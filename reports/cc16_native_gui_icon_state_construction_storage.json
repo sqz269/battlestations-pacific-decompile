@@ -1,0 +1,2388 @@
+{
+  "kind": "ignored whole ordinary raw Source proposal V2; V1 held for AB683D omission",
+  "base": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_construction_storage.hpp",
+    "src/native_gui_icon_state_construction_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_CONSTRUCTION_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_construction_storage.json"
+  ],
+  "postimages": {
+    "include/bsp/native_gui_icon_state_construction_storage.hpp": {
+      "bytes": 5757,
+      "sha256": "b58ee6ddc40a64e0a9949dd4547740921e8c81111aa706820f19b3dc1ab17ef8"
+    },
+    "src/native_gui_icon_state_construction_storage.cpp": {
+      "bytes": 9900,
+      "sha256": "a46011f67c50e11f413e4306ed9e4643d5754f26b296f62584b7c663b61e0080"
+    },
+    "docs/CC16_NATIVE_GUI_ICON_STATE_CONSTRUCTION_STORAGE.md": {
+      "bytes": 4431,
+      "sha256": "5f5e70aee2a5c28329422a0e6c4b32ef517d7ce3a98b64e799764d090d3ba320"
+    }
+  },
+  "addition_seams": [
+    {
+      "path": "include/bsp/native_gui_icon_state_construction_storage.hpp",
+      "operation": "A",
+      "before": null,
+      "after": {
+        "bytes": 5757,
+        "sha256": "b58ee6ddc40a64e0a9949dd4547740921e8c81111aa706820f19b3dc1ab17ef8"
+      }
+    },
+    {
+      "path": "src/native_gui_icon_state_construction_storage.cpp",
+      "operation": "A",
+      "before": null,
+      "after": {
+        "bytes": 9900,
+        "sha256": "a46011f67c50e11f413e4306ed9e4643d5754f26b296f62584b7c663b61e0080"
+      }
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_CONSTRUCTION_STORAGE.md",
+      "operation": "A",
+      "before": null,
+      "after": {
+        "bytes": 4431,
+        "sha256": "5f5e70aee2a5c28329422a0e6c4b32ef517d7ce3a98b64e799764d090d3ba320"
+      }
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_state_construction_storage.json",
+      "operation": "A",
+      "before": null,
+      "after": "self-containing evidence; actual Git/full path inverse verifies this path"
+    }
+  ],
+  "base_tree": "dca33173545c64f0bdfe1218979592d840f7d500",
+  "existing_Source_delta": null,
+  "installed_PE": {
+    "bytes": 12223752,
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "native": {
+    "address": "00ab66c0",
+    "PE": {
+      "bytes": 645,
+      "sha256": "06aa9c7050afb4642cf7c278fa18d9383a48083b53786e32ba35ed6c7e2b76d3"
+    },
+    "instruction_count": 168,
+    "instruction_map": [
+      {
+        "address": "00ab66c0",
+        "bytes": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]"
+      },
+      {
+        "address": "00ab66c6",
+        "bytes": "6aff",
+        "mnemonic": "push",
+        "operands": "-1"
+      },
+      {
+        "address": "00ab66c8",
+        "bytes": "68087ecb00",
+        "mnemonic": "push",
+        "operands": "0xcb7e08"
+      },
+      {
+        "address": "00ab66cd",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00ab66ce",
+        "bytes": "8b442418",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00ab66d2",
+        "bytes": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp"
+      },
+      {
+        "address": "00ab66d9",
+        "bytes": "83ec60",
+        "mnemonic": "sub",
+        "operands": "esp, 0x60"
+      },
+      {
+        "address": "00ab66dc",
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx"
+      },
+      {
+        "address": "00ab66dd",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00ab66de",
+        "bytes": "33db",
+        "mnemonic": "xor",
+        "operands": "ebx, ebx"
+      },
+      {
+        "address": "00ab66e0",
+        "bytes": "3bc3",
+        "mnemonic": "cmp",
+        "operands": "eax, ebx"
+      },
+      {
+        "address": "00ab66e2",
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "edi"
+      },
+      {
+        "address": "00ab66e3",
+        "bytes": "8bf9",
+        "mnemonic": "mov",
+        "operands": "edi, ecx"
+      },
+      {
+        "address": "00ab66e5",
+        "bytes": "7512",
+        "mnemonic": "jne",
+        "operands": "0xab66f9"
+      },
+      {
+        "address": "00ab66e7",
+        "bytes": "f30f104718",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x18]"
+      },
+      {
+        "address": "00ab66ec",
+        "bytes": "f30f11442414",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x14], xmm0"
+      },
+      {
+        "address": "00ab66f2",
+        "bytes": "f30f10471c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x1c]"
+      },
+      {
+        "address": "00ab66f7",
+        "bytes": "eb0f",
+        "mnemonic": "jmp",
+        "operands": "0xab6708"
+      },
+      {
+        "address": "00ab66f9",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab66fd",
+        "bytes": "f30f11442414",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x14], xmm0"
+      },
+      {
+        "address": "00ab6703",
+        "bytes": "f30f104004",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab6708",
+        "bytes": "8b842488000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x88]"
+      },
+      {
+        "address": "00ab670f",
+        "bytes": "3bc3",
+        "mnemonic": "cmp",
+        "operands": "eax, ebx"
+      },
+      {
+        "address": "00ab6711",
+        "bytes": "f30f11442418",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x18], xmm0"
+      },
+      {
+        "address": "00ab6717",
+        "bytes": "7512",
+        "mnemonic": "jne",
+        "operands": "0xab672b"
+      },
+      {
+        "address": "00ab6719",
+        "bytes": "f30f104720",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x20]"
+      },
+      {
+        "address": "00ab671e",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab6724",
+        "bytes": "f30f104724",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x24]"
+      },
+      {
+        "address": "00ab6729",
+        "bytes": "eb0f",
+        "mnemonic": "jmp",
+        "operands": "0xab673a"
+      },
+      {
+        "address": "00ab672b",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab672f",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab6735",
+        "bytes": "f30f104004",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab673a",
+        "bytes": "f30f100d4ca2d700",
+        "mnemonic": "movss",
+        "operands": "xmm1, dword ptr [0xd7a24c]"
+      },
+      {
+        "address": "00ab6742",
+        "bytes": "f30f11442410",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x10], xmm0"
+      },
+      {
+        "address": "00ab6748",
+        "bytes": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0"
+      },
+      {
+        "address": "00ab674b",
+        "bytes": "895c242c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x2c], ebx"
+      },
+      {
+        "address": "00ab674f",
+        "bytes": "895c2430",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x30], ebx"
+      },
+      {
+        "address": "00ab6753",
+        "bytes": "895c2434",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x34], ebx"
+      },
+      {
+        "address": "00ab6757",
+        "bytes": "f30f11442438",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x38], xmm0"
+      },
+      {
+        "address": "00ab675d",
+        "bytes": "f30f1144243c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x3c], xmm0"
+      },
+      {
+        "address": "00ab6763",
+        "bytes": "f30f114c2440",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x40], xmm1"
+      },
+      {
+        "address": "00ab6769",
+        "bytes": "f30f114c2444",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x44], xmm1"
+      },
+      {
+        "address": "00ab676f",
+        "bytes": "f30f11442448",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x48], xmm0"
+      },
+      {
+        "address": "00ab6775",
+        "bytes": "f30f1144244c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x4c], xmm0"
+      },
+      {
+        "address": "00ab677b",
+        "bytes": "f30f114c2450",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x50], xmm1"
+      },
+      {
+        "address": "00ab6781",
+        "bytes": "f30f114c2454",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x54], xmm1"
+      },
+      {
+        "address": "00ab6787",
+        "bytes": "f30f11442458",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x58], xmm0"
+      },
+      {
+        "address": "00ab678d",
+        "bytes": "f30f1144245c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x5c], xmm0"
+      },
+      {
+        "address": "00ab6793",
+        "bytes": "f30f11442460",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x60], xmm0"
+      },
+      {
+        "address": "00ab6799",
+        "bytes": "f30f11442464",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x64], xmm0"
+      },
+      {
+        "address": "00ab679f",
+        "bytes": "885c2468",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x68], bl"
+      },
+      {
+        "address": "00ab67a3",
+        "bytes": "885c2469",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x69], bl"
+      },
+      {
+        "address": "00ab67a7",
+        "bytes": "8b74247c",
+        "mnemonic": "mov",
+        "operands": "esi, dword ptr [esp + 0x7c]"
+      },
+      {
+        "address": "00ab67ab",
+        "bytes": "8d442430",
+        "mnemonic": "lea",
+        "operands": "eax, [esp + 0x30]"
+      },
+      {
+        "address": "00ab67af",
+        "bytes": "3bc6",
+        "mnemonic": "cmp",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "00ab67b1",
+        "bytes": "895c2474",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x74], ebx"
+      },
+      {
+        "address": "00ab67b5",
+        "bytes": "f30f1144241c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x1c], xmm0"
+      },
+      {
+        "address": "00ab67bb",
+        "bytes": "f30f11442420",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x20], xmm0"
+      },
+      {
+        "address": "00ab67c1",
+        "bytes": "f30f114c2424",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x24], xmm1"
+      },
+      {
+        "address": "00ab67c7",
+        "bytes": "f30f114c2428",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x28], xmm1"
+      },
+      {
+        "address": "00ab67cd",
+        "bytes": "7428",
+        "mnemonic": "je",
+        "operands": "0xab67f7"
+      },
+      {
+        "address": "00ab67cf",
+        "bytes": "8b06",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi]"
+      },
+      {
+        "address": "00ab67d1",
+        "bytes": "6a01",
+        "mnemonic": "push",
+        "operands": "1"
+      },
+      {
+        "address": "00ab67d3",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00ab67d4",
+        "bytes": "8d4c2438",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x38]"
+      },
+      {
+        "address": "00ab67d8",
+        "bytes": "e8637596ff",
+        "mnemonic": "call",
+        "operands": "0x41dd40"
+      },
+      {
+        "address": "00ab67dd",
+        "bytes": "391e",
+        "mnemonic": "cmp",
+        "operands": "dword ptr [esi], ebx"
+      },
+      {
+        "address": "00ab67df",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0xab67f7"
+      },
+      {
+        "address": "00ab67e1",
+        "bytes": "8b4c2430",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x30]"
+      },
+      {
+        "address": "00ab67e5",
+        "bytes": "8b5604",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00ab67e8",
+        "bytes": "8b442434",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x34]"
+      },
+      {
+        "address": "00ab67ec",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00ab67ed",
+        "bytes": "52",
+        "mnemonic": "push",
+        "operands": "edx"
+      },
+      {
+        "address": "00ab67ee",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00ab67ef",
+        "bytes": "e88c0e1400",
+        "mnemonic": "call",
+        "operands": "0xbf7680"
+      },
+      {
+        "address": "00ab67f4",
+        "bytes": "83c40c",
+        "mnemonic": "add",
+        "operands": "esp, 0xc"
+      },
+      {
+        "address": "00ab67f7",
+        "bytes": "389f01010000",
+        "mnemonic": "cmp",
+        "operands": "byte ptr [edi + 0x101], bl"
+      },
+      {
+        "address": "00ab67fd",
+        "bytes": "8b842480000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x80]"
+      },
+      {
+        "address": "00ab6804",
+        "bytes": "8b08",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax]"
+      },
+      {
+        "address": "00ab6806",
+        "bytes": "8b5004",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab6809",
+        "bytes": "f30f10442414",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00ab680f",
+        "bytes": "894c2448",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x48], ecx"
+      },
+      {
+        "address": "00ab6813",
+        "bytes": "8b4808",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [eax + 8]"
+      },
+      {
+        "address": "00ab6816",
+        "bytes": "8954244c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x4c], edx"
+      },
+      {
+        "address": "00ab681a",
+        "bytes": "8b500c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [eax + 0xc]"
+      },
+      {
+        "address": "00ab681d",
+        "bytes": "f30f11442458",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x58], xmm0"
+      },
+      {
+        "address": "00ab6823",
+        "bytes": "f30f10442418",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00ab6829",
+        "bytes": "f30f1144245c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x5c], xmm0"
+      },
+      {
+        "address": "00ab682f",
+        "bytes": "894c2450",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x50], ecx"
+      },
+      {
+        "address": "00ab6833",
+        "bytes": "89542454",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x54], edx"
+      },
+      {
+        "address": "00ab6837",
+        "bytes": "0f8598000000",
+        "mnemonic": "jne",
+        "operands": "0xab68d5"
+      },
+      {
+        "address": "00ab683d",
+        "bytes": "885c2468",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esp + 0x68], bl"
+      },
+      {
+        "address": "00ab6841",
+        "bytes": "e86aaaa0ff",
+        "mnemonic": "call",
+        "operands": "0x4c12b0"
+      },
+      {
+        "address": "00ab6846",
+        "bytes": "d9e8",
+        "mnemonic": "fld1",
+        "operands": ""
+      },
+      {
+        "address": "00ab6848",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00ab6849",
+        "bytes": "d91c24",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp]"
+      },
+      {
+        "address": "00ab684c",
+        "bytes": "8d4c2410",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x10]"
+      },
+      {
+        "address": "00ab6850",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00ab6851",
+        "bytes": "8d542424",
+        "mnemonic": "lea",
+        "operands": "edx, [esp + 0x24]"
+      },
+      {
+        "address": "00ab6855",
+        "bytes": "52",
+        "mnemonic": "push",
+        "operands": "edx"
+      },
+      {
+        "address": "00ab6856",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi"
+      },
+      {
+        "address": "00ab6857",
+        "bytes": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax"
+      },
+      {
+        "address": "00ab6859",
+        "bytes": "e802befeff",
+        "mnemonic": "call",
+        "operands": "0xaa2660"
+      },
+      {
+        "address": "00ab685e",
+        "bytes": "8b4c241c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x1c]"
+      },
+      {
+        "address": "00ab6862",
+        "bytes": "8b542420",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [esp + 0x20]"
+      },
+      {
+        "address": "00ab6866",
+        "bytes": "83ec10",
+        "mnemonic": "sub",
+        "operands": "esp, 0x10"
+      },
+      {
+        "address": "00ab6869",
+        "bytes": "8944243c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x3c], eax"
+      },
+      {
+        "address": "00ab686d",
+        "bytes": "8bc4",
+        "mnemonic": "mov",
+        "operands": "eax, esp"
+      },
+      {
+        "address": "00ab686f",
+        "bytes": "8908",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], ecx"
+      },
+      {
+        "address": "00ab6871",
+        "bytes": "8b4c2434",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x34]"
+      },
+      {
+        "address": "00ab6875",
+        "bytes": "895004",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], edx"
+      },
+      {
+        "address": "00ab6878",
+        "bytes": "8b542438",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [esp + 0x38]"
+      },
+      {
+        "address": "00ab687c",
+        "bytes": "894808",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], ecx"
+      },
+      {
+        "address": "00ab687f",
+        "bytes": "8d4c243c",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x3c]"
+      },
+      {
+        "address": "00ab6883",
+        "bytes": "89500c",
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], edx"
+      },
+      {
+        "address": "00ab6886",
+        "bytes": "e8f5adffff",
+        "mnemonic": "call",
+        "operands": "0xab1680"
+      },
+      {
+        "address": "00ab688b",
+        "bytes": "f30f1044240c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00ab6891",
+        "bytes": "0f57c9",
+        "mnemonic": "xorps",
+        "operands": "xmm1, xmm1"
+      },
+      {
+        "address": "00ab6894",
+        "bytes": "0f2ec1",
+        "mnemonic": "ucomiss",
+        "operands": "xmm0, xmm1"
+      },
+      {
+        "address": "00ab6897",
+        "bytes": "9f",
+        "mnemonic": "lahf",
+        "operands": ""
+      },
+      {
+        "address": "00ab6898",
+        "bytes": "f6c444",
+        "mnemonic": "test",
+        "operands": "ah, 0x44"
+      },
+      {
+        "address": "00ab689b",
+        "bytes": "7a47",
+        "mnemonic": "jp",
+        "operands": "0xab68e4"
+      },
+      {
+        "address": "00ab689d",
+        "bytes": "f30f10542410",
+        "mnemonic": "movss",
+        "operands": "xmm2, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00ab68a3",
+        "bytes": "0f2ed1",
+        "mnemonic": "ucomiss",
+        "operands": "xmm2, xmm1"
+      },
+      {
+        "address": "00ab68a6",
+        "bytes": "9f",
+        "mnemonic": "lahf",
+        "operands": ""
+      },
+      {
+        "address": "00ab68a7",
+        "bytes": "f6c444",
+        "mnemonic": "test",
+        "operands": "ah, 0x44"
+      },
+      {
+        "address": "00ab68aa",
+        "bytes": "7a38",
+        "mnemonic": "jp",
+        "operands": "0xab68e4"
+      },
+      {
+        "address": "00ab68ac",
+        "bytes": "8b54242c",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [esp + 0x2c]"
+      },
+      {
+        "address": "00ab68b0",
+        "bytes": "8d442438",
+        "mnemonic": "lea",
+        "operands": "eax, [esp + 0x38]"
+      },
+      {
+        "address": "00ab68b4",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax"
+      },
+      {
+        "address": "00ab68b5",
+        "bytes": "8d4c2418",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x18]"
+      },
+      {
+        "address": "00ab68b9",
+        "bytes": "e8f2aeffff",
+        "mnemonic": "call",
+        "operands": "0xab17b0"
+      },
+      {
+        "address": "00ab68be",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab68c2",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab68c8",
+        "bytes": "f30f104804",
+        "mnemonic": "movss",
+        "operands": "xmm1, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab68cd",
+        "bytes": "f30f114c2410",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x10], xmm1"
+      },
+      {
+        "address": "00ab68d3",
+        "bytes": "eb0f",
+        "mnemonic": "jmp",
+        "operands": "0xab68e4"
+      },
+      {
+        "address": "00ab68d5",
+        "bytes": "8d4c242c",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x2c]"
+      },
+      {
+        "address": "00ab68d9",
+        "bytes": "e852d2ffff",
+        "mnemonic": "call",
+        "operands": "0xab3b30"
+      },
+      {
+        "address": "00ab68de",
+        "bytes": "f30f1044240c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00ab68e4",
+        "bytes": "8d4c242c",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x2c]"
+      },
+      {
+        "address": "00ab68e8",
+        "bytes": "f30f11442460",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x60], xmm0"
+      },
+      {
+        "address": "00ab68ee",
+        "bytes": "f30f10442410",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00ab68f4",
+        "bytes": "8db7f0000000",
+        "mnemonic": "lea",
+        "operands": "esi, [edi + 0xf0]"
+      },
+      {
+        "address": "00ab68fa",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx"
+      },
+      {
+        "address": "00ab68fb",
+        "bytes": "8bce",
+        "mnemonic": "mov",
+        "operands": "ecx, esi"
+      },
+      {
+        "address": "00ab68fd",
+        "bytes": "f30f11442468",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x68], xmm0"
+      },
+      {
+        "address": "00ab6903",
+        "bytes": "e898faffff",
+        "mnemonic": "call",
+        "operands": "0xab63a0"
+      },
+      {
+        "address": "00ab6908",
+        "bytes": "8b4e04",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esi + 4]"
+      },
+      {
+        "address": "00ab690b",
+        "bytes": "3bcb",
+        "mnemonic": "cmp",
+        "operands": "ecx, ebx"
+      },
+      {
+        "address": "00ab690d",
+        "bytes": "7504",
+        "mnemonic": "jne",
+        "operands": "0xab6913"
+      },
+      {
+        "address": "00ab690f",
+        "bytes": "33c0",
+        "mnemonic": "xor",
+        "operands": "eax, eax"
+      },
+      {
+        "address": "00ab6911",
+        "bytes": "eb08",
+        "mnemonic": "jmp",
+        "operands": "0xab691b"
+      },
+      {
+        "address": "00ab6913",
+        "bytes": "8b4608",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esi + 8]"
+      },
+      {
+        "address": "00ab6916",
+        "bytes": "2bc1",
+        "mnemonic": "sub",
+        "operands": "eax, ecx"
+      },
+      {
+        "address": "00ab6918",
+        "bytes": "c1f806",
+        "mnemonic": "sar",
+        "operands": "eax, 6"
+      },
+      {
+        "address": "00ab691b",
+        "bytes": "8d4c242c",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x2c]"
+      },
+      {
+        "address": "00ab691f",
+        "bytes": "8d70ff",
+        "mnemonic": "lea",
+        "operands": "esi, [eax - 1]"
+      },
+      {
+        "address": "00ab6922",
+        "bytes": "c7442474ffffffff",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x74], 0xffffffff"
+      },
+      {
+        "address": "00ab692a",
+        "bytes": "e851c9ffff",
+        "mnemonic": "call",
+        "operands": "0xab3280"
+      },
+      {
+        "address": "00ab692f",
+        "bytes": "8b4c246c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x6c]"
+      },
+      {
+        "address": "00ab6933",
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "edi"
+      },
+      {
+        "address": "00ab6934",
+        "bytes": "8bc6",
+        "mnemonic": "mov",
+        "operands": "eax, esi"
+      },
+      {
+        "address": "00ab6936",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi"
+      },
+      {
+        "address": "00ab6937",
+        "bytes": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx"
+      },
+      {
+        "address": "00ab693e",
+        "bytes": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx"
+      },
+      {
+        "address": "00ab693f",
+        "bytes": "83c46c",
+        "mnemonic": "add",
+        "operands": "esp, 0x6c"
+      },
+      {
+        "address": "00ab6942",
+        "bytes": "c21000",
+        "mnemonic": "ret",
+        "operands": "0x10"
+      }
+    ],
+    "calls": [
+      {
+        "address": "00ab67d8",
+        "bytes": "e8637596ff",
+        "mnemonic": "call",
+        "operands": "0x41dd40"
+      },
+      {
+        "address": "00ab67ef",
+        "bytes": "e88c0e1400",
+        "mnemonic": "call",
+        "operands": "0xbf7680"
+      },
+      {
+        "address": "00ab6841",
+        "bytes": "e86aaaa0ff",
+        "mnemonic": "call",
+        "operands": "0x4c12b0"
+      },
+      {
+        "address": "00ab6859",
+        "bytes": "e802befeff",
+        "mnemonic": "call",
+        "operands": "0xaa2660"
+      },
+      {
+        "address": "00ab6886",
+        "bytes": "e8f5adffff",
+        "mnemonic": "call",
+        "operands": "0xab1680"
+      },
+      {
+        "address": "00ab68b9",
+        "bytes": "e8f2aeffff",
+        "mnemonic": "call",
+        "operands": "0xab17b0"
+      },
+      {
+        "address": "00ab68d9",
+        "bytes": "e852d2ffff",
+        "mnemonic": "call",
+        "operands": "0xab3b30"
+      },
+      {
+        "address": "00ab6903",
+        "bytes": "e898faffff",
+        "mnemonic": "call",
+        "operands": "0xab63a0"
+      },
+      {
+        "address": "00ab692a",
+        "bytes": "e851c9ffff",
+        "mnemonic": "call",
+        "operands": "0xab3280"
+      }
+    ],
+    "x87": [
+      {
+        "address": "00ab6846",
+        "bytes": "d9e8",
+        "mnemonic": "fld1",
+        "operands": ""
+      },
+      {
+        "address": "00ab6849",
+        "bytes": "d91c24",
+        "mnemonic": "fstp",
+        "operands": "dword ptr [esp]"
+      }
+    ],
+    "SSE": [
+      {
+        "address": "00ab66e7",
+        "bytes": "f30f104718",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x18]"
+      },
+      {
+        "address": "00ab66ec",
+        "bytes": "f30f11442414",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x14], xmm0"
+      },
+      {
+        "address": "00ab66f2",
+        "bytes": "f30f10471c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x1c]"
+      },
+      {
+        "address": "00ab66f9",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab66fd",
+        "bytes": "f30f11442414",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x14], xmm0"
+      },
+      {
+        "address": "00ab6703",
+        "bytes": "f30f104004",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab6711",
+        "bytes": "f30f11442418",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x18], xmm0"
+      },
+      {
+        "address": "00ab6719",
+        "bytes": "f30f104720",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x20]"
+      },
+      {
+        "address": "00ab671e",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab6724",
+        "bytes": "f30f104724",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [edi + 0x24]"
+      },
+      {
+        "address": "00ab672b",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab672f",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab6735",
+        "bytes": "f30f104004",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab673a",
+        "bytes": "f30f100d4ca2d700",
+        "mnemonic": "movss",
+        "operands": "xmm1, dword ptr [0xd7a24c]"
+      },
+      {
+        "address": "00ab6742",
+        "bytes": "f30f11442410",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x10], xmm0"
+      },
+      {
+        "address": "00ab6748",
+        "bytes": "0f57c0",
+        "mnemonic": "xorps",
+        "operands": "xmm0, xmm0"
+      },
+      {
+        "address": "00ab6757",
+        "bytes": "f30f11442438",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x38], xmm0"
+      },
+      {
+        "address": "00ab675d",
+        "bytes": "f30f1144243c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x3c], xmm0"
+      },
+      {
+        "address": "00ab6763",
+        "bytes": "f30f114c2440",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x40], xmm1"
+      },
+      {
+        "address": "00ab6769",
+        "bytes": "f30f114c2444",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x44], xmm1"
+      },
+      {
+        "address": "00ab676f",
+        "bytes": "f30f11442448",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x48], xmm0"
+      },
+      {
+        "address": "00ab6775",
+        "bytes": "f30f1144244c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x4c], xmm0"
+      },
+      {
+        "address": "00ab677b",
+        "bytes": "f30f114c2450",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x50], xmm1"
+      },
+      {
+        "address": "00ab6781",
+        "bytes": "f30f114c2454",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x54], xmm1"
+      },
+      {
+        "address": "00ab6787",
+        "bytes": "f30f11442458",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x58], xmm0"
+      },
+      {
+        "address": "00ab678d",
+        "bytes": "f30f1144245c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x5c], xmm0"
+      },
+      {
+        "address": "00ab6793",
+        "bytes": "f30f11442460",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x60], xmm0"
+      },
+      {
+        "address": "00ab6799",
+        "bytes": "f30f11442464",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x64], xmm0"
+      },
+      {
+        "address": "00ab67b5",
+        "bytes": "f30f1144241c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x1c], xmm0"
+      },
+      {
+        "address": "00ab67bb",
+        "bytes": "f30f11442420",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x20], xmm0"
+      },
+      {
+        "address": "00ab67c1",
+        "bytes": "f30f114c2424",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x24], xmm1"
+      },
+      {
+        "address": "00ab67c7",
+        "bytes": "f30f114c2428",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x28], xmm1"
+      },
+      {
+        "address": "00ab6809",
+        "bytes": "f30f10442414",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x14]"
+      },
+      {
+        "address": "00ab681d",
+        "bytes": "f30f11442458",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x58], xmm0"
+      },
+      {
+        "address": "00ab6823",
+        "bytes": "f30f10442418",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x18]"
+      },
+      {
+        "address": "00ab6829",
+        "bytes": "f30f1144245c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x5c], xmm0"
+      },
+      {
+        "address": "00ab688b",
+        "bytes": "f30f1044240c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00ab6891",
+        "bytes": "0f57c9",
+        "mnemonic": "xorps",
+        "operands": "xmm1, xmm1"
+      },
+      {
+        "address": "00ab6894",
+        "bytes": "0f2ec1",
+        "mnemonic": "ucomiss",
+        "operands": "xmm0, xmm1"
+      },
+      {
+        "address": "00ab689d",
+        "bytes": "f30f10542410",
+        "mnemonic": "movss",
+        "operands": "xmm2, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00ab68a3",
+        "bytes": "0f2ed1",
+        "mnemonic": "ucomiss",
+        "operands": "xmm2, xmm1"
+      },
+      {
+        "address": "00ab68be",
+        "bytes": "f30f1000",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [eax]"
+      },
+      {
+        "address": "00ab68c2",
+        "bytes": "f30f1144240c",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0xc], xmm0"
+      },
+      {
+        "address": "00ab68c8",
+        "bytes": "f30f104804",
+        "mnemonic": "movss",
+        "operands": "xmm1, dword ptr [eax + 4]"
+      },
+      {
+        "address": "00ab68cd",
+        "bytes": "f30f114c2410",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x10], xmm1"
+      },
+      {
+        "address": "00ab68de",
+        "bytes": "f30f1044240c",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0xc]"
+      },
+      {
+        "address": "00ab68e8",
+        "bytes": "f30f11442460",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x60], xmm0"
+      },
+      {
+        "address": "00ab68ee",
+        "bytes": "f30f10442410",
+        "mnemonic": "movss",
+        "operands": "xmm0, dword ptr [esp + 0x10]"
+      },
+      {
+        "address": "00ab68fd",
+        "bytes": "f30f11442468",
+        "mnemonic": "movss",
+        "operands": "dword ptr [esp + 0x68], xmm0"
+      }
+    ],
+    "RET": "RET10h",
+    "callee_profile_cell": {
+      "address": "00d5c564",
+      "bytes": "c066ab00"
+    },
+    "EH": {
+      "handler_address": "00cb7e08",
+      "handler": [
+        {
+          "address": "00cb7e08",
+          "bytes": "b8f4ebde00",
+          "mnemonic": "mov",
+          "operands": "eax, 0xdeebf4"
+        },
+        {
+          "address": "00cb7e0d",
+          "bytes": "e931edf3ff",
+          "mnemonic": "jmp",
+          "operands": "0xbf6b43"
+        },
+        {
+          "address": "00cb7e12",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "address": "00cb7e13",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "address": "00cb7e14",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "address": "00cb7e15",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "address": "00cb7e16",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        },
+        {
+          "address": "00cb7e17",
+          "bytes": "cc",
+          "mnemonic": "int3",
+          "operands": ""
+        }
+      ],
+      "FuncInfo_address": "00deebf4",
+      "FuncInfo_bytes": "2205931901000000ecebde00000000000000000000000000000000000000000001000000",
+      "FuncInfo_words": [
+        "19930522",
+        "00000001",
+        "00deebec",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind_address": "00deebec",
+      "unwind_bytes": "ffffffff007ecb00",
+      "action_address": "00cb7e00",
+      "action": [
+        {
+          "address": "00cb7e00",
+          "bytes": "8d4db4",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x4c]"
+        },
+        {
+          "address": "00cb7e03",
+          "bytes": "e978b4dfff",
+          "mnemonic": "jmp",
+          "operands": "0xab3280"
+        }
+      ]
+    }
+  },
+  "whole_Source_inputs": [
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 3321,
+      "sha256": "5809e09d32c059082df48e0abc9a248d9854612412ba4f73026bf831dd1f0694"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_state_append_wrapper_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_state_append_wrapper_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 2893,
+      "sha256": "3b3ac42e81773346af384cb89434da35a70283015777dd08946d886c1d6bfb88"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_state_iterator_insert_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_state_iterator_insert_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 3199,
+      "sha256": "832e3097c765de0ac483ac663638aa3a3642fb557be8f6ae427c9ee20d1bd13b"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_state_iterator_insert_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_state_iterator_insert_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 2672,
+      "sha256": "9023d0a1acba4ed789dc844e46034a43301281c305b3345087234619e1b119c7"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_state_growth_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_state_growth_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 6088,
+      "sha256": "0fa15e9c70fe756503d566cef17a5d855beb84828e8248dd7589798934ae2281"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_state_growth_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_state_growth_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 10137,
+      "sha256": "681097da283c46cfa5f2d1afec2d6d42ca2b9f469ebd0cd9fade841454d55459"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_state_uv_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 1990,
+      "sha256": "9998519a4cfca15ee13032876c791146e9aa43db2494d2a8f43f707cca20cb19"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_state_uv_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_state_uv_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 1974,
+      "sha256": "c66b10ab06c1e35f178ce53e5456fbbd1bf57b35ff5617e5ea06663fca0a8bfc"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_native_size_storage.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_gui_icon_native_size_storage.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 3298,
+      "sha256": "e72fa9ca5a2a2a29170e98ef309c48e8a9b2467c376cb487af5820448b8cc956"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_native_size_storage.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_gui_icon_native_size_storage.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 3758,
+      "sha256": "cd5d40b8fb20d94efc3ba5c7037bdfd67fdc81e3be813af535230a8c91b2263f"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_platform_focus_owners.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 4708,
+      "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_platform_focus_owners.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_platform_focus_owners.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 10371,
+      "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_string_raw_resize_exact.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_string_raw_resize_exact.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_crt_memcpy.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_crt_memcpy.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_crt_memcpy.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_render_context.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/native_render_context.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 14392,
+      "sha256": "11cf2eef33c83a0da0b74e9f64ca52ca78f9ba4bd45cb2ae2586f6624517091d"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_render_context.cpp",
+      "snapshot": "providers/83db5a230c20/src/native_render_context.cpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 22868,
+      "sha256": "15552619bbc2a378e948fa017dfcbc0bf42c95a2071b0734a5a89a200134e983"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/gui_texture.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/gui_texture.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 1483,
+      "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/gui_icon_runtime.hpp",
+      "snapshot": "providers/83db5a230c20/include/bsp/gui_icon_runtime.hpp",
+      "role": "published genuine direct/transitive provider",
+      "bytes": 9796,
+      "sha256": "85268af63b51d9edb56594034e8eb7eb72b14148164e0741c69e10ac9181f73c"
+    },
+    {
+      "commit": "5a73475cd5668bc63ba4d0aec8c7ab04ad6b2091",
+      "path": "include/bsp/native_gui_texture_resolver_storage.hpp",
+      "snapshot": "providers/5a73475cd566/include/bsp/native_gui_texture_resolver_storage.hpp",
+      "role": "actual Root authored private dependency; not at pinned published Main",
+      "bytes": 3520,
+      "sha256": "02c6e5de1138a9c5e09526ebc82626a38a1aad7e70637e22cdb5a2257608ac11"
+    },
+    {
+      "commit": "5a73475cd5668bc63ba4d0aec8c7ab04ad6b2091",
+      "path": "src/native_gui_texture_resolver_storage.cpp",
+      "snapshot": "providers/5a73475cd566/src/native_gui_texture_resolver_storage.cpp",
+      "role": "actual Root authored private dependency; not at pinned published Main",
+      "bytes": 7293,
+      "sha256": "039323eaba6af7a46ff9aefa12b1375e5c81561372a78676eb0d7fd8dd4ddb33"
+    },
+    {
+      "commit": "3fc5b0a0acd3bacadb625883f73d6ec44bc5a467",
+      "path": "include/bsp/native_gui_icon_placeholder_storage.hpp",
+      "snapshot": "providers/3fc5b0a0acd3/include/bsp/native_gui_icon_placeholder_storage.hpp",
+      "role": "actual Root authored private dependency; not at pinned published Main",
+      "bytes": 3915,
+      "sha256": "abb2535c1e4c99a564ddf578b6952d2249df1abd94cbf978d8fbf19252111f3c"
+    },
+    {
+      "commit": "3fc5b0a0acd3bacadb625883f73d6ec44bc5a467",
+      "path": "src/native_gui_icon_placeholder_storage.cpp",
+      "snapshot": "providers/3fc5b0a0acd3/src/native_gui_icon_placeholder_storage.cpp",
+      "role": "actual Root authored private dependency; not at pinned published Main",
+      "bytes": 3954,
+      "sha256": "f5f224fc23618eec624afaf8348f7bb45ab3ab56cd8aaa7619255c04cfa5ec95"
+    },
+    {
+      "commit": "931f49759a2737e5e12837646d56ca88e2cb588b",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "snapshot": "providers/931f49759a27/src/game_native_gui_icon_application.cpp",
+      "role": "actual Root95 captured reported/saved-dimension consumer; actual caller construction still required",
+      "bytes": 29777,
+      "sha256": "ae95b1ba6af92b020e3b80ba936c231c2afb31354ced4ebb407c0a4497a64759"
+    },
+    {
+      "commit": "0a6034a6cc75658c0e1cac62f75ecc6227500ab6",
+      "path": "include/bsp/native_gui_icon_rebuild_storage.hpp",
+      "snapshot": "providers/0a6034a6cc75/include/bsp/native_gui_icon_rebuild_storage.hpp",
+      "role": "actual Root97 downstream current80; not called by AB66C0 itself",
+      "bytes": 7144,
+      "sha256": "83107bd786e79600a674fa05301326030d8375b82aa024799c7a55cd96bc6f2d"
+    },
+    {
+      "commit": "0a6034a6cc75658c0e1cac62f75ecc6227500ab6",
+      "path": "src/native_gui_icon_rebuild_storage.cpp",
+      "snapshot": "providers/0a6034a6cc75/src/native_gui_icon_rebuild_storage.cpp",
+      "role": "actual Root97 downstream current80; not called by AB66C0 itself",
+      "bytes": 29436,
+      "sha256": "65ba7ea6da1625dc651bbd17dcdaa984d2becb3bbd016d185fd537603f4c7522"
+    }
+  ],
+  "used_regions": [
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start": 14,
+      "end": 29,
+      "label": "actual trivial40B individual-state subobjects",
+      "bytes": 680,
+      "sha256": "1d0031c75bf075bb8139b7d356a5b6890b864a1c16612675c65ad0ef95f6e01e",
+      "utf8": "// is the native8h header; texture is its one owned actual +04 reference.\n// Native AB3A70 leaves3E/3F unwritten and copies2C/30/34/38 via x87.\nstruct NativeGuiIconStateStorage {\n    void* texture_00;\n    std::uint32_t name_length_04;\n    char* name_characters_08;\n    std::uint32_t resolved_uv_0c[4];\n    std::uint32_t authored_uv_1c[4];\n    float pivot_x_2c, pivot_y_30, width_34, height_38;\n    std::uint8_t pending_3c, flag_3d, unwritten_3e[2];\n};\n// Actual F0..FF header. F0 proxy is constructor-unwritten, not a host proxy.\nstruct NativeGuiIconStateVectorStorage {\n    std::uint32_t proxy_f0;\n    NativeGuiIconStateStorage* first_f4;\n    NativeGuiIconStateStorage* last_f8;\n"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start": 103,
+      "end": 114,
+      "label": "existing raw copy/destructor actual+04/name policy",
+      "bytes": 711,
+      "sha256": "649b81dc0300bebb0b94d8064cb129122359ca3e7ffebc41b8517148bac97022",
+      "utf8": "};\n\n// AB3A70 ECX destination40h, source stack, RET4/EAX same. Real raw string\n// resize/copy then native field order and a single actual texture+04 increment.\n// AB3280 ECX actual state, RET: release CURRENT texture, clear only after its\n// terminal returns, then release CURRENT name. Name unwind also runs if texture\n// release throws. Headers are not silently repaired or cleared on name release.\n// Textures are actual live canonical owners in this SAME registry; no host ptr.\nvoid* copy_native_gui_icon_state_00ab3a70(void* actual_destination,\n    const void* actual_source, NativeGuiIconStorageContext&);\nvoid destroy_native_gui_icon_state_00ab3280(void* actual_state,\n    NativeGuiIconStorageContext&);\n"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "src/native_gui_icon_storage.cpp",
+      "start": 152,
+      "end": 168,
+      "label": "existing actual destructor secondary policy, inherited not strengthened",
+      "bytes": 760,
+      "sha256": "363c72a743334c0e7bc7980db876b55c5b303510b38b8c27679f8a1fc13e9522",
+      "utf8": "}\nvoid destroy_native_gui_icon_state_00ab3280(void* raw, NativeGuiIconStorageContext& context) {\n    require_storage(raw);\n    try {\n        if (void* const texture = pointer(raw)) {\n            release_native_render_actual_owner(context.actual_owners, texture);\n            word(raw) = 0; // AB32C2, after terminal, before reloading name.\n        }\n    } catch (...) {\n        // AB3280 native state0 owns the name even when texture0 throws.\n        try { destroy_native_string_header_0041dd20(at(raw, 4), context.strings); }\n        catch (...) { std::terminate(); }\n        throw;\n    }\n    destroy_native_string_header_0041dd20(at(raw, 4), context.strings);\n}\nvoid destroy_native_gui_icon_states_00ab5850(void* raw, NativeGuiIconStorageContext& context) {\n"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_native_size_storage.hpp",
+      "start": 16,
+      "end": 64,
+      "label": "existing complete captured-dimension ordinary raw Source domain",
+      "bytes": 2662,
+      "sha256": "af5774fdcfe168d070addec2e03196bc5aefdbf2379a69442e555178d6d7ce8c",
+      "utf8": "    std::uint32_t conversion_height_home;\n};\nstatic_assert(sizeof(NativeGuiIconNativeSizeScratch) == 8);\n\n// Whole AB17B0..AB1854 data/FP schedule, 165B/51 rows. Native ECX is output,\n// EDX is texture, the incoming mutable DWORD home holds UV pointer bits, EAX\n// returns captured output and RET4 follows. This six-borrow ordinary Source API\n// changes that ABI; private-stack/register/FLAGS/fault equivalence is unproved.\n//\n// Caller supplies actual writable output8B, live texture/profile table with\n// authenticated canonical original-VA RO mapping/lifetime, and a real\n// mutable addressable DWORD UV-pointer home and the reached readable UV words.\n// Legal output/UV/home aliases retain reached read/store order. The UV pointer\n// is read only after the height division, while ST0 is live, then the SAME home\n// is overwritten by each rounded and sign-masked difference. The captured UV\n// base remains fixed; output0 is stored BEFORE vertical UV reads. No snapshot,\n// semantic GuiUvRect, new state/reference lifetime or owner is introduced.\n//\n// Both calls consume the actual captured profile/target pair through the SAME\n// genuine callbacks.dimension_from_captured. Height's CURRENT profile/+4C is\n// captured while width ST0 is live; only after its FSTP are captured registers\n// stored as Source carriers. There is no later profile/table re-read or fallback\n// to width/height, default delegate, codeword-to-callable cast or result filter.\n// Existing Game consumer accepts its qualified D61948 canonical+04 domain and\n// real B3CE70/B3CE80 targets; OTHER is explicitly Source-rejected there. Captured\n// words/count checks are not Native authority, current-generation or lifetime\n// proof. Keep the same actual owner/registry/provider graph valid throughout.\n//\n// constants borrows the SAME live authenticated CE3978 float correction and\n// CEC380/CEF1B8 double divisor cells; oneD7A24C is not read. Bind addresses only;\n// values are read at their reached x87 instructions. Signed DWORD FILD plus\n// negative-only correction, double FDIV and float32 spill epochs are explicit.\n// No C++ FP arithmetic, reset/control/RAII restore, catch, cleanup, noexcept or\n// Origin policy is added. Ambient FP/private fault/SEH/FH3/NoThrow, emitted code,\n// actual raw caller/producer/custody/disposition and activation remain unproved.\nvoid* write_native_gui_icon_native_size_storage_00ab17b0(\n    void* actual_output_float2, void* actual_texture,\n    volatile std::uint32_t& actual_uv_pointer_home,\n    NativeGuiIconNativeSizeScratch& scratch,\n    const GuiTextureCallbacks& callbacks,\n    const GuiIconStateTextureConstants& constants);\n} // namespace bsp\n"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_platform_focus_owners.hpp",
+      "start": 72,
+      "end": 90,
+      "label": "genuine complete GUI getter/context/secondary contract",
+      "bytes": 884,
+      "sha256": "a0a199ef18294169adc37a2ad92c0add7719fd085553d7b0ff7af8684e9a906c",
+      "utf8": "void* get_native_gui_manager_004c12b0(NativePlatformFocusOwnersContext& context);\nvoid* get_native_media_manager_004c1710(NativePlatformFocusOwnersContext& context);\n\n// Complete native RET4[3]; no ECX read and no side effects. Its caller pushes\n// this argument BEFORE the no-argument media getter, so that getter still runs.\nvoid __stdcall ignore_native_media_pause_00a4c2d0(std::uint32_t pause);\n\n// Source context arguments are new interfaces, not original FH3/SEH/ABI.\n// Numeric profiles retain identity, not callable host vtables. C++ cleanup\n// follows reviewed states; a second escaping cleanup exception terminates.\n// Hardware faults, invalid storage and concurrent mutation are unproved. These\n// are constructor/getter operations and their cleanup dependencies, not complete\n// populated GUI/media destruction, page activation or application shutdown.\n} // namespace bsp\n"
+    },
+    {
+      "commit": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+      "path": "include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+      "start": 19,
+      "end": 54,
+      "label": "whole actual63A0 argument/capture/record domain",
+      "bytes": 2185,
+      "sha256": "f1907cdf4252c7b91f542942e182a8d61edf6ebf56e0902444246c9ccf481500",
+      "utf8": "    NativeGuiIconStateGrowthStorageFrame growth_frame;\n};\n\n// Whole131B/53op AB63A0 ordinary Source schedule. Original ECX vector plus\n// one actual incoming prototype DWORD HOME/RET4 becomes this four-argument API.\n// Preserve captured first and unsigned wrapped SUB/SAR6 size/capacity decisions.\n// Spare capacity: read prototype HOME TWICE, capture CURRENTlast, clear ONLY\n// scratch0 LOWBYTE, read FULLscratch0, then stage tag/firstproto/vector/secondproto\n// to real5400. After normalreturn publish capturedlast+40h, not a fresh last.\n// Slow path: capture CURRENTlast; real returning BF6713 if capturedfirst>last;\n// only then read CURRENT prototype HOME and stage genuine6070's four homes.\n// Its output pointer is SAME local_08 backing. Ignore its result as Native does.\n//\n// No new Native owner/callback/allocator/lookup, default state, input cap,\n// count/profile filter, cleanup/retry/rollback/NoThrow or Origin is introduced.\n// Real current SDK handler and lower5400/59E0 policies remain inherited;\n// actual6070 is a separately pinned ignored dependency, not published/compiled\n// by this packet. Source91 parent cleanup is separately qualified at binding.\n// Caller proves actual vector/state/prototype/backing/texture/pool/feature and\n// provider custody. All callee home arrays/frames and scratch are real stable\n// distinct objects, with local_08's stated tag/output alias; declared callee\n// operand/temp writes remain live under those suppliers. Private Source\n// controls/spills stay disjoint from operand/provider writes. Keep all entered\n// backing/partial/current/completed graph/provider debt retained on escape;\n// no implicit frame destruction may stand in for actual Native cleanup.\n// No T[n] array family, Native ABI/private-stack/FLAGS/fault/FH3/Origin/FP,\n// actual caller/production/disposition/runtime/activation or extra Original/\n// vendor/helper/CG/duplicate credit follows. Existing STL name/tag stays.\nvoid append_native_gui_icon_state_storage_00ab63a0(void* actual_vector_f0,\n    const volatile std::uint32_t& actual_prototype_home,\n    NativeGuiIconStateAppendWrapperStorageFrame&, NativeGuiIconStateGrowthStorageContext&);\n} // namespace bsp\n"
+    }
+  ],
+  "historical_overlay": [
+    {
+      "path": "include/bsp/native_gui_texture_resolver_storage.hpp",
+      "commit": "5a73475cd5668bc63ba4d0aec8c7ab04ad6b2091",
+      "bytes": 3520,
+      "sha256": "02c6e5de1138a9c5e09526ebc82626a38a1aad7e70637e22cdb5a2257608ac11"
+    },
+    {
+      "path": "src/native_gui_texture_resolver_storage.cpp",
+      "commit": "5a73475cd5668bc63ba4d0aec8c7ab04ad6b2091",
+      "bytes": 7293,
+      "sha256": "039323eaba6af7a46ff9aefa12b1375e5c81561372a78676eb0d7fd8dd4ddb33"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_placeholder_storage.hpp",
+      "commit": "3fc5b0a0acd3bacadb625883f73d6ec44bc5a467",
+      "bytes": 3915,
+      "sha256": "abb2535c1e4c99a564ddf578b6952d2249df1abd94cbf978d8fbf19252111f3c"
+    },
+    {
+      "path": "src/native_gui_icon_placeholder_storage.cpp",
+      "commit": "3fc5b0a0acd3bacadb625883f73d6ec44bc5a467",
+      "bytes": 3954,
+      "sha256": "f5f224fc23618eec624afaf8348f7bb45ab3ab56cd8aaa7619255c04cfa5ec95"
+    }
+  ],
+  "Source_asm": [
+    {
+      "ordinal": 1,
+      "bytes": 119,
+      "sha256": "a9a254f9b03628e71bf6b4d64af3a52da10e154c44bf89716bb886b281c69d6d",
+      "utf8": "__asm {\n        mov eax, address\n        mov edx, byte_offset\n        mov eax, [eax + edx]\n        mov value, eax\n    }"
+    },
+    {
+      "ordinal": 2,
+      "bytes": 119,
+      "sha256": "9bcb98f2574925c00dc3b6f77f84f1f8589da8b08fa3e931ef92854bcf1c98ee",
+      "utf8": "__asm {\n        mov eax, address\n        mov edx, byte_offset\n        mov ecx, value\n        mov [eax + edx], ecx\n    }"
+    },
+    {
+      "ordinal": 3,
+      "bytes": 1901,
+      "sha256": "1d1ddd733d276c4efb7a941d38d234c2245a87d996cf1d030ae6b7675d296d15",
+      "utf8": "__asm {\n        mov edi, captured_icon\n        mov esi, homes\n        mov edx, local_homes\n        mov ecx, temporary\n        mov ebx, state_home\n        mov dword ptr [ebx], -1\n\n        mov eax, [esi + 8]\n        test eax, eax\n        jnz construct_pivot_supplied\n        movss xmm0, [edi + 18h]\n        movss [edx + 8], xmm0\n        movss xmm0, [edi + 1ch]\n        jmp construct_pivot_done\n    construct_pivot_supplied:\n        movss xmm0, [eax]\n        movss [edx + 8], xmm0\n        movss xmm0, [eax + 4]\n    construct_pivot_done:\n        mov eax, [esi + 0ch]\n        test eax, eax\n        movss [edx + 0ch], xmm0\n        jnz construct_size_supplied\n        movss xmm0, [edi + 20h]\n        movss [edx], xmm0\n        movss xmm0, [edi + 24h]\n        jmp construct_size_done\n    construct_size_supplied:\n        movss xmm0, [eax]\n        movss [edx], xmm0\n        movss xmm0, [eax + 4]\n    construct_size_done:\n        mov eax, one\n        movss xmm1, [eax]\n        movss [edx + 4], xmm0\n        xorps xmm0, xmm0\n        mov dword ptr [ecx], 0\n        mov dword ptr [ecx + 4], 0\n        mov dword ptr [ecx + 8], 0\n        movss [ecx + 0ch], xmm0\n        movss [ecx + 10h], xmm0\n        movss [ecx + 14h], xmm1\n        movss [ecx + 18h], xmm1\n        movss [ecx + 1ch], xmm0\n        movss [ecx + 20h], xmm0\n        movss [ecx + 24h], xmm1\n        movss [ecx + 28h], xmm1\n        movss [ecx + 2ch], xmm0\n        movss [ecx + 30h], xmm0\n        movss [ecx + 34h], xmm0\n        movss [ecx + 38h], xmm0\n        mov byte ptr [ecx + 3ch], 0\n        mov byte ptr [ecx + 3dh], 0\n        mov esi, [esi]\n        mov captured_name, esi\n        lea eax, [ecx + 4]\n        cmp eax, esi\n        mov dword ptr [ebx], 0\n        movss [edx + 10h], xmm0\n        movss [edx + 14h], xmm0\n        movss [edx + 18h], xmm1\n        movss [edx + 1ch], xmm1\n        sete al\n        movzx eax, al\n        mov self_name, eax\n    }"
+    },
+    {
+      "ordinal": 4,
+      "bytes": 687,
+      "sha256": "ff5874f003eeb5d0ef83ca0ee866be331848954c011c98ec1a7f7a3d5fe16a5f",
+      "utf8": "__asm {\n            mov edi, captured_icon\n            mov esi, homes\n            mov edx, local_homes\n            mov ebx, temporary\n            cmp byte ptr [edi + 101h], 0\n            setne al\n            movzx ecx, al\n            mov delayed, ecx\n            mov eax, [esi + 4]\n            mov ecx, [eax]\n            mov esi, [eax + 4]\n            movss xmm0, [edx + 8]\n            mov [ebx + 1ch], ecx\n            mov ecx, [eax + 8]\n            mov [ebx + 20h], esi\n            mov esi, [eax + 0ch]\n            movss [ebx + 2ch], xmm0\n            movss xmm0, [edx + 0ch]\n            movss [ebx + 30h], xmm0\n            mov [ebx + 24h], ecx\n            mov [ebx + 28h], esi\n        }"
+    },
+    {
+      "ordinal": 5,
+      "bytes": 100,
+      "sha256": "8930a429dbbf803edc46e8f75d89150918a59590709eff6d2c498cdbf0abf6a1",
+      "utf8": "__asm {\n                mov ecx, temporary\n                mov byte ptr [ecx + 3ch], 0\n            }"
+    },
+    {
+      "ordinal": 6,
+      "bytes": 339,
+      "sha256": "29d9e348402ce9ee7ba615bf81b21b8a71906d7ee3bafc334668ada1c00fbea0",
+      "utf8": "__asm {\n                mov eax, resolver_homes\n                mov edx, local_homes\n                fld1\n                fstp dword ptr [eax + 0ch]\n                mov [eax + 8], edx\n                lea ecx, [edx + 10h]\n                mov [eax + 4], ecx\n                mov ecx, captured_name\n                mov [eax], ecx\n            }"
+    },
+    {
+      "ordinal": 7,
+      "bytes": 477,
+      "sha256": "6e18ec8309435c903c592e7c44eda894378dafbb1355da988461e5d17c03a2f0",
+      "utf8": "__asm {\n                mov edx, local_homes\n                mov ebx, temporary\n                mov esi, uv_homes\n                mov ecx, [edx + 10h]\n                mov eax, [edx + 14h]\n                mov edi, texture\n                mov [ebx], edi\n                mov [esi], ecx\n                mov ecx, [edx + 18h]\n                mov [esi + 4], eax\n                mov eax, [edx + 1ch]\n                mov [esi + 8], ecx\n                mov [esi + 0ch], eax\n            }"
+    },
+    {
+      "ordinal": 8,
+      "bytes": 588,
+      "sha256": "95e03850d30b785e43e22478218beec96d929c465851b69640de904d02471161",
+      "utf8": "__asm {\n                mov edx, local_homes\n                xor ecx, ecx\n                movss xmm0, [edx]\n                xorps xmm1, xmm1\n                ucomiss xmm0, xmm1\n                lahf\n                test ah, 44h\n                jp construct_size_present\n                movss xmm2, [edx + 4]\n                ucomiss xmm2, xmm1\n                lahf\n                test ah, 44h\n                jp construct_size_present\n                mov ecx, 1\n            construct_size_present:\n                mov needs_size, ecx\n                movd captured_size_x, xmm0\n            }"
+    },
+    {
+      "ordinal": 9,
+      "bytes": 309,
+      "sha256": "0360902056dd7b90ba5b8f6b945ae68b75dd49726032b9580e8eda71d695048f",
+      "utf8": "__asm {\n                    mov eax, output\n                    mov edx, local_homes\n                    movss xmm0, [eax]\n                    movss [edx], xmm0\n                    movss xmm1, [eax + 4]\n                    movss [edx + 4], xmm1\n                    movd captured_size_x, xmm0\n                }"
+    },
+    {
+      "ordinal": 10,
+      "bytes": 135,
+      "sha256": "83f7496a8b464d9ba36354528656aa1dfeae976734aba25b3e54065bbac80947",
+      "utf8": "__asm {\n                mov edx, local_homes\n                movss xmm0, [edx]\n                movd captured_size_x, xmm0\n            }"
+    },
+    {
+      "ordinal": 11,
+      "bytes": 387,
+      "sha256": "1cb8163f7f2261cb607f9c317c5941c900faafa7036cd81e917019aa55f9383e",
+      "utf8": "__asm {\n            mov ecx, temporary\n            mov edx, local_homes\n            mov ebx, prototype_home\n            movd xmm0, captured_size_x\n            movss [ecx + 34h], xmm0\n            movss xmm0, [edx + 4]\n            mov esi, captured_icon\n            add esi, 0f0h\n            mov captured_vector, esi\n            mov [ebx], ecx\n            movss [ecx + 38h], xmm0\n        }"
+    },
+    {
+      "ordinal": 12,
+      "bytes": 487,
+      "sha256": "a17236fe97fb2947fa46a27edc26158af65d25024e025b0af3d2618f59e568ca",
+      "utf8": "__asm {\n            mov esi, captured_vector\n            mov ecx, [esi + 4]\n            test ecx, ecx\n            jnz construct_nonempty\n            xor eax, eax\n            jmp construct_size_captured\n        construct_nonempty:\n            mov eax, [esi + 8]\n            sub eax, ecx\n            sar eax, 6\n        construct_size_captured:\n            lea esi, [eax - 1]\n            mov captured_result, esi\n            mov eax, state_home\n            mov dword ptr [eax], -1\n        }"
+    }
+  ],
+  "call_map": [
+    {
+      "Native": "00ab67d8",
+      "target": "0x41dd40",
+      "Source": "resize_native_string_header_0041dd40_exact"
+    },
+    {
+      "Native": "00ab67ef",
+      "target": "0xbf7680",
+      "Source": "copy_native_crt_bytes_00bf7680"
+    },
+    {
+      "Native": "00ab6841",
+      "target": "0x4c12b0",
+      "Source": "get_native_gui_manager_004c12b0"
+    },
+    {
+      "Native": "00ab6859",
+      "target": "0xaa2660",
+      "Source": "resolve_native_gui_texture_storage_00aa2660"
+    },
+    {
+      "Native": "00ab6886",
+      "target": "0xab1680",
+      "Source": "set_native_gui_icon_state_uv_storage_00ab1680"
+    },
+    {
+      "Native": "00ab68b9",
+      "target": "0xab17b0",
+      "Source": "write_native_gui_icon_native_size_storage_00ab17b0"
+    },
+    {
+      "Native": "00ab68d9",
+      "target": "0xab3b30",
+      "Source": "set_native_gui_icon_placeholder_storage_00ab3b30"
+    },
+    {
+      "Native": "00ab6903",
+      "target": "0xab63a0",
+      "Source": "append_native_gui_icon_state_storage_00ab63a0"
+    },
+    {
+      "Native": "00ab692a",
+      "target": "0xab3280",
+      "Source": "destroy_native_gui_icon_state_00ab3280"
+    }
+  ],
+  "operand_epochs": [
+    {
+      "first": "00ab66ce",
+      "last": "00ab6735",
+      "phase": "home2 pivot then home3 size",
+      "contract": "home3 read before pivotY store; each second float read remains after first store; null branches use Icon18/20"
+    },
+    {
+      "first": "00ab673a",
+      "last": "00ab67a3",
+      "phase": "one/temporary initialization",
+      "contract": "49SSE includes exact reached init; no3E/3F writes; no seeded Frame"
+    },
+    {
+      "first": "00ab67a7",
+      "last": "00ab67c7",
+      "phase": "captured name/self/state0/localUV",
+      "contract": "SAME temp.name address identity; state0 before default localUV stores and inline constructor"
+    },
+    {
+      "first": "00ab67cf",
+      "last": "00ab67f4",
+      "phase": "exact inline engine8 constructor",
+      "contract": "capture sourceLEN then actual preserveDWORD1; exact41DD40; current sourceLEN gate and destinationLEN/sourceDATA/destinationDATA; BF even0"
+    },
+    {
+      "first": "00ab67f7",
+      "last": "00ab6837",
+      "phase": "late flag then actual authoredUV/pivot",
+      "contract": "single CURRENT Icon101 BYTE compare before late HOME1; captured branch condition survives reached raw stores"
+    },
+    {
+      "first": "00ab683d",
+      "last": "00ab6859",
+      "phase": "genuine getter + resolver",
+      "contract": "bytepending0; getter; FLD1/FSTP; outgoing scale,size,UV,original capturedname in Native push order"
+    },
+    {
+      "first": "00ab685e",
+      "last": "00ab6886",
+      "phase": "texture publication/current UV capture",
+      "contract": "first two localUV captures before temp texture assignment; remaining captures interleave with outgoing UV homes; real1680"
+    },
+    {
+      "first": "00ab688b",
+      "last": "00ab68aa",
+      "phase": "ordered zero SSE decisions",
+      "contract": "UCOMISS/LAHF/TEST44h/JP both components; unordered skips native-size; exact signed-zero behavior"
+    },
+    {
+      "first": "00ab68ac",
+      "last": "00ab68cd",
+      "phase": "native-size",
+      "contract": "current temptexture captured before UV pointer home stage; real77 output SAME local pivot pair; returned EAX output reads/stores retained"
+    },
+    {
+      "first": "00ab68d5",
+      "last": "00ab68de",
+      "phase": "delayed placeholder",
+      "contract": "real98, retained frame/acquired/observed-release graph; late local sizeX capture"
+    },
+    {
+      "first": "00ab68e4",
+      "last": "00ab6903",
+      "phase": "temp dimensions and append",
+      "contract": "captured sizeX, current sizeY, captured vectorF0, prototype home, height store, real63A0"
+    },
+    {
+      "first": "00ab6908",
+      "last": "00ab6922",
+      "phase": "full result before cleanup",
+      "contract": "CURRENT first; nullsize0 else CURRENTlast-wrappedSUB/SAR6; full DWORD subtract1; state-1"
+    },
+    {
+      "first": "00ab692a",
+      "last": "00ab6942",
+      "phase": "normal destructor/return",
+      "contract": "real3280 outside Source catch; return retained numeric DWORD, no postcleanup vector/owner read"
+    }
+  ],
+  "Source_ABI": {
+    "return": "std::uint32_t full DWORD captured before normal temporary destruction",
+    "receiver": "captured actual Icon138 void*; never projected to typed owner",
+    "actual_homes": [
+      "name8 pointer",
+      "UV4 pointer",
+      "pivot2 pointer or Native null fallback",
+      "size2 pointer or Native null fallback"
+    ],
+    "frame": "ordinary no-init local_0c[8], one actual NativeGuiIconStateStorage, actual callee homes/scratch/frames; no T[n]/Native ownership",
+    "FP": "2 literal x87 forms FLD1/FSTP,49 Native SSE mapped; no C++ FP/reset and no C++ call with own ST0 live; Source private MOVD carriers are not Native opcode/FLAGS equivalence"
+  },
+  "cleanup_contract": {
+    "Native": "one state0 beginning67B1, disarm6922, CB7E08/DEEBF4/DEEBEC/CB7E00 actualtemp[EBP-4C] -> AB3280; no try-map",
+    "Source": "try begins after all temp writes/state0, covering inline name copy and later wholebody through result capture; catch same temp3280 once then barethrow only after normal destructor; state-1 normal destructor outside catch",
+    "inherited": "AB3280 actual texture/name order and existing secondary-terminate C++ policy unchanged; lower append/copy cleanup not replayed; existing unpublished/provider debt independent",
+    "limits": "No arbitrary C++ cause is certified Native; no Original FH3/SEH/secondary-exception identity; hardware faults/unmasked FP/private stack excluded"
+  },
+  "remaining_real_bindings": [
+    "actual Type6 Page record/current74→18→78/read18/currentA4 producer and per-active-invocation stable Frame/context/acquired graph",
+    "real current renderer Source-created D5F0A8/B319B0 generation/custody on each reached miss/load edge; OTHER64 transport open",
+    "actual canonical texture+04 and captured dimension consumer accepted classes/targets; RO cells and raw pool/feature/module lifetimes",
+    "future whole3310 visitor/currentA4 transports and normal Lua field scratch/owner tracking; no fake CurrentCalls or semantic dictionary",
+    "independent external cache/zero-frame/name/vector debt retention and genuine actual disposition, even after numeric temp/result history"
+  ],
+  "permissions": {
+    "compiled": false,
+    "tests_or_runtime": false,
+    "Ghidra_mutation": false,
+    "Native_Origin": false,
+    "Original_ABI_FLAGS_fault_unmaskedFP": false,
+    "production_activation": false,
+    "new_Original_vendor_helper_CG_duplicate_credit": 0
+  },
+  "reader": {
+    "path": "verify_read_only.py",
+    "bytes": 5687,
+    "sha256": "f509c383b500050ad95949d41a3af9d0d2b23333c33147136295aca53010a707",
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess,sys\nap=argparse.ArgumentParser();ap.add_argument('--repo',default='.');ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nr=Path(a.repo).resolve();here=Path(__file__).resolve().parent\nj=json.loads((here/'candidate/reports/cc16_native_gui_icon_state_construction_storage.json').read_bytes()) if (here/'candidate/reports/cc16_native_gui_icon_state_construction_storage.json').exists() else json.loads(subprocess.check_output(['git','show',a.commit+':reports/cc16_native_gui_icon_state_construction_storage.json'],cwd=r))\nn=0\ndef ck(v,label):\n global n\n assert v,label;n+=1\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef git(*x):return subprocess.check_output(['git',*x],cwd=r)\ndef body(path):return git('show',a.commit+':'+path) if a.commit else (Path(a.candidate or here/'candidate')/path).read_bytes()\nbase=j['base'];own=j['owned_paths'];before={x.split('\\t',1)[1]:x.split('\\t',1)[0] for x in git('ls-tree','-r',base).decode().splitlines()}\nfor p in own:ck(p not in before,'new path absent '+p)\nfor p,m in j['postimages'].items():\n b=body(p);ck(len(b)==m['bytes'] and sha(b)==m['sha256'],'postimage '+p)\nafter=before.copy()\nfor p in own:after[p]='hypothetical addition' if p not in j['postimages'] else j['postimages'][p]['sha256']\nfor p in own:after.pop(p)\nck(after==before,'full recursive four-addition inverse')\nif a.commit:\n delta=git('diff-tree','--root','--no-commit-id','--name-status','-r',a.commit).decode().splitlines()\n ck(set(delta)==set('A\\t'+p for p in own),'actual Git exact four additions')\n parent=git('rev-parse',a.commit+'^').decode().strip();parent_tree=git('ls-tree','-r',parent)\n ck(all(p not in {x.split('\\t',1)[1] for x in parent_tree.decode().splitlines()} for p in own),'actual parent absence')\nfor x in j['whole_Source_inputs']:\n b=git('show',x['commit']+':'+x['path']);ck(len(b)==x['bytes'] and sha(b)==x['sha256'],'genuine supplier '+x['path'])\nfor x in j['used_regions']:\n b=git('show',x['commit']+':'+x['path']);s=b''.join(b.splitlines(keepends=True)[x['start']-1:x['end']]);ck(sha(s)==x['sha256'] and s.decode()==x['utf8'],'used provider region')\nc=body('src/native_gui_icon_state_construction_storage.cpp');h=body('include/bsp/native_gui_icon_state_construction_storage.hpp')\nblocks=re.findall(rb'__asm\\s*\\{[\\s\\S]*?\\}',c)\nck(len(blocks)==len(j['Source_asm']),'all asm block count')\nfor b,x in zip(blocks,j['Source_asm']):ck(sha(b)==x['sha256'] and b.decode()==x['utf8'],'whole asm block')\nfor x in j['call_map']:ck(x['Source'].encode() in c,'real direct call '+x['target'])\nck(c.index(b'get_native_gui_manager_004c12b0')<c.index(b'fld1')<c.index(b'resolve_native_gui_texture_storage_00aa2660'),'getter/FP/resolver order')\nck(c.index(b'cmp byte ptr [edi + 101h], 0')<c.index(b'mov eax, [esi + 4]'),'delayed BYTE before late HOME1')\nck(c.index(b'mov captured_result, esi')<c.index(b'    } catch (...)'),'full DWORD before cleanup')\nck(c.count(b'destroy_native_gui_icon_state_00ab3280(temporary, context.growth.storage)')==2,'one catch and one normal temp dtor')\nck(c.index(b'    } catch (...)')<c.index(b'    return captured_result;'),'normal dtor outside catch')\nck(b'std::terminate' not in c and b'noexcept' not in c and b'frame_placeholder' not in c,'no new termination/NoThrow/stub')\nck(c.count(b'ucomiss')==2 and c.count(b'test ah, 44h')==2 and c.count(b'jp construct_size_present')==2,'SSE decisions')\nck(b'NativeGuiIconStateStorage temporary_2c;' in h and b'NativeGuiIconStateConstructionStorageFrame() {}' in h,'real individual state/no-init Frame')\nck(b'const Word request = read_word(pointer(captured_name));' in c and c.index(b'const Word request =')<c.index(b'write_word(&frame.preserve_home, 0, 1)'),'late sourceLEN before actual preserveHOME1')\nck(c.index(b'const Word bytes = read_word(temporary, 4)')<c.index(b'const Word source = read_word(pointer(captured_name), 4)')<c.index(b'const Word destination = read_word(temporary, 8)'),'current LEN/data order')\nck(j['native']['instruction_count']==168 and len(j['native']['calls'])==9 and len(j['native']['x87'])==2,'whole Native map')\nck(j['native']['EH']['FuncInfo_address']=='00deebf4' and j['native']['EH']['unwind_bytes']=='ffffffff007ecb00','actual EH map/action')\nck(not j['permissions']['compiled'] and not j['permissions']['production_activation'],'qualifications not promoted')\n\nv=j['revision'];before=(here/'historical_v1/candidate/src/native_gui_icon_state_construction_storage.cpp').read_bytes() if not a.commit else bytes.fromhex(v['V1_cpp_hex'])\nins=v['sole_Source_insertion'].encode();ck(c.count(ins)==1,'V2 reached reassertion block once')\nck(c.replace(ins,b'',1)==before,'COMPLETE CPP inverse to V1')\nstart=c.index(b'        if (!delayed) {');getter=c.index(b'get_native_gui_manager_004c12b0')\nck(start<c.index(ins)<getter,'AB683D bytezero inside nondelayed edge before getter')\nck(c.count(b'mov byte ptr [ecx + 3ch], 0')==2,'initial zero AND reached reassertion')\nfor x in v['current_provider_inputs']:\n b=git('show',x['commit']+':'+x['path']);ck(len(b)==x['bytes'] and sha(b)==x['sha256'],'actual current provider '+x['path'])\ncurrent=git('show',v['accepted_provider_fix']+':src/native_gui_icon_rebuild_storage.cpp')\nfor line in v['provider_inverse_lines']:\n ck(current.count(line.encode())==1,'accepted40b single line');current=current.replace(line.encode(),b'',1)\nck(sha(current)==v['historical_rebuild_sha256'],'COMPLETE downstream Raw80 inverse')\nck(len(v['current_provider_differences'])==1,'one qualified current provider difference')\n\nprint(json.dumps({'checks':n,'passed':True,'mode':'actual Git' if a.commit else 'ignored candidate','full_four_path_inverse':True}))\n"
+  },
+  "revision": {
+    "V1_folder": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-property-consumer-contract\\local\\output\\cc16_native_gui_icon_state_construction_storage_candidate_20261101",
+    "V1_manifest": {
+      "bytes": 11260,
+      "sha256": "55dca4058f102ed5e85fe7996237bb482d315f2942ee3a56137e4fa10a4eec8a"
+    },
+    "V1_seal": {
+      "bytes": 1267,
+      "sha256": "7010969a3ba3366d1b3121d99d7e95813ce0ca91cee2486a8169371fd0b8f866"
+    },
+    "V1_reader": {
+      "bytes": 4513,
+      "sha256": "47fd1974eee69eac2ee4cbd917e74453c3858e54b4e8e290867b10133ed969f0"
+    },
+    "V1_cpp": {
+      "bytes": 9787,
+      "sha256": "809487ed359bb59de26b39ad004c8262d9c025a7c1ba6bb8ebfe8807cf935aa5"
+    },
+    "V1_cpp_hex": "23696e636c75646520226273702f6e61746976655f6775695f69636f6e5f73746174655f636f6e737472756374696f6e5f73746f726167652e687070220a23696e636c75646520226273702f6e61746976655f6775695f69636f6e5f706c616365686f6c6465725f73746f726167652e687070220a23696e636c75646520226273702f6e61746976655f6775695f69636f6e5f73746174655f75765f73746f726167652e687070220a23696e636c75646520226273702f6e61746976655f6775695f746578747572655f7265736f6c7665725f73746f726167652e687070220a23696e636c75646520226273702f6e61746976655f706c6174666f726d5f666f6375735f6f776e6572732e687070220a23696e636c75646520226273702f6e61746976655f737472696e675f7261775f726573697a655f65786163742e687070220a23696e636c75646520226273702f6e61746976655f6372745f6d656d6370792e687070220a23696e636c756465203c637374646465663e0a23696e636c756465203c747970655f7472616974733e0a0a2369662021646566696e6564285f4d53435f56455229207c7c2021646566696e6564285f4d5f49583836290a236572726f7220546869732072617720536f7572636520737570706c696572207265717569726573204d5356432057696e333220696e6c696e6520617373656d626c792e0a23656e6469660a0a6e616d65737061636520627370207b0a6e616d657370616365207b0a7573696e6720576f7264203d207374643a3a75696e7433325f743b0a7374617469635f617373657274287374643a3a69735f7472697669616c3c4e617469766547756949636f6e537461746553746f726167653e3a3a76616c7565293b0a7374617469635f6173736572742873697a656f66284e617469766547756949636f6e537461746553746f7261676529203d3d2030783430293b0a576f726420726561645f776f726428636f6e737420766f69642a20616464726573732c20576f726420627974655f6f6666736574203d203029207b0a20202020576f72642076616c75653b0a202020205f5f61736d207b0a20202020202020206d6f76206561782c20616464726573730a20202020202020206d6f76206564782c20627974655f6f66667365740a20202020202020206d6f76206561782c205b656178202b206564785d0a20202020202020206d6f762076616c75652c206561780a202020207d0a2020202072657475726e2076616c75653b0a7d0a766f69642077726974655f776f726428766f69642a20616464726573732c20576f726420627974655f6f66667365742c20576f72642076616c756529207b0a202020205f5f61736d207b0a20202020202020206d6f76206561782c20616464726573730a20202020202020206d6f76206564782c20627974655f6f66667365740a20202020202020206d6f76206563782c2076616c75650a20202020202020206d6f76205b656178202b206564785d2c206563780a202020207d0a7d0a766f69642a20706f696e74657228576f7264206269747329207b2072657475726e207265696e746572707265745f636173743c766f69642a3e2862697473293b207d0a766f69642a20617428766f69642a20616464726573732c20576f726420627974655f6f666673657429207b0a2020202072657475726e207374617469635f636173743c7374643a3a627974652a3e286164647265737329202b20627974655f6f66667365743b0a7d0a7d0a0a576f7264206164645f6e61746976655f6775695f69636f6e5f73746174655f73746f726167655f303061623636633028766f69642a2061637475616c5f69636f6e3133382c0a20202020766f6c6174696c6520576f726420282661637475616c5f617267756d656e745f686f6d6573295b345d2c0a202020204e617469766547756949636f6e5374617465436f6e737472756374696f6e53746f726167654672616d6526206672616d652c0a202020204e617469766547756949636f6e5374617465436f6e737472756374696f6e53746f72616765436f6e746578742620636f6e7465787429207b0a20202020766f69642a20636f6e73742063617074757265645f69636f6e203d2061637475616c5f69636f6e3133383b0a20202020766f6c6174696c6520576f72642a20636f6e737420686f6d6573203d2061637475616c5f617267756d656e745f686f6d65733b0a20202020576f72642a20636f6e7374206c6f63616c5f686f6d6573203d206672616d652e6c6f63616c5f30633b0a20202020766f69642a20636f6e73742074656d706f72617279203d20266672616d652e74656d706f726172795f32633b0a20202020576f72642a20636f6e73742073746174655f686f6d65203d20266672616d652e73746174655f37343b0a20202020636f6e737420766f6c6174696c6520666c6f61742a20636f6e7374206f6e65203d2026636f6e746578742e61637475616c5f6f6e655f30306437613234633b0a20202020576f72642063617074757265645f6e616d652c2073656c665f6e616d653b0a202020205f5f61736d207b0a20202020202020206d6f76206564692c2063617074757265645f69636f6e0a20202020202020206d6f76206573692c20686f6d65730a20202020202020206d6f76206564782c206c6f63616c5f686f6d65730a20202020202020206d6f76206563782c2074656d706f726172790a20202020202020206d6f76206562782c2073746174655f686f6d650a20202020202020206d6f762064776f726420707472205b6562785d2c202d310a0a20202020202020206d6f76206561782c205b657369202b20385d0a202020202020202074657374206561782c206561780a20202020202020206a6e7a20636f6e7374727563745f7069766f745f737570706c6965640a20202020202020206d6f76737320786d6d302c205b656469202b203138685d0a20202020202020206d6f767373205b656478202b20385d2c20786d6d300a20202020202020206d6f76737320786d6d302c205b656469202b203163685d0a20202020202020206a6d7020636f6e7374727563745f7069766f745f646f6e650a20202020636f6e7374727563745f7069766f745f737570706c6965643a0a20202020202020206d6f76737320786d6d302c205b6561785d0a20202020202020206d6f767373205b656478202b20385d2c20786d6d300a20202020202020206d6f76737320786d6d302c205b656178202b20345d0a20202020636f6e7374727563745f7069766f745f646f6e653a0a20202020202020206d6f76206561782c205b657369202b203063685d0a202020202020202074657374206561782c206561780a20202020202020206d6f767373205b656478202b203063685d2c20786d6d300a20202020202020206a6e7a20636f6e7374727563745f73697a655f737570706c6965640a20202020202020206d6f76737320786d6d302c205b656469202b203230685d0a20202020202020206d6f767373205b6564785d2c20786d6d300a20202020202020206d6f76737320786d6d302c205b656469202b203234685d0a20202020202020206a6d7020636f6e7374727563745f73697a655f646f6e650a20202020636f6e7374727563745f73697a655f737570706c6965643a0a20202020202020206d6f76737320786d6d302c205b6561785d0a20202020202020206d6f767373205b6564785d2c20786d6d300a20202020202020206d6f76737320786d6d302c205b656178202b20345d0a20202020636f6e7374727563745f73697a655f646f6e653a0a20202020202020206d6f76206561782c206f6e650a20202020202020206d6f76737320786d6d312c205b6561785d0a20202020202020206d6f767373205b656478202b20345d2c20786d6d300a2020202020202020786f72707320786d6d302c20786d6d300a20202020202020206d6f762064776f726420707472205b6563785d2c20300a20202020202020206d6f762064776f726420707472205b656378202b20345d2c20300a20202020202020206d6f762064776f726420707472205b656378202b20385d2c20300a20202020202020206d6f767373205b656378202b203063685d2c20786d6d300a20202020202020206d6f767373205b656378202b203130685d2c20786d6d300a20202020202020206d6f767373205b656378202b203134685d2c20786d6d310a20202020202020206d6f767373205b656378202b203138685d2c20786d6d310a20202020202020206d6f767373205b656378202b203163685d2c20786d6d300a20202020202020206d6f767373205b656378202b203230685d2c20786d6d300a20202020202020206d6f767373205b656378202b203234685d2c20786d6d310a20202020202020206d6f767373205b656378202b203238685d2c20786d6d310a20202020202020206d6f767373205b656378202b203263685d2c20786d6d300a20202020202020206d6f767373205b656378202b203330685d2c20786d6d300a20202020202020206d6f767373205b656378202b203334685d2c20786d6d300a20202020202020206d6f767373205b656378202b203338685d2c20786d6d300a20202020202020206d6f76206279746520707472205b656378202b203363685d2c20300a20202020202020206d6f76206279746520707472205b656378202b203364685d2c20300a20202020202020206d6f76206573692c205b6573695d0a20202020202020206d6f762063617074757265645f6e616d652c206573690a20202020202020206c6561206561782c205b656378202b20345d0a2020202020202020636d70206561782c206573690a20202020202020206d6f762064776f726420707472205b6562785d2c20300a20202020202020206d6f767373205b656478202b203130685d2c20786d6d300a20202020202020206d6f767373205b656478202b203134685d2c20786d6d300a20202020202020206d6f767373205b656478202b203138685d2c20786d6d310a20202020202020206d6f767373205b656478202b203163685d2c20786d6d310a20202020202020207365746520616c0a20202020202020206d6f767a78206561782c20616c0a20202020202020206d6f762073656c665f6e616d652c206561780a202020207d0a20202020576f72642063617074757265645f726573756c743b0a20202020747279207b0a2020202020202020696620282173656c665f6e616d6529207b0a202020202020202020202020636f6e737420576f72642072657175657374203d20726561645f776f726428706f696e7465722863617074757265645f6e616d6529293b0a20202020202020202020202077726974655f776f726428266672616d652e70726573657276655f686f6d652c20302c2031293b0a202020202020202020202020726573697a655f6e61746976655f737472696e675f6865616465725f30303431646434305f65786163742861742874656d706f726172792c2034292c0a20202020202020202020202020202020636f6e746578742e67726f7774682e73746f726167652e737472696e67732c20726571756573742c20266672616d652e70726573657276655f686f6d652c0a20202020202020202020202020202020636f6e746578742e67726f7774682e666561747572655f776f72645f3031303965656134293b0a20202020202020202020202069662028726561645f776f726428706f696e7465722863617074757265645f6e616d65292929207b0a20202020202020202020202020202020636f6e737420576f7264206279746573203d20726561645f776f72642874656d706f726172792c2034293b0a20202020202020202020202020202020636f6e737420576f726420736f75726365203d20726561645f776f726428706f696e7465722863617074757265645f6e616d65292c2034293b0a20202020202020202020202020202020636f6e737420576f72642064657374696e6174696f6e203d20726561645f776f72642874656d706f726172792c2038293b0a20202020202020202020202020202020636f70795f6e61746976655f6372745f62797465735f303062663736383028706f696e7465722864657374696e6174696f6e292c20706f696e74657228736f75726365292c0a202020202020202020202020202020202020202062797465732c20636f6e746578742e67726f7774682e666561747572655f776f72645f3031303965656134293b0a2020202020202020202020207d0a20202020202020207d0a2020202020202020576f72642064656c617965643b0a20202020202020205f5f61736d207b0a2020202020202020202020206d6f76206564692c2063617074757265645f69636f6e0a2020202020202020202020206d6f76206573692c20686f6d65730a2020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a2020202020202020202020206d6f76206562782c2074656d706f726172790a202020202020202020202020636d70206279746520707472205b656469202b20313031685d2c20300a2020202020202020202020207365746e6520616c0a2020202020202020202020206d6f767a78206563782c20616c0a2020202020202020202020206d6f762064656c617965642c206563780a2020202020202020202020206d6f76206561782c205b657369202b20345d0a2020202020202020202020206d6f76206563782c205b6561785d0a2020202020202020202020206d6f76206573692c205b656178202b20345d0a2020202020202020202020206d6f76737320786d6d302c205b656478202b20385d0a2020202020202020202020206d6f76205b656278202b203163685d2c206563780a2020202020202020202020206d6f76206563782c205b656178202b20385d0a2020202020202020202020206d6f76205b656278202b203230685d2c206573690a2020202020202020202020206d6f76206573692c205b656178202b203063685d0a2020202020202020202020206d6f767373205b656278202b203263685d2c20786d6d300a2020202020202020202020206d6f76737320786d6d302c205b656478202b203063685d0a2020202020202020202020206d6f767373205b656278202b203330685d2c20786d6d300a2020202020202020202020206d6f76205b656278202b203234685d2c206563780a2020202020202020202020206d6f76205b656278202b203238685d2c206573690a20202020202020207d0a2020202020202020576f72642063617074757265645f73697a655f783b0a2020202020202020696620282164656c6179656429207b0a20202020202020202020202028766f6964296765745f6e61746976655f6775695f6d616e616765725f303034633132623028636f6e746578742e677569293b0a202020202020202020202020576f72642a20636f6e7374207265736f6c7665725f686f6d6573203d206672616d652e7265736f6c7665725f686f6d65733b0a2020202020202020202020205f5f61736d207b0a202020202020202020202020202020206d6f76206561782c207265736f6c7665725f686f6d65730a202020202020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a20202020202020202020202020202020666c64310a20202020202020202020202020202020667374702064776f726420707472205b656178202b203063685d0a202020202020202020202020202020206d6f76205b656178202b20385d2c206564780a202020202020202020202020202020206c6561206563782c205b656478202b203130685d0a202020202020202020202020202020206d6f76205b656178202b20345d2c206563780a202020202020202020202020202020206d6f76206563782c2063617074757265645f6e616d650a202020202020202020202020202020206d6f76205b6561785d2c206563780a2020202020202020202020207d0a202020202020202020202020766f69642a20636f6e73742074657874757265203d207265736f6c76655f6e61746976655f6775695f746578747572655f73746f726167655f3030616132363630280a202020202020202020202020202020206672616d652e7265736f6c7665725f686f6d65732c20636f6e746578742e7265736f6c766572293b0a202020202020202020202020576f72642a20636f6e73742075765f686f6d6573203d206672616d652e75765f686f6d65733b0a2020202020202020202020205f5f61736d207b0a202020202020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a202020202020202020202020202020206d6f76206562782c2074656d706f726172790a202020202020202020202020202020206d6f76206573692c2075765f686f6d65730a202020202020202020202020202020206d6f76206563782c205b656478202b203130685d0a202020202020202020202020202020206d6f76206561782c205b656478202b203134685d0a202020202020202020202020202020206d6f76206564692c20746578747572650a202020202020202020202020202020206d6f76205b6562785d2c206564690a202020202020202020202020202020206d6f76205b6573695d2c206563780a202020202020202020202020202020206d6f76206563782c205b656478202b203138685d0a202020202020202020202020202020206d6f76205b657369202b20345d2c206561780a202020202020202020202020202020206d6f76206561782c205b656478202b203163685d0a202020202020202020202020202020206d6f76205b657369202b20385d2c206563780a202020202020202020202020202020206d6f76205b657369202b203063685d2c206561780a2020202020202020202020207d0a2020202020202020202020207365745f6e61746976655f6775695f69636f6e5f73746174655f75765f73746f726167655f30306162313638302874656d706f726172792c0a202020202020202020202020202020206672616d652e75765f686f6d65732c20636f6e746578742e61637475616c5f6f6e655f3030643761323463293b0a202020202020202020202020576f7264206e656564735f73697a653b0a2020202020202020202020205f5f61736d207b0a202020202020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a20202020202020202020202020202020786f72206563782c206563780a202020202020202020202020202020206d6f76737320786d6d302c205b6564785d0a20202020202020202020202020202020786f72707320786d6d312c20786d6d310a2020202020202020202020202020202075636f6d69737320786d6d302c20786d6d310a202020202020202020202020202020206c6168660a20202020202020202020202020202020746573742061682c203434680a202020202020202020202020202020206a7020636f6e7374727563745f73697a655f70726573656e740a202020202020202020202020202020206d6f76737320786d6d322c205b656478202b20345d0a2020202020202020202020202020202075636f6d69737320786d6d322c20786d6d310a202020202020202020202020202020206c6168660a20202020202020202020202020202020746573742061682c203434680a202020202020202020202020202020206a7020636f6e7374727563745f73697a655f70726573656e740a202020202020202020202020202020206d6f76206563782c20310a202020202020202020202020636f6e7374727563745f73697a655f70726573656e743a0a202020202020202020202020202020206d6f76206e656564735f73697a652c206563780a202020202020202020202020202020206d6f76642063617074757265645f73697a655f782c20786d6d300a2020202020202020202020207d0a202020202020202020202020696620286e656564735f73697a6529207b0a20202020202020202020202020202020636f6e737420576f726420746578747572655f62697473203d20726561645f776f72642874656d706f72617279293b0a2020202020202020202020202020202077726974655f776f726428266672616d652e6e61746976655f73697a655f75765f686f6d652c20302c0a20202020202020202020202020202020202020207265696e746572707265745f636173743c576f72643e2861742874656d706f726172792c20307830632929293b0a20202020202020202020202020202020766f69642a20636f6e7374206f7574707574203d2077726974655f6e61746976655f6775695f69636f6e5f6e61746976655f73697a655f73746f726167655f3030616231376230280a20202020202020202020202020202020202020206c6f63616c5f686f6d6573202b20322c20706f696e74657228746578747572655f62697473292c206672616d652e6e61746976655f73697a655f75765f686f6d652c0a20202020202020202020202020202020202020206672616d652e6e61746976655f73697a652c20636f6e746578742e7265736f6c7665722e64696d656e73696f6e732c20636f6e746578742e7265736f6c7665722e636f6e7374616e7473293b0a202020202020202020202020202020205f5f61736d207b0a20202020202020202020202020202020202020206d6f76206561782c206f75747075740a20202020202020202020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a20202020202020202020202020202020202020206d6f76737320786d6d302c205b6561785d0a20202020202020202020202020202020202020206d6f767373205b6564785d2c20786d6d300a20202020202020202020202020202020202020206d6f76737320786d6d312c205b656178202b20345d0a20202020202020202020202020202020202020206d6f767373205b656478202b20345d2c20786d6d310a20202020202020202020202020202020202020206d6f76642063617074757265645f73697a655f782c20786d6d300a202020202020202020202020202020207d0a2020202020202020202020207d0a20202020202020207d20656c7365207b0a2020202020202020202020207365745f6e61746976655f6775695f69636f6e5f706c616365686f6c6465725f73746f726167655f30306162336233302874656d706f726172792c0a202020202020202020202020202020206672616d652e706c616365686f6c6465722c20636f6e746578742e706c616365686f6c646572293b0a2020202020202020202020205f5f61736d207b0a202020202020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a202020202020202020202020202020206d6f76737320786d6d302c205b6564785d0a202020202020202020202020202020206d6f76642063617074757265645f73697a655f782c20786d6d300a2020202020202020202020207d0a20202020202020207d0a2020202020202020766f69642a2063617074757265645f766563746f723b0a2020202020202020576f72642a20636f6e73742070726f746f747970655f686f6d65203d20266672616d652e70726f746f747970655f686f6d653b0a20202020202020205f5f61736d207b0a2020202020202020202020206d6f76206563782c2074656d706f726172790a2020202020202020202020206d6f76206564782c206c6f63616c5f686f6d65730a2020202020202020202020206d6f76206562782c2070726f746f747970655f686f6d650a2020202020202020202020206d6f766420786d6d302c2063617074757265645f73697a655f780a2020202020202020202020206d6f767373205b656378202b203334685d2c20786d6d300a2020202020202020202020206d6f76737320786d6d302c205b656478202b20345d0a2020202020202020202020206d6f76206573692c2063617074757265645f69636f6e0a202020202020202020202020616464206573692c20306630680a2020202020202020202020206d6f762063617074757265645f766563746f722c206573690a2020202020202020202020206d6f76205b6562785d2c206563780a2020202020202020202020206d6f767373205b656378202b203338685d2c20786d6d300a20202020202020207d0a2020202020202020617070656e645f6e61746976655f6775695f69636f6e5f73746174655f73746f726167655f30306162363361302863617074757265645f766563746f722c0a2020202020202020202020206672616d652e70726f746f747970655f686f6d652c206672616d652e617070656e642c20636f6e746578742e67726f777468293b0a20202020202020205f5f61736d207b0a2020202020202020202020206d6f76206573692c2063617074757265645f766563746f720a2020202020202020202020206d6f76206563782c205b657369202b20345d0a20202020202020202020202074657374206563782c206563780a2020202020202020202020206a6e7a20636f6e7374727563745f6e6f6e656d7074790a202020202020202020202020786f72206561782c206561780a2020202020202020202020206a6d7020636f6e7374727563745f73697a655f63617074757265640a2020202020202020636f6e7374727563745f6e6f6e656d7074793a0a2020202020202020202020206d6f76206561782c205b657369202b20385d0a202020202020202020202020737562206561782c206563780a202020202020202020202020736172206561782c20360a2020202020202020636f6e7374727563745f73697a655f63617074757265643a0a2020202020202020202020206c6561206573692c205b656178202d20315d0a2020202020202020202020206d6f762063617074757265645f726573756c742c206573690a2020202020202020202020206d6f76206561782c2073746174655f686f6d650a2020202020202020202020206d6f762064776f726420707472205b6561785d2c202d310a20202020202020207d0a202020207d20636174636820282e2e2e29207b0a202020202020202064657374726f795f6e61746976655f6775695f69636f6e5f73746174655f30306162333238302874656d706f726172792c20636f6e746578742e67726f7774682e73746f72616765293b0a20202020202020207468726f773b0a202020207d0a2020202064657374726f795f6e61746976655f6775695f69636f6e5f73746174655f30306162333238302874656d706f726172792c20636f6e746578742e67726f7774682e73746f72616765293b0a2020202072657475726e2063617074757265645f726573756c743b0a7d0a7d202f2f206e616d657370616365206273700a",
+    "sole_Source_insertion": "            __asm {\n                mov ecx, temporary\n                mov byte ptr [ecx + 3ch], 0\n            }\n",
+    "Source_delta": {
+      "bytes": 471,
+      "sha256": "d67547ccabd1548f89ed3a5cddec89e24ecd89c0eeb86597cc41a4c598e2f5d2"
+    },
+    "erratum": {
+      "bytes": 1342,
+      "sha256": "74af1697a0e06c62789f5cc1644e5e318537caad3798ed9161968c664658061c"
+    },
+    "Native_rows_unchanged": true,
+    "current_Main": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+    "current_provider_inputs": [
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_storage.hpp",
+        "bytes": 8923,
+        "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_storage.cpp",
+        "bytes": 19689,
+        "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+        "bytes": 3321,
+        "sha256": "5809e09d32c059082df48e0abc9a248d9854612412ba4f73026bf831dd1f0694",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_state_append_wrapper_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_state_append_wrapper_storage.cpp",
+        "bytes": 2893,
+        "sha256": "3b3ac42e81773346af384cb89434da35a70283015777dd08946d886c1d6bfb88",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_state_iterator_insert_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_state_iterator_insert_storage.hpp",
+        "bytes": 3199,
+        "sha256": "832e3097c765de0ac483ac663638aa3a3642fb557be8f6ae427c9ee20d1bd13b",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_state_iterator_insert_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_state_iterator_insert_storage.cpp",
+        "bytes": 2672,
+        "sha256": "9023d0a1acba4ed789dc844e46034a43301281c305b3345087234619e1b119c7",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_state_growth_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_state_growth_storage.hpp",
+        "bytes": 6088,
+        "sha256": "0fa15e9c70fe756503d566cef17a5d855beb84828e8248dd7589798934ae2281",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_state_growth_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_state_growth_storage.cpp",
+        "bytes": 10137,
+        "sha256": "681097da283c46cfa5f2d1afec2d6d42ca2b9f469ebd0cd9fade841454d55459",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_state_uv_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_state_uv_storage.hpp",
+        "bytes": 1990,
+        "sha256": "9998519a4cfca15ee13032876c791146e9aa43db2494d2a8f43f707cca20cb19",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_state_uv_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_state_uv_storage.cpp",
+        "bytes": 1974,
+        "sha256": "c66b10ab06c1e35f178ce53e5456fbbd1bf57b35ff5617e5ea06663fca0a8bfc",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_native_size_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_native_size_storage.hpp",
+        "bytes": 3298,
+        "sha256": "e72fa9ca5a2a2a29170e98ef309c48e8a9b2467c376cb487af5820448b8cc956",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_native_size_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_native_size_storage.cpp",
+        "bytes": 3758,
+        "sha256": "cd5d40b8fb20d94efc3ba5c7037bdfd67fdc81e3be813af535230a8c91b2263f",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_platform_focus_owners.hpp",
+        "snapshot": "current_providers/include/bsp/native_platform_focus_owners.hpp",
+        "bytes": 4708,
+        "sha256": "0738ee83b33d44ee79852f115e79515a85d653452d70fc920ab63e3675c51865",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_platform_focus_owners.cpp",
+        "snapshot": "current_providers/src/native_platform_focus_owners.cpp",
+        "bytes": 10371,
+        "sha256": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_string_raw_resize_exact.hpp",
+        "snapshot": "current_providers/include/bsp/native_string_raw_resize_exact.hpp",
+        "bytes": 1554,
+        "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_string_raw_resize_exact.cpp",
+        "snapshot": "current_providers/src/native_string_raw_resize_exact.cpp",
+        "bytes": 3979,
+        "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_crt_memcpy.hpp",
+        "snapshot": "current_providers/include/bsp/native_crt_memcpy.hpp",
+        "bytes": 1954,
+        "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_crt_memcpy.cpp",
+        "snapshot": "current_providers/src/native_crt_memcpy.cpp",
+        "bytes": 17187,
+        "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_render_context.hpp",
+        "snapshot": "current_providers/include/bsp/native_render_context.hpp",
+        "bytes": 14392,
+        "sha256": "11cf2eef33c83a0da0b74e9f64ca52ca78f9ba4bd45cb2ae2586f6624517091d",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_render_context.cpp",
+        "snapshot": "current_providers/src/native_render_context.cpp",
+        "bytes": 22868,
+        "sha256": "15552619bbc2a378e948fa017dfcbc0bf42c95a2071b0734a5a89a200134e983",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/gui_texture.hpp",
+        "snapshot": "current_providers/include/bsp/gui_texture.hpp",
+        "bytes": 1483,
+        "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/gui_icon_runtime.hpp",
+        "snapshot": "current_providers/include/bsp/gui_icon_runtime.hpp",
+        "bytes": 9796,
+        "sha256": "85268af63b51d9edb56594034e8eb7eb72b14148164e0741c69e10ac9181f73c",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_texture_resolver_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_texture_resolver_storage.hpp",
+        "bytes": 3520,
+        "sha256": "02c6e5de1138a9c5e09526ebc82626a38a1aad7e70637e22cdb5a2257608ac11",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_texture_resolver_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_texture_resolver_storage.cpp",
+        "bytes": 7293,
+        "sha256": "039323eaba6af7a46ff9aefa12b1375e5c81561372a78676eb0d7fd8dd4ddb33",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_placeholder_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_placeholder_storage.hpp",
+        "bytes": 3915,
+        "sha256": "abb2535c1e4c99a564ddf578b6952d2249df1abd94cbf978d8fbf19252111f3c",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_placeholder_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_placeholder_storage.cpp",
+        "bytes": 3954,
+        "sha256": "f5f224fc23618eec624afaf8348f7bb45ab3ab56cd8aaa7619255c04cfa5ec95",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/game_native_gui_icon_application.cpp",
+        "snapshot": "current_providers/src/game_native_gui_icon_application.cpp",
+        "bytes": 29777,
+        "sha256": "ae95b1ba6af92b020e3b80ba936c231c2afb31354ced4ebb407c0a4497a64759",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "include/bsp/native_gui_icon_rebuild_storage.hpp",
+        "snapshot": "current_providers/include/bsp/native_gui_icon_rebuild_storage.hpp",
+        "bytes": 7144,
+        "sha256": "83107bd786e79600a674fa05301326030d8375b82aa024799c7a55cd96bc6f2d",
+        "same_as_V1_pinned_blob": true
+      },
+      {
+        "commit": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+        "path": "src/native_gui_icon_rebuild_storage.cpp",
+        "snapshot": "current_providers/src/native_gui_icon_rebuild_storage.cpp",
+        "bytes": 29546,
+        "sha256": "8ff9ed4087de4cb0b53128f0fb280206850462f8fcf372901bc46d6725e68219",
+        "same_as_V1_pinned_blob": false
+      }
+    ],
+    "current_provider_differences": [
+      {
+        "path": "src/native_gui_icon_rebuild_storage.cpp",
+        "historical_commit": "0a6034a6cc75658c0e1cac62f75ecc6227500ab6",
+        "historical": {
+          "bytes": 29436,
+          "sha256": "65ba7ea6da1625dc651bbd17dcdaa984d2becb3bbd016d185fd537603f4c7522"
+        },
+        "current": {
+          "bytes": 29546,
+          "sha256": "8ff9ed4087de4cb0b53128f0fb280206850462f8fcf372901bc46d6725e68219"
+        }
+      }
+    ],
+    "accepted_provider_fix": "40b9348f42d07e927697a657780e3b11a2cdb03a",
+    "provider_inverse_lines": [
+      "#include \"bsp/gui_icon_runtime.hpp\"\n",
+      "#pragma warning(push)\n",
+      "#pragma warning(disable: 4102)\n",
+      "#pragma warning(pop)\n"
+    ],
+    "historical_rebuild_sha256": "65ba7ea6da1625dc651bbd17dcdaa984d2becb3bbd016d185fd537603f4c7522",
+    "current_28_equal_1_qualified": true
+  }
+}
