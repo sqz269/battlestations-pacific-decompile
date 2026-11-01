@@ -1,0 +1,77 @@
+{
+  "base_commit": "2a094149a200654ea7ddf63226483c2a72bcba35",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-parser-storage-20261101",
+  "branch": "agent/codex-atlas-parser-storage-20261101",
+  "scope": "ignored Source-only candidate; ordinary NORMAL payload",
+  "saved_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "Source_peer": 0,
+  "verification": {
+    "source_inspection": true,
+    "bounded_source_integrity_checks": true,
+    "independent_peer_review": 0,
+    "compilation": 0,
+    "fixtures": 0,
+    "native_execution": 0,
+    "original_ABI": 0,
+    "gameplay": 0,
+    "startup": 0,
+    "activation": 0
+  },
+  "tracked_source_changes": 0,
+  "cmake_changes": 0,
+  "ledger_changes": 0,
+  "ghidra_mutations": 0,
+  "new_tests": 0,
+  "builds": 0,
+  "Game_runs": 0,
+  "deployments": 0,
+  "commits": 0,
+  "pushes": 0,
+  "gate_changes": [],
+  "frozen_source_pins": "FROZEN_SOURCE_PINS.json",
+  "original_export_pins": "ORIGINAL_EXPORT_PINS.json",
+  "addresses": [
+    "00426060",
+    "004261a0"
+  ],
+  "original_ABI": {
+    "00426060": "ECX output8; source8 stack; EAX output8; RET4",
+    "004261a0": "ECX left8; output8,right8 stack; EAX output8; RET8"
+  },
+  "source_interfaces": [
+    "copy_construct_native_string_header_00426060_exact(output,source,raw,feature,retained CopyFrame)",
+    "concatenate_native_string_headers_004261a0_exact(left,output,right,raw,feature,retained ConcatFrame)"
+  ],
+  "instruction_rows": {
+    "00426060": 26,
+    "004261a0": 63
+  },
+  "evidence": [
+    "Identity before both zero stores; literal native operand order.",
+    "Exact live-feature resize and BF7680 including reached copied count0; real retained preserve DWORD HOME.",
+    "Concat append count captured before ownedbit1; current source/destination pointers after resize."
+  ],
+  "failure": "Fresh retained frame records failed/current_exception and barethrows without invented outer cleanup; preserve full partial graph. NORMAL payload only.",
+  "legacy_APIs": "unchanged; no legacy memmove or count0-omission helper is called",
+  "uncertainties": [
+    "Native selected cleanup/FH3/SEH/secondary exceptions/private-stack/fault/ABI/runtime remain qualified."
+  ],
+  "candidate_pins": [
+    {
+      "path": "string_copy_concat/candidate/docs/CC16_NATIVE_STRING_COPY_CONCAT_EXACT.md",
+      "bytes": 2842,
+      "sha256": "bdb6158f4dddb6b81f7a1d946cd532af0f7e1e64fe5a1912a0ee3662ffe50205"
+    },
+    {
+      "path": "string_copy_concat/candidate/include/bsp/native_string_copy_concat_exact.hpp",
+      "bytes": 2817,
+      "sha256": "b467d849b6f41efc38e2940d4e2cac01f8f8b7f830ee4641a0f872bd3ebd03fa"
+    },
+    {
+      "path": "string_copy_concat/candidate/src/native_string_copy_concat_exact.cpp",
+      "bytes": 4844,
+      "sha256": "feba5cbd833743d7a79c7fb15823f7b50e7cc035996f999f4f75f6f339f5055e"
+    }
+  ]
+}
