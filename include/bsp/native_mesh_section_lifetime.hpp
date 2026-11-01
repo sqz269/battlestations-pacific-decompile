@@ -9,6 +9,7 @@ class NativeMeshSectionLifetimeCall;
 class NativeMeshSectionLifetimeIssuer;
 class NativeRenderObservedZeroAccess;
 class GuiNativeGeometryOwners;
+class NativePostEffectParentDomain;
 class NativeMeshSectionLayoutStorageAccess;
 class NativeMeshSectionLayoutStorageLifetimeCalls;
 struct NativeMeshSectionLayoutStorageContext;
@@ -61,6 +62,16 @@ public:
     void close_after_host_quiescence();
 private:
     friend class NativeMeshSectionLifetimeFrame;
+    friend class NativePostEffectParentDomain;
+    friend class GuiNativeGeometryOwners;
+    // Compatibility only: actual owning friends supply the real borrowed
+    // roles. Matching addresses issue no birth, credit, borrow or owner fence.
+    void require_owner_binding(NativeMeshSectionEnvironment&,
+        NativeRenderActualOwnerRegistry&, const volatile std::uint32_t& actual_ce4970,
+        NativeMeshRetentionState&) const;
+    // Final no-new-entry owner fence ONLY, never a healthy-live readiness
+    // probe. Seals preparation and checks every record without any drain.
+    void preflight_close_after_host_quiescence();
     void require_owned(bool, const char*) const;
     struct Impl;
     std::unique_ptr<Impl> impl_;

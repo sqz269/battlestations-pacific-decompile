@@ -1,0 +1,125 @@
+{
+  "status": "ACCEPT_QUALIFIED_PASSIVE_SOURCE2_SOURCE_CORE_AND_JOIN_BUILD",
+  "scope": "Passive Section owner compatibility and final non-draining preflight",
+  "base": "5fd4c6d42b4d2ae1ee29e60ac274fa97ab747070",
+  "candidate_tree": "5850eea428e87d8e838fc39df4ba07b0bea45fdf",
+  "source_paths": [
+    "include/bsp/native_mesh_section_lifetime.hpp",
+    "src/native_mesh_section_lifetime.cpp"
+  ],
+  "forward_patch_sha256": "e2f21f590b244e6d80775986b95c174e3841de4dfb811a4f9b7f9da5ac800a77",
+  "inverse_patch_sha256": "fd030b55e09d22e8e0ffaef7032ba095e02cc5281381d38b814f88fa4f6be7cb",
+  "author_cohort": {
+    "author_seal_sha256": "5198f518e11517fae4d9f3eba8475dfe5f6cfef51302ab4b68e41662c27068a3",
+    "index_sha256": "3b750497f42017867d5640c2051da5dc9322dcff95d8470932d36456ab8dd965",
+    "indexed_files": 32,
+    "indexed_bytes": 108007804,
+    "whole_copy_exact": true,
+    "all_index_hashes_verified": true
+  },
+  "Root_mechanical_checks": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_Source_check_Root/CHECKS.json",
+  "independent_Source_gate": {
+    "decision": "ACCEPT_QUALIFIED_TWO_FILE_PASSIVE_SECTION_BINDING_PREFLIGHT_SOURCE_SUPPORT",
+    "review_sha256": "cd639614a7ff9e55c40ecbba03746406a32e721600baf7da00e817dedb6d706e",
+    "seal_sha256": "6fcf0bda8e3e875b2a6f3e5c526991d7e586666bb3af1bb24a065a67546c6563",
+    "indexed_files_whole_verified": 50,
+    "path": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_Source_peer/REVIEW.md",
+    "role": "Did not author Source2; earlier Raw4 baseline support role disclosed."
+  },
+  "independent_Core_gate": {
+    "decision": "ACCEPT_QUALIFIED_ACTUAL_SECTION_BINDING_FINAL_PREFLIGHT_CORE",
+    "review_sha256": "62204b953706822db1fc541695ddde242d19a1a13e8006ff677ece2e3ee5f27c",
+    "seal_sha256": "2331092d0d0668282fb18ce6aadcef327fa44ed25fef508fe1dbdd057b2b9236",
+    "indexed_files_whole_verified": 89,
+    "indexed_bytes": 283344513,
+    "path": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_Core_peer/REVIEW.md",
+    "baseline_member_sha256": "c88f2a22aa60a0509ae3bfbf1ffa19e0076e00c08547e59dac065fe7de76515c",
+    "reviewed_and_final_member_sha256": "e34f94911d3dde6f01c78fd5598a0d3c9a175280eb8f0e41831d6640e774ec32",
+    "function_sections": {
+      "baseline": 250,
+      "exact_code_and_ordered_relocations": 248,
+      "changed": 2,
+      "added": 3,
+      "removed": 0,
+      "new_undefined": 0
+    },
+    "inherited_logical_EH_descriptions_exact": 30,
+    "new_preflight_EH": "Two states, one catch-all; Source FH3 EHFlags1, not Original FH3/SEH proof.",
+    "join_whole_member_verified": true,
+    "role": "Independent of Source2 author; actual final Root archive/member used."
+  },
+  "Native_vendor_credit": 0,
+  "new_tests": 0,
+  "all9_raw_flags": "UNCHANGED_FALSE",
+  "provider_Common_consumption": "UNCHANGED_UNBOUND",
+  "Game_executed": false,
+  "Original_ABI_or_runtime_proof": false,
+  "retained_limits": [
+    "Compatibility check issues no birth, credit, borrow, transfer, origin or fence.",
+    "Final preflight requires genuine external no-new-entry/native/caller/worker quiescence; never a healthy-live readiness probe.",
+    "Logical caller readiness and actual Parent/GUI source event hooks remain future work.",
+    "No complete lower/all8/B107F0/Origin/strictOFFON/provider/caller/gameplay grant.",
+    "Author archive d184963a and Root archive e539ec17 are distinct. Author-vs-Root postmember differs in PCH directives, debug/checksum, symbols and strings; no whole/timestamp-only transfer. Final Core gate must use Root actual member against Root baseline.",
+    "Extracted C++ call frame changes close reservation20h to14h plus helper14h; stack/HOME/fault timing and Original ABI remain qualified."
+  ],
+  "source_files": [
+    {
+      "path": "include/bsp/native_mesh_section_lifetime.hpp",
+      "before_bytes": 11754,
+      "before_sha256": "49b95ec9996c8f21f527fbe890b26a42c01617f219995317acb18aeb99b5cc71",
+      "candidate_bytes": 12424,
+      "candidate_sha256": "48bbfd1b6995770e41787fcdfab31ae51538e396c0fd5b600cc70923c7526f58",
+      "LF_before_after": true
+    },
+    {
+      "path": "src/native_mesh_section_lifetime.cpp",
+      "before_bytes": 47579,
+      "before_sha256": "2d33a47ecdedba81196fcf6b3789c1c1ce1ad24a34d5e052ea3e52ec6b56f7ca",
+      "candidate_bytes": 48675,
+      "candidate_sha256": "c1896758443f3c0d287b757b2a4e81a10ac1766d6496cc267463ac027539a06b",
+      "LF_before_after": true
+    }
+  ],
+  "initial_Root_build": {
+    "receipt": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_Core_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "4bf11962b582f5ddb6d34a038fc9fe42e8e2b235cd0f44bd58c5ef11e0606d08",
+    "baseline": "5fd4c6d42b4d2ae1ee29e60ac274fa97ab747070",
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "official_exit": 0,
+    "elapsed_seconds": 30.33,
+    "existing_suites": 2,
+    "existing_test_seconds": 11.74,
+    "observed_CL_inputs": 6618,
+    "compiler_tools": 6,
+    "archive_bytes": 107448788,
+    "archive_sha256": "e539ec1743738ebf27940010afdf5e2054cb20137645a61cce92cc25eccc2b73",
+    "whole_focal_member_exact": true,
+    "member_bytes": 132013,
+    "member_sha256": "e34f94911d3dde6f01c78fd5598a0d3c9a175280eb8f0e41831d6640e774ec32"
+  },
+  "Root_build": {
+    "receipt": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_join_8ab_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "d3f3e77238602453feb387a03c84168771703c8eb323e20b7fd2c2deb2b63e06",
+    "baseline": "8ab5959eea6023a1e2197bb5dd8ed8d0fd44ebdd",
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "official_exit": 0,
+    "elapsed_seconds": 72.82,
+    "existing_suites": 2,
+    "existing_test_seconds": 13.61,
+    "observed_CL_inputs": 6620,
+    "compiler_tools": 6,
+    "archive_bytes": 107609098,
+    "archive_sha256": "529c99bfa8206b41a87c89bf3986a219f5eecb125afd6dc16b9c754671139cc5",
+    "whole_focal_member_exact": true,
+    "member_bytes": 132013,
+    "member_sha256": "e34f94911d3dde6f01c78fd5598a0d3c9a175280eb8f0e41831d6640e774ec32"
+  },
+  "joined_source_tree": "11f442baf93b33683ce4b36954d18d61ad14f402",
+  "joined_transfer": {
+    "path": "local/mesh_generation_primary_cc16_20261031/Section_owner_binding_join_8ab_Root/JOIN_TRANSFER.json",
+    "sha256": "6370a784a2286e9cd4ccfd706de2538ebf30e695af7837483f2f549a2a6f9141",
+    "whole_focal_member_exact": true,
+    "whole_archive_exact": false,
+    "input_delta": "Only new Source135 delayedrequest HCPP and existing VFSRuntime/IconDelayedLoads HCPP; focal command and all6tools exact."
+  }
+}
