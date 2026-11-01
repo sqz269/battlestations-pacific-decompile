@@ -21,6 +21,9 @@ struct SingletonLifetimeCallbacks;
 class NativeVfsEnumerationDuplicateLog;
 class NativeFileStoreCompletionDispatch;
 class NativeGuiIconDelayedRequestFileInvocation;
+class NativeGuiIconDelayedDeliveryFileInvocation;
+class NativeGuiIconDelayedLoads;
+struct NativeGuiIconDelayedDeliveryStorageContext;
 class NativeVfsRuntimeBindings;
 struct NativeVfsNameResolutionContext;
 struct NativeVfsDateRouteContext;
@@ -148,6 +151,15 @@ public:
     // name copy. Caller retains this Runtime through actual I/O/callback last-
     // use and shared drain; normal phase is not a quiescence/owner certificate.
     NativeGuiIconDelayedRequestFileInvocation& prepare_icon_delayed_request_file_call();
+    // Cold once-bound Source dispatcher for actual AB58D0 only. The const
+    // input's borrowed dispatcher is never overwritten/replaced. Retain the
+    // SAME service/context/feature/renderer/opaque-owner graph through all
+    // actual pending/callback/queued/worker last use and shared drain.
+    void bind_icon_delayed_completion(NativeGuiIconDelayedLoads&,
+        NativeGuiIconDelayedDeliveryStorageContext&);
+    // Fresh opaque THIS-Runtime footer call; only the actual inline callback
+    // child may enter. No Native work, name snapshot, legacy/request reuse.
+    NativeGuiIconDelayedDeliveryFileInvocation& prepare_icon_delayed_delivery_file_call();
     std::uint32_t file_store_request_failure_site() const noexcept;
     // BDD600 normalizes the actual mutable header, probes with D683E8 and
     // replaces it on success. Copy its final spelling back on TRUE and FALSE.

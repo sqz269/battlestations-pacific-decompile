@@ -7,6 +7,12 @@
 #include "bsp/native_filestore_request.hpp"
 #include "bsp/native_filestore_provider_lifetime.hpp"
 #include "bsp/native_gui_icon_delayed_request_storage.hpp"
+#include "bsp/native_gui_icon_delayed_delivery_storage.hpp"
+#include "bsp/native_gui_icon_texture_apply_storage.hpp"
+#include "bsp/native_gui_icon_storage.hpp"
+#include "bsp/native_gui_icon_delayed_loads.hpp"
+#include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_filestore_remove.hpp"
 #include "bsp/native_mpak_storage_services.hpp"
 #include "bsp/native_mpkg_runtime.hpp"
 #include "bsp/native_pak_registry.hpp"
@@ -191,6 +197,59 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
     NativeFileStoreCompletionContext filestore_completion;
     NativeFileStoreRequestContext filestore_request_context;
     std::unique_ptr<FileStoreRequestInvocation> filestore_request;
+    bool filestore_request_started{};
+    struct IconCompletionAdapter final : NativeFileStoreCompletionDispatch {
+        struct Call {
+            Call() {} // Actual incoming homes are staged at callback entry.
+            Call* parent{};
+            std::uint32_t homes[2];
+            std::uint32_t callback{};
+            NativeGuiIconDelayedCompletionStorageFrame frame;
+            bool entered{},returned{},remove_prepared{};
+            std::exception_ptr failure;
+        };
+        Impl& owner;
+        NativeGuiIconDelayedCompletionStorageContext context;
+        std::vector<std::unique_ptr<Call>> calls;
+        Call* current{};
+        bool entering{};
+        std::exception_ptr failure;
+        IconCompletionAdapter(Impl& r,NativeGuiIconDelayedLoads& s,NativeGuiIconDelayedDeliveryStorageContext& c)
+            :owner(r),context{s,c} {}
+        void invoke_00be7942(std::uint32_t,const void*,const void*) override;
+        std::uint32_t failure_site() const noexcept;
+    };
+    std::unique_ptr<IconCompletionAdapter> icon_completions;
+    bool icon_completion_binding_started{};
+    std::exception_ptr icon_completion_binding_failure;
+    struct RawIconDeliveryFileCall final : NativeGuiIconDelayedDeliveryFileInvocation {
+        Impl& owner;
+        IconCompletionAdapter::Call& callback;
+        NativeFileStoreProviderLifetimeContext provider;
+        RawIconDeliveryFileCall(Impl&,IconCompletionAdapter::Call&);
+        void validate_source_entry() override;
+    };
+    std::vector<std::unique_ptr<RawIconDeliveryFileCall>> raw_icon_delivery_file_calls;
+    NativeFileStoreCompletionDispatch* completion_dispatch() const noexcept {
+        return icon_completions?icon_completions.get():inputs.filestore_completions;
+    }
+    std::uint32_t icon_completion_failure_site() const noexcept {
+        if(icon_completion_binding_failure) return 0x00ab58d0;
+        if(icon_completions) {
+            const auto site=icon_completions->failure_site();if(site) return site;
+        }
+        for(const auto& call:raw_icon_delivery_file_calls)
+            if(call->phase()==NativeGuiIconDelayedDeliveryFileInvocation::Phase::entered ||
+                call->phase()==NativeGuiIconDelayedDeliveryFileInvocation::Phase::unknown_source_escape)
+                return call->active_native_site()?call->active_native_site():0x00ab5329;
+        return 0;
+    }
+    bool unknown_icon_request() const noexcept {
+        if(filestore_request && filestore_request->acquired.phase()==NativeFileStoreRequestPhase::failed) return true;
+        for(const auto& call:raw_icon_file_calls)
+            if(call->phase()==NativeGuiIconDelayedRequestFileInvocation::Phase::unknown_source_escape) return true;
+        return false;
+    }
     struct RawIconFileCall final : NativeGuiIconDelayedRequestFileInvocation, NativeFileStoreRequestDispatch {
         Impl& owner;
         NativeFileStoreRequestAcquired acquired;
@@ -371,9 +430,10 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
     }
     void invoke_00be7942(std::uint32_t callback, const void* first,
         const void* second) override {
-        if (!inputs.filestore_completions)
+        auto* const dispatcher=completion_dispatch();
+        if (!dispatcher)
             throw std::invalid_argument("Native FileStore completion dispatcher is not bound");
-        inputs.filestore_completions->invoke_00be7942(callback, first, second);
+        dispatcher->invoke_00be7942(callback, first, second);
     }
     bool resolve_existing_name_00bdf4c0(void* manager, void* name) override {
         if (!filestore_request || filestore_request->resolution)
@@ -419,7 +479,7 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         if (retired) return;
         // DENIAL only: an unfinished caller leaves all bindings/publications
         // intact. Caller must retain/exit, not interpret this as safe cleanup.
-        if (raw_icon_failure_site() != 0) return;
+        if (raw_icon_failure_site() != 0 || icon_completion_failure_site()!=0) return;
         auto& deletion = inputs.deletion_bindings;
         if (deletion.physical_factory == &physical_factory_context)
             deletion.physical_factory = nullptr;
@@ -465,8 +525,8 @@ GameNativeVfsRuntime::Impl::RawIconFileCall::RawIconFileCall(Impl& runtime)
       request{runtime.inputs.owners.strings(), runtime.inputs.invalid_parameters,
           runtime.inputs.owners.vfs_publication_0109ceec(), *this} {}
 void GameNativeVfsRuntime::Impl::RawIconFileCall::validate_source_entry() {
-    if (!owner.core_registered || owner.retired || !owner.inputs.filestore_completions ||
-        owner.filestore_request || owner.raw_icon_failure_site())
+    if (!owner.core_registered || owner.retired || !owner.completion_dispatch() ||
+        owner.filestore_request || owner.raw_icon_failure_site() || owner.icon_completion_failure_site())
         throw std::logic_error("Raw Icon FileStore call requires the same initialized serialized live Runtime");
 }
 bool GameNativeVfsRuntime::Impl::RawIconFileCall::resolve_existing_name_00bdf4c0(void* manager, void* name) {
@@ -481,6 +541,54 @@ bool GameNativeVfsRuntime::Impl::RawIconFileCall::open_file_overlapped_00bdda10(
 void GameNativeVfsRuntime::Impl::RawIconFileCall::invoke_manager_failure_callback(
     std::uintptr_t target, void* manager) {
     owner.bindings.open_failure_entry(target, manager);
+}
+
+std::uint32_t GameNativeVfsRuntime::Impl::IconCompletionAdapter::failure_site() const noexcept {
+    if(failure) {
+        for(auto it=calls.rbegin();it!=calls.rend();++it) if((*it)->failure) {
+            const auto& a=(*it)->frame.observation();
+            return a.escaped_native_site?a.escaped_native_site:0x00be7942;
+        }
+        return 0x00be7942;
+    }
+    if(current) {
+        const auto& a=current->frame.observation();
+        return a.active_native_site?a.active_native_site:0x00be7942;
+    }
+    return entering?0x00be7942:0;
+}
+void GameNativeVfsRuntime::Impl::IconCompletionAdapter::invoke_00be7942(
+    std::uint32_t callback,const void* first,const void* second) {
+    Call* const parent=current;Call* record=nullptr;entering=true;
+    try {
+        if(!owner.core_registered || owner.retired || failure || owner.unknown_icon_request())
+            throw std::logic_error("Icon completion requires the SAME live Runtime and retained call graph");
+        auto node=std::make_unique<Call>();record=node.get();record->parent=parent;record->callback=callback;
+        calls.push_back(std::move(node));current=record;record->entered=true;
+        record->homes[1]=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(second));
+        record->homes[0]=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(first));
+        if(callback!=0x00ab58d0)
+            throw std::invalid_argument("Unimplemented actual Icon FileStore callback identity");
+        complete_native_gui_icon_file_loaded_storage_00ab58d0(record->homes,record->frame,context);
+        if(failure) std::rethrow_exception(failure); // An owned failed nested invocation cannot become normal.
+        record->returned=true;current=parent;entering=false;
+    } catch(...) {
+        failure=std::current_exception();if(record) record->failure=failure;
+        throw; // Preserve current stack/call records and physical/FileStore/opaque-owner debt.
+    }
+}
+GameNativeVfsRuntime::Impl::RawIconDeliveryFileCall::RawIconDeliveryFileCall(Impl& r,
+    IconCompletionAdapter::Call& entered)
+    :NativeGuiIconDelayedDeliveryFileInvocation(r.filestore_factory_context,provider,
+        r.inputs.owners.strings(),r.bindings,r.inputs.invalid_parameters),owner(r),callback(entered),
+      provider{r.inputs.owners.strings(),r.bindings,r.inputs.invalid_parameters} {}
+void GameNativeVfsRuntime::Impl::RawIconDeliveryFileCall::validate_source_entry() {
+    // The active parent is EXPECTED. Do not use the public failure aggregate
+    // to deny its mandated inline remove child or snapshot Native fields.
+    if(!owner.core_registered || owner.retired || !owner.icon_completions ||
+        owner.icon_completions->failure || owner.icon_completions->current!=&callback ||
+        callback.failure || callback.returned || owner.unknown_icon_request())
+        throw std::logic_error("Icon FileStore removal requires its actual current Runtime callback child");
 }
 
 GameNativeVfsRuntime::GameNativeVfsRuntime(const GameNativeVfsRuntimeInputs& inputs)
@@ -603,10 +711,11 @@ void GameNativeVfsRuntime::pump_pending() {
     pump_native_vfs_pending_00bdb0b0(impl_->inputs.owners.vfs_publication_0109ceec(), impl_->pending);
 }
 bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t callback) {
-    if (!impl_->core_registered || !impl_->inputs.filestore_completions)
+    if (!impl_->core_registered || !impl_->completion_dispatch())
         throw std::logic_error("Native FileStore request requires core and completion binding");
-    if (impl_->filestore_request || impl_->raw_icon_failure_site())
+    if (impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
         throw std::logic_error("Native FileStore retains an invocation");
+    impl_->filestore_request_started=true;
     auto* const factory = get_native_filestore_factory_004fc150(impl_->filestore_factory_context);
     auto* const store = reinterpret_cast<void*>(word(factory, 8));
     if (!store) throw std::logic_error("Native FileStore factory has no current provider");
@@ -626,20 +735,48 @@ bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t ca
     }
 }
 NativeGuiIconDelayedRequestFileInvocation& GameNativeVfsRuntime::prepare_icon_delayed_request_file_call() {
-    if (!impl_->core_registered || impl_->retired || !impl_->inputs.filestore_completions ||
-        impl_->filestore_request || impl_->raw_icon_failure_site())
+    if (!impl_->core_registered || impl_->retired || !impl_->completion_dispatch() ||
+        impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
         throw std::logic_error("Raw Icon FileStore preparation requires the existing live initialized Runtime");
     auto call = std::make_unique<Impl::RawIconFileCall>(*impl_);
     auto& result = *call;
     impl_->raw_icon_file_calls.push_back(std::move(call));
     return result;
 }
+void GameNativeVfsRuntime::bind_icon_delayed_completion(NativeGuiIconDelayedLoads& service,
+    NativeGuiIconDelayedDeliveryStorageContext& context) {
+    auto& p=*impl_;const bool fresh=!p.icon_completion_binding_started;
+    p.icon_completion_binding_started=true;
+    try {
+        if(!fresh || !p.core_registered || p.retired || p.inputs.filestore_completions ||
+            p.icon_completions || p.filestore_request_started || p.filestore_request ||
+            !p.raw_icon_file_calls.empty() || !p.raw_icon_delivery_file_calls.empty() ||
+            &context.apply.icon.delayed!=&service || &context.cache.strings!=&p.inputs.owners.strings() ||
+            !context.cache.strings.uses_raw_pool_cells(context.apply.icon.strings) ||
+            context.file_provider!=this || !context.prepare_file_call)
+            throw std::logic_error("Icon completion binds once before actual requests with the SAME Runtime/service/context");
+        p.icon_completions=std::make_unique<Impl::IconCompletionAdapter>(p,service,context);
+    } catch(...) {p.icon_completion_binding_failure=std::current_exception();throw;}
+}
+NativeGuiIconDelayedDeliveryFileInvocation& GameNativeVfsRuntime::prepare_icon_delayed_delivery_file_call() {
+    auto& p=*impl_;
+    if(!p.core_registered || p.retired || !p.icon_completions || p.icon_completions->failure ||
+        !p.icon_completions->current || p.unknown_icon_request())
+        throw std::logic_error("Icon delivery footer prepares only under its actual entered Runtime callback");
+    auto& current=*p.icon_completions->current;
+    if(current.remove_prepared || current.returned || current.failure)
+        throw std::logic_error("Icon delivery footer preparation cannot replay");
+    current.remove_prepared=true;
+    auto call=std::make_unique<Impl::RawIconDeliveryFileCall>(p,current);auto& result=*call;
+    p.raw_icon_delivery_file_calls.push_back(std::move(call));return result;
+}
 std::uint32_t GameNativeVfsRuntime::file_store_request_failure_site() const noexcept {
     if (impl_->filestore_request) {
         const auto site = impl_->filestore_request->acquired.failure_site();
         if (site) return site;
     }
-    return impl_->raw_icon_failure_site();
+    const auto request=impl_->raw_icon_failure_site();
+    return request?request:impl_->icon_completion_failure_site();
 }
 bool GameNativeVfsRuntime::probe_and_replace_file_name(std::string& mutable_name) {
     if (!impl_->core_registered)
