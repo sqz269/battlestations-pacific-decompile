@@ -133,6 +133,20 @@ public:
     void* load_page_00aa5840(void* actual_manager, const void* actual_name_header,
         std::int32_t screen_flag, std::uint8_t add_reference);
 
+    // Whole raw AA7E00 on a SAME live Page/widget companion. The caller keeps
+    // its actual name header, data and both ordinary argument homes alive
+    // through normal return or entered-failure disposition. Home1 is unread.
+    // Returns an unretained raw child borrow; no canonical registration or
+    // Native credit is added. Serialized top-level entry, never a callback.
+    void* find_child_00aa7e00(void* captured_actual_parent,
+        volatile std::uint32_t (&actual_homes)[2]);
+
+    // Capture the SAME live widget's CURRENT profile/+34, require AA8530 and
+    // invoke its whole raw body with this Page's existing visibility graph.
+    // Per-call backing survives failure. This is a top-level current-slot
+    // operation, not an adapter for an earlier captured profile/target pair.
+    void set_widget_visibility_00aa8530(void* actual_widget, std::uint8_t requested);
+
     // An entered failure retains its frames, Group, slot and Lua state; the
     // host must _Exit before the singleton drain.
     bool requires_process_retention() const noexcept;
