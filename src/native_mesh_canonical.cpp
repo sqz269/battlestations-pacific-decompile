@@ -183,6 +183,14 @@ void NativeMeshCanonicalDomain::close_at_quiescence() {
             retention_.fail();
             throw std::logic_error("Mesh close cannot drain active or unresolved owning custody");
         }
+        NativeMeshCanonicalAccess::preflight_observed_outer_at_quiescence(*r);
+    }
+    // Validate ALL records and their real caller receivers before the first
+    // end_frame can unlink any hold. A later unresolved record must not leave
+    // earlier records partially drained. The actual owner still supplies the
+    // independent Native/worker/whole-caller quiescence fence.
+    for (auto* r = impl_->head; r; r = r->next_) {
+        if (r->closed_) continue;
         // Real graph quiescence is already established by the owning caller.
         // Drain retained caller metadata BEFORE testing the holds' counters;
         // never infer that quiescence from those counters or a phase flag.
@@ -503,6 +511,16 @@ void NativeMeshCanonicalAccess::fail_observed_outer(NativeMeshCanonicalRecord& r
 }
 void NativeMeshCanonicalAccess::release_observed_outer(NativeMeshCanonicalRecord& r) noexcept {
     r.exact_.outer_calls_.fetch_sub(1,std::memory_order_release);
+}
+void NativeMeshCanonicalAccess::preflight_observed_outer_at_quiescence(NativeMeshCanonicalRecord& r) {
+    auto* const caller=r.observed_zero_hold_.frame_;
+    const unsigned retained_hold=caller?1u:0u;
+    if ((caller && caller->active_invocations_.load(std::memory_order_acquire)!=0u) ||
+        r.exact_.outer_calls_.load(std::memory_order_acquire)!=retained_hold) {
+        r.domain_.retention_.fail();
+        r.failed();
+        throw std::logic_error("Mesh domain preflight requires only its inactive retained zero hold");
+    }
 }
 void NativeMeshCanonicalAccess::drain_observed_outer_at_quiescence(NativeMeshCanonicalRecord& r) {
     if(auto* frame=r.observed_zero_hold_.frame_) {

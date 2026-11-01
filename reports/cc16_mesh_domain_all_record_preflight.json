@@ -1,0 +1,79 @@
+{
+  "status": "INDEPENDENT_SOURCE_REVIEW_AND_WIN32_BUILD_TESTED",
+  "problem": "Mesh domain close could drain an earlier record before a later record rejected readiness.",
+  "behavior": "Validate every nonclosed record and its real caller receiver before the first hold unlink; retain existing drain/postcheck and final close passes.",
+  "reviewed_baseline": "db14691ddd6971abc17f247d92cfb15522fe01ba",
+  "joined_main": "fb8207800531c5fcf3d1ced8686104f38a46065b",
+  "source_files": [
+    {
+      "path": "include/bsp/native_mesh_canonical.hpp",
+      "before_git_sha256": "529dcc53f8272121cfc514b0cc1f201bc0843eb0f2cdd0168ad003d0124dcc5d",
+      "after_worktree_sha256": "24dd07866cfde64390be9d02f55cd91b78325bb0243f580a15daf8522b65600e"
+    },
+    {
+      "path": "src/native_mesh_canonical.cpp",
+      "before_git_sha256": "0885c3717f4dbd794cefc47e0e3da7548e54d7c6e6fdbc30e3c8dd674c2ef8b8",
+      "after_worktree_sha256": "35c6f4aea60ea549d894ecf11fc19d7a603aed675b4fd2e69945803ab1ae1929"
+    }
+  ],
+  "patch_sha256": "fcb2f61d4c6da551eefd9b0c85b44ef46ef45dd4e8af2db252f6d9f665875661",
+  "insertions": 19,
+  "deletions": 0,
+  "source_review": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc16-progress\\local\\mesh_generation_primary_cc16_20261031\\mesh_domain_all_record_preflight_Root\\Source_peer\\REVIEW.md",
+    "sha256": "4eed1dd32b1bac551faa280948fa7195d14a1b95295d1d27ad7d86f4c5f6f536",
+    "seal_sha256": "e96e2c382ed4eb6923909d961f409ceefcd51498bdbd245f7b2387c865a0760b",
+    "decision": "ACCEPT_QUALIFIED_TWO_FILE_SOURCE_ALL_RECORD_PREFLIGHT"
+  },
+  "validation": {
+    "initial_build_receipt_sha256": "e89b3798d2898b652965758b7f973cb92a1e20c54e5947fc0253edb7c9c86d95",
+    "joined_build_receipt_sha256": "f7a41ee24c2aab225b2ce26aaf20a9e6beef5a8c3b9a3212f7f61b2dd210c8e0",
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "existing_suites": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "initial_test_seconds": 12.31,
+    "joined_test_seconds": 12.73,
+    "source_and_mesh_object_whole_exact_across_main_join": true,
+    "artifacts": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_mesh_canonical.obj",
+        "frozen": "frozen_native_mesh_canonical.obj",
+        "bytes": 79888,
+        "sha256": "d8b6f14ed626d92effd68c486962a948c37d9f3d575044f7443fbf068f9d9540"
+      },
+      {
+        "path": "build/win32/Release/bsp_core.lib",
+        "frozen": "frozen_bsp_core.lib",
+        "bytes": 107320692,
+        "sha256": "551745359d225ff283b7a5fc47d05e5027ee557862bdc697737cec0225e44545"
+      },
+      {
+        "path": "build/win32/Release/bsp_game.exe",
+        "frozen": "frozen_bsp_game.exe",
+        "bytes": 7713280,
+        "sha256": "6c202225fcdb3cae8b90fc86e76d7dc0906060ca13617fc96cb425772ba53605"
+      },
+      {
+        "path": "build/win32/Testing/Temporary/LastTest.log",
+        "frozen": "frozen_LastTest.log",
+        "bytes": 1598,
+        "sha256": "cbded5fd3c9f994fc63e12a2cdef3025470143b234a5dc67bb70efd91e619d2d"
+      }
+    ],
+    "source_case_review": "Later rejected record, active caller, extra outer contribution, inactive linked/no hold, shared caller, cold/normal/closed and producer-close cases; no new execution fixture."
+  },
+  "scope": "Private C++ metadata closure. Existing Native payload/scalar/legacy/credit bodies remain literal; no Native fields/counts or public interface/layout change.",
+  "qualifications": [
+    "Domain-local readiness is not cross-domain or GUI producer-loop preflight.",
+    "Real Native, whole-caller and worker quiescence is independently required.",
+    "Pending persistent Mesh child receivers and actual Section/GUI/provider binding remain open.",
+    "No Original ABI/FH3/SEH/HOME/FP/DF/fault/concurrency/runtime/gameplay proof.",
+    "All nine raw GUI switches remain false; no route activation."
+  ],
+  "tests_added": 0,
+  "new_native_vendor_credit": 0,
+  "runtime_executed": false,
+  "goal": "ACTIVE"
+}

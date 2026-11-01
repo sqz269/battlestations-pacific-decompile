@@ -180,6 +180,7 @@ private:
     static void hold_observed_zero(NativeMeshReference&, class NativeRenderObservedZeroFrame&);
     static void fail_observed_outer(NativeMeshCanonicalRecord&) noexcept;
     static void release_observed_outer(NativeMeshCanonicalRecord&) noexcept;
+    static void preflight_observed_outer_at_quiescence(NativeMeshCanonicalRecord&);
     static void drain_observed_outer_at_quiescence(NativeMeshCanonicalRecord&);
     static void arm_observed_zero(NativeMeshReference&) noexcept;
     static void release_zero(NativeMeshReference&);
