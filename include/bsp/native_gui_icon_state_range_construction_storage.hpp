@@ -16,7 +16,7 @@ struct NativeGuiIconStateRangeConstructionStorageFrame {
 };
 static_assert(sizeof(NativeGuiIconStateRangeConstructionStorageFrame) == 20);
 
-// NORMAL range construction for AB4C50. Native ECX=source begin, EDX=source
+// Source range construction and completed-prefix cleanup for AB4C50. Native ECX=source begin, EDX=source
 // end, four stacked DWORD homes and RET10h become this ordinary Source API.
 // Capture destination homes[0] first; save incoming end to end_14, capture source
 // begin, save destination to begin_18, then full state0. Reload CURRENT end_14
@@ -39,7 +39,9 @@ static_assert(sizeof(NativeGuiIconStateRangeConstructionStorageFrame) == 20);
 // promoted to exact BF0/overlap/mutable-preserve-home/Original behavior. No new
 // validator, cap, callback, owner, typed T[n] family or Native retain is added.
 // Caller proves every reached individual slot/backing lifetime and retains
-// current/partial/completed/remaining graph/providers and homes on UNKNOWN.
+// containing backing/homes plus outstanding partial/remaining obligations
+// and providers on escape. Already-returned destructor calls are history,
+// not disposition proof; never rescan their pointees or replay those calls.
 //
 // Private Source parameter/control/spill storage is disjoint from borrowed
 // operand/record and provider-write extents. Declared operand homes in frame
@@ -49,11 +51,29 @@ static_assert(sizeof(NativeGuiIconStateRangeConstructionStorageFrame) == 20);
 // Distinct active calls need distinct retained backing. Pure comparison /
 // private register/stack/FLAGS/fault timing is not Original ABI proof.
 //
-// Native13 landing rows AB4CAA..AB4CC6 are HELD, not reconstructed: no prefix
-// destruction, rethrow-helper/body credit, Native Origin/cleanup/disposition,
-// retry/rollback/noexcept or new terminal policy follows from passive state.
-// Full function EH/private-stack/SEH/hardware-FP/caller/vector/activation remain
-// unproved. Existing high STL/vendor classification and prior credit stay.
+// On a Source C++ escape, capture CURRENT frame.begin_18 FIRST, then
+// CURRENT actual_stack_homes[0] ONCE. Destroy that captured interval in
+// forward DWORD +40h order through real AB3280. Advance only after
+// each whole destructor returns; bare-rethrow the original only after
+// the full prefix returns. A destructor escape stops the loop and
+// propagates; no retry, replacement cleanup or new terminal policy.
+//
+// The caller proves the actual captured interval consists of genuine
+// born, completed owning states with valid current canonical texture
+// and name/provider custody, including any callback-written endpoints.
+// Passive progress/state/normal return alone grants no ownership. The
+// entered partial copy is excluded solely by the published endpoint;
+// do not fabricate a current-slot destructor or private completed count.
+// Retain its backing/name/provider debt and all remaining graph on
+// escape. No array family, automatic disposal or Native Origin follows.
+//
+// This ordinary catch implements the prefix schedule of the 13 Native
+// landing rows, not FS/private FH3 or binary exception ABI. Placement
+// action slot reads/401130 RET remain evidence, not a new partial dtor.
+// Existing AB3280 name-unwind/secondary-terminate Source qualifications
+// remain unchanged; they are not generalized Native runtime proof.
+// Native register/FLAGS/fault/SEH/hardware-FP and caller/vector/actual
+// production/runtime activation remain unproved. No new body credit.
 std::uint32_t construct_native_gui_icon_state_range_storage_00ab4c50(
     const void* actual_source_begin_ecx, const void* actual_source_end_edx,
     volatile std::uint32_t (&actual_stack_homes)[4],

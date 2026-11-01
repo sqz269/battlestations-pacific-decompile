@@ -26,22 +26,35 @@ void repeat_construct_native_gui_icon_states_storage_00ab5400(
     static_cast<volatile std::uint32_t&>(frame.progress_14) = destination;
     static_cast<volatile std::uint32_t&>(frame.begin_18) = destination;
     state = 0;
-    while (remaining != 0) {
-        static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;
-        static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;
-        const std::uint32_t placement_nonnull = destination;
-        *state_byte = 1;
-        if (placement_nonnull != 0) {
-            void* const slot = reinterpret_cast<void*>(destination);
-            ::new (slot) NativeGuiIconStateStorage;
-            const std::uint32_t source = actual_stack_homes[0];
-            copy_native_gui_icon_state_00ab3a70(slot,
-                reinterpret_cast<const void*>(source), context);
+    try {
+        while (remaining != 0) {
+            static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;
+            static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;
+            const std::uint32_t placement_nonnull = destination;
+            *state_byte = 1;
+            if (placement_nonnull != 0) {
+                void* const slot = reinterpret_cast<void*>(destination);
+                ::new (slot) NativeGuiIconStateStorage;
+                const std::uint32_t source = actual_stack_homes[0];
+                copy_native_gui_icon_state_00ab3a70(slot,
+                    reinterpret_cast<const void*>(source), context);
+            }
+            remaining -= 1u;
+            destination += 0x40u;
+            *state_byte = 0;
+            static_cast<volatile std::uint32_t&>(frame.progress_14) = destination;
         }
-        remaining -= 1u;
-        destination += 0x40u;
-        *state_byte = 0;
-        static_cast<volatile std::uint32_t&>(frame.progress_14) = destination;
+    } catch (...) {
+        std::uint32_t cleanup_cursor =
+            static_cast<volatile std::uint32_t&>(frame.begin_18);
+        const std::uint32_t cleanup_end =
+            static_cast<volatile std::uint32_t&>(frame.progress_14);
+        while (cleanup_cursor != cleanup_end) {
+            destroy_native_gui_icon_state_00ab3280(
+                reinterpret_cast<void*>(cleanup_cursor), context);
+            cleanup_cursor += 0x40u;
+        }
+        throw;
     }
 }
 } // namespace bsp

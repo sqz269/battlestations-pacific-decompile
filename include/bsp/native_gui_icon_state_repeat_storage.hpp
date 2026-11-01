@@ -16,7 +16,7 @@ struct NativeGuiIconStateRepeatStorageFrame {
 };
 static_assert(sizeof(NativeGuiIconStateRepeatStorageFrame) == 20);
 
-// NORMAL counted-fill support for AB5400. Native ECX=destination, EDX=count,
+// Source counted-fill and completed-prefix cleanup for AB5400. Native ECX=destination, EDX=count,
 // four actual incoming DWORD homes and RET10h become this ordinary Source API.
 // The count is the full unsigned DWORD captured once; the destination advances
 // with DWORD wrap. Only CURRENT homes[0] is read, once per reached nonnull copy;
@@ -32,20 +32,39 @@ static_assert(sizeof(NativeGuiIconStateRepeatStorageFrame) == 20);
 // No promotion to exact BF0/mutable-preserve-home/overlap/Original behavior is
 // made; this entry adds no validation, domain filter, owner or provider.
 //
-// Retain the actual frame, four-home array, context, current/partial/completed
-// states, all payload/storage/custody and their genuine subobjects across every
-// entered escape. Frame/Source parameter/control/spill backing is disjoint from
-// borrowed records and all reached provider-write extents; the live source home
-// may be changed by genuine callbacks and is reread on the next copy. Distinct
-// reentrant invocations require distinct retained frame/home backing. No count
-// limit, progress-based birth/ownership receipt or automatic disposition exists.
+// Keep actual frame/home/context and containing record backing retained.
+// On escape retain partial/current and remaining outstanding obligations
+// and providers. Already-returned destructor calls are history, not
+// disposition proof; never rescan their pointees or replay those calls.
+// Private Source controls/spills are disjoint from operand/record and
+// provider-write extents. Declared frame/incoming operand homes remain
+// live: genuine callback writes are observed at reached epochs; source
+// home0 is reloaded for each copy. Distinct active invocations require
+// distinct retained frame/home backing. No count/progress grants custody.
 //
-// The 13 Native catch-landing rows AB545B..AB5477 are HELD, not reconstructed.
-// Arbitrary Source escape remains UNKNOWN and propagates without prefix cleanup,
-// rollback/retry, Native-origin permission, noexcept or a new terminal policy.
-// State/progress are passive operands, never EH/cleanup/retirement authority.
-// Native private stack/register/FLAGS/fault/SEH/FH3/hardware-FP equivalence and
-// vector/growth/caller/production/activation are unproved. No new body credit.
+// On a Source C++ escape, capture CURRENT frame.begin_18 FIRST, then
+// CURRENT frame.progress_14 ONCE. Destroy that captured interval in
+// forward DWORD +40h order through real AB3280. Advance only after
+// each whole destructor returns; bare-rethrow the original only after
+// the full prefix returns. A destructor escape stops the loop and
+// propagates; no retry, replacement cleanup or new terminal policy.
+//
+// The caller proves the actual captured interval consists of genuine
+// born, completed owning states with valid current canonical texture
+// and name/provider custody, including any callback-written endpoints.
+// Passive progress/state/normal return alone grants no ownership. The
+// entered partial copy is excluded solely by the published endpoint;
+// do not fabricate a current-slot destructor or private completed count.
+// Retain its backing/name/provider debt and all remaining graph on
+// escape. No array family, automatic disposal or Native Origin follows.
+//
+// This ordinary catch implements the prefix schedule of the 13 Native
+// landing rows, not FS/private FH3 or binary exception ABI. Placement
+// action slot reads/401130 RET remain evidence, not a new partial dtor.
+// Existing AB3280 name-unwind/secondary-terminate Source qualifications
+// remain unchanged; they are not generalized Native runtime proof.
+// Native register/FLAGS/fault/SEH/hardware-FP and caller/vector/actual
+// production/runtime activation remain unproved. No new body credit.
 void repeat_construct_native_gui_icon_states_storage_00ab5400(
     void* actual_destination, std::uint32_t count_edx,
     volatile std::uint32_t (&actual_stack_homes)[4],
