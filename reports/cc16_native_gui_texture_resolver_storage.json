@@ -1,0 +1,1242 @@
+{
+  "kind": "IGNORED qualified ordinary rawAA2660 kernel, no tracked author grant",
+  "base": "055525352ee37b05a0c343d2d816566f100dceea",
+  "owned_paths": [
+    "include/bsp/native_gui_texture_resolver_storage.hpp",
+    "src/native_gui_texture_resolver_storage.cpp",
+    "docs/CC16_NATIVE_GUI_TEXTURE_RESOLVER_STORAGE.md",
+    "reports/cc16_native_gui_texture_resolver_storage.json"
+  ],
+  "postimage_pins": {
+    "include/bsp/native_gui_texture_resolver_storage.hpp": {
+      "bytes": 3520,
+      "sha256": "02c6e5de1138a9c5e09526ebc82626a38a1aad7e70637e22cdb5a2257608ac11"
+    },
+    "src/native_gui_texture_resolver_storage.cpp": {
+      "bytes": 7293,
+      "sha256": "039323eaba6af7a46ff9aefa12b1375e5c81561372a78676eb0d7fd8dd4ddb33"
+    },
+    "docs/CC16_NATIVE_GUI_TEXTURE_RESOLVER_STORAGE.md": {
+      "bytes": 4452,
+      "sha256": "183f765b13c8d50eb201abdff6f7716716ee40788ce34fe6a7dad5935f5f1641"
+    }
+  },
+  "Native": {
+    "entry": "00aa2660",
+    "end_exclusive": "00aa27e1",
+    "bytes": 385,
+    "instructions": 128,
+    "sha256": "1af2be61e3e8e25fbc0cf875ca44cd0787d6263c7f38298848591411ffabbe21",
+    "hex": "568b7424088b460485c0577505b860bcf8008b0d6cc2f80050e8a2d404008bf885ff0f84440100008b742410d94608d826d9eedbf1ddd97604b101eb0232c9d9460cd86604d9c9dff1ddd87604b001eb0232c084c9d94714d91ed94718d95e04d9471cd95e08d94720d95e0c740ed94608f30f1006d91ef30f11460884c07410d9460cf30f104604d95e04f30f11460c0f57c0538b5c2418f30f100b0f2ec89ff6c4440f8aad000000f30f104b040f2ec89ff6c4440f8a9b0000008b4f088b018b503cffd285c089442410db4424107d06d8057839ce008b4f08d95c24148b018b5040ffd285c089442410db4424107d06d8057839ce00d95c2418d94608d826d95c24108b44241025ffffff7f89442410d9442410d84c2414dc3580c3ce00d944241cd9c0decad9c9d91bd9460cd86604d95c24108b4c241081e1ffffff7f894c2410d9442410d84c2418dc35b8f1ce00dec9d95b048b570883c20452ff151c22ce008b47085b5f5ec210008b0d94d3f8008b018b50646a0056ffd25f5ec21000",
+    "localEH": false
+  },
+  "instruction_map": [
+    {
+      "address": "00aa2660",
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2661",
+      "bytes": "8b742408",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [esp + 8]",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2665",
+      "bytes": "8b4604",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 4]",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2668",
+      "bytes": "85c0",
+      "mnemonic": "test",
+      "operands": "eax, eax",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa266a",
+      "bytes": "57",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa266b",
+      "bytes": "7505",
+      "mnemonic": "jne",
+      "operands": "0xaa2672",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa266d",
+      "bytes": "b860bcf800",
+      "mnemonic": "mov",
+      "operands": "eax, 0xf8bc60",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2672",
+      "bytes": "8b0d6cc2f800",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [0xf8c26c]",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2678",
+      "bytes": "50",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2679",
+      "bytes": "e8a2d40400",
+      "mnemonic": "call",
+      "operands": "0xaefb20",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa267e",
+      "bytes": "8bf8",
+      "mnemonic": "mov",
+      "operands": "edi, eax",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2680",
+      "bytes": "85ff",
+      "mnemonic": "test",
+      "operands": "edi, edi",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2682",
+      "bytes": "0f8444010000",
+      "mnemonic": "je",
+      "operands": "0xaa27cc",
+      "Source_region": "entry/current-atlas-and-original-header"
+    },
+    {
+      "address": "00aa2688",
+      "bytes": "8b742410",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [esp + 0x10]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa268c",
+      "bytes": "d94608",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 8]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa268f",
+      "bytes": "d826",
+      "mnemonic": "fsub",
+      "operands": "dword ptr [esi]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa2691",
+      "bytes": "d9ee",
+      "mnemonic": "fldz",
+      "operands": "",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa2693",
+      "bytes": "dbf1",
+      "mnemonic": "fcomi",
+      "operands": "st(1)",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa2695",
+      "bytes": "ddd9",
+      "mnemonic": "fstp",
+      "operands": "st(1)",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa2697",
+      "bytes": "7604",
+      "mnemonic": "jbe",
+      "operands": "0xaa269d",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa2699",
+      "bytes": "b101",
+      "mnemonic": "mov",
+      "operands": "cl, 1",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa269b",
+      "bytes": "eb02",
+      "mnemonic": "jmp",
+      "operands": "0xaa269f",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa269d",
+      "bytes": "32c9",
+      "mnemonic": "xor",
+      "operands": "cl, cl",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa269f",
+      "bytes": "d9460c",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 0xc]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26a2",
+      "bytes": "d86604",
+      "mnemonic": "fsub",
+      "operands": "dword ptr [esi + 4]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26a5",
+      "bytes": "d9c9",
+      "mnemonic": "fxch",
+      "operands": "st(1)",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26a7",
+      "bytes": "dff1",
+      "mnemonic": "fcompi",
+      "operands": "st(1)",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26a9",
+      "bytes": "ddd8",
+      "mnemonic": "fstp",
+      "operands": "st(0)",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26ab",
+      "bytes": "7604",
+      "mnemonic": "jbe",
+      "operands": "0xaa26b1",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26ad",
+      "bytes": "b001",
+      "mnemonic": "mov",
+      "operands": "al, 1",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26af",
+      "bytes": "eb02",
+      "mnemonic": "jmp",
+      "operands": "0xaa26b3",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26b1",
+      "bytes": "32c0",
+      "mnemonic": "xor",
+      "operands": "al, al",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26b3",
+      "bytes": "84c9",
+      "mnemonic": "test",
+      "operands": "cl, cl",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26b5",
+      "bytes": "d94714",
+      "mnemonic": "fld",
+      "operands": "dword ptr [edi + 0x14]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26b8",
+      "bytes": "d91e",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26ba",
+      "bytes": "d94718",
+      "mnemonic": "fld",
+      "operands": "dword ptr [edi + 0x18]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26bd",
+      "bytes": "d95e04",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi + 4]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26c0",
+      "bytes": "d9471c",
+      "mnemonic": "fld",
+      "operands": "dword ptr [edi + 0x1c]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26c3",
+      "bytes": "d95e08",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi + 8]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26c6",
+      "bytes": "d94720",
+      "mnemonic": "fld",
+      "operands": "dword ptr [edi + 0x20]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26c9",
+      "bytes": "d95e0c",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi + 0xc]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26cc",
+      "bytes": "740e",
+      "mnemonic": "je",
+      "operands": "0xaa26dc",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26ce",
+      "bytes": "d94608",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 8]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26d1",
+      "bytes": "f30f1006",
+      "mnemonic": "movss",
+      "operands": "xmm0, dword ptr [esi]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26d5",
+      "bytes": "d91e",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26d7",
+      "bytes": "f30f114608",
+      "mnemonic": "movss",
+      "operands": "dword ptr [esi + 8], xmm0",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26dc",
+      "bytes": "84c0",
+      "mnemonic": "test",
+      "operands": "al, al",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26de",
+      "bytes": "7410",
+      "mnemonic": "je",
+      "operands": "0xaa26f0",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26e0",
+      "bytes": "d9460c",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 0xc]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26e3",
+      "bytes": "f30f104604",
+      "mnemonic": "movss",
+      "operands": "xmm0, dword ptr [esi + 4]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26e8",
+      "bytes": "d95e04",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esi + 4]",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26eb",
+      "bytes": "f30f11460c",
+      "mnemonic": "movss",
+      "operands": "dword ptr [esi + 0xc], xmm0",
+      "Source_region": "ordered-flips/sequential-current-UV"
+    },
+    {
+      "address": "00aa26f0",
+      "bytes": "0f57c0",
+      "mnemonic": "xorps",
+      "operands": "xmm0, xmm0",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa26f3",
+      "bytes": "53",
+      "mnemonic": "push",
+      "operands": "ebx",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa26f4",
+      "bytes": "8b5c2418",
+      "mnemonic": "mov",
+      "operands": "ebx, dword ptr [esp + 0x18]",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa26f8",
+      "bytes": "f30f100b",
+      "mnemonic": "movss",
+      "operands": "xmm1, dword ptr [ebx]",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa26fc",
+      "bytes": "0f2ec8",
+      "mnemonic": "ucomiss",
+      "operands": "xmm1, xmm0",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa26ff",
+      "bytes": "9f",
+      "mnemonic": "lahf",
+      "operands": "",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2700",
+      "bytes": "f6c444",
+      "mnemonic": "test",
+      "operands": "ah, 0x44",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2703",
+      "bytes": "0f8aad000000",
+      "mnemonic": "jp",
+      "operands": "0xaa27b6",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2709",
+      "bytes": "f30f104b04",
+      "mnemonic": "movss",
+      "operands": "xmm1, dword ptr [ebx + 4]",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa270e",
+      "bytes": "0f2ec8",
+      "mnemonic": "ucomiss",
+      "operands": "xmm1, xmm0",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2711",
+      "bytes": "9f",
+      "mnemonic": "lahf",
+      "operands": "",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2712",
+      "bytes": "f6c444",
+      "mnemonic": "test",
+      "operands": "ah, 0x44",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa2715",
+      "bytes": "0f8a9b000000",
+      "mnemonic": "jp",
+      "operands": "0xaa27b6",
+      "Source_region": "late-size-pointer/ordered-zero-SSE"
+    },
+    {
+      "address": "00aa271b",
+      "bytes": "8b4f08",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [edi + 8]",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa271e",
+      "bytes": "8b01",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [ecx]",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2720",
+      "bytes": "8b503c",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [eax + 0x3c]",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2723",
+      "bytes": "ffd2",
+      "mnemonic": "call",
+      "operands": "edx",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2725",
+      "bytes": "85c0",
+      "mnemonic": "test",
+      "operands": "eax, eax",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2727",
+      "bytes": "89442410",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esp + 0x10], eax",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa272b",
+      "bytes": "db442410",
+      "mnemonic": "fild",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa272f",
+      "bytes": "7d06",
+      "mnemonic": "jge",
+      "operands": "0xaa2737",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2731",
+      "bytes": "d8057839ce00",
+      "mnemonic": "fadd",
+      "operands": "dword ptr [0xce3978]",
+      "Source_region": "width-pair/call/unsigned-conversion"
+    },
+    {
+      "address": "00aa2737",
+      "bytes": "8b4f08",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [edi + 8]",
+      "Source_region": "height-receiver-before-widthspill/pair-after"
+    },
+    {
+      "address": "00aa273a",
+      "bytes": "d95c2414",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esp + 0x14]",
+      "Source_region": "height-receiver-before-widthspill/pair-after"
+    },
+    {
+      "address": "00aa273e",
+      "bytes": "8b01",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [ecx]",
+      "Source_region": "height-receiver-before-widthspill/pair-after"
+    },
+    {
+      "address": "00aa2740",
+      "bytes": "8b5040",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [eax + 0x40]",
+      "Source_region": "height-receiver-before-widthspill/pair-after"
+    },
+    {
+      "address": "00aa2743",
+      "bytes": "ffd2",
+      "mnemonic": "call",
+      "operands": "edx",
+      "Source_region": "height-receiver-before-widthspill/pair-after"
+    },
+    {
+      "address": "00aa2745",
+      "bytes": "85c0",
+      "mnemonic": "test",
+      "operands": "eax, eax",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2747",
+      "bytes": "89442410",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esp + 0x10], eax",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa274b",
+      "bytes": "db442410",
+      "mnemonic": "fild",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa274f",
+      "bytes": "7d06",
+      "mnemonic": "jge",
+      "operands": "0xaa2757",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2751",
+      "bytes": "d8057839ce00",
+      "mnemonic": "fadd",
+      "operands": "dword ptr [0xce3978]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2757",
+      "bytes": "d95c2418",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esp + 0x18]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa275b",
+      "bytes": "d94608",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 8]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa275e",
+      "bytes": "d826",
+      "mnemonic": "fsub",
+      "operands": "dword ptr [esi]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2760",
+      "bytes": "d95c2410",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2764",
+      "bytes": "8b442410",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2768",
+      "bytes": "25ffffff7f",
+      "mnemonic": "and",
+      "operands": "eax, 0x7fffffff",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa276d",
+      "bytes": "89442410",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esp + 0x10], eax",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2771",
+      "bytes": "d9442410",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2775",
+      "bytes": "d84c2414",
+      "mnemonic": "fmul",
+      "operands": "dword ptr [esp + 0x14]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2779",
+      "bytes": "dc3580c3ce00",
+      "mnemonic": "fdiv",
+      "operands": "qword ptr [0xcec380]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa277f",
+      "bytes": "d944241c",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esp + 0x1c]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2783",
+      "bytes": "d9c0",
+      "mnemonic": "fld",
+      "operands": "st(0)",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2785",
+      "bytes": "deca",
+      "mnemonic": "fmulp",
+      "operands": "st(2)",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2787",
+      "bytes": "d9c9",
+      "mnemonic": "fxch",
+      "operands": "st(1)",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2789",
+      "bytes": "d91b",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [ebx]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa278b",
+      "bytes": "d9460c",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esi + 0xc]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa278e",
+      "bytes": "d86604",
+      "mnemonic": "fsub",
+      "operands": "dword ptr [esi + 4]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2791",
+      "bytes": "d95c2410",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2795",
+      "bytes": "8b4c2410",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa2799",
+      "bytes": "81e1ffffff7f",
+      "mnemonic": "and",
+      "operands": "ecx, 0x7fffffff",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa279f",
+      "bytes": "894c2410",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esp + 0x10], ecx",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27a3",
+      "bytes": "d9442410",
+      "mnemonic": "fld",
+      "operands": "dword ptr [esp + 0x10]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27a7",
+      "bytes": "d84c2418",
+      "mnemonic": "fmul",
+      "operands": "dword ptr [esp + 0x18]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27ab",
+      "bytes": "dc35b8f1ce00",
+      "mnemonic": "fdiv",
+      "operands": "qword ptr [0xcef1b8]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27b1",
+      "bytes": "dec9",
+      "mnemonic": "fmulp",
+      "operands": "st(1)",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27b3",
+      "bytes": "d95b04",
+      "mnemonic": "fstp",
+      "operands": "dword ptr [ebx + 4]",
+      "Source_region": "height-conversion/current-differences/late-retained-scale"
+    },
+    {
+      "address": "00aa27b6",
+      "bytes": "8b5708",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [edi + 8]",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27b9",
+      "bytes": "83c204",
+      "mnemonic": "add",
+      "operands": "edx, 4",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27bc",
+      "bytes": "52",
+      "mnemonic": "push",
+      "operands": "edx",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27bd",
+      "bytes": "ff151c22ce00",
+      "mnemonic": "call",
+      "operands": "dword ptr [0xce221c]",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27c3",
+      "bytes": "8b4708",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [edi + 8]",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27c6",
+      "bytes": "5b",
+      "mnemonic": "pop",
+      "operands": "ebx",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27c7",
+      "bytes": "5f",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27c8",
+      "bytes": "5e",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27c9",
+      "bytes": "c21000",
+      "mnemonic": "ret",
+      "operands": "0x10",
+      "Source_region": "currenttexture-counter/current-return"
+    },
+    {
+      "address": "00aa27cc",
+      "bytes": "8b0d94d3f800",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [0xf8d394]",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27d2",
+      "bytes": "8b01",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [ecx]",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27d4",
+      "bytes": "8b5064",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [eax + 0x64]",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27d7",
+      "bytes": "6a00",
+      "mnemonic": "push",
+      "operands": "0",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27d9",
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27da",
+      "bytes": "ffd2",
+      "mnemonic": "call",
+      "operands": "edx",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27dc",
+      "bytes": "5f",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27dd",
+      "bytes": "5e",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    },
+    {
+      "address": "00aa27de",
+      "bytes": "c21000",
+      "mnemonic": "ret",
+      "operands": "0x10",
+      "Source_region": "late-current-renderer/original-header/literal0"
+    }
+  ],
+  "targets": {
+    "00d61948+3c": "00b3ce50",
+    "00d61948+40": "00b3ce60",
+    "00d61948+48": "00b3ce70",
+    "00d61948+4c": "00b3ce80",
+    "00d61870+3c": "00b3cf80",
+    "00d61870+40": "00bd30e0",
+    "00d61870+48": "00b3e080",
+    "00d61870+4c": "00a82250",
+    "00d618b0+3c": "00b3d0a0",
+    "00d618b0+40": "00b3d0b0",
+    "00d618b0+48": "00bd30e0",
+    "00d618b0+4c": "00b3dca0"
+  },
+  "authentic_literal_and_leaf_bytes": {
+    "00ce3978": "0000804f",
+    "00cec380": "0000000000008e40",
+    "00cef1b8": "0000000000808640",
+    "00b3ce50": "8b4128c3",
+    "00b3ce60": "8b412cc3",
+    "00f8bc60": {
+      "provenance": "original PE loader zero-filled virtual tail; no file byte exists",
+      "initial_loader_byte": "00",
+      "section": ".data",
+      "rva": "00b8bc60",
+      "section_rva": "00a08000",
+      "raw_size": 65536,
+      "virtual_size": 2719452,
+      "current_value": "caller borrows actual live byte address; do not copy/reseed initial zero"
+    }
+  },
+  "Native_FP_SSE_mnemonics": [
+    "fld",
+    "fsub",
+    "fldz",
+    "fcomi",
+    "fstp",
+    "fld",
+    "fsub",
+    "fxch",
+    "fcomip",
+    "fstp",
+    "fld",
+    "fstp",
+    "fld",
+    "fstp",
+    "fld",
+    "fstp",
+    "fld",
+    "fstp",
+    "fld",
+    "movss",
+    "fstp",
+    "movss",
+    "fld",
+    "movss",
+    "fstp",
+    "movss",
+    "xorps",
+    "movss",
+    "ucomiss",
+    "lahf",
+    "movss",
+    "ucomiss",
+    "lahf",
+    "fild",
+    "fadd",
+    "fstp",
+    "fild",
+    "fadd",
+    "fstp",
+    "fld",
+    "fsub",
+    "fstp",
+    "fld",
+    "fmul",
+    "fdiv",
+    "fld",
+    "fld",
+    "fmulp",
+    "fxch",
+    "fstp",
+    "fld",
+    "fsub",
+    "fstp",
+    "fld",
+    "fmul",
+    "fdiv",
+    "fmulp",
+    "fstp"
+  ],
+  "Source_asm_pins": [
+    {
+      "index": 0,
+      "bytes": 115,
+      "sha256": "7dec8352097ce01787767b4164bcee7b49ca678e3ec273d9d51c8ec6249fd1d0"
+    },
+    {
+      "index": 1,
+      "bytes": 1320,
+      "sha256": "ef01d6acbd7c0a57be12871a69a89c1753d23eb9eb605adf26f5d340b249da15"
+    },
+    {
+      "index": 2,
+      "bytes": 507,
+      "sha256": "6d6b0d21f1e7579cb281f39bd96c782e6b92071c9dc79954ab200a217e15b820"
+    },
+    {
+      "index": 3,
+      "bytes": 260,
+      "sha256": "54b0e4aeaad1c7d4c21e3b6b1eb252a8f41a60391801c7a2ddfdb42f75ebdf2e"
+    },
+    {
+      "index": 4,
+      "bytes": 687,
+      "sha256": "78791f43c5e39e7a08f57010ae5cf106f4adbf109ee289a27f6e162a2403421f"
+    },
+    {
+      "index": 5,
+      "bytes": 1324,
+      "sha256": "0960992ce7cea3e20af7c1fd137ee8e7b2a62bafec4da3291d9fa9356ae6e6fd"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/native_particle_texture_names_raw.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 2444,
+      "sha256": "96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43"
+    },
+    {
+      "path": "src/native_particle_texture_names_raw.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 14759,
+      "sha256": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 13322,
+      "sha256": "e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 49969,
+      "sha256": "c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89"
+    },
+    {
+      "path": "include/bsp/native_material_effect_runtime.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3874,
+      "sha256": "e390781f185412d693863f268dd0163b535a1694e479c665bf6d996ecc05e081"
+    },
+    {
+      "path": "src/native_material_effect_runtime.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 7450,
+      "sha256": "5907af9db614875e493585ab0d17068b1018080b4119465fcb968ebf13f624d2"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+    },
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 1483,
+      "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f"
+    },
+    {
+      "path": "include/bsp/gui_icon_runtime.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 9796,
+      "sha256": "85268af63b51d9edb56594034e8eb7eb72b14148164e0741c69e10ac9181f73c"
+    },
+    {
+      "path": "include/bsp/native_system_constant_gather.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3792,
+      "sha256": "c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11"
+    },
+    {
+      "path": "src/native_system_constant_gather.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 34872,
+      "sha256": "8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86"
+    }
+  ],
+  "consumerV2_overlay": [
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "bytes": 29777,
+      "sha256": "ae95b1ba6af92b020e3b80ba936c231c2afb31354ced4ebb407c0a4497a64759",
+      "utf8": "#include \"bsp/native_mesh_canonical.hpp\"\n#include \"bsp/game_native_gui_icon_application.hpp\"\n#include \"bsp/game_native_gui_effect_application.hpp\"\n#include \"bsp/game_native_renderer_application.hpp\"\n#include \"bsp/gui_native_clip_parameters.hpp\"\n#include \"bsp/gui_text_material.hpp\"\n#include \"bsp/gui_text_native_layout.hpp\"\n#include \"bsp/gui_type_dispatch.hpp\"\n#include \"bsp/native_game_grid.hpp\"\n#include \"bsp/native_logical_buffer_mapping.hpp\"\n#include \"bsp/native_texture_loading_cache.hpp\"\n#include \"bsp/native_texture_saved_dimensions.hpp\"\n#include \"bsp/native_system_constant_gather.hpp\"\n#include <array>\n#include <cstring>\n#include <list>\n#include <stdexcept>\n#include <unordered_map>\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error Native Icon composition requires MSVC Win32.\n#endif\n\nnamespace bsp::game {\nnamespace {\nusing Word = std::uint32_t;\nvoid require(bool value, const char* message) {\n    if (!value) throw std::logic_error(message);\n}\ntemplate<class T> T read(const void* raw, Word offset = 0) {\n    T result;\n    std::memcpy(&result, static_cast<const std::byte*>(raw) + offset, sizeof result);\n    return result;\n}\nstd::atomic<std::int32_t>& actual_count(void* raw) {\n    require(raw && !(reinterpret_cast<std::uintptr_t>(raw) & 3u),\n        \"Native Icon requires aligned actual storage\");\n    return *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(\n        static_cast<std::byte*>(raw) + 4));\n}\nvoid copy_x87(float& destination, const float& source) noexcept {\n    auto* destination_address = &destination;\n    const auto* source_address = &source;\n    __asm {\n        mov eax, source_address\n        mov edx, destination_address\n        fld dword ptr [eax]\n        fstp dword ptr [edx]\n    }\n}\n} // namespace\n\nstruct GameNativeGuiIconApplication::Impl {\n    struct Rebuild {\n        Word site{};\n        bool running{}, complete{};\n        NativeString format_name, material_name;\n        bool format_name_live{}, material_name_live{};\n        GuiNativeDeclarationAcquired declaration;\n        NativeStreamCloneAcquired vertex;\n        NativeMeshStorage* mesh{};\n        std::optional<NativeMeshCanonicalBorrow> mesh_pin;\n        void* stream{};\n        void* mapping{};\n        NativeStreamCloneMapPhase map_phase{NativeStreamCloneMapPhase::not_called};\n        GuiNativeSectionSelection section{};\n        void* material{};\n        const GameNativeGuiMaterialFactoryOperation* material_factory{};\n        // These headers stay address-stable even on an entered registration\n        // failure. A consumed header is observation only, never replayed.\n        std::list<NativeString> parameter_names;\n        std::exception_ptr failure;\n    };\n    struct TextureLoad {\n        NativeString name;\n        bool name_live{};\n        NativeTextureCacheAcquired cache;\n        void* result{}; // Transferred caller reference; diagnostic identity.\n    };\n    struct Record {\n        GuiWidgetOwner& owner;\n        GameNativeGuiIconIdentity identity;\n        std::shared_ptr<const void> page_token;\n        std::unique_ptr<Rebuild> rebuild;\n        std::list<TextureLoad> texture_loads;\n        bool runtime_retired{}, borrow_guard_released{};\n        Record(GuiWidgetOwner& owner_in, GameNativeGuiIconIdentity identity_in)\n            : owner(owner_in), identity(identity_in) {}\n    };\n    GameNativeRendererApplication& renderer;\n    GameNativeGuiEffectApplication& effects;\n    GameNativeGuiIconApplicationBindings binding;\n    NativeGameGridContext& grid;\n    GuiNativeGeometryOwners& geometry;\n    GuiTextNativeLayoutServices& layouts;\n    std::unordered_map<GuiLayoutWidget*, std::unique_ptr<Record>> records;\n    bool active{}, failed{};\n    Word site{};\n    std::exception_ptr failure;\n\n    Impl(GameNativeRendererApplication& renderer_in, GameNativeGuiEffectApplication& effects_in,\n        GameNativeGuiIconApplicationBindings supplied)\n        : renderer(renderer_in), effects(effects_in), binding(std::move(supplied)),\n          grid(renderer.game_grid_context()), geometry(grid.graphics.streams.geometry),\n          layouts(renderer.section_layout_services()) {\n        auto& actual = geometry.actual_owners();\n        const auto& registration = geometry.registration();\n        require(&actual == &renderer.actual_owners() &&\n            &binding.widgets.environment().models.retained_owners == &actual &&\n            binding.widgets.environment().actual_owners == &renderer.actual_owners() &&\n            &binding.materials.retained_owners == &actual &&\n            &binding.widget_materials.actual_owners == &actual &&\n            &binding.widget_materials.widgets == &binding.widgets &&\n            &binding.materials.parameter_names == &grid.strings &&\n            &binding.parameters.parameter_names == &grid.strings &&\n            &binding.materials.parameter_slots == &binding.parameters.parameter_slots &&\n            registration.bind && registration.unbind && registration.find,\n            \"Native Icon requires the renderer's SAME widget/material/string/owner domain\");\n        require(binding.actual_identity && binding.widget_materials.retain_widget &&\n            binding.find_atlas_item_00aefb20 && binding.platform_allows_point_filter,\n            \"Native Icon requires actual page identity, lifetime and atlas providers\");\n        require_gui_text_native_renderer_domain(grid.graphics, renderer.publication_00f8d394(),\n            grid.strings, actual);\n    }\n    void require_idle() const {\n        require(!active && !failed, \"Native Icon has an entered or failed operation\");\n    }\n    struct Entry {\n        Impl& app;\n        int exceptions{std::uncaught_exceptions()};\n        Entry(Impl& value, Word entry) : app(value) {\n            app.require_idle();\n            app.active = true;\n            app.site = entry;\n        }\n        ~Entry() {\n            if (std::uncaught_exceptions() > exceptions) {\n                app.failed = true;\n            }\n            app.active = false;\n        }\n    };\n    void validate_identity(Record& record) const {\n        auto& actual = geometry.actual_owners();\n        const auto& identity = record.identity;\n        require(identity.actual && &identity.widget == &record.owner &&\n            &binding.widgets.owner(record.owner.layout()) == &record.owner &&\n            read<Word>(identity.actual) == 0x00d5c4c0 &&\n            &identity.reference.reference_count == &actual_count(identity.actual) &&\n            identity.reference.reference_count.load() > 0 &&\n            &actual.resolve_actual(identity.actual) == &identity.reference,\n            \"Native Icon requires its SAME live D5C4C0 raw allocation/count/companion\");\n    }\n    NativeModelOwner& model(Record& record) {\n        validate_identity(record);\n        auto* reference = record.owner.model_reference();\n        auto* node = record.owner.node_binding();\n        require(reference && node && &reference->model_owner().node == node &&\n            reference->reference_count.load() > 0,\n            \"Native Icon requires its sole actual primary Model\");\n        auto& result = reference->model_owner();\n        require(result.phase == NativeModelOwner::Phase::live &&\n            &result.environment == &binding.widgets.environment().models &&\n            &result.environment.retained_owners == &geometry.actual_owners(),\n            \"Native Icon primary Model belongs to another native domain\");\n        return result;\n    }\n    void validate_texture(void* raw) const {\n        require(raw && read<Word>(raw) == 0x00d61948,\n            \"Native Icon texture requires its actual D61948 2D owner\");\n        auto& reference = geometry.actual_owners().resolve_actual(raw);\n        require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,\n            \"Native Icon texture requires its SAME canonical native reference count\");\n    }\n    Word width(void* raw) const {\n        validate_texture(raw);\n        return get_native_texture_saved_width_00b3ce70(raw);\n    }\n    Word height(void* raw) const {\n        validate_texture(raw);\n        return get_native_texture_saved_height_00b3ce80(raw);\n    }\n    Word dimension_from_captured(void* raw, Word captured_profile, Word captured_target) const {\n        require(raw && captured_profile == 0x00d61948,\n            \"Native Icon captured dimension requires its supported D61948 Source family\");\n        auto& reference = geometry.actual_owners().resolve_actual(raw);\n        require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,\n            \"Native Icon texture requires its SAME canonical native reference count\");\n        if (captured_target == 0x00b3ce50)\n            return get_raw_texture_width_00b3ce50(raw);\n        if (captured_target == 0x00b3ce60)\n            return get_raw_texture_height_00b3ce60(raw);\n        if (captured_target == 0x00b3ce70)\n            return get_native_texture_saved_width_00b3ce70(raw);\n        if (captured_target == 0x00b3ce80)\n            return get_native_texture_saved_height_00b3ce80(raw);\n        throw std::logic_error(\"Native Icon unsupported captured Source dimension target\");\n    }\n    void* load_texture(Record& record, std::string_view spelling, Word flags) {\n        Entry entered(*this, 0x00aa2660);\n        validate_identity(record);\n        require(!record.runtime_retired && !record.borrow_guard_released && flags == 0,\n            \"Native Icon texture load requires its live original flags0 caller\");\n        record.texture_loads.emplace_back();\n        auto& load = record.texture_loads.back();\n        const std::string name(spelling);\n        load.name_live = true;\n        load.name.assign_0041e870(grid.strings, name.c_str());\n        void* receiver = renderer.publication_00f8d394();\n        const auto* profile = grid.graphics.streams.vertices.actual_renderer_profile_00d5f0a8;\n        require(receiver && read<Word>(receiver) == 0x00d5f0a8 && profile &&\n            profile[0x64 / 4] == 0x00b319b0,\n            \"Native Icon requires current renderer64=B319B0\");\n        site = 0x00b319b0;\n        try {\n            load.result = load_native_renderer_texture_00b319b0(receiver, &load.name, flags,\n                renderer.texture_cache(), &load.cache);\n            validate_texture(load.result);\n            destroy_native_string_header_0041dd20(&load.name, grid.strings);\n            load.name_live = false;\n            return load.result;\n        } catch (...) {\n            failure = std::current_exception();\n            throw;\n        }\n    }\n    void constructed74(Record& record) {\n        Entry entered(*this, 0x00ab2540);\n        try {\n            require(!record.runtime_retired && !record.borrow_guard_released,\n                \"Native Icon current74 requires its live same-owner record\");\n            geometry.construct_and_associate74_fragment(model(record));\n        } catch (...) { failure = std::current_exception(); throw; }\n    }\n    NativeMaterialStorage& material(void* raw) const {\n        require(raw != nullptr, \"Native Icon section has no actual material\");\n        auto* reference = dynamic_cast<NativeMaterialReference*>(\n            &geometry.actual_owners().resolve_actual(raw));\n        require(reference && &reference->storage() == raw && reference->reference_count.load() > 0 &&\n            reference->storage().vtable_00 == 0x00d5e520,\n            \"Native Icon requires its canonical actual D5E520 material\");\n        return reference->storage();\n    }\n    void register_parameter(Rebuild& operation, NativeMaterialStorage& target,\n        const char* spelling, const void* source, Word words) {\n        operation.parameter_names.emplace_back();\n        auto& name = operation.parameter_names.back();\n        name.assign_0041e870(grid.strings, spelling);\n        register_native_material_parameter_00b17e10(target, &name, source, words, 0, binding.parameters);\n        destroy_native_string_header_0041dd20(&name, grid.strings);\n    }\n    void ensure_stream(Rebuild& operation) {\n        auto& mesh = *operation.mesh;\n        auto& owners = geometry.actual_owners();\n        require(!mesh.index_stream_60 && mesh.vertex_stream_count_7c >= 0 &&\n            mesh.vertex_stream_count_7c <= 1,\n            \"Native Icon requires its nonindexed, single-stream mesh\");\n        if (!mesh.vertex_stream_count_7c) {\n            operation.format_name_live = true;\n            operation.format_name.assign_0041e870(grid.strings, \"SimpleColor.mvfm\");\n            site = operation.site = 0x00ab3d1f;\n            load_gui_text_native_declaration_current38(renderer.publication_00f8d394(),\n                operation.format_name, grid.graphics, operation.declaration);\n            destroy_native_string_header_0041dd20(&operation.format_name, grid.strings);\n            operation.format_name_live = false;\n            site = operation.site = 0x00ab3d5a;\n            void* stream = create_gui_text_native_vertex_current5c(renderer.publication_00f8d394(),\n                4, 1, operation.declaration.reference, grid.graphics, operation.vertex);\n            site = operation.site = 0x00ab3d63;\n            set_native_mesh_vertex_stream_00b73bb0(mesh, owners, 0, stream);\n            operation.vertex.creator = nullptr;\n            operation.vertex.companion = nullptr;\n            operation.vertex.phase = NativeStreamClonePhase::consumed;\n            site = operation.site = 0x00ab3d6c;\n            release_native_render_actual_owner(owners, stream);\n            void* declaration = operation.declaration.reference;\n            operation.declaration = {};\n            site = operation.site = 0x00ab3d82;\n            release_native_render_actual_owner(owners, declaration);\n        }\n        operation.stream = mesh.vertex_streams_64[0];\n        auto* reference = operation.stream ? dynamic_cast<NativeLogicalVertexReference*>(\n            &owners.resolve_actual(operation.stream)) : nullptr;\n        require(reference && reference->storage() == operation.stream &&\n            reference->reference_count.load() > 0 &&\n            read<Word>(operation.stream) == 0x00d61d6c && read<Word>(operation.stream, 0x64) >= 4,\n            \"Native Icon requires its real canonical four-vertex HAL stream\");\n    }\n    void write_quad(Record& record, GuiIconWidget& icon, Rebuild& operation) {\n        GuiIconQuadSetup setup;\n        require(gui_icon_build_quad_setup(icon, record.owner.layout().transform, setup),\n            \"Native Icon cannot resolve its selected state\");\n        auto& transform = record.owner.layout().transform;\n        // AB41A9..41BE is reached even when widget+74 suppresses stream writes.\n        if (setup.writes_widget_pivot) {\n            copy_x87(transform.size.width, setup.size.width);\n            copy_x87(transform.size.height, setup.size.height);\n            copy_x87(transform.pivot_x, setup.pivot_x);\n            copy_x87(transform.pivot_y, setup.pivot_y);\n        }\n        if (transform.bounds_enabled) return;\n        if (setup.writes_widget_pivot) { // AB4249..4266 repeated native stores.\n            copy_x87(transform.pivot_x, setup.pivot_x);\n            copy_x87(transform.pivot_y, setup.pivot_y);\n            copy_x87(transform.size.width, setup.size.width);\n            copy_x87(transform.size.height, setup.size.height);\n        }\n        setup.quad.y_scale = binding.vertical_scale_00e12fd0;\n        std::array<GuiQuadVertex, 4> vertices;\n        const bool positions_valid = gui_write_cropped_quad_00ab1860(setup.quad, vertices);\n        icon.partial_display_ratio = setup.quad.ratio;\n        auto* bytes = static_cast<std::byte*>(operation.mapping);\n        const Word stride = read<Word>(operation.stream, 0x0c);\n        const Word position = read<Word>(operation.stream, 0x10);\n        const Word uv = read<Word>(operation.stream, 0x28);\n        const auto fits = [stride](Word offset, Word length) {\n            return offset <= stride && length <= stride - offset;\n        };\n        require(bytes && fits(position, 12) && fits(uv, 8),\n            \"Native Icon mapped writer fields exceed the actual stream stride\");\n        if (positions_valid) for (Word index : {0u, 1u, 3u, 2u}) {\n            const auto& vertex = vertices[index];\n            const float xyz[]{vertex.x, vertex.y, vertex.z};\n            const float texture_uv[]{vertex.u, vertex.v};\n            std::memcpy(bytes + index * stride + position, xyz, sizeof xyz);\n            std::memcpy(bytes + index * stride + uv, texture_uv, sizeof texture_uv);\n        }\n        const auto packed = read<std::int32_t>(operation.stream, 0x34);\n        if (packed >= 0) {\n            require(fits(static_cast<Word>(packed), 4), \"Native Icon packed color offset exceeds stride\");\n            const Word white = 0xffffffffu;\n            for (Word index = 0; index != 4; ++index)\n                std::memcpy(bytes + index * stride + packed, &white, 4);\n        } else {\n            const float white = binding.texture_constants.one_00d7a24c;\n            for (Word index = 0; index != 4; ++index) for (Word lane = 0; lane != 4; ++lane) {\n                const Word offset = read<Word>(operation.stream, 0x38 + lane * 4);\n                require(fits(offset, 4), \"Native Icon float color offset exceeds stride\");\n                std::memcpy(bytes + index * stride + offset, &white, 4);\n            }\n        }\n    }\n    void rebuild(Record& record, GuiIconWidget& icon) {\n        Entry entered(*this, 0x00ab3cb0);\n        require(!record.runtime_retired && !record.borrow_guard_released,\n            \"Native Icon rebuild requires its same live page record\");\n        require(!record.rebuild || record.rebuild->complete,\n            \"Native Icon cannot replay an entered rebuild\");\n        record.rebuild = std::make_unique<Rebuild>();\n        auto& operation = *record.rebuild;\n        operation.running = true;\n        try {\n            // The loader publishes the sole child into the page tree before\n            // current78/state rebuild. make_type/current74 precede that point\n            // and create no borrowed material parameters.\n            if (!record.page_token)\n                record.page_token = binding.widget_materials.retain_widget(record.owner);\n            require(record.page_token && record.page_token.get() == &record.owner,\n                \"Native Icon rebuild requires its authoritative same-page lifetime token\");\n            auto& primary = model(record);\n            auto* raw = primary.storage.model.geometry_180;\n            auto* mesh_reference = raw ? dynamic_cast<NativeMeshReference*>(\n                &geometry.actual_owners().resolve_actual(raw)) : nullptr;\n            require(mesh_reference != nullptr, \"Native Icon requires its actual mesh canonical\");\n            operation.mesh_pin.emplace(*mesh_reference);\n            require(&operation.mesh_pin->storage() == raw &&\n                mesh_reference->reference_count.load() > 0,\n                \"Native Icon current74 must publish its SAME actual mesh first\");\n            operation.mesh = &operation.mesh_pin->storage();\n            ensure_stream(operation);\n            site = operation.site = 0x00ab3dae;\n            operation.map_phase = NativeStreamCloneMapPhase::call_in_progress;\n            operation.mapping = lock_native_logical_vertex_stream_00b49980(operation.stream,\n                grid.graphics.streams.mapping, 4, 0, 0);\n            operation.map_phase = NativeStreamCloneMapPhase::returned;\n            require(operation.mapping && read<void*>(operation.stream, 8) == operation.mapping,\n                \"Native Icon requires the actual HAL mapped write pointer\");\n            operation.section = acquire_gui_native_section_fragment(*operation.mesh, geometry);\n            const bool existing = !operation.section.append_on_publish;\n            const auto* selected = icon.has_texture ? gui_icon_state_at(icon, icon.current_state) : nullptr;\n            require(!icon.has_texture || selected, \"Native Icon state is outside its signed16 vector\");\n            const bool platform_point = icon.has_texture && icon.shader_name.empty()\n                ? binding.platform_allows_point_filter() : false;\n            bool differs = false;\n            const auto& transform = record.owner.layout().transform;\n            if (icon.has_texture && icon.shader_name.empty() && platform_point &&\n                transform.rotate == 0.0f && transform.scale_x == 1.0f && transform.scale_y == 1.0f)\n                differs = gui_icon_state_differs_from_native_size_00ab24b0(*selected,\n                    width(selected->texture), height(selected->texture));\n            const bool bilinear = gui_icon_prefers_bilinear_filter_00ab2600(icon, transform, platform_point, differs);\n            if (existing && bilinear == icon.cached_prefers_bilinear) {\n                operation.material = operation.section.section->material_20;\n                material(operation.material).references_04.fetch_add(1, std::memory_order_seq_cst);\n            } else {\n                icon.cached_prefers_bilinear = bilinear;\n                operation.material_name_live = true;\n                operation.material_name.assign_0041e870(grid.strings, gui_icon_material_name(icon, bilinear));\n                site = operation.site = 0x00535320;\n                operation.material = effects.create_material_00535320(&operation.material_name,\n                    geometry, binding.materials, operation.material_factory);\n                destroy_native_string_header_0041dd20(&operation.material_name, grid.strings);\n                operation.material_name_live = false;\n            }\n            auto& target = material(operation.material);\n            site = operation.site = 0x00ab3f76;\n            register_parameter(operation, target, \"cOverbrightFactor\", &record.owner.extra_fields().overbright_94, 1);\n            register_parameter(operation, target, \"cLowColor\", record.owner.layout().low_color, 4);\n            register_parameter(operation, target, \"cHighColor\", record.owner.layout().high_color, 4);\n            register_parameter(operation, target, \"cBlendFactor\", &record.owner.layout().blend_factor, 1);\n            site = operation.site = 0x00ab4114;\n            register_native_gui_clip_parameters_00aa9f10(record.owner, target, binding.widgets,\n                binding.widget_materials.aspect_ratio_00e12fc0, binding.parameters);\n            validate_identity(record);\n            require(record.page_token && record.page_token.get() == &record.owner,\n                \"Native Icon material requires the authoritative page lifetime token\");\n            site = operation.site = 0x00ab411e;\n            set_native_material_parameter_owner_00b18a40(target, record.identity.actual, 1,\n                geometry.actual_owners());\n            auto& section = *operation.section.section;\n            section.primitive_08 = 5;\n            section.range_words_0c[0] = 0;\n            section.range_words_0c[2] = 0;\n            section.range_words_0c[1] = 4;\n            section.range_words_0c[3] = 2;\n            // Reload the same selected state after preceding material callbacks.\n            selected = icon.has_texture ? gui_icon_state_at(icon, icon.current_state) : nullptr;\n            require(!icon.has_texture || selected, \"Native Icon lost its selected state during material binding\");\n            if (selected) validate_texture(selected->texture);\n            set_native_material_texture_00b189f0(target, 0, selected ? selected->texture : nullptr,\n                geometry.actual_owners());\n            write_quad(record, icon, operation);\n            site = operation.site = 0x00ab4431;\n            operation.map_phase = NativeStreamCloneMapPhase::unlock_in_progress;\n            unlock_native_logical_vertex_stream_00b49a80(operation.stream, grid.graphics.streams.mapping);\n            operation.map_phase = NativeStreamCloneMapPhase::unlocked;\n            record.owner.recompose_00aa7220();\n            site = operation.site = 0x00ab443d;\n            publish_gui_native_section_fragment(*operation.mesh, operation.section, operation.material,\n                geometry.actual_owners(), layouts);\n            site = operation.site = 0x00ab4495;\n            set_gui_color_00aa6870(record.owner, record.owner.layout().color, binding.widget_materials);\n            operation.running = false;\n            operation.complete = true;\n            operation.mesh_pin.reset(); // last real payload use/normal private fence passed\n        } catch (...) {\n            geometry.record_ordinary_source_failure();\n            operation.failure = failure = std::current_exception();\n            throw; // Preserve the actual map, creators, publications and frames.\n        }\n    }\n    Record& record_for(GuiWidgetOwner& owner) {\n        auto found = records.find(&owner.layout());\n        require(found != records.end() && &found->second->owner == &owner,\n            \"Native Icon requires its original same-owner factory record\");\n        return *found->second;\n    }\n    void runtime_retiring(Record& record) {\n        require_idle();\n        validate_identity(record);\n        require(record.borrow_guard_released && !record.page_token &&\n            !record.owner.node_binding() && actual_count(record.identity.actual).load() == 1 &&\n            (!record.rebuild || record.rebuild->complete) && !record.runtime_retired,\n            \"Native Icon fields cannot retire before its actual material borrowers and page guard\");\n        record.runtime_retired = true;\n    }\n};\n\nGameNativeGuiIconApplication::GameNativeGuiIconApplication(GameHostLog&,\n    GameNativeRendererApplication& renderer, GameNativeGuiEffectApplication& effects,\n    GameNativeGuiIconApplicationBindings bindings)\n    : impl_(std::make_unique<Impl>(renderer, effects, std::move(bindings))) {}\nGameNativeGuiIconApplication::~GameNativeGuiIconApplication() noexcept {\n    if (requires_process_retention()) std::terminate();\n}\nstd::unique_ptr<GuiWidgetTypeImplementation> GameNativeGuiIconApplication::make_type(GuiWidgetOwner& owner) {\n    auto& app = *impl_;\n    app.require_idle();\n    require(owner.layout().type == GuiWidgetType::Icon && owner.layout().transform.type_id == 6 &&\n        &owner.runtime() == &app.binding.widgets && !owner.node_binding() &&\n        !app.records.count(&owner.layout()),\n        \"Native Icon factory requires its fresh primary-null canonical type6 owner\");\n    auto record = std::make_unique<Impl::Record>(owner, app.binding.actual_identity(owner));\n    app.validate_identity(*record);\n    auto* saved = record.get();\n    app.records.emplace(&owner.layout(), std::move(record));\n    GuiIconRuntimeServices services{app.binding.crt_sse2_conversion};\n    services.textures.resolve.find_atlas_item = [&app](std::string_view name) {\n        auto* item = app.binding.find_atlas_item_00aefb20(name);\n        if (item) app.validate_texture(item->texture);\n        return item;\n    };\n    services.textures.resolve.load_texture = [&app, saved](std::string_view name, Word flags) {\n        return app.load_texture(*saved, name, flags);\n    };\n    services.textures.resolve.width = [&app](void* raw) { return app.width(raw); };\n    services.textures.resolve.height = [&app](void* raw) { return app.height(raw); };\n    services.textures.resolve.retain = [&app](void* raw) {\n        app.validate_texture(raw);\n        actual_count(raw).fetch_add(1, std::memory_order_seq_cst);\n    };\n    services.textures.release = [&app](void* raw) {\n        release_native_render_actual_owner(app.geometry.actual_owners(), raw);\n    };\n    services.platform_allows_point_filter = app.binding.platform_allows_point_filter;\n    services.state_texture_constants = &app.binding.texture_constants;\n    services.native_geometry.construct_and_associate74 = [&app, saved] { app.constructed74(*saved); };\n    services.native_geometry.rebuild_00ab3cb0 = [&app, saved](GuiIconWidget& icon) { app.rebuild(*saved, icon); };\n    services.native_geometry.before_runtime_destruction = [&app, saved] { app.runtime_retiring(*saved); };\n    try {\n        services.textures.resolve.dimension_from_captured =\n            [&app](void* raw, Word captured_profile, Word captured_target) {\n                return app.dimension_from_captured(raw, captured_profile, captured_target);\n            };\n        return std::make_unique<GuiIconTypeImplementation>(owner, std::move(services));\n    }\n    catch (...) { app.failed = true; app.failure = std::current_exception(); throw; }\n}\nvoid GameNativeGuiIconApplication::release_material_borrow_guard(GuiWidgetOwner& owner) {\n    auto& app = *impl_;\n    app.require_idle();\n    auto& record = app.record_for(owner);\n    app.validate_identity(record);\n    require(!record.runtime_retired && !record.borrow_guard_released && !owner.node_binding() &&\n        actual_count(record.identity.actual).load() == 1 && (!record.rebuild || record.rebuild->complete),\n        \"Native Icon page guard requires completed actual scene/material retirement first\");\n    record.borrow_guard_released = true;\n    record.page_token.reset();\n}\nvoid GameNativeGuiIconApplication::release_retired_icon(GuiLayoutWidget& layout) {\n    auto& app = *impl_;\n    app.require_idle();\n    const auto found = app.records.find(&layout);\n    require(found != app.records.end() && found->second->runtime_retired &&\n        found->second->borrow_guard_released && !found->second->page_token,\n        \"Native Icon metadata requires completed same-type/page retirement\");\n    app.records.erase(found);\n}\nbool GameNativeGuiIconApplication::requires_process_retention() const noexcept {\n    return impl_->active || impl_->failed || !impl_->records.empty();\n}\nstd::uint32_t GameNativeGuiIconApplication::failure_entry() const noexcept { return impl_->site; }\nconst std::exception_ptr& GameNativeGuiIconApplication::failure() const noexcept { return impl_->failure; }\n} // namespace bsp::game\n"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_TEXTURE_REPORTED_DIMENSION_CONSUMER.md",
+      "bytes": 3670,
+      "sha256": "9ac926d88b82e317cf797f32bde60300b8cfe9b47cf16d25d2c4ef3fec505e5d",
+      "utf8": "# Reported texture dimension consumer proposal\n\nAA2660 uses actual texture CURRENT+3C/+40. Installed D61948 cells contain B3CE50/B3CE60, which return raw reported +28/+2C DWORDs. Source77's AB17B0 uses CURRENT+48/+4C -> B3CE70/B3CE80, saved dimensions. These pairs cannot be substituted. All four leaf bodies already exist; no Native getter body is recovered or duplicated here.\n\nThis ignored proposal changes only the existing genuine GameNativeGuiIconApplication consumer: include the actual reported-getter declaration and add two exact target branches before the untouched70/80 branches. The same capturedprofile D61948, nonnull actual2D object, SAME canonical+04 reference and positive-count checks remain byte-for-byte. No table/profile reread, role fallback, new callback/interface, owner, layout cast, default value, adoption/failure/retirement change or Native authority is introduced. Existing OTHER target rejection remains. Full Source CPP reconstructs exactly by reversing two additive seams.\n\nThe consumer receives the actual already-captured texture/profile/target DWORDs. It performs integer metadata/authentication and one existing raw DWORD getter, so invoke it only at relative ST-depth0. RawAA2660 must capture width's CURRENT item+8/profile/+3C at depth0; after width returns, native signed FILD/negative correction creates ST0. While that width value is live, capture ONLY CURRENT item+8 AGAIN into the height receiver register. FSTP width HOME1 FIRST; THEN read that captured receiver's CURRENT profile/+40, store Source carriers and invoke the consumer. No C++ callback/admission/lookup while ST0 is live and no second table read after the spill.\n\nThe AA2660 resolver dependencies are concrete: rawAEFB20(manager,Cstring,RawPool,nullpattern) exists; its input is engine8 header DATA+4 or authenticF8BC60 fallback, loaded before CURRENT F8C26C. Miss reloads CURRENT F8D394/profile/+64 and passes original captured8B header plus literal0 to genuine B319B0. The default D5F0A8+64 target is B319B0, with persistent cache acquisition/context and same string domains. BDF4C0/BDD6E0 public contracts explicitly accept8B headers; NativeStringStorage is the engine allocator interface. There is no evidence here of a required engine8-to-legacy14 conversion; no such bridge is invented.\n\nNext rawAA2660 body is385B/128rows, not supplied by semantic gui_texture.cpp: four mutable incoming DWORD homes are filename/UV/size/scale, then HOME0 becomes integer and abs-diff bits, HOME1 widthfloat, HOME2 heightfloat. UV pointer is captured after atlas lookup, size pointer after UV stores. Scale is loaded late and retained in x87 across horizontal output and vertical reads; never reread it for height. Retain exact ordered-zero SSE guard, x87 unsigned conversion/spills and sequential UV/output aliasing. Late currentitem+8 reload before increment and after increment stays. No local EH/FP reset/new cleanup policy.\n\nThe raw body can reuse these genuine suppliers within their actual Source class/lifetime domains once this consumer extension is reviewed. A real raw caller still must supply canonical2D texture object/refcount birth, actual atlas manager/item lifetimes, live publication cells/constants, SAME pool domains and fresh retained cache acquisition; captured profile alone does not prove that graph. OTHER current renderer/dimension targets remain explicit source boundaries, never numeric calls or fabricated defaults. Native ABI/FH3/fault/ambientFP/Origin/runtime/actualPage/current80/activation remain unproved. No tracked Source/CMake/ledger/Ghidra/compiler/test/Game action or additional Original/vendor/helper/CG/duplicate credit is claimed.\n"
+    },
+    {
+      "path": "reports/cc16_native_gui_texture_reported_dimension_consumer.json",
+      "bytes": 33833,
+      "sha256": "3c78b454874969ce4ccff4ccc35123a4e13ac6675a1e8d2394d57e7909124925",
+      "utf8": "{\n  \"kind\": \"ignored actualreported dimensionconsumer amendment; wholeAA2660 body NOTimplemented\",\n  \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n  \"owned_paths\": [\n    \"src/game_native_gui_icon_application.cpp\",\n    \"docs/CC16_NATIVE_GUI_TEXTURE_REPORTED_DIMENSION_CONSUMER.md\",\n    \"reports/cc16_native_gui_texture_reported_dimension_consumer.json\"\n  ],\n  \"postimage_pins\": {\n    \"src/game_native_gui_icon_application.cpp\": {\n      \"bytes\": 29777,\n      \"sha256\": \"ae95b1ba6af92b020e3b80ba936c231c2afb31354ced4ebb407c0a4497a64759\"\n    },\n    \"docs/CC16_NATIVE_GUI_TEXTURE_REPORTED_DIMENSION_CONSUMER.md\": {\n      \"bytes\": 3670,\n      \"sha256\": \"9ac926d88b82e317cf797f32bde60300b8cfe9b47cf16d25d2c4ef3fec505e5d\"\n    }\n  },\n  \"preimage_cpp\": {\n    \"bytes\": 29529,\n    \"sha256\": \"a3bdc3f71efd7ebd5664f0bb9fe085217eab417226b2399ef96d7f154aefa6a5\"\n  },\n  \"seams\": [\n    {\n      \"label\": \"include existing reported-getter declaration\",\n      \"before\": \"#include \\\"bsp/native_texture_saved_dimensions.hpp\\\"\\n\",\n      \"after\": \"#include \\\"bsp/native_texture_saved_dimensions.hpp\\\"\\n#include \\\"bsp/native_system_constant_gather.hpp\\\"\\n\"\n    },\n    {\n      \"label\": \"two actual reported target branches before unchanged saved branches\",\n      \"before\": \"        if (captured_target == 0x00b3ce70)\\n\",\n      \"after\": \"        if (captured_target == 0x00b3ce50)\\n            return get_raw_texture_width_00b3ce50(raw);\\n        if (captured_target == 0x00b3ce60)\\n            return get_raw_texture_height_00b3ce60(raw);\\n        if (captured_target == 0x00b3ce70)\\n\"\n    }\n  ],\n  \"provider_pins\": [\n    {\n      \"path\": \"include/bsp/native_particle_texture_names_raw.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 2444,\n      \"sha256\": \"96527a03f29e6edd2511735b94f7dc961127a31a890df02a91a827e5743c8c43\"\n    },\n    {\n      \"path\": \"src/native_particle_texture_names_raw.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 14759,\n      \"sha256\": \"fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761\"\n    },\n    {\n      \"path\": \"include/bsp/native_texture_loading_cache.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 13322,\n      \"sha256\": \"e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785\"\n    },\n    {\n      \"path\": \"src/native_texture_loading_cache.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 49969,\n      \"sha256\": \"c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89\"\n    },\n    {\n      \"path\": \"include/bsp/native_vfs_name_resolution.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 3176,\n      \"sha256\": \"791bd34d2a2826043832d85e27cd723996b988c1d6e22f818e26cd4d45f07bcc\"\n    },\n    {\n      \"path\": \"src/native_vfs_name_resolution.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 30607,\n      \"sha256\": \"898923fc270fcaeb5b81b0dc3bf624658868ae92370a36f65c283e8ff83e5615\"\n    },\n    {\n      \"path\": \"src/native_material_effect_runtime.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 7450,\n      \"sha256\": \"5907af9db614875e493585ab0d17068b1018080b4119465fcb968ebf13f624d2\"\n    },\n    {\n      \"path\": \"src/game_native_renderer_textures.inc\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 3829,\n      \"sha256\": \"b448d72c7ee5cc2399196e86b8af12f807590bb21bc08669582aeb424cbff15a\"\n    },\n    {\n      \"path\": \"include/bsp/native_gui_icon_native_size_storage.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 3298,\n      \"sha256\": \"e72fa9ca5a2a2a29170e98ef309c48e8a9b2467c376cb487af5820448b8cc956\"\n    },\n    {\n      \"path\": \"src/native_gui_icon_native_size_storage.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 3758,\n      \"sha256\": \"cd5d40b8fb20d94efc3ba5c7037bdfd67fdc81e3be813af535230a8c91b2263f\"\n    },\n    {\n      \"path\": \"include/bsp/native_system_constant_gather.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 3792,\n      \"sha256\": \"c50c3972023f6275762edc02119843c626c002d0820a92302342e89ce654ae11\"\n    },\n    {\n      \"path\": \"src/native_system_constant_gather.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 34872,\n      \"sha256\": \"8078dc01ff71f37185a8149cf7535019257a300d71562b292cc8216a74e75a86\"\n    },\n    {\n      \"path\": \"include/bsp/native_texture_saved_dimensions.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 659,\n      \"sha256\": \"79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890\"\n    },\n    {\n      \"path\": \"src/native_texture_saved_dimensions.cpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 558,\n      \"sha256\": \"094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483\"\n    },\n    {\n      \"path\": \"include/bsp/gui_texture.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 1483,\n      \"sha256\": \"1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f\"\n    },\n    {\n      \"path\": \"include/bsp/native_string.hpp\",\n      \"base\": \"055525352ee37b05a0c343d2d816566f100dceea\",\n      \"bytes\": 8771,\n      \"sha256\": \"d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414\"\n    }\n  ],\n  \"Native_targets\": {\n    \"00d61948+3c\": \"00b3ce50\",\n    \"00d61948+40\": \"00b3ce60\",\n    \"00d61948+48\": \"00b3ce70\",\n    \"00d61948+4c\": \"00b3ce80\",\n    \"00d61870+3c\": \"00b3cf80\",\n    \"00d61870+40\": \"00bd30e0\",\n    \"00d61870+48\": \"00b3e080\",\n    \"00d61870+4c\": \"00a82250\",\n    \"00d618b0+3c\": \"00b3d0a0\",\n    \"00d618b0+40\": \"00b3d0b0\",\n    \"00d618b0+48\": \"00bd30e0\",\n    \"00d618b0+4c\": \"00b3dca0\"\n  },\n  \"Native_AA2660\": {\n    \"bytes\": 385,\n    \"rows\": 128,\n    \"sha256\": \"1af2be61e3e8e25fbc0cf875ca44cd0787d6263c7f38298848591411ffabbe21\"\n  },\n  \"raw_resolver_contract\": {\n    \"Native\": {\n      \"bytes\": 385,\n      \"rows\": 128,\n      \"sha256\": \"1af2be61e3e8e25fbc0cf875ca44cd0787d6263c7f38298848591411ffabbe21\",\n      \"targets\": {\n        \"00d61948+3c\": \"00b3ce50\",\n        \"00d61948+40\": \"00b3ce60\",\n        \"00d61948+48\": \"00b3ce70\",\n        \"00d61948+4c\": \"00b3ce80\",\n        \"00d61870+3c\": \"00b3cf80\",\n        \"00d61870+40\": \"00bd30e0\",\n        \"00d61870+48\": \"00b3e080\",\n        \"00d61870+4c\": \"00a82250\",\n        \"00d618b0+3c\": \"00b3d0a0\",\n        \"00d618b0+40\": \"00b3d0b0\",\n        \"00d618b0+48\": \"00bd30e0\",\n        \"00d618b0+4c\": \"00b3dca0\"\n      },\n      \"renderer64\": \"00b319b0\",\n      \"instruction_map\": [\n        {\n          \"address\": \"00aa2660\",\n          \"bytes\": \"56\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"esi\"\n        },\n        {\n          \"address\": \"00aa2661\",\n          \"bytes\": \"8b742408\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"esi, dword ptr [esp + 8]\"\n        },\n        {\n          \"address\": \"00aa2665\",\n          \"bytes\": \"8b4604\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa2668\",\n          \"bytes\": \"85c0\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"eax, eax\"\n        },\n        {\n          \"address\": \"00aa266a\",\n          \"bytes\": \"57\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"edi\"\n        },\n        {\n          \"address\": \"00aa266b\",\n          \"bytes\": \"7505\",\n          \"mnemonic\": \"jne\",\n          \"operands\": \"0xaa2672\"\n        },\n        {\n          \"address\": \"00aa266d\",\n          \"bytes\": \"b860bcf800\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, 0xf8bc60\"\n        },\n        {\n          \"address\": \"00aa2672\",\n          \"bytes\": \"8b0d6cc2f800\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ecx, dword ptr [0xf8c26c]\"\n        },\n        {\n          \"address\": \"00aa2678\",\n          \"bytes\": \"50\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"eax\"\n        },\n        {\n          \"address\": \"00aa2679\",\n          \"bytes\": \"e8a2d40400\",\n          \"mnemonic\": \"call\",\n          \"operands\": \"0xaefb20\"\n        },\n        {\n          \"address\": \"00aa267e\",\n          \"bytes\": \"8bf8\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"edi, eax\"\n        },\n        {\n          \"address\": \"00aa2680\",\n          \"bytes\": \"85ff\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"edi, edi\"\n        },\n        {\n          \"address\": \"00aa2682\",\n          \"bytes\": \"0f8444010000\",\n          \"mnemonic\": \"je\",\n          \"operands\": \"0xaa27cc\"\n        },\n        {\n          \"address\": \"00aa2688\",\n          \"bytes\": \"8b742410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"esi, dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa268c\",\n          \"bytes\": \"d94608\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 8]\"\n        },\n        {\n          \"address\": \"00aa268f\",\n          \"bytes\": \"d826\",\n          \"mnemonic\": \"fsub\",\n          \"operands\": \"dword ptr [esi]\"\n        },\n        {\n          \"address\": \"00aa2691\",\n          \"bytes\": \"d9ee\",\n          \"mnemonic\": \"fldz\",\n          \"operands\": \"\"\n        },\n        {\n          \"address\": \"00aa2693\",\n          \"bytes\": \"dbf1\",\n          \"mnemonic\": \"fcomi\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa2695\",\n          \"bytes\": \"ddd9\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa2697\",\n          \"bytes\": \"7604\",\n          \"mnemonic\": \"jbe\",\n          \"operands\": \"0xaa269d\"\n        },\n        {\n          \"address\": \"00aa2699\",\n          \"bytes\": \"b101\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"cl, 1\"\n        },\n        {\n          \"address\": \"00aa269b\",\n          \"bytes\": \"eb02\",\n          \"mnemonic\": \"jmp\",\n          \"operands\": \"0xaa269f\"\n        },\n        {\n          \"address\": \"00aa269d\",\n          \"bytes\": \"32c9\",\n          \"mnemonic\": \"xor\",\n          \"operands\": \"cl, cl\"\n        },\n        {\n          \"address\": \"00aa269f\",\n          \"bytes\": \"d9460c\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 0xc]\"\n        },\n        {\n          \"address\": \"00aa26a2\",\n          \"bytes\": \"d86604\",\n          \"mnemonic\": \"fsub\",\n          \"operands\": \"dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa26a5\",\n          \"bytes\": \"d9c9\",\n          \"mnemonic\": \"fxch\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa26a7\",\n          \"bytes\": \"dff1\",\n          \"mnemonic\": \"fcompi\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa26a9\",\n          \"bytes\": \"ddd8\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"st(0)\"\n        },\n        {\n          \"address\": \"00aa26ab\",\n          \"bytes\": \"7604\",\n          \"mnemonic\": \"jbe\",\n          \"operands\": \"0xaa26b1\"\n        },\n        {\n          \"address\": \"00aa26ad\",\n          \"bytes\": \"b001\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"al, 1\"\n        },\n        {\n          \"address\": \"00aa26af\",\n          \"bytes\": \"eb02\",\n          \"mnemonic\": \"jmp\",\n          \"operands\": \"0xaa26b3\"\n        },\n        {\n          \"address\": \"00aa26b1\",\n          \"bytes\": \"32c0\",\n          \"mnemonic\": \"xor\",\n          \"operands\": \"al, al\"\n        },\n        {\n          \"address\": \"00aa26b3\",\n          \"bytes\": \"84c9\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"cl, cl\"\n        },\n        {\n          \"address\": \"00aa26b5\",\n          \"bytes\": \"d94714\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [edi + 0x14]\"\n        },\n        {\n          \"address\": \"00aa26b8\",\n          \"bytes\": \"d91e\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi]\"\n        },\n        {\n          \"address\": \"00aa26ba\",\n          \"bytes\": \"d94718\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [edi + 0x18]\"\n        },\n        {\n          \"address\": \"00aa26bd\",\n          \"bytes\": \"d95e04\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa26c0\",\n          \"bytes\": \"d9471c\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [edi + 0x1c]\"\n        },\n        {\n          \"address\": \"00aa26c3\",\n          \"bytes\": \"d95e08\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi + 8]\"\n        },\n        {\n          \"address\": \"00aa26c6\",\n          \"bytes\": \"d94720\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [edi + 0x20]\"\n        },\n        {\n          \"address\": \"00aa26c9\",\n          \"bytes\": \"d95e0c\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi + 0xc]\"\n        },\n        {\n          \"address\": \"00aa26cc\",\n          \"bytes\": \"740e\",\n          \"mnemonic\": \"je\",\n          \"operands\": \"0xaa26dc\"\n        },\n        {\n          \"address\": \"00aa26ce\",\n          \"bytes\": \"d94608\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 8]\"\n        },\n        {\n          \"address\": \"00aa26d1\",\n          \"bytes\": \"f30f1006\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"xmm0, dword ptr [esi]\"\n        },\n        {\n          \"address\": \"00aa26d5\",\n          \"bytes\": \"d91e\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi]\"\n        },\n        {\n          \"address\": \"00aa26d7\",\n          \"bytes\": \"f30f114608\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"dword ptr [esi + 8], xmm0\"\n        },\n        {\n          \"address\": \"00aa26dc\",\n          \"bytes\": \"84c0\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"al, al\"\n        },\n        {\n          \"address\": \"00aa26de\",\n          \"bytes\": \"7410\",\n          \"mnemonic\": \"je\",\n          \"operands\": \"0xaa26f0\"\n        },\n        {\n          \"address\": \"00aa26e0\",\n          \"bytes\": \"d9460c\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 0xc]\"\n        },\n        {\n          \"address\": \"00aa26e3\",\n          \"bytes\": \"f30f104604\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"xmm0, dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa26e8\",\n          \"bytes\": \"d95e04\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa26eb\",\n          \"bytes\": \"f30f11460c\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"dword ptr [esi + 0xc], xmm0\"\n        },\n        {\n          \"address\": \"00aa26f0\",\n          \"bytes\": \"0f57c0\",\n          \"mnemonic\": \"xorps\",\n          \"operands\": \"xmm0, xmm0\"\n        },\n        {\n          \"address\": \"00aa26f3\",\n          \"bytes\": \"53\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"ebx\"\n        },\n        {\n          \"address\": \"00aa26f4\",\n          \"bytes\": \"8b5c2418\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ebx, dword ptr [esp + 0x18]\"\n        },\n        {\n          \"address\": \"00aa26f8\",\n          \"bytes\": \"f30f100b\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"xmm1, dword ptr [ebx]\"\n        },\n        {\n          \"address\": \"00aa26fc\",\n          \"bytes\": \"0f2ec8\",\n          \"mnemonic\": \"ucomiss\",\n          \"operands\": \"xmm1, xmm0\"\n        },\n        {\n          \"address\": \"00aa26ff\",\n          \"bytes\": \"9f\",\n          \"mnemonic\": \"lahf\",\n          \"operands\": \"\"\n        },\n        {\n          \"address\": \"00aa2700\",\n          \"bytes\": \"f6c444\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"ah, 0x44\"\n        },\n        {\n          \"address\": \"00aa2703\",\n          \"bytes\": \"0f8aad000000\",\n          \"mnemonic\": \"jp\",\n          \"operands\": \"0xaa27b6\"\n        },\n        {\n          \"address\": \"00aa2709\",\n          \"bytes\": \"f30f104b04\",\n          \"mnemonic\": \"movss\",\n          \"operands\": \"xmm1, dword ptr [ebx + 4]\"\n        },\n        {\n          \"address\": \"00aa270e\",\n          \"bytes\": \"0f2ec8\",\n          \"mnemonic\": \"ucomiss\",\n          \"operands\": \"xmm1, xmm0\"\n        },\n        {\n          \"address\": \"00aa2711\",\n          \"bytes\": \"9f\",\n          \"mnemonic\": \"lahf\",\n          \"operands\": \"\"\n        },\n        {\n          \"address\": \"00aa2712\",\n          \"bytes\": \"f6c444\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"ah, 0x44\"\n        },\n        {\n          \"address\": \"00aa2715\",\n          \"bytes\": \"0f8a9b000000\",\n          \"mnemonic\": \"jp\",\n          \"operands\": \"0xaa27b6\"\n        },\n        {\n          \"address\": \"00aa271b\",\n          \"bytes\": \"8b4f08\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ecx, dword ptr [edi + 8]\"\n        },\n        {\n          \"address\": \"00aa271e\",\n          \"bytes\": \"8b01\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [ecx]\"\n        },\n        {\n          \"address\": \"00aa2720\",\n          \"bytes\": \"8b503c\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"edx, dword ptr [eax + 0x3c]\"\n        },\n        {\n          \"address\": \"00aa2723\",\n          \"bytes\": \"ffd2\",\n          \"mnemonic\": \"call\",\n          \"operands\": \"edx\"\n        },\n        {\n          \"address\": \"00aa2725\",\n          \"bytes\": \"85c0\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"eax, eax\"\n        },\n        {\n          \"address\": \"00aa2727\",\n          \"bytes\": \"89442410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"dword ptr [esp + 0x10], eax\"\n        },\n        {\n          \"address\": \"00aa272b\",\n          \"bytes\": \"db442410\",\n          \"mnemonic\": \"fild\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa272f\",\n          \"bytes\": \"7d06\",\n          \"mnemonic\": \"jge\",\n          \"operands\": \"0xaa2737\"\n        },\n        {\n          \"address\": \"00aa2731\",\n          \"bytes\": \"d8057839ce00\",\n          \"mnemonic\": \"fadd\",\n          \"operands\": \"dword ptr [0xce3978]\"\n        },\n        {\n          \"address\": \"00aa2737\",\n          \"bytes\": \"8b4f08\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ecx, dword ptr [edi + 8]\"\n        },\n        {\n          \"address\": \"00aa273a\",\n          \"bytes\": \"d95c2414\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esp + 0x14]\"\n        },\n        {\n          \"address\": \"00aa273e\",\n          \"bytes\": \"8b01\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [ecx]\"\n        },\n        {\n          \"address\": \"00aa2740\",\n          \"bytes\": \"8b5040\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"edx, dword ptr [eax + 0x40]\"\n        },\n        {\n          \"address\": \"00aa2743\",\n          \"bytes\": \"ffd2\",\n          \"mnemonic\": \"call\",\n          \"operands\": \"edx\"\n        },\n        {\n          \"address\": \"00aa2745\",\n          \"bytes\": \"85c0\",\n          \"mnemonic\": \"test\",\n          \"operands\": \"eax, eax\"\n        },\n        {\n          \"address\": \"00aa2747\",\n          \"bytes\": \"89442410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"dword ptr [esp + 0x10], eax\"\n        },\n        {\n          \"address\": \"00aa274b\",\n          \"bytes\": \"db442410\",\n          \"mnemonic\": \"fild\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa274f\",\n          \"bytes\": \"7d06\",\n          \"mnemonic\": \"jge\",\n          \"operands\": \"0xaa2757\"\n        },\n        {\n          \"address\": \"00aa2751\",\n          \"bytes\": \"d8057839ce00\",\n          \"mnemonic\": \"fadd\",\n          \"operands\": \"dword ptr [0xce3978]\"\n        },\n        {\n          \"address\": \"00aa2757\",\n          \"bytes\": \"d95c2418\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esp + 0x18]\"\n        },\n        {\n          \"address\": \"00aa275b\",\n          \"bytes\": \"d94608\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 8]\"\n        },\n        {\n          \"address\": \"00aa275e\",\n          \"bytes\": \"d826\",\n          \"mnemonic\": \"fsub\",\n          \"operands\": \"dword ptr [esi]\"\n        },\n        {\n          \"address\": \"00aa2760\",\n          \"bytes\": \"d95c2410\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa2764\",\n          \"bytes\": \"8b442410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa2768\",\n          \"bytes\": \"25ffffff7f\",\n          \"mnemonic\": \"and\",\n          \"operands\": \"eax, 0x7fffffff\"\n        },\n        {\n          \"address\": \"00aa276d\",\n          \"bytes\": \"89442410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"dword ptr [esp + 0x10], eax\"\n        },\n        {\n          \"address\": \"00aa2771\",\n          \"bytes\": \"d9442410\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa2775\",\n          \"bytes\": \"d84c2414\",\n          \"mnemonic\": \"fmul\",\n          \"operands\": \"dword ptr [esp + 0x14]\"\n        },\n        {\n          \"address\": \"00aa2779\",\n          \"bytes\": \"dc3580c3ce00\",\n          \"mnemonic\": \"fdiv\",\n          \"operands\": \"qword ptr [0xcec380]\"\n        },\n        {\n          \"address\": \"00aa277f\",\n          \"bytes\": \"d944241c\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esp + 0x1c]\"\n        },\n        {\n          \"address\": \"00aa2783\",\n          \"bytes\": \"d9c0\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"st(0)\"\n        },\n        {\n          \"address\": \"00aa2785\",\n          \"bytes\": \"deca\",\n          \"mnemonic\": \"fmulp\",\n          \"operands\": \"st(2)\"\n        },\n        {\n          \"address\": \"00aa2787\",\n          \"bytes\": \"d9c9\",\n          \"mnemonic\": \"fxch\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa2789\",\n          \"bytes\": \"d91b\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [ebx]\"\n        },\n        {\n          \"address\": \"00aa278b\",\n          \"bytes\": \"d9460c\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esi + 0xc]\"\n        },\n        {\n          \"address\": \"00aa278e\",\n          \"bytes\": \"d86604\",\n          \"mnemonic\": \"fsub\",\n          \"operands\": \"dword ptr [esi + 4]\"\n        },\n        {\n          \"address\": \"00aa2791\",\n          \"bytes\": \"d95c2410\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa2795\",\n          \"bytes\": \"8b4c2410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ecx, dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa2799\",\n          \"bytes\": \"81e1ffffff7f\",\n          \"mnemonic\": \"and\",\n          \"operands\": \"ecx, 0x7fffffff\"\n        },\n        {\n          \"address\": \"00aa279f\",\n          \"bytes\": \"894c2410\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"dword ptr [esp + 0x10], ecx\"\n        },\n        {\n          \"address\": \"00aa27a3\",\n          \"bytes\": \"d9442410\",\n          \"mnemonic\": \"fld\",\n          \"operands\": \"dword ptr [esp + 0x10]\"\n        },\n        {\n          \"address\": \"00aa27a7\",\n          \"bytes\": \"d84c2418\",\n          \"mnemonic\": \"fmul\",\n          \"operands\": \"dword ptr [esp + 0x18]\"\n        },\n        {\n          \"address\": \"00aa27ab\",\n          \"bytes\": \"dc35b8f1ce00\",\n          \"mnemonic\": \"fdiv\",\n          \"operands\": \"qword ptr [0xcef1b8]\"\n        },\n        {\n          \"address\": \"00aa27b1\",\n          \"bytes\": \"dec9\",\n          \"mnemonic\": \"fmulp\",\n          \"operands\": \"st(1)\"\n        },\n        {\n          \"address\": \"00aa27b3\",\n          \"bytes\": \"d95b04\",\n          \"mnemonic\": \"fstp\",\n          \"operands\": \"dword ptr [ebx + 4]\"\n        },\n        {\n          \"address\": \"00aa27b6\",\n          \"bytes\": \"8b5708\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"edx, dword ptr [edi + 8]\"\n        },\n        {\n          \"address\": \"00aa27b9\",\n          \"bytes\": \"83c204\",\n          \"mnemonic\": \"add\",\n          \"operands\": \"edx, 4\"\n        },\n        {\n          \"address\": \"00aa27bc\",\n          \"bytes\": \"52\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"edx\"\n        },\n        {\n          \"address\": \"00aa27bd\",\n          \"bytes\": \"ff151c22ce00\",\n          \"mnemonic\": \"call\",\n          \"operands\": \"dword ptr [0xce221c]\"\n        },\n        {\n          \"address\": \"00aa27c3\",\n          \"bytes\": \"8b4708\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [edi + 8]\"\n        },\n        {\n          \"address\": \"00aa27c6\",\n          \"bytes\": \"5b\",\n          \"mnemonic\": \"pop\",\n          \"operands\": \"ebx\"\n        },\n        {\n          \"address\": \"00aa27c7\",\n          \"bytes\": \"5f\",\n          \"mnemonic\": \"pop\",\n          \"operands\": \"edi\"\n        },\n        {\n          \"address\": \"00aa27c8\",\n          \"bytes\": \"5e\",\n          \"mnemonic\": \"pop\",\n          \"operands\": \"esi\"\n        },\n        {\n          \"address\": \"00aa27c9\",\n          \"bytes\": \"c21000\",\n          \"mnemonic\": \"ret\",\n          \"operands\": \"0x10\"\n        },\n        {\n          \"address\": \"00aa27cc\",\n          \"bytes\": \"8b0d94d3f800\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"ecx, dword ptr [0xf8d394]\"\n        },\n        {\n          \"address\": \"00aa27d2\",\n          \"bytes\": \"8b01\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"eax, dword ptr [ecx]\"\n        },\n        {\n          \"address\": \"00aa27d4\",\n          \"bytes\": \"8b5064\",\n          \"mnemonic\": \"mov\",\n          \"operands\": \"edx, dword ptr [eax + 0x64]\"\n        },\n        {\n          \"address\": \"00aa27d7\",\n          \"bytes\": \"6a00\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"0\"\n        },\n        {\n          \"address\": \"00aa27d9\",\n          \"bytes\": \"56\",\n          \"mnemonic\": \"push\",\n          \"operands\": \"esi\"\n        },\n        {\n          \"address\": \"00aa27da\",\n          \"bytes\": \"ffd2\",\n          \"mnemonic\": \"call\",\n          \"operands\": \"edx\"\n        },\n        {\n          \"address\": \"00aa27dc\",\n          \"bytes\": \"5f\",\n          \"mnemonic\": \"pop\",\n          \"operands\": \"edi\"\n        },\n        {\n          \"address\": \"00aa27dd\",\n          \"bytes\": \"5e\",\n          \"mnemonic\": \"pop\",\n          \"operands\": \"esi\"\n        },\n        {\n          \"address\": \"00aa27de\",\n          \"bytes\": \"c21000\",\n          \"mnemonic\": \"ret\",\n          \"operands\": \"0x10\"\n        }\n      ]\n    },\n    \"four_incoming_homes\": [\n      \"filenameptr then integer/difference spill\",\n      \"UVptr then widthfloat spill\",\n      \"sizeptr then heightfloat spill\",\n      \"scale bits loadedlate/retainedx87\"\n    ],\n    \"first_name_epoch\": \"capture engine8 header, read DATA+4 only (LENnotread), authenticemptyF8BC60 fallback then CURRENT F8C26C manager\",\n    \"atlas_lookup\": \"find_native_particle_atlas_item_00aefb20; existing actualraw30Bitem +8texture/+14..20UV\",\n    \"width_height_calls\": [\n      \"2723 CURRENT item+8/profile/+3C atFPdepth0 ->B3CE50 forD61948\",\n      \"2737 reload ONLY CURRENT item+8 heightreceiver while widthST0live;273A FSTPwidth HOME1 FIRST;273E load THATreceiver CURRENTprofile;2740 capture+40target;2743call atdepth0 ->B3CE60 forD61948\"\n    ],\n    \"miss_route\": \"CURRENT F8D394/profile/+64; defaultD5F0A8->B319B0; original capturedengine8 header/literal0, realexistingcachecontext/freshacquired\",\n    \"engine_string_qualification\": \"rawengine8 ->B319B0 ->BDF4C0/BDD6E0 raw8; NativeStringStorage isallocator, notlegacy14 header. ExistingQualified Source string/guard/failure domains inherited; no wholeCRT demand.\",\n    \"scale_and_alias\": \"HOME0/1/2 reused at Native epochs; finalUV readsstaycurrent; widthsize storedBEFOREverticalUV reads; late scale retainedST0 ratherthanC++entrysnapshot/secondload\",\n    \"retention_and_remaining\": \"realcurrentitem/texture/atlas/renderer/class/pool/cacheacquired/genuineCppsubobjects andcanonicalcells supplied by actualcaller. No currentprofile-only proof. No localNativeEHbody/Origin or newobserver/owner.\",\n    \"next_source_cut\": \"exact reportedconsumer3path amendment then newrawAA2660 HCPP/doc/report with actualhomes/rawFPrecord and realexisting suppliers. Actual producer remains separate.\"\n  },\n  \"preserved\": \"fulloldCPP inverse, canonical2D/SAME+04/auth, old70/80branches/OTHER/adoption/failure/retirement/default paths; no newcallback/interface\",\n  \"Source_FP_call_contract\": \"consumer calledonlyatrelative0. AA2660 reloads ONLY heightreceiver CURRENTitem+8 whilewidthST0live; FSTPwidth HOME1 FIRST; THEN capture THATreceiver CURRENTprofile/+40target, storeSourcecarriers and callconsumer. No Cppcall/carrierstore whileST0live. UnlikeSource77, paircapture isAFTERspill; do not move it earlier across aliasableHOME1write.\",\n  \"permissions\": {\n    \"tracked_Source_author_grant\": false,\n    \"compiler_tests_Game\": false,\n    \"CMake_ledger_Ghidra_mutation\": false,\n    \"Original_ABI_FH3_FP_fault\": false,\n    \"Native_Origin\": false,\n    \"runtime_activation\": false,\n    \"new_Original_vendor_helper_CG_duplicate_credit\": 0\n  },\n  \"reader\": {\n    \"bytes\": 4003,\n    \"sha256\": \"cec479018bc2a0bd57b03a4a88be1564598354a7646778f430722729ad3f76b4\",\n    \"utf8\": \"from pathlib import Path\\nimport argparse,hashlib,json,re,subprocess\\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args()\\nC='src/game_native_gui_icon_application.cpp';R='reports/cc16_native_gui_texture_reported_dimension_consumer.json'\\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\\ndef data(p):return (Path(a.candidate)/p).read_bytes()\\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\\nr=json.loads(data(R));checks=[]\\ndef ck(n,v):assert v,n;checks.append(n)\\nck('exactextractedreader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\\nbefore=git('show',r['base']+':'+C).decode();after=data(C).decode();work=before\\nfor op in r['seams']:\\n ck('unique forward '+op['label'],work.count(op['before'])==1);work=work.replace(op['before'],op['after'],1)\\nck('wholeCPPforwardexact',work==after)\\nfor op in r['seams'][::-1]:\\n ck('unique reverse '+op['label'],work.count(op['after'])==1);work=work.replace(op['after'],op['before'],1)\\nck('wholeCPPinverseexact',work==before)\\nfor p,m in r['postimage_pins'].items():ck('postimage '+p,meta(data(p))==m)\\nfor p in r['provider_pins']:ck('provider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\\nold=before[before.index('    Word dimension_from_captured('):before.index('    void* load_texture(',before.index('    Word dimension_from_captured('))]\\nnew=after[after.index('    Word dimension_from_captured('):after.index('    void* load_texture(',after.index('    Word dimension_from_captured('))]\\nck('onlytwo branches added consumer',new.replace(r['seams'][1]['after'],r['seams'][1]['before'])==old)\\nck('canonicalactualrefcheckskept',new[:new.index('        if (captured_target')]==old[:old.index('        if (captured_target')])\\nck('oldsavedbranchesandOTHERexact',new[new.index('        if (captured_target == 0x00b3ce70)'):]==old[old.index('        if (captured_target == 0x00b3ce70)'):])\\nck('actualreportedbranches','return get_raw_texture_width_00b3ce50(raw);' in new and 'return get_raw_texture_height_00b3ce60(raw);' in new)\\nck('no CppFP/table reread innewbranches',not any(x in r['seams'][1]['after'] for x in ['float','double','read<','actual_count','std::function']))\\nck('slotpairs distinct',r['Native_targets']['00d61948+3c']=='00b3ce50' and r['Native_targets']['00d61948+40']=='00b3ce60' and r['Native_targets']['00d61948+48']=='00b3ce70' and r['Native_targets']['00d61948+4c']=='00b3ce80')\\nck('allpermissionszero',all(v is False or v==0 for v in r['permissions'].values()))\\ndef entries(ref):\\n out={}\\n for b in git('ls-tree','-r','-z',ref).split(b'\\\\0'):\\n  if b:\\n   mode,t,tail=b.split(b' ',2);oid,p=tail.split(b'\\\\t',1);out[p.decode()]=(mode.decode(),oid.decode())\\n return out\\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\\\0'+b).hexdigest()\\ndef tree(flat):\\n root={}\\n for p,v in flat.items():\\n  n=root;parts=p.split('/')\\n  for q in parts[:-1]:n=n.setdefault(q,{})\\n  n[parts[-1]]=v\\n def rec(n):\\n  out=[]\\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\\n   out.append(mode.encode()+b' '+k.encode()+b'\\\\0'+bytes.fromhex(oid))\\n  return obj('tree',b''.join(out))\\n return rec(root)\\nbase=entries(r['base']);t=git('rev-parse',r['base']+'^{tree}').decode().strip();ck('baserecursivetree',tree(base)==t)\\naftertree=base.copy()\\nfor p in r['owned_paths']:aftertree[p]=('100644',obj('blob',data(p)))\\ninv=aftertree.copy();inv[C]=base[C]\\nfor p in r['owned_paths'][1:]:ck('newpathabsent '+p,p not in base);del inv[p]\\nck('fullthreepathrecursiveinverse',inv==base and tree(inv)==t)\\nprint(json.dumps({'verdict':'PASS ignored reporteddimensionconsumer proposal only','checks':len(checks),'names':checks,'base':r['base'],'base_tree':t,'virtual_after_tree':tree(aftertree),'inverse_tree':tree(inv),'Sourceauthor_compiler_OriginalABI_Origin_runtime_activation':False},indent=2))\\n\"\n  },\n  \"v1_erratum\": {\n    \"v1_folder\": \"J:\\\\PROG\\\\battlestations-pacific-decompile-codex-gui-icon-property-consumer-contract\\\\local\\\\output\\\\cc16_native_gui_texture_filename_resolver_contract_20261031\",\n    \"v1_manifest\": {\n      \"bytes\": 6953,\n      \"sha256\": \"932cdab5fbeb50204f75003b49ecb8b3ce00308e1ccc0b5ba96ff5e2095fbe4b\"\n    },\n    \"v1_seal\": {\n      \"bytes\": 1292,\n      \"sha256\": \"28c0194131dc907ec2cf6397195bb79fa4f3ff85fa9a3c315edce5b3dcd313cd\"\n    },\n    \"finding\": \"V1 copied Source77 pre-spill pair-capture order; AA2660 actually reloads only receiver before widthspill and loads profile/target afterspill\",\n    \"CPP_unchanged\": {\n      \"bytes\": 29777,\n      \"sha256\": \"ae95b1ba6af92b020e3b80ba936c231c2afb31354ced4ebb407c0a4497a64759\"\n    },\n    \"Native_and_providers_unchanged\": true,\n    \"reader_unchanged\": true,\n    \"amended_paths\": [\n      \"docs/CC16_NATIVE_GUI_TEXTURE_REPORTED_DIMENSION_CONSUMER.md\",\n      \"reports/cc16_native_gui_texture_reported_dimension_consumer.json\"\n    ],\n    \"body_or_consumer_behavior_change\": false\n  }\n}\n"
+    }
+  ],
+  "consumer_dependency": {
+    "folder": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-property-consumer-contract\\local\\output\\cc16_native_gui_texture_filename_resolver_contract_v2_20261031",
+    "seal": {
+      "bytes": 1250,
+      "sha256": "24d93ba20bc7fe8830593e0622d72d0f8a0a015619362932518eb199613f0b29"
+    },
+    "manifest": {
+      "bytes": 6786,
+      "sha256": "aa126c4477fbbc6a5053a3b5eea9dcb1a84a7a18150c673fbc014168d38f1e20"
+    },
+    "status": "exactprivateV2 threepath proposal; CPPunchangedV1; V1wrongpre-spill-pair annotation preservedinvalid; no publication/compiler claim"
+  },
+  "corrected_V2_order": "2737 reload ONLY heightreceiver whilewidthST0live;273A FSTPwidthHOME1 FIRST;273E CURRENTprofileload fromTHATreceiver;2740target+40; Sourcecarriers/callback onlyatdepth0. Not Source77pair-before-spill order.",
+  "Source_epoch_probes": [
+    [
+      "entry-and-miss",
+      [
+        "void* const name_header = pointer(homes[0]);",
+        "Word filename = read(name_header, 4);",
+        "if (filename == 0) filename = bits(c.empty_name_00f8bc60);",
+        "void* const atlas_manager = c.atlas.actual_atlas_manager_00f8c26c;",
+        "void* const item = find_native_particle_atlas_item_00aefb20(",
+        "const void* const renderer = c.cache.textures.current_renderer_00f8d394;",
+        "const Word renderer_profile = read(renderer, 0);",
+        "const Word renderer_target = read(pointer(renderer_profile), 0x64);",
+        "return load_native_renderer_texture_00b319b0(pointer(bits(renderer)),",
+        "name_header, 0, c.cache, &c.miss_acquired);"
+      ]
+    ],
+    [
+      "height receiver/spill/pair",
+      [
+        "raw_resolve_width_nonnegative:",
+        "mov ecx, dword ptr [edi + 8]",
+        "fstp dword ptr [ebx + 4]",
+        "mov eax, dword ptr [ecx]",
+        "mov edx, dword ptr [eax + 40h]",
+        "mov texture, ecx",
+        "mov captured_profile, eax",
+        "mov captured_target, edx",
+        "const Word height_result = c.dimensions.dimension_from_captured("
+      ]
+    ],
+    [
+      "late-scale-and-alias",
+      [
+        "fdiv qword ptr [edx]",
+        "fld dword ptr [edi + 0ch]",
+        "fld st(0)",
+        "fmulp st(2), st(0)",
+        "fxch",
+        "fstp dword ptr [ebx]",
+        "fld dword ptr [esi + 0ch]",
+        "fsub dword ptr [esi + 4]",
+        "fstp dword ptr [edi]",
+        "fmul dword ptr [edi + 8]",
+        "fdiv qword ptr [edx]",
+        "fmulp st(1), st(0)",
+        "fstp dword ptr [ebx + 4]"
+      ]
+    ],
+    [
+      "retain/currentreturn",
+      [
+        "void* const retained_texture = pointer(read(item, 8));",
+        "pointer(bits(retained_texture) + 4u)",
+        "count.fetch_add(1, std::memory_order_seq_cst);",
+        "return pointer(read(item, 8));"
+      ]
+    ]
+  ],
+  "qualified_miss_domain": "actualSource-created D5F0A8/B319B0 renderer generation/custody must genuinely exist when miss reached; profile/target/count alone notproof. Capturedcurrentpair inertdata; no arbitraryOTHER dispatch. ExistingB319B0 qualifiedclassAPI borrowed, no newOwner/guard/interface.",
+  "data_and_lifetimes": "actualengine8name/atlas/item/UV/size/fourhome/atomic+04objects, sameRaw/ActualPoolcells, canonicalconstborrow and freshstablecacheacquired/providers. All privatecontrols/spills separate; actualdeclaredoperand writes/validpayloadaliases staylive. No C++FP/NoThrow/Origin/cleanup/reset.",
+  "atomic_qualification": "sameactualC++stdatomic<int32>+04 lifetime alreadyrequiredbyrawAB3A70; seq_cst increment notnewOwnerlookup; hookedmutableIAT/flags/fault/Originalbinarycode notclaimed",
+  "remaining_open": [
+    "OTHERcurrentrenderer+64transport",
+    "unsupportedcapturedtexturefamilies beyondexistinggenuine2Dconsumer",
+    "actualproducer/raw66C0/3310/Page74->18->78/current80/disposition",
+    "Rootcompiler/Core/link/OriginalABI/FH3/SEH/fault/unmaskedFP/runtime/activation"
+  ],
+  "permissions": {
+    "tracked_Source_author_grant": false,
+    "compiler_tests_Game": false,
+    "CMake_Ghidra_ledger_mutation": false,
+    "Original_ABI_FH3_SEH_FPfault_FLAGS": false,
+    "Native_Origin": false,
+    "runtime_activation": false,
+    "new_Original_vendor_helper_CG_duplicate_credit": 0
+  },
+  "reader": {
+    "bytes": 4806,
+    "sha256": "4b5221019b0f40eb4bd535d5b60e27320b639e07bca102801eb5158b522d198e",
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args()\nH='include/bsp/native_gui_texture_resolver_storage.hpp';C='src/native_gui_texture_resolver_storage.cpp';R='reports/cc16_native_gui_texture_resolver_storage.json'\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\ndef data(p):return (Path(a.candidate)/p).read_bytes()\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\nr=json.loads(data(R));checks=[]\ndef ck(n,v):assert v,n;checks.append(n)\nck('exactreportextractedreader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p,m in r['postimage_pins'].items():ck('postimage '+p,meta(data(p))==m)\nfor p in r['provider_pins']:ck('provider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\nfor p in r['consumerV2_overlay']:ck('privateconsumer '+p['path'],meta(p['utf8'].encode())=={k:p[k] for k in ['bytes','sha256']})\nc=data(C).decode();h=data(H).decode();asm=re.findall(r'__asm\\s*\\{([^}]*)\\}',c);code=re.sub(r'__asm\\s*\\{[^}]*\\}','',c);code=re.sub(r'//[^\\n]*','',code)\nck('sixasmblocks',len(asm)==6)\nops=[]\nfor line in re.sub(r'//[^\\n]*','','\\n'.join(asm)).splitlines():\n parts=line.strip().lower().split()\n if parts and (parts[0].startswith('f') or parts[0] in ['movss','xorps','ucomiss','lahf']):ops.append(parts[0])\nck('completeFP/SSE mnemonicorderexact',ops==r['Native_FP_SSE_mnemonics'])\nck('no CppFP conversions/arithmetic functions',not re.search(r'static_cast\\s*<\\s*(float|double)|std::(fabs|swap)|native_size\\(',code))\nck('no new reset/localEH/owner',not re.search(r'\\b(catch|throw|try|terminate|finit|fninit|fldcw|ldmxcsr|new)\\b',code.replace('#include <new>','')))\nck('exacttwointegerconsumers',code.count('c.dimensions.dimension_from_captured(')==2)\nck('Source H noextraFrame','struct NativeGuiTextureResolverStorageFrame' not in h)\nck('size captured afterUVstores',c.index('void* const size_output = pointer(homes[2]);')>c.index('raw_resolve_v_kept:'))\nck('late scale onlyonehome3FPread',c.count('fld dword ptr [edi + 0ch]')==1)\nfor n,fs in r['Source_epoch_probes']:\n pos=0\n for f in fs:\n  hit=c.find(f,pos);ck(n+' '+f,hit>=pos);pos=hit+len(f)\nck('integercallbacks outsideasmblocks',all('dimension_from_captured' not in b for b in asm))\nck('bothorderedzero SSEguards','test ah, 44h' in c and c.count('jp raw_resolve_no_dimensions')==2)\nck('realclassonly contractualotheropen','OTHER+64' in h and 'Profile/target/count data ALONE' in h)\nraw=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xaa2660))\nck('whole385B128rows',len(raw)==385 and len(ins)==128 and sum(i.size for i in ins)==385)\nck('full128map',all(f'{i.address:08x}'==m['address'] and i.bytes.hex()==m['bytes'] and i.mnemonic==m['mnemonic'] and i.op_str==m['operands'] for i,m in zip(ins,r['instruction_map'])))\nck('actual reportedtablecells',r['targets']['00d61948+3c']=='00b3ce50' and r['targets']['00d61948+40']=='00b3ce60')\nck('V2wrongannotationnotinherited','ONLY heightreceiver' in r['corrected_V2_order'])\nck('allpermissionsfalse',all(v is False or v==0 for v in r['permissions'].values()))\ndef entries(ref):\n d={}\n for x in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if x:\n   mode,t,tail=x.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nbase=entries(r['base']);ck('actualbasetree',tree(base)==git('rev-parse',r['base']+'^{tree}').decode().strip())\nbefore=base.copy()\nfor p in r['consumerV2_overlay']:before[p['path']]=('100644',obj('blob',p['utf8'].encode()))\nafter=before.copy()\nfor p in r['owned_paths']:ck('ownpathabsent '+p,p not in before);after[p]=('100644',obj('blob',data(p)))\ninv=after.copy()\nfor p in r['owned_paths']:del inv[p]\nck('ownfouradditionrecursiveinverse',inv==before and tree(inv)==tree(before))\nprint(json.dumps({'verdict':'PASS qualified ordinary Source kernel only','checks':len(checks),'names':checks,'actual_base_tree':tree(base),'consumerV2_before_tree':tree(before),'virtual_after_tree':tree(after),'inverse_tree':tree(inv),'compiler_OriginalABI_FH3_Origin_runtime_activation':False},indent=2))\n"
+  }
+}
