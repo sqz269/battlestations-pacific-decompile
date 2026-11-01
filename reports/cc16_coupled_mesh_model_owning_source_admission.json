@@ -1,5 +1,5 @@
 {
-  "status": "CORRECTED99_SOURCE_BUILD_CORE_AND_LINK_ACCEPTED_FINAL_MAIN_JOIN_AND_SOURCE84_REALIZATION_PENDING",
+  "status": "ACCEPTED_QUALIFIED_FINAL_JOINED_SOURCE_BUILD_CORE_AND_LINK_RUNTIME_ACTIVATION_HELD",
   "baseline": "ba7ec0329c0ada8ab917bd5243b852b36b5a6760",
   "frozen99_seal_sha256": "a03682011f1014e05896e08f75807dab3f97da45219482a35ab77845cbf623f0",
   "compiler_amended_full_Source_tree": "6f728ddbf413bfab5a6a093afc7e59189980ee02",
@@ -14,7 +14,7 @@
   ],
   "official_MSVC_Win32_Release_build_and_existing_suites_pass": true,
   "existing_suite_seconds": 18.2,
-  "new_tests": 0,
+  "new_tests": 1,
   "retained_objects": 58,
   "retained_files": 177,
   "actual_read_inputs_pinned": 3553,
@@ -73,7 +73,27 @@
     "existing_suite_seconds_restored": 19.55,
     "Game_or_new_entry_executed": false
   },
-  "final_Main_join": "PENDING",
+  "final_Main_join": {
+    "Source_commit": "6e9a6fce992ac90d192812a461a79b863fbeccf0",
+    "published_incoming": "691a76372c81e46d4198bee86c176f632caace36",
+    "official_build_exit": 0,
+    "existing_suites_seconds": 14.87,
+    "retained_objects": 69,
+    "retained_artifacts": 225,
+    "actual_read_inputs": 3564,
+    "compiler_tools": 6,
+    "previous_join_objects_whole_exact": 65,
+    "previous_join_changed_objects": [
+      "native_gui_icon_state_range_construction_storage.obj",
+      "native_gui_icon_state_repeat_storage.obj"
+    ],
+    "actual_archive_member_matches": 63,
+    "GUI_by_value_services_extent": "0x360",
+    "GUI_type_constructor_return_cleanup": "0x364",
+    "GUI_Runtime_Impl_return_cleanup": "0x368",
+    "generic_texture_legacy_text_sections_exact": 22,
+    "Source84_actual_leaf_Frame_ctor_dtor_upper_caller_gate_held": true
+  },
   "Original_ABI_unwind_fault_or_runtime_equivalence": false,
   "new_Native_or_vendor_body_credit": 0,
   "remaining_activation_gates": [
@@ -97,13 +117,90 @@
     "canonical_restored_and_existing_suites_passed": true
   },
   "new_Main_Source84_caller_composition": {
-    "state": "AUTHOR_AND_COMMON_PEER_SOURCE_ACCEPTED_UNAPPLIED_PENDING_FINAL_JOIN_BUILD_CORE_LINK",
+    "state": "APPLIED_JOINED_BUILD_CORE_AND_PUBLIC_LINK_PASS_UPPER_CALLER_ACTIVATION_HELD",
     "Main_Source84": "9fd099a7e41e5d46c1eb26692762ec61a6697293",
     "reason": "New actual returned-zero caller still uses legacy public dispatch, which cannot issue corrected ordinary Mesh once-action.",
     "author_seal_sha256": "28684874b28458e63860c12ba83a120357287981250496a7e25154f276d90a47",
     "Root_source_review": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/Source84_zero_amendment_Root/ROOT_AUTHOR_SOURCE_REVIEW.json",
     "Native_count_epoch_FP_or_cleanup_change": false,
     "caller_cpp_frame_layout_change": true,
-    "Game_gate": false
+    "Game_gate": false,
+    "actual_leaf_bytes": 814,
+    "actual_frame_hold_offset": "0x38",
+    "actual_Frame_ctor_dtor_and_upper_caller_not_emitted": true
+  },
+  "final_retained_link": {
+    "status": "PASS_RETAINED_LINK_AND_CANONICAL_RESTORE_NO_GAME",
+    "actual_genuine_public_roots": 26,
+    "Game_only_forced_roots": 12,
+    "canonical_normal_roots": 14,
+    "all69_objects_Source_and_archive_whole_exact_both_stages": true,
+    "canonical_restored_suites_seconds": 13.03,
+    "Game_or_new_entry_executed": false,
+    "receipt": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/retained_link/RESULT.json",
+    "sha256": "1f3f6ccbe5305c75f585a8dca2c6ef3c62c20a0290a18216e3aaadde4f86f1c5"
+  },
+  "merge_tool_repair": {
+    "integrated_commit": "c7d20b172",
+    "owned_files": 2,
+    "new_regression_cases": 1,
+    "targeted_tests_passed": 8,
+    "non_registration_CMake_properties_preserved": true,
+    "failed_join_preserved": true
+  },
+  "fresh_join_Common_and_Source84_Core": "ACCEPT_QUALIFIED_AND_ALL21_OBJECTS_WHOLE_EXACT_TRANSFER_TO_FINAL",
+  "fresh_join_Model_Core": "ALL_TWELVE_LITERAL_CODE_AND_ORDERED_RELOCATIONS_AND_EH_EXACT",
+  "fresh_join_GUI_Core": "ACCEPT_JOINED_CORE_PRESERVATION_AND_SOURCE77_ICON_QUALIFIED",
+  "new_Native_or_Game_test_cases": 0,
+  "new_tool_regression_cases": 1,
+  "final_evidence": {
+    "corrected99_Core_link": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/ROOT_CORRECTED99_CORE_LINK_GATE.json",
+      "sha256": "a3fef1707f300bdd2dd20e89d89556db3c0bc921b1d35e31b6f345c1b9194e9c"
+    },
+    "Model_joined_preservation": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_d2ee_Source84_retry2_Root/Root_Model_preservation/RESULT.json",
+      "sha256": "fb2253906b8606a407079e6bef87f6778a37f192b86eb22f73f7ff2dd937c109"
+    },
+    "Common_Source84_joined": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/Common_Source84_joined_peer_Root/ROOT_ACCEPTED_AND_FINAL_TRANSFER.json",
+      "sha256": "1d09ff6fc0ec65461e23bedc87917c3cefc87031b4f30fbd62f60be9674845ca"
+    },
+    "GUI_Icon_final_join": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/GUI_final_join_peer_Root/ROOT_ACCEPTED.json",
+      "sha256": "18e98ff9ed8f8f5cf3e2cc284a69651ff4e98ce087391dc9efc9661c1df8131a"
+    },
+    "tool_fix": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/CMake_tool_fix_peer_Root/ROOT_ACCEPTED.json",
+      "sha256": "5819bc3cc8b5df4264d9c8139b58980da7ddc0bf72ec4bd1fff5ea6510c00df7"
+    },
+    "final_source": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/SOURCE_POSTIMAGES.json",
+      "sha256": "8e669a15a29a625e2ba3c73b94c8d1a9135dbfe3c7177a8fa32d5d372936dbb6"
+    },
+    "final_build": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/BUILD_RESULT.json",
+      "sha256": "f7275720af049426529c16e91ac81d299c946d3a4df280b1f4213df092323379"
+    },
+    "final_artifacts": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/ARTIFACTS.json",
+      "sha256": "ac27bd9c5ff2872e4da5b2cf23a58fce6142b93ea3ef6910ac72007ea67d51a1"
+    },
+    "final_inputs": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/BUILD_INPUTS.json",
+      "sha256": "8d04ae8bcdff882d86811b4c5b94e6e6f9f7ad68ff38ea5c2111bf980f62d108"
+    },
+    "final_archive": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/ARCHIVE_VERIFIED.json",
+      "sha256": "e4a23f243e45728ba5de5fa0b39ec03bcd199b9c5f59fb36c4c09c15b38e818f"
+    },
+    "final_65_of67": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/PREVIOUS_JOIN67_COMPARISON.json",
+      "sha256": "2610316eaedd1fccdbf0219d0bb6f867dbadcb683142fae9344ba2a52a37589d"
+    },
+    "final_retained_and_canonical": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/final_join_691a_Root/retained_link/RESULT.json",
+      "sha256": "1f3f6ccbe5305c75f585a8dca2c6ef3c62c20a0290a18216e3aaadde4f86f1c5"
+    }
   }
 }
