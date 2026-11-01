@@ -5,6 +5,10 @@
 #include <optional>
 
 namespace bsp {
+class NativeMeshCanonicalRecord;
+class NativePostEffectModelFrame;
+class NativeMeshReference;
+class NativeRenderObservedZeroAccess;
 struct RenderCommand;
 struct SceneResource;
 
@@ -19,6 +23,17 @@ struct SceneResource;
 class RenderCommandReference {
 private:
     std::optional<std::atomic<std::int32_t>> owned_reference_count_;
+    // Initialized genuine Base-subobject metadata, never a Native header/tag.
+    // Null in every legacy constructor; only authentic private owners bind it.
+    friend class NativeMeshReference;
+    friend class NativePostEffectModelFrame;
+    friend class NativeRenderObservedZeroAccess;
+    friend void release_render_command_reference(RenderCommandReference&);
+    NativeMeshCanonicalRecord* ordinary_mesh_{};
+    NativePostEffectModelFrame* ordinary_model_{};
+    void bind_ordinary_mesh(NativeMeshCanonicalRecord& record) noexcept { ordinary_mesh_ = &record; }
+    void bind_ordinary_model(NativePostEffectModelFrame& frame) noexcept { ordinary_model_ = &frame; }
+
 public:
     std::atomic<std::int32_t>& reference_count;
     virtual void release_zero_references() = 0;

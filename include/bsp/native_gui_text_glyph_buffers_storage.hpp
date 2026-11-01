@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/gui_text_native_renderer.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_texture_surface_getter.hpp"
@@ -36,6 +37,9 @@ struct NativeGuiTextGlyphBuffersStorageRelease final {
     NativeTextureSurfaceReferenceIncrement captured_decrement{};
     long result{};
     bool entered{}, decremented{}, zero_entered{}, zero_returned{}, complete{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiTextGlyphBuffersStorageAcquired final {
     using Phase = NativeGuiTextGlyphBuffersStoragePhase;

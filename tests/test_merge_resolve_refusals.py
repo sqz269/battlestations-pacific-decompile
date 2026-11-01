@@ -121,6 +121,35 @@ class MergeResolveRefusals(unittest.TestCase):
         self.assertEqual(len(merge_resolve.cmake_registration_blocks(text)), 3)
         self.assertIsNone(merge_resolve.cmake_registration_blocks(sources[:-2]))
 
+    def test_cmake_appends_preserve_sdk_include_property_and_refuse_its_rewrite(self):
+        """The registry union must not drop the Text cause reader's SDK setup."""
+        sdk = (
+            'get_filename_component(_bsp_text_origin_msvc_bin "${CMAKE_CXX_COMPILER}" DIRECTORY)\n'
+            'get_filename_component(_bsp_text_origin_msvc_root "${_bsp_text_origin_msvc_bin}/../../.." ABSOLUTE)\n'
+            'if(NOT EXISTS "${_bsp_text_origin_msvc_root}/crt/src/vcruntime/trnsctrl.h")\n'
+            '  message(FATAL_ERROR "Qualified Text cause reader requires the selected MSVC vcruntime SDK source headers")\n'
+            'endif()\n'
+            'set_property(SOURCE src/native_gui_text_failure_origin.cpp APPEND PROPERTY INCLUDE_DIRECTORIES "${_bsp_text_origin_msvc_root}/crt/src/vcruntime")\n'
+            'unset(_bsp_text_origin_msvc_bin)\n'
+            'unset(_bsp_text_origin_msvc_root)\n')
+        base = '# Registry\ncmake_language(DEFER CALL add_executable bsp_game src/main.cpp)\n' + sdk
+        ours_source = 'cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/ours.cpp)\n'
+        incoming = ('cmake_language(DEFER CALL target_sources bsp_core PRIVATE\n'
+                    '  src/theirs.cpp\n  src/other.cpp)\n')
+        ours = base + ours_source
+        theirs = base + ours_source + incoming
+        how, text = self.resolve('cmake/startup.cmake', base, ours, theirs)
+        self.assertEqual(how, 'registry union')
+        self.assertTrue(text.startswith(ours), 'preserve all original directives and their order')
+        self.assertEqual(text.count(sdk), 1)
+        self.assertEqual(text.count(ours_source), 1, 'deduplicate the complete incoming registration')
+        self.assertIn(incoming, text)
+
+        rewritten = ours.replace('APPEND PROPERTY INCLUDE_DIRECTORIES', 'PROPERTY INCLUDE_DIRECTORIES')
+        how, text = self.resolve('cmake/startup.cmake', base, rewritten, theirs)
+        self.assertIsNone(how, 'an in-place non-registration change requires an explicit merge')
+        self.assertIsNone(text)
+
     def test_resolve_all_refuses_outside_a_merge(self):
         """Stage 1 is the merge base only during a merge; in a cherry-pick it is the pick's parent,
         which made the startup.cmake union mis-identify which side had changed a target."""

@@ -9,6 +9,8 @@
 #include "bsp/native_system_constant_registry.hpp"
 #include "bsp/native_renderer_gather_capabilities.hpp"
 #include "bsp/native_renderer_control_worker.hpp"
+#include <optional>
+#include <cstdlib>
 #include "bsp/native_renderer_resolution_enumeration.hpp"
 #include "bsp/native_renderer_parent_member_cleanup.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
@@ -452,6 +454,7 @@ struct MeshFieldBinding {
 
 struct GameNativeRendererApplication::Impl {
     enum class Phase { prepared, constructing, constructed, starting_device, initializing_window_cache, initializing_resources, ready, rendering, draining, failed, drained };
+    NativeMeshRetentionState& mesh_retention; // SAME outer Renderer-owned first member
     GameHostLog& log;
     GameSingletonHost& singletons;
     GameNativeLuaServices& lua_services;
@@ -470,6 +473,7 @@ struct GameNativeRendererApplication::Impl {
     volatile U& time_bits{game_native_renderer_scalar_process().renderer_worker_time_bits_0108d6e4()};
     NativeRendererLuaOwnerContext lua;
     NativeRendererControlWorkerContext control;
+    NativeRendererRawFailureBridge raw_mesh_failure;
     const SingletonLifetimeCallbacks& validation;
     NativeRenderActualOwnerRegistry owners;
     NativeEffectRecordStorageContext records;
@@ -532,15 +536,17 @@ struct GameNativeRendererApplication::Impl {
     std::unique_ptr<StartupShaderPreload> startup_preload;
     std::unique_ptr<MissionShipGraph> mission_ship;
 
-    Impl(GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
+    Impl(NativeMeshRetentionState& retained_state,GameHostLog& log_,GameSingletonHost& host,GameVfsHost& files,
         GameNativeLuaServices& services,GameNativeReadOnlyData& data,
         void* const volatile& clock,const void* legacy_platform,
-        const NativePlatformLoadPublication* borrowed_platform=nullptr)
-        : log(log_),singletons(host),lua_services(services),vfs(files.borrow_raw_services()),
+        const NativePlatformLoadPublication* borrowed_platform=nullptr,
+        NativeMeshRetentionState* ordinary_mesh_state=nullptr)
+        : mesh_retention(retained_state),log(log_),singletons(host),lua_services(services),vfs(files.borrow_raw_services()),
           raw(files.raw_strings()),profiles{data},
           entry_cache{host.manager_publication_01090aa0(),entry_cache_publication,*profiles(0xd7a24c)},
           lua{host.manager_publication_01090aa0(),lua_publication,vfs.strings,services.bootstrap()},
           control{clock,renderer,time_bits,profiles(0xd6821c),profiles(0xd68d50),profiles(0xd5f0a8),nullptr,nullptr,nullptr},
+          raw_mesh_failure(ordinary_mesh_state,control),
           validation(game_native_hardware_layout_tree_process().invalid_parameters()),
           records{vfs.strings,validation,&raw_allocate,&raw_free},
           effects{records,owners,profiles(0xd5f04c),profiles(0xd5f074),profiles(0xd5e534),profiles(0xd61a00)},
@@ -560,7 +566,7 @@ struct GameNativeRendererApplication::Impl {
           borrowed_platform_publication(borrowed_platform!=nullptr),
           devices(graph,constructor,host,vfs.strings,borrowed_platform ? *borrowed_platform :
               NativePlatformLoadPublication(legacy_platform_focus_publication)),
-        texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
+        texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting,ordinary_mesh_state),
         game_grids(graph,devices,texture_loading,declaration_cache,vfs.strings,renderer),
           vertex_half(devices.d3dx),
           section_layouts(texture_loading.geometry,graph.vertex,declaration_loading,
@@ -616,12 +622,26 @@ struct GameNativeRendererApplication::Impl {
 GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,GameSingletonHost& host,
     GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
     void* const volatile& clock,const void* platform)
-    :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,platform)) {}
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,platform)) {}
 GameNativeRendererApplication::GameNativeRendererApplication(GameHostLog& log,GameSingletonHost& host,
     GameVfsHost& files,GameNativeLuaServices& lua,GameNativeReadOnlyData& data,
     void* const volatile& clock,NativePlatformLoadPublication platform)
-    :impl_(std::make_unique<Impl>(log,host,files,lua,data,clock,nullptr,&platform)) {}
-GameNativeRendererApplication::~GameNativeRendererApplication()=default;
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform)) {}
+GameNativeRendererApplication::GameNativeRendererApplication(OrdinaryMeshConstruction,
+    GameHostLog& log,GameSingletonHost& host,GameVfsHost& files,GameNativeLuaServices& lua,
+    GameNativeReadOnlyData& data,void* const volatile& clock,NativePlatformLoadPublication platform)
+    :impl_(std::make_unique<Impl>(mesh_retention_,log,host,files,lua,data,clock,nullptr,&platform,&mesh_retention_)) {}
+std::unique_ptr<GameNativeRendererApplication>
+GameNativeRendererApplication::create_with_ordinary_mesh_ownership(GameHostLog& log,
+    GameSingletonHost& host,GameVfsHost& files,GameNativeLuaServices& lua,
+    GameNativeReadOnlyData& data,void* const volatile& clock,NativePlatformLoadPublication platform) {
+    return std::unique_ptr<GameNativeRendererApplication>(new GameNativeRendererApplication(
+        OrdinaryMeshConstruction{},log,host,files,lua,data,clock,platform));
+}
+GameNativeRendererApplication::~GameNativeRendererApplication() {
+    // Before ANY Impl/provider/member teardown. No Native read/log/cleanup.
+    if(ordinary_mesh_exception_requires_retention()) std::_Exit(1);
+}
 void* const volatile& GameNativeRendererApplication::publication_00f8d394() noexcept{return impl_->renderer;}
 void GameNativeRendererApplication::create_shader_cache() {
     auto& p=*impl_;check(p.phase==Impl::Phase::ready,"shader cache requires ready application renderer");
@@ -1163,7 +1183,7 @@ void GameNativeRendererApplication::bind_platform_services(ResourceLoadEventHost
     auto& p=*impl_;check(p.phase==Impl::Phase::constructed,"renderer platform services order");
     check(!p.frames && !p.singletons.native_deletion_bindings().render_queue,"renderer frame graph already bound");
     p.frames=std::make_unique<FrameGraph>(p.graph,p.devices,p.constructor,p.singletons,
-        p.vfs.strings,p.raw,p.entry_cache_publication,library,p.resources.publication);
+        p.vfs.strings,p.raw,p.entry_cache_publication,library,p.resources.publication,p.raw_mesh_failure);
     p.singletons.native_deletion_bindings().render_queue=&p.frames->queue_destruction;
     p.control.begin_frame=&p.frames->begin;
     p.control.end_frame_00b2f4a0=&FrameGraph::worker_finish;
@@ -1290,7 +1310,15 @@ const D3DPRESENT_PARAMETERS& GameNativeRendererApplication::presentation() const
     check(impl_->phase==Impl::Phase::ready,"native presentation unavailable");
     return *reinterpret_cast<const D3DPRESENT_PARAMETERS*>(static_cast<const unsigned char*>(impl_->renderer)+0x1a28);
 }
+bool GameNativeRendererApplication::ordinary_mesh_failure_pending() const noexcept {
+    return mesh_retention_.requires_process_retention();
+}
+bool GameNativeRendererApplication::ordinary_mesh_exception_requires_retention() const noexcept {
+    return mesh_retention_.requires_process_retention() || mesh_retention_.has_retained_records() ||
+        (impl_ && impl_->raw_mesh_failure.requires_native_join());
+}
 bool GameNativeRendererApplication::requires_process_retention() const noexcept {
+    if(ordinary_mesh_failure_pending()) return true; // FIRST, before Native/cache/provider reads
     const auto phase=impl_->phase;
     const auto* operation=impl_->shaders.operation.get();
     const bool mission_cache=impl_->mission_ship &&
@@ -1327,6 +1355,7 @@ void GameNativeRendererApplication::drain_singletons() {
     catch(...) {impl_->phase=Impl::Phase::failed;throw;}
 }
 void GameNativeRendererApplication::after_native_drain() {
+    if(ordinary_mesh_failure_pending()) std::_Exit(1);
     auto& p=*impl_;if(p.phase==Impl::Phase::drained)return;
     p.shadow.after_native_drain();
     check(!p.particle_clock_shutdown.actual_publication_00f8d420,
@@ -1345,10 +1374,27 @@ void GameNativeRendererApplication::after_native_drain() {
     if (p.mission_ship) p.mission_ship->after_native_drain();
     if (p.startup_preload) p.startup_preload->after_native_drain();
     if (p.model_domain) p.model_domain->after_native_renderer_drain();
+    close_ordinary_mesh_after_native_drain();
     if (p.mission_ship)
         observe_mission_texture_owners(p.log, p.texture_loading.owners, "after_drain");
     p.log.note("native renderer after raw drain: owner=null lua=null definitions=null system=null entry_cache=null queue=null worker=joined");
 }
+
+void GameNativeRendererApplication::close_ordinary_mesh_after_native_drain() noexcept {
+    auto& p=*impl_;
+    if(!p.texture_loading.ordinary_mesh_domain) return; // actual legacy graph
+    if(ordinary_mesh_failure_pending() || p.raw_mesh_failure.requires_native_join()) std::_Exit(1);
+    try {
+        // Actual worker/native drain and Model/mission Source fences already
+        // returned. These calls close C++ links/records, never Native credits.
+        p.texture_loading.geometry.close_ordinary_mesh_records_at_quiescence();
+        p.texture_loading.ordinary_mesh_domain->close_at_quiescence();
+        if(mesh_retention_.has_retained_records()) {
+            mesh_retention_.fail(); std::_Exit(1);
+        }
+    } catch(...) { mesh_retention_.fail(); std::_Exit(1); }
+}
+
 } // namespace bsp::game
 #include "game_native_model_domain.inc"
 #include "game_native_mission_model.inc"

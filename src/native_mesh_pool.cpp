@@ -257,4 +257,20 @@ void* allocate_native_mesh_slot_00b73b60(NativeMeshStorageFrame& frame) {
 void return_native_mesh_slot_00b72f70(void* slot) {
     require_static_pool().return_slot_00b72da0(slot);
 }
+// Hidden ordinary overload: only the genuine owning state3 continuation can
+// arm this Frame's private selected action. Bare Frame/progress is no permit.
+void return_native_mesh_slot_00b72f70(NativeMeshStorageFrame& frame, void* captured_slot) {
+    if (!frame.canonical_record_ || !frame.raw_unwind_selected_ ||
+        frame.raw_unwind_wrapper_entered_ || frame.constructor_entered_ ||
+        frame.constructor_returned_ || frame.cpp_payload_live_ ||
+        reinterpret_cast<std::uintptr_t>(captured_slot) != frame.actual_)
+        throw std::logic_error("Mesh raw unwind requires its genuine consumed prebirth action");
+    frame.raw_unwind_wrapper_entered_ = true;
+    auto& receiver = require_static_pool(); // SAME actual CURRENT B72F70 getter
+    frame.raw_unwind_receiver_ = &receiver;
+    frame.raw_unwind_getter_returned_ = true;
+    frame.raw_unwind_pool_entered_ = true;
+    receiver.return_slot_00b72da0(captured_slot);
+    frame.raw_unwind_pool_returned_ = true; // actual callee normal return only
+}
 } // namespace bsp

@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiSoundStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_sound_storage.hpp"
 #include "bsp/native_gui_widget_base_storage.hpp"
 #include "bsp/native_gui_widget_pools_cc13.hpp"
@@ -41,7 +50,7 @@ void release(void* identity, NativeGuiSoundInterlocked decrement,
         r.decremented = true;
         if (r.result == 0) {
             r.zero_entered = true;
-            dispatch_native_render_actual_owner_zero(c.owners, identity);
+            NativeGuiSoundStorageObservedZeroIssuer::dispatch(c.owners, identity, r.cpp_zero_frame);
             r.zero_returned = true;
         }
     }

@@ -5,6 +5,8 @@
 #include "bsp/gui_widget_detach.hpp"
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/native_mesh_section.hpp"
+#include "bsp/native_mesh_canonical.hpp"
+#include <optional>
 #include <array>
 #include <string>
 #include <string_view>
@@ -128,6 +130,8 @@ struct GuiTextContentContinuation {
     std::u16string transformed_text;
     NativeMeshSectionStorage* main_section{};
     void* main_mesh{};
+    // Source record pin survives the complete real pending use; no Native retain.
+    std::optional<NativeMeshCanonicalBorrow> main_mesh_pin;
 };
 
 // PARTIAL00ABA8D0: implements entry through00ABA9BA plus common temporary
@@ -161,6 +165,7 @@ struct GuiTextNonemptyContinuation {
     NativeMaterialStorage* main_material; // Captured BEFORE shader callbacks.
     bool shader_selection_attempted; // AL result, including a null load.
     GuiTextGeometryBuilder builder; // Captured only AFTER main layout rebuild.
+    std::optional<NativeMeshCanonicalBorrow> main_mesh_pin;
 };
 
 // Partial00ABA8D0,00ABA9BF..00ABAB69/77. Allocates actual buffers, resets

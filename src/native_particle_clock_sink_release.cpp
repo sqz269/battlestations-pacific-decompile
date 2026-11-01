@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeParticleClockSinkReleaseObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_particle_clock_sink_release.hpp"
 #include "bsp/native_render_context.hpp"
 
@@ -37,5 +46,17 @@ void __fastcall release_native_particle_clock_sink_004ddb40(
     const long current_count = actual_decrement_00ce2220(actual_count);
     if (current_count == 0)
         dispatch_native_render_actual_owner_zero(actual_owners, captured_sink);
+}
+// Same real current decrement; only the actual shutdown caller supplies
+// this stable outer metadata, reserved before its complete Native operation.
+void __fastcall release_native_particle_clock_sink_004ddb40(
+    void*, NativeParticleClockAtomic const volatile& actual_decrement_00ce2220,
+    void* actual_sink, NativeRenderActualOwners& actual_owners,
+    NativeRenderObservedZeroFrame& outer) {
+    void* const captured_sink=actual_sink;
+    const long result=actual_decrement_00ce2220(reinterpret_cast<volatile long*>(
+        static_cast<char*>(captured_sink)+4));
+    if(result==0)
+        NativeParticleClockSinkReleaseObservedZeroIssuer::dispatch(actual_owners,captured_sink,outer);
 }
 } // namespace bsp

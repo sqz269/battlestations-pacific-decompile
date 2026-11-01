@@ -1,10 +1,12 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_model_pool.hpp"
 #include "bsp/native_node_base_destruction.hpp"
 #include "bsp/native_render_context.hpp"
 #include "bsp/native_node_construction.hpp"
 
 namespace bsp {
+class NativePostEffectModelFrame;
 // One real node/string/import/actual-owner domain. Constants borrow CURRENT
 // CE4970/CE4ADC/D7A24C and D7A208 cells; no copied defaults or semantic Model
 // environment. The initialized pool is the SAME actual01090054 owner.
@@ -92,13 +94,18 @@ struct NativeModelStorageConstructAcquired {
     void* actual_model{};
     NativeModelStorageContext* context{};
 };
+// Retain this complete receiver through its selected call AND the enclosing
+// Native/CPP observations, health/catch and true last-use/quiescence fence.
+// Its hold is never part of resettable recursive diagnostics.
 struct NativeModelStorageMemberAcquired {
+    NativeRenderObservedZeroFrame observed_zero_frame{};
     bool started{}, complete{}, decrement_completed{}, terminal_completed{}, field_cleared{};
     std::uint32_t active_call_site{};
     void* captured_owner{};
     NativeTextureSurfaceReferenceIncrement captured_decrement{};
 };
 struct NativeModelStorageLifetimeFrame {
+    NativeRenderObservedZeroFrame observed_zero_frame{};
     NativeNodeBaseDestructionFrame node{};
     // BD30E0's Source current04 binding seeds THIS persistent argument cell.
     // B75290 rereads its low byte after destruction; callbacks may change it.
@@ -128,6 +135,11 @@ struct NativeModelStorageHostCompletion {
     void* context;
     void (*end_typed_storage)(void*) noexcept;
 };
+
+// Specific private ordinary factory record. The owning module obtains every
+// operand from that record and admits its genuinely armed canonical action;
+// callers cannot apply a completion callback/receipt to arbitrary storage.
+void* delete_native_model_storage_00b75290(NativePostEffectModelFrame&);
 
 // Complete B75030[132B], ECX actual188h slot/stack name, EAX self, RET4.
 // Raw B6F5A0 then CURRENT model constants/tail/pose stores. Establishes only

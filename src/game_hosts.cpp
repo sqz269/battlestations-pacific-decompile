@@ -2194,7 +2194,14 @@ void GameStartupHost::verify_native_gui_icon_after_drain() {
     }
 }
 
+void GameStartupHost::exit_if_native_mesh_interrupted() noexcept {
+    if(native_renderer_ && native_renderer_->ordinary_mesh_failure_pending()) std::_Exit(1);
+}
+void GameStartupHost::retain_native_mesh_on_exception() noexcept {
+    if(native_renderer_ && native_renderer_->ordinary_mesh_exception_requires_retention()) std::_Exit(1);
+}
 void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
+    exit_if_native_mesh_interrupted();
     exit_if_native_gui_icon_interrupted();
     const bool factories_incomplete = native_startup_factories_ &&
         (startup_factories_phase_ != StartupFactoriesPhase::live ||
@@ -2209,6 +2216,7 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 void GameStartupHost::drain_native_singletons() {
+    exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_icon_interrupted();
     // Font/GUI borrowers have retired; renderer drain retires its remaining
@@ -2337,6 +2345,7 @@ void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
@@ -2522,6 +2531,7 @@ void GameStartupHost::game_explorer_release() {
 }
 
 void GameStartupHost::exit_process(int code) {
+    exit_if_native_mesh_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_gui_text_incomplete();
@@ -3523,6 +3533,7 @@ void GameStartupHost::release_platform_window() noexcept {
 }
 
 void GameStartupHost::application_shutdown() {
+    exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
@@ -3643,6 +3654,7 @@ void GameStartupHost::application_shutdown() {
 }
 
 void GameStartupHost::application_destruct() {
+    exit_if_native_mesh_interrupted();
     if constexpr (kApplicationCc15Bound) {
         if (native_application_live_) {
             auto& process = game_native_string_process();
@@ -3663,6 +3675,7 @@ void GameStartupHost::application_destruct() {
 }
 
 void GameStartupHost::destroy_singleton_lifetime_manager() {
+    exit_if_native_mesh_interrupted();
     exit_if_native_gui_resources_retained();
     exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();

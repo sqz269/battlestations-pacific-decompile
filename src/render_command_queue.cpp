@@ -1,4 +1,5 @@
 #include "bsp/render_command_queue.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -25,6 +26,12 @@ void retain_render_command_reference(RenderCommandReference& reference) noexcept
     reference.reference_count.fetch_add(1, std::memory_order_seq_cst);
 }
 void release_render_command_reference(RenderCommandReference& reference) {
+    // Proved-live C++ Base metadata: no pre-count vptr/RTTI/Native header read.
+    if (reference.ordinary_mesh_ || reference.ordinary_model_) {
+        NativeRenderObservedZeroAccess::release_ordinary(reference);
+        return;
+    }
+    // Complete original legacy count->virtual body and existing escape policy.
     if (reference.reference_count.fetch_sub(1, std::memory_order_seq_cst) == 1)
         reference.release_zero_references();
 }

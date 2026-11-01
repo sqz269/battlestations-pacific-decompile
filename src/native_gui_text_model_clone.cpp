@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_gui_text_model_clone.hpp"
 #include "bsp/gui_widget_owner.hpp"
 #include "bsp/gui_native_geometry.hpp"
@@ -117,7 +118,9 @@ void associate_native_gui_text_model_clone_geometry_00b752b0_fragment(
     if (!captured) throw std::invalid_argument("model clone geometry requires its actual acquired mesh");
     auto& owners = destination.environment.retained_owners;
     auto* const reference = dynamic_cast<NativeMeshReference*>(&owners.resolve_actual(captured));
-    if (!reference || &reference->storage() != captured)
+    if (!reference) throw std::logic_error("model clone geometry lacks its canonical mesh");
+    NativeMeshCanonicalBorrow mesh_pin(*reference);
+    if (&mesh_pin.storage() != captured)
         throw std::logic_error("model clone geometry does not match the canonical native mesh owner");
     float scalar_17c;
     float scalar_178;
@@ -176,10 +179,12 @@ NativeGuiTextModelBaseCopyResult clone_model(
     if (current) {
         auto* const mesh = dynamic_cast<NativeMeshReference*>(
             &geometry.actual_owners().resolve_actual(current));
-        if (!mesh || &mesh->storage() != current)
+        if (!mesh) throw std::logic_error("Text Model current geometry lacks its canonical mesh");
+        NativeMeshCanonicalBorrow source_mesh_pin(*mesh);
+        if (&source_mesh_pin.storage() != current)
             throw std::logic_error("Text Model current geometry has no matching actual mesh owner");
         geometry.clone_mesh_for_text_00b742a0(
-            mesh->storage(), mesh_profile, material_access, material_profile, acquired.mesh, streams);
+            source_mesh_pin.storage(), mesh_profile, material_access, material_profile, acquired.mesh, streams);
         associate_native_gui_text_model_clone_geometry_00b752b0_fragment(
             source, destination, acquired.mesh.mesh);
     }

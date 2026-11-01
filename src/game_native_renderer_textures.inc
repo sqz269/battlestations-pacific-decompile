@@ -5,7 +5,9 @@ struct TextureLoadingGraph {
  DeviceGraph& devices;
  NativeMeshEnvironment meshes;
  NativeMeshSectionEnvironment sections;
- GuiNativeGeometryOwners geometry;
+ std::optional<NativeMeshCanonicalDomain> ordinary_mesh_domain;
+ std::optional<GuiNativeGeometryOwners> geometry_owner;
+ GuiNativeGeometryOwners& geometry;
  NativeNamedVolumeTextureContext named_volume;
  NativeTextureSpecialOwnerContexts specials;
  NativeTextureLoadOwners owners;
@@ -23,15 +25,27 @@ struct TextureLoadingGraph {
   auto& self=*static_cast<TextureLoadingGraph*>(context);
   recreate_native_renderer_device_00b29670(const_cast<void*>(renderer),self.devices.recreation);
  }
+ static GuiNativeGeometryOwners& prepare_geometry(
+  std::optional<NativeMeshCanonicalDomain>& domain,std::optional<GuiNativeGeometryOwners>& owner,
+  NativeMeshEnvironment& meshes,NativeMeshConstants constants,NativeMeshSectionEnvironment& sections,
+  NativeRenderActualOwnerRegistry& registry,NativeMeshRetentionState* selected_real_state) {
+  GuiNativeGeometryRegistration registration{registry,&registry,&NativeRenderActualOwnerRegistry::bind_callback,
+    &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback};
+  if(selected_real_state) {
+   domain.emplace(meshes,constants,registry,*selected_real_state);
+   return owner.emplace(meshes,constants,sections,registration,*domain);
+  }
+  return owner.emplace(meshes,constants,sections,registration);
+ }
  TextureLoadingGraph(DestructionGraph& g,DeviceGraph& d,NativeRenderActualOwnerRegistry& registry,
   GameNativeVfsRawServices& vfs,ResourceLoadEventHost* const volatile& platform,
-  const SingletonLifetimeCallbacks& validation,const NativeRenderResourceAccountingTables& accounting)
+  const SingletonLifetimeCallbacks& validation,const NativeRenderResourceAccountingTables& accounting,
+  NativeMeshRetentionState* selected_real_state)
   :destruction(g),devices(d),
    meshes{game_native_resource_pool_process().mesh_pool_0108fff8(),registry,vfs.strings,g.profiles(0xd62d60)},
    sections{game_native_resource_pool_process().section_pool_010901d4(),registry,g.profiles(0xd63194)},
-   geometry(meshes,{*g.profiles(0xce4adc),*g.profiles(0xce4970),*g.profiles(0xd7a24c)},sections,
-    {registry,&registry,&NativeRenderActualOwnerRegistry::bind_callback,
-     &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback}),
+   geometry(prepare_geometry(ordinary_mesh_domain,geometry_owner,meshes,
+    {*g.profiles(0xce4adc),*g.profiles(0xce4970),*g.profiles(0xd7a24c)},sections,registry,selected_real_state)),
    named_volume{g.volume,g.serial},
    specials{g.cube,named_volume,g.profiles(0xd61870),g.profiles(0xd618b0)},
    owners(geometry,g.texture,g.profiles(0xd61948),&specials),

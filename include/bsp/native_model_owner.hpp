@@ -10,6 +10,8 @@ class ModelTypeBootstrap;
 class NativeModelRawFactsAccess;
 class NativeModelGeometryKernelAccess;
 class NativeModelStorageGeometryFrame;
+class NativePostEffectModelFrame;
+class NativeRenderObservedZeroAccess;
 struct NativeModelStorageGeometryAcquired;
 
 // Exactly model+174..183 in the actual 188h pool slot. No initializers erase
@@ -100,6 +102,10 @@ public:
 private:
     friend class NativeModelRawFactsAccess;
     friend class NativeModelReference;
+    friend class NativePostEffectModelFrame;
+    // Only the genuine factory Frame can construct this new Source route.
+    explicit NativeModelOwner(NativePostEffectModelFrame&);
+    NativePostEffectModelFrame* const ordinary_post_effect_{};
     struct RawConstructionFacts {
         NativeNodeStorage* node{};
         NativeModelTailStorage* tail{};
@@ -177,7 +183,7 @@ public:
     SceneNodeAttachment& scene_attachment() noexcept override { return owner_.node.scene_attachment; }
     void remove_scene_virtual54(SceneResource*, bool recurse) noexcept override;
     void release_model_virtual18_00b6f310() noexcept override;
-    void release_zero_references() noexcept override;
+    void release_zero_references() override;
     // Normal Page raw calls deliberately bypass the legacy noexcept virtuals.
     // Each caller owns fresh disjoint persistent invocation/frame backing;
     // callbacks may retire this reference, so no post-body self access occurs.
@@ -193,6 +199,12 @@ public:
     void set_raw_geometry_00b75170(NativeModelStorageGeometryFrame&,
         NativeModelStorageGeometryAcquired&);
 private:
+    friend class NativePostEffectModelFrame;
+    friend class NativeRenderObservedZeroAccess;
+    explicit NativeModelReference(NativePostEffectModelFrame&) noexcept;
+    NativePostEffectModelFrame* ordinary_post_effect_{};
+    NativePostEffectModelFrame* ordinary_post_effect_frame() noexcept { return ordinary_post_effect_; }
+    void release_legacy_zero_noexcept() noexcept;
     enum class Phase { bound, destroying, retired, failed };
     NativeModelOwner& owner_;
     GeneratedModelLifetimeRuntime& runtime_;

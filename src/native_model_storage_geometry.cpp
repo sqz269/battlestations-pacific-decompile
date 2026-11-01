@@ -1,4 +1,5 @@
 #include "bsp/native_model_storage_geometry.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_model_resource_storage.hpp"
 #include <atomic>
 #include <cstddef>
@@ -13,6 +14,18 @@
 #endif
 
 namespace bsp {
+class NativeModelStorageGeometryObservedZeroIssuer final {
+public:
+    static void invoke(RenderCommandReference& reference, void* actual, NativeRenderObservedZeroFrame& frame) {
+        NativeRenderObservedZeroAccess::invoke(reference,actual,frame);
+    }
+    static auto invocation(NativeRenderObservedZeroFrame& frame) noexcept {
+        return NativeRenderObservedZeroAccess::Invocation(frame);
+    }
+    static void failed(NativeRenderObservedZeroFrame& frame) noexcept {
+        NativeRenderObservedZeroAccess::fail_frame(frame);
+    }
+};
 namespace {
 using Word = std::uint32_t;
 using Phase = NativeModelStorageGeometryPhase;
@@ -69,14 +82,15 @@ void require_model(void* model, NativeModelStorageContext& c) {
 void require_target(NativeTextureSurfaceReferenceIncrement target) {
     if (!target) throw std::logic_error("raw Model geometry requires the genuine reached import");
 }
-void terminal(void* captured, NativeNodeBaseDestructionContext& node) {
+void terminal(void* captured, NativeNodeBaseDestructionContext& node,
+    NativeRenderObservedZeroFrame& frame) {
     auto& reference = node.scenes.owners.resolve_actual(captured);
     if (static_cast<void*>(&reference.reference_count) != at(captured, 4) ||
         reference.reference_count.load(std::memory_order_relaxed) != 0)
         throw std::logic_error("raw Model geometry terminal requires SAME observed-zero actual count");
     // The existing actual-owner contract supplies its genuine CURRENT0 family.
     // No Model/node extent or scene-null test is imposed on opaque geometry.
-    reference.release_zero_references();
+    NativeModelStorageGeometryObservedZeroIssuer::invoke(reference,captured,frame);
 }
 
 enum ScalarOffsets : int {
@@ -174,6 +188,7 @@ void NativeModelGeometryKernelAccess::execute(void* model,
     const volatile Word& unchanged, NativeModelStorageGeometryAcquired& a,
     const void* issuer, const void* context_identity, const void* service_identity,
     NativeModelStorageGeometryContext* legacy_context) {
+    const auto invocation = NativeModelStorageGeometryObservedZeroIssuer::invocation(frame.observed_zero_frame_);
     frame.phase_ = a.phase = Phase::entered;
     a.actual_model = model;
     a.context = legacy_context;
@@ -224,7 +239,7 @@ void NativeModelGeometryKernelAccess::execute(void* model,
                 a.decrement_completed = true;
                 if (count == 0) {
                     a.active_call_site = 0x00b751ae;
-                    terminal(previous, node);
+                    terminal(previous, node, frame.observed_zero_frame_);
                     a.terminal_completed = true;
                 }
             }
@@ -240,6 +255,7 @@ void NativeModelGeometryKernelAccess::execute(void* model,
         }
         frame.phase_ = a.phase = Phase::complete;
     } catch (...) {
+        NativeModelStorageGeometryObservedZeroIssuer::failed(frame.observed_zero_frame_);
         frame.phase_ = a.phase = Phase::failed;
         throw; // No unwind action/rollback exists in B75170.
     }

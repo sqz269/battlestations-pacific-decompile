@@ -1,4 +1,5 @@
 #include "bsp/native_post_effect_owner.hpp"
+#include "bsp/native_post_effect_model_lifetime.hpp"
 #include "bsp/native_logical_vertex_owner.hpp"
 #include "bsp/native_material_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -68,6 +69,10 @@ void release_registered(void* captured, bool stream, NativePostEffectDecrement d
     // The terminal may retire both native storage and its companion.
 }
 void release_node(Word captured, NativePostEffectOwnerContext& context) {
+    if (context.ordinary_models) {
+        context.ordinary_models->release_captured_node(pointer(captured), context.nodes);
+        return;
+    }
     auto* binding = context.nodes.attachments.find_actual_node(captured);
     require(binding != nullptr, "post-effect member has no canonical actual node binding");
     unlink_and_release_render_model_00b6dfa0(*binding);

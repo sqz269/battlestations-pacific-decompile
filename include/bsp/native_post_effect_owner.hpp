@@ -7,6 +7,7 @@
 #include <cstdint>
 
 namespace bsp {
+class NativePostEffectModelLifetimeContext;
 
 using NativePostEffectDecrement = long (__stdcall*)(volatile long*);
 struct NativePostEffectOwnerContext {
@@ -19,6 +20,9 @@ struct NativePostEffectOwnerContext {
     const volatile std::uint32_t* actual_stream_profile_00d61d6c;
     const volatile std::uint32_t* actual_material_profile_00d5e520;
     const volatile std::uint32_t* actual_frame_profile_00d5e600;
+    // NEW finite Model transport only; parent allocation/zero remains legacy
+    // until its separate genuine owning issuer is integrated.
+    NativePostEffectModelLifetimeContext* ordinary_models = nullptr;
 };
 
 // A host companion over an already-constructed actual24h owner. The original

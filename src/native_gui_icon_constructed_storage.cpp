@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiIconConstructedStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_icon_constructed_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include <stdexcept>
@@ -95,7 +104,7 @@ void construct_native_gui_icon_geometry_storage_00ab2540(void* actual,
                     "Icon74 already-zero mesh requires its SAME genuine captured current0 companion");
                 a.active_call_site = 0x00ab25c3;
                 a.creator_zero_entered = true;
-                dispatch_native_render_actual_owner_zero(c.owners, mesh);
+                NativeGuiIconConstructedStorageObservedZeroIssuer::dispatch(c.owners, mesh, f.cpp_zero_frame_);
                 a.creator_zero_returned = true;
             }
             // No mesh payload/companion access after a possible terminal call.

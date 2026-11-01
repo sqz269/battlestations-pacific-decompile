@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_gui_widget_model_clone.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 #include <new>
@@ -84,7 +85,9 @@ NativeModelReference& clone_native_gui_widget_model_00b752b0(
     if (current_geometry) {
         acquired.active_call_site = 0x00b7532f;
         auto* current = dynamic_cast<NativeMeshReference*>(&owners.resolve_actual(current_geometry));
-        require(current && &current->storage() == current_geometry,
+        require(current != nullptr, "raw Model current geometry requires its canonical mesh");
+        NativeMeshCanonicalBorrow current_pin(*current);
+        require(&current_pin.storage() == current_geometry,
             "raw Model current geometry requires its canonical actual mesh companion");
         NativeStreamCloneServices* streams = nullptr;
         if (flags == 0x3eu) {
@@ -93,7 +96,7 @@ NativeModelReference& clone_native_gui_widget_model_00b752b0(
                 &streams->vertices == &access.streams,
                 "raw Model flags3E requires the same actual stream clone services");
         }
-        access.geometry.clone_mesh_for_text_00b742a0(current->storage(),
+        access.geometry.clone_mesh_for_text_00b742a0(current_pin.storage(),
             context.mesh_vtable_00d62d60, access.materials,
             access.material_vtable_00d5e520, acquired.creators.mesh, streams);
         acquired.active_call_site = 0x00b7534e;

@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextFieldStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_field_storage.hpp"
 #include "bsp/native_gui_text_shader_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
@@ -311,7 +320,7 @@ FontNameResult font_name_body(void* raw, const void* name, NativeFontResourceOwn
         a.active_call_site = 0x00ab8cc3;
         if (credit) credit->zero_entered();
         a.shader_zero_entered = true;
-        dispatch_native_render_actual_owner_zero(v.owners, credit ? shader : a.shader);
+        NativeGuiTextFieldStorageObservedZeroIssuer::dispatch(v.owners, credit ? shader : a.shader, frame.cpp_zero_frame);
         a.shader_zero_returned = true;
         if (credit) credit->zero_returned();
     }

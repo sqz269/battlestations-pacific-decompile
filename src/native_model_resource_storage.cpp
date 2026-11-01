@@ -1,4 +1,5 @@
 #include "bsp/native_model_resource_storage.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/native_model_owner.hpp"
 #include "bsp/native_matrix_storage_lifetime.hpp"
 #include <cstddef>
@@ -73,6 +74,7 @@ void NativeModelGeometryKernelAccess::require_live_model_slot(void* model,
 
 void NativeModelReference::set_raw_geometry_00b75170(
     NativeModelStorageGeometryFrame& frame, NativeModelStorageGeometryAcquired& acquired) {
+    const NativeRenderObservedZeroAccess::Invocation invocation(frame.observed_zero_frame_);
     NativeModelGeometryKernelAccess::require_fresh(frame, acquired);
     auto& raw = require_checked_raw_live();
     try {
@@ -85,6 +87,7 @@ void NativeModelReference::set_raw_geometry_00b75170(
         if (owner_.raw_facts_.failed)
             NativeModelGeometryKernelAccess::reject_returned(frame, acquired);
     } catch (...) {
+        NativeRenderObservedZeroAccess::fail_frame(frame.observed_zero_frame_);
         if (frame.phase() == NativeModelStorageGeometryPhase::failed)
             record_checked_raw_failure(acquired.active_call_site);
         throw; // no Native cleanup or credit adjustment

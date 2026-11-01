@@ -1,10 +1,11 @@
 #include "bsp/native_render_context.hpp"
+#include "bsp/native_render_observed_zero.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <exception>
 #include <mutex>
 #include <new>
 #include <stdexcept>
-#include <unordered_map>
+#include <array>
 
 namespace bsp {
 namespace {
@@ -29,8 +30,94 @@ void release_then_clear(void*& slot, NativeRenderActualOwners& owners) {
 } // namespace
 
 struct NativeRenderActualOwnerRegistry::Impl final {
+    struct LegacyEntry final {
+        void* identity;
+        RenderCommandReference* canonical;
+        LegacyEntry* previous{};
+        LegacyEntry* next{};
+        LegacyEntry* bucket_previous{};
+        LegacyEntry* bucket_next{};
+        LegacyEntry(void* key, RenderCommandReference* value) noexcept
+            : identity(key), canonical(value) {}
+    };
     mutable std::mutex mutex;
-    std::unordered_map<void*, RenderCommandReference*> entries;
+    LegacyEntry* legacy_head{};
+    ExactRecord* exact_head{};
+    static constexpr std::size_t bucket_count = 4096;
+    std::array<LegacyEntry*, bucket_count> legacy_buckets{};
+    std::array<ExactRecord*, bucket_count> exact_buckets{};
+    std::size_t retained_count{};
+
+    static std::size_t bucket(void* identity) noexcept {
+        // Opaque address bits are an internal metadata index only. Multiplying
+        // before taking high bits also distributes aligned pool allocation keys.
+        const auto word = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(identity) >> 2);
+        return static_cast<std::uint32_t>(word * 2654435761u) >> 20;
+    }
+    LegacyEntry* legacy(void* identity) const noexcept {
+        for (auto* entry = legacy_buckets[bucket(identity)]; entry; entry = entry->bucket_next)
+            if (entry->identity == identity) return entry;
+        return nullptr;
+    }
+    ExactRecord* indexed_exact(void* identity) const noexcept {
+        for (auto* record = exact_buckets[bucket(identity)]; record; record = record->bucket_next_) {
+            // A genuine normal payload-end fact removes only this record from
+            // active indexing. Its C++ node remains retained and counted.
+            if (record->normal_native_dead_.load(std::memory_order_acquire) ||
+                record->unborn_abandoned_.load(std::memory_order_acquire)) continue;
+            if (record->actual_key_ == identity && identity) return record;
+        }
+        return nullptr;
+    }
+    bool key_present(void* identity) const noexcept {
+        return legacy(identity) != nullptr || indexed_exact(identity) != nullptr;
+    }
+    bool contains(const ExactRecord& sought) const noexcept {
+        for (auto* record = exact_head; record; record = record->next_)
+            if (record == &sought) return true;
+        return false;
+    }
+    void insert(LegacyEntry& entry) noexcept {
+        entry.next = legacy_head;
+        if (legacy_head) legacy_head->previous = &entry;
+        legacy_head = &entry;
+        auto& head = legacy_buckets[bucket(entry.identity)];
+        entry.bucket_next = head;
+        if (head) head->bucket_previous = &entry;
+        head = &entry;
+        ++retained_count;
+    }
+    void detach(LegacyEntry& entry) noexcept {
+        if (entry.previous) entry.previous->next = entry.next;
+        else legacy_head = entry.next;
+        if (entry.next) entry.next->previous = entry.previous;
+        if (entry.bucket_previous) entry.bucket_previous->bucket_next = entry.bucket_next;
+        else legacy_buckets[bucket(entry.identity)] = entry.bucket_next;
+        if (entry.bucket_next) entry.bucket_next->bucket_previous = entry.bucket_previous;
+        --retained_count;
+    }
+    void index_exact(ExactRecord& record) noexcept {
+        auto& head = exact_buckets[bucket(record.actual_key_)];
+        record.bucket_next_ = head;
+        if (head) head->bucket_previous_ = &record;
+        head = &record;
+    }
+    void detach_exact(ExactRecord& record) noexcept {
+        if (record.actual_key_) {
+            if (record.bucket_previous_) record.bucket_previous_->bucket_next_ = record.bucket_next_;
+            else exact_buckets[bucket(record.actual_key_)] = record.bucket_next_;
+            if (record.bucket_next_) record.bucket_next_->bucket_previous_ = record.bucket_previous_;
+            record.bucket_previous_ = nullptr;
+            record.bucket_next_ = nullptr;
+        }
+        if (record.previous_) record.previous_->next_ = record.next_;
+        else exact_head = record.next_;
+        if (record.next_) record.next_->previous_ = record.previous_;
+        record.previous_ = nullptr;
+        record.next_ = nullptr;
+        record.retained_member_ = false;
+        --retained_count;
+    }
 };
 
 NativeRenderActualOwnerRegistry::BindingAdmission::BindingAdmission(
@@ -64,15 +151,20 @@ NativeRenderActualOwnerRegistry::BindingAdmission::~BindingAdmission() noexcept 
 
 void NativeRenderActualOwnerRegistry::BindingAdmission::cancel() noexcept {
     if (!registry_) return;
-    auto& impl = *registry_->impl_;
-    const std::lock_guard<std::mutex> lock(impl.mutex);
-    const auto found = impl.entries.find(identity_);
-    if (found == impl.entries.end() || &found->second != entry_ || found->second != nullptr)
-        std::terminate();
-    impl.entries.erase(found);
-    registry_ = nullptr;
-    identity_ = nullptr;
-    entry_ = nullptr;
+    std::unique_ptr<Impl::LegacyEntry> detached;
+    {
+        auto& impl = *registry_->impl_;
+        const std::lock_guard<std::mutex> lock(impl.mutex);
+        auto* const found = impl.legacy(identity_);
+        if (!found || &found->canonical != entry_ || found->canonical != nullptr)
+            std::terminate();
+        impl.detach(*found);
+        detached.reset(found);
+        registry_ = nullptr;
+        identity_ = nullptr;
+        entry_ = nullptr;
+    }
+    // Metadata deallocation occurs only after the mutex has been released.
 }
 
 NativeRenderActualOwnerRegistry::NativeRenderActualOwnerRegistry()
@@ -92,32 +184,43 @@ void NativeRenderActualOwnerRegistry::bind(void* identity,
         actual->load(std::memory_order_relaxed) <= 0)
         throw std::invalid_argument(
             "native owner registry companion must borrow the live actual +04 atomic");
-    const std::lock_guard<std::mutex> lock(impl_->mutex);
-    if (!impl_->entries.emplace(identity, &reference).second)
-        throw std::logic_error("native owner identity already has a canonical companion");
+    // Preallocate before the metadata lock. No Native field or count changes.
+    auto entry = std::make_unique<Impl::LegacyEntry>(identity, &reference);
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        if (!impl_->key_present(identity)) {
+            impl_->insert(*entry);
+            entry.release();
+            return;
+        }
+    }
+    throw std::logic_error("native owner identity already has a canonical companion");
 }
 
 NativeRenderActualOwnerRegistry::BindingAdmission
 NativeRenderActualOwnerRegistry::prepare_binding(void* identity) {
     if (!identity || reinterpret_cast<std::uintptr_t>(identity) % alignof(std::uint32_t) != 0)
         throw std::invalid_argument("native owner registry requires an aligned actual identity");
-    const std::lock_guard<std::mutex> lock(impl_->mutex);
-    const auto inserted = impl_->entries.emplace(identity, static_cast<RenderCommandReference*>(nullptr));
-    if (!inserted.second)
-        throw std::logic_error("native owner identity already has a registry entry");
-    return BindingAdmission(*this, identity, &inserted.first->second);
+    auto entry = std::make_unique<Impl::LegacyEntry>(identity, nullptr);
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        if (!impl_->key_present(identity)) {
+            auto* const retained = entry.release();
+            impl_->insert(*retained);
+            return BindingAdmission(*this, identity, &retained->canonical);
+        }
+    }
+    throw std::logic_error("native owner identity already has a registry entry");
 }
 
 void NativeRenderActualOwnerRegistry::publish(BindingAdmission&& admission,
     RenderCommandReference& reference) {
     if (admission.registry_ != this) std::terminate();
     const std::lock_guard<std::mutex> lock(impl_->mutex);
-    const auto found = impl_->entries.find(admission.identity_);
-    if (found == impl_->entries.end() || &found->second != admission.entry_ ||
-        found->second != nullptr)
+    auto* const found = impl_->legacy(admission.identity_);
+    if (!found || &found->canonical != admission.entry_ || found->canonical != nullptr)
         std::terminate();
-    // Validate the capability before touching a Native count. No virtual call
-    // or Native construction/cleanup occurs under this short metadata lock.
+    // Preserve the legacy capability validation before its actual +04 read.
     auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
         static_cast<std::byte*>(admission.identity_) + 4));
     if (&reference.reference_count != actual ||
@@ -131,17 +234,24 @@ void NativeRenderActualOwnerRegistry::publish(BindingAdmission&& admission,
 
 void NativeRenderActualOwnerRegistry::unbind(void* identity,
     RenderCommandReference& reference) noexcept {
-    const std::lock_guard<std::mutex> lock(impl_->mutex);
-    const auto found = impl_->entries.find(identity);
-    if (found == impl_->entries.end() || found->second != &reference)
-        std::terminate();
-    impl_->entries.erase(found);
+    std::unique_ptr<Impl::LegacyEntry> detached;
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        auto* const found = impl_->legacy(identity);
+        if (!found || found->canonical != &reference) std::terminate();
+        impl_->detach(*found);
+        detached.reset(found);
+    }
 }
 
 RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {
     const std::lock_guard<std::mutex> lock(impl_->mutex);
-    const auto found = impl_->entries.find(identity);
-    return found == impl_->entries.end() ? nullptr : found->second;
+    if (auto* const found = impl_->legacy(identity)) return found->canonical;
+    auto* const exact = impl_->indexed_exact(identity);
+    if (!exact || exact->poisoned_.load(std::memory_order_acquire) ||
+        exact->availability_.load(std::memory_order_acquire) != ExactRecord::Availability::live)
+        return nullptr;
+    return exact->canonical_;
 }
 
 RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {
@@ -153,12 +263,138 @@ RenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* id
 
 std::size_t NativeRenderActualOwnerRegistry::size() const {
     const std::lock_guard<std::mutex> lock(impl_->mutex);
-    return impl_->entries.size();
+    return impl_->retained_count;
 }
 
 bool NativeRenderActualOwnerRegistry::empty() const {
     return size() == 0;
 }
+
+std::mutex& NativeRenderActualOwnerRegistry::exact_metadata_mutex() noexcept {
+    return impl_->mutex;
+}
+
+void NativeRenderActualOwnerRegistry::attach_exact_record(ExactRecord& record) {
+    const std::lock_guard<std::mutex> lock(impl_->mutex);
+    attach_exact_record_locked(record);
+}
+
+void NativeRenderActualOwnerRegistry::attach_exact_record_locked(ExactRecord& record) noexcept {
+    // Private owning callers hold exact_metadata_mutex() and have already
+    // reserved all storage. Contract errors do not become recovery authority.
+    if (record.registry_ != this || !record.owning_identity_ || record.retained_member_ ||
+        record.retired_ || record.actual_key_ || impl_->contains(record))
+        std::terminate();
+    record.next_ = impl_->exact_head;
+    if (impl_->exact_head) impl_->exact_head->previous_ = &record;
+    impl_->exact_head = &record;
+    record.retained_member_ = true;
+    ++impl_->retained_count;
+}
+
+void NativeRenderActualOwnerRegistry::prepare_exact_record(
+    ExactRecord& record, void* captured_actual_key) {
+    if (!captured_actual_key || reinterpret_cast<std::uintptr_t>(captured_actual_key) %
+            alignof(std::uint32_t) != 0)
+        throw std::invalid_argument("native exact owner requires a captured aligned actual identity");
+    bool invalid_record;
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        invalid_record = record.registry_ != this || !record.retained_member_ || !impl_->contains(record) ||
+            record.retired_ || record.actual_key_ ||
+            record.poisoned_.load(std::memory_order_acquire) ||
+            record.normal_native_dead_.load(std::memory_order_acquire) ||
+            record.unborn_abandoned_.load(std::memory_order_acquire);
+        if (!invalid_record && !impl_->key_present(captured_actual_key)) {
+            record.actual_key_ = captured_actual_key;
+            impl_->index_exact(record);
+            return;
+        }
+    }
+    if (invalid_record)
+        throw std::logic_error("native exact owner preparation requires its fresh retained record");
+    throw std::logic_error("native owner identity already has a registry entry");
+}
+
+void NativeRenderActualOwnerRegistry::publish_exact_record(
+    ExactRecord& record, RenderCommandReference& canonical) noexcept {
+    // Genuine owner-only ctor return, canonical construction and one-shot
+    // preparation are preconditions established before entering this seam.
+    record.canonical_ = &canonical;
+    record.availability_.store(ExactRecord::Availability::live, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::poison_exact_record(ExactRecord& record) noexcept {
+    record.poisoned_.store(true, std::memory_order_release);
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::deactivate_exact_record_from_native_end(
+    ExactRecord& record) noexcept {
+    // Invoked only after real normal whole-payload cleanup and the last late
+    // flags read. Does not inspect Native storage, enter a lock or call a provider.
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+    record.normal_native_dead_.store(true, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::abandon_exact_unborn_record(ExactRecord& record) noexcept {
+    // Private authentic raw-slot unwind, NOT normal Native destruction or a
+    // physical-return receipt. BEFORE ANY Owner/Node/payload C++ birth and
+    // native ctor entry; no publication. Actual family pool-index access stays
+    // with the real return provider. Partial/failed constructor is NOT enough.
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+    record.unborn_abandoned_.store(true, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::retire_exact_record(ExactRecord& record) {
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        if (record.registry_ == this && record.retained_member_ && impl_->contains(record) &&
+            !record.retired_ && (record.normal_native_dead_.load(std::memory_order_acquire) ||
+                record.unborn_abandoned_.load(std::memory_order_acquire))) {
+            record.retired_ = true;
+            return;
+        }
+    }
+    throw std::logic_error("native exact owner retirement requires that authentically ended retained record");
+}
+
+void NativeRenderActualOwnerRegistry::cancel_exact_record_without_payload(ExactRecord& record) {
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        if (record.registry_ == this && record.retained_member_ && impl_->contains(record) &&
+            !record.actual_key_ && !record.canonical_ && !record.retired_ &&
+            record.availability_.load(std::memory_order_acquire) == ExactRecord::Availability::unavailable &&
+            !record.normal_native_dead_.load(std::memory_order_acquire) &&
+            !record.unborn_abandoned_.load(std::memory_order_acquire) &&
+            record.outer_calls_.load(std::memory_order_acquire) == 0 &&
+            record.borrows_.load(std::memory_order_acquire) == 0) {
+            // Only the genuine owner knows allocator-never-entered or actual
+            // normal-NULL. A missing key alone does not prove either fact.
+            impl_->detach_exact(record);
+            return;
+        }
+    }
+    throw std::logic_error("native exact owner cancellation requires that quiescent unpublished payload-free record");
+}
+
+void NativeRenderActualOwnerRegistry::close_exact_record_at_quiescence(ExactRecord& record) {
+    {
+        const std::lock_guard<std::mutex> lock(impl_->mutex);
+        if (record.registry_ == this && record.retained_member_ && impl_->contains(record) &&
+            record.retired_ && (record.normal_native_dead_.load(std::memory_order_acquire) ||
+                record.unborn_abandoned_.load(std::memory_order_acquire)) &&
+            record.outer_calls_.load(std::memory_order_acquire) == 0 &&
+            record.borrows_.load(std::memory_order_acquire) == 0) {
+            // The genuine owner additionally proves physical disposition, all
+            // links and outer Source fences; counters do not infer those facts.
+            impl_->detach_exact(record);
+            return;
+        }
+    }
+    throw std::logic_error("native exact owner close requires that retired quiescent retained record");
+}
+
 
 void NativeRenderActualOwnerRegistry::bind_callback(void* context, void* identity,
     RenderCommandReference& reference) {
@@ -195,6 +431,7 @@ void release_native_render_actual_owner(NativeRenderActualOwners& owners, void* 
 
 void release_native_render_actual_owner_observed(NativeRenderActualOwners& owners, void* identity,
     NativeRenderActualOwnerReleaseObservation& observation) {
+    const NativeRenderObservedZeroAccess::Invocation invocation(observation.cpp_zero_frame);
     if (observation.entered)
         throw std::logic_error("actual owner release observation is one-shot");
     observation.identity = identity;
@@ -206,7 +443,7 @@ void release_native_render_actual_owner_observed(NativeRenderActualOwners& owner
     observation.decremented = true;
     if (observation.previous_count == 1) {
         observation.zero_dispatch_entered = true;
-        dispatch_native_render_actual_owner_zero(owners, identity);
+        NativeRenderObservedZeroAccess::dispatch(owners, identity, observation.cpp_zero_frame);
         // Only external retained metadata is touched after the terminal.
         observation.zero_dispatch_returned = true;
     }

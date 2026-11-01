@@ -6,6 +6,7 @@
 #include "bsp/registered_type4_effect_behavior.hpp"
 
 namespace bsp {
+class NativeMeshExternalProducer;
 class NativeTracerProfileBindings;
 
 // SAME actual30h records at tracer+194. Reserve copies the ten float words
@@ -69,6 +70,9 @@ struct NativeTracerConstructionAccess {
     NativeTracerConstructionCallees& callees;
     void* const volatile& renderer_00f8d394;
     NativeTracerConstructionConstants constants;
+    // Optional typed ordinary source, prepared before this entire Native entry.
+    // Actual Game/derived-parent ordinary issuer remains a separate activation gate.
+    NativeMeshExternalProducer* const ordinary_mesh{};
 };
 
 // Complete BAD6F0..BADC6D construction THROUGH REQUIRED REAL renderer and

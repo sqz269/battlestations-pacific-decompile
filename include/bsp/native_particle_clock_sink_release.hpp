@@ -3,6 +3,7 @@
 namespace bsp {
 
 class NativeRenderActualOwners;
+class NativeRenderObservedZeroFrame;
 
 using NativeParticleClockAtomic = long (__stdcall *)(volatile long*);
 
@@ -29,5 +30,10 @@ void __fastcall release_native_particle_clock_sink_004ddb40(
 
 // This raw source interface has an additional IAT-cell argument; it is not
 // an original binary entry or a host C++ virtual-owner projection.
+
+// Caller frame is actual shutdown-owned Source metadata, not zero authority.
+void __fastcall release_native_particle_clock_sink_004ddb40(void*,
+    NativeParticleClockAtomic const volatile&, void*, NativeRenderActualOwners&,
+    NativeRenderObservedZeroFrame&);
 
 } // namespace bsp

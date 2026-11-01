@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/gui_native_geometry.hpp"
 #include "bsp/native_gui_text_reference.hpp"
 #include "bsp/native_gui_widget_position.hpp"
@@ -66,6 +67,9 @@ struct NativeGuiTextMainGeometryStorageAcquired {
     NativeGuiTextMainGeometryStorageAcquired() = default;
     NativeGuiTextMainGeometryStorageAcquired(const NativeGuiTextMainGeometryStorageAcquired&) = delete;
     NativeGuiTextMainGeometryStorageAcquired& operator=(const NativeGuiTextMainGeometryStorageAcquired&) = delete;
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 
 // Preinstall this complete nonmoving graph before entry. Constructor only

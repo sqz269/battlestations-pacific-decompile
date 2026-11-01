@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_external_producers.hpp"
 #include "bsp/native_particle_model_construction.hpp"
 #include "bsp/native_particle_model_manager.hpp"
 #include "bsp/native_particle_array_resize.hpp"
@@ -72,7 +73,7 @@ std::uint32_t truncate_low_word(float source) noexcept {
 void* allocate_object(std::size_t size) {
     return singleton_lifetime_allocate({SingletonAllocationKind::object, size, size});
 }
-NativeMeshStorage* create_mesh(NativeParticleModelConstructionAccess& access) {
+NativeMeshStorage* create_legacy_mesh(NativeParticleModelConstructionAccess& access) {
     void* raw = access.meshes.pool_0108fff8.allocate_slot_00b73a10();
     if (!raw) return nullptr;
     // B73D70 cannot throw in its supported constant/storage domain; states2/8
@@ -208,7 +209,7 @@ NativeParticleModelArraysStorage* construct_native_particle_model_arrays_00afd2e
     return arrays;
 }
 
-NativeNodeStorage* construct_native_particle_model_00af74a0(
+static NativeNodeStorage* construct_particle_model_body_00af74a0(
     NativeModelOwner& base, void* variant, NativeParticleModelConstructionAccess& access) {
     if (!variant || base.phase != NativeModelOwner::Phase::prepared ||
         &base.environment.retained_owners != &access.materials.retained_owners ||
@@ -238,7 +239,8 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         void* current_variant = tail.variant_18c;
         tail.flag_1b0 = load<std::uint8_t>(current_variant, 0x64);
         tail.flag_1b1 = load<std::uint8_t>(current_variant, 0x65);
-        tail.mesh_1b4 = create_mesh(access);
+        tail.mesh_1b4 = access.ordinary_meshes ? access.ordinary_meshes->create_first(access.meshes, access.mesh_constants) :
+            create_legacy_mesh(access);
         const auto unchanged = base.environment.constants.unchanged_00d7a260;
         set_native_model_geometry_00b75170(base, 0, tail.mesh_1b4, float_bits(unchanged), float_bits(unchanged));
         void* index = native_particle_index_stream_00af10a0(access.resources_00f8c280);
@@ -258,7 +260,8 @@ NativeNodeStorage* construct_native_particle_model_00af74a0(
         release_native_render_actual_owner(access.materials.retained_owners, &first_material);
         finish_mesh(tail.mesh_1b4, first_section, access);
 
-        tail.mesh_1c8 = create_mesh(access);
+        tail.mesh_1c8 = access.ordinary_meshes ? access.ordinary_meshes->create_second(access.meshes, access.mesh_constants) :
+            create_legacy_mesh(access);
         index = native_particle_index_stream_00af10a0(access.resources_00f8c280);
         set_native_mesh_index_stream_00b73b70(required(tail.mesh_1c8), access.materials.retained_owners, index);
         auto& second_section = create_section(access);
@@ -354,4 +357,13 @@ NativeMeshStorage* create_native_particle_prepared_mesh(NativeMeshEnvironment& m
     return &mesh;
 }
 
+NativeNodeStorage* construct_native_particle_model_00af74a0(
+    NativeModelOwner& base, void* variant, NativeParticleModelConstructionAccess& access) {
+    if (!access.ordinary_meshes) return construct_particle_model_body_00af74a0(base, variant, access);
+    try {
+        access.ordinary_meshes->check_prepared_metadata();
+        return construct_particle_model_body_00af74a0(base, variant, access);
+    }
+    catch (...) { access.ordinary_meshes->retain_source_failure(); throw; }
+}
 } // namespace bsp

@@ -1,3 +1,12 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiFrameBoxRecordsObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_frame_box_records.hpp"
 #include "bsp/native_string.hpp"
 #include <cstddef>
@@ -100,7 +109,7 @@ void release_native_gui_frame_box_record_00ad0860(void* record,
             operation.resource_decremented_ = true;
             if (operation.count_after_decrement_ == 0) {
                 operation.zero_dispatch_entered_ = true;
-                dispatch_native_render_actual_owner_zero(owners, resource);
+                NativeGuiFrameBoxRecordsObservedZeroIssuer::dispatch(owners, resource, operation.cpp_zero_frame_);
                 operation.zero_dispatch_returned_ = true;
             }
             word(record, 0) = 0;

@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/gui_text_runtime_factory.hpp"
 #include "bsp/gui_text_child_lifetime.hpp"
 #include "bsp/native_mesh_owner.hpp"
@@ -87,7 +88,9 @@ NativeMaterialStorage* drawable_material(NativeNodeBinding* node, GuiTextBufferS
     auto& owners = b.geometry.actual_owners();
     auto* raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);
     auto* mesh = dynamic_cast<NativeMeshReference*>(&owners.resolve_actual(raw_mesh));
-    require(mesh && &mesh->storage() == raw_mesh && mesh->reference_count.load() > 0,
+    require(mesh != nullptr, "Text alpha requires its actual live mesh");
+    NativeMeshCanonicalBorrow mesh_pin(*mesh);
+    require(&mesh_pin.storage() == raw_mesh && mesh->reference_count.load() > 0,
         "Text alpha requires its actual live mesh");
     if (!gui_mesh_element_count_00b72b40(raw_mesh)) return nullptr;
     raw_mesh = gui_model_geometry_00b74640(model.storage.model, 0);

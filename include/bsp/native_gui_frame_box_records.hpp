@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 
 namespace bsp {
 struct NativeStringRawPoolContext;
@@ -95,6 +96,9 @@ private:
     bool resource_cleared_{}, name_action_armed_{}, name_action_consumed_{};
     bool normal_name_return_entered_{}, normal_name_returned_{};
     bool failure_name_cleanup_entered_{}, failure_name_cleanup_returned_{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame_;
 };
 
 // Whole AD0860 [AD0860,AD08DE): native ECX actual2Ch record, no stacked args,

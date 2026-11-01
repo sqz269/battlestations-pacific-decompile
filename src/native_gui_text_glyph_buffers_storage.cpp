@@ -1,6 +1,16 @@
+#include "bsp/native_render_observed_zero.hpp"
+namespace bsp {
+class NativeGuiTextGlyphBuffersStorageObservedZeroIssuer final {
+public:
+    static void dispatch(NativeRenderActualOwners& owners, void* actual, NativeRenderObservedZeroFrame& outer) {
+        NativeRenderObservedZeroAccess::dispatch(owners, actual, outer);
+    }
+};
+} // namespace bsp
 #include "bsp/native_gui_text_glyph_buffers_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_mesh_owner.hpp"
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_vertex_declaration_cache.hpp"
 #include <cstddef>
@@ -26,14 +36,16 @@ void location(Acquired& acquired, Acquired::Boundary boundary, std::uint32_t sit
 void* pointer(std::uint32_t word) noexcept {
     return reinterpret_cast<void*>(static_cast<std::uintptr_t>(word));
 }
-NativeMeshStorage& current_mesh(void* captured, Context& context) {
+NativeMeshCanonicalBorrow current_mesh(void* captured, Context& context) {
     // Pure lookup in the EXISTING canonical registry. Its companion was
     // constructed by the actual Mesh producer, not from this raw operand.
     auto* const reference = dynamic_cast<NativeMeshReference*>(
         &context.owners.resolve_actual(captured));
-    require(reference && static_cast<void*>(&reference->storage()) == captured,
+    require(reference != nullptr, "AB8400 requires its genuine existing Mesh canonical");
+    NativeMeshCanonicalBorrow pin(*reference);
+    require(static_cast<void*>(&pin.storage()) == captured,
         "AB8400 requires the current genuine Mesh in its same canonical registry");
-    return reference->storage();
+    return pin;
 }
 void* declaration_current38(void* renderer, const void* name, Context& context,
     GuiNativeDeclarationAcquired& acquired) {
@@ -63,7 +75,7 @@ void release_creator(void*& creator, NativeTextureSurfaceReferenceIncrement capt
     acquired.decremented = true;
     if (acquired.result == 0) {
         acquired.zero_entered = true;
-        dispatch_native_render_actual_owner_zero(context.owners, raw);
+        NativeGuiTextGlyphBuffersStorageObservedZeroIssuer::dispatch(context.owners, raw, acquired.cpp_zero_frame);
         acquired.zero_returned = true;
     }
     acquired.complete = true; // no raw access after possible terminal return
@@ -142,7 +154,8 @@ void create_native_gui_text_glyph_buffers_storage_00ab8400(
             context.graphics, acquired.vertex);
         acquired.vertex_mesh = pointer(frame.arguments_[1]); // AB84AC, after factory
         location(acquired, Acquired::Boundary::vertex_publication, 0x00ab84b4);
-        set_native_mesh_vertex_stream_00b73bb0(current_mesh(acquired.vertex_mesh, context),
+        auto vertex_mesh_pin = current_mesh(acquired.vertex_mesh, context);
+        set_native_mesh_vertex_stream_00b73bb0(vertex_mesh_pin.storage(),
             context.owners, 0, vertex);
         acquired.vertex_published = true;
 
@@ -163,7 +176,8 @@ void create_native_gui_text_glyph_buffers_storage_00ab8400(
             acquired.captured_capacity * 6u, 1u, 0x65u, context.graphics, acquired.index);
         acquired.index_mesh = pointer(frame.arguments_[1]); // AB84FB: FRESH home
         location(acquired, Acquired::Boundary::index_publication, 0x00ab8502);
-        set_native_mesh_index_stream_00b73b70(current_mesh(acquired.index_mesh, context),
+        auto index_mesh_pin = current_mesh(acquired.index_mesh, context);
+        set_native_mesh_index_stream_00b73b70(index_mesh_pin.storage(),
             context.owners, index);
         acquired.index_published = true;
         acquired.index.companion = nullptr;

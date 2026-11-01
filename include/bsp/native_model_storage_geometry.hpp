@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_model_storage_lifetime.hpp"
+#include "bsp/native_render_zero_frame.hpp"
 
 namespace bsp {
 struct NativeModelStorageGeometryContext {
@@ -60,6 +61,10 @@ private:
     const volatile std::uint32_t* const scalar_17c_argument_;
     NativeModelStorageGeometryPhase phase_{NativeModelStorageGeometryPhase::fresh};
     bool poisoned_{};
+    NativeRenderObservedZeroFrame observed_zero_frame_;
+    friend class NativePostEffectModelFrame;
+    friend class NativeModelReference;
+    friend struct NativeMatrixStorageAccess;
     friend class NativeModelGeometryKernelAccess;
     friend void set_native_model_geometry_storage_00b75170(void*, NativeModelStorageGeometryFrame&,
         NativeModelStorageGeometryContext&, NativeModelStorageGeometryAcquired&);

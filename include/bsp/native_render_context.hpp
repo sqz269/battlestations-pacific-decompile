@@ -1,10 +1,12 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 
 #include "bsp/render_command_queue.hpp"
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <mutex>
 
 namespace bsp {
 
@@ -48,6 +50,42 @@ public:
 // resource/lifetime synchronization that keeps a resolved companion alive.
 class NativeRenderActualOwnerRegistry final : public NativeRenderActualOwners {
 public:
+    // Internal typed-owner metadata node. Naming the type grants no permission;
+    // only genuine Mesh/Model owning continuations below can construct/mutate it.
+    class ExactRecord final {
+    public:
+        ~ExactRecord() = default;
+        ExactRecord(const ExactRecord&) = delete;
+        ExactRecord& operator=(const ExactRecord&) = delete;
+        ExactRecord(ExactRecord&&) = delete;
+        ExactRecord& operator=(ExactRecord&&) = delete;
+    private:
+        friend class NativeRenderActualOwnerRegistry;
+        friend class NativeMeshCanonicalRecord;
+        friend class NativeMeshCanonicalAccess;
+        friend class NativeMeshCanonicalDomain;
+        friend class NativeMeshCanonicalBorrow;
+        friend class NativePostEffectModelFrame;
+        enum class Availability : std::uint8_t { unavailable, live };
+        ExactRecord(NativeRenderActualOwnerRegistry& registry,
+            const void* actual_owning_record_identity) noexcept
+            : registry_(&registry), owning_identity_(actual_owning_record_identity) {}
+        NativeRenderActualOwnerRegistry* const registry_;
+        const void* const owning_identity_;
+        void* actual_key_{};
+        RenderCommandReference* canonical_{};
+        std::atomic<Availability> availability_{Availability::unavailable};
+        std::atomic<bool> poisoned_{false};
+        std::atomic<bool> normal_native_dead_{false};
+        std::atomic<bool> unborn_abandoned_{false};
+        std::atomic<std::uint32_t> outer_calls_{0}, borrows_{0};
+        ExactRecord* previous_{};
+        ExactRecord* next_{};
+        ExactRecord* bucket_previous_{};
+        ExactRecord* bucket_next_{};
+        bool retained_member_{};
+        bool retired_{};
+    };
     // Owns one unavailable entry in this same registry. Its mapped-value address
     // survives rehash; no iterator or Native storage is retained or inspected.
     // Move/cancel/publish share the caller's serialized ownership contract.
@@ -103,6 +141,40 @@ public:
     static RenderCommandReference* find_callback(void*, void* raw_identity);
 
 private:
+    friend class NativeMeshCanonicalRecord;
+    friend class NativeMeshCanonicalAccess;
+    friend class NativePostEffectModelFrame;
+    // Cold attachment counts even an unkeyed allocating/unknown record. Nodes
+    // are already allocated; no allocator/callback runs under this mutex.
+    std::mutex& exact_metadata_mutex() noexcept;
+    void attach_exact_record(ExactRecord&);
+    void attach_exact_record_locked(ExactRecord&) noexcept;
+    // Captured key is supplied only at the genuine allocation continuation.
+    void prepare_exact_record(ExactRecord&, void* captured_actual_key);
+    // NEW private release publication: entry established before birth, genuine
+    // private ctor continuation and reserved canonical established beforehand.
+    // No mutex, allocation, validation, Native count/profile read or callback.
+    void publish_exact_record(ExactRecord&, RenderCommandReference&) noexcept;
+    // Poison prevents lookup AND replacement unless normal_native_dead is true.
+    // It does not invent a normal-death/pool-return fact.
+    void poison_exact_record(ExactRecord&) noexcept;
+    void deactivate_exact_record_from_native_end(ExactRecord&) noexcept;
+    // Genuine selected raw-slot unwind only (Mesh state3 / Model state4):
+    // captured allocation, BEFORE ANY Owner/Node/payload C++ birth or native
+    // ctor entry, no canonical/pub, last PAYLOAD borrow ended. The separate
+    // BC / Model184 pool word remains live for the unchanged real return.
+    void abandon_exact_unborn_record(ExactRecord&) noexcept;
+    // Retire THAT retained record; never erase a replacement or accept a
+    // missing arbitrary key. Native physical/flags0 debt stays with the owner.
+    void retire_exact_record(ExactRecord&);
+    // Owner has proved actual full disposition, no outer calls/borrows/links,
+    // and all Source fences. Unlink under mutex; destruction is outside it.
+    // empty()/size() are membership observations, never teardown authority.
+    void close_exact_record_at_quiescence(ExactRecord&);
+    // Authentic owning continuation only: no allocator entry, or actual normal
+    // NULL allocation; never an uncertain entered allocation or partial birth.
+    // No key/publication/borrow/outer call remains; unlinks without death facts.
+    void cancel_exact_record_without_payload(ExactRecord&);
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
@@ -122,6 +194,9 @@ struct NativeRenderActualOwnerReleaseObservation {
     std::int32_t previous_count{};
     std::uint32_t result_bits{};
     bool entered{}, decremented{}, zero_dispatch_entered{}, zero_dispatch_returned{}, returned{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 void release_native_render_actual_owner_observed(NativeRenderActualOwners&, void* raw_identity,
     NativeRenderActualOwnerReleaseObservation&);

@@ -1,3 +1,4 @@
+#include "bsp/native_mesh_canonical.hpp"
 #include "bsp/game_native_gui_render_application.hpp"
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_hosts.hpp"
@@ -507,16 +508,18 @@ struct GameNativeGuiRenderApplication::Impl {
         if (gui_trace_requested()) {
             void* mesh_raw = gui_model_geometry_00b74640(widget->model_reference()->model_owner().storage.model, 0);
             auto* mesh = dynamic_cast<NativeMeshReference*>(&renderer.actual_owners().resolve_actual(mesh_raw));
-            require(mesh && &mesh->storage() == mesh_raw && mesh->storage().draw_sections_54.count_04 > 0,
+            require(mesh != nullptr, "native GUI trace requires the actual Text mesh");
+            NativeMeshCanonicalBorrow mesh_pin(*mesh);
+            require(&mesh_pin.storage() == mesh_raw && mesh_pin.storage().draw_sections_54.count_04 > 0,
                 "native GUI trace requires the actual Text mesh");
             void* section_raw = gui_geometry_element_00b732c0(mesh_raw, 0);
             auto* section = dynamic_cast<NativeMeshSectionReference*>(&renderer.actual_owners().resolve_actual(section_raw));
             require(section && &section->storage() == section_raw, "native GUI trace requires the actual Text section");
             const auto& raw_section = section->storage();
-            void* stream = mesh->storage().vertex_stream_count_7c > 0 ? mesh->storage().vertex_streams_64[0] : nullptr;
+            void* stream = mesh_pin.storage().vertex_stream_count_7c > 0 ? mesh_pin.storage().vertex_streams_64[0] : nullptr;
             log.notef("native_GUI_trace built mesh=%p section=%p primitive=%u minimum=%u vertices=%u start=%u primitives=%u VB=%p IB=%p stream_tag=%08x stream_count=%u material=%p clip=%u",
                 mesh_raw, section_raw, raw_section.primitive_08, raw_section.range_words_0c[0], raw_section.range_words_0c[1],
-                raw_section.range_words_0c[2], raw_section.range_words_0c[3], stream, mesh->storage().index_stream_60,
+                raw_section.range_words_0c[2], raw_section.range_words_0c[3], stream, mesh_pin.storage().index_stream_60,
                 stream ? read<Word>(stream, 0x54) : 0, stream ? read<Word>(stream, 0x64) : 0,
                 raw_section.material_20, static_cast<unsigned>(widget->extra_fields().clip_enabled_e8));
         }

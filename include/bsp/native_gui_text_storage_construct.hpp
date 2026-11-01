@@ -1,4 +1,5 @@
 #pragma once
+#include "bsp/native_render_zero_frame.hpp"
 #include "bsp/native_gui_text_failure_origin.hpp"
 #include "bsp/native_instance_geometry.hpp"
 #include "bsp/native_material_effect_cache.hpp"
@@ -35,6 +36,9 @@ struct NativeGuiTextSectionStorageRelease {
     NativeTextureSurfaceReferenceIncrement captured_decrement{};
     long result{};
     bool entered{}, decremented{}, zero_entered{}, zero_returned{}, complete{};
+    // Separate C++ outer-call custody; public diagnostics never issue an action.
+    // Keep through real postcall/health/catch; no reset as Native HOME reuse.
+    NativeRenderObservedZeroFrame cpp_zero_frame;
 };
 struct NativeGuiTextSectionStorageSection {
     GuiNativeSectionAcquired section;
