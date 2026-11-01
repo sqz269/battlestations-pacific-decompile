@@ -516,11 +516,16 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
     } catch (...) { record_source_failure(); throw; }
 }
 void NativePostEffectParentDomain::close_after_host_quiescence() {
-    require_owned(!impl_->failed.load(),"Failed parent graph must remain retained");
-    { std::lock_guard<std::mutex> lock(impl_->mutex); impl_->closing.store(true,std::memory_order_release); }
-    for (auto* frame=impl_->first; frame; frame=frame->impl_->next)
-        if (!frame->impl_->closed.load()) frame->close_after_host_quiescence();
-    require_owned(impl_->retained.load()==0,"Parent graph retains unresolved records");
+    try {
+        require_owned(!impl_->failed.load(),"Failed parent graph must remain retained");
+        { std::lock_guard<std::mutex> lock(impl_->mutex); impl_->closing.store(true,std::memory_order_release); }
+        for (auto* frame=impl_->first; frame; frame=frame->impl_->next)
+            if (!frame->impl_->closed.load()) frame->close_after_host_quiescence();
+        require_owned(impl_->retained.load()==0,"Parent graph retains unresolved records");
+    } catch (...) {
+        NativePostEffectParentFrame::record_domain_failure(*this);
+        throw;
+    }
 }
 
 void* create_native_post_effect_parent20_00b4e470(NativePostEffectParentFrame& frame,
