@@ -1,0 +1,385 @@
+{
+  "schema": 1,
+  "packet": "codex-atlas-registry-storage-20261101",
+  "created_utc": "2026-11-01T10:35:58.963335+00:00",
+  "frozen_root_base": "2a094149a200654ea7ddf63226483c2a72bcba35",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-registry-storage-20261101",
+  "functions": [
+    {
+      "address": "007364a0",
+      "symbol": "register_native_texture_atlas_registry_base_007364a0",
+      "source_line": 215,
+      "original_abi": "ECX raw1C; EAX same; no stack args; RET",
+      "normal_schedule": [
+        "CFEA58",
+        "00415350/captured section10",
+        "current CE2218/enter/+18",
+        "F8C26C=self",
+        "00415350 again",
+        "CURRENT F8C26C",
+        "BD0C30",
+        "-18/current CE2210/leave"
+      ],
+      "status": "whole_ordinary_NORMAL_source_candidate_only_not_compiled",
+      "names": "descriptive_hypotheses_not_recovered_symbols"
+    },
+    {
+      "address": "00737ee0",
+      "symbol": "construct_native_texture_atlas_registry_00737ee0",
+      "source_line": 235,
+      "original_abi": "ECX raw1C; EAX same; no stack args; RET",
+      "normal_schedule": [
+        "7364A0",
+        "CFEAE8",
+        "zero DWORD04/08/0C/10/14/18"
+      ],
+      "status": "whole_ordinary_NORMAL_source_candidate_only_not_compiled",
+      "names": "descriptive_hypotheses_not_recovered_symbols"
+    },
+    {
+      "address": "00aef090",
+      "symbol": "destroy_native_texture_atlas_registry_00aef090",
+      "source_line": 269,
+      "original_abi": "ECX raw1C; no semantic result; no stack args; RET",
+      "normal_schedule": [
+        "CFEAE8",
+        "actual item array: AEE220 then BF65AC",
+        "actual texture array: captured CE2220 then zero-only terminal",
+        "texture array signed retirement/BF55BE/BF6989",
+        "item array signed retirement/BF55BE/BF6989",
+        "7375E0"
+      ],
+      "status": "whole_ordinary_NORMAL_source_candidate_only_not_compiled",
+      "names": "descriptive_hypotheses_not_recovered_symbols"
+    },
+    {
+      "address": "007375e0",
+      "symbol": "destroy_native_texture_atlas_registry_base_007375e0",
+      "source_line": 249,
+      "original_abi": "ECX raw1C; no semantic result; no stack args; RET",
+      "normal_schedule": [
+        "CFEA58",
+        "00415350/captured section10",
+        "current CE2218/enter/+18",
+        "00415350 again",
+        "CURRENT F8C26C",
+        "BCFCA0",
+        "F8C26C=0",
+        "-18/current CE2210/leave",
+        "CE3818"
+      ],
+      "status": "whole_ordinary_NORMAL_source_candidate_only_not_compiled",
+      "names": "descriptive_hypotheses_not_recovered_symbols"
+    },
+    {
+      "address": "00737f10",
+      "symbol": "delete_native_texture_atlas_registry_00737f10",
+      "source_line": 317,
+      "original_abi": "ECX raw1C; DWORD flags stack HOME/BYTE test; EAX captured raw; RET4",
+      "normal_schedule": [
+        "AEF090",
+        "CURRENT flags low BYTE",
+        "BF65AC only if bit0",
+        "return original opaque identity"
+      ],
+      "status": "whole_ordinary_NORMAL_source_candidate_only_not_compiled",
+      "names": "descriptive_hypotheses_not_recovered_symbols"
+    }
+  ],
+  "raw_layout": {
+    "bytes": "1C",
+    "profile": "00",
+    "owning_items": [
+      "04",
+      "08",
+      "0C"
+    ],
+    "owning_actual_textures": [
+      "10",
+      "14",
+      "18"
+    ],
+    "publication": "00F8C26C"
+  },
+  "startup_order": [
+    "73DDB4/BF681B allocate1C",
+    "73DDD5/7364A0 actual registration",
+    "73DDDA/CFEAE8 and six zeros",
+    "73DE42/AF0060 common.ats load before GUI"
+  ],
+  "constructor_does_not_allocate_or_load": true,
+  "texture_domain": {
+    "registry": "concrete existing NativeRenderActualOwnerRegistry",
+    "owner_graph": "same genuine Source-created NativeTextureLoadOwners and contexts",
+    "tables": {
+      "00D61948": [
+        "00BD30E0",
+        "00B3F590"
+      ],
+      "00D61870": [
+        "00BD30E0",
+        "00B3F410"
+      ],
+      "00D618B0": [
+        "00BD30E0",
+        "00B3F430"
+      ]
+    },
+    "data_owner": "GameNativeReadOnlyData authenticated PE mapping, retained live",
+    "callable_numeric_words": false,
+    "counter": "captured actual+04; CE2220 captured only once on initial positive signed count14",
+    "canonical_lookup": "zero only; pure; requires exact captured actual+04 alias",
+    "companion_provenance": "caller proves exact genuine same graph creator/registration; bits and lookup are insufficient",
+    "no_default_or_second_decrement": true,
+    "existing_terminal_boundary": "noexcept; child escape can terminate, not new catchable cleanup"
+  },
+  "retained_failure_graph": [
+    "address-stable raw8 guard backing retained before base effects",
+    "stable item/texture child nodes adopted before first native effect",
+    "cold metadata allocation cannot inspect/mutate/reenter native domains",
+    "outer catch records exception and barethrows; all prior nodes retained",
+    "no added unwind/rollback/free/unregister/clear/unlock/replay",
+    "all physical/string/feature/publication/heap/import/canonical domains remain caller live",
+    "opaque dead item/texture/manager identities never dereferenced after returning disposition"
+  ],
+  "array_retirement": [
+    "signed-negative cap: allocate4, current count/begin copy, free old, publish replacement/cap1",
+    "signed-negative count: raw32 displaced conditional zero loop, actual ADD/JS wrap",
+    "positive current count: decrement while positive",
+    "capture final begin BEFORE count0 then free captured; stale begin/cap remain",
+    "texture array then item array then full7375E0"
+  ],
+  "target_verification": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "project": "bsp",
+    "program_path": "/battlestationspacific.exe",
+    "live_status": "ghidra: up  /battlestationspacific.exe"
+  },
+  "listing_gap_reads": {
+    "00AEF17D": "8D4900 alignment LEA",
+    "00AEF19D": "8D4900 alignment LEA",
+    "00AEF23A": "8D9B00000000 alignment LEA"
+  },
+  "provider_reads": {
+    "00BF55BE": "JMP00BF681B",
+    "00BF6989": "JMP00BF65AC",
+    "00BF65AC": "JMP00BF9DC8"
+  },
+  "candidate_pins_before_report": [
+    {
+      "path": "include/bsp/native_texture_atlas_registry_storage.hpp",
+      "bytes": 9773,
+      "sha256": "fa5e70c20b28d28d1a37d9d4faf751cab5ea14bf3aeb587e983f666ee5aa2ecf"
+    },
+    {
+      "path": "src/native_texture_atlas_registry_storage.cpp",
+      "bytes": 16529,
+      "sha256": "0ced00c463938ad16cd458a48c05c9e1b114d6c5a16a2af6d1273604ff81fd90"
+    },
+    {
+      "path": "docs/CC16_NATIVE_TEXTURE_ATLAS_REGISTRY_STORAGE_20261101.md",
+      "bytes": 9084,
+      "sha256": "8f1363d077279ec3e3cc5ea67643d0f43c50a16f0448e86f599b5e703dd9b618"
+    }
+  ],
+  "native_export_pins": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007364a0\\assembly.txt",
+      "bytes": 1201,
+      "sha256": "98017ecf3c48d55fa777501b794b816dfde83ca16090ef253a5ddc1e9fac1334"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007364a0\\decompiled.c",
+      "bytes": 1363,
+      "sha256": "3323aef1a27313ba85393a4b00b65459b9384fc55404a02b35d177be764aa2d1"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737ee0\\assembly.txt",
+      "bytes": 439,
+      "sha256": "e00ebc0b8a8772020990ad8ad50641e9256a5cb58a15a7cd7fe6f795bd6faac8"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737ee0\\decompiled.c",
+      "bytes": 525,
+      "sha256": "7fde0f7eaec9af1c62089a67236de012ad8e6047adade1ee8a3ca5dce6558de5"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aef090\\assembly.txt",
+      "bytes": 4811,
+      "sha256": "21f651c9ab07b57c7233133e410b03e4e4275307e629bc91eb84f38b637977af"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00aef090\\decompiled.c",
+      "bytes": 3182,
+      "sha256": "33a1b84ae58dd4092ef3c48d7d30860005d9e93ad4fed663c26bbde2d9870a03"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007375e0\\assembly.txt",
+      "bytes": 1218,
+      "sha256": "d92fe6f30733fd9b2b28397d21133d88a510bb7495358192e66cbe94838f2f16"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\007375e0\\decompiled.c",
+      "bytes": 1456,
+      "sha256": "59a8b38124a07d584cb9165d240f6d0e4be89998c3825afa66a65db4a00042ba"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737f10\\assembly.txt",
+      "bytes": 267,
+      "sha256": "4066bfb37e9fd2e032455bbebca7c40adb266ba10e8626c753d909987c6d1b21"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile\\exports\\bsp\\functions\\00737f10\\decompiled.c",
+      "bytes": 195,
+      "sha256": "74112870b40e1497160b4c6670a2a172a677a62080830417454203c66f399c4e"
+    }
+  ],
+  "dependency_pins_at_frozen_base": [
+    {
+      "path": "include/bsp/native_texture_atlas_item_storage.hpp",
+      "bytes": 5026,
+      "sha256": "f5b8028fd6c7742e163993b3c25e5f010c32f94484a57034a9975dc73bc797ad"
+    },
+    {
+      "path": "src/native_texture_atlas_item_storage.cpp",
+      "bytes": 7404,
+      "sha256": "920ba707da735f3ed929a339bad6f1bdca6831d29dd640bbb9ad3b060ad426ae"
+    },
+    {
+      "path": "include/bsp/native_singleton_publication.hpp",
+      "bytes": 2293,
+      "sha256": "0ba3bb843ec6048790eb768f46e6cfeb99c8fae8c3e3f3ae59a0e14cca1e72f5"
+    },
+    {
+      "path": "src/native_singleton_publication.cpp",
+      "bytes": 4127,
+      "sha256": "db69108414a5aa844b80b04ca82819139f1dccc422d6f3a954512a4375d07c8a"
+    },
+    {
+      "path": "include/bsp/native_singleton_vector_registration_wrappers.hpp",
+      "bytes": 2373,
+      "sha256": "04d669c9167de50ba74557cc6651ab4dbdc753b8c6f40fdb3a743f65948eab35"
+    },
+    {
+      "path": "src/native_singleton_vector_registration_wrappers.cpp",
+      "bytes": 4283,
+      "sha256": "cd191614f5de77becc8a0a9a73f9c3ebfc1cfd86bb87fdf10a7965d0a5839a90"
+    },
+    {
+      "path": "include/bsp/native_singleton_removal_reorder.hpp",
+      "bytes": 1705,
+      "sha256": "289eb8fb612bdec0fb04611d980130d7c99101fdc577f1225b14f01aaac1deee"
+    },
+    {
+      "path": "src/native_singleton_removal_reorder.cpp",
+      "bytes": 7844,
+      "sha256": "9ada933439fc79e11749a07ba549b816173d22ae53f10ef9e1cf4f86a4bddbf2"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "bytes": 13322,
+      "sha256": "e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "bytes": 49969,
+      "sha256": "c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 15343,
+      "sha256": "0d7e49fe4767a2d9ff5ec50a48770fc2f733c34e2355cd1bc9607ca16e8dd397"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 24093,
+      "sha256": "4d07ee59dea83d1b6c33754b85beb7d7fcd51a5955da477ed82c5fcf2c046542"
+    },
+    {
+      "path": "include/bsp/native_texture_2d_owner.hpp",
+      "bytes": 4242,
+      "sha256": "d99ca4493c4a86904b31a29f15c011d2fb64281f571c9313a0ca8ecc7350867f"
+    },
+    {
+      "path": "src/native_texture_2d_owner.cpp",
+      "bytes": 12145,
+      "sha256": "5c89f1dbe273f54a21415f0b8ecbe42356d306bc570605a907f26f1968e77d0f"
+    },
+    {
+      "path": "include/bsp/native_cube_texture_owner.hpp",
+      "bytes": 2750,
+      "sha256": "d770a6d64fdbc2dbb6770bfca5cbadcb501cc39abbcdc6053e717abcb8095645"
+    },
+    {
+      "path": "src/native_cube_texture_owner.cpp",
+      "bytes": 6420,
+      "sha256": "ede6de9f1b41f358ee94e661d395696845eab91556e640e9ea36073bd45d2d0e"
+    },
+    {
+      "path": "include/bsp/native_volume_texture_owner.hpp",
+      "bytes": 4262,
+      "sha256": "78c2399fd4a524f8b1974f7a84ffe009dcd6bb76fd5db898a46e935789abe1e9"
+    },
+    {
+      "path": "src/native_volume_texture_owner.cpp",
+      "bytes": 7279,
+      "sha256": "e9101f914b2fb2837e207e38189f9671855d488f19f8e49e4c35e5b52c6db205"
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    {
+      "path": "src/game_native_readonly_data.cpp",
+      "bytes": 7167,
+      "sha256": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+    }
+  ],
+  "parent_item107_compiler_fix": {
+    "commit": "6a620df73",
+    "status": "parent-reported compiler-only item107 correction",
+    "item_cpp_bytes": 7424,
+    "item_cpp_sha256": "2ada238ae4e31ac55cf826bf5bb17d30d0807e2752151eba80482e16ea106229"
+  },
+  "handoff_sha256": "b85cfbf02ac3dbb1f279db98d2453a289dc3d13cbf12280f4e495d0a367f0a3e",
+  "validation": [
+    "manual read-only original listing/provider/source schedule inspection",
+    "read-only live target/proto/count/bytes/provider disassembly receipts",
+    "independent original startup disk-byte disassembly",
+    "SHA256 and byte-length integrity manifest"
+  ],
+  "not_performed": [
+    "tracked source edits",
+    "CMake/ledger edits",
+    "Ghidra mutation",
+    "new tests",
+    "compilation",
+    "fixture run",
+    "Game run",
+    "deployment",
+    "commit",
+    "push"
+  ],
+  "held": [
+    "Original binary ABI",
+    "Native FH3/SEH and foreign-fault/unwind identities",
+    "Native Origin",
+    "fullHost activation",
+    "runtime/Game qualification",
+    "Page/Icon type6 owning custody",
+    "parserAEEAF0",
+    "loaderAEF280/AF0060 and pre-GUI common.ats load"
+  ],
+  "admission": "Primary reviews exact candidate, source metadata/build wiring and joined compilation/runtime independently."
+}
