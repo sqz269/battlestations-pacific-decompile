@@ -338,6 +338,22 @@
       "path": "local/function_source_batch90/Source_peer/sealed_receipt.json",
       "bytes": 636,
       "sha256": "a6f85ee23e4acd610382ff87e8d51a373595f80b9a81041b7e1634a905c57812"
+    },
+    {
+      "path": "local/function_source_batch92/symbol_selector_correction.json",
+      "bytes": 636,
+      "sha256": "cd864baeb05f2b55f5dceb6edb561ffb7f971ebbd116891f4c346b64df55cabd"
     }
-  ]
+  ],
+  "symbol_selector_correction": {
+    "affected": [
+      "local/function_source_batch90/decode_Core.py",
+      "local/function_source_batch92/decode_growth_Core.py"
+    ],
+    "initial_failure": "String replacement order left stale write_native_gui_icon_state_growth_storage_00ab1860 selector; empty public/map arrays did not prove actual map absence.",
+    "correction": "Resolve actual insert_native_gui_icon_states_storage_00ab59e0 public COFF symbol, assert exactly one, then check its complete decorated name against each frozen map.",
+    "Source90_and_Source91_actual_public_present_and_normal_map_absent": true,
+    "compiled_bytes_build_runtime_unchanged": true
+  },
+  "actual_Source90_public_symbol": "?insert_native_gui_icon_states_storage_00ab59e0@bsp@@YAXPAXAAY03$$CCIAAUNativeGuiIconStateGrowthStorageFrame@1@AAUNativeGuiIconStateGrowthStorageContext@1@@Z"
 }
