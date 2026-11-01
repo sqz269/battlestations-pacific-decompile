@@ -1,0 +1,273 @@
+{
+  "kind": "Qualified Source121V2 resolved atlas-buffer admission",
+  "Source_author": {
+    "author": "45b3ebc2a78ed68939554ebefc59985f4f7fad23",
+    "parent": "a706208047230d78d0d41fd1dde86be3292a6cf6",
+    "changes": {
+      "docs/CC16_ATLAS_RESOLVED_BUFFER_FIT_ADMISSION.md": "A",
+      "include/bsp/native_particle_text_loader.hpp": "M",
+      "include/bsp/native_texture_atlas_buffer_fit.hpp": "A",
+      "include/bsp/native_texture_atlas_loader_storage.hpp": "M",
+      "reports/cc16_atlas_resolved_buffer_fit.txt": "A",
+      "src/native_particle_text_loader.cpp": "M",
+      "src/native_texture_atlas_buffer_fit.cpp": "A",
+      "src/native_texture_atlas_loader_storage.cpp": "M",
+      "src/game_native_texture_atlas_application.cpp": "M",
+      "cmake/startup.cmake": "M"
+    },
+    "eight_candidate_postimages_exact": true,
+    "postimages": [
+      {
+        "path": "docs/CC16_ATLAS_RESOLVED_BUFFER_FIT_ADMISSION.md",
+        "postimage_sha256": "023abf1cd85f8915d7d25023172a1a5bad07166bc8f883e93a8812ee39878d16",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "include/bsp/native_particle_text_loader.hpp",
+        "postimage_sha256": "38c71d3c6a0d0e2be9ae383b8a6b7544b1284fd7b5e8bdc65994f2f08332fa81",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "include/bsp/native_texture_atlas_buffer_fit.hpp",
+        "postimage_sha256": "8e888fb9c00119176e44ee015900227e25faefa577f2c4bf5ebf4f667eed7ef1",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "include/bsp/native_texture_atlas_loader_storage.hpp",
+        "postimage_sha256": "ee735609730ecc67e383f535b936d1c46f4947c9d76574cc27d3022bd22aab36",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "reports/cc16_atlas_resolved_buffer_fit.txt",
+        "postimage_sha256": "6894c61834810daa86f15f0c9e3a96e634f95f10f72c296b4882599d69d69dc5",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "src/native_particle_text_loader.cpp",
+        "postimage_sha256": "8541400b6102e1863543859c1e9e9a2f9adec8b9caff269a18c12d3e7efbb21f",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "src/native_texture_atlas_buffer_fit.cpp",
+        "postimage_sha256": "c2f389f3aeba6c3aeae7dad032624b82096c9dee7801e5b26629b5b28c6d75fb",
+        "exact_raw_postimage": true
+      },
+      {
+        "path": "src/native_texture_atlas_loader_storage.cpp",
+        "postimage_sha256": "dd2d10aa3f7493c21bcde2683c372733bfc8298fbe622303625bfde2e7254e68",
+        "exact_raw_postimage": true
+      }
+    ],
+    "Root_join": {
+      "one_constructor_argument_from_same_process": true,
+      "complete_CMake_prefix_preserved": true,
+      "added_Core_TUs": 1
+    },
+    "Root_Source_review": "complete finite AF5850/loader delta, guard HCPP, doc/report and exact V1-V2 edge fix; no open findings",
+    "V1_rejected_finding": "signed terminal cursor wrap for INTMAX unterminated final line",
+    "V2_accepted": true,
+    "build_runtime_activation_credit": false
+  },
+  "Source_peer": {
+    "path": "local/function_source_batch121/Source_peer/MANIFEST.json",
+    "bytes": 9309,
+    "sha256": "2f2afbae4c579d2dd0b23f1b6b577c6dd08bd101d834b015c5f863e724037ad8"
+  },
+  "Source_review_findings": [],
+  "V1_rejected_and_preserved": {
+    "finding": {
+      "path": "local/function_source_batch121/Source_peer/V1_FINDING.json",
+      "bytes": 1735,
+      "sha256": "df800b65221cb781961803d46d23d2dd87f1e62e5308f755978af0839ea5b228"
+    },
+    "manifest": {
+      "path": "local/function_source_batch121/candidate/MANIFEST.json",
+      "bytes": 2138,
+      "sha256": "8732fb8c087f92adcddd9a9cf43b51d0cc03529dac69e129262885fbe795ad76"
+    }
+  },
+  "V2_accepted": {
+    "manifest": {
+      "path": "local/function_source_batch121/V2/MANIFEST.json",
+      "bytes": 2209,
+      "sha256": "e07e96d4e2ba86819700fee4f3d9fba53465254904ed7c03d00de80a16fcddbb"
+    },
+    "seal": {
+      "path": "local/function_source_batch121/V2/SEAL.json",
+      "bytes": 7515,
+      "sha256": "a9c6b6a7910b7c97e226ee3b8c088e32d924791ad392f2202e8eda0b21cce285"
+    },
+    "boundary_evidence": {
+      "path": "local/function_source_batch121/V2/EDGE_EVIDENCE.json",
+      "bytes": 2395,
+      "sha256": "3d0a581315e3c3ddb271c2bb3b1f7afe379b6d6fc54b997ced54abacce1d183b"
+    }
+  },
+  "first_build_validation": {
+    "kind": "Root qualified121V2 Source/guard-Code/build/default startup review",
+    "head": "45b3ebc2a78ed68939554ebefc59985f4f7fad23",
+    "selected_inputs": 3797,
+    "artifacts": 150,
+    "all_current_and_retained_pins_verified": true,
+    "build": {
+      "exit": 0,
+      "seconds": 31.7710533
+    },
+    "existing_checks": {
+      "math_seconds": 0.22,
+      "tool_seconds": 12.18,
+      "passed": 2
+    },
+    "Root_guard_Code": {
+      "sections": [
+        {
+          "section": 41,
+          "bytes": 23,
+          "ops": 11,
+          "names": [
+            "?raw_word@?A0x66702236@bsp@@YAIPBXI@Z"
+          ]
+        },
+        {
+          "section": 44,
+          "bytes": 41,
+          "ops": 14,
+          "names": [
+            "?reject@?A0x66702236@bsp@@YAXAAUNativeTextureAtlasBufferFitFrame@2@W4NativeAtlasBufferFitFailure@2@PBD@Z"
+          ]
+        },
+        {
+          "section": 45,
+          "bytes": 706,
+          "ops": 229,
+          "names": [
+            "?require_native_texture_atlas_buffer_scratch_fit@bsp@@YAXPBXABVNativeParticleTextBufferReadFrame@1@IAAUNativeTextureAtlasBufferFitFrame@1@@Z",
+            "__catch$?require_native_texture_atlas_buffer_scratch_fit@bsp@@YAXPBXABVNativeParticleTextBufferReadFrame@1@IAAUNativeTextureAtlasBufferFitFrame@1@@Z$0"
+          ]
+        }
+      ],
+      "ops": 254,
+      "Core_member_exact_once": true,
+      "findings": [],
+      "notes": [
+        "Exact raw DWORD accessor and Source rejection helper; complete229-op normal/catch fit entry read.",
+        "Nonzero scratch/completed load/actual buffer precede currentDATA; nullDATA exits without range scan.",
+        "Actual allocation/read/physical nonwrap checks precede final-byte read; INTMAX/final!=LF branches to distinct rejection at+136/+13E.",
+        "LF-only scan, signed-byte-equivalent21..7F leading and20..7F interior ranges, copied+1 NUL, peak and final capacity compare remain.",
+        "Catch retains failed phase/current exception and bare-rethrows; no Native cleanup or parser call.",
+        "Ordinary Source/control-disjoint domain only; no Original private HOME/ABI/FH3/SEH/fault or broader all-write safety claim."
+      ]
+    },
+    "default_startup": {
+      "manifest": "local/function_source_batch121/default_host/source_host.log.manifest.json",
+      "exe_sha256": "b40f2f8adaf1bc9a3b372d8f30cd8815f14bf4f0a3444f8b04d9e63f80ca9483",
+      "game_exit": 0,
+      "launcher_exit": 0,
+      "natural": true,
+      "forced_stops": [],
+      "survivors": [],
+      "frames_presented": 0
+    },
+    "new_tests": 0,
+    "new_Original_or_vendor_body_credit": 0,
+    "raw_atlas_or_new_guard_executed": false,
+    "atlas_activated": false,
+    "goal": "ACTIVE"
+  },
+  "coupled_build_validation": {
+    "kind": "Root Source121V2/Main prerequisite coupled build/default startup qualification",
+    "head": "a3d686d1a28c4c8506b05398b6d06791ef9b42cd",
+    "joined_Main": "a114bc3732df3ecc984c3554291f9fb94a04717d",
+    "inputs": 3799,
+    "artifacts": 152,
+    "all_current_and_retained_hashes_match": true,
+    "build": {
+      "exit": 0,
+      "seconds": 92.0320837
+    },
+    "existing_checks": {
+      "math_seconds": 0.27,
+      "tool_seconds": 13.99,
+      "passed": 2
+    },
+    "object_transfer": {
+      "old_head": "45b3ebc2a78ed68939554ebefc59985f4f7fad23",
+      "coupled_head": "a3d686d1a28c4c8506b05398b6d06791ef9b42cd",
+      "objects": [
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_particle_text_loader.obj",
+          "old_sha256": "4e740bf67c6d8f84d5dd02dbdc21084f04ed5dc97d3fee004a832e230b3f229a",
+          "new_sha256": "4e740bf67c6d8f84d5dd02dbdc21084f04ed5dc97d3fee004a832e230b3f229a",
+          "whole_object_equal": true
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_texture_atlas_loader_storage.obj",
+          "old_sha256": "c5b23934f38840deb4a9390e9ffab161b2aa5b6241eb9b3f79fc73a4df34357b",
+          "new_sha256": "c5b23934f38840deb4a9390e9ffab161b2aa5b6241eb9b3f79fc73a4df34357b",
+          "whole_object_equal": true
+        },
+        {
+          "path": "build/win32/bsp_core.dir/Release/native_texture_atlas_buffer_fit.obj",
+          "old_sha256": "aa6eb1bf81c3c7aa63c1743e049344697e47ecc79b151e6d9bebfbbf9ec2da39",
+          "new_sha256": "aa6eb1bf81c3c7aa63c1743e049344697e47ecc79b151e6d9bebfbbf9ec2da39",
+          "whole_object_equal": true
+        },
+        {
+          "path": "build/win32/bsp_game.dir/Release/game_native_texture_atlas_application.obj",
+          "old_sha256": "d8bb2bea68b53c2b657575bfc4662592a0fe64cf836b2a86adcdb8cd6caedaaa",
+          "new_sha256": "618936796982955cfb3a778764c284fb337f17afd6b766c746d0d4a513cdcd67",
+          "whole_object_equal": false
+        }
+      ],
+      "all_whole_objects_equal": false
+    },
+    "GameApp_selected_Code_transfer": "independent peer receipt required",
+    "default_startup": {
+      "manifest": "local/function_source_batch121/coupled/default_host/source_host.log.manifest.json",
+      "exe_sha256": "b3515dfe261405e3c9f8ab703edcd01b0fba1899f6ab7e76a44db97c63176415",
+      "game_exit": 0,
+      "launcher_exit": 0,
+      "natural": true,
+      "forced_stops": [],
+      "survivors": [],
+      "frames_presented": 0
+    },
+    "new_tests": 0,
+    "raw_atlas_or_new_guard_executed": false,
+    "Native_ABI_FH3_SEH_Origin_or_gameplay_credit": false,
+    "goal": "ACTIVE"
+  },
+  "independent_Code": {
+    "qualified_pass": true,
+    "coupled_transfer_qualified": true,
+    "base_seal": {
+      "path": "local/function_source_batch121/Code_peer_base/MANIFEST.json",
+      "sha256": "02252375e1a1b7e0e20311843927f6d4c9f4e63302963717580d58952baaeaf7"
+    },
+    "coupled_transfer_seal": {
+      "path": "local/function_source_batch121/Code_peer_transfer/MANIFEST.json",
+      "sha256": "27249f057cece79bcacf3776d8692b3ad84b9881bdf40596cf5dd86f62d9ca1f"
+    },
+    "Core_whole_objects_equal_and_exact_members_once": 3,
+    "changed_EXE_object_scope": "complete611-byte Impl ctor and4-byte scratch getter sections plus normalized relocations equal; no whole-object reuse claim",
+    "findings": [],
+    "Original_ABI_FH3_SEH_fault_Origin_or_runtime_credit": false
+  },
+  "frozen_final_manifest": {
+    "path": "local/function_source_batch121/coupled/common/manifest.json",
+    "bytes": 1192789,
+    "sha256": "6583ae82e2326293cf2efabc831a72a59b5bae3f9f6f60754b8026bff14650a1"
+  },
+  "new_tests": 0,
+  "new_Original_or_vendor_body_credit": 0,
+  "activated": false,
+  "nine_raw_GUI_switches_changed": false,
+  "remaining": [
+    "actual extent choice and same role routing",
+    "real pre-GUI atlas construction/common loading and observed descriptor/parser/creator completion",
+    "normal retirement preparation",
+    "real Page/Icon production",
+    "required rendering/gameplay checks"
+  ],
+  "goal": "ACTIVE; full activation and required gameplay authorized"
+}
