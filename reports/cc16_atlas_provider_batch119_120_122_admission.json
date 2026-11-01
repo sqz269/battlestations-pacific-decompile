@@ -1,0 +1,213 @@
+{
+  "kind": "Qualified atlas provider119/120/122 joined admission",
+  "Source_authors": {
+    "119": {
+      "author": "ecf5a911cf9a99747772ce01109dc3665fa58bca",
+      "parent": "c808f8b84bb8ff53c5e40075f2f04392a93fc3dc",
+      "changes": {
+        "include/bsp/game_native_renderer_scalars.hpp": "M",
+        "src/game_native_renderer_scalars.cpp": "M",
+        "src/game_native_renderer_shadow.inc": "M",
+        "include/bsp/native_shadow_depth_target_owner.hpp": "M",
+        "src/native_shadow_depth_target_owner.cpp": "M",
+        "docs/CC16_ATLAS_REGISTRY_IMPORT_SUPPLIER.md": "A",
+        "reports/cc16_atlas_registry_import_supplier.json": "A"
+      },
+      "five_raw_Source_postimages_exact": true,
+      "Source_findings": 0,
+      "build_runtime_activation_credit": false
+    },
+    "120": {
+      "author": "c808f8b84bb8ff53c5e40075f2f04392a93fc3dc",
+      "parent": "68ba833ccf775c7a871e56984d0392278e635564",
+      "changes": {
+        "include/bsp/game_hosts_vfs.hpp": "M",
+        "src/game_hosts_vfs.cpp": "M",
+        "docs/CC16_ATLAS_VFS_APPLICATION_SUPPLIER.md": "A",
+        "reports/cc16_atlas_vfs_application_supplier.json": "A"
+      },
+      "Source_files": [
+        {
+          "path": "include/bsp/game_hosts_vfs.hpp",
+          "preimage_sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+          "postimage_sha256": "c502f7fe52bb61e41476dd98bc9d532101a7f5da88a8bc578ff2e04deea289fe",
+          "single_finite_insertion": true
+        },
+        {
+          "path": "src/game_hosts_vfs.cpp",
+          "preimage_sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+          "postimage_sha256": "845653304c39721241076f0bdf153bf3c010a03272787da4b219f61095ecda08",
+          "single_finite_insertion": true
+        }
+      ],
+      "new_callers": 0,
+      "build_runtime_activation_credit": false
+    },
+    "122": {
+      "author": "7f8cd51a98ae0c0c41085bcfdb538f6abc0e0c69",
+      "parent": "07e121347c5eaf77658aa2cc3fc061967846c8ac",
+      "changes": {
+        "include/bsp/game_native_vfs_application.hpp": "M",
+        "src/game_native_vfs_application.cpp": "M",
+        "include/bsp/game_native_vfs_runtime.hpp": "M",
+        "src/game_native_vfs_runtime.cpp": "M",
+        "docs/CC16_ATLAS_RAW_CANONICALIZER_SUPPLIER.md": "A",
+        "reports/cc16_atlas_raw_canonicalizer_supplier.json": "A"
+      },
+      "four_raw_Source_postimages_exact": true,
+      "candidate_doc_report_exact": true,
+      "preimages": [
+        {
+          "path": "include/bsp/game_native_vfs_application.hpp",
+          "current_and_Git_preimages_equal_by_lines": true,
+          "postimage_raw_exact": true
+        },
+        {
+          "path": "src/game_native_vfs_application.cpp",
+          "current_and_Git_preimages_equal_by_lines": true,
+          "postimage_raw_exact": true
+        },
+        {
+          "path": "include/bsp/game_native_vfs_runtime.hpp",
+          "current_and_Git_preimages_equal_by_lines": true,
+          "postimage_raw_exact": true
+        },
+        {
+          "path": "src/game_native_vfs_runtime.cpp",
+          "current_and_Git_preimages_equal_by_lines": true,
+          "postimage_raw_exact": true
+        }
+      ],
+      "Source_findings": 0,
+      "Root_review": "whole finite delta/doc/report; actual runtime provider ownership and constant locale/null role checked; metadata context destructor adds no Native cleanup",
+      "build_runtime_activation_credit": false
+    }
+  },
+  "Source_review_findings": [],
+  "Source_peers": [
+    {
+      "name": "Source119_peer",
+      "seal": "local/function_source_batch119_122/Source119_peer/MANIFEST.json",
+      "sha256": "40835becea280995a1b005d38ead53d7da1a6c95c349f98f8b07e755e00f3772",
+      "retained_and_verified": 10,
+      "qualified_pass": true
+    },
+    {
+      "name": "Source122_peer",
+      "seal": "local/function_source_batch119_122/Source122_peer/MANIFEST.json",
+      "sha256": "2ea512f63ecf5c57366d0ccf34a88cd77a7ed44452d6bd2735361794561e49dc",
+      "retained_and_verified": 3,
+      "qualified_pass": true
+    }
+  ],
+  "Source120_peer": {
+    "path": "local/function_source_batch119_122/Source120_peer/MANIFEST.json",
+    "bytes": 1047,
+    "sha256": "e381def7a2b72155b9b8d8b0718456415df91e0313a183b4966cf26c6a28c5cb"
+  },
+  "Root_validation": {
+    "kind": "Root qualified provider119/120/122 joined build/default startup review",
+    "head": "7f8cd51a98ae0c0c41085bcfdb538f6abc0e0c69",
+    "joined_Main": "7a248f3e9e27ef4881588e4aca583edcf5fe53ba",
+    "selected_inputs": 3790,
+    "artifacts": 146,
+    "all_current_and_retained_pins_verified": true,
+    "build": {
+      "seconds": 240.1449594,
+      "exit": 0
+    },
+    "existing_checks": {
+      "math_seconds": 0.27,
+      "tool_seconds": 11.11,
+      "passed": 2
+    },
+    "Root_Source120_Code": {
+      "section": 1390,
+      "bytes": 4,
+      "ops": 2,
+      "findings": [],
+      "meaning": "one actual facade-owned pointer load at+0C followed by RET, no call or Native effect"
+    },
+    "default_startup": {
+      "manifest": "local/function_source_batch119_122/default_host/source_host.log.manifest.json",
+      "exe_sha256": "f44d16db6d1db9de1e4c4bb8c05ed893f6e6ef53afc2bf8319186e6527d84258",
+      "game_exit": 0,
+      "launcher_exit": 0,
+      "natural": true,
+      "forced_stops": [],
+      "survivors": [],
+      "frames_presented": 0
+    },
+    "credit": {
+      "canonical_import_initialization_and_default_layout_regression": true,
+      "raw_canonicalizer_or_new_atlas_execution": false,
+      "Native_ABI": false,
+      "gameplay": false
+    },
+    "new_tests": 0,
+    "atlas_activated": false,
+    "goal": "ACTIVE"
+  },
+  "Root_validation_pin": {
+    "path": "local/function_source_batch119_122/Root_validation.json",
+    "bytes": 1313,
+    "sha256": "dc1d9d43b04d1c06e0a6d3c3edc256a8ab09c2f82dc630f5627e1478929c9d6e"
+  },
+  "independent_Code": {
+    "seal": "local/function_source_batch119_122/Code_peer/MANIFEST.json",
+    "sha256": "fe8f73d501622d3d42e04d78b20812f482ea8d3da013019982303d90b3211b55",
+    "qualified_pass": true,
+    "verdict": "qualified_bounded_emitted_code_pass",
+    "retained_artifacts_verified": 40,
+    "scope": {
+      "sections": 17,
+      "ops": 608,
+      "Core_members_exact_once": 3,
+      "EXE_application_object": true,
+      "shadow_exec_projection_equal_to118": {
+        "sections": 180,
+        "bytes": 10865
+      },
+      "scalar_Source_size_hex": "0x3C",
+      "raw_context_allocation_hex": "0x24"
+    }
+  },
+  "frozen_common_manifest": {
+    "path": "local/function_source_batch119_122/common/manifest.json",
+    "bytes": 1187734,
+    "sha256": "10167525d44e9104bd542cbab05acadf2c331eb9f9967fc4c436457dc65318fa"
+  },
+  "retained_caller_and_corpus_evidence": [
+    {
+      "name": "scratch",
+      "seal": "local/function_source_batch119_122/scratch/REVIEW_SEAL.json",
+      "sha256": "9a7b599772984753db50997bbf8e39b56538c945c776cc4364f9061c06d7c541",
+      "retained_and_verified": 79
+    },
+    {
+      "name": "caller_plan",
+      "seal": "local/function_source_batch119_122/caller_plan/MANIFEST.json",
+      "sha256": "1ae4daaeae54969443b30a86592d116c8436e2874317574c8bb6944e03ca6450",
+      "retained_and_verified": 6
+    },
+    {
+      "name": "Source120_peer",
+      "seal": "local/function_source_batch119_122/Source120_peer/MANIFEST.json",
+      "sha256": "e381def7a2b72155b9b8d8b0718456415df91e0313a183b4966cf26c6a28c5cb",
+      "retained_and_verified": 7
+    }
+  ],
+  "new_tests": 0,
+  "new_Original_or_vendor_body_credit": 0,
+  "atlas_activated": false,
+  "nine_raw_GUI_switches_changed": false,
+  "Source121_guard_integrated": false,
+  "remaining": [
+    "actual resolved buffer and scratch fit admission",
+    "real pre-GUI atlas construction/common loading and observed descriptor/parser/creator completion",
+    "normal retirement preparation",
+    "real Page/Icon producer",
+    "required rendering/gameplay checks"
+  ],
+  "goal": "ACTIVE; full activation and required gameplay authorized"
+}
