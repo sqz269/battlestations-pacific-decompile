@@ -5,6 +5,8 @@
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_material_lifetime.hpp"
 #include "bsp/native_material_factory.hpp"
+#include "bsp/native_mesh_section_lifetime.hpp"
+#include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_render_observed_zero.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <atomic>
@@ -51,6 +53,31 @@ struct NativePostEffectParentDomain::Impl {
         NativeMeshRetentionState& e) : c20(a), c24(b), binding(c), owners(d), retention(e) {}
 };
 
+// Impl owns this nonmoving record BEFORE any fallible Section reservation.
+// Frames/Calls belong to the selected Section Domain. Once their live loans
+// end, the saved addresses are opaque history only, never late dereferences.
+struct NativePostEffectParentFrame::SectionConstruction final {
+    NativeMeshSectionLifetimeSourceScope* source_live{};
+    const NativeMeshSectionLifetimeSourceScope* source_identity{};
+    NativePostEffectParentFrame* source_next{};
+    NativeMeshSectionLifetimeFrame* frame{};
+    NativeMeshSectionLifetimeCall* create{};
+    NativeMeshSectionLifetimeCall* material{};
+    NativeMeshSectionLifetimeCall* rebuild{};
+    NativeMeshSectionLifetimeCall* creator{};
+    NativeMeshSectionStorage* constructor_return_value{};
+    NativeMeshSectionReference* canonical{};
+    bool source_ended{}, source_failed{}, retirement_pending{}, retired{};
+    bool whole_constructor_returned{}, producer_returned{}, normal_null{};
+    bool material_returned{}, rebuild_returned{}, creator_returned{};
+    bool caller_end_entered{}, caller_ended{}, block_attached{}, borrowed{};
+    SectionConstruction() = default;
+    SectionConstruction(const SectionConstruction&) = delete;
+    SectionConstruction& operator=(const SectionConstruction&) = delete;
+    SectionConstruction(SectionConstruction&&) = delete;
+    SectionConstruction& operator=(SectionConstruction&&) = delete;
+};
+
 struct NativePostEffectParentFrame::Impl {
     NativePostEffectParentDomain& domain;
     const Kind kind;
@@ -87,6 +114,7 @@ struct NativePostEffectParentFrame::Impl {
     std::atomic<bool> retired{false}, cold_cancelled{false};
     std::uint8_t captured_flags{};
     Word virtual_flags_home{};
+    std::unique_ptr<SectionConstruction> section;
     Impl(NativePostEffectParentDomain& d, NativePostEffect20ConstructionBlock& b)
         : domain(d), kind(Kind::parent20), block20(&b) {}
     Impl(NativePostEffectParentDomain& d, NativePostEffectConstructionBlock& b)
@@ -163,6 +191,15 @@ NativePostEffectParentDomain::NativePostEffectParentDomain(
         binding.materials->require_parent_binding(c24.materials,owners,
             c24.destruction.actual_material_profile_00d5e520,retention);
     }
+    if(binding.sections){
+        binding.sections->require_owner_binding(c20.sections,owners,
+            c20.section_bounds_w_00ce4970,retention);
+        binding.sections->require_owner_binding(c24.sections,owners,
+            c24.section_bounds_w_00ce4970,retention);
+        require_owned(&c20.section_bounds_w_00ce4970 == &c20.mesh_constants.maximum_00ce4970 &&
+            &c24.section_bounds_w_00ce4970 == &c24.mesh_constants.maximum_00ce4970,
+            "Parent Section bounds must be the SAME live Mesh maximum reference");
+    }
 }
 NativePostEffectParentDomain::~NativePostEffectParentDomain() {
     // Real owning callers must deny destruction until the genuine close fence.
@@ -232,6 +269,7 @@ bool NativePostEffectParentFrame::requires_process_retention() const noexcept {
 NativePostEffectParentFrame& NativePostEffectParentDomain::prepare20(
     NativePostEffect20ConstructionBlock& block) {
     try {
+        require_owned(!impl_->binding.sections,"Selected Parent Sections require the actual external Source scope");
         require_owned(!impl_->closing.load() && !impl_->failed.load(),"Parent domain cannot prepare after close/failure");
         if (block.ordinary_lifetime_ != &impl_->binding) block.prepare(impl_->c20,impl_->binding);
         require_owned(block.context_ == &impl_->c20 && block.phase_ == NativePostEffect20ConstructionBlock::Phase::prepared && !block.parent_frame_,"Parent20 requires its exact cold Block");
@@ -251,6 +289,7 @@ NativePostEffectParentFrame& NativePostEffectParentDomain::prepare20(
 NativePostEffectParentFrame& NativePostEffectParentDomain::prepare24(
     NativePostEffectConstructionBlock& block) {
     try {
+        require_owned(!impl_->binding.sections,"Selected Parent Sections require the actual external Source scope");
         require_owned(!impl_->closing.load() && !impl_->failed.load(),"Parent domain cannot prepare after close/failure");
         if (block.ordinary_lifetime_ != &impl_->binding) block.prepare(impl_->c24,impl_->binding);
         require_owned(block.context_ == &impl_->c24 && block.phase_ == NativePostEffectConstructionBlock::Phase::prepared && !block.parent_frame_,"Parent24 requires its exact cold Block");
@@ -264,6 +303,48 @@ NativePostEffectParentFrame& NativePostEffectParentDomain::prepare24(
           } }
         require_owned(linked,"Parent prepare crossed its real close fence"); // diagnostics outside mutex
         frame->prepare_after_link();
+        return *frame;
+    } catch (...) { NativePostEffectParentFrame::record_domain_failure(*this); throw; }
+}
+NativePostEffectParentFrame& NativePostEffectParentDomain::prepare20(
+    NativePostEffect20ConstructionBlock& block, NativeMeshSectionLifetimeSourceScope& source) {
+    if(!impl_->binding.sections)return prepare20(block);
+    try {
+        require_owned(!impl_->closing.load() && !impl_->failed.load(),"Parent domain cannot prepare after close/failure");
+        if (block.ordinary_lifetime_ != &impl_->binding) block.prepare(impl_->c20,impl_->binding);
+        require_owned(block.context_ == &impl_->c20 && block.phase_ == NativePostEffect20ConstructionBlock::Phase::prepared && !block.parent_frame_,"Parent20 requires its exact cold Block");
+        auto pending = std::unique_ptr<NativePostEffectParentFrame>(new NativePostEffectParentFrame(*this,block));
+        auto* frame = pending.get();
+        bool linked = false;
+        { std::lock_guard<std::mutex> lock(impl_->mutex);
+          if (!impl_->closing.load()) {
+              frame->impl_->next = impl_->first; impl_->first = frame;
+              (void)pending.release(); linked = true;
+          } }
+        require_owned(linked,"Parent prepare crossed its real close fence"); // diagnostics outside mutex
+        frame->prepare_after_link();
+        frame->prepare_section_caller(source);
+        return *frame;
+    } catch (...) { NativePostEffectParentFrame::record_domain_failure(*this); throw; }
+}
+NativePostEffectParentFrame& NativePostEffectParentDomain::prepare24(
+    NativePostEffectConstructionBlock& block, NativeMeshSectionLifetimeSourceScope& source) {
+    if(!impl_->binding.sections)return prepare24(block);
+    try {
+        require_owned(!impl_->closing.load() && !impl_->failed.load(),"Parent domain cannot prepare after close/failure");
+        if (block.ordinary_lifetime_ != &impl_->binding) block.prepare(impl_->c24,impl_->binding);
+        require_owned(block.context_ == &impl_->c24 && block.phase_ == NativePostEffectConstructionBlock::Phase::prepared && !block.parent_frame_,"Parent24 requires its exact cold Block");
+        auto pending = std::unique_ptr<NativePostEffectParentFrame>(new NativePostEffectParentFrame(*this,block));
+        auto* frame = pending.get();
+        bool linked = false;
+        { std::lock_guard<std::mutex> lock(impl_->mutex);
+          if (!impl_->closing.load()) {
+              frame->impl_->next = impl_->first; impl_->first = frame;
+              (void)pending.release(); linked = true;
+          } }
+        require_owned(linked,"Parent prepare crossed its real close fence"); // diagnostics outside mutex
+        frame->prepare_after_link();
+        frame->prepare_section_caller(source);
         return *frame;
     } catch (...) { NativePostEffectParentFrame::record_domain_failure(*this); throw; }
 }
@@ -305,6 +386,7 @@ void NativePostEffectParentFrame::end_outer_call() noexcept {
 void* NativePostEffectParentFrame::allocate_parent() {
     require_healthy();
     require_owned(impl_->producer_entered.load()&&impl_->constructor_scope_active.load(),"Parent allocation requires its admitted whole constructor scope");
+    if(impl_->domain.impl_->binding.sections)require_prepared_section_calls();
     impl_->allocator_entered.store(true,std::memory_order_release);
     const std::size_t bytes = impl_->kind == Kind::parent20 ? 0x20u : 0x24u;
     void* actual = singleton_lifetime_allocate(
@@ -318,7 +400,7 @@ void* NativePostEffectParentFrame::allocate_parent() {
 void NativePostEffectParentFrame::cancel_normal_null_allocation() {
     require_owned(impl_->allocator_returned.load() && !impl_->actual && !impl_->constructor_entered.load() &&
         !impl_->atomic_born.load() && !impl_->published.load(),"Parent cold cancel requires actual normal NULL");
-    if(impl_->domain.impl_->binding.materials){
+    if(impl_->domain.impl_->binding.materials || impl_->domain.impl_->binding.sections){
         // Genuine NULL is not a cancellation receipt. The cold Material loan
         // remains live through this admitted constructor's final catch fence.
         impl_->normal_null_recorded.store(true,std::memory_order_release);return;
@@ -551,6 +633,223 @@ void NativePostEffectParentFrame::release_creator(long (__stdcall* decrement)(vo
         require_healthy(); end_outer_call();
     } catch (...) { record_source_failure(); end_outer_call(); throw; }
 }
+void NativePostEffectParentFrame::prepare_section_caller(NativeMeshSectionLifetimeSourceScope& source) {
+    require_healthy();auto& d=*impl_->domain.impl_;
+    require_owned(d.binding.sections&&!impl_->section&&impl_->attached&&impl_->counted&&impl_->block_linked&&
+        !impl_->producer_entered.load()&&!impl_->allocator_entered.load()&&!source.ended_&&!source.failed_,
+        "Parent Section association requires retained cold attachment and SAME live Source scope");
+    if(impl_->block20)require_owned(impl_->block20->parent_frame_==this&&impl_->block20->context_==&d.c20&&
+        impl_->block20->ordinary_lifetime_==&d.binding&&!impl_->block20->section_frame_,
+        "Parent20 Section association lost its exact cold Block");
+    else require_owned(impl_->block24->parent_frame_==this&&impl_->block24->context_==&d.c24&&
+        impl_->block24->ordinary_lifetime_==&d.binding&&!impl_->block24->section_frame_,
+        "Parent24 Section association lost its exact cold Block");
+    // Store first: a later reservation failure must not discard acquired loans.
+    impl_->section=std::make_unique<SectionConstruction>();
+    auto& s=*impl_->section;
+    s.source_live=&source;s.source_identity=&source;s.block_attached=true;
+    s.source_next=source.parents_;source.parents_=this;
+    s.frame=&d.binding.sections->prepare();
+    s.frame->bind_parent_caller(*this);s.retirement_pending=true;
+    s.create=&s.frame->prepare_call(source);
+    s.material=&s.frame->prepare_call(source);
+    s.rebuild=&s.frame->prepare_call(source);
+    s.creator=&s.frame->prepare_call(source);
+}
+void NativePostEffectParentFrame::require_prepared_section_calls() const {
+    require_healthy();auto& d=*impl_->domain.impl_;
+    const auto* s=impl_->section.get();
+    require_owned(d.binding.sections&&s&&s->source_live&&s->source_identity==s->source_live&&
+        !s->source_ended&&!s->source_failed&&!s->source_live->ended_&&!s->source_live->failed_&&
+        s->frame&&s->create&&s->material&&s->rebuild&&s->creator&&s->retirement_pending&&
+        s->block_attached&&!s->caller_end_entered&&!s->whole_constructor_returned&&!s->producer_returned,
+        "Selected Parent allocation needs all four SAME unused Section callers before effects");
+    s->frame->require_prepared_call(*s->create);
+    s->frame->require_prepared_call(*s->material);
+    s->frame->require_prepared_call(*s->rebuild);
+    s->frame->require_prepared_call(*s->creator);
+}
+void NativePostEffectParentFrame::require_section_constructor_operation(void* actual) const {
+    require_prepared_section_calls();auto& d=*impl_->domain.impl_;
+    require_owned(impl_->attached&&impl_->counted&&impl_->block_linked&&
+        impl_->producer_entered.load()&&impl_->constructor_outer.load()&&
+        impl_->constructor_scope_active.load(std::memory_order_acquire)&&
+        impl_->allocator_entered.load()&&impl_->allocator_returned.load()&&impl_->constructor_entered.load()&&
+        actual&&actual==impl_->actual&&!impl_->published.load()&&!impl_->native_constructor_returned.load()&&
+        !impl_->source_constructor_returned.load()&&!impl_->scalar_entered.load(),
+        "Selected Parent Section entry requires its admitted whole constructor and exact allocation");
+    if(impl_->block20)require_owned(impl_->block20->parent_frame_==this&&impl_->block20->context_==&d.c20&&
+        impl_->block20->ordinary_lifetime_==&d.binding,"Selected Parent20 lost its exact Section caller Block");
+    else require_owned(impl_->block24->parent_frame_==this&&impl_->block24->context_==&d.c24&&
+        impl_->block24->ordinary_lifetime_==&d.binding,"Selected Parent24 lost its exact Section caller Block");
+    // No later count1/profile value or invented Native read authenticates entry.
+}
+void NativePostEffectParentFrame::require_section_producer_operation(
+    NativeMeshSectionLifetimeFrame& frame,NativeMeshSectionLifetimeCall& call) const {
+    require_section_constructor_operation(impl_->actual);
+    require_owned(impl_->section->frame==&frame&&impl_->section->create==&call,
+        "Parent Section producer must use its exact reserved create site");
+}
+NativeMeshSectionStorage* NativePostEffectParentFrame::construct_section() {
+    require_section_constructor_operation(impl_->actual);auto& s=*impl_->section;
+    auto* actual=s.frame->produce_for_parent(*s.create,*this);
+    s.normal_null=actual==nullptr;s.producer_returned=true;
+    return actual;
+}
+void NativePostEffectParentFrame::capture_section_constructor_return(
+    NativeMeshSectionLifetimeFrame& frame,NativeMeshSectionStorage* returned) noexcept {
+    auto* s=impl_->section.get();
+    if(!s||s->frame!=&frame||!s->retirement_pending||s->whole_constructor_returned||
+        !s->block_attached||!impl_->block_linked||!impl_->constructor_scope_active.load(std::memory_order_acquire)||
+        !impl_->constructor_outer.load()||!impl_->constructor_entered.load()||!impl_->actual){
+        record_source_failure();return;
+    }
+    // Pointer-form observation only. In particular, do not form *returned before
+    // the Section producer validates its own whole return and publishes it.
+    s->constructor_return_value=returned;s->whole_constructor_returned=true;
+    if(impl_->block20)impl_->block20->acquired_.section_created=returned;
+    else impl_->block24->acquired_.section_created=returned;
+}
+NativeMeshSectionReference& NativePostEffectParentFrame::publish_section_borrow() {
+    require_healthy();auto& s=*impl_->section;
+    require_owned(s.producer_returned&&!s.normal_null&&s.whole_constructor_returned&&
+        s.constructor_return_value&&s.block_attached&&impl_->block_linked&&!s.borrowed&&!s.canonical,
+        "Parent Section borrow needs the genuine returned/published child, once only");
+    auto& reference=s.frame->canonical();s.canonical=&reference;s.borrowed=true;
+    if(impl_->block20){
+        auto& b=*impl_->block20;b.section_frame_=s.frame;
+        b.keys_[NativePostEffect20ConstructionBlock::section]=s.constructor_return_value;
+        b.references_[NativePostEffect20ConstructionBlock::section]=&reference;
+        b.registered_[NativePostEffect20ConstructionBlock::section]=false;
+        b.retired_[NativePostEffect20ConstructionBlock::section]=false;
+        b.acquired_.section_reference=&reference;
+    }else{
+        auto& b=*impl_->block24;b.section_frame_=s.frame;
+        b.keys_[NativePostEffectConstructionBlock::section]=s.constructor_return_value;
+        b.references_[NativePostEffectConstructionBlock::section]=&reference;
+        b.registered_[NativePostEffectConstructionBlock::section]=false;
+        b.retired_[NativePostEffectConstructionBlock::section]=false;
+        b.acquired_.section_reference=&reference;
+    }
+    return reference; // SAME Frame canonical; no optional companion/bind/retain
+}
+void NativePostEffectParentFrame::set_section_material(void* incoming) {
+    require_healthy();auto& s=*impl_->section;
+    require_owned(s.borrowed&&s.block_attached&&impl_->constructor_scope_active.load()&&
+        impl_->constructor_outer.load()&&!impl_->native_constructor_returned.load(),
+        "Section material site requires the actual whole Parent constructor");
+    set_native_mesh_section_material_00b864c0(*s.frame,*s.material,incoming);
+    s.material_returned=true;
+}
+void NativePostEffectParentFrame::rebuild_section_layout(void* mesh) {
+    require_healthy();auto& s=*impl_->section;
+    require_owned(s.borrowed&&s.block_attached&&impl_->constructor_scope_active.load()&&
+        impl_->constructor_outer.load()&&!impl_->native_constructor_returned.load(),
+        "Section layout site requires the actual whole Parent constructor");
+    auto& d=*impl_->domain.impl_;
+    auto& layouts=impl_->block20?d.c20.layouts:d.c24.layouts;
+    rebuild_native_mesh_section_vertex_layout_00b865a0(*s.frame,*s.rebuild,mesh,layouts);
+    s.rebuild_returned=true;
+}
+void NativePostEffectParentFrame::release_section_creator(long (__stdcall* captured)(volatile long*)) {
+    require_healthy();auto& s=*impl_->section;
+    require_owned(s.borrowed&&s.block_attached&&impl_->constructor_scope_active.load()&&
+        impl_->constructor_outer.load()&&!impl_->native_constructor_returned.load(),
+        "Section creator site requires its actual local A and saved import epoch");
+    release_native_mesh_section_creator(*s.frame,*s.creator,captured);
+    s.creator_returned=true;
+}
+NativePostEffectParentFrame* NativePostEffectParentFrame::section_source_scope_ended(
+    const NativeMeshSectionLifetimeSourceScope& source,bool failed) noexcept {
+    auto* s=impl_->section.get();
+    if(!s||s->source_identity!=&source||s->source_live!=&source||s->source_ended){
+        record_source_failure();return nullptr;
+    }
+    auto* next=s->source_next;s->source_next=nullptr;s->source_live=nullptr;
+    s->source_ended=true;s->source_failed=failed;
+    if(failed)record_source_failure();
+    // Notification follows ALL Call activity withdrawals. This does not allow
+    // the owner to destroy any target until the ENTIRE traversal has returned.
+    finish_closed_section_custody();return next;
+}
+void NativePostEffectParentFrame::section_native_retired(NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionReference& reference) noexcept {
+    auto* s=impl_->section.get();
+    if(!s||s->frame!=&frame||s->canonical!=&reference||!s->whole_constructor_returned||
+        !s->retirement_pending||s->retired){record_source_failure();return;}
+    s->retired=true;s->retirement_pending=false;
+    if(s->block_attached){
+        if(!impl_->block_linked){record_source_failure();return;}
+        if(impl_->block20)impl_->block20->section_source_retired(*this,frame,reference);
+        else impl_->block24->section_source_retired(*this,frame,reference);
+        s->borrowed=false;
+    }
+    // After logical detach ONLY this stable Parent-owned metadata is touched.
+    // Retirement precedes scalar health/Source return and is no success fence.
+    finish_closed_section_custody();
+}
+void NativePostEffectParentFrame::preflight_section_caller_end() const {
+    if(!impl_->domain.impl_->binding.sections){
+        require_owned(!impl_->section,"Null Section binding cannot adopt a caller later");return;
+    }
+    require_healthy();const auto* s=impl_->section.get();
+    require_owned(s&&s->source_ended&&!s->source_live&&!s->source_next&&!s->source_failed,
+        "Parent Section callers require the SAME actual post-withdrawal Source end");
+    if(s->caller_ended)return; // remaining addresses are opaque history only
+    require_owned(!s->caller_end_entered&&s->frame&&s->create&&s->material&&s->rebuild&&s->creator&&
+        !impl_->constructor_outer.load()&&!impl_->constructor_scope_active.load(),
+        "Parent Section caller end cannot replay/cross its constructor fence");
+    const bool skipped=(!impl_->producer_entered.load()&&!impl_->allocator_entered.load())||
+        (impl_->normal_null_recorded.load()&&impl_->allocator_returned.load()&&!impl_->actual);
+    if(skipped)require_owned(!s->producer_returned&&!s->whole_constructor_returned&&!s->canonical&&
+        !s->borrowed&&!s->material_returned&&!s->rebuild_returned&&!s->creator_returned,
+        "Unused Section callers require genuine never-entered/Parent-NULL history");
+    else require_owned(s->producer_returned&&!s->normal_null&&s->whole_constructor_returned&&s->canonical&&
+        s->material_returned&&s->rebuild_returned&&s->creator_returned,
+        "Parent Section sites retain unknown/partial/normal-tail return custody");
+    // These are ONLY our four actual top-level Calls, never Frame.calls,
+    // terminal/foreign/ancestor heads or the Section Domain final seal.
+    s->frame->preflight_caller_end(*s->create);
+    s->frame->preflight_caller_end(*s->material);
+    s->frame->preflight_caller_end(*s->rebuild);
+    s->frame->preflight_caller_end(*s->creator);
+}
+void NativePostEffectParentFrame::end_section_caller_after_host_quiescence() {
+    preflight_section_caller_end();if(!impl_->section||impl_->section->caller_ended)return;
+    auto& s=*impl_->section;s.caller_end_entered=true;
+    s.frame->end_caller_after_host_quiescence(*s.create);
+    s.frame->end_caller_after_host_quiescence(*s.material);
+    s.frame->end_caller_after_host_quiescence(*s.rebuild);
+    s.frame->end_caller_after_host_quiescence(*s.creator);
+    if(s.retirement_pending&&s.frame->detach_unborn_parent_caller(*this))s.retirement_pending=false;
+    // End the Block's loan before Material/factory reset. No Native death or
+    // fake retired flag is issued by clearing borrowed C++ cells.
+    if(impl_->block20){
+        auto& b=*impl_->block20;
+        b.references_[NativePostEffect20ConstructionBlock::section]=nullptr;
+        b.acquired_.section_reference=nullptr;b.section_frame_=nullptr;
+    }else{
+        auto& b=*impl_->block24;
+        b.references_[NativePostEffectConstructionBlock::section]=nullptr;
+        b.acquired_.section_reference=nullptr;b.section_frame_=nullptr;
+    }
+    s.borrowed=false;s.block_attached=false;s.caller_ended=true;
+}
+bool NativePostEffectParentFrame::section_caller_ended() const noexcept {
+    return impl_->section&&impl_->section->caller_ended&&!requires_process_retention();
+}
+bool NativePostEffectParentFrame::section_custody_pending() const noexcept {
+    const auto* s=impl_->section.get();
+    return s&&(s->source_live||!s->source_ended||s->retirement_pending||!s->caller_ended);
+}
+void NativePostEffectParentFrame::finish_closed_section_custody() noexcept {
+    if(impl_->closed.load(std::memory_order_acquire)&&impl_->counted&&
+        !section_custody_pending()&&!requires_process_retention()){
+        impl_->domain.impl_->retention.retained_.fetch_sub(1,std::memory_order_release);
+        impl_->domain.impl_->retained.fetch_sub(1,std::memory_order_release);impl_->counted=false;
+    }
+}
+
 void NativePostEffectParentFrame::prepare_material_caller(NativeMaterialFrame& material,
     NativeMaterialFactoryAcquired& acquired,NativeMaterialEffectCacheContext& cache) {
     require_healthy();auto& d=*impl_->domain.impl_;
@@ -679,6 +978,7 @@ void NativePostEffectParentFrame::preflight_close() const {
         (impl_->scalar_source_returned.load()&&impl_->payload_returned.load()&&impl_->typed_ended.load()&&
          impl_->free_returned.load()&&impl_->retired.load()&&!impl_->creator_outstanding.load()),
         "Parent close requires actual complete Source/physical facts, not flags0/partial/unknown");
+    preflight_section_caller_end();
     preflight_material_caller_close();
     // This is the separately frozen Block4+Root4 non-draining normal/cold
     // readiness seam. Its checks precede EVERY receiver/child/cancel/reset.
@@ -712,13 +1012,17 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
     const bool never_entered=!impl_->producer_entered.load()&&!impl_->allocator_entered.load()&&
         !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
     const bool selected_material=impl_->domain.impl_->binding.materials!=nullptr;
+    const bool selected_section=impl_->domain.impl_->binding.sections!=nullptr;
     try {
-        if(never_entered&&!selected_material){
+        if(never_entered&&!selected_material&&!selected_section){
             // Protected old null-binding cold cancellation route.
             if(impl_->block20)impl_->block20->cancel_ordinary_preparation();
             else impl_->block24->cancel_ordinary_preparation();
             impl_->cold_cancelled.store(true,std::memory_order_release);
         }
+        // Full Domain first pass has validated EVERY family's receivers before
+        // this first unlink. End only the four Section callers before reset.
+        if(selected_section)end_section_caller_after_host_quiescence();
         if(caller)require_owned(NativeRenderObservedZeroAccess::end_frame(*caller,false),
             "Parent caller still has an active invocation");
         if(caller!=&terminal_zero_frame_)require_owned(NativeRenderObservedZeroAccess::end_frame(terminal_zero_frame_,false),
@@ -729,7 +1033,7 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
         require_owned(impl_->outer_calls.load()==0&&exact_.outer_calls_.load()==0&&exact_.borrows_.load()==0,
             "Parent close retains an actual C++ caller/count user");
         close_material_caller_after_host_quiescence();
-        if(selected_material&&(never_entered||impl_->normal_null_recorded.load())){
+        if((selected_material||selected_section)&&(never_entered||impl_->normal_null_recorded.load())){
             // The genuine cold Material frame/observations have NOW closed;
             // only this actual post-scope fence may destroy its factory loan.
             if(impl_->block20)impl_->block20->cancel_ordinary_preparation();
@@ -746,7 +1050,7 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
         if(impl_->block20)impl_->block20->parent_frame_=nullptr;
         else impl_->block24->parent_frame_=nullptr;
         impl_->block_linked=false;impl_->closed.store(true,std::memory_order_release);
-        if(impl_->counted){
+        if(impl_->counted&&!section_custody_pending()){
             impl_->domain.impl_->retention.retained_.fetch_sub(1,std::memory_order_release);
             impl_->domain.impl_->retained.fetch_sub(1,std::memory_order_release);impl_->counted=false;
         }
@@ -762,7 +1066,18 @@ void NativePostEffectParentDomain::close_after_host_quiescence() {
         preflight_close();
         for(auto* frame=impl_->first;frame;frame=frame->impl_->next)
             if(!frame->impl_->closed.load())frame->close_after_host_quiescence();
-        require_owned(impl_->retained.load()==0,"Parent graph retains unresolved records");
+        unsigned expected_pending=0;
+        for(auto* frame=impl_->first;frame;frame=frame->impl_->next){
+            require_owned(frame->impl_->closed.load(),"Parent graph retains an unclosed record");
+            if(frame->impl_->counted){
+                require_owned(frame->section_custody_pending(),"Parent graph retains unexplained metadata custody");
+                ++expected_pending;
+            }
+        }
+        // Healthy pending retirement is expected retained metadata, not a
+        // failure or a collection fence. The real owner keeps this Domain and
+        // ALL targets through callback/Source/catch/worker/final fences.
+        require_owned(impl_->retained.load()==expected_pending,"Parent graph retained metadata accounting changed");
     }catch(...){NativePostEffectParentFrame::record_domain_failure(*this);throw;}
 }
 

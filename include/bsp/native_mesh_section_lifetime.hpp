@@ -10,6 +10,7 @@ class NativeMeshSectionLifetimeIssuer;
 class NativeRenderObservedZeroAccess;
 class GuiNativeGeometryOwners;
 class NativePostEffectParentDomain;
+class NativePostEffectParentFrame;
 class NativeMeshSectionLayoutStorageAccess;
 class NativeMeshSectionLayoutStorageLifetimeCalls;
 struct NativeMeshSectionLayoutStorageContext;
@@ -26,7 +27,11 @@ public:
     void fail() noexcept; // metadata only; actual scope end propagates owned heads
 private:
     friend class NativeMeshSectionLifetimeFrame;
+    friend class NativePostEffectParentFrame;
     NativeMeshSectionLifetimeCall* first_{};
+    // Concrete, nonmoving observers; the real owner retains EVERY target until
+    // the entire destructor (including this list traversal) has returned.
+    NativePostEffectParentFrame* parents_{};
     const int uncaught_;
     bool failed_{}, ended_{};
 };
@@ -91,6 +96,7 @@ public:
     void close_after_host_quiescence();
 private:
     friend class NativeMeshSectionLifetimeDomain;
+    friend class NativePostEffectParentFrame;
     friend class NativeMeshSectionLifetimeCall;
     friend class NativeMeshSectionLifetimeSourceScope;
     friend class NativeMeshSectionLifetimeIssuer;
@@ -149,6 +155,15 @@ private:
     void release_storage_child(Call&,void*,const NativeMeshSectionLayoutStorageContext&,
         NativeMeshSectionLayoutStorageLifetimeCalls&);
     void preflight_close() const;
+    // Private coupled Parent bridge. No public permit/raw-pointer adoption.
+    void bind_parent_caller(NativePostEffectParentFrame&);
+    void require_prepared_call(const Call&) const;
+    NativeMeshSectionStorage* produce_for_parent(Call&, NativePostEffectParentFrame&);
+    void preflight_caller_end(const Call&) const;
+    void end_caller_after_host_quiescence(Call&);
+    // Only genuine never-entered/normal-NULL can withdraw an unborn notice
+    // loan. An entered/live/flags0/unknown Section keeps the Parent metadata.
+    bool detach_unborn_parent_caller(NativePostEffectParentFrame&);
     class OperationScope;
     class PayloadScope;
 

@@ -1,4 +1,5 @@
 #include "bsp/native_post_effect_parent_lifetime.hpp"
+#include "bsp/native_mesh_section_lifetime.hpp"
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_post_effect_ordinary_lifetime.hpp"
 #include "bsp/native_post_effect_construction.hpp"
@@ -212,11 +213,14 @@ void NativePostEffectConstructionBlock::cancel_preparation() noexcept {
     cancel_preparation_legacy();
 }
 void NativePostEffectConstructionBlock::cancel_ordinary_preparation() {
-    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+    if (ordinary_lifetime_ && (ordinary_lifetime_->materials || ordinary_lifetime_->sections)) {
         require(phase_ == Phase::preparing || phase_ == Phase::prepared,
             "ordinary Material cold cancellation cannot recover an entered attempt");
         try {
             preflight_close_after_host_quiescence();
+            if (ordinary_lifetime_->sections && parent_frame_)
+                require(parent_frame_->section_caller_ended(),
+                    "bound Parent Section callers must end before cold Block/factory reset");
             if (material_frame_) {
                 if (parent_frame_)
                     require(parent_frame_->material_caller_closed(),
@@ -257,11 +261,12 @@ void NativePostEffectConstructionBlock::cancel_ordinary_preparation() {
     }
 }
 bool NativePostEffectConstructionBlock::requires_ordinary_process_retention() const noexcept {
-    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+    if (ordinary_lifetime_ && (ordinary_lifetime_->materials || ordinary_lifetime_->sections)) {
         return phase_ == Phase::preparing || phase_ == Phase::executing ||
             (parent_frame_ && parent_frame_->requires_process_retention()) ||
             (material_frame_ && material_frame_->requires_process_retention()) ||
-            ordinary_lifetime_->materials->requires_process_retention() ||
+            (ordinary_lifetime_->materials && ordinary_lifetime_->materials->requires_process_retention()) ||
+            (ordinary_lifetime_->sections && ordinary_lifetime_->sections->requires_process_retention()) ||
             (model_frame_ && model_frame_->requires_process_retention()) ||
             ordinary_lifetime_->meshes.requires_process_retention();
     }
@@ -269,6 +274,17 @@ bool NativePostEffectConstructionBlock::requires_ordinary_process_retention() co
         (phase_ == Phase::preparing || phase_ == Phase::executing ||
          (model_frame_ && model_frame_->requires_process_retention()) ||
          ordinary_lifetime_->meshes.requires_process_retention());
+}
+void NativePostEffectConstructionBlock::section_source_retired(
+    NativePostEffectParentFrame& parent, NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionReference& reference) noexcept {
+    if(parent_frame_!=&parent||section_frame_!=&frame||!ordinary_lifetime_||!ordinary_lifetime_->sections||
+        references_[section]!=&reference||acquired_.section_reference!=&reference||registered_[section]||
+        section_reference_||retired_[section]){parent.record_source_failure();return;}
+    // The SAME exact Section record already retired. No second unregister,
+    // payload read or optional destruction; the pointer loan ends here only.
+    retired_[section]=true;references_[section]=nullptr;acquired_.section_reference=nullptr;
+    section_frame_=nullptr;
 }
 void NativePostEffectConstructionBlock::parent_source_retired(
     NativePostEffectParentFrame& frame, RenderCommandReference& reference) noexcept {
@@ -311,6 +327,7 @@ void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() 
     // These checks never issue Native origin, a credit or a cleanup permission.
     require(!ordinary_lifetime_->meshes.requires_process_retention() &&
         (!ordinary_lifetime_->materials || !ordinary_lifetime_->materials->requires_process_retention()) &&
+        (!ordinary_lifetime_->sections || !ordinary_lifetime_->sections->requires_process_retention()) &&
         (!material_frame_ || !material_frame_->requires_process_retention()),
         "failed ordinary Block graph must keep every factory/provider loan");
     if (model_frame_) model_frame_->require_source_healthy();
@@ -342,7 +359,8 @@ void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() 
             acquired_.material_factory == &*material_factory_,
             "ordinary Material close requires its exact Parent/Frame/factory loan");
     for (std::size_t i=0;i!=slot_count;++i)
-        if (i != material || !ordinary_lifetime_->materials)
+        if ((i != material || !ordinary_lifetime_->materials) &&
+            (i != section || !ordinary_lifetime_->sections))
             require(!references_[i] || retired_[i],"ordinary Block still has a live/unknown non-Material companion");
     require((!model_owner_ || model_owner_->phase == NativeModelOwner::Phase::dead) &&
         (!camera_owner_ || camera_owner_->phase == NativeCameraOwner::Phase::dead) &&
@@ -354,20 +372,29 @@ void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() 
             phase == NativeViewportRegistry::Phase::retired,
             "ordinary Block viewport has not reached its actual final disposition");
     }
+    if (ordinary_lifetime_->sections)
+        require(parent_frame_ && !section_reference_ && !registered_[section] &&
+            ((!references_[section] && !section_frame_) ||
+             (section_frame_ && references_[section] == acquired_.section_reference)),
+            "ordinary Section close requires the SAME borrowed Frame canonical");
     if (model_frame_) model_frame_->preflight_close_at_quiescence();
     if (mesh_frame_) NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(*mesh_frame_);
     // Parent performs the separate Material and BOTH caller-observation
     // preflights; do not recurse into it or close/drain anything here.
 }
 void NativePostEffectConstructionBlock::close_ordinary_after_host_quiescence() {
-    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+    if (ordinary_lifetime_ && (ordinary_lifetime_->materials || ordinary_lifetime_->sections)) {
         try {
             preflight_close_after_host_quiescence();
-            require(parent_frame_->material_caller_closed(),
-                "actual Parent Material/caller chains must close before Block/factory reset");
+            if (ordinary_lifetime_->materials)
+                require(parent_frame_ && parent_frame_->material_caller_closed(),
+                    "actual Parent Material/caller chains must close before Block/factory reset");
+            if (ordinary_lifetime_->sections)
+                require(parent_frame_ && parent_frame_->section_caller_ended(),
+                    "actual Parent Section callers must end before Block/factory reset");
             // This is only C++ slot bookkeeping from the SAME genuine private
             // Frame's completion, not a legacy callback/profile/count receipt.
-            retired_[material] = true;
+            if (ordinary_lifetime_->materials) retired_[material] = true;
             if (model_frame_) {
                 model_frame_->close_at_quiescence();
                 model_frame_.reset(); references_[model] = nullptr;
@@ -567,6 +594,12 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
             "ordinary Material Native entry requires its genuine retained Parent caller");
         block.parent_frame_->require_material_constructor_operation(actual);
     }
+    const bool selected_sections = block.ordinary_lifetime_ && block.ordinary_lifetime_->sections;
+    if (selected_sections) {
+        require(block.parent_frame_ != nullptr,
+            "ordinary Section Native entry requires its genuine retained Parent caller");
+        block.parent_frame_->require_section_constructor_operation(actual);
+    }
     auto& c = *block.context_;
     auto& acquired = block.acquired_;
     acquired.actual_owner = actual;
@@ -672,18 +705,26 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
             set_native_material_parameter_owner_00b18a40(*material, actual, 0, c.destruction.actual_owners);
         }
 
-        NativeMeshSectionStorage* section = create_native_mesh_section_00533fa0(c.sections.pool_010901d4,
+        NativeMeshSectionStorage* section;
+        if (selected_sections) section = block.parent_frame_->construct_section();
+        else section = create_native_mesh_section_00533fa0(c.sections.pool_010901d4,
             c.section_bounds_w_00ce4970);
         acquired.section_created = section;
         require(section != nullptr, "native post-effect section dereference requires successful allocation");
-        block.section_reference_.emplace(*section, c.sections,
-            NativeMeshSectionCompanionDisposal{&block, &NativePostEffectConstructionBlock::retire_section});
-        acquired.section_reference = &*block.section_reference_;
-        block.bind(NativePostEffectConstructionBlock::section, section, *block.section_reference_);
+        if (selected_sections) {
+            acquired.section_reference = &block.parent_frame_->publish_section_borrow();
+        } else {
+            block.section_reference_.emplace(*section, c.sections,
+                NativeMeshSectionCompanionDisposal{&block, &NativePostEffectConstructionBlock::retire_section});
+            acquired.section_reference = &*block.section_reference_;
+            block.bind(NativePostEffectConstructionBlock::section, section, *block.section_reference_);
+        }
         put(section, 0x08, 4); put(section, 0x0c, 0); put(section, 0x10, vertex_count);
         put(section, 0x14, 0); put(section, 0x18, primitive_count);
-        set_native_mesh_section_material_00b864c0(*section, c.destruction.actual_owners, pointer(word(actual, 0x14)));
-        rebuild_native_mesh_section_vertex_layout_00b865a0(*section, c.destruction.actual_owners, mesh, c.layouts);
+        if (selected_sections) block.parent_frame_->set_section_material(pointer(word(actual, 0x14)));
+        else set_native_mesh_section_material_00b864c0(*section, c.destruction.actual_owners, pointer(word(actual, 0x14)));
+        if (selected_sections) block.parent_frame_->rebuild_section_layout(mesh);
+        else rebuild_native_mesh_section_vertex_layout_00b865a0(*section, c.destruction.actual_owners, mesh, c.layouts);
         append_native_mesh_draw_section_00b73c60(*mesh, section);
 
         late_raw = block.ordinary_lifetime_ ?
@@ -831,7 +872,8 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
         acquired.draw_record_created = draw;
         auto decrement = c.destruction.actual_decrement_00ce2220; // B4EBB5: ONE epoch for both releases
         acquired.section_creator_release_started = true;
-        release_registered<NativeMeshSectionReference>(section, decrement, c, 0x00d63194u,
+        if (selected_sections) block.parent_frame_->release_section_creator(decrement);
+        else release_registered<NativeMeshSectionReference>(section, decrement, c, 0x00d63194u,
             c.sections.vtable_00d63194, 0x00b86690u);
         acquired.mesh_creator_release_started = true;
         if (block.ordinary_mesh_mode()) block.release_ordinary_mesh_creator(decrement);

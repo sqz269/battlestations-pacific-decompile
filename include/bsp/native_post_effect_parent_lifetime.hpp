@@ -26,6 +26,12 @@ struct NativeMaterialFactoryAcquired;
 struct NativeMaterialEffectCacheContext;
 class NativePostEffect20MaterialObservedZeroIssuer;
 class NativePostEffect24MaterialObservedZeroIssuer;
+class NativeMeshSectionLifetimeDomain;
+class NativeMeshSectionLifetimeFrame;
+class NativeMeshSectionLifetimeCall;
+class NativeMeshSectionLifetimeSourceScope;
+class NativeMeshSectionReference;
+struct NativeMeshSectionStorage;
 
 // Source metadata over the actual two parent producers. The real caller must
 // retain this Domain, its providers and the SAME nonmoving Blocks through all
@@ -45,6 +51,10 @@ public:
     // takes a concrete cold Block, never an already-born raw pointer or permit.
     NativePostEffectParentFrame& prepare20(NativePostEffect20ConstructionBlock&);
     NativePostEffectParentFrame& prepare24(NativePostEffectConstructionBlock&);
+    NativePostEffectParentFrame& prepare20(NativePostEffect20ConstructionBlock&,
+        NativeMeshSectionLifetimeSourceScope&);
+    NativePostEffectParentFrame& prepare24(NativePostEffectConstructionBlock&,
+        NativeMeshSectionLifetimeSourceScope&);
     bool requires_process_retention() const noexcept; // failure/unknown only
     bool has_retained_records() const noexcept;      // expected live is separate
     void close_after_host_quiescence(); // a real caller fence, not a counter test
@@ -75,6 +85,8 @@ private:
     friend class NativePostEffect20Reference;
     friend class NativePostEffectConstructionBlock;
     friend class NativePostEffect20ConstructionBlock;
+    friend class NativeMeshSectionLifetimeFrame;
+    friend class NativeMeshSectionLifetimeSourceScope;
     friend class NativeRenderObservedZeroAccess;
     // Definitions remain private to the two actual payload provider TUs.
     // They may continue only the real returned-zero, already-resolved edge.
@@ -160,6 +172,31 @@ private:
     void preflight_material_caller_close() const;
     void close_material_caller_after_host_quiescence();
     bool material_caller_closed() const noexcept;
+    // Concrete caller-owned loans over the SAME external Source scope. Neither
+    // these histories nor the retained counters replace the real owner's fence:
+    // ALL observer targets must survive the ENTIRE Source destructor traversal.
+    struct SectionConstruction;
+    void prepare_section_caller(NativeMeshSectionLifetimeSourceScope&);
+    void require_prepared_section_calls() const;
+    void require_section_constructor_operation(void* actual) const;
+    void require_section_producer_operation(NativeMeshSectionLifetimeFrame&,
+        NativeMeshSectionLifetimeCall&) const;
+    NativeMeshSectionStorage* construct_section();
+    void capture_section_constructor_return(NativeMeshSectionLifetimeFrame&,
+        NativeMeshSectionStorage* actual_returned) noexcept;
+    NativeMeshSectionReference& publish_section_borrow();
+    void set_section_material(void* actual_incoming);
+    void rebuild_section_layout(void* actual_mesh);
+    void release_section_creator(long (__stdcall* captured)(volatile long*));
+    void preflight_section_caller_end() const;
+    void end_section_caller_after_host_quiescence();
+    bool section_caller_ended() const noexcept;
+    NativePostEffectParentFrame* section_source_scope_ended(
+        const NativeMeshSectionLifetimeSourceScope&, bool failed) noexcept;
+    void section_native_retired(NativeMeshSectionLifetimeFrame&,
+        NativeMeshSectionReference&) noexcept;
+    bool section_custody_pending() const noexcept;
+    void finish_closed_section_custody() noexcept;
     void preflight_close() const;
     // Future CPP definitions: only the admitted constructor/scalar mutation
     // owner may propagate failure through its own receiver at the real fence.
