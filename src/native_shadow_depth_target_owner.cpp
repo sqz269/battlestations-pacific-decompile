@@ -34,7 +34,7 @@ void enter_section(NativeShadowDepthTargetOperation& a,NativeShadowDepthTargetCo
     if(!a.captured_section)return;
     a.captured_enter=c.bindings.enter_00ce2218;
     require(a.captured_enter!=nullptr,"shadow target requires current EnterCriticalSection import");
-    a.captured_enter(a.captured_section);a.section_entered=true;
+    a.captured_enter(static_cast<::_RTL_CRITICAL_SECTION*>(a.captured_section));a.section_entered=true;
     put(a.captured_section,0x18,word(a.captured_section,0x18)+1u);a.section_incremented=true;
 }
 void leave_section(NativeShadowDepthTargetOperation& a,NativeShadowDepthTargetContext& c) {
@@ -42,7 +42,7 @@ void leave_section(NativeShadowDepthTargetOperation& a,NativeShadowDepthTargetCo
     put(a.captured_section,0x18,word(a.captured_section,0x18)-1u);a.section_incremented=false;
     a.captured_leave=c.bindings.leave_00ce2210;
     require(a.captured_leave!=nullptr,"shadow target requires current LeaveCriticalSection import");
-    a.captured_leave(a.captured_section);a.section_entered=false;
+    a.captured_leave(static_cast<::_RTL_CRITICAL_SECTION*>(a.captured_section));a.section_entered=false;
 }
 void base_construct(void* owner,NativeShadowDepthTargetContext& c,NativeShadowDepthTargetOperation& a) {
     const auto& b=c.bindings;

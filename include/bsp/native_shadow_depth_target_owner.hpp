@@ -5,6 +5,8 @@
 #include "bsp/native_shadow_texture_access.hpp"
 #include <memory>
 
+struct _RTL_CRITICAL_SECTION;
+
 namespace bsp {
 // Genuine 2Ch owner. +04/+08 are dimensions, NOT a reference count. The
 // constructor never initializes padding0F/21..23. No native C++ vtable overlay.
@@ -24,7 +26,7 @@ static_assert(offsetof(NativeShadowDepthTargetStorage,color_texture_10)==0x10);
 static_assert(offsetof(NativeShadowDepthTargetStorage,attempted_20)==0x20);
 static_assert(offsetof(NativeShadowDepthTargetStorage,depth_format_28)==0x28);
 struct NativeShadowDepthTargetDimensions { std::uint32_t width, height; };
-using NativeShadowTargetSectionCall=void (__stdcall*)(void* actual_section);
+using NativeShadowTargetSectionCall=void (__stdcall*)(::_RTL_CRITICAL_SECTION* actual_section);
 
 // Borrow exact current publication/import cells and original numeric tables.
 // Runtime/getter/terminal providers must share the same actual renderer,

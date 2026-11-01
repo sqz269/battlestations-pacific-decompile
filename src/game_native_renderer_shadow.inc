@@ -9,6 +9,7 @@ struct ShadowTargetGraph {
    context({host.manager_publication_01090aa0(),process.shadow_target_publication_00f8bbf0(),
        renderer,resources.runtime_textures,resources.texture_surfaces,resources.lifetime,
        resources.direct_terminals,g.profiles(0xd5f0a8),g.profiles(0xd61948),
+       // Borrow the SAME typed CURRENT cells by const volatile reference.
        process.enter_iat_00ce2218(),process.leave_iat_00ce2210()}) {}
  bool quiescent() const noexcept {
   for(std::size_t i=0;i<context.operation_count();++i)

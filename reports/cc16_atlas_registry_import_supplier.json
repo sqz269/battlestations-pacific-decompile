@@ -1,0 +1,57 @@
+{
+  "worker_candidate": {
+    "status": "complete_ignored_source_candidate_unbuilt_unactivated",
+    "base": "68ba833ccf775c7a871e56984d0392278e635564",
+    "candidate_count": 5,
+    "owned_addresses": [
+      "00ce2210",
+      "00ce2218",
+      "00ce2220"
+    ],
+    "finite_direct_consumer": "src/game_native_renderer_shadow.inc:12 in base",
+    "same_cells": "Existing enter/leave cells preserved; new decrement appended to same process owner",
+    "source_layout": "Expected Win32 source size0x38->0x3c; no compiled/Native layout claim",
+    "initialization": "Existing increment/enter/leave order unchanged; new decrement resolve last; new missing-export startup failure frontier",
+    "type_binding": "Atlas section/decrement aliases identical; direct const volatile references; uncompiled",
+    "verification": "Exact pins, narrow original PE/Ghidra IAT evidence, Source inverse, read-only patch applicability",
+    "source_integrity": "SOURCE_INTEGRITY.json",
+    "future_checks": [
+      "Root independent Source review",
+      "MSVC Win32 build and existing checks",
+      "scoped emitted/layout review as needed",
+      "default startup regression"
+    ],
+    "gates": "all nine held; no Native execution/activation/ABI/FH3/SEH/fault/Origin credit",
+    "no_vendor_body_credit": true
+  },
+  "Root_Source_review": "complete finite five-file delta/doc/report, actual registry alias/reference identity and shadow captures/call epochs; no Source findings",
+  "verified_postimages": [
+    {
+      "path": "include/bsp/game_native_renderer_scalars.hpp",
+      "current_and_Git_preimages_equal_by_lines": true,
+      "postimage_raw_exact": true
+    },
+    {
+      "path": "src/game_native_renderer_scalars.cpp",
+      "current_and_Git_preimages_equal_by_lines": true,
+      "postimage_raw_exact": true
+    },
+    {
+      "path": "src/game_native_renderer_shadow.inc",
+      "current_and_Git_preimages_equal_by_lines": true,
+      "postimage_raw_exact": true
+    },
+    {
+      "path": "include/bsp/native_shadow_depth_target_owner.hpp",
+      "current_and_Git_preimages_equal_by_lines": true,
+      "postimage_raw_exact": true
+    },
+    {
+      "path": "src/native_shadow_depth_target_owner.cpp",
+      "current_and_Git_preimages_equal_by_lines": true,
+      "postimage_raw_exact": true
+    }
+  ],
+  "independent_Source_review": "pending additional peer review",
+  "build_runtime_activation_credit": false
+}

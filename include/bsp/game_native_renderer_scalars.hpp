@@ -5,10 +5,12 @@
 #include <cstddef>
 #include <cstdint>
 
+struct _RTL_CRITICAL_SECTION;
+
 namespace bsp::game {
 
 using GameNativeRendererAtomicImport = long (__stdcall*)(volatile long*);
-using GameNativeRendererSectionImport = void (__stdcall*)(void*);
+using GameNativeRendererSectionImport = void (__stdcall*)(::_RTL_CRITICAL_SECTION*);
 
 // Canonical source owner for the loader-zero renderer scalar domain researched
 // at 0108D4BC,0108D4C0,0108D6DC,0108D6E4,0108D6E8,0108DAF8 and0108DAFC.
@@ -29,6 +31,9 @@ public:
     // Address-stable CURRENT pointer cell. Resolve actual kernel32 once;
     // borrowing it performs no increment and creates no alternate counter.
     GameNativeRendererAtomicImport volatile& increment_iat_00ce221c() noexcept;
+    // SAME process-owned CURRENT callable cell for atlas registry retirement.
+    // Resolve actual kernel32 once; borrowing performs no decrement.
+    GameNativeRendererAtomicImport volatile& decrement_iat_00ce2220() noexcept;
     // One loader-zero publication for the actual2Ch shadow owner. Borrowing
     // never constructs, clears or resets it across application instances.
     void* volatile& shadow_target_publication_00f8bbf0() noexcept;
@@ -66,6 +71,8 @@ private:
     GameNativeRendererSectionImport volatile enter_iat_00ce2218_;
     GameNativeRendererSectionImport volatile leave_iat_00ce2210_;
     std::uint32_t instance_generator_binding_serial_0108fd30_{};
+    // Appended ordinary Source cell: pre-existing member order is unchanged.
+    GameNativeRendererAtomicImport volatile decrement_iat_00ce2220_;
 };
 
 // The function-local process object retains loader-zero scalar preimages and

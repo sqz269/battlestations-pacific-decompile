@@ -17,6 +17,14 @@ GameNativeRendererAtomicImport resolve_increment() {
     std::memcpy(&result,&address,sizeof(result));
     return result;
 }
+GameNativeRendererAtomicImport resolve_decrement() {
+    const auto address=GetProcAddress(GetModuleHandleW(L"kernel32.dll"),"InterlockedDecrement");
+    if(!address)throw std::runtime_error("missing actual InterlockedDecrement export");
+    GameNativeRendererAtomicImport result;
+    static_assert(sizeof(result)==sizeof(address));
+    std::memcpy(&result,&address,sizeof(result));
+    return result;
+}
 GameNativeRendererSectionImport resolve_section(const char* name) {
     const auto address=GetProcAddress(GetModuleHandleW(L"kernel32.dll"),name);
     if(!address)throw std::runtime_error("missing actual critical-section import");
@@ -30,7 +38,8 @@ GameNativeRendererSectionImport resolve_section(const char* name) {
 GameNativeRendererScalarProcess::GameNativeRendererScalarProcess()
     :increment_iat_00ce221c_(resolve_increment()),
       enter_iat_00ce2218_(resolve_section("EnterCriticalSection")),
-      leave_iat_00ce2210_(resolve_section("LeaveCriticalSection")) {}
+      leave_iat_00ce2210_(resolve_section("LeaveCriticalSection")),
+      decrement_iat_00ce2220_(resolve_decrement()) {}
 
 GameNativeRendererScalarProcess& game_native_renderer_scalar_process() {
     static GameNativeRendererScalarProcess process;
@@ -55,6 +64,11 @@ GameNativeRendererScalarProcess::surface_allocation_bytes_0108d4c0() noexcept {
 GameNativeRendererAtomicImport volatile&
 GameNativeRendererScalarProcess::increment_iat_00ce221c() noexcept {
     return increment_iat_00ce221c_;
+}
+
+GameNativeRendererAtomicImport volatile&
+GameNativeRendererScalarProcess::decrement_iat_00ce2220() noexcept {
+    return decrement_iat_00ce2220_;
 }
 
 void* volatile&
