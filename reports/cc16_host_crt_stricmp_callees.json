@@ -1,0 +1,63 @@
+{
+  "packet": 145,
+  "base": "4569f0c17b108bd2d5fc4fc2eee3e1f9094b923e",
+  "scope": "stateless current MSVC Win32 Release /MD adapter for existing NativeCrtStricmpCallees",
+  "Native_addresses_owned": [],
+  "Native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "endpoints": [
+    "::_errno() per call",
+    "returning ::_invalid_parameter_noinfo() after five-zero admission",
+    "::_stricmp_l(left,right,nullptr) after null-locale admission"
+  ],
+  "pointer_policy": "actual errno pointer returned directly; actual left/right forwarded unchanged including null; no reinterpretation of private locale",
+  "ownership": "no members/cache/errno bank/locale/handler owner; Root provider/client lifetime and caller-thread custody remain separate",
+  "canonical_cell": "existing V3 game0109DE1C is not UCRT private locale-change state; no reset/sync/fallback",
+  "Source144_Root_binding": "separate and unimplemented by this packet",
+  "validation": {
+    "strict": {
+      "status": "passed",
+      "seconds": 3.3404476,
+      "TU_registered_at_this_stage": false,
+      "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+      "object_sha256": "01203045c9bc51211e4f1e8705e0f9c2bef4f19ff178307a6b1b1ad6260d41c3"
+    },
+    "registered": {
+      "status": "passed",
+      "seconds": 124.739588,
+      "target": "bsp_game",
+      "machine": "014c",
+      "exact_source_membership": 1,
+      "existing_checks_seconds": [
+        0.24,
+        13.66
+      ],
+      "object_sha256": "00fffc4cdaf247f30709a5a841f5ea67b698e4132d55fce65c7817a15b06e66b"
+    },
+    "object_imports": [
+      "__imp___errno",
+      "__imp___invalid_parameter_noinfo",
+      "__imp___stricmp_l"
+    ],
+    "EXE_imports": {
+      "_errno": true,
+      "_invalid_parameter_noinfo": true,
+      "_stricmp_l": false
+    },
+    "provider_map_methods_retained": false,
+    "production_import_retention": "Object-bound third import only; genuine Root consumer/link and production CRT resolution remain open. No dummy consumer/anchor."
+  },
+  "held": [
+    "all nine GUI gates OFF",
+    "Original static-CRT/private ABI/Origin/TLS/handler/locale/fault/SEH/FP/runtime equivalence",
+    "actual production provider lifetime/caller-thread/CRT resolution"
+  ],
+  "new_tests": 0,
+  "Game_runs": 0,
+  "Ghidra_writes": 0,
+  "Root_owned_CMake_prerequisite": {
+    "pre_sha256": "c6ab924ecbc8242e9d36152f77ac8b664781bfcb066cc3e7874778ee19589288",
+    "post_sha256": "54856beb455a10e35129b562d0491b801c9701bc07d1b226a5ee977e96dd5cb4",
+    "excluded_from_four_file_commit": true
+  }
+}
