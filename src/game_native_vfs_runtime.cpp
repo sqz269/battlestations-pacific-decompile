@@ -563,8 +563,8 @@ void GameNativeVfsRuntime::Impl::IconCompletionAdapter::invoke_00be7942(
     try {
         if(!owner.core_registered || owner.retired || failure || owner.unknown_icon_request())
             throw std::logic_error("Icon completion requires the SAME live Runtime and retained call graph");
-        auto node=std::make_unique<Call>();record=node.get();record->parent=parent;record->callback=callback;
-        calls.push_back(std::move(node));current=record;record->entered=true;
+        auto node=std::make_unique<Call>();node->parent=parent;node->callback=callback;
+        calls.push_back(std::move(node));record=calls.back().get();current=record;record->entered=true;
         record->homes[1]=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(second));
         record->homes[0]=static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(first));
         if(callback!=0x00ab58d0)
