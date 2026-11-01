@@ -1,0 +1,306 @@
+{
+  "kind": "Qualified atlas Source108\u2013113 joined integration admission",
+  "Source_authors": {
+    "108": {
+      "author": "9b4bf77001194a6653f3aca7c803d9c9325a51df",
+      "parent": "6acb50eca6d230bb7c3b421fb3df188ae65f42d7",
+      "changes": {
+        "docs/CC16_NATIVE_PATH_CANONICALIZER_RAW_PROVIDER.md": "A",
+        "include/bsp/native_path_canonicalizer.hpp": "M",
+        "reports/cc16_native_path_canonicalizer_raw_provider.json": "A",
+        "src/native_path_canonicalizer.cpp": "M"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [],
+      "compiler_runtime_activation_credit": false
+    },
+    "109": {
+      "author": "ff27f7052b086b08dc73646b53e78cdfd32d7743",
+      "parent": "9b4bf77001194a6653f3aca7c803d9c9325a51df",
+      "changes": {
+        "docs/CC16_NATIVE_TEXTURE_ATLAS_REGISTRY_STORAGE_20261101.md": "A",
+        "include/bsp/native_texture_atlas_registry_storage.hpp": "A",
+        "reports/cc16_native_texture_atlas_registry_storage.json": "A",
+        "src/native_texture_atlas_registry_storage.cpp": "A"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [
+        "reports/cc16_native_texture_atlas_registry_storage.json"
+      ],
+      "compiler_runtime_activation_credit": false
+    },
+    "110": {
+      "author": "e3db5f0e1d3984788234b054c83dc3799f144f6d",
+      "parent": "ff27f7052b086b08dc73646b53e78cdfd32d7743",
+      "changes": {
+        "docs/CC16_NATIVE_TEXTURE_ATLAS_ITEM_POINTER_RESERVE.md": "A",
+        "include/bsp/native_texture_atlas_item_pointer_reserve.hpp": "A",
+        "reports/cc16_native_texture_atlas_item_pointer_reserve.json": "A",
+        "src/native_texture_atlas_item_pointer_reserve.cpp": "A"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [
+        "reports/cc16_native_texture_atlas_item_pointer_reserve.json"
+      ],
+      "compiler_runtime_activation_credit": false
+    },
+    "111": {
+      "author": "068f8575eba62b6a16021fd038ef9abdd640bf4c",
+      "parent": "e3db5f0e1d3984788234b054c83dc3799f144f6d",
+      "changes": {
+        "docs/CC16_NATIVE_STRING_COPY_CONCAT_EXACT.md": "A",
+        "include/bsp/native_string_copy_concat_exact.hpp": "A",
+        "reports/cc16_native_string_copy_concat_exact.json": "A",
+        "src/native_string_copy_concat_exact.cpp": "A"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [
+        "reports/cc16_native_string_copy_concat_exact.json"
+      ],
+      "compiler_runtime_activation_credit": false
+    },
+    "112": {
+      "author": "d8a1be80384a2263c7f3215e0205edce097ea331",
+      "parent": "068f8575eba62b6a16021fd038ef9abdd640bf4c",
+      "changes": {
+        "docs/CC16_ATLAS_PARSER_RENDERER_CUSTODY.md": "A",
+        "include/bsp/game_native_renderer_application.hpp": "M",
+        "reports/cc16_atlas_parser_renderer_custody.json": "A",
+        "src/game_native_renderer_application.cpp": "M"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [
+        "reports/cc16_atlas_parser_renderer_custody.json"
+      ],
+      "compiler_runtime_activation_credit": false
+    },
+    "113": {
+      "author": "6e1570faee45c21ad5818e08dd1e1b84045c9b5a",
+      "parent": "d8a1be80384a2263c7f3215e0205edce097ea331",
+      "changes": {
+        "docs/CC16_NATIVE_TEXTURE_ATLAS_PARSER_STORAGE.md": "A",
+        "include/bsp/native_texture_atlas_parser_storage.hpp": "A",
+        "reports/cc16_native_texture_atlas_parser_storage.json": "A",
+        "src/native_texture_atlas_parser_storage.cpp": "A"
+      },
+      "Source_postimages_exact": true,
+      "metadata_line_endings_only": [
+        "reports/cc16_native_texture_atlas_parser_storage.json"
+      ],
+      "compiler_runtime_activation_credit": false
+    }
+  },
+  "compiler_identifier_fix": {
+    "exact_four_identifiers_per_CPP": true,
+    "total": 12,
+    "files": [
+      {
+        "path": "src/native_texture_atlas_item_pointer_reserve.cpp",
+        "before_sha256": "166e8cde2da0e726caa1438f7d2a1d230f0a3b31ec75e630b80cda3032882a5e",
+        "after_sha256": "2128ca32e1b946c7a1627ff5264e6375f122f0923f3901e4d31a82673d8a7beb",
+        "identifier_changes": 4
+      },
+      {
+        "path": "src/native_string_copy_concat_exact.cpp",
+        "before_sha256": "feba5cbd833743d7a79c7fb15823f7b50e7cc035996f999f4f75f6f339f5055e",
+        "after_sha256": "439e7bfccda4c53e992b5a2b8870ff403c0fe694f25002e5f5c5a09470bc4121",
+        "identifier_changes": 4
+      },
+      {
+        "path": "src/native_texture_atlas_parser_storage.cpp",
+        "before_sha256": "a0d1f14461766462fe19f4f8ccdaca3a0cfa99de6a970c7a903876427b016b35",
+        "after_sha256": "cb5eed2f03f72947c6c4e14f2d242b8f098c9d412013ceb7cdf8984abf6abb06",
+        "identifier_changes": 4
+      }
+    ],
+    "original_seals_immutable": true,
+    "behavior_API_change": false
+  },
+  "CMake": {
+    "author": "e189fd95e8b1be3c93b10ab5f9b0dc3fa9cbfa84",
+    "new_TUs": [
+      "native_texture_atlas_registry_storage",
+      "native_texture_atlas_item_pointer_reserve",
+      "native_string_copy_concat_exact",
+      "native_texture_atlas_parser_storage"
+    ],
+    "whole_existing_prefix_preserved": true
+  },
+  "Source_reviews": {
+    "108": "Root7seams/inverse and independentSource0",
+    "109": "RootwholeHCPP/doc and independentfivebodySource0/39pins/10exports",
+    "110_111": "RootwholeHCPP/docs and independentSource0, known name-only fixes",
+    "112_113": "RootallfiniteGamehunks/wholeparserHCPP/docs and independentSource0/24artifacts/33baseline/3canonical/5exports"
+  },
+  "build": {
+    "status": "PASS official joined Win32 Release and existing checks",
+    "head": "e189fd95e8b1be3c93b10ab5f9b0dc3fa9cbfa84",
+    "seconds": 63.1765973,
+    "inputs": 3751,
+    "artifacts": 130,
+    "checks": {
+      "reconstructed_math": 0.26,
+      "tool_tests": 11.5
+    },
+    "new_tests": 0,
+    "artifact_target_correction": "The existing renderer application object belongs to bsp_game.dir, not bsp_core; evidence selector corrected before final130-file freeze. No source/rebuild change.",
+    "Core_members": "five exact single members, Game object separateEXEtarget",
+    "Source_function_OriginalABI_gameplay_credit": false
+  },
+  "frozen_manifest_sha256": {
+    "bytes": 1170352,
+    "sha256": "9871f935949a8888c11fc81aa94acd0f0f21baa9a67b2bbc7dfcf9129cf0c953"
+  },
+  "Core109": {
+    "scope": {
+      "sections": 12,
+      "bytes": 3490,
+      "operations": 1086,
+      "all_listing_texts_match_independently_verified_decode": true,
+      "description": "Five ordinary NORMAL entries plus capture_and_enter, leave_captured, release_texture, destroy_array, flags_byte, put and word; includes inlined raw access sites. Mechanical verification of177 executable sections is byte/decode/relocation integrity, not semantic review of all STL/vendor templates."
+    },
+    "verdict": "No blocking emitted-code discrepancy found within bounded authored ordinary-NORMAL Source109 scope. Qualified static Core pass only.",
+    "pin": {
+      "bytes": 14471,
+      "sha256": "0ed0b45489314b8f2e6dd5d7057539882dcf5fa99f9b6105bd0f7c254d2b222a"
+    }
+  },
+  "Core112_113": {
+    "scope": {
+      "Source113_main": {
+        "section": 102,
+        "bytes": 3491,
+        "operations": 889,
+        "all_rows_inspected": true,
+        "includes": "whole ordinary NORMAL parser flow plus actual Source catch and error arms"
+      },
+      "Source113_context": {
+        "section": 29,
+        "bytes": 370,
+        "operations": 126,
+        "all_rows_inspected": true
+      },
+      "Source113_author_helpers": {
+        "sections": [
+          91,
+          94,
+          97,
+          104,
+          105,
+          106,
+          107,
+          108,
+          109,
+          111,
+          114
+        ],
+        "scope": "whole emitted anonymous word/put/pointer/bits/at/signed/doubled-capacity/pool-return/text-return and two cell-domain predicates"
+      },
+      "Source113_Source_EH": {
+        "sections": [
+          102,
+          103,
+          110
+        ],
+        "scope": "Source ordinary catch/error arms, bounded Source EH dispatch metadata and emitted metadata-unwind stub only; no original FH3/SEH/Origin equivalence"
+      },
+      "Source113_metadata_adoption": {
+        "sections": [
+          9,
+          18,
+          20,
+          25,
+          26
+        ],
+        "scope": "selected child construction/list adoption bodies plus the actual inlined pre-BF681B node adoption in section102; no whole STL/vendor framework audit"
+      },
+      "Source112_accessor": {
+        "section": 5827,
+        "bytes": 117,
+        "operations": 36,
+        "all_rows_inspected": true
+      },
+      "Source112_construct": {
+        "section": 6010,
+        "bytes": 536,
+        "operations": 150,
+        "all_rows_inspected": true,
+        "scope": "finite new birth store plus surrounding genuine Source B32410 call and later existing work/error arms"
+      },
+      "Source112_existing_getters": {
+        "sections": [
+          6586,
+          6991
+        ],
+        "scope": "only the tiny publication/cache getters used to independently confirm private Impl layout; no new old-body credit"
+      },
+      "not_manually_reviewed": "The remaining parser metadata/STL sections were byte/relocation/decode verified but not given whole-body semantic credit. The other4904 executable Game sections beyond the selected constructor/accessor and two tiny existing getters, and the whole existing Game/native/provider/CRT/vendor bodies, were not manually reviewed.",
+      "Source_baseline": "Immutable V1 full parser HCPP and finite Game seams were independently reviewed in prior REVIEW.json. Frozen parser source is exactly that V1 with four private identifier renames; frozen Game HCPP are byte-identical to V1."
+    },
+    "status": "qualified_emitted_Code_PASS_Source112_finite_renderer_closure_and_Source113_whole_parser",
+    "pin": {
+      "bytes": 75270,
+      "sha256": "ef9eecfce934e4399e232e3fa33235db4bf4ea9a6441500c2b4d7fdbc74338fa"
+    },
+    "selected_map": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\local\\function_source_batch108_113\\common\\artifacts\\build\\win32\\bsp_game.map",
+      "bytes": 11671913,
+      "sha256": "05826fce7353299253a5114389cb521442a71b6124e3f06663c25de4209fc81f",
+      "matches": {
+        "construct": [
+          {
+            "line": 7982,
+            "text": " 0001:002b8a00       ?construct@GameNativeRendererApplication@game@bsp@@QAEXXZ 102b9a00 f   game_native_renderer_application.obj"
+          }
+        ],
+        "atlas_accessor": [],
+        "parser": []
+      },
+      "retained_link_claim_for_parser_or_accessor": false
+    }
+  },
+  "Root_focused_Core": {
+    "kind": "Root focused emittedCode108/110/111 assessment",
+    "scope": {
+      "108": "Whole179-op raw sharedbody,23-op coldcontext andboth4-opentrywrappers; old semanticbodySourceexactsharednotwhole178-opCodeclaim",
+      "110": "Whole94-op rawreserve clamp/signedcapacity/wrappedallocation,currentcopy/free-beforepublish/currentcount",
+      "111": "Whole108-op copy and154-opconcat inclrealhelpercalls,feature/HOME/currentoperandsequences,count0call/failurecatch"
+    },
+    "findings": 0,
+    "compiler_qualification": "Machine pointer-identity CMP in both string helpers is scheduled after raw output zero stores; normal same-pointer result is unchanged with excluded private-stack/argument aliases. Original CMP/FLAGS/privatefault order is not claimed.",
+    "Source_API_not_Original_ABI": true,
+    "five_Core_objects_exact_single_members": true,
+    "Source112_target": "bsp_game object, not Corelibrary; actualconstruct/newaccessor separatelyscoped bypeer"
+  },
+  "runtime": {
+    "kind": "Rendererconstruct/oldcanonicalizer startup-only regression",
+    "build_head": "e189fd95e8b1be3c93b10ab5f9b0dc3fa9cbfa84",
+    "game": 0,
+    "launcher": 0,
+    "exe_sha256": "5fb2a190d9ec4c0e01274d96d73059be29ec658ef57208bbf21d242f62f87e7e",
+    "env": {},
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "raw_atlas_executed": false,
+    "Type6_gameplay_validated": false
+  },
+  "live_ctor_log": "native renderer constructed: owner=00811828 api=008135E0 lua=0948DB80 worker=20320 storage=actual1d94h",
+  "new_tests": 0,
+  "new_Native_vendor_credit": 0,
+  "raw_atlas_execution": false,
+  "raw_Type6_activation": false,
+  "goal": "ACTIVE; fully activated integration with required gameplay authorized",
+  "remaining": [
+    "AF0060/AEF280/AEF3C0/exact469840/425F40/4CAD40 Source candidate review and separatebuild",
+    "single actual atlas/scratch/empty process roles and CFEAE8 singletondeletion producer",
+    "common.ats-before-GUI actual startup",
+    "earlyeffect/materialservices and PageIcon realretainedrecord production",
+    "all existinglower/upper/Host/worker/quiescence/ABI/custody gates and relevant rendering/gameplay checks"
+  ]
+}
