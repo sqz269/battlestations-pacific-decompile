@@ -1,0 +1,99 @@
+{
+  "packet": "Source149 captured texture dimensions",
+  "base_Main": "03427e061ce20711f983cc6098e8ac870f5a970f",
+  "Native_vendor_body_credit": 0,
+  "Native_address_ownership": [],
+  "new_files": [
+    "include/bsp/game_native_captured_texture_dimensions.hpp",
+    "src/game_native_captured_texture_dimensions.cpp",
+    "docs/CC16_CAPTURED_TEXTURE_DIMENSIONS.md",
+    "reports/cc16_captured_texture_dimensions.json"
+  ],
+  "constructor_input": "SAME concrete NativeRenderActualOwnerRegistry& returned by Root renderer",
+  "ownership": "reference plus stable captured-only GuiTextureCallbacks member; deleted copy/move; no Native owner/count/retain",
+  "callback": "uint32_t(void* actual, uint32_t captured_profile, uint32_t captured_target); full values preserved, uint32 result bits unchanged",
+  "ordered_guards": [
+    "nonnull actual/passed D61948",
+    "SAME canonical registry resolve_actual",
+    "existing aligned actual+4 std::launder atomic<int32_t> alias check",
+    "same current positive count load",
+    "passed target comparison then named kernel or Source error"
+  ],
+  "named_dispatch": [
+    "get_raw_texture_width_00b3ce50",
+    "get_raw_texture_height_00b3ce60",
+    "get_native_texture_saved_width_00b3ce70",
+    "get_native_texture_saved_height_00b3ce80"
+  ],
+  "legacy_callback_slots": "five unbound; not a complete legacy provider",
+  "no_current_profile_slot_recapture": true,
+  "no_numeric_call_RO_IAT_fallback_or_semantic_facade": true,
+  "lifetime": "Caller retains supplier, actual allocation/atomic/companion/registry/providers and real synchronization through calls, failure and actual pending/queued/worker last use; lookup/positive count is no pin or birth/custody authority",
+  "validation": {
+    "strict_initially_unregistered": {
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 2.8645397,
+      "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+      "sourceSHA256": "530484f3023d81430bfa5c790627383ad76e0ef8999b8b63e828e55365231e21",
+      "headerSHA256": "06b2f9ece92adb6930870cbb437f1ccff9c29299230126e8119595375ac2d2ed",
+      "objectSHA256": "9c34739e4fb51db74922ddb025647215788b6dae72189f96218649cc35d53466",
+      "objectBytes": 42005,
+      "TU_registered": false,
+      "executable_or_probe": false
+    },
+    "official_registered": {
+      "status": "passed",
+      "exitCode": 0,
+      "seconds": 130.7600266,
+      "command": "./scripts/build.ps1",
+      "configuration": "Release",
+      "platform": "Win32",
+      "actual_target": "bsp_game",
+      "captured_inputs_unchanged": true,
+      "CMake_owner": "Root worker-only row, excluded",
+      "Root_CMake_postimage_sha256": "ac10b4cd8307539aca80f13e8b59b3bde1eb85e48381f10b5ebeeb74f10b755a",
+      "new_tests_probes_Game": false
+    },
+    "existing_checks": [
+      {
+        "name": "reconstructed_math",
+        "passed": true,
+        "seconds": 0.36
+      },
+      {
+        "name": "tool_tests",
+        "passed": true,
+        "seconds": 14.52
+      }
+    ],
+    "actual_Game_object": {
+      "machine": "014c",
+      "bytes": 35610,
+      "sha256": "e18ce2216e7aa98e509390f203099c8102d28c7ad271c29d1869c6c79bef9e5c"
+    },
+    "project_compile_link_membership_once": true,
+    "selected_generated_sections": 5,
+    "selected_bytes": 943,
+    "selected_ops": 328,
+    "four_real_named_kernel_relocations": true,
+    "exact_selected_map_definitions": 0,
+    "PE_qualification": "unused unbound supplier; object/link-input evidence only, no anchor or execution"
+  },
+  "Root_worker_CMake": {
+    "preimage": "bb1c5aafc8a0844f76a4591a0070ad9df38f1c6bf131d2828c4df35d7f6b7563",
+    "postimage": "ac10b4cd8307539aca80f13e8b59b3bde1eb85e48381f10b5ebeeb74f10b755a",
+    "excluded_from_commit": true
+  },
+  "Root_Page_Source144_Host_frontend_ledger_Ghidra_changes": false,
+  "new_tests_probes_Game": false,
+  "binding_activation": false,
+  "all_nine_existing_gates_held": true,
+  "excluded_proofs": [
+    "accepted kernel/vendor body re-audit",
+    "Original ABI/register/private-frame/FH3/SEH/fault/Origin/FP",
+    "runtime/GUI/defaultstartup",
+    "actual pending/queued/thread last-use closure"
+  ],
+  "follow_on": "Root registration/admission and genuine Source144 binding/Lua/callback/private-backing/last-use caller joins remain separate"
+}

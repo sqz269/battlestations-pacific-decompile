@@ -1,0 +1,26 @@
+# Source149: captured texture dimensions
+
+`GameNativeCapturedTextureDimensions` is a narrow Source provider for `GuiTextureCallbacks::dimension_from_captured`. Its single constructor input borrows the SAME concrete `NativeRenderActualOwnerRegistry` returned by Root's actual renderer. It owns only that reference and a stable callback bundle; copy and move are deleted. Only the captured callback is assigned. The five legacy find/load/width/height/retain callbacks remain genuinely unbound, so this is not a complete legacy callback provider and supplies no stand-in or semantic texture facade.
+
+The implementation copies the accepted Icon application's existing captured adapter and aligned actual-count helper. Each call preserves the actual pointer and both full32-bit captured words. It requires nonnull actual and passed profile D61948, resolves that exact identity in the canonical registry, then checks the existing four-byte-aligned actual+4 atomic alias and its current signed positive load. Only then does it compare the passed target and call one of the four existing named kernels:
+
+| Captured selector data | Existing C++ kernel |
+| --- | --- |
+| 00B3CE50 | get_raw_texture_width_00b3ce50 |
+| 00B3CE60 | get_raw_texture_height_00b3ce60 |
+| 00B3CE70 | get_native_texture_saved_width_00b3ce70 |
+| 00B3CE80 | get_native_texture_saved_height_00b3ce80 |
+
+Unsupported families, missing canonical identities, bad alignment/alias/count or unsupported targets propagate ordinary Source errors. There is no fallback or zero/error dimension. The existing atomic object and owner must already be genuine/live; the laundered data pointer and negative alias/count admission establish no constructor history, Native birth, retain or lifetime pin. No count is initialized, copied, guessed or incremented.
+
+The callback never reads the current texture profile or slot. The caller retains its separate width and later height capture epochs; each passed pair stays unchanged through dispatch. Numeric selectors are comparison data, never host function pointers. The four kernels are ordinary named Source calls under their existing contracts, with their uint32_t return bits forwarded intact. No bool/byte/signed/float narrowing, clamping, scaling or FP work is added. Existing kernel/native/vendor bodies, Original register/private-frame ABI, fault/Origin and FP behavior are reused without a new audit or credit.
+
+Construction binds Source metadata and may throw from ordinary C++ allocation. It performs no explicit Native read/call, acquires no owner and changes no publication. The accessor returns a const reference to the same member bundle. The default destructor drops only callback metadata and performs no Native cleanup. No RO mapping, table resolver, feature/locale/CRT, platform or IAT input is introduced.
+
+Root must retain the supplier/bundle, SAME renderer/registry, actual texture allocation/atomic/canonical companion and transitive providers through synchronous kernel reads, entered failure and real pending/queued/worker last use. Registry metadata locking and a positive count do not prevent concurrent retirement. Caller synchronization and full-Root failure retention remain required. There is no extra retain/release, terminal dispatch, cancel/retry, public readiness/last-use token or new failure policy. Actual Source144 binding, Root/Lua scopes, private backing and queued/thread lifetime closure remain external; all nine gates remain held.
+
+The exact four-file packet starts from published Main03427e061ce20711f983cc6098e8ac870f5a970f and the frozen Root-approved Source149 API. There are no existing Source/Root/Page/Source144/Host/frontend/ledger/Ghidra edits. Strict MSVC x86 compilation first passed while the new TU was unregistered, with `/std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX` in2.8645397s. The actual strict object is014c and contains real relocations to all four named kernels. Root separately owns the worker-only deferred Game registration row; it is excluded from the four-file commit. Registered build, emitted-object/link provenance and unused-PE qualifications are recorded in the final report/candidate receipts.
+
+The final Root-worker-registered Win32 Release build passed in130.760027s, with existing reconstructed_math/tool_tests checks2/2 at0.36s/14.52s and unchanged captured inputs. The actual Game object is COFF014c,35610B, SHA256 `e18ce2216e7aa98e509390f203099c8102d28c7ad271c29d1869c6c79bef9e5c`. Project, actual compile-command and linker-read input membership are each exactly one. Five bounded generated sections total943B/328 operations: constructor, const view, dimension body, lambda and its essential callback dispatch. The four named kernel relocations and captured-value/count-guard path are retained as object evidence. All five selected method names have no exact map definitions because the supplier remains unbound; no dummy consumer, anchor, runtime or PE-retention claim was added. Root-owned worker CMake postimage isac10b4cd8307539aca80f13e8b59b3bde1eb85e48381f10b5ebeeb74f10b755a and is excluded from this Source commit.
+
+No new tests, probes or Game execution are part of this packet. It is a new Source adapter with zero new Native/vendor body credit, not a binary replacement or GUI/runtime admission.
