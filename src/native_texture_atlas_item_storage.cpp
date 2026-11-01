@@ -15,20 +15,20 @@
 namespace bsp {
 namespace {
 using Word = std::uint32_t;
-Word word(const void* address, Word offset=0) {
+Word word(const void* address, Word byte_offset=0) {
     Word result;
     __asm {
         mov eax, address
-        mov edx, offset
+        mov edx, byte_offset
         mov eax, dword ptr [eax + edx]
         mov result, eax
     }
     return result;
 }
-void put(void* address, Word offset, Word value) {
+void put(void* address, Word byte_offset, Word value) {
     __asm {
         mov eax, address
-        mov edx, offset
+        mov edx, byte_offset
         mov ecx, value
         mov dword ptr [eax + edx], ecx
     }
