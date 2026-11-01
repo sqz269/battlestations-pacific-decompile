@@ -61,10 +61,11 @@ struct NativeRenderActualOwnerRegistry::Impl final {
     }
     ExactRecord* indexed_exact(void* identity) const noexcept {
         for (auto* record = exact_buckets[bucket(identity)]; record; record = record->bucket_next_) {
-            // A genuine normal payload-end fact removes only this record from
-            // active indexing. Its C++ node remains retained and counted.
+            // Independent genuine end facts remove only this old key from
+            // active indexing, even if poisoned. The node/caller/debt stay retained.
             if (record->normal_native_dead_.load(std::memory_order_acquire) ||
-                record->unborn_abandoned_.load(std::memory_order_acquire)) continue;
+                record->unborn_abandoned_.load(std::memory_order_acquire) ||
+                record->partial_cpp_ended_.load(std::memory_order_acquire)) continue;
             if (record->actual_key_ == identity && identity) return record;
         }
         return nullptr;
@@ -304,7 +305,8 @@ void NativeRenderActualOwnerRegistry::prepare_exact_record(
             record.retired_ || record.actual_key_ ||
             record.poisoned_.load(std::memory_order_acquire) ||
             record.normal_native_dead_.load(std::memory_order_acquire) ||
-            record.unborn_abandoned_.load(std::memory_order_acquire);
+            record.unborn_abandoned_.load(std::memory_order_acquire) ||
+            record.partial_cpp_ended_.load(std::memory_order_acquire);
         if (!invalid_record && !impl_->key_present(captured_actual_key)) {
             record.actual_key_ = captured_actual_key;
             impl_->index_exact(record);
@@ -337,6 +339,23 @@ void NativeRenderActualOwnerRegistry::deactivate_exact_record_from_native_end(
     record.normal_native_dead_.store(true, std::memory_order_release);
 }
 
+void NativeRenderActualOwnerRegistry::withhold_exact_record_for_live_storage_debt(
+    ExactRecord& record) noexcept {
+    // Legitimate flags0 after whole Material payload and its late flags read.
+    // The C++ carrier and physical slot remain owed; this is not Source failure.
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::deactivate_exact_record_from_partial_cpp_end(
+    ExactRecord& record) noexcept {
+    // Private owning continuation proved actual C++ prefix birth, ctor escape,
+    // no whole Native return/publication/borrow, selected SAME raw operand and
+    // actual last-prefix-use plus trivial prefix end. No Native access here.
+    // Caller metadata and the separately live pool index survive the pool call.
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+    record.partial_cpp_ended_.store(true, std::memory_order_release);
+}
+
 void NativeRenderActualOwnerRegistry::abandon_exact_unborn_record(ExactRecord& record) noexcept {
     // Private authentic raw-slot unwind, NOT normal Native destruction or a
     // physical-return receipt. BEFORE ANY Owner/Node/payload C++ birth and
@@ -367,6 +386,7 @@ void NativeRenderActualOwnerRegistry::cancel_exact_record_without_payload(ExactR
             record.availability_.load(std::memory_order_acquire) == ExactRecord::Availability::unavailable &&
             !record.normal_native_dead_.load(std::memory_order_acquire) &&
             !record.unborn_abandoned_.load(std::memory_order_acquire) &&
+            !record.partial_cpp_ended_.load(std::memory_order_acquire) &&
             record.outer_calls_.load(std::memory_order_acquire) == 0 &&
             record.borrows_.load(std::memory_order_acquire) == 0) {
             // Only the genuine owner knows allocator-never-entered or actual

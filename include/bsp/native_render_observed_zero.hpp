@@ -5,6 +5,7 @@
 namespace bsp {
 class NativePostEffectModelFrame;
 class NativePostEffectParentFrame;
+class NativeMaterialFrame;
 // No public token or call. Only the specific actual-decrement continuations
 // below may enter. Existing public zero dispatch remains a valid-input legacy
 // interface and does not issue ordinary raw Mesh/Model/parent scalar authority.
@@ -13,6 +14,7 @@ private:
     friend class NativeRenderObservedZeroFrame;
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
+    friend class NativeMaterialFrame;
     friend class NativeModelReference;
     friend struct NativeMatrixStorageAccess;
     friend class NativeMeshCanonicalAccess;
@@ -49,6 +51,7 @@ private:
         std::optional<NativeMeshCanonicalBorrow> mesh_;
         NativePostEffectModelFrame* model_{};
         NativePostEffectParentFrame* parent_{};
+        NativeMaterialFrame* material_{};
     };
     // An empty scope changes only caller metadata, never resolves/samples an
     // owner before its real decrement. Retained holds outlive this active call.

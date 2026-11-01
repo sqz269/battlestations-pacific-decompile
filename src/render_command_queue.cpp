@@ -27,7 +27,7 @@ void retain_render_command_reference(RenderCommandReference& reference) noexcept
 }
 void release_render_command_reference(RenderCommandReference& reference) {
     // Proved-live C++ Base metadata: no pre-count vptr/RTTI/Native header read.
-    if (reference.ordinary_mesh_ || reference.ordinary_model_ || reference.ordinary_parent_) {
+    if (reference.ordinary_mesh_ || reference.ordinary_model_ || reference.ordinary_parent_ || reference.ordinary_material_) {
         NativeRenderObservedZeroAccess::release_ordinary(reference);
         return;
     }
