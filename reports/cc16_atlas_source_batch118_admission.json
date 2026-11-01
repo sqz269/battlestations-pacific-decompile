@@ -1,0 +1,230 @@
+{
+  "kind": "Qualified actual atlas Host-retention Source118 joined admission",
+  "Source_author": {
+    "author": "a900a75930d7e867fdb0f4f14bfb7f128a5f1032",
+    "parent": "d0e463642fe242eb4b57a8115d7c68a7df12bc8b",
+    "changes": {
+      "include/bsp/game_hosts.hpp": "M",
+      "src/game_hosts.cpp": "M",
+      "include/bsp/game_hosts_singletons.hpp": "M",
+      "src/game_hosts_singletons.cpp": "M",
+      "src/game_main.cpp": "M",
+      "include/bsp/native_gui_media_focus_lifetime.hpp": "M",
+      "include/bsp/game_native_texture_atlas_application.hpp": "M",
+      "src/game_native_texture_atlas_application.cpp": "M",
+      "include/bsp/native_singleton_destruction.hpp": "M",
+      "src/native_singleton_destruction.cpp": "M",
+      "include/bsp/native_texture_atlas_manager_delete_attempt.hpp": "A",
+      "docs/CC16_ATLAS_HOST_RETENTION.md": "A",
+      "reports/cc16_atlas_host_retention.json": "A"
+    },
+    "all11Source_postimages_exact": true,
+    "Source_findings": 0,
+    "independent_review_pending": true,
+    "build_runtime_activation_credit": false
+  },
+  "independent_Source_review": {
+    "path": "local/function_source_batch118/Source_peer/MANIFEST.json",
+    "bytes": 537,
+    "sha256": "48b973c88deeee949817c4d18150f5f0bcfd29d86cc594ff9fb9e7152d89aa5f"
+  },
+  "Source_review_accepted": true,
+  "Source_findings": [],
+  "Root_validation": {
+    "kind": "Root qualified118 Source/Code/build/default startup review",
+    "head": "a900a75930d7e867fdb0f4f14bfb7f128a5f1032",
+    "selected_inputs": 3773,
+    "artifacts": 137,
+    "all_current_and_retained_pins_verified": true,
+    "build": {
+      "exit": 0,
+      "seconds": 87.6439972
+    },
+    "existing_checks": {
+      "math_seconds": 0.41,
+      "tool_seconds": 13.84,
+      "passed": 2
+    },
+    "Root_Code": {
+      "complete_sections": [
+        {
+          "section": 2490,
+          "bytes": 42,
+          "ops": 12,
+          "names": [
+            "?acknowledge_native_texture_atlas_after_drain@GameStartupHost@game@bsp@@AAEXXZ"
+          ]
+        },
+        {
+          "section": 2548,
+          "bytes": 299,
+          "ops": 90,
+          "names": [
+            "?bind_native_texture_atlas_retention@GameStartupHost@game@bsp@@AAEXAAVGameNativeTextureAtlasApplication@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@AAVGameNativeVfsApplication@23@AAVGameNativeRendererApplication@23@@Z",
+            "__catch$?bind_native_texture_atlas_retention@GameStartupHost@game@bsp@@AAEXAAVGameNativeTextureAtlasApplication@23@AAVGameSingletonHost@23@AAVGameNativeReadOnlyData@23@AAVGameNativeVfsApplication@23@AAVGameNativeRendererApplication@23@@Z$0"
+          ]
+        },
+        {
+          "section": 2757,
+          "bytes": 37,
+          "ops": 11,
+          "names": [
+            "?exit_if_native_texture_atlas_interrupted@GameStartupHost@game@bsp@@QAEXXZ"
+          ]
+        },
+        {
+          "section": 3078,
+          "bytes": 49,
+          "ops": 12,
+          "names": [
+            "?retain_native_texture_atlas_on_exception@GameStartupHost@game@bsp@@QAEXXZ"
+          ]
+        },
+        {
+          "section": 241,
+          "bytes": 198,
+          "ops": 68,
+          "names": [
+            "?finish_texture_atlas_delete_attempt@GameSingletonHost@game@bsp@@AAEXAAVNativeTextureAtlasManagerDeleteAttempt@3@@Z",
+            "__catch$?finish_texture_atlas_delete_attempt@GameSingletonHost@game@bsp@@AAEXAAVNativeTextureAtlasManagerDeleteAttempt@3@@Z$0"
+          ]
+        },
+        {
+          "section": 268,
+          "bytes": 326,
+          "ops": 94,
+          "names": [
+            "?prepare_texture_atlas_delete_attempt@GameSingletonHost@game@bsp@@AAEAAVNativeTextureAtlasManagerDeleteAttempt@3@AAVNativeTextureAtlasDeletionLifetime@3@@Z",
+            "__catch$?prepare_texture_atlas_delete_attempt@GameSingletonHost@game@bsp@@AAEAAVNativeTextureAtlasManagerDeleteAttempt@3@AAVNativeTextureAtlasDeletionLifetime@3@@Z$0"
+          ]
+        },
+        {
+          "section": 290,
+          "bytes": 614,
+          "ops": 198,
+          "names": [
+            "?shutdown@GameSingletonHost@game@bsp@@QAEXXZ",
+            "__catch$?shutdown@GameSingletonHost@game@bsp@@QAEXXZ$0"
+          ]
+        },
+        {
+          "section": 292,
+          "bytes": 511,
+          "ops": 162,
+          "names": [
+            "?shutdown_selected@GameSingletonHost@game@bsp@@AAEXAAVNativeGuiSelectedManagerDeleteAttempt@3@PAVNativeTextureAtlasManagerDeleteAttempt@3@@Z",
+            "__catch$?shutdown_selected@GameSingletonHost@game@bsp@@AAEXAAVNativeGuiSelectedManagerDeleteAttempt@3@PAVNativeTextureAtlasManagerDeleteAttempt@3@@Z$0"
+          ]
+        }
+      ],
+      "complete_ops": 647,
+      "selected_windows": [
+        {
+          "object": "game_hosts",
+          "name": "??1GameStartupHost@game@bsp@@UAE@XZ",
+          "section": 1434,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 54
+        },
+        {
+          "object": "game_hosts",
+          "name": "?application_shutdown@GameStartupHost@game@bsp@@UAEXXZ",
+          "section": 2525,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 52
+        },
+        {
+          "object": "game_hosts",
+          "name": "?application_destruct@GameStartupHost@game@bsp@@UAEXXZ",
+          "section": 2523,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 47
+        },
+        {
+          "object": "game_hosts",
+          "name": "?destroy_singleton_lifetime_manager@GameStartupHost@game@bsp@@UAEXXZ",
+          "section": 2697,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 47
+        },
+        {
+          "object": "game_hosts",
+          "name": "?drain_native_singletons@GameStartupHost@game@bsp@@AAEXXZ",
+          "section": 2705,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 62
+        },
+        {
+          "object": "game_main",
+          "name": "_WinMain@16",
+          "section": 1402,
+          "scope": "first38 instructions plus atlas/_Exit relocation windows",
+          "selected_ops": 86
+        }
+      ],
+      "selected_window_ops": 348,
+      "findings": [],
+      "notes": [
+        "Actual Host attempt captured once before callbacks; compiled branch passes same pointer to distinct Atlas3/GUIAtlas4 and preserves old routes when absent.",
+        "Host prepare adopts private record; finish checks same identity, full Host/scalar return, then consumes private routing borrow.",
+        "Root bind checks actual owned Host/RO/renderer/VFS and records negative selection before throwing admission.",
+        "First destructor/application/drain guards precede borrowed teardown; WinMain catch atlas call precedes mesh handler and rethrow; real drain catch atlas call precedes old logging.",
+        "Root acknowledge sets fence only after process after_host_shared_drain returns.",
+        "Bounded Source API and emitted-object review; no legacy compiled-body identity, Original ABI/FH3/SEH/hardware fault delivery or new atlas execution claim."
+      ]
+    },
+    "default_startup": {
+      "manifest": "local/function_source_batch118/default_host/source_host.log.manifest.json",
+      "exe_sha256": "74161a50fa01ea935df45afe31f0d32bfadef8fc9c0aa0df456daddc2af47abc",
+      "game_exit": 0,
+      "launcher_exit": 0,
+      "natural": true,
+      "forced_stops": [],
+      "survivors": [],
+      "frames_presented": 0,
+      "new_atlas_executed": false
+    },
+    "new_tests": 0,
+    "atlas_activated": false,
+    "goal": "ACTIVE"
+  },
+  "Root_validation_pin": {
+    "path": "local/function_source_batch118/Root_validation.json",
+    "bytes": 6199,
+    "sha256": "125060d7af0bdd856c89a658e0118beaa9e1e513e343277af7c21d88558e97f6"
+  },
+  "independent_emitted_Code_review": {
+    "seal": "local/function_source_batch118/Code_peer/MANIFEST.json",
+    "sha256": "246db03f8ac54aa13e49cefd05881d2e13edec5efb834bcf5188b3807bc45417",
+    "qualified_pass": true,
+    "verdict": "qualified_bounded_emitted_code_pass",
+    "retained_artifacts_verified": 37,
+    "scope": {
+      "changed_process_sections": 8,
+      "process_ops": 773,
+      "scoped_core_sections": 8,
+      "core_ops": 460
+    }
+  },
+  "frozen_common_manifest": {
+    "path": "local/function_source_batch118/common/manifest.json",
+    "bytes": 1179442,
+    "sha256": "defe92752ac6c6ed58071619b52e8d5c944b0cff318b7a4dd16cc3c39fc79b58"
+  },
+  "new_tests": 0,
+  "activated": false,
+  "nine_raw_GUI_switches_changed": false,
+  "limits": [
+    "ordinary Source/nonreentrant contract only",
+    "no Original ABI/FH3/SEH/hardware-fault or Origin credit",
+    "default startup regression only; no selected atlas exception or new atlas execution"
+  ],
+  "remaining": [
+    "actual canonical providers/cells",
+    "actual scratch-fit and shared consumer roles",
+    "common.ats before GUI",
+    "real Page/Icon production",
+    "required rendering/gameplay validation"
+  ],
+  "goal": "ACTIVE; full activation and required gameplay authorized"
+}
