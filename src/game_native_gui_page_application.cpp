@@ -1,4 +1,6 @@
 #include "bsp/game_native_gui_page_application.hpp"
+#include "bsp/game_native_gui_page_text_active_child34.hpp"
+#include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/game_hosts_fonts.hpp"
 #include "bsp/game_native_font_application.hpp"
 #include "bsp/game_hosts.hpp"
@@ -72,6 +74,13 @@
 #include <list>
 #include <limits>
 #include <optional>
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
 
 namespace bsp::game {
 namespace {
@@ -196,13 +205,14 @@ struct GameNativeGuiPageApplication::Impl {
     // receiver/result and caller-home pointer are passive identities; keeping
     // this record adds no Native reference and never rediscovers a dead child.
     struct WidgetOperation {
-        enum class Kind { child_lookup, visibility };
+        enum class Kind { child_lookup, visibility, captured_text_child34 };
         Kind kind;
         NativeCalls native_calls;
         void* receiver{};
         volatile Word (*lookup_homes)[2]{};
         std::uint8_t requested{};
         Word captured_profile{}, captured_target{};
+        Word captured_flags_dword{};
         void* result{};
         bool entered{}, complete{}, failed{};
         explicit WidgetOperation(Kind value) : kind(value) {}
@@ -423,6 +433,27 @@ struct GameNativeGuiPageApplication::Impl {
         NativeGuiPageScriptContinuation scripts;
         NativeGuiPageReaderContinuation reader;
         NativeGuiPagePropertiesContinuation properties;
+    };
+    // Source history only. The callback and borrowed129 backing survive every
+    // entered escape. No new widget owner, reference or Native cleanup exists.
+    struct TextChild34Borrow {
+        enum class Phase { preparing, borrowed, complete, failed };
+        Phase phase{Phase::preparing};
+        GameNativeGuiPageTextActiveChild34* provider{};
+        NativeGuiTextActiveStorageFrame* frame{};
+        NativeGuiTextActiveStorageAcquired* acquired{};
+        std::optional<NativeGuiTextActiveStorageContext> context;
+        NativeCalls native_calls;
+        NativeCalls* suspended_calls{};
+        PropertyInvocation* suspended_properties{};
+        TextChild34Borrow* parent{};
+        WidgetOperation* active_leaf{};
+        const volatile Word* group_table{};
+        const volatile Word* icon_table{};
+        const volatile Word* base_table{};
+        Word owner_thread{}, callbacks{}, failure_site{0x00ab87d0};
+        bool owns_active{}, context_loaned{};
+        std::atomic<bool> denied{false};
     };
 
     struct SceneTypes final : NativeSceneRegistrationDerivedTypes, NativeNodeParentingDispatch {
@@ -885,6 +916,8 @@ struct GameNativeGuiPageApplication::Impl {
     // Entered failures: retained, never destroyed (the host _Exits first).
     std::vector<std::unique_ptr<Construction>> retained_frames;
     std::vector<std::unique_ptr<WidgetOperation>> widget_operations;
+    std::vector<std::unique_ptr<TextChild34Borrow>> text_child34_borrows;
+    TextChild34Borrow* current_text_child34{};
     std::unique_ptr<GameNativeGuiManagerApplication::PageLifetimeBinding> manager_binding;
     PropertyInvocation* current_properties{};
     NativeCalls* current_calls{};
@@ -1042,6 +1075,24 @@ struct GameNativeGuiPageApplication::Impl {
     void require_icon_services() const;
     NativeCalls& calls() { require(current_calls != nullptr, "Page raw call has no retained invocation backing"); return *current_calls; }
     void prepare_calls(NativeCalls&);
+    TextChild34Borrow& text_child34_borrow(GameNativeGuiPageTextActiveChild34& provider) {
+        for (auto i = text_child34_borrows.rbegin(); i != text_child34_borrows.rend(); ++i)
+            if ((*i)->provider == &provider) return **i;
+        throw std::logic_error("captured Text child34 has no same private Page borrow");
+    }
+    bool text_child34_retained() const noexcept {
+        for (const auto& entry : text_child34_borrows)
+            if (entry->phase != TextChild34Borrow::Phase::complete ||
+                entry->denied.load(std::memory_order_acquire)) return true;
+        return false;
+    }
+    bool text_child34_chain_interrupted(const TextChild34Borrow& entry) const noexcept {
+        for (auto* current = &entry; current; current = current->parent)
+            if (current->phase != TextChild34Borrow::Phase::borrowed ||
+                current->owner_thread != entry.owner_thread || current->native_calls.failed ||
+                current->denied.load(std::memory_order_acquire)) return true;
+        return false;
+    }
     Page* find_root(void*);
     WidgetRecord& live_widget(void*);
     NativeModelReference* find_model(void*);
@@ -1378,7 +1429,7 @@ void GameNativeGuiPageApplication::Impl::bind_providers() {
 }
 
 GameNativeGuiPageApplication::Impl::~Impl() noexcept {
-    if (active || failed || retiring_page || current_properties || current_calls ||
+    if (active || failed || retiring_page || current_properties || current_calls || text_child34_retained() ||
         resolvers.requires_process_retention() || !timed.empty() || !models->empty()) std::terminate();
     for (const auto& widget : widget_records)
         if (widget->actual && (!widget->native_retired || !widget->reference_retired()))
@@ -1632,7 +1683,202 @@ void GameNativeGuiPageApplication::bind_default_icon_services(GameNativeGuiPageI
     }
 }
 
+std::unique_ptr<GameNativeGuiPageTextActiveChild34>
+GameNativeGuiPageApplication::prepare_text_active_child34_borrow(
+    const GameNativeCanonicalDataOwner& canonical, NativeGuiTextActiveStorageFrame& frame,
+    NativeGuiTextActiveStorageAcquired& acquired) {
+    auto& p = *impl_;
+    auto entry = std::make_unique<Impl::TextChild34Borrow>();
+    entry->frame = &frame; entry->acquired = &acquired;
+    // Owning adoption precedes every later allocation and catch/current pointer.
+    p.text_child34_borrows.push_back(std::move(entry));
+    auto& b = *p.text_child34_borrows.back();
+    b.suspended_calls = p.current_calls; // current AFTER throwing ownership adoption
+    b.suspended_properties = p.current_properties;
+    b.parent = p.current_text_child34;
+    b.owns_active = !p.active;
+    b.owner_thread = GetCurrentThreadId();
+    try {
+        require(!p.failed && !p.retiring_page && !p.resolvers.requires_process_retention() &&
+            p.properties_composed && p.manager_binding && &canonical.read_only_data() == &p.data &&
+            acquired.phase() == NativeGuiTextActiveStorageAcquired::Phase::fresh,
+            "captured Text child34 requires the SAME cold Page/canonical/129 graph");
+        for (const auto& other : p.text_child34_borrows) {
+            if (other.get() == &b || other->phase == Impl::TextChild34Borrow::Phase::complete) continue;
+            require(other->frame != &frame && other->acquired != &acquired,
+                "captured Text child34 cannot reuse an open129 invocation");
+        }
+        if (!p.active) p.require_entry();
+        else {
+            bool proper_parent = false;
+            if (p.current_properties)
+                proper_parent = p.current_properties->reader &&
+                    p.current_calls == &p.current_properties->native_calls;
+            for (const auto& operation : p.widget_operations)
+                if (&operation->native_calls == p.current_calls && operation->entered &&
+                    !operation->complete && !operation->failed) proper_parent = true;
+            if (b.parent) {
+                require(b.parent->owner_thread == b.owner_thread &&
+                    !p.text_child34_chain_interrupted(*b.parent),
+                    "nested captured Text child34 requires its exact live parent thread");
+                proper_parent = p.current_calls == &b.parent->native_calls ||
+                    (b.parent->active_leaf && p.current_calls == &b.parent->active_leaf->native_calls);
+            }
+            require(proper_parent && p.current_calls && !p.current_calls->failed,
+                "captured Text child34 requires a proper private Page parent");
+        }
+        p.prepare_calls(b.native_calls);
+        // Borrow actual spans cold. Callback authentication cannot map/reenter.
+        b.group_table = table(p.data, 0x00d5cb80, 0x38);
+        b.icon_table = table(p.data, 0x00d5c4c0, 0x38);
+        b.base_table = table(p.data, 0x00d5c130, 0x38);
+        auto provider = std::unique_ptr<GameNativeGuiPageTextActiveChild34>(
+            new GameNativeGuiPageTextActiveChild34(*this));
+        provider->denial_ = &b.denied;
+        b.context.emplace(p.strings, canonical.mutable_crt_data().feature_word(), p.data, *provider);
+        b.provider = provider.get();
+        b.phase = Impl::TextChild34Borrow::Phase::borrowed;
+        p.current_text_child34 = &b;
+        p.current_calls = &b.native_calls;
+        p.active = true;
+        return provider;
+    } catch (...) {
+        b.phase = Impl::TextChild34Borrow::Phase::failed;
+        b.native_calls.failed = true;
+        if (b.suspended_calls) b.suspended_calls->failed = true;
+        p.fail(0x00ab87d0);
+        throw;
+    }
+}
+
+NativeGuiTextActiveStorageContext& GameNativeGuiPageApplication::text_active_context_for(
+    GameNativeGuiPageTextActiveChild34& provider) {
+    if (GetCurrentThreadId() != provider.owner_thread_) {
+        if (provider.denial_) provider.denial_->store(true, std::memory_order_release);
+        throw std::logic_error("captured Text context borrow requires its owner thread");
+    }
+    auto& p = *impl_;
+    try {
+        auto& b = p.text_child34_borrow(provider);
+        require(b.phase == Impl::TextChild34Borrow::Phase::borrowed && !b.context_loaned &&
+            b.context && p.current_text_child34 == &b && p.current_calls == &b.native_calls &&
+            p.current_properties == b.suspended_properties && !p.failed &&
+            !p.text_child34_chain_interrupted(b) &&
+            b.acquired->phase() == NativeGuiTextActiveStorageAcquired::Phase::fresh,
+            "captured Text context is a private once-only same Page borrow");
+        b.context_loaned = true;
+        return *b.context;
+    } catch (...) { text_active_entered_failure(provider); throw; }
+}
+
+void GameNativeGuiPageApplication::call_captured_text_child34(GameNativeGuiPageTextActiveChild34& provider,
+    void* actual, Word profile, Word target, Word flags) {
+    // Public callback checked immutable thread identity before reaching Page.
+    auto& p = *impl_;
+    try {
+        auto& b = p.text_child34_borrow(provider);
+        require(b.phase == Impl::TextChild34Borrow::Phase::borrowed && b.context_loaned &&
+            p.current_text_child34 == &b && p.current_calls == &b.native_calls &&
+            p.current_properties == b.suspended_properties && p.active && !p.failed && !b.active_leaf &&
+            !p.text_child34_chain_interrupted(b),
+            "captured Text child34 cannot reenter/replay an unrelated Page invocation");
+        const auto& a = *b.acquired;
+        require(a.phase() == NativeGuiTextActiveStorageAcquired::Phase::entered && b.callbacks < 2 &&
+            b.frame->left.header_returned && b.frame->right.header_returned && a.flags_captured,
+            "captured Text child34 requires the reached129 dispatch schedule");
+        b.failure_site = a.active_call_site; // live Source diagnostic, never rediscovered after closure
+        const auto& call = b.callbacks == 0 ? a.left : a.right;
+        const auto& name = b.callbacks == 0 ? b.frame->left : b.frame->right;
+        require(a.active_call_site == (b.callbacks == 0 ? 0x00ab88e1u : 0x00ab88ebu) &&
+            call.entered && !call.returned && call.receiver == actual && name.captured_child == actual &&
+            call.profile == profile && call.target == target && call.flags_dword == flags &&
+            a.captured_flags_dword == flags && (b.callbacks == 0 || a.left.returned),
+            "captured Text child34 arguments must match its SAME reached Source call");
+        // Own the passive leaf before throwing admission/preparation and before
+        // publishing a catch/current pointer. No raw list head is cached here.
+        auto operation = std::make_unique<Impl::WidgetOperation>(Impl::WidgetOperation::Kind::captured_text_child34);
+        operation->receiver = actual; operation->captured_profile = profile;
+        operation->captured_target = target; operation->captured_flags_dword = flags;
+        p.widget_operations.push_back(std::move(operation));
+        auto& leaf = *p.widget_operations.back();
+        b.active_leaf = &leaf; // owned before throwing admission/preparation
+        auto& widget = p.live_widget(actual);
+        require(widget.icon ? (widget.icon->reference->actual_identity() == actual &&
+                &widget.icon->reference->lifetime_context() == &p.widget_lifetime) :
+            (widget.reference->actual_identity() == actual &&
+                &widget.reference->lifetime_context() == &p.widget_lifetime),
+            "captured Text child34 requires its SAME actual canonical companion/lifetime");
+        const volatile Word* captured_table = nullptr;
+        if (profile == 0x00d5c130) captured_table = b.base_table;
+        else if (widget.icon && profile == 0x00d5c4c0) captured_table = b.icon_table;
+        else if (!widget.icon && profile == 0x00d5cb80) captured_table = b.group_table;
+        require(captured_table && target == 0x00aa8530 && captured_table[0x34 / 4] == target,
+            "captured Text child34 requires its SAME admitted captured RO selector");
+        p.prepare_calls(leaf.native_calls);
+        leaf.entered = true;
+        p.current_calls = &leaf.native_calls;
+        // FULL DWORD survives to this selected concrete body's byte boundary.
+        set_native_gui_widget_visible_00aa8530(actual, static_cast<std::uint8_t>(flags), p.visibility);
+        require(p.current_text_child34 == &b && p.current_calls == &leaf.native_calls &&
+            p.current_properties == b.suspended_properties && !p.failed && !leaf.native_calls.failed &&
+            !p.text_child34_chain_interrupted(b),
+            "captured Text child34 cannot resume after a caught nested failure");
+        leaf.complete = true;
+        b.active_leaf = nullptr;
+        ++b.callbacks;
+        p.current_calls = &b.native_calls;
+    } catch (...) { text_active_entered_failure(provider); throw; }
+}
+
+void GameNativeGuiPageApplication::after_text_active_normal_return(GameNativeGuiPageTextActiveChild34& provider) {
+    if (GetCurrentThreadId() != provider.owner_thread_) {
+        if (provider.denial_) provider.denial_->store(true, std::memory_order_release);
+        throw std::logic_error("captured Text normal return requires its owner thread");
+    }
+    auto& p = *impl_;
+    try {
+        auto& b = p.text_child34_borrow(provider);
+        require(b.phase == Impl::TextChild34Borrow::Phase::borrowed && b.context_loaned &&
+            p.current_text_child34 == &b && p.current_calls == &b.native_calls && !b.active_leaf &&
+            p.current_properties == b.suspended_properties && !p.failed && !b.native_calls.failed &&
+            !p.text_child34_chain_interrupted(b) &&
+            b.acquired->phase() == NativeGuiTextActiveStorageAcquired::Phase::complete,
+            "captured Text private borrow closes only after SAME whole129 normal return");
+        const bool both = b.frame->left.captured_child && b.frame->right.captured_child;
+        require(b.callbacks == (both ? 2u : 0u), "captured Text normal return missed its actual child callbacks");
+        b.failure_site = b.acquired->active_call_site;
+        b.phase = Impl::TextChild34Borrow::Phase::complete; // Source return history only
+        b.context.reset(); // pure Source references; no Native cleanup
+        b.frame = nullptr; b.acquired = nullptr; // caller borrowing has ended
+        p.current_calls = b.suspended_calls;
+        p.current_text_child34 = b.parent;
+        if (b.owns_active) p.active = false;
+    } catch (...) { text_active_entered_failure(provider); throw; }
+}
+
+void GameNativeGuiPageApplication::text_active_entered_failure(GameNativeGuiPageTextActiveChild34& provider) noexcept {
+    if (GetCurrentThreadId() != provider.owner_thread_) {
+        if (provider.denial_) provider.denial_->store(true, std::memory_order_release);
+        return; // no foreign-thread Page access
+    }
+    auto& p = *impl_;
+    for (auto i = p.text_child34_borrows.rbegin(); i != p.text_child34_borrows.rend(); ++i) {
+        auto& b = **i;
+        if (b.provider != &provider) continue;
+        if (b.phase == Impl::TextChild34Borrow::Phase::borrowed && b.acquired)
+            b.failure_site = b.acquired->active_call_site;
+        b.phase = Impl::TextChild34Borrow::Phase::failed;
+        b.native_calls.failed = true;
+        if (b.active_leaf) { b.active_leaf->failed = true; b.active_leaf->native_calls.failed = true; }
+        if (b.suspended_calls) b.suspended_calls->failed = true;
+        p.fail(b.failure_site ? b.failure_site : 0x00ab87d0);
+        return; // retain exact stack and all real backing; never repair/retry
+    }
+    p.fail(0x00ab87d0);
+}
+
 bool GameNativeGuiPageApplication::requires_process_retention() const noexcept {
+    if (impl_->text_child34_retained()) return true;
     const auto phase = impl_->font_phase;
     if (phase == Impl::PageFontPhase::bind_entered || phase == Impl::PageFontPhase::prepare_entered ||
         phase == Impl::PageFontPhase::retire_entered || phase == Impl::PageFontPhase::detach_entered ||

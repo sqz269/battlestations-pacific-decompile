@@ -20,6 +20,9 @@ struct NativeGuiWidgetTransformBindings;
 class NativeGuiWidgetLoadedDispatch;
 class NativeRenderActualOwnerRegistry;
 class NativeFontResourceOwners;
+class NativeGuiTextActiveStorageFrame;
+class NativeGuiTextActiveStorageAcquired;
+class NativeGuiTextActiveStorageContext;
 namespace game { class GameNativeGuiPageFontRetirementCut; }
 // One concrete Source event contract, not a callback registry or Native body.
 class NativeGuiPageFontRetirementHost {
@@ -40,6 +43,8 @@ class GameVfsHost;
 class GameFontHost;
 class GameNativeFontApplication;
 class GameNativeGuiPageApplication;
+class GameNativeCanonicalDataOwner;
+class GameNativeGuiPageTextActiveChild34;
 
 // Birth ONLY in the existing selected AA6540 normal-return site. The GUI may
 // already be freed: every receiver below is an opaque identity. No public
@@ -306,6 +311,17 @@ private:
     friend class GameFontHost;
     friend class GameNativeFontApplication;
     friend class GameNativeGuiManagerApplication;
+    friend class GameNativeGuiPageTextActiveChild34;
+    // Dormant private typed borrow. No current whole129 Text caller or guessed
+    // producer friend is added; actual Type3/18 birth remains unbound.
+    std::unique_ptr<GameNativeGuiPageTextActiveChild34> prepare_text_active_child34_borrow(
+        const GameNativeCanonicalDataOwner&, NativeGuiTextActiveStorageFrame&,
+        NativeGuiTextActiveStorageAcquired&);
+    NativeGuiTextActiveStorageContext& text_active_context_for(GameNativeGuiPageTextActiveChild34&);
+    void call_captured_text_child34(GameNativeGuiPageTextActiveChild34&, void*,
+        std::uint32_t captured_profile, std::uint32_t captured_target, std::uint32_t captured_flags);
+    void after_text_active_normal_return(GameNativeGuiPageTextActiveChild34&);
+    void text_active_entered_failure(GameNativeGuiPageTextActiveChild34&) noexcept;
     void begin_page_font_link(GameFontHost&, GameNativeFontApplication&,
         GameNativeRendererApplication&, GameVfsHost&);
     void complete_page_font_link(GameFontHost&, GameNativeFontApplication&,
