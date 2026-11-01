@@ -10,6 +10,10 @@ struct GuiTextureCallbacks {
     std::function<std::uint32_t(void*)> width;
     std::function<std::uint32_t(void*)> height;
     std::function<void(void*)> retain;
+    // Optional actual captured-pair transport; no default width/height delegate.
+    // Required only by the raw dimension path; old five routes remain unchanged.
+    std::function<std::uint32_t(void* actual_texture,
+        std::uint32_t captured_profile, std::uint32_t captured_target)> dimension_from_captured;
 };
 
 // 00aa2660: native stdcall(filename string*, float4*, float2*, float), RET10h.

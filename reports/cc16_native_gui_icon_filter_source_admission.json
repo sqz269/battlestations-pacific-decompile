@@ -1,0 +1,204 @@
+{
+  "kind": "Root Source82 whole normal raw Icon filter-decision admission",
+  "author": "5acf52420e6c597bc4dcceec89f2797951435638",
+  "actual_parent": "ef516a82992df1edf5f4499c1d6f8fd2fe57ed8a",
+  "CMake": "750be8e0adf4a6f20a070fcbe85ad5a177c2c77e",
+  "static": {
+    "author": "5acf52420e6c597bc4dcceec89f2797951435638",
+    "actual_parent": "ef516a82992df1edf5f4499c1d6f8fd2fe57ed8a",
+    "immutable_checks": 230,
+    "fresh_full_four_path_inverse": true,
+    "current9providers_and6consumed_postimages_exact": true,
+    "independent_Source": "227+11checks/224artifacts0blocking",
+    "historical_candidate_base": "f0ab67b289cf5858fa3174c80ad4aa7dcf4aae7c"
+  },
+  "Root_full_HCPPdoc_reader9914_Native122B35ops_review": true,
+  "independent_Source": {
+    "reader_checks": 227,
+    "own_checks": 11,
+    "artifacts": 224,
+    "blocking_findings": 0
+  },
+  "build": {
+    "exit": 0,
+    "seconds": 42.9376351,
+    "Win32": true,
+    "all_targets_two_existing_suites": true,
+    "inputs": 543,
+    "outputs": 32,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "forcing": 0,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior23_whole_objects_unchanged": [
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_native_size_storage.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_icon_application.obj",
+      "build/win32/bsp_core.dir/Release/gui_texture.obj",
+      "build/win32/bsp_core.dir/Release/gui_type_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/native_texture_saved_dimensions.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_size_comparison_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_backward_assignment_storage.obj"
+    ]
+  },
+  "Core": {
+    "object_bytes": 2490,
+    "sha256": "4e1390b032fa312f80408fd55303da8f83d0d9edd7d8f1beaaa7d23b7172c76e",
+    "code": [
+      {
+        "section": 3,
+        "bytes": 38,
+        "ops": 20,
+        "relocations": []
+      },
+      {
+        "section": 4,
+        "bytes": 292,
+        "ops": 104,
+        "relocations": [
+          {
+            "offset": 231,
+            "symbol_index": 17,
+            "target": {
+              "name": "?get_native_gui_icon_state_storage_00ab1230@bsp@@YAPAXPAXADI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 253,
+            "symbol_index": 15,
+            "target": {
+              "name": "?gui_icon_state_differs_from_native_size_storage_00ab24b0@bsp@@YAIPAXAAUNativeGuiIconSizeComparisonScratch@1@ABUGuiTextureCallbacks@1@ABUGuiIconStateTextureConstants@1@ADMADN@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 5,
+        "bytes": 16,
+        "ops": 8,
+        "relocations": []
+      }
+    ],
+    "local_EH": [],
+    "public": [
+      {
+        "name": "?gui_icon_prefers_bilinear_filter_storage_00ab2600@bsp@@YAIPAXAAUNativeGuiIconFilterScratch@1@ABVNativePlatformLoadPublication@1@ABUGuiTextureCallbacks@1@ABUGuiIconStateTextureConstants@1@ADM5ADN@Z",
+        "value": 0,
+        "section": 4,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      }
+    ],
+    "normal_map": [],
+    "Root_complete292B104ops_review": true,
+    "observations": [
+      "Onecellreferenceaddressmetadata+1B beforeearlygate isnotoneVALUE; BYTE100+23 thenDWORD104+2C beforepublicationvalue+60.",
+      "Genuinepublication selectsitsactualcellrepresentation thenCURRENTpointerload+60; lateplatformBYTE14+77 beforeFP.",
+      "All7SSE and3UCOMISS/LAHF/TESTAH44/JP preserved at7D..A9;scale28+8B precedesonceone+90 thenlate2C+9D reusesXMM0.",
+      "MOVSXECword+AB stagesfullDWORDHOME+B2, vectorF0+B4; genuineRaw1230CALL+E6 REL32+E7 returnsdirectlytoRaw24CALL+FC REL32+FD.",
+      "TESTAL+10A thenfull0/1; no parentx87/localEH, offnormalmap. Callerwholeplatformcell/domainmandatory; Sourcewrappertypeisnotauthority."
+    ]
+  },
+  "final_independent_Git_Core": {
+    "status": "complete,zeroordinaryfindings",
+    "actual_Git_checks": 230,
+    "artifacts": 237,
+    "whole_main292B104_and_load16B8_COFF_Capstone_dumpbin_equal": true,
+    "archive2490_exact_once": true,
+    "no_localEH": true,
+    "normal_map_absent": true,
+    "Git_only_supplemental_inputs": 4
+  },
+  "receipts": [
+    {
+      "path": "local/function_source_batch82/common/manifest.json",
+      "bytes": 175051,
+      "sha256": "3e2fe2b5007d034fdecc3ceafb416f252e4127c17bf6ce397b814ffc0415601a"
+    },
+    {
+      "path": "local/function_source_batch82/build_result.json",
+      "bytes": 45,
+      "sha256": "110507d858b754745511b53474caef7b3acf72290b14d51e40836ad7e6dad449"
+    },
+    {
+      "path": "local/function_source_batch82/Root_actual_Git.json",
+      "bytes": 394,
+      "sha256": "572e3ac4a723d49716c223124f0596bf8eec314641b533f9ea417a875bcdfbab"
+    },
+    {
+      "path": "local/function_source_batch82/Root_Core.json",
+      "bytes": 18829,
+      "sha256": "d4b6723593a6fa6642a3e22ea20cc4538855938053db9ca8a33ef044826174ee"
+    },
+    {
+      "path": "local/function_source_batch82/Source_peer/Source_peer_review.json",
+      "bytes": 10672,
+      "sha256": "36dc1c479e1897b587394126f57a2bb577f9f39808d4c4fc11884cace53070e4"
+    },
+    {
+      "path": "local/function_source_batch82/Source_peer/peer_manifest.json",
+      "bytes": 46098,
+      "sha256": "3e1e369080be8b90bf0aebeddd9aca98d650374a39ef29310ee4d07d32455e49"
+    },
+    {
+      "path": "local/function_source_batch82/Root_archive.json",
+      "bytes": 87,
+      "sha256": "8b5fd09d1a6e0b6dd210fa0d722d5f2fc6794afd1c44da7c03a884b0c8908986"
+    },
+    {
+      "path": "local/function_source_batch82/postbuild_evidence_only.json",
+      "bytes": 135,
+      "sha256": "9bf51674963c218c581e3f66933a49ecc3ce8fe436f2fb3949e659376c7387ec"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/Core/FINAL_REVIEW.md",
+      "bytes": 1169,
+      "sha256": "f4e6133250e788be67745018c60079bf25166e42639ad2e308e8e0c1b9a569ab"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/Core/final_review.json",
+      "bytes": 35163,
+      "sha256": "c007096939dc42c94d7aec8f21bf530e6b48b3d09a8537dfdd227ba8bb64f7e9"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/final_manifest.json",
+      "bytes": 46781,
+      "sha256": "b6f937269a1e3b6da3ab5ba09be46a0534d2eb1c65d23181155c8646241b6e8a"
+    }
+  ],
+  "actual_type6_raw_caller_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0
+}

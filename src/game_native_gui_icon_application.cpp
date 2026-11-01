@@ -179,6 +179,18 @@ struct GameNativeGuiIconApplication::Impl {
         validate_texture(raw);
         return get_native_texture_saved_height_00b3ce80(raw);
     }
+    Word dimension_from_captured(void* raw, Word captured_profile, Word captured_target) const {
+        require(raw && captured_profile == 0x00d61948,
+            "Native Icon captured dimension requires its supported D61948 Source family");
+        auto& reference = geometry.actual_owners().resolve_actual(raw);
+        require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,
+            "Native Icon texture requires its SAME canonical native reference count");
+        if (captured_target == 0x00b3ce70)
+            return get_native_texture_saved_width_00b3ce70(raw);
+        if (captured_target == 0x00b3ce80)
+            return get_native_texture_saved_height_00b3ce80(raw);
+        throw std::logic_error("Native Icon unsupported captured Source dimension target");
+    }
     void* load_texture(Record& record, std::string_view spelling, Word flags) {
         Entry entered(*this, 0x00aa2660);
         validate_identity(record);
@@ -489,7 +501,13 @@ std::unique_ptr<GuiWidgetTypeImplementation> GameNativeGuiIconApplication::make_
     services.native_geometry.construct_and_associate74 = [&app, saved] { app.constructed74(*saved); };
     services.native_geometry.rebuild_00ab3cb0 = [&app, saved](GuiIconWidget& icon) { app.rebuild(*saved, icon); };
     services.native_geometry.before_runtime_destruction = [&app, saved] { app.runtime_retiring(*saved); };
-    try { return std::make_unique<GuiIconTypeImplementation>(owner, std::move(services)); }
+    try {
+        services.textures.resolve.dimension_from_captured =
+            [&app](void* raw, Word captured_profile, Word captured_target) {
+                return app.dimension_from_captured(raw, captured_profile, captured_target);
+            };
+        return std::make_unique<GuiIconTypeImplementation>(owner, std::move(services));
+    }
     catch (...) { app.failed = true; app.failure = std::current_exception(); throw; }
 }
 void GameNativeGuiIconApplication::release_material_borrow_guard(GuiWidgetOwner& owner) {

@@ -1,0 +1,267 @@
+{
+  "kind": "ignored NORMAL AB5400 counted-fill Source support; Native catch held, no tracked author grant",
+  "base": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+    "src/native_gui_icon_state_repeat_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_REPEAT_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_repeat_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "bytes": 3015,
+      "sha256": "170acd7b0840322fa3a6c19714060a83089824e7b990031016930c3e1c494bff"
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_storage.cpp",
+      "bytes": 2126,
+      "sha256": "39bb463835d76eb646e39d4d6b372d4b5d294f9ba3539adf385122a414ee53cc"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_REPEAT_STORAGE.md",
+      "bytes": 3244,
+      "sha256": "4b5da3f75ca643933e9dd1dca1593d8c40531f1922a15110ac2bc8fbc1dace07"
+    }
+  ],
+  "reader": {
+    "bytes": 8384,
+    "sha256": "2d1f0b950eee8968c12ae4bbfe3b0af7056ea47f83615cdace98bacbe7cc9695",
+    "utf8": "import argparse, hashlib, json, pathlib, re, subprocess\nfrom capstone import Cs, CS_ARCH_X86, CS_MODE_32\n\nap=argparse.ArgumentParser()\nap.add_argument('--candidate')\nap.add_argument('--commit')\na=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent\nC=pathlib.Path(a.candidate) if a.candidate else D/'candidate'\nP='reports/cc16_native_gui_icon_state_repeat_storage.json'\nchecks=[]\ndef g(*args): return subprocess.check_output(['git',*args])\ndef sha(b): return hashlib.sha256(b).hexdigest()\ndef ck(name, value):\n    assert value, name\n    checks.append({'check':name,'passed':True})\ndef read(p): return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\ndef tree(rev):\n    out={}\n    for raw in g('ls-tree','-r','-z',rev).split(b'\\0'):\n        if raw:\n            m,p=raw.split(b'\\t',1);mode,kind,oid=m.decode().split()\n            out[p.decode()]=(mode,kind,oid)\n    return out\ndef treehash(items):\n    root={}\n    for p,v in items.items():\n        n=root;parts=p.split('/')\n        for s in parts[:-1]: n=n.setdefault(s,{})\n        n[parts[-1]]=v\n    def rec(n):\n        entries=[]\n        for name,v in n.items():\n            if isinstance(v,dict): entries.append((name+'/',b'40000 '+name.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else: entries.append((name,v[0].lstrip('0').encode()+b' '+name.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b=b''.join(v for _,v in sorted(entries,key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\n\nr=json.loads(read(P))\nck('exact embedded read-only reader bytes',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p in r['postimages']:\n    b=read(p['path']);ck('whole postimage '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor p in r['provider_whole_pins']:\n    b=g('show',r['base']+':'+p['path'])\n    ck('frozen genuine existing provider '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor q in r['strongest_copy_contract_verbatim']:\n    b=g('show',r['base']+':'+q['path']).splitlines(keepends=True)\n    text=b''.join(b[q['start_line']-1:])[:q['bytes']].decode()\n    ck('exact strongest inherited copy quote '+str(q['start_line']),text==q['verbatim_utf8'] and len(text.encode())==q['bytes'] and sha(text.encode())==q['sha256'])\nb=bytes.fromhex(r['Native']['hex'])\nins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(b,0xab5400))\nck('whole143B Native preimage',len(b)==143 and sha(b)==r['Native']['sha256'])\nck('physical55 rows include13 held catch rows',len(ins)==55 and len([i for i in ins if 0xab545b<=i.address<=0xab5477])==13)\nck('42 normal rows including excluded ordinary-ABI prologue/epilogue',len([i for i in ins if not 0xab545b<=i.address<=0xab5477])==42)\nck('Native three calls split normal copy versus held destructor/rethrow',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab5448,'0xab3a70'),(0xab5467,'0xab3280'),(0xab5477,'0xbf6885')])\nck('Native full stack cleanup RET10, no result receipt',ins[-1].address==0xab548c and bytes(ins[-1].bytes)==bytes.fromhex('c21000'))\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode()\nclean=re.sub(r'//[^\\n]*','',c)\nframe=re.search(r'struct NativeGuiIconStateRepeatStorageFrame\\s*\\{([^}]+)\\}',h).group(1)\nck('five ordinary DWORD frame objects no DMI/valueinit',re.findall(r'std::uint32_t\\s+(\\w+)\\s*;',frame)==['progress_14','begin_18','slot_1c','placement_20','state_04'] and '=' not in frame and '{' not in frame)\nck('four volatile actual homes required', 'volatile std::uint32_t (&actual_stack_homes)[4]' in h and 'volatile std::uint32_t (&actual_stack_homes)[4]' in c)\nck('direct genuine qualified existing copy only',c.count('copy_native_gui_icon_state_00ab3a70(')==1 and 'reinterpret_cast<const void*>(source), context);' in c)\nck('no old dtor/rethrow or invented catch used',not any(x in clean for x in ['destroy_native_gui_icon_state','catch','try','throw','BF6885','bf6885','std::exception_ptr']))\nck('no vector/string projection or allocator/resolver/NoThrow',not any(x in clean for x in ['std::vector','std::string','virtual','std::function','noexcept','malloc','calloc','new[','new [','delete','memcpy','memmove']))\nck('no FP expression/reset in caller',not any(x in clean for x in ['float','double','finit','fldcw','ldmxcsr','__asm']))\nck('actual no-write individual C++ birth', '::new (slot) NativeGuiIconStateStorage;' in c and 'NativeGuiIconStateStorage()' not in c and 'NativeGuiIconStateStorage{}' not in c)\nck('birth type is compile-time checked trivial no-write',all(x in c for x in ['std::is_trivially_default_constructible_v<NativeGuiIconStateStorage>','std::is_trivially_destructible_v<NativeGuiIconStateStorage>']))\nck('only actual first incoming home read; no seed of any home',re.findall(r'actual_stack_homes\\[([^]]+)\\]',clean)==['0'] and re.search(r'actual_stack_homes\\[0\\]\\s*=',clean) is None)\nck('full unsigned count captured once; sole loop is zero/nonzero',c.count('remaining = count_edx;')==1 and 'while (remaining != 0)' in c and re.findall(r'\\bif\\s*\\(([^)]*)\\)',clean)==['placement_nonnull != 0'])\nck('lowBYTE state writes preserve high24 after full-state stores',c.count('*state_byte = 1;')==1 and c.count('*state_byte = 0;')==1 and c.count('state = 0;')==1 and c.count('state = 0xffffffffu;')==1)\ndef ordered(*parts):\n    n=[c.index(p) for p in parts];return n==sorted(n) and len(set(n))==len(n)\nck('state-1/capture/count/progress/begin/state0 order',ordered('state = 0xffffffffu;','std::uint32_t destination =','std::uint32_t remaining = count_edx;','frame.progress_14) = destination;','frame.begin_18) = destination;','state = 0;'))\nck('slot/placement/predicate/stateBYTE1 precede null edge',ordered('frame.slot_1c) = destination;','frame.placement_20) = destination;','placement_nonnull = destination;','*state_byte = 1;','if (placement_nonnull != 0)'))\nck('nonnull birth precedes current same sourceHOME then direct copy',ordered('if (placement_nonnull != 0)','::new (slot) NativeGuiIconStateStorage;','source = actual_stack_homes[0];','copy_native_gui_icon_state_00ab3a70(slot,'))\nck('countdown/wrapcursor/stateBYTE0/progress order',ordered('remaining -= 1u;','destination += 0x40u;','*state_byte = 0;','frame.progress_14) = destination;\\n    }'))\nck('held catch, UNKNOWN and inherited copy limitations are explicit',all(x in h for x in ['13 Native catch-landing rows','UNKNOWN','exact BF0','distinct valid native records','T[n]','No new body credit']))\nck('full-function/Origin/custody/runtime remain false',all(r['readiness'][k] is False for k in ['whole_Native_function','Native_catch','Native_origin','Original_ABI','vector_growth','actual_caller_custody','activation']))\nck('no new reconstruction credit',r['new_Original_vendor_helper_CG_duplicate_credit']==0)\n\nbefore=tree(r['base']);ck('reconstruct complete base tree',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nexpected=set(r['owned_paths'])\nfor p in expected:ck('genuine new path absent '+p,p not in before)\nafter=dict(before)\nfor p in expected:\n    x=read(p);oid=hashlib.sha1(b'blob '+str(len(x)).encode()+b'\\0'+x).hexdigest();after[p]=('100644','blob',oid)\nrestored=dict(after)\nfor p in expected:restored.pop(p)\nck('virtual full four-addition inverse map',restored==before)\nck('virtual full recursive inverse tree',treehash(restored)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nif a.commit:\n    parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit)\n    ck('actual author one parent',len(parent.split())==1)\n    ck('actual author exactly four additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==expected and all(p not in old for p in expected))\n    for p in r['provider_whole_pins']:ck('actual parent provider unchanged '+p['path'],g('show',parent+':'+p['path'])==g('show',r['base']+':'+p['path']))\n    for p in expected:new.pop(p)\n    ck('actual complete recursive inverse',new==old and treehash(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'pass':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','base':r['base'],'base_tree':treehash(before),'virtual_four_addition_tree':treehash(after),'full_inverse_tree':treehash(restored),'normal_rows':42,'held_catch_rows':13,'whole_Native_function':False,'new_credit':0,'compiler_runtime_Origin_ABI_activation':False}))\n"
+  },
+  "Native": {
+    "address": "00ab5400",
+    "end": "00ab548e",
+    "physical_bytes": 143,
+    "physical_instructions": 55,
+    "sha256": "7a865830e57c98f46d0f541636e07eece0a95788bb8e7a465ff554ff591a5215",
+    "calls": [
+      {
+        "site": "00ab5448",
+        "operand": "0xab3a70"
+      },
+      {
+        "site": "00ab5467",
+        "operand": "0xab3280"
+      },
+      {
+        "site": "00ab5477",
+        "operand": "0xbf6885"
+      }
+    ],
+    "hex": "558bec6aff68a17ccb0064a100000000506489250000000083ec145356578bf133db8965f08bfa894dec8975e8895dfc3bfb76488975e48975e03bf3c645fc01740b8b4508508bcee823e6ffff83ef0183c640885dfc8975ecebd58b75e88b7dec3bf7740e8bcee814deffff83c6403bf775f233db5353e8091414008b4df45f5e64890d000000005b8be55dc21000",
+    "Ghidra_count_excludes_catch": 42,
+    "held_catch_rows": 13,
+    "ECX": "captured destination40B slot",
+    "EDX": "full unsigned count captured once",
+    "incoming_homes": [
+      "CURRENT source DWORD reused per nonnull iteration",
+      "unused normal preimage",
+      "unused normal preimage",
+      "unused normal preimage"
+    ],
+    "result": "ordinary void; no incidental EAX/end/custody receipt",
+    "normal_source_map": {
+      "00ab5403": "full state_04=-1; ordinary Source backing, no FS/private stack",
+      "00ab541e": "capture destination bits once",
+      "00ab5420": "captured zero/literals; not a provider",
+      "00ab5425": "capture full unsigned count_EDX once",
+      "00ab5427": "volatile progress_14 store",
+      "00ab542a": "volatile begin_18 store",
+      "00ab542d": "full DWORD state_04=0",
+      "00ab5430": "unsigned count zero comparison",
+      "00ab5432": "unsigned zero-count exit",
+      "00ab5434": "volatile slot_1c store",
+      "00ab5437": "volatile placement_20 store",
+      "00ab543a": "capture null predicate, FLAGS/private fault identity excluded",
+      "00ab543c": "LOWBYTE state_04=1; preserve high24",
+      "00ab5440": "null skips birth/source/copy",
+      "00ab5442": "CURRENT first actual incoming HOME, source not advanced",
+      "00ab5445": "captured source transported with ordinary C++ ABI",
+      "00ab5446": "captured slot transported with ordinary C++ ABI",
+      "00ab5448": "direct genuine existing qualified AB3A70/context",
+      "00ab544d": "unsigned remaining--",
+      "00ab5450": "DWORD-wrap destination+=40h",
+      "00ab5453": "LOWBYTE state_04=0; preserve high24",
+      "00ab5456": "volatile progress_14 store after normal return or nullskip",
+      "00ab5459": "loop to unsigned zero comparison"
+    }
+  },
+  "Native_EH_operand_evidence_only": {
+    "handler": "00cb7ca1",
+    "bytes_hex": "b854e9de00e998eef3ff",
+    "FuncInfo": "00dee954",
+    "FuncInfo_hex": "22059319030000003ce9de000100000028e9de0000000000000000000000000001000000ffffffff",
+    "max_state": 3,
+    "unwind_map": "00dee93c",
+    "unwind_hex": "ffffffff0000000000000000907ccb00ffffffff00000000",
+    "try_blocks": 1,
+    "try_map": "00dee928",
+    "Native_catch_13rows_held_not_Source_reconstructed": true
+  },
+  "Native_guard_private_stack_savedESP_and_catch_implementation": false,
+  "existing_callee": {
+    "symbol": "copy_native_gui_icon_state_00ab3a70",
+    "header": "include/bsp/native_gui_icon_storage.hpp:111",
+    "definition": "src/native_gui_icon_storage.cpp:126",
+    "context": "NativeGuiIconStorageContext, same genuine lifetime/registry/raw-string/delayed/singleton/profile references",
+    "normal_only": true,
+    "new_exact_copy_implementation": false,
+    "unpromoted_limits": [
+      "existing require_storage nonnull/aligned4",
+      "existing distinct valid source/destination domain",
+      "bool-preserve resize/std::memcpy, not exact BF0 or arbitrary overlap/private HOME",
+      "actual canonical texture+04 C++ atomic lifetime and SAME registry custody",
+      "no new Original ABI/fault/Origin guarantee"
+    ]
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc",
+      "Git_blob": "0a98345600a93dff4fc6c10ce3a0626d93fe9847"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492",
+      "Git_blob": "1d61197d246f8c9789c733fa70919817a1581f73"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613",
+      "Git_blob": "4984c27fa603fe05a308d701c54dafba6110de7e"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b",
+      "Git_blob": "bf2a25c5f28d9eb10d37f7099faf9adaabb0a97d"
+    },
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c",
+      "Git_blob": "2e9e0ae6cb560eba1e7187911f6fea04791b529b"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210",
+      "Git_blob": "e05e1c9a86a44a2bba1efe9f46f3151062fab3b6"
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123",
+      "Git_blob": "a62e6ddb9d92e02afd301ed92239b258d53b5f10"
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3",
+      "Git_blob": "248194cbff651aba4341401f519050447f13b6a0"
+    },
+    {
+      "path": "include/bsp/singleton_lifetime.hpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 4372,
+      "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+      "Git_blob": "4d10f6c53a3b9be4745776df443f340ea1769936"
+    },
+    {
+      "path": "src/singleton_lifetime.cpp",
+      "commit": "672a6cc2fd7dba2b69a0e449e542f9d1c15a81fa",
+      "bytes": 13257,
+      "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+      "Git_blob": "fcfa61ad06f35ef7ca3dd03077fa321a38eccd15"
+    }
+  ],
+  "strongest_copy_contract_verbatim": [
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "start_line": 19,
+      "end_line": 22,
+      "bytes": 188,
+      "sha256": "e0df2334c8387f1f2a35cf7f3e82d05165fad598db0d37a313149ad1a4552403",
+      "verbatim_utf8": "void require_storage(const void* raw) {\n    if (!raw || reinterpret_cast<std::uintptr_t>(raw) % 4)\n        throw std::invalid_argument(\"raw Icon requires aligned actual native storage\");\n}"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "start_line": 126,
+      "end_line": 152,
+      "bytes": 1525,
+      "sha256": "40d474c02332b68b82fc5df086a8b993346f696aad74ac43dbc6a9d63189fa9a",
+      "verbatim_utf8": "void* copy_native_gui_icon_state_00ab3a70(void* destination, const void* source,\n    NativeGuiIconStorageContext& context) {\n    require_storage(destination);\n    require_storage(source);\n    // Distinct valid native records are the stock uninitialized-copy domain.\n    if (destination == source)\n        throw std::invalid_argument(\"Icon state copy requires distinct actual records\");\n    word(destination) = word(source);\n    word(destination, 4) = 0;\n    word(destination, 8) = 0;\n    resize_native_string_header_0041dd40(at(destination, 4), context.strings, word(source, 4), true);\n    if (word(source, 4) != 0)\n        std::memcpy(pointer(destination, 8), reinterpret_cast<const void*>(word(source, 8)), word(destination, 4));\n    for (Word offset = 0x0c; offset <= 0x28; offset += 4) word(destination, offset) = word(source, offset);\n    for (Word offset = 0x2c; offset <= 0x38; offset += 4) copy_x87(at(destination, offset), at(source, offset));\n    const auto pending = read<std::uint8_t>(source, 0x3c);\n    void* const texture = pointer(destination);\n    write(destination, 0x3c, pending);\n    write(destination, 0x3d, read<std::uint8_t>(source, 0x3d));\n    if (texture) {\n        // AB3B15..3B19 is a raw InterlockedIncrement, with no owner lookup or\n        // extra native retain. Registry custody is the caller's precondition.\n        auto& count = *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(at(texture, 4)));\n        count.fetch_add(1, std::memory_order_seq_cst);\n    }\n    return destination;\n}"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start_line": 105,
+      "end_line": 116,
+      "bytes": 708,
+      "sha256": "a19d924236df79b509aef27e5fc00e69e510c9784f9f8a014e023f1064eab48c",
+      "verbatim_utf8": "// AB3A70 ECX destination40h, source stack, RET4/EAX same. Real raw string\n// resize/copy then native field order and a single actual texture+04 increment.\n// AB3280 ECX actual state, RET: release CURRENT texture, clear only after its\n// terminal returns, then release CURRENT name. Name unwind also runs if texture\n// release throws. Headers are not silently repaired or cleared on name release.\n// Textures are actual live canonical owners in this SAME registry; no host ptr.\nvoid* copy_native_gui_icon_state_00ab3a70(void* actual_destination,\n    const void* actual_source, NativeGuiIconStorageContext&);\nvoid destroy_native_gui_icon_state_00ab3280(void* actual_state,\n    NativeGuiIconStorageContext&);\n\n"
+    }
+  ],
+  "verbatim_quote_span_recipe": "start at start_line byte offset, take exact bytes; header end_line116 is the excluded next-comment boundary, so content lines105..115; CPP content ends at closing brace22/152 without its LF",
+  "ordinary_born_type": {
+    "path": "include/bsp/native_gui_icon_storage.hpp",
+    "lines": [
+      16,
+      24
+    ],
+    "size": 64,
+    "birth": "::new (slot) NativeGuiIconStateStorage;",
+    "initialization": "default-init individual trivial aggregate, no()/{} and no field stores",
+    "array_family_required_or_created": false,
+    "prefix_progress_proves_birth_or_ownership": false
+  },
+  "Source_frame": {
+    "size": 20,
+    "ordinary_no_DMI_members": [
+      "progress_14",
+      "begin_18",
+      "slot_1c",
+      "placement_20",
+      "state_04"
+    ],
+    "initialized_or_value_seeded": false,
+    "Origin_cleanup_authority": false,
+    "retention": "caller-prepared real lifetime across all entered escapes; distinct invocation backing for reentry"
+  },
+  "readiness": {
+    "normal_qualified_body_support": true,
+    "whole_Native_function": false,
+    "Native_catch": false,
+    "Native_origin": false,
+    "Original_ABI": false,
+    "vector_growth": false,
+    "actual_caller_custody": false,
+    "activation": false
+  },
+  "escape": "UNKNOWN propagates with real partial/completed graph retained; no Native cleanup/replay/rollback/retry/terminal policy",
+  "Source_private_domains": [
+    "Frame/ordinary control/spills separate from borrowed records and provider-write extents",
+    "four actual homes retained; callback changes to sourceHOME are read at next reached iteration",
+    "valid individual state C++ backing/subobjects and actual callee pool/string/texture/registry domain",
+    "no Native private-stack/alias/FLAGS/fault/FH3/SEH/unmasked-FP equivalence"
+  ],
+  "separate_growth_cut": "AB63A0 fast path may compose this NORMAL qualified support; whole growth AB6070/AB59E0 and actual vector/caller custody remain unready",
+  "reconciliation_receipt": {
+    "path": "reconciliation/sealed_receipt.json",
+    "bytes": 848,
+    "sha256": "ea75c24aead6909027ed0f9f8a44bb70519827bf416a069441729cb10bfb80ca"
+  },
+  "Source_CMake_ledger_Ghidra_compiler_tests_probes_Game_mutation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0
+}

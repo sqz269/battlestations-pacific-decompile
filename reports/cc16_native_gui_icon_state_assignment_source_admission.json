@@ -1,0 +1,655 @@
+{
+  "kind": "Root Source76 raw Icon state assignment Source admission",
+  "author": "cca2119162d8318e3195dd40ab7257f660c2d1b7",
+  "actual_parent": "ba7ec0329c0ada8ab917bd5243b852b36b5a6760",
+  "CMake": "515479707bcf39c11d31bfd9ea939c5508ee9969",
+  "historical_candidate_base": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+  "Root_full_H_CPP_doc_reader9895_Native61_review": true,
+  "Native": {
+    "bytes": 154,
+    "instructions": 61,
+    "data_carrier_ops": 43,
+    "call_frame_ops": 9,
+    "ABI_ops": 9,
+    "x87_forms": 8
+  },
+  "static": {
+    "candidate_checks": 98,
+    "actual_immutable_Git_checks": 114,
+    "fresh_exact4_addition_whole_inverse": true,
+    "unchanged_providers": 13,
+    "independent_Source_checks": 18,
+    "independent_reader_checks": 98,
+    "independent_Source_blocking_findings": 0
+  },
+  "build": {
+    "command": "./scripts/build.ps1 -Configuration Release",
+    "Win32": true,
+    "exit": 0,
+    "seconds": 27.9783236,
+    "all_targets_two_existing_suites": true,
+    "inputs": 512,
+    "outputs": 23,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "forcing": 0,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior_whole_objects_unchanged": [
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj"
+    ]
+  },
+  "Core": {
+    "object_bytes": 1815,
+    "sha256": "830c7a6cecc31116772846a94431171b737af02e150a023c91bee8c150482d5f",
+    "code": [
+      {
+        "section": 3,
+        "bytes": 276,
+        "ops": 95,
+        "hex": "558bec83ec2c5356578b7d0c8b078b75088d5f048d5604897ddc8975d8895df88955f43bd389067409c745fc01000000eb07c745fc00000000837dfc00746c8b5df88b0b894decff75188b451050ff75ecff7514c70001000000ff75f4e80000000083c4148b5df88b75f4833b00741a8b168b43048b4e048955e88945e4894de0c745f001000000eb07c745f000000000837df0007414ff7518ff75e8ff75e4ff75e0e80000000083c4108b7ddc8b75d88b570c89560c8b47108946108b4f14894e148b57188956188b471c89461c8b4f20894e208b57248956248b4728894628d9472cd95e2c8bc68945d4d94730d95e30d94734d95e34d94738d95e388a4f3c884e3c8a573d88563d8b45d45f5e5b8be55dc3",
+        "relocations": [
+          {
+            "offset": 94,
+            "symbol_index": 9,
+            "target": {
+              "name": "?resize_native_string_header_0041dd40_exact@bsp@@YAXPAXAAUNativeStringRawPoolContext@1@IPBXADI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 164,
+            "symbol_index": 10,
+            "target": {
+              "name": "?copy_native_crt_bytes_00bf7680@bsp@@YAPAXPAXPBXIADI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ],
+        "instructions": [
+          {
+            "offset": 0,
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "mnemonic": "sub",
+            "operands": "esp, 0x2c"
+          },
+          {
+            "offset": 6,
+            "mnemonic": "push",
+            "operands": "ebx"
+          },
+          {
+            "offset": 7,
+            "mnemonic": "push",
+            "operands": "esi"
+          },
+          {
+            "offset": 8,
+            "mnemonic": "push",
+            "operands": "edi"
+          },
+          {
+            "offset": 9,
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 12,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi]"
+          },
+          {
+            "offset": 14,
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 17,
+            "mnemonic": "lea",
+            "operands": "ebx, [edi + 4]"
+          },
+          {
+            "offset": 20,
+            "mnemonic": "lea",
+            "operands": "edx, [esi + 4]"
+          },
+          {
+            "offset": 23,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x24], edi"
+          },
+          {
+            "offset": 26,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x28], esi"
+          },
+          {
+            "offset": 29,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 8], ebx"
+          },
+          {
+            "offset": 32,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0xc], edx"
+          },
+          {
+            "offset": 35,
+            "mnemonic": "cmp",
+            "operands": "edx, ebx"
+          },
+          {
+            "offset": 37,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi], eax"
+          },
+          {
+            "offset": 39,
+            "mnemonic": "je",
+            "operands": "0x32"
+          },
+          {
+            "offset": 41,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], 1"
+          },
+          {
+            "offset": 48,
+            "mnemonic": "jmp",
+            "operands": "0x39"
+          },
+          {
+            "offset": 50,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 4], 0"
+          },
+          {
+            "offset": 57,
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ebp - 4], 0"
+          },
+          {
+            "offset": 61,
+            "mnemonic": "je",
+            "operands": "0xab"
+          },
+          {
+            "offset": 63,
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [ebp - 8]"
+          },
+          {
+            "offset": 66,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [ebx]"
+          },
+          {
+            "offset": 68,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x14], ecx"
+          },
+          {
+            "offset": 71,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 74,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0x10]"
+          },
+          {
+            "offset": 77,
+            "mnemonic": "push",
+            "operands": "eax"
+          },
+          {
+            "offset": 78,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp - 0x14]"
+          },
+          {
+            "offset": 81,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 84,
+            "mnemonic": "mov",
+            "operands": "dword ptr [eax], 1"
+          },
+          {
+            "offset": 90,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp - 0xc]"
+          },
+          {
+            "offset": 93,
+            "mnemonic": "call",
+            "operands": "0x62"
+          },
+          {
+            "offset": 98,
+            "mnemonic": "add",
+            "operands": "esp, 0x14"
+          },
+          {
+            "offset": 101,
+            "mnemonic": "mov",
+            "operands": "ebx, dword ptr [ebp - 8]"
+          },
+          {
+            "offset": 104,
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp - 0xc]"
+          },
+          {
+            "offset": 107,
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ebx], 0"
+          },
+          {
+            "offset": 110,
+            "mnemonic": "je",
+            "operands": "0x8a"
+          },
+          {
+            "offset": 112,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [esi]"
+          },
+          {
+            "offset": 114,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebx + 4]"
+          },
+          {
+            "offset": 117,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [esi + 4]"
+          },
+          {
+            "offset": 120,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x18], edx"
+          },
+          {
+            "offset": 123,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x1c], eax"
+          },
+          {
+            "offset": 126,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x20], ecx"
+          },
+          {
+            "offset": 129,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x10], 1"
+          },
+          {
+            "offset": 136,
+            "mnemonic": "jmp",
+            "operands": "0x91"
+          },
+          {
+            "offset": 138,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x10], 0"
+          },
+          {
+            "offset": 145,
+            "mnemonic": "cmp",
+            "operands": "dword ptr [ebp - 0x10], 0"
+          },
+          {
+            "offset": 149,
+            "mnemonic": "je",
+            "operands": "0xab"
+          },
+          {
+            "offset": 151,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp + 0x18]"
+          },
+          {
+            "offset": 154,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp - 0x18]"
+          },
+          {
+            "offset": 157,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp - 0x1c]"
+          },
+          {
+            "offset": 160,
+            "mnemonic": "push",
+            "operands": "dword ptr [ebp - 0x20]"
+          },
+          {
+            "offset": 163,
+            "mnemonic": "call",
+            "operands": "0xa8"
+          },
+          {
+            "offset": 168,
+            "mnemonic": "add",
+            "operands": "esp, 0x10"
+          },
+          {
+            "offset": 171,
+            "mnemonic": "mov",
+            "operands": "edi, dword ptr [ebp - 0x24]"
+          },
+          {
+            "offset": 174,
+            "mnemonic": "mov",
+            "operands": "esi, dword ptr [ebp - 0x28]"
+          },
+          {
+            "offset": 177,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edi + 0xc]"
+          },
+          {
+            "offset": 180,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0xc], edx"
+          },
+          {
+            "offset": 183,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 0x10]"
+          },
+          {
+            "offset": 186,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x10], eax"
+          },
+          {
+            "offset": 189,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [edi + 0x14]"
+          },
+          {
+            "offset": 192,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x14], ecx"
+          },
+          {
+            "offset": 195,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edi + 0x18]"
+          },
+          {
+            "offset": 198,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x18], edx"
+          },
+          {
+            "offset": 201,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 0x1c]"
+          },
+          {
+            "offset": 204,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x1c], eax"
+          },
+          {
+            "offset": 207,
+            "mnemonic": "mov",
+            "operands": "ecx, dword ptr [edi + 0x20]"
+          },
+          {
+            "offset": 210,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x20], ecx"
+          },
+          {
+            "offset": 213,
+            "mnemonic": "mov",
+            "operands": "edx, dword ptr [edi + 0x24]"
+          },
+          {
+            "offset": 216,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x24], edx"
+          },
+          {
+            "offset": 219,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [edi + 0x28]"
+          },
+          {
+            "offset": 222,
+            "mnemonic": "mov",
+            "operands": "dword ptr [esi + 0x28], eax"
+          },
+          {
+            "offset": 225,
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x2c]"
+          },
+          {
+            "offset": 228,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x2c]"
+          },
+          {
+            "offset": 231,
+            "mnemonic": "mov",
+            "operands": "eax, esi"
+          },
+          {
+            "offset": 233,
+            "mnemonic": "mov",
+            "operands": "dword ptr [ebp - 0x2c], eax"
+          },
+          {
+            "offset": 236,
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x30]"
+          },
+          {
+            "offset": 239,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x30]"
+          },
+          {
+            "offset": 242,
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x34]"
+          },
+          {
+            "offset": 245,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x34]"
+          },
+          {
+            "offset": 248,
+            "mnemonic": "fld",
+            "operands": "dword ptr [edi + 0x38]"
+          },
+          {
+            "offset": 251,
+            "mnemonic": "fstp",
+            "operands": "dword ptr [esi + 0x38]"
+          },
+          {
+            "offset": 254,
+            "mnemonic": "mov",
+            "operands": "cl, byte ptr [edi + 0x3c]"
+          },
+          {
+            "offset": 257,
+            "mnemonic": "mov",
+            "operands": "byte ptr [esi + 0x3c], cl"
+          },
+          {
+            "offset": 260,
+            "mnemonic": "mov",
+            "operands": "dl, byte ptr [edi + 0x3d]"
+          },
+          {
+            "offset": 263,
+            "mnemonic": "mov",
+            "operands": "byte ptr [esi + 0x3d], dl"
+          },
+          {
+            "offset": 266,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp - 0x2c]"
+          },
+          {
+            "offset": 269,
+            "mnemonic": "pop",
+            "operands": "edi"
+          },
+          {
+            "offset": 270,
+            "mnemonic": "pop",
+            "operands": "esi"
+          },
+          {
+            "offset": 271,
+            "mnemonic": "pop",
+            "operands": "ebx"
+          },
+          {
+            "offset": 272,
+            "mnemonic": "mov",
+            "operands": "esp, ebp"
+          },
+          {
+            "offset": 274,
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 275,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ]
+      }
+    ],
+    "local_EH": [],
+    "public": [
+      {
+        "name": "?assign_native_gui_icon_state_storage_00ab3c10@bsp@@YAPAXPAXPBXAAIAAUNativeStringRawPoolContext@1@ADI@Z",
+        "value": 0,
+        "section": 3,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      }
+    ],
+    "normal_map": [],
+    "Root_manual_all95_ops_review": true,
+    "observations": [
+      "Source0 load +0c before dst capture; header CMP+23 before texture store+25; self skips only string arm.",
+      "CURRENTsrcLEN+42; SAME ordinaryHOME fullDWORD1 +54; actual5arg exactresize CALL+5d/REL32+5e.",
+      "After normal return CURRENTsrcLEN gate+6b, dstLEN+70 then srcDATA+72 then dstDATA+75; actual4arg BF CALL+a3/REL32+a4 even copied count0.",
+      "Unconditional tail+ab through+107: sixteen DWORD ops,eight x87 forms,EAXdst capture+e7 between first/second float pairs,four BYTE ops; no padding writes.",
+      "Source captures and cdecl frames differ from Native154B61ops43data9call9ABI; no localEH, normalGame map absent."
+    ]
+  },
+  "final_independent_Git_Core": {
+    "blocking_findings": 0,
+    "reader_checks": 114,
+    "own_checks": 17,
+    "artifacts": 44,
+    "all276_code_bytes_95_ops_COFF_Capstone_dumpbin_exact": true,
+    "compiled_data_carrier_mappings": 43,
+    "x87_forms": 8,
+    "fresh_actual_inverse_tree": "43afa0246d82d4202092e53557719bb3de85f41a",
+    "ordinary_argument_pushes_before_HOME_store": "qualified; late sourceLEN/fullHOME1/call order exact, no feature value read before store"
+  },
+  "receipts": [
+    {
+      "path": "local/function_source_batch76/common/manifest.json",
+      "bytes": 161945,
+      "sha256": "ec359819c5836d3d7634d1f96ec2991c637150fcf19bf044c701e970d5ccc724"
+    },
+    {
+      "path": "local/function_source_batch76/build_result.json",
+      "bytes": 45,
+      "sha256": "c4af21f432a9ffe0fc4bd913d0cd3d85ce67a3044fe4ef83ee3b5d7f16fa5f4b"
+    },
+    {
+      "path": "local/function_source_batch76/Root_Core.json",
+      "bytes": 14415,
+      "sha256": "63943c813fd3d65582d9be853109edac1d91ac2ce1af7b9f7fc6971dbf8c282e"
+    },
+    {
+      "path": "local/function_source_batch76/Source_peer/Source_peer_review.json",
+      "bytes": 13281,
+      "sha256": "0fbb10524bf98fcad617196292bd0d45cb1532964e3254bc243901a60fbc0130"
+    },
+    {
+      "path": "local/function_source_batch76/Source_peer/peer_manifest.json",
+      "bytes": 9717,
+      "sha256": "fd901e64c7f5c128cfaed98d46865556c1884105283eef2c0942c917afdc66f7"
+    },
+    {
+      "path": "local/function_source_batch76/final_peer/FINAL_REVIEW.md",
+      "bytes": 1385,
+      "sha256": "b42df875a1b51f7f16ca9d00dade42bdfa3b3d7acc3817c3feb7fca7dbd95501"
+    },
+    {
+      "path": "local/function_source_batch76/final_peer/final_review.json",
+      "bytes": 41290,
+      "sha256": "14156c42882c3028f6bbe8b94816e9a4321e92dd23223e640e8c702274bf69bf"
+    },
+    {
+      "path": "local/function_source_batch76/final_peer/sealed_manifest.json",
+      "bytes": 7889,
+      "sha256": "af106694372a4d194951acf3c73b1c23b9b42fb3985e98a70d8cb191d636bc1f"
+    }
+  ],
+  "qualifications": [
+    "Ordinary Source5argument API, disjoint Source homes/carriers and real pool/livefeature borrowed; not Native RET4/private stack/register/fault/FH3/SEH identity.",
+    "Source0 captured before destination, header-address comparison before texture store; self skips only strings while all x87 tail executes. No texture reftraffic.",
+    "Exactresize and BF7680 policy/extent/DF/SSE2/provider lifetimes inherited; no new cleanup/catch/NoThrow/Origin.",
+    "No actual raw growth/default Icon caller activation or Game validation; existing activated warmGUI whole objects unchanged.",
+    "No new Native/vendor/helper/CG/duplicate-body reconstruction credit."
+  ],
+  "new_Original_vendor_helper_CG_duplicate_credit": 0
+}

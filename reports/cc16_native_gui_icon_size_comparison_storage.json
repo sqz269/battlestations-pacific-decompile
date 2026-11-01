@@ -1,0 +1,478 @@
+{
+  "kind": "ignored whole raw AB24B0 normal Source candidate, two NEW Source files only; no tracked author grant",
+  "base": "ba7ec0329c0ada8ab917bd5243b852b36b5a6760",
+  "own_worktree_HEAD": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_size_comparison_storage.hpp",
+    "src/native_gui_icon_size_comparison_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_SIZE_COMPARISON_STORAGE.md",
+    "reports/cc16_native_gui_icon_size_comparison_storage.json"
+  ],
+  "Source_paths": [
+    "include/bsp/native_gui_icon_size_comparison_storage.hpp",
+    "src/native_gui_icon_size_comparison_storage.cpp"
+  ],
+  "dependency": {
+    "folder": "dependency_ab17b0",
+    "original_folder": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-native-size-storage-candidate\\local\\output\\cc16_native_gui_icon_native_size_storage_candidate_20261031",
+    "seal_sha256": "95c3eaff63d233b816229e20179edb3b5d41ef33e06875c93bf326d2f57b984d",
+    "provider_candidate_base": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+    "status": "complete ignored four-Source candidate; NOT yet tracked/admitted/compiled",
+    "Source_postimages": [
+      {
+        "path": "include/bsp/gui_texture.hpp",
+        "bytes": 1483,
+        "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f",
+        "Git_blob_sha1": "56874ac261fa8aeaed47230a830daaaa920b4cac"
+      },
+      {
+        "path": "src/game_native_gui_icon_application.cpp",
+        "bytes": 29136,
+        "sha256": "a99e08c6e3ee0ea86b381c324c4e6667e4be03dfcc10f679ee1db1874e0518e8",
+        "Git_blob_sha1": "ae4cf9f529a100ce5bf4f9994a7f2cf8fd018235"
+      },
+      {
+        "path": "include/bsp/native_gui_icon_native_size_storage.hpp",
+        "bytes": 3298,
+        "sha256": "e72fa9ca5a2a2a29170e98ef309c48e8a9b2467c376cb487af5820448b8cc956",
+        "Git_blob_sha1": "e14a9c7f041516f193552a814281af321d290df0"
+      },
+      {
+        "path": "src/native_gui_icon_native_size_storage.cpp",
+        "bytes": 3758,
+        "sha256": "cd5d40b8fb20d94efc3ba5c7037bdfd67fdc81e3be813af535230a8c91b2263f",
+        "Git_blob_sha1": "dbb3c66ac82e6f83231183da33a8285d831dc1d4"
+      }
+    ]
+  },
+  "historical_contract": {
+    "folder": "historical_ab24b0",
+    "original_folder": "J:\\PROG\\battlestations-pacific-decompile-codex-native-gui-icon-size-compare-candidate\\local\\output\\cc16_native_gui_icon_size_compare_candidate_20261031",
+    "seal_sha256": "fad8706c52cf4ff6c77968e8b820bcb197b3da039c723ec860cb379c84cb55f3",
+    "qualification": "original raw17B0 absence/body-not-written status applies at old contract epoch only, not to this new pending composition"
+  },
+  "Native": {
+    "address": "00ab24b0",
+    "end_inclusive": "00ab2530",
+    "bytes": 129,
+    "ops": 40,
+    "sha256": "e83b6650d7135878cdb16be45e4a0e72961e9c0fb7b3fbfca8adda3422b94247",
+    "hex": "83ec0c568bf18b168d460c508d4c240ce8ebf2fffff30f1005b8c3d5000f2f4424087753d94634d8642408d95c24048b4c2404dd0568a2d70081e1ffffff7f894c2404d9442404dff1772ad94638d864240cd95c24048b54240481e2ffffff7f89542404d9442404dff1ddd8770933c05e83c40cc3ddd8b8010000005e83c40cc3",
+    "no_incoming_stack_args": true,
+    "returns": "full EAX0or1, two plainRET; notRET4",
+    "Source_ordinary_arguments": 6
+  },
+  "Native_Source_map": [
+    {
+      "address": "00ab24b0",
+      "Native": "sub esp, 0xc",
+      "Source": "ordinary first12B caller Scratch; Original private-stack ABI excluded"
+    },
+    {
+      "address": "00ab24b3",
+      "Native": "push esi",
+      "Source": "Source ABI save/restore only"
+    },
+    {
+      "address": "00ab24b4",
+      "Native": "mov esi, ecx",
+      "Source": "capture actual_40b_state then bind ESI"
+    },
+    {
+      "address": "00ab24b6",
+      "Native": "mov edx, dword ptr [esi]",
+      "Source": "block0 MOV EDX,[ESI]: captured CURRENT texture00 BEFORE UVhome stage"
+    },
+    {
+      "address": "00ab24b8",
+      "Native": "lea eax, [esi + 0xc]",
+      "Source": "block0 LEA EAX,[ESI+0C]: actual raw UV address"
+    },
+    {
+      "address": "00ab24bb",
+      "Native": "push eax",
+      "Source": "block0 actual outgoing volatile DWORD UVhome store; Original PUSH/fault ABI excluded"
+    },
+    {
+      "address": "00ab24bc",
+      "Native": "lea ecx, [esp + 0xc]",
+      "Source": "&scratch.native_width_home is real private output8B; Source address binding"
+    },
+    {
+      "address": "00ab24c0",
+      "Native": "call 0xab17b0",
+      "Source": "direct complete pending raw AB17B0 Source call, SAME output/texture/UVhome/nestedScratch/callbacks/constants; EAX ignored"
+    },
+    {
+      "address": "00ab24c5",
+      "Native": "movss xmm0, dword ptr [0xd5c3b8]",
+      "Source": "block1 MOVSS CURRENT genuine minimum cell AFTER helper returns"
+    },
+    {
+      "address": "00ab24cd",
+      "Native": "comiss xmm0, dword ptr [esp + 8]",
+      "Source": "block1 COMISS minimum versus helper widthfloat"
+    },
+    {
+      "address": "00ab24d2",
+      "Native": "ja 0xab2527",
+      "Source": "JA size_compare_yes, no epsilon push/pop on minimumtrue"
+    },
+    {
+      "address": "00ab24d4",
+      "Native": "fld dword ptr [esi + 0x34]",
+      "Source": "FLD CURRENT captured-state+34 only after minimum comparison false/unordered"
+    },
+    {
+      "address": "00ab24d7",
+      "Native": "fsub dword ptr [esp + 8]",
+      "Source": "FSUB helper output width"
+    },
+    {
+      "address": "00ab24db",
+      "Native": "fstp dword ptr [esp + 4]",
+      "Source": "FSTP float32 difference into ordinary home"
+    },
+    {
+      "address": "00ab24df",
+      "Native": "mov ecx, dword ptr [esp + 4]",
+      "Source": "MOV ECX,difference bits BEFORE epsilon load"
+    },
+    {
+      "address": "00ab24e3",
+      "Native": "fld qword ptr [0xd7a268]",
+      "Source": "FLD genuine CURRENT double epsilon once"
+    },
+    {
+      "address": "00ab24e9",
+      "Native": "and ecx, 0x7fffffff",
+      "Source": "AND ECX,7fffffffh WHILE epsilon live"
+    },
+    {
+      "address": "00ab24ef",
+      "Native": "mov dword ptr [esp + 4], ecx",
+      "Source": "MOV masked difference home WHILE epsilon live"
+    },
+    {
+      "address": "00ab24f3",
+      "Native": "fld dword ptr [esp + 4]",
+      "Source": "FLD masked width magnitude"
+    },
+    {
+      "address": "00ab24f7",
+      "Native": "fcompi st(1)",
+      "Source": "FCOMIP ST0,ST1 pops magnitude, keeps epsilon"
+    },
+    {
+      "address": "00ab24f9",
+      "Native": "ja 0xab2525",
+      "Source": "JA widthtrue separate epsilon-pop label"
+    },
+    {
+      "address": "00ab24fb",
+      "Native": "fld dword ptr [esi + 0x38]",
+      "Source": "FLD CURRENT state+38 only width false/unordered WHILE epsilon live"
+    },
+    {
+      "address": "00ab24fe",
+      "Native": "fsub dword ptr [esp + 0xc]",
+      "Source": "FSUB helper output height WHILE epsilon live"
+    },
+    {
+      "address": "00ab2502",
+      "Native": "fstp dword ptr [esp + 4]",
+      "Source": "FSTP float32 difference WHILE epsilon live"
+    },
+    {
+      "address": "00ab2506",
+      "Native": "mov edx, dword ptr [esp + 4]",
+      "Source": "MOV ECX,difference bits; Source carrier differs from Native EDX, no ABI claim"
+    },
+    {
+      "address": "00ab250a",
+      "Native": "and edx, 0x7fffffff",
+      "Source": "AND ECX,7fffffffh WHILE epsilon live"
+    },
+    {
+      "address": "00ab2510",
+      "Native": "mov dword ptr [esp + 4], edx",
+      "Source": "MOV masked difference home WHILE epsilon live"
+    },
+    {
+      "address": "00ab2514",
+      "Native": "fld dword ptr [esp + 4]",
+      "Source": "FLD masked height magnitude"
+    },
+    {
+      "address": "00ab2518",
+      "Native": "fcompi st(1)",
+      "Source": "FCOMIP ST0,ST1 pops magnitude, keeps epsilon"
+    },
+    {
+      "address": "00ab251a",
+      "Native": "fstp st(0)",
+      "Source": "FSTP ST0 BEFORE terminal JA"
+    },
+    {
+      "address": "00ab251c",
+      "Native": "ja 0xab2527",
+      "Source": "JA size_compare_yes retains preceding FCOMIP flags"
+    },
+    {
+      "address": "00ab251e",
+      "Native": "xor eax, eax",
+      "Source": "XOR EAX,EAX; Source joins result store after relative FPdepth0"
+    },
+    {
+      "address": "00ab2520",
+      "Native": "pop esi",
+      "Source": "Source ABI save/restore only"
+    },
+    {
+      "address": "00ab2521",
+      "Native": "add esp, 0xc",
+      "Source": "Source private/control backing not Native stack adjustment"
+    },
+    {
+      "address": "00ab2524",
+      "Native": "ret ",
+      "Source": "return full uint32 result0; ordinary six-argument Source ABI, plain Native RET not RET4"
+    },
+    {
+      "address": "00ab2525",
+      "Native": "fstp st(0)",
+      "Source": "widthtrue FSTP ST0, joins yes only AFTER epsilon pop"
+    },
+    {
+      "address": "00ab2527",
+      "Native": "mov eax, 1",
+      "Source": "MOV EAX,1"
+    },
+    {
+      "address": "00ab252c",
+      "Native": "pop esi",
+      "Source": "Source ABI save/restore only"
+    },
+    {
+      "address": "00ab252d",
+      "Native": "add esp, 0xc",
+      "Source": "Source private/control backing not Native stack adjustment"
+    },
+    {
+      "address": "00ab2530",
+      "Native": "ret ",
+      "Source": "return full uint32 result1; ordinary six-argument Source ABI, plain Native RET not RET4"
+    }
+  ],
+  "decoder_alias": "Capstone spells Native DF F1 as fcompi st(1); Ghidra/MASM Source spell the same popped compare FCOMIP ST0,ST1. Native byte identity is explicit; emitted Source remains uncompiled.",
+  "asm_statement_regions": [
+    [
+      "mov esi, captured_state",
+      "mov edx, dword ptr [esi]",
+      "lea eax, [esi + 0ch]",
+      "mov ecx, uv_pointer_home_address",
+      "mov dword ptr [ecx], eax",
+      "mov captured_texture, edx"
+    ],
+    [
+      "mov esi, captured_state",
+      "mov edi, comparison_homes",
+      "mov ecx, minimum_width_address",
+      "mov edx, epsilon_address",
+      "movss xmm0, dword ptr [ecx]",
+      "comiss xmm0, dword ptr [edi + 4]",
+      "ja size_compare_yes",
+      "fld dword ptr [esi + 34h]",
+      "fsub dword ptr [edi + 4]",
+      "fstp dword ptr [edi]",
+      "mov ecx, dword ptr [edi]",
+      "fld qword ptr [edx]",
+      "and ecx, 7fffffffh",
+      "mov dword ptr [edi], ecx",
+      "fld dword ptr [edi]",
+      "fcomip st(0), st(1)",
+      "ja size_compare_width_yes",
+      "fld dword ptr [esi + 38h]",
+      "fsub dword ptr [edi + 8]",
+      "fstp dword ptr [edi]",
+      "mov ecx, dword ptr [edi]",
+      "and ecx, 7fffffffh",
+      "mov dword ptr [edi], ecx",
+      "fld dword ptr [edi]",
+      "fcomip st(0), st(1)",
+      "fstp st(0)",
+      "ja size_compare_yes",
+      "xor eax, eax",
+      "jmp size_compare_done",
+      "size_compare_width_yes:",
+      "fstp st(0)",
+      "size_compare_yes:",
+      "mov eax, 1",
+      "size_compare_done:",
+      "mov comparison_result, eax"
+    ]
+  ],
+  "x87_operand_map": [
+    {
+      "address": "00ab24d4",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esi + 0x34]",
+      "Source": "fld dword ptr [esi + 34h]",
+      "role": "CURRENT state width34"
+    },
+    {
+      "address": "00ab24d7",
+      "mnemonic": "fsub",
+      "Native": "dword ptr [esp + 8]",
+      "Source": "fsub dword ptr [edi + 4]",
+      "role": "helper output width"
+    },
+    {
+      "address": "00ab24db",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 4]",
+      "Source": "fstp dword ptr [edi]",
+      "role": "rounded difference home"
+    },
+    {
+      "address": "00ab24e3",
+      "mnemonic": "fld",
+      "Native": "qword ptr [0xd7a268]",
+      "Source": "fld qword ptr [edx]",
+      "role": "CURRENT epsilon double (once)"
+    },
+    {
+      "address": "00ab24f3",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esp + 4]",
+      "Source": "fld dword ptr [edi]",
+      "role": "masked width magnitude"
+    },
+    {
+      "address": "00ab24f7",
+      "mnemonic": "fcompi",
+      "Native": "st(1)",
+      "Source": "fcomip st(0), st(1)",
+      "role": "width FCOMIP leaves epsilon"
+    },
+    {
+      "address": "00ab24fb",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esi + 0x38]",
+      "Source": "fld dword ptr [esi + 38h]",
+      "role": "CURRENT state height38 AFTER width false/unordered"
+    },
+    {
+      "address": "00ab24fe",
+      "mnemonic": "fsub",
+      "Native": "dword ptr [esp + 0xc]",
+      "Source": "fsub dword ptr [edi + 8]",
+      "role": "helper output height"
+    },
+    {
+      "address": "00ab2502",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 4]",
+      "Source": "fstp dword ptr [edi]",
+      "role": "rounded difference home"
+    },
+    {
+      "address": "00ab2514",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esp + 4]",
+      "Source": "fld dword ptr [edi]",
+      "role": "masked height magnitude"
+    },
+    {
+      "address": "00ab2518",
+      "mnemonic": "fcompi",
+      "Native": "st(1)",
+      "Source": "fcomip st(0), st(1)",
+      "role": "height FCOMIP leaves epsilon"
+    },
+    {
+      "address": "00ab251a",
+      "mnemonic": "fstp",
+      "Native": "st(0)",
+      "Source": "fstp st(0)",
+      "role": "height path epsilon pop BEFORE JA"
+    },
+    {
+      "address": "00ab2525",
+      "mnemonic": "fstp",
+      "Native": "st(0)",
+      "Source": "fstp st(0)",
+      "role": "widthtrue epsilon pop"
+    }
+  ],
+  "PE_preimages": [
+    {
+      "address": "00d5c3b8",
+      "role": "CURRENT minimum-width float after helper",
+      "path": "Native/preimage_00d5c3b8.bin",
+      "hex": "5555153d",
+      "bytes": 4,
+      "sha256": "976f5078ef265122d3cf44b82baf46e61ece2e3112074240dd8b40d5eeec8e06",
+      "Git_blob_sha1": "d6cbccd8d35b1b5a5053ee70d1bc9ebeb15dbbb5"
+    },
+    {
+      "address": "00d7a268",
+      "role": "CURRENT epsilon double loaded once",
+      "path": "Native/preimage_00d7a268.bin",
+      "hex": "000000e0e2361a3f",
+      "bytes": 8,
+      "sha256": "564be83b341e452f4492fa81f7d5f215f446119f583c33a94b619cd1ee7287fd",
+      "Git_blob_sha1": "3cb2474e6d4dc48a5a69e4434ae1847b7711902f"
+    },
+    {
+      "address": "00ab17b0",
+      "role": "real complete raw extent Native dependency",
+      "path": "Native/preimage_00ab17b0.bin",
+      "hex": "83ec08568bf28b068b5048578bf98bceffd285c08944240cdb44240c7d06d8057839ce00dc3580c3ce008b068b504c8bced95c2408ffd285c08944240cdb44240c7d06d8057839ce00dc35b8f1ce008b442414d95c240cd94008d820d95c24148b4c241481e1ffffff7f894c2414d9442414d84c2408d91fd9400cd860048bc7d95c24148b54241481e2ffffff7f89542414d9442414d84c240cd95f045f5e83c408c20400",
+      "bytes": 165,
+      "sha256": "61dbd31280210d9acd9bcdedc1b0ae897593454ebd0626d1f4794c3841028853",
+      "Git_blob_sha1": "4daa24311eeddc9d9d5a16f1c686d7d0c78e515a"
+    }
+  ],
+  "verified_target": {
+    "project_file": "C:/Users/sqz269/bsp.gpr",
+    "program_path": "/battlestationspacific.exe",
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "whole_PE": {
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "Git_blob_sha1": "dc52ba5b0ec812432626e12fbdba44bb27059999"
+    },
+    "BSP_read_only_verification": "ghidra count77632; saved listing/installed bytes reused; no export refresh/Ghidra write"
+  },
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_size_comparison_storage.hpp",
+      "bytes": 3429,
+      "sha256": "75c3604339891a45253f611a8a769fcc819cb24d7b92c4bc36ee6ccbf200d52c",
+      "Git_blob_sha1": "95cdc48bb32c3b9584b271a9450169cbf2a06482"
+    },
+    {
+      "path": "src/native_gui_icon_size_comparison_storage.cpp",
+      "bytes": 2601,
+      "sha256": "8c80a2d0f8e8541d427f9cf6db490a172af29147d4faa713bf283b3d32084678",
+      "Git_blob_sha1": "e3850528d52ed84b9bcd4d82028e23b727738c99"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_SIZE_COMPARISON_STORAGE.md",
+      "bytes": 4348,
+      "sha256": "f4da24a0d8b64e930a57c96b9986c5049407aa3a15cc9197048b7973e44467e0",
+      "Git_blob_sha1": "719fca57cf2a9f8b6ea711e227fdd27d9002e36c"
+    }
+  ],
+  "reader": {
+    "bytes": 12022,
+    "sha256": "949b59be46af628494aac60144128cb52f82874ea50c839bb2ab4ef9da128557",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate';checks=[]\nP='reports/cc16_native_gui_icon_size_comparison_storage.json'\ndef g(*args):return subprocess.check_output(['git',*args])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n    assert v,n\n    checks.append(n)\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P))\nck('exact raw embedded reader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode() and sha(pathlib.Path(__file__).read_bytes())==r['reader']['sha256'])\nfor p in r['postimages']:\n    b=read(p['path']);ck('whole new postimage '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'] and b'\\r' not in b)\ndef dependency(q,label):\n    folder=D/q['folder'];seal=(folder/'sealed_receipt.json').read_bytes()\n    ck(label+' immutable seal',sha(seal)==q['seal_sha256'])\n    source=pathlib.Path(q['original_folder'])\n    for p in json.loads((folder/'manifest.json').read_bytes())['artifacts']:\n        rel=pathlib.Path(p['path'])\n        if rel.is_absolute():rel=rel.relative_to(source)\n        b=(folder/rel).read_bytes()\n        ck(label+' frozen artifact '+str(rel),len(b)==p['bytes'] and sha(b)==p['sha256'])\ndependency(r['dependency'],'complete AB17B0 candidate')\ndependency(r['historical_contract'],'historical AB24B0 contract')\ndepdir=D/r['dependency']['folder'];dep=json.loads((depdir/'candidate/reports/cc16_native_gui_icon_native_size_storage.json').read_bytes())\nck('complete raw provider contains actual HCPP/consumer/field, not declaration stub',len(r['dependency']['Source_postimages'])==4 and dep['Source_paths']==[p['path'] for p in r['dependency']['Source_postimages']])\nfor p in r['dependency']['Source_postimages']:\n    b=(depdir/'candidate'/p['path']).read_bytes();ck('actual complete pending Source provider '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nfor p in dep['existing_provider_whole_pins']:\n    b=g('show',r['base']+':'+p['path']);ck('published current existing input '+p['path'],len(b)==p['bytes'] and sha(b)==p['sha256'])\nck('dependency readiness honestly candidate only',r['dependency']['status']=='complete ignored four-Source candidate; NOT yet tracked/admitted/compiled')\n\nh=read(r['Source_paths'][0]).decode();c=read(r['Source_paths'][1]).decode()\nck('real complete extent provider header, no semantic header', '#include \"bsp/native_gui_icon_native_size_storage.hpp\"' in h and 'gui_icon.hpp' not in h+c)\nstruct=h[h.index('struct NativeGuiIconSizeComparisonScratch {'):h.index('};',h.index('struct NativeGuiIconSizeComparisonScratch {'))]\nck('exact no-DMI private12B/home/nested8B Source layout',struct=='struct NativeGuiIconSizeComparisonScratch {\\n    std::uint32_t difference_home;\\n    std::uint32_t native_width_home;\\n    std::uint32_t native_height_home;\\n    volatile std::uint32_t uv_pointer_home;\\n    NativeGuiIconNativeSizeScratch extent_scratch;\\n')\nck('mandatory SAME real minimum/epsilon borrows not injected values',all(x in h and x in c for x in ['const volatile float& actual_minimum_width_00d5c3b8','const volatile double& actual_epsilon_00d7a268']))\nck('constants only address-bound, never C++ value sampled',c.count('actual_minimum_width_00d5c3b8')==2 and c.count('actual_epsilon_00d7a268')==2 and '&actual_minimum_width_00d5c3b8' in c and '&actual_epsilon_00d7a268' in c)\nclean=re.sub(r'//[^\\n]*','',c)\nck('no C++ guards/cleanup/NoThrow/owner/default/FP policy',not any(x in clean for x in ['if (','catch','throw','noexcept','std::terminate','new ','delete ','std::abs','std::fabs','kGuiIcon','finit','fninit','fldcw','ldmxcsr']) and re.search(r'\\b(?:GuiIconState|GuiWidgetSize|GuiUvRect)\\b',clean) is None)\ncall='(void)write_native_gui_icon_native_size_storage_00ab17b0(\\n        &scratch.native_width_home, captured_texture, scratch.uv_pointer_home,\\n        scratch.extent_scratch, callbacks, extent_constants);'\nck('one genuine complete provider call with exact six real arguments',c.count(call)==1 and c.count('write_native_gui_icon_native_size_storage_00ab17b0(')==1)\nck('full DWORD return not Source bool/Native authority', 'std::uint32_t gui_icon_state_differs_from_native_size_storage_00ab24b0(' in h and 'return comparison_result;' in c)\nblocks=re.findall(r'__asm\\s*\\{([^}]*)\\}',c)\nstmts=[[z.strip() for z in re.sub(r'//[^\\n]*','',b).splitlines() if z.strip()] for b in blocks]\nck('both exact frozen Source asm schedules',len(stmts)==2 and stmts==r['asm_statement_regions'])\nck('CURRENT texture capture before actual UV HOME stage',stmts[0]==['mov esi, captured_state','mov edx, dword ptr [esi]','lea eax, [esi + 0ch]','mov ecx, uv_pointer_home_address','mov dword ptr [ecx], eax','mov captured_texture, edx'])\nck('helper call is between metadata staging and all comparisons',c.index(blocks[0])<c.index(call)<c.index(blocks[1]))\njoined='\\n'.join(stmts[1])\nck('CURRENT minimum MOVSS/COMISS only after helper',joined.index('movss xmm0, dword ptr [ecx]\\ncomiss xmm0, dword ptr [edi + 4]')>=0)\nck('rounded width diff before single epsilon double load', 'fstp dword ptr [edi]\\nmov ecx, dword ptr [edi]\\nfld qword ptr [edx]\\nand ecx, 7fffffffh' in joined and joined.count('fld qword ptr [edx]')==1)\nck('epsilon live into CURRENT height only width false/unordered','fcomip st(0), st(1)\\nja size_compare_width_yes\\nfld dword ptr [esi + 38h]\\nfsub dword ptr [edi + 8]' in joined)\nck('height epsilon pop before JA, keeps FCOMIP flags','fcomip st(0), st(1)\\nfstp st(0)\\nja size_compare_yes' in joined)\nck('minimumtrue target does not pop, widthtrue separate pop','size_compare_width_yes:\\nfstp st(0)\\nsize_compare_yes:\\nmov eax, 1' in joined)\nck('no callback/Source service during epsilon live',not any(z.startswith('call ') for z in stmts[1]) and 'dimension_from_captured' not in c)\n\nnative=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(native,0xab24b0))\nck('whole Native129B40ops/complete coverage',len(native)==129 and sha(native)==r['Native']['sha256'] and len(ins)==40 and sum(i.size for i in ins)==129)\nck('two plain Native RET/no incoming args, not staleRET4',[(i.address,i.op_str,bytes(i.bytes).hex()) for i in ins if i.mnemonic=='ret']==[(0xab2524,'','c3'),(0xab2530,'','c3')] and r['Native']['no_incoming_stack_args'])\nck('all40 Native rows mapped',[f'{i.address:08x}' for i in ins]==[q['address'] for q in r['Native_Source_map']])\nck('single real Native extent call and no new callback',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab24c0,'0xab17b0')])\nfp_native=[(f'{i.address:08x}',i.mnemonic,i.op_str) for i in ins if i.mnemonic.startswith('f')]\nfp_source=[z for b in stmts for z in b if z.split()[0].startswith('f')]\nck('all13 x87 operand/width/order forms',len(fp_native)==len(fp_source)==13 and fp_native==[(q['address'],q['mnemonic'],q['Native']) for q in r['x87_operand_map']] and fp_source==[q['Source'] for q in r['x87_operand_map']])\nck('real SSE minimum MOVSS/COMISS forms',[(i.address,i.mnemonic,i.op_str) for i in ins if i.mnemonic in ['movss','comiss']]==[(0xab24c5,'movss','xmm0, dword ptr [0xd5c3b8]'),(0xab24cd,'comiss','xmm0, dword ptr [esp + 8]')])\nck('Capstone fcompi is same Native DF F1 FCOMIP instruction alias',[(i.address,bytes(i.bytes).hex()) for i in ins if i.address in [0xab24f7,0xab2518]]==[(0xab24f7,'dff1'),(0xab2518,'dff1')])\n\ndef delta(m):return 1 if m in ['fld','fild'] else -1 if m in ['fstp','fcomip','fcompi'] else 0\nbyaddr={i.address:j for j,i in enumerate(ins)};todo=[(0,0)];seen=set();depths={};returns=[]\nwhile todo:\n    j,d=todo.pop()\n    if (j,d) in seen:continue\n    seen.add((j,d));i=ins[j];depths.setdefault(i.address,set()).add(d)\n    ck('Native relative FP depth nonnegative '+f'{i.address:08x}',d>=0)\n    if i.mnemonic=='call':ck('Native helper entered at relative FP0',d==0)\n    out=d+delta(i.mnemonic);ck('Native instruction FP output nonnegative '+f'{i.address:08x}',out>=0)\n    if i.mnemonic=='ret':returns.append(out);continue\n    if i.mnemonic=='ja':todo.append((byaddr[int(i.op_str,16)],out))\n    todo.append((j+1,out))\nck('both Native returns relative FP0',len(returns)==2 and returns==[0,0])\nck('Native epsilon frontier/height/pop depths',depths[0xab24e3]=={0} and depths[0xab24fb]=={1} and depths[0xab251a]=={1} and depths[0xab2525]=={1})\nrows=stmts[1];labels={z[:-1]:j for j,z in enumerate(rows) if z.endswith(':')};todo=[(0,0)];seen=set();source_depths={};ends=[]\nwhile todo:\n    j,d=todo.pop()\n    if (j,d) in seen:continue\n    seen.add((j,d))\n    if j==len(rows):ends.append(d);continue\n    s=rows[j];source_depths.setdefault(s,set()).add(d);m=s.split()[0];out=d+delta(m)\n    ck('Source CFG relative FP nonnegative '+str(j),d>=0 and out>=0)\n    if m in ['ja','jmp']:todo.append((labels[s.split()[1]],out))\n    if m!='jmp':todo.append((j+1,out))\nck('every Source joined result store/exit at FP0',source_depths['mov comparison_result, eax']=={0} and ends and set(ends)=={0})\nck('Source height is read with live epsilon, metadata only after pop',source_depths['fld dword ptr [esi + 38h]']=={1} and source_depths['mov comparison_result, eax']=={0})\nfor q in r['PE_preimages']:\n    b=(D/q['path']).read_bytes();ck('genuine literal/helper PE preimage '+q['role'],len(b)==q['bytes'] and sha(b)==q['sha256'])\n\ndef tree(rev):\n    out={}\n    for z in g('ls-tree','-r','-z',rev).split(b'\\0'):\n        if z:\n            meta,p=z.split(b'\\t',1);mode,kind,oid=meta.decode().split();out[p.decode()]=(mode,kind,oid)\n    return out\ndef oid(b):return hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef treehash(items):\n    root={}\n    for p,v in items.items():\n        n=root;parts=p.split('/')\n        for s in parts[:-1]:n=n.setdefault(s,{})\n        n[parts[-1]]=v\n    def rec(n):\n        rows=[]\n        for k,v in n.items():\n            if isinstance(v,dict):rows.append((k+'/',b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else:rows.append((k,v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b=b''.join(v for _,v in sorted(rows,key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\nbefore=tree(r['base']);after=dict(before)\nck('full published base tree exact',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip())\nfor p in r['owned_paths']:\n    ck('new path absent before candidate '+p,p not in before);after[p]=('100644','blob',oid(read(p)))\nundo=dict(after)\nfor p in r['owned_paths']:undo.pop(p)\nck('full four-addition map/recursive inverse',undo==before and treehash(undo)==treehash(before))\nif a.commit:\n    parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit)\n    ck('actual one parent',len(parent.split())==1)\n    ck('actual exact four additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n    for p in r['owned_paths']:new.pop(p)\n    ck('actual full recursive four-path inverse',new==old and treehash(new)==treehash(old))\nck('raw constant/producer wiring absent, no false activation',not r['actual_raw_minimum_epsilon_borrow_binding_present'] and not r['actual_raw_caller_producer_custody_selected'] and not r['compile_Core_OriginalABI_Origin_runtime_activation'] and r['new_Original_vendor_helper_CG_duplicate_credit']==0)\nprint(json.dumps({'pass':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','Native_bytes':129,'Native_ops':40,'x87_forms':13,'Source_asm_regions':2,'Native_return_FPdepths':returns,'Source_exit_FPdepths':ends,'published_existing_inputs':18,'complete_pending_AB17B0_provider':True,'base_tree':treehash(before),'virtual_four_path_tree':treehash(after),'full_inverse_tree':treehash(undo),'compile_Core_OriginalABI_Origin_runtime_activation':False}))\n"
+  },
+  "actual_raw_minimum_epsilon_borrow_binding_present": false,
+  "actual_raw_caller_producer_custody_selected": false,
+  "Source_body_support_ready_for_peer_against_pending_complete_extent_provider": true,
+  "compile_Core_OriginalABI_Origin_runtime_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0
+}

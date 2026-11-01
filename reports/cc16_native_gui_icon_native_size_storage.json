@@ -1,0 +1,937 @@
+{
+  "kind": "ignored concrete whole AB17B0 Source candidate coupled to real captured-dimension consumer; no tracked author grant",
+  "base": "88a6327684bc7d379163012e09a8b6c6c8037f68",
+  "historical_contract_base": "4adaf3be42fe8cd6c50a5657b6b87636f05fe4d2",
+  "historical_contract_latest_Main": "cb879042b23afc501d85a55b3961452dcee7ffce",
+  "accepted_contract_seal": {
+    "path": "accepted_contract/sealed_receipt.json",
+    "bytes": 1839,
+    "sha256": "763abc384ccbcab4d094c20a52b6d1da596f3458236d15dadb1f4ed525619d51",
+    "Git_blob_sha1": "34181e61d2d174494ff6e22ac4dabc52bce31fc7"
+  },
+  "Source_paths": [
+    "include/bsp/gui_texture.hpp",
+    "src/game_native_gui_icon_application.cpp",
+    "include/bsp/native_gui_icon_native_size_storage.hpp",
+    "src/native_gui_icon_native_size_storage.cpp"
+  ],
+  "owned_paths": [
+    "include/bsp/gui_texture.hpp",
+    "src/game_native_gui_icon_application.cpp",
+    "include/bsp/native_gui_icon_native_size_storage.hpp",
+    "src/native_gui_icon_native_size_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_NATIVE_SIZE_STORAGE.md",
+    "reports/cc16_native_gui_icon_native_size_storage.json"
+  ],
+  "seams": [
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "label": "append captured-pair field after complete old-five prefix",
+      "offset_before_this_edit": 486,
+      "old_utf8": "    std::function<void(void*)> retain;\n",
+      "new_utf8": "    std::function<void(void*)> retain;\n    // Optional actual captured-pair transport; no default width/height delegate.\n    // Required only by the raw dimension path; old five routes remain unchanged.\n    std::function<std::uint32_t(void* actual_texture,\n        std::uint32_t captured_profile, std::uint32_t captured_target)> dimension_from_captured;\n",
+      "before": {
+        "bytes": 1168,
+        "sha256": "8e825c11e932fbd11176f2d368160cdb66742b8a25e2fb2235c37606cb5d945a",
+        "Git_blob_sha1": "f17ec5d9aa508a8d4e3de19f8e7c7e0b21bfccff"
+      },
+      "after": {
+        "bytes": 1483,
+        "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f",
+        "Git_blob_sha1": "56874ac261fa8aeaed47230a830daaaa920b4cac"
+      }
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "label": "private real consumer uses SAME captured words and canonical count; no profile resample",
+      "offset_before_this_edit": 7959,
+      "old_utf8": "    void* load_texture(Record& record, std::string_view spelling, Word flags) {\n",
+      "new_utf8": "    Word dimension_from_captured(void* raw, Word captured_profile, Word captured_target) const {\n        require(raw && captured_profile == 0x00d61948,\n            \"Native Icon captured dimension requires its supported D61948 Source family\");\n        auto& reference = geometry.actual_owners().resolve_actual(raw);\n        require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,\n            \"Native Icon texture requires its SAME canonical native reference count\");\n        if (captured_target == 0x00b3ce70)\n            return get_native_texture_saved_width_00b3ce70(raw);\n        if (captured_target == 0x00b3ce80)\n            return get_native_texture_saved_height_00b3ce80(raw);\n        throw std::logic_error(\"Native Icon unsupported captured Source dimension target\");\n    }\n    void* load_texture(Record& record, std::string_view spelling, Word flags) {\n",
+      "before": {
+        "bytes": 28057,
+        "sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+        "Git_blob_sha1": "65a9378a2d68d1eb25a43ed72179607d0267ec0e"
+      },
+      "after": {
+        "bytes": 28880,
+        "sha256": "a7abb9e9d10595510ee89996f7262ee69b231fb6079391f28f30aa320194ebbf",
+        "Git_blob_sha1": "72be38635cf49bdce516ab32edd0bc985c0359f8"
+      }
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "label": "assign captured-pair closure inside existing try after Record adoption",
+      "offset_before_this_edit": 27286,
+      "old_utf8": "    try { return std::make_unique<GuiIconTypeImplementation>(owner, std::move(services)); }\n",
+      "new_utf8": "    try {\n        services.textures.resolve.dimension_from_captured =\n            [&app](void* raw, Word captured_profile, Word captured_target) {\n                return app.dimension_from_captured(raw, captured_profile, captured_target);\n            };\n        return std::make_unique<GuiIconTypeImplementation>(owner, std::move(services));\n    }\n",
+      "before": {
+        "bytes": 28880,
+        "sha256": "a7abb9e9d10595510ee89996f7262ee69b231fb6079391f28f30aa320194ebbf",
+        "Git_blob_sha1": "72be38635cf49bdce516ab32edd0bc985c0359f8"
+      },
+      "after": {
+        "bytes": 29136,
+        "sha256": "a99e08c6e3ee0ea86b381c324c4e6667e4be03dfcc10f679ee1db1874e0518e8",
+        "Git_blob_sha1": "ae4cf9f529a100ce5bf4f9994a7f2cf8fd018235"
+      }
+    }
+  ],
+  "existing_provider_whole_pins": [
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "bytes": 1168,
+      "sha256": "8e825c11e932fbd11176f2d368160cdb66742b8a25e2fb2235c37606cb5d945a",
+      "Git_blob_sha1": "f17ec5d9aa508a8d4e3de19f8e7c7e0b21bfccff",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "bytes": 28057,
+      "sha256": "62f96bcdbeb553005f1fe26039be64c43198417a9f4931e9fc3813e180e69565",
+      "Git_blob_sha1": "65a9378a2d68d1eb25a43ed72179607d0267ec0e",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/gui_icon_runtime.hpp",
+      "bytes": 9796,
+      "sha256": "85268af63b51d9edb56594034e8eb7eb72b14148164e0741c69e10ac9181f73c",
+      "Git_blob_sha1": "74eb93c902aba97798b12e4abea8597e12d75dd4",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_icon_runtime.cpp",
+      "bytes": 34774,
+      "sha256": "0db2eb09669e97d431fc9bd6c117afccdeb852ac8e53c2d22173feb20f4fc753",
+      "Git_blob_sha1": "a3d277e9c9a8a582161727de6c57dde9c8675ddb",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/native_texture_saved_dimensions.hpp",
+      "bytes": 659,
+      "sha256": "79cd7e835c608dda30d3ada5dc46b8c9e09b066e9a284f18a12276ff4d770890",
+      "Git_blob_sha1": "39895a3684f10935598ef4fec7dc1e4184f76249",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/native_texture_saved_dimensions.cpp",
+      "bytes": 558,
+      "sha256": "094040ca29e9d708254a8889c062bda42f15a7c6833b303c3dc37f6d72724483",
+      "Git_blob_sha1": "81b8331d5740d2ec0606a3ec1e436b0795d7a850",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_type_dispatch.cpp",
+      "bytes": 16322,
+      "sha256": "a0cac573ee0fd632a5f2a66246d26ad4c822048f34e742e4992ab14229ae9a72",
+      "Git_blob_sha1": "61d3115b64e5e94aefab0cd107c28e00b27d8d9f",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/gui_type_dispatch.hpp",
+      "bytes": 7130,
+      "sha256": "101f2aee3c59f8391ec01176675b43a765f2f5ee16c29dfb870c285b5ed43734",
+      "Git_blob_sha1": "70ea92febdb3054c5f6c87766cdae4594efc7904",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/gui_framebox.hpp",
+      "bytes": 4949,
+      "sha256": "ec5c437d8a2bfb51abf5b7dab2b69da05b6fc50fe74ef6fd26c3808c85e755a5",
+      "Git_blob_sha1": "6a739abea827bc2db8dddeb8ca74f286fee8bab4",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_framebox.cpp",
+      "bytes": 16704,
+      "sha256": "e3c56bf3d73aa45c99e5f6b744610fa179d67233435986e9d901fd74d0ce3a30",
+      "Git_blob_sha1": "72fafc97aa5db64fd2935af00ccb580e817d8edd",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/cc13_powerup.cpp",
+      "bytes": 17926,
+      "sha256": "d119b1b3052f939fe1f8b45dd0e7ea22fdf2dd60b312247d188084926d62bc8d",
+      "Git_blob_sha1": "7f716653a3354c86fa4f2b8228964aa26fc3165a",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/d3d9_atlas_probe.cpp",
+      "bytes": 11682,
+      "sha256": "7e22848336381171d0c12cca4ea5438c5fa5265a56610906c6868b88890a0052",
+      "Git_blob_sha1": "55ec0440c61a5c540939ca1152fec60d0b973cb2",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/game_hosts_mission.cpp",
+      "bytes": 146744,
+      "sha256": "79b7a34465c0fb3c3415f4a3103669bb386c407adf22b6416b4eadabe29ea945",
+      "Git_blob_sha1": "8f1d15dd700525115594ee013586309ab098fe51",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_section_runtime.cpp",
+      "bytes": 64158,
+      "sha256": "61520133226d112cbc427b1e4778291dca8dcce328e3c6c2e80777c1ea4bbf84",
+      "Git_blob_sha1": "60433093f81a9c58e92f3a2413a61c74ab1d84b4",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_texture.cpp",
+      "bytes": 3258,
+      "sha256": "9aa07ad4775f94ae00205a4462b8042a76a0f08afd7892f4f9462c6bae79198a",
+      "Git_blob_sha1": "92a1018cbc8eea2f8bcaf2f890fc5261173a386f",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "src/gui_widgets_cc13.cpp",
+      "bytes": 75116,
+      "sha256": "20312bdde0d2a577300c6431ea53a54aaaaf6c05c3c6670dc655c20864bb74da",
+      "Git_blob_sha1": "4511ee034957d5d2322c36deae1ee9618ac847bb",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/mission_picture_owner.hpp",
+      "bytes": 2677,
+      "sha256": "d40d2f7e725518c646eed9e91c1ae73da7602cede6d3316e10093e401019c1b1",
+      "Git_blob_sha1": "748b5982b7051c28f58683310f45d397468cdbc9",
+      "equals_historical_contract_input": true
+    },
+    {
+      "path": "include/bsp/powerup_config.hpp",
+      "bytes": 8260,
+      "sha256": "c9ab22fa458e8466468d39417bcc0a01e76aba5efce374f0230c6abf323389d7",
+      "Git_blob_sha1": "c41f83c4e3d1d4b7f3ae298e03fc7c83eb80e120",
+      "equals_historical_contract_input": true
+    }
+  ],
+  "protected_old_regions": [
+    {
+      "label": "old five callback field prefix",
+      "path": "include/bsp/gui_texture.hpp",
+      "start": 212,
+      "end": 525,
+      "verbatim_utf8": "struct GuiTextureCallbacks {\n    std::function<const TextureAtlasItem*(std::string_view)> find_atlas_item;\n    std::function<void*(std::string_view, std::uint32_t)> load_texture;\n    std::function<std::uint32_t(void*)> width;\n    std::function<std::uint32_t(void*)> height;\n    std::function<void(void*)> retain;\n",
+      "bytes": 313,
+      "sha256": "d4e90043910b26b85007703bc2bec101d5d773bd6895ac442e6fdde936d5243a",
+      "Git_blob_sha1": "fcc191ef9c42d9bfbf452e7cdea091260d5c442a"
+    },
+    {
+      "label": "old current-profile validation",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 7251,
+      "end": 7693,
+      "verbatim_utf8": "    void validate_texture(void* raw) const {\n        require(raw && read<Word>(raw) == 0x00d61948,\n            \"Native Icon texture requires its actual D61948 2D owner\");\n        auto& reference = geometry.actual_owners().resolve_actual(raw);\n        require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,\n            \"Native Icon texture requires its SAME canonical native reference count\");\n    }\n",
+      "bytes": 442,
+      "sha256": "d77b0fe8d44783ef49918860f29d18b915bdb655aa493d6439a38183881722b3",
+      "Git_blob_sha1": "6649bc177bf69a6f6971820d661f56baa159cab8"
+    },
+    {
+      "label": "old width and height routes",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 7693,
+      "end": 7959,
+      "verbatim_utf8": "    Word width(void* raw) const {\n        validate_texture(raw);\n        return get_native_texture_saved_width_00b3ce70(raw);\n    }\n    Word height(void* raw) const {\n        validate_texture(raw);\n        return get_native_texture_saved_height_00b3ce80(raw);\n    }\n",
+      "bytes": 266,
+      "sha256": "1ef6ffff828db4ccb90b95db5fe3efa42e41fcb32e59125d5a83b03dcd4aae9e",
+      "Git_blob_sha1": "8be8aa8d649ad977c1380f0aa646074f40117547"
+    },
+    {
+      "label": "actual_count canonical+04 helper",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 1050,
+      "end": 1342,
+      "verbatim_utf8": "std::atomic<std::int32_t>& actual_count(void* raw) {\n    require(raw && !(reinterpret_cast<std::uintptr_t>(raw) & 3u),\n        \"Native Icon requires aligned actual storage\");\n    return *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(\n        static_cast<std::byte*>(raw) + 4));\n}\n",
+      "bytes": 292,
+      "sha256": "6159d9393f28dbcde4e7fef261ae8d7fc11fd4e4266131da17518229b2252289",
+      "Git_blob_sha1": "36eb5936156d97a1e858cfb1b164a0665964fc83"
+    },
+    {
+      "label": "all old service bindings before factory try",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 25050,
+      "end": 26463,
+      "verbatim_utf8": "    GuiIconRuntimeServices services{app.binding.crt_sse2_conversion};\n    services.textures.resolve.find_atlas_item = [&app](std::string_view name) {\n        auto* item = app.binding.find_atlas_item_00aefb20(name);\n        if (item) app.validate_texture(item->texture);\n        return item;\n    };\n    services.textures.resolve.load_texture = [&app, saved](std::string_view name, Word flags) {\n        return app.load_texture(*saved, name, flags);\n    };\n    services.textures.resolve.width = [&app](void* raw) { return app.width(raw); };\n    services.textures.resolve.height = [&app](void* raw) { return app.height(raw); };\n    services.textures.resolve.retain = [&app](void* raw) {\n        app.validate_texture(raw);\n        actual_count(raw).fetch_add(1, std::memory_order_seq_cst);\n    };\n    services.textures.release = [&app](void* raw) {\n        release_native_render_actual_owner(app.geometry.actual_owners(), raw);\n    };\n    services.platform_allows_point_filter = app.binding.platform_allows_point_filter;\n    services.state_texture_constants = &app.binding.texture_constants;\n    services.native_geometry.construct_and_associate74 = [&app, saved] { app.constructed74(*saved); };\n    services.native_geometry.rebuild_00ab3cb0 = [&app, saved](GuiIconWidget& icon) { app.rebuild(*saved, icon); };\n    services.native_geometry.before_runtime_destruction = [&app, saved] { app.runtime_retiring(*saved); };\n",
+      "bytes": 1413,
+      "sha256": "bce3c8772a5edd114e2e673572be22de76e7a1f7ea2e09aa01c6aa948e5c8bb7",
+      "Git_blob_sha1": "d37ec1505293b1c24f4b651b7640dc05c909ecec"
+    },
+    {
+      "label": "old factory error catch and subsequent retirement bodies",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 26555,
+      "end": 28057,
+      "verbatim_utf8": "    catch (...) { app.failed = true; app.failure = std::current_exception(); throw; }\n}\nvoid GameNativeGuiIconApplication::release_material_borrow_guard(GuiWidgetOwner& owner) {\n    auto& app = *impl_;\n    app.require_idle();\n    auto& record = app.record_for(owner);\n    app.validate_identity(record);\n    require(!record.runtime_retired && !record.borrow_guard_released && !owner.node_binding() &&\n        actual_count(record.identity.actual).load() == 1 && (!record.rebuild || record.rebuild->complete),\n        \"Native Icon page guard requires completed actual scene/material retirement first\");\n    record.borrow_guard_released = true;\n    record.page_token.reset();\n}\nvoid GameNativeGuiIconApplication::release_retired_icon(GuiLayoutWidget& layout) {\n    auto& app = *impl_;\n    app.require_idle();\n    const auto found = app.records.find(&layout);\n    require(found != app.records.end() && found->second->runtime_retired &&\n        found->second->borrow_guard_released && !found->second->page_token,\n        \"Native Icon metadata requires completed same-type/page retirement\");\n    app.records.erase(found);\n}\nbool GameNativeGuiIconApplication::requires_process_retention() const noexcept {\n    return impl_->active || impl_->failed || !impl_->records.empty();\n}\nstd::uint32_t GameNativeGuiIconApplication::failure_entry() const noexcept { return impl_->site; }\nconst std::exception_ptr& GameNativeGuiIconApplication::failure() const noexcept { return impl_->failure; }\n} // namespace bsp::game\n",
+      "bytes": 1502,
+      "sha256": "cdf5294ca811af4f19d203bd37a04191c591593d4aca17c8561d8b9cd86229fa",
+      "Git_blob_sha1": "15c4005f1e6dfcd667317b553f81ea948b70bff5"
+    },
+    {
+      "label": "record adoption/factory prefix",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 24363,
+      "end": 25050,
+      "verbatim_utf8": "std::unique_ptr<GuiWidgetTypeImplementation> GameNativeGuiIconApplication::make_type(GuiWidgetOwner& owner) {\n    auto& app = *impl_;\n    app.require_idle();\n    require(owner.layout().type == GuiWidgetType::Icon && owner.layout().transform.type_id == 6 &&\n        &owner.runtime() == &app.binding.widgets && !owner.node_binding() &&\n        !app.records.count(&owner.layout()),\n        \"Native Icon factory requires its fresh primary-null canonical type6 owner\");\n    auto record = std::make_unique<Impl::Record>(owner, app.binding.actual_identity(owner));\n    app.validate_identity(*record);\n    auto* saved = record.get();\n    app.records.emplace(&owner.layout(), std::move(record));\n",
+      "bytes": 687,
+      "sha256": "0abe4f0926c539e55fb7901de83db17b687de49410b11e23830d2c4c5c29733d",
+      "Git_blob_sha1": "c6582c1ebbd4636268f1ce6c57cf255f6ec4f845"
+    },
+    {
+      "label": "old retention destructor",
+      "path": "src/game_native_gui_icon_application.cpp",
+      "start": 24232,
+      "end": 24363,
+      "verbatim_utf8": "GameNativeGuiIconApplication::~GameNativeGuiIconApplication() noexcept {\n    if (requires_process_retention()) std::terminate();\n}\n",
+      "bytes": 131,
+      "sha256": "a0a2864d1172c7b5ce2a96b16f75e50f70d9a0701c8351b5a2388cbd5bae4479",
+      "Git_blob_sha1": "39991d90578257fa81c16d7464c99a12d3b0ffda"
+    }
+  ],
+  "old_Game_asm_blocks": [
+    {
+      "utf8": "__asm {\n        mov eax, source_address\n        mov edx, destination_address\n        fld dword ptr [eax]\n        fstp dword ptr [edx]\n    }",
+      "bytes": 139,
+      "sha256": "9c07a0bc22a7a2294c6e9fb3b184bc398deb58555a6eecacdd4afaa30edc18bd",
+      "Git_blob_sha1": "9af8e04add7bdec8c4d088c6926fb2bc22bb6821"
+    }
+  ],
+  "old_layout_inventory": "accepted_contract/site_inventory.json",
+  "actual_entry": "write_native_gui_icon_native_size_storage_00ab17b0(output,texture,mutableUVpointerHOME,scratch,callbacks,constants)",
+  "actual_Game_consumer": "GameNativeGuiIconApplication::Impl::dimension_from_captured",
+  "Source_layout_change": "GuiTextureCallbacks appends one std::function after old-five prefix; old aggregate/default/copy/move routes remain syntactically unchanged. Exact Win32 layout/emitted copy/code is NOT yet verified.",
+  "real_provider_qualification": "captured D61948 family + SAME actual canonical +04 reference with positive count; OTHER target is explicitly Source-rejected; matching words/count is not origin/generation/backing authority",
+  "failure": "new assignment is inside existing factory try after adoption; unchanged catch marks failed, diagnostic exception_ptr and bare rethrow. No new cleanup/retry/termination. Empty captured callback is not success.",
+  "normal_body_source_support_ready_for_peer": true,
+  "tracked_author_compile_Core_Original_ABI_Origin_runtime_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0,
+  "historical_contract_original_folder": "J:/PROG/battlestations-pacific-decompile-codex-native-gui-icon-size-compare-candidate/local/output/cc16_native_gui_icon_native_size_candidate_20261031",
+  "supplemental_provider_pins": [
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516",
+      "Git_blob_sha1": "86eb5d2ef5cfdfaa7e01f50b02a33f6ed9668808"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43",
+      "Git_blob_sha1": "cac68c258f191a798e3c5e8e2316370402f17a9c"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "bytes": 10778,
+      "sha256": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "Git_blob_sha1": "6d2c181bb30aeb29dc21f3fb70e797bfc54da139"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "bytes": 30316,
+      "sha256": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "Git_blob_sha1": "b60d0c7fd032e7f146980d91c6fb578690517b43"
+    }
+  ],
+  "supplemental_provider_regions": [
+    {
+      "path": "src/native_render_context.cpp",
+      "start": 5602,
+      "end": 6114,
+      "role": "existing concrete find/resolve map lookup, no raw header sample",
+      "utf8": "RenderCommandReference* NativeRenderActualOwnerRegistry::find(void* identity) {\n    const std::lock_guard<std::mutex> lock(impl_->mutex);\n    const auto found = impl_->entries.find(identity);\n    return found == impl_->entries.end() ? nullptr : found->second;\n}\n\nRenderCommandReference& NativeRenderActualOwnerRegistry::resolve_actual(void* identity) {\n    auto* const found = find(identity);\n    if (!found)\n        throw std::logic_error(\"actual render owner has no canonical companion\");\n    return *found;\n}\n",
+      "bytes": 512,
+      "sha256": "a7d1e585ba0eab566b6919215de80d324231b612d08a9b9d0524cb9d3110ded2",
+      "Git_blob_sha1": "a37de3e854ca7e19842c5684ad65037ab71d8755"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "start": 27673,
+      "end": 27792,
+      "role": "same existing registration.owners reference accessor",
+      "utf8": "NativeRenderActualOwners& GuiNativeGeometryOwners::actual_owners() noexcept {\n    return impl_->registration.owners;\n}\n",
+      "bytes": 119,
+      "sha256": "7c43d48b9a69ae320e848a53dbfe5013348a24af660ee3ae5b878c51235c6e08",
+      "Git_blob_sha1": "399a6b5786501e54d214f0a02bff62f2e6da3b3e"
+    }
+  ],
+  "Native": {
+    "start": "00ab17b0",
+    "end_inclusive": "00ab1854",
+    "bytes": 165,
+    "instructions": 51,
+    "x87_forms": 20,
+    "sha256": "61dbd31280210d9acd9bcdedc1b0ae897593454ebd0626d1f4794c3841028853",
+    "hex": "83ec08568bf28b068b5048578bf98bceffd285c08944240cdb44240c7d06d8057839ce00dc3580c3ce008b068b504c8bced95c2408ffd285c08944240cdb44240c7d06d8057839ce00dc35b8f1ce008b442414d95c240cd94008d820d95c24148b4c241481e1ffffff7f894c2414d9442414d84c2408d91fd9400cd860048bc7d95c24148b54241481e2ffffff7f89542414d9442414d84c240cd95f045f5e83c408c20400",
+    "RET_start": "00ab1852",
+    "RET_bytes": "c20400",
+    "Original_ABI": "ECXoutput,EDXtexture,one mutable incoming UV-pointer DWORD home,EAXcapturedoutput,RET4",
+    "Source_ABI": "six ordinary C++ arguments, void* captured-output return; no binary/private-stack/FLAGS/fault equivalence"
+  },
+  "PE_preimages": [
+    {
+      "address": "00ce3978",
+      "role": "CURRENT unsigned correction float CE3978",
+      "path": "Native/preimage_00ce3978.bin",
+      "hex": "0000804f",
+      "bytes": 4,
+      "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+      "Git_blob_sha1": "7341139d6d13ec8bbae8cf1ab0d3c83551b85cb1"
+    },
+    {
+      "address": "00cec380",
+      "role": "CURRENT width double divisor CEC380",
+      "path": "Native/preimage_00cec380.bin",
+      "hex": "0000000000008e40",
+      "bytes": 8,
+      "sha256": "567be61e7cefcfaba897e6d95d81a49a884e657b6a67ada1595e794ed90f6ed7",
+      "Git_blob_sha1": "11c8853945f286d5ec0fa7182e6e2db463f7ec56"
+    },
+    {
+      "address": "00cef1b8",
+      "role": "CURRENT height double divisor CEF1B8",
+      "path": "Native/preimage_00cef1b8.bin",
+      "hex": "0000000000808640",
+      "bytes": 8,
+      "sha256": "a8e4956cde576d6c13f666f99704ab75c94011539574ec1e26983f27156ba5fa",
+      "Git_blob_sha1": "0c79da34fb8d9ae9068c0cf164e9945b6f24d15b"
+    },
+    {
+      "address": "00d61990",
+      "role": "original supported D61948 slots48/4C pair",
+      "path": "Native/preimage_00d61990.bin",
+      "hex": "70ceb30080ceb300",
+      "bytes": 8,
+      "sha256": "b713e8d21222852af69239870740ee5ca736d5d5ea093b9a02806020404b2207",
+      "Git_blob_sha1": "054ee056e329f69994175b6a0321c81d805cb536"
+    },
+    {
+      "address": "00b3ce70",
+      "role": "existing whole saved-width getter",
+      "path": "Native/preimage_00b3ce70.bin",
+      "hex": "8b4134c3",
+      "bytes": 4,
+      "sha256": "3b2eded1bf6b0f7390191ad1371a956a736f9d18c2a7de0db7e90886555b69e1",
+      "Git_blob_sha1": "5fe9ef7c80f8ceaf82210fc16cae08052172e0e3"
+    },
+    {
+      "address": "00b3ce80",
+      "role": "existing whole saved-height getter",
+      "path": "Native/preimage_00b3ce80.bin",
+      "hex": "8b4138c3",
+      "bytes": 4,
+      "sha256": "7e6bda0a031f94dbe8477fe3ce3ba2b7e3d761a050d55625bc7d92212670e60c",
+      "Git_blob_sha1": "5dbd9511485c95d9774f14892fb0578d0a0f3611"
+    }
+  ],
+  "installed_PE_verification": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_base": "00400000",
+    "whole_file": {
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "Git_blob_sha1": "dc52ba5b0ec812432626e12fbdba44bb27059999"
+    },
+    "verified_project": "C:/Users/sqz269/bsp.gpr",
+    "verified_program": "/battlestationspacific.exe",
+    "read_only_BSP_batch": "python tools/bsp.py ghidra count ->77632, matches snapshot; frozen verified exports reused; no export refresh/write"
+  },
+  "asm_statement_regions": [
+    [
+      "mov esi, captured_texture",
+      "mov eax, dword ptr [esi]",
+      "mov edx, dword ptr [eax + 48h]",
+      "mov captured_profile, eax",
+      "mov captured_target, edx"
+    ],
+    [
+      "mov esi, captured_texture",
+      "mov edi, scratch_homes",
+      "mov ebx, correction_address",
+      "mov ecx, width_divisor_address",
+      "mov eax, width_result",
+      "test eax, eax",
+      "mov dword ptr [edi + 4], eax",
+      "fild dword ptr [edi + 4]",
+      "jge native_size_width_nonnegative",
+      "fadd dword ptr [ebx]",
+      "native_size_width_nonnegative:",
+      "fdiv qword ptr [ecx]",
+      "mov eax, dword ptr [esi]",
+      "mov edx, dword ptr [eax + 4ch]",
+      "mov ecx, esi",
+      "fstp dword ptr [edi]",
+      "mov captured_profile, eax",
+      "mov captured_target, edx"
+    ],
+    [
+      "mov edi, captured_output",
+      "mov esi, scratch_homes",
+      "mov ebx, correction_address",
+      "mov ecx, height_divisor_address",
+      "mov edx, uv_pointer_home",
+      "mov eax, height_result",
+      "test eax, eax",
+      "mov dword ptr [esi + 4], eax",
+      "fild dword ptr [esi + 4]",
+      "jge native_size_height_nonnegative",
+      "fadd dword ptr [ebx]",
+      "native_size_height_nonnegative:",
+      "fdiv qword ptr [ecx]",
+      "mov eax, dword ptr [edx]",
+      "fstp dword ptr [esi + 4]",
+      "fld dword ptr [eax + 8]",
+      "fsub dword ptr [eax]",
+      "fstp dword ptr [edx]",
+      "mov ecx, dword ptr [edx]",
+      "and ecx, 7fffffffh",
+      "mov dword ptr [edx], ecx",
+      "fld dword ptr [edx]",
+      "fmul dword ptr [esi]",
+      "fstp dword ptr [edi]",
+      "fld dword ptr [eax + 0ch]",
+      "fsub dword ptr [eax + 4]",
+      "mov eax, edi",
+      "fstp dword ptr [edx]",
+      "mov ecx, dword ptr [edx]",
+      "and ecx, 7fffffffh",
+      "mov dword ptr [edx], ecx",
+      "fld dword ptr [edx]",
+      "fmul dword ptr [esi + 4]",
+      "fstp dword ptr [edi + 4]"
+    ]
+  ],
+  "x87_operand_map": [
+    {
+      "address": "00ab17c8",
+      "mnemonic": "fild",
+      "Native": "dword ptr [esp + 0xc]",
+      "Source": "fild dword ptr [edi + 4]",
+      "role": "conversion DWORD +4"
+    },
+    {
+      "address": "00ab17ce",
+      "mnemonic": "fadd",
+      "Native": "dword ptr [0xce3978]",
+      "Source": "fadd dword ptr [ebx]",
+      "role": "CURRENT correction float CE3978"
+    },
+    {
+      "address": "00ab17d4",
+      "mnemonic": "fdiv",
+      "Native": "qword ptr [0xcec380]",
+      "Source": "fdiv qword ptr [ecx]",
+      "role": "CURRENT width divisor double CEC380"
+    },
+    {
+      "address": "00ab17e1",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 8]",
+      "Source": "fstp dword ptr [edi]",
+      "role": "width float32 +0"
+    },
+    {
+      "address": "00ab17ed",
+      "mnemonic": "fild",
+      "Native": "dword ptr [esp + 0xc]",
+      "Source": "fild dword ptr [esi + 4]",
+      "role": "conversion DWORD +4"
+    },
+    {
+      "address": "00ab17f3",
+      "mnemonic": "fadd",
+      "Native": "dword ptr [0xce3978]",
+      "Source": "fadd dword ptr [ebx]",
+      "role": "CURRENT correction float CE3978"
+    },
+    {
+      "address": "00ab17f9",
+      "mnemonic": "fdiv",
+      "Native": "qword ptr [0xcef1b8]",
+      "Source": "fdiv qword ptr [ecx]",
+      "role": "CURRENT height divisor double CEF1B8"
+    },
+    {
+      "address": "00ab1803",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 0xc]",
+      "Source": "fstp dword ptr [esi + 4]",
+      "role": "height float32 +4"
+    },
+    {
+      "address": "00ab1807",
+      "mnemonic": "fld",
+      "Native": "dword ptr [eax + 8]",
+      "Source": "fld dword ptr [eax + 8]",
+      "role": "UV right +8"
+    },
+    {
+      "address": "00ab180a",
+      "mnemonic": "fsub",
+      "Native": "dword ptr [eax]",
+      "Source": "fsub dword ptr [eax]",
+      "role": "UV left +0"
+    },
+    {
+      "address": "00ab180c",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 0x14]",
+      "Source": "fstp dword ptr [edx]",
+      "role": "SAME mutable UV HOME rounded diff"
+    },
+    {
+      "address": "00ab181e",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esp + 0x14]",
+      "Source": "fld dword ptr [edx]",
+      "role": "SAME mutable UV HOME masked diff"
+    },
+    {
+      "address": "00ab1822",
+      "mnemonic": "fmul",
+      "Native": "dword ptr [esp + 8]",
+      "Source": "fmul dword ptr [esi]",
+      "role": "width float32 +0"
+    },
+    {
+      "address": "00ab1826",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [edi]",
+      "Source": "fstp dword ptr [edi]",
+      "role": "output +0"
+    },
+    {
+      "address": "00ab1828",
+      "mnemonic": "fld",
+      "Native": "dword ptr [eax + 0xc]",
+      "Source": "fld dword ptr [eax + 0ch]",
+      "role": "UV bottom +C after output0"
+    },
+    {
+      "address": "00ab182b",
+      "mnemonic": "fsub",
+      "Native": "dword ptr [eax + 4]",
+      "Source": "fsub dword ptr [eax + 4]",
+      "role": "UV top +4 after output0"
+    },
+    {
+      "address": "00ab1830",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [esp + 0x14]",
+      "Source": "fstp dword ptr [edx]",
+      "role": "SAME mutable UV HOME rounded diff"
+    },
+    {
+      "address": "00ab1842",
+      "mnemonic": "fld",
+      "Native": "dword ptr [esp + 0x14]",
+      "Source": "fld dword ptr [edx]",
+      "role": "SAME mutable UV HOME masked diff"
+    },
+    {
+      "address": "00ab1846",
+      "mnemonic": "fmul",
+      "Native": "dword ptr [esp + 0xc]",
+      "Source": "fmul dword ptr [esi + 4]",
+      "role": "height float32 +4"
+    },
+    {
+      "address": "00ab184a",
+      "mnemonic": "fstp",
+      "Native": "dword ptr [edi + 4]",
+      "Source": "fstp dword ptr [edi + 4]",
+      "role": "output +4"
+    }
+  ],
+  "Native_Source_map": [
+    {
+      "address": "00ab17b0",
+      "Native": "sub esp, 8",
+      "Source": "two ordinary retained Scratch DWORDs; private allocation/stack ABI excluded"
+    },
+    {
+      "address": "00ab17b3",
+      "Native": "push esi",
+      "Source": "Source ABI save/restore only; Native physical register preservation not claimed"
+    },
+    {
+      "address": "00ab17b4",
+      "Native": "mov esi, edx",
+      "Source": "captured_texture = actual_texture, then block0 ESI binding"
+    },
+    {
+      "address": "00ab17b6",
+      "Native": "mov eax, dword ptr [esi]",
+      "Source": "block0 mov eax,[esi]: actual CURRENT profile"
+    },
+    {
+      "address": "00ab17b8",
+      "Native": "mov edx, dword ptr [eax + 0x48]",
+      "Source": "block0 mov edx,[eax+48h]: actual captured width target"
+    },
+    {
+      "address": "00ab17bb",
+      "Native": "push edi",
+      "Source": "Source ABI save/restore only; Native physical register preservation not claimed"
+    },
+    {
+      "address": "00ab17bc",
+      "Native": "mov edi, ecx",
+      "Source": "captured_output = actual_output_float2; Source alias/private ABI qualification"
+    },
+    {
+      "address": "00ab17be",
+      "Native": "mov ecx, esi",
+      "Source": "first actual dimension_from_captured argument is SAME captured_texture"
+    },
+    {
+      "address": "00ab17c0",
+      "Native": "call edx",
+      "Source": "first real captured-pair std::function transport; actual Game consumer dispatches same target"
+    },
+    {
+      "address": "00ab17c2",
+      "Native": "test eax, eax",
+      "Source": "block1 test eax,eax on raw width_result"
+    },
+    {
+      "address": "00ab17c4",
+      "Native": "mov dword ptr [esp + 0xc], eax",
+      "Source": "block1 mov DWORD scratch+4,eax"
+    },
+    {
+      "address": "00ab17c8",
+      "Native": "fild dword ptr [esp + 0xc]",
+      "Source": "block1 FILD DWORD scratch+4"
+    },
+    {
+      "address": "00ab17cc",
+      "Native": "jge 0xab17d4",
+      "Source": "block1 JGE native_size_width_nonnegative; skip only correction"
+    },
+    {
+      "address": "00ab17ce",
+      "Native": "fadd dword ptr [0xce3978]",
+      "Source": "block1 FADD CURRENT genuine float correction"
+    },
+    {
+      "address": "00ab17d4",
+      "Native": "fdiv qword ptr [0xcec380]",
+      "Source": "block1 FDIV CURRENT genuine double width divisor"
+    },
+    {
+      "address": "00ab17da",
+      "Native": "mov eax, dword ptr [esi]",
+      "Source": "block1 mov eax,[esi] WHILE width ST0live"
+    },
+    {
+      "address": "00ab17dc",
+      "Native": "mov edx, dword ptr [eax + 0x4c]",
+      "Source": "block1 mov edx,[eax+4Ch] WHILE width ST0live"
+    },
+    {
+      "address": "00ab17df",
+      "Native": "mov ecx, esi",
+      "Source": "block1 mov ecx,esi; SAME actual receiver restoration"
+    },
+    {
+      "address": "00ab17e1",
+      "Native": "fstp dword ptr [esp + 8]",
+      "Source": "block1 FSTP width float32 scratch+0; only THEN captured metadata stores"
+    },
+    {
+      "address": "00ab17e5",
+      "Native": "call edx",
+      "Source": "second real captured-pair transport AFTER width spill, no raw profile/table resample"
+    },
+    {
+      "address": "00ab17e7",
+      "Native": "test eax, eax",
+      "Source": "block2 test eax,eax on raw height_result"
+    },
+    {
+      "address": "00ab17e9",
+      "Native": "mov dword ptr [esp + 0xc], eax",
+      "Source": "block2 mov DWORD scratch+4,eax"
+    },
+    {
+      "address": "00ab17ed",
+      "Native": "fild dword ptr [esp + 0xc]",
+      "Source": "block2 FILD DWORD scratch+4"
+    },
+    {
+      "address": "00ab17f1",
+      "Native": "jge 0xab17f9",
+      "Source": "block2 JGE native_size_height_nonnegative; skip only correction"
+    },
+    {
+      "address": "00ab17f3",
+      "Native": "fadd dword ptr [0xce3978]",
+      "Source": "block2 FADD CURRENT genuine float correction"
+    },
+    {
+      "address": "00ab17f9",
+      "Native": "fdiv qword ptr [0xcef1b8]",
+      "Source": "block2 FDIV CURRENT genuine double height divisor"
+    },
+    {
+      "address": "00ab17ff",
+      "Native": "mov eax, dword ptr [esp + 0x14]",
+      "Source": "block2 mov eax,[UVhome] WHILE height ST0live; UVbase captured only now"
+    },
+    {
+      "address": "00ab1803",
+      "Native": "fstp dword ptr [esp + 0xc]",
+      "Source": "block2 FSTP height float32 scratch+4"
+    },
+    {
+      "address": "00ab1807",
+      "Native": "fld dword ptr [eax + 8]",
+      "Source": "block2 FLD UVbase+8"
+    },
+    {
+      "address": "00ab180a",
+      "Native": "fsub dword ptr [eax]",
+      "Source": "block2 FSUB UVbase+0"
+    },
+    {
+      "address": "00ab180c",
+      "Native": "fstp dword ptr [esp + 0x14]",
+      "Source": "block2 FSTP SAME UVhome; rounded horizontal diff overwrites pointer bits"
+    },
+    {
+      "address": "00ab1810",
+      "Native": "mov ecx, dword ptr [esp + 0x14]",
+      "Source": "block2 mov ecx,[UVhome]"
+    },
+    {
+      "address": "00ab1814",
+      "Native": "and ecx, 0x7fffffff",
+      "Source": "block2 AND ecx,7fffffffh"
+    },
+    {
+      "address": "00ab181a",
+      "Native": "mov dword ptr [esp + 0x14], ecx",
+      "Source": "block2 mov [UVhome],ecx"
+    },
+    {
+      "address": "00ab181e",
+      "Native": "fld dword ptr [esp + 0x14]",
+      "Source": "block2 FLD SAME UVhome masked float32"
+    },
+    {
+      "address": "00ab1822",
+      "Native": "fmul dword ptr [esp + 8]",
+      "Source": "block2 FMUL width float32 scratch+0"
+    },
+    {
+      "address": "00ab1826",
+      "Native": "fstp dword ptr [edi]",
+      "Source": "block2 FSTP output+0 BEFORE vertical UV reads"
+    },
+    {
+      "address": "00ab1828",
+      "Native": "fld dword ptr [eax + 0xc]",
+      "Source": "block2 FLD UVbase+C"
+    },
+    {
+      "address": "00ab182b",
+      "Native": "fsub dword ptr [eax + 4]",
+      "Source": "block2 FSUB UVbase+4"
+    },
+    {
+      "address": "00ab182e",
+      "Native": "mov eax, edi",
+      "Source": "block2 mov eax,edi AFTER final UVbase read"
+    },
+    {
+      "address": "00ab1830",
+      "Native": "fstp dword ptr [esp + 0x14]",
+      "Source": "block2 FSTP SAME UVhome; rounded vertical diff"
+    },
+    {
+      "address": "00ab1834",
+      "Native": "mov edx, dword ptr [esp + 0x14]",
+      "Source": "block2 mov ecx,[UVhome]; Source carrier register differs from Native EDX"
+    },
+    {
+      "address": "00ab1838",
+      "Native": "and edx, 0x7fffffff",
+      "Source": "block2 AND ecx,7fffffffh; ordinary register/fault ABI excluded"
+    },
+    {
+      "address": "00ab183e",
+      "Native": "mov dword ptr [esp + 0x14], edx",
+      "Source": "block2 mov [UVhome],ecx"
+    },
+    {
+      "address": "00ab1842",
+      "Native": "fld dword ptr [esp + 0x14]",
+      "Source": "block2 FLD SAME UVhome masked float32"
+    },
+    {
+      "address": "00ab1846",
+      "Native": "fmul dword ptr [esp + 0xc]",
+      "Source": "block2 FMUL height float32 scratch+4"
+    },
+    {
+      "address": "00ab184a",
+      "Native": "fstp dword ptr [edi + 4]",
+      "Source": "block2 FSTP output+4"
+    },
+    {
+      "address": "00ab184d",
+      "Native": "pop edi",
+      "Source": "Source ABI save/restore only"
+    },
+    {
+      "address": "00ab184e",
+      "Native": "pop esi",
+      "Source": "Source ABI save/restore only"
+    },
+    {
+      "address": "00ab184f",
+      "Native": "add esp, 8",
+      "Source": "Source private/control backing not Native stack adjustment"
+    },
+    {
+      "address": "00ab1852",
+      "Native": "ret 4",
+      "Source": "return captured_output; six-argument Source ABI, not RET4 shim"
+    }
+  ],
+  "reader": {
+    "bytes": 13684,
+    "sha256": "ee6f5938fb9edeaba5521285ea0d6d50b148229e69d9dc0a078a34548b26e834",
+    "utf8": "import argparse\nimport hashlib\nimport json\nimport pathlib\nimport re\nimport subprocess\n\nfrom capstone import Cs, CS_ARCH_X86, CS_MODE_32\n\nap = argparse.ArgumentParser()\nap.add_argument('--candidate')\nap.add_argument('--commit')\na = ap.parse_args()\nD = pathlib.Path(__file__).resolve().parent\nC = pathlib.Path(a.candidate) if a.candidate else D / 'candidate'\nP = 'reports/cc16_native_gui_icon_native_size_storage.json'\nchecks = []\ndef sha(b): return hashlib.sha256(b).hexdigest()\ndef g(*args): return subprocess.check_output(['git', *args])\ndef ck(name, yes):\n    assert yes, name\n    checks.append(name)\ndef read(p): return g('show', a.commit + ':' + p) if a.commit else (C / p).read_bytes()\nr = json.loads(read(P))\nck('reader bytes/raw embedded identity', pathlib.Path(__file__).read_bytes() == r['reader']['utf8'].encode())\nck('reader exact declared hash/length', len(pathlib.Path(__file__).read_bytes()) == r['reader']['bytes'] and sha(pathlib.Path(__file__).read_bytes()) == r['reader']['sha256'])\nfor p in r['postimages']:\n    b = read(p['path'])\n    ck('whole candidate postimage ' + p['path'], len(b) == p['bytes'] and sha(b) == p['sha256'])\n    ck('UTF8 LF/zero CR ' + p['path'], b'\\r' not in b and b.decode().encode() == b)\nfor p in r['existing_provider_whole_pins']:\n    b = g('show', r['base'] + ':' + p['path'])\n    ck('whole published input ' + p['path'], len(b) == p['bytes'] and sha(b) == p['sha256'])\n    ck('self-contained frozen input ' + p['path'], b == (D / 'providers' / p['path']).read_bytes())\n    ck('historical contract input equality ' + p['path'], b == g('show', r['historical_contract_latest_Main'] + ':' + p['path']))\nfor p in r['supplemental_provider_pins']:\n    b = g('show', r['base'] + ':' + p['path'])\n    ck('whole existing registry/accessor input ' + p['path'], len(b) == p['bytes'] and sha(b) == p['sha256'] and b == (D / 'providers' / p['path']).read_bytes())\nfor q in r['supplemental_provider_regions']:\n    b = g('show', r['base'] + ':' + q['path'])[q['start']:q['end']]\n    ck('bounded real registry/accessor witness ' + q['role'], b == q['utf8'].encode() and sha(b) == q['sha256'])\ncontract_root = pathlib.Path(r['historical_contract_original_folder'])\nold_manifest = json.loads((D / 'accepted_contract/manifest.json').read_bytes())\nfor p in old_manifest['artifacts']:\n    rel = pathlib.Path(p['path'])\n    if rel.is_absolute(): rel = rel.relative_to(contract_root)\n    b = (D / 'accepted_contract' / rel).read_bytes()\n    ck('unchanged accepted historical artifact ' + str(rel), len(b) == p['bytes'] and sha(b) == p['sha256'])\nseal = (D / r['accepted_contract_seal']['path']).read_bytes()\nck('exact accepted contract seal', len(seal) == r['accepted_contract_seal']['bytes'] and sha(seal) == r['accepted_contract_seal']['sha256'])\n\nrestored = {p: read(p) for p in r['Source_paths'][:2]}\nfor s in reversed(r['seams']):\n    b = restored[s['path']]\n    ck('post-intermediate ' + s['label'], len(b) == s['after']['bytes'] and sha(b) == s['after']['sha256'])\n    new = s['new_utf8'].encode(); old = s['old_utf8'].encode(); at = s['offset_before_this_edit']\n    ck('exact finite seam ' + s['label'], b[at:at + len(new)] == new)\n    b = b[:at] + old + b[at + len(new):]\n    ck('inverse intermediate ' + s['label'], len(b) == s['before']['bytes'] and sha(b) == s['before']['sha256'])\n    restored[s['path']] = b\nfor p, b in restored.items():\n    ck('full old Source inverse ' + p, b == g('show', r['base'] + ':' + p) == (D / 'preimages' / p).read_bytes())\nfor p in r['protected_old_regions']:\n    b = g('show', r['base'] + ':' + p['path'])[p['start']:p['end']]\n    ck('exact protected baseline ' + p['label'], b == p['verbatim_utf8'].encode() and len(b) == p['bytes'] and sha(b) == p['sha256'])\n    ck('old protected code remains verbatim ' + p['label'], b in read(p['path']))\n\nh = read(r['Source_paths'][0]).decode()\ngame = read(r['Source_paths'][1]).decode()\nnewh = read(r['Source_paths'][2]).decode()\ncpp = read(r['Source_paths'][3]).decode()\nold_header = restored[r['Source_paths'][0]].decode()\nck('only optional field appended after complete old-five callback prefix', h.startswith(old_header[:old_header.index('};')]) and h.count('dimension_from_captured;') == 1 and h.index('dimension_from_captured;') > h.index(' retain;'))\nck('new callback exact captured pair signature', 'std::function<std::uint32_t(void* actual_texture,\\n        std::uint32_t captured_profile, std::uint32_t captured_target)> dimension_from_captured;' in h)\nconsumer = r['seams'][1]['new_utf8'][:-len(r['seams'][1]['old_utf8'])]\nck('actual real consumer inserted unchanged', consumer in game)\nck('consumer never resamples current profile/table', all(x not in consumer for x in ['validate_texture', 'read<', 'reinterpret_cast', '[raw', 'dimension_from_captured(' + 'raw)']))\nck('same captured Source family and canonical actual+04 checks', all(x in consumer for x in ['captured_profile == 0x00d61948', 'geometry.actual_owners().resolve_actual(raw)', '&reference.reference_count == &actual_count(raw)', 'reference.reference_count.load() > 0']))\nck('known real width/height dispatch plus explicit OTHER Source exception', all(x in consumer for x in ['captured_target == 0x00b3ce70', 'get_native_texture_saved_width_00b3ce70(raw)', 'captured_target == 0x00b3ce80', 'get_native_texture_saved_height_00b3ce80(raw)', 'throw std::logic_error(']))\nfactory = r['seams'][2]['new_utf8']\nck('new assignment inside old try before existing unique factory', factory.startswith('    try {\\n') and factory.index('dimension_from_captured =') < factory.index('return std::make_unique<GuiIconTypeImplementation>'))\nck('binding after Record adoption and inside old failure catch', game.index('app.records.emplace(') < game.index(factory) < game.index('    catch (...) { app.failed = true; app.failure = std::current_exception(); throw; }'))\nck('lambda transports SAME three actual captured inputs', 'return app.dimension_from_captured(raw, captured_profile, captured_target);' in factory)\nck('old Game inline assembly exact', re.findall(r'__asm\\s*\\{[^}]*\\}', game) == [q['utf8'] for q in r['old_Game_asm_blocks']])\nscratch = newh[newh.index('struct NativeGuiIconNativeSizeScratch {'):newh.index('};', newh.index('struct NativeGuiIconNativeSizeScratch {'))]\nck('exact two ordinary DWORD scratch members/no DMIs', scratch == 'struct NativeGuiIconNativeSizeScratch {\\n    std::uint32_t width_scale_home;\\n    std::uint32_t conversion_height_home;\\n')\nck('actual mutable UV pointer home and ordinary captured return', 'volatile std::uint32_t& actual_uv_pointer_home' in newh and 'return captured_output;' in cpp)\nck('only genuine captured transport called twice/no width-height fallback', cpp.count('callbacks.dimension_from_captured(') == 2 and 'callbacks.width' not in cpp and 'callbacks.height' not in cpp)\nck('same actual receiver/profile/target at both calls', cpp.count('captured_texture, captured_profile, captured_target);') == 2)\nck('genuine constant addresses only; unused one is not read', all(x in cpp for x in ['&constants.unsigned_correction_00ce3978', '&constants.width_divisor_00cec380', '&constants.height_divisor_00cef1b8']) and 'one_00d7a24c' not in cpp)\nclean = re.sub(r'//[^\\n]*', '', cpp)\nck('no new filter/noexcept/EH/FP reset/owner/cleanup policy in raw body', not any(x in clean for x in ['if (', 'throw', 'catch', 'noexcept', 'std::terminate', 'new ', 'delete ', 'finit', 'fninit', 'fldcw', 'ldmxcsr', 'std::max', 'std::min']))\n\nblocks = re.findall(r'__asm\\s*\\{([^}]*)\\}', cpp)\ndef statements(b):\n    return [z.strip() for z in re.sub(r'//[^\\n]*', '', b).splitlines() if z.strip()]\nstmts = [statements(b) for b in blocks]\nck('all three exact frozen asm regions', len(blocks) == 3 and stmts == r['asm_statement_regions'])\nck('width pair captured before first transport', stmts[0] == ['mov esi, captured_texture', 'mov eax, dword ptr [esi]', 'mov edx, dword ptr [eax + 48h]', 'mov captured_profile, eax', 'mov captured_target, edx'])\nck('height actual pair before width FSTP, metadata after spill only', stmts[1][-6:] == ['mov eax, dword ptr [esi]', 'mov edx, dword ptr [eax + 4ch]', 'mov ecx, esi', 'fstp dword ptr [edi]', 'mov captured_profile, eax', 'mov captured_target, edx'])\nck('height late UV HOME read while ST0 live before height spill', '\\n'.join(stmts[2]).find('fdiv qword ptr [ecx]\\nmov eax, dword ptr [edx]\\nfstp dword ptr [esi + 4]') >= 0)\nck('horizontal output store precedes both vertical UV reads', '\\n'.join(stmts[2]).find('fstp dword ptr [edi]\\nfld dword ptr [eax + 0ch]\\nfsub dword ptr [eax + 4]') >= 0)\nck('same UV HOME both rounded/masked writes', stmts[2].count('fstp dword ptr [edx]') == 2 and stmts[2].count('mov dword ptr [edx], ecx') == 2 and stmts[2].count('and ecx, 7fffffffh') == 2)\n\nnative = bytes.fromhex(r['Native']['hex'])\nins = list(Cs(CS_ARCH_X86, CS_MODE_32).disasm(native, 0xab17b0))\nck('whole Native 165B/51ops frozen decode', len(native) == 165 and sha(native) == r['Native']['sha256'] and len(ins) == 51 and sum(i.size for i in ins) == 165 and ins[-1].address == 0xab1852 and bytes(ins[-1].bytes) == bytes.fromhex('c20400'))\nck('every Native row mapped once without new ABI claim', [f'{i.address:08x}' for i in ins] == [p['address'] for p in r['Native_Source_map']])\nck('actual Native profile/target epochs', [(i.address, i.mnemonic, i.op_str) for i in ins if i.address in [0xab17b6, 0xab17b8, 0xab17da, 0xab17dc]] == [(0xab17b6, 'mov', 'eax, dword ptr [esi]'), (0xab17b8, 'mov', 'edx, dword ptr [eax + 0x48]'), (0xab17da, 'mov', 'eax, dword ptr [esi]'), (0xab17dc, 'mov', 'edx, dword ptr [eax + 0x4c]')])\nck('both Native captured indirect calls', [(i.address, i.op_str) for i in ins if i.mnemonic == 'call'] == [(0xab17c0, 'edx'), (0xab17e5, 'edx')])\nsource_fp = [z for b in stmts for z in b if z.split()[0].startswith('f')]\nnative_fp = [(f'{i.address:08x}', i.mnemonic, i.op_str) for i in ins if i.mnemonic.startswith('f')]\nck('all twenty exact x87 operand-width/schedule forms', len(source_fp) == len(native_fp) == 20 and source_fp == [q['Source'] for q in r['x87_operand_map']] and native_fp == [(q['address'], q['mnemonic'], q['Native']) for q in r['x87_operand_map']])\ndepth = 0; call_depths = []\nfor i in ins:\n    if i.mnemonic == 'call': call_depths.append((f'{i.address:08x}', depth))\n    if i.mnemonic in ['fld', 'fild']: depth += 1\n    if i.mnemonic == 'fstp': depth -= 1\n    ck('relative FP stack nonnegative at ' + f'{i.address:08x}', depth >= 0)\nck('both real call points relative FP depth0/end0', call_depths == [('00ab17c0', 0), ('00ab17e5', 0)] and depth == 0)\nfor q in r['PE_preimages']:\n    b = (D / q['path']).read_bytes()\n    ck('exact genuine PE literal/table/getter preimage ' + q['role'], len(b) == q['bytes'] and sha(b) == q['sha256'])\n\ndef tree(rev):\n    result = {}\n    for z in g('ls-tree', '-r', '-z', rev).split(b'\\0'):\n        if z:\n            meta, p = z.split(b'\\t', 1); mode, kind, oid = meta.decode().split()\n            result[p.decode()] = (mode, kind, oid)\n    return result\ndef oid(b): return hashlib.sha1(b'blob ' + str(len(b)).encode() + b'\\0' + b).hexdigest()\ndef treehash(items):\n    root = {}\n    for p, v in items.items():\n        q = root; parts = p.split('/')\n        for part in parts[:-1]: q = q.setdefault(part, {})\n        q[parts[-1]] = v\n    def rec(n):\n        rows = []\n        for k, v in n.items():\n            if isinstance(v, dict): rows.append((k+'/', b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n            else: rows.append((k, v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n        b = b''.join(v for _,v in sorted(rows, key=lambda x:x[0].encode()))\n        return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n    return rec(root)\nbefore = tree(r['base']); after = dict(before)\nck('full genuine base tree identity', treehash(before) == g('rev-parse', r['base']+'^{tree}').decode().strip())\nfor p in r['owned_paths']:\n    if p not in r['Source_paths'][:2]: ck('new path genuinely absent ' + p, p not in before)\n    after[p] = ('100644', 'blob', oid(read(p)))\nundo = dict(after)\nfor p in r['owned_paths']:\n    if p in restored: undo[p] = (before[p][0], 'blob', oid(restored[p]))\n    else: undo.pop(p)\nck('full six-path inverse exact map and recursive tree', undo == before and treehash(undo) == treehash(before))\nif a.commit:\n    parent = g('show', '-s', '--format=%P', a.commit).decode().strip()\n    ck('actual one parent', len(parent.split()) == 1)\n    old = tree(parent); new = tree(a.commit)\n    ck('actual exact six-path packet', {p for p in old.keys()|new.keys() if old.get(p) != new.get(p)} == set(r['owned_paths']))\n    for p in r['existing_provider_whole_pins']:\n        ck('actual parent input ' + p['path'], g('show', parent+':'+p['path']) == g('show', r['base']+':'+p['path']))\n    for p in r['owned_paths']:\n        if p in restored: new[p] = (old[p][0], 'blob', oid(restored[p]))\n        else: new.pop(p)\n    ck('actual whole recursive inverse', new == old and treehash(new) == treehash(old))\nck('no Original/vendor/helper/duplicate/Origin/runtime activation credit', r['new_Original_vendor_helper_CG_duplicate_credit'] == 0 and r['tracked_author_compile_Core_Original_ABI_Origin_runtime_activation'] is False)\nprint(json.dumps({'pass':True, 'checks':len(checks), 'mode':'immutable Git' if a.commit else 'ignored candidate', 'Native_bytes':165, 'Native_ops':51, 'x87_forms':20, 'Source_asm_regions':3, 'accepted_contract_inputs':18, 'supplemental_registry_inputs':4, 'modified_Source_inverses':2, 'finite_seams':3, 'protected_regions':8, 'base_tree':treehash(before), 'virtual_six_path_tree':treehash(after), 'full_inverse_tree':treehash(undo), 'compile_Core_OriginalABI_Origin_runtime_activation':False}))\n"
+  },
+  "postimages": [
+    {
+      "path": "include/bsp/gui_texture.hpp",
+      "bytes": 1483,
+      "sha256": "1101866b9c98cce9f32c93d8c4c2c818226b08a24032a951c51e2d15c7952b8f",
+      "Git_blob_sha1": "56874ac261fa8aeaed47230a830daaaa920b4cac"
+    },
+    {
+      "path": "src/game_native_gui_icon_application.cpp",
+      "bytes": 29136,
+      "sha256": "a99e08c6e3ee0ea86b381c324c4e6667e4be03dfcc10f679ee1db1874e0518e8",
+      "Git_blob_sha1": "ae4cf9f529a100ce5bf4f9994a7f2cf8fd018235"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_native_size_storage.hpp",
+      "bytes": 3298,
+      "sha256": "e72fa9ca5a2a2a29170e98ef309c48e8a9b2467c376cb487af5820448b8cc956",
+      "Git_blob_sha1": "e14a9c7f041516f193552a814281af321d290df0"
+    },
+    {
+      "path": "src/native_gui_icon_native_size_storage.cpp",
+      "bytes": 3758,
+      "sha256": "cd5d40b8fb20d94efc3ba5c7037bdfd67fdc81e3be813af535230a8c91b2263f",
+      "Git_blob_sha1": "dbb3c66ac82e6f83231183da33a8285d831dc1d4"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_NATIVE_SIZE_STORAGE.md",
+      "bytes": 5512,
+      "sha256": "39379d1d38d18ee85a6b778db8c18f39133ab5636c6b7b0c9f5f3dd3d674d719",
+      "Git_blob_sha1": "b54bbd8568a121a1f57568e52c683b78256c331d"
+    }
+  ]
+}
