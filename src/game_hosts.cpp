@@ -2335,11 +2335,25 @@ void GameStartupHost::drain_native_singletons() {
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
     exit_if_native_gui_icon_interrupted();
+    exit_if_native_page_frontend_interrupted();
+    if (page_frontend_phase_ == PageFrontendPhase::closed) return; // SAME complete normal parent already returned
     // Font/GUI borrowers have retired; renderer drain retires its remaining
     // lookup-capable consumers, then the shared factory table, before shutdown.
     // BBC5D0 leaves dangling table bits until parent drain. Never let a later
     // failure unwind VFS/data/strings merely because the facade says retired.
     try {
+        if (page_frontend_phase_ != PageFrontendPhase::unselected) {
+            if (page_frontend_phase_ != PageFrontendPhase::resources_retired || !fonts_ ||
+                !frontend_ || !native_gui_pages_ || !native_gui_manager_ ||
+                fonts_->page_text_owner() != native_gui_pages_.get())
+                throw std::logic_error("Page Font drain requires its SAME normally started retained Root graph once");
+            page_frontend_phase_ = PageFrontendPhase::drain_entered;
+            // FIRST inside this try, while the SAME renderer is still ready.
+            fonts_->prepare_page_fonts_for_drain(*native_gui_pages_);
+            native_gui_manager_->bind_page_font_retirement(*native_gui_pages_);
+        } else if (fonts_ && fonts_->page_text_owner()) {
+            throw std::logic_error("Page Font owner has no matching Root startup history");
+        }
         // FIRST while the SAME actual renderer/providers are still ready.
         // Only118's completed normal Source fence skips an already done drain;
         // a null binding means startup never selected an atlas Native graph.
@@ -2350,34 +2364,34 @@ void GameStartupHost::drain_native_singletons() {
             else singletons_->shutdown();
             if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
             else verify_native_gui_icon_after_drain();
-            if constexpr (kGuiManagerCc15Bound) {
-                if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
+        } else {
+            if (startup_factories_phase_ != StartupFactoriesPhase::live)
+                throw std::logic_error("shared startup factories cannot replay retirement");
+            startup_factories_phase_ = StartupFactoriesPhase::retiring;
+            if (native_renderer_) native_renderer_->drain_singletons();
+            else {
+                native_startup_factories_->retire_before_native_drain();
+                singletons_->shutdown();
             }
-            acknowledge_native_texture_atlas_after_drain(); // full renderer/Host closure returned
-            return;
+            if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
+            else verify_native_gui_icon_after_drain();
+            startup_factories_phase_ = StartupFactoriesPhase::retired;
+            // Renderer closure has returned and detached its borrow, including
+            // any prepared-phase return; all provider objects are still alive.
+            native_startup_factories_->after_native_drain();
+            native_startup_factories_.reset();
+            startup_factories_phase_ = StartupFactoriesPhase::closed;
         }
-        if (startup_factories_phase_ != StartupFactoriesPhase::live)
-            throw std::logic_error("shared startup factories cannot replay retirement");
-        startup_factories_phase_ = StartupFactoriesPhase::retiring;
-        if (native_renderer_) native_renderer_->drain_singletons();
-        else {
-            native_startup_factories_->retire_before_native_drain();
-            singletons_->shutdown();
-        }
-        if (native_gui_icon_raw_scalar_dispatch_) verify_native_gui_icon_raw_scalar_after_drain();
-        else verify_native_gui_icon_after_drain();
-        startup_factories_phase_ = StartupFactoriesPhase::retired;
-        // Renderer closure has returned and detached its borrow, including
-        // any prepared-phase return; all provider objects are still alive.
-        native_startup_factories_->after_native_drain();
-        native_startup_factories_.reset();
-        startup_factories_phase_ = StartupFactoriesPhase::closed;
         if constexpr (kGuiManagerCc15Bound) {
             if (native_gui_manager_) native_gui_manager_->after_singleton_drain();
         }
         acknowledge_native_texture_atlas_after_drain(); // full actual caller closure returned
+        close_page_frontend_after_drain(); // SAME Page/model closure, then SAME Font detach
     } catch (...) {
         retain_native_texture_atlas_on_exception(); // metadata/whole graph FIRST, before old logging
+        if (page_frontend_phase_ != PageFrontendPhase::unselected)
+            page_frontend_phase_ = PageFrontendPhase::failed;
+        exit_if_native_page_frontend_interrupted(); // before logging or any borrowed owner teardown
         startup_factories_phase_ = StartupFactoriesPhase::failed;
         try { log_.note("native singleton/factory drain incomplete; retaining the entire provider graph until exit"); log_.close(); }
         catch (...) { std::fputs("bsp_game: native singleton/factory drain requires process exit\n", stderr); }
@@ -2396,6 +2410,20 @@ void GameStartupHost::exit_if_native_fonts_interrupted() noexcept {
 
 void GameStartupHost::retire_native_fonts_before_drain() noexcept {
     if (!fonts_) return;
+    // Select the exact Page role BEFORE the legacy frontend-nonnull denial.
+    if (auto* const page = fonts_->page_text_owner()) {
+        if (page_frontend_phase_ != PageFrontendPhase::resources_retired || !frontend_ ||
+            !native_gui_manager_ || page != native_gui_pages_.get()) {
+            page_frontend_phase_ = PageFrontendPhase::failed;
+            exit_if_native_page_frontend_interrupted();
+        }
+        return; // Page Fonts retire only in their actual selected GUI scalar-return cut.
+    }
+    if (page_frontend_phase_ == PageFrontendPhase::closed) return;
+    if (page_frontend_phase_ != PageFrontendPhase::unselected) {
+        page_frontend_phase_ = PageFrontendPhase::failed;
+        exit_if_native_page_frontend_interrupted();
+    }
     // End frontend borrowers first. The optional native Text factory remains
     // alive through Font retirement and the following shared renderer drain.
     if (frontend_) {
@@ -2468,12 +2496,70 @@ void GameStartupHost::exit_if_native_gui_resources_retained() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::exit_if_native_page_frontend_interrupted() noexcept {
+    exit_if_native_fonts_interrupted();
+    const bool incomplete = page_frontend_phase_ == PageFrontendPhase::selected ||
+        page_frontend_phase_ == PageFrontendPhase::resources_retire_entered ||
+        page_frontend_phase_ == PageFrontendPhase::drain_entered ||
+        page_frontend_phase_ == PageFrontendPhase::failed;
+    const bool foreign_page = fonts_ && fonts_->page_text_owner() &&
+        fonts_->page_text_owner() != native_gui_pages_.get();
+    if (!incomplete && !foreign_page &&
+        (!native_gui_pages_ || !native_gui_pages_->requires_process_retention()) &&
+        (!native_gui_manager_ || !native_gui_manager_->requires_process_retention())) return;
+    try {
+        log_.note("native Page/frontend/manager Source operation incomplete; retaining the entire Root provider graph until exit");
+        log_.close();
+    } catch (...) { std::fputs("bsp_game: native Page/frontend graph requires process retention\n", stderr); }
+    std::_Exit(1);
+}
+
+void GameStartupHost::retire_page_frontend_resources_before_drain() noexcept {
+    if (page_frontend_phase_ == PageFrontendPhase::unselected) return;
+    exit_if_native_page_frontend_interrupted();
+    if (page_frontend_phase_ == PageFrontendPhase::closed ||
+        page_frontend_phase_ == PageFrontendPhase::resources_retired) return;
+    try {
+        if (page_frontend_phase_ != PageFrontendPhase::startup_returned || !frontend_ ||
+            !fonts_ || !native_gui_pages_ || !native_gui_manager_ ||
+            fonts_->page_text_owner() != native_gui_pages_.get())
+            throw std::logic_error("Page frontend resource retirement requires its SAME normal startup return");
+        page_frontend_phase_ = PageFrontendPhase::resources_retire_entered;
+        // Transferred +28/+2C credits stay with the actual manager. Keep the
+        // whole RawTransport/name/HOME/resource app and its borrowed owners.
+        frontend_->retire_native_gui_resources();
+        page_frontend_phase_ = PageFrontendPhase::resources_retired;
+    } catch (...) {
+        page_frontend_phase_ = PageFrontendPhase::failed;
+        exit_if_native_page_frontend_interrupted();
+    }
+}
+
+void GameStartupHost::close_page_frontend_after_drain() {
+    if (page_frontend_phase_ == PageFrontendPhase::unselected) return;
+    if (page_frontend_phase_ != PageFrontendPhase::drain_entered || !frontend_ ||
+        !fonts_ || !native_gui_pages_ || !native_gui_manager_ ||
+        fonts_->page_text_owner() != native_gui_pages_.get())
+        throw std::logic_error("Page frontend closure requires the SAME actual parent drain return");
+    native_gui_pages_->after_native_renderer_drain();
+    fonts_->detach_page_text_owner_after_parent_drain(*native_gui_pages_);
+    page_frontend_phase_ = PageFrontendPhase::closed;
+    if (frontend_->native_gui_resources_require_process_retention())
+        throw std::logic_error("Page frontend resource records survived their normal retirement");
+    // A still-live menu continues to borrow this exact frontend. Its existing
+    // teardown point releases the frontend later, using only this normal history.
+    if (!menu_) { delete frontend_; frontend_ = nullptr; }
+}
+
 GameStartupHost::~GameStartupHost() {
     exit_if_native_texture_atlas_interrupted(); // BEFORE frontend/menu and ANY borrowed Root teardown
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete(true);
-    exit_if_native_gui_resources_retained();
-    exit_if_native_fonts_interrupted();
+    exit_if_native_page_frontend_interrupted();
+    // Healthy raw resources also request retention while live. Only the SAME
+    // observed Page startup may schedule their once-only retirement below.
+    if (page_frontend_phase_ == PageFrontendPhase::unselected)
+        exit_if_native_gui_resources_retained();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_gui_text_incomplete();
@@ -2487,21 +2573,6 @@ GameStartupHost::~GameStartupHost() {
         try {log_.note("native input settings interrupted; retaining shared Lua/VFS/manager bindings until process exit");log_.close();}
         catch(...) {std::fputs("bsp_game: native input settings require process retention\n",stderr);std::fflush(stderr);}
         std::_Exit(1);
-    }
-    if constexpr (kNativeGuiPageChainCc15Bound) {
-        if (native_gui_pages_ && native_gui_pages_->requires_process_retention()) {
-            try { log_.notef("native GUI page chain interrupted at %08x; retaining its frames until process exit",
-                native_gui_pages_->failure_site()); log_.close(); }
-            catch (...) { std::fputs("bsp_game: native GUI page chain requires process retention\n", stderr); std::fflush(stderr); }
-            std::_Exit(1);
-        }
-    }
-    if constexpr (kGuiManagerCc15Bound) {
-        if (native_gui_manager_ && native_gui_manager_->requires_process_retention()) {
-            try { log_.note("native GUI manager interrupted; retaining its manager/cells until process exit"); log_.close(); }
-            catch (...) { std::fputs("bsp_game: native GUI manager requires process retention\n", stderr); std::fflush(stderr); }
-            std::_Exit(1);
-        }
     }
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
@@ -2518,8 +2589,17 @@ GameStartupHost::~GameStartupHost() {
         device_->set_overlay(nullptr);
     }
     delete menu_;
-    delete frontend_;
-    frontend_ = nullptr;
+    menu_ = nullptr;
+    if (page_frontend_phase_ != PageFrontendPhase::unselected) {
+        retire_page_frontend_resources_before_drain();
+        exit_if_native_gui_resources_retained();
+        if (page_frontend_phase_ == PageFrontendPhase::closed) {
+            delete frontend_; frontend_ = nullptr;
+        }
+    } else {
+        delete frontend_;
+        frontend_ = nullptr;
+    }
     retire_native_fonts_before_drain();
     // Retain sound callbacks, DLLs, VFS/Lua and lifetime publication cells
     // through the actual raw singleton drain, including exceptional startup.
@@ -2528,7 +2608,7 @@ GameStartupHost::~GameStartupHost() {
         drain_native_singletons();
         if(scripts_)scripts_->input().after_singleton_drain();
         if constexpr (kGuiManagerCc15Bound) {
-            if (native_gui_manager_) {
+            if (native_gui_manager_ && page_frontend_phase_ != PageFrontendPhase::closed) {
                 // Acknowledge the completed raw drain before the page owner
                 // drops its borrowed manager lifetime binding.
                 try { native_gui_manager_->after_singleton_drain(); }
@@ -2540,7 +2620,7 @@ GameStartupHost::~GameStartupHost() {
             }
         }
         if constexpr (kNativeGuiPageChainCc15Bound) {
-            if (native_gui_pages_) {
+            if (native_gui_pages_ && page_frontend_phase_ != PageFrontendPhase::closed) {
                 try { native_gui_pages_->after_native_renderer_drain(); }
                 catch (const std::exception& error) {
                     try { log_.notef("native GUI Page drain incomplete: %s", error.what()); log_.close(); }
@@ -3385,7 +3465,15 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Borrow the SAME native renderer/VFS/cache domain. Font images and the
     // sole decoded DAT allocations now belong to the actual native producer.
     fonts_ = new GameFontHost(log_, *vfs_, *scripts_, *native_renderer_);
-    if (GameNativeGuiRenderApplication::text_requested()) fonts_->enable_native_font_images();
+    if constexpr (kNativeGuiPageChainCc15Bound) {
+        page_frontend_phase_ = PageFrontendPhase::selected; // BEFORE descriptor loading
+        try {
+            if (!kGuiManagerCc15Bound || !singletons_ || !native_data_ || !native_renderer_ ||
+                GameNativeGuiRenderApplication::text_requested() || native_gui_render_ || native_raw_default_text_)
+                throw std::logic_error("actual Page Fonts require the manager/resource route and an exclusive Page borrower");
+            fonts_->enable_native_font_images();
+        } catch (...) { page_frontend_phase_ = PageFrontendPhase::failed; throw; }
+    } else if (GameNativeGuiRenderApplication::text_requested()) fonts_->enable_native_font_images();
 
     // Phase 7, 0073e13c: the whole of 0073bae0 through its reconstruction, which loads the
     // font descriptors, forces the fingerprint payload, creates the GUI manager and walks
@@ -3411,6 +3499,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
                 native_gui_pages_ = std::make_unique<GameNativeGuiPageApplication>(log_,
                     *native_gui_manager_, *native_renderer_, native_renderer_->model_domain(), *vfs_, *native_data_,
                     object_handle_resolvers(), gui_sse2_conversion());
+            if (!native_gui_pages_ || !native_gui_manager_)
+                throw std::logic_error("actual Page frontend requires the SAME Root-owned Page and manager");
+            frontend_->bind_native_gui_pages(*native_gui_pages_, *native_gui_manager_);
         } catch (...) {
             if (game_native_gui_text_process().native_operation_interrupted()) {
                 try {
@@ -3422,8 +3513,15 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             throw;
         }
     }
-    frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
-        settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
+    try {
+        frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
+            settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
+        if constexpr (kNativeGuiPageChainCc15Bound)
+            page_frontend_phase_ = PageFrontendPhase::startup_returned;
+    } catch (...) {
+        if constexpr (kNativeGuiPageChainCc15Bound) page_frontend_phase_ = PageFrontendPhase::failed;
+        throw;
+    }
     if constexpr (kGuiManagerCc15Bound) {
         if (native_gui_manager_) native_gui_manager_->prepare_cold_selected_manager_delete();
     }
@@ -3683,7 +3781,7 @@ void GameStartupHost::application_shutdown() {
     exit_if_native_texture_atlas_interrupted(); // BEFORE application/frontend teardown
     exit_if_native_mesh_interrupted();
     exit_if_native_movie_factory_incomplete();
-    exit_if_native_fonts_interrupted();
+    exit_if_native_page_frontend_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_gui_text_incomplete();
@@ -3781,13 +3879,21 @@ void GameStartupHost::application_shutdown() {
     }
     delete menu_;
     menu_ = nullptr;
-    // End native widget borrowers before retiring the manager's texture
-    // credits. The same Text factory still survives Font retirement/drain.
-    retire_native_gui_text_before_fonts();
-    try { if (frontend_) frontend_->retire_native_gui_resources(); }
-    catch (...) { exit_if_native_gui_resources_retained(); std::_Exit(1); }
-    delete frontend_;
-    frontend_ = nullptr;
+    if (page_frontend_phase_ != PageFrontendPhase::unselected) {
+        retire_page_frontend_resources_before_drain();
+        exit_if_native_gui_resources_retained();
+        if (page_frontend_phase_ == PageFrontendPhase::closed) {
+            delete frontend_; frontend_ = nullptr;
+        }
+    } else {
+        // End native widget borrowers before retiring the manager's texture
+        // credits. The same Text factory still survives Font retirement/drain.
+        retire_native_gui_text_before_fonts();
+        try { if (frontend_) frontend_->retire_native_gui_resources(); }
+        catch (...) { exit_if_native_gui_resources_retained(); std::_Exit(1); }
+        delete frontend_;
+        frontend_ = nullptr;
+    }
     retire_native_fonts_before_drain();
     // Actual Source menu/widget borrowers have retired. Bind original73804F..
     // 73805F explicit current-publication flags1 route before device/raw drain.
@@ -3804,6 +3910,7 @@ void GameStartupHost::application_shutdown() {
 void GameStartupHost::application_destruct() {
     exit_if_native_texture_atlas_interrupted(); // BEFORE application native retirement
     exit_if_native_mesh_interrupted();
+    exit_if_native_page_frontend_interrupted();
     if constexpr (kApplicationCc15Bound) {
         if (native_application_live_) {
             auto& process = game_native_string_process();
@@ -3826,8 +3933,9 @@ void GameStartupHost::application_destruct() {
 void GameStartupHost::destroy_singleton_lifetime_manager() {
     exit_if_native_texture_atlas_interrupted(); // BEFORE borrowed graph closure
     exit_if_native_mesh_interrupted();
+    exit_if_native_page_frontend_interrupted();
+    retire_page_frontend_resources_before_drain();
     exit_if_native_gui_resources_retained();
-    exit_if_native_fonts_interrupted();
     exit_if_native_platform_incomplete();
     exit_if_native_gui_probe_incomplete();
     exit_if_native_gui_text_incomplete();

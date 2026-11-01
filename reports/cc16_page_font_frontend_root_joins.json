@@ -1,0 +1,78 @@
+{
+  "packet": 143,
+  "status": "dormant_Source_joins_strict_and_registered_Win32_passed_pending_Root_review",
+  "base": "34fefb75541ea7d78618c22b444ae95b39aac890",
+  "new_Native_body_credit": 0,
+  "addresses_for_coordination_only": ["0073bae0", "00ac3910", "0073bc19", "00aa5e20", "00aa5840", "00aa6540", "00bd0400", "008f8449"],
+  "Source_files": [
+    "include/bsp/game_hosts.hpp", "src/game_hosts.cpp",
+    "include/bsp/game_native_gui_manager_application.hpp", "src/game_native_gui_manager_application.cpp",
+    "include/bsp/game_native_gui_page_application.hpp", "src/game_native_gui_page_application.cpp",
+    "src/game_hosts_frontend.cpp", "src/native_gui_media_focus_lifetime.cpp", "src/native_singleton_destruction.cpp"
+  ],
+  "evidence_files": ["docs/CC16_PAGE_FONT_FRONTEND_ROOT_JOINS.md", "reports/cc16_page_font_frontend_root_joins.json"],
+  "reviewed_plan": {
+    "Root_path": "local/function_source_batch143/plan",
+    "files": 10,
+    "MANIFEST_sha256": "86a6977b8ab29ef0ef2f1985483481bda8a6e4ee822ab368fc0cc3cf4163f9c7",
+    "SEAL_sha256": "3ff15bab9d96f754cafd617fd52e46d0b119c92480cabe0df90d4a4b2601bb10"
+  },
+  "unchanged_Source139_header": {
+    "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+    "sha256": "3de6aee871574eb8fbcfc927e5f5681222fbfb79ecc12250fab0642e088b6ae5",
+    "worker_authorship": false
+  },
+  "startup": {
+    "selection": "Existing held Page selector selects actual Font image producer before descriptor load and rejects conflicting runtime/standalone Text borrower mode",
+    "transport": "SAME Root Page/manager/resources bound to actual retained frontend before raw startup",
+    "Font_bind_seam": "Inside raw startup after SAME descriptor/fingerprint normal return and before begin_initial_resources / Page loads",
+    "selected_manager_preparation": "Existing once-only call stays after startup normal return"
+  },
+  "private_binding": {
+    "manager_API": "bind_page_font_retirement(GameNativeGuiPageApplication&)",
+    "attempt": "Reuses existing selected attempt; negative entry before admission; published manager/deletion/lifetime token and same completed frontend transport required",
+    "Page_API": "Private manager/delegate/opaque-GUI/attempt overload; derives renderer through SAME prepared139 Host/App/view",
+    "Cut_access": "Existing binding-only nested access; no public getter/token/Page::Impl exposure or additional shared-header friendship",
+    "entry": "Both Page entries use one private single-entry helper; failures retain sticky Font/Page and manager/selected unknown guards"
+  },
+  "scalar_event": "Selected AA6540 captures immutable provider/GUI, validates complete armed binding before Native body, preserves whole body/full flags/conditional free, then scalar_returned and stack-private Cut callback before next BD0400 pop; freed GUI remains opaque",
+  "renderer_fence": "Both selected BD0400 overloads capture immutable provider/saved renderer into cpp-local invocation view; exact actual popped secondary fence at start of delete_current_profile before Native deletion",
+  "Source_asm_unchanged": {
+    "function": "destroy_manager_body",
+    "sha256_utf8_lf": "fac27356065b7ff9af9800a86adfc51ce665c1e991a20eea193605d0e17907ef",
+    "scope": "Source text equality only; current-profile read/pop/full flags/iteration/recount preserved; no new Original audit or fault theorem"
+  },
+  "Root_lifetime": {
+    "history": "Private unselected/selected/startup_returned/resources_retire_entered/resources_retired/drain_entered/closed/failed Source enum; no Native permission meaning",
+    "earliest_negative_guards": ["application_shutdown", "application_destruct", "destroy_singleton_lifetime_manager", "destructor before menu/frontend teardown", "shared-drain catch after atlas retention and before logging"],
+    "resources": "Normal same-startup history schedules once-only Source resource retirement before fallback retention check; healthy live credits are not classified as interruption; actual manager +28/+2C stay untouched",
+    "first_drain_try": "SAME Font139 preparation, then selected manager binding, then existing atlas/renderer transition",
+    "post_parent": ["actual Renderer/Host return", "manager acknowledgement and existing provider/atlas fences", "Page/model closure", "SAME Font detach", "closed Source history", "frontend release after existing menu borrower closes", "later Page reset before manager"],
+    "reentry": "No-factories and factory arms share closure; closed normal Source history skips duplicate drain/Page acknowledgement; entered/failed/prepared-only paths cannot retry",
+    "retained_actual_owners": ["frontend RawTransport/resource app/name headers/HOMEs/bridge objects", "FontHost/App/descriptors", "Page/manager/delegate/token", "renderer/VFS/RO/scripts/strings and concrete transitive providers"],
+    "failure_disposition": "Existing whole-Root process retention; no new cleanup/retry/termination policy"
+  },
+  "current_last_use": "UNBOUND: unconditional Source139 rejection before ALL Native Font retirement; no empty/count/profile/flag/scheduling-history closure substitute",
+  "unchanged_selection": "Page selector and all nine GUI qualification selectors remain OFF; noPage/raw projections remain selected as before",
+  "strict_compile": {
+    "status": "passed", "exitCode": 0, "seconds": 11.3006848, "TUs": 6,
+    "flags": "MSVC x86 /c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+    "dependency_capture": "Actual compiler /sourceDependencies: 659 project dependencies copied; 302 external fingerprints"
+  },
+  "official_build": {
+    "status": "passed", "exitCode": 0, "seconds": 121.9806038,
+    "command": "./scripts/build.ps1", "configuration": "Release", "platform": "Win32",
+    "existing_checks": "2/2 passed: reconstructed_math and tool_tests",
+    "actual_targets": "Four changed application TUs in bsp_game; two changed Native service TUs in bsp_core"
+  },
+  "candidate": "local/output/cc16_page_font_frontend_root_joins143_20261101",
+  "Source_layout_qualification": "Private Root enum/member placement, C++ classes, emitted inline helpers, vtable/codegen and cpp-local invocation record consequences are Source-only; no Original class/vtable/record layout or binary ABI compatibility claim",
+  "held": [
+    "Actual earlier queued Text/Font/section/material last use",
+    "Type3/18/Icon/callback/worker/provider custody",
+    "Bridge COM/semantic borrower last use and appropriate pre-device release",
+    "All activation gates",
+    "Original ABI/FH3/SEH/fault/Origin/unmasked-FP and runtime theorem"
+  ],
+  "not_performed": ["Native body reconstruction/credit", "FontHost/App or further shared header edits", "CMake/ledger/Ghidra writes", "new tests/probes/Game", "activation", "push"]
+}

@@ -1481,23 +1481,48 @@ void GameNativeGuiPageApplication::prepare_page_font_retirement(GameFontHost& ho
     } catch (...) { host.fail_page_text_owner_link(*this); throw; }
 }
 
-void GameNativeGuiPageApplication::bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& attempt) {
+void GameNativeGuiPageApplication::enter_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& attempt) {
     auto& p = *impl_;
     const bool first = !p.font_attempt_bind_entered && !p.font_attempt;
     p.font_attempt_bind_entered = true;
     if (!p.font_attempt) p.font_attempt = &attempt;
+    require(first && p.font_phase == Impl::PageFontPhase::prepared && !p.failed &&
+        p.font_host && p.font_app && p.font_resources && p.font_image && p.font_prepared_view &&
+        p.font_manager == &p.manager && p.font_gui_context == &p.manager.context() && p.manager_binding,
+        "Page Font selected binding requires its exact prepared Page once");
+    const void* view{}; void* renderer{};
+    p.font_app->prepared_page_link_identities(*p.font_host, *this, view, renderer);
+    require(view == p.font_prepared_view && renderer == p.font_renderer_receiver,
+        "Page Font prepared service identity changed before selected binding");
+}
+
+void GameNativeGuiPageApplication::bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& attempt) {
+    auto& p = *impl_;
     try {
-        require(first && p.font_phase == Impl::PageFontPhase::prepared && !p.failed &&
-            p.font_host && p.font_app && p.font_resources && p.font_image && p.font_prepared_view &&
-            p.font_manager == &p.manager && p.font_gui_context == &p.manager.context(),
-            "Page Font selected binding requires its exact prepared Page once");
-        const void* view{}; void* renderer{};
-        p.font_app->prepared_page_link_identities(*p.font_host, *this, view, renderer);
-        require(view == p.font_prepared_view && renderer == p.font_renderer_receiver,
-            "Page Font prepared service identity changed before selected binding");
+        enter_page_font_delete_attempt(attempt);
         GameNativeGuiPageFontRetirementCut::PageBindingAccess::capture(attempt, *this, *p.font_gui_context,
             p.strings, p.page_lifetime, p.font_renderer_receiver, p.font_singleton_host,
             p.font_delete_context, p.font_delete_bindings, p.font_gui_receiver);
+    } catch (...) {
+        if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
+        else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::bind_page_font_delete_attempt(GameNativeGuiManagerApplication& manager,
+    NativeGuiPageLifetimeHost& actual_delegate, void* captured_actual_gui,
+    NativeGuiSelectedManagerDeleteAttempt& attempt) {
+    auto& p = *impl_;
+    try {
+        enter_page_font_delete_attempt(attempt); // SAME single Page entry, never chain the old entry
+        require(&manager == &p.manager && &actual_delegate == &p.page_lifetime &&
+            p.manager_binding && captured_actual_gui &&
+            captured_actual_gui == p.font_gui_context->actual_gui_00f8bc5c,
+            "Page Font selected binding requires its exact manager/delegate/token/publication");
+        GameNativeGuiPageFontRetirementCut::PageBindingAccess::bind(attempt, *this, *p.font_gui_context,
+            p.strings, p.page_lifetime, captured_actual_gui, p.font_renderer_receiver,
+            p.font_singleton_host, p.font_delete_context, p.font_delete_bindings, p.font_gui_receiver);
     } catch (...) {
         if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
         else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }

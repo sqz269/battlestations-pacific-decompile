@@ -704,6 +704,7 @@ GuiStartupResult GameFrontendHost::Impl::run_raw_startup(GameFrontendHost& front
         log.implemented("GuiStartupHost::load_font_descriptors","00ac3910");
         raw.site=0x0073bc0d;fonts.preload_fingerprint_payload_00be9760();
         log.implemented("GuiStartupHost::preload_fallback_glyph_table","0053bc00");
+        fonts.bind_page_text_owner(raw.pages); // SAME producer, before the first actual Page load
         raw.site=0x0073bc19;
         raw.actual_manager=raw.manager.begin_initial_resources(frontend);
         result.gui_manager=raw.actual_manager;summary.gui_manager_created=true;

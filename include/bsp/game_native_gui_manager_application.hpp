@@ -83,6 +83,8 @@ public:
     std::unique_ptr<PageLifetimeBinding> bind_page_lifetime_host(NativeGuiPageLifetimeHost&);
     // Explicit cold metadata preparation only; no default caller or Native effect.
     void prepare_cold_selected_manager_delete();
+    // Reuse that SAME cold attempt after the Page's Font services are prepared.
+    void bind_page_font_retirement(GameNativeGuiPageApplication&);
     bool requires_process_retention() const noexcept;
     // After the shared raw drain: the drain's 00AA0FF0 must have cleared the cell.
     void after_singleton_drain();

@@ -802,6 +802,9 @@ private:
     void verify_native_gui_icon_after_drain();
     void drain_native_singletons();
     void exit_if_native_fonts_interrupted() noexcept;
+    void exit_if_native_page_frontend_interrupted() noexcept;
+    void retire_page_frontend_resources_before_drain() noexcept;
+    void close_page_frontend_after_drain();
     void retire_native_fonts_before_drain() noexcept;
     void exit_if_native_shadow_incomplete() noexcept;
     void exit_if_native_gui_probe_incomplete() noexcept;
@@ -829,6 +832,10 @@ private:
     std::unique_ptr<GameNativeGuiManagerApplication> native_gui_manager_;
     // cc15-gui4 P3a (kNativeGuiPageChainCc15Bound): released before the manager.
     std::unique_ptr<GameNativeGuiPageApplication> native_gui_pages_;
+    // Actual C++ call history only. No Native readiness, last-use or permission.
+    enum class PageFrontendPhase { unselected, selected, startup_returned,
+        resources_retire_entered, resources_retired, drain_entered, closed, failed };
+    PageFrontendPhase page_frontend_phase_{PageFrontendPhase::unselected};
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;

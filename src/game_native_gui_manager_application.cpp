@@ -1,4 +1,5 @@
 #include "bsp/game_native_gui_manager_application.hpp"
+#include "bsp/game_native_gui_page_application.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_native_readonly_data.hpp"
@@ -187,6 +188,27 @@ void GameNativeGuiManagerApplication::prepare_cold_selected_manager_delete() {
     } catch (...) {
         p.selected_preparation_failed = true;
         throw; // actual Host pre-drain retention fence, no cold Native cleanup
+    }
+}
+
+void GameNativeGuiManagerApplication::bind_page_font_retirement(GameNativeGuiPageApplication& page) {
+    auto& p = *impl_;
+    auto* const attempt = p.selected_manager_delete;
+    const bool fresh = attempt && !attempt->page_font_bind_entered_;
+    if (attempt) attempt->page_font_bind_entered_ = true; // negative entry BEFORE admission
+    try {
+        if (!fresh || p.selected_preparation_failed || !p.selected_preparation_started ||
+            p.phase != Impl::Phase::published || !p.gui_00f8bc5c ||
+            p.singletons.native_deletion_bindings().native_gui != &p.lifetime ||
+            !p.page_binding || p.page_binding->owner_ != this || !p.pages.delegate || p.frontend_pages != &page ||
+            p.transport_phase != Impl::TransportPhase::complete)
+            throw std::logic_error("Page Font retirement reuses its SAME published cold manager attempt");
+        void* const actual_gui = p.gui_00f8bc5c;
+        page.bind_page_font_delete_attempt(*this, *p.pages.delegate, actual_gui, *attempt);
+    } catch (...) {
+        if (attempt) attempt->unknown_ = true;
+        p.selected_preparation_failed = true;
+        throw;
     }
 }
 

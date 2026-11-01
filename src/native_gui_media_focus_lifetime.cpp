@@ -1,4 +1,5 @@
 #include "bsp/native_gui_media_focus_lifetime.hpp"
+#include "bsp/game_native_gui_page_application.hpp"
 #include "bsp/native_platform_focus_owners.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -169,15 +170,30 @@ void* scalar_delete_native_gui_manager_00aa6540_fragment(void* owner,
 void* scalar_delete_native_gui_manager_00aa6540_fragment(void* owner,
     Word flags, NativeGuiMediaFocusLifetimeContext& context,
     NativeGuiSelectedManagerDeleteAttempt& selected) {
+    auto* const captured_page_fonts = selected.page_fonts_;
+    void* const captured_gui = selected.page_font_gui_receiver_;
+    void* const captured_renderer = selected.page_font_renderer_receiver_;
+    const bool page_scalar_fresh = !selected.scalar_entered_ && !selected.scalar_returned_;
     selected.scalar_entered_ = true; // negative only; never a freshness/Native permit
     try {
         if (!selected.host_entered_ || !selected.core_entered_ || selected.core_returned_ ||
             selected.host_returned_ || selected.source_fence_returned_ || selected.unknown_ ||
             selected.context_ != &context)
             throw std::logic_error("selected GUI scalar requires its captured real drain attempt");
+        if (selected.page_font_bind_entered_ ?
+            (!page_scalar_fresh || !captured_page_fonts || !captured_gui || !captured_renderer ||
+                selected.page_font_scope_ || owner != captured_gui) :
+            (captured_page_fonts || captured_gui || captured_renderer || selected.page_font_scope_))
+            throw std::logic_error("selected GUI scalar requires the complete exact Page Font binding");
         destroy_gui_manager_body(owner, context, &selected);
         if (flags & 1u) singleton_lifetime_free(owner);
         selected.scalar_returned_ = true; // does NOT finish the outer invocation
+        if (captured_page_fonts) {
+            // owner is now opaque: the whole body and conditional free returned.
+            game::GameNativeGuiPageFontRetirementCut cut(selected, *captured_page_fonts,
+                context, owner, flags);
+            captured_page_fonts->after_gui_scalar_return(cut);
+        } // scope ends before BD0400 can pop its next actual receiver
         return owner;
     } catch (...) {
         selected.unknown_ = true;

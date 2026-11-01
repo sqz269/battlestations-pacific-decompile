@@ -10,6 +10,7 @@
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
 #include "bsp/native_gui_media_focus_lifetime.hpp"
+#include "bsp/game_native_gui_page_application.hpp"
 #include "bsp/native_gui_icon_delayed_loads.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
@@ -663,17 +664,24 @@ struct SingletonManagerInvocationView {
     NativeGuiSelectedManagerDeleteAttempt* const selected;
     NativeGuiMediaFocusLifetimeContext* const gui_context;
     NativeTextureAtlasManagerDeleteAttempt* const atlas;
+    NativeGuiPageFontRetirementHost* const page_fonts;
+    void* const page_font_renderer;
     SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,
         NativeTextureAtlasManagerDeleteAttempt* captured_atlas = nullptr)
-        : bindings(actual), selected(nullptr), gui_context(nullptr), atlas(captured_atlas) {}
+        : bindings(actual), selected(nullptr), gui_context(nullptr), atlas(captured_atlas),
+          page_fonts(nullptr), page_font_renderer(nullptr) {}
     SingletonManagerInvocationView(const NativeSingletonDeletionBindings& actual,
         NativeGuiSelectedManagerDeleteAttempt& attempt, NativeGuiMediaFocusLifetimeContext& context,
+        NativeGuiPageFontRetirementHost* captured_page_fonts, void* captured_page_renderer,
         NativeTextureAtlasManagerDeleteAttempt* captured_atlas = nullptr)
-        : bindings(actual), selected(&attempt), gui_context(&context), atlas(captured_atlas) {}
+        : bindings(actual), selected(&attempt), gui_context(&context), atlas(captured_atlas),
+          page_fonts(captured_page_fonts), page_font_renderer(captured_page_renderer) {}
 };
 __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const SingletonManagerInvocationView& invocation, std::uint32_t profile,
     std::uint32_t flags) {
+    if (invocation.page_fonts && owner == invocation.page_font_renderer)
+        invocation.page_fonts->before_registered_renderer_delete(*invocation.selected, owner);
     if (invocation.atlas && profile == 0x00cfeae8) {
         (void)dispatch_native_texture_atlas_selected_scalar(owner, flags,
             invocation.bindings, *invocation.atlas);
@@ -847,14 +855,23 @@ __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
     void* owner, const NativeSingletonDeletionBindings& bindings,
     NativeGuiSelectedManagerDeleteAttempt& selected) {
     auto* const captured_context = selected.context_; // immutable address, once before callbacks
+    auto* const captured_page_fonts = selected.page_fonts_;
+    void* const captured_page_renderer = selected.page_font_renderer_receiver_;
+    const bool page_binding_complete = selected.page_font_bind_entered_ ?
+        (captured_page_fonts && selected.page_font_gui_receiver_ && captured_page_renderer &&
+            !selected.page_font_scope_) :
+        (!captured_page_fonts && !selected.page_font_gui_receiver_ && !captured_page_renderer &&
+            !selected.page_font_scope_);
     const bool fresh = !selected.core_entered_;
     selected.core_entered_ = true; // BEFORE every throwing admission and Native effect
     try {
         if (!fresh || !selected.cold_bound_ || !selected.host_entered_ || selected.unknown_ ||
             selected.bindings_ != &bindings || !selected.receiver_bound_ ||
-            selected.outer_receiver_ != owner || bindings.native_gui != captured_context)
+            selected.outer_receiver_ != owner || bindings.native_gui != captured_context ||
+            !page_binding_complete)
             throw std::logic_error("selected shared drain requires its actual cold bound invocation");
-        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context};
+        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context,
+            captured_page_fonts, captured_page_renderer};
         destroy_manager_body(owner, invocation);
         selected.core_returned_ = true; // observation only, no fence/discharge
     } catch (...) {
@@ -870,18 +887,27 @@ __declspec(noinline) void __fastcall destroy_native_singleton_manager_00bd0400(
     const bool atlas_fresh = !atlas.core_entered_;
     atlas.core_entered_ = true; // arm BEFORE either policy's throwing admission/effect
     auto* const captured_context = selected.context_; // immutable address, once before callbacks
+    auto* const captured_page_fonts = selected.page_fonts_;
+    void* const captured_page_renderer = selected.page_font_renderer_receiver_;
+    const bool page_binding_complete = selected.page_font_bind_entered_ ?
+        (captured_page_fonts && selected.page_font_gui_receiver_ && captured_page_renderer &&
+            !selected.page_font_scope_) :
+        (!captured_page_fonts && !selected.page_font_gui_receiver_ && !captured_page_renderer &&
+            !selected.page_font_scope_);
     const bool fresh = !selected.core_entered_;
     selected.core_entered_ = true; // BEFORE every throwing admission and Native effect
     try {
         if (!fresh || !selected.cold_bound_ || !selected.host_entered_ || selected.unknown_ ||
             selected.bindings_ != &bindings || !selected.receiver_bound_ ||
-            selected.outer_receiver_ != owner || bindings.native_gui != captured_context)
+            selected.outer_receiver_ != owner || bindings.native_gui != captured_context ||
+            !page_binding_complete)
             throw std::logic_error("selected shared drain requires its actual cold bound invocation");
         if (!atlas_fresh || atlas.unknown_ || !atlas.cold_bound_ || !atlas.host_entered_ ||
             !atlas.receiver_bound_ || atlas.outer_receiver_ != owner ||
             atlas.bindings_ != &bindings || bindings.texture_atlas != atlas.atlas_)
             throw std::logic_error("atlas manager drain requires its actual Host capture and bindings");
-        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context, &atlas};
+        const SingletonManagerInvocationView invocation{bindings, selected, *captured_context,
+            captured_page_fonts, captured_page_renderer, &atlas};
         destroy_manager_body(owner, invocation);
         selected.core_returned_ = true; // observation only, no fence/discharge
         if (atlas.registered_receiver_bound_ && !atlas.scalar_returned_)
