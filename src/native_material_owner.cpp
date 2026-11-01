@@ -1,4 +1,5 @@
 #include "bsp/native_material_owner.hpp"
+#include "native_material_typed_storage.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -50,10 +51,7 @@ void release_then_clear(void*& slot, NativeRenderActualOwners& owners) {
 NativeMaterialStorage& prepare(void* slot) {
     if (!slot || reinterpret_cast<std::uintptr_t>(slot) % alignof(NativeMaterialStorage))
         throw std::invalid_argument("material construction requires aligned actual110h storage");
-    std::byte preimage[sizeof(NativeMaterialStorage)];
-    std::memcpy(preimage, slot, sizeof(preimage));
-    auto* material = ::new (slot) NativeMaterialStorage;
-    std::memcpy(slot, preimage, sizeof(preimage));
+    auto* material = detail::begin_material_storage(slot);
     material->vtable_00 = base_table;
     material->references_04.store(1, std::memory_order_relaxed);
     material->vtable_00 = material_table;

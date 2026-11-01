@@ -1,3 +1,4 @@
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_post_effect_ordinary_lifetime.hpp"
 #include "bsp/native_post_effect20_construction.hpp"
@@ -230,6 +231,13 @@ bool NativePostEffect20ConstructionBlock::requires_ordinary_process_retention() 
          (model_frame_ && model_frame_->requires_process_retention()) ||
          ordinary_lifetime_->meshes.requires_process_retention());
 }
+void NativePostEffect20ConstructionBlock::parent_source_retired(
+    NativePostEffectParentFrame& frame, RenderCommandReference& reference) noexcept {
+    if (parent_frame_ != &frame || references_[owner] != &reference) {
+        frame.record_source_failure(); return;
+    }
+    retired_[owner] = true; // captured exact record, no optional reset/self-delete
+}
 void NativePostEffect20ConstructionBlock::record_ordinary_constructor_failure() noexcept {
     // Exact trusted Block bridge. Same ordinary catch sequence/receivers;
     // no public Mesh action, new permit, Native work or extra health sample.
@@ -458,6 +466,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         if (block.ordinary_lifetime_) block.model_frame_->begin_constructor();
         put(actual, 0, 0x00ceb130u); // B4E493
         new (pointer(bits(actual) + 4u)) std::atomic<std::int32_t>(1); // B4E49E, sole initial count write
+        if (block.parent_frame_) block.parent_frame_->native_atomic_born(actual);
         const Word initial_count = arguments.words[1]; // B4E4A5 before derived profile/clears
         set_state(0); // B4E4AB
         put(actual, 0, 0x00d61ec0u); // B4E4AF
@@ -718,25 +727,38 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         else release_registered<NativeMeshReference>(mesh, decrement, c, 0x00d62d60u,
             c.meshes.vtable_00d62d60, 0x00b74280u);
 
+        // Private body-return fact is BEFORE any following host publication.
+        if (block.parent_frame_) block.parent_frame_->native_constructor_returned(actual);
         acquired.native_completed = true; // HOST-only: original B4E470 has completed.
         set_state(-1);
-        block.owner_.emplace(actual, c.destruction);
-        acquired.completed_owner = &*block.owner_;
-        block.owner_reference_.emplace(*block.owner_, c.declaration_companions.registration(),
-            NativePostEffect20CompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_owner});
-        acquired.completed_reference = &*block.owner_reference_;
-        block.keys_[NativePostEffect20ConstructionBlock::owner] = actual;
-        block.references_[NativePostEffect20ConstructionBlock::owner] = &*block.owner_reference_;
-        // This reference registers/unregisters itself; the block must not do it twice.
+        if (block.parent_frame_) {
+            block.parent_frame_->publish_after_native_constructor();
+            acquired.completed_owner = &block.parent_frame_->owner20_after_publication();
+            acquired.completed_reference = static_cast<NativePostEffect20Reference*>(
+                &block.parent_frame_->canonical_after_publication());
+            block.keys_[NativePostEffect20ConstructionBlock::owner] = actual;
+            block.references_[NativePostEffect20ConstructionBlock::owner] = acquired.completed_reference;
+        } else {
+            block.owner_.emplace(actual, c.destruction);
+            acquired.completed_owner = &*block.owner_;
+            block.owner_reference_.emplace(*block.owner_, c.declaration_companions.registration(),
+                NativePostEffect20CompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_owner});
+            acquired.completed_reference = &*block.owner_reference_;
+            block.keys_[NativePostEffect20ConstructionBlock::owner] = actual;
+            block.references_[NativePostEffect20ConstructionBlock::owner] = &*block.owner_reference_;
+            // This reference registers/unregisters itself; the block must not do it twice.
+        }
         if (block.ordinary_lifetime_) block.model_frame_->finish_constructor();
         block.settle();
         return actual;
     } catch (...) {
+        if (block.parent_frame_) block.parent_frame_->record_source_failure();
         if (block.ordinary_lifetime_) {
             block.record_ordinary_constructor_failure();
         }
         try {
-            if (!acquired.native_completed) block.unwind(state, frame_raw, mesh_raw, arguments.words[1], mask);
+            if (block.parent_frame_ ? !block.parent_frame_->native_constructor_has_returned()
+                                    : !acquired.native_completed) block.unwind(state, frame_raw, mesh_raw, arguments.words[1], mask);
         } catch (...) {
             if (block.ordinary_lifetime_) block.model_frame_->finish_constructor();
             block.settle(); throw;

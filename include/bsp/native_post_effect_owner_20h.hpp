@@ -8,6 +8,7 @@
 
 namespace bsp {
 class NativePostEffectModelLifetimeContext;
+class NativePostEffectParentFrame;
 
 using NativePostEffect20Decrement = long (__stdcall*)(volatile long*);
 struct NativePostEffect20OwnerContext {
@@ -37,6 +38,8 @@ public:
     Phase phase() const noexcept { return phase_; }
 private:
     friend class NativePostEffect20Reference;
+    friend class NativePostEffectParentFrame;
+    NativePostEffect20Owner(void*, NativePostEffect20OwnerContext&, NativePostEffectParentFrame&) noexcept;
     friend void destroy_native_post_effect_owner_00b4e1f0(NativePostEffect20Owner&);
     void* const actual_;
     NativePostEffect20OwnerContext& context_;
@@ -72,8 +75,14 @@ public:
     NativePostEffect20Reference(const NativePostEffect20Reference&) = delete;
     NativePostEffect20Reference& operator=(const NativePostEffect20Reference&) = delete;
     void* storage() const noexcept { return owner_.storage(); }
-    void release_zero_references() noexcept override;
+    // Private ordinary mode propagates Source failure; legacy helper remains noexcept.
+    void release_zero_references() override;
 private:
+    friend class NativePostEffectParentFrame;
+    NativePostEffect20Reference(NativePostEffect20Owner&, NativePostEffectParentFrame&) noexcept;
+    void validate_parent_target() const;
+    void release_legacy_zero_references() noexcept;
+    NativePostEffectParentFrame* ordinary_frame_{};
     NativePostEffect20Owner& owner_;
     GuiNativeGeometryRegistration registration_;
     NativePostEffect20CompanionDisposal disposal_;
@@ -81,6 +90,6 @@ private:
 };
 
 // New source interfaces, not original binary ABI. The inherited canonical
-// terminal is noexcept; direct-body C++ cleanup projection does not establish
+// legacy terminal is noexcept; the private ordinary route does not establish
 // native FH3/SEH behavior through that terminal or gameplay equivalence.
 } // namespace bsp

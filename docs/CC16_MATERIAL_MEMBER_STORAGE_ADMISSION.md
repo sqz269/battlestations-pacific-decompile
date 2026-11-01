@@ -1,0 +1,15 @@
+# CC16 Material live-member representation admission
+
+Qualified storage prerequisite on Source `4ad799ceb`, carried unchanged into fresh Main5abb join `60b489db4`. This adds no ordinary Material ownership/failure authority and no Native/vendor reconstruction credit.
+
+The existing whole110h preimage/default-birth/restore prefix is now explicit: save the raw image, default-birth the SAME existing type, restore sixteen actual live scalar/pointer/array/preserved members, and restore only the installed SDK atomic integral `_Storage._Value`. Full offsets/extents/adjacency/type gates cover272 bytes and leave the separate +110 pool ID untouched. Public type/defaults/APIs, actual Native bodies and callers remain unchanged. Nontrivial-copy traits alone did not prove a previous runtime bug; this supplies a concrete target representation route.
+
+The exact SDK/member traits passed one isolated Win32 `/c` invocation and the official canonical build. Independent Source and actual Core reviews pass. The full469B/130-op helper snapshots first, emits the actual C++ default DWORD0 at+4, then sixteen BYTE restore ranges. No call, FP, XMM, DF/control or Native callback occurs in that interval; the cookie check follows complete restoration. Existing base-profile, sole Native count1 and derived-profile initialization follow. That transient0/byte trace differs from the previous optimized bulk-copy prefix; it is not a Native initializer, counter repair or authority. The existing fresh/aligned/exclusive Source birth contract remains, without an identical-memory-trace, asynchronous/fault or Original ABI claim.
+
+Sixty-five old code/ordered-relocation sections remain exact, with five changed and ten added. Init/Clone preserve Native source/current-field/retains/releases/lighting-copy schedules and actual EH shape/actions, but private frames/cookie offsets and outlined-helper calls differ. The old17-word initializer, payload, scalar and legacy terminating policy remain exact. Whole actual new object35376B equals its sole genuine library member; no undefined provider was added.
+
+Official component build and existing suites pass:75 objects/243 artifacts,3570 CL inputs/six tools; all74 Parent objects stay whole-byte exact. The final joined canonical build/suites pass with79 objects/255 artifacts and3574 inputs. All reviewed Parent/Material objects transfer unchanged; the exact library and all79 objects survive the 42-root retained-link/canonical restore. One default joined frame exits naturally0/0; that is bounded startup/shutdown evidence only.
+
+Material75baf still requires genuine producer/canonical/credit/zero/partial-end/raw-return/failure/caller transport. LogicalVertex92dc, all8 upper/B107F0, early Host/worker retention, real Native/worker/caller quiescence and every existing activation gate remain. No NoThrow/mode/input/zero-preimage or origin substitute is introduced.
+
+Machine-readable receipts and qualifications: [report](../reports/cc16_material_member_storage_admission.json).

@@ -7,6 +7,7 @@
 namespace bsp {
 class NativeMeshCanonicalRecord;
 class NativePostEffectModelFrame;
+class NativePostEffectParentFrame;
 class NativeMeshReference;
 class NativeRenderObservedZeroAccess;
 struct RenderCommand;
@@ -27,12 +28,15 @@ private:
     // Null in every legacy constructor; only authentic private owners bind it.
     friend class NativeMeshReference;
     friend class NativePostEffectModelFrame;
+    friend class NativePostEffectParentFrame;
     friend class NativeRenderObservedZeroAccess;
     friend void release_render_command_reference(RenderCommandReference&);
     NativeMeshCanonicalRecord* ordinary_mesh_{};
     NativePostEffectModelFrame* ordinary_model_{};
+    NativePostEffectParentFrame* ordinary_parent_{};
     void bind_ordinary_mesh(NativeMeshCanonicalRecord& record) noexcept { ordinary_mesh_ = &record; }
     void bind_ordinary_model(NativePostEffectModelFrame& frame) noexcept { ordinary_model_ = &frame; }
+    void bind_ordinary_parent(NativePostEffectParentFrame& frame) noexcept { ordinary_parent_ = &frame; }
 
 public:
     std::atomic<std::int32_t>& reference_count;

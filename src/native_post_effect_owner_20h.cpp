@@ -1,3 +1,4 @@
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/native_post_effect_owner_20h.hpp"
 #include "bsp/native_post_effect_model_lifetime.hpp"
 #include "bsp/native_material_owner.hpp"
@@ -69,6 +70,11 @@ void release_node(Word captured, NativePostEffect20OwnerContext& context) {
 }
 }
 
+// Only the authentic pre-reserved parent Frame can construct this companion.
+// +4 was already born by the existing whole producer; no Native observation here.
+NativePostEffect20Owner::NativePostEffect20Owner(void* actual, NativePostEffect20OwnerContext& context,
+    NativePostEffectParentFrame&) noexcept : actual_(actual), context_(context) {}
+
 NativePostEffect20Owner::NativePostEffect20Owner(void* actual, NativePostEffect20OwnerContext& context)
     : actual_(actual), context_(context) {
     require(actual && (reinterpret_cast<Word>(actual) & 3u) == 0, "invalid actual post-effect storage");
@@ -127,6 +133,17 @@ void* delete_native_post_effect_owner_00b4e430(NativePostEffect20Owner& owner, s
 }
 
 NativePostEffect20Reference::NativePostEffect20Reference(NativePostEffect20Owner& owner,
+    NativePostEffectParentFrame& frame) noexcept
+    : RenderCommandReference(count(owner.actual_)), ordinary_frame_(&frame), owner_(owner),
+      registration_{owner.context_.actual_owners,nullptr,nullptr,nullptr,nullptr},
+      disposal_{nullptr,nullptr} {
+    owner.reference_bound_ = true; // C++ metadata only, before exact publication
+}
+void NativePostEffect20Reference::validate_parent_target() const {
+    current_terminal(owner_.actual_, 0x00d61ec0u,
+        owner_.context_.actual_profile_00d61ec0, 0x00b4e430u);
+}
+NativePostEffect20Reference::NativePostEffect20Reference(NativePostEffect20Owner& owner,
     GuiNativeGeometryRegistration registration, NativePostEffect20CompanionDisposal disposal)
     : RenderCommandReference(count(owner.actual_)), owner_(owner),
       registration_(registration), disposal_(disposal) {
@@ -141,9 +158,14 @@ NativePostEffect20Reference::NativePostEffect20Reference(NativePostEffect20Owner
     owner.reference_bound_ = true;
 }
 NativePostEffect20Reference::~NativePostEffect20Reference() {
+    if (ordinary_frame_) return; // real Frame/graph close owns retained companions
     if (!retired_) std::terminate();
 }
-void NativePostEffect20Reference::release_zero_references() noexcept {
+void NativePostEffect20Reference::release_zero_references() {
+    if (ordinary_frame_) { ordinary_frame_->ordinary_virtual_zero(*this); return; }
+    release_legacy_zero_references();
+}
+void NativePostEffect20Reference::release_legacy_zero_references() noexcept {
     if (retired_ || owner_.phase_ != NativePostEffect20Owner::Phase::live ||
         reference_count.load(std::memory_order_relaxed) != 0) std::terminate();
     current_terminal(owner_.actual_, 0x00d61ec0u, owner_.context_.actual_profile_00d61ec0, 0x00b4e430u);

@@ -30,6 +30,7 @@ private:
     friend class NativeMeshCanonicalAccess;
     friend class NativeMeshCanonicalDomain;
     friend class NativePostEffectModelFrame;
+    friend class NativePostEffectParentFrame;
     friend class game::GameNativeRendererApplication;
     friend class NativeRendererRawFailureBridge;
     std::atomic<bool> failed_{false};
@@ -59,6 +60,7 @@ private:
     friend class NativeMeshCanonicalAccess;
     friend class NativeMeshCanonicalProducerFrame;
     friend class NativePostEffectModelFrame;
+    friend class NativePostEffectParentFrame;
     struct Impl;
     NativeMeshEnvironment& environment_;
     NativeRenderActualOwnerRegistry& registry_;

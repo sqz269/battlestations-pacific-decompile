@@ -66,6 +66,7 @@ public:
         friend class NativeMeshCanonicalDomain;
         friend class NativeMeshCanonicalBorrow;
         friend class NativePostEffectModelFrame;
+        friend class NativePostEffectParentFrame;
         enum class Availability : std::uint8_t { unavailable, live };
         ExactRecord(NativeRenderActualOwnerRegistry& registry,
             const void* actual_owning_record_identity) noexcept
@@ -144,6 +145,7 @@ private:
     friend class NativeMeshCanonicalRecord;
     friend class NativeMeshCanonicalAccess;
     friend class NativePostEffectModelFrame;
+    friend class NativePostEffectParentFrame;
     // Cold attachment counts even an unkeyed allocating/unknown record. Nodes
     // are already allocated; no allocator/callback runs under this mutex.
     std::mutex& exact_metadata_mutex() noexcept;
