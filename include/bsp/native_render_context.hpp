@@ -67,6 +67,7 @@ public:
         friend class NativeMeshCanonicalBorrow;
         friend class NativePostEffectModelFrame;
         friend class NativePostEffectParentFrame;
+    friend class NativeMaterialFrame;
         enum class Availability : std::uint8_t { unavailable, live };
         ExactRecord(NativeRenderActualOwnerRegistry& registry,
             const void* actual_owning_record_identity) noexcept
@@ -79,6 +80,8 @@ public:
         std::atomic<bool> poisoned_{false};
         std::atomic<bool> normal_native_dead_{false};
         std::atomic<bool> unborn_abandoned_{false};
+        // Genuine selected ctor-exception C++ prefix end, not Native death/free.
+        std::atomic<bool> partial_cpp_ended_{false};
         std::atomic<std::uint32_t> outer_calls_{0}, borrows_{0};
         ExactRecord* previous_{};
         ExactRecord* next_{};
@@ -146,6 +149,7 @@ private:
     friend class NativeMeshCanonicalAccess;
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
+    friend class NativeMaterialFrame;
     // Cold attachment counts even an unkeyed allocating/unknown record. Nodes
     // are already allocated; no allocator/callback runs under this mutex.
     std::mutex& exact_metadata_mutex() noexcept;
@@ -157,10 +161,18 @@ private:
     // private ctor continuation and reserved canonical established beforehand.
     // No mutex, allocation, validation, Native count/profile read or callback.
     void publish_exact_record(ExactRecord&, RenderCommandReference&) noexcept;
-    // Poison prevents lookup AND replacement unless normal_native_dead is true.
-    // It does not invent a normal-death/pool-return fact.
+    // Poison prevents lookup/replacement without an independent genuine end fact.
+    // Normal death, never-born abandonment and selected partial C++ end differ;
+    // none by itself invents a physical-return receipt.
     void poison_exact_record(ExactRecord&) noexcept;
     void deactivate_exact_record_from_native_end(ExactRecord&) noexcept;
+    // Authentic Material payload-normal flags0: carrier/physical debt stays live.
+    // Availability only: no poison, Native/partial/unborn end or failure fact.
+    void withhold_exact_record_for_live_storage_debt(ExactRecord&) noexcept;
+    // Only the selected ctor-exception owner, after actual trivial prefix end
+    // and last prefix use, before real raw return. +110 pool backing stays live.
+    // Retains node/caller/debt; grants no normal death, refund or physical result.
+    void deactivate_exact_record_from_partial_cpp_end(ExactRecord&) noexcept;
     // Genuine selected raw-slot unwind only (Mesh state3 / Model state4):
     // captured allocation, BEFORE ANY Owner/Node/payload C++ birth or native
     // ctor entry, no canonical/pub, last PAYLOAD borrow ended. The separate

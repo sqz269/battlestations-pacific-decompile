@@ -3,6 +3,7 @@
 #include <memory>
 
 namespace bsp {
+class NativeMaterialFrame;
 struct NativeMaterialEffectCacheContext;
 struct NativeMaterialEffectCacheAcquired;
 struct NativeMaterialFactoryAcquired {
@@ -71,4 +72,12 @@ int initialize_static_native_material_parameter_pool_00cd78f0();
 void destroy_static_native_material_pool_00ce0bf0() noexcept;
 void destroy_static_native_material_parameter_pool_00ce0c00() noexcept;
 
+class NativeMaterialFactoryAccess final {
+private:
+    friend class NativeMaterialFrame;
+    static NativeMaterialStorage* cached(const void*,NativeMaterialSlotPool&,NativeRenderActualOwners&,
+        NativeMaterialEffectCacheContext&,NativeMaterialFactoryAcquired&,NativeMaterialFrame&);
+    static NativeMaterialStorage* callable(NativeString&,void* const volatile&,NativeMaterialSlotPool&,
+        NativeRenderActualOwners&,NativeMaterialFrame&);
+};
 } // namespace bsp

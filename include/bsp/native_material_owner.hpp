@@ -7,6 +7,8 @@
 #include <cstddef>
 
 namespace bsp {
+class NativeMaterialFrame;
+class NativeMaterialFactoryIssuer;
 // SAME110h native material prefix. The allocator's slab ID is a separate DWORD
 // at+110 in a114h slot. No field initializer replaces the native preimage.
 struct NativeMaterialStorage {
@@ -106,14 +108,31 @@ public:
         const volatile std::uint32_t* actual_vtable_00d5e520, NativeMaterialCompanionDisposal);
     ~NativeMaterialReference() override;
     NativeMaterialStorage& storage() noexcept { return storage_; }
-    void release_zero_references() noexcept override;
+    // Only the privately born ordinary branch propagates; legacy helper is noexcept.
+    void release_zero_references() override;
 private:
     enum class Phase { bound, destroying, retired };
+    friend class NativeMaterialFrame;
+    NativeMaterialReference(NativeMaterialStorage&,NativeMaterialDestructionAccess&,
+        const volatile std::uint32_t*,NativeMaterialFrame&) noexcept;
+    void validate_ordinary_target() const;
+    void release_legacy_zero_references() noexcept;
+    NativeMaterialFrame* ordinary_frame_{};
     NativeMaterialStorage& storage_;
     NativeMaterialDestructionAccess& access_;
     const volatile std::uint32_t* vtable_;
     NativeMaterialCompanionDisposal disposal_;
     Phase phase_{Phase::bound};
     void require_current_profile() const noexcept;
+};
+// Narrow private owning entry to the SAME shared constructor kernels.
+// Naming this class grants no action or public receipt setter.
+class NativeMaterialStorageAccess final {
+private:
+    friend class NativeMaterialFrame;
+    friend class NativeMaterialFactoryIssuer;
+    static NativeMaterialStorage* initialize(void*,void*,NativeRenderActualOwners&,NativeMaterialFrame&);
+    static NativeMaterialStorage* clone(void*,const NativeMaterialStorage&,NativeRenderActualOwners&,NativeMaterialFrame&);
+    static void destroy(NativeMaterialStorage&,NativeMaterialDestructionAccess&,NativeMaterialFrame&);
 };
 } // namespace bsp

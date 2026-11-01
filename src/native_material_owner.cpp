@@ -1,4 +1,5 @@
 #include "bsp/native_material_owner.hpp"
+#include "bsp/native_material_lifetime.hpp"
 #include "native_material_typed_storage.hpp"
 #include <cstring>
 #include <exception>
@@ -10,6 +11,18 @@
 #endif
 
 namespace bsp {
+// CPP-private observer bound only by the authentic private owning entry.
+class NativeMaterialStorageIssuer final {
+public:
+    explicit NativeMaterialStorageIssuer(NativeMaterialFrame& f,bool payload=false) noexcept:frame_(f),payload_(payload){}
+    void prefix(NativeMaterialStorage& m) noexcept {frame_.cpp_prefix_born(m);}
+    void count(NativeMaterialStorage& m) noexcept {frame_.native_count1_born(m);}
+    void returned(NativeMaterialStorage& m) noexcept {frame_.native_constructor_returned(m);}
+    void release(NativeRenderActualOwners& owners,void* actual,std::size_t site){frame_.release_child(owners,actual,site,payload_);}
+private:
+    NativeMaterialFrame& frame_;
+    const bool payload_;
+};
 static_assert(sizeof(NativeMaterialStorage) == 0x110);
 static_assert(offsetof(NativeMaterialStorage, references_04) == 4);
 static_assert(offsetof(NativeMaterialStorage, source_owner_0c) == 0x0c);
@@ -35,25 +48,29 @@ void retain_actual(void* identity) noexcept {
         static_cast<std::byte*>(identity) + 4));
     actual->fetch_add(1, std::memory_order_seq_cst);
 }
-void assign_actual(void*& slot, void* incoming, NativeRenderActualOwners& owners) {
+void assign_actual(void*& slot, void* incoming, NativeRenderActualOwners& owners,
+    NativeMaterialStorageIssuer* issuer=nullptr,std::size_t site=0) {
     void* const old = slot;
     if (old == incoming) return;
     slot = incoming;
     if (incoming) retain_actual(incoming);
-    if (old) release_native_render_actual_owner(owners, old);
+    if (old) {if(issuer)issuer->release(owners,old,site);else release_native_render_actual_owner(owners, old);}
 }
-void release_then_clear(void*& slot, NativeRenderActualOwners& owners) {
+void release_then_clear(void*& slot, NativeRenderActualOwners& owners,
+    NativeMaterialStorageIssuer* issuer=nullptr,std::size_t site=0) {
     void* const old = slot;
     if (!old) return;
-    release_native_render_actual_owner(owners, old);
+    if(issuer)issuer->release(owners,old,site);else release_native_render_actual_owner(owners, old);
     slot = nullptr;
 }
-NativeMaterialStorage& prepare(void* slot) {
+NativeMaterialStorage& prepare(void* slot,NativeMaterialStorageIssuer* issuer) {
     if (!slot || reinterpret_cast<std::uintptr_t>(slot) % alignof(NativeMaterialStorage))
         throw std::invalid_argument("material construction requires aligned actual110h storage");
     auto* material = detail::begin_material_storage(slot);
+    if(issuer)issuer->prefix(*material);
     material->vtable_00 = base_table;
     material->references_04.store(1, std::memory_order_relaxed);
+    if(issuer)issuer->count(*material);
     material->vtable_00 = material_table;
     return *material;
 }
@@ -74,9 +91,10 @@ std::int32_t texture_count(const NativeMaterialStorage& material) {
 }
 } // namespace
 
-NativeMaterialStorage* initialize_native_material_00b18900(void* slot,
-    void* effect, NativeRenderActualOwners& owners) {
-    auto& material = prepare(slot);
+namespace {
+NativeMaterialStorage* initialize_body(void* slot,
+    void* effect, NativeRenderActualOwners& owners,NativeMaterialStorageIssuer* issuer) {
+    auto& material = prepare(slot,issuer);
     material.word_08 = 0;
     try {
         initialize_common(material);
@@ -84,17 +102,18 @@ NativeMaterialStorage* initialize_native_material_00b18900(void* slot,
         material.word_108 = 0xffffffff;
         material.lighting_enabled_10c = 0;
         material.retain_source_10d = 0;
-        assign_actual(material.effect_7c, effect, owners);
+        assign_actual(material.effect_7c, effect, owners,issuer,0);
         // Reload the actual publication after assignment/native terminal call.
         if (material.effect_7c)
             *(static_cast<std::uint8_t*>(material.effect_7c) + 0xb4) = 1;
+        if(issuer)issuer->returned(material); // exact Native normal continuation, before outer host/effect tails
         return &material;
     } catch (...) { material.vtable_00 = base_table; throw; }
 }
-NativeMaterialStorage* clone_native_material_00b18b60(void* slot,
-    const NativeMaterialStorage& source, NativeRenderActualOwners& owners) {
+NativeMaterialStorage* clone_body(void* slot,
+    const NativeMaterialStorage& source, NativeRenderActualOwners& owners,NativeMaterialStorageIssuer* issuer) {
     if (slot == &source) throw std::invalid_argument("material clone requires distinct fresh storage");
-    auto& material = prepare(slot);
+    auto& material = prepare(slot,issuer);
     try {
         initialize_common(material);
         material.retain_source_10d = 0;
@@ -111,15 +130,35 @@ NativeMaterialStorage* clone_native_material_00b18b60(void* slot,
             void* const texture = source.textures_10[static_cast<std::size_t>(index)];
             if (static_cast<std::uint32_t>(material.texture_count_34) <= static_cast<std::uint32_t>(index))
                 material.texture_count_34 = static_cast<std::int16_t>(index + 1);
-            assign_actual(material.textures_10[static_cast<std::size_t>(index)], texture, owners);
+            assign_actual(material.textures_10[static_cast<std::size_t>(index)], texture, owners,issuer,static_cast<std::size_t>(index)+1);
         }
         material.lighting_enabled_10c = 1;
         std::memcpy(material.lighting_38.data(), source.lighting_38.data(), sizeof(material.lighting_38));
-        assign_actual(material.effect_7c, source.effect_7c, owners);
+        assign_actual(material.effect_7c, source.effect_7c, owners,issuer,0);
         material.word_104 = source.word_104;
         material.word_108 = source.word_108;
+        if(issuer)issuer->returned(material); // exact Native normal continuation, before outer host/effect tails
         return &material;
     } catch (...) { material.vtable_00 = base_table; throw; }
+}
+
+} // anonymous shared constructor kernels
+
+NativeMaterialStorage* initialize_native_material_00b18900(void* slot,
+    void* effect,NativeRenderActualOwners& owners){return initialize_body(slot,effect,owners,nullptr);}
+NativeMaterialStorage* clone_native_material_00b18b60(void* slot,
+    const NativeMaterialStorage& source,NativeRenderActualOwners& owners){return clone_body(slot,source,owners,nullptr);}
+NativeMaterialStorage* NativeMaterialStorageAccess::initialize(void* slot,void* effect,
+    NativeRenderActualOwners& owners,NativeMaterialFrame& frame){
+    try{frame.native_constructor_entered(slot);NativeMaterialStorageIssuer issuer(frame);
+        return initialize_body(slot,effect,owners,&issuer);}
+    catch(...){frame.source_constructor_escaped();throw;}
+}
+NativeMaterialStorage* NativeMaterialStorageAccess::clone(void* slot,const NativeMaterialStorage& source,
+    NativeRenderActualOwners& owners,NativeMaterialFrame& frame){
+    try{frame.native_constructor_entered(slot);NativeMaterialStorageIssuer issuer(frame);
+        return clone_body(slot,source,owners,&issuer);}
+    catch(...){frame.source_constructor_escaped();throw;}
 }
 
 void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage& material,
@@ -131,19 +170,20 @@ void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage& materia
     if (retain_flag && actual_owner) retain_actual(actual_owner);
 }
 
-void destroy_native_material_00b192f0(NativeMaterialStorage& material,
-    NativeMaterialDestructionAccess& access) {
+namespace {
+void destroy_body(NativeMaterialStorage& material,
+    NativeMaterialDestructionAccess& access,NativeMaterialStorageIssuer* issuer) {
     material.vtable_00 = material_table;
     const BaseCleanup base{material};
-    release_then_clear(material.effect_7c, access.retained_owners);
+    release_then_clear(material.effect_7c, access.retained_owners,issuer,0);
     std::int32_t index = 0;
     while (index != texture_count(material)) {
         if (index >= 9) throw std::logic_error("material texture end moved behind its destruction cursor");
-        release_then_clear(material.textures_10[static_cast<std::size_t>(index)], access.retained_owners);
+        release_then_clear(material.textures_10[static_cast<std::size_t>(index)], access.retained_owners,issuer,static_cast<std::size_t>(index)+1);
         ++index;
     }
     if (material.retain_source_10d)
-        release_then_clear(material.source_owner_0c, access.retained_owners);
+        release_then_clear(material.source_owner_0c, access.retained_owners,issuer,1+std::tuple_size_v<decltype(NativeMaterialStorage::textures_10)>);
     for (index = 0; index < material.parameter_count_100; ++index) {
         if (index >= 32) throw std::logic_error("native material parameter extent exceeds32");
         void* const parameter = material.parameters_80[static_cast<std::size_t>(index)];
@@ -154,6 +194,12 @@ void destroy_native_material_00b192f0(NativeMaterialStorage& material,
         }
     }
 }
+} // anonymous shared payload kernel
+void destroy_native_material_00b192f0(NativeMaterialStorage& material,NativeMaterialDestructionAccess& access){
+    destroy_body(material,access,nullptr);
+}
+void NativeMaterialStorageAccess::destroy(NativeMaterialStorage& material,NativeMaterialDestructionAccess& access,
+    NativeMaterialFrame& frame){NativeMaterialStorageIssuer issuer(frame,true);destroy_body(material,access,&issuer);}
 NativeMaterialStorage* delete_native_material_00b194b0(NativeMaterialStorage* material,
     NativeMaterialDestructionAccess& access, std::uint32_t flags) {
     destroy_native_material_00b192f0(*material, access);
@@ -168,6 +214,15 @@ void* allocate_native_material_slot_00b18780(NativeMaterialSlotPool& pool) {
 }
 
 NativeMaterialReference::NativeMaterialReference(NativeMaterialStorage& material,
+    NativeMaterialDestructionAccess& access,const volatile std::uint32_t* table,NativeMaterialFrame& frame) noexcept
+    :RenderCommandReference(material.references_04),ordinary_frame_(&frame),storage_(material),
+     access_(access),vtable_(table),disposal_{nullptr,nullptr}{}
+void NativeMaterialReference::validate_ordinary_target() const {
+    ordinary_frame_->require_owned(storage_.vtable_00==material_table&&vtable_&&
+        vtable_[0]==0x00bd30e0&&vtable_[1]==0x00b194b0,
+        "ordinary Material requires its actual current deleting target");
+}
+NativeMaterialReference::NativeMaterialReference(NativeMaterialStorage& material,
     NativeMaterialDestructionAccess& access, const volatile std::uint32_t* table,
     NativeMaterialCompanionDisposal disposal)
     : RenderCommandReference(material.references_04), storage_(material), access_(access),
@@ -177,13 +232,18 @@ NativeMaterialReference::NativeMaterialReference(NativeMaterialStorage& material
     require_current_profile();
 }
 NativeMaterialReference::~NativeMaterialReference() {
+    if(ordinary_frame_)return; // genuine Frame/owner close, never callback self-erasure
     if (phase_ != Phase::retired) std::terminate();
 }
 void NativeMaterialReference::require_current_profile() const noexcept {
     if (storage_.vtable_00 != material_table || !vtable_ ||
         vtable_[0] != 0x00bd30e0 || vtable_[1] != 0x00b194b0) std::terminate();
 }
-void NativeMaterialReference::release_zero_references() noexcept {
+void NativeMaterialReference::release_zero_references() {
+    if(ordinary_frame_){ordinary_frame_->ordinary_virtual_zero(*this);return;}
+    release_legacy_zero_references();
+}
+void NativeMaterialReference::release_legacy_zero_references() noexcept {
     if (phase_ != Phase::bound) std::terminate();
     require_current_profile();
     phase_ = Phase::destroying;
