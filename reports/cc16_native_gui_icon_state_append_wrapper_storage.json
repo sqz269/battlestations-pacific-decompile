@@ -1,0 +1,562 @@
+{
+  "kind": "IGNORED whole rawAB63A0 appendwrapper Source-support candidate",
+  "base": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_append_wrapper_storage.hpp",
+    "src/native_gui_icon_state_append_wrapper_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_APPEND_WRAPPER_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_append_wrapper_storage.json"
+  ],
+  "postimage_pins": {
+    "include/bsp/native_gui_icon_state_append_wrapper_storage.hpp": {
+      "bytes": 3321,
+      "sha256": "5809e09d32c059082df48e0abc9a248d9854612412ba4f73026bf831dd1f0694"
+    },
+    "src/native_gui_icon_state_append_wrapper_storage.cpp": {
+      "bytes": 2893,
+      "sha256": "3b3ac42e81773346af384cb89434da35a70283015777dd08946d886c1d6bfb88"
+    },
+    "docs/CC16_NATIVE_GUI_ICON_STATE_APPEND_WRAPPER_STORAGE.md": {
+      "bytes": 3159,
+      "sha256": "738c1feb3f1194275318032cd08e63fc9e4c55dc8939ad50967b58061e977a69"
+    }
+  },
+  "Native": {
+    "entry": "00ab63a0",
+    "end_exclusive": "00ab6423",
+    "bytes": 131,
+    "instructions": 53,
+    "hex": "83ec08568bf18b560485d257750433c9eb088b4e082bcac1f90685d2743e8b460c2bc2c1f8063bc873328b4c24148b5424148b7e08c6442408008b44240850515652ba010000008bcfe812f0ffff83c740897e085f5e83c408c204008b7e083bd77605e80b0314008b4424145057568d4c2414518bcee855fcffff5f5e83c408c20400",
+    "sha256": "aba77d16f9b0e4687b42f98554a6aa2e8e9623f72c6dbc4c833ed449973c4006",
+    "localEH": false,
+    "FP": false,
+    "OriginalABI": "ECX actualvector plus one prototypeDWORD stackHOME, RET4 bothpaths; no definedEAX claimed",
+    "SourceABI": "fourordinaryarguments/void; actualprototypeHOMEref +retainedactualframe/existingcontext"
+  },
+  "instruction_map": [
+    {
+      "address": "00ab63a0",
+      "bytes": "83ec08",
+      "mnemonic": "sub",
+      "operands": "esp, 8",
+      "Source_effect": "private8Bscratch reservation; useactualcallerretained2DWORD"
+    },
+    {
+      "address": "00ab63a3",
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source_effect": "private ESIsave excluded"
+    },
+    {
+      "address": "00ab63a4",
+      "bytes": "8bf1",
+      "mnemonic": "mov",
+      "operands": "esi, ecx",
+      "Source_effect": "capture actualvectorECX"
+    },
+    {
+      "address": "00ab63a6",
+      "bytes": "8b5604",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [esi + 4]",
+      "Source_effect": "capture CURRENTfirst4"
+    },
+    {
+      "address": "00ab63a9",
+      "bytes": "85d2",
+      "mnemonic": "test",
+      "operands": "edx, edx",
+      "Source_effect": "testcapturedfirst"
+    },
+    {
+      "address": "00ab63ab",
+      "bytes": "57",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source_effect": "private EDIsave excluded"
+    },
+    {
+      "address": "00ab63ac",
+      "bytes": "7504",
+      "mnemonic": "jne",
+      "operands": "0xab63b2",
+      "Source_effect": "nonnullfirstbranch"
+    },
+    {
+      "address": "00ab63ae",
+      "bytes": "33c9",
+      "mnemonic": "xor",
+      "operands": "ecx, ecx",
+      "Source_effect": "size0"
+    },
+    {
+      "address": "00ab63b0",
+      "bytes": "eb08",
+      "mnemonic": "jmp",
+      "operands": "0xab63ba",
+      "Source_effect": "skiplastreadonnullfirst"
+    },
+    {
+      "address": "00ab63b2",
+      "bytes": "8b4e08",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [esi + 8]",
+      "Source_effect": "CURRENTlast8 sizeoperand"
+    },
+    {
+      "address": "00ab63b5",
+      "bytes": "2bca",
+      "mnemonic": "sub",
+      "operands": "ecx, edx",
+      "Source_effect": "wrappedlast-first"
+    },
+    {
+      "address": "00ab63b7",
+      "bytes": "c1f906",
+      "mnemonic": "sar",
+      "operands": "ecx, 6",
+      "Source_effect": "literalSAR6 size"
+    },
+    {
+      "address": "00ab63ba",
+      "bytes": "85d2",
+      "mnemonic": "test",
+      "operands": "edx, edx",
+      "Source_effect": "testSAMEcapturedfirst"
+    },
+    {
+      "address": "00ab63bc",
+      "bytes": "743e",
+      "mnemonic": "je",
+      "operands": "0xab63fc",
+      "Source_effect": "nullfirstslowpath"
+    },
+    {
+      "address": "00ab63be",
+      "bytes": "8b460c",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esi + 0xc]",
+      "Source_effect": "CURRENTendC capacityoperand"
+    },
+    {
+      "address": "00ab63c1",
+      "bytes": "2bc2",
+      "mnemonic": "sub",
+      "operands": "eax, edx",
+      "Source_effect": "wrappedend-first"
+    },
+    {
+      "address": "00ab63c3",
+      "bytes": "c1f806",
+      "mnemonic": "sar",
+      "operands": "eax, 6",
+      "Source_effect": "literalSAR6 capacity"
+    },
+    {
+      "address": "00ab63c6",
+      "bytes": "3bc8",
+      "mnemonic": "cmp",
+      "operands": "ecx, eax",
+      "Source_effect": "unsignedsizecapacitycompare"
+    },
+    {
+      "address": "00ab63c8",
+      "bytes": "7332",
+      "mnemonic": "jae",
+      "operands": "0xab63fc",
+      "Source_effect": "notbelow slowpath"
+    },
+    {
+      "address": "00ab63ca",
+      "bytes": "8b4c2414",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [esp + 0x14]",
+      "Source_effect": "FIRSTCURRENTprototypeHOMEread"
+    },
+    {
+      "address": "00ab63ce",
+      "bytes": "8b542414",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [esp + 0x14]",
+      "Source_effect": "SECONDCURRENTprototypeHOMEread"
+    },
+    {
+      "address": "00ab63d2",
+      "bytes": "8b7e08",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esi + 8]",
+      "Source_effect": "capture CURRENTlast AFTERbothprototypes"
+    },
+    {
+      "address": "00ab63d5",
+      "bytes": "c644240800",
+      "mnemonic": "mov",
+      "operands": "byte ptr [esp + 8], 0",
+      "Source_effect": "ONLYscratchword0LOWBYTE0"
+    },
+    {
+      "address": "00ab63da",
+      "bytes": "8b442408",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 8]",
+      "Source_effect": "FULLCURRENTscratchword0 tagread"
+    },
+    {
+      "address": "00ab63de",
+      "bytes": "50",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_effect": "calleeHOME3 tag"
+    },
+    {
+      "address": "00ab63df",
+      "bytes": "51",
+      "mnemonic": "push",
+      "operands": "ecx",
+      "Source_effect": "calleeHOME2 firstprototype"
+    },
+    {
+      "address": "00ab63e0",
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source_effect": "calleeHOME1 capturedvector"
+    },
+    {
+      "address": "00ab63e1",
+      "bytes": "52",
+      "mnemonic": "push",
+      "operands": "edx",
+      "Source_effect": "calleeHOME0 secondprototype"
+    },
+    {
+      "address": "00ab63e2",
+      "bytes": "ba01000000",
+      "mnemonic": "mov",
+      "operands": "edx, 1",
+      "Source_effect": "fullrepeatcount1"
+    },
+    {
+      "address": "00ab63e7",
+      "bytes": "8bcf",
+      "mnemonic": "mov",
+      "operands": "ecx, edi",
+      "Source_effect": "capturedlastdest"
+    },
+    {
+      "address": "00ab63e9",
+      "bytes": "e812f0ffff",
+      "mnemonic": "call",
+      "operands": "0xab5400",
+      "Source_effect": "realwhole5400 SAMEframe/context"
+    },
+    {
+      "address": "00ab63ee",
+      "bytes": "83c740",
+      "mnemonic": "add",
+      "operands": "edi, 0x40",
+      "Source_effect": "capturedlast+40wrap"
+    },
+    {
+      "address": "00ab63f1",
+      "bytes": "897e08",
+      "mnemonic": "mov",
+      "operands": "dword ptr [esi + 8], edi",
+      "Source_effect": "publishcapturedlast notCURRENTlast"
+    },
+    {
+      "address": "00ab63f4",
+      "bytes": "5f",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source_effect": "private EDIrestore excluded"
+    },
+    {
+      "address": "00ab63f5",
+      "bytes": "5e",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source_effect": "private ESIrestore excluded"
+    },
+    {
+      "address": "00ab63f6",
+      "bytes": "83c408",
+      "mnemonic": "add",
+      "operands": "esp, 8",
+      "Source_effect": "private scratchrelease excluded"
+    },
+    {
+      "address": "00ab63f9",
+      "bytes": "c20400",
+      "mnemonic": "ret",
+      "operands": "4",
+      "Source_effect": "OriginalRET4 fast excluded"
+    },
+    {
+      "address": "00ab63fc",
+      "bytes": "8b7e08",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esi + 8]",
+      "Source_effect": "CURRENTlast slowcapture"
+    },
+    {
+      "address": "00ab63ff",
+      "bytes": "3bd7",
+      "mnemonic": "cmp",
+      "operands": "edx, edi",
+      "Source_effect": "capturedinitialfirst vs currentlast"
+    },
+    {
+      "address": "00ab6401",
+      "bytes": "7605",
+      "mnemonic": "jbe",
+      "operands": "0xab6408",
+      "Source_effect": "notabove skiphandler"
+    },
+    {
+      "address": "00ab6403",
+      "bytes": "e80b031400",
+      "mnemonic": "call",
+      "operands": "0xbf6713",
+      "Source_effect": "realBF6713 mayreturn"
+    },
+    {
+      "address": "00ab6408",
+      "bytes": "8b442414",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x14]",
+      "Source_effect": "CURRENTprototypeHOME AFTERhandler"
+    },
+    {
+      "address": "00ab640c",
+      "bytes": "50",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source_effect": "callee6070HOME3 source"
+    },
+    {
+      "address": "00ab640d",
+      "bytes": "57",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source_effect": "callee6070HOME2 capturedlast"
+    },
+    {
+      "address": "00ab640e",
+      "bytes": "56",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source_effect": "callee6070HOME1 capturedvector"
+    },
+    {
+      "address": "00ab640f",
+      "bytes": "8d4c2414",
+      "mnemonic": "lea",
+      "operands": "ecx, [esp + 0x14]",
+      "Source_effect": "SAMEscratch8B address"
+    },
+    {
+      "address": "00ab6413",
+      "bytes": "51",
+      "mnemonic": "push",
+      "operands": "ecx",
+      "Source_effect": "callee6070HOME0 outputpointer"
+    },
+    {
+      "address": "00ab6414",
+      "bytes": "8bce",
+      "mnemonic": "mov",
+      "operands": "ecx, esi",
+      "Source_effect": "SAMEcapturedvectorreceiver"
+    },
+    {
+      "address": "00ab6416",
+      "bytes": "e855fcffff",
+      "mnemonic": "call",
+      "operands": "0xab6070",
+      "Source_effect": "actualwhole6070 ignoreEAX"
+    },
+    {
+      "address": "00ab641b",
+      "bytes": "5f",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source_effect": "private EDIrestore excluded"
+    },
+    {
+      "address": "00ab641c",
+      "bytes": "5e",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source_effect": "private ESIrestore excluded"
+    },
+    {
+      "address": "00ab641d",
+      "bytes": "83c408",
+      "mnemonic": "add",
+      "operands": "esp, 8",
+      "Source_effect": "private scratchrelease excluded"
+    },
+    {
+      "address": "00ab6420",
+      "bytes": "c20400",
+      "mnemonic": "ret",
+      "operands": "4",
+      "Source_effect": "OriginalRET4 slow excluded"
+    }
+  ],
+  "Native_calls": [
+    {
+      "site": "00ab63e9",
+      "target": "0xab5400"
+    },
+    {
+      "site": "00ab6403",
+      "target": "0xbf6713"
+    },
+    {
+      "site": "00ab6416",
+      "target": "0xab6070"
+    }
+  ],
+  "provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_state_growth_storage.hpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 4539,
+      "sha256": "b9f5a7fb8a21bb6a8ef0e3eefb97c08fbaf1197cd039d0f0e18689b15c5dc098"
+    },
+    {
+      "path": "src/native_gui_icon_state_growth_storage.cpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 8203,
+      "sha256": "df1e78337f7d00512fda397637f824b5170e5fdf0b719a9f8dbc6041b5fc2e5f"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 4127,
+      "sha256": "d44eb49ce2ad7bbbff7139bbc8ba2f074c0a18dc27647d3141d626d5097bb675"
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_storage.cpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 2675,
+      "sha256": "b9e2739e6198fc9282a2c253325cef11c5bce1e5babf6676a6787f82669f04ff"
+    },
+    {
+      "path": "include/bsp/native_invalid_parameter_noinfo_call.hpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 1471,
+      "sha256": "c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613"
+    },
+    {
+      "path": "src/native_invalid_parameter_noinfo_call.cpp",
+      "commit": "49fa1326a509624d9f77ee0e9e4231281eb233df",
+      "bytes": 1089,
+      "sha256": "efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b"
+    }
+  ],
+  "dependency_overlay": [
+    {
+      "path": "include/bsp/native_gui_icon_state_iterator_insert_storage.hpp",
+      "bytes": 3199,
+      "sha256": "832e3097c765de0ac483ac663638aa3a3642fb557be8f6ae427c9ee20d1bd13b",
+      "utf8": "#pragma once\n#include \"bsp/native_gui_icon_state_growth_storage.hpp\"\n\nnamespace bsp {\n// Whole139B/57op AB6070 schedule over actual16B vector backing. Original ECX,\n// four stackDWORD homes and RET10h become this ordinary five-argument API.\n// Incoming homes are [output8B pointer, iterator owner, element, prototype].\n// Capture owner first, then actual receiver/current first. Empty/null or the\n// actual wrapped SUB/SAR6 size0 skips initial validation and ordinal-home read.\n// Otherwise keep captured first/owner across real returning invalid-parameter\n// calls, then read CURRENT element home. No noreturn/NoThrow is inferred.\n//\n// Real growth arguments are separate four mutable DWORD homes: capture current\n// prototype THEN current element, stage prototype/count1/element/capturedowner,\n// and directly call actual AB59E0 with SAME context/frame. Never copy mutated\n// growth homes back to the incoming caller homes. No new frame, owner, callback,\n// allocation, state constructor/destructor or implicit cleanup is introduced.\n//\n// After growth capture CURRENT first before its validation call. Keep that\n// capture across returning callbacks; form ordinalSHL6+first with DWORD wrap.\n// Capture CURRENT last, overwrite incoming element HOME with captured first,\n// then decide the already-captured comparison. Only its non-above path reads\n// CURRENT first again. The pure compare may occur after the HOME store in this\n// Source expression; operands are already captured and private controls are\n// disjoint. Original FLAGS/private-stack/fault timing is not claimed.\n// Read output HOME last, AFTER any returning handler. Store output+4 then+0,\n// return captured output identity, and never reread a possibly overwritten HOME.\n//\n// Caller supplies genuine DWORD/subobject/backing/iterator/output lifetimes and\n// retains both home arrays, growth frame, current/partial/completed graph and\n// providers across entered escapes. The two home arrays have separate backing;\n// the growth frame is distinct from incoming/output/vector backing. Private\n// Source controls/spills are disjoint from operand/provider writes. Genuine\n// writes to declared callee homes/frame (including its temp) and current fields\n// remain live under the actual growth supplier's contract.\n// No typed vector/T[n] family or custody follows from an index/profile/count.\n// Existing raw59E0 allocation/copy/dtor/exception and genuine current SDK\n// _invalid_parameter_noinfo policy are inherited. Source90's normal supplier is\n// a separately pinned compiled private dependency; future Source91 catches do\n// not change this API but must be qualified at actual caller admission.\n// Native BF66EF handler/CRT selection, Origin, FH3/SEH/ABI/FLAGS/fault/CPU/DF/FP,\n// actual caller/disposition/runtime/activation remain unproved. No extra\n// Original/vendor/helper/CG/duplicate body credit; preserve existing STL name.\nvoid* insert_native_gui_icon_state_iterator_storage_00ab6070(void* actual_vector_f0,\n    volatile std::uint32_t (&actual_incoming_homes)[4],\n    volatile std::uint32_t (&actual_growth_homes)[4],\n    NativeGuiIconStateGrowthStorageFrame&, NativeGuiIconStateGrowthStorageContext&);\n} // namespace bsp\n"
+    },
+    {
+      "path": "src/native_gui_icon_state_iterator_insert_storage.cpp",
+      "bytes": 2672,
+      "sha256": "9023d0a1acba4ed789dc844e46034a43301281c305b3345087234619e1b119c7",
+      "utf8": "#include \"bsp/native_gui_icon_state_iterator_insert_storage.hpp\"\n#include \"bsp/native_invalid_parameter_noinfo_call.hpp\"\n\n#if !defined(_MSC_VER) || !defined(_M_IX86)\n#error This raw iterator-insertion supplier requires MSVC Win32 DWORD contracts.\n#endif\n\nnamespace bsp {\nnamespace {\nusing Word = std::uint32_t;\nstatic_assert(sizeof(void*) == sizeof(Word));\nWord bits(const void* p) noexcept { return reinterpret_cast<Word>(p); }\nvoid* pointer(Word p) noexcept { return reinterpret_cast<void*>(p); }\nWord read(void* object, Word byte_offset) noexcept {\n    Word result;\n    __asm {\n        mov edx, object\n        add edx, byte_offset\n        mov eax, dword ptr [edx]\n        mov result, eax\n    }\n    return result;\n}\nvoid write(void* object, Word byte_offset, Word value) noexcept {\n    __asm {\n        mov edx, object\n        add edx, byte_offset\n        mov eax, value\n        mov dword ptr [edx], eax\n    }\n}\nWord sar6(Word value) noexcept {\n    Word result;\n    __asm {\n        mov eax, value\n        sar eax, 6\n        mov result, eax\n    }\n    return result;\n}\n} // namespace\n\nvoid* insert_native_gui_icon_state_iterator_storage_00ab6070(void* actual_vector,\n    volatile Word (&homes)[4], volatile Word (&growth_homes)[4],\n    NativeGuiIconStateGrowthStorageFrame& growth_frame,\n    NativeGuiIconStateGrowthStorageContext& context) {\n    const Word owner = homes[1];\n    const Word vector = bits(actual_vector);\n    Word first = read(pointer(vector), 4);\n    Word ordinal;\n    if (first != 0) {\n        const Word last = read(pointer(vector), 8);\n        if (sar6(last - first) != 0) {\n            if (first > last) invoke_native_invalid_parameter_00bf6713();\n            if (owner == 0 || owner != vector) invoke_native_invalid_parameter_00bf6713();\n            ordinal = sar6(homes[2] - first);\n        } else ordinal = 0;\n    } else ordinal = 0;\n    const Word prototype = homes[3];\n    const Word position = homes[2];\n    growth_homes[3] = prototype;\n    growth_homes[2] = 1;\n    growth_homes[1] = position;\n    growth_homes[0] = owner;\n    insert_native_gui_icon_states_storage_00ab59e0(pointer(vector),\n        growth_homes, growth_frame, context);\n    first = read(pointer(vector), 4);\n    if (first > read(pointer(vector), 8)) invoke_native_invalid_parameter_00bf6713();\n    ordinal = (ordinal << 6u) + first;\n    const Word last = read(pointer(vector), 8);\n    homes[2] = first;\n    if (ordinal > last || ordinal < read(pointer(vector), 4))\n        invoke_native_invalid_parameter_00bf6713();\n    const Word output = homes[0];\n    write(pointer(output), 4, ordinal);\n    write(pointer(output), 0, vector);\n    return pointer(output);\n}\n} // namespace bsp\n"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_ITERATOR_INSERT_STORAGE.md",
+      "bytes": 3710,
+      "sha256": "37b07bc3adff446265d0af247c021ae093423d866335be6019756a86c1416180",
+      "utf8": "# Raw Icon iterator insertion Source proposal\n\nThis ignored four-new-file packet reconstructs the whole ordinary payload/control schedule of AB6070,139B/57Native instructions. Its existing STL-shaped name/classification and credit remain intact; no additional Original/vendor/helper/CG/duplicate credit is claimed. The new five-argument Source API is not Original ECX/RET10h ABI.\n\nThe four incoming DWORD homes are output-pointer,iterator-owner,element,prototype. Capture owner FIRST, then receiver/currentfirst. Nullfirst or wrapped SUB/SAR6 size0 sets ordinal0 and skips initial owner/range validation and the early element read. Otherwise compare capturedfirst/last, use the real returning BF6713 Source service where Native does, check the captured owner, and only then read CURRENT element. A returning handler can change live homes/current vector fields; captured nonvolatile values are kept.\n\nCapture prototype HOME3 before position HOME2. Stage a separate genuine fourDWORD growth-home backing in push order: prototype,count1,position,capturedowner. Directly call whole raw59E0 with SAME actual vector, growth frame and existing context. No copied-back homes, new frame/context/owner, callback, allocation or state birth is introduced here. The actual growth supplier is pinned to Root's private normal Source90 commit49fa (sameHCPP as2ba99); it is not yet in published43ad. Root-reported compiler success is a separate receipt, not worker execution. Source91cleanup remains a separate proposed callee amendment with unchanged normal API/layout.\n\nAfter growth capture CURRENTfirst before comparing CURRENTlast and calling a possibly returning handler. Preserve capturedfirst across that call. Form ordinalSHL6+first with DWORD wrap; capture CURRENTlast again, overwrite incoming element HOME with capturedfirst, and only then deliver the invalid-result handler if needed. Only the non-above-last branch reads CURRENTfirst again. In this Source expression the pure comparison may occur after the HOME write; both compared operands were captured before it and private Source controls are disjoint. No literal EFLAGS/Native private alias/fault timing proof is claimed.\n\nRead the output-pointer HOME only after all reached handler returns. Store output+4 before output+0, return the SAME captured pointer identity, and never rescan the possibly aliased HOME after those writes. Actual incoming/output/vector backing may alias only within their genuine ordinary C++ object/subobject domains. The separate outgoing homes/growth frame and private Source parameter/control/spill storage must retain the corresponding separation from operand/payload writes; genuine declared home callbacks remain current. No typed iterator owner/vector family or T[n] lifetime is manufactured.\n\nThe real existing invoke_native_invalid_parameter_00bf6713 uses the selected SDK _invalid_parameter_noinfo import. Its declaration supplies no noexcept/noreturn and no handler installation/conversion. Current Source handler return/failure policy remains inherited; OriginalBF66EF encoded globals/PTD/debugger/Watson/return/fault behavior is unproved. Do not substitute a no-op callback or assume terminal behavior.\n\nAB6070 has no local EH or FP instructions. A growth/handler escape propagates with actual incoming and callee homes, retained growth frame, partial/current/completed graph and genuine provider custody according to that exact supplier's contract. No new cleanup/retry/rollback/termination/Origin/retirement permission is added. Whole66C0/3310 and actual Page74->18->78/current80/production/disposition/runtime/activation remain separate. No tracked Source/CMake/ledger/Ghidra/compiler/test/Game action occurred here.\n"
+    },
+    {
+      "path": "reports/cc16_native_gui_icon_state_iterator_insert_storage.json",
+      "bytes": 22882,
+      "sha256": "5c4a2e7faa787357cb540b480a3a841e3075fca5e84a82bd19e66e768446078e",
+      "utf8": "{\n  \"kind\": \"IGNORED whole rawAB6070 Source-support candidate; no tracked author grant\",\n  \"base\": \"49fa1326a509624d9f77ee0e9e4231281eb233df\",\n  \"published_reference\": \"43ad5ec10fd17bbfae8e86f233b10e45045b457e\",\n  \"owned_paths\": [\n    \"include/bsp/native_gui_icon_state_iterator_insert_storage.hpp\",\n    \"src/native_gui_icon_state_iterator_insert_storage.cpp\",\n    \"docs/CC16_NATIVE_GUI_ICON_STATE_ITERATOR_INSERT_STORAGE.md\",\n    \"reports/cc16_native_gui_icon_state_iterator_insert_storage.json\"\n  ],\n  \"postimage_pins\": {\n    \"include/bsp/native_gui_icon_state_iterator_insert_storage.hpp\": {\n      \"bytes\": 3199,\n      \"sha256\": \"832e3097c765de0ac483ac663638aa3a3642fb557be8f6ae427c9ee20d1bd13b\"\n    },\n    \"src/native_gui_icon_state_iterator_insert_storage.cpp\": {\n      \"bytes\": 2672,\n      \"sha256\": \"9023d0a1acba4ed789dc844e46034a43301281c305b3345087234619e1b119c7\"\n    },\n    \"docs/CC16_NATIVE_GUI_ICON_STATE_ITERATOR_INSERT_STORAGE.md\": {\n      \"bytes\": 3710,\n      \"sha256\": \"37b07bc3adff446265d0af247c021ae093423d866335be6019756a86c1416180\"\n    }\n  },\n  \"Native\": {\n    \"entry\": \"00ab6070\",\n    \"end_exclusive\": \"00ab60fb\",\n    \"bytes\": 139,\n    \"instructions\": 57,\n    \"sha256\": \"027ce2c70380a5e7be1701d396119dad759329f75752aba86e53512c8dca6122\",\n    \"hex\": \"5153558b6c2414568bf18b5e0485db57740c8b46088bc82bcbc1f906750433ffeb1f3bd87605e87806140085ed74043bee7405e86b0614008b7c24202bfbc1ff068b5424248b442420526a0150558bcee81bf9ffff8b5e043b5e087605e841061400c1e70603fb3b7e08895c242077053b7e047305e8290614008b4424188978045f89305e5d5b59c21000\",\n    \"OriginalABI\": \"ECX actualvector +fourstackDWORD [output,owner,element,prototype], RET10h/EAXcapturedoutput\",\n    \"newAPI\": \"fiveordinarySourcearguments; twoactualmutablehomearrays +existinggrowthFrame/Context\",\n    \"localEH\": false,\n    \"FP\": false\n  },\n  \"instruction_map\": [\n    {\n      \"address\": \"00ab6070\",\n      \"bytes\": \"51\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"ecx\",\n      \"Source_effect\": \"private unused pushedECX excluded\"\n    },\n    {\n      \"address\": \"00ab6071\",\n      \"bytes\": \"53\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"ebx\",\n      \"Source_effect\": \"private EBXsave excluded\"\n    },\n    {\n      \"address\": \"00ab6072\",\n      \"bytes\": \"55\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"ebp\",\n      \"Source_effect\": \"private EBPsave excluded\"\n    },\n    {\n      \"address\": \"00ab6073\",\n      \"bytes\": \"8b6c2414\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"ebp, dword ptr [esp + 0x14]\",\n      \"Source_effect\": \"capture incomingHOME1 owner FIRST\"\n    },\n    {\n      \"address\": \"00ab6077\",\n      \"bytes\": \"56\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"esi\",\n      \"Source_effect\": \"private ESIsave excluded\"\n    },\n    {\n      \"address\": \"00ab6078\",\n      \"bytes\": \"8bf1\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"esi, ecx\",\n      \"Source_effect\": \"capture actualvectorECX\"\n    },\n    {\n      \"address\": \"00ab607a\",\n      \"bytes\": \"8b5e04\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"ebx, dword ptr [esi + 4]\",\n      \"Source_effect\": \"capture CURRENTfirst4\"\n    },\n    {\n      \"address\": \"00ab607d\",\n      \"bytes\": \"85db\",\n      \"mnemonic\": \"test\",\n      \"operands\": \"ebx, ebx\",\n      \"Source_effect\": \"test capturedfirst\"\n    },\n    {\n      \"address\": \"00ab607f\",\n      \"bytes\": \"57\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"edi\",\n      \"Source_effect\": \"private EDIsave excluded\"\n    },\n    {\n      \"address\": \"00ab6080\",\n      \"bytes\": \"740c\",\n      \"mnemonic\": \"je\",\n      \"operands\": \"0xab608e\",\n      \"Source_effect\": \"nullfirst ->ordinal0\"\n    },\n    {\n      \"address\": \"00ab6082\",\n      \"bytes\": \"8b4608\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"eax, dword ptr [esi + 8]\",\n      \"Source_effect\": \"CURRENTlast8 for initialsize\"\n    },\n    {\n      \"address\": \"00ab6085\",\n      \"bytes\": \"8bc8\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"ecx, eax\",\n      \"Source_effect\": \"capturedlast copy\"\n    },\n    {\n      \"address\": \"00ab6087\",\n      \"bytes\": \"2bcb\",\n      \"mnemonic\": \"sub\",\n      \"operands\": \"ecx, ebx\",\n      \"Source_effect\": \"DWORDlast-first\"\n    },\n    {\n      \"address\": \"00ab6089\",\n      \"bytes\": \"c1f906\",\n      \"mnemonic\": \"sar\",\n      \"operands\": \"ecx, 6\",\n      \"Source_effect\": \"literalSAR6\"\n    },\n    {\n      \"address\": \"00ab608c\",\n      \"bytes\": \"7504\",\n      \"mnemonic\": \"jne\",\n      \"operands\": \"0xab6092\",\n      \"Source_effect\": \"nonzerosize branch\"\n    },\n    {\n      \"address\": \"00ab608e\",\n      \"bytes\": \"33ff\",\n      \"mnemonic\": \"xor\",\n      \"operands\": \"edi, edi\",\n      \"Source_effect\": \"ordinal0 evenbadowner\"\n    },\n    {\n      \"address\": \"00ab6090\",\n      \"bytes\": \"eb1f\",\n      \"mnemonic\": \"jmp\",\n      \"operands\": \"0xab60b1\",\n      \"Source_effect\": \"skipinitialvalidation/elementread\"\n    },\n    {\n      \"address\": \"00ab6092\",\n      \"bytes\": \"3bd8\",\n      \"mnemonic\": \"cmp\",\n      \"operands\": \"ebx, eax\",\n      \"Source_effect\": \"capturedfirst vs capturedlast\"\n    },\n    {\n      \"address\": \"00ab6094\",\n      \"bytes\": \"7605\",\n      \"mnemonic\": \"jbe\",\n      \"operands\": \"0xab609b\",\n      \"Source_effect\": \"unsignednotabove branch\"\n    },\n    {\n      \"address\": \"00ab6096\",\n      \"bytes\": \"e878061400\",\n      \"mnemonic\": \"call\",\n      \"operands\": \"0xbf6713\",\n      \"Source_effect\": \"realBF6713 mayreturn; keep first/ownercaptures\"\n    },\n    {\n      \"address\": \"00ab609b\",\n      \"bytes\": \"85ed\",\n      \"mnemonic\": \"test\",\n      \"operands\": \"ebp, ebp\",\n      \"Source_effect\": \"capturedowner==0\"\n    },\n    {\n      \"address\": \"00ab609d\",\n      \"bytes\": \"7404\",\n      \"mnemonic\": \"je\",\n      \"operands\": \"0xab60a3\",\n      \"Source_effect\": \"zeroowner reacheshandler\"\n    },\n    {\n      \"address\": \"00ab609f\",\n      \"bytes\": \"3bee\",\n      \"mnemonic\": \"cmp\",\n      \"operands\": \"ebp, esi\",\n      \"Source_effect\": \"capturedowner==capturedvector\"\n    },\n    {\n      \"address\": \"00ab60a1\",\n      \"bytes\": \"7405\",\n      \"mnemonic\": \"je\",\n      \"operands\": \"0xab60a8\",\n      \"Source_effect\": \"equalowner skiphandler\"\n    },\n    {\n      \"address\": \"00ab60a3\",\n      \"bytes\": \"e86b061400\",\n      \"mnemonic\": \"call\",\n      \"operands\": \"0xbf6713\",\n      \"Source_effect\": \"realBF6713 mayreturn; no HOME1reload\"\n    },\n    {\n      \"address\": \"00ab60a8\",\n      \"bytes\": \"8b7c2420\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"edi, dword ptr [esp + 0x20]\",\n      \"Source_effect\": \"CURRENTincomingHOME2 lateelement\"\n    },\n    {\n      \"address\": \"00ab60ac\",\n      \"bytes\": \"2bfb\",\n      \"mnemonic\": \"sub\",\n      \"operands\": \"edi, ebx\",\n      \"Source_effect\": \"DWORDelement-capturedfirst\"\n    },\n    {\n      \"address\": \"00ab60ae\",\n      \"bytes\": \"c1ff06\",\n      \"mnemonic\": \"sar\",\n      \"operands\": \"edi, 6\",\n      \"Source_effect\": \"literalSAR6 ordinal\"\n    },\n    {\n      \"address\": \"00ab60b1\",\n      \"bytes\": \"8b542424\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"edx, dword ptr [esp + 0x24]\",\n      \"Source_effect\": \"CURRENTincomingHOME3 prototype FIRST\"\n    },\n    {\n      \"address\": \"00ab60b5\",\n      \"bytes\": \"8b442420\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"eax, dword ptr [esp + 0x20]\",\n      \"Source_effect\": \"CURRENTincomingHOME2 position SECOND\"\n    },\n    {\n      \"address\": \"00ab60b9\",\n      \"bytes\": \"52\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"edx\",\n      \"Source_effect\": \"calleeHOME3 prototype\"\n    },\n    {\n      \"address\": \"00ab60ba\",\n      \"bytes\": \"6a01\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"1\",\n      \"Source_effect\": \"calleeHOME2 literalcount1\"\n    },\n    {\n      \"address\": \"00ab60bc\",\n      \"bytes\": \"50\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"eax\",\n      \"Source_effect\": \"calleeHOME1 position\"\n    },\n    {\n      \"address\": \"00ab60bd\",\n      \"bytes\": \"55\",\n      \"mnemonic\": \"push\",\n      \"operands\": \"ebp\",\n      \"Source_effect\": \"calleeHOME0 capturedowner\"\n    },\n    {\n      \"address\": \"00ab60be\",\n      \"bytes\": \"8bce\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"ecx, esi\",\n      \"Source_effect\": \"SAMEcapturedvector receiver\"\n    },\n    {\n      \"address\": \"00ab60c0\",\n      \"bytes\": \"e81bf9ffff\",\n      \"mnemonic\": \"call\",\n      \"operands\": \"0xab59e0\",\n      \"Source_effect\": \"realwholeAB59E0 SAMEretainedframes/context\"\n    },\n    {\n      \"address\": \"00ab60c5\",\n      \"bytes\": \"8b5e04\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"ebx, dword ptr [esi + 4]\",\n      \"Source_effect\": \"capture CURRENTfirst AFTERgrowth\"\n    },\n    {\n      \"address\": \"00ab60c8\",\n      \"bytes\": \"3b5e08\",\n      \"mnemonic\": \"cmp\",\n      \"operands\": \"ebx, dword ptr [esi + 8]\",\n      \"Source_effect\": \"CURRENTlast compare\"\n    },\n    {\n      \"address\": \"00ab60cb\",\n      \"bytes\": \"7605\",\n      \"mnemonic\": \"jbe\",\n      \"operands\": \"0xab60d2\",\n      \"Source_effect\": \"unsignednotabove branch\"\n    },\n    {\n      \"address\": \"00ab60cd\",\n      \"bytes\": \"e841061400\",\n      \"mnemonic\": \"call\",\n      \"operands\": \"0xbf6713\",\n      \"Source_effect\": \"realBF6713 mayreturn; preserve capturedfirst\"\n    },\n    {\n      \"address\": \"00ab60d2\",\n      \"bytes\": \"c1e706\",\n      \"mnemonic\": \"shl\",\n      \"operands\": \"edi, 6\",\n      \"Source_effect\": \"ordinalSHL6 wrap\"\n    },\n    {\n      \"address\": \"00ab60d5\",\n      \"bytes\": \"03fb\",\n      \"mnemonic\": \"add\",\n      \"operands\": \"edi, ebx\",\n      \"Source_effect\": \"add capturedfirst wrap\"\n    },\n    {\n      \"address\": \"00ab60d7\",\n      \"bytes\": \"3b7e08\",\n      \"mnemonic\": \"cmp\",\n      \"operands\": \"edi, dword ptr [esi + 8]\",\n      \"Source_effect\": \"CURRENTlast capturedBEFOREHOMEwrite\"\n    },\n    {\n      \"address\": \"00ab60da\",\n      \"bytes\": \"895c2420\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"dword ptr [esp + 0x20], ebx\",\n      \"Source_effect\": \"overwrite incomingHOME2 capturedfirst beforedecision/handler\"\n    },\n    {\n      \"address\": \"00ab60de\",\n      \"bytes\": \"7705\",\n      \"mnemonic\": \"ja\",\n      \"operands\": \"0xab60e5\",\n      \"Source_effect\": \"above-last skip currentfirst reread\"\n    },\n    {\n      \"address\": \"00ab60e0\",\n      \"bytes\": \"3b7e04\",\n      \"mnemonic\": \"cmp\",\n      \"operands\": \"edi, dword ptr [esi + 4]\",\n      \"Source_effect\": \"onlynonabove CURRENTfirst compare\"\n    },\n    {\n      \"address\": \"00ab60e3\",\n      \"bytes\": \"7305\",\n      \"mnemonic\": \"jae\",\n      \"operands\": \"0xab60ea\",\n      \"Source_effect\": \"unsignednotbelow skiphandler\"\n    },\n    {\n      \"address\": \"00ab60e5\",\n      \"bytes\": \"e829061400\",\n      \"mnemonic\": \"call\",\n      \"operands\": \"0xbf6713\",\n      \"Source_effect\": \"one realBF6713 joinedvalidation call mayreturn\"\n    },\n    {\n      \"address\": \"00ab60ea\",\n      \"bytes\": \"8b442418\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"eax, dword ptr [esp + 0x18]\",\n      \"Source_effect\": \"CURRENTincomingHOME0 outputpointer LAST\"\n    },\n    {\n      \"address\": \"00ab60ee\",\n      \"bytes\": \"897804\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"dword ptr [eax + 4], edi\",\n      \"Source_effect\": \"store output+4 capturedordinalpointer\"\n    },\n    {\n      \"address\": \"00ab60f1\",\n      \"bytes\": \"5f\",\n      \"mnemonic\": \"pop\",\n      \"operands\": \"edi\",\n      \"Source_effect\": \"private EDIrestore excluded\"\n    },\n    {\n      \"address\": \"00ab60f2\",\n      \"bytes\": \"8930\",\n      \"mnemonic\": \"mov\",\n      \"operands\": \"dword ptr [eax], esi\",\n      \"Source_effect\": \"store output+0 capturedvector\"\n    },\n    {\n      \"address\": \"00ab60f4\",\n      \"bytes\": \"5e\",\n      \"mnemonic\": \"pop\",\n      \"operands\": \"esi\",\n      \"Source_effect\": \"private ESIrestore excluded\"\n    },\n    {\n      \"address\": \"00ab60f5\",\n      \"bytes\": \"5d\",\n      \"mnemonic\": \"pop\",\n      \"operands\": \"ebp\",\n      \"Source_effect\": \"private EBPrestore excluded\"\n    },\n    {\n      \"address\": \"00ab60f6\",\n      \"bytes\": \"5b\",\n      \"mnemonic\": \"pop\",\n      \"operands\": \"ebx\",\n      \"Source_effect\": \"private EBXrestore excluded\"\n    },\n    {\n      \"address\": \"00ab60f7\",\n      \"bytes\": \"59\",\n      \"mnemonic\": \"pop\",\n      \"operands\": \"ecx\",\n      \"Source_effect\": \"private ECXrestore excluded\"\n    },\n    {\n      \"address\": \"00ab60f8\",\n      \"bytes\": \"c21000\",\n      \"mnemonic\": \"ret\",\n      \"operands\": \"0x10\",\n      \"Source_effect\": \"OriginalRET10h excluded; EAXcapturedoutputidentity\"\n    }\n  ],\n  \"Native_calls\": [\n    {\n      \"site\": \"00ab6096\",\n      \"target\": \"0xbf6713\"\n    },\n    {\n      \"site\": \"00ab60a3\",\n      \"target\": \"0xbf6713\"\n    },\n    {\n      \"site\": \"00ab60c0\",\n      \"target\": \"0xab59e0\"\n    },\n    {\n      \"site\": \"00ab60cd\",\n      \"target\": \"0xbf6713\"\n    },\n    {\n      \"site\": \"00ab60e5\",\n      \"target\": \"0xbf6713\"\n    }\n  ],\n  \"provider_pins\": [\n    {\n      \"path\": \"include/bsp/native_gui_icon_state_growth_storage.hpp\",\n      \"commit\": \"49fa1326a509624d9f77ee0e9e4231281eb233df\",\n      \"bytes\": 4539,\n      \"sha256\": \"b9f5a7fb8a21bb6a8ef0e3eefb97c08fbaf1197cd039d0f0e18689b15c5dc098\",\n      \"published43ad_pin\": null,\n      \"dependency_status\": \"Source90 private normal supplier; Root-reported compiled, no worker compiler proof\"\n    },\n    {\n      \"path\": \"src/native_gui_icon_state_growth_storage.cpp\",\n      \"commit\": \"49fa1326a509624d9f77ee0e9e4231281eb233df\",\n      \"bytes\": 8203,\n      \"sha256\": \"df1e78337f7d00512fda397637f824b5170e5fdf0b719a9f8dbc6041b5fc2e5f\",\n      \"published43ad_pin\": null,\n      \"dependency_status\": \"Source90 private normal supplier; Root-reported compiled, no worker compiler proof\"\n    },\n    {\n      \"path\": \"include/bsp/native_invalid_parameter_noinfo_call.hpp\",\n      \"commit\": \"49fa1326a509624d9f77ee0e9e4231281eb233df\",\n      \"bytes\": 1471,\n      \"sha256\": \"c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613\",\n      \"published43ad_pin\": {\n        \"bytes\": 1471,\n        \"sha256\": \"c9a8e159dc18cb8260ede0fcf09bee7b3eb566e4a78d741ff86d815b91dce613\"\n      },\n      \"dependency_status\": \"real published returning SDK-policy transport; no NativeBF66EF identity\"\n    },\n    {\n      \"path\": \"src/native_invalid_parameter_noinfo_call.cpp\",\n      \"commit\": \"49fa1326a509624d9f77ee0e9e4231281eb233df\",\n      \"bytes\": 1089,\n      \"sha256\": \"efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b\",\n      \"published43ad_pin\": {\n        \"bytes\": 1089,\n        \"sha256\": \"efad33886bea7208e21ff952bb914b05d16151ae2eb713ae039ae0e573785e2b\"\n      },\n      \"dependency_status\": \"real published returning SDK-policy transport; no NativeBF66EF identity\"\n    }\n  ],\n  \"Source_epoch_probes\": [\n    [\n      \"initialcaptureandreturningvalidation\",\n      [\n        \"const Word owner = homes[1];\",\n        \"const Word vector = bits(actual_vector);\",\n        \"Word first = read(pointer(vector), 4);\",\n        \"if (first != 0) {\",\n        \"const Word last = read(pointer(vector), 8);\",\n        \"if (sar6(last - first) != 0) {\",\n        \"if (first > last) invoke_native_invalid_parameter_00bf6713();\",\n        \"if (owner == 0 || owner != vector) invoke_native_invalid_parameter_00bf6713();\",\n        \"ordinal = sar6(homes[2] - first);\"\n      ]\n    ],\n    [\n      \"growthhomeepochs\",\n      [\n        \"const Word prototype = homes[3];\",\n        \"const Word position = homes[2];\",\n        \"growth_homes[3] = prototype;\",\n        \"growth_homes[2] = 1;\",\n        \"growth_homes[1] = position;\",\n        \"growth_homes[0] = owner;\",\n        \"insert_native_gui_icon_states_storage_00ab59e0(pointer(vector),\",\n        \"growth_homes, growth_frame, context);\"\n      ]\n    ],\n    [\n      \"postgrowthcurrenthomesandoutput\",\n      [\n        \"growth_homes, growth_frame, context);\",\n        \"first = read(pointer(vector), 4);\",\n        \"if (first > read(pointer(vector), 8)) invoke_native_invalid_parameter_00bf6713();\",\n        \"ordinal = (ordinal << 6u) + first;\",\n        \"const Word last = read(pointer(vector), 8);\",\n        \"homes[2] = first;\",\n        \"if (ordinal > last || ordinal < read(pointer(vector), 4))\",\n        \"invoke_native_invalid_parameter_00bf6713();\",\n        \"const Word output = homes[0];\",\n        \"write(pointer(output), 4, ordinal);\",\n        \"write(pointer(output), 0, vector);\",\n        \"return pointer(output);\"\n      ]\n    ]\n  ],\n  \"dependency_qualification\": {\n    \"Source90\": \"actualgrowthHCPP same at2ba99 and49fa; privatecompiledRootreported, NOT published43ad\",\n    \"Source91\": \"ordinaryC++cleanup proposal separate; signatures/layout/normalstatements unchanged but exactactualcalleeEH must be readmitted at binding\",\n    \"SDK\": \"current genuine Source _invalid_parameter_noinfo import; no NativeBF66EF/PTD/encodedhandler/fault identity\",\n    \"currentcaller\": \"actual63A0/66C0/3310 production andPageIcon74->18->78 not implemented here\"\n  },\n  \"pure_comparison_commutation\": \"Native6070CMPcurrentlast occurs beforeMOVincomingHOME2; Source captures compared operands beforeHOMEwrite and evaluates purecomparison after. Private controls/spills separated; same ordinary data result, no OriginalFLAGS/privatealias/fault timing claim. Currentfirst RHS read stays shortcircuited afterHOMEwrite.\",\n  \"home_lifetimes\": \"incomingarray/outputactual8B/vectoractual16B ordinaryDWORDsubobjects and genuine address aliases; outgoing4homes +existingnonmovinggrowthFrame distinctretainedbacking and privatecontrols separated frompayload/providerwrites. Callbacks maymutate declaredhomes/currentfields at reached epochs. No arrayfamily/owner/retirement receipt.\",\n  \"failure\": \"no localcatch/cleanup/NoThrow/noreturn. Retain sameenteredgrowthframe/homearrays/partial-current-completed-unpublishedgraph/providers according to exactlypinnedcallee. No Source phase/Origin/boolean may authorize Nativecleanup/retry.\",\n  \"permissions\": {\n    \"tracked_Source_author_grant\": false,\n    \"compiler_test_Game\": false,\n    \"CMake_Ghidra_ledger_mutation\": false,\n    \"Original_ABI_FH3_fault_FLAGS\": false,\n    \"Native_Origin\": false,\n    \"runtime_activation\": false,\n    \"new_Original_vendor_helper_CG_duplicate_credit\": 0\n  },\n  \"reader\": {\n    \"bytes\": 4987,\n    \"sha256\": \"8fc825ed02dce576d267dd1acd6d2a657613958d949c21f30c46a24277fc51f3\",\n    \"utf8\": \"from pathlib import Path\\nimport argparse,hashlib,json,re,subprocess\\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');ap.add_argument('--repo',default='.');a=ap.parse_args();assert bool(a.candidate)!=bool(a.commit)\\nH='include/bsp/native_gui_icon_state_iterator_insert_storage.hpp';C='src/native_gui_icon_state_iterator_insert_storage.cpp';D='docs/CC16_NATIVE_GUI_ICON_STATE_ITERATOR_INSERT_STORAGE.md';R='reports/cc16_native_gui_icon_state_iterator_insert_storage.json';OWNED=[H,C,D,R]\\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\\ndef data(p):return git('show',a.commit+':'+p) if a.commit else (Path(a.candidate)/p).read_bytes()\\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\\nr=json.loads(data(R));checks=[]\\ndef ck(n,v):assert v,n;checks.append(n)\\nck('actualreportextractedreaderexact',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\\nck('exactfournewpaths',r['owned_paths']==OWNED)\\nfor path,pin in r['postimage_pins'].items():ck('postimage '+path,meta(data(path))==pin)\\nfor pin in r['provider_pins']:\\n b=git('show',r['base']+':'+pin['path']);ck('realprovider '+pin['path'],meta(b)=={k:pin[k] for k in ['bytes','sha256']})\\n if pin['published43ad_pin']:ck('publishedSDKpin '+pin['path'],meta(git('show',r['published_reference']+':'+pin['path']))==pin['published43ad_pin'])\\nh=data(H).decode();c=data(C).decode();code=re.sub(r'//[^\\\\n]*','',c)\\nck('no new frame/context/provider declarations','struct ' not in h and 'class ' not in h and 'virtual ' not in h)\\nck('no new localEH/cleanup/filter/FP',not re.search(r'\\\\b(catch|throw|try|float|double|terminate|calloc|memset)\\\\b',code))\\nck('fourrealSDKsites plusonegrowth',code.count('invoke_native_invalid_parameter_00bf6713();')==4 and code.count('insert_native_gui_icon_states_storage_00ab59e0(')==1)\\nck('no Native numeric codepointercall',not re.search(r'reinterpret_cast<[^>]*\\\\(\\\\*',code))\\nck('three integer raw asm blocks',code.count('__asm {')==3 and 'sar eax, 6' in code)\\nck('onlytwoincomingelement reads',len(re.findall(r'\\\\bhomes\\\\[2\\\\]',code))==3 and len(re.findall(r'\\\\bhomes\\\\[2\\\\]\\\\s*=',code))==1)\\nck('lateoutput read once',len(re.findall(r'\\\\bhomes\\\\[0\\\\]',code))==1 and code.index('const Word output = homes[0]')>code.index('    homes[2] ='))\\nfor name,fragments in r['Source_epoch_probes']:\\n pos=0\\n for f in fragments:\\n  n=c.find(f,pos);ck(name+' '+f,n>=pos);pos=n+len(f)\\nraw=bytes.fromhex(r['Native']['hex']);rows=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xab6070))\\nck('whole139B57ops',len(raw)==139 and len(rows)==57 and sum(i.size for i in rows)==139)\\nck('all57row mapexact',all(f'{i.address:08x}'==m['address'] and i.bytes.hex()==m['bytes'] and i.mnemonic==m['mnemonic'] and i.op_str==m['operands'] for i,m in zip(rows,r['instruction_map'])))\\nck('allfiveNativecalls',[i.op_str for i in rows if i.mnemonic=='call']==['0xbf6713','0xbf6713','0xab59e0','0xbf6713','0xbf6713'])\\nck('OriginalRET10h',rows[-1].mnemonic=='ret' and rows[-1].op_str=='0x10')\\nck('nativeHOMEwritebeforeJA',next(i.address for i in rows if i.address==0xab60da)<next(i.address for i in rows if i.address==0xab60de))\\nck('noNativeFP',not any(i.mnemonic.startswith('f') or i.mnemonic.startswith(('movss','movsd')) for i in rows))\\nck('permissionsfalse',all(v is False or v==0 for v in r['permissions'].values()))\\ndef entries(ref):\\n d={}\\n for x in git('ls-tree','-r','-z',ref).split(b'\\\\0'):\\n  if x:\\n   mode,t,tail=x.split(b' ',2);oid,p=tail.split(b'\\\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\\n return d\\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\\\0'+b).hexdigest()\\ndef tree(flat):\\n root={}\\n for p,v in flat.items():\\n  n=root;parts=p.split('/')\\n  for q in parts[:-1]:n=n.setdefault(q,{})\\n  n[parts[-1]]=v\\n def rec(n):\\n  out=[]\\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\\n   out.append(mode.encode()+b' '+k.encode()+b'\\\\0'+bytes.fromhex(oid))\\n  return obj('tree',b''.join(out))\\n return rec(root)\\nbase=entries(r['base']);t=git('rev-parse',r['base']+'^{tree}').decode().strip();ck('recursivebasetree',tree(base)==t)\\nfor p in OWNED:ck('newpathabsent '+p,p not in base)\\nafter=base.copy()\\nfor p in OWNED:after[p]=('100644',obj('blob',data(p)))\\ninv=after.copy()\\nfor p in OWNED:del inv[p]\\nck('fullfouradditionrecursiveinverse',inv==base and tree(inv)==t)\\nif a.commit:\\n parent=git('rev-parse',a.commit+'^').decode().strip();actual=entries(a.commit)\\n ck('actualparentallnonownedexact',entries(parent)==base)\\n ck('actualpostimagewholetreeexact',actual==after and tree(after)==git('rev-parse',a.commit+'^{tree}').decode().strip())\\nprint(json.dumps({'verdict':'PASS whole ordinary Source schedule only','checks':len(checks),'names':checks,'base':r['base'],'base_tree':t,'virtual_after_tree':tree(after),'inverse_tree':tree(inv),'compiler_OriginalABI_Origin_runtime_activation':False},indent=2))\\n\",\n    \"scope\": \"read-only fullrawpins/57epochs/sourceordering/fourpathrecursiveinverse; not runtime test\"\n  }\n}\n"
+    }
+  ],
+  "dependency_qualification": {
+    "6070_folder": "J:\\PROG\\battlestations-pacific-decompile-codex-gui-icon-property-consumer-contract\\local\\output\\cc16_native_gui_icon_state_iterator_insert_storage_candidate_20261031",
+    "6070_seal": {
+      "bytes": 1466,
+      "sha256": "f8139cba57426c480d27db5dfab04a29be3a33d97628c81ac5e7b28895d75156"
+    },
+    "6070_manifest": {
+      "bytes": 4421,
+      "sha256": "4e9f8c369d67e4216e1d3073023c752bb95786c234d9f5c4fb0c1654d6ed7db5"
+    },
+    "status": "exactignored6070 fourfilepostimages overlay only; no publication/compiler claim",
+    "Source90": "private49fa normalgrowth supplier, same2ba99HCPP",
+    "Source91": "separatelyproposedC++cleanup amendment, interface/normalpath unchanged; actual binding requires distinctexactcurrent qualification"
+  },
+  "Source_epoch_probes": [
+    [
+      "sizecapacity",
+      [
+        "const Word vector = bits(actual_vector);",
+        "const Word first = read(pointer(vector), 4);",
+        "const Word size = first == 0 ? 0 : sar6(read(pointer(vector), 8) - first);",
+        "if (first != 0 && size < sar6(read(pointer(vector), 0x0c) - first)) {"
+      ]
+    ],
+    [
+      "fast",
+      [
+        "const Word first_prototype = prototype_home;",
+        "const Word second_prototype = prototype_home;",
+        "Word last = read(pointer(vector), 8);",
+        "*reinterpret_cast<volatile std::uint8_t*>(&frame.local_08[0]) = 0;",
+        "const Word tag = static_cast<volatile Word&>(frame.local_08[0]);",
+        "set(frame.repeat_homes[3], tag);",
+        "set(frame.repeat_homes[2], first_prototype);",
+        "set(frame.repeat_homes[1], vector);",
+        "set(frame.repeat_homes[0], second_prototype);",
+        "repeat_construct_native_gui_icon_states_storage_00ab5400(pointer(last), 1,",
+        "frame.repeat_homes, frame.repeat_frame, context.storage);",
+        "last += 0x40u;",
+        "write(pointer(vector), 8, last);",
+        "return;"
+      ]
+    ],
+    [
+      "slow",
+      [
+        "    const Word last = read(pointer(vector), 8);",
+        "if (first > last) invoke_native_invalid_parameter_00bf6713();",
+        "const Word prototype = prototype_home;",
+        "set(frame.iterator_homes[3], prototype);",
+        "set(frame.iterator_homes[2], last);",
+        "set(frame.iterator_homes[1], vector);",
+        "set(frame.iterator_homes[0], bits(frame.local_08));",
+        "(void)insert_native_gui_icon_state_iterator_storage_00ab6070(pointer(vector),",
+        "frame.iterator_homes, frame.growth_homes, frame.growth_frame, context);"
+      ]
+    ]
+  ],
+  "storage": "ordinary2DWORDlocal08 SAMEtag/outputalias, authenticinitializedupperWORDbytes; emptyuserprovidedframeseedsnothing. Distinctretainedrepeat/iterator/growthhomearrays andactualrepeat/growthframes; calleeoperand/tempwritesremainlive, privatecontrols separated. No T[n]/newowner/callback/allocator.",
+  "failure": "directly inherit realrepeat/SDK/6070/59E0 policies. No localEH/cleanup/retry/rollback/newNoThrow/Origin. Keep actualenteredpartial/current/completedgraph/frames/providerdebt and genuinecustody; numericreturn/count/profile grantsnone.",
+  "permissions": {
+    "tracked_Source_author_grant": false,
+    "compiler_tests_Game": false,
+    "CMake_Ghidra_ledger_mutation": false,
+    "Original_ABI_FH3_FLAGS_fault": false,
+    "Native_Origin": false,
+    "runtime_activation": false,
+    "new_Original_vendor_helper_CG_duplicate_credit": 0
+  },
+  "reader": {
+    "bytes": 4850,
+    "sha256": "80294dd5833ef507adba3cb363b31cafc6d1929b736139a33194d8d15da967e5",
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args()\nH='include/bsp/native_gui_icon_state_append_wrapper_storage.hpp';C='src/native_gui_icon_state_append_wrapper_storage.cpp';R='reports/cc16_native_gui_icon_state_append_wrapper_storage.json'\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\ndef data(p):return (Path(a.candidate)/p).read_bytes()\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\nr=json.loads(data(R));checks=[]\ndef ck(n,v):assert v,n;checks.append(n)\nck('exactreportreader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor path,pin in r['postimage_pins'].items():ck('postimage '+path,meta(data(path))==pin)\nfor p in r['provider_pins']:ck('realprovider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\nfor p in r['dependency_overlay']:ck('6070frozenpin '+p['path'],meta(p['utf8'].encode())=={k:p[k] for k in ['bytes','sha256']})\nh=data(H).decode();c=data(C).decode();code=re.sub(r'//[^\\n]*','',c)\nck('userprovidedemptyframector','NativeGuiIconStateAppendWrapperStorageFrame() {}' in h)\nck('allfourcopymovesdeleted',h.count('= delete;')==4)\nck('ordinaryunseededhomes','std::uint32_t local_08[2];' in h and 'std::uint32_t repeat_homes[4];' in h and 'std::uint32_t iterator_homes[4], growth_homes[4];' in h)\nck('no localcleanuporFP',not re.search(r'\\b(catch|try|throw|float|double|terminate|calloc|memset)\\b',code))\nck('onlythreegenuinecalls',code.count('repeat_construct_native_gui_icon_states_storage_00ab5400(')==1 and code.count('invoke_native_invalid_parameter_00bf6713();')==1 and code.count('insert_native_gui_icon_state_iterator_storage_00ab6070(')==1)\nck('exactthreecurrentprototypeHOMEreads',code.count('= prototype_home;')==3)\nck('onlylowBYTEtagwritefullreload',code.count('reinterpret_cast<volatile std::uint8_t*>(&frame.local_08[0]) = 0;')==1 and 'static_cast<volatile Word&>(frame.local_08[0])' in code)\nck('SAMEscratch outputaddress','set(frame.iterator_homes[0], bits(frame.local_08));' in code)\nck('no rawstorageSourcebirth','::new' not in code and 'std::vector' not in code and 'std::string' not in code)\nfor name,fragments in r['Source_epoch_probes']:\n pos=0\n for f in fragments:\n  hit=c.find(f,pos);ck(name+' '+f,hit>=pos);pos=hit+len(f)\nraw=bytes.fromhex(r['Native']['hex']);rows=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xab63a0))\nck('whole131B53ops',len(raw)==131 and len(rows)==53 and sum(i.size for i in rows)==131)\nck('full53mapping',all(f'{i.address:08x}'==m['address'] and i.bytes.hex()==m['bytes'] and i.mnemonic==m['mnemonic'] and i.op_str==m['operands'] for i,m in zip(rows,r['instruction_map'])))\nck('allthreecalls',[i.op_str for i in rows if i.mnemonic=='call']==['0xab5400','0xbf6713','0xab6070'])\nck('bothRET4',[i.op_str for i in rows if i.mnemonic=='ret']==['4','4'])\nck('noNativeFP',not any(i.mnemonic.startswith('f') or i.mnemonic.startswith(('movss','movsd')) for i in rows))\nck('allpermissionsfalse',all(v is False or v==0 for v in r['permissions'].values()))\ndef entries(ref):\n d={}\n for v in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if v:\n   mode,t,tail=v.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for name,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+name.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nbase=entries(r['base']);ck('actualGitbasetree',tree(base)==git('rev-parse',r['base']+'^{tree}').decode().strip())\nbefore=base.copy()\nfor p in r['dependency_overlay']:\n ck('6070dependencyabsentactualbase '+p['path'],p['path'] not in before)\n before[p['path']]=('100644',obj('blob',p['utf8'].encode()))\nfor p in r['owned_paths']:ck('ownpathabsentoverlay '+p,p not in before)\nafter=before.copy()\nfor p in r['owned_paths']:after[p]=('100644',obj('blob',data(p)))\ninv=after.copy()\nfor p in r['owned_paths']:del inv[p]\nck('ownfourpathrecursiveinverse',inv==before and tree(inv)==tree(before))\nprint(json.dumps({'verdict':'PASS ignored whole ordinary Source wrapper only','checks':len(checks),'names':checks,'actual_base_tree':tree(base),'before6070_overlay_tree':tree(before),'virtual_after_tree':tree(after),'inverse_tree':tree(inv),'Source_author_compiler_NativeABI_Origin_runtime_activation':False},indent=2))\n",
+    "scope": "read-only Native53row/sourceoperand/private6070overlay/fouradditionrecursiveinverse; not execution"
+  }
+}
