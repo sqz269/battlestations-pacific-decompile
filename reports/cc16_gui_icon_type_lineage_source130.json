@@ -1,0 +1,124 @@
+{
+  "packet": "cc16_gui_icon_type_lineage_source130",
+  "base": "57502850405515f60f20e0852ec8eda48f1313c4",
+  "current_merge_pin": "db14691ddd6971abc17f247d92cfb15522fe01ba",
+  "status": "implemented_registered_Core_Game_build_pass_pending_Root_independent_Source_Code_admission",
+  "source_implemented": true,
+  "source_ready": false,
+  "accepted_new_Native_body_credit": 0,
+  "Source129_unchanged": true,
+  "functions": [
+    {
+      "address": "00cd71a0",
+      "exclusive_end": "00cd71ef",
+      "coverage": "complete_normal_role",
+      "native_bytes": 79,
+      "native_instruction_starts": 16,
+      "source": "src/game_native_gui_text_process.cpp",
+      "source_name": "GameNativeGuiTextProcess::initialize_icon_type_once_00cd71a0",
+      "original_abi": "CRT initializer, no arguments; guard/name/Element/parent/counter/own-ID schedule; no semantic EAX claim",
+      "new_Source_ABI": "explicit SAME counter and canonical common-root storage references, existing process member; no Native CRT/placement/private ABI"
+    },
+    {
+      "address": "00aa1cc0",
+      "exclusive_end": "00aa1ce8",
+      "coverage": "complete_ordered_three_word_search_kernel",
+      "native_bytes": 40,
+      "native_instruction_starts": 12,
+      "source": "src/gui_widgets_cc13.cpp",
+      "source_name": "gui_widgets_cc13::native_gui_icon_is_kind_of_00aa1cc0",
+      "original_abi": "ignore incoming receiver; capture stackDWORD ID once, ordered3word search, ALtruth, RET4",
+      "new_Source_ABI": "explicit noinline ordinary constvolatile3word array/ID -> C++bool; no unusedreceiver/RET4/upperEAX/private-stack claim",
+      "existing_generic_kernel_reused": true
+    }
+  ],
+  "calls": [
+    {
+      "address": "00cd71bf",
+      "native": "00aa8200",
+      "function": "00cd71a0",
+      "kind": "call"
+    },
+    {
+      "address": "00cd71da",
+      "native": "006fac20",
+      "function": "00cd71a0",
+      "kind": "call"
+    }
+  ],
+  "protocol": {
+    "loader_zero_roles": [
+      "guardF8BD9C",
+      "GuiTypeDescriptor<3>F8BDD8/nameF8BDE4",
+      "privateIconState"
+    ],
+    "name_word": "00d5c448",
+    "parent_both_loads": [
+      "00cd71c4",
+      "00cd71c9"
+    ],
+    "parent_stores": [
+      "00cd71cf",
+      "00cd71d4"
+    ],
+    "counter_increment_before_own_store": [
+      "00cd71e5",
+      "00cd71e8"
+    ],
+    "no_pool_Text_completion_prerequisite": true,
+    "actual_domain": "reuse existing bind_or_check_type_domain/CounterHost/LightTypeBootstrap; no second counter/root/ID seed",
+    "Source_sticky_failure": "ownState entered before guard; no replay/reset/rollback; unexplained nonzero guard is not Source completion",
+    "crossrole": "completed-return paths first and existing getters unchanged; new cold Icon rejects interrupted Text/Group/Layer; cold oldroles reject Icon interruption only",
+    "getter": "completeIconState -> SAME constvolatile current3words; no copy/name/counter/pool/getter/init",
+    "interrupted_predicate": "metadata-only OR newIconState; no health/birth authority",
+    "Source_layout": "append only; previous fields retained, Source process size grows; no Native layout/VA claim"
+  },
+  "build": {
+    "meaning": "Official registered existing Core/Game module build; no new TU or caller activation",
+    "seconds": 34.8948555,
+    "source_pins": {
+      "include/bsp/game_native_gui_text_process.hpp": "583eb238973a39b55a44213a0c80007b4e122a173900fbafe1c615417f24da91",
+      "src/gui_widgets_cc13.cpp": "8d4e25bd540f0e202b3696485415e2780f095765283791aca7d106a654993dcd",
+      "src/game_native_gui_text_process.cpp": "8c310c32d84fe531f11245e4f1d427da2083adaccee2a65f26151be1c5545557",
+      "include/bsp/gui_widgets_cc13.hpp": "3cf733f366a21ee7c428d71999b4b751e01e1d64c41802eb7a94a316038a01df"
+    },
+    "exit": 0
+  },
+  "actual_Core_objects": [
+    {
+      "target": "bsp_core",
+      "bytes": 39610,
+      "sha256": "a7f8d86f7287c270e1940bed88ea8744a95a470b8ad0c2a0214a3d19bfab9eed",
+      "retained": "game_native_gui_text_process.obj"
+    },
+    {
+      "target": "bsp_core",
+      "bytes": 209727,
+      "sha256": "1d713ee08f1f5b3b4f9dd132b467ccf216ac272ae8f3690db2c1ba012587ed25",
+      "retained": "gui_widgets_cc13.obj"
+    }
+  ],
+  "Core_window_observations": [
+    "initializer419B114ops, parentloads+11A/+11F before stores+125/+12B; counter+13F before ownID+142",
+    "getter53B17ops returns existingthis+E0 after private completion check",
+    "query35B17ops capturesID once and reads ordered3volatile words, no name load",
+    "interrupted predicate55B17ops readsSource states only"
+  ],
+  "verification": {
+    "report": "2 direct Original call rows checked,0failed",
+    "doc": "2 call claims checked,0failed; expected DATA-role getter warning atF8BDD8, not a Native function",
+    "Source129": "all31 sealed artifacts +4current Source postimages unchanged",
+    "scope": "filtered patch only the6ownedfiles; 129untrackedfiles excluded"
+  },
+  "registration": "existing Core/Game modules; no new TU or CMake change",
+  "no_new_tests_probes_Game": true,
+  "no_Host_Page_providerbinding_gate_CMake_ledger_Ghidra_writes": true,
+  "doc": "docs/CC16_GUI_ICON_TYPE_LINEAGE_SOURCE130.md",
+  "limits": [
+    "all existing Page/GUI/Origin/ABI/FH3/SEH/fault/runtime gates held",
+    "caller retains actual live unchanged counter/root/publications through callbacks/consumers/teardown",
+    "externally serialized; no reentry/retarget/retirement during use",
+    "Root owns independent Source/Core/current merge admission",
+    "no Native runtime or implicit startup credit"
+  ]
+}

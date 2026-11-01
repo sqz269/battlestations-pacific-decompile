@@ -15,6 +15,11 @@ __declspec(noinline) bool native_gui_layer_is_kind_of_00aa38b0(
     return gui_type_is_kind_of(actual_lineage_00f8bf88, id);
 }
 
+__declspec(noinline) bool native_gui_icon_is_kind_of_00aa1cc0(
+    const volatile std::uint32_t (&actual_lineage_00f8bdd8)[3], std::uint32_t id) noexcept {
+    return gui_type_is_kind_of(actual_lineage_00f8bdd8, id);
+}
+
 using gui_manager_cc13::name_less_00aa2420;
 namespace {
 

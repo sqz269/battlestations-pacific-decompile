@@ -48,7 +48,7 @@ public:
 
     // Complete CD7460 Source role over the SAME Element/counter/root domain.
     // Group may initialize before Text: neither payload pool, Text descriptor
-    // nor Layer completion is an input. The first Text/Group call binds the
+    // nor Layer completion is an input. The first Text/Group/Icon call binds the
     // existing domain identities; later calls cannot retarget them. Keep the
     // publication/object live and unchanged during serialized initialization
     // and consumers; retain its owning counter/root graph through shared drain.
@@ -59,6 +59,16 @@ public:
     // Entered failure stays sticky and is visible in native_operation_interrupted.
     // New C++ interface, not Native register/private-frame/FH3/SEH/fault parity.
     void initialize_group_type_once_00cd7460(TypeIdCounterLifetime&,
+        LightTypeBootstrapStorage canonical_common_types);
+
+    // Complete CD71A0 Source role over the SAME Element/counter/root domain.
+    // Icon may precede Text/Group and requires no payload-pool startup. Bind
+    // the existing domain once; never create another counter/root or seed IDs.
+    // Guard/name precede AA8200; capture BOTH current parent IDs before either
+    // Icon parent store, then increment the current counter BEFORE own-ID
+    // publication. An entered failure remains sticky; no reset/retry/rollback.
+    // This explicit API adds no Host/CRT call or Original placement/ABI claim.
+    void initialize_icon_type_once_00cd71a0(TypeIdCounterLifetime&,
         LightTypeBootstrapStorage canonical_common_types);
 
     // Only after the corresponding complete explicit startup. Borrowers must
@@ -73,6 +83,9 @@ public:
     // Same Group IDs, only after complete CD7460. No Text/pool/other-role gate,
     // copied IDs or default chain; AC6F70 consumes these CURRENT words in order.
     const volatile std::uint32_t (&group_lineage_00f8bfd8() const)[3];
+    // SAME three CURRENT Icon words only after complete explicit CD71A0.
+    // No name/counter/pool read, copied IDs or implicit initializer.
+    const volatile std::uint32_t (&icon_lineage_00f8bdd8() const)[3];
 
     // Metadata only: inspect BEFORE unwinding host/manager/CRT ownership.
     // True for an entered pool/type failure or interrupted pool retirement.
@@ -117,6 +130,12 @@ private:
     std::uint8_t group_guard_00f8bf9c_{};
     gui_widgets_cc13::GuiTypeDescriptor<3> group_00f8bfd8_{};
     State group_type_state_{State::unattempted};
+
+    // Appended Icon role preserves all previous Source field offsets. These
+    // loader-zero cells alone never establish completed type initialization.
+    std::uint8_t icon_guard_00f8bd9c_{};
+    gui_widgets_cc13::GuiTypeDescriptor<3> icon_00f8bdd8_{};
+    State icon_type_state_{State::unattempted};
 };
 
 // Construct the common E188B4 owner and this process BEFORE CD71F0 registers

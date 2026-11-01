@@ -86,6 +86,8 @@ void GameNativeGuiTextProcess::initialize_types_once_00cd7210(
         throw std::logic_error("GUI Text type startup cannot replay an entered initialization");
     if (group_type_state_ == State::threw)
         throw std::logic_error("GUI Text type startup cannot enter after interrupted Group initialization");
+    if (icon_type_state_ == State::threw)
+        throw std::logic_error("GUI Text type startup cannot enter after interrupted Icon initialization");
     bind_or_check_type_domain(counter, canonical_common_types);
     type_state_ = State::threw;
     CounterHost host(counter);
@@ -125,6 +127,8 @@ void GameNativeGuiTextProcess::initialize_layer_type_once_00cd73f0(
     if (layer_type_state_ == State::returned) return;
     if (layer_type_state_ != State::unattempted)
         throw std::logic_error("GUI Layer type startup cannot replay an entered initialization");
+    if (icon_type_state_ == State::threw)
+        throw std::logic_error("GUI Layer type startup cannot enter after interrupted Icon initialization");
     layer_type_state_ = State::threw;
     CounterHost host(counter);
     LightTypeBootstrap common(counter, canonical_common_types);
@@ -162,6 +166,8 @@ void GameNativeGuiTextProcess::initialize_group_type_once_00cd7460(
         throw std::logic_error("GUI Group type startup cannot replay an entered initialization");
     if (type_state_ == State::threw)
         throw std::logic_error("GUI Group type startup cannot enter after interrupted Text initialization");
+    if (icon_type_state_ == State::threw)
+        throw std::logic_error("GUI Group type startup cannot enter after interrupted Icon initialization");
     bind_or_check_type_domain(counter, canonical_common_types);
     group_type_state_ = State::threw;
     CounterHost host(counter);
@@ -186,6 +192,43 @@ void GameNativeGuiTextProcess::initialize_group_type_once_00cd7460(
     actual_counter.next_id_04 = next_id + 1u;
     group.ids[0] = next_id;
     group_type_state_ = State::returned;
+}
+
+void GameNativeGuiTextProcess::initialize_icon_type_once_00cd71a0(
+    TypeIdCounterLifetime& counter, LightTypeBootstrapStorage canonical_common_types) {
+    // Preserve completed-role access before inspecting another interrupted role.
+    if (icon_type_state_ == State::returned) {
+        bind_or_check_type_domain(counter, canonical_common_types);
+        return;
+    }
+    if (icon_type_state_ != State::unattempted)
+        throw std::logic_error("GUI Icon type startup cannot replay an entered initialization");
+    if (type_state_ == State::threw || group_type_state_ == State::threw ||
+        layer_type_state_ == State::threw)
+        throw std::logic_error("GUI Icon type startup cannot enter an interrupted shared type domain");
+    bind_or_check_type_domain(counter, canonical_common_types);
+    icon_type_state_ = State::threw;
+    CounterHost host(counter);
+    LightTypeBootstrap common(counter, canonical_common_types);
+    volatile auto& guard = icon_guard_00f8bd9c_;
+    if (guard != 0)
+        throw std::logic_error("GUI Icon guard does not establish completed Source startup");
+    guard = 1;                                                // CD71AE
+    volatile auto& icon = icon_00f8bdd8_;
+    icon.native_name_address = 0x00d5c448;                     // CD71B5
+    initialize_element_00aa8200(element_00f8bc88_, element_guard_00f8bc80_, common, host);
+    const volatile auto& element = element_00f8bc88_;
+    const auto element_id = element.ids[0];                   // CD71C4
+    const auto root_id = element.ids[1];                      // CD71C9
+    icon.ids[1] = element_id;                                 // CD71CF
+    icon.ids[2] = root_id;                                    // CD71D4
+    // Completed Element makes this SAME concrete counter getter warm. No
+    // additional fallible work belongs between increment and publication.
+    volatile auto& actual_counter = host.counter();           // CD71DA
+    const auto next_id = actual_counter.next_id_04;            // CD71DF
+    actual_counter.next_id_04 = next_id + 1u;                  // CD71E5
+    icon.ids[0] = next_id;                                    // CD71E8
+    icon_type_state_ = State::returned;
 }
 
 NativeGuiTextPool& GameNativeGuiTextProcess::pool_00f8bdf0() {
@@ -219,9 +262,15 @@ const volatile std::uint32_t (&GameNativeGuiTextProcess::group_lineage_00f8bfd8(
     return group_00f8bfd8_.ids;
 }
 
+const volatile std::uint32_t (&GameNativeGuiTextProcess::icon_lineage_00f8bdd8() const)[3] {
+    if (icon_type_state_ != State::returned)
+        throw std::logic_error("GUI Icon lineage requires complete same-domain CD71A0 startup");
+    return icon_00f8bdd8_.ids;
+}
+
 bool GameNativeGuiTextProcess::native_operation_interrupted() const noexcept {
     return pool_state_ == State::threw || pool_state_ == State::retiring ||
         type_state_ == State::threw || layer_type_state_ == State::threw ||
-        group_type_state_ == State::threw;
+        group_type_state_ == State::threw || icon_type_state_ == State::threw;
 }
 } // namespace bsp::game

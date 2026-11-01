@@ -89,6 +89,14 @@ bool gui_type_is_kind_of(const volatile std::uint32_t (&actual_ids)[Depth],
 bool native_gui_layer_is_kind_of_00aa38b0(
     const volatile std::uint32_t (&actual_lineage_00f8bf88)[3], std::uint32_t id) noexcept;
 
+// Whole AA1CC0's ordered search over three CURRENT F8BDD8-role words. Capture
+// the requested ID once; each later word is read only after the preceding miss.
+// The genuine completed Icon producer/lineage domain remains required. This
+// ordinary noinline Source wrapper adds no unused receiver, name/counter read,
+// initializer or Original RET4/AL-only/upper-EAX/private-frame ABI guarantee.
+bool native_gui_icon_is_kind_of_00aa1cc0(
+    const volatile std::uint32_t (&actual_lineage_00f8bdd8)[3], std::uint32_t id) noexcept;
+
 // The initializer, __fastcall(ECX = target descriptor). When the guard is clear:
 // set the guard, store the name word, run the parent initializer, copy the
 // parent's ids (Depth-1 words) behind the own slot, then take the next id from
