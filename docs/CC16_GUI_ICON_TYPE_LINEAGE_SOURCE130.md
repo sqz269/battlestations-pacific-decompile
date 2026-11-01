@@ -13,7 +13,9 @@ the four modified provider preimages are also exact at published
 | CD71A0..CD71EF, 79B/16 starts | Complete normal initializer role | Added Source domain/one-attempt admission; no Original CRT/placement/private ABI |
 | AA1CC0..AA1CE8, 40B/12 starts | Complete ordered three-word search kernel | Ordinary array/ID API; no unused receiver, RET4 or upper-EAX identity |
 
-The existing names are retained; the new descriptive Source APIs are hypotheses.
+The producer retained existing names; the Source API names are hypotheses.
+Root later names/annotations and acceptance are qualified in
+CC16_ICON_LINEAGE_SOURCE130_ADMISSION.md.
 The shared-Git search found no existing preserved Icon role or explicit AA1CC0
 wrapper to reuse. AA1CC0's existing generic search implementation remains the
 kernel; the new wrapper supplies an address-named, noinline callable interface,
