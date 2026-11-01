@@ -1,4 +1,9 @@
-# Actual atlas startup caller123 - finite Source candidate
+# Actual atlas startup caller123
+
+Current admission and validation are recorded in
+[CC16_ATLAS_SOURCE123_ADMISSION.md](CC16_ATLAS_SOURCE123_ADMISSION.md).
+The notes below preserve the historical producer candidate before Root applied,
+built, reviewed and exercised the actual caller and retirement correction.
 
 Frozen published Maina706208047230d78d0d41fd1dde86be3292a6cf6. Complete ignored
 postimages touch only game_hosts.hpp/cpp. No tracked edits, compilation, tests,
