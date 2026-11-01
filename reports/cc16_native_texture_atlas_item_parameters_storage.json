@@ -1,0 +1,229 @@
+{
+  "kind": "ignored ordinary NORMAL raw Source payload proposal, no activation",
+  "base": "6c7779a286f251c46578864f62042f7423055be5",
+  "base_tree": "9f530e88305bb3f89e6846a55f2c17617f805dab",
+  "owned_paths": [
+    "include/bsp/native_texture_atlas_item_parameters_storage.hpp",
+    "src/native_texture_atlas_item_parameters_storage.cpp",
+    "docs/CC16_NATIVE_TEXTURE_ATLAS_ITEM_PARAMETERS_STORAGE.md",
+    "reports/cc16_native_texture_atlas_item_parameters_storage.json"
+  ],
+  "postimages": {
+    "include/bsp/native_texture_atlas_item_parameters_storage.hpp": {
+      "bytes": 5240,
+      "sha256": "eb539502e5fdf6822079059471fcb40316883a9cf822f83425c789ea7c4c6ff0"
+    },
+    "src/native_texture_atlas_item_parameters_storage.cpp": {
+      "bytes": 12797,
+      "sha256": "d52f483b1fcce025edec78dc697798ab24ff33afbea38fbe5b794bebaaee0d4b"
+    },
+    "docs/CC16_NATIVE_TEXTURE_ATLAS_ITEM_PARAMETERS_STORAGE.md": {
+      "bytes": 3778,
+      "sha256": "52f334ccf43f04b494036b5d979c5f517c03567fa25e6450c976ab4d7fc716ff"
+    }
+  },
+  "whole_Source_inputs": [
+    {
+      "path": "src/game_native_gui_page_application.cpp",
+      "bytes": 72373,
+      "sha256_git_raw": "0f770bd8713656eeb56b77a97109eb7168e1be5d53d96305e4105edbe44b1668",
+      "git_blob": "996fbbdec1f9160540da07b0842295920734eead",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_page_application.hpp",
+      "bytes": 2945,
+      "sha256_git_raw": "7ad6d366ec92695ede58d8f44deeee6b6874f8c344788f626aab286495d83221",
+      "git_blob": "4abf6219f61e37b4e6c9ceb2777bd69aa7f7d8df",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/game_hosts.cpp",
+      "bytes": 192088,
+      "sha256_git_raw": "65a8731e52a6fa0c7d805f92a664996663a428c3397b08975722d10cc6ffeeab",
+      "git_blob": "03179fa37fc6e1284c3fd5abb4c47c88f12fa2bb",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/game_hosts.hpp",
+      "bytes": 48811,
+      "sha256_git_raw": "0b8ea6d614ac7ae842917ee94759abfe7decab1c2c2940f4d940ba6c1d84c872",
+      "git_blob": "731611d10f1752175575a06f78093e7df56243d9",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/game_native_gui_render_application.cpp",
+      "bytes": 59548,
+      "sha256_git_raw": "092b53f5f49a79e445cc708112629886fb5840d90a855ce45bc6f47b7538b4b6",
+      "git_blob": "d8dfdd90ac256f7c38fb2d2e761cb7049512c260",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/game_native_gui_render_application.hpp",
+      "bytes": 3177,
+      "sha256_git_raw": "a39b05be1207d2efc7743c65aac80f939aec686d4aab1f7e51d20f4ca5ec73f6",
+      "git_blob": "2ece9c6a1512cc4fc43af4b78fffd842e7c37460",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/native_particle_texture_names_raw.cpp",
+      "bytes": 14759,
+      "sha256_git_raw": "fb57ea62196906006c62164ac2710bc4379273b9c065b54f8170baac5ea50761",
+      "git_blob": "9738a939f6da8d94775cd505791cf46115e01046",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/native_gui_texture_resolver_storage.cpp",
+      "bytes": 7293,
+      "sha256_git_raw": "039323eaba6af7a46ff9aefa12b1375e5c81561372a78676eb0d7fd8dd4ddb33",
+      "git_blob": "2aac470126f302e75c7b7d24f035658c7fb5ac6a",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/native_pooled_text.cpp",
+      "bytes": 15018,
+      "sha256_git_raw": "da9bf235546af58d385dc0f964c73bb89fd4ea7c8c18e0d66ad57d5a1326da9e",
+      "git_blob": "25ef9c041701aef9483790ad2fdee8de3d888246",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/native_pooled_text.hpp",
+      "bytes": 5230,
+      "sha256_git_raw": "7496f31d04f73e73d6115fa7840ebb0855a3be470e8491cc8e82b7bc3cc1063b",
+      "git_blob": "15d21ec4ea4a361b8b3d6eeb53c8b4300d6291ce",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/native_particle_text_loader.cpp",
+      "bytes": 3537,
+      "sha256_git_raw": "ca5b120e1207bc0e48846f8b2f33b238c2e390781f1286c2113ff0044dc89448",
+      "git_blob": "d0822afccf8ab38d2a604a42818dcfd40934e02f",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/native_particle_text_loader.hpp",
+      "bytes": 2472,
+      "sha256_git_raw": "5279f80eefbf6f4aa6bf4161212ccc52c9b550c49a5aa02a0596c8a1d59c50fd",
+      "git_blob": "2f16622c440b74fc45323ff5233f6de289a106cb",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/cc13_seg41_misc.cpp",
+      "bytes": 27565,
+      "sha256_git_raw": "5031d41084a255ebdd1b0f49fbc66f52d14285601a41025cc72e67ec91e170b5",
+      "git_blob": "18c8b480be92b923bb0831eb531a69decb30bc79",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/cc13_seg41.hpp",
+      "bytes": 26195,
+      "sha256_git_raw": "bd57179d914aaea0658b7ac201a000a16008b3e4b52d42e33c04ec92b110ee65",
+      "git_blob": "b877366951402161c6c62346f02ee498e6ad7afe",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/engine_seg11_35_66_cc13.cpp",
+      "bytes": 206645,
+      "sha256_git_raw": "86d443153ac95f6de31721c79b7bc9c706c4be28487ebfd223736c8fdabfd367",
+      "git_blob": "d3ac98e5caad5a78a3eed116c6833435f26ad1a4",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/oct18_tail_c.hpp",
+      "bytes": 22684,
+      "sha256_git_raw": "afd3a4d036494eeec6c1ddd8328bfab2f8fed9db89a509311f79aef87a34e99e",
+      "git_blob": "e7a8ecbce80f7ed0443b4429cf95f6fc11bb53be",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/terrain_particles_cc13.cpp",
+      "bytes": 135361,
+      "sha256_git_raw": "587410d0bbcc3d2ff1d3fa141fa3505218967cb83db91d4734c4452763ce9db0",
+      "git_blob": "068705d7671b0314ecd4413637b340271cd5716a",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/world_effects_startup.cpp",
+      "bytes": 11331,
+      "sha256_git_raw": "03062b95b8c2f1336503408082a3ac749082d4d2f00aa69ed77708a54a0eb7ea",
+      "git_blob": "03136b6dce2a89126e69040a10f845df9370ecc0",
+      "working_equal_git": true
+    },
+    {
+      "path": "src/native_singleton_destruction.cpp",
+      "bytes": 34081,
+      "sha256_git_raw": "be363ce041d5b5c9c59a1bd08bc6417e9acc35a283860281a496fb4f3cc6b99a",
+      "git_blob": "f8ee23c8c707d5a4f1014ae68563390b179844fa",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/native_singleton_destruction.hpp",
+      "bytes": 24254,
+      "sha256_git_raw": "7b16cc4b6169fd537f5b12e0e98ff22c248012bc5d10a72cf0a55e9a87028731",
+      "git_blob": "b49affd061c9a03972c28536c53514dcebd81641",
+      "working_equal_git": true
+    },
+    {
+      "path": "include/bsp/game_native_readonly_data.hpp",
+      "bytes": 2713,
+      "sha256_git_raw": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981",
+      "git_blob": "fa398d10e27927e398edcb67ae14be3333ecb9c3",
+      "working_equal_git": true
+    },
+    {
+      "path": "config/target.json",
+      "bytes": 455,
+      "sha256_git_raw": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+      "git_blob": "a46b97705f35162ba70bfbd4909788d11bb188b4",
+      "working_equal_git": true
+    }
+  ],
+  "functions": [
+    {
+      "address": "00aee620",
+      "name": "read_native_texture_atlas_item_parameters_00aee620",
+      "original_abi": "ECX actual30h item; one mutable TextBuffer DWORD HOME; RET4; AL1",
+      "qualification": "whole ordinary NORMAL raw storage payload; Source exception observation only; not Original unwind"
+    }
+  ],
+  "evidence_seal": {
+    "directory": "J:\\PROG\\battlestations-pacific-decompile-codex-page-icon-producer-20261101\\local\\output\\cc16_page_icon_type6_producer_proposal_20261101",
+    "manifest": {
+      "manifest_bytes": 1230,
+      "manifest_sha256": "8c565834cc237d73670b2b49a62220389fb3934181b46da2d47b0c92eca32911",
+      "status": "sealed proposal; no Source admission/compile/activation",
+      "candidate_bytes": {
+        "candidate/include/bsp/native_texture_atlas_item_parameters_storage.hpp": 5240,
+        "candidate/src/native_texture_atlas_item_parameters_storage.cpp": 12797
+      },
+      "no_tracked_edits": true
+    }
+  },
+  "static_evidence": {
+    "packing_inspection": "J:\\PROG\\battlestations-pacific-decompile-codex-page-icon-producer-20261101\\local\\output\\cc16_page_icon_type6_producer_proposal_20261101\\packing_inspection.json",
+    "checks": {},
+    "against_Original_export": true
+  },
+  "credit": {
+    "new_Original_functions": 0,
+    "new_vendor_functions": 0,
+    "source_additions": 2,
+    "duplicate_Original_credit": false
+  },
+  "ordinary_normal_payload": true,
+  "Original_FH3_SEH_Origin": false,
+  "original_ABI": false,
+  "compilation": false,
+  "fixtures": false,
+  "runtime": false,
+  "gameplay": false,
+  "tracked_changes": false,
+  "Ghidra_mutations": false,
+  "activation_gates_changed": false,
+  "required_next": [
+    "Root and independent peer Source review",
+    "Root CMake two-TU admission as applicable",
+    "Root required build and existing checks",
+    "retained production atlas/Host binding and runtime gates remain separate"
+  ]
+}
