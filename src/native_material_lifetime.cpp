@@ -71,6 +71,9 @@ struct NativeMaterialFrame::Impl {
     void* release_effect{};
     NativeMaterialFactoryAcquired* factory_receiver{}; // stable retained external C++ borrow
     NativeMaterialEffectCacheContext* factory_context{};
+    NativePostEffectParentFrame* parent_caller{}; // stable external C++ loan
+    void* parent_actual{}; // opaque captured actual store receiver, never followed
+    std::atomic<bool> parent_credit_transferred{false};
     std::atomic<bool> creator_outstanding{false},creator_release_entered{false},zero_armed{false};
     std::atomic<bool> scalar_entered{false},payload_returned{false},flags_read{false};
     std::atomic<bool> typed_ended{false},live_storage_debt{false};
@@ -111,6 +114,16 @@ NativeMaterialDomain::NativeMaterialDomain(NativeMaterialDestructionAccess& acce
     NativeMeshRetentionState& retention):impl_(std::make_unique<Impl>(access,owners,profile,retention)) {
     require_owned(&access.retained_owners==static_cast<NativeRenderActualOwners*>(&owners) && profile,
         "Material domain requires SAME actual registry/pool/access and current profile binding");
+}
+void NativeMaterialDomain::require_parent_binding(NativeMaterialDestructionAccess& access,
+    NativeRenderActualOwnerRegistry& owners, const volatile Word* profile,
+    NativeMeshRetentionState& retention) const {
+    require_owned(&owners==&impl_->owners && &retention==&impl_->retention && profile==impl_->profile &&
+        &access.retained_owners==&impl_->access.retained_owners &&
+        &access.parameter_names==&impl_->access.parameter_names &&
+        &access.parameter_slots==&impl_->access.parameter_slots &&
+        &access.material_slots==&impl_->access.material_slots,
+        "Parent Material binding must preserve SAME registry, graph, profile and actual providers");
 }
 NativeMaterialDomain::~NativeMaterialDomain() {
     // Actual owner must retain this graph on any unclosed/failed debt. No
@@ -176,7 +189,10 @@ void NativeMaterialFrame::end_outer_call() noexcept {
     impl_->outer_calls.fetch_sub(1,std::memory_order_release);exact_.outer_calls_.fetch_sub(1,std::memory_order_release);
 }
 void NativeMaterialFrame::begin_producer(Word kind){
-    require_healthy();Word expected=0;
+    require_healthy();
+    require_owned(!impl_->parent_caller || kind==Entry::cached,
+        "Bound Parent Material must use its real cached factory producer");
+    Word expected=0;
     require_owned(impl_->entry.compare_exchange_strong(expected,kind),"Material producer cannot replay/adopt a born slot");
 }
 void NativeMaterialFrame::begin_child_scope() noexcept {
@@ -339,7 +355,9 @@ NativeMaterialStorage* NativeMaterialFrame::create_cached(const void* name,Nativ
         begin_producer(Entry::cached);const ChildScope child_scope(*this,1);
         // This is a real persistent C++ receiver/context loan, not a public
         // phase/Acquired-derived Native permit. Never inspect it after end.
-        impl_->factory_receiver=&acquired;impl_->factory_context=&cache;
+        if(impl_->parent_caller) require_owned(impl_->factory_receiver==&acquired && impl_->factory_context==&cache,
+            "Parent Material factory must keep its exact cold external receivers");
+        else {impl_->factory_receiver=&acquired;impl_->factory_context=&cache;}
         auto& d=*impl_->domain.impl_;
         auto* actual=NativeMaterialFactoryAccess::cached(name,d.access.material_slots,d.access.retained_owners,cache,acquired,*this);
         producer_returned(actual);end_outer_call();return actual;
@@ -434,6 +452,42 @@ void NativeMaterialFrame::release_creator(long (__stdcall* decrement)(volatile l
         if(result==0)NativeRenderObservedZeroAccess::dispatch(impl_->domain.impl_->owners,impl_->actual,terminal_zero_frame_);
         require_healthy();end_outer_call();
     }catch(...){record_source_failure();end_outer_call();throw;}
+}
+void NativeMaterialFrame::bind_parent_caller(NativeMaterialDomain& expected,
+    NativePostEffectParentFrame& parent, NativeMaterialFactoryAcquired& acquired,
+    NativeMaterialEffectCacheContext& cache) {
+    require_healthy();
+    require_owned(&impl_->domain==&expected && !impl_->parent_caller && impl_->entry.load()==0 &&
+        !impl_->allocation_entered.load() && !impl_->prefix_born.load() && !impl_->published.load(),
+        "Parent Material association requires its exact cold Domain-owned Frame");
+    impl_->parent_caller=&parent;impl_->factory_receiver=&acquired;impl_->factory_context=&cache;
+}
+void NativeMaterialFrame::parent_field_published(NativePostEffectParentFrame& parent,
+    void* captured_parent, NativeMaterialStorage* stored) noexcept {
+    // The trusted actual constructor hook is AFTER its real Parent+14 store.
+    // This opaque receiver is not an adopted Native parent or a delete permit.
+    const bool same=impl_->parent_caller==&parent && captured_parent &&
+        impl_->producer_returned.load(std::memory_order_acquire) && stored==impl_->actual;
+    if(!same){record_source_failure();return;}
+    if(!stored) return; // actual NULL store transfers no creator credit
+    if(!impl_->native_ctor_returned.load() || !impl_->published.load() ||
+        impl_->parent_credit_transferred.exchange(true) || !impl_->creator_outstanding.exchange(false)) {
+        record_source_failure();return;
+    }
+    impl_->parent_actual=captured_parent;
+}
+void NativeMaterialFrame::preflight_parent_caller_close(const NativePostEffectParentFrame& parent) const {
+    require_owned(impl_->parent_caller==&parent && !requires_process_retention(),
+        "Parent close must retain its exact healthy Material caller loan");
+    if(!impl_->closed.load(std::memory_order_acquire))preflight_close();
+}
+void NativeMaterialFrame::close_parent_caller_after_host_quiescence(NativePostEffectParentFrame& parent) {
+    preflight_parent_caller_close(parent);
+    if(!impl_->closed.load(std::memory_order_acquire))close_after_host_quiescence();
+}
+bool NativeMaterialFrame::parent_caller_closed(const NativePostEffectParentFrame& parent) const noexcept {
+    return impl_->parent_caller==&parent && impl_->closed.load(std::memory_order_acquire) &&
+        !requires_process_retention();
 }
 void NativeMaterialFrame::preflight_close() const {
     require_healthy();auto* caller=observed_zero_hold_.frame_;

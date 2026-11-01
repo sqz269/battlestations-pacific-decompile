@@ -48,6 +48,11 @@ private:
     NativePostEffectOwnerContext& context_;
     Phase phase_{Phase::live};
     bool reference_bound_{};
+
+    // C++ owning metadata only: private Frame constructor binds this exact
+    // lifetime once; all legacy constructors retain the null body/policy.
+    // Never set by profile/count/public progress, never Native scalar authority.
+    NativePostEffectParentFrame* const ordinary_frame_{};
 };
 
 // Full217-byte body: +18 stream, +14 material, +0C/+10 nodes, +1C CRT

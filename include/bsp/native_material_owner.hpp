@@ -131,8 +131,11 @@ class NativeMaterialStorageAccess final {
 private:
     friend class NativeMaterialFrame;
     friend class NativeMaterialFactoryIssuer;
+    friend class NativePostEffectParentFrame;
     static NativeMaterialStorage* initialize(void*,void*,NativeRenderActualOwners&,NativeMaterialFrame&);
     static NativeMaterialStorage* clone(void*,const NativeMaterialStorage&,NativeRenderActualOwners&,NativeMaterialFrame&);
     static void destroy(NativeMaterialStorage&,NativeMaterialDestructionAccess&,NativeMaterialFrame&);
+    static void set_parameter_owner(NativeMaterialStorage&, void*, std::uint8_t,
+        NativeRenderActualOwners&, NativeRenderActualOwnerReleaseObservation&);
 };
 } // namespace bsp

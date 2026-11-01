@@ -4,6 +4,7 @@
 #include "bsp/native_post_effect_construction.hpp"
 #include "bsp/native_instance_collection.hpp"
 #include "bsp/native_material_factory.hpp"
+#include "bsp/native_material_lifetime.hpp"
 #include "bsp/native_material_effect_cache.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -196,6 +197,10 @@ void NativePostEffectConstructionBlock::prepare(NativePostEffectConstructionCont
         model_frame_->bind_block(*this);
         mesh_frame_.emplace(binding.meshes,this);
         NativeMeshCanonicalAccess::bind_block(*mesh_frame_,*this);
+        // Last fallible cold reservation, BEFORE any Parent allocation.
+        // Parent.prepare_after_link performs the later authentic association
+        // only after its own retained attachment and block.parent_frame_.
+        if (binding.materials) material_frame_ = &binding.materials->prepare();
     } catch (...) {
         try { cancel_ordinary_preparation(); }
         catch (...) { phase_ = Phase::settled; throw; }
@@ -207,6 +212,34 @@ void NativePostEffectConstructionBlock::cancel_preparation() noexcept {
     cancel_preparation_legacy();
 }
 void NativePostEffectConstructionBlock::cancel_ordinary_preparation() {
+    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+        require(phase_ == Phase::preparing || phase_ == Phase::prepared,
+            "ordinary Material cold cancellation cannot recover an entered attempt");
+        try {
+            preflight_close_after_host_quiescence();
+            if (material_frame_) {
+                if (parent_frame_)
+                    require(parent_frame_->material_caller_closed(),
+                        "bound Parent Material loan must close before cold factory reset");
+                else
+                    material_frame_->close_after_host_quiescence(); // genuine unassociated cold record
+            }
+            if (model_frame_) { model_frame_->cancel_without_native_payload(); model_frame_.reset(); }
+            if (mesh_frame_) {
+                NativeMeshCanonicalAccess::cancel_without_native_payload(*mesh_frame_);
+                mesh_frame_.reset();
+            }
+            material_frame_ = nullptr; // closed loan only; Domain keeps immutable history
+            ordinary_lifetime_ = nullptr;
+            cancel_preparation_legacy();
+        } catch (...) {
+            if (parent_frame_) parent_frame_->record_source_failure();
+            if (model_frame_) model_frame_->record_source_failure();
+            if (mesh_frame_) NativeMeshCanonicalAccess::record_source_failure(*mesh_frame_);
+            throw;
+        }
+        return;
+    }
     require(ordinary_lifetime_ && (phase_ == Phase::preparing || phase_ == Phase::prepared),
         "ordinary cold cancellation cannot recover an entered attempt");
     try {
@@ -224,6 +257,14 @@ void NativePostEffectConstructionBlock::cancel_ordinary_preparation() {
     }
 }
 bool NativePostEffectConstructionBlock::requires_ordinary_process_retention() const noexcept {
+    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+        return phase_ == Phase::preparing || phase_ == Phase::executing ||
+            (parent_frame_ && parent_frame_->requires_process_retention()) ||
+            (material_frame_ && material_frame_->requires_process_retention()) ||
+            ordinary_lifetime_->materials->requires_process_retention() ||
+            (model_frame_ && model_frame_->requires_process_retention()) ||
+            ordinary_lifetime_->meshes.requires_process_retention();
+    }
     return ordinary_lifetime_ &&
         (phase_ == Phase::preparing || phase_ == Phase::executing ||
          (model_frame_ && model_frame_->requires_process_retention()) ||
@@ -259,7 +300,93 @@ void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {
     if (ordinary_lifetime_) std::terminate(); // preserves explicit legacy policy
     reset_after_host_quiescence_legacy();
 }
+void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() {
+    // Readiness only for the old normal-NULL path which already genuinely
+    // cancelled this Block. Parent must authenticate its private cold_cancelled
+    // history before using this idle result; it cannot authorize a new cancel.
+    if (phase_ == Phase::idle && !context_ && !ordinary_lifetime_ && !material_frame_) return;
+    require(ordinary_lifetime_ && context_,
+        "ordinary Block preflight requires its genuine prepared context");
+    // Retention/failure is distinct from expected live or flags0 custody.
+    // These checks never issue Native origin, a credit or a cleanup permission.
+    require(!ordinary_lifetime_->meshes.requires_process_retention() &&
+        (!ordinary_lifetime_->materials || !ordinary_lifetime_->materials->requires_process_retention()) &&
+        (!material_frame_ || !material_frame_->requires_process_retention()),
+        "failed ordinary Block graph must keep every factory/provider loan");
+    if (model_frame_) model_frame_->require_source_healthy();
+    if (ordinary_lifetime_->materials)
+        require(material_factory_ && acquired_.material_factory == &*material_factory_ &&
+            (material_factory_->phase == NativeMaterialFactoryAcquired::Phase::empty ||
+             material_factory_->phase == NativeMaterialFactoryAcquired::Phase::complete),
+            "ordinary factory reset diagnostics are not ready; retain its real loan");
+    if (phase_ == Phase::preparing || phase_ == Phase::prepared) {
+        // This private phase precedes the actual constructor's admission to
+        // Native effects. Root owning-module checks validate every cold record;
+        // an empty public Acquired/registry/profile is not cancellation authority.
+        for (std::size_t i=0;i!=slot_count;++i)
+            require(!references_[i],"cold ordinary Block has an entered companion");
+        if (model_frame_) model_frame_->preflight_cancel_without_native_payload();
+        if (mesh_frame_) NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(*mesh_frame_);
+        for (auto& record : viewport_records_) {
+            const auto phase = record.phase();
+            require(phase == NativeViewportRegistry::Phase::unused ||
+                phase == NativeViewportRegistry::Phase::reserved || phase == NativeViewportRegistry::Phase::cancelled,
+                "cold ordinary Block viewport has a live/unknown Native owner");
+        }
+        return;
+    }
+    require(phase_ == Phase::settled,
+        "ordinary Block close needs actual completed caller quiescence");
+    if (ordinary_lifetime_->materials)
+        require(material_frame_ && parent_frame_ && material_factory_ && !material_reference_ &&
+            acquired_.material_factory == &*material_factory_,
+            "ordinary Material close requires its exact Parent/Frame/factory loan");
+    for (std::size_t i=0;i!=slot_count;++i)
+        if (i != material || !ordinary_lifetime_->materials)
+            require(!references_[i] || retired_[i],"ordinary Block still has a live/unknown non-Material companion");
+    require((!model_owner_ || model_owner_->phase == NativeModelOwner::Phase::dead) &&
+        (!camera_owner_ || camera_owner_->phase == NativeCameraOwner::Phase::dead) &&
+        (!owner_ || owner_->phase() == NativePostEffectOwner::Phase::dead),
+        "ordinary Block retains a live/unknown semantic owner");
+    for (auto& record : viewport_records_) {
+        const auto phase = record.phase();
+        require(phase == NativeViewportRegistry::Phase::unused || phase == NativeViewportRegistry::Phase::cancelled ||
+            phase == NativeViewportRegistry::Phase::retired,
+            "ordinary Block viewport has not reached its actual final disposition");
+    }
+    if (model_frame_) model_frame_->preflight_close_at_quiescence();
+    if (mesh_frame_) NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(*mesh_frame_);
+    // Parent performs the separate Material and BOTH caller-observation
+    // preflights; do not recurse into it or close/drain anything here.
+}
 void NativePostEffectConstructionBlock::close_ordinary_after_host_quiescence() {
+    if (ordinary_lifetime_ && ordinary_lifetime_->materials) {
+        try {
+            preflight_close_after_host_quiescence();
+            require(parent_frame_->material_caller_closed(),
+                "actual Parent Material/caller chains must close before Block/factory reset");
+            // This is only C++ slot bookkeeping from the SAME genuine private
+            // Frame's completion, not a legacy callback/profile/count receipt.
+            retired_[material] = true;
+            if (model_frame_) {
+                model_frame_->close_at_quiescence();
+                model_frame_.reset(); references_[model] = nullptr;
+            }
+            if (mesh_frame_) {
+                NativeMeshCanonicalAccess::close_producer_link_at_quiescence(*mesh_frame_);
+                mesh_frame_.reset(); references_[mesh] = nullptr;
+            }
+            material_frame_ = nullptr;
+            ordinary_lifetime_ = nullptr;
+            reset_after_host_quiescence_legacy(); // factory reset is last, after loan close
+        } catch (...) {
+            if (parent_frame_) parent_frame_->record_source_failure();
+            if (model_frame_) model_frame_->record_source_failure();
+            if (mesh_frame_) NativeMeshCanonicalAccess::record_source_failure(*mesh_frame_);
+            throw;
+        }
+        return;
+    }
     require(ordinary_lifetime_ && phase_ == Phase::settled,
         "ordinary post-effect close needs actual completed caller quiescence");
     try {
@@ -435,6 +562,11 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
         !(bits(actual) & 3u) && allocation_bytes >= 0x24u,
         "post-effect constructor requires prepared storage and an aligned actual 24h allocation");
     block.validate();
+    if (block.ordinary_lifetime_ && block.ordinary_lifetime_->materials) {
+        require(block.material_frame_ && block.parent_frame_,
+            "ordinary Material Native entry requires its genuine retained Parent caller");
+        block.parent_frame_->require_material_constructor_operation(actual);
+    }
     auto& c = *block.context_;
     auto& acquired = block.acquired_;
     acquired.actual_owner = actual;
@@ -513,17 +645,32 @@ void* construct_native_post_effect_00b4e840(void* actual, std::size_t allocation
         require(mesh != nullptr, "native post-effect mesh dereference requires successful allocation");
         set_native_mesh_vertex_stream_00b73bb0(*mesh, c.destruction.actual_owners, 0, current_stream);
 
-        NativeMaterialStorage* material = create_native_material_from_effect_cache_00535320(effect_name,
-            c.materials.material_slots, c.destruction.actual_owners,
-            c.material_effects, *block.material_factory_); // B4E99C
+        // The selected Frame supplies the SAME validated pool/owners pair;
+        // name, cache and stable Acquired remain the actual original operands.
+        NativeMaterialStorage* material = block.material_frame_ ?
+            create_native_material_from_effect_cache_00535320(*block.material_frame_,effect_name,
+                c.material_effects,*block.material_factory_) :
+            create_native_material_from_effect_cache_00535320(effect_name,
+                c.materials.material_slots,c.destruction.actual_owners,
+                c.material_effects,*block.material_factory_); // B4E99C
         acquired.material_created = material;
         put(actual, 0x14, bits(material)); // B4E9A5
+        if (block.material_frame_) block.parent_frame_->material_field_published(material);
         require(material != nullptr, "native post-effect material dereference requires successful allocation");
-        block.material_reference_.emplace(*material, c.materials, c.destruction.actual_material_profile_00d5e520,
-            NativeMaterialCompanionDisposal{&block, &NativePostEffectConstructionBlock::retire_material});
-        acquired.material_reference = &*block.material_reference_;
-        block.bind(NativePostEffectConstructionBlock::material, material, *block.material_reference_);
-        set_native_material_parameter_owner_00b18a40(*material, actual, 0, c.destruction.actual_owners);
+        if (block.material_frame_) {
+            acquired.material_reference = &block.material_frame_->canonical();
+            block.keys_[NativePostEffectConstructionBlock::material] = material;
+            block.references_[NativePostEffectConstructionBlock::material] = acquired.material_reference;
+            block.registered_[NativePostEffectConstructionBlock::material] = false; // SAME Domain canonical, no second bind/count
+            block.retired_[NativePostEffectConstructionBlock::material] = false;
+            block.parent_frame_->set_material_parameter_owner(*material,actual,0,c.destruction.actual_owners);
+        } else {
+            block.material_reference_.emplace(*material, c.materials, c.destruction.actual_material_profile_00d5e520,
+                NativeMaterialCompanionDisposal{&block, &NativePostEffectConstructionBlock::retire_material});
+            acquired.material_reference = &*block.material_reference_;
+            block.bind(NativePostEffectConstructionBlock::material, material, *block.material_reference_);
+            set_native_material_parameter_owner_00b18a40(*material, actual, 0, c.destruction.actual_owners);
+        }
 
         NativeMeshSectionStorage* section = create_native_mesh_section_00533fa0(c.sections.pool_010901d4,
             c.section_bounds_w_00ce4970);

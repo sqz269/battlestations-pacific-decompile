@@ -3,9 +3,13 @@
 #include "bsp/native_post_effect20_construction.hpp"
 #include "bsp/native_post_effect_ordinary_lifetime.hpp"
 #include "bsp/native_mesh_canonical.hpp"
+#include "bsp/native_material_lifetime.hpp"
+#include "bsp/native_material_factory.hpp"
 #include "bsp/native_render_observed_zero.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <atomic>
+#include <exception>
+#include <optional>
 #include <cstring>
 #include <mutex>
 #include <new>
@@ -23,9 +27,6 @@ using Counter = std::atomic<std::int32_t>;
 static_assert(sizeof(void*) == 4 && sizeof(long) == 4 && sizeof(Counter) == 4);
 static_assert(alignof(Counter) == 4 && std::is_trivially_destructible_v<Counter>);
 enum class Kind { parent20, parent24 };
-void require(bool value, const char* message) {
-    if (!value) throw std::logic_error(message);
-}
 std::uint8_t late_byte(const void* actual_home) noexcept {
     std::uint8_t result;
     std::atomic_signal_fence(std::memory_order_seq_cst);
@@ -73,6 +74,9 @@ struct NativePostEffectParentFrame::Impl {
     std::atomic<unsigned> outer_calls{0};
     std::atomic<bool> failed{false}, closed{false}, producer_entered{false};
     std::atomic<bool> constructor_outer{false}, constructor_entered{false};
+    std::atomic<bool> constructor_scope_active{false}, payload_scope_active{false};
+    std::atomic<bool> material_setter_entered{false}, material_setter_returned{false};
+    std::atomic<bool> normal_null_recorded{false};
     std::atomic<bool> allocator_entered{false}, allocator_returned{false};
     std::atomic<bool> atomic_born{false}, native_constructor_returned{false};
     std::atomic<bool> source_constructor_returned{false}, published{false};
@@ -89,16 +93,76 @@ struct NativePostEffectParentFrame::Impl {
         : domain(d), kind(Kind::parent24), block24(&b) {}
 };
 
+// Only the admitted producer owns this setter receiver's mutable heads.
+// Optional emplacement in the wrapper happens AFTER its producer CAS and the
+// object lives through the wrapper's complete publication/health/catch fence.
+class NativePostEffectParentFrame::MaterialConstructorScope final {
+public:
+    explicit MaterialConstructorScope(NativePostEffectParentFrame& frame)
+        :frame_(frame),material_(frame.material_frame_),uncaught_(std::uncaught_exceptions()) {
+        frame_.impl_->constructor_outer.store(true,std::memory_order_release);
+        try {
+            if(material_)material_->begin_outer_call(); // C++ use only, no Native retain
+            frame_.material_parameter_release_.cpp_zero_frame.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
+            frame_.impl_->constructor_scope_active.store(true,std::memory_order_release);
+        }catch(...){frame_.impl_->constructor_outer.store(false,std::memory_order_release);frame_.record_source_failure();throw;}
+    }
+    ~MaterialConstructorScope() noexcept {
+        if(std::uncaught_exceptions()>uncaught_||frame_.requires_process_retention()){
+            frame_.record_source_failure();
+            NativeRenderObservedZeroAccess::fail_frame(frame_.material_parameter_release_.cpp_zero_frame);
+        }
+        frame_.impl_->constructor_scope_active.store(false,std::memory_order_release);
+        frame_.impl_->constructor_outer.store(false,std::memory_order_release);
+        frame_.material_parameter_release_.cpp_zero_frame.active_invocations_.fetch_sub(1,std::memory_order_release);
+        if(material_)material_->end_outer_call();
+    }
+    MaterialConstructorScope(const MaterialConstructorScope&)=delete;
+    MaterialConstructorScope& operator=(const MaterialConstructorScope&)=delete;
+private:
+    NativePostEffectParentFrame& frame_;
+    NativeMaterialFrame* const material_;
+    const int uncaught_;
+};
+// Only the scalar CAS winner owns payload heads. It does not pin/substitute
+// factory A for the actual CURRENT target B; Common holds B's own real Frame.
+class NativePostEffectParentFrame::MaterialPayloadScope final {
+public:
+    explicit MaterialPayloadScope(NativePostEffectParentFrame& frame) noexcept
+        :frame_(frame),uncaught_(std::uncaught_exceptions()) {
+        frame_.terminal_zero_frame_.active_invocations_.fetch_add(1,std::memory_order_acq_rel);
+        frame_.impl_->payload_scope_active.store(true,std::memory_order_release);
+    }
+    ~MaterialPayloadScope() noexcept {
+        if(std::uncaught_exceptions()>uncaught_||frame_.requires_process_retention()){
+            frame_.record_source_failure();NativeRenderObservedZeroAccess::fail_frame(frame_.terminal_zero_frame_);
+        }
+        frame_.impl_->payload_scope_active.store(false,std::memory_order_release);
+        frame_.terminal_zero_frame_.active_invocations_.fetch_sub(1,std::memory_order_release);
+    }
+    MaterialPayloadScope(const MaterialPayloadScope&)=delete;
+    MaterialPayloadScope& operator=(const MaterialPayloadScope&)=delete;
+private:
+    NativePostEffectParentFrame& frame_;
+    const int uncaught_;
+};
+
 NativePostEffectParentDomain::NativePostEffectParentDomain(
     NativePostEffect20ConstructionContext& c20, NativePostEffectConstructionContext& c24,
     const NativePostEffectOrdinaryLifetimeBinding& binding,
     NativeRenderActualOwnerRegistry& owners, NativeMeshRetentionState& retention)
     : impl_(std::make_unique<Impl>(c20,c24,binding,owners,retention)) {
-    require(&c20.destruction.actual_owners == static_cast<NativeRenderActualOwners*>(&owners) &&
+    require_owned(&c20.destruction.actual_owners == static_cast<NativeRenderActualOwners*>(&owners) &&
         &c24.destruction.actual_owners == static_cast<NativeRenderActualOwners*>(&owners) &&
         c20.destruction.ordinary_models == &binding.models &&
         c24.destruction.ordinary_models == &binding.models,
         "Parent domain requires the SAME actual registry and immutable ordinary Model binding");
+    if(binding.materials){
+        binding.materials->require_parent_binding(c20.materials,owners,
+            c20.destruction.actual_material_profile_00d5e520,retention);
+        binding.materials->require_parent_binding(c24.materials,owners,
+            c24.destruction.actual_material_profile_00d5e520,retention);
+    }
 }
 NativePostEffectParentDomain::~NativePostEffectParentDomain() {
     // Real owning callers must deny destruction until the genuine close fence.
@@ -149,19 +213,20 @@ void NativePostEffectParentFrame::require_owned(bool value, const char* message)
 }
 void NativePostEffectParentFrame::require_healthy() const {
     if (impl_->failed.load(std::memory_order_acquire) ||
-        impl_->domain.impl_->failed.load(std::memory_order_acquire) || impl_->closed.load()) {
+        impl_->domain.impl_->failed.load(std::memory_order_acquire) || impl_->closed.load() ||
+        impl_->domain.impl_->retention.requires_process_retention()) {
         const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();
         throw std::logic_error("Parent record retains failed/closed Source custody");
     }
 }
 bool NativePostEffectParentDomain::requires_process_retention() const noexcept {
-    return impl_->failed.load(std::memory_order_acquire);
+    return impl_->failed.load(std::memory_order_acquire) || impl_->retention.requires_process_retention();
 }
 bool NativePostEffectParentDomain::has_retained_records() const noexcept {
     return impl_->retained.load(std::memory_order_acquire) != 0;
 }
 bool NativePostEffectParentFrame::requires_process_retention() const noexcept {
-    return impl_->failed.load(std::memory_order_acquire);
+    return impl_->failed.load(std::memory_order_acquire) || impl_->domain.requires_process_retention();
 }
 
 NativePostEffectParentFrame& NativePostEffectParentDomain::prepare20(
@@ -216,6 +281,15 @@ void NativePostEffectParentFrame::prepare_after_link() {
         if (impl_->block20) impl_->block20->parent_frame_ = this;
         else impl_->block24->parent_frame_ = this;
         impl_->block_linked = true;
+        if(d.binding.materials){
+            if(impl_->block20){
+                require_owned(impl_->block20->material_frame_&&impl_->block20->material_factory_,"Parent20 lost its cold Material/factory loan");
+                prepare_material_caller(*impl_->block20->material_frame_,*impl_->block20->material_factory_,d.c20.material_effects);
+            }else{
+                require_owned(impl_->block24->material_frame_&&impl_->block24->material_factory_,"Parent24 lost its cold Material/factory loan");
+                prepare_material_caller(*impl_->block24->material_frame_,*impl_->block24->material_factory_,d.c24.material_effects);
+            }
+        }
     } catch (...) { record_source_failure(); throw; }
 }
 void NativePostEffectParentFrame::begin_outer_call() {
@@ -230,7 +304,7 @@ void NativePostEffectParentFrame::end_outer_call() noexcept {
 }
 void* NativePostEffectParentFrame::allocate_parent() {
     require_healthy();
-    require_owned(!impl_->producer_entered.exchange(true),"Parent allocation/constructor cannot replay");
+    require_owned(impl_->producer_entered.load()&&impl_->constructor_scope_active.load(),"Parent allocation requires its admitted whole constructor scope");
     impl_->allocator_entered.store(true,std::memory_order_release);
     const std::size_t bytes = impl_->kind == Kind::parent20 ? 0x20u : 0x24u;
     void* actual = singleton_lifetime_allocate(
@@ -244,6 +318,11 @@ void* NativePostEffectParentFrame::allocate_parent() {
 void NativePostEffectParentFrame::cancel_normal_null_allocation() {
     require_owned(impl_->allocator_returned.load() && !impl_->actual && !impl_->constructor_entered.load() &&
         !impl_->atomic_born.load() && !impl_->published.load(),"Parent cold cancel requires actual normal NULL");
+    if(impl_->domain.impl_->binding.materials){
+        // Genuine NULL is not a cancellation receipt. The cold Material loan
+        // remains live through this admitted constructor's final catch fence.
+        impl_->normal_null_recorded.store(true,std::memory_order_release);return;
+    }
     // Real child cold cancellation; no Native parent/header/count is touched.
     if (impl_->block20) impl_->block20->cancel_ordinary_preparation();
     else impl_->block24->cancel_ordinary_preparation();
@@ -309,8 +388,11 @@ void NativePostEffectParentFrame::source_constructor_returned() {
 void* NativePostEffectParentFrame::construct20(NativeString& name, Word vertices, const void* optional) {
     require_owned(impl_->kind == Kind::parent20,"Parent20 producer family mismatch");
     const NativeRenderObservedZeroAccess::Invocation invocation(terminal_zero_frame_);
-    begin_outer_call(); impl_->constructor_outer.store(true,std::memory_order_release);
+    begin_outer_call();
+    std::optional<MaterialConstructorScope> material_scope;
     try {
+        require_owned(!impl_->producer_entered.exchange(true),"Parent allocation/constructor cannot replay");
+        material_scope.emplace(*this); // admitted winner only, BEFORE allocation
         void* actual = allocate_parent();
         if (!actual) cancel_normal_null_allocation();
         else {
@@ -318,14 +400,17 @@ void* NativePostEffectParentFrame::construct20(NativeString& name, Word vertices
             (void)construct_native_post_effect20_00b4e470(actual,0x20u,name,vertices,optional,*impl_->block20);
             source_constructor_returned();
         }
-        impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); return actual;
-    } catch (...) { record_source_failure(); impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); throw; }
+        end_outer_call(); return actual;
+    } catch (...) { record_source_failure(); end_outer_call(); throw; }
 }
 void* NativePostEffectParentFrame::construct20(const NativePostEffect20ArgumentView& arguments) {
     require_owned(impl_->kind == Kind::parent20,"Parent20 producer family mismatch");
     const NativeRenderObservedZeroAccess::Invocation invocation(terminal_zero_frame_);
-    begin_outer_call(); impl_->constructor_outer.store(true,std::memory_order_release);
+    begin_outer_call();
+    std::optional<MaterialConstructorScope> material_scope;
     try {
+        require_owned(!impl_->producer_entered.exchange(true),"Parent allocation/constructor cannot replay");
+        material_scope.emplace(*this); // admitted winner only, BEFORE allocation
         void* actual = allocate_parent();
         if (!actual) cancel_normal_null_allocation();
         else {
@@ -333,14 +418,17 @@ void* NativePostEffectParentFrame::construct20(const NativePostEffect20ArgumentV
             (void)construct_native_post_effect20_00b4e470(actual,0x20u,arguments,*impl_->block20);
             source_constructor_returned();
         }
-        impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); return actual;
-    } catch (...) { record_source_failure(); impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); throw; }
+        end_outer_call(); return actual;
+    } catch (...) { record_source_failure(); end_outer_call(); throw; }
 }
 void* NativePostEffectParentFrame::construct24(NativeString& name, Word primitives, const void* optional) {
     require_owned(impl_->kind == Kind::parent24,"Parent24 producer family mismatch");
     const NativeRenderObservedZeroAccess::Invocation invocation(terminal_zero_frame_);
-    begin_outer_call(); impl_->constructor_outer.store(true,std::memory_order_release);
+    begin_outer_call();
+    std::optional<MaterialConstructorScope> material_scope;
     try {
+        require_owned(!impl_->producer_entered.exchange(true),"Parent allocation/constructor cannot replay");
+        material_scope.emplace(*this); // admitted winner only, BEFORE allocation
         void* actual = allocate_parent();
         if (!actual) cancel_normal_null_allocation();
         else {
@@ -348,8 +436,8 @@ void* NativePostEffectParentFrame::construct24(NativeString& name, Word primitiv
             (void)construct_native_post_effect_00b4e840(actual,0x24u,name,primitives,optional,*impl_->block24);
             source_constructor_returned();
         }
-        impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); return actual;
-    } catch (...) { record_source_failure(); impl_->constructor_outer.store(false,std::memory_order_release); end_outer_call(); throw; }
+        end_outer_call(); return actual;
+    } catch (...) { record_source_failure(); end_outer_call(); throw; }
 }
 void NativePostEffectParentFrame::require_same_canonical(RenderCommandReference& reference) const {
     require_healthy();
@@ -419,8 +507,10 @@ void* NativePostEffectParentFrame::scalar(const void* flags_home) {
         impl_->published.load() && !impl_->scalar_entered.exchange(true),"Parent scalar requires its genuine one-shot caller action");
     const NativeRenderObservedZeroAccess::Invocation invocation(terminal_zero_frame_);
     begin_outer_call();
+    std::optional<MaterialPayloadScope> material_scope;
     const Word original = reinterpret_cast<Word>(impl_->actual);
     try {
+        material_scope.emplace(*this); // scalar CAS winner, lives through catch
         // Direct action entry is not a successful creator/death disposition.
         // Keep any outstanding creator debt on a partial payload escape.
         if (impl_->kind == Kind::parent20) destroy_native_post_effect_owner_00b4e1f0(*impl_->owner20);
@@ -461,72 +551,221 @@ void NativePostEffectParentFrame::release_creator(long (__stdcall* decrement)(vo
         require_healthy(); end_outer_call();
     } catch (...) { record_source_failure(); end_outer_call(); throw; }
 }
-void NativePostEffectParentFrame::close_after_host_quiescence() {
+void NativePostEffectParentFrame::prepare_material_caller(NativeMaterialFrame& material,
+    NativeMaterialFactoryAcquired& acquired,NativeMaterialEffectCacheContext& cache) {
+    require_healthy();auto& d=*impl_->domain.impl_;
+    require_owned(d.binding.materials&&!material_frame_&&impl_->attached&&impl_->counted&&impl_->block_linked&&
+        !impl_->producer_entered.load()&&!impl_->allocator_entered.load(),
+        "Parent Material association requires retained cold Parent attachment before effects");
+    if(impl_->block20){
+        auto& block=*impl_->block20;
+        require_owned(block.parent_frame_==this&&block.ordinary_lifetime_==&d.binding&&block.context_==&d.c20&&
+            block.material_frame_==&material&&block.material_factory_ && &*block.material_factory_==&acquired&&
+            &cache==&d.c20.material_effects,"Parent20 Material loan must preserve its exact stable Block/factory/cache");
+    }else{
+        auto& block=*impl_->block24;
+        require_owned(block.parent_frame_==this&&block.ordinary_lifetime_==&d.binding&&block.context_==&d.c24&&
+            block.material_frame_==&material&&block.material_factory_ && &*block.material_factory_==&acquired&&
+            &cache==&d.c24.material_effects,"Parent24 Material loan must preserve its exact stable Block/factory/cache");
+    }
+    material.bind_parent_caller(*d.binding.materials,*this,acquired,cache);
+    material_frame_=&material; // immutable association; actual outer owner owns the loan
+}
+void NativePostEffectParentFrame::require_material_constructor_operation(void* actual) const {
+    require_healthy();auto& d=*impl_->domain.impl_;
+    require_owned(d.binding.materials&&material_frame_&&impl_->attached&&impl_->counted&&impl_->block_linked&&
+        impl_->constructor_scope_active.load(std::memory_order_acquire)&&impl_->constructor_outer.load()&&
+        impl_->producer_entered.load()&&impl_->allocator_entered.load()&&impl_->allocator_returned.load()&&
+        impl_->constructor_entered.load()&&actual&&actual==impl_->actual&&!impl_->published.load()&&
+        !impl_->native_constructor_returned.load()&&!impl_->source_constructor_returned.load()&&!impl_->scalar_entered.load(),
+        "Selected Parent constructor needs its admitted actual allocation/whole Source scope before Native effects");
+    if(impl_->block20)require_owned(impl_->block20->parent_frame_==this&&impl_->block20->context_==&d.c20&&
+        impl_->block20->ordinary_lifetime_==&d.binding&&impl_->block20->material_frame_==material_frame_,
+        "Selected Parent20 constructor lost its exact Block attachment");
+    else require_owned(impl_->block24->parent_frame_==this&&impl_->block24->context_==&d.c24&&
+        impl_->block24->ordinary_lifetime_==&d.binding&&impl_->block24->material_frame_==material_frame_,
+        "Selected Parent24 constructor lost its exact Block attachment");
+    // No later atomic/count1 birth prerequisite and no Native payload read.
+}
+void NativePostEffectParentFrame::material_field_published(NativeMaterialStorage* stored) noexcept {
+    // The free constructor already authenticated its real raw allocation before
+    // effects. This hook follows its actual +14 store, carrying THAT operand.
+    if(!material_frame_||!impl_->attached||!impl_->block_linked||!impl_->actual||
+        !impl_->allocator_returned.load()||!impl_->constructor_entered.load()||
+        !impl_->constructor_scope_active.load(std::memory_order_acquire)||!impl_->constructor_outer.load()||
+        (impl_->block20?impl_->block20->parent_frame_!=this:impl_->block24->parent_frame_!=this)){
+        record_source_failure();return;
+    }
+    material_frame_->parent_field_published(*this,impl_->actual,stored);
+    // Metadata-only genuine creator handoff, zero Native count operations.
+}
+void NativePostEffectParentFrame::set_material_parameter_owner(NativeMaterialStorage& material,
+    void* incoming,std::uint8_t retain_byte,NativeRenderActualOwners& owners) {
     require_healthy();
-    auto* caller = observed_zero_hold_.frame_;
-    const unsigned retained_hold = caller ? 1u : 0u;
-    // A concrete owner must first establish actual whole-graph/worker/last-use
-    // quiescence. These checks reject misuse; counters do not issue that fact.
-    // Validate BOTH receiver frames and all non-hold facts before ANY unlink.
-    require_owned(!impl_->constructor_outer.load() &&
-        terminal_zero_frame_.active_invocations_.load(std::memory_order_acquire)==0 &&
-        (!caller || caller->active_invocations_.load(std::memory_order_acquire)==0) &&
-        impl_->outer_calls.load()==retained_hold && exact_.outer_calls_.load()==retained_hold &&
-        exact_.borrows_.load()==0,
-        "Parent close crossed an active operation/count use/caller invocation");
-    const bool never_entered = !impl_->producer_entered.load() && !impl_->allocator_entered.load() &&
-        !impl_->constructor_entered.load() && !impl_->atomic_born.load() && !impl_->published.load();
-    require_owned(never_entered || impl_->cold_cancelled.load() ||
-        (impl_->scalar_source_returned.load() && impl_->payload_returned.load() &&
-         impl_->typed_ended.load() && impl_->free_returned.load() && !impl_->creator_outstanding.load()),
-        "Parent close requires actual complete caller/physical facts, not flags0/partial/unknown");
+    require_owned(material_frame_&&impl_->constructor_scope_active.load(std::memory_order_acquire)&&
+        impl_->constructor_outer.load()&&impl_->constructor_entered.load()&&!impl_->native_constructor_returned.load()&&
+        incoming==impl_->actual && &owners==&impl_->domain.impl_->owners&&
+        &material==&material_frame_->canonical().storage()&&!impl_->material_setter_entered.exchange(true),
+        "Parent setter requires the actual admitted constructor/local factory Material and persistent receiver");
+    NativeMaterialStorageAccess::set_parameter_owner(material,incoming,retain_byte,owners,material_parameter_release_);
+    require_healthy();impl_->material_setter_returned.store(true,std::memory_order_release);
+}
+void NativePostEffectParentFrame::require_material_payload_operation() const {
+    require_healthy();
+    require_owned(material_frame_&&impl_->actual&&impl_->published.load()&&impl_->source_constructor_returned.load()&&
+        impl_->scalar_entered.load()&&impl_->payload_scope_active.load(std::memory_order_acquire)&&
+        !impl_->payload_returned.load()&&!impl_->typed_ended.load(),
+        "Parent Material zero continuation requires its genuine scalar CAS winner's live payload");
+    // This authentic private scope is issued only by the admitted scalar;
+    // generic active-invocation counts/public phases do not issue the action.
+}
+void NativePostEffectParentFrame::invoke_material_observed_zero(RenderCommandReference& reference,void* actual) {
+    require_material_payload_operation();
+    const NativeRenderObservedZeroAccess::Invocation invocation(terminal_zero_frame_);
+    try{
+        // The payload provider already decremented once, checked CURRENT
+        // profile/+4/type/storage and resolved THIS actual target exactly once.
+        // No factory-A equality check: actual CURRENT B owns its own hold.
+        NativeRenderObservedZeroAccess::invoke(reference,actual,terminal_zero_frame_);
+        require_healthy();
+    }catch(...){record_source_failure();throw;} // metadata only; scalar owner fails heads at its fence
+}
+void NativePostEffectParentFrame::preflight_material_caller_close() const {
+    require_healthy();
+    require_owned(!impl_->constructor_scope_active.load()&&!impl_->payload_scope_active.load()&&
+        material_parameter_release_.cpp_zero_frame.active_invocations_.load()==0&&
+        terminal_zero_frame_.active_invocations_.load()==0,
+        "Parent Material callers still own active constructor/scalar/receiver scopes");
+    require_owned(!impl_->material_setter_entered.load()||impl_->material_setter_returned.load(),
+        "Parent Material setter return/health remains unknown");
+    const auto& setter=material_parameter_release_;
+    require_owned(!setter.entered||(setter.decremented&&setter.returned&&
+        (!setter.zero_dispatch_entered||setter.zero_dispatch_returned)),
+        "Parent parameter old-source decrement/zero/return remains unknown");
+    if(impl_->domain.impl_->binding.materials){
+        require_owned(material_frame_!=nullptr,"Parent lost its selected Material caller association");
+        if(impl_->block20)require_owned(impl_->block20->material_frame_==material_frame_,"Parent20 Material association changed");
+        else require_owned(impl_->block24->material_frame_==material_frame_,"Parent24 Material association changed");
+        material_frame_->preflight_parent_caller_close(*this);
+    }else require_owned(!material_frame_,"Null Material binding cannot adopt a later caller association");
+}
+void NativePostEffectParentFrame::close_material_caller_after_host_quiescence() {
+    preflight_material_caller_close();
+    require_owned(NativeRenderObservedZeroAccess::end_frame(material_parameter_release_.cpp_zero_frame,false),
+        "Parent setter caller did not quiesce");
+    if(material_frame_)material_frame_->close_parent_caller_after_host_quiescence(*this);
+    require_healthy();
+}
+bool NativePostEffectParentFrame::material_caller_closed() const noexcept {
+    return material_frame_&&!requires_process_retention()&&material_frame_->parent_caller_closed(*this);
+}
+void NativePostEffectParentFrame::preflight_close() const {
     try {
-        if (never_entered) {
-            // Authentic cold owner fence: no allocator or constructor entered.
-            if (impl_->block20) impl_->block20->cancel_ordinary_preparation();
+    require_healthy();auto* caller=observed_zero_hold_.frame_;const unsigned retained_hold=caller?1u:0u;
+    require_owned(!impl_->constructor_outer.load()&&!impl_->constructor_scope_active.load()&&!impl_->payload_scope_active.load()&&
+        terminal_zero_frame_.active_invocations_.load(std::memory_order_acquire)==0&&
+        material_parameter_release_.cpp_zero_frame.active_invocations_.load(std::memory_order_acquire)==0&&
+        (!caller||caller->active_invocations_.load(std::memory_order_acquire)==0)&&
+        impl_->outer_calls.load()==retained_hold&&exact_.outer_calls_.load()==retained_hold&&exact_.borrows_.load()==0,
+        "Parent close crossed an active operation/count use/whole caller fence");
+    const bool never_entered=!impl_->producer_entered.load()&&!impl_->allocator_entered.load()&&
+        !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
+    const bool normal_null=impl_->normal_null_recorded.load()&&impl_->allocator_returned.load()&&!impl_->actual&&
+        !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
+    const bool cancelled=impl_->cold_cancelled.load()&&!impl_->actual&&!impl_->constructor_entered.load()&&
+        !impl_->atomic_born.load()&&!impl_->published.load()&&
+        (never_entered||(impl_->allocator_entered.load()&&impl_->allocator_returned.load()));
+    require_owned(never_entered||normal_null||cancelled||
+        (impl_->scalar_source_returned.load()&&impl_->payload_returned.load()&&impl_->typed_ended.load()&&
+         impl_->free_returned.load()&&impl_->retired.load()&&!impl_->creator_outstanding.load()),
+        "Parent close requires actual complete Source/physical facts, not flags0/partial/unknown");
+    preflight_material_caller_close();
+    // This is the separately frozen Block4+Root4 non-draining normal/cold
+    // readiness seam. Its checks precede EVERY receiver/child/cancel/reset.
+    if(impl_->block20){
+        require_owned(impl_->block20->phase_!=NativePostEffect20ConstructionBlock::Phase::idle||cancelled,
+            "Idle Parent20 Block readiness requires authentic prior cold cancellation");
+        impl_->block20->preflight_close_after_host_quiescence();
+    }else{
+        require_owned(impl_->block24->phase_!=NativePostEffectConstructionBlock::Phase::idle||cancelled,
+            "Idle Parent24 Block readiness requires authentic prior cold cancellation");
+        impl_->block24->preflight_close_after_host_quiescence();
+    }
+    }catch(...){const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();throw;}
+}
+void NativePostEffectParentDomain::preflight_close() const {
+    try {
+    require_owned(!impl_->failed.load()&&!impl_->retention.requires_process_retention(),
+        "Failed SAME Parent graph must remain retained before any drain");
+    NativePostEffectParentFrame* first;
+    {std::lock_guard<std::mutex> lock(impl_->mutex);first=impl_->first;}
+    // Stable Domain-owned list; actual owner independently proves no incoming
+    // workers/Native/callers/preparations. Throwing checks run OUTSIDE the lock.
+    for(auto* frame=first;frame;frame=frame->impl_->next)
+        if(!frame->impl_->closed.load())frame->preflight_close();
+    }catch(...){NativePostEffectParentFrame::record_domain_failure(*const_cast<NativePostEffectParentDomain*>(this));throw;}
+}
+
+void NativePostEffectParentFrame::close_after_host_quiescence() {
+    preflight_close();
+    auto* caller=observed_zero_hold_.frame_;
+    const bool never_entered=!impl_->producer_entered.load()&&!impl_->allocator_entered.load()&&
+        !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
+    const bool selected_material=impl_->domain.impl_->binding.materials!=nullptr;
+    try {
+        if(never_entered&&!selected_material){
+            // Protected old null-binding cold cancellation route.
+            if(impl_->block20)impl_->block20->cancel_ordinary_preparation();
             else impl_->block24->cancel_ordinary_preparation();
             impl_->cold_cancelled.store(true,std::memory_order_release);
         }
-        if (caller)
-            require_owned(NativeRenderObservedZeroAccess::end_frame(*caller,false),
-                "Parent caller still has an active invocation");
-        if (caller != &terminal_zero_frame_)
-            require_owned(NativeRenderObservedZeroAccess::end_frame(terminal_zero_frame_,false),
-                "Parent terminal caller still has an active invocation");
+        if(caller)require_owned(NativeRenderObservedZeroAccess::end_frame(*caller,false),
+            "Parent caller still has an active invocation");
+        if(caller!=&terminal_zero_frame_)require_owned(NativeRenderObservedZeroAccess::end_frame(terminal_zero_frame_,false),
+            "Parent terminal caller still has an active invocation");
+        require_owned(NativeRenderObservedZeroAccess::end_frame(material_parameter_release_.cpp_zero_frame,false),
+            "Parent parameter setter caller still has an active invocation");
         require_healthy();
-        require_owned(impl_->outer_calls.load()==0 && exact_.outer_calls_.load()==0 && exact_.borrows_.load()==0,
-            "Parent close retains an actual CPP caller/count user");
-        if (impl_->cold_cancelled.load()) {
-            impl_->domain.impl_->owners.cancel_exact_record_without_payload(exact_);
-        } else {
-            if (impl_->block20) impl_->block20->close_ordinary_after_host_quiescence();
+        require_owned(impl_->outer_calls.load()==0&&exact_.outer_calls_.load()==0&&exact_.borrows_.load()==0,
+            "Parent close retains an actual C++ caller/count user");
+        close_material_caller_after_host_quiescence();
+        if(selected_material&&(never_entered||impl_->normal_null_recorded.load())){
+            // The genuine cold Material frame/observations have NOW closed;
+            // only this actual post-scope fence may destroy its factory loan.
+            if(impl_->block20)impl_->block20->cancel_ordinary_preparation();
+            else impl_->block24->cancel_ordinary_preparation();
+            impl_->cold_cancelled.store(true,std::memory_order_release);
+        }
+        if(impl_->cold_cancelled.load())impl_->domain.impl_->owners.cancel_exact_record_without_payload(exact_);
+        else {
+            if(impl_->block20)impl_->block20->close_ordinary_after_host_quiescence();
             else impl_->block24->close_ordinary_after_host_quiescence();
             impl_->domain.impl_->owners.close_exact_record_at_quiescence(exact_);
         }
-        impl_->attached = false;
-        if (impl_->block20) impl_->block20->parent_frame_ = nullptr;
-        else impl_->block24->parent_frame_ = nullptr;
-        impl_->block_linked = false;
-        impl_->closed.store(true,std::memory_order_release);
-        if (impl_->counted) {
+        impl_->attached=false;
+        if(impl_->block20)impl_->block20->parent_frame_=nullptr;
+        else impl_->block24->parent_frame_=nullptr;
+        impl_->block_linked=false;impl_->closed.store(true,std::memory_order_release);
+        if(impl_->counted){
             impl_->domain.impl_->retention.retained_.fetch_sub(1,std::memory_order_release);
-            impl_->domain.impl_->retained.fetch_sub(1,std::memory_order_release);
-            impl_->counted = false;
+            impl_->domain.impl_->retained.fetch_sub(1,std::memory_order_release);impl_->counted=false;
         }
-    } catch (...) { record_source_failure(); throw; }
+    }catch(...){record_source_failure();throw;}
 }
 void NativePostEffectParentDomain::close_after_host_quiescence() {
     try {
-        require_owned(!impl_->failed.load(),"Failed parent graph must remain retained");
-        { std::lock_guard<std::mutex> lock(impl_->mutex); impl_->closing.store(true,std::memory_order_release); }
-        for (auto* frame=impl_->first; frame; frame=frame->impl_->next)
-            if (!frame->impl_->closed.load()) frame->close_after_host_quiescence();
+        require_owned(!impl_->failed.load()&&!impl_->retention.requires_process_retention(),
+            "Failed SAME Parent graph must remain retained");
+        {std::lock_guard<std::mutex> lock(impl_->mutex);impl_->closing.store(true,std::memory_order_release);}
+        // Full Domain FIRST pass includes Material/setter/payload and actual
+        // non-Material Block normal/cold readiness before ANY earlier drain.
+        preflight_close();
+        for(auto* frame=impl_->first;frame;frame=frame->impl_->next)
+            if(!frame->impl_->closed.load())frame->close_after_host_quiescence();
         require_owned(impl_->retained.load()==0,"Parent graph retains unresolved records");
-    } catch (...) {
-        NativePostEffectParentFrame::record_domain_failure(*this);
-        throw;
-    }
+    }catch(...){NativePostEffectParentFrame::record_domain_failure(*this);throw;}
 }
+
 
 void* create_native_post_effect_parent20_00b4e470(NativePostEffectParentFrame& frame,
     NativeString& name, Word vertices, const void* optional) { return frame.construct20(name,vertices,optional); }
