@@ -110,8 +110,15 @@ public:
     NativeLogicalVertexReference& operator=(const NativeLogicalVertexReference&) = delete;
     void* storage() const noexcept { return actual_stream_; }
     void release_zero_references() noexcept override;
+    // Ordinary Source raw-scalar route for the genuine captured BD30E0 edge.
+    // Uses the real B4BF10 body and only then the SAME retirement callback.
+    // No noexcept conversion, extra decrement or returned-slot read. An escape
+    // leaves this companion failed/bound; caller retains/excludes slot reuse.
+    bool matches_raw_context(const NativeLogicalVertexOwnerContext&) const;
+    void* delete_raw_scalar_00b4bf10(std::uint32_t actual_flags);
+
 private:
-    enum class Phase { bound, destroying, retired };
+    enum class Phase { bound, destroying, retired, failed };
     void* actual_stream_;
     NativeLogicalVertexOwnerContext& context_;
     NativeLogicalVertexCompanionDisposal disposal_;

@@ -115,8 +115,11 @@ __declspec(noinline) void rebuild_native_mesh_section_vertex_layout_storage_00b8
     void* const captured_renderer = c.actual_renderer_00f8d394;
     const auto call = current(bits(captured_renderer), 0x40u, c);
     void* const layout = call.target == 0x00b2f710u
-        ? get_or_create_native_hardware_layout_00b2f710(
-            actual_key_home, c.hardware_layouts, acquired_before_insertion)
+        ? (c.source_factory
+            ? c.source_factory->create_layout_00b2f710(captured_renderer, call.profile,
+                actual_key_home, c.hardware_layouts, acquired_before_insertion)
+            : get_or_create_native_hardware_layout_00b2f710(
+                actual_key_home, c.hardware_layouts, acquired_before_insertion))
         : c.bindings.other_renderer_layout_current40(
             captured_renderer, call.profile, call.target, actual_key_home, acquired_before_insertion);
     store(section + 0x50u, bits(layout));

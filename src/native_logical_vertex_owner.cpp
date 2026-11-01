@@ -547,4 +547,29 @@ void NativeLogicalVertexReference::release_zero_references() noexcept {
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
 }
+bool NativeLogicalVertexReference::matches_raw_context(
+    const NativeLogicalVertexOwnerContext& context) const {
+    return phase_ == Phase::bound && &context_ == &context;
+}
+void* NativeLogicalVertexReference::delete_raw_scalar_00b4bf10(std::uint32_t flags) {
+    if (phase_ != Phase::bound) {
+        phase_ = Phase::failed;
+        throw std::logic_error("raw logical vertex scalar cannot replay or reenter");
+    }
+    phase_ = Phase::destroying;
+    const auto disposal = disposal_;
+    try {
+        void* const result = delete_native_logical_vertex_stream_00b4bf10(
+            actual_stream_, flags, context_);
+        if (phase_ != Phase::destroying)
+            throw std::logic_error("raw logical vertex scalar invalidated while active");
+        phase_ = Phase::retired;
+        disposal.retire(disposal.context, *this); // May delete this; numeric return only.
+        return result;
+    } catch (...) {
+        phase_ = Phase::failed;
+        throw;
+    }
+}
+
 } // namespace bsp

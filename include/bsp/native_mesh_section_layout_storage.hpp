@@ -30,6 +30,19 @@ struct NativeMeshSectionLayoutStorageBindings {
         const void* actual_key_home, void** acquired_before_insertion) = 0;
 };
 
+// Optional ordinary Source factory composition, implemented by a genuine
+// retained provider. The known B2F710 path must execute that whole body on the
+// SAME raw key/output home and finish its real canonical admission before return.
+// Absence preserves the established raw-only API; pointer presence is no
+// Native/ownership permission. No typed-key cast/copy or successful fallback.
+class NativeMeshSectionLayoutStorageFactoryCalls {
+public:
+    virtual ~NativeMeshSectionLayoutStorageFactoryCalls() = default;
+    virtual void* create_layout_00b2f710(void* captured_renderer,
+        std::uint32_t captured_profile, const void* actual_key_home,
+        NativeHardwareLayoutConstructContext&, void** actual_acquired_before_insertion) = 0;
+};
+
 // Pure borrows from the SAME actual stream/layout/renderer domain. The known
 // BD30E0 current00 target reuses its whole fresh-profile/current04 Source body;
 // scalar_delete must dispatch the actual captured profile's genuine scalar.
@@ -44,6 +57,7 @@ struct NativeMeshSectionLayoutStorageContext {
     // Native CALL; never snapshot these target values at operation entry.
     NativeMeshSectionLayoutReferenceOperation const volatile& increment_00ce221c;
     NativeMeshSectionLayoutReferenceOperation const volatile& decrement_00ce2220;
+    NativeMeshSectionLayoutStorageFactoryCalls* source_factory{};
 };
 
 // WholeB86550..B8659E [79B/36ops], ECX actual section, plainRET. Signed current

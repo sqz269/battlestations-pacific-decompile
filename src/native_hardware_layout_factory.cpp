@@ -47,15 +47,16 @@ struct RawSlotCleanup {
 };
 } // namespace
 
-void* get_or_create_native_hardware_layout_00b2f710(
+void* NativeHardwareLayoutFactoryObservation::invoke(
     const void* key, NativeHardwareLayoutConstructContext& context,
-    void** acquired_before_insertion) {
+    void** acquired_before_insertion, NativeHardwareLayoutFactoryObservation* observation) {
     if (acquired_before_insertion && *acquired_before_insertion)
         throw std::logic_error("hardware layout acquisition output must start empty");
     auto& owner_context = context.actual_owner;
     auto* const actual_tree = owner_context.actual_tree_0108d530;
     auto* const actual_pool = owner_context.actual_hardware_layout_pool_0108fe9c;
     const auto& invalid = owner_context.invalid_parameters;
+    if (observation) { observation->tree_ = actual_tree; observation->pool_ = actual_pool; }
     NativeHardwareLayoutTreeIterator found;
     find_native_hardware_layout_key_00b28220(actual_tree, &found, key, invalid);
     auto* const captured_iterator_owner = pointer(word(&found));
@@ -69,15 +70,21 @@ void* get_or_create_native_hardware_layout_00b2f710(
             invalid.invalid_parameter(invalid.context);
         auto* const selected_owner = pointer(word(address(selected_node, 0x20)));
         InterlockedIncrement(static_cast<volatile LONG*>(address(selected_owner, 4)));
+        if (observation) { observation->hit_ = true; observation->result_ = selected_owner; }
         if (acquired_before_insertion) *acquired_before_insertion = selected_owner;
         return selected_owner;
     }
 
     auto* const raw_slot = allocate_native_hardware_layout_00b606f0(actual_pool);
+    if (observation) observation->raw_slot_ = raw_slot;
     RawSlotCleanup cleanup{raw_slot, actual_pool, true};
     void* result = nullptr;
-    if (raw_slot) result = construct_native_hardware_layout_00b60cb0(raw_slot, key, context);
+    if (raw_slot) {
+        result = construct_native_hardware_layout_00b60cb0(raw_slot, key, context);
+        if (observation) { observation->constructor_returned_ = true; observation->result_ = result; }
+    }
     cleanup.armed = false;
+    if (observation) observation->pre_insertion_ = true;
     if (acquired_before_insertion) *acquired_before_insertion = result;
 
     // Original scratch pairs are uninitialized: only reached key words,
@@ -90,6 +97,36 @@ void* get_or_create_native_hardware_layout_00b2f710(
     NativeHardwareLayoutTreeInsertResult inserted;
     insert_native_hardware_layout_pair_00b2f540(actual_tree, &inserted, &copied_pair, invalid);
     return result;
+}
+
+void* get_or_create_native_hardware_layout_00b2f710(const void* key,
+    NativeHardwareLayoutConstructContext& context, void** acquired_before_insertion) {
+    return NativeHardwareLayoutFactoryObservation::invoke(key, context,
+        acquired_before_insertion, nullptr); // Exact established raw-only API.
+}
+void* get_or_create_native_hardware_layout_00b2f710(const void* key,
+    NativeHardwareLayoutConstructContext& context, void** acquired_before_insertion,
+    NativeHardwareLayoutFactoryObservation& observation) {
+    if (observation.entered_) {
+        observation.invalidated_ = true;
+        observation.failed_ = true;
+        throw std::logic_error("hardware layout Source observation cannot replay or reenter");
+    }
+    observation.entered_ = true; // Before even existing output-home admission.
+    observation.key_ = key;
+    observation.context_ = &context;
+    try {
+        void* const result = NativeHardwareLayoutFactoryObservation::invoke(
+            key, context, acquired_before_insertion, &observation);
+        observation.returned_ = true; // Source body return, never disposition.
+        if (observation.invalidated_)
+            throw std::logic_error("hardware layout Source observation invalidated while active");
+        return result;
+    } catch (...) {
+        observation.failed_ = true;
+        if (!observation.failure_) observation.failure_ = std::current_exception();
+        throw;
+    }
 }
 
 } // namespace bsp

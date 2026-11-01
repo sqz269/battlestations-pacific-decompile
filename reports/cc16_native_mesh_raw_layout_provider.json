@@ -1,0 +1,1790 @@
+{
+  "base": "5abb9688e19005fe75ae95ff6e0c748aa595cc6e",
+  "source_paths": [
+    "include/bsp/native_hardware_layout_factory.hpp",
+    "src/native_hardware_layout_factory.cpp",
+    "include/bsp/native_logical_vertex_owner.hpp",
+    "src/native_logical_vertex_owner.cpp",
+    "include/bsp/native_mesh_section_layout_storage.hpp",
+    "src/native_mesh_section_layout_storage.cpp",
+    "include/bsp/gui_text_native_layout.hpp",
+    "src/gui_text_native_layout.cpp"
+  ],
+  "preimage_pins": {
+    "include/bsp/native_hardware_layout_factory.hpp": {
+      "bytes": 1755,
+      "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3"
+    },
+    "src/native_hardware_layout_factory.cpp": {
+      "bytes": 3995,
+      "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+    },
+    "include/bsp/native_logical_vertex_owner.hpp": {
+      "bytes": 7242,
+      "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+    },
+    "src/native_logical_vertex_owner.cpp": {
+      "bytes": 25341,
+      "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+    },
+    "include/bsp/native_mesh_section_layout_storage.hpp": {
+      "bytes": 6385,
+      "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+    },
+    "src/native_mesh_section_layout_storage.cpp": {
+      "bytes": 5775,
+      "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+    },
+    "include/bsp/gui_text_native_layout.hpp": {
+      "bytes": 3064,
+      "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+    },
+    "src/gui_text_native_layout.cpp": {
+      "bytes": 8285,
+      "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+    }
+  },
+  "postimage_pins": {
+    "include/bsp/native_hardware_layout_factory.hpp": {
+      "bytes": 4632,
+      "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+    },
+    "src/native_hardware_layout_factory.cpp": {
+      "bytes": 5905,
+      "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+    },
+    "include/bsp/native_logical_vertex_owner.hpp": {
+      "bytes": 7707,
+      "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+    },
+    "src/native_logical_vertex_owner.cpp": {
+      "bytes": 26317,
+      "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+    },
+    "include/bsp/native_mesh_section_layout_storage.hpp": {
+      "bytes": 7201,
+      "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+    },
+    "src/native_mesh_section_layout_storage.cpp": {
+      "bytes": 5980,
+      "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+    },
+    "include/bsp/gui_text_native_layout.hpp": {
+      "bytes": 6789,
+      "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+    },
+    "src/gui_text_native_layout.cpp": {
+      "bytes": 17227,
+      "sha256": "a97a9b37173bf613ccea8bbd8d90d36e5920fd6bb5460c6e915563df9b70ce2e"
+    },
+    "docs/CC16_NATIVE_MESH_RAW_LAYOUT_PROVIDER.md": {
+      "bytes": 6277,
+      "sha256": "672abc3a64449bf067225fbf4b142efcb6cd50bb7a35fb76ec4fa30b0ff7da7b"
+    }
+  },
+  "Source_seams": [
+    {
+      "path": "include/bsp/native_hardware_layout_factory.hpp",
+      "old": "#include \"bsp/native_hardware_layout_construct.hpp\"",
+      "new": "#include \"bsp/native_hardware_layout_construct.hpp\"\n#include <exception>",
+      "label": "factory observation Source diagnostic include"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_factory.hpp",
+      "old": "\n} // namespace bsp",
+      "new": "\n// Actual Source factory events, never Native Origin or a cleanup capability.\n// Fresh retained record, distinct from key/output/native/provider write extents.\n// Only the genuine observed entry/shared body writes these observations. A hit\n// is not a new constructor receipt; null allocation is not a constructed owner.\nclass NativeHardwareLayoutFactoryObservation final {\npublic:\n    NativeHardwareLayoutFactoryObservation() = default;\n    NativeHardwareLayoutFactoryObservation(const NativeHardwareLayoutFactoryObservation&) = delete;\n    NativeHardwareLayoutFactoryObservation& operator=(const NativeHardwareLayoutFactoryObservation&) = delete;\n    NativeHardwareLayoutFactoryObservation(NativeHardwareLayoutFactoryObservation&&) = delete;\n    NativeHardwareLayoutFactoryObservation& operator=(NativeHardwareLayoutFactoryObservation&&) = delete;\n    bool source_complete() const { return returned_ && !failed_ && !invalidated_; }\n    bool source_failed() const { return failed_ || invalidated_; }\n    bool source_cache_hit() const { return hit_; }\n    bool source_constructor_returned() const { return constructor_returned_; }\n    bool source_pre_insertion() const { return pre_insertion_; }\n    const void* actual_key_home() const { return key_; }\n    const NativeHardwareLayoutConstructContext* actual_context() const { return context_; }\n    void* allocated_slot() const { return raw_slot_; }\n    void* source_result() const { return result_; }\n    void* actual_tree() const { return tree_; }\n    void* actual_pool() const { return pool_; }\nprivate:\n    friend void* get_or_create_native_hardware_layout_00b2f710(\n        const void*, NativeHardwareLayoutConstructContext&, void**);\n    friend void* get_or_create_native_hardware_layout_00b2f710(\n        const void*, NativeHardwareLayoutConstructContext&, void**,\n        NativeHardwareLayoutFactoryObservation&);\n    static void* invoke(const void*, NativeHardwareLayoutConstructContext&,\n        void**, NativeHardwareLayoutFactoryObservation*);\n    bool entered_{}, returned_{}, failed_{}, invalidated_{};\n    bool hit_{}, constructor_returned_{}, pre_insertion_{};\n    const void* key_{};\n    NativeHardwareLayoutConstructContext* context_{};\n    void* tree_{};\n    void* pool_{};\n    void* raw_slot_{};\n    void* result_{};\n    std::exception_ptr failure_;\n};\n// Same actual raw mutable key and output home; no typed-key copy. Arm before\n// Source admission, retain genuine completed creator on later insertion failure.\n// Private observations authenticate this actual Source invocation/birth only;\n// retain the record/context/actual creator through failure, no reset or cleanup.\nvoid* get_or_create_native_hardware_layout_00b2f710(const void* actual_key_home,\n    NativeHardwareLayoutConstructContext&, void** actual_acquired_before_insertion,\n    NativeHardwareLayoutFactoryObservation&);\n\n} // namespace bsp",
+      "label": "factory genuine observed overload and private event record"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "void* get_or_create_native_hardware_layout_00b2f710(\n    const void* key, NativeHardwareLayoutConstructContext& context,\n    void** acquired_before_insertion) {",
+      "new": "void* NativeHardwareLayoutFactoryObservation::invoke(\n    const void* key, NativeHardwareLayoutConstructContext& context,\n    void** acquired_before_insertion, NativeHardwareLayoutFactoryObservation* observation) {",
+      "label": "share actual whole factory body for both APIs"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "    const auto& invalid = owner_context.invalid_parameters;",
+      "new": "    const auto& invalid = owner_context.invalid_parameters;\n    if (observation) { observation->tree_ = actual_tree; observation->pool_ = actual_pool; }",
+      "label": "observe actual captured tree and pool identities"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "        InterlockedIncrement(static_cast<volatile LONG*>(address(selected_owner, 4)));\n        if (acquired_before_insertion)",
+      "new": "        InterlockedIncrement(static_cast<volatile LONG*>(address(selected_owner, 4)));\n        if (observation) { observation->hit_ = true; observation->result_ = selected_owner; }\n        if (acquired_before_insertion)",
+      "label": "observe actual hit only after its real acquire returned"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "    RawSlotCleanup cleanup{raw_slot, actual_pool, true};",
+      "new": "    if (observation) observation->raw_slot_ = raw_slot;\n    RawSlotCleanup cleanup{raw_slot, actual_pool, true};",
+      "label": "record actual allocated identity without constructing null"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "    if (raw_slot) result = construct_native_hardware_layout_00b60cb0(raw_slot, key, context);",
+      "new": "    if (raw_slot) {\n        result = construct_native_hardware_layout_00b60cb0(raw_slot, key, context);\n        if (observation) { observation->constructor_returned_ = true; observation->result_ = result; }\n    }",
+      "label": "constructor fact only immediately after actual normal return"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "    cleanup.armed = false;\n    if (acquired_before_insertion)",
+      "new": "    cleanup.armed = false;\n    if (observation) observation->pre_insertion_ = true;\n    if (acquired_before_insertion)",
+      "label": "preserve disarm then output and pre-insertion stage"
+    },
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "old": "\n} // namespace bsp",
+      "new": "\nvoid* get_or_create_native_hardware_layout_00b2f710(const void* key,\n    NativeHardwareLayoutConstructContext& context, void** acquired_before_insertion) {\n    return NativeHardwareLayoutFactoryObservation::invoke(key, context,\n        acquired_before_insertion, nullptr); // Exact established raw-only API.\n}\nvoid* get_or_create_native_hardware_layout_00b2f710(const void* key,\n    NativeHardwareLayoutConstructContext& context, void** acquired_before_insertion,\n    NativeHardwareLayoutFactoryObservation& observation) {\n    if (observation.entered_) {\n        observation.invalidated_ = true;\n        observation.failed_ = true;\n        throw std::logic_error(\"hardware layout Source observation cannot replay or reenter\");\n    }\n    observation.entered_ = true; // Before even existing output-home admission.\n    observation.key_ = key;\n    observation.context_ = &context;\n    try {\n        void* const result = NativeHardwareLayoutFactoryObservation::invoke(\n            key, context, acquired_before_insertion, &observation);\n        observation.returned_ = true; // Source body return, never disposition.\n        if (observation.invalidated_)\n            throw std::logic_error(\"hardware layout Source observation invalidated while active\");\n        return result;\n    } catch (...) {\n        observation.failed_ = true;\n        if (!observation.failure_) observation.failure_ = std::current_exception();\n        throw;\n    }\n}\n\n} // namespace bsp",
+      "label": "old API retained plus genuine observed entry failure envelope"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "old": "    void release_zero_references() noexcept override;",
+      "new": "    void release_zero_references() noexcept override;\n    // Ordinary Source raw-scalar route for the genuine captured BD30E0 edge.\n    // Uses the real B4BF10 body and only then the SAME retirement callback.\n    // No noexcept conversion, extra decrement or returned-slot read. An escape\n    // leaves this companion failed/bound; caller retains/excludes slot reuse.\n    bool matches_raw_context(const NativeLogicalVertexOwnerContext&) const;\n    void* delete_raw_scalar_00b4bf10(std::uint32_t actual_flags);\n",
+      "label": "logical companion explicit genuine raw scalar API"
+    },
+    {
+      "path": "include/bsp/native_logical_vertex_owner.hpp",
+      "old": "    enum class Phase { bound, destroying, retired };",
+      "new": "    enum class Phase { bound, destroying, retired, failed };",
+      "label": "append logical failed metadata phase preserving old values"
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "old": "\n} // namespace bsp",
+      "new": "\nbool NativeLogicalVertexReference::matches_raw_context(\n    const NativeLogicalVertexOwnerContext& context) const {\n    return phase_ == Phase::bound && &context_ == &context;\n}\nvoid* NativeLogicalVertexReference::delete_raw_scalar_00b4bf10(std::uint32_t flags) {\n    if (phase_ != Phase::bound) {\n        phase_ = Phase::failed;\n        throw std::logic_error(\"raw logical vertex scalar cannot replay or reenter\");\n    }\n    phase_ = Phase::destroying;\n    const auto disposal = disposal_;\n    try {\n        void* const result = delete_native_logical_vertex_stream_00b4bf10(\n            actual_stream_, flags, context_);\n        if (phase_ != Phase::destroying)\n            throw std::logic_error(\"raw logical vertex scalar invalidated while active\");\n        phase_ = Phase::retired;\n        disposal.retire(disposal.context, *this); // May delete this; numeric return only.\n        return result;\n    } catch (...) {\n        phase_ = Phase::failed;\n        throw;\n    }\n}\n\n} // namespace bsp",
+      "label": "actual raw logical deletion then same normal retirement"
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "old": "// Pure borrows from the SAME actual stream/layout/renderer domain.",
+      "new": "// Optional ordinary Source factory composition, implemented by a genuine\n// retained provider. The known B2F710 path must execute that whole body on the\n// SAME raw key/output home and finish its real canonical admission before return.\n// Absence preserves the established raw-only API; pointer presence is no\n// Native/ownership permission. No typed-key cast/copy or successful fallback.\nclass NativeMeshSectionLayoutStorageFactoryCalls {\npublic:\n    virtual ~NativeMeshSectionLayoutStorageFactoryCalls() = default;\n    virtual void* create_layout_00b2f710(void* captured_renderer,\n        std::uint32_t captured_profile, const void* actual_key_home,\n        NativeHardwareLayoutConstructContext&, void** actual_acquired_before_insertion) = 0;\n};\n\n// Pure borrows from the SAME actual stream/layout/renderer domain.",
+      "label": "explicit actual known-factory composition interface"
+    },
+    {
+      "path": "include/bsp/native_mesh_section_layout_storage.hpp",
+      "old": "    NativeMeshSectionLayoutReferenceOperation const volatile& decrement_00ce2220;",
+      "new": "    NativeMeshSectionLayoutReferenceOperation const volatile& decrement_00ce2220;\n    NativeMeshSectionLayoutStorageFactoryCalls* source_factory{};",
+      "label": "append legacy-absent actual factory provider borrow"
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "old": "        ? get_or_create_native_hardware_layout_00b2f710(\n            actual_key_home, c.hardware_layouts, acquired_before_insertion)",
+      "new": "        ? (c.source_factory\n            ? c.source_factory->create_layout_00b2f710(captured_renderer, call.profile,\n                actual_key_home, c.hardware_layouts, acquired_before_insertion)\n            : get_or_create_native_hardware_layout_00b2f710(\n                actual_key_home, c.hardware_layouts, acquired_before_insertion))",
+      "label": "real known-arm factory and admission before section publication"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "#include \"bsp/gui_native_geometry.hpp\"",
+      "new": "#include \"bsp/gui_native_geometry.hpp\"\n#include \"bsp/native_mesh_section_layout_storage.hpp\"\n#include \"bsp/native_ref_counted.hpp\"",
+      "label": "raw layout interfaces for actual retained provider"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "    void release_zero_references() noexcept override;",
+      "new": "    void release_zero_references() noexcept override;\n    bool matches_raw_context(const NativeHardwareLayoutOwnerContext&,\n        const volatile std::uint32_t*) const;\n    // Real B60770; this is an ordinary raw scalar, not the noexcept terminal.\n    // Retire metadata only after actual normal destruction/pool-return path.\n    void* delete_raw_scalar_00b60770(std::uint32_t actual_flags);\n",
+      "label": "hardware companion explicit genuine raw scalar API"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "    enum class Phase { bound, destroying, retired };",
+      "new": "    enum class Phase { bound, destroying, retired, failed };",
+      "label": "append hardware failed metadata phase preserving old values"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "class GuiTextNativeLayoutServices final : public NativeMeshSectionLayoutServices {",
+      "new": "class GuiTextNativeRawLayoutInvocation;\nclass GuiTextNativeLayoutServices final : public NativeMeshSectionLayoutServices {",
+      "label": "declare concrete raw invocation"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "private:\n    struct Impl;\n    std::unique_ptr<Impl> impl_;",
+      "new": "private:\n    friend class GuiTextNativeRawLayoutInvocation;\n    struct Impl;\n    std::unique_ptr<Impl> impl_;",
+      "label": "share actual private service graph and registrar with concrete provider"
+    },
+    {
+      "path": "include/bsp/gui_text_native_layout.hpp",
+      "old": "\n} // namespace bsp",
+      "new": "\n// Concrete raw mutable-key layout provider, one caller-retained invocation.\n// Owns ONLY Source observations, no native owner/count or cleanup. Construct\n// after the service and before parent Native entry; retain through unknown\n// escape and same-domain retirement. The expected key is an address borrow,\n// not an early descriptor/count snapshot. Imports remain live home references.\n//\n// Admitted genuine Source-created families are D61D6C/B48CE0/B4BF10 logical\n// streams, D62AF4/B60770 hardware layouts and D5F0A8/B2F710 renderer. Caller\n// proves actual C++ birth/generation/custody, not profile/count alone. Normal\n// current_table only maps these SAME immutable real views; no allocator,\n// callback, native effect or reentry. OTHER profiles/targets remain outside\n// this provider's qualified domain and fail Source admission; none is invoked\n// as a numeric host codeword or silently substituted by a known body.\nclass GuiTextNativeRawLayoutInvocation final : public NativeMeshSectionLayoutStorageBindings,\n    public NativeRefCountedDeleteCalls, public NativeMeshSectionLayoutStorageFactoryCalls {\npublic:\n    GuiTextNativeRawLayoutInvocation(GuiTextNativeLayoutServices&,\n        const void* actual_retained_key_home,\n        NativeMeshSectionLayoutReferenceOperation const volatile& actual_increment_00ce221c,\n        NativeMeshSectionLayoutReferenceOperation const volatile& actual_decrement_00ce2220);\n    GuiTextNativeRawLayoutInvocation(const GuiTextNativeRawLayoutInvocation&) = delete;\n    GuiTextNativeRawLayoutInvocation& operator=(const GuiTextNativeRawLayoutInvocation&) = delete;\n    GuiTextNativeRawLayoutInvocation(GuiTextNativeRawLayoutInvocation&&) = delete;\n    GuiTextNativeRawLayoutInvocation& operator=(GuiTextNativeRawLayoutInvocation&&) = delete;\n    const NativeMeshSectionLayoutStorageContext& context() const { return context_; }\n    const GuiTextNativeLayoutAcquired& acquired() const { return acquisition_; }\n    const NativeHardwareLayoutFactoryObservation& factory_observation() const { return observation_; }\n    bool source_failed() const { return failed_ || observation_.source_failed(); }\n    bool source_factory_complete() const { return factory_complete_; }\n    const volatile std::uint32_t* current_table(void*, std::uint32_t) override;\n    void other_reference_current00(void*, std::uint32_t, std::uint32_t) override;\n    void* other_stream_descriptor_current24(void*, std::uint32_t, std::uint32_t) override;\n    void* other_renderer_layout_current40(void*, std::uint32_t, std::uint32_t,\n        const void*, void**) override;\n    void delete_vslot04(void*, std::uint32_t captured_profile, std::uint32_t actual_flags) override;\n    void* create_layout_00b2f710(void*, std::uint32_t, const void*,\n        NativeHardwareLayoutConstructContext&, void**) override;\nprivate:\n    void begin_effect();\n    GuiTextNativeLayoutServices& service_;\n    const void* const actual_key_home_;\n    NativeMeshSectionLayoutStorageContext context_;\n    GuiTextNativeLayoutAcquired acquisition_;\n    NativeHardwareLayoutFactoryObservation observation_;\n    bool active_{}, failed_{}, factory_started_{}, factory_complete_{};\n    std::exception_ptr failure_;\n};\n\n} // namespace bsp",
+      "label": "complete retained raw provider and actual context API"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "struct GuiTextNativeLayoutServices::Impl {",
+      "new": "\nbool GuiTextNativeLayoutReference::matches_raw_context(\n    const NativeHardwareLayoutOwnerContext& context,\n    const volatile std::uint32_t* profile) const {\n    return phase_ == Phase::bound && &context_ == &context && profile_ == profile;\n}\nvoid* GuiTextNativeLayoutReference::delete_raw_scalar_00b60770(std::uint32_t flags) {\n    if (phase_ != Phase::bound) {\n        phase_ = Phase::failed;\n        throw std::logic_error(\"raw hardware layout scalar cannot replay or reenter\");\n    }\n    phase_ = Phase::destroying;\n    const auto disposal = disposal_;\n    try {\n        void* const result = delete_native_hardware_layout_00b60770(storage_, flags, context_);\n        if (phase_ != Phase::destroying)\n            throw std::logic_error(\"raw hardware layout scalar invalidated while active\");\n        phase_ = Phase::retired;\n        disposal.retire(disposal.context, *this); // No later companion/raw-slot access.\n        return result;\n    } catch (...) {\n        phase_ = Phase::failed;\n        throw;\n    }\n}\nstruct GuiTextNativeLayoutServices::Impl {",
+      "label": "real raw hardware scalar and same normal retirement"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "    void register_acquired() {\n        auto& a = acquisition;\n        const auto& r = geometry.registration();\n        if (auto* existing = r.find(r.context, a.creator)) {",
+      "new": "    void register_acquired(GuiTextNativeLayoutAcquired& a,\n        const NativeHardwareLayoutFactoryObservation* observed = nullptr) {\n        const auto& r = geometry.registration();\n        auto* const existing = r.find(r.context, a.creator);\n        if (observed) {\n            require(observed->source_complete() && observed->actual_context() == &construct &&\n                observed->source_result() == a.creator &&\n                observed->actual_tree() == construct.actual_owner.actual_tree_0108d530 &&\n                observed->actual_pool() == construct.actual_owner.actual_hardware_layout_pool_0108fe9c,\n                \"raw layout admission requires its genuine actual factory invocation\");\n            if (observed->source_cache_hit())\n                require(existing != nullptr, \"raw cached layout requires its existing same-generation companion\");\n            else\n                require(observed->source_constructor_returned() && observed->source_pre_insertion() &&\n                    observed->allocated_slot() == a.creator && existing == nullptr,\n                    \"raw new layout requires actual constructor return and no stale canonical generation\");\n        }\n        if (existing) {",
+      "label": "share actual registrar with authenticated per-call factory observation"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "        s.register_acquired();",
+      "new": "        s.register_acquired(a);",
+      "label": "preserve old typed path actual same acquisition"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "\n} // namespace bsp",
+      "new": "\nGuiTextNativeRawLayoutInvocation::GuiTextNativeRawLayoutInvocation(\n    GuiTextNativeLayoutServices& service, const void* actual_key,\n    NativeMeshSectionLayoutReferenceOperation const volatile& increment,\n    NativeMeshSectionLayoutReferenceOperation const volatile& decrement)\n    : service_(service), actual_key_home_(actual_key),\n      context_{*this, *this, service.impl_->construct,\n          service.impl_->construct.actual_owner.actual_renderer_00f8d394,\n          increment, decrement, this} {\n    service.impl_->require_domain(); // Source address/service metadata only.\n}\nvoid GuiTextNativeRawLayoutInvocation::begin_effect() {\n    if (active_ || failed_ || factory_started_) {\n        failed_ = true;\n        throw std::logic_error(\"raw layout Source invocation cannot replay or reenter\");\n    }\n    active_ = true;\n}\nconst volatile std::uint32_t* GuiTextNativeRawLayoutInvocation::current_table(\n    void*, std::uint32_t profile) {\n    auto& s = *service_.impl_;\n    if (profile == 0x00d61d6cu) return s.vertices.actual_logical_profile_00d61d6c;\n    if (profile == 0x00d62af4u) return s.profile;\n    if (profile == 0x00d5f0a8u) return s.construct.actual_owner.actual_renderer_profile_00d5f0a8;\n    failed_ = true;\n    throw std::logic_error(\"OTHER raw layout table is outside the admitted Source families\");\n}\nvoid GuiTextNativeRawLayoutInvocation::delete_vslot04(void* actual,\n    std::uint32_t profile, std::uint32_t flags) {\n    begin_effect();\n    try {\n        auto& s = *service_.impl_;\n        const auto& r = s.geometry.registration();\n        auto* const base = r.find(r.context, actual);\n        if (profile == 0x00d61d6cu) {\n            const auto target = s.vertices.actual_logical_profile_00d61d6c[1];\n            auto* reference = dynamic_cast<NativeLogicalVertexReference*>(base);\n            require(target == 0x00b4bf10u && reference && reference->storage() == actual &&\n                reference->matches_raw_context(s.vertices),\n                \"raw logical scalar requires its captured target and same live companion/context\");\n            (void)reference->delete_raw_scalar_00b4bf10(flags);\n        } else if (profile == 0x00d62af4u) {\n            const auto target = s.profile[1];\n            auto* reference = dynamic_cast<GuiTextNativeLayoutReference*>(base);\n            require(target == 0x00b60770u && reference && reference->storage() == actual &&\n                reference->matches_raw_context(s.construct.actual_owner, s.profile),\n                \"raw hardware scalar requires its captured target and same live companion/context\");\n            (void)reference->delete_raw_scalar_00b60770(flags);\n        } else {\n            throw std::logic_error(\"OTHER raw scalar profile remains unadmitted\");\n        }\n        require(!failed_, \"raw scalar Source invocation invalidated while active\");\n        active_ = false;\n    } catch (...) {\n        failed_ = true; active_ = false;\n        if (!failure_) failure_ = std::current_exception();\n        throw;\n    }\n}\nvoid GuiTextNativeRawLayoutInvocation::other_reference_current00(void* actual,\n    std::uint32_t profile, std::uint32_t target) {\n    require((profile == 0x00d61d6cu || profile == 0x00d62af4u) && target == 0x00bd30e0u,\n        \"OTHER current00 target remains unadmitted by the real raw provider\");\n    invoke_native_ref_counted_delete_00bd30e0(actual, *this);\n}\nvoid* GuiTextNativeRawLayoutInvocation::other_stream_descriptor_current24(void* stream,\n    std::uint32_t profile, std::uint32_t target) {\n    begin_effect();\n    try {\n        auto& s = *service_.impl_;\n        const auto& r = s.geometry.registration();\n        auto* reference = dynamic_cast<NativeLogicalVertexReference*>(r.find(r.context, stream));\n        require(profile == 0x00d61d6cu && target == 0x00b48ce0u && reference &&\n            reference->storage() == stream && reference->matches_raw_context(s.vertices),\n            \"OTHER stream descriptor target remains unadmitted by the real raw provider\");\n        void* const result = native_logical_vertex_stream_get_declaration_00b48ce0(stream);\n        require(!failed_, \"raw descriptor Source invocation invalidated while active\");\n        active_ = false;\n        return result;\n    } catch (...) {\n        failed_ = true; active_ = false;\n        if (!failure_) failure_ = std::current_exception();\n        throw;\n    }\n}\nvoid* GuiTextNativeRawLayoutInvocation::other_renderer_layout_current40(void* renderer,\n    std::uint32_t profile, std::uint32_t target, const void* key, void** acquired) {\n    require(target == 0x00b2f710u,\n        \"OTHER renderer layout target remains unadmitted by the real raw provider\");\n    return create_layout_00b2f710(renderer, profile, key, service_.impl_->construct, acquired);\n}\nvoid* GuiTextNativeRawLayoutInvocation::create_layout_00b2f710(void*,\n    std::uint32_t profile, const void* key,\n    NativeHardwareLayoutConstructContext& actual_construct, void** acquired) {\n    begin_effect();\n    factory_started_ = true; // A factory never replays, including swallowed denial.\n    try {\n        auto& s = *service_.impl_;\n        require(profile == 0x00d5f0a8u && &actual_construct == &s.construct &&\n            key == actual_key_home_, \"raw layout factory requires its actual key/context/captured family\");\n        acquisition_.phase = GuiTextNativeLayoutPhase::factory;\n        void* const result = get_or_create_native_hardware_layout_00b2f710(\n            key, actual_construct, acquired, observation_);\n        acquisition_.creator = result; // Source return identity, no HOME rescan.\n        require(!failed_ && observation_.source_complete(),\n            \"raw factory Source invocation invalidated while active\");\n        if (result) {\n            acquisition_.phase = GuiTextNativeLayoutPhase::registration;\n            s.register_acquired(acquisition_, &observation_);\n        }\n        require(!failed_, \"raw layout Source admission invalidated while active\");\n        acquisition_.phase = GuiTextNativeLayoutPhase::transferred;\n        factory_complete_ = true; // Factory/metadata return only, NOT section publication.\n        active_ = false;\n        return result;\n    } catch (...) {\n        failed_ = true; active_ = false;\n        if (!failure_) failure_ = std::current_exception();\n        throw;\n    }\n}\n\n} // namespace bsp",
+      "label": "complete genuine mutable-key provider and raw scalar routes"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "layout->matches_context(construct.actual_owner, profile),",
+      "new": "layout->matches_context(construct.actual_owner, profile) &&\n                (!observed || layout->matches_raw_context(construct.actual_owner, profile)),",
+      "label": "raw cache hit requires its still-bound actual companion"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "    service.impl_->require_domain(); // Source address/service metadata only.",
+      "new": "    service.impl_->require_domain(); // Source address/service metadata only.\n    require(service.impl_->profile && service.impl_->vertices.actual_logical_profile_00d61d6c &&\n        service.impl_->construct.actual_owner.actual_renderer_profile_00d5f0a8,\n        \"raw layout preparation requires its genuine existing table views\");",
+      "label": "cold actual table-address admission without reading values"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "    require((profile == 0x00d61d6cu || profile == 0x00d62af4u) && target == 0x00bd30e0u,\n        \"OTHER current00 target remains unadmitted by the real raw provider\");",
+      "new": "    if ((profile != 0x00d61d6cu && profile != 0x00d62af4u) || target != 0x00bd30e0u) {\n        failed_ = true;\n        throw std::logic_error(\"OTHER current00 target remains unadmitted by the real raw provider\");\n    }",
+      "label": "unsupported current00 failure stays sticky"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "    require(target == 0x00b2f710u,\n        \"OTHER renderer layout target remains unadmitted by the real raw provider\");",
+      "new": "    if (target != 0x00b2f710u) {\n        failed_ = true;\n        throw std::logic_error(\"OTHER renderer layout target remains unadmitted by the real raw provider\");\n    }",
+      "label": "unsupported current40 failure stays sticky"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "        auto* const base = r.find(r.context, actual);\n        if (profile == 0x00d61d6cu) {\n            const auto target = s.vertices.actual_logical_profile_00d61d6c[1];",
+      "new": "        std::uint32_t target;\n        if (profile == 0x00d61d6cu) target = s.vertices.actual_logical_profile_00d61d6c[1];\n        else if (profile == 0x00d62af4u) target = s.profile[1];\n        else throw std::logic_error(\"OTHER raw scalar profile remains unadmitted\");\n        auto* const base = r.find(r.context, actual);\n        if (profile == 0x00d61d6cu) {",
+      "label": "capture actual current04 target before Source companion lookup"
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "old": "        } else if (profile == 0x00d62af4u) {\n            const auto target = s.profile[1];",
+      "new": "        } else if (profile == 0x00d62af4u) {",
+      "label": "reuse exact captured hardware scalar target without resampling"
+    }
+  ],
+  "states": [
+    {
+      "label": "published5abb eight preimages",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 1755,
+          "sha256": "9349fc0e2e88249243f1af07b063397d6b220b4a815ac26e19b0a185f00133d3"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 3995,
+          "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "factory observation Source diagnostic include",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 1776,
+          "sha256": "dc4df98ecb015cded6cf9fe4a4557c01e9006d62ce2aba0d6dbdd640f958fb02"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 3995,
+          "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "factory genuine observed overload and private event record",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 3995,
+          "sha256": "782408551d90456e8908c506ea8d53ad4f44ffe8f7840da255e0b35906d956fe"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "share actual whole factory body for both APIs",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4049,
+          "sha256": "cf6c4e02c7ded83cbc6345660c0e3bfce8d8af657d645f0e3a3b7c65429d70c9"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "observe actual captured tree and pool identities",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4142,
+          "sha256": "526c2556dac9dc83cb476297ebdd4ea20164a0dcc909d45e2b0b6d25d953846a"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "observe actual hit only after its real acquire returned",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4236,
+          "sha256": "386c43d0440e1fb5867a78caa9cac98c4eb4c25f8302bd0931af189086d491fd"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "record actual allocated identity without constructing null",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4292,
+          "sha256": "03523a24bd3b79f54ab89b1d8338351a554d32c0567850bacad2ad7560266370"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "constructor fact only immediately after actual normal return",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4411,
+          "sha256": "6133c40efc2dc037a6f4c09e8f201dbaf96cb6c3db5bb72591c5fe3d02749cd9"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "preserve disarm then output and pre-insertion stage",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 4468,
+          "sha256": "ef66b499ef0d356a4c1bb0bc54b99b55eb40bad81f802c3c54ec687f50cafce5"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "old API retained plus genuine observed entry failure envelope",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7242,
+          "sha256": "f3a097c42b5289e0f5c14767e17cce85aa409b70f3f854d4ba4f668738aef20c"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "logical companion explicit genuine raw scalar API",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7699,
+          "sha256": "17410054a9e89932ce1e409d8e0e297dbfd09c0b90a9d006dfb1f73a59e38262"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "append logical failed metadata phase preserving old values",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 25341,
+          "sha256": "8c3fc9cff8680d9c7fe300bff162c29818b92d71ab813cca2f33476cee953bba"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "actual raw logical deletion then same normal retirement",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 6385,
+          "sha256": "19245d00005b8d543fdcd5b85e71dba091ca158063e38fd86010cfb8e72c8939"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "explicit actual known-factory composition interface",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7135,
+          "sha256": "967eaabc8c348f9d164f2d13e7a103014ecc1c58f15b1ad819effa2b20655354"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "append legacy-absent actual factory provider borrow",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5775,
+          "sha256": "d6f0378634d82d4287cf698dd529e24f3a53b4f1b6b0398647d33c4f956c4115"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "real known-arm factory and admission before section publication",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3064,
+          "sha256": "94d50a37a2f612c72531fcc0e9b70d0c8cd91780a40f5845df79cc20079d18c3"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "raw layout interfaces for actual retained provider",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3156,
+          "sha256": "71d31fd4db1cf657c8f55f31517b61d9c463c5fd34b4716065e2a9483c37358b"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "hardware companion explicit genuine raw scalar API",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3496,
+          "sha256": "6198bf9fb7bb64450075e2960e5e185b0ba596c93ced89e90cad1295652abfe1"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "append hardware failed metadata phase preserving old values",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3504,
+          "sha256": "735a231a703d7c760a637ce8ee6f7874528233c95ce3b512e0e8a3dee5287789"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "declare concrete raw invocation",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3544,
+          "sha256": "1fbdd2d67dba254800475c16e9a48626b62cb7bdbbad96b6daa2313ae0157696"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "share actual private service graph and registrar with concrete provider",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 3595,
+          "sha256": "f9d52894cf2055f2381e76922a75419b28bf2927f07030ddd1d4e0d36848ed7f"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "complete retained raw provider and actual context API",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 8285,
+          "sha256": "6fdd39c50f20bfb0b4ca1bb1a502f710f1a3bc776eb1c2d4f9fe9cd54d52155d"
+        }
+      }
+    },
+    {
+      "label": "real raw hardware scalar and same normal retirement",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 9303,
+          "sha256": "dcff77332257cdb798c31a9ea63e4cd8732a3cb35097ae9630ffd6ad6852de31"
+        }
+      }
+    },
+    {
+      "label": "share actual registrar with authenticated per-call factory observation",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 10342,
+          "sha256": "86d243ccd9549068b382c2cde76bb8aaf536a8019822fd0d9033ed0eb425aa00"
+        }
+      }
+    },
+    {
+      "label": "preserve old typed path actual same acquisition",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 10343,
+          "sha256": "ef9971be430197869da6df9e49a8b8bdfa4570232d89da6c193ead65fe687c16"
+        }
+      }
+    },
+    {
+      "label": "complete genuine mutable-key provider and raw scalar routes",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 16631,
+          "sha256": "9e1ec218a96fd335c5e80d97cf42d39303e5673fd6d121f21b71028498a26578"
+        }
+      }
+    },
+    {
+      "label": "raw cache hit requires its still-bound actual companion",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 16726,
+          "sha256": "e576383ff3789b4bd1ee601f6cd2a4e464271ce5dd18d268540c4966dadb8b00"
+        }
+      }
+    },
+    {
+      "label": "cold actual table-address admission without reading values",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 16980,
+          "sha256": "16c495927523b6ce17d9f698a159e7a5a6bff2d3e7ca9ef3ad1c4ea0cc04cc82"
+        }
+      }
+    },
+    {
+      "label": "unsupported current00 failure stays sticky",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 17031,
+          "sha256": "086e794b871de9145e7b27cb1e84fa047b913935a68d1bed79af0556b6d90a0d"
+        }
+      }
+    },
+    {
+      "label": "unsupported current40 failure stays sticky",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 17082,
+          "sha256": "6a13fa24cf7b39c00e100d66bbd4164143f3c6ef36961e8948e54dcdeeafb3f5"
+        }
+      }
+    },
+    {
+      "label": "capture actual current04 target before Source companion lookup",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 17273,
+          "sha256": "9129d9839b8b19a68d4f24b6a8e81dc427adf670b79a2f506e321221a182b539"
+        }
+      }
+    },
+    {
+      "label": "reuse exact captured hardware scalar target without resampling",
+      "sources": {
+        "include/bsp/native_hardware_layout_factory.hpp": {
+          "bytes": 4632,
+          "sha256": "b962a63812d3fcf377889f4e99151392b026128d52e5ca99d2ad76103bf1d787"
+        },
+        "src/native_hardware_layout_factory.cpp": {
+          "bytes": 5905,
+          "sha256": "30edf53eda19514301dd24aa50f7e712f2461bf8b40bbf601334a9dd53be05ed"
+        },
+        "include/bsp/native_logical_vertex_owner.hpp": {
+          "bytes": 7707,
+          "sha256": "97aa3b67048f8163a21fced4a346a7d6424a55741c4132e8361e57fb1af8f8cd"
+        },
+        "src/native_logical_vertex_owner.cpp": {
+          "bytes": 26317,
+          "sha256": "56f44102c2160e4f66439fb2ec3adf7460de4a851fd34513a688722c12d5d037"
+        },
+        "include/bsp/native_mesh_section_layout_storage.hpp": {
+          "bytes": 7201,
+          "sha256": "2bb597ecde029d9e9d614742e79826493173c77d7ea399e3092b5852698e03ae"
+        },
+        "src/native_mesh_section_layout_storage.cpp": {
+          "bytes": 5980,
+          "sha256": "e4eb85cdc0f1c91b31fda2e2e94c6bcf048e2c446156817bf893f3023e8391d0"
+        },
+        "include/bsp/gui_text_native_layout.hpp": {
+          "bytes": 6789,
+          "sha256": "c512ccf8c20f52347d2b2967b8f2addd895db4d536babdf522ee9b4dee2ea8cc"
+        },
+        "src/gui_text_native_layout.cpp": {
+          "bytes": 17227,
+          "sha256": "a97a9b37173bf613ccea8bbd8d90d36e5920fd6bb5460c6e915563df9b70ce2e"
+        }
+      }
+    }
+  ],
+  "kind": "ignored complete8Source+2evidence raw mutable-key provider proposal",
+  "owned_paths": [
+    "include/bsp/native_hardware_layout_factory.hpp",
+    "src/native_hardware_layout_factory.cpp",
+    "include/bsp/native_logical_vertex_owner.hpp",
+    "src/native_logical_vertex_owner.cpp",
+    "include/bsp/native_mesh_section_layout_storage.hpp",
+    "src/native_mesh_section_layout_storage.cpp",
+    "include/bsp/gui_text_native_layout.hpp",
+    "src/gui_text_native_layout.cpp",
+    "docs/CC16_NATIVE_MESH_RAW_LAYOUT_PROVIDER.md",
+    "reports/cc16_native_mesh_raw_layout_provider.json"
+  ],
+  "current_integration_head": "7647f4104aeeb902b7a4bdede1930dadc67d6f54",
+  "all8_current_preimages_exact": true,
+  "providers": [
+    {
+      "path": "include/bsp/native_ref_counted.hpp",
+      "bytes": 1226,
+      "sha256": "3012884c86aac66804d98ebb7453f3cc6f4b42580a85731d7eca0b3868ddca82"
+    },
+    {
+      "path": "src/native_ref_counted.cpp",
+      "bytes": 822,
+      "sha256": "b56eb6cde8b0aa0c590ecb52500918839723eb61a135578b95cc2ed6e2e695d9"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_owner.hpp",
+      "bytes": 3993,
+      "sha256": "57c6e2ad4a2b612969901001efc4c6b8bb8ec3702bcafe180ebc3926cdde5870"
+    },
+    {
+      "path": "src/native_hardware_layout_owner.cpp",
+      "bytes": 9277,
+      "sha256": "dc06e0a774ccd6efa5fa456cd24d124c509aa704c7c9fb85da0ef930419c9eda"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_construct.hpp",
+      "bytes": 2237,
+      "sha256": "63f4780ba2106fee5ac6ea2737ee546c48ddd82fa7c2fa89eb34dff6d03df798"
+    },
+    {
+      "path": "src/native_hardware_layout_construct.cpp",
+      "bytes": 8272,
+      "sha256": "eb91a58f817ab65da5e70aba21502f5459ccc92693055b2ca28642a8c13646a9"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree_key.hpp",
+      "bytes": 2682,
+      "sha256": "5a190ee237ac1a73f5fba270c0524724acd875499f4fbba205cb78d132a9f761"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_key.cpp",
+      "bytes": 3978,
+      "sha256": "1b1aac5682046bf26d7d92741c516934678695c2145e7f752b0f68bd1fe2ea12"
+    },
+    {
+      "path": "include/bsp/native_hardware_layout_tree_insert.hpp",
+      "bytes": 3313,
+      "sha256": "ab22f0f87d42c9c6b4cb6823b28bfbff1098a21ec9ff917a9cf4be211163dbd4"
+    },
+    {
+      "path": "src/native_hardware_layout_tree_insert.cpp",
+      "bytes": 5048,
+      "sha256": "82d040c12d2d84affb1a05e3880d273ce4f3471ee4e8cb88922a5213ad2ab802"
+    },
+    {
+      "path": "include/bsp/native_renderer_binding_getters.hpp",
+      "bytes": 2180,
+      "sha256": "ff3fc49ab959b57abfb6287f4d1653d8f86937abfa55ca44012ca97a9a427704"
+    },
+    {
+      "path": "src/native_renderer_binding_getters.cpp",
+      "bytes": 1759,
+      "sha256": "b8db34694ca9c340e55587acd1a4e95c9aceb46b501b437f177fdb690c505328"
+    },
+    {
+      "path": "include/bsp/gui_native_geometry.hpp",
+      "bytes": 11297,
+      "sha256": "30ce9d3ba933ed0e4489601f8f74c195fbb7df46457ee8444f7e3b495ec953ab"
+    },
+    {
+      "path": "src/gui_native_geometry.cpp",
+      "bytes": 37183,
+      "sha256": "694938f926f2a92eb7a12c38727579e0e338190b3de6d2d9973ac7135c308563"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 14392,
+      "sha256": "11cf2eef33c83a0da0b74e9f64ca52ca78f9ba4bd45cb2ae2586f6624517091d"
+    }
+  ],
+  "protected": [
+    {
+      "name": "logical old noexcept terminal",
+      "path": "src/native_logical_vertex_owner.cpp",
+      "utf8": "void NativeLogicalVertexReference::release_zero_references() noexcept {\n    if (phase_ != Phase::bound) std::terminate();\n    require_current_profile();\n    phase_ = Phase::destroying;\n    const auto disposal = disposal_;\n    (void)delete_native_logical_vertex_stream_00b4bf10(actual_stream_, 1, context_);\n    phase_ = Phase::retired;\n    disposal.retire(disposal.context, *this);\n}",
+      "bytes": 383,
+      "sha256": "35d2840e2ff8fa464cde74caf195be70ff3815786f737eeda883d0507b2b681e"
+    },
+    {
+      "name": "logical old ctor/dtor/profile guard",
+      "path": "src/native_logical_vertex_owner.cpp",
+      "utf8": "NativeLogicalVertexReference::NativeLogicalVertexReference(void* stream,\n    NativeLogicalVertexOwnerContext& context, NativeLogicalVertexCompanionDisposal disposal)\n    : RenderCommandReference(references(stream)), actual_stream_(stream), context_(context), disposal_(disposal) {\n    if (!disposal.retire || reference_count.load(std::memory_order_relaxed) <= 0)\n        throw std::invalid_argument(\"logical vertex reference requires live actual storage and retirement\");\n    require_current_profile();\n}\nNativeLogicalVertexReference::~NativeLogicalVertexReference() {\n    if (phase_ != Phase::retired) std::terminate();\n}\nvoid NativeLogicalVertexReference::require_current_profile() const noexcept {\n    if (word(actual_stream_) != 0x00d61d6cu || !context_.actual_logical_profile_00d61d6c ||\n        context_.actual_logical_profile_00d61d6c[0] != 0x00bd30e0u ||\n        context_.actual_logical_profile_00d61d6c[1] != 0x00b4bf10u) std::terminate();\n}\nvoid NativeLogicalVertexReference::release_zero_references() noexcept",
+      "bytes": 1020,
+      "sha256": "2743f4dc8a800f3161ea67809e7a780baf2aa2a166e1ae2046d22a9aa75d489a"
+    },
+    {
+      "name": "hardware old noexcept terminal",
+      "path": "src/gui_text_native_layout.cpp",
+      "utf8": "void GuiTextNativeLayoutReference::release_zero_references() noexcept {\n    if (phase_ != Phase::bound || !profile_matches(storage_, profile_) ||\n        reference_count.load(std::memory_order_relaxed) != 0) std::terminate();\n    phase_ = Phase::destroying;\n    const auto disposal = disposal_;\n    (void)delete_native_hardware_layout_00b60770(storage_, 1, context_);\n    phase_ = Phase::retired;\n    disposal.retire(disposal.context, *this); // May delete this; no later member access.\n}",
+      "bytes": 488,
+      "sha256": "fc466b1cd7c07ffd0c3f811e866bc9924a05b8fadc16b048d864d8912ef59c89"
+    },
+    {
+      "name": "hardware old constructor/dtor/context match",
+      "path": "src/gui_text_native_layout.cpp",
+      "utf8": "GuiTextNativeLayoutReference::GuiTextNativeLayoutReference(void* raw,\n    NativeHardwareLayoutOwnerContext& context, const volatile std::uint32_t* profile,\n    GuiTextNativeLayoutDisposal disposal)\n    : RenderCommandReference(count(raw)), storage_(raw), context_(context),\n      profile_(profile), disposal_(disposal) {\n    require(disposal.retire && reference_count.load(std::memory_order_relaxed) > 0 &&\n        profile_matches(raw, profile), \"hardware layout requires its live actual profile and retirement\");\n}\nGuiTextNativeLayoutReference::~GuiTextNativeLayoutReference() {\n    if (phase_ != Phase::retired) std::terminate();\n}\nbool GuiTextNativeLayoutReference::matches_context(const NativeHardwareLayoutOwnerContext& c,\n    const volatile std::uint32_t* p) const noexcept { return &c == &context_ && p == profile_; }\nvoid GuiTextNativeLayoutReference::release_zero_references() noexcept",
+      "bytes": 894,
+      "sha256": "e93884b575bfb62ba1204024535472e14e21923139b33738b434efac88cdb974"
+    },
+    {
+      "name": "actual factory old raw cleanup policy",
+      "path": "src/native_hardware_layout_factory.cpp",
+      "utf8": "int terminate_cpp_cleanup_exception(unsigned long code) noexcept {\n    if (code == 0xe06d7363u) std::terminate();\n    return EXCEPTION_CONTINUE_SEARCH;\n}\nvoid unwind_raw_slot(void* raw_slot, void* actual_pool) noexcept {\n    __try {\n        return_native_hardware_layout_00b60260(raw_slot, actual_pool);\n    } __except (terminate_cpp_cleanup_exception(GetExceptionCode())) {\n        __assume(0);\n    }\n}\nstruct RawSlotCleanup {\n    void* raw_slot;\n    void* actual_pool;\n    bool armed;\n    ~RawSlotCleanup() noexcept {\n        if (armed) unwind_raw_slot(raw_slot, actual_pool);\n    }\n};\n} // namespace",
+      "bytes": 602,
+      "sha256": "f968626e1a6d2c72c9e9f9acec2fe8334df83c2ee85f22d46163eb43e06cee4e"
+    },
+    {
+      "name": "old typed service constructor and teardown",
+      "path": "src/gui_text_native_layout.cpp",
+      "utf8": "GuiTextNativeLayoutServices::GuiTextNativeLayoutServices(GuiNativeGeometryOwners& g,\n    NativeLogicalVertexOwnerContext& v, NativeVertexDeclarationLoadingContext& d,\n    NativeHardwareLayoutConstructContext& c, const volatile std::uint32_t* p)\n    : impl_(std::make_unique<Impl>(Impl{g, v, d, c, p, {}, {}})) {\n    impl_->require_domain();\n}\nGuiTextNativeLayoutServices::~GuiTextNativeLayoutServices() {\n    if (!impl_->entries.empty() || (impl_->acquisition.phase != GuiTextNativeLayoutPhase::empty &&\n        impl_->acquisition.phase != GuiTextNativeLayoutPhase::transferred)) std::terminate();\n}\nconst GuiTextNativeLayoutAcquired& GuiTextNativeLayoutServices::acquired() const noexcept {\n    return impl_->acquisition;\n}\nbool GuiTextNativeLayoutServices::has_live_companions() const noexcept {\n    return !impl_->entries.empty();\n}\nvoid* GuiTextNativeLayoutServices::current_stream_descriptor_virtual24",
+      "bytes": 906,
+      "sha256": "e49218da6eac6b21f8c43b5d57a06f65b508e73bb714c37177561823a394ad2f"
+    },
+    {
+      "name": "old typed descriptor whole method",
+      "path": "src/gui_text_native_layout.cpp",
+      "utf8": "void* GuiTextNativeLayoutServices::current_stream_descriptor_virtual24(void* stream) {\n    auto& s = *impl_;\n    s.require_domain();\n    const auto* profile = s.vertices.actual_logical_profile_00d61d6c;\n    require(stream && word(stream) == 0x00d61d6cu && profile && profile[9] == 0x00b48ce0u,\n        \"Text layout requires actual D61D6C current24 B48CE0\");\n    auto* reference = dynamic_cast<NativeLogicalVertexReference*>(\n        &s.vertices.actual_owners.resolve_actual(stream));\n    require(reference && reference->storage() == stream && &reference->reference_count == &count(stream),\n        \"Text layout descriptor requires the canonical actual logical vertex reference\");\n    return native_logical_vertex_stream_get_declaration_00b48ce0(stream);\n}",
+      "bytes": 755,
+      "sha256": "0b4bec20b52c0104518356fd289d38f2efe6ac016bca6a2f4153bd3a17f17b77"
+    },
+    {
+      "name": "lowlevel full clear kernel",
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "utf8": "__declspec(noinline) void clear_native_mesh_section_vertex_streams_storage_00b86550(\n    void* captured_actual_section, const NativeMeshSectionLayoutStorageContext& c) {\n    const Word section = bits(captured_actual_section);\n    Word index = 0;\n    if (signed_word(load(section + 0x4cu)) > 0) {\n        Word slot = section + 0x3cu;\n        do {\n            const Word captured_stream = load(slot);\n            if (captured_stream != 0) {\n                release_captured(captured_stream, c);\n                store(slot, 0); // Includes a callback replacement; only after return.\n            }\n            index += 1u;\n            slot += 4u;\n        } while (signed_word(index) < signed_word(load(section + 0x4cu)));\n    }\n    store(section + 0x4cu, 0);\n}\n",
+      "bytes": 757,
+      "sha256": "72fa2cee6aa6de02321ea1bc8e2519611498541cfbfec771d793ca9f288317eb"
+    }
+  ],
+  "asm_pins": [
+    {
+      "path": "src/native_hardware_layout_factory.cpp",
+      "blocks": 3,
+      "pins": [
+        {
+          "bytes": 27,
+          "sha256": "7c48a6296aff4e5ad8da84e956f55d89c1a6dd8c4b4c42c4c22bb73b4772fb3e"
+        },
+        {
+          "bytes": 34,
+          "sha256": "ee4facf4c2ae7732188f788bdfa8c53e7fd9261e36f661cbe91a842ea5592c3f"
+        },
+        {
+          "bytes": 24,
+          "sha256": "cfa784e11105d9d755cf504228ea10d5180ec19906c38c22ef942d628a6ec9fb"
+        }
+      ]
+    },
+    {
+      "path": "src/native_logical_vertex_owner.cpp",
+      "blocks": 1,
+      "pins": [
+        {
+          "bytes": 93,
+          "sha256": "54f3e7d05d83fea55dd3e5bd7a7a0ec4d27527ca39a81509c5d90fc16579ad9b"
+        }
+      ]
+    },
+    {
+      "path": "src/native_mesh_section_layout_storage.cpp",
+      "blocks": 0,
+      "pins": []
+    },
+    {
+      "path": "src/gui_text_native_layout.cpp",
+      "blocks": 0,
+      "pins": []
+    }
+  ],
+  "ordered_probes": [
+    [
+      "actual Source factory hit capture",
+      "src/native_hardware_layout_factory.cpp",
+      [
+        "InterlockedIncrement(static_cast<volatile LONG*>(address(selected_owner, 4)));",
+        "observation->hit_ = true; observation->result_ = selected_owner;",
+        "if (acquired_before_insertion) *acquired_before_insertion = selected_owner;",
+        "return selected_owner;"
+      ]
+    ],
+    [
+      "actual Source constructor and insertion",
+      "src/native_hardware_layout_factory.cpp",
+      [
+        "allocate_native_hardware_layout_00b606f0(actual_pool)",
+        "observation->raw_slot_ = raw_slot;",
+        "construct_native_hardware_layout_00b60cb0(raw_slot, key, context);",
+        "observation->constructor_returned_ = true; observation->result_ = result;",
+        "cleanup.armed = false;",
+        "observation->pre_insertion_ = true;",
+        "*acquired_before_insertion = result;",
+        "construct_native_hardware_layout_pair_00b282b0",
+        "copy_native_hardware_layout_pair_00b25ef0",
+        "insert_native_hardware_layout_pair_00b2f540",
+        "return result;"
+      ]
+    ],
+    [
+      "fresh actual event binding",
+      "src/native_hardware_layout_factory.cpp",
+      [
+        "if (observation.entered_)",
+        "observation.entered_ = true;",
+        "observation.key_ = key;",
+        "observation.context_ = &context;",
+        "NativeHardwareLayoutFactoryObservation::invoke(",
+        "observation.returned_ = true;",
+        "if (observation.invalidated_)"
+      ]
+    ],
+    [
+      "actual known-path publication",
+      "src/native_mesh_section_layout_storage.cpp",
+      [
+        "const auto call = current(bits(captured_renderer), 0x40u, c);",
+        "c.source_factory->create_layout_00b2f710(captured_renderer, call.profile,",
+        "actual_key_home, c.hardware_layouts, acquired_before_insertion)",
+        "store(section + 0x50u, bits(layout));"
+      ]
+    ],
+    [
+      "real raw factory admission",
+      "src/gui_text_native_layout.cpp",
+      [
+        "factory_started_ = true;",
+        "key == actual_key_home_",
+        "acquisition_.phase = GuiTextNativeLayoutPhase::factory;",
+        "get_or_create_native_hardware_layout_00b2f710(",
+        "key, actual_construct, acquired, observation_);",
+        "acquisition_.creator = result;",
+        "if (result) {",
+        "s.register_acquired(acquisition_, &observation_);",
+        "factory_complete_ = true;",
+        "return result;"
+      ]
+    ],
+    [
+      "logical raw real scalar and retire",
+      "src/native_logical_vertex_owner.cpp",
+      [
+        "void* NativeLogicalVertexReference::delete_raw_scalar_00b4bf10",
+        "phase_ = Phase::destroying;",
+        "delete_native_logical_vertex_stream_00b4bf10(",
+        "if (phase_ != Phase::destroying)",
+        "phase_ = Phase::retired;",
+        "disposal.retire(disposal.context, *this);",
+        "return result;"
+      ]
+    ],
+    [
+      "hardware raw real scalar and retire",
+      "src/gui_text_native_layout.cpp",
+      [
+        "void* GuiTextNativeLayoutReference::delete_raw_scalar_00b60770",
+        "phase_ = Phase::destroying;",
+        "delete_native_hardware_layout_00b60770(storage_, flags, context_)",
+        "if (phase_ != Phase::destroying)",
+        "phase_ = Phase::retired;",
+        "disposal.retire(disposal.context, *this);",
+        "return result;"
+      ]
+    ],
+    [
+      "captured current04 before metadata lookup",
+      "src/gui_text_native_layout.cpp",
+      [
+        "void GuiTextNativeRawLayoutInvocation::delete_vslot04",
+        "target = s.vertices.actual_logical_profile_00d61d6c[1]",
+        "target = s.profile[1]",
+        "auto* const base = r.find(r.context, actual);",
+        "reference->delete_raw_scalar_00b4bf10(flags);"
+      ]
+    ]
+  ],
+  "normal_body_providers": [
+    "actual B48CE0",
+    "observed shared actual B2F710",
+    "actual BD30E0",
+    "actual B4BF10 via same canonical companion",
+    "actual B60770 via same canonical companion"
+  ],
+  "unknown_policies": [
+    "actual factory constructor/insertion/output debt retained",
+    "no Native cleanup/refund/retry invented",
+    "raw scalar ordinary exception path retains failed binding",
+    "old nested/noexcept/secondary policies inherited",
+    "successful retirement may destroy companion; no postcall pointee access",
+    "factory returned fact does not discharge actual section/parent obligation"
+  ],
+  "remaining_open": [
+    "OTHER classes/targets not claimed",
+    "actual production caller/8H context/scratch/key/import graph and Page/raw18 integration",
+    "Original private ABI/FH3/SEH/FLAGS/fault/unmaskedFP/Origin",
+    "runtime/Game validation"
+  ],
+  "permissions": {
+    "NativeOrigin": false,
+    "NativeCleanup": false,
+    "OriginalABI": false,
+    "OTHERTransport": false,
+    "productionActivation": false,
+    "compilerProof": false,
+    "runtimeGameProof": false,
+    "newNativeVendorHelperCGBodyCredit": 0
+  },
+  "reader": {
+    "utf8": "from pathlib import Path\nimport argparse,json,hashlib,re,subprocess\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args();root=Path(a.candidate);R='reports/cc16_native_mesh_raw_layout_provider.json';r=json.loads((root/R).read_bytes());checks=[]\ndef git(*x):return subprocess.check_output(['git',*x],cwd=a.repo)\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\ndef ck(n,v):assert v,n;checks.append(n)\nck('exact embedded reader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p,m in r['postimage_pins'].items():ck('postimage '+p,meta((root/p).read_bytes())==m)\ncur={p:git('show',r['base']+':'+p) for p in r['source_paths']};ck('all8 actual base Source preimages',all(meta(b)==r['preimage_pins'][p] for p,b in cur.items()))\nfor i,s in enumerate(r['Source_seams']):\n p=s['path'];old=s['old'].encode();new=s['new'].encode();ck('unique forward '+s['label'],cur[p].count(old)==1);cur[p]=cur[p].replace(old,new);ck('all8 intermediate '+str(i),{p:meta(b) for p,b in cur.items()}==r['states'][i+1]['sources'])\nck('eight whole forwards',all(b==(root/p).read_bytes() for p,b in cur.items()))\nfor s in reversed(r['Source_seams']):\n p=s['path'];old=s['old'].encode();new=s['new'].encode();ck('unique reverse '+s['label'],cur[p].count(new)==1);cur[p]=cur[p].replace(new,old)\nck('eight whole inverses',all(b==git('show',r['base']+':'+p) for p,b in cur.items()))\nfor p in r['providers']:ck('provider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\nfor p in r['protected']:ck('old protected '+p['name'],p['utf8'].encode() in (root/p['path']).read_bytes() and meta(p['utf8'].encode())=={k:p[k] for k in ['bytes','sha256']})\nfor p in r['asm_pins']:\n asm=re.findall(r'__asm\\s*\\{[^}]*\\}',(root/p['path']).read_bytes().decode());ck('all old asm exact '+p['path'],[meta(x.encode()) for x in asm]==p['pins'])\nsrc={p:(root/p).read_bytes().decode() for p in r['source_paths']}\nf=src['src/native_hardware_layout_factory.cpp'];g=src['src/gui_text_native_layout.cpp'];raw=src['src/native_mesh_section_layout_storage.cpp'];lh=src['include/bsp/gui_text_native_layout.hpp']\nfor n,p,parts in r['ordered_probes']:\n pos=0\n for part in parts:\n  hit=src[p].find(part,pos);ck(n+' '+part,hit>=pos);pos=hit+len(part)\nck('old3arg API still genuine body wrapper','return NativeHardwareLayoutFactoryObservation::invoke(key, context,\\n        acquired_before_insertion, nullptr);' in f)\nck('one real factory body only',f.count('find_native_hardware_layout_key_00b28220(')==1 and f.count('construct_native_hardware_layout_00b60cb0(')==1 and f.count('insert_native_hardware_layout_pair_00b2f540(')==1)\nck('null allocation remains original conditional', 'if (raw_slot) {\\n        result = construct_native_hardware_layout_00b60cb0' in f)\nck('new record no reset/copy/move','NativeHardwareLayoutFactoryObservation& operator=(const NativeHardwareLayoutFactoryObservation&) = delete;' in src['include/bsp/native_hardware_layout_factory.hpp'] and 'observation = {}' not in f)\nck('known actual raw factory hook present',raw.count('source_factory->create_layout_00b2f710(')==1)\nck('legacy absent direct genuine factory retained','get_or_create_native_hardware_layout_00b2f710(\\n                actual_key_home, c.hardware_layouts, acquired_before_insertion)' in raw)\nck('new raw factory uses actual4arg observed body','key, actual_construct, acquired, observation_);' in g)\nck('new raw path no typed key cast/copy','NativeMeshSectionLayoutKey' not in g[g.index('GuiTextNativeRawLayoutInvocation::GuiTextNativeRawLayoutInvocation'):])\nck('raw source does not use noexcept canonical terminals','release_zero_references' not in g[g.index('GuiTextNativeRawLayoutInvocation::GuiTextNativeRawLayoutInvocation'):])\nck('raw real B4BF10 and B60770 invoked','reference->delete_raw_scalar_00b4bf10(flags)' in g and 'reference->delete_raw_scalar_00b60770(flags)' in g)\nck('hit requires existing actual companion','require(existing != nullptr, \"raw cached layout requires its existing same-generation companion\")' in g)\nck('new generation requires ctor and no stale binding','observed->source_constructor_returned() && observed->source_pre_insertion()' in g and 'observed->allocated_slot() == a.creator && existing == nullptr' in g)\nck('raw reuse requires bound companion','(!observed || layout->matches_raw_context(construct.actual_owner, profile))' in g)\nck('no count-only registration mint','reference_count' not in g[g.index('GuiTextNativeRawLayoutInvocation::GuiTextNativeRawLayoutInvocation'):])\nck('old typed acquisition stays old member','auto& a = s.acquisition;' in g and 's.register_acquired(a);' in g)\nck('new per-call record independent','GuiTextNativeLayoutAcquired acquisition_;' in lh and 'NativeHardwareLayoutFactoryObservation observation_;' in lh)\nck('imports live refs and key only address','increment, decrement, this}' in g and 'key == actual_key_home_' in g)\nck('factory mark not section publication credit','Factory/metadata return only, NOT section publication.' in g)\nck('Source Other readiness explicitly held',all(x in g for x in ['OTHER raw scalar profile remains unadmitted','OTHER raw layout table is outside the admitted Source families','OTHER renderer layout target remains unadmitted']))\nck('no new flags/count/key clamp',not re.search(r'flags\\s*!=\\s*1|count\\s*>\\s*4|std::min',g[g.index('GuiTextNativeRawLayoutInvocation::GuiTextNativeRawLayoutInvocation'):]))\nck('all gates held',all(v is False or v==0 for v in r['permissions'].values()))\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef entries(ref):\n d={}\n for x in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if x:\n   mode,t,tail=x.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nbefore=entries(r['base']);ck('actual whole base tree',tree(before)==git('rev-parse',r['base']+'^{tree}').decode().strip());after=before.copy()\nfor p in r['owned_paths']:\n ck('owned Source/evidence state '+p,(p in before)==(p in r['source_paths']));after[p]=('100644',obj('blob',(root/p).read_bytes()))\nrev=after.copy()\nfor p in r['owned_paths']:\n if p in before:rev[p]=before[p]\n else:del rev[p]\nck('full10path recursive inverse',rev==before and tree(rev)==tree(before))\nprint(json.dumps({'verdict':'PASS ignored concrete qualified raw mutable-key provider only','checks':len(checks),'names':checks,'base':r['base'],'base_tree':tree(before),'virtual_after_tree':tree(after),'inverse_tree':tree(rev),'Native_Origin_ABI_compiler_Game_credit':False},indent=2))\n",
+    "bytes": 7061,
+    "sha256": "8ac99a189b13c7c006e2dbc2adef2cbffbd2c3ec9737a0d507037a7cf91a7c8c"
+  }
+}
