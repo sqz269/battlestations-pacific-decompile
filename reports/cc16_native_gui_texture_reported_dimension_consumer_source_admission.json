@@ -1,0 +1,239 @@
+{
+  "kind": "Source95 reported texture dimensions integration admission",
+  "author": "931f49759a2737e5e12837646d56ca88e2cb588b",
+  "actual_parent": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+  "schedule": "Extend the existing captured-dimension consumer with the genuine reported-width/height getters, retaining the same canonical receiver/count checks and saved-dimension branches.",
+  "Root_Source": {
+    "artifacts": 37,
+    "candidate_checks": 36,
+    "current_CPP_preimage_and_providers_exact": 16,
+    "Root_complete_two_seam_CPP_delta_and_full_consumer_doc_reader_Native128rows_review": true,
+    "findings": 0,
+    "V1_erratum": "Wrong pre-spill pair-capture annotation preserved; V2receiver2737\u2192FSTP273A\u2192profile273E/target2740 corrected, CPP unchanged fromV1",
+    "scope": "Existing reported dimension consumer only; no rawkernel/OriginalABI/FP/runtime activation claim",
+    "observations": [
+      "OnlyincludeexistingreportedgetterH+actual50/60branches;old70/80,canonicalsame+04,count/auth/adoption/failure/OTHER rejection exact.",
+      "Existingreportedgettersnaked4B2ops read28/2C; saved70/80 distinct.",
+      "Consumer invocation requiresrelativeFPdepth0; no CPP callback/profilelookup whilewidthST0live; heightprofile/target load afterwidthspill.",
+      "Engine string8\u21928 existing rawsuppliers, no fabricatedlegacy14 bridge; OTHERrenderer/texture targets remainheld."
+    ]
+  },
+  "actual_Git": {
+    "author": "931f49759a2737e5e12837646d56ca88e2cb588b",
+    "actual_parent": "83db5a230c20ddd21d25b9788b98560a3ab43b4e",
+    "historical_base": "055525352ee37b05a0c343d2d816566f100dceea",
+    "exact_owned_paths": true,
+    "raw_postimages_exact": true,
+    "fresh_full_recursive_inverse": true,
+    "inverse_tree": "dca33173545c64f0bdfe1218979592d840f7d500",
+    "historical_candidate_reader_only": true,
+    "findings": 0
+  },
+  "independent_Source": {
+    "own_checks": 257,
+    "reader_checks": 36,
+    "artifacts": 87,
+    "findings": 0,
+    "scope": "Source only; emitted-Code review is separately identified"
+  },
+  "compiled_review": {
+    "object_bytes": 471341,
+    "object_sha256": "6f61ad55ed2e844b710479ff3bd12e775c747b6f4e58df8f77fbb3bf2fefaa25",
+    "selected_sections": [
+      1267
+    ],
+    "selected_bytes": 211,
+    "selected_ops": 73,
+    "main": {
+      "bytes": 211,
+      "ops": 73
+    },
+    "Root_Code_review": "Whole211B73-op dimension dispatch reviewed; same canonical receiver/count checks before reported50/60 and saved70/80 getter branches. Actual four getter callees verified; both reported getter bodies are exact4B2-op naked fastcall routines.",
+    "qualification": "Source interface/canonical checks are inherited; no Original caller ABI or activation proof.",
+    "findings": 0,
+    "actual_public_symbol_absent_normal_map": true,
+    "archive_exact_member_once": null,
+    "OriginalABI_Origin_runtime_activation_credit": false,
+    "reported_getters": [
+      {
+        "name": "get_raw_texture_width_00b3ce50",
+        "hex": "8b4128c3",
+        "bytes": 4,
+        "ops": 2
+      },
+      {
+        "name": "get_raw_texture_height_00b3ce60",
+        "hex": "8b412cc3",
+        "bytes": 4,
+        "ops": 2
+      }
+    ]
+  },
+  "build": {
+    "build": {
+      "seconds": 32.2987514,
+      "exit": 0
+    },
+    "inputs": 3671,
+    "outputs": 105,
+    "existing_suites": 2,
+    "archive_exact_once": {
+      "96": 1,
+      "97": 1,
+      "98": 1,
+      "99": 1
+    },
+    "prior_objects_whole_exact": [
+      "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+      "build/win32/bsp_core.dir/Release/gui_text_clip_refresh.obj",
+      "build/win32/bsp_core.dir/Release/gui_text_content.obj",
+      "build/win32/bsp_core.dir/Release/gui_text_runtime_content.obj",
+      "build/win32/bsp_core.dir/Release/gui_text_runtime_factory.obj",
+      "build/win32/bsp_core.dir/Release/gui_texture.obj",
+      "build/win32/bsp_core.dir/Release/gui_type_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/gui_widget_clip_refresh.obj",
+      "build/win32/bsp_core.dir/Release/gui_widget_color_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_curve_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_frame_box_constructed_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_frame_box_records.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_frame_box_state_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_constructed_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_cropped_quad_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_filter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_native_size_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_size_comparison_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_append_wrapper_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_backward_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_fill_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_growth_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_iterator_insert_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_construction_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_copy_wrapper_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_wrapper_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_model_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_sound_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_cursor_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_field_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_glyph_buffers_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_main_geometry_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_main_section_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_model_clone.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_shader_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_text_storage_construct.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_bounds.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_model_clone.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_position.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_transform.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_main_scene_submission.obj",
+      "build/win32/bsp_core.dir/Release/native_material_program_compiler_actual.obj",
+      "build/win32/bsp_core.dir/Release/native_matrix_storage_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_canonical.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_clone.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_external_producers.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_pool.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_storage_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_model_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_model_pool.obj",
+      "build/win32/bsp_core.dir/Release/native_model_resource_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_model_storage_geometry.obj",
+      "build/win32/bsp_core.dir/Release/native_model_storage_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_node_tree_retirement.obj",
+      "build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj",
+      "build/win32/bsp_core.dir/Release/native_particle_clock_sink_release.obj",
+      "build/win32/bsp_core.dir/Release/native_particle_model_construction.obj",
+      "build/win32/bsp_core.dir/Release/native_post_effect20_construction.obj",
+      "build/win32/bsp_core.dir/Release/native_post_effect_construction.obj",
+      "build/win32/bsp_core.dir/Release/native_post_effect_model_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_post_effect_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_post_effect_owner_20h.obj",
+      "build/win32/bsp_core.dir/Release/native_ref_counted.obj",
+      "build/win32/bsp_core.dir/Release/native_render_batch_preparation_actual.obj",
+      "build/win32/bsp_core.dir/Release/native_render_context.obj",
+      "build/win32/bsp_core.dir/Release/native_render_observed_zero.obj",
+      "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "build/win32/bsp_core.dir/Release/native_texture_saved_dimensions.obj",
+      "build/win32/bsp_core.dir/Release/native_tracer_construction.obj",
+      "build/win32/bsp_core.dir/Release/render_command_queue.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_game.dir/Release/game_main.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_line_application.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_render_application.obj",
+      "build/win32/bsp_game.dir/Release/game_native_renderer_application.obj"
+    ],
+    "prior_objects_expected_changed": [
+      "build/win32/bsp_game.dir/Release/game_native_gui_icon_application.obj"
+    ],
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "all_new_public_symbols_absent_normal_map": true,
+    "OriginalABI_Origin_activation_credit": false
+  },
+  "compiler_amendment": null,
+  "receipts": [
+    {
+      "path": "local/function_source_batch95/Root_review.json",
+      "bytes": 999,
+      "sha256": "89cbb42d19d4ac40690cdb2211bbe591586dba61af266fd620fed9c30454d699"
+    },
+    {
+      "path": "local/function_source_batch95/Root_actual_Git.json",
+      "bytes": 422,
+      "sha256": "07bfb384179b0802e8a68b84290b837adcc756e3ef33d2981d1f5e97cee05154"
+    },
+    {
+      "path": "local/function_source_batch95/Root_Core_review.json",
+      "bytes": 1092,
+      "sha256": "9b924faa4b9223f7b393bb3e9720a7da18326b657664a5489496fb218e403e79"
+    },
+    {
+      "path": "local/function_source_batch95/Source_peer/peer_receipt.json",
+      "bytes": 5458,
+      "sha256": "bc51ad655a014e4f15e38954e1a1a005a9de7aacc618ca66aa19df8a5953e452"
+    },
+    {
+      "path": "local/function_source_batch95/Source_peer/peer_manifest.json",
+      "bytes": 16672,
+      "sha256": "71ed0292b8dd97f11dbae4f766e248974660bdf16196bdaf37b7ef3162545b4c"
+    },
+    {
+      "path": "local/function_source_batch95/Source_peer/peer_sealed_receipt.json",
+      "bytes": 546,
+      "sha256": "d46787b6f505c519cea77c73044a4f6c5774c9d41f9f7c571ef4a0ffacf0f753"
+    },
+    {
+      "path": "local/function_source_batch95/Root_common_build_review.json",
+      "bytes": 7377,
+      "sha256": "9350fc2656b539be53cc8fe4bb8a3535675b873549a40b4796347c10b001b8c5"
+    },
+    {
+      "path": "local/function_source_batch95/common/manifest.json",
+      "bytes": 1116936,
+      "sha256": "4c5ec77cc976ec93a39cdca7395550868fbe2825ff4c3e7fa87eff6fb59827a1"
+    },
+    {
+      "path": "local/function_source_batch95/build_result.json",
+      "bytes": 45,
+      "sha256": "d3a5f23770352c9f29db1165340eac013c5f340e047d26e1c95ed10415039bb6"
+    }
+  ],
+  "new_tests": 0,
+  "new_Game_runs": 0,
+  "new_body_credit": 0,
+  "OriginalABI_Origin_gameplay_activation_credit": false
+}

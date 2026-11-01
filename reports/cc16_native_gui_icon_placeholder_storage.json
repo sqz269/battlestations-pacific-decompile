@@ -1,0 +1,785 @@
+{
+  "kind": "ignored whole qualified rawAB3B30 Source placeholder candidate, no tracked author grant",
+  "base": "055525352ee37b05a0c343d2d816566f100dceea",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_placeholder_storage.hpp",
+    "src/native_gui_icon_placeholder_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_PLACEHOLDER_STORAGE.md",
+    "reports/cc16_native_gui_icon_placeholder_storage.json"
+  ],
+  "postimage_pins": {
+    "include/bsp/native_gui_icon_placeholder_storage.hpp": {
+      "bytes": 3915,
+      "sha256": "abb2535c1e4c99a564ddf578b6952d2249df1abd94cbf978d8fbf19252111f3c"
+    },
+    "src/native_gui_icon_placeholder_storage.cpp": {
+      "bytes": 3954,
+      "sha256": "f5f224fc23618eec624afaf8348f7bb45ab3ab56cd8aaa7619255c04cfa5ec95"
+    },
+    "docs/CC16_NATIVE_GUI_ICON_PLACEHOLDER_STORAGE.md": {
+      "bytes": 3861,
+      "sha256": "fa8a135e9346beee8fd70014ea12263206365557c6f36eee60fe56f9b57004d0"
+    }
+  },
+  "Native": {
+    "entry": "00ab3b30",
+    "end_exclusive": "00ab3c08",
+    "bytes": 216,
+    "rows": 76,
+    "sha256": "79fa98e079be4c50f99a8bbabbdc5cfcf37ba42c5bb05216b0b4e1b76d92f876",
+    "instruction_map": [
+      {
+        "address": "00ab3b30",
+        "bytes": "6aff",
+        "mnemonic": "push",
+        "operands": "-1",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b32",
+        "bytes": "68b87acb00",
+        "mnemonic": "push",
+        "operands": "0xcb7ab8",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b37",
+        "bytes": "64a100000000",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr fs:[0]",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b3d",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b3e",
+        "bytes": "64892500000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], esp",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b45",
+        "bytes": "83ec08",
+        "mnemonic": "sub",
+        "operands": "esp, 8",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b48",
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b49",
+        "bytes": "56",
+        "mnemonic": "push",
+        "operands": "esi",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b4a",
+        "bytes": "57",
+        "mnemonic": "push",
+        "operands": "edi",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b4b",
+        "bytes": "8bf1",
+        "mnemonic": "mov",
+        "operands": "esi, ecx",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b4d",
+        "bytes": "33db",
+        "mnemonic": "xor",
+        "operands": "ebx, ebx",
+        "Source_region": "privateprolog/actualhomes"
+      },
+      {
+        "address": "00ab3b4f",
+        "bytes": "6a01",
+        "mnemonic": "push",
+        "operands": "1",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b51",
+        "bytes": "6a29",
+        "mnemonic": "push",
+        "operands": "0x29",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b53",
+        "bytes": "8d4c2414",
+        "mnemonic": "lea",
+        "operands": "ecx, [esp + 0x14]",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b57",
+        "bytes": "c6463c01",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x3c], 1",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b5b",
+        "bytes": "885e3d",
+        "mnemonic": "mov",
+        "operands": "byte ptr [esi + 0x3d], bl",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b5e",
+        "bytes": "895c2414",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x14], ebx",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b62",
+        "bytes": "895c2418",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x18], ebx",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b66",
+        "bytes": "e8d5a196ff",
+        "mnemonic": "call",
+        "operands": "0x41dd40",
+        "Source_region": "preserve-before-flags/headerzeros/exactresize"
+      },
+      {
+        "address": "00ab3b6b",
+        "bytes": "8b442410",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp + 0x10]",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b6f",
+        "bytes": "3bc3",
+        "mnemonic": "cmp",
+        "operands": "eax, ebx",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b71",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0xab3b89",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b73",
+        "bytes": "8b4c240c",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0xc]",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b77",
+        "bytes": "83c101",
+        "mnemonic": "add",
+        "operands": "ecx, 1",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b7a",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b7b",
+        "bytes": "6858c0d500",
+        "mnemonic": "push",
+        "operands": "0xd5c058",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b80",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b81",
+        "bytes": "e8fa3a1400",
+        "mnemonic": "call",
+        "operands": "0xbf7680",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b86",
+        "bytes": "83c40c",
+        "mnemonic": "add",
+        "operands": "esp, 0xc",
+        "Source_region": "currentdata/currentLENplus1/BF-evenzero"
+      },
+      {
+        "address": "00ab3b89",
+        "bytes": "8b0d94d3f800",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [0xf8d394]",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b8f",
+        "bytes": "8b11",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [ecx]",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b91",
+        "bytes": "8b5264",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [edx + 0x64]",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b94",
+        "bytes": "53",
+        "mnemonic": "push",
+        "operands": "ebx",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b95",
+        "bytes": "8d442410",
+        "mnemonic": "lea",
+        "operands": "eax, [esp + 0x10]",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b99",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b9a",
+        "bytes": "895c2424",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x24], ebx",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3b9e",
+        "bytes": "ffd2",
+        "mnemonic": "call",
+        "operands": "edx",
+        "Source_region": "currentrenderer64/state0/realB319B0"
+      },
+      {
+        "address": "00ab3ba0",
+        "bytes": "8b3e",
+        "mnemonic": "mov",
+        "operands": "edi, dword ptr [esi]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3ba2",
+        "bytes": "3bf8",
+        "mnemonic": "cmp",
+        "operands": "edi, eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3ba4",
+        "bytes": "742a",
+        "mnemonic": "je",
+        "operands": "0xab3bd0",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3ba6",
+        "bytes": "3bc3",
+        "mnemonic": "cmp",
+        "operands": "eax, ebx",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3ba8",
+        "bytes": "8906",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esi], eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3baa",
+        "bytes": "740a",
+        "mnemonic": "je",
+        "operands": "0xab3bb6",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bac",
+        "bytes": "83c004",
+        "mnemonic": "add",
+        "operands": "eax, 4",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3baf",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bb0",
+        "bytes": "ff151c22ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce221c]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bb6",
+        "bytes": "3bfb",
+        "mnemonic": "cmp",
+        "operands": "edi, ebx",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bb8",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0xab3bd0",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bba",
+        "bytes": "8d4704",
+        "mnemonic": "lea",
+        "operands": "eax, [edi + 4]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bbd",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bbe",
+        "bytes": "ff152022ce00",
+        "mnemonic": "call",
+        "operands": "dword ptr [0xce2220]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bc4",
+        "bytes": "85c0",
+        "mnemonic": "test",
+        "operands": "eax, eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bc6",
+        "bytes": "7508",
+        "mnemonic": "jne",
+        "operands": "0xab3bd0",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bc8",
+        "bytes": "8b17",
+        "mnemonic": "mov",
+        "operands": "edx, dword ptr [edi]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bca",
+        "bytes": "8b02",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [edx]",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bcc",
+        "bytes": "8bcf",
+        "mnemonic": "mov",
+        "operands": "ecx, edi",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bce",
+        "bytes": "ffd0",
+        "mnemonic": "call",
+        "operands": "eax",
+        "Source_region": "currentold/publishnew/retainnew/releasecapturedold"
+      },
+      {
+        "address": "00ab3bd0",
+        "bytes": "8b4c2410",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 0x10]",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bd4",
+        "bytes": "5f",
+        "mnemonic": "pop",
+        "operands": "edi",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bd5",
+        "bytes": "5e",
+        "mnemonic": "pop",
+        "operands": "esi",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bd6",
+        "bytes": "3bcb",
+        "mnemonic": "cmp",
+        "operands": "ecx, ebx",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bd8",
+        "bytes": "c7442414ffffffff",
+        "mnemonic": "mov",
+        "operands": "dword ptr [esp + 0x14], 0xffffffff",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3be0",
+        "bytes": "5b",
+        "mnemonic": "pop",
+        "operands": "ebx",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3be1",
+        "bytes": "7416",
+        "mnemonic": "je",
+        "operands": "0xab3bf9",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3be3",
+        "bytes": "8b0424",
+        "mnemonic": "mov",
+        "operands": "eax, dword ptr [esp]",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3be6",
+        "bytes": "6a01",
+        "mnemonic": "push",
+        "operands": "1",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3be8",
+        "bytes": "83c001",
+        "mnemonic": "add",
+        "operands": "eax, 1",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3beb",
+        "bytes": "50",
+        "mnemonic": "push",
+        "operands": "eax",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bec",
+        "bytes": "51",
+        "mnemonic": "push",
+        "operands": "ecx",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bed",
+        "bytes": "e8ce6096ff",
+        "mnemonic": "call",
+        "operands": "0x419cc0",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bf2",
+        "bytes": "8bc8",
+        "mnemonic": "mov",
+        "operands": "ecx, eax",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bf4",
+        "bytes": "e817d91100",
+        "mnemonic": "call",
+        "operands": "0xbd1510",
+        "Source_region": "data-before-disarm/currentLEN/freshgetter/realreturn"
+      },
+      {
+        "address": "00ab3bf9",
+        "bytes": "8b4c2408",
+        "mnemonic": "mov",
+        "operands": "ecx, dword ptr [esp + 8]",
+        "Source_region": "privateepilog"
+      },
+      {
+        "address": "00ab3bfd",
+        "bytes": "64890d00000000",
+        "mnemonic": "mov",
+        "operands": "dword ptr fs:[0], ecx",
+        "Source_region": "privateepilog"
+      },
+      {
+        "address": "00ab3c04",
+        "bytes": "83c414",
+        "mnemonic": "add",
+        "operands": "esp, 0x14",
+        "Source_region": "privateepilog"
+      },
+      {
+        "address": "00ab3c07",
+        "bytes": "c3",
+        "mnemonic": "ret",
+        "operands": "",
+        "Source_region": "privateepilog"
+      }
+    ],
+    "literal": {
+      "address": "00d5c058",
+      "bytes": 42,
+      "hex": "696e746572666163652f74657874757265732f636f6d6d6f6e2f7472616e73706172656e742e74676100"
+    },
+    "handler": {
+      "address": "00cb7ab8",
+      "hex": "b830e6de00e981f0f3ff"
+    },
+    "FuncInfo": {
+      "address": "00dee630",
+      "raw_words": [
+        "19930522",
+        "00000001",
+        "00dee628",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001",
+        "19930522"
+      ]
+    },
+    "unwind_map": {
+      "address": "00dee628",
+      "hex": "ffffffffb07acb00"
+    },
+    "action": {
+      "address": "00cb7ab0",
+      "hex": "8d4dece9686276ff",
+      "instructions": [
+        {
+          "address": "00cb7ab0",
+          "mnemonic": "lea",
+          "operands": "ecx, [ebp - 0x14]"
+        },
+        {
+          "address": "00cb7ab3",
+          "mnemonic": "jmp",
+          "operands": "0x41dd20"
+        }
+      ]
+    },
+    "local_catches": 0
+  },
+  "Native_raw_hex": "6aff68b87acb0064a100000000506489250000000083ec085356578bf133db6a016a298d4c2414c6463c01885e3d895c2414895c2418e8d5a196ff8b4424103bc374168b4c240c83c101516858c0d50050e8fa3a140083c40c8b0d94d3f8008b118b5264538d44241050895c2424ffd28b3e3bf8742a3bc38906740a83c00450ff151c22ce003bfb74168d470450ff152022ce0085c075088b178b028bcfffd08b4c24105f5e3bcbc7442414ffffffff5b74168b04246a0183c0015051e8ce6096ff8bc8e817d911008b4c240864890d0000000083c414c3",
+  "provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    {
+      "path": "include/bsp/native_texture_loading_cache.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 13322,
+      "sha256": "e1f71c97b0d2d61535964084b66c51379b919bc206ebfbe4710f9058b9544785"
+    },
+    {
+      "path": "src/native_texture_loading_cache.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 49969,
+      "sha256": "c8deb2862f324fc88f4f36ac6105adf37562e1dcf2b354ef636852131078ce89"
+    },
+    {
+      "path": "include/bsp/native_string_raw_resize_exact.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 1554,
+      "sha256": "a1a3c6be74194e2f5946e13e09bfb26562c3f73d3565b51f96403f0d60b9999c"
+    },
+    {
+      "path": "src/native_string_raw_resize_exact.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3979,
+      "sha256": "74bff613a83abda342b5506ff750f46f5c44e191de506480ced504208c81f210"
+    },
+    {
+      "path": "include/bsp/native_string_raw_header_return.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 1330,
+      "sha256": "66804d2209e6875d5a9d723afdab3ab6be12e9f394ba78f3d71778149ef1a335"
+    },
+    {
+      "path": "src/native_string_raw_header_return.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 1772,
+      "sha256": "d65b8c9fab58a2b23d512164caefcd9dbdaa18f3d0aadc2ff68422dcf6429d28"
+    },
+    {
+      "path": "include/bsp/native_crt_memcpy.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 1954,
+      "sha256": "885afc56f9f3a32bad037aa4ab2d43bdf5c9d803379823ec16081fefc7e4e123"
+    },
+    {
+      "path": "src/native_crt_memcpy.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 17187,
+      "sha256": "2de2dde339f8bda040ba8b379319a5f36c4d5edfc2823586c505b312c862e6d3"
+    },
+    {
+      "path": "include/bsp/native_string_pool_owner.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 5893,
+      "sha256": "b28854f22e3b04abf48797046bdded3cd6dc0b087ffb47068bb40228d0eabdff"
+    },
+    {
+      "path": "include/bsp/native_string_pool_storage.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3113,
+      "sha256": "0d37cfdd1c50cc5e4e1c5aabed5a496324f747a68ad3ca5949f2cebb1fa23d02"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 14392,
+      "sha256": "11cf2eef33c83a0da0b74e9f64ca52ca78f9ba4bd45cb2ae2586f6624517091d"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 22868,
+      "sha256": "15552619bbc2a378e948fa017dfcbc0bf42c95a2071b0734a5a89a200134e983"
+    },
+    {
+      "path": "include/bsp/native_render_observed_zero.hpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 3903,
+      "sha256": "8acf5954ca0f96968e868532184725e5712b8ee9b62c45c898288ed71943c34b"
+    },
+    {
+      "path": "src/native_render_observed_zero.cpp",
+      "base": "055525352ee37b05a0c343d2d816566f100dceea",
+      "bytes": 5448,
+      "sha256": "9a9045c8e9b613f781ac80297aedeea9019324b051deab8cde2c37a30ac360da"
+    }
+  ],
+  "Source_epoch_probes": [
+    [
+      "construct",
+      [
+        "set(f.state_home, 0xffffffffu);",
+        "set(f.preserve_home, 1);",
+        "byte(actual_state, 0x3c, 1);",
+        "byte(actual_state, 0x3d, 0);",
+        "set(f.header[0], 0);",
+        "set(f.header[1], 0);",
+        "resize_native_string_header_0041dd40_exact(f.header, c.icon.strings, 0x29,",
+        "const Word constructed_data = live(f.header[1]);",
+        "if (constructed_data != 0) {",
+        "const Word count = live(f.header[0]) + 1u;",
+        "copy_native_crt_bytes_00bf7680(pointer(constructed_data),"
+      ]
+    ],
+    [
+      "load-publish-release",
+      [
+        "    try {",
+        "const void* const renderer = c.cache.textures.current_renderer_00f8d394;",
+        "const Word profile = read(renderer, 0);",
+        "const Word target = read(pointer(profile), 0x64);",
+        "set(f.state_home, 0);",
+        "const Word loaded = bits(load_native_renderer_texture_00b319b0(",
+        "const Word old = read(actual_state, 0);",
+        "if (old != loaded) {",
+        "write(actual_state, 0, loaded);",
+        "if (loaded != 0) {",
+        "count.fetch_add(1, std::memory_order_seq_cst);",
+        "if (old != 0)",
+        "release_native_render_actual_owner_observed(c.icon.actual_owners,",
+        "pointer(old), c.old_release);"
+      ]
+    ],
+    [
+      "catch-and-normal-return",
+      [
+        "    } catch (...) {",
+        "return_native_string_header_buffer_0041dd20_exact(f.header, c.icon.strings);",
+        "throw;",
+        "const Word cleanup_data = live(f.header[1]);",
+        "set(f.state_home, 0xffffffffu);",
+        "if (cleanup_data != 0) {",
+        "const Word size = live(f.header[0]) + 1u;",
+        "auto* const pool = native_string_pool_get_or_create_00419cc0(",
+        "return_native_string_pool_00bd1510(pool, pointer(cleanup_data), size,"
+      ]
+    ]
+  ],
+  "qualified_current64": "genuineSource-createdD5F0A8/B319B0class/custody at reachededge, sameactualcache/RawPoolcells/freshpersistentacquired. Passiveprofile/target alone notproof; OTHERcurrent64 remainsopen.",
+  "observed_release": "existingactualdecrement-first/source-currentzero API with caller-retained fresh observation/privateCPPzeroFrame; no localobserver replacement, postterminalpointee reread, reset or authority. Retain external obligations even after function normal return until genuine caller disposition.",
+  "EH_Source_policy": "ordinary completed-name C++cleanup only AFTERfullresize/copy returns; wholeRaw41DD20/barethrow onlyafternormalcleanup. Secondaryescapepropagates under SourceC++, not claimed NativeFH3/termination identity. NormalDATAcapture precedesdisarm thenCURRENTLEN/freshpoolgetter/capturedblockreturn.",
+  "no_source96_dependency": "reuses SAME genuine renderer/cache/pool domain but does not call AA2660 or depend on its private kernel/consumer overlay",
+  "remaining_open": [
+    "OTHERcurrent64transport",
+    "actual raw66C0/3310/Pageproducer/current80 integration",
+    "genuine state/atomic/header/pool/ownerrecord/zero-frame/literal/provider custody and Source CPPcaller disposition",
+    "Rootcompiler/Core/link/runtime/activation and OriginalABI/FH3/FLAGS/fault"
+  ],
+  "permissions": {
+    "tracked_Source_author_grant": false,
+    "compiler_tests_Game": false,
+    "CMake_Ghidra_ledger_mutation": false,
+    "Original_ABI_FH3_SEH_fault": false,
+    "Native_Origin": false,
+    "metadata_retirement_authority": false,
+    "runtime_activation": false,
+    "new_Original_vendor_helper_CG_duplicate_credit": 0
+  },
+  "reader": {
+    "bytes": 4502,
+    "sha256": "812d8e71d9f721dbc0fe1c36814553346fe8810e7c01373a7932ebcf4d803a3c",
+    "utf8": "from pathlib import Path\nimport argparse,hashlib,json,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate',required=True);ap.add_argument('--repo',default='.');a=ap.parse_args()\nH='include/bsp/native_gui_icon_placeholder_storage.hpp';C='src/native_gui_icon_placeholder_storage.cpp';R='reports/cc16_native_gui_icon_placeholder_storage.json'\ndef git(*v):return subprocess.check_output(['git',*v],cwd=a.repo)\ndef data(p):return (Path(a.candidate)/p).read_bytes()\ndef meta(b):return {'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()}\nr=json.loads(data(R));checks=[]\ndef ck(n,v):assert v,n;checks.append(n)\nck('exactreportextractedreader',Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor p,m in r['postimage_pins'].items():ck('postimage '+p,meta(data(p))==m)\nfor p in r['provider_pins']:ck('provider '+p['path'],meta(git('show',r['base']+':'+p['path']))=={k:p[k] for k in ['bytes','sha256']})\nh=data(H).decode();c=data(C).decode();code=re.sub(r'//[^\\n]*','',c)\nck('emptyunseedednonmovingframe','NativeGuiIconPlaceholderStorageFrame() {}' in h and h.count('= delete;')==4)\nck('ordinaryfourhomes','std::uint32_t header[2], preserve_home, state_home;' in h)\nck('retainedrealobservationref','NativeRenderActualOwnerReleaseObservation& old_release;' in h and 'NativeRenderActualOwnerReleaseObservation observation' not in code)\nck('no semanticfacade/string/temporaryowner',not any(x in code for x in ['GuiIconState&','std::string','construct_native_string_header_0041e870','std::terminate']))\nck('oneobservedrelease no unobservedlocal',code.count('release_native_render_actual_owner_observed(')==1 and 'release_native_render_actual_owner(' not in code)\nck('oneexplicitCppcatch no newtermination',code.count('catch (...)')==1 and code.count('throw;')==1)\nck('constructoroutsidecatch',c.index('copy_native_crt_bytes_00bf7680(')<c.index('    try {'))\nck('normalcleanupoutsidecatch',c.index('const Word cleanup_data')>c.index('    } catch (...)'))\nfor name,fs in r['Source_epoch_probes']:\n pos=0\n for f in fs:\n  hit=c.find(f,pos);ck(name+' '+f,hit>=pos);pos=hit+len(f)\nck('no postterminal statepointee read','read(actual_state' not in c[c.index('release_native_render_actual_owner_observed('):])\nraw=bytes.fromhex(r['Native_raw_hex']);rows=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xab3b30))\nck('whole216B76ops',len(raw)==216 and len(rows)==76 and sum(i.size for i in rows)==216)\nck('full76rowmap',all(f'{i.address:08x}'==m['address'] and i.bytes.hex()==m['bytes'] and i.mnemonic==m['mnemonic'] and i.op_str==m['operands'] for i,m in zip(rows,r['Native']['instruction_map'])))\nck('solecompletednameaction',r['Native']['unwind_map']['hex']=='ffffffffb07acb00' and r['Native']['local_catches']==0 and r['Native']['action']['instructions'][-1]['operands']=='0x41dd20')\nck('authentic42Bliteral',bytes.fromhex(r['Native']['literal']['hex'])==b'interface/textures/common/transparent.tga\\0')\nck('noNativeFP',not any(i.mnemonic.startswith('f') or i.mnemonic.startswith(('movss','movsd')) for i in rows))\nck('allpermissionszero',all(v is False or v==0 for v in r['permissions'].values()))\ndef entries(ref):\n d={}\n for x in git('ls-tree','-r','-z',ref).split(b'\\0'):\n  if x:\n   mode,t,tail=x.split(b' ',2);oid,p=tail.split(b'\\t',1);d[p.decode()]=(mode.decode(),oid.decode())\n return d\ndef obj(k,b):return hashlib.sha1(k.encode()+b' '+str(len(b)).encode()+b'\\0'+b).hexdigest()\ndef tree(flat):\n root={}\n for p,v in flat.items():\n  n=root;parts=p.split('/')\n  for q in parts[:-1]:n=n.setdefault(q,{})\n  n[parts[-1]]=v\n def rec(n):\n  out=[]\n  for k,v in sorted(n.items(),key=lambda kv:(kv[0]+('/' if isinstance(kv[1],dict) else '')).encode()):\n   mode,oid=('40000',rec(v)) if isinstance(v,dict) else v\n   out.append(mode.encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(oid))\n  return obj('tree',b''.join(out))\n return rec(root)\nbase=entries(r['base']);t=git('rev-parse',r['base']+'^{tree}').decode().strip();ck('actualbasetree',tree(base)==t);after=base.copy()\nfor p in r['owned_paths']:ck('ownpathabsent '+p,p not in base);after[p]=('100644',obj('blob',data(p)))\ninv=after.copy()\nfor p in r['owned_paths']:del inv[p]\nck('fullfouradditioninverse',inv==base and tree(inv)==t)\nprint(json.dumps({'verdict':'PASS ignored whole ordinary Source placeholder proposal only','checks':len(checks),'names':checks,'base_tree':t,'virtual_after_tree':tree(after),'inverse_tree':tree(inv),'compiler_OriginalABI_FH3_Origin_runtime_activation':False},indent=2))\n"
+  }
+}

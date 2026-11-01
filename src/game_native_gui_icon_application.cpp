@@ -10,6 +10,7 @@
 #include "bsp/native_logical_buffer_mapping.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
 #include "bsp/native_texture_saved_dimensions.hpp"
+#include "bsp/native_system_constant_gather.hpp"
 #include <array>
 #include <cstring>
 #include <list>
@@ -185,6 +186,10 @@ struct GameNativeGuiIconApplication::Impl {
         auto& reference = geometry.actual_owners().resolve_actual(raw);
         require(&reference.reference_count == &actual_count(raw) && reference.reference_count.load() > 0,
             "Native Icon texture requires its SAME canonical native reference count");
+        if (captured_target == 0x00b3ce50)
+            return get_raw_texture_width_00b3ce50(raw);
+        if (captured_target == 0x00b3ce60)
+            return get_raw_texture_height_00b3ce60(raw);
         if (captured_target == 0x00b3ce70)
             return get_native_texture_saved_width_00b3ce70(raw);
         if (captured_target == 0x00b3ce80)

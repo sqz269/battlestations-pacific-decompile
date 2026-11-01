@@ -1,0 +1,43 @@
+{
+  "kind": "Source97 narrow compiler integration amendment",
+  "original_author": "0a6034a6cc75658c0e1cac62f75ecc6227500ab6",
+  "failed_build": {
+    "seconds": 13.5969021,
+    "exit": 1
+  },
+  "diagnostics": [
+    "Missing complete GuiIconStateTextureConstants definition",
+    "C4102 unused Native address labels under WX"
+  ],
+  "changes": [
+    "Include existing gui_icon_runtime.hpp definition",
+    "Push/disable4102/pop only around write_white"
+  ],
+  "whole_preimage_restored_after_removing_exact_amendment": true,
+  "all_function_bodies_and_97_ASM_rows_unchanged": true,
+  "Source97_historical_reader_current_postimage_equality": false,
+  "Source99_current_provider_qualification": "Raw80 CPP changes only by this exact compiler amendment; no API/layout/function-body change.",
+  "receipts": [
+    {
+      "path": "local\\function_source_batch95\\initial_failed\\common\\inputs_manifest.json",
+      "bytes": 1080236,
+      "sha256": "9cfe76a9f3a951a62d0f4fa4b689e1f3d8a37e379be46e2034007d78352ce199"
+    },
+    {
+      "path": "local\\function_source_batch95\\initial_failed\\build_result.json",
+      "bytes": 45,
+      "sha256": "adc9d5cb7ea502a79cd0946f96225603c58e366f7bf0ec36762ebc3f81246854"
+    },
+    {
+      "path": "local\\function_source_batch95\\initial_failed\\common_build.log",
+      "bytes": 37898,
+      "sha256": "f02ec6cf3955168cf62d5df96cc47cbcba93ff655d44bf564d8eb95fcd133ced"
+    },
+    {
+      "path": "src\\native_gui_icon_rebuild_storage.cpp",
+      "bytes": 29546,
+      "sha256": "8ff9ed4087de4cb0b53128f0fb280206850462f8fcf372901bc46d6725e68219"
+    }
+  ],
+  "new_runtime_OriginalABI_Origin_activation_credit": false
+}
