@@ -1,0 +1,182 @@
+{
+  "kind": "Qualified atlas Source114-117 joined integration admission",
+  "Source_authors": {
+    "114": {
+      "author": "5dc05cf821a24c8ea8ac1cab54ef4cf2a652ad79",
+      "parent": "d8f8d6a6224856dd424e325f053b19cb80040002",
+      "exact4additions": true,
+      "raw_postimages_exact": true,
+      "Source_findings": 0,
+      "Root_manual": "Whole2HCPP/docs/reports; raw41DD20 provider read schedule verified; independentSourcewhole6body1196Originalrows qualifiedpass",
+      "build_runtime_activation_credit": false
+    },
+    "115": {
+      "author": "de1fc12689674c8027b5a08a26ca7015dc029537",
+      "parent": "5dc05cf821a24c8ea8ac1cab54ef4cf2a652ad79",
+      "exact4additions": true,
+      "raw_postimages_exact": true,
+      "Source_findings": 0,
+      "Root_manual": "Whole2HCPP/docs/reports; raw41DD20 provider read schedule verified; independentSourcewhole6body1196Originalrows qualifiedpass",
+      "build_runtime_activation_credit": false
+    },
+    "116": {
+      "author": "d8f8d6a6224856dd424e325f053b19cb80040002",
+      "parent": "918d11a4bce93e67e7af3c8ace56a4de4a21a9bd",
+      "Source_findings": 0,
+      "two_modified_two_added": true,
+      "only_16_Source_insertions": true,
+      "ABI_or_activation_credit": false
+    },
+    "117": {
+      "author": "cf5be56294b733217d7835c2032d5235526af5cf",
+      "parent": "de1fc12689674c8027b5a08a26ca7015dc029537",
+      "exact5additions2modifications": true,
+      "allHCPPpostimagesexact": true,
+      "metadata_only_line_normalization": [],
+      "Source_findings": 0,
+      "build_runtime_activation_credit": false
+    }
+  },
+  "Source_findings": 0,
+  "Source_peer_seals": [
+    {
+      "path": "local/function_source_batch114_115/Source_peer/REVIEW_SEAL.json",
+      "bytes": 1485,
+      "sha256": "30dea61da3db7b3d932100d126df7f1bf1f2665b89dcc625b3880b69daa95f28"
+    },
+    {
+      "path": "local/function_source_batch117/Source_peer/MANIFEST.json",
+      "bytes": 499,
+      "sha256": "cde25e73970a90ca792af023f7586fd6bc96996c8a6c830fa2103572c16076df"
+    }
+  ],
+  "Root_validation": {
+    "kind": "Root qualified Source114-117 Code/build/default-startup review",
+    "head": "818ba5c6c61fc5ac7cafa0f13ad7ab755b28307e",
+    "inputs": 3768,
+    "artifacts": 135,
+    "all_current_and_retained_hashes_match": true,
+    "build": {
+      "seconds": 51.0898432,
+      "exit": 0
+    },
+    "existing_checks": {
+      "math_seconds": 0.26,
+      "tool_seconds": 11.12,
+      "passed": 2
+    },
+    "Root_emitted_normal_body_review": {
+      "Source114": {
+        "assignment": {
+          "section": 84,
+          "bytes": 325,
+          "ops": 100
+        },
+        "substring": {
+          "section": 101,
+          "bytes": 626,
+          "ops": 194
+        },
+        "replacement": {
+          "section": 97,
+          "bytes": 1778,
+          "ops": 471
+        }
+      },
+      "Source116": {
+        "ready_renderer_supplier": {
+          "section": 5828,
+          "bytes": 86,
+          "ops": 27
+        }
+      },
+      "findings": [],
+      "notes": [
+        "Assignment identity branch precedes payload reads; real resize and BF7680 copy remain.",
+        "Substring output HOME follows BF9280; exact426060 and captured temporary DATA/current LEN cleanup remain.",
+        "Replacement captures replacement pointer after initial match; mutable search HOME reloads each iteration; suffix/prefix/concat/assignment and joined/first/prefix/suffix returns remain ordered.",
+        "Next real BF9440 search precedes current count HOME decrement and zero wraps.",
+        "Supplier checks ready phase, actual private renderer birth and same RO, then returns actual texture cache without Native payload reads.",
+        "Compiler pointer comparison scheduling is qualified by excluded private stack/argument aliases; no Original FLAGS, fault, private FH3/SEH or binary ABI identity claim."
+      ]
+    },
+    "default_host": {
+      "manifest": "local\\function_source_batch114_117\\default_host\\source_host.log.manifest.json",
+      "exe_sha256": "9bf09c00f8df0b99add08956316e495edc24fafc26c6a3838eea84ea81cd5733",
+      "game_exit": 0,
+      "launcher_exit": 0,
+      "natural_completed": true,
+      "forced_stops": [],
+      "survivors": [],
+      "frames_presented": 0
+    },
+    "credit": {
+      "Source_build_default_startup": true,
+      "atlas_activation": false,
+      "new_atlas_execution": false,
+      "retained_link": false,
+      "native_ABI": false,
+      "gameplay": false
+    },
+    "new_tests": 0
+  },
+  "Root_validation_pin": {
+    "path": "local/function_source_batch114_117/Root_validation.json",
+    "bytes": 2373,
+    "sha256": "e417d628c24b60367830d132ffb1b704059682ed561da255c0e74f5074b9f1a6"
+  },
+  "independent_emitted_Code_reviews": {
+    "reviews": [
+      {
+        "name": "loader",
+        "seal": "local/function_source_batch114_117/Code_peers/loader/REVIEW_SEAL.json",
+        "sha256": "351ace563356f4d9d5055f83898066354fb7ebf7082314f7b4654bb05122f974",
+        "qualified_pass": true,
+        "artifacts_verified_and_retained": 17,
+        "verdict": "qualified_source115_emitted_code_pass"
+      },
+      {
+        "name": "process",
+        "seal": "local/function_source_batch114_117/Code_peers/process/MANIFEST.json",
+        "sha256": "a1da17ef90413e3b4191da0afb674ea50642483db4ea04336d00adf0d3c1e415",
+        "qualified_pass": true,
+        "artifacts_verified_and_retained": 55,
+        "verdict": "qualified_bounded_emitted_code_pass"
+      }
+    ]
+  },
+  "CMake": {
+    "author": "818ba5c6c61fc5ac7cafa0f13ad7ab755b28307e",
+    "new_targets": [
+      [
+        "bsp_core",
+        "native_texture_atlas_loader_string_exact"
+      ],
+      [
+        "bsp_core",
+        "native_texture_atlas_loader_storage"
+      ],
+      [
+        "bsp_game",
+        "game_native_texture_atlas_application"
+      ]
+    ],
+    "whole_prefix_preserved": true
+  },
+  "frozen_common_manifest": {
+    "path": "local/function_source_batch114_117/common/manifest.json",
+    "bytes": 1177419,
+    "sha256": "c0542f9b80e60e69501a6de5f8890c2ecd27783ba57afd6378a938a0a7d8e683"
+  },
+  "new_tests": 0,
+  "atlas_activated": false,
+  "nine_raw_GUI_switches_changed": false,
+  "remaining": [
+    "actual Host and manager full graph failure retention",
+    "explicit scratch extent and every reached normalized line plus NUL fit",
+    "single actual consumer roles and common.ats before GUI",
+    "actual Page/Icon producer and all existing activation gates",
+    "required atlas rendering and gameplay validation"
+  ],
+  "goal": "ACTIVE; full activation and required gameplay authorized"
+}
