@@ -58,6 +58,7 @@ struct IGameExplorer;
 namespace bsp {
 class NativeGuiIconDelayedLoadsRawScalarDispatchContext;
 struct NativeInputActionRecordCalls;
+struct NativeTextureAtlasRegistryConstructFrame;
 struct NativeRendererParametersOwner;
 class XInputLibrary;
 struct CameraAxesCrtAccess;
@@ -96,6 +97,8 @@ class GameFontHost;
 class GameFrontendHost;
 class GameSingletonHost;
 class GameNativeTextureAtlasApplication;
+struct GameNativeTextureAtlasLoadCall;
+struct GameNativeTextureAtlasDeleteCall;
 class GameNativeVfsApplication;
 class GameNativeGuiIconProcess;
 // Milestone 2c, defined in bsp/game_hosts_menu.hpp and
@@ -726,6 +729,12 @@ public:
     void exit_if_native_texture_atlas_interrupted() noexcept;
     void retain_native_texture_atlas_on_exception() noexcept;
 
+    // Loans of actual retained per-call Source history; never readiness,
+    // Native ownership, or permission to dereference returned raw bytes.
+    const NativeTextureAtlasRegistryConstructFrame* native_texture_atlas_construction_record() const noexcept;
+    const GameNativeTextureAtlasLoadCall* native_texture_atlas_common_load_record() const noexcept;
+    const GameNativeTextureAtlasDeleteCall* native_texture_atlas_deletion_record() const noexcept;
+
     const GameRunSummary& summary() const noexcept { return summary_; }
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
     // phase 5 loaded. Null and default respectively when initialize did not reach them.
@@ -762,6 +771,7 @@ private:
         GameSingletonHost&, GameNativeReadOnlyData&, GameNativeVfsApplication&,
         GameNativeRendererApplication&);
     void acknowledge_native_texture_atlas_after_drain();
+    void observe_native_texture_atlas_startup();
     using CanonicalDataBorrow = std::reference_wrapper<const GameNativeCanonicalDataOwner>;
     GameStartupHost(GameHostLog&, HINSTANCE, const GameExecutableOptions&,
         GameNativeReadOnlyData*, std::optional<CanonicalDataBorrow>);

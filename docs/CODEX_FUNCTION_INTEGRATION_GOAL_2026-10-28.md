@@ -6,6 +6,14 @@ gameplay runs" in the explicit scope clarification. That supersedes this
 harness's preceding no-new-game-runs constraint. Vendor-library bodies remain
 outside the reconstruction scope.
 
+Latest actual lifecycle advance: Source123 wires genuine common atlas startup
+and selected normal retirement. Four mounted textures and 227 item records load;
+the corrected same-domain texture context bindings complete shared shutdown with
+natural game/launcher 0/0 and final renderer COM 0/0. The official Win32 build and
+both existing suites pass. See `CC16_ATLAS_SOURCE123_ADMISSION.md`. No frames were
+presented; raw Page/Icon/Text/FrameBox/frontend integration and required visual
+gameplay checks remain. The full-activation goal is active.
+
 ## Scope and evidence
 
 The target is full activation with required gameplay gates, rather than stopping

@@ -12,6 +12,7 @@
 #include "bsp/game_movie_factory_owner.hpp"
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_texture_atlas_application.hpp"
+#include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/game_native_vfs_application.hpp"
 #include "bsp/game_native_raw_default_text_owner.hpp"
 #include "bsp/game_native_mission_factories.hpp"
@@ -2042,6 +2043,80 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     singletons_ = singletons.release();
 }
 
+const NativeTextureAtlasRegistryConstructFrame*
+GameStartupHost::native_texture_atlas_construction_record() const noexcept {
+    return native_texture_atlas_ ? native_texture_atlas_->construction_record() : nullptr;
+}
+const GameNativeTextureAtlasLoadCall*
+GameStartupHost::native_texture_atlas_common_load_record() const noexcept {
+    return native_texture_atlas_ ? native_texture_atlas_->common_load_record() : nullptr;
+}
+const GameNativeTextureAtlasDeleteCall*
+GameStartupHost::native_texture_atlas_deletion_record() const noexcept {
+    return native_texture_atlas_ ? native_texture_atlas_->deletion_record() : nullptr;
+}
+
+void GameStartupHost::observe_native_texture_atlas_startup() {
+    // Only retained Source metadata after BOTH whole calls and request return.
+    // Native names/buffers may already have been returned; never read those
+    // bytes here. These observations do not grant populated atlas/Page use.
+    const auto* const construction = native_texture_atlas_construction_record();
+    const auto* const call = native_texture_atlas_common_load_record();
+    if (construction) log_.notef("atlas source construction: frame=%p phase=%u receiver=%p registered=%u",
+        static_cast<const void*>(construction), static_cast<unsigned>(construction->phase),
+        construction->actual_registry, static_cast<unsigned>(construction->base.registered));
+    if (!call) return;
+    log_.notef("atlas source common call: frame=%p manager=%p request_ctor=%u loader_started=%u loader_returned=%u request_returned=%u phase=%u candidates=%zu",
+        static_cast<const void*>(call), call->captured_manager,
+        static_cast<unsigned>(call->request_constructor_returned), static_cast<unsigned>(call->loader_started),
+        static_cast<unsigned>(call->loader_returned), static_cast<unsigned>(call->request_returned),
+        static_cast<unsigned>(call->loader.phase), call->loader.candidates.size());
+    std::size_t candidate_index = 0;
+    for (const auto& candidate : call->loader.candidates) {
+        const std::size_t index = candidate_index++;
+        log_.notef("atlas source candidate[%zu]: frame=%p phase=%u matched=%u already_present=%u descriptor_entered=%u",
+            index, static_cast<const void*>(&candidate), static_cast<unsigned>(candidate.phase),
+            static_cast<unsigned>(candidate.matcher_result), static_cast<unsigned>(candidate.requested_already_present),
+            static_cast<unsigned>(candidate.descriptor_entered));
+        if (!candidate.descriptor_entered) continue;
+        const auto& descriptor = candidate.descriptor;
+        log_.notef("atlas source descriptor[%zu]: frame=%p phase=%u buffer=%p admission_entered=%u admitted=%u file_entered=%u parser_entered=%u text_returned=%u text_freed=%u",
+            index, static_cast<const void*>(&descriptor), static_cast<unsigned>(descriptor.phase),
+            descriptor.text_register, static_cast<unsigned>(descriptor.admission_entered),
+            static_cast<unsigned>(descriptor.admission_result), static_cast<unsigned>(descriptor.file_entered),
+            static_cast<unsigned>(descriptor.parser_entered), static_cast<unsigned>(descriptor.text_destroyed),
+            static_cast<unsigned>(descriptor.text_freed));
+        log_.notef("atlas source read/fit[%zu]: fit_entered=%u read_phase=%u allocation_extent=%u completed_read_count=%u fit_phase=%u fit_reason=%u physical_shared_scratch_extent=%zu required_scratch_extent=%zu logical_extent=%u no_data=%u",
+            index, static_cast<unsigned>(descriptor.fit_entered),
+            static_cast<unsigned>(descriptor.file_read.phase()), descriptor.file_read.allocation_extent(),
+            descriptor.file_read.completed_read_count(), static_cast<unsigned>(descriptor.buffer_fit.phase),
+            static_cast<unsigned>(descriptor.buffer_fit.reason), descriptor.buffer_fit.physical_shared_scratch_extent,
+            descriptor.buffer_fit.required_scratch_extent, descriptor.buffer_fit.logical_extent,
+            static_cast<unsigned>(descriptor.buffer_fit.no_data));
+        if (!descriptor.parser_entered) continue;
+        const auto& parser = descriptor.parser;
+        const auto& acquisition = parser.texture_acquired;
+        const auto& loader = acquisition.loader;
+        log_.notef("atlas source parser[%zu]: frame=%p phase=%u normal_result=%u cache_entered=%u cache_phase=%u loader_phase=%u creator=%p ctor_complete=%u registered=%u texture=%p append_header=%p append_slot=%u slot_written=%u count_incremented=%u items=%zu",
+            index, static_cast<const void*>(&parser), static_cast<unsigned>(parser.phase),
+            static_cast<unsigned>(parser.normal_result), static_cast<unsigned>(parser.cache_entered),
+            static_cast<unsigned>(acquisition.phase), static_cast<unsigned>(loader.phase), loader.creator,
+            static_cast<unsigned>(loader.constructor_complete), static_cast<unsigned>(loader.registered),
+            parser.texture_register, parser.texture_append_header, parser.texture_append_slot,
+            static_cast<unsigned>(parser.texture_slot_written), static_cast<unsigned>(parser.texture_count_incremented),
+            parser.item_calls.size());
+        std::size_t item_index = 0;
+        for (const auto& item : parser.item_calls) {
+            log_.notef("atlas source item[%zu/%zu]: frame=%p phase=%u allocation=%p returned=%p ctor_entered=%u ctor_phase=%u params_entered=%u params_phase=%u append_header=%p append_slot=%u slot_written=%u count_incremented=%u",
+                index, item_index++, static_cast<const void*>(&item), static_cast<unsigned>(item.phase),
+                item.allocation, item.item_return, static_cast<unsigned>(item.constructor_entered),
+                static_cast<unsigned>(item.constructor.phase), static_cast<unsigned>(item.parameters_entered),
+                static_cast<unsigned>(item.parameters.phase), item.append_header, item.append_slot,
+                static_cast<unsigned>(item.slot_written), static_cast<unsigned>(item.count_incremented));
+        }
+    }
+}
+
 void GameStartupHost::bind_native_texture_atlas_retention(GameNativeTextureAtlasApplication& atlas,
     GameSingletonHost& host, GameNativeReadOnlyData& data, GameNativeVfsApplication& vfs,
     GameNativeRendererApplication& renderer) {
@@ -2265,6 +2340,11 @@ void GameStartupHost::drain_native_singletons() {
     // BBC5D0 leaves dangling table bits until parent drain. Never let a later
     // failure unwind VFS/data/strings merely because the facade says retired.
     try {
+        // FIRST while the SAME actual renderer/providers are still ready.
+        // Only118's completed normal Source fence skips an already done drain;
+        // a null binding means startup never selected an atlas Native graph.
+        if (native_texture_atlas_ && !native_texture_atlas_source_fence_returned_)
+            native_texture_atlas_->prepare_normal_retirement();
         if (!native_startup_factories_) {
             if (native_renderer_) native_renderer_->drain_singletons();
             else singletons_->shutdown();
@@ -2744,6 +2824,13 @@ void GameStartupHost::application_initialize(int flags, const char* mode) {
 }
 
 void GameStartupHost::run_initialize_phases(const char* mode) {
+    // Explicit Source budget from the pinned24-file corpus (max84 incl NUL).
+    // Source121 V2 must join actual resolved-buffer fit to THIS SAME
+    // process storage before this caller is admitted; no Native capacity.
+    constexpr std::size_t atlas_source_line_scratch_bytes = 84;
+    auto& atlas_process = GameNativeTextureAtlasApplication::create_process_roles_once(
+        atlas_source_line_scratch_bytes);
+
     // Phase 0, allocator and process identity (0073d43f-0073d4bd).
     char module_name[MAX_PATH] = {};
     GetModuleFileNameA(nullptr, module_name, static_cast<DWORD>(sizeof(module_name)));
@@ -3176,6 +3263,21 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     input_runtime_->startup();
     log_.implemented("Phase 5 input_backend_initialize", "0073dd8e");
     log_.implemented("Phase 5 input_backend_callback_and_reset", "0073dd98");
+
+    // Original73DDB6/73DDD5 -> common73DE42, before movie/particle/GUI.
+    // Supplier argument evaluation is cold and precedes Native atlas birth.
+    const auto& atlas_canonical_owner = canonical_data_owner_.value().get();
+    auto& atlas_vfs_application = vfs_->native_application();
+    auto& atlas_canonicalizer = atlas_vfs_application.raw_canonicalizer_for_atlas(atlas_canonical_owner);
+    auto& atlas_imports = game_native_renderer_scalar_process();
+    atlas_process.bind_graph_once(*this, *singletons_, *native_data_, atlas_vfs_application,
+        *native_renderer_, atlas_canonical_owner.mutable_crt_data().feature_word(), atlas_canonicalizer,
+        atlas_imports.enter_iat_00ce2218(), atlas_imports.leave_iat_00ce2210(),
+        atlas_imports.decrement_iat_00ce2220());
+    atlas_process.construct_normal();
+    atlas_process.load_common_normal();
+    log_.implemented("Phase 5 actual atlas common startup", "0073de42");
+    observe_native_texture_atlas_startup(); // Source histories only, no GUI/Page permission.
 
     // Original73DF9B factory slot, before010909B0/particle/locale. The terrain
     // and010909B0 surrounding parents stay explicitly unbound; no placeholders.
