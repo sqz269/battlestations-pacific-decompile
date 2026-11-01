@@ -167,7 +167,12 @@ private:
     // True only when the selected actual B72F70 returned this original slot;
     // born/entered-unknown constructor is retained with NO raw return.
     static bool return_unconstructed_static_slot(NativeMeshCanonicalProducerFrame&, void* captured_slot);
+    // Genuine never-entered/normal-NULL attempt only; no detach/cancel.
+    static void preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame&);
     static void cancel_without_native_payload(NativeMeshCanonicalProducerFrame&);
+    // Read only completion/active/hold metadata; never drain as a probe.
+    // The actual complete caller/worker quiescence remains external.
+    static void preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame&);
     static void close_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame&);
     static void record_source_failure(NativeMeshCanonicalProducerFrame&) noexcept;
 

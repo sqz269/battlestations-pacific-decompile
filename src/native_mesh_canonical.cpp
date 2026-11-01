@@ -396,7 +396,7 @@ bool NativeMeshCanonicalAccess::return_unconstructed_static_slot(
         return original_disposed;
     } catch (...) { r.failed(); throw; }
 }
-void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f) {
+void NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f) {
     auto& r = NativeMeshCanonicalRecord::get(f);
     // Only genuine never-entered or actual normal-NULL history, no guessed count.
     if (r.lower_.actual_ || (r.lower_.allocation_entered_ && !r.lower_.allocation_returned_) ||
@@ -406,6 +406,10 @@ void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonica
         r.failed();
         throw std::logic_error("Mesh cold cancel cannot discard entered/unknown Native custody");
     }
+}
+void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f) {
+    preflight_cancel_without_native_payload(f);
+    auto& r = NativeMeshCanonicalRecord::get(f);
     r.domain_.registry_.cancel_exact_record_without_payload(r.exact_);
     r.cold_cancelled_ = true;
     r.pending_custody_.store(false, std::memory_order_release);
@@ -415,7 +419,7 @@ void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonica
     r.block20_ = nullptr;
     f.record_ = nullptr;
 }
-void NativeMeshCanonicalAccess::close_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
+void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
     auto& r = NativeMeshCanonicalRecord::get(f);
     if (!r.canonical_zero_returned_.load(std::memory_order_acquire) || !r.lower_.pool_returned_ ||
         r.creator_outstanding_ || r.poisoned_.load(std::memory_order_acquire) ||
@@ -424,6 +428,20 @@ void NativeMeshCanonicalAccess::close_producer_link_at_quiescence(NativeMeshCano
         r.failed();
         throw std::logic_error("Failed Mesh producer cannot pass a normal close fence");
     }
+    // end_frame must not be used to discover a live caller or discharge an
+    // unrelated active-use contribution. The one linked hold is metadata,
+    // not a Native count sample or an independent quiescence proof.
+    auto* const caller=r.observed_zero_hold_.frame_;
+    const unsigned retained_hold=caller?1u:0u;
+    if ((caller && caller->active_invocations_.load(std::memory_order_acquire)!=0u) ||
+        r.exact_.outer_calls_.load(std::memory_order_acquire)!=retained_hold) {
+        r.failed();
+        throw std::logic_error("Mesh preflight requires only its inactive retained zero hold");
+    }
+}
+void NativeMeshCanonicalAccess::close_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
+    preflight_producer_link_at_quiescence(f);
+    auto& r = NativeMeshCanonicalRecord::get(f);
     drain_observed_outer_at_quiescence(r);
     if (!r.canonical_zero_returned_.load(std::memory_order_acquire) || !r.lower_.pool_returned_ || r.creator_outstanding_ ||
         r.invocation_.load(std::memory_order_acquire) ||

@@ -1,0 +1,172 @@
+{
+  "status": "QUALIFIED_MODEL_MESH_PRIVATE_PREFLIGHT_SOURCE_CORE_BUILD_LINK_DEFAULT_STARTUP_ADMITTED",
+  "Source_commit": "5a8333502891b08b844ec13e6064ad1d419f6eb5",
+  "joined_Main": "a706208047230d78d0d41fd1dde86be3292a6cf6",
+  "source_paths": 4,
+  "new_Native_or_vendor_body_credit": 0,
+  "new_tests": 0,
+  "new_public_CPP_roots": 0,
+  "new_fields_or_friends": 0,
+  "private_preflight_methods": [
+    "NativePostEffectModelFrame::preflight_cancel_without_native_payload",
+    "NativePostEffectModelFrame::preflight_close_at_quiescence",
+    "NativeMeshCanonicalAccess::preflight_cancel_without_native_payload",
+    "NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence"
+  ],
+  "whole_old_file_Source_projections": 4,
+  "whole_recursive_forward_inverse_exact": true,
+  "source_forward_sha256": "5e2c6ba1b9faecc726d925a2020737432592854354e8d4b9df253c5a5d31aadc",
+  "source_inverse_sha256": "120d9f635ebcebefc9cf1376fce4d76893058201f6f9cfef820bcb0ed35df026",
+  "reviews": {
+    "Source": {
+      "review": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Source_peer/REVIEW.md",
+        "sha256": "93ab56b4cba87cb831f968e11eebcd082a8bed01936f224d94526b58062fa70c"
+      },
+      "seal": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Source_peer/review_pins.json",
+        "sha256": "067e765dc4d56f340b319c43821ef008743c3ca39df35704ba4f497f70ee5087"
+      },
+      "copy": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Source_peer/ROOT_COPY_PINS.json",
+        "sha256": "22bdfb8af3bede4295dc4452c9f4b8a2afbd2aacddb28a359cf652e8b3ced3f8"
+      },
+      "status": "qualified_scoped_acceptance",
+      "independent_of_Source_author": true
+    },
+    "actual_Core": {
+      "review": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Core_peer/REVIEW.md",
+        "sha256": "bf87fbc773aa6049fa1602eab1a5537ee49d5fa0f950cd6f0923779ca050851b"
+      },
+      "seal": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Core_peer/review_pins.json",
+        "sha256": "708d47fb373c3c88ab347543d485aab98c4ea43eda2f8509c53577ecd79ffd24"
+      },
+      "copy": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Core_peer/ROOT_COPY_PINS.json",
+        "sha256": "e0cbdb297b1066ca7ab79a766135b09da10b81b77571a31963d25c7aede631b6"
+      },
+      "status": "qualified_scoped_acceptance",
+      "independent_of_Source_author": true,
+      "Source_failure_qualification": {
+        "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Core_peer/SOURCE_QUALIFICATION.md",
+        "sha256": "b1707bf4ad6e33489545010309511c646293f5664758d70d2d717b410774f6d5"
+      }
+    }
+  },
+  "receipts": {
+    "candidate": {
+      "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Root05_a706/PINS.json",
+      "sha256": "2a708175e23aabf6e700cfed22b3413e4211fac1f30d8eee2e3a0945fd864ded"
+    },
+    "Source_transfer": {
+      "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/Parent_Preflight4_Root05_a706/SOURCE03_TRANSFER.json",
+      "sha256": "d8c2d0f6362cb562b1afe9031ccb080457436817d0dc635559c796f3f1b3b255"
+    },
+    "build": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/preflight4_5a833_a706_Root/BUILD_RESULT.json",
+      "sha256": "52222994672ba221ce797070adde56c560e339d20d5417c8ddb9819005c282bd"
+    },
+    "artifacts": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/preflight4_5a833_a706_Root/ARTIFACTS.json",
+      "sha256": "5ca173024d730be11951b3000551ad064cfb4e6d1038f7047230df901323a0d0"
+    },
+    "inputs": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/preflight4_5a833_a706_Root/BUILD_INPUTS.json",
+      "sha256": "3a1c8973118fdc9939e91047063885c0fef67369728e51d233f85ccbf1085842"
+    },
+    "archive": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/preflight4_5a833_a706_Root/ARCHIVE_VERIFIED.json",
+      "sha256": "4c4c3dc3ac044088e3bc5ac873dd0d2349a5526e1dcc101086f348b666fd47ba"
+    },
+    "link": {
+      "path": "local/mesh_generation_primary_cc16_20261031/final99_Source_Root/preflight4_5a833_a706_Root/retained_Preflight4_link/RESULT.json",
+      "sha256": "87d81cccff6285bd68de6e7b7247cfefa08f13534e0cd3fe217525b63188f09a"
+    },
+    "root_current_bytes": {
+      "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/PREFLIGHT4_ROOT_FINAL_BYTES_GATE.json",
+      "sha256": "a6a76215aac8e76d28b2fbad6a3caf9e13ffb3395c68195c5703d9b09e74368c"
+    },
+    "runtime": {
+      "path": "local/mesh_generation_primary_cc16_20261031/ordinary_parent_common_contract_Root/runtime_Preflight5a833_default/ROOT_VALIDATION_RECEIPT.json",
+      "sha256": "21a61dd161386bc0f492ee82ac87d6f5450e058b07b651e2e0c3d9fdf2e32f73"
+    }
+  },
+  "Core_checks": {
+    "complete_scoped_methods_read": 8,
+    "old_sections_byte_and_literal_relocation_exact": 500,
+    "explicitly_named_active_lambda_bytes_exact": 18,
+    "other_EH_records_exact": 123,
+    "specific_Model_close_to_preflight_EH_map_rebindings": 4,
+    "guards_precede_real_drain_and_cancel": true,
+    "no_new_layout_fields_or_virtual_methods": true
+  },
+  "build": {
+    "configuration": "Official MSVC Win32 Release, MP2, PCH ON, coverage PDB OFF, no forcing",
+    "exit_code": 0,
+    "seconds": 104.089441,
+    "both_existing_suites_passed": true,
+    "existing_suites_seconds": 11.67,
+    "frozen_files": 348,
+    "objects": 109,
+    "Source_files": 211,
+    "actual_CL_read_inputs": 3590,
+    "compiler_tools": 6,
+    "archive": {
+      "path": "bsp_core.lib",
+      "bytes": 107159252,
+      "sha256": "dc35194fc9c502673495541ad2bbc6d5f054e093b9aeee3f8aabfd8ac30e82ac"
+    },
+    "whole_exact_selected_Core_members": 98
+  },
+  "retained_link": {
+    "existing_actual_public_roots": 90,
+    "existing_Section_roots": 31,
+    "new_roots_this_batch": 0,
+    "temporarily_retained": 76,
+    "normal_roots": 14,
+    "all_109_objects_Source_and_archive_whole_exact": true,
+    "canonical_forcing_off": true,
+    "new_entry_execution": false
+  },
+  "default_runtime": {
+    "game_launcher_exit": [
+      0,
+      0
+    ],
+    "natural_completed": true,
+    "forced_or_surviving_pids": [],
+    "BSP_environment": {},
+    "exact_six_shutdown_rows": true,
+    "concrete_host_methods": 126,
+    "unimplemented_host_methods": 41,
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "ordinary_preflight_execution": false,
+    "exe_sha256": "8234c98e1e729507c74c2c9f954b719cf47a7984f334b157cde05247256e189d"
+  },
+  "cold_failure_policy": {
+    "Model": "Preserved free-require throw; no automatic self failure marker. Owning first-pass/cancel escape must retain SAME failed graph.",
+    "Mesh": "Preserved own metadata failure marker; no foreign head traversal."
+  },
+  "raw_GUI_false_switches": [
+    "kRawDefaultTextQualificationCc16Bound",
+    "kRawDefaultSourceEqualQualificationCc16Bound",
+    "kRawPrimaryPrefixQualificationCc16Bound",
+    "kRawPrefixGeometryQualificationCc16Bound",
+    "kRawMainSectionQualificationCc16Bound",
+    "kRawFontMainQualificationCc16Bound",
+    "kRawEmptyUnchangedQualificationCc16Bound",
+    "kRawFontMetadataQualificationCc16Bound",
+    "kRawFontWorkQualificationCc16Bound"
+  ],
+  "activation": false,
+  "remaining_gates": [
+    "Real whole Native/caller/worker quiescence is external; metadata counts do not prove it.",
+    "Actual registry cancellation/close retain their final membership checks; preflight is not a concurrent reservation.",
+    "Root5/Parent6/Block4 coupled creator/setter/payload/first-pass/reset integration remains separate.",
+    "Actual Section/GUI/clone/Model/Mesh/Host bindings, lower/all-eight upper families, strict pairs and gameplay remain open.",
+    "Private C++ call/EH/scheduling changed; no Original ABI/FH3/SEH/private HOME/FP/DF/fault/concurrency equivalence."
+  ]
+}
