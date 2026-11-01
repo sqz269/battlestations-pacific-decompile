@@ -1,0 +1,243 @@
+{
+  "kind": "Root combined published owning support and raw Icon support join",
+  "published_Main": "71b7bc9723089f1a4e0a810e954b5e74cc6314b7",
+  "compiled_head": "20d2d96c2c77409364e3a0dcb8db395a7c390c63",
+  "included_Source": [
+    88,
+    90,
+    91
+  ],
+  "join": {
+    "incoming": "43ad5ec10fd17bbfae8e86f233b10e45045b457e",
+    "incoming_paths": 109,
+    "all_incoming_Git_blobs_exact_except_two_intentional_files": [
+      "docs/CC16_COUPLED_MESH_MODEL_OWNING_SOURCE_ADMISSION.md",
+      "include/bsp/game_hosts.hpp",
+      "include/bsp/game_native_renderer_application.hpp",
+      "include/bsp/gui_native_geometry.hpp",
+      "include/bsp/gui_text_content.hpp",
+      "include/bsp/gui_text_resource_names.hpp",
+      "include/bsp/gui_text_runtime_content.hpp",
+      "include/bsp/native_gui_curve_storage.hpp",
+      "include/bsp/native_gui_frame_box_constructed_storage.hpp",
+      "include/bsp/native_gui_frame_box_records.hpp",
+      "include/bsp/native_gui_frame_box_state_storage.hpp",
+      "include/bsp/native_gui_icon_constructed_storage.hpp",
+      "include/bsp/native_gui_model_storage.hpp",
+      "include/bsp/native_gui_sound_storage.hpp",
+      "include/bsp/native_gui_text_cursor_storage.hpp",
+      "include/bsp/native_gui_text_field_storage.hpp",
+      "include/bsp/native_gui_text_glyph_buffers_storage.hpp",
+      "include/bsp/native_gui_text_main_geometry_storage.hpp",
+      "include/bsp/native_gui_text_storage_construct.hpp",
+      "include/bsp/native_main_scene_submission.hpp",
+      "include/bsp/native_material_program_compiler_actual.hpp",
+      "include/bsp/native_mesh_canonical.hpp",
+      "include/bsp/native_mesh_external_producers.hpp",
+      "include/bsp/native_mesh_owner.hpp",
+      "include/bsp/native_mesh_storage_lifetime.hpp",
+      "include/bsp/native_model_owner.hpp",
+      "include/bsp/native_model_pool.hpp",
+      "include/bsp/native_model_storage_geometry.hpp",
+      "include/bsp/native_model_storage_lifetime.hpp",
+      "include/bsp/native_node_tree_retirement.hpp",
+      "include/bsp/native_particle_clock_shutdown.hpp",
+      "include/bsp/native_particle_clock_sink_release.hpp",
+      "include/bsp/native_particle_model_construction.hpp",
+      "include/bsp/native_post_effect20_construction.hpp",
+      "include/bsp/native_post_effect_construction.hpp",
+      "include/bsp/native_post_effect_model_lifetime.hpp",
+      "include/bsp/native_post_effect_ordinary_lifetime.hpp",
+      "include/bsp/native_post_effect_owner.hpp",
+      "include/bsp/native_post_effect_owner_20h.hpp",
+      "include/bsp/native_render_context.hpp",
+      "include/bsp/native_render_observed_zero.hpp",
+      "include/bsp/native_render_zero_frame.hpp",
+      "include/bsp/native_renderer_control_worker.hpp",
+      "include/bsp/native_tracer_construction.hpp",
+      "include/bsp/render_command_queue.hpp",
+      "reports/cc16_coupled_mesh_model_owning_source_admission.json",
+      "src/game_hosts.cpp",
+      "src/game_main.cpp",
+      "src/game_native_gui_icon_application.cpp",
+      "src/game_native_gui_line_application.cpp",
+      "src/game_native_gui_render_application.cpp",
+      "src/game_native_mission_resources.inc",
+      "src/game_native_renderer_application.cpp",
+      "src/game_native_renderer_frame.inc",
+      "src/game_native_renderer_textures.inc",
+      "src/gui_native_geometry.cpp",
+      "src/gui_text_clip_refresh.cpp",
+      "src/gui_text_content.cpp",
+      "src/gui_text_runtime_content.cpp",
+      "src/gui_text_runtime_factory.cpp",
+      "src/gui_widget_clip_refresh.cpp",
+      "src/gui_widget_color_dispatch.cpp",
+      "src/native_gui_curve_storage.cpp",
+      "src/native_gui_frame_box_constructed_storage.cpp",
+      "src/native_gui_frame_box_records.cpp",
+      "src/native_gui_frame_box_state_storage.cpp",
+      "src/native_gui_icon_constructed_storage.cpp",
+      "src/native_gui_model_storage.cpp",
+      "src/native_gui_sound_storage.cpp",
+      "src/native_gui_text_cursor_storage.cpp",
+      "src/native_gui_text_field_storage.cpp",
+      "src/native_gui_text_glyph_buffers_storage.cpp",
+      "src/native_gui_text_main_geometry_storage.cpp",
+      "src/native_gui_text_main_section_storage.cpp",
+      "src/native_gui_text_model_clone.cpp",
+      "src/native_gui_text_shader_storage.cpp",
+      "src/native_gui_text_storage_construct.cpp",
+      "src/native_gui_widget_model_clone.cpp",
+      "src/native_main_scene_submission.cpp",
+      "src/native_material_program_compiler_actual.cpp",
+      "src/native_matrix_storage_lifetime.cpp",
+      "src/native_mesh_canonical.cpp",
+      "src/native_mesh_external_producers.cpp",
+      "src/native_mesh_owner.cpp",
+      "src/native_mesh_pool.cpp",
+      "src/native_mesh_storage_lifetime.cpp",
+      "src/native_model_owner.cpp",
+      "src/native_model_pool.cpp",
+      "src/native_model_resource_storage.cpp",
+      "src/native_model_storage_geometry.cpp",
+      "src/native_model_storage_lifetime.cpp",
+      "src/native_node_tree_retirement.cpp",
+      "src/native_particle_clock_shutdown.cpp",
+      "src/native_particle_clock_sink_release.cpp",
+      "src/native_particle_model_construction.cpp",
+      "src/native_post_effect20_construction.cpp",
+      "src/native_post_effect_construction.cpp",
+      "src/native_post_effect_model_lifetime.cpp",
+      "src/native_post_effect_owner.cpp",
+      "src/native_post_effect_owner_20h.cpp",
+      "src/native_render_context.cpp",
+      "src/native_render_observed_zero.cpp",
+      "src/native_renderer_control_worker.cpp",
+      "src/native_tracer_construction.cpp",
+      "src/render_command_queue.cpp",
+      "tests/test_merge_resolve_refusals.py",
+      "tools/merge_resolve.py"
+    ],
+    "CMake_entire_incoming_bytes_plus_exact_two_entries": true,
+    "GoalDoc_both_append_blocks_preserved": true,
+    "source_conflicts": 0
+  },
+  "build": {
+    "exit": 0,
+    "seconds": 251.8223687,
+    "inputs": 3643,
+    "outputs": 98,
+    "existing_suites": 2,
+    "new_tests": 0
+  },
+  "runtime": {
+    "kind": "Focused actual combined executable startup and natural shutdown",
+    "build_head": "20d2d96c2c77409364e3a0dcb8db395a7c390c63",
+    "exe": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\build\\win32\\Release\\bsp_game.exe",
+      "size": 7610880,
+      "mtime_utc": "2026-11-01T06:19:13.0307971Z",
+      "sha256": "64392d6700d0cdc708d7ef36ef95636588f0822eee00da621e789d3114a8c6e1",
+      "build_checkout": {
+        "root": "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration",
+        "head": "9cb262f9c560d015cc07fae402f2646077ca9355",
+        "dirty": false
+      }
+    },
+    "frames": 1,
+    "difficulty": 1,
+    "NoForceStop": true,
+    "private_personal_root": true,
+    "env": {},
+    "exit_code": 0,
+    "launcher_exit_code": 0,
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "window_created": true,
+    "device_created": true,
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "unimplemented_methods": 41,
+    "raw_Icon_activation": false,
+    "full_visual_gameplay_validation": false
+  },
+  "Main69_comparison": {
+    "strict_Code_data_EH": 22,
+    "explicit_bijective_private_anonymous_ID_qualified": 56,
+    "raw_Code_by_ordered_section": 58,
+    "total": 69,
+    "whole_objects_equal": 0,
+    "complete_normalized_equality_not_established_for_remaining_13": true,
+    "scope": "Supplementary comparisons only; no blanket whole69 identity or Original ABI claim. Incoming Source accepted by published review and exact Git merge; current build and focused runtime checked."
+  },
+  "raw_quad_provider_reconciliation": {
+    "unchanged_whole_pins": 12,
+    "changed_published_sources": [
+      "include/bsp/gui_native_geometry.hpp",
+      "src/gui_native_geometry.cpp",
+      "src/game_native_gui_icon_application.cpp"
+    ],
+    "qualification": "Published owning-support/interface changes; full raw leaf input domain remains caller contract. No claim all15 historical whole pins equal after join."
+  },
+  "metadata_only_after_build": [
+    "Main71b Source99 admission/runtime notes",
+    "Source90 stale-selector evidence correction",
+    "new Root admission/goal evidence"
+  ],
+  "all_raw_activation_gates_still_required": true,
+  "goal": "active; full activation and required gameplay authorized",
+  "receipts": [
+    {
+      "path": "local/function_source_batch92/Root_join_review.json",
+      "bytes": 5435,
+      "sha256": "3c9e80c5551ed7a3b2cd2192ddef2bc5d05e107ea6437f1625ac1d5659126319"
+    },
+    {
+      "path": "local/function_source_batch92/common/manifest.json",
+      "bytes": 1105635,
+      "sha256": "92f69aac290588f301274442165cedefe054aa36ed8250b0800fd9ef2511e726"
+    },
+    {
+      "path": "local/function_source_batch92/build_result.json",
+      "bytes": 46,
+      "sha256": "3bd2cae73de4be02ec90a4576e5021861983c227f3b705b1f5defdffc457a22c"
+    },
+    {
+      "path": "local/function_source_batch92/Main69_Core_comparison.json",
+      "bytes": 385511,
+      "sha256": "b233f32e0f1fa3b8b37e29c3d37a4d65b70f4696bb430587a424a72bc723f078"
+    },
+    {
+      "path": "local/function_source_batch92/Main69_private_identifier_comparison.json",
+      "bytes": 21826,
+      "sha256": "94988e7628ad2ac3747aa8551fd174f0b279460055fcae3ce1cdeccb58e4f7d1"
+    },
+    {
+      "path": "local/function_source_batch92/Main69_raw_Code_comparison.json",
+      "bytes": 18230,
+      "sha256": "32ca4a65b9f34eec34ae0845a1c5a41462a42d63fa61b42dcbcf896539664a6e"
+    },
+    {
+      "path": "local/function_source_batch92/symbol_selector_correction.json",
+      "bytes": 636,
+      "sha256": "cd864baeb05f2b55f5dceb6edb561ffb7f971ebbd116891f4c346b64df55cabd"
+    },
+    {
+      "path": "local/function_source_batch92/default_host/manifest.json",
+      "bytes": 979,
+      "sha256": "d7e7c3b8abe92448f39d252e3d179fa5b99d095b988e49bed365a9a3e650e18b"
+    },
+    {
+      "path": "local/function_source_batch91/Root_Core_review.json",
+      "bytes": 2913,
+      "sha256": "f8a497af2013457fa7cdf32f92cd2b6a3d6d6241e865447b68618a80b60ffb93"
+    }
+  ]
+}
