@@ -351,7 +351,9 @@ void NativeRenderActualOwnerRegistry::deactivate_exact_record_from_partial_cpp_e
     // Private owning continuation proved actual C++ prefix birth, ctor escape,
     // no whole Native return/publication/borrow, selected SAME raw operand and
     // actual last-prefix-use plus trivial prefix end. No Native access here.
-    // Caller metadata and the separately live pool index survive the pool call.
+    // Caller metadata and separately live pool index survive the pool call.
+    // Qualified Parent initializer instead ends only its born +4 atomic before
+    // the SAME reached raw free, never normal payload death or retirement.
     record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
     record.partial_cpp_ended_.store(true, std::memory_order_release);
 }
@@ -361,6 +363,15 @@ void NativeRenderActualOwnerRegistry::abandon_exact_unborn_record(ExactRecord& r
     // physical-return receipt. BEFORE ANY Owner/Node/payload C++ birth and
     // native ctor entry; no publication. Actual family pool-index access stays
     // with the real return provider. Partial/failed constructor is NOT enough.
+    record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
+    record.unborn_abandoned_.store(true, std::memory_order_release);
+}
+
+void NativeRenderActualOwnerRegistry::abandon_exact_parent_record_before_cpp_birth(
+    ExactRecord& record) noexcept {
+    // Concrete Parent action0 proved SAME actual allocation and no +4/Owner/
+    // canonical/publication birth. An entered-but-pre+4 caught attempt is not
+    // the Mesh/Model never-entered contract. No Native access or failure clear.
     record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
     record.unborn_abandoned_.store(true, std::memory_order_release);
 }

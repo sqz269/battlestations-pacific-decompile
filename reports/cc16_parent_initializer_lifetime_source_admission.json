@@ -1,0 +1,576 @@
+{
+  "status": "ACCEPT_QUALIFIED_PARENT_INITIALIZER_SOURCE_CODE_OFFICIAL_BUILD_AND_JOIN_TRANSFER",
+  "Source_base": "cda8c653d1c894486437a6b8aa02c86270d13721",
+  "Root_base": "deb39273101dda6b8a7b43874a6a415fab899232",
+  "Root_candidate_tree": "19bb9293b40e052e67fbcda7c0029dd1d33b9127",
+  "source01_seal_sha256": "5c95d6fc2c62469447de8f69f510d8f28e971111ca83021bb549d6b4acae9a31",
+  "Root_source_files": [
+    {
+      "path": "include/bsp/native_post_effect_parent_lifetime.hpp",
+      "sha256": "2a8a8789ebc82533e108243b88f1bae69fca11aadbd677f4571529d95dd6976a"
+    },
+    {
+      "path": "src/native_post_effect_parent_lifetime.cpp",
+      "sha256": "36c80d7af2c3ddaa941b5f99e270af98ed03195cdc48cc2a36406c848fd7c6e4"
+    },
+    {
+      "path": "include/bsp/native_bright_pass_initializer.hpp",
+      "sha256": "180edbcbb504f278f61092e11a8929e747cabb267c8c956731807ba08e90ca26"
+    },
+    {
+      "path": "src/native_bright_pass_initializer.cpp",
+      "sha256": "608b4b794113c501825215154bb7df625232c8189fd6f68f6e37f2d4c9024055"
+    },
+    {
+      "path": "include/bsp/native_post_effect_dust_initializer.hpp",
+      "sha256": "6f37e648e4773f2f335586264a004895b4c3a3a72b9110f1eff265a0c2de581c"
+    },
+    {
+      "path": "src/native_post_effect_dust_initializer.cpp",
+      "sha256": "cea6c18b1e26b8e1e22dc587c190a2ecdb25c59f959a5418125f4cff75ee98d3"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "sha256": "4c97705f1214f477b3640f15395f72db48f3c114899a2f6439e8c9e35435288a"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "sha256": "427486aa6a412dd2855ad971b4294351a3a2b36f885b59d95f1bbc00156585c7"
+    }
+  ],
+  "Root_canonical_patch_sha256": "31ee1bda76bf550a872a37d2672909c936ee585922ce375fca82baec8aec4c57",
+  "independent_Source": {
+    "review_sha256": "6ee954e092508c2e3dc57a27fe0f4fb56ea00c962b769a665238675d8ad13717",
+    "seal_sha256": "9f3e307c0e87393f699f1f239028db2838d90a47d43fa9e5dbd0a663af0ea2a3",
+    "decision": "QUALIFIED_SOURCE_PASS",
+    "conditions": [
+      {
+        "id": "C1",
+        "status": "source_pass",
+        "evidence": "Bright after172-225; Dust after154-232: complete private scope, outside-try optional, inside emplacement, whole catch lifetime"
+      },
+      {
+        "id": "C2",
+        "status": "source_pass",
+        "evidence": "Parent after470-508,592-599: baseline, optional engagements, actual outer-entry fact, begin-failure compensation, full-tail withdrawal"
+      },
+      {
+        "id": "C3",
+        "status": "source_pass_not_compiler_proof",
+        "evidence": "private HPP declarations/friends; Parent after162-217, Impl destructor186; all34 DEFINITION_COVERAGE rows read against full patch"
+      },
+      {
+        "id": "C4",
+        "status": "source_pass",
+        "evidence": "unchanged allocate_parent saved actual/returned before fallible health; Parent after510-549,581-590; Callers actual-call catch excludes post-return checks and preserves original tails"
+      },
+      {
+        "id": "C5",
+        "status": "source_pass",
+        "evidence": "Parent after551-579; Caller reached action0 only; Common after370-378 metadata seam; old death/retire/close/abandon bodies protected"
+      },
+      {
+        "id": "C6",
+        "status": "source_pass_with_external_owner_fences_held",
+        "evidence": "Parent after188-217,1010-1038,1225-1328,601-622; Caller detach/reset after genuine Parent close; all observer targets remain owner-held through entire traversal"
+      }
+    ],
+    "author44_and_peer3_pins_verified": true,
+    "protected_comparisons": 44,
+    "whole_unwind_projections": 2,
+    "real_definition_floor": 34,
+    "Root_full8_patch_read": true
+  },
+  "official_build": {
+    "path": "local/mesh_generation_primary_cc16_20261031/Parent_initializer_eight_Core_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "3a4d542744f4de1753b5a822a4e3c70b5f96d22e1a18ab5eeb6156ba6423b6ba",
+    "Core_bytes": 108196388,
+    "Core_sha256": "1e1b98c7248737765e7acd7b2c30c0baccdf8ac70507312ebbbadc86fe4e7023",
+    "exit": 0,
+    "seconds": 247.26,
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "command": "./scripts/build.ps1 -Configuration Release -Diagnostic",
+    "existing_suites": 2,
+    "test_seconds": 15.61,
+    "CL_inputs": 6634,
+    "tools": 6,
+    "focal_members": [
+      {
+        "object": "native_post_effect_parent_lifetime.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect_parent_lifetime.obj",
+        "offset": 24651122,
+        "bytes": 201569,
+        "sha256": "8a9398094c5af7871f65a107c5376cd48038ad9d4bc1a8ae862591e87570919d",
+        "sections": 631,
+        "symbols": 2038,
+        "whole_exact": true
+      },
+      {
+        "object": "native_post_effect_dust_initializer.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect_dust_initializer.obj",
+        "offset": 46098070,
+        "bytes": 33287,
+        "sha256": "a6fc8725618363befe8dc7a48e2c7b649917da7ef61d418352558017337cb390",
+        "sections": 133,
+        "symbols": 426,
+        "whole_exact": true
+      },
+      {
+        "object": "native_post_effect_construction.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect_construction.obj",
+        "offset": 46132954,
+        "bytes": 146149,
+        "sha256": "c8079a3eda804a24c7fb03bc2d8d602ba28794db0007fe77826fc2b6f0fc6270",
+        "sections": 518,
+        "symbols": 1639,
+        "whole_exact": true
+      },
+      {
+        "object": "native_post_effect20_construction.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect20_construction.obj",
+        "offset": 46279164,
+        "bytes": 149611,
+        "sha256": "b8157b55df8d270b5f5025836628bc28fab2e9b5a45366812b8ff4a56155e74c",
+        "sections": 523,
+        "symbols": 1658,
+        "whole_exact": true
+      },
+      {
+        "object": "native_mesh_owner.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_owner.obj",
+        "offset": 49674808,
+        "bytes": 63066,
+        "sha256": "5268149eb23dfb2d507a105e033ed6ab69388959a2bed74b02ce29778c56ae0f",
+        "sections": 246,
+        "symbols": 763,
+        "whole_exact": true
+      },
+      {
+        "object": "native_mesh_draw_section_clear_storage.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_draw_section_clear_storage.obj",
+        "offset": 49737934,
+        "bytes": 3185,
+        "sha256": "f845bb84c74547a010fabebebb1aa4e2d2d6f03e39edd3f84767a0848e0c48ee",
+        "sections": 11,
+        "symbols": 33,
+        "whole_exact": true
+      },
+      {
+        "object": "native_mesh_draw_section_append_storage.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_draw_section_append_storage.obj",
+        "offset": 49741180,
+        "bytes": 3228,
+        "sha256": "5c81e31b097c5955f6688389d44dfc4f8681374c78b5632555bbaadd77fe7d4f",
+        "sections": 11,
+        "symbols": 32,
+        "whole_exact": true
+      },
+      {
+        "object": "native_bright_pass_initializer.obj",
+        "member": "bsp_core.dir\\Release\\native_bright_pass_initializer.obj",
+        "offset": 56385770,
+        "bytes": 39240,
+        "sha256": "c97a2056efee0b053479808401a2798a93138c44bfa7cd4785c1bc4542bcf74d",
+        "sections": 140,
+        "symbols": 455,
+        "whole_exact": true
+      },
+      {
+        "object": "native_render_context.obj",
+        "member": "bsp_core.dir\\Release\\native_render_context.obj",
+        "offset": 101214816,
+        "bytes": 76876,
+        "sha256": "47e7f6eb20886fc36fd5a1fd6f72fd9748f35f86fd18b3e08984dad2216bca99",
+        "sections": 317,
+        "symbols": 987,
+        "whole_exact": true
+      }
+    ]
+  },
+  "genuine_before": {
+    "path": "local/mesh_generation_primary_cc16_20261031/Mesh_clear_resize_Core_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "abb26f30ad9b093e86b82530beecc1f2e7f69fbe08cc44f25b99bd1fa472e654",
+    "Core_sha256": "439b1eec67192b9b3c38a3dad7d59948fa3560ef3c911ec5cc199c9f71002163",
+    "source8_preimages_pinned_unchanged": true
+  },
+  "actual_Code": {
+    "decision": "QUALIFIED_CODE_PASS_FOR_PINNED_TUPLE",
+    "review_path": "local/mesh_generation_primary_cc16_20261031/Parent_initializer_Code_peer/REVIEW.md",
+    "review_sha256": "81e58a8ca2e5640abfa343740ee8b8375ccf64e8437c37eb2962bbd0da18323e",
+    "seal_sha256": "8682c500d512550061a3630a0db105093fc5db8ee5b10d9d656a320e27718272",
+    "seal3_and74_transitive_proof_files_verified": true,
+    "full_review_read": true,
+    "archive_census": {
+      "ordinary_members": 2860,
+      "metadata_members": 3,
+      "whole_equal": 2338,
+      "timestamp_only": 515,
+      "content_changed": 7,
+      "timestamp_only_permitted_offsets": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "actual_changed_timestamp_offsets": [
+        4,
+        5
+      ],
+      "nine_focal_snapshot_payloads_exact": true,
+      "index_symbols": 96082,
+      "both_archive_indices_agree": true
+    },
+    "complete_readsets": {
+      "before_paths": 6634,
+      "after_paths": 6634,
+      "raw_tlogs_manifest_set_equal": true,
+      "path_sets_identical": true,
+      "only_hash_deltas": 8,
+      "only_hash_deltas_are_source01_Parent8": true,
+      "PCH_inputs_identical": 2,
+      "other_inputs_identical": 6626,
+      "tools_verified": 6,
+      "focal_commands_before_after": [
+        7,
+        9
+      ],
+      "all_frozen_artifacts_verified": [
+        16,
+        18
+      ],
+      "root_source8_current_at_review_exact": true,
+      "root_dependency5_current_at_review_exact": true,
+      "hash_capture_not_reexecution": true
+    },
+    "code_accounting": {
+      "primary_objects": 4,
+      "header_dependent_objects": 3,
+      "header_dependent_text_bodies": 9,
+      "header_dependent_relocation_sequences_equal": true,
+      "text_delta_records": 200,
+      "text_classes": {
+        "optional/unique_ptr/construction/forward/deletion template helper; actual code and relocation inventory": 90,
+        "concrete host constructor/destructor/deleting wrapper; metadata/layout/lifetime": 20,
+        "private concrete ParentCallScope forwarding member": 10,
+        "existing host preparation/field-address/reset/name tail or private accessor; host-layout/codegen accounting": 34,
+        "compiler EH handler/funclet; FH3/SafeSEH accounting and scope/delete cleanup": 20,
+        "initializer lifetime/source/free/close semantic body; actual control flow and EH": 17,
+        "header-dependent host aggregate offset/codegen; complete diff and same relocation-target sequence": 9
+      },
+      "all34_definitions_emitted": 34,
+      "new_undefined_refs": 24,
+      "new_undefined_core_resolved": 24,
+      "unresolved_new_refs": [],
+      "before_after_FH3_records": 106,
+      "new_common_body_bytes": 18,
+      "raw_ctor_and_Mesh_objects_equal_except_timestamp": 5,
+      "anonymous_rdata_multisets_equal": true
+    },
+    "conditions": {
+      "C1": "actual scope optional lives through outer catch/recursive cleanup; actual seven-state initializer EH maps",
+      "C2": "actual terminal/outer/Material engagement and catch compensation; final return/exception baseline and one withdrawal",
+      "C3": "all34 emitted, private Source definitions compile, all24 new undefined resolved by archive indices",
+      "C4": "actual supplier/return/state epochs, raw-call catch2 only, native_completed preservation and original tails/Dust zeros",
+      "C5": "same reached operand/free despite mismatch; no fallible health/Native count access/death/refund/clear; trivial prefix end has no Native emission",
+      "C6": "real single Source observer, full tail/Source close preflight, deferred cold/NULL and closed typed Caller detach; failed membership retained"
+    },
+    "initializer_EH": {
+      "magic": "0x19930522",
+      "max_state": 7,
+      "optional_cleanup_state": 0,
+      "optional_cleanup_to": -1,
+      "raw_call_try": [
+        2,
+        2,
+        3
+      ],
+      "recursive_cleanup_try": [
+        5,
+        5,
+        6
+      ],
+      "outer_try": [
+        1,
+        3,
+        6
+      ],
+      "Caller_cancel_reset_noexcept_flags": 5
+    },
+    "scope": "all7contentchangingmembers including3headerdependents",
+    "raw_ctor20_ctor24_Mesh3": "Only COFFtimestamp4/5 changed vs genuine before; zero outside4..7; NOT wholebyteidentity"
+  },
+  "held": [
+    "owner custody through entire external Source traversal and real final fences",
+    "actual Mission/upper dispatcher and provider/caller selection",
+    "OriginalABI/HOME/FH3/SEH/FP/DF/fault/concurrency",
+    "Origin/all8/lower/strictOFFON/runtime/activation"
+  ],
+  "all9_raw_GUI_flags": false,
+  "Native_vendor_credit": 0,
+  "new_tests_probes_Game_Ghidra_mutation": false,
+  "joined_official_build": {
+    "base": "03427e061ce20711f983cc6098e8ac870f5a970f",
+    "candidate_tree": "2840e12ed4a49d8c7ff48c5723c3f86ce8f6774f",
+    "patch_sha256": "31ee1bda76bf550a872a37d2672909c936ee585922ce375fca82baec8aec4c57",
+    "receipt_path": "local/mesh_generation_primary_cc16_20261031/Parent_initializer_eight_join_Core_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "54faf0c4f01f5cedbf8b614895f6408ee103a729bf6f232c164bd85a8ed51e6c",
+    "Core_bytes": 108196388,
+    "Core_sha256": "d1f57961266c2257ee73b92e942b53b835ca5af0014c517a769cf43d0e453c46",
+    "exit": 0,
+    "seconds": 81.75,
+    "existing_suites": 2,
+    "test_seconds": 14.91,
+    "CL_inputs": 6636,
+    "tools": 6,
+    "input_transfer": {
+      "reviewed_paths": 6634,
+      "joined_paths": 6636,
+      "added": [
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC16-PROGRESS\\INCLUDE\\BSP\\GAME_NATIVE_GUI_PAGE_TEXT_ACTIVE_CHILD34.HPP",
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC16-PROGRESS\\SRC\\GAME_NATIVE_GUI_PAGE_TEXT_ACTIVE_CHILD34.CPP"
+      ],
+      "removed": [],
+      "hash_deltas": [
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC16-PROGRESS\\SRC\\GAME_NATIVE_GUI_PAGE_APPLICATION.CPP",
+        "J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC16-PROGRESS\\INCLUDE\\BSP\\GAME_NATIVE_GUI_PAGE_APPLICATION.HPP"
+      ],
+      "tools_identical": true
+    },
+    "member_transfer": {
+      "decision": "QUALIFIED_TWELVE_MEMBER_JOIN_TRANSFER_PASS",
+      "before_Core_sha256": "1e1b98c7248737765e7acd7b2c30c0baccdf8ac70507312ebbbadc86fe4e7023",
+      "after_Core_sha256": "d1f57961266c2257ee73b92e942b53b835ca5af0014c517a769cf43d0e453c46",
+      "members": [
+        {
+          "member": "native_post_effect_parent_lifetime.obj",
+          "before_bytes": 201569,
+          "after_bytes": 201569,
+          "before_sha256": "8a9398094c5af7871f65a107c5376cd48038ad9d4bc1a8ae862591e87570919d",
+          "after_sha256": "8a9398094c5af7871f65a107c5376cd48038ad9d4bc1a8ae862591e87570919d",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 24651122,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_bright_pass_initializer.obj",
+          "before_bytes": 39240,
+          "after_bytes": 39240,
+          "before_sha256": "c97a2056efee0b053479808401a2798a93138c44bfa7cd4785c1bc4542bcf74d",
+          "after_sha256": "c97a2056efee0b053479808401a2798a93138c44bfa7cd4785c1bc4542bcf74d",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 56385770,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_post_effect_dust_initializer.obj",
+          "before_bytes": 33287,
+          "after_bytes": 33287,
+          "before_sha256": "a6fc8725618363befe8dc7a48e2c7b649917da7ef61d418352558017337cb390",
+          "after_sha256": "a6fc8725618363befe8dc7a48e2c7b649917da7ef61d418352558017337cb390",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 46098070,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_render_context.obj",
+          "before_bytes": 76876,
+          "after_bytes": 76876,
+          "before_sha256": "47e7f6eb20886fc36fd5a1fd6f72fd9748f35f86fd18b3e08984dad2216bca99",
+          "after_sha256": "47e7f6eb20886fc36fd5a1fd6f72fd9748f35f86fd18b3e08984dad2216bca99",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 101214816,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_render_resource_init_continuation.obj",
+          "before_bytes": 36805,
+          "after_bytes": 36805,
+          "before_sha256": "895373bfe1ebadf40282f9c44a3391aa5ad20de8587a424c02aa01655b315540",
+          "after_sha256": "895373bfe1ebadf40282f9c44a3391aa5ad20de8587a424c02aa01655b315540",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 97204496,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_render_resource_init_post.obj",
+          "before_bytes": 14857,
+          "after_bytes": 14857,
+          "before_sha256": "32e1bff49217653e6f88f66199e13e6f951397ac4c394a650981554f115264b3",
+          "after_sha256": "32e1bff49217653e6f88f66199e13e6f951397ac4c394a650981554f115264b3",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 45583766,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_render_resource_initializer.obj",
+          "before_bytes": 26762,
+          "after_bytes": 26762,
+          "before_sha256": "67902631249b33acc1b90da4268b612e068e7b66e12a1f0694960bc1c7a854f6",
+          "after_sha256": "67902631249b33acc1b90da4268b612e068e7b66e12a1f0694960bc1c7a854f6",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 45468448,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_post_effect20_construction.obj",
+          "before_bytes": 149611,
+          "after_bytes": 149611,
+          "before_sha256": "b8157b55df8d270b5f5025836628bc28fab2e9b5a45366812b8ff4a56155e74c",
+          "after_sha256": "b8157b55df8d270b5f5025836628bc28fab2e9b5a45366812b8ff4a56155e74c",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 46279164,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_post_effect_construction.obj",
+          "before_bytes": 146149,
+          "after_bytes": 146149,
+          "before_sha256": "c8079a3eda804a24c7fb03bc2d8d602ba28794db0007fe77826fc2b6f0fc6270",
+          "after_sha256": "c8079a3eda804a24c7fb03bc2d8d602ba28794db0007fe77826fc2b6f0fc6270",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 46132954,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_mesh_draw_section_clear_storage.obj",
+          "before_bytes": 3185,
+          "after_bytes": 3185,
+          "before_sha256": "f845bb84c74547a010fabebebb1aa4e2d2d6f03e39edd3f84767a0848e0c48ee",
+          "after_sha256": "f845bb84c74547a010fabebebb1aa4e2d2d6f03e39edd3f84767a0848e0c48ee",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 49737934,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_mesh_draw_section_append_storage.obj",
+          "before_bytes": 3228,
+          "after_bytes": 3228,
+          "before_sha256": "5c81e31b097c5955f6688389d44dfc4f8681374c78b5632555bbaadd77fe7d4f",
+          "after_sha256": "5c81e31b097c5955f6688389d44dfc4f8681374c78b5632555bbaadd77fe7d4f",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 49741180,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        },
+        {
+          "member": "native_mesh_owner.obj",
+          "before_bytes": 63066,
+          "after_bytes": 63066,
+          "before_sha256": "5268149eb23dfb2d507a105e033ed6ab69388959a2bed74b02ce29778c56ae0f",
+          "after_sha256": "5268149eb23dfb2d507a105e033ed6ab69388959a2bed74b02ce29778c56ae0f",
+          "whole_exact": true,
+          "same_size": true,
+          "diff_bytes": 0,
+          "outside_COFF_timestamp_bytes": 0,
+          "first_outside_offsets": [],
+          "after_archive_offset": 49674808,
+          "code_symbols_relocations_all_bytes_except_timestamp_exact": true
+        }
+      ],
+      "whole_exact_count": 12,
+      "timestamp_only_count": 0,
+      "Original_ABI_runtime_granted": false
+    },
+    "source8_exact_through_join": true
+  },
+  "Root_canonical_join_Source": {
+    "status": "PINNED_CODE_GATE_ACCEPTED_JOIN_BUILD_TRANSFER_PENDING",
+    "base": "03427e061ce20711f983cc6098e8ac870f5a970f",
+    "candidate_tree": "2840e12ed4a49d8c7ff48c5723c3f86ce8f6774f",
+    "source_files": [
+      {
+        "path": "include/bsp/native_post_effect_parent_lifetime.hpp",
+        "sha256": "2a8a8789ebc82533e108243b88f1bae69fca11aadbd677f4571529d95dd6976a"
+      },
+      {
+        "path": "src/native_post_effect_parent_lifetime.cpp",
+        "sha256": "36c80d7af2c3ddaa941b5f99e270af98ed03195cdc48cc2a36406c848fd7c6e4"
+      },
+      {
+        "path": "include/bsp/native_bright_pass_initializer.hpp",
+        "sha256": "180edbcbb504f278f61092e11a8929e747cabb267c8c956731807ba08e90ca26"
+      },
+      {
+        "path": "src/native_bright_pass_initializer.cpp",
+        "sha256": "608b4b794113c501825215154bb7df625232c8189fd6f68f6e37f2d4c9024055"
+      },
+      {
+        "path": "include/bsp/native_post_effect_dust_initializer.hpp",
+        "sha256": "6f37e648e4773f2f335586264a004895b4c3a3a72b9110f1eff265a0c2de581c"
+      },
+      {
+        "path": "src/native_post_effect_dust_initializer.cpp",
+        "sha256": "cea6c18b1e26b8e1e22dc587c190a2ecdb25c59f959a5418125f4cff75ee98d3"
+      },
+      {
+        "path": "include/bsp/native_render_context.hpp",
+        "sha256": "4c97705f1214f477b3640f15395f72db48f3c114899a2f6439e8c9e35435288a"
+      },
+      {
+        "path": "src/native_render_context.cpp",
+        "sha256": "427486aa6a412dd2855ad971b4294351a3a2b36f885b59d95f1bbc00156585c7"
+      }
+    ],
+    "source_paths": [
+      "include/bsp/native_post_effect_parent_lifetime.hpp",
+      "src/native_post_effect_parent_lifetime.cpp",
+      "include/bsp/native_bright_pass_initializer.hpp",
+      "src/native_bright_pass_initializer.cpp",
+      "include/bsp/native_post_effect_dust_initializer.hpp",
+      "src/native_post_effect_dust_initializer.cpp",
+      "include/bsp/native_render_context.hpp",
+      "src/native_render_context.cpp"
+    ],
+    "patch_sha256": "31ee1bda76bf550a872a37d2672909c936ee585922ce375fca82baec8aec4c57",
+    "reviewed_base": "deb39273101dda6b8a7b43874a6a415fab899232",
+    "reviewed_candidate": "19bb9293b40e052e67fbcda7c0029dd1d33b9127",
+    "Code_peer_seal_sha256": "8682c500d512550061a3630a0db105093fc5db8ee5b10d9d656a320e27718272",
+    "Code_peer74_verified": true,
+    "Root_real_index_modified": false,
+    "Source8_changed_during_join": false,
+    "all9_false": true
+  }
+}

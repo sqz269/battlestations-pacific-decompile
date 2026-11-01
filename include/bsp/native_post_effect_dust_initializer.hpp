@@ -2,6 +2,9 @@
 #include "bsp/native_post_effect_construction.hpp"
 
 namespace bsp {
+class NativePostEffectParentFrame;
+class NativePostEffectParentDomain;
+class NativeMeshSectionLifetimeSourceScope;
 // Original D620AC bytes and the same actual pools, canonical owners and native
 // constant cells already used by the child B4E840 constructor. Borrowed for the
 // complete lifetime of every surviving child and host companion.
@@ -42,6 +45,8 @@ public:
     NativePostEffectDustBlock(NativePostEffectDustBlock&&) = delete;
     NativePostEffectDustBlock& operator=(NativePostEffectDustBlock&&) = delete;
     void prepare(NativePostEffectDustContext&);
+    void prepare(NativePostEffectDustContext&, NativePostEffectParentDomain&,
+        NativeMeshSectionLifetimeSourceScope&);
     void cancel_preparation() noexcept;
     Phase phase() const noexcept { return phase_; }
     const NativePostEffectDustAcquired& acquired() const noexcept { return acquired_; }
@@ -51,6 +56,8 @@ public:
     // This resets only diagnostic storage and the inactive raw name header.
     void reset_after_host_quiescence() noexcept;
 private:
+    friend class NativePostEffectParentDomain;
+    class ParentCallScope;
     friend void initialize_native_post_effect_dust_00b52860(void*, std::size_t,
         NativePostEffectDustBlock&);
     void settle() noexcept;
@@ -60,6 +67,7 @@ private:
     Phase phase_{Phase::idle};
     NativePostEffectDustAcquired acquired_;
     NativePostEffectConstructionBlock child_;
+    NativePostEffectParentFrame* parent_frame_{}; // genuine retained cold loan
     NativeString effect_name_;
 };
 

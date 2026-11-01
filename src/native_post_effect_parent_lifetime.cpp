@@ -1,6 +1,8 @@
 #include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/native_post_effect_construction.hpp"
 #include "bsp/native_post_effect20_construction.hpp"
+#include "bsp/native_bright_pass_initializer.hpp"
+#include "bsp/native_post_effect_dust_initializer.hpp"
 #include "bsp/native_post_effect_ordinary_lifetime.hpp"
 #include "bsp/native_mesh_canonical.hpp"
 #include "bsp/native_material_lifetime.hpp"
@@ -115,10 +117,12 @@ struct NativePostEffectParentFrame::Impl {
     std::uint8_t captured_flags{};
     Word virtual_flags_home{};
     std::unique_ptr<SectionConstruction> section;
+    std::unique_ptr<InitializerConstruction> initializer;
     Impl(NativePostEffectParentDomain& d, NativePostEffect20ConstructionBlock& b)
         : domain(d), kind(Kind::parent20), block20(&b) {}
     Impl(NativePostEffectParentDomain& d, NativePostEffectConstructionBlock& b)
         : domain(d), kind(Kind::parent24), block24(&b) {}
+    ~Impl(); // InitializerConstruction must be complete at destruction.
 };
 
 // Only the admitted producer owns this setter receiver's mutable heads.
@@ -152,6 +156,65 @@ private:
     NativeMaterialFrame* const material_;
     const int uncaught_;
 };
+
+// Retained before initializer admission. The automatic Caller guard owns only
+// its real invocation; this record and all observer targets outlive that guard.
+struct NativePostEffectParentFrame::InitializerConstruction final {
+    NativeBrightPassInitializationBlock* bright_live{};
+    const NativeBrightPassInitializationBlock* bright_identity{};
+    NativePostEffectDustBlock* dust_live{};
+    const NativePostEffectDustBlock* dust_identity{};
+    NativeMeshSectionLifetimeSourceScope* source_live{};
+    const NativeMeshSectionLifetimeSourceScope* source_identity{};
+    NativePostEffectParentFrame* source_next{};
+    bool owns_observer{}, source_ended{}, source_failed{};
+    bool admitted{}, outer_entered{}, finished{}, source_returned{}, detached{};
+    bool constructor_call_entered{}, constructor_call_returned{}, constructor_call_escaped{};
+    bool raw_free_entered{}, raw_free_returned{}, raw_free_same{}, prefix_ended{};
+    int uncaught{};
+    void* constructor_return_value{};
+    void* raw_free_operand{};
+    std::optional<NativeRenderObservedZeroAccess::Invocation> terminal_invocation;
+    std::optional<MaterialConstructorScope> material_scope;
+    InitializerConstruction(NativeBrightPassInitializationBlock&, NativeMeshSectionLifetimeSourceScope&);
+    InitializerConstruction(NativePostEffectDustBlock&, NativeMeshSectionLifetimeSourceScope&);
+    InitializerConstruction(const InitializerConstruction&) = delete;
+    InitializerConstruction& operator=(const InitializerConstruction&) = delete;
+    InitializerConstruction(InitializerConstruction&&) = delete;
+    InitializerConstruction& operator=(InitializerConstruction&&) = delete;
+};
+NativePostEffectParentFrame::Impl::~Impl() = default;
+
+NativePostEffectParentFrame::InitializerConstruction::InitializerConstruction(
+    NativeBrightPassInitializationBlock& block, NativeMeshSectionLifetimeSourceScope& source)
+    : bright_live(&block), bright_identity(&block), source_live(&source), source_identity(&source) {
+    auto* frame=block.post_effect().parent_frame_;
+    if(!frame)throw std::logic_error("Bright initializer lost its retained Parent attachment");
+    frame->require_owned(frame->impl_->kind==Kind::parent20&&frame->impl_->block20==&block.post_effect()&&
+        !source.ended_&&!source.failed_,"Bright initializer requires SAME cold Parent and live external Source");
+    if(frame->impl_->section){
+        auto& s=*frame->impl_->section;
+        frame->require_owned(s.source_live==&source&&s.source_identity==&source&&!s.source_ended,
+            "Bright initializer must reuse its SAME Section Source observer");
+    }else{
+        source_next=source.parents_;source.parents_=frame;owns_observer=true;
+    }
+}
+NativePostEffectParentFrame::InitializerConstruction::InitializerConstruction(
+    NativePostEffectDustBlock& block, NativeMeshSectionLifetimeSourceScope& source)
+    : dust_live(&block), dust_identity(&block), source_live(&source), source_identity(&source) {
+    auto* frame=block.child().parent_frame_;
+    if(!frame)throw std::logic_error("Dust initializer lost its retained Parent attachment");
+    frame->require_owned(frame->impl_->kind==Kind::parent24&&frame->impl_->block24==&block.child()&&
+        !source.ended_&&!source.failed_,"Dust initializer requires SAME cold Parent and live external Source");
+    if(frame->impl_->section){
+        auto& s=*frame->impl_->section;
+        frame->require_owned(s.source_live==&source&&s.source_identity==&source&&!s.source_ended,
+            "Dust initializer must reuse its SAME Section Source observer");
+    }else{
+        source_next=source.parents_;source.parents_=frame;owns_observer=true;
+    }
+}
 // Only the scalar CAS winner owns payload heads. It does not pin/substitute
 // factory A for the actual CURRENT target B; Common holds B's own real Frame.
 class NativePostEffectParentFrame::MaterialPayloadScope final {
@@ -348,6 +411,37 @@ NativePostEffectParentFrame& NativePostEffectParentDomain::prepare24(
         return *frame;
     } catch (...) { NativePostEffectParentFrame::record_domain_failure(*this); throw; }
 }
+NativePostEffectParentFrame& NativePostEffectParentDomain::prepare_initializer(
+    NativeBrightPassInitializationBlock& caller, NativePostEffect20ConstructionContext& context,
+    NativeMeshSectionLifetimeSourceScope& source) {
+    NativePostEffectParentFrame* frame=nullptr;
+    try {
+        require_owned(&context==&impl_->c20&&caller.context_ && &caller.context_->post_effects==&context&&
+            caller.phase_==NativeBrightPassInitializationBlock::Phase::preparing&&!caller.parent_frame_,
+            "Bright initializer requires its exact Domain context and cold Caller");
+        frame=&prepare20(caller.post_effect_,source);
+        caller.parent_frame_=frame; // retained loan survives a later host allocation failure
+        require_owned(!frame->impl_->initializer,"Bright initializer association cannot replay");
+        frame->impl_->initializer=std::make_unique<NativePostEffectParentFrame::InitializerConstruction>(caller,source);
+        return *frame;
+    }catch(...){if(frame)frame->record_source_failure();else NativePostEffectParentFrame::record_domain_failure(*this);throw;}
+}
+NativePostEffectParentFrame& NativePostEffectParentDomain::prepare_initializer(
+    NativePostEffectDustBlock& caller, NativePostEffectConstructionContext& context,
+    NativeMeshSectionLifetimeSourceScope& source) {
+    NativePostEffectParentFrame* frame=nullptr;
+    try {
+        require_owned(&context==&impl_->c24&&caller.context_ && &caller.context_->construction==&context&&
+            caller.phase_==NativePostEffectDustBlock::Phase::preparing&&!caller.parent_frame_,
+            "Dust initializer requires its exact Domain context and cold Caller");
+        frame=&prepare24(caller.child_,source);
+        caller.parent_frame_=frame;
+        require_owned(!frame->impl_->initializer,"Dust initializer association cannot replay");
+        frame->impl_->initializer=std::make_unique<NativePostEffectParentFrame::InitializerConstruction>(caller,source);
+        return *frame;
+    }catch(...){if(frame)frame->record_source_failure();else NativePostEffectParentFrame::record_domain_failure(*this);throw;}
+}
+
 void NativePostEffectParentFrame::prepare_after_link() {
     try {
         auto& d = *impl_->domain.impl_;
@@ -373,6 +467,160 @@ void NativePostEffectParentFrame::prepare_after_link() {
         }
     } catch (...) { record_source_failure(); throw; }
 }
+void NativePostEffectParentFrame::begin_initializer_call(NativeBrightPassInitializationBlock& caller) {
+    require_healthy();auto* i=impl_->initializer.get();
+    require_owned(i&&i->bright_live==&caller&&i->bright_identity==&caller&&!i->dust_identity&&
+        impl_->kind==Kind::parent20&&impl_->block20==&caller.post_effect()&&
+        caller.phase()==NativeBrightPassInitializationBlock::Phase::executing&&
+        i->source_live&&!i->source_ended&&!i->source_failed&&!i->source_live->ended_&&!i->source_live->failed_&&
+        !i->admitted&&!i->finished&&!i->detached,
+        "Bright admission requires the SAME prepared Caller/Frame and real live Source");
+    i->admitted=true;i->uncaught=std::uncaught_exceptions();
+    try {
+        require_owned(!impl_->producer_entered.exchange(true),"Initializer Parent producer cannot replay");
+        i->terminal_invocation.emplace(terminal_zero_frame_);
+        begin_outer_call();i->outer_entered=true;
+        i->material_scope.emplace(*this);
+    }catch(...){
+        record_source_failure();
+        if(i->outer_entered){i->outer_entered=false;end_outer_call();}
+        i->material_scope.reset();i->terminal_invocation.reset();i->finished=true;throw;
+    }
+}
+void NativePostEffectParentFrame::begin_initializer_call(NativePostEffectDustBlock& caller) {
+    require_healthy();auto* i=impl_->initializer.get();
+    require_owned(i&&i->dust_live==&caller&&i->dust_identity==&caller&&!i->bright_identity&&
+        impl_->kind==Kind::parent24&&impl_->block24==&caller.child()&&
+        caller.phase()==NativePostEffectDustBlock::Phase::executing&&
+        i->source_live&&!i->source_ended&&!i->source_failed&&!i->source_live->ended_&&!i->source_live->failed_&&
+        !i->admitted&&!i->finished&&!i->detached,
+        "Dust admission requires the SAME prepared Caller/Frame and real live Source");
+    i->admitted=true;i->uncaught=std::uncaught_exceptions();
+    try {
+        require_owned(!impl_->producer_entered.exchange(true),"Initializer Parent producer cannot replay");
+        i->terminal_invocation.emplace(terminal_zero_frame_);
+        begin_outer_call();i->outer_entered=true;
+        i->material_scope.emplace(*this);
+    }catch(...){
+        record_source_failure();
+        if(i->outer_entered){i->outer_entered=false;end_outer_call();}
+        i->material_scope.reset();i->terminal_invocation.reset();i->finished=true;throw;
+    }
+}
+void* NativePostEffectParentFrame::allocate_initializer_parent() {
+    require_healthy();auto* i=impl_->initializer.get();
+    require_owned(i&&i->admitted&&i->outer_entered&&!i->finished&&i->material_scope&&
+        !i->constructor_call_entered&&!impl_->allocator_entered.load(),
+        "Initializer supplier needs its actual admitted whole Caller scope");
+    // allocate_parent saves actual/returned BEFORE fallible exact preparation.
+    // If it throws afterwards, the Caller's state0 is still genuinely unreached.
+    void* actual=allocate_parent();
+    if(!actual)impl_->normal_null_recorded.store(true,std::memory_order_release);
+    return actual; // preserve a real normal-NULL/control path; no early reset
+}
+void NativePostEffectParentFrame::initializer_constructor_entered() {
+    require_healthy();auto* i=impl_->initializer.get();
+    require_owned(i&&i->admitted&&i->outer_entered&&!i->finished&&i->material_scope&&
+        impl_->allocator_returned.load()&&impl_->actual&&!impl_->constructor_entered.load()&&
+        !i->constructor_call_entered&&!impl_->native_constructor_returned.load()&&!impl_->published.load(),
+        "Initializer constructor entry requires its exact genuine supplier return");
+    // Last metadata stores before the actual raw call; all fallible admission
+    // is above. Its adjacent escape catch must enclose ONLY that call.
+    i->constructor_call_entered=true;
+    impl_->constructor_entered.store(true,std::memory_order_release);
+}
+void NativePostEffectParentFrame::initializer_constructor_returned(void* returned) {
+    auto* i=impl_->initializer.get();
+    const bool valid=i&&i->admitted&&i->outer_entered&&!i->finished&&i->constructor_call_entered&&
+        !i->constructor_call_returned&&!i->constructor_call_escaped;
+    // Save the actual WHOLE C++ return before ANY fallible post-return check.
+    if(i&&!i->constructor_call_returned){i->constructor_return_value=returned;i->constructor_call_returned=true;}
+    require_owned(valid,"Initializer constructor return has no SAME admitted call");
+    require_owned(i->constructor_return_value==impl_->actual,"Initializer constructor returned another Parent allocation");
+    source_constructor_returned();
+}
+void NativePostEffectParentFrame::initializer_constructor_escaped() noexcept {
+    auto* i=impl_->initializer.get();
+    if(!i||!i->admitted||!i->outer_entered||i->finished||!i->constructor_call_entered||
+        i->constructor_call_returned||i->constructor_call_escaped){record_source_failure();return;}
+    i->constructor_call_escaped=true;
+    // This is a Source raw-call escape. native_constructor_returned separately
+    // preserves completed Native body/publication debt on a later host failure.
+    record_source_failure();
+}
+void NativePostEffectParentFrame::before_initializer_raw_free(void* captured) noexcept {
+    auto* i=impl_->initializer.get();
+    const bool first=i&&!i->raw_free_entered;
+    if(first){i->raw_free_operand=captured;i->raw_free_entered=true;}
+    record_source_failure(); // actual failure continuation, no fallible health probe
+    if(!first||!i->admitted||!i->outer_entered||i->finished||!i->material_scope||
+        !impl_->attached||!impl_->allocator_returned.load()||!captured||captured!=impl_->actual||
+        impl_->native_constructor_returned.load()||impl_->published.load()||impl_->owner_live||
+        impl_->reference_live||exact_.borrows_.load(std::memory_order_acquire)!=0||
+        (i->constructor_call_entered&&!i->constructor_call_escaped)||i->constructor_call_returned||
+        impl_->constructor_entered.load()!=i->constructor_call_entered)return;
+    i->raw_free_same=true;
+    if(!impl_->atomic_born.load()){
+        impl_->domain.impl_->owners.abandon_exact_parent_record_before_cpp_birth(exact_);
+    }else{
+        if(!i->constructor_call_escaped||!impl_->count_home||i->prefix_ended)return;
+        // Only actual born +4, after reached name/constructor unwind's last
+        // prefix use and BEFORE the SAME free. No Native count load or store.
+        std::destroy_at(impl_->count_home);i->prefix_ended=true;
+        impl_->domain.impl_->owners.deactivate_exact_record_from_partial_cpp_end(exact_);
+    }
+    // The caller ALWAYS executes its original free, including mismatch. This
+    // hook never substitutes/suppresses/replays it or records normal death.
+}
+void NativePostEffectParentFrame::initializer_raw_free_returned() noexcept {
+    auto* i=impl_->initializer.get();
+    if(!i||!i->admitted||!i->outer_entered||i->finished||!i->raw_free_entered||
+        i->raw_free_returned){record_source_failure();return;}
+    i->raw_free_returned=true; // actual void free returned; no physical close credit
+}
+void NativePostEffectParentFrame::initializer_source_returned() {
+    require_healthy();auto* i=impl_->initializer.get();
+    const bool normal_null=impl_->allocator_returned.load()&&!impl_->actual&&
+        impl_->normal_null_recorded.load()&&!impl_->constructor_entered.load();
+    require_owned(i&&i->admitted&&i->outer_entered&&!i->finished&&i->material_scope&&
+        !i->source_returned&&!i->raw_free_entered&&
+        (normal_null||(i->constructor_call_returned&&i->constructor_return_value==impl_->actual&&
+            impl_->source_constructor_returned.load())),
+        "Initializer Source return requires its real complete tail/health or normal NULL");
+    i->source_returned=true;
+}
+void NativePostEffectParentFrame::finish_initializer_call() noexcept {
+    auto* i=impl_->initializer.get();
+    if(!i||!i->admitted||i->finished){record_source_failure();return;}
+    if(!i->source_returned||std::uncaught_exceptions()>i->uncaught)record_source_failure();
+    i->finished=true;
+    if(i->outer_entered){i->outer_entered=false;end_outer_call();}
+    i->material_scope.reset(); // after outer withdrawal, exactly as the existing wrapper
+    i->terminal_invocation.reset();
+}
+void NativePostEffectParentFrame::detach_initializer_caller(NativeBrightPassInitializationBlock& caller) {
+    require_owned(!requires_process_retention(),"Failed initializer Caller loan remains retained");
+    auto* i=impl_->initializer.get();
+    require_owned(i&&i->bright_live==&caller&&i->bright_identity==&caller&&!i->dust_identity&&
+        !i->detached&&impl_->closed.load()&&!impl_->attached&&!impl_->block_linked&&
+        !i->outer_entered&&!i->material_scope&&!i->terminal_invocation&&(!i->admitted||i->finished)&&
+        i->source_ended&&!i->source_live&&!i->source_next&&!i->source_failed&&
+        caller.post_effect().phase()==NativePostEffect20ConstructionBlock::Phase::idle,
+        "Bright Caller loan ends only after SAME Parent logical close and real Source end");
+    i->bright_live=nullptr;i->detached=true; // opaque identity/history remains
+}
+void NativePostEffectParentFrame::detach_initializer_caller(NativePostEffectDustBlock& caller) {
+    require_owned(!requires_process_retention(),"Failed initializer Caller loan remains retained");
+    auto* i=impl_->initializer.get();
+    require_owned(i&&i->dust_live==&caller&&i->dust_identity==&caller&&!i->bright_identity&&
+        !i->detached&&impl_->closed.load()&&!impl_->attached&&!impl_->block_linked&&
+        !i->outer_entered&&!i->material_scope&&!i->terminal_invocation&&(!i->admitted||i->finished)&&
+        i->source_ended&&!i->source_live&&!i->source_next&&!i->source_failed&&
+        caller.child().phase()==NativePostEffectConstructionBlock::Phase::idle,
+        "Dust Caller loan ends only after SAME Parent logical close and real Source end");
+    i->dust_live=nullptr;i->detached=true;
+}
+
 void NativePostEffectParentFrame::begin_outer_call() {
     require_healthy();
     require_owned(!impl_->domain.impl_->closing.load(),"Parent operation crossed its actual graph-close fence");
@@ -761,15 +1009,31 @@ void NativePostEffectParentFrame::release_section_creator(long (__stdcall* captu
 }
 NativePostEffectParentFrame* NativePostEffectParentFrame::section_source_scope_ended(
     const NativeMeshSectionLifetimeSourceScope& source,bool failed) noexcept {
-    auto* s=impl_->section.get();
-    if(!s||s->source_identity!=&source||s->source_live!=&source||s->source_ended){
-        record_source_failure();return nullptr;
-    }
-    auto* next=s->source_next;s->source_next=nullptr;s->source_live=nullptr;
-    s->source_ended=true;s->source_failed=failed;
+    auto* s=impl_->section.get();auto* i=impl_->initializer.get();
+    NativePostEffectParentFrame* next=nullptr;
+    if(s){
+        next=s->source_next;
+        if(s->source_identity!=&source||s->source_live!=&source||s->source_ended){
+            record_source_failure();return next;
+        }
+        s->source_next=nullptr;s->source_live=nullptr;s->source_ended=true;s->source_failed=failed;
+        if(i){
+            if(i->source_identity!=&source||i->source_live!=&source||i->source_ended||i->owns_observer){
+                record_source_failure();return next;
+            }
+            i->source_live=nullptr;i->source_ended=true;i->source_failed=failed;
+        }
+    }else if(i&&i->owns_observer){
+        next=i->source_next;
+        if(i->source_identity!=&source||i->source_live!=&source||i->source_ended){
+            record_source_failure();return next;
+        }
+        i->source_next=nullptr;i->source_live=nullptr;i->source_ended=true;
+        i->source_failed=failed;i->owns_observer=false;
+    }else {record_source_failure();return nullptr;}
     if(failed)record_source_failure();
-    // Notification follows ALL Call activity withdrawals. This does not allow
-    // the owner to destroy any target until the ENTIRE traversal has returned.
+    // Only the actual Source destructor calls this AFTER ALL Call withdrawals.
+    // Every target remains owned through its ENTIRE traversal; no flag pins it.
     finish_closed_section_custody();return next;
 }
 void NativePostEffectParentFrame::section_native_retired(NativeMeshSectionLifetimeFrame& frame,
@@ -961,6 +1225,12 @@ bool NativePostEffectParentFrame::material_caller_closed() const noexcept {
 void NativePostEffectParentFrame::preflight_close() const {
     try {
     require_healthy();auto* caller=observed_zero_hold_.frame_;const unsigned retained_hold=caller?1u:0u;
+    if(const auto* i=impl_->initializer.get()){
+        require_owned(i->source_ended&&!i->source_live&&!i->source_next&&!i->source_failed&&!i->owns_observer&&
+            !i->outer_entered&&!i->material_scope&&!i->terminal_invocation&&
+            (!i->admitted||(i->finished&&i->source_returned)),
+            "Initializer close requires full automatic tail AND real external Source end");
+    }
     require_owned(!impl_->constructor_outer.load()&&!impl_->constructor_scope_active.load()&&!impl_->payload_scope_active.load()&&
         terminal_zero_frame_.active_invocations_.load(std::memory_order_acquire)==0&&
         material_parameter_release_.cpp_zero_frame.active_invocations_.load(std::memory_order_acquire)==0&&
@@ -1013,8 +1283,9 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
         !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
     const bool selected_material=impl_->domain.impl_->binding.materials!=nullptr;
     const bool selected_section=impl_->domain.impl_->binding.sections!=nullptr;
+    const bool deferred_cold=selected_material||selected_section||impl_->initializer!=nullptr;
     try {
-        if(never_entered&&!selected_material&&!selected_section){
+        if(never_entered&&!deferred_cold){
             // Protected old null-binding cold cancellation route.
             if(impl_->block20)impl_->block20->cancel_ordinary_preparation();
             else impl_->block24->cancel_ordinary_preparation();
@@ -1033,7 +1304,7 @@ void NativePostEffectParentFrame::close_after_host_quiescence() {
         require_owned(impl_->outer_calls.load()==0&&exact_.outer_calls_.load()==0&&exact_.borrows_.load()==0,
             "Parent close retains an actual C++ caller/count user");
         close_material_caller_after_host_quiescence();
-        if((selected_material||selected_section)&&(never_entered||impl_->normal_null_recorded.load())){
+        if(deferred_cold&&(never_entered||impl_->normal_null_recorded.load())){
             // The genuine cold Material frame/observations have NOW closed;
             // only this actual post-scope fence may destroy its factory loan.
             if(impl_->block20)impl_->block20->cancel_ordinary_preparation();

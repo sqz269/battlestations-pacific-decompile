@@ -1,4 +1,5 @@
 #include "bsp/native_bright_pass_initializer.hpp"
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_mesh_texture_field.hpp"
 #include "bsp/native_render_resources_remap.hpp"
@@ -6,6 +7,7 @@
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
+#include <optional>
 #include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -37,6 +39,31 @@ NativeMaterialStorage& current_material(void* owner) {
 }
 } // namespace
 
+class NativeBrightPassInitializationBlock::ParentCallScope final {
+public:
+    explicit ParentCallScope(NativeBrightPassInitializationBlock&);
+    ~ParentCallScope() noexcept;
+    void* allocate_parent();
+    void constructor_entered();
+    void constructor_returned(void*);
+    void constructor_escaped() noexcept;
+    void source_returned();
+    ParentCallScope(const ParentCallScope&)=delete;
+    ParentCallScope& operator=(const ParentCallScope&)=delete;
+    ParentCallScope(ParentCallScope&&)=delete;
+    ParentCallScope& operator=(ParentCallScope&&)=delete;
+private:
+    NativePostEffectParentFrame& frame_;
+};
+NativeBrightPassInitializationBlock::ParentCallScope::ParentCallScope(NativeBrightPassInitializationBlock& block)
+    :frame_(*block.parent_frame_) { frame_.begin_initializer_call(block); }
+NativeBrightPassInitializationBlock::ParentCallScope::~ParentCallScope() noexcept { frame_.finish_initializer_call(); }
+void* NativeBrightPassInitializationBlock::ParentCallScope::allocate_parent() { return frame_.allocate_initializer_parent(); }
+void NativeBrightPassInitializationBlock::ParentCallScope::constructor_entered() { frame_.initializer_constructor_entered(); }
+void NativeBrightPassInitializationBlock::ParentCallScope::constructor_returned(void* actual) { frame_.initializer_constructor_returned(actual); }
+void NativeBrightPassInitializationBlock::ParentCallScope::constructor_escaped() noexcept { frame_.initializer_constructor_escaped(); }
+void NativeBrightPassInitializationBlock::ParentCallScope::source_returned() { frame_.initializer_source_returned(); }
+
 NativeBrightPassInitializationBlock::~NativeBrightPassInitializationBlock() noexcept {
     if(phase_!=Phase::idle)std::terminate();
 }
@@ -53,18 +80,35 @@ void NativeBrightPassInitializationBlock::prepare(NativeBrightPassInitialization
         phase_=Phase::prepared;
     } catch(...) {context_=nullptr;phase_=Phase::idle;throw;}
 }
+void NativeBrightPassInitializationBlock::prepare(NativeBrightPassInitializationContext& c,
+    NativePostEffectParentDomain& parents, NativeMeshSectionLifetimeSourceScope& source) {
+    require(phase_==Phase::idle&&!parent_frame_&&c.effect_name_00d62138,
+        "selected bright-pass requires idle storage and actual effect name");
+    for(const char* name:c.parameter_names)require(name!=nullptr,"bright-pass requires actual parameter names");
+    context_=&c;phase_=Phase::preparing;
+    try {
+        parent_frame_=&parents.prepare_initializer(*this,c.post_effects,source);
+        acquired_.native.effect_name_header=&effect_name_;
+        acquired_.native.parameter_name_header=&parameter_name_;
+        acquired_.last_parameter_name_header=&last_parameter_name_;
+        phase_=Phase::prepared;
+    }catch(...){phase_=Phase::settled;throw;} // retain every acquired cold loan
+}
 void NativeBrightPassInitializationBlock::cancel_preparation() noexcept {
     if(phase_!=Phase::prepared)std::terminate();
-    post_effect_.cancel_preparation();acquired_={};context_=nullptr;phase_=Phase::idle;
+    if(parent_frame_){parent_frame_->detach_initializer_caller(*this);parent_frame_=nullptr;}
+    else post_effect_.cancel_preparation();
+    acquired_={};context_=nullptr;phase_=Phase::idle;
 }
 void NativeBrightPassInitializationBlock::settle() noexcept {
-    if(post_effect_.phase()==NativePostEffect20ConstructionBlock::Phase::prepared)
+    if(!parent_frame_&&post_effect_.phase()==NativePostEffect20ConstructionBlock::Phase::prepared)
         post_effect_.cancel_preparation();
     phase_=Phase::settled;
 }
 void NativeBrightPassInitializationBlock::reset_after_host_quiescence() noexcept {
     if(phase_!=Phase::settled || post_effect_.phase()!=NativePostEffect20ConstructionBlock::Phase::idle)
         std::terminate();
+    if(parent_frame_){parent_frame_->detach_initializer_caller(*this);parent_frame_=nullptr;}
     effect_name_.~NativeString();new(&effect_name_) NativeString;
     parameter_name_.~NativeString();new(&parameter_name_) NativeString;
     last_parameter_name_.~NativeString();new(&last_parameter_name_) NativeString;
@@ -103,7 +147,15 @@ void NativeBrightPassInitializationBlock::unwind() {
         try {
             if(action==0) {
                 if(post_effect_.acquired().native_completed)a.completed_post_preserved_after_host_failure=true;
-                else {a.post_raw_free_started=true;singleton_lifetime_free(a.raw_post_effect);}
+                else {
+                    a.post_raw_free_started=true;
+                    if(parent_frame_){
+                        void* const captured=a.raw_post_effect; // original retained operand, no exchange
+                        parent_frame_->before_initializer_raw_free(captured);
+                        singleton_lifetime_free(captured);
+                        parent_frame_->initializer_raw_free_returned();
+                    }else singleton_lifetime_free(a.raw_post_effect);
+                }
             } else if(action==1 || action==2) {
                 if(acquired_.effect_name_mask&1u) {
                     acquired_.effect_name_mask&=~1u;return_effect_name();
@@ -122,14 +174,27 @@ void initialize_native_bright_pass_00b54940(void* owner,std::size_t bytes,
         "bright-pass requires aligned existing224h storage and a prepared persistent frame");
     auto& c=*block.context_;auto& a=block.acquired_.native;
     a.receiver=owner;block.phase_=Block::Phase::executing;
+    // Outside try: destruction follows the ENTIRE catch/recursive unwind tail.
+    std::optional<Block::ParentCallScope> parent_scope;
     try {
-        a.raw_post_effect=singleton_lifetime_allocate({SingletonAllocationKind::object,0x20,0x20});
+        if(block.parent_frame_)parent_scope.emplace(block);
+        a.raw_post_effect=parent_scope?parent_scope->allocate_parent():
+            singleton_lifetime_allocate({SingletonAllocationKind::object,0x20,0x20});
         a.native_state=0;
         if(a.raw_post_effect) {
             construct_native_string_cstring_0041e870(&block.effect_name_,c.effect_name_00d62138,c.post_effects.raw_strings);
             a.effect_name_constructed=true;block.acquired_.effect_name_mask=1;a.native_state=1;
+            if(parent_scope){
+                parent_scope->constructor_entered();
+                try {
+                    a.returned_post_effect=construct_native_post_effect20_00b4e470(a.raw_post_effect,0x20,
+                        block.effect_name_,3,nullptr,block.post_effect_);
+                }catch(...){parent_scope->constructor_escaped();throw;}
+                parent_scope->constructor_returned(a.returned_post_effect); // outside raw-call catch
+            }else {
             a.returned_post_effect=construct_native_post_effect20_00b4e470(a.raw_post_effect,0x20,
                 block.effect_name_,3,nullptr,block.post_effect_);
+            }
         }
         put(owner,8,reinterpret_cast<Word>(a.returned_post_effect));a.post_published=true;a.native_state=-1;
         if(block.acquired_.effect_name_mask&1u)block.return_effect_name(); // Native bit remains set.
@@ -151,6 +216,7 @@ void initialize_native_bright_pass_00b54940(void* owner,std::size_t bytes,
         require(current_post!=nullptr,"bright-pass color binding requires its current post-effect");
         set_native_post_effect_color0_00b4cb70(current_post,surface,c.post_effects.destruction.frame_targets);
         a.completed=true;block.settle();
+        if(parent_scope)parent_scope->source_returned();
     } catch(...) {
         try {block.unwind();}catch(...){block.settle();throw;}
         block.settle();throw;

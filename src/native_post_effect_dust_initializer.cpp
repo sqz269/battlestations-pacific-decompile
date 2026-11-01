@@ -1,10 +1,12 @@
 #include "bsp/native_post_effect_dust_initializer.hpp"
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/gui_text_material.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <exception>
 #include <new>
+#include <optional>
 #include <stdexcept>
 #include <utility>
 
@@ -39,6 +41,31 @@ __declspec(naked) void* __fastcall get_native_post_effect_material_00b4cbf0(cons
     }
 }
 
+class NativePostEffectDustBlock::ParentCallScope final {
+public:
+    explicit ParentCallScope(NativePostEffectDustBlock&);
+    ~ParentCallScope() noexcept;
+    void* allocate_parent();
+    void constructor_entered();
+    void constructor_returned(void*);
+    void constructor_escaped() noexcept;
+    void source_returned();
+    ParentCallScope(const ParentCallScope&)=delete;
+    ParentCallScope& operator=(const ParentCallScope&)=delete;
+    ParentCallScope(ParentCallScope&&)=delete;
+    ParentCallScope& operator=(ParentCallScope&&)=delete;
+private:
+    NativePostEffectParentFrame& frame_;
+};
+NativePostEffectDustBlock::ParentCallScope::ParentCallScope(NativePostEffectDustBlock& block)
+    :frame_(*block.parent_frame_) { frame_.begin_initializer_call(block); }
+NativePostEffectDustBlock::ParentCallScope::~ParentCallScope() noexcept { frame_.finish_initializer_call(); }
+void* NativePostEffectDustBlock::ParentCallScope::allocate_parent() { return frame_.allocate_initializer_parent(); }
+void NativePostEffectDustBlock::ParentCallScope::constructor_entered() { frame_.initializer_constructor_entered(); }
+void NativePostEffectDustBlock::ParentCallScope::constructor_returned(void* actual) { frame_.initializer_constructor_returned(actual); }
+void NativePostEffectDustBlock::ParentCallScope::constructor_escaped() noexcept { frame_.initializer_constructor_escaped(); }
+void NativePostEffectDustBlock::ParentCallScope::source_returned() { frame_.initializer_source_returned(); }
+
 NativePostEffectDustBlock::~NativePostEffectDustBlock() noexcept {
     if (phase_ != Phase::idle) std::terminate();
 }
@@ -57,21 +84,33 @@ void NativePostEffectDustBlock::prepare(NativePostEffectDustContext& context) {
         throw;
     }
 }
+void NativePostEffectDustBlock::prepare(NativePostEffectDustContext& context,
+    NativePostEffectParentDomain& parents, NativeMeshSectionLifetimeSourceScope& source) {
+    require(phase_==Phase::idle&&!parent_frame_&&context.effect_name_00d620ac,
+        "selected dust initialization requires idle storage and actual effect name");
+    context_=&context;phase_=Phase::preparing;
+    try {
+        parent_frame_=&parents.prepare_initializer(*this,context.construction,source);
+        acquired_.effect_name_header=&effect_name_;phase_=Phase::prepared;
+    }catch(...){phase_=Phase::settled;throw;}
+}
 void NativePostEffectDustBlock::cancel_preparation() noexcept {
     if (phase_ != Phase::prepared) std::terminate();
-    child_.cancel_preparation();
+    if(parent_frame_){parent_frame_->detach_initializer_caller(*this);parent_frame_=nullptr;}
+    else child_.cancel_preparation();
     acquired_ = {};
     context_ = nullptr;
     phase_ = Phase::idle;
 }
 void NativePostEffectDustBlock::settle() noexcept {
-    if (child_.phase() == NativePostEffectConstructionBlock::Phase::prepared)
+    if (!parent_frame_ && child_.phase() == NativePostEffectConstructionBlock::Phase::prepared)
         child_.cancel_preparation(); // The native child was never entered.
     phase_ = Phase::settled;
 }
 void NativePostEffectDustBlock::reset_after_host_quiescence() noexcept {
     if (phase_ != Phase::settled || child_.phase() != NativePostEffectConstructionBlock::Phase::idle)
         std::terminate();
+    if(parent_frame_){parent_frame_->detach_initializer_caller(*this);parent_frame_=nullptr;}
     effect_name_.~NativeString();
     new (&effect_name_) NativeString;
     acquired_ = {};
@@ -98,7 +137,12 @@ void NativePostEffectDustBlock::unwind(int& state, bool& name_owned) {
                     acquired_.completed_child_preserved_after_host_failure = true;
                 } else {
                     acquired_.raw_free_started = true;
-                    singleton_lifetime_free(std::exchange(acquired_.raw_child, nullptr));
+                    if(parent_frame_){
+                        void* const captured=std::exchange(acquired_.raw_child,nullptr);
+                        parent_frame_->before_initializer_raw_free(captured);
+                        singleton_lifetime_free(captured);
+                        parent_frame_->initializer_raw_free_returned();
+                    }else singleton_lifetime_free(std::exchange(acquired_.raw_child, nullptr));
                 }
             } else if (action == 1 || action == 2) {
                 if (name_owned) { name_owned = false; return_name(); }
@@ -119,11 +163,14 @@ void initialize_native_post_effect_dust_00b52860(void* actual, std::size_t recei
     int state = -1;
     bool name_owned = false;
     auto set_state = [&](int value) noexcept { state = value; acquired.native_state = value; };
+    std::optional<NativePostEffectDustBlock::ParentCallScope> parent_scope; // outlives catch/unwind
     try {
         put(actual, 0x20, 0); // B52888: XORPS/MOVSS exact zero bits.
         put_byte(actual, 0x34, 0);
         put(actual, 0x38, 0);
-        acquired.raw_child = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x24, 0x24});
+        if(block.parent_frame_)parent_scope.emplace(block); // AFTER original three zero stores
+        acquired.raw_child = parent_scope?parent_scope->allocate_parent():
+            singleton_lifetime_allocate({SingletonAllocationKind::object, 0x24, 0x24});
         set_state(0); // Allocation failure precedes this state in the original.
         void* child = nullptr;
         if (acquired.raw_child) {
@@ -132,8 +179,17 @@ void initialize_native_post_effect_dust_00b52860(void* actual, std::size_t recei
             acquired.name_constructed = true;
             name_owned = true;
             set_state(1);
+            if(parent_scope){
+                parent_scope->constructor_entered();
+                try {
+                    child = construct_native_post_effect_00b4e840(acquired.raw_child, 0x24,
+                        block.effect_name_, 2, nullptr, block.child_);
+                }catch(...){parent_scope->constructor_escaped();throw;}
+                parent_scope->constructor_returned(child); // outside raw-call catch
+            }else {
             child = construct_native_post_effect_00b4e840(acquired.raw_child, 0x24,
                 block.effect_name_, 2, nullptr, block.child_);
+            }
         }
         acquired.returned_child = child;
         put(actual, 0x68, reinterpret_cast<Word>(child)); // B528DE, no prior-value release.
@@ -166,6 +222,7 @@ void initialize_native_post_effect_dust_00b52860(void* actual, std::size_t recei
         put(actual, 0xc4, 0); put(actual, 0xc8, 0);
         acquired.normal_body_completed = true;
         block.settle();
+        if(parent_scope)parent_scope->source_returned();
     } catch (...) {
         try { block.unwind(state, name_owned); }
         catch (...) { block.settle(); throw; }
