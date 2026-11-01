@@ -66,6 +66,63 @@ if ($TraceExecutable) {
     throw '-TraceArguments requires -TraceExecutable'
 }
 $GameArgs = @($GameArgs | Where-Object { $_ -ne '--' })
+
+function Initialize-BspWindowedSettings([string[]]$Arguments,
+    [string]$DocumentsRoot = [Environment]::GetFolderPath('MyDocuments')) {
+    $personalRoots = @()
+    for ($i = 0; $i -lt $Arguments.Count; $i++) {
+        if ($Arguments[$i] -eq '--settings-personal-root') {
+            if ($i + 1 -ge $Arguments.Count -or $Arguments[$i + 1].StartsWith('--')) {
+                throw '--settings-personal-root requires a path; no game was launched'
+            }
+            $personalRoots += $Arguments[++$i]
+        } elseif ($Arguments[$i] -match '^--settings-personal-root=(.*)$') {
+            if (-not $Matches[1]) { throw '--settings-personal-root requires a path' }
+            $personalRoots += $Matches[1]
+        }
+    }
+    if ($personalRoots.Count -gt 1) { throw 'Repeated --settings-personal-root is ambiguous; no game was launched' }
+    $documentsOptions = Join-Path $DocumentsRoot 'Battlestations-Pacific\options.txt'
+    $private = $personalRoots.Count -eq 1
+    $options = if ($private) {
+        Join-Path ([IO.Path]::GetFullPath($personalRoots[0])) 'Battlestations-Pacific\options.txt'
+    } else { $documentsOptions }
+    $seedSource = $null
+    $backup = $null
+    if ($private) {
+        [IO.Directory]::CreateDirectory((Split-Path $options -Parent)) | Out-Null
+        if (-not (Test-Path -LiteralPath $options -PathType Leaf)) {
+            if (Test-Path -LiteralPath $documentsOptions -PathType Leaf) {
+                Copy-Item -LiteralPath $documentsOptions -Destination $options
+                $seedSource = $documentsOptions
+            } else {
+                [IO.File]::WriteAllText($options, "Fullscreen 0`r`n", [Text.UTF8Encoding]::new($false))
+                $seedSource = 'windowed-only defaults'
+            }
+        }
+        $original = [IO.File]::ReadAllText($options)
+        $windowed = if ([regex]::IsMatch($original, '(?mi)^[\t ]*Fullscreen[\t ]+[^\r\n]*')) {
+            [regex]::Replace($original, '(?mi)^[\t ]*Fullscreen[\t ]+[^\r\n]*', 'Fullscreen 0')
+        } else { $original.TrimEnd("`r", "`n") + "`r`nFullscreen 0`r`n" }
+        if ($windowed -cne $original) {
+            $backup = $options + '.pre-windowed-' + [Guid]::NewGuid().ToString('N') + '.bak'
+            Copy-Item -LiteralPath $options -Destination $backup
+            [IO.File]::WriteAllText($options, $windowed, [Text.UTF8Encoding]::new($false))
+        }
+    }
+    if (-not (Test-Path -LiteralPath $options -PathType Leaf)) {
+        throw "Windowed launch requires Fullscreen 0 in $options; options-absent validation must be coordinated without launching fullscreen"
+    }
+    $fullscreen = @([regex]::Matches([IO.File]::ReadAllText($options), '(?mi)^[\t ]*Fullscreen[\t ]+(\S+)'))
+    if (-not $fullscreen.Count -or @($fullscreen | Where-Object { $_.Groups[1].Value -ne '0' }).Count) {
+        throw "Refusing fullscreen/unspecified launch: require Fullscreen 0 in $options; Documents settings were not modified"
+    }
+    [ordered]@{ options_path = $options; private_root = $private; fullscreen = 0
+        seed_source = $seedSource; backup = $backup
+        sha256 = (Get-FileHash -LiteralPath $options -Algorithm SHA256).Hash.ToLower()
+        observed_window_requests = $null; verified_windowed = $false }
+}
+$windowedSettings = Initialize-BspWindowedSettings -Arguments $GameArgs
 # Default window placement (harness only): config/run_game.json's "window_monitor" is forwarded
 # as --window-monitor unless the caller passed --window-monitor or --window-origin, or set
 # BSP_WINDOW_MONITOR (which the executable reads itself). See docs/WINDOW_MONITOR.md.
@@ -227,6 +284,13 @@ function New-RunManifest([string[]]$runArgs) {
         $inputs += [ordered]@{ option = $opt; arg_index = $index; value = $value; source = $source
             archived = $name; sha256 = (Get-FileHash -LiteralPath $source -Algorithm SHA256).Hash.ToLower() }
     }
+    if (-not (Test-Path -LiteralPath $inputDir)) { New-Item -ItemType Directory -Path $inputDir | Out-Null }
+    $settingsArchive = '__launcher-windowed-options.txt'
+    while (@($inputs | Where-Object { $_.archived -eq $settingsArchive }).Count) { $settingsArchive = '_' + $settingsArchive }
+    Copy-Item -LiteralPath $windowedSettings.options_path -Destination (Join-Path $inputDir $settingsArchive) -Force
+    $inputs += [ordered]@{ option = 'launcher-windowed-options'; arg_index = -1
+        value = $windowedSettings.options_path; source = $windowedSettings.options_path
+        archived = $settingsArchive; sha256 = $windowedSettings.sha256 }
     $envBsp = [ordered]@{}
     Get-ChildItem env: | Where-Object { $_.Name -like 'BSP_*' } | Sort-Object Name | ForEach-Object { $envBsp[$_.Name] = $_.Value }
     $record = [ordered]@{
@@ -238,6 +302,7 @@ function New-RunManifest([string[]]$runArgs) {
             no_force_stop = [bool]$NoForceStop }
         arguments = @($runArgs)
         difficulty = $difficultyRecord
+        windowed_settings = $windowedSettings
         env = $envBsp
         exe = [ordered]@{ path = $exeItem.FullName; size = $exeItem.Length
             mtime_utc = $exeItem.LastWriteTimeUtc.ToString('o')
@@ -261,9 +326,13 @@ function New-RunManifest([string[]]$runArgs) {
 try {
     $logDir = Split-Path $Log -Parent
     if ($logDir -and -not (Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir | Out-Null }
+    # A queued run may have waited for a slot while another process changed
+    # settings. Recheck immediately before recording and launching this run.
+    $windowedSettings = Initialize-BspWindowedSettings -Arguments $GameArgs
     $arguments = @('--game-root', $GameRoot, '--xlive-dll', $XLiveDll, '--log', $Log, '--instance-tag', $tag, '--affinity-core', "$core") + $GameArgs
     try { $manifest = New-RunManifest $arguments; Write-RunManifest $manifest }
     catch { Write-Warning "run manifest not written: $_" }
+    $windowedRequestStart = [DateTime]::UtcNow
     if ($TraceExecutable) {
         & $TraceExecutable @TraceArguments -- $Exe @arguments 2>&1 | Select-Object -Last 1
     } else {
@@ -314,6 +383,16 @@ try {
             $forcedStopRequested = @($mine | ForEach-Object ProcessId)
             $mine | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
             "stopped lingering bsp_game pids after ${waited}s: $($forcedStopRequested -join ',')"
+        }
+    }
+    if ((Test-Path -LiteralPath $logFull -PathType Leaf) -and
+        [IO.File]::GetLastWriteTimeUtc($logFull) -ge $windowedRequestStart) {
+        $requests = @(Select-String -LiteralPath $logFull -Pattern 'window request .*fullscreen=(\d+)')
+        $windowedSettings.observed_window_requests = @($requests | ForEach-Object { $_.Line })
+        $windowedSettings.verified_windowed = [bool]($requests.Count -and -not @($requests | Where-Object { $_.Matches[0].Groups[1].Value -ne '0' }).Count)
+        if (@($requests | Where-Object { $_.Matches[0].Groups[1].Value -ne '0' }).Count) {
+            Write-Warning 'Game log reported fullscreen despite windowed settings; validation failed'
+            if ($code -eq 0) { $code = 77 }
         }
     }
     if ($manifest) {
