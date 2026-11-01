@@ -1,0 +1,98 @@
+{
+  "kind": "Root Source author, qualified raw provider composition; build pending",
+  "source_proposal": {
+    "status": "candidate_sealed_source_only",
+    "packet": "codex-atlas-raw-canonicalizer-BEE390",
+    "base_commit": "ce589bf2be81c17d3d9749960ba571d4f5ab948d",
+    "original_abi": {
+      "output": "ECX",
+      "input": "EDX",
+      "result": "EAX output",
+      "return": "RET0"
+    },
+    "candidate_abi": "ordinary C++ overload; original binary/EH/private-HOME ABI unclaimed",
+    "address_range": "00BEE390..00BEE512",
+    "live_read_only_proto": {
+      "program": "battlestationspacific.exe",
+      "body": "00bee390 - 00bee512",
+      "instruction_count": 142,
+      "call_count": 4
+    },
+    "evidence": [
+      "existing complete BEE390 source",
+      "BEE390 saved assembly and live proto",
+      "exact raw41E870 source/header",
+      "raw pool context and concrete services source/header"
+    ],
+    "checks": {
+      "unique_seams": true,
+      "inverse_equals_original": true,
+      "one_shared_body": true,
+      "body_equal_except_constructor_dispatch": true,
+      "old_bdb970_suffix_equal": true,
+      "tracked_source_clean_before": true
+    },
+    "not_performed": [
+      "compilation",
+      "tests",
+      "Game",
+      "Ghidra writes",
+      "tracked source changes",
+      "CMake changes",
+      "ledger changes",
+      "commit",
+      "push"
+    ],
+    "uncertainties": [
+      "caller must provide and retain genuine null_source0109DB91 authority",
+      "caller must retain SAME live canonical feature/raw-pool/library graph",
+      "valid native byte/header/scratch extents and CPU/DF/FP required",
+      "incomplete lower-provider pool/header/copy/scratch debt retained",
+      "original register/private-frame/FH3/SEH/fault and runtime behavior unclaimed"
+    ],
+    "project_verification": {
+      "configured_project": "C:/Users/sqz269/bsp.gpr",
+      "live_ghidra_javaw_pid": 47268,
+      "live_command_line_project": "C:/Users/sqz269/bsp.gpr",
+      "live_program": "/battlestationspacific.exe",
+      "writes": false
+    },
+    "parent_current_source_pins": [
+      {
+        "path": "include/bsp/native_path_canonicalizer.hpp",
+        "parent_current_sha256": "d3dd375922e191bbf368b4ebb43e899fc811e89e36f91365b96cc19aab61c8eb",
+        "matches_packet_before": true
+      },
+      {
+        "path": "src/native_path_canonicalizer.cpp",
+        "parent_current_sha256": "bb8e033c5cc3f31dabb8134955d0181591b5440709eb7dfc4662861f9cbf81ef",
+        "matches_packet_before": true
+      }
+    ]
+  },
+  "Root_review": {
+    "status": "Root Source review passes; pending next integration batch",
+    "seams": 7,
+    "all_current_preimages_and_whole_inverses_exact": true,
+    "Root_scope": "Full7seam diff and appended API/context/provider composition, fullnewdocumentation; old BEE390 algorithm exactly shared except finalconstructor binding, BDB970suffix unchanged.",
+    "same_pool_cells_exact_feature_raw0041e870": true,
+    "findings": 0,
+    "new_build_or_runtime_credit": false,
+    "candidate_hashes": {
+      "candidate/include/bsp/native_path_canonicalizer.hpp": "586309018f0cf5df58c66216e72ece6d86d3551af7db40e09d0d6b8e62670db4",
+      "candidate/src/native_path_canonicalizer.cpp": "2b523a9874887f408cf92b3a2e60f0d310fc32f6331cfdda161e9f754cfada2d",
+      "candidate/docs/CC16_NATIVE_PATH_CANONICALIZER_RAW_PROVIDER.md": "2b39853e47c21758b111009b9d9a22b90f1fe2d2af26a6cc3d432e51ffda068a",
+      "candidate.diff": "01533cd14cfbd79c1b5019426188a70af75539f2c66767627ed59120950b8d2a",
+      "seams_and_pins.json": "f509886cf2b5c24c9322f913a2f980dccc8cd44b081358f0028fbb5ba1aa7951",
+      "source_only_report.json": "9d6ea59c1283051a313ceb8206f549686f4c291d40e335e21ff5b03cca1f47ab",
+      "prepare_candidate.py": "f8d7bdaffd13c48e9831385d0bc3a89b5b46b597b238fecc0d15ae5eb08e50fe",
+      "inverse/include/bsp/native_path_canonicalizer.hpp": "d3dd375922e191bbf368b4ebb43e899fc811e89e36f91365b96cc19aab61c8eb",
+      "inverse/src/native_path_canonicalizer.cpp": "bb8e033c5cc3f31dabb8134955d0181591b5440709eb7dfc4662861f9cbf81ef"
+    }
+  },
+  "seams_sha256": "f509886cf2b5c24c9322f913a2f980dccc8cd44b081358f0028fbb5ba1aa7951",
+  "Source_peer": "local/function_source_batch108/Source_peer/REVIEW.json",
+  "Source_findings": 0,
+  "built": false,
+  "activated": false
+}

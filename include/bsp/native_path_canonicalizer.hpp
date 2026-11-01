@@ -6,6 +6,7 @@ namespace bsp {
 class NativeStringStorage;
 class SingletonLifetimeDomain;
 struct NativeStringPoolStorage;
+struct NativeStringRawPoolContext;
 
 // Library/service boundaries of BEE390 and BDB970. The lowercase argument is
 // sign-extended from a byte, including -128..-1; do not coerce it to unsigned.
@@ -55,6 +56,25 @@ struct NativePathCanonicalizerContext {
     const char* null_source_0109db91;
 };
 
+// Concrete Source-only composition for actual raw pool callers of BEE390.
+// Borrows the SAME actual AA8/AA4/AA0 publication/control cells, actual
+// 0109DB91 fallback role, current-locale library and live canonical feature.
+// Construction only binds metadata: no getter, feature read or native call.
+// Retain this context and every borrowed domain through the entire caller
+// graph, including an incomplete call; no semantic pool or default is made.
+struct NativePathCanonicalizerRawContext {
+    NativeStringRawPoolContext& strings;
+    NativePathCanonicalizerRuntimeServices services;
+    const char* null_source_0109db91;
+    const volatile std::uint32_t& actual_feature_word_0109eea4;
+
+    NativePathCanonicalizerRawContext(NativeStringRawPoolContext&,
+        const char* actual_null_source_0109db91,
+        const volatile std::uint32_t& actual_feature_word_0109eea4,
+        NativePathCanonicalizerRuntimeServices::Lowercase
+            current_locale_lowercase_00bf9611) noexcept;
+};
+
 // Complete BEE390 body over actual eight-byte input/output headers. Original:
 // ECX output, EDX input, EAX output, RET0. New C++ interface, not original ABI.
 // Copies to the first NUL, then traverses the reloaded header count; these are
@@ -64,6 +84,15 @@ struct NativePathCanonicalizerContext {
 // No cleanup is added on failure, no input/output alias retain is added.
 void* canonicalize_native_path_00bee390(void* output, const void* input,
     NativePathCanonicalizerContext&);
+
+// SAME shared BEE390 algorithm and scratch/failure schedule. Final output
+// construction uses genuine raw0041E870 exact transport, forwarding the SAME
+// live feature reference into exact41DD40 and BF7680 without preloading it.
+// Original ECX/EDX/EAX/RET and private-frame/FH3/SEH/fault/runtime behavior are
+// not claimed by this ordinary Source interface. Native valid extents, CPU,
+// DF and all lower-provider custody/error domains remain caller obligations.
+void* canonicalize_native_path_00bee390(void* output, const void* input,
+    NativePathCanonicalizerRawContext&);
 
 // Complete BDB970 normal body and source representation of its EH state order.
 // Original ignores incoming ECX/EDX, consumes one C-string with RET4, no stable

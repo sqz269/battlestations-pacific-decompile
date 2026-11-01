@@ -1,6 +1,7 @@
 #include "bsp/native_path_canonicalizer.hpp"
 
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_string_raw_cstring_exact.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
@@ -76,8 +77,33 @@ void NativePathCanonicalizerRuntimeServices::return_string_00bd1510(
     return_native_string_pool_00bd1510(pool, block, bytes, returns_disabled_);
 }
 
-void* canonicalize_native_path_00bee390(void* output, const void* input,
+NativePathCanonicalizerRawContext::NativePathCanonicalizerRawContext(
+    NativeStringRawPoolContext& actual_strings, const char* actual_null_source,
+    const volatile std::uint32_t& actual_feature_word,
+    NativePathCanonicalizerRuntimeServices::Lowercase current_locale_lowercase) noexcept
+    : strings(actual_strings),
+      services(actual_strings.actual_published_01090aa8,
+          actual_strings.actual_small_returns_disabled_01090aa4,
+          actual_strings.actual_manager_publication_01090aa0, current_locale_lowercase),
+      null_source_0109db91(actual_null_source),
+      actual_feature_word_0109eea4(actual_feature_word) {}
+
+namespace {
+void construct_canonicalizer_output(void* output, const char* source,
     NativePathCanonicalizerContext& context) {
+    construct_native_string_cstring_0041e870(output, source, context.strings);
+}
+void construct_canonicalizer_output(void* output, const char* source,
+    NativePathCanonicalizerRawContext& context) {
+    construct_native_string_header_0041e870_exact(output, source, context.strings,
+        context.actual_feature_word_0109eea4);
+}
+
+// Only the final constructor binding differs. Keep the recovered cursor,
+// byte accesses, library calls and scratch/failure schedule in ONE body.
+template<class Context>
+void* canonicalize_native_path_body(void* output, const void* input,
+    Context& context) {
     char stack_scratch[260];
     const auto initial_length = word(input);
     void* const storage = initial_length < 256u
@@ -155,10 +181,20 @@ void* canonicalize_native_path_00bee390(void* output, const void* input,
         ++current;
     }
     put_byte(result, 0);
-    construct_native_string_cstring_0041e870(output,
-        static_cast<const char*>(storage), context.strings);
+    construct_canonicalizer_output(output,
+        static_cast<const char*>(storage), context);
     if (storage != stack_scratch) context.services.free_scratch_00bf65ac(storage);
     return output;
+}
+} // namespace
+
+void* canonicalize_native_path_00bee390(void* output, const void* input,
+    NativePathCanonicalizerContext& context) {
+    return canonicalize_native_path_body(output, input, context);
+}
+void* canonicalize_native_path_00bee390(void* output, const void* input,
+    NativePathCanonicalizerRawContext& context) {
+    return canonicalize_native_path_body(output, input, context);
 }
 
 void canonicalize_discard_native_path_00bdb970(const char* source,
