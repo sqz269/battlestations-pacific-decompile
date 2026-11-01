@@ -341,8 +341,8 @@ void NativeRenderActualOwnerRegistry::deactivate_exact_record_from_native_end(
 
 void NativeRenderActualOwnerRegistry::withhold_exact_record_for_live_storage_debt(
     ExactRecord& record) noexcept {
-    // Legitimate flags0 after whole Material payload and its late flags read.
-    // The C++ carrier and physical slot remain owed; this is not Source failure.
+    // Legitimate flags0 after the actual family payload and its late flags read.
+    // Material110h/Section60h carrier and physical slot stay owed, without Source failure.
     record.availability_.store(ExactRecord::Availability::unavailable, std::memory_order_release);
 }
 

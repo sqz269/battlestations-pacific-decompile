@@ -1,4 +1,5 @@
 #include "bsp/native_mesh_section.hpp"
+#include "bsp/native_mesh_section_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -7,6 +8,10 @@
 #include <new>
 #include <stdexcept>
 #include <exception>
+#include <intrin.h>
+#include <limits>
+#include <type_traits>
+#include <utility>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native mesh section copying requires MSVC Win32 x87 assembly.
@@ -246,7 +251,126 @@ void destroy_static_native_mesh_section_pool_00ce0ec0() {
     require_static_pool().destroy_00b858f0();
 }
 
+// Private observer can be constructed only inside this translation unit's
+// genuine owning entries. It changes caller metadata, not Native scheduling.
+class NativeMeshSectionLifetimeIssuer final {
+public:
+    NativeMeshSectionLifetimeIssuer(NativeMeshSectionLifetimeFrame& frame,
+        NativeMeshSectionLifetimeCall& call) noexcept : frame_(frame),call_(call) {}
+    void prefix(NativeMeshSectionStorage& section) noexcept { frame_.cpp_prefix_born(section); }
+    void count(NativeMeshSectionStorage& section) noexcept { frame_.native_count1_born(section); }
+    void returned(NativeMeshSectionStorage& section) noexcept { frame_.native_constructor_returned(section); }
+    void release(NativeRenderActualOwners& owners,void* actual,std::size_t site) {
+        frame_.release_child(call_,owners,actual,site);
+    }
+private:
+    NativeMeshSectionLifetimeFrame& frame_;
+    NativeMeshSectionLifetimeCall& call_;
+};
+
 namespace {
+constexpr std::size_t next_site=0,generator_site=1,material_site=2,stream_sites=3,layout_site=7;
+using SectionAtomic=std::atomic<std::int32_t>;
+using SectionAtomicStorage=std::remove_reference_t<decltype(std::declval<SectionAtomic&>()._Storage)>;
+using SectionAtomicValue=std::remove_reference_t<decltype(std::declval<SectionAtomic&>()._Storage._Value)>;
+static_assert(!std::is_trivially_copyable_v<SectionAtomic>);
+static_assert(std::is_standard_layout_v<SectionAtomic> && std::is_standard_layout_v<SectionAtomicStorage>);
+static_assert(std::is_trivially_copyable_v<SectionAtomicStorage>);
+static_assert(std::is_same_v<SectionAtomicValue,std::int32_t>);
+static_assert(std::is_same_v<std::make_unsigned_t<SectionAtomicValue>,std::uint32_t>);
+static_assert(std::is_trivially_copyable_v<SectionAtomicValue> && std::has_unique_object_representations_v<SectionAtomicValue>);
+static_assert(sizeof(SectionAtomic)==4 && alignof(SectionAtomic)==4);
+static_assert(sizeof(SectionAtomicStorage)==4 && alignof(SectionAtomicStorage)==4);
+static_assert(sizeof(SectionAtomicValue)==4 && alignof(SectionAtomicValue)==4);
+static_assert(offsetof(SectionAtomic,_Storage)==0 && offsetof(SectionAtomicStorage,_Value)==0);
+static_assert(std::numeric_limits<SectionAtomicValue>::digits==31);
+static_assert((std::numeric_limits<SectionAtomicValue>::min)()==(-2147483647-1));
+static_assert((std::numeric_limits<SectionAtomicValue>::max)()==2147483647);
+static_assert(std::numeric_limits<unsigned char>::digits==8);
+static_assert(std::is_standard_layout_v<NativeMeshSectionStorage>);
+static_assert(!std::is_trivially_copyable_v<NativeMeshSectionStorage>);
+static_assert(std::is_nothrow_default_constructible_v<NativeMeshSectionStorage>);
+static_assert(std::is_trivially_destructible_v<NativeMeshSectionStorage>);
+#define BSP_SECTION_MEMBER(member,offset,bytes) \
+    static_assert(offsetof(NativeMeshSectionStorage,member)==offset); \
+    static_assert(sizeof(decltype(NativeMeshSectionStorage::member))==bytes); \
+    static_assert(std::is_trivially_copyable_v<decltype(NativeMeshSectionStorage::member)>)
+BSP_SECTION_MEMBER(native_vtable_00,0x00,4);
+static_assert(offsetof(NativeMeshSectionStorage,references_04)==4);
+BSP_SECTION_MEMBER(primitive_08,0x08,4);
+BSP_SECTION_MEMBER(range_words_0c,0x0c,16);
+BSP_SECTION_MEMBER(instance_count_1c,0x1c,4);
+BSP_SECTION_MEMBER(material_20,0x20,4);
+BSP_SECTION_MEMBER(bounds_bits_24,0x24,16);
+BSP_SECTION_MEMBER(word_34,0x34,4);
+BSP_SECTION_MEMBER(next_section_38,0x38,4);
+BSP_SECTION_MEMBER(vertex_streams_3c,0x3c,16);
+BSP_SECTION_MEMBER(vertex_stream_count_4c,0x4c,4);
+BSP_SECTION_MEMBER(vertex_layout_50,0x50,4);
+BSP_SECTION_MEMBER(uninterpreted_54,0x54,4);
+BSP_SECTION_MEMBER(indexed_58,0x58,1);
+BSP_SECTION_MEMBER(untouched_59,0x59,3);
+BSP_SECTION_MEMBER(instance_generator_binding_5c,0x5c,4);
+#undef BSP_SECTION_MEMBER
+#define BSP_SECTION_ADJACENT(left,right) \
+    static_assert(offsetof(NativeMeshSectionStorage,right)== \
+        offsetof(NativeMeshSectionStorage,left)+sizeof(decltype(NativeMeshSectionStorage::left)))
+BSP_SECTION_ADJACENT(native_vtable_00,references_04);
+BSP_SECTION_ADJACENT(references_04,primitive_08);
+BSP_SECTION_ADJACENT(primitive_08,range_words_0c);
+BSP_SECTION_ADJACENT(range_words_0c,instance_count_1c);
+BSP_SECTION_ADJACENT(instance_count_1c,material_20);
+BSP_SECTION_ADJACENT(material_20,bounds_bits_24);
+BSP_SECTION_ADJACENT(bounds_bits_24,word_34);
+BSP_SECTION_ADJACENT(word_34,next_section_38);
+BSP_SECTION_ADJACENT(next_section_38,vertex_streams_3c);
+BSP_SECTION_ADJACENT(vertex_streams_3c,vertex_stream_count_4c);
+BSP_SECTION_ADJACENT(vertex_stream_count_4c,vertex_layout_50);
+BSP_SECTION_ADJACENT(vertex_layout_50,uninterpreted_54);
+BSP_SECTION_ADJACENT(uninterpreted_54,indexed_58);
+BSP_SECTION_ADJACENT(indexed_58,untouched_59);
+BSP_SECTION_ADJACENT(untouched_59,instance_generator_binding_5c);
+#undef BSP_SECTION_ADJACENT
+static_assert(sizeof(NativeMeshSectionStorage)==offsetof(NativeMeshSectionStorage,instance_generator_binding_5c)+4);
+template<class T> void restore_section_subobject(T& destination,const unsigned char* preimage) noexcept {
+    static_assert(std::is_trivially_copyable_v<T>);
+    auto* const bytes=reinterpret_cast<volatile unsigned char*>(&destination);
+    for(std::size_t i=0;i!=sizeof(T);++i)bytes[i]=preimage[i];
+}
+NativeMeshSectionStorage* begin_section_storage(void* raw) noexcept {
+    // Existing fresh/aligned/exclusive60h birth contract: no callbacks or count
+    // users can observe the transient SDK default atomic0 before restoration.
+    // This is Source C++ birth work, not an additional Native instruction proof.
+    // All16 real born member extents are restored individually. Neither atomic
+    // nor whole carrier is byte-copied as a trivially-copyable complete object.
+    // Untouched streams/+59..5B retain arbitrary preimage; live pool ID+60 is OUT.
+    unsigned char preimage[sizeof(NativeMeshSectionStorage)];
+    auto* const source=static_cast<const volatile unsigned char*>(raw);
+    _ReadWriteBarrier();
+    for(std::size_t i=0;i!=sizeof(preimage);++i)preimage[i]=source[i];
+    _ReadWriteBarrier();
+    auto* const section=::new(raw)NativeMeshSectionStorage;
+    _ReadWriteBarrier();
+    restore_section_subobject(section->native_vtable_00,preimage);
+    restore_section_subobject(section->references_04._Storage._Value,preimage+4);
+    restore_section_subobject(section->primitive_08,preimage+0x08);
+    restore_section_subobject(section->range_words_0c,preimage+0x0c);
+    restore_section_subobject(section->instance_count_1c,preimage+0x1c);
+    restore_section_subobject(section->material_20,preimage+0x20);
+    restore_section_subobject(section->bounds_bits_24,preimage+0x24);
+    restore_section_subobject(section->word_34,preimage+0x34);
+    restore_section_subobject(section->next_section_38,preimage+0x38);
+    restore_section_subobject(section->vertex_streams_3c,preimage+0x3c);
+    restore_section_subobject(section->vertex_stream_count_4c,preimage+0x4c);
+    restore_section_subobject(section->vertex_layout_50,preimage+0x50);
+    restore_section_subobject(section->uninterpreted_54,preimage+0x54);
+    restore_section_subobject(section->indexed_58,preimage+0x58);
+    restore_section_subobject(section->untouched_59,preimage+0x59);
+    restore_section_subobject(section->instance_generator_binding_5c,preimage+0x5c);
+    _ReadWriteBarrier();
+    return section;
+}
+
 static_assert(sizeof(NativeMeshSectionStorage) == 0x60);
 static_assert(offsetof(NativeMeshSectionStorage, references_04) == 4);
 static_assert(offsetof(NativeMeshSectionStorage, primitive_08) == 8);
@@ -271,21 +395,29 @@ void retain_actual(void* raw) noexcept {
         static_cast<std::byte*>(raw) + 4));
     count->fetch_add(1, std::memory_order_seq_cst);
 }
-void assign_actual(void*& field, void* incoming, NativeRenderActualOwners& owners) {
+void assign_actual(void*& field, void* incoming, NativeRenderActualOwners& owners,
+    NativeMeshSectionLifetimeIssuer* issuer=nullptr,std::size_t site=0) {
     void* const old = field;
     if (old == incoming) return;
     field = incoming;
     if (incoming) retain_actual(incoming);
-    if (old) release_native_render_actual_owner(owners, old);
+    if (old) {
+        if (issuer) issuer->release(owners,old,site);
+        else release_native_render_actual_owner(owners, old);
+    }
 }
-void copy_actual(void*& destination, void* const& source, NativeRenderActualOwners& owners) {
+void copy_actual(void*& destination, void* const& source, NativeRenderActualOwners& owners,
+    NativeMeshSectionLifetimeIssuer* issuer=nullptr,std::size_t site=0) {
     // B85EF0 loads the destination before the current source identity.
     void* const old = destination;
     void* const incoming = source;
     if (old == incoming) return;
     destination = incoming;
     if (incoming) retain_actual(incoming);
-    if (old) release_native_render_actual_owner(owners, old);
+    if (old) {
+        if (issuer) issuer->release(owners,old,site);
+        else release_native_render_actual_owner(owners, old);
+    }
 }
 void copy_section_float_word(std::uint32_t& destination, const std::uint32_t& source) noexcept {
     __asm {
@@ -295,16 +427,19 @@ void copy_section_float_word(std::uint32_t& destination, const std::uint32_t& so
         fstp dword ptr [edx]
     }
 }
-void release_then_clear(void*& field, NativeRenderActualOwners& owners) {
+void release_then_clear(void*& field, NativeRenderActualOwners& owners,
+    NativeMeshSectionLifetimeIssuer* issuer=nullptr,std::size_t site=0) {
     void* const old = field;
     if (old) {
-        release_native_render_actual_owner(owners, old);
+        if (issuer) issuer->release(owners,old,site);
+        else release_native_render_actual_owner(owners, old);
         field = nullptr;
     }
 }
-void release_streams(NativeMeshSectionStorage& section, NativeRenderActualOwners& owners) {
+void release_streams(NativeMeshSectionStorage& section, NativeRenderActualOwners& owners,
+    NativeMeshSectionLifetimeIssuer* issuer=nullptr) {
     for (std::int32_t i = 0; i < section.vertex_stream_count_4c; ++i)
-        release_then_clear(section.vertex_streams_3c[i], owners);
+        release_then_clear(section.vertex_streams_3c[i], owners,issuer,stream_sites+i);
 }
 class SectionBaseCleanup final {
 public:
@@ -322,14 +457,16 @@ void return_native_mesh_section_slot_00b85b20(NativeMeshSectionPool& pool, void*
     pool.return_slot_00b859b0(slot);
 }
 
-NativeMeshSectionStorage* construct_native_mesh_section_00b857f0(
-    void* raw, const volatile std::uint32_t& bounds_w) noexcept {
+static NativeMeshSectionStorage* construct_section_body(
+    void* raw, const volatile std::uint32_t& bounds_w,NativeMeshSectionLifetimeIssuer* issuer) noexcept {
     const auto w = bounds_w;
-    auto* section = ::new (raw) NativeMeshSectionStorage;
+    auto* section = issuer ? begin_section_storage(raw) : ::new (raw) NativeMeshSectionStorage;
+    if (issuer) issuer->prefix(*section);
     section->native_vtable_00 = reference_profile;
     section->native_vtable_00 = section_profile;
     section->material_20 = nullptr;
     section->references_04.store(1, std::memory_order_relaxed);
+    if (issuer) issuer->count(*section);
     section->bounds_bits_24[0] = 0;
     section->bounds_bits_24[1] = 0;
     section->bounds_bits_24[2] = 0;
@@ -344,7 +481,12 @@ NativeMeshSectionStorage* construct_native_mesh_section_00b857f0(
     section->primitive_08 = 4;
     for (auto& word : section->range_words_0c) word = 0;
     section->instance_count_1c = 0;
+    if (issuer) issuer->returned(*section);
     return section;
+}
+NativeMeshSectionStorage* construct_native_mesh_section_00b857f0(
+    void* raw,const volatile std::uint32_t& bounds_w) noexcept {
+    return construct_section_body(raw,bounds_w,nullptr);
 }
 NativeMeshSectionStorage* create_native_mesh_section_00533fa0(
     NativeMeshSectionPool& pool, const volatile std::uint32_t& bounds_w) {
@@ -352,12 +494,14 @@ NativeMeshSectionStorage* create_native_mesh_section_00533fa0(
     return raw ? construct_native_mesh_section_00b857f0(raw, bounds_w) : nullptr;
 }
 
-NativeMeshSectionStorage* copy_construct_native_mesh_section_00b85ef0(
+static NativeMeshSectionStorage* copy_section_body(
     void* raw, const NativeMeshSectionStorage& source, NativeRenderActualOwners& owners,
-    const volatile std::uint32_t& bounds_w) {
-    auto* section = ::new (raw) NativeMeshSectionStorage;
+    const volatile std::uint32_t& bounds_w,NativeMeshSectionLifetimeIssuer* issuer) {
+    auto* section = issuer ? begin_section_storage(raw) : ::new (raw) NativeMeshSectionStorage;
+    if (issuer) issuer->prefix(*section);
     section->native_vtable_00 = reference_profile;
     section->references_04.store(1, std::memory_order_relaxed);
+    if (issuer) issuer->count(*section);
     const auto w = bounds_w; // Native copy reads CE4970 after base count=1.
     section->native_vtable_00 = section_profile;
     section->material_20 = nullptr;
@@ -376,22 +520,28 @@ NativeMeshSectionStorage* copy_construct_native_mesh_section_00b85ef0(
         section->range_words_0c[i] = source.range_words_0c[i];
     section->instance_count_1c = source.instance_count_1c;
     try { // Native EH state0 starts immediately before material assignment.
-        copy_actual(section->material_20, source.material_20, owners);
+        copy_actual(section->material_20, source.material_20, owners,issuer,material_site);
         for (std::uint32_t i = 0; i < 4; ++i)
             copy_section_float_word(section->bounds_bits_24[i], source.bounds_bits_24[i]);
         copy_section_float_word(section->word_34, source.word_34);
-        copy_actual(section->next_section_38, source.next_section_38, owners);
+        copy_actual(section->next_section_38, source.next_section_38, owners,issuer,next_site);
         for (std::int32_t i = 0; i < source.vertex_stream_count_4c; ++i)
             append_native_mesh_section_vertex_stream_00b85b80(*section, source.vertex_streams_3c[i]);
-        copy_actual(section->vertex_layout_50, source.vertex_layout_50, owners);
+        copy_actual(section->vertex_layout_50, source.vertex_layout_50, owners,issuer,layout_site);
         section->uninterpreted_54 = source.uninterpreted_54;
-        copy_actual(section->instance_generator_binding_5c, source.instance_generator_binding_5c, owners);
+        copy_actual(section->instance_generator_binding_5c, source.instance_generator_binding_5c, owners,issuer,generator_site);
     } catch (...) {
         // CC24B0 invokes only BD30F0, not the derived resource destructor.
         section->native_vtable_00 = reference_profile;
         throw;
     }
+    if (issuer) issuer->returned(*section);
     return section;
+}
+NativeMeshSectionStorage* copy_construct_native_mesh_section_00b85ef0(
+    void* raw,const NativeMeshSectionStorage& source,NativeRenderActualOwners& owners,
+    const volatile std::uint32_t& bounds_w) {
+    return copy_section_body(raw,source,owners,bounds_w,nullptr);
 }
 
 void set_native_mesh_section_material_00b864c0(
@@ -421,23 +571,23 @@ void set_native_mesh_section_indexed_00b85600(
     NativeMeshSectionStorage& section, std::uint8_t value) noexcept {
     section.indexed_58 = value;
 }
-void clear_native_mesh_section_vertex_streams_00b86550(
-    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners) {
-    release_streams(section, owners);
+static void clear_section_streams_body(
+    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners,NativeMeshSectionLifetimeIssuer* issuer) {
+    release_streams(section, owners,issuer);
     section.vertex_stream_count_4c = 0;
 }
-void clear_native_mesh_section_resources_00b86390(
-    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners) {
-    release_then_clear(section.material_20, owners);
-    release_streams(section, owners);
-    release_then_clear(section.vertex_layout_50, owners);
+static void clear_section_resources_body(
+    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners,NativeMeshSectionLifetimeIssuer* issuer) {
+    release_then_clear(section.material_20, owners,issuer,material_site);
+    release_streams(section, owners,issuer);
+    release_then_clear(section.vertex_layout_50, owners,issuer,layout_site);
 }
-void rebuild_native_mesh_section_vertex_layout_00b865a0(
+static void rebuild_section_layout_body(
     NativeMeshSectionStorage& section, NativeRenderActualOwners& owners,
-    void* mesh, NativeMeshSectionLayoutServices& services) {
+    void* mesh, NativeMeshSectionLayoutServices& services,NativeMeshSectionLifetimeIssuer* issuer) {
     if (section.vertex_layout_50) {
-        clear_native_mesh_section_vertex_streams_00b86550(section, owners);
-        release_then_clear(section.vertex_layout_50, owners);
+        clear_section_streams_body(section, owners,issuer);
+        release_then_clear(section.vertex_layout_50, owners,issuer,layout_site);
         if (section.vertex_layout_50) return;
     }
     if (section.vertex_stream_count_4c == 0) {
@@ -455,13 +605,30 @@ void rebuild_native_mesh_section_vertex_layout_00b865a0(
     }
     section.vertex_layout_50 = services.current_renderer_layout_virtual40(key);
 }
-void destroy_native_mesh_section_00b86420(
-    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners) {
+static void destroy_section_body(
+    NativeMeshSectionStorage& section, NativeRenderActualOwners& owners,NativeMeshSectionLifetimeIssuer* issuer) {
     section.native_vtable_00 = section_profile;
     const SectionBaseCleanup base(section);
-    release_then_clear(section.next_section_38, owners);
-    release_then_clear(section.instance_generator_binding_5c, owners);
-    clear_native_mesh_section_resources_00b86390(section, owners);
+    release_then_clear(section.next_section_38, owners,issuer,next_site);
+    release_then_clear(section.instance_generator_binding_5c, owners,issuer,generator_site);
+    clear_section_resources_body(section, owners,issuer);
+}
+void clear_native_mesh_section_vertex_streams_00b86550(
+    NativeMeshSectionStorage& section,NativeRenderActualOwners& owners) {
+    clear_section_streams_body(section,owners,nullptr);
+}
+void clear_native_mesh_section_resources_00b86390(
+    NativeMeshSectionStorage& section,NativeRenderActualOwners& owners) {
+    clear_section_resources_body(section,owners,nullptr);
+}
+void rebuild_native_mesh_section_vertex_layout_00b865a0(
+    NativeMeshSectionStorage& section,NativeRenderActualOwners& owners,
+    void* mesh,NativeMeshSectionLayoutServices& services) {
+    rebuild_section_layout_body(section,owners,mesh,services,nullptr);
+}
+void destroy_native_mesh_section_00b86420(
+    NativeMeshSectionStorage& section,NativeRenderActualOwners& owners) {
+    destroy_section_body(section,owners,nullptr);
 }
 NativeMeshSectionStorage* delete_native_mesh_section_00b86690(
     NativeMeshSectionStorage* section, NativeMeshSectionEnvironment& environment, std::uint32_t flags) {
@@ -479,7 +646,7 @@ NativeMeshSectionReference::NativeMeshSectionReference(NativeMeshSectionStorage&
     require_current_profile();
 }
 NativeMeshSectionReference::~NativeMeshSectionReference() {
-    if (phase_ != Phase::retired) std::terminate();
+    if (!ordinary_frame_ && phase_ != Phase::retired) std::terminate();
 }
 void NativeMeshSectionReference::require_current_profile() const noexcept {
     const auto* table = environment_.vtable_00d63194;
@@ -487,7 +654,21 @@ void NativeMeshSectionReference::require_current_profile() const noexcept {
         table[0] != 0x00bd30e0 || table[1] != 0x00b86690)
         std::terminate();
 }
-void NativeMeshSectionReference::release_zero_references() noexcept {
+NativeMeshSectionReference::NativeMeshSectionReference(NativeMeshSectionStorage& section,
+    NativeMeshSectionEnvironment& environment,NativeMeshSectionLifetimeFrame& frame) noexcept
+    :RenderCommandReference(section.references_04),ordinary_frame_(&frame),storage_(section),environment_(environment),
+     disposal_{} {}
+void NativeMeshSectionReference::validate_ordinary_target() const {
+    const auto* table=environment_.vtable_00d63194;
+    if(storage_.native_vtable_00!=section_profile || !table ||
+        table[0]!=0x00bd30e0 || table[1]!=0x00b86690)
+        throw std::logic_error("ordinary Section CURRENT target/profile mismatch");
+}
+void NativeMeshSectionReference::release_zero_references() {
+    if(ordinary_frame_){ordinary_frame_->ordinary_virtual_zero(*this);return;}
+    release_zero_references_legacy();
+}
+void NativeMeshSectionReference::release_zero_references_legacy() noexcept {
     if (phase_ != Phase::bound) std::terminate();
     require_current_profile();
     phase_ = Phase::destroying;
@@ -495,5 +676,43 @@ void NativeMeshSectionReference::release_zero_references() noexcept {
     delete_native_mesh_section_00b86690(&storage_, environment_, 1);
     phase_ = Phase::retired;
     disposal.retire(disposal.context, *this);
+}
+NativeMeshSectionStorage* NativeMeshSectionLifetimeAccess::construct(void* raw,
+    const volatile std::uint32_t& bounds,NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call) noexcept {
+    NativeMeshSectionLifetimeIssuer issuer(frame,call);
+    return construct_section_body(raw,bounds,&issuer);
+}
+NativeMeshSectionStorage* NativeMeshSectionLifetimeAccess::copy(void* raw,
+    const NativeMeshSectionStorage& source,NativeRenderActualOwners& owners,
+    const volatile std::uint32_t& bounds,NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call) {
+    NativeMeshSectionLifetimeIssuer issuer(frame,call);
+    return copy_section_body(raw,source,owners,bounds,&issuer);
+}
+void NativeMeshSectionLifetimeAccess::mutate(NativeMeshSectionStorage& section,
+    NativeRenderActualOwners& owners,std::uint32_t operation,void* operand,std::int32_t index,
+    NativeMeshSectionLayoutServices* services,NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call) {
+    NativeMeshSectionLifetimeIssuer issuer(frame,call);
+    using Operation=NativeMeshSectionLifetimeFrame::Operation;
+    switch(static_cast<Operation>(operation)) {
+    case Operation::material: assign_actual(section.material_20,operand,owners,&issuer,material_site);break;
+    case Operation::stream: assign_actual(section.vertex_streams_3c[index],operand,owners,&issuer,stream_sites+index);break;
+    case Operation::layout: assign_actual(section.vertex_layout_50,operand,owners,&issuer,layout_site);break;
+    case Operation::generator: assign_actual(section.instance_generator_binding_5c,operand,owners,&issuer,generator_site);break;
+    case Operation::append: append_native_mesh_section_vertex_stream_00b85b80(section,operand);break;
+    case Operation::indexed: set_native_mesh_section_indexed_00b85600(section,static_cast<std::uint8_t>(index));break;
+    case Operation::clear_streams: clear_section_streams_body(section,owners,&issuer);break;
+    case Operation::clear_resources: clear_section_resources_body(section,owners,&issuer);break;
+    case Operation::rebuild: rebuild_section_layout_body(section,owners,operand,*services,&issuer);break;
+    default: throw std::logic_error("Section private mutation operation mismatch");
+    }
+}
+void NativeMeshSectionLifetimeAccess::destroy(NativeMeshSectionStorage& section,
+    NativeRenderActualOwners& owners,NativeMeshSectionLifetimeFrame& frame,
+    NativeMeshSectionLifetimeCall& call) {
+    NativeMeshSectionLifetimeIssuer issuer(frame,call);
+    destroy_section_body(section,owners,&issuer);
 }
 } // namespace bsp

@@ -9,6 +9,7 @@ class NativeMeshCanonicalRecord;
 class NativePostEffectModelFrame;
 class NativePostEffectParentFrame;
 class NativeMaterialFrame;
+class NativeMeshSectionLifetimeFrame;
 class NativeMeshReference;
 class NativeRenderObservedZeroAccess;
 struct RenderCommand;
@@ -31,16 +32,19 @@ private:
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
     friend class NativeRenderObservedZeroAccess;
     friend void release_render_command_reference(RenderCommandReference&);
     NativeMeshCanonicalRecord* ordinary_mesh_{};
     NativePostEffectModelFrame* ordinary_model_{};
     NativePostEffectParentFrame* ordinary_parent_{};
     NativeMaterialFrame* ordinary_material_{};
+    NativeMeshSectionLifetimeFrame* ordinary_section_{};
     void bind_ordinary_mesh(NativeMeshCanonicalRecord& record) noexcept { ordinary_mesh_ = &record; }
     void bind_ordinary_model(NativePostEffectModelFrame& frame) noexcept { ordinary_model_ = &frame; }
     void bind_ordinary_parent(NativePostEffectParentFrame& frame) noexcept { ordinary_parent_ = &frame; }
     void bind_ordinary_material(NativeMaterialFrame& frame) noexcept { ordinary_material_ = &frame; }
+    void bind_ordinary_section(NativeMeshSectionLifetimeFrame& frame) noexcept { ordinary_section_ = &frame; }
 
 public:
     std::atomic<std::int32_t>& reference_count;

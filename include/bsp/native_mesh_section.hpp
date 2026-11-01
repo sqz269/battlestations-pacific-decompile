@@ -5,6 +5,9 @@
 #include <cstdlib>
 
 namespace bsp {
+class NativeMeshSectionLifetimeFrame;
+class NativeMeshSectionLifetimeCall;
+class NativeMeshSectionLifetimeAccess;
 
 // Actual 60h object; the pool's separate slab-index DWORD is at +60.
 struct NativeMeshSectionStorage {
@@ -164,14 +167,37 @@ public:
     NativeMeshSectionReference(const NativeMeshSectionReference&) = delete;
     NativeMeshSectionReference& operator=(const NativeMeshSectionReference&) = delete;
     NativeMeshSectionStorage& storage() noexcept { return storage_; }
-    void release_zero_references() noexcept override;
+    void release_zero_references() override;
 private:
+    friend class NativeMeshSectionLifetimeFrame;
+    NativeMeshSectionReference(NativeMeshSectionStorage&, NativeMeshSectionEnvironment&,
+        NativeMeshSectionLifetimeFrame&) noexcept;
+    void validate_ordinary_target() const;
+    void release_zero_references_legacy() noexcept;
+    NativeMeshSectionLifetimeFrame* ordinary_frame_{};
     enum class Phase { bound, destroying, retired };
     NativeMeshSectionStorage& storage_;
     NativeMeshSectionEnvironment& environment_;
     NativeMeshSectionCompanionDisposal disposal_;
     Phase phase_{Phase::bound};
     void require_current_profile() const noexcept;
+};
+
+// Narrow private entry to the SAME whole constructor/resource kernels.
+// Naming this type supplies no adoption, birth, action or observation setter.
+class NativeMeshSectionLifetimeAccess final {
+private:
+    friend class NativeMeshSectionLifetimeFrame;
+    static NativeMeshSectionStorage* construct(void*,const volatile std::uint32_t&,
+        NativeMeshSectionLifetimeFrame&,NativeMeshSectionLifetimeCall&) noexcept;
+    static NativeMeshSectionStorage* copy(void*,const NativeMeshSectionStorage&,
+        NativeRenderActualOwners&,const volatile std::uint32_t&,
+        NativeMeshSectionLifetimeFrame&,NativeMeshSectionLifetimeCall&);
+    static void mutate(NativeMeshSectionStorage&,NativeRenderActualOwners&,
+        std::uint32_t,void*,std::int32_t,NativeMeshSectionLayoutServices*,
+        NativeMeshSectionLifetimeFrame&,NativeMeshSectionLifetimeCall&);
+    static void destroy(NativeMeshSectionStorage&,NativeRenderActualOwners&,
+        NativeMeshSectionLifetimeFrame&,NativeMeshSectionLifetimeCall&);
 };
 
 // Valid native domain: actual aligned live owners; 0<=count<=4; in-range stream

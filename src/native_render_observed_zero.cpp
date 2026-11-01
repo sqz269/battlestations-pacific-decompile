@@ -3,6 +3,7 @@
 #include "bsp/native_post_effect_model_lifetime.hpp"
 #include "bsp/native_post_effect_parent_lifetime.hpp"
 #include "bsp/native_material_lifetime.hpp"
+#include "bsp/native_mesh_section_lifetime.hpp"
 #include <exception>
 #include <new>
 #include <utility>
@@ -50,6 +51,7 @@ void NativeRenderObservedZeroAccess::fail_frame(NativeRenderObservedZeroFrame& f
         if(n->model_) n->model_->record_source_failure();
         if(n->parent_) n->parent_->record_source_failure();
         if(n->material_) n->material_->record_source_failure();
+        if(n->section_) n->section_->record_source_failure();
     }
 }
 bool NativeRenderObservedZeroAccess::end_frame(NativeRenderObservedZeroFrame& frame,
@@ -67,6 +69,7 @@ bool NativeRenderObservedZeroAccess::end_frame(NativeRenderObservedZeroFrame& fr
         if(n->model_) n->model_->release_observed_zero_hold(false);
         if(n->parent_) n->parent_->release_observed_zero_hold(false);
         if(n->material_) n->material_->release_observed_zero_hold(false);
+        if(n->section_) n->section_->release_observed_zero_hold(false);
     }
     return true;
 }
@@ -82,12 +85,16 @@ NativeRenderObservedZeroAccess::CppCountUse::CppCountUse(RenderCommandReference&
     } else if (auto* material_frame = reference.ordinary_material_) {
         material_frame->begin_cpp_count_use(reference);
         material_ = material_frame;
+    } else if (auto* section_frame = reference.ordinary_section_) {
+        section_frame->begin_cpp_count_use(reference);
+        section_ = section_frame;
     }
 }
 NativeRenderObservedZeroAccess::CppCountUse::~CppCountUse() noexcept {
     if (model_) model_->end_cpp_count_use(); // external metadata only
     if (parent_) parent_->end_cpp_count_use(); // external metadata only
     if (material_) material_->end_cpp_count_use(); // external metadata only
+    if (section_) section_->end_cpp_count_use(); // external metadata only
 }
 void NativeRenderObservedZeroAccess::release_ordinary(RenderCommandReference& reference) {
     const CppCountUse use(reference);
@@ -120,6 +127,10 @@ void NativeRenderObservedZeroAccess::invoke(RenderCommandReference& reference, v
     } else if (auto* material_frame = reference.ordinary_material_) {
         material_frame->hold_observed_zero(outer, reference);
         material_frame->invoke_observed_zero(actual, reference);
+        return;
+    } else if (auto* section_frame = reference.ordinary_section_) {
+        section_frame->hold_observed_zero(outer, reference);
+        section_frame->invoke_observed_zero(actual, reference);
         return;
     }
     reference.release_zero_references(); // exact legacy virtual policy

@@ -6,6 +6,7 @@ class NativeMeshCanonicalAccess;
 class NativePostEffectModelFrame;
 class NativePostEffectParentFrame;
 class NativeMaterialFrame;
+class NativeMeshSectionLifetimeFrame;
 class NativeRenderObservedZeroAccess;
 class NativeRenderObservedZeroFrame;
 
@@ -18,6 +19,7 @@ private:
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
     friend class NativeRenderObservedZeroAccess;
     friend class NativeRenderObservedZeroFrame;
     NativeRenderObservedZeroHold() noexcept = default;
@@ -28,6 +30,7 @@ private:
     NativePostEffectModelFrame* model_{};
     NativePostEffectParentFrame* parent_{};
     NativeMaterialFrame* material_{};
+    NativeMeshSectionLifetimeFrame* section_{};
 };
 
 // Caller-owned metadata, reserved before effects and kept through its actual
@@ -53,6 +56,7 @@ private:
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialFrame;
+    friend class NativeMeshSectionLifetimeFrame;
     NativeRenderObservedZeroHold* head_{};
     int uncaught_on_attach_{};
     std::atomic<unsigned> active_invocations_{0};
