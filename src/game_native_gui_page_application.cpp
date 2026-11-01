@@ -1093,6 +1093,38 @@ struct GameNativeGuiPageApplication::Impl {
                 current->denied.load(std::memory_order_acquire)) return true;
         return false;
     }
+    bool live_property_invocation(const PropertyInvocation* frame) const noexcept {
+        if (!frame) return false;
+        bool owned = false;
+        for (const auto& page : pages) if (page->properties.get() == frame) owned = true;
+        for (const auto& widget : widget_records) if (widget->properties.get() == frame) owned = true;
+        return owned && frame->reader && !frame->native_calls.failed;
+    }
+    bool text_child34_property_parent(const TextChild34Borrow& parent) const noexcept {
+        const auto anchor = [&parent](const NativeCalls* calls) noexcept {
+            if (calls == &parent.native_calls) return !parent.native_calls.failed;
+            const auto* leaf = parent.active_leaf;
+            return leaf && leaf->entered && !leaf->complete && !leaf->failed &&
+                !leaf->native_calls.failed && calls == &leaf->native_calls;
+        };
+        const auto* boundary = parent.suspended_properties;
+        if (boundary && !live_property_invocation(boundary)) return false;
+        if (current_properties == boundary) return anchor(current_calls); // direct arm
+        if (!live_property_invocation(current_properties) ||
+            current_calls != &current_properties->native_calls) return false;
+        const auto* reader = boundary ? boundary->reader : current_properties->reader;
+        if (widget_records.size() > (std::numeric_limits<std::size_t>::max)() - pages.size()) return false;
+        auto remaining = pages.size() + widget_records.size(); // private frame cycle denial only
+        for (const auto* frame = current_properties; remaining; --remaining) {
+            if (!live_property_invocation(frame) || frame->reader != reader) return false;
+            const auto* suspended = frame->suspended;
+            if (suspended == boundary) return anchor(frame->suspended_calls);
+            if (!live_property_invocation(suspended) ||
+                frame->suspended_calls != &suspended->native_calls) return false;
+            frame = suspended;
+        }
+        return false;
+    }
     Page* find_root(void*);
     WidgetRecord& live_widget(void*);
     NativeModelReference* find_model(void*);
@@ -1721,8 +1753,7 @@ GameNativeGuiPageApplication::prepare_text_active_child34_borrow(
                 require(b.parent->owner_thread == b.owner_thread &&
                     !p.text_child34_chain_interrupted(*b.parent),
                     "nested captured Text child34 requires its exact live parent thread");
-                proper_parent = p.current_calls == &b.parent->native_calls ||
-                    (b.parent->active_leaf && p.current_calls == &b.parent->active_leaf->native_calls);
+                proper_parent = p.text_child34_property_parent(*b.parent);
             }
             require(proper_parent && p.current_calls && !p.current_calls->failed,
                 "captured Text child34 requires a proper private Page parent");

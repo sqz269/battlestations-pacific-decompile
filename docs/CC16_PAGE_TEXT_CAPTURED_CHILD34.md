@@ -51,6 +51,17 @@ parent/captured arguments reject. Source129 Frame/Acquired are read for mismatch
 denial and are never written by this supplier; their public diagnostics confer
 no Native origin or queued-closure permission.
 
+V2 corrects the captured-parent admission for a genuine property descendant.
+Direct arms require the unchanged suspended-property identity. A descendant
+must be a retained Page-owned live-reader frame whose current NativeCalls is
+its own. Each suspended/suspended_calls link must match the next retained
+property NativeCalls exactly, ending at the captured parent's actual suspended
+property boundary and direct controller or same entered/incomplete/unfailed
+leaf NativeCalls. The nullable boundary stays null where genuinely null. A
+finite retained-property bound denies cycles; unrelated properties are not
+admitted through a blind OR. Validation allocates nothing and reads no Native
+payload. The immutable V1 candidate remains preserved separately.
+
 The callback checks immutable owner-thread identity before touching Page. A
 foreign-thread call only sets its Page-owned atomic denial latch and rejects.
 Owner-thread entry/resume checks include every captured-call ancestor's denial

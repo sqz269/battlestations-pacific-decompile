@@ -59,9 +59,9 @@
   },
   "strict_compile": {
     "status": "passed",
-    "TUs": 2,
+    "TUs": 1,
     "flags": "MSVC x86 /c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
-    "seconds": 4.655893
+    "seconds": 3.9098184
   },
   "official_build": {
     "status": "passed",
@@ -69,9 +69,9 @@
     "configuration": "Release",
     "platform": "Win32",
     "existing_checks": "2/2 passed: reconstructed_math and tool_tests",
-    "seconds": 28.0622791
+    "seconds": 24.7933006
   },
-  "candidate": "local/output/cc16_page_text_captured_child34_source146_20261101",
+  "candidate": "local/output/cc16_page_text_captured_child34_source146_v2_20261101",
   "Source_qualification": "New C++ class/vtable/record/codegen and Page::Impl layout are Source-only; no Original ABI/fault/Origin/FH3/SEH/unmasked-FP/runtime theorem",
   "not_performed": [
     "new tests/probes/Game",
@@ -80,5 +80,15 @@
     "whole129 runner/Text factory",
     "activation",
     "push"
-  ]
+  ],
+  "revision": 2,
+  "V1_source_commit": "1ac7dfd1904530070e3c79a4a7412f616e121259",
+  "V1_manifest_sha256": "ed9632f152289eee8f1addd3c5736ba6ab6d6f92e4217353f386134900affa47",
+  "V1_seal_sha256": "8e690632be3e1bed5978803616cb8429f8841d1df660828b37729d3dcc6c309d",
+  "V2_changed_files": [
+    "src/game_native_gui_page_application.cpp",
+    "docs/CC16_PAGE_TEXT_CAPTURED_CHILD34.md",
+    "reports/cc16_page_text_captured_child34.json"
+  ],
+  "V2_correction": "Exact retained descendant PropertyInvocation/NativeCalls ancestry to captured parent suspended-property boundary; direct arms require unchanged property identity; selected active leaf entered/incomplete/unfailed. No Native reads, allocation, blind OR, guessed reader or generic provenance subsystem."
 }
