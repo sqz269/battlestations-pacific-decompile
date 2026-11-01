@@ -31,6 +31,7 @@ private:
     friend class NativeGuiFrameBoxStateStorageObservedZeroIssuer;
     friend class NativeGuiIconConstructedStorageObservedZeroIssuer;
     friend class NativeGuiIconTextureApplyStorageObservedZeroIssuer;
+    friend class NativeGuiIconVisibilityStorageObservedZeroIssuer;
     friend class NativeGuiModelStorageObservedZeroIssuer;
     friend class NativeGuiSoundStorageObservedZeroIssuer;
     friend class NativeGuiTextCursorStorageObservedZeroIssuer;
