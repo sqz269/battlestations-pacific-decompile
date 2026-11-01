@@ -1,0 +1,65 @@
+{
+  "packet": "Source145 current host CRT stricmp callees",
+  "status": "qualified Source/Code/Win32 build integration; actual consumer remains unbound",
+  "author": "7c99122d270ed8523dc26d0bc66c772d592a8087",
+  "Root_import": "5a36f048c",
+  "Root_registration_build_head": "849516b5ee9f7fef856dc2263542aaf976c720a4",
+  "published_base_Main": "cda8c653d1c894486437a6b8aa02c86270d13721",
+  "author_files": [
+    "include/bsp/game_native_host_crt_stricmp_callees.hpp",
+    "src/game_native_host_crt_stricmp_callees.cpp",
+    "docs/CC16_HOST_CRT_STRICMP_CALLEES.md",
+    "reports/cc16_host_crt_stricmp_callees.json"
+  ],
+  "Source_findings": 0,
+  "Code_findings": 0,
+  "scope": {
+    "sections": 3,
+    "bytes": 137,
+    "instruction_starts": 45,
+    "relocations": 11
+  },
+  "Root_manual_review": {
+    "finding_count": 0,
+    "scope": "all45 actual emitted instructions in the three endpoint sections; direct percall errno import; allfivewords denied before returningnoinfo; null locale denied before unchanged string/null pushes to real stricmp_l"
+  },
+  "Root_Code_transfer": "allthree raw sections and normalized relocations exact;actualRoot014cGameobject/projectonce/linkinput",
+  "Root_build": {
+    "seconds": 25.3490634,
+    "exit": 0
+  },
+  "frozen_inputs": 3896,
+  "frozen_artifacts": 221,
+  "existing_checks_seconds": [
+    0.21,
+    13.93
+  ],
+  "new_tests": 0,
+  "Game_runs_for_this_packet": 0,
+  "Ghidra_writes": 0,
+  "all_nine_GUI_selectors": false,
+  "Native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "actual_Root_object": {
+    "path": "build/win32/bsp_game.dir/Release/game_native_host_crt_stricmp_callees.obj",
+    "size": 10213,
+    "sha256": "93f7a0778945b1dc099ef3a45a619c97fff4e3682a7378b8662c37f79ed69b75",
+    "retained_path": "local/function_source_batch145/common/artifacts/build/win32/bsp_game.dir/Release/game_native_host_crt_stricmp_callees.obj"
+  },
+  "required_activation_edges": [
+    "genuine Source144/131/135 Root consumer and lifetime/caller thread",
+    "actual retained production CRT import/link resolution"
+  ],
+  "qualification": "Real current MSVC Win32 Release MD SDK APIs. Object import dependencies only; independent worker map strips provider and PE lacks stricmp_l. No forced anchor/dummy consumer. No Original staticCRT/TLS/errno/handler/locale/ABI/Origin/fault/SEH/FP/runtime equivalence.",
+  "local_evidence_root": "local/function_source_batch145",
+  "local_evidence_sha256": {
+    "candidate/MANIFEST.json": "79b8de622d6a629852920f9560982a9dead66ed35aa2a6868ee2342289bda943",
+    "candidate/SOURCE_SEAL.json": "08fa301af4777400d82c34b3d340b07c2c258e870a4a6ac397045a36d423665a",
+    "peer/MANIFEST.json": "a008833b91796051d64c49f3d518496d34c9875a855f51b898ee16ee8264b403",
+    "peer/SEAL.json": "2d6acc6267a6fb7d6c35beb55b3c7d5ef23f2a9abe05711beee80a2a775d3c31",
+    "common/manifest.json": "dee1d53951257418965564848fe94ec6029af87407bd9ddcb7080f14c14c98ce",
+    "Root_Source_review.json": "8684d3f166a364641bd19f81e6314a3859fb2c1e807a0c874a8cf3446017be9c",
+    "Root_Code_transfer.json": "5eaba7d33ccb884716ec6d7aca5c1224177e0067d5f6e345f1acd72532546354",
+    "Root_CMake/Root_receipt.json": "3ff3476c624eae5fcd070e94687e03bd266e3aa9dd5f1d80ce1d3798276bde8c"
+  }
+}
