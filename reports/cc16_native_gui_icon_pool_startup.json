@@ -1,0 +1,63 @@
+{
+  "kind": "Concrete existing Icon pool startup Source",
+  "actual_parent": "4a7fce16d4b8c6e0e05107b96e4dcf09671eb9f1",
+  "Source_review": {
+    "artifacts": 5,
+    "Root_review": "All6 startup seams and whole-file inverse reviewed with actual process initialize_once/pool/destroy and trim-unbind code. SAME function-static Icon pool before Text/Group/Host; entered flag before initialize clears only on normal return; two existing retention catches extended without newExit call. Every normal atexit status preserved. Actual sameAA1410 pool path remains. Existing shared allocator process outlives Icon native callback/C++trim-unbind. No Type6/gate/ordinaryrenderer change.",
+    "canonical_Git_preimage_and_all10_providers_exact": true,
+    "workspace_CRLF_only_qualified": [
+      "src/game_native_gui_page_application.cpp"
+    ],
+    "candidate_sha256": "077e9e4969bc0c169dd3a9db6bcb49a880e1a31ae897ba7257f46a99e087a88e",
+    "source_diff_qualification": "Receipt normalized diff hash differs from CRLF on-disk diff; manifest pins actual3909B diff. Canonical Git files/6seams inverse are exact; existing workspace CRLF normalization is separate.",
+    "findings": 0,
+    "required_pending": [
+      "official Win32 build and existing suites",
+      "natural cold startup + Iconpool atexit0/noForceStop"
+    ],
+    "OriginalABI_Origin_gameplay_activation_credit": false
+  },
+  "author_proposal_receipt_sha256": "8eb39ce3e0b5eaebc555fa839ce4f6900669af82337930e2d11d0c025ffb4ca2",
+  "before_canonical_sha256": "9e71df4b78c3e9ca60f69548afb85ba5a8028021f7eefdd911ce8dfcab5212c7",
+  "after_sha256": "077e9e4969bc0c169dd3a9db6bcb49a880e1a31ae897ba7257f46a99e087a88e",
+  "finite_seams": [
+    {
+      "label": "existing concrete pool API include",
+      "before": "#include \"bsp/native_gui_group_storage.hpp\"\n",
+      "after": "#include \"bsp/native_gui_group_storage.hpp\"\n#include \"bsp/native_gui_widget_pools_cc13.hpp\"\n",
+      "occurrences": 1
+    },
+    {
+      "label": "local entered-call retention bookkeeping",
+      "before": "    bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;\n",
+      "after": "    bsp::game::GameNativeGuiGroupPoolProcess* group_pool_process = nullptr;\n    bool icon_pool_startup_incomplete = false;\n",
+      "occurrences": 1
+    },
+    {
+      "label": "cold actual Icon init before Text/Group and Host",
+      "before": "    try {\n        // CE3470/CD71F0 precedes the existing CE34EC/CD7830 subset entry.\n",
+      "after": "    try {\n        // CE3468/CD7180 starts the SAME F8BDA0 process pool used by AA1410.\n        // No Icon allocation or Page factory is entered by pool startup.\n        auto& gui_icon_pool = bsp::game::GameNativeGuiWidgetPoolProcess<\n            bsp::GuiIconPoolTraits>::instance();\n        icon_pool_startup_incomplete = true; // Before the actual initializer.\n        const int icon_pool_atexit = gui_icon_pool.initialize_once();\n        icon_pool_startup_incomplete = false; // Every normal status is preserved.\n        log.notef(\"native GUI Icon pool CRT CD7180: atexit=%d storage_bytes=%zu \"\n            \"before_gui_text_pool=1\", icon_pool_atexit, sizeof(bsp::NativeGuiWidgetPoolStorage));\n        // CE3470/CD71F0 precedes the existing CE34EC/CD7830 subset entry.\n",
+      "occurrences": 1
+    },
+    {
+      "label": "existing retained-root catches also retain escaped Icon init",
+      "before": "        if ((text_pool_process && text_pool_process->native_operation_interrupted()) ||\n",
+      "after": "        if (icon_pool_startup_incomplete ||\n            (text_pool_process && text_pool_process->native_operation_interrupted()) ||\n",
+      "occurrences": 2
+    },
+    {
+      "label": "retained-root diagnostic includes Icon",
+      "before": "GUI Text/Group pool startup",
+      "after": "GUI Icon/Text/Group pool startup",
+      "occurrences": 2
+    },
+    {
+      "label": "fallback diagnostic includes Icon",
+      "before": "GUI Text/Group pools require process retention",
+      "after": "GUI Icon/Text/Group pools require process retention",
+      "occurrences": 2
+    }
+  ],
+  "build_and_natural_startup": "pending; not accepted as runtime proof",
+  "OriginalABI_Origin_Type6_gameplay_credit": false
+}
