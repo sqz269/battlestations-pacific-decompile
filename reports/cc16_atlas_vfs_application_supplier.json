@@ -1,0 +1,22 @@
+{
+  "kind": "Ordinary Source actual VFS identity supplier",
+  "files": [
+    {
+      "path": "include/bsp/game_hosts_vfs.hpp",
+      "preimage_sha256": "1e3878ed0f752e14946c132fdee509a76f07c95cd52676bc00fafdbeb7ad0326",
+      "postimage_sha256": "c502f7fe52bb61e41476dd98bc9d532101a7f5da88a8bc578ff2e04deea289fe",
+      "single_finite_insertion": true
+    },
+    {
+      "path": "src/game_hosts_vfs.cpp",
+      "preimage_sha256": "7394248062dc8b98f55e06ea172e93fb3da3243a897f9e04dcb652a70750e087",
+      "postimage_sha256": "845653304c39721241076f0bdf153bf3c010a03272787da4b219f61095ecda08",
+      "single_finite_insertion": true
+    }
+  ],
+  "Root_Source_review": "finite declaration and one-line same unique_ptr dereference; current constructor adoption and accessor pattern inspected",
+  "independent_Source_review": "pending",
+  "build_and_runtime": "pending joined supplier batch",
+  "new_native_body_credit": 0,
+  "activated": false
+}

@@ -138,6 +138,7 @@ const GameNativeAnimationExtraItemServices& GameVfsHost::borrow_animation_extra_
     const auto services = borrow_raw_services(); // Existing interrupted-operation gate.
     return resources_->borrow_animation_extra_item_services(services.bindings, native_->raw_strings());
 }
+GameNativeVfsApplication& GameVfsHost::native_application() noexcept { return *native_; }
 NativeVfsOwnerServices& GameVfsHost::native_owners() noexcept { return native_->owners(); }
 GameNativeTypeStorage& GameVfsHost::native_types() noexcept { return native_->types(); }
 

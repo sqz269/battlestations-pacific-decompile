@@ -140,6 +140,10 @@ public:
     // The mount remains owned by the native manager until its normal drain.
     void* mount(const char* system_path,const char* virtual_path,
         std::uint32_t priority,std::uint32_t flags,std::uint32_t device_id);
+    // Identity-only view of the SAME application owned by this facade.
+    // No initialization, readiness, I/O or publication is performed. Actual
+    // atlas callers must retain this whole Host graph and admit their uses.
+    GameNativeVfsApplication& native_application() noexcept;
     NativeVfsOwnerServices& native_owners() noexcept;
     GameNativeTypeStorage& native_types() noexcept;
 
