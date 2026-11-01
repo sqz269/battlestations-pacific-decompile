@@ -67,20 +67,12 @@ public:
         friend class GameNativeGuiPageApplication;
         static void bind(NativeGuiSelectedManagerDeleteAttempt& attempt,
             NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
-            NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages,
+            NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& actual_dispatcher,
             void* actual_gui, void* renderer, GameSingletonHost*& host,
             NativeGuiMediaFocusLifetimeContext*& context,
             const NativeSingletonDeletionBindings*& bindings, void*& gui) {
             GameNativeGuiPageFontRetirementCut::bind_binding(attempt, provider, owners,
-                strings, pages, actual_gui, renderer, host, context, bindings, gui);
-        }
-        static void capture(const NativeGuiSelectedManagerDeleteAttempt& attempt,
-            NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
-            NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages, void* renderer,
-            GameSingletonHost*& host, NativeGuiMediaFocusLifetimeContext*& context,
-            const NativeSingletonDeletionBindings*& bindings, void*& gui) {
-            GameNativeGuiPageFontRetirementCut::capture_binding(attempt, provider, owners,
-                strings, pages, renderer, host, context, bindings, gui);
+                strings, actual_dispatcher, actual_gui, renderer, host, context, bindings, gui);
         }
         static void require_renderer(const NativeGuiSelectedManagerDeleteAttempt& attempt,
             const NativeGuiPageFontRetirementHost& provider, const GameSingletonHost* host,
@@ -98,7 +90,7 @@ private:
     }
     static void bind_binding(NativeGuiSelectedManagerDeleteAttempt& attempt,
         NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
-        NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages,
+        NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& actual_dispatcher,
         void* actual_gui, void* renderer, GameSingletonHost*& host,
         NativeGuiMediaFocusLifetimeContext*& context,
         const NativeSingletonDeletionBindings*& bindings, void*& gui) {
@@ -109,12 +101,12 @@ private:
         attempt.page_fonts_ = &provider;
         attempt.page_font_gui_receiver_ = actual_gui;
         attempt.page_font_renderer_receiver_ = renderer;
-        capture_binding(attempt, provider, owners, strings, pages, renderer,
+        capture_binding(attempt, provider, owners, strings, actual_dispatcher, renderer,
             host, context, bindings, gui);
     }
     static void capture_binding(const NativeGuiSelectedManagerDeleteAttempt& attempt,
         NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
-        NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages, void* renderer,
+        NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& actual_dispatcher, void* renderer,
         GameSingletonHost*& host, NativeGuiMediaFocusLifetimeContext*& context,
         const NativeSingletonDeletionBindings*& bindings, void*& gui) {
         check(attempt.cold_bound_ && !attempt.host_entered_ && !attempt.core_entered_ &&
@@ -125,7 +117,7 @@ private:
             attempt.page_font_gui_receiver_ && attempt.page_font_renderer_receiver_ == renderer &&
             renderer && !attempt.page_font_scope_ &&
             &attempt.context_->owners == &owners && &attempt.context_->strings == &strings &&
-            &attempt.context_->pages == &pages,
+            &attempt.context_->pages == &actual_dispatcher,
             "Page Font binding requires the SAME cold selected attempt/provider domain");
         host = attempt.host_; context = attempt.context_; bindings = attempt.bindings_;
         gui = attempt.page_font_gui_receiver_;
@@ -321,9 +313,9 @@ private:
     void fail_page_font_link(GameFontHost&, GameNativeFontApplication&) noexcept;
     void prepare_page_font_retirement(GameFontHost&, GameNativeFontApplication&);
     void enter_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);
-    void bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);
     void bind_page_font_delete_attempt(GameNativeGuiManagerApplication&,
-        NativeGuiPageLifetimeHost& actual_delegate, void* captured_actual_gui,
+        NativeGuiPageLifetimeHost& actual_dispatcher, NativeGuiPageLifetimeHost& actual_delegate,
+        void* captured_actual_gui,
         NativeGuiSelectedManagerDeleteAttempt&);
     void require_page_font_retirement_cut(GameFontHost&, GameNativeFontApplication&,
         const GameNativeGuiPageFontRetirementCut&) const;

@@ -46,9 +46,26 @@ The private Page overload checks its original manager, lifetime delegate/token,
 and the same prepared Host/App/view. It derives the registered renderer from
 that private prepared record. A binding-only nested Cut helper fills and checks
 the selected metadata; no public getter, permit, Page::Impl exposure or new
-shared-header friendship is added. The old and new Page entries share a private
-single-entry helper. Failure keeps the existing sticky Page/Font failure and
+shared-header friendship is added. The private entry uses a single-entry
+helper. Failure keeps the existing sticky Page/Font failure and
 manager preparation/selected-unknown denial records.
+
+Source143 V2 refines the reviewed plan's Page lifetime argument after independent
+review found that V1 collapsed two distinct actual objects. The manager owns a
+`NoPageOwner` forwarding dispatcher and constructs its lifetime context with
+that dispatcher. Its `pages.delegate` points to the Page's separate private
+`page_lifetime`; the Page owns the manager lifetime token. V2 transports both
+actual references through the private manager-to-Page overload. Manager checks
+its actual lifetime dispatcher/token; Page checks its own delegate/token,
+manager and prepared Font graph; Cut retains the strict
+`&attempt.context_->pages == &actual_dispatcher` identity check. It does not
+substitute the delegate or weaken that check. A bounded `include/src/tests`
+caller search found no callers of the old private one-argument entry, so V2
+removes that unusable entry and its nested capture adapter. Entry/failure
+latches, scalar/free event and exact popped-secondary fence remain unchanged.
+The immutable V1 candidate remains sealed separately at commit
+`bb09943d2146e94485c993ad33a5e91ed4f4991c`; V2 supplies no runtime proof that
+execution reaches the still-UNBOUND last-use checker.
 
 The selected `00AA6540` overload captures its provider and opaque GUI identity
 before Native callbacks. Only after the complete GUI destruction body and the
@@ -101,7 +118,7 @@ Six changed translation units compile with MSVC x86
 `/std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX`. The official
 `scripts/build.ps1` Win32 build and existing checks are recorded in the report
 and candidate receipts. No tests, probes, Game runs or Ghidra writes were added.
-The candidate contains finite preimages/postimages, compiler dependency capture,
+The V2 candidate contains finite preimages/postimages, compiler dependency capture,
 patch, strict objects, actual registered target objects and source commit data.
 
 Changed C++ class size/alignment, private enum/member placement, inline helper

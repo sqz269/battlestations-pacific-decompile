@@ -1,7 +1,13 @@
 {
   "packet": 143,
+  "revision": 2,
   "status": "dormant_Source_joins_strict_and_registered_Win32_passed_pending_Root_review",
   "base": "34fefb75541ea7d78618c22b444ae95b39aac890",
+  "V1_source_commit": "bb09943d2146e94485c993ad33a5e91ed4f4991c",
+  "V1_immutable_manifest_sha256": "fac5bf3b9aaf0a1df214a71c986f3676f1bdf946df1502ca427feba556dac6e1",
+  "V1_immutable_seal_sha256": "7f605843fc95b7061da66bff51924b7b84d7125a9f60f0e6590bdebc1e96d06e",
+  "V2_changed_files": ["include/bsp/game_native_gui_page_application.hpp", "src/game_native_gui_manager_application.cpp", "src/game_native_gui_page_application.cpp", "docs/CC16_PAGE_FONT_FRONTEND_ROOT_JOINS.md", "reports/cc16_page_font_frontend_root_joins.json"],
+  "V2_plan_refinement": "Authenticate distinct actual manager forwarding dispatcher and Page delegate/token; V1 passed the delegate where the context stores the dispatcher and therefore rejected every genuine binding. Strict context.pages identity is preserved, not removed or relaxed.",
   "new_Native_body_credit": 0,
   "addresses_for_coordination_only": ["0073bae0", "00ac3910", "0073bc19", "00aa5e20", "00aa5840", "00aa6540", "00bd0400", "008f8449"],
   "Source_files": [
@@ -31,9 +37,11 @@
   "private_binding": {
     "manager_API": "bind_page_font_retirement(GameNativeGuiPageApplication&)",
     "attempt": "Reuses existing selected attempt; negative entry before admission; published manager/deletion/lifetime token and same completed frontend transport required",
-    "Page_API": "Private manager/delegate/opaque-GUI/attempt overload; derives renderer through SAME prepared139 Host/App/view",
+    "Page_API": "Private manager/actual-dispatcher/actual-delegate/opaque-GUI/attempt overload; derives renderer through SAME prepared139 Host/App/view",
     "Cut_access": "Existing binding-only nested access; no public getter/token/Page::Impl exposure or additional shared-header friendship",
-    "entry": "Both Page entries use one private single-entry helper; failures retain sticky Font/Page and manager/selected unknown guards"
+    "entry": "Single typed Page entry uses private single-entry helper; failures retain sticky Font/Page and manager/selected unknown guards",
+    "dispatcher_and_delegate": "Manager passes p.pages and *p.pages.delegate separately. Manager authenticates &p.lifetime.pages==&p.pages and owned token; Page authenticates own delegate/token/manager/prepared graph and distinct references; Cut requires &attempt.context_->pages==&actual_dispatcher.",
+    "removed_private_entry": "Bounded include/src/tests caller search found only declaration/definition for old one-argument overload; removed unusable entry and its nested capture adapter. Manager remains sole typed-entry caller."
   },
   "scalar_event": "Selected AA6540 captures immutable provider/GUI, validates complete armed binding before Native body, preserves whole body/full flags/conditional free, then scalar_returned and stack-private Cut callback before next BD0400 pop; freed GUI remains opaque",
   "renderer_fence": "Both selected BD0400 overloads capture immutable provider/saved renderer into cpp-local invocation view; exact actual popped secondary fence at start of delete_current_profile before Native deletion",
@@ -55,17 +63,17 @@
   "current_last_use": "UNBOUND: unconditional Source139 rejection before ALL Native Font retirement; no empty/count/profile/flag/scheduling-history closure substitute",
   "unchanged_selection": "Page selector and all nine GUI qualification selectors remain OFF; noPage/raw projections remain selected as before",
   "strict_compile": {
-    "status": "passed", "exitCode": 0, "seconds": 11.3006848, "TUs": 6,
+    "status": "passed", "exitCode": 0, "seconds": 11.4170284, "TUs": 6,
     "flags": "MSVC x86 /c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
     "dependency_capture": "Actual compiler /sourceDependencies: 659 project dependencies copied; 302 external fingerprints"
   },
   "official_build": {
-    "status": "passed", "exitCode": 0, "seconds": 121.9806038,
+    "status": "passed", "exitCode": 0, "seconds": 52.0537783,
     "command": "./scripts/build.ps1", "configuration": "Release", "platform": "Win32",
     "existing_checks": "2/2 passed: reconstructed_math and tool_tests",
     "actual_targets": "Four changed application TUs in bsp_game; two changed Native service TUs in bsp_core"
   },
-  "candidate": "local/output/cc16_page_font_frontend_root_joins143_20261101",
+  "candidate": "local/output/cc16_page_font_frontend_root_joins143_v2_20261101",
   "Source_layout_qualification": "Private Root enum/member placement, C++ classes, emitted inline helpers, vtable/codegen and cpp-local invocation record consequences are Source-only; no Original class/vtable/record layout or binary ABI compatibility claim",
   "held": [
     "Actual earlier queued Text/Font/section/material last use",

@@ -200,11 +200,12 @@ void GameNativeGuiManagerApplication::bind_page_font_retirement(GameNativeGuiPag
         if (!fresh || p.selected_preparation_failed || !p.selected_preparation_started ||
             p.phase != Impl::Phase::published || !p.gui_00f8bc5c ||
             p.singletons.native_deletion_bindings().native_gui != &p.lifetime ||
-            !p.page_binding || p.page_binding->owner_ != this || !p.pages.delegate || p.frontend_pages != &page ||
+            !p.page_binding || p.page_binding->owner_ != this || !p.pages.delegate ||
+            &p.lifetime.pages != &p.pages || p.frontend_pages != &page ||
             p.transport_phase != Impl::TransportPhase::complete)
             throw std::logic_error("Page Font retirement reuses its SAME published cold manager attempt");
         void* const actual_gui = p.gui_00f8bc5c;
-        page.bind_page_font_delete_attempt(*this, *p.pages.delegate, actual_gui, *attempt);
+        page.bind_page_font_delete_attempt(*this, p.pages, *p.pages.delegate, actual_gui, *attempt);
     } catch (...) {
         if (attempt) attempt->unknown_ = true;
         p.selected_preparation_failed = true;

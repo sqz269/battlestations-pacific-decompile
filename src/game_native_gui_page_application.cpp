@@ -1496,32 +1496,20 @@ void GameNativeGuiPageApplication::enter_page_font_delete_attempt(NativeGuiSelec
         "Page Font prepared service identity changed before selected binding");
 }
 
-void GameNativeGuiPageApplication::bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& attempt) {
-    auto& p = *impl_;
-    try {
-        enter_page_font_delete_attempt(attempt);
-        GameNativeGuiPageFontRetirementCut::PageBindingAccess::capture(attempt, *this, *p.font_gui_context,
-            p.strings, p.page_lifetime, p.font_renderer_receiver, p.font_singleton_host,
-            p.font_delete_context, p.font_delete_bindings, p.font_gui_receiver);
-    } catch (...) {
-        if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
-        else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
-        throw;
-    }
-}
-
 void GameNativeGuiPageApplication::bind_page_font_delete_attempt(GameNativeGuiManagerApplication& manager,
-    NativeGuiPageLifetimeHost& actual_delegate, void* captured_actual_gui,
+    NativeGuiPageLifetimeHost& actual_dispatcher, NativeGuiPageLifetimeHost& actual_delegate,
+    void* captured_actual_gui,
     NativeGuiSelectedManagerDeleteAttempt& attempt) {
     auto& p = *impl_;
     try {
-        enter_page_font_delete_attempt(attempt); // SAME single Page entry, never chain the old entry
+        enter_page_font_delete_attempt(attempt); // SAME single Page entry before admission
         require(&manager == &p.manager && &actual_delegate == &p.page_lifetime &&
+            &actual_dispatcher != &actual_delegate &&
             p.manager_binding && captured_actual_gui &&
             captured_actual_gui == p.font_gui_context->actual_gui_00f8bc5c,
-            "Page Font selected binding requires its exact manager/delegate/token/publication");
+            "Page Font selected binding requires its exact manager/dispatcher/delegate/token/publication");
         GameNativeGuiPageFontRetirementCut::PageBindingAccess::bind(attempt, *this, *p.font_gui_context,
-            p.strings, p.page_lifetime, captured_actual_gui, p.font_renderer_receiver,
+            p.strings, actual_dispatcher, captured_actual_gui, p.font_renderer_receiver,
             p.font_singleton_host, p.font_delete_context, p.font_delete_bindings, p.font_gui_receiver);
     } catch (...) {
         if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
