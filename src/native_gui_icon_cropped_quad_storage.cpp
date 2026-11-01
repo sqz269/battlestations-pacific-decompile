@@ -1,8 +1,9 @@
 #include "bsp/native_gui_icon_cropped_quad_storage.hpp"
 
-// Keep every Native row label as an evidence anchor, including fallthrough rows.
+// Keep Native row labels and the local switch table; MSVC disables global
+// optimization around this assembly control flow.
 #pragma warning(push)
-#pragma warning(disable: 4102)
+#pragma warning(disable: 4102 4740)
 
 namespace bsp {
 void write_native_gui_icon_cropped_quad_storage_00ab1860(void* actual_icon,
