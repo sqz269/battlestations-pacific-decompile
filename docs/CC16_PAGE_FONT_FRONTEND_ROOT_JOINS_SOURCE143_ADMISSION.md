@@ -54,3 +54,18 @@ fault, Origin or unmasked-FP equivalence. No Ghidra mutation was required.
 Exact seals, object provenance, Root build/runtime hashes and qualified receipts
 are indexed in `reports/cc16_page_font_frontend_root_joins_source143_admission.json`.
 Detailed immutable evidence is under ignored `local/function_source_batch143/`.
+
+## Final coupled Main verification
+
+The final tuple joins published RAW2 Main
+`974179c33ddb3b8494f09499f945ac39c05f66c6`, using its qualified independent
+Source/Code/build admission. No incoming Native body was re-audited. The merged
+build head `0152e368d7d19b574364b85bb72985d31265ff62` passed the official
+Win32 build in 37.9693041 seconds and both existing checks in 0.34/16.95 seconds.
+All 3,886 frozen inputs and 214 artifacts were retained. The same 43 sections
+and three windows transferred exactly again; both Core members occur once in
+the actual archive. The exact coupled executable repeated the windowed Atlas
+regression: four textures, 227 items, 47 slots, natural 0/0 exits, no forced
+stops/survivors, fullscreen=0, final device/api counts 0/0, zero presented frames.
+All frozen inputs matched at verification. New Page/Font paths remain held and
+unexecuted. This documentation-only final receipt update follows that build.

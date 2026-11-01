@@ -71,5 +71,45 @@
     "Root_Source_review.json": "708ec893aeccf7cf01059ff54c6f47bb4236b930f3c2fc523d8a18eace83cefa",
     "Root_Code_transfer.json": "1476bb09ea510616d64e0032f49cb96fee9ef7b4cd066c217461538b30770eb4",
     "runtime_acceptance_windowed.json": "adca714a27065b1196b7d29cb0028fa7cf6d950de64a91e4a9bba94087114216"
+  },
+  "final_coupled_validation": {
+    "build_head": "0152e368d7d19b574364b85bb72985d31265ff62",
+    "incoming_Main": "974179c33ddb3b8494f09499f945ac39c05f66c6",
+    "incoming_scope": "accepted RAW2 new raw Mesh reserve/append storage + one Core row + admission; reused independent admission without duplicate Native-body audit",
+    "registered_build": {
+      "seconds": 37.9693041,
+      "exit": 0
+    },
+    "inputs": 3886,
+    "artifacts": 214,
+    "existing_checks_seconds": [
+      0.34,
+      16.95
+    ],
+    "Code_transfer": {
+      "full_sections": 43,
+      "windowed_sections": 3,
+      "selected_bytes": 10744,
+      "selected_ops": 3208
+    },
+    "exact_views": 46,
+    "actual_Core_exact_members_each": 1,
+    "windowed_regression": {
+      "textures": 4,
+      "items": 227,
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "natural_completed": true,
+      "forced_stops": [],
+      "survivors": [],
+      "presented_frames": 0,
+      "window_fullscreen": 0
+    },
+    "new_Page_Font_paths_executed": false,
+    "evidence_sha256": {
+      "common/manifest.json": "814b9893f5634e16e4b6f4ad6eb2923bcdac553dccc3a58f831edcc8539304d4",
+      "Root_Code_transfer.json": "7bb39f0905d421e89781eb9b16dcb6cd1af01aa5698b3cd825dc3b44a0b9a9b9",
+      "runtime_acceptance_windowed.json": "6e6142a143bd1f29822e7c734de5bc181f47a1bf09d3416963e2bf423e51af47"
+    }
   }
 }
