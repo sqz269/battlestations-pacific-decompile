@@ -1,0 +1,548 @@
+{
+  "kind": "ignored AB4C50 NORMAL range construction; Native13 catch rows held; no tracked author grant",
+  "base": "ef516a82992df1edf5f4499c1d6f8fd2fe57ed8a",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+    "src/native_gui_icon_state_range_construction_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_RANGE_CONSTRUCTION_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_range_construction_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+      "bytes": 3574,
+      "sha256": "b4a80dd3b38f2ec845c0b4df9027f0dc3e357428fede6b50cbb5c2cf11333ab5"
+    },
+    {
+      "path": "src/native_gui_icon_state_range_construction_storage.cpp",
+      "bytes": 2245,
+      "sha256": "3d96ef961f77ada56ff6bf704258ed83dfb4bb73604640a523d6bb99779a20e1"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_RANGE_CONSTRUCTION_STORAGE.md",
+      "bytes": 3486,
+      "sha256": "2b158db55275e35ffea33fc49c6cc748703ceb55cf562e105770332275d014bc"
+    }
+  ],
+  "reader": {
+    "bytes": 9235,
+    "sha256": "a75c45808b5229faa469fcb2665a0706f02451e0827b90353f77942741679545",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args()\nD=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate'\nP='reports/cc16_native_gui_icon_state_range_construction_storage.json';checks=[]\ndef g(*x):return subprocess.check_output(['git',*x])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n assert v,n\n checks.append({'check':n,'passed':True})\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P));ck('exact reportembedded staticreader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor q in r['postimages']:\n b=read(q['path']);ck('complete frozen Source/doc '+q['path'],len(b)==q['bytes'] and sha(b)==q['sha256'])\nfor q in r['provider_whole_pins']:\n b=g('show',r['base']+':'+q['path']);ck('actual genuine dependency '+q['path'],len(b)==q['bytes'] and sha(b)==q['sha256'])\nfor q in r['used_contracts']:\n b=b''.join(g('show',r['base']+':'+q['path']).splitlines(keepends=True)[q['start_line']-1:q['end_line_inclusive']]);ck('strongest used qualifier '+q['label'],len(b)==q['bytes'] and sha(b)==q['sha256'] and b.decode()==q['verbatim_utf8'])\nraw=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xab4c50))\nck('whole144B55physicalrows Native',len(raw)==144 and len(ins)==55 and sha(raw)==r['Native']['sha256'])\nlanding=[i for i in ins if 0xab4caa<=i.address<=0xab4cc6]\nck('13landing rows held not normal implementation',len(landing)==13 and r['Native']['held_landing_rows']==13 and r['Native_EH']['landing_rows']==[f'{i.address:08x}' for i in landing])\nck('actual normal call AB3A70 and held destructor/rethrow calls',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab4c97,'0xab3a70'),(0xab4cb6,'0xab3280'),(0xab4cc6,'0xbf6885')])\nck('Native dest first then endHOME then source then begin/state0',[(i.address,i.op_str) for i in ins if i.address in [0xab4c6d,0xab4c76,0xab4c79,0xab4c7b,0xab4c7e]]==[(0xab4c6d,'esi, dword ptr [ebp + 8]'),(0xab4c76,'dword ptr [ebp - 0x14], edx'),(0xab4c79,'edi, ecx'),(0xab4c7b,'dword ptr [ebp - 0x18], esi'),(0xab4c7e,'dword ptr [ebp - 4], ebx')])\nck('Native loophead always currentendHOME','edi, dword ptr [ebp - 0x14]'==next(i.op_str for i in ins if i.address==0xab4c81) and next(i.op_str for i in ins if i.address==0xab4ca8)=='0xab4c81')\nck('Native slot2stores nulltest then byte1 before nullbranch',[(i.address,i.mnemonic,i.op_str) for i in ins if 0xab4c86<=i.address<=0xab4c92]==[(0xab4c86,'mov','dword ptr [ebp - 0x1c], esi'),(0xab4c89,'mov','dword ptr [ebp - 0x20], esi'),(0xab4c8c,'cmp','esi, ebx'),(0xab4c8e,'mov','byte ptr [ebp - 4], 1'),(0xab4c92,'je','0xab4c9c')])\nck('Native destadvance byte0 HOME0write sourceadvance order',[(i.address,i.mnemonic,i.op_str) for i in ins if 0xab4c9c<=i.address<=0xab4ca5]==[(0xab4c9c,'add','esi, 0x40'),(0xab4c9f,'mov','byte ptr [ebp - 4], bl'),(0xab4ca2,'mov','dword ptr [ebp + 8], esi'),(0xab4ca5,'add','edi, 0x40')])\nck('Native finalESI return andRET10',next(i.op_str for i in ins if i.address==0xab4ccf)=='eax, esi' and ins[-1].mnemonic=='ret' and ins[-1].op_str=='0x10')\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode();doc=read(r['owned_paths'][2]).decode()\nbody=c[c.index('    volatile std::uint32_t& state'):c.index('\\n} // namespace bsp')]\nck('POD5ordinaryDWORD frame no member seeds',re.findall(r'std::uint32_t (\\w+);',h)==['end_14','begin_18','slot_1c','placement_20','state_04'] and 'sizeof(NativeGuiIconStateRangeConstructionStorageFrame) == 20' in h)\nck('real4mutablehomes ordinary frame samecontext signature','volatile std::uint32_t (&actual_stack_homes)[4]' in h and 'NativeGuiIconStorageContext& context' in h)\nck('state-1 destread endstore sourcecapture beginstore state0 sequence',body.index('state = 0xffffffffu;')<body.index('destination = actual_stack_homes[0];')<body.index('(frame.end_14) =')<body.index('std::uint32_t source =')<body.index('(frame.begin_18) = destination;')<body.index('state = 0;'))\nck('CURRENT end isvolatile at every head not snapshot','while (source != static_cast<volatile std::uint32_t&>(frame.end_14))' in body and body.count('frame.end_14')==2)\nck('initialHOME0capture and aftereachcopy write only',re.findall(r'actual_stack_homes\\[([^]]+)\\]',body)==['0','0'] and 'actual_stack_homes[0] = destination;' in body)\nck('no otherthreehome read or write',not any('actual_stack_homes['+str(n)+']' in body for n in [1,2,3]))\nck('slot and placement writes before lowbyte1',body.index('(frame.slot_1c) = destination;')<body.index('(frame.placement_20) = destination;')<body.index('placement_nonnull = destination;')<body.index('*state_byte = 1;')<body.index('if (placement_nonnull != 0)'))\nck('real individual no-write birth only nonnull','::new (slot) NativeGuiIconStateStorage;' in body and 'NativeGuiIconStateStorage()' not in body and 'NativeGuiIconStateStorage{}' not in body)\nck('noDMI birth justified by exacttrivial assertions','std::is_trivially_default_constructible_v<NativeGuiIconStateStorage>' in c and 'std::is_trivially_destructible_v<NativeGuiIconStateStorage>' in c)\nck('directgenuinecopy same source/currentdestination/context',c.count('copy_native_gui_icon_state_00ab3a70(')==1 and 'copy_native_gui_icon_state_00ab3a70(slot,\\n                reinterpret_cast<const void*>(source), context);' in c)\nck('sourceadvance occurs only after destination/HOME0 publication',body.index('destination += 0x40u;')<body.index('*state_byte = 0;')<body.index('actual_stack_homes[0] = destination;')<body.index('source += 0x40u;'))\nck('register destination numericreturn not lateHOME0','return destination;' in body and c.count('return ')==1)\nck('onlyNative null and range decisions',re.findall(r'\\bif\\s*\\(([^)]*)\\)',body)==['placement_nonnull != 0'] and c.count('while (')==1)\nck('no new cleanup NoThrow Owner provider rangecap',re.search(r'\\bGuiIconState\\b',c) is None and not any(x in c for x in ['catch','try {','throw','noexcept','std::function','virtual','std::vector','std::string','memcpy','memmove','std::terminate','destroy_native_gui_icon_state','count >','source <','finit','fldcw']))\nck('byteview ordinarybacking no constcast','reinterpret_cast<volatile std::uint8_t*>(&frame.state_04)' in body and 'const_cast' not in c)\nck('held EH no fakeFS orsavedESP image','FS:' not in c and 'saved_esp' not in c and r['Native_EH']['Native_cleanup_Origin_reconstructed'] is False)\nck('original normalcopy qualifiers not promoted','bool-preserve resize/std::memcpy' in h and 'distinct valid actual40B records' in h and '13 landing instructions' in doc)\nck('actualcallchain limited and separatefillnotduplicated','AB3310 currentA4 AB66C0 -> AB63A0 -> AB6070 ->' in doc and r['separate_fill_candidate_duplicated'] is False)\nck('no Original vendor CG newbody activation credit',r['new_credit']==0 and all(v is False for v in r['readiness'].values()))\ndef tree(rev):\n o={}\n for row in g('ls-tree','-r','-z',rev).split(b'\\0'):\n  if row:\n   q,p=row.split(b'\\t',1);mode,kind,oid=q.decode().split();o[p.decode()]=(mode,kind,oid)\n return o\ndef treehash(items):\n root={}\n for p,v in items.items():\n  n=root;parts=p.split('/')\n  for s in parts[:-1]:n=n.setdefault(s,{})\n  n[parts[-1]]=v\n def rec(n):\n  rows=[]\n  for name,v in n.items():\n   if isinstance(v,dict):rows.append((name+'/',b'40000 '+name.encode()+b'\\0'+bytes.fromhex(rec(v))))\n   else:rows.append((name,v[0].lstrip('0').encode()+b' '+name.encode()+b'\\0'+bytes.fromhex(v[2])))\n  b=b''.join(v for _,v in sorted(rows,key=lambda q:q[0].encode()));return hashlib.sha1(b'tree '+str(len(b)).encode()+b'\\0'+b).hexdigest()\n return rec(root)\nbefore=tree(r['base']);ck('complete recursive baseline',treehash(before)==g('rev-parse',r['base']+'^{tree}').decode().strip());after=dict(before)\nfor p in r['owned_paths']:\n ck('new pathabsent '+p,p not in before);b=read(p);after[p]=('100644','blob',hashlib.sha1(b'blob '+str(len(b)).encode()+b'\\0'+b).hexdigest())\nrestore=dict(after)\nfor p in r['owned_paths']:restore.pop(p)\nck('full4path reverse tree unchanged',restore==before and treehash(restore)==treehash(before))\nif a.commit:\n parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit);ck('actual one parent',len(parent.split())==1)\n ck('actual exactly4additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n for q in r['provider_whole_pins']:ck('actualprovider unchanged '+q['path'],g('show',parent+':'+q['path'])==g('show',r['base']+':'+q['path']))\n for p in r['owned_paths']:new.pop(p)\n ck('actualfullrecursiveinverse',new==old and treehash(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'passed':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','base':r['base'],'base_tree':treehash(before),'virtual_four_addition_tree':treehash(after),'restored_tree':treehash(restore),'Native_physical_rows':55,'normal_and_ABI_rows':42,'held_landing_rows':13,'fullNativecleanup_OriginalABI_Origin_runtime_activation':False,'new_credit':0}))\n"
+  },
+  "Native": {
+    "entry": "00ab4c50",
+    "end": "00ab4cdd",
+    "bytes": 144,
+    "physical_rows": 55,
+    "normal_and_ABI_rows": 42,
+    "held_landing_rows": 13,
+    "hex": "558bec6aff68117ccb0064a100000000506489250000000083ec1453568b75085733db8965f08955ec8bf98975e8895dfc3b7dec74458975e48975e03bf3c645fc017408578bcee8d4edffff83c640885dfc89750883c740ebd78b75e88b7d083bf7740e8bcee8c5e5ffff83c6403bf775f233db5353e8ba1b14008b4df45f8bc65e64890d000000005b8be55dc21000",
+    "sha256": "0e17f58c24d2bb3b857cceae85df433a9f978e5d4a8c1b839acfa2494326bae9",
+    "ABI": "ECX sourceBegin/EDX sourceEnd/4stackDWORDhomes/RET10; finalESI returnedEAX",
+    "normal_direct_call": {
+      "site": "00ab4c97",
+      "target": "00ab3a70"
+    },
+    "landing_calls_held": [
+      "00ab4cb6 AB3280",
+      "00ab4cc6 BF6885"
+    ]
+  },
+  "instruction_map": [
+    {
+      "address": "00ab4c50",
+      "mnemonic": "push",
+      "operands": "ebp",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c51",
+      "mnemonic": "mov",
+      "operands": "ebp, esp",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c53",
+      "mnemonic": "push",
+      "operands": "-1",
+      "Source": "full stateFFFFFFFF; no FS/private-stack emulation"
+    },
+    {
+      "address": "00ab4c55",
+      "mnemonic": "push",
+      "operands": "0xcb7c11",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c5a",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr fs:[0]",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c60",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c61",
+      "mnemonic": "mov",
+      "operands": "dword ptr fs:[0], esp",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c68",
+      "mnemonic": "sub",
+      "operands": "esp, 0x14",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c6b",
+      "mnemonic": "push",
+      "operands": "ebx",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c6c",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c6d",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [ebp + 8]",
+      "Source": "capture actual incoming homes0 first"
+    },
+    {
+      "address": "00ab4c70",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c71",
+      "mnemonic": "xor",
+      "operands": "ebx, ebx",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4c73",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 0x10], esp",
+      "Source": "savedESP privateEH operand excluded"
+    },
+    {
+      "address": "00ab4c76",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 0x14], edx",
+      "Source": "full end_14 store from captured incoming EDX"
+    },
+    {
+      "address": "00ab4c79",
+      "mnemonic": "mov",
+      "operands": "edi, ecx",
+      "Source": "capture incoming ECX source register"
+    },
+    {
+      "address": "00ab4c7b",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 0x18], esi",
+      "Source": "full begin_18 destination store"
+    },
+    {
+      "address": "00ab4c7e",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 4], ebx",
+      "Source": "full state0"
+    },
+    {
+      "address": "00ab4c81",
+      "mnemonic": "cmp",
+      "operands": "edi, dword ptr [ebp - 0x14]",
+      "Source": "reload CURRENT volatile end_14 at every loophead"
+    },
+    {
+      "address": "00ab4c84",
+      "mnemonic": "je",
+      "operands": "0xab4ccb",
+      "Source": "empty/finished join numeric destination return"
+    },
+    {
+      "address": "00ab4c86",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 0x1c], esi",
+      "Source": "slot_1c destination store"
+    },
+    {
+      "address": "00ab4c89",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp - 0x20], esi",
+      "Source": "placement_20 destination store"
+    },
+    {
+      "address": "00ab4c8c",
+      "mnemonic": "cmp",
+      "operands": "esi, ebx",
+      "Source": "captured DWORD nullness; private CMP/EFLAGS/fault timing excluded"
+    },
+    {
+      "address": "00ab4c8e",
+      "mnemonic": "mov",
+      "operands": "byte ptr [ebp - 4], 1",
+      "Source": "only stateLOWBYTE1"
+    },
+    {
+      "address": "00ab4c92",
+      "mnemonic": "je",
+      "operands": "0xab4c9c",
+      "Source": "null skips individual no-write birth and realcopy only"
+    },
+    {
+      "address": "00ab4c94",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source": "captured current source register argument"
+    },
+    {
+      "address": "00ab4c95",
+      "mnemonic": "mov",
+      "operands": "ecx, esi",
+      "Source": "captured destination receiver; individual no-fieldwrite C++ birth"
+    },
+    {
+      "address": "00ab4c97",
+      "mnemonic": "call",
+      "operands": "0xab3a70",
+      "Source": "genuine existing copy_native_gui_icon_state_00ab3a70 samecontext"
+    },
+    {
+      "address": "00ab4c9c",
+      "mnemonic": "add",
+      "operands": "esi, 0x40",
+      "Source": "destination+40 DWORDwrap"
+    },
+    {
+      "address": "00ab4c9f",
+      "mnemonic": "mov",
+      "operands": "byte ptr [ebp - 4], bl",
+      "Source": "only stateLOWBYTE0"
+    },
+    {
+      "address": "00ab4ca2",
+      "mnemonic": "mov",
+      "operands": "dword ptr [ebp + 8], esi",
+      "Source": "actual incoming homes0 output write captured destination"
+    },
+    {
+      "address": "00ab4ca5",
+      "mnemonic": "add",
+      "operands": "edi, 0x40",
+      "Source": "source+40 DWORDwrap AFTER HOME0write"
+    },
+    {
+      "address": "00ab4ca8",
+      "mnemonic": "jmp",
+      "operands": "0xab4c81",
+      "Source": "loopback currentend load"
+    },
+    {
+      "address": "00ab4caa",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [ebp - 0x18]",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cad",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [ebp + 8]",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cb0",
+      "mnemonic": "cmp",
+      "operands": "esi, edi",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cb2",
+      "mnemonic": "je",
+      "operands": "0xab4cc2",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cb4",
+      "mnemonic": "mov",
+      "operands": "ecx, esi",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cb6",
+      "mnemonic": "call",
+      "operands": "0xab3280",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cbb",
+      "mnemonic": "add",
+      "operands": "esi, 0x40",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cbe",
+      "mnemonic": "cmp",
+      "operands": "esi, edi",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cc0",
+      "mnemonic": "jne",
+      "operands": "0xab4cb4",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cc2",
+      "mnemonic": "xor",
+      "operands": "ebx, ebx",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cc4",
+      "mnemonic": "push",
+      "operands": "ebx",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cc5",
+      "mnemonic": "push",
+      "operands": "ebx",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4cc6",
+      "mnemonic": "call",
+      "operands": "0xbf6885",
+      "Source": "HELD Nativecatch prefixdestruction/rethrow row; no Sourceimplementation"
+    },
+    {
+      "address": "00ab4ccb",
+      "mnemonic": "mov",
+      "operands": "ecx, dword ptr [ebp - 0xc]",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cce",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4ccf",
+      "mnemonic": "mov",
+      "operands": "eax, esi",
+      "Source": "return final captured destination numericbits"
+    },
+    {
+      "address": "00ab4cd1",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cd2",
+      "mnemonic": "mov",
+      "operands": "dword ptr fs:[0], ecx",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cd9",
+      "mnemonic": "pop",
+      "operands": "ebx",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cda",
+      "mnemonic": "mov",
+      "operands": "esp, ebp",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cdc",
+      "mnemonic": "pop",
+      "operands": "ebp",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    },
+    {
+      "address": "00ab4cdd",
+      "mnemonic": "ret",
+      "operands": "0x10",
+      "Source": "private register/prologue/epilogue/Original EH ABI excluded"
+    }
+  ],
+  "Native_EH": {
+    "handler": "00cb7c11",
+    "FuncInfo": "00dee828",
+    "words": [
+      "19930522",
+      "00000003",
+      "00dee810",
+      "00000001",
+      "00dee7fc",
+      "00000000",
+      "00000000",
+      "00000000",
+      "00000001"
+    ],
+    "try_rows": [
+      [
+        "00000000",
+        "00000001",
+        "00000002",
+        "00000001",
+        "00dee7ec"
+      ]
+    ],
+    "landing_rows": [
+      "00ab4caa",
+      "00ab4cad",
+      "00ab4cb0",
+      "00ab4cb2",
+      "00ab4cb4",
+      "00ab4cb6",
+      "00ab4cbb",
+      "00ab4cbe",
+      "00ab4cc0",
+      "00ab4cc2",
+      "00ab4cc4",
+      "00ab4cc5",
+      "00ab4cc6"
+    ],
+    "Native_cleanup_Origin_reconstructed": false
+  },
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/native_gui_widget_lifetime.hpp",
+      "bytes": 10153,
+      "sha256": "eb41bcd6bea8ecff99ab0b1dca322316a12c86a3da54a0229a1a59e2519f336a"
+    },
+    {
+      "path": "src/native_gui_widget_lifetime.cpp",
+      "bytes": 19237,
+      "sha256": "4cc4073e96b0441595743d967ae2cbf07eaf313671e63bd99891cbe06fb912b7"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "bytes": 3015,
+      "sha256": "170acd7b0840322fa3a6c19714060a83089824e7b990031016930c3e1c494bff"
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_storage.cpp",
+      "bytes": 2126,
+      "sha256": "39bb463835d76eb646e39d4d6b372d4b5d294f9ba3539adf385122a414ee53cc"
+    }
+  ],
+  "used_contracts": [
+    {
+      "label": "real existing raw copy normal body",
+      "path": "src/native_gui_icon_storage.cpp",
+      "start_line": 126,
+      "end_line_inclusive": 152,
+      "bytes": 1526,
+      "sha256": "75d5a62fcc557062649fff2337b380c08f4adbe98b72a3246220bca8bc5867d7",
+      "verbatim_utf8": "void* copy_native_gui_icon_state_00ab3a70(void* destination, const void* source,\n    NativeGuiIconStorageContext& context) {\n    require_storage(destination);\n    require_storage(source);\n    // Distinct valid native records are the stock uninitialized-copy domain.\n    if (destination == source)\n        throw std::invalid_argument(\"Icon state copy requires distinct actual records\");\n    word(destination) = word(source);\n    word(destination, 4) = 0;\n    word(destination, 8) = 0;\n    resize_native_string_header_0041dd40(at(destination, 4), context.strings, word(source, 4), true);\n    if (word(source, 4) != 0)\n        std::memcpy(pointer(destination, 8), reinterpret_cast<const void*>(word(source, 8)), word(destination, 4));\n    for (Word offset = 0x0c; offset <= 0x28; offset += 4) word(destination, offset) = word(source, offset);\n    for (Word offset = 0x2c; offset <= 0x38; offset += 4) copy_x87(at(destination, offset), at(source, offset));\n    const auto pending = read<std::uint8_t>(source, 0x3c);\n    void* const texture = pointer(destination);\n    write(destination, 0x3c, pending);\n    write(destination, 0x3d, read<std::uint8_t>(source, 0x3d));\n    if (texture) {\n        // AB3B15..3B19 is a raw InterlockedIncrement, with no owner lookup or\n        // extra native retain. Registry custody is the caller's precondition.\n        auto& count = *std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(at(texture, 4)));\n        count.fetch_add(1, std::memory_order_seq_cst);\n    }\n    return destination;\n}\n"
+    },
+    {
+      "label": "raw copy declarations and no extra texture ownership",
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start_line": 105,
+      "end_line_inclusive": 114,
+      "bytes": 707,
+      "sha256": "0ee4e49aeabe2cfcaad05b101b7d71f8297257cf761a5f3a2954e0cb4da958a6",
+      "verbatim_utf8": "// AB3A70 ECX destination40h, source stack, RET4/EAX same. Real raw string\n// resize/copy then native field order and a single actual texture+04 increment.\n// AB3280 ECX actual state, RET: release CURRENT texture, clear only after its\n// terminal returns, then release CURRENT name. Name unwind also runs if texture\n// release throws. Headers are not silently repaired or cleared on name release.\n// Textures are actual live canonical owners in this SAME registry; no host ptr.\nvoid* copy_native_gui_icon_state_00ab3a70(void* actual_destination,\n    const void* actual_source, NativeGuiIconStorageContext&);\nvoid destroy_native_gui_icon_state_00ab3280(void* actual_state,\n    NativeGuiIconStorageContext&);\n"
+    },
+    {
+      "label": "already admitted repeat strongest inherited domain",
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "start_line": 28,
+      "end_line_inclusive": 43,
+      "bytes": 1120,
+      "sha256": "c12af217cb0c0607975214eda1c6e82644e10121874b1bb8c931b7a1cd5735f3",
+      "verbatim_utf8": "// initialization. That does not require or establish a T[n] array lifetime.\n// The existing AB3A70 copy is called directly with the SAME context. Its actual\n// qualified domain is inherited: distinct valid native records, real raw string\n// pool/backing and canonical live texture+04 objects in the SAME registry.\n// No promotion to exact BF0/mutable-preserve-home/overlap/Original behavior is\n// made; this entry adds no validation, domain filter, owner or provider.\n//\n// Retain the actual frame, four-home array, context, current/partial/completed\n// states, all payload/storage/custody and their genuine subobjects across every\n// entered escape. Frame/Source parameter/control/spill backing is disjoint from\n// borrowed records and all reached provider-write extents; the live source home\n// may be changed by genuine callbacks and is reread on the next copy. Distinct\n// reentrant invocations require distinct retained frame/home backing. No count\n// limit, progress-based birth/ownership receipt or automatic disposition exists.\n//\n// The 13 Native catch-landing rows AB545B..AB5477 are HELD, not reconstructed.\n"
+    },
+    {
+      "label": "actual40B trivial/noDMI record",
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "start_line": 13,
+      "end_line_inclusive": 24,
+      "bytes": 529,
+      "sha256": "dc6c1f1ecc6f5fe09d40096dae735d6d6b2cbbff1b554a4941d337af456fef42",
+      "verbatim_utf8": "// Actual40h state, not GuiIconState or a second owning representation. Name\n// is the native8h header; texture is its one owned actual +04 reference.\n// Native AB3A70 leaves3E/3F unwritten and copies2C/30/34/38 via x87.\nstruct NativeGuiIconStateStorage {\n    void* texture_00;\n    std::uint32_t name_length_04;\n    char* name_characters_08;\n    std::uint32_t resolved_uv_0c[4];\n    std::uint32_t authored_uv_1c[4];\n    float pivot_x_2c, pivot_y_30, width_34, height_38;\n    std::uint8_t pending_3c, flag_3d, unwritten_3e[2];\n};\n"
+    }
+  ],
+  "normal_schedule": {
+    "capture": "full state-1, incoming destinationHOME0 once, savedendHOME fromEDX, captured sourceECX, savedbeginHOME, fullstate0",
+    "head": "CURRENTend_14 reloaded every loop head; end is not cached through callbacks",
+    "element": "two separate destinationHOME stores, stateLOWBYTE1, nonnull individual defaultplacement/no fields initialized, SAME genuine rawAB3A70 current captured source/destination/context",
+    "post": "captured destination+=40 wrap; stateLOWBYTE0; incomingHOME0=captured destination; capturedsource+=40 wrap; compare currentend again",
+    "return": "final captured destination numericDWORD; no late incomingHOME read or owner/birth/progress authority",
+    "unused": "stackhomes1..3 and savedESP private-stack alias are not read, seeded or invented"
+  },
+  "strongest_existing_copy_domain": "AB3A70 distinct valid actual40B records, genuinely born ordinary C++ subobjects/backing, real NativeStringRawPoolContext and SAME canonical actual texture+04 objects. Existing bool-preserve resize/std::memcpy route and exception/terminal/provider contracts stay exactly qualified; do not promote to exactBF0/overlap/mutable-preserve/OriginalABI.",
+  "individual_lifetime": "::new(slot) NativeGuiIconStateStorage; only on reached nonnull. Trivial no-DMI/no-destruction assertions prove no field initialization. No T[n] array family/element count cap or fabricated owner is required or created.",
+  "Source_ABI_and_retention": "ordinary5arg Source signature replaces ECX/EDX/fourstackhomes/RET10; genuine ordinary20B frame+actualmutable4home array remain live, private Source controls/spills disjoint from borrowed operand/record/provider-write extents; declared frame and incoming operand homes are separate live storage and genuine callback writes (including end_14/incoming homes) are permitted at reached epochs. Distinct active entries need distinct retained frame/home storage. Arbitrary Source escape propagates UNKNOWN with actual partial/completed/remaining graph/providers retained; state/slot/end/progress do not authorize NativeEH, replay, retirement, compensation or disposition.",
+  "pure_CMP_qualification": "nonnull DWORD captured before LOWBYTE1, C++ branch compares that private capture after store; ordinary normal result/loadstore schedule preserved but literal CMP timing/EFLAGS/fault/privateNativeABI not claimed",
+  "EH_scope": "13 physical landing rows AB4CAA..AB4CC6 are not reconstructed; their currentbegin/currentHOME0 prefix destructor and BF6885 rethrow remain Native evidence only. This function has no catch, cleanup, retry, rollback or new noexcept/terminal policy.",
+  "actual_producer_edge": "AB3310 currentA4 AB66C0 -> AB63A0 -> AB6070 -> AB59E0 reaches raw range construction via AB4C50/AB58A0. This normal supplier is a real missing prerequisite; complete insertion/defaultPage/texture/current80/Native cleanup/caller custody still separate.",
+  "separate_fill_candidate_duplicated": false,
+  "separate_fill_candidate": "existing Glyph AB4AF0 sealed50535fb03799c60653725298e0cb9b768e7a62d7d1e96933de47a1d2444146de; pinned separately, no edits or duplicate implementation",
+  "normal_Source_support_ready": true,
+  "readiness": {
+    "full_AB4C50_Native_cleanup": false,
+    "AB58A0_wrapper": false,
+    "AB59E0_complete": false,
+    "AB3310_AB66C0_complete": false,
+    "actual_caller_custody": false,
+    "Original_ABI": false,
+    "Native_Origin": false,
+    "runtime_activation": false
+  },
+  "new_credit": 0,
+  "classification": "Existing HIGH STL/library classification/name and all prior Original/vendor/helper/CG/body credit unchanged. Necessary ordinary normal Source composition supplies zero duplicate/new Nativebody credit.",
+  "project": "existing configured C:/Users/sqz269/bsp.gpr verified project/program before live bsp.py bytes batch; installed full144B, live Ghidra bytes and saved55-row listing match; no Ghidra mutation",
+  "actions": {
+    "ignored_candidate_only": true,
+    "tracked_Source_CMake_ledger_Ghidra_mutations": false,
+    "compiler_tests_probes_Game": false
+  }
+}
