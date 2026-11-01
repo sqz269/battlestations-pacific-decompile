@@ -11,6 +11,16 @@
 #endif
 
 namespace bsp {
+class NativePostEffect20MaterialObservedZeroIssuer final {
+public:
+    static void require_operation(NativePostEffectParentFrame* frame) {
+        if(frame&&frame->material_frame_)frame->require_material_payload_operation();
+    }
+    static void invoke(NativePostEffectParentFrame* frame,NativeMaterialReference& reference,void* captured) {
+        if(frame&&frame->material_frame_)frame->invoke_material_observed_zero(reference,captured);
+        else reference.release_zero_references(); // literal protected null association route
+    }
+};
 namespace {
 using Word = std::uint32_t;
 static_assert(sizeof(void*) == 4 && sizeof(long) == 4 && sizeof(std::atomic<std::int32_t>) == 4);
@@ -48,7 +58,8 @@ void current_terminal(void* actual, Word profile, const volatile Word* table, Wo
         "unsupported current post-effect member deleting profile");
 }
 void release_material(void* captured, NativePostEffect20Decrement decrement,
-    NativePostEffect20OwnerContext& context) {
+    NativePostEffect20OwnerContext& context,NativePostEffectParentFrame* frame=nullptr) {
+    NativePostEffect20MaterialObservedZeroIssuer::require_operation(frame);
     if (decrement(reinterpret_cast<volatile long*>(reinterpret_cast<Word>(captured) + 4u)) != 0)
         return;
     current_terminal(captured, 0x00d5e520u, context.actual_material_profile_00d5e520, 0x00b194b0u);
@@ -56,7 +67,7 @@ void release_material(void* captured, NativePostEffect20Decrement decrement,
     require(&reference.reference_count == &count(captured), "post-effect material has a foreign counter");
     auto* binding = dynamic_cast<NativeMaterialReference*>(&reference);
     require(binding && &binding->storage() == captured, "post-effect material lacks its concrete companion");
-    binding->release_zero_references();
+    NativePostEffect20MaterialObservedZeroIssuer::invoke(frame,*binding,captured);
     // The terminal may retire both native storage and its companion.
 }
 void release_node(Word captured, NativePostEffect20OwnerContext& context) {
@@ -73,7 +84,7 @@ void release_node(Word captured, NativePostEffect20OwnerContext& context) {
 // Only the authentic pre-reserved parent Frame can construct this companion.
 // +4 was already born by the existing whole producer; no Native observation here.
 NativePostEffect20Owner::NativePostEffect20Owner(void* actual, NativePostEffect20OwnerContext& context,
-    NativePostEffectParentFrame&) noexcept : actual_(actual), context_(context) {}
+    NativePostEffectParentFrame& frame) noexcept : actual_(actual), context_(context), ordinary_frame_(&frame) {}
 
 NativePostEffect20Owner::NativePostEffect20Owner(void* actual, NativePostEffect20OwnerContext& context)
     : actual_(actual), context_(context) {
@@ -92,7 +103,7 @@ void destroy_native_post_effect_owner_00b4e1f0(NativePostEffect20Owner& owner) {
     const auto decrement = context.actual_decrement_00ce2220; // B4E219
     try { // Native state0 is armed at B4E223, after capture.
         if (material) {
-            release_material(pointer(material), decrement, context); // B4E22D/239
+            release_material(pointer(material), decrement, context,owner.ordinary_frame_); // B4E22D/239
             put(actual, 0x14, 0); // B4E23B, after terminal return
         }
         if (const Word node = word(actual, 0x0c)) {

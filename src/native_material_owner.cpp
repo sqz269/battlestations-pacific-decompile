@@ -57,10 +57,12 @@ void assign_actual(void*& slot, void* incoming, NativeRenderActualOwners& owners
     if (old) {if(issuer)issuer->release(owners,old,site);else release_native_render_actual_owner(owners, old);}
 }
 void release_then_clear(void*& slot, NativeRenderActualOwners& owners,
-    NativeMaterialStorageIssuer* issuer=nullptr,std::size_t site=0) {
+    NativeMaterialStorageIssuer* issuer=nullptr,std::size_t site=0,
+    NativeRenderActualOwnerReleaseObservation* external=nullptr) {
     void* const old = slot;
     if (!old) return;
-    if(issuer)issuer->release(owners,old,site);else release_native_render_actual_owner(owners, old);
+    if(external)release_native_render_actual_owner_observed(owners,old,*external);
+    else if(issuer)issuer->release(owners,old,site);else release_native_render_actual_owner(owners, old);
     slot = nullptr;
 }
 NativeMaterialStorage& prepare(void* slot,NativeMaterialStorageIssuer* issuer) {
@@ -161,13 +163,25 @@ NativeMaterialStorage* NativeMaterialStorageAccess::clone(void* slot,const Nativ
     catch(...){frame.source_constructor_escaped();throw;}
 }
 
-void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage& material,
-    void* actual_owner, std::uint8_t retain_flag, NativeRenderActualOwners& owners) {
+namespace {
+void set_parameter_owner_body(NativeMaterialStorage& material, void* actual_owner,
+    std::uint8_t retain_flag, NativeRenderActualOwners& owners,
+    NativeRenderActualOwnerReleaseObservation* observation) {
     if (material.retain_source_10d)
-        release_then_clear(material.source_owner_0c, owners);
+        release_then_clear(material.source_owner_0c, owners,nullptr,0,observation);
     material.source_owner_0c = actual_owner;
     material.retain_source_10d = retain_flag;
     if (retain_flag && actual_owner) retain_actual(actual_owner);
+}
+}
+void set_native_material_parameter_owner_00b18a40(NativeMaterialStorage& material,
+    void* actual_owner, std::uint8_t retain_flag, NativeRenderActualOwners& owners) {
+    set_parameter_owner_body(material,actual_owner,retain_flag,owners,nullptr);
+}
+void NativeMaterialStorageAccess::set_parameter_owner(NativeMaterialStorage& material,
+    void* actual_owner,std::uint8_t retain_flag,NativeRenderActualOwners& owners,
+    NativeRenderActualOwnerReleaseObservation& observation) {
+    set_parameter_owner_body(material,actual_owner,retain_flag,owners,&observation);
 }
 
 namespace {

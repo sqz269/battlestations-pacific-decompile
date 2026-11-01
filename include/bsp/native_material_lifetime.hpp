@@ -5,6 +5,8 @@
 
 namespace bsp {
 class NativeMaterialFrame;
+class NativePostEffectParentDomain;
+class NativePostEffectParentFrame;
 class NativeMeshRetentionState;
 class NativeMaterialStorageIssuer;
 class NativeMaterialFactoryIssuer;
@@ -31,6 +33,9 @@ public:
     void close_after_host_quiescence();
 private:
     friend class NativeMaterialFrame;
+    friend class NativePostEffectParentDomain;
+    void require_parent_binding(NativeMaterialDestructionAccess&, NativeRenderActualOwnerRegistry&,
+        const volatile std::uint32_t*, NativeMeshRetentionState&) const;
     void require_owned(bool, const char*) const;
     struct Impl;
     std::unique_ptr<Impl> impl_;
@@ -50,6 +55,7 @@ public:
     void close_after_host_quiescence();
 private:
     friend class NativeMaterialDomain;
+    friend class NativePostEffectParentFrame;
     friend class NativeMaterialReference;
     friend class NativeMaterialStorageIssuer;
     friend class NativeMaterialFactoryIssuer;
@@ -71,6 +77,15 @@ private:
 
     explicit NativeMaterialFrame(NativeMaterialDomain&);
     void prepare_after_link();
+    // Genuine cold Parent association and exact post-store creator handoff.
+    // No method here changes a Native count or reads the published field.
+    void bind_parent_caller(NativeMaterialDomain&, NativePostEffectParentFrame&,
+        NativeMaterialFactoryAcquired&, NativeMaterialEffectCacheContext&);
+    void parent_field_published(NativePostEffectParentFrame&, void* captured_parent,
+        NativeMaterialStorage* stored_actual) noexcept;
+    void preflight_parent_caller_close(const NativePostEffectParentFrame&) const;
+    void close_parent_caller_after_host_quiescence(NativePostEffectParentFrame&);
+    bool parent_caller_closed(const NativePostEffectParentFrame&) const noexcept;
     void require_owned(bool,const char*) const;
     void require_healthy() const;
     static void record_domain_failure(NativeMaterialDomain&) noexcept;

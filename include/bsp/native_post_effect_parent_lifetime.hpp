@@ -20,6 +20,12 @@ struct NativePostEffect20ArgumentView;
 struct NativePostEffectOrdinaryLifetimeBinding;
 class NativeRenderObservedZeroAccess;
 class NativePostEffectParentFrame;
+class NativeMaterialFrame;
+struct NativeMaterialStorage;
+struct NativeMaterialFactoryAcquired;
+struct NativeMaterialEffectCacheContext;
+class NativePostEffect20MaterialObservedZeroIssuer;
+class NativePostEffect24MaterialObservedZeroIssuer;
 
 // Source metadata over the actual two parent producers. The real caller must
 // retain this Domain, its providers and the SAME nonmoving Blocks through all
@@ -44,6 +50,9 @@ public:
     void close_after_host_quiescence(); // a real caller fence, not a counter test
 private:
     friend class NativePostEffectParentFrame;
+    // Pure all-record validation, including each selected Material loan,
+    // before the first receiver drain, child close or Block reset.
+    void preflight_close() const;
     void require_owned(bool, const char*) const;
     struct Impl;
     std::unique_ptr<Impl> impl_;
@@ -67,6 +76,10 @@ private:
     friend class NativePostEffectConstructionBlock;
     friend class NativePostEffect20ConstructionBlock;
     friend class NativeRenderObservedZeroAccess;
+    // Definitions remain private to the two actual payload provider TUs.
+    // They may continue only the real returned-zero, already-resolved edge.
+    friend class NativePostEffect20MaterialObservedZeroIssuer;
+    friend class NativePostEffect24MaterialObservedZeroIssuer;
     friend void* construct_native_post_effect_00b4e840(void*, std::size_t,
         NativeString&, std::uint32_t, const void*, NativePostEffectConstructionBlock&);
     friend void* construct_native_post_effect20_00b4e470(void*, std::size_t,
@@ -129,10 +142,42 @@ private:
     void end_cpp_parent_payload() noexcept;
     void notify_block_retired() noexcept;
 
+    // Root5's Material Domain is validated against BOTH construction contexts
+    // by the Domain constructor, before Block.prepare or Native effects.
+    // Association follows Block.prepare and this Frame's retained attachment.
+    // Root-approved H3 amendment: authentic selected entry BEFORE Native effects.
+    void require_material_constructor_operation(void* actual) const;
+    void prepare_material_caller(NativeMaterialFrame&,
+        NativeMaterialFactoryAcquired&, NativeMaterialEffectCacheContext&);
+    // Exact post-store B4E5E1/B4E9A5 notice, no field/count reread or retain.
+    void material_field_published(NativeMaterialStorage* stored_actual) noexcept;
+    void set_material_parameter_owner(NativeMaterialStorage&, void* incoming,
+        std::uint8_t retain_byte, NativeRenderActualOwners&);
+    // Existing decrement/profile/resolve/alias/type checks have already run.
+    // Use Common invoke(reference, actual, terminal_zero_frame_), not dispatch.
+    void invoke_material_observed_zero(RenderCommandReference&, void* captured_actual);
+    void require_material_payload_operation() const;
+    void preflight_material_caller_close() const;
+    void close_material_caller_after_host_quiescence();
+    bool material_caller_closed() const noexcept;
+    void preflight_close() const;
+    // Future CPP definitions: only the admitted constructor/scalar mutation
+    // owner may propagate failure through its own receiver at the real fence.
+    // Rejected calls and creator-nonzero paths never traverse these heads.
+    class MaterialConstructorScope;
+    class MaterialPayloadScope;
+
     struct Impl;
     std::unique_ptr<Impl> impl_;
     NativeRenderActualOwnerRegistry::ExactRecord exact_;
     NativeRenderObservedZeroHold observed_zero_hold_;
+    // Set once after retained attachment; immutable association thereafter.
+    // Domain owns this Material Frame; this pointer does not extend any loan.
+    NativeMaterialFrame* material_frame_{};
+    // Exactly one B18A40 call in this actual Parent construction attempt.
+    // Lives cold through the whole constructor/outer catch and verified close.
+    NativeRenderActualOwnerReleaseObservation material_parameter_release_;
+    // Persistent payload-material receiver, distinct from the setter receiver.
     NativeRenderObservedZeroFrame terminal_zero_frame_;
 };
 

@@ -15,6 +15,7 @@
 namespace bsp {
 class NativePostEffectParentDomain;
 class NativePostEffectParentFrame;
+class NativeMaterialFrame;
 class ActualNativeStringPoolStorage;
 struct NativeTracelineRenderAccess;
 
@@ -129,6 +130,9 @@ private:
     friend class NativePostEffectParentFrame;
     void parent_source_retired(NativePostEffectParentFrame&, RenderCommandReference&) noexcept;
     friend class NativeMeshCanonicalAccess;
+    // Success is non-draining; only authentic private cold/settled phases select
+    // the owning Model/Mesh checks. Material/caller preflight is Parent-owned.
+    void preflight_close_after_host_quiescence();
     void prepare_legacy(NativePostEffectConstructionContext&);
     void cancel_preparation_legacy() noexcept;
     void reset_after_host_quiescence_legacy() noexcept;
@@ -162,6 +166,9 @@ private:
     NativePostEffectConstructionAcquired acquired_;
     const NativePostEffectOrdinaryLifetimeBinding* ordinary_lifetime_{};
     NativePostEffectParentFrame* parent_frame_{}; // authentic cold issuer only
+    // Domain-owned cold loan. No association/creator fact until the genuine
+    // Parent attachment and post-store hooks; never an adopted companion.
+    NativeMaterialFrame* material_frame_{};
     std::optional<NativePostEffectModelFrame> model_frame_;
     std::optional<NativeMeshCanonicalProducerFrame> mesh_frame_;
     std::optional<NativeMaterialFactoryAcquired> material_factory_;
