@@ -772,6 +772,17 @@ const NativeCockpitViewportReleaseContext& GameNativeRendererApplication::cockpi
 NativeTextureCacheContext& GameNativeRendererApplication::texture_cache() noexcept {
     return impl_->texture_loading.cache;
 }
+NativeTextureCacheContext& GameNativeRendererApplication::atlas_process_texture_cache(
+    const GameNativeReadOnlyData& data) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready,
+        "atlas process requires the ready application renderer");
+    check(p.normal_renderer_birth_for_atlas != nullptr,
+        "atlas process requires this normal Source-created renderer");
+    check(&data == &p.profiles.data,
+        "atlas process requires this renderer's read-only data owner");
+    return p.texture_loading.cache;
+}
 NativeTextureCacheContext& GameNativeRendererApplication::atlas_parser_texture_cache_for(
     void* captured_receiver, U captured_profile_address, U captured_slot64,
     const GameNativeReadOnlyData& data) {

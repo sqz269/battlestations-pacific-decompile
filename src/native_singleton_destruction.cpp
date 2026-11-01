@@ -1,5 +1,6 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_locale_manager_deletion_lifetime.hpp"
+#include "bsp/native_texture_atlas_deletion_lifetime.hpp"
 #include "bsp/native_avoid_manager_lifetime.hpp"
 #include "bsp/native_fixed_step_job_waves.hpp"
 #include "bsp/native_allocation_stats_lifecycle.hpp"
@@ -109,6 +110,12 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
         return;
     }
     switch (profile) {
+    case 0x00cfeae8:
+        if (bindings.texture_atlas != nullptr) {
+            (void)bindings.texture_atlas->delete_registered_00737f10(owner, flags);
+            return;
+        }
+        break;
     case 0x00cff140: case 0x00cfea5c:
         if (bindings.locale_manager != nullptr) {
             (void)bindings.locale_manager->delete_registered_current_profile(owner, profile, flags);
