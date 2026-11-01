@@ -1,0 +1,93 @@
+{
+  "packet": "Source144 concrete raw Page Icon services",
+  "status": "qualified Source/actual Code/build integration; supplier remains unbound",
+  "author": "f60b1782a1950baa221ce072bf96833b0bb0ea20",
+  "Root_source_import": "90135a559",
+  "Root_registration_build_head": "89f7d6e8014054cf1fda80d92f3888b5d625dd96",
+  "published_base_Main": "e3f04279e777f3f765da03cea70b9801cc3f4bb2",
+  "author_files": [
+    "include/bsp/game_native_gui_page_icon_services_application.hpp",
+    "src/game_native_gui_page_icon_services_application.cpp",
+    "docs/CC16_PAGE_ICON_SERVICES_APPLICATION.md",
+    "reports/cc16_page_icon_services_application.json"
+  ],
+  "Root_shared_change": "one deferred bsp_game source row in cmake/startup.cmake",
+  "Source_findings": 0,
+  "Code_findings": 0,
+  "independent_Code_scope": {
+    "sections": 61,
+    "bytes": 9186,
+    "instruction_starts": 2731,
+    "relocations": 337
+  },
+  "Root_Code_transfer": "all61 raw sections and normalized relocation tuples exact",
+  "Root_manual_review": {
+    "finding_count": 0,
+    "scope": "whole emitted adopt136ops and visibility100ops; actual current parent/head reads after allocation+Call construction; nonallocating ownership before catch/current publication; whole140 direct call then nested-failure/normal restore; independent complete61sectionreview reused"
+  },
+  "actual_Root_Game_object": {
+    "path": "build/win32/bsp_game.dir/Release/game_native_gui_page_icon_services_application.obj",
+    "size": 205490,
+    "sha256": "9abf9468252e35734740e711b0673e12b2f73aa915caab5456fc380b0b90560c",
+    "retained_path": "local/function_source_batch144/common/artifacts/build/win32/bsp_game.dir/Release/game_native_gui_page_icon_services_application.obj"
+  },
+  "registration": {
+    "Root_head": "89f7d6e8014054cf1fda80d92f3888b5d625dd96",
+    "actual_target": "bsp_game",
+    "exact_project_compile_items": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_native_gui_page_icon_services_application.cpp"
+    ],
+    "project_artifact": {
+      "path": "build/win32/bsp_game.vcxproj",
+      "size": 277535,
+      "sha256": "33d627068f5564563a563eb4a2a5cc74092216805a47ae89cc101c57951b33cc",
+      "retained_path": "local/function_source_batch144/common/artifacts/build/win32/bsp_game.vcxproj"
+    },
+    "actual_link_command": {
+      "path": "build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog",
+      "size": 65262,
+      "sha256": "6d6e3480618b1c0e2c2f0a91384e66f5400694c5c3ac97090676c97a06aee353",
+      "retained_path": "local/function_source_batch144/common/artifacts/build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog"
+    },
+    "object_is_actual_link_input": true,
+    "retained_PE_or_execution_claim": false
+  },
+  "Root_build": {
+    "seconds": 26.339138,
+    "exit": 0
+  },
+  "frozen_inputs": 3890,
+  "frozen_artifacts": 218,
+  "existing_checks_seconds": [
+    0.21,
+    14.49
+  ],
+  "new_tests": 0,
+  "Game_runs_for_this_packet": 0,
+  "Ghidra_mutations": 0,
+  "all_nine_GUI_selectors": false,
+  "Native_body_credit": 0,
+  "vendor_body_credit": 0,
+  "required_activation_edges": [
+    "actual Root owner/bind/retention before first Page",
+    "Runtime142 cold completion bind before any request",
+    "same synchronous renderer Lua Activation scopes",
+    "genuine production145 CRT provider",
+    "actual Icon cancellation/inflight/pending/stream/current-thread/queued/worker last use"
+  ],
+  "qualification": "Actual registered Win32 object and link input, not retained PE body or execution. No Original ABI/FH3/SEH/fault/Origin/whole-FP/runtime equivalence. Source phases and false retention grant no Native ownership or last-use authority.",
+  "local_evidence_root": "local/function_source_batch144",
+  "local_evidence_sha256": {
+    "candidate/MANIFEST.json": "50dbfeeb761b35d152f6b91e22f8a45b27846c92207553bc22fda74372f1a8d8",
+    "candidate/SOURCE_SEAL.json": "d70862594cf506bedc91a965c9a195bdb566863ab370746da06b66a9e5e97019",
+    "Source_peer/MANIFEST.json": "3b0edd358db1ec61c18b095d16b7720fa89f22b445018599a0c869de3ab4bf33",
+    "Source_peer/SEAL.json": "0a44f8e1f77fead2dc2b1d9323b507882c529e04a86e485a8478bede0cb6c670",
+    "Code_peer/MANIFEST.json": "ae3129e367f75333d574b91481b0cddd0d8be7fd0622cc3988bbd46d05939af0",
+    "Code_peer/SEAL.json": "663910db44badda28a7cd03a959c574587195ddecb415f74f4278ff0a224d01c",
+    "common/manifest.json": "e0578450c4ff4e41e45c9e7ab2c0ce55ce28c5e73e91eb2ddbd92be9bf654aed",
+    "Root_Source_review.json": "c70b9b1cacab10021544d01463f8647c1901a374e59c49693c9f64096e4a20d5",
+    "Root_Code_transfer.json": "b79c602eccba65ea371655793780779b893ccf493e08c444212da82e93780249",
+    "Root_registration_provenance.json": "7f3df9792668b7fd5963f760768d12c75c9e9abf5c9816771dce7db98d27577f",
+    "Root_CMake/Root_receipt.json": "5291f817a1114c7c6ac0d9a0d7a53c4f6c0fc9a600471ede3b0b7d2485dfe6af"
+  }
+}
