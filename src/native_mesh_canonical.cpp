@@ -11,6 +11,30 @@
 
 namespace bsp {
 void return_native_mesh_slot_00b72f70(NativeMeshStorageFrame&, void*);
+// One retained receiver for this record's actual once-only scalar action.
+// Its per-reached nodes are Host metadata, never a Native operand list/count.
+class NativeMeshPayloadReleaseReceiver final {
+    friend class NativeMeshCanonicalRecord;
+    friend class NativeMeshCanonicalAccess;
+    struct Node final {
+        explicit Node(void* captured) noexcept : captured_(captured) {}
+        Node* next_{};
+        void* const captured_;
+        NativeRenderActualOwnerReleaseObservation observation_;
+    };
+    explicit NativeMeshPayloadReleaseReceiver(NativeMeshCanonicalRecord& record) noexcept
+        : record_(record) {}
+    ~NativeMeshPayloadReleaseReceiver() noexcept {
+        // C++ metadata only. The actual owner must retain failed/unknown graphs
+        // instead of ending this storage; no Native cleanup is supplied here.
+        while (first_) { auto* next=first_->next_; delete first_; first_=next; }
+    }
+    NativeMeshPayloadReleaseReceiver(const NativeMeshPayloadReleaseReceiver&)=delete;
+    NativeMeshPayloadReleaseReceiver& operator=(const NativeMeshPayloadReleaseReceiver&)=delete;
+    NativeMeshCanonicalRecord& record_;
+    Node* first_{};
+    std::atomic<bool> entered_{false}, active_{false}, returned_{false}, failed_{false}, drained_{false};
+};
 class NativeMeshCanonicalRecord final {
     friend class NativeMeshCanonicalDomain;
     friend class NativeMeshCanonicalProducerFrame;
@@ -24,6 +48,7 @@ class NativeMeshCanonicalRecord final {
     NativeRenderActualOwnerRegistry::ExactRecord exact_;
     NativeRenderObservedZeroHold observed_zero_hold_;
     NativeMeshStorageFrame lower_;
+    NativeMeshPayloadReleaseReceiver payload_release_;
     NativeMeshCanonicalProducerFrame* producer_frame_{};
     NativePostEffectConstructionBlock* block24_{};
     NativePostEffect20ConstructionBlock* block20_{};
@@ -51,7 +76,8 @@ class NativeMeshCanonicalRecord final {
     bool closed_{};
 
     NativeMeshCanonicalRecord(NativeMeshCanonicalDomain& d, const void* producer)
-        : domain_(d), producer_identity_(producer), exact_(d.registry_, this), lower_(d.context_) {
+        : domain_(d), producer_identity_(producer), exact_(d.registry_, this), lower_(d.context_),
+          payload_release_(*this) {
         lower_.canonical_record_ = this; // private, before any Native operation
     }
     ~NativeMeshCanonicalRecord() noexcept {
@@ -113,6 +139,96 @@ class NativeMeshCanonicalRecord final {
         return *f.record_;
     }
 };
+
+void NativeMeshCanonicalAccess::begin_payload_receiver(NativeMeshCanonicalRecord& r) {
+    auto& receiver=r.payload_release_;
+    if (!r.scalar_entered_.load(std::memory_order_acquire) || !r.canonical_ ||
+        r.lower_.canonical_record_!=&r || r.lower_.payload_receiver_ ||
+        r.lower_.active_ || r.lower_.phase_!=NativeMeshStorageFrame::Phase::live ||
+        receiver.entered_.exchange(true,std::memory_order_acq_rel)) {
+        r.failed();
+        throw std::logic_error("Mesh payload receiver requires its genuine admitted scalar operation");
+    }
+    r.lower_.payload_receiver_=&receiver;
+    receiver.active_.store(true,std::memory_order_release);
+}
+NativeMeshPayloadReleaseReceiver& NativeMeshCanonicalAccess::payload_receiver(
+    NativeMeshCanonicalRecord& r, NativeMeshStorageFrame& lower) {
+    auto& receiver=r.payload_release_;
+    if (&lower!=&r.lower_ || lower.canonical_record_!=&r ||
+        lower.payload_receiver_!=&receiver || !receiver.active_.load(std::memory_order_acquire) ||
+        !lower.active_ || !lower.scalar_entered_ || !lower.destructor_entered_ ||
+        lower.phase_!=NativeMeshStorageFrame::Phase::destroying) {
+        r.failed();
+        throw std::logic_error("Mesh payload lost its SAME private record/lower receiver binding");
+    }
+    return receiver;
+}
+void NativeMeshCanonicalAccess::release_payload_child(NativeMeshPayloadReleaseReceiver& receiver,
+    NativeRenderActualOwners& owners, void* captured) {
+    auto& r=receiver.record_;
+    (void)payload_receiver(r,r.lower_);
+    if (&owners!=&r.domain_.registry_ || &owners!=&r.domain_.environment_.retained_owners ||
+        receiver.drained_.load(std::memory_order_acquire) || r.poisoned_.load(std::memory_order_acquire)) {
+        r.failed();
+        throw std::logic_error("Mesh child release requires its actual same-registry operation");
+    }
+    // The kernel has ALREADY captured this one CURRENT operand. Reserve and
+    // retain its own observation before the actual helper/decrement can enter.
+    auto pending=std::make_unique<NativeMeshPayloadReleaseReceiver::Node>(captured);
+    auto* node=pending.get();node->next_=receiver.first_;receiver.first_=node;(void)pending.release();
+    release_native_render_actual_owner_observed(owners,captured,node->observation_);
+}
+void NativeMeshCanonicalAccess::end_payload_receiver(NativeMeshCanonicalRecord& r,
+    bool source_failed) noexcept {
+    auto& receiver=r.payload_release_;
+    if (!receiver.active_.load(std::memory_order_acquire)) {
+        r.failed(); // rejected/saved guards never walk a different operation's heads
+        return;
+    }
+    const bool failed=source_failed || r.lower_.payload_receiver_!=&receiver ||
+        r.poisoned_.load(std::memory_order_acquire) || r.domain_.retention_.requires_process_retention();
+    if (failed) {
+        receiver.failed_.store(true,std::memory_order_release);r.failed();r.domain_.retention_.fail();
+        // Only the admitted scalar owner reaches this mutable head traversal.
+        for(auto* node=receiver.first_;node;node=node->next_)
+            NativeRenderObservedZeroAccess::fail_frame(node->observation_.cpp_zero_frame);
+    } else receiver.returned_.store(true,std::memory_order_release);
+    if(r.lower_.payload_receiver_==&receiver)r.lower_.payload_receiver_=nullptr;
+    receiver.active_.store(false,std::memory_order_release);
+}
+void NativeMeshCanonicalAccess::preflight_payload_receiver(NativeMeshCanonicalRecord& r, bool complete) {
+    auto& receiver=r.payload_release_;
+    const auto reject=[&r](const char* message) {
+        r.failed();r.domain_.retention_.fail();throw std::logic_error(message);
+    };
+    if(receiver.active_.load(std::memory_order_acquire) || r.lower_.payload_receiver_ ||
+        receiver.failed_.load(std::memory_order_acquire) || r.poisoned_.load(std::memory_order_acquire) ||
+        r.domain_.retention_.requires_process_retention())
+        reject("Mesh payload receiver still active or its SAME graph failed");
+    if(complete ? (!receiver.entered_.load(std::memory_order_acquire)||!receiver.returned_.load(std::memory_order_acquire)) :
+        (receiver.entered_.load(std::memory_order_acquire)||receiver.first_))
+        reject("Mesh payload receiver lacks actual whole-return or genuine never-entered facts");
+    for(auto* node=receiver.first_;node;node=node->next_) {
+        const auto& observation=node->observation_;
+        if(observation.cpp_zero_frame.active_invocations_.load(std::memory_order_acquire)!=0u ||
+            !observation.entered || observation.identity!=node->captured_ ||
+            !observation.decremented || !observation.returned ||
+            (observation.zero_dispatch_entered&&!observation.zero_dispatch_returned))
+            reject("Mesh reached child observation did not pass its real return/health/caller fence");
+    }
+}
+void NativeMeshCanonicalAccess::drain_payload_receiver(NativeMeshCanonicalRecord& r) {
+    preflight_payload_receiver(r,!r.cold_cancelled_);
+    auto& receiver=r.payload_release_;
+    if(receiver.drained_.load(std::memory_order_acquire))return;
+    for(auto* node=receiver.first_;node;node=node->next_)
+        if(!NativeRenderObservedZeroAccess::end_frame(node->observation_.cpp_zero_frame,false)) {
+            r.failed();r.domain_.retention_.fail();
+            throw std::logic_error("Mesh child caller still has an active real Source invocation");
+        }
+    receiver.drained_.store(true,std::memory_order_release);
+}
 
 struct NativeMeshCanonicalDomain::Impl final {
     NativeMeshCanonicalRecord* head{};
@@ -184,6 +300,7 @@ void NativeMeshCanonicalDomain::close_at_quiescence() {
             throw std::logic_error("Mesh close cannot drain active or unresolved owning custody");
         }
         NativeMeshCanonicalAccess::preflight_observed_outer_at_quiescence(*r);
+        NativeMeshCanonicalAccess::preflight_payload_receiver(*r,!r->cold_cancelled_);
     }
     // Validate ALL records and their real caller receivers before the first
     // end_frame can unlink any hold. A later unresolved record must not leave
@@ -194,6 +311,7 @@ void NativeMeshCanonicalDomain::close_at_quiescence() {
         // Real graph quiescence is already established by the owning caller.
         // Drain retained caller metadata BEFORE testing the holds' counters;
         // never infer that quiescence from those counters or a phase flag.
+        NativeMeshCanonicalAccess::drain_payload_receiver(*r);
         NativeMeshCanonicalAccess::drain_observed_outer_at_quiescence(*r);
         if (!r->producer_link_closed_ || r->invocation_.load(std::memory_order_acquire) ||
             r->exact_.outer_calls_.load(std::memory_order_acquire) != 0u ||
@@ -406,6 +524,7 @@ bool NativeMeshCanonicalAccess::return_unconstructed_static_slot(
 }
 void NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f) {
     auto& r = NativeMeshCanonicalRecord::get(f);
+    preflight_payload_receiver(r,false);
     // Only genuine never-entered or actual normal-NULL history, no guessed count.
     if (r.lower_.actual_ || (r.lower_.allocation_entered_ && !r.lower_.allocation_returned_) ||
         r.canonical_ || r.invocation_.load(std::memory_order_acquire) ||
@@ -429,6 +548,7 @@ void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonica
 }
 void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
     auto& r = NativeMeshCanonicalRecord::get(f);
+    preflight_payload_receiver(r,true);
     if (!r.canonical_zero_returned_.load(std::memory_order_acquire) || !r.lower_.pool_returned_ ||
         r.creator_outstanding_ || r.poisoned_.load(std::memory_order_acquire) ||
         r.invocation_.load(std::memory_order_acquire) ||
@@ -450,6 +570,7 @@ void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMesh
 void NativeMeshCanonicalAccess::close_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
     preflight_producer_link_at_quiescence(f);
     auto& r = NativeMeshCanonicalRecord::get(f);
+    drain_payload_receiver(r);
     drain_observed_outer_at_quiescence(r);
     if (!r.canonical_zero_returned_.load(std::memory_order_acquire) || !r.lower_.pool_returned_ || r.creator_outstanding_ ||
         r.invocation_.load(std::memory_order_acquire) ||
@@ -540,12 +661,14 @@ void NativeMeshCanonicalAccess::release_zero(NativeMeshReference& reference) {
         r.failed();
         throw std::logic_error("Raw Mesh zero requires its genuine once-only observed-zero action");
     }
+    bool owns_receiver=false;
     try {
         require_cpp_count_access(reference); // metadata before ANY ended-payload access
         auto* const table = r.domain_.environment_.vtable_00d62d60;
         if (!table || reference.storage_.native_vtable_00 != 0x00d62d60u ||
             table[0] != 0x00bd30e0u || table[1] != 0x00b74280u)
             throw std::logic_error("Raw Mesh zero requires its current actual deleting profile");
+        begin_payload_receiver(r);owns_receiver=true;
         r.scalar_flags_ = 1u; // real deleting-virtual argument epoch, not birth authority
         (void)delete_native_mesh_storage_00b74280(r.scalar_flags_, r.lower_);
         r.source_scalar_returned_ = true; // actual lower normal return AFTER health fence
@@ -556,7 +679,13 @@ void NativeMeshCanonicalAccess::release_zero(NativeMeshReference& reference) {
         if (r.block20_) r.block20_->mesh_source_retired(*r.producer_frame_);
         r.healthy();
         r.canonical_zero_returned_.store(true, std::memory_order_release);
-    } catch (...) { r.failed(); throw; }
+        end_payload_receiver(r,false);owns_receiver=false;
+        r.healthy();
+    } catch (...) {
+        r.failed();
+        if(owns_receiver)end_payload_receiver(r,true);
+        throw;
+    }
 }
 NativeMeshStorage& NativeMeshCanonicalAccess::reject_unscoped_storage(NativeMeshReference& reference) {
     reference.raw_record_->failed();

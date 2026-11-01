@@ -153,7 +153,10 @@ public:
             f.destructor_entered_ = true;
             // Reuse the WHOLE existing ordinary C++ body, including its actual
             // noexcept leaves/RAII termination effects. No Native unwind claim.
-            destroy_native_mesh_00b73e60(*f.live_payload_, f.context_.environment_);
+            if (f.canonical_record_)
+                NativeMeshPayloadReleaseAccess::destroy(*f.live_payload_, f.context_.environment_,
+                    NativeMeshCanonicalAccess::payload_receiver(*f.canonical_record_,f));
+            else destroy_native_mesh_00b73e60(*f.live_payload_, f.context_.environment_);
             f.destructor_returned_ = true;
             const auto low = *reinterpret_cast<const volatile unsigned char*>(std::addressof(flags));
             f.flags_low_byte_ = low;

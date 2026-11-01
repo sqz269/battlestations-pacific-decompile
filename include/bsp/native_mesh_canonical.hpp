@@ -128,6 +128,7 @@ private:
     friend class NativeMeshCanonicalProducerFrame;
     friend class NativeMeshCanonicalBorrow;
     friend class NativeMeshStorageAccess;
+    friend class NativeMeshPayloadReleaseAccess;
     friend class NativeRenderObservedZeroAccess;
     friend class NativeMeshReference;
     friend class GuiNativeGeometryOwners;
@@ -143,6 +144,14 @@ private:
         void*, NativeRenderActualOwnerReleaseObservation&);
 
     // SAME low Frame/receiver throughout; no callback or mode-dependent fallback.
+    static void begin_payload_receiver(NativeMeshCanonicalRecord&);
+    static NativeMeshPayloadReleaseReceiver& payload_receiver(
+        NativeMeshCanonicalRecord&, NativeMeshStorageFrame&);
+    static void release_payload_child(NativeMeshPayloadReleaseReceiver&,
+        NativeRenderActualOwners&, void* captured_actual);
+    static void end_payload_receiver(NativeMeshCanonicalRecord&, bool source_failed) noexcept;
+    static void preflight_payload_receiver(NativeMeshCanonicalRecord&, bool complete);
+    static void drain_payload_receiver(NativeMeshCanonicalRecord&);
     static void require_domain_identity(NativeMeshCanonicalDomain&, NativeMeshEnvironment&,
         NativeRenderActualOwners&);
     static void require_domain_identity(NativeMeshCanonicalDomain&, NativeMeshEnvironment&,

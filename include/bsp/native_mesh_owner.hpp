@@ -11,6 +11,8 @@ class NativeMeshCanonicalDomain;
 class NativeMeshCanonicalRecord;
 class NativeMeshCanonicalAccess;
 class NativeMeshCanonicalBorrow;
+class NativeMeshStorageAccess;
+class NativeMeshPayloadReleaseReceiver;
 
 struct NativeMeshLodPhaseStorage {
     std::uint32_t minimum_00;
@@ -60,6 +62,16 @@ struct NativeMeshEnvironment {
     NativeStringStorage& strings;
     // Actual CURRENT D62D60 profile, at least two DWORDs. Never synthesize it.
     const volatile std::uint32_t* vtable_00d62d60;
+};
+
+// Private ordinary payload bridge. The receiver is external C++ metadata
+// issued by the SAME canonical record's admitted scalar operation; it is not
+// a Native retain, family lookup, public zero permission or cleanup token.
+class NativeMeshPayloadReleaseAccess final {
+private:
+    friend class NativeMeshStorageAccess;
+    static void destroy(NativeMeshStorage&, NativeMeshEnvironment&,
+        NativeMeshPayloadReleaseReceiver&);
 };
 
 // Original ECX=actual BCh payload, EAX=same, RET. Placement-only constructor:

@@ -183,6 +183,29 @@ void destroy_native_mesh_00b73e60(NativeMeshStorage& mesh, NativeMeshEnvironment
     clear_native_mesh_draw_sections_00b73c10(mesh, environment.retained_owners);
     cleanup.finish();
 }
+void NativeMeshPayloadReleaseAccess::destroy(NativeMeshStorage& mesh,
+    NativeMeshEnvironment& environment, NativeMeshPayloadReleaseReceiver& receiver) {
+    // Whole B73E60/B73C10 schedule. Only the actual release receiver changes;
+    // the public legacy bodies above remain literal. Capture each Native
+    // operand at its original epoch, before reserving that release's node.
+    mesh.native_vtable_00 = mesh_table;
+    MeshMemberCleanup cleanup(mesh, environment.strings);
+    if (void* const index = mesh.index_stream_60) {
+        NativeMeshCanonicalAccess::release_payload_child(receiver, environment.retained_owners, index);
+        mesh.index_stream_60 = nullptr;
+    }
+    void** const end = mesh.vertex_streams_64 + mesh.vertex_stream_count_7c;
+    for (void** current = mesh.vertex_streams_64; current != end; ++current)
+        if (void* const stream = *current)
+            NativeMeshCanonicalAccess::release_payload_child(receiver, environment.retained_owners, stream);
+    // CURRENT count and data are re-read after every callback. There is no
+    // initial operand list or quota, including when callbacks change the array.
+    for (std::int32_t index = 0; index < mesh.draw_sections_54.count_04; ++index)
+        NativeMeshCanonicalAccess::release_payload_child(receiver, environment.retained_owners,
+            mesh.draw_sections_54.data_00[index]);
+    resize_native_mesh_section_pointers_00b73840(mesh.draw_sections_54, 0);
+    cleanup.finish();
+}
 NativeMeshStorage* delete_native_mesh_00b74280(
     NativeMeshStorage* mesh, NativeMeshEnvironment& environment, std::uint32_t flags) {
     destroy_native_mesh_00b73e60(*mesh, environment);
