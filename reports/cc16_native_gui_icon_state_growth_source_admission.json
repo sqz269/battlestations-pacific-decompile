@@ -69,7 +69,7 @@
     "Source89_qualified_providers": 4,
     "actual_full_inverse": true,
     "findings": 0,
-    "sealed": false,
+    "sealed": true,
     "scope": "normal Source only"
   },
   "build": {
@@ -328,6 +328,16 @@
       "path": "local/function_source_batch90/Source_peer/reader_stdout.json",
       "bytes": 12581,
       "sha256": "19edf896df84f647fa5a1b89de8d4c1609c9fb79169e80b931458e2fbbd63ed0"
+    },
+    {
+      "path": "local/function_source_batch90/Source_peer/manifest.json",
+      "bytes": 14017,
+      "sha256": "bf54cc548ac278b3422147106440332d547130ee98406996ffe80c92fee2372d"
+    },
+    {
+      "path": "local/function_source_batch90/Source_peer/sealed_receipt.json",
+      "bytes": 636,
+      "sha256": "a6f85ee23e4acd610382ff87e8d51a373595f80b9a81041b7e1634a905c57812"
     }
   ]
 }
