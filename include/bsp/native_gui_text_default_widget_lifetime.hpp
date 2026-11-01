@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_gui_text_default_factory_storage.hpp"
+#include <optional>
 
 namespace bsp {
 // One independent publication history, supplied by the retained owner. These
@@ -42,6 +43,12 @@ public:
     NativeGuiTextDefaultWidgetLifetime(NativeNodeDestructionRuntime&,
         NativeRenderActualOwnerRegistry&, game::GameNativeReadOnlyData&,
         game::GameNativeGuiTextProcess&, NativeGuiTextDefaultWidgetLifetimeAcquired&);
+    // Borrow Page's actual context and its DISTINCT forwarding dispatcher.
+    // This helper is the DEFAULT delegate; neither context nor cells are copied.
+    NativeGuiTextDefaultWidgetLifetime(NativeGuiWidgetLifetimeContext& actual_page_context,
+        NativeGuiWidgetLifetimeBindings& actual_page_dispatcher,
+        NativeRenderActualOwnerRegistry&, game::GameNativeReadOnlyData&,
+        game::GameNativeGuiTextProcess&, NativeGuiTextDefaultWidgetLifetimeAcquired&);
     ~NativeGuiTextDefaultWidgetLifetime() override;
     NativeGuiTextDefaultWidgetLifetime(const NativeGuiTextDefaultWidgetLifetime&) = delete;
     NativeGuiTextDefaultWidgetLifetime& operator=(const NativeGuiTextDefaultWidgetLifetime&) = delete;
@@ -76,6 +83,7 @@ private:
     [[noreturn]] void reject(const char*);
     void fail() noexcept;
     NativeGuiTextDefaultWidgetLifetimeRecord& record();
+    void require_context_identity() const;
     Admission authenticate(void* actual);
     std::uint32_t active_profile(void* actual, Admission);
     void require_empty_branches(void* actual);
@@ -86,7 +94,9 @@ private:
     const volatile std::uint32_t* const base_;
     const volatile std::uint32_t* const text_;
     const volatile std::uint32_t (&text_lineage_)[3];
-    NativeGuiWidgetLifetimeContext context_;
+    std::optional<NativeGuiWidgetLifetimeContext> owned_context_;
+    NativeGuiWidgetLifetimeContext& context_;
+    NativeGuiWidgetLifetimeBindings& dispatcher_;
     NativeGuiTextDefaultWidgetLifetimeRecord* record_{};
 };
 

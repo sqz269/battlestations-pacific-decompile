@@ -1,0 +1,129 @@
+{
+  "packet": 148,
+  "kind": "BOUNDED_SOURCE",
+  "base_Main": "deb39273101dda6b8a7b43874a6a415fab899232",
+  "plan_API_sha256": "f71e89e3d80722357aaa44b206dd7bc77bb34a420a781df30b06351232e5d5bb",
+  "scope": [
+    "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+    "src/native_gui_text_default_widget_lifetime.cpp",
+    "docs/CC16_DEFAULT_TEXT_PAGE_LIFETIME_CONTEXT.md",
+    "reports/cc16_default_text_page_lifetime_context.json"
+  ],
+  "Source_change": {
+    "API": "Additional constructor borrowing the actual Page NativeGuiWidgetLifetimeContext and distinct actual dispatcher in the SAME existing DEFAULT helper",
+    "representation": "Standalone optional owned context; actual context reference and immutable dispatcher reference for both routes; external route copies no context or process cells",
+    "existing_standalone_route": "Preserved; same existing Game caller still selects NativeNodeDestructionRuntime constructor",
+    "identity_checks": [
+      "Context bindings is exact captured dispatcher; external dispatcher differs from helper delegate",
+      "SAME canonical ready Text process, RO base-table view, Element-lineage array address and Text-descriptor cell address",
+      "SAME factory/raw93/raw122/independent Model record, owner registry, RO, lifetime context, retirement base/resources/model, point-light runtime and glyph nodes",
+      "Glyph children is the SAME actual dispatcher, not the distinct helper on the Page route",
+      "SAME canonical Text F8BDF0 pool, actual geometry owners, node/raw-string pool and process/storage raw-string cells",
+      "Known writable records do not overlap actual external context or known dispatcher subobject"
+    ],
+    "preserved": [
+      "One-shot bind and constructor/bound/retiring histories",
+      "Independent negative/failure/disposal guards precede receiver/payload authentication",
+      "Real A9E070/AB83D0 results and true canonical Text-descriptor rejection before legacy188 cleanup",
+      "DEFAULT-only empty/unparented/nonprimary/nonshader restrictions; child/timed dispatch remains rejected",
+      "Existing whole native list body, captured list/pointer-cell and reload/free order",
+      "Existing sticky failure and retained graph obligations; no new cleanup/retry policy"
+    ],
+    "provenance_boundary": "Caller must supply and retain the genuine actual Page context/dispatcher and complete stable provider graph; these metadata checks do not prove that custody or grant activation"
+  },
+  "source_preimages": [
+    {
+      "path": "include/bsp/native_gui_text_default_widget_lifetime.hpp",
+      "exists": true,
+      "sha256": "6689bd2ad16f3518e7356abea646dd10f37bb3d609f23453ca479dee10ed5672"
+    },
+    {
+      "path": "src/native_gui_text_default_widget_lifetime.cpp",
+      "exists": true,
+      "sha256": "a9a0804f232966546ad7f17ce8d8b6fa81937f26531d831ecd79a3d8bb62d88b"
+    },
+    {
+      "path": "docs/CC16_DEFAULT_TEXT_PAGE_LIFETIME_CONTEXT.md",
+      "exists": false,
+      "sha256": null
+    },
+    {
+      "path": "reports/cc16_default_text_page_lifetime_context.json",
+      "exists": false,
+      "sha256": null
+    }
+  ],
+  "compiled_source_pins": {
+    "helper_header_sha256": "788da771856786ce6857b145255f00c9e4ea06d05b83d7d03c3ba9cdb7bfdd9b",
+    "helper_CPP_sha256": "f4ca28a19a6e41ca0950ac5acc232508dffbd1abc95d996fcb24fc7f10357673",
+    "existing_caller_CPP_sha256": "b0c6a8e39b0756e98960a9f21894a0b25ea7b1a437891edaa86b6f893289d25b"
+  },
+  "validation": {
+    "strict": {
+      "status": "passed",
+      "seconds": 6.1705915,
+      "flags": "/c /std:c++17 /EHsc /MD /O2 /fp:strict /W4 /WX",
+      "TUs": [
+        "native_gui_text_default_widget_lifetime",
+        "game_native_raw_default_text_owner"
+      ]
+    },
+    "registered": {
+      "status": "passed",
+      "seconds": 144.4041126,
+      "command": "./scripts/build.ps1",
+      "platform": "Win32",
+      "configuration": "Release",
+      "existing_checks": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "existing_checks_passed": 2
+    },
+    "new_tests": 0,
+    "probes": 0,
+    "Game_runs": 0,
+    "Ghidra_mutations": 0
+  },
+  "actual_registered_provenance": {
+    "artifact_inventory": "REGISTERED_ARTIFACTS.json",
+    "compiler_input_inventory": "STRICT_COMPILER_INPUTS.json",
+    "minimal_dependency_pins": "PINNED_DEPENDENCIES.json",
+    "minimal_dependency_windows": "SELECTED_DEPENDENCY_WINDOWS.md",
+    "actual_Core_Game_project_and_command_inputs": "registered/",
+    "emission": {
+      "registered_core_object_defines_both_overloads": true,
+      "registered_core_archive_indexes_both_overloads": true,
+      "registered_game_caller_relocates_standalone_overload": true,
+      "registered_game_caller_relocates_external_overload": false,
+      "external_production_caller_added": false,
+      "final_executable_external_overload_retention": "UNPROVEN; unused overload may be discarded by the linker",
+      "no_reference_anchor_added": true,
+      "Source_only": true,
+      "selected_symbols": [
+        "101 00000000 SECT17 notype ()    External     | ??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z (public: __thiscall bsp::NativeGuiTextDefaultWidgetLifetime::NativeGuiTextDefaultWidgetLifetime(class bsp::NativeNodeDestructionRuntime &,class bsp::NativeRenderActualOwnerRegistry &,class bsp::game::GameNativeReadOnlyData &,class bsp::game::GameNativeGuiTextProcess &,struct bsp::NativeGuiTextDefaultWidgetLifetimeAcquired &))",
+        "102 00000000 SECT15 notype ()    External     | ??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAUNativeGuiWidgetLifetimeContext@1@AAVNativeGuiWidgetLifetimeBindings@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@61@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z (public: __thiscall bsp::NativeGuiTextDefaultWidgetLifetime::NativeGuiTextDefaultWidgetLifetime(struct bsp::NativeGuiWidgetLifetimeContext &,class bsp::NativeGuiWidgetLifetimeBindings &,class bsp::NativeRenderActualOwnerRegistry &,class bsp::game::GameNativeReadOnlyData &,class bsp::game::GameNativeGuiTextProcess &,struct bsp::NativeGuiTextDefaultWidgetLifetimeAcquired &))"
+      ]
+    }
+  },
+  "remaining_UNBOUND": [
+    "Actual private Page borrow/delegation and pending/completed Type3 factory/RawModel companion record",
+    "Genuine full DEFAULT frame/opaque extent/sampler inputs and shader-cache/Lua entry scope",
+    "Separate nonnull canonical RawModel publication, without extra retain or legacy Text/GuiWidgetOwner casts",
+    "Nondefault Text property/hierarchy/lifetime arms",
+    "Typed full-DWORD whole129 caller and captured-child146 borrow",
+    "Page Font production and actual queued Text/Font/section/material last-use cut",
+    "FrameBox Type18/F8C188 remains separate; Text Type3 uses F8BDF0"
+  ],
+  "held": {
+    "all_nine_GUI_selectors": "OFF",
+    "production_Page_binding_added": false,
+    "Native_body_credit": 0,
+    "vendor_body_credit": 0,
+    "Original_ABI_FH3_fault_Origin_FP_or_runtime_proof": false,
+    "reference_anchors": 0,
+    "Page_Host_CMake_ledger_edits": 0,
+    "Source_address_leases": 0
+  },
+  "candidate": "local/output/cc16_default_text_page_lifetime_source148_20261101"
+}

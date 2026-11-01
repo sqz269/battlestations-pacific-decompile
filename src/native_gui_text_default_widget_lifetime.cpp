@@ -1,8 +1,10 @@
 #include "bsp/native_gui_text_default_widget_lifetime.hpp"
 #include "bsp/game_native_gui_text_process.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/gui_text_lifetime.hpp"
 #include "bsp/native_gui_widget_child_links.hpp"
+#include "bsp/native_string_raw_domain.hpp"
 #include <exception>
 #include <initializer_list>
 #include <stdexcept>
@@ -47,11 +49,39 @@ NativeGuiTextDefaultWidgetLifetime::NativeGuiTextDefaultWidgetLifetime(
       base_(static_cast<const volatile Word*>(data.data_at(base_profile, 9 * sizeof(Word)))),
       text_(static_cast<const volatile Word*>(data.data_at(text_profile, 9 * sizeof(Word)))),
       text_lineage_(process.text_lineage_00f8be28()),
-      context_{nodes, base_, process.element_lineage_00f8bc88(), text_lineage_[0], *this} {
+      owned_context_(NativeGuiWidgetLifetimeContext{
+          nodes, base_, process.element_lineage_00f8bc88(), text_lineage_[0], *this}),
+      context_(*owned_context_), dispatcher_(*this) {
+    require_context_identity();
     require(&process == &game::game_native_gui_text_process() &&
         !acquired.bound && !acquired.active && !acquired.poisoned && !acquired.completed_calls &&
         acquired.current.operation == Op::none && acquired.failure.operation == Op::none,
         "DEFAULT widget metadata requires its canonical ready process and fresh diagnostics");
+}
+NativeGuiTextDefaultWidgetLifetime::NativeGuiTextDefaultWidgetLifetime(
+    NativeGuiWidgetLifetimeContext& actual_page_context,
+    NativeGuiWidgetLifetimeBindings& actual_page_dispatcher,
+    NativeRenderActualOwnerRegistry& registry, game::GameNativeReadOnlyData& data,
+    game::GameNativeGuiTextProcess& process, NativeGuiTextDefaultWidgetLifetimeAcquired& acquired)
+    : registry_(registry), data_(data), process_(process), acquired_(acquired),
+      base_(static_cast<const volatile Word*>(data.data_at(base_profile, 9 * sizeof(Word)))),
+      text_(static_cast<const volatile Word*>(data.data_at(text_profile, 9 * sizeof(Word)))),
+      text_lineage_(process.text_lineage_00f8be28()), owned_context_(std::nullopt),
+      context_(actual_page_context), dispatcher_(actual_page_dispatcher) {
+    require(&actual_page_dispatcher != this,
+        "Page DEFAULT widget dispatcher must be distinct from its helper delegate");
+    require_context_identity();
+    require(!acquired.bound && !acquired.active && !acquired.poisoned && !acquired.completed_calls &&
+        acquired.current.operation == Op::none && acquired.failure.operation == Op::none,
+        "Page DEFAULT widget metadata requires fresh diagnostics");
+}
+void NativeGuiTextDefaultWidgetLifetime::require_context_identity() const {
+    require(&process_ == &game::game_native_gui_text_process() &&
+        context_.actual_base_table_00d5c130 == base_ &&
+        &context_.actual_base_lineage_00f8bc88 == &process_.element_lineage_00f8bc88() &&
+        &context_.actual_text_descriptor_00f8be28 == &text_lineage_[0] &&
+        &context_.bindings == &dispatcher_,
+        "DEFAULT widget context requires SAME canonical RO/process address aliases and dispatcher");
 }
 NativeGuiTextDefaultWidgetLifetime::~NativeGuiTextDefaultWidgetLifetime() {
     if (acquired_.active || acquired_.poisoned) std::terminate();
@@ -99,6 +129,7 @@ void NativeGuiTextDefaultWidgetLifetime::bind(NativeGuiTextDefaultWidgetLifetime
     begin(call);
     try {
         require(!acquired_.bound && !record_, "DEFAULT widget record binding is once only");
+        require_context_identity();
         auto& f = r.factory_context;
         auto& p = f.publication;
         auto& c = f.construction;
@@ -109,10 +140,19 @@ void NativeGuiTextDefaultWidgetLifetime::bind(NativeGuiTextDefaultWidgetLifetime
             &p.retirement.resources == &p.construction_context.sections &&
             &p.retirement.model == &c.sections.model &&
             &p.retirement.glyphs.nodes == &context_.nodes &&
-            &p.retirement.glyphs.children == this &&
+            &p.retirement.glyphs.children == &dispatcher_ &&
+            &p.retirement.actual_pool_00f8bdf0 == &process_.pool_00f8bdf0() &&
+            &p.owners == &p.construction_context.sections.geometry.actual_owners() &&
             &p.construction_context.sections.model.storage.node.trees.point_lights ==
                 &context_.nodes.point_lights,
             "DEFAULT widget binding requires EXACT factory/raw93/raw122/188/base/glyph identities");
+        auto& sections = p.construction_context.sections;
+        require(context_.nodes.uses_raw_name_pool() &&
+            &context_.nodes.require_raw_name_pool() == &sections.strings &&
+            &sections.model.storage.node.strings == &sections.strings &&
+            same_native_string_raw_pool_cells(sections.strings, sections.string_process.raw_context()) &&
+            same_native_string_storage_raw_pool_cells(sections.material_strings, sections.strings),
+            "DEFAULT widget binding requires SAME genuine raw string pool cells");
         require(r.factory.phase == NativeGuiTextDefaultFactoryStorageAcquired::Phase::fresh &&
             !r.factory.started && !r.factory.complete && !r.factory.raw_slot &&
             !c.started && !c.complete && !c.destination &&
@@ -138,6 +178,10 @@ void NativeGuiTextDefaultWidgetLifetime::bind(NativeGuiTextDefaultWidgetLifetime
             {f.disposal.context, f.disposal.context_bytes}};
         for (std::size_t i = 0; i != 4; ++i) {
             require(representable(writable[i]), "DEFAULT widget caller region has an invalid extent");
+            if (!owned_context_)
+                require(disjoint(writable[i], {&context_, sizeof(context_)}) &&
+                    disjoint(writable[i], {&dispatcher_, sizeof(dispatcher_)}),
+                    "DEFAULT widget records cannot overlap their borrowed Page context/dispatcher");
             for (std::size_t j = i + 1; j != 4; ++j)
                 require(disjoint(writable[i], writable[j]), "DEFAULT widget caller records must be separate");
             for (const auto b : borrowed)
@@ -166,11 +210,12 @@ NativeGuiTextDefaultWidgetLifetime::authenticate(void* actual) {
         !scalar.destruction.complete && !scalar.destruction.base_returned &&
         a.phase != NativeGuiTextDefaultFactoryStorageAcquired::Phase::failed && !a.failure,
         "DEFAULT widget dispatch rejects failed/disposing/ended/returned metadata");
+    require_context_identity();
     require(actual && a.started && a.allocation_returned && a.raw_slot == actual &&
         a.prepared_context == &f && a.construction_record == &c &&
         a.actual_pool == &f.publication.retirement.actual_pool_00f8bdf0 &&
         c.started && c.destination == actual && c.base_complete && c.derived_complete &&
-        context_.actual_base_table_00d5c130 == base_ && &context_.bindings == this,
+        context_.actual_base_table_00d5c130 == base_ && &context_.bindings == &dispatcher_,
         "DEFAULT widget receiver is not its SAME actual factory/raw93 allocation");
     if (!s.bind_entered) {
         require(!s.bind_complete && !s.reference && !s.scalar_entered &&
