@@ -45,6 +45,7 @@ namespace bsp::game {
 
 class GameNativeRendererApplication;
 class GameNativeGuiManagerApplication;
+class GameNativeGuiPageApplication;
 
 class GameHostLog;
 class GameVfsHost;
@@ -170,10 +171,18 @@ public:
     // kGuiManagerCc15Bound: 0073BC19's 004C12B0 also builds the borrowed actual
     // manager. The bridge ManagerState stays the hosted callers' stand-in.
     void bind_native_gui_manager(GameNativeGuiManagerApplication&);
+    // Cold once-bound actual transport, before startup. Requires the SAME
+    // already-bound manager/resource app and actual Page graph. No Native
+    // call, page/owner birth or gate activation occurs here. The tuple and
+    // all entered records must survive actual last use/drain (Root-owned).
+    void bind_native_gui_pages(GameNativeGuiPageApplication&, GameNativeGuiManagerApplication&);
     // End manager texture borrowers before calling, before renderer drain.
     // Interrupted native work requires process retention and cannot be retried.
     void retire_native_gui_resources();
     bool native_gui_resources_require_process_retention() const noexcept;
+    // This failure/active/credit aggregate is not a last-use acknowledgement.
+    // Even after normal resource retirement, Root retains the raw tuple and
+    // record backing through actual Page/manager/callback/queued last use.
     GameFrontendHost(const GameFrontendHost&) = delete;
     GameFrontendHost& operator=(const GameFrontendHost&) = delete;
 

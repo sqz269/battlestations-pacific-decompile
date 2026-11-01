@@ -2,6 +2,8 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/game_native_gui_manager_application.hpp"
+#include "bsp/native_platform_focus_owners.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/native_render_context.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -72,8 +74,21 @@ GameNativeGuiResourceApplication::GameNativeGuiResourceApplication(GameHostLog& 
 GameNativeGuiResourceApplication::~GameNativeGuiResourceApplication() noexcept {
     if (requires_process_retention()) std::terminate();
 }
+void GameNativeGuiResourceApplication::require_actual_manager_domain(GameNativeGuiManagerApplication& manager) {
+    impl_->validate_domain();
+    require(&manager.context().actual_resources==&impl_->renderer.actual_owners(),
+        "actual GUI manager and texture publication must use the SAME canonical owner registry");
+}
 void* GameNativeGuiResourceApplication::load_manager_texture_00aa5e20(
     std::uint16_t offset, std::string_view path) {
+    return load_manager_texture_impl(offset,path,nullptr,nullptr);
+}
+void* GameNativeGuiResourceApplication::load_initial_texture_into_actual_manager(
+    GameNativeGuiManagerApplication& manager,void* actual,std::uint16_t offset,std::string_view path) {
+    return load_manager_texture_impl(offset,path,&manager,actual);
+}
+void* GameNativeGuiResourceApplication::load_manager_texture_impl(
+    std::uint16_t offset,std::string_view path,GameNativeGuiManagerApplication* manager,void* actual) {
     auto& app = *impl_;
     require(app.phase == Impl::Phase::active, "Native GUI texture load cannot reenter or replay");
     const bool white = app.operations.empty();
@@ -84,10 +99,15 @@ void* GameNativeGuiResourceApplication::load_manager_texture_00aa5e20(
     auto frame = std::make_unique<GameNativeGuiResourceLoadOperation>();
     frame->manager_offset = offset;
     frame->requested_path = std::string(path);
+    frame->manager_owner=manager;frame->actual_manager=actual;
     auto& op = *frame;
     app.operations.push_back(std::move(frame)); // Publish BEFORE native effects.
     app.phase = Impl::Phase::loading;
     try {
+        if(manager) {
+            manager->admit_initial_texture(*this,actual,offset); // Throwing admission BEFORE effects.
+            op.transfer_pending=true;
+        }
         op.native_site = white ? 0x00aa5e56 : 0x00aa5eb7;
         op.name_live = true;
         op.name.assign_0041e870(app.raw.strings, op.requested_path.c_str());
@@ -112,6 +132,27 @@ void* GameNativeGuiResourceApplication::load_manager_texture_00aa5e20(
                 app.cache, &op.cache);
             op.reference_owned = op.result != nullptr; // Exactly the returned reference.
         }
+        if(manager) {
+            op.phase=GameNativeGuiResourceLoadOperation::Phase::publishing;
+            if(op.resolved) {
+                if(!white) {
+                    op.native_site=0x00aa5ef2;op.old_slot_release_entered=true;
+                    // Whole helper reads CURRENT old+2C only now, after renderer
+                    // return; release/clear must finish before new publication.
+                    release_native_gui_resource_slot_0041da80(static_cast<char*>(actual)+0x2c,
+                        app.renderer.actual_owners());
+                    op.old_slot_release_returned=true;
+                }
+                op.native_site=white?0x00aa5ea4:0x00aa5f1a;
+                op.manager_publication_entered=true;
+                manager->complete_initial_texture(actual,offset,op.result,true);
+                // No callback/throwing call between actual store and handoff.
+                op.reference_owned=false;op.manager_transferred=true;op.transfer_pending=false;
+            } else {
+                manager->complete_initial_texture(actual,offset,nullptr,false);
+                op.publication_skipped=true;op.transfer_pending=false;
+            }
+        }
         destroy_native_string_header_0041dd20(&op.name, app.raw.strings);
         op.name_live = false;
         op.phase = GameNativeGuiResourceLoadOperation::Phase::complete;
@@ -124,6 +165,7 @@ void* GameNativeGuiResourceApplication::load_manager_texture_00aa5e20(
         op.failure = app.failed = std::current_exception();
         op.phase = GameNativeGuiResourceLoadOperation::Phase::failed;
         app.phase = Impl::Phase::failed;
+        if(manager) manager->fail_frontend_transport(op.failure);
         throw;
     }
 }
@@ -137,6 +179,11 @@ void GameNativeGuiResourceApplication::retire_textures() {
             auto& op = *frame;
             require(op.phase == GameNativeGuiResourceLoadOperation::Phase::complete && !op.name_live,
                 "Native GUI resource retirement requires completed load frames");
+            require(!op.transfer_pending,"Pending actual-manager handoff cannot be retired or replayed");
+            if(op.manager_transferred) {
+                require(!op.reference_owned,"Transferred manager reference has no second Source owner");
+                continue; // Real AA6340 owns +28/+2C. Do not clear or decrement them here.
+            }
             if (op.reference_owned) {
                 void* const captured = op.result;
                 op.reference_owned = false;

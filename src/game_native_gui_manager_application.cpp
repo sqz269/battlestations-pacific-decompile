@@ -48,6 +48,15 @@ struct GameNativeGuiManagerApplication::Impl {
     NativeGuiSelectedManagerDeleteAttempt* selected_manager_delete{}; // owned by real singleton host
     bool selected_preparation_started{};
     bool selected_preparation_failed{};
+    enum class TransportPhase { unbound, bound, active, complete, failed };
+    TransportPhase transport_phase{TransportPhase::unbound};
+    GameFrontendHost* frontend{};
+    GameNativeGuiPageApplication* frontend_pages{};
+    GameNativeGuiResourceApplication* frontend_resources{};
+    void* initial_receiver{};
+    std::size_t texture_step{}, widget_store_step{};
+    bool texture_pending{};
+    std::exception_ptr transport_failure;
     Impl(GameHostLog& l, GameSingletonHost& s, GameNativeReadOnlyData& data,
         NativeRenderActualOwners& resources, NativeStringRawPoolContext& strings)
         : log(l), singletons(s),
@@ -92,6 +101,78 @@ void* GameNativeGuiManagerApplication::get_004c12b0() {
 
 NativePlatformFocusOwnersContext& GameNativeGuiManagerApplication::context() noexcept {
     return impl_->owners;
+}
+
+void GameNativeGuiManagerApplication::bind_frontend_transport(GameFrontendHost& frontend,
+    GameNativeGuiPageApplication& pages, GameNativeGuiResourceApplication& resources,
+    NativeStringRawPoolContext& strings) {
+    auto& p=*impl_;
+    if(p.transport_phase!=Impl::TransportPhase::unbound || p.frontend ||
+        p.phase!=Impl::Phase::published || !p.gui_00f8bc5c || !p.page_binding ||
+        !p.pages.delegate || &p.lifetime.strings!=&strings)
+        throw std::logic_error("actual frontend transport binds once to the published manager/Page/string graph");
+    p.frontend=&frontend;p.frontend_pages=&pages;p.frontend_resources=&resources;
+    p.transport_phase=Impl::TransportPhase::bound; // No Native effect.
+}
+void* GameNativeGuiManagerApplication::begin_initial_resources(GameFrontendHost& frontend) {
+    auto& p=*impl_;
+    if(p.frontend!=&frontend || p.transport_phase!=Impl::TransportPhase::bound ||
+        p.phase!=Impl::Phase::published)
+        throw std::logic_error("actual initial GUI resources enter once through the bound frontend");
+    p.transport_phase=Impl::TransportPhase::active; // BEFORE reached raw getter.
+    try { return p.initial_receiver=get_004c12b0(); }
+    catch(...) { fail_frontend_transport(std::current_exception());throw; }
+}
+void GameNativeGuiManagerApplication::admit_initial_texture(GameNativeGuiResourceApplication& resources,
+    void* actual,std::uint16_t offset) {
+    auto& p=*impl_;
+    if(p.transport_phase!=Impl::TransportPhase::active || p.frontend_resources!=&resources ||
+        !actual || actual!=p.initial_receiver || actual!=p.gui_00f8bc5c || p.texture_pending ||
+        p.texture_step>=2 || offset!=(p.texture_step==0?0x28:0x2c))
+        throw std::logic_error("actual initial GUI texture does not match private reached transport history");
+    p.texture_pending=true;
+}
+void GameNativeGuiManagerApplication::complete_initial_texture(void* actual,std::uint16_t offset,
+    void* value,bool publish) noexcept {
+    // All throwing admission occurred before Native entry. No callback/throwing
+    // call separates this store from the resource operation's credit handoff.
+    if(publish) *reinterpret_cast<void* volatile*>(static_cast<char*>(actual)+offset)=value;
+    auto& p=*impl_;p.texture_pending=false;++p.texture_step;
+}
+void GameNativeGuiManagerApplication::store_initial_widget(GameFrontendHost& frontend,void* actual,
+    std::uint16_t offset,void* value) {
+    static constexpr std::uint16_t slots[]={0x4c,0x54,0x50,0x58,0x74,0x78,0x7c,0x80};
+    auto& p=*impl_;
+    if(p.frontend!=&frontend || p.transport_phase!=Impl::TransportPhase::active ||
+        actual!=p.initial_receiver || actual!=p.gui_00f8bc5c || p.texture_step!=2 || p.texture_pending ||
+        p.widget_store_step>=sizeof(slots)/sizeof(slots[0]) || offset!=slots[p.widget_store_step])
+        throw std::logic_error("actual GUI widget store requires the private fixed resource sequence");
+    *reinterpret_cast<void* volatile*>(static_cast<char*>(actual)+offset)=value;
+    ++p.widget_store_step;
+}
+void* GameNativeGuiManagerApplication::current_resource_slot(void* actual,std::uint16_t offset) noexcept {
+    return *reinterpret_cast<void* volatile*>(static_cast<char*>(actual)+offset);
+}
+void GameNativeGuiManagerApplication::finish_initial_resources(GameFrontendHost& frontend,void* actual) {
+    auto& p=*impl_;
+    if(p.frontend!=&frontend || p.transport_phase!=Impl::TransportPhase::active ||
+        actual!=p.initial_receiver || actual!=p.gui_00f8bc5c || p.texture_step!=2 ||
+        p.texture_pending || p.widget_store_step!=8)
+        throw std::logic_error("actual GUI byte84 finishes only the completed private fixed sequence");
+    *reinterpret_cast<volatile std::uint8_t*>(static_cast<char*>(actual)+0x84)=0;
+    p.transport_phase=Impl::TransportPhase::complete;
+}
+void GameNativeGuiManagerApplication::admit_pointer_operation(GameFrontendHost& frontend,void* actual) {
+    auto& p=*impl_;
+    if(p.frontend!=&frontend || p.transport_phase!=Impl::TransportPhase::complete ||
+        p.phase!=Impl::Phase::published || actual!=p.initial_receiver || actual!=p.gui_00f8bc5c)
+        throw std::logic_error("actual pointer transport requires the same completed Source resource history");
+}
+void GameNativeGuiManagerApplication::store_enabled_48(void* actual,std::uint8_t value) noexcept {
+    *reinterpret_cast<volatile std::uint8_t*>(static_cast<char*>(actual)+0x48)=value;
+}
+void GameNativeGuiManagerApplication::fail_frontend_transport(std::exception_ptr failure) noexcept {
+    impl_->transport_failure=failure;impl_->transport_phase=Impl::TransportPhase::failed;
 }
 
 void GameNativeGuiManagerApplication::prepare_cold_selected_manager_delete() {
@@ -143,6 +224,8 @@ void GameNativeGuiManagerApplication::release_page_lifetime_binding(PageLifetime
 }
 
 bool GameNativeGuiManagerApplication::requires_process_retention() const noexcept {
+    if(impl_->transport_phase==Impl::TransportPhase::active ||
+        impl_->transport_phase==Impl::TransportPhase::failed) return true;
     if (impl_->selected_preparation_failed) return true;
     if (impl_->selected_manager_delete &&
         impl_->selected_manager_delete->requires_source_retention()) return true;

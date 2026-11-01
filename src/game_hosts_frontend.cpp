@@ -4,6 +4,8 @@
 
 #include "bsp/game_native_gui_resource_application.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
+#include "bsp/game_native_gui_page_application.hpp"
+#include "bsp/native_string.hpp"
 
 #include "bsp/blocking_screen.hpp"
 #include "bsp/d3d9_texture.hpp"
@@ -26,6 +28,7 @@
 #include "bsp/vfs_mounts.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <cstring>
 #include <map>
@@ -194,6 +197,43 @@ struct GameFrontendHost::Impl {
     // Sole owner of the two returned native texture references. ManagerState
     // stores raw borrowers; bridge COM textures remain a separate draw path.
     std::unique_ptr<GameNativeGuiResourceApplication> native_gui_resources;
+    struct RawResourceCall {
+        RawResourceCall() {} // Ordinary lookup homes are written only at the call epoch.
+        NativeString name;
+        volatile std::uint32_t lookup_homes[2];
+        void* manager{};void* parent{};void* result{};void* visibility_receiver{};
+        bool name_live{},name_entered{},load_entered{},load_returned{},cleanup_entered{};
+        bool visibility_entered{},visibility_returned{};
+        bool store_entered[2]{};
+        std::size_t stores{};
+    };
+    struct RawPointerCall {
+        enum class Kind { getter, enabled, visible };
+        Kind kind;bool requested{};
+        void* manager{};void* pointer{};
+        bool entered{},getter_returned{},enabled_store_entered{},enabled_stored{},visibility_entered{},normal_returned{};
+        std::uint32_t site{};std::exception_ptr failure;
+        explicit RawPointerCall(Kind k,bool value):kind(k),requested(value) {}
+    };
+    struct RawTransport {
+        enum class Phase { bound, starting, complete, failed };
+        GameNativeGuiPageApplication& pages;
+        GameNativeGuiManagerApplication& manager;
+        GameNativeGuiResourceApplication& textures;
+        NativeStringRawPoolContext& strings;
+        Phase phase{Phase::bound};std::uint32_t site{};std::exception_ptr failure;
+        std::array<RawResourceCall,10> calls;
+        std::vector<std::unique_ptr<RawPointerCall>> pointer_calls;
+        bool pointer_active{};
+        bool finish_entered{},finish_returned{};
+        void* actual_manager{};void* group{};RawResourceCall* deferred{};
+        RawTransport(GameNativeGuiPageApplication& p,GameNativeGuiManagerApplication& m,
+            GameNativeGuiResourceApplication& t,NativeStringRawPoolContext& s)
+            :pages(p),manager(m),textures(t),strings(s) {}
+    };
+    std::unique_ptr<RawTransport> raw_transport;
+    GuiStartupResult run_raw_startup(GameFrontendHost&,const std::string&);
+    void* run_raw_pointer(GameFrontendHost&,RawPointerCall::Kind,bool);
 
     // The sprite bridge.
     D3dxImageImports imports;
@@ -647,6 +687,142 @@ private:
 
 }  // namespace
 
+GuiStartupResult GameFrontendHost::Impl::run_raw_startup(GameFrontendHost& frontend,
+    const std::string& language_path) {
+    auto& raw=*raw_transport;
+    if(raw.phase!=RawTransport::Phase::bound || raw.pointer_active)
+        throw std::logic_error("actual GUI startup is once-only and serialized");
+    GuiStartupResult result;raw.phase=RawTransport::Phase::starting;
+    try {
+        // SAME existing font/preload operations; no semantic page/layout path.
+        raw.site=0x0073bafe;result.language_font_path=language_path;
+        log.implemented("GuiStartupHost::language_font_path","008d4890");
+        raw.site=0x0073bb7e;(void)fonts.registry().registry();
+        log.implemented("GuiStartupHost::font_registry","007371d0");
+        fonts.load_descriptors_00ac3910(std::string(kFontRootPrefix),std::string(kFontDescriptorPath),language_path);
+        result.font_descriptors_loaded=true;
+        log.implemented("GuiStartupHost::load_font_descriptors","00ac3910");
+        raw.site=0x0073bc0d;fonts.preload_fingerprint_payload_00be9760();
+        log.implemented("GuiStartupHost::preload_fallback_glyph_table","0053bc00");
+        raw.site=0x0073bc19;
+        raw.actual_manager=raw.manager.begin_initial_resources(frontend);
+        result.gui_manager=raw.actual_manager;summary.gui_manager_created=true;
+        static constexpr std::uint32_t name_sites[]={0,0,0x00aa5f4a,0x00aa5fc3,0x00aa6033,
+            0x00aa60b6,0x00aa612d,0x00aa61a4,0x00aa621b,0x00aa6292};
+        static constexpr std::uint32_t load_sites[]={0,0,0x00aa5f7c,0x00aa5ff5,0x00aa6065,
+            0x00aa60e8,0x00aa615e,0x00aa61d5,0x00aa624c,0x00aa62c3};
+        static constexpr std::uint32_t visibility_sites[]={0,0,0x00aa5fb1,0x00aa60a4,0x00aa6099,
+            0x00aa611b,0x00aa6192,0x00aa6209,0x00aa6280,0x00aa62fd};
+        static constexpr std::uint32_t store_sites[]={0,0,0x00aa5f87,0x00aa5ffa,0x00aa6070,
+            0,0x00aa6163,0x00aa61da,0x00aa6251,0x00aa62c8};
+        static constexpr std::uint32_t cleanup_sites[]={0,0,0x00aa5f9b,0x00aa6017,0x00aa6084,
+            0x00aa6106,0x00aa617d,0x00aa61f4,0x00aa626b,0x00aa62e5};
+        for(std::size_t i=0;i<kGuiManagerResources.size();++i) {
+            const auto& entry=kGuiManagerResources[i];auto& call=raw.calls[i];
+            call.manager=raw.actual_manager;
+            GameGuiResourceRecord observed;observed.name=std::string(entry.name);observed.offset=entry.offset;
+            if(entry.kind==GuiResourceKind::Texture) {
+                observed.kind="texture";call.load_entered=true;raw.site=i==0?0x00aa5ea2:0x00aa5ef0;
+                call.result=raw.textures.load_initial_texture_into_actual_manager(raw.manager,
+                    raw.actual_manager,entry.offset,entry.name);
+                call.load_returned=true;
+                const auto& texture=raw.textures.operation(raw.textures.operation_count()-1);
+                if(texture.manager_publication_entered) { ++result.stores;++summary.gui_resource_stores; }
+                observed.detail=!texture.resolved?"actual VFS rejected; no +28 store":
+                    texture.result?"returned actual credit transferred to manager":"accepted null published to actual manager";
+            } else {
+                raw.site=name_sites[i];call.name_entered=true;call.name_live=true;
+                call.name.assign_0041e870(raw.strings,entry.name.data());
+                raw.site=load_sites[i];call.load_entered=true;
+                if(entry.kind==GuiResourceKind::Group) {
+                    observed.kind="group";
+                    call.result=raw.pages.load_page_00aa5840(raw.actual_manager,&call.name,1,0);
+                    raw.group=call.result; // Actual returned Widget; Highlight is held only here.
+                } else {
+                    observed.kind="child";
+                    // Original Mouse children reload manager+4C AFTER name
+                    // construction. Highlight children use captured returned EDI.
+                    call.parent=i==3 || i==4?
+                        GameNativeGuiManagerApplication::current_resource_slot(raw.actual_manager,0x4c):raw.group;
+                    call.lookup_homes[1]=1; // Genuine ordinary HOME; callee never reads it.
+                    call.lookup_homes[0]=reinterpret_cast<std::uint32_t>(&call.name);
+                    call.result=raw.pages.find_child_00aa7e00(call.parent,call.lookup_homes);
+                }
+                call.load_returned=true;
+                if(entry.offset!=kGuiResourceNotStored) {
+                    raw.site=store_sites[i];call.store_entered[0]=true;
+                    raw.manager.store_initial_widget(frontend,raw.actual_manager,entry.offset,call.result);
+                    ++call.stores;++result.stores;++summary.gui_resource_stores;
+                }
+                if(entry.second_offset!=kGuiResourceNotStored) {
+                    raw.site=0x00aa5ffd;call.store_entered[1]=true;
+                    raw.manager.store_initial_widget(frontend,raw.actual_manager,entry.second_offset,call.result);
+                    ++call.stores;++result.stores;++summary.gui_resource_stores;
+                }
+                // Normal cleanup follows actual stores and precedes visibility.
+                raw.site=cleanup_sites[i];call.cleanup_entered=true;
+                destroy_native_string_header_0041dd20(&call.name,raw.strings);call.name_live=false;
+                if(entry.sets_visibility && !entry.visibility_deferred) {
+                    call.visibility_receiver=entry.offset==kGuiResourceNotStored?call.result:
+                        GameNativeGuiManagerApplication::current_resource_slot(raw.actual_manager,entry.offset);
+                    raw.site=visibility_sites[i];call.visibility_entered=true;
+                    raw.pages.set_widget_visibility_00aa8530(call.visibility_receiver,entry.visibility?1:0);
+                    call.visibility_returned=true;
+                }
+                if(raw.deferred) {
+                    auto& deferred=*raw.deferred;
+                    deferred.visibility_receiver=GameNativeGuiManagerApplication::current_resource_slot(raw.actual_manager,0x50);
+                    raw.site=0x00aa60a4;deferred.visibility_entered=true;
+                    raw.pages.set_widget_visibility_00aa8530(deferred.visibility_receiver,0);
+                    deferred.visibility_returned=true;raw.deferred=nullptr;
+                }
+                if(entry.visibility_deferred) raw.deferred=&call;
+                observed.detail="actual Page-owned load/lookup/current34; raw graph borrow";
+            }
+            observed.acquired=call.result!=nullptr;
+            if(observed.acquired) { ++result.resources_created;++summary.gui_resources_acquired; }
+            resources.push_back(std::move(observed)); // Observations confer no birth/retain authority.
+        }
+        raw.site=0x00aa6305;raw.finish_entered=true;
+        raw.manager.finish_initial_resources(frontend,raw.actual_manager);raw.finish_returned=true;
+        raw.phase=RawTransport::Phase::complete;return result;
+    } catch(...) {
+        raw.failure=std::current_exception();raw.phase=RawTransport::Phase::failed;
+        raw.manager.fail_frontend_transport(raw.failure);
+        throw; // Retain partial slots/credits/names/frames; never load_page.error.what/continue.
+    }
+}
+
+void* GameFrontendHost::Impl::run_raw_pointer(GameFrontendHost& frontend,RawPointerCall::Kind kind,bool value) {
+    auto& raw=*raw_transport;
+    if(raw.pointer_active || raw.phase==RawTransport::Phase::starting || raw.phase==RawTransport::Phase::failed ||
+        (kind!=RawPointerCall::Kind::getter && raw.phase!=RawTransport::Phase::complete))
+        throw std::logic_error("actual GUI pointer operation is serialized against retained transport history");
+    auto record=std::make_unique<RawPointerCall>(kind,value);auto& call=*record;
+    raw.pointer_calls.push_back(std::move(record));raw.pointer_active=true;
+    try {
+        call.entered=true;call.site=0x004c12b0;call.manager=raw.manager.get_004c12b0();call.getter_returned=true;
+        if(kind!=RawPointerCall::Kind::getter) {
+            raw.manager.admit_pointer_operation(frontend,call.manager); // BEFORE any pointer Native effect.
+            if(kind==RawPointerCall::Kind::enabled) {
+                call.enabled_store_entered=true;
+                call.site=0x00aa0e06;GameNativeGuiManagerApplication::store_enabled_48(call.manager,value?1:0);
+                call.enabled_stored=true;
+            }
+            if(kind==RawPointerCall::Kind::visible || !value) {
+                call.site=kind==RawPointerCall::Kind::visible?0x00aa0e50:0x00aa0e0b;
+                call.pointer=GameNativeGuiManagerApplication::current_resource_slot(call.manager,0x50);
+                call.visibility_entered=true;
+                raw.pages.set_widget_visibility_00aa8530(call.pointer,kind==RawPointerCall::Kind::visible && value?1:0);
+            }
+        }
+        call.normal_returned=true;raw.pointer_active=false;return call.manager;
+    } catch(...) {
+        call.failure=raw.failure=std::current_exception();raw.phase=RawTransport::Phase::failed;
+        raw.manager.fail_frontend_transport(raw.failure);throw;
+    }
+}
+
 GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std::string& name,
     bool log_tree) {
     GamePageRecord record;
@@ -702,28 +878,60 @@ void GameFrontendHost::bind_native_gui_manager(GameNativeGuiManagerApplication& 
         throw std::logic_error("Native GUI manager binding requires the empty initial frontend manager");
     host.native_manager = &manager;
 }
+void GameFrontendHost::bind_native_gui_pages(GameNativeGuiPageApplication& pages,
+    GameNativeGuiManagerApplication& manager) {
+    auto& host=*impl_;
+    if(host.raw_transport || host.summary.gui_startup_ran || host.manager.constructed ||
+        host.native_manager!=&manager || !host.native_gui_resources ||
+        host.native_gui_resources->operation_count()!=0)
+        throw std::logic_error("actual Page transport binds once before frontend startup with the same actual manager/resources");
+    // Nonmoving metadata is owned BEFORE cross-binding. Even a failed bind
+    // leaves the entered tuple retained and cannot silently select legacy.
+    host.raw_transport=std::make_unique<Impl::RawTransport>(pages,manager,*host.native_gui_resources,
+        host.vfs.raw_strings());
+    try {
+        host.native_gui_resources->require_actual_manager_domain(manager);
+        manager.bind_frontend_transport(*this,pages,*host.native_gui_resources,host.vfs.raw_strings());
+    }
+    catch(...) {
+        host.raw_transport->failure=std::current_exception();
+        host.raw_transport->phase=Impl::RawTransport::Phase::failed;throw;
+    }
+}
 void GameFrontendHost::retire_native_gui_resources() {
     auto& host = *impl_;
     if (!host.native_gui_resources) return;
-    if (host.native_gui_resources->failure()) {
+    if (host.native_gui_resources->failure() || (host.raw_transport &&
+        (host.raw_transport->phase==Impl::RawTransport::Phase::starting ||
+         host.raw_transport->phase==Impl::RawTransport::Phase::failed || host.raw_transport->pointer_active))) {
         throw std::logic_error("Failed native GUI resources require process retention without manager mutation");
     }
     // End both projected manager borrowers before any terminal can reenter.
-    host.manager.fields[0x28 / 4] = nullptr;
-    host.manager.fields[0x2c / 4] = nullptr;
+    if(!host.raw_transport) {
+        host.manager.fields[0x28 / 4] = nullptr;
+        host.manager.fields[0x2c / 4] = nullptr;
+    }
     host.native_gui_resources->retire_textures();
 }
 bool GameFrontendHost::native_gui_resources_require_process_retention() const noexcept {
+    if(impl_->raw_transport && (impl_->raw_transport->phase==Impl::RawTransport::Phase::starting ||
+        impl_->raw_transport->phase==Impl::RawTransport::Phase::failed || impl_->raw_transport->pointer_active)) return true;
     return impl_->native_gui_resources && impl_->native_gui_resources->requires_process_retention();
 }
 
 void GameFrontendHost::run_font_and_gui_startup_0073bae0(const std::string& language_font_path) {
     Impl& host = *impl_;
-    host.page_scripts = std::make_unique<VfsGuiPageScripts>(host.scripts.files(),
-        host.scripts.runtime(), host.scripts.globals());
-    GameGuiLayoutHost layout(host, *host.page_scripts);
-    GameGuiStartupHost startup(host, layout, language_font_path);
-    const GuiStartupResult result = run_gui_startup(startup);
+    try {
+    GuiStartupResult result;
+    if(host.raw_transport) {
+        result=host.run_raw_startup(*this,language_font_path);
+    } else {
+        host.page_scripts = std::make_unique<VfsGuiPageScripts>(host.scripts.files(),
+            host.scripts.runtime(), host.scripts.globals());
+        GameGuiLayoutHost layout(host, *host.page_scripts);
+        GameGuiStartupHost startup(host, layout, language_font_path);
+        result=run_gui_startup(startup);
+    }
     host.summary.gui_startup_ran = true;
     host.summary.font_descriptors_loaded = result.font_descriptors_loaded;
     for (const auto& font : host.fonts.registry().fonts()) {
@@ -740,6 +948,14 @@ void GameFrontendHost::run_font_and_gui_startup_0073bae0(const std::string& lang
             : result.language_font_path.c_str(), host.fonts.registry().fonts().size(),
         result.resources_created, result.stores, result.gui_manager);
     host.log.implemented("Phase 7 fonts_and_gui_startup", "0073bae0");
+    } catch(...) {
+        if(host.raw_transport) {
+            host.raw_transport->failure=std::current_exception();
+            host.raw_transport->phase=Impl::RawTransport::Phase::failed;
+            host.raw_transport->manager.fail_frontend_transport(host.raw_transport->failure);
+        }
+        throw;
+    }
 }
 
 void GameFrontendHost::load_title_pages(const std::vector<std::string>& names) {
@@ -1165,17 +1381,24 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
 
 void* GameFrontendHost::gui_manager_004c12b0() {
+    if(impl_->raw_transport) return impl_->run_raw_pointer(*this,Impl::RawPointerCall::Kind::getter,false);
     return gui_manager_get_or_create_004c12b0(*impl_);
 }
 
 // Callers reach both through 004c12b0, so the manager is constructed first.
 void GameFrontendHost::gui_manager_set_enabled_00aa0e00(bool enabled) {
+    if(impl_->raw_transport) {
+        impl_->run_raw_pointer(*this,Impl::RawPointerCall::Kind::enabled,enabled);return;
+    }
     gui_manager_get_or_create_004c12b0(*impl_);
     GuiManagerPointerSlot slot(*impl_);
     bsp::gui_manager_set_enabled_00aa0e00(impl_->manager.pointer, slot, enabled);
 }
 
 void GameFrontendHost::gui_manager_set_pointer_visible_00aa0e50(bool visible) {
+    if(impl_->raw_transport) {
+        impl_->run_raw_pointer(*this,Impl::RawPointerCall::Kind::visible,visible);return;
+    }
     gui_manager_get_or_create_004c12b0(*impl_);
     GuiManagerPointerSlot slot(*impl_);
     bsp::gui_manager_set_pointer_visible_00aa0e50(slot, visible);
