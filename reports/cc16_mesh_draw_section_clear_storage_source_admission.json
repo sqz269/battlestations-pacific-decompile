@@ -1,0 +1,190 @@
+{
+  "status": "ACCEPT_QUALIFIED_CLEAR_RESIZE_SOURCE_REGISTRATION_OFFICIAL_BUILD_AND_ACTUAL_CODE",
+  "Source_base": "cda8c653d1c894486437a6b8aa02c86270d13721",
+  "Root_current_base": "8cc923dda2fc4f62cdee74e9308ce61e6c16cb93",
+  "Source_files": [
+    {
+      "path": "include/bsp/native_mesh_draw_section_clear_storage.hpp",
+      "bytes": 3076,
+      "sha256": "4daa037dfe5551fdeea47df1a1fddb0fb9e08ab6907ab7f45f62fa6bb1e35c59"
+    },
+    {
+      "path": "src/native_mesh_draw_section_clear_storage.cpp",
+      "bytes": 4208,
+      "sha256": "df9aba8429a116f5296a68913e58166e21c831a3cacfefbf6795f12f10225ede"
+    }
+  ],
+  "Native_precheck": {
+    "Root_copy": "Mesh_clear_resize_native_peer",
+    "seal_sha256": "404ab4d7c5597358b219362eb8011eb7b2e5a6a720cf0129d694b06d335beae9",
+    "sealed_files_verified": 13,
+    "complete_contract_read": true,
+    "live_disk_export_equal": [
+      "00b73c10",
+      "00b73840",
+      "00b72e10"
+    ],
+    "program": "/battlestationspacific.exe",
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "modification": 33310
+  },
+  "independent_Source": {
+    "decision": "QUALIFIED_SOURCE_PASS",
+    "review_sha256": "f9f9b8733c66c746a4be763eca6e94427c0b4334e8c2e7850ea84d067bb09492",
+    "seal_sha256": "36c30a6e45919f82aa85bf1ae3db41f67d6586e712260ee3331e5801c1d9853c",
+    "author31_and_peer15_sealed_files_verified": true,
+    "complete_new2_forward_inverse_tree_absence": "VERIFIED",
+    "path": "local/mesh_generation_primary_cc16_20261031/Mesh_clear_resize_Source_peer/REVIEW.md"
+  },
+  "actual_Root_registration": {
+    "status": "QUALIFIED_SOURCE_ACCEPTED_CANONICAL_SOURCE_AND_ONE_ROW_APPLIED_BUILD_CODE_PENDING",
+    "base": "8cc923dda2fc4f62cdee74e9308ce61e6c16cb93",
+    "candidate_tree": "e797b56c72991b471d382099f7e2a1ba8c0d5080",
+    "source_paths": [
+      "cmake/startup.cmake",
+      "include/bsp/native_mesh_draw_section_clear_storage.hpp",
+      "src/native_mesh_draw_section_clear_storage.cpp"
+    ],
+    "CMake_before_sha256": "411b49658f75dbb6b276b18bd3d22212dd31b25b2f81c533159b34c82da62243",
+    "CMake_after_sha256": "c9459213c8f02e19c5153232c839e066993926ef1439cdf66828611aa36821f9",
+    "registered_rows": 1,
+    "patch_sha256": "9867098c14079b9b4afe123b3f65049a81662332195a06c55decbf70f73952df",
+    "Root_real_index_modified": false,
+    "Source_peer_review_sha256": "f9f9b8733c66c746a4be763eca6e94427c0b4334e8c2e7850ea84d067bb09492",
+    "all9_false": true,
+    "Game_launched": false
+  },
+  "official_Root_build": {
+    "receipt_path": "local/mesh_generation_primary_cc16_20261031/Mesh_clear_resize_Core_Root/BUILD_RECEIPT.json",
+    "receipt_sha256": "abb26f30ad9b093e86b82530beecc1f2e7f69fbe08cc44f25b99bd1fa472e654",
+    "base": "8cc923dda2fc4f62cdee74e9308ce61e6c16cb93",
+    "command": "./scripts/build.ps1 -Configuration Release -Diagnostic",
+    "configuration": "MSVC Win32 Release MP2 PCHON coveragePDBOFF",
+    "exit": 0,
+    "seconds": 79.9,
+    "existing_suites": 2,
+    "test_seconds": 13.56,
+    "CL_inputs": 6634,
+    "tools": 6,
+    "Core_bytes": 108076200,
+    "Core_sha256": "439b1eec67192b9b3c38a3dad7d59948fa3560ef3c911ec5cc199c9f71002163",
+    "focal_archive_members": [
+      {
+        "object": "native_mesh_owner.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_owner.obj",
+        "offset": 49570844,
+        "bytes": 63066,
+        "sha256": "7ac7cc75311f57cf2f5f79a96b45f00d35d1b93b09f8284f8de37173ed6048f2",
+        "sections": 246,
+        "symbols": 763,
+        "whole_exact": true
+      },
+      {
+        "object": "native_mesh_draw_section_clear_storage.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_draw_section_clear_storage.obj",
+        "offset": 49633970,
+        "bytes": 3185,
+        "sha256": "6350220a5b47fcec76a72933ae5a1d638105918f1b169ee2b710a1efc6403663",
+        "sections": 11,
+        "symbols": 33,
+        "whole_exact": true
+      },
+      {
+        "object": "native_mesh_draw_section_append_storage.obj",
+        "member": "bsp_core.dir\\Release\\native_mesh_draw_section_append_storage.obj",
+        "offset": 49637216,
+        "bytes": 3228,
+        "sha256": "91cd5b68f04d4875e872029b9a9f876889869b684fcf4b2fbaad9e7f48369795",
+        "sections": 11,
+        "symbols": 32,
+        "whole_exact": true
+      }
+    ]
+  },
+  "actual_Code": {
+    "decision": "QUALIFIED_CODE_PASS",
+    "path": "local/mesh_generation_primary_cc16_20261031/Mesh_clear_resize_Code_peer/REVIEW.md",
+    "review_sha256": "5eb1adb004649be335310ce64734ce1cd99a35da1adde2cc1663c88e9e09c77d",
+    "seal_sha256": "03432349186cfe828fb1d6506a107f416af991abf2327d81eaa8d46c229e165d",
+    "sealed_files_verified": 25,
+    "counts": {
+      "tuple_artifacts": 16,
+      "CL_read_source_pins": 6634,
+      "tools": 6,
+      "code_bodies": 8,
+      "code_bytes": 418,
+      "REL32": 24,
+      "private_helper_REL32": 22,
+      "real_reserve_REL32": 2,
+      "undefined_real_reserve": 1,
+      "EH_unwind_sections": 0
+    },
+    "library_resolution": "3 public symbols uniquely mapped to exact current archive members",
+    "published_Raw2_and_semantic_before_members": "WHOLE_EXACT:direct genuine prior archive-member comparison",
+    "clear_body_bytes": 229,
+    "standalone_resize_body_bytes": 125,
+    "final_desired_store": "verified fastcall store_word tail JMP after cdecl frame restoration",
+    "MP2_diagnostic_lines": [
+      898015,
+      898017
+    ],
+    "Original_ABI_runtime_activation": false
+  },
+  "held": [
+    "actual provider/caller/current-B incarnation/custody/credit and terminal ownership",
+    "Original ABI/HOME/private stack/fault/concurrency/FH3/SEH",
+    "Origin/all8/lower/strict OFFON/runtime/activation"
+  ],
+  "all9_raw_GUI_flags": false,
+  "Native_vendor_credit": 0,
+  "new_tests": 0,
+  "Game_executed": false,
+  "Source_tree": "a0fc7f4c7cd3adc752eab3410e8e7cb317532b0b",
+  "Root_candidate_tree": "e797b56c72991b471d382099f7e2a1ba8c0d5080",
+  "extra_Parent_before_capture": {
+    "purpose": "Genuine unchanged baseline for separate future Parent8 Code review; not Parent Code acceptance",
+    "source_paths_pinned_unchanged": 8,
+    "whole_archive_members": [
+      {
+        "object": "native_post_effect_parent_lifetime.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect_parent_lifetime.obj",
+        "offset": 24612668,
+        "bytes": 151174,
+        "sha256": "d9d2daf63c75d0fc981c59ce30427c155a64bd0269233336303d9eaf215e556e",
+        "sections": 488,
+        "symbols": 1598,
+        "whole_exact": true
+      },
+      {
+        "object": "native_post_effect_dust_initializer.obj",
+        "member": "bsp_core.dir\\Release\\native_post_effect_dust_initializer.obj",
+        "offset": 46009220,
+        "bytes": 18174,
+        "sha256": "22cf6ba5037f8e3df6175830d9cac6e6245bba8bb9c891d6c401f319d363dd24",
+        "sections": 71,
+        "symbols": 244,
+        "whole_exact": true
+      },
+      {
+        "object": "native_bright_pass_initializer.obj",
+        "member": "bsp_core.dir\\Release\\native_bright_pass_initializer.obj",
+        "offset": 56281806,
+        "bytes": 23245,
+        "sha256": "5272ee8b8cd6a3b5aab49811fe57fbb433e4ed3f1e4f16716cbc2c65d961cb69",
+        "sections": 78,
+        "symbols": 273,
+        "whole_exact": true
+      },
+      {
+        "object": "native_render_context.obj",
+        "member": "bsp_core.dir\\Release\\native_render_context.obj",
+        "offset": 101094856,
+        "bytes": 76648,
+        "sha256": "98b4b313f8b25d46d219d2cd23d4f1efe54850c4c0818ae465fbd9270de9b0c0",
+        "sections": 316,
+        "symbols": 984,
+        "whole_exact": true
+      }
+    ]
+  }
+}
