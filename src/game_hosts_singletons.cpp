@@ -13,6 +13,8 @@
 #include "bsp/native_gameplay_effect_construction.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_gui_media_focus_lifetime.hpp"
+#include "bsp/native_texture_atlas_manager_delete_attempt.hpp"
+#include "bsp/native_texture_atlas_deletion_lifetime.hpp"
 #include "bsp/singleton_lifetime.hpp"
 
 namespace bsp::game {
@@ -174,21 +176,41 @@ GameNativeLocaleManagerProcess& GameSingletonHost::prepare_locale_manager() {
 }
 
 void GameSingletonHost::shutdown() {
+    auto* const atlas = pending_texture_atlas_attempt_; // capture before callbacks
+    const bool atlas_fresh = !atlas || !atlas->host_entered_;
+    if (atlas) atlas->host_entered_ = true; // BEFORE all admission, callbacks and Native effects
+    try {
+    if (atlas && (!atlas_fresh || atlas->unknown_ || !atlas->cold_bound_ || atlas->host_ != this ||
+        atlas->bindings_ != &deletion_bindings_ ||
+        deletion_bindings_.texture_atlas != atlas->atlas_))
+        throw std::logic_error("atlas shutdown requires the SAME retained actual Host attempt");
     auto* const selected = pending_selected_gui_attempt_; // capture before callbacks
-    if (selected) { shutdown_selected(*selected); return; }
+    if (selected) {
+        shutdown_selected(*selected, atlas); // separate attempts, SAME immutable Host capture
+        if (atlas) atlas->host_returned_ = true;
+        return;
+    }
     auto* const locale = locale_manager_process_;
     if (locale != nullptr) locale->before_shared_drain(*this);
     void* const manager = manager_publication_01090aa0_;
+    if (atlas && manager == nullptr && atlas->registered_receiver_bound_ && !atlas->scalar_returned_)
+        throw std::logic_error("atlas Host cannot retire providers without its real registered scalar return");
     if (manager == nullptr) {
         retire_vfs_after_drain();
         if (locale != nullptr) {
             locale->after_shared_drain(*this);
             locale_manager_process_ = nullptr;
         }
+        if (atlas) atlas->host_returned_ = true;
         return;
     }
+    if (atlas) {
+        atlas->outer_receiver_ = manager;
+        atlas->receiver_bound_ = true; // actual reached manager, BEFORE count/core effects
+    }
     const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
-    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);
+    if (atlas) destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, *atlas);
+    else destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_);
     retire_vfs_after_drain();
     observers_->record_after_singleton_drain();
     singleton_lifetime_free(manager);
@@ -204,6 +226,48 @@ void GameSingletonHost::shutdown() {
         manager_publication_01090aa0_ == nullptr ? "null" : "non-null",
         game_resource_factory_publication_00e19b90_ == nullptr ? "null" : "non-null",
         game_resource_factory_alias_00f8d31c_);
+    if (atlas) atlas->host_returned_ = true; // ALL actual shutdown work/logging returned
+    } catch (...) {
+        if (atlas) atlas->unknown_ = true;
+        throw; // real StartupHost/WinMain catch retains heap graph; no cleanup authority
+    }
+}
+
+NativeTextureAtlasManagerDeleteAttempt& GameSingletonHost::prepare_texture_atlas_delete_attempt(
+    NativeTextureAtlasDeletionLifetime& application) {
+    if (texture_atlas_attempt_) {
+        texture_atlas_attempt_->unknown_ = true;
+        throw std::logic_error("atlas manager attempt cannot be replaced or replayed");
+    }
+    texture_atlas_attempt_.reset(new NativeTextureAtlasManagerDeleteAttempt(
+        *this, application, deletion_bindings_)); // adopt BEFORE throwing binding admission
+    auto& atlas = *texture_atlas_attempt_;
+    try {
+        if (pending_texture_atlas_attempt_ ||
+            deletion_bindings_.texture_atlas != &application)
+            throw std::logic_error("atlas manager attempt requires its actual cold application binding");
+        atlas.cold_bound_ = true;
+        pending_texture_atlas_attempt_ = &atlas;
+        return atlas;
+    } catch (...) {
+        atlas.unknown_ = true;
+        throw;
+    }
+}
+
+void GameSingletonHost::finish_texture_atlas_delete_attempt(NativeTextureAtlasManagerDeleteAttempt& atlas) {
+    try {
+        if (pending_texture_atlas_attempt_ != &atlas || atlas.host_ != this ||
+            atlas.bindings_ != &deletion_bindings_ || atlas.unknown_ || !atlas.host_returned_ ||
+            (atlas.receiver_bound_ && !atlas.core_returned_) ||
+            (atlas.registered_receiver_bound_ && (!atlas.scalar_entered_ || !atlas.scalar_returned_)))
+            throw std::logic_error("atlas source fence requires complete actual shutdown and registered scalar return");
+        atlas.source_fence_returned_ = true; // Source observation only, no Native origin credit
+        pending_texture_atlas_attempt_ = nullptr;
+    } catch (...) {
+        atlas.unknown_ = true;
+        throw;
+    }
 }
 NativeGuiSelectedManagerDeleteAttempt& GameSingletonHost::prepare_gui_manager_delete_attempt(
     NativeGuiMediaFocusLifetimeContext& context) {
@@ -218,7 +282,8 @@ NativeGuiSelectedManagerDeleteAttempt& GameSingletonHost::prepare_gui_manager_de
     return *selected;
 }
 
-void GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt& selected) {
+void GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt& selected,
+    NativeTextureAtlasManagerDeleteAttempt* const atlas) {
     const bool fresh = !selected.host_entered_;
     selected.host_entered_ = true; // before admission, callbacks and Native effects
     try {
@@ -229,6 +294,8 @@ void GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&
     auto* const locale = locale_manager_process_;
     if (locale != nullptr) locale->before_shared_drain(*this);
     void* const manager = manager_publication_01090aa0_;
+    if (atlas && manager == nullptr && atlas->registered_receiver_bound_ && !atlas->scalar_returned_)
+        throw std::logic_error("atlas Host cannot retire providers without its real registered scalar return");
     if (manager == nullptr) {
         retire_vfs_after_drain();
         if (locale != nullptr) {
@@ -240,8 +307,13 @@ void GameSingletonHost::shutdown_selected(NativeGuiSelectedManagerDeleteAttempt&
     }
     selected.outer_receiver_ = manager;
     selected.receiver_bound_ = true;
+    if (atlas) {
+        atlas->outer_receiver_ = manager;
+        atlas->receiver_bound_ = true; // same actual capture; no GUI attempt repurposing
+    }
     const std::uint32_t registered = count_native_singleton_slots_00bcf910(manager, nullptr);
-    destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected);
+    if (atlas) destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected, *atlas);
+    else destroy_native_singleton_manager_00bd0400(manager, deletion_bindings_, selected);
     retire_vfs_after_drain();
     observers_->record_after_singleton_drain();
     singleton_lifetime_free(manager);

@@ -13,6 +13,7 @@ struct NativeStringRawPoolContext;
 namespace game {
 class GameNativeReadOnlyData;
 class GameSingletonHost;
+class GameStartupHost;
 class GameNativeVfsApplication;
 class GameNativeRendererApplication;
 
@@ -82,7 +83,9 @@ public:
     // borrow actual typed callable IAT cells; the caller retains these exact
     // references, all code/providers and this whole graph through shared drain.
     // No graph constructor, cache acquisition or publication occurs here.
-    void bind_graph_once(GameSingletonHost&, GameNativeReadOnlyData&,
+    // The actual heap Root must prove it owns THIS host/data/VFS/renderer.
+    // Its negative marker is installed before throwing binding admission.
+    void bind_graph_once(GameStartupHost&, GameSingletonHost&, GameNativeReadOnlyData&,
         GameNativeVfsApplication&, GameNativeRendererApplication&,
         const volatile std::uint32_t& actual_feature_0109eea4,
         NativePathCanonicalizerRawContext&,
@@ -112,10 +115,10 @@ public:
     // uses the captured popped owner, independent of CURRENT F8C26C identity.
     // retire_normal() instead executes this same real scalar flags1 explicitly;
     // the full normal body unregisters/clears/releases/frees in native order.
-    // The default shared-manager catch still performs legacy BD0220 cleanup on
-    // an atlas escape. Activating that drain REQUIRES a separately reviewed
-    // Host/manager retention route before legacy cleanup; this class supplies
-    // no selected-catch authority. Explicit retire_normal() runs outside it.
+    // Binding also installs the distinct actual Host-owned atlas manager
+    // attempt. The real core arms it before every throwing admission/effect;
+    // unknown Source escape skips BD0220 and reaches the real Root _Exit guard.
+    // Explicit retire_normal() remains outside the shared-manager wrapper.
     void prepare_normal_retirement();
     void retire_normal();
     void* delete_registered_00737f10(void*, std::uint32_t full_flags) override;
@@ -123,6 +126,10 @@ public:
     const GameNativeTextureAtlasDeleteCall* deletion_record() const noexcept;
 
 private:
+    friend class GameStartupHost;
+    bool requires_host_retention() const noexcept;
+    void note_host_exception() noexcept;
+    void after_host_shared_drain(GameSingletonHost&);
     explicit GameNativeTextureAtlasApplication(std::size_t);
     ~GameNativeTextureAtlasApplication() = default; // never invoked by process owner
     struct Impl;

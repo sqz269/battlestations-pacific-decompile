@@ -95,6 +95,8 @@ class GameFontHost;
 // Milestone 2b, defined in bsp/game_hosts_frontend.hpp.
 class GameFrontendHost;
 class GameSingletonHost;
+class GameNativeTextureAtlasApplication;
+class GameNativeVfsApplication;
 class GameNativeGuiIconProcess;
 // Milestone 2c, defined in bsp/game_hosts_menu.hpp and
 // bsp/game_hosts_init_tail.hpp.
@@ -720,6 +722,9 @@ public:
     // First metadata-only denial before old handlers/provider/log/teardown.
     void exit_if_native_mesh_interrupted() noexcept;
     void retain_native_mesh_on_exception() noexcept;
+    // Same existing whole-graph _Exit policy, before old handlers or teardown.
+    void exit_if_native_texture_atlas_interrupted() noexcept;
+    void retain_native_texture_atlas_on_exception() noexcept;
 
     const GameRunSummary& summary() const noexcept { return summary_; }
     // Milestone 2a: the phase-2 provider manager, alive for the whole run, and the settings
@@ -752,6 +757,11 @@ public:
     void* volatile& input_backend_publication() noexcept { return input_backend_00f8bbf4_; }
 
 private:
+    friend class GameNativeTextureAtlasApplication;
+    void bind_native_texture_atlas_retention(GameNativeTextureAtlasApplication&,
+        GameSingletonHost&, GameNativeReadOnlyData&, GameNativeVfsApplication&,
+        GameNativeRendererApplication&);
+    void acknowledge_native_texture_atlas_after_drain();
     using CanonicalDataBorrow = std::reference_wrapper<const GameNativeCanonicalDataOwner>;
     GameStartupHost(GameHostLog&, HINSTANCE, const GameExecutableOptions&,
         GameNativeReadOnlyData*, std::optional<CanonicalDataBorrow>);
@@ -898,6 +908,12 @@ private:
     // bytes are not the frame loop's: frame_state_ stays the host projection.
     std::uint32_t native_application_[7]{}; // 1Ch, DWORD aligned
     bool native_application_live_{};
+    // Retention selection is set BEFORE any throwing identity admission. It is
+    // not ownership: WinMain's outside-try unique_ptr owns this whole Root;
+    // Root owns singletons_, native_renderer_ and VFS facade/native application.
+    GameNativeTextureAtlasApplication* native_texture_atlas_{};
+    bool native_texture_atlas_binding_entered_{}, native_texture_atlas_binding_failed_{};
+    bool native_texture_atlas_source_fence_returned_{};
     // Source caller ownership state; this is not the native FH3 state number.
     enum class AllocationStatsPhase : std::uint8_t {
         unattempted, allocating, allocation_failed, skipped,

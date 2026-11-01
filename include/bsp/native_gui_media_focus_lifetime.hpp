@@ -6,6 +6,7 @@ namespace bsp {
 struct NativePlatformFocusOwnersContext;
 struct NativeStringRawPoolContext;
 struct NativeSingletonDeletionBindings;
+class NativeTextureAtlasManagerDeleteAttempt;
 namespace game { class GameSingletonHost; class GameNativeGuiManagerApplication; }
 
 // One operation for each native page virtual call. The provider must dispatch
@@ -43,6 +44,9 @@ private:
     friend class game::GameNativeGuiManagerApplication;
     friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,
         const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&);
+    friend void __fastcall destroy_native_singleton_manager_00bd0400(void*,
+        const NativeSingletonDeletionBindings&, NativeGuiSelectedManagerDeleteAttempt&,
+        NativeTextureAtlasManagerDeleteAttempt&);
     friend void* scalar_delete_native_gui_manager_00aa6540_fragment(void*,
         std::uint32_t, NativeGuiMediaFocusLifetimeContext&, NativeGuiSelectedManagerDeleteAttempt&);
     NativeGuiSelectedManagerDeleteAttempt(game::GameSingletonHost& host,
