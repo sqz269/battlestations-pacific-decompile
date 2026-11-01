@@ -142,7 +142,18 @@
     ],
     "symbol_selector_correction": "Actual insert_00ab59e0 public validated exactlyonce, both historical Source90 and current Source91 frozenmaps checked after correcting stale selector; noCodechange"
   },
-  "supplementary_independent_Core": "manual qualified0 reported; packaging pending, not required for completed Root Core admission",
+  "supplementary_independent_Core": {
+    "sealed": true,
+    "findings": 0,
+    "critical_checks": 48,
+    "artifacts": 46,
+    "mechanical_sections": 12,
+    "mechanical_bytes": 1797,
+    "mechanical_ops": 633,
+    "manual_selected_bytes": 1751,
+    "manual_selected_ops": 608,
+    "qualification": "two compiler helpers excluded semantic credit; private SHL/EH bookkeeping hoists qualified; Source only"
+  },
   "build": {
     "exit": 0,
     "seconds": 251.8223687,
@@ -241,6 +252,21 @@
       "path": "local/function_source_batch92/default_host/manifest.json",
       "bytes": 979,
       "sha256": "d7e7c3b8abe92448f39d252e3d179fa5b99d095b988e49bed365a9a3e650e18b"
+    },
+    {
+      "path": "local/function_source_batch91/Core_peer/compiled_peer_receipt.json",
+      "bytes": 8180,
+      "sha256": "6ccb21621d3e97575389d6b33467bb8308f62c1fb2af4c9699900baca715e7b6"
+    },
+    {
+      "path": "local/function_source_batch91/Core_peer/manifest.json",
+      "bytes": 7101,
+      "sha256": "9c810067dc1d815b9c6f42529877283a4c0d7df20c6f74c3aa530bf70836fa65"
+    },
+    {
+      "path": "local/function_source_batch91/Core_peer/sealed_receipt.json",
+      "bytes": 631,
+      "sha256": "c12952afb58cd46ae80c7bde7da68cb6465b44e125b5b33ebd0d37aa6461851c"
     }
   ]
 }
