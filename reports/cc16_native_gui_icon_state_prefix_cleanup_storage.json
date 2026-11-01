@@ -1,0 +1,270 @@
+{
+  "kind": "ignored ordinary Source prefix-cleanup amendment; not tracked admission",
+  "base": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+    "src/native_gui_icon_state_repeat_storage.cpp",
+    "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+    "src/native_gui_icon_state_range_construction_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_PREFIX_CLEANUP_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_prefix_cleanup_storage.json"
+  ],
+  "source_pairs": [
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "before_bytes": 3015,
+      "before_sha256": "170acd7b0840322fa3a6c19714060a83089824e7b990031016930c3e1c494bff",
+      "before_blob": "58c97eae412ab41711b6b2c2d1d2a1460b180e3e",
+      "after_bytes": 4127,
+      "after_sha256": "d44eb49ce2ad7bbbff7139bbc8ba2f074c0a18dc27647d3141d626d5097bb675",
+      "seams": [
+        {
+          "before_utf8": "// NORMAL counted-fill support for AB5400.",
+          "after_utf8": "// Source counted-fill and completed-prefix cleanup for AB5400."
+        },
+        {
+          "before_utf8": "// Retain the actual frame, four-home array, context, current/partial/completed\n// states, all payload/storage/custody and their genuine subobjects across every\n// entered escape. Frame/Source parameter/control/spill backing is disjoint from\n// borrowed records and all reached provider-write extents; the live source home\n// may be changed by genuine callbacks and is reread on the next copy. Distinct\n// reentrant invocations require distinct retained frame/home backing. No count\n// limit, progress-based birth/ownership receipt or automatic disposition exists.\n//\n",
+          "after_utf8": "// Keep actual frame/home/context and containing record backing retained.\n// On escape retain partial/current and remaining outstanding obligations\n// and providers. Already-returned destructor calls are history, not\n// disposition proof; never rescan their pointees or replay those calls.\n// Private Source controls/spills are disjoint from operand/record and\n// provider-write extents. Declared frame/incoming operand homes remain\n// live: genuine callback writes are observed at reached epochs; source\n// home0 is reloaded for each copy. Distinct active invocations require\n// distinct retained frame/home backing. No count/progress grants custody.\n//\n"
+        },
+        {
+          "before_utf8": "// The 13 Native catch-landing rows AB545B..AB5477 are HELD, not reconstructed.\n// Arbitrary Source escape remains UNKNOWN and propagates without prefix cleanup,\n// rollback/retry, Native-origin permission, noexcept or a new terminal policy.\n// State/progress are passive operands, never EH/cleanup/retirement authority.\n// Native private stack/register/FLAGS/fault/SEH/FH3/hardware-FP equivalence and\n// vector/growth/caller/production/activation are unproved. No new body credit.",
+          "after_utf8": "// On a Source C++ escape, capture CURRENT frame.begin_18 FIRST, then\n// CURRENT frame.progress_14 ONCE. Destroy that captured interval in\n// forward DWORD +40h order through real AB3280. Advance only after\n// each whole destructor returns; bare-rethrow the original only after\n// the full prefix returns. A destructor escape stops the loop and\n// propagates; no retry, replacement cleanup or new terminal policy.\n//\n// The caller proves the actual captured interval consists of genuine\n// born, completed owning states with valid current canonical texture\n// and name/provider custody, including any callback-written endpoints.\n// Passive progress/state/normal return alone grants no ownership. The\n// entered partial copy is excluded solely by the published endpoint;\n// do not fabricate a current-slot destructor or private completed count.\n// Retain its backing/name/provider debt and all remaining graph on\n// escape. No array family, automatic disposal or Native Origin follows.\n//\n// This ordinary catch implements the prefix schedule of the 13 Native\n// landing rows, not FS/private FH3 or binary exception ABI. Placement\n// action slot reads/401130 RET remain evidence, not a new partial dtor.\n// Existing AB3280 name-unwind/secondary-terminate Source qualifications\n// remain unchanged; they are not generalized Native runtime proof.\n// Native register/FLAGS/fault/SEH/hardware-FP and caller/vector/actual\n// production/runtime activation remain unproved. No new body credit."
+        }
+      ]
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_storage.cpp",
+      "before_bytes": 2126,
+      "before_sha256": "39bb463835d76eb646e39d4d6b372d4b5d294f9ba3539adf385122a414ee53cc",
+      "before_blob": "fb686c94553ed2ca81460eccd5aecefba03dd5e8",
+      "after_bytes": 2675,
+      "after_sha256": "b9e2739e6198fc9282a2c253325cef11c5bce1e5babf6676a6787f82669f04ff",
+      "seams": [
+        {
+          "before_utf8": "    while (remaining != 0) {\n        static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;\n        static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;\n        const std::uint32_t placement_nonnull = destination;\n        *state_byte = 1;\n        if (placement_nonnull != 0) {\n            void* const slot = reinterpret_cast<void*>(destination);\n            ::new (slot) NativeGuiIconStateStorage;\n            const std::uint32_t source = actual_stack_homes[0];\n            copy_native_gui_icon_state_00ab3a70(slot,\n                reinterpret_cast<const void*>(source), context);\n        }\n        remaining -= 1u;\n        destination += 0x40u;\n        *state_byte = 0;\n        static_cast<volatile std::uint32_t&>(frame.progress_14) = destination;\n    }",
+          "after_utf8": "    try {\n        while (remaining != 0) {\n            static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;\n            static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;\n            const std::uint32_t placement_nonnull = destination;\n            *state_byte = 1;\n            if (placement_nonnull != 0) {\n                void* const slot = reinterpret_cast<void*>(destination);\n                ::new (slot) NativeGuiIconStateStorage;\n                const std::uint32_t source = actual_stack_homes[0];\n                copy_native_gui_icon_state_00ab3a70(slot,\n                    reinterpret_cast<const void*>(source), context);\n            }\n            remaining -= 1u;\n            destination += 0x40u;\n            *state_byte = 0;\n            static_cast<volatile std::uint32_t&>(frame.progress_14) = destination;\n        }\n    } catch (...) {\n        std::uint32_t cleanup_cursor =\n            static_cast<volatile std::uint32_t&>(frame.begin_18);\n        const std::uint32_t cleanup_end =\n            static_cast<volatile std::uint32_t&>(frame.progress_14);\n        while (cleanup_cursor != cleanup_end) {\n            destroy_native_gui_icon_state_00ab3280(\n                reinterpret_cast<void*>(cleanup_cursor), context);\n            cleanup_cursor += 0x40u;\n        }\n        throw;\n    }"
+        }
+      ]
+    },
+    {
+      "path": "include/bsp/native_gui_icon_state_range_construction_storage.hpp",
+      "before_bytes": 3574,
+      "before_sha256": "b4a80dd3b38f2ec845c0b4df9027f0dc3e357428fede6b50cbb5c2cf11333ab5",
+      "before_blob": "75234c2b7c7b4512d8d633af4691a4ec441422d8",
+      "after_bytes": 4849,
+      "after_sha256": "aebf7c8ec0067330190607a3546264949e9688ae3871f129e184f934e9e7f3d5",
+      "seams": [
+        {
+          "before_utf8": "// NORMAL range construction for AB4C50.",
+          "after_utf8": "// Source range construction and completed-prefix cleanup for AB4C50."
+        },
+        {
+          "before_utf8": "// Caller proves every reached individual slot/backing lifetime and retains\n// current/partial/completed/remaining graph/providers and homes on UNKNOWN.\n",
+          "after_utf8": "// Caller proves every reached individual slot/backing lifetime and retains\n// containing backing/homes plus outstanding partial/remaining obligations\n// and providers on escape. Already-returned destructor calls are history,\n// not disposition proof; never rescan their pointees or replay those calls.\n"
+        },
+        {
+          "before_utf8": "// Native13 landing rows AB4CAA..AB4CC6 are HELD, not reconstructed: no prefix\n// destruction, rethrow-helper/body credit, Native Origin/cleanup/disposition,\n// retry/rollback/noexcept or new terminal policy follows from passive state.\n// Full function EH/private-stack/SEH/hardware-FP/caller/vector/activation remain\n// unproved. Existing high STL/vendor classification and prior credit stay.",
+          "after_utf8": "// On a Source C++ escape, capture CURRENT frame.begin_18 FIRST, then\n// CURRENT actual_stack_homes[0] ONCE. Destroy that captured interval in\n// forward DWORD +40h order through real AB3280. Advance only after\n// each whole destructor returns; bare-rethrow the original only after\n// the full prefix returns. A destructor escape stops the loop and\n// propagates; no retry, replacement cleanup or new terminal policy.\n//\n// The caller proves the actual captured interval consists of genuine\n// born, completed owning states with valid current canonical texture\n// and name/provider custody, including any callback-written endpoints.\n// Passive progress/state/normal return alone grants no ownership. The\n// entered partial copy is excluded solely by the published endpoint;\n// do not fabricate a current-slot destructor or private completed count.\n// Retain its backing/name/provider debt and all remaining graph on\n// escape. No array family, automatic disposal or Native Origin follows.\n//\n// This ordinary catch implements the prefix schedule of the 13 Native\n// landing rows, not FS/private FH3 or binary exception ABI. Placement\n// action slot reads/401130 RET remain evidence, not a new partial dtor.\n// Existing AB3280 name-unwind/secondary-terminate Source qualifications\n// remain unchanged; they are not generalized Native runtime proof.\n// Native register/FLAGS/fault/SEH/hardware-FP and caller/vector/actual\n// production/runtime activation remain unproved. No new body credit."
+        }
+      ]
+    },
+    {
+      "path": "src/native_gui_icon_state_range_construction_storage.cpp",
+      "before_bytes": 2245,
+      "before_sha256": "3d96ef961f77ada56ff6bf704258ed83dfb4bb73604640a523d6bb99779a20e1",
+      "before_blob": "c59538993ed127ed0e1a1310e65309a3283024b7",
+      "after_bytes": 2756,
+      "after_sha256": "15dce0ed0a74c5e9b09950542e924e90f07e0cdfe4bf675c96e188fa32f0157a",
+      "seams": [
+        {
+          "before_utf8": "    while (source != static_cast<volatile std::uint32_t&>(frame.end_14)) {\n        static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;\n        static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;\n        const std::uint32_t placement_nonnull = destination;\n        *state_byte = 1;\n        if (placement_nonnull != 0) {\n            void* const slot = reinterpret_cast<void*>(destination);\n            ::new (slot) NativeGuiIconStateStorage;\n            copy_native_gui_icon_state_00ab3a70(slot,\n                reinterpret_cast<const void*>(source), context);\n        }\n        destination += 0x40u;\n        *state_byte = 0;\n        actual_stack_homes[0] = destination;\n        source += 0x40u;\n    }",
+          "after_utf8": "    try {\n        while (source != static_cast<volatile std::uint32_t&>(frame.end_14)) {\n            static_cast<volatile std::uint32_t&>(frame.slot_1c) = destination;\n            static_cast<volatile std::uint32_t&>(frame.placement_20) = destination;\n            const std::uint32_t placement_nonnull = destination;\n            *state_byte = 1;\n            if (placement_nonnull != 0) {\n                void* const slot = reinterpret_cast<void*>(destination);\n                ::new (slot) NativeGuiIconStateStorage;\n                copy_native_gui_icon_state_00ab3a70(slot,\n                    reinterpret_cast<const void*>(source), context);\n            }\n            destination += 0x40u;\n            *state_byte = 0;\n            actual_stack_homes[0] = destination;\n            source += 0x40u;\n        }\n    } catch (...) {\n        std::uint32_t cleanup_cursor =\n            static_cast<volatile std::uint32_t&>(frame.begin_18);\n        const std::uint32_t cleanup_end =\n            actual_stack_homes[0];\n        while (cleanup_cursor != cleanup_end) {\n            destroy_native_gui_icon_state_00ab3280(\n                reinterpret_cast<void*>(cleanup_cursor), context);\n            cleanup_cursor += 0x40u;\n        }\n        throw;\n    }"
+        }
+      ]
+    }
+  ],
+  "doc": {
+    "path": "docs/CC16_NATIVE_GUI_ICON_STATE_PREFIX_CLEANUP_STORAGE.md",
+    "bytes": 4431,
+    "sha256": "5a5fc5eca0dbb719eff4871096174464bd3b056a9281c1e44183617906f575b4"
+  },
+  "unchanged_provider_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "src/native_string_pool_storage.cpp",
+      "bytes": 5450,
+      "sha256": "359410cc14e526d0c62aeddc1f9f4fa9136551117418c4fa9969cdc939f1269a"
+    },
+    {
+      "path": "src/native_string_pool_owner.cpp",
+      "bytes": 8443,
+      "sha256": "cb52fde795918995689a26567d513e9f3cf75eeb27600eb60c431c37fdd21d6e"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    },
+    {
+      "path": "include/bsp/render_command_queue.hpp",
+      "bytes": 10896,
+      "sha256": "40a849eddfd0a8b9af7ba6a0b68da1acd7de7978915ddd969f184dcea4ae46a6"
+    }
+  ],
+  "Native": {
+    "installed_executable": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "image_base": 4194304,
+    "regions": [
+      {
+        "name": "AB3A70",
+        "address": 11221616,
+        "bytes": 184,
+        "sha256": "17dc82a4390ae746056eec883627ad2158bce2b1d5985e8673eef384936b100b",
+        "hex": "535556578b7c24148b078bf18d5e048d6f043bdd8906c70300000000c743040000000074268b4d006a01518bcbe89ea296ff837d000074138b138b45048b4b04525051e8c83b140083c40c8b570c89560c8b47108946108b4f14894e148b57188956188b471c89461c8b4f20894e208b57248956248b4728894628d9472cd95e2cd94730d95e30d94734d95e34d94738d95e388a4f3c8b0685c0884e3c8a573d88563d740a83c00450ff151c22ce005f8bc65e5d5bc20400",
+        "ops": 69
+      },
+      {
+        "name": "AB3280",
+        "address": 11219584,
+        "bytes": 126,
+        "sha256": "e1abc6d85dc6716e63d62cd5d9f1a21b7697f76b3a370d2d779290eaeafb3feb",
+        "hex": "6aff685b7acb0064a100000000506489250000000051568bf157897424088b3e85ffc744241400000000741c8d470450ff152022ce0085c075088b178b028bcfffd0c706000000008b460885c0c7442414ffffffff74168b76046a0183c6015650e8da6996ff8bc8e823e211008b4c240c5f5e64890d0000000083c410c3",
+        "ops": 42
+      },
+      {
+        "name": "AB4C50",
+        "address": 11226192,
+        "bytes": 144,
+        "sha256": "0e17f58c24d2bb3b857cceae85df433a9f978e5d4a8c1b839acfa2494326bae9",
+        "hex": "558bec6aff68117ccb0064a100000000506489250000000083ec1453568b75085733db8965f08955ec8bf98975e8895dfc3b7dec74458975e48975e03bf3c645fc017408578bcee8d4edffff83c640885dfc89750883c740ebd78b75e88b7d083bf7740e8bcee8c5e5ffff83c6403bf775f233db5353e8ba1b14008b4df45f8bc65e64890d000000005b8be55dc21000",
+        "ops": 55
+      },
+      {
+        "name": "AB5400",
+        "address": 11228160,
+        "bytes": 143,
+        "sha256": "7a865830e57c98f46d0f541636e07eece0a95788bb8e7a465ff554ff591a5215",
+        "hex": "558bec6aff68a17ccb0064a100000000506489250000000083ec145356578bf133db8965f08bfa894dec8975e8895dfc3bfb76488975e48975e03bf3c645fc01740b8b4508508bcee823e6ffff83ef0183c640885dfc8975ecebd58b75e88b7dec3bf7740e8bcee814deffff83c6403bf775f233db5353e8091414008b4df45f5e64890d000000005b8be55dc21000",
+        "ops": 55
+      },
+      {
+        "name": "AB3280_name_action",
+        "address": 13335120,
+        "bytes": 11,
+        "sha256": "a462e7c4cb373fe09766e522b58425c55930208f4ee86f7ef0a4ce225204f1ed",
+        "hex": "8b4df083c104e9c56276ff",
+        "ops": 3
+      },
+      {
+        "name": "AB4C50_placement_action",
+        "address": 13335552,
+        "bytes": 17,
+        "sha256": "5f94b0fc5ba21d90b0ddb8d4a0e941999fadc17b959dab69f0707fd57bac1dc7",
+        "hex": "8b45e4508b4de051e8239574ff83c408c3",
+        "ops": 7
+      },
+      {
+        "name": "AB5400_placement_action",
+        "address": 13335696,
+        "bytes": 17,
+        "sha256": "3737be487a58951ea5b3530aed30c02d82be1ca5c0dbbcecf7c43abc930b0d3e",
+        "hex": "8b45e4508b4de051e8939474ff83c408c3",
+        "ops": 7
+      },
+      {
+        "name": "placement_delete",
+        "address": 4198704,
+        "bytes": 1,
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "hex": "c3",
+        "ops": 1
+      },
+      {
+        "name": "AB3280_FuncInfo",
+        "address": 14607788,
+        "bytes": 36,
+        "sha256": "09158058a22c5bfac6bd12e60fccd8725553c9c3f16aa6053f9068aec00e1fa0",
+        "hex": "2205931901000000a4e5de00000000000000000000000000000000000000000001000000"
+      },
+      {
+        "name": "AB3280_unwind",
+        "address": 14607780,
+        "bytes": 8,
+        "sha256": "ef4ad76d30cc561af1944cb5118a418029c757ebf9c8e33f79b0b8163c855366",
+        "hex": "ffffffff507acb00"
+      },
+      {
+        "name": "AB4C50_FuncInfo",
+        "address": 14608424,
+        "bytes": 36,
+        "sha256": "5597d6663301e2f5783fa129430c4999678a3c893ef3cbe54789feae2b07cff0",
+        "hex": "220593190300000010e8de0001000000fce7de0000000000000000000000000001000000"
+      },
+      {
+        "name": "AB4C50_unwind",
+        "address": 14608400,
+        "bytes": 24,
+        "sha256": "8fd4a8a39b50d82c2604c37466756524c6fa0e36fab4ec7921f7a2859f3594b5",
+        "hex": "ffffffff0000000000000000007ccb00ffffffff00000000"
+      },
+      {
+        "name": "AB4C50_try",
+        "address": 14608380,
+        "bytes": 20,
+        "sha256": "23a32df1517292c1b49c6290dcba90cca90db98db31eafbd5035a7084d0da22e",
+        "hex": "00000000010000000200000001000000ece7de00"
+      },
+      {
+        "name": "AB5400_FuncInfo",
+        "address": 14608724,
+        "bytes": 36,
+        "sha256": "d888eae672aa223d2a35a40361d2c6bf917a412a09e2e2b946c5a8507eba64bb",
+        "hex": "22059319030000003ce9de000100000028e9de0000000000000000000000000001000000"
+      },
+      {
+        "name": "AB5400_unwind",
+        "address": 14608700,
+        "bytes": 24,
+        "sha256": "687ba35938800fdd392a30d4f2e345bff9361831aca1e168832e64bed2c9b651",
+        "hex": "ffffffff0000000000000000907ccb00ffffffff00000000"
+      },
+      {
+        "name": "AB5400_try",
+        "address": 14608680,
+        "bytes": 20,
+        "sha256": "13a07d811f550fb60f794ba73ceedbffa10183a78317b58afd307a1919054e76",
+        "hex": "0000000001000000020000000100000018e9de00"
+      }
+    ]
+  },
+  "reader": {
+    "bytes": 9536,
+    "sha256": "fc809eac47045425e8a5b4319b6f35c563a2c428198f39f45300784d6186cd91",
+    "utf8": "import argparse, hashlib, json, os, pathlib, re, struct, subprocess, tempfile\nfrom capstone import Cs, CS_ARCH_X86, CS_MODE_32\n\nap = argparse.ArgumentParser()\nap.add_argument('--candidate')\nap.add_argument('--commit')\na = ap.parse_args()\nD = pathlib.Path(__file__).resolve().parent\nC = pathlib.Path(a.candidate) if a.candidate else D / 'candidate'\nP = 'reports/cc16_native_gui_icon_state_prefix_cleanup_storage.json'\nsha = lambda b: hashlib.sha256(b).hexdigest()\nchecks = []\n\n\ndef g(*args, data=None, env=None):\n    return subprocess.check_output(['git', *args], input=data, env=env)\n\n\ndef read(path):\n    return g('show', a.commit + ':' + path) if a.commit else (C / path).read_bytes()\n\n\ndef ck(name, value):\n    if not value:\n        raise AssertionError(name)\n    checks.append(name)\n\n\nr = json.loads(read(P))\nck('reader exact embedded bytes', pathlib.Path(__file__).read_bytes() == r['reader']['utf8'].encode())\nck('reader immutable tuple', len(pathlib.Path(__file__).read_bytes()) == r['reader']['bytes']\n   and sha(pathlib.Path(__file__).read_bytes()) == r['reader']['sha256'])\nfor q in r['source_pairs']:\n    old = g('show', r['base'] + ':' + q['path'])\n    new = read(q['path'])\n    ck('whole preimage ' + q['path'], len(old) == q['before_bytes'] and sha(old) == q['before_sha256'])\n    ck('whole postimage ' + q['path'], len(new) == q['after_bytes'] and sha(new) == q['after_sha256'])\n    value = old.decode()\n    for i, s in enumerate(q['seams']):\n        ck('forward seam unique ' + q['path'] + str(i), value.count(s['before_utf8']) == 1)\n        value = value.replace(s['before_utf8'], s['after_utf8'], 1)\n    ck('whole forward ' + q['path'], value.encode() == new)\n    for i, s in reversed(list(enumerate(q['seams']))):\n        ck('reverse seam unique ' + q['path'] + str(i), value.count(s['after_utf8']) == 1)\n        value = value.replace(s['after_utf8'], s['before_utf8'], 1)\n    ck('whole reverse ' + q['path'], value.encode() == old)\n    if q['path'].endswith('.hpp'):\n        tokens = lambda b: re.sub(r'\\s+', '', re.sub(r'//[^\\n]*|/\\*.*?\\*/', '', b.decode(), flags=re.S))\n        ck('all declarations/layout unchanged ' + q['path'], tokens(old) == tokens(new))\n    else:\n        c = new.decode()\n        s = q['seams'][0]\n        ck('normal loop preserved except indentation ' + q['path'], '\\n'.join(\n            line[4:] for line in s['after_utf8'].splitlines()[1:s['after_utf8'].splitlines().index('    } catch (...) {')])\n           == s['before_utf8'])\n        catch = c[c.index('    } catch (...) {'):]\n        endpoint = ('static_cast<volatile std::uint32_t&>(frame.progress_14)'\n                    if 'repeat_storage' in q['path'] else 'actual_stack_homes[0]')\n        ck('begin then actual current published endpoint ' + q['path'],\n           catch.index('frame.begin_18') < catch.index(endpoint))\n        ck('both catch operands captured only once ' + q['path'],\n           catch.count('frame.begin_18') == 1 and catch.count(endpoint) == 1)\n        ck('real forward destruction then advance then original rethrow ' + q['path'],\n           catch.index('while (cleanup_cursor != cleanup_end)')\n           < catch.index('destroy_native_gui_icon_state_00ab3280(')\n           < catch.index('cleanup_cursor += 0x40u;') < catch.index('throw;'))\n        ck('single ordinary catch no phase Origin partial cleanup terminal ' + q['path'],\n           c.count('catch (...)') == 1 and catch.count('throw;') == 1\n           and not any(x in catch for x in ['if (', 'try {', 'noexcept', 'terminate', 'current_exception',\n                                            'state_04', 'slot_1c', 'placement_20', 'release(', 'new ',\n                                            'Origin', 'failure_runtime']))\n\nq = r['doc']\nck('complete new doc', len(read(q['path'])) == q['bytes'] and sha(read(q['path'])) == q['sha256'])\nfor q in r['unchanged_provider_pins']:\n    b = g('show', r['base'] + ':' + q['path'])\n    ck('whole genuine provider ' + q['path'], len(b) == q['bytes'] and sha(b) == q['sha256'])\n\nregions = {q['name']: q for q in r['Native']['regions']}\nins = {}\nfor name in ['AB3A70', 'AB3280', 'AB4C50', 'AB5400', 'AB3280_name_action',\n             'AB4C50_placement_action', 'AB5400_placement_action', 'placement_delete']:\n    q = regions[name]\n    b = bytes.fromhex(q['hex'])\n    ck('whole installed Native bytes ' + name, len(b) == q['bytes'] and sha(b) == q['sha256'])\n    ins[name] = list(Cs(CS_ARCH_X86, CS_MODE_32).disasm(b, q['address']))\n    ck('whole Native instruction coverage ' + name,\n       len(ins[name]) == q['ops'] and sum(i.size for i in ins[name]) == len(b))\nck('AB3A70 no local FS EH setup', len(ins['AB3A70']) == 69\n   and not any('fs:' in i.op_str for i in ins['AB3A70']))\nck('AB3A70 terminal increment after current texture capture',\n   next(i.op_str for i in ins['AB3A70'] if i.address == 0xab3b06) == 'eax, dword ptr [esi]'\n   and next(i.op_str for i in ins['AB3A70'] if i.address == 0xab3b19) == 'dword ptr [0xce221c]')\nfor name, action in [('AB4C50', 0xcb7c00), ('AB5400', 0xcb7c90)]:\n    f = struct.unpack('<9I', bytes.fromhex(regions[name + '_FuncInfo']['hex']))\n    u = [struct.unpack_from('<iI', bytes.fromhex(regions[name + '_unwind']['hex']), i * 8) for i in range(3)]\n    t = struct.unpack('<5I', bytes.fromhex(regions[name + '_try']['hex']))\n    ck('actual 3-state EH/no catch-state cleanup action ' + name,\n       f[0] == 0x19930522 and f[1] == 3 and f[3] == 1\n       and u == [(-1, 0), (0, action), (-1, 0)] and t[:4] == (0, 1, 2, 1))\n    x = ins[name + '_placement_action']\n    ck('actual private slot operands and real no-op placement call ' + name,\n       [(i.mnemonic, i.op_str) for i in x] == [\n           ('mov', 'eax, dword ptr [ebp - 0x1c]'), ('push', 'eax'),\n           ('mov', 'ecx, dword ptr [ebp - 0x20]'), ('push', 'ecx'),\n           ('call', '0x401130'), ('add', 'esp, 8'), ('ret', '')])\nck('placement delete is exactly RET', bytes.fromhex(regions['placement_delete']['hex']) == b'\\xc3')\nfor name, start, end, published in [('AB4C50', 0xab4caa, 0xab4cc6, 'edi, dword ptr [ebp + 8]'),\n                                    ('AB5400', 0xab545b, 0xab5477, 'edi, dword ptr [ebp - 0x14]')]:\n    x = [i for i in ins[name] if start <= i.address <= end]\n    ck('all 13 prefix-landing rows ' + name, len(x) == 13)\n    ck('Native begin then published end capture ' + name,\n       x[0].op_str == 'esi, dword ptr [ebp - 0x18]' and x[1].op_str == published)\n    ck('Native direct prefix destructor and bare rethrow helper ' + name,\n       [i.op_str for i in x if i.mnemonic == 'call'] == ['0xab3280', '0xbf6885']\n       and [(i.mnemonic, i.op_str) for i in x[-4:]]\n       == [('xor', 'ebx, ebx'), ('push', 'ebx'), ('push', 'ebx'), ('call', '0xbf6885')])\nf = struct.unpack('<9I', bytes.fromhex(regions['AB3280_FuncInfo']['hex']))\nck('AB3280 actual one name-unwind state no try block',\n   f[1] == 1 and f[3] == 0\n   and struct.unpack('<iI', bytes.fromhex(regions['AB3280_unwind']['hex'])) == (-1, 0xcb7a50))\nck('AB3280 actual receiver+4 name action', [(i.mnemonic, i.op_str) for i in ins['AB3280_name_action']]\n   == [('mov', 'ecx, dword ptr [ebp - 0x10]'), ('add', 'ecx, 4'), ('jmp', '0x41dd20')])\nck('no new credit Native authority or current disposal', r['new_credit'] == 0\n   and r['readiness']['new_Native_Origin_or_NoThrow_authority'] is False\n   and r['readiness']['failed_current_automatic_disposition'] is False)\n\nparent = g('show', '-s', '--format=%P', a.commit).decode().strip() if a.commit else r['base']\nck('actual one parent or candidate baseline', len(parent.split()) == 1)\nfor q in r['source_pairs']:\n    ck('actual preimage affinity ' + q['path'], sha(g('show', parent + ':' + q['path'])) == q['before_sha256'])\nfor q in r['unchanged_provider_pins']:\n    ck('actual unchanged provider affinity ' + q['path'], sha(g('show', parent + ':' + q['path'])) == q['sha256'])\n\nfd, index_path = tempfile.mkstemp(prefix='prefix_cleanup_index_', dir=D)\nos.close(fd)\npathlib.Path(index_path).unlink()\nenv = dict(os.environ, GIT_INDEX_FILE=str(pathlib.Path(index_path).resolve()))\ntry:\n    g('read-tree', parent, env=env)\n    for path in r['owned_paths']:\n        oid = g('hash-object', '-w', '--stdin', data=read(path)).decode().strip()\n        g('update-index', '--add', '--cacheinfo', '100644,' + oid + ',' + path, env=env)\n    forward = g('write-tree', env=env).decode().strip()\n    changed = set(g('diff', '--cached', '--name-only', '-z', parent, env=env).decode().strip('\\0').split('\\0'))\n    ck('full forward exactly4M2A paths', changed == set(r['owned_paths']))\n    if a.commit:\n        ck('actual full forward tree', forward == g('rev-parse', a.commit + '^{tree}').decode().strip())\n    for q in r['source_pairs']:\n        g('update-index', '--cacheinfo', '100644,' + q['before_blob'] + ',' + q['path'], env=env)\n    for path in r['owned_paths'][4:]:\n        g('update-index', '--force-remove', path, env=env)\n    reverse = g('write-tree', env=env).decode().strip()\n    ck('full six-path recursive reverse tree', reverse == g('rev-parse', parent + '^{tree}').decode().strip())\nfinally:\n    pathlib.Path(index_path).unlink(missing_ok=True)\n\nprint(json.dumps({'passed': True, 'checks': len(checks), 'mode': 'actual Git' if a.commit else 'ignored candidate',\n                  'base': r['base'], 'parent': parent, 'Source_pairs': 4, 'paths': 6,\n                  'seams': sum(len(q['seams']) for q in r['source_pairs']),\n                  'forward_tree': forward, 'reverse_tree': reverse,\n                  'new_credit': 0, 'Native_OriginalABI_Origin_runtime_activation': False}))\n"
+  },
+  "readiness": {
+    "ordinary_Source_prefix_cleanup_candidate": true,
+    "new_Native_Origin_or_NoThrow_authority": false,
+    "failed_current_automatic_disposition": false,
+    "general_Native_FH3_secondary_proof": false,
+    "real_production_caller_custody_admitted": false,
+    "Original_ABI_runtime_activation": false
+  },
+  "inherited_secondary_policy": "AB3280 existing Source secondary-name std::terminate remains qualified, unchanged; range catches add no termination policy",
+  "tests": "none added or run; Root compiler/Core inspection deferred",
+  "new_credit": 0
+}

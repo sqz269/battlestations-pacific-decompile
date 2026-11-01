@@ -1,0 +1,308 @@
+{
+  "kind": "Root Source89 completed Icon constructor prefix cleanup admission",
+  "author": "d198fbbcdecf570bdd2948d8521325b20bfcf4e8",
+  "actual_parent": "02cc518d66ae359c9604b30b5fd4c11469a93e92",
+  "static": {
+    "passed": true,
+    "checks": 101,
+    "mode": "actual Git",
+    "base": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+    "parent": "02cc518d66ae359c9604b30b5fd4c11469a93e92",
+    "Source_pairs": 4,
+    "paths": 6,
+    "seams": 8,
+    "forward_tree": "124cffe638b917cbd92aa178be05f0563a3e0b63",
+    "reverse_tree": "32a1ad66530355ab76aa9c619331adc5ba355197",
+    "new_credit": 0,
+    "Native_OriginalABI_Origin_runtime_activation": false
+  },
+  "Root_Source_review": {
+    "frozen_artifacts": 62,
+    "reader": {
+      "passed": true,
+      "checks": 100,
+      "mode": "ignored candidate",
+      "base": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+      "parent": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+      "Source_pairs": 4,
+      "paths": 6,
+      "seams": 8,
+      "forward_tree": "1299b41458158ffba5f1e4cf7889611fe95445fe",
+      "reverse_tree": "4a7f58283b6abd84926b78d3ac9d516fcb675e75",
+      "new_credit": 0,
+      "Native_OriginalABI_Origin_runtime_activation": false
+    },
+    "current_preimages4_providers7_exact": true,
+    "Root_full_HCPPdoc_reader_Native_review": true,
+    "findings": 0,
+    "observations": [
+      "Both normal loops and declarations/layout remain unchanged.",
+      "Catch captures actual begin first then current actual published endpoint once;forward AB3280, advance only after return.",
+      "No partial current destructor/automatic free/phasepredicate/newterminal;original barethrow after prefix;destructor escape propagates and stops.",
+      "Native landing13+13 and placementRET/state maps agree within ordinary Source C++ exception domain;no Native ABI/Origin claim."
+    ]
+  },
+  "independent_Source": {
+    "own_checks": 52,
+    "candidate_checks": 100,
+    "actual_checks": 101,
+    "findings": 0,
+    "scope": "Source only"
+  },
+  "build": {
+    "exit": 0,
+    "seconds": 29.9001055,
+    "inputs": 577,
+    "outputs": 46,
+    "all_targets_two_existing_suites": true,
+    "new_tests": 0,
+    "new_Game_runs": 0
+  },
+  "compiled": {
+    "Core": [
+      {
+        "stem": "repeat",
+        "object_bytes": 3933,
+        "sha256": "798febb598a4323e9d990959973c8226fa4e20bf84ec810115a93ed58f351d31",
+        "sections": [
+          {
+            "section": 3,
+            "bytes": 8,
+            "ops": 5
+          },
+          {
+            "section": 4,
+            "bytes": 38,
+            "ops": 20
+          },
+          {
+            "section": 5,
+            "bytes": 198,
+            "ops": 76
+          },
+          {
+            "section": 6,
+            "bytes": 29,
+            "ops": 9
+          }
+        ],
+        "catch_offset": 128,
+        "unwind": [
+          [
+            -1,
+            0
+          ],
+          [
+            -1,
+            0
+          ]
+        ],
+        "try_block": [
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "calls": [
+          {
+            "offset": 109,
+            "target": "?copy_native_gui_icon_state_00ab3a70@bsp@@YAPAXPAXPBXAAUNativeGuiIconStorageContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 149,
+            "target": "?destroy_native_gui_icon_state_00ab3280@bsp@@YAXPAXAAUNativeGuiIconStorageContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 188,
+            "target": "__CxxThrowException@8",
+            "type": 20
+          }
+        ],
+        "archive_exact_member_offsets": [
+          22975398
+        ],
+        "normal_map": false,
+        "Root_all_Code_review": true,
+        "findings": 0,
+        "observations": [
+          "Currentbeginload precedes currentpublishedendload;actualAB3280CALL returns before cursor+40;endcapturedonce;barethrowtwozeros onlyafterloop.",
+          "TwoSourceEHstates/onecatch/no unwindactions or newterminal;normalpayloadretained. Existing parameter/privateABI/FLAGS/fault qualifications apply."
+        ]
+      },
+      {
+        "stem": "range_construction",
+        "object_bytes": 4013,
+        "sha256": "2bc2b327c7864c624b398fd3a59217a7c76b3d83a817f18d3b59bf77be36e783",
+        "sections": [
+          {
+            "section": 3,
+            "bytes": 8,
+            "ops": 5
+          },
+          {
+            "section": 4,
+            "bytes": 38,
+            "ops": 20
+          },
+          {
+            "section": 5,
+            "bytes": 203,
+            "ops": 78
+          },
+          {
+            "section": 6,
+            "bytes": 29,
+            "ops": 9
+          }
+        ],
+        "catch_offset": 132,
+        "unwind": [
+          [
+            -1,
+            0
+          ],
+          [
+            -1,
+            0
+          ]
+        ],
+        "try_block": [
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        "calls": [
+          {
+            "offset": 108,
+            "target": "?copy_native_gui_icon_state_00ab3a70@bsp@@YAPAXPAXPBXAAUNativeGuiIconStorageContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 152,
+            "target": "?destroy_native_gui_icon_state_00ab3280@bsp@@YAXPAXAAUNativeGuiIconStorageContext@1@@Z",
+            "type": 20
+          },
+          {
+            "offset": 193,
+            "target": "__CxxThrowException@8",
+            "type": 20
+          }
+        ],
+        "archive_exact_member_offsets": [
+          22946190
+        ],
+        "normal_map": false,
+        "Root_all_Code_review": true,
+        "findings": 0,
+        "observations": [
+          "Currentbeginload precedes currentpublishedendload;actualAB3280CALL returns before cursor+40;endcapturedonce;barethrowtwozeros onlyafterloop.",
+          "TwoSourceEHstates/onecatch/no unwindactions or newterminal;normalpayloadretained. Existing parameter/privateABI/FLAGS/fault qualifications apply."
+        ]
+      }
+    ],
+    "prior_objects_exact": [
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_native_size_storage.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_icon_application.obj",
+      "build/win32/bsp_core.dir/Release/gui_texture.obj",
+      "build/win32/bsp_core.dir/Release/gui_type_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/native_texture_saved_dimensions.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_size_comparison_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_backward_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_filter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_constructed_storage.obj",
+      "build/win32/bsp_core.dir/Release/gui_native_geometry.obj",
+      "build/win32/bsp_core.dir/Release/native_model_resource_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_model_storage_geometry.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_mesh_pool.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_position.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_transform.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_widget_bounds.obj",
+      "build/win32/bsp_core.dir/Release/native_render_context.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_fill_storage.obj"
+    ],
+    "changed_objects": [
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_construction_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_copy_wrapper_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_wrapper_storage.obj"
+    ],
+    "wrapper_code_exact": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_copy_wrapper_storage.obj",
+        "all_code_relocations_unchanged": true,
+        "whole_object_unchanged": false
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_wrapper_storage.obj",
+        "all_code_relocations_unchanged": true,
+        "whole_object_unchanged": false
+      }
+    ]
+  },
+  "Native_binary_exception_ABI": false,
+  "production_activation": false,
+  "new_body_credit": 0,
+  "receipts": [
+    {
+      "path": "local/function_source_batch89/common/manifest.json",
+      "bytes": 190875,
+      "sha256": "1394c33ab71dca981486b57daac7139d3f7bc92be152ace080b340a8500141b8"
+    },
+    {
+      "path": "local/function_source_batch89/build_result.json",
+      "bytes": 45,
+      "sha256": "21533203f9fd580e5450ecd89ed189be13cdee2fd12030eba77eadb39a81dca2"
+    },
+    {
+      "path": "local/function_source_batch89/Root_actual_Git.json",
+      "bytes": 396,
+      "sha256": "306ac209635cceaaa262ec8d6cbffe18307bee911c036ac41ec50e671c8847c0"
+    },
+    {
+      "path": "local/function_source_batch89/Root_review.json",
+      "bytes": 1139,
+      "sha256": "61cf245d5bd8f7941576e6cd27bd5cf455c3937034647e55eabb677450ff413c"
+    },
+    {
+      "path": "local/function_source_batch89/Root_Core_review.json",
+      "bytes": 7054,
+      "sha256": "c7d63b74345ccfe5ebbffc9b52ca414e1fce7302ef420e6fb6fb9298401dd1a4"
+    },
+    {
+      "path": "local/function_source_batch89/Source_peer/peer_receipt.json",
+      "bytes": 12574,
+      "sha256": "d5132112fa469430eb79fd0d0b51b634c0363bb14700f9b45194a909793f0ebe"
+    },
+    {
+      "path": "local/function_source_batch89/Source_peer/peer_manifest.json",
+      "bytes": 2527,
+      "sha256": "806fcac6ea2e1e3d113dc65fe1ec29158ff3e4b1f27a52381c1dfb28d8bacbb1"
+    },
+    {
+      "path": "local/function_source_batch89/Source_peer/sealed_peer.json",
+      "bytes": 606,
+      "sha256": "aa52d602a61d4aa6ace85a3b26d6ead8f3effc695988c9bed2ab91a9ed137988"
+    }
+  ]
+}

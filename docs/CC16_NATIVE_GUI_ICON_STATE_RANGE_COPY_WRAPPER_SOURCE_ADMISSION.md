@@ -1,0 +1,9 @@
+# Raw Icon range copy wrapper Source admission
+
+Source86 supplies the complete normal wrapper schedule (37 bytes / 14 instructions). Stages actual callee homes 3, 2, 1, 0 after two separate outer HOME2 reads, preserves original entry ECX in callee HOME1, and returns the real AB4C50 result. Full DWORD tag publication precedes LOWBYTE zero and full reread. No outer-home copyback, new frame, callback or provider substitution is introduced.
+
+Actual author `08c91c55bf7f5f2a6a20b12cd73587abb6ae9aff` has parent `d2eeef16e09c3e5e4158ea125b74106e04f8eb62`. Root reviewed the full header, source, documentation, reader and Native body. Candidate/actual readers pass 42/57, including a fresh full four-path inverse. The independent combined Source peer passes 56 checks and readers 57/45, with exact eight postimages and a joined inverse; zero findings.
+
+The shared two-entry CMake commit `489c7c6b45bf302fdbedc238cd3f26a611a0d88a` passes the official MSVC Win32 Release build and both existing suites in 28.92 seconds, with 575 frozen inputs and 46 outputs. All 36 previously captured objects remain whole-byte exact. Root read every emitted main-body instruction (69 bytes / 32 operations) and the genuine callee relocation. The 1679-byte object occurs exactly once as an archive member. No local EH is emitted; this entry is absent from the normal Game map.
+
+This ordinary six-argument Source interface carries actual homes and the existing callee frame/context. It does not establish Native register, stack, RET0C, FLAGS, fault or exception ABI identity. The callee's 13 Native landing rows remain held at the pinned implementation. Existing backing, canonical custody and incomplete cleanup debts remain inherited. Parent growth and production caller activation remain open. No new tests or Game run were needed for these inactive library additions; no new vendor, helper, CG or duplicate reconstruction credit is claimed. Exact receipts are in the companion report.
