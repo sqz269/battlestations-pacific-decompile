@@ -1,0 +1,102 @@
+{
+  "base_commit": "2a094149a200654ea7ddf63226483c2a72bcba35",
+  "worktree": "J:\\PROG\\battlestations-pacific-decompile-codex-atlas-parser-storage-20261101",
+  "branch": "agent/codex-atlas-parser-storage-20261101",
+  "scope": "ignored Source-only candidate; ordinary NORMAL payload",
+  "saved_project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "Source_peer": 0,
+  "verification": {
+    "source_inspection": true,
+    "bounded_source_integrity_checks": true,
+    "independent_peer_review": 0,
+    "compilation": 0,
+    "fixtures": 0,
+    "native_execution": 0,
+    "original_ABI": 0,
+    "gameplay": 0,
+    "startup": 0,
+    "activation": 0
+  },
+  "tracked_source_changes": 0,
+  "cmake_changes": 0,
+  "ledger_changes": 0,
+  "ghidra_mutations": 0,
+  "new_tests": 0,
+  "builds": 0,
+  "Game_runs": 0,
+  "deployments": 0,
+  "commits": 0,
+  "pushes": 0,
+  "gate_changes": [],
+  "frozen_source_pins": "FROZEN_SOURCE_PINS.json",
+  "original_export_pins": "ORIGINAL_EXPORT_PINS.json",
+  "addresses": [
+    "00aeeaf0"
+  ],
+  "original_ABI": "ECX actual manager1Ch; incoming buffer pointer DWORD HOME/RET4; AL Boolean",
+  "source_interface": "parse_native_texture_atlas_storage_00aeeaf0(void*,volatile uint32_t&,Frame&,Context&) -> uint8",
+  "instruction_rows": 478,
+  "basic_blocks": 78,
+  "static_call_rows": 56,
+  "raw_native_homes": "S+10..S+50 raw relations retained; header-token0/item-name-token4h reuse; canonical/slash raw8 then allocation DWORD reuse",
+  "critical_epochs": [
+    "Buffer captured before rewind; flags0 then line0.",
+    "BEE390 result distinct raw8 and immediately returned; directory never assigned from it.",
+    "Renderer captured BEFORE exact concat; captured receiver CURRENT profile/slot64 AFTER concat.",
+    "Distinct retained existing NativeTextureCacheAcquired before B319B0; creator reference actual manager+10 append BEFORE item body, without extra retain.",
+    "Nonmoving per-item metadata/helper frames/HOMEs adopted BEFORE BF681B(30h).",
+    "token1 -> exact name8 -> genuine AEE4D0 with CURRENT input HOME+C; normal cleanup bits2 then1.",
+    "CURRENT input HOME copied AFTER cleanup into DISTINCT outgoing AEE620 HOME; no parser incoming-HOME stores; params execute even allocation-null.",
+    "Real735F90 current item append then saved texture restore; nonempty arm current input reload before next line.",
+    "Footer directory/TextureName/line; AL1 even EOF."
+  ],
+  "actual_shared_providers": [
+    "sealed sibling raw BEE390 context/overload with SAME pool/live feature",
+    "exact426060/4261A0 candidate",
+    "raw735F90 candidate and existing raw735FF0",
+    "approved actual renderer custody closure + existing actual B319B0/cache/NativeTextureCacheAcquired",
+    "frozen genuine raw AEE620,AEE4D0,AEE220",
+    "existing exact41DD40/41E870/BF7680/BF79F0",
+    "existing actual raw AF55F0/AF5740/AEE3C0/4BCB80 and pool return"
+  ],
+  "canonicalizer_pins": "RAW_CANONICALIZER_PINS.json",
+  "failure": "Record parent/active-child failure and barethrow; no new outer cleanup/free/rollback/replay; retain whole partial item/texture/array/helper/provider/actual acquired graph. Existing failed-acquired destructor termination policy inherited.",
+  "scope_excluded": [
+    "AF0060",
+    "AEF280",
+    "AEF3C0",
+    "AEF090",
+    "7364A0",
+    "7375E0",
+    "737EE0",
+    "737F10",
+    "real F8C26C/F8C2C8 host-role producer",
+    "common.ats startup",
+    "Page/type6 producer",
+    "all9 existing held gates"
+  ],
+  "uncertainties": [
+    "Genuine actual native backing, initialized reached fields, declared aliases, raw pool/feature/RO roles and serialized actual F8C2C8 scratch require external custody.",
+    "Private Source controls/HOMEs are disjoint from provider-write extents except declared raw header/argument aliases.",
+    "Original FH3/SEH/hardware-null faults/unmasked FP/private-stack/Origin/ABI/runtime/game remain qualified.",
+    "Lower provider error policies and current Source CRT full_stricmp boundary are inherited, with no new vendor-body credit."
+  ],
+  "candidate_pins": [
+    {
+      "path": "parser/candidate/docs/CC16_NATIVE_TEXTURE_ATLAS_PARSER_STORAGE.md",
+      "bytes": 7470,
+      "sha256": "b386e1542937ce4d793b1234ecad70cd85b511b4dbe1b35a71438255e431d106"
+    },
+    {
+      "path": "parser/candidate/include/bsp/native_texture_atlas_parser_storage.hpp",
+      "bytes": 7188,
+      "sha256": "5d6e8dc503f7fec38daf58e991b91fa8a1260fb2d010182c3a4cfadc785b15a7"
+    },
+    {
+      "path": "parser/candidate/src/native_texture_atlas_parser_storage.cpp",
+      "bytes": 21999,
+      "sha256": "a0d1f14461766462fe19f4f8ccdaca3a0cfa99de6a970c7a903876427b016b35"
+    }
+  ]
+}
