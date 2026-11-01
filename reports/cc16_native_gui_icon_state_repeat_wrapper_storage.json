@@ -1,0 +1,248 @@
+{
+  "kind": "ignored normal AB56C0 genuine counted-repeat forwarding",
+  "base": "d2eeef16e09c3e5e4158ea125b74106e04f8eb62",
+  "owned_paths": [
+    "include/bsp/native_gui_icon_state_repeat_wrapper_storage.hpp",
+    "src/native_gui_icon_state_repeat_wrapper_storage.cpp",
+    "docs/CC16_NATIVE_GUI_ICON_STATE_REPEAT_WRAPPER_STORAGE.md",
+    "reports/cc16_native_gui_icon_state_repeat_wrapper_storage.json"
+  ],
+  "postimages": [
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_wrapper_storage.hpp",
+      "bytes": 2904,
+      "sha256": "24528366d2fa48cfe92cd641232af925c30bc75a1bcac157cb8eac1308bc67de"
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_wrapper_storage.cpp",
+      "bytes": 1643,
+      "sha256": "476964dddcace812c983c56641010d04cb8fbedec81269d50a0a2eabb26c058b"
+    },
+    {
+      "path": "docs/CC16_NATIVE_GUI_ICON_STATE_REPEAT_WRAPPER_STORAGE.md",
+      "bytes": 3032,
+      "sha256": "4291c991dd7b041fee0c2946ea754286172242add4f70ce8204ae7da16de6097"
+    }
+  ],
+  "reader": {
+    "bytes": 7004,
+    "sha256": "b8cc52c4133e35fd06077cdb6405c7605317809f024f7d77bf76488d189704a0",
+    "utf8": "import argparse,hashlib,json,pathlib,re,subprocess\nfrom capstone import Cs,CS_ARCH_X86,CS_MODE_32\nap=argparse.ArgumentParser();ap.add_argument('--candidate');ap.add_argument('--commit');a=ap.parse_args();D=pathlib.Path(__file__).resolve().parent;C=pathlib.Path(a.candidate) if a.candidate else D/'candidate';checks=[]\nP='reports/cc16_native_gui_icon_state_repeat_wrapper_storage.json'\ndef g(*x):return subprocess.check_output(['git',*x])\ndef sha(b):return hashlib.sha256(b).hexdigest()\ndef ck(n,v):\n assert v,n\n checks.append(n)\ndef read(p):return g('show',a.commit+':'+p) if a.commit else (C/p).read_bytes()\nr=json.loads(read(P));ck('exact reportembedded reader',pathlib.Path(__file__).read_bytes()==r['reader']['utf8'].encode())\nfor q in r['postimages']:\n b=read(q['path']);ck('exact whole postimage '+q['path'],len(b)==q['bytes'] and sha(b)==q['sha256'])\nfor q in r['provider_whole_pins']:\n b=g('show',r['base']+':'+q['path']);ck('actual genuine supplier '+q['path'],len(b)==q['bytes'] and sha(b)==q['sha256'])\nraw=bytes.fromhex(r['Native']['hex']);ins=list(Cs(CS_ARCH_X86,CS_MODE_32).disasm(raw,0xab56c0))\nck('whole54B23ops',len(raw)==54 and len(ins)==23 and sha(raw)==r['Native']['sha256'])\nck('actual Native captures prototype/count/destination before byteclear',[(i.address,i.op_str) for i in ins if i.address in [0xab56c1,0xab56c6,0xab56cb,0xab56cf]]==[(0xab56c1,'edx, dword ptr [esp + 0x10]'),(0xab56c6,'esi, dword ptr [esp + 0x10]'),(0xab56cb,'edi, dword ptr [esp + 0x10]'),(0xab56cf,'byte ptr [esp + 8], 0')])\nck('fulltagread secondprototype and3-2-1-0 pushes',[(i.mnemonic,i.op_str) for i in ins if 0xab56d4<=i.address<=0xab56df]==[('mov','eax, dword ptr [esp + 8]'),('push','eax'),('mov','eax, dword ptr [esp + 0x1c]'),('push','edx'),('push','ecx'),('push','eax')])\nck('one genuine AB5400 then literal shift/add return',[(i.address,i.op_str) for i in ins if i.mnemonic=='call']==[(0xab56e4,'0xab5400')] and [(i.mnemonic,i.op_str) for i in ins if 0xab56e9<=i.address<=0xab56ee]==[('mov','eax, esi'),('shl','eax, 6'),('add','eax, edi')])\nck('RET0C no localEH orFP',ins[-1].mnemonic=='ret' and ins[-1].op_str=='0xc' and not r['Native']['local_EH'] and not any(i.mnemonic.startswith('f') for i in ins))\nh=read(r['owned_paths'][0]).decode();c=read(r['owned_paths'][1]).decode();doc=read(r['owned_paths'][2]).decode();b=c[c.index('    const std::uint32_t captured_entry_ecx'):]\nck('exact sixarg borrows no newFrame','std::uint32_t actual_entry_ecx_bits' in h and 'const volatile std::uint32_t (&actual_outer_stack_homes)[3]' in h and 'std::uint32_t& actual_tag_home' in h and 'volatile std::uint32_t (&actual_callee_stack_homes)[4]' in h and 'NativeGuiIconStateRepeatStorageFrame& frame' in h)\nck('outer read2-1-0-2 exact',re.findall(r'actual_outer_stack_homes\\[([^]]+)\\]',b)==['2','1','0','2'])\nck('fulltag then capturedprototype/count/destination then byte0',b.index('tag = captured_entry_ecx;')<b.index('first_prototype = actual_outer_stack_homes[2];')<b.index('count = actual_outer_stack_homes[1];')<b.index('destination = actual_outer_stack_homes[0];')<b.index('*reinterpret_cast<volatile std::uint8_t*>(&actual_tag_home) = 0;'))\nck('FULL maskedtagread/home3 before second prototype',b.index('masked_tag = tag;')<b.index('actual_callee_stack_homes[3] = masked_tag;')<b.index('second_prototype = actual_outer_stack_homes[2];'))\nck('outgoing3-2-1-0 exact originalECX separately',re.findall(r'actual_callee_stack_homes\\[([^]]+)\\]',b)==['3','2','1','0'] and 'actual_callee_stack_homes[2] = first_prototype;' in b and 'actual_callee_stack_homes[1] = captured_entry_ecx;' in b and 'actual_callee_stack_homes[0] = second_prototype;' in b)\nck('same real repeat supplier count/dest/home/frame/context','repeat_construct_native_gui_icon_states_storage_00ab5400(\\n        reinterpret_cast<void*>(destination), count, actual_callee_stack_homes, frame, context);' in b and c.count('repeat_construct_native_gui_icon_states_storage_00ab5400(')==1)\nck('captured count/destination wrap result AFTER actualcall',b.index('repeat_construct_native_gui_icon_states_storage_00ab5400(')<b.index('return destination + (count << 6u);') and c.count('return ')==1)\nck('no outer copyback latecount or frozenprototype substitute',re.search(r'actual_outer_stack_homes\\[[^]]+\\]\\s*=',b) is None and b.count('actual_outer_stack_homes[1]')==1 and 'CURRENT callee\\n// HOME0' in h)\nck('no extra constructor Frame owner callback guards or cleanup',not any(x in c for x in ['struct ','class ','new ','delete ','virtual','std::function','if (','while (','catch','try {','throw','noexcept','std::terminate','memcpy','memmove','const_cast']))\nck('ordinarytag bytealias and permitted liveoperandwrites','reinterpret_cast<volatile std::uint8_t*>(&actual_tag_home)' in c and 'genuine callback writes' in h)\nck('held13catch and noNativeauthority explicit','AB5400\\'s13Nativecatch rows/prefix cleanup remain HELD' in h and r['new_credit']==0 and all(v is False for v in r['readiness'].values()))\ndef tree(rev):\n o={}\n for row in g('ls-tree','-r','-z',rev).split(b'\\0'):\n  if row:\n   m,p=row.split(b'\\t',1);mode,kind,oid=m.decode().split();o[p.decode()]=(mode,kind,oid)\n return o\ndef th(items):\n root={}\n for p,v in items.items():\n  n=root;s=p.split('/')\n  for x in s[:-1]:n=n.setdefault(x,{})\n  n[s[-1]]=v\n def rec(n):\n  rows=[]\n  for k,v in n.items():\n   if isinstance(v,dict):rows.append((k+'/',b'40000 '+k.encode()+b'\\0'+bytes.fromhex(rec(v))))\n   else:rows.append((k,v[0].lstrip('0').encode()+b' '+k.encode()+b'\\0'+bytes.fromhex(v[2])))\n  z=b''.join(v for _,v in sorted(rows,key=lambda x:x[0].encode()));return hashlib.sha1(b'tree '+str(len(z)).encode()+b'\\0'+z).hexdigest()\n return rec(root)\nbefore=tree(r['base']);ck('wholebase tree',th(before)==g('rev-parse',r['base']+'^{tree}').decode().strip());after=dict(before)\nfor p in r['owned_paths']:\n ck('newpath absent '+p,p not in before);z=read(p);after[p]=('100644','blob',hashlib.sha1(b'blob '+str(len(z)).encode()+b'\\0'+z).hexdigest())\nundo=dict(after)\nfor p in r['owned_paths']:undo.pop(p)\nck('full4recursiveinverse',undo==before and th(undo)==th(before))\nif a.commit:\n parent=g('show','-s','--format=%P',a.commit).decode().strip();old=tree(parent);new=tree(a.commit);ck('actual oneparent',len(parent.split())==1)\n ck('actual4additions',{p for p in old.keys()|new.keys() if old.get(p)!=new.get(p)}==set(r['owned_paths']) and all(p not in old for p in r['owned_paths']))\n for q in r['provider_whole_pins']:ck('actualprovider unchanged '+q['path'],g('show',parent+':'+q['path'])==g('show',r['base']+':'+q['path']))\n for p in r['owned_paths']:new.pop(p)\n ck('actualfull4inverse',new==old and th(new)==g('rev-parse',parent+'^{tree}').decode().strip())\nprint(json.dumps({'passed':True,'checks':len(checks),'mode':'immutable Git' if a.commit else 'ignored candidate','base':r['base'],'base_tree':th(before),'virtual_four_addition_tree':th(after),'restored_tree':th(undo),'Native_bytes':54,'Native_ops':23,'fullNativecleanup_OriginalABI_Origin_runtime_activation':False,'new_credit':0}))\n"
+  },
+  "Native": {
+    "entry": "00ab56c0",
+    "end": "00ab56f5",
+    "bytes": 54,
+    "rows": 23,
+    "hex": "518b542410568b742410578b7c2410c6442408008b442408508b44241c5251508bd68bcfe817fdffff8bc6c1e00603c75f5e59c20c00",
+    "sha256": "5b4f89732c5680a9fc94485c95ebdc8a409b0b2beb3d8aed8a37b75d85eabfa8",
+    "local_EH": false,
+    "ABI": "entryECX plus three stackDWORD homes [dest,count,prototype]; originalRET0Ch; EAX capturedcountSHL6+captureddest"
+  },
+  "instruction_map": [
+    {
+      "address": "00ab56c0",
+      "mnemonic": "push",
+      "operands": "ecx",
+      "Source": "fulltagHOME fromentryECX"
+    },
+    {
+      "address": "00ab56c1",
+      "mnemonic": "mov",
+      "operands": "edx, dword ptr [esp + 0x10]",
+      "Source": "firstouterHOME2 prototypecapture"
+    },
+    {
+      "address": "00ab56c5",
+      "mnemonic": "push",
+      "operands": "esi",
+      "Source": "savedESI OriginalABI excluded"
+    },
+    {
+      "address": "00ab56c6",
+      "mnemonic": "mov",
+      "operands": "esi, dword ptr [esp + 0x10]",
+      "Source": "outerHOME1count capture"
+    },
+    {
+      "address": "00ab56ca",
+      "mnemonic": "push",
+      "operands": "edi",
+      "Source": "savedEDI OriginalABI excluded"
+    },
+    {
+      "address": "00ab56cb",
+      "mnemonic": "mov",
+      "operands": "edi, dword ptr [esp + 0x10]",
+      "Source": "outerHOME0destinationcapture"
+    },
+    {
+      "address": "00ab56cf",
+      "mnemonic": "mov",
+      "operands": "byte ptr [esp + 8], 0",
+      "Source": "onlytagLOWBYTE0"
+    },
+    {
+      "address": "00ab56d4",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 8]",
+      "Source": "FULL currenttagHOME read"
+    },
+    {
+      "address": "00ab56d8",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source": "calleeHOME3 maskedtag"
+    },
+    {
+      "address": "00ab56d9",
+      "mnemonic": "mov",
+      "operands": "eax, dword ptr [esp + 0x1c]",
+      "Source": "secondindependent outerHOME2prototypecapture"
+    },
+    {
+      "address": "00ab56dd",
+      "mnemonic": "push",
+      "operands": "edx",
+      "Source": "calleeHOME2firstprototype"
+    },
+    {
+      "address": "00ab56de",
+      "mnemonic": "push",
+      "operands": "ecx",
+      "Source": "calleeHOME1 ORIGINALentryECX"
+    },
+    {
+      "address": "00ab56df",
+      "mnemonic": "push",
+      "operands": "eax",
+      "Source": "calleeHOME0secondprototype"
+    },
+    {
+      "address": "00ab56e0",
+      "mnemonic": "mov",
+      "operands": "edx, esi",
+      "Source": "capturedfullcount sourcecalleeEDX binding"
+    },
+    {
+      "address": "00ab56e2",
+      "mnemonic": "mov",
+      "operands": "ecx, edi",
+      "Source": "captureddestination sourcecalleeECX binding"
+    },
+    {
+      "address": "00ab56e4",
+      "mnemonic": "call",
+      "operands": "0xab5400",
+      "Source": "one realpublished AB5400 NORMAL call"
+    },
+    {
+      "address": "00ab56e9",
+      "mnemonic": "mov",
+      "operands": "eax, esi",
+      "Source": "capturedcount result aftercall"
+    },
+    {
+      "address": "00ab56eb",
+      "mnemonic": "shl",
+      "operands": "eax, 6",
+      "Source": "literal DWORDshift6 wrap"
+    },
+    {
+      "address": "00ab56ee",
+      "mnemonic": "add",
+      "operands": "eax, edi",
+      "Source": "capturedDestinationadd wrap"
+    },
+    {
+      "address": "00ab56f0",
+      "mnemonic": "pop",
+      "operands": "edi",
+      "Source": "savedEDI OriginalABI excluded"
+    },
+    {
+      "address": "00ab56f1",
+      "mnemonic": "pop",
+      "operands": "esi",
+      "Source": "savedESI OriginalABI excluded"
+    },
+    {
+      "address": "00ab56f2",
+      "mnemonic": "pop",
+      "operands": "ecx",
+      "Source": "private ECXrestore excluded"
+    },
+    {
+      "address": "00ab56f3",
+      "mnemonic": "ret",
+      "operands": "0xc",
+      "Source": "OriginalRET0Ch excluded"
+    }
+  ],
+  "provider_whole_pins": [
+    {
+      "path": "include/bsp/native_gui_icon_state_repeat_storage.hpp",
+      "bytes": 3015,
+      "sha256": "170acd7b0840322fa3a6c19714060a83089824e7b990031016930c3e1c494bff"
+    },
+    {
+      "path": "src/native_gui_icon_state_repeat_storage.cpp",
+      "bytes": 2126,
+      "sha256": "39bb463835d76eb646e39d4d6b372d4b5d294f9ba3539adf385122a414ee53cc"
+    },
+    {
+      "path": "include/bsp/native_gui_icon_storage.hpp",
+      "bytes": 8923,
+      "sha256": "36efeb861e01b14348e370d169c9002b8ac436a29b2f9f3be1d5aac8d7976bfc"
+    },
+    {
+      "path": "src/native_gui_icon_storage.cpp",
+      "bytes": 19689,
+      "sha256": "cc847b8f5fb19055a1116376b2d3a8eff181f045695fe73394ba04996728a492"
+    },
+    {
+      "path": "include/bsp/native_string.hpp",
+      "bytes": 8771,
+      "sha256": "d50d87d78d1afcb73d42d61b33100f8d1eb30c51960d5c91c52c3e66602c0414"
+    },
+    {
+      "path": "src/native_string.cpp",
+      "bytes": 9121,
+      "sha256": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43"
+    },
+    {
+      "path": "include/bsp/native_render_context.hpp",
+      "bytes": 10071,
+      "sha256": "6c10dc5e62a3d68d12c12e89bdb4838dfc609caf4e4539cdedebc2b282399516"
+    },
+    {
+      "path": "src/native_render_context.cpp",
+      "bytes": 11471,
+      "sha256": "89fed23e4c27fd57a66178636b3725a9d0387ddf0291a13c451a7e09af0c3c43"
+    }
+  ],
+  "callee": "Published genuine repeat_construct_native_gui_icon_states_storage_00ab5400, same actualmutable fourhome array/existing20BFrame/context. It reads CURRENTcalleeHOME0 every reachednonnull iteration, so no frozenprototype substitute. Its13Nativecatchrows/prefix cleanup stayheld; normal Source contracts/partialgraph retention are inherited.",
+  "schedule": "tagFULLentryECX; outer2firstprototype\u2192outer1fullcount\u2192outer0destination; tagLOWBYTE0/FULLread\u2192callee3; outer2secondprototype; callee2firstprototype\u2192callee1ORIGINALentryECX\u2192callee0secondprototype; actualAB5400; capturedDestination+(capturedCount<<6)wrap afterreturn; nooutercopyback/reread",
+  "operand_lifetimes": "genuine entryECXbits are explicit ordinarySource input, not fabricated Native register/preimage/default. Ordinarytag and3outer/4callee words remain live C++ operands with permitted actualcallbacks/legalaliases. Private controls/spills separate from operand/record/provider writes; distinct active entries require distinct retained backing.",
+  "actual_growth_edges": [
+    "00ab5ae0 realloc middle repeated temp construction",
+    "00ab5bb6 inplace tail<count remaining repeated temp construction"
+  ],
+  "retention": "full count0 staging stilloccurs. Caller retains tag/bothhomesets/actual20BFrame/context/currentpartialcompletedremaining records and genuine providers on UNKNOWN. No helper catch/cleanup/retry/rollback/noexcept/terminal/Origin/ownership/disposition token.",
+  "ordinary_normal_Source_support_ready": true,
+  "readiness": {
+    "fullNativecallee_cleanup": false,
+    "AB59E0_complete": false,
+    "Original_ABI": false,
+    "Native_Origin": false,
+    "actual_caller_custody": false,
+    "runtime_activation": false
+  },
+  "new_credit": 0,
+  "classification": "existingHIGHSTL/vendorname/tag/priorcredits retained; no new Native/Original/vendor/helper/CG/duplicatebodycredit",
+  "actions": {
+    "ignored_candidate_only": true,
+    "tracked_Source_CMake_Ghidra_ledger_mutations": false,
+    "compiler_tests_probes_Game": false
+  }
+}
