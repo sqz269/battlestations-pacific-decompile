@@ -1,0 +1,142 @@
+{
+  "status": "QUALIFIED_MATERIAL_OWNING_PROVIDER_SOURCE_CORE_BUILD_LINK_DEFAULT_STARTUP_ADMITTED",
+  "Source_commit": "010e881f70ef3c07289612ec0608e09a316d41e7",
+  "joined_Main": "6c7779a286f251c46578864f62042f7423055be5",
+  "Native_addresses": [
+    "00535320",
+    "00B17D70",
+    "00B18900",
+    "00B18B60",
+    "00B192F0",
+    "00B194B0"
+  ],
+  "new_Native_or_vendor_body_credit": 0,
+  "new_tests": 0,
+  "source_paths": 15,
+  "author_Source_seal_sha256": "ed69d011d6f2a32306f78672e1ccb2f21095baf47e0de2ce2179a625a9328e02",
+  "source_forward_sha256": "6cb67872f79d5bcfd51bd49cb50481cfa74328bb903f6b3a483a529fae9abd8c",
+  "literal_legacy_or_NULL_selected_Source_projections": 25,
+  "whole_inverse_exact": true,
+  "Core_peers": {
+    "Native": {
+      "review": "local\\mesh_generation_primary_cc16_20261031\\ordinary_parent_common_contract_Root\\Material_010e_Native_Core_peer\\REVIEW.md",
+      "review_sha256": "2028f53d9ce5925e5dd598839cedce9743ff0ca189d5f7f455f4b8d1c8b80fef",
+      "seal_file": "SEAL.json",
+      "seal_sha256": "c68ab199524baecba0b90559b7c8e18c0eaad32b43b426d6d6c93e5979d834df",
+      "status": "qualified_scoped_acceptance"
+    },
+    "lifetime": {
+      "review": "local\\mesh_generation_primary_cc16_20261031\\ordinary_parent_common_contract_Root\\Material_010e_ChildScope_Core_peer\\REVIEW.md",
+      "review_sha256": "9058b83b601135920826f78a49b1066f33612889c3abcc2a718a03faf65a27d7",
+      "seal_file": "SEAL.json",
+      "seal_sha256": "d8897902bb5b15f6bcd18e2265af013e5319edc86a9509e07c9bb6b1905b4e52",
+      "status": "qualified_scoped_acceptance"
+    },
+    "Common_registry": {
+      "review": "local\\mesh_generation_primary_cc16_20261031\\ordinary_parent_common_contract_Root\\Material_010e_Common_Core_peer\\REVIEW.md",
+      "review_sha256": "d0f1d5670d8845ad5da6a599aac8d30a8970cc1ddbedcc3fed65fc031646ea4c",
+      "seal_file": "review_pins.json",
+      "seal_sha256": "75d7f23512e378498f54c006f921da7d51d0ce7118daebf3868b48619c8544ce",
+      "status": "qualified_scoped_acceptance"
+    }
+  },
+  "receipts": {
+    "Source": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\ordinary_parent_common_contract_Root\\Material_Source_admission_Root.json",
+      "sha256": "5650437ed0d2078436746ed84fa8b0860ef06afd3d998e686f737ab788c11a68"
+    },
+    "build": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\final99_Source_Root\\material_010e_owning_Root\\BUILD_RESULT.json",
+      "sha256": "e507f935af8d5fa0cbd2f7876b81e8a80383f2cba12d931cd76f96fff055c412"
+    },
+    "artifacts": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\final99_Source_Root\\material_010e_owning_Root\\ARTIFACTS.json",
+      "sha256": "5da6ebabd46fc5c9e6d765e46e53b2f41cdbd92417cd204f33c52106a02377b5"
+    },
+    "inputs": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\final99_Source_Root\\material_010e_owning_Root\\BUILD_INPUTS.json",
+      "sha256": "34f185f07ff1cfc46ce40b2a7d0fe9d898327f9b411e5004aecd8c8573673d35"
+    },
+    "archive": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\final99_Source_Root\\material_010e_owning_Root\\ARCHIVE_VERIFIED.json",
+      "sha256": "483aac0b603c1c7d6a240732c3ef096e947fa7d945264674b3067b9185e48830"
+    },
+    "link": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\final99_Source_Root\\material_010e_owning_Root\\retained_Material_link\\RESULT.json",
+      "sha256": "92765c45a78eaf9d8e4d45fff5b5faa901e217bbfb03648258efda66c2450968"
+    },
+    "runtime": {
+      "path": "local\\mesh_generation_primary_cc16_20261031\\ordinary_parent_common_contract_Root\\runtime_Material010e_default\\ROOT_VALIDATION_RECEIPT.json",
+      "sha256": "754246f6b38cfd19a14e649e309e1c0cd44eb29f50edf2bc46536b09f3cf0ba2"
+    }
+  },
+  "build": {
+    "configuration": "Official MSVC Win32 Release, MP2, PCH ON, coverage PDB OFF, no forcing",
+    "exit_code": 0,
+    "frozen_files": 272,
+    "objects": 85,
+    "actual_CL_read_inputs": 3577,
+    "compiler_tools": 6,
+    "archive": {
+      "path": "bsp_core.lib",
+      "bytes": 106430142,
+      "sha256": "547efcaa71e43fbaaedfc6633c81cb410b0b8a0271b18d6605498590b2672bb6"
+    },
+    "whole_exact_selected_Core_members": 78,
+    "both_existing_suites_passed": true
+  },
+  "retained_link": {
+    "actual_public_CPP_roots": 59,
+    "new_Material_roots": 17,
+    "temporarily_retained": 45,
+    "normal_roots": 14,
+    "all_85_objects_and_library_whole_exact": true,
+    "canonical_forcing_off": true,
+    "new_entry_execution": false
+  },
+  "default_runtime": {
+    "game_launcher_exit": [
+      0,
+      0
+    ],
+    "drain": {
+      "no_force_stop": true,
+      "waited_seconds": 0,
+      "natural_completed": true,
+      "timed_out": false,
+      "forced_stop_requested_pids": [],
+      "retained_pids": []
+    },
+    "exe_sha256": "3c40b5921f95f11ba2ae2c9dcbe55c34fd6e8de88e6a9a3d5b2ef1a63809f751",
+    "BSP_environment": {},
+    "window_device_created": [
+      1,
+      1
+    ],
+    "back_buffer": [
+      1600,
+      900
+    ],
+    "frames_presented": 0,
+    "presents_skipped": 1,
+    "loop_finished": 1,
+    "concrete_unimplemented_methods": [
+      126,
+      41
+    ],
+    "shutdown_rows": 6,
+    "ordinary_Material_exercised": false
+  },
+  "remaining": [
+    "Actual five caller bindings and staged Particle/Tracer argument epochs",
+    "Private genuine Parent+14 Material creator-credit handoff and B18A40 caller observations",
+    "Actual Parent close-before-factory-reset and persistent external cache/provider loans",
+    "Late-failure SAME-graph enclosing owner/early Host/worker retention before any teardown",
+    "Material75baf lower-family, LogicalVertex92dc and all eight upper/B107F0 contracts",
+    "Original ABI/FH3/SEH/private HOME/fault/FP/DF/concurrency and live ordinary/gameplay proof",
+    "Every existing strict OFF/ON and GUI activation gate"
+  ],
+  "all_nine_raw_GUI_switches_false": true,
+  "late_failure_does_not_immediately_mark_completed_heads_or_all_Parent_Model_close_guards": true,
+  "actual_ordinary_Material_caller_Host_activation_admitted": false
+}
