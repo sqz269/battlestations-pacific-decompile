@@ -165,6 +165,11 @@ public:
     // release ordinary returned references before the shared renderer drain;
     // its own fallback reference follows the native cache cleanup schedule.
     NativeTextureCacheContext& texture_cache() noexcept;
+    // Ready-only process supplier. Pure Source metadata admission over the
+    // genuine normal B32410 birth and SAME RO owner; no Native publication,
+    // receiver/profile/slot payload read or fabricated dispatch observation.
+    NativeTextureCacheContext& atlas_process_texture_cache(
+        const GameNativeReadOnlyData&);
     // Source admission for raw AEEAF0's captured B319B0 dispatch. Receiver is
     // captured BEFORE concat; native profile-address/slot64 AFTER concat.
     // The known actual normal B32410 birth is independent of the mutable
