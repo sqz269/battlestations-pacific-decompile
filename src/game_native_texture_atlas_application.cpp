@@ -89,7 +89,8 @@ struct GameNativeTextureAtlasApplication::Impl final {
           registry(d, h.manager_publication_01090aa0(), p.atlas_publication_,
               items, r.actual_owners(), cache.textures.owners, enter, leave, decrement),
           parser(d, strings, f, p.scratch_.get(), c, r),
-          loader(d, strings, f, raw, p.atlas_publication_, p.empty_name_, parser),
+          loader(d, strings, f, raw, p.atlas_publication_, p.empty_name_, parser,
+              p.source_line_scratch_extent()),
           deletion(h.native_deletion_bindings()),
           common_literal(d.data_at(0x00ce81c4u, sizeof("interface/textures/common.ats"))) {}
 

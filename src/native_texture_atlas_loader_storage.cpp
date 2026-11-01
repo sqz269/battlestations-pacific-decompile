@@ -96,16 +96,17 @@ NativeTextureAtlasLoaderContext::NativeTextureAtlasLoaderContext(
     const game::GameNativeReadOnlyData& data,NativeStringRawPoolContext& strings,
     const volatile Word& feature,game::GameNativeVfsRawServices& vfs,
     void* volatile& atlas_publication,const char* empty_name,
-    NativeTextureAtlasParserContext& parser)
+    NativeTextureAtlasParserContext& parser, std::size_t scratch_extent)
     :data_(data),strings_(strings),feature_(feature),vfs_(vfs),
       atlas_publication_(atlas_publication),empty_name_(empty_name),parser_(parser),
+      scratch_extent_(scratch_extent),
       extension_ats_(data.data_at(0x00d5d7cc,4)),
       directory_default_(data.data_at(0x00d5d7d0,3)),
       slash_(data.data_at(0x00ce7898,2)),backslash_(data.data_at(0x00ce7894,2)),
       underscore_(data.data_at(0x00ce7890,2)),
       extension_dot_ats_(data.data_at(0x00d5d23c,5)) {
     if(!same_native_string_storage_raw_pool_cells(vfs.strings,strings) ||
-       &vfs.enumeration.strings!=&vfs.strings || !empty_name)
+       &vfs.enumeration.strings!=&vfs.strings || !empty_name || scratch_extent==0)
         throw std::logic_error("raw atlas loader requires one genuine VFS/raw pool and actual empty role");
 }
 std::uint8_t match_native_texture_atlas_split_name_00aef3c0(
@@ -433,11 +434,16 @@ void register_native_texture_atlas_descriptor_00aef280(void* ignored_receiver,
             f.file_entered=true;f.active_site=0x00aef339;
             (void)load_native_particle_text_buffer_00af5850(f.text_register,f.diagnostic_name,
                 c.vfs_.actual_vfs_publication_0109ceec,c.vfs_.bindings,
-                c.vfs_.name_resolution,f.file_resolution,c.strings_);
+                c.vfs_.name_resolution,f.file_resolution,c.strings_,f.file_read);
             // AF5850's EAX is not tested. The original RELOADS the publication
             // after all of that provider's effects and ignores entry ECX.
             f.captured_parser_manager=c.atlas_publication_;    // AEF33E
             f.parser_buffer_home=bits(f.text_register);        // AEF344
+            // Additional Source admission, AFTER the original publication/HOME
+            // captures and BEFORE any parser/AF5740 effect. No Native helper.
+            f.fit_entered=true;
+            require_native_texture_atlas_buffer_scratch_fit(f.text_register,
+                f.file_read,c.scratch_extent_,f.buffer_fit);
             f.parser_entered=true;f.active_site=0x00aef345;
             (void)parse_native_texture_atlas_storage_00aeeaf0(
                 f.captured_parser_manager,f.parser_buffer_home,f.parser,c.parser_);

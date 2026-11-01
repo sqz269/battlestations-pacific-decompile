@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_language_catalog_storage.hpp"
+#include "bsp/native_texture_atlas_buffer_fit.hpp"
 #include "bsp/native_texture_atlas_loader_string_exact.hpp"
 #include "bsp/native_texture_atlas_parser_storage.hpp"
 #include "bsp/native_vfs_name_resolution.hpp"
@@ -26,7 +27,8 @@ public:
     NativeTextureAtlasLoaderContext(const game::GameNativeReadOnlyData&,
         NativeStringRawPoolContext&, const volatile std::uint32_t& actual_feature_0109eea4,
         game::GameNativeVfsRawServices&, void* volatile& actual_atlas_publication_00f8c26c,
-        const char* actual_empty_name_00f8c270, NativeTextureAtlasParserContext&);
+        const char* actual_empty_name_00f8c270, NativeTextureAtlasParserContext&,
+        std::size_t actual_process_shared_scratch_extent);
 private:
     friend void load_native_texture_atlas_storage_00af0060(void*,
         volatile std::uint32_t&, NativeTextureAtlasLoaderFrame&,NativeTextureAtlasLoaderContext&);
@@ -41,6 +43,7 @@ private:
     void* volatile& atlas_publication_;
     const char* const empty_name_;
     NativeTextureAtlasParserContext& parser_;
+    const std::size_t scratch_extent_; // SAME process owner actual allocation, no default.
     // Exact concrete object, not a supplied callback subclass. Its established
     // full 886280 normal raw-list schedule uses the SAME real BDD990 route.
     NativeLanguageResourceEnumerationCalls enumeration_calls_;
@@ -91,6 +94,8 @@ struct NativeTextureAtlasDescriptorFrame final {
     // Two distinct existing acquisitions. The BDF4C0 admission result never
     // substitutes for the independent resolve INSIDE the actual AF5850 body.
     NativeVfsNameResolutionAcquired admission_resolution, file_resolution;
+    NativeParticleTextBufferReadFrame file_read;
+    NativeTextureAtlasBufferFitFrame buffer_fit;
     NativeTextureAtlasParserFrame parser;
     NativeTextureAtlasLoaderPhase phase{NativeTextureAtlasLoaderPhase::fresh};
     void* ignored_receiver{};
@@ -102,7 +107,7 @@ struct NativeTextureAtlasDescriptorFrame final {
     std::uint32_t active_site{};
     std::int32_t native_state{-1};
     bool allocation_entered{}, allocation_returned{}, constructor_entered{};
-    bool admission_entered{}, admission_result{}, file_entered{}, parser_entered{};
+    bool admission_entered{}, admission_result{}, file_entered{}, fit_entered{}, parser_entered{};
     bool text_destroyed{}, text_freed{};
     std::exception_ptr failure;
 };
