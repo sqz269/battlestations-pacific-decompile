@@ -5,6 +5,7 @@
 
 namespace bsp {
 class NativeLocaleManagerDeletionLifetime;
+class NativeTextureAtlasDeletionLifetime;
 struct NativeAllocationStatsConstructorContext;
 struct NativeAvoidManagerLifetimeContext;
 struct GlobalConfigContext;
@@ -302,6 +303,12 @@ struct NativeSingletonDeletionBindings {
     // Explicit Source caller selection only; null preserves exact legacy.
     // Owned by the retained Host, never selected from feature presence.
     NativeGuiIconDelayedLoadsRawScalarDispatchContext* gui_icon_raw_scalar_dispatch{};
+    // CFEAE8 ->737F10. Borrow the ONE retained atlas process owner, whose
+    // implementation has the actual1Ch normal birth, SAME publication/pool/
+    // renderer texture owners and retained fresh full-flags HOME/scalar frame.
+    // This pointer grants no missing-provider, partial-constructor or failed-
+    // graph cleanup policy. Explicit normal retirement is armed before drain.
+    NativeTextureAtlasDeletionLifetime* texture_atlas{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -337,7 +344,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, actual_loading_queue_pub
 static_assert(offsetof(NativeSingletonDeletionBindings, movie_factory) == 216);
 static_assert(offsetof(NativeSingletonDeletionBindings, locale_manager) == 220);
 static_assert(offsetof(NativeSingletonDeletionBindings, gui_icon_raw_scalar_dispatch) == 224);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 228);
+static_assert(offsetof(NativeSingletonDeletionBindings, texture_atlas) == 228);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 232);
 
 // Exception paragraph below is the legacy/default contract. A selected prepared
 // raw edge still armed on an unknown Source escape instead retains/rethrows
