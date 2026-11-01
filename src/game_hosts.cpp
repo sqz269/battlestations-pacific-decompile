@@ -2086,6 +2086,13 @@ void GameStartupHost::observe_native_texture_atlas_startup() {
             static_cast<unsigned>(descriptor.admission_result), static_cast<unsigned>(descriptor.file_entered),
             static_cast<unsigned>(descriptor.parser_entered), static_cast<unsigned>(descriptor.text_destroyed),
             static_cast<unsigned>(descriptor.text_freed));
+        log_.notef("atlas source read/fit[%zu]: fit_entered=%u read_phase=%u allocation_extent=%u completed_read_count=%u fit_phase=%u fit_reason=%u physical_shared_scratch_extent=%zu required_scratch_extent=%zu logical_extent=%u no_data=%u",
+            index, static_cast<unsigned>(descriptor.fit_entered),
+            static_cast<unsigned>(descriptor.file_read.phase()), descriptor.file_read.allocation_extent(),
+            descriptor.file_read.completed_read_count(), static_cast<unsigned>(descriptor.buffer_fit.phase),
+            static_cast<unsigned>(descriptor.buffer_fit.reason), descriptor.buffer_fit.physical_shared_scratch_extent,
+            descriptor.buffer_fit.required_scratch_extent, descriptor.buffer_fit.logical_extent,
+            static_cast<unsigned>(descriptor.buffer_fit.no_data));
         if (!descriptor.parser_entered) continue;
         const auto& parser = descriptor.parser;
         const auto& acquisition = parser.texture_acquired;
