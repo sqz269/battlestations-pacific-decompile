@@ -46,21 +46,25 @@ def same_spot_insertions(base, ours, theirs):
     return base[:p] + x + y + suffix
 
 
-def cmake_registration_blocks(text):
-    """Keep each deferred command whole, including its continuation lines.
+def _cmake_registration_spans(text):
+    """Locate complete deferred commands without discarding surrounding text.
 
     Parentheses in quoted arguments and line comments do not close a command.
     An incomplete command is refused rather than silently dropping its tail.
     """
     blocks = []
-    pending = []
+    pending = None
+    offset = 0
     depth = 0
     quoted = False
     escaped = False
-    for line in text.splitlines():
-        if not pending and not line.startswith('cmake_language('):
+    for raw_line in text.splitlines(keepends=True):
+        line = raw_line.rstrip('\r\n')
+        if pending is None and not line.startswith('cmake_language('):
+            offset += len(raw_line)
             continue
-        pending.append(line)
+        if pending is None:
+            pending = offset
         for char in line:
             if escaped:
                 escaped = False
@@ -80,58 +84,101 @@ def cmake_registration_blocks(text):
                     if depth < 0:
                         return None
         if depth == 0 and not quoted:
-            blocks.append('\n'.join(pending))
-            pending = []
-    return None if pending else blocks
+            end = offset + len(line)
+            blocks.append((pending, end, text[pending:end]))
+            pending = None
+        offset += len(raw_line)
+    return None if pending is not None else blocks
+
+
+def cmake_registration_blocks(text):
+    """Keep the existing complete-command interface for callers and checks."""
+    spans = _cmake_registration_spans(text)
+    return None if spans is None else ['\n'.join(block.splitlines()) for _, _, block in spans]
+
+
+def merge_cmake_registrations(base, ours, theirs):
+    """Preserve a whole side and replay registration appends, never flatten CMake.
+
+    Existing target definitions retain the old changed-side/incoming tie rule.
+    Apart from those exact replacements, both sides must preserve the base as
+    a complete prefix. Non-registration edits or appended control flow require
+    a human merge rather than moving commands out of their original scope.
+    """
+    if not base:
+        return None
+    parsed = [_cmake_registration_spans(text) for text in (base, ours, theirs)]
+    if any(spans is None for spans in parsed):
+        return None
+    target_re = re.compile(r'CALL add_(?:executable|library) (\S+)')
+    definitions = []
+    for spans in parsed:
+        targets = {}
+        for _, _, block in spans:
+            match = target_re.search(block)
+            if match:
+                target = match.group(1)
+                if target in targets:
+                    return None
+                targets[target] = block
+        definitions.append(targets)
+    base_defs, our_defs, their_defs = definitions
+    winners = {}
+    for target in our_defs.keys() | their_defs.keys():
+        candidates = list(dict.fromkeys(side[target] for side in (our_defs, their_defs) if target in side))
+        changed = [block for block in candidates if block != base_defs.get(target)]
+        winners[target] = (changed or candidates)[-1]
+
+    def replace_targets(text, spans, replacements):
+        for start, end, block in reversed(spans):
+            match = target_re.search(block)
+            if match and match.group(1) in replacements:
+                text = text[:start] + replacements[match.group(1)] + text[end:]
+        return text
+
+    suffixes = []
+    for text, spans in zip((ours, theirs), parsed[1:]):
+        normalized = replace_targets(text, spans, base_defs)
+        if not normalized.startswith(base):
+            return None
+        suffix = normalized[len(base):]
+        spans = _cmake_registration_spans(suffix)
+        if spans is None:
+            return None
+        outside = suffix
+        for start, end, _ in reversed(spans):
+            outside = outside[:start] + outside[end:]
+        if any(line.strip() and not line.lstrip().startswith('#') for line in outside.splitlines()):
+            return None
+        suffixes.append((suffix, spans))
+
+    merged = replace_targets(ours, parsed[1], winners)
+    seen = set(cmake_registration_blocks(merged))
+    suffix, spans = suffixes[1]
+    additions = []
+    cursor = 0
+    for start, end, block in spans:
+        additions.append(suffix[cursor:start])
+        match = target_re.search(block)
+        if (not match or winners[match.group(1)] == block) and block not in seen:
+            additions.append(block)
+            seen.add(block)
+        cursor = end
+    additions.append(suffix[cursor:])
+    appended = ''.join(additions)
+    if appended.strip():
+        merged += ('' if merged.endswith('\n') else '\n') + appended
+    return merged
 
 
 def resolve(worktree, path):
     worktree = Path(worktree)
     base, ours, theirs = (stage_text(worktree, path, i) for i in (1, 2, 3))
     if path == 'cmake/startup.cmake':
-        lines = [l for l in ours.splitlines() if l.strip()]
-        header = [l for l in lines if l.startswith('#') or l.startswith('cmake_minimum_required')]
-        parsed = [cmake_registration_blocks(text) for text in (base, ours, theirs)]
-        if any(blocks is None for blocks in parsed):
+        merged = merge_cmake_registrations(base, ours, theirs)
+        if merged is None:
             return None
-        base_regs, our_regs, their_regs = parsed
-        regs = list(dict.fromkeys(our_regs + their_regs))
-        # a target defined on both sides (add_executable/add_library with the same name) keeps the
-        # incoming definition only: two definitions make CMake refuse the configure
-        target_re = re.compile(r'CALL add_(?:executable|library) (\S+)')
-        base_def = {}
-        for l in base_regs:
-            m = target_re.search(l)
-            if m:
-                base_def[m.group(1)] = l
-        candidates = {}
-        for l in regs:
-            m = target_re.search(l)
-            if m:
-                candidates.setdefault(m.group(1), []).append(l)
-        keep = {}
-        for target, lines_for in candidates.items():
-            # the side that changed the definition wins; if both changed, the incoming side does
-            changed = [l for l in lines_for if l != base_def.get(target)]
-            keep[target] = (changed or lines_for)[-1]
-        regs = [l for l in regs if not target_re.search(l) or keep[target_re.search(l).group(1)] == l]
-        # Sorting is safe for the target_sources / add_executable registrations, which
-        # are order-independent, but NOT for a deferred `include`. cmake/startup.cmake
-        # ends with
-        #   cmake_language(DEFER CALL include ".../cmake/native_data_placement.cmake")
-        # and that file runs target_link_options on bsp_game, so it has to be deferred
-        # AFTER the deferred add_executable that creates the target. "include" sorts
-        # before "target_sources" alphabetically, so a plain sorted() hoists it to the
-        # top of the registry and the next configure dies with
-        #   Cannot specify link options for target "bsp_game" which is not built by
-        #   this project
-        # which is what happened integrating agent/cc7-mount-frame-scale. Keep those
-        # lines pinned to the end, in their original relative order.
-        def order_dependent(line):
-            return 'CALL include ' in line
-        pinned = [l for l in regs if order_dependent(l)]
-        sortable = sorted(l for l in regs if not order_dependent(l))
-        (worktree / path).write_text('\n'.join(header + sortable + pinned) + '\n', encoding='utf-8', newline='\n')
+        (worktree / path).write_text(merged, encoding='utf-8', newline='\n')
         return 'registry union'
     if path.startswith('config/names/') and path.endswith('.jsonl'):
         def by_address(text):
