@@ -1,5 +1,9 @@
 #include "bsp/native_gui_icon_cropped_quad_storage.hpp"
 
+// Keep every Native row label as an evidence anchor, including fallthrough rows.
+#pragma warning(push)
+#pragma warning(disable: 4102)
+
 namespace bsp {
 void write_native_gui_icon_cropped_quad_storage_00ab1860(void* actual_icon,
     std::uint32_t (&actual_argument_homes)[7], NativeGuiIconCroppedQuadStorageFrame& frame,
@@ -981,3 +985,4 @@ void write_native_gui_icon_cropped_quad_storage_00ab1860(void* actual_icon,
     }
 }
 } // namespace bsp
+#pragma warning(pop)
