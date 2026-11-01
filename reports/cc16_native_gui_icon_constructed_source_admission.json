@@ -1,0 +1,1841 @@
+{
+  "kind": "Root Source84 raw Icon current74 normal Source composition admission",
+  "author": "4d1fdd44a1b7c99cd0aef9ae72f2f784169488c8",
+  "actual_parent": "1980c4871edaef31ea1930083e830f923a147204",
+  "CMake": "4d38c96dce70bf180b78fddfed70d0f6bf3f6ab2",
+  "static": {
+    "author": "4d1fdd44a1b7c99cd0aef9ae72f2f784169488c8",
+    "actual_parent": "1980c4871edaef31ea1930083e830f923a147204",
+    "reader_checks": 108,
+    "candidate_checks": 80,
+    "full_fresh_four_path_inverse": true,
+    "providers25_current_exact": true,
+    "independent_Source_checks": 117,
+    "independent_Source_reader": 80,
+    "Source_peer_artifacts": 72,
+    "Source_peer_findings": 0
+  },
+  "Root_full_HCPPdoc_reader10679_Native184B57ops_review": true,
+  "build": {
+    "exit": 0,
+    "seconds": 41.4355266,
+    "Win32": true,
+    "all_targets_two_existing_suites": true,
+    "inputs": 553,
+    "outputs": 42,
+    "MP": 2,
+    "PCH": "ON",
+    "coverage_PDB": "OFF",
+    "forcing": 0,
+    "new_tests": 0,
+    "new_Game_runs": 0,
+    "prior24_whole_objects_unchanged": [
+      "build/win32/bsp_core.dir/Release/native_gui_media_focus_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_manager_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_selection_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_getter_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_invalid_parameter_noinfo_call.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_allocation_storage.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_range_lifetime_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_string_raw_resize_exact.obj",
+      "build/win32/bsp_core.dir/Release/native_crt_memcpy.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_native_size_storage.obj",
+      "build/win32/bsp_game.dir/Release/game_native_gui_icon_application.obj",
+      "build/win32/bsp_core.dir/Release/gui_texture.obj",
+      "build/win32/bsp_core.dir/Release/gui_type_dispatch.obj",
+      "build/win32/bsp_core.dir/Release/native_texture_saved_dimensions.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_repeat_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_size_comparison_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_state_backward_assignment_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_gui_icon_filter_storage.obj"
+    ]
+  },
+  "Core": {
+    "object_bytes": 17473,
+    "sha256": "fe47bc30be3d9287c965f2ffcd68166a89e1d481bbb3dcf732aaf39609c613f5",
+    "code": [
+      {
+        "section": 3,
+        "bytes": 315,
+        "ops": 108,
+        "relocations": [
+          {
+            "offset": 7,
+            "symbol_index": 220,
+            "target": {
+              "name": "___security_cookie",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 35,
+            "symbol_index": 112,
+            "target": {
+              "name": "__imp_?_Getcvt@_Locinfo@std@@QBE?AU_Cvtvec@@XZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 74,
+            "symbol_index": 113,
+            "target": {
+              "name": "__imp_?_W_Getdays@_Locinfo@std@@QBEPBGXZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 99,
+            "symbol_index": 74,
+            "target": {
+              "name": "__imp__calloc",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 142,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 157,
+            "symbol_index": 114,
+            "target": {
+              "name": "__imp_?_W_Getmonths@_Locinfo@std@@QBEPBGXZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 222,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 247,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 253,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 268,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 289,
+            "symbol_index": 124,
+            "target": {
+              "name": "@__security_check_cookie@4",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 300,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 305,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 310,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 4,
+        "bytes": 315,
+        "ops": 108,
+        "relocations": [
+          {
+            "offset": 7,
+            "symbol_index": 220,
+            "target": {
+              "name": "___security_cookie",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 35,
+            "symbol_index": 112,
+            "target": {
+              "name": "__imp_?_Getcvt@_Locinfo@std@@QBE?AU_Cvtvec@@XZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 74,
+            "symbol_index": 113,
+            "target": {
+              "name": "__imp_?_W_Getdays@_Locinfo@std@@QBEPBGXZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 99,
+            "symbol_index": 74,
+            "target": {
+              "name": "__imp__calloc",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 142,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 157,
+            "symbol_index": 114,
+            "target": {
+              "name": "__imp_?_W_Getmonths@_Locinfo@std@@QBEPBGXZ",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 222,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 247,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 253,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 268,
+            "symbol_index": 219,
+            "target": {
+              "name": "??_C@_1BK@MHIKGOKE@?$AA?3?$AAA?$AAM?$AA?3?$AAa?$AAm?$AA?3?$AAP?$AAM?$AA?3?$AAp?$AAm@",
+              "value": 0,
+              "section": 62,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 289,
+            "symbol_index": 124,
+            "target": {
+              "name": "@__security_check_cookie@4",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 300,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 305,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 310,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 5,
+        "bytes": 45,
+        "ops": 18,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 31,
+            "symbol_index": 75,
+            "target": {
+              "name": "___std_exception_copy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 6,
+        "bytes": 57,
+        "ops": 22,
+        "relocations": [
+          {
+            "offset": 31,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 41,
+            "symbol_index": 75,
+            "target": {
+              "name": "___std_exception_copy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 7,
+        "bytes": 38,
+        "ops": 14,
+        "relocations": [
+          {
+            "offset": 24,
+            "symbol_index": 86,
+            "target": {
+              "name": "?__ExceptionPtrCopy@@YAXPAXPBX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 8,
+        "bytes": 29,
+        "ops": 10,
+        "relocations": [
+          {
+            "offset": 18,
+            "symbol_index": 84,
+            "target": {
+              "name": "?__ExceptionPtrCreate@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 10,
+        "bytes": 51,
+        "ops": 19,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 31,
+            "symbol_index": 75,
+            "target": {
+              "name": "___std_exception_copy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 40,
+            "symbol_index": 159,
+            "target": {
+              "name": "??_7logic_error@std@@6B@",
+              "value": 4,
+              "section": 42,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          }
+        ]
+      },
+      {
+        "section": 11,
+        "bytes": 66,
+        "ops": 24,
+        "relocations": [
+          {
+            "offset": 30,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 44,
+            "symbol_index": 75,
+            "target": {
+              "name": "___std_exception_copy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 53,
+            "symbol_index": 159,
+            "target": {
+              "name": "??_7logic_error@std@@6B@",
+              "value": 4,
+              "section": 42,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          }
+        ]
+      },
+      {
+        "section": 12,
+        "bytes": 17,
+        "ops": 6,
+        "relocations": [
+          {
+            "offset": 5,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 11,
+            "symbol_index": 76,
+            "target": {
+              "name": "___std_exception_destroy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 14,
+        "bytes": 8,
+        "ops": 4,
+        "relocations": [
+          {
+            "offset": 2,
+            "symbol_index": 85,
+            "target": {
+              "name": "?__ExceptionPtrDestroy@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 16,
+        "bytes": 17,
+        "ops": 6,
+        "relocations": [
+          {
+            "offset": 5,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 11,
+            "symbol_index": 76,
+            "target": {
+              "name": "___std_exception_destroy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 18,
+        "bytes": 25,
+        "ops": 12,
+        "relocations": [
+          {
+            "offset": 11,
+            "symbol_index": 87,
+            "target": {
+              "name": "?__ExceptionPtrAssign@@YAXPAXPBX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 19,
+        "bytes": 48,
+        "ops": 19,
+        "relocations": [
+          {
+            "offset": 11,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 17,
+            "symbol_index": 76,
+            "target": {
+              "name": "___std_exception_destroy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 34,
+            "symbol_index": 73,
+            "target": {
+              "name": "??3@YAXPAXI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 20,
+        "bytes": 48,
+        "ops": 19,
+        "relocations": [
+          {
+            "offset": 11,
+            "symbol_index": 146,
+            "target": {
+              "name": "??_7exception@std@@6B@",
+              "value": 4,
+              "section": 38,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 17,
+            "symbol_index": 76,
+            "target": {
+              "name": "___std_exception_destroy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 34,
+            "symbol_index": 73,
+            "target": {
+              "name": "??3@YAXPAXI@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 21,
+        "bytes": 38,
+        "ops": 20,
+        "relocations": []
+      },
+      {
+        "section": 22,
+        "bytes": 82,
+        "ops": 34,
+        "relocations": [
+          {
+            "offset": 41,
+            "symbol_index": 74,
+            "target": {
+              "name": "__imp__calloc",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 63,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 77,
+            "symbol_index": 95,
+            "target": {
+              "name": "?_Xbad_alloc@std@@YAXXZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 23,
+        "bytes": 11,
+        "ops": 6,
+        "relocations": []
+      },
+      {
+        "section": 24,
+        "bytes": 810,
+        "ops": 230,
+        "relocations": [
+          {
+            "offset": 6,
+            "symbol_index": 129,
+            "target": {
+              "name": "__ehhandler$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+              "value": 0,
+              "section": 25,
+              "type": 32,
+              "storage": 3,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 24,
+            "symbol_index": 220,
+            "target": {
+              "name": "___security_cookie",
+              "value": 0,
+              "section": 0,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 83,
+            "symbol_index": 110,
+            "target": {
+              "name": "?phase@NativeModelStorageGeometryFrame@bsp@@QBE?AW4NativeModelStorageGeometryPhase@2@XZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 108,
+            "symbol_index": 108,
+            "target": {
+              "name": "?actual_owners@GuiNativeGeometryOwners@bsp@@QAEAAVNativeRenderActualOwners@2@XZ",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 190,
+            "symbol_index": 107,
+            "target": {
+              "name": "?create_native_mesh_00b73b60@GuiNativeGeometryOwners@bsp@@QAEPAUNativeMeshStorage@2@AAUGuiNativeMeshAcquired@2@@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 262,
+            "symbol_index": 103,
+            "target": {
+              "name": "?resolve_actual@NativeRenderActualOwnerRegistry@bsp@@UAEAAVRenderCommandReference@2@PAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 269,
+            "symbol_index": 201,
+            "target": {
+              "name": "??_R0?AVNativeModelReference@bsp@@@8",
+              "value": 0,
+              "section": 56,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 274,
+            "symbol_index": 198,
+            "target": {
+              "name": "??_R0?AVRenderCommandReference@bsp@@@8",
+              "value": 0,
+              "section": 55,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 282,
+            "symbol_index": 127,
+            "target": {
+              "name": "___RTDynamicCast",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 352,
+            "symbol_index": 106,
+            "target": {
+              "name": "?set_raw_geometry_00b75170@NativeModelReference@bsp@@QAEXAAVNativeModelStorageGeometryFrame@2@AAUNativeModelStorageGeometryAcquired@2@@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 414,
+            "symbol_index": 118,
+            "target": {
+              "name": "?data_at@GameNativeReadOnlyData@game@bsp@@QBEPBXII@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 462,
+            "symbol_index": 102,
+            "target": {
+              "name": "?find@NativeRenderActualOwnerRegistry@bsp@@QAEPAVRenderCommandReference@2@PAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 492,
+            "symbol_index": 104,
+            "target": {
+              "name": "?dispatch_native_render_actual_owner_zero@bsp@@YAXAAVNativeRenderActualOwners@1@PAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 561,
+            "symbol_index": 109,
+            "target": {
+              "name": "?set_native_gui_widget_local_position_00aa7dc0@bsp@@YAXPAXPBXAAUNativeGuiWidgetTransformScratch@1@AAUNativeGuiWidgetTransformBindings@1@AAUGuiWidgetBounds@1@ADN@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 604,
+            "symbol_index": 204,
+            "target": {
+              "name": "??_C@_0DK@HOINMJGC@Icon74?5requires?5its?5SAME?5fresh?5r@",
+              "value": 0,
+              "section": 57,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 612,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 617,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 626,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 631,
+            "symbol_index": 207,
+            "target": {
+              "name": "??_C@_0ED@FFANGBJF@Icon74?5requires?5the?5SAME?5genuine@",
+              "value": 0,
+              "section": 58,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 639,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 644,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 653,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 658,
+            "symbol_index": 213,
+            "target": {
+              "name": "??_C@_0DO@MNGAJKNO@Icon74?5requires?5the?5genuine?5capt@",
+              "value": 0,
+              "section": 60,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 666,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 671,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 680,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 685,
+            "symbol_index": 216,
+            "target": {
+              "name": "??_C@_0EP@BEIGBOEM@Icon74?5already?9zero?5mesh?5require@",
+              "value": 0,
+              "section": 61,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 693,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 698,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 707,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 712,
+            "symbol_index": 210,
+            "target": {
+              "name": "??_C@_0FF@GKEDHMKD@Icon74?5requires?5the?5captured?5Mod@",
+              "value": 0,
+              "section": 59,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 720,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 725,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 734,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 752,
+            "symbol_index": 93,
+            "target": {
+              "name": "?current_exception@std@@YA?AVexception_ptr@1@XZ",
+              "value": 0,
+              "section": 26,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 767,
+            "symbol_index": 92,
+            "target": {
+              "name": "??4exception_ptr@std@@QAEAAV01@ABV01@@Z",
+              "value": 0,
+              "section": 18,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 775,
+            "symbol_index": 90,
+            "target": {
+              "name": "??1exception_ptr@std@@QAE@XZ",
+              "value": 0,
+              "section": 14,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 800,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 25,
+        "bytes": 29,
+        "ops": 9,
+        "relocations": [
+          {
+            "offset": 15,
+            "symbol_index": 124,
+            "target": {
+              "name": "@__security_check_cookie@4",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 20,
+            "symbol_index": 140,
+            "target": {
+              "name": "__ehfuncinfo$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+              "value": 52,
+              "section": 37,
+              "type": 0,
+              "storage": 3,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 25,
+            "symbol_index": 126,
+            "target": {
+              "name": "___CxxFrameHandler3",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 26,
+        "bytes": 40,
+        "ops": 15,
+        "relocations": [
+          {
+            "offset": 22,
+            "symbol_index": 84,
+            "target": {
+              "name": "?__ExceptionPtrCreate@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 28,
+            "symbol_index": 88,
+            "target": {
+              "name": "?__ExceptionPtrCurrentException@@YAXPAX@Z",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 27,
+        "bytes": 4,
+        "ops": 2,
+        "relocations": []
+      },
+      {
+        "section": 29,
+        "bytes": 10,
+        "ops": 6,
+        "relocations": []
+      },
+      {
+        "section": 30,
+        "bytes": 42,
+        "ops": 16,
+        "relocations": [
+          {
+            "offset": 23,
+            "symbol_index": 96,
+            "target": {
+              "name": "??0logic_error@std@@QAE@PBD@Z",
+              "value": 0,
+              "section": 11,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          },
+          {
+            "offset": 28,
+            "symbol_index": 189,
+            "target": {
+              "name": "__TI2?AVlogic_error@std@@",
+              "value": 0,
+              "section": 52,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          },
+          {
+            "offset": 37,
+            "symbol_index": 125,
+            "target": {
+              "name": "__CxxThrowException@8",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      },
+      {
+        "section": 31,
+        "bytes": 37,
+        "ops": 14,
+        "relocations": []
+      },
+      {
+        "section": 32,
+        "bytes": 25,
+        "ops": 9,
+        "relocations": []
+      },
+      {
+        "section": 33,
+        "bytes": 14,
+        "ops": 5,
+        "relocations": [
+          {
+            "offset": 4,
+            "symbol_index": 149,
+            "target": {
+              "name": "??_C@_0BC@EOODALEL@Unknown?5exception@",
+              "value": 0,
+              "section": 39,
+              "type": 0,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 6
+          }
+        ]
+      },
+      {
+        "section": 35,
+        "bytes": 17,
+        "ops": 7,
+        "relocations": [
+          {
+            "offset": 13,
+            "symbol_index": 128,
+            "target": {
+              "name": "_memcpy",
+              "value": 0,
+              "section": 0,
+              "type": 32,
+              "storage": 2,
+              "aux_count": 0,
+              "aux_hex": ""
+            },
+            "type": 20
+          }
+        ]
+      }
+    ],
+    "local_EH": [
+      {
+        "name": "___CxxFrameHandler3",
+        "value": 0,
+        "section": 0,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      {
+        "name": "__ehhandler$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+        "value": 0,
+        "section": 25,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      {
+        "name": "__catch$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z$0",
+        "value": 738,
+        "section": 24,
+        "type": 32,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      {
+        "name": "__unwindtable$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+        "value": 16,
+        "section": 37,
+        "type": 0,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_hex": ""
+      },
+      {
+        "name": "__tryblocktable$?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+        "value": 32,
+        "section": 37,
+        "type": 0,
+        "storage": 3,
+        "aux_count": 0,
+        "aux_hex": ""
+      }
+    ],
+    "public": [
+      {
+        "name": "?construct_native_gui_icon_geometry_storage_00ab2540@bsp@@YAXPAXAAVNativeGuiIconConstructedStorageFrame@1@AAUNativeGuiIconConstructedStorageContext@1@AAUNativeGuiIconConstructedStorageAcquired@1@@Z",
+        "value": 0,
+        "section": 24,
+        "type": 32,
+        "storage": 2,
+        "aux_count": 0,
+        "aux_hex": ""
+      }
+    ],
+    "normal_map": [],
+    "Root_complete_main810B230ops_review": true,
+    "Root_Source_EH": {
+      "FuncInfo_max_states": 2,
+      "try_low_high_catchHigh_nCatches": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "unwind_entries": [
+        [
+          -1,
+          0
+        ],
+        [
+          -1,
+          0
+        ]
+      ],
+      "cleanup_actions": "none;catchdiagnosticexception_ptr+phasefail+bare_rethrow",
+      "catch_code_range": [
+        738,
+        804
+      ]
+    },
+    "observations": [
+      "Freshsamecontextcanonicalpreflightbeforepayload; BYTE74+8B branch+9A skipscreationbutalwaysposition.",
+      "CapturedModel4C+A3 beforegenuinemeshcreatorCALL+BD; x87FLDE1/FSTE3/FSTPE6 order, geometry/0homesEC/EF thencanonicalModelresolve105 andrealrawgeometry159.",
+      "LateCE2220referencecellread172 afterassociationreturn164;oneCALL182mesh+4,branchobservedresult18B/18D.",
+      "ZeroarmCURRENTprofile194/actualtableload1AB,targetchecks+canonicalcompanion,realalreadyzeroCALL1EB;nomeshpayloadreadthereafter.",
+      "AlwaysXORPS1FD/MOVSS203_207_20C thenwholeAA7DC0CALL230; successfulcompletephase239..248.",
+      "Catch2E2..323 recordsactivesite/exception_ptr/failedphasesandbareCxxrethrow;noNativecleanupaction. PrivatenativeEHstackepochnotreconstructed."
+    ]
+  },
+  "root_archive": {
+    "object_bytes": 17473,
+    "object_sha256": "fe47bc30be3d9287c965f2ffcd68166a89e1d481bbb3dcf732aaf39609c613f5",
+    "archive_exact_member_offsets": [
+      22941164
+    ]
+  },
+  "supplemental_independent_Git_Core": "Git108complete;compiledreviewinprogress,notclaimedcomplete",
+  "receipts": [
+    {
+      "path": "local/function_source_batch84/common/manifest.json",
+      "bytes": 181473,
+      "sha256": "b4c2536aeb71d6d6b39c312c791513903ff97d9c89aa1a7ca955efca654ebf87"
+    },
+    {
+      "path": "local/function_source_batch84/build_result.json",
+      "bytes": 45,
+      "sha256": "c55bd0e6ede1a3451f8a9bfeff65f402d8e8b5ab1215bac4be5426dd6413cc5e"
+    },
+    {
+      "path": "local/function_source_batch84/Root_actual_Git.json",
+      "bytes": 392,
+      "sha256": "3df89812e83bde80981caaa3eb60bd6164259d7a27c3e4d5e90340243d98e4e2"
+    },
+    {
+      "path": "local/function_source_batch84/Root_Core.json",
+      "bytes": 137986,
+      "sha256": "b3bb5021fa28d2b16288aa6ca55565322b4deef71af3d28f76e34ff9627aa424"
+    },
+    {
+      "path": "local/function_source_batch84/Root_archive.json",
+      "bytes": 176,
+      "sha256": "c9ace89b7ea9859a451891dde3f2afefd01b1d28fe13add7dcdf78101d4c0cea"
+    },
+    {
+      "path": "local/function_source_batch84/Source_peer/peer_receipt.json",
+      "bytes": 15066,
+      "sha256": "5d271b0fc41f18b4dd88a94c547609763449c87a49c47a965c156d8d7e0fa41b"
+    },
+    {
+      "path": "local/function_source_batch84/Source_peer/manifest.json",
+      "bytes": 12558,
+      "sha256": "bd858e6c06d47019fe8735512b5639632bcdf0e4951914d26b2af6f1759f8637"
+    },
+    {
+      "path": "local/function_source_batch84/Source_peer/sealed_receipt.json",
+      "bytes": 1143,
+      "sha256": "34f5e05418a9e1903d1f3e3abe868167e5869c296df5da553459bbd71e031372"
+    },
+    {
+      "path": "local/function_source_batch84/postbuild_evidence_only.json",
+      "bytes": 262,
+      "sha256": "d4ab4dc989816fc3164bee692923168dc24dd0f065492e1e3559e0633e5aa5bc"
+    }
+  ],
+  "normal_Source_support_only": true,
+  "Native_private_EH_stack_or_action_reconstructed": false,
+  "actual_Page_Type6_activation": false,
+  "new_Original_vendor_helper_CG_duplicate_credit": 0
+}

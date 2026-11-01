@@ -133,9 +133,14 @@
     ]
   },
   "final_independent_Git_Core": {
-    "status": "supplementary review in progress; not claimed complete",
-    "completed_admission_basis": "independentSource227+11/224 plus Rootwhole292B104+16B8/officialbuild2suites/archive2490exact",
-    "activation_permitted": false
+    "status": "complete,zeroordinaryfindings",
+    "actual_Git_checks": 230,
+    "artifacts": 237,
+    "whole_main292B104_and_load16B8_COFF_Capstone_dumpbin_equal": true,
+    "archive2490_exact_once": true,
+    "no_localEH": true,
+    "normal_map_absent": true,
+    "Git_only_supplemental_inputs": 4
   },
   "receipts": [
     {
@@ -177,6 +182,21 @@
       "path": "local/function_source_batch82/postbuild_evidence_only.json",
       "bytes": 135,
       "sha256": "9bf51674963c218c581e3f66933a49ecc3ce8fe436f2fb3949e659376c7387ec"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/Core/FINAL_REVIEW.md",
+      "bytes": 1169,
+      "sha256": "f4e6133250e788be67745018c60079bf25166e42639ad2e308e8e0c1b9a569ab"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/Core/final_review.json",
+      "bytes": 35163,
+      "sha256": "c007096939dc42c94d7aec8f21bf530e6b48b3d09a8537dfdd227ba8bb64f7e9"
+    },
+    {
+      "path": "local/function_source_batch82/final_peer/final_manifest.json",
+      "bytes": 46781,
+      "sha256": "b6f937269a1e3b6da3ab5ba09be46a0534d2eb1c65d23181155c8646241b6e8a"
     }
   ],
   "actual_type6_raw_caller_activation": false,
