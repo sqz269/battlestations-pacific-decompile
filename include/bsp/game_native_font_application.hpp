@@ -12,10 +12,13 @@ class VfsLuaScriptFiles;
 struct LuaRuntimeGlobals;
 }
 namespace bsp::game {
+class GameFontHost;
 class GameHostLog;
 class GameVfsHost;
 class GameNativeRendererApplication;
 class GameNativeRawDefaultTextOwner;
+class GameNativeGuiPageApplication;
+class GameNativeGuiPageFontRetirementCut;
 
 enum class GameNativeFontLoadPhase {
     fresh, gfx, alpha, data, decode, adoption, publication, complete, failed
@@ -114,6 +117,17 @@ public:
 
 private:
     friend class GameFontHost;
+    friend class GameNativeGuiPageApplication;
+    NativeFontResourceOwners& bind_page_text_owner(GameFontHost&, GameNativeGuiPageApplication&);
+    void fail_page_text_owner_link(GameFontHost&, GameNativeGuiPageApplication&) noexcept;
+    void prepare_page_fonts_for_drain(GameFontHost&, GameNativeGuiPageApplication&);
+    void require_prepared_page_link(const GameFontHost&, const GameNativeGuiPageApplication&) const;
+    void prepared_page_link_identities(const GameFontHost&, const GameNativeGuiPageApplication&,
+        const void*& service_view, void*& registered_renderer) const;
+    void retire_prepared_page_fonts(GameFontHost&, GameNativeGuiPageApplication&,
+        const GameNativeGuiPageFontRetirementCut&);
+    void detach_page_text_owner_after_parent_drain(GameFontHost&, GameNativeGuiPageApplication&);
+    bool page_text_owner_awaits_detach(const GameFontHost&, const GameNativeGuiPageApplication&) const noexcept;
     // Shared Host/App interruption latch; callable only by that typed host.
     void fail_raw_text_owner_link(GameNativeRawDefaultTextOwner&) noexcept;
     bool raw_text_owner_awaits_detach(const GameNativeRawDefaultTextOwner*) const noexcept;

@@ -1,4 +1,6 @@
 #include "bsp/game_native_gui_page_application.hpp"
+#include "bsp/game_hosts_fonts.hpp"
+#include "bsp/game_native_font_application.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
@@ -817,6 +819,7 @@ struct GameNativeGuiPageApplication::Impl {
     GameHostLog& log;
     GameNativeGuiManagerApplication& manager;
     GameNativeRendererApplication& renderer;
+    GameVfsHost& font_vfs; // Source identity retained from the actual constructor.
     GameNativeReadOnlyData& data;
     const ObjectHandleResolverSlots& installed_resolvers;
     const bool& crt_sse2_conversion;
@@ -889,11 +892,29 @@ struct GameNativeGuiPageApplication::Impl {
     bool active{};
     std::uint32_t failed_site{};
     std::exception_ptr failed;
+    enum class PageFontPhase { none, bind_entered, bound, prepare_entered, prepared,
+        retire_entered, retired_await_parent, detach_entered, detached, failed };
+    PageFontPhase font_phase{PageFontPhase::none};
+    GameFontHost* font_host{};
+    GameNativeFontApplication* font_app{};
+    NativeFontResourceOwners* font_resources{};
+    const void* font_image{};
+    const void* font_prepared_view{};
+    GameNativeGuiManagerApplication* font_manager{};
+    NativePlatformFocusOwnersContext* font_gui_context{};
+    void* font_renderer_receiver{};
+    NativeGuiSelectedManagerDeleteAttempt* font_attempt{};
+    GameSingletonHost* font_singleton_host{};
+    NativeGuiMediaFocusLifetimeContext* font_delete_context{};
+    const NativeSingletonDeletionBindings* font_delete_bindings{};
+    void* font_gui_receiver{};
+    bool font_attempt_bind_entered{}, font_parent_closed{};
+    std::exception_ptr font_failure;
 
     Impl(GameHostLog& output, GameNativeGuiManagerApplication& gui, GameNativeRendererApplication& app,
         GameNativeModelDomain& model_domain, GameVfsHost& vfs, GameNativeReadOnlyData& mapped,
         const ObjectHandleResolverSlots& slots, const bool& sse2_conversion)
-        : log(output), manager(gui), renderer(app), data(mapped),
+        : log(output), manager(gui), renderer(app), font_vfs(vfs), data(mapped),
           installed_resolvers(slots), crt_sse2_conversion(sse2_conversion), raw(vfs.borrow_raw_services()),
           strings(vfs.raw_strings()), scene_domain(app.startup_scene_domain()),
           node_types(vfs.native_owners().types(), vfs.native_types().light_types()),
@@ -1392,6 +1413,183 @@ GameNativeGuiPageApplication::~GameNativeGuiPageApplication() noexcept {
     if (requires_process_retention()) std::terminate();
 }
 
+void GameNativeGuiPageApplication::begin_page_font_link(GameFontHost& host,
+    GameNativeFontApplication& producer, GameNativeRendererApplication& renderer, GameVfsHost& vfs) {
+    auto& p = *impl_;
+    const bool fresh_link = p.font_phase == Impl::PageFontPhase::none && !p.font_host && !p.font_app;
+    if (!p.font_host) p.font_host = &host;
+    if (!p.font_app) p.font_app = &producer;
+    p.font_phase = Impl::PageFontPhase::bind_entered;
+    try {
+        p.require_entry();
+        require(fresh_link && host.owns_page_font_producer(producer) &&
+            &renderer == &p.renderer && &vfs == &p.font_vfs && p.manager_binding && p.properties_composed &&
+            p.scene_hooks_bound && p.pages.empty() && p.widget_records.empty() &&
+            p.retained_frames.empty() && p.widget_operations.empty() && !p.current_calls,
+            "Page Font link requires the SAME producer/renderer/VFS/manager before Page or Text entry");
+        p.font_manager = &p.manager;
+        p.font_gui_context = &p.manager.context(); // Source service identity only.
+    } catch (...) { host.fail_page_text_owner_link(*this); throw; }
+}
+
+void GameNativeGuiPageApplication::complete_page_font_link(GameFontHost& host,
+    GameNativeFontApplication& producer, NativeFontResourceOwners& resources, const void* image) {
+    auto& p = *impl_;
+    try {
+        require(p.font_phase == Impl::PageFontPhase::bind_entered && !p.failed && !p.font_failure &&
+            p.font_host == &host && p.font_app == &producer && host.owns_page_font_producer(producer) &&
+            !p.font_resources && !p.font_image && image && p.font_manager == &p.manager &&
+            p.font_gui_context == &p.manager.context(),
+            "Page Font completion requires its SAME entered private producer link");
+        p.font_resources = &resources; p.font_image = image;
+        p.font_phase = Impl::PageFontPhase::bound;
+    } catch (...) { host.fail_page_text_owner_link(*this); throw; }
+}
+
+void GameNativeGuiPageApplication::fail_page_font_link(GameFontHost& attempted_host,
+    GameNativeFontApplication& attempted_app) noexcept {
+    auto& p = *impl_;
+    auto* const prior_host = p.font_host;
+    auto* const prior_app = p.font_app;
+    const bool notify_prior = p.font_phase != Impl::PageFontPhase::failed && prior_host && prior_app &&
+        (prior_host != &attempted_host || prior_app != &attempted_app);
+    if (!p.font_failure) p.font_failure = std::current_exception();
+    p.font_phase = Impl::PageFontPhase::failed;
+    if (!p.font_host) p.font_host = &attempted_host;
+    if (!p.font_app) p.font_app = &attempted_app;
+    p.fail(0); // Source custody failure, not a claimed Original instruction.
+    if (notify_prior) prior_app->fail_page_text_owner_link(*prior_host, *this);
+}
+
+void GameNativeGuiPageApplication::prepare_page_font_retirement(GameFontHost& host,
+    GameNativeFontApplication& producer) {
+    auto& p = *impl_;
+    const auto prior = p.font_phase;
+    p.font_phase = Impl::PageFontPhase::prepare_entered;
+    try {
+        p.require_entry();
+        require(prior == Impl::PageFontPhase::bound && p.font_host == &host && p.font_app == &producer &&
+            p.font_resources && p.font_image && !p.font_prepared_view && !p.font_attempt_bind_entered &&
+            p.font_manager == &p.manager && p.font_gui_context == &p.manager.context(),
+            "Page Font preparation requires its SAME completed link once");
+        producer.require_prepared_page_link(host, *this);
+        producer.prepared_page_link_identities(host, *this, p.font_prepared_view, p.font_renderer_receiver);
+        require(p.font_phase == Impl::PageFontPhase::prepare_entered && !p.failed &&
+            p.font_prepared_view && p.font_renderer_receiver,
+            "Page Font preparation cannot resume after interruption");
+        p.font_phase = Impl::PageFontPhase::prepared;
+    } catch (...) { host.fail_page_text_owner_link(*this); throw; }
+}
+
+void GameNativeGuiPageApplication::bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt& attempt) {
+    auto& p = *impl_;
+    const bool first = !p.font_attempt_bind_entered && !p.font_attempt;
+    p.font_attempt_bind_entered = true;
+    if (!p.font_attempt) p.font_attempt = &attempt;
+    try {
+        require(first && p.font_phase == Impl::PageFontPhase::prepared && !p.failed &&
+            p.font_host && p.font_app && p.font_resources && p.font_image && p.font_prepared_view &&
+            p.font_manager == &p.manager && p.font_gui_context == &p.manager.context(),
+            "Page Font selected binding requires its exact prepared Page once");
+        const void* view{}; void* renderer{};
+        p.font_app->prepared_page_link_identities(*p.font_host, *this, view, renderer);
+        require(view == p.font_prepared_view && renderer == p.font_renderer_receiver,
+            "Page Font prepared service identity changed before selected binding");
+        GameNativeGuiPageFontRetirementCut::PageBindingAccess::capture(attempt, *this, *p.font_gui_context,
+            p.strings, p.page_lifetime, p.font_renderer_receiver, p.font_singleton_host,
+            p.font_delete_context, p.font_delete_bindings, p.font_gui_receiver);
+    } catch (...) {
+        if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
+        else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::require_page_font_retirement_cut(GameFontHost& host,
+    GameNativeFontApplication& producer, const GameNativeGuiPageFontRetirementCut& cut) const {
+    const auto& p = *impl_;
+    require((p.font_phase == Impl::PageFontPhase::prepared || p.font_phase == Impl::PageFontPhase::retire_entered) &&
+        !p.failed && !p.font_failure && p.font_host == &host && p.font_app == &producer &&
+        p.font_resources && p.font_image && p.font_prepared_view && p.font_renderer_receiver &&
+        p.font_attempt_bind_entered && p.font_attempt && p.font_singleton_host &&
+        p.font_delete_context && p.font_delete_bindings && p.font_gui_receiver,
+        "Page Font cut requires its exact privately bound prepared record");
+    producer.require_prepared_page_link(host, *this); // Retained metadata, no ready getter.
+    const void* view{}; void* renderer{};
+    producer.prepared_page_link_identities(host, *this, view, renderer);
+    require(view == p.font_prepared_view && renderer == p.font_renderer_receiver,
+        "Page Font consuming service identity changed");
+    cut.require_same(*p.font_attempt, *this, *p.font_singleton_host, *p.font_delete_bindings,
+        *p.font_delete_context, p.font_gui_receiver, p.font_renderer_receiver);
+}
+
+void GameNativeGuiPageApplication::require_actual_page_font_last_use_closed(
+    const GameNativeGuiPageFontRetirementCut&) const {
+    // Deliberately not inferred from empty Page/Type3 records, count, phase,
+    // scalar-return metadata or a caller assertion. No late Native payload read.
+    throw std::logic_error("Actual Page Font/Text/section/material queued last-use closure producer is UNBOUND");
+}
+
+void GameNativeGuiPageApplication::after_gui_scalar_return(const GameNativeGuiPageFontRetirementCut& cut) {
+    auto& p = *impl_;
+    try {
+        require(p.font_host && p.font_app && p.font_phase == Impl::PageFontPhase::prepared,
+            "Page Font callback requires its exact prepared private chain");
+        require_page_font_retirement_cut(*p.font_host, *p.font_app, cut);
+        require_actual_page_font_last_use_closed(cut); // Rejects before all retirement entry/effects.
+        p.font_phase = Impl::PageFontPhase::retire_entered;
+        p.font_host->retire_prepared_page_fonts(*this, cut);
+        require(p.font_phase == Impl::PageFontPhase::retire_entered && !p.failed &&
+            p.font_host->page_font_retired_awaiting_parent(*this),
+            "Page Font callback cannot resume after interruption");
+        p.font_phase = Impl::PageFontPhase::retired_await_parent;
+    } catch (...) {
+        if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
+        else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::before_registered_renderer_delete(
+    const NativeGuiSelectedManagerDeleteAttempt& attempt, void* actual_receiver) {
+    auto& p = *impl_;
+    try {
+        require(p.font_attempt == &attempt && p.font_singleton_host && p.font_delete_bindings &&
+            p.font_delete_context && p.font_host && p.font_app &&
+            actual_receiver == p.font_renderer_receiver && actual_receiver,
+            "Page Font renderer fence requires its actual saved secondary/selected identities");
+        GameNativeGuiPageFontRetirementCut::PageBindingAccess::require_renderer(attempt, *this,
+            p.font_singleton_host, p.font_delete_bindings, p.font_delete_context,
+            p.font_gui_receiver, p.font_renderer_receiver);
+        require(p.font_phase == Impl::PageFontPhase::retired_await_parent && !p.failed &&
+            p.font_host->page_font_retired_awaiting_parent(*this),
+            "Actual Page Font retirement cut is missing before registered renderer deletion");
+    } catch (...) {
+        if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
+        else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
+        throw;
+    }
+}
+
+void GameNativeGuiPageApplication::detach_page_font_link_after_parent_drain(GameFontHost& host,
+    GameNativeFontApplication& producer, NativeFontResourceOwners& resources, const void* image) {
+    auto& p = *impl_;
+    const auto prior = p.font_phase;
+    p.font_phase = Impl::PageFontPhase::detach_entered;
+    try {
+        require(prior == Impl::PageFontPhase::retired_await_parent && p.font_parent_closed && !p.failed &&
+            p.font_host == &host && p.font_app == &producer && p.font_resources == &resources &&
+            p.font_image == image && image && p.font_prepared_view && p.font_attempt,
+            "Page Font detach requires SAME saved identities and actual post-parent closure");
+        // Identity-only after native Font/GUI/renderer payload retirement.
+        p.font_host = nullptr; p.font_app = nullptr; p.font_resources = nullptr; p.font_image = nullptr;
+        p.font_prepared_view = nullptr; p.font_manager = nullptr; p.font_gui_context = nullptr;
+        p.font_renderer_receiver = nullptr; p.font_attempt = nullptr; p.font_singleton_host = nullptr;
+        p.font_delete_context = nullptr; p.font_delete_bindings = nullptr; p.font_gui_receiver = nullptr;
+        p.font_phase = Impl::PageFontPhase::detached;
+    } catch (...) { host.fail_page_text_owner_link(*this); throw; }
+}
+
 void GameNativeGuiPageApplication::bind_default_icon_services(GameNativeGuiPageIconServices& services) {
     auto& p = *impl_;
     p.require_entry();
@@ -1422,6 +1620,10 @@ void GameNativeGuiPageApplication::bind_default_icon_services(GameNativeGuiPageI
 }
 
 bool GameNativeGuiPageApplication::requires_process_retention() const noexcept {
+    const auto phase = impl_->font_phase;
+    if (phase == Impl::PageFontPhase::bind_entered || phase == Impl::PageFontPhase::prepare_entered ||
+        phase == Impl::PageFontPhase::retire_entered || phase == Impl::PageFontPhase::detach_entered ||
+        phase == Impl::PageFontPhase::failed) return true;
     return impl_->failed != nullptr || impl_->active || impl_->retiring_page ||
         impl_->current_properties || impl_->current_calls || impl_->resolvers.requires_process_retention() ||
         impl_->models->requires_process_retention();
@@ -1496,6 +1698,19 @@ void GameNativeGuiPageApplication::after_native_renderer_drain() {
         require(!widget->actual || (widget->native_retired && widget->reference_retired()),
             "Page raw Group/Icon ownership survived native drain");
     impl_->models->after_native_renderer_drain();
+    if (impl_->font_phase != Impl::PageFontPhase::none && impl_->font_phase != Impl::PageFontPhase::detached) {
+        auto& p = *impl_;
+        try {
+            require(p.font_phase == Impl::PageFontPhase::retired_await_parent && p.font_host &&
+                p.font_host->page_font_retired_awaiting_parent(*this),
+                "Page Font post-parent closure requires actual completed prepared retirement");
+            p.font_parent_closed = true; // Existing real Page/model post-drain closure returned.
+        } catch (...) {
+            if (p.font_host) p.font_host->fail_page_text_owner_link(*this);
+            else { p.font_phase = Impl::PageFontPhase::failed; p.fail(0); }
+            throw;
+        }
+    }
 }
 
 void* GameNativeGuiPageApplication::load_page_00aa5840(void* actual_manager,

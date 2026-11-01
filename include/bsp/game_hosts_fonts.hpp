@@ -14,6 +14,9 @@ class GameVfsHost;
 class GameScriptHost;
 class GameNativeRendererApplication;
 class GameNativeRawDefaultTextOwner;
+class GameNativeGuiPageApplication;
+class GameNativeFontApplication;
+class GameNativeGuiPageFontRetirementCut;
 
 // Application ownership for the font/payload portion of0073bae0. Uses the
 // existing mounted VFS, Lua environment and canonical native renderer/cache.
@@ -65,6 +68,13 @@ public:
     // BEFORE owner.reset. Keep this host/resources/descriptors/VFS alive until
     // successful completion. No image/name/header payload is revisited here.
     void detach_raw_text_owner_after_parent_drain(GameNativeRawDefaultTextOwner&);
+    // Distinct exclusive Page borrower. Bind after actual image production and
+    // before any Page/Text entry. Preparation runs while Renderer is ready.
+    // No real Page Font-use closure producer is supplied by this dormant lane.
+    void bind_page_text_owner(GameNativeGuiPageApplication&);
+    void prepare_page_fonts_for_drain(GameNativeGuiPageApplication&);
+    void detach_page_text_owner_after_parent_drain(GameNativeGuiPageApplication&);
+    GameNativeGuiPageApplication* page_text_owner() const noexcept; // Identity only.
     // One successful native retirement; repeated host closure is metadata-only.
     // Never retries a failed load/retirement or retires surviving borrowers.
     void retire_native_fonts();
@@ -77,6 +87,14 @@ public:
     // payload reads. Image cache/provider opens belong to the native renderer.
     std::size_t resource_opens() const noexcept;
 private:
+    friend class GameNativeGuiPageApplication;
+    friend class GameNativeFontApplication;
+    bool owns_page_font_producer(const GameNativeFontApplication&) const noexcept;
+    void latch_page_text_owner_failure(GameNativeGuiPageApplication&) noexcept;
+    void fail_page_text_owner_link(GameNativeGuiPageApplication&) noexcept;
+    void retire_prepared_page_fonts(GameNativeGuiPageApplication&,
+        const GameNativeGuiPageFontRetirementCut&);
+    bool page_font_retired_awaiting_parent(const GameNativeGuiPageApplication&) const noexcept;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };

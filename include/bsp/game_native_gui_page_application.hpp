@@ -1,7 +1,9 @@
 #pragma once
+#include "bsp/native_gui_media_focus_lifetime.hpp"
 #include <cstdint>
 #include <exception>
 #include <memory>
+#include <stdexcept>
 
 namespace bsp {
 struct ObjectHandleResolverSlots;
@@ -17,6 +19,16 @@ struct NativeGuiWidgetLifetimeContext;
 struct NativeGuiWidgetTransformBindings;
 class NativeGuiWidgetLoadedDispatch;
 class NativeRenderActualOwnerRegistry;
+class NativeFontResourceOwners;
+namespace game { class GameNativeGuiPageFontRetirementCut; }
+// One concrete Source event contract, not a callback registry or Native body.
+class NativeGuiPageFontRetirementHost {
+public:
+    virtual ~NativeGuiPageFontRetirementHost() = default;
+    virtual void after_gui_scalar_return(const game::GameNativeGuiPageFontRetirementCut&) = 0;
+    virtual void before_registered_renderer_delete(
+        const NativeGuiSelectedManagerDeleteAttempt&, void* actual_receiver) = 0;
+};
 }
 namespace bsp::game {
 class GameHostLog;
@@ -25,6 +37,127 @@ class GameNativeReadOnlyData;
 class GameNativeRendererApplication;
 class GameNativeModelDomain;
 class GameVfsHost;
+class GameFontHost;
+class GameNativeFontApplication;
+class GameNativeGuiPageApplication;
+
+// Birth ONLY in the existing selected AA6540 normal-return site. The GUI may
+// already be freed: every receiver below is an opaque identity. No public
+// scalar flag, count or caller receipt can construct/copy/retain this scope.
+class GameNativeGuiPageFontRetirementCut final {
+public:
+    GameNativeGuiPageFontRetirementCut(const GameNativeGuiPageFontRetirementCut&) = delete;
+    GameNativeGuiPageFontRetirementCut& operator=(const GameNativeGuiPageFontRetirementCut&) = delete;
+    GameNativeGuiPageFontRetirementCut(GameNativeGuiPageFontRetirementCut&&) = delete;
+    GameNativeGuiPageFontRetirementCut& operator=(GameNativeGuiPageFontRetirementCut&&) = delete;
+    void require_same(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+        const NativeGuiPageFontRetirementHost& provider, const GameSingletonHost& host,
+        const NativeSingletonDeletionBindings& bindings, const NativeGuiMediaFocusLifetimeContext& context,
+        void* actual_gui, void* registered_renderer) const {
+        check(active_ && &attempt == &attempt_ && &provider == provider_ &&
+            &host == host_ && &bindings == bindings_ && &context == context_ &&
+            actual_gui == gui_ && registered_renderer == renderer_ &&
+            attempt.page_font_scope_ == this, "Page Font cut scope/identity mismatch");
+        require_active_attempt();
+    }
+    // Friendship is deliberately confined to this binding-only nested access.
+    // Page has NO friendship with Cut itself and cannot call its ctor/dtor.
+    class PageBindingAccess final {
+    private:
+        friend class GameNativeGuiPageApplication;
+        static void capture(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+            NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
+            NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages, void* renderer,
+            GameSingletonHost*& host, NativeGuiMediaFocusLifetimeContext*& context,
+            const NativeSingletonDeletionBindings*& bindings, void*& gui) {
+            GameNativeGuiPageFontRetirementCut::capture_binding(attempt, provider, owners,
+                strings, pages, renderer, host, context, bindings, gui);
+        }
+        static void require_renderer(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+            const NativeGuiPageFontRetirementHost& provider, const GameSingletonHost* host,
+            const NativeSingletonDeletionBindings* bindings, const NativeGuiMediaFocusLifetimeContext* context,
+            void* gui, void* renderer) {
+            GameNativeGuiPageFontRetirementCut::require_renderer_fence(attempt, provider,
+                host, bindings, context, gui, renderer);
+        }
+    };
+private:
+    friend void* bsp::scalar_delete_native_gui_manager_00aa6540_fragment(void*,
+        std::uint32_t, NativeGuiMediaFocusLifetimeContext&, NativeGuiSelectedManagerDeleteAttempt&);
+    static void check(bool condition, const char* message) {
+        if (!condition) throw std::logic_error(message);
+    }
+    static void capture_binding(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+        NativeGuiPageFontRetirementHost& provider, NativePlatformFocusOwnersContext& owners,
+        NativeStringRawPoolContext& strings, NativeGuiPageLifetimeHost& pages, void* renderer,
+        GameSingletonHost*& host, NativeGuiMediaFocusLifetimeContext*& context,
+        const NativeSingletonDeletionBindings*& bindings, void*& gui) {
+        check(attempt.cold_bound_ && !attempt.host_entered_ && !attempt.core_entered_ &&
+            !attempt.scalar_entered_ && !attempt.scalar_returned_ && !attempt.core_returned_ &&
+            !attempt.host_returned_ && !attempt.source_fence_returned_ && !attempt.unknown_ &&
+            attempt.host_ && attempt.context_ && attempt.bindings_ &&
+            attempt.page_font_bind_entered_ && attempt.page_fonts_ == &provider &&
+            attempt.page_font_gui_receiver_ && attempt.page_font_renderer_receiver_ == renderer &&
+            renderer && !attempt.page_font_scope_ &&
+            &attempt.context_->owners == &owners && &attempt.context_->strings == &strings &&
+            &attempt.context_->pages == &pages,
+            "Page Font binding requires the SAME cold selected attempt/provider domain");
+        host = attempt.host_; context = attempt.context_; bindings = attempt.bindings_;
+        gui = attempt.page_font_gui_receiver_;
+    }
+    static void require_bound_attempt(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+        const NativeGuiPageFontRetirementHost& provider, const GameSingletonHost* host,
+        const NativeSingletonDeletionBindings* bindings, const NativeGuiMediaFocusLifetimeContext* context,
+        void* gui, void* renderer) {
+        check(attempt.host_ == host && attempt.bindings_ == bindings && attempt.context_ == context &&
+            attempt.page_fonts_ == &provider && attempt.page_font_bind_entered_ &&
+            attempt.page_font_gui_receiver_ == gui && attempt.page_font_renderer_receiver_ == renderer &&
+            attempt.host_entered_ && !attempt.host_returned_ && attempt.core_entered_ &&
+            !attempt.core_returned_ && !attempt.source_fence_returned_ && !attempt.unknown_,
+            "Page Font selected attempt changed or escaped");
+    }
+    static void require_renderer_fence(const NativeGuiSelectedManagerDeleteAttempt& attempt,
+        const NativeGuiPageFontRetirementHost& provider, const GameSingletonHost* host,
+        const NativeSingletonDeletionBindings* bindings, const NativeGuiMediaFocusLifetimeContext* context,
+        void* gui, void* renderer) {
+        require_bound_attempt(attempt, provider, host, bindings, context, gui, renderer);
+        check(attempt.scalar_entered_ && attempt.scalar_returned_ && !attempt.page_font_scope_,
+            "Page Font renderer fence requires the completed exact scalar scope");
+    }
+    void require_active_attempt() const {
+        require_bound_attempt(attempt_, *provider_, host_, bindings_, context_, gui_, renderer_);
+        check(attempt_.scalar_entered_ && attempt_.scalar_returned_ &&
+            attempt_.page_font_scope_ == this, "Page Font cut is not the actual scalar-return scope");
+    }
+    GameNativeGuiPageFontRetirementCut(NativeGuiSelectedManagerDeleteAttempt& attempt,
+        NativeGuiPageFontRetirementHost& provider, NativeGuiMediaFocusLifetimeContext& context,
+        void* actual_gui, std::uint32_t full_flags)
+        : attempt_(attempt), provider_(&provider), host_(attempt.host_), bindings_(attempt.bindings_),
+          context_(&context), gui_(actual_gui), renderer_(attempt.page_font_renderer_receiver_),
+          flags_(full_flags) {
+        check(!attempt.page_font_scope_ && attempt.context_ == &context &&
+            attempt.page_fonts_ == &provider && attempt.page_font_gui_receiver_ == actual_gui &&
+            actual_gui && renderer_, "Page Font cut requires its exact prepared scalar capture");
+        require_bound_attempt(attempt, provider, host_, bindings_, context_, gui_, renderer_);
+        check(attempt.scalar_entered_ && attempt.scalar_returned_,
+            "Page Font cut birth requires actual selected scalar normal work");
+        attempt.page_font_scope_ = this;
+        active_ = true;
+    }
+    ~GameNativeGuiPageFontRetirementCut() noexcept {
+        if (attempt_.page_font_scope_ == this) attempt_.page_font_scope_ = nullptr;
+        active_ = false; // Source scope metadata only, no Native cleanup.
+    }
+    NativeGuiSelectedManagerDeleteAttempt& attempt_;
+    NativeGuiPageFontRetirementHost* const provider_;
+    GameSingletonHost* const host_;
+    const NativeSingletonDeletionBindings* const bindings_;
+    NativeGuiMediaFocusLifetimeContext* const context_;
+    void* const gui_;
+    void* const renderer_;
+    const std::uint32_t flags_; // Actual full DWORD capture; never a caller permission.
+    bool active_{};
+};
 
 // Existing AA5840 Page chain, with the actual raw default-Type2 GuiGroup
 // reader/Model/lifetime service. Keep OFF until joint full-frontend authority,
@@ -99,7 +232,7 @@ public:
         std::uint8_t visible) = 0;
 };
 
-class GameNativeGuiPageApplication final {
+class GameNativeGuiPageApplication final : private NativeGuiPageFontRetirementHost {
 public:
     // Starts F8BF50 (CD73D0), initializes the canonical Layer lineage
     // (CD73F0) and prepares private context views over the renderer domain.
@@ -153,6 +286,23 @@ public:
     void after_native_renderer_drain();
     std::uint32_t failure_site() const noexcept;
 private:
+    friend class GameFontHost;
+    friend class GameNativeFontApplication;
+    friend class GameNativeGuiManagerApplication;
+    void begin_page_font_link(GameFontHost&, GameNativeFontApplication&,
+        GameNativeRendererApplication&, GameVfsHost&);
+    void complete_page_font_link(GameFontHost&, GameNativeFontApplication&,
+        NativeFontResourceOwners&, const void* actual_image);
+    void fail_page_font_link(GameFontHost&, GameNativeFontApplication&) noexcept;
+    void prepare_page_font_retirement(GameFontHost&, GameNativeFontApplication&);
+    void bind_page_font_delete_attempt(NativeGuiSelectedManagerDeleteAttempt&);
+    void require_page_font_retirement_cut(GameFontHost&, GameNativeFontApplication&,
+        const GameNativeGuiPageFontRetirementCut&) const;
+    void require_actual_page_font_last_use_closed(const GameNativeGuiPageFontRetirementCut&) const;
+    void detach_page_font_link_after_parent_drain(GameFontHost&, GameNativeFontApplication&,
+        NativeFontResourceOwners&, const void* saved_image);
+    void after_gui_scalar_return(const GameNativeGuiPageFontRetirementCut&) override;
+    void before_registered_renderer_delete(const NativeGuiSelectedManagerDeleteAttempt&, void*) override;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
