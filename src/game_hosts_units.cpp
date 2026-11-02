@@ -16,6 +16,8 @@
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
 #include "bsp/wire_goal2_chain32_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
+#include "bsp/wire_goal2_chain56_switches.hpp"
+#include "bsp/strike_release_ver_cc13.hpp"
 #include "bsp/native_scene_command_queue.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_scene_command_record_destroy.hpp"
@@ -37445,6 +37447,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.has_squadron_2fc = bsp::plane_squadron_registry()
                                 .find_by_member_unit(unit_.process_index) != nullptr;
                             arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
+                            // Native 0099B6A0 calls the reconstructed base-slot decision; OFF keeps the torpedo helper's inline tail projection.
+                            if constexpr (bsp::kWireGoal2Chain56Bound) {
+                                bsp::TorpedoArmResult ar = bsp::torpedo_arm_drop_009d49a0(arm);
+                                if (ar.fell_through_to_0099b6a0) {
+                                    // 009D49DA tail-jumps with the same task in ECX (RET,
+                                    // no stack arguments). These facts come from that
+                                    // task's actual squadron and unit control mode above.
+                                    // Discard the legacy helper's inline base decisions:
+                                    // only this body's outputs govern release and spend.
+                                    const bsp::BaseReleaseRequestResult base =
+                                        bsp::bot_task_request_release_base_0099b6a0(
+                                            arm.has_squadron_2fc, arm.unit_free_flight_72c);
+                                    ar.release_007bbba0 = base.release_007bbba0;
+                                    ar.consumed = base.returned_true;
+                                    owner_.done("BotTask::request_ordnance_release_base", 0x0099b6a0u);
+                                    bsp::plane_task_reach_count(
+                                        bsp::g_plane_task_reach_sw3.torpedo_fallthrough,
+                                        arm.has_squadron_2fc,
+                                        arm.has_squadron_2fc && arm.unit_free_flight_72c);
+                                }
+                                if (ar.armed) {
+                                    unit_.torpedo_drop_timer = ar.prepare_timer;
+                                    unit_.torpedo_timer_armed_since_enter = true;
+                                }
+                                if (ar.release_007bbba0) {
+                                    owner_.release_ordnance_007bbba0(unit_);
+                                    ++unit_.torpedo_fallthrough_releases;
+                                }
+                                if (ar.consumed) --unit_.torpedo_release_orders_c58;
+                            } else {
                             const bsp::TorpedoArmResult ar =
                                 bsp::torpedo_arm_drop_009d49a0(arm);
                             if (ar.fell_through_to_0099b6a0) {   // sw3c reach, log only
@@ -37462,6 +37494,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 ++unit_.torpedo_fallthrough_releases;
                             }
                             if (ar.consumed) --unit_.torpedo_release_orders_c58;
+                            }
                         }
                         // The two gates that stop the drop in this host, both
                         // fed by the unread 009D3420.
