@@ -29,9 +29,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/cc13_seg87.hpp"
-#include "bsp/cc13_dyn1.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
-#include "bsp/landscape_lua_seg55_argon.hpp"
 #include "bsp/attack_commands.hpp"
 #include <vector>
 #include "bsp/attack_target_classify.hpp"
@@ -2901,21 +2899,7 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
         const bool ship = units_.unit_is_kind_of(row.unit_index, 6);
         bool posed = false;
         if (ship) {
-            // 00C336C0 calls transform_from_4x4_00c336c0; OFF keeps the shared motion-state pose.
-            if constexpr (kWireScriptOrdersHostBound) {
-                float transform[12];
-                bsp::cc13_dyn1::transform_from_4x4_00c336c0(transform, m);
-                // Adapt the compact physics transform to the host's shared
-                // affine motion state (the existing labelled substitution).
-                const float body_pose[16] = {
-                    transform[0], transform[1], transform[2], 0.0f,
-                    transform[3], transform[4], transform[5], 0.0f,
-                    transform[6], transform[7], transform[8], 0.0f,
-                    transform[9], transform[10], transform[11], 1.0f};
-                posed = units_.set_local_matrix_006e00a0(row.unit_index, body_pose);
-            } else {
             posed = units_.set_local_matrix_006e00a0(row.unit_index, m);   // vtable[88h]
-            }
             if (posed) ++turn_ship_arm_posed_;
             log_.implemented("EntityTurnToEntity::ship_body_pose_00c56cf0 (the motion state)",
                              "00c56cf0");
@@ -3287,25 +3271,12 @@ void* GameScriptOrdersHost::argument_ptr_field(int index) {
     if (state_ == nullptr) return nullptr;
     const int slot = stack_slot(index);
     if (slot > argument_count_ || lua_type(state_, slot) != LUA_TTABLE) return nullptr;
-    // 00888D20 calls lua_table_get_ptr_field_00888d20; OFF keeps the direct Ptr read.
-    if constexpr (kWireScriptOrdersHostBound) {
-        lua_getfield(state_, slot, "Ptr");
-        bsp::landscape_lua_seg55_argon::LuaTableEntry entry;
-        entry.key = "Ptr";
-        entry.is_light_userdata = lua_type(state_, -1) == LUA_TLIGHTUSERDATA;
-        entry.userdata_ptr = entry.is_light_userdata ? lua_touserdata(state_, -1) : nullptr;
-        void* value = bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20({entry});
-        lua_settop(state_, argument_count_);
-        log_.implemented("LuaBinding::argument_ptr_field", "00888d20");
-        return value;
-    } else {
     lua_getfield(state_, slot, "Ptr");
     void* value = (lua_type(state_, -1) == LUA_TLIGHTUSERDATA)
         ? lua_touserdata(state_, -1) : nullptr;
     lua_settop(state_, argument_count_);
     log_.implemented("LuaBinding::argument_ptr_field", "00888d20");
     return value;
-    }
 }
 
 // ---------------------------------------------------------------------------
