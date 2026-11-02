@@ -1,0 +1,329 @@
+{
+  "packet": "Source148 DEFAULT Text external Page lifetime context",
+  "status": "qualified Source/Code/build integration; external Page caller remains unbound",
+  "author": "2afd899f8094ab2a469d714f2d564b7d577f7608",
+  "Root_import": "f7d71dc7b10b5228b4fbf45ed87976cbd2376e9f",
+  "joined_published_Main": "ebc12fd232490dae9da2c83f129b9d41c4bf3d57",
+  "author_files": {
+    "include/bsp/native_gui_text_default_widget_lifetime.hpp": "788da771856786ce6857b145255f00c9e4ea06d05b83d7d03c3ba9cdb7bfdd9b",
+    "src/native_gui_text_default_widget_lifetime.cpp": "f4ca28a19a6e41ca0950ac5acc232508dffbd1abc95d996fcb24fc7f10357673",
+    "docs/CC16_DEFAULT_TEXT_PAGE_LIFETIME_CONTEXT.md": "c43fb4d145d86e371cf7d0f3d49ef0ad0c2a04d5b944b8785804bd4bd7370fd2",
+    "reports/cc16_default_text_page_lifetime_context.json": "d44f71bb3d021aa8968e158697078872b5fe71335e94ab85c9a54f37475197c3"
+  },
+  "Source_findings": 0,
+  "Code_findings": 0,
+  "Root_manual_Code_review": {
+    "findings": 0,
+    "scope": "external ctor83 starts + existing make_unique caller43 + actual Attempt constructor window34; remaining exact sections reuse independent full selected review"
+  },
+  "Code_transfer": {
+    "verdict": "PASS0 actual Root scoped Code transfer",
+    "Root_head": "f7d71dc7b10b5228b4fbf45ed87976cbd2376e9f",
+    "objects": [
+      {
+        "worker_sha256": "bdee9d241711246147d00eb83e6e021a207d2a4d0554bea4fab9488ce2ed789c",
+        "Root": {
+          "path": "build/win32/bsp_core.dir/Release/native_gui_text_default_widget_lifetime.obj",
+          "size": 57337,
+          "sha256": "52141229d250a2256a135cda59125c86afd1fe94cd936b83a51a5958a2d0f5a9",
+          "retained_path": "local/function_source_batch148/common/artifacts/build/win32/bsp_core.dir/Release/native_gui_text_default_widget_lifetime.obj"
+        },
+        "project": {
+          "path": "build/win32/bsp_core.vcxproj",
+          "size": 3558360,
+          "sha256": "e95e4969ab62d3c3db426f14da6a3c92c3074651176b510e2d8caaea1007922c",
+          "retained_path": "local/function_source_batch146/common/artifacts/build/win32/bsp_core.vcxproj"
+        },
+        "exact_compile_items": [
+          "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\native_gui_text_default_widget_lifetime.cpp"
+        ],
+        "Game_link_input_or_Core_library": true
+      },
+      {
+        "worker_sha256": "1f74f8d78a0268d538a6e364c6109ffa191850c63969fe11cc00e4a79ff11420",
+        "Root": {
+          "path": "build/win32/bsp_game.dir/Release/game_native_raw_default_text_owner.obj",
+          "size": 424150,
+          "sha256": "7d441d1a9c38bc270dd049eaca8b8fc8615352d42f8cc43a81430afd7fae0972",
+          "retained_path": "local/function_source_batch148/common/artifacts/build/win32/bsp_game.dir/Release/game_native_raw_default_text_owner.obj"
+        },
+        "project": {
+          "path": "build/win32/bsp_game.vcxproj",
+          "size": 280005,
+          "sha256": "a1b43051bd02faec63f73923857ccf91cd7577d1c524d3f13bfb4541b269b094",
+          "retained_path": "local/function_source_batch146/common/artifacts/build/win32/bsp_game.vcxproj"
+        },
+        "exact_compile_items": [
+          "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_native_raw_default_text_owner.cpp"
+        ],
+        "Game_link_input_or_Core_library": true
+      }
+    ],
+    "link_command": {
+      "path": "build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog",
+      "size": 66126,
+      "sha256": "bb9ef59fb5b356038271dacd3efb5006a0bcd865c88a9dd7b8be324177fab676",
+      "retained_path": "local/function_source_batch146/common/artifacts/build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog"
+    },
+    "scope": {
+      "ranges": 11,
+      "full_sections": 10,
+      "bytes": 3618,
+      "ops": 1038,
+      "relocations": 117
+    },
+    "ranges": [
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 21,
+        "Root_section": 21,
+        "start": 0,
+        "end": 256,
+        "complete_section": true,
+        "symbols": [
+          "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAUNativeGuiWidgetLifetimeContext@1@AAVNativeGuiWidgetLifetimeBindings@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@61@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z"
+        ],
+        "bytes": 256,
+        "ops": 83,
+        "relocations": 12,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s21_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 22,
+        "Root_section": 22,
+        "start": 0,
+        "end": 42,
+        "complete_section": true,
+        "symbols": [
+          "__unwindfunclet$??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAUNativeGuiWidgetLifetimeContext@1@AAVNativeGuiWidgetLifetimeBindings@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@61@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z$0"
+        ],
+        "bytes": 42,
+        "ops": 16,
+        "relocations": 4,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s22_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 23,
+        "Root_section": 23,
+        "start": 0,
+        "end": 292,
+        "complete_section": true,
+        "symbols": [
+          "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z"
+        ],
+        "bytes": 292,
+        "ops": 95,
+        "relocations": 13,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s23_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 24,
+        "Root_section": 24,
+        "start": 0,
+        "end": 42,
+        "complete_section": true,
+        "symbols": [
+          "__unwindfunclet$??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z$0"
+        ],
+        "bytes": 42,
+        "ops": 16,
+        "relocations": 4,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s24_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 37,
+        "Root_section": 37,
+        "start": 0,
+        "end": 28,
+        "complete_section": true,
+        "symbols": [
+          "??1NativeGuiTextDefaultWidgetLifetime@bsp@@UAE@XZ"
+        ],
+        "bytes": 28,
+        "ops": 8,
+        "relocations": 2,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s37_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 62,
+        "Root_section": 62,
+        "start": 0,
+        "end": 762,
+        "complete_section": true,
+        "symbols": [
+          "?authenticate@NativeGuiTextDefaultWidgetLifetime@bsp@@AAE?AW4Admission@12@PAX@Z"
+        ],
+        "bytes": 762,
+        "ops": 212,
+        "relocations": 16,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s62_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 64,
+        "Root_section": 64,
+        "start": 0,
+        "end": 1829,
+        "complete_section": true,
+        "symbols": [
+          "?bind@NativeGuiTextDefaultWidgetLifetime@bsp@@QAEXAAUNativeGuiTextDefaultWidgetLifetimeRecord@2@@Z"
+        ],
+        "bytes": 1829,
+        "ops": 484,
+        "relocations": 50,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s64_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 65,
+        "Root_section": 65,
+        "start": 0,
+        "end": 32,
+        "complete_section": true,
+        "symbols": [
+          "__ehhandler$?bind@NativeGuiTextDefaultWidgetLifetime@bsp@@QAEXAAUNativeGuiTextDefaultWidgetLifetimeRecord@2@@Z"
+        ],
+        "bytes": 32,
+        "ops": 9,
+        "relocations": 3,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s65_0.txt"
+      },
+      {
+        "object": "native_gui_text_default_widget_lifetime.obj",
+        "worker_section": 89,
+        "Root_section": 89,
+        "start": 0,
+        "end": 98,
+        "complete_section": true,
+        "symbols": [
+          "?require_context_identity@NativeGuiTextDefaultWidgetLifetime@bsp@@ABEXXZ"
+        ],
+        "bytes": 98,
+        "ops": 38,
+        "relocations": 6,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/native_gui_text_default_widget_lifetime_s89_0.txt"
+      },
+      {
+        "object": "game_native_raw_default_text_owner.obj",
+        "worker_section": 232,
+        "Root_section": 232,
+        "start": 0,
+        "end": 129,
+        "complete_section": true,
+        "symbols": [
+          "??$make_unique@VNativeGuiTextDefaultWidgetLifetime@bsp@@AAVNativeNodeDestructionRuntime@2@AAVNativeRenderActualOwnerRegistry@2@AAVGameNativeReadOnlyData@game@2@AAVGameNativeGuiTextProcess@62@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@2@$0A@@std@@YA?AV?$unique_ptr@VNativeGuiTextDefaultWidgetLifetime@bsp@@U?$default_delete@VNativeGuiTextDefaultWidgetLifetime@bsp@@@std@@@0@AAVNativeNodeDestructionRuntime@bsp@@AAVNativeRenderActualOwnerRegistry@3@AAVGameNativeReadOnlyData@game@3@AAVGameNativeGuiTextProcess@63@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@3@@Z"
+        ],
+        "bytes": 129,
+        "ops": 43,
+        "relocations": 4,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/game_native_raw_default_text_owner_s232_0.txt"
+      },
+      {
+        "object": "game_native_raw_default_text_owner.obj",
+        "worker_section": 256,
+        "Root_section": 256,
+        "start": 1007,
+        "end": 1115,
+        "complete_section": false,
+        "symbols": [
+          "??0Attempt@Impl@GameNativeRawDefaultTextOwner@game@bsp@@QAE@AAUServices@1234@I@Z"
+        ],
+        "bytes": 108,
+        "ops": 34,
+        "relocations": 3,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch148/Root_decoded/game_native_raw_default_text_owner_s256_1007.txt"
+      }
+    ],
+    "archive": {
+      "path": "build/win32/Release/bsp_core.lib",
+      "size": 108327054,
+      "sha256": "2357a26b42a88fefcb2b76fa398a4115e96f009ad247d176b46d1e0d363f1706",
+      "retained_path": "local/function_source_batch148/common/artifacts/build/win32/Release/bsp_core.lib"
+    },
+    "unique_helper_member": {
+      "header_offset": 54593974,
+      "bytes": 57337,
+      "sha256": "52141229d250a2256a135cda59125c86afd1fe94cd936b83a51a5958a2d0f5a9"
+    },
+    "two_actual_linker_indexes": [
+      {
+        "index": 1,
+        "symbol": "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAUNativeGuiWidgetLifetimeContext@1@AAVNativeGuiWidgetLifetimeBindings@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@61@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z",
+        "unique_member_header_offset": 54593974
+      },
+      {
+        "index": 1,
+        "symbol": "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z",
+        "unique_member_header_offset": 54593974
+      },
+      {
+        "index": 2,
+        "symbol": "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAUNativeGuiWidgetLifetimeContext@1@AAVNativeGuiWidgetLifetimeBindings@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@61@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z",
+        "unique_member_header_offset": 54593974
+      },
+      {
+        "index": 2,
+        "symbol": "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z",
+        "unique_member_header_offset": 54593974
+      }
+    ],
+    "actual_Game_ctor_relocations": [
+      "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z",
+      "??0NativeGuiTextDefaultWidgetLifetime@bsp@@QAE@AAVNativeNodeDestructionRuntime@1@AAVNativeRenderActualOwnerRegistry@1@AAVGameNativeReadOnlyData@game@1@AAVGameNativeGuiTextProcess@51@AAUNativeGuiTextDefaultWidgetLifetimeAcquired@1@@Z"
+    ],
+    "qualification": "External ctor defined and indexed; existing Game caller still selects standalone ctor twice. External final PE retention/execution, Page binding, Native ABI and gameplay unproven."
+  },
+  "build": {
+    "terminal": 0,
+    "seconds": 66.4111822,
+    "existing_checks": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.34,
+        "pass": true
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 27.32,
+        "pass": true
+      }
+    ],
+    "frozen_inputs": 3919,
+    "frozen_artifacts": 235,
+    "manifest_sha256": "d662a5e5aae1ea066bd35042c9227af2b09df58f3dd0d5a154790b55b89f3b9c"
+  },
+  "seals": {
+    "candidate/manifest.json": "b5acbd21289fbb2589ac460d26fdfa2d19137be8309334e36728d23a40054825",
+    "candidate/SEAL.json": "cbe3d0c37387332b73b791f883a7ecbdc11747364cae01d95b31c90e4ddb86e9",
+    "peer/manifest.json": "2ba4c050f0d4eced75bca91763252832fb56a7688e568f1a395e0af869ea5d31",
+    "peer/SEAL.json": "0e668b6849e9e3be8d432dd167290723dc550f6c0d1be7624d20c53f55fc97c2",
+    "Root_Source_review.json": "bd6c02a2414ead5ca9be97ce144dd1fca290996cf51786d91250baefa649c6d4",
+    "Root_Code_transfer.json": "569ada42a1755a08b52eb6f84aaa362f8dc8583fec2ff251d050c91cc57eefa8"
+  },
+  "activation": {
+    "all_nine_GUI_selectors": false,
+    "external_ctor_final_PE_retention": "unproven",
+    "external_Page_context_runtime": "unbound/unexecuted",
+    "Native_credit": 0
+  },
+  "limitations": [
+    "Standalone owned context and existing dispatcher behavior preserved; external same graph identities enforced without bank/token/retain permission.",
+    "No new CMake registration, test, Ghidra mutation or Game run. No Original ABI/FH3/SEH/fault/Origin/FP or gameplay claim."
+  ]
+}
