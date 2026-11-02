@@ -11,6 +11,7 @@
 #include "bsp/game_hosts_world.hpp"
 
 #include "bsp/camera_projection.hpp"
+#include "bsp/frontend_menus.hpp"
 #include "bsp/gui_aspect_extent.hpp"
 #include "bsp/platform_window.hpp"
 #include "bsp/gui_layout_loader.hpp"
@@ -26,6 +27,7 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/hud_heading_vtable50_cc13.hpp"  // packet cc13-hudhdg
+#include "bsp/wire_goal2_chain47_switches.hpp"
 
 #include <cmath>
 #include <cstdio>
@@ -101,6 +103,18 @@ struct GameHudMinimapHost::Impl {
     GuiLayoutWidget* island_map{nullptr};     // +50h
     GuiLayoutWidget* direction{nullptr};      // +48h
 
+    // Chain 47 (kWireGoal2Chain47Bound): the screen fields 005BD590 reads, bound
+    // where the image binds them, in 005BE240 at page load (bind_page_005bec50),
+    // and left empty otherwise. +6Ch..+78h are minimap_units_white_Group's
+    // item_ship/plane/sub/building_Icon (005BE397, 005BE406, 005BE475, 005BE4E4);
+    // +80h, +90h and +C0h are the 16-byte colours virtual +54h returns for the
+    // red, blue and grey groups' item_ship_Icon (005BE6A2, 005BE7BA, 005BE8D2).
+    // The image keeps them for the screen's life; so does this Impl.
+    GuiLayoutWidget* entry_templates[4]{};    // ship, plane, sub, building
+    float entry_colours[3][4]{};              // red +80h, blue +90h, grey +C0h
+    bool entry_colour_bound[3]{};
+    bool logged_entry_body{false};
+
     // The per-unit icon map at screen +F8h, as this process holds it: one
     // run-time clone of the colour template per unit index.
     std::map<std::size_t, GuiLayoutWidget*> icons;
@@ -137,6 +151,9 @@ struct GameHudMinimapHost::Impl {
 
     void bind_page_005bec50();
     GuiLayoutWidget* create_icon(std::size_t index);
+    // Chain 47: the 005BE240 binds above, and the icon 005BD590 builds.
+    void bind_icon_entry_fields(GuiLayoutWidget& root);
+    GuiLayoutWidget* create_icon_from_entry(void* unit);
 };
 
 namespace {
@@ -339,6 +356,15 @@ public:
         return found != owner_.icons.end() ? found->second : nullptr;
     }
     void* create_icon_entry(void* unit) override {
+        // 005C173A: 005BD590 builds the entry (white template by IsKindOf, colour by
+        // unit+54h) via MinimapIconEntryBinding; OFF keeps the 00639990 group clone.
+        if constexpr (bsp::kWireGoal2Chain47Bound) {
+            owner_.record("HudMinimap::allocate_icon_entry", 0x00bf681bu);
+            GuiLayoutWidget* icon = owner_.create_icon_from_entry(unit);
+            owner_.record("HudMinimap::insert_icon_entry", 0x005c0700u);
+            owner_.record("HudMinimap::attach_icon_entry", 0x00694a60u);
+            return icon;
+        } else {
         // 005C171C..005C1767: 00BF681B allocates 0Ch bytes, 005BD590 constructs
         // the entry, 005C0700 inserts it and 00694A60 attaches it. None of the
         // four is reconstructed (packet `hud_minimap_icon_entries`), so all four
@@ -349,6 +375,7 @@ public:
         owner_.record("HudMinimap::insert_icon_entry", 0x005c0700u);
         owner_.record("HudMinimap::attach_icon_entry", 0x00694a60u);
         return owner_.create_icon(owner_.index_of(unit));
+        }
     }
 
     void renderer_basis(float& y_component, float& x_component) override {
@@ -455,6 +482,7 @@ void GameHudMinimapHost::Impl::bind_page_005bec50() {
         if (colour_templates[slot] != nullptr) ++summary.colour_templates;
     }
     summary.groups_bound = summary.colour_templates > 0;
+    if constexpr (bsp::kWireGoal2Chain47Bound) bind_icon_entry_fields(root);
     // The island map's own content. minimap_terrain.mshd is the two-sampler GUI
     // shader effect; `RadarMap` at texture register 0 is a render target the
     // renderer owner produces, and 005BED21 is where 005BEC50 takes the widget
@@ -504,6 +532,153 @@ GuiLayoutWidget* GameHudMinimapHost::Impl::create_icon(std::size_t index) {
             "`item_ship_Icon` template (colour index %d of six, from 00639990's rule on "
             "party %d) under unit_marker_Group and drives the clone through the sprite "
             "bridge; the clone is an executable-side stand-in", colour, row->party);
+    }
+    return icon;
+}
+
+namespace {
+
+// bsp::MinimapIconHost, the boundary of 005BD590 (src/frontend_menus.cpp), over
+// this screen's Impl (chain 47). The unit is the walk's UnitHandle.
+class MinimapIconEntryBinding final : public bsp::MinimapIconHost {
+public:
+    MinimapIconEntryBinding(GameHudMinimapHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+
+    // Virtual +5Ch, IsKindOf, by the class the unit's VehicleClass selected.
+    bool unit_is_kind_5c(bsp::HudUnitRef unit, int class_id) override {
+        return owner_.units->unit_is_kind_of(owner_.index_of(unit.native), class_id);
+    }
+    // unit+54h, the side: the row field the host already reads as [unit+54h]
+    // for 00639990 (marker_colour_index_00639990 above).
+    std::int32_t unit_side_54(bsp::HudUnitRef unit) override {
+        const GameUnitRow* row = owner_.units->unit_row(owner_.index_of(unit.native));
+        return row != nullptr ? row->party : -1;
+    }
+    // 00AAB4C0(template, parent 0). The host's clone takes its parent at creation,
+    // so the clone is made under unit_marker_Group (+F0h), where 00AAA5A0 puts it.
+    bsp::MainMenuWidgetRef clone_template_00aab4c0(bsp::MinimapField field) override {
+        GuiLayoutWidget* templ = template_for(field);
+        if (templ == nullptr || owner_.page == nullptr || owner_.marker_group == nullptr) {
+            owner_.record("HudMinimap::entry_template_unbound", 0x00aab4c0u);
+            return {};
+        }
+        char suffix[32];
+        std::snprintf(suffix, sizeof(suffix), "_%zu", index_);
+        GuiLayoutWidget* icon = owner_.menu.frontend().clone_runtime_widget(owner_.page->name,
+            *templ, *owner_.marker_group, templ->key + suffix);
+        owner_.done("HudMinimap::clone_template", 0x00aab4c0u);
+        return bsp::MainMenuWidgetRef{icon};
+    }
+    // Virtual +50h (00AA6870 copies the RGBA to widget +50h) with the screen's
+    // +80h, +90h or +C0h colour.
+    void widget_set_colour_50(bsp::MainMenuWidgetRef widget,
+        bsp::MinimapField colour_field) override {
+        auto* icon = static_cast<GuiLayoutWidget*>(widget.native);
+        const int slot = colour_slot(colour_field);
+        if (icon == nullptr || slot < 0 || !owner_.entry_colour_bound[slot]) {
+            owner_.record("HudMinimap::entry_colour_unbound", 0x005bd590u);
+            return;
+        }
+        const float* colour = owner_.entry_colours[slot];
+        owner_.menu.frontend().set_widget_color(*icon, colour[0], colour[1], colour[2],
+            colour[3]);
+    }
+    void attach_to_unit_marker_group_00aaa5a0(bsp::MainMenuWidgetRef widget) override {
+        // Already done by the clone above, whose parent is unit_marker_Group.
+        if (widget.native != nullptr) {
+            owner_.done("HudMinimap::attach_to_marker_group", 0x00aaa5a0u);
+        }
+    }
+    void widget_set_visible_34(bsp::MainMenuWidgetRef widget, bool visible) override {
+        auto* icon = static_cast<GuiLayoutWidget*>(widget.native);
+        if (icon != nullptr) owner_.menu.frontend().set_widget_visible(*icon, visible);
+    }
+
+private:
+    GuiLayoutWidget* template_for(bsp::MinimapField field) const noexcept {
+        switch (field) {
+        case bsp::MinimapField::ShipTemplate: return owner_.entry_templates[0];
+        case bsp::MinimapField::PlaneTemplate: return owner_.entry_templates[1];
+        case bsp::MinimapField::SubTemplate: return owner_.entry_templates[2];
+        case bsp::MinimapField::BuildingTemplate: return owner_.entry_templates[3];
+        default: return nullptr;
+        }
+    }
+    static int colour_slot(bsp::MinimapField field) noexcept {
+        switch (field) {
+        case bsp::MinimapField::RedColour: return 0;
+        case bsp::MinimapField::BlueColour: return 1;
+        case bsp::MinimapField::GreyColour: return 2;
+        default: return -1;
+        }
+    }
+
+    GameHudMinimapHost::Impl& owner_;
+    std::size_t index_;
+};
+
+}  // namespace
+
+void GameHudMinimapHost::Impl::bind_icon_entry_fields(GuiLayoutWidget& root) {
+    // 005BE240 (chain 47): minimap_units_white_Group's four unit templates into
+    // +6Ch..+78h, then virtual +54h of the red, blue and grey groups' item_ship_Icon
+    // copied 16 bytes each into +80h, +90h and +C0h. The colour groups' icons are
+    // colour_templates[1..3], bound above by the same two names.
+    static constexpr const char* kEntryTemplateNames[4] = {
+        "item_ship_Icon", "item_plane_Icon", "item_sub_Icon", "item_building_Icon"};
+    GuiLayoutWidget* white = bsp::find_child_by_name_00aa7e00(root,
+        bsp::kHudMinimapUnitGroups[0]);
+    std::size_t templates_bound = 0;
+    if (white != nullptr) {
+        for (std::size_t slot = 0; slot < 4; ++slot) {
+            entry_templates[slot] = bsp::find_child_by_name_00aa7e00(*white,
+                kEntryTemplateNames[slot]);
+            if (entry_templates[slot] != nullptr) ++templates_bound;
+        }
+    }
+    static constexpr std::size_t kColourGroups[3] = {1, 2, 3};  // red, blue, grey
+    std::size_t colours_bound = 0;
+    for (std::size_t slot = 0; slot < 3; ++slot) {
+        const GuiLayoutWidget* icon = colour_templates[kColourGroups[slot]];
+        if (icon == nullptr) continue;
+        for (std::size_t lane = 0; lane < 4; ++lane) {
+            entry_colours[slot][lane] = icon->color[lane];
+        }
+        entry_colour_bound[slot] = true;
+        ++colours_bound;
+    }
+    log.notef("minimap icon entry fields (005be240): %zu of 4 white-group templates, "
+        "%zu of 3 side colours (red %.3f %.3f %.3f %.3f, blue %.3f %.3f %.3f %.3f, "
+        "grey %.3f %.3f %.3f %.3f)", templates_bound, colours_bound,
+        static_cast<double>(entry_colours[0][0]), static_cast<double>(entry_colours[0][1]),
+        static_cast<double>(entry_colours[0][2]), static_cast<double>(entry_colours[0][3]),
+        static_cast<double>(entry_colours[1][0]), static_cast<double>(entry_colours[1][1]),
+        static_cast<double>(entry_colours[1][2]), static_cast<double>(entry_colours[1][3]),
+        static_cast<double>(entry_colours[2][0]), static_cast<double>(entry_colours[2][1]),
+        static_cast<double>(entry_colours[2][2]), static_cast<double>(entry_colours[2][3]));
+}
+
+GuiLayoutWidget* GameHudMinimapHost::Impl::create_icon_from_entry(void* unit) {
+    if (page == nullptr || marker_group == nullptr || units == nullptr) return nullptr;
+    const std::size_t index = index_of(unit);
+    const GameUnitRow* row = units->unit_row(index);
+    if (row == nullptr) return nullptr;
+    MinimapIconEntryBinding binding(*this, index);
+    const bsp::MinimapIconEntry entry =
+        bsp::construct_minimap_icon_entry_005bd590(bsp::HudUnitRef{unit}, binding);
+    done("HudMinimap::construct_icon_entry", 0x005bd590u);
+    auto* icon = static_cast<GuiLayoutWidget*>(entry.widget.native);
+    if (icon == nullptr) return nullptr;
+    icons.emplace(index, icon);
+    ++summary.icons_created;
+    if (!logged_entry_body) {
+        logged_entry_body = true;
+        log.notef("minimap icons: 005bd590 builds each entry; the first is %s (party %d, "
+            "kind sub %d ship %d plane %d) as a clone of %s under unit_marker_Group",
+            row->name.c_str(), row->party, units->unit_is_kind_of(index, 0x08) ? 1 : 0,
+            units->unit_is_kind_of(index, 0x06) ? 1 : 0,
+            units->unit_is_kind_of(index, 0x0F) ? 1 : 0, icon->key.c_str());
     }
     return icon;
 }
