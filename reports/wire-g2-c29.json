@@ -1,0 +1,183 @@
+{
+  "chain": 29,
+  "goal": 2,
+  "run": 66,
+  "slot": "g2-w3",
+  "branch": "agent/g2-w3",
+  "host_file": "src/game_hosts_mission.cpp",
+  "selection": "Ship AI claim refused on 00731020/0087bcc0; units claim refused on the host file and addresses. Mission host was the next available candidate with live rows and page-object gaps.",
+  "switch": "kWireGoal2Chain29Bound",
+  "switch_default": false,
+  "code_commit": "75edd15d45e1b818dbda6bcd85f19d69792969d2",
+  "host_objects": [],
+  "host_object_decision": "No new object landed. Existing FrontEndScreenScroller and MainMenuMapGeometryState were inspected, together with their layout/registration producers. The host does not expose the complete input/text runtime needed by the scrollers or an established initial map-anchor producer. Empty or constant-fed objects would not qualify.",
+  "validation": {
+    "off_build": "PASS: scripts/build.ps1; reconstructed_math and tool_tests, 2/2 passed",
+    "on_build": "PASS: off_switch_on_build.py --names kWireGoal2Chain29Bound; exit 0 and zero diagnostics after correcting the adapter namespace",
+    "off_build_after_on_check": true,
+    "wired_before": 8783,
+    "wired_after": 8784,
+    "readiness_transition": {"005c3850": "ready -> wired"},
+    "readiness_before": "local/output/g2-w3-readiness-before.json",
+    "readiness_after": "local/output/g2-w3-readiness-after.json",
+    "off_arm": "Original two statements retained byte for byte inside else; no adapter or new object is constructed with the switch OFF.",
+    "pc24_lint": "Not applicable: the new ON arm performs no x87 arithmetic.",
+    "report_calls": "PASS: 14/14 image CALL claims verified, zero failures or unchecked claims"
+  },
+  "pair_run": {
+    "mission": "USN04",
+    "console_session": "console sqz269 1 Active",
+    "off_exe": "build/win32/Release/bsp_game.exe",
+    "on_exe": "local/g2-w3-on/build/win32/Release/bsp_game.exe",
+    "on_export": "pair_export.py --commit HEAD --flip kWireGoal2Chain29Bound=true --out local/g2-w3-on --mission USN04; PASS",
+    "off_log": "local/g2-w3-off_USN04.log",
+    "on_log": "local/g2-w3-on_USN04.log",
+    "diff": "local/output/g2-w3-pair-diff.txt",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "off_exit_code": 0,
+    "on_exit_code": 0,
+    "off_mission_frames_ran": 3000,
+    "on_mission_frames_ran": 3000,
+    "pair_diff_verdict": "DIFFERENT, gameplay identical (pair_diff exit 1)",
+    "native_standin_to_concrete": [],
+    "native_status_or_count_changes": [],
+    "native_table_note": "1624 rows in each log, zero added/removed/status/count changes. The OFF stand-in already logged 005c3850 as concrete; its status therefore cannot demonstrate the new body call. Readiness and the source call establish wiring; the ON host-site count is 1.",
+    "gameplay_rows_changed": [],
+    "gameplay": "Identical: 28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 seconds, 14 plane water contacts, controlled unit moved 2235.17, 81 units, no mission end. Unit table (81), plane death modes (25), death rows (0), and all 867 summary lines agree.",
+    "other_differences": "PlatformLoopCallbacks::pretranslate calls 8 -> 9 is classified as noise. pair_diff reports 231 other masked lines per side, with atlas diagnostic address differences displayed. A separate comparison of all 253 atlas source rows per side agrees exactly after masking 8-digit hex addresses and decimal append_slot addresses.",
+    "limits": "This is a reconstructed-executable pair and static wiring evidence, not original-game ABI or visual parity proof."
+  },
+  "flip_proposal": "Enable kWireGoal2Chain29Bound after integration review: the live selected-record name lookup is wired, both builds pass, and the USN04 pair has identical gameplay and summary rows. The worktree switch remains OFF.",
+  "reached_scope": "Counts of the named host sites in the ON native table. Skipped rows remain stand-ins; their counts do not assert reconstructed-body execution.",
+  "rows": [
+    {
+      "native": "005c3850",
+      "address": "0058c088",
+      "function": "0058c010",
+      "host_site": "src/game_hosts_mission.cpp:MissionDetailBinding::read_tree_selected_mission_index",
+      "status": "wired",
+      "reached": 1,
+      "reach": "live",
+      "reason": "Calls the existing cc13_fe1::mission_tree_mission_index_of_005c3850 body with the selected record's real screen.name and the retained MissionTreeTables. Its callback invokes the existing full-table case-insensitive last-match find_mission_by_id_005c3470 rather than returning the cached ordinal. The live campaign MissionList -> build_detail_page path has no false enclosing switch. Both original callers 00580977 and 0058c088 supply the selected record's id and the same tree receiver; RET4 at 005c3868 consumes the single name argument."
+    },
+    {
+      "native": "004d2a80",
+      "address": "0058bfef",
+      "function": "0058bdf0",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::finish_start",
+      "status": "skipped",
+      "reached": 1,
+      "reason": "The native destructor requires the by-value loading-config holder, pooled name at +10h/+14h and native string vector at +4h/+8h/+Ch. publish_loading_config discards its real record inputs and constructs no such owner. kMissionStartTemporaryReleaseCc15Bound is also false; its ON branch only logs. A scratch empty holder would perform no real cleanup."
+    },
+    {
+      "native": "00583e50",
+      "address": "0058c7f6",
+      "function": "0058c010",
+      "host_site": "src/game_hosts_mission.cpp:MissionDetailBinding::commit_page_state",
+      "status": "skipped",
+      "reached": 1,
+      "reason": "The host retains none of the body's dynamic objective-row ownership: headers +2B8h..+2C0h, owned lists +280h/+298h/+2A4h, +2C4h live flag, objective page +2C8h, list position +558h and listener +40h. Existing MainMenuLayoutBindings describes these, but the owning builders and runtime widget services are not bound here. An invented empty screen would bypass the cleanup."
+    },
+    {
+      "native": "0060d570",
+      "address": "0076fbb9",
+      "function": "0076fad0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding::please_wait_frame_0060d570",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The only host site is in the binding constructed inside start_skirmish's kSkirmishSessionCc13Bound=false arm. It is dead under this chain's switch and has no live PleaseWaitScreen/page-render owner."
+    },
+    {
+      "native": "008d9cf0",
+      "address": "0046df71",
+      "function": "0046df00",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::read_scene_file",
+      "status": "skipped",
+      "reached": 1,
+      "reason": "Readiness selects the nodef/partial scene_file.cpp entry. A separate complete native tokenizer constructor already exists in native_scene_file_tokenizer.cpp and was not duplicated. This host opens a semantic memory resource and passes text to its parser; it has no retained 838h tokenizer, canonical native strings, registered native stream owner and tokenizer-consuming parse binding. Calling only a scratch constructor would not replace that parser."
+    },
+    {
+      "native": "004d92b0",
+      "address": "004f90de",
+      "function": "004f90d0",
+      "host_site": "src/game_hosts_mission.cpp:MenuUpdateBinding::action_fired",
+      "status": "skipped",
+      "reached": 3,
+      "reason": "The selected typed identifier front_end_action_sound_004d92b0 only maps an action to a sound enum. It cannot replace action_fired's scripted edge with the native input-record/deadline algorithm. The host owns no real +1Ch/+20h/+24h/+28h action samples, repeat map or sound-request queue."
+    },
+    {
+      "native": "0057bec0",
+      "address": "004e3d46",
+      "function": "004e3aa0",
+      "host_site": "src/game_hosts_mission.cpp:MissionTreeScriptBinding::report_progress",
+      "status": "skipped",
+      "reached": 5,
+      "reason": "The real LoadingScreen is privately owned by GameMenuHost and its creation is gated by kLoadingScreenCc13Bound=false in game_hosts_menu.cpp. This host cannot supply the singleton +2Ch/+30h storage or its required CRT/x87 services. Passing null would only execute the no-op return."
+    },
+    {
+      "native": "00588c70",
+      "address": "0059a3cb",
+      "function": "00599db0",
+      "host_site": "src/game_hosts_mission.cpp:MenuUpdateBinding::drive_map",
+      "status": "skipped",
+      "reached": 2,
+      "reason": "The existing complete geometry body and MainMenuMapGeometryState were found. The host has the point lists, selected widget, backdrop position and zoom, and 00582F30 establishes the base offset, but it has no retained initial +184h anchor state/producer or +19Ch carried-zoom state. Supplying invented zero state would change smoothing history. No duplicate geometry body or unused object was added."
+    },
+    {
+      "native": "006834a0",
+      "address": "00511ef6",
+      "function": "00511bf0",
+      "host_site": "src/game_hosts_mission.cpp:MissionDetailBinding::set_scroll_range",
+      "status": "skipped",
+      "reached": 1,
+      "reason": "Existing FrontEndScreenScroller and 005861B0's attach_content/attach_scroll_bar producers were found. This host still returns constant zero from briefing_text_height and exposes no same-widget live Text context/normalized-height producer. Its graph lacks retained thumb/content/arrow attachments and track/min-height state. A newly attached scroller fed by that zero stub would not satisfy the real-state rule."
+    },
+    {
+      "native": "00683820",
+      "address": "005162d4",
+      "function": "005162b0",
+      "host_site": "src/game_hosts_mission.cpp:MenuUpdateBinding::animate_detail_group and animate_page_group",
+      "status": "skipped",
+      "reached": 2,
+      "reason": "Neither embedded scroller +354h/+1D4h is retained here. More decisively, the real input-manager +36B4h/+3714h axes, optional pad axis 10, GUI cursor and drag-state producers are unavailable to this binding. Constant neutral input or a fresh empty scroller would only manufacture a no-op update."
+    },
+    {
+      "native": "00437c70",
+      "address": "0058bf89",
+      "function": "0058bdf0",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::write_checkpoint",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The pre-load host has no actual BSP_Chk_Save Lua owner/current mission-key binding, and checkpoint_differs returns constant false before write_checkpoint. An empty Lua table or invented positive diff would not replace live checkpoint behavior."
+    },
+    {
+      "native": "00576b10",
+      "address": "00576cba",
+      "function": "00576be0",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::lobby_multi_menu_init_00689540",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Comment-only singleton reference: the host uses a local semantic LobbyOptionRegistry. It has no F8894C publication, C4h/five-map native registry, lifetime-manager registration or native map consumers. Constructing a second registry beside the local one would not replace its behavior."
+    },
+    {
+      "native": "00584f50",
+      "address": "00588ab1",
+      "function": "00588a80",
+      "host_site": "src/game_hosts_mission.cpp:MenuUpdateBinding::build_single_player_page",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "build_main_menu_list_page requires actual Listbox/row ownership, template cloning, remembered selection and command-bar services. None is retained by this callback. A labels-only or empty-page adapter would not perform the reconstructed list builder's effects."
+    },
+    {
+      "native": "00599340",
+      "address": "005998b4",
+      "function": "005993a0",
+      "host_site": "src/game_hosts_mission.cpp:MenuUpdateBinding::mission_detail_back",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Page/campaign/selected-record inputs exist, but the body's effect is a call to the actual 00597870 mission-list builder. This host has no concrete builder or listbox/row services, so an adapter could only log the selected page."
+    }
+  ]
+}
