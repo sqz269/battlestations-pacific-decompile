@@ -19,6 +19,7 @@
 #include "bsp/native_scene_integer_set_insert.hpp"
 #include "bsp/native_scene_name_hash_iterator.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_compare.hpp"
 #include "bsp/seg6_cc13.hpp"
 #include "bsp/settings_seg29_cc13.hpp"
 #include "bsp/scene_traffic_groups.hpp"
@@ -1325,7 +1326,7 @@ public:
         return reinterpret_cast<Object>(property_.data());
     }
     bool native_string_equals_00425850(Object string, const char* text) override {
-        return std::strcmp(native_string_c_str_00419ca0(string), text) == 0;
+        return bsp::equal_native_string_header_00425850(string, text);
     }
     void pointer_vector_push_back_00442190(Object vector, const void* value) override {
         if (vector != g_scene_database_00e18680 + 8)
