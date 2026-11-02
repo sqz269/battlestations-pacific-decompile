@@ -1,0 +1,154 @@
+{
+  "packet": "Source149 captured texture dimension supplier",
+  "status": "qualified Source/Code/build integration; supplier remains unbound",
+  "author": "ba66a765f308a8373fe01fd62e6b7aed5b10de67",
+  "Root_import": "73ebb2854",
+  "final_build_head": "387f292286027c12b01aecc63f65715abaaeed90",
+  "joined_published_Main": "7c5080240479cdc81c0854a1c71463845aaac054",
+  "Source_findings": 0,
+  "Code_findings": 0,
+  "Root_manual_Code_review": {
+    "scope": "all328starts in five complete selected sections",
+    "findings": 0
+  },
+  "Code_transfer": {
+    "verdict": "PASS0 actual Root five-section Code transfer",
+    "Root_head": "387f292286027c12b01aecc63f65715abaaeed90",
+    "worker_source": "ba66a765f308a8373fe01fd62e6b7aed5b10de67",
+    "actual_Game_object": {
+      "path": "build/win32/bsp_game.dir/Release/game_native_captured_texture_dimensions.obj",
+      "size": 35589,
+      "sha256": "9b7b531f642dea1c4fbe3b41e5f4822d4124b79c778ebd0d347fc14fc0d3e01f",
+      "retained_path": "local/function_source_batch149/common/artifacts/build/win32/bsp_game.dir/Release/game_native_captured_texture_dimensions.obj"
+    },
+    "exact_project_compile_items": [
+      "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_native_captured_texture_dimensions.cpp"
+    ],
+    "project": {
+      "path": "build/win32/bsp_game.vcxproj",
+      "size": 281241,
+      "sha256": "57ba7c642b77162a9bd6ec9eb7787745d8d15e6ea30d95fb392674937bd1739c",
+      "retained_path": "local/function_source_batch149/common/artifacts/build/win32/bsp_game.vcxproj"
+    },
+    "actual_link_input": true,
+    "link_command": {
+      "path": "build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog",
+      "size": 66562,
+      "sha256": "1aa1464dc3b24c38acc2ea8ee796410eac9c132e484df3cd340dd242e6705bc6",
+      "retained_path": "local/function_source_batch149/common/artifacts/build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog"
+    },
+    "scope": {
+      "sections": 5,
+      "bytes": 943,
+      "ops": 328,
+      "relocations": 40
+    },
+    "sections": [
+      {
+        "label": "constructor",
+        "worker_section": 44,
+        "Root_section": 44,
+        "symbols": [
+          "??0GameNativeCapturedTextureDimensions@game@bsp@@QAE@AAVNativeRenderActualOwnerRegistry@2@@Z"
+        ],
+        "bytes": 321,
+        "ops": 109,
+        "relocations": 4,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch149/Root_decoded/constructor.txt"
+      },
+      {
+        "label": "view",
+        "worker_section": 141,
+        "Root_section": 141,
+        "symbols": [
+          "?captured_callbacks@GameNativeCapturedTextureDimensions@game@bsp@@QBEABUGuiTextureCallbacks@3@XZ"
+        ],
+        "bytes": 4,
+        "ops": 2,
+        "relocations": 0,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch149/Root_decoded/view.txt"
+      },
+      {
+        "label": "dimension",
+        "worker_section": 143,
+        "Root_section": 143,
+        "symbols": [
+          "?dimension@GameNativeCapturedTextureDimensions@game@bsp@@ABEIPAXII@Z"
+        ],
+        "bytes": 198,
+        "ops": 69,
+        "relocations": 12,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch149/Root_decoded/dimension.txt"
+      },
+      {
+        "label": "callback",
+        "worker_section": 78,
+        "Root_section": 78,
+        "symbols": [
+          "??R<lambda_3bd84658f9e742f228b98cec08df33ed>@@QBE@PAXII@Z"
+        ],
+        "bytes": 200,
+        "ops": 70,
+        "relocations": 12,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch149/Root_decoded/callback.txt"
+      },
+      {
+        "label": "callback_dispatch",
+        "worker_section": 87,
+        "Root_section": 87,
+        "symbols": [
+          "?_Do_call@?$_Func_impl_no_alloc@V<lambda_3bd84658f9e742f228b98cec08df33ed>@@IPAXII@std@@EAEI$$QAPAX$$QAI1@Z"
+        ],
+        "bytes": 220,
+        "ops": 78,
+        "relocations": 12,
+        "raw_and_normalized_relocations_exact": true,
+        "view": "local/function_source_batch149/Root_decoded/callback_dispatch.txt"
+      }
+    ],
+    "exact_source_lambda_name_pair": [
+      "lambda_3bd84658f9e742f228b98cec08df33ed",
+      "lambda_d93ea12a992b9d1c0a346ed4d118daa4"
+    ],
+    "qualification": "All five methods remain unused/unbound; no anchor, final PE retention, Native ABI or runtime claim."
+  },
+  "build": {
+    "terminal": 0,
+    "seconds": 29.1834404,
+    "checks": [
+      {
+        "name": "reconstructed_math",
+        "seconds": 0.21,
+        "pass": true
+      },
+      {
+        "name": "tool_tests",
+        "seconds": 15.6,
+        "pass": true
+      }
+    ],
+    "inputs": 3925,
+    "artifacts": 238,
+    "manifest_sha256": "be4fececd931c054d5b9eb038c3695bc53e74aad7d3d6c273a1c4b354cf71a2d"
+  },
+  "evidence": {
+    "candidate/MANIFEST.json": "dfc6611401792ef662c5f7a4bebdf349929ec830b92b7d4dd584487345881562",
+    "candidate/SOURCE_SEAL.json": "5eef979ca275ed47f2ae567ed4d933f7695a407c25aadde3dc503673d083427c",
+    "peer/MANIFEST.json": "d1d519a0e1d02d54082593923467d443372f93d395cb5a2df4b533228370c76c",
+    "peer/SEAL.json": "fe9ce77e2f579174a6a4e18bb16e78e42f54215a19862f14c4d44d0aedc51362",
+    "Root_Source_review.json": "572adda59c46004eaf8d068b8b8312599c407df73bed377364d92794cd7b24ec",
+    "Root_Code_transfer.json": "5a52dc976a0fccca1af898a58fb129f9b679953c1663c7f1c7054afe9f67996b",
+    "Root_CMake/Root_final_receipt.json": "6219dcadc4aa3310ea8ad3ad28cb4dfbca22ef7df623c3921948171e65d2a0a1"
+  },
+  "registration": "Root owns final deferred Game row; exact worker frozen pre/post ac10b4cd...; one actual project item/link input",
+  "qualifications": [
+    "Same registry and canonical actual+4 positive count are admission checks, not a lifetime pin; synchronization and real queued/worker last-use remain caller obligations.",
+    "Passed full32 profile/target preserved; no current profile/slot recapture, retain, numeric call or fallback; legacy five callbacks remain empty.",
+    "Unused supplier: no dummy anchor or exact selected map definition, final PE retention or runtime claim.",
+    "All nine GUI selectors remain OFF. No new tests/probes/Game/Ghidra or Native/vendor/Original ABI/FH3/SEH/fault/Origin/FP credit."
+  ]
+}
