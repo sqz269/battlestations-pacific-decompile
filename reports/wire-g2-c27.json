@@ -1,0 +1,261 @@
+{
+  "packet": "g2-w1",
+  "goal": 2,
+  "chain": 27,
+  "run": 64,
+  "harness": "claude",
+  "host": "src/game_hosts_gunnery.cpp",
+  "picked_reason": "Highest score. Every assigned gunnery row needs a native object the host lacks; the one buildable from existing bodies and real host state is the spatial index's grid for the units' collision nodes, which unblocks 0098C630 on the live burst path (apply_impact_blast). The other hosts' rows were thin forwarders (005C3850), behind kSkirmishSessionCc13Bound=false (0076CB90, 007752D0) or a split copy no motion code reads (00741140).",
+  "branch": "agent/g2-w1",
+  "code_commit": "2633dc75e",
+  "switch": "kWireGoal2Chain27Bound",
+  "switch_header": "include/bsp/wire_goal2_chain27_switches.hpp",
+  "switch_default": false,
+  "wired_before": 8783,
+  "wired_after": 8784,
+  "wired_delta": 1,
+  "measurement": "python tools/wire_readiness.py after a plain ./scripts/build.ps1 at f66e89856 (OFF): 0098c630 ready -> wired. 0098a310, 0098a3d0, 0098bdb0, 0098bc70 were already wired.",
+  "host_objects": [
+    {
+      "name": "blast spatial grid (GameGunneryHost::Impl::BlastGrid / BlastGridNode)",
+      "where": "src/game_hosts_gunnery.cpp:4081",
+      "producers": [
+        "cell heads index+84h: 96h x 96h null heads, the memset at 0042D453 (sized at the first ON step, released with the host)",
+        "node fields: 004E6540 / 004E6480 (node+4h = -1 at 004E6502, node+154h = -1 at 004E64CB)",
+        "node world bounds node+13Ch..+150h: SegmentBinding::entity_bounds, the host's 0098A750 (posed hull box) grown over the mounts (0098B530); rebuilt at most once per frame (0098A761 / 0098A77E)",
+        "attach: 0098BA10's root branch - spatial_cell_rect_of_bounds (two 0098AD60 corners, cell width = double 400.0 at 00CE3D90), spatial_placement_0098bad2, spatial_register_node_0098a310, root list head insertion 0098BAFD..0098BB16; loose nodes (0098BB2C) are not walked by 0098C630",
+        "per-step re-bucket: spatial_refresh_moved_nodes_0098bdb0 / spatial_refresh_node_0098bc70 at the head of GameGunneryHost::fixed_step (the image runs 0098BDB0 among the per-step calls 00875E0C after the job waves, i.e. before the next step's bursts)",
+        "frame stamp game+648h: MissionFrameState::frame_counter, bumped by run_mission_frame at 004E4FF5; borrowed by GameGunneryHost::attach_game_frame_counter_648 after the first create_units (src/game_hosts_mission_frame.cpp:3640)"
+      ],
+      "rows": [
+        "0098c630"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "0x0098c630",
+      "address": "0x009044a2",
+      "function": "0x00904470",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::apply_impact_blast (via blast_sphere_visit_order_0098c630)",
+      "status": "wired",
+      "reached": 281,
+      "identifier": "bsp::spatial_index_query_sphere_0098c630",
+      "abi": "callback",
+      "reach": "static in the survey (the host never logged a stand-in for it); the site is apply_impact_blast, which every burst with BlastRange > 0 reaches (torpedo warheads, bombs, flak). No disabled gate on the path: the call is behind kWireGoal2Chain27Bound only; kBlastGatherShotDrawCc13Bound=false gates a different block.",
+      "behavior": "ON, the units a burst considers and their order come from the body's grid walk: the cell rectangle of the burst's AABB (low end clamped up, high end clamped down), each cell's list head-first, each node once per frame through the game+648h stamp (a second burst in the same frame skips nodes the first visited, including the first source's node), never the source unit's node. OFF walks every unit in index order. The per-unit record (box distance, 00723B70 elements, mounts) stays the walk's own code, which is the node's vtable[0Ch] (0070F090) stand-in, so the adapter's node_overlaps_sphere appends nothing.",
+      "contract_evidence": [
+        "0098C630 RET 10h, ECX = index; only caller 00904470 at 009044A2 with (centre, radius, exclude = source->vtable[B0h](), vector).",
+        "0098C653 reads [[00E188A8]+648h]; 0098C753 compares node+4h, 0098C762 stores it. Only 0098A750 and 0098C630 read +648h among 0098xxxx; docs/GAME_ON_MOVE_MAP.md: game+648h += 1 once per OnMove.",
+        "004E6502 MOV [ESI+4],-1 and 004E64CB MOV [ESI+154h],-1 in the node field initialiser.",
+        "0098BAD2..0098BB16: 2x2 test, 0098A310, root list head insertion; 0098BB2C loose push."
+      ]
+    },
+    {
+      "native": "0x00447510",
+      "address": "0x00934fd1",
+      "function": "0x00934150",
+      "host_site": "src/game_hosts_gunnery.cpp:UnitInstance wreck debris record",
+      "status": "skipped",
+      "reason": "game_dynamics_list_add_00447510 appends a spec to the game+30h dynamics list (debris physics bodies, list + spec images through SweepA4Host). The gunnery host keeps no dynamics list and simulates no debris pieces; it only records the call. Building the list would need the debris spec producers (00934150 / 00935540 part and model data) and a stepping consumer, which this host lacks.",
+      "reached": 0
+    },
+    {
+      "native": "0x0080fa50",
+      "address": "0x00827372",
+      "function": "0x00826f10",
+      "host_site": "src/game_hosts_gunnery.cpp:ShipHit route_set_damage_channel",
+      "status": "skipped",
+      "reason": "Message 9Eh constructor. The host applies damage_control_add_seconds directly and has no UnitMessage dispatch consumer for msg+1Ch/+20h/+24h; constructing the message and reading the host's own channel/amount back would be a round trip (same lasting reason as 00761310).",
+      "reached": 0
+    },
+    {
+      "native": "0x00913d80",
+      "address": "0x0093c0dc",
+      "function": "0x0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp:component failure failure_side_effect",
+      "status": "skipped",
+      "reason": "Needs the mission scoring object (8 slots x 284h with string-int maps at +70h, the +140h short vectors, the award table through 0050FC30 and 0090EDE0) plus the native unit (+54h, +174h, +180h, +370h, +A20h block). No scoring storage or award table exists in this host.",
+      "reached": 0
+    },
+    {
+      "native": "0x00915f20",
+      "address": "0x00819bbe",
+      "function": "0x00819a20",
+      "host_site": "src/game_hosts_gunnery.cpp:KamikazeDetonate direct hit record",
+      "status": "skipped",
+      "reason": "Same missing mission scoring object as 00913D80 (per-hit damage trees, BW_* counters, RUA_* awards, kill list of the attacker's score record).",
+      "reached": 0
+    },
+    {
+      "native": "0x0092ced0",
+      "address": "0x0092d2bd",
+      "function": "0x0092d1f0",
+      "host_site": "src/game_hosts_gunnery.cpp:Parts detach_part_message_99h",
+      "status": "skipped",
+      "reason": "Message 99h constructor with no consumer: the message's handler path is 00934150 (gap; needs UnitPartDetachHost scene nodes, dynamics and effect ownership). An unused constructed message replaces no host logic.",
+      "reached": 0
+    },
+    {
+      "native": "0x0093a2c0",
+      "address": "0x0093c07a",
+      "function": "0x0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp:component failure session_route_failure_started",
+      "status": "skipped",
+      "reason": "Session message 9Bh constructor; the host has no session message route or consumer for it, so the constructed message would be discarded.",
+      "reached": 0
+    },
+    {
+      "native": "0x00982c50",
+      "address": "0x0093c0c2",
+      "function": "0x0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp:component failure warning_fire_failure",
+      "status": "skipped",
+      "reason": "Needs the image warning manager: its +24h critical section, +104h/+105h bytes, the channel index 00980150 ('failure') and the Lua subscription boxes/callbacks. No warning manager exists in this host.",
+      "reached": 0
+    },
+    {
+      "native": "0x00984eb0",
+      "address": "0x006c7df7",
+      "function": "0x006c7d10",
+      "host_site": "src/game_hosts_gunnery.cpp:Shipyard stock_notice",
+      "status": "skipped",
+      "reason": "Same missing warning manager as 00982C50 ('stock' channel, subscription filters); also skipped by chain 25 for this reason.",
+      "reached": 0
+    },
+    {
+      "native": "0x00729bc0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain (one object per chain: the blast grid). Earlier reason stands: the body returns an offset, not the selected bot pointer the native tests at 00729D06 / 00729D1C."
+    },
+    {
+      "native": "0x0072bf10",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. Needs the factory/medium/appearance/scale/owner/director-timestamp shot interface; the host assembles GameProjectileRow directly."
+    },
+    {
+      "native": "0x00761310",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. Message 98h has no UnitMessage dispatch consumer in this host."
+    },
+    {
+      "native": "0x008636a0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. No native director-presence / type-slot-48h(2) state for the provider half."
+    },
+    {
+      "native": "0x006e1300",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. BombTickState's launch-delay +410h, active +458h and arming +45Ch have no producers in GameProjectileRow."
+    },
+    {
+      "native": "0x006e3500",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. No per-rack attached-round and reserve +484h storage."
+    },
+    {
+      "native": "0x007214c0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. No stored ControllerSnapshotMessage or routed snapshot consumer."
+    },
+    {
+      "native": "0x00731020",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. The only available term is gun.max_range, already the host's value; no +78h record-count state."
+    },
+    {
+      "native": "0x00814520",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. No 0080F9F0 breakup-piece descriptor query or game+21D0h wreck manager."
+    },
+    {
+      "native": "0x0084bf00",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. Needs the native session/decal/presentation context of ProjectileImpactHost."
+    },
+    {
+      "native": "0x0084c5b0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Body returns its input boolean unchanged; wiring would hand the host's own value back."
+    },
+    {
+      "native": "0x00868420",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. Needs RenderCommandReference definitions/matrices and effect-manager ownership; the host has draw counters only."
+    },
+    {
+      "native": "0x00875b90",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Identifier belongs to GameFixedStepHost (src/game_hosts_fixed_step.cpp), an unimplemented-log stub; not a gunnery row."
+    },
+    {
+      "native": "0x0087bcc0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. Needs NativeUnitHealthPartsView over native unit, property-bag, model and part-pointer storage."
+    },
+    {
+      "native": "0x00934150",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. UnitPartDetachHost needs scene nodes, dynamics/physics instances and effect ownership absent from the segment list. (The blast grid holds unit nodes only, not part nodes.)"
+    },
+    {
+      "native": "0x009373c0",
+      "host_site": "src/game_hosts_gunnery.cpp",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Gap not rebuilt in this chain. No periscope +394h shape, +1214h node, +122Ch state or repair deadline storage."
+    }
+  ],
+  "validation": {
+    "off_build": "./scripts/build.ps1 exit 0, 2/2 tests passed (f66e89856, switch OFF)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain27Bound: build.ps1 exit 0, 0 distinct diagnostics",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings (no x87 arithmetic in the ON arms)",
+    "verify_report_calls": "python tools/verify_report_calls.py reports/wire-g2-c27.json: 9 call rows checked, 0 failed",
+    "off_identity": "OFF at f66e89856 and at 2633dc75e (loop bound re-read restored): pair_diff GAMEPLAY identical, native table 0 counts moved, summary lines 0 changed."
+  },
+  "pair": {
+    "mission": "USN04",
+    "command": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+    "off_exe": "build\\win32\\Release\\bsp_game.exe at 2633dc75e",
+    "on_exe": "local\\g2-w1-on (pair_export --commit f66e89856 --flip kWireGoal2Chain27Bound=true); the ON arm is identical at 2633dc75e, which changed only the OFF loop bound",
+    "off_log": "local\\g2-w1-off_USN04.log",
+    "on_log": "local\\g2-w1-on_USN04.log",
+    "both_exit_code": 0,
+    "native_table": "1624 -> 1625 rows: + Projectile::blast_sphere_query_0098c630 0098c630 concrete calls=281; 138 counts moved (RNG-coupled)",
+    "grid_summary_on": "nodes=81 loose=0 rebuckets=2192 queries=281 visits=773 link_overflow=0 frame_counter=attached",
+    "gameplay": "MOVED: deaths 28 -> 28; hit records 380 -> 368; hull hits 276 -> 245; damage 6366.6 -> 6448.8; shots 5509 -> 5778; plane water contacts 14 -> 16; first hit 86.15 s both; plane death modes 21 of 25 changed; unit table 65 of 81 changed",
+    "first_divergence": "blast #13 (t ~103.0 s): OFF applies two bursts in the same step (bullet 44, then bullet 31) to B5N Kate #2.1|.-IV; ON the second burst skips that node because the first stamped it with this frame (0098C753), so its next record is B5N Kate #4.1|.-IV. Everything after moves through the shared RNG stream (00BD2F10)."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain27Bound to true. The ON burst walk is the image's 0098C630 over a grid built from existing bodies (0098BA10 root branch, 0098A310/0098A3D0, 0098BDB0/0098BC70) and real host state (unit boxes, game+648h). The pair's first divergence is exactly the frame-stamp rule (a node takes at most one burst per frame), deaths are unchanged (28/28), the run exits 0, and no node went loose or overflowed. Caveat: the stamp rule is read from the listing (0098C653/0098C753/0098C762, 004E6502) and moves RNG-coupled gameplay; a second mission with heavy flak (e.g. USN01) would confirm before or after the flip.",
+  "ledger": "No new address-suffixed function; no ledger rows."
+}
