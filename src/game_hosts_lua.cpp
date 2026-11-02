@@ -87,12 +87,9 @@
 #include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
 #include "bsp/racked_round_entity_cc13.hpp"     // packet cc13-rackround
 #include "bsp/settings_seg29_cc13.hpp"          // packet wire-lua, LuaMachine 006B8xxx
-#include "bsp/cc13_left55.hpp"                  // packet wire-lua, LuaVariant 008849D0..00884A30
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
-#include "bsp/gameplay_seg38_cc13.hpp"          // packet wire-lua, 0071DD30 / 0071E050
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
-#include "bsp/unit_death_sink.hpp"              // packet wire-lua, 00814520
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
 
 extern "C" {
@@ -196,23 +193,6 @@ struct NativeBindingPushFrame {
     NativeBindingPushFrame& operator=(const NativeBindingPushFrame&) = delete;
 };
 
-// Packet wire-lua adapter: a listener argument built by the 008849D0 /
-// 00884A00 / 00884A30 constructors, as the record push_argument pushes (the
-// tag 0 float and tag 2 byte arms of 00885DA0). Those constructors leave the
-// name empty and allocate nothing, so the variant needs no 00884AF0. Any
-// other tag is not produced here and maps to nil.
-bsp::MissionLuaArgument listener_variant_argument(const bsp::cc13_left55::LuaVariant& v) {
-    bsp::MissionLuaArgument argument;
-    if (v.tag == 0) {
-        argument.type = bsp::MissionLuaArgumentType::Number;
-        argument.number = static_cast<double>(v.payload.number);
-    } else if (v.tag == 2) {
-        argument.type = bsp::MissionLuaArgumentType::Boolean;
-        argument.boolean = v.payload.boolean;
-    }
-    return argument;
-}
-
 // Packet wire-lua adapter: the class id air_ops_block_offset_006bcd20 compares,
 // from 006BCD20's own two vtable[5Ch] tests through the units host in their
 // order (006BCD35 kind 9, then 006BCD4C kind 45h); 0 when neither holds.
@@ -225,36 +205,6 @@ std::uint32_t air_ops_block_class(const GameUnitsHost& units, std::size_t index)
     }
     return 0u;
 }
-
-// Packet wire-lua adapter: the UnitDeathMessageHost 00814520 runs on for
-// BreakShip (008914F0, 0089162C). LABELLED: 0080F9F0 is not modelled, so every
-// class answers "has pieces" and [game+21D0h] is taken as present, which keeps
-// the one 004A5AA0 record per break the OFF arm makes; breakup_parts (the
-// 00814553 tail jump to 00935D30) adds nothing here because the caller's
-// 00935D30 model runs right after the call. The other three methods serve the
-// other receivers and are not reached from 00814520.
-class BreakShipMessageHost final : public bsp::UnitDeathMessageHost {
-public:
-    explicit BreakShipMessageHost(GameHostLog& log) : log_(log) {}
-    void detach_all_live_parts(bsp::EntityRef) override {
-        log_.unimplemented("BreakShip::detach_all_live_parts", "00935c70");
-    }
-    void kill_entity(bsp::EntityRef, int) override {
-        log_.unimplemented("BreakShip::kill_entity", "00926d90");
-    }
-    void clear_hull_shape_fields(bsp::EntityRef) override {
-        log_.unimplemented("BreakShip::clear_hull_shape_fields", "0092bd30");
-    }
-    bool class_has_breakup_pieces(bsp::EntityRef) override { return true; }
-    bsp::EntityRef wreck_manager() override { return 1u; }
-    void register_wreck(bsp::EntityRef, bsp::EntityRef) override {
-        log_.unimplemented("BreakShip::breakup_registry_004a5aa0", "004a5aa0");
-    }
-    void breakup_parts(bsp::EntityRef) override {}
-
-private:
-    GameHostLog& log_;
-};
 
 // Packet cc9_spawn_new_id_queries: what the two id bindings answered.
 struct SpawnIdQueryCensus {
@@ -500,8 +450,11 @@ void movie_vector_entries(lua_State* state, int table,
     while (::lua_next(state, table) != 0) {
         bsp::cc13cam2::LuaEntryView view;
         bsp::cc13cam2::LuaNumberEntry number;
-        view.key_is_string = ::lua_isstring(state, -2) != 0;      // 00B660A0
-        view.value_is_number = ::lua_isnumber(state, -1) != 0;    // 00B66050
+        // 00B660A0 / 00B66050 are exact type tests on a kind-2 object:
+        // lua_type == 4 (00B660CB) and lua_type == 3 (00B6607B), so a numeric
+        // string value or a number key does not pass.
+        view.key_is_string = ::lua_type(state, -2) == LUA_TSTRING;    // 00B660A0
+        view.value_is_number = ::lua_type(state, -1) == LUA_TNUMBER;  // 00B66050
         number.number = static_cast<double>(::lua_tonumber(state, -1));  // 00B66270
         ::lua_pushvalue(state, -2);
         const char* text = ::lua_tolstring(state, -1, nullptr);   // 00B662B0
@@ -6670,15 +6623,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
             if (kLuaListenerCallbackArgsBound) {
                 // 00884A90 the entity, 00884A30 the byte as a boolean.
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
-                // 0098234B: 00884A30 builds the byte record push_argument pushes;
-                // OFF keeps lua_pushboolean.
-                if constexpr (bsp::kWireLuaHostBound) {
-                    bsp::cc13_left55::LuaVariant record{};
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_bool_00884a30(&record, exited != 0)));
-                } else {
                 ::lua_pushboolean(state_, exited);
-                }
                 pushed = 2;
             }
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
@@ -7384,15 +7329,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 if (attacker <= 0 || !push_resolved_entity_by_id(state_, attacker)) {
                     lua_pushnil(state_);
                 }
-                // 00981953: 00884A00 builds the +2D8h record push_argument pushes
-                // (int -> float); OFF keeps lua_pushnumber.
-                if constexpr (bsp::kWireLuaHostBound) {
-                    bsp::cc13_left55::LuaVariant record{};
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_int_00884a00(&record, attacker_slot)));
-                } else {
                 ::lua_pushnumber(state_, static_cast<lua_Number>(attacker_slot));
-                }
                 pushed = 3;
                 ++summary_.listener_args_pushed;
             }
@@ -8316,23 +8253,9 @@ int GameMissionLuaHost::run_break_ship_008914f0(lua_State* state, int argument_c
     if (!halves) {
         ++summary_.break_ship_no_halves;
     } else {
-        // 0089162C: 00814520 on_breakup_message over BreakShipMessageHost; its
-        // tail jump (00814553 breakup_parts) is the 00935D30 model below, which
-        // both arms run. OFF keeps the one inline 004A5AA0 record.
-        if constexpr (bsp::kWireLuaHostBound) {
-            BreakShipMessageHost message_host(log_);
-            bsp::DyingUnit dying;
-            dying.unit = static_cast<bsp::EntityRef>(id);
-            dying.parts_object = static_cast<bsp::EntityRef>(id);       // unit+1018h
-            dying.motion_controller = static_cast<bsp::EntityRef>(id);  // the same pointer
-            dying.class_descriptor = static_cast<bsp::EntityRef>(
-                row != nullptr ? row->type_id : -1);                    // unit+538h
-            bsp::on_breakup_message_00814520(message_host, dying);
-        } else {
         // 00814529..00814547: 004A5AA0 when 0080F9F0 answers (the class has breakup
         // pieces); the registry is presentation and the test is not modelled.
         log_.unimplemented("BreakShip::breakup_registry_004a5aa0", "004a5aa0");
-        }
         for (int piece = 0; piece < 2; ++piece) {
             for (int axis = piece == 0 ? 0 : 1; axis < 3; ++axis)
                 static_cast<void>(gunnery->death_mode_draw_00bd2f10(1, index, -1.0f, 1.0f));
@@ -8417,17 +8340,7 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
             "slot (packet cc13-luawire)", id);
         return 0;
     }
-    // 0071DD30 director_sub_kind_message builds the 5Ah sub-kind 2 record; its
-    // +24h value is what 0071C1E0 arm 2 stores (applied at the call, as OFF).
-    // OFF keeps the direct store of the mask.
-    if constexpr (bsp::kWireLuaHostBound) {
-        const bsp::gameplay_seg38_cc13::RoutedDirectorMessage message =
-            bsp::gameplay_seg38_cc13::director_sub_kind_message(2u,
-                static_cast<std::uint32_t>(mask));
-        director_player_commands_1cc_[director] = static_cast<std::int32_t>(message.field_24);
-    } else {
     director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
-    }
     ++summary_.player_commands_stored;
     const GameUnitRow* row = units->unit_row(director);
     log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: director \"%s\" +1CCh = 0x%X "
@@ -9916,15 +9829,7 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
     if (const bsp::game::SceneDirectorEnables* e = bsp::game::scene_director_enables_find(row->name)) {
         enables = *e;
     }
-    // 0071E050 director_sub_kind_message builds the 5Ah sub-kind 4 record
-    // (byte value); 0071C246 stores value != 0 at +221h. OFF keeps the flag.
-    if constexpr (bsp::kWireLuaHostBound) {
-        const bsp::gameplay_seg38_cc13::RoutedDirectorMessage message =
-            bsp::gameplay_seg38_cc13::director_sub_kind_message(4u, flag ? 1u : 0u);
-        enables.anti_air = message.field_24 != 0u;
-    } else {
     enables.anti_air = flag;                                   // 0071C246, +221h
-    }
     bsp::game::scene_director_enables_set(row->name, enables);
     if (!flag) ++summary_.aa_enable_disables;
     log_.notef("  AAEnable 0089c740: \"%s\" aaEnabled=%d (packet cc9_lua_aa_enable)",
@@ -10143,25 +10048,10 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 // The attack-type name table 00E08E58 (char*[], read from the PE),
                 // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
                 ::lua_pushstring(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
-                // 00988E62 00884A00 (attackerPlayerIndex, FILD/FSTP float) and
-                // 00988E98/00988ED1/00988F07 008849D0 (damage, fire, leak) build
-                // the records push_argument pushes; OFF keeps lua_pushnumber.
-                if constexpr (bsp::kWireLuaHostBound) {
-                    bsp::cc13_left55::LuaVariant record{};
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_int_00884a00(&record, hit.attacker_player_index)));
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_number_008849d0(&record, hit.damage)));
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_number_008849d0(&record, hit.fire_caused)));
-                    push_argument(listener_variant_argument(*bsp::cc13_left55::
-                        variant_construct_number_008849d0(&record, hit.leak_caused)));
-                } else {
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.leak_caused));
-                }
                 pushed = 8;
                 ++summary_.listener_args_pushed;
             }
