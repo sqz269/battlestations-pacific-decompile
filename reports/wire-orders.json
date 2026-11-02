@@ -1,0 +1,788 @@
+{
+  "packet": "wire-orders",
+  "branch": "agent/wire-orders",
+  "code_commit": "665378486bf54ea75cbac9f2de9f8b584548eff7",
+  "switch": {
+    "name": "kWireScriptOrdersHostBound",
+    "header": "include/bsp/wire_script_orders_host_switches.hpp",
+    "default": false
+  },
+  "assigned_ready_rows_before": 28,
+  "assigned_rows_wired": 10,
+  "assigned_rows_skipped": 18,
+  "wired_total_before": 8493,
+  "wired_total_after": 8505,
+  "collateral_wired_addresses": [
+    "0071da50",
+    "00835a40"
+  ],
+  "readiness_evidence": {
+    "baseline": "local/output/wire-orders-baseline.json",
+    "after": "local/output/wire-orders-after.json",
+    "measurement": "Source-level identifier reachability, including code behind an OFF switch; not native ABI or full game parity."
+  },
+  "off_arm_preservation": "Code commit adds 111 host-file lines and removes zero. Every original host statement remains byte-for-byte in the corresponding OFF arm. No reconstructed body was edited or added.",
+  "checks": {
+    "off_build": {
+      "result": "pass",
+      "log": "local/output/wire-orders-off-build.log",
+      "tests": "reconstructed_math and tool_tests both passed"
+    },
+    "on_build": {
+      "result": "pass",
+      "command": "python tools/off_switch_on_build.py --names kWireScriptOrdersHostBound",
+      "diagnostics": 0,
+      "log": "local/output/wire-orders-on-build.log",
+      "switch_restored": true
+    },
+    "pc24_lint": {
+      "result": "pass",
+      "findings": 0,
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD"
+    },
+    "pair_export_off_build": "pass including both tests",
+    "pair_export_on_build": "pass including both tests",
+    "report_calls": {
+      "result": "pass",
+      "checked": 10,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/wire-orders.json",
+      "log": "local/output/wire-orders-report-calls.log"
+    }
+  },
+  "rows": [
+    {
+      "address": "005b66d0",
+      "native": "005b66d0",
+      "entry_row": true,
+      "name": "GameScriptOrdersHost::interface_request_pending_005b66d0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::interface_request_pending_005b66d0"
+      },
+      "reason": "The reconstructed body is already this host method, called through MissionBlackoutHost. There is no separate callee to wire; adding a second body or changing metadata is outside this run."
+    },
+    {
+      "address": "006f1f90",
+      "native": "006f1f90",
+      "entry_row": true,
+      "name": "GameShipAiHost::command_building_capture_fraction_006f1f90",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_ship_ai.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch GetCapturePercentage arm"
+      },
+      "reason": "Already calls GameShipAiHost::command_building_capture_fraction_006f1f90. The method body is present at src/game_hosts_ship_ai.cpp:13928; this readiness row needs identifier accounting, not duplicate wiring."
+    },
+    {
+      "address": "0071c1e0",
+      "native": "0071c1e0",
+      "entry_row": true,
+      "name": "apply_command_message_0071c1e0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/gameplay_seg38_cc13.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::gameplay_seg38_cc13::apply_command_message_0071c1e0",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "record_director_artillery_enable_0071c231",
+        "lines": [
+          646
+        ]
+      },
+      "evidence": "0071C237 RET 4; ECX director, stack message; selector 3 writes only +220h. The adapter maps the existing artillery byte in and out.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00835940",
+      "native": "00835940",
+      "entry_row": true,
+      "name": "BSP_WeaponDirector_SendTorpedoAvoidanceMessage",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/weapon_director.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::director_command_message_0071da50",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::session_route_avoidance_message torpedo/land arm",
+        "lines": [
+          3646,
+          3683
+        ]
+      },
+      "evidence": "008359B9 RET 4; ESI captures ECX; MOVZX payload byte at 00835966, selector 7 at 0083598A. Shared typed body builds the message; existing loopback route and receiver stay in place.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "008359c0",
+      "native": "008359c0",
+      "entry_row": true,
+      "name": "BSP_WeaponDirector_SendShipCollisionAvoidanceMessage",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/weapon_director.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::director_command_message_0071da50",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::session_route_avoidance_message ship arm",
+        "lines": [
+          3646,
+          3683
+        ]
+      },
+      "evidence": "00835A39 RET 4; ESI captures ECX; MOVZX payload byte at 008359E6, selector 8 at 00835A0A. Shared typed body builds the message; existing loopback route and receiver stay in place.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "008522c0",
+      "native": "008522c0",
+      "entry_row": true,
+      "name": "submarine_catapult_needs_surface_008522c0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/gameplay_seg53_cc13.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch GetSubmarineDepthLevel arm"
+      },
+      "reason": "Host explicitly substitutes catapult=false and lacks native unit+1279h and the IsKindOf(28h)/launch_state_490 child list required by the callee."
+    },
+    {
+      "address": "00888d20",
+      "native": "00888d20",
+      "entry_row": true,
+      "name": "lua_table_get_ptr_field_00888d20",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/landscape_lua_seg55_argon.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::argument_ptr_field",
+        "lines": [
+          3297
+        ]
+      },
+      "evidence": "00888D7B RET; incoming ECX is passed unchanged to 00B67800, then the result is converted via 00B662D0. The adapter carries the existing host Ptr value and light-userdata policy.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00894100",
+      "native": "00894100",
+      "entry_row": true,
+      "name": "BSP_LuaNative_GetSubmarineDepthLevel",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "0089a190",
+      "native": "0089a190",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_FillPathPoints",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "0089b840",
+      "native": "0089b840",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_GetCapturePercentage",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "0089cc50",
+      "native": "0089cc50",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_GetSquadronPlanes",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008a3e70",
+      "native": "008a3e70",
+      "entry_row": true,
+      "name": "ver12_check_PilotMoveOnPath",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008a7e60",
+      "native": "008a7e60",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_GetRotation",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008a9f90",
+      "native": "008a9f90",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_PutTo",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008aadf0",
+      "native": "008aadf0",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_ForceRecon",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008b16e0",
+      "native": "008b16e0",
+      "entry_row": true,
+      "name": "BSP_LuaBinding_Countdown",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+    },
+    {
+      "address": "008b19a0",
+      "native": "008b19a0",
+      "entry_row": true,
+      "name": "CountdownCancel (host binding)",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/game_hosts_script_orders.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch"
+      },
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced. CountdownCancel is also labelled host_implementation_partial."
+    },
+    {
+      "address": "009565a0",
+      "native": "009565a0",
+      "entry_row": true,
+      "name": "unit_skill_apply_level_009565a0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/gameplay_seg61_62_cc13.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::entity_set_skill_level"
+      },
+      "reason": "Host documents that +6DCh director and child vtable[1C4h] skill fan-out is not modelled. Calling a plan with invented absent objects would not supply the callee contract."
+    },
+    {
+      "address": "00b66400",
+      "native": "00b66400",
+      "entry_row": true,
+      "name": "mission_binding_result_count",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/mission_lua_bindings.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::mission_binding_result_count",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::run_pilot_set_target",
+        "lines": [
+          2738
+        ]
+      },
+      "evidence": "00B66411 RET; ECX object, owner.state and +0Ch entry top. The host supplies its current Lua top and argument-count entry top.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00b664b0",
+      "native": "00b664b0",
+      "entry_row": true,
+      "name": "native_lua_push_integer_00b664b0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/cc13_seg87.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::native_lua_push_integer_00b664b0",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::push_number",
+        "lines": [
+          5367
+        ]
+      },
+      "evidence": "00B664D7 RET 4; ESI captures incoming ECX, [ESI] is owner, owner+4 is state. Integer is widened exactly to Lua number.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00b665d0",
+      "native": "00b665d0",
+      "entry_row": true,
+      "name": "native_lua_set_integer_at_00b665d0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/cc13_seg87.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::native_lua_set_integer_at_00b665d0",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::sync_recon_level_tables_0077b0c0",
+        "lines": [
+          6524
+        ]
+      },
+      "evidence": "00B66618 RET 8; integer key and value; object index read after pushing both. The borrowed view pins a positive absolute stack slot.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00b672f0",
+      "native": "00b672f0",
+      "entry_row": true,
+      "name": "native_lua_set_lstring_at_00b672f0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/cc13_seg87.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::native_lua_set_lstring_at_00b672f0",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::dispatch GetActDialogIDs arm",
+        "lines": [
+          4805
+        ]
+      },
+      "evidence": "00B67343 RET 8; integer key and NativeString pointer. The adapter owns length/data storage and a positive table slot.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00b67630",
+      "native": "00b67630",
+      "entry_row": true,
+      "name": "native_lua_set_string_00b67630",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/cc13_seg87.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::native_lua_set_string_00b67630",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::build_script_self_table",
+        "lines": [
+          5266
+        ]
+      },
+      "evidence": "00B6767D RET 8; literal key and NativeString pointer. The ID text is kept as a Lua string; borrowed table slot stays stable.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00c336c0",
+      "native": "00c336c0",
+      "entry_row": true,
+      "name": "transform_from_4x4_00c336c0",
+      "abi": "typed",
+      "state_before": "ready",
+      "state_after": "wired",
+      "reconstructed_source": "src/cc13_dyn1.cpp",
+      "status": "wired",
+      "native_identifier": "bsp::cc13_dyn1::transform_from_4x4_00c336c0",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::run_entity_turn_to_entity ship arm",
+        "lines": [
+          2907
+        ]
+      },
+      "evidence": "00C3370A RET 4; ECX destination, stack source. Twelve FLD/FSTP copies, no arithmetic. Compact output feeds the existing shared affine motion-state substitution; separate physics-body ownership is not added.",
+      "coverage": "existing reconstructed interface; no body changes"
+    },
+    {
+      "address": "00662020",
+      "native": "00662020",
+      "entry_row": true,
+      "name": "highlight_loadout_00662020",
+      "abi": "callback",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/radial_menu_cc13.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "support loadout selection comment, no radial-screen call"
+      },
+      "reason": "Host explicitly does not run the radial ring and owns no RadialScreen/icon list or RadialHost widget/sound services."
+    },
+    {
+      "address": "00665f30",
+      "native": "00665f30",
+      "entry_row": true,
+      "name": "build_loadout_ring_00665f30",
+      "abi": "callback",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/radial_menu_cc13.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "support loadout selection comment, no radial-screen call"
+      },
+      "reason": "Host owns no RadialScreen catalog/template/icon lifecycle needed to build the loadout ring."
+    },
+    {
+      "address": "0071bf70",
+      "native": "0071bf70",
+      "entry_row": true,
+      "name": "free_attack_0071bf70",
+      "abi": "callback",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/weapon_director.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "GameScriptOrdersHost::run_unit_free_fire ship arm"
+      },
+      "reason": "Only the gunnery stance setter is exposed here. The complete WeaponDirectorHost allocation/command/reference interface is unavailable; no stub adapter was added."
+    },
+    {
+      "address": "0088b6d0",
+      "native": "0088b6d0",
+      "entry_row": true,
+      "name": "named_message_e2_construct_0088b6d0",
+      "abi": "callback",
+      "state_before": "ready",
+      "state_after": "ready",
+      "reconstructed_source": "src/cc13_left55_seg56.cpp",
+      "status": "skipped",
+      "host_call_site": {
+        "file": "src/game_hosts_script_orders.cpp",
+        "method": "SetThinkCoreHost::call_0088b6d0_0076a9f0_00765590"
+      },
+      "reason": "Existing offline callback is empty; it owns no named session message, routing lifecycle or complete Left56Host services. Construction alone would leave an unused message."
+    }
+  ],
+  "image_calls": [
+    {
+      "address": "0083568a",
+      "native": "0071c1e0",
+      "function": "00835640",
+      "kind": "tail_jump",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008a3e0e",
+      "native": "00835940",
+      "function": "008a3cd0",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008a3aae",
+      "native": "008359c0",
+      "function": "008a3970",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008a6169",
+      "native": "00888d20",
+      "function": "008a6060",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008a4eb5",
+      "native": "00b66400",
+      "function": "008a4c90",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "00894261",
+      "native": "00b664b0",
+      "function": "00894100",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "0077b12c",
+      "native": "00b665d0",
+      "function": "0077b0c0",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008cb872",
+      "native": "00b672f0",
+      "function": "008cb730",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "00928ba5",
+      "native": "00b67630",
+      "function": "00928a00",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    },
+    {
+      "address": "008a0e4f",
+      "native": "00c336c0",
+      "function": "008a0a10",
+      "kind": "call",
+      "purpose": "original-image call-site/owner validation for the wired entry"
+    }
+  ],
+  "pair_run": {
+    "console_session": "query session showed console sqz269 ID 1 Active; command returned 1 despite listing the active session",
+    "mission": "USN04",
+    "frames": 3000,
+    "mission_frames": 2800,
+    "mission_frame_seconds": 0.05,
+    "sequential": true,
+    "trajectory": false,
+    "logs": [
+      {
+        "variant": "off",
+        "path": "local/wire-orders-off_USN04.log",
+        "size": 5109460,
+        "mtime_utc": "2026-11-02T03:22:48.213483+00:00",
+        "sha256": "e0e78bded24ba5c4935ec68cbd02e171ce67322fbab07c5f9f88a9b537202b6c",
+        "mission_frames": 2800,
+        "loop_finished": true,
+        "exit_code": 0
+      },
+      {
+        "variant": "on",
+        "path": "local/wire-orders-on_USN04.log",
+        "size": 5109458,
+        "mtime_utc": "2026-11-02T03:24:21.786442+00:00",
+        "sha256": "d9342b68dc914722084872f082751829f29d5a53254f7c29e42605e34b9e8a53",
+        "mission_frames": 2800,
+        "loop_finished": true,
+        "exit_code": 0
+      }
+    ],
+    "completion_basis": "Both complete logs contain requested=2800 ran=2800 simulated=2800 and loop_finished=1 exit_code=0; completion checked against log contents and mtimes, not process exit alone. This is a bounded mission run, not a mission victory.",
+    "pair_diff_command": "python tools/pair_diff.py local/wire-orders-off_USN04.log local/wire-orders-on_USN04.log --limit 60 --json local/output/wire-orders-pair-diff.json",
+    "pair_diff_exit": 1,
+    "pair_diff_json": "local/output/wire-orders-pair-diff.json",
+    "pair_diff_text": "local/output/wire-orders-pair-diff.txt",
+    "gameplay_moved": [],
+    "native_standin_or_unimplemented_to_concrete": [],
+    "native_added": [],
+    "native_removed": [],
+    "native_status_changes": [],
+    "native_count_changes": [],
+    "native_rows": [
+      1624,
+      1624
+    ],
+    "host_method_counts_raw": [
+      {
+        "concrete": 1147,
+        "unimplemented": 477
+      },
+      {
+        "concrete": 1147,
+        "unimplemented": 477
+      }
+    ],
+    "headline": [
+      [
+        "deaths",
+        "28",
+        "28"
+      ],
+      [
+        "hit records",
+        "380",
+        "380"
+      ],
+      [
+        "hull hits",
+        "276",
+        "276"
+      ],
+      [
+        "damage",
+        "6366.6",
+        "6366.6"
+      ],
+      [
+        "shots",
+        "5509",
+        "5509"
+      ],
+      [
+        "first hit",
+        "86.15 s",
+        "86.15 s"
+      ],
+      [
+        "torpedo-task releases",
+        "0 of 16",
+        "0 of 16"
+      ],
+      [
+        "dive-bomb-task releases",
+        "0 of 19",
+        "0 of 19"
+      ],
+      [
+        "torpedo drops",
+        "0",
+        "0"
+      ],
+      [
+        "plane water contacts",
+        "13",
+        "13"
+      ],
+      [
+        "controlled moved",
+        "Lexington-class01 2073.67",
+        "Lexington-class01 2073.67"
+      ],
+      [
+        "units",
+        "81",
+        "81"
+      ],
+      [
+        "mission end",
+        "none (Mission.EndMission never true)",
+        "none (Mission.EndMission never true)"
+      ],
+      [
+        "host methods concrete/unimplemented",
+        "1144 / 477",
+        "1144 / 477"
+      ]
+    ],
+    "clock": {
+      "anchor": "gunnery step 100",
+      "offset": 0.0,
+      "first_hit_delta": 0.0
+    },
+    "unit_rows_identical": 81,
+    "plane_death_mode_rows_identical": 25,
+    "death_rows": 0,
+    "summary_lines_identical": 867,
+    "remaining_differences": {
+      "masked_other_lines_each": 231,
+      "groups": {
+        "atlas source parser": 4,
+        "atlas source item": 227
+      },
+      "only_different_field": "decimal append_slot address",
+      "normalising_only_append_slot_yields_zero_differences": true,
+      "source_evidence": [
+        "src/game_hosts.cpp:2100 logs append_slot with %u",
+        "src/native_texture_atlas_parser_storage.cpp:241 computes texture_table+texture_count*4",
+        "src/native_texture_atlas_parser_storage.cpp:352 computes table+count*4"
+      ],
+      "pair_diff_noise": "PlatformLoopCallbacks::pretranslate calls 33 -> 221 is already excluded by pair_diff"
+    }
+  },
+  "flip_proposal": {
+    "set_to": false,
+    "reason": "Keep OFF. USN04 has no gameplay, summary or native-table regression, but GetActDialogIDs queries=0 and ship-collision avoidance orders=0 leave two new arms unreached. Obtain focused runtime coverage before proposing a batch-wide ON flip. Existing body substitutions and ABI limits remain."
+  },
+  "limits": [
+    "Typed helper interfaces preserve varying values; original callee bodies, caller censuses and stack cleanup were inspected. No Ghidra annotations were changed.",
+    "Ten ready rows are existing dispatch arms, plus two already-called host methods; their readiness accounting was not changed.",
+    "No new address-suffixed function, ledger row, test suite or documentation outside this report was added."
+  ]
+}
