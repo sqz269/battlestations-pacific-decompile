@@ -1,0 +1,162 @@
+{
+  "packet": "g1-w2",
+  "goal": 1,
+  "chain": 24,
+  "run": 59,
+  "harness": "codex",
+  "host": "src/game_hosts_units.cpp",
+  "picked_reason": "The landing-assignment host retains a live producer-populated vector, allowing the existing lookup body to replace an actual scan. The ship-AI candidates had earlier body-level skips or an already-called body.",
+  "branch": "agent/g1-w2",
+  "code_commit": "8df6b5141",
+  "switch": "kWireGoal1Chain24Bound",
+  "switch_default": false,
+  "wired_before": 8781,
+  "wired_after": 8782,
+  "wired_delta": 1,
+  "measurement": "Before is the completed --standins scan, not its pre-existing cached JSON. After was measured following the final plain OFF build, after the temporary ON build check.",
+  "rows": [
+    {
+      "native": "0x006bd080",
+      "address": "0x006c5505",
+      "function": "0x006c54c0",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::landing_request_006c54c0",
+      "status": "wired",
+      "reached": 0,
+      "identifier": "bsp::cc13_seg29U::air_ops_find_landing_assignment_006bd080",
+      "abi": "raw_callback",
+      "behavior": "The existing body searches all current deck assignments by plane identity and copies spacing, mode, and side to the live plane approach. ON replaces the host scan. It does not preselect a record or pass the host answer through a callback.",
+      "adapter": "Query-local plane images map the real process-index identity domain one-to-one, including the existing index+1 command entity ID at +174h. Each 14h record copies current path, spacing, held, side, and mode from d->assignments in order. A8/AC expose the full vector. The single-threaded host owns no tracked lock, so +8h is null; unrelated segment services and invalid indices abort rather than approximate work.",
+      "contract_evidence": [
+        "006BD080-006BD1AA: ECX=block; plane and output stack arguments; RET 8 at 006BD1AA.",
+        "Only original caller is 006C54C0 at 006C5505; EDI is loaded from the plane stack argument at 006C54C6 and passed at 006C54FD.",
+        "006BD14F reads plane+174h; 006BD159-006BD189 copies floats, crossed held/side bytes and mode.",
+        "The OFF loop remains byte-for-byte intact in the else arm. No reconstructed body was changed."
+      ],
+      "gates": {
+        "kSquadronLandTaskBound": true,
+        "kLandingSequencerBound": true,
+        "kLandBeginStateBound": true
+      },
+      "live_path_evidence": "Assignment census reports 3422 USN01 calls. Required USN04 pair had zero deck lookups and no native table entry for this row.",
+      "limits": "Source wiring and compilation are verified. This pair does not exercise the row or establish original binary ABI/gameplay equivalence."
+    },
+    {
+      "native": "0x006c0b50",
+      "address": "0x006c54ef",
+      "function": "0x006c54c0",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::landing_request_006c54c0",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The host queue stores squadron indices and sequence/countdown/interval only. The complete body requires actual holder-bearing records, native observer/vector allocation, captured locks, slot state/timer updates, and connected event/message84 routing. The current host explicitly leaves the slot tail unapplied; a small view cannot supply that missing behavior.",
+      "evidence": "LandingQueueEntry/LandingDeck and landing_request_006c54c0; native_landing_queue.cpp queue_incoming_006c0b50 and native_landing_queue.hpp actual-storage contract."
+    },
+    {
+      "native": "0x0092bd30",
+      "address": "0x00826633",
+      "function": "0x00825f20",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::tick kill-depth removal and GameUnitsHost::kill_and_remove_00814595",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The body needs controller+2Ch hull, an actual shape+208h chain, and both per-shape +30h/+2Ch filter writes with physics notifications. This host retains terrain/class-mask projections, not those image-shaped fields or their notification service. Supplying a null hull would only make the body a no-op.",
+      "evidence": "entity_mission_seg60_argon.cpp:unit_controller_clear_hull_shape_fields_0092bd30; host GameUnitSlot hull mask fields and the two record-only death sites."
+    },
+    {
+      "native": "0x0098b370",
+      "address": "0x0084c1d3",
+      "function": "0x0084bf00",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::plane_own_base_hit_filter_0084c213",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "This host association comes from a comment explaining the downstream own-base hit filter. That method receives an already-computed hit and hit-unit ID, with no segment vector, native spatial index, or query context. The body dispatches 0098ADD0 over segment inputs; returning the supplied hit would only round-trip the host answer. The actual projectile sweep belongs outside this owned host file.",
+      "evidence": "The only 0098B370 text in game_hosts_units.cpp is the plane-own-base comment. cc13_seg62_seg65.cpp:spatial_sweep_segments_0098b370 reads segments+C0h and calls spatial_query_segment_0098add0."
+    },
+    {
+      "native": "0x0099b650",
+      "address": "0x009b3add",
+      "function": "0x009b3900",
+      "host_site": "src/game_hosts_units.cpp:land approach update in the unit bot host",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The body only writes plan+25Ch. The host explicitly records this as not modelled and has no plan owner cell or consumer of that cell. Adding an unused image buffer would execute an inert write rather than replace host behavior.",
+      "evidence": "cc13_seg67b.cpp:bot_task_set_owner_25c_0099b650; record immediately after land_geometry_009afaf0(true) in the approach update."
+    },
+    {
+      "native": "0x009b3240",
+      "address": "0x009b41fd",
+      "function": "0x009b41c0",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::install_land_task_core_009b41c0",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The existing complete constructor requires the same actual task/owner/subobjects, complete base/composite construction, executable profile identities, retained pointer cells, and real state-entry dispatch. This host builds a projected LandTaskState and scalar fields, not those task/owner images and services. The header expressly excludes sparse task records and approximate constructor callbacks.",
+      "evidence": "native_land_task_constructor.hpp:NativeLandTaskConstructorView and NativeLandTaskConstructorCalls requirements; native_land_task_constructor.cpp; host install_land_task_core_009b41c0."
+    }
+  ],
+  "validation": {
+    "off_build": {
+      "result": "passed",
+      "tests": "2/2 existing CTests",
+      "log": "local/output/g1-c24-off-build-final.txt"
+    },
+    "on_build": {
+      "result": "passed",
+      "diagnostics": 0,
+      "log": "local/output/g1-c24-on-build.txt"
+    },
+    "pc24_lint": "Not applicable: the ON arm performs data copies and integer identity mapping, with no x87 arithmetic.",
+    "readiness": {
+      "result": "006bd080 ready -> wired",
+      "log": "local/output/g1-c24-readiness-after.txt"
+    },
+    "diff_review": "Reviewed the complete source diff and switch header before the code commit; all existing OFF statements are unchanged.",
+    "report_calls": "passed: 6 call rows checked, 0 failed"
+  },
+  "pair": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "console_session": "Active sqz269 console; checked before export/run.",
+    "off_exe": "build/win32/Release/bsp_game.exe",
+    "off_commit": "8df6b5141",
+    "on_exe": "local/g1-w2-on/build/win32/Release/bsp_game.exe",
+    "on_export": "pair_export.py --commit HEAD --flip kWireGoal1Chain24Bound=true --out local/g1-w2-on --mission USN04",
+    "off_log": "local/g1-w2-off_USN04.log",
+    "on_log": "local/g1-w2-on_USN04.log",
+    "off_exit": 0,
+    "on_exit": 0,
+    "frames_presented_each": 3199,
+    "diff_log": "local/output/g1-c24-pair-diff.txt",
+    "diff_exit": 1,
+    "gameplay": "identical",
+    "gameplay_rows_moved": [],
+    "native_rows": {
+      "off": 1624,
+      "on": 1624,
+      "added": 0,
+      "removed": 0,
+      "status_changed": 0,
+      "counts_moved": 0
+    },
+    "native_standin_to_concrete": [],
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "unit_table": "identical, 81 rows",
+    "plane_death_modes": "identical, 25 rows",
+    "other_diagnostic_lines": {
+      "only_off": 231,
+      "only_on": 231,
+      "note": "Displayed differences include atlas source append_slot decimal pointer values; raw diagnostics were not declared identical."
+    },
+    "wired_row_reached": {
+      "006bd080": 0
+    },
+    "limitation": "Both landing decks report zero lookups. The USN04 pair cannot establish runtime behavior of the new lookup arm."
+  },
+  "flip_proposal": "Keep kWireGoal1Chain24Bound=false. Exercise a landing-assignment path such as the census-positive USN01 mission before proposing activation.",
+  "ledger": "No new address-suffixed reconstruction body; only a host adapter and calls to the existing body. No ledger change needed."
+}
