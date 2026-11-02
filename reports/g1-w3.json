@@ -1,0 +1,177 @@
+{
+  "worker": "g1-w3",
+  "run": 9,
+  "harness": "codex",
+  "branch": "agent/g1-w3",
+  "picked": "game_hosts_ship_ai.cpp",
+  "picked_reason": "Live ship directors own the selector state and shared RNG source needed by the constructor. Typed candidates were checked first; duplicates and missing native state were excluded.",
+  "selection_audit": "The initially leased AI host was left unedited and its lease released after finding that its planner paths require the OFF kSkirmishSessionCc13Bound switch.",
+  "switch": "kWireGoal1Chain3Bound",
+  "switch_default": false,
+  "code_commit": "70703ef40",
+  "build": {
+    "off": "passed; scripts/build.ps1 and both existing tests",
+    "on": "passed; off_switch_on_build.py --names kWireGoal1Chain3Bound; zero diagnostics; header restored",
+    "pc24": "passed; --staged and --diff origin/main...HEAD; zero findings"
+  },
+  "wired_before": 8522,
+  "wired_after": 8523,
+  "rows": [
+    {
+      "native": "00731020",
+      "host_site": "SubAttackBinding::torpedo_bot_range_00901ba0",
+      "status": "skipped",
+      "reason": "Only the gunnery host's cached GameGunRow::max_range is available here, not the first gun-class fire record. Wrapping that cached answer would only round-trip a host value.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "00780670",
+      "host_site": "GameShipAiHost::Impl::deliver_pass_side_messages",
+      "status": "skipped",
+      "reason": "PassSideMessage retains sender/other/side, but no native tick/category, dispatch game state, or entity-ready field. A full gate adapter would have to supply constants for missing state.",
+      "reached": 168,
+      "reach_evidence": "Session::message_tick_window: UNIMPLEMENTED, calls=168"
+    },
+    {
+      "native": "008689c0",
+      "host_site": "GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "status": "skipped",
+      "reason": "The host retains only a boolean fire_740; the body requires real retained effect templates, manager, parent transform and effect-constructor bindings.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "0087bcc0",
+      "host_site": "GameShipAiHost::Impl capture-building health reads",
+      "status": "skipped",
+      "reason": "This host consumes initialized units through GameUnitsHost. It does not own the native unit byte storage, part-descriptor array, model group or required initialization providers.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "00955420",
+      "host_site": "GameShipAiHost::Impl capture-building scene reads",
+      "status": "skipped",
+      "reason": "The ship host consumes existing scene units. Native model/handle, Lua, property, material and scene-registration storage needed by the initializer are absent here; reinitializing a projection would not replace host initialization.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "009d8b90",
+      "host_site": "game_hosts_ship_ai.cpp drive-order-ring-middle dispatch",
+      "status": "skipped",
+      "reason": "The OFF path already executes this body inside ship_ai_drive_order_ring_middle_009f40ca (src/ship_ai_obstacle_tables.cpp:539). A direct host call would duplicate existing work.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "009de2f0",
+      "host_site": "GameShipAiHost::Impl::run_hull_pre_step",
+      "status": "skipped",
+      "reason": "The OFF path already executes this body inside ship_ai_hull_pre_step_009e0270 (src/ship_ai_hull_geometry.cpp:192). Adding another call would duplicate existing work.",
+      "reached": 50418,
+      "reach_evidence": "ShipAi::hull_geometry_009de2f0: concrete, calls=50418"
+    },
+    {
+      "native": "006ac490",
+      "host_site": "GameShipAiHost landing-craft launch -> BuildingPadModel::begin_landing_0074a990",
+      "status": "skipped",
+      "reason": "BuildingPadModel uses semantic pad/unit indices and already sets the occupant; the ready body needs native pad+1E4h observer storage and real observer register/unregister providers that this host lacks.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "00744870",
+      "host_site": "GameShipAiHost::Impl::landfort_fire_frame_00745be0",
+      "status": "skipped",
+      "reason": "The D1h synchronization is recorded only. No retained native LandFortEffectMessage or receiver queue exists here, so construction alone would discard its output.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "007465e0",
+      "host_site": "GameShipAiHost::Impl::CaptureBuilding fire state",
+      "status": "skipped",
+      "reason": "Only the damage-fire +740h projection is hosted. The destroyed-handler path, +744h death-fire effect and retained class+160h template required by the body are absent.",
+      "reached": 0,
+      "reach_evidence": "No distinct native-table counter in the ON log; 0 is logged reach, not proof that an indirect body was never executed."
+    },
+    {
+      "native": "009f6a20",
+      "address": "0083676a",
+      "function": "008366d0",
+      "host_site": "GameShipAiHost::bind_gunnery -> ShipDirectorTargetBinding; TargetBinding::scan_party_list; ControllerUpdateBinding::step_auto_target",
+      "status": "wired",
+      "coverage": "existing reconstructed body, persistent live ship selector state",
+      "reason": "The existing constructor initializes a retained selector from each real ship owner kind and the shared per-unit phase draw. Its search configuration and timer/retained-score state replace per-scan construction and phase-only host seeding, and feed the live scan/tick.",
+      "abi_evidence": "Single native caller 0083676A: PUSH ESI at 00836767 passes the owning director; 0083674D stores its unit at +24Ch. Constructor 009F6ABB RET 4; EDI loaded from stack at 009F6A38, ESI from ECX at 009F6A3C. Random call 009F6A8F uses stream 1, [0,1].",
+      "reached": 18,
+      "reach_evidence": "AutoTarget::construct: concrete, calls=18"
+    }
+  ],
+  "limitations": [
+    "The selector is constructed when the shared gunnery source binds for existing ship navigation controllers; later generated controllers retain the old fallback until that source is rebound.",
+    "Build and paired mission evidence do not establish drop-in native ABI equivalence."
+  ],
+  "pair": {
+    "mission": "USN04",
+    "application_frames": 3000,
+    "mission_frames": 2800,
+    "mission_frame_seconds": 0.05,
+    "exports": {
+      "off": "local/g1-w3-off",
+      "on": "local/g1-w3-on",
+      "off_exe_sha256_prefix": "357C3ECDA483",
+      "on_exe_sha256_prefix": "99EEE0BCF42E",
+      "builds": "both passed"
+    },
+    "off_log": "local/g1-w3-off_USN04.log",
+    "on_log": "local/g1-w3-on_USN04.log",
+    "completion": {
+      "off_exit": 0,
+      "on_exit": 0,
+      "off_log_mtime": "2026-11-01 21:56:56 local",
+      "on_log_mtime": "2026-11-01 21:58:09 local",
+      "evidence": "Both logs: loop finished=1 frames=3000; mission requested=2800 ran=2800 simulated=2800; after_full_drain idle=1 publication=null; final renderer COM device=0 api=0."
+    },
+    "diff": {
+      "exit_code": 1,
+      "verdict": "DIFFERENT, gameplay identical",
+      "native_rows_before": 1624,
+      "native_rows_after": 1625,
+      "added": [
+        {
+          "method": "AutoTarget::construct",
+          "native": "009f6a20",
+          "status": "concrete",
+          "calls": 18
+        }
+      ],
+      "removed": [],
+      "status_changed": [],
+      "counts_moved": [],
+      "gameplay_rows_moved": [],
+      "unit_table": "identical, 81 rows",
+      "death_modes": "identical, 25 rows",
+      "summary_lines": "867 -> 867, zero changed/added/removed",
+      "diagnostics": "PlatformLoopCallbacks::pretranslate 96 -> 75 is classified as noise. Other masked lines: 232 only OFF / 232 only ON; atlas pointer diagnostics and constructor/phase log text differ.",
+      "artifact": "local/output/g1-w3-pair-diff.json"
+    },
+    "headline_identical": {
+      "deaths": 28,
+      "hit_records": 380,
+      "hull_hits": 276,
+      "damage": 6366.6,
+      "shots": 5509,
+      "first_hit_seconds": 86.15,
+      "units": 81
+    }
+  },
+  "flip_proposal": "Propose kWireGoal1Chain3Bound=true after integration review: existing-body constructor ran 18 times in USN04, with identical gameplay, unit/death tables and all 867 summary lines. Leave the source default OFF in this branch.",
+  "verification": {
+    "report_calls": "passed; 1 native call row checked, 0 failed",
+    "committed_readiness": "009f6a20 wired; 8523 total",
+    "off_arm": "Existing phase-only seeding and tick code retained in OFF arms; the control export and USN04 run completed."
+  }
+}
