@@ -14,6 +14,8 @@
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
+#include "bsp/wire_goal2_chain32_switches.hpp"
+#include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/cc13_seg29U.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
@@ -16779,7 +16781,17 @@ bool GameUnitsHost::set_land_convoy_stopped_3a8(const std::string& convoy, bool 
 bool GameUnitsHost::set_land_convoy_speed_368(const std::string& convoy, float speed) {
     for (LandConvoyMotionState& c : impl_->land_convoys) {
         if (c.name != convoy) continue;
+        // 00741140 calls the recovered +368h setter; OFF keeps the direct host store.
+        if constexpr (bsp::kWireGoal2Chain32Bound) {
+            // Typed projection: the body only writes speed_368. The argument is
+            // Lua argument 2 from run_land_convoy_native (008959A3 CALL, RET 4).
+            bsp::gameplay_seg41_cc13::ConvoyState view;
+            bsp::gameplay_seg41_cc13::set_speed_00741140(view, speed);
+            c.formation.speed = view.speed_368;
+            impl_->done("LandConvoy::set_speed", 0x00741140u);
+        } else {
         c.formation.speed = speed;
+        }
         return true;
     }
     return false;
