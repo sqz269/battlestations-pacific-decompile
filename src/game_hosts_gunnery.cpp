@@ -4057,8 +4057,11 @@ struct GameGunneryHost::Impl {
     // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): the unit of each
     // record apply_impact_blast's walk will push, in push order, and the discarded
     // gather draws made for them.
+    // `visit_order` (wire goal 2 chain 27, ON only): the units 0098C630 visited for
+    // this burst, walked instead of every unit in index order. Null keeps the walk.
     std::vector<std::size_t> blast_gathered_records(std::size_t shooter,
-        const float centre[3], float range);
+        const float centre[3], float range,
+        const std::vector<std::size_t>* visit_order = nullptr);
     unsigned long long blast_gather_shot_draws{0};
     // Wire goal 2 chain 27 (kWireGoal2Chain27Bound; OFF never touches any of it).
     // The spatial index's grid half for the units' collision nodes, which 0098C630
@@ -4072,10 +4075,17 @@ struct GameGunneryHost::Impl {
     //    world bounds, two 0098AD60 corners, 0098BAD2's 2x2 test, then 0098A310
     //    and the root list at index+16014h (head insertion, 0098BAFD..0098BB16),
     //    or the loose array, which 0098C630 never walks. Here at the first step
-    //    that sees the unit with a hull box;
+    //    that sees the unit with a hull box. The body 0098BA10 already has,
+    //    attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp),
+    //    works on raw image-shaped node and index storage; BlastGridNode is not
+    //    image-shaped, so blast_grid_step_0098bdb0 restates its root branch over
+    //    the same existing sub-bodies (0098BAD2, 0098A310);
     //  * re-bucketed every step by 0098BDB0, which the image runs among the
-    //    per-step calls (00875E0C) after the job waves; here at the head of the
-    //    next fixed_step, the same point in the gunnery pass's sequence.
+    //    per-step calls (00875E0C) after step N's job waves; here at the head of
+    //    step N+1's fixed_step, before its bursts. KNOWN DEVIATION: anything that
+    //    moves a unit in step N+1 ahead of the gunnery pass is already in the
+    //    host's cells but not yet in the image's, so the cells can be one step
+    //    fresher; that changes a query only for a node at a cell boundary.
     // The node bounds are SegmentBinding::entity_bounds, this host's 0098A750:
     // the posed hull box grown over the device mounts (0098B530).
     struct BlastGridNode {
@@ -15113,7 +15123,11 @@ void GameGunneryHost::Impl::blast_grid_step_0098bdb0(float step) {
     // 0098BDB0 over the nodes attached so far.
     BlastGridRefresh refresh(*this);
     bsp::spatial_refresh_moved_nodes_0098bdb0(refresh, step);
-    // 0098BA10's root branch for each unit that has no node yet.
+    // 0098BA10's root branch for each unit that has no node yet. The existing body
+    // attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp) takes
+    // raw image-shaped node/index storage, which BlastGridNode is not, so the branch
+    // is restated here over its existing sub-bodies: the 0098AD60 corners
+    // (spatial_cell_rect_of_bounds), 0098BAD2 and 0098A310.
     BlastGridCells cells(*this);
     const std::uint32_t frame = *game_frame_648;
     if (blast_grid.nodes.size() < unit_state.size()) blast_grid.nodes.resize(unit_state.size());
@@ -15176,10 +15190,12 @@ bool GameGunneryHost::Impl::blast_sphere_visit_order_0098c630(std::size_t shoote
 // kGunDeviceBlastDamageCc13Bound, one per mount with entries (0098C510's children).
 // The same tests as the walk, without its census counters.
 std::vector<std::size_t> GameGunneryHost::Impl::blast_gathered_records(std::size_t shooter,
-    const float centre[3], float range) {
+    const float centre[3], float range, const std::vector<std::size_t>* visit_order) {
     std::vector<std::size_t> out;
     const float r2 = range * range;
-    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+    for (std::size_t slot = 0;
+         slot < (visit_order != nullptr ? visit_order->size() : unit_state.size()); ++slot) {
+        const std::size_t i = visit_order != nullptr ? (*visit_order)[slot] : slot;
         if (i == shooter) continue;
         if (unit_state[i].dead) continue;
         if (hit_index_detached(i)) continue;
@@ -15361,31 +15377,36 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
     }
 
-    if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
-        // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): 00904470's
-        // gather loop runs SetShot (00470350 at 009044F4) on every gathered record
-        // before 0084BAD0's push loop runs it again (0084BBB1): one discarded
-        // shot->vtable[54h] draw per record, in gather order, ahead of the used ones
-        // the pushes below make.
-        const int shot_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
-        const GameBulletClassRow* shot = bullet(shot_class);
-        const float low = shot != nullptr ? shot->damage_min : 0.0f;
-        const float high = shot != nullptr ? shot->damage_max : 0.0f;
-        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range)) {
-            static_cast<void>(draw(Draw::hull_damage, gun_row, unit, low, high));
-            ++blast_gather_shot_draws;
-        }
-    }
-
     // 0098C630 (wire goal 2 chain 27): ON, 00904470's sphere query over the blast
     // grid picks the units and their order (the cells the burst's box covers, each
     // node once per frame, never the source's); OFF keeps every unit in index order.
+    // It runs once per burst, ahead of both walks below, because its node stamps
+    // are a side effect: a second query in this frame would visit nothing.
     std::vector<std::size_t> blast_visit_order;
     bool blast_grid_walk = false;
     if constexpr (bsp::kWireGoal2Chain27Bound) {
         blast_grid_walk = blast_sphere_visit_order_0098c630(shooter, centre,
             weapon->blast_range, blast_visit_order);
     }
+
+    if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
+        // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): 00904470's
+        // gather loop runs SetShot (00470350 at 009044F4) on every gathered record
+        // before 0084BAD0's push loop runs it again (0084BBB1): one discarded
+        // shot->vtable[54h] draw per record, in gather order, ahead of the used ones
+        // the pushes below make. With chain 27 ON the gather walks the same visit
+        // order as the push walk.
+        const int shot_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
+        const GameBulletClassRow* shot = bullet(shot_class);
+        const float low = shot != nullptr ? shot->damage_min : 0.0f;
+        const float high = shot != nullptr ? shot->damage_max : 0.0f;
+        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range,
+                 blast_grid_walk ? &blast_visit_order : nullptr)) {
+            static_cast<void>(draw(Draw::hull_damage, gun_row, unit, low, high));
+            ++blast_gather_shot_draws;
+        }
+    }
+
     // OFF re-reads unit_state.size() every pass, as before.
     for (std::size_t blast_slot = 0;
          blast_slot < (blast_grid_walk ? blast_visit_order.size() : unit_state.size());
