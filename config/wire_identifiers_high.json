@@ -799,9 +799,9 @@
    "address": "00a7a460",
    "source": "src/fmod_configuration_library.cpp",
    "identifiers": [
-    "memory_get_stats"
+    "on_out_of_sound_memory"
    ],
-   "evidence": "Source448-451 is FmodConfigurationLibrary::memory_get_stats; reviewed original only calls FMOD_Memory_GetStats into discarded locals (no failure/report). Concrete callers supply the locals; preserve adapter/transport limits. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+   "evidence": "Source407-410 FmodConfigurationLibrary::on_out_of_sound_memory is the existing complete wrapper: it ignores the label, owns two discarded int32 locals, and calls memory_get_stats. Original00A7A460..00A7A474 likewise allocates eight local bytes, passes their addresses to FMOD_Memory_GetStats, and RET4 ignores the incoming label. This supersedes the448-451 memory_get_stats mapping, which named the transport method rather than the owning wrapper and was ambiguous with GameSoundRuntime::Impl::memory_get_stats. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "00aa7190",
