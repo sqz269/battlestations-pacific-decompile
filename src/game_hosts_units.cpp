@@ -12,6 +12,8 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
+#include "bsp/wire_goal1_chain24_switches.hpp"
+#include "bsp/cc13_seg29U.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
@@ -461,6 +463,69 @@ struct PlaneOrdnanceRack {
     // scene generator writes Equipment 1 when a squadron authors none and the
     // class lists any (0094BD34), so this is a scene squadron's loadout.
     int generator_ammo{-1};
+};
+
+// Adapter for the single-threaded landing-assignment snapshot. The body can
+// only report an invalid index: there is no host lock at block+8h. All other
+// segment services trap rather than provide unrelated placeholder behavior.
+class LandingAssignmentLookupHost final : public bsp::cc13_seg29U::Seg29UHost {
+    using NativeStr = bsp::cc13_seg29U::NativeStr;
+public:
+    void* global_pointer(std::uint32_t) override { std::abort(); }
+    void* global_address(std::uint32_t) override { std::abort(); }
+    void invalid_parameter_00bf6713() override { std::abort(); }
+    void free_00bf65ac(void*) override { std::abort(); }
+    void* operator_new_00bf681b(std::uint32_t) override { std::abort(); }
+    void entity_pose_refresh_00414db0(void*) override { std::abort(); }
+    void* matrix_multiply_00413920(void*,  void*,  void*) override { std::abort(); }
+    void matrix_copy_004134f0(void*,  void*) override { std::abort(); }
+    void matrix_inverse_00b63d50(void*,  void*) override { std::abort(); }
+    void* transform_point_004142e0(void*,  void*,  void*) override { std::abort(); }
+    void object_vslot_04(void*,  std::uint32_t,  void*) override { std::abort(); }
+    void path_derive_knots_007af150(void*) override { std::abort(); }
+    void game_21d0_register_0048ca60(void*,  void*,  std::int32_t) override { std::abort(); }
+    void observer_unregister_pair_006952a0(void*,  void*) override { std::abort(); }
+    void callback_owner_destroy_00695870(void*) override { std::abort(); }
+    void game_entity_destruct_009287b0(void*) override { std::abort(); }
+    void entity_default_slot_a4_009295b0(void*) override { std::abort(); }
+    NativeStr* native_string_from_int_004260b0(NativeStr*,  std::int32_t) override { std::abort(); }
+    void native_string_resize_0041dd40(NativeStr*,  std::uint32_t,  char) override { std::abort(); }
+    void memcpy_00bf7680(void*,  const void*,  std::uint32_t) override { std::abort(); }
+    void native_string_concat_004261a0(const NativeStr*,  NativeStr*,  const NativeStr*) override { std::abort(); }
+    void* sized_pool_00419cc0() override { std::abort(); }
+    void sized_pool_return_00bd1510(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
+    void* property_bag_find_008f2260(void*,  const char*) override { std::abort(); }
+    const char* property_string_value_008f0df0(void*) override { std::abort(); }
+    void* entity_registry_find_00925a90(void*,  const char*) override { std::abort(); }
+    bool entity_is_kind_of_5c(void*,  std::int32_t) override { std::abort(); }
+    void list_push_back_006acd80(void*,  void* const*) override { std::abort(); }
+    void object_vslot_08_float(void*,  float) override { std::abort(); }
+    std::int32_t object_vslot_0c(void*) override { std::abort(); }
+    double object_vslot_10_x87(void*) override { std::abort(); }
+    void* object_vslot_18(void*) override { std::abort(); }
+    const float* object_vslot_34(void*,  float*) override { std::abort(); }
+    void object_vslot_44(void*,  float*) override { std::abort(); }
+    void* object_vslot_114(void*) override { std::abort(); }
+    void enter_critical_section(void*) override { std::abort(); }
+    void leave_critical_section(void*) override { std::abort(); }
+    void free_00bf6989(void*) override { std::abort(); }
+    void session_message_construct_base_0075b430(void*,  std::uint32_t) override { std::abort(); }
+    void session_route_message_0077c2a0(void*,  void*,  std::uint32_t,  std::uint32_t) override { std::abort(); }
+    std::uint32_t vehicle_class_registry_id_0095b9c0(void*) override { std::abort(); }
+    std::uint32_t current_command_0071be40(void*) override { std::abort(); }
+    void* active_target_descriptor_0071eb60(void*,  void*) override { std::abort(); }
+    const float* target_descriptor_position_006f7dd0(void*) override { std::abort(); }
+    float vector3_length_0042b2f0(const float*) override { std::abort(); }
+    std::int32_t squadron_airborne_count_007ee5c0(void*) override { std::abort(); }
+    void observer_ref_destruct_00653400(void*) override { std::abort(); }
+    void observer_member_cleanup_00653390(void*) override { std::abort(); }
+    float add_wrapped_angle_00438aa0(float,  float) override { std::abort(); }
+    double sqrt_00bf7030(double) override { std::abort(); }
+    double atan2_00bf701a(double,  double) override { std::abort(); }
+    void format_to_buffer32_00467310(char*,  const char*,  std::int32_t) override { std::abort(); }
+    void vehicle_class_mark_party_required_0095ba60(void*,  std::uint32_t) override { std::abort(); }
+    void register_hidden_stock_unit_0046be90(void*,  void*) override { std::abort(); }
+    void* landing_vector_at_006ba7b0(void*,  std::int32_t) override { std::abort(); }
 };
 
 struct GameUnitSlot {
@@ -20797,6 +20862,54 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
     }
     ++d->lookups;
     bool found = false;
+    // 006BD080 calls air_ops_find_landing_assignment_006bd080; OFF keeps the host's assignment scan.
+    if constexpr (bsp::kWireGoal1Chain24Bound) {
+        struct PlaneView {
+            std::uint8_t unused_000[0x174]{};
+            std::uint16_t id_174{};
+        };
+        struct AssignmentView {
+            void* plane_00;
+            float path_04;
+            float spacing_08;
+            std::uint8_t held_0c;
+            std::uint8_t side_0d;
+            std::uint16_t unused_0e;
+            std::int32_t mode_10;
+        };
+        static_assert(sizeof(AssignmentView) == 0x14);
+        static_assert(offsetof(PlaneView, id_174) == 0x174);
+        // One identity per live host slot, without preselecting a matching
+        // record. These query-local images stay fixed until the body returns.
+        std::vector<PlaneView> planes(slots.size());
+        planes.at(plane.process_index).id_174 =
+            static_cast<std::uint16_t>(plane.process_index + 1u);
+        std::vector<AssignmentView> assignments;
+        assignments.reserve(d->assignments.size());
+        for (const LandingAssignment& rec : d->assignments) {
+            assignments.push_back({&planes.at(rec.plane),
+                rec.path_4, rec.spacing_8, static_cast<std::uint8_t>(rec.held_0c),
+                static_cast<std::uint8_t>(rec.side_0d), 0, rec.mode_10});
+        }
+        alignas(4) std::uint8_t block[0xb0]{};
+        alignas(4) std::uint8_t answer[0x14]{};
+        // The host owns a single-threaded vector with no tracked critical
+        // section. Only its begin/end cells and the record payload are exposed.
+        using bsp::cc13_seg29U::at;
+        if (!assignments.empty()) {
+            at<void*>(block, 0xa8) = assignments.data();
+            at<void*>(block, 0xac) = assignments.data() + assignments.size();
+        }
+        LandingAssignmentLookupHost lookup;
+        found = bsp::cc13_seg29U::air_ops_find_landing_assignment_006bd080(
+            block, &planes.at(plane.process_index), answer, lookup);
+        if (found) {
+            ++d->found;
+            plane.land_spacing_4c = at<float>(answer, 0x08);
+            plane.land_mode_50 = at<std::int32_t>(answer, 0x10);
+            plane.land_side_44 = at<std::uint8_t>(answer, 0x0c) != 0;
+        }
+    } else {
     for (const LandingAssignment& rec : d->assignments) {
         if (rec.plane != plane.process_index) continue;
         ++d->found;
@@ -20805,6 +20918,7 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
         plane.land_side_44 = rec.side_0d;            // out+0Ch, approach+44h
         found = true;
         break;
+    }
     }
     if constexpr (kLandStandbyStateBound) {
         if (!found) {
