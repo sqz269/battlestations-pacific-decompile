@@ -7,6 +7,8 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal1_chain1_switches.hpp"
 #include "bsp/wire_goal1_chain8_switches.hpp"
+#include "bsp/wire_goal1_chain22_switches.hpp"
+#include "bsp/cc13_front2.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/engine_seg1_cc13.hpp"
@@ -2236,6 +2238,28 @@ float dot3(const float a[3], const float b[3]) noexcept {
 float length3(const float v[3]) noexcept {
     return std::sqrt(dot3(v, v));
 }
+
+// Bind the gun bot's arithmetic calls to the retained hull frame and the
+// host's float math boundary. The bot body owns subtraction, normalization
+// and horizontal negation; no already-computed angle is passed back to it.
+struct GunneryDirectionAnglesBinding final : bsp::GunBotAnglesHost {
+    void transform_direction_0042d0d0(float out[3], const float direction[3],
+        const void* frame, bool normalize) override {
+        bsp::vector3f_transform_direction_optional_normalize_0042d0d0(
+            out, direction, static_cast<const float*>(frame), normalize ? 1 : 0);
+    }
+    float vector_length_00419440(const float vector[3]) override {
+        return bsp::length_00419440({vector[0], vector[1], vector[2]});
+    }
+    void direction_to_pitch_yaw_00521370(const float direction[3],
+        float* pitch, float* yaw) override {
+        // Preserve this host's asin/atan2 provider boundary. No native CRT
+        // exception or binary-ABI equivalence is claimed by this adapter.
+        const float vertical = std::max(-1.0f, std::min(1.0f, direction[1]));
+        *pitch = std::asin(vertical);
+        *yaw = std::atan2(direction[0], direction[2]);
+    }
+};
 
 // Packet cc13-powerup-bind: what 008E4680 reads off a torpedo projectile, the
 // unit 008570B8 and 008576A4 pass (ECX of 00856BB0 / EBX of 00857480).
@@ -9582,6 +9606,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             const float distance = length3(delta);
             lead_distance = distance;
             if (distance > 0.0f) {
+                // 008FDAF0 calls the world-to-gun body; OFF keeps the host angle calculation.
+                if constexpr (bsp::kWireGoal1Chain22Bound) {
+                    const float inverse_frame[16] = {
+                        right[0], up[0], forward[0], 0.0f,
+                        right[1], up[1], forward[1], 0.0f,
+                        right[2], up[2], forward[2], 0.0f,
+                        0.0f, 0.0f, 0.0f, 1.0f};
+                    GunneryDirectionAnglesBinding angles_host;
+                    float requested[2];
+                    bsp::gun_bot_angles_from_world_008fdaf0(
+                        lead.data(), muzzle, inverse_frame, requested, angles_host);
+                    want_horz = requested[0];
+                    want_vert = requested[1] + pitch;
+                } else {
                 const float unit_delta[3] = {delta[0] / distance, delta[1] / distance,
                     delta[2] / distance};
                 // 008FDAF0: the world direction as a hull-relative angle pair.
@@ -9590,6 +9628,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float vertical = std::max(-1.0f,
                     std::min(1.0f, dot3(unit_delta, up)));
                 want_vert = std::asin(vertical) + pitch;
+                }
                 if (gun.category == bsp::kUnitGunneryTorpedoCategory) {
                     // 008FFF20 step 8 at 00900380 does NOT refuse a heading that
                     // falls outside a firing window: 0085AB50 -> 007F6190 snaps
