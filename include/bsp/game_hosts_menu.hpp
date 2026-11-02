@@ -207,6 +207,17 @@ public:
     bool in_game_screen_applied(int slot);
     // Packet cc9_screen_46h: the slot holds a registered HUD screen.
     bool in_game_screen_registered(int slot);
+    // Goal 2 chain 35: a registered HUD screen's requested byte +4h
+    // (FrontEndScreen::wanted, written by 004F7620's recompute). 0068AB80 reads
+    // it for slot 4Ch as [manager+54h]+4h.
+    bool in_game_screen_wanted(int slot);
+    // Goal 2 chain 35: the id count of level `level` (1..5) of the screen-set
+    // stack at 00E18CF8. Level 3 is the vector 00E18D18 whose 00E18D1C /
+    // 00E18D20 pair 0068AB80 tests.
+    std::size_t screen_set_level_size(int level) const;
+    // Goal 2 chain 35: 0068AB80's level-3 collapse, 004F8670(0) then
+    // 004D8B70(game, 0): level 3 of both stacks set empty.
+    void clear_level3_screen_and_context_sets();
     // The HUD calls this on each frame screen 2Eh's 005484F0 runs, so the helm
     // `input` line can report edges and held frames that no 005484F0 read.
     void note_screen_2eh_ran();
