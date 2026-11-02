@@ -31,6 +31,8 @@
 #include "bsp/ship_ai_search_storage.hpp"
 #include "bsp/cc13_seg67b_switches.hpp"   // packet cc13-para2 (capture arm 3)
 #include "bsp/session_participant_pools.hpp"
+#include "bsp/cc13_seg68.hpp"
+#include "bsp/wire_goal1_chain3_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -1559,6 +1561,7 @@ struct GameShipAiHost::Impl {
             }
         } order{};
         bsp::AutoTargetState target{};          // director+38h
+        std::unique_ptr<bsp::cc13_seg68::WeaponDirectorAutoTarget> constructed_target;
         // ai+2264h. 009F3C0D..009F3C27 (the controller constructor 009F3BA0):
         // the current state starts as ai+0BC8h, brain+0B70h, the `cruise` leaf,
         // and its vtable[4] (a bare RET) is called. Packet cc9_initial_cruise_state.
@@ -11827,8 +11830,17 @@ public:
         kinds.kind_0b = owner_.units.unit_is_kind_of(index_, 0x0b);
         kinds.kind_09 = owner_.units.unit_is_kind_of(index_, 0x09);
         kinds.kind_0c = owner_.units.unit_is_kind_of(index_, 0x0c);
-        const bsp::AutoTargetSearchConfig config
-            = bsp::auto_target_build_priority_009f65e0(kinds);
+        const bsp::AutoTargetSearchConfig config = [&] {
+            if constexpr (kWireGoal1Chain3Bound) {
+                // Use the search state initialized by the ship director's constructor.
+                if (ctl_.constructed_target) return ctl_.constructed_target->search;
+                return bsp::auto_target_build_priority_009f65e0(kinds);
+            } else {
+                const bsp::AutoTargetSearchConfig config
+                    = bsp::auto_target_build_priority_009f65e0(kinds);
+                return config;
+            }
+        }();
         owner_.done("AutoTarget::build_priority_list", 0x009f65e0u);
         // The list itself is the recon slot 008053C0 returns for the owner's
         // party and the intrusive chain at slot+0DE8h. Nothing in this process
@@ -12089,6 +12101,20 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
             return;
         }
     }
+    if constexpr (kWireGoal1Chain3Bound) {
+        // The constructor's interval, phase and retained score are the tick's storage.
+        bsp::AutoTargetState& state = ctl_.constructed_target
+            ? ctl_.constructed_target->state : ctl_.target;
+        const float before = state.think_countdown;
+        TargetBinding target(owner_, ctl_, row_, index_);
+        bsp::auto_target_tick_009f5da0(target, state, nullptr, frame_delta);
+        owner_.done("AutoTarget::tick", 0x009f5da0u);
+        if (!(frame_delta < before)) {
+            ++row_.target_thinks;
+            ++owner_.summary.thinks;
+            if (plane_row) ++owner_.summary.plane_row_autotarget_thinks;
+        }
+    } else {
     const float before = ctl_.target.think_countdown;
     TargetBinding target(owner_, ctl_, row_, index_);
     bsp::auto_target_tick_009f5da0(target, ctl_.target, nullptr, frame_delta);
@@ -12097,6 +12123,7 @@ void ControllerUpdateBinding::step_auto_target(float frame_delta) {
         ++row_.target_thinks;
         ++owner_.summary.thinks;
         if (plane_row) ++owner_.summary.plane_row_autotarget_thinks;
+    }
     }
 }
 
@@ -14157,6 +14184,59 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
 void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
+    // 009F6A20 calls weapon_director_auto_target_construct_009f6a20; OFF keeps phase-only seeding.
+    if constexpr (kWireGoal1Chain3Bound) {
+        if (gunnery != nullptr) {
+            struct ShipDirectorTargetBinding final
+                : bsp::cc13_seg68::WeaponDirectorAutoTargetHost {
+                Impl& owner;
+                std::size_t index;
+                ShipDirectorTargetBinding(Impl& h, std::size_t i) : owner(h), index(i) {}
+                bsp::cc13_seg68::Handle director_unit_24c(
+                    bsp::cc13_seg68::Handle director) override {
+                    // As in TargetBinding, a semantic owner handle is unit index + 1.
+                    // 0083674D stores the unit in its own director's +24Ch.
+                    return director;
+                }
+                bsp::AutoTargetOwnerKinds owner_kinds_009f65e0(
+                    bsp::cc13_seg68::Handle unit) override {
+                    const std::size_t i = static_cast<std::size_t>(unit - 1u);
+                    bsp::AutoTargetOwnerKinds kinds{};
+                    kinds.kind_0e = owner.units.unit_is_kind_of(i, 0x0e);
+                    kinds.kind_07 = owner.units.unit_is_kind_of(i, 0x07);
+                    kinds.kind_0a = owner.units.unit_is_kind_of(i, 0x0a);
+                    kinds.kind_0d = owner.units.unit_is_kind_of(i, 0x0d);
+                    kinds.kind_08 = owner.units.unit_is_kind_of(i, 0x08);
+                    kinds.kind_0b = owner.units.unit_is_kind_of(i, 0x0b);
+                    kinds.kind_09 = owner.units.unit_is_kind_of(i, 0x09);
+                    kinds.kind_0c = owner.units.unit_is_kind_of(i, 0x0c);
+                    return kinds;
+                }
+                float random_uniform_00bd2f10(int stream, float lo, float hi) override {
+                    // The sole constructor site uses stream 1 and [0,1]. Preserve
+                    // the existing shared draw and its per-unit RNG census label.
+                    if (stream != 1 || lo != 0.0f || hi != 1.0f) std::terminate();
+                    return owner.gunnery_draws->auto_target_phase_draw_009f6a8f(index);
+                }
+            };
+            std::size_t seeded = 0;
+            for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
+                auto& ctl = impl_->controllers[i];
+                if (!ctl.nav_block_built) continue;
+                ShipDirectorTargetBinding binding(*impl_, i);
+                ctl.constructed_target =
+                    std::make_unique<bsp::cc13_seg68::WeaponDirectorAutoTarget>();
+                bsp::cc13_seg68::weapon_director_auto_target_construct_009f6a20(
+                    binding, *ctl.constructed_target,
+                    static_cast<bsp::cc13_seg68::Handle>(i + 1u));
+                impl_->done("AutoTarget::construct", 0x009f6a20u);
+                ++seeded;
+            }
+            impl_->log.notef("ship ai auto-target constructors: %llu controllers seeded "
+                "(009F6A20, persistent search and think state)",
+                static_cast<unsigned long long>(seeded));
+        }
+    } else {
     if (kAutoTargetPhaseDrawBound && gunnery != nullptr) {
         std::size_t seeded = 0;
         for (std::size_t i = 0; i < impl_->controllers.size(); ++i) {
@@ -14167,6 +14247,7 @@ void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
         }
         impl_->log.notef("ship ai auto-target phase draws: %llu controllers seeded "
             "(009F6A8F, stream 1)", static_cast<unsigned long long>(seeded));
+    }
     }
     if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
         impl_->seed_brain_draws_009f1160();
