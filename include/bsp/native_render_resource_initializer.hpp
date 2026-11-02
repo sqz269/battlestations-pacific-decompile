@@ -4,6 +4,11 @@
 
 namespace bsp {
 
+class NativePostEffectParentDomain;
+class NativeMeshSectionLifetimeSourceScope;
+struct NativeBrightPassInitializationContext;
+struct NativePostEffectDustContext;
+
 // Borrow the original providers and byte strings. Every stage uses the SAME
 // continuation context, service and three argument cells; no shadow domain is
 // created. All referents survive the operation and native child retirement.
@@ -30,9 +35,7 @@ public:
     NativeRenderResourceInitialization(const NativeRenderResourceInitialization&) = delete;
     NativeRenderResourceInitialization& operator=(const NativeRenderResourceInitialization&) = delete;
     Phase phase() const noexcept { return phase_; }
-    bool requires_process_retention() const noexcept {
-        return phase_ == Phase::running || phase_ == Phase::failed;
-    }
+    bool requires_process_retention() const noexcept;
     const NativeRenderResourceInitEntryState& entry() const noexcept { return entry_; }
     const NativeRenderResourceInitTailState& tail() const noexcept { return tail_; }
     // Entry address of the last entered stage, not the precise failed CALL.
@@ -49,11 +52,30 @@ public:
     // child block enforces its own terminal facts. No release, free, retry or
     // reset of this one-shot operation is performed. Failed attempts are retained.
     void close_children_after_host_quiescence() noexcept;
+    // Selected pair only. The owner must first close the SAME Parent domain
+    // after actual Source end and external fences. This never closes a domain
+    // or supplies whole-operation readiness; healthy pending custody stays owned.
+    void close_parent_initializers_after_host_quiescence(NativePostEffectParentDomain&);
 
 private:
     friend void initialize_native_render_resources_00b107f0(void*,
         const volatile NativeRenderResourceInitArguments&,
         NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&);
+    friend void initialize_native_render_resources_00b107f0(void*,
+        const volatile NativeRenderResourceInitArguments&,
+        NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&,
+        NativePostEffectParentDomain&, NativeBrightPassInitializationContext&,
+        NativePostEffectDustContext&, NativeMeshSectionLifetimeSourceScope&);
+    void bind_parent_initializers(NativePostEffectParentDomain&,
+        NativeBrightPassInitializationContext&, NativePostEffectDustContext&,
+        NativeMeshSectionLifetimeSourceScope&);
+    void release_parent_source_borrow() noexcept;
+    NativePostEffectParentDomain* selected_parent_{};
+    NativeBrightPassInitializationContext* selected_bright_{};
+    NativePostEffectDustContext* selected_dust_{};
+    // Invocation borrow only. Clearing this never ends the external Source.
+    NativeMeshSectionLifetimeSourceScope* selected_source_{};
+    bool parent_initializers_closed_{}; // ordered close history, not readiness
     Phase phase_{Phase::fresh};
     std::uint32_t active_stage_{};
     NativeRenderResourceInitEntryState entry_;
@@ -79,5 +101,14 @@ private:
 void initialize_native_render_resources_00b107f0(void* actual_service,
     const volatile NativeRenderResourceInitArguments&,
     NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&);
+
+// The actual upper owner supplies stable selected per-family contexts and ONE
+// external Source scope spanning the complete initialization/tail/catch horizon.
+// Other child families continue to use the unchanged legacy context.
+void initialize_native_render_resources_00b107f0(void* actual_service,
+    const volatile NativeRenderResourceInitArguments&,
+    NativeRenderResourceInitializerContext&, NativeRenderResourceInitialization&,
+    NativePostEffectParentDomain&, NativeBrightPassInitializationContext&,
+    NativePostEffectDustContext&, NativeMeshSectionLifetimeSourceScope&);
 
 } // namespace bsp

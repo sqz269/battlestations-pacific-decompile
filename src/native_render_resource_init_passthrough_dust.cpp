@@ -66,6 +66,52 @@ void require_domains(Context& c,StageContext& d) {
        &q.draw_entries!=&p.draw_entries || &q.node_constants!=&p.node_constants)
         throw std::logic_error("passthrough and dust require the same actual domains and original literal views");
 }
+void require_parent24_roles(const NativePostEffectConstructionContext& selected,
+    const NativePostEffectConstructionContext& legacy) {
+    // Compare Native object/pointer roles and HOME ADDRESSES only. The selected
+    // Source binding and ordinary Model context are authenticated by Parent8.
+    if(&selected.destruction.actual_owners!=&legacy.destruction.actual_owners ||
+       &selected.destruction.nodes!=&legacy.destruction.nodes ||
+       &selected.destruction.frame_targets!=&legacy.destruction.frame_targets ||
+       &selected.destruction.actual_decrement_00ce2220!=&legacy.destruction.actual_decrement_00ce2220 ||
+       selected.destruction.actual_profile_00d61ec8!=legacy.destruction.actual_profile_00d61ec8 ||
+       selected.destruction.actual_stream_profile_00d61d6c!=legacy.destruction.actual_stream_profile_00d61d6c ||
+       selected.destruction.actual_material_profile_00d5e520!=legacy.destruction.actual_material_profile_00d5e520 ||
+       selected.destruction.actual_frame_profile_00d5e600!=legacy.destruction.actual_frame_profile_00d5e600 ||
+       &selected.meshes!=&legacy.meshes ||
+       &selected.mesh_constants.minimum_00ce4adc!=&legacy.mesh_constants.minimum_00ce4adc ||
+       &selected.mesh_constants.maximum_00ce4970!=&legacy.mesh_constants.maximum_00ce4970 ||
+       &selected.mesh_constants.lod_00d7a24c!=&legacy.mesh_constants.lod_00d7a24c ||
+       &selected.sections!=&legacy.sections ||
+       &selected.section_bounds_w_00ce4970!=&legacy.section_bounds_w_00ce4970 ||
+       &selected.materials!=&legacy.materials ||
+       &selected.material_effects!=&legacy.material_effects ||
+       &selected.declaration_companions!=&legacy.declaration_companions ||
+       &selected.declarations!=&legacy.declarations ||
+       &selected.streams!=&legacy.streams ||
+       &selected.layouts!=&legacy.layouts ||
+       &selected.models!=&legacy.models ||
+       &selected.cameras!=&legacy.cameras ||
+       &selected.node_constants!=&legacy.node_constants ||
+       &selected.viewports!=&legacy.viewports ||
+       &selected.draw_entries!=&legacy.draw_entries ||
+       &selected.raw_strings!=&legacy.raw_strings ||
+       &selected.strings!=&legacy.strings ||
+       &selected.actual_renderer_00f8d394!=&legacy.actual_renderer_00f8d394 ||
+       selected.renderer_profile_00d5f0a8!=legacy.renderer_profile_00d5f0a8 ||
+       selected.surface_profile_00d619a0!=legacy.surface_profile_00d619a0 ||
+       selected.viewport_profile_00d5e5f8!=legacy.viewport_profile_00d5e5f8 ||
+       selected.vertex_format_00d61f0c!=legacy.vertex_format_00d61f0c ||
+       selected.model_name_00d61ee4!=legacy.model_name_00d61ee4 ||
+       selected.camera_prefix_00d61ed0!=legacy.camera_prefix_00d61ed0)
+        throw std::logic_error("selected parent24 requires the same Native provider roles and HOME cells");
+}
+void require_dust_parent_context(const NativePostEffectDustContext& selected,
+    const NativePostEffectDustContext& legacy) {
+    require_parent24_roles(selected.construction,legacy.construction);
+    if(selected.effect_name_00d620ac!=legacy.effect_name_00d620ac)
+        throw std::logic_error("selected Dust requires the same Native effect-name pointer");
+}
 void construct_name(std::size_t index,const char* literal,U address,Context& c,State& a) {
     site(a,address,a.native_state);
     construct_native_string_header_0041e870(&a.names[index],c.passes.post_effects.raw_strings,literal);
@@ -124,6 +170,23 @@ void parameter(std::size_t index,Context& c,StageContext& d,State& a) {
 }
 } // namespace
 
+void NativeRenderResourceInitPassthroughDustState::bind_dust_parent(StageContext& d,
+    NativePostEffectDustContext& selected,NativePostEffectParentDomain& parent,
+    NativeMeshSectionLifetimeSourceScope& source) {
+    if(phase!=Phase::fresh || dust_parent_ || selected_dust_ || dust_source_)
+        throw std::logic_error("Dust selection requires a fresh unbound passthrough state");
+    require_dust_parent_context(selected,d.dust);
+    // No fallible work follows publication of this invocation's private loan.
+    dust_parent_=&parent;selected_dust_=&selected;dust_source_=&source;
+}
+void NativeRenderResourceInitPassthroughDustState::prepare_blocks(Context& c,StageContext& d) {
+    if(dust_parent_ && !dust_source_)
+        throw std::logic_error("selected Dust Source invocation is no longer active");
+    post.prepare(c.passes.post_effects);
+    if(dust_parent_)dust.prepare(*selected_dust_,*dust_parent_,*dust_source_);
+    else dust.prepare(d.dust);
+}
+
 void continue_native_render_resource_init_00b11ef4_fragment(Previous& previous,Context& c,
     StageContext& d,State& a) {
     auto* const bloom=previous.previous;
@@ -156,8 +219,7 @@ void continue_native_render_resource_init_00b11ef4_fragment(Previous& previous,C
     entry->phase=NativeRenderResourceInitEntryState::Phase::continuation_running;
     site(a,0xb11ef4,-1);
     try {
-        a.post.prepare(c.passes.post_effects);
-        a.dust.prepare(d.dust);
+        a.prepare_blocks(c,d);
         a.phase=State::Phase::running;
         void* const service=entry->service;
         site(a,0xb11ef6,-1);
@@ -196,5 +258,17 @@ void continue_native_render_resource_init_00b11ef4_fragment(Previous& previous,C
         // blocks. Their existing failure policies are authoritative.
         throw;
     }
+}
+void continue_native_render_resource_init_00b11ef4_fragment(Previous& previous,Context& c,
+    StageContext& d,State& a,NativePostEffectParentDomain& parent,
+    NativePostEffectDustContext& selected,NativeMeshSectionLifetimeSourceScope& source) {
+    a.bind_dust_parent(d,selected,parent,source); // outside cleanup: entered only
+    try {
+        continue_native_render_resource_init_00b11ef4_fragment(previous,c,d,a);
+    } catch(...) {
+        a.dust_source_=nullptr; // this successful bind only; not Source end
+        throw;
+    }
+    a.dust_source_=nullptr;
 }
 } // namespace bsp

@@ -1,4 +1,5 @@
 #include "bsp/native_render_resource_initializer.hpp"
+#include "bsp/native_post_effect_parent_lifetime.hpp"
 
 #include <stdexcept>
 #include <type_traits>
@@ -6,7 +7,58 @@
 
 namespace bsp {
 
+bool NativeRenderResourceInitialization::requires_process_retention() const noexcept {
+    return phase_ == Phase::running || phase_ == Phase::failed ||
+        (selected_parent_ && selected_parent_->requires_process_retention());
+}
+
+void NativeRenderResourceInitialization::bind_parent_initializers(NativePostEffectParentDomain& parent,
+    NativeBrightPassInitializationContext& bright,NativePostEffectDustContext& dust,
+    NativeMeshSectionLifetimeSourceScope& source) {
+    if(phase_!=Phase::fresh || children_closed_ || selected_parent_ || selected_bright_ ||
+       selected_dust_ || selected_source_ || parent_initializers_closed_)
+        throw std::logic_error("selected parent initializers require a fresh unbound operation");
+    // Concrete compatibility is checked against each actual legacy stage context
+    // at its typed bind. All checks here precede nonthrowing pointer commits.
+    selected_parent_=&parent;selected_bright_=&bright;selected_dust_=&dust;selected_source_=&source;
+}
+void NativeRenderResourceInitialization::release_parent_source_borrow() noexcept {
+    selected_source_=nullptr; // invocation borrow only; never Source end
+}
+
+void NativeRenderResourceInitialization::close_parent_initializers_after_host_quiescence(
+    NativePostEffectParentDomain& parent) {
+    if(selected_parent_!=&parent)
+        throw std::logic_error("selected initializer close requires the same Parent domain");
+    if(phase_!=Phase::normal_work_complete && phase_!=Phase::already_initialized_returned)
+        throw std::logic_error("partial, running or failed selected initialization remains retained");
+    if(selected_source_ || continuation_.bright_source_ || passthrough_dust_.dust_source_ ||
+       parent.requires_process_retention())
+        throw std::logic_error("selected initializer invocation or Parent failure remains retained");
+    if(parent_initializers_closed_)return;
+    if((continuation_.bright_parent_ && continuation_.bright_parent_!=&parent) ||
+       (passthrough_dust_.dust_parent_ && passthrough_dust_.dust_parent_!=&parent))
+        throw std::logic_error("selected initializer Parent identities differ");
+    auto& dust=passthrough_dust_.dust;auto& bright=continuation_.bright;
+    using DustPhase=NativePostEffectDustBlock::Phase;
+    using BrightPhase=NativeBrightPassInitializationBlock::Phase;
+    // Non-draining pair preflight. This is not the missing whole-legacy pass.
+    if((dust.phase()!=DustPhase::idle && dust.phase()!=DustPhase::prepared && dust.phase()!=DustPhase::settled) ||
+       (bright.phase()!=BrightPhase::idle && bright.phase()!=BrightPhase::prepared && bright.phase()!=BrightPhase::settled))
+        throw std::logic_error("selected initializer Caller is still partial or running");
+    // PRECONDITION: actual owner already completed parent.close_after_host_quiescence()
+    // after the real external Source end and all required fences. Source8 typed
+    // Caller detach enforces that close, idle inner Block and genuine Source end.
+    // Never reset the inner Parent Block or require healthy pending custody==0.
+    if(dust.phase()==DustPhase::prepared)dust.cancel_preparation();
+    else if(dust.phase()==DustPhase::settled)dust.reset_after_host_quiescence();
+    if(bright.phase()==BrightPhase::prepared)bright.cancel_preparation();
+    else if(bright.phase()==BrightPhase::settled)bright.reset_after_host_quiescence();
+    parent_initializers_closed_=true; // only ordered history, not readiness/fence
+}
+
 void NativeRenderResourceInitialization::close_children_after_host_quiescence() noexcept {
+    if(selected_parent_ && !parent_initializers_closed_)std::terminate();
     if (children_closed_) return;
     if (phase_ == Phase::fresh || phase_ == Phase::already_initialized_returned) {
         children_closed_ = true;
@@ -101,8 +153,13 @@ void initialize_native_render_resources_00b107f0(void* service,
         }
 
         operation.active_stage_ = 0x00b109bc;
-        continue_native_render_resource_init_00b109bc_fragment(operation.entry_,
-            continuation, operation.continuation_);
+        if(operation.selected_parent_)
+            continue_native_render_resource_init_00b109bc_fragment(operation.entry_,
+                continuation, operation.continuation_, *operation.selected_parent_,
+                *operation.selected_bright_, *operation.selected_source_);
+        else
+            continue_native_render_resource_init_00b109bc_fragment(operation.entry_,
+                continuation, operation.continuation_);
         operation.active_stage_ = 0x00b11599;
         continue_native_render_resource_init_00b11599_fragment(operation.continuation_,
             continuation, operation.post_);
@@ -116,8 +173,13 @@ void initialize_native_render_resources_00b107f0(void* service,
         continue_native_render_resource_init_00b11e40_fragment(operation.second_bloom_,
             continuation, context.distortion, operation.distortion_);
         operation.active_stage_ = 0x00b11ef4;
-        continue_native_render_resource_init_00b11ef4_fragment(operation.distortion_,
-            continuation, context.passthrough_dust, operation.passthrough_dust_);
+        if(operation.selected_parent_)
+            continue_native_render_resource_init_00b11ef4_fragment(operation.distortion_,
+                continuation, context.passthrough_dust, operation.passthrough_dust_,
+                *operation.selected_parent_, *operation.selected_dust_, *operation.selected_source_);
+        else
+            continue_native_render_resource_init_00b11ef4_fragment(operation.distortion_,
+                continuation, context.passthrough_dust, operation.passthrough_dust_);
         operation.active_stage_ = 0x00b120b9;
         continue_native_render_resource_init_00b120b9_fragment(operation.passthrough_dust_,
             continuation, context.post658_names, operation.post658_);
@@ -137,4 +199,18 @@ void initialize_native_render_resources_00b107f0(void* service,
     }
 }
 
+void initialize_native_render_resources_00b107f0(void* service,
+    const volatile NativeRenderResourceInitArguments& arguments,
+    NativeRenderResourceInitializerContext& context,NativeRenderResourceInitialization& operation,
+    NativePostEffectParentDomain& parent,NativeBrightPassInitializationContext& bright,
+    NativePostEffectDustContext& dust,NativeMeshSectionLifetimeSourceScope& source) {
+    operation.bind_parent_initializers(parent,bright,dust,source); // outside cleanup: entered only
+    try {
+        initialize_native_render_resources_00b107f0(service,arguments,context,operation);
+    } catch(...) {
+        operation.release_parent_source_borrow(); // only this completed bind
+        throw;
+    }
+    operation.release_parent_source_borrow();
+}
 } // namespace bsp

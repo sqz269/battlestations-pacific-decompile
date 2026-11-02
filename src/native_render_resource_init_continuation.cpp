@@ -67,6 +67,55 @@ void validate(Context& c) {
        !same_cell(c.entry.decrement_iat_00ce2220,c.effects_lifetime.actual_decrement_00ce2220))
         throw std::logic_error("render-resource continuation requires one canonical provider domain");
 }
+void require_parent20_roles(const NativePostEffect20ConstructionContext& selected,
+    const NativePostEffect20ConstructionContext& legacy) {
+    // Compare Native object/pointer roles and HOME ADDRESSES only. The selected
+    // Source binding and ordinary Model context are authenticated by Parent8.
+    if(&selected.destruction.actual_owners!=&legacy.destruction.actual_owners ||
+       &selected.destruction.nodes!=&legacy.destruction.nodes ||
+       &selected.destruction.frame_targets!=&legacy.destruction.frame_targets ||
+       &selected.destruction.actual_decrement_00ce2220!=&legacy.destruction.actual_decrement_00ce2220 ||
+       selected.destruction.actual_profile_00d61ec0!=legacy.destruction.actual_profile_00d61ec0 ||
+       selected.destruction.actual_material_profile_00d5e520!=legacy.destruction.actual_material_profile_00d5e520 ||
+       selected.destruction.actual_frame_profile_00d5e600!=legacy.destruction.actual_frame_profile_00d5e600 ||
+       &selected.meshes!=&legacy.meshes ||
+       &selected.mesh_constants.minimum_00ce4adc!=&legacy.mesh_constants.minimum_00ce4adc ||
+       &selected.mesh_constants.maximum_00ce4970!=&legacy.mesh_constants.maximum_00ce4970 ||
+       &selected.mesh_constants.lod_00d7a24c!=&legacy.mesh_constants.lod_00d7a24c ||
+       &selected.sections!=&legacy.sections ||
+       &selected.section_bounds_w_00ce4970!=&legacy.section_bounds_w_00ce4970 ||
+       &selected.materials!=&legacy.materials ||
+       &selected.material_effects!=&legacy.material_effects ||
+       &selected.declaration_companions!=&legacy.declaration_companions ||
+       &selected.declarations!=&legacy.declarations ||
+       &selected.streams!=&legacy.streams ||
+       &selected.layouts!=&legacy.layouts ||
+       &selected.models!=&legacy.models ||
+       &selected.cameras!=&legacy.cameras ||
+       &selected.node_constants!=&legacy.node_constants ||
+       &selected.viewports!=&legacy.viewports ||
+       &selected.draw_entries!=&legacy.draw_entries ||
+       &selected.raw_strings!=&legacy.raw_strings ||
+       &selected.strings!=&legacy.strings ||
+       &selected.actual_renderer_00f8d394!=&legacy.actual_renderer_00f8d394 ||
+       selected.renderer_profile_00d5f0a8!=legacy.renderer_profile_00d5f0a8 ||
+       selected.surface_profile_00d619a0!=legacy.surface_profile_00d619a0 ||
+       selected.viewport_profile_00d5e5f8!=legacy.viewport_profile_00d5e5f8 ||
+       selected.vertex_format_00d61ef8!=legacy.vertex_format_00d61ef8 ||
+       selected.model_name_00d61ee4!=legacy.model_name_00d61ee4 ||
+       selected.camera_prefix_00d61ed0!=legacy.camera_prefix_00d61ed0)
+        throw std::logic_error("selected parent20 requires the same Native provider roles and HOME cells");
+}
+void require_bright_parent_context(const NativeBrightPassInitializationContext& selected,
+    const NativeBrightPassInitializationContext& legacy) {
+    require_parent20_roles(selected.post_effects,legacy.post_effects);
+    if(&selected.holders!=&legacy.holders || &selected.parameters!=&legacy.parameters ||
+       selected.effect_name_00d62138!=legacy.effect_name_00d62138)
+        throw std::logic_error("selected BrightPass requires the same Native roles and literal pointers");
+    for(std::size_t i=0;i!=selected.parameter_names.size();++i)
+        if(selected.parameter_names[i]!=legacy.parameter_names[i])
+            throw std::logic_error("selected BrightPass parameter-name pointers differ");
+}
 void site(State& a,U address,int state) noexcept {
     a.native_site=address;a.native_state=state;
     a.entry->native_site=address;a.entry->unwind_state=state;
@@ -79,11 +128,6 @@ void* renderer_slot(Context& c,U offset,U expected) {
     if(!current || word(current)!=0x00d5f0a8u || !table || table[offset/4]!=expected)
         throw std::logic_error("unsupported current continuation renderer dispatch");
     return current;
-}
-void prepare(Context& c,State& a) {
-    for(auto& block:a.passes)block.prepare(c.passes);
-    a.luminance.prepare(c.luminance);a.bright.prepare(c.bright);a.bloom.prepare(c.bloom);
-    for(auto& block:a.posts)block.prepare(c.passes.post_effects);
 }
 void* allocate(U size,State& a,U address) {
     site(a,address,a.native_state);
@@ -218,6 +262,27 @@ void parameter(std::size_t index,Context& c,State& a) {
 }
 } // namespace
 
+void NativeRenderResourceInitContinuationState::bind_bright_parent(Context& c,
+    NativeBrightPassInitializationContext& selected,NativePostEffectParentDomain& parent,
+    NativeMeshSectionLifetimeSourceScope& source) {
+    if(phase!=Phase::fresh || bright_parent_ || selected_bright_ || bright_source_)
+        throw std::logic_error("BrightPass selection requires a fresh unbound continuation");
+    require_bright_parent_context(selected,c.bright);
+    // All throwing checks precede these nonthrowing commits. A rejected nested
+    // bind cannot alter or clear the invocation which already owns this borrow.
+    bright_parent_=&parent;selected_bright_=&selected;bright_source_=&source;
+}
+void NativeRenderResourceInitContinuationState::prepare_blocks(Context& c) {
+    if(bright_parent_ && !bright_source_)
+        throw std::logic_error("selected BrightPass Source invocation is no longer active");
+    for(auto& block:passes)block.prepare(c.passes);
+    luminance.prepare(c.luminance);
+    if(bright_parent_)bright.prepare(*selected_bright_,*bright_parent_,*bright_source_);
+    else bright.prepare(c.bright);
+    bloom.prepare(c.bloom);
+    for(auto& block:posts)block.prepare(c.passes.post_effects);
+}
+
 void assign_native_post_effect_frame_00b4e2b0(void* effect,
     NativeFrameTargetOwnerStorage* incoming,NativeRenderResourceInitEntryContext& c,
     NativeTextureSurfaceReferenceIncrement const volatile& increment_cell) {
@@ -245,7 +310,7 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
     a.entry=&entry;entry.continuation_identity=&a;a.context_identity=&c;
     a.pass_companions_identity=&c.pass_companions;a.phase=State::Phase::preparing;
     try {
-        validate(c);prepare(c,a);
+        validate(c);a.prepare_blocks(c);
         a.phase=State::Phase::running;entry.phase=NativeRenderResourceInitEntryState::Phase::continuation_running;
         void* const service=entry.service;
         a.aligned_width_esp58=entry.aligned_width_eax; // B109BE, after native PUSH18.
@@ -359,5 +424,17 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
         // No guessed native FH3 unwind, rollback or destruction admission.
         throw;
     }
+}
+void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResourceInitEntryState& entry,
+    Context& c,State& a,NativePostEffectParentDomain& parent,
+    NativeBrightPassInitializationContext& selected,NativeMeshSectionLifetimeSourceScope& source) {
+    a.bind_bright_parent(c,selected,parent,source); // outside cleanup: entered only
+    try {
+        continue_native_render_resource_init_00b109bc_fragment(entry,c,a);
+    } catch(...) {
+        a.bright_source_=nullptr; // this successful bind only; not Source end
+        throw;
+    }
+    a.bright_source_=nullptr;
 }
 } // namespace bsp
