@@ -1057,6 +1057,11 @@ public:
     GameGunneryHost& operator=(const GameGunneryHost&) = delete;
 
     void set_ship_ai(GameShipAiHost* ai) noexcept;
+    // Wire goal 2 chain 27 (kWireGoal2Chain27Bound): borrows game+648h, the
+    // OnMove frame counter that run_mission_frame bumps at 004E4FF5, for the
+    // blast grid's node stamps (0098C630 at 0098C653, 0098A750 at 0098A755).
+    // The mission-frame host owns it and outlives this host.
+    void attach_game_frame_counter_648(const std::uint32_t* frame_counter) noexcept;
 
     // Packet cc9_recon_team_lists: the recon slot of party `side` after the last
     // 008073C0 rebuild, one published triple as unit indices in native order.

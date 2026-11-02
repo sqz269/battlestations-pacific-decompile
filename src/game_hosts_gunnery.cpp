@@ -8,6 +8,7 @@
 #include "bsp/wire_goal1_chain1_switches.hpp"
 #include "bsp/wire_goal1_chain8_switches.hpp"
 #include "bsp/wire_goal1_chain22_switches.hpp"
+#include "bsp/wire_goal2_chain27_switches.hpp"
 #include "bsp/cc13_front2.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
@@ -4056,9 +4057,71 @@ struct GameGunneryHost::Impl {
     // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): the unit of each
     // record apply_impact_blast's walk will push, in push order, and the discarded
     // gather draws made for them.
+    // `visit_order` (wire goal 2 chain 27, ON only): the units 0098C630 visited for
+    // this burst, walked instead of every unit in index order. Null keeps the walk.
     std::vector<std::size_t> blast_gathered_records(std::size_t shooter,
-        const float centre[3], float range);
+        const float centre[3], float range,
+        const std::vector<std::size_t>* visit_order = nullptr);
     unsigned long long blast_gather_shot_draws{0};
+    // Wire goal 2 chain 27 (kWireGoal2Chain27Bound; OFF never touches any of it).
+    // The spatial index's grid half for the units' collision nodes, which 0098C630
+    // walks for every burst (00904470 at 009044A2):
+    //  * the 96h x 96h cell heads at index+84h, zeroed by the memset at 0042D453
+    //    when the world singleton (0042E630) is built; here sized at the first
+    //    step, and released with this host;
+    //  * one collision node per unit, its fields as 004E6540 / 004E6480 set them
+    //    (node+4h = node+154h = -1 at 004E6502 / 004E64CB);
+    //  * attached as 0098BA10's root branch does at the unit's scene init: the
+    //    world bounds, two 0098AD60 corners, 0098BAD2's 2x2 test, then 0098A310
+    //    and the root list at index+16014h (head insertion, 0098BAFD..0098BB16),
+    //    or the loose array, which 0098C630 never walks. Here at the first step
+    //    that sees the unit with a hull box. The body 0098BA10 already has,
+    //    attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp),
+    //    works on raw image-shaped node and index storage; BlastGridNode is not
+    //    image-shaped, so blast_grid_step_0098bdb0 restates its root branch over
+    //    the same existing sub-bodies (0098BAD2, 0098A310);
+    //  * re-bucketed every step by 0098BDB0, which the image runs among the
+    //    per-step calls (00875E0C) after step N's job waves; here at the head of
+    //    step N+1's fixed_step, before its bursts. KNOWN DEVIATION: anything that
+    //    moves a unit in step N+1 ahead of the gunnery pass is already in the
+    //    host's cells but not yet in the image's, so the cells can be one step
+    //    fresher; that changes a query only for a node at a cell boundary.
+    // The node bounds are SegmentBinding::entity_bounds, this host's 0098A750:
+    // the posed hull box grown over the device mounts (0098B530).
+    struct BlastGridNode {
+        bsp::SpatialCellLink links[bsp::kSpatialNodeCellLinkSlots]{};  // node+0Ch..+3Bh
+        std::uint32_t cell_key_3c{0};                 // node+3Ch, 0098A310
+        int cell_count_40{0};                          // node+40h, 0098A310 / 0098A3D0
+        std::uint32_t sphere_stamp_4{0xFFFFFFFFu};     // node+4h, 004E6502; 0098C762
+        std::uint32_t bounds_stamp_154{0xFFFFFFFFu};   // node+154h, 004E64CB; 0098A750
+        bsp::HitQueryBounds world_bounds{};            // node+13Ch..+150h, 0098A750
+        BlastGridNode* root_prev_44{nullptr};          // node+44h, 0098BAFD
+        BlastGridNode* root_next_48{nullptr};          // node+48h, 0098BB06
+        bool attached_158{false};                      // node+158h, 0098BB1D
+        bool loose{false};                             // 0098BB2C, the loose push
+        std::size_t unit{0};
+    };
+    struct BlastGrid {
+        std::vector<void*> cell_head_84;                        // index+84h
+        std::vector<std::unique_ptr<BlastGridNode>> nodes;      // by unit index
+        BlastGridNode* root_16014{nullptr};                     // index+16014h
+    } blast_grid;
+    // game+648h, the OnMove frame counter (004E4FF5), borrowed from the mission
+    // frame host's MissionFrameState by attach_game_frame_counter_648.
+    const std::uint32_t* game_frame_648{nullptr};
+    bool blast_grid_node_bounds(std::size_t unit, bsp::HitQueryBounds& out);
+    void blast_grid_step_0098bdb0(float step);
+    // The units whose node 0098C630 visits (not the source's), in visit order.
+    // False when the grid cannot run (no frame counter), which keeps OFF's walk.
+    bool blast_sphere_visit_order_0098c630(std::size_t shooter, const float centre[3],
+        float range, std::vector<std::size_t>& order);
+    unsigned long long blast_grid_attached{0};
+    unsigned long long blast_grid_loose{0};
+    unsigned long long blast_grid_rebuckets{0};
+    unsigned long long blast_grid_queries{0};
+    unsigned long long blast_grid_visits{0};
+    unsigned long long blast_grid_link_overflow{0};
+    bool blast_grid_no_frame_logged{false};
     // Packet cc13-c2b (include/bsp/gun_device_blast_gunless_cc13.hpp): the mounts of a
     // gunless burst (00819A20, 0084BC60's crash shot). The flush pushes them when the
     // walked unit's turn ends, after its own record, past every `continue`.
@@ -14860,6 +14923,265 @@ void GameGunneryHost::Impl::device_blast_dispatch_009239a0(std::size_t gun_row,
     }
 }
 
+// ---------------------------------------------------------------------------
+// Wire goal 2 chain 27 (kWireGoal2Chain27Bound): the blast grid. See BlastGridNode
+// in Impl for the object, its producers and its lifetime.
+// ---------------------------------------------------------------------------
+namespace {
+
+// The cell width 0098AD60 divides by: the double 400.0 at 00CE3D90 (FDIV at
+// 0098AD67 and 0098AD97); exact in float.
+constexpr float kBlastGridCellSize00ce3d90 = 400.0f;
+
+GameGunneryHost::Impl::BlastGridNode* blast_grid_node(const void* node) {
+    return static_cast<GameGunneryHost::Impl::BlastGridNode*>(const_cast<void*>(node));
+}
+bsp::SpatialCellLink* blast_grid_link(const void* link) {
+    return static_cast<bsp::SpatialCellLink*>(const_cast<void*>(link));
+}
+
+// 0098A310 / 0098A3D0's field accesses: the cell heads at index+84h, the four
+// links at node+0Ch and node+3Ch / +40h.
+class BlastGridCells final : public bsp::SpatialGridHost {
+public:
+    explicit BlastGridCells(GameGunneryHost::Impl& owner) : owner_(owner) {}
+    void* cell_head(int cell) override {
+        return owner_.blast_grid.cell_head_84[static_cast<std::size_t>(cell)];
+    }
+    void set_cell_head(int cell, void* link) override {
+        owner_.blast_grid.cell_head_84[static_cast<std::size_t>(cell)] = link;
+    }
+    // register_node_0098a310 below keeps every rectangle inside the four slots.
+    void* node_link(void* node, int slot) override {
+        return &blast_grid_node(node)->links[slot];
+    }
+    void* link_prev(void* link) override { return const_cast<void*>(blast_grid_link(link)->prev); }
+    void* link_next(void* link) override { return const_cast<void*>(blast_grid_link(link)->next); }
+    void set_link_prev(void* link, void* value) override { blast_grid_link(link)->prev = value; }
+    void set_link_next(void* link, void* value) override { blast_grid_link(link)->next = value; }
+    int node_cell_count(void* node) override { return blast_grid_node(node)->cell_count_40; }
+    void set_node_cell_count(void* node, int count) override {
+        blast_grid_node(node)->cell_count_40 = count;
+    }
+    void set_node_cell_key(void* node, std::uint32_t key) override {
+        blast_grid_node(node)->cell_key_3c = key;
+    }
+    std::uint32_t node_cell_key(void* node) override { return blast_grid_node(node)->cell_key_3c; }
+
+private:
+    GameGunneryHost::Impl& owner_;
+};
+
+// 0098BDB0 / 0098BC70 over the root list.
+class BlastGridRefresh final : public bsp::SpatialRefreshHost {
+public:
+    explicit BlastGridRefresh(GameGunneryHost::Impl& owner) : owner_(owner), cells_(owner) {}
+    void* first_root_node() override { return owner_.blast_grid.root_16014; }
+    void* next_root_node(void* node) override { return blast_grid_node(node)->root_next_48; }
+    // node+8h. No static flag is kept: a static unit's box never moves, so its
+    // key never changes and 0098BC70 re-buckets nothing for it.
+    bool node_is_static(void* node) override { static_cast<void>(node); return false; }
+    // node+4Ch's pose and the two matrix copies: the bounds below are taken from
+    // the unit's pose when they are rebuilt, so there is no node-side copy.
+    void* node_owner_pose(void* node) override { return node; }
+    bool pose_world_valid(void* pose) override { static_cast<void>(pose); return true; }
+    void pose_refresh_world_00414db0(void* pose) override { static_cast<void>(pose); }
+    void node_copy_world_matrix_004134f0(void* node, void* pose) override {
+        static_cast<void>(node);
+        static_cast<void>(pose);
+    }
+    bool pose_inverse_valid(void* pose) override { static_cast<void>(pose); return true; }
+    void pose_build_inverse_00b63d50(void* pose) override { static_cast<void>(pose); }
+    void node_copy_inverse_matrix_004134f0(void* node, void* pose) override {
+        static_cast<void>(node);
+        static_cast<void>(pose);
+    }
+    // 0098A750: rebuilt at most once per frame (0098A761 node+154h against
+    // [game+648h], 0098A77E stores it).
+    void node_rebuild_world_bounds_0098a750(void* node) override {
+        GameGunneryHost::Impl::BlastGridNode& n = *blast_grid_node(node);
+        const std::uint32_t frame = *owner_.game_frame_648;
+        if (n.bounds_stamp_154 == frame) return;
+        n.bounds_stamp_154 = frame;
+        bsp::HitQueryBounds bounds;
+        if (owner_.blast_grid_node_bounds(n.unit, bounds)) n.world_bounds = bounds;
+    }
+    int node_cell_count(void* node) override { return blast_grid_node(node)->cell_count_40; }
+    bsp::SpatialCellRect node_cell_rect_0098ad60(void* node) override {
+        return bsp::spatial_cell_rect_of_bounds(blast_grid_node(node)->world_bounds,
+            kBlastGridCellSize00ce3d90);
+    }
+    std::uint32_t node_cell_key(void* node) override { return blast_grid_node(node)->cell_key_3c; }
+    void unregister_node_0098a3d0(void* node) override {
+        bsp::spatial_unregister_node_0098a3d0(cells_, node);
+    }
+    void register_node_0098a310(void* node, const bsp::SpatialCellRect& rect) override {
+        // 0098A310 has no slot bound: a box grown past 2x2 cells would write over
+        // node+3Ch. A unit box is far under one 400 m cell, so the node is left
+        // out of the grid and counted rather than corrupting its neighbours.
+        if (bsp::spatial_cell_slot_count_0098a310(rect) > bsp::kSpatialNodeCellLinkSlots) {
+            ++owner_.blast_grid_link_overflow;
+            return;
+        }
+        bsp::spatial_register_node_0098a310(cells_, node, rect);
+        ++owner_.blast_grid_rebuckets;
+    }
+    // node+FCh / +100h: the device mounts own no cell links (entity_bounds reads
+    // their spheres on demand), so their refresh moves nothing in the grid.
+    int node_child_count(void* node) override { static_cast<void>(node); return 0; }
+    void* node_child(void* node, int slot) override {
+        static_cast<void>(node);
+        static_cast<void>(slot);
+        return nullptr;
+    }
+
+private:
+    GameGunneryHost::Impl& owner_;
+    BlastGridCells cells_;
+};
+
+// 0098C630 / 0098C510 over the grid.
+class BlastSphereQuery final : public bsp::SphereQueryHost {
+public:
+    BlastSphereQuery(GameGunneryHost::Impl& owner, std::vector<std::size_t>& order)
+        : owner_(owner), order_(order) {}
+    bsp::HitQueryCell cell_of_point(const bsp::HitQueryPoint& point) override {
+        return bsp::cell_of_point_0098ad60(point, kBlastGridCellSize00ce3d90);
+    }
+    // [game+648h] at 0098C653: the frame, not the query. A node a burst earlier in
+    // the same frame visited is not visited again (0098C753).
+    int query_stamp() override { return static_cast<int>(*owner_.game_frame_648); }
+    int node_stamp(const void* node) override {
+        return static_cast<int>(blast_grid_node(node)->sphere_stamp_4);
+    }
+    void set_node_stamp(const void* node, int stamp) override {
+        blast_grid_node(node)->sphere_stamp_4 = static_cast<std::uint32_t>(stamp);
+    }
+    const void* cell_first_link(int cell_x, int cell_z) override {
+        return owner_.blast_grid.cell_head_84[static_cast<std::size_t>(
+            bsp::spatial_cell_head_index_0098a356(cell_x, cell_z))];
+    }
+    const void* cell_next_link(const void* link) override { return blast_grid_link(link)->next; }
+    const void* cell_link_node(const void* link) override { return blast_grid_link(link)->owner; }
+    // node+4Ch into record+0h (00470370 at 0098C570), once per visited node past
+    // the exclude test: the order apply_impact_blast's walk then follows.
+    const void* node_owner_entity(const void* node) override {
+        order_.push_back(blast_grid_node(node)->unit);
+        ++owner_.blast_grid_visits;
+        return node;
+    }
+    // node->vtable[0Ch] (0070F090 -> 0098AAE0 and the shape's 00723B70): the unit's
+    // own record is built by apply_impact_blast's walk for each visited unit (its
+    // box distance, then its elements), so none is appended to the vector here.
+    bool node_overlaps_sphere(const void* node, const bsp::HitQueryPoint& centre, float radius,
+        const void* exclude, bsp::HitRecordFill& record) override {
+        static_cast<void>(node);
+        static_cast<void>(centre);
+        static_cast<void>(radius);
+        static_cast<void>(exclude);
+        static_cast<void>(record);
+        return false;
+    }
+    // node+FCh / +100h: the walk's DeviceBlastFlush gathers a visited unit's
+    // mounts, which is where 0098C510's recursion would reach them.
+    int node_child_count(const void* node) override { static_cast<void>(node); return 0; }
+    const void* node_child(const void* node, int slot) override {
+        static_cast<void>(node);
+        static_cast<void>(slot);
+        return nullptr;
+    }
+    void record_reset(bsp::HitRecordFill& record) override {
+        bsp::hit_record_reset_00470470(record);
+    }
+    void append_record(const bsp::HitRecordFill& record) override { static_cast<void>(record); }
+    void destroy_record(bsp::HitRecordFill& record) override { static_cast<void>(record); }
+
+private:
+    GameGunneryHost::Impl& owner_;
+    std::vector<std::size_t>& order_;
+};
+
+}  // namespace
+
+// The node's world bounds: SegmentBinding::entity_bounds, the posed hull box
+// grown over the mounts. False when the unit has no hull box (box_of).
+bool GameGunneryHost::Impl::blast_grid_node_bounds(std::size_t unit, bsp::HitQueryBounds& out) {
+    if (unit >= unit_state.size() || unit >= units.count()) return false;
+    SegmentBinding probe(*this, static_cast<std::size_t>(-1));
+    const bsp::HitQueryBounds bounds = probe.entity_bounds(reinterpret_cast<const void*>(unit + 1));
+    if (!(bounds.max.x > bounds.min.x) && !(bounds.max.z > bounds.min.z)) return false;
+    out = bounds;
+    return true;
+}
+
+void GameGunneryHost::Impl::blast_grid_step_0098bdb0(float step) {
+    if (game_frame_648 == nullptr) return;
+    if (blast_grid.cell_head_84.empty()) {
+        blast_grid.cell_head_84.assign(static_cast<std::size_t>(bsp::kSpatialGridCellCount),
+            nullptr);   // 0042D453, the memset of the heads
+    }
+    // 0098BDB0 over the nodes attached so far.
+    BlastGridRefresh refresh(*this);
+    bsp::spatial_refresh_moved_nodes_0098bdb0(refresh, step);
+    // 0098BA10's root branch for each unit that has no node yet. The existing body
+    // attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp) takes
+    // raw image-shaped node/index storage, which BlastGridNode is not, so the branch
+    // is restated here over its existing sub-bodies: the 0098AD60 corners
+    // (spatial_cell_rect_of_bounds), 0098BAD2 and 0098A310.
+    BlastGridCells cells(*this);
+    const std::uint32_t frame = *game_frame_648;
+    if (blast_grid.nodes.size() < unit_state.size()) blast_grid.nodes.resize(unit_state.size());
+    for (std::size_t i = 0; i < blast_grid.nodes.size(); ++i) {
+        if (blast_grid.nodes[i] != nullptr) continue;
+        bsp::HitQueryBounds bounds;
+        if (!blast_grid_node_bounds(i, bounds)) continue;
+        auto node = std::make_unique<BlastGridNode>();   // 004E6540 / 004E6480
+        node->unit = i;
+        for (bsp::SpatialCellLink& link : node->links) link.owner = node.get();   // link+8h
+        node->world_bounds = bounds;                      // 0098A750
+        node->bounds_stamp_154 = frame;
+        const bsp::SpatialCellRect rect =
+            bsp::spatial_cell_rect_of_bounds(bounds, kBlastGridCellSize00ce3d90);  // 0098BAB4..0098BACD
+        if (bsp::spatial_placement_0098bad2(rect) == bsp::SpatialPlacement::kGridCells) {
+            bsp::spatial_register_node_0098a310(cells, node.get(), rect);   // 0098BAF8
+            node->root_prev_44 = nullptr;                                   // 0098BAFD
+            node->root_next_48 = blast_grid.root_16014;                     // 0098BB06
+            if (blast_grid.root_16014 != nullptr) {
+                blast_grid.root_16014->root_prev_44 = node.get();           // 0098BB13
+            }
+            blast_grid.root_16014 = node.get();                             // 0098BB16
+        } else {
+            node->loose = true;   // 0098BB2C: the loose array, never walked by 0098C630
+            ++blast_grid_loose;
+        }
+        node->attached_158 = true;                                          // 0098BB1D
+        ++blast_grid_attached;
+        blast_grid.nodes[i] = std::move(node);
+    }
+}
+
+bool GameGunneryHost::Impl::blast_sphere_visit_order_0098c630(std::size_t shooter,
+    const float centre[3], float range, std::vector<std::size_t>& order) {
+    if (game_frame_648 == nullptr || blast_grid.cell_head_84.empty()) {
+        if (!blast_grid_no_frame_logged) {
+            blast_grid_no_frame_logged = true;
+            log.notef("gunnery blast grid: no game+648h frame counter attached; the burst "
+                "walks every unit (0098C630 not run)");
+        }
+        return false;
+    }
+    BlastSphereQuery query(*this, order);
+    bsp::SphereQueryArgs args;
+    args.centre = bsp::HitQueryPoint{centre[0], centre[1], centre[2]};
+    args.radius = range;
+    // 00904476..00904482: source->vtable[B0h](), the source unit's own node.
+    args.exclude = shooter < blast_grid.nodes.size() ? blast_grid.nodes[shooter].get() : nullptr;
+    static_cast<void>(bsp::spatial_index_query_sphere_0098c630(query, args));   // 009044A2
+    ++blast_grid_queries;
+    done("Projectile::blast_sphere_query_0098c630", 0x0098c630u);
+    return true;
+}
+
 // Packet cc13-gunF1. The records 00904470 gathers, as apply_impact_blast's walk below
 // will push them: per unit (not the shooter, whose node is 00904470's exclude,
 // source->vtable[B0h](), so 0098C535 never reaches it or its mounts), its own record
@@ -14868,10 +15190,12 @@ void GameGunneryHost::Impl::device_blast_dispatch_009239a0(std::size_t gun_row,
 // kGunDeviceBlastDamageCc13Bound, one per mount with entries (0098C510's children).
 // The same tests as the walk, without its census counters.
 std::vector<std::size_t> GameGunneryHost::Impl::blast_gathered_records(std::size_t shooter,
-    const float centre[3], float range) {
+    const float centre[3], float range, const std::vector<std::size_t>* visit_order) {
     std::vector<std::size_t> out;
     const float r2 = range * range;
-    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+    for (std::size_t slot = 0;
+         slot < (visit_order != nullptr ? visit_order->size() : unit_state.size()); ++slot) {
+        const std::size_t i = visit_order != nullptr ? (*visit_order)[slot] : slot;
         if (i == shooter) continue;
         if (unit_state[i].dead) continue;
         if (hit_index_detached(i)) continue;
@@ -15053,23 +15377,41 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         }
     }
 
+    // 0098C630 (wire goal 2 chain 27): ON, 00904470's sphere query over the blast
+    // grid picks the units and their order (the cells the burst's box covers, each
+    // node once per frame, never the source's); OFF keeps every unit in index order.
+    // It runs once per burst, ahead of both walks below, because its node stamps
+    // are a side effect: a second query in this frame would visit nothing.
+    std::vector<std::size_t> blast_visit_order;
+    bool blast_grid_walk = false;
+    if constexpr (bsp::kWireGoal2Chain27Bound) {
+        blast_grid_walk = blast_sphere_visit_order_0098c630(shooter, centre,
+            weapon->blast_range, blast_visit_order);
+    }
+
     if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
         // Packet cc13-gunF1 (include/bsp/blast_gather_shot_draw_cc13.hpp): 00904470's
         // gather loop runs SetShot (00470350 at 009044F4) on every gathered record
         // before 0084BAD0's push loop runs it again (0084BBB1): one discarded
         // shot->vtable[54h] draw per record, in gather order, ahead of the used ones
-        // the pushes below make.
+        // the pushes below make. With chain 27 ON the gather walks the same visit
+        // order as the push walk.
         const int shot_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
         const GameBulletClassRow* shot = bullet(shot_class);
         const float low = shot != nullptr ? shot->damage_min : 0.0f;
         const float high = shot != nullptr ? shot->damage_max : 0.0f;
-        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range)) {
+        for (const std::size_t unit : blast_gathered_records(shooter, centre, weapon->blast_range,
+                 blast_grid_walk ? &blast_visit_order : nullptr)) {
             static_cast<void>(draw(Draw::hull_damage, gun_row, unit, low, high));
             ++blast_gather_shot_draws;
         }
     }
 
-    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+    // OFF re-reads unit_state.size() every pass, as before.
+    for (std::size_t blast_slot = 0;
+         blast_slot < (blast_grid_walk ? blast_visit_order.size() : unit_state.size());
+         ++blast_slot) {
+        const std::size_t i = blast_grid_walk ? blast_visit_order[blast_slot] : blast_slot;
         if (i == shooter) continue;  // 0084BBF9 skips the burst's own source
         UnitState& state = unit_state[i];
         if (state.dead) continue;
@@ -16404,6 +16746,10 @@ GameGunneryHost::GameGunneryHost(GameHostLog& log, GameUnitsHost& units,
 }
 
 GameGunneryHost::~GameGunneryHost() = default;
+
+void GameGunneryHost::attach_game_frame_counter_648(const std::uint32_t* frame_counter) noexcept {
+    impl_->game_frame_648 = frame_counter;
+}
 
 void GameGunneryHost::set_ship_ai(GameShipAiHost* ai) noexcept {
     impl_->ship_ai = ai;
@@ -17960,6 +18306,9 @@ bool GameGunneryHost::player_fire_torpedo_group(std::size_t unit, const std::str
 
 void GameGunneryHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
+    // 0098BDB0 (wire goal 2 chain 27): ON, the blast grid's per-step re-bucket and
+    // the new units' 0098BA10 attach, ahead of this step's bursts; OFF keeps no grid.
+    if constexpr (bsp::kWireGoal2Chain27Bound) host.blast_grid_step_0098bdb0(step_seconds);
     if constexpr (bsp::kShipyardProductionBound) host.shipyard_walk_00846320();
     if (!host.pending_hull_torques.empty()) {
         // Packet cc9_hull_roll_torque: the previous step's message-93h posts,
@@ -20476,6 +20825,14 @@ void GameGunneryHost::report() {
         if constexpr (bsp::kBlastGatherShotDrawCc13Bound) {
             host.log.notef("summary mission gunnery blast gather shot draws=%llu (009044F4, packet "
                 "cc13-gunF1)", host.blast_gather_shot_draws);
+        }
+        if constexpr (bsp::kWireGoal2Chain27Bound) {
+            host.log.notef("summary mission gunnery blast grid: nodes=%llu loose=%llu "
+                "rebuckets=%llu queries=%llu visits=%llu link_overflow=%llu frame_counter=%s "
+                "(0098BA10 / 0098BDB0 / 0098C630, wire goal 2 chain 27)",
+                host.blast_grid_attached, host.blast_grid_loose, host.blast_grid_rebuckets,
+                host.blast_grid_queries, host.blast_grid_visits, host.blast_grid_link_overflow,
+                host.game_frame_648 != nullptr ? "attached" : "absent");
         }
         if constexpr (bsp::kShipDamagedGfxRemoveCc13Bound) {
             host.log.notef("summary mission gunnery damaged gfx calls=%llu ship_raises=%llu "
