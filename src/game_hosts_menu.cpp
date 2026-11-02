@@ -26,10 +26,13 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
+#include "bsp/native_render_queue_destruction.hpp"
 #include "bsp/press_start_screen.hpp"
+#include "bsp/render_queue_seg83_cc13.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/wire_goal1_chain4_switches.hpp"
 #include "bsp/wire_goal2_chain34_switches.hpp"
+#include "bsp/wire_goal2_chain48_switches.hpp"
 
 #include <algorithm>
 #include <map>
@@ -1116,10 +1119,31 @@ public:
     int game_state() override { return owner_.state.value; }
 
     bool render_queue_retained() override {
-        // 004c11f0 then 00b1bf90. No retention control exists here, so the
-        // branch always opens its frame.
-        owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
-        return false;
+        // 00B1BF90 on the renderer's actual 00F8D440 queue (004E4BBA CALL 004C11F0,
+        // MOV ECX,EAX, 004E4BC1 CALL 00B1BF90, 004E4BC6 TEST EAX,EAX); OFF keeps false.
+        if constexpr (kWireGoal2Chain48Bound) {
+            // The queue is GameNativeRendererApplication's FrameGraph::queue, the
+            // 00F8D440 cell its end frame fills through 004C11F0 (00B1F280 sets
+            // +20h = 0), published by bind_platform_services as
+            // native_deletion_bindings().render_queue and retired at renderer drain.
+            // Before the first end frame the cell is empty; 004C11F0 would build
+            // the queue with +20h = 0 there, so the frame opens as below.
+            const NativeRenderQueueDestructionContext* const published =
+                owner_.singletons.native_deletion_bindings().render_queue;
+            const NativeRenderCommandQueueStorage* const queue =
+                published != nullptr ? published->actual_queue_00f8d440 : nullptr;
+            if (queue != nullptr) {
+                owner_.log.implemented("FrontEndFrame::render_queue_retained", "00b1bf90");
+                return cc13_seg83::render_queue_mode_00b1bf90(queue) != 0;
+            }
+            owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
+            return false;
+        } else {
+            // 004c11f0 then 00b1bf90. No retention control exists here, so the
+            // branch always opens its frame.
+            owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
+            return false;
+        }
     }
     void renderer_begin_frame() override {
         // 00f8d394 vtable +0Ch. The milestone's own Clear/BeginScene stands in.
