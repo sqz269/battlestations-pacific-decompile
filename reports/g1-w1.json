@@ -10,7 +10,8 @@
   "switch_in_tree": false,
   "code_commits": [
     "f9ba0f0b4d1625e1915b73888b9efdaa59a6c676",
-    "473e2b8d05f23205fb7bf74364a5cf13cc20d03d"
+    "473e2b8d05f23205fb7bf74364a5cf13cc20d03d",
+    "8bf807de84af25ece0f26a12a7851b6239485327"
   ],
   "counting_scope": "Calls existing reconstructed bodies through the one OFF switch; no new address-suffixed function or body. The interfaces are semantic C++ interfaces, not binary ABI replacements.",
   "rows": [
@@ -106,13 +107,17 @@
     {
       "native": "00729bc0",
       "host_site": "GunneryPassBinding::gun_inputs",
-      "status": "wired",
-      "address": "008657f7",
-      "caller": "00864fe0",
-      "identifier": "bsp::bot_slot_for_projectile_kind_00729bc0",
-      "inputs": "Live selected round subtype (including dual-purpose second ammunition) and gun Function id. A missing bot-slot dispatch refuses the actual target.",
-      "binding_scope": "Existing selector body binds the projectile-kind dispatch gate; existing host range, armour, fire-window and line-of-fire checks remain.",
-      "evidence": "Native gun+3F4h and selected ammunition record, RET 4; selector's nonzero slot is required for acceptance.",
+      "status": "skipped",
+      "reason": "Removed in review round 1: a nonzero bot-slot offset does not establish an installed non-null slot or the selected bot vtable[1Ch](target) acceptance. The host has category-driven bot state, but no installed-slot identity/presence and dispatchable per-slot target predicate; retain its original acceptance stand-in.",
+      "evidence": "Native 00729BC0 checks the loaded slot pointer and dispatches its predicate after choosing an offset. The host computes GunBotSlotAssignment from category/constant flags and discards it; it is not installed bot state.",
+      "wiring_body_calls": 0,
+      "prior_reach_correction": {
+        "reported": 5570,
+        "meaning": "Enclosing host acceptance queries, not selector/body invocations.",
+        "range_rejections": 1961,
+        "selector_invocations_inferred": 3609,
+        "source": "Independent review run 14; 5570 - 1961, not an independently instrumented body counter."
+      },
       "reached": 5570,
       "reached_evidence": [
         {
@@ -121,7 +126,8 @@
           "status": "concrete",
           "calls": 5570
         }
-      ]
+      ],
+      "reached_scope": "Enclosing retained host stand-in queries only; removed reconstructed binding has zero calls."
     },
     {
       "native": "008fef40",
@@ -326,9 +332,10 @@
       "native": "00875b90",
       "host_site": "gun bot wave-2 ordering comments",
       "status": "skipped",
-      "reason": "Body is already GameFixedStepHost's wave-2 dispatcher, called outside this host. Calling it again from gunnery would duplicate the existing dispatch.",
+      "reason": "GameFixedStepHost::run_wave2_job_00875b90 discards group/position/step and only logs unimplemented (src/game_hosts_fixed_step.cpp:191-196); it is not concrete dispatch and duplication is not the skip reason. Native 00875B90 needs a registered tick element and calls 008759B0 over its live sub-node list, enabled/expired flags, callbacks, count, and locked unlink/destruction state. This gunnery host does not retain that native element/sub-node ownership contract.",
       "reached": 0,
-      "reached_evidence": []
+      "reached_evidence": [],
+      "evidence": "GameFixedStepHost::next_element returns false and explicitly reports missing raw registrations/group publication (src/game_hosts_fixed_step.cpp:151-162). Native 008759B0 uses element +1Ch/+20h/+24h and node +8h/+0Ch/+10h/+11h; no claim of an actual native dispatch attachment is made."
     },
     {
       "native": "0087bcc0",
@@ -379,15 +386,16 @@
       "reached_evidence": []
     }
   ],
-  "reach_count_scope": "ON log native-table counts, summed by address. For skipped rows these can be stand-in counters, not body executions; 00729BC0 already had a concrete-labelled host entry and counts the enclosing acceptance query. Missing table entry is zero.",
+  "reach_count_scope": "ON log native-table counts, summed by address. Skipped rows can retain enclosing stand-in counters; these are not reconstructed-body calls. In particular 00729BC0 remains a concrete-labelled host query counter after its binding was removed, and wiring_body_calls is zero. Missing table entry is zero.",
   "wired_total_before": 8522,
-  "wired_total_after": 8531,
-  "rows_wired": 9,
-  "rows_skipped": 20,
+  "wired_total_after": 8530,
+  "rows_wired": 8,
+  "rows_skipped": 21,
   "readiness": {
     "command": "python tools/wire_readiness.py",
-    "log": "local/output/g1-w1-readiness-final.txt",
+    "log": "local/output/g1-w1-r1-readiness.txt",
     "states": {
+      "00729bc0": "ready",
       "008fef40": "wired",
       "0042aeb0": "wired",
       "004193e0": "wired",
@@ -395,7 +403,6 @@
       "0092d1f0": "wired",
       "007149d0": "wired",
       "00729b90": "wired",
-      "00729bc0": "wired",
       "00954210": "wired"
     }
   },
@@ -404,13 +411,13 @@
       "command": "./scripts/build.ps1",
       "exit_code": 0,
       "result": "passed, 2/2 existing CTest groups",
-      "log": "local/output/g1-w1-off-build.txt"
+      "log": "local/output/g1-w1-r1-off-build.txt"
     },
     "on_build": {
       "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain1Bound",
       "exit_code": 0,
       "result": "passed, 0 distinct diagnostics; header restored OFF",
-      "log": "local/output/g1-w1-on-build.txt"
+      "log": "local/output/g1-w1-r1-on-build.txt"
     },
     "pc24": {
       "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
@@ -420,26 +427,26 @@
     "report_calls": {
       "command": "python tools/verify_report_calls.py reports/g1-w1.json",
       "exit_code": 0,
-      "checked": 14,
+      "checked": 13,
       "failed": 0,
-      "log": "local/output/g1-w1-report-calls.txt"
+      "log": "local/output/g1-w1-r1-report-calls.txt"
     }
   },
   "pair_run": {
-    "code_commit": "473e2b8d05f23205fb7bf74364a5cf13cc20d03d",
+    "code_commit": "8bf807de84af25ece0f26a12a7851b6239485327",
     "session": "query session: console sqz269 ID 1 Active; query command exits 1 even though console is active",
     "exports": {
       "off": {
         "exe": "local\\g1-w1-off\\build\\win32\\Release\\bsp_game.exe",
-        "sha256": "2b8ec5f67892e46a038f4f0f31055211554d03d8c76e40e9c4693769e90420ba",
-        "mtime": 1793599676.309031,
+        "sha256": "38c4e52acc33419fb6903709d800345120c21daff6e4a58a2357e4e2a4761813",
+        "mtime": "2026-11-01T22:30:01.082112",
         "build_result": "passed",
         "build_log": "local/g1-w1-off/pair_export_build.log"
       },
       "on": {
         "exe": "local\\g1-w1-on\\build\\win32\\Release\\bsp_game.exe",
-        "sha256": "6acc925a41906d6d814c8fae5a13923e006e56f8369860dab2a7cc6db07b192e",
-        "mtime": 1793599680.5003188,
+        "sha256": "30fce7a1f8030fe10416824a76d3d941e24a9ae171e9dce0fb306f6d28d59b66",
+        "mtime": "2026-11-01T22:30:03.343776",
         "build_result": "passed",
         "build_log": "local/g1-w1-on/pair_export_build.log"
       }
@@ -448,8 +455,8 @@
     "launcher": "tools/run_game.ps1, sequential runs, no -Traj",
     "logs": {
       "off": {
-        "path": "local\\g1-w1-final-off_USN04.log",
-        "mtime": "2026-11-01T22:11:14.199112",
+        "path": "local\\g1-w1-r1-off_USN04.log",
+        "mtime": "2026-11-01T22:31:49.120010",
         "completion": [
           "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=3199 presents_skipped=1 loop_finished=1 exit_code=0"
         ],
@@ -481,8 +488,8 @@
         ]
       },
       "on": {
-        "path": "local\\g1-w1-final-on_USN04.log",
-        "mtime": "2026-11-01T22:12:37.802339",
+        "path": "local\\g1-w1-r1-on_USN04.log",
+        "mtime": "2026-11-01T22:34:22.633665",
         "completion": [
           "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=3199 presents_skipped=1 loop_finished=1 exit_code=0"
         ],
@@ -546,15 +553,15 @@
     },
     "completion": "Both completed: logs contain frames_presented=3199 loop_finished=1 exit_code=0; log mtimes were checked after completion.",
     "pair_diff": {
-      "command": "python tools/pair_diff.py local/g1-w1-final-off_USN04.log local/g1-w1-final-on_USN04.log --limit 60 --json local/output/g1-w1-final-pair-diff.json",
+      "command": "python tools/pair_diff.py local/g1-w1-r1-off_USN04.log local/g1-w1-r1-on_USN04.log --limit 60 --json local/output/g1-w1-r1-pair-diff.json",
       "exit_code": 1,
       "verdict": "DIFFERENT, gameplay identical",
-      "text": "local/output/g1-w1-final-pair-diff.txt",
-      "json": "local/output/g1-w1-final-pair-diff.json",
+      "text": "local/output/g1-w1-r1-pair-diff.txt",
+      "json": "local\\output\\g1-w1-r1-pair-diff.json",
       "clock": {
         "anchor": "gunnery step 100",
-        "offset": 0,
-        "first_hit_delta": 0
+        "offset": 0.0,
+        "first_hit_delta": 0.0
       },
       "gameplay_rows_moved": [],
       "headline": [
@@ -710,8 +717,8 @@
       "native_status_changes": [],
       "native_calls_moved": [],
       "summaries_changed": [],
-      "other": "231 atlas parser/item diagnostic lines differ in each direction; not independently interpreted. Existing PlatformLoopCallbacks::pretranslate count noise is masked.",
-      "native_note": "Five new concrete rows; no pre-existing row changed status. 00729BC0's pre-existing concrete-labelled stand-in now calls the body, and its host call count remains 5570. Three wired paths were not reached: 004193E0, 0042AEB0, 0092D1F0."
+      "other": "231 atlas parser/item diagnostic lines differ in each direction; not independently interpreted. Native noise counters are masked by pair_diff.",
+      "native_note": "Five new concrete rows belong to the five reached wired addresses. 00729BC0 is skipped: its pre-existing concrete-labelled query counter is not evidence of reconstructed execution. Unreached wired addresses: 004193E0, 0042AEB0, 0092D1F0."
     }
   },
   "exploratory_pair": {
@@ -877,5 +884,38 @@
       ]
     ]
   },
-  "flip_proposal": "Propose kWireGoal1Chain1Bound=true after independent review of this nine-row binding: final USN04 pair preserves observed gameplay, all 81 unit rows, 25 plane death-mode rows and 867 summary rows; six wired addresses are reached. Keep direct-hit attribution on its old stand-in until that path retains native part entries. The three unreached wired paths and other missions are not game-validated. The tree remains OFF."
+  "flip_proposal": "Keep kWireGoal1Chain1Bound OFF pending review round 2. Current scope is eight rows, with five reached and three unreached in the fresh USN04 pair; 00729BC0 remains a host stand-in until installed bot presence and selected-bot acceptance are retained. No flip is applied.",
+  "review_round_1": {
+    "review_run": 14,
+    "harness": "codex",
+    "reviewed_head": "505c4205d4afbe700ac90f3a8f5c76d77cfebf24",
+    "findings": [
+      {
+        "finding": 1,
+        "native": "00729bc0",
+        "status": "fixed",
+        "action": "Accepted; removed binding because installed-slot state/selected acceptance are unavailable. Corrected totals to 8 wired / 8530 globally and separated query reach from body calls."
+      },
+      {
+        "finding": 2,
+        "native": "00875b90",
+        "status": "fixed",
+        "action": "Accepted; replaced incorrect duplication claim with verified unimplemented method and missing native element/sub-node state contract."
+      }
+    ],
+    "off_identity": "Independent review passed OFF identity at the reviewed head; this fix removes only the ON wrapper and preserves the exact original in.slot_accepts_target = in_range assignment.",
+    "superseded_pair": {
+      "code_commit": "473e2b8d05f23205fb7bf74364a5cf13cc20d03d",
+      "logs": {
+        "off": "local\\g1-w1-final-off_USN04.log",
+        "on": "local\\g1-w1-final-on_USN04.log"
+      },
+      "reason": "Prior artifacts claimed nine rows; this report replaces their active results with the fresh eight-row pair."
+    },
+    "readiness_change": {
+      "previous_wired_total": 8531,
+      "current_wired_total": 8530,
+      "current_counted_rows": 8
+    }
+  }
 }
