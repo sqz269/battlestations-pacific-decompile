@@ -13669,15 +13669,19 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 
     // 0077CE60, step 7 of 009239A0: the attribution block on the victim.
     const bool attribute = [&]() {
-    // 00470740 calls max_part_damage; OFF keeps the host base-damage attribution gate.
+    // 00470740 calls max_part_damage on gathered blast entries; OFF keeps the base-damage gate.
     if constexpr (bsp::kWireGoal1Chain1Bound) {
         // 0077CE8x supplies zero armour (RET 4), with ECX pointing at this hit.
-        // The hit's actual part list, falloff and owner/weapon modifiers remain live inputs.
-        const float damage = hit.hull_segment == -1
-            ? bsp::max_part_damage_00470740(hit, 0.0f)
-            : bsp::hull_damage_00470510(hit, 0.0f);
-        if (hit.hull_segment == -1) done("Hit::max_part_damage_00470740", 0x00470740u);
-        return !kKillCreditDamageGateBound || damage > 0.0f;
+        // Only a gathered blast has the real entry vector this body needs.
+        // Direct hits above deliberately lack that vector, so retain their stand-in.
+        if (blast_record != nullptr && hit.hull_segment == -1
+            && hit.part_hits != nullptr && hit.part_hit_count > 0) {
+            const float damage = bsp::max_part_damage_00470740(hit, 0.0f);
+            done("Hit::max_part_damage_00470740", 0x00470740u);
+            return !kKillCreditDamageGateBound || damage > 0.0f;
+        }
+        return !kKillCreditDamageGateBound
+            || (hit.hull_damage_base + hit.part_damage_base) > 0.0f;
     } else {
     const bool attribute = !kKillCreditDamageGateBound
         || (hit.hull_damage_base + hit.part_damage_base) > 0.0f;   // 0077CEB7 COMISS / JBE
