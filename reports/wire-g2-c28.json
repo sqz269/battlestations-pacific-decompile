@@ -1,0 +1,250 @@
+{
+ "packet": "g2-w2",
+ "goal": 2,
+ "chain": 28,
+ "run": 65,
+ "harness": "claude",
+ "host": "src/game_hosts_units.cpp",
+ "picked_reason": "Most assigned rows (12) plus 6 gaps; the plane flight controller state (world velocity, pose rows, deck parent slots, low-pass +30h) is live host state that 007D9C10/007D9CE0 can replace, and the torpedo offer feeds 0099B6A0 real registry/mode inputs.",
+ "branch": "agent/g2-w2",
+ "switch": "kWireGoal2Chain28Bound",
+ "switch_default": false,
+ "wired_before": 8783,
+ "wired_after": 8786,
+ "wired_delta": 3,
+ "rows": [
+  {
+   "native": "0x007d9c10",
+   "address": "0x007db697",
+   "function": "0x007db680",
+   "host_site": "src/game_hosts_units.cpp:GameUnitsHost::motion_step_00825f20 (plane binding run_core_law_007db680)",
+   "also_host_sites": [
+    "src/game_hosts_units.cpp:GameUnitsHost::Impl::carrier_deck_reparent_007c71e0 (image 007C72C5 in 007C71E0)"
+   ],
+   "status": "wired",
+   "reached": 85728,
+   "identifier": "bsp::world_to_body_007d9c10",
+   "abi": "typed",
+   "behavior": "ON: the body's two 0042D0D0 transforms rebuild ctl+3Ch..44h (state.body_velocity; the touchdown vx/vz) from the plane's world velocity, replacing the host's inline dot products. ctl+0B0h is built from the host pose rows as 0085DEA0's transpose (3x3 block only; 0042D0D0 reads no translation row). The angular half (ctl+24h -> ctl+48h) is fed zero and discarded: the host keeps no ctl+24h, and its persistent ctl+48h (plane_body_angular) is untouched, as in OFF.",
+   "contract_evidence": [
+    "007D9C10 __thiscall(ECX=ctl), RET 0: 007D9C25 0085DEA0(ctl+B0h, [ctl+8]+74h); 007D9C34 0042D0D0(ctl+18h, ctl+B0h, 0) -> +3Ch/+40h/+44h; 007D9C54 0042D0D0(ctl+24h) -> +48h..+50h; tail 007D8020 (not modelled by the body).",
+    "007DB695 MOV ECX,ESI / 007DB697 CALL 007D9C10 at the head of the core law; 007C72C3 MOV ECX,EBP(unit+AB0h) / 007C72C5 CALL 007D9C10, then 007C72DD/007C72E5 read unit+AECh/+AF4h (ctl+3Ch/+44h).",
+    "callers: 10 call sites (007C6F50, 007C71E0, 007C78A0 x2, 007D9EE0, 007DB1F0, 007DB430, 007DB680, 009BE050, undefined 009BE000); all pass ECX=ctl."
+   ],
+   "gates": {
+    "kPlaneTouchdownBound": true,
+    "kCarrierDeckParentBound": true,
+    "kPc24FlightRenderCc13Bound": true
+   }
+  },
+  {
+   "native": "0x007d9ce0",
+   "address": "0x007c7277",
+   "function": "0x007c71e0",
+   "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::carrier_deck_reparent_007c71e0",
+   "also_host_sites": [
+    "src/game_hosts_units.cpp:GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50 (image 007C6F8D in 007C6F50)"
+   ],
+   "status": "wired",
+   "reached": 12,
+   "identifier": "bsp::gameplay_seg48_cc13::reparent_velocity_007d9ce0",
+   "abi": "typed",
+   "behavior": "ON: the body moves ctl+18h between parents (same-parent gate, old parent's velocity added, new parent's subtracted) and sets ctl+30h, replacing the host's inline subtraction (touchdown) and addition (lift-off). Inputs: the plane's world velocity and low-pass +30h, the current deck parent slot and the carrier slot; parent velocities are the slots' motion.linear_velocity (vtable[34h]). Frame callbacks are the identity because the host stores the parent-relative velocity in world axes (LABELLED at 007C71E0); ctl+24h is not kept by the host and its result is discarded.",
+   "contract_evidence": [
+    "007D9CE0 __thiscall(ECX=ctl, new_parent), RET 4.",
+    "007C7264 CMP EAX(00923810 current parent),EDI / JZ skips; 007C7275 MOV ECX,EBP(unit+AB0h) / 007C7277 CALL 007D9CE0(EDI = holder owner).",
+    "007C6F78 CMP [ESI+3Ch],0 / JZ skips; 007C6F89 PUSH 0 / 007C6F8D CALL 007D9CE0(0).",
+    "callers: 4 sites (007C6F50, 007C71E0, 007C78A0 x2 client-only)."
+   ],
+   "gates": {
+    "kPlaneTouchdownBound": true,
+    "kCarrierDeckParentBound": true,
+    "kBaseLaunchChainBound": true,
+    "kPlaneVelocityLowpassBound": true
+   }
+  },
+  {
+   "native": "0x0099b6a0",
+   "function": "0x009d49a0",
+   "host_site": "src/game_hosts_units.cpp:GameUnitsHost::motion_step_00825f20 (torpedo task arm offer, 0099AF53 loop)",
+   "status": "wired",
+   "reached": 0,
+   "identifier": "bsp::bot_task_request_release_base_0099b6a0",
+   "abi": "typed",
+   "behavior": "ON: on 009D49A0's fall-through the body decides the 0099B6CD release (007BBBA0) and the spent order (AL), from the squadron registry membership (task+2FCh) and unit+900h == 7 (0074E210); OFF keeps the copy inlined into torpedo_arm_drop_009d49a0 under kTorpedoArmFallthroughReleaseBound. Reach is static: no surveyed log recorded the fall-through.",
+   "contract_evidence": [
+    "Only code reference: tail JMP at 009D49DA in 009D49A0 (ECX=task restored at 009D49D7); 20 vtable slot +24h data refs. No CALL site, so address is left out (unchecked).",
+    "0099B6A3 CMP [ESI+2FCh],0 / JNE -> AL=0; 0099B6C5 JE skips only 0099B6CD CALL 007BBBA0; 0099B6D2 MOV AL,1."
+   ],
+   "gates": {
+    "kTorpedoArmFallthroughReleaseBound": true
+   }
+  },
+  {
+   "native": "0x00653390",
+   "status": "skipped",
+   "reason": "Host mention is only an aborting Calls-interface override (src/game_hosts_units.cpp:521). The body needs an actual NativeObserverOwnerStorage, its volatile endpoint cell and the retained observer lifetime; the units host owns no native observer member. Static reach.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x006c0b50",
+   "status": "skipped",
+   "reason": "The body needs an actual NativeLandingQueueBlockStorage (A4h block prefix: slot section +0Ch/+4Ch/+50h, holder +80h, five-word record vector +84h). The host keeps LandingDeck::queue as a vector of unit indices and its landing sequencer (kLandingSequencerBound) already queues; building an image AirOps block is not one host object's work.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x006ca730",
+   "status": "skipped",
+   "reason": "nodef: readiness matched no callable definition for BSP_AirOpsBlock_PushBackB8List; checked by hand, not wired.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x00741140",
+   "status": "skipped",
+   "reason": "Body is one store, ConvoyState::speed_368 = speed. The host has no ConvoyState; it keeps +368h in LandConvoyMotionState::formation.speed. A temporary ConvoyState would only hand the argument back. Static reach.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x0092bd30",
+   "status": "skipped",
+   "reason": "Body walks the dyn-physics shapes of controller+2Ch (next at +208h) through 00C31DC0/00C48020/00C48050. The host's ship hull body has no attached shapes (shape builder unread, ship_hull_body.hpp) and both sites only record the call after kill depth / kamikaze death.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x009565a0",
+   "status": "skipped",
+   "reason": "The host skill setter stores pilot_skill_index; the body's other effects need the unit+6DCh object's vtable[18h] and devices answering IsKindOf(20h), neither modelled. Wiring would pass has_object_6dc=false and an empty device list as constants. Static reach.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x0098b370",
+   "status": "skipped",
+   "reason": "Comment-only mention in the units host; the body delegates to 0098ADD0 over an image spatial index and segment buffer the host does not own.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x0099b650",
+   "status": "skipped",
+   "reason": "Body writes [approach+18h]+25Ch = owner. The host keeps no image plan/approach object; the BotApproachLand site only records the call.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x009b3240",
+   "status": "skipped",
+   "reason": "Native land-task constructor over an image-shaped 670h task (NativeLandTaskConstructorView, executable state table). The host builds a semantic land task (records BotTaskLand::construct); no image task exists to construct.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x00469610",
+   "status": "skipped",
+   "reason": "gap: body allocates a 14h record via 004690D0 (native strings) and pushes it on database+14Ch via 00468350 through Seg6Host. The units host owns no native scene database or command list, and the list's drain is not modelled (create_units reads entity.command directly), so a built list would feed nothing. Not buildable in one chain.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x007ddea0",
+   "status": "skipped",
+   "reason": "gap: the body stores constant 60.0f at the plane FX sub-block+40h. No host consumer reads such a timer (its reader 007EB380 is unwired), so a built block would carry the body's constant to nothing.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x007eb380",
+   "status": "skipped",
+   "reason": "gap: needs the full image-shaped plane FX component (plane+C98h): RPM/load/fade/debounce/timer fields, effect holders, the sound handle at 00F8BBD8 and 19 PlaneFxStepHost callbacks (sound/effect vcalls, transforms). Producers (FX component constructor, sound set, effect holders) are absent from this host; larger than half a turn.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x007ef010",
+   "status": "skipped",
+   "reason": "gap: nodef (ledger_only_007ef010), no callable reconstructed body; the host implements member selection inline.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x009a7650",
+   "status": "skipped",
+   "reason": "gap: body owns observer unregister/register at approach+A0h, the target at +B4h, the target-reference retarget at +2Ch and the pilot rocket call; the host keeps a semantic slot index only, with no image approach/observer producer.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  },
+  {
+   "native": "0x00b0d7b0",
+   "status": "skipped",
+   "reason": "gap: body publishes the listener to renderer+1C0h and invalidates renderer+30h owner/root lists; the units host owns no renderer and this belongs to the render host.",
+   "reached": 0,
+   "host_site": "src/game_hosts_units.cpp"
+  }
+ ],
+ "host_objects": [],
+ "host_objects_note": "No host object built: every gap's producer is missing (see the gap rows).",
+ "validation": {
+  "off_build": "passed (build.ps1, 2/2 CTests)",
+  "on_build": "passed (off_switch_on_build.py --names kWireGoal2Chain28Bound: 0 diagnostics)",
+  "pc24_lint": "0 findings (origin/main...HEAD); ON arms only copy values, the x87 work is inside the existing body",
+  "readiness": "007d9c10, 007d9ce0, 0099b6a0 ready -> wired after a plain OFF build"
+ },
+ "pair": {
+  "mission": "USN04",
+  "frames": 3200,
+  "mission_frames": 3000,
+  "mission_frame_seconds": 0.05,
+  "console_session": "console Active (query session) before export and runs",
+  "off_exe": "build/win32/Release/bsp_game.exe (plain OFF build of fcfa83e75 sources)",
+  "on_exe": "local/g2-w2-on/build/win32/Release/bsp_game.exe",
+  "on_export": "pair_export.py --commit HEAD --flip kWireGoal2Chain28Bound=true --out local\\g2-w2-on --mission USN04",
+  "off_log": "local/g2-w2-off_USN04.log",
+  "on_log": "local/g2-w2-on_USN04.log",
+  "off_exit": 0,
+  "on_exit": 0,
+  "frames_presented_each": 3199,
+  "diff_log": "local/output/g2-w2-pair-diff.txt",
+  "diff_exit": 1,
+  "gameplay": "identical",
+  "gameplay_rows_moved": [],
+  "native_rows": {
+   "off": 1624,
+   "on": 1626,
+   "added": 2,
+   "removed": 0,
+   "status_changed": 0,
+   "counts_moved": 0
+  },
+  "native_standin_to_concrete": [
+   "+ PlaneFlightController::refresh_body_frame_007d9c10 007d9c10 concrete calls=85728",
+   "+ PlaneFlightController::reparent_velocity_007d9ce0 007d9ce0 concrete calls=12"
+  ],
+  "host_methods_concrete": {
+   "off": 1144,
+   "on": 1146
+  },
+  "summary_lines": {
+   "off": 867,
+   "on": 867,
+   "changed": 0
+  },
+  "unit_table": "identical, 81 rows",
+  "plane_death_modes": "identical, 25 rows",
+  "other_diagnostic_lines": "231 only OFF / 231 only ON, atlas source append_slot pointer values (address noise)",
+  "wired_row_reached": {
+   "007d9c10": 85728,
+   "007d9ce0": 12,
+   "0099b6a0": 0
+  },
+  "reach_notes": "007D9C10: core-law site every plane step; the touchdown site (007C72C5) was not reached because USN04 logged no carrier deck parent (0 'carrier deck parent:' lines). 007D9CE0: 12 lift-off detaches (007C6F8D); touchdown re-parent not reached. 0099B6A0: the OFF summary shows torpedo_fallthrough 009D49DA calls=0, so the fall-through did not occur in USN04 (reach static)."
+ },
+ "code_commit": "fcfa83e75",
+ "measurement": "Before: the --standins scan at chain start (8783 wired). After: wire_readiness.py following the final plain OFF build, run after the ON build check (8786 wired).",
+ "flip_proposal": "Propose kWireGoal2Chain28Bound=true: the USN04 pair is gameplay-identical with 007D9C10 reached 85728 times (core law) and 007D9CE0 12 times (lift-off detach). The touchdown re-parent (007C7277/007C72C5) and the torpedo fall-through (0099B6A0) were not exercised by USN04; a carrier-landing mission and a torpedo-attack mission pair would cover them before or with the flip.",
+ "ledger": "No new address-suffixed function; host adapters only (host_pose_world_to_body, host_reparent_callbacks, host_unit_velocity). No ledger change."
+}
