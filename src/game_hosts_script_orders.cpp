@@ -27,6 +27,11 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/command_execution.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
+#include "bsp/wire_script_orders_host_switches.hpp"
+#include "bsp/cc13_seg87.hpp"
+#include "bsp/cc13_dyn1.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
+#include "bsp/landscape_lua_seg55_argon.hpp"
 #include "bsp/attack_commands.hpp"
 #include <vector>
 #include "bsp/attack_target_classify.hpp"
@@ -73,6 +78,33 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+
+// Untracked, borrowed views: the selected Lua helpers read owner.state_04 and
+// object.index_08 only. Positive slots remain stable while the helpers push keys.
+struct ScriptOrdersLuaStackView {
+    bsp::NativeLuaStateStorage owner{};
+    bsp::NativeLuaObjectStorage object{};
+
+    ScriptOrdersLuaStackView(lua_State* state, int slot) noexcept {
+        owner.state_04 = state;
+        object.owner_00 = &owner;
+        object.kind_04 = 2;
+        object.index_08 = slot;
+    }
+};
+
+// Own the native string header consumed by the string setters. The native
+// helpers borrow it; this adapter returns its buffer to the same allocator.
+struct ScriptOrdersNativeText {
+    bsp::NativeString text;
+
+    explicit ScriptOrdersNativeText(const std::string& value) {
+        text.resize_0041dd40(bsp::crt_string_storage(),
+            static_cast<std::uint32_t>(value.size()), false);
+        if (!value.empty()) std::memcpy(text.data(), value.data(), value.size());
+    }
+    ~ScriptOrdersNativeText() { text.release_to(bsp::crt_string_storage()); }
+};
 
 // The eight rows src/lua_binding_navigator.cpp reconstructs, with the binding
 // table row address 006b8610 registers each one under. The three names that
@@ -607,7 +639,15 @@ bool record_director_artillery_enable_0071c231(const std::string& name, bool ena
     SceneDirectorEnables enables;
     if (const SceneDirectorEnables* e = scene_director_enables_find(name)) enables = *e;
     const bool changed = enables.artillery != enabled;
+    // 0071C1E0 calls apply_command_message_0071c1e0; OFF keeps the direct artillery store.
+    if constexpr (kWireScriptOrdersHostBound) {
+        bsp::gameplay_seg38_cc13::DirectorFlags flags;
+        flags.enables_220[0] = enables.artillery;
+        bsp::gameplay_seg38_cc13::apply_command_message_0071c1e0(flags, 3, enabled ? 1 : 0);
+        enables.artillery = flags.enables_220[0];
+    } else {
     enables.artillery = enabled;
+    }
     scene_director_enables_set(name, enables);
     return changed;
 }
@@ -2693,7 +2733,13 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     ++pilot_set_target_calls_;
     if (!row.unit.empty()) ++pilot_set_target_unit_resolved_;
     if (target.object_id != 0 || target.position_valid) ++pilot_set_target_target_resolved_;
+    // 00B66400 calls mission_binding_result_count; OFF keeps the zero-result return.
+    if constexpr (kWireScriptOrdersHostBound) {
+        return state_ != nullptr ? bsp::mission_binding_result_count(lua_gettop(state_),
+            {bsp::kBindingFirstArgumentSlot, argument_count_}) : 0;
+    } else {
     return 0;  // 00B66400: the binding pushes nothing.
+    }
 }
 
 // 008A4590 `PilotMoveToRange(unit, target [, range])`, packet cc9_pilot_moveto_task.
@@ -2855,7 +2901,21 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
         const bool ship = units_.unit_is_kind_of(row.unit_index, 6);
         bool posed = false;
         if (ship) {
+            // 00C336C0 calls transform_from_4x4_00c336c0; OFF keeps the shared motion-state pose.
+            if constexpr (kWireScriptOrdersHostBound) {
+                float transform[12];
+                bsp::cc13_dyn1::transform_from_4x4_00c336c0(transform, m);
+                // Adapt the compact physics transform to the host's shared
+                // affine motion state (the existing labelled substitution).
+                const float body_pose[16] = {
+                    transform[0], transform[1], transform[2], 0.0f,
+                    transform[3], transform[4], transform[5], 0.0f,
+                    transform[6], transform[7], transform[8], 0.0f,
+                    transform[9], transform[10], transform[11], 1.0f};
+                posed = units_.set_local_matrix_006e00a0(row.unit_index, body_pose);
+            } else {
             posed = units_.set_local_matrix_006e00a0(row.unit_index, m);   // vtable[88h]
+            }
             if (posed) ++turn_ship_arm_posed_;
             log_.implemented("EntityTurnToEntity::ship_body_pose_00c56cf0 (the motion state)",
                              "00c56cf0");
@@ -3227,12 +3287,25 @@ void* GameScriptOrdersHost::argument_ptr_field(int index) {
     if (state_ == nullptr) return nullptr;
     const int slot = stack_slot(index);
     if (slot > argument_count_ || lua_type(state_, slot) != LUA_TTABLE) return nullptr;
+    // 00888D20 calls lua_table_get_ptr_field_00888d20; OFF keeps the direct Ptr read.
+    if constexpr (kWireScriptOrdersHostBound) {
+        lua_getfield(state_, slot, "Ptr");
+        bsp::landscape_lua_seg55_argon::LuaTableEntry entry;
+        entry.key = "Ptr";
+        entry.is_light_userdata = lua_type(state_, -1) == LUA_TLIGHTUSERDATA;
+        entry.userdata_ptr = entry.is_light_userdata ? lua_touserdata(state_, -1) : nullptr;
+        void* value = bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20({entry});
+        lua_settop(state_, argument_count_);
+        log_.implemented("LuaBinding::argument_ptr_field", "00888d20");
+        return value;
+    } else {
     lua_getfield(state_, slot, "Ptr");
     void* value = (lua_type(state_, -1) == LUA_TLIGHTUSERDATA)
         ? lua_touserdata(state_, -1) : nullptr;
     lua_settop(state_, argument_count_);
     log_.implemented("LuaBinding::argument_ptr_field", "00888d20");
     return value;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -3568,10 +3641,16 @@ void GameScriptOrdersHost::session_route_avoidance_message(void* director,
         }
         if constexpr (kNavigatorShipAvoidanceDeliveryBound) {
             bsp::DirectorCommandMessage message;
+            // Wire 008359C0 calls director_command_message_0071da50; OFF keeps the literal header.
+            if constexpr (kWireScriptOrdersHostBound) {
+                message = bsp::director_command_message_0071da50(
+                    bsp::DirectorCommandSubKind::ShipCollisionAvoidance, enabled);
+            } else {
             message.base_kind = 0x5a;
             message.vtable = 0x00cfd9c4u;
             message.sub_kind = selector;
             message.value = enabled ? 1u : 0u;
+            }
             if (ship_index < units_.count()
                 && units_.apply_director_avoidance_message_00835640(ship_index, message)) {
                 ++summary_.ship_avoidance_delivered;
@@ -3599,10 +3678,16 @@ void GameScriptOrdersHost::session_route_avoidance_message(void* director,
     }
     if constexpr (kNavigatorAvoidanceDeliveryBound) {
         bsp::DirectorCommandMessage message;
+        // Wire 00835940 calls director_command_message_0071da50; OFF keeps the literal header.
+        if constexpr (kWireScriptOrdersHostBound) {
+            message = bsp::director_command_message_0071da50(
+                static_cast<bsp::DirectorCommandSubKind>(selector), enabled);
+        } else {
         message.base_kind = 0x5a;
         message.vtable = 0x00cfd9c4u;
         message.sub_kind = selector;
         message.value = enabled ? 1u : 0u;
+        }
         if (index < units_.count()
             && units_.apply_director_avoidance_message_00835640(index, message)) {
             ++summary_.avoidance_delivered;
@@ -4713,8 +4798,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             lua_createtable(state_, static_cast<int>(active_dialogs_.size()), 0);
             int n = 0;
             for (const auto& dialog : active_dialogs_) {
+                // 00B672F0 calls native_lua_set_lstring_at_00b672f0; OFF keeps rawseti.
+                if constexpr (kWireScriptOrdersHostBound) {
+                    ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
+                    ScriptOrdersNativeText value(dialog.first);
+                    bsp::native_lua_set_lstring_at_00b672f0(table.object, ++n, value.text);
+                } else {
                 lua_pushstring(state_, dialog.first.c_str());
                 lua_rawseti(state_, -2, ++n);
+                }
             }
             results = 1;
         } else {
@@ -5167,8 +5259,15 @@ bool GameScriptOrdersHost::build_script_self_table(const GameScriptEntity& entit
     // Corrected by packet cc_lua_find_entity: 00928BA5 seeds `ID` with the key
     // text through 00B67630's lua_pushlstring, and the shipped helpers index
     // thisTable with it.
+    // 00B67630 calls native_lua_set_string_00b67630; OFF keeps the direct ID field write.
+    if constexpr (kWireScriptOrdersHostBound) {
+        ScriptOrdersLuaStackView table(state_, lua_gettop(state_));
+        ScriptOrdersNativeText value(key);
+        bsp::native_lua_set_string_00b67630(table.object, "ID", value.text);
+    } else {
     lua_pushstring(state_, key);
     lua_setfield(state_, -2, "ID");
+    }
     lua_pushboolean(state_, entity.dead ? 1 : 0);
     lua_setfield(state_, -2, "Dead");
     lua_pushlightuserdata(state_, const_cast<GameScriptEntity*>(&entity));
@@ -5262,7 +5361,13 @@ void GameScriptOrdersHost::call_script_global(const GameScriptEntity& entity,
 
 void GameScriptOrdersHost::push_number(int value) {
     if (state_ == nullptr) return;
+    // 00B664B0 calls native_lua_push_integer_00b664b0; OFF keeps lua_pushnumber.
+    if constexpr (kWireScriptOrdersHostBound) {
+        ScriptOrdersLuaStackView frame(state_, 1);
+        bsp::native_lua_push_integer_00b664b0(frame.object, value);
+    } else {
     lua_pushnumber(state_, static_cast<lua_Number>(value));
+    }
 }
 
 void GameScriptOrdersHost::push_boolean(bool value) {
@@ -6413,9 +6518,15 @@ void GameScriptOrdersHost::sync_recon_level_tables_0077b0c0() {
             published = level;
             lua_getfield(L, unit_table, "reconlevel");
             if (lua_istable(L, -1)) {
+                // 00B665D0 calls native_lua_set_integer_at_00b665d0; OFF keeps the Lua writes.
+                if constexpr (kWireScriptOrdersHostBound) {
+                    ScriptOrdersLuaStackView table(L, lua_gettop(L));
+                    bsp::native_lua_set_integer_at_00b665d0(table.object, s, level);
+                } else {
                 lua_pushnumber(L, static_cast<lua_Number>(s));
                 lua_pushnumber(L, static_cast<lua_Number>(level));
                 lua_settable(L, -3);
+                }
                 ++recon_level_writes_;
             }
             lua_settop(L, unit_table);
