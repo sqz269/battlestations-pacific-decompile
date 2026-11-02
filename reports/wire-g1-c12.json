@@ -1,0 +1,179 @@
+{
+  "packet": "g1-w3",
+  "run": 29,
+  "goal": 1,
+  "chain": 12,
+  "branch": "agent/g1-w3",
+  "host": "src/game_hosts_hud.cpp",
+  "selection_reason": "Highest-ranked available host; the selection poll can consume existing input, unit-list, cursor and formation state. The other eight rows fail the body/state counting rule.",
+  "switch": "kWireGoal1Chain12Bound",
+  "switch_header": "include/bsp/wire_goal1_chain12_switches.hpp",
+  "switch_default": false,
+  "code_commit": "8fa4fb1323645ec35d95bd52a6e1ec8da18358f8",
+  "rows": [
+    {
+      "native": "00644db0",
+      "address": "0064a159",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_unit_rows",
+      "status": "wired",
+      "reached": 2739,
+      "body": "bsp::hud_root_poll_selection in src/hud_root_rows.cpp",
+      "state": "Uses root_lists.primary_8c, secondary_9c, cursor and force_pending_c0; menu input-action edges; record_pending_id_20; screen 4Ch applied byte; controlled unit and existing formation/liveness accessors. Retains the body outputs and writes the cursor/pending flag back to root_lists and the packed cursor to hud_root.weapon_info_field.",
+      "live_path": "GameMenuHost screen 44h update -> GameHudHost::update_hud_root_screen_00649860 -> hud_root_screen_update -> update_unit_rows. kHudRootScreenBound and kUnitVtable124MapBound are true; no enclosing false switch.",
+      "contract": "One image call site. ECX supplies the root (MOV ECX,EBX at 0064A14E); one unused float stack argument is spilled at 0064A150; callee RET 4 at 00645044/00645059. Callback register source at 00644E7E is the controlled unit loaded from 00E188D8 at 00644E4E. The C++ projection does not claim Original ABI replacement.",
+      "limitations": "The normal USN04 pair exercises the poll but does not inject actions 8Ch..8Fh. Existing selected-unit resolution, row display and automatic row-refresh stand-ins remain; active selection/commit parity is not proven. Pending-manager tracking and unit-vtable liveness retain their previously labelled host limitations."
+    },
+    {
+      "native": "00683a90",
+      "address": "0068cd04",
+      "function": "0068cc70",
+      "host_site": "src/game_hosts_hud.cpp: HudInitBinding::base_init",
+      "status": "skipped",
+      "reason": "Native body is a bare RET. The host already marks base_init concrete and performs the same no-op. Adding its identifier would not replace any host logic and is not counted.",
+      "reached": 0
+    },
+    {
+      "native": "0068ab80",
+      "address": "0068ad43",
+      "function": "0068aca0",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::collapse_overlays and HudUpdateBinding::collapse_overlays",
+      "status": "skipped",
+      "reason": "The host lacks the level-3 vector, screen-4Eh +30h/+0Ah flags and a binocular-reset binding. Feeding default InGameInterfaceCollapseState flags would produce an empty plan, not apply real overlay state. The optional release-gun map flag alone does not supply the body's contract.",
+      "reached": 0
+    },
+    {
+      "native": "00954990",
+      "address": "006456b9",
+      "function": "00645600",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "status": "skipped",
+      "reason": "No retained +BBCh engine emitter, child-gun audio objects or unit+6B4h audio flag storage exists in this host. The scalar AudioFlagPlan would only return the supplied flag unless absent audio effects/storage were invented.",
+      "reached": 0
+    },
+    {
+      "native": "00a79880",
+      "address": "0068cb45",
+      "function": "0068c1f0",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::set_ambient_volume",
+      "status": "skipped",
+      "reason": "has_ambient_sound_instance() is false, unit_ambient_sound_source() and start_ambient_sound() return zero, and no SoundInstance/sample options are retained. The call site is unreachable with this host's actual ambient state.",
+      "reached": 0
+    },
+    {
+      "native": "00abe6e0",
+      "address": "0064f86c",
+      "function": "0064dd30",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenBinding::circle_progress",
+      "status": "skipped",
+      "reason": "The bound circles are GuiLayoutWidget projections. They do not carry a GuiSectionRuntimeImplementation, its canonical GuiWidgetOwner, section fields or emission services. A synthetic Section owner would not be the host widget's real state.",
+      "reached": 0
+    },
+    {
+      "native": "00647080",
+      "address": "0064a200",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "status": "skipped",
+      "reason": "Root +CCh interface id and +E4h restore payload are not retained: hud_root_screen_set_interface only records the setter. controlled_unit_flag_379() also reads a substituted false. Defaults would bypass the native toggle decisions rather than consume the missing real state.",
+      "reached": 0
+    },
+    {
+      "native": "00648c20",
+      "address": "0064a160",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_medals",
+      "status": "skipped",
+      "reason": "HudRootRowsHost requires panel weapon/override objects, weapon-source cache and animations, command descriptors and health-metric inputs that this host does not retain. A large adapter supplying defaults would not satisfy the reconstructed body's contract; lists and scalar unit fields alone are insufficient.",
+      "reached": 0
+    },
+    {
+      "native": "00a7b710",
+      "address": "0068cc4f",
+      "function": "0068c1f0",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::set_audio_environment",
+      "status": "skipped",
+      "reason": "The HUD retains only summary.audio_environment, not the sound manager's SoundConfigurationState/listener table or SoundLevelNameHost. Using an invented listener table would merely round-trip the same environment string; the real application's sound state is outside this host's available interface.",
+      "reached": 0
+    }
+  ],
+  "build": {
+    "on": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain12Bound",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "log": "local/output/g1-c12-on-build.txt"
+    },
+    "off": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": 2,
+      "tests_total": 2,
+      "log": "local/output/g1-c12-off-build.txt",
+      "ordering": "Plain OFF build ran after the ON-build checker and before readiness measurement and the committed-HEAD OFF run."
+    },
+    "pc24_lint": "Not applicable: the ON arm adds no x87 arithmetic.",
+    "off_arm": "Existing two-line selection-poll comment/record arm preserved byte for byte. New switch stays false in this worktree."
+  },
+  "wire_readiness": {
+    "before": 8771,
+    "after": 8772,
+    "delta": 1,
+    "rows_ready_to_wired": ["00644db0"],
+    "before_artifact": "local/output/g1-c12-readiness-before.json",
+    "after_artifact": "local/output/wire_readiness.json"
+  },
+  "report_verification": {"command": "python tools/verify_report_calls.py reports/wire-g1-c12.json", "call_rows_checked": 9, "failed": 0},
+  "paired_run": {
+    "session": "console sqz269 1 Active",
+    "mission": "USN04",
+    "arguments": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+    "off": {
+      "exe": "build/win32/Release/bsp_game.exe",
+      "sha256": "FD4B7D7A8B8F2ECCE7C93DD55340DDD4A1687958E02A27545AA0913571A90FFA",
+      "log": "local/g1-w3-off_USN04.log",
+      "exit_code": 0,
+      "frames_presented": 3199,
+      "loop_finished": true
+    },
+    "on": {
+      "export_command": "python tools/pair_export.py --commit HEAD --flip kWireGoal1Chain12Bound=true --out local/g1-w3-on --mission USN04",
+      "export_exit_code": 0,
+      "exe": "local/g1-w3-on/build/win32/Release/bsp_game.exe",
+      "sha256": "EA69E86356D757B1255387C98B682676C0B623F6E9DF4637C5D5262A2DE952EC",
+      "log": "local/g1-w3-on_USN04.log",
+      "exit_code": 0,
+      "frames_presented": 3199,
+      "loop_finished": true
+    },
+    "diff_command": "python tools/pair_diff.py local/g1-w3-off_USN04.log local/g1-w3-on_USN04.log --limit 60",
+    "diff_artifact": "local/output/g1-c12-pair-diff.txt",
+    "diff_exit_code": 1,
+    "verdict": "DIFFERENT, gameplay identical",
+    "native_table": {
+      "before_rows": 1624,
+      "after_rows": 1624,
+      "added": 0,
+      "removed": 0,
+      "status_changes": [
+        {"method": "HudRootScreen::selection_poll", "native": "00644db0", "off": "UNIMPLEMENTED", "on": "concrete", "off_calls": 2739, "on_calls": 2739}
+      ],
+      "count_changes": [
+        {"method": "Unit::vtable_124", "table_address": "00645110", "off_calls": 62, "on_calls": 2801}
+      ],
+      "noise": "PlatformLoopCallbacks::pretranslate calls 2 -> 9"
+    },
+    "gameplay_rows_moved": [],
+    "gameplay": "All compared gameplay rows identical: deaths 28; hit records 380; hull hits 276; damage 6366.6; shots 5509; first hit 86.15s; torpedo-task releases 0 of 16; dive-bomb releases 0 of 19; torpedo drops 0; plane water contacts 14; controlled moved Lexington-class01 2235.17; units 81; mission end none. Death rows (0), plane death modes (25), and unit table (81) identical.",
+    "diagnostic_changes": [
+      "Comparison host-method totals concrete/unimplemented 1144/477 -> 1145/476.",
+      "mission hud unit vtable124: asks 62 -> 2640; map_only_asks and map_only_units stay zero.",
+      "Summary lines 867 -> 867, one changed; other masked log lines 231 only OFF / 231 only ON. Displayed other differences include atlas append_slot address values. Full log equality is not claimed."
+    ]
+  },
+  "flip_proposal": {
+    "value": true,
+    "reason": "Propose enabling after integrator review: ON compiles/links, 00644DB0 is concrete for 2739 calls, and the paired mission's compared gameplay/unit/death rows are identical. The expected extra vtable liveness queries and diagnostic differences are recorded above.",
+    "remaining_validation": "No active next/previous selection-input branch, full selection commit/display path, Original ABI replacement or original-game parity is established by this pair. The switch has not been enabled in the worktree."
+  }
+}
