@@ -1,921 +1,381 @@
 {
   "packet": "g1-w1",
-  "run": 7,
+  "run": 23,
   "harness": "codex",
+  "goal": 1,
+  "chain": 8,
   "branch": "agent/g1-w1",
-  "picked": "game_hosts_gunnery.cpp - highest number of typed candidates with live gun, projectile, hit and authored-section state",
-  "host_file": "src/game_hosts_gunnery.cpp",
-  "switch": "kWireGoal1Chain1Bound",
-  "switch_header": "include/bsp/wire_goal1_chain1_switches.hpp",
-  "switch_in_tree": false,
-  "code_commits": [
-    "f9ba0f0b4d1625e1915b73888b9efdaa59a6c676",
-    "473e2b8d05f23205fb7bf74364a5cf13cc20d03d",
-    "8bf807de84af25ece0f26a12a7851b6239485327"
-  ],
-  "counting_scope": "Calls existing reconstructed bodies through the one OFF switch; no new address-suffixed function or body. The interfaces are semantic C++ interfaces, not binary ABI replacements.",
-  "rows": [
-    {
-      "native": "004193e0",
-      "host_site": "Impl::torpedo_swim3d_step / TorpedoSwimHost::acquire_nearest_target",
-      "status": "wired",
-      "address": "00856d24",
-      "caller": "00856bb0",
-      "identifier": "bsp::engine_seg1_cc13::vector3_length_squared_004193e0",
-      "inputs": "Live candidate position minus current shot position; result chooses nearest homing target.",
-      "other_call_claims": [
-        {
-          "address": "00856d31",
-          "native": "004193e0",
-          "caller": "00856bb0"
-        }
-      ],
-      "evidence": "ECX float3, RET; native float spills and PC24 arithmetic stay in the existing body.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "0042aeb0",
-      "host_site": "Impl::seat_artillery_lead_009578c3",
-      "status": "wired",
-      "address": "00957a4b",
-      "caller": "00957740",
-      "identifier": "bsp::profile_seg2_cc13::vector3_add_in_place_0042aeb0",
-      "inputs": "Live aim buffer and computed intercept-minus-target vector.",
-      "evidence": "ECX destination, one stack source, RET 4.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00470740",
-      "host_site": "Impl::apply_hit / attribution gate for populated gathered blast records",
-      "status": "wired",
-      "address": "0077cea8",
-      "caller": "0077ce60",
-      "identifier": "bsp::max_part_damage_00470740",
-      "inputs": "Actual gathered blast HitRecord entries, falloff, base damage, and live weapon/owner modifiers. Armour 0 is the original caller's FLDZ argument at 0077CE8E..0077CE9A, not fabricated target state.",
-      "binding_scope": "Only blast_record != nullptr, hull_segment == -1 and a nonempty part vector. Direct records explicitly have nullptr/0 entries and retain the old attribution gate; no claim that their missing native narrowphase data is reconstructed.",
-      "evidence": "Strict maximum over 004705C0 results, seed 0; RET 4. The first exploratory pair exposed the direct-hit state gap; the final code narrows the binding instead of changing the body.",
-      "reached": 100,
-      "reached_evidence": [
-        {
-          "name": "Hit::max_part_damage_00470740",
-          "native": "00470740",
-          "status": "concrete",
-          "calls": 100
-        }
-      ]
-    },
-    {
-      "native": "007149d0",
-      "host_site": "Impl::flatten_class_tables / flat_mesh_category / build_guns damage sections and failure rows",
-      "status": "wired",
-      "address": "0087cf7b",
-      "caller": "0087ca80",
-      "identifier": "bsp::native_mesh_category_from_name_007149d0",
-      "inputs": "Authored MshCategory/SectionName strings retained in VehicleClass[type].BSPGun; full existing 15-name host category table plus native null terminator. Search result sets actual section/failure kinds.",
-      "evidence": "ECX string, no stack args. Callers include 007273A3 and 0087CF7B plus 008383C5 in undefined Ghidra code; same whole-string lookup contract. ON removes the Lua mcat lookup at these sites.",
-      "reached": 350,
-      "reached_evidence": [
-        {
-          "name": "Gunnery::mesh_category_from_name_007149d0",
-          "native": "007149d0",
-          "status": "concrete",
-          "calls": 350
-        }
-      ]
-    },
-    {
-      "native": "00729b90",
-      "host_site": "GunneryPassBinding::bind_aa_acceptance",
-      "status": "wired",
-      "address": "008657e1",
-      "caller": "00864fe0",
-      "identifier": "bsp::gameplay_seg40_59_cc13::gun_min_air_range_record_00729b90",
-      "inputs": "Actual gun Function id selects the first or second loaded ammunition minimum-range field; result drives existing minimum-air-range gate.",
-      "evidence": "ECX gun, RET; kind 6 selects +7Ch, all other kinds +34h. Caller applies the result for weapon kinds 5/6.",
-      "reached": 5570,
-      "reached_evidence": [
-        {
-          "name": "Gunnery::minimum_air_range_00729b90",
-          "native": "00729b90",
-          "status": "concrete",
-          "calls": 5570
-        }
-      ]
-    },
-    {
-      "native": "00729bc0",
-      "host_site": "GunneryPassBinding::gun_inputs",
-      "status": "skipped",
-      "reason": "Removed in review round 1: a nonzero bot-slot offset does not establish an installed non-null slot or the selected bot vtable[1Ch](target) acceptance. The host has category-driven bot state, but no installed-slot identity/presence and dispatchable per-slot target predicate; retain its original acceptance stand-in.",
-      "evidence": "Native 00729BC0 checks the loaded slot pointer and dispatches its predicate after choosing an offset. The host computes GunBotSlotAssignment from category/constant flags and discards it; it is not installed bot state.",
-      "wiring_body_calls": 0,
-      "prior_reach_correction": {
-        "reported": 5570,
-        "meaning": "Enclosing host acceptance queries, not selector/body invocations.",
-        "range_rejections": 1961,
-        "selector_invocations_inferred": 3609,
-        "source": "Independent review run 14; 5570 - 1961, not an independently instrumented body counter."
-      },
-      "reached": 5570,
-      "reached_evidence": [
-        {
-          "name": "Gunnery::bot_slot_accepts_target_00729bc0",
-          "native": "00729bc0",
-          "status": "concrete",
-          "calls": 5570
-        }
-      ],
-      "reached_scope": "Enclosing retained host stand-in queries only; removed reconstructed binding has zero calls."
-    },
-    {
-      "native": "008fef40",
-      "host_site": "Impl::run_gun_aim_and_fire / TailGunnerBot debounce",
-      "status": "wired",
-      "address": "008fff12",
-      "caller": "008ffa20",
-      "identifier": "bsp::gun_bot_trigger_step_008fef40",
-      "inputs": "Persistent committed/requested/timer state, the actual bot request, and live step dt; writes back all three state fields before the fire request.",
-      "evidence": "Changed request restarts 0.1/0.3 delay; repeated request decrements only nonnegative timer and commits at <= 0.",
-      "reached": 676,
-      "reached_evidence": [
-        {
-          "name": "GunBot::debounced_trigger_008fef40",
-          "native": "008fef40",
-          "status": "concrete",
-          "calls": 676
-        }
-      ]
-    },
-    {
-      "native": "0092d1f0",
-      "host_site": "Impl::apply_segment_damage_0092d1f0",
-      "status": "wired",
-      "address": "0082703e",
-      "caller": "00826f10",
-      "identifier": "bsp::ship_part_damage_0092d1f0",
-      "inputs": "Live segment health, incoming damage and segment-present gate; returned applied/destroyed/health drives the existing detach queue and counters.",
-      "other_call_claims": [
-        {
-          "address": "0082765b",
-          "native": "0092d1f0",
-          "caller": "00826f10"
-        }
-      ],
-      "evidence": "Gate/sentinel/subtraction/destruction decisions move to the body. Native RET 0Ch includes an unread direction argument; typed interface exposes the consumed state only.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00954210",
-      "host_site": "Impl::apply_gun_aim_message and group3/group4 / gun_accepts_aim_message adapter",
-      "status": "wired",
-      "address": "00959cd6",
-      "caller": "00959c20",
-      "identifier": "bsp::unit_gun_aim_accepts_device_00954210",
-      "inputs": "Actual message group, gun Function, ownership/presence and operational state. Body replaces all four host filters.",
-      "other_call_claims": [
-        {
-          "address": "0095a019",
-          "native": "00954210",
-          "caller": "00959c20"
-        },
-        {
-          "address": "0095a1f2",
-          "native": "00954210",
-          "caller": "00959c20"
-        },
-        {
-          "address": "0095a486",
-          "native": "00954210",
-          "caller": "00959c20"
-        }
-      ],
-      "evidence": "RET 8; ESI comes from second stack argument. Callees 005459B0, 005459E0 and 0080F750 were read before mapping their category predicates.",
-      "reached": 58476,
-      "reached_evidence": [
-        {
-          "name": "PlayerGunSeat::device_filter_00954210",
-          "native": "00954210",
-          "status": "concrete",
-          "calls": 58476
-        }
-      ]
-    },
-    {
-      "native": "006e1300",
-      "host_site": "Impl projectile tick / comment at fixed-step drain",
-      "status": "skipped",
-      "reason": "BombTickHost requires live launch-delay, active, arming, pose-valid and owner-grace state; this host retains motion/life but no complete native tick record. Constants would substitute for missing state.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "006e3500",
-      "host_site": "release_torpedo_drop / release_bomb_drop rack inventory comments",
-      "status": "skipped",
-      "reason": "Host explicitly has no per-rack attached-round child count or ammo_484 reserve; adding fabricated counts would not be a real-state sum.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "0071e050",
-      "host_site": "AA-enable consumer in Impl::run_gun_aim_and_fire",
-      "status": "skipped",
-      "reason": "This host reads director enables; it has no sub-kind-4 message sender/router at the mention. Constructing a message just to read its input value back would round-trip.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "007214c0",
-      "host_site": "ship weapon-director-enable summary / SceneDirectorEnables consumer",
-      "status": "skipped",
-      "reason": "No controller snapshot producer/transport here; existing host only reads flattened scene flags. Copying those into a temporary snapshot and back would round-trip.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "0072bf10",
-      "host_site": "Impl::run_gun_aim_and_fire projectile creation",
-      "status": "skipped",
-      "reason": "Full ProjectileSpawnHost needs shot identity, appearance/scale, factory medium hooks and owner/director registration state beyond the retained GameProjectileRow. No-op adapters would omit body side effects.",
-      "reached": 5509,
-      "reached_evidence": [
-        {
-          "name": "Projectile::spawn_0072bf10",
-          "native": "0072bf10",
-          "status": "concrete",
-          "calls": 5509
-        }
-      ]
-    },
-    {
-      "native": "00731020",
-      "host_site": "RebuildBinding::gun weapon range getter",
-      "status": "skipped",
-      "reason": "Valid gun rows already hold finalised ammunition max_range; the proposed first-record getter would only return that same host value.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00761310",
-      "host_site": "Impl ship death / record ShipDeath::breakup_message_98_00761310",
-      "status": "skipped",
-      "reason": "Only a presentation record exists at this site; no actual UnitMessage transport consumes the constructed payload. A new temporary message would be inert.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00814520",
-      "host_site": "Impl ship death / break-in-two draws",
-      "status": "skipped",
-      "reason": "No breakup registry manager or full motion-controller breakup implementation is retained. Existing draw stand-in cannot satisfy UnitDeathMessageHost effects without invented objects/no-ops.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "0084bad0",
-      "host_site": "Impl::apply_blast",
-      "status": "skipped",
-      "reason": "Ready identifier only fills record damage/position/ignore fields. This host constructs HitRecord directly; a temporary HitRecordFill copied back into it would only round-trip values. Full BlastDamageHost sequence is not supplied here.",
-      "reached": 254,
-      "reached_evidence": [
-        {
-          "name": "Projectile::blast_radial_damage_0084bad0",
-          "native": "0084bad0",
-          "status": "concrete",
-          "calls": 254
-        }
-      ]
-    },
-    {
-      "native": "0084bf00",
-      "host_site": "Impl projectile sweep / SegmentBinding",
-      "status": "skipped",
-      "reason": "Existing reconstructed sweep models only the projectile caller. Host also owns squadron/own-base grace and plane-crash paths; a small adapter cannot preserve their complete live filtering and impact contract.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "0084c5b0",
-      "host_site": "Impl::run_gun_aim_and_fire rapid-turning extra send",
-      "status": "skipped",
-      "reason": "Existing turning_gun_extra_fire_request body returns its bool argument unchanged (src/gameplay_seg52_cc13.cpp:129); explicit round-trip exclusion.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "008636a0",
-      "host_site": "Impl::attach_passes / policy install record",
-      "status": "skipped",
-      "reason": "No general live unit director-pointer and director vslot-48h type predicate is exposed here. Supplying guessed kind/presence constants would fabricate policy inputs.",
-      "reached": 81,
-      "reached_evidence": [
-        {
-          "name": "Gunnery::install_policies_008636a0",
-          "native": "008636a0",
-          "status": "concrete",
-          "calls": 81
-        }
-      ]
-    },
-    {
-      "native": "00868420",
-      "host_site": "point-effect comments / damage and timeout presentation",
-      "status": "skipped",
-      "reason": "No consumed RenderCommandReference template, output effect handle or PointEffectConstruction owner exists in this host.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00875b90",
-      "host_site": "gun bot wave-2 ordering comments",
-      "status": "skipped",
-      "reason": "GameFixedStepHost::run_wave2_job_00875b90 discards group/position/step and only logs unimplemented (src/game_hosts_fixed_step.cpp:191-196); it is not concrete dispatch and duplication is not the skip reason. Native 00875B90 needs a registered tick element and calls 008759B0 over its live sub-node list, enabled/expired flags, callbacks, count, and locked unlink/destruction state. This gunnery host does not retain that native element/sub-node ownership contract.",
-      "reached": 0,
-      "reached_evidence": [],
-      "evidence": "GameFixedStepHost::next_element returns false and explicitly reports missing raw registrations/group publication (src/game_hosts_fixed_step.cpp:151-162). Native 008759B0 uses element +1Ch/+20h/+24h and node +8h/+0Ch/+10h/+11h; no claim of an actual native dispatch attachment is made."
-    },
-    {
-      "native": "0087bcc0",
-      "host_site": "Impl::build_guns initial health/model comments",
-      "status": "skipped",
-      "reason": "NativeUnitHealthPartsView and its object-backed part vectors/model bindings are absent; scalar gun health fields are insufficient for native health/part initialization.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00934150",
-      "host_site": "Impl::explode_to_parts_00935c70 / destroyed-segment queue",
-      "status": "skipped",
-      "reason": "Host retains destroyed-segment indices/times, not the native node/effect/group vectors and debris resource state required by UnitPartDetachHost.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "009373c0",
-      "host_site": "script_set_failure_008132c0 Periscope arm",
-      "status": "skipped",
-      "reason": "Arm only records shape-bit work; no live periscope shape handle +394h or repair-state object is held. Feeding has_shape=true would invent the object the body needs.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00955420",
-      "host_site": "unit scene-binding initialization comments",
-      "status": "skipped",
-      "reason": "NativeUnitSceneInitializationView, global storage and node/attachment bindings are not retained by this host.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00999b70",
-      "host_site": "release_torpedo_drop / release_bomb_drop ThrowMul stand-in",
-      "status": "skipped",
-      "reason": "Only DiveBomb/LevelBomb arrays exist here; live PilotBot Torp/DepthCharge/Strike fields required by the selector's union contract are absent. Existing torpedo path explicitly notes the stand-in.",
-      "reached": 0,
-      "reached_evidence": []
-    },
-    {
-      "native": "00bd2f90",
-      "host_site": "Impl::draw_normal",
-      "status": "skipped",
-      "reason": "Host RNG state is per-key LCG words, while the existing body consumes RandomThreads/MT state. No state-preserving adapter can feed that body without replacing the underlying RNG ownership.",
-      "reached": 0,
-      "reached_evidence": []
-    }
-  ],
-  "reach_count_scope": "ON log native-table counts, summed by address. Skipped rows can retain enclosing stand-in counters; these are not reconstructed-body calls. In particular 00729BC0 remains a concrete-labelled host query counter after its binding was removed, and wiring_body_calls is zero. Missing table entry is zero.",
-  "wired_total_before": 8522,
-  "wired_total_after": 8530,
-  "rows_wired": 8,
-  "rows_skipped": 21,
-  "readiness": {
-    "command": "python tools/wire_readiness.py",
-    "log": "local/output/g1-w1-r1-readiness.txt",
-    "states": {
-      "00729bc0": "ready",
-      "008fef40": "wired",
-      "0042aeb0": "wired",
-      "004193e0": "wired",
-      "00470740": "wired",
-      "0092d1f0": "wired",
-      "007149d0": "wired",
-      "00729b90": "wired",
-      "00954210": "wired"
-    }
+  "picked": "game_hosts_gunnery.cpp",
+  "selection_reason": "Largest typed candidate set with real gun, projectile, damage and loaded PilotBot state on mission paths; skipped identity-only getters and missing native object graphs.",
+  "switch": "kWireGoal1Chain8Bound",
+  "switch_value": false,
+  "baseline_commit": "cde847c8f",
+  "code_commit": "efacfd1bc3548f2208e4c53bf98866b93baaae15",
+  "counting": {
+    "wired_total_before": 8771,
+    "wired_total_after": 8777,
+    "assigned_ready_to_wired": 3,
+    "assigned_wired": [
+      "00729bc0",
+      "0084bad0",
+      "00999b70"
+    ],
+    "skipped": 18,
+    "note": "Only the three assigned transitions are claimed. The whole-report wired total rose by six as the readiness graph was recomputed."
   },
   "checks": {
     "off_build": {
+      "result": "passed",
       "command": "./scripts/build.ps1",
-      "exit_code": 0,
-      "result": "passed, 2/2 existing CTest groups",
-      "log": "local/output/g1-w1-r1-off-build.txt"
+      "log": "local/output/g1-w1-off-build-final.txt",
+      "tests": "reconstructed_math and tool_tests: 2/2 passed",
+      "source": "Committed code with the switch false; all pre-existing host statements preserved inside OFF arms."
     },
     "on_build": {
-      "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain1Bound",
-      "exit_code": 0,
-      "result": "passed, 0 distinct diagnostics; header restored OFF",
-      "log": "local/output/g1-w1-r1-on-build.txt"
+      "result": "passed",
+      "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain8Bound",
+      "log": "local/output/g1-w1-on-build.txt",
+      "diagnostics": 0
     },
-    "pc24": {
+    "final_map": "Readiness measured only after the final plain OFF build. pair_export built ON in local/g1-w1-on and did not replace this tree's OFF map.",
+    "pc24_lint": {
+      "result": "passed",
       "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
-      "exit_code": 0,
-      "findings": 0
+      "findings": 0,
+      "note": "ON arms select branches and fill/project fields; no new x87 arithmetic chain."
     },
+    "diff_check": "passed",
     "report_calls": {
-      "command": "python tools/verify_report_calls.py reports/g1-w1.json",
-      "exit_code": 0,
-      "checked": 13,
+      "result": "passed",
+      "checked": 20,
       "failed": 0,
-      "log": "local/output/g1-w1-r1-report-calls.txt"
-    }
-  },
-  "pair_run": {
-    "code_commit": "8bf807de84af25ece0f26a12a7851b6239485327",
-    "session": "query session: console sqz269 ID 1 Active; query command exits 1 even though console is active",
-    "exports": {
-      "off": {
-        "exe": "local\\g1-w1-off\\build\\win32\\Release\\bsp_game.exe",
-        "sha256": "38c4e52acc33419fb6903709d800345120c21daff6e4a58a2357e4e2a4761813",
-        "mtime": "2026-11-01T22:30:01.082112",
-        "build_result": "passed",
-        "build_log": "local/g1-w1-off/pair_export_build.log"
-      },
-      "on": {
-        "exe": "local\\g1-w1-on\\build\\win32\\Release\\bsp_game.exe",
-        "sha256": "30fce7a1f8030fe10416824a76d3d941e24a9ae171e9dce0fb306f6d28d59b66",
-        "mtime": "2026-11-01T22:30:03.343776",
-        "build_result": "passed",
-        "build_log": "local/g1-w1-on/pair_export_build.log"
-      }
+      "log": "local/output/g1-w1-report-verification.txt",
+      "no_call_site": "00875b90 is address-taken at 00D0DEC4; its row intentionally omits address."
     },
-    "arguments": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
-    "launcher": "tools/run_game.ps1, sequential runs, no -Traj",
-    "logs": {
-      "off": {
-        "path": "local\\g1-w1-r1-off_USN04.log",
-        "mtime": "2026-11-01T22:31:49.120010",
-        "completion": [
-          "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=3199 presents_skipped=1 loop_finished=1 exit_code=0"
-        ],
-        "native_rows": [
-          {
-            "name": "Gunnery::install_policies_008636a0",
-            "native": "008636a0",
-            "status": "concrete",
-            "calls": 81
-          },
-          {
-            "name": "Projectile::spawn_0072bf10",
-            "native": "0072bf10",
-            "status": "concrete",
-            "calls": 5509
-          },
-          {
-            "name": "Gunnery::bot_slot_accepts_target_00729bc0",
-            "native": "00729bc0",
-            "status": "concrete",
-            "calls": 5570
-          },
-          {
-            "name": "Projectile::blast_radial_damage_0084bad0",
-            "native": "0084bad0",
-            "status": "concrete",
-            "calls": 254
-          }
-        ]
-      },
-      "on": {
-        "path": "local\\g1-w1-r1-on_USN04.log",
-        "mtime": "2026-11-01T22:34:22.633665",
-        "completion": [
-          "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=3199 presents_skipped=1 loop_finished=1 exit_code=0"
-        ],
-        "native_rows": [
-          {
-            "name": "Gunnery::mesh_category_from_name_007149d0",
-            "native": "007149d0",
-            "status": "concrete",
-            "calls": 350
-          },
-          {
-            "name": "Gunnery::install_policies_008636a0",
-            "native": "008636a0",
-            "status": "concrete",
-            "calls": 81
-          },
-          {
-            "name": "PlayerGunSeat::device_filter_00954210",
-            "native": "00954210",
-            "status": "concrete",
-            "calls": 58476
-          },
-          {
-            "name": "Projectile::spawn_0072bf10",
-            "native": "0072bf10",
-            "status": "concrete",
-            "calls": 5509
-          },
-          {
-            "name": "Gunnery::minimum_air_range_00729b90",
-            "native": "00729b90",
-            "status": "concrete",
-            "calls": 5570
-          },
-          {
-            "name": "Gunnery::bot_slot_accepts_target_00729bc0",
-            "native": "00729bc0",
-            "status": "concrete",
-            "calls": 5570
-          },
-          {
-            "name": "Projectile::blast_radial_damage_0084bad0",
-            "native": "0084bad0",
-            "status": "concrete",
-            "calls": 254
-          },
-          {
-            "name": "GunBot::debounced_trigger_008fef40",
-            "native": "008fef40",
-            "status": "concrete",
-            "calls": 676
-          },
-          {
-            "name": "Hit::max_part_damage_00470740",
-            "native": "00470740",
-            "status": "concrete",
-            "calls": 100
-          }
-        ]
-      }
-    },
-    "completion": "Both completed: logs contain frames_presented=3199 loop_finished=1 exit_code=0; log mtimes were checked after completion.",
-    "pair_diff": {
-      "command": "python tools/pair_diff.py local/g1-w1-r1-off_USN04.log local/g1-w1-r1-on_USN04.log --limit 60 --json local/output/g1-w1-r1-pair-diff.json",
-      "exit_code": 1,
-      "verdict": "DIFFERENT, gameplay identical",
-      "text": "local/output/g1-w1-r1-pair-diff.txt",
-      "json": "local\\output\\g1-w1-r1-pair-diff.json",
-      "clock": {
-        "anchor": "gunnery step 100",
-        "offset": 0.0,
-        "first_hit_delta": 0.0
-      },
-      "gameplay_rows_moved": [],
-      "headline": [
-        [
-          "deaths",
-          "28",
-          "28"
-        ],
-        [
-          "hit records",
-          "380",
-          "380"
-        ],
-        [
-          "hull hits",
-          "276",
-          "276"
-        ],
-        [
-          "damage",
-          "6366.6",
-          "6366.6"
-        ],
-        [
-          "shots",
-          "5509",
-          "5509"
-        ],
-        [
-          "first hit",
-          "86.15 s",
-          "86.15 s"
-        ],
-        [
-          "torpedo-task releases",
-          "0 of 16",
-          "0 of 16"
-        ],
-        [
-          "dive-bomb-task releases",
-          "0 of 19",
-          "0 of 19"
-        ],
-        [
-          "torpedo drops",
-          "0",
-          "0"
-        ],
-        [
-          "plane water contacts",
-          "14",
-          "14"
-        ],
-        [
-          "controlled moved",
-          "Lexington-class01 2235.17",
-          "Lexington-class01 2235.17"
-        ],
-        [
-          "units",
-          "81",
-          "81"
-        ],
-        [
-          "mission end",
-          "none (Mission.EndMission never true)",
-          "none (Mission.EndMission never true)"
-        ],
-        [
-          "host methods concrete/unimplemented",
-          "1144 / 477",
-          "1149 / 477"
-        ]
-      ],
-      "unit_table_changes": {
-        "added": [],
-        "removed": [],
-        "changed": []
-      },
-      "death_mode_changes": {
-        "added": [],
-        "removed": [],
-        "changed": []
-      },
-      "counts": {
-        "native_rows": [
-          1624,
-          1629
-        ],
-        "death_rows": [
-          0,
-          0
-        ],
-        "plane_death_modes": [
-          25,
-          25
-        ],
-        "unit_rows": [
-          81,
-          81
-        ],
-        "summary_lines": [
-          867,
-          867
-        ],
-        "other_lines": [
-          34035,
-          34035
-        ]
-      },
-      "native_rows_moved_to_concrete": [
-        [
-          [
-            "Gunnery::mesh_category_from_name_007149d0",
-            "007149d0"
-          ],
-          "concrete",
-          350
-        ],
-        [
-          [
-            "PlayerGunSeat::device_filter_00954210",
-            "00954210"
-          ],
-          "concrete",
-          58476
-        ],
-        [
-          [
-            "Gunnery::minimum_air_range_00729b90",
-            "00729b90"
-          ],
-          "concrete",
-          5570
-        ],
-        [
-          [
-            "GunBot::debounced_trigger_008fef40",
-            "008fef40"
-          ],
-          "concrete",
-          676
-        ],
-        [
-          [
-            "Hit::max_part_damage_00470740",
-            "00470740"
-          ],
-          "concrete",
-          100
-        ]
-      ],
-      "native_status_changes": [],
-      "native_calls_moved": [],
-      "summaries_changed": [],
-      "other": "231 atlas parser/item diagnostic lines differ in each direction; not independently interpreted. Native noise counters are masked by pair_diff.",
-      "native_note": "Five new concrete rows belong to the five reached wired addresses. 00729BC0 is skipped: its pre-existing concrete-labelled query counter is not evidence of reconstructed execution. Unreached wired addresses: 004193E0, 0042AEB0, 0092D1F0."
-    }
-  },
-  "exploratory_pair": {
-    "code_commit": "f9ba0f0b4d1625e1915b73888b9efdaa59a6c676",
-    "logs": {
-      "off": "local/g1-w1-off_USN04.log",
-      "on": "local/g1-w1-on_USN04.log"
-    },
-    "diff": "local/output/g1-w1-pair-diff.json",
-    "verdict": "gameplay moved; superseded by corrected final pair",
-    "reason_for_correction": "The direct-hit record sets part_hits=nullptr and part_hit_count=0; it cannot feed original narrowphase entries to 00470740. The first pair exposed false zero-damage attribution on that unsupported binding. No body was changed: the wiring was narrowed to real gathered blast entries.",
-    "unit_changes": [
-      [
-        "A6M Zero #1.2",
-        [
-          [
-            "killed_by",
-            "Lexington-class01_sqn01|.-III",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "D3A Val #1.1|.-II",
-        [
-          [
-            "killed_by",
-            "Lexington-class01_sqn01",
-            "Lexington-class01"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #1.2|.-II",
-        [
-          [
-            "killed_by",
-            "Lexington-class01_sqn01",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #2.2",
-        [
-          [
-            "killed_by",
-            "Lexington-class01_sqn01|.-III",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #2.2|.-II",
-        [
-          [
-            "killed_by",
-            "Lexington-class01_sqn01|.-III",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #3.2",
-        [
-          [
-            "killed_by",
-            "Yorktown-class01_sqn04",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #3.2|.-II",
-        [
-          [
-            "killed_by",
-            "Yorktown-class01_sqn02|.-III",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "B5N Kate #4.1",
-        [
-          [
-            "killed_by",
-            "Yorktown-class01_sqn04|.-II",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #4.2",
-        [
-          [
-            "killed_by",
-            "Yorktown-class01_sqn02|.-II",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "A6M Zero #4.2|.-II",
-        [
-          [
-            "killed_by",
-            "Yorktown-class01_sqn02",
-            "-"
-          ]
-        ]
-      ],
-      [
-        "Yorktown-class01_sqn02",
-        [
-          [
-            "killed_by",
-            "A6M Zero #3.2",
-            "-"
-          ]
-        ]
-      ]
+    "self_review": "Reviewed the whole code diff. No reconstructed bodies changed or duplicated, no new address-suffixed function, no ledger changes.",
+    "contract_evidence": [
+      "00729BC0: original caller 008657F7 is inside 00864FE0; target pushed at 008657F4, callee RET 4 at 00729D13/00729D25. The mapped body consumes projectile kind and weapon subtype from the host's actual selected ammunition.",
+      "0084BAD0: all eight recorded image CALL sites inspected through callers --sites. ECX centre/EDX radius and four stack args, RET 10h at 0084BC5B. 0084BBAC and 0084BBBC..0084BBD1 fill damage, position and flag; fresh producer storage is consumed through the existing consumer_view.",
+      "00999B70: sole caller 006E4F6D is inside 006E4D50 (live Ghidra body 006E4D50..006E56EF). Record from rack+3F8h/+34h is pushed at 006E4F6A, bot moved to ECX at 006E4F6B; callee RET 4 and skill-row dispatch confirmed. The selector result picks a field of the existing loaded PilotBotParameters row.",
+      "Live Ghidra proto confirmed containing functions for 006E4F6D, 00864FE0 and 0084BC60. No Ghidra mutations.",
+      "All wired sites have an ungated normal mission path. kTorpedoRackDropBound, kBombDropScatterBound and kPilotBotConfigLoadBound are true. The paratrooper-only scatter gate is not required for the ordinary bomb path. The units host's latch_control_input_007b9770 calls run_rack_tick_006e56f0 with kReleaseIssueStageBound=true; its live drop branches call release_ordnance_drop or run_rack_bomb_drop_006e4d50 -> release_bomb_drop. kReleaseIssueStageValsBound and kRackBulletKindBound are true."
     ],
-    "native_calls_moved": [
-      [
-        [
-          "KillCredit::award_threshold_0050fc30",
-          "0050fc30"
-        ],
-        50,
-        30
-      ]
-    ],
-    "summary_changes": [
-      [
-        "mission script listener args",
-        [
-          [
-            "kill_with_attacker",
-            "24",
-            "16"
-          ],
-          [
-            "kill_second_passes",
-            "5",
-            "0"
-          ]
-        ],
-        "mission script listener args bound=1 kill_attacker_bound=1 pushed=0 kill_with_attacker=24 attacker_matched=0 kill_second_passes=5 kill_second_fired=0 (009813A0 / 00988510, packet cc9_lua51_listener_args)",
-        "mission script listener args bound=1 kill_attacker_bound=1 pushed=0 kill_with_attacker=16 attacker_matched=0 kill_second_passes=0 kill_second_fired=0 (009813A0 / 00988510, packet cc9_lua51_listener_args)"
-      ],
-      [
-        "mission gunnery kill credit",
-        [
-          [
-            "attributed",
-            "4",
-            "280"
-          ]
-        ],
-        "mission gunnery kill credit zero-damage hits not attributed=4 bound=1 (0077CEB7, packet cc9_kill_credit)",
-        "mission gunnery kill credit zero-damage hits not attributed=280 bound=1 (0077CEB7, packet cc9_kill_credit)"
-      ]
-    ]
+    "readiness_parser_note": "A new address-heading comment above if constexpr initially resolved 00999B70 to the token constexpr. Prefixing that call-site comment with Native restored suffix_body resolution to pilot_bot_throw_mul_row_00999b70; final row is wired. No tool or ledger workaround added."
   },
-  "flip_proposal": "Keep kWireGoal1Chain1Bound OFF pending review round 2. Current scope is eight rows, with five reached and three unreached in the fresh USN04 pair; 00729BC0 remains a host stand-in until installed bot presence and selected-bot acceptance are retained. No flip is applied.",
-  "review_round_1": {
-    "review_run": 14,
-    "harness": "codex",
-    "reviewed_head": "505c4205d4afbe700ac90f3a8f5c76d77cfebf24",
-    "findings": [
-      {
-        "finding": 1,
-        "native": "00729bc0",
-        "status": "fixed",
-        "action": "Accepted; removed binding because installed-slot state/selected acceptance are unavailable. Corrected totals to 8 wired / 8530 globally and separated query reach from body calls."
-      },
-      {
-        "finding": 2,
-        "native": "00875b90",
-        "status": "fixed",
-        "action": "Accepted; replaced incorrect duplication claim with verified unimplemented method and missing native element/sub-node state contract."
-      }
-    ],
-    "off_identity": "Independent review passed OFF identity at the reviewed head; this fix removes only the ON wrapper and preserves the exact original in.slot_accepts_target = in_range assignment.",
-    "superseded_pair": {
-      "code_commit": "473e2b8d05f23205fb7bf74364a5cf13cc20d03d",
-      "logs": {
-        "off": "local\\g1-w1-final-off_USN04.log",
-        "on": "local\\g1-w1-final-on_USN04.log"
-      },
-      "reason": "Prior artifacts claimed nine rows; this report replaces their active results with the fresh eight-row pair."
+  "pair": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "console_session": "console sqz269 session 1 Active",
+    "off_log": "local/g1-w1-off_USN04.log",
+    "on_log": "local/g1-w1-on_USN04.log",
+    "off_exit": 0,
+    "on_exit": 0,
+    "off_launcher_exit": 0,
+    "on_launcher_exit": 0,
+    "off_exe": "build/win32/Release/bsp_game.exe",
+    "off_sha256": "BAF861E7F708429374FED49E4B2965E755ADF13C7E1A02C15F9FE6F81014BBEC",
+    "on_exe": "local/g1-w1-on/build/win32/Release/bsp_game.exe",
+    "on_sha256": "BCAB2A2D32982E016E949C0031F7890D1738287DB9A84B229AFCFA648898CECB",
+    "export_log": "local/output/g1-w1-on-export.txt",
+    "diff_command": "python tools/pair_diff.py local/g1-w1-off_USN04.log local/g1-w1-on_USN04.log --limit 60",
+    "diff_log": "local/output/g1-w1-pair-diff.txt",
+    "diff_exit": 1,
+    "verdict": "DIFFERENT, gameplay identical",
+    "gameplay_changed_rows": [],
+    "gameplay": {
+      "deaths": [
+        28,
+        28
+      ],
+      "hit_records": [
+        380,
+        380
+      ],
+      "hull_hits": [
+        276,
+        276
+      ],
+      "damage": [
+        6366.6,
+        6366.6
+      ],
+      "shots": [
+        5509,
+        5509
+      ],
+      "first_hit_seconds": [
+        86.15,
+        86.15
+      ],
+      "torpedo_task_releases": [
+        "0 of 16",
+        "0 of 16"
+      ],
+      "dive_bomb_task_releases": [
+        "0 of 19",
+        "0 of 19"
+      ],
+      "torpedo_drops": [
+        0,
+        0
+      ],
+      "plane_water_contacts": [
+        14,
+        14
+      ],
+      "controlled_moved": [
+        "Lexington-class01 2235.17",
+        "Lexington-class01 2235.17"
+      ],
+      "units": [
+        81,
+        81
+      ],
+      "mission_end": [
+        "none",
+        "none"
+      ]
     },
-    "readiness_change": {
-      "previous_wired_total": 8531,
-      "current_wired_total": 8530,
-      "current_counted_rows": 8
+    "unit_table": "identical: 81 rows",
+    "plane_death_modes": "identical: 25 rows",
+    "death_rows": "identical: 0 rows; BSP_DEATH_TABLE was not enabled",
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "host_methods_metadata": {
+      "off": "1144 / 477",
+      "on": "1146 / 477"
+    },
+    "native_table": {
+      "off": 1624,
+      "on": 1626,
+      "added": 2,
+      "removed": 0,
+      "status_changed": 0,
+      "counts_moved": 0,
+      "standin_or_unimplemented_to_concrete": [],
+      "added_concrete": [
+        {
+          "method": "Gunnery::bot_slot_dispatch_00729bc0",
+          "native": "00729bc0",
+          "calls": 5570
+        },
+        {
+          "method": "Projectile::blast_record_fill_0084bad0",
+          "native": "0084bad0",
+          "calls": 102
+        }
+      ]
+    },
+    "other_differences": {
+      "masked_only_off": 231,
+      "masked_only_on": 231,
+      "displayed_samples": "atlas source parser/item diagnostics contain differing append_slot values; pair_diff displays only its 60-line limit per side",
+      "native_noise": "PlatformLoopCallbacks::pretranslate calls 9 -> 8"
+    },
+    "limits": "PilotBot selector was not reached: no dive-bomb or torpedo releases. This is a reconstruction-host OFF/ON comparison, not native-game parity or binary ABI proof."
+  },
+  "flip_proposal": {
+    "value": true,
+    "applied": false,
+    "reason": "Propose enabling kWireGoal1Chain8Bound after integrator review: all three assigned rows use real host state, both builds pass, and the USN04 pair preserves every reported gameplay row. PilotBot selection remains runtime-unexercised in this pair; unrelated diagnostic lines prevent byte-identical logs."
+  },
+  "rows": [
+    {
+      "native": "006e1300",
+      "address": "006fecb9",
+      "function": "006fec00",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "status": "skipped",
+      "reason": "BombTickState requires the native launch-delay +410h, active +458h and arming +45Ch state. GameProjectileRow does not hold their producers; an adapter would invent these inputs.",
+      "reached": 0
+    },
+    {
+      "native": "006e3500",
+      "address": "007c1dcc",
+      "function": "007c1db0",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::release_ordnance_drop / release_bomb_drop",
+      "status": "skipped",
+      "reason": "No per-rack attached-round and reserve +484h storage. The host explicitly substitutes one consumed loadout bit after a drop; it cannot feed the count body's two live terms.",
+      "reached": 0
+    },
+    {
+      "native": "0071e050",
+      "address": "0089c8a2",
+      "function": "0089c740",
+      "host_site": "src/game_hosts_gunnery.cpp: director AA-enable publication",
+      "status": "skipped",
+      "reason": "director_sub_kind_message only constructs fields; constructing subkind 4 and immediately reading its value into the existing enable flag would be an identity round trip. Session construction/routing is not owned here.",
+      "reached": 0
+    },
+    {
+      "native": "007214c0",
+      "address": "00823a9f",
+      "function": "00822c20",
+      "host_site": "src/game_hosts_gunnery.cpp: director enable publication",
+      "status": "skipped",
+      "reason": "The mention is snapshot provenance, with no stored ControllerSnapshotMessage or routed snapshot consumer. Wrapping current flags in the copy-only snapshot builder and copying them back would only round-trip host state.",
+      "reached": 0
+    },
+    {
+      "native": "00729bc0",
+      "address": "008657f7",
+      "function": "00864fe0",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::gun_inputs",
+      "status": "wired",
+      "reason": "The existing dispatch body selects a supported bot slot from the selected first/DP ammunition's real subtype and the gun's category; zero refuses the target instead of range-only acceptance. Existing range and acceptance terms remain.",
+      "reached": 5570,
+      "log_method": "Gunnery::bot_slot_dispatch_00729bc0"
+    },
+    {
+      "native": "0072bf10",
+      "address": "00730042",
+      "function": "0072f830",
+      "host_site": "src/game_hosts_gunnery.cpp: gun projectile spawn",
+      "status": "skipped",
+      "reason": "The callback body needs the complete factory/medium/appearance/scale/owner/director-timestamp interface. This host assembles GameProjectileRow directly and lacks several corresponding native shot and presentation objects; no fake callback implementation added.",
+      "reached": 0
+    },
+    {
+      "native": "00731020",
+      "address": "00956d9f",
+      "function": "00956c20",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::rebuild_weapon_category_index_00956c20",
+      "status": "skipped",
+      "reason": "The only available term is gun.max_range, already derived in build_guns. Passing present=true and that same range into this getter would only return the host's own value; no live +78h record-count state is held.",
+      "reached": 0
+    },
+    {
+      "native": "00761310",
+      "address": "00827b63",
+      "function": "00827a90",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::ship_death_message_00827ab0",
+      "status": "skipped",
+      "reason": "The host records message 98h then performs breakup effects directly. There is no UnitMessage dispatch consumer for the constructor's local-slot/base fields, so an unused constructed message would not replace live behavior.",
+      "reached": 0
+    },
+    {
+      "native": "00814520",
+      "address": "00821fbc",
+      "function": "00821e80",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::ship_death_message_00827ab0",
+      "status": "skipped",
+      "reason": "The host does not hold the 0080F9F0 breakup-piece descriptor query or game+21D0h wreck manager. Its front/back node test is a different precondition; supplying has-pieces/manager constants would repeat the earlier invalid wiring.",
+      "reached": 0
+    },
+    {
+      "native": "0084bad0",
+      "address": "0084bee3",
+      "function": "0084bc60",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::apply_impact_blast",
+      "status": "wired",
+      "reason": "The existing producer fills a fresh HitRecordFill with the live burst centre, damage draw and falloff flag. consumer_view converts that producer record for the actual damage path, including the centre.y armour selector previously pinned to zero.",
+      "reached": 102,
+      "log_method": "Projectile::blast_record_fill_0084bad0"
+    },
+    {
+      "native": "0084bf00",
+      "address": "0084c4c8",
+      "function": "0084c430",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "status": "skipped",
+      "reason": "The reconstructed callback body is explicitly projectile-caller-only and folds impact handling into a broad ProjectileImpactHost. A full adapter would also need the native session/decal/presentation contracts and preserve the host's torpedo/depth-charge medium transitions; no incomplete callback ports added.",
+      "reached": 0
+    },
+    {
+      "native": "0084c5b0",
+      "address": "006fe0db",
+      "function": "006fe0d0",
+      "host_site": "src/game_hosts_gunnery.cpp: immediate_4d4 extra-send arm",
+      "status": "skipped",
+      "reason": "turning_gun_extra_fire_request_0084c5b0 returns its input boolean unchanged. Feeding immediate_4d4 into it would only return that same host value.",
+      "reached": 0
+    },
+    {
+      "native": "008636a0",
+      "address": "00864c18",
+      "function": "00864bd0",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes / GunneryPassBinding::category_gate_slot4",
+      "status": "skipped",
+      "reason": "The category kind is held, but the host has no native director-presence/type-slot-48h(2) state for the provider half of the contract. The commands host owns a generic director row for every unit, which does not answer those native tests.",
+      "reached": 0
+    },
+    {
+      "native": "00868420",
+      "address": "004dec0f",
+      "function": "004de610",
+      "host_site": "src/game_hosts_gunnery.cpp: point-effect draw mention",
+      "status": "skipped",
+      "reason": "The actual-lifetime body consumes a RenderCommandReference definition and matrix plus native effect-manager/constructor ownership. The gunnery host has draw counters, not these live definition/owner objects.",
+      "reached": 0
+    },
+    {
+      "native": "00875b90",
+      "host_site": "src/game_hosts_gunnery.cpp: wave-order comments",
+      "status": "skipped",
+      "reason": "The listed identifier belongs to GameFixedStepHost in game_hosts_fixed_step.cpp and is an unimplemented-log stub. Gunnery only runs a job's downstream work. Native entry is address-taken at 00D0DEC4, with no image CALL site.",
+      "reached": 0
+    },
+    {
+      "native": "0087bcc0",
+      "address": "00955424",
+      "function": "00955420",
+      "host_site": "src/game_hosts_gunnery.cpp: unit/gun health setup",
+      "status": "skipped",
+      "reason": "The complete body requires NativeUnitHealthPartsView over native unit, property-bag, model and part-pointer storage. Scalar host health and hull-segment arrays do not provide that object graph.",
+      "reached": 0
+    },
+    {
+      "native": "00934150",
+      "address": "00935d16",
+      "function": "00935c70",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::explode_to_parts_00935c70",
+      "status": "skipped",
+      "reason": "The stand-in publishes destroyed segment indices. UnitPartDetachHost additionally needs actual scene nodes, dynamics/physics instances and effect ownership, absent from this host's segment list; no fabricated ports.",
+      "reached": 0
+    },
+    {
+      "native": "009373c0",
+      "address": "00813595",
+      "function": "008132c0",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::script_set_failure_008132c0",
+      "status": "skipped",
+      "reason": "The Periscope arm only records a gap and returns 4; no periscope +394h shape, +1214h node, +122Ch state or repair deadline storage is held. A returned plan could not update real host state.",
+      "reached": 0
+    },
+    {
+      "native": "00955420",
+      "address": "006d3c2d",
+      "function": "006d3c10",
+      "host_site": "src/game_hosts_gunnery.cpp: scene/health setup comment",
+      "status": "skipped",
+      "reason": "No NativeUnitSceneInitializationView backing image, generated-model handle, property bag or renderer material/flag providers. A mention of health initialization is not a scene-initialization call site.",
+      "reached": 0
+    },
+    {
+      "native": "00999b70",
+      "address": "006e4f6d",
+      "function": "006e4d50",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::release_ordnance_drop / release_bomb_drop -> Impl::pilot_throw_multiplier",
+      "status": "wired",
+      "reason": "The existing selector receives the selected rack's real record presence/subtype and the owner's kind-10 query; its enum chooses the corresponding field of the already-loaded PilotBotParameters skill row. This replaces the two-table bomb-only selection, including torpedo/depth/strike rows. A missing loaded row retains the old fallback.",
+      "reached": 0,
+      "log_method": "PilotBot::throw_mul_00999b70"
+    },
+    {
+      "native": "00bd2f90",
+      "address": "00902d77",
+      "function": "00902920",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::draw_normal",
+      "status": "skipped",
+      "reason": "The body takes RandomThreads/RandomState, while this host owns an LCG and optional keyed LCG streams (rng/rng_by_key). No same-state adapter exists; creating a separate RandomThreads would replace host RNG state rather than feed the body its real state.",
+      "reached": 0
     }
-  }
+  ]
 }
