@@ -13,6 +13,8 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
+#include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
+#include "bsp/strike_release_ver_cc13.hpp"      // chain 28: 0099B6A0
 #include "bsp/cc13_seg29U.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
@@ -19601,6 +19603,46 @@ void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
     }
 }
 
+namespace {
+// Chain 28 adapters (kWireGoal2Chain28Bound). The host keeps a plane's pose rows
+// in world (pose_row_i is body axis i in world) and keeps the parent-relative
+// velocity of a deck-parented plane in world axes as well (LABELLED at 007C71E0).
+//
+// ctl+0B0h as 007D9C10 reads it: 0085DEA0 rebuilds it from unit+74h as the
+// transpose, so column i of the 3x3 block is body axis i. 0042D0D0 reads only
+// that block (no translation row), so the translation row is left zero.
+bsp::AdvanceMatrix host_pose_world_to_body(const GameUnitSlot& u) {
+    bsp::AdvanceMatrix m{};
+    const float* const rows[3] = {u.motion.pose_row0, u.motion.pose_row1, u.motion.pose_row2};
+    for (int i = 0; i < 3; ++i) {
+        for (int j = 0; j < 3; ++j) m.m[4 * j + i] = rows[i][j];
+    }
+    m.m[15] = 1.0f;
+    return m;
+}
+
+// 007D9CE0's frame callbacks in host axes. The image rotates by the old
+// parent's +CCh and the new parent's +110h; the host stores the relative
+// velocity in world axes, so both frame changes are the identity here. The
+// parent velocities are vtable[34h] (007BBB70 for a unit): the parent slot's
+// motion.linear_velocity, the term the OFF arms add and subtract.
+bsp::gameplay_seg48_cc13::Vec3 host_unit_velocity(const GameUnitSlot* u) {
+    if (u == nullptr) return {};
+    return {u->motion.linear_velocity.x, u->motion.linear_velocity.y,
+            u->motion.linear_velocity.z};
+}
+bsp::gameplay_seg48_cc13::ReparentCallbacks host_reparent_callbacks(
+    const GameUnitSlot* old_parent, const GameUnitSlot* new_parent) {
+    using bsp::gameplay_seg48_cc13::Vec3;
+    bsp::gameplay_seg48_cc13::ReparentCallbacks cb;
+    cb.old_parent_to_world = [](const Vec3& v) { return v; };
+    cb.old_parent_velocity = [old_parent] { return host_unit_velocity(old_parent); };
+    cb.world_to_new_parent = [](const Vec3& v) { return v; };
+    cb.new_parent_velocity = [new_parent] { return host_unit_velocity(new_parent); };
+    return cb;
+}
+}  // namespace
+
 // The ground roll's lift-off send (007CC212 / 007CC26E): 00762A00 builds message
 // C6h and 0077C2A0(unit, msg, 1, 0) routes it; LABELLED: delivered at once.
 // BSP_Plane_HandleMessage's case C6h (007CCFA0) calls 007C6F50(msg byte +20h),
@@ -19618,6 +19660,31 @@ void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
 void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char* why) {
     if (p.deck_parent_plus_one != 0 && p.deck_parent_plus_one <= slots.size()) {
         const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
+        if constexpr (bsp::kWireGoal2Chain28Bound) {
+            // 007D9CE0(0) (007C6F8D): reparent_velocity_007d9ce0 takes ctl+18h
+            // from the deck parent back to world and sets +30h; the OFF arm keeps
+            // the inline addition of the parent's velocity.
+            bsp::gameplay_seg48_cc13::ReparentVelocity rv;
+            rv.velocity_18 = {p.plane_world_velocity[0], p.plane_world_velocity[1],
+                              p.plane_world_velocity[2]};
+            rv.previous_30 = {p.plane_velocity_lp_30[0], p.plane_velocity_lp_30[1],
+                              p.plane_velocity_lp_30[2]};
+            const bsp::gameplay_seg48_cc13::ReparentVelocity out =
+                bsp::gameplay_seg48_cc13::reparent_velocity_007d9ce0(
+                    rv, false, o != nullptr, false, host_reparent_callbacks(o, nullptr));
+            p.plane_world_velocity[0] = out.velocity_18.x;
+            p.plane_world_velocity[1] = out.velocity_18.y;
+            p.plane_world_velocity[2] = out.velocity_18.z;
+            p.deck_parent_plus_one = 0;
+            ++base_launch_liftoff_unparented;
+            if constexpr (kPlaneVelocityLowpassBound) {
+                p.plane_velocity_lp_30[0] = out.previous_30.x;
+                p.plane_velocity_lp_30[1] = out.previous_30.y;
+                p.plane_velocity_lp_30[2] = out.previous_30.z;
+                p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+            }
+            done("PlaneFlightController::reparent_velocity_007d9ce0", 0x007d9ce0u);
+        } else {
         if (o != nullptr) {
             p.plane_world_velocity[0] += o->motion.linear_velocity.x;
             p.plane_world_velocity[1] += o->motion.linear_velocity.y;
@@ -19628,6 +19695,7 @@ void GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50(GameUnitSlot& p, const char
         if constexpr (kPlaneVelocityLowpassBound) {
             for (int i = 0; i < 3; ++i) p.plane_velocity_lp_30[i] = p.plane_world_velocity[i];
             p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+        }
         }
     }
     const int prev = p.plane_control_mode_900;
@@ -20087,12 +20155,40 @@ void GameUnitsHost::Impl::carrier_deck_reparent_007c71e0(GameUnitSlot& p, const 
     // velocity is its motion.linear_velocity; the host keeps it in world axes.
     const float vw[3] = {p.plane_world_velocity[0], p.plane_world_velocity[1],
         p.plane_world_velocity[2]};
+    if constexpr (bsp::kWireGoal2Chain28Bound) {
+        // 007D9CE0 (007C7277): reparent_velocity_007d9ce0 moves ctl+18h from the
+        // current parent (none, or another deck) to the carrier and sets +30h;
+        // the OFF arm keeps the inline subtraction of the carrier's velocity.
+        const GameUnitSlot* const old_parent =
+            p.deck_parent_plus_one != 0 && p.deck_parent_plus_one <= slots.size()
+                ? slots[p.deck_parent_plus_one - 1u].get() : nullptr;
+        bsp::gameplay_seg48_cc13::ReparentVelocity rv;
+        rv.velocity_18 = {p.plane_world_velocity[0], p.plane_world_velocity[1],
+                          p.plane_world_velocity[2]};
+        rv.previous_30 = {p.plane_velocity_lp_30[0], p.plane_velocity_lp_30[1],
+                          p.plane_velocity_lp_30[2]};
+        const bsp::gameplay_seg48_cc13::ReparentVelocity out =
+            bsp::gameplay_seg48_cc13::reparent_velocity_007d9ce0(
+                rv, p.deck_parent_plus_one == d.owner + 1u, old_parent != nullptr, true,
+                host_reparent_callbacks(old_parent, &o));
+        p.plane_world_velocity[0] = out.velocity_18.x;
+        p.plane_world_velocity[1] = out.velocity_18.y;
+        p.plane_world_velocity[2] = out.velocity_18.z;
+        if constexpr (kPlaneVelocityLowpassBound) {
+            p.plane_velocity_lp_30[0] = out.previous_30.x;
+            p.plane_velocity_lp_30[1] = out.previous_30.y;
+            p.plane_velocity_lp_30[2] = out.previous_30.z;
+            p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+        }
+        done("PlaneFlightController::reparent_velocity_007d9ce0", 0x007d9ce0u);
+    } else {
     p.plane_world_velocity[0] -= o.motion.linear_velocity.x;
     p.plane_world_velocity[1] -= o.motion.linear_velocity.y;
     p.plane_world_velocity[2] -= o.motion.linear_velocity.z;
     if constexpr (kPlaneVelocityLowpassBound) {
         for (int i = 0; i < 3; ++i) p.plane_velocity_lp_30[i] = p.plane_world_velocity[i];
         p.plane_velocity_lp_valid = true;   // 007D9CE0's tail
+    }
     }
     // 007BA020 / vtable[ACh] (007C7287-007C72B1): the parent and the local pose.
     p.deck_parent_plus_one = d.owner + 1u;
@@ -20102,10 +20198,23 @@ void GameUnitsHost::Impl::carrier_deck_reparent_007c71e0(GameUnitSlot& p, const 
     // 007C72D3: the owner answers IsKindOf(9). 007C72DD-007C730E: the body
     // (ctl+3Ch, ctl+44h) after 007D9C10, above 3.3333 (00D05B48, a double).
     const float* const v = p.plane_world_velocity;
-    const float bx = p.motion.pose_row0[0] * v[0] + p.motion.pose_row0[1] * v[1]
+    float bx = 0.0f;
+    float bz = 0.0f;
+    if constexpr (bsp::kWireGoal2Chain28Bound) {
+        // 007D9C10 (007C72C5): world_to_body_007d9c10 rebuilds ctl+3Ch..44h from
+        // ctl+18h through ctl+0B0h; the OFF arm keeps the two inline dot products.
+        bsp::ControllerVelocities vel;
+        for (int i = 0; i < 3; ++i) vel.linear_world[i] = v[i];
+        bsp::world_to_body_007d9c10(vel, host_pose_world_to_body(p));
+        bx = vel.linear_body[0];   // ctl+3Ch, read at 007C72DD
+        bz = vel.linear_body[2];   // ctl+44h, read at 007C72E5
+        done("PlaneFlightController::refresh_body_frame_007d9c10", 0x007d9c10u);
+    } else {
+    bx = p.motion.pose_row0[0] * v[0] + p.motion.pose_row0[1] * v[1]
         + p.motion.pose_row0[2] * v[2];
-    const float bz = p.motion.pose_row2[0] * v[0] + p.motion.pose_row2[1] * v[1]
+    bz = p.motion.pose_row2[0] * v[0] + p.motion.pose_row2[1] * v[1]
         + p.motion.pose_row2[2] * v[2];
+    }
     const float spd = landing_len2_00414c60(bx, bz);
     bool seeded = false;
     float diff = 0.0f, z = 0.0f, arg = 0.0f;
@@ -24912,6 +25021,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 0046cf40; nothing here invents a rotation.
                         const float* const rows[3] = {unit_.motion.pose_row0,
                             unit_.motion.pose_row1, unit_.motion.pose_row2};
+                        if constexpr (bsp::kWireGoal2Chain28Bound) {
+                            // 007D9C10 (007DB697): world_to_body_007d9c10 rebuilds
+                            // ctl+3Ch..44h from ctl+18h through ctl+0B0h; the OFF
+                            // arm keeps the inline dot products per pose row.
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) {
+                                    state.world_to_body[r * 3 + c] = rows[r][c];
+                                }
+                            }
+                            bsp::ControllerVelocities vel;
+                            for (int i = 0; i < 3; ++i) {
+                                vel.linear_world[i] = unit_.plane_world_velocity[i];
+                            }
+                            bsp::world_to_body_007d9c10(vel, host_pose_world_to_body(unit_));
+                            for (int r = 0; r < 3; ++r) state.body_velocity[r] = vel.linear_body[r];
+                            owner_.done("PlaneFlightController::refresh_body_frame_007d9c10",
+                                0x007d9c10u);
+                        } else {
                         for (int r = 0; r < 3; ++r) {
                             for (int c = 0; c < 3; ++c) {
                                 state.world_to_body[r * 3 + c] = rows[r][c];
@@ -24922,6 +25049,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 rows[r][0] * unit_.plane_world_velocity[0] +
                                 rows[r][1] * unit_.plane_world_velocity[1] +
                                 rows[r][2] * unit_.plane_world_velocity[2];
+                        }
                         }
                         // ctl+44h, the body forward component. The carrier term
                         // 007D99C0 adds to it is zero off a deck. Under the
@@ -37183,11 +37311,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
                                 unit_.torpedo_timer_armed_since_enter = true;
                             }
+                            if constexpr (bsp::kWireGoal2Chain28Bound) {
+                                // 0099B6A0 (009D49DA JMP): bot_task_request_release_base_0099b6a0
+                                // decides the 0099B6CD release and AL on a fall-through; the
+                                // OFF arm keeps the copy inlined into the 009D49A0 model.
+                                bsp::BaseReleaseRequestResult base;
+                                base.release_007bbba0 = ar.release_007bbba0;
+                                base.returned_true = ar.consumed;
+                                if (ar.fell_through_to_0099b6a0) {
+                                    base = bsp::bot_task_request_release_base_0099b6a0(
+                                        arm.has_squadron_2fc, arm.unit_free_flight_72c);
+                                    owner_.done("BotTask::request_release_base_0099b6a0",
+                                        0x0099b6a0u);
+                                }
+                                if (base.release_007bbba0) {
+                                    owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
+                                    ++unit_.torpedo_fallthrough_releases;
+                                }
+                                if (base.returned_true) --unit_.torpedo_release_orders_c58;
+                            } else {
                             if (ar.release_007bbba0) {
                                 owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
                                 ++unit_.torpedo_fallthrough_releases;
                             }
                             if (ar.consumed) --unit_.torpedo_release_orders_c58;
+                            }
                         }
                         // The two gates that stop the drop in this host, both
                         // fed by the unread 009D3420.
