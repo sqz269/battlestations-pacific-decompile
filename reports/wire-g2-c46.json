@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "goal": 2,
+  "chain": 46,
+  "slot": "g2-w2",
+  "run": 103,
+  "harness": "codex",
+  "picked": "game_hosts_init_tail.cpp",
+  "pick_reason": "Six bounded static rows appeared to offer more countable replacements than the larger host gaps; inspection left one row with a real input producer.",
+  "switch": "kWireGoal2Chain46Bound",
+  "switch_default": false,
+  "code_commit": "e79232d95c55993562fe105a9ba2b8f410b5466b",
+  "rows": [
+    {
+      "native": "0098c870",
+      "address": "0073c49a",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::current_gpu_device_id",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Missing detected HardwareInfoFields.gpu_index_28 producer: this host does not construct 009927d0/collect 00992640 or retain the selected-adapter index. The static catalog alone cannot replace the current-device zero stand-in with real detected state."
+    },
+    {
+      "native": "0098c890",
+      "address": "0073c4b4",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::gpu_device_name",
+      "status": "wired",
+      "reached": 0,
+      "reach": "static",
+      "coverage": "stored nonzero registry GPUDeviceID call site only",
+      "identifier": "bsp::engine_seg11_35_66_cc13::gpu_device_name_0098c890",
+      "reason": "Existing body performs the native ordered catalog scan and row-zero fallback using real stored GPUDeviceID read from HKLM. The independent current-device call still receives an unimplemented zero and retains its existing stand-in.",
+      "contract": "0098c890 uses ECX=device ID, RET with no stack arguments; 0073c49f loads ECX from the stored registry slot before CALL 0073c4b4. Other original site 0073c4cb uses EAX from 0098c870 via MOV ECX,EAX at 0073c4c9. Body/assembly and both callers reviewed; containing function verified live as 0073c3b0..0073c8f6.",
+      "live_site": "application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> GameHardwareProbe::run -> run_hardware_probe_tail_0073c3b0 -> gpu_device_name. No other disabled constexpr gate. Runtime prerequisites are first VFS initialization, all four registry reads succeeding, and a nonzero stored GPUDeviceID. kHardwareRegistryReadsCc13Bound=false selects the existing real Win32 reads; it does not disable the probe."
+    },
+    {
+      "native": "0098d570",
+      "address": "0073c856",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::write_hardware_dword",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "run_hardware_probe_tail_0073c3b0 supplies current memory/CPU/GPU values, but all three current getters in this host return unimplemented zero constants. Replacing the Win32 writer would pass synthetic values and fail the counting rule. Real detection producers are outside the catalog object built in this chain."
+    },
+    {
+      "native": "0098d590",
+      "address": "0073c89e",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::write_hardware_string",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The SoundDevice argument comes from current_sound_device(), an empty-string stand-in. The 009927d0 detection owner and its process-wide 00f8a0e8 detected-name producer are absent; a registry adapter would still write synthetic state."
+    },
+    {
+      "native": "0098f430",
+      "address": "0073c83e",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::write_default_options_file",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Requires OptionsTextBuilder backed by the detection object and its existing 0098e910 default-options producer. This host owns neither; adding generated default strings would be a second implementation with invented input. The chain builds only the GPU catalog object."
+    },
+    {
+      "native": "00996060",
+      "address": "0073c55b",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::localized_message",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Seg66Host requires a language-row provider (0098d400) and image-shaped wide-pointer message table at 00d1e918, followed by the caller formatting binding. This host has no locale/message-table owner or Seg66Host adapter. That separate object is outside the one-object scope after building the GPU catalog; the existing body is left unchanged."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "Hardware probe immutable GPU catalog",
+      "where": "src/game_hosts_init_tail.cpp:157",
+      "data": "include/bsp/wire_goal2_chain46_gpu_catalog.inc",
+      "producers": [
+        "Original executable SHA-256 b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+        "Static 00e0cff4 table: 396 ordered 12-byte rows plus first null-name terminator at 00e0e284; each ID, name byte string, score and duplicate row retained",
+        "Stored device ID: existing read_stored_qword(\"GPUDeviceID\") Win32 registry read, admitted by probe_hardware_0073c3b0 all-four-read-success gate"
+      ],
+      "rows": [
+        "0098c890"
+      ],
+      "layout": "Existing GpuTableRow, asserted sizeof=12, device_id +0 width4, name +4 width4, score +8 width4. The body consumes device_id and name.",
+      "lifetime": "Native table is static initial-image data present before 0073c3b0 and has process lifetime. Host owner is immutable static storage at first ON lookup, with process lifetime; OFF constructs and references no catalog.",
+      "verification": "Catalog extracted with PE section address translation from SHA-256 verified image; all 397 record fields and original C-string bytes copied. Live Ghidra xrefs to 00e0cff4 are reads/data, no writes."
+    }
+  ],
+  "wired_total_before": 8804,
+  "wired_total_after": 8805,
+  "wired_before": {
+    "0098c890": "ready"
+  },
+  "wired_after": {
+    "0098c890": "wired"
+  },
+  "validation": {
+    "off_build": "passed; reconstructed_math and tool_tests 2/2 passed",
+    "off_build_log": "local/output/g2-w2-final-off-build.txt",
+    "on_build": "passed; off_switch_on_build exit 0, zero distinct diagnostics; exported ON build and existing tests also passed",
+    "on_build_log": "local/output/g2-w2-on-build.txt",
+    "pc24_lint": "not applicable: no x87 arithmetic added",
+    "off_preservation": "OFF function arm compared byte-for-byte to previous HEAD, normalizing only line endings; final plain OFF build ran after ON check and before the readiness measurement",
+    "catalog_generation": "local/g2_w2_catalog.py; SHA-256 and 397-record assertions passed"
+  },
+  "paired_run": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "console_session": "1 Active",
+    "code_commit": "e79232d95c55993562fe105a9ba2b8f410b5466b",
+    "off_log": "local/g2-w2-off_USN04.log",
+    "on_log": "local/g2-w2-on_USN04.log",
+    "off_exit_code": 0,
+    "on_exit_code": 0,
+    "pair_diff_exit_code": 1,
+    "pair_diff_log": "local/output/g2-w2-pair-diff.txt",
+    "native_transitions": [],
+    "gameplay_rows_moved": [],
+    "native_table": {
+      "off_rows": 1624,
+      "on_rows": 1624,
+      "added": 0,
+      "removed": 0,
+      "status_changed": 0,
+      "counts_moved": 0
+    },
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "gameplay": "identical: 28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 seconds, 81 units",
+    "reach": {
+      "0098c890": 0
+    },
+    "reason_not_reached": "Both logs line 68: stored hardware profile incomplete; summary stored_values=0. Probe returns before comparison/name lookup.",
+    "other_differences": "pair_diff verdict DIFFERENT, gameplay identical: 231 other lines only OFF and 231 only ON. All 231 atlas source parser/item rows were matched; their only changed fields are pointer-valued frame, allocation, returned, creator, texture, append_header, append_slot. All remaining fields equal.",
+    "death_rows": "0 / 0; no per-death table requested",
+    "plane_death_modes": "identical, 25 rows",
+    "unit_table": "identical, 81 rows",
+    "off_exe_sha256": "080649c2ef4e57ad168992d12e75ac704d8e32375c1a7eb80755fac2f58deaf3",
+    "on_exe_sha256": "42c13fded7854b73892d77d8c0f9a9d785b05719c2f6ca713ef8cf8347f288a6"
+  },
+  "flip_proposal": "Keep false. Static wiring is ready for review; USN04 does not establish lookup execution because the real stored hardware profile is incomplete."
+}
