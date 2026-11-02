@@ -34,6 +34,7 @@
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
+#include "bsp/wire_goal1_chain10_switches.hpp"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -1374,9 +1375,15 @@ public:
         // 0071E2E0, body 0071E2E0-0071E361: only while +50h < 2, which it raises to 2;
         // then, outside session mode 2, 0071C730(0, 0) routed with flags 7.
         chain_.owner.done("WeaponDirector::echo_command", 0x0071e2e0u);
-        if (chain_.director.override_stage >= 2) return;
-        chain_.director.override_stage = 2;
-        if (session_mode_1fe4() == 2) return;
+        // 0071E2E0 calls echo_clear_command_0071e2e0; OFF keeps the host's stage/session gate.
+        if constexpr (bsp::kWireGoal1Chain10Bound) {
+            if (!bsp::gameplay_seg38_cc13::echo_clear_command_0071e2e0(
+                    chain_.director.override_stage, session_mode_1fe4())) return;
+        } else {
+            if (chain_.director.override_stage >= 2) return;
+            chain_.director.override_stage = 2;
+            if (session_mode_1fe4() == 2) return;
+        }
         ++chain_.owner.summary.override_push_echoes;
         if (chain_.owner.summary.override_push_echoes <= 12) {
             chain_.owner.log.notef("  override ended by a pushed attack order: %s, head `%s`, "
@@ -2291,10 +2298,23 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             // no object.
             bsp::NativeSessionMessage92 queued = message.set_message;
             const std::uint8_t ordinal = queued.command_21;
-            const bsp::EntityOrderCommandClass* klass
-                = ordinal == bsp::kCruiseCommandNoOrdinal
-                    ? nullptr : bsp::entity_order_command_class_by_ordinal(ordinal);
-            chain.pending_command = klass != nullptr ? klass->object_address : 0u;
+            // 007216D0 calls command_from_ordinal_007216d0; OFF keeps the host's registry search.
+            if constexpr (bsp::kWireGoal1Chain10Bound) {
+                std::vector<std::uint32_t> class_ordinals;
+                class_ordinals.reserve(bsp::kEntityOrderCommandCount);
+                for (const bsp::EntityOrderCommandClass& entry : bsp::kEntityOrderCommandClasses) {
+                    class_ordinals.push_back(static_cast<std::uint32_t>(entry.ordinal));
+                }
+                const auto match = bsp::gameplay_seg38_cc13::command_from_ordinal_007216d0(
+                    ordinal, class_ordinals);
+                chain.pending_command = match
+                    ? bsp::kEntityOrderCommandClasses[*match].object_address : 0u;
+            } else {
+                const bsp::EntityOrderCommandClass* klass
+                    = ordinal == bsp::kCruiseCommandNoOrdinal
+                        ? nullptr : bsp::entity_order_command_class_by_ordinal(ordinal);
+                chain.pending_command = klass != nullptr ? klass->object_address : 0u;
+            }
             chain.pending_target = queued.target_24;
             chain.pending_target.object = queued.target_24.kind != 0
                 ? const_cast<void*>(unit_object_of(message.target_handle,
