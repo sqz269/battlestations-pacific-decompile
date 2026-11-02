@@ -41,6 +41,7 @@
 #include "bsp/hud_root_rows.hpp"
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/wire_goal1_chain12_switches.hpp"
+#include "bsp/wire_goal2_chain35_switches.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -191,6 +192,9 @@ struct GameHudHost::Impl {
     bool release_gun_armed{false};
     bool release_gun_map_up{false};
     void back_out_one_overlay_level_0068b470();
+    // Goal 2 chain 35 (kWireGoal2Chain35Bound): 0068AB80 over the menu host's
+    // screen-set state, for the two collapse sites' ON arms.
+    void collapse_in_game_overlays(bool clear_level2, bool run_extra_hook, const char* site);
     void log_map_state(const char* state);
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
@@ -505,10 +509,16 @@ public:
         return 0;
     }
     void collapse_overlays(bool clear_level2, bool run_extra_hook) override {
+        // 0068AD43: 0068AB80 collapse_in_game_overlays over the menu's screen sets; OFF keeps the record.
+        if constexpr (bsp::kWireGoal2Chain35Bound) {
+            owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
+                "InGameInterface::collapse_overlays");
+        } else {
         static_cast<void>(clear_level2);
         static_cast<void>(run_extra_hook);
         // 0068ab80 collapses the level-2 and level-3 sets. Both are empty here.
         owner_.record("InGameInterface::collapse_overlays", 0x0068ab80u);
+        }
     }
     InGameInterfaceUnitQuery& unit_query() override { return query_; }
     bool is_multiplayer() override { return false; }
@@ -663,8 +673,16 @@ public:
         }
         owner_.record("InGameInterfaceUpdate::back_out_one_overlay_level", 0x0068b470u);
     }
-    void collapse_overlays(bool, bool) override {
+    void collapse_overlays(bool clear_level2, bool run_extra_hook) override {
+        // 0068C6E7: 0068AB80 collapse_in_game_overlays over the menu's screen sets; OFF keeps the record.
+        if constexpr (bsp::kWireGoal2Chain35Bound) {
+            owner_.collapse_in_game_overlays(clear_level2, run_extra_hook,
+                "InGameInterfaceUpdate::collapse_overlays");
+        } else {
+        static_cast<void>(clear_level2);
+        static_cast<void>(run_extra_hook);
         owner_.record("InGameInterfaceUpdate::collapse_overlays", 0x0068ab80u);
+        }
     }
     void toggle_movie_camera() override {
         owner_.record("InGameInterfaceUpdate::toggle_movie_camera", 0x0068a160u);
@@ -1782,6 +1800,64 @@ void GameHudHost::Impl::back_out_one_overlay_level_0068b470() {
     log_map_state("open");
     log.note("releasegun: C1h opened the map: level 2 {4Ch 39h 44h 29h 49h}, contexts "
         "{0Eh 14h 0Ch 11h}; 4Ch's +8h (005A8EF0) occludes level 1");
+}
+
+// Goal 2 chain 35. 0068AB80 BSP_InGameInterface_CollapseOverlays, __thiscall(this,
+// char clear_level2, char run_extra_hook), RET 8, over this host's real inputs:
+//  * 0068AB86..0068AB97, the level-3 vector 00E18D18 (begin 00E18D1C, end
+//    00E18D20): the menu host's screen-set stack, level 3. Only the menu host
+//    writes that stack (levels 1, 2 and 4), so its level 3 is empty here.
+//  * 0068AB9D, [[00E198C4]+BCh]+30h, read only on the level-3 arm: this host
+//    keeps no camera-screen object; HudUpdateBinding answers the same byte false
+//    to the update body and drops its +0Ah store, and this takes that answer.
+//  * 0068ABEF..0068ABF9, [this+54h]+4h: registry slot 4Ch's requested byte,
+//    FrontEndScreen::wanted as the menu's 004F7620 recompute leaves it.
+// Each collapse is followed by 0068AA40(004B4B00()), modelled as the C1h close
+// models it (back_out_one_overlay_level_0068b470). The level-2 clear also ends
+// the host's two mirrors of the map being up (release_gun_map_up, the helm
+// occlusion), which that close keeps in step with the same clear. 0051E8E0 has
+// no body here: it stays the record the C1h close makes.
+void GameHudHost::Impl::collapse_in_game_overlays(bool clear_level2, bool run_extra_hook,
+    const char* site) {
+    bsp::InGameInterfaceCollapseState state;
+    state.level3_non_empty = menu.screen_set_level_size(3) != 0;
+    state.camera_screen_flag_30 = false;
+    state.screen_4c_wanted = menu.in_game_screen_wanted(0x4c);
+    bsp::collapse_in_game_overlays_0068ab80(state, clear_level2, run_extra_hook);
+    const auto request_scene_for_controlled_unit = [this]() {
+        // 0068AA40(004B4B00()): the gates of back_out_one_overlay_level_0068b470.
+        const bool present = units != nullptr && units->controlled_bound();
+        const std::size_t unit = present ? units->controlled_index() : 0;
+        const bool is_pending_payload = present && unit == record_pending_payload_38;
+        bsp::SceneRequestUnitFlags flags{};
+        if (present) flags.flag_5c = units->unit_alive_and_visible(unit);
+        const bool push = bsp::scene_request_accepts_unit_0068aa40(present,
+            is_pending_payload, flags, record_pending_id_20);
+        if (push) {
+            unit_request_pending = true;
+            unit_request_applied = false;
+            pending_interface_id = 0;
+            note_pending_record_004cc460(kInterfaceScene3d, true);
+        }
+        done("InGameInterface::request_scene_for_unit", 0x0068aa40u);
+    };
+    if (state.level3_cleared) {
+        // 0068ABAD 004F8670(0), 0068ABB7 004D8B70(game, 0).
+        menu.clear_level3_screen_and_context_sets();
+        request_scene_for_controlled_unit();
+    }
+    if (state.extra_hook_ran) record("InGameInterface::binoculars_reset", 0x0051e8e0u);
+    if (state.level2_cleared) {
+        // 0068AC00 004F85D0(0), 0068AC0A 004D8AE0(game, 0).
+        static const int kNone[] = {0};
+        menu.publish_level2_screen_set_004f85d0(kNone, 1);
+        menu.publish_level2_input_contexts_004d8ae0(kNone, 1);
+        release_gun_map_up = false;
+        if (units != nullptr) units->set_helm_screen_occluded_by_map(false);
+        request_scene_for_controlled_unit();
+        log.notef("collapse: %s cleared overlay level 2 (0068AB80, screen 4Ch wanted)", site);
+    }
+    done(site, 0x0068ab80u);
 }
 
 // 0064A490, screen 46h's +1Ch (vtable 00CF7978): 005470C0 with ECX =

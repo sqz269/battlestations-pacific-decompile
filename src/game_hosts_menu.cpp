@@ -2106,6 +2106,28 @@ bool GameMenuHost::in_game_screen_registered(int slot) {
     return impl_->screen_at(slot) != nullptr;
 }
 
+bool GameMenuHost::in_game_screen_wanted(int slot) {
+    Impl::MenuScreen* screen = impl_->screen_at(slot);
+    return screen != nullptr && screen->flags != nullptr && screen->flags->wanted;
+}
+
+std::size_t GameMenuHost::screen_set_level_size(int level) const {
+    if (level < kFrontEndScreenSetLowestLevel || level > kFrontEndScreenSetHighestLevel) return 0;
+    return impl_->screen_sets.levels[level - 1].size();
+}
+
+void GameMenuHost::clear_level3_screen_and_context_sets() {
+    // 004F8670 is 004f8530's shape on level 3 (vector 00E18D18); 004D8B70's
+    // tail is `PUSH 3 ; CALL 004d6410`, 004d8a50's setter on level 3. Both
+    // with the empty list 0068AB80 passes.
+    Impl& host = *impl_;
+    MenuSetBindings bindings(host);
+    static const int kNone[] = {0};
+    set_front_end_screen_set_level(host.screen_sets, host.world.screens, bindings, 3, kNone, 1);
+    host.input_contexts.levels[2].clear();
+    apply_input_context_levels_004c4300(host.input_contexts, 3);
+}
+
 void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
 
 GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {
