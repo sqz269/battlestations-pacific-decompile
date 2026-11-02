@@ -1133,7 +1133,9 @@ public:
             const NativeRenderCommandQueueStorage* const queue =
                 published != nullptr ? published->actual_queue_00f8d440 : nullptr;
             if (queue != nullptr) {
-                owner_.log.implemented("FrontEndFrame::render_queue_retained", "00b1bf90");
+                // Own label: the call table keeps a row's first status, and the
+                // first call (before frame 1's end) takes the unpublished arm.
+                owner_.log.implemented("FrontEndFrame::render_queue_retention_control", "00b1bf90");
                 return cc13_seg83::render_queue_mode_00b1bf90(queue) != 0;
             }
             owner_.log.unimplemented("FrontEndFrame::render_queue_retained", "00b1bf90");
