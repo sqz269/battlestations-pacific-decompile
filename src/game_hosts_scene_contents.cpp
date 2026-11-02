@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the scene contents pass.
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/game_hosts_avoid_zones.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -1758,6 +1759,9 @@ public:
         // with nothing to issue.
         entity_.command = command;
         entity_.command_target = target;
+        if constexpr (bsp::kWireGoal2Chain51Bound) {
+            entity_.command_present = true; // callback means inner Command exists
+        }
         owner_.log.unimplemented("SceneUnit::queue_entity_command", "00469610");
         ++commands_;
     }

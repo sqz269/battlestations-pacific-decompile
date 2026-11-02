@@ -1925,6 +1925,13 @@ int main() {
         check(!quiet.queued && queued.queued && queued.command == "Cruise" &&
                 queued.target == "Path1",
             "004E6B30 queues on the inner Command key, not on the sub-block");
+
+        authored_sub.values.back().values.back().clear();
+        bsp::ScenePropertyBlock present_empty;
+        present_empty.blocks.emplace_back("Command", authored_sub);
+        const auto empty = bsp::scene_unit_command_004e6b30(present_empty);
+        check(empty.queued && empty.command.empty() && empty.target == "Path1",
+            "004E6B30 preserves present-empty Command and its target");
     }
 
     {

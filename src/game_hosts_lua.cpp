@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/lobby_option_defaults_cc13.hpp"  // packet cc13-mp3 (MP3c)
 #include "bsp/lua_exec_guard.hpp"
@@ -3725,6 +3726,9 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         if (entry->carry_command_queued) {
             record.command = entry->carry_command;
             record.command_target = entry->carry_command_target;
+            if constexpr (bsp::kWireGoal2Chain51Bound) {
+                record.command_present = entry->carry_command_queued;
+            }
         }
         if (entry->carry_start_speed_present) {
             record.start_speed_present = true;

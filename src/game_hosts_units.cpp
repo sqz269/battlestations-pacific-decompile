@@ -16,9 +16,8 @@
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
 #include "bsp/wire_goal2_chain32_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
-#include "bsp/seg6_cc13.hpp"
+#include "bsp/native_scene_command_queue.hpp"
 #include "bsp/game_native_string_process.hpp"
-#include "bsp/native_scene_command_record_construct.hpp"
 #include "bsp/native_scene_command_record_destroy.hpp"
 #include "bsp/native_scene_command_list_clear.hpp"
 #include "bsp/singleton_lifetime.hpp"
@@ -3220,10 +3219,7 @@ static_assert(offsetof(UnitSceneCommandDatabaseImage, head) == 0x150);
 static_assert(offsetof(UnitSceneCommandDatabaseImage, tail) == 0x154);
 static_assert(sizeof(UnitSceneCommandDatabaseImage) == 0x158);
 
-// Active Seg6Host contract: allocation and record construction only. Other
-// callbacks belong to unrelated segment-6 bodies and fail closed if reached.
-class UnitSceneCommandQueue final : private bsp::cc13_seg6::Seg6Host {
-    using Object = bsp::cc13_seg6::Object;
+class UnitSceneCommandQueue final {
 public:
     UnitSceneCommandQueue() : strings_(game_native_string_process().raw_context()) {}
     ~UnitSceneCommandQueue() {
@@ -3234,9 +3230,19 @@ public:
     void enqueue(GameUnitSlot& owner, const GameSceneEntityRecord& entity) {
         // 004E6B30 supplies the creator's entity and the carried property-bag
         // strings. 00469680 RET 0Ch confirms all three incoming stack words.
-        bsp::cc13_seg6::scene_database_queue_entity_command_00469610(*this,
-            reinterpret_cast<Object>(&database_), reinterpret_cast<const char*>(&owner),
-            entity.command.c_str(), entity.command_target.c_str());
+        const std::uint32_t parameters[3] = {
+            reinterpret_cast<std::uint32_t>(&owner),
+            reinterpret_cast<std::uint32_t>(entity.command.c_str()),
+            reinterpret_cast<std::uint32_t>(entity.command_target.c_str())};
+        std::uint32_t saved_allocation;
+        std::uint32_t constructor_parameters[3];
+        std::uint32_t constructor_saved_record;
+        // Explicit native cells: P+4 incoming arguments, P-10h allocation,
+        // P-20h constructor arguments, P-34h child saved record. P-18h is
+        // reused by the list argument, aliasing the outgoing target word.
+        const bsp::NativeSceneCommandQueueFrame frame{parameters, &saved_allocation,
+            constructor_parameters, &constructor_saved_record, &constructor_parameters[2]};
+        bsp::queue_native_scene_command_00469610(&database_, frame, strings_);
     }
     void take(GameUnitSlot& owner) {
         // The actual queued record feeds the existing 0046AAB0/0077D600
@@ -3270,88 +3276,6 @@ public:
         }
     }
 private:
-    Object operator_new_00bf681b(std::uint32_t bytes) override {
-        return static_cast<Object>(bsp::singleton_lifetime_allocate({
-            bsp::SingletonAllocationKind::object, bytes, bytes}));
-    }
-    Object scene_command_record_construct_004690d0(Object record,
-        const char* owner, const char* command, const char* target) override {
-        const std::uint32_t parameters[3] = {
-            reinterpret_cast<std::uint32_t>(owner),
-            reinterpret_cast<std::uint32_t>(command),
-            reinterpret_cast<std::uint32_t>(target)};
-        std::uint32_t saved_record;
-        return static_cast<Object>(bsp::construct_native_scene_command_record_004690d0(
-            record, {parameters, &saved_record}, strings_));
-    }
-    Object image_address(std::uint32_t) override { std::abort(); }
-    Object game_00e188a8() override { std::abort(); }
-    Object scene_database_00e18680() override { std::abort(); }
-    void set_scene_database_00e18680(Object) override { std::abort(); }
-    Object operator_new_00bf55be(std::uint32_t) override { std::abort(); }
-    void free_00bf65ac(void*) override { std::abort(); }
-    void free_00bf6989(void*) override { std::abort(); }
-    void crt_memcpy_00bf7680(void*,  const void*,  std::uint32_t) override { std::abort(); }
-    void crt_memmove_s_00bf67a7(void*,  std::uint32_t,  const void*,  std::uint32_t) override { std::abort(); }
-    std::int32_t crt_toupper_00bf924e(std::int32_t) override { std::abort(); }
-    std::int32_t crt_stricmp_00bf7fbf(const char*,  const char*) override { std::abort(); }
-    void checked_iterator_report_00bf6713() override { std::abort(); }
-    Object sized_pool_singleton_00419cc0(void*,  std::uint32_t,  std::int32_t) override { std::abort(); }
-    void sized_pool_return_block_00bd1510(Object,  void*,  std::uint32_t,  std::int32_t) override { std::abort(); }
-    void native_string_resize_0041dd40(Object,  std::uint32_t,  std::int32_t) override { std::abort(); }
-    Object native_string_construct_0041e870(Object,  const char*) override { std::abort(); }
-    const char* native_string_c_str_00419ca0(Object) override { std::abort(); }
-    std::int32_t string_compare_00438e10(const char*,  const char*) override { std::abort(); }
-    char* string_duplicate_00438e40(const char*) override { std::abort(); }
-    bool native_string_equals_00425850(Object,  const char*) override { std::abort(); }
-    void movie_timed_item_construct_00465850(Object,  float) override { std::abort(); }
-    void scene_name_hash_iterator_begin_00466bb0(Object) override { std::abort(); }
-    bool scene_name_hash_iterator_next_00466c00(Object) override { std::abort(); }
-    void tree_iterator_increment_00467980(Object) override { std::abort(); }
-    Object hidden_record_map_find_00468cd0(Object,  Object,  Object) override { std::abort(); }
-    void hidden_record_tree_erase_0046ad10(Object,  Object) override { std::abort(); }
-    Object hidden_record_map_buy_head_node_00468260(Object) override { std::abort(); }
-    Object int_set_buy_head_node_004682b0(Object) override { std::abort(); }
-    void int_set_insert_0046ac50(Object,  Object,  const std::int32_t*) override { std::abort(); }
-    void int_set_erase_range_0046b170(Object,  Object,  Object,  Object,  Object,  Object) override { std::abort(); }
-    void hidden_record_map_erase_range_0046b570(Object,  Object,  Object,  Object,  Object,  Object) override { std::abort(); }
-    void raw_list_clear_storage_004683b0(Object) override { std::abort(); }
-    void pointer_vector_push_back_00442190(Object,  const void*) override { std::abort(); }
-    void enum_node_pool_return_0043b0a0(Object,  Object) override { std::abort(); }
-    Object property_bag_clone_008f41f0(Object) override { std::abort(); }
-    Object property_bag_find_008f2260(Object,  const char*) override { std::abort(); }
-    std::uint32_t scene_property_array_element_count_008ef7f0(Object) override { std::abort(); }
-    void matrix_copy_4x4_004134f0(Object,  Object) override { std::abort(); }
-    void sentity_init_all_00925f20(std::uint8_t) override { std::abort(); }
-    void format_to_buffer32_00467310(char*,  const char*,  std::int32_t) override { std::abort(); }
-    void vehicle_class_stock_queue_append_0095c4d0(std::int32_t) override { std::abort(); }
-    std::int32_t game_effective_game_mode_004bca50(Object) override { std::abort(); }
-    void writer_vcall_0c(Object,  std::int32_t,  const char*,  std::int32_t,  const char*) override { std::abort(); }
-    void object_deleting_destructor_vcall_00(Object,  std::int32_t) override { std::abort(); }
-    bool entity_is_kind_vcall_5c(Object,  std::int32_t) override { std::abort(); }
-    Object model_source_vcall_08(Object,  std::int32_t,  float) override { std::abort(); }
-    void cloud_instance_vcall_34(Object,  Object) override { std::abort(); }
-    void scene_node_vcall_38(Object,  Object) override { std::abort(); }
-    void sentity_init_base_0048dbd0(Object) override { std::abort(); }
-    void class_entity37_destruct_base_00487380(Object) override { std::abort(); }
-    Object atmosphere_cloud_manager_00bbddf0(Object) override { std::abort(); }
-    void cloud_manager_release_instance_00bbd910(Object,  Object) override { std::abort(); }
-    Object cloud_manager_create_instance_00bbd770(Object,  Object) override { std::abort(); }
-    void cloud_instance_invalidate_lighting_00bbe760(Object,  std::int32_t) override { std::abort(); }
-    Object unit_part_instance_construct_007135c0(Object,  Object,  Object) override { std::abort(); }
-    void node_set_parent_00b6e680(Object,  Object) override { std::abort(); }
-    void node_or_flags_recursive_00475e60(Object,  std::uint32_t) override { std::abort(); }
-    void node_propagate_root_registration_00b6d890(Object,  Object) override { std::abort(); }
-    void scene_node_set_visibility_factor_00b6da70(Object,  float,  std::int32_t) override { std::abort(); }
-    void sentity_write_scene_properties_00924d90(Object,  Object) override { std::abort(); }
-    void game_entity_construct_00928630(Object,  std::int32_t,  std::int32_t) override { std::abort(); }
-    void game_entity_destruct_009287b0(Object) override { std::abort(); }
-    void path_component_construct_007b28c0(Object,  Object) override { std::abort(); }
-    void path_component_destruct_007b1bd0(Object) override { std::abort(); }
-    Object entity_registry_find_by_name_00925a90(Object,  const char*) override { std::abort(); }
-    bool scene_entity_should_generate_0046c550(Object,  const char*,  Object,  Object,  Object,  Object,  std::int32_t,  const float[16],  std::int32_t) override { std::abort(); }
-    Object class_row_create_entity_call(Object,  std::int32_t,  Object,  Object,  Object,  Object,  std::int32_t) override { std::abort(); }
-    Object property_bag_ref_construct_00922e20(Object,  Object) override { std::abort(); }
     bsp::NativeStringRawPoolContext& strings_;
     UnitSceneCommandDatabaseImage database_{};
 };
@@ -22632,9 +22556,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // Milestone 2l: the two strings 004f0520's last step handed 00469610.
         // 00469610 queues the authored command; OFF keeps the direct string copies.
         if constexpr (bsp::kWireGoal2Chain51Bound) {
-            if (!entity.command.empty()) {
+            if (entity.command_present) {
                 host.scene_commands->enqueue(*slot, entity);
-                host.done("SceneUnit::queue_entity_command", 0x00469610u);
+                host.done("Units::queue_native_scene_command", 0x00469610u);
             }
         } else {
         row.command = entity.command;
@@ -23485,6 +23409,13 @@ bool GameUnitsHost::issue_authored_command_at(std::size_t index) {
     // The token every DestroyerGen of this scene authors. An entity that
     // authored none is skipped, exactly as 004f0520's last step skips the
     // queue call when the property is absent.
+    if constexpr (bsp::kWireGoal2Chain51Bound) {
+        // 004E6B30 queues a present-empty key too; 0046AAB0's empty-name
+        // failure still reaches its clear. Retire before the host early exit.
+        if (slot.row.command.empty() && host.scene_commands != nullptr) {
+            host.scene_commands->retire(slot);
+        }
+    }
     if (slot.row.command.empty()) return false;
     const float heading = host.pose_heading_radians(slot);
     const GameCommandRow* row = host.commands.issue(index, slot.row.command,
