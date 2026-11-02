@@ -1,0 +1,345 @@
+{
+  "status": "QUALIFIED_SOURCE_CORE_GAME_CODE_BUILD_AND_JOINED_TRANSFER_ACCEPTED",
+  "base": "a3e354cf3c4821af28ce3541ff7ad0d8140daab8",
+  "source_author_base": "7ac412f9327584b939fa31af5ba18af8b46064f3",
+  "scope": {
+    "production_paths": 6,
+    "new_definitions": 14,
+    "existing_query_definition_move": 1,
+    "CMake_changes": 0,
+    "production_overload_selected": false
+  },
+  "files": [
+    {
+      "path": "include/bsp/native_render_resource_initializer.hpp",
+      "before": {
+        "bytes": 4559,
+        "sha256": "6c05273656240f51dd51b8aa1e311fa7ddf4db65161d62d6bd1e66c2404baee0"
+      },
+      "after": {
+        "bytes": 6561,
+        "sha256": "8273e0654ff2714cf842ee0d8c65e608838739162c5aefacf114db4a8165c266"
+      }
+    },
+    {
+      "path": "src/native_render_resource_initializer.cpp",
+      "before": {
+        "bytes": 6886,
+        "sha256": "eeb35334f1da2441c0b2b14bd2067eda907330558844b09e02d3977c496e1bff"
+      },
+      "after": {
+        "bytes": 11903,
+        "sha256": "aed5daa31ffffdf3e0728116e366ce2d7329120125d5c2a8145af85c2dc0193d"
+      }
+    },
+    {
+      "path": "include/bsp/native_render_resource_init_continuation.hpp",
+      "before": {
+        "bytes": 6510,
+        "sha256": "ad449067d0d63c68178b392c52212d7b5dabcbb43b2eb7ec44d98c3120d1925c"
+      },
+      "after": {
+        "bytes": 8183,
+        "sha256": "768ed0a3395afd9c21bfffd4b8ada92a6b6d6d234f4ac00ab9ea62e4823dec4a"
+      }
+    },
+    {
+      "path": "src/native_render_resource_init_continuation.cpp",
+      "before": {
+        "bytes": 22724,
+        "sha256": "1425549edb33d4782640ab8213bcb716b59d0d1fc2c8583b8e1a31ad1ebc4d3a"
+      },
+      "after": {
+        "bytes": 27707,
+        "sha256": "5dd33c4d88b367e27059b283d7808a8397b053e882d969181a6296d72ed1650e"
+      }
+    },
+    {
+      "path": "include/bsp/native_render_resource_init_passthrough_dust.hpp",
+      "before": {
+        "bytes": 3881,
+        "sha256": "a92d7c2186403e1da5518cb3438c844db1355a84eb6245660dbd5481949de78a"
+      },
+      "after": {
+        "bytes": 5674,
+        "sha256": "81b5f54fceb21e787fe7942b07beb63edac9bcdd2aac2a42cfbccbf233edb64e"
+      }
+    },
+    {
+      "path": "src/native_render_resource_init_passthrough_dust.cpp",
+      "before": {
+        "bytes": 12046,
+        "sha256": "8fa46932195245da810085fc204d39020bd3ef125eba363987be2be373a94d11"
+      },
+      "after": {
+        "bytes": 16721,
+        "sha256": "d630fec19502d59b459ab237c073a6ac20938e87dddc20a63e2de68df530f2fd"
+      }
+    }
+  ],
+  "Source_gate": {
+    "author_seal_sha256": "9db46c05eff3b7ae941507dc63984c7c6a982b06d98567791e969682eaba0587",
+    "peer_seal_sha256": "fb48b8369b77abf547e3ef274cdfb69cef33e9683f49687ebc000037efe91587",
+    "candidate_tree_on_author_base": "bf69ef1756761108ea6fca1e6bf33f9e41c1e820",
+    "checks": {
+      "seal_entries": 46,
+      "before_after_vs_preflight": 12,
+      "canonical_tree_leaves": 19910,
+      "changed_files": 6,
+      "changed_tree_objects": 4,
+      "full_and_pair_forward_inverse_replays": 4,
+      "git_apply_commands": 16,
+      "protected": 51,
+      "default_metadata": 10,
+      "raw_expressions": 13,
+      "new_definitions": 14,
+      "moved_query": 1,
+      "recursive_role_comparisons": 67,
+      "role_types": 7,
+      "role_members": 79,
+      "lower8_whole_unchanged": 8
+    },
+    "conditions": [
+      "Exact frozen six-file source cohort only; Root rechecks current preimages before applying",
+      "Source close retains mandatory actual Parent-close and real Source-end owner preconditions; no-owed-Caller history proves no fence",
+      "Official build and actual Code gate remain separate",
+      "All prior readiness/current-B/Raw4/Common/provider/final-owner/ABI/runtime/activation barriers remain held"
+    ]
+  },
+  "builds": [
+    {
+      "kind": "FIRST_GENUINE_CURRENT_MAIN_BEFORE",
+      "ignored_evidence_directory": "Parent_upper_six_before_Core_Root",
+      "receipt_sha256": "c1c328f2f6026d2e3bc3952f57fce32c8e794cb899806dd93a318af7db257a1f",
+      "Core_archive_sha256": "47bb1035d4819c114a293fe04af0ab0958b63a6e387fb1530b25bf769b30d2ae",
+      "Game_PE_sha256": "8a27219724fedbae2dbfc1d8c149bd00203dc501eb6f10cf917a0620ae48efbb",
+      "build_seconds": 104.95,
+      "test_seconds": 27.03,
+      "existing_suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "exit_code": 0,
+      "Game_launched": false
+    },
+    {
+      "kind": "FIRST_GENUINE_ACCEPTED_SOURCE_AFTER",
+      "ignored_evidence_directory": "Parent_upper_six_Core_Root",
+      "receipt_sha256": "5c9651fda3bb2b2b362cdc3aa4436d46653fa1f9ae4778c6c59cd9346df02b4b",
+      "Core_archive_sha256": "723f7bcc54eb766a26d26a7042bcb1a1c6e827c6a7a4148711988860c2417432",
+      "Game_PE_sha256": "891443f94aa16ce26c15dea5ce2323808069a526195ac5354da21b4cc69c9586",
+      "build_seconds": 65.69,
+      "test_seconds": 25.51,
+      "existing_suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "exit_code": 0,
+      "Game_launched": false
+    },
+    {
+      "kind": "REGENERATED_BEFORE_WITH_GAME_OBJECT_MAP_LINK",
+      "ignored_evidence_directory": "Parent_upper_six_Game_before_Core_Root",
+      "receipt_sha256": "730d91849c88c711812fb0c34c63db0f5b38b8c795e84fb4568ffedf63f816af",
+      "Core_archive_sha256": "4faa1dbbad4b603bfcce53574ff05e1962ffdf90b3c1c56a5d84ce59ce54c8a5",
+      "Game_PE_sha256": "7c4c5049069d3033484cd109a560280d3e6d2b2e9623014d69b9855f32d72f02",
+      "build_seconds": 40.0,
+      "test_seconds": 14.89,
+      "existing_suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "exit_code": 0,
+      "Game_launched": false
+    },
+    {
+      "kind": "FINAL_AFTER_WITH_GAME_OBJECT_MAP_LINK",
+      "ignored_evidence_directory": "Parent_upper_six_Game_after_Core_Root",
+      "receipt_sha256": "727cc2fe9557565016d77cf14bb8d6fa1bc41b43f99d4a14be646b9e4bb3ca56",
+      "Core_archive_sha256": "afb811d83edeeeaf1878c8b4c2ca2315ce1860129d5540f37fce73d258f41a30",
+      "Game_PE_sha256": "dd271da01a84587269cad20da71640fa357578eb525b216ac1bdad34f4e6be50",
+      "build_seconds": 38.35,
+      "test_seconds": 13.88,
+      "existing_suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "exit_code": 0,
+      "Game_launched": false
+    },
+    {
+      "kind": "FINAL_JOINED_PUBLISHED_MAIN_WITH_EXACT_SOURCE6",
+      "ignored_evidence_directory": "Parent_upper_six_Main_join_Core_Root",
+      "receipt_sha256": "1fd05cbd2e3e6536a8c6680b3e999792de3693efd18357fdc522ab560700624d",
+      "Core_archive_sha256": "268e8898d8d7d0194094b50b1bb91f4273b4ff5988559f970c698fe0f533a97f",
+      "Game_PE_sha256": "74e3ac05eec4183af0c278d8d0b2a6d09314d6a091d7442c869335369c9b1894",
+      "build_seconds": 71.76,
+      "test_seconds": 31.3,
+      "existing_suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "exit_code": 0,
+      "Game_launched": false
+    }
+  ],
+  "complete_Core_census": {
+    "member_count": 2860,
+    "counts": {
+      "WHOLE_EXACT": 2848,
+      "COFF_TIMESTAMP_ONLY": 9,
+      "CONTENT_CHANGED": 3
+    },
+    "input_count": 6636,
+    "tools_whole_exact": 6,
+    "focal_commands_whole_exact": 12
+  },
+  "changed_Core_members": [
+    {
+      "member": "bsp_core.dir\\Release\\native_render_resource_init_continuation.obj",
+      "short": "native_render_resource_init_continuation.obj",
+      "classification": "CONTENT_CHANGED",
+      "before_bytes": 36805,
+      "after_bytes": 43944,
+      "before_sha256": "1ae2d1b8c5ab1207ef60113228e8f8bf770edd7ff94fd97b7aff8692c1ed558a",
+      "after_sha256": "76a2dc9e6d239f649e3bf96e0d9f44371226ffa376cd464cb2beffc183469e7d",
+      "after_archive_offset": 97225560
+    },
+    {
+      "member": "bsp_core.dir\\Release\\native_render_resource_init_passthrough_dust.obj",
+      "short": "native_render_resource_init_passthrough_dust.obj",
+      "classification": "CONTENT_CHANGED",
+      "before_bytes": 18017,
+      "after_bytes": 25276,
+      "before_sha256": "f4aafcf8e48b75479dbc6f1bf5345d1d7224cea92aa05119a4c806c5b9102d21",
+      "after_sha256": "a51d28aa1d3d7d26290c1c3663042105c1335c8725105f4c6d003a204c345b1d",
+      "after_archive_offset": 45612490
+    },
+    {
+      "member": "bsp_core.dir\\Release\\native_render_resource_initializer.obj",
+      "short": "native_render_resource_initializer.obj",
+      "classification": "CONTENT_CHANGED",
+      "before_bytes": 26762,
+      "after_bytes": 33947,
+      "before_sha256": "5aceea04d8b2372afb7ccfb712024e90c5e773eb344f841c12df113dfe6ebf18",
+      "after_sha256": "a18aa8554fb19b471cce2e74558efd8cf726e0b4828691a6650179a58f54d4f5",
+      "after_archive_offset": 45475068
+    }
+  ],
+  "header_dependency_timestamp_only_members": [
+    "native_main_scene_execution_prefix.obj",
+    "native_render_resource_init_distortion.obj",
+    "native_render_resource_init_dof.obj",
+    "native_render_resource_init_post.obj",
+    "native_render_resource_init_post658.obj",
+    "native_render_resource_init_post65c.obj",
+    "native_render_resource_init_post664.obj",
+    "native_render_resource_init_second_bloom.obj",
+    "native_render_resource_init_tail.obj"
+  ],
+  "paired_Game_objects": {
+    "before": {
+      "bytes": 2346588,
+      "sha256": "f7cc944abe1d72f9dc1745ed402329b941cd1c5b34eeeec53ee8700ecf8aaa06"
+    },
+    "after": {
+      "bytes": 2346500,
+      "sha256": "c4db1cedf686e7fdaea1004b5bbe129a3e966878ed0e30af39f0ba3ae122ad56"
+    }
+  },
+  "Game_header_closure": "one renderer application TU outside Core; complete paired objects plus official MAP/PE/LINK/CL records supplied to independent Game Code reviewer",
+  "regeneration_lineage": "All 2860 original-to-regenerated Core payloads equal except 12 COFF timestamps per side; all 6636 compiler-input hashes and six tools unchanged. First-after Game object to regenerated-after differs only at COFF timestamp bytes 4..7. Original and regenerated identities remain distinct.",
+  "actual_Code_gate": {
+    "status": "QUALIFIED_SCOPED_CORE_GAME_AND_JOINED_TRANSFER_PASS",
+    "Core_seal_sha256": "bfe1cde7c5707f43b627251e645e74043b1e0a8e16e1d5a97fa13f4eeb7956f4",
+    "Game_frozen_seal_sha256": "8c65b61ae6f65652d7ebaa794c8a59052a804c45329928f3259964119de9b859",
+    "Game_join_final_seal_sha256": "ee7c3cc71d237221c2e6a0db68f5191343597fb1c221943f17bc2647bd815609",
+    "combined_join_seal_sha256": "16e682ac86c7fc2eaa7cc5e50aebfcea940a646467c8371802b9635c4414b7ac",
+    "Root_all_Core47_Game100_joinGame25_combined7_indexed_copies_verified_and_entire_reviews_read": true,
+    "Core_actual_body_count": 15,
+    "new_refs_resolved": 48,
+    "new_refs_unresolved": 0,
+    "Core_changed_canonical_section_groups": 52,
+    "new_FH3_tables": 3,
+    "old_FH3_tables_exact": 3,
+    "Game_code_keys": 27,
+    "Game_metadata_groups": [
+      ".chks64",
+      ".debug$F",
+      ".xdata$x"
+    ],
+    "Game_selected_PE_text_sections": 13,
+    "Game_selected_PE_EH_data_sections": 1,
+    "joined_transfer": {
+      "protected_Core_objects_whole_exact": 21,
+      "body_hashes_exact": 15,
+      "new_references_resolved": 48,
+      "external_definitions": 11,
+      "private_local_definitions": 4,
+      "joined_archive_indices": 2,
+      "joined_index_symbols_each": 96130,
+      "Game_whole_obj_exact": true,
+      "Game_sections_exact": 8135,
+      "Game_family_keys_exact": 30,
+      "Game_linked_sections_exact": 14,
+      "Game_joined_MAP_relocations": 533,
+      "inputs_before": 6636,
+      "inputs_joined": 6638,
+      "inputs_added": 2,
+      "inputs_changed": 2,
+      "inputs_removed": 0,
+      "tools_exact": 6,
+      "focal_commands_exact": 12
+    },
+    "prose_errata": "Operation destructor has 15 changed operands in 13 diff spans; raw proof already covers all15. Joined Game object is whole-byte exact, not timestamp-only; final joined seal controls."
+  },
+  "held": [
+    "Source close retains mandatory actual Parent-close and real Source-end owner preconditions; no-owed-Caller history proves no fence",
+    "All prior readiness/current-B/Raw4/Common/provider/final-owner/ABI/runtime/activation barriers remain held",
+    "Mission/Renderer actual selected context provisioning and external Source issuer/lifetime",
+    "complete nondraining nonpoisoning readiness pass over selected pair and 28 legacy leaves and nine companions before any mutation",
+    "current-B Material child/invocation receivers and Raw4 current00/fresh04/OTHER/Common actual provider binding",
+    "early host custody retention; real callback/worker/provider/borrower use fences and final physical-owner lifetime",
+    "Original ABI/HOME/FP/DF/FH3/SEH/fault/concurrency/Origin/all-eight/lower/OFF-ON/game runtime"
+  ],
+  "acceptance": {
+    "Source": true,
+    "official_build": true,
+    "existing_suites": true,
+    "actual_Code": true,
+    "Original_ABI": false,
+    "runtime": false,
+    "activation": false,
+    "joined_transfer": true,
+    "blanket_Main_Code": false
+  },
+  "all9_raw_GUI_flags": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "Native_credit": 0,
+  "vendor_credit": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "Ghidra_mutations": 0,
+  "Game_launched": false,
+  "reviewed_before_after_base": "ebc12fd232490dae9da2c83f129b9d41c4bf3d57",
+  "Main_base_scope_exclusions": [
+    "Source148 other7GUI carrier behavior; separate supplemental actual Code audit ongoing, not Upper6 blocker",
+    "separate captured-dimensions Game TU admission",
+    "OriginalABI/runtime/activation and all existing owner/provider/readiness fences"
+  ],
+  "upstream_Source148_additional_carrier_audit": {
+    "scope": "7 previously published GUI carriers/21 real text changes/0 EH changes",
+    "status": "separate independent supplemental actual Code audit ongoing",
+    "Upper6_behavior_grant": false,
+    "Upper6_blocker": false
+  }
+}

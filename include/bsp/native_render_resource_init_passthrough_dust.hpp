@@ -4,6 +4,10 @@
 
 namespace bsp {
 
+class NativePostEffectParentDomain;
+class NativeMeshSectionLifetimeSourceScope;
+class NativeRenderResourceInitialization;
+
 // Same actual application domains, with the DISTINCT existing post24 context
 // required by dust. Do not reinterpret the post20 context or create substitutes.
 // Original D5E430 scene-color name is borrowed from continuation.parameter_names[0].
@@ -51,6 +55,24 @@ struct NativeRenderResourceInitPassthroughDustState final {
     void* captured_post{};
     void* captured_dust_receiver{};
     NativePostEffectDustBlock dust;
+private:
+    friend class NativeRenderResourceInitialization;
+    friend void continue_native_render_resource_init_00b11ef4_fragment(
+        NativeRenderResourceInitDistortionState&, NativeRenderResourceInitContinuationContext&,
+        NativeRenderResourceInitPassthroughDustContext&, NativeRenderResourceInitPassthroughDustState&);
+    friend void continue_native_render_resource_init_00b11ef4_fragment(
+        NativeRenderResourceInitDistortionState&, NativeRenderResourceInitContinuationContext&,
+        NativeRenderResourceInitPassthroughDustContext&, NativeRenderResourceInitPassthroughDustState&,
+        NativePostEffectParentDomain&, NativePostEffectDustContext&,
+        NativeMeshSectionLifetimeSourceScope&);
+    void bind_dust_parent(NativeRenderResourceInitPassthroughDustContext&,
+        NativePostEffectDustContext&, NativePostEffectParentDomain&,
+        NativeMeshSectionLifetimeSourceScope&);
+    void prepare_blocks(NativeRenderResourceInitContinuationContext&,
+        NativeRenderResourceInitPassthroughDustContext&);
+    NativePostEffectParentDomain* dust_parent_{};
+    NativePostEffectDustContext* selected_dust_{};
+    NativeMeshSectionLifetimeSourceScope* dust_source_{}; // invocation only
 };
 
 // NORMAL-PATH FRAGMENT: exact one-use B11EF4 predecessor and SAME original
@@ -65,5 +87,12 @@ struct NativeRenderResourceInitPassthroughDustState final {
 void continue_native_render_resource_init_00b11ef4_fragment(
     NativeRenderResourceInitDistortionState&, NativeRenderResourceInitContinuationContext&,
     NativeRenderResourceInitPassthroughDustContext&, NativeRenderResourceInitPassthroughDustState&);
+
+// Select ONLY Dust; passthrough post20 and its shared legacy domains are unchanged.
+void continue_native_render_resource_init_00b11ef4_fragment(
+    NativeRenderResourceInitDistortionState&, NativeRenderResourceInitContinuationContext&,
+    NativeRenderResourceInitPassthroughDustContext&, NativeRenderResourceInitPassthroughDustState&,
+    NativePostEffectParentDomain&, NativePostEffectDustContext&,
+    NativeMeshSectionLifetimeSourceScope&);
 
 } // namespace bsp

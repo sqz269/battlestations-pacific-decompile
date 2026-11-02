@@ -10,6 +10,10 @@
 
 namespace bsp {
 
+class NativePostEffectParentDomain;
+class NativeMeshSectionLifetimeSourceScope;
+class NativeRenderResourceInitialization;
+
 // Complete B4E2B0 normal body (59 bytes): ECX post20, stacked frame, RET4.
 // Publish/retain incoming before releasing captured old at zero. Borrow the
 // actual D5E600 frame profile and current imports; no second count or registry.
@@ -99,6 +103,22 @@ struct NativeRenderResourceInitContinuationState final {
     void* captured_name_data{};
     std::uint32_t captured_name_bytes{};
     bool field70_published{};
+private:
+    friend class NativeRenderResourceInitialization;
+    friend void continue_native_render_resource_init_00b109bc_fragment(
+        NativeRenderResourceInitEntryState&, NativeRenderResourceInitContinuationContext&,
+        NativeRenderResourceInitContinuationState&);
+    friend void continue_native_render_resource_init_00b109bc_fragment(
+        NativeRenderResourceInitEntryState&, NativeRenderResourceInitContinuationContext&,
+        NativeRenderResourceInitContinuationState&, NativePostEffectParentDomain&,
+        NativeBrightPassInitializationContext&, NativeMeshSectionLifetimeSourceScope&);
+    void bind_bright_parent(NativeRenderResourceInitContinuationContext&,
+        NativeBrightPassInitializationContext&, NativePostEffectParentDomain&,
+        NativeMeshSectionLifetimeSourceScope&);
+    void prepare_blocks(NativeRenderResourceInitContinuationContext&);
+    NativePostEffectParentDomain* bright_parent_{};
+    NativeBrightPassInitializationContext* selected_bright_{};
+    NativeMeshSectionLifetimeSourceScope* bright_source_{}; // invocation only
 };
 
 // B107F0 NORMAL-PATH CONTINUATION FRAGMENT [B109BC,B11599). Requires the
@@ -112,5 +132,12 @@ struct NativeRenderResourceInitContinuationState final {
 void continue_native_render_resource_init_00b109bc_fragment(
     NativeRenderResourceInitEntryState&, NativeRenderResourceInitContinuationContext&,
     NativeRenderResourceInitContinuationState&);
+
+// Select ONLY Bright's saved context; the legacy continuation context and its
+// equality checks stay intact. The Source borrow ends after whole return/catch.
+void continue_native_render_resource_init_00b109bc_fragment(
+    NativeRenderResourceInitEntryState&, NativeRenderResourceInitContinuationContext&,
+    NativeRenderResourceInitContinuationState&, NativePostEffectParentDomain&,
+    NativeBrightPassInitializationContext&, NativeMeshSectionLifetimeSourceScope&);
 
 } // namespace bsp
