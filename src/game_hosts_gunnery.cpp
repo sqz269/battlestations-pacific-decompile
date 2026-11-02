@@ -6,6 +6,9 @@
 
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal1_chain1_switches.hpp"
+#include "bsp/wire_goal1_chain8_switches.hpp"
+#include "bsp/blast_damage.hpp"
+#include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
@@ -2270,6 +2273,27 @@ struct GameGunneryHost::Impl {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
         log.implemented(method, text);
+    }
+
+    // Adapt the selected rack record and the already-loaded PilotBot row;
+    // the existing body owns the kind/plane dispatch, this adapter the fields.
+    std::optional<float> pilot_throw_multiplier(const GameGunRow& rack,
+        std::size_t unit, int level) {
+        const bsp::PilotBotParameters* row = bsp::cc13_torp_goaway::pilot_bot_row(level);
+        if (row == nullptr) return std::nullopt;
+        const auto selected = bsp::plane_release_ver_cc13::pilot_bot_throw_mul_row_00999b70(
+            rack.bullet_class >= 0, rack.bullet_sub_type, units.unit_is_kind_of(unit, 0x10));
+        done("PilotBot::throw_mul_00999b70", 0x00999b70u);
+        using Row = bsp::plane_release_ver_cc13::ThrowMulRow;
+        switch (selected) {
+        case Row::kTorp034: return row->torp_throw_mul_034;
+        case Row::kDepthCharge0E0: return row->depth_charge_throw_mul_0e0;
+        case Row::kStrike12C: return row->strike_throw_mul_12c;
+        case Row::kLevelBomb0C8: return row->level_bomb_throw_mul_0c8;
+        case Row::kDiveBomb078: return row->dive_bomb_throw_mul_078;
+        case Row::kNone: return 1.0f;
+        }
+        return std::nullopt;
     }
 
     GameHostLog& log;
@@ -7552,7 +7576,17 @@ public:
             }
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
+        // 00729BC0 calls bot_slot_for_projectile_kind; OFF keeps range-only acceptance.
+        if constexpr (bsp::kWireGoal1Chain8Bound) {
+            const auto* ammo = owner_.dp_air_ammo(slot, row.category, other);
+            const int kind = ammo != nullptr ? ammo->sub_type : row.bullet_sub_type;
+            const std::size_t bot_slot = bsp::bot_slot_for_projectile_kind_00729bc0(
+                kind, row.category);
+            owner_.done("Gunnery::bot_slot_dispatch_00729bc0", 0x00729bc0u);
+            in.slot_accepts_target = in_range && bot_slot != 0;
+        } else {
         in.slot_accepts_target = in_range;
+        }
         if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
             && other < owner_.units.count()) {
             // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
@@ -15151,6 +15185,17 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
             }
         }
         bsp::HitRecord blast;
+        // 0084BAD0 calls blast_apply_record_fill; OFF keeps the hand-filled consumer record.
+        if constexpr (bsp::kWireGoal1Chain8Bound) {
+            bsp::HitRecordFill fill;
+            fill.falloff_range = weapon->blast_range;
+            fill.hull_segment = kDirectHitHullSegment;
+            bsp::blast_apply_record_fill_0084bad0(fill,
+                bsp::HitQueryPoint{centre[0], centre[1], centre[2]}, damage,
+                ignore_falloff || (kFlakBlastIgnoreFalloffBound && weapon->type == "Flak"));
+            blast = bsp::consumer_view(fill, 1.0f, 1.0f);
+            done("Projectile::blast_record_fill_0084bad0", 0x0084bad0u);
+        } else {
         blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
         blast.part_damage_base = damage;
         blast.falloff_range = weapon->blast_range;
@@ -15160,6 +15205,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
         blast.owner_modifier = 1.0f;
+        }
         if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
             // Packet cc13-powerup-bind: 0084BC60's blast record carries the shot
             // (buffer+20h, 00470350 at 0084BBB1), so 004705C0 takes
@@ -19227,8 +19273,20 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
         // CC13_VER_20 D2: 006E4D50's bomb arm, as release_bomb_drop runs it.
         const int level = h.units.skill_level(unit_index);
         const int row = (level < 0 || level > 5) ? 1 : level;
+        const float mul = [&]() {
+            // 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
+            if constexpr (bsp::kWireGoal1Chain8Bound) {
+                const auto selected = h.pilot_throw_multiplier(*chosen, unit_index, row);
+                if (selected) return *selected;
+                // A failed config load retains the existing host fallback.
+                return h.units.unit_is_kind_of(unit_index, 0x10)
+                    ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+            } else {
         const float mul = h.units.unit_is_kind_of(unit_index, 0x10)
             ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+                return mul;
+            }
+        }();
         const float s = chosen->throw_amount * mul;
         const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             3.14159274f);                                                   // 006E4F91
@@ -19464,8 +19522,20 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         // 00999B70 reads the bot's PilotBot row at its level (bot+34h, 007B8AE0).
         const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
         const int row = (level < 0 || level > 5) ? 1 : level;
+        const float mul = [&]() {
+            // 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
+            if constexpr (bsp::kWireGoal1Chain8Bound) {
+                const auto selected = h.pilot_throw_multiplier(*chosen, unit_index, row);
+                if (selected) return *selected;
+                // A failed config load retains the existing host fallback.
+                return h.units.unit_is_kind_of(unit_index, 0x10)
+                    ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+            } else {
         const float mul = h.units.unit_is_kind_of(unit_index, 0x10)
             ? kLevelBombThrowMulRows[row] : kDiveBombThrowMulRows[row];
+                return mul;
+            }
+        }();
         const float s = chosen->throw_amount * mul;
         const float a = h.draw(Impl::Draw::bomb_scatter, unit_index, 0, 0.0f,
             3.14159274f);                                                   // 006E4F91
