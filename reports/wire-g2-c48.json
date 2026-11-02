@@ -1,0 +1,163 @@
+{
+  "goal": 2,
+  "chain": 48,
+  "run": 106,
+  "harness": "claude",
+  "packet": "g2-w3",
+  "host_file": "src/game_hosts_menu.cpp",
+  "branch": "agent/g2-w3",
+  "code_commit": "0071a0d67",
+  "switch": "kWireGoal2Chain48Bound",
+  "switch_header": "include/bsp/wire_goal2_chain48_switches.hpp",
+  "switch_default": false,
+  "pick_reason": "game_hosts_menu.cpp offered 16 host-object gaps (score 104), the most of any candidate; the other candidates offered one or two static rows each or gaps whose producers are missing. After the survey only one gap had an existing, live object to borrow: the renderer's published 00F8D440 render command queue for 00b1bf90.",
+  "wired_before": 8805,
+  "wired_after": 8806,
+  "wired_delta": 1,
+  "wired_delta_note": "python tools/wire_readiness.py after a plain ./scripts/build.ps1 at 0071a0d67: 00b1bf90 moved ready -> wired; the other 15 gaps stay ready (skipped below).",
+  "rows": [
+    {
+      "native": "00b1bf90",
+      "address": "004e4bc1",
+      "function": "004e4a40",
+      "host_site": "src/game_hosts_menu.cpp: MenuFrameHost::render_queue_retained (called by frontend_states.cpp open_render_queue, 004E4BB5..004E4BDB)",
+      "status": "wired",
+      "reach": "live",
+      "reached": 30,
+      "note": "Image site 004E4BBA CALL 004C11F0 / 004E4BBF MOV ECX,EAX / 004E4BC1 CALL 00B1BF90 / 004E4BC6 TEST EAX,EAX (full 32-bit). ON reads +20h (control_20) of the renderer's actual queue through cc13_seg83::render_queue_mode_00b1bf90 and returns it != 0. The queue is GameNativeRendererApplication FrameGraph::queue, borrowed through native_deletion_bindings().render_queue->actual_queue_00f8d440 (same pattern as the existing sound_runtime borrow in MenuShellHost::probe_sound_memory). USN04 ON log: render_queue_retention_control 00b1bf90 concrete calls=30; the first front-end call precedes the renderer's first end frame, finds the cell empty and keeps the OFF answer false (render_queue_retained calls=1), which is what the image gets there because 004C11F0 would construct the queue with 00B1F280 storing +20h = 0."
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::report_loading_progress / MenuShellHost::report_progress",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The LoadingScreen the body reads is built only by begin_loading_screen (0057CB60) under kLoadingScreenCc13Bound = false, which already holds this call; with that switch OFF the screen is null and the body is the image's no-op, so a chain-48 arm would pass a null constant or duplicate the cc15-ls2 arm. The identifier report_loading_progress is also a plain name defined in several files, so wire_readiness only counts uses inside frontend_entry.cpp."
+    },
+    {
+      "native": "0057c990",
+      "host_site": "src/game_hosts_menu.cpp: LoadingScreen host prepare_extra_elements",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The site (0057CE83 inside 0057CB60) is reached only through begin_loading_screen under kLoadingScreenCc13Bound = false, so the arm would sit behind another OFF switch; the bound LoadingScreen element state and hint list it needs exist only on that path."
+    },
+    {
+      "native": "00686170",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "main_menu_construct_00686170 takes Fe5Host& (include/bsp/frontend_seg16_24_28_cc13.hpp: 293 pure virtuals, no implementation anywhere in src) and an image-shaped 78h manager; the host's MainMenuManager is a typed aggregate the recovered Init reads. Building the Fe5Host adapter is far past one chain's cap."
+    },
+    {
+      "native": "006887e0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager / MenuShellHost::create_manager_b4",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs Fe5Host& (293 pure virtuals, unimplemented) and a 68h multiplayer-manager image with no host consumer: create_multi_menu_manager returns nullptr and nothing in the menu path reads that manager."
+    },
+    {
+      "native": "00689800",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager / MenuShellHost::create_manager_b8",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs Fe5Host& (293 pure virtuals, unimplemented) and a 4Ch options-manager image with no host consumer (create_options_manager returns nullptr)."
+    },
+    {
+      "native": "00689d90",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit host create_attract_screen",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs Fe5Host& (293 pure virtuals, unimplemented), the 4Ch attract-screen image, its FE_attract page and the movie player; none is held by this host."
+    },
+    {
+      "native": "0068d760",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit host create_title_screen",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs Fe5Host& (293 pure virtuals, unimplemented) and a 44h image-shaped title screen; the host's TitleScreen is a typed aggregate the title path already uses."
+    },
+    {
+      "native": "00687c00",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::refresh_downloadable_content",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs Fe5Host& (293 pure virtuals, unimplemented), and the 00F8894C registry singleton it destroys is never built in this process (its producer is 00576B10, also unbuilt)."
+    },
+    {
+      "native": "00576b10",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::refresh_multiplayer_state",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs the C4h lobby option registry (constructor 005769E0, five maps), the singleton lifetime lock domain and Seg19_21Host; the site is on the multiplayer-manager init path, which never runs because create_multi_menu_manager returns nullptr (no call-table row in the USN04 log)."
+    },
+    {
+      "native": "00be0ae0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::open_load_block",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "fileblock_scope_construct_00be0ae0 takes EngineServiceCalls& (74 pure virtuals, no implementation in src). The VFS host's native title file block (GameVfsHost::open_title_fileblock) runs the 00BE0A30 owner path through native_fileblock_owner, not this body, and the matching close (00BDCB30) would also have to move."
+    },
+    {
+      "native": "00a85c20",
+      "host_site": "src/game_hosts_menu.cpp: TitleMusic host play_stream",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs a real 54h stream. Creating and opening it (00A877D0 / 00A867B0, or the GameTitleSound composition) needs the selected-track C-string 00E19504, whose producer this host lacks (TitleMusic::selected_track_name is unimplemented and GameTitleSound refuses a null track), plus the 00E18D48 movie-player publication."
+    },
+    {
+      "native": "004b43b0",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::input_edge_latch",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Its input is 00A91020 over the input backend [00F8BBF4]. The backend exists (GameStartupHost::input_backend_publication, 'input_backend_initialize [0073dd8e] concrete') but the menu host does not borrow it, and input_device_table_any_dynamic_device_button_down_00a91020 needs Cc13Front2Host (39+ pure virtuals) for each device's vtable +2Ch. That is past one chain's cap."
+    },
+    {
+      "native": "0067c8f0",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit host sign_in_state_valid",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs 00E19880 and three queries on the XenonSystemManager [00F8ABE8]. That online manager is not constructed in this process (USN04 log: 'Phase 5 online_manager_initialize [0073dc7c] UNIMPLEMENTED'), so every input would be a constant."
+    },
+    {
+      "native": "00a3e3b0",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::profile_change_pending",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Reads [00F8ABE8]+2Ch and +3C0h; the NativeOnlineManagerStorage publication exists but stays null because 0073DC7C online manager construction is unimplemented, so a default flags object would only pass constants."
+    },
+    {
+      "native": "00a3f3d0",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::request_sign_in",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Needs the actual NativeOnlineManagerStorage at 00F8ABE8 and the XLive sign-in provider; the manager is not constructed (0073DC7C unimplemented), so the body has no real state to act on."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "Borrowed native render command queue [00F8D440] (NativeRenderCommandQueueStorage, 34h): the menu frame host reads GameNativeRendererApplication's FrameGraph::queue through the existing native_deletion_bindings().render_queue publication; nothing new is allocated",
+      "where": "src/game_hosts_menu.cpp:1121",
+      "producers": [
+        "get_native_render_command_queue_004c11f0 (native_render_batch_preparation_actual.cpp), reached from the renderer's end frame 00B2F4A0 through FrameGraph::queue_getter; first published at front-end frame 1 (log 'native frame complete: frame=1 queue=...')",
+        "the queue constructor 00B1F280 (native_render_queue_constructor.cpp), which stores control_20 = 0",
+        "GameNativeRendererApplication::bind_platform_services, which publishes &FrameGraph::queue_destruction as native_deletion_bindings().render_queue; renderer drain retires it"
+      ],
+      "rows": ["00b1bf90"]
+    }
+  ],
+  "host_object_decision": "Borrowed rather than built: the 00F8D440 queue already exists in the renderer application, which is its binary lifetime (004C11F0 lazily on first use, freed at shutdown). No other menu gap had a buildable object within one chain: five constructors and 00687c00 need Fe5Host (293 virtuals), 00be0ae0 needs EngineServiceCalls (74), the XLive gaps need an online manager this process never constructs, the title stream needs the unhosted 00E19504 track, and the loading-screen rows sit behind kLoadingScreenCc13Bound.",
+  "verification": {
+    "off_build": "./scripts/build.ps1 exit 0, 2/2 tests passed (clean tree at 0071a0d67's content; also at a82f243eb)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain48Bound: build.ps1 exit 0, 0 distinct diagnostics; header restored (at a82f243eb and 0071a0d67)",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings (no x87 arithmetic in the ON arm)",
+    "pair_run": {
+      "session": "console Active (query session)",
+      "off": "build\\win32\\Release\\bsp_game.exe at 0071a0d67 -> local\\g2-w3-off_USN04.log, exit 0",
+      "on": "python tools/pair_export.py --commit HEAD --flip kWireGoal2Chain48Bound=true --out local\\g2-w3-on --mission USN04 -> local\\g2-w3-on_USN04.log, exit 0",
+      "args": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "result": "GAMEPLAY identical (28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 s, 81 units); UNIT TABLE, DEATH ROWS and PLANE DEATH MODES identical; host methods concrete 1144 -> 1145, unimplemented 477 both; NATIVE TABLE 1624 -> 1625: + FrontEndFrame::render_queue_retention_control 00b1bf90 concrete calls=30, ~ FrontEndFrame::render_queue_retained 00b1bf90 calls 31 -> 1; SUMMARY LINES 867 -> 867, 0 changed; OTHER LINES 231/231 are atlas source item lines whose decimal append_slot heap pointers differ (e.g. 244063328 vs 247260464), heap layout only, every other field equal.",
+      "note": "A first pair at a82f243eb showed no native-table move because GameHostLog keeps a row's first status and the first call precedes the queue's publication; 0071a0d67 gives the concrete read its own label."
+    },
+    "verify_report_calls": "python tools/verify_report_calls.py reports/wire-g2-c48.json"
+  },
+  "flip_proposal": "Flip kWireGoal2Chain48Bound to true: the USN04 pair is gameplay-identical, and the front-end retention test reads the renderer's real 00F8D440 queue +20h 30 times (always 0 in the front end, so every frame opens as before), with the one pre-publication call keeping the image's constructed-queue answer."
+}
