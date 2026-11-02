@@ -72,6 +72,10 @@
 #include "bsp/world_entities.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal2_chain27_switches.hpp"
+#include "bsp/wire_goal2_chain36_switches.hpp"
+#include "bsp/warning_string_seg64_argon.hpp"
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -1199,9 +1203,18 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
     if (killer != nullptr && !query.is_kind_5c(killer, bsp::kWarningKindUnit)) killer = nullptr;
     // 00922A90: class id +C4h in {19h, 1Ah, 1Bh, 36h, 45h, 46h, 1Ch}.
     const auto land_family = [&]() {
+        if constexpr (bsp::kWireGoal2Chain36Bound) {
+            // 00982044 00922A90 class_id_is_land_family_00922a90 over the victim's +C4h
+            // (unit_class_id); OFF keeps the inline seven-id test.
+            std::int32_t entity[0xC8 / 4]{};
+            entity[0xC4 / 4] = host.units->unit_class_id(unit);
+            return bsp::cc13_seg49::class_id_is_land_family_00922a90(
+                bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(entity)});
+        } else {
         const int id = host.units->unit_class_id(unit);
         return id == 0x19 || id == 0x1a || id == 0x1b || id == 0x36 || id == 0x45
             || id == 0x46 || id == 0x1c;
+        }
     };
     bool report = false;
     if (relation == 0) {
@@ -3007,6 +3020,205 @@ void report_scene_markers(GameHostLog& log,
     }
 }
 
+// Goal 2 chain 36 (kWireGoal2Chain36Bound): the Seg64Host 00976F10 runs over.
+// The manager's +E0h std::list is rebuilt per call from the host's pending
+// vector (WarningManagerState::pending, "the +E0h list"): +E4h the head node,
+// +E8h the size; a node is {+0h next, +4h prev, +8h Warning*}. Each Warning
+// view is the 84h-byte record with only +80h filled, from the record's
+// target_id (the host's unit, written where the record is queued). vt[10h] is
+// the record's kind, vt[0](1) marks the record destroyed, 00975C40 on +15Ch is
+// warning_loss_stamp_15c, 00F876A4 is world_clock and 00D7A308 the image's
+// double 2.0. 00976F10's only other callees are _free and 00BF6713; every
+// other Seg64Host entry is unreached by it and throws.
+class PendingWarningCancelView final : public bsp::warning_string_seg64_argon::Seg64Host {
+public:
+    PendingWarningCancelView(GameMissionFrameHost::Impl& host,
+                             std::vector<bsp::WarningRecord>& pending)
+        : host_(host), pending_(pending) {}
+
+    // Runs 00976F10 for one target, then erases the records it destroyed from
+    // the host vector (order kept). Returns how many it destroyed.
+    std::size_t cancel_by_target(std::uint32_t target) {
+        const std::size_t count = pending_.size();
+        views_.assign(count, WarningView{});
+        nodes_.assign(count, ListNode{});
+        destroyed_.assign(count, false);
+        freed_ = 0;
+        std::memset(manager_, 0, sizeof(manager_));
+        ListNode* prev = &head_;
+        for (std::size_t i = 0; i < count; ++i) {
+            const std::uint32_t id = pending_[i].target_id;
+            std::memcpy(views_[i].bytes + 0x80, &id, sizeof(id));
+            nodes_[i].warning = &views_[i];
+            nodes_[i].prev = prev;
+            prev->next = &nodes_[i];
+            prev = &nodes_[i];
+        }
+        prev->next = &head_;
+        head_.prev = prev;
+        head_.warning = nullptr;
+        void* const head = &head_;
+        const std::int32_t size = static_cast<std::int32_t>(count);
+        std::memcpy(manager_bytes() + 0xE4, &head, sizeof(head));
+        std::memcpy(manager_bytes() + 0xE8, &size, sizeof(size));
+
+        bsp::warning_string_seg64_argon::warning_manager_cancel_by_target_00976f10(
+            *this, bsp::warning_string_seg64_argon::Raw{manager_bytes()}, target);
+
+        std::size_t destroyed = 0;
+        for (std::size_t i = count; i-- > 0;) {
+            if (!destroyed_[i]) continue;
+            pending_.erase(pending_.begin() + static_cast<std::ptrdiff_t>(i));
+            ++destroyed;
+        }
+        std::int32_t left = 0;
+        std::memcpy(&left, manager_bytes() + 0xE8, sizeof(left));
+        if (freed_ != destroyed || left != static_cast<std::int32_t>(count - destroyed)) {
+            throw std::logic_error("00976F10 view: destroyed, freed and +E8h size disagree");
+        }
+        return destroyed;
+    }
+
+    std::uint32_t& global_u32(std::uint32_t) override { unreached("global_u32"); }
+    std::uint8_t& global_u8(std::uint32_t) override { unreached("global_u8"); }
+    float& global_f32(std::uint32_t address) override {
+        if (address != 0x00f876a4u) unreached("global_f32");
+        return host_.world_clock;
+    }
+    double& global_f64(std::uint32_t address) override {
+        if (address != 0x00d7a308u) unreached("global_f64");
+        return image_double_00d7a308_;
+    }
+    void* image_address(std::uint32_t) override { unreached("image_address"); }
+    void entity_pose_refresh_world_00414db0(void*) override { unreached("00414DB0"); }
+    void* sized_storage_pool_get_singleton_00419cc0() override { unreached("00419CC0"); }
+    void* stl_tree_erase_range_00492a00(void*, void*, void*, void*, void*, void*) override {
+        unreached("00492A00");
+    }
+    void stl_vector_push_back_005bb020(void*, const void*) override { unreached("005BB020"); }
+    void voice_manager_play_line_005bbc10(void*, void*, std::uint32_t, void*) override {
+        unreached("005BBC10");
+    }
+    void voice_manager_play_positional_line_005bbdc0(void*, const void*, void*, std::uint32_t,
+                                                     void*) override {
+        unreached("005BBDC0");
+    }
+    void* message_record_resolve_named_00705e00(void*, const void*, std::uint32_t) override {
+        unreached("00705E00");
+    }
+    std::uint32_t recon_relation_if_identified_00803ce0(std::int32_t, void*) override {
+        unreached("00803CE0");
+    }
+    void point_effect_stop_children_00867b10(void*) override { unreached("00867B10"); }
+    void** point_effect_create_with_parent_matrix_008687c0(void**, void*, void*, const float*,
+                                                           std::uint32_t, std::uint32_t,
+                                                           std::uint32_t) override {
+        unreached("008687C0");
+    }
+    void* stl_list_buy_node_0096b510(void*, void*, void*, const void*) override {
+        unreached("0096B510");
+    }
+    void* stl_tree_buy_head_node_0096ba00(void*) override { unreached("0096BA00"); }
+    void ship_noise_info_start_air_raid_effect_0096c070(void*, void*, void*) override {
+        unreached("0096C070");
+    }
+    void warning_save_archive_0096cf10(void*, void*) override { unreached("0096CF10"); }
+    void warning_event_record_destruct_0096dcb0(void*) override { unreached("0096DCB0"); }
+    void warning_destruct_0096f170(void*) override { unreached("0096F170"); }
+    void entity_warning_destruct_0096f270(void*) override { unreached("0096F270"); }
+    void stl_list_incsize_0096f960(void*, std::uint32_t) override { unreached("0096F960"); }
+    void* stl_tree_insert_hint_00973410(void*, void*, void*, void*, const void*) override {
+        unreached("00973410");
+    }
+    void* message_warning_construct_with_id_00975ac0(void*, const void*) override {
+        unreached("00975AC0");
+    }
+    float* stl_map_subscript_u32_f32_00975c40(void* map, const std::uint32_t* key) override {
+        if (map != manager_bytes() + 0x15C) unreached("00975C40 off +15Ch");
+        return &host_.warning_loss_stamp_15c[static_cast<std::size_t>(*key)];
+    }
+    void string_list_warning_destroy_009762a0(void*) override { unreached("009762A0"); }
+    void warning_manager_report_009763e0(void*, void*) override { unreached("009763E0"); }
+    void* stl_tree_find_u16_009790d0(void*, void*, const void*) override {
+        unreached("009790D0");
+    }
+    void sized_storage_pool_return_block_00bd1510(void*, void*, std::uint32_t,
+                                                  std::int32_t) override {
+        unreached("00BD1510");
+    }
+    void free_00bf65ac(void* block) override {
+        const auto* node = static_cast<const ListNode*>(block);
+        if (nodes_.empty() || node < nodes_.data() || node >= nodes_.data() + nodes_.size()) {
+            unreached("_free off the +E0h nodes");
+        }
+        ++freed_;
+    }
+    void crt_invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("00976F10 view: 00BF6713 iterator check failed");
+    }
+    void* operator_new_00bf681b(std::uint32_t) override { unreached("00BF681B"); }
+    void leave_critical_section_00ce2210(void*) override { unreached("00CE2210"); }
+    void enter_critical_section_00ce2218(void*) override { unreached("00CE2218"); }
+    std::int32_t interlocked_increment_00ce221c(std::int32_t*) override {
+        unreached("00CE221C");
+    }
+    std::int32_t interlocked_decrement_00ce2220(std::int32_t*) override {
+        unreached("00CE2220");
+    }
+    void ref_counted_vslot00_destroy(void*) override { unreached("ref vt[0]"); }
+    void* warning_vslot00_deleting_dtor(void* warning, std::uint8_t flags) override {
+        const std::size_t i = index_of(warning);
+        if (flags != 1 || destroyed_[i]) unreached("Warning vt[0] twice or flags != 1");
+        destroyed_[i] = true;
+        return warning;
+    }
+    std::uint32_t warning_vslot10_get_kind(void* warning) override {
+        return static_cast<std::uint32_t>(pending_[index_of(warning)].kind);
+    }
+    void archive_vslot04_begin_table(void*, std::uint32_t, const void*) override {
+        unreached("archive vt[4]");
+    }
+    void archive_vslot08_end_table(void*) override { unreached("archive vt[8]"); }
+    void archive_vslot0c_write_entry(void*, std::uint32_t, std::uint32_t, std::uint32_t,
+                                     const void*) override {
+        unreached("archive vt[Ch]");
+    }
+
+private:
+    struct ListNode {
+        void* next;
+        void* prev;
+        void* warning;
+    };
+    static_assert(offsetof(ListNode, prev) == 0x04 && offsetof(ListNode, warning) == 0x08,
+                  "00976F10 reads node +0h next, +4h prev, +8h Warning*");
+    struct WarningView {
+        std::uint8_t bytes[0x84];
+    };
+
+    [[noreturn]] static void unreached(const char* what) {
+        throw std::logic_error(std::string("00976F10 view: unreached ") + what);
+    }
+    std::size_t index_of(const void* warning) const {
+        const auto* view = static_cast<const WarningView*>(warning);
+        if (views_.empty() || view < views_.data() || view >= views_.data() + views_.size()) {
+            unreached("Warning outside the +E0h list");
+        }
+        return static_cast<std::size_t>(view - views_.data());
+    }
+
+    GameMissionFrameHost::Impl& host_;
+    std::vector<bsp::WarningRecord>& pending_;
+    std::uint8_t* manager_bytes() { return reinterpret_cast<std::uint8_t*>(manager_); }
+    std::uint32_t manager_[0x1A0 / 4]{};  // word-aligned manager image
+    ListNode head_{};
+    std::vector<ListNode> nodes_{};
+    std::vector<WarningView> views_{};
+    std::vector<bool> destroyed_{};
+    std::size_t freed_{0};
+    double image_double_00d7a308_{2.0};  // the double at 00D7A308
+};
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -3106,6 +3318,12 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     // map at +15Ch, whose readers are unread.
     auto& pending = host->warning().pending;
     const std::uint32_t target = static_cast<std::uint32_t>(unit);
+    if constexpr (bsp::kWireGoal2Chain36Bound) {
+        // 00976F10 warning_manager_cancel_by_target_00976f10 over the pending vector's
+        // +E0h list view; OFF keeps the inline kind-4/+80h erase loop and +15Ch stamp.
+        PendingWarningCancelView view(*host, pending);
+        host->warning_loss_cancelled += view.cancel_by_target(target);
+    } else {
     for (auto it = pending.begin(); it != pending.end();) {
         if (it->kind == 4 && it->target_id == target) {
             it = pending.erase(it);
@@ -3116,6 +3334,7 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     }
     host->warning_loss_stamp_15c[unit] = static_cast<float>(
         static_cast<double>(host->world_clock) + 2.0);
+    }
     host->done("WarningManager::cancel_by_target", 0x00976f10u);
     // 0098168D..009816C5: a ship (IsKindOf 6) loses its proximity record at
     // manager+184h: 00975D00 finds it (creating one if absent), 0096AE90 stops
@@ -3252,9 +3471,36 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
         }
         // 00989855..00989871: 009761D0 (the live bytes and 0077EDF0) without own
         // fire, 009681D0 (the live bytes) with it, on the reported entity.
+        if constexpr (bsp::kWireGoal2Chain36Bound) {
+            // 0098986A 009681D0 unit_is_active_for_hit_channel_009681d0 when BL, the
+            // own-fire byte [esp+98h] (local attacker, relation 0; 00988770/00989604),
+            // is set, over the target's +5Ch/+5Dh/+5Eh (SceneNodeFlags) and +60h
+            // (unit_pending_destroy_0060); 0098985C 009761D0 keeps the live lambda.
+            // An identity the units host cannot resolve reads as not live, as there.
+            const auto active_for_hit_channel = [&](std::size_t unit) {
+                bsp::SceneNodeFlags flags;
+                bool pending = false;
+                if (!units.unit_scene_node_flags(unit, flags)
+                        || !units.unit_pending_destroy_0060(unit, pending)) {
+                    return false;
+                }
+                std::uint8_t entity[0x64]{};
+                entity[0x5C] = flags.active ? 1 : 0;
+                entity[0x5D] = flags.torn_down ? 1 : 0;
+                entity[0x5E] = flags.destroyed ? 1 : 0;
+                entity[0x60] = pending ? 1 : 0;
+                return bsp::cc13_sweepC::unit_is_active_for_hit_channel_009681d0(entity) != 0;
+            };
+            const bool own_fire = local_attacker && relation == 0;
+            if (!(own_fire ? active_for_hit_channel(target) : live(target))) {
+                ++counts.not_reportable;
+                return;
+            }
+        } else {
         if (!live(target)) {
             ++counts.not_reportable;
             return;
+        }
         }
         // 00989877..0098994A: a command building of another slot (+180h) sends
         // the E6h session message first; its +78Ch/+180h are not in the host.
