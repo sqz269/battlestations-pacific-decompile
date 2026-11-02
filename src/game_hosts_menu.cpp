@@ -5,6 +5,7 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/frontend_state_machine.hpp"
@@ -28,6 +29,7 @@
 #include "bsp/press_start_screen.hpp"
 #include "bsp/title_init.hpp"
 #include "bsp/wire_goal1_chain4_switches.hpp"
+#include "bsp/wire_goal2_chain34_switches.hpp"
 
 #include <algorithm>
 #include <map>
@@ -695,6 +697,28 @@ private:
 // 0068d8d0 and 0068d850, the title handover
 // ---------------------------------------------------------------------------
 
+// Borrow the screen installed by 0068D8D0/0067CA80 and its existing input
+// provider for the duration of 0068D850. No second screen or owner is created.
+class MenuPressStartUpdateAdapter final : public engine_seg11_35_66_cc13::FrontEndScreenObject {
+public:
+    MenuPressStartUpdateAdapter(GameMenuHost::Impl& owner, MenuPressStartHost& press)
+        : owner_(owner), press_(press) {}
+
+    void update_20(float seconds) override {
+        const PressStartOutcome outcome = update_press_start_screen_0067cfb0(
+            owner_.press_start, owner_.press_globals, owner_.prompt_pulse, seconds,
+            press_);
+        owner_.log.implemented("PressStartScreen::update", "0067cfb0");
+        if (outcome != PressStartOutcome::Idle) {
+            owner_.log.notef("press-start outcome %d", static_cast<int>(outcome));
+        }
+    }
+
+private:
+    GameMenuHost::Impl& owner_;
+    MenuPressStartHost& press_;
+};
+
 class MenuTitleHandoverHost final : public TitleHandoverHost {
 public:
     MenuTitleHandoverHost(GameMenuHost::Impl& owner, MenuPressStartHost& press,
@@ -738,6 +762,12 @@ public:
         owner_.log.unimplemented("TitleScreen::update_title_owner", "00f8bbf4+4h");
     }
     void update_press_start_screen(float raw_delta) override {
+        // 004F71F0 dispatches the real screen's +20h; OFF keeps the direct press-start update.
+        if constexpr (kWireGoal2Chain34Bound) {
+            MenuPressStartUpdateAdapter screen(owner_, press_);
+            engine_seg11_35_66_cc13::update_front_end_screen_004f71f0(screen, raw_delta);
+            owner_.log.implemented("TitleScreen::update_press_start_screen", "004f71f0");
+        } else {
         // 004f71f0 on title+40h, which tail-calls the screen's vtable +20h with
         // the raw delta. The registry pump reaches the same body in pass C, so
         // the native runs 0067cfb0 twice per frame in state 2 and so does this.
@@ -747,6 +777,7 @@ public:
         owner_.log.implemented("PressStartScreen::update", "0067cfb0");
         if (outcome != PressStartOutcome::Idle) {
             owner_.log.notef("press-start outcome %d", static_cast<int>(outcome));
+        }
         }
     }
 
