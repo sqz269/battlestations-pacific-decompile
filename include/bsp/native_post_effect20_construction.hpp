@@ -137,6 +137,7 @@ public:
     // not implement its native failure recovery or authorize discarding it.
     void reset_after_host_quiescence() noexcept;
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativePostEffectModelFrame;
     friend class NativePostEffectParentDomain;
     friend class NativePostEffectParentFrame;
@@ -146,7 +147,7 @@ private:
     friend class NativeMeshCanonicalAccess;
     // Success is non-draining; only authentic private cold/settled phases select
     // the owning Model/Mesh checks. Material/caller preflight is Parent-owned.
-    void preflight_close_after_host_quiescence();
+    void preflight_close_after_host_quiescence(ReadinessRejection rejection = ReadinessRejection::sticky);
     void prepare_legacy(NativePostEffect20ConstructionContext&);
     void cancel_preparation_legacy() noexcept;
     void reset_after_host_quiescence_legacy() noexcept;

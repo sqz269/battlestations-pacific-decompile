@@ -1,0 +1,394 @@
+{
+  "status": "QUALIFIED_SOURCE_ACTUAL_CORE_GAME_CODE_BUILDS_AND_JOINED_TRANSFER_ACCEPTED",
+  "base": "03154b9a33287a1091eecc61f54a662a43866f03",
+  "frozen_Code_review_base": "bdb35a09b54d6663a5317fbcf619ab779e6eeb27",
+  "author_Source_base": "a3e354cf3c4821af28ce3541ff7ad0d8140daab8",
+  "files": [
+    {
+      "path": "include/bsp/native_post_effect_parent_lifetime.hpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 14925,
+        "sha256": "2a8a8789ebc82533e108243b88f1bae69fca11aadbd677f4571529d95dd6976a"
+      },
+      "after": {
+        "bytes": 15468,
+        "sha256": "64e2bf3d48267d884b3a28c43adde23847ffcf3f6eb716e430e6984595c2622c"
+      }
+    },
+    {
+      "path": "src/native_post_effect_parent_lifetime.cpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 85152,
+        "sha256": "36c80d7af2c3ddaa941b5f99e270af98ed03195cdc48cc2a36406c848fd7c6e4"
+      },
+      "after": {
+        "bytes": 87301,
+        "sha256": "ccf23e6b6d7b2d5a1a5b2edf3d3aae4548ce9f7cc2323da9e940dec927778194"
+      }
+    },
+    {
+      "path": "include/bsp/native_material_lifetime.hpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 9101,
+        "sha256": "4d533500a95ed0a30530a154e863f8948f53621d613ab2b5d9ef119de48ecd75"
+      },
+      "after": {
+        "bytes": 9411,
+        "sha256": "165006bd3647677b7a64d8c730ce407d7fe73acce7be1e180ed5e5771ea261a2"
+      }
+    },
+    {
+      "path": "src/native_material_lifetime.cpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 36687,
+        "sha256": "5dbe557b3e17e9e88cb77c8d41a3f13e780ed1efad4bae6412a2a2d9645ddea7"
+      },
+      "after": {
+        "bytes": 36943,
+        "sha256": "8059058abfb0c5ee306d76a84ae150791fbb595f2ccc6bf8a5278effed38ddee"
+      }
+    },
+    {
+      "path": "include/bsp/native_mesh_section_lifetime.hpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 13348,
+        "sha256": "e322dbc6141a05df9a74b9b2b57389567c1c2ad344062d353d3b37104868ea57"
+      },
+      "after": {
+        "bytes": 13599,
+        "sha256": "ca2b7185935fbffc8f1f09ce3f7c0f1d529373bfb4a8361ae5820a4aa07bb9a2"
+      }
+    },
+    {
+      "path": "src/native_mesh_section_lifetime.cpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 56228,
+        "sha256": "d57202dfe686b82eb4a0f1be7657dbce81e40c668d95b617c856d31c593d4233"
+      },
+      "after": {
+        "bytes": 56436,
+        "sha256": "594edaaac43a1f2cee46167fdbc915efdd9bd26c8e6825c0d601b489560c11d1"
+      }
+    },
+    {
+      "path": "include/bsp/native_post_effect_model_lifetime.hpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 8292,
+        "sha256": "be53ccfaee6d18ed39ad622575ae66dc3712b7c053355d2ceabc1e13152f0e19"
+      },
+      "after": {
+        "bytes": 8405,
+        "sha256": "3f0be1cbe0ffc90c6608b12c79abdde29e9992c141c928f7a0e14ca37593b454"
+      }
+    },
+    {
+      "path": "src/native_post_effect_model_lifetime.cpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 42898,
+        "sha256": "a4be326d80f17039ba2a28fe6225f5fe86502dec1ad163114c1e3a07240679d1"
+      },
+      "after": {
+        "bytes": 42971,
+        "sha256": "bfa9ee0c995429d9b6d5c38dfebe5ef3902c1df6a5921fcbb7736f92a69706a2"
+      }
+    },
+    {
+      "path": "include/bsp/native_mesh_canonical.hpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 11174,
+        "sha256": "cf5313284943b456a7d5f30bf9dd44e38a3d5745968e8832562ae8969e00e4a0"
+      },
+      "after": {
+        "bytes": 11413,
+        "sha256": "27b9ea21d4ca9e66621cc03287050af2413d425749ef35da544f2ebae4e7f79a"
+      }
+    },
+    {
+      "path": "src/native_mesh_canonical.cpp",
+      "scope": "nominal_ten",
+      "before": {
+        "bytes": 38963,
+        "sha256": "b8307df48b05a40932a9be9c074969a8b946d49a0c19f97163b129f3517215f7"
+      },
+      "after": {
+        "bytes": 39267,
+        "sha256": "0c930824ebf3ec37f48699049213e55a95365c9439572b82c747566ab14e74ad"
+      }
+    },
+    {
+      "path": "include/bsp/native_post_effect_construction.hpp",
+      "scope": "required_external_adapter",
+      "before": {
+        "bytes": 11701,
+        "sha256": "9499db802b398cf88a15a7b5e36f83b9a1acc3c6ab7906f16b585f8f2450a061"
+      },
+      "after": {
+        "bytes": 11814,
+        "sha256": "6f146673a3203d2006b490f378d9c1d3dea0ad6a3c958891b75ac574d700adb4"
+      }
+    },
+    {
+      "path": "src/native_post_effect_construction.cpp",
+      "scope": "required_external_adapter",
+      "before": {
+        "bytes": 53232,
+        "sha256": "8229fd847f4250da6d4355e38cd631eb5427d31d7440ddd5a73264b20d9d3c6e"
+      },
+      "after": {
+        "bytes": 53792,
+        "sha256": "eb4ca3fc457ac8062a733061488f79027adcdb7a41b249244090a6770a278bd4"
+      }
+    },
+    {
+      "path": "include/bsp/native_post_effect20_construction.hpp",
+      "scope": "required_external_adapter",
+      "before": {
+        "bytes": 13507,
+        "sha256": "1b2e4d217c0a821ac3fc315689d0d293a91d6707b57099d9a01622cdf731bd6b"
+      },
+      "after": {
+        "bytes": 13620,
+        "sha256": "6f77468a75e89605685cdc067d5e4e583052f71a25134a8bad674af828d46c86"
+      }
+    },
+    {
+      "path": "src/native_post_effect20_construction.cpp",
+      "scope": "required_external_adapter",
+      "before": {
+        "bytes": 55907,
+        "sha256": "5e8687dd6a0bd6983e38a02f5de62b100975fb17ae9a5ddfb456b0720abe797f"
+      },
+      "after": {
+        "bytes": 56467,
+        "sha256": "7357cfeef431e6c57d90892890c806ec05559acbb49d97e3c4994c5f4daed514"
+      }
+    }
+  ],
+  "scope": {
+    "production_paths": 14,
+    "existing_private_definitions_changed": 20,
+    "private_enums": 8,
+    "new_function_bodies": 0,
+    "persistent_fields": 0,
+    "public_APIs": 0,
+    "friendships": 0,
+    "CMake_changes": 0,
+    "production_preserve_caller": false
+  },
+  "Source_gate": {
+    "author_seal_sha256": "8c0cf22886563c560adda761d9cfb02595ca02cebcab52daa5445cd1bd765e29",
+    "peer_seal_sha256": "dd752093e4d60e71f5c270ec6b16117192c3bdf9498d8b3a04aa45a0656dc1c0",
+    "whole_sticky_proofs": 20,
+    "whole_preserve_proofs": 20,
+    "whole_CPP_complements": 7,
+    "whole_headers": 7,
+    "policy_edges": 55,
+    "impurity_routes": 11,
+    "complete_failure_calls": 13,
+    "actual_replay_applies": 32,
+    "actual_replay_checks": 32,
+    "whole_replay_file_comparisons": 448,
+    "Root_all68_author_494_peer_entries_and_entire_reviews_verified": true,
+    "Root_full_47213char_diff_read": true
+  },
+  "genuine_before": {
+    "receipt_sha256": "1c890473b9e302378e0705aa68c80e330642962de299099227b8eba5131515b0",
+    "prior_official_build_receipt": "1fd05cbd2e3e6536a8c6680b3e999792de3693efd18357fdc522ab560700624d",
+    "Core_sha256": "268e8898d8d7d0194094b50b1bb91f4273b4ff5988559f970c698fe0f533a97f",
+    "qualification": "Seven whole primary payloads extracted from genuine previous official archive; all14 source preimages match actual compiler inputs; 23 before Game objects captured before Source14; no new baseline build or relabeling."
+  },
+  "builds": [
+    {
+      "directory": "Render_pure_predicate_Core_Root",
+      "baseline": "bdb35a09b54d6663a5317fbcf619ab779e6eeb27",
+      "build_seconds": 116.27,
+      "test_seconds": 18.77,
+      "exit_code": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "build_receipt_sha256": "30b0fc56ba6a837d0b1b37d48ca9667ba495ea64d4354ef5614f16fe3e842c1a",
+      "Core_sha256": "9c0e41f3a1ba13f42b8a138770548c22bfe3ae7c9c59be7baf366ccd60bc7ad9",
+      "Game_run": false
+    },
+    {
+      "directory": "Render_pure_predicate_Main_join_Core_Root",
+      "baseline": "03154b9a33287a1091eecc61f54a662a43866f03",
+      "build_seconds": 56.98,
+      "test_seconds": 12.95,
+      "exit_code": 0,
+      "suites": [
+        "reconstructed_math",
+        "tool_tests"
+      ],
+      "build_receipt_sha256": "888beecc7938bde1905138113ad9b0d0d92ca0c86501ef2abca26e93e7a99f64",
+      "Core_sha256": "ffa45162d6a4eb28c1b869b54c1c8a9d1562d1dd7cf0d5d078141f2ebca6c540",
+      "Game_run": false
+    }
+  ],
+  "actual_Code_gate": {
+    "status": "QUALIFIED_PASS_FROZEN_BDB_COHORT",
+    "aggregate_seal_sha256": "58437afbc95940dc4de70ec47646eaecfbae569ba1391b48eeeb3076ff4ab590",
+    "policy20_seal_sha256": "164cc39a341d3695b57ebb80cc11fbfe0417cf826eae2a3aaf2a7409eee8132c",
+    "Root_all596_aggregate_232_policy_entries_verified_and_entire_reviews_read": true,
+    "facts": {
+      "status": "QUALIFIED_AGGREGATE_ACTUAL_CODE_GATE_PASS",
+      "findings": [],
+      "frozen_review_baseline": "bdb35a09b54d6663a5317fbcf619ab779e6eeb27",
+      "before_Core_sha256": "268e8898d8d7d0194094b50b1bb91f4273b4ff5988559f970c698fe0f533a97f",
+      "after_Core_sha256": "9c0e41f3a1ba13f42b8a138770548c22bfe3ae7c9c59be7baf366ccd60bc7ad9",
+      "after_receipt_sha256": "30b0fc56ba6a837d0b1b37d48ca9667ba495ea64d4354ef5614f16fe3e842c1a",
+      "complete_archive_members": 2860,
+      "whole_exact_Core_members": 2736,
+      "literal_timestamp_only_Core": 116,
+      "substantive_Core_objects": 8,
+      "actual_header_closure_Core_Game": [
+        124,
+        23
+      ],
+      "literal_timestamp_only_Game_objects": 23,
+      "changed_same_key_code_sections": 100,
+      "ordinary_policy_call_or_sticky_inline_bodies": 81,
+      "existing_EH_frame_displacement_helpers": 19,
+      "removed_added_code_sections": [
+        29,
+        26
+      ],
+      "actual_outlined_policy_refs_internal_external": [
+        24,
+        28
+      ],
+      "all_external_mode_values_zero": true,
+      "ordinary_static_cdecl_cleanup_checked": 12,
+      "private_thiscall_cleanup_plus4": 17,
+      "static_cdecl_policy_bodies": 3,
+      "strict_unchanged_data_sections": 428,
+      "strict_unchanged_constructor_destructor_sections": 507,
+      "FP_arithmetic_in_changed_same_key_sections": 0,
+      "PE_selected_code_sections_exact": 487,
+      "PE_relocations_resolved_and_exact": 3680,
+      "own_origin_sections_not_in_MAP": 1559,
+      "policy20_named_in_final_MAP": 7,
+      "compiler_input_count": 6638,
+      "changed_inputs_exactly_qualified_Source14": 14,
+      "unchanged_other_inputs": 6624,
+      "compiler_command_entries_exact": 3044,
+      "per_TU_non_source_resource_read_record_deltas": 7,
+      "policy20_subgate_seal": "164cc39a341d3695b57ebb80cc11fbfe0417cf826eae2a3aaf2a7409eee8132c",
+      "policy20_imported_files_verified": 232,
+      "preparation_60_files_reverified_unchanged": true,
+      "own_new_build_test_probe_Game_Ghidra_production_Git_actions": false,
+      "OriginalABI_FP_DF_FH3_SEH_runtime_fault_concurrency_Game_activation_credit": 0,
+      "later_Main_join_reviewed_by_this_seal": false
+    },
+    "Root_entire_aggregate_review_bytes": 7198,
+    "Root_entire_policy_review_bytes": 4595
+  },
+  "joined_transfer": {
+    "status": "QUALIFIED_PASS",
+    "seal_sha256": "108cafb499589eee7af1e0aea27013a1f453e2fdaa06145f46069ff13eaf68a4",
+    "Root_all29_indexed_files_verified_and_entire5835review_read": true,
+    "facts": {
+      "status": "QUALIFIED_JOINED_SOURCE14_ACTUAL_CODE_TRANSFER_PASS",
+      "findings": [],
+      "joined_Main": "03154b9a33287a1091eecc61f54a662a43866f03",
+      "joined_receipt_sha256": "888beecc7938bde1905138113ad9b0d0d92ca0c86501ef2abca26e93e7a99f64",
+      "joined_Core_sha256": "ffa45162d6a4eb28c1b869b54c1c8a9d1562d1dd7cf0d5d078141f2ebca6c540",
+      "parent_aggregate_seal": "58437afbc95940dc4de70ec47646eaecfbae569ba1391b48eeeb3076ff4ab590",
+      "parent_policy20_seal": "164cc39a341d3695b57ebb80cc11fbfe0417cf826eae2a3aaf2a7409eee8132c",
+      "parent596_files_whole_reverified": 596,
+      "Core_members": 2860,
+      "Core_whole_payload_exact": 2859,
+      "Core_timestamp_only": 1,
+      "Core_policy8_whole_exact": 8,
+      "complete_Core_Code_EH_data_references_canonical_exact": true,
+      "both_archive_linker_indices_exact": true,
+      "archive_container_member_dates_changed": 4,
+      "PE_selected_code_sections_exact": 487,
+      "PE_patched_refs_exact": 3680,
+      "PE_unresolved_targets": 0,
+      "existing_Game23_whole_exact": 7,
+      "existing_Game23_timestamp_only": 15,
+      "existing_Game23_substantive_Source157_only": 1,
+      "Source157_actual_changed_code_sections": 2,
+      "Source157_after_bytes_ops_relocs": [
+        110,
+        39,
+        7
+      ],
+      "Source157_only_other_deltas": [
+        "two exact debug-F function extents",
+        "LNK_REMOVE checksum metadata"
+      ],
+      "new_Source150_Game_TUs": 1,
+      "Game_newTU_and_Source157_behavioral_admission_excluded": true,
+      "all_47_before_join_Game_objects_direct_policy20_refs": 0,
+      "actual_input_counts": [
+        6638,
+        6640
+      ],
+      "only_added_inputs": "Source150 FrameBox header+cpp",
+      "only_changed_input": "Source157 game_hosts_vfs.hpp",
+      "no_removed_inputs": true,
+      "positive_Main03154_three_upstream_input_wholepins": true,
+      "existing_compiler_commands_exact": [
+        2860,
+        184
+      ],
+      "new_Game_command": 1,
+      "header_closure_Core_Game": [
+        124,
+        24
+      ],
+      "existing124Core_23Game_header_mappings_exact": true,
+      "new_only_header_TU": "game_native_gui_page_frame_box_default.cpp",
+      "all20_final_PE_or_runtime_claimed": false,
+      "OriginalABI_FP_DF_FH3_SEH_runtime_fault_concurrency_activation_credit": 0,
+      "own_build_test_probe_Game_Ghidra_production_Git_actions": false
+    }
+  },
+  "held": [
+    "Legacy8 implementation/publication and fresh Block4 pins",
+    "Root2 whole-operation composition and selected/unowed projections before actual Parent close",
+    "Actual SAME Source completion and whole observer traversal, no-new-entry, Native/worker/provider/borrower/final physical fences",
+    "CURRENT-B/Raw4/Common concrete provider/receiver binding and actual owner/Mission/Renderer provisioning",
+    "OriginalABI/HOME/FP/DF/FH3/SEH/fault/concurrency/Origin/all8/lower/OFFON/runtime/activation"
+  ],
+  "acceptance": {
+    "Source": true,
+    "actual_frozen_Code": true,
+    "official_build": true,
+    "existing_suites": true,
+    "joined_Code": true,
+    "Original_Native_ABI": false,
+    "runtime": false,
+    "activation": false
+  },
+  "all9_GUI_flags": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ],
+  "Native_credit": 0,
+  "vendor_credit": 0,
+  "new_tests": 0,
+  "new_probes": 0,
+  "Game_run": false,
+  "Ghidra_mutations": 0
+}

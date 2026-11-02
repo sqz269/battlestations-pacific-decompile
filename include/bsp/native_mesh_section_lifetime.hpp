@@ -95,6 +95,7 @@ public:
     bool requires_process_retention() const noexcept;
     void close_after_host_quiescence();
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativeMeshSectionLifetimeDomain;
     friend class NativePostEffectParentFrame;
     friend class NativeMeshSectionLifetimeCall;
@@ -131,8 +132,8 @@ private:
         direct_payload, scalar, creator, reference, clear_storage, rebuild_storage };
     explicit NativeMeshSectionLifetimeFrame(NativeMeshSectionLifetimeDomain&);
     void prepare_after_link();
-    void require_owned(bool,const char*) const;
-    void require_healthy() const;
+    void require_owned(bool value, const char* message, ReadinessRejection rejection = ReadinessRejection::sticky) const;
+    void require_healthy(ReadinessRejection rejection = ReadinessRejection::sticky) const;
     static void record_domain_failure(NativeMeshSectionLifetimeDomain&) noexcept;
     void record_source_failure() noexcept; // metadata ONLY, never foreign heads
     void begin_cpp_count_use(RenderCommandReference&);
@@ -159,7 +160,7 @@ private:
     void bind_parent_caller(NativePostEffectParentFrame&);
     void require_prepared_call(const Call&) const;
     NativeMeshSectionStorage* produce_for_parent(Call&, NativePostEffectParentFrame&);
-    void preflight_caller_end(const Call&) const;
+    void preflight_caller_end(const Call& call, ReadinessRejection rejection = ReadinessRejection::sticky) const;
     void end_caller_after_host_quiescence(Call&);
     // Only genuine never-entered/normal-NULL can withdraw an unborn notice
     // loan. An entered/live/flags0/unknown Section keeps the Parent metadata.

@@ -54,6 +54,7 @@ public:
     bool requires_process_retention() const noexcept;
     void close_after_host_quiescence();
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativeMaterialDomain;
     friend class NativePostEffectParentFrame;
     friend class NativeMaterialReference;
@@ -83,11 +84,11 @@ private:
         NativeMaterialFactoryAcquired&, NativeMaterialEffectCacheContext&);
     void parent_field_published(NativePostEffectParentFrame&, void* captured_parent,
         NativeMaterialStorage* stored_actual) noexcept;
-    void preflight_parent_caller_close(const NativePostEffectParentFrame&) const;
+    void preflight_parent_caller_close(const NativePostEffectParentFrame& parent, ReadinessRejection rejection = ReadinessRejection::sticky) const;
     void close_parent_caller_after_host_quiescence(NativePostEffectParentFrame&);
     bool parent_caller_closed(const NativePostEffectParentFrame&) const noexcept;
-    void require_owned(bool,const char*) const;
-    void require_healthy() const;
+    void require_owned(bool value, const char* message, ReadinessRejection rejection = ReadinessRejection::sticky) const;
+    void require_healthy(ReadinessRejection rejection = ReadinessRejection::sticky) const;
     static void record_domain_failure(NativeMaterialDomain&) noexcept;
     void record_source_failure() noexcept;
     void require_same_canonical(RenderCommandReference&) const;
@@ -106,7 +107,7 @@ private:
     void fail_children_owned(std::uint32_t private_owned_set) noexcept;
     void release_child(NativeRenderActualOwners&,void*,std::size_t,bool payload);
     void release_factory_effect(NativeRenderActualOwners&,void*);
-    void preflight_close() const;
+    void preflight_close(ReadinessRejection rejection = ReadinessRejection::sticky) const;
 
     // Issued only from the actual shared constructor/factory continuations.
     // No public acquired/phase/profile/count can set these observations.

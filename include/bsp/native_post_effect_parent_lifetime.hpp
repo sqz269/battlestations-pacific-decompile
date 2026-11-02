@@ -61,6 +61,7 @@ public:
     bool has_retained_records() const noexcept;      // expected live is separate
     void close_after_host_quiescence(); // a real caller fence, not a counter test
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativePostEffectParentFrame;
     friend class NativeBrightPassInitializationBlock;
     friend class NativePostEffectDustBlock;
@@ -70,8 +71,8 @@ private:
         NativePostEffectConstructionContext&, NativeMeshSectionLifetimeSourceScope&);
     // Pure all-record validation, including each selected Material loan,
     // before the first receiver drain, child close or Block reset.
-    void preflight_close() const;
-    void require_owned(bool, const char*) const;
+    void preflight_close(ReadinessRejection rejection = ReadinessRejection::sticky) const;
+    void require_owned(bool value, const char* message, ReadinessRejection rejection = ReadinessRejection::sticky) const;
     struct Impl;
     std::unique_ptr<Impl> impl_;
 };
@@ -86,6 +87,7 @@ public:
     bool requires_process_retention() const noexcept;
     void close_after_host_quiescence();
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativePostEffectParentDomain;
     friend class NativePostEffectOwner;
     friend class NativePostEffectReference;
@@ -145,8 +147,8 @@ private:
     void record_source_failure() noexcept;
 
     void require_same_canonical(RenderCommandReference&) const;
-    void require_healthy() const;
-    void require_owned(bool, const char*) const;
+    void require_healthy(ReadinessRejection rejection = ReadinessRejection::sticky) const;
+    void require_owned(bool value, const char* message, ReadinessRejection rejection = ReadinessRejection::sticky) const;
     static void record_domain_failure(NativePostEffectParentDomain&) noexcept;
     void prepare_after_link();
     void* construct20(NativeString&, std::uint32_t, const void*);
@@ -179,7 +181,7 @@ private:
     // Use Common invoke(reference, actual, terminal_zero_frame_), not dispatch.
     void invoke_material_observed_zero(RenderCommandReference&, void* captured_actual);
     void require_material_payload_operation() const;
-    void preflight_material_caller_close() const;
+    void preflight_material_caller_close(ReadinessRejection rejection = ReadinessRejection::sticky) const;
     void close_material_caller_after_host_quiescence();
     bool material_caller_closed() const noexcept;
     // Concrete initializer admission spans the ORIGINAL allocator/name/body/
@@ -214,7 +216,7 @@ private:
     void set_section_material(void* actual_incoming);
     void rebuild_section_layout(void* actual_mesh);
     void release_section_creator(long (__stdcall* captured)(volatile long*));
-    void preflight_section_caller_end() const;
+    void preflight_section_caller_end(ReadinessRejection rejection = ReadinessRejection::sticky) const;
     void end_section_caller_after_host_quiescence();
     bool section_caller_ended() const noexcept;
     NativePostEffectParentFrame* section_source_scope_ended(
@@ -223,7 +225,7 @@ private:
         NativeMeshSectionReference&) noexcept;
     bool section_custody_pending() const noexcept;
     void finish_closed_section_custody() noexcept;
-    void preflight_close() const;
+    void preflight_close(ReadinessRejection rejection = ReadinessRejection::sticky) const;
     // Future CPP definitions: only the admitted constructor/scalar mutation
     // owner may propagate failure through its own receiver at the real fence.
     // Rejected calls and creator-nonzero paths never traverse these heads.

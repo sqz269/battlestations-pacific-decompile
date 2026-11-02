@@ -123,6 +123,7 @@ private:
 // Each friend is an actual owning producer or the existing release boundary.
 class NativeMeshCanonicalAccess final {
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativeMeshCanonicalDomain;
     friend class NativeMeshCanonicalRecord;
     friend class NativeMeshCanonicalProducerFrame;
@@ -150,7 +151,7 @@ private:
     static void release_payload_child(NativeMeshPayloadReleaseReceiver&,
         NativeRenderActualOwners&, void* captured_actual);
     static void end_payload_receiver(NativeMeshCanonicalRecord&, bool source_failed) noexcept;
-    static void preflight_payload_receiver(NativeMeshCanonicalRecord&, bool complete);
+    static void preflight_payload_receiver(NativeMeshCanonicalRecord& r, bool complete, ReadinessRejection rejection = ReadinessRejection::sticky);
     static void drain_payload_receiver(NativeMeshCanonicalRecord&);
     static void require_domain_identity(NativeMeshCanonicalDomain&, NativeMeshEnvironment&,
         NativeRenderActualOwners&);
@@ -177,11 +178,11 @@ private:
     // born/entered-unknown constructor is retained with NO raw return.
     static bool return_unconstructed_static_slot(NativeMeshCanonicalProducerFrame&, void* captured_slot);
     // Genuine never-entered/normal-NULL attempt only; no detach/cancel.
-    static void preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame&);
+    static void preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f, ReadinessRejection rejection = ReadinessRejection::sticky);
     static void cancel_without_native_payload(NativeMeshCanonicalProducerFrame&);
     // Read only completion/active/hold metadata; never drain as a probe.
     // The actual complete caller/worker quiescence remains external.
-    static void preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame&);
+    static void preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f, ReadinessRejection rejection = ReadinessRejection::sticky);
     static void close_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame&);
     static void record_source_failure(NativeMeshCanonicalProducerFrame&) noexcept;
 

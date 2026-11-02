@@ -236,13 +236,13 @@ void NativeMeshSectionLifetimeFrame::record_source_failure() noexcept {
     if(impl_->attached)impl_->domain.impl_->owners.poison_exact_record(exact_);
     // Metadata ONLY. The actual operation's own scope propagates its own heads.
 }
-void NativeMeshSectionLifetimeFrame::require_owned(bool value,const char* message) const {
-    if(!value){const_cast<NativeMeshSectionLifetimeFrame*>(this)->record_source_failure();throw std::logic_error(message);}
+void NativeMeshSectionLifetimeFrame::require_owned(bool value,const char* message, ReadinessRejection rejection) const {
+    if(!value){if (rejection == ReadinessRejection::sticky) const_cast<NativeMeshSectionLifetimeFrame*>(this)->record_source_failure();throw std::logic_error(message);}
 }
-void NativeMeshSectionLifetimeFrame::require_healthy() const {
+void NativeMeshSectionLifetimeFrame::require_healthy(ReadinessRejection rejection) const {
     require_owned(!impl_->failed.load(std::memory_order_acquire)&&!impl_->domain.impl_->failed.load(std::memory_order_acquire)&&
         !impl_->closed.load(std::memory_order_acquire)&&!impl_->domain.impl_->retention.requires_process_retention(),
-        "Section retains failed/closed Source custody");
+        "Section retains failed/closed Source custody", rejection);
 }
 bool NativeMeshSectionLifetimeDomain::requires_process_retention() const noexcept {
     return impl_->failed.load(std::memory_order_acquire)||impl_->retention.requires_process_retention();
@@ -456,33 +456,33 @@ NativeMeshSectionStorage* NativeMeshSectionLifetimeFrame::produce_for_parent(Cal
     impl_->parent_producer_call=&call;
     return produce(call,nullptr);
 }
-void NativeMeshSectionLifetimeFrame::preflight_caller_end(const Call& call) const {
-    require_healthy();
+void NativeMeshSectionLifetimeFrame::preflight_caller_end(const Call& call, ReadinessRejection rejection) const {
+    require_healthy(rejection);
     require_owned(&call.impl_->frame==this&&!call.impl_->terminal&&call.impl_->source_identity&&
         call.impl_->source_ended&&!call.impl_->source&&!call.impl_->source_next&&
         !call.impl_->source_active.load()&&!call.impl_->failed.load()&&call.impl_->active_users.load()==0&&
         !call.impl_->caller_end_entered&&!call.impl_->caller_ended&&
         call.impl_->direct_zero.active_invocations_.load()==0,
-        "Parent Section caller end requires its real whole-Source withdrawal witness, once only");
+        "Parent Section caller end requires its real whole-Source withdrawal witness, once only", rejection);
     require_owned(call.impl_->operation.load()==0?
         (!call.impl_->leaf_entered.load()&&!call.impl_->returned.load()):
         (call.impl_->leaf_entered.load()&&call.impl_->returned.load()),
-        "Parent Section invocation return/unused history remains unknown");
+        "Parent Section invocation return/unused history remains unknown", rejection);
     const auto& drop=call.impl_->reference_drop;
     require_owned(drop.cpp_zero_frame.active_invocations_.load()==0&&(!drop.entered||
         (drop.decremented&&drop.returned&&(!drop.zero_dispatch_entered||drop.zero_dispatch_returned))),
-        "Parent Section retained-credit decrement/zero/return remains unknown");
+        "Parent Section retained-credit decrement/zero/return remains unknown", rejection);
     for(auto& observation:call.impl_->children){
         require_owned(observation.cpp_zero_frame.active_invocations_.load()==0&&
             (!observation.entered||(observation.decremented&&observation.returned&&
              (!observation.zero_dispatch_entered||observation.zero_dispatch_returned))),
-            "Parent Section child decrement/zero/whole-call return remains unknown");
+            "Parent Section child decrement/zero/whole-call return remains unknown", rejection);
     }
     for(auto* row=call.impl_->storage_releases;row;row=row->next){
         require_owned(row->zero_frame.active_invocations_.load()==0&&row->entered&&
             row->decrement_returned&&row->returned&&(!row->zero_provider_entered||
             (row->current_captured&&row->zero_provider_returned)),
-            "Parent Section raw storage decrement/provider/whole-call return remains unknown");
+            "Parent Section raw storage decrement/provider/whole-call return remains unknown", rejection);
     }
     // No live-canonical/count/death test, Frame-wide drain, ancestor walk,
     // final Domain seal or Native work belongs to this caller-only first pass.

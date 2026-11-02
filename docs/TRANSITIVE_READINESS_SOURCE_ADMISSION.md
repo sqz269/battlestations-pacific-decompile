@@ -1,0 +1,15 @@
+# Transitive readiness rejection policy admission
+
+Status: qualified Source, emitted Code, official Win32 build and joined Main transfer accepted.
+
+Private readiness methods in Parent, Material, Section, Model and Mesh now carry a per-call rejection policy through both ordinary post-effect Block adapters. Existing callers default to the original sticky behavior. The preserve route evaluates the same predicates, in the same order, and throws the same diagnostics while omitting the complete graph failure-recording actions. That includes Mesh poison, conditional retention failure and primary-exception capture. Original sticky recording remains before diagnostic construction and at the original catch/rethrow sites, including diagnostic allocation failure.
+
+The batch changes twenty existing private definitions across fourteen existing header/source files. Eight class-local private enums add no persistent fields, public APIs, function bodies, friendships, global mode or CMake registration. All fifty-five nested calls explicitly forward or map this invocation's policy. Existing pure lookups, health checks and observations remain unchanged.
+
+Independent Source review reproduces twenty whole sticky definitions, twenty whole preserve definitions minus only thirteen complete recording calls, seven entire C++ complements and seven whole header projections. Full and seven pair patches replay in both starting directions. The official MSVC Win32 build and both existing suites pass. The complete dependency census includes 124 Core and 23 Game translation units.
+
+Actual emitted-Code review covers twenty methods, their reject lambda and three FH3 pairs, all 55 nested edges, 28 ordinary outlined sticky callers, 100 changed existing code/helper sections, and complete symbol, data and dependency closure. The 116 other rebuilt Core and all 23 rebuilt Game objects differ only in timestamps. All eight substantive policy/caller objects transfer byte-for-byte to the joined Main build; 487 selected code sections and 3,680 MAP relocations match its executable. Seven policy methods have named final-MAP selection; all twenty are evidenced in actual Core COFF. Source150/157 additions remain under their separate upstream admissions.
+
+No production caller selects preserve. A successful query is an observation and supplies no use fence or cleanup authority. Whole-child composition, selected Caller projection, legacy leaf/viewport readiness, actual Parent close ordering and the real owner/Source/native/worker/provider/borrower/final physical fences remain separate work. Failed or unknown debt remains retained; healthy outstanding debt must not be poisoned by a readiness rejection.
+
+This introduces private C++ interface changes. Original ABI/HOME placement, FP/DF, FH3/SEH/fault/concurrency equivalence, Origin/all-eight/lower compatibility, OFF/ON behavior, runtime and activation remain unproved. All nine GUI flags remain false; Native and vendor credit remain zero. No new tests, probes or Game run were added.

@@ -270,9 +270,9 @@ NativePostEffectParentDomain::~NativePostEffectParentDomain() {
     auto* frame = impl_->first;
     while (frame) { auto* next = frame->impl_->next; delete frame; frame = next; }
 }
-void NativePostEffectParentDomain::require_owned(bool value, const char* message) const {
+void NativePostEffectParentDomain::require_owned(bool value, const char* message, ReadinessRejection rejection) const {
     if (!value) {
-        NativePostEffectParentFrame::record_domain_failure(
+        if (rejection == ReadinessRejection::sticky) NativePostEffectParentFrame::record_domain_failure(
             *const_cast<NativePostEffectParentDomain*>(this));
         throw std::logic_error(message);
     }
@@ -305,17 +305,17 @@ void NativePostEffectParentFrame::record_source_failure() noexcept {
     record_domain_failure(impl_->domain);
     if (impl_->attached) impl_->domain.impl_->owners.poison_exact_record(exact_);
 }
-void NativePostEffectParentFrame::require_owned(bool value, const char* message) const {
+void NativePostEffectParentFrame::require_owned(bool value, const char* message, ReadinessRejection rejection) const {
     if (!value) {
-        const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();
+        if (rejection == ReadinessRejection::sticky) const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();
         throw std::logic_error(message);
     }
 }
-void NativePostEffectParentFrame::require_healthy() const {
+void NativePostEffectParentFrame::require_healthy(ReadinessRejection rejection) const {
     if (impl_->failed.load(std::memory_order_acquire) ||
         impl_->domain.impl_->failed.load(std::memory_order_acquire) || impl_->closed.load() ||
         impl_->domain.impl_->retention.requires_process_retention()) {
-        const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();
+        if (rejection == ReadinessRejection::sticky) const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();
         throw std::logic_error("Parent record retains failed/closed Source custody");
     }
 }
@@ -1052,31 +1052,39 @@ void NativePostEffectParentFrame::section_native_retired(NativeMeshSectionLifeti
     // Retirement precedes scalar health/Source return and is no success fence.
     finish_closed_section_custody();
 }
-void NativePostEffectParentFrame::preflight_section_caller_end() const {
+void NativePostEffectParentFrame::preflight_section_caller_end(ReadinessRejection rejection) const {
     if(!impl_->domain.impl_->binding.sections){
-        require_owned(!impl_->section,"Null Section binding cannot adopt a caller later");return;
+        require_owned(!impl_->section,"Null Section binding cannot adopt a caller later", rejection);return;
     }
-    require_healthy();const auto* s=impl_->section.get();
+    require_healthy(rejection);const auto* s=impl_->section.get();
     require_owned(s&&s->source_ended&&!s->source_live&&!s->source_next&&!s->source_failed,
-        "Parent Section callers require the SAME actual post-withdrawal Source end");
+        "Parent Section callers require the SAME actual post-withdrawal Source end", rejection);
     if(s->caller_ended)return; // remaining addresses are opaque history only
     require_owned(!s->caller_end_entered&&s->frame&&s->create&&s->material&&s->rebuild&&s->creator&&
         !impl_->constructor_outer.load()&&!impl_->constructor_scope_active.load(),
-        "Parent Section caller end cannot replay/cross its constructor fence");
+        "Parent Section caller end cannot replay/cross its constructor fence", rejection);
     const bool skipped=(!impl_->producer_entered.load()&&!impl_->allocator_entered.load())||
         (impl_->normal_null_recorded.load()&&impl_->allocator_returned.load()&&!impl_->actual);
     if(skipped)require_owned(!s->producer_returned&&!s->whole_constructor_returned&&!s->canonical&&
         !s->borrowed&&!s->material_returned&&!s->rebuild_returned&&!s->creator_returned,
-        "Unused Section callers require genuine never-entered/Parent-NULL history");
+        "Unused Section callers require genuine never-entered/Parent-NULL history", rejection);
     else require_owned(s->producer_returned&&!s->normal_null&&s->whole_constructor_returned&&s->canonical&&
         s->material_returned&&s->rebuild_returned&&s->creator_returned,
-        "Parent Section sites retain unknown/partial/normal-tail return custody");
+        "Parent Section sites retain unknown/partial/normal-tail return custody", rejection);
     // These are ONLY our four actual top-level Calls, never Frame.calls,
     // terminal/foreign/ancestor heads or the Section Domain final seal.
-    s->frame->preflight_caller_end(*s->create);
-    s->frame->preflight_caller_end(*s->material);
-    s->frame->preflight_caller_end(*s->rebuild);
-    s->frame->preflight_caller_end(*s->creator);
+    s->frame->preflight_caller_end(*s->create,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshSectionLifetimeFrame::ReadinessRejection::preserve : NativeMeshSectionLifetimeFrame::ReadinessRejection::sticky);
+    s->frame->preflight_caller_end(*s->material,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshSectionLifetimeFrame::ReadinessRejection::preserve : NativeMeshSectionLifetimeFrame::ReadinessRejection::sticky);
+    s->frame->preflight_caller_end(*s->rebuild,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshSectionLifetimeFrame::ReadinessRejection::preserve : NativeMeshSectionLifetimeFrame::ReadinessRejection::sticky);
+    s->frame->preflight_caller_end(*s->creator,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshSectionLifetimeFrame::ReadinessRejection::preserve : NativeMeshSectionLifetimeFrame::ReadinessRejection::sticky);
 }
 void NativePostEffectParentFrame::end_section_caller_after_host_quiescence() {
     preflight_section_caller_end();if(!impl_->section||impl_->section->caller_ended)return;
@@ -1193,24 +1201,26 @@ void NativePostEffectParentFrame::invoke_material_observed_zero(RenderCommandRef
         require_healthy();
     }catch(...){record_source_failure();throw;} // metadata only; scalar owner fails heads at its fence
 }
-void NativePostEffectParentFrame::preflight_material_caller_close() const {
-    require_healthy();
+void NativePostEffectParentFrame::preflight_material_caller_close(ReadinessRejection rejection) const {
+    require_healthy(rejection);
     require_owned(!impl_->constructor_scope_active.load()&&!impl_->payload_scope_active.load()&&
         material_parameter_release_.cpp_zero_frame.active_invocations_.load()==0&&
         terminal_zero_frame_.active_invocations_.load()==0,
-        "Parent Material callers still own active constructor/scalar/receiver scopes");
+        "Parent Material callers still own active constructor/scalar/receiver scopes", rejection);
     require_owned(!impl_->material_setter_entered.load()||impl_->material_setter_returned.load(),
-        "Parent Material setter return/health remains unknown");
+        "Parent Material setter return/health remains unknown", rejection);
     const auto& setter=material_parameter_release_;
     require_owned(!setter.entered||(setter.decremented&&setter.returned&&
         (!setter.zero_dispatch_entered||setter.zero_dispatch_returned)),
-        "Parent parameter old-source decrement/zero/return remains unknown");
+        "Parent parameter old-source decrement/zero/return remains unknown", rejection);
     if(impl_->domain.impl_->binding.materials){
-        require_owned(material_frame_!=nullptr,"Parent lost its selected Material caller association");
-        if(impl_->block20)require_owned(impl_->block20->material_frame_==material_frame_,"Parent20 Material association changed");
-        else require_owned(impl_->block24->material_frame_==material_frame_,"Parent24 Material association changed");
-        material_frame_->preflight_parent_caller_close(*this);
-    }else require_owned(!material_frame_,"Null Material binding cannot adopt a later caller association");
+        require_owned(material_frame_!=nullptr,"Parent lost its selected Material caller association", rejection);
+        if(impl_->block20)require_owned(impl_->block20->material_frame_==material_frame_,"Parent20 Material association changed", rejection);
+        else require_owned(impl_->block24->material_frame_==material_frame_,"Parent24 Material association changed", rejection);
+        material_frame_->preflight_parent_caller_close(*this,
+        rejection == ReadinessRejection::preserve ?
+            NativeMaterialFrame::ReadinessRejection::preserve : NativeMaterialFrame::ReadinessRejection::sticky);
+    }else require_owned(!material_frame_,"Null Material binding cannot adopt a later caller association", rejection);
 }
 void NativePostEffectParentFrame::close_material_caller_after_host_quiescence() {
     preflight_material_caller_close();
@@ -1222,21 +1232,21 @@ void NativePostEffectParentFrame::close_material_caller_after_host_quiescence() 
 bool NativePostEffectParentFrame::material_caller_closed() const noexcept {
     return material_frame_&&!requires_process_retention()&&material_frame_->parent_caller_closed(*this);
 }
-void NativePostEffectParentFrame::preflight_close() const {
+void NativePostEffectParentFrame::preflight_close(ReadinessRejection rejection) const {
     try {
-    require_healthy();auto* caller=observed_zero_hold_.frame_;const unsigned retained_hold=caller?1u:0u;
+    require_healthy(rejection);auto* caller=observed_zero_hold_.frame_;const unsigned retained_hold=caller?1u:0u;
     if(const auto* i=impl_->initializer.get()){
         require_owned(i->source_ended&&!i->source_live&&!i->source_next&&!i->source_failed&&!i->owns_observer&&
             !i->outer_entered&&!i->material_scope&&!i->terminal_invocation&&
             (!i->admitted||(i->finished&&i->source_returned)),
-            "Initializer close requires full automatic tail AND real external Source end");
+            "Initializer close requires full automatic tail AND real external Source end", rejection);
     }
     require_owned(!impl_->constructor_outer.load()&&!impl_->constructor_scope_active.load()&&!impl_->payload_scope_active.load()&&
         terminal_zero_frame_.active_invocations_.load(std::memory_order_acquire)==0&&
         material_parameter_release_.cpp_zero_frame.active_invocations_.load(std::memory_order_acquire)==0&&
         (!caller||caller->active_invocations_.load(std::memory_order_acquire)==0)&&
         impl_->outer_calls.load()==retained_hold&&exact_.outer_calls_.load()==retained_hold&&exact_.borrows_.load()==0,
-        "Parent close crossed an active operation/count use/whole caller fence");
+        "Parent close crossed an active operation/count use/whole caller fence", rejection);
     const bool never_entered=!impl_->producer_entered.load()&&!impl_->allocator_entered.load()&&
         !impl_->constructor_entered.load()&&!impl_->atomic_born.load()&&!impl_->published.load();
     const bool normal_null=impl_->normal_null_recorded.load()&&impl_->allocator_returned.load()&&!impl_->actual&&
@@ -1247,33 +1257,39 @@ void NativePostEffectParentFrame::preflight_close() const {
     require_owned(never_entered||normal_null||cancelled||
         (impl_->scalar_source_returned.load()&&impl_->payload_returned.load()&&impl_->typed_ended.load()&&
          impl_->free_returned.load()&&impl_->retired.load()&&!impl_->creator_outstanding.load()),
-        "Parent close requires actual complete Source/physical facts, not flags0/partial/unknown");
-    preflight_section_caller_end();
-    preflight_material_caller_close();
+        "Parent close requires actual complete Source/physical facts, not flags0/partial/unknown", rejection);
+    preflight_section_caller_end(rejection);
+    preflight_material_caller_close(rejection);
     // This is the separately frozen Block4+Root4 non-draining normal/cold
     // readiness seam. Its checks precede EVERY receiver/child/cancel/reset.
     if(impl_->block20){
         require_owned(impl_->block20->phase_!=NativePostEffect20ConstructionBlock::Phase::idle||cancelled,
-            "Idle Parent20 Block readiness requires authentic prior cold cancellation");
-        impl_->block20->preflight_close_after_host_quiescence();
+            "Idle Parent20 Block readiness requires authentic prior cold cancellation", rejection);
+        impl_->block20->preflight_close_after_host_quiescence(
+        rejection == ReadinessRejection::preserve ?
+            NativePostEffect20ConstructionBlock::ReadinessRejection::preserve : NativePostEffect20ConstructionBlock::ReadinessRejection::sticky);
     }else{
         require_owned(impl_->block24->phase_!=NativePostEffectConstructionBlock::Phase::idle||cancelled,
-            "Idle Parent24 Block readiness requires authentic prior cold cancellation");
-        impl_->block24->preflight_close_after_host_quiescence();
+            "Idle Parent24 Block readiness requires authentic prior cold cancellation", rejection);
+        impl_->block24->preflight_close_after_host_quiescence(
+        rejection == ReadinessRejection::preserve ?
+            NativePostEffectConstructionBlock::ReadinessRejection::preserve : NativePostEffectConstructionBlock::ReadinessRejection::sticky);
     }
-    }catch(...){const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();throw;}
+    }catch(...){if (rejection == ReadinessRejection::sticky) const_cast<NativePostEffectParentFrame*>(this)->record_source_failure();throw;}
 }
-void NativePostEffectParentDomain::preflight_close() const {
+void NativePostEffectParentDomain::preflight_close(ReadinessRejection rejection) const {
     try {
     require_owned(!impl_->failed.load()&&!impl_->retention.requires_process_retention(),
-        "Failed SAME Parent graph must remain retained before any drain");
+        "Failed SAME Parent graph must remain retained before any drain", rejection);
     NativePostEffectParentFrame* first;
     {std::lock_guard<std::mutex> lock(impl_->mutex);first=impl_->first;}
     // Stable Domain-owned list; actual owner independently proves no incoming
     // workers/Native/callers/preparations. Throwing checks run OUTSIDE the lock.
     for(auto* frame=first;frame;frame=frame->impl_->next)
-        if(!frame->impl_->closed.load())frame->preflight_close();
-    }catch(...){NativePostEffectParentFrame::record_domain_failure(*const_cast<NativePostEffectParentDomain*>(this));throw;}
+        if(!frame->impl_->closed.load())frame->preflight_close(
+        rejection == ReadinessRejection::preserve ?
+            NativePostEffectParentFrame::ReadinessRejection::preserve : NativePostEffectParentFrame::ReadinessRejection::sticky);
+    }catch(...){if (rejection == ReadinessRejection::sticky) NativePostEffectParentFrame::record_domain_failure(*const_cast<NativePostEffectParentDomain*>(this));throw;}
 }
 
 void NativePostEffectParentFrame::close_after_host_quiescence() {

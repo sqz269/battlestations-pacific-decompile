@@ -197,10 +197,10 @@ void NativeMeshCanonicalAccess::end_payload_receiver(NativeMeshCanonicalRecord& 
     if(r.lower_.payload_receiver_==&receiver)r.lower_.payload_receiver_=nullptr;
     receiver.active_.store(false,std::memory_order_release);
 }
-void NativeMeshCanonicalAccess::preflight_payload_receiver(NativeMeshCanonicalRecord& r, bool complete) {
+void NativeMeshCanonicalAccess::preflight_payload_receiver(NativeMeshCanonicalRecord& r, bool complete, ReadinessRejection rejection) {
     auto& receiver=r.payload_release_;
-    const auto reject=[&r](const char* message) {
-        r.failed();r.domain_.retention_.fail();throw std::logic_error(message);
+    const auto reject=[&r,rejection](const char* message) {
+        if (rejection == ReadinessRejection::sticky) {r.failed();r.domain_.retention_.fail();}throw std::logic_error(message);
     };
     if(receiver.active_.load(std::memory_order_acquire) || r.lower_.payload_receiver_ ||
         receiver.failed_.load(std::memory_order_acquire) || r.poisoned_.load(std::memory_order_acquire) ||
@@ -522,15 +522,15 @@ bool NativeMeshCanonicalAccess::return_unconstructed_static_slot(
         return original_disposed;
     } catch (...) { r.failed(); throw; }
 }
-void NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f) {
+void NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(NativeMeshCanonicalProducerFrame& f, ReadinessRejection rejection) {
     auto& r = NativeMeshCanonicalRecord::get(f);
-    preflight_payload_receiver(r,false);
+    preflight_payload_receiver(r,false, rejection);
     // Only genuine never-entered or actual normal-NULL history, no guessed count.
     if (r.lower_.actual_ || (r.lower_.allocation_entered_ && !r.lower_.allocation_returned_) ||
         r.canonical_ || r.invocation_.load(std::memory_order_acquire) ||
         r.exact_.outer_calls_.load(std::memory_order_acquire) != 0u ||
         r.exact_.borrows_.load(std::memory_order_acquire) != 0u) {
-        r.failed();
+        if (rejection == ReadinessRejection::sticky) r.failed();
         throw std::logic_error("Mesh cold cancel cannot discard entered/unknown Native custody");
     }
 }
@@ -546,14 +546,14 @@ void NativeMeshCanonicalAccess::cancel_without_native_payload(NativeMeshCanonica
     r.block20_ = nullptr;
     f.record_ = nullptr;
 }
-void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f) {
+void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMeshCanonicalProducerFrame& f, ReadinessRejection rejection) {
     auto& r = NativeMeshCanonicalRecord::get(f);
-    preflight_payload_receiver(r,true);
+    preflight_payload_receiver(r,true, rejection);
     if (!r.canonical_zero_returned_.load(std::memory_order_acquire) || !r.lower_.pool_returned_ ||
         r.creator_outstanding_ || r.poisoned_.load(std::memory_order_acquire) ||
         r.invocation_.load(std::memory_order_acquire) ||
         r.exact_.borrows_.load(std::memory_order_acquire) != 0u) {
-        r.failed();
+        if (rejection == ReadinessRejection::sticky) r.failed();
         throw std::logic_error("Failed Mesh producer cannot pass a normal close fence");
     }
     // end_frame must not be used to discover a live caller or discharge an
@@ -563,7 +563,7 @@ void NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(NativeMesh
     const unsigned retained_hold=caller?1u:0u;
     if ((caller && caller->active_invocations_.load(std::memory_order_acquire)!=0u) ||
         r.exact_.outer_calls_.load(std::memory_order_acquire)!=retained_hold) {
-        r.failed();
+        if (rejection == ReadinessRejection::sticky) r.failed();
         throw std::logic_error("Mesh preflight requires only its inactive retained zero hold");
     }
 }

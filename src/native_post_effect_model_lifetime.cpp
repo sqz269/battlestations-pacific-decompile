@@ -712,7 +712,7 @@ void NativePostEffectModelFrame::cancel_without_native_payload() {
     impl_->closed = true;
     impl_->state.store(ModelState::closed,std::memory_order_release);
 }
-void NativePostEffectModelFrame::preflight_close_at_quiescence() {
+void NativePostEffectModelFrame::preflight_close_at_quiescence(ReadinessRejection rejection) {
     // Entry already requires genuine graph/Block quiescence through ALL outer
     // calls and saved canonical users. Reject every independent active/failure
     // obligation BEFORE unlinking any retained caller metadata.
@@ -745,7 +745,7 @@ void NativePostEffectModelFrame::preflight_close_at_quiescence() {
         const unsigned retained_hold=observed_zero_hold_.frame_?1u:0u;
         require(exact_.outer_calls_.load(std::memory_order_acquire)==retained_hold,
             "ordinary Model preflight requires only its retained zero hold");
-    } catch (...) { record_source_failure(); throw; }
+    } catch (...) { if (rejection == ReadinessRejection::sticky) record_source_failure(); throw; }
 }
 void NativePostEffectModelFrame::close_at_quiescence() {
     preflight_close_at_quiescence();

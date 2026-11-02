@@ -316,7 +316,7 @@ void NativePostEffectConstructionBlock::reset_after_host_quiescence() noexcept {
     if (ordinary_lifetime_) std::terminate(); // preserves explicit legacy policy
     reset_after_host_quiescence_legacy();
 }
-void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() {
+void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence(ReadinessRejection rejection) {
     // Readiness only for the old normal-NULL path which already genuinely
     // cancelled this Block. Parent must authenticate its private cold_cancelled
     // history before using this idle result; it cannot authorize a new cancel.
@@ -343,7 +343,9 @@ void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() 
         for (std::size_t i=0;i!=slot_count;++i)
             require(!references_[i],"cold ordinary Block has an entered companion");
         if (model_frame_) model_frame_->preflight_cancel_without_native_payload();
-        if (mesh_frame_) NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(*mesh_frame_);
+        if (mesh_frame_) NativeMeshCanonicalAccess::preflight_cancel_without_native_payload(*mesh_frame_,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshCanonicalAccess::ReadinessRejection::preserve : NativeMeshCanonicalAccess::ReadinessRejection::sticky);
         for (auto& record : viewport_records_) {
             const auto phase = record.phase();
             require(phase == NativeViewportRegistry::Phase::unused ||
@@ -377,8 +379,12 @@ void NativePostEffectConstructionBlock::preflight_close_after_host_quiescence() 
             ((!references_[section] && !section_frame_) ||
              (section_frame_ && references_[section] == acquired_.section_reference)),
             "ordinary Section close requires the SAME borrowed Frame canonical");
-    if (model_frame_) model_frame_->preflight_close_at_quiescence();
-    if (mesh_frame_) NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(*mesh_frame_);
+    if (model_frame_) model_frame_->preflight_close_at_quiescence(
+        rejection == ReadinessRejection::preserve ?
+            NativePostEffectModelFrame::ReadinessRejection::preserve : NativePostEffectModelFrame::ReadinessRejection::sticky);
+    if (mesh_frame_) NativeMeshCanonicalAccess::preflight_producer_link_at_quiescence(*mesh_frame_,
+        rejection == ReadinessRejection::preserve ?
+            NativeMeshCanonicalAccess::ReadinessRejection::preserve : NativeMeshCanonicalAccess::ReadinessRejection::sticky);
     // Parent performs the separate Material and BOTH caller-observation
     // preflights; do not recurse into it or close/drain anything here.
 }

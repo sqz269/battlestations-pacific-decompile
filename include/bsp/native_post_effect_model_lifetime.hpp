@@ -67,6 +67,7 @@ public:
     NativePostEffectModelFrame(NativePostEffectModelFrame&&) = delete;
     NativePostEffectModelFrame& operator=(NativePostEffectModelFrame&&) = delete;
 private:
+    enum class ReadinessRejection { sticky, preserve };
     friend class NativeModelOwner;
     friend class NativeModelReference;
     friend class NativePostEffectConstructionBlock;
@@ -100,7 +101,7 @@ private:
     void cancel_without_native_payload();
     // No hold drain; actual complete caller/worker quiescence is external.
     // Failure marks this private Source graph, never another caller head.
-    void preflight_close_at_quiescence();
+    void preflight_close_at_quiescence(ReadinessRejection rejection = ReadinessRejection::sticky);
     void close_at_quiescence();
     bool requires_process_retention() const noexcept;
     void wrapper_entered();

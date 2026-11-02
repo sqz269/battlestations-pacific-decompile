@@ -150,14 +150,14 @@ void NativeMaterialFrame::record_source_failure() noexcept {
     // Metadata-only and idempotent. The operation's own scope propagates its
     // caller heads at the real fence; saved-C++ guards may run on another thread.
 }
-void NativeMaterialFrame::require_owned(bool value,const char* message) const {
-    if(!value){const_cast<NativeMaterialFrame*>(this)->record_source_failure();throw std::logic_error(message);}
+void NativeMaterialFrame::require_owned(bool value,const char* message, ReadinessRejection rejection) const {
+    if(!value){if (rejection == ReadinessRejection::sticky) const_cast<NativeMaterialFrame*>(this)->record_source_failure();throw std::logic_error(message);}
 }
-void NativeMaterialFrame::require_healthy() const {
+void NativeMaterialFrame::require_healthy(ReadinessRejection rejection) const {
     require_owned(!impl_->failed.load(std::memory_order_acquire) &&
         !impl_->domain.impl_->failed.load(std::memory_order_acquire) && !impl_->closed.load() &&
         !impl_->domain.impl_->retention.requires_process_retention(),
-        "Material retains failed/closed Source custody");
+        "Material retains failed/closed Source custody", rejection);
 }
 bool NativeMaterialDomain::requires_process_retention() const noexcept{return impl_->failed.load(std::memory_order_acquire)||impl_->retention.requires_process_retention();}
 bool NativeMaterialDomain::has_retained_records() const noexcept{return impl_->retained.load(std::memory_order_acquire)!=0;}
@@ -476,10 +476,10 @@ void NativeMaterialFrame::parent_field_published(NativePostEffectParentFrame& pa
     }
     impl_->parent_actual=captured_parent;
 }
-void NativeMaterialFrame::preflight_parent_caller_close(const NativePostEffectParentFrame& parent) const {
+void NativeMaterialFrame::preflight_parent_caller_close(const NativePostEffectParentFrame& parent, ReadinessRejection rejection) const {
     require_owned(impl_->parent_caller==&parent && !requires_process_retention(),
-        "Parent close must retain its exact healthy Material caller loan");
-    if(!impl_->closed.load(std::memory_order_acquire))preflight_close();
+        "Parent close must retain its exact healthy Material caller loan", rejection);
+    if(!impl_->closed.load(std::memory_order_acquire))preflight_close(rejection);
 }
 void NativeMaterialFrame::close_parent_caller_after_host_quiescence(NativePostEffectParentFrame& parent) {
     preflight_parent_caller_close(parent);
@@ -489,23 +489,23 @@ bool NativeMaterialFrame::parent_caller_closed(const NativePostEffectParentFrame
     return impl_->parent_caller==&parent && impl_->closed.load(std::memory_order_acquire) &&
         !requires_process_retention();
 }
-void NativeMaterialFrame::preflight_close() const {
-    require_healthy();auto* caller=observed_zero_hold_.frame_;
+void NativeMaterialFrame::preflight_close(ReadinessRejection rejection) const {
+    require_healthy(rejection);auto* caller=observed_zero_hold_.frame_;
     const unsigned held=caller?1u:0u;
     // All physical and active-caller facts precede the FIRST hold unlink.
     // The real owner separately proves whole caller/Native/worker quiescence.
     require_owned(terminal_zero_frame_.active_invocations_.load()==0&&(!caller||caller->active_invocations_.load()==0)&&
         impl_->outer_calls.load()==held&&exact_.outer_calls_.load()==held&&exact_.borrows_.load()==0,
-        "Material close crossed an actual active operation/count/caller fence");
-    for(auto& o:impl_->constructor_children)require_owned(o.cpp_zero_frame.active_invocations_.load()==0,"Material ctor child caller active");
-    for(auto& o:impl_->payload_children)require_owned(o.cpp_zero_frame.active_invocations_.load()==0,"Material payload child caller active");
-    require_owned(impl_->factory_effect.cpp_zero_frame.active_invocations_.load()==0,"Material factory effect caller active");
+        "Material close crossed an actual active operation/count/caller fence", rejection);
+    for(auto& o:impl_->constructor_children)require_owned(o.cpp_zero_frame.active_invocations_.load()==0,"Material ctor child caller active", rejection);
+    for(auto& o:impl_->payload_children)require_owned(o.cpp_zero_frame.active_invocations_.load()==0,"Material payload child caller active", rejection);
+    require_owned(impl_->factory_effect.cpp_zero_frame.active_invocations_.load()==0,"Material factory effect caller active", rejection);
     const bool cold=impl_->entry.load()==0&&!impl_->allocation_entered.load()&&!impl_->prefix_born.load();
     const bool normal_null=impl_->producer_returned.load()&&impl_->allocation_returned.load()&&!impl_->actual&&
         !impl_->constructor_entered.load()&&!impl_->prefix_born.load();
     const bool complete=impl_->scalar_source_returned.load()&&impl_->payload_returned.load()&&impl_->typed_ended.load()&&
         impl_->pool_return_normal.load()&&impl_->retired.load()&&!impl_->creator_outstanding.load()&&!impl_->live_storage_debt.load();
-    require_owned(cold||normal_null||complete,"Material close retains flags0/partial/unknown/physical/source debt");
+    require_owned(cold||normal_null||complete,"Material close retains flags0/partial/unknown/physical/source debt", rejection);
 }
 void NativeMaterialFrame::close_after_host_quiescence(){
     preflight_close();
