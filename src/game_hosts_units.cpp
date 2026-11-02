@@ -14,7 +14,6 @@
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
-#include "bsp/strike_release_ver_cc13.hpp"      // chain 28: 0099B6A0
 #include "bsp/cc13_seg29U.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
 #include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
@@ -37311,31 +37310,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.torpedo_drop_timer = ar.prepare_timer;
                                 unit_.torpedo_timer_armed_since_enter = true;
                             }
-                            if constexpr (bsp::kWireGoal2Chain28Bound) {
-                                // 0099B6A0 (009D49DA JMP): bot_task_request_release_base_0099b6a0
-                                // decides the 0099B6CD release and AL on a fall-through; the
-                                // OFF arm keeps the copy inlined into the 009D49A0 model.
-                                bsp::BaseReleaseRequestResult base;
-                                base.release_007bbba0 = ar.release_007bbba0;
-                                base.returned_true = ar.consumed;
-                                if (ar.fell_through_to_0099b6a0) {
-                                    base = bsp::bot_task_request_release_base_0099b6a0(
-                                        arm.has_squadron_2fc, arm.unit_free_flight_72c);
-                                    owner_.done("BotTask::request_release_base_0099b6a0",
-                                        0x0099b6a0u);
-                                }
-                                if (base.release_007bbba0) {
-                                    owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
-                                    ++unit_.torpedo_fallthrough_releases;
-                                }
-                                if (base.returned_true) --unit_.torpedo_release_orders_c58;
-                            } else {
                             if (ar.release_007bbba0) {
                                 owner_.release_ordnance_007bbba0(unit_);   // 0099B6CD
                                 ++unit_.torpedo_fallthrough_releases;
                             }
                             if (ar.consumed) --unit_.torpedo_release_orders_c58;
-                            }
                         }
                         // The two gates that stop the drop in this host, both
                         // fed by the unread 009D3420.

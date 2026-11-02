@@ -5,13 +5,13 @@
  "run": 65,
  "harness": "claude",
  "host": "src/game_hosts_units.cpp",
- "picked_reason": "Most assigned rows (12) plus 6 gaps; the plane flight controller state (world velocity, pose rows, deck parent slots, low-pass +30h) is live host state that 007D9C10/007D9CE0 can replace, and the torpedo offer feeds 0099B6A0 real registry/mode inputs.",
+ "picked_reason": "Most assigned rows (12) plus 6 gaps; the plane flight controller state (world velocity, pose rows, deck parent slots, low-pass +30h) is live host state that 007D9C10/007D9CE0 can replace.",
  "branch": "agent/g2-w2",
  "switch": "kWireGoal2Chain28Bound",
  "switch_default": false,
  "wired_before": 8783,
- "wired_after": 8786,
- "wired_delta": 3,
+ "wired_after": 8785,
+ "wired_delta": 2,
  "rows": [
   {
    "native": "0x007d9c10",
@@ -49,7 +49,7 @@
    "reached": 12,
    "identifier": "bsp::gameplay_seg48_cc13::reparent_velocity_007d9ce0",
    "abi": "typed",
-   "behavior": "ON: the body moves ctl+18h between parents (same-parent gate, old parent's velocity added, new parent's subtracted) and sets ctl+30h, replacing the host's inline subtraction (touchdown) and addition (lift-off). Inputs: the plane's world velocity and low-pass +30h, the current deck parent slot and the carrier slot; parent velocities are the slots' motion.linear_velocity (vtable[34h]). Frame callbacks are the identity because the host stores the parent-relative velocity in world axes (LABELLED at 007C71E0); ctl+24h is not kept by the host and its result is discarded.",
+   "behavior": "ON: the body moves ctl+18h between parents (same-parent gate, old parent's velocity added, new parent's subtracted) and sets ctl+30h, replacing the host's inline subtraction (touchdown) and addition (lift-off). Inputs: the plane's world velocity and low-pass +30h, the current deck parent slot and the carrier slot; parent velocities are the slots' motion.linear_velocity (vtable[34h]). Frame callbacks are the identity because the host stores the parent-relative velocity in world axes (LABELLED at 007C71E0); ctl+24h is not kept by the host and its result is discarded. Touchdown difference from OFF: when the plane is still parented to a different deck, ON first adds that old parent's velocity (the body's has_old_parent arm, as the image does at 007D9D29-007D9D4A) before subtracting the carrier's; OFF only subtracts the carrier's. Every other input gives OFF's values (same_parent is always false at this site because the caller requires deck_parent != owner+1).",
    "contract_evidence": [
     "007D9CE0 __thiscall(ECX=ctl, new_parent), RET 4.",
     "007C7264 CMP EAX(00923810 current parent),EDI / JZ skips; 007C7275 MOV ECX,EBP(unit+AB0h) / 007C7277 CALL 007D9CE0(EDI = holder owner).",
@@ -67,18 +67,9 @@
    "native": "0x0099b6a0",
    "function": "0x009d49a0",
    "host_site": "src/game_hosts_units.cpp:GameUnitsHost::motion_step_00825f20 (torpedo task arm offer, 0099AF53 loop)",
-   "status": "wired",
+   "status": "skipped",
    "reached": 0,
-   "identifier": "bsp::bot_task_request_release_base_0099b6a0",
-   "abi": "typed",
-   "behavior": "ON: on 009D49A0's fall-through the body decides the 0099B6CD release (007BBBA0) and the spent order (AL), from the squadron registry membership (task+2FCh) and unit+900h == 7 (0074E210); OFF keeps the copy inlined into torpedo_arm_drop_009d49a0 under kTorpedoArmFallthroughReleaseBound. Reach is static: no surveyed log recorded the fall-through.",
-   "contract_evidence": [
-    "Only code reference: tail JMP at 009D49DA in 009D49A0 (ECX=task restored at 009D49D7); 20 vtable slot +24h data refs. No CALL site, so address is left out (unchecked).",
-    "0099B6A3 CMP [ESI+2FCh],0 / JNE -> AL=0; 0099B6C5 JE skips only 0099B6CD CALL 007BBBA0; 0099B6D2 MOV AL,1."
-   ],
-   "gates": {
-    "kTorpedoArmFallthroughReleaseBound": true
-   }
+   "reason": "torpedo_arm_drop_009d49a0 already applies 0099B6A0's result under kTorpedoArmFallthroughReleaseBound (src/torpedo_task_arm.cpp:139); a call returns the same {release, consumed}, an identity round trip"
   },
   {
    "native": "0x00653390",
@@ -189,10 +180,10 @@
  "host_objects": [],
  "host_objects_note": "No host object built: every gap's producer is missing (see the gap rows).",
  "validation": {
-  "off_build": "passed (build.ps1, 2/2 CTests)",
-  "on_build": "passed (off_switch_on_build.py --names kWireGoal2Chain28Bound: 0 diagnostics)",
+  "off_build": "passed (build.ps1, 2/2 CTests) after review round 1 edits",
+  "on_build": "passed (off_switch_on_build.py --names kWireGoal2Chain28Bound: 0 diagnostics) after review round 1 edits",
   "pc24_lint": "0 findings (origin/main...HEAD); ON arms only copy values, the x87 work is inside the existing body",
-  "readiness": "007d9c10, 007d9ce0, 0099b6a0 ready -> wired after a plain OFF build"
+  "readiness": "007d9c10, 007d9ce0 ready -> wired; 0099b6a0 ready (arm removed in review round 1)"
  },
  "pair": {
   "mission": "USN04",
@@ -238,13 +229,22 @@
   "other_diagnostic_lines": "231 only OFF / 231 only ON, atlas source append_slot pointer values (address noise)",
   "wired_row_reached": {
    "007d9c10": 85728,
-   "007d9ce0": 12,
-   "0099b6a0": 0
+   "007d9ce0": 12
   },
-  "reach_notes": "007D9C10: core-law site every plane step; the touchdown site (007C72C5) was not reached because USN04 logged no carrier deck parent (0 'carrier deck parent:' lines). 007D9CE0: 12 lift-off detaches (007C6F8D); touchdown re-parent not reached. 0099B6A0: the OFF summary shows torpedo_fallthrough 009D49DA calls=0, so the fall-through did not occur in USN04 (reach static)."
+  "reach_notes": "007D9C10: core-law site every plane step; the touchdown site (007C72C5) was not reached because USN04 logged no carrier deck parent. 007D9CE0: 12 lift-off detaches (007C6F8D); touchdown re-parent not reached. The pair ran on fcfa83e75, which still carried the 0099B6A0 arm; that arm was never entered (torpedo_fallthrough 009D49DA calls=0) and is removed in review round 1, so the pair evidence stands for the two remaining rows."
  },
  "code_commit": "fcfa83e75",
- "measurement": "Before: the --standins scan at chain start (8783 wired). After: wire_readiness.py following the final plain OFF build, run after the ON build check (8786 wired).",
- "flip_proposal": "Propose kWireGoal2Chain28Bound=true: the USN04 pair is gameplay-identical with 007D9C10 reached 85728 times (core law) and 007D9CE0 12 times (lift-off detach). The touchdown re-parent (007C7277/007C72C5) and the torpedo fall-through (0099B6A0) were not exercised by USN04; a carrier-landing mission and a torpedo-attack mission pair would cover them before or with the flip.",
- "ledger": "No new address-suffixed function; host adapters only (host_pose_world_to_body, host_reparent_callbacks, host_unit_velocity). No ledger change."
+ "measurement": "Before: the --standins scan at chain start (8783 wired). After (review round 1): wire_readiness.py following the final plain OFF build, run after the ON build check (8785 wired; 0099b6a0 back to ready).",
+ "flip_proposal": "Propose kWireGoal2Chain28Bound=true: the USN04 pair is gameplay-identical with 007D9C10 reached 85728 times (core law) and 007D9CE0 12 times (lift-off detach). The touchdown re-parent (007C7277/007C72C5) was not exercised by USN04; pair one carrier-landing mission whose carrier deck parent line shows parented>0 before or with the flip.",
+ "ledger": "No new address-suffixed function; host adapters only (host_pose_world_to_body, host_reparent_callbacks, host_unit_velocity). No ledger change.",
+ "review_round_1": [
+  "fix 1 fixed: torpedo fall-through arm removed; the two original ifs are restored unwrapped",
+  "fix 2 fixed: strike_release_ver_cc13.hpp include dropped",
+  "fix 3 fixed: 0099B6A0 removed from the switch header comment",
+  "fix 4 fixed: 0099B6A0 row is skipped with the identity-round-trip reason",
+  "fix 5 fixed: re-measured 8785 wired (delta 2); 0099b6a0 dropped from wired_row_reached",
+  "fix 6 fixed: 007D9CE0 behaviour states the different-old-deck-parent touchdown difference",
+  "fix 7 fixed: flip proposal keeps only the carrier-landing pair request",
+  "fix 8 fixed: build.ps1 and off_switch_on_build.py re-run, both pass"
+ ]
 }
