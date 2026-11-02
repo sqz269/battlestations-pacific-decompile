@@ -1,0 +1,115 @@
+{
+  "goal": 2,
+  "chain": 47,
+  "run": 105,
+  "harness": "claude",
+  "packet": "g2-w1",
+  "host_file": "src/game_hosts_hud_world.cpp",
+  "branch": "agent/g2-w1",
+  "code_commit": "2b32927f7",
+  "switch": "kWireGoal2Chain47Bound",
+  "switch_default": false,
+  "wired_before": 8804,
+  "wired_after": 8805,
+  "wired_delta": 1,
+  "pick": "game_hosts_hud_world.cpp. game_hosts_menu.cpp was claimed first (largest gap pool) and released after reading its gaps: every one needs a platform, audio, loading-screen or image-shaped manager object whose producers the menu host lacks, or sits behind kLoadingScreenCc13Bound = false. game_hosts_hud_world.cpp holds the one live callback row with real host state behind it (005BD590, 74 calls).",
+  "rows": [
+    {
+      "native": "005bd590",
+      "address": "005c173a",
+      "function": "005c0f20",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapBinding::create_icon_entry -> GameHudMinimapHost::Impl::create_icon_from_entry (MinimapIconEntryBinding)",
+      "status": "wired",
+      "reach": "live",
+      "reached": 9,
+      "note": "Live: 005C0F20's unit walk (bsp::hud_minimap_place_unit_icons_005c154e) calls create_icon_entry for each unit without an icon; no switch on the path (update_005c0f20 gates only on the bound page and attached units). The body picks the white-group template by IsKindOf 8/6/0Fh (sub/ship/plane, else building) and colours it by unit+54h (0 blue +90h, 1 red +80h, 2 grey +C0h). Both are host state: GameUnitsHost::unit_is_kind_of and the row party the host already reads as [unit+54h]; templates and colours are bound from the GUI_minimap page where 005BE240 binds them. The host's clone API takes the parent at creation, so the 00AAB4C0 clone is made under unit_marker_Group and the 00AAA5A0 attach is recorded done. USN04 ON: 9 calls, 4/4 templates and 3/3 colours bound (red 1.000 0.090 0.090 1.000, blue 0.047 0.067 0.914 1.000, grey 0.522 0.522 0.522 1.000); the first entry is Fletcher-class02, party 0, IsKindOf 6, cloned from item_ship_Icon and coloured blue, where OFF cloned the red group's icon by the markers rule 00639990."
+    },
+    {
+      "native": "00aa1fe0",
+      "host_site": "src/game_hosts_hud_world.cpp: HudMarkers gui_extent",
+      "status": "skipped",
+      "reason": "nodef row: the readiness name BSP_Gui_GetAspectExtent has no callable definition; the site already calls the semantic body gui_aspect_extent_00aa1fe0 (game_hosts_hud_world.cpp, HudMarkers::gui_extent). Nothing to wire."
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::report_loading_progress, MenuShellHost::report_progress",
+      "status": "skipped",
+      "reason": "Both report sites already call report_loading_progress under kLoadingScreenCc13Bound = false (game_hosts_menu.cpp:73); any new arm there sits behind that OFF switch."
+    },
+    {
+      "native": "0057c990",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::prepare_extra_elements",
+      "status": "skipped",
+      "reason": "MenuLoadingScreenHost is constructed only inside the kLoadingScreenCc13Bound = false arms of begin_loading/end_loading (game_hosts_menu.cpp:1570, 1591); the site is dead OFF and the LoadingScreen element/hint objects are not bound."
+    },
+    {
+      "native": "00686170",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "status": "skipped",
+      "reason": "Body takes a raw image plus Fe5Host and writes the image vtable/fields; the host's MainMenuManager (include/bsp/frontend_managers.hpp:205) is a typed semantic model, not a 78h image, so a constructed image would have no consumer. Same for 00689800, 006887e0 and 0068d760 below."
+    },
+    {
+      "native": "00689800",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "status": "skipped",
+      "reason": "Raw-image constructor (Fe5Host); the host builds no options manager and OptionsMenuManager (frontend_managers.hpp:166) is not image-shaped. Needs an image-shaped manager base and its init 006898C0 consumer first."
+    },
+    {
+      "native": "006887e0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager",
+      "status": "skipped",
+      "reason": "Raw-image constructor (Fe5Host); no multiplayer manager is owned and MultiMenuManager (frontend_managers.hpp:227) is not image-shaped."
+    },
+    {
+      "native": "0068d760",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit::create_title_screen",
+      "status": "skipped",
+      "reason": "Raw-image constructor (Fe5Host); the host's TitleScreen (include/bsp/frontend_states.hpp:67) is a typed model, so writing the 44h image vtable/global would reach no consumer."
+    },
+    {
+      "native": "006e38e0",
+      "host_site": "src/game_hosts_commands.cpp: session_field_f4h_is_0_or_1",
+      "status": "skipped",
+      "reason": "The only host value for session+F4h is session_mode_1fe4(), which returns the constant kSessionModeSinglePlayer while kSkirmishSessionCc13Bound is false (game_hosts_commands.cpp:165-170); the body would be fed a constant."
+    },
+    {
+      "native": "00721030",
+      "host_site": "src/game_hosts_commands.cpp: message_target_descriptor",
+      "status": "skipped",
+      "reason": "Body copies message+24h..+38h into the 18h descriptor; the host has no 5Ch message image, only chain_.pending_target already in descriptor form, so a call would hand the host's own value back."
+    },
+    {
+      "native": "0099b6a0",
+      "host_site": "src/game_hosts_units.cpp: torpedo arm fall-through (sw3c reach counter)",
+      "status": "skipped",
+      "reason": "Static reach, and kTorpedoArmFallthroughReleaseBound = true already runs the same base-slot +24h logic inline in torpedo_arm_drop_009d49a0 (src/torpedo_task_arm.cpp:139-147), whose release/consumed results the host uses; a call would duplicate it."
+    },
+    {
+      "native": "00885da0",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::push_argument",
+      "status": "skipped",
+      "reason": "NamedCallBinding runs only inside drain_named_call_queue over lua_queue_, which nothing fills (its producer 00887560 needs a frame job thread; game_hosts_ready.cpp:177-181); an arm would never run. Same for 006b8530 and 00887560."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GameHudMinimapHost::Impl entry fields (screen +6Ch..+78h templates, +80h/+90h/+C0h colours) and MinimapIconEntryBinding",
+      "where": "src/game_hosts_hud_world.cpp:106",
+      "producers": [
+        "005BE240 BSP_HudMinimapScreen_LoadLayout: find_child_by_name_00aa7e00 over the GUI_minimap page (minimap_units_white_Group item_ship/plane/sub/building_Icon)",
+        "005BE240 virtual +54h of the red/blue/grey groups' item_ship_Icon (GuiLayoutWidget::color, widget +50h), copied at page bind",
+        "GameUnitsHost::unit_is_kind_of (IsKindOf, vtable +5Ch) and GameUnitRow::party ([unit+54h])"
+      ],
+      "rows": ["005bd590"]
+    }
+  ],
+  "verification": {
+    "build": "./scripts/build.ps1 exit 0, tests 2/2 passed (OFF, at 2b32927f7 content)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain47Bound: build.ps1 exit 0, 0 distinct diagnostics",
+    "pc24_lint": "0 findings (the ON arm does no x87 arithmetic; colours are copied)",
+    "readiness": "wired 8804 -> 8805 after a plain OFF build; 005bd590 state wired (1 wired caller)",
+    "verify_report_calls": "1 call row checked, 0 failed",
+    "pair": "USN04, 3200 frames, OFF = tree build at 2b32927f7, ON = pair_export --flip kWireGoal2Chain47Bound=true. Both exit 0. pair_diff: GAMEPLAY identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509, units 81/81); UNIT TABLE identical; SUMMARY LINES 867 -> 867, 0 changed. NATIVE TABLE: 005bd590 HudMinimap::construct_icon_entry UNIMPLEMENTED -> concrete (9 calls); added concrete 00aab4c0 clone_template (9) and 00aaa5a0 attach_to_marker_group (9); removed the 00639990 marker_colour_index record (9). Host methods concrete/unimplemented 1144/477 -> 1147/475. OTHER LINES: 232 only OFF / 233 only ON = the 231 masked atlas-source allocation lines on each side plus the changed minimap notes (1 OFF, 2 ON). Minimap icons created 8 of 21 units on both sides."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain47Bound to true. The USN04 pair is gameplay-identical and the only moved native rows are the minimap icon entry's own (005BD590 concrete, 9 calls). The visible change is the image's: icons now take the white-group template by IsKindOf and the side colour 005BE240 bound (party 0 blue, 1 red, 2 grey) instead of the markers rule's colour-group clone."
+}
