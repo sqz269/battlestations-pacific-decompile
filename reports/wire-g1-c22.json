@@ -1,0 +1,175 @@
+{
+  "run": 56,
+  "harness": "codex",
+  "goal": 1,
+  "chain": 22,
+  "packet": "g1-w3",
+  "host": "src/game_hosts_gunnery.cpp",
+  "switch": "kWireGoal1Chain22Bound",
+  "default": false,
+  "code_commit": "b073c02d157610643f495104dc824164cd62d5d4",
+  "wired_total_before": 8780,
+  "wired_total_after": 8781,
+  "wired_rows": 1,
+  "rows": [
+    {
+      "native": "008fdaf0",
+      "address": "008ffcbd",
+      "function": "008ffa20",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::run_gun_aim_and_fire",
+      "status": "wired",
+      "reached": 16480,
+      "evidence": "Existing gun_bot_angles_from_world_008fdaf0 receives the live lead point, muzzle point and the inverse rotation assembled from unit_pose's right/up/forward basis. Its own subtraction, local normalization and yaw negation replace the OFF world-normalization and dot/asin/atan2 calculation. Outputs feed the unchanged torpedo window, aim-error and gun-command logic. No enclosing OFF switch: GameGunneryHost::step calls run_gun_aim_and_fire directly.",
+      "contract": "Read native body and assembly (ECX target, EDX origin; stack frame and output; 008FDB99 RET 8) and all four caller sites 008FFCBD,00902AD9,00902C86,0090327B. Three callbacks adapt rotation/length and the existing host asin/atan2 math boundary. This is host wiring, not a drop-in native ABI or CRT exception-equivalence claim."
+    },
+    {
+      "native": "008069a0",
+      "address": "008075f3",
+      "function": "008073c0",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "status": "skipped",
+      "reached": 102,
+      "reason": "The body publishes member maxima into each group's per-slot native detection record (+1E8h + slot*34h), unregisters its observer and dispatches effective-level changes. This host folds maxima into temporary Rec values inside group(), discards the member lists, and records publication without a native group detection/observer/delegate object. Passing its already-folded level through scratch storage would only round-trip the host answer; publishing real detection state requires broader recon storage changes."
+    },
+    {
+      "native": "0085ad00",
+      "address": "008fbd61",
+      "function": "008fbce0",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::run_gun_aim_and_fire;GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290",
+      "status": "skipped",
+      "reached": 565,
+      "reason": "The existing body traverses gun+3F0h -> owner+538h -> native platform pointer array+94h, indexed by gun+38Ch, then calls SetTargetAngles. GameGunRow retains a flattened rest pair/rest_authored flag, arcs and angles, but no native owner/platform-array hierarchy. A small retained-image view is unavailable; wiring would require manufacturing the missing object chain plus the broad Seg53Host adapter. No replacement body or synthetic hierarchy was added."
+    },
+    {
+      "native": "00863a80",
+      "address": "00864c94",
+      "function": "00864bd0",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::attach_passes",
+      "status": "skipped",
+      "reached": 81,
+      "reason": "The body queries owner IsKindOf(2), owner vslot140 then vslot114 for a real director, allocates and retains a 14h bridge at ai+64h, and forces its initial Apply. attach_passes retains only independent countdown/cache/category fields; GunneryPassBinding::has_director_bridge always answers true. No native AI/owner/director identity or bridge allocation is retained. A scratch bridge with canned owner/director answers would not replace the host's live state."
+    },
+    {
+      "native": "00926e80",
+      "address": "0084be20",
+      "function": "0084bc60",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::queue_deferred_hit",
+      "status": "skipped",
+      "reached": 389,
+      "reason": "The body owns a native sentinel list at F899C4, list size, critical-section owner/counter, 54h image HitRecord assignment and shot entity vslot5C(29h). The live host queue is std::deque<DeferredHit> with typed records, owned part vectors and replay side state. It has no native list/lock/record/shot images. A callback that merely push_back's the same DeferredHit would leave native list logic on unrelated scratch storage and fail the counting rule."
+    }
+  ],
+  "checks": {
+    "report_calls": {
+      "status": "passed",
+      "checked": 5,
+      "failed": 0,
+      "command": "python tools/verify_report_calls.py reports/wire-g1-c22.json"
+    },
+    "off_build": {
+      "status": "passed",
+      "command": "./scripts/build.ps1",
+      "tests": "2/2 CTest groups passed",
+      "log": "local/output/g1-w3-head-off-build.txt"
+    },
+    "on_build": {
+      "status": "passed",
+      "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain22Bound",
+      "diagnostics": 0,
+      "log": "local/output/g1-w3-on-build.txt"
+    },
+    "off_preserved": "Original OFF angle-calculation block verified byte-for-byte after newline normalization; diff contains only additions.",
+    "pc24": {
+      "status": "passed",
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "findings": 0
+    },
+    "readiness": {
+      "status": "passed",
+      "log": "local/output/g1-w3-readiness-after.txt",
+      "measured_after": "plain OFF build after the ON compile check"
+    }
+  },
+  "pair_run": {
+    "status": "gameplay_identical_pointer_diagnostics_only",
+    "mission": "USN04",
+    "console": "query session showed console sqz269 ID 1 Active (utility exit code 1)",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "off_log": "local/g1-w3-off_USN04.log",
+    "on_log": "local/g1-w3-on_USN04.log",
+    "export_log": "local/output/g1-w3-on-export.txt",
+    "on_sha256_prefix": "A8C255B2CE55",
+    "off_exit_code": 0,
+    "on_exit_code": 0,
+    "export_status": "passed",
+    "diff_command": "python tools/pair_diff.py local\\g1-w3-off_USN04.log local\\g1-w3-on_USN04.log --limit 60",
+    "diff_exit_code": 1,
+    "diff_log": "local/output/g1-w3-pair-diff.txt",
+    "expanded_diff_log": "local/output/g1-w3-pair-diff-all.txt",
+    "gameplay_rows_moved": [],
+    "gameplay": {
+      "deaths": 28,
+      "hit_records": 380,
+      "hull_hits": 276,
+      "damage": 6366.6,
+      "shots": 5509,
+      "first_hit_seconds": 86.15,
+      "units": 81,
+      "controlled_moved": "Lexington-class01 2235.17",
+      "mission_end": "none"
+    },
+    "unit_table": {
+      "status": "identical",
+      "rows": 81
+    },
+    "plane_death_modes": {
+      "status": "identical",
+      "rows": 25
+    },
+    "death_rows": {
+      "status": "identical",
+      "rows": 0,
+      "note": "BSP_DEATH_TABLE was not enabled."
+    },
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "native_table": {
+      "off_rows": 1624,
+      "on_rows": 1624,
+      "added": 0,
+      "removed": 0,
+      "status_changed": [],
+      "counts_moved": [],
+      "standin_or_unimplemented_to_concrete": []
+    },
+    "native_table_note": "The existing host done() label for 008fdaf0 was already concrete in OFF, so the runtime table shows no label promotion. Static wire_readiness changes ready->wired and the isolated switch-ON path calls the reconstructed body for all 16480 reached angle calculations.",
+    "other_lines": {
+      "only_off": 231,
+      "only_on": 231,
+      "categories": "4 atlas source parser rows and 227 atlas source item rows per side",
+      "cause": "The diagnostic append_slot is a native pointer word printed with %u; pair_diff masks the hex pointer fields but leaves this decimal pointer unmasked.",
+      "audit": "local/output/g1-w3-atlas-pointer-audit.json",
+      "expanded_differences_all_atlas": true,
+      "all_atlas_rows_per_side": 253,
+      "all_atlas_rows_identical_after_pointer_masking": true,
+      "evidence": [
+        "src/game_hosts.cpp:2100 and 2110 append_slot uses %u",
+        "src/native_texture_atlas_parser_storage.cpp:240-242 and 351-353 form append_slot from table pointer + count*4"
+      ]
+    },
+    "limitations": "One reconstructed USN04 mission pair; no claim of native ABI/CRT-exception equivalence or cross-mission gameplay validation."
+  },
+  "flip_proposal": {
+    "switch": "kWireGoal1Chain22Bound",
+    "value": true,
+    "applied": false,
+    "reason": "Propose ON: 16480 body-path calls, identical gameplay, unit/death tables, summaries and native counts; the only raw pair_diff differences are audited atlas pointer diagnostics. Independent integration review is still required."
+  }
+}
