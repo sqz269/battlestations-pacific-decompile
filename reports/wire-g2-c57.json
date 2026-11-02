@@ -1,0 +1,135 @@
+{
+  "packet": "g2-w2",
+  "chain": 57,
+  "goal": 2,
+  "host_file": "src/game_hosts_menu.cpp",
+  "switch": "kWireGoal2Chain57Bound",
+  "switch_header": "include/bsp/wire_goal2_chain57_switches.hpp",
+  "rows": [
+    {
+      "native": "00a85c20",
+      "address": "005885ad",
+      "function": "005884a0",
+      "host_site": "src/game_hosts_menu.cpp MenuTitleMusicHost::play_stream",
+      "status": "wired",
+      "reached": 1,
+      "note": "Fed by the chain-57 title stream (00A877D0 in create_music_stream, 00A867B0 in open_stream) on the live GameSoundRuntime; reads its real +20h state and +Ah fade-out byte."
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "src/game_hosts_menu.cpp FrontEndShell::report_progress",
+      "status": "skipped",
+      "reason": "Every report site and the LoadingScreen's creation sit behind kLoadingScreenCc13Bound = false (game_hosts_menu.cpp:87, the cc15-ls1/ls2 lane: 377fc1ae3, 6b05b8f58); a second LoadingScreen under chain 57 would duplicate that unflipped lane's begin/end bodies, and outside it the screen is null. wire_readiness also counts report_loading_progress only inside frontend_entry.cpp."
+    },
+    {
+      "native": "0057c990",
+      "host_site": "src/game_hosts_menu.cpp MenuLoadingScreenHost::prepare_extra_elements",
+      "status": "skipped",
+      "reason": "MenuLoadingScreenHost exists only inside the kLoadingScreenCc13Bound = false arms of begin_loading/end_loading; the LoadingScreenElementState bindings and hint list exist only there."
+    },
+    {
+      "native": "0076c190",
+      "host_site": "src/game_hosts_menu.cpp MenuLoadingScreenHost::session_suspend",
+      "status": "skipped",
+      "reason": "Same dead kLoadingScreenCc13Bound = false path; the menu holds no session +F4h/+4h/+27Ch storage or SessionSendHost."
+    },
+    {
+      "native": "0076c230",
+      "host_site": "src/game_hosts_menu.cpp MenuLoadingScreenHost::session_resume",
+      "status": "skipped",
+      "reason": "Same dead kLoadingScreenCc13Bound = false path; no session +F4h/+27Ch storage or transport."
+    },
+    {
+      "native": "00a3e3b0",
+      "host_site": "src/game_hosts_menu.cpp XenonSystemManager::profile_change_pending",
+      "status": "skipped",
+      "reason": "Needs the 00F8ABE8 online manager, which this process never constructs (0073DC7C 'online_manager_initialize' is unimplemented in game_hosts.cpp startup phase 5, outside this host); every input would be a constant."
+    },
+    {
+      "native": "00a3f3d0",
+      "host_site": "src/game_hosts_menu.cpp XenonSystemManager::request_sign_in",
+      "status": "skipped",
+      "reason": "Needs the 00F8ABE8 online manager, which this process never constructs (0073DC7C 'online_manager_initialize' is unimplemented in game_hosts.cpp startup phase 5, outside this host); every input would be a constant. It also needs the XLive sign-in provider."
+    },
+    {
+      "native": "0067c8f0",
+      "host_site": "src/game_hosts_menu.cpp TitleInit::sign_in_state_valid",
+      "status": "skipped",
+      "reason": "Reads 00E19880 and three queries on the same unconstructed 00F8ABE8 online manager; Needs the 00F8ABE8 online manager, which this process never constructs (0073DC7C 'online_manager_initialize' is unimplemented in game_hosts.cpp startup phase 5, outside this host); every input would be a constant."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "reason": "Raw image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host builds no image-shaped manager for it and nothing on the menu path reads one, so a scratch image has no consumer."
+    },
+    {
+      "native": "006887e0",
+      "status": "skipped",
+      "reason": "Raw image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host builds no image-shaped manager for it and nothing on the menu path reads one, so a scratch image has no consumer. create_multi_menu_manager returns nullptr."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "reason": "Raw image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host builds no image-shaped manager for it and nothing on the menu path reads one, so a scratch image has no consumer. create_options_manager returns nullptr."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "reason": "Raw image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host builds no image-shaped manager for it and nothing on the menu path reads one, so a scratch image has no consumer. No 4Ch attract image, FE_attract page or movie player."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "reason": "Raw image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host builds no image-shaped manager for it and nothing on the menu path reads one, so a scratch image has no consumer. The host's TitleScreen is a typed aggregate the title path already uses."
+    },
+    {
+      "native": "00687c00",
+      "status": "skipped",
+      "reason": "Destroys the 00F8894C lobby registry singleton, never built in this process; the site is on the never-run multi-menu init and needs Fe5Host& as well."
+    },
+    {
+      "native": "00576b10",
+      "status": "skipped",
+      "reason": "Needs the C4h lobby option registry (005769E0, five maps) at 00F8894C and its lifetime lock; the site is on the multiplayer-manager path that never runs (create_multi_menu_manager returns nullptr)."
+    },
+    {
+      "native": "004b43b0",
+      "status": "skipped",
+      "reason": "Static site; its input is 00A91020 over the [00F8BBF4] device table, which needs a Cc13Front2Host whose input_device_vcall_2c has no implementation, so no real any-button-down exists."
+    },
+    {
+      "native": "004c17d0",
+      "host_site": "src/game_hosts_avoid_zones.cpp GameAvoidZoneRegistry::instance",
+      "status": "skipped",
+      "reason": "Looked at while choosing. nodef: the source entry is a singleton descriptor-table row (engine_seg4_6_9_cc13.cpp:235), not a callable body; the host's function-local static is the one-per-process registry."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "MenuTitleMusicStream (the main-menu manager's 54h title stream, [00E198AC]+50h)",
+      "where": "src/game_hosts_menu.cpp:264",
+      "producers": [
+        "GameSoundRuntime published by GameStartupHost::SoundServices via GameSingletonHost::bind_sound_runtime",
+        "005884A0: operator new(54h) 005884D5, 00A877D0 at 00588528 (construct_sound_stream_00a877d0)",
+        "00A867B0 at 0058855C (start_sound_stream_00a867b0) with 00E19504, the PE's zero empty string",
+        "image constants E12EF0 {0,1,2,6}, D7A24C 3F800000h, CE3DC8 0.3, 1090AB4 empty, as SoundServices binds them",
+        "release: 00686C90 at 00686ED1..00686EF0 (InterlockedDecrement +4h, 00BD30E0 -> 00A87B30)"
+      ],
+      "rows": [
+        "00a85c20"
+      ],
+      "not_produced": "00F889A8 music volume (writers 0073DB76, 00685C80) has no producer here, so 00A864F0 stays a record; the per-frame 00685C80 stream update is a mission-frame record."
+    }
+  ],
+  "build": {
+    "off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+    "on": "off_switch_on_build.py --names kWireGoal2Chain57Bound: build.ps1 exit 0, 0 diagnostics",
+    "pc24_lint": "0 findings"
+  },
+  "wired_total": {
+    "before": 8810,
+    "after": 8819,
+    "note": "before was read from this tree's pre-existing map; 00a85c20 is the one assigned row that moved ready -> wired"
+  },
+  "pair": "USN04 pair (OFF build/win32 at 9dd2f2f61, ON local/g2-w2-on/localg2-w2-on flip kWireGoal2Chain57Bound=true), both exit 0. pair_diff: GAMEPLAY identical, DEATH ROWS identical, PLANE DEATH MODES identical (25), UNIT TABLE identical (81), SUMMARY LINES identical (867). NATIVE TABLE: TitleMusic::create_music_stream 00a877d0, open_stream 00a867b0, play_stream 00a85c20 UNIMPLEMENTED -> concrete (calls 1 each); + MainMenuManager::release_title_stream 00a87b30 concrete calls=1 (at mission load). Only other differences: 232/232 atlas source lines whose heap pointer values (frame/allocation/append_slot) shift with the stream allocation; PlatformLoopCallbacks::pretranslate 9 -> 10 is masked noise. Verdict DIFFERENT, gameplay identical (exit 1). An earlier ON attempt ran a stale chain-54 exe (export nested under an existing local/g2-w2-on) and was discarded."
+}

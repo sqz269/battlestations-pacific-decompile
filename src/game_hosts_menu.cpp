@@ -34,6 +34,14 @@
 #include "bsp/wire_goal2_chain34_switches.hpp"
 #include "bsp/wire_goal2_chain48_switches.hpp"
 #include "bsp/wire_goal2_chain54_switches.hpp"
+#include "bsp/wire_goal2_chain57_switches.hpp"
+#include "bsp/game_title_sound.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_ref_counted.hpp"
+#include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_sample_runtime.hpp"
+#include "bsp/sound_stream_owner.hpp"
+#include "bsp/sound_stream_runtime.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/game_native_vfs_application.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
@@ -240,6 +248,92 @@ struct MenuLoadBlockFrames {
         for (auto& frame : open)
             if (frame && !frame->closed) static_cast<void>(frame.release());
     }
+};
+
+// kWireGoal2Chain57Bound: the main-menu manager's title stream, [00E198AC]+50h,
+// over the live sound core GameStartupHost::SoundServices publishes through
+// GameSingletonHost::bind_sound_runtime. The contexts are the ones
+// GameTitleSound binds on that core (game_title_sound.cpp). Built by 005884A0:
+// operator new(54h) at 005884D5, 00A877D0 at 00588528, 00A867B0 at 0058855C.
+// Released by 00686C90 at 00686EDE..00686EF0 (InterlockedDecrement of +4h, then
+// at zero vtable D5B360 +0h, 00BD30E0, whose +4h(1) is 00A87B30) when the mission load destroys
+// the manager; teardown reaches the same 00686C90 through 004DA650, so the
+// destructor releases a stream that load never released. The menu host is
+// deleted before the sound core (game_hosts.cpp), as 004DA650 runs before the
+// core's shutdown.
+class MenuTitleMusicStream final : public SoundStreamOwnerHost, public NativeRefCountedDeleteCalls {
+public:
+    MenuTitleMusicStream(GameSoundRuntime& core, void*& slot)
+        : core_(core), slot_(slot),
+          table_{core.samples().sample_context().strings, core.samples(), format_counts_00e12ef0_, 0},
+          runtime_{core.lifetime_bindings().global_00f8bbd8, core.fmod(), table_.strings,
+              one_00d7a24c_, fade_rate_00ce3dc8_, core.words().null_data_00f8bbec.data() + 2,
+              &null_integer_format_01090ab4_},
+          owner_{table_, core.samples(), *this} {}
+    MenuTitleMusicStream(const MenuTitleMusicStream&) = delete;
+    MenuTitleMusicStream& operator=(const MenuTitleMusicStream&) = delete;
+    ~MenuTitleMusicStream() override { release(); }
+
+    // 005884D5..00588537: null when the 54h allocation fails (0058852F).
+    void* construct(std::string_view path) {
+        void* const allocation = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x54, 0x54});
+        if (allocation == nullptr) return nullptr;
+        const std::string text(path);
+        NativeString owned_name;
+        try {
+            // 00A877D0 consumes the name on every exit; no caller-side destruction.
+            construct_native_string_cstring_0041e870(&owned_name, text.c_str(), table_.strings);
+            return construct_sound_stream_00a877d0(allocation, owned_name, nullptr, owner_);
+        } catch (...) {
+            singleton_lifetime_free(allocation);
+            throw;
+        }
+    }
+    // 0058853D..00588587: a temporary native copy of the track, then 00A867B0.
+    void start(void* stream, std::string_view track) {
+        const std::string text(track);
+        NativeString selected;
+        construct_native_string_cstring_0041e870(&selected, text.c_str(), table_.strings);
+        struct Cleanup {
+            NativeString& value;
+            NativeStringStorage& strings;
+            ~Cleanup() { destroy_native_string_header_0041dd20(&value, strings); }
+        } cleanup{selected, table_.strings};
+        start_sound_stream_00a867b0(stream, selected, runtime_);
+    }
+    // 00686ED1..00686EF0 on the +50h slot.
+    void release() {
+        void* const stream = slot_;
+        if (stream == nullptr) return;
+        if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
+                static_cast<unsigned char*>(stream) + 4)) == 0) {
+            invoke_native_ref_counted_delete_00bd30e0(stream, *this);
+        }
+        slot_ = nullptr;
+    }
+
+    void resolve_stream_name_00bdf4c0(void* name) override {
+        static_cast<void>(core_.samples().resolve_name_00bdf4c0(*static_cast<NativeString*>(name)));
+    }
+    void stop_stream_00a86bf0(void* stream) override { stop_sound_stream_00a86bf0(stream, runtime_); }
+    void delete_vslot04(void* stream, std::uint32_t profile, std::uint32_t flags) override {
+        if (profile != 0x00D5B360u)
+            throw std::logic_error("title stream release requires its D5B360 stream profile");
+        scalar_delete_sound_stream_00a87b30(stream, static_cast<std::uint8_t>(flags), owner_);
+    }
+
+private:
+    GameSoundRuntime& core_;
+    void*& slot_;
+    // The image's constants (PE: E12EF0 {0,1,2,6}, D7A24C 3F800000h,
+    // CE3DC8 0.3f widened, 1090AB4 an empty C string), as SoundServices binds them.
+    const std::array<std::uint32_t, 4> format_counts_00e12ef0_{0, 1, 2, 6};
+    const volatile std::uint32_t one_00d7a24c_{0x3f800000};
+    const volatile double fade_rate_00ce3dc8_{0.30000001192092896};
+    char null_integer_format_01090ab4_{};
+    SoundDialogTableContext table_;
+    SoundStreamRuntimeContext runtime_;
+    SoundStreamOwnerContext owner_;
 };
 
 }  // namespace
@@ -452,6 +546,17 @@ struct GameMenuHost::Impl {
         frame.closed = true;
         load_blocks.open.pop_back();
         return true;
+    }
+    // kWireGoal2Chain57Bound: the title stream's services over the live sound
+    // core, bound at the first 005884A0 that finds a started core. Declared after
+    // title_music so it releases that slot first. Stays empty with the switch OFF.
+    std::unique_ptr<MenuTitleMusicStream> title_stream;
+    MenuTitleMusicStream* bind_title_stream() {
+        if (title_stream) return title_stream.get();
+        GameSoundRuntime* const core = singletons.native_deletion_bindings().sound_runtime;
+        if (core == nullptr || !core->started()) return nullptr;
+        title_stream = std::make_unique<MenuTitleMusicStream>(*core, title_music.title_stream);
+        return title_stream.get();
     }
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
@@ -1426,18 +1531,45 @@ public:
         return false;
     }
     void* create_music_stream(std::string_view path) override {
-        owner_.log.unimplemented("TitleMusic::create_music_stream", "00a877d0");
-        owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
-        return nullptr;
+        if constexpr (kWireGoal2Chain57Bound) {
+            // 00588528: 00A877D0 builds the 54h stream on the live sound core;
+            // OFF keeps the null stand-in. No started core: the OFF record.
+            MenuTitleMusicStream* const title = owner_.bind_title_stream();
+            void* const stream = title != nullptr ? title->construct(path) : nullptr;
+            if (title != nullptr) {
+                owner_.log.implemented("TitleMusic::create_music_stream", "00a877d0");
+            } else {
+                owner_.log.unimplemented("TitleMusic::create_music_stream", "00a877d0");
+            }
+            owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
+            return stream;
+        } else {
+            owner_.log.unimplemented("TitleMusic::create_music_stream", "00a877d0");
+            owner_.log.notef("title music path %.*s", static_cast<int>(path.size()), path.data());
+            return nullptr;
+        }
     }
     std::string_view selected_track_name() override {
         owner_.log.unimplemented("TitleMusic::selected_track_name", "00e19504");
         return {};
     }
     void open_stream(void* stream, std::string_view track) override {
-        static_cast<void>(stream);
-        static_cast<void>(track);
-        owner_.log.unimplemented("TitleMusic::open_stream", "00a867b0");
+        if constexpr (kWireGoal2Chain57Bound) {
+            // 0058855C: 00A867B0 starts the stream. The track is the host's empty
+            // one, which is 00E19504's: that .data string is zero in the PE and
+            // its other xrefs (0058BE63, 0059A16B) are c_str() fallbacks, not
+            // writers. OFF keeps the record.
+            if (stream != nullptr && owner_.title_stream != nullptr) {
+                owner_.title_stream->start(stream, track);
+                owner_.log.implemented("TitleMusic::open_stream", "00a867b0");
+            } else {
+                owner_.log.unimplemented("TitleMusic::open_stream", "00a867b0");
+            }
+        } else {
+            static_cast<void>(stream);
+            static_cast<void>(track);
+            owner_.log.unimplemented("TitleMusic::open_stream", "00a867b0");
+        }
     }
     float music_volume() override {
         owner_.log.unimplemented("TitleMusic::music_volume", "00f889a8");
@@ -1449,8 +1581,19 @@ public:
         owner_.log.unimplemented("TitleMusic::set_stream_volume", "00a864f0");
     }
     void play_stream(void* stream) override {
-        static_cast<void>(stream);
-        owner_.log.unimplemented("TitleMusic::play_stream", "00a85c20");
+        if constexpr (kWireGoal2Chain57Bound) {
+            // 005885AD: 00A85C20 requests the fade-in on the stream 00A867B0
+            // started (state +20h, fade-out +Ah; sets +Bh and +Ch). OFF keeps the record.
+            if (stream != nullptr) {
+                request_sound_stream_fade_in_00a85c20(stream);
+                owner_.log.implemented("TitleMusic::play_stream", "00a85c20");
+            } else {
+                owner_.log.unimplemented("TitleMusic::play_stream", "00a85c20");
+            }
+        } else {
+            static_cast<void>(stream);
+            owner_.log.unimplemented("TitleMusic::play_stream", "00a85c20");
+        }
     }
 
 private:
@@ -2518,6 +2661,14 @@ void GameMenuHost::destroy_main_menu_manager_00686c90() {
     host.log.implemented("FrontEndManager::deactivate", "00683aa0");
     host.main_menu.base.active = false;  // +3Ch, cleared by 00683aa0
     host.summary.main_menu_manager_active = false;
+    if constexpr (kWireGoal2Chain57Bound) {
+        // 00686ED1..00686EF0, after 00683AA0 and the 00E198AC clear: release
+        // the +50h title stream's reference (00A87B30 at zero). OFF built none.
+        if (host.title_stream != nullptr && host.title_music.title_stream != nullptr) {
+            host.title_stream->release();
+            host.log.implemented("MainMenuManager::release_title_stream", "00a87b30");
+        }
+    }
 }
 
 bool GameMenuHost::mission_exit_finished() const noexcept {
