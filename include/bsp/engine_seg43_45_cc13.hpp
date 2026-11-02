@@ -675,8 +675,9 @@ void movie_key_read_bits_007a2370(MovieKeyBits& k, NativeBitCursor* cursor, Movi
 
 // ---------------------------------------------------------------------------
 // 0079C040: fastcall (ECX LuaObject), AL result; SEH. True when the object is
-// a table (00B661B0) whose every entry has a string key (00B660A0, Lua's
-// isstring) and a number value (00B66050) with the key "x" (__stricmp, only
+// a table (00B661B0) whose every entry has a string key (00B660A0, the exact
+// type test lua_type == 4 at 00B660CB, not lua_isstring) and a number value
+// (00B66050, lua_type == 3 at 00B6607B) with the key "x" (__stricmp, only
 // when the key text is non-null), "y" or "z" (00425850, case-insensitive),
 // and there are exactly three entries. Iteration is 00B67080/00B67190 until
 // the key is unbound (00B66420).

@@ -86,6 +86,11 @@
 #include "bsp/unit_weapons.hpp"            // packet cc13-luawire, 008BE7E0's class tests
 #include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
 #include "bsp/racked_round_entity_cc13.hpp"     // packet cc13-rackround
+#include "bsp/settings_seg29_cc13.hpp"          // packet wire-lua, LuaMachine 006B8xxx
+#include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
+#include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
+#include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
+#include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
 
 extern "C" {
 #include "lauxlib.h"
@@ -168,6 +173,37 @@ NativeLuaObjectStorage stack_object(NativeLuaStateStorage& owner, int index) {
     object.kind_04 = 2;
     object.index_08 = index;
     return object;
+}
+
+// Packet wire-lua adapter: the LuaObject a binding's 00B66430 / 00B66450 /
+// 00B66710 push runs on (ECX). Those bodies read only owner_00->state_04
+// (src/cc13_seg87.cpp state_of), so an owner constructed by 00B66BD0 that
+// holds the call's lua_State is their whole input; kind, index and +0Ch are
+// not read and stay zero. A table setter (00B66790) takes stack_object(owner,
+// absolute index) instead, since it settables at index_08.
+struct NativeBindingPushFrame {
+    NativeLuaStateStorage owner;
+    NativeLuaObjectStorage object{};
+    explicit NativeBindingPushFrame(lua_State* state) noexcept {
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state;
+        object.owner_00 = &owner;
+    }
+    NativeBindingPushFrame(const NativeBindingPushFrame&) = delete;
+    NativeBindingPushFrame& operator=(const NativeBindingPushFrame&) = delete;
+};
+
+// Packet wire-lua adapter: the class id air_ops_block_offset_006bcd20 compares,
+// from 006BCD20's own two vtable[5Ch] tests through the units host in their
+// order (006BCD35 kind 9, then 006BCD4C kind 45h); 0 when neither holds.
+std::uint32_t air_ops_block_class(const GameUnitsHost& units, std::size_t index) {
+    if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdMothership))) {
+        return bsp::kAirOpsClassIdMothership;
+    }
+    if (units.unit_is_kind_of(index, static_cast<int>(bsp::kAirOpsClassIdAirfield))) {
+        return bsp::kAirOpsClassIdAirfield;
+    }
+    return 0u;
 }
 
 // Packet cc9_spawn_new_id_queries: what the two id bindings answered.
@@ -404,7 +440,54 @@ bool movie_number(lua_State* state, int table, const char* key, std::optional<fl
     lua_pop(state, 1);
     return is;
 }
+// Packet wire-lua adapter: the entries 007A0EB0's LuaObject iteration
+// (00B67080/00B67190) hands 0079C040 and 0078FD70. Keys are read from a
+// pushed copy, so lua_tolstring never converts the key lua_next resumes from.
+void movie_vector_entries(lua_State* state, int table,
+    std::vector<bsp::cc13cam2::LuaEntryView>& views,
+    std::vector<bsp::cc13cam2::LuaNumberEntry>& numbers) {
+    ::lua_pushnil(state);
+    while (::lua_next(state, table) != 0) {
+        bsp::cc13cam2::LuaEntryView view;
+        bsp::cc13cam2::LuaNumberEntry number;
+        // 00B660A0 / 00B66050 are exact type tests on a kind-2 object:
+        // lua_type == 4 (00B660CB) and lua_type == 3 (00B6607B), so a numeric
+        // string value or a number key does not pass.
+        view.key_is_string = ::lua_type(state, -2) == LUA_TSTRING;    // 00B660A0
+        view.value_is_number = ::lua_type(state, -1) == LUA_TNUMBER;  // 00B66050
+        number.number = static_cast<double>(::lua_tonumber(state, -1));  // 00B66270
+        ::lua_pushvalue(state, -2);
+        const char* text = ::lua_tolstring(state, -1, nullptr);   // 00B662B0
+        view.key_text_null = text == nullptr;
+        if (text != nullptr && ::lua_type(state, -3) == LUA_TSTRING) number.key = text;
+        if (text != nullptr) view.key = text;
+        ::lua_pop(state, 2);
+        views.push_back(std::move(view));
+        numbers.push_back(std::move(number));
+    }
+}
+
 bool movie_vector(lua_State* state, int table, std::array<float, 3>& out) {
+    // 007A1690 0079C040 on the table's entries, then 007A16A1 0078FD70 into
+    // out; otherwise the array part 1..3 as the OFF arm reads it. OFF keeps
+    // the host's "x is a number" test.
+    if constexpr (bsp::kWireLuaHostBound) {
+        std::vector<bsp::cc13cam2::LuaEntryView> views;
+        std::vector<bsp::cc13cam2::LuaNumberEntry> numbers;
+        const bool is_table = lua_type(state, table) == LUA_TTABLE;
+        if (is_table) movie_vector_entries(state, table, views, numbers);
+        const bool vector3 = bsp::cc13cam2::lua_is_vector3_table_0079c040(is_table, views);
+        if (vector3) {
+            bsp::cc13cam2::lua_read_xyz_0078fd70(out, numbers);
+            return true;
+        }
+        for (int i = 0; i < 3; ++i) {
+            lua_rawgeti(state, table, i + 1);
+            out[static_cast<std::size_t>(i)] = static_cast<float>(lua_tonumber(state, -1));
+            lua_pop(state, 1);
+        }
+        return true;
+    } else {
     // 0079C040: three string keys among x/y/z read by name (0078FD70), else
     // the array part 1..3.
     lua_getfield(state, table, "x");
@@ -421,6 +504,7 @@ bool movie_vector(lua_State* state, int table, std::array<float, 3>& out) {
         lua_pop(state, 1);
     }
     return true;
+    }
 }
 // Packet cc9_lua49_movie_modifier: a Lua value as 007A0EB0's LuaObject
 // wrappers see it, for the modifier and event parses (bsp::cc13cam). Tables
@@ -1249,7 +1333,13 @@ int binding_trampoline(lua_State* state) {
                 ++g_spawn_id_census.requested;
                 if (requested) ++g_spawn_id_census.answered_true;
             }
-            ::lua_pushboolean(state, requested ? 1 : 0);
+            // 009459A8: 00B66450 native_lua_push_boolean over the call's state; OFF keeps lua_pushboolean.
+            if constexpr (bsp::kWireLuaHostBound) {
+                const NativeBindingPushFrame frame(state);
+                native_lua_push_boolean_00b66450(frame.object, requested ? 1 : 0);
+            } else {
+                ::lua_pushboolean(state, requested ? 1 : 0);
+            }
             return 1;
         }
         // 00945B07..00945BAE: every match is unlinked and freed (009442A0,
@@ -5473,6 +5563,30 @@ bool GameMissionLuaHost::mirror_identity_00928100(int entity_id, int party,
     const std::string& name, const char* type_name) {
     if (state_ == nullptr || entity_id <= 0) return false;
     const int base = ::lua_gettop(state_);
+    // 00928126 006B8460 get_global, 0092815D/00928174 006B8260 set_string_number,
+    // 00928193/009281AD 006B8360 set_string_string, on a LuaMachine over state_
+    // (006B7E30 wraps without owning). The host's table guards and the
+    // unwritten Race (contract, section 8) stay; OFF keeps lua_setfield.
+    if constexpr (bsp::kWireLuaHostBound) {
+        bsp::cc13_seg29::LuaMachine machine(state_);
+        machine.get_global(bsp::kMissionLuaSelfTable);
+        if (!lua_istable(state_, -1)) {
+            ::lua_settop(state_, base);
+            return false;
+        }
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+        lua_getfield(state_, -1, key);
+        if (!lua_istable(state_, -1)) {
+            ::lua_settop(state_, base);
+            return false;
+        }
+        machine.set_string_number("Party", static_cast<float>(party));
+        if (!name.empty()) machine.set_string_string("Name", name.c_str());
+        machine.set_string_string("Type", type_name);
+        ::lua_settop(state_, base);
+        return true;
+    } else {
     lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
     if (!lua_istable(state_, -1)) {
         ::lua_settop(state_, base);
@@ -5495,6 +5609,7 @@ bool GameMissionLuaHost::mirror_identity_00928100(int entity_id, int party,
     lua_setfield(state_, -2, "Type");
     ::lua_settop(state_, base);
     return true;
+    }
 }
 
 // Packet cc9_init_attach_order. 009292B0 (docs/NATIVE_UNIT_CLASS_LUA.md): the
@@ -5521,8 +5636,16 @@ bool GameMissionLuaHost::bind_lua_class_009292b0(int entity_id, int class_index,
     mark_vehicle_class_row_00964790(class_index);   // kVehicleClassRowIdBound
     lua_pushinteger(state_, class_index);
     lua_setfield(state_, -2, "ClassID");
-    ::lua_pushstring(state_, name.c_str());
-    lua_setfield(state_, -2, "Name");
+    // 00929356: 00B66790 native_lua_set_cstring on the slot table (absolute
+    // index, settable after both pushes); OFF keeps lua_pushstring/lua_setfield.
+    if constexpr (bsp::kWireLuaHostBound) {
+        NativeBindingPushFrame frame(state_);
+        NativeLuaObjectStorage slot = stack_object(frame.owner, ::lua_gettop(state_));
+        native_lua_set_cstring_00b66790(slot, "Name", name.c_str());
+    } else {
+        ::lua_pushstring(state_, name.c_str());
+        lua_setfield(state_, -2, "Name");
+    }
     lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
     if (lua_istable(state_, -1)) {
         lua_rawgeti(state_, -1, class_index);
@@ -6016,7 +6139,13 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
         }
         if (command == 0u) {
             ++summary_.get_property_unitcommand_nocommand;
-            ::lua_pushstring(state, "nocommand");
+            // 00927B31: 00B66710 native_lua_push_cstring over the call's state; OFF keeps lua_pushstring.
+            if constexpr (bsp::kWireLuaHostBound) {
+                const NativeBindingPushFrame frame(state);
+                native_lua_push_cstring_00b66710(frame.object, "nocommand");
+            } else {
+                ::lua_pushstring(state, "nocommand");
+            }
             return 1;
         }
         const char* name = units->command_name_of(command);
@@ -6028,7 +6157,13 @@ int GameMissionLuaHost::run_get_property_class_readers(lua_State* state, const c
             return 0;
         }
         ++summary_.get_property_unitcommand_named;
-        ::lua_pushstring(state, name);
+        // 00927B1E: 00B66710 native_lua_push_cstring over the call's state; OFF keeps lua_pushstring.
+        if constexpr (bsp::kWireLuaHostBound) {
+            const NativeBindingPushFrame frame(state);
+            native_lua_push_cstring_00b66710(frame.object, name);
+        } else {
+            ::lua_pushstring(state, name);
+        }
         return 1;
     }
 
@@ -6296,7 +6431,13 @@ int GameMissionLuaHost::run_is_listener_active_008c6bb0(lua_State* state, int ar
             break;
         }
     }
-    ::lua_pushboolean(state, active ? 1 : 0);
+    // 008C6D11: 00B66450 native_lua_push_boolean over the call's state; OFF keeps lua_pushboolean.
+    if constexpr (bsp::kWireLuaHostBound) {
+        const NativeBindingPushFrame frame(state);
+        native_lua_push_boolean_00b66450(frame.object, active ? 1 : 0);
+    } else {
+        ::lua_pushboolean(state, active ? 1 : 0);
+    }
     log_.implemented("MissionLuaNative::IsListenerActive", "008c6bb0");
     return 1;
 }
@@ -6430,6 +6571,25 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
         const int exited = event.second ? 1 : 0;
         // 0097B8C0 collects every matching callback first, then 00887E50 calls each.
         std::vector<std::string> callbacks;
+        // 009822A2: 0097B8C0 evaluate_warning_channel over the exitzone channel's
+        // subscriptions, each entry's entity/exited filters as its vtable[3]
+        // condition; OFF keeps the host's inline collection loop.
+        if constexpr (bsp::kWireLuaHostBound) {
+            std::vector<bsp::WarningSubscription> subscriptions;
+            for (const ListenerEntry& entry : listeners_) {
+                if (!listener_key_equal(entry.channel, "exitzone") || entry.callback.empty()) continue;
+                bsp::WarningSubscription subscription;
+                subscription.callback = entry.callback;
+                subscription.condition_holds = (entry.entity_ids.empty()
+                        || std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
+                            != entry.entity_ids.end())
+                    && (entry.exited_values.empty()
+                        || std::find(entry.exited_values.begin(), entry.exited_values.end(), exited)
+                            != entry.exited_values.end());
+                subscriptions.push_back(std::move(subscription));
+            }
+            callbacks = bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+        } else {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "exitzone")) continue;
             if (!entry.entity_ids.empty()
@@ -6443,6 +6603,7 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 continue;
             }
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
         }
         const GameUnitRow* row = units_hooks_->unit_row(event.first);
         log_.notef("  exitzone 00982120: entity \"%s\" exited=%d matches=%zu (packet cc13-fix3)",
@@ -7436,9 +7597,16 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
         {
             bsp::ReconTableScope indexed = bsp::push_recon_index_table_00803750(instance, party);
             for (const char* key : {"enemy", "own", "neutral", "unknown"}) {
+                // 00806B59..00806B7D: 006B8390 set_field_nil on a LuaMachine over
+                // state_; OFF keeps the inline pushstring/pushnil/settable(-3).
+                if constexpr (bsp::kWireLuaHostBound) {
+                    bsp::cc13_seg29::LuaMachine machine(state_);
+                    machine.set_field_nil(key);
+                } else {
                 ::lua_pushstring(state_, key);   // 006B8390
                 ::lua_pushnil(state_);
                 ::lua_settable(state_, -3);
+                }
             }
             bsp::pop_recon_table_scope(indexed);
         }
@@ -7711,7 +7879,13 @@ int GameMissionLuaHost::run_is_class_changed_008cc4b0(lua_State* state, int argu
     const bool in_range = id >= 0 && id < bsp::kVehicleClassIndexMapSize;
     const bool changed = in_range && identity_map.to_type_id(id) != id;
     if (changed) ++summary_.class_changed_true;
-    ::lua_pushboolean(state, changed ? 1 : 0);
+    // 008CC5DA: 00B66450 native_lua_push_boolean over the call's state; OFF keeps lua_pushboolean.
+    if constexpr (bsp::kWireLuaHostBound) {
+        const NativeBindingPushFrame frame(state);
+        native_lua_push_boolean_00b66450(frame.object, changed ? 1 : 0);
+    } else {
+        ::lua_pushboolean(state, changed ? 1 : 0);
+    }
     log_.implemented("MissionLuaNative::IsClassChanged", "008cc4b0");
     return 1;
 }
@@ -8437,6 +8611,17 @@ int GameMissionLuaHost::run_add_air_base_stock_00896a90(lua_State* state, int ar
     const int added = argument_count >= 3 ? static_cast<int>(::lua_tonumber(state, 3)) : 0;
     const int id = air_ops_entity_id(state);
     bsp::AirOpsDeck* deck = id > 0 ? bsp::air_ops_decks().find_mutable_by_entity_id(id) : nullptr;
+    // 00896BAE: 006BCD20 (DL = 0) air_ops_block_offset over the entity's two
+    // vtable[5Ch] tests; no block (neither 9 nor 45h, or no unit) leaves no
+    // deck. OFF keeps the deck lookup alone.
+    if constexpr (bsp::kWireLuaHostBound) {
+        const bool unit = units_hooks_ != nullptr && id > 0
+            && static_cast<std::size_t>(id) <= units_hooks_->count();
+        if (!unit || bsp::air_ops_block_offset_006bcd20(
+                air_ops_block_class(*units_hooks_, static_cast<std::size_t>(id - 1))) == 0) {
+            deck = nullptr;
+        }
+    }
     if (deck == nullptr) {
         ++summary_.stock_add_unresolved;
         log_.notef("  AddAirBaseStock 00896a90: entity id %d has no deck (packet "
@@ -9283,7 +9468,13 @@ int GameMissionLuaHost::run_get_last_catapulted_00892860(lua_State* state,
         }
     }
     ++summary_.last_catapulted_nil;
-    ::lua_pushnil(state);
+    // 00892A4B: 00B66430 native_lua_push_nil over the call's state; OFF keeps lua_pushnil.
+    if constexpr (bsp::kWireLuaHostBound) {
+        const NativeBindingPushFrame frame(state);
+        native_lua_push_nil_00b66430(frame.object);
+    } else {
+        ::lua_pushnil(state);
+    }
     return 1;
 }
 
@@ -10250,7 +10441,16 @@ namespace {
 bool plane_cached_speed_007b8e60(const GameUnitsHost& units, std::size_t index, float& out) {
     float v[3] = {0.0f, 0.0f, 0.0f};
     if (!units.unit_plane_world_velocity(index, v)) return false;
-    out = bsp::plane_cached_speed_b1c_007d8020(v);
+    // 007D807C: +6Ch from 007D8020 flight_controller_update_speed_terms over the
+    // world velocity ctl+18h; its body-velocity and rate terms are not read
+    // here and get zero inputs. OFF keeps the header's inline chain.
+    if constexpr (bsp::kWireLuaHostBound) {
+        const bsp::gameplay_seg48_cc13::Vec3 world{v[0], v[1], v[2]};
+        out = bsp::gameplay_seg48_cc13::flight_controller_update_speed_terms_007d8020(
+            world, bsp::gameplay_seg48_cc13::Vec3{}, bsp::gameplay_seg48_cc13::Vec3{}).airspeed_6c;
+    } else {
+        out = bsp::plane_cached_speed_b1c_007d8020(v);
+    }
     return true;
 }
 }  // namespace
