@@ -15386,9 +15386,10 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast_grid_walk = blast_sphere_visit_order_0098c630(shooter, centre,
             weapon->blast_range, blast_visit_order);
     }
-    const std::size_t blast_candidates =
-        blast_grid_walk ? blast_visit_order.size() : unit_state.size();
-    for (std::size_t blast_slot = 0; blast_slot < blast_candidates; ++blast_slot) {
+    // OFF re-reads unit_state.size() every pass, as before.
+    for (std::size_t blast_slot = 0;
+         blast_slot < (blast_grid_walk ? blast_visit_order.size() : unit_state.size());
+         ++blast_slot) {
         const std::size_t i = blast_grid_walk ? blast_visit_order[blast_slot] : blast_slot;
         if (i == shooter) continue;  // 0084BBF9 skips the burst's own source
         UnitState& state = unit_state[i];
