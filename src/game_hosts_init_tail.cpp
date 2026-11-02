@@ -8,6 +8,7 @@
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/vfs_mounts.hpp"
+#include "bsp/wire_goal2_chain46_switches.hpp"
 
 #include <string>
 
@@ -134,9 +135,35 @@ std::uint32_t GameHardwareProbe::current_gpu_device_id() {
 }
 
 std::string GameHardwareProbe::gpu_device_name(std::uint32_t id) {
+    // 0098c890 calls gpu_device_name_0098c890; OFF keeps the unimplemented lookup.
+    if constexpr (kWireGoal2Chain46Bound) {
+        // The current-device producer is still unimplemented and returns zero.
+        // Only the nonzero stored GPUDeviceID admitted by run()'s profile gate
+        // supplies real state (0073c49f -> CALL 0073c4b4); keep the synthetic
+        // current-device call unchanged until detection owns its adapter index.
+        if (id == 0) {
+            static_cast<void>(id);
+            log_.unimplemented("HardwareProbe::gpu_device_name", "0098c890");
+            return {};
+        }
+        using engine_seg11_35_66_cc13::GpuTableRow;
+        static_assert(sizeof(GpuTableRow) == 12);
+        static_assert(offsetof(GpuTableRow, device_id) == 0);
+        static_assert(offsetof(GpuTableRow, name) == 4);
+        static_assert(offsetof(GpuTableRow, score) == 8);
+        // Producer: the original image's static 00e0cff4 catalog and pointed-to
+        // strings. Native lifetime is process-static, present before 0073c3b0;
+        // this immutable owner is materialized only in the ON arm, at first use.
+        static constexpr GpuTableRow gpu_catalog[] = {
+#include "bsp/wire_goal2_chain46_gpu_catalog.inc"
+        };
+        log_.implemented("HardwareProbe::gpu_device_name", "0098c890");
+        return engine_seg11_35_66_cc13::gpu_device_name_0098c890(id, gpu_catalog);
+    } else {
     static_cast<void>(id);
     log_.unimplemented("HardwareProbe::gpu_device_name", "0098c890");
     return {};
+    }
 }
 
 std::string GameHardwareProbe::current_sound_device() {
