@@ -6,12 +6,13 @@
   "packet": "g2-w3",
   "host_file": "src/game_hosts_mission_frame.cpp",
   "branch": "agent/g2-w3",
-  "code_commit": "29aa858f2",
+  "code_commit": "b856b0405",
   "switch": "kWireGoal2Chain36Bound",
   "switch_default": false,
   "wired_before": 8796,
   "wired_after": 8802,
-  "wired_delta": 6,
+  "wired_delta": 3,
+  "wired_delta_note": "Readiness moved 8796 -> 8802 (+6), but only the three rows below were wired by this branch; the other three state changes were not identified and are not claimed. Credit 3.",
   "rows": [
     {
       "native": "00976f10",
@@ -39,9 +40,9 @@
       "function": "00988510",
       "host_site": "src/game_hosts_mission_frame.cpp: game_warning_report_hit_00989604 target live test",
       "status": "wired",
-      "reach": "live",
+      "reach": "static",
       "reached": 0,
-      "note": "Not in the assigned list; a ready row standing in this file. 00989855 TEST BL,BL selects 009681D0 when BL = byte [esp+98h] (loaded at 00989604), set at 00988770 only when the local-attacker byte [esp+17h] is set and the relation equals EDI=0 (009886AF XOR EDI,EDI); otherwise 009761D0 (not wired, the host's live lambda stays). Fed by unit_scene_node_flags (+5Ch/+5Dh/+5Eh) and unit_pending_destroy_0060 (+60h); gate kWarningMessageBankCc15Bound=true."
+      "note": "Static reach: reached 0 in the USN04, USN01 and IJN18 pairs, although the hit dispatcher itself runs (251 calls in IJN18). The own-fire arm is gated only by friendly fire: a projectile whose team is the local slot 0 hitting an own-side (relation 0) unit that is not player controlled; no OFF switch sits on the path. Not in the assigned list; a ready row standing in this file. 00989855 TEST BL,BL selects 009681D0 when BL = byte [esp+98h] (loaded at 00989604), set at 00988770 only when the local-attacker byte [esp+17h] is set and the relation equals EDI=0 (009886AF XOR EDI,EDI); otherwise 009761D0 (not wired, the host's live lambda stays). Fed by unit_scene_node_flags (+5Ch/+5Dh/+5Eh) and unit_pending_destroy_0060 (+60h); gate kWarningMessageBankCc15Bound=true."
     },
     {
       "native": "004d87b0",
@@ -50,7 +51,7 @@
       "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
       "status": "skipped",
       "reached": 0,
-      "reason": "Host-object gap not built. On every live load +1FE4h is the session word, 0 (kSkirmishSessionCc13Bound=false keeps scene_state.session_mode 0), so the body returns at 004D87C9 and replaces no participant-count work. A MissionPlayerCountHost needs producers this host lacks: the 00F8A2FC participant-block override, 004BB770 side counts, 004BCA50 effective game mode, the 00E18B44/00E18B40 retry latch and deadline, 00734E50 messages and 004D7970 end scene."
+      "reason": "Host-object gap not built. On every live load +1FE4h is the session word, 0 (kSkirmishSessionCc13Bound=false keeps scene_state.session_mode 0), so the body returns at its first test (+1FE4h loaded at 004D87CC, tested at 004D87D2) and replaces no participant-count work. A MissionPlayerCountHost needs producers this host lacks: the 00F8A2FC participant-block override, 004BB770 side counts, 004BCA50 effective game mode, the 00E18B44/00E18B40 retry latch and deadline, 00734E50 messages and 004D7970 end scene."
     },
     {
       "native": "004dc6a0",
@@ -166,5 +167,6 @@
     },
     "live_site": "All three sites are in game_hosts_mission_frame.cpp under gates that are true: kLossWarningBound=true (report_loss body), kWarningMessageBankCc15Bound=true (kill block call and the whole hit dispatcher). 009681D0's own-fire arm (local attacker on a relation-0 entity that is not player controlled) has no disabled gate but was not reached in USN04/USN01/IJN18."
   },
-  "flip_proposal": "Flip kWireGoal2Chain36Bound to true. USN04, USN01 and IJN18 pairs are gameplay-identical; in IJN18 the body 00976F10 ran 4 times over the pending-list view with the same cancelled=2 and summary lines as OFF, and 00922A90 ran once with the same kill report count. 009681D0 is unexercised (no own-fire hit report in the three missions); its view feeds exactly the four bytes the OFF lambda reads."
+  "flip_proposal": "Flip kWireGoal2Chain36Bound to true. USN04, USN01 and IJN18 pairs are gameplay-identical; in IJN18 the body 00976F10 ran 4 times over the pending-list view with the same cancelled=2 and summary lines as OFF, and 00922A90 ran once with the same kill report count. 009681D0 is unexercised (no own-fire hit report in the three missions); its view feeds exactly the four bytes the OFF lambda reads.",
+  "review_round_1": "Run 85 review (fix, B+): wired_delta set to 3 with the unidentified +3 readiness remainder not claimed; 009681D0 reach changed to static (0 in all three pairs, friendly-fire-only gate noted); switch comment now names all three arms (b856b0405, comment only); 004D87B0 skip reason now cites 004D87CC/004D87D2. Checks re-run after the fixes: ON build 0 diagnostics, OFF build 2/2 tests, pc24_lint 0 findings, readiness 8802 with the three rows wired. The pair runs were not repeated: the only code change is a comment."
 }
