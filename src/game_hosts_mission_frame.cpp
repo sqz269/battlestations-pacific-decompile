@@ -1208,6 +1208,7 @@ void game_warning_kill_block_00981e07(GameMissionFrameHost::Impl& host, std::siz
             // (unit_class_id); OFF keeps the inline seven-id test.
             std::int32_t entity[0xC8 / 4]{};
             entity[0xC4 / 4] = host.units->unit_class_id(unit);
+            host.done("WarningManager::kill_land_family", 0x00922a90u);
             return bsp::cc13_seg49::class_id_is_land_family_00922a90(
                 bsp::ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(entity)});
         } else {
@@ -3489,6 +3490,7 @@ void game_warning_report_hit_00989604(std::size_t victim, std::size_t shooter,
                 entity[0x5D] = flags.torn_down ? 1 : 0;
                 entity[0x5E] = flags.destroyed ? 1 : 0;
                 entity[0x60] = pending ? 1 : 0;
+                host->done("WarningManager::hit_target_live_own_fire", 0x009681d0u);
                 return bsp::cc13_sweepC::unit_is_active_for_hit_channel_009681d0(entity) != 0;
             };
             const bool own_fire = local_attacker && relation == 0;
