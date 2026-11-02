@@ -1,0 +1,66 @@
+{
+  "goal": 2,
+  "chain": 42,
+  "run": 94,
+  "harness": "claude",
+  "packet": "g2-w3",
+  "host_file": "src/game_hosts_commands.cpp",
+  "branch": "agent/g2-w3",
+  "code_commit": "3de66a1d8",
+  "switch": "kWireGoal2Chain42Bound",
+  "switch_header": "include/bsp/wire_goal2_chain42_switches.hpp",
+  "switch_default": false,
+  "pick_reason": "game_hosts_commands.cpp had three live assigned rows (0046a9f0, 006e38e0, 00721030), each with an existing reconstructed body; the other candidates offered only static rows or host-object gaps whose producers this host lacks.",
+  "wired_before": 8803,
+  "wired_after": 8805,
+  "wired_delta": 2,
+  "wired_delta_note": "python tools/wire_readiness.py after a plain ./scripts/build.ps1 at 3de66a1d8: 00721030 and 006e38e0 moved ready -> wired; 0046a9f0 stays ready (skipped).",
+  "rows": [
+    {
+      "native": "00721030",
+      "address": "00721b47",
+      "function": "00721a40",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback, SetCommand arm with set_message_bound (feeds DirectorBinding::message_target_descriptor)",
+      "status": "wired",
+      "reach": "live",
+      "reached": 199,
+      "note": "USN04 ON log: native table GameUnitMessage::target_descriptor calls=199 (same as OFF) and 'director setcmd message bound=1 round_trips=199', so the body ran once per bound delivery, 199 times. Image sites 00721B11/B22/B47/B6C, all in 00721A40 with ECX = ESI = the delivered message (its +20h is the flag byte tested at 00721B36) and the out descriptor a stack local, RET 4. The host's delivered message is the queued 0076E520 copy, bsp::NativeSessionMessage92 (static_assert size 3Ch, target_24 at +24h), built by HostSessionMessages::queue_set_command_92 when kSetCommandMessageCc13Bound=true and kSetCommandQueueDelayBound=true (both true; enclosing gate kAttackPushEndsOverrideBound is not on this path). ON: bsp_game_unit_message_read_target_descriptor_00721030(&queued, &chain.pending_target) replaces the struct copy of target_24; the host's handle resolve (object, preserved id) then runs as before, and message_target_descriptor() answers that descriptor at each of the four reads (the message is not written between them). OFF: the struct copy."
+    },
+    {
+      "native": "006e38e0",
+      "address": "0071e7c9",
+      "function": "0071e6c0",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::session_field_f4h_is_0_or_1",
+      "status": "wired",
+      "reach": "live",
+      "reached": 0,
+      "note": "Not reached in the USN04 pair (no session_echo_gate row in either native table); the readiness survey saw it once in USN15. Only image site 0071E7C9 in 0071E6C0, ECX = [00E188A8]+1EF0h (0071E7BD..0071E7C3), __fastcall/thiscall RET 0, AL result. The body reads only session+F4h = game+1FE4h. ON passes SessionObjectModeView (static_assert offsetof mode_f4 == F4h) whose +F4h is session_mode_1fe4(), the accessor every other session-mode use in this host reads (the session context when kSkirmishSessionCc13Bound, else the single-player value 0 that game+1FE4h holds in campaign); the body's {0, 1} test replaces the host's. Gate on the path: kAttackPushEndsOverrideBound=true; reached only for a weapon-category push with director+188h set (cruise_command.cpp 0071E7A8/0071E7B4); the survey saw it in USN15."
+    },
+    {
+      "native": "0046a9f0",
+      "address": "0046df33",
+      "function": "0046df00",
+      "host_site": "src/game_hosts_commands.cpp: SceneResolveBinding::clear_queue (the 0046AC34 tail JMP of 0046AAB0)",
+      "status": "skipped",
+      "reach": "live",
+      "reached": 0,
+      "reason": "Host object missing: both reconstructions (clear_native_scene_command_list_0046a9f0, BSP_SceneDatabase_ClearPendingReferences) empty the native {count, head, tail} list at scene database +14Ch whose nodes hold 14h command records built by 00469610 and destroyed through 00469010 and the native string pool. This host resolves from a host-typed local bsp::SceneCommandQueue of scene_command_record_004690d0 records read by resolve_scene_command_0046aab0; it owns no native list, and a native list built only for this clear would have no other reader (its producer 00469610 is itself an unbuilt host-object gap in game_hosts_units.cpp). The host's own clear is the local queue's destruction. Lasting until the native scene-command list exists in a host."
+    }
+  ],
+  "host_objects": [],
+  "host_object_decision": "No host object built: this host file listed no host-object gaps, and the one assigned row that needs an object (0046a9f0) needs the native scene-command list and its 00469610 producer, which is outside this file and would have no reader here.",
+  "verification": {
+    "off_build": "./scripts/build.ps1 exit 0, 2/2 tests passed (at 3de66a1d8, clean tree)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain42Bound: build.ps1 exit 0, 0 distinct diagnostics; header restored",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings (no x87 arithmetic in the ON arms)",
+    "pair_run": {
+      "session": "console Active (query session)",
+      "off": "build\\win32\\Release\\bsp_game.exe at 3de66a1d8 -> local\\g2-w3-off_USN04.log, exit 0",
+      "on": "python tools/pair_export.py --commit HEAD --flip kWireGoal2Chain42Bound=true --out local\\g2-w3-on --mission USN04 -> local\\g2-w3-on_USN04.log, exit 0",
+      "args": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "result": "GAMEPLAY identical (28 deaths, 380 hit records, 6366.6 damage, 5509 shots, first hit 86.15 s, 81 units); host methods concrete/unimplemented 1144/477 both; NATIVE TABLE 1624 -> 1624, 0 added/removed/status changed/counts moved; SUMMARY LINES 867 -> 867, 0 changed; OTHER LINES 231/231 differ, all atlas source parser/item diagnostics carrying heap append_slot addresses (the same pointer noise chains 32/34/36 recorded); 0 non-atlas lines differ.",
+      "native_rows_moved_to_concrete": "none (the 00721030 and 006E38E0 rows were already concrete markers; the change is that the reconstructed bodies now run behind them)"
+    }
+  },
+  "flip_proposal": "Flip kWireGoal2Chain42Bound to true: the USN04 pair is gameplay-identical with 199 runs of the 00721030 body over the queued NativeSessionMessage92 copies; 006E38E0 is unreached in USN04 and is the same {0, 1} test over the same session_mode_1fe4() input, so a USN15 pair would exercise it if wanted."
+}
