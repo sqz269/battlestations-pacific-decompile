@@ -7576,17 +7576,7 @@ public:
             }
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
-        // 00729BC0 calls bot_slot_for_projectile_kind; OFF keeps range-only acceptance.
-        if constexpr (bsp::kWireGoal1Chain8Bound) {
-            const auto* ammo = owner_.dp_air_ammo(slot, row.category, other);
-            const int kind = ammo != nullptr ? ammo->sub_type : row.bullet_sub_type;
-            const std::size_t bot_slot = bsp::bot_slot_for_projectile_kind_00729bc0(
-                kind, row.category);
-            owner_.done("Gunnery::bot_slot_dispatch_00729bc0", 0x00729bc0u);
-            in.slot_accepts_target = in_range && bot_slot != 0;
-        } else {
         in.slot_accepts_target = in_range;
-        }
         if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
             && other < owner_.units.count()) {
             // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
