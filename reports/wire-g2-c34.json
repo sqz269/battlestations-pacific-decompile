@@ -1,0 +1,335 @@
+{
+  "chain": 34,
+  "goal": 2,
+  "run": 78,
+  "harness": "codex",
+  "slot": "g2-w2",
+  "host_file": "src/game_hosts_menu.cpp",
+  "branch": "agent/g2-w2",
+  "switch": "kWireGoal2Chain34Bound",
+  "switch_default": false,
+  "code_commit": "a1aa171f3",
+  "selection": "Menu has the largest offered live/gap set. Native manager and loading owners were investigated; their missing producers prevented a sound object batch. The live title update can use the existing typed body through a small borrowing adapter.",
+  "wired_before": 8795,
+  "wired_after": 8796,
+  "wired_count": 1,
+  "host_objects": [],
+  "host_object_findings": "No new native owner landed. In particular, the existing LoadingScreen projection cannot replace the absent GUI init, published hint/clock state and worker consumer. Constructor 0057C1C0 explicitly leaves progress/GUI fields to those later producers. Native front-end managers need the absent base/registry image and consumers; constructing disposable storage would not count.",
+  "adapters": [
+    {
+      "name": "MenuPressStartUpdateAdapter",
+      "where": "src/game_hosts_menu.cpp:702",
+      "producers": [
+        "0068D8D0/0067C840 create the existing PressStartScreen",
+        "0067CA80 registers/binds its existing page",
+        "GameMenuHost::frame supplies raw_delta and the existing MenuPressStartHost"
+      ],
+      "rows": [
+        "004f71f0"
+      ],
+      "lifetime": "Stack adapter only inside the ON branch for the title update. Borrows existing host state; owns no image, screen or registration."
+    }
+  ],
+  "builds": {
+    "on": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain34Bound",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "log": "local/off_switch_on_build.log"
+    },
+    "off": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests": "2/2 CTests passed; run after ON check, so readiness used the OFF bsp_game.map"
+    },
+    "pc24": {
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "exit_code": 0,
+      "findings": 0
+    },
+    "off_arm": "The pre-existing update_press_start_screen body is kept byte for byte inside else. OFF does not instantiate the adapter or call the new dispatch.",
+    "pair_on_export": {
+      "command": "python tools/pair_export.py --commit HEAD --flip kWireGoal2Chain34Bound=true --out local\\g2-w2-on --mission USN04",
+      "exit_code": 0,
+      "tests": "2/2 CTests passed",
+      "source_commit": "a1aa171f3",
+      "sha256_prefix": "D2A1F078E3EE",
+      "log": "local/output/g2-w2-on-export.txt"
+    }
+  },
+  "pair_run": {
+    "console": "query session showed console sqz269 session 1 Active; services session 0 Disc was not the console.",
+    "off_log": "local/g2-w2-off_USN04.log",
+    "on_log": "local/g2-w2-on_USN04.log",
+    "arguments": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+    "off_exit_code": 0,
+    "on_exit_code": 0,
+    "frames_presented_each": 3199,
+    "mission": "USN04",
+    "diff": {
+      "command": "python tools/pair_diff.py local\\g2-w2-off_USN04.log local\\g2-w2-on_USN04.log --limit 60",
+      "exit_code": 1,
+      "verdict": "DIFFERENT, gameplay identical",
+      "log": "local/output/g2-w2-pair-diff.txt",
+      "native_table": {
+        "before": 1624,
+        "after": 1625,
+        "added": [
+          {
+            "native": "004f71f0",
+            "method": "TitleScreen::update_press_start_screen",
+            "state": "concrete",
+            "calls": 31
+          }
+        ],
+        "removed": [],
+        "status_changed": [],
+        "counts_moved": []
+      },
+      "native_standin_to_concrete": [],
+      "native_note": "004F71F0 was an inline direct dispatch with no OFF table row, so the ON concrete row is added rather than an existing status change.",
+      "gameplay_rows_moved": [],
+      "host_methods_row": {
+        "off": "1144 / 477",
+        "on": "1145 / 477"
+      },
+      "gameplay": "Both: 28 deaths, 380 hit records, 276 hull hits, damage 6366.6, 5509 shots, first hit 86.15s, 81 units; unit table and 25 plane-death-mode rows identical.",
+      "summary_lines": {
+        "before": 867,
+        "after": 867,
+        "changed": 0,
+        "only_on": 0,
+        "only_off": 0
+      },
+      "other_diagnostics": {
+        "only_off": 231,
+        "only_on": 231,
+        "note": "Do not treat this as a fully identical log pair. Atlas source address traces are among the differences. Supplemental comparison found all 253 atlas-source lines per run equal after masking frame and pointer fields including append_slot, manager and buffer."
+      }
+    }
+  },
+  "flip_proposal": {
+    "value": true,
+    "reason": "Propose enabling only kWireGoal2Chain34Bound after integration review: 31 live dispatches, no gameplay changes, both builds/tests pass. Pair_diff's diagnostic-line mismatch remains recorded. The worktree header stays false."
+  },
+  "reached_note": "Wired row reached is the ON concrete native-table call count. Skipped rows' reached values are existing address-bearing host diagnostics, possibly across multiple methods, and do not prove execution of their reconstructed bodies.",
+  "rows": [
+    {
+      "native": "004f71f0",
+      "address": "0068d873",
+      "function": "0068d850",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleHandoverHost::update_press_start_screen",
+      "status": "wired",
+      "abi": "typed",
+      "identifier": "bsp::engine_seg11_35_66_cc13::update_front_end_screen_004f71f0",
+      "reach": "static in supplied mission survey; current BSP ON pair reached the live title path 31 times",
+      "reached": 31,
+      "contract": "Body dispatches screen.update_20(seconds). A small adapter borrows the existing PressStartScreen, PressStartGlobals, PromptPulse and MenuPressStartHost; it runs the existing 0067CFB0 update once, preserving the prior outcome/log behavior.",
+      "live_site_check": "GameMenuHost::frame -> run_front_end_state_frame(state 2) -> MenuFrameHost::update_title_screen -> update_title_screen_0068d850 -> this site. No other OFF switch gates it. Runtime title/press_start presence guards have real constructor/activation producers.",
+      "evidence": [
+        "004F71F0 listing: ECX screen; FLD [ESP+4]; virtual +20h; 004F71FF RET 4.",
+        "0068D850 listing: ESI retains title receiver, 0068D86D MOV ECX,[ESI+40h]; raw delta reloaded from [ESP+8], stored at [ESP]; 0068D873 CALL 004F71F0; 0068D879 RET 4.",
+        "All seven caller sites queried: five interface-only sub-sites, OnMove scaled-delta site 004E4C88 and title raw-delta site 0068D873. This binding replaces only the latter.",
+        "Live proto query places 0068D873 in 0068D850..0068D87B."
+      ]
+    },
+    {
+      "native": "004c1ac0",
+      "host_site": "src/game_hosts_menu.cpp:GameMenuHost::Impl / MenuFrameLayoutHost",
+      "status": "skipped",
+      "abi": "nodef",
+      "reach": "live host candidate or required object producer",
+      "reached": 3,
+      "reason": "The selected engine_seg4_6_9_cc13.cpp entry has no callable body. The host already owns its semantic frame/layout state; do not add a second singleton getter."
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::report_progress / MenuManagerHost::report_loading_progress",
+      "status": "skipped",
+      "abi": "typed",
+      "reach": "live host candidate or required object producer",
+      "reached": 14,
+      "reason": "kLoadingScreenCc13Bound=false gates creation, begin/end and both report sites. LoadingScreen's existing CRT ST0 provider is available, but the host lacks the +1Ch..+28h GUI-element producers, real hint reset/tick and worker consumer. Enabling an isolated progress object would retain synthetic initialization with no loading consumer; no object landed."
+    },
+    {
+      "native": "0067c8f0",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleInitHost::sign_in_state_valid",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "No borrow of the live 00F8ABE8 platform manager or 00E19880 producer. MenuPressStartHost's selected-user, invitee and active-slot queries return constants; a new flags object would invent platform state."
+    },
+    {
+      "native": "00686170",
+      "host_site": "src/game_hosts_menu.cpp:MenuManagerHost::create_main_menu_manager",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "The owned main_menu is a typed projection, not the 78h native manager image. Its native 00684E10 base/registry owner and request-vector producer are absent; a scratch native constructor would not initialize the manager consumed by the live path."
+    },
+    {
+      "native": "006887e0",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::create_manager_b4 / MenuManagerHost::create_multi_menu_manager",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "Both creation sites only log or return null. No native base/registry, request-vector or multiplayer/session producer is bound. A new empty manager would not supply the missing producer or a native consumer."
+    },
+    {
+      "native": "00689800",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::create_manager_b8 / MenuManagerHost::create_options_manager",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "Creation only logs or returns null. The required 00684E10 native base/registry storage and owned options graph are absent; writing only its vtable into scratch storage would have no options consumer."
+    },
+    {
+      "native": "00689d90",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleInitHost::create_attract_screen",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "No owned 4Ch native attract image, native manager base or FE_attract page/init/idle state consumer exists. create_attract_screen returns null and attract_screen_init only logs; the native base/registry producer is missing."
+    },
+    {
+      "native": "0068d760",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleInitHost::create_title_screen",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "title_object is an existing typed TitleScreen, with attached_screen filled by 0068D8D0. The native 44h base/registry owner and publication producer do not exist here. A scratch constructor mapped onto that already initialized typed field would only return host state."
+    },
+    {
+      "native": "004b43b0",
+      "host_site": "src/game_hosts_menu.cpp:MenuPressStartHost::input_edge_latch",
+      "status": "skipped",
+      "abi": "typed",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "No dynamic-device table/poll provider produces AnyDynamicDeviceButtonDown (00A91020). Injected action records do not establish that device query; a constant any_button_down would violate the real-state rule."
+    },
+    {
+      "native": "00576b10",
+      "host_site": "src/game_hosts_menu.cpp:MenuManagerHost::refresh_multiplayer_state",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Missing actual 00F8894C singleton publication, C4h storage with five native maps, and lifetime-lock producer. A local semantic lobby registry cannot satisfy this getter and no native consumer owns it."
+    },
+    {
+      "native": "0057c990",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::prepare_extra_elements",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; the enclosing begin-loading path is disabled by kLoadingScreenCc13Bound=false. The host also lacks LoadingScreenElementState widget bindings, published hint keys/cursor, localized UTF-16 length and the clock/tick producer. No fabricated empty hint list."
+    },
+    {
+      "native": "00687c00",
+      "host_site": "src/game_hosts_menu.cpp:MenuManagerHost::refresh_downloadable_content",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; downloadable_content_present returns false. This body destroys 00F8894C under its lifetime lock. That singleton is never built here; it is not a content refresh, and a null destructor would count no behavior."
+    },
+    {
+      "native": "0076c190",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::session_suspend",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; only reached through begin_loading_screen behind kLoadingScreenCc13Bound=false. The menu has no live session mode/flags and SessionSendHost. Do not fabricate a local session."
+    },
+    {
+      "native": "0076c230",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::session_resume",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; only reached through end_loading_screen behind kLoadingScreenCc13Bound=false. The menu has no live session loading flag and SessionSendHost producer."
+    },
+    {
+      "native": "00a410a0",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::grant_award",
+      "status": "skipped",
+      "abi": "typed",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; award_gate_open, award_system_ready and award_session_ready return false. No OnlineSignInState fields or award-queue producer are borrowed from 00F8ABE8, so fabricated flags would be constants."
+    },
+    {
+      "native": "00aa2b80",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::gui_refresh",
+      "status": "skipped",
+      "abi": "callback",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "Static reach; the end-loading path is behind kLoadingScreenCc13Bound=false. This host exposes no actual GUI render-command queue or GuiRenderQueueHost; there is no queue owner to reset."
+    },
+    {
+      "native": "00a3e3b0",
+      "host_site": "src/game_hosts_menu.cpp:MenuPressStartHost::profile_change_pending",
+      "status": "skipped",
+      "abi": "typed",
+      "reach": "live host candidate or required object producer",
+      "reached": 62,
+      "reason": "No borrow of the actual platform-manager +2Ch and +3C0h asynchronous-operation status producers. A new default PlatformManagerFlags object would merely reproduce constant false."
+    },
+    {
+      "native": "00a3f3d0",
+      "host_site": "src/game_hosts_menu.cpp:MenuPressStartHost::request_sign_in",
+      "status": "skipped",
+      "abi": "typed",
+      "reach": "live host candidate or required object producer",
+      "reached": 2,
+      "reason": "No NativeOnlineManagerStorage publication or NativeOnlineSigninRequestCalls/XLive user-provider binding is held by this menu host. Injected pad state cannot initialize that owner or provider domain."
+    },
+    {
+      "native": "00a85c20",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleMusicHost::play_stream",
+      "status": "skipped",
+      "abi": "raw_view",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "create_music_stream returns null; open_stream and set_stream_volume only log. No actual 54h stream owner or +20h/+Ah state producer is borrowed here. A fabricated stream would not request playback on the owned sound runtime."
+    },
+    {
+      "native": "00b1bf90",
+      "host_site": "src/game_hosts_menu.cpp:MenuFrameHost::render_queue_retained",
+      "status": "skipped",
+      "abi": "raw_view",
+      "reach": "live host candidate or required object producer",
+      "reached": 31,
+      "reason": "The host owns no native queue+20h retention control or its producer; frame_state.render_queue_open is the distinct game+34h state. A getter on a fabricated false queue would hand back the existing stand-in."
+    },
+    {
+      "native": "00be0ae0",
+      "host_site": "src/game_hosts_menu.cpp:MenuManagerHost::open_load_block",
+      "status": "skipped",
+      "abi": "raw_view",
+      "reach": "live host candidate or required object producer",
+      "reached": 1,
+      "reason": "No refcounted native scope image, native string owner, prepared block identifier or EngineServiceCalls/VFS binding exists at this label-only site. The title VFS scope belongs to a different host phase and cannot be reused as this object."
+    },
+    {
+      "native": "0057c1c0",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::create_screen",
+      "status": "skipped",
+      "abi": "raw_callback",
+      "reach": "live host candidate or required object producer",
+      "reached": 0,
+      "reason": "Inspected as the loading-object producer: constructor does not initialize progress or GUI pointers; 0057CB60 must call screen+10h and 0057C990 afterward. Native singleton-lifetime registration, GUI initialization and hint consumers are absent and kLoadingScreenCc13Bound=false disables its host path."
+    }
+  ]
+}
