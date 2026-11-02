@@ -19274,7 +19274,7 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
         const int level = h.units.skill_level(unit_index);
         const int row = (level < 0 || level > 5) ? 1 : level;
         const float mul = [&]() {
-            // 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
+            // Native 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
             if constexpr (bsp::kWireGoal1Chain8Bound) {
                 const auto selected = h.pilot_throw_multiplier(*chosen, unit_index, row);
                 if (selected) return *selected;
@@ -19523,7 +19523,7 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
         const int level = skill_row >= 0 ? skill_row : h.units.skill_level(unit_index);
         const int row = (level < 0 || level > 5) ? 1 : level;
         const float mul = [&]() {
-            // 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
+            // Native 00999B70 calls the PilotBot selector with the rack record; OFF keeps the two tables.
             if constexpr (bsp::kWireGoal1Chain8Bound) {
                 const auto selected = h.pilot_throw_multiplier(*chosen, unit_index, row);
                 if (selected) return *selected;
