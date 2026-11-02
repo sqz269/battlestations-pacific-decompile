@@ -2,6 +2,8 @@
 // See include/bsp/game_hosts_mission.hpp for the address list and the evidence.
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/wire_goal2_chain29_switches.hpp"
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -722,6 +724,19 @@ private:
 // 0058C010's MissionDetailHost
 // ---------------------------------------------------------------------------
 
+// The native screen's +14h..+30h tables are already retained in Impl::tables.
+// 005C3850 receives the selected record's +00h id, not its cached ordinal.
+// Both callers (00580977 and 0058C088) use 005C3870's selected record and the
+// same tree receiver; RET4 at 005C3868 consumes that one name argument.
+class MissionTreeLookupBinding final : public cc13_fe1::MissionTreeLookupHost {
+public:
+    std::int32_t find_mission_by_name_005c3470(void* screen, const void* name) override {
+        const auto& tables = *static_cast<const MissionTreeTables*>(screen);
+        const auto& id = *static_cast<const std::string*>(name);
+        return static_cast<std::int32_t>(find_mission_by_id_005c3470(tables.groups, id).mission);
+    }
+};
+
 class MissionDetailBinding final : public MissionDetailHost {
 public:
     explicit MissionDetailBinding(GameMissionHost::Impl& owner) : owner_(owner) {}
@@ -741,8 +756,21 @@ public:
         return static_cast<int>(owner_.tables.selection.group);
     }
     int read_tree_selected_mission_index() override {
+        // 005C3850 calls the reconstructed name lookup; OFF keeps the cached tree ordinal.
+        if constexpr (kWireGoal2Chain29Bound) {
+            const MissionRecordData* record = selected_mission_005806a0(owner_.tables,
+                owner_.tables.selection.group, owner_.tables.selection.mission);
+            if (record == nullptr)
+                throw std::logic_error("mission-index lookup requires the selected tree record");
+            MissionTreeLookupBinding lookup;
+            const auto index = cc13_fe1::mission_tree_mission_index_of_005c3850(
+                &owner_.tables, &record->screen.name, lookup);
+            owner_.log.implemented("MissionDetail::read_tree_selected_mission_index", "005c3850");
+            return index;
+        } else {
         owner_.log.implemented("MissionDetail::read_tree_selected_mission_index", "005c3850");
         return static_cast<int>(owner_.tables.selection.mission);
+        }
     }
     void publish_selection(int group, int mission_index) override {
         owner_.published_group = static_cast<std::uint32_t>(group);
