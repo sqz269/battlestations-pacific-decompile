@@ -1,0 +1,134 @@
+{
+  "chain": 58,
+  "slot": "g2-w3",
+  "host_file": "src/game_hosts_ai.cpp",
+  "switch": "kWireGoal2Chain58Bound",
+  "switch_header": "include/bsp/wire_goal2_chain58_switches.hpp",
+  "build": "./scripts/build.ps1 exit 0, ctest 2/2 passed (OFF)",
+  "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain58Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "not needed: the ON arm does no x87 arithmetic (the clock and the draw are passed to the body unchanged)",
+  "wired_total_before": 8811,
+  "wired_total_after": 8813,
+  "gate_note": "Every AI-coordinator tick path in this host is dead in the current build: GameAiCoordinatorHost::fixed_step (game_hosts_ai.cpp) returns before ai_coordinator_fixed_step_00a32d50 when kAiCoordinatorLoadGateBound (true) && !ai_coordinator_created_at_load(), and ai_coordinator_created_at_load() folds to false because kSkirmishSessionCc13Bound = false (include/bsp/session_context_cc13.hpp:22). Planner thinks, the party think 00A182C0 and everything they call never run in a mission-tree launch. Only create_00a32350 (the 00A32350/00A31730 construction) runs.",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "00a31730",
+      "address": "00a32397",
+      "function": "00a32350",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::create_00a32350",
+      "status": "wired",
+      "identifier": "ai_init_party_think_schedule_00a163d0",
+      "note": "ON: the eight party slots come from ai_init_party_think_schedule_00a163d0(host.clock_seconds, host's 00BD2F10 stand-in stream): next_think = clock + U(3,5), record +0h = 0. OFF: next_think.fill(0), party_record.fill(false). The values are read only by the coordinator tick (00A182C0), which the load gate above keeps off in campaign, so the change is not expected to move gameplay rows in a mission-tree run; the 8 draws come from the coordinator's private stream (host.rng), which nothing outside the coordinator tick reads.",
+      "reached": 1
+    },
+    {
+      "native": "00a16450",
+      "address": "00a26590",
+      "function": "00a26510",
+      "host_site": "src/game_hosts_ai.cpp Impl::publish_spawn_bias (planner spawn arm)",
+      "status": "skipped",
+      "reason": "Dead arm: publish_spawn_bias is reached only from planner_tick -> duel/escort/mode think inside the coordinator tick, which GameAiCoordinatorHost::fixed_step skips under kAiCoordinatorLoadGateBound because ai_coordinator_created_at_load() is false with kSkirmishSessionCc13Bound = false. The body itself fits (ECX = [00E0E344] current party at all four sites, now + 0.5 pull-forward of next_think).",
+      "reached": 0
+    },
+    {
+      "native": "00a24870",
+      "address": "00a250fa",
+      "function": "00a250a0",
+      "host_site": "src/game_hosts_ai.cpp Impl::capture_defenders_00a24870 (stand-in, from capture_plan_00a29fd0)",
+      "status": "skipped",
+      "reason": "Dead arm: capture_plan_00a29fd0 runs only from planner_tick in the coordinator tick, skipped by kAiCoordinatorLoadGateBound with kSkirmishSessionCc13Bound = false. The typed body would fit over world list 2 and CaptureTuning::collect_defenders once the tick is live.",
+      "reached": 0
+    },
+    {
+      "native": "00a2def0",
+      "address": "00a28ae5",
+      "function": "00a28a60",
+      "host_site": "src/game_hosts_ai.cpp Impl::defend_think_00a28a60",
+      "status": "skipped",
+      "reason": "Already called: game_hosts_ai.cpp:5239 calls ai_defend_member_is_candidate_00a2def0 under kDefendThinkImageBound (true); wire_readiness reads it as ready only because that multi-line call matches its definition regex (host_has_own=true, one occurrence in the file). It also sits in the gated coordinator tick. Nothing to wire.",
+      "reached": 0
+    },
+    {
+      "native": "00a03760",
+      "address": "00a1e2a8",
+      "function": "00a1e250",
+      "host_site": "src/game_hosts_ai.cpp CaptureScoreHost::unit_arrival_value",
+      "status": "skipped",
+      "reason": "The host already runs a body of this address, bsp::ai_tail_unit_arrival_value (src/ai_planner_tails.cpp:107), at game_hosts_ai.cpp:4428; swapping in ai_unit_arrival_value_00a03760 would replace one reconstruction with another, not host logic. It is also inside the gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "00a15950",
+      "address": "009ffca3",
+      "function": "009ffc80",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::create_00a32350 (tuning load)",
+      "status": "skipped",
+      "reason": "Host-object gap not built: 009FFC80 uses the slot to read the player record [game+18CCh+slot*4]+2Ch (difficulty - 3), which no host object produces, and ai_tuning_mode_009ffc80 takes that difficulty, not the slot. The host loads tuning once in create, before any brain exists; the image re-evaluates per 00A371A0 access inside the gated tick.",
+      "reached": 0
+    },
+    {
+      "native": "00a179e0",
+      "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail",
+      "status": "skipped",
+      "reason": "Host-object gap not built: no powerup-ready entries, scoring callbacks or item-use consumer in this host, and the party brain think that reaches it runs only in the gated coordinator tick. Image xrefs are tail jumps (00A181C0 etc.), no CALL site.",
+      "reached": 0
+    },
+    {
+      "native": "00a371a0",
+      "address": "009fdf43",
+      "function": "009fdf30",
+      "host_site": "src/game_hosts_ai.cpp tuning_field / auto_merge_dist",
+      "status": "skipped",
+      "reason": "Host-object gap not built: the body returns a pointer into the coordinator's 0x23C-stride mode records, which this host does not own (one projected AiTuningBlock); every host site is inside the gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "00a2b950",
+      "address": "00a1ce93",
+      "function": "00a1cb80",
+      "host_site": "src/game_hosts_ai.cpp (no score list)",
+      "status": "skipped",
+      "reason": "Host-object gap not built: the group score list's only record reader is the unreachable debug overlay 00A2CDD0 <- 00A2D580 <- 00A31000 (game_hosts_ai.cpp:1126 note), so a list would have no gameplay consumer; its writers run in the gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "00a2bcc0",
+      "address": "00a1ceff",
+      "function": "00a1cb80",
+      "host_site": "src/game_hosts_ai.cpp (no score list)",
+      "status": "skipped",
+      "reason": "Same as 00a2b950: no score-list storage with a gameplay consumer; gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "00a2c530",
+      "address": "00a1c932",
+      "function": "00a1c900",
+      "host_site": "src/game_hosts_ai.cpp kCaptureGroupResource",
+      "status": "skipped",
+      "reason": "Host-object gap not built: member+304h ResourceUsage (written by 0077E830 from the Lua ResourceUsage key) is not exposed by GameUnitsHost, and game_hosts_units.cpp is leased by another worker this chain; the sites are inside the gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "00946fc0",
+      "address": "00a1e6d9",
+      "function": "00a1e250",
+      "host_site": "src/game_hosts_ai.cpp CaptureScoreHost::available_resources",
+      "status": "skipped",
+      "reason": "Host-object gap not built: the body walks the image game object's game+19CCh+58h unit list (+5Ch/+5Dh/+5Eh/+60h/+54h/+304h/+9D4h) and the globals 00E0CFB4 / 00F89B3C through Left61Host (87 virtuals); this host has no image-shaped game object or unit+304h producer. Gated coordinator tick.",
+      "reached": 0
+    },
+    {
+      "native": "006de3f0",
+      "address": "008df581",
+      "function": "008df400",
+      "host_site": "src/game_hosts_ai.cpp GameObjectiveSets::erase_member_unless_held",
+      "status": "skipped",
+      "reason": "Host-object gap not built: the body needs the marker manager's name-keyed map (this+14h) of per-unit marker slots with +14h keep flags and the observer pair (00694AF0 / 006952A0); GameObjectiveSets holds unit lists only and no host builds those markers.",
+      "reached": 0
+    }
+  ],
+  "pair_run": "USN04, 3200 frames, OFF = this tree at 30c74eb38, ON = pair_export --flip kWireGoal2Chain58Bound=true (bsp_game.exe SHA-256 AD3A86109E00). pair_diff: GAMEPLAY identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509, units 81/81); UNIT TABLE identical; NATIVE TABLE 1 status change: AiController::construct 00a31730 UNIMPLEMENTED -> concrete, calls 1 -> 1; host methods 1144/477 -> 1145/476; SUMMARY LINES identical; the 231/231 OTHER LINES are atlas source parser/item allocation addresses (heap layout of a different exe). Wired total 8811 -> 8813: 00a31730 and 00a163d0 (the body itself, which shares the identifier).",
+  "flip_proposal": "Flip kWireGoal2Chain58Bound to true: the pair shows the 00a31730 stand-in turning concrete with gameplay identical. The schedule it seeds is read only by the coordinator tick, which stays off in campaign (kAiCoordinatorLoadGateBound, kSkirmishSessionCc13Bound = false), so a campaign run is not expected to move; a skirmish-session pair is the one that would."
+}
