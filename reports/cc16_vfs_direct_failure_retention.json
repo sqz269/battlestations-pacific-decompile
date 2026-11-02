@@ -1,0 +1,15 @@
+{
+  "packet": "Source157 VFS direct Runtime failure retention",
+  "status": "Source implementation; independent review, registered build and Code admission pending",
+  "problem": "Direct Runtime142 request/completion borrowers bypass the VFS invoke_native failure flag",
+  "change": "Preserve facade failure/title arms, then include existing failure_site()!=0",
+  "source_files": ["include/bsp/game_hosts_vfs.hpp"],
+  "existing_failure_query": "src/game_hosts_vfs.cpp:210; same title/resource/Runtime request-completion/name-resolution history with existing core_ready guard",
+  "core_readiness": "Set only after normal initialize_core and raw manager publication; retained Runtime already exists",
+  "native_cleanup_policy": "unchanged Root whole-graph retention; no additional cleanup or retry",
+  "false_query_last_use_authority": false,
+  "Source144_callback_retirement_closed": false,
+  "GUI_activation": false,
+  "Native_vendor_credit": 0,
+  "new_tests_probes_Game_Ghidra": 0
+}

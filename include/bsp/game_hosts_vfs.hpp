@@ -86,7 +86,9 @@ public:
     void phase6(VfsStartupState&);
     bool ready() const noexcept { return core_ready_; }
     bool requires_process_retention() const noexcept {
-        return native_operation_failed_ || title_fileblock_ != nullptr;
+        // Direct Runtime request/completion borrowers bypass invoke_native.
+        // Their existing positive failure history must reach Root's guards too.
+        return native_operation_failed_ || title_fileblock_ != nullptr || failure_site() != 0;
     }
     std::uint32_t failure_site() const noexcept;
     VfsMountContext& context() noexcept { return consumer_context_; }
