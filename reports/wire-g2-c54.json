@@ -1,0 +1,155 @@
+{
+  "chain": 54,
+  "goal": 2,
+  "slot": "g2-w2",
+  "branch": "agent/g2-w2",
+  "harness": "claude",
+  "host_file": "src/game_hosts_menu.cpp",
+  "switch": "kWireGoal2Chain54Bound",
+  "switch_header": "include/bsp/wire_goal2_chain54_switches.hpp",
+  "build": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain54Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings (no x87 arithmetic in the ON arm)",
+  "wired_before": 8808,
+  "wired_after": 8809,
+  "host_objects": [
+    {
+      "name": "MenuLoadBlockFrame (with the MenuFileBlockScopeCalls EngineServiceCalls adapter and the MenuLoadBlockFrames stack in GameMenuHost::Impl::load_blocks)",
+      "where": "src/game_hosts_menu.cpp:213",
+      "producers": [
+        "[0109CEEC] VFS publication, ActualNativeStringPoolStorage: GameVfsHost::borrow_raw_services (GameNativeVfsRuntime::borrow_raw_services)",
+        "NativeStringRawPoolContext: GameVfsHost::raw_strings",
+        "NativeVfsFileBlockScopeContext: GameVfsHost::native_application().runtime().borrow_fileblock_scopes() (the same gated borrow open_title_fileblock takes)",
+        "18h log builder: construct_native_log_builder_00426500 / append_native_log_cstring_00bd1a60 / destroy_native_log_builder_00425f80 (006863A6 / 006863BA / 006863D2)",
+        "label: kMainMenuLoadBlock 'GVMainMenu' = image string 00CF77C0 pushed at 006863AF; kOptionsMenuLoadBlock 'GVOptions' 00CF78DC at 006898E7",
+        "gate 1: the image's PUSH 1 at 006863AB / 006898E5",
+        "00BDF950 / 00BE0980 services: prepare_native_fileblock_identifier_00bdf950, enter_native_vfs_fileblock_00be0980 (00BE0B5E / 00BE0B6F)",
+        "close: destroy_native_fileblock_00bdcb30 at close_load_block (00686380 at 006868E4)"
+      ],
+      "lifetime": "Built by FrontEndManager::open_load_block (init_main_menu_00686380 entry; image 006863C4) and released by close_load_block (its exit; image 006868E4). Frames nest as the image's stack locals do; a frame a native call escaped from is retained, never replayed.",
+      "rows": [
+        "00be0ae0"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00be0ae0",
+      "address": "006863c4",
+      "function": "00686380",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::open_load_block -> GameMenuHost::Impl::open_load_block_00be0ae0",
+      "status": "wired",
+      "reach": "live: FrontEndManager::open_load_block ran once in the OFF USN04 log ('front-end load block GVMainMenu')",
+      "reached": 1
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "src/game_hosts_menu.cpp Impl::report_loading_progress_0057bec0 / FrontEndShell::report_progress",
+      "status": "skipped",
+      "reason": "Every report site and the LoadingScreen's creation sit behind kLoadingScreenCc13Bound = false (game_hosts_menu.cpp:87); an arm there is behind another OFF switch, and outside it the screen is null so the body is the image's no-op."
+    },
+    {
+      "native": "0057c990",
+      "host_site": "src/game_hosts_menu.cpp MenuLoadingScreenHost::prepare_extra_elements",
+      "status": "skipped",
+      "reason": "MenuLoadingScreenHost exists only inside the kLoadingScreenCc13Bound = false arms of begin_loading/end_loading; the site is dead with that switch OFF."
+    },
+    {
+      "native": "0076c190",
+      "host_site": "src/game_hosts_menu.cpp MenuLoadingScreenHost::session_suspend",
+      "status": "skipped",
+      "reason": "Reached only through begin_loading_screen inside the kLoadingScreenCc13Bound = false arm; the menu also holds no session +F4h/+4h/+27Ch storage or SessionSendHost."
+    },
+    {
+      "native": "00a3e3b0",
+      "host_site": "src/game_hosts_menu.cpp MenuPressStartHost::profile_change_pending",
+      "status": "skipped",
+      "reason": "Reads [00F8ABE8]+2Ch/+3C0h. GameNativeSettingsProcess::online_00f8abe8 stays null because the startup host never runs the 0073DC7C online-manager construction (construct_native_online_manager_00a40df0 needs the XLive pump/startup context); building that manager belongs to game_hosts.cpp's startup phase 5, not this host, and is past one chain's cap."
+    },
+    {
+      "native": "0067c8f0",
+      "host_site": "src/game_hosts_menu.cpp MenuTitleInitHost::sign_in_state_valid",
+      "status": "skipped",
+      "reason": "Needs 00E19880 plus three queries on the same unconstructed 00F8ABE8 online manager (see 00a3e3b0); every input would be a constant."
+    },
+    {
+      "native": "00a3f3d0",
+      "host_site": "src/game_hosts_menu.cpp MenuPressStartHost::request_sign_in",
+      "status": "skipped",
+      "reason": "Needs the actual NativeOnlineManagerStorage at 00F8ABE8 and the XLive sign-in provider; the manager is never constructed in this process (see 00a3e3b0)."
+    },
+    {
+      "native": "004b43b0",
+      "host_site": "src/game_hosts_menu.cpp MenuPressStartHost::input_edge_latch",
+      "status": "skipped",
+      "reason": "One object per chain; 00be0ae0's live frame was chosen. The site is static (press_start_screen.cpp:214 needs a press while press_consumed_by_prompt, set only with a menu screen up). Route for a later chain: 00a91020 over GameInputRuntime's native backend [00F8BBF4] needs a Cc13Front2Host (76 pure virtuals) whose input_device_vcall_2c forwards to NativeInputDeviceRuntime::buttons_active_vslot2c."
+    },
+    {
+      "native": "00a85c20",
+      "host_site": "src/game_hosts_menu.cpp MenuTitleMusicHost::play_stream",
+      "status": "skipped",
+      "reason": "Needs a real 54h stream from 00A877D0 on the live GameSoundRuntime (owned by game_hosts.cpp, not borrowed by the menu) through the GameTitleSound composition, which also needs the 00E18D48 movie-player publication and the E198AC menu view. Note for later chains: 00E19504 is zero-initialised .data (empty at title start); its writers 0058BE63 / 0059A16B run later."
+    },
+    {
+      "native": "00686170",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::create_main_menu_manager",
+      "status": "skipped",
+      "reason": "Raw 78h image constructor taking Fe5Host& (293 pure virtuals, no implementation in src); the host's MainMenuManager is a typed model the recovered Init reads, so a scratch image would have no consumer."
+    },
+    {
+      "native": "006887e0",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::create_multi_menu_manager / FrontEndShell::create_manager_b4",
+      "status": "skipped",
+      "reason": "Needs Fe5Host& (293 pure virtuals) and a 68h multiplayer-manager image; create_multi_menu_manager returns nullptr and nothing on the menu path reads that manager."
+    },
+    {
+      "native": "00689800",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::create_options_manager / FrontEndShell::create_manager_b8",
+      "status": "skipped",
+      "reason": "Needs Fe5Host& (293 pure virtuals) and a 4Ch options-manager image with no host consumer (create_options_manager returns nullptr)."
+    },
+    {
+      "native": "00689d90",
+      "host_site": "src/game_hosts_menu.cpp MenuTitleInitHost::create_attract_screen",
+      "status": "skipped",
+      "reason": "Needs Fe5Host& (293 pure virtuals), the 4Ch attract-screen image, its FE_attract page and the movie player; none is held by this host."
+    },
+    {
+      "native": "0068d760",
+      "host_site": "src/game_hosts_menu.cpp MenuTitleInitHost::create_title_screen",
+      "status": "skipped",
+      "reason": "Needs Fe5Host& (293 pure virtuals) and a 44h image; the host's TitleScreen is a typed aggregate the title path already uses, so the constructor would only hand host state back."
+    },
+    {
+      "native": "00687c00",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::refresh_downloadable_content",
+      "status": "skipped",
+      "reason": "Destroys the 00F8894C registry singleton, which is never built here (downloadable_content_present returns false); needs Fe5Host& too. Static and no object to destroy."
+    },
+    {
+      "native": "00576b10",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::refresh_multiplayer_state",
+      "status": "skipped",
+      "reason": "Needs the C4h lobby option registry (constructor 005769E0, five maps) at 00F8894C and its lifetime lock; the site is on the multiplayer-manager path that never runs (create_multi_menu_manager returns nullptr)."
+    }
+  ],
+  "pair_run": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "off_exe": "build/win32/Release/bsp_game.exe at 2f07b3dc4 (clean tree)",
+    "on_exe": "local/g2-w2-on (pair_export --flip kWireGoal2Chain54Bound=true), SHA-256 562486A22E6E",
+    "exit": "both exit_code=0, frames_presented=3199, loop_finished=1",
+    "gameplay": "identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509, units 81/81, death/plane/unit tables identical)",
+    "native_table": [
+      "FrontEndManager::open_load_block 00be0ae0 UNIMPLEMENTED -> concrete, calls 1 -> 1",
+      "FrontEndManager::close_load_block 00bdcb30 UNIMPLEMENTED -> concrete, calls 1 -> 1"
+    ],
+    "host_methods": "1144/477 -> 1146/475 concrete/unimplemented in the pair_diff count",
+    "other_lines": "231/231 atlas source parser/item lines differ only in pointer values (frame=, allocation=, append_header= and the decimal append_slot address); phases, flags and item counts match: heap layout from the frame pooled allocations",
+    "verdict": "pair_diff: DIFFERENT, gameplay identical (exit 1)"
+  },
+  "flip_proposal": "Flip kWireGoal2Chain54Bound to true: the main menu init now enters and leaves its GVMainMenu FileBlock on the live VFS through 00be0ae0/00bdcb30 as the image does, both runs exit 0, gameplay identical, only the two front-end load-block rows move to concrete and heap addresses shift.",
+  "head": "see git log -1 on agent/g2-w2 (this report is committed after 2f07b3dc4)",
+  "code_commit": "2f07b3dc4"
+}
