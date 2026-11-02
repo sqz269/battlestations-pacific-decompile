@@ -33,9 +33,20 @@
 #include "bsp/wire_goal1_chain4_switches.hpp"
 #include "bsp/wire_goal2_chain34_switches.hpp"
 #include "bsp/wire_goal2_chain48_switches.hpp"
+#include "bsp/wire_goal2_chain54_switches.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/game_native_vfs_application.hpp"
+#include "bsp/game_native_vfs_runtime.hpp"
+#include "bsp/native_fileblock_identifier.hpp"
+#include "bsp/native_fileblock_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
+#include "bsp/native_vfs_fileblock_scope.hpp"
+#include "bsp/native_vfs_open_logging.hpp"
 
 #include <algorithm>
 #include <map>
+#include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -83,6 +94,153 @@ std::string path_step_text(MainMenuPathStep step) {
     const std::string_view name = main_menu_path_step_name(step);
     return std::string(name.data(), name.size());
 }
+
+// kWireGoal2Chain54Bound: the EngineServiceCalls 00BE0AE0 reaches. Its body
+// (engine_services_cc13.cpp) calls only 00BDF950 and 00BE0980; both route to
+// the existing native FileBlock bodies over the VFS host's live context, the
+// same pair 00BE0A30 (byte-identical code, other EH handler) runs for the title
+// block. Every other service is outside this body's contract and throws.
+namespace es = bsp::engine_services_cc13;
+using es::NativeArrayHeader;
+using es::NativeContainerHeader;
+using es::NativeIterator;
+
+class MenuFileBlockScopeCalls final : public es::EngineServiceCalls {
+public:
+    MenuFileBlockScopeCalls(NativeStringStorage& strings, NativeVfsFileBlockScopeContext& scopes,
+        NativeVfsFileBlockScopeAcquired& entry)
+        : strings_(strings), scopes_(scopes), entry_(entry) {}
+
+    // 00BE0B5E: ECX = the scope.
+    void prepare_fileblock_identifier_00bdf950(void* scope) override {
+        prepare_native_fileblock_identifier_00bdf950(scope, strings_);
+    }
+    // 00BE0B6F: ECX = [0109CEEC] reloaded after 00BDF950, stack (&scope+14h,
+    // gate); 00BE0980 reads the gate's low byte.
+    void enter_fileblock_00be0980(void* vfs, const NativeString* name, std::uint32_t arg) override {
+        enter_native_vfs_fileblock_00be0980(vfs, name, static_cast<std::uint8_t>(arg), scopes_, entry_);
+    }
+    void invalid_parameter_00bf6713() override { unused("invalid_parameter_00bf6713"); }
+    void advance_vfs_mount_iterator_00bd97e0(NativeIterator&) override { unused("advance_vfs_mount_iterator_00bd97e0"); }
+    void advance_physical_index_iterator_00bd9860(NativeIterator&) override { unused("advance_physical_index_iterator_00bd9860"); }
+    void retreat_vfs_mount_iterator_00bd99b0(NativeIterator&) override { unused("retreat_vfs_mount_iterator_00bd99b0"); }
+    void retreat_physical_index_iterator_00bd9a40(NativeIterator&) override { unused("retreat_physical_index_iterator_00bd9a40"); }
+    void advance_filestore_resident_iterator_00be4c30(NativeIterator&) override { unused("advance_filestore_resident_iterator_00be4c30"); }
+    void retreat_filestore_resident_iterator_00be4d20(NativeIterator&) override { unused("retreat_filestore_resident_iterator_00be4d20"); }
+    void advance_filestore_pending_iterator_00be4e40(NativeIterator&) override { unused("advance_filestore_pending_iterator_00be4e40"); }
+    void retreat_filestore_pending_iterator_00be4db0(NativeIterator&) override { unused("retreat_filestore_pending_iterator_00be4db0"); }
+    void* allocate_list_head_0c_00bda960() override { unused("allocate_list_head_0c_00bda960"); }
+    void* allocate_list_head_28_00bda980() override { unused("allocate_list_head_28_00bda980"); }
+    void* allocate_tree_head_20_00bdaba0() override { unused("allocate_tree_head_20_00bdaba0"); }
+    void* allocate_tree_head_24_00bdabf0() override { unused("allocate_tree_head_24_00bdabf0"); }
+    void* allocate_filestore_resident_head_00be55e0() override { unused("allocate_filestore_resident_head_00be55e0"); }
+    void* allocate_filestore_pending_head_00be5690() override { unused("allocate_filestore_pending_head_00be5690"); }
+    void* allocate_pooled_string_list_head_004c3020() override { unused("allocate_pooled_string_list_head_004c3020"); }
+    void destroy_physical_index_subtree_00bdf7a0(void*) override { unused("destroy_physical_index_subtree_00bdf7a0"); }
+    void destroy_vfs_mount_subtree_00bdf7e0(void*) override { unused("destroy_vfs_mount_subtree_00bdf7e0"); }
+    void erase_filestore_pending_subtree_00be66c0(void*) override { unused("erase_filestore_pending_subtree_00be66c0"); }
+    void erase_filestore_resident_subtree_00be6720(void*) override { unused("erase_filestore_resident_subtree_00be6720"); }
+    void erase_physical_index_range_00be0c30(NativeIterator&, NativeContainerHeader&, NativeIterator, NativeIterator) override { unused("erase_physical_index_range_00be0c30"); }
+    void erase_vfs_mount_range_00be0d00(NativeIterator&, NativeContainerHeader&, NativeIterator, NativeIterator) override { unused("erase_vfs_mount_range_00be0d00"); }
+    void erase_vfs_mount_iterator_00be0080(NativeIterator&, NativeContainerHeader&, NativeIterator) override { unused("erase_vfs_mount_iterator_00be0080"); }
+    void destroy_vfs_request_payload_00be1220(void*) override { unused("destroy_vfs_request_payload_00be1220"); }
+    void clear_vfs_request_list_00be19e0(NativeContainerHeader&) override { unused("clear_vfs_request_list_00be19e0"); }
+    void destroy_allocation_stats_00be27f0(void*) override { unused("destroy_allocation_stats_00be27f0"); }
+    void construct_allocation_stats_base_00be2750(void*) override { unused("construct_allocation_stats_base_00be2750"); }
+    void destroy_window_platform_base_00be2b10(void*) override { unused("destroy_window_platform_base_00be2b10"); }
+    void destroy_filestore_payload_00be5d70(void*) override { unused("destroy_filestore_payload_00be5d70"); }
+    void destroy_frame_clock_base_00bedea0(void*) override { unused("destroy_frame_clock_base_00bedea0"); }
+    void construct_frame_clock_base_00bede00(void*) override { unused("construct_frame_clock_base_00bede00"); }
+    void destroy_physical_read_request_names_00bf3880(void*) override { unused("destroy_physical_read_request_names_00bf3880"); }
+    void destroy_lua_state_owner_00bd4270(void*) override { unused("destroy_lua_state_owner_00bd4270"); }
+    void destroy_text_queue_00bec730(void*) override { unused("destroy_text_queue_00bec730"); }
+    void* create_text_queue_sentinel_00bec710() override { unused("create_text_queue_sentinel_00bec710"); }
+    void destroy_ref_counted_base_00bd30f0(void*) override { unused("destroy_ref_counted_base_00bd30f0"); }
+    void copy_pooled_string_list_004d48a0(void*, const void*) override { unused("copy_pooled_string_list_004d48a0"); }
+    void reserve_vfs_pair_vector_00bdcd10(NativeArrayHeader&, std::int32_t) override { unused("reserve_vfs_pair_vector_00bdcd10"); }
+    void copy_vfs_string_pair_00bdcc60(void*, const void*) override { unused("copy_vfs_string_pair_00bdcc60"); }
+    void destroy_vfs_string_pair_00bdb850(void*) override { unused("destroy_vfs_string_pair_00bdb850"); }
+    void resize_vfs_pair_vector_00bdec70(NativeArrayHeader&, std::int32_t) override { unused("resize_vfs_pair_vector_00bdec70"); }
+    bool resolve_existing_vfs_name_00bdf4c0(void*, const NativeString&) override { unused("resolve_existing_vfs_name_00bdf4c0"); }
+    void visit_matching_mounts_00bdd0a0(void*, const NativeString&, void*) override { unused("visit_matching_mounts_00bdd0a0"); }
+    void* select_search_group_value_list_00bdb2e0(const NativeIterator&, std::int32_t) override { unused("select_search_group_value_list_00bdb2e0"); }
+    void erase_render_alias_list_node_004d0990(NativeIterator&, void*, void*) override { unused("erase_render_alias_list_node_004d0990"); }
+    void list_size_check_00bded80(NativeContainerHeader&, std::uint32_t) override { unused("list_size_check_00bded80"); }
+    void* create_tracked_section_00bd1860() override { unused("create_tracked_section_00bd1860"); }
+    void destroy_tracked_section_0041cc80(void*) override { unused("destroy_tracked_section_0041cc80"); }
+    void set_debug_feature_enabled_00be8680(void*, const NativeString&, bool) override { unused("set_debug_feature_enabled_00be8680"); }
+    void reserve_debug_feature_records_00be8df0(NativeArrayHeader&, std::int32_t) override { unused("reserve_debug_feature_records_00be8df0"); }
+    void reserve_stream_writer_chunks_00bf05d0(NativeArrayHeader&, std::int32_t) override { unused("reserve_stream_writer_chunks_00bf05d0"); }
+    void reserve_string_table_rows_00b80c70(NativeArrayHeader&, std::int32_t) override { unused("reserve_string_table_rows_00b80c70"); }
+    void reserve_physical_stream_slots_00bf30c0(NativeArrayHeader&, std::int32_t) override { unused("reserve_physical_stream_slots_00bf30c0"); }
+    void physical_stream_open_00bf52a0(void*, std::uint32_t, std::uint32_t) override { unused("physical_stream_open_00bf52a0"); }
+    bool pc_storage_file_exists_00beb040(void*, std::uint32_t, const char*) override { unused("pc_storage_file_exists_00beb040"); }
+    void compose_error_message_00bf1b50(void*, NativeString&, const NativeString&) override { unused("compose_error_message_00bf1b50"); }
+    void* read_structured_string_00bea010(void*, NativeString&) override { unused("read_structured_string_00bea010"); }
+    std::uint32_t decode_tga_00befdc0(void*) override { unused("decode_tga_00befdc0"); }
+    std::uint32_t read_dword_slot34_and_debit_00bf0280(void*, std::uint32_t*) override { unused("read_dword_slot34_and_debit_00bf0280"); }
+    std::uint32_t read_dword_and_debit_00bf02a0(void*, std::uint32_t*) override { unused("read_dword_and_debit_00bf02a0"); }
+    float read_float_and_account_00bf02c0(void*, std::uint32_t*) override { unused("read_float_and_account_00bf02c0"); }
+    void stream_reader_construct_00bf09a0(void*) override { unused("stream_reader_construct_00bf09a0"); }
+    void stream_reader_assign_stream_00bf0430(void*, void*) override { unused("stream_reader_assign_stream_00bf0430"); }
+    void profiler_clear_history_00be3380(void*) override { unused("profiler_clear_history_00be3380"); }
+    char* text_scanner_peek_token_00bee8e0(void*) override { unused("text_scanner_peek_token_00bee8e0"); }
+    std::uint32_t text_scanner_skip_whitespace_00beedb0(void*) override { unused("text_scanner_skip_whitespace_00beedb0"); }
+    bool text_scanner_peek_bool_00beec40(void*, char*) override { unused("text_scanner_peek_bool_00beec40"); }
+    void append_checked_string_vector_00450540(void*, const NativeString&) override { unused("append_checked_string_vector_00450540"); }
+    void* lower_bound_filestore_pending_00be5530(NativeContainerHeader&, const void*) override { unused("lower_bound_filestore_pending_00be5530"); }
+    void* upper_bound_filestore_pending_00be5630(NativeContainerHeader&, const void*) override { unused("upper_bound_filestore_pending_00be5630"); }
+    void* upper_bound_extension_prefix_00bda2c0(NativeContainerHeader&, const NativeString&) override { unused("upper_bound_extension_prefix_00bda2c0"); }
+    void* lower_bound_indexed_name_00bda260(NativeContainerHeader&, const NativeString&) override { unused("lower_bound_indexed_name_00bda260"); }
+    void canonicalize_path_00bee390(NativeString&, const NativeString&) override { unused("canonicalize_path_00bee390"); }
+
+private:
+    [[noreturn]] static void unused(const char* service) {
+        throw std::logic_error(std::string("00BE0AE0 does not reach EngineServiceCalls::") + service);
+    }
+    NativeStringStorage& strings_;
+    NativeVfsFileBlockScopeContext& scopes_;
+    NativeVfsFileBlockScopeAcquired& entry_;
+};
+
+// kWireGoal2Chain54Bound: one 00686380 / 006898C0 load-block frame, immovable
+// from 00426500 through 00BDCB30. The image keeps both as stack locals of
+// 00686380 / 006898C0: the 18h log builder (00426500 at 006863A6 / 006898E0)
+// and the 1Ch FileBlockScope (00BE0AE0 at 006863C4 / 00689900). The VFS
+// publication, pooled string storage, raw pool and FileBlock scope context are
+// the VFS host's own (GameVfsHost borrow_raw_services / raw_strings /
+// native_application().runtime().borrow_fileblock_scopes).
+struct MenuLoadBlockFrame {
+    alignas(4) std::uint32_t builder[6]{}; // 00426500: three actual 8h headers
+    alignas(4) std::uint32_t scope[7]{};   // 00BE0AE0: actual 1Ch FileBlockScope
+    NativeFileBlockOwnerContext context;    // 00BDCB30's VFS/string/scope domain
+    NativeVfsFileBlockScopeAcquired entry;  // the 00BE0980 call 00BE0AE0 makes
+    NativeFileBlockOwnerAcquired exit;      // the 00BDCB30 call
+    MenuFileBlockScopeCalls calls;
+    bool opened{};
+    bool closed{};
+
+    MenuLoadBlockFrame(GameNativeVfsRawServices services, NativeStringRawPoolContext& raw,
+        NativeVfsFileBlockScopeContext& scopes)
+        : context{services.actual_vfs_publication_0109ceec, services.strings, raw, scopes},
+          calls(services.strings, scopes, entry) {}
+    MenuLoadBlockFrame(const MenuLoadBlockFrame&) = delete;
+    MenuLoadBlockFrame& operator=(const MenuLoadBlockFrame&) = delete;
+};
+
+// The open frames, innermost last (the image's frames are stack locals, so they
+// nest). A frame a native call escaped from is retained: never replayed and
+// never destroyed, as the VFS host retains its title frame.
+struct MenuLoadBlockFrames {
+    std::vector<std::unique_ptr<MenuLoadBlockFrame>> open;
+    MenuLoadBlockFrames() = default;
+    MenuLoadBlockFrames(const MenuLoadBlockFrames&) = delete;
+    MenuLoadBlockFrames& operator=(const MenuLoadBlockFrames&) = delete;
+    ~MenuLoadBlockFrames() {
+        for (auto& frame : open)
+            if (frame && !frame->closed) static_cast<void>(frame.release());
+    }
+};
 
 }  // namespace
 
@@ -250,6 +408,51 @@ struct GameMenuHost::Impl {
     // cc15-hint2 (kHintTriggerPassesCc15Bound): the registry, input and locale
     // reads the hint tracker and its screen 34h make; bound at game_on_init.
     std::unique_ptr<HintScreenRegistry> hint_registry;
+    // kWireGoal2Chain54Bound: the front-end managers' open load blocks, built by
+    // FrontEndManager::open_load_block (00686380 at 006863C4, 006898C0 at
+    // 00689900) and left by close_load_block (00686380 at 006868E4). Stays empty
+    // with the switch OFF.
+    MenuLoadBlockFrames load_blocks;
+    // 00686380 / 006898C0: 00426500 builder, 00BD1A60 append of the label,
+    // 00BE0AE0(scope, builder's first header, gate 1), 00425F80. False for a
+    // label with no 00BE0AE0 site (GVMultiMenu::Init is a log label).
+    bool open_load_block_00be0ae0(std::string_view name) {
+        if (name != kMainMenuLoadBlock && name != kOptionsMenuLoadBlock) return false;
+        // The same gated borrows GameVfsHost::open_title_fileblock takes.
+        const GameNativeVfsRawServices services = vfs.borrow_raw_services();
+        NativeVfsFileBlockScopeContext& scopes =
+            vfs.native_application().runtime().borrow_fileblock_scopes();
+        load_blocks.open.push_back(
+            std::make_unique<MenuLoadBlockFrame>(services, vfs.raw_strings(), scopes));
+        MenuLoadBlockFrame& frame = *load_blocks.open.back();
+        const std::string label(name);
+        // 006863A6 / 006898E0.
+        construct_native_log_builder_00426500(frame.builder, frame.context.strings);
+        // 006863BA / 006898F6: EAX is the builder, whose +0 header holds the label.
+        void* const header =
+            append_native_log_cstring_00bd1a60(frame.builder, label.c_str(), frame.context.strings);
+        // 006863C4 / 00689900: PUSH 1 (006863AB / 006898E5), PUSH EAX, ECX = scope.
+        // The body takes [0109CEEC] as a value; the image reloads it at 00BE0B6F,
+        // and its only writer is 00BDA7F9 (VFS manager destruction).
+        es::fileblock_scope_construct_00be0ae0(frame.scope, *static_cast<const NativeString*>(header), 1u,
+            frame.context.actual_vfs_publication_0109ceec, frame.context.strings, frame.calls);
+        // 006863D2 / 0068990F.
+        destroy_native_log_builder_00425f80(frame.builder, frame.context.strings);
+        frame.opened = true;
+        return true;
+    }
+    // 006868E4: 00BDCB30(ECX = the scope) leaves the block and returns the
+    // scope's name. False when no 00BE0AE0 frame is open.
+    bool close_load_block_00bdcb30() {
+        if (load_blocks.open.empty()) return false;
+        MenuLoadBlockFrame& frame = *load_blocks.open.back();
+        if (!frame.opened)
+            throw std::logic_error("front-end load block requires a completed 00BE0AE0 construction");
+        destroy_native_fileblock_00bdcb30(frame.scope, frame.context, frame.exit);
+        frame.closed = true;
+        load_blocks.open.pop_back();
+        return true;
+    }
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
         GameSingletonHost& singletons, long press_start_frame_in, GameVfsHost& vfs_in);
@@ -1263,12 +1466,34 @@ public:
     explicit MenuManagerHost(GameMenuHost::Impl& owner) : owner_(owner) {}
 
     void open_load_block(std::string_view name) override {
-        owner_.log.unimplemented("FrontEndManager::open_load_block", "00be0ae0");
-        owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
-            name.data());
+        if constexpr (kWireGoal2Chain54Bound) {
+            // 00be0ae0: FileBlockScope_Construct enters the label's block on the live
+            // VFS; OFF keeps the record row and the note.
+            if (owner_.open_load_block_00be0ae0(name)) {
+                owner_.log.implemented("FrontEndManager::open_load_block", "00be0ae0");
+            } else {
+                owner_.log.unimplemented("FrontEndManager::open_load_block", "00be0ae0");
+            }
+            owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
+                name.data());
+        } else {
+            owner_.log.unimplemented("FrontEndManager::open_load_block", "00be0ae0");
+            owner_.log.notef("front-end load block %.*s", static_cast<int>(name.size()),
+                name.data());
+        }
     }
     void close_load_block() override {
-        owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
+        if constexpr (kWireGoal2Chain54Bound) {
+            // 00bdcb30: FileBlock_Destroy leaves the block 00be0ae0 entered; OFF keeps
+            // the record row.
+            if (owner_.close_load_block_00bdcb30()) {
+                owner_.log.implemented("FrontEndManager::close_load_block", "00bdcb30");
+            } else {
+                owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
+            }
+        } else {
+            owner_.log.unimplemented("FrontEndManager::close_load_block", "00bdcb30");
+        }
     }
     void report_loading_progress(float progress) override {
         if constexpr (kLoadingScreenCc13Bound) {
