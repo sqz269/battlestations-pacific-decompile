@@ -71,6 +71,7 @@
 #include "bsp/simulation_gate.hpp"
 #include "bsp/world_entities.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal2_chain27_switches.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
@@ -3630,6 +3631,15 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // the mission machine and says so.
             host.units->load_gameplay_settings_0083b5e0();
             host.units->create_units(host.scene_contents->entities());
+            if constexpr (bsp::kWireGoal2Chain27Bound) {
+                // Wire goal 2 chain 27: the gunnery host's blast grid stamps its nodes
+                // with game+648h (0098C653, 0098A755); this frame state's counter is
+                // the one run_mission_frame bumps at 004E4FF5. The first create_units
+                // built the gunnery host, which lives as long as host.units.
+                if (GameGunneryHost* gunnery = host.units->gunnery()) {
+                    gunnery->attach_game_frame_counter_648(&host.frame_state.frame_counter);
+                }
+            }
             host.world_host = std::make_unique<GameWorldHost>(host.log, *host.units);
             host.world_host->build_entity_chains_009037f0();
             if constexpr (kBotSchedulerWritersBound) {
