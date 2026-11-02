@@ -11,6 +11,7 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/wire_goal1_chain13_switches.hpp"
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -680,7 +681,7 @@ char g_scene_empty_literal_00e18560[1] = {0};      // the "" at 00E18560
 
 // The Seg6Host calls the database's construction, 004F2800's inserts and the
 // two lookups reach. Everything else stops: it is not on those paths.
-class SceneDatabaseSeg6Host final : public seg6::Seg6Host {
+class SceneDatabaseSeg6Host : public seg6::Seg6Host {
 public:
     using Object = seg6::Object;
 
@@ -1300,6 +1301,45 @@ bool scene_stock_register_0046be90(GameSceneContentsHost::Impl& owner, int value
     return true;
 }
 
+// Borrow the live class map and project a property value at its native +0Ch.
+// The reconstructed stock routines own all filtering; the append callback
+// publishes directly to the vector consumed by the instantiate pass.
+class SceneStockPropertyAdapter final : public SceneDatabaseSeg6Host {
+public:
+    SceneStockPropertyAdapter(GameSceneContentsHost::Impl& owner,
+        const ScenePropertyBlock& properties)
+        : owner_(owner), properties_(properties) {}
+
+    Object image_address(std::uint32_t va) override {
+        if (va == 0x00CE4780u)
+            return reinterpret_cast<Object>(const_cast<char*>(kSceneUnitTypeKey));
+        if (va == 0x00CE56B8u)
+            return reinterpret_cast<Object>(const_cast<char*>("SpawnPoint"));
+        return SceneDatabaseSeg6Host::image_address(va);
+    }
+    Object property_bag_find_008f2260(Object bag, const char* name) override {
+        if (bag != reinterpret_cast<Object>(const_cast<ScenePropertyBlock*>(&properties_)))
+            throw std::logic_error("scene stock: unexpected source property bag");
+        if (properties_.find(name) == nullptr) return nullptr;
+        property_[3] = static_cast<std::uint32_t>(scene_stock_int(owner_, properties_, name));
+        return reinterpret_cast<Object>(property_.data());
+    }
+    bool native_string_equals_00425850(Object string, const char* text) override {
+        return std::strcmp(native_string_c_str_00419ca0(string), text) == 0;
+    }
+    void pointer_vector_push_back_00442190(Object vector, const void* value) override {
+        if (vector != g_scene_database_00e18680 + 8)
+            throw std::logic_error("scene stock: unexpected destination vector");
+        owner_.scene_class_vector.push_back(*static_cast<const std::int32_t*>(value));
+        ++owner_.scene_vector_gate_pushes;
+    }
+
+private:
+    GameSceneContentsHost::Impl& owner_;
+    const ScenePropertyBlock& properties_;
+    std::array<std::uint32_t, 4> property_{};
+};
+
 // 0095C4D0: the stock-queue append. Its de-duplication is
 // VehicleClassPreloadBinding::push_stock_queue's.
 void scene_stock_queue_0095c4d0(GameSceneContentsHost::Impl& owner, int value) {
@@ -1577,6 +1617,14 @@ public:
         const std::string& class_name) override {
         ++stock_walks_;
         if constexpr (kVehicleClassPreloadCc15Bound) {
+            // 0046bf20 calls the stock body; OFF keeps the host's property/class filters and append.
+            if constexpr (kWireGoal1Chain13Bound) {
+                SceneStockPropertyAdapter host(owner_, properties);
+                seg6::scene_stock_register_from_type_property_0046bf20(host,
+                    g_scene_database_00e18680,
+                    reinterpret_cast<seg6::Object>(const_cast<ScenePropertyBlock*>(&properties)),
+                    class_name.c_str());
+            } else {
             // 0046BF20: a `Type` property, and the class name's id
             // (00469690) is not 47h (Path).
             const SceneEntityClassRow* klass = scene_class_row_by_name(class_name);
@@ -1585,6 +1633,7 @@ public:
                 && scene_stock_register_0046be90(owner_,
                        scene_stock_int(owner_, properties, kSceneUnitTypeKey))) {
                 ++owner_.scene_vector_gate_pushes;
+            }
             }
             owner_.log.implemented("SceneGate::register_multiplayer_stock", "0046bf20");
         } else {
