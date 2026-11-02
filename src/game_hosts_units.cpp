@@ -11,6 +11,9 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
+#include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
+#include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -13576,6 +13579,40 @@ public:
     // step, not after 00825F20's motion update; the warnings 00977050/009771E0/
     // 00977370 are logged, not reported; the settings are the installed
     // shipglobals.lua values (SubmarineDepthSettings' defaults).
+    // Packet wire-units: the WarningReportHost 00977050 / 009771E0 / 00977370 report through.
+    // LABELLED: this host has no warning manager, so no +24h lock, +D0h never suppresses and the
+    // +D4h map never holds a byte; the local slot is kLocalPlayerSlot; the entity's +5Ch is set
+    // (a live unit), +5Dh is unit_torn_down_005d, +5Eh/+60h read clear; 00974150 is a log line.
+    struct SubmarineWarningReportBinding final : bsp::WarningReportHost {
+        GameUnitsHost::Impl& host;
+        const GameUnitSlot& unit;
+        SubmarineWarningReportBinding(GameUnitsHost::Impl& h, const GameUnitSlot& u)
+            : host(h), unit(u) {}
+        void lock_24() override {}
+        void unlock_24() noexcept override {}
+        bool suppressed_d0() override { return false; }
+        std::int32_t local_slot_18ec() override { return GameUnitsHost::Impl::kLocalPlayerSlot; }
+        float mission_clock_f876a4() override {
+            return static_cast<float>(host.summary.simulated_seconds);
+        }
+        bsp::WarningEntityFlags entity_flags(bsp::WarningEntity) override {
+            bsp::WarningEntityFlags f;
+            f.present_5c = true;
+            f.flag_5d = host.unit_torn_down_005d(unit.process_index);
+            return f;
+        }
+        bool entity_suppressed_0077edf0(bsp::WarningEntity) override { return false; }
+        bool is_player_controlled_00965810(bsp::WarningEntity) override {
+            return host.is_controlled(unit);
+        }
+        bool is_kind_5c(bsp::WarningEntity, std::int32_t) override { return false; }  // unread: no excluded kind
+        void report_entity_warning_00974150(bsp::WarningEntity, std::string_view id) override {
+            host.log.notef("submarine warning: unit=%s id=%.*s t=%.2f (00974150, packet wire-units)",
+                unit.row.name.c_str(), static_cast<int>(id.size()), id.data(),
+                static_cast<double>(host.summary.simulated_seconds));
+        }
+    };
+
     void run_submarine_air_and_crush(float dt, bool dead) {
         const bsp::SubmarineDepthSettings settings{};
         const float hull_y = slot_.motion.position[1];
@@ -13584,6 +13621,18 @@ public:
         const bool was_need = slot_.sub_air.need_air;
         slot_.sub_air = air.state;
         owner_.done("SubmarineUnit::air_step", 0x00855250u);
+        // ON 009771E0 at 0085533B / 00977050 at 00855375: report_submarine_air_critical_009771e0 or
+        // report_submarine_air_low_00977050 through SubmarineWarningReportBinding; OFF only logs.
+        if constexpr (kWireUnitsHostBound) {
+            if (air.warning != bsp::SubmarineAirWarning::none) {
+                SubmarineWarningReportBinding reports(owner_, slot_);
+                if (air.warning == bsp::SubmarineAirWarning::critical) {
+                    bsp::report_submarine_air_critical_009771e0(reports, &slot_);
+                } else {
+                    bsp::report_submarine_air_low_00977050(reports, &slot_);
+                }
+            }
+        }
         if (air.warning != bsp::SubmarineAirWarning::none || was_need != air.state.need_air) {
             owner_.log.notef("submarine air: unit=%s air=%.3f need_air=%d warning=%s y=%.2f "
                 "(packet cc9_submarine_air)", slot_.row.name.c_str(),
@@ -13606,6 +13655,14 @@ public:
             slot_.sub_crush_1284, dt, hull_y, settings);
         slot_.sub_crush_1284 = crush.accumulator;
         owner_.done("SubmarineUnit::crush_step", 0x008551c0u);
+        // ON 00977370 at 0085523C: report_submarine_depth_damage_00977370 through
+        // SubmarineWarningReportBinding when 008551C0 reports; OFF reports nothing.
+        if constexpr (kWireUnitsHostBound) {
+            if (crush.report) {
+                SubmarineWarningReportBinding reports(owner_, slot_);
+                bsp::report_submarine_depth_damage_00977370(reports, &slot_);
+            }
+        }
         if (crush.damage > 0.0f && owner_.gunnery != nullptr) {
             // vtable[1ACh] of 00D0BF80 is 0095DA00 (the dword at 00D0C12C).
             owner_.gunnery->apply_script_damage_0095da00(slot_.process_index, crush.damage);
@@ -19228,12 +19285,30 @@ void GameUnitsHost::Impl::ground_state_from_locked_007ca3f0(GameUnitSlot& p, Lan
                                                             bool five) {
     plane_site_probe_007c5ac0(p, -1.0f);
     if (p.plane_contact_deck_bf4 == 0) return;   // 007CA4xx: the explosion arm, not reached
-    const bool state_changed = p.plane_control_mode_900 != (five ? 5 : 4);  // 007C144C
+    bool state_changed;
+    // ON 007C1430 at 007CA4D3: set_flight_state_007c1430(4 + flag) applied to +900h/+C04h/
+    // +904h/+C18h (nothing stored when unchanged); OFF keeps the host's unconditional stores.
+    if constexpr (kWireUnitsHostBound) {
+        bsp::PlaneSetStateInputs si;
+        si.requested_state = five ? 5 : 4;
+        si.current_state = p.plane_control_mode_900;
+        si.airborne_clock = p.plane_airborne_908;
+        si.class_min_water_spd = p.plane_min_water_spd_198;
+        si.landed_after_flight = p.plane_landed_904;
+        const bsp::PlaneSetStateEffects fx = bsp::set_flight_state_007c1430(si);
+        state_changed = fx.changed;
+        p.plane_control_mode_900 = fx.state;
+        if (fx.write_state_change_stamp) p.plane_site_timer_c04 = -1.0f;
+        if (fx.write_landed_after_flight) p.plane_landed_904 = fx.landed_after_flight;
+        if (fx.write_state_enter_marker) p.plane_c18 = 3;
+    } else {
+    state_changed = p.plane_control_mode_900 != (five ? 5 : 4);  // 007C144C
     p.plane_control_mode_900 = five ? 5 : 4;                            // 007C1430
     p.plane_site_timer_c04 = -1.0f;
     if (p.plane_min_water_spd_198 != 0.0f) {
         p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
         p.plane_c18 = 3;
+    }
     }
     if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
         if (state_changed) flight_state_notify_007c11e0(p);             // 007C14C5
@@ -20017,10 +20092,15 @@ std::array<float, 3> GameUnitsHost::Impl::landing_t_world_006bca40(const Landing
 // airfield owner, x 0.3 (00CE3DC8) when the owner answers IsKindOf(9)
 // (006BA62F-006BA63D); both through a float store.
 float GameUnitsHost::Impl::landing_run_length_006ba620(const LandingDeck& d) const {
+    // ON 006BA620: air_ops_approach_setback_006ba620(holder+B4h, IsKindOf(9)); OFF keeps the host copy below.
+    if constexpr (kWireUnitsHostBound) {
+        return bsp::band_006b_cc13::air_ops_approach_setback_006ba620(d.length_b4, d.mother_ship);
+    } else {
     if (d.mother_ship) {
         return static_cast<float>(static_cast<double>(d.length_b4) * 0.30000001192092896);
     }
     return static_cast<float>(static_cast<double>(d.length_b4) * 0.4000000059604645);
+    }
 }
 
 float GameUnitsHost::Impl::landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const {
@@ -45322,7 +45402,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // free-flight step 007DC830; otherwise the core law in mode 1
                         // (007DCD34, second argument 1.0 since the state is not 2).
                         const bool on_path = unit_.plane_control_mode_900 == 5;
-                        if (!unit_.plane_ground_contact_bf8 && !on_path) {
+                        bool free_step;
+                        // ON 007DCCF0 at 007CC15E: ground_roll_law_007dccf0 picks the arm (+BF8h,
+                        // +900h, flag = 007CC155's SETZ +900h == 2); its ctl+80h..8Ch frame is not carried, the
+                        // host's core law keeps its own. OFF keeps the host's inline test.
+                        if constexpr (kWireUnitsHostBound) {
+                            bsp::PlaneGroundLawInputs gi;
+                            gi.ground_contact = unit_.plane_ground_contact_bf8;
+                            gi.flight_state = unit_.plane_control_mode_900;
+                            gi.state_is_locked = unit_.plane_control_mode_900 == 2;
+                            free_step = !bsp::ground_roll_law_007dccf0(gi).took_ground_arm;
+                        } else {
+                        free_step = !unit_.plane_ground_contact_bf8 && !on_path;
+                        }
+                        if (free_step) {
                             ++unit_.ground_free_steps;
                             if (unit_.ground_free_steps == 1) {
                                 // Diagnostic: where a landed plane loses contact.
