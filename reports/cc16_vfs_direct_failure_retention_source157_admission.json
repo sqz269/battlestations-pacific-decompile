@@ -1,0 +1,204 @@
+{
+  "packet": "Source157 direct Runtime failure retention admission",
+  "status": "qualified existing Source failure-observation fix",
+  "author": "8d98b9bf4eee16ea5dee38da930eac3c1494dab1",
+  "final_build_head": "4e367017901e1ec41a0fb49e737c5651c02a179e",
+  "joined_published_Main": "bdb35a09b54d6663a5317fbcf619ab779e6eeb27",
+  "Source_findings": 0,
+  "Code_findings": 0,
+  "change": "Existing facade/title true arms preserved; existing failure_site()!=0 now reaches Root guard for direct Runtime active/failed request/completion history",
+  "proof": "Existing core_ready guard precedes retained Runtime access; facade readiness set only after normal initialization/publication. Query creates no Native effect or custody. False is no last-use/readiness certificate.",
+  "before_after": {
+    "actual_Game_objects": 2,
+    "canonical_text_sections": 3337,
+    "unchanged_sections": 3335,
+    "changed_full_sections": 2,
+    "before_bytes": 86,
+    "before_ops": 32,
+    "after_bytes": 110,
+    "after_ops": 39,
+    "after_relocations": 7,
+    "Root_manual_review": "whole before32/after39starts; failure_site target and preserved short-circuit/Root retention route"
+  },
+  "final_Code_transfer": {
+    "verdict": "PASS0 final coupled157Code transfer",
+    "head": "4e367017901e1ec41a0fb49e737c5651c02a179e",
+    "joined_Main": "bdb35a09b54d6663a5317fbcf619ab779e6eeb27",
+    "objects": [
+      {
+        "object": "game_hosts.obj",
+        "before": {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+          "size": 1210051,
+          "sha256": "705b32895637e1859dd9ffc43a4e92b0edbe41119ba10719090d8179bcde4b60",
+          "retained_path": "local/function_source_batch157/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts.obj"
+        },
+        "coupled": {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts.obj",
+          "size": 1210051,
+          "sha256": "705b32895637e1859dd9ffc43a4e92b0edbe41119ba10719090d8179bcde4b60",
+          "retained_path": "local/function_source_batch157/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts.obj"
+        },
+        "project_compile_once": [
+          "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_hosts.cpp"
+        ],
+        "link_input": true,
+        "selected": [
+          {
+            "symbols": [
+              "?exit_if_native_vfs_interrupted@GameStartupHost@game@bsp@@QAEXXZ"
+            ],
+            "Root_section": 2801,
+            "bytes": 83,
+            "relocations": 6,
+            "exact": true
+          },
+          {
+            "symbols": [
+              "?requires_process_retention@GameVfsHost@game@bsp@@QBE_NXZ"
+            ],
+            "Root_section": 3105,
+            "bytes": 27,
+            "relocations": 1,
+            "exact": true
+          }
+        ],
+        "whole_VFS_1012_text_sections_exact": false
+      },
+      {
+        "object": "game_hosts_vfs.obj",
+        "before": {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+          "size": 449058,
+          "sha256": "bf35ec8279a54f8f04c3a798b9ffb0d0da7ef250bd171b8bb6aa344f3d61aa99",
+          "retained_path": "local/function_source_batch157/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts_vfs.obj"
+        },
+        "coupled": {
+          "path": "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+          "size": 449058,
+          "sha256": "bf35ec8279a54f8f04c3a798b9ffb0d0da7ef250bd171b8bb6aa344f3d61aa99",
+          "retained_path": "local/function_source_batch157/common/artifacts/build/win32/bsp_game.dir/Release/game_hosts_vfs.obj"
+        },
+        "project_compile_once": [
+          "J:\\PROG\\battlestations-pacific-decompile-codex-function-source-integration\\src\\game_hosts_vfs.cpp"
+        ],
+        "link_input": true,
+        "selected": [],
+        "whole_VFS_1012_text_sections_exact": true
+      }
+    ],
+    "scope": {
+      "selected_full_sections": 2,
+      "bytes": 110,
+      "ops": 39,
+      "relocations": 7
+    },
+    "project": {
+      "path": "build/win32/bsp_game.vcxproj",
+      "size": 282476,
+      "sha256": "4a55db484ee3fcfbdaaa77dcf7ef6573ff3ab0188b5ab7fd0f057e1d8ccf6d7c",
+      "retained_path": "local/function_source_batch150/common/artifacts/build/win32/bsp_game.vcxproj"
+    },
+    "link_command": {
+      "path": "build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog",
+      "size": 66994,
+      "sha256": "a3992f0b7e4236bd02ffc5636784823febc9ea064c301b00a71a0b8d96e2daaf",
+      "retained_path": "local/function_source_batch150/common/artifacts/build/win32/bsp_game.dir/Release/bsp_game.tlog/link.command.1.tlog"
+    },
+    "qualification": "Source157 two changed Game sections exactly transferred; actual whole1012 VFS text sections unchanged. Incoming Upper6 qualified admission reused, no unrelated Root body or Native ABI/runtime audit."
+  },
+  "first_build": {
+    "seconds": 89.5153259,
+    "checks_seconds": [
+      0.63,
+      22.91
+    ],
+    "pass": true
+  },
+  "final_build": {
+    "terminal": 0,
+    "seconds": 57.9917475,
+    "checks_seconds": [
+      0.37,
+      23.13
+    ],
+    "pass": true,
+    "inputs": 3938,
+    "artifacts": 248,
+    "manifest_sha256": "9db67c76b7ab4179b10c5014caba0812e6ba06e85d50a1c9fc2ea6f6917bc38d"
+  },
+  "runtime": {
+    "receipt": "local/function_source_batch157/coupled/runtime_acceptance_windowed.json",
+    "sha256": "3a93368885b3dffe38360fd06dc1b1cbe0aff9d16e6a050f095a6cc708daadc3",
+    "normal_existing_Atlas_lifecycle_pass": true,
+    "exit_codes": [
+      0,
+      0
+    ],
+    "window_fullscreen": 0,
+    "forced_stops": [],
+    "survivors": [],
+    "positive_failure_path_exercised": false,
+    "new_FrameBox_GUI_executed": false
+  },
+  "independent_peer_files": {
+    "peer/COUPLED_TRANSFER_VERIFICATION.json": "2acbfa2d4338d4a0418d0822d481ca59c37d68be1cab3029655c4d997e3532dd",
+    "peer/FINAL_STATE.json": "826a45edece067ae11355b20892e23d0c52f989366a509d268283982345d20a6",
+    "peer/game_hosts.obj_unchanged_text_receipts.json": "8ade7e3118e3b5ea5c392fbbc27a17fb6e5c53729d91698a74a01af27fb14d77",
+    "peer/game_hosts_vfs.obj_unchanged_text_receipts.json": "9d76a75f129b8cd8c7268fd936857c01278fbcf88b7a8deb8f73c7fdf7f3b237",
+    "peer/INPUT_AND_CODE_VERIFICATION.json": "79f33f68b28227c71a12be77aa677065eebe7aea5c6f641f9d4a68f5940b8e2e",
+    "peer/inspect_frozen.py": "d7be4f8202346a37359f844f8d044f66d99c00044f6ea41c50a8da5190d0eda9",
+    "peer/MANIFEST.json": "6f9173889c6cb9add7db7a43563379f1d72422e959f673d3e3ede0a066286984",
+    "peer/PEER_SEAL.json": "dce67c1eeb1e514d43d317046fd5dff6c6fcb756472cd56eb9899483b6bf224d",
+    "peer/REPORT.json": "e8db3b420d5c95f7245c8e08f87b011737debc09c39a444b48124b340023845c",
+    "peer/REPORT.md": "1bebe6814c010f47ebfd0758acfc178457b62c15b16d06234747b0c78d4cf4a2",
+    "peer/SOURCE_WINDOWS.txt": "8eef77f93de89db9f5e120e6a3c2221f586491bf108b0d8ae73da9e9b1ca2e1a",
+    "peer/code/game_hosts.obj_2801_after.txt": "3cd328e8b527ae5050bc717018b4686ef9ffd9304b7d9f1fc5a7017caba7d3ca",
+    "peer/code/game_hosts.obj_2801_before.txt": "05b775b9f2c4d884a9750977d2a5f742cde2ddf02d301fa8e4ff41aff7539a28",
+    "peer/code/game_hosts.obj_3105_after.txt": "6a2fda7f1c3e5fe516d13d4a19206461324173459a8fd6ce28f91f473ae2b661",
+    "peer/code/game_hosts.obj_3105_before.txt": "49668d7dedab216c46ebd400ac23cf84453ac812010bb580695745d2ef4d95fb",
+    "peer/receipts/after_manifest.json": "255dd1051c7e7da49c695e8f4b55de2efcf6a9b7508cb6bf6447a2e3cdd8737d",
+    "peer/receipts/before_manifest.json": "2e3bda0a4c9480e5b85253c76dd6913d5cc61280164e5d44c5ce35e1d9f3a2bb",
+    "peer/receipts/build.log": "9315a858156a45f50a9f7e1cdfe5a59dd6554acf06915f697108211324f74c19",
+    "peer/receipts/build_result.json": "b76786c042614e4a79e564ff299c990c0814fa829528c523e2fc79f623b33139",
+    "peer/receipts/coupled_bsp_game.vcxproj": "4a55db484ee3fcfbdaaa77dcf7ef6573ff3ab0188b5ab7fd0f057e1d8ccf6d7c",
+    "peer/receipts/coupled_build.log": "d5ef9aae4bee39a51d9d5778e4a1a3d6929de8accfc20d3b2a72728e6013cecb",
+    "peer/receipts/coupled_build_result.json": "5d7623255e52af26883667653c80b52a2e2b6d4b5a1d235af0d1190ec4b83c0f",
+    "peer/receipts/coupled_link.command.1.tlog": "a3992f0b7e4236bd02ffc5636784823febc9ea064c301b00a71a0b8d96e2daaf",
+    "peer/receipts/coupled_manifest.json": "9db67c76b7ab4179b10c5014caba0812e6ba06e85d50a1c9fc2ea6f6917bc38d",
+    "peer/receipts/link.command.1.tlog": "a3992f0b7e4236bd02ffc5636784823febc9ea064c301b00a71a0b8d96e2daaf",
+    "peer/receipts/Root_capture.py": "9295e5f899251cd058a3c64856a8fb95b8fc33582b1ab7a886aa32a484be6441",
+    "peer/receipts/Root_Code_delta.json": "f702c42191ebb373d61495efd161fe5e9cf3581fe0c839fdc79d13c811f363ca",
+    "peer/receipts/Root_Code_transfer.json": "8f82b972045189e09a749bc752d0af0296b27a45997b907a1affffbf9ed26011",
+    "peer/receipts/Root_inspect_code_delta.py": "3b4775720a4785bf36b7918b1b8911be647b5e8b13aafcb641d9b19ac7d3be18",
+    "peer/receipts/Root_PLAN.json": "eadb661c604b45ddd706a94bab3f0195f78272574c6dfc999d5a8efd464d820a",
+    "peer/receipts/Root_runtime_acceptance_windowed.json": "3a93368885b3dffe38360fd06dc1b1cbe0aff9d16e6a050f095a6cc708daadc3",
+    "peer/source_before/include/bsp/game_hosts_vfs.hpp": "c502f7fe52bb61e41476dd98bc9d532101a7f5da88a8bc578ff2e04deea289fe",
+    "peer/source_after/docs/CC16_VFS_DIRECT_FAILURE_RETENTION.md": "4a0ae1596f1b86687ed0963c7deca9778d2f9edb44c98290ca2f87029b41c3f6",
+    "peer/source_after/reports/cc16_vfs_direct_failure_retention.json": "2a7ca67025a303a4b12923209facfa75632afc14578811f7bf6f1378924b7ddb",
+    "peer/source_after/src/game_hosts.cpp": "fd0ef5226be7ef67ef6d6988e016eed12146d95223f0587deddb3dada9bdf45e",
+    "peer/source_after/src/game_hosts_vfs.cpp": "845653304c39721241076f0bdf153bf3c010a03272787da4b219f61095ecda08",
+    "peer/source_after/src/game_native_gui_page_icon_services_application.cpp": "be8dbd0b8a54563a30922f612967dba2e6a281cbcaa0f6d45d81ad60fb555e27",
+    "peer/source_after/src/game_native_resource_application.cpp": "83ed3891956c0f2699f6f4807877c330ddd5d3c6dfedd2836b0446966ab2f236",
+    "peer/source_after/src/game_native_vfs_application.cpp": "2769c4a467b8c1faf192a3fcb4fb76db30e0d196743ecc9f0d5fc4c7ad12a634",
+    "peer/source_after/src/game_native_vfs_runtime.cpp": "227f7ad413e00e43ea4318d865cac90a80a27eb3856e4cceb4af8c76d3366e92",
+    "peer/source_after/include/bsp/game_hosts_vfs.hpp": "d00d0db96a9c7d5da648a351a1e1597323941de34cef4b583001ffe65eada870",
+    "peer/source_after/include/bsp/game_native_vfs_runtime.hpp": "25ea683ace645e26a13cb29327a85d65f9f246fdd8953b06ab79fdaabe73961e",
+    "peer/objects/after/game_hosts.obj": "705b32895637e1859dd9ffc43a4e92b0edbe41119ba10719090d8179bcde4b60",
+    "peer/objects/after/game_hosts_vfs.obj": "bf35ec8279a54f8f04c3a798b9ffb0d0da7ef250bd171b8bb6aa344f3d61aa99",
+    "peer/objects/before/game_hosts.obj": "b4a29311f11d7f575375612cfc84a9a630c41e1ea78f9c0fb4dae141604759bd",
+    "peer/objects/before/game_hosts_vfs.obj": "60fb3de75a955e22e954d2634a86b9e17bb848f27c545399fcd838bd676bc308",
+    "peer/objects/coupled/game_hosts.obj": "705b32895637e1859dd9ffc43a4e92b0edbe41119ba10719090d8179bcde4b60",
+    "peer/objects/coupled/game_hosts_vfs.obj": "bf35ec8279a54f8f04c3a798b9ffb0d0da7ef250bd171b8bb6aa344f3d61aa99"
+  },
+  "Root_evidence": {
+    "PLAN.json": "eadb661c604b45ddd706a94bab3f0195f78272574c6dfc999d5a8efd464d820a",
+    "Root_Code_delta.json": "f702c42191ebb373d61495efd161fe5e9cf3581fe0c839fdc79d13c811f363ca",
+    "coupled/Root_Code_transfer.json": "8f82b972045189e09a749bc752d0af0296b27a45997b907a1affffbf9ed26011"
+  },
+  "qualifications": [
+    "Published Upper6 qualified Source/Code/build admission reused without new body audit.",
+    "All nine GUI selectors remain OFF; Source144 callback retention/adoption/normal last-use remains unresolved.",
+    "No new tests/probes/Ghidra action, Native/vendor credit, Original ABI/fault/Origin/FP or positive-failure runtime proof."
+  ]
+}
