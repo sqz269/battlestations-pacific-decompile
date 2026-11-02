@@ -36,7 +36,6 @@
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/wire_goal1_chain10_switches.hpp"
 #include "bsp/wire_goal2_chain42_switches.hpp"
-#include "bsp/cc13_seg33a.hpp"                      // 006E38E0
 #include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
 #include <algorithm>
 #include <array>
@@ -172,15 +171,6 @@ int session_mode_1fe4() noexcept {
         return kSessionModeSinglePlayer;
     }
 }
-
-// kWireGoal2Chain42Bound: 006E38E0's ECX at 0071E7BD..0071E7C3, the session
-// object [00E188A8]+1EF0h. Its body reads only the dword at +F4h, which is
-// game+1FE4h, so the view carries that one field, from session_mode_1fe4().
-struct SessionObjectModeView {
-    std::uint8_t unread_00[0xF4]{};
-    std::int32_t mode_f4{0};
-};
-static_assert(offsetof(SessionObjectModeView, mode_f4) == 0xF4);
 
 // The three command objects whose apply takes 00816e30's movement fall-through:
 // the test at 00816f5e..00816f7a is false for them, so 00816f7c..00817330 does
@@ -1377,14 +1367,7 @@ public:
         }
         // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
         chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        // 006E38E0 at 0071E7C9: session_mode_field_is_zero_or_one_006e38e0 tests the session view's +F4h (session_mode_1fe4()); OFF keeps the host's own {0, 1} test.
-        if constexpr (bsp::kWireGoal2Chain42Bound) {
-            SessionObjectModeView session{};
-            session.mode_f4 = session_mode_1fe4();
-            return bsp::cc13_seg33a::session_mode_field_is_zero_or_one_006e38e0(&session);
-        } else {
-            return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
-        }
+        return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
     }
     void echo_command() override {
         if (!kAttackPushEndsOverrideBound) {

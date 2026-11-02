@@ -12,9 +12,9 @@
   "switch_default": false,
   "pick_reason": "game_hosts_commands.cpp had three live assigned rows (0046a9f0, 006e38e0, 00721030), each with an existing reconstructed body; the other candidates offered only static rows or host-object gaps whose producers this host lacks.",
   "wired_before": 8803,
-  "wired_after": 8805,
-  "wired_delta": 2,
-  "wired_delta_note": "python tools/wire_readiness.py after a plain ./scripts/build.ps1 at 3de66a1d8: 00721030 and 006e38e0 moved ready -> wired; 0046a9f0 stays ready (skipped).",
+  "wired_after": 8804,
+  "wired_delta": 1,
+  "wired_delta_note": "python tools/wire_readiness.py after a plain ./scripts/build.ps1 with the review round 1 fixes: 00721030 moved ready -> wired; 006e38e0 (arm removed in review round 1) and 0046a9f0 stay ready (skipped). Before the review, 3de66a1d8 counted 8805.",
   "rows": [
     {
       "native": "00721030",
@@ -31,10 +31,10 @@
       "address": "0071e7c9",
       "function": "0071e6c0",
       "host_site": "src/game_hosts_commands.cpp: DirectorBinding::session_field_f4h_is_0_or_1",
-      "status": "wired",
-      "reach": "live",
+      "status": "skipped",
       "reached": 0,
-      "note": "Not reached in the USN04 pair (no session_echo_gate row in either native table); the readiness survey saw it once in USN15. Only image site 0071E7C9 in 0071E6C0, ECX = [00E188A8]+1EF0h (0071E7BD..0071E7C3), __fastcall/thiscall RET 0, AL result. The body reads only session+F4h = game+1FE4h. ON passes SessionObjectModeView (static_assert offsetof mode_f4 == F4h) whose +F4h is session_mode_1fe4(), the accessor every other session-mode use in this host reads (the session context when kSkirmishSessionCc13Bound, else the single-player value 0 that game+1FE4h holds in campaign); the body's {0, 1} test replaces the host's. Gate on the path: kAttackPushEndsOverrideBound=true; reached only for a weapon-category push with director+188h set (cruise_command.cpp 0071E7A8/0071E7B4); the survey saw it in USN15."
+      "reason": "only input is session_mode_1fe4(), which returns the constant 0 while kSkirmishSessionCc13Bound is false, and a campaign run never publishes a non-zero word, so the ON arm computes a constant; the site was not reached in the USN04 pair",
+      "note": "Review round 1 (run 101): the arm wired in 3de66a1d8 was removed, and session_field_f4h_is_0_or_1 is back to the origin/main text. The body itself is correct: only image site 0071E7C9 in 0071E6C0, ECX = [00E188A8]+1EF0h, which reads session+F4h = game+1FE4h. This row can be wired once a host publishes a real game+1FE4h (a skirmish session context with kSkirmishSessionCc13Bound true)."
     },
     {
       "native": "0046a9f0",
@@ -50,8 +50,8 @@
   "host_objects": [],
   "host_object_decision": "No host object built: this host file listed no host-object gaps, and the one assigned row that needs an object (0046a9f0) needs the native scene-command list and its 00469610 producer, which is outside this file and would have no reader here.",
   "verification": {
-    "off_build": "./scripts/build.ps1 exit 0, 2/2 tests passed (at 3de66a1d8, clean tree)",
-    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain42Bound: build.ps1 exit 0, 0 distinct diagnostics; header restored",
+    "off_build": "./scripts/build.ps1 exit 0, 2/2 tests passed (at 3de66a1d8, clean tree; re-run after the review round 1 fixes: exit 0, 2/2 passed)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain42Bound: build.ps1 exit 0, 0 distinct diagnostics; header restored (at 3de66a1d8 and again after the review round 1 fixes)",
     "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings (no x87 arithmetic in the ON arms)",
     "pair_run": {
       "session": "console Active (query session)",
@@ -59,8 +59,20 @@
       "on": "python tools/pair_export.py --commit HEAD --flip kWireGoal2Chain42Bound=true --out local\\g2-w3-on --mission USN04 -> local\\g2-w3-on_USN04.log, exit 0",
       "args": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
       "result": "GAMEPLAY identical (28 deaths, 380 hit records, 6366.6 damage, 5509 shots, first hit 86.15 s, 81 units); host methods concrete/unimplemented 1144/477 both; NATIVE TABLE 1624 -> 1624, 0 added/removed/status changed/counts moved; SUMMARY LINES 867 -> 867, 0 changed; OTHER LINES 231/231 differ, all atlas source parser/item diagnostics carrying heap append_slot addresses (the same pointer noise chains 32/34/36 recorded); 0 non-atlas lines differ.",
-      "native_rows_moved_to_concrete": "none (the 00721030 and 006E38E0 rows were already concrete markers; the change is that the reconstructed bodies now run behind them)"
+      "native_rows_moved_to_concrete": "none (the 00721030 row was already a concrete marker; the change is that the reconstructed body now runs behind it). This pair ran at 3de66a1d8, which also carried the 006E38E0 arm; that arm was unreached in USN04 and was removed in review round 1."
     }
   },
-  "flip_proposal": "Flip kWireGoal2Chain42Bound to true: the USN04 pair is gameplay-identical with 199 runs of the 00721030 body over the queued NativeSessionMessage92 copies; 006E38E0 is unreached in USN04 and is the same {0, 1} test over the same session_mode_1fe4() input, so a USN15 pair would exercise it if wanted."
+  "flip_proposal": "Flip kWireGoal2Chain42Bound to true: after review round 1 only 00721030 is behind it, and the USN04 pair (run at 3de66a1d8, whose 00721030 arm is unchanged) is gameplay-identical with 199 runs of the 00721030 body over the queued NativeSessionMessage92 copies.",
+  "review_round_1": {
+    "review_run": 101,
+    "verdict": "fix",
+    "fixes": [
+      {"finding": "src/game_hosts_commands.cpp:1380 remove the 006E38E0 arm and restore the single return", "status": "fixed"},
+      {"finding": "src/game_hosts_commands.cpp:176 delete SessionObjectModeView, its static_assert and the bsp/cc13_seg33a.hpp include", "status": "fixed"},
+      {"finding": "reports/wire-g2-c42.json:30 mark 006e38e0 skipped with the constant-input reason and drop the reach claim", "status": "fixed"},
+      {"finding": "reports/wire-g2-c42.json:15 re-run wire_readiness and set wired_after/wired_delta", "status": "fixed"},
+      {"finding": "re-run ./scripts/build.ps1 and off_switch_on_build.py", "status": "fixed"}
+    ],
+    "pair_run_note": "No new pair: the 00721030 arm is unchanged from 3de66a1d8, and the reviewer accepted the existing USN04 pair for it."
+  }
 }
