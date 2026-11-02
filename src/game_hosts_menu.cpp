@@ -9,6 +9,7 @@
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/frontend_states.hpp"
+#include "bsp/fmod_configuration_library.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -20,11 +21,13 @@
 #include "bsp/game_hint_passes.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
+#include "bsp/game_sound_runtime.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
 #include "bsp/main_menu_screens.hpp"
 #include "bsp/press_start_screen.hpp"
 #include "bsp/title_init.hpp"
+#include "bsp/wire_goal1_chain4_switches.hpp"
 
 #include <algorithm>
 #include <map>
@@ -1037,6 +1040,39 @@ private:
     MenuCommitHost& commit_;
 };
 
+// The main-menu destructor inlines the base close sequence at
+// 00686DA0..00686DB9. Keep its leaf-exit and visibility bindings while the
+// reconstructed close body owns the active test and both flag stores.
+class MainMenuClosingScreenHost final : public FrontEndScreenHost {
+public:
+    MainMenuClosingScreenHost(GameMenuHost::Impl& owner, MenuCommitHost& commit,
+        FrontEndScreenHost& screens, std::size_t& exited)
+        : owner_(owner), commit_(commit), screens_(screens), exited_(exited) {}
+
+    void screen_exit(int slot) override {
+        static_cast<void>(slot);
+        owner_.log.unimplemented("MainMenuScreen::exit", "00686dad");
+        ++exited_;
+    }
+    void screen_commit(int slot) override {
+        GameMenuHost::Impl::MenuScreen* screen = owner_.screen_at(slot);
+        if (screen == nullptr || screen->flags == nullptr) return;
+        commit_front_end_screen_visibility_004f83b0(*screen->flags, slot, commit_);
+        owner_.log.implemented("MainMenuManager::commit_screen_visibility", "00686db9");
+    }
+    void screen_enter(int slot) override { screens_.screen_enter(slot); }
+    void screen_update(int slot, float seconds) override { screens_.screen_update(slot, seconds); }
+    void menu_command_update(float seconds) override { screens_.menu_command_update(seconds); }
+    void menu_command_exit() override { screens_.menu_command_exit(); }
+    void menu_command_commit() override { screens_.menu_command_commit(); }
+
+private:
+    GameMenuHost::Impl& owner_;
+    MenuCommitHost& commit_;
+    FrontEndScreenHost& screens_;
+    std::size_t& exited_;
+};
+
 // ---------------------------------------------------------------------------
 // 004e4b9d..004e4d2c, the front-end branch of GGame::OnMove
 // ---------------------------------------------------------------------------
@@ -1461,8 +1497,19 @@ public:
         owner_.log.unimplemented("FrontEndShell::probe_texture_memory", "00f8d394+70h");
     }
     void probe_sound_memory(const char* label) override {
-        static_cast<void>(label);
-        owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
+        // Native 00a7a460 calls on_out_of_sound_memory on the live FMOD library; OFF keeps the probe stub.
+        if constexpr (kWireGoal1Chain4Bound) {
+            GameSoundRuntime* sound = owner_.singletons.native_deletion_bindings().sound_runtime;
+            if (sound != nullptr) {
+                sound->fmod().on_out_of_sound_memory(label);
+                owner_.log.implemented("FrontEndShell::probe_sound_memory", "00a7a460");
+            } else {
+                owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
+            }
+        } else {
+            static_cast<void>(label);
+            owner_.log.unimplemented("FrontEndShell::probe_sound_memory", "00a7a460");
+        }
     }
     void probe_effect_memory(const char* label) override {
         owner_.log.implemented("FrontEndShell::probe_effect_memory", "004c1650");
@@ -1805,7 +1852,18 @@ GameMenuHost::Impl::MenuScreen& GameMenuHost::Impl::add_screen(int slot, std::st
     MenuScreen& screen = screens[slot];
     screen.slot = slot;
     screen.name = std::move(name);
-    screen.flags = external != nullptr ? external : &screen.owned_flags;
+    // 004f7180 calls construct_front_end_screen_004f7180; OFF keeps default-owned flags.
+    if constexpr (kWireGoal1Chain4Bound) {
+        // External leaf objects already run their constructor (0067c840 for
+        // press-start); only construct the registry-owned screen base here.
+        screen.flags = external != nullptr ? external
+            : &construct_front_end_screen_004f7180(screen.owned_flags);
+        if (external == nullptr) {
+            log.implemented("FrontEndScreen::construct", "004f7180");
+        }
+    } else {
+        screen.flags = external != nullptr ? external : &screen.owned_flags;
+    }
     screen.enter_virtual = enter_virtual;
     screen.exit_virtual = exit_virtual;
     screen.update_virtual = update_virtual;
@@ -2125,14 +2183,23 @@ void GameMenuHost::destroy_main_menu_manager_00686c90() {
     for (const MainMenuScreenClass& entry : kMainMenuScreens) {
         Impl::MenuScreen* screen = host.screen_at(entry.screen_id);
         if (screen == nullptr || screen->flags == nullptr) continue;
-        if (screen->flags->active) {
-            host.log.unimplemented("MainMenuScreen::exit", "00686dad");
-            ++exited;
+        // 004b6e50 calls close_front_end_screen; OFF keeps the inlined 00686DA0..00686DB9 close.
+        if constexpr (kWireGoal1Chain4Bound) {
+            MenuPressStartHost press(host);
+            MenuScreenHost screens(host, press, commit);
+            MainMenuClosingScreenHost closing(host, commit, screens, exited);
+            close_front_end_screen(*screen->flags, entry.screen_id, closing);
+            host.log.implemented("MainMenuManager::close_screen", "004b6e50");
+        } else {
+            if (screen->flags->active) {
+                host.log.unimplemented("MainMenuScreen::exit", "00686dad");
+                ++exited;
+            }
+            screen->flags->wanted = false;
+            screen->flags->active = false;
+            commit_front_end_screen_visibility_004f83b0(*screen->flags, entry.screen_id, commit);
+            host.log.implemented("MainMenuManager::commit_screen_visibility", "00686db9");
         }
-        screen->flags->wanted = false;
-        screen->flags->active = false;
-        commit_front_end_screen_visibility_004f83b0(*screen->flags, entry.screen_id, commit);
-        host.log.implemented("MainMenuManager::commit_screen_visibility", "00686db9");
         // 00686e14, the screen's own vtable +0Ch with the deleting flag. The
         // seven classes are not reconstructed; unregistering the executable's
         // record is what a destroyed screen leaves behind in the registry.
