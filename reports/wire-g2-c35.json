@@ -1,0 +1,211 @@
+{
+  "chain": "goal2-chain35",
+  "slot": "g2-w1",
+  "host_file": "src/game_hosts_hud.cpp",
+  "switch": "kWireGoal2Chain35Bound",
+  "switch_header": "include/bsp/wire_goal2_chain35_switches.hpp",
+  "build": "scripts/build.ps1 exit 0 (2/2 tests passed)",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain35Bound: build.ps1 exit 0, 0 diagnostics",
+  "wired_before": 8795,
+  "wired_after": 8796,
+  "pair": "USN04 pair (OFF HEAD 3950c83f9 build, ON pair_export flip kWireGoal2Chain35Bound=true), both exit 0, 3199 frames. GAMEPLAY identical (deaths 28, hits 380, damage 6366.6, shots 5509); DEATH ROWS, PLANE DEATH MODES (25), UNIT TABLE (81) identical; SUMMARY LINES 867 unchanged. NATIVE TABLE 1624 -> 1625: ~ InGameInterface::collapse_overlays 0068ab80 UNIMPLEMENTED -> concrete, calls 6 -> 6; + InGameInterface::binoculars_reset 0051e8e0 UNIMPLEMENTED calls=6 (the body's run_extra_hook arm, 0051E8E0 has no body). OTHER LINES 231/231: startup atlas source lines differing only in the decimal heap address append_slot (layout noise; pair_diff exit 1 from these). Neither collapse took a clear: level 3 empty, and no camera interface (29h/2Bh/2Ch/2Dh) was applied while slot 4Ch was wanted.",
+  "host_objects": [
+    {
+      "name": "GameMenuHost screen-set state accessors (in_game_screen_wanted, screen_set_level_size, clear_level3_screen_and_context_sets)",
+      "where": "src/game_hosts_menu.cpp:2109",
+      "producers": [
+        "FrontEndScreen::wanted from recompute_front_end_screen_requests_004f7620 via set_front_end_screen_set_level (menu host)",
+        "FrontEndScreenSetStack levels (004F8530/004F85D0/004F8710 publishers in the menu host)",
+        "GameInputContextSetStack levels (004D8A50/004D8AE0 publishers, apply_input_context_levels_004c4300)"
+      ],
+      "rows": [
+        "0068ab80"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "0068ab80",
+      "address": "0068ad43",
+      "function": "0068aca0",
+      "host_site": "src/game_hosts_hud.cpp HudInterfaceBinding::collapse_overlays (and HudUpdateBinding::collapse_overlays, image site 0068C6E7 in 0068C1F0) via GameHudHost::Impl::collapse_in_game_overlays",
+      "status": "wired",
+      "reached": 6,
+      "note": "collapse_in_game_overlays_0068ab80 runs over the menu host's level-3 screen-set vector (00E18D18) and registry slot 4Ch's requested byte +4h; its level-2/level-3 clears publish the empty sets and request the scene for the controlled unit (0068AA40). OFF keeps the 'both sets are empty here' record. Live: mission_frame's update_interface_only_004c40f0 calls apply_pending_interface_0068aca0 every frame with no gate."
+    },
+    {
+      "native": "0068a140",
+      "address": "004c6ce7",
+      "function": "004c6c70",
+      "host_site": "src/game_hosts_hud.cpp HudRootSelectionBinding::base_screen_active",
+      "status": "skipped",
+      "reason": "Dead site: HudRootSelectionBinding is constructed only inside if constexpr (kWireGoal1Chain12Bound) arms (resolve_weapon_info, resolve_weapon_info_fallback, update_unit_rows), and kWireGoal1Chain12Bound = false (include/bsp/wire_goal1_chain12_switches.hpp). No other HUD code tests ids 31h/32h. Wire it after chain 12 flips."
+    },
+    {
+      "native": "005251c0",
+      "address": "00647059",
+      "function": "00647040",
+      "host_site": "src/game_hosts_hud.cpp SetSelectedUnit / ForceSelectUnit screen_reset records",
+      "status": "skipped",
+      "reason": "Body hud_screen_reset_selection_005251c0 takes cc13_sweepA::SweepAHost&, a 161-virtual interface with no host adapter anywhere, plus a raw screen image (+30h mode, +C4h vector, +C0h, +D4h) this host does not hold. Not buildable in one chain."
+    },
+    {
+      "native": "005fb080",
+      "address": "0068c6bb",
+      "function": "0068c1f0",
+      "host_site": "src/game_hosts_hud.cpp HudUpdateBinding::screen_3b_idle",
+      "status": "skipped",
+      "reason": "Raw body over the order screen image (+4h/+84h and manager-linked screens); no image-shaped order screen or menu payload state exists here. The new menu screen-set accessors do not supply it."
+    },
+    {
+      "native": "00636d90",
+      "address": "004c9ced",
+      "function": "004c9ca0",
+      "host_site": "src/game_hosts_hud.cpp loading element",
+      "status": "skipped",
+      "reason": "Earlier reason stands: the body installs scene-init/callback vtables and initializes callback-owner +Ch..+18h; no host consumer of those fields."
+    },
+    {
+      "native": "00646040",
+      "address": "0068ad07",
+      "function": "0068aca0",
+      "host_site": "src/game_hosts_hud.cpp HudInterfaceBinding::hud_root_set_interface",
+      "status": "skipped",
+      "reason": "Earlier reason stands: the body gates on root+1Ch and repoints the observer member root+D0h (observed +E4h); the HUD root keeps no image root with those members."
+    },
+    {
+      "native": "00673130",
+      "address": "0068c77f",
+      "function": "0068c1f0",
+      "host_site": "src/game_hosts_hud.cpp HudUpdateBinding::camera_screen_frame_step",
+      "status": "skipped",
+      "reason": "Earlier reason stands: no support-manager screen image, entry state or info-panel widgets (+16Ch..+1A8h)."
+    },
+    {
+      "native": "0043aba0",
+      "address": "0043b33f",
+      "function": "0043b2f0",
+      "host_site": "src/game_hosts_hud.cpp digit gauge",
+      "status": "skipped",
+      "reason": "Earlier reason stands: needs an icon-record UV rectangle and a writable four-vertex stream; the sprite bridge keeps neither."
+    },
+    {
+      "native": "008e9af0",
+      "address": "005a7e2f",
+      "function": "005a7c20",
+      "host_site": "src/game_hosts_hud.cpp power-up collections",
+      "status": "skipped",
+      "reason": "Earlier reason stands: the power-up manager 00F88C30 is never created in this process; a fabricated empty manager would supply constants."
+    },
+    {
+      "native": "00447510",
+      "address": "007caec7",
+      "function": "007caad0",
+      "host_site": "src/game_hosts_gunnery.cpp sinking_wreck_debris_draws_00935540",
+      "status": "skipped",
+      "reason": "game_dynamics_list_add_00447510 needs the native Dyn list ([00E188A8]+30h) and a spec image; the host only draws RNG for the pieces. No dynamics list exists in this host."
+    },
+    {
+      "native": "0080fa50",
+      "address": "00827372",
+      "function": "00826f10",
+      "host_site": "src/game_hosts_gunnery.cpp ShipHitBinding::route_set_damage_channel",
+      "status": "skipped",
+      "reason": "Message constructor (9Eh) over cc13 SweepCHost (138 virtuals, no host adapter). Its consumer chain is the session route 0077C2A0 -> 0076E520 copy (write 00760970 / read 007609E0) -> 00821E80 arm 0082203D; the base 0075B430 needs a game image. A future chain could route it through HostSessionMessages (cc15-sm1 pattern) with a SweepCHost adapter; a bare construct-then-read would only hand back the host's own values."
+    },
+    {
+      "native": "0092ced0",
+      "address": "0092d2bd",
+      "function": "0092d1f0",
+      "host_site": "src/game_hosts_gunnery.cpp Impl::apply_segment_damage_0092d1f0",
+      "status": "skipped",
+      "reason": "99h constructor; its consumer 00821E80 DetachPart -> 0080E440 -> 00934150 ends in the unbuildable UnitPartDetachHost gap (scene nodes, dynamics, effects). Constructing it would have no consumer."
+    },
+    {
+      "native": "0093a2c0",
+      "address": "0093c07a",
+      "function": "0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::session_route_failure_started",
+      "status": "skipped",
+      "reason": "9Bh constructor over Cc13SegmixHost; no reconstructed consumer in the host (its delivery ends at the warning-manager event path, a raw image body)."
+    },
+    {
+      "native": "00982c50",
+      "address": "0081b77d",
+      "function": "0081b630",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::warning_fire_failure",
+      "status": "skipped",
+      "reason": "Raw Seg62Host body over the native warning manager image (+D0h/+D4h/+104h/+108h tree), entity image (+5Ch..+60h, +9D4h, +180h) and game +18ECh; no such images in this host."
+    },
+    {
+      "native": "00984eb0",
+      "address": "006c7cf1",
+      "function": "006c7b10",
+      "host_site": "src/game_hosts_gunnery.cpp Shipyard::stock_notice record",
+      "status": "skipped",
+      "reason": "Same as 00982C50: raw warning-manager image body (channel map, subscription filters)."
+    },
+    {
+      "native": "00913d80",
+      "address": "0093c0dc",
+      "function": "0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::failure_side_effect",
+      "status": "skipped",
+      "reason": "Raw Seg59bHost body over the native scoring image (0x284-byte slots), player record (+1Ch/+21h/+ACh) and game +1FE4h/+18CCh; none held."
+    },
+    {
+      "native": "00915f20",
+      "address": "0077d13c",
+      "function": "0077ce60",
+      "host_site": "src/game_hosts_gunnery.cpp KamikazeDetonate::direct_hit record",
+      "status": "skipped",
+      "reason": "Same scoring image as 00913D80 (raw Seg59bHost body)."
+    },
+    {
+      "native": "00bd2f90",
+      "address": "00902d77",
+      "function": "00902920",
+      "host_site": "src/game_hosts_gunnery.cpp Impl::draw_normal",
+      "status": "skipped",
+      "reason": "Confirmed: bsp::RandomState is the 624-word Mersenne twister (include/bsp/random.hpp); the host's 00BD2F10 stand-in is an LCG (rng*1664525+1013904223). No same-state adapter is possible."
+    },
+    {
+      "native": "008636a0",
+      "address": "00864c18",
+      "function": "00864bd0",
+      "host_site": "src/game_hosts_gunnery.cpp pass attach done('Gunnery::install_policies_008636a0')",
+      "status": "skipped",
+      "reason": "Needs unit vtable[114h] director presence and director vtable[48h](2) per unit class; the host keeps only kind tests (kPlaneNullFireTargetProviderBound). A per-class table would need a vtable census not done here."
+    },
+    {
+      "native": "0072bf10",
+      "address": "00730042",
+      "function": "0072f830",
+      "host_site": "src/game_hosts_gunnery.cpp gun fire spawn done('Projectile::spawn_0072bf10')",
+      "status": "skipped",
+      "reason": "Earlier reason stands: the host has no medium flag, fire-time stamp, platform-velocity inheritance, scale, appearance, owner bind or director stamp for the callback steps."
+    },
+    {
+      "native": "006e1300",
+      "address": "006fecb9",
+      "function": "006fec00",
+      "host_site": "src/game_hosts_gunnery.cpp projectile tick",
+      "status": "skipped",
+      "reason": "Earlier reason stands: BombTickState's +410h/+458h/+45Ch have no producer on GameProjectileRow."
+    },
+    {
+      "native": "006e3500",
+      "host_site": "src/game_hosts_gunnery.cpp release_ordnance_drop torpedo loadout bit",
+      "status": "skipped",
+      "reason": "Per-rack round state (SingleRackState) belongs to the units host's devices; gunnery only clears a loadout bit. Its only image site 0068DD4C is undefined code."
+    },
+    {
+      "native": "009373c0",
+      "address": "00813595",
+      "function": "008132c0",
+      "host_site": "src/game_hosts_gunnery.cpp script_set_failure_008132c0 Periscope arm",
+      "status": "skipped",
+      "reason": "Earlier reason stands: no periscope +394h shape, +1214h node, +122Ch state or repair deadline storage; the periscope byte is the units host's."
+    }
+  ]
+}
