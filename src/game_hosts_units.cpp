@@ -15,6 +15,12 @@
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
 #include "bsp/wire_goal2_chain32_switches.hpp"
+#include "bsp/wire_goal2_chain51_switches.hpp"
+#include "bsp/native_scene_command_queue.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/native_scene_command_record_destroy.hpp"
+#include "bsp/native_scene_command_list_clear.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/gameplay_seg41_cc13.hpp"
 #include "bsp/cc13_seg29U.hpp"
 #include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
@@ -234,6 +240,7 @@
 #include "bsp/dive_flyabove_avoid_increment_cc13.hpp"  // cc13-flyavoid, 009C6D59
 #include "bsp/session_context_cc13.hpp"  // cc13-mp1 (MP2a)
 
+#include <cstddef>
 #include <cfloat>
 #include <cmath>
 #include <cstdio>
@@ -3177,6 +3184,103 @@ float dive_bomb_bearing_pc24(float dx, float dz) {
 }
 }  // namespace
 
+namespace {
+// Only the command-list projection of 0046F160's database is owned here.
+// Its three DWORDs are zeroed by that constructor at +14Ch/+150h/+154h.
+struct UnitSceneCommandRecordImage {
+    GameUnitSlot* owner;
+    std::uint32_t command_length;
+    const char* command;
+    std::uint32_t target_length;
+    const char* target;
+};
+struct UnitSceneCommandNodeImage {
+    UnitSceneCommandNodeImage* previous;
+    UnitSceneCommandNodeImage* next;
+    UnitSceneCommandRecordImage* record;
+};
+struct UnitSceneCommandDatabaseImage {
+    std::uint8_t unused[0x14c];
+    std::uint32_t count;
+    UnitSceneCommandNodeImage* head;
+    UnitSceneCommandNodeImage* tail;
+};
+static_assert(sizeof(UnitSceneCommandRecordImage) == 0x14);
+static_assert(offsetof(UnitSceneCommandRecordImage, command_length) == 4);
+static_assert(offsetof(UnitSceneCommandRecordImage, command) == 8);
+static_assert(offsetof(UnitSceneCommandRecordImage, target_length) == 0xc);
+static_assert(offsetof(UnitSceneCommandRecordImage, target) == 0x10);
+static_assert(sizeof(UnitSceneCommandNodeImage) == 0xc);
+static_assert(offsetof(UnitSceneCommandNodeImage, previous) == 0);
+static_assert(offsetof(UnitSceneCommandNodeImage, next) == 4);
+static_assert(offsetof(UnitSceneCommandNodeImage, record) == 8);
+static_assert(offsetof(UnitSceneCommandDatabaseImage, count) == 0x14c);
+static_assert(offsetof(UnitSceneCommandDatabaseImage, head) == 0x150);
+static_assert(offsetof(UnitSceneCommandDatabaseImage, tail) == 0x154);
+static_assert(sizeof(UnitSceneCommandDatabaseImage) == 0x158);
+
+class UnitSceneCommandQueue final {
+public:
+    UnitSceneCommandQueue() : strings_(game_native_string_process().raw_context()) {}
+    ~UnitSceneCommandQueue() {
+        std::uint32_t saved_this;
+        bsp::clear_native_scene_command_list_0046a9f0(
+            &database_.count, &saved_this, strings_);
+    }
+    void enqueue(GameUnitSlot& owner, const GameSceneEntityRecord& entity) {
+        // 004E6B30 supplies the creator's entity and the carried property-bag
+        // strings. 00469680 RET 0Ch confirms all three incoming stack words.
+        const std::uint32_t parameters[3] = {
+            reinterpret_cast<std::uint32_t>(&owner),
+            reinterpret_cast<std::uint32_t>(entity.command.c_str()),
+            reinterpret_cast<std::uint32_t>(entity.command_target.c_str())};
+        std::uint32_t saved_allocation;
+        std::uint32_t constructor_parameters[3];
+        std::uint32_t constructor_saved_record;
+        // Explicit native cells: P+4 incoming arguments, P-10h allocation,
+        // P-20h constructor arguments, P-34h child saved record. P-18h is
+        // reused by the list argument, aliasing the outgoing target word.
+        const bsp::NativeSceneCommandQueueFrame frame{parameters, &saved_allocation,
+            constructor_parameters, &constructor_saved_record, &constructor_parameters[2]};
+        bsp::queue_native_scene_command_00469610(&database_, frame, strings_);
+    }
+    void take(GameUnitSlot& owner) {
+        // The actual queued record feeds the existing 0046AAB0/0077D600
+        // consumer at authored-command issue, after every entity was created.
+        // Generated-object issue consumes its own record by owner identity.
+        for (auto* node = database_.head; node != nullptr; node = node->next) {
+            const auto* record = node->record;
+            if (record == nullptr || record->owner != &owner) continue;
+            owner.row.command.assign(record->command != nullptr ? record->command : "",
+                record->command_length);
+            owner.row.command_target.assign(record->target != nullptr ? record->target : "",
+                record->target_length);
+            return;
+        }
+    }
+    void retire(GameUnitSlot& owner) {
+        // 0046AAB0 issues first; its 0046A9F0 tail releases the record only
+        // after the consumer returns. Keep that lifetime for each host issue.
+        for (auto* node = database_.head; node != nullptr; node = node->next) {
+            if (node->record == nullptr || node->record->owner != &owner) continue;
+            std::uint32_t saved_this;
+            bsp::delete_native_scene_command_record_pointer_0046a090(
+                &node->record, &saved_this, strings_);
+            if (node->previous != nullptr) node->previous->next = node->next;
+            else database_.head = node->next;
+            if (node->next != nullptr) node->next->previous = node->previous;
+            else database_.tail = node->previous;
+            --database_.count;
+            bsp::singleton_lifetime_free(node);
+            return;
+        }
+    }
+private:
+    bsp::NativeStringRawPoolContext& strings_;
+    UnitSceneCommandDatabaseImage database_{};
+};
+} // namespace
+
 struct GameUnitsHost::Impl {
     Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
         : log(log_in), lua(lua_in), commands(log_in) {}
@@ -3187,6 +3291,11 @@ struct GameUnitsHost::Impl {
     // Milestone 2l: the weapon director of every created unit, and the three
     // message hops between the authored `Command` token and its command slot.
     GameCommandsHost commands;
+    // 0046F160 before scene creation; 004E6BAB queues until 0046ED1E's
+    // resolve pass, or the Lua generated-object drain. 0046A9F0 frees any
+    // unconsumed records before this mission owner is retired. Constructed
+    // only in the chain-51 ON arm; borrows the canonical process string pool.
+    std::unique_ptr<UnitSceneCommandQueue> scene_commands;
     // Packet cc9_land_convoy_movement, under kLandConvoyMovementBound.
     std::vector<LandConvoyMotionState> land_convoys;
     // Packet cc13-convoy, under kLandConvoyBodiesBound: one per roster built.
@@ -22430,6 +22539,11 @@ constexpr bool kSceneUnitSkillBound = true;
 
 void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entities) {
     Impl& host = *impl_;
+    if constexpr (bsp::kWireGoal2Chain51Bound) {
+        if (host.scene_commands == nullptr) {
+            host.scene_commands = std::make_unique<UnitSceneCommandQueue>();
+        }
+    }
     for (const GameSceneEntityRecord& entity : entities) {
         if (!entity.created) continue;
         auto slot = std::make_unique<GameUnitSlot>();
@@ -22440,8 +22554,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         row.type_id = entity.type_id;
         row.party = entity.party;
         // Milestone 2l: the two strings 004f0520's last step handed 00469610.
+        // 00469610 queues the authored command; OFF keeps the direct string copies.
+        if constexpr (bsp::kWireGoal2Chain51Bound) {
+            if (entity.command_present) {
+                host.scene_commands->enqueue(*slot, entity);
+                host.done("Units::queue_native_scene_command", 0x00469610u);
+            }
+        } else {
         row.command = entity.command;
         row.command_target = entity.command_target;
+        }
 
         // The frame 0046cf40 composed for the gate is the instance's world 4x4;
         // rows 0..2 are the body axes and row 3 the position, which is the same
@@ -23281,13 +23403,26 @@ bool GameUnitsHost::issue_authored_command_at(std::size_t index) {
     Impl& host = *impl_;
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
+    if constexpr (bsp::kWireGoal2Chain51Bound) {
+        if (host.scene_commands != nullptr) host.scene_commands->take(slot);
+    }
     // The token every DestroyerGen of this scene authors. An entity that
     // authored none is skipped, exactly as 004f0520's last step skips the
     // queue call when the property is absent.
+    if constexpr (bsp::kWireGoal2Chain51Bound) {
+        // 004E6B30 queues a present-empty key too; 0046AAB0's empty-name
+        // failure still reaches its clear. Retire before the host early exit.
+        if (slot.row.command.empty() && host.scene_commands != nullptr) {
+            host.scene_commands->retire(slot);
+        }
+    }
     if (slot.row.command.empty()) return false;
     const float heading = host.pose_heading_radians(slot);
     const GameCommandRow* row = host.commands.issue(index, slot.row.command,
         slot.row.command_target, slot.ring, heading);
+    if constexpr (bsp::kWireGoal2Chain51Bound) {
+        if (host.scene_commands != nullptr) host.scene_commands->retire(slot);
+    }
     if (row == nullptr) return false;
     slot.row.command_current = row->current;
     slot.row.command_latched = row->latched;

@@ -116,6 +116,9 @@ struct GameSceneEntityRecord {
     // Milestone 2h dropped both at the queue host; the command path needs them.
     std::string command;
     std::string command_target;
+    // 004E6B6D tests inner-key presence, including an authored empty value.
+    // Carried only by the chain-51 ON producers; text alone cannot encode it.
+    bool command_present{false};
     // Milestone 2q: the two keys 00822C20's property-bag arm looks up in the
     // holder 0046d5b0 stores at entity+0C0h. `StartSpeed` is authored on every
     // `Cruise` unit of usn_2_java.scn (docs/CRUISE_SPEED_SETTING.md) and
