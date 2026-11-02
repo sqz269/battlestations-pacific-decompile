@@ -1,0 +1,495 @@
+{
+  "picked": "game_hosts_menu.cpp - highest ranked available candidate; actual registry flags and process sound binding support three body-owned replacements",
+  "packet": "g1-w2",
+  "run": 11,
+  "harness": "codex",
+  "branch": "agent/g1-w2",
+  "code_commit": "4af6acf10c08a9bb24d9c7d500280b9c6677cffe",
+  "switch": "kWireGoal1Chain4Bound",
+  "switch_default": false,
+  "wired_count": 3,
+  "skipped_count": 14,
+  "wired_totals": {
+    "before": 8522,
+    "after": 8525
+  },
+  "reach_semantics": "reached is the total native-table address call count in the ON log, including stand-ins for skipped rows; body_reached excludes those stand-ins.",
+  "rows": [
+    {
+      "native": "004b43b0",
+      "host_site": "MenuPressStartHost::input_edge_latch",
+      "status": "skipped",
+      "reason": "Host has neither the dynamic-device button table nor the F8BBF4 owner +DDh latch; action records do not establish the native any-device-button value.",
+      "evidence": "Body reads 00A91020 and updates the prior byte at owner+DDh; the host only keeps injected action records and returns false here.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "004b6e50",
+      "host_site": "GameMenuHost::destroy_main_menu_manager_00686c90, seven-screen close loop",
+      "status": "wired",
+      "reason": "Existing close body replaces the inline active test, exit, two flag clears and visibility commit over the actual registry screen.",
+      "evidence": "00686DA0..00686DB9 in 00686C90 is the same sequence as 004B6E50..004B6E6B. MainMenuClosingScreenHost preserves the existing exit count/log and page visibility binding. This is an equivalent inline site, rather than a native CALL to 004B6E50.",
+      "reached": 7,
+      "body_reached": 7,
+      "on_native_table": [
+        {
+          "method": "MainMenuManager::close_screen",
+          "state": "concrete",
+          "calls": 7
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "wired"
+    },
+    {
+      "native": "004da780",
+      "host_site": "MenuManagerHost::lower_in_mission_interface",
+      "status": "skipped",
+      "reason": "The existing body is only the screen/context clearing slice of the 55-callee session teardown; it cannot replace the whole native call.",
+      "evidence": "Host comment identifies the partial 004DA99D..004DA9CF slice and deliberately leaves the whole 004DA780 call unimplemented.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "004f7180",
+      "host_site": "GameMenuHost::Impl::add_screen, registry-owned base",
+      "status": "wired",
+      "reason": "Existing constructor clears wanted/active in the registry-owned base before registration; external leaf bases retain their already-existing constructor path.",
+      "evidence": "004F718A/004F718D clear the real two flag bytes. Native main-menu constructor 005902E0 chains it at 005902FF; in-game screen constructors also chain it. No second call is added for the external press-start base.",
+      "reached": 49,
+      "body_reached": 49,
+      "on_native_table": [
+        {
+          "method": "FrontEndScreen::construct",
+          "state": "concrete",
+          "calls": 49
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "wired"
+    },
+    {
+      "native": "004f71f0",
+      "host_site": "MenuTitleHandoverHost::update_press_start_screen",
+      "status": "skipped",
+      "reason": "Body only forwards the delta to virtual +20h; an adapter here would round-trip the same direct 0067CFB0 call already made by OFF.",
+      "evidence": "004F71F0 is only virtual update dispatch; the existing host directly invokes update_press_start_screen_0067cfb0 with the same host state and raw delta.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00576b10",
+      "host_site": "MenuManagerHost::refresh_multiplayer_state",
+      "status": "skipped",
+      "reason": "Host has no F8894C lobby registry publication, five map members or consumers to bind the singleton getter to.",
+      "evidence": "The native getter allocates/constructs/registers the registry; this host leaves the whole subsystem as a record-only call.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0057bec0",
+      "host_site": "MenuShellHost::report_progress and MenuManagerHost::report_loading_progress",
+      "status": "skipped",
+      "reason": "The existing body call is already present behind kLoadingScreenCc13Bound=false; independently calling it with the uncreated loading singleton would only take its null no-op.",
+      "evidence": "Impl::report_loading_progress_0057bec0 already calls report_loading_progress; loading_screen.created is only raised by the disabled begin-loading path.",
+      "reached": 14,
+      "body_reached": 0,
+      "on_native_table": [
+        {
+          "method": "FrontEndShell::report_progress",
+          "state": "UNIMPLEMENTED",
+          "calls": 1
+        },
+        {
+          "method": "FrontEndManager::report_loading_progress",
+          "state": "UNIMPLEMENTED",
+          "calls": 8
+        },
+        {
+          "method": "MissionTree::report_progress",
+          "state": "UNIMPLEMENTED",
+          "calls": 5
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0057c990",
+      "host_site": "MenuLoadingScreenHost::prepare_extra_elements",
+      "status": "skipped",
+      "reason": "Only reached behind kLoadingScreenCc13Bound=false; host also lacks the hint list, cursor and element state the body resets.",
+      "evidence": "MenuLoadingScreenHost is composed only by the disabled begin/end-loading path; the method records the call.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0067c8f0",
+      "host_site": "MenuTitleInitHost::sign_in_state_valid",
+      "status": "skipped",
+      "reason": "Host has no built online manager or real selected/active user-slot state; the required reads would be constant stubs.",
+      "evidence": "Native requires E19880, selected user, invitee slot and active slot; the XenonSystemManager host methods return false/zero.",
+      "reached": 1,
+      "body_reached": 0,
+      "on_native_table": [
+        {
+          "method": "TitleInit::sign_in_state_valid",
+          "state": "UNIMPLEMENTED",
+          "calls": 1
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00687c00",
+      "host_site": "MenuManagerHost::refresh_downloadable_content",
+      "status": "skipped",
+      "reason": "Host never constructs the F8894C registry and its presence gate is always false, so destroying a fabricated/null publication would not replace live state logic.",
+      "evidence": "Adjacent host comment documents the absent singleton and downloadable_content_present() returns false.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0076c190",
+      "host_site": "MenuLoadingScreenHost::session_suspend",
+      "status": "skipped",
+      "reason": "Behind the existing OFF loading switch and missing the real session +F4h mode, +4h flag, +27Ch loading byte and transport.",
+      "evidence": "Native branches on session mode, broadcasts/flushes for mode 1 and writes the flags; the host only records this method.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0076c230",
+      "host_site": "MenuLoadingScreenHost::session_resume",
+      "status": "skipped",
+      "reason": "Behind the existing OFF loading switch and missing the real session mode, loading byte and transport.",
+      "evidence": "Native broadcasts loading end for mode 1 and clears +27Ch; this host only records it.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00a3e3b0",
+      "host_site": "MenuPressStartHost::profile_change_pending",
+      "status": "skipped",
+      "reason": "No online manager owns the +2Ch pending flag and +3C0h async result in this host; supplied inputs would be constants.",
+      "evidence": "The host explicitly says XenonSystemManager is not built and returns false; the body needs both actual fields.",
+      "reached": 62,
+      "body_reached": 0,
+      "on_native_table": [
+        {
+          "method": "XenonSystemManager::profile_change_pending",
+          "state": "UNIMPLEMENTED",
+          "calls": 62
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00a3f3d0",
+      "host_site": "MenuPressStartHost::request_sign_in",
+      "status": "skipped",
+      "reason": "Host lacks NativeOnlineManagerStorage and its per-user query/begin provider; forwarding only the pad index cannot implement the request.",
+      "evidence": "Native writes manager+28h then tail-jumps to 00A3F100; this host discards the pad index and does not build the manager.",
+      "reached": 2,
+      "body_reached": 0,
+      "on_native_table": [
+        {
+          "method": "XenonSystemManager::request_sign_in",
+          "state": "UNIMPLEMENTED",
+          "calls": 2
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00a410a0",
+      "host_site": "MenuShellHost::grant_award",
+      "status": "skipped",
+      "reason": "Existing body is only the admission predicate; host lacks the real sign-in gates/per-slot state and the award queue.",
+      "evidence": "may_queue_award_00a410a0 consumes OnlineSignInState; both host award-readiness methods are constant false and grant_award only records.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00a7a460",
+      "host_site": "MenuShellHost::probe_sound_memory",
+      "status": "wired",
+      "reason": "Calls the existing complete on_out_of_sound_memory wrapper on the same process-owned FMOD library borrowed through the singleton host sound binding.",
+      "evidence": "Existing Source407-410 ignores the label, owns two discarded locals and calls memory_get_stats, matching native SUB ESP,8; two LEA/PUSH; CALL 00C2DDEE; ADD ESP,8; RET4. SoundServices binds this exact runtime before menu construction. The identifier map now names this owning wrapper rather than the ambiguous transport method.",
+      "reached": 1,
+      "body_reached": 1,
+      "on_native_table": [
+        {
+          "method": "FrontEndShell::probe_sound_memory",
+          "state": "concrete",
+          "calls": 1
+        }
+      ],
+      "readiness_before": "ready",
+      "readiness_after": "wired"
+    },
+    {
+      "native": "00aa2b80",
+      "host_site": "MenuLoadingScreenHost::gui_refresh",
+      "status": "skipped",
+      "reason": "Behind the existing OFF loading switch and lacking the native render-command queue singleton/mode/cycle state.",
+      "evidence": "Native gets the render queue and resets mode/cycles its frame; this menu method only records the call.",
+      "reached": 0,
+      "body_reached": 0,
+      "on_native_table": [],
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    }
+  ],
+  "contract_calls": [
+    {
+      "address": "005902ff",
+      "native": "004f7180",
+      "function": "005902e0",
+      "evidence": "Base constructor: ECX remains the new screen, no stack args; callee RET at 004F7190."
+    },
+    {
+      "address": "0067d22d",
+      "native": "004b6e50",
+      "function": "0067cfb0",
+      "evidence": "Reference direct close call; zero stack args; helper tail-jumps to visibility commit. The wired destructor site is the equivalent inline sequence described above."
+    },
+    {
+      "address": "004e4051",
+      "native": "00a7a460",
+      "function": "004e4000",
+      "evidence": "PUSH label at 004E404C; callee ignores the label and RET4 at 00A7A474; inner FMOD call cleanup ADD ESP,8 at 00A7A471."
+    }
+  ],
+  "build": {
+    "off": "passed, 2/2 CTest groups",
+    "off_log": "local/g1-w2-off-build.log",
+    "on": "passed, 2/2 CTest groups, zero compiler/linker diagnostics",
+    "on_command": "python tools/off_switch_on_build.py --names kWireGoal1Chain4Bound",
+    "on_log": "local/g1-w2-on-build.log",
+    "switch_restored_off": true,
+    "off_source_check": "Original initializer, sound-probe stub and close sequence retained byte-for-byte apart from branch indentation.",
+    "pc24_lint": "not applicable: wired bodies and new arms contain no x87 arithmetic",
+    "new_tests": 0
+  },
+  "identifier_mapping": {
+    "file": "config/wire_identifiers_high.json",
+    "native": "00a7a460",
+    "was": "memory_get_stats (transport, ambiguous with GameSoundRuntime::Impl method)",
+    "is": "on_out_of_sound_memory (existing complete discarded-locals wrapper)",
+    "body_modified": false
+  },
+  "pair": {
+    "mission": "USN04",
+    "frames_cap": 3000,
+    "mission_frames_cap": 2800,
+    "mission_frame_seconds": 0.05,
+    "press_start_frame": 30,
+    "console": "query session showed console sqz269 Active before exports",
+    "export_commit": "4af6acf10c08a9bb24d9c7d500280b9c6677cffe",
+    "exports_built": {
+      "off": "passed",
+      "on": "passed"
+    },
+    "serial_runs": true,
+    "receipts": [
+      {
+        "state": "off",
+        "log": "local/g1-w2-off_USN04.log",
+        "log_mtime_utc": "2026-11-02T06:12:20.746952+00:00",
+        "log_bytes": 5109441,
+        "completion": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=2999 presents_skipped=1 loop_finished=1 exit_code=0",
+        "launcher_exit": 0,
+        "slot": 0,
+        "core": 2,
+        "exe_sha256": "ea28b82aeb22fd01d3e64656efd5aeafb279ff3e7c6b23104e20897fd5b2ed51"
+      },
+      {
+        "state": "on",
+        "log": "local/g1-w2-on_USN04.log",
+        "log_mtime_utc": "2026-11-02T06:13:49.082356+00:00",
+        "log_bytes": 5109689,
+        "completion": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=1600x900 frames_presented=2999 presents_skipped=1 loop_finished=1 exit_code=0",
+        "launcher_exit": 0,
+        "slot": 0,
+        "core": 2,
+        "exe_sha256": "c359b039a8098625efd012c6b80ef4bc5b7a3b267dbb656aba4c2d3abcd83f0f"
+      }
+    ],
+    "diff_command": "python tools/pair_diff.py local/g1-w2-off_USN04.log local/g1-w2-on_USN04.log --limit 60 --json local/g1-w2-pair-diff.json",
+    "diff_exit": 1,
+    "verdict": "DIFFERENT, gameplay identical",
+    "native_changes": {
+      "added": [
+        [
+          [
+            "FrontEndScreen::construct",
+            "004f7180"
+          ],
+          "concrete",
+          49
+        ],
+        [
+          [
+            "MainMenuManager::close_screen",
+            "004b6e50"
+          ],
+          "concrete",
+          7
+        ]
+      ],
+      "removed": [],
+      "status": [
+        [
+          [
+            "FrontEndShell::probe_sound_memory",
+            "00a7a460"
+          ],
+          "UNIMPLEMENTED",
+          "concrete",
+          1,
+          1
+        ]
+      ],
+      "calls": [],
+      "noise": [
+        [
+          [
+            "PlatformLoopCallbacks::pretranslate",
+            "00bec1d8"
+          ],
+          10,
+          8
+        ]
+      ]
+    },
+    "gameplay_rows_moved": [],
+    "gameplay": [
+      [
+        "deaths",
+        "28",
+        "28"
+      ],
+      [
+        "hit records",
+        "380",
+        "380"
+      ],
+      [
+        "hull hits",
+        "276",
+        "276"
+      ],
+      [
+        "damage",
+        "6366.6",
+        "6366.6"
+      ],
+      [
+        "shots",
+        "5509",
+        "5509"
+      ],
+      [
+        "first hit",
+        "86.15 s",
+        "86.15 s"
+      ],
+      [
+        "torpedo-task releases",
+        "0 of 16",
+        "0 of 16"
+      ],
+      [
+        "dive-bomb-task releases",
+        "0 of 19",
+        "0 of 19"
+      ],
+      [
+        "torpedo drops",
+        "0",
+        "0"
+      ],
+      [
+        "plane water contacts",
+        "13",
+        "13"
+      ],
+      [
+        "controlled moved",
+        "Lexington-class01 2073.67",
+        "Lexington-class01 2073.67"
+      ],
+      [
+        "units",
+        "81",
+        "81"
+      ],
+      [
+        "mission end",
+        "none (Mission.EndMission never true)",
+        "none (Mission.EndMission never true)"
+      ],
+      [
+        "host methods concrete/unimplemented",
+        "1144 / 477",
+        "1147 / 476"
+      ]
+    ],
+    "summary_lines": [
+      867,
+      867
+    ],
+    "summary_changes": {
+      "added": [],
+      "removed": [],
+      "changed": []
+    },
+    "unit_table": "81 rows identical",
+    "plane_death_modes": "25 rows identical",
+    "death_rows": "0 rows: BSP_DEATH_TABLE was not enabled",
+    "other_differences": {
+      "only_off": 231,
+      "only_on": 231,
+      "matching_atlas_keys": 231,
+      "changed_fields": {
+        "append_slot": 231
+      },
+      "evidence": "All paired other-line keys match; only append_slot allocation-address fields differ. PlatformLoopCallbacks::pretranslate count is the tool-listed noise 10 -> 8."
+    }
+  },
+  "flip_proposal": "Propose kWireGoal1Chain4Bound=true after integration review: all three wired bodies reached (49/7/1 calls), gameplay and all 867 summary rows identical. Tree remains OFF.",
+  "evidence_boundary": "Reconstructed source wiring, Win32 OFF/ON builds and one finite BSP USN04 pair. No original binary ABI or full original-game behavior equivalence claim.",
+  "report_verification": "python tools/verify_report_calls.py reports/g1-w2.json: 3 call rows checked, 0 failed"
+}
