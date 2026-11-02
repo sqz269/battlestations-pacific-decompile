@@ -91,6 +91,8 @@
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
+#include "bsp/wire_goal1_chain20_switches.hpp"
+#include "bsp/landscape_lua_seg55_argon.hpp"
 
 extern "C" {
 #include "lauxlib.h"
@@ -8352,6 +8354,36 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
 
 namespace {
 
+// The typed getter consumes a table, not a preselected Ptr value. Copy every
+// string-keyed entry of the live plain table, without choosing a field here.
+// Metatable lookups cannot be represented by LuaTableEntry; retain the old host
+// path for those. Normal unit tables seed Ptr with their entity id (00928A00).
+std::optional<int> plain_entity_table_pointer_id(lua_State* state, GameHostLog& log) {
+    if (state == nullptr || ::lua_type(state, 1) != LUA_TTABLE) return 0;
+    if (::lua_getmetatable(state, 1) != 0) {
+        ::lua_pop(state, 1);
+        return std::nullopt;
+    }
+    std::vector<bsp::landscape_lua_seg55_argon::LuaTableEntry> entries;
+    ::lua_pushnil(state);
+    while (::lua_next(state, 1) != 0) {
+        if (::lua_type(state, -2) == LUA_TSTRING) {
+            std::size_t length = 0;
+            const char* key = ::lua_tolstring(state, -2, &length);
+            bsp::landscape_lua_seg55_argon::LuaTableEntry entry;
+            entry.key.assign(key, length);
+            entry.is_light_userdata = ::lua_type(state, -1) == LUA_TLIGHTUSERDATA;
+            entry.userdata_ptr = ::lua_touserdata(state, -1);
+            entries.push_back(std::move(entry));
+        }
+        ::lua_pop(state, 1);
+    }
+    void* const pointer =
+        bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20(entries);
+    log.implemented("MissionLua::plain_entity_table_pointer", "00888d20");
+    return static_cast<int>(reinterpret_cast<std::uintptr_t>(pointer));
+}
+
 // Part 7b. The registry record whose fused slot is `index`: the host's stand-in
 // for the image's IsKindOf(18h) (PlaneSquadronGen) test on the entity.
 const bsp::PlaneSquadronHostRecord* luawire_squadron_record(std::size_t index) {
@@ -8382,7 +8414,15 @@ int GameMissionLuaHost::run_set_visibility_008a13d0(lua_State* state, int argume
     ++summary_.visibility_calls;
     const bool visible = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
     GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
+    const int id = [&] {
+        // 00888D20 selects Ptr for SetVisibility; OFF keeps the host's ID lookup.
+        if constexpr (kWireGoal1Chain20Bound) {
+            const auto pointer_id = plain_entity_table_pointer_id(state, log_);
+            return pointer_id ? *pointer_id : air_ops_entity_id(state);
+        } else {
+            return air_ops_entity_id(state);
+        }
+    }();
     if (units == nullptr || id <= 0 || static_cast<std::size_t>(id) > units->count()) {
         ++summary_.visibility_unresolved;
         log_.notef("  SetVisibility 008a13d0: entity id %d has no units-host slot (packet "
@@ -9610,7 +9650,15 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
     static_cast<void>(argument_count);
     ++summary_.use_catapult_calls;
     GameUnitsHost* units = units_hooks_;
-    const int id = air_ops_entity_id(state);
+    const int id = [&] {
+        // 00888D20 selects Ptr for ShipUseCatapult; OFF keeps the host's ID lookup.
+        if constexpr (kWireGoal1Chain20Bound) {
+            const auto pointer_id = plain_entity_table_pointer_id(state, log_);
+            return pointer_id ? *pointer_id : air_ops_entity_id(state);
+        } else {
+            return air_ops_entity_id(state);
+        }
+    }();
     if (units == nullptr || script_orders_ == nullptr || id <= 0
         || static_cast<std::size_t>(id) > units->count()) {
         ++summary_.use_catapult_no_catapult;
