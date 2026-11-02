@@ -11,6 +11,13 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
+#include "bsp/gameplay_seg38_cc13.hpp"       // packet wire-units: 0071EA00
+#include "bsp/strike_release_ver_cc13.hpp"   // packet wire-units: 0099B6A0
+#include "bsp/band_006b_cc13.hpp"            // packet wire-units: 006BA620
+#include "bsp/session_message_dispatch.hpp"  // packet wire-units: 00780670
+#include "bsp/gameplay_seg61_62_cc13.hpp"    // packet wire-units: 009583C0, 009585B0
+#include "bsp/options_hardware_cc13.hpp"     // packet wire-units: 00977050, 009771E0, 00977370
 #include "bsp/cc13_x87_model.hpp"  // pc24w1-gunnery-2
 #include "bsp/pc24_gunnery_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -3792,7 +3799,15 @@ struct GameUnitsHost::Impl {
     // is exactly mass * 10, which is what cancels 00C41550's gravity * dt. The
     // two belong to the same step and neither is correct alone.
     bsp::DynWorldStepConstants physics_world{
-        bsp::dyn_world_step_constants(bsp::dyn_world_settings_game())};
+        bsp::dyn_world_step_constants([] {
+            // ON 00C41AD0 from 00C420E0: dyn_world_construct_00c41ad0 over 004DDB90's descriptor,
+            // spelled at the host; OFF keeps dyn_world_settings_game(), the same composition.
+            if constexpr (kWireUnitsHostBound) {
+                return bsp::dyn_world_construct_00c41ad0(bsp::dyn_world_descriptor_004ddb90());
+            } else {
+                return bsp::dyn_world_settings_game();
+            }
+        }())};
 
     // The notes are logged once per kind, not once per unit tick.
     bool logged_ocean{false};
@@ -13576,6 +13591,40 @@ public:
     // step, not after 00825F20's motion update; the warnings 00977050/009771E0/
     // 00977370 are logged, not reported; the settings are the installed
     // shipglobals.lua values (SubmarineDepthSettings' defaults).
+    // Packet wire-units: the WarningReportHost 00977050 / 009771E0 / 00977370 report through.
+    // LABELLED: this host has no warning manager, so no +24h lock, +D0h never suppresses and the
+    // +D4h map never holds a byte; the local slot is kLocalPlayerSlot; the entity's +5Ch is set
+    // (a live unit), +5Dh is unit_torn_down_005d, +5Eh/+60h read clear; 00974150 is a log line.
+    struct SubmarineWarningReportBinding final : bsp::WarningReportHost {
+        GameUnitsHost::Impl& host;
+        const GameUnitSlot& unit;
+        SubmarineWarningReportBinding(GameUnitsHost::Impl& h, const GameUnitSlot& u)
+            : host(h), unit(u) {}
+        void lock_24() override {}
+        void unlock_24() noexcept override {}
+        bool suppressed_d0() override { return false; }
+        std::int32_t local_slot_18ec() override { return GameUnitsHost::Impl::kLocalPlayerSlot; }
+        float mission_clock_f876a4() override {
+            return static_cast<float>(host.summary.simulated_seconds);
+        }
+        bsp::WarningEntityFlags entity_flags(bsp::WarningEntity) override {
+            bsp::WarningEntityFlags f;
+            f.present_5c = true;
+            f.flag_5d = host.unit_torn_down_005d(unit.process_index);
+            return f;
+        }
+        bool entity_suppressed_0077edf0(bsp::WarningEntity) override { return false; }
+        bool is_player_controlled_00965810(bsp::WarningEntity) override {
+            return host.is_controlled(unit);
+        }
+        bool is_kind_5c(bsp::WarningEntity, std::int32_t) override { return false; }  // unread: no excluded kind
+        void report_entity_warning_00974150(bsp::WarningEntity, std::string_view id) override {
+            host.log.notef("submarine warning: unit=%s id=%.*s t=%.2f (00974150, packet wire-units)",
+                unit.row.name.c_str(), static_cast<int>(id.size()), id.data(),
+                static_cast<double>(host.summary.simulated_seconds));
+        }
+    };
+
     void run_submarine_air_and_crush(float dt, bool dead) {
         const bsp::SubmarineDepthSettings settings{};
         const float hull_y = slot_.motion.position[1];
@@ -13584,6 +13633,18 @@ public:
         const bool was_need = slot_.sub_air.need_air;
         slot_.sub_air = air.state;
         owner_.done("SubmarineUnit::air_step", 0x00855250u);
+        // ON 009771E0 at 0085533B / 00977050 at 00855375: report_submarine_air_critical_009771e0 or
+        // report_submarine_air_low_00977050 through SubmarineWarningReportBinding; OFF only logs.
+        if constexpr (kWireUnitsHostBound) {
+            if (air.warning != bsp::SubmarineAirWarning::none) {
+                SubmarineWarningReportBinding reports(owner_, slot_);
+                if (air.warning == bsp::SubmarineAirWarning::critical) {
+                    bsp::report_submarine_air_critical_009771e0(reports, &slot_);
+                } else {
+                    bsp::report_submarine_air_low_00977050(reports, &slot_);
+                }
+            }
+        }
         if (air.warning != bsp::SubmarineAirWarning::none || was_need != air.state.need_air) {
             owner_.log.notef("submarine air: unit=%s air=%.3f need_air=%d warning=%s y=%.2f "
                 "(packet cc9_submarine_air)", slot_.row.name.c_str(),
@@ -13606,6 +13667,14 @@ public:
             slot_.sub_crush_1284, dt, hull_y, settings);
         slot_.sub_crush_1284 = crush.accumulator;
         owner_.done("SubmarineUnit::crush_step", 0x008551c0u);
+        // ON 00977370 at 0085523C: report_submarine_depth_damage_00977370 through
+        // SubmarineWarningReportBinding when 008551C0 reports; OFF reports nothing.
+        if constexpr (kWireUnitsHostBound) {
+            if (crush.report) {
+                SubmarineWarningReportBinding reports(owner_, slot_);
+                bsp::report_submarine_depth_damage_00977370(reports, &slot_);
+            }
+        }
         if (crush.damage > 0.0f && owner_.gunnery != nullptr) {
             // vtable[1ACh] of 00D0BF80 is 0095DA00 (the dword at 00D0C12C).
             owner_.gunnery->apply_script_damage_0095da00(slot_.process_index, crush.damage);
@@ -19228,12 +19297,30 @@ void GameUnitsHost::Impl::ground_state_from_locked_007ca3f0(GameUnitSlot& p, Lan
                                                             bool five) {
     plane_site_probe_007c5ac0(p, -1.0f);
     if (p.plane_contact_deck_bf4 == 0) return;   // 007CA4xx: the explosion arm, not reached
-    const bool state_changed = p.plane_control_mode_900 != (five ? 5 : 4);  // 007C144C
+    bool state_changed;
+    // ON 007C1430 at 007CA4D3: set_flight_state_007c1430(4 + flag) applied to +900h/+C04h/
+    // +904h/+C18h (nothing stored when unchanged); OFF keeps the host's unconditional stores.
+    if constexpr (kWireUnitsHostBound) {
+        bsp::PlaneSetStateInputs si;
+        si.requested_state = five ? 5 : 4;
+        si.current_state = p.plane_control_mode_900;
+        si.airborne_clock = p.plane_airborne_908;
+        si.class_min_water_spd = p.plane_min_water_spd_198;
+        si.landed_after_flight = p.plane_landed_904;
+        const bsp::PlaneSetStateEffects fx = bsp::set_flight_state_007c1430(si);
+        state_changed = fx.changed;
+        p.plane_control_mode_900 = fx.state;
+        if (fx.write_state_change_stamp) p.plane_site_timer_c04 = -1.0f;
+        if (fx.write_landed_after_flight) p.plane_landed_904 = fx.landed_after_flight;
+        if (fx.write_state_enter_marker) p.plane_c18 = 3;
+    } else {
+    state_changed = p.plane_control_mode_900 != (five ? 5 : 4);  // 007C144C
     p.plane_control_mode_900 = five ? 5 : 4;                            // 007C1430
     p.plane_site_timer_c04 = -1.0f;
     if (p.plane_min_water_spd_198 != 0.0f) {
         p.plane_landed_904 = p.plane_airborne_908 > 5.0f;
         p.plane_c18 = 3;
+    }
     }
     if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
         if (state_changed) flight_state_notify_007c11e0(p);             // 007C14C5
@@ -19429,6 +19516,18 @@ void GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0(GameUnitSlot& p) {
 //   007CD05C: otherwise 007CA3F0(0), the host's ground_state_from_locked_007ca3f0
 //     (with no holder it stops after the probe, as that function does).
 void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
+    // ON 00780670 from 0076C600: gate_queued_message_00780670 on the C3h (a generic kind, the
+    // sender is this live plane, due this tick; LABELLED host inputs); OFF delivers unconditionally.
+    if constexpr (kWireUnitsHostBound) {
+        bsp::QueuedMessageInputs q;
+        q.game_state = bsp::kDispatchGameState;
+        q.sender_resolved = true;
+        q.entity_ready = true;
+        q.tick_delta = 0;
+        if (bsp::gate_queued_message_00780670(q).route != bsp::QueuedMessageRoute::kEntityGeneric) {
+            return;  // kept queued: +904h stays pending for the next delivery
+        }
+    }
     p.takeoff_notify_c3h_pending = false;
     const std::int32_t sent = p.takeoff_notify_c3h_current;
     if (sent == 7) {
@@ -19933,10 +20032,17 @@ float GameUnitsHost::Impl::plane_forward_speed_007d99c0(const GameUnitSlot& p,
     const bsp::OceanVec3& pv = o->motion.linear_velocity;
     const float* const r2 = p.motion.pose_row2;
     const float z = r2[0] * pv.x + r2[1] * pv.y + r2[2] * pv.z;
+    // ON 007D99C0: flight_forward_speed_007d99c0(ctl+44h, parent, local z) with the host's z;
+    // OFF keeps the host's inline (0.1 | 0.8) term.
+    if constexpr (kWireUnitsHostBound) {
+        ++forward_speed_deck_terms;
+        return bsp::gameplay_seg48_cc13::flight_forward_speed_007d99c0(ctl_44, true, z);
+    } else {
     const float c = z >= 0.0f ? 0.1f : 0.8f;
     const float t = static_cast<float>(static_cast<double>(z) * static_cast<double>(c));
     ++forward_speed_deck_terms;
     return static_cast<float>(static_cast<double>(t) + static_cast<double>(ctl_44));
+    }
 }
 
 // 007C71E0 (007C71E0-007C742F), the re-parent arm (007C726C-007C72C5) and the
@@ -20017,10 +20123,15 @@ std::array<float, 3> GameUnitsHost::Impl::landing_t_world_006bca40(const Landing
 // airfield owner, x 0.3 (00CE3DC8) when the owner answers IsKindOf(9)
 // (006BA62F-006BA63D); both through a float store.
 float GameUnitsHost::Impl::landing_run_length_006ba620(const LandingDeck& d) const {
+    // ON 006BA620: air_ops_approach_setback_006ba620(holder+B4h, IsKindOf(9)); OFF keeps the host copy below.
+    if constexpr (kWireUnitsHostBound) {
+        return bsp::band_006b_cc13::air_ops_approach_setback_006ba620(d.length_b4, d.mother_ship);
+    } else {
     if (d.mother_ship) {
         return static_cast<float>(static_cast<double>(d.length_b4) * 0.30000001192092896);
     }
     return static_cast<float>(static_cast<double>(d.length_b4) * 0.4000000059604645);
+    }
 }
 
 float GameUnitsHost::Impl::landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const {
@@ -21057,7 +21168,16 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                     }
                     end = !inside;
                 }
-            } else if (unit_is_kind_of(t, 0x0F) && leash_world.outside_map_0071c4f0(t)) {
+            } else if ([&] {
+                           // ON 0071EA00 at 009F8420: entity_as_kind_0f_0071ea00 on the live target;
+                           // OFF keeps the host's unit_is_kind_of(t, 0Fh).
+                           if constexpr (kWireUnitsHostBound) {
+                               return bsp::gameplay_seg38_cc13::entity_as_kind_0f_0071ea00(
+                                   true, unit_is_kind_of(t, 0x0F));
+                           } else {
+                               return unit_is_kind_of(t, 0x0F);
+                           }
+                       }() && leash_world.outside_map_0071c4f0(t)) {
                 // 009F841E..009F8463: 0071EA00, a plane outside the map whose +9D4h
                 // squadron's command (vt+174h) is retreat. LABELLED: the squadron's
                 // command is its flight leader's.
@@ -25383,7 +25503,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
                             advance_pose_0085e4d0(step, ground, state.forward_speed);
                         }
+                        // ON 007D80C0 at 007DC81D (dt = the core law's step, [ESP+58h]):
+                        // flight_controller_update_rate_007d80c0 over ctl+44h, +7Ch kept (+78h and
+                        // +54h/+60h have no host field); OFF keeps the host's direct +7Ch store.
+                        if constexpr (kWireUnitsHostBound) {
+                            bsp::band_007a_cc13::FlightControllerRateFields rf{};
+                            rf.f44 = state.forward_speed;
+                            rf.previous_7c = unit_.plane_forward_speed_7c;
+                            static constexpr float kZeroVector_00f87574[3] = {0.0f, 0.0f, 0.0f};
+                            bsp::band_007a_cc13::flight_controller_update_rate_007d80c0(
+                                rf, step, kZeroVector_00f87574);
+                            unit_.plane_forward_speed_7c = rf.previous_7c;
+                        } else {
                         unit_.plane_forward_speed_7c = state.forward_speed;   // 007D80C0
+                        }
                         unit_.plane_pose_ground_prev = ground;
                     }
 
@@ -36977,8 +37110,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             arm.has_squadron_2fc = bsp::plane_squadron_registry()
                                 .find_by_member_unit(unit_.process_index) != nullptr;
                             arm.unit_free_flight_72c = unit_.plane_control_mode_900 == 7;
-                            const bsp::TorpedoArmResult ar =
-                                bsp::torpedo_arm_drop_009d49a0(arm);
+                            const bsp::TorpedoArmResult ar = [&] {
+                                bsp::TorpedoArmResult r = bsp::torpedo_arm_drop_009d49a0(arm);
+                                // ON 0099B6A0 via 009D49DA's tail jump: bot_task_request_release_base_0099b6a0
+                                // decides the 0099B6CD release and AL; OFF keeps torpedo_arm_drop's inline copy.
+                                if constexpr (kWireUnitsHostBound) {
+                                    if (r.fell_through_to_0099b6a0) {
+                                        const bsp::BaseReleaseRequestResult base =
+                                            bsp::bot_task_request_release_base_0099b6a0(
+                                                arm.has_squadron_2fc, arm.unit_free_flight_72c);
+                                        r.release_007bbba0 = base.release_007bbba0;
+                                        r.consumed = base.returned_true;
+                                    }
+                                }
+                                return r;
+                            }();
                             if (ar.fell_through_to_0099b6a0) {   // sw3c reach, log only
                                 bsp::plane_task_reach_count(
                                     bsp::g_plane_task_reach_sw3.torpedo_fallthrough,
@@ -41530,8 +41676,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // squadron's +404h through 0071E430; recorded, not modelled.
                     void takeoff_altitude_floor_009cfa80() {
                         const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+                        // ON 0041DF40 at 007F1DC5 (squadron+34Ch): select_layer_by_slope_0041df40(1.5, 1)
+                        // on the registry; OFF keeps the registry's squadron_layer_34c().
+                        const int layer_34c = [&] {
+                            if constexpr (kWireUnitsHostBound) {
+                                return reg.select_layer_by_slope_0041df40(1.5f, true);
+                            } else {
+                                return reg.squadron_layer_34c();
+                            }
+                        }();
                         const bsp::TerrainGridLayerRecord* layer =
-                            reg.layer(reg.squadron_layer_34c());
+                            reg.layer(layer_34c);
                         const float h = layer != nullptr ? avoid_zone_sample_0041bc20(*layer,
                             unit_.motion.position[0], unit_.motion.position[2]) : 0.0f;
                         const float m = unit_.takeoff_margin_30;
@@ -45322,7 +45477,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // free-flight step 007DC830; otherwise the core law in mode 1
                         // (007DCD34, second argument 1.0 since the state is not 2).
                         const bool on_path = unit_.plane_control_mode_900 == 5;
-                        if (!unit_.plane_ground_contact_bf8 && !on_path) {
+                        bool free_step;
+                        // ON 007DCCF0 at 007CC15E: ground_roll_law_007dccf0 picks the arm (+BF8h,
+                        // +900h, flag = 007CC155's SETZ +900h == 2); its ctl+80h..8Ch frame is not carried, the
+                        // host's core law keeps its own. OFF keeps the host's inline test.
+                        if constexpr (kWireUnitsHostBound) {
+                            bsp::PlaneGroundLawInputs gi;
+                            gi.ground_contact = unit_.plane_ground_contact_bf8;
+                            gi.flight_state = unit_.plane_control_mode_900;
+                            gi.state_is_locked = unit_.plane_control_mode_900 == 2;
+                            free_step = !bsp::ground_roll_law_007dccf0(gi).took_ground_arm;
+                        } else {
+                        free_step = !unit_.plane_ground_contact_bf8 && !on_path;
+                        }
+                        if (free_step) {
                             ++unit_.ground_free_steps;
                             if (unit_.ground_free_steps == 1) {
                                 // Diagnostic: where a landed plane loses contact.
@@ -46796,7 +46964,18 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
         at[2] = st.z;
         station = true;
     }
+    // ON 009583C0: unit_set_world_position_009583c0's plan, +A4h..+ACh applied (game+1FE4h = 0,
+    // single player, LABELLED, so no relocate broadcast; +6A4h has no host field); OFF keeps the store.
+    if constexpr (kWireUnitsHostBound) {
+        const bsp::gameplay_seg61_62_cc13::PoseSetPlan plan =
+            bsp::gameplay_seg61_62_cc13::unit_set_world_position_009583c0(
+                unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0F), 0, 0);
+        if (plan.set_translation_a4) {
+            for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];
+        }
+    } else {
     for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
+    }
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));
@@ -46900,11 +47079,26 @@ bool GameUnitsHost::put_rel_to_00819840(std::size_t index, std::size_t ref, cons
         rows[2][lane] = rm.pose_row2[lane];
     }
     GameUnitSlot& slot = *host.slots[index];
+    // ON 009585B0: unit_set_world_matrix_009585b0's plan, the 004134F0 copy into +74h applied to the
+    // host's pose rows and position (+6A4h has no host field); OFF keeps the unconditional copy.
+    if constexpr (kWireUnitsHostBound) {
+        const bsp::gameplay_seg61_62_cc13::PoseSetPlan plan =
+            bsp::gameplay_seg61_62_cc13::unit_set_world_matrix_009585b0();
+        if (plan.copy_matrix_004134f0) {
+            for (int lane = 0; lane < 3; ++lane) {
+                slot.motion.pose_row0[lane] = rows[0][lane];
+                slot.motion.pose_row1[lane] = rows[1][lane];
+                slot.motion.pose_row2[lane] = rows[2][lane];
+                slot.motion.position[lane] = at[lane];
+            }
+        }
+    } else {
     for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
         slot.motion.pose_row0[lane] = rows[0][lane];
         slot.motion.pose_row1[lane] = rows[1][lane];
         slot.motion.pose_row2[lane] = rows[2][lane];
         slot.motion.position[lane] = at[lane];
+    }
     }
     Impl::publish_pose(slot);
     const float heading = static_cast<float>(
