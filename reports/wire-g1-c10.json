@@ -1,0 +1,195 @@
+{
+  "packet": "g1-w2",
+  "goal": 1,
+  "chain": 10,
+  "run": 25,
+  "harness": "codex",
+  "host": "src/game_hosts_commands.cpp",
+  "branch": "agent/g1-w2",
+  "switch": "kWireGoal1Chain10Bound",
+  "switch_value": false,
+  "code_commit": "bcfec03140c52d640c5c2e0c61dd81b5dd2fa9b4",
+  "wired_total_before": 8771,
+  "wired_total_after": 8773,
+  "readiness_changed_rows": [
+    "0071e2e0",
+    "007216d0"
+  ],
+  "validation": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "clean_committed_snapshot": true
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain10Bound",
+      "exit_code": 0,
+      "distinct_diagnostics": 0,
+      "log": "local/off_switch_on_build.log"
+    },
+    "off_source_check": "After removing the new include and unwrapping both OFF arms, game_hosts_commands.cpp equals its parent source byte for byte with normalized line endings.",
+    "readiness_measurement": "Measured after the ON build check, source restoration and a plain OFF build. Only the two listed rows changed state.",
+    "pc24_lint": "Not applicable: both ON arms and their reconstructed callees use integer/registry logic, without x87 arithmetic.",
+    "no_new_bodies_or_ledger_rows": true
+  },
+  "rows": [
+    {
+      "native": "0071db90",
+      "address": "00720617",
+      "function": "00720450",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::copy_director_state_00720450",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The command host retains command-unit records, not the live class-1Ch world list at [[game+19CCh]+16Ch] or its pose-refresh owner. The existing copy site explicitly keeps land commands. Filtering all command units would substitute inferred list membership/order for the real world list.",
+      "evidence": "0071DB90 walks list16C and refreshes each entity pose; GameDirector copy site documents the missing list. The live world-list storage is owned by GameUnitsHost."
+    },
+    {
+      "native": "0071dc80",
+      "address": "007207c3",
+      "function": "007207c0",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::Impl::apply_user_path_point_007207c0",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The last moveonpath target's resolved entity+170h component kind is not retained by this host. The typed body's optional resolved_kind cannot be supplied faithfully; GameCommandUnit::class_id is a different contract. Passing null or a guessed 12h would replace missing state with a constant.",
+      "evidence": "0071DC80 resolves the target and calls its +170h component vtable[0], comparing with 12h. The host explicitly labels authored-Path object type unresolved."
+    },
+    {
+      "native": "0071e2e0",
+      "address": "0071e7d4",
+      "function": "0071e6c0",
+      "host_site": "src/game_hosts_commands.cpp:DirectorBinding::echo_command",
+      "status": "wired",
+      "reached": 0,
+      "binding": "echo_clear_command_0071e2e0 receives GameDirector::override_stage by reference and session_mode_1fe4(). Its returned decision controls the existing clear-message construction/routing; it replaces the host's stage/session gate.",
+      "live_path": "director_push_command_slot_0071e6c0 calls echo_command for a category-1/2 push with an override. kAttackPushEndsOverrideBound and kAutoTargetOverrideBound are true; kDirectorOverrideLayerBound is therefore true.",
+      "abi_evidence": "Callee 0071E2F9 MOV ESI,ECX; +50h is read/raised to 2 and game+1FE4h compared with 2; RET at 0071E347 has no stack arguments. Caller EDI=ECX at 0071E6C1, MOV ECX,EDI at 0071E7D2, CALL at 0071E7D4. One original caller."
+    },
+    {
+      "native": "0071fb90",
+      "address": "00720b36",
+      "function": "00720850",
+      "host_site": "src/game_hosts_commands.cpp:QueueClearBinding::create_path_object",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The host returns zero and does not retain the ten slot path-object allocations and lifetime the constructor needs. Its slot-0 cursor/point projection is not that object. A temporary typed constructor would only supply constant defaults while discarding the owner/object state.",
+      "evidence": "0071FB90 constructs a 50h path object including two owner fields and its point-vector storage. GameDirector retains only a reduced slot-0 path model; QueueClearBinding::create_path_object records and returns 0."
+    },
+    {
+      "native": "007216d0",
+      "address": "00721b4f",
+      "function": "00721a40",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::Impl::deliver_loopback (SetCommand)",
+      "status": "wired",
+      "reached": 199,
+      "binding": "command_from_ordinal_007216d0 searches the actual queued NativeSessionMessage92::command_21 byte over ordinals projected from the host's kEntityOrderCommandClasses registry in walk order. Its selected index supplies pending_command, replacing entity_order_command_class_by_ordinal; the body is not given pending_command.",
+      "live_path": "The normal queued SETCMD delivery sets set_message_bound=true under kSetCommandMessageCc13Bound=true; kSetCommandQueueDelayBound=true. The returned command is consumed by gameunit_apply_set_command_00721a40.",
+      "abi_evidence": "Callee MOV CL,[ECX+21h] at 007216D0, first-match registry walk and FFh sentinel, RET without stack cleanup at 007216F5/007216F8. Both original sites 00721B4F and 00721B74 set ECX=ESI (message loaded at 00721A78); the pushed descriptor remains for the following setter. Both flag arms use the same ordinal contract."
+    },
+    {
+      "native": "00780670",
+      "address": "0076c65d",
+      "function": "0076c600",
+      "host_site": "src/game_hosts_commands.cpp:EntityIssueBinding::route_message",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The command host's loopback keeps no native game+5D4h state, message post tick/current tick domain, or sender+BDh ready flag. A QueuedMessageInputs call here would supply invented gate inputs rather than replace the native dispatch gate over real host state.",
+      "evidence": "00780670 requires game state 0Dh, compares msg+0Ch with 00F876B0 and tests resolved sender+BDh. The route site only records the native gate before the host loopback delivery."
+    },
+    {
+      "native": "007b22a0",
+      "address": "0071f6db",
+      "function": "0071f600",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::build_path_object_0071f600",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The host owns a world-point snapshot and cursor, not the authored entity's PathComponentState/path-interface identity required by AuthoredPathSource. Allocating a temporary wrapper over a fabricated component would only round-trip the same points and would not replace an object-backed source used by the host.",
+      "evidence": "007B22A0 allocates and stores the real scene_path pointer in AuthoredPathSource::scene_path_08; build_path_object_0071f600 works directly on pending_path_points."
+    }
+  ],
+  "pair": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "press_start_frame": 30,
+    "console_session": "query session: console sqz269 ID 1 Active",
+    "snapshot_commit": "bcfec03140c52d640c5c2e0c61dd81b5dd2fa9b4",
+    "off_tree_clean_at_build_and_run": true,
+    "off": {
+      "executable": "build/win32/Release/bsp_game.exe",
+      "log": "local/g1-w2-off_USN04.log",
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "sha256": "40626DF65E4EBDBD4ECC4527D5876B501757E04CE7755A215D64FCF836BCCD63"
+    },
+    "on": {
+      "executable": "local/g1-w2-on/build/win32/Release/bsp_game.exe",
+      "log": "local/g1-w2-on_USN04.log",
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "sha256": "5BC16B2F8A85245EE0A15D9A5BBCDB255C35CBA9962F360B4AF38B0B918D5BA3",
+      "export_log": "local/output/g1-w2-on-export.txt"
+    },
+    "pair_diff": {
+      "command": "python tools/pair_diff.py local/g1-w2-off_USN04.log local/g1-w2-on_USN04.log --limit 60",
+      "exit_code": 1,
+      "log": "local/output/wire-g1-c10-pair-diff.txt",
+      "verdict": "DIFFERENT, gameplay identical",
+      "gameplay_rows_moved": [],
+      "unit_table_rows_moved": [],
+      "plane_death_mode_rows_moved": [],
+      "gameplay": {
+        "deaths": 28,
+        "hit_records": 380,
+        "hull_hits": 276,
+        "damage": 6366.6,
+        "shots": 5509,
+        "first_hit_seconds": 86.15,
+        "torpedo_task_releases": "0 of 16",
+        "dive_bomb_task_releases": "0 of 19",
+        "torpedo_drops": 0,
+        "plane_water_contacts": 14,
+        "controlled_movement_metres": 2235.17,
+        "units": 81,
+        "mission_end": "none"
+      },
+      "native_table_rows_before": 1624,
+      "native_table_rows_after": 1624,
+      "native_rows_added": [],
+      "native_rows_removed": [],
+      "native_status_rows_moved": [],
+      "native_count_rows_moved": [],
+      "native_standin_or_unimplemented_to_concrete": [],
+      "native_movement_note": "Both host sites were already logged concrete in OFF; this wiring replaces their host logic with the existing reconstructed bodies, so no native-table status/count movement was expected.",
+      "summary_lines_before": 867,
+      "summary_lines_after": 867,
+      "summary_lines_changed": 0,
+      "other_lines_only_off": 231,
+      "other_lines_only_on": 231,
+      "diagnostic_analysis": "All 231 residual diagnostic differences disappear after replacing only decimal append_slot values with 0 in local copies of each log. Original logs are preserved. The normalized pair_diff exits 0, identical apart from noise, with 0 residual OTHER lines.",
+      "normalized_log": "local/output/wire-g1-c10-pair-diff-normalized.txt"
+    },
+    "reached": {
+      "0071e2e0": 0,
+      "007216d0": 199
+    },
+    "reach_evidence": [
+      "ON log line 37447: GameUnitMessage::command_from_ordinal 007216d0 concrete calls=199.",
+      "ON log line 36058: director setcmd message bound=1 round_trips=199 command_changed=0.",
+      "ON log line 36062: director override push-end weapon_pushes=35 with_override=0 echoes=0 clears=0; no 0071e2e0 native-table row."
+    ],
+    "limitation": "USN04 exercised the ordinal search but not echo_clear_command_0071e2e0. The pair establishes behavior equality for this reconstructed mission run; it does not establish original-game ABI compatibility or full-game parity."
+  },
+  "flip_proposal": {
+    "value": false,
+    "recommendation": "Keep kWireGoal1Chain10Bound OFF pending a pair that exercises 0071e2e0. The ordinal row passed the USN04 pair with 199 calls and no gameplay/native/summary movement."
+  },
+  "report_call_verification": {
+    "command": "python tools/verify_report_calls.py reports/wire-g1-c10.json",
+    "status": "passed",
+    "call_rows_checked": 7,
+    "failed": 0
+  }
+}
