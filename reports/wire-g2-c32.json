@@ -1,0 +1,274 @@
+{
+  "goal": 2,
+  "chain": 32,
+  "run": 76,
+  "harness": "codex",
+  "packet": "g2-w3",
+  "host_file": "src/game_hosts_units.cpp",
+  "branch": "agent/g2-w3",
+  "code_commit": "22535bf04cb12c7b111ea78b37c8cacc7e927316",
+  "switch": "kWireGoal2Chain32Bound",
+  "switch_default": false,
+  "wired_before": 8786,
+  "wired_after": 8787,
+  "wired_delta": 1,
+  "rows": [
+    {
+      "native": "00469610",
+      "address": "004e6bab",
+      "function": "004e6b30",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::create_units",
+      "status": "skipped",
+      "reason": "Native database+14Ch command-list and native-string-pool lifetime are not owned by this host. create_units only copies scene-produced command/target strings; the deferred queue/drain belongs to scene instantiation, which has already run. A shadow queue here would duplicate scheduling without replacing its native consumer.",
+      "reach": "live",
+      "reached": 19
+    },
+    {
+      "native": "00653390",
+      "address": "00653823",
+      "function": "00653820",
+      "host_site": "src/game_hosts_units.cpp: unbound Seg30 host adapter::observer_member_cleanup_00653390",
+      "status": "skipped",
+      "reason": "Static reach: only an aborting adapter override exists here; no live member-cleanup call, actual NativeObserverOwnerStorage, endpoint cell or NativeObserverLifetime is available. Cannot construct the required observer owner from this stand-in.",
+      "reach": "static",
+      "reached": 0
+    },
+    {
+      "native": "006c0b50",
+      "address": "006c54ef",
+      "function": "006c54c0",
+      "host_site": "src/game_hosts_units.cpp: landing binding::land_request_006c54c0",
+      "status": "skipped",
+      "reason": "The landing sequencer uses semantic LandingDeck queue records. No actual NativeLandingQueueBlockStorage or incoming native observer object, lock/owner publication, event-4 registration and hex84 session-message provider is owned here. Cannot feed the complete body from the semantic deck projection.",
+      "reach": "live",
+      "reached": 0
+    },
+    {
+      "native": "006ca730",
+      "address": "0089fc54",
+      "function": "0089faf0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::add_base_unsupported_006ca730",
+      "status": "skipped",
+      "reason": "Hand-checked nodef row: an existing air_ops_block_push_b8_006ca730 body delegates to native list_push_back on block+B4h. This host only owns a set of deck/squadron names, not the native block+B8h sentinel, allocated nodes or size/lifetime owner consumed by that body.",
+      "reach": "live",
+      "reached": 0
+    },
+    {
+      "native": "00741140",
+      "address": "008959a3",
+      "function": "00895850",
+      "host_site": "src/game_hosts_units.cpp:16781 GameUnitsHost::set_land_convoy_speed_368",
+      "status": "wired",
+      "reason": "Static reach: Lua LandConvoySetSpeed dispatch is enabled, as are convoy member/motion construction. The existing setter now replaces the direct formation.speed store with the actual Lua speed argument; its output updates the formation consumed by convoy movement. The typed view contains only a field the body writes; no previous host speed is passed back.",
+      "reach": "static",
+      "reached": 0,
+      "evidence": [
+        "00741140 MOVSS XMM0,[ESP+4]; MOVSS [ECX+368h],XMM0; RET 4.",
+        "0089594F resolves convoy, 00895958 MOV ESI,EAX, 00895980 reads Lua numeric argument, 0089599E MOV ECX,ESI; 008959A3 CALL 00741140.",
+        "kLuaLandConvoySetSpeedBound=true; kLandConvoyMembersBound=true; kLandConvoyMovementBound=true; kLandConvoyBodiesBound=true."
+      ]
+    },
+    {
+      "native": "007ddea0",
+      "address": "007c13b8",
+      "function": "007c11e0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "status": "skipped",
+      "reason": "Plane FX object could not be built: 007CD520 constructs it and 007EC5A0 fills it from real visual-class engine/effect/sound owners. Those native owners/providers are absent here. A standalone +40h timer would have no retained FX-step consumer and would only turn a log into a scratch write.",
+      "reach": "live",
+      "reached": 24
+    },
+    {
+      "native": "007eb380",
+      "address": "007c13c5",
+      "function": "007c11e0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "status": "skipped",
+      "reason": "Plane FX object could not be built: the host has no native class-produced effect/sound holders or the game_00e188a8/sound_00f8bbd8 publications, tuning image and transform/effect callbacks required by PlaneFxStepGlobals/PlaneFxStepHost. Existing 007CD520 and 007EC5A0 bodies were located; no replacement body or default-backed scratch component was introduced.",
+      "reach": "live",
+      "reached": 24
+    },
+    {
+      "native": "007ef010",
+      "address": "007f1fae",
+      "function": "007f1f00",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl base-launch task tick",
+      "status": "skipped",
+      "reason": "Readiness selects ledger_only_007ef010 (nodef); no callable reconstructed body exists. The current host already performs member selection and ready-site publication inline. Extracting that logic would be a new reconstruction, outside this wiring chain.",
+      "reach": "live",
+      "reached": 12
+    },
+    {
+      "native": "0092bd30",
+      "address": "00819889",
+      "function": "00819880",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost kill-depth path and kill_and_remove_00814595",
+      "status": "skipped",
+      "reason": "No native controller+2Ch hull-body or physics shape chain (shape+208h, fields+30h/+2Ch) is retained. The host motion/hull geometry projection does not expose actual DYN physics first-shape/set-field providers. A null hull would only take the early return and replace no behavior.",
+      "reach": "live",
+      "reached": 0
+    },
+    {
+      "native": "009565a0",
+      "address": "007b8b02",
+      "function": "007b8ae0",
+      "host_site": "src/game_hosts_units.cpp: LandConvoy construction adapter::member_set_skill_vt128",
+      "status": "skipped",
+      "reason": "Static reach: the host lacks the actual +6DCh weapon-director object and child kind20h/vtable[1C4h] skill fan-out. Passing absent objects and an empty child projection would suppress required body effects rather than replace the skill application.",
+      "reach": "static",
+      "reached": 0
+    },
+    {
+      "native": "0098b370",
+      "address": "0042f4dc",
+      "function": "0042f0c0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost collision/spatial stand-ins",
+      "status": "skipped",
+      "reason": "No image spatial-index owner or real segment-buffer/query-result transport for 0098ADD0 exists in this host. Existing hull/terrain helpers are semantic projections and cannot initialize the native index from its actual producer.",
+      "reach": "live",
+      "reached": 12885
+    },
+    {
+      "native": "0099b650",
+      "address": "009b3add",
+      "function": "009b3900",
+      "host_site": "src/game_hosts_units.cpp: landing binding land geometry/owner publication",
+      "status": "skipped",
+      "reason": "The host explicitly records the owner store as not modelled. It has semantic unit/site indices, not the live plan+25Ch image field and native owner identity consumed by an existing task. A new scratch plan with only +25Ch would have no native consumer.",
+      "reach": "live",
+      "reached": 0
+    },
+    {
+      "native": "0099b6a0",
+      "host_site": "src/game_hosts_units.cpp: torpedo release-order offer path",
+      "status": "skipped",
+      "reason": "Static reach: OFF already executes equivalent base-release decisions inside torpedo_arm_drop_009d49a0, under kTorpedoArmFallthroughReleaseBound=true, using the same squadron/free-flight inputs. Calling the separate base helper afterward would repeat that work; replacing the shared body is outside host-only ownership. Native entry is a tail jump at 009D49DA, not a CALL.",
+      "reach": "static",
+      "reached": 0
+    },
+    {
+      "native": "009a7650",
+      "address": "009a79a9",
+      "function": "009a76e0",
+      "host_site": "src/game_hosts_units.cpp: dogfight target selection binding",
+      "status": "skipped",
+      "reason": "The host only retains a semantic target slot. The actual approach+A0h observer pair, target+B4h pointer, target reference+2Ch and pilot-rocket provider/lifetime are absent. These fields cannot be built from the host's target-index producer without native registry ownership.",
+      "reach": "live",
+      "reached": 13
+    },
+    {
+      "native": "009b3240",
+      "address": "009b41fd",
+      "function": "009b41c0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl land task installation",
+      "status": "skipped",
+      "reason": "No same-task native allocation/subobject identities, executable profile tables, actual owner+50h plane or complete base/composite/selected-state-entry providers exist here. NativeLandTaskConstructorView explicitly rejects sparse/zeroed BotTaskRecord substitutes; this host installs semantic task fields inline.",
+      "reach": "live",
+      "reached": 0
+    },
+    {
+      "native": "00b0d7b0",
+      "address": "004c0905",
+      "function": "004c0890",
+      "host_site": "src/game_hosts_units.cpp: SetControlledUnitBinding::publish_listener",
+      "status": "skipped",
+      "reason": "The host callback receives only a bool and driven_listener_handle returns false. It cannot obtain the actual listener pointer or renderer+1C0h/+30h root-list owner from their real producers; a fabricated null renderer/listener would replace no publication/invalidation work.",
+      "reach": "live",
+      "reached": 2
+    }
+  ],
+  "host_objects": [],
+  "host_object_decision": "No host object landed. The shared two-row candidate was the plane FX component; existing constructor 007CD520 and class initializer 007EC5A0 require unavailable native visual-class, effect/sound and game-tuning owners. The timer-only row would have no legitimate consumer without the step object.",
+  "verification": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests": "reconstructed_math and tool_tests passed (2/2)"
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain32Bound",
+      "exit_code": 0,
+      "distinct_diagnostics": 0,
+      "log": "local/off_switch_on_build.log"
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py",
+      "order": "Measured after ON check and final plain OFF build; 00741140 ready -> wired.",
+      "wired_before": 8786,
+      "wired_after": 8787
+    },
+    "live_site": "Static reach. run_land_convoy_native's dispatch uses kLuaLandConvoySetSpeedBound=true. The load/generate paths build the convoy motion state under kLandConvoyMembersBound=true and kLandConvoyMovementBound=true. No false switch gates the setter. kLandConvoyBodiesBound=true.",
+    "contract": "Single original caller 00895850. Setter RET4; ECX is the convoy returned by 00888D20 at 0089594F, saved in ESI at 00895958 and moved back to ECX at 0089599E. Lua numeric input from 00B66270 at 00895980 is rounded through the float stack cell and passed at 008959A0. Body only stores speed at convoy+368h.",
+    "off_arm": "Existing c.formation.speed = speed statement retained byte for byte in the else arm. New view construction, body call, copy-back and native-call logging only exist in the ON arm.",
+    "pc24_lint": "Not applicable: ON arm adds no x87 arithmetic; existing body is a MOVSS field store.",
+    "new_tests": "None; existing checks cover the unchanged build contract.",
+    "diff_review": "Reviewed the owned source diff before committing.",
+    "pair": {
+      "mission": "USN04",
+      "frames": 3200,
+      "mission_frames": 3000,
+      "mission_frame_seconds": 0.05,
+      "console_session": "console sqz269 session 1 Active",
+      "off_log": "local/g2-w3-off_USN04.log",
+      "on_log": "local/g2-w3-on_USN04.log",
+      "on_export_log": "local/output/g2-w3-on-export.txt",
+      "on_export_exit_code": 0,
+      "off_exit_code": 0,
+      "on_exit_code": 0,
+      "off_loop_finished": true,
+      "on_loop_finished": true,
+      "pair_diff_log": "local/output/wire-g2-c32-pair-diff.txt",
+      "pair_diff_exit_code": 1,
+      "verdict": "DIFFERENT, gameplay identical",
+      "gameplay_rows_moved": [],
+      "native_rows_standin_to_concrete": [],
+      "native_rows": {
+        "before": 1624,
+        "after": 1624,
+        "added": 0,
+        "removed": 0,
+        "status_changed": 0,
+        "counts_moved": 0
+      },
+      "summary_rows": {
+        "before": 867,
+        "after": 867,
+        "changed": 0,
+        "only_on": 0,
+        "only_off": 0
+      },
+      "other_diagnostics": {
+        "only_off": 231,
+        "only_on": 231,
+        "observed": "Atlas source parser/item diagnostics include different decimal append_slot addresses; these cause unmasked diagnostic differences. PlatformLoopCallbacks::pretranslate calls 8 -> 10 is separately classified as noise by pair_diff."
+      },
+      "gameplay": {
+        "deaths": 28,
+        "hit_records": 380,
+        "hull_hits": 276,
+        "damage": 6366.6,
+        "shots": 5509,
+        "first_hit_seconds": 86.15,
+        "units": 81
+      },
+      "reached_source": "Counts from the ON host native-call table, summed by native address; absent table entries are 0. This table includes call labels from other hosts; it is not native binary execution coverage.",
+      "wired_row_reached": {
+        "00741140": 0
+      },
+      "limitation": "The new setter is statically reachable and build-tested; this mission did not execute it. Pair equality therefore does not validate the ON setter at runtime."
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c32.json",
+      "status": "passed",
+      "checked": 15,
+      "failed": 0,
+      "note": "0099B6A0 has a tail-jump entry and no CALL-site claim in this report."
+    }
+  },
+  "flip_proposal": {
+    "switch": "kWireGoal2Chain32Bound",
+    "value": false,
+    "recommendation": "Keep OFF pending a real mission that calls LandConvoySetSpeed on a bound convoy.",
+    "reason": "USN04 has identical gameplay and native rows, but the wired setter reached 0. No ON runtime claim is made."
+  }
+}
