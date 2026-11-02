@@ -47,6 +47,7 @@
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (kPc24UnitsHostCc13Bound)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp4 (MP2b, the 004E17FD gate)
 #include "bsp/plane_task_reach_sw3.hpp"  // cc9-sweep3c reach counter (log only)
+#include "bsp/wire_goal2_chain58_switches.hpp"  // goal 2 chain 58 (kWireGoal2Chain58Bound)
 
 namespace bsp::game {
 
@@ -6509,8 +6510,32 @@ void GameAiCoordinatorHost::create_00a32350() {
     host.created = true;
     host.build_squadrons();
     host.group_of_unit.assign(host.candidate_count(), nullptr);
-    host.next_think.fill(0.0f);
-    host.party_record.fill(false);
+    // 00A31730 -> 00A163D0 ai_init_party_think_schedule_00a163d0 over the host's
+    // 00F876A4 clock and 00BD2F10 stream; OFF keeps both arrays zeroed.
+    if constexpr (bsp::kWireGoal2Chain58Bound) {
+        // 00A16405 CALL 00BD2F10 with ECX = 1: the host keeps one 00BD2F10
+        // stand-in stream (rng), the one random_think_interval draws from.
+        struct CoordinatorThinkRng final : bsp::gameplay_seg69_70_cc13::ThinkScheduleRng {
+            Impl& self;
+            explicit CoordinatorThinkRng(Impl& s) : self(s) {}
+            float uniform(int stream, float lo, float hi) override {
+                (void)stream;
+                return self.random_00bd2f10(lo, hi);
+            }
+        } rng(host);
+        static_assert(bsp::kAiGroupPartySlotCount == 8, "00A1643A: eight slots");
+        const std::array<bsp::gameplay_seg69_70_cc13::PartyThinkSlotInit, 8> slots =
+            bsp::gameplay_seg69_70_cc13::ai_init_party_think_schedule_00a163d0(
+                host.clock_seconds, rng);
+        for (std::size_t p = 0; p < slots.size(); ++p) {
+            host.next_think[p] = slots[p].next_think;          // 00F8A87C + p*4
+            host.party_record[p] = slots[p].ai_enabled_000;    // 00F8A8C8 + p*1Ch, +0h
+            // 00F8A89C + p*4 = 0: brains[p] is still empty, `created` guards this.
+        }
+    } else {
+        host.next_think.fill(0.0f);
+        host.party_record.fill(false);
+    }
     // The party records the mission's `SetParty` binding fills. This process
     // has no party record block, so a party slot is enabled when at least one
     // created unit carries that side. record +0h is the native gate.
@@ -6573,7 +6598,11 @@ void GameAiCoordinatorHost::create_00a32350() {
         row.ai_enabled = host.party_admitted(party);
     }
     host.record("AiController::create", 0x00a32350u);
-    host.record("AiController::construct", 0x00a31730u);
+    if constexpr (bsp::kWireGoal2Chain58Bound) {
+        host.done("AiController::construct", 0x00a31730u);   // its 00A163D0 ran above
+    } else {
+        host.record("AiController::construct", 0x00a31730u);
+    }
 }
 
 // One unit's squadron seed, the body build_squadrons ran per unit. Packet
