@@ -24,6 +24,8 @@
 #include "bsp/locale_tables.hpp"
 #include "bsp/locale_text_lookup.hpp"
 #include "bsp/cc13_seg87.hpp"
+#include "bsp/oct18_tail_c.hpp"
+#include "bsp/wire_goal2_chain52_switches.hpp"
 
 #include <array>
 #include <atomic>
@@ -118,6 +120,121 @@ float vertex_float(const std::uint8_t* vertices, std::uint32_t index,
     std::memcpy(&value, vertices + static_cast<std::size_t>(index) * kQuadStride + offset,
         sizeof(value));
     return value;
+}
+
+// Goal 2 chain 52 (kWireGoal2Chain52Bound): the views 00AB98F0 reads by offset.
+// The complete body takes ECX = the native Text and stack argument 3 = the vertex
+// writer. This host builds sprite quads from a typed GuiTextWidget into its own
+// scratch buffer, so both are image-shaped views over that host state, holding
+// only the fields 00AB98F0 reads (docs/FONT_GEOMETRY.md, gui_text_geometry.hpp):
+// - Text+1D8h, the width scale: GuiTextWidget::font_scale, the "FontScale"
+//   property gui_text.cpp reads (the native reader's +1D8h store).
+// - Text+1B0h/+1ACh/+0DCh/+1A4h/+1A8h, the glyph-child tail's gate, tested from
+//   AB9C5D in that order. Zero is the Text constructor AB9650's value
+//   (native_gui_text_default_storage.cpp), which the texts this host draws keep.
+//   In the image 00531130 BSP_TextContext_SetGlyphReference later sets +1A4h
+//   (UTF-16 code units), +1ACh (listener) and +1B0h (reference Text) on some
+//   texts: callers 00531380 MenuPromptScreen_Enter, 0054C050
+//   MainMenuCommandOwner_BindPages (the *Icon_Text widgets at owner+48h..),
+//   005D26D0 MultiErrorScreen_Enter and 0061FBE0 RewardsScreen_BindLayout. For
+//   those the native body enters the tail (UV blanking and the child Text). That
+//   producer is not modelled here, so the tail is not reproduced, as in OFF:
+//   +1B0h is null and the body returns at its first test.
+// - writer+08h/+0Ch/+10h/+28h/+34h..+44h: the host's own scratch quad and its
+//   quad_layout(), the same buffer and format the fragment arm writes.
+struct GlyphQuadTextContextImage {
+    std::uint8_t unread_000[0xdc];
+    std::uint32_t child_gate_0dc;
+    std::uint8_t unread_0e0[0x1a4 - 0xe0];
+    std::uint32_t child_enabled_1a4;
+    const std::uint16_t* child_code_units_1a8;
+    void* child_listener_1ac;
+    void* child_reference_1b0;
+    std::uint8_t unread_1b4[0x1d8 - 0x1b4];
+    float width_scale_1d8;
+};
+static_assert(offsetof(GlyphQuadTextContextImage, child_gate_0dc) == 0xdc);
+static_assert(offsetof(GlyphQuadTextContextImage, child_enabled_1a4) == 0x1a4);
+static_assert(offsetof(GlyphQuadTextContextImage, child_code_units_1a8) == 0x1a8);
+static_assert(offsetof(GlyphQuadTextContextImage, child_listener_1ac) == 0x1ac);
+static_assert(offsetof(GlyphQuadTextContextImage, child_reference_1b0) == 0x1b0);
+static_assert(offsetof(GlyphQuadTextContextImage, width_scale_1d8) == 0x1d8);
+static_assert(sizeof(GlyphQuadTextContextImage) == 0x1dc);
+
+struct GlyphQuadWriterImage {
+    std::uint32_t unread_00[2];
+    std::uint8_t* vertex_data_08;
+    std::uint32_t stride_0c;
+    std::uint32_t position_offset_10;
+    std::uint32_t unread_14[5];
+    std::uint32_t uv_offset_28;
+    std::uint32_t unread_2c[2];
+    std::int32_t packed_color_offset_34;
+    std::uint32_t float_color_offsets_38[4];
+};
+static_assert(offsetof(GlyphQuadWriterImage, vertex_data_08) == 0x08);
+static_assert(offsetof(GlyphQuadWriterImage, stride_0c) == 0x0c);
+static_assert(offsetof(GlyphQuadWriterImage, position_offset_10) == 0x10);
+static_assert(offsetof(GlyphQuadWriterImage, uv_offset_28) == 0x28);
+static_assert(offsetof(GlyphQuadWriterImage, packed_color_offset_34) == 0x34);
+static_assert(offsetof(GlyphQuadWriterImage, float_color_offsets_38) == 0x38);
+static_assert(sizeof(GlyphQuadWriterImage) == 0x48);
+
+// 00AB98F0 reads the glyph record's four UV edges at +0h..+0Ch, the signed
+// bearing at +10h and the unsigned quad width at +14h.
+static_assert(offsetof(FontGlyphData, fields_00_0c) == 0x00);
+static_assert(offsetof(FontGlyphData, field_10) == 0x10);
+static_assert(offsetof(FontGlyphData, scaled_field_14) == 0x14);
+
+GlyphQuadWriterImage glyph_quad_writer(std::uint8_t* vertices,
+    const FontGeometryLayout& layout) noexcept {
+    GlyphQuadWriterImage writer{};
+    writer.vertex_data_08 = vertices;
+    writer.stride_0c = layout.stride;
+    writer.position_offset_10 = layout.position_offset;
+    writer.uv_offset_28 = layout.uv_offset;
+    writer.packed_color_offset_34 = layout.packed_color_offset;
+    for (std::size_t i = 0; i < layout.float_color_offsets.size(); ++i)
+        writer.float_color_offsets_38[i] = layout.float_color_offsets[i];
+    return writer;
+}
+
+double glyph_quad_f64_bits(std::uint64_t bits) noexcept {
+    double value;
+    std::memcpy(&value, &bits, sizeof(value));
+    return value;
+}
+
+// The cells 00AB98F0 loads. .rdata words are the image's bytes; E12FD4 is the
+// live vertical-scale cell the fragment arm samples too. Only D7A24C, E12FD4,
+// CEC380 and CEF1B8 are read before the glyph-child tail; the rest belong to
+// that tail, which +1B0h = 0 never enters.
+const oct18_tail_c::GlyphQuadImage& glyph_quad_image() {
+    static const volatile float one_00d7a24c = 1.0f;                  // 3F800000
+    static const volatile double width_00cec380 =
+        glyph_quad_f64_bits(0x408e000000000000ull);                   // 960.0
+    static const volatile double height_00cef1b8 =
+        glyph_quad_f64_bits(0x4086800000000000ull);                   // 720.0
+    static const volatile float shadow_00d5c5c0 = 0.05f;              // 3D4CCCCD
+    static const volatile float pivot_00ce3800 = 0.5f;                // 3F000000
+    static const volatile double x_subtract_00d7a358 =
+        glyph_quad_f64_bits(0x3f847ae140000000ull);
+    static const volatile double y_subtract_00d5c7a8 =
+        glyph_quad_f64_bits(0x3f8c432ca0000000ull);
+    static const volatile double z_subtract_00d7a220 =
+        glyph_quad_f64_bits(0x4059000000000000ull);                   // 100.0
+    static const volatile double input_x_bias_00d06880 =
+        glyph_quad_f64_bits(0x403a000000000000ull);                   // 26.0
+    // F8BE50 is .bss: the loader's zero code unit.
+    static const volatile std::uint16_t empty_utf16_00f8be50 = 0;
+    // F8BDF0, the native Text pool, is only reached by the tail's allocation;
+    // this host builds no native Text pool.
+    static const oct18_tail_c::GlyphQuadImage image{nullptr, &empty_utf16_00f8be50,
+        one_00d7a24c, game_native_gui_text_state().vertical_scale_00e12fd4(),
+        width_00cec380, height_00cef1b8, shadow_00d5c5c0, pivot_00ce3800,
+        x_subtract_00d7a358, y_subtract_00d5c7a8, z_subtract_00d7a220,
+        input_x_bias_00d06880};
+    return image;
 }
 
 const std::string* table_string(const GuiTable& table, const char* key) noexcept {
@@ -520,6 +637,22 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
     for (const FontGlyphPlacement& placement : placements) {
         const FontGlyphData& glyph = native ? native->glyph(placement.code_unit)
             : select_font_glyph_00ad4480(*decoded, placement.code_unit);
+        if constexpr (kWireGoal2Chain52Bound) {
+            // 00AB98F0: glyph_quad_00ab98f0, the complete body, writes this placement's
+            // quad into the scratch buffer; OFF keeps the 00AB98F0..00AB9C5D fragment.
+            vertices.fill(0);
+            GlyphQuadTextContextImage context{};
+            context.width_scale_1d8 = text.font_scale;
+            GlyphQuadWriterImage writer = glyph_quad_writer(vertices.data(), layout);
+            // The image's callers pass the pen as stack slots 2, 5 and 6; the body
+            // reads only slot 2's x and y. Quad index and first vertex are 0 in the
+            // one-quad scratch buffer, as in the fragment arm.
+            const float pen[2] = {placement.x, placement.y};
+            static const oct18_tail_c::GlyphQuadBindings no_glyph_child_services{};
+            oct18_tail_c::glyph_quad_00ab98f0(&context, &glyph, pen, &writer,
+                indices.data(), pen, pen, 0, height, 0, placement.code_unit,
+                glyph_quad_image(), no_glyph_child_services);
+        } else {
         FontGeometryParameters parameters;
         parameters.x = placement.x;
         parameters.y = placement.y;
@@ -532,6 +665,7 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
                 vertices.size(), 0, indices)) {
             run.error = "the glyph quad writer rejected a placement";
             break;
+        }
         }
         GameTextQuad quad;
         quad.left = vertex_float(vertices.data(), 0, kQuadPositionOffset);
