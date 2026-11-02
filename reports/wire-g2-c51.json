@@ -1,0 +1,138 @@
+{
+  "run": 111,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 51,
+  "packet": "g2-w1",
+  "branch": "agent/g2-w1",
+  "host": "src/game_hosts_units.cpp",
+  "code_commit": "94928437012b657cac73149ef742f5e585652619",
+  "switch": "kWireGoal2Chain51Bound",
+  "switch_default": false,
+  "wired_total_before": 8807,
+  "wired_total_after": 8809,
+  "assigned_rows_wired": 1,
+  "builds": {
+    "off": "passed; scripts/build.ps1; 2 of 2 existing tests passed",
+    "on": "passed; off_switch_on_build.py; zero diagnostics; 2 of 2 existing tests passed",
+    "pair_export_on": "passed; 2 of 2 existing tests passed",
+    "measurement": "wire_readiness.py ran after the final plain OFF build, after the ON build checker restored the source",
+    "pc24_lint": "not required: new ON logic uses pointers, integers and strings only"
+  },
+  "host_objects": [
+    {
+      "name": "UnitSceneCommandQueue",
+      "where": "src/game_hosts_units.cpp:3374",
+      "producers": [
+        "0046F160 scene-database constructor zeroes the command-list count/head/tail at +14Ch/+150h/+154h; the host owns only this image-shaped projection",
+        "004E6B30 via SceneUnitCreatorBinding::queue_entity_command carries the real authored Command and CommandTarget strings in GameSceneEntityRecord",
+        "00469610 allocates the 14h record and appends a 0Ch node using the real Seg6Host allocation and record-construction services",
+        "construct_native_scene_command_record_004690d0 fills owner+0, command length/data+4/+8, target length/data+Ch/+10h using the canonical game_native_string_process raw context"
+      ],
+      "rows": ["00469610"],
+      "layout": "static_assert checks database count/head/tail offsets and 158h projection size, all record field offsets and 14h size, all node field offsets and 0Ch size",
+      "lifetime": "created only in the ON create_units arm before entity creation; retained until issue_authored_command_at consumes the owner's actual queued strings; record freed after commands.issue returns; pending records cleared with 0046A9F0 on mission-owner retirement",
+      "consumer": "queued record strings, rather than the OFF direct entity-to-row copies, feed the existing GameCommandsHost::issue 0046AAB0/0077D600 command path",
+      "adapter": "only allocation and record construction can be called by the selected 00469610 body; the 68 unrelated Seg6Host callbacks fail closed"
+    }
+  ],
+  "rows": [
+    {
+      "native": "00469610",
+      "address": "004e6bab",
+      "function": "004e6b30",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units -> UnitSceneCommandQueue::enqueue; issue_authored_command_at consumes the queue",
+      "status": "wired",
+      "coverage": "existing complete queue body; no new address body",
+      "reach": "live mission-load and generated-object paths",
+      "reached": 19,
+      "on_native_table_calls": 38,
+      "off_native_table_calls": 19,
+      "call_count_note": "GameHostLog aggregates both phases under SceneUnit::queue_entity_command and retains UNIMPLEMENTED from the earlier scene reader. The OFF 19 producer observations remain; ON adds 19 completed body calls. reached counts the actual new queue executions, not both observations",
+      "reason": "replaces direct string copies with an owned native-layout queue; the body's allocate/construct/append decisions produce persistent records read by the real command consumer",
+      "contract": "sole image caller is 004E6B30; EBX receives incoming entity ECX at 004E6B32 and is pushed at 004E6BAA; command EAX is pushed at 004E6BA9; target is pushed at 004E6B94 or 004E6B97; database ECX comes from 00E18680 at 004E6BA3; callee RET 0Ch at 00469680",
+      "live_site_check": "GameMissionFrameHost mission load calls create_units without a disabled gate; kAuthoredCommandsAfterLoadWalkBound=true selects the issue_authored_commands call after the load walk; the new queue arm has only the chain-51 switch",
+      "off_arm": "original row.command and row.command_target assignments retained byte for byte; no native queue object constructed or service called OFF"
+    },
+    {
+      "native": "0099b6a0",
+      "host_site": "src/game_hosts_units.cpp:run_torpedo_task_arm_009d4850",
+      "status": "skipped",
+      "reach": "static in supplied mission survey",
+      "reached": 0,
+      "reason": "the OFF torpedo_arm_drop_009d49a0 already executes this base-slot decision inline under kTorpedoArmFallthroughReleaseBound=true (torpedo_task_arm.cpp:135-147); calling the base model afterward would duplicate existing logic rather than replace host logic"
+    },
+    {
+      "native": "007ddea0",
+      "host_site": "src/game_hosts_units.cpp:Impl::flight_state_notify_007c11e0",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "no persistent plane FX component or +40h timer consumer exists here; a scratch block would only absorb the constant store. Building FX would be a second object beyond this chain's scene-command queue"
+    },
+    {
+      "native": "007eb380",
+      "host_site": "src/game_hosts_units.cpp:Impl::flight_state_notify_007c11e0",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "the host has no image-shaped plane FX owner, plane pointer, class-loaded sound/effect holders or RPM/fade/debounce/timer state from 007CD520/007EC5A0; cannot supply the complete step body's producers within the one-object cap"
+    },
+    {
+      "native": "007ef010",
+      "host_site": "src/game_hosts_units.cpp:hangar-member dispatch",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "readiness selects nodef ledger_only_007ef010; no callable reconstructed definition exists. The host already implements the selection/publication inline, and this run must not write a second address body"
+    },
+    {
+      "native": "009a7650",
+      "host_site": "src/game_hosts_units.cpp:df_adopt_gun_target_009a797f",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "the semantic target index lacks the native approach+A0h observer pair and +2Ch target-reference owner initialized by the approach constructor; the body must update +B4h and run unregister/register, retarget/reset and pilot-rocket callbacks. This requires another object beyond the scene-command queue"
+    },
+    {
+      "native": "00b0d7b0",
+      "host_site": "src/game_hosts_units.cpp:SetControlledUnitBinding::publish_listener",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "the interface supplies only a bool and driven_listener_handle returns false; it has no actual listener-pointer producer or borrowed live renderer+30h owner/root graph for the +1C0h publication/invalidation body"
+    }
+  ],
+  "pair": {
+    "mission": "USN04",
+    "parameters": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+    "console": "active",
+    "off_log": "local/g2-w1-off_USN04.log",
+    "on_log": "local/g2-w1-on_USN04.log",
+    "off_exit": 0,
+    "on_exit": 0,
+    "off_loop_finished": true,
+    "on_loop_finished": true,
+    "diff_log": "local/output/g2-w1-pair-diff.txt",
+    "pair_diff_exit": 1,
+    "summary": "DIFFERENT, gameplay identical: only one native call-table count moved (00469610, 19 to 38). All gameplay rows, 81 unit rows, 25 plane-death-mode rows and 867 summary lines are identical. Window loops completed with exit 0. No native table row changed status because the earlier scene reader retains UNIMPLEMENTED under the same aggregate method key",
+    "native_table": {
+      "rows_off": 1624,
+      "rows_on": 1624,
+      "added": 0,
+      "removed": 0,
+      "status_changed": 0,
+      "counts_moved": [{"native": "00469610", "method": "SceneUnit::queue_entity_command", "off": 19, "on": 38, "body_calls": 19}],
+      "pretranslate_noise": "PlatformLoopCallbacks::pretranslate calls 2 to 9"
+    },
+    "gameplay_rows_moved": [],
+    "gameplay": {
+      "deaths": 28,
+      "hit_records": 380,
+      "hull_hits": 276,
+      "damage": 6366.6,
+      "shots": 5509,
+      "first_hit_seconds": 86.15,
+      "units": 81
+    },
+    "other_lines": "231 only OFF and 231 only ON in the masked multiset; the limit-60 samples are atlas source allocation/append-address diagnostics. pair_diff exits 1 for these and the intentional queue count delta; this is not byte-identical log output"
+  },
+  "flip_proposal": "propose kWireGoal2Chain51Bound=true after integration review: 19 actual queue calls and identical USN04 gameplay, unit table and summary rows. The committed switch remains false",
+  "limitations": "ordinary host integration and a single USN04 paired run; not original binary-ABI or all-mission equivalence. The earlier scene-reader queue stand-in diagnostic remains and its aggregate status must not be read as evidence that the new body did not run",
+  "report_validation": "verify_report_calls.py: 1 call row checked, 0 failed"
+}
