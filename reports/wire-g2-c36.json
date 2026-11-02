@@ -1,0 +1,172 @@
+{
+  "goal": 2,
+  "chain": 36,
+  "run": 82,
+  "harness": "claude",
+  "packet": "g2-w3",
+  "host_file": "src/game_hosts_mission_frame.cpp",
+  "branch": "agent/g2-w3",
+  "code_commit": "b856b0405",
+  "switch": "kWireGoal2Chain36Bound",
+  "switch_default": false,
+  "wired_before": 8796,
+  "wired_after": 8802,
+  "wired_delta": 3,
+  "wired_delta_note": "Readiness moved 8796 -> 8802 (+6), but only the three rows below were wired by this branch; the other three state changes were not identified and are not claimed. Credit 3.",
+  "rows": [
+    {
+      "native": "00976f10",
+      "address": "00981688",
+      "function": "009813a0",
+      "host_site": "src/game_hosts_mission_frame.cpp: game_warning_report_loss_009813a0 (PendingWarningCancelView)",
+      "status": "wired",
+      "reach": "live",
+      "reached": 4,
+      "note": "Live path: report_loss is reached under kLossWarningBound=true; the cancel runs only for a side 0/1 unit answering IsKindOf 18h or 6 (not a single aircraft); USN04 and USN01 lose none in the window (loss_side0/1=0), IJN18 does.The body walks an image-shaped +E0h list (nodes {next, prev, Warning*}, +80h target) rebuilt from the host's pending vector; vt[10h] answers the record kind, vt[0](1) erases the record, 00975C40 on +15Ch is warning_loss_stamp_15c, 00F876A4 world_clock, 00D7A308 the image's 2.0 (bytes 00 00 00 00 00 00 00 40)."
+    },
+    {
+      "native": "00922a90",
+      "address": "00982044",
+      "function": "009813a0",
+      "host_site": "src/game_hosts_mission_frame.cpp: game_warning_kill_block_00981e07 land_family",
+      "status": "wired",
+      "reach": "live",
+      "reached": 1,
+      "note": "Not in the assigned list; a ready row standing in this file. Gates on the path: kLossWarningBound=true, kWarningMessageBankCc15Bound=true. Fed by GameUnitsHost::unit_class_id (native instance +C4h). The second image caller 0097D650 is not a host site."
+    },
+    {
+      "native": "009681d0",
+      "address": "0098986a",
+      "function": "00988510",
+      "host_site": "src/game_hosts_mission_frame.cpp: game_warning_report_hit_00989604 target live test",
+      "status": "wired",
+      "reach": "static",
+      "reached": 0,
+      "note": "Static reach: reached 0 in the USN04, USN01 and IJN18 pairs, although the hit dispatcher itself runs (251 calls in IJN18). The own-fire arm is gated only by friendly fire: a projectile whose team is the local slot 0 hitting an own-side (relation 0) unit that is not player controlled; no OFF switch sits on the path. Not in the assigned list; a ready row standing in this file. 00989855 TEST BL,BL selects 009681D0 when BL = byte [esp+98h] (loaded at 00989604), set at 00988770 only when the local-attacker byte [esp+17h] is set and the relation equals EDI=0 (009886AF XOR EDI,EDI); otherwise 009761D0 (not wired, the host's live lambda stays). Fed by unit_scene_node_flags (+5Ch/+5Dh/+5Eh) and unit_pending_destroy_0060 (+60h); gate kWarningMessageBankCc15Bound=true."
+    },
+    {
+      "native": "004d87b0",
+      "address": "004da755",
+      "function": "004da6c0",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built. On every live load +1FE4h is the session word, 0 (kSkirmishSessionCc13Bound=false keeps scene_state.session_mode 0), so the body returns at its first test (+1FE4h loaded at 004D87CC, tested at 004D87D2) and replaces no participant-count work. A MissionPlayerCountHost needs producers this host lacks: the 00F8A2FC participant-block override, 004BB770 side counts, 004BCA50 effective game mode, the 00E18B44/00E18B40 retry latch and deadline, 00734E50 messages and 004D7970 end scene."
+    },
+    {
+      "native": "004dc6a0",
+      "address": "004dfebb",
+      "function": "004dfb70",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_mission_frame load (cc15-ob1 global subsystems)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built. construct_global_subsystems_004dc6a0 needs the full GlobalSubsystemState/Host/Context (Lua, string, config, effect services and owner slots); the host builds four of its owners through their typed bodies under kGlobalSubsystemsCc15Bound. Building the whole context is far beyond half a turn."
+    },
+    {
+      "native": "0096c070",
+      "address": "00977b1b",
+      "function": "00977990",
+      "host_site": "src/game_hosts_mission_frame.cpp: WarningManagerBinding proximity scan (proximity_records)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built. The body creates a point effect through 008687C0 parented to ship node +4A4h from the manager definition +194h; no host owns a point-effect/FX system (the only host 008687C0 mention, game_hosts_units.cpp, is a record). The proximity record keeps only effect_live; a fake effect pointer would be invented state."
+    },
+    {
+      "native": "00a91020",
+      "address": "004db95d",
+      "function": "004db920",
+      "host_site": "src/game_hosts_mission_frame.cpp: DeviceWaitBinding::any_dynamic_device_button_down",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built. The body scans the three device vectors of the input device table 00F8BBF4 (+70h, stride 24h) through device vt[2Ch]; this process builds no input-device backend, so its producer is missing. An empty table returns 0 forever and the single-player device wait would never complete; the host's one-edge injection is its own substitution."
+    },
+    {
+      "native": "0076cb90",
+      "address": "00771eb2",
+      "function": "00771e80",
+      "host_site": "src/game_hosts_mission_frame.cpp: comment only (load_warning_bank AI coordinator gate)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "No call site in this host file: 0076CB90 appears only in a comment. Its host call is in game_hosts_mission.cpp under kSkirmishSessionCc13Bound=false (wire-g1-c11, wire-g2-c30)."
+    },
+    {
+      "native": "007752d0",
+      "address": "007762c5",
+      "function": "00776230",
+      "host_site": "src/game_hosts_mission_frame.cpp: comment only (reset_single_player_slots)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "No call site in this host file: 007752D0 appears only in a comment inside the kSkirmishSessionCc13Bound arm (false); the local-join call is in game_hosts_mission.cpp under the same OFF switch."
+    },
+    {
+      "native": "00875b90",
+      "host_site": "src/game_hosts_mission_frame.cpp: comment only (wave 2 sub-list walk)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "No call site in this host file (comment only). The identifier is GameFixedStepHost::run_wave2_job_00875b90 in game_hosts_fixed_step.cpp, an unimplemented-log stub; the image references it only from the data slot 00D0DEC4."
+    }
+  ],
+  "host_objects": [],
+  "host_object_decision": "No host object built. Of the four gaps, 0096C070 needs a point-effect owner, 00A91020 an input-device backend, 004DC6A0 the whole global subsystem context, and 004D87B0 only takes its single-player early return; none has its producers in this host. 00976F10 instead runs over a per-call view adapter (PendingWarningCancelView) of the existing pending warning vector, not a new object.",
+  "verification": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests": "2/2 passed"
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain36Bound",
+      "exit_code": 0,
+      "distinct_diagnostics": 0
+    },
+    "pc24_lint": {
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "findings": 0,
+      "note": "the ON arms do no x87 arithmetic; 00976F10's own clock + 2.0 is the body's"
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py",
+      "order": "measured after the ON check and a final plain OFF build",
+      "wired_before": 8796,
+      "wired_after": 8802,
+      "rows_now_wired": [
+        "00976f10",
+        "00922a90",
+        "009681d0"
+      ]
+    },
+    "pair_runs": {
+      "exes": "OFF build/win32/Release/bsp_game.exe and ON local/g2-w3-on (pair_export --commit HEAD --flip kWireGoal2Chain36Bound=true), both at 29aa858f2",
+      "args": "--frames 3200 --press-start-frame 30 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "USN04": {
+        "result": "GAMEPLAY identical; NATIVE TABLE 1624 -> 1624, 0 moved; SUMMARY LINES 0 changed; only atlas lines carrying heap pointers differ",
+        "reached": {
+          "00976f10": 0,
+          "00922a90": 0,
+          "009681d0": 0
+        },
+        "why_zero": "loss_side0=0/loss_side1=0: no side 0/1 ship or squadron lost in the window, so neither the cancel nor the kill block runs; no own-fire hit report"
+      },
+      "USN01": {
+        "result": "GAMEPLAY identical; NATIVE TABLE 1654 -> 1654, 0 moved; SUMMARY LINES 0 changed",
+        "reached": {
+          "00976f10": 0,
+          "00922a90": 0,
+          "009681d0": 0
+        }
+      },
+      "IJN18": {
+        "result": "GAMEPLAY identical; NATIVE TABLE 1761 -> 1762, the one added row is the ON arm's own record 'WarningManager::kill_land_family 00922a90 concrete calls=1'; SUMMARY LINES 0 changed (warning manager cancelled=2 both); two ship-AI clearance rows (Asa1/Gear4 clear_37c 2842.0/~ -> 10000.0) moved, and an OFF-vs-OFF IJN18 rerun shows the same two rows moving, so they are run noise",
+        "reached": {
+          "00976f10": 4,
+          "00922a90": 1,
+          "009681d0": 0
+        },
+        "why_chosen": "the newest retained log reaching 00976F10 (codex_cc16_base_ijn18.log, 10-28, calls=22); no log from the last 4 days reaches it"
+      }
+    },
+    "live_site": "All three sites are in game_hosts_mission_frame.cpp under gates that are true: kLossWarningBound=true (report_loss body), kWarningMessageBankCc15Bound=true (kill block call and the whole hit dispatcher). 009681D0's own-fire arm (local attacker on a relation-0 entity that is not player controlled) has no disabled gate but was not reached in USN04/USN01/IJN18."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain36Bound to true. USN04, USN01 and IJN18 pairs are gameplay-identical; in IJN18 the body 00976F10 ran 4 times over the pending-list view with the same cancelled=2 and summary lines as OFF, and 00922A90 ran once with the same kill report count. 009681D0 is unexercised (no own-fire hit report in the three missions); its view feeds exactly the four bytes the OFF lambda reads.",
+  "review_round_1": "Run 85 review (fix, B+): wired_delta set to 3 with the unidentified +3 readiness remainder not claimed; 009681D0 reach changed to static (0 in all three pairs, friendly-fire-only gate noted); switch comment now names all three arms (b856b0405, comment only); 004D87B0 skip reason now cites 004D87CC/004D87D2. Checks re-run after the fixes: ON build 0 diagnostics, OFF build 2/2 tests, pc24_lint 0 findings, readiness 8802 with the three rows wired. The pair runs were not repeated: the only code change is a comment."
+}
