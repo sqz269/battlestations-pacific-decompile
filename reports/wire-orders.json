@@ -1,38 +1,37 @@
 {
   "packet": "wire-orders",
   "branch": "agent/wire-orders",
-  "code_commit": "665378486bf54ea75cbac9f2de9f8b584548eff7",
+  "code_commit": "0cd85ae001d98a0a29c7bdf50ec9eb68a55f52ec",
   "switch": {
     "name": "kWireScriptOrdersHostBound",
     "header": "include/bsp/wire_script_orders_host_switches.hpp",
     "default": false
   },
   "assigned_ready_rows_before": 28,
-  "assigned_rows_wired": 10,
-  "assigned_rows_skipped": 18,
+  "assigned_rows_wired": 5,
+  "assigned_rows_skipped": 23,
   "wired_total_before": 8493,
-  "wired_total_after": 8505,
+  "wired_total_after": 8503,
   "collateral_wired_addresses": [
-    "0071da50",
     "00835a40"
   ],
   "readiness_evidence": {
     "baseline": "local/output/wire-orders-baseline.json",
-    "after": "local/output/wire-orders-after.json",
-    "measurement": "Source-level identifier reachability, including code behind an OFF switch; not native ABI or full game parity."
+    "after": "local/output/wire-orders-review-after.json",
+    "measurement": "Unmodified tool source-level identifier reachability; includes unreached arms and shared identifiers. Strict accepted credit is reported separately under strict_review."
   },
-  "off_arm_preservation": "Code commit adds 111 host-file lines and removes zero. Every original host statement remains byte-for-byte in the corresponding OFF arm. No reconstructed body was edited or added.",
+  "off_arm_preservation": "Relative to the original base c3ae3e6be, the final host file adds 82 lines and removes zero. The two rejected ON arms and their unused includes are removed; original OFF statements are retained byte-for-byte. No standalone reconstructed body was changed.",
   "checks": {
     "off_build": {
       "result": "pass",
-      "log": "local/output/wire-orders-off-build.log",
-      "tests": "reconstructed_math and tool_tests both passed"
+      "log": "local/output/wire-orders-review-off-build.log",
+      "tests": "reconstructed_math and tool_tests passed"
     },
     "on_build": {
       "result": "pass",
       "command": "python tools/off_switch_on_build.py --names kWireScriptOrdersHostBound",
       "diagnostics": 0,
-      "log": "local/output/wire-orders-on-build.log",
+      "log": "local/output/wire-orders-review-on-build.log",
       "switch_restored": true
     },
     "pc24_lint": {
@@ -40,14 +39,18 @@
       "findings": 0,
       "command": "python tools/pc24_lint.py --diff origin/main...HEAD"
     },
-    "pair_export_off_build": "pass including both tests",
-    "pair_export_on_build": "pass including both tests",
+    "pair_export_off_build": "Existing OFF export and log reused without rebuilding or rerunning; OFF log SHA-256 unchanged.",
+    "pair_export_on_build": {
+      "result": "pass including both tests",
+      "code_commit": "0cd85ae001d98a0a29c7bdf50ec9eb68a55f52ec",
+      "log": "local/output/wire-orders-review-pair-on-build.log"
+    },
     "report_calls": {
       "result": "pass",
-      "checked": 10,
+      "checked": 8,
       "failed": 0,
       "command": "python tools/verify_report_calls.py reports/wire-orders.json",
-      "log": "local/output/wire-orders-report-calls.log"
+      "log": "local/output/wire-orders-review-report-calls.log"
     }
   },
   "rows": [
@@ -65,7 +68,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::interface_request_pending_005b66d0"
       },
-      "reason": "The reconstructed body is already this host method, called through MissionBlackoutHost. There is no separate callee to wire; adding a second body or changing metadata is outside this run."
+      "reason": "The reconstructed body is already this host method, called through MissionBlackoutHost. There is no separate callee to wire; adding a second body or changing metadata is outside this run.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "006f1f90",
@@ -81,7 +95,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch GetCapturePercentage arm"
       },
-      "reason": "Already calls GameShipAiHost::command_building_capture_fraction_006f1f90. The method body is present at src/game_hosts_ship_ai.cpp:13928; this readiness row needs identifier accounting, not duplicate wiring."
+      "reason": "Already calls GameShipAiHost::command_building_capture_fraction_006f1f90. The method body is present at src/game_hosts_ship_ai.cpp:13928; this readiness row needs identifier accounting, not duplicate wiring.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0071c1e0",
@@ -92,17 +117,36 @@
       "state_before": "ready",
       "state_after": "wired",
       "reconstructed_source": "src/gameplay_seg38_cc13.cpp",
-      "status": "wired",
+      "status": "skipped",
       "native_identifier": "bsp::gameplay_seg38_cc13::apply_command_message_0071c1e0",
       "host_call_site": {
         "file": "src/game_hosts_script_orders.cpp",
         "method": "record_director_artillery_enable_0071c231",
         "lines": [
-          646
+          644
         ]
       },
       "evidence": "0071C237 RET 4; ECX director, stack message; selector 3 writes only +220h. The adapter maps the existing artillery byte in and out.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "absent caller row; no ArtilleryEnable calls",
+        "reached": false,
+        "evidence": [
+          {
+            "line": 31850,
+            "text": "summary mission script bindings calls=324 attackmove=0 moveto=16 issued=143 reached_director=0 units=53 formations=16/18 skills=18 repairs=18 roles=24"
+          }
+        ],
+        "caller": "MissionLuaNative::ArtilleryEnable",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      },
+      "reason": "ON arm retained, but zero calls in the USN04 ON log. Runtime-qualified wiring credit is withheld until this arm is exercised with real host state.",
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "00835940",
@@ -119,12 +163,29 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::session_route_avoidance_message torpedo/land arm",
         "lines": [
-          3646,
-          3683
+          3654
         ]
       },
       "evidence": "008359B9 RET 4; ESI captures ECX; MOVZX payload byte at 00835966, selector 7 at 0083598A. Shared typed body builds the message; existing loopback route and receiver stay in place.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": true,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 18,
+        "calls_kind": "one native sender per torpedo-evasion host order",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 31706,
+            "text": "summary mission script navigator avoidance land=18 torpedo=18 disables=0 delivered=36 bound=1 (008A3B10 / 008A3CD0 -> 00835640, packet cc9_navigator_avoidance)"
+          }
+        ],
+        "caller": "MissionLuaNative::NavigatorSetTorpedoEvasion",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": true
+      },
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "008359c0",
@@ -135,18 +196,36 @@
       "state_before": "ready",
       "state_after": "wired",
       "reconstructed_source": "src/weapon_director.cpp",
-      "status": "wired",
+      "status": "skipped",
       "native_identifier": "bsp::director_command_message_0071da50",
       "host_call_site": {
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::session_route_avoidance_message ship arm",
         "lines": [
-          3646,
-          3683
+          3617
         ]
       },
       "evidence": "00835A39 RET 4; ESI captures ECX; MOVZX payload byte at 008359E6, selector 8 at 00835A0A. Shared typed body builds the message; existing loopback route and receiver stay in place.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "exact host orders counter",
+        "reached": false,
+        "evidence": [
+          {
+            "line": 31708,
+            "text": "summary mission script navigator ship avoidance orders=0 disables=0 delivered=0 bound=1 (008A3970 -> 008359C0 -> 00835640 +241h, packet cc9_navigator_ship_avoidance)"
+          }
+        ],
+        "caller": "MissionLuaNative::NavigatorSetAvoidShipCollision",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      },
+      "reason": "ON arm retained, but zero calls in the USN04 ON log. Runtime-qualified wiring credit is withheld until this arm is exercised with real host state.",
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "008522c0",
@@ -162,7 +241,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch GetSubmarineDepthLevel arm"
       },
-      "reason": "Host explicitly substitutes catapult=false and lacks native unit+1279h and the IsKindOf(28h)/launch_state_490 child list required by the callee."
+      "reason": "Host explicitly substitutes catapult=false and lacks native unit+1279h and the IsKindOf(28h)/launch_state_490 child list required by the callee.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "00888d20",
@@ -171,19 +261,38 @@
       "name": "lua_table_get_ptr_field_00888d20",
       "abi": "typed",
       "state_before": "ready",
-      "state_after": "wired",
+      "state_after": "ready",
       "reconstructed_source": "src/landscape_lua_seg55_argon.cpp",
-      "status": "wired",
-      "native_identifier": "bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20",
+      "status": "skipped",
       "host_call_site": {
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::argument_ptr_field",
-        "lines": [
-          3297
-        ]
+        "lines": []
       },
-      "evidence": "00888D7B RET; incoming ECX is passed unchanged to 00B67800, then the result is converted via 00B662D0. The adapter carries the existing host Ptr value and light-userdata policy.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 66,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 3203,
+            "text": "host LuaBinding::argument_ptr_field [00888d20] concrete"
+          },
+          {
+            "line": 35583,
+            "text": "LuaBinding::argument_ptr_field                           00888d20             concrete      calls=66"
+          }
+        ],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      },
+      "removed_on_arm": true,
+      "removed_native_identifier": "bsp::landscape_lua_seg55_argon::lua_table_get_ptr_field_00888d20",
+      "reason": "Removed the ON arm: host code had already looked up Ptr, gated light userdata and extracted its value before passing a one-entry vector, so the body made no decision over real table fields. A faithful actual-table adapter is not supplied.",
+      "native_full_userdata_note": "Native 00888D20 uses plain lua_touserdata via 00B662D0 and returns the block for full userdata too. The preserved OFF host stand-in still rejects full userdata; this is an explicit remaining fidelity gap, not corrected wiring."
     },
     {
       "address": "00894100",
@@ -199,7 +308,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0089a190",
@@ -215,7 +335,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0089b840",
@@ -231,7 +362,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0089cc50",
@@ -247,7 +389,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008a3e70",
@@ -263,7 +416,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008a7e60",
@@ -279,7 +443,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008a9f90",
@@ -295,7 +470,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008aadf0",
@@ -311,7 +497,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008b16e0",
@@ -327,7 +524,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "008b19a0",
@@ -343,7 +551,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch"
       },
-      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced. CountdownCancel is also labelled host_implementation_partial."
+      "reason": "Explicit identifier mapping selects the existing dispatch arm. No separate reconstructed function exists to call; no duplicate body or recursive dispatch was introduced. CountdownCancel is also labelled host_implementation_partial.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "host native-call table; absent row means zero logged invocations",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "009565a0",
@@ -359,7 +578,28 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::entity_set_skill_level"
       },
-      "reason": "Host documents that +6DCh director and child vtable[1C4h] skill fan-out is not modelled. Calling a plan with invented absent objects would not supply the callee contract."
+      "reason": "Host documents that +6DCh director and child vtable[1C4h] skill fan-out is not modelled. Calling a plan with invented absent objects would not supply the callee contract.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 18,
+        "calls_kind": "host skill-set path only; reconstructed fan-out body remains unwired",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 3214,
+            "text": "host MissionLuaNative::SetSkillLevel [00895250] concrete"
+          },
+          {
+            "line": 35590,
+            "text": "MissionLuaNative::SetSkillLevel                          00895250             concrete      calls=18"
+          }
+        ],
+        "caller": "MissionLuaNative::SetSkillLevel",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "00b66400",
@@ -376,11 +616,34 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::run_pilot_set_target",
         "lines": [
-          2738
+          2736
         ]
       },
       "evidence": "00B66411 RET; ECX object, owner.state and +0Ch entry top. The host supplies its current Lua top and argument-count entry top.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": true,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 9,
+        "calls_kind": "one result-count invocation per completed PilotSetTarget binding",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 4495,
+            "text": "host MissionLuaNative::PilotSetTarget [008a4c90] concrete"
+          },
+          {
+            "line": 36163,
+            "text": "MissionLuaNative::PilotSetTarget                         008a4c90             concrete      calls=9"
+          }
+        ],
+        "caller": "MissionLuaNative::PilotSetTarget",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": true
+      },
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract.",
+      "hazard": "ON computes lua_gettop(state_) minus the binding entry argument count. Its return therefore depends on every preceding host helper leaving the Lua stack balanced. A leaked temporary becomes an extra reported result, and a removed argument can yield an invalid result count. USN04 covers nine current calls only; it does not prove every helper/path preserves stack balance."
     },
     {
       "address": "00b664b0",
@@ -397,11 +660,34 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::push_number",
         "lines": [
-          5367
+          5338
         ]
       },
       "evidence": "00B664D7 RET 4; ESI captures incoming ECX, [ESI] is owner, owner+4 is state. Integer is widened exactly to Lua number.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": true,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 1,
+        "calls_kind": "lower bound from GetDifficulty alone; other result-writer calls are not separately instrumented",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 3198,
+            "text": "host MissionLuaNative::GetDifficulty [008ae030] concrete"
+          },
+          {
+            "line": 35580,
+            "text": "MissionLuaNative::GetDifficulty                          008ae030             concrete      calls=1"
+          }
+        ],
+        "caller": "MissionLuaNative::GetDifficulty",
+        "is_lower_bound": true,
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": true
+      },
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "00b665d0",
@@ -418,11 +704,29 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::sync_recon_level_tables_0077b0c0",
         "lines": [
-          6524
+          6495
         ]
       },
       "evidence": "00B66618 RET 8; integer key and value; object index read after pushing both. The borrowed view pins a positive absolute stack slot.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": true,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 368,
+        "calls_kind": "one setter call per logged reconlevel write",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 31718,
+            "text": "summary mission script recon level table bound=1 syncs=60 tables=81 writes=368 force_recon=0 (0077FAD0 / 0077B0C0 / 008AADF0, packet cc9_recon_level_table)"
+          }
+        ],
+        "caller": "GameScriptOrdersHost::sync_recon_level_tables_0077b0c0",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": true
+      },
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "00b672f0",
@@ -433,17 +737,36 @@
       "state_before": "ready",
       "state_after": "wired",
       "reconstructed_source": "src/cc13_seg87.cpp",
-      "status": "wired",
+      "status": "skipped",
       "native_identifier": "bsp::native_lua_set_lstring_at_00b672f0",
       "host_call_site": {
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::dispatch GetActDialogIDs arm",
         "lines": [
-          4805
+          4776
         ]
       },
       "evidence": "00B67343 RET 8; integer key and NativeString pointer. The adapter owns length/data storage and a positive table slot.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "exact dialog query counter is zero",
+        "reached": false,
+        "evidence": [
+          {
+            "line": 31721,
+            "text": "summary mission dialogs starts=1 kills=0 queries=0 active_at_end=0"
+          }
+        ],
+        "caller": "MissionLuaNative::GetActDialogIDs",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      },
+      "reason": "ON arm retained, but zero calls in the USN04 ON log. Runtime-qualified wiring credit is withheld until this arm is exercised with real host state.",
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "00b67630",
@@ -460,11 +783,38 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::build_script_self_table",
         "lines": [
-          5266
+          5237
         ]
       },
       "evidence": "00B6767D RET 8; literal key and NativeString pointer. The ID text is kept as a Lua string; borrowed table slot stays stable.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "coverage": "existing reconstructed interface; no body changes",
+      "on_arm_retained": true,
+      "counts_as_wired": true,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 9,
+        "calls_kind": "lower bound from nine CreateScript self-table builds; other self-table rebuilds are not separately counted",
+        "reached": true,
+        "evidence": [
+          {
+            "line": 31739,
+            "text": "summary mission script timers created=9 think_registrations=9 waits=8 clears=0 deletes=7 passes=2800 fires=53 failures=0"
+          },
+          {
+            "line": 3184,
+            "text": "host MissionLuaNative::CreateScript [00898750] concrete"
+          },
+          {
+            "line": 35571,
+            "text": "MissionLuaNative::CreateScript                           00898750             concrete      calls=9"
+          }
+        ],
+        "caller": "GameScriptOrdersHost::build_script_self_table",
+        "is_lower_bound": true,
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": true
+      },
+      "guard_audit": "Batch OFF switch is the only disabled gate. Existing parent switches used by this arm are ON; no duplicate reconstructed call in OFF; operands come from real host state. Fixed selector/key literals are the original call-site contract."
     },
     {
       "address": "00c336c0",
@@ -473,19 +823,40 @@
       "name": "transform_from_4x4_00c336c0",
       "abi": "typed",
       "state_before": "ready",
-      "state_after": "wired",
+      "state_after": "ready",
       "reconstructed_source": "src/cc13_dyn1.cpp",
-      "status": "wired",
-      "native_identifier": "bsp::cc13_dyn1::transform_from_4x4_00c336c0",
+      "status": "skipped",
       "host_call_site": {
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::run_entity_turn_to_entity ship arm",
-        "lines": [
-          2907
-        ]
+        "lines": []
       },
-      "evidence": "00C3370A RET 4; ECX destination, stack source. Twelve FLD/FSTP copies, no arithmetic. Compact output feeds the existing shared affine motion-state substitution; separate physics-body ownership is not added.",
-      "coverage": "existing reconstructed interface; no body changes"
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "no ship_body_pose_00c56cf0 call row; all 17 EntityTurnToEntity calls used the squadron arm",
+        "reached": false,
+        "evidence": [
+          {
+            "line": 4491,
+            "text": "host MissionLuaNative::EntityTurnToEntity [008a0a10] concrete"
+          },
+          {
+            "line": 36161,
+            "text": "MissionLuaNative::EntityTurnToEntity                     008a0a10             concrete      calls=17"
+          }
+        ],
+        "caller_calls": 17,
+        "ship_body_pose_calls": 0,
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      },
+      "removed_on_arm": true,
+      "removed_native_identifier": "bsp::cc13_dyn1::transform_from_4x4_00c336c0",
+      "reason": "Removed the no-op compact-to-4x4 round trip: it fed the vtable[88h] motion-state stand-in instead of the native 00C56CF0 physics-body pose consumer.",
+      "blocked_on": "host 00C56CF0 physics-body pose consumer"
     },
     {
       "address": "00662020",
@@ -501,7 +872,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "support loadout selection comment, no radial-screen call"
       },
-      "reason": "Host explicitly does not run the radial ring and owns no RadialScreen/icon list or RadialHost widget/sound services."
+      "reason": "Host explicitly does not run the radial ring and owns no RadialScreen/icon list or RadialHost widget/sound services.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "no radial-screen path exists in this host",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "00665f30",
@@ -517,7 +899,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "support loadout selection comment, no radial-screen call"
       },
-      "reason": "Host owns no RadialScreen catalog/template/icon lifecycle needed to build the loadout ring."
+      "reason": "Host owns no RadialScreen catalog/template/icon lifecycle needed to build the loadout ring.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "no radial-screen path exists in this host",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0071bf70",
@@ -533,7 +926,19 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "GameScriptOrdersHost::run_unit_free_fire ship arm"
       },
-      "reason": "Only the gunnery stance setter is exposed here. The complete WeaponDirectorHost allocation/command/reference interface is unavailable; no stub adapter was added."
+      "reason": "Only the gunnery stance setter is exposed here. The complete WeaponDirectorHost allocation/command/reference interface is unavailable; no stub adapter was added.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "UnitFreeAttack caller row absent",
+        "reached": false,
+        "evidence": [],
+        "caller": "MissionLuaNative::UnitFreeAttack",
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     },
     {
       "address": "0088b6d0",
@@ -549,7 +954,18 @@
         "file": "src/game_hosts_script_orders.cpp",
         "method": "SetThinkCoreHost::call_0088b6d0_0076a9f0_00765590"
       },
-      "reason": "Existing offline callback is empty; it owns no named session message, routing lifecycle or complete Left56Host services. Construction alone would leave an unused message."
+      "reason": "Existing offline callback is empty; it owns no named session message, routing lifecycle or complete Left56Host services. Construction alone would leave an unused message.",
+      "on_arm_retained": false,
+      "counts_as_wired": false,
+      "reach": {
+        "log": "local/wire-orders-on-review_USN04.log",
+        "calls": 0,
+        "calls_kind": "empty offline host callback; no named session message constructed",
+        "reached": false,
+        "evidence": [],
+        "scope": "host call-site reach; reconstructed body calls are inferred only for retained arms, not independently instrumented",
+        "reconstructed_body_reached": false
+      }
     }
   ],
   "image_calls": [
@@ -571,13 +987,6 @@
       "address": "008a3aae",
       "native": "008359c0",
       "function": "008a3970",
-      "kind": "call",
-      "purpose": "original-image call-site/owner validation for the wired entry"
-    },
-    {
-      "address": "008a6169",
-      "native": "00888d20",
-      "function": "008a6060",
       "kind": "call",
       "purpose": "original-image call-site/owner validation for the wired entry"
     },
@@ -615,13 +1024,6 @@
       "function": "00928a00",
       "kind": "call",
       "purpose": "original-image call-site/owner validation for the wired entry"
-    },
-    {
-      "address": "008a0e4f",
-      "native": "00c336c0",
-      "function": "008a0a10",
-      "kind": "call",
-      "purpose": "original-image call-site/owner validation for the wired entry"
     }
   ],
   "pair_run": {
@@ -645,20 +1047,20 @@
       },
       {
         "variant": "on",
-        "path": "local/wire-orders-on_USN04.log",
-        "size": 5109458,
-        "mtime_utc": "2026-11-02T03:24:21.786442+00:00",
-        "sha256": "d9342b68dc914722084872f082751829f29d5a53254f7c29e42605e34b9e8a53",
+        "path": "local/wire-orders-on-review_USN04.log",
+        "size": 5109465,
+        "mtime_utc": "2026-11-02T04:56:41.001015+00:00",
+        "sha256": "727ea1fd04f1784a082785052776e1c185ce4d3e625c8787725bc22e8c9a1ac9",
         "mission_frames": 2800,
         "loop_finished": true,
         "exit_code": 0
       }
     ],
     "completion_basis": "Both complete logs contain requested=2800 ran=2800 simulated=2800 and loop_finished=1 exit_code=0; completion checked against log contents and mtimes, not process exit alone. This is a bounded mission run, not a mission victory.",
-    "pair_diff_command": "python tools/pair_diff.py local/wire-orders-off_USN04.log local/wire-orders-on_USN04.log --limit 60 --json local/output/wire-orders-pair-diff.json",
+    "pair_diff_command": "python tools/pair_diff.py local/wire-orders-off_USN04.log local/wire-orders-on-review_USN04.log --limit 60 --json local/output/wire-orders-review-pair-diff.json",
     "pair_diff_exit": 1,
-    "pair_diff_json": "local/output/wire-orders-pair-diff.json",
-    "pair_diff_text": "local/output/wire-orders-pair-diff.txt",
+    "pair_diff_json": "local/output/wire-orders-review-pair-diff.json",
+    "pair_diff_text": "local/output/wire-orders-review-pair-diff.txt",
     "gameplay_moved": [],
     "native_standin_or_unimplemented_to_concrete": [],
     "native_added": [],
@@ -773,16 +1175,105 @@
         "src/native_texture_atlas_parser_storage.cpp:241 computes texture_table+texture_count*4",
         "src/native_texture_atlas_parser_storage.cpp:352 computes table+count*4"
       ],
-      "pair_diff_noise": "PlatformLoopCallbacks::pretranslate calls 33 -> 221 is already excluded by pair_diff"
-    }
+      "pair_diff_noise": "PlatformLoopCallbacks::pretranslate calls 33 -> 42 is excluded by pair_diff."
+    },
+    "previous_on_log": {
+      "variant": "on",
+      "path": "local/wire-orders-on_USN04.log",
+      "size": 5109458,
+      "mtime_utc": "2026-11-02T03:24:21.786442+00:00",
+      "sha256": "d9342b68dc914722084872f082751829f29d5a53254f7c29e42605e34b9e8a53",
+      "mission_frames": 2800,
+      "loop_finished": true,
+      "exit_code": 0
+    },
+    "only_on_rebuilt_and_rerun": true,
+    "off_log_sha256_unchanged": true,
+    "off_code_commit": "665378486bf54ea75cbac9f2de9f8b584548eff7",
+    "on_code_commit": "0cd85ae001d98a0a29c7bdf50ec9eb68a55f52ec",
+    "unreached_arms_in_original_on_run": [
+      {
+        "address": "0071c1e0",
+        "calls": 0,
+        "basis": "ArtilleryEnable has no call row"
+      },
+      {
+        "address": "008359c0",
+        "calls": 0,
+        "basis": "ship-avoidance orders=0"
+      },
+      {
+        "address": "00b672f0",
+        "calls": 0,
+        "basis": "GetActDialogIDs queries=0"
+      },
+      {
+        "address": "00c336c0",
+        "calls": 0,
+        "basis": "ship_body_pose_00c56cf0 has no call row; all 17 EntityTurnToEntity calls used the squadron arm"
+      }
+    ],
+    "remaining_unreached_on_arms": [
+      "0071c1e0",
+      "008359c0",
+      "00b672f0"
+    ]
   },
   "flip_proposal": {
     "set_to": false,
-    "reason": "Keep OFF. USN04 has no gameplay, summary or native-table regression, but GetActDialogIDs queries=0 and ship-collision avoidance orders=0 leave two new arms unreached. Obtain focused runtime coverage before proposing a batch-wide ON flip. Existing body substitutions and ABI limits remain."
+    "reason": "Keep OFF. Original USN04 coverage missed four arms (0071C1E0, 008359C0, 00B672F0, 00C336C0), not two. After removing 00C336C0 and the invalid reached 00888D20 adapter, the revised ON-only pair has no gameplay/native/summary movement. ArtilleryEnable, ship avoidance and GetActDialogIDs remain unreached and receive no strict credit. The 00B66400 return remains sensitive to stack balance in every preceding host helper. Require coverage of the remaining arms and stack-balance evidence before a batch ON flip."
   },
   "limits": [
-    "Typed helper interfaces preserve varying values; original callee bodies, caller censuses and stack cleanup were inspected. No Ghidra annotations were changed.",
-    "Ten ready rows are existing dispatch arms, plus two already-called host methods; their readiness accounting was not changed.",
-    "No new address-suffixed function, ledger row, test suite or documentation outside this report was added."
-  ]
+    "Per-row reach is derived from existing ON-log host counters/callers. Callee-specific counters are not independently instrumented; lower bounds are labelled.",
+    "Five assigned rows qualify on the observed USN04 path. Three retained source-wired arms are explicitly skipped for runtime credit because they were not reached.",
+    "0071DA50 AllowFire receives zero collateral credit; only reached selector-9 land avoidance is credited as collateral.",
+    "The original Ptr stand-in full-userdata mismatch and missing physics-body pose consumer remain explicit blockers; no replacement body was invented.",
+    "No Ghidra annotations, reconstructed bodies, new tests, extra documentation, merges or pushes were added."
+  ],
+  "original_code_commit": "665378486bf54ea75cbac9f2de9f8b584548eff7",
+  "assigned_rows_source_wired": 8,
+  "retained_on_arm_addresses": [
+    "0071c1e0",
+    "00835940",
+    "008359c0",
+    "00b66400",
+    "00b664b0",
+    "00b665d0",
+    "00b672f0",
+    "00b67630"
+  ],
+  "removed_on_arm_addresses": [
+    "00888d20",
+    "00c336c0"
+  ],
+  "retained_uncredited_on_arm_addresses": [
+    "0071c1e0",
+    "008359c0",
+    "00b672f0"
+  ],
+  "strict_review": {
+    "counting_rule": "Credit only a reached path where existing reconstructed-body logic replaces host logic using real host state. A source identifier reference alone is insufficient.",
+    "credited_assigned_addresses": [
+      "00835940",
+      "00b66400",
+      "00b664b0",
+      "00b665d0",
+      "00b67630"
+    ],
+    "credited_assigned_count": 5,
+    "credited_collateral_addresses": [
+      "00835a40"
+    ],
+    "credited_delta": 6,
+    "source_reference_delta": 10,
+    "uncredited_source_reference_addresses": [
+      "0071da50",
+      "0071c1e0",
+      "008359c0",
+      "00b672f0"
+    ],
+    "allow_fire_exclusion": "0071DA50 remains source-reachable because its C++ function is shared by avoidance selectors 7/8/9. Its own AllowFire selector 0 is not on a wired path, so it receives no collateral credit.",
+    "repository_runtime_qualified_total": null,
+    "total_note": "wired_total_after is the unmodified wire_readiness.py source-reference count (8503), not a runtime-qualified repository total. This review qualifies only the batch delta: five assigned rows plus the reached selector-9 land-avoidance collateral row. The inherited repository baseline was not requalified."
+  }
 }
