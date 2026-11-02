@@ -1,0 +1,87 @@
+{
+  "packet": "g1-w1",
+  "run": 51,
+  "chain": 20,
+  "branch": "agent/g1-w1",
+  "host_file": "src/game_hosts_lua.cpp",
+  "picked_reason": "One typed getter can select a field from real host Lua tables; the remaining assigned registration row needs a callback dispatch contract the selected nodef source does not supply.",
+  "switch": "kWireGoal1Chain20Bound",
+  "switch_default": false,
+  "code_commit": "c153a1140eb95f9ad38c008b41a044d216d16fad",
+  "wired_totals": {
+    "before": 8780,
+    "after": 8781,
+    "delta": 1,
+    "measured_after_plain_off_build": true
+  },
+  "rows": [
+    {
+      "native": "00888d20",
+      "address": "008a1503",
+      "function": "008a13d0",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_set_visibility_008a13d0",
+      "status": "wired",
+      "reached": 0,
+      "source": "src/landscape_lua_seg55_argon.cpp",
+      "identifier": "lua_table_get_ptr_field_00888d20",
+      "abi": "typed",
+      "coverage": "Existing body; wiring at two plain-table host call sites. This is a C++ interface, not an original ABI replacement.",
+      "logic_replaced": "ON snapshots every string-keyed entry of the actual argument table without selecting Ptr, then the existing body finds Ptr. Its result replaces the host ID-field lookup and selects the unit used for visibility or catapult work. OFF retains the existing ID lookup.",
+      "host_state": "attach_created_entity_00928a00 seeds unit Ptr with the entity id; the adapter preserves all string keys and each value's lua_touserdata result, including absent or null Ptr. No host Ptr lookup or one-entry round trip precedes the body.",
+      "limitations": "Tables with metatables use the existing host path because the vector interface cannot represent __index. Non-table arguments retain the host's zero-id guard. Only these two caller sites are wired; the script-orders getter is unchanged.",
+      "live_path": "register_global_function -> binding_trampoline -> run_set_visibility_008a13d0 or run_ship_use_catapult_00891d50. kLuaSetVisibilityBound and kShipCatapultLaunchBound are both true; no additional false switch gates either site.",
+      "contract_evidence": "Read the existing typed body and native pseudocode/listing; queried all 21 native call sites. Getter ECX is the LuaObject, with no stack arguments and RET at 00888d7b. At 008a14f9 and 00891e4e, ECX receives ArgumentAt's EAX before the getter call. Live Ghidra proto confirms each containing function.",
+      "additional_call_sites": [
+        {
+          "native": "00888d20",
+          "address": "00891e58",
+          "function": "00891d50",
+          "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ship_use_catapult_00891d50"
+        }
+      ],
+      "pair_evidence": "USN04: SetVisibility calls=0 and ShipUseCatapult use_calls=0 in both logs; MissionLua::plain_entity_table_pointer is absent from the ON log. The 66 LuaBinding::argument_ptr_field calls in each log belong to the unchanged script-orders stand-in and are not counted as reconstructed-body reach."
+    },
+    {
+      "native": "006b8610",
+      "address": "00884c5b",
+      "function": "00884be0",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::register_global_function",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Readiness selects nodef binding_stub from settings_seg29_cc13.cpp, with no callable body for that selected identifier. The separate existing raw provider registers a genuine zero-upvalue callback, while this host dispatches 560 bindings through one trampoline requiring host and row upvalues. Feeding that trampoline to the provider would lose dispatch identity; supporting it requires a callback-dispatch redesign, not a small state adapter. No body was changed or duplicated.",
+      "evidence": "006b8610 listing loads the real Lua state from machine+4, passes nup=0 to lua_pushcclosure, installs the global, and returns RET 8. Current host registration pushes this and the row, then uses lua_pushcclosure(..., 2)."
+    }
+  ],
+  "checks": {
+    "off_build": "PASS: scripts/build.ps1, including reconstructed_math and tool_tests (2/2); repeated after the ON check and at clean committed code HEAD.",
+    "on_build": "PASS: off_switch_on_build.py --names kWireGoal1Chain20Bound; exit 0, zero distinct diagnostics, sources restored.",
+    "pc24_lint": "PASS: pc24_lint.py --diff origin/main...HEAD; 0 findings. New ON arms perform no floating-point arithmetic.",
+    "readiness": "00888d20 ready -> wired; 006b8610 remains ready/nodef. Total 8780 -> 8781 after a plain OFF build.",
+    "diff_check": "PASS"
+  },
+  "paired_run": {
+    "mission": "USN04",
+    "console_session": "console sqz269 1 Active",
+    "arguments": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+    "off_executable": "build/win32/Release/bsp_game.exe",
+    "on_executable": "local/g1-w1-on/build/win32/Release/bsp_game.exe",
+    "on_export": "PASS: pair_export.py --commit HEAD --flip kWireGoal1Chain20Bound=true --out local/g1-w1-on --mission USN04, built from code_commit",
+    "off_run_exit": 0,
+    "on_run_exit": 0,
+    "off_log": "local/g1-w1-off_USN04.log",
+    "on_log": "local/g1-w1-on_USN04.log",
+    "pair_diff_log": "local/output/g1-c20-pair-diff.txt",
+    "pair_diff_exit": 1,
+    "pair_diff_verdict": "DIFFERENT, gameplay identical",
+    "native_rows_changed_from_standin_or_unimplemented_to_concrete": [],
+    "gameplay_rows_moved": [],
+    "native_table": "1624 -> 1624; 0 added, 0 removed, 0 status changed, 0 counts moved",
+    "summary_lines": "867 -> 867; 0 changed, 0 only ON, 0 only OFF",
+    "other_lines": "Masked multiset: 231 only OFF, 231 only ON; displayed differences are atlas source diagnostic address fields.",
+    "gameplay": "Identical: deaths 28, hit records 380, hull hits 276, damage 6366.6, shots 5509, first hit 86.15 s, units 81. Unit table and plane death modes identical; mission end none in both.",
+    "new_wiring_reached": {
+      "00888d20": 0
+    }
+  },
+  "flip_proposal": "Keep kWireGoal1Chain20Bound false. USN04 did not reach either newly wired caller; static wiring and OFF/ON build checks passed, but this pair does not validate execution of the new adapter. A mission reaching SetVisibility or ShipUseCatapult is needed before proposing activation."
+}
