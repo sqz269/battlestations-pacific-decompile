@@ -35,6 +35,8 @@
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/wire_goal1_chain10_switches.hpp"
+#include "bsp/wire_goal2_chain42_switches.hpp"
+#include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -2315,7 +2317,14 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
                         ? nullptr : bsp::entity_order_command_class_by_ordinal(ordinal);
                 chain.pending_command = klass != nullptr ? klass->object_address : 0u;
             }
-            chain.pending_target = queued.target_24;
+            // 00721030 at 00721B11/B22/B47/B6C: bsp_game_unit_message_read_target_descriptor_00721030 copies the queued copy's +24h..+38h descriptor, which message_target_descriptor() answers at all four reads (the message is const between them); OFF keeps the struct copy of target_24.
+            if constexpr (bsp::kWireGoal2Chain42Bound) {
+                bsp::director_geommesh_seg38_39_argon::
+                    bsp_game_unit_message_read_target_descriptor_00721030(
+                        &queued, &chain.pending_target);
+            } else {
+                chain.pending_target = queued.target_24;
+            }
             chain.pending_target.object = queued.target_24.kind != 0
                 ? const_cast<void*>(unit_object_of(message.target_handle,
                     message.set_target.object))
