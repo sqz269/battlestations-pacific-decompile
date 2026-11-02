@@ -130,10 +130,16 @@ float vertex_float(const std::uint8_t* vertices, std::uint32_t index,
 // - Text+1D8h, the width scale: GuiTextWidget::font_scale, the "FontScale"
 //   property gui_text.cpp reads (the native reader's +1D8h store).
 // - Text+1B0h/+1ACh/+0DCh/+1A4h/+1A8h, the glyph-child tail's gate, tested from
-//   AB9C5D in that order: the Text constructor AB9650 zeroes +1A4h..+1B0h
-//   (native_gui_text_default_storage.cpp) and GuiTextWidget has no reader that
-//   sets them, so +1B0h stays null and the tail returns at its first test; the
-//   other gate words are never read on this path.
+//   AB9C5D in that order. Zero is the Text constructor AB9650's value
+//   (native_gui_text_default_storage.cpp), which the texts this host draws keep.
+//   In the image 00531130 BSP_TextContext_SetGlyphReference later sets +1A4h
+//   (UTF-16 code units), +1ACh (listener) and +1B0h (reference Text) on some
+//   texts: callers 00531380 MenuPromptScreen_Enter, 0054C050
+//   MainMenuCommandOwner_BindPages (the *Icon_Text widgets at owner+48h..),
+//   005D26D0 MultiErrorScreen_Enter and 0061FBE0 RewardsScreen_BindLayout. For
+//   those the native body enters the tail (UV blanking and the child Text). That
+//   producer is not modelled here, so the tail is not reproduced, as in OFF:
+//   +1B0h is null and the body returns at its first test.
 // - writer+08h/+0Ch/+10h/+28h/+34h..+44h: the host's own scratch quad and its
 //   quad_layout(), the same buffer and format the fragment arm writes.
 struct GlyphQuadTextContextImage {

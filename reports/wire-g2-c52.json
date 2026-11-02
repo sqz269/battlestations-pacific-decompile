@@ -5,6 +5,15 @@
   "harness": "claude",
   "host_file": "src/game_hosts_text.cpp",
   "picked_note": "Claimed game_hosts_menu.cpp first (score 98). Every menu gap I read needs an object past one chain's cap or a producer nobody has recovered (rows below), so I released that lease before editing and claimed game_hosts_text.cpp for its live 00ab98f0 row.",
+  "review_round_1": {
+    "review_run": 119,
+    "fixes": [
+      "fixed: src/game_hosts_text.cpp comment on Text+1A4h..+1B0h now says zero is AB9650's value for the texts this host draws, names 00531130 BSP_TextContext_SetGlyphReference and its callers 00531380/0054C050/005D26D0/0061FBE0 (9 sites, checked with bsp.py callers --sites) as the unmodelled producer, and says the glyph-child tail is not reproduced, as in OFF",
+      "fixed: host_objects[0].producers names 00531130 and its four callers as the missing producer for Text+1A4h..+1B0h; 'Icon_Text' has 0 matches in local/g2-w3-on_USN04.log",
+      "fixed: 006887e0, 00689800, 00689d90 and 0068d760 are separate skipped rows, each with its own blocker"
+    ],
+    "code_change": "comment only; the OFF and ON arms are unchanged"
+  },
   "switch": "kWireGoal2Chain52Bound",
   "switch_header": "include/bsp/wire_goal2_chain52_switches.hpp",
   "build": "scripts/build.ps1 exit 0, 2/2 tests passed (OFF)",
@@ -28,10 +37,10 @@
   "host_objects": [
     {
       "name": "GlyphQuadTextContextImage + GlyphQuadWriterImage (image-shaped views over GameTextHost::build_run state) and glyph_quad_image()",
-      "where": "src/game_hosts_text.cpp:139",
+      "where": "src/game_hosts_text.cpp:145",
       "producers": [
         "Text+1D8h width scale: GuiTextWidget::font_scale, the FontScale property gui_text.cpp:321 reads",
-        "Text+1A4h..+1B0h: zero, as the Text constructor AB9650 stores them (native_gui_text_default_storage.cpp:369-372); GuiTextWidget has no reader that sets them, so the AB9C5D tail returns at its +1B0h test",
+        "Text+1A4h..+1B0h: zero, the Text constructor AB9650's value (native_gui_text_default_storage.cpp:369-372), which the texts this host draws keep. Missing producer: 00531130 BSP_TextContext_SetGlyphReference sets +1A4h/+1ACh/+1B0h on some texts in the image (callers 00531380 MenuPromptScreen_Enter, 0054C050 MainMenuCommandOwner_BindPages for the *Icon_Text widgets at owner+48h.., 005D26D0 MultiErrorScreen_Enter, 0061FBE0 RewardsScreen_BindLayout); for those the native body enters the glyph-child tail (UV blanking, child Text). It is not modelled here, so the tail is not reproduced, as in OFF; none of those widgets appears in the USN04 ON log",
         "writer+08h/+0Ch/+10h/+28h/+34h..+44h: the host's scratch quad and quad_layout(), the buffer the OFF fragment writes",
         "E12FD4: game_native_gui_text_state().vertical_scale_00e12fd4(), the live cell the OFF arm samples",
         ".rdata D7A24C/CEC380/CEF1B8 (ordinary path) and D5C5C0/CE3800/D7A358/D5C7A8/D7A220/D06880 (tail only): the image's bytes, read with bsp.py ghidra bytes"
@@ -120,7 +129,31 @@
       "native": "00686170",
       "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
       "status": "skipped",
-      "reason": "Takes Fe5Host& (293 pure virtuals, no implementation) and writes a 78h image; the host's MainMenuManager is a typed aggregate, so the image would have no consumer. Same for 006887e0, 00689800, 00689d90 and 0068d760."
+      "reason": "Takes Fe5Host& (293 pure virtuals, no implementation) and writes a 78h image; create_main_menu_manager returns the host's typed MainMenuManager aggregate, which the recovered 00686380 Init reads, so the image would have no consumer."
+    },
+    {
+      "native": "006887e0",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager",
+      "status": "skipped",
+      "reason": "create_multi_menu_manager returns nullptr: the host owns no multiplayer manager, 78h-class native base/registry image or request vector for the body to initialize, and the body also takes Fe5Host& (293 pure virtuals, no implementation)."
+    },
+    {
+      "native": "00689800",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "status": "skipped",
+      "reason": "create_options_manager returns nullptr: the host owns no options-manager image for the body (base constructor chain plus the native options vtable) to construct, and the body takes Fe5Host& (293 pure virtuals, no implementation)."
+    },
+    {
+      "native": "00689d90",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit::create_attract_screen",
+      "status": "skipped",
+      "reason": "create_attract_screen returns nullptr and attract_screen_init only logs: the host owns no 4Ch attract-screen image, FE_attract page, idle countdown or movie player for the body, and it takes Fe5Host& (293 pure virtuals, no implementation)."
+    },
+    {
+      "native": "0068d760",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit::create_title_screen",
+      "status": "skipped",
+      "reason": "The host's title_screen is an already initialized typed TitleScreen aggregate (attached_screen filled by 0068D8D0) that the title path uses; the body writes a 44h image vtable/global no host code reads, and takes Fe5Host& (293 pure virtuals, no implementation)."
     },
     {
       "native": "00be0ae0",
