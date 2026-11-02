@@ -166,6 +166,11 @@ for p, t in srcs.items():
 for a, (nm, src) in recon.items():  # identifiers named in source records that the map regex did not catch
     if nm and re.search(r'_[0-9a-f]{8}$', nm):
         ident_by_addr[a].add(nm)
+        # A record named with its namespace (bsp::cc13_seg68::foo_009f6a20) is used in source by its last
+        # component. Without it the row could only match through the map, and an OFF build's map drops a
+        # body whose only call sits behind an OFF switch, so a switched wire read as unwired. A stale ON-build
+        # map (left by off_switch_on_build.py) made the same row read as wired in the worker's tree.
+        ident_by_addr[a].add(nm.rsplit('::', 1)[-1])
 
 # ---- identifiers for recon rows whose name has no _xxxxxxxx suffix (ledger-style or plain C++ names).
 # Tried in order: (1) the record's name, or a ' / '-separated part of it, defined in the record's source file;
