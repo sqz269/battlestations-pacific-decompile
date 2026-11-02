@@ -10,34 +10,34 @@
   "switch": "kWireGoal1Chain8Bound",
   "switch_value": false,
   "baseline_commit": "cde847c8f",
-  "code_commit": "efacfd1bc3548f2208e4c53bf98866b93baaae15",
+  "code_commit": "964ef1cd7ed96c38bd65f63d1805d18fb272bf9f",
   "counting": {
     "wired_total_before": 8771,
-    "wired_total_after": 8777,
-    "assigned_ready_to_wired": 3,
+    "wired_total_after": 8776,
+    "assigned_ready_to_wired": 2,
     "assigned_wired": [
-      "00729bc0",
       "0084bad0",
       "00999b70"
     ],
-    "skipped": 18,
-    "note": "Only the three assigned transitions are claimed. The whole-report wired total rose by six as the readiness graph was recomputed."
+    "skipped": 19,
+    "note": "Only two assigned transitions are credited. Removing the incomplete 00729bc0 predicate changed the global total from 8777 to 8776. Relative to the original 8771 baseline the global increase includes other readiness-graph classifications.",
+    "wired_total_before_review": 8777
   },
   "checks": {
     "off_build": {
       "result": "passed",
       "command": "./scripts/build.ps1",
-      "log": "local/output/g1-w1-off-build-final.txt",
+      "log": "local/output/g1-w1-review1-off-build-clean.txt",
       "tests": "reconstructed_math and tool_tests: 2/2 passed",
-      "source": "Committed code with the switch false; all pre-existing host statements preserved inside OFF arms."
+      "source": "Clean committed repair HEAD, switch false; original OFF statements preserved."
     },
     "on_build": {
       "result": "passed",
       "command": "python tools/off_switch_on_build.py --names kWireGoal1Chain8Bound",
-      "log": "local/output/g1-w1-on-build.txt",
+      "log": "local/output/g1-w1-review1-on-build.txt",
       "diagnostics": 0
     },
-    "final_map": "Readiness measured only after the final plain OFF build. pair_export built ON in local/g1-w1-on and did not replace this tree's OFF map.",
+    "final_map": "Readiness counted after the repair's plain OFF build: 00729bc0 ready, 0084bad0/00999b70 wired, global wired 8776. A second clean-HEAD plain OFF build supplied the paired OFF executable. The isolated ON export never replaced this tree's OFF map.",
     "pc24_lint": {
       "result": "passed",
       "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
@@ -49,18 +49,18 @@
       "result": "passed",
       "checked": 20,
       "failed": 0,
-      "log": "local/output/g1-w1-report-verification.txt",
+      "log": "local/output/g1-w1-review1-report-verification.txt",
       "no_call_site": "00875b90 is address-taken at 00D0DEC4; its row intentionally omits address."
     },
-    "self_review": "Reviewed the whole code diff. No reconstructed bodies changed or duplicated, no new address-suffixed function, no ledger changes.",
+    "self_review": "Reviewed repair diff and cumulative source stat: 60 inserted host lines and no original host-line removals. No bodies duplicated or altered; no ledger edits.",
     "contract_evidence": [
-      "00729BC0: original caller 008657F7 is inside 00864FE0; target pushed at 008657F4, callee RET 4 at 00729D13/00729D25. The mapped body consumes projectile kind and weapon subtype from the host's actual selected ammunition.",
       "0084BAD0: all eight recorded image CALL sites inspected through callers --sites. ECX centre/EDX radius and four stack args, RET 10h at 0084BC5B. 0084BBAC and 0084BBBC..0084BBD1 fill damage, position and flag; fresh producer storage is consumed through the existing consumer_view.",
       "00999B70: sole caller 006E4F6D is inside 006E4D50 (live Ghidra body 006E4D50..006E56EF). Record from rack+3F8h/+34h is pushed at 006E4F6A, bot moved to ECX at 006E4F6B; callee RET 4 and skill-row dispatch confirmed. The selector result picks a field of the existing loaded PilotBotParameters row.",
       "Live Ghidra proto confirmed containing functions for 006E4F6D, 00864FE0 and 0084BC60. No Ghidra mutations.",
       "All wired sites have an ungated normal mission path. kTorpedoRackDropBound, kBombDropScatterBound and kPilotBotConfigLoadBound are true. The paratrooper-only scatter gate is not required for the ordinary bomb path. The units host's latch_control_input_007b9770 calls run_rack_tick_006e56f0 with kReleaseIssueStageBound=true; its live drop branches call release_ordnance_drop or run_rack_bomb_drop_006e4d50 -> release_bomb_drop. kReleaseIssueStageValsBound and kRackBulletKindBound are true."
     ],
-    "readiness_parser_note": "A new address-heading comment above if constexpr initially resolved 00999B70 to the token constexpr. Prefixing that call-site comment with Native restored suffix_body resolution to pilot_bot_throw_mul_row_00999b70; final row is wired. No tool or ledger workaround added."
+    "readiness_parser_note": "A new address-heading comment above if constexpr initially resolved 00999B70 to the token constexpr. Prefixing that call-site comment with Native restored suffix_body resolution to pilot_bot_throw_mul_row_00999b70; final row is wired. No tool or ledger workaround added.",
+    "review_evidence": "Read 00729BC0 listing 00729CEF..00729D25: category 9 loads +3A4h, 00729D06 TEST ECX,ECX; 00729D16 reads the bot vtable; 00729D1C CALL EAX through slot +1Ch. A nonzero offset does not implement either check. The removal diff contains only deletion of the added ON predicate and wrapper."
   },
   "pair": {
     "mission": "USN04",
@@ -68,19 +68,19 @@
     "mission_frames": 3000,
     "mission_frame_seconds": 0.05,
     "console_session": "console sqz269 session 1 Active",
-    "off_log": "local/g1-w1-off_USN04.log",
-    "on_log": "local/g1-w1-on_USN04.log",
+    "off_log": "local/g1-w1-review1-off_USN04.log",
+    "on_log": "local/g1-w1-review1-on_USN04.log",
     "off_exit": 0,
     "on_exit": 0,
     "off_launcher_exit": 0,
     "on_launcher_exit": 0,
     "off_exe": "build/win32/Release/bsp_game.exe",
-    "off_sha256": "BAF861E7F708429374FED49E4B2965E755ADF13C7E1A02C15F9FE6F81014BBEC",
-    "on_exe": "local/g1-w1-on/build/win32/Release/bsp_game.exe",
-    "on_sha256": "BCAB2A2D32982E016E949C0031F7890D1738287DB9A84B229AFCFA648898CECB",
-    "export_log": "local/output/g1-w1-on-export.txt",
-    "diff_command": "python tools/pair_diff.py local/g1-w1-off_USN04.log local/g1-w1-on_USN04.log --limit 60",
-    "diff_log": "local/output/g1-w1-pair-diff.txt",
+    "off_sha256": "F4821E5715DBDE8C0F20B733FF28AF7B07CDA6EB15F5BB2762BE3B3AABB87173",
+    "on_exe": "local/g1-w1-review1-on/build/win32/Release/bsp_game.exe",
+    "on_sha256": "13A1C1219B2185A860A73C4A47E169831EAFB227F47F7A50592C14DE75C6E90D",
+    "export_log": "local/output/g1-w1-review1-on-export.txt",
+    "diff_command": "python tools/pair_diff.py local/g1-w1-review1-off_USN04.log local/g1-w1-review1-on_USN04.log --limit 60",
+    "diff_log": "local/output/g1-w1-review1-pair-diff.txt",
     "diff_exit": 1,
     "verdict": "DIFFERENT, gameplay identical",
     "gameplay_changed_rows": [],
@@ -150,41 +150,37 @@
     },
     "host_methods_metadata": {
       "off": "1144 / 477",
-      "on": "1146 / 477"
+      "on": "1145 / 477"
     },
     "native_table": {
       "off": 1624,
-      "on": 1626,
-      "added": 2,
+      "on": 1625,
+      "added": 1,
       "removed": 0,
       "status_changed": 0,
       "counts_moved": 0,
       "standin_or_unimplemented_to_concrete": [],
       "added_concrete": [
         {
-          "method": "Gunnery::bot_slot_dispatch_00729bc0",
-          "native": "00729bc0",
-          "calls": 5570
-        },
-        {
           "method": "Projectile::blast_record_fill_0084bad0",
           "native": "0084bad0",
           "calls": 102
         }
-      ]
+      ],
+      "note": "Removed incomplete bot-slot predicate is absent; only retained body calls are credited."
     },
     "other_differences": {
       "masked_only_off": 231,
       "masked_only_on": 231,
       "displayed_samples": "atlas source parser/item diagnostics contain differing append_slot values; pair_diff displays only its 60-line limit per side",
-      "native_noise": "PlatformLoopCallbacks::pretranslate calls 9 -> 8"
+      "native_noise": []
     },
     "limits": "PilotBot selector was not reached: no dive-bomb or torpedo releases. This is a reconstruction-host OFF/ON comparison, not native-game parity or binary ABI proof."
   },
   "flip_proposal": {
-    "value": true,
+    "value": false,
     "applied": false,
-    "reason": "Propose enabling kWireGoal1Chain8Bound after integrator review: all three assigned rows use real host state, both builds pass, and the USN04 pair preserves every reported gameplay row. PilotBot selection remains runtime-unexercised in this pair; unrelated diagnostic lines prevent byte-identical logs."
+    "reason": "Keep kWireGoal1Chain8Bound OFF for integrator review. The incomplete 00729bc0 predicate was removed and receives no credit. Both retained rows pass static/build checks and the fresh pair preserves reported gameplay; PilotBot behavior remains runtime-unexercised and the logs contain other diagnostic differences."
   },
   "rows": [
     {
@@ -228,10 +224,9 @@
       "address": "008657f7",
       "function": "00864fe0",
       "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::gun_inputs",
-      "status": "wired",
-      "reason": "The existing dispatch body selects a supported bot slot from the selected first/DP ammunition's real subtype and the gun's category; zero refuses the target instead of range-only acceptance. Existing range and acceptance terms remain.",
-      "reached": 5570,
-      "log_method": "Gunnery::bot_slot_dispatch_00729bc0"
+      "status": "skipped",
+      "reason": "Review run 31 accepted: bot_slot_for_projectile_kind_00729bc0 returns an offset, not the selected bot pointer or its target-acceptance result. Native 00729D06 tests the pointer and 00729D1C calls vtable[1Ch]. The host lacks a complete selected-bot presence/acceptance interface; category checks also omit category 9's second artillery bot acceptance. Removed the wiring and restored range-only host acceptance. No completion credit; the previous 5570 calls proved reach only.",
+      "reached": 0
     },
     {
       "native": "0072bf10",
@@ -377,5 +372,42 @@
       "reason": "The body takes RandomThreads/RandomState, while this host owns an LCG and optional keyed LCG streams (rng/rng_by_key). No same-state adapter exists; creating a separate RandomThreads would replace host RNG state rather than feed the body its real state.",
       "reached": 0
     }
-  ]
+  ],
+  "rows_claimed": 2,
+  "rows_counted": 2,
+  "review_response": {
+    "review_run": 31,
+    "harness": "codex",
+    "round": 1,
+    "reviewed_head": "134ddae2daeeb90c22bb46773fc01a52e7d11c7c",
+    "findings": [
+      {
+        "finding": 1,
+        "native": "00729bc0",
+        "assessment": "accepted",
+        "status": "fixed",
+        "resolution": "Removed incomplete slot-offset wiring; marked the row skipped. A complete presence-and-acceptance interface is not held by this host."
+      },
+      {
+        "finding": 2,
+        "assessment": "accepted",
+        "status": "fixed",
+        "resolution": "Credits only 0084bad0 and 00999b70, refreshes counts and paired evidence, and proposes keeping the switch OFF."
+      }
+    ],
+    "retained_correct_rows": [
+      "0084bad0",
+      "00999b70"
+    ],
+    "disagreements": [],
+    "off_identity": "pass",
+    "previous_pair": {
+      "code_commit": "efacfd1bc3548f2208e4c53bf98866b93baaae15",
+      "reviewed_head": "134ddae2daeeb90c22bb46773fc01a52e7d11c7c",
+      "off_log": "local/g1-w1-off_USN04.log",
+      "on_log": "local/g1-w1-on_USN04.log",
+      "removed_predicate_calls": 5570,
+      "note": "The 5570 calls proved reach of the incomplete predicate only; none are wiring credit."
+    }
+  }
 }
