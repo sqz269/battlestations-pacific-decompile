@@ -6,34 +6,38 @@
   "packet": "g2-w1",
   "branch": "agent/g2-w1",
   "host": "src/game_hosts_units.cpp",
-  "code_commit": "94928437012b657cac73149ef742f5e585652619",
+  "code_commit": "1dad4d9977612bb532ec0634553e462e7f742313",
   "switch": "kWireGoal2Chain51Bound",
   "switch_default": false,
   "wired_total_before": 8807,
-  "wired_total_after": 8809,
-  "assigned_rows_wired": 1,
+  "wired_total_after": 8808,
+  "assigned_rows_wired": 0,
+  "assigned_rows_functionally_wired": 1,
+  "assigned_rows_counted_by_independent_review": 1,
   "builds": {
-    "off": "passed; scripts/build.ps1; 2 of 2 existing tests passed",
-    "on": "passed; off_switch_on_build.py; zero diagnostics; 2 of 2 existing tests passed",
-    "pair_export_on": "passed; 2 of 2 existing tests passed",
-    "measurement": "wire_readiness.py ran after the final plain OFF build, after the ON build checker restored the source",
-    "pc24_lint": "not required: new ON logic uses pointers, integers and strings only"
+    "off": "passed; scripts/build.ps1; 2 of 2 tests passed, including the added present-empty case; local/output/g2-w1-r1-off-build.txt",
+    "on": "passed; off_switch_on_build.py; zero diagnostics; both tests passed; local/output/g2-w1-r1-on-build.txt",
+    "pair_export_on": "passed; 2 of 2 tests passed; local/g2-w1-r1-on/pair_export_build.log",
+    "measurement": "wire_readiness.py ran after the final plain OFF build; the reviewed legacy-identifier resolution limitation is recorded separately",
+    "pc24_lint": "not required: the changed ON logic uses pointers, integers and strings only"
   },
   "host_objects": [
     {
       "name": "UnitSceneCommandQueue",
-      "where": "src/game_hosts_units.cpp:3374",
+      "where": "src/game_hosts_units.cpp:3298",
       "producers": [
         "0046F160 scene-database constructor zeroes the command-list count/head/tail at +14Ch/+150h/+154h; the host owns only this image-shaped projection",
-        "004E6B30 via SceneUnitCreatorBinding::queue_entity_command carries the real authored Command and CommandTarget strings in GameSceneEntityRecord",
-        "00469610 allocates the 14h record and appends a 0Ch node using the real Seg6Host allocation and record-construction services",
+        "004E6B30 via SceneUnitCreatorBinding::queue_entity_command carries command_present=true as well as Command and CommandTarget; hidden GenerateObject carries SceneSpawnPoolEntry::carry_command_queued into the same flag. All new producer stores are chain-51 ON-only",
+        "queue_native_scene_command_00469610 owns the 14h allocation and constructor-exception unwind through 00C61B10; after construction it disarms before the real 0Ch-node append, matching the binary",
         "construct_native_scene_command_record_004690d0 fills owner+0, command length/data+4/+8, target length/data+Ch/+10h using the canonical game_native_string_process raw context"
       ],
-      "rows": ["00469610"],
+      "rows": [
+        "00469610"
+      ],
       "layout": "static_assert checks database count/head/tail offsets and 158h projection size, all record field offsets and 14h size, all node field offsets and 0Ch size",
-      "lifetime": "created only in the ON create_units arm before entity creation; retained until issue_authored_command_at consumes the owner's actual queued strings; record freed after commands.issue returns; pending records cleared with 0046A9F0 on mission-owner retirement",
+      "lifetime": "created only in the ON create_units arm before entity creation; retained until issue_authored_command_at consumes the owner's actual queued strings; record freed after commands.issue returns; pending records cleared with 0046A9F0 on mission-owner retirement; present-empty records are explicitly retired before the existing empty-command early return",
       "consumer": "queued record strings, rather than the OFF direct entity-to-row copies, feed the existing GameCommandsHost::issue 0046AAB0/0077D600 command path",
-      "adapter": "only allocation and record construction can be called by the selected 00469610 body; the 68 unrelated Seg6Host callbacks fail closed"
+      "adapter": "all Seg6 inheritance and 70 service overrides removed. The raw frame supplies incoming parameters, saved allocation, outgoing constructor parameters, child saved record, and a list-argument cell aliasing the outgoing target word as P-18h requires"
     }
   ],
   "rows": [
@@ -41,15 +45,15 @@
       "native": "00469610",
       "address": "004e6bab",
       "function": "004e6b30",
-      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units -> UnitSceneCommandQueue::enqueue; issue_authored_command_at consumes the queue",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units -> UnitSceneCommandQueue::enqueue -> queue_native_scene_command_00469610; issue_authored_command_at consumes and retires records",
       "status": "wired",
       "coverage": "existing complete queue body; no new address body",
       "reach": "live mission-load and generated-object paths",
       "reached": 19,
-      "on_native_table_calls": 38,
-      "off_native_table_calls": 19,
-      "call_count_note": "GameHostLog aggregates both phases under SceneUnit::queue_entity_command and retains UNIMPLEMENTED from the earlier scene reader. The OFF 19 producer observations remain; ON adds 19 completed body calls. reached counts the actual new queue executions, not both observations",
-      "reason": "replaces direct string copies with an owned native-layout queue; the body's allocate/construct/append decisions produce persistent records read by the real command consumer",
+      "on_native_table_calls": 19,
+      "off_native_table_calls": 0,
+      "call_count_note": "Completed raw queue calls have their own Units::queue_native_scene_command key: concrete calls=19 ON and absent OFF. The original SceneUnit::queue_entity_command producer stand-in remains calls=19 in each log",
+      "reason": "real command-presence flag gates an owned native-layout queue, including present-empty values; the existing raw allocation/construction/append body produces persistent records read by command issue, with construction-exception cleanup and empty-record retirement",
       "contract": "sole image caller is 004E6B30; EBX receives incoming entity ECX at 004E6B32 and is pushed at 004E6BAA; command EAX is pushed at 004E6BA9; target is pushed at 004E6B94 or 004E6B97; database ECX comes from 00E18680 at 004E6BA3; callee RET 0Ch at 00469680",
       "live_site_check": "GameMissionFrameHost mission load calls create_units without a disabled gate; kAuthoredCommandsAfterLoadWalkBound=true selects the issue_authored_commands call after the load walk; the new queue arm has only the chain-51 switch",
       "off_arm": "original row.command and row.command_target assignments retained byte for byte; no native queue object constructed or service called OFF"
@@ -102,25 +106,40 @@
     "mission": "USN04",
     "parameters": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
     "console": "active",
-    "off_log": "local/g2-w1-off_USN04.log",
-    "on_log": "local/g2-w1-on_USN04.log",
+    "off_log": "local/g2-w1-r1-off_USN04.log",
+    "on_log": "local/g2-w1-r1-on_USN04.log",
     "off_exit": 0,
     "on_exit": 0,
     "off_loop_finished": true,
     "on_loop_finished": true,
-    "diff_log": "local/output/g2-w1-pair-diff.txt",
+    "diff_log": "local/output/g2-w1-r1-pair-diff.txt",
     "pair_diff_exit": 1,
-    "summary": "DIFFERENT, gameplay identical: only one native call-table count moved (00469610, 19 to 38). All gameplay rows, 81 unit rows, 25 plane-death-mode rows and 867 summary lines are identical. Window loops completed with exit 0. No native table row changed status because the earlier scene reader retains UNIMPLEMENTED under the same aggregate method key",
+    "summary": "DIFFERENT, gameplay identical. One concrete native diagnostic row added with 19 queue executions; all 81 unit rows, 25 plane-death-mode rows and 867 summary lines identical. Both window loops completed with exit 0",
     "native_table": {
       "rows_off": 1624,
-      "rows_on": 1624,
-      "added": 0,
+      "rows_on": 1625,
+      "added": 1,
       "removed": 0,
       "status_changed": 0,
-      "counts_moved": [{"native": "00469610", "method": "SceneUnit::queue_entity_command", "off": 19, "on": 38, "body_calls": 19}],
-      "pretranslate_noise": "PlatformLoopCallbacks::pretranslate calls 2 to 9"
+      "counts_moved": [],
+      "added_rows": [
+        {
+          "native": "00469610",
+          "method": "Units::queue_native_scene_command",
+          "status": "concrete",
+          "calls": 19
+        }
+      ]
     },
     "gameplay_rows_moved": [],
+    "diagnostic_rows_moved": [
+      {
+        "row": "host methods concrete/unimplemented",
+        "off": "1144 / 477",
+        "on": "1145 / 477",
+        "reason": "separate concrete queue diagnostic key"
+      }
+    ],
     "gameplay": {
       "deaths": 28,
       "hit_records": 380,
@@ -130,9 +149,87 @@
       "first_hit_seconds": 86.15,
       "units": 81
     },
-    "other_lines": "231 only OFF and 231 only ON in the masked multiset; the limit-60 samples are atlas source allocation/append-address diagnostics. pair_diff exits 1 for these and the intentional queue count delta; this is not byte-identical log output"
+    "other_lines": "231 only OFF and 231 only ON in the masked multiset; limit-60 samples are atlas source allocation/append-address diagnostics. The intentional native diagnostic row and these lines cause pair_diff exit 1"
   },
-  "flip_proposal": "propose kWireGoal2Chain51Bound=true after integration review: 19 actual queue calls and identical USN04 gameplay, unit table and summary rows. The committed switch remains false",
-  "limitations": "ordinary host integration and a single USN04 paired run; not original binary-ABI or all-mission equivalence. The earlier scene-reader queue stand-in diagnostic remains and its aggregate status must not be read as evidence that the new body did not run",
-  "report_validation": "verify_report_calls.py: 1 call row checked, 0 failed"
+  "flip_proposal": "keep kWireGoal2Chain51Bound=false pending re-review of these fixes and the alternate-body readiness identifier limitation; refreshed runtime evidence is recorded",
+  "limitations": "Ordinary host integration plus a single refreshed USN04 pair. Constructor failure is a synthetic injected-service probe; present-empty parsing is a focused fixture with host producer/carry/retirement inspected. No Original binary-ABI, all-mission or live synthetic hidden-spawn claim. The current readiness tool still selects the legacy Seg6 identifier despite the qualified raw body call and runtime evidence",
+  "report_validation": "verify_report_calls.py: 1 call row checked, 0 failed",
+  "previous_pair": {
+    "code_commit": "94928437012b657cac73149ef742f5e585652619",
+    "pair": {
+      "mission": "USN04",
+      "parameters": "--frames 3200 --press-start-frame 30 --menu-select USN04 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "console": "active",
+      "off_log": "local/g2-w1-off_USN04.log",
+      "on_log": "local/g2-w1-on_USN04.log",
+      "off_exit": 0,
+      "on_exit": 0,
+      "off_loop_finished": true,
+      "on_loop_finished": true,
+      "diff_log": "local/output/g2-w1-pair-diff.txt",
+      "pair_diff_exit": 1,
+      "summary": "DIFFERENT, gameplay identical: only one native call-table count moved (00469610, 19 to 38). All gameplay rows, 81 unit rows, 25 plane-death-mode rows and 867 summary lines are identical. Window loops completed with exit 0. No native table row changed status because the earlier scene reader retains UNIMPLEMENTED under the same aggregate method key",
+      "native_table": {
+        "rows_off": 1624,
+        "rows_on": 1624,
+        "added": 0,
+        "removed": 0,
+        "status_changed": 0,
+        "counts_moved": [
+          {
+            "native": "00469610",
+            "method": "SceneUnit::queue_entity_command",
+            "off": 19,
+            "on": 38,
+            "body_calls": 19
+          }
+        ],
+        "pretranslate_noise": "PlatformLoopCallbacks::pretranslate calls 2 to 9"
+      },
+      "gameplay_rows_moved": [],
+      "gameplay": {
+        "deaths": 28,
+        "hit_records": 380,
+        "hull_hits": 276,
+        "damage": 6366.6,
+        "shots": 5509,
+        "first_hit_seconds": 86.15,
+        "units": 81
+      },
+      "other_lines": "231 only OFF and 231 only ON in the masked multiset; the limit-60 samples are atlas source allocation/append-address diagnostics. pair_diff exits 1 for these and the intentional queue count delta; this is not byte-identical log output"
+    }
+  },
+  "readiness": {
+    "before_review_fixes": 8809,
+    "after_review_fixes": 8808,
+    "assigned_row_detected_wired": false,
+    "assigned_row_state": "ready",
+    "selected_identifier": "scene_database_queue_entity_command_00469610",
+    "called_identifier": "queue_native_scene_command_00469610",
+    "evidence": "local/output/g2-w1-r1-readiness.txt",
+    "note": "After the final OFF build, the current tool resolves the first Seg6 address-comment candidate and omits the alternate qualified raw reconstruction. It therefore does not detect this revised wire. The row is functionally wired and the independent review counted one row; the refreshed ON log proves 19 raw queue calls. No legacy call or metadata-only use was retained to influence the counter. The instrument mismatch remains for integration/re-review."
+  },
+  "review_round_1": {
+    "review_run": 116,
+    "reviewed_head": "a5de1776184888af2548dcf493c3c01caf4da3c9",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "change": "existing raw queue body with all required frame cells replaces the Seg6 call; obsolete adapter callbacks removed",
+        "validation": "OFF/ON builds and fresh USN04 pair passed. Focused synthetic fault probe compiled the unchanged raw queue source with renamed service boundaries: a throwing constructor caused exactly one allocation, one unwind free and no insertion. This is cleanup-schedule evidence, not Original FH3/ABI proof",
+        "probe": "local/g2-w1-r1-queue-probe.cpp",
+        "probe_command": "cmd.exe /d /c local/g2-w1-r1-queue-probe.cmd"
+      },
+      {
+        "finding": 2,
+        "status": "fixed",
+        "change": "command_present is set by the scene creator callback, carried from hidden-spawn carry_command_queued, used for enqueue, and present-empty records are retired before early return",
+        "validation": "one added existing-suite case verifies present-empty Command queues and retains Path1, alongside the existing absent/nonempty case; both build modes pass. Producer/carry/early-return sites inspected; the stock USN04 pair does not claim live coverage of a synthetic present-empty hidden spawn"
+      }
+    ],
+    "disagreements": [],
+    "off_identity": "original assignments and empty-command early return remain unchanged; every new producer store and host call is gated by the OFF chain-51 switch",
+    "switch_off": true
+  }
 }
