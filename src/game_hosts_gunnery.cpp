@@ -5,6 +5,12 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal1_chain1_switches.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/gameplay_seg40_59_cc13.hpp"
+#include "bsp/bot_fire_target.hpp"
+#include "bsp/native_damageable_class_lua.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/ocean_spectrum.hpp"
 #include "bsp/projectile_helpers.hpp"
@@ -4159,6 +4165,20 @@ struct GameGunneryHost::Impl {
     unsigned long long seg_destroyed{0};
     double seg_damage{0.0};
     void apply_segment_damage_0092d1f0(std::size_t unit, int index, float damage);
+    bool gun_accepts_aim_message(const GameGunRow& gun, int message_group) {
+        bsp::UnitGunAimDeviceTests tests;
+        tests.device_present = gun.unit_index < units.count();
+        tests.device_ready = bsp::gun_is_operational_00729f10_cc13(units, gun);
+        tests.weapon_sub_type = gun.category;
+        tests.accepts_kind2_extra = gun.category == 5 || gun.category == 6;
+        tests.accepts_kind3 = gun.category == 2 || gun.category == 3
+            || gun.category == 4 || gun.category == 6;
+        tests.accepts_kind5 = gun.category == 8 || gun.category == 9;
+        const bool accepts = bsp::unit_gun_aim_accepts_device_00954210(
+            static_cast<bsp::UnitGunAimMessageKind>(message_group), tests);
+        done("PlayerGunSeat::device_filter_00954210", 0x00954210u);
+        return accepts;
+    }
     void ensure_hull_segments_00937c90(std::size_t unit);
     void explode_to_parts_00935c70(std::size_t unit);
     unsigned long long explode_calls{0}, explode_detached{0};
@@ -4416,6 +4436,29 @@ struct GameGunneryHost::Impl {
     void flatten_class_tables(const std::vector<int>& class_ids);
     int flat(int class_id, const char* key, int fallback) {
         return lua.read_vehicle_class_integer(class_id, "BSPGun", key, fallback);
+    }
+    int flat_mesh_category(int class_id, const char* key) {
+        // The ON flatten keeps the authored name so the native search, rather
+        // than Lua's mcat stand-in, decides the damage-section category.
+        const int top = lua.lua_gettop();
+        lua.lua_getglobal("VehicleClass");
+        bsp::MissionLuaArgument index;
+        index.type = bsp::MissionLuaArgumentType::Number;
+        index.number = class_id;
+        lua.push_argument(index);
+        lua.lua_gettable(-2);
+        lua.lua_pushstring("BSPGun");
+        lua.lua_gettable(-2);
+        lua.lua_pushstring(key);
+        lua.lua_gettable(-2);
+        const std::string name = lua.lua_tolstring_at_top();
+        lua.lua_settop(top);
+        std::array<const char*, bsp::kMeshCategoryCount + 1> categories{};
+        std::copy_n(bsp::kMeshCategoryNames, bsp::kMeshCategoryCount, categories.data());
+        const int result = bsp::native_mesh_category_from_name_007149d0(
+            name.c_str(), categories.data());
+        done("Gunnery::mesh_category_from_name_007149d0", 0x007149d0u);
+        return result;
     }
 
     // Packet cc9_torpedo_stock. 00810E90: loaded barrels (timer below the
@@ -5778,8 +5821,15 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "        local sc = secs[k]\n"
         "        if type(sc) == 'table' then\n"
         "          ns = ns + 1\n"
-        "          local q = 's' .. ns .. '_'\n"
-        "          f[q .. 'kind'] = mcat(sc.MshCategory)\n"
+        "          local q = 's' .. ns .. '_'\n";
+    // 007149D0 feeds authored names to native_mesh_category_from_name; OFF keeps Lua mcat.
+    if constexpr (bsp::kWireGoal1Chain1Bound) {
+        chunk += "          f[q .. 'kind'] = type(sc.MshCategory) == 'string' and sc.MshCategory or ''\n";
+    } else {
+        chunk +=
+        "          f[q .. 'kind'] = mcat(sc.MshCategory)\n";
+    }
+    chunk +=
         "          f[q .. 'idx'] = type(sc.Index) == 'number' and math.floor(sc.Index + 0.5) or 0\n"
         "          f[q .. 'fc'] = num(sc.FailureChance, 1000) or -100000\n"
         "          f[q .. 'thr'] = num(sc.FailureDamageThreshold, 1000) or -1000\n"
@@ -5800,8 +5850,15 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "          nf = nf + 1\n"
         "          local q = 'fl' .. nf .. '_'\n"
         "          local nm = type(r.FailureName) == 'string' and r.FailureName or ''\n"
-        "          if names[nm] == nil then names[nm] = nf end\n"
-        "          f[q .. 'kind'] = mcat(r.SectionName)\n"
+        "          if names[nm] == nil then names[nm] = nf end\n";
+    // 007149D0 feeds authored names to native_mesh_category_from_name; OFF keeps Lua mcat.
+    if constexpr (bsp::kWireGoal1Chain1Bound) {
+        chunk += "          f[q .. 'kind'] = type(r.SectionName) == 'string' and r.SectionName or ''\n";
+    } else {
+        chunk +=
+        "          f[q .. 'kind'] = mcat(r.SectionName)\n";
+    }
+    chunk +=
         "          f[q .. 'id'] = names[nm]\n"
         "          f[q .. 'dur'] = num(r.FailureDuration, 1000) or 0\n"
         "          local lo = string.lower(nm)\n"
@@ -6040,7 +6097,12 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 char key[24];
                 DamageControl::Section sec;
                 std::snprintf(key, sizeof(key), "s%d_kind", k);
+                // 007149D0 calls native_mesh_category_from_name; OFF keeps Lua's mapped integer.
+                if constexpr (bsp::kWireGoal1Chain1Bound) {
+                    sec.kind = flat_mesh_category(type_id, key);
+                } else {
                 sec.kind = flat(type_id, key, -1);
+                }
                 std::snprintf(key, sizeof(key), "s%d_idx", k);
                 sec.index = flat(type_id, key, 0);
                 std::snprintf(key, sizeof(key), "s%d_fc", k);
@@ -6064,7 +6126,12 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     char key[24];
                     FailureRow frow;
                     std::snprintf(key, sizeof(key), "fl%d_kind", k);
+                    // 007149D0 calls native_mesh_category_from_name; OFF keeps Lua's mapped integer.
+                    if constexpr (bsp::kWireGoal1Chain1Bound) {
+                        frow.kind = flat_mesh_category(type_id, key);
+                    } else {
                     frow.kind = flat(type_id, key, -1);
+                    }
                     std::snprintf(key, sizeof(key), "fl%d_id", k);
                     frow.name_id = flat(type_id, key, k);
                     std::snprintf(key, sizeof(key), "fl%d_eff", k);
@@ -7485,7 +7552,15 @@ public:
             }
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
+        // 00729BC0 calls bot_slot_for_projectile_kind; OFF keeps the range-only stand-in.
+        if constexpr (bsp::kWireGoal1Chain1Bound) {
+            const auto* dp = owner_.dp_air_ammo(slot, row.category, other);
+            const int projectile_kind = dp != nullptr ? dp->sub_type : row.bullet_sub_type;
+            in.slot_accepts_target = in_range
+                && bsp::bot_slot_for_projectile_kind_00729bc0(projectile_kind, row.category) != 0;
+        } else {
         in.slot_accepts_target = in_range;
+        }
         if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
             && other < owner_.units.count()) {
             // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
@@ -7591,6 +7666,19 @@ public:
         const int kind = row.category;
         in.is_torpedo_class_launcher = kind == 5 || kind == 6;       // 005459E0
         in.minimum_air_range = 0.0f;
+        // 00729B90 calls gun_min_air_range_record; OFF keeps the two host kind tests.
+        if constexpr (bsp::kWireGoal1Chain1Bound) {
+            const int record = bsp::gameplay_seg40_59_cc13::gun_min_air_range_record_00729b90(kind);
+            if (record == 0) {
+                const auto it = owner_.bullet_min_range.find(row.bullet_class);
+                if (it != owner_.bullet_min_range.end()) in.minimum_air_range = it->second;
+            } else {
+                const std::size_t g = static_cast<std::size_t>(&row - owner_.guns.data());
+                const auto it = owner_.second_ammo_by_gun.find(g);
+                if (it != owner_.second_ammo_by_gun.end()) in.minimum_air_range = it->second.min_range;
+            }
+            owner_.done("Gunnery::minimum_air_range_00729b90", 0x00729b90u);
+        } else {
         if (kind == 5) {                                              // 00729B90
             const auto it = owner_.bullet_min_range.find(row.bullet_class);
             if (it != owner_.bullet_min_range.end()) in.minimum_air_range = it->second;
@@ -7599,6 +7687,7 @@ public:
             const GameGunneryHost::Impl::SecondAmmo* dp = owner_.dp_air_ammo(
                 static_cast<std::size_t>(&row - owner_.guns.data()), kind, other);
             if (dp != nullptr) in.minimum_air_range = dp->min_range;
+        }
         }
         float right[3], up[3], forward[3], origin[3];
         owner_.unit_pose(unit_, right, up, forward, origin);
@@ -10082,12 +10171,22 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 } else if (dh + dv > kTailGunnerHoldSum) {                   // 008FFEFC
                     request = false;
                 }
+                // 008FEF40 calls gun_bot_trigger_step; OFF keeps the host debounce.
+                if constexpr (bsp::kWireGoal1Chain1Bound) {
+                    bsp::GunBotTriggerState trigger{tg.act_58, tg.next_59, tg.delay_5c};
+                    bsp::gun_bot_trigger_step_008fef40(trigger, request, dt);
+                    tg.act_58 = trigger.committed;
+                    tg.next_59 = trigger.requested;
+                    tg.delay_5c = trigger.timer;
+                    done("GunBot::debounced_trigger_008fef40", 0x008fef40u);
+                } else {
                 if (request != tg.next_59) {                                 // 008FEF4A
                     tg.next_59 = request;
                     tg.delay_5c = request ? 0.1f : 0.3f;                     // 00D17D3C / 00CE69C8
                 } else {
                     if (tg.delay_5c >= 0.0f) tg.delay_5c -= dt;              // 008FEF7B
                     if (!(0.0f < tg.delay_5c)) tg.act_58 = tg.next_59;       // 008FEF91
+                }
                 }
                 want_fire = tg.act_58;                                       // 008FEFC2
                 tg.trigger = tg.act_58;
@@ -11866,7 +11965,18 @@ void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float d
                 h.units.unit_position_00fc(i, x, y, z);
                 const float dx = x - shot.position[0], dy = y - shot.position[1],
                     dz = z - shot.position[2];
+                const float d2 = [&]() {
+                // 004193E0 calls vector3_length_squared; OFF keeps the host distance sum.
+                if constexpr (bsp::kWireGoal1Chain1Bound) {
+                    const float delta[3] = {dx, dy, dz};
+                    const float result = bsp::engine_seg1_cc13::vector3_length_squared_004193e0(delta);
+                    h.done("Torpedo::target_distance_squared_004193e0", 0x004193e0u);
+                    return result;
+                } else {
                 const float d2 = dx * dx + dy * dy + dz * dz;
+                return d2;
+                }
+                }();
                 if (pick == 0 || best > d2) {
                     best = d2;
                     pick = i + 1;
@@ -13558,8 +13668,22 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (summary.first_hit_seconds < 0.0f) summary.first_hit_seconds = clock_seconds;
 
     // 0077CE60, step 7 of 009239A0: the attribution block on the victim.
+    const bool attribute = [&]() {
+    // 00470740 calls max_part_damage; OFF keeps the host base-damage attribution gate.
+    if constexpr (bsp::kWireGoal1Chain1Bound) {
+        // 0077CE8x supplies zero armour (RET 4), with ECX pointing at this hit.
+        // The hit's actual part list, falloff and owner/weapon modifiers remain live inputs.
+        const float damage = hit.hull_segment == -1
+            ? bsp::max_part_damage_00470740(hit, 0.0f)
+            : bsp::hull_damage_00470510(hit, 0.0f);
+        if (hit.hull_segment == -1) done("Hit::max_part_damage_00470740", 0x00470740u);
+        return !kKillCreditDamageGateBound || damage > 0.0f;
+    } else {
     const bool attribute = !kKillCreditDamageGateBound
         || (hit.hull_damage_base + hit.part_damage_base) > 0.0f;   // 0077CEB7 COMISS / JBE
+    return attribute;
+    }
+    }();
     if (!attribute) ++summary_zero_damage_attributions_skipped;
     bsp::KillAttributionSource source;
     source.ordnance_kind = gun.category;
@@ -14136,6 +14260,23 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
         return;
     }
     float& h = dc.segment_health[index];
+    // 0092D1F0 calls ship_part_damage; OFF keeps the host health/sentinel arithmetic.
+    if constexpr (bsp::kWireGoal1Chain1Bound) {
+        const auto result = bsp::ship_part_damage_0092d1f0(h, damage,
+            static_cast<signed char>(dc.segment_present[index] ? 0 : -1));
+        if (!result.applied) return;
+        const float before = h;
+        h = result.health;
+        seg_damage += before - (h > 0.0f ? h : 0.0f);
+        if (result.destroyed) {
+            ++seg_destroyed;
+            dc.destroyed_segments.emplace_back(index, clock_seconds);
+            log.notef("gunnery: hull segment %d of %s destroyed t=%.2f (0092D1F0 -> 99h -> "
+                "0080E440)", index, unit_state[unit].row.name.c_str(),
+                static_cast<double>(clock_seconds));
+            record("Parts::detach_part_message_99h_0092ced0", 0x0092ced0u);
+        }
+    } else {
     if (!(h > -10000.0f)) return;   // 0092D23x against 00D19620
     const float before = h;
     h -= damage;                     // 0092D275
@@ -14148,6 +14289,7 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
             "0080E440)", index, unit_state[unit].row.name.c_str(),
             static_cast<double>(clock_seconds));
         record("Parts::detach_part_message_99h_0092ced0", 0x0092ced0u);
+    }
     }
 }
 
@@ -16249,12 +16391,17 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (unit >= unit_state.size() || unit_state[unit].dead) return;
         for (std::size_t g = 0; g < guns.size(); ++g) {
             GameGunRow& gun = guns[g];
+            // 00954210 calls unit_gun_aim_accepts_device; OFF keeps the group-5 host filter.
+            if constexpr (bsp::kWireGoal1Chain1Bound) {
+                if (gun.unit_index != unit || !gun_accepts_aim_message(gun, m.group)) continue;
+            } else {
             if constexpr (bsp::kGunIsOperationalHostedCc13) {
                 // 0095421F: 00954210(5) asks 00729F10 first.
                 if (gun.unit_index != unit
                     || !bsp::gun_is_operational_00729f10_cc13(units, gun)) continue;
             } else {
                 if (gun.unit_index != unit) continue;
+            }
             }
             if (gun.category == 8) {
                 gun.seat_trigger = m.held_34;
@@ -16347,12 +16494,17 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(kind 1 or 2): operational (00729F10; unit+720h and gun
         // +3B8h/+5Dh are never set here) and Function 1, 5 or 6.
+        // 00954210 calls unit_gun_aim_accepts_device; OFF keeps the group-1/2 host filter.
+        if constexpr (bsp::kWireGoal1Chain1Bound) {
+            if (!gun_accepts_aim_message(gun, m.group)) continue;
+        } else {
         if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // 0095421F: 00729F10.
             if (!bsp::gun_is_operational_00729f10_cc13(units, gun)
                 || !(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
         } else {
             if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        }
         }
         float muzzle[3];
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
@@ -16495,12 +16647,17 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group4(std::size_t unit,
     if (press_arm && m.pressed_35) ++group4_presses;
     for (std::size_t g = 0; g < guns.size(); ++g) {
         GameGunRow& gun = guns[g];
+        // 00954210 calls unit_gun_aim_accepts_device; OFF keeps the group-4 host filter.
+        if constexpr (bsp::kWireGoal1Chain1Bound) {
+            if (gun.unit_index != unit || !gun_accepts_aim_message(gun, m.group)) continue;
+        } else {
         if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // 0095421F: 00954210(4) asks 00729F10 before Function 7.
             if (gun.unit_index != unit || !bsp::gun_is_operational_00729f10_cc13(units, gun)
                 || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
         } else {
             if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+        }
         }
         const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
         const float v = bsp::gun_snap_heading_to_fire_window_007f6190(arcs, bearing, kQuarterPi);
@@ -16643,7 +16800,13 @@ void GameGunneryHost::Impl::seat_artillery_lead_009578c3(const GameGunRow& gun,
     intercept_00901c20(lead);
     const float delta[3] = {lead[0] - target_pos[0], lead[1] - target_pos[1],
                             lead[2] - target_pos[2]};
+    // 0042AEB0 calls vector3_add_in_place; OFF keeps the host three-component add.
+    if constexpr (bsp::kWireGoal1Chain1Bound) {
+        bsp::profile_seg2_cc13::vector3_add_in_place_0042aeb0(aim, delta);
+        done("PlayerGunSeat::add_lead_offset_0042aeb0", 0x0042aeb0u);
+    } else {
     for (int i = 0; i < 3; ++i) aim[i] = delta[i] + aim[i];
+    }
     ++seat_lead_other;
     done("PlayerGunSeat::artillery_hit_lead_other", 0x00957a00u);
 }
@@ -16735,6 +16898,10 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
         if (gun.unit_index != unit) continue;
         // 00954210(3, dev): operational (00729F10) and 005459B0, the weapon
         // Function [[dev+3F4h]+80h] in {2, 3, 4, 6}.
+        // 00954210 calls unit_gun_aim_accepts_device; OFF keeps the group-3 host filter.
+        if constexpr (bsp::kWireGoal1Chain1Bound) {
+            if (!gun_accepts_aim_message(gun, m.group)) continue;
+        } else {
         if constexpr (bsp::kGunIsOperationalHostedCc13) {
             // 0095421F: 00729F10.
             if (!bsp::gun_is_operational_00729f10_cc13(units, gun)
@@ -16747,6 +16914,7 @@ void GameGunneryHost::Impl::apply_gun_aim_message_group3(std::size_t unit,
                   || gun.category == 6)) {
                 continue;
             }
+        }
         }
         ++seat_artillery_guns;
         const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(dev, 0)
