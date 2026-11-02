@@ -40,6 +40,7 @@
 #include "bsp/cc13_big1_null_host.hpp"
 #include "bsp/hud_root_rows.hpp"
 #include "bsp/local_player_unit_lists.hpp"
+#include "bsp/wire_goal1_chain12_switches.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -283,6 +284,7 @@ struct GameHudHost::Impl {
     void run_root_observer_notice();
     // Packet cc9_force_select_unit: the HUD root's unit vectors and cursor.
     bsp::HudRootUnitLists root_lists{};
+    bsp::HudRootSelectionState root_selection{};
     unsigned long long root_rebuilds{0};
     unsigned long long force_calls{0};
     unsigned long long force_selects{0};
@@ -3717,6 +3719,45 @@ void GameHudHost::update_warning_screen_00683020(float seconds) {
 }
 
 namespace {
+// 00644DB0's callback surface over the same lists/cursor used by 00648290
+// and 006485A0. Handles remain unit index + 1, with zero representing null.
+class HudRootSelectionBinding final : public bsp::HudRootSelectionHost {
+public:
+    explicit HudRootSelectionBinding(GameHudHost::Impl& owner)
+        : owner_(owner), lists_(owner) {}
+    bool unit_is_group_leader(std::uint32_t unit) override {
+        return lists_.unit_is_group_leader_00778890(unit);
+    }
+    bool unit_is_group_member(std::uint32_t unit) override {
+        return lists_.unit_is_group_member_007788b0(unit);
+    }
+    std::uint32_t group_leader(std::uint32_t unit) override {
+        return lists_.group_leader_007788d0(unit);
+    }
+    bool input_action_pressed(int action) override {
+        return owner_.menu.input_action_pressed(action);
+    }
+    bool base_screen_active() override {
+        // 0068A140 reads manager+20h (the pending record, not the applied id).
+        return owner_.record_pending_id_20 == 0x31 || owner_.record_pending_id_20 == 0x32;
+    }
+    bool panel_54_active() override {
+        // Manager+54h is registry slot 4Ch; +5h is its applied byte.
+        return owner_.menu.in_game_screen_applied(0x4c);
+    }
+    std::uint32_t controlled_unit() override { return lists_.controlled_unit(); }
+    bool unit_virtual_124(std::uint32_t unit) override {
+        return unit != 0 && owner_.unit_vtable_124(unit - 1, 0x00644e7eu);
+    }
+    std::uint32_t selected_unit() override {
+        return bsp::hud_root_cursor_unit_00644a60(owner_.root_lists);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+    HudRootListsBinding lists_;
+};
+
 // bsp::HudRootUpdateHost over this process's HUD, for 00649860. One record per
 // input the host cannot source. Every body that writes the controlled unit,
 // pushes an interface request or toggles the closed HUD is a record that
@@ -3829,17 +3870,72 @@ public:
         owner_.menu.frontend().set_widget_visible(*w, shown);
     }
     std::uint32_t resolve_weapon_info(bool& needs_fallback) override {
+        // 00644CC0 calls hud_root_find_unit; OFF keeps the neutral selection tuple.
+        if constexpr (kWireGoal1Chain12Bound) {
+            HudRootSelectionBinding binding(owner_);
+            const auto& lists = owner_.root_lists;
+            const bsp::HudUnitListView primary{lists.primary_8c.data(),
+                static_cast<std::uint32_t>(lists.primary_8c.size())};
+            const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
+                static_cast<std::uint32_t>(lists.secondary_9c.size())};
+            const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
+            const auto selection = bsp::hud_root_find_unit(primary, secondary, controlled, binding);
+            needs_fallback = selection.index == 0xffffu;
+            return (static_cast<std::uint32_t>(selection.index) << 16)
+                | (selection.secondary ? 1u : 0u);
+        } else {
         // 00644CC0 (and its fallback 00644C20) look the controlled unit up in
         // the primary and secondary lists 00648290 builds; neither the lists
         // nor the lookups are bound here. +C2h has no reader in this host.
         owner_.record("HudRootScreen::selection_tuple", 0x0064a114u);
         needs_fallback = false;
         return 0xFFFF0000u;
+        }
     }
-    std::uint32_t resolve_weapon_info_fallback() override { return 0xFFFF0000u; }
+    std::uint32_t resolve_weapon_info_fallback() override {
+        // 00644C20 calls hud_root_find_primary_unit; OFF keeps the neutral fallback.
+        if constexpr (kWireGoal1Chain12Bound) {
+            HudRootSelectionBinding binding(owner_);
+            const auto& lists = owner_.root_lists;
+            const bsp::HudUnitListView primary{lists.primary_8c.data(),
+                static_cast<std::uint32_t>(lists.primary_8c.size())};
+            const auto controlled = owner_.units != nullptr ? binding.controlled_unit() : 0u;
+            const auto selection = bsp::hud_root_find_primary_unit(primary, controlled, binding);
+            return (static_cast<std::uint32_t>(selection.index) << 16)
+                | (selection.secondary ? 1u : 0u);
+        } else {
+            return 0xFFFF0000u;
+        }
+    }
     void update_unit_rows(float) override {
+        // 00644DB0 calls hud_root_poll_selection; OFF keeps the selection-poll record.
+        if constexpr (kWireGoal1Chain12Bound) {
+            if (owner_.units == nullptr) return;
+            HudRootSelectionBinding binding(owner_);
+            auto& state = owner_.root_selection;
+            auto& lists = owner_.root_lists;
+            const auto incoming = owner_.hud_root.weapon_info_field;
+            state.selection = {(incoming & 0xffu) != 0,
+                static_cast<std::uint16_t>(incoming >> 16)};
+            // The caller just wrote root+C2h. selected_unit() must see that
+            // same tuple if the poll converts a secondary selection to primary.
+            lists.cursor = state.selection;
+            state.pending = lists.force_pending_c0;
+            const bsp::HudUnitListView primary{lists.primary_8c.data(),
+                static_cast<std::uint32_t>(lists.primary_8c.size())};
+            const bsp::HudUnitListView secondary{lists.secondary_9c.data(),
+                static_cast<std::uint32_t>(lists.secondary_9c.size())};
+            bsp::hud_root_poll_selection(state, primary, secondary, binding);
+            lists.cursor = state.selection;
+            lists.force_pending_c0 = state.pending;
+            owner_.hud_root.weapon_info_field = (incoming & 0x0000ff00u)
+                | (static_cast<std::uint32_t>(state.selection.index) << 16)
+                | (state.selection.secondary ? 1u : 0u);
+            owner_.done("HudRootScreen::selection_poll", 0x00644db0u);
+        } else {
         // 00644DB0, the selection poll over actions 8Dh, 8Ch, 8Eh and 8Fh.
         owner_.record("HudRootScreen::selection_poll", 0x00644db0u);
+        }
     }
     void update_medals() override {
         // 00648C20, the unit rows (name, flag, payload, health, command).
