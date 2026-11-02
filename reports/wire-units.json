@@ -5,82 +5,319 @@
   "switch_header": "include/bsp/wire_units_host_switches.hpp",
   "harness": "claude",
   "rows": [
-    {"row": "0071ea00", "address": "009f8420", "native": "0071ea00", "function": "009f8160", "host_site": "GameUnitsHost::run_squadron_free_attack_009f8470, the 009F841E..009F8463 retreat-outside-map test", "status": "wired"},
-    {"row": "0099b6a0", "address": "009d49da", "native": "0099b6a0", "kind": "tail_jump", "function": "009d49a0", "host_site": "torpedo arm offer, after torpedo_arm_drop_009d49a0", "status": "wired"},
-    {"row": "006ba620", "address": "007c73b0", "native": "006ba620", "function": "007c71e0", "host_site": "GameUnitsHost::Impl::landing_run_length_006ba620", "status": "wired"},
-    {"row": "00780670", "address": "0076c65d", "native": "00780670", "function": "0076c600", "host_site": "GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c", "status": "wired"},
-    {"row": "00c41ad0", "address": "00c4211b", "native": "00c41ad0", "function": "00c420e0", "host_site": "GameUnitsHost::Impl::physics_world initializer", "status": "wired"},
-    {"row": "007c1430", "address": "007ca4d3", "native": "007c1430", "function": "007ca3f0", "host_site": "GameUnitsHost::Impl::ground_state_from_locked_007ca3f0", "status": "wired"},
-    {"row": "007d80c0", "address": "007dc81d", "native": "007d80c0", "function": "007db680", "host_site": "plane core-law step, the ctl+7Ch store after control_step_007da710", "status": "wired"},
-    {"row": "007d99c0", "address": "0099d99e", "native": "007d99c0", "function": "0099d300", "host_site": "GameUnitsHost::Impl::plane_forward_speed_007d99c0 (also read for 007D9AB4 / 007DAABD / 007DC878)", "status": "wired"},
-    {"row": "007dccf0", "address": "007cc15e", "native": "007dccf0", "function": "007cbfa0", "host_site": "plane ground-roll step 6, the free-flight / ground-law arm choice", "status": "wired"},
-    {"row": "009583c0", "address": "00819574", "native": "009583c0", "function": "008193a0", "host_site": "GameUnitsHost::place_at_world_position_008193a0", "status": "wired"},
-    {"row": "009585b0", "address": "00819848", "native": "009585b0", "function": "00819840", "host_site": "GameUnitsHost::put_rel_to_00819840", "status": "wired"},
-    {"row": "00977050", "address": "00855375", "native": "00977050", "function": "00855250", "host_site": "ShipMotionBinding::run_submarine_air_and_crush, air warning low", "status": "wired"},
-    {"row": "009771e0", "address": "0085533b", "native": "009771e0", "function": "00855250", "host_site": "ShipMotionBinding::run_submarine_air_and_crush, air warning critical", "status": "wired"},
-    {"row": "00977370", "address": "0085523c", "native": "00977370", "function": "008551c0", "host_site": "ShipMotionBinding::run_submarine_air_and_crush, crush report", "status": "wired"},
-    {"row": "0041df40", "address": "007f1dc5", "native": "0041df40", "function": "007f1d90", "host_site": "takeoff_altitude_floor_009cfa80, the squadron+34Ch layer", "status": "wired_not_counted", "reason": "the recon name is the qualified GameAvoidZoneRegistry::select_layer_by_slope_0041df40; the body is inlined in the OFF build, so the map has no plain symbol and tools/wire_readiness.py cannot see the use"},
-
-    {"row": "009c3c40", "status": "skipped", "reason": "needs the MoveToTaskCalls image allocator (operator_new_00bf681b, 009BE310, 009C3000); the host mentions 009C3C40 only in a switch comment"},
-    {"row": "009cdd10", "status": "skipped", "reason": "already called in the host (owner_.takeoff_permission_009cdd10); the readiness identifier is the qualified Impl name and the body is inlined, so no map symbol"},
-    {"row": "006c45c0", "status": "skipped", "reason": "already called in the host (landing_released_006c45c0); qualified Impl name, inlined, no map symbol"},
-    {"row": "006d0150", "status": "skipped", "reason": "already called in the host (carrier_elevator_lift_free_006d0150); qualified Impl name, inlined, no map symbol"},
-    {"row": "006d02f0", "status": "skipped", "reason": "already called in the host (carrier_elevator_blocked_006d02f0); qualified Impl name, inlined, no map symbol"},
-    {"row": "007c16f0", "status": "skipped", "reason": "already called in the host (owner_.plane_four_to_five_007c16f0); qualified Impl name, inlined, no map symbol"},
-    {"row": "007cc820", "status": "skipped", "reason": "already called in the host (host.plane_enter_state_one_007cc820); qualified Impl name, inlined, no map symbol"},
-    {"row": "00a03760", "status": "skipped", "reason": "the arrival-value computation lives in src/game_hosts_ai.cpp; this file only has the +7A0h accessor comment"},
-    {"row": "00a31730", "status": "skipped", "reason": "only a comment here (the coordinator is in game_hosts_ai.cpp); the row's identifier is ai_init_party_think_schedule_00a163d0, 00A163D0's body, so using it would misattribute"},
-    {"row": "006bcd20", "status": "skipped", "reason": "the host resolves decks by name through AirOpsDeckRegistry; the body answers an image byte offset (+1188h / +72Ch) the host has no object for"},
-    {"row": "00414e10", "status": "skipped", "reason": "needs PoseRefreshView and the unit+110h derived inverse, which this host does not keep"},
-    {"row": "0046cf40", "status": "skipped", "reason": "scene parsing runs in the scene loader; this file only consumes the composed entity.world frame"},
-    {"row": "004b4740", "status": "skipped", "reason": "the local-slot setter site is src/game_hosts_mission.cpp; only a comment here"},
-    {"row": "006e3500", "status": "skipped", "reason": "the host keeps one aggregate rack_ammo, no per-device SingleRackState; a per-rack call would be fabricated"},
-    {"row": "00741140", "status": "skipped", "reason": "address leased by agent/wire-lua (lease refused); edit reverted"},
-    {"row": "007d8020", "status": "skipped", "reason": "address leased by agent/wire-lua (lease refused); edit reverted"},
-    {"row": "007d9c10", "status": "skipped", "reason": "address leased by agent/wire-lua (lease refused); edit reverted"},
-    {"row": "007d9ce0", "status": "skipped", "reason": "address leased by agent/wire-lua (lease refused); edit reverted"},
-    {"row": "009565a0", "status": "skipped", "reason": "address leased by agent/wire-orders (lease refused); edit reverted"},
-    {"row": "00762a00", "status": "skipped", "reason": "qualified recon name seg42::construct_plane_takeoff_00762a00 and no map symbol: a use behind an OFF switch cannot register as wired"},
-    {"row": "00762a60", "status": "skipped", "reason": "qualified recon name seg42::construct_plane_touchdown_00762a60, no map symbol (as 00762A00)"},
-    {"row": "007c6340", "status": "skipped", "reason": "the host seeds +900h/+908h in create_units before class Height (class+A8h) is loaded (hull_height is set later), and the seed stands in for creation, not 007F2920's call"},
-    {"row": "008522c0", "status": "skipped", "reason": "the host has no unit+1279h byte or catapult child list; its SUBSTITUTION reads false"},
-    {"row": "008687c0", "status": "skipped", "reason": "needs renderer RenderCommandReference / CameraTransform objects the units host does not hold"},
-    {"row": "008689c0", "status": "skipped", "reason": "needs renderer RenderCommandReference / CameraTransform objects the units host does not hold"},
-    {"row": "00875b90", "status": "skipped", "reason": "its body is GameFixedStepHost's unimplemented-log stub in game_hosts_fixed_step.cpp, not a reconstruction"},
-    {"row": "0087bcc0", "status": "skipped", "reason": "needs native image unit, bag and model storage (NativeUnitHealthPartsView)"},
-    {"row": "0087fa50", "status": "skipped", "reason": "the landscape height walk is world_ground_height_00903860 in game_hosts_scene_contents.cpp; no LandscapeState here"},
-    {"row": "009bd400", "status": "skipped", "reason": "raw image singleton behind the large Cc13Seg67bHost interface"},
-    {"row": "004dc6a0", "status": "skipped", "reason": "the global-subsystem construction belongs to game_hosts_global_subsystems.cpp"},
-    {"row": "00c5bb30", "status": "skipped", "reason": "the host already runs 00C5BB30's phases itself (velocity, contact, position); the body's callback interface (contact records) is not small"},
-    {"row": "004842c0", "status": "skipped", "reason": "no effect node in this host: the bow/stern anchor stand-ins only record, so the relative point would be discarded"},
-    {"row": "00815370", "status": "skipped", "reason": "no effect-target arrays (+0Ch/+18h) in this host; tick_part only records"},
-    {"row": "0084bf00", "status": "skipped", "reason": "the projectile sweep runs in the gunnery host; this file only has its own-base filter"},
-    {"row": "00748c40", "status": "skipped", "reason": "qualified recon name cc13_seg41::land_fort_allocate_stationary_prop_00748c40, no map symbol"},
-    {"row": "009fa2e0", "status": "skipped", "reason": "qualified recon name bsp::cc13_seg68::approach_ref_target_velocity_009fa2e0, no map symbol"},
-    {"row": "009faad0", "status": "skipped", "reason": "qualified recon name bsp::cc13_seg68::bot_task_gun_construct_009faad0, no map symbol"},
-    {"row": "009fb190", "status": "skipped", "reason": "qualified recon name bsp::cc13_seg68::approach_ref_bind_target_009fb190, no map symbol"}
+    {
+      "row": "006ba620",
+      "address": "007c73b0",
+      "native": "006ba620",
+      "function": "007c71e0",
+      "host_site": "GameUnitsHost::Impl::landing_run_length_006ba620",
+      "status": "wired",
+      "reach": "not reached in USN04: every caller is on the landing queue, touchdown attach or land-begin steer, and the ON log has land task installs=0 and carrier deck parent parented=0"
+    },
+    {
+      "row": "007c1430",
+      "address": "007ca4d3",
+      "native": "007c1430",
+      "function": "007ca3f0",
+      "host_site": "GameUnitsHost::Impl::ground_state_from_locked_007ca3f0",
+      "status": "wired",
+      "reach": "reached: Plane::ground_state_from_locked_007ca3f0 calls=12 in the ON log",
+      "integrator_note": "007C1430 has two bodies: the ledger names src/pilot_controls.cpp:209, which is partial (no +904h/+C18h arm); src/plane_ground_ops.cpp:62, which this arm calls, is the complete one"
+    },
+    {
+      "row": "007dccf0",
+      "address": "007cc15e",
+      "native": "007dccf0",
+      "function": "007cbfa0",
+      "host_site": "plane ground-roll step 6, the free-flight / ground-law arm choice",
+      "status": "wired",
+      "reach": "reached: summary mission plane step ground_roll=2436 in the ON log"
+    },
+    {
+      "row": "00977050",
+      "address": "00855375",
+      "native": "00977050",
+      "function": "00855250",
+      "host_site": "ShipMotionBinding::run_submarine_air_and_crush, air warning low",
+      "status": "wired",
+      "reach": "not reached in USN04 (no submarine; no SubmarineUnit rows); needs a submarine mission pair"
+    },
+    {
+      "row": "009771e0",
+      "address": "0085533b",
+      "native": "009771e0",
+      "function": "00855250",
+      "host_site": "ShipMotionBinding::run_submarine_air_and_crush, air warning critical",
+      "status": "wired",
+      "reach": "not reached in USN04 (no submarine; no SubmarineUnit rows); needs a submarine mission pair"
+    },
+    {
+      "row": "00977370",
+      "address": "0085523c",
+      "native": "00977370",
+      "function": "008551c0",
+      "host_site": "ShipMotionBinding::run_submarine_air_and_crush, crush report",
+      "status": "wired",
+      "reach": "not reached in USN04 (no submarine; no SubmarineUnit rows); needs a submarine mission pair"
+    },
+    {
+      "row": "0071ea00",
+      "status": "skipped",
+      "reason": "round trip: the body is `present && is_kind_0f` and present is always true at this site, so the arm handed back unit_is_kind_of(t, 0Fh); ON arm removed (stricter counting rule)"
+    },
+    {
+      "row": "0099b6a0",
+      "status": "skipped",
+      "reason": "duplicates a release that already runs: torpedo_arm_drop_009d49a0 makes it under kTorpedoArmFallthroughReleaseBound = true (src/torpedo_task_arm.cpp:139-147). Needs its own packet: call torpedo_offer_release_order_009d49a0 and retire the inline copy under one switch (torpedo_task_arm.cpp not touched); ON arm removed (review)"
+    },
+    {
+      "row": "00780670",
+      "status": "skipped",
+      "reason": "the host keeps none of the gate inputs (no entity +BDh ready byte, no game state 0Dh value, no message post tick), so the arm could only pass constants and its keep/drop arms could never fire; ON would deliver a C3h the original keeps queued; ON arm removed (review)"
+    },
+    {
+      "row": "00c41ad0",
+      "status": "skipped",
+      "reason": "already wired before this branch: OFF already calls it through dyn_world_settings_game() (src/dyn_world_settings.cpp:54-55); ON arm removed (review)"
+    },
+    {
+      "row": "007d80c0",
+      "status": "skipped",
+      "reason": "round trip: the only kept output was ctl+7Ch = ctl+44h, the host value it was given; the rate +78h has no host field; ON arm removed (stricter counting rule)"
+    },
+    {
+      "row": "007d99c0",
+      "status": "skipped",
+      "reason": "blocked on kPlaneForwardSpeedDeckTermBound: plane_forward_speed_007d99c0 returns ctl_44 under `if constexpr (!kPlaneForwardSpeedDeckTermBound)` before the arm, and that switch is false; ON arm removed (review)"
+    },
+    {
+      "row": "009583c0",
+      "status": "skipped",
+      "reason": "constant inputs (game+1FE4h, +218Ch) and the only applied output, +A4h, is set on every call; ON arm removed (stricter counting rule)"
+    },
+    {
+      "row": "009585b0",
+      "status": "skipped",
+      "reason": "the body has no inputs and returns a fixed plan; ON arm removed (stricter counting rule)"
+    },
+    {
+      "row": "0041df40",
+      "status": "skipped",
+      "reason": "already wired before this branch: OFF already calls it through squadron_layer_34c() (src/game_hosts_avoid_zones.cpp:159); ON arm removed (review)"
+    },
+    {
+      "row": "009c3c40",
+      "status": "skipped",
+      "reason": "needs the MoveToTaskCalls image allocator (operator_new_00bf681b, 009BE310, 009C3000); the host mentions 009C3C40 only in a switch comment"
+    },
+    {
+      "row": "009cdd10",
+      "status": "skipped",
+      "reason": "already called in the host (owner_.takeoff_permission_009cdd10); the readiness identifier is the qualified Impl name and the body is inlined, so no map symbol"
+    },
+    {
+      "row": "006c45c0",
+      "status": "skipped",
+      "reason": "already called in the host (landing_released_006c45c0); qualified Impl name, inlined, no map symbol"
+    },
+    {
+      "row": "006d0150",
+      "status": "skipped",
+      "reason": "already called in the host (carrier_elevator_lift_free_006d0150); qualified Impl name, inlined, no map symbol"
+    },
+    {
+      "row": "006d02f0",
+      "status": "skipped",
+      "reason": "already called in the host (carrier_elevator_blocked_006d02f0); qualified Impl name, inlined, no map symbol"
+    },
+    {
+      "row": "007c16f0",
+      "status": "skipped",
+      "reason": "already called in the host (owner_.plane_four_to_five_007c16f0); qualified Impl name, inlined, no map symbol"
+    },
+    {
+      "row": "007cc820",
+      "status": "skipped",
+      "reason": "already called in the host (host.plane_enter_state_one_007cc820); qualified Impl name, inlined, no map symbol"
+    },
+    {
+      "row": "00a03760",
+      "status": "skipped",
+      "reason": "the arrival-value computation lives in src/game_hosts_ai.cpp; this file only has the +7A0h accessor comment"
+    },
+    {
+      "row": "00a31730",
+      "status": "skipped",
+      "reason": "only a comment here (the coordinator is in game_hosts_ai.cpp); the row's identifier is ai_init_party_think_schedule_00a163d0, 00A163D0's body, so using it would misattribute"
+    },
+    {
+      "row": "006bcd20",
+      "status": "skipped",
+      "reason": "the host resolves decks by name through AirOpsDeckRegistry; the body answers an image byte offset (+1188h / +72Ch) the host has no object for"
+    },
+    {
+      "row": "00414e10",
+      "status": "skipped",
+      "reason": "needs PoseRefreshView and the unit+110h derived inverse, which this host does not keep"
+    },
+    {
+      "row": "0046cf40",
+      "status": "skipped",
+      "reason": "scene parsing runs in the scene loader; this file only consumes the composed entity.world frame"
+    },
+    {
+      "row": "004b4740",
+      "status": "skipped",
+      "reason": "the local-slot setter site is src/game_hosts_mission.cpp; only a comment here"
+    },
+    {
+      "row": "006e3500",
+      "status": "skipped",
+      "reason": "the host does keep rack_ammo_per_rack (src/game_hosts_units.cpp:1912), but the 007C1DB0 site (dive_bomb_rounds_remaining, :5456-5475) reads the aggregate rack_ammo and the host has no attached-round count, so 006E3500(rack, attached) cannot be fed"
+    },
+    {
+      "row": "00741140",
+      "status": "skipped",
+      "reason": "address leased by agent/wire-lua (lease refused); edit reverted"
+    },
+    {
+      "row": "007d8020",
+      "status": "skipped",
+      "reason": "address leased by agent/wire-lua (lease refused); edit reverted"
+    },
+    {
+      "row": "007d9c10",
+      "status": "skipped",
+      "reason": "address leased by agent/wire-lua (lease refused); edit reverted"
+    },
+    {
+      "row": "007d9ce0",
+      "status": "skipped",
+      "reason": "address leased by agent/wire-lua (lease refused); edit reverted"
+    },
+    {
+      "row": "009565a0",
+      "status": "skipped",
+      "reason": "address leased by agent/wire-orders (lease refused); edit reverted"
+    },
+    {
+      "row": "00762a00",
+      "status": "skipped",
+      "reason": "qualified recon name seg42::construct_plane_takeoff_00762a00 and no map symbol: a use behind an OFF switch cannot register as wired"
+    },
+    {
+      "row": "00762a60",
+      "status": "skipped",
+      "reason": "qualified recon name seg42::construct_plane_touchdown_00762a60, no map symbol (as 00762A00)"
+    },
+    {
+      "row": "007c6340",
+      "status": "skipped",
+      "reason": "the host seeds +900h/+908h in create_units before class Height (class+A8h) is loaded (hull_height is set later), and the seed stands in for creation, not 007F2920's call"
+    },
+    {
+      "row": "008522c0",
+      "status": "skipped",
+      "reason": "the host has no unit+1279h byte or catapult child list; its SUBSTITUTION reads false"
+    },
+    {
+      "row": "008687c0",
+      "status": "skipped",
+      "reason": "needs renderer RenderCommandReference / CameraTransform objects the units host does not hold"
+    },
+    {
+      "row": "008689c0",
+      "status": "skipped",
+      "reason": "needs renderer RenderCommandReference / CameraTransform objects the units host does not hold"
+    },
+    {
+      "row": "00875b90",
+      "status": "skipped",
+      "reason": "its body is GameFixedStepHost's unimplemented-log stub in game_hosts_fixed_step.cpp, not a reconstruction"
+    },
+    {
+      "row": "0087bcc0",
+      "status": "skipped",
+      "reason": "needs native image unit, bag and model storage (NativeUnitHealthPartsView)"
+    },
+    {
+      "row": "0087fa50",
+      "status": "skipped",
+      "reason": "the landscape height walk is world_ground_height_00903860 in game_hosts_scene_contents.cpp; no LandscapeState here"
+    },
+    {
+      "row": "009bd400",
+      "status": "skipped",
+      "reason": "raw image singleton behind the large Cc13Seg67bHost interface"
+    },
+    {
+      "row": "004dc6a0",
+      "status": "skipped",
+      "reason": "the global-subsystem construction belongs to game_hosts_global_subsystems.cpp"
+    },
+    {
+      "row": "00c5bb30",
+      "status": "skipped",
+      "reason": "the host already runs 00C5BB30's phases itself (velocity, contact, position); the body's callback interface (contact records) is not small"
+    },
+    {
+      "row": "004842c0",
+      "status": "skipped",
+      "reason": "no effect node in this host: the bow/stern anchor stand-ins only record, so the relative point would be discarded"
+    },
+    {
+      "row": "00815370",
+      "status": "skipped",
+      "reason": "no effect-target arrays (+0Ch/+18h) in this host; tick_part only records"
+    },
+    {
+      "row": "0084bf00",
+      "status": "skipped",
+      "reason": "the projectile sweep runs in the gunnery host; this file only has its own-base filter"
+    },
+    {
+      "row": "00748c40",
+      "status": "skipped",
+      "reason": "qualified recon name cc13_seg41::land_fort_allocate_stationary_prop_00748c40, no map symbol"
+    },
+    {
+      "row": "009fa2e0",
+      "status": "skipped",
+      "reason": "qualified recon name bsp::cc13_seg68::approach_ref_target_velocity_009fa2e0, no map symbol"
+    },
+    {
+      "row": "009faad0",
+      "status": "skipped",
+      "reason": "qualified recon name bsp::cc13_seg68::bot_task_gun_construct_009faad0, no map symbol"
+    },
+    {
+      "row": "009fb190",
+      "status": "skipped",
+      "reason": "qualified recon name bsp::cc13_seg68::approach_ref_bind_target_009fb190, no map symbol"
+    }
   ],
   "run": {
-    "commit": "82015fd6c",
-    "off_build": "pass: ./scripts/build.ps1 exit 0, 2/2 tests",
-    "on_build": "pass: python tools/off_switch_on_build.py --names kWireUnitsHostBound, build.ps1 exit 0, 0 distinct diagnostics",
+    "commit": "666458b59 (code); 82015fd6c first batch",
+    "off_build": "pass: ./scripts/build.ps1 exit 0, 2/2 tests (after the removals)",
+    "on_build": "pass: python tools/off_switch_on_build.py --names kWireUnitsHostBound, build.ps1 exit 0, 0 distinct diagnostics (after the removals)",
     "pc24_lint": "pass: 0 findings over origin/main...HEAD (2 files)",
     "wired_total_before": 8493,
-    "wired_total_after": 8507,
-    "rows_wired_counted": 14,
+    "wired_total_after": 8499,
+    "rows_wired_counted": 6,
     "pair": {
       "mission": "USN04",
       "frames": "--frames 3200 --press-start-frame 30 --mission-frames 3000 --mission-frame-seconds 0.05",
-      "off": "local/wire-units-off (SHA-256 E93577B3D0DF), log local/wire-units-off_USN04.log: 3199 frames presented, loop_finished=1, exit_code=0",
-      "on": "local/wire-units-on (SHA-256 4E4E5BCC03C8, --flip kWireUnitsHostBound=true), log local/wire-units-on_USN04.log: 3199 frames presented, loop_finished=1, exit_code=0",
-      "pair_diff": "VERDICT: DIFFERENT, gameplay identical (exit 1). Gameplay rows identical (28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 s, 14 plane water contacts, 81 units). Death rows, plane death modes (25) and unit table (81) identical. Native table 1624 -> 1624 rows, 0 status changed, 0 counts moved (only the PlatformLoopCallbacks::pretranslate noise counter). Summary lines 867 -> 867, 0 changed. The 231/231 other lines are all 'atlas source' allocation-address lines.",
+      "off": "local/wire-units-off from 82015fd6c (SHA-256 E93577B3D0DF; the OFF arms are unchanged since), log local/wire-units-off_USN04.log: 3199 frames presented, loop_finished=1, exit_code=0",
+      "on": "local/wire-units-on rebuilt from 666458b59 (SHA-256 56CFB0C789D0, --flip kWireUnitsHostBound=true), log local/wire-units-on2_USN04.log: 3199 frames presented, loop_finished=1, exit_code=0",
+      "pair_diff": "VERDICT: DIFFERENT, gameplay identical (exit 1). Gameplay rows identical (28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 s, 14 plane water contacts, 81 units). Death rows, plane death modes (25) and unit table (81) identical. Native table 1624 -> 1624, 0 status changed, 0 counts moved (only the pretranslate noise counter). Summary lines 867 -> 867, 0 changed. Every differing other line is an atlas source allocation line.",
       "native_rows_to_concrete": "none: each ON arm replaces concrete host code with the reconstructed body, so no stand-in or unimplemented row changes status",
-      "reach": "USN04 reaches the takeoff-notify delivery (1 'takeoff start notify' line) and the squadron member placement (17 lines); no submarine warning was reported in this mission"
+      "reach": "007C1430 reached (12 calls) and 007DCCF0 reached (2436 ground-roll steps); 006BA620 and the three submarine reports were not reached in USN04"
     },
-    "flip_proposal": "Flip kWireUnitsHostBound to true: the USN04 3000-frame pair is gameplay-identical and the native table does not move. The ON arms that can differ from OFF by design are 007C1430 (no +C04h/+904h/+C18h stores when the state is unchanged) and the three submarine reports (a log line per reported warning); a submarine mission pair would exercise the latter before or after the flip."
+    "flip_proposal": "Do not flip on this evidence alone. Of the six wired rows only 007C1430 and 007DCCF0 ran in the USN04 pair, gameplay-identical. 006BA620 needs a landing mission pair, and 00977050 / 009771E0 / 00977370 need a submarine mission pair. Flip after those two pairs, or flip now with the understanding that 007C1430 (no +C04h/+904h/+C18h stores on an unchanged state) is the only reached arm that can differ from OFF."
   },
   "notes": [
     "The lease was claimed after the first edits, not before; the claim then refused 00741140, 007d8020, 007d9c10, 007d9ce0 (agent/wire-lua) and 009565a0 (agent/wire-orders), and those edits were reverted.",
-    "ON-arm comments start with 'ON <address>' so tools/wire_readiness.py's address-comment heuristic does not read the following if-constexpr line as a definition (it had taken 'constexpr' as 0099B6A0's identifier)."
+    "ON-arm comments start with 'ON <address>' so tools/wire_readiness.py's address-comment heuristic does not read the following if-constexpr line as a definition (it had taken 'constexpr' as 0099B6A0's identifier).",
+    "Review pass: nine ON arms were removed (007D99C0, 00C41AD0, 0041DF40, 00780670, 0099B6A0 per the review; 0071EA00, 007D80C0, 009583C0, 009585B0 under the same counting rule). The last four were outside the review-pass lease, but no lane held them (lease check: unleased) and only this branch's own arms were removed."
   ]
 }
