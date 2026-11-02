@@ -6,7 +6,7 @@
   "host": "src/game_hosts_scene_contents.cpp",
   "switch": "kWireGoal1Chain13Bound",
   "switch_default": false,
-  "code_commit": "beb159a92",
+  "code_commit": "5851e94ca25c618cfed57481fb31f7a26ef7685c",
   "wired_before": 8773,
   "wired_after": 8774,
   "readiness": {
@@ -18,12 +18,12 @@
   "build": {
     "off": "passed",
     "off_exit_code": 0,
-    "off_log": "local/output/g1-w2-off-build.txt",
+    "off_log": "local/output/g1-w2-r1-off-build.txt",
     "tests": "Both existing CTest checks passed: reconstructed_math and tool_tests.",
     "on": "passed",
     "on_exit_code": 0,
     "on_diagnostics": 0,
-    "on_log": "local/output/g1-w2-on-build.txt",
+    "on_log": "local/output/g1-w2-r1-on-build.txt",
     "pc24_lint": "not applicable: the ON arm performs no x87 arithmetic"
   },
   "contract": {
@@ -39,7 +39,8 @@
     "host_state": "The actual ScenePropertyBlock and class_name feed the existing body. A small Seg6Host adapter exposes the live Type value at +0Ch, borrows the already constructed 170h scene database/class map, and appends directly to Impl::scene_class_vector. The body owns the Type-presence test, class-47h exclusion, and 0046be90's 2ACh/SpawnPoint exclusions. No precomputed decision or result is passed into the body.",
     "live_path": "GameMissionFrameHost load-scene step -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> SceneReaderBinding::instantiate_entity -> scene_entity_generation_gate_0046c550 -> SceneGateBinding::register_multiplayer_stock. kVehicleClassPreloadCc15Bound and kSceneDatabaseCc15Bound are both true; no enclosing false switch gates this site.",
     "off_preservation": "Existing stand-in condition and append retained byte for byte inside the OFF arm; existing log remains common to both arms.",
-    "limitations": "New C++ host interface, not Original ABI or whole-game equivalence. No reconstructed body was changed or duplicated."
+    "limitations": "New C++ host interface, not Original ABI or whole-game equivalence. No reconstructed body was changed or duplicated.",
+    "native_string_comparator": "The adapter delegates directly to equal_native_string_header_00425850, preserving the actual-header null/length rules and case-insensitive _stricmp comparison."
   },
   "rows": [
     {
@@ -305,35 +306,119 @@
   "pair": {
     "status": "completed",
     "console_session": "console sqz269 session 1 Active",
+    "code_commit": "5851e94ca25c618cfed57481fb31f7a26ef7685c",
     "mission": "USN04",
     "frames": 3200,
     "mission_frames": 3000,
     "mission_frame_seconds": 0.05,
-    "off_log": "local/g1-w2-off_USN04.log",
-    "on_log": "local/g1-w2-on_USN04.log",
+    "off_log": "local/g1-w2-r1-off_USN04.log",
+    "on_log": "local/g1-w2-r1-on_USN04.log",
+    "export_log": "local/output/g1-w2-r1-on-export.txt",
+    "diff_log": "local/output/g1-w2-r1-pair-diff.txt",
     "off_exit_code": 0,
     "on_exit_code": 0,
-    "export_build": "passed at code commit beb159a92; only the export switch was flipped",
-    "export_log": "local/output/g1-w2-on-export.txt",
-    "on_exe_sha256_prefix": "A916B064759E",
-    "diff_log": "local/output/g1-w2-pair-diff.txt",
+    "export_build": "passed at corrected code commit 5851e94ca25c618cfed57481fb31f7a26ef7685c; only the export switch was flipped",
+    "on_exe_sha256_prefix": "78078BECB4F1",
     "diff_exit_code": 1,
     "diff_verdict": "DIFFERENT, gameplay identical",
     "gameplay": "identical",
     "gameplay_rows_moved": [],
     "native_rows_moved_to_concrete": [],
-    "native_table": "1624 -> 1624 rows; 0 added, removed, status-changed or counts-moved. The stock site already logs concrete OFF; the new body invocation does not change that label. PlatformLoopCallbacks::pretranslate has the separately classified noise count 8 -> 9.",
+    "native_table": "1624 -> 1624 rows; 0 added, removed, status-changed or counts-moved. The stock site already logs concrete OFF; the body invocation does not change that label.",
     "unit_table": "identical, 81 rows",
     "death_rows": "identical, 0 rows; BSP_DEATH_TABLE was not enabled",
     "plane_death_modes": "identical, 25 rows",
     "summary_lines": "867 -> 867; 0 changed, only ON or only OFF",
-    "other_lines": "231 only OFF and 231 only ON in the masked multiset. Printed differences are atlas-source diagnostics. Inspection of common atlas labels found changes only in address-valued fields: frame, manager, receiver, buffer, allocation, returned, append_slot, append_header, texture and creator. Decimal append_slot addresses remain visible in the masked output. This is not an identical-log claim.",
+    "other_lines": "231 only OFF and 231 only ON in the masked multiset; atlas-source address diagnostics differ. Inspection of common atlas labels found differences only in the fields listed in atlas_changed_fields. This is not an identical-log claim.",
+    "atlas_changed_fields": {
+      "allocation": 227,
+      "append_header": 231,
+      "append_slot": 231,
+      "buffer": 4,
+      "creator": 4,
+      "frame": 249,
+      "manager": 1,
+      "receiver": 1,
+      "returned": 227,
+      "texture": 4
+    },
     "wired_reach": {
       "0046bf20": 106
     },
-    "flip_evidence": "The live Type/class filtering body ran 106 times while all compared gameplay, unit and death tables and all summary lines remained identical. Readiness moved ready -> wired even though the legacy native-table concrete label did not move."
+    "flip_evidence": "The corrected comparator adapter ran on the 106-call stock-registration path; all compared gameplay, unit/death tables and all 867 summary lines remained identical. NativeString null/case semantics come from the existing complete helper, not from this mission exercising every comparator branch."
   },
   "reached_semantics": "Aggregated ON native-table call counts per address. For skipped rows these are host stand-in observations, not execution of their reconstructed bodies; log_calls preserves the individual labels.",
   "report_verification": "15 image CALL rows checked, 0 failed",
-  "flip_proposal": "Propose kWireGoal1Chain13Bound=true after the independent integration review: the new body ran 106 times in USN04 with identical gameplay, unit/death tables and all 867 summary lines. The overall pair_diff exit is 1 because atlas address diagnostics differ. The worktree switch remains false."
+  "flip_proposal": "Propose kWireGoal1Chain13Bound=true after independent integration review. Finding 1 is fixed by delegating to the native header comparator; refreshed USN04 observes 106 body calls and identical compared gameplay/unit/death/summary rows. Overall pair_diff remains exit 1 for atlas address diagnostics. The worktree switch remains false.",
+  "original_validation": {
+    "code_commit": "beb159a92",
+    "build": {
+      "off": "passed",
+      "off_exit_code": 0,
+      "off_log": "local/output/g1-w2-off-build.txt",
+      "tests": "Both existing CTest checks passed: reconstructed_math and tool_tests.",
+      "on": "passed",
+      "on_exit_code": 0,
+      "on_diagnostics": 0,
+      "on_log": "local/output/g1-w2-on-build.txt",
+      "pc24_lint": "not applicable: the ON arm performs no x87 arithmetic"
+    },
+    "pair": {
+      "status": "completed",
+      "console_session": "console sqz269 session 1 Active",
+      "mission": "USN04",
+      "frames": 3200,
+      "mission_frames": 3000,
+      "mission_frame_seconds": 0.05,
+      "off_log": "local/g1-w2-off_USN04.log",
+      "on_log": "local/g1-w2-on_USN04.log",
+      "off_exit_code": 0,
+      "on_exit_code": 0,
+      "export_build": "passed at code commit beb159a92; only the export switch was flipped",
+      "export_log": "local/output/g1-w2-on-export.txt",
+      "on_exe_sha256_prefix": "A916B064759E",
+      "diff_log": "local/output/g1-w2-pair-diff.txt",
+      "diff_exit_code": 1,
+      "diff_verdict": "DIFFERENT, gameplay identical",
+      "gameplay": "identical",
+      "gameplay_rows_moved": [],
+      "native_rows_moved_to_concrete": [],
+      "native_table": "1624 -> 1624 rows; 0 added, removed, status-changed or counts-moved. The stock site already logs concrete OFF; the new body invocation does not change that label. PlatformLoopCallbacks::pretranslate has the separately classified noise count 8 -> 9.",
+      "unit_table": "identical, 81 rows",
+      "death_rows": "identical, 0 rows; BSP_DEATH_TABLE was not enabled",
+      "plane_death_modes": "identical, 25 rows",
+      "summary_lines": "867 -> 867; 0 changed, only ON or only OFF",
+      "other_lines": "231 only OFF and 231 only ON in the masked multiset. Printed differences are atlas-source diagnostics. Inspection of common atlas labels found changes only in address-valued fields: frame, manager, receiver, buffer, allocation, returned, append_slot, append_header, texture and creator. Decimal append_slot addresses remain visible in the masked output. This is not an identical-log claim.",
+      "wired_reach": {
+        "0046bf20": 106
+      },
+      "flip_evidence": "The live Type/class filtering body ran 106 times while all compared gameplay, unit and death tables and all summary lines remained identical. Readiness moved ready -> wired even though the legacy native-table concrete label did not move."
+    }
+  },
+  "review_round_1": {
+    "review_run": 37,
+    "review_harness": "codex",
+    "reviewed_head": "36c88b9127a0597de357cd3eb9e69b2d77971468",
+    "findings": [
+      {
+        "native": "0046bf20",
+        "status": "fixed",
+        "agreement": "Agreed: strcmp loses the original case-insensitive and header/null semantics, even though canonical class spelling masked the difference in USN04.",
+        "change": "Included bsp/native_string_compare.hpp and delegated SceneStockPropertyAdapter::native_string_equals_00425850 directly to bsp::equal_native_string_header_00425850(string, text).",
+        "source_evidence": "src/native_string_compare.cpp implements actual header+4 null handling, recorded-length semantics for a null candidate, and _stricmp for a nonnull pair.",
+        "off_identity": "The existing OFF arm is untouched. The changed override belongs only to the adapter instantiated inside the ON arm.",
+        "fix_commit": "5851e94ca25c618cfed57481fb31f7a26ef7685c"
+      }
+    ],
+    "checks": {
+      "off_build": "passed, exit 0; both existing CTest checks passed",
+      "on_build": "passed, exit 0; 0 distinct diagnostics",
+      "readiness_before": 8774,
+      "readiness_after": 8774,
+      "row_state": "0046bf20 wired",
+      "readiness_log": "local/output/g1-w2-r1-readiness-after.txt",
+      "paired_run": "Both 3200-frame USN04 runs exited 0; 106 wired calls ON; gameplay, unit/death tables and 867 summary rows identical. Overall pair_diff exit 1: atlas address diagnostics differ.",
+      "report_calls": "15 image CALL rows checked, 0 failed"
+    }
+  }
 }
