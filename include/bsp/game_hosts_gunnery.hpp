@@ -1380,6 +1380,10 @@ public:
     // 0071D580(stance). Always recorded; the two readers answer the stored
     // values only with kShipFireStanceBound, else 008363E0's default true.
     void set_director_fire_stance_0071be80(std::size_t unit_index, int stance);
+    // Chain 257: commit the two answers produced by the reconstructed stance
+    // wrappers to the same live +3Ch/+3Dh store, without evaluating them again.
+    void store_director_stance_permissions(std::size_t unit_index, int stance,
+                                           bool allow_fire, bool allow_move);
     // Packet cc9_repair_enable_route: the 9Fh arm of 00821E80 (008220D7), which calls
     // 00939FD0 to store the flag at task+45h. Always counted; applied only with
     // kHullRepairEnableRouteBound.

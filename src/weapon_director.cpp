@@ -67,22 +67,22 @@ bool director_stance_allows_move_0071d580(FireStance stance) noexcept {
 
 // 0071BE80. Both questions are asked before either answer is applied: the fire
 // answer is parked in a stack byte at 0071BE91 while 0071BE9D runs.
-void set_fire_stance_0071be80(WeaponDirectorHost& host, FireStance stance) {
+void set_fire_stance_0071be80(WeaponDirectorStanceHost& host, FireStance stance) {
     const bool allow_fire = host.director_stance_allows_fire(stance); // 0071BE8F
     const bool allow_move = host.director_stance_allows_move(stance); // 0071BE9D
     host.send_allow_fire(allow_fire);                                 // 0071BEAF
     host.send_allow_move(allow_move);                                 // 0071BEBD
 }
 
-void hold_fire_0071bed0(WeaponDirectorHost& host) {
+void hold_fire_0071bed0(WeaponDirectorStanceHost& host) {
     set_fire_stance_0071be80(host, FireStance::HoldFire); // literal 0 at 0071BEDB
 }
 
-void free_fire_0071bf20(WeaponDirectorHost& host) {
+void free_fire_0071bf20(WeaponDirectorStanceHost& host) {
     set_fire_stance_0071be80(host, FireStance::FreeFire); // literal 1 at 0071BF2B
 }
 
-void free_attack_0071bf70(WeaponDirectorHost& host) {
+void free_attack_0071bf70(WeaponDirectorStanceHost& host) {
     set_fire_stance_0071be80(host, FireStance::FreeAttack); // literal 2 at 0071BF7B
 }
 
