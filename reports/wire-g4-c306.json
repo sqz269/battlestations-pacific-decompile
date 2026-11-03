@@ -1,0 +1,145 @@
+{
+  "chain": 306,
+  "slot": "g4-w4",
+  "switch": "kWireGoal4Chain306Bound",
+  "switch_header": "include/bsp/wire_goal4_chain306_switches.hpp",
+  "summary": "In-mission camera and spawn-border live paths: the movie camera update now runs its ground-offset step 0078FAF0, the ship-captain camera sets its basis through 0042D5A0, and the Lua Spawn border search runs 004B6720 for edges 2 and 3 (body fixed to return 004F3730's AL). Large unimplemented host interfaces (Seg2Host, Left8Host) were narrowed by splitting the one method each body calls into a base interface.",
+  "rows": [
+    {
+      "native": "0078faf0",
+      "status": "wired",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0 (0079A3B0's call at 0079B691)",
+      "evidence": "Every +4FCh-clear path (0079B3B8/0079B3C5 JZ 0079B631, 0079B3E3 JZ 0079B634) sets +520h only when dt > 0, then 0079B684..0079B691 calls 0078FAF0(ECX=+51Ch, dt). The host set the goal and never stepped the state."
+    },
+    {
+      "native": "0042d5a0",
+      "status": "wired",
+      "host_site": "src/mission_camera.cpp: update_ship_captain_00432ed0 (00432ED0's call at 004330BF)",
+      "evidence": "ECX = mover+2B8h, forward local {unit+ECh, 0 (004330AD XORPS), unit+F4h}, up 00F8758C (0043309E PUSH). 0085DC80 moved to MatrixOrthonormalizeHost, a base of Seg2Host, bound to orthonormalize_pose_matrix_0085dc80."
+    },
+    {
+      "native": "004b6720",
+      "status": "wired",
+      "host_site": "src/lua_spawn_cc13.cpp: spawn_edge_crossing_004bc120 (004BC120's calls at 004BC34E and 004BC3B5)",
+      "evidence": "Body fixed: 004B679A..004B67BE never write EAX, so 004F3730's AL is returned and 004BC353/004BC3BA test it. Edge 2 passes locals +44h/+50h, edge 3 +50h/+38h (stores 004BC1AC..004BC1CA) = the reconstruction's edge_a/edge_b. 004F3730 moved to SegmentCrossing2dHost, a base of Left8Host, bound to segment_crossing_004f3730."
+    },
+    {
+      "native": "00797da0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: the calls at 0079B288/0079B29D sit in the keyframe editor arm (0079A58A JZ 0079B2A2 skips it when +568h is clear)."
+    },
+    {
+      "native": "00797a00",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079A650 inside the input-action keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00797af0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079A685 inside the keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00797c60",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079AB47/0079ABCD inside the keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00795bd0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079A9C1 inside the keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00795d90",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079A9F7/0079AA26 inside the keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00798e70",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "Debug-only: called at 0079AA86 inside the keyframe editor block 0079A584..0079B2A2."
+    },
+    {
+      "native": "00435410",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0 (call at 0079B854)",
+      "reason": "Missing a native camera mover: the body takes Raw mover + SweepAHost and forwards to 004329D0 on it; the host keeps the movie camera as a typed HudMovieCamera with no native mover bytes."
+    },
+    {
+      "native": "0042dcd0",
+      "status": "skipped",
+      "host_site": "src/mission_camera.cpp: update_ship_captain_00432ed0 (call at 00432F99)",
+      "reason": "Missing the native 404h-byte mover: the full body reads raw uint8_t* mover fields while the host's ShipCaptainCamera is typed; focus_gate_0042dcd0 already runs the gate, and +3D4h never goes positive here."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: SubmarineDepthBand.catapult_wants_surface (feeds submarine_effective_depth_band_00936dc0)",
+      "reason": "Needs unit+1279h and per-child catapult +490h launch-state views at the game_hosts_units.cpp producer, which another lane held this run; the flag is never filled today."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: ai_tuning_mode_009ffc80 caller (passes difficulty 0)",
+      "reason": "Missing the native 00F8A89C party slot array (+0Ch active flags) that 00A15950 scans; file in another lane this run."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/ai_tuning_globals.cpp / cc13_seg69.cpp tuning readers",
+      "reason": "Missing the native AI coordinator 004C1C50 (+4 + mode*23Ch tuning records); the host keeps tuning as AiTuningBlock."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: EntityTurnToEntity ship arm (008A0DE9)",
+      "reason": "No consumer: the 3x4 transform only feeds 00C56CF0's physics-body pose, and this host's ship pose and physics are one motion state; the ship_hull_body 009399C0 site would be a rows-to-4x4 round trip."
+    },
+    {
+      "native": "00867ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionFrameBinding::update_effect_manager_00867ee0",
+      "reason": "Missing a native NativeLiveEffectManagerStorage (point effects, render command references, deletion queue); the binding is a record. Its callees 00867D00, 00866C60, 00867790 and 0081B010 wait on the same object."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents::clear_pending_class_ids",
+      "reason": "Missing the native pending-class vector 00F8A09C and list 00F8A0B0; the host keeps no pending-class list."
+    },
+    {
+      "native": "005cf3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: WarningManager loss text (00981602)",
+      "reason": "Multiplayer-only: 005CF320 returns unless game+1FE4h == 1 (session mode)."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing the ambient SoundInstance: has_ambient_sound_instance() is false, so 0068C1F0 never reaches the volume call."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cache.cpp: append_sound_resource_cache_record_00a84530",
+      "reason": "The host's SoundResourceOwner keeps records in a std::vector; the body reallocates native 2Ch-byte records through NativePointerArray."
+    },
+    {
+      "native": "009fcfd0",
+      "status": "skipped",
+      "host_site": "src/plane_fly_to_solver.cpp: fly_to_point_heading_009fd570 (call at 009FD71F)",
+      "reason": "Missing the native land-state observer vector (007B4500 resize, 009A1CA0 elements) the push-back appends to."
+    }
+  ],
+  "notes": [
+    "Technique: when a body is blocked only by a huge unimplemented Host interface but calls one or two of its methods, move those methods into a small base interface the big one derives from and bind the base at the live caller (MatrixOrthonormalizeHost, SegmentCrossing2dHost).",
+    "Readiness artifacts seen: dyn_solve_normal_rows_00c42530, dyn_solve_friction_rows_00c42230, dyn_write_back_velocities_00c37b50 and dyn_store_impulses_00c35020 are called from hull_terrain_contact.cpp (inlined, so the map has no symbol); reserve_native_distortion_records_00b4ed70 likewise from 00B4EE20."
+  ]
+}
