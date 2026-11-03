@@ -1,0 +1,109 @@
+{
+  "goal": 4,
+  "chain": 287,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain287Bound",
+  "switch_header": "include/bsp/wire_goal4_chain287_switches.hpp",
+  "summary": "Route mission Lua value copies/removals and objective string/table reads through the existing raw-machine stack, predicate and iteration bodies.",
+  "real_state": "Every call borrows the callback lua_State* or GameMissionLuaHost::state_ via the existing 006B7E30 LuaMachine constructor. On MSVC Win32 this 0Ch-byte object stores that live linked-Lua state at +4 and owns=false at +8; destruction does not close it. No VM bytes, fabricated Lua values, or replacement body were introduced.",
+  "evidence": [
+    "bsp.py show 006b7e30: borrowed state at +4, owns-state byte cleared at +8; include/bsp/settings_seg29_cc13.hpp asserts sizeof(LuaMachine)==0x0C on Win32.",
+    "bsp.py show --asm 006b7e90, 006b7ea0, 006b7ec0: capture index, read machine+4, call the corresponding linked Lua provider once.",
+    "bsp.py show --asm 006b7ee0, 006b7f00, 006b7f60: exact type 0/5/4 predicates; string checks continue to reject number values.",
+    "bsp.py show --asm 006b8130, 006b85b0, 006b85f0: push nil, advance using the actual unchanged table index, and pop by settop(-1-count).",
+    "call_graph.py who for all nine addresses: reachable calls from GameMissionLuaHost or its binding trampoline; objective_argument_units is inlined into that trampoline."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed after the final C++ edit; reconstructed_math and tool_tests both passed.",
+    "call_graph": "All nine wired bodies have entry-reachable callers in build/win32/bsp_game.exe; no game run was performed.",
+    "wired_before": 9248,
+    "wired_after": 9256,
+    "metric_note": "Eight game rows become wired. 006B8130 also has a reachable call but is classified cg_adjustor_thunk and excluded from the readiness game-row pool.",
+    "float_math": "No floating-point operations or conversions changed."
+  },
+  "rows": [
+    {
+      "native": "006b7e90",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::lua_pushvalue",
+      "body": "bsp::push_value_native_mission_lua_006b7e90"
+    },
+    {
+      "native": "006b7ea0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::lua_remove",
+      "body": "bsp::remove_native_mission_lua_006b7ea0"
+    },
+    {
+      "native": "006b7ec0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_units and the raw predicates called by objective_argument_string / GameMissionLuaHost::push_argument",
+      "body": "bsp::type_native_mission_lua_006b7ec0"
+    },
+    {
+      "native": "006b7ee0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_argument, EntityId self-table nil check",
+      "body": "bsp::is_nil_native_mission_lua_006b7ee0"
+    },
+    {
+      "native": "006b7f00",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_units, list and element table checks",
+      "body": "bsp::is_table_native_mission_lua_006b7f00"
+    },
+    {
+      "native": "006b7f60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_string",
+      "body": "bsp::is_string_native_mission_lua_006b7f60"
+    },
+    {
+      "native": "006b8130",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_units, initialize iteration key",
+      "body": "bsp::push_nil_native_mission_lua_006b8130"
+    },
+    {
+      "native": "006b85b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_units, advance list iteration",
+      "body": "bsp::next_native_mission_lua_006b85b0"
+    },
+    {
+      "native": "006b85f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: objective_argument_units, pop ID field and list value while retaining the next key",
+      "body": "bsp::pop_native_mission_lua_006b85f0"
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Per-element job owner binding is missing from this callback, which receives group/position/step only; the existing log cannot be replaced with a real-state job call here."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Per-element job owner binding is missing from this callback, which receives group/position/step only; the existing log cannot be replaced with a real-state job call here."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Per-element job owner binding is missing from this callback, which receives group/position/leftover only; the existing log cannot be replaced with a real-state job call here."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Per-element job owner binding is missing from this callback, which receives group/position/step only; the existing log cannot be replaced with a real-state job call here."
+    }
+  ],
+  "left_for_others": [
+    "Other mission Lua machine leaves and argument readers are unchanged.",
+    "The four fixed-step compatibility callbacks still need real per-job owner/dispatch bindings.",
+    "g4-w2 is waiting for the Lua host lease for disjoint listener-dispatch edits; this chain changes only includes, objective_argument_string/units, lua_remove/lua_pushvalue, and the EntityId self-table nil check."
+  ]
+}
