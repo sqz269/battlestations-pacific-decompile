@@ -1,0 +1,91 @@
+{
+  "chain": 300,
+  "worker": "agent/g4-w5",
+  "base": "e022c62c2d",
+  "switch": "bsp::kWireGoal4Chain300Bound",
+  "scope": "Gun player-control release at the live aim-window and role-owner release sites",
+  "rows": [
+    {
+      "native": "00729f70",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::apply_gun_aim_message and GameGunneryHost::role_owner_device_walk_0095ac1d",
+      "evidence": "bsp.py show 00729f70 --asm: 00729F7F slot 154h(0,8), 00729F8D slot 1E8h(0), 00729F92 tail jump 00728000",
+      "state": "The existing body receives the actual GameGunRow. Its services update seat ownership and trigger state, then call GunneryPassBinding's existing live bot-target-clear service, including trigger releases, fire-target state and torpedo target-cache invalidation.",
+      "call_sites": 3,
+      "callers": [
+        "GameGunneryHost::Impl::apply_gun_aim_message (one reachable call)",
+        "GameGunneryHost::role_owner_device_walk_0095ac1d (two reachable calls)"
+      ]
+    },
+    {
+      "native": "00728000",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::clear_bot_fire_target_00728000",
+      "reason": "Missing native per-gun bot-object publications at +398h/+394h/+390h/+39Ch/+3A0h; the existing live target-clear service is reused without claiming the reconstructed raw five-bot traversal is called."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::bot_clear_release_008ff2b0",
+      "reason": "Missing native bot+38h command-target records and bot+1Ch observer ownership/unregistration; current host target and trigger state cannot supply the raw body's storage contract."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns",
+      "reason": "Missing owned native TailGunnerBot storage and the 0072BBD0 base-constructor descriptor publication; host tail-gunner maps are typed state, not the constructor's native object."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns",
+      "reason": "Missing owned native TorpedoBot storage and the 0072BBD0 base-constructor descriptor publication; host torpedo maps do not supply the native constructor's object contract."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding director-enable publication",
+      "reason": "Missing a live ControllerSnapshotMessage producer/consumer at this host site; current director enable publication does not create or consume the full snapshot."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate scoring",
+      "reason": "Missing a host insertion site producing the native list's full sixteen score terms and auxiliary key; no fabricated score records were introduced."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate selection",
+      "reason": "Missing the live score-record insertion/selection pipeline and chosen record keys for AiGroupScoreList::mark_chosen."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture group resource calculation",
+      "reason": "Missing the authored per-member ResourceUsage (+304h) producer/view; the existing constant resource stand-in was not passed off as real member state."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate admission",
+      "reason": "No new wiring needed: an existing live host call already supplies kind-1Ch and objective-set membership; readiness marked it ready despite its existing compiled body."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed",
+    "call_graph_before": { "reconstructed_addresses_called": 4280 },
+    "call_graph_after": { "reconstructed_addresses_called": 4281 },
+    "readiness_before": { "wired": 9278 },
+    "readiness_after": { "wired": 9279, "selected_body_called": true, "selected_body_call_sites": 3 },
+    "entry_path": "WinMainCRTStartup -> startup/frame hosts -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameGunneryHost::player_fire_torpedo_group -> Impl::apply_gun_aim_message -> cc13_front3_gun_release_player_control_00729f70",
+    "float_math": "No floating-point arithmetic changed",
+    "runtime": "Game not launched, as instructed; compiled reachability does not establish gameplay validation or original ABI compatibility"
+  },
+  "implementation_notes": [
+    "The existing address body is reused; only its three-service host contract was separated from Cc13Front3Host. No duplicate body or new native address was introduced.",
+    "Both old release blocks remain unchanged in the switch-off arms; release counters remain outside the arms and execute once.",
+    "The native constants 0 and 8 come from the reconstructed body; gun ownership, trigger and targets come from the live row and existing bot maps.",
+    "The raw bot constructors and five-bot traversal remain for a future worker with owned native bot storage."
+  ]
+}

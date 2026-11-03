@@ -10,8 +10,9 @@
 // original ABI; each function's comment gives the native ABI. Native objects
 // are raw byte blocks touched only at the offsets the image reads or writes,
 // and every call the image makes goes through a named Cc13Front3Host method at
-// the same point with the same arguments. Nothing here is wired into the game.
-// Build-tested only.
+// the same point with the same arguments. Chain 300 wires 00729F70 through
+// GunPlayerControlReleaseHost; this is build/call-graph evidence, not gameplay
+// validation or compatibility with the original binary ABI.
 
 #include <cstddef>
 #include <cstdint>
@@ -54,7 +55,20 @@ public:
     virtual void camera_path_derive_knots_007af150(void* path) = 0;
 };
 
-class Cc13Front3Host : public ScenePathSourceHost {
+// The three calls made by 00729F70. A live gun owner need not implement the
+// unrelated plane, scene-path and archive services in Cc13Front3Host.
+class GunPlayerControlReleaseHost {
+public:
+    virtual ~GunPlayerControlReleaseHost() = default;
+    // Gun slot +154h(a, b): return control with (0, 8).
+    virtual void vcall_154(void* gun, std::int32_t a, std::int32_t b) = 0;
+    // Gun slot +1E8h(a): release the trigger with 0.
+    virtual void vcall_1e8(void* gun, std::int32_t a) = 0;
+    // 00728000 BSP_Gun_ClearBotFireTarget, the tail call in 00729F70.
+    virtual void gun_clear_bot_fire_target_00728000(void* gun) = 0;
+};
+
+class Cc13Front3Host : public ScenePathSourceHost, public GunPlayerControlReleaseHost {
 public:
     virtual ~Cc13Front3Host() = default;
 
@@ -90,10 +104,6 @@ public:
     virtual float vcall_204_float(void* plane) = 0;
     // Plane sub-object +72Ch slot +38h(), EAX (ECX = plane+72Ch).
     virtual std::uint32_t vcall_38_dword(void* object) = 0;
-    // Gun slot +154h(a, b).
-    virtual void vcall_154(void* gun, std::int32_t a, std::int32_t b) = 0;
-    // Gun slot +1E8h(a).
-    virtual void vcall_1e8(void* gun, std::int32_t a) = 0;
     // Gun slots +1C8h(message) and +1CCh(message) (opcodes 68h / 69h).
     virtual void vcall_1c8(void* gun, void* message) = 0;
     virtual void vcall_1cc(void* gun, void* message) = 0;
@@ -113,8 +123,6 @@ public:
     virtual void gun_effect_set_set_mix_0072aa10(void* effects, float mix) = 0;
     // 0072D5B0 BSP_Gun_SelectFireMode, __thiscall(ECX = gun; mode, flag), RET 8.
     virtual void gun_select_fire_mode_0072d5b0(void* gun, std::uint32_t mode, std::uint32_t flag) = 0;
-    // 00728000 BSP_Gun_ClearBotFireTarget, __thiscall(ECX = gun) (a tail jump in 00729F70).
-    virtual void gun_clear_bot_fire_target_00728000(void* gun) = 0;
     // 00521EA0 BSP_CommandTarget_ResolveObject, __thiscall(ECX = target record), EAX.
     virtual void* command_target_resolve_object_00521ea0(void* record) = 0;
     // 006952A0 BSP_Observer_UnregisterPair, __fastcall(ECX = observed, EDX = owner).
@@ -181,7 +189,7 @@ void cc13_front3_mission_narrative_apply_mission_info_00734db0(void* message, Cc
 void cc13_front3_gun_set_controlled_audio_mix_0072b540(void* gun, bool controlled, Cc13Front3Host& host);
 bool cc13_front3_gun_handle_network_message_0072d830(void* gun, void* message, Cc13Front3Host& host);
 void cc13_front3_gun_bot_clear_fire_target_0072bd50(void* bot, Cc13Front3Host& host);
-void cc13_front3_gun_release_player_control_00729f70(void* gun, Cc13Front3Host& host);
+void cc13_front3_gun_release_player_control_00729f70(void* gun, GunPlayerControlReleaseHost& host);
 
 // Segment 47 (planes and scene paths).
 void cc13_front3_scene_path_load_source_holder_007b34f0(void* path, void* holder, Cc13Front3Host& host);

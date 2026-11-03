@@ -19,6 +19,7 @@
 #include "bsp/cc13_left61.hpp"                        // chain 68: 0093A9E0 over image rows
 #include "bsp/seg59_bots_s53.hpp"                     // chain 68: 008FB890 typed body
 #include "bsp/cc13_front2.hpp"
+#include "bsp/cc13_front3.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/engine_seg1_cc13.hpp"
@@ -44,6 +45,7 @@
 #include "bsp/wire_goal4_chain275_switches.hpp"
 #include "bsp/wire_goal4_chain277_switches.hpp"
 #include "bsp/wire_goal4_chain288_switches.hpp"
+#include "bsp/wire_goal4_chain300_switches.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
@@ -8506,6 +8508,38 @@ private:
     std::vector<void*> sub_entities_;   // 006D4DD0's live hangars (kAirfieldTargetSubEntitiesBound)
     std::set<void*> arm_entities_;   // entities handed out by step 8.7 this pass
 };
+
+// Chain 300: bsp.py show 00729F70 --asm, 00729F7F / 00729F8D / 00729F92.
+// The opaque gun is the actual GameGunRow; the native body never reads its
+// layout. Slots 154h and 1E8h publish the seat and trigger fields already used
+// by the player firing pass. The tail call uses the same live target-clear
+// service as 0086586C, including active bot releases and torpedo target caches.
+// This does not claim wiring of the raw five-bot traversal at 00728000.
+class GunPlayerControlReleaseBinding final : public bsp::GunPlayerControlReleaseHost {
+public:
+    explicit GunPlayerControlReleaseBinding(GameGunneryHost::Impl& owner) : owner_(owner) {}
+
+    void vcall_154(void* gun, std::int32_t, std::int32_t slot) override {
+        static_cast<GameGunRow*>(gun)->seat_1ac = slot;
+    }
+    void vcall_1e8(void* gun, std::int32_t held) override {
+        static_cast<GameGunRow*>(gun)->seat_trigger = held != 0;
+    }
+    void gun_clear_bot_fire_target_00728000(void* gun) override {
+        auto& row = *static_cast<GameGunRow*>(gun);
+        const std::size_t slot = static_cast<std::size_t>(&row - owner_.guns.data());
+        GunneryPassBinding pass(owner_, row.unit_index);
+        pass.clear_bot_fire_target_00728000(reinterpret_cast<void*>(slot + 1));
+    }
+
+private:
+    GameGunneryHost::Impl& owner_;
+};
+
+void release_player_gun_control(GameGunneryHost::Impl& owner, GameGunRow& gun) {
+    GunPlayerControlReleaseBinding binding(owner);
+    bsp::cc13_front3_gun_release_player_control_00729f70(&gun, binding);
+}
 
 }  // namespace
 
@@ -17533,10 +17567,14 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(gun, 0)
         if (!in_window) {
             if (!seat_ai) {                                        // 00959D8E: 00729F70
+                if constexpr (bsp::kWireGoal4Chain300Bound) {
+                    release_player_gun_control(*this, gun);
+                } else {
                 gun.seat_1ac = 8;
                 gun.seat_trigger = false;
                 gun.target_unit = 0;
                 gun.target_name.clear();
+                }
                 ++gun.seat_returns;
                 ++seat_returns;
             }
@@ -18084,10 +18122,14 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
         auto in_2346 = [](int k) { return k == 2 || k == 3 || k == 4 || k == 6; };
         // 00729F70: vtable[154h](0, 8), vtable[1E8h](0), 00728000.
         auto release = [&](GameGunRow& gun) {
+            if constexpr (bsp::kWireGoal4Chain300Bound) {
+                release_player_gun_control(h, gun);
+            } else {
             gun.seat_1ac = 8;
             gun.seat_trigger = false;
             gun.target_unit = 0;
             gun.target_name.clear();
+            }
             ++h.seat_role_releases;
         };
         if (walk_156) {
