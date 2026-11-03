@@ -5,6 +5,7 @@
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
 #include "bsp/cc13_front3.hpp"
+#include "bsp/cc13_seg47.hpp"
 #include "bsp/camera_path_sampler.hpp"
 #include "bsp/mission_camera.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"
@@ -605,14 +606,15 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
 // Adapts a scene-file property-bag source and its Path component to 007B34F0.
 // 007B38D0 passes the entity's kind-1 holder at 007B390C. The merged bag is
 // already produced by 0046CF40; the adapter never creates authored values.
-class ScenePathSourceAdapter final : public ScenePathSourceHost {
+class ScenePathSourceAdapter final : public ScenePathSourceHost,
+                                     public cc13_seg47::Point3PtrArrayAddHost {
 public:
     // This view represents the source produced by the scene-file property
     // reader. Raw views retain object-point and saved-Lua sources as well.
     static constexpr bool kNativeAlternateSources = false;
     ScenePathSourceAdapter(const ScenePropertyBlock& bag, const PropertyLibrary& library,
-        GameSceneEntityRecord& record, ScenePathSourceState& state)
-        : bag_(bag), library_(library), record_(record), state_(state) {}
+        GameSceneEntityRecord& record, ScenePathSourceState& state, GameHostLog& log)
+        : bag_(bag), library_(library), record_(record), state_(state), log_(log) {}
 
     void* path() { return &state_; }
     void* holder() { return this; }
@@ -677,8 +679,16 @@ public:
         // 00D053D8[08h] = 00480890 clears +18h, then 007B34B0 allocates
         // the point, copies these XYZ lanes, and appends its pointer.
         state_.component.knots_dirty_18 = false;
-        state_.point_storage.push_back({xyz[0], xyz[1], xyz[2]});
-        state_.component.points_08.push_back(&state_.point_storage.back());
+        cc13_seg47::point3_ptr_array_add_point_007b34b0(*this, xyz);
+        log_.implemented("Point3PtrArray::add_point", "007b34b0");
+    }
+    cc13_seg47::WritablePoint3View point_array_vcall_new_point_20() override {
+        auto& node = state_.point_storage.emplace_back();
+        return {node.x, node.y, node.z, &node};
+    }
+    void ptr_vector_push_back_007b3190(void* node) override {
+        state_.component.points_08.push_back(
+            static_cast<path_movcam_seg46_argon::Vec3*>(node));
     }
     void camera_path_derive_knots_007af150(void*) override {
         state_.knots.reserve(state_.component.points_08.size());
@@ -709,6 +719,7 @@ private:
     const PropertyLibrary& library_;
     GameSceneEntityRecord& record_;
     ScenePathSourceState& state_;
+    GameHostLog& log_;
     std::deque<Entry> entries_;
 };
 
@@ -721,7 +732,7 @@ void load_scene_path_source(const ScenePropertyBlock& bag, const PropertyLibrary
     // constructor's entity token is the host's stable scene identity.
     path_movcam_seg46_argon::path_component_construct_007b28c0(
         state.component, static_cast<std::uint32_t>(record.scene_id));
-    ScenePathSourceAdapter adapter(bag, library, record, state);
+    ScenePathSourceAdapter adapter(bag, library, record, state, log);
     try {
         cc13_front3_scene_path_load_source_holder_007b34f0(adapter, adapter);
         for (const auto* point : state.component.points_08)

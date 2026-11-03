@@ -234,15 +234,29 @@ void net_path_destruct_007b3400(Seg47Host& host, Raw entity) {
     host.unit_owner_entity_destruct_0077e380(entity);
 }
 
+namespace {
+class RawPoint3PtrArrayAddAdapter final : public Point3PtrArrayAddHost {
+public:
+    RawPoint3PtrArrayAddAdapter(Seg47Host& host, Raw array) : host_(host), array_(array) {}
+    WritablePoint3View point_array_vcall_new_point_20() override {
+        float* const node = host_.point_array_vcall_new_point_20(array_);
+        return {node[0], node[1], node[2], node};
+    }
+    void ptr_vector_push_back_007b3190(void* node) override {
+        void* const value = node;
+        host_.ptr_vector_push_back_007b3190(array_.sub(4), &value);
+    }
+private:
+    Seg47Host& host_;
+    Raw array_;
+};
+} // namespace
+
 // 007B34B0, __thiscall(ECX = array; const float[3]*), RET 4. node =
 // array->vtable[20h](); copies the point into it; push_back(array+4, &node).
 void point3_ptr_array_add_point_007b34b0(Seg47Host& host, Raw array, const float* point) {
-    float* const node = host.point_array_vcall_new_point_20(array);
-    node[0] = point[0];
-    node[1] = point[1];
-    node[2] = point[2];
-    void* const value = node;
-    host.ptr_vector_push_back_007b3190(array.sub(4), &value);
+    RawPoint3PtrArrayAddAdapter adapter(host, array);
+    point3_ptr_array_add_point_007b34b0(adapter, point);
 }
 
 // 007B3730, __thiscall(ECX = component; property holder), RET 4.
