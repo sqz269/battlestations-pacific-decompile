@@ -1,0 +1,18 @@
+{
+  "chain": 274,
+  "slot": "g4-w1",
+  "switch": "kWireGoal4Chain274Bound",
+  "switch_header": "include/bsp/wire_goal4_chain274_switches.hpp",
+  "rows": [
+    {
+      "native": "00435d30",
+      "status": "wired",
+      "host_site": "src/profile_checkpoint.cpp: save_checkpoint_00438020 (00438747, script slots) and write_other_entries (004388C6 / 00437405), reached from GameMissionLuaHost::mission_checkpoint_binding (SaveCheckpoint 008ACB70)"
+    },
+    {
+      "native": "00436730",
+      "status": "wired",
+      "host_site": "src/profile_checkpoint.cpp: load_checkpoint_004379c0 (00437B21), reached from GameMissionLuaHost::mission_checkpoint_binding (LoadCheckpoint 008ACA30)"
+    }
+  ]
+}
