@@ -54,15 +54,30 @@ bool rack_is_empty_006e3570(const SingleRackState& rack, int attached_rounds) no
 }
 
 float rack_ammo_fraction_006e4130(const SingleRackState& rack, int attached_rounds) noexcept {
-    if (rack.org_ammo_488 == 0) return 0.0f;  // 006E4134 / 006E413D FLDZ
+    if (rack.org_ammo_488 == 0) return 0.0f;
+    return rack_ammo_fraction_006e4130(
+        SingleRackRoundCount{attached_rounds + rack.ammo_484}, rack.org_ammo_488);
+}
+
+float rack_ammo_fraction_006e4130(SingleRackRoundCount rounds, int original_ammo) noexcept {
+    if (original_ammo == 0) return 0.0f;  // 006E4134 / 006E413D FLDZ
+    // bsp.py show 006e4130 --asm: ADD at 006E414E precedes FILD.
+    // The combined-count view and the split-state wrapper share this body.
     // 006E4158 FILD, 006E415C FIDIV, 006E4163 FSTP float.
-    return static_cast<float>(static_cast<double>(attached_rounds + rack.ammo_484) /
-                              static_cast<double>(rack.org_ammo_488));
+    return static_cast<float>(static_cast<double>(rounds.total) /
+                              static_cast<double>(original_ammo));
 }
 
 float rack_remaining_drop_time_006e4170(const SingleRackState& rack, int attached_rounds,
                                         float repeat_time) noexcept {
-    int n = attached_rounds + rack.ammo_484 - 1;  // 006E4186
+    return rack_remaining_drop_time_006e4170(
+        SingleRackRoundCount{attached_rounds + rack.ammo_484}, repeat_time);
+}
+
+float rack_remaining_drop_time_006e4170(SingleRackRoundCount rounds, float repeat_time) noexcept {
+    // bsp.py show 006e4170 --asm: 006E4186 combines both counts before
+    // clamping. No attached-round identity is observed by this arithmetic.
+    int n = rounds.total - 1;  // 006E4186
     if (n < 0) n = 0;                             // SETL / SUB 1 / AND
     // 006E419C FLD class+E0h, 006E41A6 FIMUL, FSTP float: exact in double.
     return static_cast<float>(static_cast<double>(repeat_time) * n);

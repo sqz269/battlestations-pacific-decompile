@@ -1,0 +1,40 @@
+{
+  "chain": 295,
+  "switch": "kWireGoal4Chain295Bound",
+  "wired_total_before": 9268,
+  "wired_total_after": 9270,
+  "rows": [
+    {
+      "native": "006E4130",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::bomb_load_factor",
+      "state": "The first holding single rack supplies its actual retained total and authored orgAmmo. The shared reconstructed fraction feeds PlaneBombLoadFactor::slot_weight and then control authority; unknown counts retain the former fallback.",
+      "evidence": "bsp.py show 006e4130 --asm: ADD child count and reserve at 006E414E, then FILD/FIDIV/FSTP float. The count-only view observes exactly that combined sum without fabricating its components; the original split-state interface delegates to the same arithmetic.",
+      "abi": "Typed projection; not native thiscall ABI compatible.",
+      "call_graph": "REACHABLE at 10307760; direct call 1022CA8F from PlaneBinding::bomb_load_factor."
+    },
+    {
+      "native": "006E4170",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::lb_rack_timing_007c1fb0",
+      "state": "The live per-rack total, or the single-rack aggregate, feeds the query after seeding; known authored Ammo is used before the first seed. Actual device RepeatTime supplies the multiplier. The result feeds the longest rack span and lb_release_delay_1fc. Unknown counts retain the former fallback.",
+      "evidence": "bsp.py show 006e4170 --asm: LEA/SETL/SUB/AND clamps total-1, then FLD RepeatTime/FIMUL/FSTP float. bsp.py show 007c1fb0 dispatches each kind-25h rack's live slot +1F8h. The ON arm replaces the former authored-capacity span, so a later task uses rounds still carried after drops or rearming.",
+      "abi": "Typed projection; not native thiscall ABI compatible.",
+      "call_graph": "REACHABLE at 103077D0; direct call 1025C21A from PlaneBinding::lb_rack_timing_007c1fb0."
+    },
+    {
+      "native": "006E3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "The host retains combined per-rack totals; the native child-count and reserve-ammo components required by this sum body have no separate live producers."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "evidence": "bsp.py show 006e4130 --asm; bsp.py show 006e4170 --asm; bsp.py show 007c1fb0",
+    "call_graph": "python tools/call_graph.py: 4230 -> 4232 reconstructed addresses called; who 006e4130 and who 006e4170 each identify one direct call from the changed entry-reachable host method.",
+    "wire_readiness": "9268 -> 9270 source-wired functions; approximate source graph, supplemented by the built call graph.",
+    "switch": "kWireGoal4Chain295Bound=true; both old host calculations remain unchanged in the OFF arms.",
+    "game_validation": "Not run, per assignment."
+  }
+}

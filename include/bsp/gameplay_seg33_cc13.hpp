@@ -94,11 +94,18 @@ void rack_set_reload_time_006e3a20(SingleRackState& rack, float reload_time) noe
 int rack_round_count_006e3500(const SingleRackState& rack, int attached_rounds) noexcept;
 // 006E3570, slot +20Ch.
 bool rack_is_empty_006e3570(const SingleRackState& rack, int attached_rounds) noexcept;
+// Some hosts retain the live combined attached/reserve count. These queries
+// only observe that sum; this view avoids inventing either of its components.
+struct SingleRackRoundCount {
+    int total;
+};
 // 006E4130, slot +214h: 0 with no orgAmmo, else rounds / orgAmmo (FILD/FIDIV, one float round).
 float rack_ammo_fraction_006e4130(const SingleRackState& rack, int attached_rounds) noexcept;
+float rack_ammo_fraction_006e4130(SingleRackRoundCount rounds, int original_ammo) noexcept;
 // 006E4170, slot +1F8h: RepeatTime (class+E0h) x max(rounds - 1, 0) (FIMUL, one float round).
 float rack_remaining_drop_time_006e4170(const SingleRackState& rack, int attached_rounds,
                                         float repeat_time) noexcept;
+float rack_remaining_drop_time_006e4170(SingleRackRoundCount rounds, float repeat_time) noexcept;
 // 006E3550, slot +1F0h, RET 4: toRepeatTime += delay (float), dropBombs = 1.
 void rack_fire_006e3550(SingleRackState& rack, float delay) noexcept;
 // 006E3CD0, slot +1FCh: dropBombs.
