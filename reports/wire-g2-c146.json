@@ -45,7 +45,7 @@
       "readiness_after": "wired",
       "coverage": "Existing complete normal-sequence algorithm shared by typed view and raw wrapper; native EH remains unmodelled.",
       "contract": "005C597F RET 0Ch consumes kind/key/out. At 005C5DF7, ECX=ESI (reader loaded from the stack), EBP=00CF15B8 (primaryObjectives), EBX=0, and output=EDI+14h. Other 005C5DA0/005C6A70 list sites use the same name-kind contract.",
-      "change": "The ON arm calls cc13_sweepB2_mission_tree_read_string_vector_005c5860 with a narrow storage view/reader host over the real Lua table and vector. The body owns bounds checks, erase, enter, integer-key traversal, read/append/temporary release, and leave. The old raw entry delegates to this same body. OFF retains the original host loop byte for byte."
+      "change": "The ON arm calls cc13_sweepB2_mission_tree_read_string_vector_005c5860 with a narrow storage view/reader host over the real Lua table and vector. The body owns bounds checks, erase, enter, integer-key traversal, read/append/temporary release, and leave. The adapter calls lua_.to_string(element_) directly, preserving the native reader's numeric string conversion and null-to-empty fallback. The old raw entry delegates to this same body. OFF retains the original host loop byte for byte."
     },
     {
       "native": "005c89b0",
@@ -166,13 +166,52 @@
     }
   ],
   "checks": {
-    "off_build": {"command": "./scripts/build.ps1", "result": "passed", "tests": "reconstructed_math and tool_tests: 2/2 passed", "log": "local/output/wire-g2-c146-off-final.log"},
-    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain146Bound", "result": "passed", "diagnostics": 0, "log": "local/output/wire-g2-c146-on.log"},
+    "off_build": {"command": "./scripts/build.ps1", "result": "passed", "tests": "reconstructed_math and tool_tests: 2/2 passed", "log": "local/output/wire-g2-c146-r1-off.log"},
+    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain146Bound", "result": "passed", "diagnostics": 0, "log": "local/output/wire-g2-c146-r1-on.log"},
     "order": "ON check completed before the final plain OFF build and readiness recount.",
-    "off_body_preservation": "Checked the original read_string_array body from HEAD as an exact normalized-text substring of the new OFF arm: true.",
-    "readiness": "python tools/wire_readiness.py: 005c5860 ready -> wired; global wired 8976 -> 8977; all 13 skipped rows remain ready.",
+    "off_body_preservation": "Rechecked the original read_string_array body from pre-wiring base 617fd79f0 as an exact normalized-text substring of the current OFF arm: true. kWireGoal2Chain146Bound remains false.",
+    "readiness": "Initial wiring: 005c5860 ready -> wired, global wired 8976 -> 8977. Review round 1 recount after the final plain OFF build: global wired remains 8977 and 005c5860 remains wired; local/output/wire-g2-c146-r1-readiness.log. All 13 skipped rows remain ready.",
     "report_calls": "python tools/verify_report_calls.py reports/wire-g2-c146.json: 14 call rows checked, 0 failed.",
     "pc24_lint": "Not applicable: no x87 arithmetic in the ON arm or modified body.",
     "game_run": "Not run, as assigned. No runtime or native-ABI equivalence claim."
-  }
+  },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 290,
+      "reviewed_head": "670ee4747d6711b3cd6a7fdbcba638a8ba7f563a",
+      "finding": {
+        "native": "005c5860",
+        "status": "fixed",
+        "reason": "Removed the exact GuiLuaType::String gate. The ON adapter now calls lua_.to_string(element_) directly and retains the null fallback. Local GuiLua51Host::to_string calls lua_tostring and anchors numeric replacements in their registry reference; gui_lua_store_ref_00bd63b0 uses this conversion for String fields. The OFF arm was not edited."
+      },
+      "accepted_skip_findings": [
+        {"native": "005c89b0", "reason": "Native record producer absent; skip retained."},
+        {"native": "005c8ae0", "reason": "Native record ownership absent; skip retained."},
+        {"native": "005c9b60", "reason": "Native group lifetime absent; skip retained."},
+        {"native": "005c9f70", "reason": "OFF already uses the same implementation; skip retained."},
+        {"native": "005cafb0", "reason": "Old MovCam receiver/default producer absent; skip retained."},
+        {"native": "005cafc0", "reason": "Overview state absent; skip retained."},
+        {"native": "005cb160", "reason": "Movie-screen graph absent; skip retained."},
+        {"native": "005cb970", "reason": "Speed defaults absent; skip retained."},
+        {"native": "005cb9c0", "reason": "Acceleration defaults absent; skip retained."},
+        {"native": "005cb9f0", "reason": "Old limits adapter absent; skip retained."},
+        {"native": "005cba20", "reason": "Old limits adapter absent; skip retained."},
+        {"native": "005cba50", "reason": "Edit-window graph absent; skip retained."},
+        {"native": "005cc5e0", "reason": "Mode-text graph absent; skip retained."}
+      ],
+      "focused_conversion_probe": {
+        "result": "passed",
+        "fixture": "Verbatim production MissionStringVectorBinding class extracted into a local standalone Win32 probe and linked to the existing 005c5860 body, GuiLua51Host, NativeString helpers and repository Lua 5.1.1. No production test hook or second reader body was added.",
+        "input": "MissionTree = { values = {42, 'text', true, {}} }; destination initially {'stale'}",
+        "expected_and_observed": ["42", "text", "", ""],
+        "log": "local/output/wire-g2-c146-r1-probe.log",
+        "executable_manifest": "Linked with /MANIFEST:EMBED. No game was run."
+      },
+      "switch_default": false,
+      "wired_before_review_fix": 8977,
+      "wired_after_review_fix": 8977,
+      "disagreements": []
+    }
+  ]
 }

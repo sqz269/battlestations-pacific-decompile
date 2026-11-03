@@ -188,8 +188,8 @@ public:
     void read(std::uint32_t, Cc13SweepBNativeString& text) override {
         // The native reader's String destination starts {0, null}. Its
         // producer is this Lua element; host CRT storage owns the temporary.
-        const char* value = lua_.type_of(element_) == GuiLuaType::String
-            ? lua_.to_string(element_) : nullptr;
+        // Reader slot +10h uses lua_tolstring, which also converts numbers.
+        const char* value = lua_.to_string(element_);
         temporary_.assign_0041e870(crt_string_storage(), value != nullptr ? value : "");
         text = {temporary_.length(), temporary_.data()};
     }
