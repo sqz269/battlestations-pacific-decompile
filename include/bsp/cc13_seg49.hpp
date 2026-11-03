@@ -599,6 +599,15 @@ void unit_apply_role_mask_00927810(Seg60Host& host, void* unit, std::uint32_t ma
 bool unit_has_role_slot_value_00927850(Raw unit, int value) noexcept;
 std::uint32_t controlled_target_00927880(Seg60Host& host, void* entity);
 void unit_set_role_009278a0(Seg60Host& host, Raw unit, std::uint32_t value);
+// 009278A0's typed view: its two effects on the unit, the role-owner word +180h and the
+// instance's vtable +148h (0077F360 -> 00927D20 on units: the nine role words +188h..). The
+// Raw entry above adapts image memory and Seg60Host to it.
+struct UnitSetRoleView {
+    virtual ~UnitSetRoleView() = default;
+    virtual void store_role_owner_180(std::uint32_t value) = 0;                           // unit+180h
+    virtual void set_role_availability_148(std::uint32_t mask, std::uint32_t value) = 0;  // vtable +148h
+};
+void unit_set_role_009278a0(UnitSetRoleView& unit, std::uint32_t value);
 bool unit_role_word_is_player_or_open_00927c90(Raw unit, int index) noexcept;
 std::uint32_t unit_role_mask_for_00927cc0(Raw unit, int value) noexcept;
 inline constexpr std::uint32_t kSessionMessageBaseVtable = 0x00CE4974;

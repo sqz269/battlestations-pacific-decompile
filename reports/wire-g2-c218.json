@@ -1,0 +1,109 @@
+{
+  "goal": 2,
+  "chain": 218,
+  "run": 399,
+  "harness": "claude",
+  "slot": "g2-w1",
+  "branch": "agent/g2-w1",
+  "host_file": "src/game_hosts_ship_ai.cpp",
+  "picked": {
+    "tier": 2,
+    "segment": 60,
+    "range": ["009222e0", "0092dfe0"],
+    "reason": "Segment 60's one ready row, 009278A0 BSP_UnitSetRole, has a host site with real state: the landing-craft launch (transport_launch_craft_008206f0) already stores the craft's +180h owner word, and the host already implements the body's vtable +148h target (0077F360 -> 00927D20, GameUnitsHost::set_role_availability_00927d20). Candidates 1, 3, 4, 6 and 7 lack a host object or a reachable host path (see skipped rows). Candidate 2 was leased by g2-w5. Candidate 5's only caller is the Lua GenerateObject binding in game_hosts_lua.cpp, which another worker holds."
+  },
+  "switch": "kWireGoal2Chain218Bound",
+  "switch_default": false,
+  "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed, no warnings",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain218Bound: build.ps1 exit 0, 0 distinct diagnostics, sources restored",
+  "pc24_lint": "not run: the ON arm does no x87 arithmetic",
+  "wired_total_before": 9017,
+  "wired_total_after": 9018,
+  "wired_total_note": "After = wire_readiness.py on this tree after a plain OFF build. Before = after minus this chain's one flip: a per-row diff against the tree's earlier readiness JSON shows only 009278a0 (this chain) and 0045c440 (chain 202, already on HEAD) changing state.",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "009278a0",
+      "address": "0077f2d8",
+      "function": "0077f2d0",
+      "name": "unit_set_role_009278a0",
+      "abi": "raw_callback",
+      "host_site": "src/game_hosts_ship_ai.cpp GameShipAiHost::transport_launch_craft_008206f0 (craft owner store after create_units)",
+      "status": "wired",
+      "reach": "static",
+      "reach_path": "Host path read down to the site: game_hosts_ai.cpp transport_moves_00a11b80 (00A11B80, AI group move) -> kLandingCraftLaunchBound (true) -> GameShipAiHost::transport_launch_craft_008206f0. Also game_hosts_ship_ai.cpp's approach landing sweep (line ~7738) and game_hosts_lua.cpp's landing request binding (kind 06h). Inside the function, the craft is created, then the site; its old store sits under kLandingCraftOwnerPlayerBound (true). No disabled gate on the path. docs/SHIP_AI_OPEN_ITEMS.md section 101.4 records JM08 runs launching crafts (5 launches / 12 crafts). The candidate detail gave no surveyed call count.",
+      "contract": "009278A0 __thiscall(ECX = unit, value) RET 4: unit+180h = value, then (*unit)->vtable[148h](1FFh, value). Image path: 0077F0E0 BSP_UnitOwnerEntity_ActivateAndRegister reads the bag's OwnerPlayer (0077F1E7 008F2260, +0Ch), else 9 (0077F1F1), and calls vtable[144h] (0077F1F9..0077F201). On every unit vtable that slot is 0077F2D0 (e.g. 00CEA35C), which calls 009278A0 at 0077F2D8. Unit vtable +148h is 0077F360 (00CEA360), which calls 00927D20 and then sets a message-suppress byte for kind-5 units. The craft's bag carries OwnerPlayer 8 (008206F0, 00821A72), which the host's create record holds as record.owner_player = 8.",
+      "binding": "Typed UnitSetRoleView overload of the existing body (cc13_seg49). The Raw entry is now a thin wrapper through a RawUnitSetRoleView, so there is still one body. The host's UnitSetRoleSlotView maps +180h to ai_set_unit_owner_player(craft, value), the word 009FFD20's owner-slot lookup reads. It maps vtable +148h to GameUnitsHost::set_role_availability_00927d20(craft, mask, value), the same mapping GameScriptOrdersHost::role_owner_set_role_available already uses for 0077F360. The value is the create record's owner_player, not a literal.",
+      "on_effect": "Besides the existing +180h = 8 store, the ON arm runs 00927D20 over all nine roles: role_permission_0188[0..8] = 8 (closed to all but the AI). A craft's holders start at 8 (kUnitRoleTableFill), so no 4Bh release is routed. It also makes 00927D20's observer notify (00696350, code 5) to the power-up manager.",
+      "off_behavior": "The else arm is the old line byte for byte: if constexpr (kLandingCraftOwnerPlayerBound) ai_set_unit_owner_player(craft, 8). The view type is only constructed in the ON arm.",
+      "limitations": "0077F360's message-suppress tail and 0077F2D0's own tail are not modelled, the same as the host's existing 00927D20 mapping. Wired only at the landing-craft site. Scene units activated at load (OwnerPlayer authored, or 9) still take the host's constructor default of 9 and the name-keyed owner table. Source and build evidence only; no game run."
+    },
+    {
+      "native": "00605630",
+      "address": "006084e6",
+      "function": "006082d0",
+      "name": "direction_angle_deltas_00605630",
+      "abi": "typed",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The only caller, 006082D0, uses the yaw/pitch deltas (sites 006084E6, 0060858F, 00608638) for the plane HUD screen's camera aim (screen+94h, +3E4h/+3E8h/+3F0h). The inputs are predicted bomb, rocket or release points moved into camera space. The host's player_bomb_release_006082d0 leaves the display out, and no host object owns that camera or produces those inputs. Cc13BigB1Host::plane_hud_update_bomb_fire_006082d0 has no implementation."
+    },
+    {
+      "native": "0081f3a0",
+      "name": "unit_release_steps_0081f3a0",
+      "abi": "typed",
+      "host_site": "src/cc13_seg41_land.cpp ship_base_destruct_0081f3a0 (no host implements it)",
+      "status": "skipped",
+      "reason": "Lease: unit_destructor_levels.cpp and cc13_seg41_land.cpp are held by g2-w5 (chain 219)."
+    },
+    {
+      "native": "00740270",
+      "address": "009257cf",
+      "function": "00925780",
+      "name": "cc13_seg41::life_ref_release_00740270",
+      "abi": "callback",
+      "host_site": "src/entity_mission_seg60_argon.cpp entity_life_ref_release_00740270 (pure virtual, no override)",
+      "status": "skipped",
+      "reason": "Its only caller is 00925780 BSP_Entity_DestructBase, reached through Seg60Host::entity_life_ref_release_00740270, and no host implements that method. The host has no native life-ref vector or refcounted decal objects to release."
+    },
+    {
+      "native": "00440a30",
+      "name": "ref_slot_release_00440a30",
+      "abi": "raw_callback",
+      "host_site": "src/cc13_bigB1.cpp:822 / src/cc13_seg47.cpp:2390 host.ref_ptr_slot_release_00440a30 (pure virtual, no override)",
+      "status": "skipped",
+      "reason": "This is a refcount release (InterlockedDecrement on obj+4h, then vtable[0] at zero). Its two named host methods (Cc13BigB1Host, Seg47 host) have no implementation. The wired callers release through other generic helpers. No host slot holds a native refcounted object for it to release."
+    },
+    {
+      "native": "004c6be0",
+      "address": "009452ca",
+      "function": "00944fd0",
+      "name": "game_generate_object_004c6be0",
+      "abi": "raw_callback",
+      "host_site": "src/game_hosts_lua.cpp (Lua GenerateObject binding)",
+      "status": "skipped",
+      "reason": "Lease: its only caller is 00944FD0 BSP_LuaBinding_GenerateObject, whose host stand-in is in game_hosts_lua.cpp, which another worker holds."
+    },
+    {
+      "native": "00a782e0",
+      "address": "00a78956",
+      "function": "00a788a0",
+      "name": "music_director_select_row_and_store_name_00a782e0",
+      "abi": "raw_callback",
+      "host_site": "src/game_sound_dialog_runtime.cpp:112 MusicDirectorAdapter::music_director_select_row_00a782e0",
+      "status": "skipped",
+      "reason": "game_sound_dialog_runtime.cpp's ON music adapter already calls the body. That file is not in wire_readiness's host-reachable set. Counting the row would only need a textual reference, with no new logic replacing host logic, so I made no change."
+    },
+    {
+      "native": "0045cfc0",
+      "address": "0045d3e3",
+      "function": "0045d3e0",
+      "name": "scene_record_eight_strings_destroy_0045cfc0",
+      "abi": "raw_callback",
+      "host_site": "src/pool_pool16_cc13.cpp:289 movie_action_type_destroy_0045cfc0 (pure virtual, no override)",
+      "status": "skipped",
+      "reason": "No host implements movie_action_type_destroy_0045cfc0 or owns the native eight-string movie-action record (the same finding as chain 202)."
+    }
+  ]
+}
