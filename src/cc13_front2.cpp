@@ -114,8 +114,8 @@ bool camera_mover_update_focus_0042dcd0(std::uint8_t* mover, float dt, std::uint
     return false;
 }
 
-bool input_device_table_any_dynamic_device_button_down_00a91020(std::uint8_t* table,
-                                                                Cc13Front2Host& host) {
+__declspec(noinline) bool input_device_table_any_dynamic_device_button_down_00a91020(
+    std::uint8_t* table, DynamicInputButtonQueryHost& host) {
     // Three checked vectors of device pointers, 24h apart: +6Ch the container
     // proxy, +70h first, +74h last, +78h end of storage.
     for (std::uint32_t device_class = 0; device_class < 3; ++device_class) {   // 00A91087..00A91098

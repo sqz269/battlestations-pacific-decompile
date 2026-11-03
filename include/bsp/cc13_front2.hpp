@@ -15,14 +15,23 @@
 
 namespace bsp {
 
-class Cc13Front2Host {
+// Only the two operations observed by 00A91020. The live input runtime can
+// bind this query without supplying unrelated camera/settings host operations.
+class DynamicInputButtonQueryHost {
+public:
+    virtual ~DynamicInputButtonQueryHost() = default;
+    virtual void invalid_parameter_00bf6713() = 0;
+    virtual bool input_device_vcall_2c(void* device) = 0;
+};
+
+class Cc13Front2Host : public DynamicInputButtonQueryHost {
 public:
     virtual ~Cc13Front2Host() = default;
 
     // 00BF6713, the CRT checked-iterator failure (_invalid_parameter_noinfo).
     // The image continues after the call when it returns, so the code here
     // does too.
-    virtual void invalid_parameter_00bf6713() = 0;
+    void invalid_parameter_00bf6713() override = 0;
 
     // ---- camera mover (0042DCD0) ----
     // 00414DB0 BSP_EntityPose_RefreshWorld: __thiscall(ECX = entity), RET.
@@ -35,7 +44,7 @@ public:
     // The dword global 00F8BBF4: the input device table (backend).
     virtual std::uint8_t* input_device_table_00f8bbf4() = 0;
     // Device vtable +2Ch: __thiscall(ECX = device), no stack arguments, AL.
-    virtual bool input_device_vcall_2c(void* device) = 0;
+    bool input_device_vcall_2c(void* device) override = 0;
     // 00A95890 BSP_GamepadForce_ClearRequests: __thiscall(ECX = channel), RET.
     // 00A95CB0 can pass a null ECX (see there).
     virtual void gamepad_force_clear_requests_00a95890(void* channel) = 0;
@@ -227,7 +236,7 @@ bool camera_mover_update_focus_0042dcd0(std::uint8_t* mover, float dt, std::uint
 // table), RET, AL. Any device in the three checked vectors at table+6Ch +
 // class*24h whose vtable +2Ch answers nonzero.
 bool input_device_table_any_dynamic_device_button_down_00a91020(std::uint8_t* table,
-                                                                Cc13Front2Host& host);
+                                                                DynamicInputButtonQueryHost& host);
 
 // 00A95CB0 BSP_GamepadForce_ClearAllChannels: no arguments, RET. 00A95890 on
 // each pointer of the vector at [00F8BBF4]+B8h..+BCh.

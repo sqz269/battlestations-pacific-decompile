@@ -174,7 +174,8 @@ bool input_action_was_pressed_004c50d0(const std::vector<InputActionRecord>& act
     return record.down_28 != 0 && record.previous_down_20 == 0;
 }
 
-bool press_start_poll_button_edge_004b43b0(std::uint8_t& latch_dd, std::uint8_t any_button_down) noexcept
+__declspec(noinline) bool press_start_poll_button_edge_004b43b0(
+    std::uint8_t& latch_dd, std::uint8_t any_button_down) noexcept
 {
     const bool edge = latch_dd == 0 && any_button_down != 0;
     latch_dd = any_button_down; // 004B43C7 and 004B43D1 store CL on both paths

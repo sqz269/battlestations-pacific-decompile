@@ -1,4 +1,6 @@
 #include "bsp/game_input_runtime.hpp"
+#include "bsp/band_004b_cc13.hpp"
+#include "bsp/cc13_front2.hpp"
 #include "bsp/native_input_backend_startup.hpp"
 #include "bsp/native_input_backend_bindings.hpp"
 #include "bsp/native_input_class_configuration.hpp"
@@ -10,7 +12,7 @@
 namespace bsp::game {
 struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
     NativeInputBackendSlotActivation, NativeInputCursorDeviceCalls,
-    NativeInputActionRecordCalls, NativeGamepadRumbleOutput {
+    NativeInputActionRecordCalls, NativeGamepadRumbleOutput, DynamicInputButtonQueryHost {
     GameInputRuntimeBindings bound;
     NativeInputDeviceRuntime device_runtime;
     NativeInputBackendDirectInput direct_input;
@@ -98,6 +100,13 @@ struct GameInputRuntime::Impl final : NativeInputBackendBindingsCalls,
         float value) override {
         device_runtime.set_force_vslot38(p, profile, channel, value);
     }
+    void invalid_parameter_00bf6713() override {
+        device_runtime.invalid_parameter_00bf6713();
+    }
+    bool input_device_vcall_2c(void* device) override {
+        // Dispatch the current native profile on the same vector element.
+        return device_runtime.buttons_active_vslot2c(device) != 0;
+    }
 };
 
 GameInputRuntime::GameInputRuntime(GameInputRuntimeBindings b) : impl_(std::make_unique<Impl>(b)) {}
@@ -150,6 +159,23 @@ void GameInputRuntime::update_backend(float seconds) {
 }
 void GameInputRuntime::backend_update_vslot04(void* backend, std::uint32_t profile, float seconds) {
     impl_->backend_vslot04(backend, profile, seconds);
+}
+bool GameInputRuntime::poll_dynamic_button_edge() {
+    // Normal-frame producer: GameFrameHost::game_on_move calls update_backend
+    // with its incoming delta before dispatching to mission device-wait. Keep
+    // this query read-only apart from the shared latch, so additional consumers
+    // cannot resample hardware or advance device timers a second time.
+    auto* const backend = static_cast<std::uint8_t*>(impl_->bound.backend_00f8bbf4);
+    if (!backend) throw std::logic_error("input button edge requires the actual published backend");
+    // Evidence: bsp.py ghidra disasm 0067D35B, MOV ECX,[F8BBF4] then
+    // CALL 004B43B0; bsp.py show 004B43B0 --asm keeps that receiver in ESI
+    // across 00A91020 and reads/writes ESI+DD only AFTER the query. The native
+    // groups constructor 00A91570 already initializes this byte to zero.
+    // Borrow its real checked device vectors and existing latch, without a
+    // second device table, state snapshot, synthetic sample or latch owner.
+    const auto down = static_cast<std::uint8_t>(
+        input_device_table_any_dynamic_device_button_down_00a91020(backend, *impl_));
+    return cc13_band004b::press_start_poll_button_edge_004b43b0(backend[0xdd], down);
 }
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }
 void GameInputRuntime::release_sdk_after_native_drain() {

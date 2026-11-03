@@ -463,6 +463,9 @@ public:
     void advance_frame_clock() override;
     const ClockTimestamp& frame_interval() override;
     void game_on_move(float seconds) override;
+    // Same application-owned backend used by mission device-wait. Its lifetime
+    // encloses this frame host; normal frames refresh it before state dispatch.
+    void bind_input_runtime(GameInputRuntime* runtime) noexcept { input_runtime_ = runtime; }
     bool exit_requested() override;
     void request_loop_exit() override;
     void tick_vfs_providers() override;
@@ -499,6 +502,7 @@ private:
     GameStateSlot& game_state_;
     GameFrameProfiler* profiler_{};
     GameMenuHost* menu_{};
+    GameInputRuntime* input_runtime_{};
     GameVfsHost& vfs_;
     NativeOnlineManagerStorage* volatile& online_;
     WindowClosePromptCalls* close_prompt_{};

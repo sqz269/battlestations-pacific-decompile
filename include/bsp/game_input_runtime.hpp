@@ -58,6 +58,11 @@ public:
     // Load callers above instead capture the current platform publication.
     void update_cursor(Win32PlatformState& captured_platform, bool loading);
     void update_backend(float seconds);
+    // 004DB955..977 and 0067D363 borrow the actual F8BBF4 backend. Its +DDh
+    // latch belongs to that same owner, not the 18h press-start screen.
+    // Cached-state query: normal-frame callers must first update_backend with
+    // that frame's real delta, as GameFrameHost::game_on_move does once.
+    bool poll_dynamic_button_edge();
     // Entry for a raw caller which already captured its receiver/profile.
     void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();

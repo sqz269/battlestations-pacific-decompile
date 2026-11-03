@@ -200,6 +200,11 @@ struct MissionDeviceWaitHost {
     virtual ~MissionDeviceWaitHost() = default;
     // 004db95d, 00a91020 with ECX = the device table 00f8bbf4.
     virtual bool any_dynamic_device_button_down() = 0;
+    // The application overrides this to borrow the actual backend+DDh latch.
+    // Existing semantic/fixture hosts retain their own latch and sample path.
+    virtual bool poll_button_edge(DeviceWaitLatch& latch) {
+        return device_wait_button_edge(latch, any_dynamic_device_button_down());
+    }
     virtual bool menu_command_screen_busy() = 0; // 00425d10, +25Ch
     virtual bool gui_root_busy() = 0; // 00f8abe8, +3E8h
     // 004db9ad..004db9b4. The FLDZ at 004db9a7 pushes the argument of

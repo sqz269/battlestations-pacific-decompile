@@ -53,6 +53,7 @@ class GameFrameProfiler;
 class GameMissionLuaHost;
 class GameMissionFrameHost;
 class GameObserverRuntime;
+class GameInputRuntime;
 class GameHudHost;
 class GameProfileOwner;
 class GameHintTrackerSlot;
@@ -221,6 +222,8 @@ public:
 
     // Borrow the startup-owned runtime through frame/unit destruction.
     void bind_observer_runtime(GameObserverRuntime&);
+    // Borrow the application's actual device backend through mission loads.
+    void bind_input_runtime(GameInputRuntime*);
     // cc15 lane L2: the menu host's game+650h profile owner and the [00E198D0]
     // hint tracker slot. Both outlive this host; the rows read them only when
     // kProfileOwnerCc15Bound / kHintTrackerCc15Bound are on.
