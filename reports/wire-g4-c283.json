@@ -1,0 +1,137 @@
+{
+  "chain": 283,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain283Bound",
+  "rows": [
+    {
+      "native": "00762880",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_change_state_c3; src/game_hosts_units.cpp: request_ground_state_007c3c90 and GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0"
+    },
+    {
+      "native": "00762940",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_change_state_c3; src/game_hosts_units.cpp: request_ground_state_007c3c90 and GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0"
+    },
+    {
+      "native": "007629A0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_change_state_c3; src/game_hosts_units.cpp: request_ground_state_007c3c90 and GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0"
+    },
+    {
+      "native": "0070D0C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::leave_group_on_destroy_0077bd70",
+      "reason": "Whole raw setter dereferences FAC-byte native unit prefixes through 00815E20 on wake handoff; FormationGroup stores unit registry indices and no such unit prefixes."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::capture_target_path_00a29fd0 (score list omitted)",
+      "reason": "Host has no native score-list storage or gameplay consumer; its documented native consumer is a debug overlay, which this single-player task excludes."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::capture_target_path_00a29fd0 (score list omitted)",
+      "reason": "Host has no native AiGroupScoreList entries; chosen-flag writes would update only a fabricated auxiliary debug list."
+    },
+    {
+      "native": "00A2C530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "The required live member+304h ResourceUsage values are not exposed by the units interface; existing planner uses a constant substitute."
+    },
+    {
+      "native": "00A2DEF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+      "reason": "Existing enabled kDefendThinkImageBound arm already calls this reconstruction with the real kind and objective-set values; adding another call would duplicate it."
+    },
+    {
+      "native": "006E3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::dive_bomb_rounds_remaining",
+      "reason": "Host rack_ammo_per_rack combines carried rounds; native body needs distinct attached child count and reserve+484h, which are not maintained separately."
+    },
+    {
+      "native": "00729BC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bot_slot_accepts_target_00729bc0",
+      "reason": "Reconstruction selects a bot-slot offset; host still lacks the installed native bot-slot pointer and its vtable[1Ch] target-acceptance contract."
+    }
+  ],
+  "evidence": {
+    "native_caller": "bsp.py show 007C17D0: +904h guard, current +900h byte at +20h, requested 4 at +21h; local C3h route flags 7.",
+    "constructor": "bsp.py show 00762880: C3h, header zeroes, delivery 1, profile 00D03504; payload left for sender.",
+    "codec_abi": "bsp.py show 00762940/007629A0 --asm: ECX message, stack cursor/stream, RET 4; fields +20h/+21h are 3 bits each.",
+    "factory": "00768530 case C3h allocates 24h bytes, constructs with 00762880, then reads via profile[8] at 0076A27B.",
+    "profile": "bsp.py ghidra bytes 00D03504 --length 20: 00762920, 00762940, 007629A0, 007628F0, 004499C0."
+  },
+  "behavior": {
+    "state_source": "The real plane +900h value and requested 4/5 from the existing ground-state callback; takeoff posts the real +900h byte and binary constant 4.",
+    "consumer": "Ground-state callback dispatches from the copied requested selector; takeoff stores the copied current state and requested-4 dispatch in its existing pending notification.",
+    "timing": "Ground-state delivery remains immediate; takeoff notification remains pending until its existing row-9 drain. Original direct stores/call remain unchanged in the switch-off else arms.",
+    "context": "Reuse GameUnitsHost::Impl::commands.session_messages(), its host-owned session image, codec constants and native profile binding. Target slot identity stays with the existing caller."
+  },
+  "validation": {
+    "official_build": "scripts/build.ps1: Win32 Release passed, reconstructed_math and tool_tests passed (2/2).",
+    "focused_probe": "local/output/plane_state_codec_probe.cpp compiled against the built host adapter object and core libraries, with /link /MANIFEST:EMBED; (5,4) and high-bit aliases (0xFD,0xFC) both decode to (5,4). Passed.",
+    "call_graph": {
+      "00762880": {
+        "reachable": true,
+        "call_sites": 2,
+        "caller": "HostSessionMessages::queue_plane_change_state_c3"
+      },
+      "00762940": {
+        "reachable": true,
+        "call_sites": 1,
+        "caller": "HostSessionMessages::queue_plane_change_state_c3"
+      },
+      "007629A0": {
+        "reachable": true,
+        "call_sites": 1,
+        "caller": "HostSessionMessages::queue_plane_change_state_c3"
+      },
+      "adapter": {
+        "reachable": true,
+        "call_sites": 2,
+        "callers": [
+          "plane_request_flight_state_007c1570 callback in request_ground_state_007c3c90",
+          "GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0"
+        ]
+      },
+      "entry_path": "WinMainCRTStartup -> startup/frame/mission -> fixed simulation -> air ops -> run_landing_queue_006CD240 -> request_ground_state_007C3C90 -> plane_request_flight_state_007C1570 callback -> queue_plane_change_state_c3 -> write_plane_change_state_00762940"
+    },
+    "float_math": "No float arithmetic changed; pc24_lint was not required.",
+    "diff_check": "git diff --check passed.",
+    "wire_readiness": {
+      "00762880": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      "00762940": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      "007629a0": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      }
+    }
+  },
+  "limitations": [
+    "Build, focused codec fixture and static entry reachability only; no game was run, as instructed.",
+    "This wires the C3h message copy at two existing host send sites; broader plane handler parity and other message classes remain outside this change."
+  ],
+  "wired_total": {
+    "before": 9240,
+    "after": 9243,
+    "delta": 3,
+    "tool": "python tools/wire_readiness.py --standins",
+    "scope": "isolated worktree based on c4cbd45a7; source wiring metric, with all three rows separately confirmed called in the built executable"
+  }
+}
