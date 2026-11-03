@@ -591,8 +591,10 @@ struct Fe3LibraryHost {
     virtual std::int32_t atol_00bf8417(const char* text) = 0;
 };
 
-// 004FA230, __thiscall(out, b) with EDX = a, RET 4, EAX = out: out = 004F9B30 cross(a, b) (x87:
-// products in extended precision; the C++ uses double, exact for the products).
+// 004FA230, __thiscall(out, b) with EDX = a, RET 4, EAX = out: out = 004F9B30 cross(a, b).
+// Reuses that recovered x87 kernel into a temporary before copying to out:
+// caller precision is retained (main PC24), including when out aliases a or b.
+// This explicit three-pointer C++ interface is not a native ABI replacement.
 void* vector3_assign_cross_004fa230(float* out, const float* a, const float* b) noexcept;
 // 004FAB40 BSP_VehicleClassLua_IsHeavyCruiser, slot(index), RET 4, AL:
 // globals.VehicleClass[index].HeavyCruiser is a boolean equal to 1.

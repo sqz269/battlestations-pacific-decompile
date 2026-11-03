@@ -2573,6 +2573,26 @@ bool plane_in_paratrooper_drop_altitude_007c4d90(Seg47Host& host, Raw plane) {
     return true;
 }
 
+// Goal 4 chain 333. Evidence: bsp.py show 007c6760 --asm, 007C676B/677E
+// load min/max into the stack locals that Ghidra misidentifies as unaff_ESI.
+// 007C6799 selects max for kind 10h; 007C67D6 selects min for other kinds;
+// 007C67E4..67FA mix max*0.4 + min*0.6 for kinds 12h/14h/11h. Both constants
+// are widened floats stored as doubles (00CE65D0 / 00CEFF98, bytes verified).
+// Every x87 operation rounds at PC24, including the final class+268h multiply
+// at 007C680B. Names and the scalar interface remain reconstruction hypotheses.
+float landing_circle_radius_007c6760(float class_turn_radius, float multiplier_min,
+    float multiplier_max, bool kind_10, bool kind_12_14_11) {
+    float multiplier = multiplier_min;
+    if (kind_10) {
+        multiplier = multiplier_max;
+    } else if (kind_12_14_11) {
+        multiplier = static_cast<float>(bsp::cc13x87::x87_add24(
+            bsp::cc13x87::x87_mul24(multiplier_max, 0.4000000059604645),
+            bsp::cc13x87::x87_mul24(multiplier_min, 0.6000000238418579)));
+    }
+    return static_cast<float>(bsp::cc13x87::x87_mul24(class_turn_radius, multiplier));
+}
+
 // ============================================================================
 // The plane engine-effect vector {+0 data, +4 size, +8 capacity} of 44h-byte
 // records {RefPtr effect +0, matrix +4..+43h}

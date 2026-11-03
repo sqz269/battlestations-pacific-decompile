@@ -65,6 +65,26 @@
     "float_math_changed": false,
     "game_run": false
   },
+  "merge_validation": {
+    "origin_main": "60c2f0163eddfc117a93350f1baac860ab0ec6d1",
+    "resolution": "Kept both chain329 terrain-normal headers and the chain332 switch at the adjacent-include conflict. Retained incoming chain330 V3A producer/decoder/tests in the shared adapter; removed the duplicate test include.",
+    "default_build": "./scripts/build.ps1 passes, including both CTests",
+    "on_build": "python tools/off_switch_on_build.py passes with kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled ON; zero distinct diagnostics; both CTests pass; tool restores both source files byte-for-byte",
+    "restored_default_build": "./scripts/build.ps1 passes again after ON-source restoration, including both CTests; final binary uses the committed switch values",
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "text_wired_total": 9346,
+      "008f3b60": {"state": "ready", "called": true, "call_sites": 1, "callers_live": 1}
+    },
+    "call_graph_unique_reconstructed_called": 4381,
+    "incoming_wiring_preserved": {
+      "004fa230": {"called": true, "call_sites": 4},
+      "008f3610": {"called": true, "call_sites": 1}
+    },
+    "pc24_lint_findings": 0,
+    "game_run": false,
+    "count_note": "The original packet's before/after counts above remain its historical delta. These post-merge totals also include the incoming main changes."
+  },
   "limits": [
     "Only complete supported, uniquely named, compatible subtrees enter native recursion. Raw forms, repeated names and scalar/child or tag conflicts keep the old host path.",
     "The projection fills the already-parsed child before attachment; it makes no Original parser allocation/observer timing or class/register ABI claim.",

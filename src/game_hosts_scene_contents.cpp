@@ -14,7 +14,9 @@
 #include "bsp/wire_goal4_chain296_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain319_switches.hpp"
+#include "bsp/wire_goal4_chain329_switches.hpp"
 #include "bsp/wire_goal4_chain332_switches.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
@@ -5139,6 +5141,19 @@ void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3
     const float d2[3] = {0.0f, terrain_f32(static_cast<double>(h01) - h00),
         terrain_f32(static_cast<double>(p2z) - fj)};
     float c[3];
+    if constexpr (kWireGoal4Chain329Bound) {
+        // 00ADAB3E's 004F9B30 on the live cell edges, through its recovered
+        // 004FA230 assignment wrapper. c feeds the normal below. The Dyn
+        // worker's separate PC53 arm retains its existing arithmetic.
+        if constexpr (kPc24Bound) {
+            cc13_fe3::vector3_assign_cross_004fa230(c, d2, d1);
+        } else {
+            // pc24-lint: allow PC53 Dyn-worker path, unchanged from OFF.
+            c[0] = terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]);
+            c[1] = terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]);
+            c[2] = terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0]);
+        }
+    } else {
     if constexpr (kPc24Bound) {
         // The 004F9B30 cross (called at 00ADAB3E; inlined here): both products rounded before the FSUBRP (004F9B5F / 004F9B6D / 004F9B71,
         // 004F9B87 / 004F9B8F / 004F9B93, 004F9B9A / 004F9B9C / 004F9B9E).
@@ -5149,6 +5164,7 @@ void SceneTerrainHeightField::cell_normal_arm_00adaa40(int i, int j, float out[3
         c[0] = terrain_f32(static_cast<double>(d2[1]) * d1[2] - static_cast<double>(d2[2]) * d1[1]);
         c[1] = terrain_f32(static_cast<double>(d2[2]) * d1[0] - static_cast<double>(d2[0]) * d1[2]);
         c[2] = terrain_f32(static_cast<double>(d2[0]) * d1[1] - static_cast<double>(d2[1]) * d1[0]);
+    }
     }
     const float xx = terrain_f32(static_cast<double>(c[0]) * c[0]);
     const float yy = terrain_f32(static_cast<double>(c[1]) * c[1]);
@@ -5498,6 +5514,19 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
 // 004F9B30: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z,
 // out.z = b.y*a.x - a.y*b.x.
 void quad_cross(const float a[3], const float b[3], float out[3]) noexcept {
+    if constexpr (kWireGoal4Chain329Bound) {
+        // 00ADEB40/00ADEB80's real terrain vertices and line direction reach
+        // 004F9B30 through the recovered assignment wrapper. The result feeds
+        // the scalar triple/dot predicates and interpolation weights below.
+        if constexpr (kPc24FlightRenderCc13Bound) {
+            cc13_fe3::vector3_assign_cross_004fa230(out, a, b);
+        } else {
+            // pc24-lint: allow legacy PC53 precision-switch arm, unchanged from OFF.
+            out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
+            out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
+            out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
+        }
+    } else {
     if constexpr (kPc24FlightRenderCc13Bound) {
         // pc24w1-sweep1-4: each product rounded at PC24 before its FSUBRP, and the
         // difference rounded (004F9B54..004F9BA0).
@@ -5508,6 +5537,7 @@ void quad_cross(const float a[3], const float b[3], float out[3]) noexcept {
         out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
         out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
         out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
+    }
     }
 }
 
