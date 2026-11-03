@@ -53,6 +53,8 @@
 #include "bsp/wire_goal4_chain277_switches.hpp"
 #include "bsp/wire_goal4_chain288_switches.hpp"
 #include "bsp/wire_goal4_chain300_switches.hpp"
+#include "bsp/wire_goal4_chain325_switches.hpp"
+#include "bsp/cc13_seg52.hpp"                         // chain 325: 0084D8F0
 #include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
@@ -2601,6 +2603,9 @@ struct GameGunneryHost::Impl {
         bsp::UnitGunneryCategoryState category{};
         int bridge_countdown{0};         // adapter+8h
         bool allow_fire_cache{false};    // adapter+0Ch
+        // pass+5Ch / +60h, the fire-target provider and category gate that
+        // 008636A0 installs at the attach (kWireGoal4Chain325Bound).
+        bsp::AaPickPolicies policies{};
         // The visibility cache at pass+68h: one entry per candidate, 0Ch bytes.
         struct VisibilityEntry {
             std::size_t target{0};
@@ -3668,6 +3673,12 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_slot_origin_flips{0};    // kAaSlotRangeOriginBound
     unsigned long long leader_fire_target_inherits{0}; // kDirectorLeaderFireTargetBound
     unsigned long long submarine_category_gate_refusals{0}; // kSubmarineCategoryGateBound
+    // kWireGoal4Chain325Bound: 008636A0's installs, and the 00863640 reads.
+    unsigned long long null_provider_installs{0};
+    unsigned long long submarine_gate_installs{0};
+    unsigned long long director_provider_reads{0};
+    unsigned long long null_provider_other_ticks{0};   // null director, not plane-side
+    unsigned long long null_provider_other_nulled{0};
     unsigned long long kill_funnel_non_harm_causes{0};      // kKillFunnelCauseBound
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
@@ -5020,6 +5031,10 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_supply_calls{0};
 
     void run_gunnery_pass(std::size_t index, float dt);
+    // kWireGoal4Chain325Bound: 008636A0's inputs for one unit, and the read of
+    // the provider it installed (00863640 or 00861B90).
+    bsp::AaPickPolicies install_unit_policies(std::size_t unit) const;
+    void read_fire_target_provider(std::size_t index, UnitState& state);
     void refresh_command_targets();
     // 0071EBF0 per unit, one based; 0 when the unit has no current command
     // target. Rebuilt only when the command row count or the unit count
@@ -7276,7 +7291,19 @@ void GameGunneryHost::Impl::attach_passes(std::size_t first_unit) {
         ++summary.passes_attached;
         done("Gunnery::pass_attach_00864bd0", 0x00864bd0u);
         done("Gunnery::pass_construct_00864580", 0x00864580u);
+        if constexpr (bsp::kWireGoal4Chain325Bound) {
+            // 00864C18: 008636A0(this)([this+50h]) installs pass+5Ch and +60h.
+            state.policies = install_unit_policies(i);
+            if (state.policies.fire_target == bsp::AaPickFireTargetProvider::kNull_00D0D314) {
+                ++null_provider_installs;
+            }
+            if (state.policies.gate == bsp::AaPickCategoryGate::kSubmarine_00D0D32C) {
+                ++submarine_gate_installs;
+            }
+            done("Gunnery::install_policies_008636a0", 0x008636a0u);
+        } else {
         done("Gunnery::install_policies_008636a0", 0x008636a0u);
+        }
         done("Gunnery::create_director_bridge_00863a80", 0x00863a80u);
     }
 }
@@ -7441,7 +7468,16 @@ public:
     bool category_gate_slot4(int category) override {
         // 008636A0 installs the default gate 00D0D31C on a unit that is not
         // class 8; its vtable[4h] is 00861BE0, `mov al,1`.
+        if constexpr (bsp::kWireGoal4Chain325Bound) {
+            // [this+60h]->vtable[4h](category), the gate the attach installed.
+            if (!kSubmarineCategoryGateBound
+                || state_.policies.gate != bsp::AaPickCategoryGate::kSubmarine_00D0D32C) {
+                return bsp::aa_pick_accept_category_00861be0(
+                    nullptr, static_cast<std::uint32_t>(category));
+            }
+        } else {
         if (!kSubmarineCategoryGateBound || !owner_.units.unit_is_kind_of(unit_, 8)) return true;
+        }
         // 0086371E..00863743: an IsKindOf(8) unit gets 00D0D32C, whose slot 4 is
         // 008627A0: category 7 asks 008527E0, 1..6 ask 008527A0, others false.
         float x = 0.0f, y = 0.0f, z = 0.0f;
@@ -9386,6 +9422,135 @@ bool GameGunneryHost::recon_triple_units(int side, int triple,
     return true;
 }
 
+// kWireGoal4Chain325Bound. 008636A0 (one caller, 00864C18 in the attach
+// 00864BD0), __thiscall(pass)(Entity* unit), RET 4; docs/UNIT_GUNNERY_PASS.md
+// section 6. Its four reads, as this process holds them:
+//  - 008636AD unit->vtable[5Ch](2): the units host's class table.
+//  - 008636B9..008636C2 unit->vtable[114h](), by the instance's class (the
+//    dword at vtable+114h, read on disk for every class vtable in
+//    src/unit_kind_query.cpp's table):
+//      0047F180 (XOR EAX,EAX): the planes 10h..17h, MLandVehicle 19h (dword
+//        00CFFEF4) and LandConvoy 1Ah (dword 00CEA684), among others;
+//      007ECFD0 ([+348h], the 0084D810 controller): PlaneSquadronGen 18h;
+//      0080E150 ([+738h], the ship director 008366D0 builds, vtable 00D09F58):
+//        the ships 07h..0Eh;
+//      00743F30 ([+74Ch], MLandFort 1Bh and MCommandBuilding 1Ch), 006D0D30
+//        ([+8C8h], MAirfield 45h), 00842A80 ([+7A0h], MShipyard 46h): a 240h-
+//        byte base director 008363E0 builds with vtable 00D09EC0 (00743E90,
+//        006D0C80, 008429E0).
+//    The other classes' slot 114h is not a director getter (Stationary 36h
+//    answers 00748FF0, MOV EAX,0Fh), and none of them answers IsKindOf(2), so
+//    008636A0 never reaches the slot for them. docs/GUNNERY_OPEN_ITEMS.md 42.1.
+//  - 008636C9..008636D3 director->vtable[48h](2), only for a non-null
+//    director: the squadron controller's slot is 0084D8F0 (dword 00D0BDE0),
+//    the ship director's 00836790 (dword 00D09FA0 of vtable 00D09F58), the base
+//    director's 008364B0 (dword 00D09F08 of vtable 00D09EC0), all read on disk.
+//  - 0086371E unit->vtable[5Ch](8).
+bsp::AaPickPolicies GameGunneryHost::Impl::install_unit_policies(std::size_t unit) const {
+    enum class DirectorSlot { none, ship, squadron, base };
+    DirectorSlot director = DirectorSlot::none;
+    switch (units.unit_class_id(unit)) {
+    case 0x07: case 0x08: case 0x09: case 0x0A:
+    case 0x0B: case 0x0C: case 0x0D: case 0x0E:
+        director = DirectorSlot::ship;       // 0080E150
+        break;
+    case 0x18:
+        director = DirectorSlot::squadron;   // 007ECFD0
+        break;
+    case 0x1B: case 0x1C: case 0x45: case 0x46:
+        director = DirectorSlot::base;       // 00743F30 / 006D0D30 / 00842A80
+        break;
+    default:
+        break;                               // 0047F180, or no IsKindOf(2)
+    }
+    bsp::AaPickPolicyInputs in;
+    in.unit_is_kind_2 = units.unit_is_kind_of(unit, 2);
+    in.unit_has_director = director != DirectorSlot::none;
+    if (in.unit_is_kind_2 && in.unit_has_director) {
+        switch (director) {
+        case DirectorSlot::squadron:
+            in.director_answers_48h_2 =
+                bsp::cc13_seg52::squadron_block_allows_category48_0084d8f0(2) != 0u;
+            break;
+        case DirectorSlot::base:
+            in.director_answers_48h_2 = bsp::oct18_tail_b::director_allows_category_008364b0(2);
+            break;
+        default:
+            in.director_answers_48h_2 = bsp::oct18_tail_b::ship_director_allows_category_00836790(2);
+            break;
+        }
+    }
+    in.unit_is_kind_8 = units.unit_is_kind_of(unit, 8);
+    return bsp::aa_pick_install_policies_008636a0(in);
+}
+
+// kWireGoal4Chain325Bound. The step-8 fire-target read [this+5Ch]->vtable[4h]().
+// The null provider 00D0D314's slot is 00861B90 (XOR EAX,EAX). The director
+// provider 00D0D324's is 00863640: director->vtable[2Ch]() (008364E0,
+// director+238h); on a null answer [director+34h] through 007788D0 to the
+// formation leader [[unit+284h]+14h], whose own [leader+738h]->vtable[2Ch]()
+// it returns when the leader answers IsKindOf(6). director+238h is the ship-AI
+// row's stored fire target (00835860's write), resolved by name as the OFF arm
+// resolves it. Entities go to 00863640 as unit index + 1, null for none.
+void GameGunneryHost::Impl::read_fire_target_provider(std::size_t index, UnitState& state) {
+    const std::vector<GameShipAiRow>* rows = ship_ai != nullptr ? &ship_ai->rows() : nullptr;
+    const auto stored_target = [&](std::size_t unit) -> std::size_t {
+        if (rows == nullptr || unit >= rows->size()) return 0;
+        const std::string& name = (*rows)[unit].fire_target;
+        if (name.empty()) return 0;
+        std::size_t found = 0;
+        for (std::size_t i = 0; i < units.count(); ++i) {
+            const GameUnitRow* candidate = units.unit_row(i);
+            if (candidate != nullptr && candidate->name == name) found = i + 1;
+        }
+        return found;
+    };
+    const auto handle = [](std::size_t one_based) -> const void* {
+        return reinterpret_cast<const void*>(static_cast<std::uintptr_t>(one_based));
+    };
+    const std::size_t own = stored_target(index);
+    if (state.policies.fire_target == bsp::AaPickFireTargetProvider::kNull_00D0D314) {
+        // The stored target the null provider does not read. Planes and
+        // squadrons keep packet cc9_plane_forced_target_read's counters and its
+        // switch; the other null-director classes (MLandVehicle 19h, LandConvoy
+        // 1Ah) are counted apart and take 00861B90 under this chain alone.
+        const bool plane_side = units.unit_is_kind_of(index, 0x0f)
+            || units.unit_is_kind_of(index, 0x18);
+        if (plane_side) ++summary.plane_null_provider_ticks;
+        else ++null_provider_other_ticks;
+        state.fire_target = own;
+        if (own != 0) {
+            if (plane_side) ++summary.plane_fire_target_reads;
+            if (!plane_side || kPlaneNullFireTargetProviderBound) {
+                state.fire_target = bsp::aa_pick_no_target_00861b90();
+                if (plane_side) ++summary.plane_fire_target_nulled;
+                else ++null_provider_other_nulled;
+                done("Gunnery::null_fire_target_provider_00861b90", 0x00861b90u);
+            }
+        }
+        return;
+    }
+    bsp::AaPickDirectorFireTargetInputs in;
+    in.own = handle(own);
+    // [director+34h], the director's unit, which 008366D0 stores when it builds it.
+    in.director_has_unit = true;
+    if (own == 0 && kDirectorLeaderFireTargetBound) {
+        const std::int32_t group = units.unit_formation_group_0284(index);
+        const std::size_t leader = group >= 0
+            ? units.formation_leader_0014(group) : static_cast<std::size_t>(-1);
+        if (leader < units.count()) {
+            in.formation_leader = handle(leader + 1);
+            in.leader_is_ship = units.unit_is_kind_of(leader, 6);
+            if (in.leader_is_ship) in.leader_fire_target = handle(stored_target(leader));
+        }
+    }
+    state.fire_target = static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(
+        bsp::aa_pick_director_fire_target_00863640(in)));
+    ++director_provider_reads;
+    if (own == 0 && state.fire_target != 0) ++leader_fire_target_inherits;
+    done("Gunnery::director_fire_target_00863640", 0x00863640u);
+}
+
 void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
     UnitState& state = unit_state[index];
     if (!state.attached) return;
@@ -9405,6 +9570,10 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
     if (index < command_target_by_unit.size()) {
         state.command_target = command_target_by_unit[index];
     }
+    if constexpr (bsp::kWireGoal4Chain325Bound) {
+        // [this+5Ch]->vtable[4h](): the provider 008636A0 installed at the attach.
+        read_fire_target_provider(index, state);
+    } else {
     if (ship_ai != nullptr) {
         const std::vector<GameShipAiRow>& rows = ship_ai->rows();
         if (index < rows.size()) {
@@ -9471,6 +9640,7 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
                 done("Gunnery::null_fire_target_provider_00861b90", 0x00861b90u);
             }
         }
+    }
     }
     state.row.fire_target = state.fire_target != 0
         ? unit_state[state.fire_target - 1].row.name : std::string();
@@ -21354,6 +21524,14 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery director leader fire target inherits=%llu "
             "bound=%d (00863640, packet cc9_g41_aa_pick_d3)", host.leader_fire_target_inherits,
             kDirectorLeaderFireTargetBound ? 1 : 0);
+        if constexpr (bsp::kWireGoal4Chain325Bound) {
+            host.log.notef("summary mission gunnery policies null_installs=%llu "
+                "submarine_gates=%llu director_reads=%llu other_null_ticks=%llu "
+                "other_nulled=%llu (008636A0 / 00863640 / 00861B90, chain 325)",
+                host.null_provider_installs, host.submarine_gate_installs,
+                host.director_provider_reads, host.null_provider_other_ticks,
+                host.null_provider_other_nulled);
+        }
         host.log.notef("summary mission gunnery submarine category gate refusals=%llu "
             "bound=%d (008627A0, packet cc9_g41_aa_pick_d4)", host.submarine_category_gate_refusals,
             kSubmarineCategoryGateBound ? 1 : 0);
