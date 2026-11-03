@@ -516,25 +516,28 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
             if (!expect_token(lexer, "{", error)) {         // 008F698A
                 return false;
             }
-            // 008F69FF 008F31A0 parses the body. That callee was not opened, so
-            // the body is handed over as text rather than decoded here.
+            // 008F69FF calls 008F31A0: bsp.py show 008f31a0 confirms that
+            // token bytes equal to "}" terminate the enum, without nesting
+            // on "{". In particular, a quoted "{" is a valid symbol name.
+            // Hand the token-preserving body to the owning enum adapter.
             std::string body;
-            int depth = 1;
-            while (depth > 0 && !lexer.at_end()) {
+            bool terminated = false;
+            while (!lexer.at_end()) {
                 const SceneToken token = lexer.next();
-                if (token.text == "{") {
-                    ++depth;
-                } else if (token.text == "}") {
-                    if (--depth == 0) {
-                        break;
-                    }
+                if (token.text == "}") {
+                    terminated = true;
+                    break;
                 }
                 if (!body.empty()) {
                     body.push_back(' ');
                 }
+                // Retokenizing in the native enum adapter must retain quoted
+                // names containing whitespace/delimiters (008D8A70 +4 flag).
+                if (token.quoted) body.push_back('"');
                 body += token.text;
+                if (token.quoted) body.push_back('"');
             }
-            if (depth > 0) {
+            if (!terminated) {
                 error = "unterminated enum " + table.name;
                 return false;
             }
@@ -562,6 +565,7 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
                     if (group.parent.empty()) {
                         group.parent = name;
                     }
+                    group.parents.push_back(name);
                 }
                 if (!expect_token(lexer, ")", error)) {
                     return false;
@@ -573,9 +577,11 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
             if (!parse_errors.empty() && error.empty()) {
                 error = parse_errors.front();
             }
-            if (group.created) {
-                host.register_group(group);                 // 008F6B42
-            }
+            // bsp.py show 008f67b0: the lookup arm reuses the existing bag,
+            // then BOTH arms call 008F5A00 at 008F6AD7. Only map publication
+            // at 008F6B42 is conditional. Do not discard a redeclaration or
+            // the later parents that 008F5A00 merges at 008F5AB3.
+            host.register_group(group);
             document.groups.push_back(std::move(group));
             continue;
         }

@@ -115,6 +115,7 @@
 #include "bsp/vehicle_class_fields.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/scene_traffic_groups.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/scene_property_bag_merge.hpp"
 #include "bsp/scene_record_map.hpp"
@@ -254,6 +255,51 @@ private:
 }
 
 int main() {
+    {
+        // 008F6AD7 must apply a redeclaration to its existing bag, preserving
+        // every parent for 008F5AB3. The enum adapter retokenizes quoted names;
+        // 008F31A0 treats an opening brace as a symbol, not a nested block.
+        struct LibraryFixture final : bsp::PropLibraryHost {
+            std::vector<bsp::PropLibraryGroup> applied;
+            std::vector<std::string> symbols;
+            std::vector<std::string> published_tables;
+            std::vector<std::string> enumerate_library_files(
+                const std::string&, const std::string&) override { return {}; }
+            bool read_library_file(const std::string&, std::string& text) override {
+                text = "enum Words { \"two words\" = 7; } "
+                    "enum Keys { \"{\" = 7; } "
+                    "properties Pair (BaseA BaseB) { X = I 1; } "
+                    "properties Pair { X = I 2; }";
+                return true;
+            }
+            bool has_group(const std::string& name) override {
+                for (const auto& group : applied) if (group.name == name) return true;
+                return false;
+            }
+            bool has_enum_table(const std::string&) override { return false; }
+            void register_group(const bsp::PropLibraryGroup& group) override {
+                applied.push_back(group);
+            }
+            void register_enum_table(const bsp::PropLibraryEnumTable& table) override {
+                published_tables.push_back(table.name);
+            }
+            void parse_enum_body(const std::string&, const std::string& body) override {
+                bsp::SceneLexer lexer(body, bsp::kSceneDelimiters);
+                symbols.push_back(lexer.next().text);
+            }
+        } host;
+        bsp::PropLibraryDocument document;
+        std::string error;
+        const bool loaded = bsp::load_prop_library_file("fixture.props", host, document, error);
+        const auto* value = host.applied.size() == 2 ? host.applied[1].body.find("X") : nullptr;
+        check(loaded && error.empty() && host.applied.size() == 2
+                && host.applied[0].created && !host.applied[1].created
+                && host.applied[0].parents == std::vector<std::string>({"BaseA", "BaseB"})
+                && value != nullptr && value->has_integer && value->integer_value == 2
+                && host.symbols == std::vector<std::string>({"two words", "{"})
+                && host.published_tables == std::vector<std::string>({"Words", "Keys"}),
+            "property-library load applies repeated groups and all parents, and publishes quoted enum names including an opening brace");
+    }
     {
         // 0084C5D4 must tick once, then read the live +4D4h flag. Pin the
         // ungated/untargeted extra send and a synchronous 0084C4E0 clear.
