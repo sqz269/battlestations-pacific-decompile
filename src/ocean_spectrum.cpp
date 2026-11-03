@@ -5,12 +5,16 @@
 
 #include <cmath>
 #include <cstddef>
+#include <cstring>
+#include <memory>
 #include <string>
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/pc24_flightrender_cc13.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_graph2_cc13.hpp"
+#include "bsp/wire_goal2_chain129_switches.hpp"
 
 // pc24w1-sweep1-3, kPc24FlightRenderCc13Bound (OFF): ON = per-op PC24 (x87_*24) in the
 // spectrum leaves the main thread runs at 24-bit precision control; OFF keeps each double
@@ -159,8 +163,19 @@ void ocean_spectrum_build_00b95750(OceanSpectrum& sp) {
     }
 
     const std::size_t grid = static_cast<std::size_t>(kOceanGridSide * kOceanGridSide);
+    // 00B97030: construct_float_vector supplies the live spectrum tables; OFF keeps assign.
+    if constexpr (kWireGoal2Chain129Bound) {
+        // 00B971ED/00B9720D construct the +4Ch/+5Ch tables with 1000h zero floats.
+        // This host sizes those tables in the builder reached by that same constructor,
+        // and also rebuilds them after authored wind/height changes. `grid` is its extent.
+        sp.inv_k_60 = cc13_scene2::construct_float_vector_00b97030(
+            static_cast<std::uint32_t>(grid), 0.0f);
+        sp.omega_50 = cc13_scene2::construct_float_vector_00b97030(
+            static_cast<std::uint32_t>(grid), 0.0f);
+    } else {
     sp.inv_k_60.assign(grid, 0.0f);
     sp.omega_50.assign(grid, 0.0f);
+    }
     std::size_t i = 0;
     for (int m = -kOceanSpectrumHalf; m < kOceanSpectrumHalf; ++m) {
         const float a = f32(m * kOceanWaveNumberStep);
@@ -207,7 +222,26 @@ void ocean_spectrum_set_height_00b96c50(OceanSpectrum& sp, float height, float c
 
 void ocean_spectrum_construct_00b97100(OceanSpectrum& sp) {
     sp = OceanSpectrum{};
+    // 00B96B60: fill_pairs initializes the spectrum cells; OFF keeps vector::assign.
+    if constexpr (kWireGoal2Chain129Bound) {
+        // 00B9717F -> 00B96F80 -> 00B96FF8 constructs the 1000h complex cells
+        // from the constructor's two zero dwords. Copy representations rather
+        // than aliasing the host's float members as uint32_t objects.
+        static_assert(sizeof(OceanComplex) == sizeof(cc13_scene2::PairRecord));
+        static_assert(offsetof(OceanComplex, re) == offsetof(cc13_scene2::PairRecord, first));
+        static_assert(offsetof(OceanComplex, im) == offsetof(cc13_scene2::PairRecord, second));
+        const auto count = static_cast<std::size_t>(kOceanGridSide * kOceanGridSide);
+        // Default initialization leaves these trivial records uninitialized;
+        // the reconstructed fill, rather than a second zero-fill, supplies them.
+        std::unique_ptr<cc13_scene2::PairRecord[]> initialized(new cc13_scene2::PairRecord[count]);
+        const cc13_scene2::PairRecord zero_pair{0, 0};
+        cc13_scene2::fill_pairs_00b96b60(initialized.get(),
+            static_cast<std::int32_t>(count), zero_pair);
+        sp.h_20.resize(count);
+        std::memcpy(sp.h_20.data(), initialized.get(), count * sizeof(OceanComplex));
+    } else {
     sp.h_20.assign(static_cast<std::size_t>(kOceanGridSide * kOceanGridSide), {});
+    }
     sp.direction_power_84 = 0.5f;                                    // 00CE3800
     // 00B97295..00B972DA: 00D638CC..00D638E0.
     ocean_spectrum_set_all_00b96b90(sp, 1.570796012878418f, 32.0f, 60.0f, 2.0f,

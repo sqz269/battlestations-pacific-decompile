@@ -1,0 +1,172 @@
+{
+  "run": 257,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 129,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": {
+    "tier": 2,
+    "segment": 91,
+    "range": [
+      "00b8a2b0",
+      "00b999a0"
+    ],
+    "reason": "Sweep of typed scene/resource helpers; existing live OceanSpectrum ownership supports two rows without an optional renderer graph."
+  },
+  "host_file": "src/ocean_spectrum.cpp",
+  "switch": "kWireGoal2Chain129Bound",
+  "switch_header": "include/bsp/wire_goal2_chain129_switches.hpp",
+  "switch_default": false,
+  "wired_total_before": 8957,
+  "wired_total_after": 8959,
+  "assigned_ready_before": 10,
+  "rows_wired": 2,
+  "host_objects": [
+    {
+      "name": "Transient PairRecord adapter for existing OceanSpectrum::h_20",
+      "where": "src/ocean_spectrum.cpp:236",
+      "producers": [
+        "00B97169: 1000h cell count, represented by kOceanGridSide*kOceanGridSide",
+        "00B97173/00B97179: the native constructor's two zero dwords",
+        "fill_pairs_00b96b60 initializes both dwords in every adapter record"
+      ],
+      "rows": [
+        "00b96b60"
+      ],
+      "lifetime": "Constructed only in the ON arm of ocean_spectrum_construct_00b97100; size/offset-checked records are copied into the existing live h_20 float cells, then the temporary dies before the spectrum rebuild. No new persistent host owner."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00b8b350",
+      "address": "00b8d30c",
+      "function": "00b8d150",
+      "host_site": "src/scene_graph2_cc13.cpp:flare_update_00b8d150 / FlareServices::centre_weight_00b8b350",
+      "status": "skipped",
+      "reason": "No concrete FlareServices implementation or host call to flare_update_00b8d150 was found. Live flare owner, projected camera position and cached occlusion visibility producers are absent; a value-only adapter would create an unreachable site.",
+      "reach": "static"
+    },
+    {
+      "native": "00b8b3b0",
+      "address": "00b8d303",
+      "function": "00b8d150",
+      "host_site": "src/scene_graph2_cc13.cpp:flare_update_00b8d150 / FlareServices::edge_fade_00b8b3b0",
+      "status": "skipped",
+      "reason": "Same missing flare update host as 00b8b350; visibility, limit and limit-flag state have no live host producer. No object was fabricated.",
+      "reach": "static"
+    },
+    {
+      "native": "00b8b8c0",
+      "address": "00b8d45f",
+      "function": "00b8d150",
+      "host_site": "src/scene_graph2_cc13.cpp:flare_update_00b8d150 / FlareServices::place_element_00b8b8c0",
+      "status": "skipped",
+      "reason": "No concrete live flare owner/FlareServices. Native owner+1DCh and authored element+08/+0C/+3C/+40/+44 producers cannot be supplied by the current host; setting constants would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "00b8e980",
+      "address": "00b8ea44",
+      "function": "00b8e9f0",
+      "host_site": "src/native_group_world_sphere.cpp:merge_native_group_sphere_00b8e9f0",
+      "status": "skipped",
+      "reason": "The OFF path already calls normalize_kernel, the shared full native 00B8E980 logic. normalize_native_group_sphere_delta_00b8e980 is a thin context adapter over that same kernel. Redirecting through its identifier would not replace host logic with a newly running body.",
+      "reach": "static"
+    },
+    {
+      "native": "00b8fb50",
+      "address": "00b90afd",
+      "function": "00b90ac0",
+      "host_site": "src/native_matrix_indexed_model_owner.cpp:initialize_slab_00b8fb50",
+      "status": "skipped",
+      "reason": "The concrete game caller is GameNativeMissionModel::Impl::materialize_matrix_drawable via MissionShipGraph::load_new_unit_models. configure_mission_ship returns unless BSP_NATIVE_MISSION_SHIP=1; mission_ship_requested is disabled by default (game_native_renderer_application.cpp:978-1009). Trial wiring was removed because it would require a second OFF gate.",
+      "reach": "static"
+    },
+    {
+      "native": "00b90800",
+      "address": "00b91c5f",
+      "function": "00b91c40",
+      "host_site": "src/scene_graph2_cc13.cpp:quadtree_clone_00b91c40 / pool_allocate",
+      "status": "skipped",
+      "reason": "MitBlockPool::allocate returns a semantic block/slot pair, whereas native callers need an actual 198h slot in the 01090358/010903F0 allocator with native lock/slab ownership. No live game quadtree-clone/build host or concrete semantic pool instance was found. Building a disconnected pool would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "00b92440",
+      "address": "00b92669",
+      "function": "00b92650",
+      "host_site": "src/native_skinned_animation_item.cpp:append_values",
+      "status": "skipped",
+      "reason": "Existing append_values, clear_values and assign_native_animation_values_00b926e0 already invoke reserve_native_animation_values_00b92440 over the actual vector header. Adding a typed view or another call would duplicate an existing OFF call, rather than wire new body logic.",
+      "reach": "static"
+    },
+    {
+      "native": "00b96b60",
+      "address": "00b96ff8",
+      "function": "00b96f80",
+      "host_site": "src/ocean_spectrum.cpp:238 ocean_spectrum_construct_00b97100",
+      "status": "wired",
+      "reach": "static",
+      "reach_path": "GameMissionHost::advance (campaign DetailPage) -> start_briefing_005922f0 -> MissionPlayBinding::start_selected_mission -> MissionStartBinding::set_pending_scene -> run_set_pending_scene_004e2770 -> run_build_scene_record_004e1d70 -> PendingSceneBinding::load_scene_header_pass -> GameMissionHost::Impl::read_scene_file -> ocean_live_field_publish_scene -> ocean_live_field_build -> ocean_spectrum_construct_00b97100 -> ocean_spectrum_set_all_00b96b90 -> ocean_spectrum_build_00b95750. kWaveFieldLiveAmplitudeBound=true at include/bsp/ocean_spectrum.hpp:162. No false switch encloses the campaign path. Candidate supplies no mission counts; static reach only.",
+      "reason": "Replaces h_20.assign with the existing pair-fill body, then a representation copy into the host's real float cells. Count 1000h and the zero pair are the native constructor's own producers at 00B97169/73/79; no placeholder inputs. OFF assign remains unchanged.",
+      "abi_evidence": "00B96FF8: ECX=EDI allocated pair buffer, EDX=EBX count; first stack argument is [EBP+0Ch] value pointer. 00B96B89 RET 10h consumes four stacked words; the other three are unused by the body. Semantic source interface intentionally omits those unused words."
+    },
+    {
+      "native": "00b97030",
+      "address": "00b971ed",
+      "function": "00b97100",
+      "host_site": "src/ocean_spectrum.cpp:171 ocean_spectrum_build_00b95750",
+      "status": "wired",
+      "reach": "static",
+      "reach_path": "GameMissionHost::advance (campaign DetailPage) -> start_briefing_005922f0 -> MissionPlayBinding::start_selected_mission -> MissionStartBinding::set_pending_scene -> run_set_pending_scene_004e2770 -> run_build_scene_record_004e1d70 -> PendingSceneBinding::load_scene_header_pass -> GameMissionHost::Impl::read_scene_file -> ocean_live_field_publish_scene -> ocean_live_field_build -> ocean_spectrum_construct_00b97100 -> ocean_spectrum_set_all_00b96b90 -> ocean_spectrum_build_00b95750. kWaveFieldLiveAmplitudeBound=true at include/bsp/ocean_spectrum.hpp:162. No false switch encloses the campaign path. Candidate supplies no mission counts; static reach only.",
+      "reason": "Existing construct_float_vector_00b97030 now creates the live inv_k_60 and omega_50 buffers in place of their assign stand-ins. Host currently performs this sizing in the builder reached by the native constructor and authored wind/height updates. Resulting vectors feed the existing table population and per-frame spectrum; OFF assigns are unchanged.",
+      "abi_evidence": "00B971ED and 00B9720D: ECX=ESI+4Ch/+5Ch, PUSH 1000h and pointer to a zero float from XORPS/MOVSS. Callee 00B97097 RET 8. The existing host grid extent and the native zero-fill value supply these semantic arguments."
+    },
+    {
+      "native": "00b98be0",
+      "address": "00b997a9",
+      "function": "00b99790",
+      "host_site": "src/scene_graph2_cc13.cpp:grid_builder_build_all_00b99790 / GridBuilderServices::build_patch_00b98be0",
+      "status": "skipped",
+      "reason": "Only the standalone grid_builder_construct_00b998c0 reaches build-all; no concrete GridBuilderServices or game call was found. The existing GameGridGraph is a different 0070B330/0070BD70 grid. The ocean patch-builder max-size, row/patch storage and index-buffer owner have no live host producer.",
+      "reach": "static"
+    }
+  ],
+  "checks": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": 2,
+      "tests_total": 2
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain129Bound",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "tests_passed": 2,
+      "tests_total": 2,
+      "log": "local/off_switch_on_build.log",
+      "sources_restored": true
+    },
+    "pc24_lint": {
+      "command": "python tools/pc24_lint.py src/ocean_spectrum.cpp",
+      "exit_code": 0,
+      "findings": 0,
+      "note": "ON arms add no x87 arithmetic."
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c129.json",
+      "exit_code": 0,
+      "checked": 10,
+      "failed": 0
+    },
+    "diff_check": 0,
+    "game_run": false
+  },
+  "limitations": [
+    "Static host reach and build/CTest proof only; no game run or runtime comparison was performed.",
+    "The ON complex-cell storage adapter allocates an additional temporary 4096-record buffer; it is absent in the OFF build.",
+    "The batch switch remains false. No address-suffixed function definition or ledger record was added."
+  ]
+}
