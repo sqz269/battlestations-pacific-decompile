@@ -23,6 +23,7 @@
 
 #include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/main_menu_command_bar.hpp"
+#include "bsp/frontend_screen_constructor.hpp"
 
 namespace bsp::segs_13_15_22_44_cc13 {
 struct SegBHost;  // 00527D40 tail target host (segs_13_15_22_44_cc13.hpp)
@@ -564,6 +565,18 @@ std::uint8_t* credits_item_copy_backward_0052e410(std::uint8_t* first, std::uint
 void credits_item_vector_insert_n_0052f9e0(Raw vec, std::uint8_t* where, std::uint32_t count, Raw value,
                                            Seg15Host& host);
 Raw credits_construct_0052fce0(Raw s, Seg15Host& host);
+// Typed references to precisely the fields written by 0052FCE0. The raw
+// entry above is a wrapper around this same body, with its original base hook.
+struct CreditsScreenConstructionView {
+    std::uint32_t& primary_vtable_00;
+    std::uint32_t& listener_vtable_08;
+    std::array<std::uint32_t*, 6> vector_words_28_50;
+    float& field_3c;
+    float& field_40;
+    float& field_44;
+};
+void credits_construct_0052fce0(CreditsScreenConstructionView screen,
+    FrontendScreenConstructorHost& host);
 void credits_collect_children_0052fd70(Raw s, void* out, Seg15Host& host);
 void credits_destruct_0052fd80(Raw s, Seg15Host& host);
 

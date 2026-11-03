@@ -10,6 +10,8 @@
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/frontend_states.hpp"
+#include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/frontend_seg19_21_cc13.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/game_frame_control.hpp"
 #include "bsp/game_hosts.hpp"
@@ -35,6 +37,7 @@
 #include "bsp/wire_goal2_chain48_switches.hpp"
 #include "bsp/wire_goal2_chain54_switches.hpp"
 #include "bsp/wire_goal2_chain57_switches.hpp"
+#include "bsp/wire_goal2_chain91_switches.hpp"
 #include "bsp/game_title_sound.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_ref_counted.hpp"
@@ -52,10 +55,13 @@
 #include "bsp/native_vfs_open_logging.hpp"
 
 #include <algorithm>
+#include <array>
+#include <cstddef>
 #include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace bsp::game {
@@ -387,11 +393,143 @@ const ProfilerCounterRecord& GameFrameProfiler::frame_record() const noexcept {
 // GameMenuHost::Impl
 // ---------------------------------------------------------------------------
 
+namespace {
+
+// Image-shaped storage for the two constructor-only leaves. Unknown bytes are
+// left untouched, as in the original allocation. The actual registered flags
+// are the +4h/+5h subobject, rather than a copied/default second pair.
+struct MenuMissionTreeImage {
+    std::uint32_t primary_vtable;
+    FrontEndScreen flags;
+    std::uint8_t unknown_06[2];
+    std::uint32_t listener_vtable;
+    std::uint8_t unknown_0c[0x0c];
+    std::array<std::uint32_t, 3> vector_18;
+    std::uint32_t unknown_24;
+    std::array<std::uint32_t, 3> vector_28;
+};
+static_assert(sizeof(FrontEndScreen) == 2);
+static_assert(offsetof(MenuMissionTreeImage, flags) == 4);
+static_assert(offsetof(MenuMissionTreeImage, listener_vtable) == 8);
+static_assert(offsetof(MenuMissionTreeImage, vector_18) == 0x18);
+static_assert(offsetof(MenuMissionTreeImage, vector_28) == 0x28);
+static_assert(sizeof(MenuMissionTreeImage) == 0x34);
+
+struct MenuCreditsImage {
+    std::uint32_t primary_vtable;
+    FrontEndScreen flags;
+    std::uint8_t unknown_06[2];
+    std::uint32_t listener_vtable;
+    std::uint8_t unknown_0c[0x1c];
+    std::array<std::uint32_t, 3> vector_28;
+    std::uint8_t unknown_34[8];
+    float field_3c;
+    float field_40;
+    float field_44;
+    std::uint8_t unknown_48[8];
+    std::array<std::uint32_t, 3> vector_50;
+};
+static_assert(offsetof(MenuCreditsImage, flags) == 4);
+static_assert(offsetof(MenuCreditsImage, listener_vtable) == 8);
+static_assert(offsetof(MenuCreditsImage, vector_28) == 0x28);
+static_assert(offsetof(MenuCreditsImage, field_3c) == 0x3c);
+static_assert(offsetof(MenuCreditsImage, field_40) == 0x40);
+static_assert(offsetof(MenuCreditsImage, field_44) == 0x44);
+static_assert(offsetof(MenuCreditsImage, vector_50) == 0x50);
+static_assert(sizeof(MenuCreditsImage) == 0x5c);
+
+// Adapts the existing front-end base constructor to a leaf's registered flags.
+class MenuLeafBaseConstructor final : public FrontendScreenConstructorHost {
+public:
+    explicit MenuLeafBaseConstructor(FrontEndScreen& flags) : flags_(flags) {}
+    void construct_frontend_base() override { construct_front_end_screen_004f7180(flags_); }
+private:
+    FrontEndScreen& flags_;
+};
+
+struct MenuLeafBacking {
+    std::unique_ptr<MenuMissionTreeImage> mission_tree;
+    std::unique_ptr<MenuCreditsImage> credits;
+    FrontEndScreen* flags{};
+    std::uint32_t* primary_vtable{};
+};
+
+// 00686732 / 006867FE construct during main-menu Init; 00686E14 deletes
+// after unregister. OFF inherits an empty base and constructs no holder.
+struct MenuLeafOwner {
+    std::unique_ptr<MenuLeafBacking> native_leaf;
+};
+struct NoMenuLeafOwner {};
+using MenuLeafOwnership = std::conditional_t<kWireGoal2Chain91Bound, MenuLeafOwner, NoMenuLeafOwner>;
+
+template <class Screen>
+void retain_menu_leaf(Screen& screen, std::unique_ptr<MenuLeafBacking> native) {
+    if constexpr (kWireGoal2Chain91Bound) screen.native_leaf = std::move(native);
+}
+
+template <class Screen>
+void release_menu_leaf(Screen& screen) {
+    if constexpr (kWireGoal2Chain91Bound) {
+        if (screen.native_leaf) {
+            // Constructor-only backing owns no raw page/vector elements. The
+            // existing menu and mission hosts retain those separate owners.
+            screen.owned_flags = *screen.flags;
+            screen.flags = &screen.owned_flags;
+            screen.native_leaf.reset();
+        }
+    }
+}
+
+// Adapts the native constructor field references to the menu's owned backing.
+// Called only in the chain-91 ON arm. Neither raw allocation nor field setup
+// takes place in the OFF build.
+[[maybe_unused]] std::unique_ptr<MenuLeafBacking> construct_menu_leaf(
+    std::size_t size_bytes, std::uint32_t constructor, GameHostLog& log) {
+    if (!((constructor == 0x005CA880u && size_bytes == sizeof(MenuMissionTreeImage)) ||
+          (constructor == 0x0052FCE0u && size_bytes == sizeof(MenuCreditsImage)))) return nullptr;
+    auto backing = std::make_unique<MenuLeafBacking>();
+    if (constructor == 0x005CA880u && size_bytes == sizeof(MenuMissionTreeImage)) {
+        backing->mission_tree.reset(new MenuMissionTreeImage);
+        auto& image = *backing->mission_tree;
+        MenuLeafBaseConstructor base(image.flags);
+        // 005CA880: the existing constructor supplies the vtable and fields;
+        // OFF keeps create_screen's constructor-address registry record.
+        frontend_seg19_21_cc13::mission_tree_screen_construct_005ca880(
+            frontend_seg19_21_cc13::MissionTreeScreenConstructionView{
+                image.primary_vtable, image.listener_vtable,
+                {&image.vector_18[0], &image.vector_18[1], &image.vector_18[2],
+                 &image.vector_28[0], &image.vector_28[1], &image.vector_28[2]}}, base);
+        backing->flags = &image.flags;
+        backing->primary_vtable = &image.primary_vtable;
+        log.implemented("FrontEndManager::mission_tree_constructor", "005ca880");
+    } else if (constructor == 0x0052FCE0u && size_bytes == sizeof(MenuCreditsImage)) {
+        backing->credits.reset(new MenuCreditsImage);
+        auto& image = *backing->credits;
+        MenuLeafBaseConstructor base(image.flags);
+        // 0052FCE0: the existing constructor supplies vtables, empty vectors
+        // and rdata seeds; OFF keeps create_screen's registry record.
+        frontend_seg15_22_cc13::credits_construct_0052fce0(
+            frontend_seg15_22_cc13::CreditsScreenConstructionView{
+                image.primary_vtable, image.listener_vtable,
+                {&image.vector_28[0], &image.vector_28[1], &image.vector_28[2],
+                 &image.vector_50[0], &image.vector_50[1], &image.vector_50[2]},
+                image.field_3c, image.field_40, image.field_44}, base);
+        backing->flags = &image.flags;
+        backing->primary_vtable = &image.primary_vtable;
+        log.implemented("FrontEndManager::credits_constructor", "0052fce0");
+    } else {
+        return nullptr;
+    }
+    return backing;
+}
+
+} // namespace
+
 struct GameMenuHost::Impl {
     // One registry slot. The flag bytes live in whichever object owns them
     // (004f7180 clears +4h and +5h in the base constructor), so this record
     // points at them rather than holding a second copy.
-    struct MenuScreen {
+    struct MenuScreen : MenuLeafOwnership {
         int slot{kNoScreenSlot};
         std::string name;
         // Owned when the leaf type has no reconstruction of its own; otherwise
@@ -1648,6 +1786,39 @@ public:
         }
     }
     void* create_screen(std::size_t size_bytes, std::uint32_t constructor_address) override {
+        // 005CA880 / 0052FCE0: construct the leaves named by 00686380's table;
+        // OFF preserves the existing constructor-address registry stand-ins.
+        if constexpr (kWireGoal2Chain91Bound) {
+            owner_.log.unimplemented("FrontEndManager::create_screen", "00bf681b");
+            auto native = construct_menu_leaf(size_bytes, constructor_address, owner_.log);
+            const MainMenuScreenClass* recovered = nullptr;
+            for (const MainMenuScreenClass& entry : kMainMenuScreens) {
+                // A constructed leaf's own primary vtable selects its class.
+                // That body-produced value is what 004F71D0 dispatches through.
+                const bool matches = native
+                    ? entry.primary_vtable == *native->primary_vtable
+                    : entry.constructor == constructor_address;
+                if (matches) {
+                    recovered = &entry;
+                    break;
+                }
+            }
+            if (recovered == nullptr) {
+                owner_.log.notef("front-end screen %08lx (%zu bytes) has no recovered class",
+                    static_cast<unsigned long>(constructor_address), size_bytes);
+                return nullptr;
+            }
+            GameMenuHost::Impl::MenuScreen& screen = owner_.add_screen(recovered->screen_id,
+                std::string(recovered->primary_layout), native ? native->flags : nullptr,
+                recovered->enter_virtual, recovered->exit_virtual, recovered->update_virtual, false);
+            retain_menu_leaf(screen, std::move(native));
+            owner_.log.notef("front-end screen id=%d layout=%.*s constructor=%08lx size=%lu",
+                recovered->screen_id, static_cast<int>(recovered->primary_layout.size()),
+                recovered->primary_layout.data(),
+                static_cast<unsigned long>(constructor_address),
+                static_cast<unsigned long>(recovered->object_size));
+            return &screen;
+        } else {
         // operator new(size) then the leaf constructor. None of the seven
         // main-menu screen classes is reconstructed (docs/MAIN_MENU_SCREENS.md
         // records their vtables, ids and layouts), so the executable builds its
@@ -1675,6 +1846,7 @@ public:
             static_cast<unsigned long>(constructor_address),
             static_cast<unsigned long>(recovered->object_size));
         return &screen;
+        }
     }
     void register_screen(void* screen) override {
         // The leaf's virtual +10h, which chains 004f71d0 and, in five of the
@@ -2652,6 +2824,9 @@ void GameMenuHost::destroy_main_menu_manager_00686c90() {
         // record is what a destroyed screen leaves behind in the registry.
         host.log.unimplemented("MainMenuScreen::deleting_destructor", "00686e14");
         unregister_front_end_screen_004f71a0(host.world.screens, *screen->flags);
+        if constexpr (kWireGoal2Chain91Bound) {
+            release_menu_leaf(*screen);
+        }
     }
     host.log.notef("main-menu manager destroyed: %zu of %zu screens exited and committed, "
         "all seven unregistered", exited, kMainMenuScreens.size());

@@ -1,0 +1,510 @@
+{
+  "goal": 2,
+  "chain": 91,
+  "run": 186,
+  "harness": "codex",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "picked": "frontend_managers.cpp",
+  "tier": 3,
+  "host_file": "src/frontend_managers.cpp",
+  "host_files": [
+    "src/frontend_managers.cpp",
+    "src/game_hosts_menu.cpp"
+  ],
+  "switch": "kWireGoal2Chain91Bound",
+  "switch_default": false,
+  "selection": "The tier-2 commands candidate has no group-creation site and no native endpoint/tick owner for its director gap. Ingame interface and profile load alternatives were lease-refused. Selected the reachable main-menu constructor dispatch in frontend_managers.cpp, implemented by MenuManagerHost::create_screen in game_hosts_menu.cpp.",
+  "wired_before": 8907,
+  "wired_after": 8909,
+  "builds": {
+    "off": {
+      "result": "passed",
+      "tests": "2/2",
+      "log": "local/output/g2-w2-off-build-committed.txt"
+    },
+    "on": {
+      "result": "passed",
+      "diagnostics": 0,
+      "log": "local/output/g2-w2-on-build.txt"
+    },
+    "pc24_lint": "not applicable: no x87 arithmetic added; credits float seeds are unchanged stores"
+  },
+  "live_site": "GameMenuHost::Impl::advance_path -> advance_main_menu_path EnterShell -> MenuPathHost::enter_front_end_shell -> enter_front_end_shell -> MenuShellHost::create_manager_ac -> init_main_menu_00686380 -> MenuManagerHost::create_screen. No other false switch gates these calls. Options and multiplayer factories remain record-only.",
+  "contract": "Each selected native constructor has one direct caller (00686380). At 00686730/006867FC ECX receives the allocation EAX; CALLs at 00686732/006867FE take no stack arguments, return the same screen. Parent boundaries and both CALL targets verified with live Ghidra proto/instruction-context.",
+  "off_preservation": "Original create_screen logic is unchanged in the else arm. Native storage and its constructor adapter execute only ON; MenuScreen inherits an empty ownership base OFF. The raw APIs wrap the same typed bodies and preserve store order and original base hooks.",
+  "host_objects": [
+    {
+      "name": "Main-menu mission-tree screen backing",
+      "where": "src/game_hosts_menu.cpp:401",
+      "producers": [
+        "00686380 allocation of 34h at its mission-tree slot",
+        "004f7180 registered wanted/active flags",
+        "mission_tree_screen_construct_005ca880 primary/listener vtables and six empty vector words"
+      ],
+      "rows": [
+        "005ca880"
+      ],
+      "fields": [
+        [
+          "+00",
+          4,
+          "primary vtable"
+        ],
+        [
+          "+04",
+          1,
+          "registered wanted"
+        ],
+        [
+          "+05",
+          1,
+          "registered active"
+        ],
+        [
+          "+08",
+          4,
+          "listener vtable"
+        ],
+        [
+          "+18/+1c/+20",
+          4,
+          "first cleared field run"
+        ],
+        [
+          "+28/+2c/+30",
+          4,
+          "second cleared field run"
+        ]
+      ],
+      "lifetime": "Allocated in create_screen at main-menu Init, retained by the MenuScreen, released at the existing 00686E14 deletion phase after unregister. Unwritten bytes remain untouched. Existing mission data/table owners remain in GameMissionHost."
+    },
+    {
+      "name": "Main-menu credits screen backing",
+      "where": "src/game_hosts_menu.cpp:418",
+      "producers": [
+        "00686380 allocation of 5Ch at its credits slot",
+        "004f7180 registered wanted/active flags",
+        "credits_construct_0052fce0 primary/listener vtables, empty vector words and unchanged rdata constants 00ced1dc/00ce3800/00ced1d8"
+      ],
+      "rows": [
+        "0052fce0"
+      ],
+      "fields": [
+        [
+          "+00",
+          4,
+          "primary vtable"
+        ],
+        [
+          "+04",
+          1,
+          "registered wanted"
+        ],
+        [
+          "+05",
+          1,
+          "registered active"
+        ],
+        [
+          "+08",
+          4,
+          "listener vtable"
+        ],
+        [
+          "+28/+2c/+30",
+          4,
+          "first empty vector"
+        ],
+        [
+          "+3c/+40/+44",
+          4,
+          "native float seeds"
+        ],
+        [
+          "+50/+54/+58",
+          4,
+          "second empty vector"
+        ]
+      ],
+      "lifetime": "Allocated in create_screen at main-menu Init and released after unregister at 00686E14. Existing GUI page ownership is unchanged; the constructor-only backing never owns raw page/vector allocations."
+    }
+  ],
+  "rows": [
+    {
+      "native": "0052fce0",
+      "address": "006867fe",
+      "function": "00686380",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_screen -> construct_menu_leaf",
+      "status": "wired",
+      "reach": "live",
+      "reached": 1,
+      "reason": "Existing constructor body moved once to a typed view; raw entry wraps it. Its primary vtable selects the real registered class and its base flags are the actual registry flags."
+    },
+    {
+      "native": "005ca880",
+      "address": "00686732",
+      "function": "00686380",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_screen -> construct_menu_leaf",
+      "status": "wired",
+      "reach": "live",
+      "reached": 1,
+      "reason": "Existing constructor body moved once to a typed view; raw entry wraps it. Its primary vtable selects the real registered class and its base flags are the actual registry flags."
+    },
+    {
+      "native": "0070db20",
+      "host_file": "src/game_hosts_commands.cpp",
+      "host_site": "unit_controller_belongs_to_another_007788b0",
+      "status": "skipped",
+      "reason": "No creation site in game_hosts_commands.cpp: the only 0070DB20 mention describes a formation query. GameCommandUnit explicitly borrows follower/leader facts from the units host, which owns the group; a new group here would duplicate that owner and has no native join/replication caller.",
+      "reached": 0,
+      "address": "0077f9d9",
+      "function": "0077f940"
+    },
+    {
+      "native": "008363e0",
+      "host_file": "src/game_hosts_commands.cpp",
+      "host_site": "GameCommandsHost::register_units / GameDirector",
+      "status": "skipped",
+      "reason": "00720180 is reconstructed, but this host lacks its native owner+28h endpoint and tick-node owner/bindings. GameCommandUnit has only semantic class/id/formation state; defaulting these or invoking the constructor over GameDirector would invent producers and cannot build the required object.",
+      "reached": 0,
+      "address": "00836705",
+      "function": "008366d0"
+    },
+    {
+      "native": "005098b0",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "Requires a native Simple3dScene, GUI scroller, string arrays and render-resource bindings absent from this menu record; beyond the two constructor-only backings selected for this chain.",
+      "reached": 0,
+      "address": "00686888",
+      "function": "00686380"
+    },
+    {
+      "native": "0051e4d0",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "Requires the native briefing tree head from 0051ACB0 and a matching native tree lifetime. This host has a page/record projection, and this chain's two-object cap is used by mission-tree and credits.",
+      "reached": 0,
+      "address": "006867bc",
+      "function": "00686380"
+    },
+    {
+      "native": "00563370",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "Requires two embedded 00683610 GUI-scroller objects and their native widget graph; the live menu record does not contain that graph. Outside this chain's two-object cap.",
+      "reached": 0,
+      "address": "00686843",
+      "function": "00686380"
+    },
+    {
+      "native": "005902e0",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "Requires the main-menu native listener, five-element constructor array, GUI scroller, list sentinels and global publications. Those are not the host's current MenuScreen object; outside this chain's two-object cap.",
+      "reached": 0,
+      "address": "006866f0",
+      "function": "00686380"
+    },
+    {
+      "native": "00626630",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "Requires three embedded 00683610 GUI-scroller objects and their native widget graph, absent from the current rewards record. Outside this chain's two-object cap.",
+      "reached": 0,
+      "address": "00686777",
+      "function": "00686380"
+    },
+    {
+      "native": "00527d00",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live options-manager constructor dispatch: MenuShellHost::create_manager_b8 only logs 00689800 and never calls init_options_menu_006898c0.",
+      "reached": 0,
+      "address": "00689986",
+      "function": "006898c0"
+    },
+    {
+      "native": "00555770",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live options-manager constructor dispatch: MenuShellHost::create_manager_b8 only logs 00689800 and never calls init_options_menu_006898c0.",
+      "reached": 0,
+      "address": "006899bb",
+      "function": "006898c0"
+    },
+    {
+      "native": "005f6030",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live options-manager constructor dispatch: MenuShellHost::create_manager_b8 only logs 00689800 and never calls init_options_menu_006898c0.",
+      "reached": 0,
+      "address": "00689945",
+      "function": "006898c0"
+    },
+    {
+      "native": "00574240",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live multiplayer-manager constructor dispatch: MenuShellHost::create_manager_b4 only logs 006887e0 and never reaches init_multi_menu_00689540 or its scene-exit reconstruction.",
+      "reached": 0,
+      "address": "0068974b",
+      "function": "00689540"
+    },
+    {
+      "native": "005cfda0",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live multiplayer-manager constructor dispatch: MenuShellHost::create_manager_b4 only logs 006887e0 and never reaches init_multi_menu_00689540 or its scene-exit reconstruction.",
+      "reached": 0,
+      "address": "006897b4",
+      "function": "00689540"
+    },
+    {
+      "native": "005d2f90",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live multiplayer-manager constructor dispatch: MenuShellHost::create_manager_b4 only logs 006887e0 and never reaches init_multi_menu_00689540 or its scene-exit reconstruction.",
+      "reached": 0,
+      "address": "0068977e",
+      "function": "00689540"
+    },
+    {
+      "native": "005e6d90",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live multiplayer-manager constructor dispatch: MenuShellHost::create_manager_b4 only logs 006887e0 and never reaches init_multi_menu_00689540 or its scene-exit reconstruction.",
+      "reached": 0,
+      "address": "006896a9",
+      "function": "00689540"
+    },
+    {
+      "native": "005ea8c0",
+      "host_file": "src/frontend_managers.cpp",
+      "host_site": "MenuManagerHost::create_screen (src/game_hosts_menu.cpp)",
+      "status": "skipped",
+      "reason": "No live multiplayer-manager constructor dispatch: MenuShellHost::create_manager_b4 only logs 006887e0 and never reaches init_multi_menu_00689540 or its scene-exit reconstruction.",
+      "reached": 0,
+      "address": "006896df",
+      "function": "00689540"
+    },
+    {
+      "native": "004c1710",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "004db208",
+      "function": "004db190"
+    },
+    {
+      "native": "00a7abf0",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d54d9",
+      "function": "008d5430"
+    },
+    {
+      "native": "00b0d080",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d610d",
+      "function": "008d5b50"
+    },
+    {
+      "native": "00b0d580",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d603c",
+      "function": "008d5b50"
+    },
+    {
+      "native": "00b1ffb0",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d5b80",
+      "function": "008d5b50"
+    },
+    {
+      "native": "00b29e60",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d6092",
+      "function": "008d5b50"
+    },
+    {
+      "native": "00b72270",
+      "host_file": "src/game_profile_load.cpp",
+      "host_site": "QuickSettingsApplyHost",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w5:g2-w5 owns game_profile_load.cpp and its required sink/startup files and these addresses; not edited or wired here.",
+      "reached": 0,
+      "address": "008d5f0f",
+      "function": "008d5b50"
+    },
+    {
+      "native": "005178b0",
+      "host_file": "src/ingame_interface.cpp",
+      "host_site": "HudInitBinding::construct_screen",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w4:g2-w4 owns the caller file ingame_interface.cpp, so its constructor dispatch was unavailable; not edited or wired here.",
+      "reached": 0,
+      "address": "0068d3c6",
+      "function": "0068cc70"
+    },
+    {
+      "native": "0051e950",
+      "host_file": "src/ingame_interface.cpp",
+      "host_site": "HudInitBinding::construct_screen",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w4:g2-w4 owns the caller file ingame_interface.cpp, so its constructor dispatch was unavailable; not edited or wired here.",
+      "reached": 0,
+      "address": "0068cdca",
+      "function": "0068cc70"
+    },
+    {
+      "native": "005ee440",
+      "host_file": "src/ingame_interface.cpp",
+      "host_site": "HudInitBinding::construct_screen",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w4:g2-w4 owns the caller file ingame_interface.cpp, so its constructor dispatch was unavailable; not edited or wired here.",
+      "reached": 0,
+      "address": "0068cedf",
+      "function": "0068cc70"
+    },
+    {
+      "native": "005f9440",
+      "host_file": "src/ingame_interface.cpp",
+      "host_site": "HudInitBinding::construct_screen",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w4:g2-w4 owns the caller file ingame_interface.cpp, so its constructor dispatch was unavailable; not edited or wired here.",
+      "reached": 0,
+      "address": "0068cf17",
+      "function": "0068cc70"
+    },
+    {
+      "native": "00604780",
+      "host_file": "src/ingame_interface.cpp",
+      "host_site": "HudInitBinding::construct_screen",
+      "status": "skipped",
+      "reason": "Candidate lease refused: agent/g2-w4:g2-w4 owns the caller file ingame_interface.cpp, so its constructor dispatch was unavailable; not edited or wired here.",
+      "reached": 0,
+      "address": "0068d553",
+      "function": "0068cc70"
+    }
+  ],
+  "pair": {
+    "status": "completed",
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "console": "query session: console sqz269 Active",
+    "off": {
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "log": "local/g2-w2-off_USN04.log",
+      "sha256": "80EB4B883A396731417DBF9378EFCCBAAED98AD499EAA1E07E0FA6453E4B509A"
+    },
+    "on": {
+      "exit_code": 0,
+      "launcher_exit_code": 0,
+      "log": "local/g2-w2-on_USN04.log",
+      "sha256": "72D518296D3179933F0BC0F3535F054128D0CA90283E3D0B146E4D96DB862562",
+      "export_log": "local/output/g2-w2-on-export.txt",
+      "export_commit": "c5b7579c5cd6af115d466028132cb9ff22803d71"
+    },
+    "diff_log": "local/output/g2-w2-pair-diff.txt",
+    "diff_exit_code": 1,
+    "verdict": "DIFFERENT, gameplay identical",
+    "native_table": {
+      "before": 1624,
+      "after": 1626,
+      "added": [
+        {
+          "native": "005ca880",
+          "name": "FrontEndManager::mission_tree_constructor",
+          "status": "concrete",
+          "calls": 1
+        },
+        {
+          "native": "0052fce0",
+          "name": "FrontEndManager::credits_constructor",
+          "status": "concrete",
+          "calls": 1
+        }
+      ],
+      "removed": 0,
+      "status_changed": 0,
+      "counts_moved": 0
+    },
+    "gameplay_rows_moved": [],
+    "gameplay": "Identical: 28 deaths, 380 hit records, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15s, 81-unit table, 25 plane-death-mode rows. Both loop_finished=1 and frames_presented=3199.",
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "diagnostic_differences": {
+      "pretranslate_calls": [
+        7,
+        20
+      ],
+      "other_lines": {
+        "only_off": 231,
+        "only_on": 231,
+        "explanation": "All 231 differences are decimal atlas append_slot pointer diagnostics. Source confirms texture_table + texture_count*4 and table + count*4 in native_texture_atlas_parser_storage.cpp:241/352. Normalizing only address-valued atlas fields leaves zero non-address atlas payload multiset differences across all 253 atlas source rows in each run."
+      }
+    }
+  },
+  "flip_proposal": {
+    "switch": "kWireGoal2Chain91Bound",
+    "value": true,
+    "status": "proposed for integrator review; left false",
+    "evidence": "Both rows reached once; gameplay/unit tables and all 867 summary lines identical. pair_diff exit 1 explicitly retained: two expected added concrete rows, pointer-valued atlas diagnostics and pretranslate count noise."
+  },
+  "limitations": [
+    "Reconstructed C++ host interfaces; not a drop-in binary ABI.",
+    "These two constructor backings supply live class dispatch and registered base flags. The native registration/update/destructor bodies and native page/data graphs are not claimed."
+  ],
+  "code_commit": "c5b7579c5cd6af115d466028132cb9ff22803d71",
+  "validation": {
+    "report_calls": "passed: 29 call rows checked, 0 failed",
+    "diff_review": "reviewed owned diff; git diff --check passed",
+    "readiness": "8907 -> 8909 after final plain OFF build; both selected native rows wired",
+    "no_new_tests": true
+  }
+}

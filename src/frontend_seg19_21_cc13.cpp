@@ -465,12 +465,26 @@ void mission_group_uninitialized_fill_005ca300(void* first, std::uint32_t count,
 // 005CA880 __thiscall(screen), RET: MissionTreeScreen constructor.
 void* mission_tree_screen_construct_005ca880(void* screen, Seg19_21Host& host) {
     Raw s = raw(screen);
-    host.frontend_construct_004f7180(screen);
-    s.at<std::uint32_t>(0x8) = 0x00CEB0FCu;
-    s.at<std::uint32_t>(0x0) = 0x00CF170Cu;
-    s.at<std::uint32_t>(0x8) = 0x00CF16F8u;
-    for (std::size_t off : {0x18u, 0x1Cu, 0x20u, 0x28u, 0x2Cu, 0x30u}) s.at<std::uint32_t>(off) = 0;
+    struct RawMissionTreeBase final : FrontendScreenConstructorHost {
+        void* screen;
+        Seg19_21Host& original;
+        RawMissionTreeBase(void* value, Seg19_21Host& calls) : screen(value), original(calls) {}
+        void construct_frontend_base() override { original.frontend_construct_004f7180(screen); }
+    } base(screen, host);
+    mission_tree_screen_construct_005ca880(MissionTreeScreenConstructionView{
+        s.at<std::uint32_t>(0), s.at<std::uint32_t>(8),
+        {&s.at<std::uint32_t>(0x18), &s.at<std::uint32_t>(0x1c), &s.at<std::uint32_t>(0x20),
+         &s.at<std::uint32_t>(0x28), &s.at<std::uint32_t>(0x2c), &s.at<std::uint32_t>(0x30)}}, base);
     return screen;
+}
+
+void mission_tree_screen_construct_005ca880(MissionTreeScreenConstructionView screen,
+    FrontendScreenConstructorHost& host) {
+    host.construct_frontend_base();
+    screen.listener_vtable_08 = 0x00CEB0FCu;
+    screen.primary_vtable_00 = 0x00CF170Cu;
+    screen.listener_vtable_08 = 0x00CF16F8u;
+    for (std::uint32_t* word : screen.vector_words_18_28) *word = 0;
 }
 
 // 005CA8E0: MOV EAX, 2; RET.
