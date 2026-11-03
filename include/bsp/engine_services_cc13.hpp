@@ -449,6 +449,9 @@ void* copy_string_int_pair(void* record, const void* source, NativeStringStorage
 // BSP_TrafficStringPair_CopyConstruct 0048E500).
 void* construct_string_pair_00bdcbb0(void* pair, const NativeString& first, const NativeString& second,
                                      NativeStringStorage& strings);
+// Typed view of 00BDCBB0 over the caller's two adjacent headers; the raw entry above delegates here.
+void construct_string_pair_00bdcbb0(NativeStringPairView pair, const NativeString& first,
+                                    const NativeString& second, NativeStringStorage& strings);
 void* copy_string_pair_00bdcea0(void* pair, const void* source, NativeStringStorage& strings);
 // 00BE8CA0 BSP_DebugFeatureOwner_CopySelectedProfileName, __thiscall(ECX owner, string* out) RET 4,
 // EAX out: construct *out as a copy of the string the owner's +30h points to.
