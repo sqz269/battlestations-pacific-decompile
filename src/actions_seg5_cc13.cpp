@@ -426,14 +426,14 @@ bool session_message7b_is_kind_of_004647b0(std::int32_t type) {
 
 // 004645B0: 0075B480(ECX message, stream), then 004290B0(ECX stream, the
 // zero-extended byte +1Ch).
-void session_bool_message_write_004645b0(Seg5Host& host, Object message, Object stream) {
+void session_bool_message_write_004645b0(SessionBoolMessageHost& host, Object message, Object stream) {
     host.session_message_write_extended_header_0075b480(message, stream);
     host.bit_cursor_write_boolean_004290b0(stream, native_at<std::uint8_t>(message, 0x1C));
 }
 
 // 004645D0: 0075B4C0(ECX message, stream), then 00428D70(ECX stream+4,
 // &message+1Ch).
-void session_bool_message_read_004645d0(Seg5Host& host, Object message, Object stream) {
+void session_bool_message_read_004645d0(SessionBoolMessageHost& host, Object message, Object stream) {
     host.session_message_read_extended_header_0075b4c0(message, stream);
     host.bit_cursor_read_boolean_00428d70(stream + 4, message + 0x1C);
 }

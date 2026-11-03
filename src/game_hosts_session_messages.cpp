@@ -1,5 +1,8 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/native_bit_cursor_fields.hpp"
+#include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -92,8 +95,19 @@ struct HostSessionMessages::Image {
         // bsp.py ghidra bytes 00d03504 --length 20 (existing bsp.gpr program).
         std::uint32_t slots_00d03504[5]{0x00762920u, 0x00762940u, 0x007629a0u, 0x007628f0u,
                                         0x004499c0u};
+        // bsp.py ghidra bytes 00D03518 --length 20, /battlestationspacific.exe:
+        // scalar delete, shared bool writer/reader, IsType, always true.
+        std::uint32_t slots_00d03518[5]{0x00762b00u, 0x004645b0u, 0x004645d0u, 0x00762ad0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if (image_address == 0x00d032d0u) return slots_00d032d0;
+            if (image_address == 0x00d03518u) {
+                if constexpr (kWireGoal4Chain294Bound) {
+                    return slots_00d03518;
+                } else {
+                    return nullptr;
+                }
+            }
             if constexpr (kWireGoal4Chain283Bound) {
                 if (image_address == 0x00d03504u) return slots_00d03504;
             }
@@ -128,6 +142,28 @@ struct LocalStream {
         std::uint8_t type = 0;
         read_native_u8_bits_00428c70(&in.cursor_04, &type, 8);
         rewind_native_bits_00428b80(&in.cursor_04, 8);
+    }
+};
+
+// Only the four boundaries the existing shared codec actually invokes.
+// Object/stream retain their native offsets; these adapters neither allocate
+// unrelated scene objects nor replace any bitstream arithmetic.
+struct SessionBoolCodec final : cc13_seg5::SessionBoolMessageHost {
+    using Object = cc13_seg5::Object;
+    void session_message_write_extended_header_0075b480(Object message, Object stream) override {
+        write_native_session_message_header_0075b480(message,
+            reinterpret_cast<NativeBitCursor*>(stream));
+    }
+    void session_message_read_extended_header_0075b4c0(Object message, Object stream) override {
+        read_native_session_message_header_0075b4c0(message,
+            reinterpret_cast<NativeSessionReadStream*>(stream));
+    }
+    void bit_cursor_write_boolean_004290b0(Object cursor, std::uint8_t value) override {
+        write_native_bool_bit_004290b0(reinterpret_cast<NativeBitCursor*>(cursor), value);
+    }
+    void bit_cursor_read_boolean_00428d70(Object cursor, Object out_byte) override {
+        read_native_bool_bit_00428d70(reinterpret_cast<NativeBitCursor*>(cursor),
+            reinterpret_cast<bool*>(out_byte));
     }
 };
 }  // namespace
@@ -419,6 +455,32 @@ HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_chang
     seg42::construct_plane_change_state_00762880(&queued, image.seg42);
     seg42::read_plane_change_state_007629a0(&queued, &stream.in);
     return PlaneChangeStateCopy{queued.state_20, queued.state_21};
+}
+
+std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
+    const Image& image = *image_;
+    static_assert(sizeof(seg42::UnitMessage) == 0x20);
+    // bsp.py show 00762A60: type C5h, +18h/+1Ah/+1Ch zero, delivery 1,
+    // and the selected owner from the existing live session context.
+    seg42::UnitMessage sent{};
+    seg42::construct_plane_touchdown_00762a60(&sent, image.seg42);
+    SessionBoolCodec codec;
+    LocalStream stream;
+    cc13_seg5::session_bool_message_write_004645b0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&sent),
+        reinterpret_cast<cc13_seg5::Object>(&stream.out));
+    stream.begin_read();
+    // 00768530's C5h factory allocates 20h at 00769BD0 and calls 00762A60 at
+    // 00769BE4 (bsp.py show 00768530 --asm --start 1576 --lines 19).
+    // The reader reloads
+    // the serialized type, sender and flag. The direct delivery retains the
+    // posting plane's registry identity, as the other local message routes do.
+    seg42::UnitMessage queued{};
+    seg42::construct_plane_touchdown_00762a60(&queued, image.seg42);
+    cc13_seg5::session_bool_message_read_004645d0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&queued),
+        reinterpret_cast<cc13_seg5::Object>(&stream.in));
+    return queued.h.base.type_10;
 }
 
 HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub_kind_5a(
