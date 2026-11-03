@@ -1,0 +1,106 @@
+{
+  "goal": 4,
+  "chain": 310,
+  "worker": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain310Bound",
+  "wired_before": 9296,
+  "wired_after": 9297,
+  "rows": [
+    {
+      "native": "00470440",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp::powerup_site_product and powerup_site_product_for_view -> reconstructed_site_product",
+      "real_state": "PowerupRuntime.manager/host publication, host EnablePowerups byte, actual category_lists sizes, and the queried unit index or in-construction PowerupUnitView; the accepted lookup uses the same actual lists and published unit resolver.",
+      "implementation": "Reuse gameplay_modifiers_powerup_multiplier_00470440 unchanged except for narrowing its C++ provider interface. Project the sixteen actual list sizes at the offsets the body reads; preserve lazy unit resolution, nullopt for a closed gate and one product evaluation for an accepted gate.",
+      "evidence": "bsp.py show 00470440: byte 00E0C978, owner+88h+index*0Ch, 008E6430 tail call, otherwise FLD1. PowerupRuntime documents category_lists at +80h+category*0Ch.",
+      "called": true,
+      "call_sites": 1,
+      "built_caller": "bsp::game_powerups::reconstructed_site_product"
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::ai_group_forward_command",
+      "reason": "Missing live entity+16Ch AI-group production and its command at group+564Ch; the entity-order host returns a null AI group, so forwarding a constructed scratch group would not use game state."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::FailureBinding::failure_side_effect",
+      "reason": "Missing native per-slot 284h scoring owner, attacker/player-record graph and award providers; this callback currently receives semantic handles rather than the required native hit and scoring objects."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::repair_completed_notify",
+      "reason": "Missing the native scoring/player-record and award graph; the repair-completed callback is explicitly unreached in this binding."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::KamikazeDetonate direct_hit_00915f20 sites",
+      "reason": "Missing the native target/player-record graph, per-slot nested scoring maps and award/kill-list ownership; the host records semantic direct-hit attribution only."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "Missing the ammo+48h alternate record producer, six retained class references and its native +3Ch tree; the device handle currently resolves directly to a semantic gun row."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command_building_set_owner_player_006f4d10 capture-flip path",
+      "reason": "Missing the actual unit+660h vector of owning 44h records and its resize/destruction provider; the capture-building host owns a semantic state object."
+    },
+    {
+      "native": "008d41f0",
+      "status": "skipped",
+      "host_site": "src/press_start_screen.cpp sign-in completion/defaults path",
+      "reason": "Missing a reachable sign-in completion/defaults request in the menu host; the earlier chain281 Idle-phase blocker remains outside this power-up packet."
+    },
+    {
+      "native": "008d4520",
+      "status": "skipped",
+      "host_site": "src/press_start_screen.cpp sign-in completion/defaults path",
+      "reason": "Missing a reachable video-defaults request and its resolution/fullscreen reset inputs; no defaults event is supplied by the current Idle sign-in path."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread named-call producer and owned deferred argument queue; queue_call currently records the unimplemented site and discards the call."
+    },
+    {
+      "native": "00761310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::ship_death_message_00827ab0",
+      "reason": "Missing the native 98h message's session-context/vtable ownership and delivery consumer at this semantic breakup path; constructing an unused message would not wire its behavior."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp::begin_native_scene_property_hash_008eeb10 (no live host site found)",
+      "reason": "Missing a live loader-owned native 64-bucket property hash and iterator producer; no source caller of this iterator body is present."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp::next_native_scene_property_hash_008eeb60 (no live host site found)",
+      "reason": "Missing the same live loader-owned native hash/iterator and a consuming iteration loop; a synthetic hash walk would not use game state."
+    }
+  ],
+  "checks": {
+    "initial_index": "python tools/bsp.py index --if-stale: fresh",
+    "initial_build": "scripts/build.ps1 passed; 2/2 tests",
+    "changed_build": "scripts/build.ps1 passed; 2/2 tests",
+    "call_graph": "python tools/call_graph.py; who 00470440 confirms one entry-reachable executable call from reconstructed_site_product; path 00470440 reaches the power-up reader",
+    "readiness": "python tools/wire_readiness.py --standins: 00470440 ready -> wired, called=true, call_sites=1",
+    "diff": "git diff --check passed"
+  },
+  "limits": [
+    "Build, existing tests and executable reachability evidence; no game run or native binary-ABI claim.",
+    "The new typed query and two-provider C++ interface preserve the existing body; no second body for 00470440 and no arithmetic changes.",
+    "Unattended choice: route both existing power-up readers through the shared gate so every reader uses the same live lists and the old optional fallback semantics."
+  ]
+}

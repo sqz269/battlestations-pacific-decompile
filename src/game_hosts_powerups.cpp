@@ -6,9 +6,11 @@
 #include "bsp/game_hosts_powerups.hpp"
 
 #include "bsp/cc13_powerup.hpp"
+#include "bsp/cc13_sweepA.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/powerup_session_broadcast_cc13.hpp"
+#include "bsp/wire_goal4_chain310_switches.hpp"
 
 #include <iterator>
 #include <random>
@@ -102,17 +104,97 @@ const std::list<PowerupModifier>* gated_list(int category) {
     return list.empty() ? nullptr : &list;
 }
 
+// 00470440 only reads the enable byte and manager+88h+category*0Ch. This
+// read-only layout projection copies those sizes from the actual manager's
+// lists; it is not a second modifier store. The lookup below uses those same
+// lists, and resolves the actual queried unit only if the body accepts the gate.
+// Evidence: bsp.py show 00470440, CALL/JMP target 008E6430. The original unit
+// argument is only forwarded, so a typed query can carry the existing host's
+// unit index or its in-construction PowerupUnitView without a fabricated unit.
+struct PowerupQueryUnit {
+    std::size_t index{};
+    const PowerupUnitView* view{};
+};
+
+class PowerupMultiplierBinding final : public cc13_sweepA::PowerupMultiplierHost {
+public:
+    explicit PowerupMultiplierBinding(cc13_powerup::PowerupRuntime& runtime)
+        : runtime_(runtime), enabled_(runtime.host->powerups_enabled_00e0c978() ? 1 : 0) {
+        for (std::size_t category = 0; category < runtime.category_lists.size(); ++category) {
+            counts_[(0x88 + category * 0x0c) / sizeof(std::uint32_t)] =
+                static_cast<std::uint32_t>(runtime.category_lists[category].size());
+        }
+    }
+
+    std::optional<float> product(int category, PowerupQueryUnit& unit) {
+        const float value = cc13_sweepA::gameplay_modifiers_powerup_multiplier_00470440(
+            cc13_sweepA::Raw{reinterpret_cast<std::uint8_t*>(counts_.data())},
+            category, &unit, *this);
+        // The readers' nullopt means to keep their existing 1.0f arm. Only
+        // 00470440's 008E6430 arm changes that optional to a product value.
+        return looked_up_ ? std::optional<float>{value} : std::nullopt;
+    }
+
+    void* global_address(std::uint32_t address) override {
+        if (address != 0x00e0c978u) {
+            throw std::logic_error("00470440 requested an unrelated global");
+        }
+        return &enabled_;
+    }
+
+    float gameplay_modifiers_lookup_008e6430(cc13_sweepA::Raw,
+        std::int32_t category, void* opaque_unit) override {
+        const auto& query = *static_cast<const PowerupQueryUnit*>(opaque_unit);
+        PowerupUnitView resolved;
+        const PowerupUnitView* unit = query.view;
+        if (unit != nullptr) {
+            if (g_unit_resolver == nullptr) {
+                throw std::logic_error("008E6430 without a unit resolver");
+            }
+        } else {
+            if (g_unit_resolver == nullptr || !g_unit_resolver->view_unit(query.index, resolved)) {
+                throw std::logic_error("008E6430 without a unit view");
+            }
+            unit = &resolved;
+        }
+        looked_up_ = true;
+        return gameplay_modifier_product_008e6430(
+            runtime_.category_lists[static_cast<std::size_t>(category)], *unit, *g_unit_resolver);
+    }
+
+private:
+    cc13_powerup::PowerupRuntime& runtime_;
+    // Last observed size word: +88h + 15*0Ch = +13Ch.
+    std::array<std::uint32_t, 0x140 / sizeof(std::uint32_t)> counts_{};
+    std::uint8_t enabled_;
+    bool looked_up_{};
+};
+
+std::optional<float> reconstructed_site_product(int category, PowerupQueryUnit unit) {
+    cc13_powerup::PowerupRuntime& runtime = cc13_powerup::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr || category < 0 ||
+        category >= kPowerupCategoryCount) {
+        return std::nullopt;
+    }
+    PowerupMultiplierBinding binding(runtime);
+    return binding.product(category, unit);
+}
+
 }  // namespace
 
 std::optional<float> powerup_site_product(int category, std::size_t unit_index) {
     std::optional<float> result;
     if constexpr (kPowerUpSubsystemCc13Bound) {
-        if (const std::list<PowerupModifier>* list = gated_list(category)) {
-            PowerupUnitView unit;
-            if (g_unit_resolver == nullptr || !g_unit_resolver->view_unit(unit_index, unit)) {
-                throw std::logic_error("008E6430 without a unit view");
+        if constexpr (bsp::kWireGoal4Chain310Bound) {
+            result = reconstructed_site_product(category, PowerupQueryUnit{unit_index, nullptr});
+        } else {
+            if (const std::list<PowerupModifier>* list = gated_list(category)) {
+                PowerupUnitView unit;
+                if (g_unit_resolver == nullptr || !g_unit_resolver->view_unit(unit_index, unit)) {
+                    throw std::logic_error("008E6430 without a unit view");
+                }
+                result = gameplay_modifier_product_008e6430(*list, unit, *g_unit_resolver);
             }
-            result = gameplay_modifier_product_008e6430(*list, unit, *g_unit_resolver);
         }
     } else {
         (void)category;
@@ -124,11 +206,15 @@ std::optional<float> powerup_site_product(int category, std::size_t unit_index) 
 std::optional<float> powerup_site_product_for_view(int category, const PowerupUnitView& view) {
     std::optional<float> result;
     if constexpr (kPowerUpSubsystemCc13Bound) {
-        if (const std::list<PowerupModifier>* list = gated_list(category)) {
-            if (g_unit_resolver == nullptr) {
-                throw std::logic_error("008E6430 without a unit resolver");
+        if constexpr (bsp::kWireGoal4Chain310Bound) {
+            result = reconstructed_site_product(category, PowerupQueryUnit{0, &view});
+        } else {
+            if (const std::list<PowerupModifier>* list = gated_list(category)) {
+                if (g_unit_resolver == nullptr) {
+                    throw std::logic_error("008E6430 without a unit resolver");
+                }
+                result = gameplay_modifier_product_008e6430(*list, view, *g_unit_resolver);
             }
-            result = gameplay_modifier_product_008e6430(*list, view, *g_unit_resolver);
         }
     } else {
         (void)category;

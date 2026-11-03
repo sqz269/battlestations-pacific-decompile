@@ -31,7 +31,16 @@ struct LuaObjectStorage {
     alignas(4) std::uint8_t bytes[0x14];
 };
 
-struct SweepAHost {
+// The complete provider surface read by 00470440. A live power-up reader does
+// not need to implement the unrelated camera, archive and entity providers.
+struct PowerupMultiplierHost {
+    virtual ~PowerupMultiplierHost() = default;
+    virtual void* global_address(std::uint32_t address) = 0;
+    virtual float gameplay_modifiers_lookup_008e6430(
+        Raw modifiers, std::int32_t index, void* unit) = 0;
+};
+
+struct SweepAHost : PowerupMultiplierHost {
     virtual ~SweepAHost() = default;
 
     // The pointer stored in the image global dword at `address` (for example
@@ -556,7 +565,7 @@ void entity_command_set_submarine_depth_004654d0(Raw command, void* entity, Swee
 // --- segment 6 -------------------------------------------------------------
 Raw unit_reference_construct_004684f0(Raw reference, void* unit, SweepAHost& host);
 float gameplay_modifiers_powerup_multiplier_00470440(Raw modifiers, std::int32_t index, void* unit,
-                                                     SweepAHost& host);
+                                                     PowerupMultiplierHost& host);
 void hit_record_destroy_004704b0(Raw record, SweepAHost& host);
 std::uint32_t hit_record_owning_unit_004704e0(Raw record, SweepAHost& host);
 float random_in_range_0047b7f0(Raw range, SweepAHost& host);
