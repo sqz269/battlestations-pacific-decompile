@@ -35,6 +35,7 @@
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/pc24_unitshost_cc13.hpp"  // packet pc24w1-units-1 (00836920)
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
+#include "bsp/cc13_seg33a.hpp"
 #include "bsp/wire_goal1_chain10_switches.hpp"
 #include "bsp/wire_goal2_chain42_switches.hpp"
 #include "bsp/wire_goal2_chain75_switches.hpp"
@@ -44,6 +45,7 @@
 #include "bsp/wire_goal4_chain255_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain276_switches.hpp"
+#include "bsp/wire_goal4_chain280_switches.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -1453,7 +1455,22 @@ public:
         }
         // [[00E188A8]+1EF0h]+F4h is game+1FE4h, the session mode.
         chain_.owner.done("WeaponDirector::session_echo_gate", 0x006e38e0u);
-        return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
+        if constexpr (bsp::kWireGoal4Chain280Bound) {
+            // bsp.py show 006e38e0 --asm: 006E38E0..006E38F7 reads only
+            // [ECX+F4h]. Project the live session word into that original
+            // layout; the opaque prefix is never consumed. The caller at
+            // 0071E7C9 supplies session = game+1EF0h before ending an override.
+            struct SessionModeView {
+                std::uint8_t opaque[0xf4];
+                std::int32_t mode;
+            } session;
+            static_assert(offsetof(SessionModeView, mode) == 0xf4);
+            session.mode = session_mode_1fe4();
+            return bsp::cc13_seg33a::session_mode_field_is_zero_or_one_006e38e0(
+                &session);
+        } else {
+            return session_mode_1fe4() == 0 || session_mode_1fe4() == 1;
+        }
     }
     void echo_command() override {
         if (!kAttackPushEndsOverrideBound) {
