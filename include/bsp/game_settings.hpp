@@ -139,14 +139,18 @@ void reset_game_defaults_008d41c0(GameSettingsBlock& settings) noexcept;
 // 008d41f0 audio reset, __thiscall(void), RET. Stores the constant at 00ce3800
 // (0.5f) into +20h, +28h, +2Ch and +30h.
 inline constexpr float kDefaultVolume = 0.5f; // 00ce3800
-void reset_audio_defaults_008d41f0(GameSettingsBlock& settings) noexcept;
+// Explicit image bits keep the native owner's captured constant, including its
+// representation. These are source interfaces, not the original register ABI.
+void reset_audio_defaults_008d41f0(GameSettingsBlock& settings,
+    std::uint32_t volume_bits_00ce3800 = 0x3f000000u) noexcept;
 
 // 008d4520 video reset, __thiscall(bool reset_resolution, bool keep_fullscreen),
 // RET 8. The second flag is inverted in the body: fullscreen is forced on only
 // when the argument is zero. The call sites pass (0, 1).
 inline constexpr float kVideoResetUnknown34 = 0.6981317400932312f; // 00ce7d20, 0x3f32b8c3
 void reset_video_defaults_008d4520(
-    GameSettingsBlock& settings, bool reset_resolution, bool keep_fullscreen) noexcept;
+    GameSettingsBlock& settings, bool reset_resolution, bool keep_fullscreen,
+    std::uint32_t divisor_bits_00ce7d20 = 0x3f32b8c3u) noexcept;
 
 // 008d4820 control reset, __thiscall(void), RET. Writes +40h..+44h, then tail
 // calls 008d45d0 when the Xenon system manager at 00f8abe8 reports state 2 and

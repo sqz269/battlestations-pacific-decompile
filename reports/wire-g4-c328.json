@@ -1,0 +1,198 @@
+{
+  "goal": 4,
+  "chain": 328,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain328Bound",
+  "picked": "Native settings constructor audio/video defaults",
+  "base_head": "d6982d21b5",
+  "implementation": "Replace the constructor's inlined defaults with the existing reset bodies. Copy only their sparse output fields into the actual native settings owner. Pass the constants captured at the original reads as raw DWORD bits; leave unrelated bytes and ownership intact. OFF retains the original stores.",
+  "rows": [
+    {
+      "native": "008d41f0",
+      "status": "wired",
+      "host_site": "src/native_game_settings_owner.cpp: construct_native_game_settings_008d7710",
+      "call_site": "1052a49c",
+      "input": "Captured c.audio_bits_00ce3800; outputs consumed at native +20h/+28h/+2Ch/+30h."
+    },
+    {
+      "native": "008d4520",
+      "status": "wired",
+      "host_site": "src/native_game_settings_owner.cpp: construct_native_game_settings_008d7710",
+      "call_site": "1052a50f",
+      "input": "Captured c.video_bits_00ce7d20, reset_resolution=true and keep_fullscreen=false, matching constructor stores; all reset outputs copied sparsely to the real owner."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "No producer for the native ammo record's +48h alternate; the host records this branch."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: capture-point update",
+      "reason": "The native unit+660h vector owner and its contents are not bound in this host path."
+    },
+    {
+      "native": "00749d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing mode 3 and request_landing_0074a4c0",
+      "reason": "Landing uses BuildingPadModel indices and direct delivery; raw pad/building objects and the native message route are missing."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landfort_fire_roll_007470b0",
+      "reason": "The D1h effect-message construction/delivery adapter is missing; a temporary unused message would not replace behavior."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Multiplayer-only participant check; single-player session mode is zero and bypasses the body."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "No bound AiGroupScoreList owner and gameplay consumer; an auxiliary sorted table would not replace planning."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "The native score-list entries consumed by mark_chosen are missing from the host planner."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: difficulty selection",
+      "reason": "The native eight-brain publication and each brain's +0Ch planner pointer are not bound here."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: run_entity_turn_to_entity",
+      "reason": "The ship path shares one motion state; a separate native physics-body transform consumer is missing."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot override angles",
+      "reason": "The unit+9A8h/+9ACh override-angle producer is missing; the inspected ship angle-wrap alternatives only update diagnostics."
+    },
+    {
+      "native": "004fa230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: quad_cross",
+      "reason": "Terrain uses the 004F9B30 cross operation; the separate library-screen assign-cross consumer of 004FA230 is not bound."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The pre-load checkpoint-diff result is always false; the actual checkpoint Lua table/current-key binding is missing at this site."
+    },
+    {
+      "native": "004d92b0",
+      "status": "skipped",
+      "host_site": "src/main_menu_screen.cpp: front_end_action_sound_004d92b0",
+      "reason": "The classifier alone does not implement the native action-edge/repeat routine; live input records, repeat deadlines and sound-request binding are missing at this site."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown gear gate",
+      "reason": "The plane+DECh gear channel and its +28h/+2Ch producer are missing; the host currently labels a true substitution."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: dive_bomb_rounds_remaining",
+      "reason": "The host carries aggregate rack totals; the body's separate kind-2Ah child count and native reserve+484h are not available at this site."
+    },
+    {
+      "native": "006e3570",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: rack_is_empty_006e3570",
+      "reason": "A live caller with the separate attached-round count and reserve+484h is missing; deriving artificial terms from a total would not bind those fields."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path loopback",
+      "reason": "The host posts append-point messages; the native remove-last-point message dispatch and per-slot path ownership are missing."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp: gameunit_apply_message_00721a40",
+      "reason": "No concrete GameUnitMessageHost binds the native two-table target resolver in this dispatch path."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No reached native CommandTargetDescriptor owner/caller was found; the current command host uses SceneCommandTarget."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit_ring_set_write_slot_rudder_0080e190",
+      "reason": "The live host uses the write-slot setter; no whole-pending-span rudder-reset caller was found, and substituting it would change semantics."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: active-use cooldown tail",
+      "reason": "Only passive grant consumption reaches this host use path; the active-use producer is missing."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Already called from reachable code in the baseline through chain285; no new wiring is needed."
+    },
+    {
+      "native": "008d7710",
+      "status": "skipped",
+      "host_site": "src/native_game_settings_owner.cpp: construct_native_game_settings_008d7710",
+      "reason": "Already reachable in the baseline; reused as the caller, not counted as a newly wired function."
+    }
+  ],
+  "counts": {
+    "readiness_wired": {
+      "before": 9327,
+      "after": 9329
+    },
+    "entry_reachable_reconstructed_calls": {
+      "before": 4362,
+      "after": 4364
+    }
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "readiness": "Both selected rows are wired, called=true, call_sites=1.",
+    "call_graph": "Both bodies are called by construct_native_game_settings_008d7710; entry path is WinMain -> GameStartupHost -> GameNativeSettingsProcess::initialize_once -> initialize_native_game_settings_static_00cd2d80 -> constructor.",
+    "native_store_probe": {
+      "path": "local/g4_c328/probe.cpp",
+      "result": "4 comparisons passed, each comparing all 188 bytes, including untouched preimages.",
+      "scope": "Executed isolated original constructor audio/video store spans against the production projection helpers, with image constants and a second pair containing signaling-NaN/negative-zero bits.",
+      "binary": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+      "spans": [
+        "008D77C4..008D77D7 (20 bytes)",
+        "008D7801..008D787A (122 bytes)"
+      ],
+      "evidence": "local/g4_c328/evidence.json",
+      "manifest": "/MANIFEST:EMBED",
+      "game_launched": false
+    }
+  },
+  "limits": [
+    "Build, static entry reach and isolated native store equivalence are verified; no game run or full original ABI proof.",
+    "Explicit C++ source constant parameters are not the binary's calling convention.",
+    "Options-page and sign-in consumers were not added; this packet wires the equivalent defaults already executed at construction."
+  ]
+}

@@ -164,16 +164,20 @@ void reset_game_defaults_008d41c0(GameSettingsBlock& settings) noexcept
     settings.gameplay.marker_alpha_80 = 0.0f;     // 008d41e2, XORPS
 }
 
-void reset_audio_defaults_008d41f0(GameSettingsBlock& settings) noexcept
+__declspec(noinline) void reset_audio_defaults_008d41f0(GameSettingsBlock& settings,
+    std::uint32_t volume_bits_00ce3800) noexcept
 {
-    settings.audio.master_20 = kDefaultVolume;  // 008d41f8
-    settings.audio.music_28 = kDefaultVolume;   // 008d41fd
-    settings.audio.effects_2c = kDefaultVolume; // 008d4202
-    settings.audio.speech_30 = kDefaultVolume;  // 008d4207
+    // bsp.py show 008D41F0: MOV stores the captured DWORD, without float
+    // arithmetic or NaN canonicalization. Keep the out-of-line body auditable.
+    std::memcpy(&settings.audio.master_20, &volume_bits_00ce3800, 4);  // 008d41f8
+    std::memcpy(&settings.audio.music_28, &volume_bits_00ce3800, 4);   // 008d41fd
+    std::memcpy(&settings.audio.effects_2c, &volume_bits_00ce3800, 4); // 008d4202
+    std::memcpy(&settings.audio.speech_30, &volume_bits_00ce3800, 4);  // 008d4207
 }
 
-void reset_video_defaults_008d4520(
-    GameSettingsBlock& settings, bool reset_resolution, bool keep_fullscreen) noexcept
+__declspec(noinline) void reset_video_defaults_008d4520(
+    GameSettingsBlock& settings, bool reset_resolution, bool keep_fullscreen,
+    std::uint32_t divisor_bits_00ce7d20) noexcept
 {
     if (reset_resolution) { // 008d4522
         settings.options_file.resolution_index_78 = 0;
@@ -200,7 +204,9 @@ void reset_video_defaults_008d4520(
     if (!keep_fullscreen) {                        // 008d4591, JNZ skips the store
         settings.options_file.fullscreen_1e = true;
     }
-    settings.presentation.unknown_34 = kVideoResetUnknown34; // 008d4596
+    // 008D4596 copies the image DWORD; the native owner captures that same
+    // cell before its inline defaults (008D77D8). Preserve its exact bits.
+    std::memcpy(&settings.presentation.unknown_34, &divisor_bits_00ce7d20, 4);
     settings.options_file.foliage_86 = true;                 // 008d45a3
     settings.options_file.shader_model_88 = 1;               // 008d45a9
 }
