@@ -1,0 +1,134 @@
+{
+  "goal": 3,
+  "chain": 233,
+  "slot": "g3-w1",
+  "harness": "claude",
+  "run": 418,
+  "branch": "agent/g3-w1",
+  "host_file": "src/game_hosts_hud.cpp",
+  "tier": 1,
+  "files": [
+    "src/game_hosts_hud.cpp",
+    "include/bsp/fe5_host_unreached.hpp",
+    "include/bsp/wire_goal3_chain233_switches.hpp"
+  ],
+  "switch": "kWireGoal3Chain233Bound",
+  "switch_header": "include/bsp/wire_goal3_chain233_switches.hpp",
+  "selection": "game_hosts_hud.cpp. The power-up manager (00F88C30) was looked at first and dropped: its HUD bodies read an image-shaped manager and native vectors through Seg58Host (140 pure virtuals, no implementation), and the host keeps the same state in its typed PowerupRuntime, so it would need a second, drifting copy. The exit-zone alert's missing object, the GGame world box +711Ch..+7130h, turned out to exist in the host, so that climb was short and real.",
+  "rows": [
+    {
+      "native": "00682e10",
+      "name": "warning_screen_show_alert (BSP_HudWarningScreen_ShowExitZone)",
+      "address": "006832a6",
+      "function": "00683020",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::show_alert (with WarningScreenBinding::near_world_edge_00681f40 as its producer)",
+      "status": "wired",
+      "reach": "static: frontend state machine -> GameMenuHost screen_update(0x50) (game_hosts_menu.cpp, kHudWarningScreenBound = true) -> GameHudHost::update_warning_screen_00683020 -> warning_screen_update_00683020 -> near_world_edge_00681f40 (ON: game_near_world_edge_00681f40 over the host's border box, controlled unit +FCh, margin 0.0) -> raise(3) -> show_alert(screen, 3). It becomes active when the controlled unit is on or outside the world rectangle.",
+      "on_effect": "phase[3] += dt, first_Group shown, warning_text given the key ingame.warning_exitezone, the pulsed alpha 0.3 + 0.7*(sin(2*pi*phase)+1)/2 on warning_text, warning_1_Icon and warning_2_Icon; OFF only recorded the show and the test answered false."
+    },
+    {
+      "native": "00682cb0",
+      "name": "warning_screen_show_alert (BSP_HudWarningScreen_ShowOxygen)",
+      "address": "00683294",
+      "function": "00683020",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::show_alert",
+      "status": "skipped",
+      "reason": "Shares the identifier with 00682E10, so the readiness scan counts it wired, but the oxygen alert is never raised here: submarine_127c() answers 1.0 and submarine_below_00852860() false (unit+127Ch oxygen and the depth test are not modelled). climb: 00682CB0 needs an active oxygen alert <- unit+127Ch submarine oxygen and 00852860 <- the submarine unit's oxygen producer (stopped: no host submarine oxygen state).",
+      "reach": "static, dead arm"
+    },
+    {
+      "native": "00682d60",
+      "name": "warning_screen_show_alert (BSP_HudWarningScreen_ShowShallowWater)",
+      "address": "0068329d",
+      "function": "00683020",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::show_alert",
+      "status": "skipped",
+      "reason": "Shares the identifier with 00682E10 (counted wired by the scan), but ship_shallow_1011() is fixed false: unit+1011h is the latched kind-8 physics contact from the grounding edge 008255B0, and this host has no terrain contacts. climb: 00682D60 needs unit+1011h <- grounding edge 008255B0 <- terrain contact producer (stopped: no host terrain-contact latch).",
+      "reach": "static, dead arm"
+    },
+    {
+      "native": "00682ed0",
+      "name": "warning_screen_show_alert (BSP_HudWarningScreen_ShowStall)",
+      "address": "0068328b",
+      "function": "00683020",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::show_alert",
+      "status": "skipped",
+      "reason": "Shares the identifier with 00682E10 (counted wired by the scan), but plane_stall_007c6e10() is fixed false and the stall show also needs the hint service award_tracker_trigger_hint_00690fd0, which WarningAlertFe5Binding leaves to the base's loud failure. climb: 00682ED0 needs 007C6E10 on the plane controller [unit+3D0h] <- the native plane controller (stopped: not built by this host).",
+      "reach": "static, dead arm"
+    },
+    {
+      "native": "008ed9c0",
+      "name": "power_up_manager_local_player_has_usable_item_008ed9c0",
+      "address": "0068c7a1",
+      "function": "0068c1f0",
+      "host_site": "src/game_hosts_hud.cpp InGameInterfaceUpdate binding support_request_pending",
+      "status": "skipped",
+      "reason": "Dead arms: in_mission_interface_runtime.cpp asks support_request_pending only after map_screen_wanted() (false here) or overlay_c_extra_gate() (false here). The body also reads the manager image (+20h+slot*0Ch native list, item +4h class/+0Ch uses) through Seg58Host (140 pure virtuals, none implemented). climb: 008ED9C0 needs manager+20h lists <- PowerupRuntime.inventories (typed, game_hosts_powerups.cpp) (stopped: sites dead; an image list would be a second copy of the typed inventories).",
+      "reach": "static, dead arm"
+    },
+    {
+      "native": "008e9af0",
+      "name": "power_up_manager_collect_active_008e9af0",
+      "address": "00649a36",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp HudRootUpdateBinding::collect_powerups",
+      "status": "skipped",
+      "reason": "climb: 008E9AF0 needs the manager image's native list heads +24h+slot*0Ch, item class +8h, the players at game+18CCh with their +28h team and five native output vectors <- PowerupRuntime (typed: std::list inventories, PowerupCategoryLists) <- load_powerup_classes_004dc6a0 (stopped: the body takes Seg58Host, 140 pure virtuals with no implementation, and an image-shaped manager would be a second copy of the typed runtime; its HUD consumer, the icon/circle clones 00AAB4C0, returns no widget).",
+      "reach": "static"
+    },
+    {
+      "native": "008e62a0",
+      "name": "power_up_applies_to_unit_008e62a0",
+      "address": "00649a86",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp HudRootUpdateBinding::untimed_entry_applies / timed_entry_applies",
+      "status": "skipped",
+      "reason": "Reached only for entries 008E9AF0 collects; with that collection unbuilt (row above) both entry counts are zero. climb: 008E62A0 <- 008E9AF0 entries (stopped as 008E9AF0).",
+      "reach": "static"
+    },
+    {
+      "native": "005251c0",
+      "name": "hud_screen_reset_selection_005251c0",
+      "address": "0064a0de",
+      "function": "00649860",
+      "host_site": "src/game_hosts_hud.cpp unit-pick screen reset (not changed)",
+      "status": "skipped",
+      "reason": "Looked at while choosing. The fields it resets (+30h mode, +C4h selection vector) are written in the unit-pick lock branches, which need UnitPickHost::action_byte (always false here), so the reset would only clear zeros. climb: 005251C0 needs screen 29h +30h/+C4h <- unit-pick lock branches 005277D1/00527905 <- an in-mission action byte (stopped: no device drives an in-mission action).",
+      "reach": "static"
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "GGame world box +711Ch..+7130h (GameWorldBoxImage, an image-shaped view filled per test)",
+      "where": "src/game_hosts_hud.cpp:3288",
+      "producers": [
+        "GameMissionLuaHost::set_world_border_zones (src/game_hosts_lua.cpp:10707), called by the mission frame's avoid-zone load (src/game_hosts_mission_frame.cpp:3777) with select_world_map_bounds_004d5ede; the image fills the same box in 004E6C00's Map read"
+      ],
+      "rows": ["00682e10"],
+      "climb": [
+        "00682E10 needs an active exit-zone alert <- 00681F40 on GGame+711Ch..+7130h (HUD stand-in fixed false) <- GameMissionLuaHost::world_border_bounds <- avoid-zone load select_world_map_bounds_004d5ede (host already runs it: stopped, built there)"
+      ]
+    },
+    {
+      "name": "Screen 50h warning view (WarningScreenImage) and the Fe5Host adapter WarningAlertFe5Binding over Fe5HostUnreached",
+      "where": "src/game_hosts_hud.cpp:3303; src/game_hosts_hud.cpp:3340; include/bsp/fe5_host_unreached.hpp",
+      "producers": [
+        "GameHudHost::Impl::warning_screen (WarningScreenState, the semantic 00683020 state) for phase/dt",
+        "GameHudHost::Impl::warning_widget (006823C0's GUI_Warning lookups) for +50h/+54h/+58h/+68h",
+        "samples +30h..+3Ch: screen 50h's constructor 006821C0 (00A83FD0 on the sample cache [00F8BBE8]) is not built by this host, so they stay null"
+      ],
+      "rows": ["00682e10"],
+      "climb": [
+        "00682E10's sound half needs samples at screen+30h <- ctor 006821C0 via 00A83FD0 on [00F8BBE8] <- BSP_InGameInterface_Init 0068CC70 (HudInitBinding::construct_screen builds no native screens) and the GUI sound class [00E1988C] (stopped: no host owner; no sound, as before)"
+      ]
+    }
+  ],
+  "wired_before": 9022,
+  "wired_after": 9026,
+  "wired_note": "Measured with python tools/wire_readiness.py after a plain ./scripts/build.ps1. The four rows 00682CB0/00682D60/00682E10/00682ED0 share the identifier warning_screen_show_alert, so all four turn wired; only 00682E10 is claimed (the others are dead arms, reported skipped). A first version of fe5_host_unreached.hpp with written-out override bodies also turned 004C1B90 and 005471B0 wired through same-named Fe5Host services; the bodies are now one macro and those two stay ready (checked by diffing the readiness output before and after).",
+  "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "python tools/off_switch_on_build.py --names kWireGoal3Chain233Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 3 files",
+  "ledger": "no new address-suffixed functions; no ledger rows",
+  "pair_run": "none (not run, per the brief)"
+}
