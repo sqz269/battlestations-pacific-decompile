@@ -39,6 +39,8 @@
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
+#include "bsp/wire_goal4_chain262_switches.hpp"
+#include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
@@ -2310,6 +2312,35 @@ struct GunneryDirectionAnglesBinding final : bsp::GunBotAnglesHost {
         *pitch = std::asin(vertical);
         *yaw = std::atan2(direction[0], direction[2]);
     }
+};
+
+// Chain 262: GameGunRow is already the gun's resolved authored platform,
+// populated by build_guns from its Platforms key. Native 0085AB50/0085AD00's
+// class-array lookup/grow is retained in their Raw adapters; no image or
+// synthetic slot index is needed here. Capture the angle request so each
+// caller can use its existing 0085ABA0 commit point exactly once.
+struct GunneryTurningGunPlatformBinding final : bsp::cc13_seg53::TurningGunPlatformHost {
+    explicit GunneryTurningGunPlatformBinding(const GameGunRow& gun) : gun_(gun) {}
+    double snap_heading_007f6190(float heading, float limit) override {
+        return bsp::gun_snap_heading_to_fire_window_007f6190(
+            {gun_.arcs.data(), gun_.arcs.size()}, heading, limit);
+    }
+    float rest_horizontal_94() override {
+        // The Lua reader's presence flag preserves platform+94h's FLT_MAX
+        // constructor default; its numeric convenience field defaults to 0.
+        return gun_.rest_authored ? gun_.rest_horz : bsp::kGunBotFloatMax;
+    }
+    float rest_vertical_90() override { return gun_.rest_vert; }
+    void set_target_angles_0085aba0(float horizontal, float vertical) override {
+        requested = true;
+        requested_horz = horizontal;
+        requested_vert = vertical;
+    }
+    bool requested{false};
+    float requested_horz{};
+    float requested_vert{};
+private:
+    const GameGunRow& gun_;
 };
 
 // Packet cc13-powerup-bind: what 008E4680 reads off a torpedo projectile, the
@@ -9915,8 +9946,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     // window. docs/TORPEDO_LAUNCH_ACCURACY.md.
                     const bsp::GunPlatformArcs snap_arcs{gun.arcs.data(),
                         gun.arcs.size()};
+                    const float snapped = [&]() {
+                        if constexpr (bsp::kWireGoal4Chain262Bound) {
+                            GunneryTurningGunPlatformBinding platform(gun);
+                            return static_cast<float>(
+                                bsp::cc13_seg53::turning_gun_filter_heading_to_traverse_0085ab50(
+                                    platform, want_horz, kQuarterPi));
+                        } else {
                     const float snapped = bsp::gun_snap_heading_to_fire_window_007f6190(
                         snap_arcs, want_horz, kQuarterPi);
+                            return snapped;
+                        }
+                    }();
                     if (bsp::gun_heading_snap_failed(snapped)) {
                         have_target = false;          // 00900392..009003A2
                     } else {
@@ -10134,12 +10175,24 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 if (action == bsp::GunBotIdleAction::kAimToRest) {
                     ++summary.idle_rests;
                     done("TurningGun::aim_to_rest_angles_0085ad00", 0x0085ad00u);
+                    if constexpr (bsp::kWireGoal4Chain262Bound) {
+                        GunneryTurningGunPlatformBinding platform(gun);
+                        bsp::cc13_seg53::turning_gun_aim_to_rest_angles_0085ad00(platform);
+                        if (platform.requested) {
+                            want_horz = platform.requested_horz;
+                            want_vert = platform.requested_vert;
+                            command_angles = true;
+                        } else {
+                            ++summary.idle_rests_unauthored;
+                        }
+                    } else {
                     if (gun.rest_authored) {
                         want_horz = gun.rest_horz;   // platform+94h
                         want_vert = gun.rest_vert;   // platform+90h
                         command_angles = true;
                     } else {
                         ++summary.idle_rests_unauthored;   // 0085AD4x: FLT_MAX, no call
+                    }
                     }
                 }
                 if (!command_angles) ++summary.idle_holds;
@@ -17871,6 +17924,19 @@ void GameGunneryHost::role_owner_device_walk_0095ac1d(std::size_t unit, std::uin
 // 0085ABA0's AL and its accepted mark are discarded, as 0085AD6A..0085AD73 discard them.
 void GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290(std::size_t unit) {
     Impl& h = *impl_;
+    if constexpr (bsp::kWireGoal4Chain262Bound) {
+        for (GameGunRow& gun : h.guns) {
+            if (gun.unit_index != unit || !gun_answers_turning_22h(gun.category)) continue;
+            GunneryTurningGunPlatformBinding platform(gun);
+            bsp::cc13_seg53::turning_gun_aim_to_rest_angles_0085ad00(platform);
+            if (!platform.requested) continue;
+            const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+            float accepted_mark = 0.0f;
+            bsp::gun_set_target_angles_0085aba0(gun.angles, arcs, gun.speeds,
+                platform.requested_horz, platform.requested_vert, accepted_mark);
+            h.done("TurningGun::aim_to_rest_angles_0085ad00", 0x0085ad00u);
+        }
+    } else {
     for (GameGunRow& gun : h.guns) {
         if (gun.unit_index != unit || !gun_answers_turning_22h(gun.category)) continue;
         if (!gun.rest_authored) continue;                              // 0085AD56 JNP
@@ -17879,6 +17945,7 @@ void GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290(std::size_t unit) {
         bsp::gun_set_target_angles_0085aba0(gun.angles, arcs, gun.speeds,
             gun.rest_horz, gun.rest_vert, accepted_mark);              // 0085AD6A
         h.done("TurningGun::aim_to_rest_angles_0085ad00", 0x0085ad00u);
+    }
     }
     h.done("Unit::aim_turning_guns_to_rest_0080e290", 0x0080e290u);
 }

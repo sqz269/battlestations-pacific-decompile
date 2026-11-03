@@ -1,0 +1,48 @@
+{
+  "goal": 4,
+  "chain": 262,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain262Bound",
+  "rows": [
+    {
+      "native": "0085ab50",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire (torpedo heading snap)",
+      "state": "Actual GameGunRow platform arcs, requested horizontal heading, and binary pi/4 snap limit; shared existing body through TurningGunPlatformHost."
+    },
+    {
+      "native": "0085ad00",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire (idle rest) and GameGunneryHost::aim_unit_turning_guns_to_rest_0080e290",
+      "state": "Actual gun RestAngles and presence flag; missing RestAngles maps to the binary FLT_MAX default, not the host numeric convenience zero. The shared body produces a request consumed once at the caller existing 0085ABA0 commit point."
+    },
+    {
+      "native": "0085a9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: fire_window_0085a9a0 target-acceptance lambda",
+      "reason": "Raw body still needs a typed mount world-matrix and gun/target pose-refresh provider; host-computed local angles cannot substitute for those inputs."
+    },
+    {
+      "native": "0084c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire rapid-turning tick",
+      "reason": "Existing body only returns its input flag; native tick and extra-fire producer/dispatch are missing, so wrapping the host immediate_4d4 flag would not replace behavior."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0085ab50 and --asm (0085AB50-0085AB98)",
+    "bsp.py show 0085ad00 and --asm (0085AD00-0085AD7A)",
+    "docs/GUN_REST_ANGLES.md: native FLT_MAX default versus host presence flag"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed Win32 Release and both reconstructed_math/tool_tests",
+    "changed_build": "scripts/build.ps1 passed Win32 Release and both reconstructed_math/tool_tests",
+    "new_tests": "None; reused existing checks for the adapter/refactor.",
+    "game_run": false,
+    "binary_abi_compatible": false,
+    "pc24_lint": "--staged: 0 findings, 4 source/header files"
+  },
+  "wired_before": 9112,
+  "wired_count_scope": "wire_readiness.py source/file reachability approximation, not live execution proof",
+  "wired_after": 9114
+}

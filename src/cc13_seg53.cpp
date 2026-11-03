@@ -814,6 +814,27 @@ Object gun_platform_slot(Seg53Host& host, Object gun) {
     }
     return field<Object*>(array, 0x0)[index];
 }
+
+// Keep native platform selection (including its array-grow arm) in the Raw
+// adapter. The selected row and the actual gun remain the receivers of the
+// original calls; the control-flow bodies below are shared with the game host.
+class RawTurningGunPlatform final : public TurningGunPlatformHost {
+public:
+    RawTurningGunPlatform(Seg53Host& host, Object gun)
+        : host_(host), gun_(gun), platform_(gun_platform_slot(host, gun)) {}
+    double snap_heading_007f6190(float heading, float limit) override {
+        return host_.gun_platform_snap_heading_007f6190(platform_, heading, limit);
+    }
+    float rest_horizontal_94() override { return field<float>(platform_, 0x94); }
+    float rest_vertical_90() override { return field<float>(platform_, 0x90); }
+    void set_target_angles_0085aba0(float horizontal, float vertical) override {
+        host_.turning_gun_set_target_angles_0085aba0(gun_, horizontal, vertical);
+    }
+private:
+    Seg53Host& host_;
+    Object gun_;
+    Object platform_;
+};
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -821,10 +842,15 @@ Object gun_platform_slot(Seg53Host& host, Object gun) {
 // limit), RET 8 -> ST0: 007F6190(ECX = this gun's platform slot, heading, limit) returned as is
 // (FLT_MAX when no traverse window accepts it, per gun_bot_ticks.hpp).
 // ---------------------------------------------------------------------------
+double turning_gun_filter_heading_to_traverse_0085ab50(TurningGunPlatformHost& platform,
+                                                       float heading, float limit) {
+    return platform.snap_heading_007f6190(heading, limit);
+}
+
 double turning_gun_filter_heading_to_traverse_0085ab50(Seg53Host& host, Object gun, float heading,
                                                        float limit) {
-    Object platform = gun_platform_slot(host, gun);
-    return host.gun_platform_snap_heading_007f6190(platform, heading, limit);
+    RawTurningGunPlatform platform(host, gun);
+    return turning_gun_filter_heading_to_traverse_0085ab50(platform, heading, limit);
 }
 
 // ---------------------------------------------------------------------------
@@ -832,13 +858,19 @@ double turning_gun_filter_heading_to_traverse_0085ab50(Seg53Host& host, Object g
 // against double [00D7A278] = FLT_MAX with LAHF/TEST AH,44h/JNP: only an exact FLT_MAX skips
 // (NaN calls); otherwise 0085ABA0(ECX = gun; v, float [slot+90h]).
 // ---------------------------------------------------------------------------
-void turning_gun_aim_to_rest_angles_0085ad00(Seg53Host& host, Object gun) {
+void turning_gun_aim_to_rest_angles_0085ad00(TurningGunPlatformHost& platform) {
     constexpr double kNoRestAngle_00d7a278 = 3.4028234663852886e+38;
-    Object slot = gun_platform_slot(host, gun);
-    float v = field<float>(slot, 0x94);
+    float v = platform.rest_horizontal_94();
+    // bsp.py show 0085ad00 --asm: 0085AD4E..56 skips ordered equality
+    // only (FUCOMIP / TEST AH,44h / JNP); unordered still calls 0085ABA0.
     if (static_cast<double>(v) != kNoRestAngle_00d7a278) {
-        host.turning_gun_set_target_angles_0085aba0(gun, v, field<float>(slot, 0x90));
+        platform.set_target_angles_0085aba0(v, platform.rest_vertical_90());
     }
+}
+
+void turning_gun_aim_to_rest_angles_0085ad00(Seg53Host& host, Object gun) {
+    RawTurningGunPlatform platform(host, gun);
+    turning_gun_aim_to_rest_angles_0085ad00(platform);
 }
 
 // ---------------------------------------------------------------------------

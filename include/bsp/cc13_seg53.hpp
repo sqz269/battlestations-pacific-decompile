@@ -441,6 +441,22 @@ void turning_gun_write_snapshot_fields_00859b10(Seg53Host& host, Object gun, Obj
                                                 Object writer);
 
 // --- turning gun aiming ---
+// One resolved platform row: native callers select gun+38Ch from
+// [[gun+3F0h]+538h]+94h (growing via 005471B0 when needed). The game host
+// already resolves that authored row while building each GameGunRow. This
+// interface lets both representations use the same bodies without a fake gun
+// image or fabricated platform indices/counts. Original ABI remains in the
+// Seg53Host/Raw wrappers below; this is a source-level interface only.
+struct TurningGunPlatformHost {
+    virtual ~TurningGunPlatformHost() = default;
+    virtual double snap_heading_007f6190(float heading, float limit) = 0;
+    virtual float rest_horizontal_94() = 0;
+    virtual float rest_vertical_90() = 0;
+    virtual void set_target_angles_0085aba0(float horizontal, float vertical) = 0;
+};
+double turning_gun_filter_heading_to_traverse_0085ab50(TurningGunPlatformHost& platform,
+                                                       float heading, float limit);
+void turning_gun_aim_to_rest_angles_0085ad00(TurningGunPlatformHost& platform);
 double turning_gun_filter_heading_to_traverse_0085ab50(Seg53Host& host, Object gun, float heading,
                                                        float limit);
 void turning_gun_aim_to_rest_angles_0085ad00(Seg53Host& host, Object gun);
