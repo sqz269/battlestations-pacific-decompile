@@ -71,7 +71,15 @@ inline constexpr std::uint32_t kBotConditionSimpleTimedVtable = 0x00D1E9F0u;
 inline constexpr std::uint32_t kBotConditionTurnToHdgVtable = 0x00D1EA30u;
 inline constexpr std::uint32_t kTargetObserverVtable = 0x00CE3CF0u;
 
-class Cc13Seg67bHost {
+// 009E5E30 needs only the target's IsKindOf slot. Keep that contract separate
+// so a live ship controller need not implement unrelated archive/task services.
+class ShipAiApproachTargetHost {
+public:
+    virtual ~ShipAiApproachTargetHost() = default;
+    virtual bool object_vcall_5c(void* object, std::uint32_t arg) = 0;
+};
+
+class Cc13Seg67bHost : public ShipAiApproachTargetHost {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -428,7 +436,7 @@ public:
     // object->vtable[+8](archive), RET 4: an object's load slot.
     virtual void object_vcall_08_load(void* object, void* archive) = 0;
     // object->vtable[+5Ch](arg), RET 4, AL.
-    virtual bool object_vcall_5c(void* object, std::uint32_t arg) = 0;
+    bool object_vcall_5c(void* object, std::uint32_t arg) override = 0;
     // archive->vtable[+14h](name), RET 8, AL: does the named section exist.
     virtual bool archive_vcall_14_has(void* archive, Cc13Seg67bArchiveValue name) = 0;
     // object->vtable[+4](flags), RET 4: the scalar deleting destructor.
@@ -1057,7 +1065,7 @@ void ship_ai_set_navigation_goal_with_penalty_009de280(Cc13Seg67bHost& host, voi
 float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
 float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
 // 009E5E30: __thiscall(ECX = nested), RET, AL.
-bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested);
+bool ship_ai_approach_target_is_kind_6_009e5e30(ShipAiApproachTargetHost& host, void* nested);
 // 009C1DC0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
 void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
                                                           void* arg, void* archive);
