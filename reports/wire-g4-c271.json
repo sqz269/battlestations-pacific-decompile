@@ -1,0 +1,143 @@
+{
+  "goal": 4,
+  "chain": 271,
+  "slot": "g4-w3",
+  "branch": "agent/g4-w3",
+  "switch": "include/bsp/wire_goal4_chain271_switches.hpp: bsp::game::kWireGoal4Chain271Bound",
+  "summary": "Wire the existing native level-3 input-context body over the menu-owned persistent context stack and reuse the existing level-2/shared setter bodies.",
+  "wired_before": 9209,
+  "wired_after": 9210,
+  "rows": [
+    {
+      "native": "004d8b70",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::clear_level3_screen_and_context_sets / publish_level3_input_contexts; src/game_hosts_hud.cpp: HudUpdateBinding::set_level3_input_contexts",
+      "detail": "Existing seg10 body receives the persistent menu context lists through borrowed native vector headers; assignments, priority application and context 1Dh writes update the same owner."
+    },
+    {
+      "native": "004d8ae0",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::publish_level2_input_contexts_004d8ae0",
+      "detail": "Already host-bound in baseline; now calls the existing segment-10 body rather than the manual list-copy stand-in. No additional readiness credit claimed."
+    },
+    {
+      "native": "004d6410",
+      "status": "wired",
+      "host_site": "src/frontend_screen_sets.cpp: publish_native_input_context_set -> src/seg10_cc13.cpp: push_level",
+      "detail": "Existing shared body executes inside push_level; the optimized build inlines it, so there is no separate address-suffixed symbol. Already wired in baseline; no additional readiness credit claimed."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0..3",
+      "reason": "Missing render-resource service, actual renderer/texture-cache ownership and record texture-name producer; current record_remap_texture_name returns empty."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0..3",
+      "reason": "Missing render-resource service, actual renderer/texture-cache ownership and record texture-name producer; current record_remap_texture_name returns empty."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0..3",
+      "reason": "Missing render-resource service, actual renderer/texture-cache ownership and record texture-name producer; current record_remap_texture_name returns empty."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0..3",
+      "reason": "Missing render-resource service, actual renderer/texture-cache ownership and record texture-name producer; current record_remap_texture_name returns empty."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::exit_free_camera_overlay",
+      "reason": "Missing binding for the camera screen spectate fields and controlled-unit scene-request callback required by the collapse body."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_tactical_overlay",
+      "reason": "Missing native support-screen available-entry/list-building and camera-state bindings, plus tracked-target/unavailable-sound callbacks."
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_set_interface",
+      "reason": "Missing root-screen +D0h/+E4h observer-reference owner and payload identity binding; the host currently receives only a payload-presence flag."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::advance_ticker",
+      "reason": "Missing binding for the native +ACh award string-pair queue and its icon/text/timed-entry owners."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD unit-pick selection reset",
+      "reason": "Missing binding for the unit-pick screen native selection vector at +C4h and its erase/input-reset services."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: unit_set_world_position_009583c0",
+      "reason": "Existing reconstruction returns a PoseSetPlan; full pose-setter state application and native callbacks are not bound by this chain."
+    },
+    {
+      "native": "009585b0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: unit_set_world_matrix_009585b0",
+      "reason": "Existing reconstruction returns a PoseSetPlan; the matrix copy and previous-position state application remain unbound."
+    },
+    {
+      "native": "009514b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: load_traffic_block",
+      "reason": "Missing runtime traffic container and 004A5620 unit-creation commit; current host parses into a SceneTrafficRecorder only."
+    },
+    {
+      "native": "00682cb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WarningAlertFe5Binding / warning_screen_show_alert",
+      "reason": "Fresh readiness already marks this warning-show body wired; no additional wiring selected."
+    },
+    {
+      "native": "00682d60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WarningAlertFe5Binding / warning_screen_show_alert",
+      "reason": "Fresh readiness already marks this warning-show body wired; no additional wiring selected."
+    },
+    {
+      "native": "00682e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WarningAlertFe5Binding / warning_screen_show_alert",
+      "reason": "Fresh readiness already marks this warning-show body wired; no additional wiring selected."
+    },
+    {
+      "native": "00682ed0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WarningAlertFe5Binding / warning_screen_show_alert",
+      "reason": "Fresh readiness already marks this warning-show body wired; no additional wiring selected."
+    },
+    {
+      "native": "004d8a50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::publish_level1_input_contexts_004d8a50",
+      "reason": "Already wired by the existing host body; level-1 conversion is outside this level-2/3 binding."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed.",
+    "focused_fixture": "One synthetic input-context sequence in tests/math_tests.cpp checks terminated/bounded ids, live level-4 priority, newly assigned level-3 headers, empty-list clearing, and native default priority 1.",
+    "call_graph": "004D8B70 reachable: publish_native_input_context_set -> GameMenuHost::publish_level3_input_contexts -> HUD mission frame -> WinMainCRTStartup. 004D8AE0 segment body also reachable. 004D6410 is inlined.",
+    "evidence": [
+      "bsp.py show 004d8b70",
+      "bsp.py show 004d6410"
+    ],
+    "limits": "No game launched. Fixture/build/call-graph evidence is not original binary ABI or gameplay validation. No float math changed."
+  },
+  "left": "Level-1 host body remains unchanged. Camera/tactical-overlay, award queue, texture-resource, pose-plan and traffic runtime bindings remain as recorded in skipped rows."
+}

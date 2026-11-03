@@ -24,7 +24,20 @@ T& native_at(Object base, std::uint32_t offset) {
     return *reinterpret_cast<T*>(base + offset);
 }
 
-struct Seg10Host {
+// The existing input-context bodies need only these six services. Keeping
+// their contract separate lets the game bind its actual context owner without
+// manufacturing unrelated segment-10 globals or accepting silent stand-ins.
+struct InputContextHost {
+    virtual ~InputContextHost() = default;
+    virtual void crt_free_00bf65ac(void* memory) = 0;
+    virtual Object input_manager_004bec00() = 0;
+    virtual void pointer_vector_assign_004d3740(Object vector, Object source) = 0;
+    virtual void input_contexts_apply_levels_004c4300(Object game, std::int32_t level) = 0;
+    virtual void input_manager_set_context_level_00a933f0(Object manager, std::int32_t index, std::int32_t level) = 0;
+    virtual void vector_push_back_004d6840(Object vector, const std::int32_t* value) = 0;
+};
+
+struct Seg10Host : InputContextHost {
     virtual ~Seg10Host() = default;
 
     // Globals.
@@ -48,7 +61,6 @@ struct Seg10Host {
 
     // CRT and imports.
     virtual Object operator_new_00bf681b(std::uint32_t bytes) = 0;
-    virtual void crt_free_00bf65ac(void* memory) = 0;
     virtual Object operator_new_00bf55be(std::uint32_t bytes) = 0;
     virtual void crt_free_00bf6989(void* memory) = 0;
     virtual void crt_memcpy_00bf7680(void* dest, const void* src, std::uint32_t bytes) = 0;
@@ -98,7 +110,6 @@ struct Seg10Host {
     virtual void game_end_scene_004d7970(Object game, std::int32_t arg) = 0;
     virtual void multi_menu_leave_to_main_00688c70(Object menu) = 0;
     virtual float* input_repeat_map_subscript_004d6900(Object map, const std::int32_t* key) = 0;
-    virtual Object input_manager_004bec00() = 0;
     virtual void ref_ptr_range_release_004ce600(Object first, Object last, Object owner, Object allocator) = 0;
     virtual void ref_ptr_range_release_004ce5c0(Object first, Object last, Object owner, Object allocator) = 0;
     virtual void ref_ptr_range_release_004ce580(Object first, Object last, Object owner, Object allocator) = 0;
@@ -118,9 +129,6 @@ struct Seg10Host {
     virtual void warning_dispatch_player_channel_00985920(Object manager, std::uint32_t player, Object text) = 0;
     virtual void native_string_set_insert_004d0640(Object set, Object result, Object value) = 0;
     virtual void native_string_range_destroy_00432050(Object first, Object last, Object owner, Object allocator) = 0;
-    virtual void pointer_vector_assign_004d3740(Object vector, Object source) = 0;
-    virtual void input_contexts_apply_levels_004c4300(Object game, std::int32_t level) = 0;
-    virtual void input_manager_set_context_level_00a933f0(Object manager, std::int32_t index, std::int32_t level) = 0;
     virtual void enqueue_state_request_004d3ed0(Object queue, const std::int32_t* state) = 0;
     virtual void session_begin_mission_reload_00772610(Object session) = 0;
     virtual void drain_state_requests_004c88a0(Object game) = 0;
@@ -135,7 +143,6 @@ struct Seg10Host {
     virtual void multi_menu_pop_request_interface_up_to_00688b20(Object menu, std::int32_t level) = 0;
     virtual void game_accept_pending_invite_0067d6e0() = 0;
     virtual void game_raise_multiplayer_menu_004bfc70(Object game) = 0;
-    virtual void vector_push_back_004d6840(Object vector, const std::int32_t* value) = 0;
     virtual void input_manager_update_00a92c40(Object manager, float seconds) = 0;
     virtual void game_set_cinematic_mode_004cd0f0(Object game, std::int32_t a, std::int32_t b, std::int32_t c) = 0;
     virtual void game_set_system_pause_004d95f0(Object game, std::int32_t paused) = 0;
@@ -197,11 +204,11 @@ void leaderboard_process_read_results_004dca80(Seg10Host& host, Object ecx, Obje
 // Input.
 float input_repeat_take_axis_value_004d9420(Seg10Host& host, Object game, std::int32_t action);
 bool input_repeat_action_fired_004d9480(Seg10Host& host, Object game, std::int32_t action);
-void input_contexts_set_level_set_004d6410(Seg10Host& host, Object game, std::int32_t level, Object ids);
+void input_contexts_set_level_set_004d6410(InputContextHost& host, Object game, std::int32_t level, Object ids);
 // 004D8AE0 / 004D8B70: cdecl (game, id, id, ..., 0); `ids` is the
 // zero-terminated argument block after the game.
-void input_contexts_push_level2_004d8ae0(Seg10Host& host, Object game, const std::int32_t* ids);
-void input_contexts_push_level3_004d8b70(Seg10Host& host, Object game, const std::int32_t* ids);
+void input_contexts_push_level2_004d8ae0(InputContextHost& host, Object game, const std::int32_t* ids);
+void input_contexts_push_level3_004d8b70(InputContextHost& host, Object game, const std::int32_t* ids);
 void game_toggle_pause_menu_004db030(Seg10Host& host, Object game);
 
 // Camera.

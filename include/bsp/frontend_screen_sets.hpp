@@ -91,6 +91,8 @@ void set_front_end_screen_set_004f8710(FrontEndScreenSetStack& stack, FrontEndSc
 // contexts 1..19h when it clears a level.
 inline constexpr int kGameInputContextSetLevels = 4;
 inline constexpr int kGameInputContextCount = 0x1A; // exclusive bound, ids 1..19h
+// Storage through context 1Dh, which 004D6410 writes outside that walk.
+inline constexpr int kGameInputContextStorageCount = 0x1E;
 inline constexpr unsigned kGameInputContextSetSetters[kGameInputContextSetLevels] = {
     0x004D8A50u, // level 1, game+570h
     0x004D8AE0u, // level 2, game+580h
@@ -101,7 +103,7 @@ inline constexpr unsigned kGameInputContextSetSetters[kGameInputContextSetLevels
 struct GameInputContextSetStack {
     std::vector<int> levels[kGameInputContextSetLevels]{};
     // [manager+10h], indexed by context id. 004C4300 only ever raises a level.
-    int context_level[kGameInputContextCount]{};
+    int context_level[kGameInputContextStorageCount]{};
 };
 
 // 004C4300, __thiscall(game, int level), RET 4. For `level` down to 1: drop
@@ -113,6 +115,12 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
 // 004C4300(game, 4). The backwards scan at 004D8C84 that looks for the topmost
 // non-empty level leaves its result unused and is not reproduced.
 void set_game_input_context_set_004d8c00(GameInputContextSetStack& stack,
+    const int* ids, std::size_t count);
+
+// Bind the existing segment-10 level-2/3 bodies to this persistent owner.
+// Only the four native vector headers are projected; their data pointers
+// borrow levels[], and assignments and manager writes update this stack.
+void publish_native_input_context_set(GameInputContextSetStack& stack, int level,
     const int* ids, std::size_t count);
 
 // ---------------------------------------------------------------------------

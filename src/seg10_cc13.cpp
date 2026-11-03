@@ -93,7 +93,7 @@ void shared_array_reserve(Seg10Host& host, Object holder, std::int32_t capacity)
     native_at<Object>(holder, 0) = fresh;
 }
 
-void push_level(Seg10Host& host, Object game, const std::int32_t* ids, std::int32_t level) {
+void push_level(InputContextHost& host, Object game, const std::int32_t* ids, std::int32_t level) {
     alignas(4) std::uint8_t vector[0x10];
     native_at<std::uint32_t>(vector, 0x04) = 0;
     native_at<std::uint32_t>(vector, 0x08) = 0;
@@ -590,7 +590,7 @@ bool input_repeat_action_fired_004d9480(Seg10Host& host, Object game, std::int32
 // game+(level+56h)*10h, ids); 004C4300(game, level); the highest non-empty
 // level among the vectors game+5A4h, +594h, +584h (default 1); for level < 4,
 // 00A933F0(ECX input manager, 1Dh, that level).
-void input_contexts_set_level_set_004d6410(Seg10Host& host, Object game, std::int32_t level, Object ids) {
+void input_contexts_set_level_set_004d6410(InputContextHost& host, Object game, std::int32_t level, Object ids) {
     host.pointer_vector_assign_004d3740(game + static_cast<std::uint32_t>(level + 0x56) * 0x10, ids);
     host.input_contexts_apply_levels_004c4300(game, level);
     std::int32_t top = 4;
@@ -606,10 +606,10 @@ void input_contexts_set_level_set_004d6410(Seg10Host& host, Object game, std::in
 
 // 004D8AE0 / 004D8B70: the ids are pushed into a stack vector (004D6840),
 // 004D6410(game, 2 / 3, &vector), and the vector's data is freed.
-void input_contexts_push_level2_004d8ae0(Seg10Host& host, Object game, const std::int32_t* ids) {
+void input_contexts_push_level2_004d8ae0(InputContextHost& host, Object game, const std::int32_t* ids) {
     push_level(host, game, ids, 2);
 }
-void input_contexts_push_level3_004d8b70(Seg10Host& host, Object game, const std::int32_t* ids) {
+void input_contexts_push_level3_004d8b70(InputContextHost& host, Object game, const std::int32_t* ids) {
     push_level(host, game, ids, 3);
 }
 

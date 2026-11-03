@@ -4158,6 +4158,33 @@ int main() {
         ::operator delete(slabs);
     }
 
+    {
+        // Chain 271: one sequence checks the raw header view after assignment,
+        // the zero sentinel, and the highest-level scan when overlays clear.
+        // Synthetic state; this is not a native ABI or gameplay comparison.
+        bsp::GameInputContextSetStack contexts;
+        const int top[] = {8, 0};
+        const int second[] = {4, 6, 0, 9};
+        const int third[] = {6, 0x14}; // bounded host list need not carry a zero
+        const int none[] = {0};
+        bsp::set_game_input_context_set_004d8c00(contexts, top, 2);
+        bsp::publish_native_input_context_set(contexts, 2, second, 4);
+        check(contexts.levels[1] == std::vector<int>({4, 6})
+            && contexts.context_level[6] == 2 && contexts.context_level[9] == 0
+            && contexts.context_level[0x1D] == 4, "chain271 bounded ids and live level-4 priority");
+        bsp::set_game_input_context_set_004d8c00(contexts, none, 1);
+        bsp::publish_native_input_context_set(contexts, 3, third, 2);
+        check(contexts.context_level[6] == 3 && contexts.context_level[0x14] == 3
+            && contexts.context_level[0x1D] == 3, "chain271 new level-3 header visible to scan");
+        bsp::publish_native_input_context_set(contexts, 3, nullptr, 1);
+        check(contexts.levels[2].empty() && contexts.context_level[6] == 2
+            && contexts.context_level[0x14] == 0 && contexts.context_level[0x1D] == 2,
+            "chain271 empty level 3 restores level 2");
+        bsp::publish_native_input_context_set(contexts, 2, none, 1);
+        check(contexts.levels[1].empty() && contexts.context_level[6] == 0
+            && contexts.context_level[0x1D] == 1, "chain271 empty stacks use native default level 1");
+    }
+
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }
