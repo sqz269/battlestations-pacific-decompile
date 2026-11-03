@@ -41,6 +41,12 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
+#include "bsp/wire_goal2_chain150_switches.hpp"
+#include "bsp/scene_graph2_cc13.hpp"
+
+namespace bsp::cc13_terrain {
+struct QuadNode14;  // bsp/terrain_particles_cc13.hpp: the 14h quadtree node, five dwords
+}
 
 namespace bsp::game {
 
@@ -718,6 +724,53 @@ template <> struct SceneTerrainQuadtreeBoundsOwner<true> {
     mutable SceneTerrainQuadtreeBounds quadtree_bounds;
 };
 
+// Packet cc9_terrain_segment_quadtree: one node of the tree 00AEA820 builds at
+// the end of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1,
+// tile x, tile z).
+struct SceneTerrainQuadNode {
+    float min_y{0.0f};
+    float max_y{0.0f};
+    int children{-1};
+    int tile_x{0};
+    int tile_z{0};
+};
+static_assert(sizeof(SceneTerrainQuadNode) == 0x14, "the image's 14h quadtree node");
+static_assert(offsetof(SceneTerrainQuadNode, max_y) == 0x04, "node +04h max y");
+static_assert(offsetof(SceneTerrainQuadNode, children) == 0x08, "node +08h first child");
+static_assert(offsetof(SceneTerrainQuadNode, tile_x) == 0x0C, "node +0Ch tile x");
+static_assert(offsetof(SceneTerrainQuadNode, tile_z) == 0x10, "node +10h tile z");
+
+// Chain 150 (kWireGoal2Chain150Bound ON only): the tree's own node array, tree
+// +3Ch {data, count, capacity} of 14h nodes. Lifetime as in the image: 00ADD290
+// constructs it with the height field (00ADD33E -> 00AEA8C0 zeroes +3Ch..+44h);
+// 00ADD1B0 releases it (00ADD1EC -> 00AEA8E0 -> 00AEA8A0, resize 0 then free).
+// push_back is 00AEA530 and clear is 00AEA590(0), the calls 00AEA820 makes
+// (00AEA875, 00AEA82E) and 00AEA900 makes (its node clear).
+class SceneTerrainNativeQuadNodes {
+public:
+    SceneTerrainNativeQuadNodes() = default;
+    SceneTerrainNativeQuadNodes(const SceneTerrainNativeQuadNodes&) = delete;
+    SceneTerrainNativeQuadNodes& operator=(const SceneTerrainNativeQuadNodes&) = delete;
+    ~SceneTerrainNativeQuadNodes();
+    std::size_t size() const noexcept { return static_cast<std::size_t>(nodes_.count); }
+    bool empty() const noexcept { return nodes_.count == 0; }
+    SceneTerrainQuadNode& operator[](std::size_t index) noexcept;
+    const SceneTerrainQuadNode& operator[](std::size_t index) const noexcept;
+    void clear();
+    void push_back(const SceneTerrainQuadNode& node);
+
+private:
+    bsp::cc13_scene2::NativeArray<bsp::cc13_terrain::QuadNode14> nodes_;
+};
+
+// OFF: the host's vector, unchanged. ON: the native node array above.
+template <bool Bound> struct SceneTerrainQuadNodeStorage {
+    using type = std::vector<SceneTerrainQuadNode>;
+};
+template <> struct SceneTerrainQuadNodeStorage<true> {
+    using type = SceneTerrainNativeQuadNodes;
+};
+
 struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<bsp::kWireGoal2Chain74Bound> {
     std::string root;               // `TRNV2` on this installation's islands
     int tiles_wide{0};              // +38h
@@ -768,14 +821,8 @@ struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<bsp::kWireGoal2
     // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile
     // x, tile z), built here on the first slot 3Ch query. `quadtree_leaves` is
     // +38h, 1 << depth tiles per side.
-    struct QuadNode {
-        float min_y{0.0f};
-        float max_y{0.0f};
-        int children{-1};
-        int tile_x{0};
-        int tile_z{0};
-    };
-    mutable std::vector<QuadNode> quadtree;
+    using QuadNode = SceneTerrainQuadNode;
+    mutable SceneTerrainQuadNodeStorage<bsp::kWireGoal2Chain150Bound>::type quadtree;
     mutable int quadtree_leaves{0};
 };
 
