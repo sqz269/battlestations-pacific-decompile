@@ -1,0 +1,188 @@
+{
+  "chain": 111,
+  "slot": "g2-w1",
+  "goal": 2,
+  "harness": "claude",
+  "run": 216,
+  "picked": "segment 59 [008ee670-00922240] (tier 2, range sweep); segment 1 [00413d10-0042a830] was claimed first, read, and released with every row skipped below",
+  "host_file": "src/game_hosts_menu.cpp",
+  "files": [
+    "src/game_hosts_menu.cpp",
+    "include/bsp/wire_goal2_chain111_switches.hpp"
+  ],
+  "switch": "kWireGoal2Chain111Bound",
+  "rows": [
+    {
+      "native": "0090c5d0",
+      "address": "004e42f2",
+      "function": "004e4000",
+      "host_site": "src/game_hosts_menu.cpp MenuShellHost::award_gate_open",
+      "status": "wired",
+      "reach": "static: GameMenuHost frame -> GameMenuHost::Impl::advance_path (game_hosts_menu.cpp, called unconditionally every menu frame) -> advance_main_menu_path -> MenuPathHost::enter_front_end_shell -> bsp::enter_front_end_shell (frontend_entry.cpp:242) -> award block (frontend_entry.cpp:306, gated only by the host's once-per-profile award_ga_hm_recorded flag, which starts false) -> award_gate_open(). No switch on the path; the run reaches it on every launch through the main menu.",
+      "note": "The adapter MidwaySaveFolderProbe (game_hosts_menu.cpp, no address suffix) implements award_grant.hpp MidwaySaveFolderHost over game_native_string_process().raw_context(): 0041E870 construct_native_string_cstring_0041e870 and 004261A0 concatenate_native_string_headers_004261a0 (native_physical_file_date.cpp), 00419CC0 native_string_pool_get_or_create_00419cc0, 00BD1510 return_native_string_pool_00bd1510, and SHGetSpecialFolderPathA / CreateDirectoryA / GetLastError. OFF returned the constant false. ON returns true only when Documents\\Battlestations-Midway\\save already existed; the host's award_id stand-in (006B8DA0) then answers 0, so the award block still grants nothing. Side effect, as natively: when only Documents\\Battlestations-Midway exists, CreateDirectoryA creates its save subfolder."
+    },
+    {
+      "native": "008f7100",
+      "address": "004d30d0",
+      "function": "004d3040",
+      "host_site": "src/game_hosts_scene_contents.cpp GameSceneContentsHost::Impl::load_property_library",
+      "status": "skipped",
+      "reason": "Body incomplete for shipped input: load_prop_library_file (008F67B0, scene_traffic_groups.cpp:558-565) keeps only the first parenthesised parent (PropLibraryGroup::parent is one string), but universe/library has three two-parent groups, CommandBuilding(Common, PowerupHandler), LandFort(Common, MultiEntity) and Landscape(Common, MultiEntity). The host's parse_library_file keeps every base. The body also registers a group only on a miss and drops a redeclared group's body, where native 008F6A7F reopens the existing bag. ON would drop inherited defaults."
+    },
+    {
+      "native": "008f3370",
+      "host_site": "src/game_hosts_scene_contents.cpp set_terrain_shadow_string",
+      "status": "skipped",
+      "reason": "raw_view on a native 114h property bag; the scene-contents host builds no native bag (its bags are the host-shaped ScenePropertyBlock), so there is no image storage to view."
+    },
+    {
+      "native": "008f54f0",
+      "host_site": "src/game_hosts_scene_contents.cpp merge_group_into / merge_property_block",
+      "status": "skipped",
+      "reason": "raw_view merge over native property bags; same missing native bag storage as 008f3370 (the host merges ScenePropertyBlock)."
+    },
+    {
+      "native": "008f02b0",
+      "address": "008f5dec",
+      "function": "008f5a00",
+      "status": "skipped",
+      "reason": "Only caller is 008F5A00. Its reconstruction (scene_file.cpp parse_scene_property_block_008f5a00) has no declared-type 'E' test to replace, because it never consults the library's declared type. Wiring would add behavior rather than replace host logic."
+    },
+    {
+      "native": "008f02e0",
+      "address": "008f5e85",
+      "function": "008f5a00",
+      "status": "skipped",
+      "reason": "As 008f02b0: the 008F5A00 projection has no declared-type 'LUA_S' test."
+    },
+    {
+      "native": "008ef6d0",
+      "address": "008f6391",
+      "function": "008f5a00",
+      "status": "skipped",
+      "reason": "As 008f02b0: the 008F5A00 projection has no hex-byte array arm that decodes through 008EF6D0."
+    },
+    {
+      "native": "008f1960",
+      "address": "008f1ea4",
+      "function": "008f1ca0",
+      "status": "skipped",
+      "reason": "Only reached through Seg59bHost::scene_reference_get_type_letter_008f1960 from cc13_seg59b.cpp; nothing implements Seg59bHost, so no host path runs the caller."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "reason": "Named only in game_native_enum_lua_declaration.cpp, whose GameNativeEnumLuaDeclarationBindings no host constructs; it needs the native enum owner, which the host has not built (it keeps a host-shaped EnumTable library)."
+    },
+    {
+      "native": "00903420",
+      "address": "0090358d",
+      "function": "00903580",
+      "status": "skipped",
+      "reason": "Lease: the TorpedoBot SetFireTarget host site is in src/game_hosts_gunnery.cpp, held by agent/g2-w3 this run."
+    },
+    {
+      "native": "0090f6c0",
+      "status": "skipped",
+      "reason": "Mission-scoring raw_callback rows (also 0090e670, 0090eb80, 0090ebf0, 0090ec40, 0090ed40, 0090f5a0, 0090f860, 00910570, 00911c00, 00911ce0, 00913ab0, 00914270): nothing implements Seg59aHost and the native scoring object is not built; the stand-ins named are in game_hosts_units.cpp / game_hosts_gunnery.cpp, held by agent/g2-w3 this run."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "reason": "Already runs in the OFF build: GameShipAiHost AvoidSearchBinding::avoid_zone_query_refresh_009d7050 (game_hosts_ship_ai.cpp:9798) -> GameAvoidZoneRuntime::refresh_search (game_avoid_zone_runtime.cpp:341) -> ship_ai_avoid_query_refresh_009d7050 -> ship_ai_avoid_list_set_layer_00419fa0. It counts as ready only because wire_readiness's file reach does not include game_avoid_zone_runtime.cpp, whose methods carry no address suffix."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "reason": "Already runs in the OFF build through 009D7050, as 00419fa0 (ship_ai_avoid_zone_search.cpp:129); a tool reach artifact."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "reason": "Already runs in the OFF build inside 009D7050 (ship_ai_avoid_zone_search.cpp:105-106), as 00419fa0."
+    },
+    {
+      "native": "00428800",
+      "status": "skipped",
+      "reason": "Reached only through BlastDamageHost::call_00428800 from blast_apply_radial_damage_0084bad0, which no host calls and nothing implements; the gunnery host is held by agent/g2-w3."
+    },
+    {
+      "native": "00424a10",
+      "address": "00424cb6",
+      "function": "00424c40",
+      "status": "skipped",
+      "reason": "The host has no 00424C40 settings singleton to construct. Its only GameplayTuningSettings is neighbour_settings_storage in game_hosts_ship_ai.cpp (held by agent/g2-w3), and it fills and reads only +190h..+1D8h, none of the dof/torpedo-hit/flag fields 00424A10 stores."
+    },
+    {
+      "native": "00425c20",
+      "address": "0058bf82",
+      "function": "0058bdf0",
+      "status": "skipped",
+      "reason": "get_profile_manager_00425c20 publishes the host-projection ProfileManagerOwner, which no host body reads (004374F0's refresh takes ProfileManagerRefreshHost instead); building it would feed nothing."
+    },
+    {
+      "native": "00426250",
+      "address": "004c1f03",
+      "function": "004c1e90",
+      "status": "skipped",
+      "reason": "Its only caller, 004C1E90 get_native_profile_hints_owner_004c1e90, constructs through its own inlined construct() helper, so 00426250 could be used only by duplicating that getter. The host's one reader (game_profile_load.cpp hints_owner_field_08_004c1e90) already answers +08h = 0, the value 00426285 stores."
+    },
+    {
+      "native": "00429fd0",
+      "address": "00773021",
+      "function": "00772ec0",
+      "status": "skipped",
+      "reason": "Callers are 00772EC0 (session peer removed) and 00A44EC0 (XLive error text) only; no host path reaches either."
+    },
+    {
+      "native": "00425560",
+      "status": "skipped",
+      "reason": "Autotest only (00427190 BSP_AutoTest_Step chain); no host runs the autotest driver."
+    },
+    {
+      "native": "004278a0",
+      "status": "skipped",
+      "reason": "Autotest only, as 00425560."
+    },
+    {
+      "native": "0041b680",
+      "address": "00941db7",
+      "function": "00941d30",
+      "status": "skipped",
+      "reason": "Lease: the spawn-placement host site (lua_spawn_new.cpp under game_hosts_lua.cpp) is held by another worker this run."
+    },
+    {
+      "native": "0041d1e0",
+      "address": "00424dc5",
+      "function": "00424d00",
+      "status": "skipped",
+      "reason": "raw_view over the native 004218E0 avoid manager's groups. The host's rebuild (game_hosts_ready.cpp rebuild_avoid_zones_00424d00) uses the semantic AvoidZoneTable, and no native manager is built."
+    },
+    {
+      "native": "00421500",
+      "address": "00421953",
+      "function": "004218e0",
+      "status": "skipped",
+      "reason": "Constructs the native avoid manager that the host does not build (GameAvoidZoneRuntime keeps a semantic table). Building it would duplicate the host's table with no counted reader."
+    },
+    {
+      "native": "004235a0",
+      "address": "0042460e",
+      "function": "00423c50",
+      "status": "skipped",
+      "reason": "Lease: the draft-physics host for 00423C50 is in game_hosts_units.cpp, held by agent/g2-w3."
+    },
+    {
+      "native": "004166e0",
+      "status": "skipped",
+      "reason": "Debug draw reached only through host.avoid_zone_debug_draw_selected_segments_004166e0 in cc13_seg67b.cpp, which nothing implements."
+    }
+  ],
+  "host_objects": [],
+  "wired_before": 8921,
+  "wired_after": 8922,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed (final OFF build after the ON check)",
+  "build_on": "off_switch_on_build.py --names kWireGoal2Chain111Bound: flipped 1 site, build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "not run: the ON arm does no x87 arithmetic",
+  "on_effect": "award_gate_open() runs 0090C5D0's SHGetSpecialFolderPathA + native-string concat + CreateDirectoryA probe instead of answering false; true only when Documents\\Battlestations-Midway\\save already existed, after which the unimplemented award_id stand-in returns 0 and no award is granted. Creates that save folder if only its parent exists, as the game does."
+}
