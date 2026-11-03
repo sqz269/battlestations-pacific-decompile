@@ -10482,8 +10482,10 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         }
         return 0;
     }
-    // 006EC8E0's bag: Type = LaunchedClass (the instance override +530h is -1 here),
-    // WingCount 1, Party, State (7 here, LABELLED), Equipment.
+    // 006EC8E0's bag: Type = LaunchedClass, WingCount 1, Party, State (7 here,
+    // LABELLED), Equipment. With kWireGoal4Chain270Bound off, the else arm below
+    // takes the instance override +530h as -1 and fills Type and Party only; the
+    // on arm builds the whole bag through 006EC8E0.
     bsp::DummyKamikazeSpawn spawn;
     spawn.carrier = ship;
     if constexpr (bsp::kWireGoal4Chain270Bound) {
@@ -10501,8 +10503,13 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         //    integer 00960230 stores at 009610D4 (00B66380, default 0).
         // LABELLED, unchanged from the OFF arm: State 3 (held on the catapult node,
         // +CCh matrix) is not hosted, so the creator still makes the plane in flight
-        // (State 7) above the ship. PlaneParentID, Behaviour and ResourceUsage have
-        // no reader in the creator's record; they are logged.
+        // (State 7) above the ship.
+        // Behaviour (006ECA2F, 1) is carried: 007F47C7 stores it at the squadron's
+        // +364h. PlaneParentID has a reader (007F479D -> 00521E30 -> the
+        // under-parent placement arm at 007F4817) but is deliberately not carried,
+        // because this host places the plane in world space, 30 m above the ship,
+        // not under a parent. ResourceUsage alone has no reader in the creator's
+        // record. The two uncarried values are logged.
         const std::int32_t launched =
             bsp::catapult_launch_input_006ec8ff(row->launch_class_530, cls.launched_class);
         const std::int32_t equipment =
@@ -10515,6 +10522,7 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
             launched, equipment, units->skill_level(ship), row->race_58, row->party,
             owner_player, static_cast<std::uint16_t>(ship + 1u), cost);
         spawn.plane_class = static_cast<int>(props.type);
+        spawn.behaviour = props.behaviour;     // 006ECA2F, 1 -> +364h via 007F47C7
         spawn.party = props.party;
         spawn.race = props.race;
         spawn.skill = props.skill;

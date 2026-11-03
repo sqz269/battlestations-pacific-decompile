@@ -117,6 +117,11 @@ struct DummyKamikazeSpawn {
     // kamikaze bag), so the units host keeps the class default. ShipUseCatapult
     // sets MCatapult::Fire's resolved value (006ECA20) under kWireGoal4Chain270Bound.
     int equipment = -1;
+    // The bag's `Behaviour` (00CFACBC). -1: the bag has no Behaviour key (006FEC00's
+    // kamikaze bag), so 007F47C7 leaves the squadron's +364h at the constructor's
+    // -1 seed. ShipUseCatapult sets MCatapult::Fire's 1 (006ECA2F) under
+    // kWireGoal4Chain270Bound.
+    int behaviour = -1;
 };
 
 // Process-wide, like the squadron registry: the units host pushes a round at
