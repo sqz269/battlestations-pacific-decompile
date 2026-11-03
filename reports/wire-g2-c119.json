@@ -1,0 +1,302 @@
+{
+  "goal": 2,
+  "chain": 119,
+  "run": 234,
+  "harness": "codex",
+  "packet": "g2-w1",
+  "candidate": "segment 87 [00b65ba0-00b6d1b0]",
+  "tier": 2,
+  "host_file": "src/game_hosts_lua.cpp",
+  "switch": "kWireGoal2Chain119Bound",
+  "switch_default": false,
+  "wired_before": 8934,
+  "wired_after": 8939,
+  "rows_wired": 5,
+  "host_objects": [],
+  "host_views": [
+    {
+      "name": "Existing NativeBindingPushFrame and stack_object views",
+      "where": "src/game_hosts_lua.cpp:192",
+      "producers": [
+        "construct_native_lua_state_00b66bd0 initializes the borrowed owner and all tracking counts; state_04 comes from the live binding interpreter",
+        "stack_object uses that interpreter's actual absolute stack position and native kind 2",
+        "ScopedNativeKey uses NativeString::assign_0041e870 over the formatted entity id or the binary's Ptr literal"
+      ],
+      "rows": [
+        "00b660f0",
+        "00b66670",
+        "00b67530",
+        "00b678e0"
+      ],
+      "fields": [
+        "NativeLuaObjectStorage owner_00 DWORD +0, kind_04 DWORD +4, index_08 DWORD +8, tracked_10 BYTE +0x10",
+        "NativeLuaStateStorage state_04 DWORD +4; stack_offset_0c DWORD +0x0c; slots_14[50] stride 0x18; high_water_4c4 DWORD +0x4c4"
+      ],
+      "lifetime": "Call-local borrowed views only; no retained object, registry or singleton introduced. The named lookup's single tracked result is released after pushing its result. The view owner never closes the host interpreter.",
+      "limit": "Named lookup uses native tracking only below stack top 49; larger stacks retain the old direct field read to respect the physical 50-slot contract.",
+      "uncounted_rows": [
+        "00b663d0"
+      ]
+    },
+    {
+      "name": "Archive execution owner view",
+      "where": "src/storage_backend.cpp:226",
+      "producers": [
+        "PcStorageLuaHost::open_storage_archive_00b6a020(1) creates the archive interpreter",
+        "storage_lua_38 returns its actual state; construct_native_lua_state_00b66bd0 initializes the borrowed view"
+      ],
+      "rows": [
+        "00b65ef0"
+      ],
+      "fields": [
+        "NativeLuaStateStorage state_04 DWORD +4; this callee reads no other fields"
+      ],
+      "lifetime": "Only during open_read_archive_00bd3470; PcStorageLuaHost retains all close/failure ownership."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00b65ef0",
+      "address": "00bd348a",
+      "function": "00bd3470",
+      "host_site": "src/storage_backend.cpp: PcStorageBackend::open_read_archive_00bd3470",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "GameMenuHost main-menu PressStartPoll -> TitleSkip transition -> load_signed_in_profile_0067cc60 -> load_signed_in_profile_read_only -> ReadOnlyProfileIoHost::run_storage_operation_006adb50 -> PcStorageBackend::immediate_read_00bd4380 -> read_archive_00bd3ec0 -> open_read_archive_00bd3470. kProfileOwnerCc15Bound=true and kProfileLoadCc15Bound=true; a real present archive supplies buffer_30_. No mission counts supplied in this assignment.",
+      "contract": "00B65F35/00B65F49 RET 8; live archive byte buffer and length, borrowed current Lua state. Return is used as success/failure, with all result/error stack values retained.",
+      "effect": "Replace the existing loadbuffer/pcall sequence with native_lua_do_buffer_protected_00b65ef0; error cleanup is unchanged."
+    },
+    {
+      "native": "00b65f70",
+      "address": "0043878d",
+      "function": "00438020",
+      "host_site": "src/game_hosts_lua.cpp: mission_checkpoint_binding -> src/profile_checkpoint.cpp",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The checkpoint dispatcher is gated by kMissionCheckpointBound=false (game_hosts_lua.cpp:437). The other named archive writer site is only a pure Host call in cc13_sweepA.cpp, with no implemented LuaObject host. A kind value synthesized merely to call this predicate would not replace live logic."
+    },
+    {
+      "native": "00b660f0",
+      "address": "008887cb",
+      "function": "00888760",
+      "host_site": "src/game_hosts_lua.cpp: read_vector3_00888760",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "Registered GenerateObject/SpawnNew binding dispatch -> run_generate_object_00944fd0/run_spawn_new_00949750 -> read_vector3_00888760; these readers have no disabled compile-time gate. Actual Lua argument table keys feed the body. No mission counts supplied.",
+      "contract": "Read callee and 00888760: iterated key's native kind/index and the original x/y/z literals. The callee gates kind 2 and exact LUA_TSTRING before C-string equality. No numeric-string key coercion.",
+      "effect": "Use native key comparisons during lua_next iteration instead of direct getfield reads. Existing zero initialization for absent components remains the host's documented policy; matched values use the original bare numeric conversion."
+    },
+    {
+      "native": "00b662e0",
+      "address": "0043c439",
+      "function": "0043c1c0",
+      "host_site": "src/lua_text_dump.cpp: lua_value_text_0043c1c0; src/mission_savedata_lua.cpp",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Pointer-formatting and savedata registry stand-ins exist, but tracing their callers found only lua_text_dump.cpp, mission_savedata_lua.cpp and save_settings_cc13.cpp, with no current game-host root invoking them. GuiLua51Host's unrelated identity hash is not the native function-reference save site."
+    },
+    {
+      "native": "00b663d0",
+      "address": "00898fe9",
+      "function": "00898e30",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity",
+      "status": "skipped",
+      "reach": "static",
+      "reach_evidence": "mission_binding_row entity-return tail -> push_resolved_entity for registered FindEntity/GetSelectedUnit; real resolved id indexes thisTable. FindEntity is not in the orders-handled set and reaches this tail. No disabled switch; named-lookup tracking has a runtime capacity guard. No mission counts supplied.",
+      "contract": "00B663D0 reads owner+4 and object's +8, checkstack(1), tail-jumps to pushvalue. 00898FDF loads ECX from the 00B678E0 result before 00898FE9. Release removes the tracked original and retains the pushed same-value result.",
+      "effect": "Retained, uncounted ownership sequence: push the looked-up value and remove its tracked original.",
+      "reason": "Identity round trip: native_lua_get_by_native_string_00b678e0 already leaves the resolved value on the stack. The subsequent native_lua_push_value_00b663d0 and tracked-original removal copy and retain that same value without replacing a separate host operation. The ownership sequence remains in the ON arm but does not count as wiring this row."
+    },
+    {
+      "native": "00b66530",
+      "address": "00436b48",
+      "function": "00436730",
+      "host_site": "src/profile_checkpoint.cpp: copy_slot",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The existing integer-key checkpoint boolean-copy logic is reachable only through the disabled kMissionCheckpointBound=false dispatcher. Profile-load refresh_profile_manager_004374f0 is also explicitly unimplemented in game_profile_load.cpp. No additional switch may be enabled in this chain."
+    },
+    {
+      "native": "00b66670",
+      "address": "006c69c1",
+      "function": "006c6630",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_get_property_0088bf80 stock/planes loop",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "mission_binding_row GetProperty dispatch -> run_get_property_0088bf80 -> stock/planes loop over air_ops_decks().find_by_entity_id(...)->stock, populated by scene PlaneStock blocks. No disabled compile-time gate. No mission counts supplied. run_get_property_class_readers returns -1 for stock/planes before its class-reader gates, so this earlier call does not swallow the stock arm.",
+      "contract": "006C69BC loads the current list index, PUSH EDX at 006C69C0, CALL at 006C69C1; callee 00B666B2 RET 4. Parent table absolute stack index and the live loop's one-based key are supplied. FILD int32 to double is exact; no new arithmetic.",
+      "effect": "Create and assign each stock child with the existing native integer-key new-table body before filling classid/count from the real stock record. OFF retains the original create/fill/rawseti sequence."
+    },
+    {
+      "native": "00b66740",
+      "address": "00436c04",
+      "function": "00436730",
+      "host_site": "src/profile_checkpoint.cpp: copy_slot",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Integer-key string copies are on the same kMissionCheckpointBound=false path as 00b66530. The live profile-load host does not implement refresh_profile_manager_004374f0; the generic cc13_seg95 Host has no concrete implementation here."
+    },
+    {
+      "native": "00b67530",
+      "address": "00928d04",
+      "function": "00928c80",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::on_entity_killed_00928c80",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "GameUnitsHost live kill/removal sites call on_entity_killed_00928c80; kLuaTrulyDeadOnKilledBound=true in game_hosts_lua.hpp:656. Actual resolved entity self table is used. No mission counts supplied.",
+      "contract": "Already has a typed NativeLuaObjectStorage&/NativeString& interface in native_lua_field_setters.cpp, despite the raw_view census label; no second body or additional wrapper needed. 00B6757D RET 8. The null pointer is the binary's literal PUSH 0 at 00928CF4; key constructed by 0041E870 at 00928CEF from 00CFAD08.",
+      "effect": "Run native_lua_set_lightuserdata_00b67530 to clear the real killed self.Ptr, replacing the host's pushlightuserdata/setfield pair."
+    },
+    {
+      "native": "00b678e0",
+      "address": "00898fda",
+      "function": "00898e30",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "Same registered entity-return dispatch path as 00b663d0. NativeString key is produced from the actual resolved entity id; thisTable is the current interpreter's table. No disabled compile-time switch. No mission counts supplied.",
+      "contract": "00898FA7 constructs the id string; 00898FC9 PUSH ESI key, 00898FCE PUSH ECX fresh, 00898FD1 MOV ECX,EAX table, 00898FDA call. Callee 00B67908 RET 8. Added a typed destination overload; the original raw entry is a thin wrapper of the single existing body.",
+      "effect": "Replace the direct entity-key getfield read with native_lua_get_by_native_string_00b678e0 over native views, followed by native push and tracked release."
+    },
+    {
+      "native": "00b67d40",
+      "address": "0086a0c8",
+      "function": "00869fd0",
+      "host_site": "src/gameplay_effect_scalar_components.cpp: vector4_or / read_effect_light_00869fd0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The host exposes registry-backed GuiLuaRef handles, while the existing body requires an actual NativeLuaObjectStorage and its tracked stack owner. GuiLua51Host's interpreter/storage is private and no native-object producer/accessor is available. Supplying the handle as a pointer would be invalid; extending this separate owner is outside the small view adapter used by this batch."
+    },
+    {
+      "native": "00b680a0",
+      "address": "00960672",
+      "function": "00960230",
+      "host_site": "src/vehicle_class_fields.cpp: read_vehicle_class_base_fields_00960230 CockpitCameraPos",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "VehicleClassFieldHost supplies opaque GuiLuaRef/VehicleClassLuaValue values, not the actual owner/stack object required by this callee. No retained interpreter or native-view accessor is present in that interface. Cannot invent a native Lua owner from the already projected float values."
+    },
+    {
+      "native": "00b68550",
+      "address": "0043c492",
+      "function": "0043c1c0",
+      "host_site": "src/cc13_front8.cpp: lua_object_get_type_name_00b68550 / src/native_lua_type_name.cpp",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "This census identifier needs SmallBodiesHost and a NativeStringImage output; no concrete implementation lies on a current game-host call path. The separate actual-storage construct_native_lua_object_type_name_00b68550 path already exists, but adding another call around it would duplicate an existing body invocation rather than replace reachable host logic."
+    },
+    {
+      "native": "00b68630",
+      "address": "008f30a4",
+      "function": "008f2f70",
+      "host_site": "src/game_native_lua_display_string.cpp: GameNativeLuaDisplayStringBindings::to_display_string",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "This binding already calls native_lua_to_display_string_00b68630 unconditionally. A new ON arm there would duplicate the OFF call, which explicitly does not count. Tracing the enum composition found no additional game-host instantiation/call site to replace; sound configuration uses unresolved Host contracts."
+    }
+  ],
+  "checks": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "ctest": "2/2 passed",
+      "rerun_for_review_run": 239
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain119Bound",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "ctest": "2/2 passed",
+      "log": "local/off_switch_on_build.log",
+      "rerun_for_review_run": 239
+    },
+    "pc24": {
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "exit_code": 0,
+      "findings": 0,
+      "rerun_for_review_run": 239
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py",
+      "after_plain_off_build": true,
+      "exit_code": 0,
+      "before": 8934,
+      "after": 8940,
+      "changes": [
+        {
+          "native": "00b65ef0",
+          "before": "ready",
+          "after": "wired",
+          "qualified": true
+        },
+        {
+          "native": "00b660f0",
+          "before": "ready",
+          "after": "wired",
+          "qualified": true
+        },
+        {
+          "native": "00b663d0",
+          "before": "ready",
+          "after": "wired",
+          "qualified": false,
+          "qualification_reason": "Identity round trip: lookup already leaves the resolved value on the stack."
+        },
+        {
+          "native": "00b66670",
+          "before": "ready",
+          "after": "wired",
+          "qualified": true
+        },
+        {
+          "native": "00b67530",
+          "before": "ready",
+          "after": "wired",
+          "qualified": true
+        },
+        {
+          "native": "00b678e0",
+          "before": "ready",
+          "after": "wired",
+          "qualified": true
+        }
+      ],
+      "count_basis": "Unqualified readiness tool output; includes the false positive identified below.",
+      "false_positive_rows": [
+        "00b663d0"
+      ],
+      "qualified_before": 8934,
+      "qualified_after": 8939,
+      "qualified_delta": 5,
+      "rerun_for_review_run": 239
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c119.json",
+      "exit_code": 0,
+      "checked": 14,
+      "failed": 0,
+      "rerun_for_review_run": 239
+    },
+    "game_run": false
+  },
+  "limitations": [
+    "Static host reach and build evidence only; no game run, original ABI equivalence or ON behavior validation claimed.",
+    "All new runtime work is behind kWireGoal2Chain119Bound=false. Native Lua frames borrow current host interpreters; no persistent host object was built.",
+    "The typed destination overload preserves the existing body, with the raw entry retained as a thin wrapper."
+  ],
+  "rows_wired_tool": 6,
+  "wired_after_tool": 8940,
+  "counting_note": "Qualified count is five rows, 8934 -> 8939. The readiness tool reports six rows, 8934 -> 8940, because it also credits 00b663d0. That row is an identity-round-trip false positive and is excluded from the qualified count.",
+  "review_fixes": [
+    {
+      "review_run": 239,
+      "round": 1,
+      "finding": 1,
+      "native": "00b663d0",
+      "status": "fixed",
+      "resolution": "Accepted the identity-round-trip finding; reclassified as skipped and corrected qualified counts to five and 8939. The readiness tool retains a documented false-positive credit.",
+      "code_change": false,
+      "code_change_reason": "The reviewer found no behavior defect and explicitly allowed the ownership sequence to remain uncounted."
+    }
+  ]
+}

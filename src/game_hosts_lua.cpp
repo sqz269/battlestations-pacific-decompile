@@ -14,6 +14,7 @@
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
 #include "bsp/wire_goal2_chain104_switches.hpp"
+#include "bsp/wire_goal2_chain119_switches.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -3558,6 +3559,28 @@ unsigned long long g_generate_object_record_only = 0;
 // briefly, would refuse a `{x=..., z=...}` sea-level point the image accepts.
 bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
     if (::lua_type(state, index) != LUA_TTABLE) return false;
+    // 00B660F0 compares 00888760's iterated keys; OFF keeps the direct x/y/z field reads.
+    if constexpr (bsp::kWireGoal2Chain119Bound) {
+        const int table = index > 0 || index <= LUA_REGISTRYINDEX
+            ? index : ::lua_gettop(state) + index + 1;
+        NativeBindingPushFrame frame(state);
+        out[0] = out[1] = out[2] = 0.0f; // retain this host's documented missing-lane policy
+        bool found = false;
+        ::lua_pushnil(state);
+        while (::lua_next(state, table) != 0) {
+            const auto key = stack_object(frame.owner, ::lua_gettop(state) - 1);
+            int lane = -1;
+            if (bsp::native_lua_equals_cstring_00b660f0(key, "x")) lane = 0;
+            else if (bsp::native_lua_equals_cstring_00b660f0(key, "y")) lane = 1;
+            else if (bsp::native_lua_equals_cstring_00b660f0(key, "z")) lane = 2;
+            if (lane >= 0) {
+                out[lane] = static_cast<float>(::lua_tonumber(state, -1));
+                found = true;
+            }
+            ::lua_pop(state, 1);
+        }
+        return found;
+    } else {
     static const char* const kVectorKeys[3] = {"x", "y", "z"};
     int found = 0;
     for (int i = 0; i < 3; ++i) {
@@ -3571,6 +3594,7 @@ bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
         ::lua_settop(state, ::lua_gettop(state) - 1);
     }
     return found > 0;
+    }
 }
 
 // 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
@@ -7979,8 +8003,17 @@ void GameMissionLuaHost::on_entity_killed_00928c80(std::size_t unit_index) {
         if (state == nullptr) return;
         const int top = ::lua_gettop(state);
         if (push_resolved_entity_by_id(state, static_cast<int>(unit_index + 1))) {
+            // 00B67530 clears the killed entity's actual self.Ptr; OFF keeps pushlightuserdata/setfield.
+            if constexpr (bsp::kWireGoal2Chain119Bound) {
+                NativeBindingPushFrame frame(state);
+                auto self = stack_object(frame.owner, ::lua_gettop(state));
+                ScopedNativeKey key("Ptr"); // 00928CEF: 0041E870 from 00CFAD08
+                // 00928CF4 PUSH 0 is the binary's value, not a fabricated entity pointer.
+                bsp::native_lua_set_lightuserdata_00b67530(self, key.key, nullptr);
+            } else {
             ::lua_pushlightuserdata(state, nullptr);
             ::lua_setfield(state, -2, "Ptr");
+            }
             ++summary_.truly_dead_ptr_nulled;
             if constexpr (kLuaLastPositionOnKilledBound) {
                 // 00928D49..00928E7E: self.LastPosition = {x = +FCh, y = +100h, z = +104h}.
@@ -11183,12 +11216,27 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
     ::lua_createtable(state, stock_count, 0);
     for (int index = 0; index < stock_count; ++index) {
         const bsp::AirOpsStockEntry& entry = deck->stock[static_cast<std::size_t>(index)];
+        // 00B66670 assigns each stock child before filling it; OFF keeps createtable/rawseti.
+        if constexpr (bsp::kWireGoal2Chain119Bound) {
+            const int parent = ::lua_gettop(state);
+            NativeBindingPushFrame frame(state);
+            auto table = stack_object(frame.owner, parent);
+            bsp::native_lua_set_new_table_at_00b66670(table, index + 1);
+            ::lua_pushinteger(state, index + 1);
+            ::lua_gettable(state, parent);
+            ::lua_pushinteger(state, static_cast<lua_Integer>(entry.vehicle_class));
+            ::lua_setfield(state, -2, "classid");
+            ::lua_pushinteger(state, static_cast<lua_Integer>(entry.count));
+            ::lua_setfield(state, -2, "count");
+            ::lua_pop(state, 1);
+        } else {
         ::lua_createtable(state, 0, 2);
         ::lua_pushinteger(state, static_cast<lua_Integer>(entry.vehicle_class));
         ::lua_setfield(state, -2, "classid");
         ::lua_pushinteger(state, static_cast<lua_Integer>(entry.count));
         ::lua_setfield(state, -2, "count");
         ::lua_rawseti(state, -2, index + 1);
+        }
     }
     log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
     return 1;
@@ -12388,7 +12436,26 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
         ::lua_settop(state, ::lua_gettop(state) - 1);
         return false;
     }
+    // 00B678E0/00B663D0 look up and push the resolved entity; OFF keeps the direct field read.
+    if constexpr (bsp::kWireGoal2Chain119Bound) {
+        // 00B67800 tracks by absolute stack position in 50 slots. This local
+        // owner starts at offset zero (00B66BD0); preserve the old reader for
+        // stacks outside that body's storage contract.
+        if (::lua_gettop(state) < 49) {
+            NativeBindingPushFrame frame(state);
+            auto table = stack_object(frame.owner, ::lua_gettop(state));
+            ScopedNativeKey name(key); // entity id formatted above, as at 00898FA7
+            bsp::NativeLuaObjectStorage value;
+            bsp::native_lua_get_by_native_string_00b678e0(table, value, name.key);
+            bsp::native_lua_push_value_00b663d0(value);
+            // Remove the tracked original; the pushed result remains the same table.
+            bsp::native_lua_release_00b67050(value, 1);
+        } else {
+            lua_getfield(state, -1, key);
+        }
+    } else {
     lua_getfield(state, -1, key);
+    }
     ::lua_remove(state, -2);
     if (lua_isnil(state, -1)) {
         ::lua_settop(state, ::lua_gettop(state) - 1);

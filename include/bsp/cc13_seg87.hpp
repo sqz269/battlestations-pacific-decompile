@@ -94,6 +94,8 @@ NativeLuaObjectStorage* native_lua_get_by_literal_00b67910(NativeLuaObjectStorag
     void* fresh, const char* key);
 // Typed destination views over the host's actual 14h LuaObject storage. The
 // raw entries below/above delegate to these bodies; no second implementation.
+NativeLuaObjectStorage& native_lua_get_by_native_string_00b678e0(NativeLuaObjectStorage&,
+    NativeLuaObjectStorage& fresh, const NativeString& key);
 NativeLuaObjectStorage& native_lua_get_by_literal_00b67910(NativeLuaObjectStorage&,
     NativeLuaObjectStorage& fresh, const char* key);
 // 00B67930, stack fresh, RET 4, EAX fresh: lua_createtable(0, 0) then an
