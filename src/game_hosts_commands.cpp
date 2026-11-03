@@ -49,6 +49,7 @@
 #include "bsp/wire_goal4_chain292_switches.hpp"  // 0071EDD0 in the 0071DDB0 walk
 #include "bsp/plane_squadron_host.hpp"           // plane+9D4h / +3D0h stand-in (chain 292)
 #include "bsp/gameplay_seg52_cc13.hpp"           // 00836040 / 0084DD20 (chain 292)
+#include "bsp/band_0071_cc13.hpp"                // 0071DEB0 (chain 292)
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -4786,6 +4787,21 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
             }
             // 0071DE5D: [[00E188A8]+1FE4h] == 2 skips; this process is mode 1.
             const bool player = released.controlled_unit == d;
+            bool slot_clearable = false;
+            if constexpr (kWireGoal4Chain292Bound) {
+                // 0071DE7B..0071DE8C, i > 0: director vtable[74h](command, i), which
+                // is 0071DEB0 BSP_WeaponDirector_SlotClearable in all four director
+                // vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C): the command's
+                // vtable[0Ch] category is 1 or 2 and the slot is above 0. The
+                // category is the class's own answer (class_of, as above).
+                if (i > 0) {
+                    slot_clearable = bsp::band_0071_cc13::weapon_director_slot_clearable_0071deb0(
+                        category, i);
+                    host.done("WeaponDirector::slot_clearable_0071deb0", 0x0071deb0u);
+                }
+            } else {
+                slot_clearable = category == 1 || category == 2;
+            }
             if (i == 0) {
                 // 0071DE72 0071D810(2), monotonic, then the 5Dh round trip.
                 if (bsp::stage_raise_applies(director.stage, 2)) {
@@ -4798,7 +4814,7 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                             bsp::clear_command_message_for_queue_stage_done());
                     }
                 }
-            } else if (category == 1 || category == 2) {
+            } else if (slot_clearable) {
                 // 0071DE7B..0071DE91: 0071DEB0(command, i) true, 0071D900(i).
                 host.done("WeaponDirector::send_clear_command_slot", 0x0071d900u);
                 host.route_clear_command(d, player, clear_command_slot_message(i));

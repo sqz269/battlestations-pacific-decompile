@@ -8,8 +8,15 @@
   "base": "063d0ea30",
   "switch": "bsp::kWireGoal4Chain292Bound",
   "wired_before": 9265,
-  "wired_after": 9268,
+  "wired_after": 9269,
   "rows": [
+    {
+      "native": "0071deb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::release_observed_target_0071ddb0 (0071DE85 vtable[74h], i > 0)",
+      "real_state": "The slot's command class category (class_of, the class's vtable[0Ch] answer) and the slot index; 0071DEB0 is slot 74h of all four director vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C).",
+      "change": "Replaces the inline `category == 1 || category == 2` stand-in; same rule, now the body."
+    },
     {
       "native": "00836040",
       "status": "wired",
