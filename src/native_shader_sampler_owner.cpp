@@ -1,5 +1,6 @@
 #include "bsp/native_shader_sampler_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal2_chain114_switches.hpp"
 #include <exception>
 #include <new>
 #include <stdexcept>
@@ -34,7 +35,13 @@ void destroy_native_shader_state_list_00b56de0(NativeShaderStateListStorage*& ho
     if(rows->capacity_08<0)reserve_native_shader_state_pairs_00b40cf0(*rows,0);
     while(rows->count_04>0)--rows->count_04;
     rows->count_04=0;singleton_lifetime_free(rows->data_00);
+    // 00B623C0: return the real sampler list to canonical 0108FEE4; OFF keeps the passed pool.
+    if constexpr (kWireGoal2Chain114Bound) {
+        return_static_native_shader_state_list_slot_00b623c0(*rows);
+        holder=nullptr;
+    } else {
     pool.return_slot_00b62280(rows);holder=nullptr;
+    }
 }
 NativeShaderSamplerStorage* initialize_native_shader_sampler_00b57b50_fragment(void* raw){
     require_fresh(raw);auto* owner=::new(raw) NativeShaderSamplerStorage;

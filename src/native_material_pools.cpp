@@ -1,6 +1,7 @@
 #include "bsp/native_material_pools.hpp"
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal2_chain114_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -318,7 +319,15 @@ void destroy_native_shader_state_list_pool_table_00b621b0(void* header) noexcept
 namespace {NativeShaderStateListPool* canonical_shader_state_list_pool;}
 void bind_static_native_shader_state_list_pool_0108fee4(NativeShaderStateListPool& pool) noexcept{canonical_shader_state_list_pool=&pool;}
 void* allocate_static_native_shader_state_list_slot_00b62760(){return canonical_shader_state_list_pool->allocate_slot_00b62630();}
-void return_static_native_shader_state_list_slot_00b623c0(void* slot){canonical_shader_state_list_pool->return_slot_00b62280(slot);}
+void return_static_native_shader_state_list_slot_00b623c0(NativeShaderDescriptorArray& slot){canonical_shader_state_list_pool->return_slot_00b62280(&slot);}
+void return_static_native_shader_state_list_slot_00b623c0(void* slot){
+    // 00B623C0: forward raw storage to its typed view; OFF keeps the original global-pool call.
+    if constexpr (kWireGoal2Chain114Bound) {
+        return_static_native_shader_state_list_slot_00b623c0(*static_cast<NativeShaderDescriptorArray*>(slot));
+    } else {
+        canonical_shader_state_list_pool->return_slot_00b62280(slot);
+    }
+}
 int initialize_static_native_shader_state_list_pool_00cd7cc0(){
     canonical_shader_state_list_pool->initialize_00b623d0();return std::atexit(&destroy_static_native_shader_state_list_pool_00ce0d50);
 }

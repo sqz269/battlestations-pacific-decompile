@@ -1,0 +1,306 @@
+{
+  "goal": 2,
+  "chain": 114,
+  "slot": "g2-w5",
+  "run": 219,
+  "harness": "codex",
+  "branch": "agent/g2-w5",
+  "host_file": "src/native_shader_sampler_owner.cpp",
+  "candidate": {
+    "tier": 2,
+    "segment": 86,
+    "range": [
+      "00b4b490",
+      "00b65ac0"
+    ],
+    "selection": "One segment sweep: retain canonical shader-pool selection on real sampler cleanup; reject shared-helper-only routing."
+  },
+  "switch": "kWireGoal2Chain114Bound",
+  "switch_header": "include/bsp/wire_goal2_chain114_switches.hpp",
+  "switch_default": false,
+  "wired_before": 8921,
+  "wired_after": 8922,
+  "wired_delta": 1,
+  "assigned_ready_to_wired": [
+    "00b623c0"
+  ],
+  "checks": {
+    "off_build": "Review round 1: scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests both passed (2/2). Log: local/output/wire-g2-c114-review1-off-build.log.",
+    "on_build": "Review round 1: tools/off_switch_on_build.py --names kWireGoal2Chain114Bound passed: build.ps1 exit 0, zero distinct diagnostics; header restored OFF. Log: local/output/wire-g2-c114-review1-on-build.log.",
+    "readiness": "Review round 1: final wire_readiness.py ran after the final plain OFF build. Total 8921 to 8922; only 00b623c0 promoted to wired. The three rejected helper routes are ready again. Mechanical delta and independently accepted eligible delta now both equal 1.",
+    "pc24": "Not applicable: no arithmetic or x87 body changed; the sole retained ON route selects the reconstructed canonical pool.",
+    "runtime": "No game, pair export, or runtime probe was run. Reach is static source evidence, with no mission call-count claim.",
+    "report_calls": "Review round 1: verify_report_calls.py reports/wire-g2-c114.json checked 22 original call rows with zero failures."
+  },
+  "host_objects": [],
+  "storage_views": [
+    {
+      "name": "NativeShaderDescriptorArray / existing NativeShaderStateListStorage alias",
+      "where": "include/bsp/native_shader_descriptor_owner.hpp",
+      "ownership": "Existing sampler-owned 0Ch header inside a 10h slot, returned without payload destruction by the global wrapper.",
+      "producers": [
+        "read_native_shader_sampler_00b57b50",
+        "initialize_native_shader_state_list_00b621a0",
+        "GameNativeShaderProcess::initialize_state_pool_once_00cd7cc0 binds canonical 0108FEE4"
+      ],
+      "rows": [
+        "00b623c0"
+      ]
+    }
+  ],
+  "contract": {
+    "single_bodies": "Only the existing canonical-pool return identifier gains a typed overload; its raw entry remains a thin wrapper. No new reconstructed address identity or second body was introduced.",
+    "return_abi": "B623C0 PUSH ECX; MOV ECX,0108FEE4; CALL B62280; RET. ON preserves fixed-global pool selection instead of passing through the caller's pool companion.",
+    "off": "Physical-buffer source/header and shader-slab initializer are restored to their pre-chain code. Sampler cleanup retains its original passed-pool return and holder clear in OFF. The raw global-return entry retains its original OFF call. No additional objects are constructed."
+  },
+  "rows": [
+    {
+      "native": "00b4b490",
+      "address": "00b4b950",
+      "function": "00b4b900",
+      "host_site": "src/native_physical_buffer_owner.cpp:destroy (original shared destroy_base cleanup, unchanged)",
+      "status": "skipped",
+      "reach": "static",
+      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical index deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-index owner cleanup also reaches pooled deletion. No other OFF switch gates this host path.",
+      "coverage": "Existing reconstructed body remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called destroy_base, which OFF already calls. Removed the wrapper, storage view and ON routing; no eligible replacement remains."
+    },
+    {
+      "native": "00b4b530",
+      "address": "00b4bb00",
+      "function": "00b4bab0",
+      "host_site": "src/native_physical_buffer_owner.cpp:destroy (original shared destroy_base cleanup, unchanged)",
+      "status": "skipped",
+      "reach": "static",
+      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical vertex deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-vertex owner cleanup also reaches pooled deletion. No other OFF switch gates this host path.",
+      "coverage": "Existing reconstructed body remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called destroy_base, which OFF already calls. Removed the wrapper, storage view and ON routing; no eligible replacement remains."
+    },
+    {
+      "native": "00b4caf0",
+      "address": "00b1630f",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 / src/native_main_scene_execution_prefix.cpp:continue_native_main_scene_scne_capture_00b162fe",
+      "status": "skipped",
+      "reason": "SceneRenderFrameHost::holder_resolve_00b4caf0 has no concrete implementation. The alternate native continuation already calls the actual-storage implementation of this address in OFF and has no src application caller; replacing it would duplicate existing address logic on an unrooted continuation.",
+      "reach": "static"
+    },
+    {
+      "native": "00b4cb90",
+      "address": "00b16ad2",
+      "function": "00b156c0",
+      "host_site": "src/render_fx_cc13.cpp:pass_frame_targets_00b4cb90 interface / src/scene_renderer_cc13.cpp:render_scene_00b156c0",
+      "status": "skipped",
+      "reason": "Only an unimplemented PostEffectHost method names this getter. No reachable pass-frame-target host state; a synthetic getter returning an already supplied value would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "00b4ec50",
+      "address": "00b16d19",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 post-effect tail",
+      "status": "skipped",
+      "reason": "Raw +18 getter has no src caller identifier and its image callers are the unrooted post-effect tail. No real pass owner reaches a concrete replacement site.",
+      "reach": "static"
+    },
+    {
+      "native": "00b4ed30",
+      "address": "00b16ba7",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 / distortion_extent_00b4ed30",
+      "status": "skipped",
+      "reason": "distortion_extent_00b4ed30 is pure virtual with no implementation. There is no host-rooted distortion pass supplying +24/+28 extent fields to this site.",
+      "reach": "static"
+    },
+    {
+      "native": "00b4ee20",
+      "address": "00b4f0a5",
+      "function": "00b4f0a0",
+      "host_site": "src/native_distortion_lifetime.cpp:existing distortion array teardown / src/render_fx_cc13.cpp:distortion_release_objects_00b4f030",
+      "status": "skipped",
+      "reason": "The actual-storage lifetime code already calls this exact body in OFF. The other callback-based distortion owner has no concrete host root; adding another call would provide no eligible replacement.",
+      "reach": "static"
+    },
+    {
+      "native": "00b4ffe0",
+      "address": "00b16a50",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 post-effect tail",
+      "status": "skipped",
+      "reason": "Raw +23C getter has no concrete caller identifier or reachable luminance-owner host site. Returning a host-supplied field without that owner would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "00b50050",
+      "address": "00b16a14",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 / luminance_measure_00b50050",
+      "status": "skipped",
+      "reason": "luminance_measure_00b50050 has no concrete host implementation. Its native owner requires the pass/material/target graph and adaptation targets; no application-rooted post-effect owner supplies them in this chain.",
+      "reach": "static"
+    },
+    {
+      "native": "00b529a0",
+      "address": "00b16e22",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 / render_old_film_00b529a0",
+      "status": "skipped",
+      "reason": "render_old_film_00b529a0 is unimplemented. Its old-film stream/texture/child-material owner is absent from a host-rooted render continuation; building that graph exceeds the bounded object contract.",
+      "reach": "static"
+    },
+    {
+      "native": "00b548c0",
+      "address": "00b16a59",
+      "function": "00b156c0",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0 / tonemap_set_params_draw_00b548c0",
+      "status": "skipped",
+      "reason": "tonemap_set_params_draw_00b548c0 has no concrete implementation or reachable pass/material/fullscreen draw host graph. The real +210..+220 producer parameters cannot be fabricated.",
+      "reach": "static"
+    },
+    {
+      "native": "00b56200",
+      "address": "00b5af7a",
+      "function": "00b5adf0",
+      "host_site": "src/render_fx_cc13.cpp:array routine metadata for MshdLayerPointers_Reserve",
+      "status": "skipped",
+      "reason": "The address appears as generic array-shape metadata, with original callers in the MSHD render-mode Lua reader and pointer-array helpers. No concrete host MSHD layer graph or dispatch reaches this reserve slot; unrelated generic-array users are not eligible sites.",
+      "reach": "static"
+    },
+    {
+      "native": "00b56260",
+      "address": "00b5b1ca",
+      "function": "00b5aff0",
+      "host_site": "src/render_fx_cc13.cpp:array routine metadata for MshdRenderModePointers_Reserve",
+      "status": "skipped",
+      "reason": "No host-rooted MSHD version/render-mode pointer array exists at the Lua-reader or dispatch callers. Metadata and generic reserve helpers alone do not establish a live slot.",
+      "reach": "static"
+    },
+    {
+      "native": "00b562c0",
+      "address": "00b5b37a",
+      "function": "00b5b240",
+      "host_site": "src/render_fx_cc13.cpp:array routine metadata for MshdVersionPointers_Reserve",
+      "status": "skipped",
+      "reason": "No host-rooted MSHD LOD-phase/version pointer array exists at the original Lua-reader or dispatch callers. Using another generic pointer array would substitute unrelated state.",
+      "reach": "static"
+    },
+    {
+      "native": "00b56320",
+      "address": "00b5b53c",
+      "function": "00b5b3f0",
+      "host_site": "src/render_fx_cc13.cpp:array routine metadata for MshdLodPhasePointers_Reserve",
+      "status": "skipped",
+      "reason": "The original MSHD shader file loader has no concrete host-rooted LOD-phase graph. Generic array metadata is not an application dispatch slot for this address.",
+      "reach": "static"
+    },
+    {
+      "native": "00b56b90",
+      "address": "00b5a220",
+      "function": "00b5a1f0",
+      "host_site": "src/render_fx_cc13.cpp:mshd_layer_construct_00b56b90 / original MSHD layer Lua reader",
+      "status": "skipped",
+      "reason": "No src application path calls this layer constructor or its original Lua reader. The newer native shader descriptor graph is a different object layout and cannot supply a genuine 78h MSHD layer.",
+      "reach": "static"
+    },
+    {
+      "native": "00b57680",
+      "address": "00b57785",
+      "function": "00b576f0",
+      "host_site": "src/render_fx_cc13.cpp:shader_constant_rows_reserve_00b576f0 callback",
+      "status": "skipped",
+      "reason": "The 1Ch MSHD constant-row copy callback has no concrete host StringHost/row-list caller. Existing compiled-shader reflection constants have a different storage contract and are not replacement inputs.",
+      "reach": "static"
+    },
+    {
+      "native": "00b580c0",
+      "address": "00b5842f",
+      "function": "00b58400",
+      "host_site": "src/render_fx_cc13.cpp:shader_constant_list_construct_00b58400 resize callback",
+      "status": "skipped",
+      "reason": "No concrete MSHD constant-list owner supplies the copy callback and pooled-string lifetime on an application path. The original constructor/destructor callers remain unrooted.",
+      "reach": "static"
+    },
+    {
+      "native": "00b58400",
+      "address": "00b59ea4",
+      "function": "00b59e70",
+      "host_site": "src/render_fx_cc13.cpp:shader_constant_list_construct_00b58400 / original constant-list Lua reader",
+      "status": "skipped",
+      "reason": "Only the original MSHD constant-list Lua reader calls this constructor. No concrete application reader, list owner or callback graph reaches it; manufacturing an empty list would be a fixture.",
+      "reach": "static"
+    },
+    {
+      "native": "00b620f0",
+      "address": "00b6266d",
+      "function": "00b62630",
+      "host_site": "src/native_material_pools.cpp:allocate_slot<NativeShaderStateListPool> (original generic initialize_slab call, unchanged)",
+      "status": "skipped",
+      "reach": "static",
+      "reach_evidence": "game_main.cpp initializes and binds the canonical shader pool. game_hosts.cpp kNativeShaderPreloadStartupCc16Bound=true -> GameNativeRendererApplication::preload_startup_shaders -> StartupShaderPreload::open -> real material-effect descriptor reader -> read_native_shader_samplers_00b41830 -> read_states -> this allocator. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are also true; no false selector is on this path.",
+      "coverage": "Existing reconstructed initializer remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called initialize_slab<NativeShaderStateListPool>, which OFF already uses. Removed the wrapper, slab view and ON routing; no eligible replacement remains."
+    },
+    {
+      "native": "00b623c0",
+      "address": "00b56e1f",
+      "function": "00b56de0",
+      "host_site": "src/native_shader_sampler_owner.cpp:destroy_native_shader_state_list_00b56de0",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "The enabled startup shader preload creates real descriptor samplers through GameNativeRendererApplication's DescriptorGraph. That graph's NativeShaderSamplerClassBinding uses game_native_shader_process().state_list_pool_0108fee4(); descriptor virtual-owner deletion -> delete_native_shader_sampler_00b56fc0 -> destroy_native_shader_sampler_00b56ea0 -> this list cleanup. game_main.cpp initializes the same pool and binds the global before application startup. No false selector is on this path.",
+      "coverage": "complete fixed-global wrapper; existing payload cleanup and holder clearing retain their order"
+    },
+    {
+      "native": "00b65710",
+      "address": "00b715d5",
+      "function": "00b71590",
+      "host_site": "src/scene_graph2_cc13.cpp:camera_classify_aabb_00b71590 / CameraServices::classify_aabb_00b65710",
+      "status": "skipped",
+      "reason": "The classifier is only exposed through a pure-virtual CameraServices method with no implementation. Existing camera-frustum publication is used for device clip planes, not a host AABB-classification site; no reachable caller supplies this plane set and box together.",
+      "reach": "static"
+    }
+  ],
+  "readiness_tool": {
+    "before": 8921,
+    "reviewed_head_before_fix": 8925,
+    "after": 8922,
+    "eligible_promotions": 1,
+    "note": "The original readiness result included three identifier matches that only named a shared helper already called by OFF. Those matches were ineligible. Their routes and typed views have now been removed; only canonical-pool selection counts.",
+    "final_row_states": {
+      "00b4b490": "ready",
+      "00b4b530": "ready",
+      "00b620f0": "ready",
+      "00b623c0": "wired"
+    }
+  },
+  "review": {
+    "run": 225,
+    "round": 1,
+    "reviewed_head": "0ea6203ecc1283fe1dab396a6be1e9fb3136e54d",
+    "accepted_count": 1,
+    "decisions": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "addresses": [
+          "00b4b490",
+          "00b4b530"
+        ],
+        "resolution": "Reclassified as skipped and removed shared-helper-only routes, typed overloads and storage view."
+      },
+      {
+        "finding": 2,
+        "status": "fixed",
+        "addresses": [
+          "00b620f0"
+        ],
+        "resolution": "Reclassified as skipped and removed shared-initializer-only route, typed overload and slab view."
+      },
+      {
+        "finding": 3,
+        "status": "fixed",
+        "resolution": "Host is native_shader_sampler_owner.cpp; only 00b623c0 is wired; eligible delta 1 and total 8922. Readiness matches are recorded separately from eligibility."
+      }
+    ]
+  }
+}

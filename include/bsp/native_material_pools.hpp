@@ -181,6 +181,8 @@ void destroy_native_shader_state_list_pool_table_00b621b0(void* actual_header) n
 // Same explicit fixed-global/real-CRT-atexit contract as the pass pool above.
 void bind_static_native_shader_state_list_pool_0108fee4(NativeShaderStateListPool&) noexcept;
 void* allocate_static_native_shader_state_list_slot_00b62760();
+struct NativeShaderDescriptorArray;
+void return_static_native_shader_state_list_slot_00b623c0(NativeShaderDescriptorArray&);
 void return_static_native_shader_state_list_slot_00b623c0(void*);
 int initialize_static_native_shader_state_list_pool_00cd7cc0();
 void destroy_static_native_shader_state_list_pool_00ce0d50() noexcept;
