@@ -1,0 +1,276 @@
+{
+ "chain": 73,
+ "slot": "g2-w1",
+ "harness": "claude",
+ "host_file": "src/game_hosts_units.cpp",
+ "switch": "kWireGoal2Chain73Bound",
+ "switch_header": "include/bsp/wire_goal2_chain73_switches.hpp",
+ "files_changed": [
+  "src/game_hosts_units.cpp",
+  "include/bsp/wire_goal2_chain73_switches.hpp",
+  "src/cc13_seg29U.cpp",
+  "include/bsp/cc13_seg29U.hpp",
+  "src/cc13_seg47.cpp",
+  "include/bsp/cc13_seg47.hpp",
+  "src/cc13_seg47b.cpp",
+  "include/bsp/cc13_seg47b.hpp",
+  "src/leftovers_cc13.cpp",
+  "include/bsp/oct18_tail_b.hpp"
+ ],
+ "build": "scripts/build.ps1 OFF: pass, 2/2 tests",
+ "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain73Bound: pass (0 diagnostics)",
+ "pc24_lint": "0 findings (origin/main...HEAD)",
+ "wired_before": 8837,
+ "wired_after": 8844,
+ "ran_in_usn04": [
+  "0x006bc960",
+  "0x007c1570"
+ ],
+ "static_reach": [
+  "0x006bcc90",
+  "0x006bce60",
+  "0x007b96c0",
+  "0x007b8a90",
+  "0x007c2090"
+ ],
+ "host_objects": [
+  {
+   "name": "LandingHolderLocalImage (query-local holder image for 006BCC90)",
+   "where": "src/game_hosts_units.cpp near landing_local_006bcc90",
+   "producers": [
+    "LandingDeck::inverse_48 (0085DEA0 / landing_deck_006c0750, carrier_holder_frame_006bee40)",
+    "LandingDeck::t_a4 (006BC960)"
+   ],
+   "rows": [
+    "0x006bcc90"
+   ]
+  }
+ ],
+ "pair": {
+  "mission": "USN04",
+  "off_log": "local/g2-w1-off_USN04.log",
+  "on_log": "local/g2-w1-on_USN04.log",
+  "off_exe": "build/win32/Release/bsp_game.exe at 2eeebc94a (clean tree)",
+  "on_exe": "local/g2-w1-on/build/win32/Release/bsp_game.exe (pair_export --flip kWireGoal2Chain73Bound=true, SHA-256 EF4A6442512A)",
+  "verdict": "DIFFERENT, gameplay identical (exit 1)",
+  "summary": "gameplay identical (28 deaths, 380 hits, 276 hull hits, 6366.6 damage, 5509 shots, first hit 86.15 s, 81 units) both; death rows, plane death modes (25) and unit table (81) identical; native table 1624 -> 1624 rows, 0 added/removed/status changed, 0 counts moved (noise only: pretranslate 8 -> 7); summary lines 867 -> 867, 0 changed; the only other lines are 231/231 atlas source allocation lines (heap pointers).",
+  "reach_evidence": "ON log: 'summary carrier landing decks built=2 refreshes=135634' (each runs 006BC960's ON arm in carrier_holder_frame_006bee40); 'summary base launch deck arms: placed=12 refused=0 ground_entries=12' and 'base launch lift: top=12' (each ground entry is the C3h send of the 007C1570 ON arm). Elevator intakes=0 stowed=0, follow exit calls=0, landing sequencer passes=0 lookups=0: USN04's 150 s has no landing, so 006BCC90, 006BCE60, 007B96C0, 007B8A90 and 007C2090 have static reach only."
+ },
+ "rows": [
+  {
+   "native": "0x006bcc90",
+   "address": "0x006c0a0d",
+   "function": "0x006c0840",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::landing_local_006bcc90 (every land-task/sequencer caller)",
+   "status": "wired",
+   "note": "query-local holder image adapter (LandingHolderLocalImage: +48h inverse, +A4h T) fed from the LandingDeck; the native naked body runs instead of the host transform-less-T",
+   "reached": 0,
+   "reach": "static: every caller is a land-task state, the sequencer pass or the mother-ship free-runway test (run_landing_queue_006cd240 under kLandingSequencerBound=true; land states under kLandFinalStateBound/kLandParkStateBound/kLandAbortStateBound=true); USN04 3000 frames has passes=0, lookups=0"
+  },
+  {
+   "native": "0x006bc960",
+   "address": "0x006c07a7",
+   "function": "0x006c0750",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::landing_deck_006c0750 (airfield arm) and carrier_holder_frame_006bee40 (MotherShip arm)",
+   "status": "wired",
+   "note": "typed overload air_ops_holder_refresh_touchdown_006bc960(float* t_a4, AirOpsHolderTouchdownInputs); raw entry wraps it. Inputs: deck width/length, owner IsKindOf(9) from the class id, the airfield block vtable[10h] = 006CA5A0 constant 35.0 (binary constant). Carrier site keeps the host arm for a non-kind-9 owner (labelled)",
+   "reached": 135636,
+   "reach": "ran in USN04"
+  },
+  {
+   "native": "0x006bce60",
+   "address": "0x009b09b0",
+   "function": "0x009b09a0",
+   "host_site": "src/game_hosts_units.cpp PlaneBinding::land_exit_abort_009b09a0",
+   "status": "wired",
+   "note": "raw body over a query-local image of the deck assignment vector (block+A8h/+ACh, no lock at +8h, LandingAssignmentLookupHost), held bytes written back",
+   "reached": 0,
+   "reach": "static: land_exit_abort_009b09a0 from the land/abort tick and state switch (kLandAbortStateBound=true) inside run_land_task_tick_009b3eb0 from motion_step_00825f20; no abort in USN04 3000 frames"
+  },
+  {
+   "native": "0x007b96c0",
+   "address": "0x009b28b8",
+   "function": "0x009b22c0",
+   "host_site": "src/game_hosts_units.cpp PlaneBinding::run_land_park_tick_009b22c0 and GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600",
+   "status": "wired",
+   "note": "typed overload plane_detach_into_hangar_007b96c0(Byte& +C00h, detach callee); 00951F40(v) maps to plane_hit_node_detached = !v (the host model of 00951F40, as set_plane_visible_00951f40)",
+   "reached": 0,
+   "reach": "static: run_land_park_tick_009b22c0 (kLandParkStateBound=true) and carrier_elevator_site_tick_006d0600 (kCarrierElevatorBound=true, run_landing_queue_006cd240 kLandingSequencerBound=true); USN04 elevator intakes=0 stowed=0"
+  },
+  {
+   "native": "0x007b8a90",
+   "address": "0x009bde49",
+   "function": "0x009bde40",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::follow_exit_009bde40",
+   "status": "wired",
+   "note": "typed overload plane_clear_turbo_007b8a90(Byte& +9F9h) over plane_turbo_9f9",
+   "reached": 0,
+   "reach": "static: follow_exit_009bde40 (kFollowExitClearsBound=true) from the follow/land task exits; USN04 summary follow exit calls=0"
+  },
+  {
+   "native": "0x007c2090",
+   "address": "0x006fc7d4",
+   "function": "0x006fc720",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::carrier_elevator_take_006fc720",
+   "status": "wired",
+   "note": "typed overload: +900h, session test from session_context().session_word_1fe4, C3h send = the host delivery 007CC820 -> 007CC7A0 (plane_enter_state_two_007cc7a0)",
+   "reached": 0,
+   "reach": "static: carrier_elevator_take_006fc720 from carrier_elevator_site_tick_006d0600 (kCarrierElevatorBound=true); USN04 elevator intakes=0"
+  },
+  {
+   "native": "0x007c1570",
+   "address": "0x007c3c9f",
+   "function": "0x007c3c90",
+   "host_site": "src/game_hosts_units.cpp request_ground_state_007c3c90 from airfield_site_tick_006cf980 and carrier_elevator_site_tick_006d0600",
+   "status": "wired",
+   "note": "typed overload: +900h, session test, requested 4+flag, force 0 (007C3C90 call-site constants); C3h send = the host 007CCFA0 arm 007CA3F0 (ground_state_from_locked_007ca3f0); mode-2 arm applies set_flight_state_007c1430",
+   "reached": 12,
+   "reach": "ran in USN04"
+  },
+  {
+   "native": "0x007ee2e0",
+   "status": "skipped",
+   "reason": "dead path: GameUnitsHost::Impl::leaving_on_purpose_007ee2e0 is reached only through leave_countdown_007c6c30 and the retreat-exit arm, both behind kLeaveCountdownAllSquadronsCc13Bound=false (include/bsp/leave_countdown_all_squadrons_cc13.hpp:53); a typed view was written and reverted",
+   "reached": 0
+  },
+  {
+   "native": "0x007bc550",
+   "status": "skipped",
+   "reason": "host object missing: the body returns at a null +4A4h scene node; this host sets state->has_scene_node=false (00928860 is a milestone 2h record) and the OFF arm takes +4A4h as set, so host state would disable the toggles",
+   "reached": 0
+  },
+  {
+   "native": "0x007b8d70",
+   "status": "skipped",
+   "reason": "host object missing: the gear channel ([+DECh]-28h) is not carried (host comment at the land-final arm answers true)",
+   "reached": 0
+  },
+  {
+   "native": "0x007bbc10",
+   "status": "skipped",
+   "reason": "host object missing: no +DF4h pilot command record per local slot; the host stands in with the dogfight/command target (df_pilot_targets_us)",
+   "reached": 0
+  },
+  {
+   "native": "0x007b9740",
+   "status": "skipped",
+   "reason": "host object missing: the +C50h neighbours block (007E1E20) is LABELLED as existing for every fighter; feeding it would pass a constant",
+   "reached": 0
+  },
+  {
+   "native": "0x007b96f0",
+   "status": "skipped",
+   "reason": "host object missing: the +C50h neighbours finder (as 007B9740); the host search is df_finder_scan_007e2090 with its own inputs",
+   "reached": 0
+  },
+  {
+   "native": "0x007c1f60",
+   "status": "skipped",
+   "reason": "host object missing: no device model (class 25h racks holding ordnance 2Ah); the host substitutes a torpedo/rack round count",
+   "reached": 0
+  },
+  {
+   "native": "0x007ed740",
+   "status": "skipped",
+   "reason": "host object missing: no squadron image (+3CCh count, +3D0h members); the host loop carries labelled member substitutions",
+   "reached": 0
+  },
+  {
+   "native": "0x007bb150",
+   "status": "skipped",
+   "reason": "already folded: 007BB150 logic is inside bsp::cc13_release_timer::pilot_step_flag_df0_0099b055, which the host already calls; wiring would duplicate it",
+   "reached": 0
+  },
+  {
+   "native": "0x007f2bd0",
+   "status": "skipped",
+   "reason": "host object missing: the host does not build the PilotBotSettings block at squadron+37Ch",
+   "reached": 0
+  },
+  {
+   "native": "0x006bc890",
+   "status": "skipped",
+   "reason": "host object missing: no site traffic object (block+3Ch vtable[44h]); the host stands in with the lift/path point and a 40.0 default",
+   "reached": 0
+  },
+  {
+   "native": "0x006c0b50",
+   "status": "skipped",
+   "reason": "host object missing: needs tracked critical sections, observer storage and the queue vector image (NativeLandingQueueBlockStorage)",
+   "reached": 0
+  },
+  {
+   "native": "0x006bdac0",
+   "status": "skipped",
+   "reason": "host object missing: the appear-ready-plane message is never built; the host delivers its effect at once",
+   "reached": 0
+  },
+  {
+   "native": "0x00c47f60",
+   "status": "skipped",
+   "reason": "host object missing: hull shapes are flags (hull_class_bit_cleared, sunk_terrain_mask_cleared), no shape chain with +30h masks",
+   "reached": 0
+  },
+  {
+   "native": "0x00c47f90",
+   "status": "skipped",
+   "reason": "host object missing: as 00C47F60",
+   "reached": 0
+  },
+  {
+   "native": "0x0092bd30",
+   "status": "skipped",
+   "reason": "host object missing: recorded only; no controller hull body/shape chain",
+   "reached": 0
+  },
+  {
+   "native": "0x007c3ea0",
+   "status": "skipped",
+   "reason": "not reached: census only, the local player never holds the pilot role in this host",
+   "reached": 0
+  },
+  {
+   "native": "0x007c4d90",
+   "status": "skipped",
+   "reason": "not reached: the level-bomb/paratrooper arm is refused by the host (not bound)",
+   "reached": 0
+  },
+  {
+   "native": "0x007ddea0",
+   "status": "skipped",
+   "reason": "host object missing: recorded only; no +C98h sub-block",
+   "reached": 0
+  },
+  {
+   "native": "0x007eb380",
+   "status": "skipped",
+   "reason": "host object missing: recorded only; no +C98h FX component",
+   "reached": 0
+  },
+  {
+   "native": "0x007eb270",
+   "status": "skipped",
+   "reason": "host object missing: presentation-only FX component not carried",
+   "reached": 0
+  },
+  {
+   "native": "0x00954580",
+   "status": "skipped",
+   "reason": "host object missing: recorded only; no impulse/matrix fields (+4D8h, +4E0h, +4C0h)",
+   "reached": 0
+  },
+  {
+   "native": "0x0070db20",
+   "status": "skipped",
+   "reason": "body file src/flak_note_seg36_37_argon.cpp is leased by agent/g2-w2 (lease, comes back)",
+   "reached": 0
+  },
+  {
+   "native": "0x0070e4c0",
+   "status": "skipped",
+   "reason": "body file src/flak_note_seg36_37_argon.cpp is leased by agent/g2-w2 (lease, comes back)",
+   "reached": 0
+  }
+ ],
+ "flip_proposal": "Flip kWireGoal2Chain73Bound to true. The USN04 pair is gameplay-identical with 006BC960 (135636 calls) and 007C1570 (12) live; the other five rows sit on the landing/park/elevator-intake paths (kLandingSequencerBound, kLandParkStateBound, kLandAbortStateBound, kCarrierElevatorBound, kFollowExitClearsBound, all true) that USN04 does not reach in 3000 frames. Before flipping, a carrier-landing mission pair (USN01, or USN04 long enough for a strike to return) should show the landing rows reached with gameplay unchanged."
+}
