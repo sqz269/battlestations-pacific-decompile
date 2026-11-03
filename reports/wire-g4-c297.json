@@ -1,0 +1,97 @@
+{
+  "chain": 297,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain297Bound",
+  "scope": "Landscape local height/normal and world height queries over retained scene terrain",
+  "rows": [
+    {
+      "native": "0087fa20",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: LandConvoyPlacementBinding::terrain_height_0087fa20",
+      "state": "Borrow c_.terrain, the loaded parent's +3D0h object, and pass the existing local XZ to the reconstructed forwarder; slot 24h still calls local_height_00ada160.",
+      "evidence": "bsp.py show 0087fa20: __thiscall Landscape, two float arguments, RET 8, dispatch through +3D0h slot 24h; vtable 00D5D350 targets 00ADA160.",
+      "call_graph": "landscape_lua_seg55_argon.obj body is entry-reachable with one direct call from LandConvoyPlacementBinding::terrain_height_0087fa20; baseline matched only the host callback."
+    },
+    {
+      "native": "0087fa50",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: ShipMotionBinding::run_submarine_seabed_scan",
+      "state": "Borrow each retained SceneWorldObject::terrain in the existing Landscape class-list walk and pass the same world XZ scan point; slot 28h still calls height_00ada900, then accumulates one clearance sample.",
+      "evidence": "bsp.py show 0087fa50: __thiscall Landscape, two float arguments, RET 8, +3D0h slot 28h; bsp.py show 00855420 lists this forwarder as the submarine scan's callee.",
+      "call_graph": "landscape_lua_seg55_argon.obj body is entry-reachable with one direct call from ShipMotionBinding::run_submarine_seabed_scan; baseline body was not linked."
+    },
+    {
+      "native": "0087fb90",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: LandConvoyPlacementBinding::terrain_normal_0087fb90",
+      "state": "Borrow c_.terrain and pass the existing local XZ and a caller-owned Vec3 to the reconstructed forwarder; slot 34h still calls local_normal_00ada1c0.",
+      "evidence": "bsp.py show 0087fb90: __thiscall Landscape, out pointer plus two floats, RET 0Ch, +3D0h slot 34h and return out; terrain vtable 00D5D350 targets 00ADA1C0.",
+      "call_graph": "landscape_lua_seg55_argon.obj body is entry-reachable with one direct call from LandConvoyPlacementBinding::terrain_normal_0087fb90; baseline matched only the host callback."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "Missing owned movie page/widget: load_movie_page and find_movie_page_child still return nullptr, so this callback has no native widget state to lend."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing movie-page scene node, decoder and material sampler ownership; the existing callback only logs and its movie-page producer returns nullptr."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native subtitle widget and native subtitle/extratitle vector ownership; the host resets its separate schedule without producing the movie page."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Online objective replication is outside single-player scope; the record-only callback has no peer/session-message producer."
+    },
+    {
+      "native": "00bd2f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::draw_normal",
+      "reason": "Missing shared RandomThreads/624-word MT ownership: draw_normal consumes the host's 32-bit LCG or keyed LCG states, which cannot be borrowed as the existing body's RandomState."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "Missing adapters for the live +6DCh callback object and role-device reskill fan-out; the host leaf stores only pilot_skill_index, while the existing body returns a plan requiring those effects."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::place_at_world_position_008193a0",
+      "reason": "Missing complete PoseSetPlan replay for relocate-message gates, previous-position/invalidation fields and device/subobject callbacks; replacing the translation store alone would leave native effects unapplied."
+    },
+    {
+      "native": "009585b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::put_rel_to_00819840",
+      "reason": "Missing complete PoseSetPlan replay for previous-position/invalidation fields and device/subobject callbacks after matrix copy; the existing body is a plan rather than a matrix-state writer."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release; reconstructed_math and tool_tests passed (2/2).",
+    "call_graph_before": {
+      "called_reconstructed": 4237,
+      "linked_reconstructed": 4669
+    },
+    "call_graph_after": {
+      "called_reconstructed": 4240,
+      "linked_reconstructed": 4672
+    },
+    "readiness_before": 9275,
+    "readiness_after": 9276,
+    "readiness_note": "Baseline was rebuilt and its graph refreshed: the initial stale graph yielded 9271, corrected baseline 9275. Only 0087FA50 changes readiness state (ready to wired); FA20/FB90 previously matched host callback names without their reconstructed bodies. All three actual bodies gain a reachable direct call.",
+    "float_math": "No arithmetic changed; query slots retain the existing terrain methods and their PC24 switches.",
+    "gameplay": "Not run; build, existing tests and entry-reachable call graph are the evidence."
+  },
+  "limitations": "SceneTerrainForwarders lends only terrain slots 24h/28h/34h and rejects unrelated interface operations. Its LandscapeState is a borrowed +3D0h view, not a native-layout object or a replacement Landscape lifecycle."
+}

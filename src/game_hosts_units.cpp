@@ -23,6 +23,8 @@
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
+#include "bsp/wire_goal4_chain297_switches.hpp"
+#include "bsp/scene_terrain_forwarders.hpp"
 #include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
@@ -13879,9 +13881,19 @@ public:
         for (std::size_t index : lists.list(bsp::game::kSceneLandscapeClassId)) {
             const bsp::game::SceneWorldObject& object = lists.objects()[index];
             if (!object.terrain) continue;
+            if constexpr (bsp::kWireGoal4Chain297Bound) {
+                // 00855420's seabed scan calls 0087FA50: world XZ through the
+                // loaded Landscape's +3D0h slot 28h. Borrow the same terrain.
+                SceneTerrainForwarders terrain(*object.terrain);
+                const float sample = bsp::landscape_lua_seg55_argon::landscape_forward_height_at_0087fa50(
+                    terrain.landscape(), world[0], world[2]);
+                bsp::submarine_scan_sample_00855420(scan, sample, slot_.sub_class_height, hull_y, time);
+                ++slot_.sub_scan_samples;
+            } else {
             const float sample = object.terrain->height_00ada900(world[0], world[2]);
             bsp::submarine_scan_sample_00855420(scan, sample, slot_.sub_class_height, hull_y, time);
             ++slot_.sub_scan_samples;
+            }
         }
         bsp::submarine_scan_advance_00855420(scan);
         owner_.done("SubmarineUnit::seabed_scan", 0x00855420u);
@@ -16675,15 +16687,29 @@ public:
     // The parent's world frame is the composed scene frame; nothing to refresh.
     void refresh_world_pose_00414db0(std::uintptr_t) override {}
     float terrain_height_0087fa20(std::uintptr_t, float x, float z) override {
+        if constexpr (bsp::kWireGoal4Chain297Bound) {
+            SceneTerrainForwarders terrain(*c_.terrain);
+            return bsp::landscape_lua_seg55_argon::landscape_forward_local_height_0087fa20(
+                terrain.landscape(), x, z);
+        } else {
         return c_.terrain->local_height_00ada160(x, z);   // [parent+3D0h]->vtable[24h]
+        }
     }
     float parent_height_origin_00742792(std::uintptr_t) override {
         return c_.parent_world_cc[13];                  // parent+100h
     }
     bsp::LandVec3 terrain_normal_0087fb90(std::uintptr_t, float x, float z) override {
+        if constexpr (bsp::kWireGoal4Chain297Bound) {
+            SceneTerrainForwarders terrain(*c_.terrain);
+            bsp::landscape_lua_seg55_argon::Vec3 normal;
+            bsp::landscape_lua_seg55_argon::landscape_forward_local_normal_0087fb90(
+                terrain.landscape(), &normal, x, z);
+            return {normal.x, normal.y, normal.z};
+        } else {
         float n[3] = {};
         c_.terrain->local_normal_00ada1c0(x, z, n);     // [parent+3D0h]->vtable[34h]
         return {n[0], n[1], n[2]};
+        }
     }
     void orthonormalize_from_normal_0085dad0(bsp::LandPoseMatrix* matrix,
                                              const bsp::LandVec3& normal) override {
