@@ -3,6 +3,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bsp/mission_lua_class_table_resets.hpp"
+
 namespace bsp::airfield_marker_seg31_32_argon {
 
 struct Raw {
@@ -218,7 +220,8 @@ void tmpl_owned_ptr_delete_reset_006d7100(
 void owned_object_ptr_delete_006d7120(Seg31_32Host& host, void** self_slot);
 void tmpl_owned_ptr_delete_reset_006d7140(
     Seg31_32Host& host, void** self_slot);
-void marker_classes_reset_lua_table_006d74b0(Seg31_32Host& host);
+// Its only call is 006B8AD0 on the mission machine, so it takes that call alone.
+void marker_classes_reset_lua_table_006d74b0(MissionLuaRunString& lua);
 void marker_instance_destruct_006d74d0(Seg31_32Host& host, void* self);
 void marker_instance_update_pose_006d7fc0(Seg31_32Host& host, void* self);
 void* marker_instance_construct_006d8750(

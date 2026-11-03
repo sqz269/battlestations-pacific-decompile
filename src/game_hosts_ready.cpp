@@ -8,6 +8,7 @@
 #include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/entity_event_queues.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -640,7 +641,13 @@ void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
                 // Packet cc9_dead_member_group_removal: the destroy's 77h leave
                 // (0077D1A0 -> 0077C980), delivered here.
                 if constexpr (kDeadMemberLeavesGroupBound) {
+                    if constexpr (kWireGoal4Chain260Bound) {
+                        // Goal 4 chain 260: 0077C980(unit, 0) at 0077D236 builds
+                        // the 77h; 0076E520's copy first, then 0077BD70 here.
+                        units_->leave_formation_message_0077c980(unit);
+                    } else {
                     units_->leave_group_on_destroy_0077bd70(unit);
+                    }
                 }
                 // 009263AE JMP [vt+7Ch], the ship's wreck handler 00824B60: the
                 // gunnery death route already does its physics writes.

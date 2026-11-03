@@ -536,8 +536,18 @@ void cc13_sweepB2_hud_damage_direction_register_0064b170(void* widget, const flo
 // 006AC030 BSP_InputSettings_LoadForCurrentProfile(settings).
 void cc13_sweepB2_input_settings_load_for_current_profile_006ac030(void* settings, Cc13SweepB2Host& host);
 
-// 006AD600 BSP_Game_ClearMissionLuaGlobals().
-void cc13_sweepB2_game_clear_mission_lua_globals_006ad600(Cc13SweepB2Host& host);
+// 006AD600 BSP_Game_ClearMissionLuaGlobals(). Each name is one step: the key
+// NativeString (0041DD40(length, 1), memcpy length + 1), the globals LuaObject of
+// the state owner at [00E188A8]+1A0Ch (00B67980), 00B67350(globals, &key), which is
+// globals[key] = nil through lua_settable, 00B67700 on the globals object, and the
+// key's bytes back to the sized pool (00419CC0, 00BD1510). That step is the only
+// thing the routine asks of its environment, so it takes it alone rather than the
+// whole Cc13SweepB2Host.
+struct MissionLuaGlobalClear {
+    virtual ~MissionLuaGlobalClear() = default;
+    virtual void set_global_nil(const char* name, std::uint32_t length) = 0;
+};
+void cc13_sweepB2_game_clear_mission_lua_globals_006ad600(MissionLuaGlobalClear& lua);
 
 // 006AF780 BSP_SceneEntity_RestoreFromSaveData(entity) (ECX unused).
 void cc13_sweepB2_scene_entity_restore_from_save_data_006af780(void* entity, Cc13SweepB2Host& host);

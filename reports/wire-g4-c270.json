@@ -36,7 +36,8 @@
     "wired_after": 9182,
     "reachability": "tools/call_graph.py rebuilt after the build; who 006ec8e0 shows the new call from run_ship_use_catapult_00891d50",
     "runtime": "No game run; build and static call-graph evidence only",
-    "review_round_1": "scripts/build.ps1 passed (reconstructed_math, tool_tests); call_graph who 006ec8e0 reachable, one call site; readiness 9182; no float math changed"
+    "review_round_1": "scripts/build.ps1 passed (reconstructed_math, tool_tests); call_graph who 006ec8e0 reachable, one call site; readiness 9182; no float math changed",
+    "merge_origin_main": "Merged origin/main (include-list conflicts in game_hosts_lua.cpp, game_hosts_scene_contents.cpp, game_hosts_units.cpp, both sides kept). scripts/build.ps1 passed with the switch on; call_graph who 006ec8e0 reachable, one call site from run_ship_use_catapult_00891d50; wire_readiness on the merged tree: wired 9230, 006EC8E0 wired and called."
   },
   "review_round_1": [
     {

@@ -7,6 +7,7 @@
 #include "bsp/wire_goal2_chain120_switches.hpp"
 #include "bsp/wire_goal2_chain132_switches.hpp"
 #include "bsp/wire_goal2_chain192_switches.hpp"
+#include "bsp/wire_goal4_chain268_switches.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
@@ -1510,6 +1511,56 @@ void GameSceneContentsHost::Impl::load_property_library() {
     log.unimplemented("SceneContents::property_library_load", "008f67b0");
     auto* manager = vfs.ready() ? &vfs.context() : nullptr;
     if (manager == nullptr) return;
+    if constexpr (kWireGoal4Chain268Bound) {
+        // 008F710E/008F711B call 008F6FC0 with .enums, then .props;
+        // 008F701B enumerates and 008F7092 loads each result into this library
+        // (bsp.py show 008f7100 and 008f6fc0). Supply the actual mounted VFS
+        // and the parser that populates the groups/enums consumed by entities.
+        // This binds the folder walk, not the separate raw 008F67B0 ABI.
+        class FolderBinding final : public PropLibraryFolderHost {
+        public:
+            explicit FolderBinding(Impl& owner) : owner_(owner) {}
+
+            std::vector<std::string> enumerate_library_files(
+                const std::string& folder, const std::string& extension) override {
+                std::vector<std::string> found;
+                std::string error;
+                if (!enumerate_resources_00bdd990_fragment(owner_.vfs.context(),
+                        folder, extension, 1, found, error)) {
+                    owner_.log.notef("property library: %s enumeration failed: %s",
+                        extension.c_str(), error.c_str());
+                    found.clear();
+                }
+                // 008F7079..008F7092 consumes PopFront order unchanged.
+                return found;
+            }
+
+            bool load_library_file(const std::string& entry,
+                PropLibraryDocument&, std::string& error) override {
+                std::string text;
+                std::string full = entry;
+                if (!owner_.read_vfs_file(full, text)) {
+                    full = std::string(kPropertyLibraryDirectory) + "/" + entry;
+                    if (!owner_.read_vfs_file(full, text)) {
+                        error = "cannot read " + entry;
+                        owner_.log.notef("property library: %s did not resolve", entry.c_str());
+                        return false;
+                    }
+                }
+                owner_.parse_library_file(full, text);
+                ++owner_.summary.library_files;
+                return true;
+            }
+
+        private:
+            Impl& owner_;
+        } binding(*this);
+
+        const PropLibraryLoadResult loaded = load_prop_library(kPropertyLibraryDirectory, binding);
+        if (!loaded.ok) log.notef("property library: %s", loaded.error.c_str());
+        log.implemented("SceneContents::property_library_folder", "008f7100");
+        log.implemented("SceneContents::property_library_extension", "008f6fc0");
+    } else {
     // 008f7100 calls 008f6fc0 twice, first with ".enums" (00d1655c at 008f7106)
     // and then with ".props" (00d16554 at 008f7113), so the enum tables are
     // loaded before .props inputs. Preserve that order: enum redeclarations
@@ -1540,6 +1591,7 @@ void GameSceneContentsHost::Impl::load_property_library() {
         }
         parse_library_file(full, text);
         ++summary.library_files;
+    }
     }
     summary.property_groups = library.group_count();
     summary.enum_tables = library.enum_count();

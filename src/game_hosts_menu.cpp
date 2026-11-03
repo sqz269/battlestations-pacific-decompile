@@ -10,6 +10,7 @@
 #include "bsp/native_frame_clock_lifetime.hpp"
 #include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
+#include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
@@ -2856,6 +2857,11 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
 
 GameMenuHost::~GameMenuHost() = default;
 
+void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
+    binding.prepare();
+    impl_->input_contexts.manager = &binding;
+}
+
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;
@@ -2965,8 +2971,12 @@ void GameMenuHost::clear_level3_screen_and_context_sets() {
     MenuSetBindings bindings(host);
     static const int kNone[] = {0};
     set_front_end_screen_set_level(host.screen_sets, host.world.screens, bindings, 3, kNone, 1);
+    if constexpr (kWireGoal4Chain271Bound) {
+        publish_level3_input_contexts(kNone, 1);
+    } else {
     host.input_contexts.levels[2].clear();
     apply_input_context_levels_004c4300(host.input_contexts, 3);
+    }
 }
 
 void GameMenuHost::note_screen_2eh_ran() { impl_->screen_2eh_ran = true; }
@@ -3017,6 +3027,9 @@ void GameMenuHost::publish_level2_screen_set_004f85d0(const int* ids, std::size_
 
 void GameMenuHost::publish_level2_input_contexts_004d8ae0(const int* ids,
     std::size_t count) {
+    if constexpr (kWireGoal4Chain271Bound) {
+        publish_native_input_context_set(impl_->input_contexts, 2, ids, count);
+    } else {
     // Packet cc13-releasegun: 004D8AE0's tail is `PUSH 2 ; CALL 004d6410`
     // (004D8B46), 004d8a50's setter on level 2.
     Impl& host = *impl_;
@@ -3027,6 +3040,11 @@ void GameMenuHost::publish_level2_input_contexts_004d8ae0(const int* ids,
     }
     host.input_contexts.levels[1] = pending;
     apply_input_context_levels_004c4300(host.input_contexts, 2);
+    }
+}
+
+void GameMenuHost::publish_level3_input_contexts(const int* ids, std::size_t count) {
+    publish_native_input_context_set(impl_->input_contexts, 3, ids, count);
 }
 
 void GameMenuHost::pump_interface_only_004c40f0(float raw_delta) {

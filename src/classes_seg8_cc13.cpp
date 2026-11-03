@@ -25,14 +25,6 @@ Raw raw_from_u32(std::uint32_t value) noexcept {
     return Raw{reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(value))};
 }
 
-// The three "<Class>=nil\n" teardowns: 006B8AD0(text, 0, 0, 2) on the machine
-// at [[00E188A8]+1A08h]+4.
-void clear_lua_global(const char* text, Seg8Host& host) {
-    const Raw game = raw_from_u32(host.global_u32(kGame));
-    void* const machine = as_raw(game.ptr(0x1a08)).ptr(0x4);
-    host.lua_run_string_006b8ad0(machine, text, 0, 0, 2);
-}
-
 // The intrusive reference release: InterlockedDecrement(+4) and slot 0 (no
 // arguments) at zero; the field is cleared whenever it was set.
 void release_ref(Raw owner, std::size_t field, Seg8Host& host) {
@@ -165,10 +157,19 @@ void* load_from_globals(Raw name, const char* table, std::uint32_t empty_string,
 }  // namespace
 
 // 004A7120 / 004AF930 / 004B1890, __cdecl, RET: "PlanePartClass=nil\n"
-// (00CE6A78), "SoldierClass=nil\n" (00CE712C), "WreckClass=nil\n" (00CE7174).
-void plane_part_class_clear_lua_global_004a7120(Seg8Host& host) { clear_lua_global("PlanePartClass=nil\n", host); }
-void soldier_class_clear_lua_global_004af930(Seg8Host& host) { clear_lua_global("SoldierClass=nil\n", host); }
-void wreck_class_clear_lua_global_004b1890(Seg8Host& host) { clear_lua_global("WreckClass=nil\n", host); }
+// (00CE6A78), "SoldierClass=nil\n" (00CE712C), "WreckClass=nil\n" (00CE7174), each
+// 006B8AD0(text, 0, 0, 2) on the machine at [[00E188A8]+1A08h]+4 (004B1890..004B18AE;
+// the other two differ only in the PUSHed text). The machine is the implementer's
+// (include/bsp/mission_lua_class_table_resets.hpp).
+void plane_part_class_clear_lua_global_004a7120(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("PlanePartClass=nil\n", kClassTableResetRunMode);
+}
+void soldier_class_clear_lua_global_004af930(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("SoldierClass=nil\n", kClassTableResetRunMode);
+}
+void wreck_class_clear_lua_global_004b1890(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("WreckClass=nil\n", kClassTableResetRunMode);
+}
 
 // 004A7650 / 004AC0B0, __thiscall(part), RET.
 void plane_part_refresh_visibility_004a7650(Raw part, Seg8Host& host) { refresh_visibility(part, host); }

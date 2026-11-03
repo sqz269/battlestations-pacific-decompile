@@ -38,6 +38,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_seg87.hpp"
@@ -3970,6 +3972,35 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
         log_.unimplemented("Formation::route_join_message", "0077c964");
         return;
     }
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0077C964 -> 0076E520 writes the 76h (0075C7C0) and
+        // the factory rebuilds it (0075A2E0, 0075C810 read); 0077FE80's arm
+        // resolves the copy's +20h, so the delivery joins the copy's leader.
+        const std::size_t copy_leader =
+            bsp::game::commands_formation_member_copy_0076e520(0x76, leader_index);
+        if (copy_leader >= units_.count()) {
+            log_.unimplemented("Formation::route_join_message", "0077c964");
+            return;
+        }
+        if constexpr (kFormationJoinLoopbackBound) {
+            ++summary_.formation_joins_posted;
+            const bool posted = bsp::game::commands_post_loopback_callback_0076e520(
+                follower_index, [this, follower_index, copy_leader] {
+                    ++summary_.formation_joins_delivered;
+                    if (units_.formation_join_0077f940(follower_index, copy_leader)) {
+                        ++summary_.formations_joined;
+                    }
+                });
+            if (posted) {
+                log_.implemented("Formation::route_join_message", "0077c964");
+                return;
+            }
+        }
+        if (units_.formation_join_0077f940(follower_index, copy_leader)) {
+            ++summary_.formations_joined;
+        }
+        log_.implemented("Formation::route_join_message", "0077c964");
+    } else {
     if constexpr (kFormationJoinLoopbackBound) {
         ++summary_.formation_joins_posted;
         const bool posted = bsp::game::commands_post_loopback_callback_0076e520(
@@ -3988,6 +4019,7 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
         ++summary_.formations_joined;
     }
     log_.implemented("Formation::route_join_message", "0077c964");
+    }
 }
 
 void GameScriptOrdersHost::entity_set_skill_level(void* entity, int level) {
@@ -4037,8 +4069,21 @@ void GameScriptOrdersHost::session_route_repair_enable_message(void* entity, boo
     // unit+A20h. The gunnery host holds the task.
     const std::size_t index = index_of(entity);
     GameGunneryHost* gunnery = units_.gunnery();
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0076E520's copy of the 9Fh (00760A50 construct,
+        // 00760AE0 write, factory case 9Fh 00760A50, 00760B30 read); 00821E80's
+        // 9Fh arm hands the copy's +1Ch to 00939FD0. UNCERTAIN, as for 79h:
+        // delivered here at the route, where the image delivers at the drain.
+        const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
+        const bool copy_enabled =
+            messages != nullptr ? messages->queue_repair_body_9f(enabled) : enabled;
+        if (gunnery != nullptr && index < units_.count()) {
+            gunnery->set_hull_repair_enabled_00939fd0(index, copy_enabled);
+        }
+    } else {
     if (gunnery != nullptr && index < units_.count()) {
         gunnery->set_hull_repair_enabled_00939fd0(index, enabled);
+    }
     }
     if constexpr (kHullRepairEnableRouteBound) {
         log_.implemented("Session::route_repair_enable_message", "008ad4cd");

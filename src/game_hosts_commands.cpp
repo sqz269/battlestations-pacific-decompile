@@ -42,6 +42,7 @@
 #include "bsp/wire_goal2_chain165_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain255_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -2790,6 +2791,32 @@ bool commands_post_loopback_callback_0076e520(std::size_t unit_index,
     return live != nullptr && live->post_loopback_callback(unit_index, std::move(deliver));
 }
 
+const bsp::HostSessionMessages* commands_session_messages() {
+    GameCommandsHost* live = live_commands_host();
+    return live != nullptr ? &live->session_messages() : nullptr;
+}
+
+const bsp::HostSessionMessages& GameCommandsHost::session_messages() const {
+    return impl_->session_messages;
+}
+
+std::size_t commands_formation_member_copy_0076e520(std::uint8_t type,
+                                                    std::size_t member_index) {
+    // The sender's +20h is the other entity's +174h word, or 0 without one
+    // (0077CA21). This process stands the unit index + 1 in for +174h (the
+    // id GameScriptOrdersHost::entity_object_id answers and its receiver's
+    // 00521E30 lookup inverts), so the copy's id - 1 is the member's index.
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    const std::size_t posted =
+        member_index == kNoFormationMember ? 0u : member_index + 1u;
+    // LABELLED: an index the copy's 12 bits cannot carry keeps the posted one,
+    // as queue_gun_aim_79 keeps its target id.
+    if (messages == nullptr || posted > 0xfffu) return member_index;
+    const std::uint16_t copy = messages->queue_formation_member_76_77(
+        type, static_cast<std::uint16_t>(posted));
+    return copy == 0 ? kNoFormationMember : static_cast<std::size_t>(copy) - 1u;
+}
+
 bool GameCommandsHost::post_loopback_callback(std::size_t unit_index,
                                               std::function<void()> deliver) {
     Impl& host = *impl_;
@@ -3405,6 +3432,29 @@ bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
 bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
     bool player_controlled, const bsp::ClearCommandMessage& message) {
     if (unit_index >= units.size()) return false;
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0077C2A0 -> 0076E520 queues the 5Dh's copy
+        // (0071C7A0 write, factory case 5Dh 0075B030, 0071C7E0 read), so the
+        // 5Dh arm reads the copy's +20h (1 bit) and +24h (5 signed bits).
+        bsp::ClearCommandMessage copy = message;
+        const bsp::HostSessionMessages::ClearCommandCopy wire =
+            session_messages.queue_clear_command_5d(message.arm, message.index);
+        copy.arm = wire.arm;
+        copy.index = wire.index;
+        ++summary.clear_messages;
+        ++summary.loopback_clear_posts;
+        if (!kSetCommandQueueDelayBound) {
+            ++summary.loopback_delivered_in_place;
+            return apply_clear_command(unit_index, player_controlled, copy);
+        }
+        LoopbackMessage posted;
+        posted.kind = LoopbackKind::Clear;
+        posted.unit = unit_index;
+        posted.player = player_controlled;
+        posted.clear = copy;
+        post_loopback(posted);
+        return false;
+    } else {
     ++summary.clear_messages;
     ++summary.loopback_clear_posts;
     if (!kSetCommandQueueDelayBound) {
@@ -3420,6 +3470,7 @@ bool GameCommandsHost::Impl::route_clear_command(std::size_t unit_index,
     posted.clear = message;
     post_loopback(posted);
     return false;
+    }
 }
 
 bool GameCommandsHost::Impl::apply_clear_command(std::size_t unit_index,

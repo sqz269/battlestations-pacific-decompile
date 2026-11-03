@@ -33,6 +33,7 @@
 
 namespace bsp {
 class LocaleTables;
+struct GameInputContextManagerBinding;
 struct GuiLayoutPage;
 }  // namespace bsp
 
@@ -159,6 +160,9 @@ public:
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
+    // Borrow the application's actual input-action owner/configuration before
+    // the first menu publication. It outlives the menu and the raw manager drain.
+    void bind_input_context_manager(GameInputContextManagerBinding&);
 
     // 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     void run_title_init_004c9a70();
@@ -231,6 +235,9 @@ public:
     // Packet cc13-releasegun: 004f85d0 and 004d8ae0, level 2 of the same stacks.
     void publish_level2_screen_set_004f85d0(const int* ids, std::size_t count);
     void publish_level2_input_contexts_004d8ae0(const int* ids, std::size_t count);
+    // 004D8B70 over the same menu-owned context stack; used by the HUD and
+    // 0068AB80's level-3 collapse, including its empty-list call.
+    void publish_level3_input_contexts(const int* ids, std::size_t count);
     // 004c40f0's pump pass, for the frames the mission owns.
     void pump_interface_only_004c40f0(float raw_delta);
     // The load's release at 004dfd96 calls the main-menu manager's vtable slot

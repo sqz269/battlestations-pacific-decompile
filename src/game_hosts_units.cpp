@@ -11,9 +11,15 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_unit_group_storage.hpp"
+#include "bsp/native_unit_group_lookup.hpp"
+#include "bsp/native_unit_group_direct_views.hpp"
+#include "bsp/wire_goal4_chain272_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
+#include "bsp/wire_goal4_chain273_switches.hpp"
+#include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
@@ -28,6 +34,7 @@
 #include "bsp/wire_goal2_chain147_switches.hpp"
 #include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
 #include "bsp/wire_goal4_chain254_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -283,6 +290,26 @@
 
 namespace bsp::game {
 namespace {
+
+// Chain 273: projections of the host's existing rack fields, not a second rack
+// simulation. Only the fields read/written by these two leaf bodies are bound.
+// Evidence: 006E3550..006E3567 is FLD +494h / FADD delay / FSTP +494h,
+// with +498h set; 006E3CD0..006E3CD6 returns that same busy byte.
+template <class Busy>
+void fire_host_single_rack(float& to_repeat, Busy& dropping, float delay) {
+    bsp::gameplay_seg33_cc13::SingleRackState rack;
+    rack.to_repeat_494 = to_repeat;
+    rack.drop_bombs_498 = dropping != 0;
+    bsp::gameplay_seg33_cc13::rack_fire_006e3550(rack, delay);
+    to_repeat = rack.to_repeat_494;
+    dropping = static_cast<Busy>(rack.drop_bombs_498);
+}
+
+bool host_single_rack_busy(bool dropping) {
+    bsp::gameplay_seg33_cc13::SingleRackState rack;
+    rack.drop_bombs_498 = dropping;
+    return bsp::gameplay_seg33_cc13::rack_is_busy_006e3cd0(rack);
+}
 
 constexpr double kPi = 3.14159265358979323846;
 
@@ -3895,6 +3922,7 @@ struct GameUnitsHost::Impl {
     struct FormationGroup {
         std::size_t leader{0};                               // group+14h
         std::vector<bsp::ShipAiUnitGroupMember> members;     // group+18h, 34h each
+        mutable GameUnitGroupStorage native_members;        // chain272 read projection
         std::int32_t column{0};                              // group+500h, the
                                                              // pattern index the
                                                              // constructor leaves 0
@@ -5491,8 +5519,23 @@ struct GameUnitsHost::Impl {
                 // cc9_dive_bomb_carried_rounds). -1 when absent.
                 const int ammo = owner_.rack_positive_bag_round(unit_,
                     owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                if (ammo > 0) unit_.rack_rounds_authored += ammo;
-                unit_.rack_authored_per_rack.push_back(ammo);
+                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                    // 006E3530 writes ammo+484h and orgAmmo+488h from the same
+                    // equipment entry. Both outputs feed the existing load seed:
+                    // the total carried count and this rack's original capacity.
+                    // -1 is this reader's missing-entry sentinel, not native ammo.
+                    if (ammo >= 0) {
+                        bsp::gameplay_seg33_cc13::SingleRackState rack;
+                        bsp::gameplay_seg33_cc13::rack_set_ammo_006e3530(rack, ammo);
+                        if (rack.ammo_484 > 0) unit_.rack_rounds_authored += rack.ammo_484;
+                        unit_.rack_authored_per_rack.push_back(rack.org_ammo_488);
+                    } else {
+                        unit_.rack_authored_per_rack.push_back(ammo);
+                    }
+                } else {
+                    if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                    unit_.rack_authored_per_rack.push_back(ammo);
+                }
                 // Packet cc9_rack_bullet_kind. LABELLED: the class's
                 // default Bullet[1]; an equipment bag that changes
                 // the bullet is not read.
@@ -5511,10 +5554,24 @@ struct GameUnitsHost::Impl {
                 float reload = 30.0f;
                 const float authored_reload =
                     owner_.rack_equipment_reload_time(unit_, type_id, pkey);
-                if (authored_reload >= 0.0f)
-                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
-                unit_.rack_reload_time_per_rack.push_back(reload);
-                unit_.rack_reload_left_per_rack.push_back(reload);
+                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                    // 006E3A20..006E3A5D: both the configured period and live
+                    // countdown take the clamped equipment ReloadTime. Preserve
+                    // the existing missing-entry guard and constructor default.
+                    bsp::gameplay_seg33_cc13::SingleRackState rack;
+                    rack.reload_time_48c = reload;
+                    rack.reload_left_490 = reload;
+                    if (authored_reload >= 0.0f)
+                        bsp::gameplay_seg33_cc13::rack_set_reload_time_006e3a20(
+                            rack, authored_reload);
+                    unit_.rack_reload_time_per_rack.push_back(rack.reload_time_48c);
+                    unit_.rack_reload_left_per_rack.push_back(rack.reload_left_490);
+                } else {
+                    if (authored_reload >= 0.0f)
+                        reload = authored_reload < 1.0f ? 1.0f : authored_reload;
+                    unit_.rack_reload_time_per_rack.push_back(reload);
+                    unit_.rack_reload_left_per_rack.push_back(reload);
+                }
             } else if (type == "MultiBombPlatform") {
                 ++unit_.rack_multi_count;
             }
@@ -33276,8 +33333,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         for (std::size_t i = 0; i < unit_.rack_ammo_per_rack.size(); ++i) {
                             if (unit_.rack_ammo_per_rack[i] <= 0 || unit_.lb_rack_dropping[i]) continue;
                             // 006E3550 via 007C0E17: toRepeatTime += delay, dropBombs = 1.
-                            unit_.lb_rack_to_repeat[i] += delay;
-                            unit_.lb_rack_dropping[i] = 1;
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                fire_host_single_rack(unit_.lb_rack_to_repeat[i],
+                                    unit_.lb_rack_dropping[i], delay);
+                            } else {
+                                unit_.lb_rack_to_repeat[i] += delay;
+                                unit_.lb_rack_dropping[i] = 1;
+                            }
                             ++fired;
                             // 007C0E88-007C0EA0.
                             delay += rack_delay_draw_007c0e88() * unit_.plane_bomb_delay_1f4;
@@ -38281,10 +38343,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // keep their own dropBombs (lb_rack_dropping, 006E58E1),
                             // so the C25h the tail raised clears only after them.
                             for (const char d : unit_.lb_rack_dropping) {
-                                if (d != 0) return true;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    if (host_single_rack_busy(d != 0)) return true;
+                                } else {
+                                    if (d != 0) return true;
+                                }
                             }
                         }
-                        return unit_.rack_dropping;
+                        if constexpr (bsp::kWireGoal4Chain273Bound) {
+                            return host_single_rack_busy(unit_.rack_dropping);
+                        } else {
+                            return unit_.rack_dropping;
+                        }
                     }
 
                     // 006E56F0, the rack's fixed-step tick (ESI = rack+310h, so
@@ -38644,10 +38714,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             racks[i].bullet_class = unit_.rack_bullet_class_per_rack[i];
                             racks[i].holds_round = unit_.rack_ammo_per_rack[i] > 0;
                             // vt+1FCh, the rack's dropBombs: whichever tick runs it.
-                            racks[i].busy = lb_tick
-                                ? unit_.lb_rack_dropping[i] != 0
-                                : (unit_.rack_dropping &&
-                                   (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                racks[i].busy = lb_tick
+                                    ? host_single_rack_busy(unit_.lb_rack_dropping[i] != 0)
+                                    : (host_single_rack_busy(unit_.rack_dropping) &&
+                                       (unit_.rack_active < 0 ||
+                                        unit_.rack_active == static_cast<int>(i)));
+                            } else {
+                                racks[i].busy = lb_tick
+                                    ? unit_.lb_rack_dropping[i] != 0
+                                    : (unit_.rack_dropping &&
+                                       (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                            }
                         }
                         owner_.done("Plane::droppable_device_walk", 0x007c0d90u);
                         const dw::DeviceWalkResult w = dw::device_walk_007c0d90(
@@ -38681,14 +38759,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             if (lb_tick) {
-                                unit_.lb_rack_to_repeat[f.rack] += f.delay;
-                                unit_.lb_rack_dropping[f.rack] = 1;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    fire_host_single_rack(unit_.lb_rack_to_repeat[f.rack],
+                                        unit_.lb_rack_dropping[f.rack], f.delay);
+                                } else {
+                                    unit_.lb_rack_to_repeat[f.rack] += f.delay;
+                                    unit_.lb_rack_dropping[f.rack] = 1;
+                                }
                                 ++lb_fired;
                             } else if (!single_set) {
                                 single_set = true;
                                 if (unit_.rack_single_fired < unit_.rack_single_count)
                                     ++unit_.rack_single_fired;
-                                unit_.rack_dropping = true;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    // The same 007C0E17 call on the single-rack
+                                    // arm; f.delay is the device walk's own value.
+                                    fire_host_single_rack(unit_.rack_to_repeat,
+                                        unit_.rack_dropping, f.delay);
+                                } else {
+                                    unit_.rack_dropping = true;
+                                }
                                 unit_.rack_episode_drops = 0;   // GUNNERY 137 diagnostic
                                 unit_.rack_active = static_cast<int>(f.rack);
                             } else {
@@ -38759,7 +38849,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
                             // a single torpedo), dropBombs = 1.
-                            if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                if (unit_.rack_single_count > 0)
+                                    fire_host_single_rack(unit_.rack_to_repeat,
+                                        unit_.rack_dropping, 0.0f);
+                            } else {
+                                if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            }
                             unit_.rack_episode_drops = 0;  // GUNNERY 137 diagnostic
                             if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
                                 // 007C0DE3-007C0E17: the first rack holding a
@@ -48594,9 +48690,37 @@ bool GameUnitsHost::post_formation_leave_0077c980(std::size_t index) {
                 [this, index]() { leave_group_on_destroy_0077bd70(index); })) {
             return false;
         }
+        if constexpr (kWireGoal4Chain260Bound) {
+            // Goal 4 chain 260: 0077C980 at 0077CA21 sends +20h = 0 (a Lua
+            // leave names no other); 0076E520's copy is what the queue holds
+            // (0075C860 write, 00768530 case 77h 0075A330, 0075C8B0 read), and
+            // 0077FE80 arm 3 resolves its +20h for 0077BD70. This host's leave
+            // models the null-other arm only, so a copy naming one is recorded.
+            // Made once the post succeeded: a failed post leaves synchronously
+            // through leave_formation_message_0077c980, which makes its own.
+            const std::size_t other =
+                commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
+            if (other != kNoFormationMember) {
+                impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+            }
+        }
         ++host.director_lua_leaves_posted;
         return true;
     }
+}
+
+void GameUnitsHost::leave_formation_message_0077c980(std::size_t index) {
+    // Goal 4 chain 260: the 77h copy as in post_formation_leave_0077c980, then
+    // 0077BD70 at the call (the synchronous leave's substitution). 0077C980
+    // builds the message only while [unit+284h] is set (0077C99C..0077C9A6).
+    if (unit_formation_group_0284(index) >= 0) {
+        const std::size_t other =
+            commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
+        if (other != kNoFormationMember) {
+            impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+        }
+    }
+    leave_group_on_destroy_0077bd70(index);
 }
 
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
@@ -48641,6 +48765,7 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
     // 0070D2A1 resolves the member record through 0070D080 and 0070D2A6/0070D2AF
     // take the leader branch when the unit IS the leader or has no record.
     const bsp::ShipAiUnitGroupMember* record = nullptr;
+    bsp::ShipAiUnitGroupMember projected_record;
     std::size_t leader = unit;
     if (group_index >= 0
         && static_cast<std::size_t>(group_index) < host.formation_groups.size()) {
@@ -48649,8 +48774,33 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
         leader = group.leader;
         if (leader != unit) {
             const std::uint32_t handle = static_cast<std::uint32_t>(unit + 1u);
-            for (const bsp::ShipAiUnitGroupMember& member : group.members) {
-                if (member.entity == handle) { record = &member; break; }
+            if constexpr (bsp::kWireGoal4Chain272Bound) {
+                // bsp.py show 0070D030 / 0070D070: captured signed count,
+                // first matching identity, then +18h + index*34h. Copy the
+                // current live records, including authored offset columns.
+                // This composition supplies the same record as the native
+                // 0070D2A1 call to 0070D080, with no added unit dereference.
+                // These bodies never dereference the registry identity word.
+                if (group.native_members.capture_members(group.members)) {
+                    const std::int32_t member_index = bsp::native_unit_group_member_index_0070d030(
+                        group.native_members.data(), reinterpret_cast<const void*>(handle));
+                    if (member_index >= 0) {
+                        const void* const native_record = bsp::native_unit_group_record_at_0070d070(
+                            group.native_members.data(), nullptr, static_cast<std::uint32_t>(member_index));
+                        std::memcpy(&projected_record, native_record, sizeof(projected_record));
+                        record = &projected_record;
+                    }
+                } else {
+                    // A host group beyond native capacity stays on its old
+                    // vector search rather than entering a raw body out of domain.
+                    for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+                        if (member.entity == handle) { record = &member; break; }
+                    }
+                }
+            } else {
+                for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+                    if (member.entity == handle) { record = &member; break; }
+                }
             }
         }
         if (record != nullptr) {
@@ -48793,6 +48943,11 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         group = static_cast<std::int32_t>(host.formation_groups.size());
         host.formation_groups.emplace_back();
         Impl::FormationGroup& created = host.formation_groups.back();
+        if constexpr (bsp::kWireGoal4Chain272Bound) {
+            // 0070DB20's fresh group's existing whole 0070DAB0 producer.
+            // No call through the constructor's original profile is admitted.
+            created.native_members.initialize();
+        }
         created.leader = leader;
         bsp::ShipAiUnitGroupMember record;
         record.entity = static_cast<std::uint32_t>(leader + 1u);

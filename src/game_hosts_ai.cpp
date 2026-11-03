@@ -49,6 +49,7 @@
 #include "bsp/plane_task_reach_sw3.hpp"  // cc9-sweep3c reach counter (log only)
 #include "bsp/wire_goal2_chain58_switches.hpp"  // goal 2 chain 58 (kWireGoal2Chain58Bound)
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 
 namespace bsp::game {
 
@@ -3223,6 +3224,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // runs here rather than through the session; the wire hop is the
             // part that is not modelled, not the merge.
             bool posted = false;
+            if constexpr (kWireGoal4Chain260Bound) {
+                // Goal 4 chain 260: 0076E520's copy of the 76h (0075C7C0 write,
+                // 0075A2E0 / 0075C810); the delivery joins the copy's leader.
+                const std::size_t copy_leader =
+                    commands_formation_member_copy_0076e520(0x76, leader_index);
+                if (copy_leader < units.count()) {
+                    if constexpr (kPlannerJoinLoopbackBound) {
+                        ++formation_joins_posted;
+                        posted = commands_post_loopback_callback_0076e520(follower_index,
+                            [this, follower_index, copy_leader] {
+                                ++formation_joins_delivered;
+                                if (units.formation_join_0077f940(follower_index,
+                                                                  copy_leader)) {
+                                    ++formation_joins_made;
+                                }
+                            });
+                    }
+                    if (!posted && units.formation_join_0077f940(follower_index, copy_leader)) {
+                        ++formation_joins_made;
+                    }
+                }
+            } else {
             if constexpr (kPlannerJoinLoopbackBound) {
                 ++formation_joins_posted;
                 posted = commands_post_loopback_callback_0076e520(follower_index,
@@ -3235,6 +3258,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             }
             if (!posted && units.formation_join_0077f940(follower_index, leader_index)) {
                 ++formation_joins_made;
+            }
             }
         } else {
             ++formation_requests_refused;

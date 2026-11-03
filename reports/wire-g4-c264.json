@@ -1,0 +1,123 @@
+{
+  "goal": 4,
+  "chain": 264,
+  "owner": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain264Bound",
+  "summary": "The class-table resets BSP_Game_LoadMissionScene runs at 004E0AA0..004E0ACD and BSP_EngineMovie_Stop at 0045F6C6..0045F6F8 (\"<Table>=nil\\n\" through 006B8AD0 on the mission Lua machine, right after luaPrecacheUnits and the 0095CA70 VehicleClass purge). The seven whose tables no live host code reads afterwards now run through their reconstructed bodies on GameMissionLuaHost's state, in image order, at both sites. The bodies took their segment's whole host interface (Seg8Host 39, Seg31_32Host 63, Seg53Host 114 pure virtuals, never implemented) but only make the one 006B8AD0 call, so they now take bsp::MissionLuaRunString (include/bsp/mission_lua_class_table_resets.hpp); the host adapter is bsp::run_lua_chunk (the host's 006B89F0) over the machine's MissionLuaHostServices with the text as buffer and chunk name and null sinks, as 006B8AD0 does (006B8AE0..006B8AFD). Chunk texts read from the PE at the PUSHed addresses. tools/call_graph.py: all seven reachable from WinMainCRTStartup through run_class_table_resets_cc264, called from GameMissionFrameHost::run_scene_load_004dfb70 and MissionFrameBinding::update_in_mission_subsystems_004c40a0 (the movie-stop tail). Second piece: BSP_Game_ClearMissionLuaGlobals (006AD600) at 004E019F, the step table's mislabelled reset_effect_atlas row, now clears scoring, thisTable, Mission, MissionGlobals and MessageSender on the mission state through the image's own LuaObject bodies (00B66BD0 owner over the borrowed state, 00B67980 globals, 00B67350 set-nil, 00B67700), with the key built as 0041DD40 + memcpy; the body takes a one-method MissionLuaGlobalClear instead of Cc13SweepB2Host (169 pure virtuals). thisTable is recreated at 004E0305 by the existing create_self_table_004e0305 in the sync_lobby_settings_from_lua step, the image's order; the global scripts define none of the other four at top level. GameMissionLuaHost gained a header-only mission_lua_state() accessor (game_hosts_lua.hpp; g4-w3 told). wire_readiness 9173 -> 9178: 00474200, 00476410 and 006AD600 are the real ready->wired rows; 004B1890, 004AF930, 004A7120, 006D74B0 and 00869D20 were already counted wired by static reach (through engine_movie_stop_0045f600, which is not linked) and are now actually called; 00470820 (AnimClass_ReadLua) and 004774A0 (CloudClass_ReadLua) moved to wired only because scene_class_registry.cpp is now statically reached; neither is in the exe. No game run was made; the OFF build (switch false) also built and passed.",
+  "rows": [
+    {
+      "native": "004b1890",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264, from GameMissionFrameHost::run_scene_load_004dfb70 (lua_call_entry_point_a, 004E0AAF) and the engine-movie stop tail (0045F6D5)",
+      "state": "WreckClass=nil on the live mission Lua state; WreckClass is defined by Scripts/datatables/autoload/wreckclasses.lua and rerun each scene load; no linked reader."
+    },
+    {
+      "native": "004af930",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0AB4 / 0045F6DA)",
+      "state": "SoldierClass=nil (autoload soldierclasses.lua); no linked reader."
+    },
+    {
+      "native": "00474200",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0AB9 / 0045F6DF)",
+      "state": "BuoyClass=nil (autoload buoyclasses.lua, text at 00CE5E24); no linked reader."
+    },
+    {
+      "native": "00476410",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0ABE / 0045F6E4)",
+      "state": "CloudClass=nil (autoload cloudclasses.lua, text at 00CE5FA0); no linked reader."
+    },
+    {
+      "native": "004a7120",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0AC3 / 0045F6EE)",
+      "state": "PlanePartClass=nil (autoload planepartclasses.lua); no linked reader."
+    },
+    {
+      "native": "006d74b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0AC8 / 0045F6F3)",
+      "state": "MarkerClasses=nil (autoload markerclasses.lua, text at 00CF8F54); its only reader, the MarkerClasses loader 006DBEB0, is not linked."
+    },
+    {
+      "native": "00869d20",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 (004E0ACD / 0045F6F8)",
+      "state": "Effects=nil (autoload effects.lua, text at 00D0D4AC); the Effects readers (effect acquisition 008700E0, effect-name index 00871750) are not linked and no host file reads Effects."
+    },
+    {
+      "native": "006ad600",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: GameMissionFrameHost::run_scene_load_004dfb70, step reset_effect_atlas (004E019F) -> clear_mission_lua_globals_cc264",
+      "state": "scoring/thisTable/Mission/MissionGlobals/MessageSender = nil on the live mission state through 00B67350 (native_lua_set_nil_00b67350) over 00B67980's globals object; names from the PE (00CF8268, 00CE7494, .data 00E08DF0 -> 00CF5148/00CF8240/00CF8230, read-only)."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 callers (004E0AAA / 0045F6D0), recorded",
+      "reason": "Host reads StationaryClass straight from Lua during the mission (src/game_hosts_lua.cpp lua_getfield StationaryClass ~3574/3590); clearing it needs a load-time StationaryClass cache in GameMissionLuaHost first."
+    },
+    {
+      "native": "004423a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 callers (004E0AA0 / 0045F6C6), recorded",
+      "reason": "Host reads DeviceClass lazily (src/game_hosts_lua.cpp ~5732, 12471-12513); also the body walks DeviceClass indices through SweepA2Host (122 pure virtuals). Needs a load-time device class cache first."
+    },
+    {
+      "native": "006e9c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264 callers (004E0AA5 / 0045F6CB), recorded",
+      "reason": "Host reads Bullets lazily (src/game_hosts_lua.cpp ~5764, 12149-12221); the body also rebuilds the native bullet class cache through Seg33aHost, which the host does not keep."
+    },
+    {
+      "native": "0095ca70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: lua_call_entry_point_a (004E0A9B) and engine-movie stop (0045F6C1)",
+      "reason": "Already run at both sites by GameMissionLuaHost::census_vehicle_class_purge_0095ca70 (game_hosts_lua.cpp, held by g4-w3); replacing it with class_registry_clear_lua_tables_0095ca70 needs a Seg62Host (162 pure virtuals) or a narrowed body and must drop the host purge (no double run)."
+    },
+    {
+      "native": "004708a0",
+      "status": "skipped",
+      "host_site": "engine-movie stop 0045F6E9",
+      "reason": "Bare RET in the image; nothing to run and no readiness row."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen toggle_closed_hud record",
+      "reason": "hud_root_toggle_closed needs the root's +CCh interface id and +E4h payload (00646040 is still a record) and a live 004CC460 interface switch for 22h/23h; the host only notes pending ids."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio record",
+      "reason": "The plan body needs the unit's +BBCh sound object, the +428h device list (0072B540) and +6B4h byte; no host producer for any of them."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Caller gate needs the interface's +104h ambient sound instance and a game camera (camera_present() is false: nothing builds game+19FCh)."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: parse_007a0eb0 gamecamera/fpscamera modifier (unsupported record)",
+      "reason": "GameCameraModifier needs the 0079CBD0 game camera movers (ship captain / chase / cockpit cameras) through GameCameraModifierHost; the host has only the movie camera."
+    },
+    {
+      "native": "006f39b0",
+      "status": "skipped",
+      "host_site": "src/cc13_paratrooper_round.cpp: add_capturer",
+      "reason": "Body works on an image-shaped MCommandBuilding (+764h critical section, +7DCh pointer vector); the host keeps capturers as (building id, round id) pairs in RoundWorld and the units host. Same for 006F34B0 remove_capturer."
+    },
+    {
+      "native": "00472420",
+      "status": "skipped",
+      "host_site": "none (caller 004D2B10 game_destroy_world_containers_004d2b10 is not linked)",
+      "reason": "The registry DeleteAllClasses rows (00472420, 00475860, 00479AC0, 0047B4E0) show ready only through 004D2B10's static reach; that caller is not in the exe and the host keeps no AnimClass/Buoy/Cloud/VehicleVisual registries."
+    }
+  ]
+}

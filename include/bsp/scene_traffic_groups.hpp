@@ -278,13 +278,27 @@ struct SceneBrowserGroupsHost {
     virtual void observe_browser_group(const SceneBrowserGroupEntry& entry) = 0;
 };
 
-// 008F67B0, 008F6FC0 and 008F7100.
-struct PropLibraryHost {
-    virtual ~PropLibraryHost() = default;
+// The 008F7100/008F6FC0 folder walk does not inspect a file's declarations.
+// Keep its file-load boundary separate so an application can supply its live
+// library parser without implementing the independent 008F67B0 parser host.
+struct PropLibraryFolderHost {
+    virtual ~PropLibraryFolderHost() = default;
 
     // 00886280 at 008F701B: enumerate the folder for one extension.
     virtual std::vector<std::string> enumerate_library_files(
         const std::string& folder, const std::string& extension) = 0;
+
+    // 008F7092: load one enumerated file into the same library. The folder
+    // walk only accumulates errors; document is optional parser diagnostics.
+    virtual bool load_library_file(const std::string& path,
+        PropLibraryDocument& document, std::string& error) = 0;
+};
+
+// 008F67B0's parser. Existing users of this host retain the standalone parser
+// as their folder provider; applications can instead implement only the walk.
+struct PropLibraryHost : PropLibraryFolderHost {
+    bool load_library_file(const std::string& path,
+        PropLibraryDocument& document, std::string& error) override;
 
     // 008F67B0's prologue: read the named file through the VFS.
     virtual bool read_library_file(const std::string& path, std::string& out) = 0;
@@ -368,7 +382,7 @@ SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer
 
 // 008F7100 then 008F6FC0 twice: .enums, then .props.
 PropLibraryLoadResult load_prop_library(const std::string& folder,
-    PropLibraryHost& host);
+    PropLibraryFolderHost& host);
 
 // 008F67B0, one file.
 bool load_prop_library_file(const std::string& path, PropLibraryHost& host,

@@ -86,6 +86,10 @@
 #include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/native_particle_model_manager.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/frontend_screen_sets.hpp"
+#include "bsp/native_input_action_contexts.hpp"
+#include "bsp/input_action_classifier.hpp"
+#include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -1774,7 +1778,17 @@ struct GameStartupHost::InputServices {
     // branch. Arbitrary native uninitialized-stack failure behavior is unproven.
     const XINPUT_STATE joystick_stack_preimage{};
     NativeInputShowCursorCall const show_cursor{&::ShowCursor};
+    // Same source cells used by all native action-context operations. Initial
+    // timing bits are E12F20..28 = 3e800000/3f000000/3dcccccd (verified bytes).
+    InputActionTimingThresholds action_timing;
+    // Binding arithmetic's original numeric constants, not replacement device
+    // values. Half, one and negative zero borrow the existing input cells.
+    const volatile double quarter_00d7a348{0.25}, half_00d7a280{0.5};
+    const volatile double seven_eighths_00ce42e0{0.875}, eighth_00d04380{0.125};
     GameInputRuntime core;
+    NativeInputActionBindingContext action_bindings;
+    NativeInputActionConfigurationContext action_configuration;
+    GameInputContextManagerBinding context_manager;
 
     explicit InputServices(GameStartupHost& app)
         : xinput(*app.xinput_library_),
@@ -1799,7 +1813,13 @@ struct GameStartupHost::InputServices {
                   app.sound_->previous_ui_0109db90},
               app.sound_->online_00f8abe8, app.sound_->online_pump, app.sound_->xlive,
               loading_step_00d7a2f0, show_cursor,
-              &gui_raw_input_device_004ba6d0, rumble_00e12f2c}) {
+              &gui_raw_input_device_004ba6d0, rumble_00e12f2c}),
+          action_bindings{core.devices(), application_camera_axes_crt(),
+              {trigger_threshold_00ce3800, negative_zero_00d7a208, one_00d7a24c,
+                  quarter_00d7a348, half_00d7a280, seven_eighths_00ce42e0, eighth_00d04380}},
+          action_configuration{core.records_context(), action_bindings,
+              {action_timing.quick_edge_and_hold, action_timing.repeat_delay, action_timing.repeat_step}},
+          context_manager{core.action_context(), action_configuration} {
         app.singletons_->bind_input_backend(&core.backend_context());
         app.singletons_->bind_input_actions(&core.action_context());
     }
@@ -3644,6 +3664,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.order_throttle, options_.order_rudder, options_.mission_frame_seconds,
         options_.trajectory_csv, options_.order_command, options_.order_command_target,
         options_.order_speed, options_.order_speed_set);
+    if constexpr (kWireGoal4Chain271Bound) {
+        menu_->bind_input_context_manager(input_->context_manager);
+    }
     // Milestone 2n, --order-unit <name>. It is a setter rather than another
     // constructor argument so the menu host, which this packet does not own,
     // keeps its signature.

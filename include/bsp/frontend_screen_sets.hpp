@@ -11,6 +11,8 @@
 // half). Everything here is a hypothesis reconstructed from the listing; no
 // symbol was recovered.
 namespace bsp {
+struct NativeInputActionOwnerContext;
+struct NativeInputActionConfigurationContext;
 
 // ---------------------------------------------------------------------------
 // The layered screen-set stack, 00E18CF8..00E18D47
@@ -91,6 +93,8 @@ void set_front_end_screen_set_004f8710(FrontEndScreenSetStack& stack, FrontEndSc
 // contexts 1..19h when it clears a level.
 inline constexpr int kGameInputContextSetLevels = 4;
 inline constexpr int kGameInputContextCount = 0x1A; // exclusive bound, ids 1..19h
+// Required raw context range through 1Dh, outside the 004C4300 walk.
+inline constexpr int kGameInputContextStorageCount = 0x1E;
 inline constexpr unsigned kGameInputContextSetSetters[kGameInputContextSetLevels] = {
     0x004D8A50u, // level 1, game+570h
     0x004D8AE0u, // level 2, game+580h
@@ -98,10 +102,24 @@ inline constexpr unsigned kGameInputContextSetSetters[kGameInputContextSetLevels
     0x004D8C00u, // level 4, game+5A0h; the one every manager calls
 };
 
+// Borrow the same raw owner and configuration providers as native actions.
+// No level table or action storage lives in this bridge. prepare() extends
+// that owner's native table for the fixed-index game callers, preserving
+// existing entries and zeroing only new slots (00A93C80's growth schedule).
+struct GameInputContextManagerBinding {
+    NativeInputActionOwnerContext& owner;
+    NativeInputActionConfigurationContext& configuration;
+    void prepare();
+    void* current_owner();
+    void set_level(void* captured_owner, std::uint32_t index, std::uint32_t level);
+};
+
 struct GameInputContextSetStack {
     std::vector<int> levels[kGameInputContextSetLevels]{};
-    // [manager+10h], indexed by context id. 004C4300 only ever raises a level.
+    // Retained solely for the chain271 OFF implementation. ON never reads or
+    // writes this old host state: all levels belong to manager's actual+10h.
     int context_level[kGameInputContextCount]{};
+    GameInputContextManagerBinding* manager{}; // borrowed through menu lifetime
 };
 
 // 004C4300, __thiscall(game, int level), RET 4. For `level` down to 1: drop
@@ -113,6 +131,12 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
 // 004C4300(game, 4). The backwards scan at 004D8C84 that looks for the topmost
 // non-empty level leaves its result unused and is not reproduced.
 void set_game_input_context_set_004d8c00(GameInputContextSetStack& stack,
+    const int* ids, std::size_t count);
+
+// Bind the existing segment-10 level-2/3 bodies to this persistent owner.
+// Only the four native vector headers are projected; their data pointers
+// borrow levels[], and assignments and manager writes update this stack.
+void publish_native_input_context_set(GameInputContextSetStack& stack, int level,
     const int* ids, std::size_t count);
 
 // ---------------------------------------------------------------------------
