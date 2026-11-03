@@ -5,6 +5,8 @@
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_c.hpp"
+#include "bsp/sound_retained_record.hpp"
+#include "bsp/wire_goal2_chain157_switches.hpp"
 
 #include <windows.h>
 #include <intrin.h>
@@ -547,14 +549,21 @@ void read_message_record_00704590(VoiceClipRecord& record, PropertyVisitor& read
         path += voice + ".fsb";
         auto take = [&](const std::string& file) {
             void* bank = calls.load_sound_bank_00a83fd0(file);
-            void* const previous = record.resources_20[slot];
-            if (previous != bank) {
-                record.resources_20[slot] = bank;
-                if (bank != nullptr) {
-                    calls.retain_reference(bank);
-                }
-                if (previous != nullptr) {
-                    calls.release_reference(previous);
+            if constexpr (kWireGoal2Chain157Bound) {
+                // 00704FF9: 004E7BB0(ECX = &slot, &temporary) assigns the sample into the record
+                // slot through the reconstructed body; OFF keeps the inline compare/retain/release.
+                assign_sound_sample_reference_004e7bb0(&record.resources_20[slot], &bank,
+                    calls.sample_reference_lifetime());
+            } else {
+                void* const previous = record.resources_20[slot];
+                if (previous != bank) {
+                    record.resources_20[slot] = bank;
+                    if (bank != nullptr) {
+                        calls.retain_reference(bank);
+                    }
+                    if (previous != nullptr) {
+                        calls.release_reference(previous);
+                    }
                 }
             }
             if (bank != nullptr) {

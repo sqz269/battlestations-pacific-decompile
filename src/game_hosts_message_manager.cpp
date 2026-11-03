@@ -474,6 +474,12 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
             unreached("a sound bank reference (00A83FD0 is a seam)");
         }
     }
+    // kWireGoal2Chain157Bound: 004E7BB0's zero-reference service is the started sound
+    // runtime's sample lifetime, the service release_sample_reference dispatches to at zero.
+    // Read only after load_sound_bank_00a83fd0 returned, so the runtime is started.
+    bsp::GameplayEffectComponentLifetime& sample_reference_lifetime() override {
+        return bound_sound_runtime().samples();
+    }
     bool file_store_exists_vslot8(const std::string& path) override {
         const bool present = vfs.exists(path);  // 00BDD440
         ++(present ? summary.voice_probe_hits : summary.voice_probe_misses);
