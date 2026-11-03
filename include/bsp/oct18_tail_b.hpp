@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <vector>
 
 namespace bsp::entity_mission_seg60_argon { struct Seg60Host; }
 
@@ -135,6 +136,9 @@ bool ship_derive_turn_fields_thunk_00852200(void* descriptor, Host& host);
 
 float engine_jam_seconds_0093a3f0(const void* task, Host& host);
 void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host);
+// 0095C550's typed view: the same body over a std::vector a host keeps as its
+// copy of the census at 00F8A09C (dedupe scan, then append at last).
+void append_vehicle_census_0095c550(std::vector<std::int32_t>& census, std::int32_t class_id);
 void inherit_race_activate_thunk_009277e0(void* entity);
 std::uint8_t surface_target_thunk_00922dc0(void* entity,
                                           entity_mission_seg60_argon::Seg60Host& host);

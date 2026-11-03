@@ -6,6 +6,8 @@
 #include "bsp/wire_goal2_chain81_switches.hpp"
 #include "bsp/wire_goal2_chain120_switches.hpp"
 #include "bsp/wire_goal2_chain132_switches.hpp"
+#include "bsp/wire_goal2_chain192_switches.hpp"
+#include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
@@ -1587,10 +1589,17 @@ public:
             static_cast<int>(class_index), "Catapult", "LaunchedClass", -1));
     }
     void append_census(std::int32_t class_index) override {
-        for (std::int32_t existing : owner_.preload_census) {
-            if (existing == class_index) return;
+        if constexpr (bsp::kWireGoal2Chain192Bound) {
+            // 0095C550 (0095C754/0095C75B/0095C99D): the census append's own dedupe
+            // scan and append over Impl::preload_census (00F8A09C); OFF keeps this loop.
+            bsp::oct18_tail_b::append_vehicle_census_0095c550(owner_.preload_census,
+                class_index);
+        } else {
+            for (std::int32_t existing : owner_.preload_census) {
+                if (existing == class_index) return;
+            }
+            owner_.preload_census.push_back(class_index);
         }
-        owner_.preload_census.push_back(class_index);
     }
     bool pop_stock_queue(std::int32_t& class_index) override {
         if (owner_.stock_queue.empty()) return false;

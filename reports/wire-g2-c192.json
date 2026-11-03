@@ -1,0 +1,56 @@
+{
+  "goal": 2,
+  "chain": 192,
+  "run": 365,
+  "harness": "claude",
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": "segment 62 [00951f40-00966890]",
+  "tier": 2,
+  "host_file": "src/game_hosts_scene_contents.cpp",
+  "selection_reason": "Every candidate's rows sit behind host interfaces nothing implements. Segment 62 had one row (0095C550) whose stand-in, VehicleClassPreloadBinding::append_census, already runs on every mission load through 0095C640's reconstruction. Segments 58, 60, 70, 72 and 80 route through multiplayer start gates, network state messages, scene-file writing, xlive and foliage hosts that no host path reaches; segment 26's markers and destructors need native marker and score-row storage the host does not build.",
+  "switch": "kWireGoal2Chain192Bound",
+  "switch_value": false,
+  "wired_total_before": 9011,
+  "wired_total_after": 9012,
+  "counting_scope": "Source-level readiness counts from tools/wire_readiness.py after a plain OFF build; not runtime or ABI proof.",
+  "rows": [
+    {
+      "native": "0095c550",
+      "address": "0095c754",
+      "function": "0095c640",
+      "host_site": "src/game_hosts_scene_contents.cpp:1591 VehicleClassPreloadBinding::append_census",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "game_hosts_mission_frame.cpp:3916 load_scene_contents step -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> load_scene_contents_004d4df0 (mission_scene_contents.cpp:115, unconditional pass 2 Registration) -> SceneContentsBinding::read_scene_file -> run_scene_file_reader_0046df00 -> SceneReaderBinding::instantiate_entity (Registration arm, game_hosts_scene_contents.cpp:3012ff; main_body when Type is present and the class is not short-circuited; owner.lua attached at mission_frame:3911) -> bsp::register_vehicle_class_preload (0095C640, scene_traffic_groups.cpp:382/386/403) -> append_census. No if-constexpr gate on the path; kVehicleClassPreloadCc15Bound is true and only gates code after the site.",
+      "contract": "__fastcall ECX = class index, plain RET; the vector is the global at 00F8A09C (words +4 first, +8 last, +0Ch end). All three image call sites are in 0095C640 (0095C754, 0095C75B, 0095C99D), which the host's VehicleClassPreloadHost::append_census stands in for.",
+      "replacement": "The existing body was split into one template core over a census view. The raw image-storage entry is a thin wrapper (same behaviour); a new typed overload with the same address runs the core over std::vector<int32_t>. The ON arm calls it over Impl::preload_census, the host's copy of 00F8A09C, replacing the host's own dedupe loop and push_back.",
+      "note": "The census's only current reader (004D4720 alias building, game_hosts_scene_contents.cpp:1880) runs under kSceneClassPreloadAliasesCc15Bound, which is false; the append itself runs on every mission load."
+    },
+    {
+      "native": "0095ba30",
+      "address": "004d2b2f",
+      "function": "004d2b10",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Sole image caller is 004D2B10 BSP_Game_DestroyWorldContainers (world teardown). Its reconstruction (seg10_cc13.cpp:214) is reached only through Seg10Host/host methods nothing implements (cc13_left55_seg56c.cpp, cc13_sweepA3.cpp); no host path runs a world teardown, and the scene-contents host's VehicleClassRegistry lives for the whole process with no clear site. No live site."
+    },
+    {
+      "native": "00958e90",
+      "address": "00961520",
+      "function": "00960230",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Both real callers are inside 00960230 BSP_VehicleClass_ReadLuaFields, which builds native 0Ch class-entry nodes (operator new, refcounted +8 reference). The host's stand-in for 00960230 (GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230) is in src/game_hosts_lua.cpp, which another worker holds, and it keeps host records rather than native entry nodes, so the body has no host storage to build into."
+    }
+  ],
+  "host_objects": [],
+  "checks": {
+    "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed, no warnings",
+    "build_on": "python tools/off_switch_on_build.py --names kWireGoal2Chain192Bound: build.ps1 exit 0, 0 distinct diagnostics; sources restored",
+    "pc24_lint": "not required: the ON arm does no x87 arithmetic",
+    "wire_readiness": "0095c550 wired after a plain OFF build; total wired 9011 -> 9012"
+  },
+  "on_effect": "At each mission load's registration pass, 0095C640's census appends (landing-ship class, the class itself, the catapult-launched class) go through the reconstructed 0095C550 dedupe scan and append over Impl::preload_census instead of the host's loop. The census content and order are unchanged for a well-formed vector. Switch remains OFF.",
+  "limitations": "Reach is static (read, not run). The census feeds 004D4720 only while kSceneClassPreloadAliasesCc15Bound is true."
+}
