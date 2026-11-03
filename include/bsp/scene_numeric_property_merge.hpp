@@ -8,7 +8,8 @@
 namespace bsp::game {
 
 // Projects supported parser-owned I/F/B, decoded S, V3 and (chain 311) closed
-// nonempty IA plus one-quoted-token reference values into two real native bags
+// nonempty IA plus one-quoted-token reference values, and (chain 321) closed
+// nonempty BIN byte payloads into two real native bags
 // (the class name predates the S/V3/IA/R extensions; IA enters through
 // 008F3590 as native type 10, the eight reference letters through 008F3AC0 as
 // type 5 with their kind word).

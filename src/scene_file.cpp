@@ -14,6 +14,8 @@
 #include "bsp/wire_goal4_chain284_switches.hpp"
 #include "bsp/wire_goal4_chain307_switches.hpp"
 #include "bsp/wire_goal4_chain311_switches.hpp"
+#include "bsp/wire_goal4_chain321_switches.hpp"
+#include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -23,6 +25,7 @@
 
 #include <cmath>
 
+#include <algorithm>
 #include <array>
 #include <cctype>
 #include <clocale>
@@ -741,6 +744,35 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 && prop.values.front().find('\0') == std::string::npos) {
                 prop.has_reference = true;
             }
+        }
+        if constexpr (kWireGoal4Chain321Bound) {
+            // bsp.py show 008F5A00 --asm, 008F632D..008F63DF: BIN reads
+            // count with 008D9AD0, allocates count bytes, then passes each
+            // 008D9980 token in ECX to 008EF6D0. The provider receives the
+            // retained buffer, count and flags 0. Admit complete nonempty
+            // explicit statements; existing-record/empty forms stay raw.
+            if (equal_insensitive(prop.type_letter, "BIN") && cur.at(";")
+                && prop.values.size() >= 2) {
+                std::int32_t count = 0;
+                if (scene_scan_int(prop.values.front(), count) && count >= 1
+                    && static_cast<std::size_t>(count) == prop.values.size() - 1) {
+                    const bool bounded = std::all_of(prop.values.begin() + 1, prop.values.end(),
+                        [](const std::string& token) {
+                            return token.size() < 0x400
+                                && token.find('\0') == std::string::npos;
+                        });
+                    if (bounded) {
+                        prop.byte_array.reserve(static_cast<std::size_t>(count));
+                        for (std::size_t i = 1; i < prop.values.size(); ++i) {
+                            prop.byte_array.push_back(cc13_band0080::decode_hex_byte_token_008ef6d0(
+                                prop.values[i].c_str()));
+                        }
+                        prop.has_byte_array = true;
+                    }
+                }
+            }
+        } else {
+            // The prior parser retains only the raw BIN tokens.
         }
         cur.expect(";");
         block.values.push_back(std::move(prop));
