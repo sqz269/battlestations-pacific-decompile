@@ -1154,7 +1154,7 @@ void mission_lua_result_sink_append_all_as_text_00885a30(
 //   6 -> 006B8130 PushNil
 void mission_lua_push_argument_record_00885da0(
     const LuaVariantRecord& record,
-    MissionLuaEnvironmentHost& env) {
+    MissionLuaArgumentPushHost& env) {
     switch (record.tag) {
     case 0:
         env.lua_push_number_006b80e0(record.num_val);
