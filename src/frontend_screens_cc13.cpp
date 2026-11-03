@@ -400,8 +400,14 @@ void hud_order_screen_exit_005f9480(void* screen) noexcept {
     write_field<std::uint8_t>(screen, 0x82, 0);
 }
 
+std::uint32_t plane_ground_contact_owner_006049f0(std::uint8_t contact_bf8,
+                                                 std::uint32_t owner_bf4) noexcept {
+    return contact_bf8 != 0 ? owner_bf4 : 0;
+}
 std::uint32_t plane_ground_contact_owner_006049f0(const void* plane) noexcept {
-    return read_field<std::uint8_t>(plane, 0xBF8) != 0 ? read_field<std::uint32_t>(plane, 0xBF4) : 0;
+    const std::uint8_t contact = read_field<std::uint8_t>(plane, 0xBF8);
+    return plane_ground_contact_owner_006049f0(
+        contact, contact != 0 ? read_field<std::uint32_t>(plane, 0xBF4) : 0u);
 }
 
 void prompt_result_set_quit_flag_005fc640(std::int32_t result, std::uint8_t& quit_00e1ae75) noexcept {

@@ -837,6 +837,8 @@ void* ship_ai_traffic_list_head_node_009df8f0(Cc13Seg67bHost& host);
 float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot);
 // 0099BB00: __thiscall(ECX = unit, float v), RET 4.
 void plane_latch_yaw_rate_multiplier_0099bb00(void* unit, float v);
+// 0099BB00 over the field it latches, unit+BC4h; the Raw entry forwards here.
+void plane_latch_yaw_rate_multiplier_0099bb00(float& yaw_rate_multiplier_bc4, float v);
 // 009DB470: __fastcall(ECX = brain), RET.
 void ship_ai_brain_destruct_members_009db470(Cc13Seg67bHost& host, void* brain);
 // 009E5110 / 009E5130 / 009E5460 / 009E8C10: __fastcall(ECX = object), RET.

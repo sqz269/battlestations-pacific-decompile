@@ -1728,9 +1728,12 @@ float pilot_bot_first_task_wait_value_00999ae0(Cc13Seg67bHost& host, void* bot) 
 
 // 0099BB00 (0099BB00-0099BB37). cur = unit+BC4h; 0099BB11 FCOMIP cur against v,
 // JBE (cur <= v, or NaN) -> unit+BC4h = v; else unit+BC4h = cur (re-stored).
+void plane_latch_yaw_rate_multiplier_0099bb00(float& yaw_rate_multiplier_bc4, float v) {
+    const float cur = yaw_rate_multiplier_bc4;
+    yaw_rate_multiplier_bc4 = (cur > v) ? cur : v;
+}
 void plane_latch_yaw_rate_multiplier_0099bb00(void* unit, float v) {
-    const float cur = at<float>(unit, 0xBC4);
-    at<float>(unit, 0xBC4) = (cur > v) ? cur : v;
+    plane_latch_yaw_rate_multiplier_0099bb00(at<float>(unit, 0xBC4), v);
 }
 
 // 009DB470 (009DB470-009DB522). EH frame 00CB05FD. [b+D0h] = 00D05704 (009DB49F);

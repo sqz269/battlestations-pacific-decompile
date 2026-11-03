@@ -372,6 +372,10 @@ void hud_order_screen_exit_005f9480(void* screen) noexcept;
 
 // 006049F0: the plane's ground-contact owner (+BF4h) when the byte +BF8h is set.
 std::uint32_t plane_ground_contact_owner_006049f0(const void* plane) noexcept;
+// 006049F0 over the two fields it reads: the contact byte +BF8h and the owner +BF4h; the
+// Raw entry forwards here.
+std::uint32_t plane_ground_contact_owner_006049f0(std::uint8_t contact_bf8,
+                                                 std::uint32_t owner_bf4) noexcept;
 
 // 005FC640: prompt callback, ECX = result: result 1 sets the quit byte 00E1AE75.
 void prompt_result_set_quit_flag_005fc640(std::int32_t result, std::uint8_t& quit_00e1ae75) noexcept;

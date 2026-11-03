@@ -10,4 +10,8 @@ namespace bsp {
 // New C++ interface; this does not reproduce the original calling convention.
 std::uint32_t native_unit_role_open_to_slot_0059bbd0(const void* actual_unit,
     std::uint32_t role, std::uint32_t candidate_slot) noexcept;
+// 0059BBD0 over the unit's role policy table (+188h, one DWORD per role); the Raw
+// entry forwards here.
+std::uint32_t native_unit_role_open_to_slot_0059bbd0(const std::int32_t* role_policy_188,
+    std::uint32_t role, std::uint32_t candidate_slot) noexcept;
 } // namespace bsp

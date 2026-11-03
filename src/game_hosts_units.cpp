@@ -17,6 +17,14 @@
 #include "bsp/wire_goal2_chain32_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain56_switches.hpp"
+#include "bsp/wire_goal2_chain67_switches.hpp"
+#include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
+#include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
+#include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
+#include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
+#include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
+#include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
+#include "bsp/native_frame_transpose_inverse.hpp"  // chain 67: 0085DEA0
 #include "bsp/strike_release_ver_cc13.hpp"
 #include "bsp/native_scene_command_queue.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -10430,7 +10438,15 @@ struct GameUnitsHost::Impl {
                 // 007D7A40 when the +72Ch predicate holds (packet cc9_plane_rate_floor).
                 if constexpr (GameUnitsHost::Impl::kPlaneSpeedFloorBound) {
                     if (free_flight) {
+                        // 007D7A40: cc13_seg48_pilot_plan_reset_command_timer_007d7a40 arms
+                        // dyn+C8h (plane_speed_floor_timer_c8, the plane's [ctl+10h] block,
+                        // never null here); OFF keeps the inline 1.2f store.
+                        if constexpr (bsp::kWireGoal2Chain67Bound) {
+                            bsp::cc13_seg48_pilot_plan_reset_command_timer_007d7a40(
+                                &u.plane_speed_floor_timer_c8);
+                        } else {
                         u.plane_speed_floor_timer_c8 = bsp::gameplay_seg48_cc13::kRepairFloorSeconds_007d7a40;
+                        }
                         ++u.speed_floor_arms;
                     }
                 }
@@ -12404,12 +12420,20 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         const std::size_t idx = slots[ti]->process_index;
         for (const GameGunneryUnitRow& r : gunnery->unit_rows()) {
             if (r.unit_index != idx) continue;
+            // 007B5BE0: unit_largest_extent_007b5be0 over the target's gunnery row
+            // ranges (+434h, +444h, +448h); OFF keeps the inline max.
+            if constexpr (bsp::kWireGoal2Chain67Bound) {
+                extent = bsp::cc13_seg47::unit_largest_extent_007b5be0(
+                    r.category_ranges[1], r.category_ranges[5], r.category_ranges[6]);
+                return true;
+            } else {
             const float a = r.category_ranges[5];  // +444h
             const float b = r.category_ranges[6];  // +448h
             const float m = (b > a) ? b : a;       // 007B5BF9 FCOMPI / JA
             const float c = r.category_ranges[1];  // +434h
             extent = (m > c) ? m : c;              // 007B5C0A FCOMPI / JBE
             return true;
+            }
         }
         return false;
     }
@@ -14991,9 +15015,17 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
                         2.0 * static_cast<double>(static_cast<float>(
                             (static_cast<double>(m) - 0.4) * std::sin(ab))) + 1.0);
                     }
+                    // 0099BB00: plane_latch_yaw_rate_multiplier_0099bb00 latches unit+BC4h
+                    // (plane_yaw_gain_bc4) at max(cur, v); OFF keeps the inline latch.
+                    if constexpr (bsp::kWireGoal2Chain67Bound) {
+                        const bool raises = !(u.plane_yaw_gain_bc4 > v);
+                        bsp::plane_latch_yaw_rate_multiplier_0099bb00(u.plane_yaw_gain_bc4, v);
+                        if (raises) ++u.yaw_gain_raises;
+                    } else {
                     if (!(u.plane_yaw_gain_bc4 > v)) {
                         u.plane_yaw_gain_bc4 = v;
                         ++u.yaw_gain_raises;
+                    }
                     }
                 }
             }
@@ -15196,7 +15228,14 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
         stall_range = lua.plane_globals().dynamics_spd_multipliers_stall_range_max;
     }
     const float stall = u.plane_stall_spd > 0.0f ? u.plane_stall_spd : 17.5f;
-    const float v_stall = stall_range * stall;                       // 007C4830
+    // 007C4830: plane_class_stall_range_speed_007c4830 over tuning+230h and the
+    // class StallSpd +184h; OFF keeps the inline product.
+    float v_stall;
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        v_stall = bsp::cc13_seg47::plane_class_stall_range_speed_007c4830(stall_range, stall);
+    } else {
+        v_stall = stall_range * stall;                               // 007C4830
+    }
     const float v_look = speed > v_stall ? speed : v_stall;
     // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8), and
     // unit+AC8h is the world velocity vtable[34h] 007BBB70 returns
@@ -15622,7 +15661,14 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
     auto ai_held = [](std::int32_t s) { return s != kLocalPlayerSlot; };
     // 0059BBD0(unit, role, slot): unit+188h + role*4 == 9 || == slot.
     auto open_to = [&](int role, std::int32_t s) {
+        // 0059BBD0: native_unit_role_open_to_slot_0059bbd0 over the unit's +188h role
+        // policy table (role_permission_0188); OFF keeps the inline test.
+        if constexpr (bsp::kWireGoal2Chain67Bound) {
+            return bsp::native_unit_role_open_to_slot_0059bbd0(u.role_permission_0188,
+                static_cast<std::uint32_t>(role), static_cast<std::uint32_t>(s)) != 0;
+        } else {
         return u.role_permission_0188[role] == 9 || u.role_permission_0188[role] == s;
+        }
     };
     // 009281C0 through vtable[154h] = 0077F480: role 0 given 8 clears +184h.
     auto set_role = [&](int role, std::int32_t s) {
@@ -15724,8 +15770,17 @@ void GameUnitsHost::Impl::role_screen_update_0067bb50() {
     // hold on the pump path, see above).
     if (holds(controlled_plus_one, 0)) return;
     GameUnitSlot& c = *slots[controlled_plus_one - 1];
+    // 0059BBD0: native_unit_role_open_to_slot_0059bbd0(role 0, the local slot) over the
+    // unit's +188h policy table; OFF keeps the inline test.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        if (bsp::native_unit_role_open_to_slot_0059bbd0(c.role_permission_0188, 0u,
+                static_cast<std::uint32_t>(kLocalPlayerSlot)) == 0) {
+            return;
+        }
+    } else {
     if (!(c.role_permission_0188[0] == 9 || c.role_permission_0188[0] == kLocalPlayerSlot)) {
         return;                                                  // 0059BBD0(0, slot)
+    }
     }
     send(controlled_plus_one, 1u, 1);                            // 0067BC0B
 }
@@ -17747,6 +17802,14 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     d.frame_8 = o.world;
     // 0085DEA0: copy, transpose the 3x3, translation = -0.0 - (t through the
     // transposed rotation, 0042D0D0 without normalising).
+    // 0085DEA0: transpose_inverse_native_frame_0085dea0 builds holder+48h from the +8h
+    // frame (both image-shaped 4x4 float matrices) with the -0.0 cell 00D7A208
+    // (kNegativeZero_00d7a208, plane_pose_commit.hpp);
+    // OFF keeps the inline transpose and negated translation.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        bsp::transpose_inverse_native_frame_0085dea0(d.inverse_48.data(), d.frame_8.data(),
+                                                     &bsp::kNegativeZero_00d7a208);
+    } else {
     bsp::CameraMatrix inv = d.frame_8;
     std::swap(inv[1], inv[4]);
     std::swap(inv[2], inv[8]);
@@ -17759,6 +17822,7 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     inv[13] = -0.0f - ry;
     inv[14] = -0.0f - rz;
     d.inverse_48 = inv;
+    }
     // +88h = owner->vtable[50h]() = 006D2040: atan2 over local row 2 (x, z); this
     // host's airfield is top level, so its world rows are the local rows.
     d.runway_heading_88 = static_cast<float>(std::atan2(static_cast<double>(d.frame_8[8]),
@@ -18018,6 +18082,14 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     d.frame_8[13] = static_cast<float>(static_cast<double>(wy) + d.frame_8[13]);
     d.frame_8[14] = static_cast<float>(static_cast<double>(wz) + d.frame_8[14]);
     // 0085DEA0, as landing_deck_006c0750 builds it for an airfield.
+    // 0085DEA0: transpose_inverse_native_frame_0085dea0 builds holder+48h from the +8h
+    // frame (both image-shaped 4x4 float matrices) with the -0.0 cell 00D7A208
+    // (kNegativeZero_00d7a208, plane_pose_commit.hpp);
+    // OFF keeps the inline transpose and negated translation.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        bsp::transpose_inverse_native_frame_0085dea0(d.inverse_48.data(), d.frame_8.data(),
+                                                     &bsp::kNegativeZero_00d7a208);
+    } else {
     bsp::CameraMatrix inv = d.frame_8;
     std::swap(inv[1], inv[4]);
     std::swap(inv[2], inv[8]);
@@ -18030,6 +18102,7 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     inv[13] = -0.0f - ry;
     inv[14] = -0.0f - rz;
     d.inverse_48 = inv;
+    }
     d.runway_heading_88 = o.hull_heading_1050;
     const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
     d.t_a4[0] = 0.0f;
@@ -25416,8 +25489,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     // 007DBF28-007DBFAE: the holder heading (+88h of
                                     // 006049F0) with contact, else the plane's own.
                                     const float h = unit_.plane_heading_c6c;
-                                    const bool contact = unit_.plane_ground_contact_bf8
+                                    // 006049F0: plane_ground_contact_owner_006049f0 answers the
+                                    // holder +BF4h (here a landing deck index + 1) only while
+                                    // +BF8h is set; OFF keeps the inline test.
+                                    bool contact;
+                                    if constexpr (bsp::kWireGoal2Chain67Bound) {
+                                        contact = bsp::cc13_fe1::plane_ground_contact_owner_006049f0(
+                                            static_cast<std::uint8_t>(unit_.plane_ground_contact_bf8 ? 1u : 0u),
+                                            static_cast<std::uint32_t>(unit_.plane_contact_deck_bf4)) != 0;
+                                    } else {
+                                    contact = unit_.plane_ground_contact_bf8
                                         && unit_.plane_contact_deck_bf4 != 0;
+                                    }
                                     const GameUnitsHost::Impl::LandingDeck* hd = contact
                                         ? &owner_.landing_decks[unit_.plane_contact_deck_bf4 - 1u]
                                         : nullptr;
@@ -41084,9 +41167,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                    : g->air_field_move_spd;
                         // 009B24F3-009B256B: hi = max(base, 007C4830 x 0.6);
                         // speed = 00419010(base x 5, base, base x 10, hi, dz).
-                        const float srs = static_cast<float>(static_cast<double>(
+                        // 007C4830: plane_class_stall_range_speed_007c4830 over tuning+230h
+                        // and StallSpd +184h; OFF keeps the inline product.
+                        float srs;
+                        if constexpr (bsp::kWireGoal2Chain67Bound) {
+                            srs = static_cast<float>(static_cast<double>(
+                                bsp::cc13_seg47::plane_class_stall_range_speed_007c4830(
+                                    g->dynamics_spd_multipliers_stall_range_max,
+                                    unit_.plane_stall_spd)) *
+                                0.6000000238418579);
+                        } else {
+                        srs = static_cast<float>(static_cast<double>(
                             g->dynamics_spd_multipliers_stall_range_max * unit_.plane_stall_spd) *
                             0.6000000238418579);
+                        }
                         const float hi = base > srs ? base : srs;
                         float spd = carrier ? base : bsp::clamped_interpolate_00419010(
                             static_cast<float>(static_cast<double>(base) * 5.0), base,
@@ -42362,8 +42456,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool bomber = bsp::unit_is_kind_of(p.class_id, 0x10)
                             || bsp::unit_is_kind_of(p.class_id, 0x16);
                         const bsp::GameTuningBlock* g = loaded ? &owner_.lua.plane_globals() : nullptr;
-                        const double stall_range = g == nullptr ? 1.0 : static_cast<double>(
+                        // 007C4830: plane_class_stall_range_speed_007c4830 over tuning+230h
+                        // and StallSpd +184h; OFF keeps the inline product.
+                        double stall_range;
+                        if constexpr (bsp::kWireGoal2Chain67Bound) {
+                            stall_range = g == nullptr ? 1.0 : static_cast<double>(
+                                bsp::cc13_seg47::plane_class_stall_range_speed_007c4830(
+                                    g->dynamics_spd_multipliers_stall_range_max, p.plane_stall_spd));
+                        } else {
+                        stall_range = g == nullptr ? 1.0 : static_cast<double>(
                             g->dynamics_spd_multipliers_stall_range_max * p.plane_stall_spd);  // 007C4830
+                        }
                         if (free) {
                             // PC24 (kPc24UnitsHostCc13Bound): 009CE5C0-009CE5D7 rounds f * 5
                             // and the + +908h.
@@ -49217,7 +49320,15 @@ bool GameUnitsHost::plane_local_input_gate_007bb9a0(std::size_t index,
     gate.gate_block_value = u.actuator_block_dec.channel_a.value;
     gate.controller_present = false;
     gate.controller_blocks = false;
+    // 00604A20: cc13_sweepB_interface_allows_input_00604a20 over the flight state +900h
+    // and the landing byte +904h (plane_landed_904); OFF keeps !active, which takes
+    // +904h clear.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        gate.global_block_00604a20 = bsp::cc13_sweepB_interface_allows_input_00604a20(
+            mode, static_cast<std::uint8_t>(u.plane_landed_904 ? 1u : 0u));
+    } else {
     gate.global_block_00604a20 = !active;
+    }
     gate.unit_suppressed = unit_flag_005d(index);
     return true;
 }
