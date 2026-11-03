@@ -4,6 +4,7 @@
 
 #include "bsp/gameplay_seg69_70_cc13.hpp"
 #include "bsp/band_009f_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/unit_rudder.hpp"
 
 #include <cmath>
@@ -713,7 +714,10 @@ std::optional<PlannerSpawnCall> ai_defend_spawn_arm_00a29be7(
 
 float ai_group_resource_sum_00a2c530(const std::vector<float>& member_304) noexcept {
     float sum = 0.0f;
-    for (const float v : member_304) sum = v + sum;   // 00A2C570 FLD, 00A2C576 FADD
+    // 00A2C570 FLD member+304h, 00A2C576 FADD accumulator, 00A2C57A
+    // FSTP float on every iteration. Preserve the main thread's PC24 addition.
+    for (const float v : member_304)
+        sum = static_cast<float>(cc13x87::x87_add24(v, sum));
     return sum;
 }
 

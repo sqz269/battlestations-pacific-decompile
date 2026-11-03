@@ -26,6 +26,7 @@
 #include "bsp/wire_goal4_chain297_switches.hpp"
 #include "bsp/wire_goal4_chain301_switches.hpp"
 #include "bsp/wire_goal4_chain303_switches.hpp"
+#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/material_effect_plane.hpp"
 #include "bsp/scene_terrain_forwarders.hpp"
@@ -23241,6 +23242,9 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         row.type_symbol = entity.type_symbol;
         row.type_id = entity.type_id;
         row.party = entity.party;
+        if constexpr (bsp::kWireGoal4Chain308Bound) {
+            row.resource_usage_304 = entity.resource_usage_304;
+        }
         if constexpr (bsp::kWireGoal4Chain270Bound) {
             // unit+58h: 00927050's kind-1 arm stores the bag's Race (0092708F..
             // 0092709C) with no presence test; MCatapult::Fire reads it back.

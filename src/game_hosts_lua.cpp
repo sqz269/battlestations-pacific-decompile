@@ -120,6 +120,7 @@
 #include "bsp/native_mission_lua_to_string.hpp"
 #include "bsp/wire_goal4_chain293_switches.hpp"
 #include "bsp/wire_goal4_chain299_switches.hpp"
+#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
@@ -10730,8 +10731,8 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         // +364h. PlaneParentID has a reader (007F479D -> 00521E30 -> the
         // under-parent placement arm at 007F4817) but is deliberately not carried,
         // because this host places the plane in world space, 30 m above the ship,
-        // not under a parent. ResourceUsage alone has no reader in the creator's
-        // record. The two uncarried values are logged.
+        // not under a parent. Chain308 carries ResourceUsage into the creator's
+        // owning record and then unit+304h; PlaneParentID is still logged only.
         const std::int32_t launched =
             bsp::catapult_launch_input_006ec8ff(row->launch_class_530, cls.launched_class);
         const std::int32_t equipment =
@@ -10750,6 +10751,9 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         spawn.skill = props.skill;
         spawn.owner_player = props.owner_player;
         spawn.equipment = props.equipment;
+        if constexpr (bsp::kWireGoal4Chain308Bound) {
+            spawn.resource_usage = props.resource_usage;
+        }
         log_.notef("  ShipUseCatapult 00891d50: \"%s\" bag Type=%u Skill=%d Race=%d Party=%d "
             "OwnerPlayer=%d State=%d(7 hosted) PlaneParentID=%d Equipment=%d Behaviour=%d "
             "ResourceUsage=%.1f (006EC8E0, overrides +530h=%d +534h=%d)", row->name.c_str(),

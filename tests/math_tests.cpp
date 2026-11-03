@@ -21,6 +21,9 @@
 #include "bsp/cruise_speed_setting.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/plane_squadron.hpp"
+#include "bsp/plane_squadron_host.hpp"
+#include "bsp/game_hosts_units.hpp"
+#include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/avoid_zone_geometry.hpp"
 #include "bsp/award_grant.hpp"
@@ -255,6 +258,42 @@ private:
 }
 
 int main() {
+    {
+        // Chain308 review593: a group can contain a logical squadron ID beyond
+        // units.count(). Its +304h belongs to the creation row, never whichever
+        // wing 007ED610 promotes into slot zero. Distinct nonzero values make
+        // both a direct logical-ID lookup and a leader-proxy lookup fail here.
+        std::vector<bsp::game::GameUnitRow> rows(3);
+        rows[0].resource_usage_304 = 7.5f;
+        rows[1].resource_usage_304 = 37.5f;
+        rows[2].resource_usage_304 = 900.0f;
+        bsp::PlaneSquadronHostRecord canonical;
+        canonical.squadron_unit = 1;
+        canonical.member_units = {1, 2};
+        const bsp::game::AiSquadronResourceOwner owner{canonical.squadron_unit};
+        const auto group_inputs = [&] {
+            std::vector<float> inputs;
+            for (const std::size_t candidate : {std::size_t{0}, rows.size()}) {
+                inputs.push_back(bsp::game::ai_candidate_resource_usage(candidate,
+                    rows.size(), candidate >= rows.size() ? &owner : nullptr,
+                    [&](std::size_t index) -> const bsp::game::GameUnitRow* {
+                        return index < rows.size() ? &rows[index] : nullptr;
+                    }));
+            }
+            return inputs;
+        };
+        const auto before = group_inputs();
+        check(before[0] == 7.5f && before[1] == 37.5f && before[0] + before[1] == 45.0f,
+            "AI group resource inputs resolve a nonzero logical squadron and an ordinary unit");
+        // The two-member post-007ED610 state: the more expensive wing is
+        // now slot zero. This fixture exercises ownership resolution, not the
+        // separate promotion/reindex transport or its game-only providers.
+        std::swap(canonical.member_units[0], canonical.member_units[1]);
+        check(canonical.member_units[0] == 2,
+            "AI resource fixture makes the differently priced wing the flight leader");
+        check(group_inputs() == before,
+            "AI squadron ResourceUsage stays on its owning creation row after leader promotion");
+    }
     {
         // 008F6AD7 must apply a redeclaration to its existing bag, preserving
         // every parent for 008F5AB3. The enum adapter retokenizes quoted names;

@@ -122,6 +122,9 @@ struct DummyKamikazeSpawn {
     // -1 seed. ShipUseCatapult sets MCatapult::Fire's 1 (006ECA2F) under
     // kWireGoal4Chain270Bound.
     int behaviour = -1;
+    // MCatapult::Fire adds launched-class Cost as ResourceUsage (006ECA3F).
+    // 006FEC00's kamikaze bag omits it, so 0077E849 supplies zero.
+    float resource_usage = 0.0f;
 };
 
 // Process-wide, like the squadron registry: the units host pushes a round at

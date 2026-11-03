@@ -1,0 +1,180 @@
+{
+  "goal": 4,
+  "chain": 308,
+  "slot": "g4-w5",
+  "owner": "agent/g4-w5",
+  "switch": "kWireGoal4Chain308Bound",
+  "rows": [
+    {
+      "native": "00a2c530",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::group_resource, used by capture_plan_00a29fd0 and defend_think_00a28a60",
+      "inputs": "Actual group.members order and each candidate's owning ResourceUsage at unit+304h. Ordinary candidates use their unit row directly. Logical squadrons use a stable creation-row ID captured from canonical squadron_unit at seeding; flight-leader promotion never reseats it. Scene/Hidden/GenerateObject records carry the merged creation bag's F/I/E numeric value, or 0077E849's absent-key FLDZ. ShipUseCatapult carries the existing 006ECA3F launched-class Cost-derived value through DummyKamikazeSpawn and the squadron creator.",
+      "output": "The whole existing reconstructed sum replaces kCaptureGroupResource in CaptureGroupRec.resource and the defend anchor's remaining-demand subtraction. The old assignments remain in the switch OFF arms.",
+      "evidence": "bsp.py show 00a2c530 pseudocode and assembly: member+304h FLD at 00A2C570, FADD at 00A2C576, FSTP float at 00A2C57A. bsp.py show 0077e830 and 0048f5d0 establish creation-bag provenance and numeric/default rules. Existing catapult_spawn_properties_006ec8e0 supplies the catapult value.",
+      "abi": "Existing source vector<float> interface; no original thiscall/class ABI claim.",
+      "call_sites": 2,
+      "callers": [
+        "GameAiCoordinatorHost::Impl::defend_think_00a28a60",
+        "GameAiCoordinatorHost::Impl::group_resource (called by capture_plan_00a29fd0)"
+      ]
+    },
+    {
+      "native": "008f38a0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Concurrent g4-w1 chain307 owns the decoded-string property merge extension and its files; my claim was refused and no edits were made there."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::merge_property_block -> SceneNumericPropertyMerge",
+      "reason": "Already wired through chain296's native numeric merge; readiness text still lists it ready, so it is not a new gain for this chain."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already called by chain296's entry-reachable numeric property producer; no new wiring needed."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already called by chain296's entry-reachable numeric property producer; no new wiring needed."
+    },
+    {
+      "native": "008f3940",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already called by chain296's entry-reachable numeric property producer; no new wiring needed."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group candidate-score diagnostics",
+      "reason": "The score-list record consumer is the unreached debug overlay 00A2CDD0; debug-only work is outside this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group candidate-score diagnostics",
+      "reason": "The chosen-byte record consumer is the unreached debug overlay 00A2CDD0; debug-only work is outside this assignment."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::landing-ship unload completion",
+      "reason": "The complete event body still needs the owning warning manager, lock, channel map, subscription filters and Lua argument dispatch; the live unload site only records the event."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::run_load_scripted_name_baseline_004d30f0",
+      "reason": "The baseline exists but native teardown needs the retained image-shaped game name tree and LuaObject traversal/execute host, beyond this load-only binding."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::push_argument",
+      "reason": "This binding has no live Lua state and its deferred-call queue has no producer in the main-thread-only path."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootScreen powerup applies predicates",
+      "reason": "The HUD has no owning native powerup item/class manager and receives empty item vectors, so there is no real entry to pass."
+    },
+    {
+      "native": "008e9af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootScreen::collect_powerups",
+      "reason": "The retained native powerup item/class lists and their lifecycle are missing; this host currently records five empty result vectors."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::support_request_pending",
+      "reason": "The native powerup manager's ready-item lists and local-player usability providers are missing from this HUD binding."
+    },
+    {
+      "native": "00bf1130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp::native VFS consumer paths",
+      "reason": "No owning adopted-source stream transfer was identified in the inspected host path; constructing an extra stream merely to call the body would fabricate work."
+    },
+    {
+      "native": "0077e830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneReaderBinding::instantiate_entity and src/game_hosts_units.cpp::create_units",
+      "reason": "This chain projects the proven ResourceUsage store only; wiring the whole attach requires the complete MissionEntityLuaAttachHost and owning entity Lua self-table lifetime."
+    },
+    {
+      "native": "0048f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneReaderBinding::instantiate_entity ResourceUsage projection",
+      "reason": "The scene host owns typed ScenePropertyBlock data rather than the native accessor's bag/map owner; numeric payloads are projected without claiming this accessor is called."
+    },
+    {
+      "native": "00a2bdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group command queries",
+      "reason": "The existing body requires a raw group command pointer at +564Ch and its native type-query host; the active AI host owns typed AiCommandObject records instead."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::auto_merge_dist and tuning_field",
+      "reason": "The body needs the owning coordinator with its mode-indexed 23Ch tuning blocks; the active host exposes selected AiTuning fields rather than that complete owner."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::party brain selection",
+      "reason": "No call site with the body's actual eight-slot activity input was identified in this bounded review; group ResourceUsage was selected instead."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::BotApproachLand owner publication",
+      "reason": "The host records this operation because approach+18h's owning bot and its native +25Ch owner pointer are not modeled."
+    }
+  ],
+  "wired_total": {
+    "metric": "call_graph.summary.recon_called: reconstructed addresses called from entry-reachable built code",
+    "before": 4304,
+    "after": 4305
+  },
+  "readiness_text_total": {
+    "before": 9294,
+    "after": 9295,
+    "target_state": "wired"
+  },
+  "validation": [
+    "Required initial index refresh and Win32 Release build: passed, both existing CTest suites passed.",
+    "Final scripts/build.ps1: Win32 Release and reconstructed_math/tool_tests passed.",
+    "call_graph.py who/path 00a2c530: entry-reachable, two call sites; capture reaches the group_resource adapter and defend inlines that adapter.",
+    "pc24_lint.py --diff origin/main...HEAD: passed with zero findings on the committed code diff.",
+    "No new address-suffixed body or duplicate implementation; existing 00A2C530 now explicitly rounds each x87 addition to PC24."
+  ],
+  "review_round_1": {
+    "review_run": 593,
+    "finding": "P1 src/game_hosts_ai.cpp:4383: logical squadron candidates are beyond units.count() and cannot be resolved by direct unit_row(candidate).",
+    "status": "fixed",
+    "change": "AI Squadron retains an AiSquadronResourceOwner holding canonical squadron_unit, the stable owning creation slot. group_resource uses the shared ai_candidate_resource_usage resolver: ordinary unit candidates retain direct row lookup; logical candidates resolve through their retained squadron owner. The owner is copied as an index rather than a pointer, survives row/squadron-vector growth, and is independent of proxy()/lead_member(). Registry-free singleton squadrons retain their original seed row.",
+    "ownership_evidence": "game_hosts_script_orders.cpp sets canonical squadron_unit at creation (air-ops, catapult/kamikaze and GenerateObject) or once during initial member resolution while unset. Promotion and member removal change the member arrays, not squadron_unit. seed_squadron_for_unit therefore captures the creation row even if first seeded after a promotion.",
+    "focused_regression": "One fixture in tests/math_tests.cpp exercises the production resolver with an ordinary unit (7.5), a logical squadron (creation ResourceUsage 37.5), and a wing priced 900. It verifies the group inputs total 45 without throwing, changes the canonical two-member array to the post-007ED610 order with the differently priced wing in slot zero, then verifies identical resource inputs afterward. This tests the owning-state boundary rather than promotion/reindex transport, whose game-only providers are outside this fixture target.",
+    "checks": [
+      "scripts/build.ps1 passed: Win32 Release and both CTest suites, including the new focused regression.",
+      "call_graph.py and who/path 00a2c530 passed: the same whole reconstructed sum remains entry-reachable at two sites from capture and defend; recon_called remains 4305.",
+      "pc24_lint.py --diff origin/main...HEAD passed with zero findings after the fix commit.",
+      "git diff --check passed."
+    ],
+    "scope": "Source/build/fixture/call-graph validation; no game run or original class ABI claim. The chain308 OFF arms remain unchanged."
+  },
+  "remaining": [
+    "The separate party-wide available-resource budget still uses kCaptureAvailableResources and omits the per-unit subtraction; queued spawn-request accounting remains a labeled stand-in.",
+    "ResourceUsage storage admits retained F/I and resolvable E values. Unsupported/implicit-context property storage raises an explicit source boundary instead of inventing a payload.",
+    "This is source/build/call-graph evidence. No game run, gameplay validation, original thiscall ABI or private CRT equivalence is claimed."
+  ]
+}

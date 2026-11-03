@@ -35,6 +35,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal4_chain257_switches.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_goal4_chain298_switches.hpp"
+#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/cc13_seg52.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
@@ -1358,6 +1359,9 @@ std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
     record.owner_player = spawn.owner_player;
     record.bag_skill = spawn.skill;
     record.bag_skill_source = "Skill";
+    if constexpr (bsp::kWireGoal4Chain308Bound) {
+        record.resource_usage_304 = spawn.resource_usage;
+    }
     if constexpr (bsp::kWireGoal4Chain270Bound) {
         // The bag's Equipment when the caller's bag has one (MCatapult::Fire
         // 006ECA20); the kamikaze bag has none and leaves the record's -1.

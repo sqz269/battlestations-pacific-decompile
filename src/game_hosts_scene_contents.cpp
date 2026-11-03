@@ -12,6 +12,7 @@
 #include "bsp/wire_goal4_chain278_switches.hpp"
 #include "bsp/wire_goal4_chain290_switches.hpp"
 #include "bsp/wire_goal4_chain296_switches.hpp"
+#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
@@ -3390,6 +3391,29 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.party_symbol = party.symbol;
     record.party = party_id;
     record.race = race_id;
+    if constexpr (kWireGoal4Chain308Bound) {
+        // 0077E830's kind-1 descriptor reads the merged creation bag, before
+        // the nonzero key is erased at 0077E885. Preserve that owning value
+        // across a Hidden/GenerateObject deferral, not a later Lua self field.
+        // 0048F5D0 reads type1 as float and other numeric tags as int32.
+        if (find_scene_unit_creator(klass->class_id) != nullptr) {
+            if (const SceneProperty* resource = bag.find("ResourceUsage")) {
+                if (equal_insensitive(resource->type_letter, "F") && resource->has_float) {
+                    record.resource_usage_304 = resource->float_value;
+                } else if (equal_insensitive(resource->type_letter, "I") && resource->has_integer) {
+                    record.resource_usage_304 = static_cast<float>(resource->integer_value);
+                } else {
+                    const SceneEnumProperty value = scene_enum_property(bag, "ResourceUsage");
+                    int numeric = 0;
+                    if (!equal_insensitive(resource->type_letter, "E") || !value.present
+                        || !owner.library.resolve_symbol(value.table, value.symbol, numeric)) {
+                        throw std::runtime_error("unsupported ResourceUsage property: " + entity.name);
+                    }
+                    record.resource_usage_304 = static_cast<float>(numeric);
+                }
+            }
+        }
+    }
     {
         // Packet cc9_ai_owner_player_slot: 0077F1C8.. finds `OwnerPlayer` and
         // hands its +0Ch to vtable[144h] (unit+180h), else 9 (0077F1F1).
