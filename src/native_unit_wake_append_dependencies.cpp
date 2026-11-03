@@ -1,6 +1,8 @@
 #include "bsp/native_unit_wake_append_dependencies.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
 #include "bsp/vector_helpers.hpp"
+#include "bsp/ship_ai_formation.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <cstring>
 
@@ -60,8 +62,8 @@ __declspec(naked) float __fastcall native_unit_wake_length_0042b2f0(
 // Complete 00810160..0081018A: 43 bytes / 15 instructions. There are no
 // external calls, relocations or globals. Preserve all six x87 load/store
 // events even for self-copy or partially overlapping actual storage.
-__declspec(naked) void* __fastcall copy_native_unit_wake_sample_00810160(
-    void*, void*, const void*) noexcept {
+__declspec(naked) ShipAiWakeSample* __fastcall copy_native_unit_wake_sample_00810160(
+    ShipAiWakeSample*, void*, const ShipAiWakeSample*) noexcept {
     __asm {
         mov eax, ecx
         mov ecx, dword ptr [esp + 4]
@@ -79,6 +81,27 @@ __declspec(naked) void* __fastcall copy_native_unit_wake_sample_00810160(
         fstp dword ptr [eax + 0x14]
         ret 4
     }
+}
+
+namespace {
+// The host sample has exactly the six cells read and written by 00810160.
+static_assert(offsetof(ShipAiWakeSample, x) == 0x00);
+static_assert(offsetof(ShipAiWakeSample, y) == 0x04);
+static_assert(offsetof(ShipAiWakeSample, z) == 0x08);
+static_assert(offsetof(ShipAiWakeSample, heading) == 0x0c);
+static_assert(offsetof(ShipAiWakeSample, segment) == 0x10);
+static_assert(offsetof(ShipAiWakeSample, yaw_rate) == 0x14);
+static_assert(sizeof(ShipAiWakeSample) == 0x18);
+using WakeSampleCopy = ShipAiWakeSample* (__fastcall*)(
+    ShipAiWakeSample*, void*, const ShipAiWakeSample*) noexcept;
+const WakeSampleCopy typed_wake_sample_copy = &copy_native_unit_wake_sample_00810160;
+}
+
+// Tail-forward without a compiler prologue: retain the raw entry's ECX/EDX,
+// source stack slot, EAX result, ECX result and RET4 contract.
+__declspec(naked) void* __fastcall copy_native_unit_wake_sample_00810160(
+    void*, void*, const void*) noexcept {
+    __asm { jmp dword ptr [typed_wake_sample_copy] }
 }
 
 namespace {
@@ -372,7 +395,7 @@ __declspec(naked) void __fastcall append_kernel_00810190(
         lea eax, [eax + eax*2] // 0081055E
         push edx // 00810561
         lea ecx, [esi + eax*8 + 8] // 00810562
-        call copy_native_unit_wake_sample_00810160 // 00810566
+        call dword ptr [typed_wake_sample_copy] // 00810566; same kernel, typed overload
         mov dword ptr [esi + 0x3c8], ebp // 0081056B
         jmp wake_00810585 // 00810571
     wake_00810573:

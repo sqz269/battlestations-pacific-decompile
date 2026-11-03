@@ -4,6 +4,8 @@ namespace bsp::game { class GameNativeGeometryGlobals; }
 
 namespace bsp {
 
+struct ShipAiWakeSample;
+
 // Raw 0042B2F0: ECX points at three readable float cells; ST0 returns the
 // float-spilled length, ECX returns its raw float bits and RET consumes no stack arguments.
 // Preserve the actual Y/X/Z load order, x87 arithmetic, float spills and
@@ -27,6 +29,13 @@ float __fastcall native_unit_wake_length_0042b2f0(
 // leaf constructs no ring, owner, reset vector or entity and updates no head.
 void* __fastcall copy_native_unit_wake_sample_00810160(
     void* actual_destination, void* unused_edx, const void* actual_source) noexcept;
+
+// Typed view of the same six-float operation over the host's live sample
+// storage. The raw entry is a forwarding thunk to this single kernel; neither
+// interface copies or reinterprets the enclosing ShipAiWakeTrail as a raw wake.
+ShipAiWakeSample* __fastcall copy_native_unit_wake_sample_00810160(
+    ShipAiWakeSample* actual_destination, void* unused_edx,
+    const ShipAiWakeSample* actual_source) noexcept;
 
 // Ordinary Source interface for the complete 00810190 algorithm; this is not
 // the Original binary entry ABI. Borrow a genuine live raw wake (988 bytes):
