@@ -1,0 +1,130 @@
+{
+  "goal": 2,
+  "chain": 176,
+  "run": 343,
+  "harness": "codex",
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "tier": 2,
+  "range": [
+    "00544e60",
+    "00554600"
+  ],
+  "host_file": "src/game_hosts_mission.cpp",
+  "switch": "kWireGoal2Chain176Bound",
+  "switch_default": false,
+  "wired_before": 9004,
+  "wired_after": 9005,
+  "build": {
+    "off": "passed: final scripts/build.ps1 after isolated ON check; 2/2 existing CTest targets",
+    "on": "passed: isolated local/g2-w5-on, off_switch_on_build.py --names kWireGoal2Chain176Bound; build.ps1 exit 0; 0 distinct diagnostics; switch restored false; source and header SHA256 match worktree",
+    "on_log": "local/g2-w5-on/local/off_switch_on_build.log",
+    "pc24_lint": "not applicable: no x87 arithmetic added or modified"
+  },
+  "host_objects": [
+    {
+      "name": "MissionIdleCameraShotOwner<true>",
+      "where": "src/game_hosts_mission.cpp:572",
+      "producers": [
+        "GameMissionHost process lifetime: default-empty typed IdleCameraShotArray vectors model globals 00E19328 and 00E193A8; 00551440 clears every array on each header load",
+        "Installed universe/library/scene.props SceneRootProps, lines 63 onward: IdleCameraPos mode/side/Pair01..04 tables and R From/To defaults; read through the existing VFS resolver/open and property parser",
+        "Selected scene document.header.properties parsed by parse_scene_document from the existing header-pass VFS read; authored nodes/values override declaration defaults",
+        "Current installed library scan finds only one properties SceneRootProps declaration (scene.props:1); its eight mode tables are at lines 65,115,165,215,265,315,365,415."
+      ],
+      "rows": [
+        "00551440"
+      ],
+      "layout": "Uses the existing typed IdleCameraShotArray and IdleCameraPosTable interfaces; the callee performs no byte-offset reads of host storage. Native input node kind is +4 DWORD=6, table +0C DWORD; pair From/To names are supplied by the parsed R properties.",
+      "lifetime": "ON-only base of process-owned GameMissionHost::Impl; arrays retain capacity between header loads; no schema, shot vectors or table adapters are constructed OFF."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00551440",
+      "address": "004f2218",
+      "function": "004f1d70",
+      "name": "idle_camera_load_shots_00551440",
+      "source": "src/gui_screens_3.cpp",
+      "host_site": "src/game_hosts_mission.cpp:2280 GameMissionHost::Impl::read_scene_file -> load_mission_idle_camera_shots",
+      "status": "wired",
+      "reach": "static",
+      "static_path": "GameMissionHost::advance campaign page progression -> start_briefing_005922f0 -> MissionPlayBinding/MissionStartBinding::set_pending_scene -> run_set_pending_scene_004e2770 -> SetPendingSceneHost::load_scene_header_pass -> PendingSceneBinding::load_scene_header_pass -> Impl::read_scene_file; campaign path is outside kSkirmishSessionCc13Bound and contains no disabled switch gate.",
+      "contract": "004F220A PUSH IdleCameraPos; 004F220F MOV ECX,ESI (bag); 004F2211 CALL 008F2260; 004F2216 MOV ECX,EAX; 004F2218 CALL 00551440. Loader is fastcall node in ECX, no stack arguments. Typed output arrays replace its global vectors. Schema is the existing installed producer, not a synthetic complete table.",
+      "off_behavior": "The existing partial header application remains byte-for-byte; idle shots were not retained. Empty OFF owner base has no state or constructor work.",
+      "on_behavior": "Read the actual SceneRootProps declaration once through VFS; layer the selected scene header over it; call the existing body to clear/repopulate the two eight-mode shot arrays.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "00545750",
+      "address": "0054894d",
+      "function": "005484f0",
+      "host_site": "src/game_hosts_hud.cpp WeaponGroupScreenBinding::target_debug_00548942",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native target-debug branch is delegated to target_debug_00548942, whose host is record-only and has no colour-bearing draw sink. Merely obtaining and discarding the red pointer cannot count. The needed host file game_hosts_hud.cpp is reserved to another worker."
+    },
+    {
+      "native": "00546310",
+      "address": "00548baf",
+      "function": "005484f0",
+      "host_site": "src/game_hosts_hud.cpp WeaponGroupScreenBinding::lock_branch_00548b06",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The lock branch is record-only; it has no native 18h-byte observer handle or the observed-object registration producer needed by 005460A0/00546310. The needed host file game_hosts_hud.cpp is reserved to another worker."
+    },
+    {
+      "native": "00546730",
+      "address": "00549312",
+      "function": "00549260",
+      "host_site": "src/mission_camera.cpp weapon_group_screen_bind_00549260; src/game_hosts_hud.cpp WeaponGroupScreenBinding",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The host binds vector<HudWeaponGroupEntry> unit indices, not the native 18h-byte observer entries with callback-owner +4/+8/+C, active +10 and observed pointer +14. Append/reserve copy/register/destroy those handles. No producer for that observer graph is available in this host; wrapping push_back would be a second projection rather than the existing raw body. The owning HUD host is also reserved."
+    },
+    {
+      "native": "00547a20",
+      "address": "0054831c",
+      "function": "00548300",
+      "host_site": "src/game_hosts_hud.cpp WeaponGroupScreenBinding::group_sight_00548300",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "group_sight_00548300 only records. The raw body needs an image-shaped screen, entry array and mover pointer +40, live gun records, and widget/temporary-object ownership. Existing screen state has unit indices and a mover bool. Those producers are unavailable without a larger HUD object; game_hosts_hud.cpp is reserved."
+    },
+    {
+      "native": "00549430",
+      "address": "006f38c9",
+      "function": "006f3660",
+      "host_site": "src/cc13_seg33b_command_building.cpp host.hud_panel_refresh_00549430; src/game_hosts_hud.cpp",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "hud_panel_refresh_00549430 has no implementation. The raw rebind body reads native screen +20/+24/+40, but the live HUD uses semantic entry vectors and a mover bool and cannot furnish those pointers. A typed thin wrapper still needs an adapter to the reserved game_hosts_hud.cpp owner."
+    },
+    {
+      "native": "0054ac10",
+      "address": "0054ba39",
+      "function": "0054b530",
+      "host_site": "src/game_hosts_mission.cpp MissionDetailBinding::set_footer_commands and MissionPlayBinding::clear_command_bar",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Only original caller 0054B530 builds the command bar. The host footer/clear methods merely log that address; no reachable command-bar rebuild or native string scratch/input producer exists. Calling concat on unrelated strings would not replace the native caller logic."
+    }
+  ],
+  "limitations": [
+    "Static host reach only; no mission call counts were supplied for these range candidates.",
+    "No game, pair export, native ABI or camera playback run. This chain binds shot loading/retention only; an idle-camera display consumer remains outside this packet.",
+    "ON rejects unavailable/malformed schema, missing required tables or non-R camera names rather than manufacturing fields."
+  ],
+  "report_call_verification": "passed: 7 call rows checked, 0 failed",
+  "validated_sources_sha256": {
+    "src/game_hosts_mission.cpp": "54be6684f5266f943b9323d226908689df7f4952b579543ebacd1a0d54c03c92",
+    "include/bsp/wire_goal2_chain176_switches.hpp": "a650a2045e421f0e08b8a5fb98a38ffd6dbfa44db9be3b49e894f3ecbd1c4d8d"
+  },
+  "wired_count": 1,
+  "wired_addresses": [
+    "00551440"
+  ],
+  "skipped_count": 6,
+  "readiness_after_final_off_build": true,
+  "readiness_after_file": "local/output/wire_readiness.json"
+}

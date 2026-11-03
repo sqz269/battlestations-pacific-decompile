@@ -5,6 +5,7 @@
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/wire_goal2_chain29_switches.hpp"
 #include "bsp/wire_goal2_chain146_switches.hpp"
+#include "bsp/wire_goal2_chain176_switches.hpp"
 #include "bsp/cc13_sweepB2.hpp"
 
 #include "bsp/game_hosts_lua.hpp"
@@ -24,6 +25,7 @@
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/gui_widget.hpp"
+#include "bsp/gui_screens_3.hpp"
 #include "bsp/locale_tables.hpp"
 #include "bsp/lobby_option_defaults_cc13.hpp"
 #include "bsp/lua_object.hpp"
@@ -565,13 +567,104 @@ struct NativeMissionPictureLoader {
     }
 };
 
+// Empty in the OFF host: neither the schema nor either vector array is constructed.
+template <bool Bound> struct MissionIdleCameraShotOwner {};
+template <> struct MissionIdleCameraShotOwner<true> {
+    // 00469BF0 merges universe/library/scene.props' SceneRootProps before
+    // 004F2218 fills globals 00E19328/00E193A8. Their vectors start empty,
+    // retain capacity across header loads, and are destroyed at process exit.
+    // GameMissionHost has that process lifetime; 00551440 itself clears each load.
+    ScenePropertyBlock idle_camera_schema;
+    bool idle_camera_schema_loaded{false};
+    IdleCameraShotArray idle_camera_allied;
+    IdleCameraShotArray idle_camera_japanese;
+};
+
+const ScenePropertyBlock* idle_camera_child(const ScenePropertyBlock* block,
+    const std::string& key) {
+    if (block != nullptr) {
+        for (const auto& child : block->blocks) {
+            if (_stricmp(child.first.c_str(), key.c_str()) == 0) return &child.second;
+        }
+    }
+    return nullptr;
+}
+
+// A view of the real authored bag over its declaration-time defaults. No
+// missing table or From/To value is manufactured by this adapter.
+class MissionIdleCameraTable final : public IdleCameraPosTable {
+public:
+    MissionIdleCameraTable(const ScenePropertyBlock* authored,
+        const ScenePropertyBlock* defaults) : authored_(authored), defaults_(defaults) {}
+    const IdleCameraPosTable* table(std::string_view name) const override {
+        const std::string key(name);
+        auto& view = children_[key];
+        if (!view) {
+            const auto* authored = idle_camera_child(authored_, key);
+            const auto* defaults = idle_camera_child(defaults_, key);
+            if (authored == nullptr && defaults == nullptr)
+                throw std::runtime_error("idle camera table producer missing: " + key);
+            view = std::make_unique<MissionIdleCameraTable>(authored, defaults);
+        }
+        return view.get();
+    }
+    const char* string(std::string_view name) const override {
+        const std::string key(name);
+        const SceneProperty* value = authored_ ? authored_->find(key) : nullptr;
+        if (value == nullptr && defaults_ != nullptr) value = defaults_->find(key);
+        if (value == nullptr || value->values.empty()) return nullptr;
+        // From/To are R properties in scene.props, read by 008F0DF0 as names.
+        if (_stricmp(value->type_letter.c_str(), "R") != 0)
+            throw std::runtime_error("unsupported idle camera name type: " + key);
+        return value->values.front().c_str();
+    }
+private:
+    const ScenePropertyBlock* authored_;
+    const ScenePropertyBlock* defaults_;
+    mutable std::map<std::string, std::unique_ptr<MissionIdleCameraTable>> children_;
+};
+
+// Instantiated only by the ON arm, over MissionIdleCameraShotOwner<true>.
+template <class Owner>
+void load_mission_idle_camera_shots(Owner& owner, const ScenePropertyBlock& header) {
+    if (!owner.idle_camera_schema_loaded) {
+        auto* manager = owner.vfs.ready() ? &owner.vfs.context() : nullptr;
+        std::string path = "universe/library/scene.props";
+        if (manager == nullptr || !resolve_existing_resource_00bdf4c0_fragment(
+                *manager, owner.vfs.search_registrations(), path))
+            throw std::runtime_error("idle camera SceneRootProps producer unavailable");
+        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager, path, 2);
+        if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized())
+            throw std::runtime_error("idle camera SceneRootProps producer could not be read");
+        std::string text(reinterpret_cast<const char*>(opened.stream->data_00bef610()),
+            static_cast<std::size_t>(opened.stream->size_00bef600()));
+        // 008F67B0's library delimiters, also used by the scene-contents host.
+        SceneLexer lexer(std::move(text), ";{}=:()");
+        if (lexer.next().text != "properties" || lexer.next().text != "SceneRootProps")
+            throw std::runtime_error("unsupported idle camera SceneRootProps declaration");
+        std::vector<std::string> errors;
+        owner.idle_camera_schema = parse_scene_property_block_008f5a00(lexer, errors);
+        if (!errors.empty())
+            throw std::runtime_error("unsupported idle camera SceneRootProps syntax");
+        owner.idle_camera_schema_loaded = true;
+    }
+    const std::string key(kIdleCameraPosProperty);
+    const auto* authored = idle_camera_child(&header, key);
+    const auto* defaults = idle_camera_child(&owner.idle_camera_schema, key);
+    MissionIdleCameraTable root(authored, defaults);
+    // ScenePropertyBlock children are the parser's type-6 bag nodes (+4h),
+    // not a fabricated kind used to force entry into the loader.
+    idle_camera_load_shots_00551440(owner.idle_camera_allied, owner.idle_camera_japanese,
+        authored || defaults ? &root : nullptr, authored || defaults ? 6 : 0);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
 // GameMissionHost::Impl
 // ---------------------------------------------------------------------------
 
-struct GameMissionHost::Impl {
+struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Bound> {
     GameHostLog& log;
     GameVfsHost& vfs;
     GameScriptHost& scripts;
@@ -2184,6 +2277,12 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const SceneDocument document = parse_scene_document(text);
     log.implemented("SetPendingScene::load_scene_header_pass", "0046df00");
     if (document.has_header && document.header.has_properties) {
+        if constexpr (kWireGoal2Chain176Bound) {
+            // 00551440 loads authored/default idle shots; OFF keeps the partial header apply below.
+            load_mission_idle_camera_shots(*this, document.header.properties);
+        } else {
+            // The existing header host did not retain idle-camera shots.
+        }
         const auto table = bsp::read_scene_record_slot_table_004f1d70(document.header.properties);
         // Packet cc9_stage_init_chunk_errors: 004F1D70's `GameStageScript` /
         // `StageScript` arm into record+968h, slot 8 of the +928h table. The
