@@ -23,6 +23,7 @@
 #include "bsp/wire_goal2_chain84_switches.hpp"
 #include "bsp/wire_goal2_chain147_switches.hpp"
 #include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
+#include "bsp/wire_goal4_chain254_switches.hpp"
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -1315,6 +1316,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     double deck_clamp_lift_total{0.0};
     // kPlanePoseFirstBound: ctl+7Ch and the levelling mode the last core law left.
     float plane_forward_speed_7c{0.0f};
+    // Chain 254: the fields written by 007D80C0, retained per live controller.
+    // +44h and the old +7Ch are borrowed below from this step and its existing
+    // latch; +78h holds the reconstructed rate instead of discarding it.
+    bsp::band_007a_cc13::FlightControllerRateFields plane_controller_rate{};
     bool plane_pose_ground_prev{false};
     unsigned long long pose_first_steps{0};
     double bank_yaw_abs_angle{0.0};
@@ -25602,6 +25607,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // identity frame this is the world +Z the previous
                         // revision took, so the acceptance test is unmoved.
                         state.forward_speed = state.body_velocity[2];
+                        // Chain 254: the native tail copies dyn+6Ch into
+                        // ctl+44h at 007DC6EE..007DC708, after integration.
+                        float forward_speed_after_step_44 = state.forward_speed;
                         state.world_altitude = unit_.motion.position[1];
                         state.lost_drag_timer = unit_.plane_lost_drag_timer_c3c;
                         state.pitch = unit_.plane_pitch_angle_c64;
@@ -26128,6 +26136,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 007D8FFE-007D902F, the integrator's tail.
                                 secs = bsp::decay_direction_hold_007d902f(secs, step);
                             }
+                            forward_speed_after_step_44 = vs.velocity[2];
                             for (int c = 0; c < 3; ++c) {
                                 float w = 0.0f;
                                 for (int r = 0; r < 3; ++r) w += rows[r][c] * vs.velocity[r];
@@ -26175,6 +26184,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                 for (int r = 0; r < 3; ++r) w += rows[r][c] * b[r];
                                                 gw[c] = w;
                                             }
+                                            forward_speed_after_step_44 = b[2];
                                             ++unit_.ground_hold_down_steps;
                                         }
                                     }
@@ -26194,6 +26204,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             vs.velocity[r] = rows[r][0] * gw[0] +
                                                 rows[r][1] * gw[1] + rows[r][2] * gw[2];
                                         }
+                                        forward_speed_after_step_44 = vs.velocity[2];
                                         ++unit_.ground_contact_steps;
                                     }
                                 }
@@ -26217,6 +26228,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
                                     unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
                                 }
+                            }
+                            if constexpr (bsp::kWireGoal4Chain254Bound) {
+                                bsp::ControllerVelocities velocity;
+                                for (int i = 0; i < 3; ++i) {
+                                    velocity.linear_world[i] = unit_.plane_world_velocity[i];
+                                }
+                                bsp::world_to_body_007d9c10(
+                                    velocity, host_pose_world_to_body(unit_));
+                                forward_speed_after_step_44 = velocity.linear_body[2];
                             }
                             if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
                                 wanderer_publish_007d8230(step);
@@ -26261,7 +26281,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if constexpr (!GameUnitsHost::Impl::kPlanePoseFirstBound) {
                             advance_pose_0085e4d0(step, ground, state.forward_speed);
                         }
+                        if constexpr (bsp::kWireGoal4Chain254Bound) {
+                            // 007DC81D calls 007D80C0 after the core law's
+                            // body-to-world conversion. +44h is this step's
+                            // body-forward velocity; +7Ch is the preceding
+                            // value used by next step's pose law above.
+                            // 007D80D5..F6 computes (+44h - old +7Ch) / step
+                            // and publishes +7Ch. 00F87574..7C are twelve zero
+                            // bytes (live Ghidra bytes checked for this chain).
+                            static constexpr float zero_f87574[3]{};
+                            auto& rate = unit_.plane_controller_rate;
+                            rate.f44 = forward_speed_after_step_44;
+                            rate.previous_7c = unit_.plane_forward_speed_7c;
+                            bsp::band_007a_cc13::flight_controller_update_rate_007d80c0(
+                                rate, step, zero_f87574);
+                            unit_.plane_forward_speed_7c = rate.previous_7c;
+                            owner_.done("PlaneFlightController::update_rate_007d80c0",
+                                0x007d80c0u);
+                        } else {
                         unit_.plane_forward_speed_7c = state.forward_speed;   // 007D80C0
+                        }
                         unit_.plane_pose_ground_prev = ground;
                     }
 
