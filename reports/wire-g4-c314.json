@@ -1,0 +1,104 @@
+{
+  "goal": 4,
+  "chain": 314,
+  "worker": "agent/g4-w5",
+  "picked": "Mission-tree group and mission reader dispatch from the existing picture-backed Lua loader",
+  "switch": "kWireGoal4Chain314Bound",
+  "rows": [
+    {
+      "native": "005c9f70",
+      "status": "wired",
+      "host_site": "src/mission_tree_data.cpp::load_mission_tree_impl, called by GameMissionHost::load_mission_tree_005caaf0",
+      "evidence": "005CAAF0 calls 005C9F70 at 005CAD37 after entering missionGroups[index]; the reconstructed loader now passes that same Lua reader, appended group and actual picture services through read_mission_group_005c9f70.",
+      "emitted_call_sites": 1
+    },
+    {
+      "native": "005c6a70",
+      "status": "wired",
+      "host_site": "src/mission_tree_data.cpp::read_mission_group_impl and load_mission_tree_impl",
+      "evidence": "005C9F70 calls 005C6A70 at 005CA170; the flat multiMissionInfos loop calls it at 005CAE47. Both reconstructed sites now call read_mission_record_005c6a70 once with the existing reader, record and picture services.",
+      "emitted_call_sites": 2,
+      "previously_counted_address": true,
+      "previous_count_note": "The address already had a reachable MissionPictureOwner::read_005c6a70 method; the full record-reader entry itself had no emitted caller before this change. Only 005C9F70 adds to the unique-address totals."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuManagerHost::create_main_menu_manager",
+      "reason": "The typed MainMenuManager lacks the raw 78h constructor view and native base/observer registry adapter; returning its existing storage alone does not satisfy the raw constructor contract."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuTitleInitHost::create_title_screen",
+      "reason": "TitleScreen currently exposes only the attached-screen projection; the 44h raw base/observer registry state required by the constructor is missing."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuTitleInitHost::create_attract_screen",
+      "reason": "The host has no retained attract-screen owner or movie playback initialization; this site returns nullptr."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuManagerHost::create_options_manager",
+      "reason": "The host does not create an options-manager owner and returns nullptr; a native constructor/base-state adapter must precede this wiring."
+    },
+    {
+      "native": "00aa31f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp::GameFrontendHost::release_screen_page",
+      "reason": "The bridge retains pages in GuiPageRegistry for the run and lacks the native manager/page reference-count and destruction adapter required by the release body."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::set_widget_local_z",
+      "reason": "Movie page loading and child lookup return nullptr, so an actual movie widget is missing at this call site."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::bind_movie_textures",
+      "reason": "The movie decoder does not open and supplies no actual video textures to bind."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (bomb-family tick adapter not supplied)",
+      "reason": "The complete BombTickState/BombTickHost binding for launch delay, arming, expiration, pose and sweep callbacks is missing; the existing flight helpers alone do not supply it."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg41_cc13.cpp::start_death_fire_007465e0 (live host adapter not supplied)",
+      "reason": "No live FortTimers and LandFortHost effect-owner binding was found in the ship/unit host candidates; real fire/smoke ownership and duration RNG must be supplied first."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp::gui_curve_control_points_00abca10 (live caller not supplied)",
+      "reason": "The helper needs a caller carrying actual authored curve points and publishing the resulting control array to the live curve owner; that state bridge was not established."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 9313,
+    "readiness_wired_after": 9314,
+    "entry_reachable_reconstructed_addresses_before": 4340,
+    "entry_reachable_reconstructed_addresses_after": 4341
+  },
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release passed; reconstructed_math and tool_tests passed",
+    "call_graph": "005C9F70 has one reachable call from load_mission_tree_impl; the read_mission_record_005c6a70 entry has two reachable calls from load_mission_tree_impl and read_mission_group_impl",
+    "readiness": "005C9F70 and 005C6A70 both wired and called=true; call_sites 1 and 2 respectively",
+    "source": "bsp.py show/callees for 005C9F70 and 005CAAF0 confirm the original dispatch edges; git diff --check passed",
+    "float_math": "No float arithmetic changed; pc24_lint not required",
+    "runtime": "Game not launched; this is build, existing-test and emitted entry-reachability evidence"
+  },
+  "assumptions": [
+    "The normal device-created startup binds native mission picture services before menu registration, as src/game_hosts.cpp already specifies; the metadata-only path keeps its prior direct implementation calls.",
+    "Reusing the existing public readers also repeats their existing nonmutating service validation. No second parse or picture load is added.",
+    "No new address-suffixed function was introduced; existing reconstructed bodies are reused without ledger additions."
+  ]
+}
