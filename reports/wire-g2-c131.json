@@ -1,0 +1,119 @@
+{
+  "chain": 131,
+  "goal": 2,
+  "slot": "g2-w1",
+  "run": 260,
+  "harness": "claude",
+  "picked": "segment 33 [006deca0-006fa320] (tier 2, range sweep)",
+  "host_file": "src/cc13_paratrooper_round.cpp",
+  "switch": "kWireGoal2Chain131Bound",
+  "switch_header": "include/bsp/wire_goal2_chain131_switches.hpp",
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain131Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings (--diff origin/main...HEAD, 3 files)",
+  "wired_total_before": 8960,
+  "wired_total_after": 8969,
+  "wired_total_note": "Measured after a plain OFF build. 006E2220 reads wired. 006F9EE0 is wired in src/hull_terrain_contact.cpp, which the host does reach (game_hosts_units.cpp run_world_contact_phase -> hull_terrain.world_step / hull_terrain.step -> native_narrow_phase -> hull_shape), but wire_readiness.py still reads the row as ready: its reach graph follows only address-suffixed identifiers, and hull_terrain_contact.cpp's entry points are class methods with no suffix.",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "006e2220",
+      "address": "007ac0fe",
+      "function": "007ac000",
+      "host_site": "src/cc13_paratrooper_round.cpp RoundAdapter::extrapolate_position",
+      "status": "wired",
+      "reach": "live by reading: GameUnitsHost::Impl::para_round_step (game_hosts_units.cpp, under kParatrooperRoundBound = true, the JM08 pair) -> RoundWorld::step -> seg46::step_landing_007ac000 -> host.extrapolate_position at 007AC0FE for every round still in the air. The candidate detail cited no mission call count. The site runs once a paratrooper drop happens (JM08).",
+      "contract": "__thiscall(ECX = round, float t), RET 4. At 007AC0F6 [ESP+28h] is the first stack argument of 007AC000 (the step dt), and ECX = ESI = this. Body: +A4h = +448h + float(t * v(+318h)), each product and sum FSTP float. The host keeps +448h as round_.position.",
+      "on_change": "The round's position takes the per-op float products and sums instead of the stand-in's double-chain-rounded-once arithmetic."
+    },
+    {
+      "native": "006f9ee0",
+      "address": "006fae89",
+      "function": "006fad70",
+      "host_site": "src/hull_terrain_contact.cpp HullTerrainContactSolver::hull_shape",
+      "status": "wired",
+      "reach": "live by reading: game_hosts_units.cpp run_world_contact_phase -> hull_terrain.world_step(...) (and hull_terrain.step at 47340) -> HullTerrainContactSolver::native_narrow_phase (kHullTerrainNativeTerrainTestBound = true) -> hull_shape under kHullTerrainDynHullVerticesBound = true; kHullTerrainContactSolverBound = true. The shape is rebuilt only when a hull's raw points change. wire_readiness.py does not count it, because the file is reached through unsuffixed class methods (see wired_total_note).",
+      "contract": "__thiscall(ECX = object, const float* points, int count), RET 8. The points are packed xyz (stride 0Ch; static_assert sizeof(OceanVec3) == 12). The host reads the centre (+14h..+1Ch) and ignores the half extents. For count 0 the centre is 0, as in the OFF copy.",
+      "on_change": "The hull shape centre comes from the body, not the inline copy. The arithmetic is the same model, so the values should match OFF."
+    },
+    {
+      "native": "006f7c20",
+      "address": "006f9188",
+      "function": "006f9110",
+      "status": "skipped",
+      "reason": "The only host model of the caller, entity_order_collect_by_category_006f9110 (src/entity_orders.cpp, reached only from entity_order_menu_set_category_00523900), has no caller in any host file, so no host path reaches the sort. Wiring it would also need each command class's vtable+10h key (006F7B30 compares those), and EntityOrderCommandClass does not carry that key (its comment says the slot +10h semantics are unknown)."
+    },
+    {
+      "native": "006f7d40",
+      "address": "006f9172",
+      "function": "006f9110",
+      "status": "skipped",
+      "reason": "raw_callback over a native intrusive list (Seg33bHost). Its only modelled site, entity_order_collect_by_category_006f9110's push_back, has no host caller (as for 006F7C20). The 53 other callers are command-class constructors (metadata only)."
+    },
+    {
+      "native": "006e0e00",
+      "status": "skipped",
+      "reason": "Called only through observer_construct_006e0e00 in cc13_seg62_seg65.cpp, which no host implements. No host keeps native observer members (vtable 00CF9348)."
+    },
+    {
+      "native": "006e1b90",
+      "status": "skipped",
+      "reason": "Callers 006E6BB0, 009813A0 and 00988510 are modelled in the host (game_hosts_lua.cpp dispatch_kill/hit_listeners) over unit indices. No host keeps the native attacker observer handle (+18h id word, target+174h) that the raw body repoints."
+    },
+    {
+      "native": "006e3940",
+      "status": "skipped",
+      "reason": "Constructs a native ADh session message (0075B430 base). The callers 006E56F0 and 006ED1C0 are host-modelled (run_rack_tick_006e56f0) without native message storage or routing, so the body has no host object to construct into."
+    },
+    {
+      "native": "006eb680",
+      "status": "skipped",
+      "reason": "Called only through catapult_queue_launch_006eb680 in cc13_seg30_seg50.cpp, which no host implements. The body also needs a native catapult object (vtable +1D0h)."
+    },
+    {
+      "native": "006edea0",
+      "status": "skipped",
+      "reason": "Allocates a native Lua variant tree node. Its users (initialize_native_lua_variant_header_006eeaf0, host.map_allocate_head_006edea0 in cc13_left55_seg55.cpp, host.tree_allocate_head_006edea0 in cc13_seg33b_misc.cpp) are not implemented by any host."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "reason": "raw_view. Called only through map_initialize_header_006eeaf0 in cc13_left55_seg55.cpp, which no host implements."
+    },
+    {
+      "native": "006f1ee0",
+      "status": "skipped",
+      "reason": "EnterCriticalSection on building+764h. The host model of the caller, BuildingPadModel::begin_landing_0074a990 (building_pads.cpp), keeps no native building or CRITICAL_SECTION, so the lock has no host state to act on."
+    },
+    {
+      "native": "006f1f00",
+      "status": "skipped",
+      "reason": "LeaveCriticalSection twin of 006F1EE0; same missing native building lock."
+    },
+    {
+      "native": "006f31b0",
+      "status": "skipped",
+      "reason": "Destructs a native garrison entry (property bag +58h). The host's garrison (game_hosts_ship_ai.cpp, 006F5CC0 pass 1) is a std::vector of host records with no native entries."
+    },
+    {
+      "native": "006f4110",
+      "status": "skipped",
+      "reason": "Constructs a native D6h COMMANDBUILDING_INFERIORLIST session message. No host builds or routes it."
+    },
+    {
+      "native": "006f4300",
+      "status": "skipped",
+      "reason": "Destructor of the D6h message (006F4110). No host constructs one."
+    },
+    {
+      "native": "006f4a00",
+      "status": "skipped",
+      "reason": "Its caller 0084D560 is reached only through support_site_*_0084d560 host methods that no host implements. The body walks a native command-building garrison vector."
+    },
+    {
+      "native": "006f4b30",
+      "status": "skipped",
+      "reason": "push_back over a native garrison vector (raw_callback). The host garrison is a std::vector, so there is no native storage for the body."
+    }
+  ]
+}
