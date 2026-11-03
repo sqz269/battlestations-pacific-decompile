@@ -29,6 +29,45 @@ SoundFrameServiceContext bind_game_sound_frame_service(game::GameSoundRuntime&,
 // from the one live D7A24C word. ONLY this entry skips listener on null interface.
 void service_sound_frame_00735b50(SoundFrameServiceContext&);
 
+// The listener-free update the session teardown 004DA780 makes twice
+// (004DA873..004DA905 and 004DA907..004DA999): 00735B50's identity matrix and
+// zero velocity from the live D7A24C word, then the current [00F8BBD8]
+// vtable[4] dispatch. It never reads the interface publication. Not a native
+// entry of its own; both sites are inline in 004DA780.
+void update_published_sound_with_identity_listener(SoundFrameServiceContext&);
+
+// A SoundFrameServiceContext whose [00E198C4] publication is null, which is
+// the native state outside a mission: the word is BSS until 0068CC70
+// publishes it (0068CCFE), and the teardowns that end a mission delete the
+// manager and store null (004DAB94 in 004DA780, 004DA6B3 in 004DA650). With
+// that word 00735B50 skips 0068A670, so this binding's game/controlled
+// publications are never read and its 0068A670 dispatches throw if reached.
+// The constants are the PE words 0068A670 reads (bsp.py ghidra bytes):
+// 00D7A24C 3F800000h, 00CE3D64 461C4000h (10000.0f), 00D7A218 0.0f,
+// 00D7A220 4059000000000000h (100.0); 00F87574 is BSS (three zero words).
+// Borrows the started core and CRT access for its whole lifetime.
+class NullInterfaceSoundFrame final : public InterfaceSoundListenerCalls {
+public:
+    NullInterfaceSoundFrame(game::GameSoundRuntime& core, const CameraAxesCrtAccess& crt);
+    NullInterfaceSoundFrame(const NullInterfaceSoundFrame&) = delete;
+    NullInterfaceSoundFrame& operator=(const NullInterfaceSoundFrame&) = delete;
+    SoundFrameServiceContext& context() noexcept { return frame_; }
+    const void* call_slot120(void* actual_object, void* scratch64) override;
+    const void* call_slot34(void* actual_object, void* scratch12) override;
+
+private:
+    void* volatile interface_00e198c4_{nullptr};
+    void* volatile game_00e188a8_{nullptr};
+    void* volatile controlled_00e188d8_{nullptr};
+    const volatile std::uint32_t one_00d7a24c_{0x3f800000u};
+    const volatile float threshold_00ce3d64_{10000.0f};
+    const volatile float compare_00d7a218_{0.0f};
+    const volatile double scale_00d7a220_{100.0};
+    const volatile float fallback_00f87574_[3]{0.0f, 0.0f, 0.0f};
+    InterfaceSoundListenerContext listener_;
+    SoundFrameServiceContext frame_;
+};
+
 // 004BBD00..004BBDCF inclusive, complete. ECX job object unused, one UNUSED
 // STACK DWORD, RET4. The decompiler's EDX input is spurious; 68A670 ignores it.
 // Same initialized local buffers, but an unconditional native listener call.

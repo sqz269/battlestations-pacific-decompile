@@ -58,6 +58,29 @@ void service_sound_frame_00735b50(SoundFrameServiceContext& context) {
     update_current_sound(matrix, velocity, context);
 }
 
+void update_published_sound_with_identity_listener(SoundFrameServiceContext& context) {
+    // 004DA873..004DA905 / 004DA907..004DA999: XORPS zero and the one D7A24C
+    // load fill the identity matrix and zero velocity, then [00F8BBD8] is
+    // loaded and its vtable[4] called; no listener provider is consulted.
+    CameraMatrix matrix;
+    std::array<float, 3> velocity;
+    initialize_listener(context.listener.one_00d7a24c, matrix, velocity);
+    update_current_sound(matrix, velocity, context);
+}
+
+NullInterfaceSoundFrame::NullInterfaceSoundFrame(game::GameSoundRuntime& core,
+    const CameraAxesCrtAccess& crt)
+    : listener_{game_00e188a8_, controlled_00e188d8_, one_00d7a24c_, threshold_00ce3d64_,
+          compare_00d7a218_, scale_00d7a220_, fallback_00f87574_, *this, crt},
+      frame_(bind_game_sound_frame_service(core, interface_00e198c4_, listener_)) {}
+
+const void* NullInterfaceSoundFrame::call_slot120(void*, void*) {
+    throw std::logic_error("null-interface sound frame reached 0068A670 slot 120h");
+}
+const void* NullInterfaceSoundFrame::call_slot34(void*, void*) {
+    throw std::logic_error("null-interface sound frame reached 0068A670 slot 34h");
+}
+
 void run_sound_frame_job_004bbd00(std::uint32_t, SoundFrameServiceContext& context) {
     const auto one = context.listener.one_00d7a24c;
     auto* const actual_interface = context.interface_00e198c4;

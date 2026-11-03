@@ -12,6 +12,8 @@
 #include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain302_switches.hpp"
+#include "bsp/wire_goal4_chain312_switches.hpp"
+#include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
@@ -356,6 +358,15 @@ private:
     SoundStreamRuntimeContext runtime_;
     SoundStreamOwnerContext owner_;
 };
+
+// Goal 4 chain 312 (kWireGoal4Chain312Bound): 004CA440's front-end branch
+// reaches 004CA5D4, 00735B50 BSP_SoundFrame_ServiceInline, directly:
+// 004CA4E7..004CA529 take the in-game view arms only when [00E198C4] is
+// non-null, and that word is null in the front-end states (see
+// bsp::NullInterfaceSoundFrame). 00735B50 then skips 0068A670 for the null
+// interface and dispatches [00F8BBD8]->vtable[4] (00735BE7..00735C1B), the
+// per-frame update 00A87BF0 / 00A7E630 (bsp.py disasm-raw 00735b50), over the
+// live core GameStartupHost::SoundServices publishes.
 
 }  // namespace
 
@@ -740,6 +751,16 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
         if (core == nullptr || !core->started()) return nullptr;
         title_stream = std::make_unique<MenuTitleMusicStream>(*core, title_music.title_stream);
         return title_stream.get();
+    }
+    // kWireGoal4Chain312Bound: 004CA5D4's 00735B50 over the same started core,
+    // bound at the first front-end render that finds it. Stays empty OFF.
+    std::unique_ptr<NullInterfaceSoundFrame> sound_frame;
+    NullInterfaceSoundFrame* bind_sound_frame() {
+        if (sound_frame) return sound_frame.get();
+        GameSoundRuntime* const core = singletons.native_deletion_bindings().sound_runtime;
+        if (core == nullptr || !core->started()) return nullptr;
+        sound_frame = std::make_unique<NullInterfaceSoundFrame>(*core, application_camera_axes_crt());
+        return sound_frame.get();
     }
 
     Impl(GameHostLog& log_in, GameFrontendHost& frontend_in, GameStateSlot& state_in,
@@ -1690,7 +1711,23 @@ public:
         owner_.log.unimplemented("FrontEndFrame::gui_update", "00aa4f80");
     }
     void game_render() override {
+        if constexpr (kWireGoal4Chain312Bound) {
+            // 004CA44E: nothing runs unless game+34h is 1 (the frame begun by
+            // 004E4BB5..004E4BDB, frame_state.render_queue_open here). In the
+            // front-end states [00E198C4] is null, so 004CA4E7 falls through to
+            // 004CA5D4's 00735B50. The rest of 004CA440 keeps its record.
+            if (owner_.frame_state.render_queue_open) {
+                if (NullInterfaceSoundFrame* const sound = owner_.bind_sound_frame()) {
+                    service_sound_frame_00735b50(sound->context());
+                    owner_.log.implemented("FrontEndFrame::sound_frame_service", "00735b50");
+                } else {
+                    owner_.log.unimplemented("FrontEndFrame::sound_frame_service", "00735b50");
+                }
+            }
+            owner_.log.unimplemented("FrontEndFrame::game_render", "004ca440");
+        } else {
         owner_.log.unimplemented("FrontEndFrame::game_render", "004ca440");
+        }
     }
     void game_finish_render_frame() override {
         // 004ca1f0 clears game+34h. The milestone's own Present is the frame

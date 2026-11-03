@@ -290,6 +290,16 @@ void GameSoundDialogRuntime::set_music_target_level(float level) {
     } else {
     }
 }
+void GameSoundDialogRuntime::clear_channels() {
+    auto& self = *impl_;
+    // 004DA857 MOV ECX,[00F8BBCC]; 004DA85D CALL 00A77C10: the current
+    // publication, which must be this runtime's constructed owner.
+    void* const current = self.globals.alternate_00f8bbcc;
+    self.check_owner(current);
+    clear_sound_alternate_channels_00a77c10(
+        *static_cast<NativeSoundAlternateOwnerStorage*>(current), self.bound().alternate);
+}
+GameSoundRuntime* GameSoundDialogRuntime::attached_core() const noexcept { return impl_->core; }
 void GameSoundDialogRuntime::delete_alternate_slot00(void* object, std::uint32_t flags) {
     impl_->destroy(object, flags);
 }

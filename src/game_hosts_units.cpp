@@ -21,12 +21,15 @@
 #include "bsp/wire_goal4_chain273_switches.hpp"
 #include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
 #include "bsp/wire_goal4_chain283_switches.hpp"
+#include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
 #include "bsp/wire_goal4_chain301_switches.hpp"
 #include "bsp/wire_goal4_chain303_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/wire_goal4_chain320_switches.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/wire_goal4_chain323_switches.hpp"
 #include "bsp/view_seg14_cc13.hpp"
 #include "bsp/pose_derived.hpp"
@@ -22058,6 +22061,21 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             // and has left the map ends (0071E430(current, 1) at 009F83A8).
             const std::size_t t = over_target - 1u;
             bool end = false;
+            const auto target_as_plane = [&]() {
+                if constexpr (bsp::kWireGoal4Chain320Bound) {
+                    // 009F8420 calls 0071EA00 on the resolved target; the
+                    // helper's null test and vtable[5Ch](0Fh) decide whether
+                    // 009F842B proceeds to the out-of-map query (bsp.py show
+                    // 0071ea00 --asm / 009f8160 --asm). Its existing typed
+                    // body consumes the actual slot presence and the same
+                    // live class query that this host used here before.
+                    const bool present = h.slots[t] != nullptr;
+                    return bsp::gameplay_seg38_cc13::entity_as_kind_0f_0071ea00(
+                        present, present && unit_is_kind_of(t, 0x0F));
+                } else {
+                    return unit_is_kind_of(t, 0x0F);
+                }
+            };
             // SUBSTITUTION, labelled: "the target is the squadron this host's own
             // override named" (fa.override_squadron with the same target) stands for
             // 00523560's squadron test on the resolved object. A squadron target the
@@ -22108,7 +22126,7 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                     }
                     end = !inside;
                 }
-            } else if (unit_is_kind_of(t, 0x0F) && leash_world.outside_map_0071c4f0(t)) {
+            } else if (target_as_plane() && leash_world.outside_map_0071c4f0(t)) {
                 // 009F841E..009F8463: 0071EA00, a plane outside the map whose +9D4h
                 // squadron's command (vt+174h) is retreat. LABELLED: the squadron's
                 // command is its flight leader's.
@@ -47144,12 +47162,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.plane_world_velocity[1]) >
                                         0.10000000149011612) {
                                     ++unit_.ground_liftoff_requests;
+                                    if constexpr (bsp::kWireGoal4Chain322Bound) {
+                                        // 007CC212: the constructor supplies the routed type.
+                                        if (owner_.commands.session_messages().make_plane_takeoff_c6() == 0xc6u)
+                                            owner_.plane_liftoff_c6h_007c6f50(unit_, "height");
+                                    } else {
                                     owner_.plane_liftoff_c6h_007c6f50(unit_, "height");
+                                    }
                                 } else if (!unit_.plane_ground_contact_bf8) {
                                     if (hd != 0 && hd <= owner_.landing_decks.size()
                                         && owner_.landing_decks[hd - 1u].mother_ship) {
                                         ++owner_.carrier_deck_edge_takeoffs;
+                                        if constexpr (bsp::kWireGoal4Chain322Bound) {
+                                            // 007CC26E: the carrier-edge arm builds the same request.
+                                            if (owner_.commands.session_messages().make_plane_takeoff_c6() == 0xc6u)
+                                                owner_.plane_liftoff_c6h_007c6f50(unit_, "deck edge");
+                                        } else {
                                         owner_.plane_liftoff_c6h_007c6f50(unit_, "deck edge");
+                                        }
                                     } else {
                                         unit_.plane_c01 = 2;                  // 007CC2AD
                                         ++owner_.base_launch_c01_sets;

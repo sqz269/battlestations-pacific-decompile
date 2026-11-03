@@ -194,6 +194,13 @@ public:
     // the decoded type so the caller dispatches that copy to its live plane.
     std::uint8_t queue_plane_touchdown_c5() const;
 
+    // 007CBFA0 calls 00762A00 at 007CC212 / 007CC26E before routing C6h.
+    // Build that request with this session's retained header context; return
+    // its type for the caller's existing immediate delivery. This is only the
+    // constructor: byte +20h is unwritten at both send sites, so its two-bool
+    // codec (006EBB10 / 006EBB40) is not bound by inventing a flag value.
+    std::uint8_t make_plane_takeoff_c6() const;
+
 private:
     struct Image;
     std::unique_ptr<Image> image_;

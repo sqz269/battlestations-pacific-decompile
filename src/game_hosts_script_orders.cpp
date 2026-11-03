@@ -734,6 +734,9 @@ bool record_director_artillery_enable_0071c231(const std::string& name, bool ena
 }
 }  // namespace
 
+GameSoundDialogRuntime* GameScriptOrdersHost::bound_music_dialog_runtime() noexcept {
+    return bound_music_dialog();
+}
 void GameScriptOrdersHost::bind_music_dialog(GameSoundDialogRuntime* runtime) noexcept {
     if constexpr (kWireGoal2Chain180Bound) {
         bound_music_dialog() = runtime;

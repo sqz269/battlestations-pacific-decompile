@@ -135,6 +135,21 @@
     "float_math_changed": false,
     "game_run": false
   },
+  "merge_validation": {
+    "merged_origin_main": "0ec2a6062ec2d69f19c11e7d3a73cc1f032a7d86",
+    "conflicted_file": "src/game_hosts_units.cpp",
+    "resolution": "The only conflict was adjacent include additions; retained chain320/gameplay_seg38 and chain323/view_seg14 headers. Both target-cast arms and chain322 takeoff message bodies were preserved.",
+    "pre_merge_rebuild": "scripts/build.ps1 passed, both CTests passed",
+    "merged_on_build": "Verified kWireGoal4Chain323Bound=true, then scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 4 files",
+    "call_graph_scope": "Built merged working tree before merge commit",
+    "reconstructed_addresses_called": 4362,
+    "readiness_wired": 9327,
+    "readiness_00523560": "wired; called=true; call_sites=1; callers_live=1",
+    "cast_00523560": "One entry-reachable direct call from GameUnitsHost::run_squadron_free_attack_009f8470",
+    "upstream_0071ea00": "Source arm retained and symbol entry-reachable; Release linker folds this symbol with other identical functions",
+    "upstream_00762a00": "Entry-reachable call from HostSessionMessages::make_plane_takeoff_c6"
+  },
   "limits": [
     "Entry reachability is static built-executable evidence; no gameplay run was performed.",
     "The existing override identity and flight-leader command projection remain host representations; this is not native class/vtable ABI integration.",

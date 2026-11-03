@@ -62,6 +62,11 @@ public:
     // these batch services have no effect with kWireGoal2Chain180Bound OFF.
     void set_music_level(std::int32_t level);
     void set_music_target_level(float level);
+    // 00A77C10 on the current published owner [00F8BBCC], the call the session
+    // teardown 004DA780 makes at 004DA85D (goal 4 chain 312).
+    void clear_channels();
+    // The core this runtime was attached to, or null before attach().
+    GameSoundRuntime* attached_core() const noexcept;
     void delete_alternate_slot00(void* actual_owner, std::uint32_t flags) override;
 
 private:

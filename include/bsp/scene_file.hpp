@@ -128,6 +128,13 @@ struct SceneProperty {
     // that raw token text in values.front() (native type 5, +1Ch duplicate; the
     // letter selects the +08h kind). Unquoted/empty/multi-token forms stay raw.
     bool has_reference{false};
+    // Chain 319: a closed "E <table> : <symbol> ;" (values {table, ":",
+    // symbol}, the form 008F5E15..008F5FCF reads). has_enum marks the closed
+    // form only; enum_value is the merged native type-4 +0Ch (008F3A20 stores
+    // 0048E840's word), present when has_enum_value is set.
+    bool has_enum{false};
+    std::int32_t enum_value{0};
+    bool has_enum_value{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.

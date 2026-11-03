@@ -13,6 +13,7 @@
 #include "bsp/wire_goal4_chain290_switches.hpp"
 #include "bsp/wire_goal4_chain296_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
@@ -325,7 +326,7 @@ private:
     char scratch_[0x400]; // host backing for the F89758 name-copy role
 };
 
-class LibraryNativeEnums final {
+class LibraryNativeEnums final : public SceneNativeEnumSource {
 public:
     LibraryNativeEnums()
         : strings_(game_native_string_process()),
@@ -398,6 +399,25 @@ public:
             if (!table.empty()) return false;
         }
         return false;
+    }
+    // Chain 319, the E arm's registry (SceneNativeEnumSource). 008F5F94 reads
+    // the table with 0048E960 on this registry (004D3040 publishes it to
+    // [00E1867C]); 008F3A20's 0048E840 then reads the symbol. Both getters
+    // dereference a miss, so answer a CEnum only for a known table (008F2C10)
+    // that holds the symbol (0048D480 on CEnum+4, the map 0048E840 searches).
+    const void* known_enum_owner(const std::string& table, const std::string& symbol) override {
+        if (!contains_native_enum_table_name_008f2c10(registry_, table.c_str(), tables_)) return nullptr;
+        const auto* owner = reinterpret_cast<const NativeSceneEnumOwnerStorage*>(
+            read_native_enum_table_word_0048e960(&registry_, table.c_str(),
+                strings_.raw_context(), strings_.enum_empty_00e186ed(),
+                strings_.query_empty_00e17654()));
+        NativeString key;
+        construct_native_string_header_0041e870(&key, strings_.raw_context(), symbol.c_str());
+        std::uint32_t bucket;
+        const void* node = find_native_enum_symbol_node_0048d480(&owner->map, key, bucket,
+            strings_.enum_empty_00e186ed(), strings_.query_empty_00e17654());
+        destroy_native_string_header_0041dd20(&key, strings_.raw_context());
+        return node != nullptr ? owner : nullptr;
     }
     bool has_table(const std::string& name) const {
         for (const auto* owner : order_) {
@@ -524,6 +544,30 @@ public:
         return false;
         }
     }
+    // Chain 319: the registry the E arm reads, for the native bag merge; null
+    // before the ON library-load phase builds it.
+    SceneNativeEnumSource* native_enum_source() const noexcept {
+        if constexpr (kWireGoal2Chain120Bound) {
+            return native_enums_.get();
+        } else {
+            return nullptr;
+        }
+    }
+    // An E property's integer. ON: a merged E property carries its native
+    // type-4 +0Ch (008F3A20's 0048E840 word), which the executable's readers
+    // take as is; anything else still resolves through the tables. OFF: always
+    // resolve_symbol, the previous behaviour.
+    bool resolve_enum(const SceneEnumProperty& e, int& value) const {
+        if constexpr (kWireGoal4Chain319Bound) {
+            if (e.has_native_value) {
+                value = e.native_value;
+                return true;
+            }
+            return resolve_symbol(e.table, e.symbol, value);
+        } else {
+            return resolve_symbol(e.table, e.symbol, value);
+        }
+    }
 
     std::size_t group_count() const noexcept { return groups_.size(); }
     std::size_t enum_count() const noexcept {
@@ -557,10 +601,13 @@ private:
 // entity group merge fills missing keys and an authored assignment overwrites.
 // Library parent merges instead pass native flag 0: later parents overwrite,
 // then the authored group body overwrites (008F5AB3, 008F6AD7).
+// Chain 319: `enums` is the library registry for the E arm (null from every
+// OFF call site, which leaves E values on the host path as before).
 void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& other,
-    bool overwrite, bool require_compatible_types = false) {
+    bool overwrite, bool require_compatible_types = false,
+    SceneNativeEnumSource* enums = nullptr) {
     if constexpr (kWireGoal4Chain296Bound) {
-        SceneNumericPropertyMerge native_merge(bag, other, overwrite);
+        SceneNumericPropertyMerge native_merge(bag, other, overwrite, enums);
         for (std::size_t i = 0; i < other.values.size(); ++i) {
             const SceneProperty& value = other.values[i];
             if (require_compatible_types) {
@@ -607,7 +654,7 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
                 bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
                 target = &bag.blocks.back().second;
             }
-            merge_property_block(*target, block.second, overwrite, require_compatible_types);
+            merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
         }
     } else {
     for (const SceneProperty& value : other.values) {
@@ -684,10 +731,20 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
     // This owning-tree projection validates its supported domain on a copy;
     // native malformed-input failure, aliases and rollback are not modeled.
     ScenePropertyBlock captured = existing != nullptr ? existing->block : ScenePropertyBlock{};
+    if constexpr (kWireGoal4Chain319Bound) {
+        // The E arm resolves against the enums loaded so far, as 008F5A00
+        // does while this library file is read; an unknown table or symbol
+        // stays on the host path.
+        for (const std::string& base : group.bases) {
+            merge_property_block(captured, this->group(base)->block, true, true, native_enum_source());
+        }
+        merge_property_block(captured, group.block, true, true, native_enum_source());
+    } else {
     for (const std::string& base : group.bases) {
         merge_property_block(captured, this->group(base)->block, true, true);
     }
     merge_property_block(captured, group.block, true, true);
+    }
     if (existing != nullptr) {
         existing->block = std::move(captured);
         existing->bases = std::move(group.bases);
@@ -701,7 +758,11 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     ScenePropertyBlock& bag) {
     const PropertyGroupDefinition* group = library.group(name);
     if (group == nullptr) return;
+    if constexpr (kWireGoal4Chain319Bound) {
+        merge_property_block(bag, group->block, false, false, library.native_enum_source());
+    } else {
     merge_property_block(bag, group->block, false);
+    }
 }
 
 bool retain_start_speed(const ScenePropertyBlock& bag, GameSceneEntityRecord& record) {
@@ -866,7 +927,7 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
         const SceneEnumProperty e = scene_enum_property(*sub, "Type");
         if (e.present) {
             symbol = e.symbol;
-            if (!library.resolve_symbol(e.table, e.symbol, type)) type = 0;
+            if (!library.resolve_enum(e, type)) type = 0;
         }
         for (int m = 1; m <= 4; ++m) {
             char position_key[16];
@@ -918,7 +979,7 @@ public:
             && scene_scan_int(prop->values.back(), value)) return static_cast<std::uint32_t>(value);
         const SceneEnumProperty e = scene_enum_property(bag_, prop->key);
         int resolved = 0;
-        if (e.present && library_.resolve_symbol(e.table, e.symbol, resolved))
+        if (e.present && library_.resolve_enum(e, resolved))
             return static_cast<std::uint32_t>(resolved);
         throw std::runtime_error("path Group has no readable integer payload");
     }
@@ -1859,7 +1920,7 @@ int scene_stock_int(GameSceneContentsHost::Impl& owner, const ScenePropertyBlock
     const SceneEnumProperty e = scene_enum_property(bag, key);
     if (e.present) {
         int value = 0;
-        return owner.library.resolve_symbol(e.table, e.symbol, value) ? value : 0;
+        return owner.library.resolve_enum(e, value) ? value : 0;
     }
     const SceneProperty* property = bag.find(key);
     if (property == nullptr || property->values.empty()) return 0;
@@ -2436,7 +2497,7 @@ std::string scene_deck_type(const ScenePropertyBlock& block, const PropertyLibra
     if (!kSceneDeckTypeEnumBound || library == nullptr) return text;
     const SceneEnumProperty e = scene_enum_property(block, "Type");
     int value = 0;
-    if (e.present && library->resolve_symbol(e.table, e.symbol, value)) {
+    if (e.present && library->resolve_enum(e, value)) {
         return std::to_string(value);
     }
     return text;
@@ -3183,7 +3244,13 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     for (const std::string& group : entity.groups) {
         merge_group_into(owner.library, group, bag);
     }
+    if constexpr (kWireGoal4Chain319Bound) {
+        // The authored body's E statements are the parse 008F5A00 performs
+        // into this bag: 0048E960 / 008F3A20 on the library registry.
+        merge_property_block(bag, entity.properties, true, false, owner.library.native_enum_source());
+    } else {
     merge_property_block(bag, entity.properties, true);
+    }
 
     const SceneEntityClassRow* klass = scene_class_row_by_name(entity.class_name);
     if (klass == nullptr) {
@@ -3250,12 +3317,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     const SceneEnumProperty party = scene_enum_property(bag, kSceneUnitPartyKey);
     int type_id = -1;
     int party_id = -1;
-    if (type.present) owner.library.resolve_symbol(type.table, type.symbol, type_id);
-    if (party.present) owner.library.resolve_symbol(party.table, party.symbol, party_id);
+    if (type.present) owner.library.resolve_enum(type, type_id);
+    if (party.present) owner.library.resolve_enum(party, party_id);
     // Packet cc9_scene_race_and_script_identity: 0092708F pushes "Race" (00CE8EE0).
     const SceneEnumProperty race = scene_enum_property(bag, "Race");
     int race_id = -1;
-    if (race.present) owner.library.resolve_symbol(race.table, race.symbol, race_id);
+    if (race.present) owner.library.resolve_enum(race, race_id);
 
     if (pass == SceneFilePass::Registration) {
         if (!gate.generate) return;
@@ -3406,7 +3473,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                     const SceneEnumProperty value = scene_enum_property(bag, "ResourceUsage");
                     int numeric = 0;
                     if (!equal_insensitive(resource->type_letter, "E") || !value.present
-                        || !owner.library.resolve_symbol(value.table, value.symbol, numeric)) {
+                        || !owner.library.resolve_enum(value, numeric)) {
                         throw std::runtime_error("unsupported ResourceUsage property: " + entity.name);
                     }
                     record.resource_usage_304 = static_cast<float>(numeric);
@@ -3421,7 +3488,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         if (owner_player.present) {
             record.owner_player_symbol = owner_player.symbol;
             int value = 9;
-            if (owner.library.resolve_symbol(owner_player.table, owner_player.symbol, value)) {
+            if (owner.library.resolve_enum(owner_player, value)) {
                 record.owner_player = value;
             } else {
                 ++owner.summary.owner_player_unresolved;
@@ -3442,7 +3509,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 return true;
             }
             const SceneEnumProperty e = scene_enum_property(bag, key);
-            return e.present && owner.library.resolve_symbol(e.table, e.symbol, out);
+            return e.present && owner.library.resolve_enum(e, out);
         };
         int v = 0;
         if (bag_int("Skill", v)) {                     // 00CF8838, 00927A97
@@ -3499,7 +3566,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 }
             } else {
                 const SceneEnumProperty e = scene_enum_property(bag, "Equipment");
-                if (e.present && owner.library.resolve_symbol(e.table, e.symbol, equipment)) {
+                if (e.present && owner.library.resolve_enum(e, equipment)) {
                     record.bag_equipment = equipment;
                 }
             }
@@ -3864,7 +3931,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                                   int fallback) {
             const SceneEnumProperty e = scene_enum_property(block, key);
             int value = fallback;
-            if (e.present && owner.library.resolve_symbol(e.table, e.symbol, value)) return value;
+            if (e.present && owner.library.resolve_enum(e, value)) return value;
             std::int32_t parsed = 0;
             if (e.present) {
                 // gunnery30's routed (A): the symbol's own digits, `:" 0"` included.
@@ -4025,7 +4092,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             }
             const SceneEnumProperty e = scene_enum_property(bag, key);
             int v = 0;
-            if (e.present && owner.library.resolve_symbol(e.table, e.symbol, v)) {
+            if (e.present && owner.library.resolve_enum(e, v)) {
                 present = true;
                 level = static_cast<std::int32_t>(v);
             }

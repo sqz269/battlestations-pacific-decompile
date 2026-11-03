@@ -3,6 +3,8 @@
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
+#include "bsp/native_scene_property_enum_add.hpp"
+#include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/native_scene_property_bag_merge.hpp"
 #include "bsp/native_scene_property_bag_storage.hpp"
 #include "bsp/native_scene_property_bool_add.hpp"
@@ -40,23 +42,23 @@ namespace bsp::game {
 struct SceneNumericPropertyMerge::Impl final {
 public:
     Impl(const ScenePropertyBlock& destination,
-        const ScenePropertyBlock& source, bool overwrite)
+        const ScenePropertyBlock& source, bool overwrite, SceneNativeEnumSource* enums)
         : context_(game_native_string_process(), property_process()),
           destination_(context_.insertion()), source_(context_.insertion()),
-          selected_(source.values.size(), false) {
+          selected_(source.values.size(), false), enums_(enums) {
         bool any = false;
         for (std::size_t i = 0; i < source.values.size(); ++i) {
             const auto& value = source.values[i];
-            if (!supported(value) || occurrences(source, value.key) != 1
+            if (!admitted(value) || occurrences(source, value.key) != 1
                 || occurrences(destination, value.key) > 1
                 || has_child(source, value.key) || has_child(destination, value.key)) continue;
             const auto prior = std::find_if(destination.values.begin(), destination.values.end(),
                 [&](const SceneProperty& p) { return same_key(p.key, value.key); });
             if (prior != destination.values.end()) {
-                if (!supported(*prior) || prior->type_letter != value.type_letter) continue;
-                destination_.insert(*prior);
+                if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
+                insert_into(destination_, *prior);
             }
-            source_.insert(value);
+            insert_into(source_, value);
             selected_[i] = true;
             any = true;
         }
@@ -105,6 +107,18 @@ public:
                 std::memcpy(&value.boolean_value, record + 0x0c, sizeof(value.boolean_value));
                 value.has_boolean = true;
                 break;
+            case 4:
+                if constexpr (kWireGoal4Chain319Bound) {
+                    // 008F3A20 stores 0048E840's word at +0Ch and the CEnum at
+                    // +28h; 008F0700 (keep 0 hit) and the 008F4F60 clone (miss)
+                    // carry both. Consumers read the merged +0Ch, as the
+                    // executable's readers of a type-4 property do (006CB114).
+                    value.has_enum = authored_metadata.has_enum;
+                    std::memcpy(&value.enum_value, record + 0x0c, sizeof(value.enum_value));
+                    value.has_enum_value = true;
+                    break;
+                }
+                throw std::logic_error("unexpected merged scene property tag");
             case 7:
                 // 008F3690 and 008F0700 copy the three +0C/+10/+14 words.
                 // Bit transport preserves signed zero without float math.
@@ -328,6 +342,13 @@ private:
             }
             }
         }
+        // Chain 319. bsp.py show 008F5A00 --asm, 008F5F94..008F5FCF: a new
+        // key's E arm passes (key, EDI = 0048E960's CEnum, the 008D9980 symbol)
+        // to 008F3A20, which resolves the symbol through 0048E840 into +0Ch.
+        void insert_enum(const SceneProperty& value, const void* enum_owner) {
+            add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
+                value.values[2].c_str(), game_native_string_process(), context_);
+        }
         void* find(const std::string& key) {
             NativeString query;
             construct_native_string_header_0041e870(&query, context_.lifetimes().keys(), key.c_str());
@@ -375,15 +396,49 @@ private:
         alignas(std::uint32_t) std::array<std::byte, native_scene_property_bag_storage_bytes> storage_;
     };
 
+    // Chain 319: the genuine CEnum for a closed E value, or null when there is
+    // no registry, the value is not the closed form, or the registry does not
+    // hold both its table and its symbol.
+    const void* enum_owner(const SceneProperty& value) const {
+        if (enums_ == nullptr || value.type_letter != "E" || !value.has_enum
+            || value.values.size() != 3) return nullptr;
+        for (const std::string& token : value.values) {
+            if (std::any_of(token.begin(), token.end(),
+                    [](unsigned char c) { return c == 0 || c >= 0x80; })) return nullptr;
+        }
+        return enums_->known_enum_owner(value.values[0], value.values[2]);
+    }
+    // supported() plus, under chain 319, the closed known E form.
+    bool admitted(const SceneProperty& value) const {
+        if constexpr (kWireGoal4Chain319Bound && kWireGoal4Chain307Bound) {
+            if (value.type_letter == "E") {
+                return !std::any_of(value.key.begin(), value.key.end(),
+                           [](unsigned char c) { return c == 0 || c >= 0x80; })
+                    && enum_owner(value) != nullptr;
+            }
+        }
+        return supported(value);
+    }
+    void insert_into(Bag& bag, const SceneProperty& value) {
+        if constexpr (kWireGoal4Chain319Bound && kWireGoal4Chain307Bound) {
+            if (value.type_letter == "E") {
+                bag.insert_enum(value, enum_owner(value));
+                return;
+            }
+        }
+        bag.insert(value);
+    }
+
     NativeScenePropertyCloneContext context_;
     Bag destination_;
     Bag source_;
     std::vector<bool> selected_;
+    SceneNativeEnumSource* enums_;
 };
 
 SceneNumericPropertyMerge::SceneNumericPropertyMerge(const ScenePropertyBlock& destination,
-    const ScenePropertyBlock& source, bool overwrite)
-    : impl_(std::make_unique<Impl>(destination, source, overwrite)) {}
+    const ScenePropertyBlock& source, bool overwrite, SceneNativeEnumSource* enums)
+    : impl_(std::make_unique<Impl>(destination, source, overwrite, enums)) {}
 
 SceneNumericPropertyMerge::~SceneNumericPropertyMerge() = default;
 

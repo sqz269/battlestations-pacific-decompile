@@ -751,6 +751,9 @@ public:
     ~GameScriptOrdersHost();
     // Application phase5's existing dialog owner; no new manager lifetime.
     static void bind_music_dialog(class GameSoundDialogRuntime*) noexcept;
+    // The runtime bind_music_dialog published, or null (goal 4 chain 312: the
+    // mission frame's session-teardown sound reset borrows it).
+    static class GameSoundDialogRuntime* bound_music_dialog_runtime() noexcept;
     void attach_scoring_name_owner(GameMissionResultHost* owner) noexcept {
         scoring_name_owner_ = owner;
     }
