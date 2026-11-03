@@ -463,7 +463,9 @@ bool class55_is_kind_0079d840(const void* object, int query) {
     return query == 0x55 || query == 0x4c || query == 0 || query == get<int>(object, 0xc4);
 }
 // 007B8A90: ECX=plane, RET; original two-instruction business body.
-void plane_clear_turbo_007b8a90(void* plane) { put<std::uint8_t>(plane, 0x9f9, 0); }
+void plane_clear_turbo_007b8a90(void* plane) {
+    plane_clear_turbo_007b8a90(*static_cast<std::uint8_t*>(at(plane, 0x9f9)));
+}
 
 // 008364B0 / 00836790: vslot 48h, unused ECX, stack category, RET 4.
 bool director_allows_category_008364b0(int category) noexcept {

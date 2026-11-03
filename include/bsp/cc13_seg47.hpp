@@ -545,6 +545,14 @@ bool weapon_controller_has_rocket_ordnance_007b9480(Seg47Host& host, Raw plane, 
 void unit_instance_retire_ai_sub_nodes_007b9590(Seg47Host& host, Raw plane);
 bool plane_altitude_sink_predicate_007b9620(Raw plane);
 void plane_detach_into_hangar_007b96c0(Seg47Host& host, Raw plane);
+// Typed view of 007B96C0 over the caller's storage: the stowed byte +C00h = 1,
+// then 00951F40(plane, 0) through the caller's callee. The raw entry wraps it.
+template <class Byte, class Detach00951f40>
+void plane_detach_into_hangar_007b96c0(Byte& in_hangar_c00,
+                                       Detach00951f40&& unit_instance_detach_00951f40) {
+    in_hangar_c00 = static_cast<Byte>(1);
+    unit_instance_detach_00951f40(std::int32_t{0});
+}
 void* unit_find_gun_target_007b96f0(Seg47Host& host, Raw unit, float f0, float f1, float f2, float f3, float f4,
                                     std::int32_t n, float f6);
 void plane_neighbours_clear_target_007b9740(Seg47Host& host, Raw unit);

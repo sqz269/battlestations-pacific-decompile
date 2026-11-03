@@ -229,6 +229,19 @@ float* air_ops_block_runway_end_point_006bc890(void* block, float* out, Seg29UHo
 void air_ops_route_do_launch_slot_006bc8e0(void* block, std::uint32_t slot, Seg29UHost& host);
 // 006BC960, __thiscall(ECX = holder) RET: T = holder+A4h..+ACh.
 void air_ops_holder_refresh_touchdown_006bc960(void* holder, Seg29UHost& host);
+// Typed view of 006BC960's inputs, in the order the body reads them: +B4h,
+// then [[holder+4]+7Ch]->vtable[5Ch](9); on the other arm only, +B0h and then
+// [holder+4]->vtable[10h]() (ST0, kept as the double it is consumed as).
+struct AirOpsHolderTouchdownInputs {
+    float length_b4;          // holder+B4h
+    bool owner_is_kind_9;     // the block owner's IsKindOf(9), MMothership
+    float width_b0;           // holder+B0h, read on the airfield arm only
+    double block_vslot_10;    // block vtable[10h], called on the airfield arm only
+};
+// The body over typed storage: writes t_a4[0] (+A4h), t_a4[2] (+ACh), then
+// t_a4[1] (+A8h), as 006BC960 stores them. The raw entry above wraps it.
+void air_ops_holder_refresh_touchdown_006bc960(float* t_a4,
+    const AirOpsHolderTouchdownInputs& in);
 // 006BCA40, __thiscall(ECX = holder; float out[3]) RET 4 -> EAX = out.
 float* air_ops_holder_touchdown_world_006bca40(void* holder, float* out, Seg29UHost& host);
 // 006BCA80, __thiscall(ECX = holder; float out[4], float t) RET 8.

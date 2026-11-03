@@ -81,6 +81,12 @@ bool class60_is_kind_007810f0(const void*, int);
 bool class54_is_kind_0079a380(const void*, int);
 bool class55_is_kind_0079d840(const void*, int);
 void plane_clear_turbo_007b8a90(void*);
+// Typed view of 007B8A90 over the caller's storage: the turbo byte +9F9h = 0.
+// The raw entry above wraps it.
+template <class Byte>
+void plane_clear_turbo_007b8a90(Byte& turbo_9f9) noexcept {
+    turbo_9f9 = static_cast<Byte>(0);
+}
 bool director_allows_category_008364b0(int) noexcept;
 bool ship_director_allows_category_00836790(int) noexcept;
 float gun_class_value_for_target_00836eb0(const void*, void*, Host&);
