@@ -1,6 +1,10 @@
 #include "bsp/locale_text_lookup.hpp"
+#include "bsp/native_wide_string.hpp"
+#include "bsp/wide_string_substring_view.hpp"
+#include "bsp/wire_goal2_chain116_switches.hpp"
 
 #include <cstdint>
+#include <cwchar>
 #include <limits>
 #include <stdexcept>
 
@@ -50,6 +54,44 @@ void append_checked(std::u16string& output, const std::u16string& suffix) {
         throw std::length_error("locale text append exceeds native string range");
     }
     output.append(suffix);
+}
+
+// The resolver already owns the source UTF-16 string. The view borrows that
+// backing; only 00770E50's temporary and result allocate, at its native sites.
+// This host has no native pool: use the existing explicit CRT storage domain.
+class LocaleWideSubstringAdapter final : public WideStringSubstringHost {
+public:
+    void wide_string_resize_004c53e0(void* value, std::uint32_t length, std::int32_t preserve) override {
+        resize_native_wide_string_header_004c53e0(value, storage_, length, preserve != 0);
+    }
+    void* wide_string_copy_construct_004c8dd0(void* out, const void* source) override {
+        return copy_construct_native_wide_string_header_004c8dd0(out, source, storage_);
+    }
+    wchar_t* crt_wcsncpy_00bfaeef(wchar_t* out, const wchar_t* source, std::uint32_t count) override {
+        return std::wcsncpy(out, source, count);
+    }
+    void* sized_pool_get_00419cc0() override { return &storage_; }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+        std::int32_t) override {
+        static_cast<NativeStringStorage*>(pool)->release(static_cast<char*>(data), bytes);
+    }
+private:
+    NativeStringStorage& storage_ = crt_string_storage();
+};
+
+std::u16string locale_substring(const std::u16string& source, std::size_t position,
+    std::uint32_t count) {
+    WideStringSubstringHeader input{static_cast<std::uint32_t>(source.size()),
+        reinterpret_cast<wchar_t*>(const_cast<char16_t*>(source.data()))};
+    struct Result {
+        WideStringSubstringHeader header{};
+        ~Result() { destroy_native_wide_string_header_00436430(&header, crt_string_storage()); }
+    } result;
+    LocaleWideSubstringAdapter adapter;
+    wide_string_substring_view_00770e50(input, result.header,
+        static_cast<std::int32_t>(position), count, adapter);
+    if (result.header.data == nullptr) return {};
+    return std::u16string(reinterpret_cast<const char16_t*>(result.header.data), result.header.length);
 }
 
 } // namespace
@@ -119,6 +161,25 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
                 // the complete original output. It has no terminating result.
                 throw std::invalid_argument("unmatched locale substitution marker");
             }
+            // 00770E50 calls the substring body at the three slices; OFF keeps the host loop.
+            if constexpr (kWireGoal2Chain116Bound) {
+                const std::string path = narrow_low_bytes_00436630(locale_substring(output, marker + 1,
+                    static_cast<std::uint32_t>(close - marker - 1)));
+                std::u16string replacement;
+                if (path.empty()) {
+                    replacement = u"\n";
+                } else if (path == ":") {
+                    replacement = u"#";
+                } else {
+                    const std::string value = host_.context_string_00b692c0(path);
+                    append_key_list_00a9fad0(replacement, value);
+                }
+                std::u16string joined = locale_substring(output, 0, static_cast<std::uint32_t>(marker));
+                append_checked(joined, replacement);
+                append_checked(joined, locale_substring(output, close + 1, 0x7fffffffu));
+                output.swap(joined);
+                marker = output.find(u'#', marker + replacement.size());
+            } else {
             const std::string path = narrow_low_bytes_00436630(
                 output.substr(marker + 1, close - marker - 1));
             std::u16string replacement;
@@ -137,6 +198,7 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
             // The recursive call already resolved replacement. Do not scan it
             // again: '#:#' must survive as '#', and '.literal' stays literal.
             marker = output.find(u'#', marker + replacement.size());
+            }
         }
     }
     if (uppercase) {

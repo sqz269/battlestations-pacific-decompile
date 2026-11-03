@@ -8,6 +8,7 @@
 // image keeps unstored intermediates wider. EH frames are noted, not modelled.
 
 #include "bsp/cc13_sweepB2.hpp"
+#include "bsp/wide_string_substring_view.hpp"
 
 #include <initializer_list>
 
@@ -1342,37 +1343,65 @@ void cc13_sweepB2_session_update_client_clock_scale_007700e0(void* session, Cc13
 //   data + pos, count); 004C8DD0(out, &local); then a non-null local.data
 //   goes back through 00BD1510([00419CC0()], data, local.length*2 + 2, 1).
 // EH frame 00C89461 (state 1 / 0 around the local) is not modelled.
-void* cc13_sweepB2_wide_string_substring_00770e50(const void* source, void* out, std::int32_t pos,
-                                                  std::uint32_t count, Cc13SweepB2Host& host) {
-    void* src = const_cast<void*>(source);
-    struct {
-        std::uint32_t length;
-        wchar_t* data;
-    } local = {0, nullptr};
+WideStringSubstringHeader* wide_string_substring_view_00770e50(
+    const WideStringSubstringHeader& source, WideStringSubstringHeader& out,
+    std::int32_t pos, std::uint32_t count, WideStringSubstringHost& host) {
+    WideStringSubstringHeader local = {0, nullptr};
     std::uint32_t start;
     if (pos < 0) {
         count += static_cast<std::uint32_t>(pos);
         start = 0;
     } else {
         start = static_cast<std::uint32_t>(pos);
-        if (start > at<std::uint32_t>(src, 0x0)) start = at<std::uint32_t>(src, 0x0);
+        if (start > source.length) start = source.length;
     }
-    const wchar_t* data = at<const wchar_t*>(src, 0x4);
-    const std::uint32_t length = at<std::uint32_t>(src, 0x0);
+    const wchar_t* data = source.data;
+    const std::uint32_t length = source.length;
     if (data == nullptr || length == 0 || start >= length) {
-        host.wide_string_copy_construct_004c8dd0(out, &local);
-        return out;
+        host.wide_string_copy_construct_004c8dd0(&out, &local);
+        return &out;
     }
     if (start + count > length) count = length - start;
     host.wide_string_resize_004c53e0(&local, count, 1);
     wchar_t* buffer = local.data;
     if (count != 0) host.crt_wcsncpy_00bfaeef(buffer, data + start, count);
-    host.wide_string_copy_construct_004c8dd0(out, &local);
+    host.wide_string_copy_construct_004c8dd0(&out, &local);
     if (buffer != nullptr) {
         const std::uint32_t bytes = local.length * 2 + 2;
         host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), buffer, bytes, 1);
     }
-    return out;
+    return &out;
+}
+
+namespace {
+class SweepWideSubstringAdapter final : public WideStringSubstringHost {
+public:
+    explicit SweepWideSubstringAdapter(Cc13SweepB2Host& host) : host_(host) {}
+    void wide_string_resize_004c53e0(void* value, std::uint32_t length, std::int32_t preserve) override {
+        host_.wide_string_resize_004c53e0(value, length, preserve);
+    }
+    void* wide_string_copy_construct_004c8dd0(void* out, const void* source) override {
+        return host_.wide_string_copy_construct_004c8dd0(out, source);
+    }
+    wchar_t* crt_wcsncpy_00bfaeef(wchar_t* out, const wchar_t* source, std::uint32_t count) override {
+        return host_.crt_wcsncpy_00bfaeef(out, source, count);
+    }
+    void* sized_pool_get_00419cc0() override { return host_.sized_pool_get_00419cc0(); }
+    void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t bytes,
+        std::int32_t flag) override {
+        host_.sized_pool_return_block_00bd1510(pool, data, bytes, flag);
+    }
+private:
+    Cc13SweepB2Host& host_;
+};
+} // namespace
+
+void* cc13_sweepB2_wide_string_substring_00770e50(const void* source, void* out, std::int32_t pos,
+    std::uint32_t count, Cc13SweepB2Host& host) {
+    SweepWideSubstringAdapter adapter(host);
+    return wide_string_substring_view_00770e50(
+        *static_cast<const WideStringSubstringHeader*>(source),
+        *static_cast<WideStringSubstringHeader*>(out), pos, count, adapter);
 }
 
 // 00775160 BSP_SessionHostInfo_BuildBlob (hypothesis, ledger name).
