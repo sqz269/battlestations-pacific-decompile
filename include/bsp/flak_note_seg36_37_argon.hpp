@@ -44,6 +44,30 @@ void* UnitGroup_CreateForLeader_0070db20(void* leader);
 void UnitGroup_SwapSlotsByDistance_0070db60(void* self);
 void* Entity_AsKind06_0070e3a0(void* self);
 float UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(void* self);
+// [0x0070e3c0] typed view overload (wire goal 2 chain 71); the raw entry above wraps it.
+// View supplies, by the image's offsets: seed_00ce3d08() (the float at 00CE3D08),
+// member_count_4f8() (read once, as the raw entry does), member_18(i) (the record at
+// +18h + i*34h, a View::Member), member_present(m) (non-null), member_is_kind_6(m)
+// (vtable[5Ch](6)), member_is_leader_14(m) (equal to [group+14h]) and
+// member_turn_radius_0082e850(m) (0082E850 on [m+538h]). A present member answering
+// kind 6 that is not the leader raises the result when !(max > r).
+template <class View>
+float UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(const View& group) {
+    float max_r = group.seed_00ce3d08();
+    const std::int32_t count = group.member_count_4f8();
+    for (std::int32_t i = 0; i < count; ++i) {
+        const auto member = group.member_18(i);
+        if (group.member_present(member)) {
+            if (group.member_is_kind_6(member) && !group.member_is_leader_14(member)) {
+                const float r = group.member_turn_radius_0082e850(member);
+                if (!(max_r > r)) {
+                    max_r = r;
+                }
+            }
+        }
+    }
+    return max_r;
+}
 std::int32_t ShipGroup_ControllerAreaKey_0070e450(void* self);
 void UnitGroup_DetachMember_0070e4c0(void* self, void* member, std::uint32_t arg1);
 void UnitGroup_ReadSceneFields_0070e620(void* self, void* reader);

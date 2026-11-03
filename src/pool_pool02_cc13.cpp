@@ -66,39 +66,50 @@ void command_building_handle_message_d5_006f29d0(Object building, float progress
     at<std::uint32_t>(building, 0x7A4) = value;
 }
 
-Object command_building_take_landing_pad_006f2a50(Object site, Object ship, Pool02Host& host) {
-    if (at<std::int32_t>(site, 0x798) == 0) return nullptr;
-    host.enter_critical_section(at<Object>(site, 0x764));
-    ++at<std::int32_t>(at<Object>(site, 0x764), 0x18);
-    float best = FLT_MAX;  // 00D7A248
-    Object chosen = nullptr;
-    const float* const source = ship != nullptr ? refreshed_position(ship, host) : host.static_vector_00f87574();
-    const float ref[3] = {source[0], source[1], source[2]};
-    for (std::int32_t i = 0; i < at<std::int32_t>(site, 0x798); ++i) {
-        Object const pad = at<Object*>(site, 0x794)[i];
-        if (host.landing_pad_occupant_006ac220(pad) != nullptr) continue;
-        if (ship == nullptr) {
-            chosen = pad;
-            break;
-        }
-        const float* const p = refreshed_position(pad, host);
-        const float dx = p[0] - ref[0];
-        const float dy = p[1] - ref[1];
-        const float dz = p[2] - ref[2];
-        const float xx = dx * dx;
-        const float yy = dy * dy;
-        const float xy = yy + xx;
-        const float zz = dz * dz;
-        const float dist = xy + zz;
-        if (best > dist) {
-            best = dist;
-            chosen = pad;
-        }
+namespace {
+
+// The raw image site for the typed 006F2A50 overload: +798h / +794h / [+764h], pads and ship
+// as image objects, image routines through Pool02Host.
+struct RawLandingPadSite {
+    using Pad = Object;
+    using Ship = Object;
+    Object site;
+    Pool02Host& host;
+    static Pad null_pad() noexcept { return nullptr; }
+    static bool pad_is_null(Pad p) noexcept { return p == nullptr; }
+    static bool ship_is_null(Ship s) noexcept { return s == nullptr; }
+    std::int32_t pad_count_798() const { return at<std::int32_t>(site, 0x798); }
+    Pad pad_794(std::int32_t i) const { return at<Object*>(site, 0x794)[i]; }
+    void lock_764() {
+        host.enter_critical_section(at<Object>(site, 0x764));
+        ++at<std::int32_t>(at<Object>(site, 0x764), 0x18);
     }
-    if (chosen != nullptr) host.landing_pad_set_occupant_006ac490(chosen, ship);
-    --at<std::int32_t>(at<Object>(site, 0x764), 0x18);
-    host.leave_critical_section(at<Object>(site, 0x764));
-    return chosen;
+    void unlock_764() {
+        --at<std::int32_t>(at<Object>(site, 0x764), 0x18);
+        host.leave_critical_section(at<Object>(site, 0x764));
+    }
+    void reference_position(Ship ship, float out[3]) {
+        const float* const source =
+            ship != nullptr ? refreshed_position(ship, host) : host.static_vector_00f87574();
+        out[0] = source[0];
+        out[1] = source[1];
+        out[2] = source[2];
+    }
+    bool pad_occupied_006ac220(Pad pad) { return host.landing_pad_occupant_006ac220(pad) != nullptr; }
+    void pad_position(Pad pad, float out[3]) {
+        const float* const p = refreshed_position(pad, host);
+        out[0] = p[0];
+        out[1] = p[1];
+        out[2] = p[2];
+    }
+    void set_occupant_006ac490(Pad pad, Ship ship) { host.landing_pad_set_occupant_006ac490(pad, ship); }
+};
+
+}  // namespace
+
+Object command_building_take_landing_pad_006f2a50(Object site, Object ship, Pool02Host& host) {
+    RawLandingPadSite view{site, host};
+    return command_building_take_landing_pad_006f2a50(view, ship);
 }
 
 bool land_fort_shows_on_minimap_006f57d0() noexcept { return false; }

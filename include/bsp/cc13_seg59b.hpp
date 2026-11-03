@@ -629,6 +629,14 @@ void robot_config_read_parameters_base_008fb770(void* descriptor, void* level_ta
 // accepts, else null.
 void* entity_as_kind05_or_null_008fe120(Seg59bHost& host, void* entity);
 void* entity_as_kind06_or_null_008fe140(Seg59bHost& host, void* entity);
+// 008FE120, typed view overload (wire goal 2 chain 71); the raw entry above wraps it.
+// View supplies the Entity handle type, null_entity(), entity_is_null(e) (008FE123 TEST ESI)
+// and entity_is_kind_of_vt5c(e, kind) (008FE12D, vt[5Ch]).
+template <class View>
+typename View::Entity entity_as_kind05_or_null_008fe120(View& view, typename View::Entity entity) {
+    if (view.entity_is_null(entity)) return view.null_entity();
+    return view.entity_is_kind_of_vt5c(entity, 5) ? entity : view.null_entity();
+}
 
 // --- Scene property records (+04h type, +0Ch value, +10h/+14h vec3 tail, +18h/+1Ch reference
 // object / name, +20h/+24h array data / byte size, +28h enum declaration) -------------------

@@ -1,0 +1,170 @@
+{
+  "chain": 71,
+  "goal": 2,
+  "slot": "g2-w2",
+  "harness": "claude",
+  "host_file": "src/game_hosts_ship_ai.cpp",
+  "tier": 2,
+  "switch": "kWireGoal2Chain71Bound",
+  "switch_header": "include/bsp/wire_goal2_chain71_switches.hpp",
+  "files_changed": [
+    "src/game_hosts_ship_ai.cpp",
+    "include/bsp/wire_goal2_chain71_switches.hpp",
+    "include/bsp/pool_pool02_cc13.hpp",
+    "src/pool_pool02_cc13.cpp",
+    "include/bsp/flak_note_seg36_37_argon.hpp",
+    "src/flak_note_seg36_37_argon.cpp",
+    "include/bsp/cc13_seg59b.hpp",
+    "src/cc13_seg59b.cpp"
+  ],
+  "method": "Each raw body's logic moved into a typed view overload template (same identifier, same address) in its own header; the raw entry is a thin wrapper that builds a raw image view and calls it. The host ON arm calls the typed overload with an adapter over the host's storage.",
+  "build": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain71Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings, 10 files",
+  "wired_total_before": 8829,
+  "wired_total_after": 8881,
+  "rows": [
+    {
+      "native": "006f2a50",
+      "address": "0074a540",
+      "function": "0074a4c0",
+      "host_site": "src/game_hosts_ship_ai.cpp GameShipAiHost::landing_ship_request_landing_0074a4c0; also transport_launch_craft_008206f0 (first_free_pad, image 00820844/00821bbb), ApproachLimitBinding::target_accepted_vtable_0234 and candidate_accepts_warning_vtable_0234 (008128E0 target arm, image 00812945)",
+      "status": "wired",
+      "adapter": "BuildingPadSiteView over bsp::BuildingPadModel (pads_of/pad/set_occupant_006ac490) and the units host position",
+      "reach": "static (no disabled gate: kShipAiApproachLanderTermsBound, kShipAiApproachLandingSweepBound, kLandingCraftLaunchBound all true)",
+      "reached": 0
+    },
+    {
+      "native": "0070e3c0",
+      "address": "009f4eb5",
+      "function": "009f4da0",
+      "host_site": "src/game_hosts_ship_ai.cpp Impl::formation_throttle_ceiling_009f4da0 (called from drive_order_ring_009f3f80 under kShipFormationSpeedBound=true)",
+      "status": "wired",
+      "adapter": "FormationGroupTurnRadiusView over the units host formation group, leader, controllers and class_turn_radius_0082e850",
+      "reached": 54000
+    },
+    {
+      "native": "008fe120",
+      "address": "009f2400",
+      "function": "009f1bc0",
+      "host_site": "src/game_hosts_ship_ai.cpp approach retarget step (ship_ai_approach_retarget_ring_009f239a inputs, target_height_00a8)",
+      "status": "wired",
+      "adapter": "UnitHandleKind05View: units-host handle (index+1, 0 null) and unit_is_kind_of",
+      "reached": 0,
+      "reach": "static: frame_state_009f1bc0 -> run_retarget_arm; no disabled gate (retarget arm runtime-latched; USN04 approach retarget runs=0)"
+    },
+    {
+      "native": "009e5e30",
+      "address": "009f2772",
+      "function": "009f1bc0",
+      "host_site": "src/game_hosts_ship_ai.cpp approach frame mode-0 side byte +1204h (under kAttackMoveApproachImageBound=true)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "result masked: side byte is 0 or 2 regardless because kLandAttackerStopByte is constexpr true (game_hosts_ship_ai.cpp, side = flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1)); ship_target has no other reader. Arm, include and typed overload removed in review round 1."
+    },
+    {
+      "native": "0064a820",
+      "address": "009f359c",
+      "function": "009f3240",
+      "host_site": "src/game_hosts_ship_ai.cpp route_warning_message_0077c2a0",
+      "status": "skipped",
+      "reason": "message construct only: the host delivers the 94h StartLanding route at the call (0074A4C0 / 008206F0) instead of building and queueing a session message; a constructed message nothing reads replaces no host logic"
+    },
+    {
+      "native": "00749d90",
+      "address": "0074a56b",
+      "function": "0074a4c0",
+      "host_site": "src/game_hosts_ship_ai.cpp landing_ship_request_landing_0074a4c0 / approach landing mode 3",
+      "status": "skipped",
+      "reason": "message construct only: the 0A5h message carries the pad and building ids the host already passes straight to begin_landing_0074a990 (labelled substitution of the 0077C2A0 route); building it would only hand those values back"
+    },
+    {
+      "native": "006f34b0",
+      "address": "007aae3e",
+      "function": "007aae10",
+      "host_site": "src/game_hosts_ship_ai.cpp capture arm 3 (comment only)",
+      "status": "skipped",
+      "reason": "the +7DCh paratrooper list and its erase live in game_hosts_units.cpp (units host), not this file; ship AI only reads paratrooper_capturers_07dc. That file is held by another worker this chain"
+    },
+    {
+      "native": "006f39b0",
+      "address": "007ab5b6",
+      "function": "007ab590",
+      "host_site": "src/game_hosts_ship_ai.cpp capture arm 3 (comment only)",
+      "status": "skipped",
+      "reason": "the +7DCh paratrooper list and its append live in game_hosts_units.cpp (units host), not this file; ship AI only reads paratrooper_capturers_07dc. That file is held by another worker this chain"
+    },
+    {
+      "native": "0070d0f0",
+      "address": "009f4e34",
+      "function": "009f4da0",
+      "host_site": "src/game_hosts_ship_ai.cpp Impl::formation_throttle_ceiling_009f4da0",
+      "status": "skipped",
+      "reason": "getter of group+504h, which 0070DA00 maintains; the host computes that ceiling itself in the same loop, so a typed view would only hand the host's own value back"
+    },
+    {
+      "native": "0095cf80",
+      "address": "0095ecd4",
+      "function": "0095eb40",
+      "host_site": "src/game_hosts_ship_ai.cpp ammo_select_flak_alternate",
+      "status": "skipped",
+      "reason": "producer missing: the flak alternate ammunition record at ammo+48h has no producer in this host (the gunnery host reaches ammunition through the gun row; device handle == ammo handle)"
+    },
+    {
+      "native": "0095d3c0",
+      "address": "006f5433",
+      "function": "006f4d10",
+      "host_site": "src/game_hosts_ship_ai.cpp command_building_set_owner_player_006f4d10",
+      "status": "skipped",
+      "reason": "not modelled: the host's 006F4D10 flip does not model the unit vector at +660h that 0095D3C0 clears; no host storage or logic to replace"
+    },
+    {
+      "native": "008363e0",
+      "address": "006d0cca",
+      "function": "006d0c80",
+      "host_site": "src/game_hosts_ship_ai.cpp AutoTarget selection_enabled (WeaponDirectorState defaults)",
+      "status": "skipped",
+      "reason": "native weapon director constructor: the host keeps bsp::WeaponDirectorState defaults, not a native director object; +3Ch/+3Dh for class 0Bh/9 owners need 00720180's stores, which this host does not produce (same as chain 68)"
+    },
+    {
+      "native": "009f3f20",
+      "address": "00810df2",
+      "function": "00810dd0",
+      "host_site": "src/game_hosts_ship_ai.cpp brain registration (Controller per unit)",
+      "status": "skipped",
+      "reason": "allocates the native 2268h composite brain (operator new + 009F3BA0); the host keeps its own Controller per ship and models the constructor draws; a native brain nothing reads replaces no host logic"
+    },
+    {
+      "native": "004c1d10",
+      "address": "006f43da",
+      "function": "006f4360",
+      "host_site": "src/game_hosts_ship_ai.cpp command building class fields from the 004C1D10 globals",
+      "status": "skipped",
+      "reason": "lazy singleton 00E19A64 under the lifetime manager's lock (004BF9A0 constructor); the host has no native singleton or lifetime manager and reads the Lua values directly; no producer for the object"
+    }
+  ],
+  "host_objects": [],
+  "pair_run": {
+    "mission": "USN04",
+    "off_log": "local/g2-w2-off_USN04.log",
+    "on_log": "local/g2-w2-on_USN04.log",
+    "on_exe": "local/g2-w2-on (pair_export --flip kWireGoal2Chain71Bound=true, SHA-256 3F5D35A16603)",
+    "both_exit": 0,
+    "gameplay": "identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509, unit table 81 rows identical)",
+    "native_table": "1624 -> 1625 rows: + ShipAiFormation::group_turn_radius_0070e3c0 0070e3c0 concrete calls=54000; 0 status changed, 0 counts moved",
+    "other_lines": "231/231 masked atlas allocation lines only (address noise)",
+    "note": "Pair run from the first commit (029fce3d2), before review round 1. Round 1 removes only the 009E5E30 ON arm, which logged 0 calls in that ON run and whose result was masked, so the pair result stands without a rerun."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain71Bound ON: the USN04 pair is gameplay-identical while 0070E3C0 runs 54000 times (it gives the host's maximum). 006F2A50 and 008FE120 are static in USN04; pair a mission with landing ships or troop transports to exercise them at runtime.",
+  "wired_total_note": "Measured in this tree with plain wire_readiness.py after build.ps1: base f11fc1d58 sources 8829 (reproduced), head 8881. This chain's counted rows are 3 (006f2a50, 0070e3c0, 008fe120). The other +49 are NOT credited to this chain: they are every row of files that became include-reachable to the tool (reachable_files 2065 -> 2071) once game_hosts_ship_ai.cpp included flak_note_seg36_37_argon.hpp, pool_pool02_cc13.hpp and cc13_seg59b.hpp: src/flak_note_seg36_37_argon.cpp 27 rows besides 0070e3c0 (e.g. 0070da00, 0070e3a0, 0070e4c0, 00710630, 00718f50), src/dummy_depth_seg34_argon.cpp 20 rows (006fb750..00700a20), src/lua_text_dump.cpp 2 rows (0043c1c0, 0043c530); a further 4 rows moved callees_done_no_wired_caller -> ready (0070b9d0, 00b662e0, 00711c30, 0074fa80). No code calls them: the linked object set in bsp_game.map is the same at base and head (flak_note_seg36_37_argon.obj 5 references both; dummy_depth_seg34_argon, lua_text_dump, pool_pool02_cc13, cc13_seg59b 0 both).",
+  "review_round_1": {
+    "review_run": 153,
+    "findings": [
+      "fixed: removed the 009E5E30 arm, restored the single ship_target expression, dropped the chain-71 cc13_seg67b.hpp include",
+      "fixed: cc13_seg67b.hpp/.cpp returned to the branch base f11fc1d58 (not origin/main, which has since moved for these files)",
+      "fixed: 009E5E30 row marked skipped with the masked-result reason",
+      "fixed: wired_total_after recomputed (8881) with the extra +49 listed and not credited"
+    ],
+    "checks": "off_switch_on_build.py --names kWireGoal2Chain71Bound: exit 0, 0 diagnostics; build.ps1 exit 0, 2/2 tests; wire_readiness: 006f2a50 / 0070e3c0 / 008fe120 wired, 009e5e30 ready"
+  }
+}
