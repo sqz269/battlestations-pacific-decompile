@@ -1101,7 +1101,7 @@ void mission_lua_host_release_machine_008844f0(
 void mission_lua_host_run_script_file_00885110(
     MissionLuaHostState& host,
     const char* path,
-    MissionLuaEnvironmentHost& env) {
+    MissionLuaScriptEnvironmentHost& env) {
     std::vector<char> bytes{};
     const std::string safe_path = (path != nullptr) ? path : "";
     if (env.read_vfs_file(safe_path, bytes)) {
@@ -1196,7 +1196,7 @@ void mission_lua_host_run_script_with_variants_00885fb0(
     MissionLuaHostState& host,
     const char* path,
     bool run_variants,
-    MissionLuaEnvironmentHost& env) {
+    MissionLuaScriptEnvironmentHost& env) {
     mission_lua_host_run_script_file_00885110(host, path, env);
     if (run_variants) {
         std::vector<std::string> overrides{};

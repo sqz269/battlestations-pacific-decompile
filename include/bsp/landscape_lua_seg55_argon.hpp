@@ -917,10 +917,10 @@ struct VfsFileBlockScope {
     int saved_depth{0};                         // +04h
 };
 
-struct MissionLuaEnvironmentHost {
-    virtual ~MissionLuaEnvironmentHost() = default;
-    // 006B87C0 LuaMachine scalar deleting destructor (vslot 0)
-    virtual void delete_lua_machine(void* machine) = 0;
+// The file runner needs only these services. Keep its adapter independent of
+// stack conversion, result sinks and named-call dispatch; no dummy callbacks.
+struct MissionLuaScriptEnvironmentHost {
+    virtual ~MissionLuaScriptEnvironmentHost() = default;
     // VFS open stream (vslot +04h(path, 2)) and read all bytes
     virtual bool read_vfs_file(const std::string& path, std::vector<char>& out_bytes) = 0;
     // 006B89F0 BSP_LuaMachine_RunChunk
@@ -936,6 +936,12 @@ struct MissionLuaEnvironmentHost {
     virtual void append_lua_script_overrides_00bdef90(
         const std::string& path,
         std::vector<std::string>& out_variants) = 0;
+};
+
+struct MissionLuaEnvironmentHost : MissionLuaScriptEnvironmentHost {
+    virtual ~MissionLuaEnvironmentHost() = default;
+    // 006B87C0 LuaMachine scalar deleting destructor (vslot 0)
+    virtual void delete_lua_machine(void* machine) = 0;
     // 00BDC9B0 BSP_VFS_LeaveFileBlock
     virtual int current_vfs_block_depth() const = 0;
     virtual void leave_vfs_file_block_00bdc9b0(const std::string& empty_tag) = 0;
@@ -985,7 +991,7 @@ void mission_lua_host_release_machine_008844f0(
 void mission_lua_host_run_script_file_00885110(
     MissionLuaHostState& host,
     const char* path,
-    MissionLuaEnvironmentHost& env);
+    MissionLuaScriptEnvironmentHost& env);
 
 // 00885350 BSP_VfsFileBlockScope_Destruct
 // __fastcall(ECX = scope), RET. Sets vptr 00D0E6EC; if `scope.saved_depth < vfs_depth`,
@@ -1016,7 +1022,7 @@ void mission_lua_host_run_script_with_variants_00885fb0(
     MissionLuaHostState& host,
     const char* path,
     bool run_variants,
-    MissionLuaEnvironmentHost& env);
+    MissionLuaScriptEnvironmentHost& env);
 
 // 00886E00 BSP_MissionLua_BuildVariantFromStack
 // __thiscall(ECX = sink, LuaVariantRecord* out, int stack_index, int depth, int max_depth), RET 10h.
