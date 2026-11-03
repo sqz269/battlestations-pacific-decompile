@@ -48,6 +48,7 @@
 #include "bsp/wire_goal4_chain280_switches.hpp"
 #include "bsp/wire_goal4_chain292_switches.hpp"  // 0071EDD0 in the 0071DDB0 walk
 #include "bsp/plane_squadron_host.hpp"           // plane+9D4h / +3D0h stand-in (chain 292)
+#include "bsp/gameplay_seg52_cc13.hpp"           // 00836040 / 0084DD20 (chain 292)
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -1404,10 +1405,68 @@ public:
         // target that resolves to the director's own endpoint at director+34h
         // and the command is `cruise` or `stop`. The endpoint is the session
         // owner's and is null here, so no descriptor resolves to it.
+        if constexpr (kWireGoal4Chain292Bound) {
+            // Goal 4 chain 292. director+34h is the director's OWN UNIT, not a
+            // session endpoint: 0071EE6C loads it and reads its +FCh pose, and the
+            // idle tail names it through 00465080 for `cruise` and `stop`
+            // (00836E6C / 00836E84, make_command_target_00465080 above). So the
+            // self test is 00521EA0 answering this unit's handle, and the slot
+            // runs per director class, which the unit's class decides through its
+            // vtable +9Ch builder:
+            //  - a push through the squadron controller (00D0BD98+14h = 00D0BDAC,
+            //    kSquadronSetCommandBound's 0071E6C0 arm): 0084DD20, where a self
+            //    `moveto` answers 1 unchanged and a self `stop` is emptied;
+            //  - the ship family (IsKindOf 6, the nine vtables whose +9Ch is
+            //    00810F60 -> 008366D0, docs/CC13_FIX12.md): the derived director
+            //    00D09F58, +14h = 00D09F6C = 00836040;
+            //  - anything else (airfield 006D0C80, command building / fort
+            //    00743E90 and 008429E0 build the base 00D09EC0): +14h = 00D09ED4 =
+            //    0071D540, XOR AL,AL / RET 8, so 0 and the descriptor untouched.
+            // 0071E73C/0071E742 then refuse the push into a filled queue. The zero
+            // point [00F87574..7C] is BSS: three zeroes at load
+            // (default_command_position).
+            if (!(kSquadronSetCommandBound && squadron_row_)
+                && !bsp::unit_kind_is_ship(chain_.unit.class_id)) {
+                chain_.owner.done("WeaponDirector::base_self_target_0071d540", 0x0071d540u);
+                return false;
+            }
+            namespace g52 = bsp::gameplay_seg52_cc13;
+            const bool own_unit = chain_.owner.resolve_target_00521ea0(target)
+                == static_cast<std::uint32_t>(chain_.unit.index) + 1u;
+            g52::SceneCommandTargetView view;
+            view.b0 = target.kind;
+            view.b1 = target.position_valid;
+            view.w2 = target.object_id;
+            view.d4 = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target.object));
+            view.point_08 = {target.position[0], target.position[1], target.position[2]};
+            view.f14 = target.trailing;
+            const g52::Vec3f zero_point_f87574{};
+            bool answer = false;
+            if (kSquadronSetCommandBound && squadron_row_) {
+                answer = g52::squadron_filter_self_target_command_0084dd20(command, view,
+                    own_unit, zero_point_f87574);
+                chain_.owner.done("WeaponDirector::squadron_self_target_0084dd20", 0x0084dd20u);
+            } else {
+                answer = g52::director_normalize_self_target_00836040(command, view,
+                    own_unit, zero_point_f87574);
+                chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
+            }
+            target.kind = view.b0;
+            target.position_valid = view.b1;
+            target.object_id = view.w2;
+            target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(view.d4));
+            target.position[0] = view.point_08.x;
+            target.position[1] = view.point_08.y;
+            target.position[2] = view.point_08.z;
+            target.trailing = view.f14;
+            if (answer) ++chain_.owner.summary.self_target_answers;
+            return answer;
+        } else {
         chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
         if (command != 0x00e08f70u && command != 0x00e08f88u) return false;
         if (target.object == nullptr) return false;
         return false;
+        }
     }
     void store_slot(int slot_index, std::uint32_t command,
         const bsp::SceneCommandTarget& target) override {
@@ -5324,10 +5383,11 @@ void GameCommandsHost::report() {
         host.summary.target_refusals);
     if constexpr (kWireGoal4Chain292Bound) {
         host.log.notef("summary mission director release retarget member=%llu point=%llu "
-            "squadron_blocks=%llu faults=%llu (0071EDD0 in 0071DDB0; 0084DA60 kept, "
-            "goal 4 chain 292)",
+            "squadron_blocks=%llu faults=%llu self_target_answers=%llu (0071EDD0 in "
+            "0071DDB0, 0084DA60 kept; 00836040 / 0084DD20 in 0071E6C0; goal 4 chain 292)",
             host.summary.release_member_retargets, host.summary.release_point_retargets,
-            host.summary.release_squadron_blocks, host.summary.release_retarget_faults);
+            host.summary.release_squadron_blocks, host.summary.release_retarget_faults,
+            host.summary.self_target_answers);
     }
     host.log.notef("summary mission director extra tests bound=%d torpedo=%llu null=%llu kind=%llu "
         "fort_unread=%llu class_unknown=%llu path=%llu path_unit=%llu path_non_unit=%llu "

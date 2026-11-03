@@ -8,8 +8,22 @@
   "base": "063d0ea30",
   "switch": "bsp::kWireGoal4Chain292Bound",
   "wired_before": 9265,
-  "wired_after": 9266,
+  "wired_after": 9268,
   "rows": [
+    {
+      "native": "00836040",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::normalize_self_target (0071E6C0's vtable[14h], ship family arm)",
+      "real_state": "director+34h is the director's own unit (0071EE6C reads its +FCh pose), so the self test is Impl::resolve_target_00521ea0(target) == this unit's handle; the class test is unit_kind_is_ship (IsKindOf 6, the nine ship vtables whose +9Ch builds 00D09F58); the zero point is [00F87574..7C], BSS zeroes.",
+      "change": "The idle tail's cruise/stop name the unit itself through 00465080 (00836E6C / 00836E84); the image empties that descriptor and 0071E73C refuses the push into a filled queue. The host used to answer 0 and stored the self target. Non-ship, non-squadron directors (base 00D09EC0 / 00CFDA40) answer 0071D540's constant 0, the old result.",
+      "body_fix": "SceneCommandTargetView gained the +1h point byte: MOV word ptr [ESI],0 at 00836095 / 0084DD75 clears +0h and +1h."
+    },
+    {
+      "native": "0084dd20",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::normalize_self_target (squadron controller arm, kSquadronSetCommandBound && squadron_row_)",
+      "real_state": "Slot 14h of the squadron block 00D0BD98 (00D0BDAC); the same own-unit resolution through block+34h; a self moveto answers 1 unchanged, a self stop is emptied."
+    },
     {
       "native": "0071edd0",
       "status": "wired",

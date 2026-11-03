@@ -285,6 +285,9 @@ MakeRoomResult squadron_make_room_for_command_0084dc50(const MakeRoomInputs& in)
 // and clears the rest, answering 1; anything else answers 0.
 struct SceneCommandTargetView {
     std::uint8_t b0 = 0;
+    // +1h, the point byte. Both rewrites clear it with +0h: MOV word ptr [ESI],0
+    // at 0084DD75 and 00836095 (goal 4 chain 292; the view used to omit it).
+    std::uint8_t b1 = 0;
     std::uint16_t w2 = 0;
     std::uint32_t d4 = 0;
     Vec3f point_08;
@@ -297,9 +300,11 @@ bool squadron_filter_self_target_command_0084dd20(std::uint32_t command,
 // 00836040, the ship director's slot 14h (the same shape; 0071E6C0 refuses the
 // push when it answers 1 and a slot is filled, 0071E73C/0071E742). Here cruise
 // (00E08F70) and stop (00E08F88) are rewritten to the empty target and answer 1;
-// every other command answers 0, a moveto included. The host's override
-// (src/game_hosts_commands.cpp:1120) always answers 0: no target resolves to the
-// director's endpoint +34h there.
+// every other command answers 0, a moveto included. director+34h is the
+// director's own unit (0071EE6C reads its +FCh pose through the same field), so
+// the host override (DirectorBinding::normalize_self_target in
+// src/game_hosts_commands.cpp) runs this body under kWireGoal4Chain292Bound,
+// and 0084DD20 for a push through the squadron controller.
 inline constexpr std::uint32_t kCmdCruise = 0x00E08F70u;
 bool director_normalize_self_target_00836040(std::uint32_t command,
     SceneCommandTargetView& target, bool resolves_to_own_unit,

@@ -242,9 +242,10 @@ bool squadron_filter_self_target_command_0084dd20(std::uint32_t command,
     if (target.b0 == 0 || !resolves_to_own_unit) return false;
     if (command == kCmdMoveTo) return true;  // 0084DD42
     if (command != kCmdStop) return false;   // 0084DD49
-    // 0084DD4B..0084DD8A.
+    // 0084DD4B..0084DD8A. 0084DD75 MOV word ptr [ESI],0 clears +0h and +1h.
     target.point_08 = zero_point_f87574;
     target.b0 = 0;
+    target.b1 = 0;
     target.w2 = 0;
     target.d4 = 0;
     target.f14 = 0.0f;
@@ -258,9 +259,10 @@ bool director_normalize_self_target_00836040(std::uint32_t command,
     if (target.b0 == 0 || !resolves_to_own_unit) return false;
     // 0083605D / 00836064: cruise or stop.
     if (command != kCmdCruise && command != kCmdStop) return false;
-    // 0083606B..008360AB.
+    // 0083606B..008360AB. 00836095 MOV word ptr [ESI],0 clears +0h and +1h.
     target.point_08 = zero_point_f87574;
     target.b0 = 0;
+    target.b1 = 0;
     target.w2 = 0;
     target.d4 = 0;
     target.f14 = 0.0f;

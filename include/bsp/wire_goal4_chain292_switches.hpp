@@ -10,6 +10,12 @@ namespace bsp {
 // (vt70 answers 0: no 0071D810 raise, no 0071D900 clear); anything else takes
 // the point branch as before. Squadron command blocks (vtable 00D0BD98, slot
 // 70h 0084DA60) keep the old path.
+//
+// 0071E6C0's director vtable[14h] (DirectorBinding::normalize_self_target)
+// runs per director class: 00836040 for the ship family, 0084DD20 for a push
+// through the squadron controller, 0071D540's constant 0 otherwise. director+34h
+// is the director's own unit, which the idle tail's cruise/stop name through
+// 00465080, so those pushes now store the image's empty target.
 inline constexpr bool kWireGoal4Chain292Bound = true;
 
 }  // namespace bsp
