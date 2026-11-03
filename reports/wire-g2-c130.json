@@ -1,0 +1,176 @@
+{
+  "chain": 130,
+  "goal": 2,
+  "slot": "g2-w4",
+  "branch": "agent/g2-w4",
+  "harness": "claude",
+  "picked": "segment 8 [00491170-004ba200] (tier 2 range sweep); every segment 8 row proved unwireable (multiplayer-only arms, no host caller, or registry/FX host objects too large for one chain), so the batch moved to segment 61 row 00947A30, the one candidate row with a live host site and a small host interface",
+  "switch": "kWireGoal2Chain130Bound",
+  "switch_header": "include/bsp/wire_goal2_chain130_switches.hpp",
+  "host_file": "src/game_hosts_lua.cpp",
+  "build": {
+    "off": "scripts/build.ps1 exit 0, 2/2 tests passed, no C-warnings in the log",
+    "on": "tools/off_switch_on_build.py --names kWireGoal2Chain130Bound: build.ps1 exit 0, 0 distinct diagnostics",
+    "pc24_lint": "not needed: the ON arm does no x87 arithmetic"
+  },
+  "wired_total": {"before": 8959, "after": 8960},
+  "host_objects": [
+    {
+      "name": "SpawnCompletionLuaAdapter (Cc13SpawnCompletionHost over the host's spawn request and lua_State)",
+      "where": "src/game_hosts_lua.cpp:4504",
+      "producers": [
+        "record+84h callback: the request's `callback` string read by the Lua SpawnNew binding (00949750, GameMissionLuaHost SpawnNew)",
+        "record+CCh members: the entity ids fulfil_spawn_request_009483d0 creates (009483D0 member loop)",
+        "runner [[00E188A8]+1A08h]: the host's mission lua_State",
+        "00887E50: this host's named-global Lua call with push_resolved_entity_by_id per entity variant"
+      ],
+      "rows": ["00947a30"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00947a30",
+      "address": "009487a1",
+      "function": "009483d0",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::fulfil_spawn_request_009483d0 (ON arm before request.fulfilled = true; OFF arm keeps complete_spawn_request_0094c777 in run_spawn_queue_0094c490)",
+      "status": "wired",
+      "reach": "static: GameWorldHost::run_world_entity_update_00904bf0 (every mission frame) -> run_spawn_queue_step_0094c8f0 -> GameMissionLuaHost::run_spawn_queue_0094c490 -> fulfil_spawn_request_009483d0, no switch on the path; reached when a mission script's SpawnNew request is fulfilled (SpawnNew with callbacks in usn_19_coralus.lua x14, usn_13_truk.lua, usn_14_phil_sea.lua, usn_9_santa.lua and others)"
+    },
+    {
+      "native": "004b54f0",
+      "address": "0094c69c",
+      "function": "0094c490",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_spawn_queue_0094c490",
+      "status": "skipped",
+      "reason": "host-object gap: the only site reads the participant slot record at game+18CCh+slot*4 (+8/+9), a table this host does not keep (run_spawn_queue_0094c490: 'This process has no party table'), and its answer only selects the drain's scoring branch (0090EB80 / 00913AB0), which the host drain does not implement"
+    },
+    {
+      "native": "004b5510",
+      "host_site": "src/game_hosts_ai.cpp party_admitted -> ai_party_ai_enabled_009ffe50",
+      "status": "skipped",
+      "reason": "dead arm: reached only by the tail jump at 009FFEA3 on 009FFE50's multiplayer arm (game+1FE4h != 0); the host passes multiplayer=false unless kSkirmishSessionCc13Bound, which is false"
+    },
+    {
+      "native": "004b61c0",
+      "address": "004e461a",
+      "function": "004e4430",
+      "host_site": "src/game_frame_control.cpp drain_state_requests_004e4430",
+      "status": "skipped",
+      "reason": "dead arm: the site is on the network-client arm (game+1FE4h == 2) of the teardown request, never taken by this single-player host; the other caller 004D80D0 (update_multiplayer_interface) is a multiplayer stand-in in game_hosts_mission_frame.cpp, another worker's file this run"
+    },
+    {
+      "native": "004b8410",
+      "address": "004c70a4",
+      "function": "004c7070",
+      "status": "skipped",
+      "reason": "no live site: the only caller 004C7070 (diagnostic text printf) has no host implementation; every diagnostic_printf_004c7070 host method is unimplemented and engine_seg4_6_9_cc13's model has no caller"
+    },
+    {
+      "native": "004b1330",
+      "address": "004b141c",
+      "function": "004b1400",
+      "status": "skipped",
+      "reason": "host-object gap: soldier registry singleton; its callers 004B1400 / 004B1540 are not run by any host (SceneTrafficRecorder::ensure_soldier_type in game_hosts_scene_contents.cpp only counts 004B1400); needs a native soldier registry and soldier class loading (Lua SoldierTypes, Left8Host), beyond one chain"
+    },
+    {
+      "native": "004b12a0",
+      "address": "004b1493",
+      "function": "004b1400",
+      "status": "skipped",
+      "reason": "host-object gap: soldier class construct, called only from 004B1400, which no host runs (see 004B1330); no soldier class registry in this host"
+    },
+    {
+      "native": "004b6050",
+      "address": "0076fdbd",
+      "function": "0076fad0",
+      "status": "skipped",
+      "reason": "no live site: session message 19 is built only by the network bit-stream factory 00768530 and Session_SetMode 0076FAD0; no host path constructs or sends message 19"
+    },
+    {
+      "native": "004b6720",
+      "address": "004bc34e",
+      "function": "004bc120",
+      "status": "skipped",
+      "reason": "no live site: the caller 004BC120 world_first_box_edge_crossing has no host implementation (the Cc13Left55Seg56b host method is unimplemented), and the callback body needs Left8Host, which nothing implements"
+    },
+    {
+      "native": "00498f80",
+      "address": "007d0c93",
+      "function": "007d0b80",
+      "status": "skipped",
+      "reason": "host-object gap: plane debris spawner; at plane death the host computes only plane_death_flags_007d0b80 (game_hosts_units.cpp) and has no debris/FX owner; the raw body needs Left8Host, which nothing implements"
+    },
+    {
+      "native": "0049a760",
+      "address": "007d0ca8",
+      "function": "007d0b80",
+      "status": "skipped",
+      "reason": "host-object gap: plane debris spawn over the spawner 00498F80 makes; same missing debris/FX owner and Left8bHost implementation"
+    },
+    {
+      "native": "0049c000",
+      "address": "0049c98c",
+      "function": "0049c940",
+      "status": "skipped",
+      "reason": "no live site: point announcement construct; its creator 0049C940 is reached only through point_effect_owner's construct_0049c000, which no host implements"
+    },
+    {
+      "native": "0049f260",
+      "status": "skipped",
+      "reason": "no live site: reached only by the tail jump at 004C74A7 from 004C71C0 LayoutBorderZoneRecords, which no host runs; the host creates no traffic units (SceneTrafficRecorder counts the traffic block only)"
+    },
+    {
+      "native": "0049fc80",
+      "address": "004a08b6",
+      "function": "004a0410",
+      "status": "skipped",
+      "reason": "host-object gap: soldier type with anims; caller 004A0410 is not run by a host and Left8bHost has no implementation; no soldier type registry"
+    },
+    {
+      "native": "004a9960",
+      "address": "004a9d4d",
+      "function": "004a9bd0",
+      "status": "skipped",
+      "reason": "host-object gap: the caller 004A9BD0 is a labelled host substitution (game_hosts_units.cpp reads ExplosionExplosionDelay straight from planepartclasses.lua); wiring needs a PlanePartClass registry (004A9890 / map 004A95F0) and a Seg8Host implementation, beyond one chain"
+    },
+    {
+      "native": "004aec00",
+      "address": "004af11d",
+      "function": "004aed50",
+      "status": "skipped",
+      "reason": "host-object gap: ship part class registry (004AEB30 / map 004AE7F0); the caller 004AED50 (ship explosion parts table) is not run by a host and Left8Host/Seg8Host have no implementation"
+    },
+    {
+      "native": "004b3c50",
+      "address": "004b3d3c",
+      "function": "004b3d20",
+      "status": "skipped",
+      "reason": "host-object gap: wreck class registry; callers 004B3D20 / 004B3E60 are not run by any host and Left8Host has no implementation"
+    },
+    {
+      "native": "009481a0",
+      "address": "0094996d",
+      "function": "00949750",
+      "host_site": "src/game_hosts_lua.cpp SpawnNew (excludeRadiusOverride read)",
+      "status": "skipped",
+      "reason": "host-object gap: the raw body runs over Left61Host (99 pure virtuals, no implementation in any host); the host reads excludeRadiusOverride with the Lua C API; not leased this run"
+    },
+    {
+      "native": "004693c0",
+      "address": "0046d6f4",
+      "function": "0046cf40",
+      "host_site": "src/game_hosts_scene_contents.cpp hidden hold-back branch (scene_spawn_pool stand-in)",
+      "status": "skipped",
+      "reason": "host-object gap: the hidden-entity record map at sceneDb+18h; the record keeps an image property bag at +4h (the host holds ScenePropertyBlock), and the insert path 00469FC0 / 00469A20 / 0046B340 has no host implementation; beyond half a chain. Not leased this run"
+    },
+    {
+      "native": "004691b0",
+      "address": "0094477d",
+      "function": "00944680",
+      "host_site": "src/game_hosts_lua.cpp Lua Spawn (scene_spawn_pool lookup)",
+      "status": "skipped",
+      "reason": "host-object gap: finds in the sceneDb+18h hidden record map that 004693C0's registration would fill; blocked on the same map (see 004693C0). Not leased this run"
+    }
+  ],
+  "on_effect": "With kWireGoal2Chain130Bound ON, a fulfilled SpawnNew request's completion runs through 00947A30 at its image position (inside 009483D0 after the member loop and SEntity InitAll, before +C0h): empty callback does nothing; '[supportmanager]' and other '['-names take the 0065D070 / 00A16EF0 arms (logged, no host object); any other name calls the Lua global with one entity table per created member in member order. The drain no longer calls complete_spawn_request_0094c777."
+}
