@@ -1,0 +1,93 @@
+{
+  "chain": 325,
+  "worker": "agent/g4-w4",
+  "base": "849700d66",
+  "picked": "The unit gunnery pass's two policy objects: 008636A0 installed at the attach, the pass reading the installed fire-target provider and category gate",
+  "switch": "bsp::kWireGoal4Chain325Bound",
+  "rows": [
+    {
+      "native": "008636a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes -> install_unit_policies (00864C18)",
+      "real_state": "IsKindOf 2/0Fh/18h/8 from the units host's class table; director slot 48h(2) from 0084D8F0 / 00836790 (vtable dwords 00D0BDE0 / 00D09FA0 read on disk)"
+    },
+    {
+      "native": "00863640",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::read_fire_target_provider, from run_gunnery_pass's step-8 read",
+      "real_state": "the ship-AI row's stored fire target (director+238h), the formation leader from units.formation_leader_0014(unit_formation_group_0284), the leader's IsKindOf(6) and stored target; replaces the OFF arm's inline copy of the same logic"
+    },
+    {
+      "native": "00861b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::read_fire_target_provider (null provider 00D0D314)",
+      "real_state": "selected by the installed policy instead of the inline IsKindOf(0Fh)/(18h) test"
+    },
+    {
+      "native": "00861be0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::category_gate_slot4 (default gate 00D0D31C)",
+      "real_state": "the gate the attach installed; the submarine gate 008627A0 keeps its existing body"
+    },
+    {
+      "native": "00836790",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::install_unit_policies (ship director vtable 00D09F58 slot 48h)",
+      "real_state": "category 2, the constant 008636CB pushes"
+    },
+    {
+      "native": "0084d8f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::install_unit_policies (squadron controller vtable 00D0BD98 slot 48h)",
+      "real_state": "category 2, the constant 008636CB pushes"
+    },
+    {
+      "native": "00861970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::apply_director_stance_008624c0",
+      "reason": "Director bridge getters 00861970..008619C0 read raw bytes +3Ch/+3Dh/+220h..+223h of a native director; the host keeps the stance as DirectorGunneryStance and builds no native director or bridge (00863A80), so a call would be a byte round-trip."
+    },
+    {
+      "native": "00863a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes",
+      "reason": "raw_callback bridge constructor needs the native bridge object and a native director at [unit]->vtable[114h]; neither is built."
+    },
+    {
+      "native": "00864520",
+      "status": "skipped",
+      "host_site": "-",
+      "reason": "00864520/00864530/00864540 are native no-op slots 12-14 of the pass vtable 00D0D360; nothing in the host dispatches those slots, so a call would be inert."
+    },
+    {
+      "native": "00861b40",
+      "status": "skipped",
+      "host_site": "-",
+      "reason": "Gunnery target record methods (00861B40, 00861B30, 008626D0) need the native record layout (+1Ch observee, +6Ch..+7Ch aim offset); the host's target records are semantic and have no observer callback."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::script_set_failure_008132c0 (Periscope arm records only)",
+      "reason": "Periscope break/repair (009373C0, 0092BEC0) needs the submarine block (+122Ch state, +1254h/+1258h deadline, +394h shape) owned by game_hosts_ship_ai.cpp / game_hosts_units.cpp, plus settings+4C4h; not reachable from the gunnery host alone."
+    },
+    {
+      "native": "00797a00",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "00797A00, 00797AF0, 00797C60, 00798E70, 00795BD0, 00795D90 are called only inside 0079A3B0's CAMERA EDITOR branch (+568h); debug-only."
+    },
+    {
+      "native": "008da140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMinimapHost::update_005c0f20",
+      "reason": "The minimap objective/ping pass (008DA140, 008DACD0, 008DAD30, 005C0930, 005C0BD0, 008E2BF0) needs an objective container, the map ping list at game+21C8h and the marker pool at screen+104h; none is built."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::set_ambient_volume",
+      "reason": "The in-mission ambient sound instance (interface+104h) and the mission camera (game+19FCh) are not built; set_ambient_volume is a record."
+    }
+  ]
+}
