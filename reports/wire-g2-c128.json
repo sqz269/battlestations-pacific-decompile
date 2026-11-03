@@ -1,0 +1,237 @@
+{
+  "goal": 2,
+  "chain": 128,
+  "run": 256,
+  "harness": "codex",
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "host_file": "src/plane_wanderer.cpp",
+  "candidate": {
+    "tier": 2,
+    "segment": 2,
+    "range": [
+      "0042a920",
+      "0043e840"
+    ],
+    "selection": "Segment 2 camera/profile range, audited across all fourteen offered rows. After review, only acceleration scaling survives both state reach and disabled-gate checks."
+  },
+  "switch": "kWireGoal2Chain128Bound",
+  "switch_header": "include/bsp/wire_goal2_chain128_switches.hpp",
+  "switch_default": false,
+  "host_objects": [],
+  "adapters": [],
+  "wired_before": 8957,
+  "wired_after": 8958,
+  "checks": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests": "2/2 passed; final plain OFF build after review-fix ON check"
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain128Bound",
+      "exit_code": 0,
+      "tests": "2/2 passed",
+      "diagnostics": 0,
+      "log": "local/off_switch_on_build.log",
+      "sources_restored": true
+    },
+    "pc24_lint": {
+      "command": "python tools/pc24_lint.py --staged",
+      "exit_code": 0,
+      "findings": 0
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py",
+      "exit_code": 0,
+      "map": "final plain OFF build after review fixes",
+      "transitions": [
+        {
+          "native": "0042ae50",
+          "before": "ready",
+          "after": "wired"
+        }
+      ],
+      "skipped_row_state": {
+        "0042d5a0": "ready"
+      }
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c128.json",
+      "exit_code": 0,
+      "checked": 14,
+      "failed": 0
+    },
+    "diff_review": "Review-fix code and report diffs read; git diff --check passed. Camera source, matrix body/header and ledger shard match bacba7bd5^ exactly; acceleration code and OFF switch match reviewed bacba7bd5 exactly.",
+    "game_run": false,
+    "camera_restore": {
+      "source": "bacba7bd5^",
+      "files": [
+        "src/mission_camera.cpp",
+        "src/profile_seg2_cc13.cpp",
+        "include/bsp/profile_seg2_cc13.hpp",
+        "config/reconstruction/00420000.jsonl"
+      ],
+      "exit_code": 0
+    },
+    "plane_preserved": {
+      "source": "bacba7bd5",
+      "exit_code": 0
+    }
+  },
+  "off_invariance": "The acceleration-scaling OFF arm retains the original component loop and inputs. Camera source, raw matrix body, header and ledger annotation are restored exactly to their pre-chain128 versions; camera binding and mode behavior are unchanged.",
+  "on_behavior": "Use the existing PC24 vector scaling body vector3_scale_in_place_0042ae50 for the plane wanderer acceleration clamp, on s.accel with the host-computed AccelMax/length scalar.",
+  "validation_scope": "Win32 compilation/linking and existing CTest checks only. Reach is static source tracing; candidate details supplied no mission counts. No game, original-ABI, or runtime-parity claim.",
+  "rows": [
+    {
+      "native": "0042ae50",
+      "address": "007be2a3",
+      "function": "007be060",
+      "host_site": "src/plane_wanderer.cpp:156 plane_wanderer_fixed_step_007be060, acceleration clamp",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "Mission frame run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> plane dispatch 007CE040 -> run_plane_fixed_step_007ce040 -> PlaneBinding::wanderer_fixed_step_007be060 -> plane_wanderer_fixed_step_007be060. kPlaneWandererBound=true (game_hosts_units.cpp:11172); no disabled enclosing switch. Runtime conditions: active airborne plane, timer expiry and accel length above real Lua tuning AccelMax.",
+      "contract": "Sole image call 007BE2A3; EDI=ESI+18h is the acceleration vector (007BE0B8), ECX=EDI at 007BE296, stack scalar is float-stored AccelMax/length; callee RET 4. ON uses s.accel and the existing computed k. Existing body performs three PC24 multiplies; OFF keeps the three-component loop.",
+      "coverage": "complete existing body"
+    },
+    {
+      "native": "0042d5a0",
+      "address": "004330bf",
+      "function": "00432ed0",
+      "host_site": "src/mission_camera.cpp:340 update_ship_captain_00432ed0, mode_3f4==0 orientation setup",
+      "status": "skipped",
+      "reach": "static",
+      "reach_evidence": "GameHudHost::Impl::bind_mission_camera_0064da40 calls bind_ship_captain_0064da40 before the bound camera can step; the mode_3f4==0 arm cannot run on this host path.",
+      "reason": "Unreachable host state: bind_ship_captain_0064da40 unconditionally sets camera.mode_3f4=1 (src/mission_camera.cpp:224 after fix; :245 in reviewed bacba7bd5). The only update-side writer also sets 1; no host writer restores mode 0 after binding. The constructor/default value 0 cannot reach this bound-camera path. Removed the wiring, unused adapter/template and ledger annotation without changing camera mode behavior."
+    },
+    {
+      "native": "0042aaf0",
+      "address": "00605f60",
+      "function": "00605e50",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp:1306 host.camera_set_target_0042aaf0",
+      "status": "skipped",
+      "reason": "No concrete host implements camera_set_target_0042aaf0 or MoverSetupHost. Existing mission camera is ShipCaptainCamera, not PlaneChaseCamera. Missing producer/lifetime for the chase camera's observer pair (+10h/+388h) and native chase state; no reachable concrete chase-camera root to wire.",
+      "reach": "static"
+    },
+    {
+      "native": "0042b680",
+      "address": "0079c497",
+      "function": "0079c200",
+      "host_site": "src/engine_seg43_45_cc13.cpp movcam_frame_0079c200, mode 2 matrix_74 assignment",
+      "status": "skipped",
+      "reason": "movcam_frame_0079c200 has no concrete host call or MovCamFrameHost implementation in src. Replacing its inline matrix assignment would remain unreachable; the running movie-camera path uses a different mover.",
+      "reach": "static"
+    },
+    {
+      "native": "0042c4c0",
+      "address": "004458a0",
+      "function": "00445790",
+      "host_site": "src/options_hardware_cc13.cpp:168 WeatherShakeTarget::set_shake_0042c4c0; src/engine_seg43_45_cc13.cpp:565 MovCamPoseHost method",
+      "status": "skipped",
+      "reason": "No concrete implementation of either set_shake_0042c4c0 interface. Active ShipCaptainCamera lacks amplitude storage +1D0h..+1D8h and the weather-shake request/config producer; its shake block is dormant. Cannot count stores in an unconsumed temporary or behind an absent host path.",
+      "reach": "static"
+    },
+    {
+      "native": "0042cd00",
+      "address": "00608071",
+      "function": "00607f60",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp:2541 host.camera_position_0042cd00",
+      "status": "skipped",
+      "reason": "camera_position_0042cd00 has no host implementation. Body reads [[camera+388h]+538h]+168h/+16Ch and camera+3B8h; no concrete cockpit/chase object or class-owned eye-offset producer reaches this site. Ship captain target storage does not supply that graph.",
+      "reach": "static"
+    },
+    {
+      "native": "0042dcd0",
+      "address": "00432f99",
+      "function": "00432ed0",
+      "host_site": "src/mission_camera.cpp:58 focus_gate_0042dcd0",
+      "status": "skipped",
+      "reason": "Reachable host models only the early gate. Full body needs parent/target pose objects +3ACh/+3C4h, focus point +3C8h..+3D0h, speed +3DCh and pose refresh. The host has no 0042EA40/vtable+11Ch producer for a focus request; constructor/bind leave +3D4h zero. Fabricating the missing graph to clear two existing zero offsets would not supply real state.",
+      "reach": "static"
+    },
+    {
+      "native": "0042e030",
+      "address": "00608110",
+      "function": "00607f60",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp:2555 host.cockpit_camera_set_position_0042e030",
+      "status": "skipped",
+      "reason": "No concrete cockpit_camera_set_position_0042e030/MoverSetupHost implementation. Missing producer/lifetime for PlaneCockpitCamera, counted plane reference +3C0h, and its virtual step. ShipCaptainCamera is a different object; a standalone cockpit allocation would not have a reachable consumer.",
+      "reach": "static"
+    },
+    {
+      "native": "00435d30",
+      "address": "00438747",
+      "function": "00438020",
+      "host_site": "src/profile_checkpoint.cpp save_checkpoint_00438020 / write_other_entries",
+      "status": "skipped",
+      "reason": "The only concrete save path is GameMissionLuaHost::mission_checkpoint_binding, admitted by checkpoint_row only when kMissionCheckpointBound=true; it is false at game_hosts_lua.cpp:439. Wiring serialization inside this caller would sit behind that OFF switch. write_other_checkpoints_00437250 has no concrete caller either.",
+      "reach": "static"
+    },
+    {
+      "native": "00436490",
+      "address": "005997a4",
+      "function": "005993a0",
+      "host_site": "src/profile_manager.cpp import_loaded_entries / profile transient record cleanup; main-menu checkpoint temporaries",
+      "status": "skipped",
+      "reason": "Active profile refresh owns ProfileTransientRecord94 with std::string, not a 14h image record with pooled NativeString length/data at +0Ch/+10h. Missing host-owned NativeStringRawPoolContext and sized-pool allocation/lifetime for those records. Cannot return std::string storage through the native pool destructor.",
+      "reach": "static"
+    },
+    {
+      "native": "00436730",
+      "address": "00437b21",
+      "function": "004379c0",
+      "host_site": "src/profile_checkpoint.cpp load_checkpoint_004379c0",
+      "status": "skipped",
+      "reason": "Only concrete load call is GameMissionLuaHost::mission_checkpoint_binding, gated by kMissionCheckpointBound=false (game_hosts_lua.cpp:439, checkpoint_row admission at :868). Recursive calls are not independent host roots; cannot count behind another OFF switch.",
+      "reach": "static"
+    },
+    {
+      "native": "00437490",
+      "address": "004378cf",
+      "function": "004374f0",
+      "host_site": "src/profile_manager.cpp:169 import_loaded_entries -> set_profile_transient_record_007fc2c0",
+      "status": "skipped",
+      "reason": "ProfileTransientRecord94 uses a C++ string projection and moves into the profile map. No source/destination 14h native record or NativeStringRawPoolContext is available in the refresh host; the body deep-copies native +0Ch storage through its pool. Converting to a temporary native record and handing the same host value back would not replace the host map's ownership/copy logic.",
+      "reach": "static"
+    },
+    {
+      "native": "00438f80",
+      "address": "00900b10",
+      "function": "00900af0",
+      "host_site": "src/robot_config.cpp:743 find_robot_config_00900af0",
+      "status": "skipped",
+      "reason": "RobotConfigRegistry stores borrowed const char* keys directly; no 8-byte pointer/ownership key object exists. Constructing a temporary wrapper then extracting its unchanged pointer for registry.find would only hand back the host's own value and fails the counting rule.",
+      "reach": "static"
+    },
+    {
+      "native": "00438fe0",
+      "address": "009015a1",
+      "function": "009013d0",
+      "host_site": "src/robot_config.cpp:763 register_robot_config_009013d0 -> insert_robot_config_00901210",
+      "status": "skipped",
+      "reason": "Registry.emplace stores a borrowed const char* directly, with no native owned-key node or source ownership byte. Adding two wrappers with false ownership solely to extract the same name would not replace real ownership transfer; both bytes are false on this robot path. A real owned-key map/lifetime producer is absent.",
+      "reach": "static"
+    }
+  ],
+  "review_round_1": {
+    "run": 262,
+    "harness": "codex",
+    "reviewed_head": "bacba7bd5c5d42fc7177799086d36ba224d05a60",
+    "findings": [
+      {
+        "id": 1,
+        "native": "0042d5a0",
+        "resolution": "fixed",
+        "detail": "Agree: post-bind mode is always 1. Removed camera wiring, CameraBasisMatrixView/CameraBasisHost, shared template refactor and ledger annotation. Restored the four affected files exactly to the reviewed commit parent."
+      },
+      {
+        "id": 2,
+        "native": "0042d5a0",
+        "resolution": "fixed",
+        "detail": "Marked skipped with binding-mode evidence, changed host_file to src/plane_wanderer.cpp, corrected total to 8957 -> 8958, removed camera adapter entry, and narrowed ON/OFF notes to acceleration scaling."
+      }
+    ],
+    "rows_counted": 1,
+    "runtime_validation": "pending; no game run"
+  }
+}

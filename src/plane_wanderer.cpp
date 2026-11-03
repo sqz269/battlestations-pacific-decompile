@@ -1,6 +1,8 @@
 #include "bsp/plane_wanderer.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/wire_goal2_chain128_switches.hpp"
 
 #include <cmath>
 #include <cstdint>
@@ -150,7 +152,12 @@ bool plane_wanderer_fixed_step_007be060(PlaneWandererState& s, const PlaneWander
             len = length3_0042b2f0(s.accel);
             if (len > t.accel_max) {
                 const float k = static_cast<float>(static_cast<double>(t.accel_max) / len);
-                for (int i = 0; i < 3; ++i) s.accel[i] = s.accel[i] * k;
+                // 0042AE50 scales the live acceleration; OFF keeps the component loop.
+                if constexpr (kWireGoal2Chain128Bound) {
+                    profile_seg2_cc13::vector3_scale_in_place_0042ae50(s.accel, k);
+                } else {
+                    for (int i = 0; i < 3; ++i) s.accel[i] = s.accel[i] * k;
+                }
                 len = t.accel_max;
             }
             // 007BE2BC-007BE32F: the roll kick.
