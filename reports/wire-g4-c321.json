@@ -2,12 +2,14 @@
   "chain": 321,
   "worker": "agent/g4-w1",
   "base": "03bc99cefe",
-  "picked": "Scene BIN byte decoding and native type-8 property merge",
+  "picked": "Conditional scene BIN decoding/type-8 merge support; partial progress with no shipped BIN inputs found",
   "switch": "bsp::kWireGoal4Chain321Bound",
   "rows": [
     {
       "native": "008ef6a0",
-      "status": "wired",
+      "status": "skipped",
+      "reason": "No explicit BIN assignments occur in the 6357 installed .scn/.def/.lua files scanned; newly reachable through conditional BIN support, but invocation with shipped input is unproven.",
+      "connection_implemented": true,
       "host_site": "src/band_0080_cc13.cpp: decode_hex_byte_token_008ef6d0 -> hex_digit_value_008ef6a0, reached through the new scene BIN arm",
       "real_state": "First and second characters of each actual BIN byte token; the existing decoder supplies them unchanged",
       "evidence": "Existing decoder body calls the sole existing digit body; neither address is linked with chain321 OFF, and both are reachable with it ON",
@@ -15,7 +17,9 @@
     },
     {
       "native": "008ef6d0",
-      "status": "wired",
+      "status": "skipped",
+      "reason": "No explicit BIN assignments occur in the 6357 installed .scn/.def/.lua files scanned; parser connection is built and reachable, but invocation with shipped input is unproven.",
+      "connection_implemented": true,
       "host_site": "src/scene_file.cpp: parse_property_body, reached by parse_scene_property_block_008f5a00 and scene loading",
       "real_state": "Each token of a complete explicit nonempty BIN statement read from the loaded scene; the count uses the existing 008D9AD0 reader's scan rule",
       "built_call_site": "10402500 from bsp::parse_property_body",
@@ -23,7 +27,9 @@
     },
     {
       "native": "008f3490",
-      "status": "wired",
+      "status": "skipped",
+      "reason": "No explicit BIN assignments occur in the 6357 installed .scn/.def/.lua files scanned; native merge connection is built and reachable, but invocation with shipped input is unproven.",
+      "connection_implemented": true,
       "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert -> insert_byte_array; game_hosts_scene_contents.cpp merge_property_block remains the existing caller",
       "real_state": "Canonical allocation containing the parser-owned byte payload, its actual byte count, and the original parser's flags 0; native 008EF2F0 adopts the allocation",
       "built_call_site": "1041c0eb from SceneNumericPropertyMerge::Impl::Bag::insert",
@@ -49,7 +55,7 @@
   "entry_reachable_reconstructed_total": {
     "before": 4348,
     "after": 4351,
-    "measure": "call_graph.py with chain321 OFF versus ON; all three wired rows are absent from the OFF executable"
+    "measure": "call_graph.py with chain321 OFF versus ON; all three connection_implemented rows are absent from the OFF executable; conditional reachability does not prove a shipped input exercises them"
   },
   "validation": {
     "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
@@ -60,10 +66,20 @@
     "float_math_changed": false,
     "game_validated": false
   },
+  "shipped_content_audit": {
+    "root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "file_globs": ["*.scn", "*.def", "*.lua"],
+    "files": 6357,
+    "pattern": "=\\s*(BIN|FA|V3A)\\b",
+    "rg_flags": "-l -i -U",
+    "matching_files": 0,
+    "scope": "Read-only installed-file scan, independently checked after agent/g4-w2 message 1918; not an audit of packed or generated runtime data"
+  },
   "limits": [
     "Only closed explicit nonempty BIN statements are admitted; implicit existing-record types, empty/zero count, count mismatches and oversized/embedded-NUL tokens retain the previous raw-token fallback",
     "Native merge admission retains the existing duplicate-key, child-conflict, differing-tag/spelling and ASCII-key restrictions",
-    "Source interfaces and reconstructed executable reachability are verified; original parser ABI and live gameplay are not verified"
+    "Source interfaces and reconstructed executable reachability are verified; original parser ABI and live gameplay are not verified",
+    "No shipped explicit BIN input was found in the audited files, so all three implemented connections are reported skipped for the real-state wiring objective"
   ],
   "left": "FA/type-9 parser payload, insertion and merge publication; empty/context-dependent BIN forms"
 }
