@@ -38,6 +38,9 @@
 #include "bsp/wire_goal2_chain54_switches.hpp"
 #include "bsp/wire_goal2_chain57_switches.hpp"
 #include "bsp/wire_goal2_chain91_switches.hpp"
+#include "bsp/wire_goal2_chain111_switches.hpp"
+#include "bsp/award_grant.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/game_title_sound.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_ref_counted.hpp"
@@ -53,6 +56,8 @@
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_vfs_fileblock_scope.hpp"
 #include "bsp/native_vfs_open_logging.hpp"
+
+#include <shlobj.h>
 
 #include <algorithm>
 #include <array>
@@ -2079,6 +2084,53 @@ private:
 // 004e4000, BSP_Game_EnterFrontEndShell
 // ---------------------------------------------------------------------------
 
+// 0090C5D0's host calls (award_grant.hpp), one per native call in body order,
+// over this process's actual string pool: 0041E870 and 004261A0 are the raw-
+// header bodies of native_physical_file_date.cpp, 00419CC0 and 00BD1510 the
+// pool getter and return on the same 01090AA8/01090AA0/01090AA4 cells that
+// game_native_string_process() publishes. kWireGoal2Chain111Bound only.
+static_assert(sizeof(MidwayNativeString) == 8 && offsetof(MidwayNativeString, length) == 0
+        && offsetof(MidwayNativeString, data) == 4,
+    "0090C5D0's stack strings are the native eight-byte header (+0 length, +4 data)");
+class MidwaySaveFolderProbe final : public MidwaySaveFolderHost {
+public:
+    explicit MidwaySaveFolderProbe(NativeStringRawPoolContext& strings) noexcept
+        : strings_(strings) {}
+
+    int sh_get_special_folder_path_a(char (&buffer)[0x104], int csidl, int create) override {
+        return SHGetSpecialFolderPathA(nullptr, buffer, csidl, create); // [00CE22F0], 0090C5F6
+    }
+    void native_string_from_cstring_0041e870(MidwayNativeString& s, const char* text) override {
+        construct_native_string_cstring_0041e870(&s, text, strings_); // 0090C60D, 0090C626
+    }
+    void native_string_concat_004261a0(const MidwayNativeString& left, MidwayNativeString& out,
+        const MidwayNativeString& right) override {
+        concatenate_native_string_headers_004261a0(&left, &out, &right, strings_); // 0090C63F
+    }
+    void* pool_singleton_00419cc0() override {
+        return native_string_pool_get_or_create_00419cc0(strings_.actual_published_01090aa8,
+            strings_.actual_manager_publication_01090aa0);
+    }
+    void pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size, int) override {
+        // 00BD1510's third stack argument (1 at all three sites) is unused.
+        return_native_string_pool_00bd1510(static_cast<NativeStringPoolStorage*>(pool), block,
+            size, strings_.actual_small_returns_disabled_01090aa4);
+    }
+    const char* empty_text_00f899a0() override {
+        // 00F899A0 is a zero BSS byte; read only for a null concatenation buffer,
+        // which the nonempty suffix rules out.
+        static const char empty = '\0';
+        return &empty;
+    }
+    int create_directory_a(const char* path, void* security) override {
+        return CreateDirectoryA(path, static_cast<LPSECURITY_ATTRIBUTES>(security)); // [00CE227C]
+    }
+    std::uint32_t get_last_error() override { return GetLastError(); } // [00CE2258]
+
+private:
+    NativeStringRawPoolContext& strings_;
+};
+
 class MenuShellHost final : public FrontEndShellServices {
 public:
     MenuShellHost(GameMenuHost::Impl& owner, MenuManagerHost& managers,
@@ -2227,7 +2279,20 @@ public:
     void post_state_hook() override {
         owner_.log.unimplemented("FrontEndShell::post_state_hook", "004bfc70");
     }
-    bool award_gate_open() override { return false; }
+    bool award_gate_open() override {
+        // 0090C5D0 at 004E42F2: midway_save_folder_preexisted_0090c5d0 over the
+        // actual string pool and the Win32 shell/file calls; OFF keeps false.
+        if constexpr (kWireGoal2Chain111Bound) {
+            MidwaySaveFolderProbe probe(game_native_string_process().raw_context());
+            const bool preexisted = midway_save_folder_preexisted_0090c5d0(probe);
+            owner_.log.implemented("FrontEndShell::award_gate_open", "0090c5d0");
+            owner_.log.notef("front-end shell: 0090C5D0 Midway save folder preexisted=%d",
+                preexisted ? 1 : 0);
+            return preexisted;
+        } else {
+            return false;
+        }
+    }
     int award_id(const char* key) override {
         static_cast<void>(key);
         owner_.log.unimplemented("FrontEndShell::award_id", "006b8da0");
