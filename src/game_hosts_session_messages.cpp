@@ -6,6 +6,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"
+#include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include <cfloat>
 #include <cmath>
@@ -87,8 +88,15 @@ struct HostSessionMessages::Image {
         // 83h 00D03554.
         std::uint32_t slots_00d03554[5]{0x00763240u, 0x00763260u, 0x007632c0u, 0x00763210u,
                                         0x004499c0u};
+        // C3h 00D03504: native destructor, write, read, IsType, always true.
+        // bsp.py ghidra bytes 00d03504 --length 20 (existing bsp.gpr program).
+        std::uint32_t slots_00d03504[5]{0x00762920u, 0x00762940u, 0x007629a0u, 0x007628f0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if (image_address == 0x00d032d0u) return slots_00d032d0;
+            if constexpr (kWireGoal4Chain283Bound) {
+                if (image_address == 0x00d03504u) return slots_00d03504;
+            }
             if constexpr (kWireGoal4Chain260Bound) {
                 if (image_address == 0x00d02d30u) return slots_00d02d30;
                 if (image_address == 0x00d02d44u) return slots_00d02d44;
@@ -389,6 +397,28 @@ HostSessionMessages::AirbaseLaunchSlotCopy HostSessionMessages::queue_airbase_la
     seg42::construct_airbase_launchslot_007631a0(&queued, image.seg42);
     seg42::read_airbase_launchslot_007632c0(&queued, &stream.in);
     return AirbaseLaunchSlotCopy{queued.slot_20, queued.flag_24 != 0};
+}
+
+HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_change_state_c3(
+    std::uint8_t current, std::uint8_t requested) const {
+    const Image& image = *image_;
+    // Evidence: bsp.py show 007C17D0 and 00762880. The sender inlines the
+    // constructor's header stores; its two payload bytes come from the caller.
+    seg42::PlaneChangeStateMessage sent{};
+    seg42::construct_plane_change_state_00762880(&sent, image.seg42);
+    sent.state_20 = current;
+    sent.state_21 = requested;
+
+    LocalStream stream;
+    seg42::write_plane_change_state_00762940(&sent, &stream.out);
+    // 00768530 case C3h allocates 24h bytes, calls 00762880, then dispatches
+    // vtable[8] at 0076A27B to 007629A0. These message lifetimes own no
+    // references; the host keeps the two bytes read by 007CCFA0's C3h arm.
+    stream.begin_read();
+    seg42::PlaneChangeStateMessage queued{};
+    seg42::construct_plane_change_state_00762880(&queued, image.seg42);
+    seg42::read_plane_change_state_007629a0(&queued, &stream.in);
+    return PlaneChangeStateCopy{queued.state_20, queued.state_21};
 }
 
 HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub_kind_5a(
