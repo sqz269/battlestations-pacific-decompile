@@ -1,5 +1,7 @@
 #include "bsp/cc13_camera_controllers.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/engine_seg43_45_cc13.hpp"
+#include "bsp/wire_goal2_chain112_switches.hpp"
 
 namespace bsp::cc13cam {
 void modifier_write_noop_0078e730(void*) noexcept {}
@@ -636,13 +638,27 @@ bool keyframe_event_parse_007a1f94(const ModifierLuaValue& event, std::size_t pa
     const ModifierLuaValue& type = event.field("type");
     KeyframeEvent e{};
     const std::string& name = type.string;
+    if constexpr (kWireGoal2Chain112Bound) {
+        // 00799FA0/0079A040/0079A0E0 construct the Lua-selected event; OFF keeps inline defaults/kind.
+        if (name == "noparent") e.kind = KeyframeEventKind::NoParent;
+        else if (name == "noentity") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::NoEntity);
+        else if (name == "killed") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Killed);
+        else if (name == "sunk") e = cc13cam2::keyframe_event_construct(KeyframeEventKind::Sunk);
+        else return false;
+    } else {
     if (name == "noparent") e.kind = KeyframeEventKind::NoParent;
     else if (name == "noentity") e.kind = KeyframeEventKind::NoEntity;
     else if (name == "killed") e.kind = KeyframeEventKind::Killed;
     else if (name == "sunk") e.kind = KeyframeEventKind::Sunk;
     else return false;
+    }
     e.entity_24 = parent;                          // 007A207F / 007A2126 / 007A21AC / 007A2236
+    if constexpr (kWireGoal2Chain112Bound) {
+        // 0079C000 assigns the Lua function name; OFF keeps the direct string assignment.
+        cc13cam2::keyframe_event_set_function_0079c000(e, event.field("function").string);
+    } else {
     e.function_4 = event.field("function").string; // 0079C000
+    }
     if (e.kind == KeyframeEventKind::Sunk) e.depth_28 = event.field("depth").number_f32();  // 007A22CB
     out = std::move(e);
     return true;
