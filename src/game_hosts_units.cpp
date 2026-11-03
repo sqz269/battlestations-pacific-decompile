@@ -29,6 +29,7 @@
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain320_switches.hpp"
 #include "bsp/wire_goal4_chain324_switches.hpp"
+#include "bsp/plane_rack_census_admission.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/material_effect_plane.hpp"
@@ -534,6 +535,8 @@ struct GameUnitWorldLists {
 // type), single or multi, and its index among the single racks.
 struct PlaneOrdnanceRack {
     int class_id{0};
+    int platform_key{-1};     // identity of the default-device metadata
+    int device_class{-1};
     bool multi{false};
     int single_index{-1};
     int authored_ammo{-1};   // Equipments[DefaultEquipment][key].Ammo, -1 absent
@@ -2081,6 +2084,8 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // descriptor 007C0D90 asks vtable[8] of: 2Ah bomb, 2Bh torpedo, 2Ch depth
     // charge, 33h rocket) and its RepeatTime (desc+E0h), in census order.
     std::vector<int> rack_bullet_class_per_rack;
+    // Chain 324: identities captured by the equipment-resolved ammo census.
+    std::vector<SingleRackCensusIdentity> rack_identity_per_rack;
     // Packet cc9_lua53_kamikaze_impact: the rack's Bullet[1].Bullet id itself (the
     // vector above holds the descriptor's kind), census order. -1 when absent.
     std::vector<int> rack_bullet_id_per_rack;
@@ -5384,6 +5389,10 @@ struct GameUnitsHost::Impl {
             r.class_id = read_device_bullet_class_id(dev);
             std::snprintf(key, sizeof(key), "p%d_key", p);
             const int platform_key = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            if constexpr (kWireGoal4Chain324Bound) {
+                r.platform_key = platform_key;
+                r.device_class = dev;
+            }
             r.authored_ammo = rack_equipment_ammo(s, type_id, platform_key);
             r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
@@ -5514,17 +5523,29 @@ struct GameUnitsHost::Impl {
         if (unit == nullptr) return 0;
         const auto& racks = ordnance_racks(*unit);
         bool complete = unit->rack_census_done && !racks.empty()
-            && racks.size() == unit->rack_ammo_per_rack.size();
+            && racks.size() == unit->rack_ammo_per_rack.size()
+            && racks.size() == unit->rack_identity_per_rack.size()
+            && racks.size() == unit->rack_bullet_class_per_rack.size()
+            && unit->rack_multi_count == 0;
         for (const auto& rack : racks) {
             // Multi-rack attached lists are absent. Torpedo/rocket direct
             // release paths also have separate counters, so keep their old
             // query until every producer updates this per-rack owner.
-            if (rack.multi || (rack.class_id != 0x2A && rack.class_id != 0x2C
-                              && rack.class_id != 0x31)
-                || rack.single_index < 0
-                || static_cast<std::size_t>(rack.single_index) >= unit->rack_ammo_per_rack.size()
-                || unit->rack_ammo_per_rack[static_cast<std::size_t>(rack.single_index)] < 0)
+            if (!complete) break;
+            if (rack.multi || rack.single_index < 0
+                || static_cast<std::size_t>(rack.single_index) >= unit->rack_ammo_per_rack.size()) {
                 complete = false;
+                break;
+            }
+            const auto index = static_cast<std::size_t>(rack.single_index);
+            const auto& resolved = unit->rack_identity_per_rack[index];
+            // The ammo census resolves Equipments[e][key].Platform; the older
+            // ordnance metadata above uses BSPGun's default device. Validate
+            // both identities and the resolved kind, not just the vector size.
+            complete = resolved.projectile_kind == unit->rack_bullet_class_per_rack[index]
+                && admits_single_rack_round_census(
+                    {rack.platform_key, rack.device_class, rack.class_id}, resolved,
+                    unit->rack_ammo_per_rack[index]);
         }
         if (complete) {
             struct Binding final : bsp::cc13_seg47::DroppableRoundCountHost {
@@ -5634,6 +5655,10 @@ struct GameUnitsHost::Impl {
                 // the bullet is not read.
                 unit_.rack_bullet_class_per_rack.push_back(
                     owner_.read_device_bullet_class_id(dev));
+                if constexpr (kWireGoal4Chain324Bound) {
+                    unit_.rack_identity_per_rack.push_back(
+                        {pkey, dev, unit_.rack_bullet_class_per_rack.back()});
+                }
                 unit_.rack_bullet_id_per_rack.push_back(
                     owner_.read_device_bullet_id(dev));
                 // 006E0242 00B66330 default [00CE3D30] = 0.6f.

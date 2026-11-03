@@ -49,16 +49,74 @@
     }
   ],
   "validation": {
-    "build": "scripts/build.ps1 passes; reconstructed_math and tool_tests pass",
+    "build": "scripts/build.ps1 passes; reconstructed_math (including review635 Rikufu admission regression) and tool_tests pass",
     "call_graph": "007c1f60 reachable from entry, one direct call from GameUnitsHost::Impl::droppable_round_count_or_stand_in",
     "runtime": "Game not run; executable reachability and source-state evidence only",
     "readiness": "9323 -> 9325 textual wired rows; 007c1f60 called=true, call_sites=1; 006e3500 called=null despite textual wired state"
   },
   "limits": [
-    "Binding requires a complete, seeded single-rack inventory containing only known bomb/depth-charge/paratrooper records.",
+    "Binding requires a complete, seeded single-rack inventory of known bomb/depth-charge/paratrooper records whose platform keys, device identities and projectile kinds match the equipment-resolved ammunition census.",
     "Multi-rack, unseeded, unknown, torpedo and rocket cases retain the existing fallback.",
     "The existing host held-round query treats a positive combined count as held; native attached-child geometry remains outside this binding.",
     "Readiness also marks 006e3500 wired after the callback source becomes reachable; this is a text match, not a call to rack_round_count_006e3500, and its row remains skipped."
   ],
-  "verified_new_body_calls": 1
+  "verified_new_body_calls": 1,
+  "review_fixes": [
+    {
+      "review_run": 635,
+      "round": 1,
+      "finding": "P2 equipment-resolved rack census identity and projectile-kind admission",
+      "status": "fixed",
+      "change": "Capture platform key, resolved device class, and projectile kind in the same per-rack census as the ammunition. Admission requires matching default/resolved identities and kinds plus complete live single-rack storage. Torpedo, rocket, unknown, multi-rack and mismatched inventories retain the existing fallback.",
+      "regression": "Existing reconstructed_math target checks Rikufu keys 10/11: matching device 89 bombs admitted; equipment 2 device 416 rockets rejected at unchanged rack count. It also rejects same-kind device/key mismatches and unsupported torpedo/unknown kinds.",
+      "installed_evidence": {
+        "vehicle": 312,
+        "equipment_platforms": [
+          89,
+          89,
+          416,
+          416
+        ],
+        "resolved_devices": [
+          {
+            "device": 89,
+            "device_type": "BombPlatform",
+            "bullet": 79,
+            "projectile_type": "Bomb"
+          },
+          {
+            "device": 416,
+            "device_type": "BombPlatform",
+            "bullet": 116,
+            "projectile_type": "Rocket"
+          }
+        ],
+        "off_arm_identical_to_reviewed_head": true,
+        "installed_inputs": [
+          {
+            "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\autoload\\vehicleclasses.lua",
+            "sha256": "0649dddf3a765a8340db2e6d545d04ac86503b4f8ba2e867c88ecbd2d2983650"
+          },
+          {
+            "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\classtables\\arcade\\deviceclasses.lua",
+            "sha256": "97cf66714cd833a85c546748ba7843816a9405dda5de7e9e2062b7a858786dbd"
+          },
+          {
+            "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\scripts\\datatables\\classtables\\arcade\\bulletclasses.lua",
+            "sha256": "7ee76ef69f23fff6a5378c948d62868f07fc669ae42f32eec12ac2c6030d6bb3"
+          }
+        ]
+      },
+      "checks": {
+        "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+        "off_identity": "Switch-off calculation is byte-for-byte identical to reviewed head bdc4d867433247138dc6ddbbf7db69427ba1a16c",
+        "call_graph": "Fresh built Win32 executable retains one entry-reachable direct call to 007c1f60 from droppable_round_count_or_stand_in; 006e3500 body remains uncalled.",
+        "readiness": {
+          "textual_wired": 9325,
+          "007c1f60_called": true,
+          "007c1f60_call_sites": 1
+        }
+      }
+    }
+  ]
 }

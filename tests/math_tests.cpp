@@ -23,6 +23,7 @@
 #include "bsp/plane_squadron.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/plane_rack_census_admission.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/app_bootstrap.hpp"
 #include "bsp/avoid_zone_geometry.hpp"
@@ -258,6 +259,26 @@ private:
 }
 
 int main() {
+    {
+        // Chain324 review635: installed arcade Rikufu (VehicleClass[312])
+        // keeps two racks at keys 10/11 when equipment 2 substitutes rockets.
+        // Unchanged inventory length must not admit those stale bomb counts.
+        using bsp::game::SingleRackCensusIdentity;
+        using bsp::game::admits_single_rack_round_census;
+        for (const int key : {10, 11}) {
+            const SingleRackCensusIdentity bomb{key, 89, 0x2A};
+            const SingleRackCensusIdentity rocket{key, 416, 0x33};
+            check(admits_single_rack_round_census(bomb, bomb, 1)
+                && !admits_single_rack_round_census(bomb, rocket, 1),
+                "chain324 Rikufu equipment 1 admitted, equipment 2 rejected");
+            check(!admits_single_rack_round_census(bomb, {key, 416, 0x2A}, 1)
+                && !admits_single_rack_round_census(bomb, {key + 1, 89, 0x2A}, 1)
+                && !admits_single_rack_round_census(rocket, rocket, 1)
+                && !admits_single_rack_round_census({key, 89, 0x2B}, {key, 89, 0x2B}, 1)
+                && !admits_single_rack_round_census({key, 89, 0}, {key, 89, 0}, 1),
+                "chain324 mismatched identities and unsupported resolved kinds use fallback");
+        }
+    }
     {
         // Chain308 review593: a group can contain a logical squadron ID beyond
         // units.count(). Its +304h belongs to the creation row, never whichever
