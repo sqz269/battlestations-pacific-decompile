@@ -17,8 +17,8 @@
   "host_object_note": "No host object built. The one wire uses a small typed-view adapter (WarningObserverSlotView, src/warning_reports_cc13.cpp) over the Warning's own slot field and the warning host's 006952A0/00694A60 calls.",
   "wired_before": 8936,
   "wired_after": 8938,
-  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed (reconstructed_math, tool_tests); rebuilt after the ON check so the map is the OFF build",
-  "build_on": "off_switch_on_build.py --names kWireGoal2Chain121Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed; switch restored to false",
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed (reconstructed_math, tool_tests); rebuilt after the ON check so the map is the OFF build; re-run in review round 1 with no code change",
+  "build_on": "off_switch_on_build.py --names kWireGoal2Chain121Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed; switch restored to false (code unchanged since, not re-run)",
   "pc24_lint": "not run: no x87 arithmetic in the ON arm",
   "turning_on": "With kWireGoal2Chain121Bound ON, the seven 005B7F60 slot sets in the kill warning (009744C0: 009746EB, 009748B0, 00974A41, 00974BB8) and hit warning (00974C70: 00975139, 009751A3, 00975317) constructors run 005B7F60's body (cc13_fe1::observer_slot_set, typed view) instead of set_slot's inline compare/unlink/store/link. The result is the same slot value and the same 006952A0/00694A60 host calls (no-ops in this host). The 00523B30 site (00975142) keeps set_slot.",
   "rows": [
@@ -28,7 +28,7 @@
       "function": "009744c0",
       "host_site": "src/warning_reports_cc13.cpp set_slot_via_observer_body (the seven 005B7F60 sites of construct_kill_warning_009744c0 and construct_hit_warning_00974c70)",
       "status": "wired",
-      "reach": "live, read: kill path GameGunneryHost unit death (src/game_hosts_gunnery.cpp:16429, kLossWarningBound=true) -> game_warning_report_loss_009813a0 -> (kWarningMessageBankCc15Bound=true) game_warning_kill_block_00981e07 -> bsp::construct_kill_warning_009744c0 (src/game_hosts_mission_frame.cpp:1248); hit path game_hosts_lua.cpp:10123 -> game_warning_report_hit_00989604 (kWarningMessageBankCc15Bound) -> construct_hit_warning_00974c70 (game_hosts_mission_frame.cpp:3519). No disabled gate on either path; the kill block runs past the 4 s clock and recon-identified guards on every reportable loss.",
+      "reach": "static (no surveyed mission or call count cited; the candidate detail gave none), host path read down to the site: kill path GameGunneryHost unit death (src/game_hosts_gunnery.cpp:16429, kLossWarningBound=true) -> game_warning_report_loss_009813a0 -> (kWarningMessageBankCc15Bound=true) game_warning_kill_block_00981e07 -> bsp::construct_kill_warning_009744c0 (src/game_hosts_mission_frame.cpp:1248); hit path game_hosts_lua.cpp:10123 -> game_warning_report_hit_00989604 (kWarningMessageBankCc15Bound) -> construct_hit_warning_00974c70 (game_hosts_mission_frame.cpp:3519). No disabled gate on either path; the kill block runs past the 4 s clock and recon-identified guards on every reportable loss.",
       "note": "raw_callback row: added the typed view overload observer_slot_set(ObserverSlotView&, void*) in src/frontend_screens_cc13.cpp with the body (005B7F63..005B7F8E: compare +14h, 006952A0 on the old target, store, 00694A60 on the new one); the raw entry is now a thin wrapper (RawObserverSlotView over +14h and ObserverHost) and had no callers. Image sites: 009746EB, 009748B0, 00974A41, 00974BB8 (009744C0); 00975139, 009751A3, 00975317 (00974C70)."
     },
     {
@@ -245,7 +245,7 @@
       "native": "008d4520",
       "host_site": "src/game_hosts_menu.cpp PressStartHost::reset_offline_profile",
       "status": "skipped",
-      "reason": "Census (candidate 7, not claimed): body looks wrong. The image 008D4520 ends at 008D45AF RET 8 after the +88h store, but reset_video_defaults_008d4520 (game_settings.cpp:175) also writes +B1h/+B2h/+B4h and calls 008D41F0/008D41C0, which are the constructor's inline stores 008D77A7..008D77F9. Its press-start site 0067D4C6 (reset_offline_profile, a log-only stand-in) would also need 008D4820/008D41C0/008D41F0/008D5B50 in the same arm."
+      "reason": "Census (candidate 7, not claimed): the body is sound; reset_video_defaults_008d4520 (game_settings.cpp:175-206) ends at the +88h store (008D45A9), as the image does before RET 8 at 008D45AF. No live host site: the press-start site 0067D4C6 is the log-only stand-in reset_offline_profile (game_hosts_menu.cpp:1065), which would also need 008D4820/008D41C0/008D41F0/008D5B50 in the same arm; the options-screen callers 005F7C40/005F8960 go through settings_reset_video_defaults_008d4520 (include/bsp/frontend_screens_cc13.hpp:2104), which no host implements."
     },
     {
       "native": "008d76c0",
@@ -260,5 +260,7 @@
       "reason": "Census (candidate 3, not claimed): the screenshot paths format inline, but capture never starts: the mission frame host answers input_action_pressed false (game_native_mission_frame.cpp:107) and GameMissionFrameHost::finish_render_frame_004ca1f0 only records."
     }
   ],
-  "wired_delta_note": "wired 8936 -> 8938 (+2). The assigned row is 005b7f60. The other is 005b7b40, the identical copy of the body (frontend_screens_cc13.hpp: \"005B7F60, 005B7B40 (identical)\") with no image callers: it shares the observer_slot_set identifier, so wire_readiness marks it too. It is a side effect, not a claimed or counted row."
+  "wired_delta_note": "This chain is credited with 1 row: 005b7f60. The tool measures 8936 -> 8938 (+2), but the second is 005b7b40, the identical copy of the body (frontend_screens_cc13.hpp: \"005B7F60, 005B7B40 (identical)\") with no image callers. It shares the observer_slot_set identifier, so wire_readiness marks it wired. That is a side effect of the shared name, not a claimed or counted row. wired_after keeps the tool measurement.",
+  "rows_credited": 1,
+  "review_round_1": "Run 252 fixes applied: (1) 008d4520 skip reason rewritten; the earlier \"body looks wrong\" claim was a misreading, because the stores cited were Select-String context lines from settings_initial_state.cpp, not the body; (2) 005b7f60 reach relabelled static; (3) chain credit stated as 1 row. No code changed."
 }
