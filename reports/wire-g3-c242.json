@@ -9,9 +9,9 @@
   "switch": "kWireGoal3Chain242Bound",
   "switch_header": "include/bsp/wire_goal3_chain242_switches.hpp",
   "selection_reason": "The reset can use the existing running fixed-step owner and frame-clock consumers, with no additional OFF gate or invented initial clock values.",
-  "build_off": "scripts/build.ps1 exit 0; final plain OFF build passed 2/2 existing tests (reconstructed_math, tool_tests)",
-  "build_on": "tools/off_switch_on_build.py --names kWireGoal3Chain242Bound: exit 0; 2/2 existing tests; zero distinct compiler/linker diagnostics; header restored OFF",
-  "pc24_lint": "zero findings (--staged, 2 C++ files); whole host-file scan also zero findings with one pre-existing allowed expression",
+  "build_off": "review round 1: scripts/build.ps1 exit 0 after ON check; 2/2 existing tests passed",
+  "build_on": "review round 1: off_switch_on_build.py --names kWireGoal3Chain242Bound exit 0; 2/2 existing tests passed; zero distinct diagnostics; header restored OFF",
+  "pc24_lint": "review round 1: zero findings (--staged, 1 changed C++ file); whole host-file scan zero findings with one pre-existing allowed expression",
   "wired_total_before": 9022,
   "wired_total_after": 9071,
   "rows_wired": 1,
@@ -69,7 +69,7 @@
         "004DA780 calls 00874640 at 004DAD52 during teardown; the frame's existing request-10 phase binds it and preserves the native states-1/2/4 exclusion at 004DA7A0..004DA7BC.",
         "Existing run_fixed_step_driver_00875bb0 updates the same five fields on the live 004C40A0 -> 004C40AD path; the ON frame has no independent raw-delta clock increment.",
         "game_main.cpp unconditionally initializes canonical CRT data and binds its feature word through initialize_convex_pool_once_00cc89c0 before creating the mission host. The reset borrows this cell, without creating another process or feature flag.",
-        "Frame, WorldTickState and mission-result by-value publications are refreshed after reset and after the fixed-step driver, before the following world pass. Direct frame warning/hint consumers read the world_clock alias during callbacks."
+        "Frame global_time is refreshed from A4 after reset/driver. The result-host snapshot is seeded after reset/frame start, published before each step's first callback (00875C80 store -> 00875CA5), published before interpolation callbacks after the 00875F26 remainder store, and refreshed on driver return including a closed gate. WorldTickState.game.elapsed is the separate game+64Ch accumulator: it advances by this host's undilated raw_delta before action deadlines, independently of whether simulation runs, and is not reset or copied from A4."
       ],
       "rows": [
         "00874640"
@@ -91,8 +91,8 @@
       "status": "wired",
       "reach": "static: game_hosts_mission.cpp constructs the frame host and calls run_scene_load_004dfb70 at its existing mission-load site. The reset catalogue branch and final load tail have no other OFF gate. In-mission frames call the existing fixed-step driver through MissionFrameBinding -> InMissionTickBinding, and request 10 reaches the existing teardown binding. No mission count was supplied for this gap; no game run was performed.",
       "contract": "Complete 00874640..00874690 body already reconstructed in native_mission_clock_reset.cpp. One float argument, RET 4, no ECX input. Its two MOVSS stores publish A4/A8; BF7420 conversion writes B0, signed FILD and retained x87 operands derive AC then B4. For the native zero argument B4 is the nonzero step, so a zero aggregate is not a substitute. All six original call sites were checked for FLDZ/stack argument setup, and the exact D7A270 bytes were read live.",
-      "on_change": "Load and teardown execute the existing reset body over the actual driver state. The frame reads the driver clock through a reference alias, removes the separate once-per-frame increment, and refreshes downstream snapshots after the driver's remainder publication.",
-      "off_preservation": "The conditional clock member is an independent float initialized to positive zero when OFF. The existing frame increment and load record fallback are retained. New reset contexts, CRT borrows, teardown reset and snapshot refreshes execute only when this switch is ON.",
+      "on_change": "Load and teardown execute the existing reset body over the actual driver state. The frame reads A4 through a reference alias and removes its independent mission-clock increment. The separate game+64Ch accumulator still advances before action deadlines. Result time is published before fixed-step and interpolation callbacks as well as after the driver, so synchronous scoring Lua sees the current callback phase.",
+      "off_preservation": "The conditional clock member remains an independent positive-zero float when OFF. The original frame increment, world.game.elapsed = world_clock statement and load fallback remain. The elapsed accumulator change and pre-callback result publications execute only under kWireGoal3Chain242Bound.",
       "additional_verified_sites": [
         {
           "address": "004e1890",
@@ -115,5 +115,46 @@
     "newly_wired": 49,
     "no_longer_wired": 1,
     "claimed_here": 0
+  },
+  "review_round_1": {
+    "review_run": 435,
+    "review_harness": "codex",
+    "base_head": "16396206f1b54195425eb2d7445cd9093311cfed",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "reason": "Accepted: game+64Ch is distinct from A4. Removed its reset and post-driver copies. The ON frame advances its own elapsed accumulator by the existing undilated host step before action deadlines; OFF retains its original assignment.",
+        "where": "src/game_hosts_mission_frame.cpp:5151",
+        "evidence": "004C6E30 writes game+64Ch += undilated step; frame deadlines run later through record_action_deadlines_004d8cd0. Neither reset_shared_frame_mission_clock nor the driver-return publication writes world.game.elapsed now.",
+        "source_trace": "With initial elapsed 0 and raw_delta 0.05, game+64Ch becomes 0.05 before deadlines even though A4 is still 0 before the first simulation step. An entered frame whose simulation gate is closed still executes this accumulator producer. This is source reasoning, not runtime evidence."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "reason": "Accepted: post-driver publication was too late. Publish the current A4 snapshot at entry to the first callback of every step and at entry to interpolation, before invoking any downstream callback. Existing reset, frame-start and driver-return publications remain for the other phases.",
+        "where": "src/game_hosts_mission_frame.cpp:2056 and :2172",
+        "evidence": "Live native instruction contexts show A4 stored at 00875C80 before the first callback at 00875CA5, and the final remainder stored at 00875F26 before interpolation descriptor/wave entry at 00875F43. The existing reconstructed driver has the same order. FixedStepBinding publishes before its countdown record and before run_interpolation_wave_00875670.",
+        "source_trace": "A first whole 0.05-second step publishes 0.05 before waves/subsystems can synchronously invoke scoring Lua. A positive sub-step frame with no whole step publishes its current A4 before interpolation callbacks. Each later whole step republishes its own clock. This is source reasoning, not runtime evidence."
+      }
+    ],
+    "wired_total_before": 9071,
+    "wired_total_after": 9071,
+    "assigned_row": "00874640 remains wired; no additional rows claimed",
+    "build_off": "review round 1: scripts/build.ps1 exit 0 after ON check; 2/2 existing tests passed",
+    "build_on": "review round 1: off_switch_on_build.py --names kWireGoal3Chain242Bound exit 0; 2/2 existing tests passed; zero distinct diagnostics; header restored OFF",
+    "pc24_lint": "review round 1: zero findings (--staged, 1 changed C++ file); whole host-file scan zero findings with one pre-existing allowed expression",
+    "report_calls": "verify_report_calls.py: 1 call row checked, 0 failed",
+    "game_run": false,
+    "switch_off": true,
+    "flip_status": "Switch remains OFF; runtime flip validation was not performed.",
+    "receipts": {
+      "off": "local/output/wire_g3_c242_review1_off.log",
+      "on": "local/output/wire_g3_c242_review1_on.log",
+      "on_full": "local/off_switch_on_build.log",
+      "readiness": "local/output/wire_g3_c242_review1_readiness.log"
+    },
+    "readiness": "00874640 remains wired; final recount follows plain OFF build. No additional assigned rows claimed.",
+    "readiness_state_changes": 0
   }
 }

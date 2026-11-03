@@ -406,7 +406,6 @@ struct GameMissionFrameHost::Impl {
                 fixed_clock.interpolation_left, native_step, conversion};
             bsp::reset_native_mission_clock_00874640(0u, context);
             frame_state.global_time = world_clock;
-            world.game.elapsed = world_clock;
             result->set_mission_clock(world_clock);
         }
     }
@@ -2051,6 +2050,11 @@ class FixedStepBinding final : public bsp::FixedStepHost {
 public:
     explicit FixedStepBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
     void advance_step_countdown_008079b0(float) override {
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            // 00875C80 publishes A4 before this first callback at 00875CA5.
+            // Synchronous scoring Lua in the following waves reads this step.
+            owner_.result->set_mission_clock(owner_.world_clock);
+        }
         owner_.record("Recon::service_periodic_refresh", 0x008079b0u);
     }
     void run_step_job_waves(std::uint8_t run_pass) override {
@@ -2162,6 +2166,11 @@ public:
         }
     }
     void run_interpolation_wave_00875670(float leftover, std::uint8_t run_pass) override {
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            // 00875F26 adds the remainder before 00875F43's interpolation wave,
+            // including frames that ran no whole step. Publish before callbacks.
+            owner_.result->set_mission_clock(owner_.world_clock);
+        }
         owner_.fixed_step->run_interpolation_wave_00875670(leftover, run_pass);
         if constexpr (bsp::game::kLandConvoyMovementBound) {
             if (owner_.units != nullptr && leftover > 0.0f) {
@@ -2250,9 +2259,9 @@ public:
             owner_.fixed_clock, gate, scaled_delta, world_active, 0, host);
         if constexpr (bsp::kWireGoal3Chain242Bound) {
             // 00875BB0 has now published A4, including the final remainder.
-            // Refresh later consumers before 004C40A0 enters the world pass.
+            // FixedStepBinding publishes before callbacks; retain the final
+            // publication here for later consumers and the closed-gate case.
             owner_.frame_state.global_time = owner_.world_clock;
-            owner_.world.game.elapsed = owner_.world_clock;
             owner_.result->set_mission_clock(owner_.world_clock);
         }
         owner_.fixed_steps += steps;
@@ -5136,7 +5145,13 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     host.frame_state.raw_delta = raw_delta;
     host.frame_state.scaled_delta = raw_delta;  // no time dilation in this process
     host.frame_state.global_time = host.world_clock;
-    host.world.game.elapsed = host.world_clock;
+    // 004C6E30 advances game+64Ch before 004D8CD0's action deadlines, even
+    // when simulation is skipped. This host's undilated step is raw_delta.
+    if constexpr (bsp::kWireGoal3Chain242Bound) {
+        host.world.game.elapsed += raw_delta;
+    } else {
+        host.world.game.elapsed = host.world_clock;
+    }
     // 004E4D45: 004C6E30 stores the scaled delta at game+21F0h, after the
     // request drain (004E4D02, which reads no delta) and before the fixed steps
     // and Think (004E5133). frame_state.scaled_delta is that value here: with
