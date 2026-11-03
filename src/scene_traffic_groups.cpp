@@ -516,18 +516,17 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
             if (!expect_token(lexer, "{", error)) {         // 008F698A
                 return false;
             }
-            // 008F69FF 008F31A0 parses the body. That callee was not opened, so
-            // the body is handed over as text rather than decoded here.
+            // 008F69FF calls 008F31A0: bsp.py show 008f31a0 confirms that
+            // token bytes equal to "}" terminate the enum, without nesting
+            // on "{". In particular, a quoted "{" is a valid symbol name.
+            // Hand the token-preserving body to the owning enum adapter.
             std::string body;
-            int depth = 1;
-            while (depth > 0 && !lexer.at_end()) {
+            bool terminated = false;
+            while (!lexer.at_end()) {
                 const SceneToken token = lexer.next();
-                if (token.text == "{") {
-                    ++depth;
-                } else if (token.text == "}") {
-                    if (--depth == 0) {
-                        break;
-                    }
+                if (token.text == "}") {
+                    terminated = true;
+                    break;
                 }
                 if (!body.empty()) {
                     body.push_back(' ');
@@ -538,7 +537,7 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
                 body += token.text;
                 if (token.quoted) body.push_back('"');
             }
-            if (depth > 0) {
+            if (!terminated) {
                 error = "unterminated enum " + table.name;
                 return false;
             }

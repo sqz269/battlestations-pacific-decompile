@@ -257,14 +257,17 @@ private:
 int main() {
     {
         // 008F6AD7 must apply a redeclaration to its existing bag, preserving
-        // every parent for 008F5AB3. The enum adapter retokenizes quoted names.
+        // every parent for 008F5AB3. The enum adapter retokenizes quoted names;
+        // 008F31A0 treats an opening brace as a symbol, not a nested block.
         struct LibraryFixture final : bsp::PropLibraryHost {
             std::vector<bsp::PropLibraryGroup> applied;
-            std::string symbol;
+            std::vector<std::string> symbols;
+            std::vector<std::string> published_tables;
             std::vector<std::string> enumerate_library_files(
                 const std::string&, const std::string&) override { return {}; }
             bool read_library_file(const std::string&, std::string& text) override {
-                text = "enum Keys { \"two words\" = 7; } "
+                text = "enum Words { \"two words\" = 7; } "
+                    "enum Keys { \"{\" = 7; } "
                     "properties Pair (BaseA BaseB) { X = I 1; } "
                     "properties Pair { X = I 2; }";
                 return true;
@@ -277,10 +280,12 @@ int main() {
             void register_group(const bsp::PropLibraryGroup& group) override {
                 applied.push_back(group);
             }
-            void register_enum_table(const bsp::PropLibraryEnumTable&) override {}
+            void register_enum_table(const bsp::PropLibraryEnumTable& table) override {
+                published_tables.push_back(table.name);
+            }
             void parse_enum_body(const std::string&, const std::string& body) override {
                 bsp::SceneLexer lexer(body, bsp::kSceneDelimiters);
-                symbol = lexer.next().text;
+                symbols.push_back(lexer.next().text);
             }
         } host;
         bsp::PropLibraryDocument document;
@@ -291,8 +296,9 @@ int main() {
                 && host.applied[0].created && !host.applied[1].created
                 && host.applied[0].parents == std::vector<std::string>({"BaseA", "BaseB"})
                 && value != nullptr && value->has_integer && value->integer_value == 2
-                && host.symbol == "two words",
-            "property-library load applies repeated groups, preserves all parents and quoted enum names");
+                && host.symbols == std::vector<std::string>({"two words", "{"})
+                && host.published_tables == std::vector<std::string>({"Words", "Keys"}),
+            "property-library load applies repeated groups and all parents, and publishes quoted enum names including an opening brace");
     }
     {
         // 0084C5D4 must tick once, then read the live +4D4h flag. Pin the

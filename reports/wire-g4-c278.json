@@ -10,11 +10,11 @@
   "changes": [
     "FolderBinding now calls the existing load_prop_library_file body once per enumerated file; its OFF arm preserves the old file reader unchanged.",
     "Forward every authored parent and apply repeated group declarations to the existing library bag, matching 008F6AD7 and the 008F5AB3 parent merges.",
-    "Preserve quoted enum symbols when passing the balanced enum body to the existing owning native-enum adapter; publish each new table once."
+    "Preserve quoted enum symbols when passing the enum body to the existing owning native-enum adapter; publish each new table once."
   ],
   "checks": {
     "build": "./scripts/build.ps1: MSVC Win32 Release and both CTest groups passed",
-    "regression": "One focused fixture in tests/math_tests.cpp checks repeated group writes, multiple parents, and a quoted enum symbol containing whitespace.",
+    "regression": "One focused fixture in tests/math_tests.cpp checks repeated group writes, multiple parents, quoted enum symbols containing whitespace and an opening brace, and publication of both enum tables.",
     "call_graph": "python tools/call_graph.py; who 008f67b0; who load_prop_library_file; path load_prop_library_file",
     "call_site": "101985CB -> 10411070 from GameSceneContentsHost::Impl::load_property_library::FolderBinding::load_library_file; reachable from WinMain through scene loading",
     "address_alias_note": "The pre-existing body has the identifier load_prop_library_file without an address suffix. who 008f67b0 cannot resolve it; the existing wire_readiness address_comment mapping and symbol-name queries identify the actual body.",
@@ -27,6 +27,28 @@
     "Keep the existing chain268 folder/extension enumeration enabled; with that earlier switch off, its legacy application parser remains in control.",
     "Use the already-established owning-tree property projection and native enum graph. This is typed C++ host wiring, not proof of native property-bag allocation ABI or gameplay parity."
   ],
+  "review_round_1": {
+    "review_run": 520,
+    "reviewed_head": "a46d2360b283f8016ce5ebdf679d6a9445579f94",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "finding": "The enum collector treated a quoted opening-brace symbol as a nested block and failed to publish its table.",
+        "resolution": "Collect until the first token whose bytes equal the closing brace, with no nesting on opening braces, while retaining quoted token spelling.",
+        "evidence": "bsp.py show 008f31a0 confirms the native loop compares the peeked token text with the closing-brace literal and otherwise reads a symbol assignment; it has no brace-depth counter.",
+        "regression": "Extended the existing fixture with enum Keys { \"{\" = 7; } and checks for the preserved symbol and publication of Keys. The extended fixture failed against the reviewed collector, then passed after the correction."
+      }
+    ],
+    "checks": {
+      "baseline": "Reviewed HEAD passed ./scripts/build.ps1 before edits.",
+      "build": "./scripts/build.ps1 after the correction: MSVC Win32 Release and both CTest groups passed.",
+      "call_graph": "Rebuilt graph confirms the same entry-reachable 101985CB -> 10411070 host call and WinMain path.",
+      "wiring": "Re-run wire_readiness.py --standins: 9231 wired; 008f67b0 remains wired and called.",
+      "off_identity": "Host implementation and chain278 switch are unchanged from the reviewed HEAD; the previously verified OFF loader/parser remain intact.",
+      "game_run": false
+    }
+  },
   "rows": [
     {
       "native": "008f67b0",
