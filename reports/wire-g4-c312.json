@@ -1,0 +1,135 @@
+{
+  "goal": 4,
+  "chain": 312,
+  "slot": "g4-w4",
+  "owner": "agent/g4-w4",
+  "switch": "kWireGoal4Chain312Bound",
+  "switch_header": "include/bsp/wire_goal4_chain312_switches.hpp",
+  "summary": "The native sound system's per-frame update now runs in the game. The front-end render step (MenuFrameHost::game_render, 004CA440's front-end branch) calls 00735B50 BSP_SoundFrame_ServiceInline over the started core, so 00A87BF0 -> 00A7E630 (streamed-dialog owner update 00A789C0, FMOD listener and EventSystem::update, active entries) runs once per front-end frame instead of only at shutdown. The mission teardown (request 10h -> 004DA780) now runs 004DA780's sound reset 004DA824..004DA999: level +6Ch to 1.0 with 00A7A440, 00A77C10 ClearChannels on the music director, 00A77860 target 1.0, and two identity-listener updates. That also keeps a mission's last requested music track from being started in the menu by the new front-end update.",
+  "wired_total": {
+    "metric": "call_graph.summary.recon_called (reconstructed addresses called from entry-reachable code in the built exe)",
+    "before": 4335,
+    "after": 4339,
+    "readiness_text_state_before": 9308,
+    "readiness_text_state_after": 9310,
+    "note": "Of the +4, 0068A670 is only statically linked behind 00735B50's null-interface test and never runs from the front-end site (see its skipped row). 00A87BF0, 00A7E630 and 00A789C0 were already reachable through close_sound_system_00a7e240 at shutdown; they now also run per front-end frame and at the mission teardown."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed (Win32 Release, 2/2 CTests) after each commit",
+    "pc24_lint": "0 findings over the diff (no float arithmetic added; one equality test and one store)",
+    "call_sites": "call_graph who: service_sound_frame_00735b50 <- MenuFrameHost::game_render; clear_sound_alternate_channels_00a77c10 <- GameSoundDialogRuntime::clear_channels; apply_sound_global_level_00a7a440 and update_published_sound_with_identity_listener (x2) <- FrameControlBinding::request_10_teardown_004e458a",
+    "game_run": "not run (brief)"
+  },
+  "evidence": {
+    "00735B50": "bsp.py disasm-raw 00735b50: [00E198C4] tested at 00735B5E/00735B64, 0068A670 called only when non-null (00735BD7 JE), then [00F8BBD8]->vtable[4](matrix, velocity) at 00735C1B.",
+    "front_end_interface_null": "[00E198C4] writers (ghidra xrefs): 0068CCFE publish at mission load, 004DA6B3 (004DA650) and 004DAB94 (004DA780) delete and store null; 004CA4E7..004CA529 reach 004CA5D4 directly when it is null.",
+    "teardown_block": "bsp.py disasm-raw 004da820 / 004da889 / 004da91b: UCOMISS [+6Ch],1.0, LAHF/TEST AH,44h/JNP (skip only on equal), store 1.0, 00A7A440([+4Ch]); 00A77C10 on [00F8BBCC]; FLD1, 00A77860; two vtable[4] calls with identity/zero at 004DA905 and 004DA999. Gate 004DA7A0..004DA7BC: game+5D4h not 1/2/4.",
+    "constants": "bsp.py ghidra bytes: 00D7A24C 00 00 80 3F, 00CE3D64 00 40 1C 46, 00D7A218 00 00 00 00, 00D7A220 00 00 00 00 00 00 59 40."
+  },
+  "rows": [
+    {
+      "native": "00735b50",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuFrameHost::game_render (004CA440 front-end branch, 004CA5D4)"
+    },
+    {
+      "native": "00a77c10",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: FrameControlBinding::request_10_teardown_004e458a -> reset_session_sound_004da824 (004DA85D) via GameSoundDialogRuntime::clear_channels"
+    },
+    {
+      "native": "00a7a440",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: FrameControlBinding::request_10_teardown_004e458a -> reset_session_sound_004da824 (004DA852)"
+    },
+    {
+      "native": "0068a670",
+      "status": "skipped",
+      "host_site": "src/sound_frame_service.cpp: service_sound_frame_00735b50 (statically linked, never executed from the front-end site)",
+      "reason": "Missing the native in-game interface object (+4 applied id) and game storage +1ED4/+19FC (camera node with +5Ch flags, +F0 world) it reads; the host's InGameInterfaceManager is semantic and the mission camera is a CameraState publication."
+    },
+    {
+      "native": "004bbd00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: render_004ca440 (in-mission world-view job)",
+      "reason": "Calls 0068A670 unconditionally with [00E198C4], which in mission needs the native interface/camera storage above; without it the in-mission per-frame sound update (and so in-mission music start in 00A789C0) still does not run."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: close-result GUI record (004E476C)",
+      "reason": "Needs actual game storage (+7184), the movie screen [00E18D48] with its slot24 children, and the input manager 004BEC00 / 00A933F0; none is native in this host."
+    },
+    {
+      "native": "00685c80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: update_interface_music_00685c80 (004E542D)",
+      "reason": "Body takes Fe5Host (290 pure virtuals, no implementation) and reads manager +50h/+54h; the title stream lives in GameMenuHost::Impl, and 004E542D runs only in non-front-end frames before the load's release_main_menu_manager step. Needs a narrow base for its 4 calls plus a typed stream view."
+    },
+    {
+      "native": "0065f170",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: support_play_unavailable_sound_0065f170 (support manager screen)",
+      "reason": "Needs HUD screen 4Eh's eight samples acquired at 0066EA60 (+10h..+2Ch) and 00A7E490 into a sound system whose in-mission update does not run (004BBD00 above); the screen is host-recorded."
+    },
+    {
+      "native": "0065f560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: BSP_HudSupportManager_ConfirmOrder caller",
+      "reason": "Same as 0065F170: no screen 4Eh sample owner, and no in-mission sound update."
+    },
+    {
+      "native": "009a6970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: create_bot_task (bot_install_command_task_0099a170)",
+      "reason": "The thirteen BotTask_Make* factories (009A2F40, 009A6970, 009AB570, 009B9030, 009BADB0, 009BDBB0, 009C3C40, 009C8C70, 009CA2B0, 009CD300, 009D4E30, 007B7FD0, 009AEBE0) build native bot task objects; the host hands out index handles and keeps no native pilot/bot task storage."
+    },
+    {
+      "native": "008127e0",
+      "status": "skipped",
+      "host_site": "src/mission_lua_host.cpp: GetFirepower 0088DC10 (unbound)",
+      "reason": "No live reader: the only GetFirepower call in the installed scripts (global/commandhelpers.lua:2413, luaCheckDamageRetreatConditions) is inside a --[[ ]] block, and 0081F980's bind-time totals have no host reader either."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: script_set_failure_008132c0 Periscope arm",
+      "reason": "No producer: no script calls SetFailure with \"Periscope\", and the host's failure rolls do not reach 008132C0's periscope arm; the submarine +122Ch/+1254h periscope state has no host reader."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: parse_007a0eb0 gamecamera/fpscamera modifier",
+      "reason": "Used by 59 mission scripts (luaCamOnTargetNew), but needs the game camera movers 0079CBD0 builds per parent kind (ShipCaptain 0064B650, plane 00605130/006065D0, 0078E830, 005176F0) driven per frame, the begin slot 0079CF80, and the keyframe +7Ch/+BCh matrix consumer in the partial 00798130 track evaluate."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder::route_message (Session::message_tick_window record)",
+      "reason": "The host's loopback queue keeps no send tick (msg+0Ch) or entity-ready byte; in mode 0 every input would be a constant (due, resolved, ready), so the gate would replay the host's deliver-all."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: set_unit_skill_index_006d1eb0",
+      "reason": "The host keeps one skill field for both bot+34h (007B8AE0, unconditional) and unit+390h (009565A0, dead-gated); the body's gate and device fan-out would have no observable effect until the two are split."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: vehicle_avoidance_007df4f0",
+      "reason": "Dead arm: 007DF4F0 builds the frame from 0085D770 only when unit+B04h is non-zero, and B04h has no writer (the host comment's store census)."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::attach_passes (00864BD0)",
+      "reason": "Inputs are per-class virtual answers (unit vtable[114h] director, director vtable[48h](2), IsKindOf(2)/(8)) the host does not model; the two consumers already apply the null-provider and submarine-gate rules from the kind tests."
+    }
+  ],
+  "notes": [
+    "00A7A440 at mission entry (004DA734, MissionEntryBinding::set_audio_environment_level) stays a record: the mission frame host passes a default AudioSettings (master_20 = 0), not the live settings block 00F88980, so calling the body there would mute every class.",
+    "The FMOD call journal (FmodConfigurationLibrary::results) is unbounded; the front-end update adds about three entries per frame (8 bytes each). Worth capping with counters if long idle menu sessions matter.",
+    "In-mission audio is gated on 004BBD00/0068A670: once a native-compatible interface (+4 applied id) and the camera at game+1ED4/+19FC exist, the same NullInterfaceSoundFrame pattern can be replaced by a real listener binding and in-mission music (00A789C0 start_logical) will start."
+  ]
+}
