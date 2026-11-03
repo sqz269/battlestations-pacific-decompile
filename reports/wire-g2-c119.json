@@ -10,8 +10,8 @@
   "switch": "kWireGoal2Chain119Bound",
   "switch_default": false,
   "wired_before": 8934,
-  "wired_after": 8940,
-  "rows_wired": 6,
+  "wired_after": 8939,
+  "rows_wired": 5,
   "host_objects": [],
   "host_views": [
     {
@@ -24,7 +24,6 @@
       ],
       "rows": [
         "00b660f0",
-        "00b663d0",
         "00b66670",
         "00b67530",
         "00b678e0"
@@ -34,7 +33,10 @@
         "NativeLuaStateStorage state_04 DWORD +4; stack_offset_0c DWORD +0x0c; slots_14[50] stride 0x18; high_water_4c4 DWORD +0x4c4"
       ],
       "lifetime": "Call-local borrowed views only; no retained object, registry or singleton introduced. The named lookup's single tracked result is released after pushing its result. The view owner never closes the host interpreter.",
-      "limit": "Named lookup uses native tracking only below stack top 49; larger stacks retain the old direct field read to respect the physical 50-slot contract."
+      "limit": "Named lookup uses native tracking only below stack top 49; larger stacks retain the old direct field read to respect the physical 50-slot contract.",
+      "uncounted_rows": [
+        "00b663d0"
+      ]
     },
     {
       "name": "Archive execution owner view",
@@ -98,11 +100,12 @@
       "address": "00898fe9",
       "function": "00898e30",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::push_resolved_entity",
-      "status": "wired",
+      "status": "skipped",
       "reach": "static",
       "reach_evidence": "mission_binding_row entity-return tail -> push_resolved_entity for registered FindEntity/GetSelectedUnit; real resolved id indexes thisTable. FindEntity is not in the orders-handled set and reaches this tail. No disabled switch; named-lookup tracking has a runtime capacity guard. No mission counts supplied.",
       "contract": "00B663D0 reads owner+4 and object's +8, checkstack(1), tail-jumps to pushvalue. 00898FDF loads ECX from the 00B678E0 result before 00898FE9. Release removes the tracked original and retains the pushed same-value result.",
-      "effect": "Run the native push body on the lookup's actual LuaObject instead of returning the direct getfield stack value."
+      "effect": "Retained, uncounted ownership sequence: push the looked-up value and remove its tracked original.",
+      "reason": "Identity round trip: native_lua_get_by_native_string_00b678e0 already leaves the resolved value on the stack. The subsequent native_lua_push_value_00b663d0 and tracked-original removal copy and retain that same value without replacing a separate host operation. The ownership sequence remains in the ON arm but does not count as wiring this row."
     },
     {
       "native": "00b66530",
@@ -196,19 +199,22 @@
     "off_build": {
       "command": "./scripts/build.ps1",
       "exit_code": 0,
-      "ctest": "2/2 passed"
+      "ctest": "2/2 passed",
+      "rerun_for_review_run": 239
     },
     "on_build": {
       "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain119Bound",
       "exit_code": 0,
       "diagnostics": 0,
       "ctest": "2/2 passed",
-      "log": "local/off_switch_on_build.log"
+      "log": "local/off_switch_on_build.log",
+      "rerun_for_review_run": 239
     },
     "pc24": {
-      "command": "python tools/pc24_lint.py src/game_hosts_lua.cpp src/storage_backend.cpp src/cc13_seg87.cpp",
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
       "exit_code": 0,
-      "findings": 0
+      "findings": 0,
+      "rerun_for_review_run": 239
     },
     "readiness": {
       "command": "python tools/wire_readiness.py",
@@ -220,40 +226,56 @@
         {
           "native": "00b65ef0",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": true
         },
         {
           "native": "00b660f0",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": true
         },
         {
           "native": "00b663d0",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": false,
+          "qualification_reason": "Identity round trip: lookup already leaves the resolved value on the stack."
         },
         {
           "native": "00b66670",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": true
         },
         {
           "native": "00b67530",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": true
         },
         {
           "native": "00b678e0",
           "before": "ready",
-          "after": "wired"
+          "after": "wired",
+          "qualified": true
         }
-      ]
+      ],
+      "count_basis": "Unqualified readiness tool output; includes the false positive identified below.",
+      "false_positive_rows": [
+        "00b663d0"
+      ],
+      "qualified_before": 8934,
+      "qualified_after": 8939,
+      "qualified_delta": 5,
+      "rerun_for_review_run": 239
     },
     "report_calls": {
       "command": "python tools/verify_report_calls.py reports/wire-g2-c119.json",
       "exit_code": 0,
       "checked": 14,
-      "failed": 0
+      "failed": 0,
+      "rerun_for_review_run": 239
     },
     "game_run": false
   },
@@ -261,5 +283,20 @@
     "Static host reach and build evidence only; no game run, original ABI equivalence or ON behavior validation claimed.",
     "All new runtime work is behind kWireGoal2Chain119Bound=false. Native Lua frames borrow current host interpreters; no persistent host object was built.",
     "The typed destination overload preserves the existing body, with the raw entry retained as a thin wrapper."
+  ],
+  "rows_wired_tool": 6,
+  "wired_after_tool": 8940,
+  "counting_note": "Qualified count is five rows, 8934 -> 8939. The readiness tool reports six rows, 8934 -> 8940, because it also credits 00b663d0. That row is an identity-round-trip false positive and is excluded from the qualified count.",
+  "review_fixes": [
+    {
+      "review_run": 239,
+      "round": 1,
+      "finding": 1,
+      "native": "00b663d0",
+      "status": "fixed",
+      "resolution": "Accepted the identity-round-trip finding; reclassified as skipped and corrected qualified counts to five and 8939. The readiness tool retains a documented false-positive credit.",
+      "code_change": false,
+      "code_change_reason": "The reviewer found no behavior defect and explicitly allowed the ownership sequence to remain uncounted."
+    }
   ]
 }
