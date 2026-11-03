@@ -21,13 +21,13 @@ std::uint32_t dword_bytes(std::uint32_t count) {
 
 Object section_of(Object building) { return obj(at<std::uint32_t>(building, 0x764)); }
 
-void lock(Seg33bHost& host, Object building) {
+void lock(CommandBuildingCapturerHost& host, Object building) {
     Object section = section_of(building);
     host.enter_critical_section(section);
     at<std::int32_t>(section, 0x18) += 1;
 }
 
-void unlock(Seg33bHost& host, Object building) {
+void unlock(CommandBuildingCapturerHost& host, Object building) {
     Object section = section_of(building);
     at<std::int32_t>(section, 0x18) -= 1;
     host.leave_critical_section(section);
@@ -121,7 +121,7 @@ void observer_member_set_target_006f34f0(Seg33bHost& host, Object member, Object
 // 006F30D0: n = max(n, 1); when capacity < n (signed): new[] n * 4 (00BF55BE), copy size
 // dwords (null test on the destination), free the old buffer unconditionally (00BF6989),
 // data = new, capacity = n.
-void pointer_vector_reserve_006f30d0(Seg33bHost& host, Object vector, std::int32_t count) {
+void pointer_vector_reserve_006f30d0(CommandBuildingCapturerHost& host, Object vector, std::int32_t count) {
     if (count < 1) count = 1;
     if (at<std::int32_t>(vector, 0x8) < count) {
         Object fresh = host.operator_new_00bf55be(static_cast<std::uint32_t>(count) * 4);
@@ -163,7 +163,9 @@ void garrison_entry_destruct_006f31b0(Seg33bHost& host, Object entry) {
 
 // 006F32B0: the first element equal to *value is replaced by the last one (unless it is the
 // last) and size drops by one; true when found.
-bool pointer_vector_erase_value_006f32b0(Object vector, const std::uint32_t* value) {
+// Retain this native call boundary so the game map/call graph can audit the
+// remove path alongside 006F34B0, rather than losing it to release inlining.
+__declspec(noinline) bool pointer_vector_erase_value_006f32b0(Object vector, const std::uint32_t* value) {
     std::uint32_t* first = reinterpret_cast<std::uint32_t*>(obj(at<std::uint32_t>(vector, 0x0)));
     const std::uint32_t size = at<std::uint32_t>(vector, 0x4);
     std::int32_t index = -1;
@@ -183,7 +185,7 @@ bool pointer_vector_erase_value_006f32b0(Object vector, const std::uint32_t* val
 }
 
 namespace {
-void push_pointer(Seg33bHost& host, Object vector, std::uint32_t value) {
+void push_pointer(CommandBuildingCapturerHost& host, Object vector, std::uint32_t value) {
     if (at<std::int32_t>(vector, 0x4) == at<std::int32_t>(vector, 0x8)) {
         std::int32_t count = at<std::int32_t>(vector, 0x8) * 2;
         if (!(count > 1)) count = 1;
@@ -233,7 +235,7 @@ Object entity_as_kind_0c_006f3490(Seg33bHost& host, Object entity) {
 }
 
 // 006F34B0: under the lock, swap-erase the unit from +7DCh (006F32B0; the result is unused).
-void command_building_remove_paratrooper_006f34b0(Seg33bHost& host, Object building, std::uint32_t unit) {
+void command_building_remove_paratrooper_006f34b0(CommandBuildingCapturerHost& host, Object building, std::uint32_t unit) {
     lock(host, building);
     pointer_vector_erase_value_006f32b0(building + 0x7DC, &unit);
     unlock(host, building);
@@ -241,7 +243,7 @@ void command_building_remove_paratrooper_006f34b0(Seg33bHost& host, Object build
 
 // 006F39B0: under the lock, the inline push_back of 006F3360 on +7DCh. The unlock is a tail
 // jump to LeaveCriticalSection.
-void command_building_add_paratrooper_006f39b0(Seg33bHost& host, Object building, std::uint32_t unit) {
+void command_building_add_paratrooper_006f39b0(CommandBuildingCapturerHost& host, Object building, std::uint32_t unit) {
     lock(host, building);
     push_pointer(host, building + 0x7DC, unit);
     unlock(host, building);
