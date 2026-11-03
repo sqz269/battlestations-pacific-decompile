@@ -122,6 +122,7 @@
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/scene_property_bag_merge.hpp"
+#include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/scene_record_map.hpp"
 #include "bsp/entity_think_dispatch.hpp"
 #include "bsp/unit_damage.hpp"
@@ -2060,6 +2061,48 @@ int main() {
                 && bsp::is_unlock_expression_satisfied_007fc4c0(profile, "rank, IJN04")
                 && bsp::are_unlock_requirements_met_007fc820(profile, {}),
             "a zero named counter is locked, an any-of token and an empty vector are not");
+    }
+
+    {
+        // Chain 332's concrete risk: type-6 hits must recurse even with keep1,
+        // while missing children clone and empty syntax retains inherited data.
+        std::vector<std::string> errors;
+        bsp::SceneLexer prior_text("{ Inner { Count = I 4 ; Retained = S \"inherited\" ; } "
+            "Stay { Word = I 7 ; } }");
+        bsp::SceneLexer source_text("{ inner { count = I 9 ; Added = I 12 ; } Stay {} NewEmpty {} }");
+        const auto prior = bsp::parse_scene_property_block_008f5a00(prior_text, errors);
+        const auto source = bsp::parse_scene_property_block_008f5a00(source_text, errors);
+        bool passed = errors.empty();
+        for (const bool overwrite : {false, true}) {
+            bsp::game::SceneNumericPropertyMerge merge(prior, source, overwrite);
+            bsp::ScenePropertyBlock result;
+            const bool handled = merge.merge_child("Settings", &prior, source, result);
+            passed = passed && handled && result.blocks.size() == 3;
+            if (handled && result.blocks.size() == 3) {
+                const auto& inner = result.blocks[0].second.values;
+                passed = passed && result.blocks[0].first == "Inner" && inner.size() == 3;
+                if (inner.size() == 3) {
+                    passed = passed && inner[0].integer_value == (overwrite ? 9 : 4)
+                        && inner[0].key == (overwrite ? "count" : "Count")
+                        && inner[1].values == std::vector<std::string>{"inherited"}
+                        && inner[2].integer_value == 12;
+                }
+                passed = passed && result.blocks[1].second.values.size() == 1
+                    && result.blocks[1].second.values[0].integer_value == 7
+                    && result.blocks[2].second.values.empty()
+                    && result.blocks[2].second.blocks.empty();
+            }
+            bsp::ScenePropertyBlock missing;
+            passed = passed && merge.merge_child("New", nullptr, source, missing)
+                && missing.blocks.size() == 3
+                && missing.blocks[0].second.values[0].integer_value == 9;
+            auto unsupported = source;
+            unsupported.blocks[0].second.values[0].has_integer = false;
+            bsp::ScenePropertyBlock untouched = prior;
+            passed = passed && !merge.merge_child("Raw", &prior, unsupported, untouched)
+                && untouched.blocks.size() == prior.blocks.size();
+        }
+        check(passed, "native child bags recurse for keep/overwrite, clone misses, retain empty children and reject raw leaves");
     }
 
     {

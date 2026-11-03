@@ -16,6 +16,8 @@ namespace bsp::game {
 // The whole native merge owns payload precedence; result() republishes those
 // bytes with the selected authored spelling/tokens. Unsupported entries stay
 // on the caller's existing host path. No Original class/stack ABI is supplied.
+// Chain 332 adds the same projection for complete supported nested blocks via
+// the owning native type-6 producer; raw/ambiguous subtrees remain on the host.
 
 // Chain 319: the live library's native CEnum registry, the [00E1867C] object
 // 004D3040 publishes and the parser's E arm reads through 0048E960. Returns the
@@ -40,6 +42,15 @@ public:
 
     bool handles(std::size_t source_index) const;
     SceneProperty result(const SceneProperty& authored_metadata);
+
+    // Chain 332: project a complete, uniquely named supported child subtree
+    // through owning native type-6 records and the recursive whole merge.
+    // A null destination means the child is absent. Returns false before any
+    // publication for raw/unsupported values or incompatible name/tag graphs.
+    // Payloads in result come from the native merge; authored order/spelling
+    // and the caller's overwrite choice supply only the host metadata.
+    bool merge_child(const std::string& key, const ScenePropertyBlock* destination,
+        const ScenePropertyBlock& source, ScenePropertyBlock& result);
 
 private:
     struct Impl;
