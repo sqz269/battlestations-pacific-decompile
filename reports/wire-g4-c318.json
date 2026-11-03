@@ -1,0 +1,134 @@
+{
+  "chain": 318,
+  "owner": "agent/g4-w1",
+  "base": "73285e9daa",
+  "picked": "Native enum symbol membership in the live property-library declaration path",
+  "switch": "bsp::kWireGoal4Chain318Bound",
+  "rows": [
+    {
+      "native": "0048e8d0",
+      "status": "wired",
+      "host_site": "src/native_enum_symbol_declaration.cpp::declare_native_enum_symbol_008f2e40",
+      "state": "The existing LibraryEnumReader supplies its live NativeSceneEnumOwnerStorage, authored symbol text, process raw-string pool, and the distinct enum/query empty cells.",
+      "replacement": "The enabled arm replaces the first construct/find/capture/destroy sequence; the disabled arm retains it. Both paths release the membership query before duplicate return or metadata/insertion. The mapped word is not read.",
+      "evidence": [
+        "bsp.py show 008f2e40: first temporary serves only the duplicate predicate and is destroyed before the branch and insertion",
+        "bsp.py show 0048e8d0 --asm: 0048E914 TEST, 0048E91A SETNZ before 0048E934/0048E93B raw-pool cleanup",
+        "call_graph.py who 0048e8d0: one reachable call at 1041BFD6 from declare_native_enum_symbol_008f2e40",
+        "call_graph.py path 0048e8d0: WinMainCRTStartup -> scene loading -> LibraryNativeEnums::read -> LibraryEnumReader::declare_symbol -> 008F2E40 -> 0048E8D0"
+      ]
+    },
+    {
+      "native": "008f2e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::LibraryEnumReader::declare_symbol",
+      "reason": "Already entry-reachable before this packet; changed only as the caller of 0048E8D0 and receives no new wiring credit."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::Impl::dive_bomb_rounds_remaining",
+      "reason": "Current rack queries retain a combined carried count; no live per-rack split into attached kind-2Ah children and reserve +484h was established."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::install_policies_008636a0",
+      "reason": "The category projection does not supply a proven live director-presence and director type-slot-48h(2) pair required by the policy provider."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The inspected shadow consumer is itself unrooted; no entry-reachable existing FOV/aspect-product consumer was established."
+    },
+    {
+      "native": "00b6fec0",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp::set_camera_context_depth_scale_00b6fec0",
+      "reason": "No live producer/call site for the camera depth-scale pointer was established in the inspected camera owner/application paths."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp::contains_native_property_library_name_008f2db0",
+      "reason": "This requires a property-library owner and reader context; the selected live duplicate predicate owns a CEnum symbol dictionary instead."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture0_00b0fd70",
+      "reason": "No live named remap-setter call site with its renderer/texture-cache context was established during candidate selection."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture1_00b0fdc0",
+      "reason": "No live named remap-setter call site with its renderer/texture-cache context was established during candidate selection."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture2_00b0fe10",
+      "reason": "No live named remap-setter call site with its renderer/texture-cache context was established during candidate selection."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture3_00b0fe60",
+      "reason": "No live named remap-setter call site with its renderer/texture-cache context was established during candidate selection."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp::add_half_texel",
+      "reason": "No concrete live PostEffectHost supplies the actual pass/frame-target object for the inspected abstract getter call."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp::native_post_effect_pass_raw_18_00b4ec50",
+      "reason": "No live post-effect pass object and entry-reachable getter dispatch were established."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::post-effect owner +23Ch reads",
+      "reason": "No live luminance/post-effect owner dispatch was established for the inspected +23Ch getter."
+    },
+    {
+      "native": "008dc7a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message_tags_56_to_62.cpp::destroy_native_session_message56_008dc7a0",
+      "reason": "No live objective-message type56 producer and its string/profile context were established in this packet."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRows::animation_interval",
+      "reason": "weapon_animation still returns zero; no real ticker object exists for animation_interval to update."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "The inspected ambient-sound gate returns false and supplies no live SoundInstance to scale."
+    }
+  ],
+  "counts": {
+    "wire_readiness_text_wired_before": 9317,
+    "wire_readiness_text_wired_after": 9318,
+    "call_graph_reconstructed_called_before": 4344,
+    "call_graph_reconstructed_called_after": 4345,
+    "new_reachable_native_addresses": ["0048e8d0"]
+  },
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed; 2/2 existing CTests passed",
+    "changed_build": "scripts/build.ps1 passed; 2/2 existing CTests passed",
+    "call_graph": "Rebuilt from the Release executable; target has one direct call from the changed declaration body and an entry path through scene loading",
+    "wire_readiness": "--standins reports 0048e8d0 wired, called=true, call_sites=1",
+    "diff_check": "git diff --check passed",
+    "float_math": "No floating-point expressions changed"
+  },
+  "limits": "Build and static executable reachability verified. The game was not launched; native ABI, EH/SEH, allocation-failure and gameplay validation are not claimed. Existing provider admission and lifetime boundaries remain. No second address body or new ledger function was created."
+}
