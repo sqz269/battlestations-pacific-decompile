@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
+#include "bsp/wire_goal4_chain291_switches.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gui_aspect_extent.hpp"
@@ -232,6 +233,19 @@ struct GameHudHost::Impl {
     bool hud_root_widgets_bound{false};
     GuiLayoutWidget* hud_root_closed_group{nullptr};
     GuiLayoutWidget* hud_root_closed_group_widget();
+    // Goal 4 chain 291: 00648C20's root fields, +6Ch (cached unit) and +88h
+    // in root_rows, +70h (the cached weapon-info source) in
+    // root_weapon_source_70, and the row widgets 006463E0 binds (+34h..+84h
+    // on GUI_unit, +3Ch on GUI_selector), resolved once by name.
+    bsp::HudRootRowState root_rows{};
+    std::string root_weapon_source_70;
+    bool hud_root_row_widgets_bound{false};
+    std::map<bsp::HudRowWidget, GuiLayoutWidget*> hud_root_row_widgets;
+    std::map<bsp::HudRowWidget, bool> hud_root_row_shown;
+    std::string root_weapon_text;
+    bool root_weapon_text_applied{false};
+    GuiLayoutWidget* hud_root_row_widget(bsp::HudRowWidget widget);
+    unsigned long long root_row_updates{0};
     // Screen 29h, the unit pick (00527260, 00526A40).
     bsp::UnitPickScreenState unit_pick{};
     // Screen 2Eh, the weapon groups (00549260, 005484F0).
@@ -4161,6 +4175,242 @@ private:
     HudRootListsBinding lists_;
 };
 
+// Goal 4 chain 291: bsp::HudRootRowsHost over this process's HUD, for 00648C20
+// (hud_root_update_rows), which 00649860 calls every frame. Units are index + 1
+// as in HudRootListsBinding. The text, alpha and visibility writes reach the
+// frontend; the icon state select (virtual +88h), the scale pair (virtual +48h)
+// and the WeaponInfo animation (00AA8B00 / 00AC2F20) have no bridge operation,
+// so they are records, as on the ship screen. Each input this host cannot
+// source is a labelled record; the ones that only feed a recorded write are
+// noted as such. docs/HUD_ROOT_UNIT_ROWS.md.
+class HudRootRowsBinding final : public bsp::HudRootRowsHost {
+public:
+    explicit HudRootRowsBinding(GameHudHost::Impl& owner) : owner_(owner), lists_(owner) {}
+
+    void rebuild_unit_lists() override {
+        // 00648C2C: 00648290 on the root, as the enter 006488D0 runs it, but
+        // without run_root_lists's per-call log lines (this is every frame).
+        bsp::hud_root_rebuild_unit_lists_00648290(owner_.root_lists, lists_);
+        ++owner_.root_rebuilds;
+    }
+    std::uint32_t controlled_unit() override { return lists_.controlled_unit(); }
+    std::uint32_t selected_unit() override {
+        return bsp::hud_root_cursor_unit_00644a60(owner_.root_lists);
+    }
+    bool panel_byte(std::uint32_t manager_offset, std::uint32_t byte_offset) override {
+        // [00E198C4]+N is registry slot N - 8h (+54h is slot 4Ch, as in
+        // HudRootSelectionBinding::panel_54_active). +5h is the applied byte,
+        // +4h the requested byte 004F7620 writes.
+        const int slot = static_cast<int>(manager_offset) - 8;
+        if (byte_offset == 5) return owner_.menu.in_game_screen_applied(slot);
+        if (byte_offset == 4) return owner_.menu.in_game_screen_wanted(slot);
+        // 00648D0F: [manager+6Ch]+BDh, read only after +5h of the same screen
+        // (slot 64h) was found set. SUBSTITUTION, labelled: no slot-64h screen
+        // state exists in this host, so the byte reads clear.
+        owner_.record("HudRootRows::panel_6c_bd", 0x00648d0fu);
+        return false;
+    }
+    std::uint32_t panel_74_override_unit() override {
+        // 00648C66..00648C82: [manager+74h] (slot 6Ch) applied, then its +20h
+        // object's +9D4h. SUBSTITUTION, labelled: the slot-6Ch screen's +20h
+        // object is not modelled; while the screen is not applied the image
+        // takes no override either.
+        if (!owner_.menu.in_game_screen_applied(0x6c)) return 0u;
+        owner_.record("HudRootRows::panel_74_override_unit", 0x00648c74u);
+        return 0u;
+    }
+    int panel_50_weapon_mode() override {
+        // 00648D9C: [[manager+50h]+44h], the slot-48h screen's weapon mode.
+        // SUBSTITUTION, labelled: that screen's +44h is written by its own
+        // update, which this host does not run; 0 is the noweapon arm.
+        owner_.record("HudRootRows::panel_50_weapon_mode", 0x00648d9cu);
+        return 0;
+    }
+    bool unit_is_kind(std::uint32_t unit, int kind) override {
+        return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
+            && owner_.units->unit_is_kind_of(unit - 1, kind);
+    }
+    std::uint32_t first_member(std::uint32_t unit) override {
+        // [unit+3D0h], read on kind-18h (squadron) units only: the squadron's
+        // flight leader, which the list-24 node answers (unit count: none).
+        if (unit == 0 || owner_.units == nullptr || unit > owner_.units->count()) return 0u;
+        const std::size_t leader = owner_.units->squadron_list_24_leader(unit - 1);
+        return leader < owner_.units->count() ? static_cast<std::uint32_t>(leader + 1) : 0u;
+    }
+    // Reached only behind panel_byte(6Ch, 5) && panel_byte(6Ch, BDh).
+    bool weapon_probe(std::uint32_t, bsp::HudWeaponProbe) override {
+        owner_.record("HudRootRows::weapon_probe", 0x007b9320u);
+        return false;
+    }
+    std::int32_t weapon_count(std::uint32_t, bsp::HudWeaponCount kind) override {
+        // Payload / Rocket behind the 6Ch gate above; SubmarineTorpedo behind
+        // weapon mode 4, which panel_50_weapon_mode never answers here.
+        owner_.record("HudRootRows::weapon_count",
+            kind == bsp::HudWeaponCount::SubmarineTorpedo ? 0x00815850u : 0x007c1db0u);
+        return 0;
+    }
+    bool unit_machinegun_byte(std::uint32_t unit) override {
+        // unit+C24h PilotFires (007CD930's store).
+        return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
+            && owner_.units->plane_pilot_fires_0c24(unit - 1);
+    }
+    bool weapon_source_differs(const bsp::HudWeaponSource& source) override {
+        // 00449AF0 over root+70h and the new source: emptiness first, then a
+        // case-insensitive compare.
+        const std::string text = source_text(source);
+        const std::string& cached = owner_.root_weapon_source_70;
+        if (text.empty() != cached.empty()) return true;
+        if (text.size() != cached.size()) return true;
+        for (std::size_t i = 0; i < text.size(); ++i) {
+            if (lower(text[i]) != lower(cached[i])) return true;
+        }
+        return false;
+    }
+    void set_weapon_source(const bsp::HudWeaponSource& source, bool) override {
+        // 00ABAED0(WeaponInfo_Text, source, 1). The frontend re-lays out a
+        // text on every set, so an unchanged source is not re-submitted (the
+        // widget already holds it).
+        GuiLayoutWidget* w = owner_.hud_root_row_widget(bsp::HudRowWidget::WeaponInfo);
+        if (w == nullptr) return;
+        std::string text = source_text(source);
+        if (owner_.root_weapon_text_applied && owner_.root_weapon_text == text) return;
+        owner_.root_weapon_text = text;
+        owner_.root_weapon_text_applied = true;
+        owner_.menu.frontend().set_widget_text_source(*w, std::move(text));
+    }
+    void cache_weapon_source(const bsp::HudWeaponSource& source) override {
+        owner_.root_weapon_source_70 = source_text(source);   // root+70h
+    }
+    void widget_scalar(bsp::HudRowWidget widget, float value) override {
+        // Virtual +4Ch (00AA6980): the alpha lane of the Color property.
+        GuiLayoutWidget* w = owner_.hud_root_row_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, w->color[0], w->color[1], w->color[2], value);
+    }
+    void stop_weapon_animation(int) override {
+        owner_.record("HudRootRows::stop_weapon_animation", 0x00aa8b80u);
+    }
+    std::uint32_t weapon_animation(int) override {
+        owner_.record("HudRootRows::weapon_animation", 0x00aa8b00u);
+        return 0u;
+    }
+    void animation_interval(std::uint32_t, float, float) override {
+        owner_.record("HudRootRows::animation_interval", 0x00ac2f20u);
+    }
+    void animation_field_4(std::uint32_t, float) override {}
+    bool special_command_state(std::uint32_t unit, int role) override {
+        // 00927F30(unit, role): the holder at unit+1ACh is the local player's
+        // slot 0, as WeaponGroupScreenBinding::local_player_role answers it.
+        std::int32_t holder = -1;
+        return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
+            && owner_.units->unit_current_role_slot(unit - 1, role, holder) && holder == 0;
+    }
+    std::uint32_t command_descriptor(std::uint32_t unit) override {
+        // Virtual +114h (the weapon director) then 0071BE40 on it; 0 without one.
+        if (unit == 0 || owner_.units == nullptr || unit > owner_.units->count()) return 0u;
+        return owner_.units->director_current_command_0071be40(unit - 1);
+    }
+    void widget_state(bsp::HudRowWidget widget, std::uint32_t, int, float) override {
+        // Virtual +88h, the icon state select (00AB1710); the bridge draws a
+        // widget's first authored state only.
+        owner_.record(widget == bsp::HudRowWidget::Command
+            ? "HudRootRows::command_icon_state" : "HudRootRows::payload_icon_state", 0x00ab1710u);
+    }
+    const char* unit_name(std::uint32_t) override {
+        // Virtual +14h, 0081C0A0: +160h when +15Ch is set, else [+538h]+54h.
+        // SUBSTITUTION, labelled: neither string reaches this host, so the
+        // name is not sourced and unit_name_source below writes nothing.
+        owner_.record("HudRootRows::unit_display_name", 0x0081c0a0u);
+        return "";
+    }
+    void unit_name_source(const char*, float, bool) override {
+        owner_.record("HudRootRows::unit_name_source", 0x00abb000u);
+    }
+    int controlled_unit_country(std::uint32_t unit) override {
+        return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
+            ? owner_.units->unit_side_0054(unit - 1) : 0;   // unit+54h
+    }
+    void widget_shown(bsp::HudRowWidget widget, bool shown) override {
+        // Virtual +34h. The frontend rebuilds its quads on every call, so a
+        // widget already applied with the same value is left alone.
+        GuiLayoutWidget* w = owner_.hud_root_row_widget(widget);
+        if (w == nullptr) return;
+        const auto it = owner_.hud_root_row_shown.find(widget);
+        if (it != owner_.hud_root_row_shown.end() && it->second == shown && w->visible == shown) return;
+        owner_.hud_root_row_shown[widget] = shown;
+        owner_.menu.frontend().set_widget_visible(*w, shown);
+    }
+    // The payload frame and the health widths only reach widget_state /
+    // widget_width, which are records here.
+    std::uint32_t unit_class(std::uint32_t unit) override { return unit; }
+    std::uint32_t class_payload_icon(std::uint32_t) override {
+        owner_.record("HudRootRows::payload_icon_frame", 0x00653200u);
+        return 0u;
+    }
+    long double kind_45_health(std::uint32_t unit) override {
+        // 006D2560, the airfield's health fraction. LABELLED: answered by the
+        // 00923BE0 projection below; it only feeds the recorded width.
+        owner_.record("HudRootRows::airfield_health", 0x006d2560u);
+        return unit_health(unit);
+    }
+    long double unit_health(std::uint32_t unit) override {
+        // 00923BE0: 0 for a dead unit, else +370h / +36Ch, which the gunnery
+        // host keeps as health / max_health.
+        const GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (unit == 0 || gunnery == nullptr) return 0.0L;
+        const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
+        if (unit - 1 >= rows.size() || gunnery->unit_dead(unit - 1)) return 0.0L;
+        return static_cast<float>(static_cast<double>(rows[unit - 1].health) /
+                                  static_cast<double>(rows[unit - 1].max_health));
+    }
+    void widget_width(bsp::HudRowWidget widget, float, float) override {
+        // Virtual +48h, the scale pair; no bridge operation.
+        owner_.record(widget == bsp::HudRowWidget::HpDamage
+            ? "HudRootRows::hp_damage_width" : "HudRootRows::hp_healthy_width", 0x006496a6u);
+    }
+    float health_metric(std::uint32_t, std::uint32_t address) override {
+        // 00939F70 / F80 / FC0 / FB0 read the repair task at unit+A20h
+        // (+38h, +34h, +30h, +2Ch). SUBSTITUTION, labelled: the gunnery host
+        // keeps that task privately; 0 takes the plain-health arm, and the
+        // value only feeds the recorded width.
+        owner_.record("HudRootRows::repair_task_metric", address);
+        return 0.0f;
+    }
+    int unit_field_a44(std::uint32_t) override {
+        owner_.record("HudRootRows::repair_priority_a44", 0x00649615u);
+        return 0;
+    }
+    float tuning_float(std::uint32_t) override {
+        owner_.record("HudRootRows::tuning_float", 0x00424c40u);
+        return 1.0f;
+    }
+    long double powerup_multiplier(int, std::uint32_t) override {
+        // 00470440: FLD1 unless the flag byte 00E0C978 is set with a modifier
+        // owner; the power-up manager [00F88C30] is not built in this host.
+        return 1.0L;
+    }
+    float unit_float_36c(std::uint32_t unit) override {
+        const GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+        if (unit == 0 || gunnery == nullptr) return 0.0f;
+        const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
+        return unit - 1 < rows.size() ? rows[unit - 1].max_health : 0.0f;   // unit+36Ch
+    }
+
+private:
+    static char lower(char c) {
+        return (c >= 'A' && c <= 'Z') ? static_cast<char>(c - 'A' + 'a') : c;
+    }
+    // The 00648CBD..006491C5 recipe: a counted source is "." + decimal count
+    // + "x |" + key (004263B0 / 004260B0 / 004261A0); otherwise the key.
+    static std::string source_text(const bsp::HudWeaponSource& source) {
+        std::string key = source.key != nullptr ? source.key : "";
+        if (!source.counted) return key;
+        return "." + std::to_string(source.count) + "x |" + key;
+    }
+    GameHudHost::Impl& owner_;
+    HudRootListsBinding lists_;
+};
+
 // bsp::HudRootUpdateHost over this process's HUD, for 00649860. One record per
 // input the host cannot source. Every body that writes the controlled unit,
 // pushes an interface request or toggles the closed HUD is a record that
@@ -4341,8 +4591,20 @@ public:
         }
     }
     void update_medals() override {
+        if constexpr (kWireGoal4Chain291Bound) {
+            // 00648C20, the unit rows (name, flag, payload, health, command).
+            if (owner_.units == nullptr) {
+                owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
+                return;
+            }
+            HudRootRowsBinding binding(owner_);
+            bsp::hud_root_update_rows(owner_.root_rows, binding);
+            ++owner_.root_row_updates;
+            owner_.done("HudRootScreen::unit_rows", 0x00648c20u);
+        } else {
         // 00648C20, the unit rows (name, flag, payload, health, command).
         owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
+        }
     }
 
     bool controlled_unit_is_kind(int kind) override {
@@ -4386,6 +4648,30 @@ GuiLayoutWidget* GameHudHost::Impl::hud_root_closed_group_widget() {
             ? bsp::find_descendant_by_name(*page->root, "ClosedUnitHUD_Group") : nullptr;
     }
     return hud_root_closed_group;
+}
+
+// The row widgets 006463E0 stores: +34h..+84h found under GUI_unit, +3Ch under
+// GUI_selector (ingame_gui_cc13.cpp hud_root_load_layout_006463e0).
+GuiLayoutWidget* GameHudHost::Impl::hud_root_row_widget(bsp::HudRowWidget widget) {
+    if (!hud_root_row_widgets_bound) {
+        hud_root_row_widgets_bound = true;
+        GuiLayoutPage* unit_page = menu.in_game_page(0x44, "GUI_unit");
+        GuiLayoutPage* selector_page = menu.in_game_page(0x44, "GUI_selector");
+        const auto find = [&](GuiLayoutPage* page, bsp::HudRowWidget key, const char* name) {
+            hud_root_row_widgets[key] = page != nullptr && page->root
+                ? bsp::find_descendant_by_name(*page->root, name) : nullptr;
+        };
+        find(unit_page, bsp::HudRowWidget::UnitName, "unit_name_Text");
+        find(unit_page, bsp::HudRowWidget::FlagJP, "FlagJP_Icon");
+        find(unit_page, bsp::HudRowWidget::FlagUS, "FlagUS_Icon");
+        find(unit_page, bsp::HudRowWidget::Payload, "unit_payload_Icon");
+        find(unit_page, bsp::HudRowWidget::HpDamage, "unit_HP_damage_Icon");
+        find(unit_page, bsp::HudRowWidget::HpHealthy, "unit_HP_healthy_Icon");
+        find(unit_page, bsp::HudRowWidget::Command, "unit_command_Icon");
+        find(selector_page, bsp::HudRowWidget::WeaponInfo, "WeaponInfo_Text");
+    }
+    const auto it = hud_root_row_widgets.find(widget);
+    return it != hud_root_row_widgets.end() ? it->second : nullptr;
 }
 
 void GameHudHost::update_hud_root_screen_00649860(float seconds) {

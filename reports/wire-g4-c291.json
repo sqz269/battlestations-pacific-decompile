@@ -1,0 +1,56 @@
+{
+  "chain": 291,
+  "slot": "g4-w4",
+  "switch": "kWireGoal4Chain291Bound",
+  "switch_header": "include/bsp/wire_goal4_chain291_switches.hpp",
+  "rows": [
+    {
+      "native": "00648c20",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp HudRootUpdateBinding::update_medals (00649860's call), through HudRootRowsBinding",
+      "note": "Per-frame unit rows: 00648290 list rebuild (with its 006485A0 tail on a pending cycle), WeaponInfo_Text source and alpha, FlagJP/FlagUS and HP-damage visibility reach the frontend. Records: icon state select (+88h), scale pair (+48h), WeaponInfo animation, unit display name (0081C0A0 strings not in host), slot-64h/6Ch/48h screen fields, repair-task metrics (gunnery-private)."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "root+CCh/+E4h come from 00646040 (raw-image body), which the interface manager reaches with (id, has_payload) only; needs a typed root + request payload unit first"
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp InGameInterfaceBinding::hud_root_screen_set_interface",
+      "reason": "body takes a raw root image (Raw s, observer member +D0h); host interface requests carry no payload unit to observe"
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail",
+      "reason": "needs the power-up manager's ready entries per party; game_hosts_powerups.cpp throws on the 008E35F0 unit-kind mask and 008E87C0 active-item arms the AI use would reach"
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp check_multiplayer_player_count",
+      "reason": "multiplayer participant balance check; returns at game+1FE4h == 0 in single player (online-only arms)"
+    },
+    {
+      "native": "008364e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp WeaponDirector fire_target",
+      "reason": "director+238h fire target is held by the gunnery host (no accessor; game_hosts_gunnery.cpp in review); the commands binding has no WeaponDirectorState"
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp vehicle_avoidance_007df4f0",
+      "reason": "only on the velocity-frame arm, which needs unit+B04h; no writer of +B04h exists, so the host uses the inverse pose and the call never runs"
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp GetSubmarineDepthLevel / game_hosts_units.cpp run_submarine_dive_00936dc0",
+      "reason": "needs unit+1279h and the submarine's catapult children (+490h launch state); the host models neither"
+    }
+  ]
+}
