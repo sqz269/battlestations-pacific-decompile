@@ -8930,7 +8930,21 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
             "slot (packet cc13-luawire)", id);
         return 0;
     }
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0071DD30's 5Ah reaches 0071C1E0 as 0076E520's copy
+        // (0071C670 write: the sub-kind in 4 bits, a sub-kind-2 value in 9;
+        // 0075AF60, 0071C6C0 read), so arm 2 stores the copy's 9-bit value.
+        bsp::HostSessionMessages::DirectorSubKindCopy copy{
+            2u, static_cast<std::uint32_t>(mask)};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_director_sub_kind_5a(2u, static_cast<std::uint32_t>(mask));
+        }
+        if (copy.sub_kind == 2u) {
+            director_player_commands_1cc_[director] = static_cast<std::int32_t>(copy.value);
+        }
+    } else {
     director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
+    }
     ++summary_.player_commands_stored;
     const GameUnitRow* row = units->unit_row(director);
     log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: director \"%s\" +1CCh = 0x%X "
@@ -10515,7 +10529,18 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
     if (const bsp::game::SceneDirectorEnables* e = bsp::game::scene_director_enables_find(row->name)) {
         enables = *e;
     }
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0071E050 sends 5Ah sub-kind 4 with the MOVZX flag
+        // (0071E076, 0071E09A); 0071C1E0 receives 0076E520's copy (0071C670
+        // write, 1 value bit for sub-kind 4; 0075AF60, 0071C6C0 read).
+        bsp::HostSessionMessages::DirectorSubKindCopy copy{4u, flag ? 1u : 0u};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_director_sub_kind_5a(4u, flag ? 1u : 0u);
+        }
+        if (copy.sub_kind == 4u) enables.anti_air = copy.value != 0;   // 0071C246, +221h
+    } else {
     enables.anti_air = flag;                                   // 0071C246, +221h
+    }
     bsp::game::scene_director_enables_set(row->name, enables);
     if (!flag) ++summary_.aa_enable_disables;
     log_.notef("  AAEnable 0089c740: \"%s\" aaEnabled=%d (packet cc9_lua_aa_enable)",

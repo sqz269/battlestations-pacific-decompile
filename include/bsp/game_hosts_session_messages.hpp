@@ -145,6 +145,20 @@ public:
         bool now{false};
     };
     AirbaseLaunchSlotCopy queue_airbase_launch_slot_83(std::uint32_t slot, bool now) const;
+    // Goal 4 chain 260. The weapon director's kind 5Ah (session message 90):
+    // 0071DD30 (sub-kind 2) at 0071DD4B..0071DD81: 0075B430(5Ah), +18h word 0,
+    // +1Ah 0, +4h = 1, +1Ch 0, vtable 00CFD9C4, +20h = the sub-kind, +24h =
+    // the value (gameplay_seg38_cc13's director_sub_kind_message), routed at
+    // 0071DD94 flags 7 to [director+34h]; then 0071C670 write (4-bit
+    // sub-kind; the value in 9 bits for sub-kind 2, else 1 bit), 00768530
+    // case 5Ah at 00769CE4 (0075AF60), 0071C6C0 read. Returns the copy's
+    // +20h and +24h, what 0071C1E0 receives.
+    struct DirectorSubKindCopy {
+        std::uint32_t sub_kind{0};
+        std::uint32_t value{0};
+    };
+    DirectorSubKindCopy queue_director_sub_kind_5a(std::uint32_t sub_kind,
+                                                   std::uint32_t value) const;
 
 private:
     struct Image;

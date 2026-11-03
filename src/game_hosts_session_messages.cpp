@@ -6,6 +6,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstring>
@@ -57,6 +58,8 @@ struct HostSessionMessages::Image {
                                          &plus_one_00d7a24c};
     NativeSessionMessage90To93Context context{&session, target, &position_scale_00cf9360};
     NativeSessionMessage92Profile profile92{context};
+    // Goal 4 chain 260: the kind 5Ah profile (vtable 00CFD9C4).
+    NativeSessionMessage90Profile profile90{context};
     NativeSessionMessage88Profile profile88{target};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
@@ -384,6 +387,35 @@ HostSessionMessages::AirbaseLaunchSlotCopy HostSessionMessages::queue_airbase_la
     seg42::construct_airbase_launchslot_007631a0(&queued, image.seg42);
     seg42::read_airbase_launchslot_007632c0(&queued, &stream.in);
     return AirbaseLaunchSlotCopy{queued.slot_20, queued.flag_24 != 0};
+}
+
+HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub_kind_5a(
+    std::uint32_t sub_kind, std::uint32_t value) const {
+    const Image& image = *image_;
+    // 0071DD30's message: type 5Ah, +20h the sub-kind, +24h the value.
+    const gameplay_seg38_cc13::RoutedDirectorMessage posted =
+        gameplay_seg38_cc13::director_sub_kind_message(sub_kind, value);
+    // 0071DD4B..0071DD81: 0075B430 on the stack message, then +18h word 0,
+    // +1Ah 0, +4h = 1, +1Ch 0, the vtable 00CFD9C4 (profile90), +20h, +24h.
+    NativeSessionMessage90 sent{};
+    construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
+    sent.header.sender_18 = 0;
+    sent.header.relay_1a = 0;
+    sent.header.base.delivery_04 = 1;
+    sent.header.flag_1c = 0;
+    sent.header.base.profile_00 = image.profile90.slots;
+    sent.selector_20 = posted.field_20;
+    sent.value_24 = posted.field_24;
+
+    LocalStream stream;
+    write_native_session_message90_0071c670(&sent, &stream.out, image.context);
+    // 00768530 case 5Ah: operator new(28h), 0075AF60 at 00769CE4; 0076A27B
+    // vtable[8] = 0071C6C0. The drain's delete (0071E370) frees nothing.
+    stream.begin_read();
+    NativeSessionMessage90 queued{};
+    construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
+    read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
+    return DirectorSubKindCopy{queued.selector_20, queued.value_24};
 }
 
 } // namespace bsp
