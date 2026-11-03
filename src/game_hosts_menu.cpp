@@ -624,6 +624,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     GameInputContextSetStack input_contexts{};
     // Goal 4 chain 302: game+3Ch, borrowed from the application (null when unbound).
     GameNativeInputConfigurationApplication* input_configuration{};
+    void publish_input_device_flags_sink();
 
     // --- the front-end managers --------------------------------------------
     FrontEndManagerRegistry manager_registry{};
@@ -2882,11 +2883,34 @@ void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& bi
 
 void GameMenuHost::bind_input_configuration(GameNativeInputConfigurationApplication* configuration) {
     impl_->input_configuration = configuration;
+    impl_->publish_input_device_flags_sink();
+}
+
+// Goal 4 chain 302: the profile's settings apply (008D5B50) reaches 00699B80 on
+// the same game+3Ch at 008D5BB6. Published into the sinks whichever binder runs
+// last, so the application's later bind_profile_settings_sinks keeps it.
+void GameMenuHost::Impl::publish_input_device_flags_sink() {
+    if (input_configuration == nullptr) {
+        profile_settings_sinks.set_input_device_flags_00699b80 = nullptr;
+        return;
+    }
+    GameNativeInputConfigurationApplication* const configuration = input_configuration;
+    profile_settings_sinks.set_input_device_flags_00699b80 =
+        [configuration](bool swap_sticks, bool invert_camera_y, bool invert_plane_y,
+            bool swap_map_sticks) {
+            configuration->set_device_flags_004b46e0(swap_sticks, invert_camera_y, invert_plane_y,
+                swap_map_sticks);
+            return true;
+        };
 }
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;
+    if constexpr (kWireGoal4Chain302Bound) {
+        impl_->publish_input_device_flags_sink();
+    } else {
+    }
 }
 
 GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }

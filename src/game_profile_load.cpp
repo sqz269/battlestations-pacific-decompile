@@ -34,6 +34,7 @@
 #include "bsp/storage_backend.hpp"
 #include "bsp/wire_goal2_chain90_switches.hpp"
 #include "bsp/wire_goal2_chain144_switches.hpp"
+#include "bsp/wire_goal4_chain302_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -409,8 +410,20 @@ public:
         }
     }
     void renderer_set_gamma(float) override { missing("renderer_set_gamma", "00f8d394+f0h"); }
-    void input_set_stick_modifiers(bool, bool, bool, bool) override {
-        missing("input_set_stick_modifiers", "00699b80");
+    void input_set_stick_modifiers([[maybe_unused]] bool swap_sticks,
+        [[maybe_unused]] bool invert_camera_y, [[maybe_unused]] bool invert_plane_y,
+        [[maybe_unused]] bool swap_map_sticks) override {
+        // 008D5BB6: ECX = [00E188A8], CALL 004B46E0 (ADD ECX,3Ch; JMP 00699B80).
+        if constexpr (kWireGoal4Chain302Bound) {
+            if (!sinks_.set_input_device_flags_00699b80 || !sinks_.set_input_device_flags_00699b80(
+                    swap_sticks, invert_camera_y, invert_plane_y, swap_map_sticks)) {
+                missing("input_set_stick_modifiers", "00699b80");
+                return;
+            }
+            log_.implemented("QuickSettingsApply::input_set_stick_modifiers", "00699b80");
+        } else {
+            missing("input_set_stick_modifiers", "00699b80");
+        }
     }
     void game_refresh_after_settings() override { missing("game_refresh_after_settings", "004dcdf0"); }
     void foliage_system_set_detail_scale(float) override {

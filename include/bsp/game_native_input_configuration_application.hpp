@@ -53,6 +53,11 @@ public:
     // 00698A10 unconditionally, as the press-start commits 0067CEB9 and
     // 0067D50F call it. Exceptions propagate after marking the owner failed.
     void load();
+    // 008D5BB6 -> 004B46E0 (ADD ECX,3Ch; JMP 00699B80): store the four device
+    // bytes +4C9h..+4CCh from settings +41h..+44h; when they change and +520h
+    // is set, 00698730 then 00698A10 rebuild the actions with the new swaps.
+    void set_device_flags_004b46e0(bool swap_sticks_41, bool invert_camera_y_42,
+        bool invert_plane_y_43, bool swap_map_sticks_44);
     // 004DCEB0 on the same span: flat buffers, rows, then the Lua owner close.
     // Once only; a failed load retains the span (no invented rollback).
     void retire();

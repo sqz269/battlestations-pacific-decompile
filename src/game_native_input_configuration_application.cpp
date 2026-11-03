@@ -15,6 +15,7 @@
 #include "bsp/native_input_keyboard_storage.hpp"
 #include "bsp/native_input_settings_defaults.hpp"
 #include "bsp/native_lua_service_bindings.hpp"
+#include "bsp/settings_seg29_cc13.hpp"
 #include <array>
 #include <cstddef>
 #include <cstring>
@@ -135,6 +136,32 @@ struct GameNativeInputConfigurationApplication::Impl {
             header_count(c, 0x500, 4), header_count(c, 0x510, 4),
             owner ? word<std::uint32_t>(static_cast<const std::byte*>(owner), 8) : 0u);
     }
+
+    void set_device_flags(std::uint8_t flag_4c9, std::uint8_t flag_4ca, std::uint8_t flag_4cb,
+        std::uint8_t flag_4cc) {
+        if (phase == Phase::failed || phase == Phase::retired || phase == Phase::loading)
+            throw std::logic_error("input configuration device flags set in an unusable phase");
+        // 00699B80's two calls on the same ECX: 00698730 (cleanup context as the
+        // load prefix uses) then the whole 00698A10 through load().
+        struct Hooks final : cc13_seg29::InputConfigurationHooks {
+            explicit Hooks(Impl& owner) : p(owner) {}
+            void clear_00698730(void* c) override {
+                if (c != p.configuration.data()) throw std::logic_error("00698730 on a foreign configuration");
+                clear_native_input_configuration_00698730(c, p.cleanup);
+            }
+            void load_00698a10(void* c) override {
+                if (c != p.configuration.data()) throw std::logic_error("00698A10 on a foreign configuration");
+                p.load();
+            }
+            Impl& p;
+        } hooks(*this);
+        const std::uint32_t before = loads;
+        cc13_seg29::input_configuration_set_device_flags_00699b80(configuration.data(),
+            flag_4c9, flag_4ca, flag_4cb, flag_4cc, hooks);
+        b.log.notef("native input configuration 00699B80 device flags 4C9..4CC=%u/%u/%u/%u reload=%d",
+            static_cast<unsigned>(flag_4c9), static_cast<unsigned>(flag_4ca),
+            static_cast<unsigned>(flag_4cb), static_cast<unsigned>(flag_4cc), loads != before ? 1 : 0);
+    }
 };
 
 GameNativeInputConfigurationApplication::GameNativeInputConfigurationApplication(
@@ -151,6 +178,16 @@ bool GameNativeInputConfigurationApplication::load_if_unloaded() {
 }
 
 void GameNativeInputConfigurationApplication::load() { impl_->load(); }
+
+void GameNativeInputConfigurationApplication::set_device_flags_004b46e0(bool swap_sticks_41,
+    bool invert_camera_y_42, bool invert_plane_y_43, bool swap_map_sticks_44) {
+    // 004B46E0 (CG_adjustor_thunk_004b46e0): ADD ECX,3Ch; JMP 00699B80, from
+    // game to its embedded configuration, which here is the owned span.
+    // 008D5B9C..008D5BAF push settings bytes +44h,+43h,+42h,+41h, so +41h is
+    // the first argument (configuration +4C9h) and +44h the last (+4CCh).
+    impl_->set_device_flags(swap_sticks_41 ? 1u : 0u, invert_camera_y_42 ? 1u : 0u,
+        invert_plane_y_43 ? 1u : 0u, swap_map_sticks_44 ? 1u : 0u);
+}
 
 void GameNativeInputConfigurationApplication::retire() {
     auto& p = *impl_;
