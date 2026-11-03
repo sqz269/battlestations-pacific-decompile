@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_string.hpp"
+#include "bsp/native_scene_enum_storage.hpp"
 #include <cstddef>
 #include <cstdint>
 
@@ -14,6 +15,9 @@ inline constexpr std::size_t native_scene_enum_owner_allocation_bytes = 0x19c;
 // namespace or virtual lifecycle is manufactured from these physical stores.
 void* initialize_native_scene_enum_owner_008f4dd0(void* actual_raw_19c_owner,
     NativeStringRawPoolContext& actual_strings,
+    const void* actual_type_bytes_00d162d4);
+NativeSceneEnumOwnerStorage& initialize_native_scene_enum_owner_008f4dd0(
+    NativeSceneEnumOwnerStorage&, NativeStringRawPoolContext&,
     const void* actual_type_bytes_00d162d4);
 
 // Complete ordinary 008F2850 body. Receiver is owner+4, not the outer owner.

@@ -1,0 +1,198 @@
+{
+  "goal": 2,
+  "chain": 120,
+  "run": 236,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 59 [008ee670-00922240]",
+  "tier": 2,
+  "host_file": "src/game_hosts_scene_contents.cpp",
+  "switch": "kWireGoal2Chain120Bound",
+  "switch_default": false,
+  "wired_before": 8935,
+  "wired_after": 8946,
+  "wired_delta": 11,
+  "assigned_rows_wired": 4,
+  "readiness_note": "All four claimed direct rows changed ready -> wired after the final plain OFF build. Global source-file closure increased by eleven; the seven additional support-closure rows are not claimed as extra assigned wires.",
+  "build": {
+    "off": "PASS: scripts/build.ps1; reconstructed_math and tool_tests both passed after the ON check",
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain120Bound; build.ps1 exit 0, zero diagnostics; source restored",
+    "off_log": "local/output/wire-g2-c120-off-build.txt",
+    "on_log": "local/output/wire-g2-c120-on-build.txt",
+    "pc24_lint": "not applicable: no ON arm performs x87 arithmetic",
+    "game_run": "not run, as assigned"
+  },
+  "reach_evidence": "Static source reach only; the candidate supplied no mission call counts. GameMissionHost::Impl::finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70, load_scene_contents step -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> Impl::load_property_library -> read_vfs_file -> parse_library_file enum branch -> PropertyLibrary::read_native_enum -> LibraryNativeEnums::read. No enclosing OFF switch; kSkirmishSessionCc13Bound affects session inputs, not this load step. The only new gate is kWireGoal2Chain120Bound.",
+  "on_effect": "Replace enum library parsing and vector/map ownership with the existing native CEnum constructor, symbol-reader loop, registry membership and insertion bodies. Use the resulting native symbol maps for property symbol resolution and summary counts. Duplicate declarations reopen the same CEnum and retain first matching symbols. OFF keeps the old parser and enum vector/map code.",
+  "host_objects": [
+    {
+      "name": "LibraryNativeEnums: native enum registry and CEnum owner pair",
+      "where": "src/game_hosts_scene_contents.cpp:317",
+      "producers": [
+        "004D3040/004D3069: registry construction immediately before universe/library loading; existing initialize_native_scene_enum_registry_storage_004d3069",
+        "CC8A10 and CC8A50: existing canonical table E175E8 and symbol E17578 pool startup via GameNativePhysicalPoolProcess",
+        "008F69A7..008F69C9: current-CRT 19Ch allocation and existing 008F4DD0 CEnum constructor",
+        "00D162D4: binary E literal, confirmed by live Ghidra bytes query (45)",
+        "008F69F0..008F69FA: authored enum name copied to owner+11Ch from VFS file tokens",
+        "008F31A0 -> 008F2E40: values from the same live SceneLexer over read_vfs_file bytes; canonical GameNativeStringProcess supplies owning keys and distinct fallback roles"
+      ],
+      "lifetime": "Begin once in Impl::load_property_library before file parsing; keep across subsequent loads on that host; retire with the scene host through existing 004D2620 -> CEnum/key/node cleanup before the canonical process pools' CRT callbacks. Fresh unregistered CEnums retire through 008F59C0 if symbol parsing throws.",
+      "layout": "include/bsp/native_scene_enum_storage.hpp statically asserts registry 10Ch, CEnum 19Ch; profile+0 DWORD, map+4 with profile/count/64 DWORD heads, min+10Ch DWORD, max+110h DWORD, NativeString+114h 8 bytes, name+11Ch 80h bytes. Constructor retains unspecified tail bytes.",
+      "rows": ["008f2b90", "008f2c10", "008f31a0", "008f4dd0"]
+    }
+  ],
+  "interface_changes": "Existing identifiers and address-to-source identities are retained. Typed storage/Host overloads own the single existing bodies; raw entries are thin adapters. No second implementation or new address-suffixed identifier was added, so no new ledger row is needed.",
+  "contracts": [
+    "008F2B90: ECX registry, name and CEnum stack args; 008F2C08 RET 8. Both image call sites inspected through callers; library site pushes owner ESI and authored name before 008F6A18.",
+    "008F2C10: ECX registry, name stack arg, AL bool; 008F2C92 RET 4. Both image call sites were queried; library site result BL controls reopen versus construction.",
+    "008F31A0: ECX CEnum, tokenizer stack arg; 008F69FC PUSH EBP and 008F69FD MOV ECX,ESI precede 008F69FF; 008F325E RET 4. Typed adapter supplies the same file token source and real native declaration context.",
+    "008F4DD0: ECX newly allocated 19Ch owner at 008F69C7; native constructor stores observed binary defaults and owning type string. No handback or unused mirror object: the constructed map receives declarations and serves property resolution."
+  ],
+  "rows": [
+    {
+      "native": "008f2b90",
+      "address": "008f6a18",
+      "function": "008f67b0",
+      "host_site": "src/game_hosts_scene_contents.cpp:369 LibraryNativeEnums::read, reached from parse_library_file's ON enum arm",
+      "status": "wired",
+      "reach": "static",
+      "reason": "Existing native insertion publishes the owning CEnum in the real registry used for subsequent reopen/lookup; replaces enums_.push_back."
+    },
+    {
+      "native": "008f2c10",
+      "address": "008f697c",
+      "function": "008f67b0",
+      "host_site": "src/game_hosts_scene_contents.cpp:340 LibraryNativeEnums::read",
+      "status": "wired",
+      "reach": "static",
+      "reason": "Native registry membership controls reopen versus allocation, replacing the old enum-vector name search."
+    },
+    {
+      "native": "008f31a0",
+      "address": "008f69ff",
+      "function": "008f67b0",
+      "host_site": "src/game_hosts_scene_contents.cpp:361 LibraryNativeEnums::read with LibraryEnumReader",
+      "status": "wired",
+      "reach": "static",
+      "reason": "Existing full symbol-reader loop consumes real VFS file tokens and declares into the authoritative CEnum map, replacing the host's inline enum parse loop."
+    },
+    {
+      "native": "008f4dd0",
+      "address": "008f69c9",
+      "function": "008f67b0",
+      "host_site": "src/game_hosts_scene_contents.cpp:355 LibraryNativeEnums::read",
+      "status": "wired",
+      "reach": "static",
+      "reason": "Existing constructor initializes each real owning CEnum before the native reader/insertion use it; replaces construction of the old std::map-backed table."
+    },
+    {
+      "native": "008efb00",
+      "address": "008f5cf6",
+      "function": "008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body quoted S branch",
+      "status": "skipped",
+      "reason": "Attempted typed driver adapter failed the ON all-target link: scene_file is in bsp_core but its existing 008EE670 decoder is linked only into bsp_game via leftovers_cc13.cpp. Removed the attempted wiring; no duplicate decoder or cross-target body move was added. A future provider/target-boundary packet can revisit this row.",
+      "retryable": true
+    },
+    {
+      "native": "00903420",
+      "address": "0090358d",
+      "function": "00903580",
+      "host_site": "src/game_hosts_gunnery.cpp:Impl::torpedo_attack_range_00901ba0",
+      "status": "skipped",
+      "reason": "The host attack-range path supplies unit class hull length directly and targets only its unit indices. Binding the kind-5 arm would only return that same host value, which the counting rule excludes; no live non-unit bounds producer was established."
+    },
+    {
+      "native": "008eeb10",
+      "host_site": "src/cc13_seg59b.cpp:hash64_iterator_begin_008eeb10 provider",
+      "status": "skipped",
+      "reason": "Needs a genuine populated native scene-property bag map and iterator. This host retains ScenePropertyBlock vectors; the new enum maps are a different owning graph and cannot substitute for property-bag storage."
+    },
+    {
+      "native": "008eeb60",
+      "host_site": "src/cc13_seg59b.cpp:hash64_iterator_next_008eeb60 provider",
+      "status": "skipped",
+      "reason": "Same missing native property-bag map/node producer as 008EEB10; the current enum pair does not produce those property nodes."
+    },
+    {
+      "native": "008f29a0",
+      "host_site": "src/game_hosts_scene_contents.cpp:PropertyLibrary::add_group",
+      "status": "skipped",
+      "reason": "Replacement destroys mapped values as native scene-property bags. Host groups contain ScenePropertyBlock, not genuine owning native bags; passing a host group pointer would violate the deletion contract."
+    },
+    {
+      "native": "008f2db0",
+      "host_site": "src/game_hosts_scene_contents.cpp:PropertyLibrary::group",
+      "status": "skipped",
+      "reason": "Requires a populated native property-tree-library map. Constructing an empty 008F5670 owner without the native bag producers would not replace the vector lookup over the real host state."
+    },
+    {
+      "native": "008f3370",
+      "host_site": "src/game_hosts_scene_contents.cpp:property parsing",
+      "status": "skipped",
+      "reason": "Requires native scene-property records with +4 type, +0C payload and +28 declaration storage. The host's parsed SceneProperty is a typed vector/string projection, not that record image."
+    },
+    {
+      "native": "008f3490",
+      "host_site": "src/game_hosts_scene_contents.cpp:property parsing",
+      "status": "skipped",
+      "reason": "Needs an owning native scene-property bag/insertion context and byte-array producer; the enum graph supplies neither, and adding a third object family exceeds this chain's cap."
+    },
+    {
+      "native": "008f3510",
+      "host_site": "src/cc13_seg59b.cpp:scene_property_bag_add_float_array_008f3510 provider",
+      "status": "skipped",
+      "reason": "Needs the genuine native property bag and array payload producer. No live implementation of that provider was established in the chosen enum-library host."
+    },
+    {
+      "native": "008f3770",
+      "host_site": "src/cc13_large61.cpp:property_bag_add_float_008f3770 provider",
+      "status": "skipped",
+      "reason": "Caller survey leads to property-bag writers, but this host has no native bag/record owner. The enum registry cannot accept property records."
+    },
+    {
+      "native": "008f5670",
+      "host_site": "src/game_hosts_scene_contents.cpp:PropertyLibrary",
+      "status": "skipped",
+      "reason": "Its empty property-library map would be unused without native bag construction, payload insertion and lifetime. An extra empty mirror constructor would not count; kept the object cap to the enum pair."
+    },
+    {
+      "native": "008f84a0",
+      "host_site": "SpawnNew host in src/game_hosts_lua.cpp",
+      "status": "skipped",
+      "reason": "The SpawnNew host file is reserved by another worker in this run; did not edit it or build a duplicate frame graph.",
+      "retryable": true,
+      "skip_kind": "lease"
+    },
+    {
+      "native": "008f84d0",
+      "host_site": "SpawnNew host in src/game_hosts_lua.cpp",
+      "status": "skipped",
+      "reason": "The SpawnNew host file is reserved by another worker in this run; did not edit it or build a duplicate frame graph.",
+      "retryable": true,
+      "skip_kind": "lease"
+    },
+    {
+      "native": "008f8610",
+      "host_site": "SpawnNew host in src/game_hosts_lua.cpp",
+      "status": "skipped",
+      "reason": "The SpawnNew host file is reserved by another worker in this run; did not edit it or build a duplicate frame graph.",
+      "retryable": true,
+      "skip_kind": "lease"
+    },
+    {
+      "native": "008ff4a0",
+      "host_site": "src/game_hosts_gunnery.cpp:gun-bot ownership",
+      "status": "skipped",
+      "reason": "Needs a native gun-bot instance and the real class descriptor at the E19988 role. This batch built the enum pair, not a gun-bot/robot-class owner; did not invent the descriptor or allocate an unused bot."
+    },
+    {
+      "native": "009052e0",
+      "host_site": "src/cc13_seg59b.cpp:score record add-field provider",
+      "status": "skipped",
+      "reason": "The export is absent and no host-native scoring owner was established during selection. Did not pursue a second ownership stream beyond the bounded enum pair.",
+      "retryable": true
+    }
+  ],
+  "limitations": "Build and source reach evidence only; no runtime/game/Original ABI claim. Malformed enum syntax, non-ASCII or oversized names/tokens fail explicitly in the typed lexer adapter rather than attempting native overflow or nontermination. Canonical current-CRT allocation/string/pool providers retain their existing qualifications."
+}

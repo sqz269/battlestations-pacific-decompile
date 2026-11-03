@@ -4,6 +4,17 @@
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
+#include "bsp/wire_goal2_chain120_switches.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/game_native_physical_pool.hpp"
+#include "bsp/native_enum_dictionary_lookup.hpp"
+#include "bsp/native_enum_dictionary_word_getters.hpp"
+#include "bsp/native_enum_registry_scalar_delete.hpp"
+#include "bsp/native_enum_scalar_delete.hpp"
+#include "bsp/native_enum_symbol_reader.hpp"
+#include "bsp/native_enum_table_insertion.hpp"
+#include "bsp/native_enum_table_wrappers.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/cc13_front3.hpp"
 #include "bsp/cc13_seg47.hpp"
 #include "bsp/camera_path_sampler.hpp"
@@ -70,6 +81,7 @@ extern "C" {
 #include <cstring>
 #include <deque>
 #include <map>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -257,6 +269,151 @@ struct EnumTable {
     std::map<std::string, int> symbols;
 };
 
+// Adapter over the same SceneLexer that reads the VFS library file. Syntax,
+// EOF, non-ASCII and token-size failures are outside the native ordinary domain.
+class LibraryEnumReader final : public SceneEnumSymbolReaderHost {
+public:
+    LibraryEnumReader(SceneLexer& lexer, NativeEnumSymbolDeclarationContext& declaration)
+        : lexer_(lexer), declaration_(declaration) {}
+    const char* peek() override {
+        const SceneToken& token = lexer_.peek();
+        if (token.is_end() || token.text.size() >= sizeof(scratch_)
+            || token.text.find('\0') != std::string::npos
+            || std::any_of(token.text.begin(), token.text.end(),
+                [](unsigned char c) { return c >= 0x80; })) {
+            throw std::runtime_error("unsupported enum library token");
+        }
+        return token.text.c_str();
+    }
+    void consume() override { lexer_.next(); }
+    bool expect(const char* text) override {
+        if (std::strcmp(peek(), text) != 0)
+            throw std::runtime_error("unsupported enum library syntax");
+        consume();
+        return true;
+    }
+    std::int32_t read_int(std::uint8_t* accepted) override {
+        std::int32_t value;
+        if (!scene_scan_int(peek(), value))
+            throw std::runtime_error("unsupported enum library integer");
+        consume();
+        *accepted = 1;
+        return value;
+    }
+    char* symbol_scratch() override { return scratch_; }
+    const char* close_token() const override { return "}"; } // 00CE4CD4
+    const char* equals_token() const override { return "="; } // 00CE55BC
+    const char* semicolon_token() const override { return ";"; } // 00CE5698
+    void declare_symbol(NativeSceneEnumOwnerStorage& owner, const char* name,
+        std::int32_t value) override {
+        declare_native_enum_symbol_008f2e40(&owner, name, value, declaration_);
+    }
+private:
+    SceneLexer& lexer_;
+    NativeEnumSymbolDeclarationContext& declaration_;
+    char scratch_[0x400]; // host backing for the F89758 name-copy role
+};
+
+class LibraryNativeEnums final {
+public:
+    LibraryNativeEnums()
+        : strings_(game_native_string_process()),
+          tables_(strings_, table_pool(), symbol_pool(), strings_.enum_empty_00e186ed()),
+          declaration_{strings_.raw_context(), tables_.symbol_pool(),
+              strings_.enum_empty_00e186ed(), strings_.query_empty_00e17654()} {
+        // 004D3040 builds the registry immediately before loading universe/library.
+        initialize_native_scene_enum_registry_storage_004d3069(&registry_);
+    }
+    ~LibraryNativeEnums() {
+        // Same nested registry -> CEnum -> keys/nodes release as 004D2620.
+        // All owners retire with the scene host, before process pool callbacks.
+        delete_native_scene_enum_registry_004d2620(&registry_, 0,
+            tables_.table_pool(), tables_.symbol_pool(), strings_.raw_context());
+    }
+    void read(SceneLexer& lexer, const std::string& name) {
+        if (name.empty() || name.size() >= 124
+            || name.find('\0') != std::string::npos
+            || std::any_of(name.begin(), name.end(), [](unsigned char c) { return c >= 0x80; }))
+            throw std::runtime_error("unsupported enum library name");
+        LibraryEnumReader reader(lexer, declaration_);
+        // 008F2C10 tests the real registry; OFF keeps the vector's name search.
+        const bool exists = contains_native_enum_table_name_008f2c10(registry_, name.c_str(), tables_);
+        reader.expect("{"); // 008F6990, before allocation or reopening
+        NativeSceneEnumOwnerStorage* owner;
+        if (exists) {
+            owner = reinterpret_cast<NativeSceneEnumOwnerStorage*>(
+                read_native_enum_table_word_0048e960(&registry_, name.c_str(),
+                    strings_.raw_context(), strings_.enum_empty_00e186ed(),
+                    strings_.query_empty_00e17654()));
+        } else {
+            owner = static_cast<NativeSceneEnumOwnerStorage*>(singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, 0x19c, 0x19c}));
+            if (owner == nullptr) throw std::bad_alloc();
+            // 008F4DD0 initializes the real CEnum; OFF keeps the std::map table.
+            // D162D4 is the binary's 'E' byte (live bytes query: 45).
+            static constexpr char type = 'E';
+            initialize_native_scene_enum_owner_008f4dd0(*owner, strings_.raw_context(), &type);
+            // 008F69CF..008F69E1 copies the authored table name to +11Ch.
+            std::memcpy(owner->name, name.c_str(), name.size() + 1);
+        }
+        try {
+            // 008F31A0 reads/declares from the file lexer; OFF keeps the parse loop.
+            read_native_enum_symbols_008f31a0(*owner, reader);
+        } catch (...) {
+            if (!exists) delete_native_scene_enum_owner_008f59c0(owner, 1,
+                tables_.symbol_pool(), strings_.raw_context());
+            throw;
+        }
+        if (!exists) {
+            // 008F2B90 publishes the owning table; OFF keeps enums_.push_back.
+            insert_native_cenum_table_name_008f2b90(registry_, name.c_str(), owner, tables_);
+            order_.push_back(owner);
+        }
+    }
+    bool resolve_symbol(const std::string& table, const std::string& symbol, int& value) const {
+        for (const auto* owner : order_) {
+            if (!table.empty() && !equal_insensitive(table, owner->name)) continue;
+            NativeString key;
+            construct_native_string_header_0041e870(&key, strings_.raw_context(), symbol.c_str());
+            std::uint32_t bucket;
+            const void* node = find_native_enum_symbol_node_0048d480(&owner->map, key, bucket,
+                strings_.enum_empty_00e186ed(), strings_.query_empty_00e17654());
+            if (node != nullptr) {
+                // 14h pooled node: owning key +0/+4, mapped int +8, next +Ch.
+                std::memcpy(&value, static_cast<const std::byte*>(node) + 8, sizeof(value));
+            }
+            destroy_native_string_header_0041dd20(&key, strings_.raw_context());
+            if (node != nullptr) return true;
+            if (!table.empty()) return false;
+        }
+        return false;
+    }
+    std::size_t enum_count() const noexcept { return registry_.map.count; }
+    std::size_t symbol_count() const noexcept {
+        std::size_t result = 0;
+        for (const auto* owner : order_) result += owner->map.count;
+        return result;
+    }
+private:
+    static void* table_pool() {
+        auto& pools = game_native_physical_pool_process();
+        pools.initialize_enum_table_pool_once_00cc8a10();
+        return pools.enum_table_pool_storage_00e175e8();
+    }
+    static void* symbol_pool() {
+        auto& pools = game_native_physical_pool_process();
+        pools.initialize_enum_symbol_pool_once_00cc8a50();
+        return pools.enum_symbol_pool_storage_00e17578();
+    }
+    GameNativeStringProcess& strings_;
+    NativeEnumTableWrapperContext tables_;
+    NativeEnumSymbolDeclarationContext declaration_;
+    // Registry producer 004D3069 at 004D3040; CEnums are produced at 008F69C9
+    // while reading the library and released by registry teardown (004D2620).
+    NativeSceneEnumRegistryStorage registry_;
+    std::vector<NativeSceneEnumOwnerStorage*> order_; // retain host's unqualified search order
+};
+
 // 008F2E40 retains the first case-insensitive symbol. This host projection
 // covers duplicate retention, not the native CEnum layout or allocation ABI.
 void insert_library_enum_symbol(EnumTable& table, const std::string& name, int value) {
@@ -268,6 +425,14 @@ void insert_library_enum_symbol(EnumTable& table, const std::string& name, int v
 
 class PropertyLibrary {
 public:
+    void begin_load() {
+        if constexpr (kWireGoal2Chain120Bound) {
+            if (!native_enums_) native_enums_ = std::make_unique<LibraryNativeEnums>();
+        }
+    }
+    void read_native_enum(SceneLexer& lexer, const std::string& name) {
+        native_enums_->read(lexer, name);
+    }
     void add_group(PropertyGroupDefinition group);
     void add_enum(EnumTable table) {
         // 008F697C/008F699E reopen an existing table before parsing more IDs.
@@ -293,6 +458,9 @@ public:
     // fold costs nothing and matches the reader's other lookups.
     bool resolve_symbol(const std::string& table, const std::string& symbol,
         int& value) const {
+        if constexpr (kWireGoal2Chain120Bound) {
+            return native_enums_ != nullptr && native_enums_->resolve_symbol(table, symbol, value);
+        } else {
         for (const EnumTable& row : enums_) {
             if (!table.empty() && !equal_insensitive(row.name, table)) continue;
             for (const auto& entry : row.symbols) {
@@ -304,19 +472,32 @@ public:
             if (!table.empty()) return false;
         }
         return false;
+        }
     }
 
     std::size_t group_count() const noexcept { return groups_.size(); }
-    std::size_t enum_count() const noexcept { return enums_.size(); }
+    std::size_t enum_count() const noexcept {
+        if constexpr (kWireGoal2Chain120Bound) {
+            return native_enums_ != nullptr ? native_enums_->enum_count() : 0;
+        } else {
+            return enums_.size();
+        }
+    }
     std::size_t symbol_count() const noexcept {
+        if constexpr (kWireGoal2Chain120Bound) {
+            return native_enums_ != nullptr ? native_enums_->symbol_count() : 0;
+        } else {
         std::size_t total = 0;
         for (const EnumTable& row : enums_) total += row.symbols.size();
         return total;
+        }
     }
 
 private:
     std::vector<PropertyGroupDefinition> groups_;
     std::vector<EnumTable> enums_;
+    // Construct only in the ON library-load phase, not in the OFF host.
+    std::unique_ptr<LibraryNativeEnums> native_enums_;
 };
 
 // The bag an entity hands 0046c550 is built in two steps by 0046cf40. Step 6
@@ -1285,6 +1466,11 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
             continue;
         }
         if (equal_insensitive(token.text, kPropertyLibraryKeywordEnum)) {
+            if constexpr (kWireGoal2Chain120Bound) {
+                // 008F697C/69C9/69FF/6A18: native enum graph; OFF keeps the old parser.
+                const std::string table_name = lexer.next().text;
+                library.read_native_enum(lexer, table_name);
+            } else {
             EnumTable table;
             table.name = lexer.next().text;
             if (lexer.peek().text != "{") continue;
@@ -1301,6 +1487,7 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
             }
             if (!lexer.at_end()) lexer.next();
             library.add_enum(std::move(table));
+            }
             continue;
         }
         // Host recovery skips unknown top-level tokens. Native 008F6A35 loops
@@ -1310,6 +1497,9 @@ void GameSceneContentsHost::Impl::parse_library_file(const std::string& name,
 }
 
 void GameSceneContentsHost::Impl::load_property_library() {
+    if constexpr (kWireGoal2Chain120Bound) {
+        library.begin_load();
+    }
     // 008f6fc0 enumerates the library directory through 00886280 and calls
     // 008f67b0 once per file. The enumeration is the recovered one; the load is
     // this file's stand-in, and the host record says so.

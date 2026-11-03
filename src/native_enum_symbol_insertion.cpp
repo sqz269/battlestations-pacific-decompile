@@ -38,6 +38,14 @@ void* at(const void* base, std::uint32_t offset) noexcept {
 
 void* initialize_native_scene_enum_owner_008f4dd0(void* owner,
     NativeStringRawPoolContext& strings, const void* type_bytes) {
+    return &initialize_native_scene_enum_owner_008f4dd0(
+        *static_cast<NativeSceneEnumOwnerStorage*>(owner), strings, type_bytes);
+}
+
+NativeSceneEnumOwnerStorage& initialize_native_scene_enum_owner_008f4dd0(
+    NativeSceneEnumOwnerStorage& storage,
+    NativeStringRawPoolContext& strings, const void* type_bytes) {
+    void* const owner = &storage;
     put(owner, 0, 0x00d16508);
     put(owner, 4, 0x00d162c0);
     put(owner, 8, 0);
@@ -51,7 +59,7 @@ void* initialize_native_scene_enum_owner_008f4dd0(void* owner,
         std::memmove(type->data(), type_bytes, type->length());
     }
     *static_cast<unsigned char*>(at(owner, 0x11c)) = 0;
-    return owner;
+    return storage;
 }
 
 std::uint32_t insert_native_enum_symbol_word_008f2850(void* receiver,

@@ -23,6 +23,24 @@ struct NativeEnumSymbolReaderContext {
 bool read_native_enum_symbols_008f31a0(void* actual_raw_19c_enum,
     void* actual_live_838h_tokenizer,NativeEnumSymbolReaderContext&);
 
+// Same loop over a typed owning enum and the host's live token source. Raw
+// entry below adapts its tokenizer/context to this interface; no second body.
+class SceneEnumSymbolReaderHost {
+public:
+    virtual ~SceneEnumSymbolReaderHost() = default;
+    virtual const char* peek() = 0;
+    virtual void consume() = 0;
+    virtual bool expect(const char*) = 0;
+    virtual std::int32_t read_int(std::uint8_t*) = 0;
+    virtual char* symbol_scratch() = 0;
+    virtual const char* close_token() const = 0;
+    virtual const char* equals_token() const = 0;
+    virtual const char* semicolon_token() const = 0;
+    virtual void declare_symbol(NativeSceneEnumOwnerStorage&, const char*, std::int32_t) = 0;
+};
+bool read_native_enum_symbols_008f31a0(NativeSceneEnumOwnerStorage&,
+    SceneEnumSymbolReaderHost&);
+
 // Preserve full name-copy/consume/expect/int/optional-semicolon/declaration loop
 // until exact at-most-two-byte }NUL match. Failures still declare returned int;
 // no EOF, nesting, error exit or iteration guard is invented. Input without a

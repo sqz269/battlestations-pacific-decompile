@@ -19,12 +19,20 @@ static_assert(std::is_standard_layout_v<NativeString>
 void insert_native_cenum_table_name_008f2b90(void* actual_owner,
     const char* key, void* new_actual_cenum_or_null,
     NativeEnumTableWrapperContext& context) {
+    insert_native_cenum_table_name_008f2b90(
+        *static_cast<NativeSceneEnumRegistryStorage*>(actual_owner), key,
+        static_cast<NativeSceneEnumOwnerStorage*>(new_actual_cenum_or_null), context);
+}
+
+void insert_native_cenum_table_name_008f2b90(NativeSceneEnumRegistryStorage& owner,
+    const char* key, NativeSceneEnumOwnerStorage* new_actual_cenum_or_null,
+    NativeEnumTableWrapperContext& context) {
     NativeString temporary_key;
     auto& strings = context.strings();
     construct_native_string_header_0041e870(&temporary_key,
         strings.raw_context(), key);
     (void)insert_native_cenum_table_008f17e0(
-        static_cast<std::byte*>(actual_owner) + 4, temporary_key,
+        &owner.map, temporary_key,
         new_actual_cenum_or_null, context.table_pool(), context.symbol_pool(),
         strings.raw_context(), context.enum_empty(), strings.query_empty_00e17654());
     destroy_native_string_header_0041dd20(&temporary_key, strings.raw_context());
@@ -32,13 +40,19 @@ void insert_native_cenum_table_name_008f2b90(void* actual_owner,
 
 bool contains_native_enum_table_name_008f2c10(const void* actual_owner,
     const char* key, NativeEnumTableWrapperContext& context) {
+    return contains_native_enum_table_name_008f2c10(
+        *static_cast<const NativeSceneEnumRegistryStorage*>(actual_owner), key, context);
+}
+
+bool contains_native_enum_table_name_008f2c10(const NativeSceneEnumRegistryStorage& owner,
+    const char* key, NativeEnumTableWrapperContext& context) {
     NativeString temporary_key;
     std::uint32_t bucket;
     auto& strings = context.strings();
     construct_native_string_header_0041e870(&temporary_key,
         strings.raw_context(), key);
     const void* const node = find_native_enum_table_node_0048d4e0(
-        static_cast<const std::byte*>(actual_owner) + 4, temporary_key, bucket,
+        &owner.map, temporary_key, bucket,
         context.enum_empty(), strings.query_empty_00e17654());
     const bool found = node != nullptr;
     destroy_native_string_header_0041dd20(&temporary_key, strings.raw_context());
