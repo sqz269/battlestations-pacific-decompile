@@ -1,0 +1,231 @@
+{
+  "chain": 67,
+  "slot": "g2-w1",
+  "harness": "claude",
+  "host_file": "src/game_hosts_units.cpp",
+  "switch": "kWireGoal2Chain67Bound",
+  "switch_header": "include/bsp/wire_goal2_chain67_switches.hpp",
+  "files_changed": [
+    "src/game_hosts_units.cpp",
+    "include/bsp/wire_goal2_chain67_switches.hpp",
+    "src/cc13_seg47.cpp",
+    "include/bsp/cc13_seg47.hpp",
+    "src/cc13_seg48.cpp",
+    "include/bsp/cc13_seg48.hpp",
+    "src/cc13_seg67b.cpp",
+    "include/bsp/cc13_seg67b.hpp",
+    "src/cc13_sweepB.cpp",
+    "include/bsp/cc13_sweepB.hpp",
+    "src/frontend_screens_cc13.cpp",
+    "include/bsp/frontend_screens_cc13.hpp",
+    "src/native_unit_role_permission.cpp",
+    "include/bsp/native_unit_role_permission.hpp"
+  ],
+  "build": "scripts/build.ps1 OFF: pass, 2/2 tests",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain67Bound: pass (0 diagnostics)",
+  "pc24_lint": "0 findings (origin/main...HEAD)",
+  "wired_before": 8822,
+  "wired_after": 8830,
+  "pair": {
+    "mission": "USN04",
+    "off_log": "local/g2-w1-off_USN04.log",
+    "on_log": "local/g2-w1-on_USN04.log",
+    "verdict": "DIFFERENT, gameplay identical (exit 1)",
+    "summary": "gameplay identical (28 deaths, 380 hits, 6366.6 damage, 5509 shots both); death modes, unit table identical; native table 0 counts moved, 0 status changed; summary lines 0 changed; the only other lines are atlas allocation addresses (heap pointers). A first pair with 007D99C0 wired moved gameplay through deck terms 0 -> 3650; that row was unwired before this pair."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain67Bound to true. The USN04 pair is gameplay-identical; the eight ON arms are the bodies' logic over the same host fields. Watch 00604A20 (now reads +904h) and 006049F0 in a mission with a controlled plane or carrier landings (USN01).",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "0x0059bbd0",
+      "address": "0x0078020b",
+      "function": "0x00780120",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::role_message_4b_00780162 (open_to) and role_screen_update_0067bb50",
+      "status": "wired",
+      "reached": 3,
+      "note": "typed overload over the +188h role policy table (role_permission_0188); reached is the ON log's role takes=3, a lower bound (no per-call counter)"
+    },
+    {
+      "native": "0x00604a20",
+      "address": "0x007bb9f0",
+      "function": "0x007bb9a0",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::plane_local_input_gate_007bb9a0",
+      "status": "wired",
+      "reached": 0,
+      "note": "static reach: runs only when the controlled unit is a plane (HUD 007BB9A0 query, kPlaneInFlightTestBound ON); USN04's controlled unit is Lexington. The ON arm feeds the host's +904h byte (plane_landed_904) where OFF took it clear"
+    },
+    {
+      "native": "0x006049f0",
+      "address": "0x007dbf53",
+      "function": "0x007db680",
+      "host_site": "src/game_hosts_units.cpp motion_step_00825f20 core law run_core_law_007db680 wire band (kCarrierDeckParentBound ON)",
+      "status": "wired",
+      "reached": 0,
+      "note": "typed overload (contact +BF8h, owner +BF4h); needs a landed plane with wire > epsilon, and USN04 had no carrier landing (carrier landing leads=0)"
+    },
+    {
+      "native": "0x007b5be0",
+      "address": "0x009c49b4",
+      "function": "0x009c4950",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::goaway_target_extent_007b5be0 (dive/torpedo/level goaway enters, all three extent switches ON)",
+      "status": "wired",
+      "reached": 0,
+      "note": "typed overload over the gunnery row ranges +434h/+444h/+448h; USN04 had no goaway enter (0 of 16 torpedo, 0 of 19 dive releases)"
+    },
+    {
+      "native": "0x007c4830",
+      "address": "0x0099f264",
+      "function": "0x0099f1c0",
+      "host_site": "src/game_hosts_units.cpp terrain_avoidance_0099f1c0, run_land_park_tick_009b22c0, run_takeoff_run_step_009ce2c0",
+      "status": "wired",
+      "reached": 1814,
+      "note": "typed overload (tuning+230h, class+184h); reached is the terrain avoidance tick count, which computes v_stall every tick"
+    },
+    {
+      "native": "0x007d7a40",
+      "address": "0x0099c032",
+      "function": "0x0099bf30",
+      "host_site": "src/game_hosts_units.cpp gunfire_repair_0099bf30 (kPlaneSpeedFloorBound ON)",
+      "status": "wired",
+      "reached": 730,
+      "note": "typed overload over [ctl+10h]+C8h (plane_speed_floor_timer_c8); reached = speed_floor_arms"
+    },
+    {
+      "native": "0x0085dea0",
+      "address": "0x006bee9f",
+      "function": "0x006bee40",
+      "host_site": "src/game_hosts_units.cpp landing_deck_006c0750 (airfield) and carrier_holder_frame_006bee40",
+      "status": "wired",
+      "reached": 2,
+      "note": "raw entry called over the host's image-shaped CameraMatrix storage (frame_8 -> inverse_48) with bsp::kNegativeZero_00d7a208; reached = the two MOTHER-SHIP holders built (the frame is also refreshed per landing-deck lookup, not counted)"
+    },
+    {
+      "native": "0x0099bb00",
+      "address": "0x0099cd76",
+      "function": "0x0099cab0",
+      "host_site": "src/game_hosts_units.cpp terrain_shape_band_0099cab0 from terrain_avoidance_0099f1c0 (kPlaneYawGainBc4Bound ON)",
+      "status": "wired",
+      "reached": 0,
+      "note": "typed overload over unit+BC4h (plane_yaw_gain_bc4); the log counts raises only (0 in both runs), not latch calls"
+    },
+    {
+      "native": "0x007d99c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::plane_forward_speed_007d99c0",
+      "reason": "The host function already implements the deck term under kPlaneForwardSpeedDeckTermBound = false, which docs/OCEAN_WAVE_FIELD.md sections 74 and 78 hold OFF because the term breaks USN01 carrier stows (19 -> 0). An arm inside that gate sits behind an OFF switch; an arm ahead of it turns the known regression back on (first USN04 pair: deck terms 0 -> 3650, gameplay moved). Wired in b3ba38c55, unwired in 5c4f59ed1.",
+      "reached": 0
+    },
+    {
+      "native": "0x007b8a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp follow_exit_009bde40",
+      "reason": "lease: the body's files src/leftovers_cc13.cpp and include/bsp/oct18_tail_b.hpp are leased to agent/g2-w2, so the typed overload (bool& turbo_9f9) could not be added. The site is live (kFollowExitClearsBound ON).",
+      "reached": 0
+    },
+    {
+      "native": "0x007c6340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp place_squadron_members_007f2920 / create_units seed",
+      "reason": "The host's 007F2920 stand-in keeps a member's flight state on purpose (labelled substitution). The body only returns state and clock, and the arm's other effects (007C11E0 notify, vt[3Ch] speed, 007DB2C0, pose invalidation) have no host counterpart, so wiring it would be partial.",
+      "reached": 0
+    },
+    {
+      "native": "0x009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp place_at_world_position_008193a0",
+      "reason": "The plan body's only input-dependent field is broadcast_relocate (session mode 1). session_mode_1fe4 is a constant single-player value while kSkirmishSessionCc13Bound is false, and every other field is constant, so the row would pass constants.",
+      "reached": 0
+    },
+    {
+      "native": "0x009585b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp put_rel_to_00819840",
+      "reason": "unit_set_world_matrix_009585b0() takes no parameters and returns a constant plan; no host state feeds it.",
+      "reached": 0
+    },
+    {
+      "native": "0x007d80c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp run_core_law_007db680 tail (plane_forward_speed_7c)",
+      "reason": "The only field the host keeps is previous_7c = f44, which is the host's own copy. The rate +78h and the dt==0 vector zeroing have no host storage or consumer, so the row would hand the host's value back.",
+      "reached": 0
+    },
+    {
+      "native": "0x006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp squadron armed fraction (ctl+374h)",
+      "reason": "The host has no rack/device model; it uses a labelled rack_ammo substitution. The body would return ammo + 0 attached = the host's own value.",
+      "reached": 0
+    },
+    {
+      "native": "0x0071ea00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp free attack leash (009F841E)",
+      "reason": "The body is present && is_kind_0f. Both inputs are the host's own unit_is_kind_of answer on a validated index, so it hands the host's value back.",
+      "reached": 0
+    },
+    {
+      "native": "0x007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp ground roll / touchdown gear test",
+      "reason": "The gear channel (+DECh)+28h is not carried (the host answers true by label), so the row would pass constants.",
+      "reached": 0
+    },
+    {
+      "native": "0x007c4d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp level bomber arm",
+      "reason": "The host marks the 007C4D90 site unread ('level bomber: 007C7750 / 007C4D90 not bound'); there is no live consumer to replace.",
+      "reached": 0
+    },
+    {
+      "native": "0x007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp df_pilot_targets_us",
+      "reason": "The host holds the pilot target semantically (dogfight target or command target). There is no +DF4h bot with a per-slot +98h target table to type a view over.",
+      "reached": 0
+    },
+    {
+      "native": "0x00811150",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp formation station (0070D2EE)",
+      "reason": "The body only forwards to 00810630, which the host already calls (ship_ai_wake_sample_at_distance_00810630).",
+      "reached": 0
+    },
+    {
+      "native": "0x0047f200",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp set_heading_008196b0",
+      "reason": "The body builds the matrix through Seg7Host calls (00B646E0, 00413920, 004134F0) over a raw node. It has no small typed view, and a Seg7Host adapter is outside this chain.",
+      "reached": 0
+    },
+    {
+      "native": "0x007ee2e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp leaving_on_purpose_007ee2e0",
+      "reason": "The raw body needs Cc15Seg48Host squadron vcalls (+174h, +178h), the 00927F30 role test and the director path cursor. The host keeps a semantic stand-in, and the adapter is too large for this chain.",
+      "reached": 0
+    },
+    {
+      "native": "0x007ed740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp release_launch_brake_006c5b70",
+      "reason": "The body walks a raw squadron +3CCh/+3D0h member list through 007B8BD0. The host's labelled substitution works on semantic squadron records, and no image-shaped list exists.",
+      "reached": 0
+    },
+    {
+      "native": "0x007edac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp leader+C24h flag",
+      "reason": "leader+C24h is not carried; the host passes the constant false.",
+      "reached": 0
+    },
+    {
+      "native": "0x00927c90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp multiplayer role test",
+      "reason": "This is the multiplayer test; the single-player host answers the constant false.",
+      "reached": 0
+    }
+  ]
+}
