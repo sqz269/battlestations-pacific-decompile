@@ -768,6 +768,8 @@ public:
     // 008C6308: 00706760(this = [game+21DCh], &name, side), for
     // bsp::lua_binding_load_message_map's message_map_load.
     void load_mission_message_map(const std::string& name, int side);
+    // 008C65D8: 00706FC0 on [game+21DCh], for UnloadMessageMap's message_map_unload.
+    void unload_mission_message_map(const std::string& name, int side);
     // Packet cc13-reconload, log-only: the scene load's recon publication entry
     // count (dry run when OFF), for the end-of-run summary line; also marks
     // that the scene-load block ran.
@@ -1334,6 +1336,7 @@ private:
     GameMessageManagerHost* message_manager_{nullptr};
     unsigned long long message_maps_loaded_{0};
     unsigned long long message_maps_without_manager_{0};
+    unsigned long long message_maps_unloaded_{0};
     bool measure_imperial_{false};  // 00F88988, untouched by this process
     // The stream 00BD2ED0 hands 00BD2F10. This process has no thread-local random
     // state object, so the sequence is this generator's and not the game's; a run

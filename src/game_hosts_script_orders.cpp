@@ -639,10 +639,95 @@ private:
     GameScriptOrdersHost& owner_;
 };
 
+// Goal 4 chain 331: the UnloadMessageMap binding 008C6490 through its body
+// bsp::cc13_seg56::lua_unload_message_map. The body reads two arguments and the
+// session word; every other accessor of the two seg56 interfaces belongs to a
+// different binding and is refused rather than answered.
+[[noreturn]] void unload_message_map_unreached(const char* what) {
+    throw std::logic_error(std::string("UnloadMessageMap 008C6490: unreached ") + what);
+}
+
+class UnloadMessageMapArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit UnloadMessageMapArgs(bsp::LuaBindingArgumentReader& core) : core_(core) {}
+    int count() override { return core_.count(); }
+    int get_integer(int index) override { return core_.get_integer(index); }
+    double get_number(int index) override { return core_.get_number(index); }
+    bool get_boolean(int index) override { return core_.get_boolean(index); }
+    std::string get_string(int index) override { return core_.get_string(index); }
+    bool is_string(int index) override { return core_.is_string(index); }
+    bool is_nil(int index) override { return core_.is_nil(index); }
+    bool is_entity_table(int index) override { return core_.is_entity_table(index); }
+    void* entity_at(int index) override { return core_.entity_at(index); }
+    bool is_boolean(int) override { unload_message_map_unreached("00B66000"); }
+    bool is_number(int) override { unload_message_map_unreached("00B66050"); }
+    bool is_integer(int) override { unload_message_map_unreached("00B66A60"); }
+    bool is_table(int) override { unload_message_map_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { unload_message_map_unreached("00888760"); }
+    bool is_vector3_table(int) override { unload_message_map_unreached("0088B840"); }
+    void* to_userdata(int) override { unload_message_map_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { unload_message_map_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        unload_message_map_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        unload_message_map_unreached("00B67800 number");
+    }
+
+private:
+    bsp::LuaBindingArgumentReader& core_;
+};
+
+class UnloadMessageMapGlue final : public bsp::cc13_seg56::GlueHost {
+public:
+    explicit UnloadMessageMapGlue(GameScriptOrdersHost& owner) : owner_(owner) {}
+    // 008C65D8: 00706FC0 on [game+21DCh].
+    void message_map_unload(const std::string& name, int index) override {
+        owner_.unload_mission_message_map(name, index);
+    }
+    // game+1FE4h: the campaign session SetThinkCoreHost::game_non_campaign_flag
+    // answers for LoadMessageMap's same test (008C635B); the session arm is not taken.
+    std::int32_t game_session_mode_1fe4() override { return 0; }
+    void session_manage_messages(const std::string&, int, int) override {
+        unload_message_map_unreached("0088B6D0 MANAGE_MESSAGES (session arm)");
+    }
+    bsp::cc13_seg56::Vec3 game_camera_world_position() override {
+        unload_message_map_unreached("camera position");
+    }
+    bsp::cc13_seg56::Vec3 entity_world_position(void*) override {
+        unload_message_map_unreached("entity position");
+    }
+    bsp::cc13_seg56::Vec3 entity_world_to_local(void*, const bsp::cc13_seg56::Vec3&) override {
+        unload_message_map_unreached("entity inverse");
+    }
+    void input_collect_action_binding_texts(int, std::vector<std::string>&,
+        std::vector<std::string>&) override {
+        unload_message_map_unreached("006A33F0");
+    }
+    void forced_input_set_insert(int) override { unload_message_map_unreached("0069FA40"); }
+    void forced_input_set_erase(int) override { unload_message_map_unreached("008CA7B0"); }
+    std::int32_t vehicle_class_slot(int) override { unload_message_map_unreached("00437F50"); }
+    std::int32_t vehicle_class_cache_size() override { unload_message_map_unreached("00437F50 size"); }
+    void vehicle_class_resize_cache(int) override { unload_message_map_unreached("00437BD0"); }
+    void vehicle_class_release_cached(int) override { unload_message_map_unreached("class release"); }
+    void log_text(const std::string&) override { unload_message_map_unreached("004254B0"); }
+
+private:
+    GameScriptOrdersHost& owner_;
+};
+
+// Not a kScriptOrderBindings row so that the switch can withhold it: OFF leaves
+// UnloadMessageMap the unimplemented record it was.
+constexpr ScriptOrderBinding kUnloadMessageMapBinding{"UnloadMessageMap", 0x008c6490u};
+
 const ScriptOrderBinding* find_binding(const char* name) noexcept {
     if (name == nullptr) return nullptr;
     for (const ScriptOrderBinding& row : kScriptOrderBindings) {
         if (std::strcmp(row.name, name) == 0) return &row;
+    }
+    if constexpr (bsp::kWireGoal4Chain331Bound) {
+        if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
+    } else {
     }
     return nullptr;
 }
@@ -790,6 +875,22 @@ void GameScriptOrdersHost::load_mission_message_map(const std::string& name, int
     ++message_maps_loaded_;
     log_.notef("LoadMessageMap(\"%s\", %d): 00706760 records %zu -> %zu (goal 4 chain 331)",
         name.c_str(), side, before, message_manager_->record_count());
+}
+
+void GameScriptOrdersHost::unload_mission_message_map(const std::string& name, int side) {
+    // Goal 4 chain 331. 008C65C6 MOV ECX,[00E188A8]; 008C65CC MOV ECX,[ECX+21DCh];
+    // 008C65D2/008C65D7 push the integer then &name; 008C65D8 CALL 00706FC0. No
+    // shipped script calls UnloadMessageMap; the native registers it for every
+    // mission state all the same. A missing manager is counted, as for the load.
+    if (message_manager_ == nullptr || !message_manager_->constructed()) {
+        ++message_maps_without_manager_;
+        log_.notef("UnloadMessageMap(\"%s\", %d): no MessageManager [game+21DCh] (00706FC0 "
+            "not run, goal 4 chain 331)", name.c_str(), side);
+        return;
+    }
+    message_manager_->unload_message_map_00706fc0(name, side);
+    ++message_maps_unloaded_;
+    log_.notef("UnloadMessageMap(\"%s\", %d): 00706FC0 (goal 4 chain 331)", name.c_str(), side);
 }
 
 std::size_t script_orders_drain_loopback_0076c600() {
@@ -5033,6 +5134,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         message_map_name_ = get_string(0);
         message_map_index_ = get_integer(1);
         results = bsp::lua_binding_load_message_map(*this, core);
+    } else if (bsp::kWireGoal4Chain331Bound
+               && std::strcmp(binding->name, "UnloadMessageMap") == 0) {
+        // Goal 4 chain 331: 008C6490's body; find_binding offers the row only ON.
+        UnloadMessageMapArgs args(*this);
+        UnloadMessageMapGlue glue(*this);
+        results = bsp::cc13_seg56::lua_unload_message_map(args, glue);
     } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_music_control_set_level(*this, core);
@@ -7439,9 +7546,10 @@ void GameScriptOrdersHost::report() {
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
         if constexpr (bsp::kWireGoal4Chain331Bound) {
-            log_.notef("summary message maps loaded=%llu without_manager=%llu dialog records "
-                "resolved=%llu (008C6308 00706760, 00448416 00705E00, goal 4 chain 331)",
-                message_maps_loaded_, message_maps_without_manager_, dialog_records_resolved_);
+            log_.notef("summary message maps loaded=%llu unloaded=%llu without_manager=%llu "
+                "dialog records resolved=%llu (008C6308 00706760, 008C65D8 00706FC0, "
+                "00448416 00705E00, goal 4 chain 331)", message_maps_loaded_,
+                message_maps_unloaded_, message_maps_without_manager_, dialog_records_resolved_);
         } else {
         }
         if (mission_end_.seen) {
