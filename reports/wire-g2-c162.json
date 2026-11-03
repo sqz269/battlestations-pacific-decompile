@@ -1,0 +1,87 @@
+{
+  "run": 320,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 162,
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "candidate": "segment 88 [00b6d3c0-00b80ed0]",
+  "tier": 2,
+  "host_file": "src/structured_hierarchy.cpp",
+  "selection_reason": "The sphere row has an existing typed float-storage ABI and a model-parser host path with both input and output producers. Other selected rows were checked for active concrete hosts before editing.",
+  "switch": "kWireGoal2Chain162Bound",
+  "switch_default": false,
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "00b6f960",
+      "address": "009360db",
+      "function": "00935d30",
+      "host_site": "src/cc13_segmix.cpp:cc13_segmix_ship_break_in_two_00935d30",
+      "status": "skipped",
+      "reason": "The breakup host records the missing piece presentation rather than producing the native front/back nodes and their raw string-pool context. Cc13SegmixHost::node_assign_name_00b6f960 has no implementation. The separate NativeUnitPartConstructionBindings::call_00b6f960 already calls the body in OFF, so wrapping that call would duplicate existing behavior.",
+      "reach": "static",
+      "reach_evidence": "Checked the 00935D30 host interface and the GameLuaHost BreakShip presentation record; no usable node/name/pool producer at this site."
+    },
+    {
+      "native": "00b6fc30",
+      "address": "0042e1a2",
+      "function": "0042e180",
+      "host_site": "src/segment2_camera_cc13.cpp:mover_build_frustum_planes_0042e180",
+      "status": "skipped",
+      "reason": "MoverFrustumHost::fov_aspect_product_00b6fc30 and the traffic/message equivalents have no concrete host implementation with the original camera state. The shadow-cascade callers also have no host-root call path. Adding the product to one of these uncalled bodies would not count.",
+      "reach": "static",
+      "reach_evidence": "Callers and identifier searches found only declarations/body definitions for the relevant interfaces and shadow fit functions."
+    },
+    {
+      "native": "00b6fe60",
+      "address": "00b15738",
+      "function": "00b156c0",
+      "host_site": "src/native_main_scene_execution_prefix.cpp:execute_prefix_body",
+      "status": "skipped",
+      "reason": "The native prefix already calls get_native_camera_clear_color_00b6fe60 in OFF and execute_native_main_scene_prefix_00b156c0 has no source caller. SceneRenderFrameHost::camera_clear_color_00b6fe60 has no concrete implementation. Replacing an existing equivalent getter or manufacturing a CameraView only to hand back the host color would not count.",
+      "reach": "static",
+      "reach_evidence": "Checked the native prefix, camera getter, and renderer host interface; the native prefix is dormant."
+    },
+    {
+      "native": "00b6d980",
+      "address": "004b0016",
+      "function": "004affe0",
+      "host_site": "src/cc13_left8_seg8.cpp:soldier_sentity_init_004affe0",
+      "status": "skipped",
+      "reason": "Left8Host::node_query_00b6d980 has no implementation and the current soldier host does not provide its original node image. The other reconstructed caller reads SceneNode::child_count through a semantic struct rather than native +38 storage and has no host-root caller; synthesizing an image containing just that count would only hand the host value back.",
+      "reach": "static",
+      "reach_evidence": "Checked all original callers, the Left8Host interface and refresh_leaf_worlds_00b72080."
+    },
+    {
+      "native": "00b7d220",
+      "address": "00b7edf6",
+      "function": "00b7eb90",
+      "identifier": "set_native_bounds_from_sphere_00b7d220",
+      "host_site": "src/structured_hierarchy.cpp:parse_hierarchy_item_00b7eb90:BoundingSphere",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost::run_scene_load_004dfb70 load_scene_contents -> GameUnitsHost::create_units -> GameGunneryHost::attach_00864bd0/register_new_units_00864bd0 -> Impl::build_guns -> device_fire_points -> read_mmod_hierarchy_items -> parse_hierarchy_00b7f100 -> parse_hierarchy_item_00b7eb90 BoundingSphere. kGunBarrelCountBound=true; no other OFF gate encloses this path. No surveyed mission count was supplied for this range.",
+      "producers": [
+        "Lua device-class Mesh names the model resource; GameLuaHost::read_resource_file supplies its bytes.",
+        "read_sphere_00b932e0 writes parsed.sphere from the actual BoundingSphere child; the call remains conditional on successful parsing.",
+        "parsed.box belongs to the same HierarchyItem retained in DeviceFirePoints::nodes."
+      ],
+      "contract": "Existing API already takes typed float pointers over the host's std::array<float,4> sphere and std::array<float,6> box, requiring no raw image conversion or second body. Dummy EDX=nullptr is not a native input. Original 00B7EDF1 pushes ESI=record+5C, 00B7EDF2 supplies ECX scratch output, and callee 00B7D25B RET4 removes the single sphere argument. Existing body retains its private six-float temporary and ordered x87 copies.",
+      "off_behavior": "The original line if (success) sphere_to_box_00b7d160(parsed.sphere, parsed.box); remains unchanged in the OFF arm.",
+      "on_behavior": "The existing 00B7D220 wrapper computes the box from the parsed sphere, retaining its audited x87/SSE schedule instead of the host projection."
+    }
+  ],
+  "wired_totals": {
+    "before": 8995,
+    "after": 8996
+  },
+  "checks": {
+    "off_build": "passed: ./scripts/build.ps1; both reconstructed_math and tool_tests passed",
+    "on_build": "passed: python tools/off_switch_on_build.py --names kWireGoal2Chain162Bound; exit 0, no distinct diagnostics; switch restored OFF before final plain build",
+    "pc24_lint": "No x87 arithmetic was added in the ON arm; it only calls the existing body. Precommit lint exited 0.",
+    "report_calls": "passed: 5 call rows checked, 0 failed",
+    "game_run": "not run, as assigned"
+  },
+  "limitations": "Build/static wiring evidence only; no runtime, native ABI replacement, or gameplay validation claim. No new host object was needed."
+}
