@@ -152,6 +152,10 @@ struct SceneEnumProperty {
     bool present{false};
     std::string table;   // `ShipClasses`, `PlaneClasses`, `Races`, ...
     std::string symbol;  // `PACK3_Pennsylvania`
+    // Chain 319: the property's merged native type-4 +0Ch (008F3A20), when the
+    // native bag merge resolved it (SceneProperty::has_enum_value).
+    bool has_native_value{false};
+    std::int32_t native_value{0};
 };
 SceneEnumProperty scene_enum_property(const ScenePropertyBlock& bag,
                                       const std::string& key) noexcept;

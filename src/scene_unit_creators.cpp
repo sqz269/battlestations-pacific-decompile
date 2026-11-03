@@ -239,6 +239,10 @@ SceneEnumProperty scene_enum_property(const ScenePropertyBlock& bag,
         out.symbol = out.table;
         out.table.clear();
     }
+    // Chain 319: only the native merge sets has_enum_value, so with the switch
+    // OFF this copies nothing.
+    out.has_native_value = prop->has_enum_value;
+    out.native_value = prop->enum_value;
     return out;
 }
 
