@@ -4,11 +4,14 @@
 // See docs/CC13_LEFTOVERS_1.md.
 
 #include "bsp/leftovers_cc13.hpp"
+#include "bsp/director_geommesh_seg38_39_argon.hpp"
+#include "bsp/wire_goal2_chain181_switches.hpp"
 
 #include <climits>
 #include <cmath>
 #include <cstring>
 #include <limits>
+#include <stdexcept>
 
 namespace bsp::leftovers_cc13 {
 namespace {
@@ -19,6 +22,40 @@ constexpr float kBoxMaxSeed = -std::numeric_limits<float>::max();
 
 // 00724462 CMP EDI,14h / JLE: a range of at most 20 triangles is a leaf.
 constexpr int kLeafTriangles = 20;
+
+// 00724CE0 owns one buffer: n records followed by n scratch records. The
+// dispatcher gets those same host buffers as the image's 00E19BD8/00E19BDC.
+class GeomMeshRadixSortAdapter final
+    : public director_geommesh_seg38_39_argon::GeomMeshRadixSortHost {
+public:
+    GeomMeshRadixSortAdapter(Record16* records, Record16* scratch)
+        : records_(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(records))),
+          scratch_(static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(scratch))) {}
+
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address == 0x00e19bd8u) return records_;
+        if (address == 0x00e19bdcu) return scratch_;
+        throw std::logic_error("Unexpected GeomMesh sort global");
+    }
+
+    void geom_mesh_radix_sort_key4_00722400(std::uint32_t* records,
+        std::int32_t count, std::uint32_t* scratch) override {
+        band_0067_cc13::radix_sort_records16_00722210(
+            reinterpret_cast<Record16*>(records), count,
+            reinterpret_cast<Record16*>(scratch), 1);
+    }
+
+    void geom_mesh_radix_sort_key8_007225f0(std::uint32_t* records,
+        std::int32_t count, std::uint32_t* scratch) override {
+        band_0067_cc13::radix_sort_records16_00722210(
+            reinterpret_cast<Record16*>(records), count,
+            reinterpret_cast<Record16*>(scratch), 2);
+    }
+
+private:
+    std::uint32_t records_;
+    std::uint32_t scratch_;
+};
 
 std::uint32_t float_bits(float v) noexcept {
     std::uint32_t bits = 0;
@@ -125,7 +162,14 @@ GeomMeshBuild build_tree_node_007240e0(const GeomMesh& mesh, GeomMeshPart& part,
         }
         // 007230F0 picks 00722210 / 00722400 / 007225F0 for key column 0 / 1 / 2; the scratch
         // pointer [00E19BDC] is the fixed second half of the buffer, not offset by start.
+        if constexpr (kWireGoal2Chain181Bound) {
+            // 007230F0 calls the native axis dispatcher; OFF keeps the direct radix sort.
+            GeomMeshRadixSortAdapter sort(records.data(), records.data() + n);
+            director_geommesh_seg38_39_argon::bsp_geom_mesh_radix_sort_by_axis_007230f0(
+                sort, axis, start, count);
+        } else {
         band_0067_cc13::radix_sort_records16_00722210(records.data() + start, count, records.data() + n, axis);
+        }
         const int half = count / 2; // CDQ, SUB EAX,EDX, SAR 1
         const GeomMeshBuild left = build_tree_node_007240e0(mesh, part, records, node * 2 + 1, start, half);
         if (left != GeomMeshBuild::ok) {

@@ -36,6 +36,8 @@
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
+#include "bsp/leftovers_cc13.hpp"
+#include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
@@ -3594,7 +3596,9 @@ struct GameGunneryHost::Impl {
     DeviceFirePoints& device_fire_points(int device);
     // Packet cc9_ship_platform_attachment: the ship model's Aux items, one load
     // per vehicle class.
-    struct ShipModelSlots {
+    // Model load 00727A90/00727310 owns the collision trees until its resource
+    // cache releases the model. Keep those owners with this host's class cache.
+    struct ShipModelSlots : bsp::detail::GeomMeshTreeOwner<bsp::kWireGoal2Chain181Bound> {
         bool loaded{false};
         std::string mesh;
         std::vector<bsp::GunFirePointItem> items;
@@ -5334,12 +5338,28 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                 entry.tris.push_back(a);
                 entry.tris.push_back(b);
                 entry.tris.push_back(c);
+                if constexpr (bsp::kWireGoal2Chain181Bound) {
+                    // 00725380's retained mesh bounds replace the per-triangle host bounds below.
+                } else {
                 for (const auto& v : {a, b, c}) {
                     for (int k = 0; k < 3; ++k) {
                         lo[k] = std::min(lo[k], v[k]);
                         hi[k] = std::max(hi[k], v[k]);
                     }
                 }
+                }
+            }
+            if constexpr (bsp::kWireGoal2Chain181Bound) {
+                if (mesh.bounds_and_trees() && !mesh.bounds_and_trees()->positions.empty()) {
+                    const auto& tree = *mesh.bounds_and_trees();
+                    const float native_lo[3] = {tree.bounds_min.x, tree.bounds_min.y, tree.bounds_min.z};
+                    const float native_hi[3] = {tree.bounds_max.x, tree.bounds_max.y, tree.bounds_max.z};
+                    for (int k = 0; k < 3; ++k) {
+                        lo[k] = std::min(lo[k], native_lo[k]);
+                        hi[k] = std::max(hi[k], native_hi[k]);
+                    }
+                }
+                entry.retain_trees_from(mesh);
             }
             for (const bsp::GeomMeshElement& el : mesh.elements) {
                 ShipModelSlots::ElementRange range;

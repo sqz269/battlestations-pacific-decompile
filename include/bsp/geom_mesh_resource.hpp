@@ -2,9 +2,12 @@
 #include "bsp/part_damage_reachability.hpp"
 #include "bsp/structured_reader.hpp"
 #include "bsp/structured_resource_registry.hpp"
+#include "bsp/wire_goal2_chain181_switches.hpp"
 #include <array>
 #include <cstdint>
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 // The `GeomMesh` resource payload: the authored collision geometry whose
@@ -22,6 +25,37 @@
 // reference-counted base, or any binary-compatible layout.
 
 namespace bsp {
+
+namespace leftovers_cc13 { struct GeomMesh; }
+
+namespace detail {
+// 00727A90/007268D0 create the resource at model load; 00727310 fills its
+// vectors, then 00725380 owns bounds/trees until resource teardown. The typed
+// projection shares the decoded payload's lifetime. Only the ON specialization
+// has storage; the empty OFF base preserves payload layout and construction.
+template<bool Enabled>
+struct GeomMeshTreeOwner {
+    const leftovers_cc13::GeomMesh* bounds_and_trees() const noexcept {
+        return trees_.empty() ? nullptr : trees_.front().get();
+    }
+    void retain_bounds_and_trees(std::shared_ptr<const leftovers_cc13::GeomMesh> tree) {
+        trees_.push_back(std::move(tree));
+    }
+    void retain_trees_from(const GeomMeshTreeOwner& resource) {
+        trees_.insert(trees_.end(), resource.trees_.begin(), resource.trees_.end());
+    }
+private:
+    std::vector<std::shared_ptr<const leftovers_cc13::GeomMesh>> trees_;
+};
+
+template<>
+struct GeomMeshTreeOwner<false> {
+    // These accessors are used only in discarded ON arms in an OFF build.
+    const leftovers_cc13::GeomMesh* bounds_and_trees() const noexcept { return nullptr; }
+    void retain_bounds_and_trees(std::shared_ptr<const leftovers_cc13::GeomMesh>) noexcept {}
+    void retain_trees_from(const GeomMeshTreeOwner&) noexcept {}
+};
+}  // namespace detail
 
 // One entry of the 2Ch-stride vector at mesh+8h. 00727260's 0x2E8BA2E9 /
 // SAR EDX,3 magic at 00727277/0072727E is division by 0x2C, and the temporary
@@ -70,7 +104,7 @@ struct GeomMeshEdge {
     std::uint32_t b{};
 };
 
-struct GeomMeshResourcePayload {
+struct GeomMeshResourcePayload : detail::GeomMeshTreeOwner<kWireGoal2Chain181Bound> {
     // The element list in authored order, before the 00727704 merge pass.
     std::vector<GeomMeshElement> authored_elements;
     // The surviving elements after 00727704..00727A6D. This is the vector at
@@ -96,6 +130,7 @@ struct GeomMeshResourcePayload {
     // is not an error for the enclosing dispatcher, so it is reported here
     // rather than through the return value.
     bool payload_too_small{};
+
 };
 
 // 00727310. The node must be the attached leaf; the parser leaves it attached

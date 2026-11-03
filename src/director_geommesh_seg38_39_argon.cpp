@@ -720,7 +720,7 @@ void bsp_geom_mesh_element_root_box_centre_00723030(
 // 007230f0: BSP_GeomMesh_RadixSortByAxis
 // Original ABI: __stdcall(stack axis, stack start, stack count), RET 0Ch.
 void bsp_geom_mesh_radix_sort_by_axis_007230f0(
-    Seg38_39Host& host,
+    GeomMeshRadixSortHost& host,
     std::int32_t axis,
     std::int32_t start,
     std::int32_t count) {

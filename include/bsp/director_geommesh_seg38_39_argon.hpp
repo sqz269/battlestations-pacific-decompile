@@ -17,7 +17,16 @@ struct Raw {
   void*& ptr(std::size_t off) const noexcept { return at<void*>(off); }
 };
 
-struct Seg38_39Host {
+// The axis dispatcher reads only the two record-buffer globals and these leaves.
+// Keep that contract usable without constructing unrelated director/game state.
+struct GeomMeshRadixSortHost {
+  virtual ~GeomMeshRadixSortHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void geom_mesh_radix_sort_key4_00722400(std::uint32_t* records, std::int32_t count, std::uint32_t* scratch) = 0;
+  virtual void geom_mesh_radix_sort_key8_007225f0(std::uint32_t* records, std::int32_t count, std::uint32_t* scratch) = 0;
+};
+
+struct Seg38_39Host : GeomMeshRadixSortHost {
   virtual ~Seg38_39Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -235,7 +244,7 @@ void bsp_geom_mesh_element_root_box_centre_00723030(
     const float* zero_vector_00f87574,
     float* out_centre);
 void bsp_geom_mesh_radix_sort_by_axis_007230f0(
-    Seg38_39Host& host,
+    GeomMeshRadixSortHost& host,
     std::int32_t axis,
     std::int32_t start,
     std::int32_t count);
