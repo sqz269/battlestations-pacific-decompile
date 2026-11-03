@@ -1,0 +1,146 @@
+{
+  "goal": 2,
+  "chain": 123,
+  "run": 246,
+  "harness": "claude",
+  "packet": "g2-w1",
+  "candidate": "segment 48 [007d1e50-007f8390]",
+  "tier": 2,
+  "host_file": "src/game_hosts_gunnery.cpp",
+  "switch": "kWireGoal2Chain123Bound",
+  "switch_header": "include/bsp/wire_goal2_chain123_switches.hpp",
+  "switch_default": false,
+  "wired_before": 8942,
+  "wired_after": 8943,
+  "rows_wired": 1,
+  "host_objects": [],
+  "checks": {
+    "off_build": {"command": "./scripts/build.ps1", "exit_code": 0, "ctest": "2/2 passed"},
+    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain123Bound", "exit_code": 0, "diagnostics": 0, "log": "local/off_switch_on_build.log"},
+    "pc24": {"command": "python tools/pc24_lint.py --diff origin/main...HEAD", "exit_code": 0, "findings": 0},
+    "readiness": {"command": "python tools/wire_readiness.py", "after_plain_off_build": true, "before": 8942, "after": 8943, "changes": [{"native": "007f6840", "before": "ready", "after": "wired"}]},
+    "game_run": false
+  },
+  "selection_note": "Segment 56 was claimed first and released after its rows were found unreachable from any host path (rows listed below with the segment-56 prefix). Segment 87 was not taken: chain 119 already examined all 14 of its listed rows (reports/wire-g2-c119.json).",
+  "rows": [
+    {
+      "native": "007f6840",
+      "address": "0085b0c5",
+      "function": "0085ad80",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire, wave-1 aim step (kGunWaveOrderBound=true, kGunDestroyedFailureCc13Bound=true arm)",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "GameGunneryHost fixed step (game_hosts_gunnery.cpp:18515 host.run_gun_aim_and_fire(step_seconds), after `if (host.guns.empty()) return;`) -> per-gun loop (skips dead owners only) -> `if (kGunWaveOrderBound)` (constexpr true, game_hosts_gunnery.cpp:700) -> `if constexpr (kGunDestroyedFailureCc13Bound)` (true, gun_destroyed_failure_cc13.hpp:54) -> gun_step_aim_0085ad80. Every turning gun of every mission steps here; the candidate detail gave no mission counts.",
+      "contract": "007F6840 __thiscall(ECX = platform window list; float horz, float vert), RET 8, EAX = window or null. 0085AD80 passes the stepped pair after 00605070 wraps both (0085AFD1 and the vertical); on null 0085B0CE restores the horizontal angle saved at 0085AFC8 (the value the add started from, after the zero-speed snap). Single caller.",
+      "effect": "ON: a gun whose stepped (horz, vert) lies in no traverse-enabled window of its platform arcs keeps its previous horizontal angle (vertical step kept), as 0085B0CE does. OFF: the step is kept unchecked."
+    },
+    {
+      "native": "007d7c00",
+      "address": "007db6b6",
+      "function": "007db680",
+      "host_site": "src/plane_flight.cpp: accumulate_free_flight_007db680 (PlaneDynAccumulators acc{})",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Identity: 007D7C00 only copies the world/body velocities into the step record and zeroes its accumulators. The host's free-flight accumulator is a different PlaneDynAccumulators type that is already value-initialised to zero and reads the velocities from its state; an ON arm would hand back zeros and the host's own velocities. The other caller 007D9360 is itself unwired (row below)."
+    },
+    {
+      "native": "007d9360",
+      "address": "007d9964",
+      "function": "007d98f0",
+      "host_site": "src/plane_flight.cpp: max_sustainable_climb_angle_007d98f0 (bisection predicate substitution), called from game_hosts_units.cpp:23105",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The live site exists (spawn-time climb angle), but trial_integrate_at_climb_angle_007d9360 needs a TrialClass (+164h/+170h/+174h/+184h), five tuning globals (00F87404/08/0C, 00F8732C, 00F873FC) and five callbacks (0042D0D0 trial pose, 00419010, 007D9140 drag, 007D92B0 aero, 007D8470 integrator) that the substituted PlaneClimbAngleInputs does not carry. Building that adapter exceeds this chain's per-row cap; later chain can take it."
+    },
+    {
+      "native": "007de5b0",
+      "address": "007cb030",
+      "function": "007caf10",
+      "host_site": "none: 007CAF10 BSP_Plane_LimitAndResetControls has no host implementation",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Host-object gap: the plane +C98h engine list (vector of PlaneEngineSlots) is not modelled by any host (game_hosts_units.cpp:19105 records the +C98h block only), and no host runs 007CAF10."
+    },
+    {
+      "native": "007de600",
+      "address": "007b8ef9",
+      "function": "007b8ef0",
+      "host_site": "src/cc13_seg47.cpp: plane_lose_power_007b8ef0 via Seg47Host::plane_power_block_007de600",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Host-object gap: no host implements Seg47Host or holds the +C98h engine list; the other callers 007CAF10 and 007D0B80 (state_message_007d0b80) are not called by any host either."
+    },
+    {
+      "native": "007eb0b0",
+      "address": "007d0d5d",
+      "function": "007d0b80",
+      "host_site": "src/gameplay_seg47_cc13.cpp: state_message_007d0b80 (no host caller)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Host-object gap: state_message_007d0b80 has no host caller and the +C98h engine list it indexes does not exist in any host."
+    },
+    {
+      "native": "007ef8b0",
+      "address": "007f17d2",
+      "function": "007f16d0",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::issue_return_to_base_007f16d0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The host substitutes 007F16D0 with a per-member `returntobase` script command over SceneCommandTarget; it builds no native 1Ch command record for 007EF8B0 to initialise, so a raw_view overload would have no host storage to type over."
+    },
+    {
+      "native": "007f0f80",
+      "address": "009a6cac",
+      "function": "009a6c10",
+      "host_site": "src/cc13_seg67b.cpp: bot_approach_dogfight_construct_009a6c10 via Cc13Seg67bHost::observer_member_initialize_007f0f80",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host implements Cc13Seg67bHost, so the dogfight-approach constructor never runs; the other caller 007F1DE0 is ledger-only."
+    },
+    {
+      "native": "007f2fd0",
+      "address": "007f3b68",
+      "function": "007f3b10",
+      "host_site": "src/cc15_seg48.cpp: cc15_seg48_entity_add_plane_kill_reason_007f2fd0 (Cc15Seg48Host)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host implements Cc15Seg48Host or keeps the entity Lua self table 'PlaneKillReasons'; game_hosts_lua.cpp's squadron death path calls only squadron_death_reports_kill_007f3b10's predicate."
+    },
+    {
+      "native": "007f7cd0",
+      "address": "0077b3df",
+      "function": "0077b280",
+      "host_site": "src/cc13_front8.cpp: player_record_has_recent_camera_state_007f7cd0 (unimplemented host method)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Only caller is the multiplayer replication sync-delta builder 0077B280, which no host runs (no session peers)."
+    },
+    {
+      "native": "008d4520",
+      "address": "0067d4c6",
+      "function": "0067cfb0",
+      "host_site": "src/press_start_screen.cpp: run_completed_arm -> PressStartScreenHost::reset_offline_profile (game_hosts_menu.cpp:1065)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Segment 56, examined before switching candidates. The press-start site is in the SignInPhase::Completed arm, which this host never enters (game_hosts_menu.cpp:907 sign_in_phase() returns Idle). The options-screen sites 005F833C/005F8B3B have no host: nothing implements OptionsScreenHost or OptionsActivateHost."
+    },
+    {
+      "native": "008d76c0",
+      "address": "007068b2",
+      "function": "00706760",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: load_message_map_00706760 via GameMessageManagerHost",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Segment 56, examined before switching candidates. Both sites sit in the profile-hints mode-2 language sweep; the message-manager host answers profile_hints_mode_plus8() = 0 (game_hosts_message_manager.cpp:538, no 004C1E90 singleton), and mission_scene_load.hpp's installed_languages() has no implementation."
+    },
+    {
+      "native": "0088b410",
+      "address": "008d00b4",
+      "function": "008d0060",
+      "host_site": "src/engine_seg56_cc13.cpp: hack_input_queue_press (HackPressInput)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Segment 56, examined before switching candidates. The only call site is the HackPressInput Lua binding (008D0430), which mission_lua_host.cpp lists by name but no host binds; the other reference is a data slot."
+    }
+  ]
+}
