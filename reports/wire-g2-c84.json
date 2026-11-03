@@ -1,167 +1,172 @@
 {
-  "chain": 84,
-  "slot": "g2-w1",
-  "harness": "claude",
-  "host_file": "src/game_hosts_units.cpp",
-  "switch": "kWireGoal2Chain84Bound",
-  "switch_header": "include/bsp/wire_goal2_chain84_switches.hpp",
-  "files_changed": [
-    "src/game_hosts_units.cpp",
-    "include/bsp/wire_goal2_chain84_switches.hpp",
-    "include/bsp/cc13_seg47.hpp",
-    "src/cc13_seg47.cpp",
-    "include/bsp/cc13_sweepC.hpp",
-    "src/cc13_sweepC.cpp",
-    "include/bsp/cc15_seg48.hpp",
-    "src/cc15_seg48.cpp"
-  ],
-  "rows": [
-    {
-      "native": "0x007bb150",
-      "address": "0x0099b055",
-      "function": "0x0099acd0",
-      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::bay_open_step_cc13 (unit+DF0h store before 007C6A8D)",
-      "status": "wired",
-      "reach_note": "live: bay_open_step_cc13 runs per plane each fixed step under kReleaseBayOpenCc13Bound = true (call at the 007DE3A0 actuator loop, host.gunnery present); planes with a torpedo or dive-bomb task reach the store. Typed over the 0099B003-0099B04D flag and the unit's 9C3h (bay_rack_holds_round_9c3). ON USN04: the store runs on every Plane::bay_target_007c6a8d pass (62518 calls; no return between them)",
-      "reached": 62518
-    },
-    {
-      "native": "0x006c77e0",
-      "address": "0x006cdc89",
-      "function": "0x006cdc70",
-      "host_site": "src/game_hosts_units.cpp GameUnitsHost::run_landing_queue_006cd240 (006CDC70's third sub-update, kAirOpsQueueCompactBound)",
-      "status": "wired",
-      "reach_note": "live: run_landing_queue_006cd240 is called every step from game_hosts_script_orders.cpp:1366; gates kLandingSequencerBound and Impl::kAirOpsQueueCompactBound are true. Typed over each landing deck's assignment records; the 0043F080 test is the host's death predicate. ON USN04: one walk per landing deck on each of the 3000 AirOps::landing_queue_tick passes; no record erased in this mission",
-      "reached": 3000
-    },
-    {
-      "native": "0x007f1ca0",
-      "address": "0x007cc8c8",
-      "function": "0x007cc8b0",
-      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0 (stock add, +3CCh == 1 gate, session-mode gate, slot return)",
-      "status": "wired",
-      "reach_note": "live gates: called from the plane fixed step under Impl::kStowedPlaneStockReturnBound = true; kStockReturnQueueEraseBound = true. Reached when a stowed plane goes back into a carrier's stock. Typed over the deck registry entry, the squadron record's live members and session_context().session_word_1fe4. ON USN04: stowed plane stock return sends=0, so not reached in this mission",
-      "reached": 0
-    },
-    {
-      "native": "0x00605270",
-      "address": "0x006087ed",
-      "function": "0x006082d0",
-      "host_site": "src/game_hosts_units.cpp player_bomb_release_006082d0",
-      "status": "skipped",
-      "reason": "host object missing: the C4h bomb-fire message is delivered at once (LABELLED) with no message object; the constructor only fills the base, +4h = 1 and the +1Ch bool, so wiring it would round-trip the host's own byte"
-    },
-    {
-      "native": "0x00653400",
-      "address": "0x00653843",
-      "function": "0x00653840",
-      "host_site": "src/game_hosts_units.cpp:545 (an interface override)",
-      "status": "skipped",
-      "reason": "not live: the only units-host mention is an std::abort() override of a native Host interface method that no host path calls; the host has no observer reference object"
-    },
-    {
-      "native": "0x0068a8a0",
-      "address": "0x0068cd5d",
-      "function": "0x0068cc70",
-      "host_site": "src/game_hosts_units.cpp (comment near player_flag_0184)",
-      "status": "skipped",
-      "reason": "host object missing: the units host names the HUD page 27h constructor only in a comment; it has no HUD screen/page object to construct"
-    },
-    {
-      "native": "0x006c6540",
-      "address": "0x006cdccd",
-      "function": "0x006cdc70",
-      "host_site": "src/game_hosts_units.cpp",
-      "status": "skipped",
-      "reason": "lease: the body lives in src/oct18_tail_a.cpp, which another worker holds this run, so no typed overload could be added; the host also has no ready-plane list (block+D8h/DCh) producer (wire-g2-c72 reason)"
-    },
-    {
-      "native": "0x0070db20",
-      "address": "0x0077f9d9",
-      "function": "0x0077f940",
-      "host_site": "src/game_hosts_units.cpp formation join (0077F940 model)",
-      "status": "skipped",
-      "reason": "no body logic to replace: 0070DB20 is operator new(508h) + 0070DAB0 + 0070D7B0; the host's FormationGroup creation is the 0070D7B0 init itself, so a typed overload would only sequence host code"
-    },
-    {
-      "native": "0x00710b80",
-      "address": "0x00951f62",
-      "function": "0x00951f40",
-      "host_site": "src/game_hosts_units.cpp plane_hit_node_detached stores",
-      "status": "skipped",
-      "reason": "host object missing: the host has no spatial index; +184h is modelled as the plane_hit_node_detached flag, so the body would only set the host's own flag (same reason as wire-g2-c68)"
-    },
-    {
-      "native": "0x007ee8f0",
-      "address": "0x009f8234",
-      "function": "0x009f8160",
-      "host_site": "src/game_hosts_units.cpp free-attack target_live_arm (009F830C)",
-      "status": "skipped",
-      "reason": "already reconstructed on this path: the ON arm of kFreeAttackAcceptTestCc13Bound already runs bsp::attack_command_applies (the typed 007EE8F0 decision); a typed overload would be a second body, and the raw body needs native squadron members/leader +C24h/target class (wire-g2-c72)"
-    },
-    {
-      "native": "0x00822c20",
-      "address": "0x0074bee7",
-      "function": "0x0074bec0",
-      "host_site": "src/game_hosts_units.cpp unit creation (00822C20 property-bag arm)",
-      "status": "skipped",
-      "reason": "host object missing: the 40-callee native unit/property-holder/traffic/weapon-director init graph is not in this host (lasting reason from wire-g2-c69/c72/c74)"
-    },
-    {
-      "native": "0x00876020",
-      "address": "0x0071c475",
-      "function": "0x0071c470",
-      "host_site": "src/game_hosts_units.cpp (comments in the fixed step)",
-      "status": "skipped",
-      "reason": "host object missing: the host has no tick-element sub-node graph; 00876020 is named only as a position note for the plane sub-node passes"
-    },
-    {
-      "native": "0x00924f90",
-      "address": "0x007c6fd0",
-      "function": "0x007c6f50",
-      "host_site": "src/game_hosts_units.cpp plane_liftoff_c6h_007c6f50 / plane_enter_state_one_007cc820 (deck_parent_plus_one)",
-      "status": "skipped",
-      "reason": "host object missing: the host keeps the parent as deck_parent_plus_one only, with no entity child chain {+48h,+4Ch,+50h}, world-root list or +B4h/+B8h counters; the body would reduce to the host's own store"
-    },
-    {
-      "native": "0x009af9a0",
-      "address": "0x009b3010",
-      "function": "0x009b2e50",
-      "host_site": "src/game_hosts_units.cpp LandTaskState enum",
-      "status": "skipped",
-      "reason": "host object missing: the host keeps the land task's states as an enum; there is no bot-state registry (00411E70 name/state vector) for the body to fill"
-    },
-    {
-      "native": "0x009be150",
-      "address": "0x009bed92",
-      "function": "0x009bed80",
-      "host_site": "src/game_hosts_units.cpp follow band inputs (gin.state_88 = gt.pilot_follow_safe_alt)",
-      "status": "skipped",
-      "reason": "host object missing: 009BE150 copies the A4h-byte Pilot/Follow block; the host has no such block and latches the single SafeAlt field, so wiring would only hand the host's value back"
-    },
-    {
-      "native": "0x009c2ac0",
-      "address": "0x009a2575",
-      "function": "0x009a2500",
-      "host_site": "src/game_hosts_units.cpp moveto ticks (run_land_moveto_tick_009c18c0, st_moveto_tick_009c18c0)",
-      "status": "skipped",
-      "reason": "host object missing: the host keeps no MoveTo state (element vector +0Ch, observer callback +18h, first endpoint +2Ch registered through 00694A60); the constructor's ranges are read as constants at the ticks"
-    },
-    {
-      "native": "0x009f9ce0",
-      "address": "0x009a1d7a",
-      "function": "0x009a1d60",
-      "host_site": "src/game_hosts_units.cpp speed-ratio sites (st_speed_ratio_24, lb_ap.speed_ratio_24, land_speed_ratio_24)",
-      "status": "skipped",
-      "reason": "already reconstructed on this path: the host's +24h ratio is bsp::bot_task_speed_ratio (009F9CE0's quotient and 1.0 floor); the rest of the head copies native unit fields (+538h, +9D4h, +DF4h descriptor row) the host has no head object for, so a typed overload would be a second body"
-    }
-  ],
-  "host_objects": [],
-  "build": "pass (./scripts/build.ps1, 2/2 tests)",
-  "on_build": "pass (tools/off_switch_on_build.py --names kWireGoal2Chain84Bound, 0 diagnostics)",
-  "pc24_lint": "0 findings",
-  "wired_before": 8906,
-  "wired_after": 8909,
-  "pair_run": "USN04 3200 frames, OFF = tree build at d9ce36cc7, ON = pair_export --flip kWireGoal2Chain84Bound=true; both exit 0. pair_diff: GAMEPLAY identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509), UNIT TABLE identical (81), NATIVE TABLE 1624 -> 1624 with 0 added/removed/status changed/counts moved, SUMMARY LINES 0 changed; OTHER LINES differ only in atlas source allocation addresses (layout noise). No native row moved from stand-in to concrete: the three bodies replace host logic inside already-concrete host methods.",
-  "flip_proposal": "Flip kWireGoal2Chain84Bound ON: the USN04 pair is identical in gameplay and in the native call table, and the three ON arms are behavior-equivalent to OFF in single player (007F1CA0 adds only the image session-mode-2 gate before the slot return). 007F1CA0 was not reached in USN04; a carrier mission with stowed returns (JM05) would exercise it."
+ "chain": 84,
+ "slot": "g2-w1",
+ "harness": "claude",
+ "host_file": "src/game_hosts_units.cpp",
+ "switch": "kWireGoal2Chain84Bound",
+ "switch_header": "include/bsp/wire_goal2_chain84_switches.hpp",
+ "files_changed": [
+  "src/game_hosts_units.cpp",
+  "include/bsp/wire_goal2_chain84_switches.hpp",
+  "include/bsp/cc13_seg47.hpp",
+  "src/cc13_seg47.cpp",
+  "include/bsp/cc13_sweepC.hpp",
+  "src/cc13_sweepC.cpp",
+  "include/bsp/cc15_seg48.hpp",
+  "src/cc15_seg48.cpp"
+ ],
+ "rows": [
+  {
+   "native": "0x007bb150",
+   "address": "0x0099b055",
+   "function": "0x0099acd0",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::bay_open_step_cc13 (unit+DF0h store before 007C6A8D)",
+   "status": "wired",
+   "reach_note": "live: bay_open_step_cc13 runs per plane each fixed step under kReleaseBayOpenCc13Bound = true (call at the 007DE3A0 actuator loop, host.gunnery present); planes with a torpedo or dive-bomb task reach the store. Typed over the 0099B003-0099B04D flag and the unit's 9C3h (bay_rack_holds_round_9c3). ON USN04: the store runs on every Plane::bay_target_007c6a8d pass (62518 calls; no return between them)",
+   "reached": 62518
+  },
+  {
+   "native": "0x006c77e0",
+   "address": "0x006cdc89",
+   "function": "0x006cdc70",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::run_landing_queue_006cd240 (006CDC70's third sub-update, kAirOpsQueueCompactBound)",
+   "status": "wired",
+   "reach_note": "live gates: run_landing_queue_006cd240 is called every step from game_hosts_script_orders.cpp:1366; kLandingSequencerBound and Impl::kAirOpsQueueCompactBound are true. Typed over each landing deck's assignment records: the null-plane test (006C7875) is s == nullptr and 0043F080's test (006C788D-006C78B6) is the host's death predicate, both evaluated in the typed body. ON USN04: both decks (Lexington-class01, Yorktown-class01) log records=0 inserts=0 in their summary landing sequencer lines, so the body walked an empty vector on each of the 3000 AirOps::landing_queue_tick passes and plane_is_null/plane_fails_0043f080/erase never executed; 3000 is the landing_queue_tick count, not erase work",
+   "reached": 3000
+  },
+  {
+   "native": "0x007f1ca0",
+   "address": "0x007cc8c8",
+   "function": "0x007cc8b0",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0 (stock add, +3CCh == 1 gate, session-mode gate, slot return)",
+   "status": "wired",
+   "reach_note": "static reach in this chain's USN04 pair: stowed plane stock return sends=0 on both sides. The host path is live: called from the plane fixed step under Impl::kStowedPlaneStockReturnBound = true with kStockReturnQueueEraseBound = true, and ESMP08 p3 at 72000 frames logged 12 stock returns and 7 slot returns (docs/SHIP_AI_OPEN_ITEMS.md:15485; USN01 p8 at 22000 also returns planes to Enterprise's stock). Typed over the deck registry entry, the squadron record's live members and session_context().session_word_1fe4",
+   "reached": 0
+  },
+  {
+   "native": "0x00605270",
+   "address": "0x006087ed",
+   "function": "0x006082d0",
+   "host_site": "src/game_hosts_units.cpp player_bomb_release_006082d0",
+   "status": "skipped",
+   "reason": "host object missing: the C4h bomb-fire message is delivered at once (LABELLED) with no message object; the constructor only fills the base, +4h = 1 and the +1Ch bool, so wiring it would round-trip the host's own byte"
+  },
+  {
+   "native": "0x00653400",
+   "address": "0x00653843",
+   "function": "0x00653840",
+   "host_site": "src/game_hosts_units.cpp:545 (an interface override)",
+   "status": "skipped",
+   "reason": "not live: the only units-host mention is an std::abort() override of a native Host interface method that no host path calls; the host has no observer reference object"
+  },
+  {
+   "native": "0x0068a8a0",
+   "address": "0x0068cd5d",
+   "function": "0x0068cc70",
+   "host_site": "src/game_hosts_units.cpp (comment near player_flag_0184)",
+   "status": "skipped",
+   "reason": "host object missing: the units host names the HUD page 27h constructor only in a comment; it has no HUD screen/page object to construct"
+  },
+  {
+   "native": "0x006c6540",
+   "address": "0x006cdccd",
+   "function": "0x006cdc70",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "lease: the body lives in src/oct18_tail_a.cpp, which another worker holds this run, so no typed overload could be added; the host also has no ready-plane list (block+D8h/DCh) producer (wire-g2-c72 reason)"
+  },
+  {
+   "native": "0x0070db20",
+   "address": "0x0077f9d9",
+   "function": "0x0077f940",
+   "host_site": "src/game_hosts_units.cpp formation join (0077F940 model)",
+   "status": "skipped",
+   "reason": "no body logic to replace: 0070DB20 is operator new(508h) + 0070DAB0 + 0070D7B0; the host's FormationGroup creation is the 0070D7B0 init itself, so a typed overload would only sequence host code"
+  },
+  {
+   "native": "0x00710b80",
+   "address": "0x00951f62",
+   "function": "0x00951f40",
+   "host_site": "src/game_hosts_units.cpp plane_hit_node_detached stores",
+   "status": "skipped",
+   "reason": "host object missing: the host has no spatial index; +184h is modelled as the plane_hit_node_detached flag, so the body would only set the host's own flag (same reason as wire-g2-c68)"
+  },
+  {
+   "native": "0x007ee8f0",
+   "address": "0x009f8234",
+   "function": "0x009f8160",
+   "host_site": "src/game_hosts_units.cpp free-attack target_live_arm (009F830C)",
+   "status": "skipped",
+   "reason": "already reconstructed on this path: the ON arm of kFreeAttackAcceptTestCc13Bound already runs bsp::attack_command_applies (the typed 007EE8F0 decision); a typed overload would be a second body, and the raw body needs native squadron members/leader +C24h/target class (wire-g2-c72)"
+  },
+  {
+   "native": "0x00822c20",
+   "address": "0x0074bee7",
+   "function": "0x0074bec0",
+   "host_site": "src/game_hosts_units.cpp unit creation (00822C20 property-bag arm)",
+   "status": "skipped",
+   "reason": "host object missing: the 40-callee native unit/property-holder/traffic/weapon-director init graph is not in this host (lasting reason from wire-g2-c69/c72/c74)"
+  },
+  {
+   "native": "0x00876020",
+   "address": "0x0071c475",
+   "function": "0x0071c470",
+   "host_site": "src/game_hosts_units.cpp (comments in the fixed step)",
+   "status": "skipped",
+   "reason": "host object missing: the host has no tick-element sub-node graph; 00876020 is named only as a position note for the plane sub-node passes"
+  },
+  {
+   "native": "0x00924f90",
+   "address": "0x007c6fd0",
+   "function": "0x007c6f50",
+   "host_site": "src/game_hosts_units.cpp plane_liftoff_c6h_007c6f50 / plane_enter_state_one_007cc820 (deck_parent_plus_one)",
+   "status": "skipped",
+   "reason": "host object missing: the host keeps the parent as deck_parent_plus_one only, with no entity child chain {+48h,+4Ch,+50h}, world-root list or +B4h/+B8h counters; the body would reduce to the host's own store"
+  },
+  {
+   "native": "0x009af9a0",
+   "address": "0x009b3010",
+   "function": "0x009b2e50",
+   "host_site": "src/game_hosts_units.cpp LandTaskState enum",
+   "status": "skipped",
+   "reason": "host object missing: the host keeps the land task's states as an enum; there is no bot-state registry (00411E70 name/state vector) for the body to fill"
+  },
+  {
+   "native": "0x009be150",
+   "address": "0x009bed92",
+   "function": "0x009bed80",
+   "host_site": "src/game_hosts_units.cpp follow band inputs (gin.state_88 = gt.pilot_follow_safe_alt)",
+   "status": "skipped",
+   "reason": "host object missing: 009BE150 copies the A4h-byte Pilot/Follow block; the host has no such block and latches the single SafeAlt field, so wiring would only hand the host's value back"
+  },
+  {
+   "native": "0x009c2ac0",
+   "address": "0x009a2575",
+   "function": "0x009a2500",
+   "host_site": "src/game_hosts_units.cpp moveto ticks (run_land_moveto_tick_009c18c0, st_moveto_tick_009c18c0)",
+   "status": "skipped",
+   "reason": "host object missing: the host keeps no MoveTo state (element vector +0Ch, observer callback +18h, first endpoint +2Ch registered through 00694A60); the constructor's ranges are read as constants at the ticks"
+  },
+  {
+   "native": "0x009f9ce0",
+   "address": "0x009a1d7a",
+   "function": "0x009a1d60",
+   "host_site": "src/game_hosts_units.cpp speed-ratio sites (st_speed_ratio_24, lb_ap.speed_ratio_24, land_speed_ratio_24)",
+   "status": "skipped",
+   "reason": "already reconstructed on this path: the host's +24h ratio is bsp::bot_task_speed_ratio (009F9CE0's quotient and 1.0 floor); the rest of the head copies native unit fields (+538h, +9D4h, +DF4h descriptor row) the host has no head object for, so a typed overload would be a second body"
+  }
+ ],
+ "host_objects": [],
+ "build": "pass (./scripts/build.ps1, 2/2 tests) after review round 1",
+ "on_build": "pass (tools/off_switch_on_build.py --names kWireGoal2Chain84Bound, 0 diagnostics) after review round 1",
+ "pc24_lint": "0 findings",
+ "wired_before": 8906,
+ "wired_after": 8909,
+ "pair_run": "USN04 3200 frames, OFF = tree build at d9ce36cc7, ON = pair_export --flip kWireGoal2Chain84Bound=true; both exit 0. pair_diff: GAMEPLAY identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509), UNIT TABLE identical (81), NATIVE TABLE 1624 -> 1624 with 0 added/removed/status changed/counts moved, SUMMARY LINES 0 changed; OTHER LINES differ only in atlas source allocation addresses (layout noise). No native row moved from stand-in to concrete: the three bodies replace host logic inside already-concrete host methods.",
+ "flip_proposal": "Flip kWireGoal2Chain84Bound ON: the USN04 pair is identical in gameplay and in the native call table, and the three ON arms are behavior-equivalent to OFF (007F1CA0 adds only the image's session-mode-2 gate before the slot return, which the host never sets: it holds 0 or 1). Neither 006C77E0's erase nor 007F1CA0 ran in USN04, so before or with the flip run an ESMP08 p3 72000-frame pair (12 stock returns, 7 slot returns, docs/SHIP_AI_OPEN_ITEMS.md:15485) or USN01 p8 at 22000 frames, expecting identical stock-return and slot-return counts on both sides. JM05 9000 is not a reach mission (sends 0 on both sides, docs/OCEAN_WAVE_FIELD.md:2022).",
+ "review_round_1": [
+  "fix 1 (007F1CA0 reach_note, flip_proposal): fixed; JM05 replaced by ESMP08 p3 72000 / USN01 p8 22000, reach marked static for the USN04 pair",
+  "fix 2 (006C77E0 reach_note): fixed; both USN04 decks records=0 inserts=0, the body walked an empty vector",
+  "fix 3 (cc13_sweepC.hpp typed body): fixed; records.gone() split into plane_is_null (006C7875) and plane_fails_0043f080 (006C788D-006C78B6), evaluated in the typed body; BlockQueueRecords keeps the 006C7866 check before the null test and the 006C7898 check before the byte test; LandingDeckAssignmentRecords uses s == nullptr and the death predicate in the same order"
+ ]
 }

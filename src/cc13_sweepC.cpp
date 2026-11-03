@@ -119,11 +119,13 @@ struct BlockQueueRecords {
     std::uint32_t size() const {
         return begin() == nullptr ? 0u : static_cast<std::uint32_t>((end() - begin()) / 0x14);
     }
-    bool gone(std::uint32_t index) const {
+    bool plane_is_null(std::uint32_t index) const {
         const std::ptrdiff_t offset = static_cast<std::ptrdiff_t>(index) * 0x14;
         if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7866
-        void* const plane = *reinterpret_cast<void**>(begin() + offset);
-        if (plane == nullptr) return true;                                    // 006C7875
+        return *reinterpret_cast<void**>(begin() + offset) == nullptr;        // 006C7875
+    }
+    bool plane_fails_0043f080(std::uint32_t index) const {
+        const std::ptrdiff_t offset = static_cast<std::ptrdiff_t>(index) * 0x14;
         if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7898
         void* const p = *reinterpret_cast<void**>(begin() + offset);
         return at<std::uint8_t>(p, 0x5C) == 0 || at<std::uint8_t>(p, 0x5D) != 0 ||

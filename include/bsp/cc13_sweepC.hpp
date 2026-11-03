@@ -378,16 +378,19 @@ void air_ops_block_set_orders_006bf650(SweepCHost& host, void* block, std::uint8
 // 006C77E0, __fastcall(ECX = block): drops the +A8h records whose plane is gone or inactive.
 void air_ops_block_compact_records_006c77e0(SweepCHost& host, void* block);
 // Typed view of 006C77E0 over the caller's record storage. Between lock() and unlock() (the
-// block+8h tracked lock), the records are walked by index (006C7818 / 006C7839); a record that
-// records.gone(index) answers for (a null plane, 006C7875, or one failing 0043F080's test,
-// 006C788D-006C78B6) is removed by records.erase(index), the tail shifted down one record with
-// the order kept (006C78C3-006C7920), and the index stays on the record moved into its place.
-// The raw entry wraps it.
+// block+8h tracked lock), the records are walked by index (006C7818 / 006C7839). A record whose
+// plane is null (records.plane_is_null(index), 006C7875) is erased; otherwise its plane is put
+// to 0043F080's test (records.plane_fails_0043f080(index), 006C788D-006C78B6), and a failing one
+// is erased. records.erase(index) shifts the tail down one record with the order kept
+// (006C78C3-006C7920), and the index stays on the record moved into its place. The raw entry
+// wraps it.
 template <class Records, class Lock, class Unlock>
 void air_ops_block_compact_records_006c77e0(Records& records, Lock&& lock, Unlock&& unlock) {
     lock();
     for (std::uint32_t index = 0; index < records.size(); ++index) {
-        if (records.gone(index)) {
+        bool erase = records.plane_is_null(index);                // 006C7875
+        if (!erase) erase = records.plane_fails_0043f080(index);  // 006C788D-006C78B6
+        if (erase) {
             records.erase(index);
             --index;  // unsigned wrap from 0, undone by the ++ (the image's DEC / INC pair)
         }

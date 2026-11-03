@@ -22760,10 +22760,12 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
                     const std::size_t pi = d.assignments[i].plane;
                     return pi < h.slots.size() ? h.slots[pi].get() : nullptr;
                 }
-                bool gone(std::uint32_t i) const {
+                bool plane_is_null(std::uint32_t i) const { return slot(i) == nullptr; }
+                // 0043F080's test: the host's death predicate.
+                bool plane_fails_0043f080(std::uint32_t i) const {
                     const std::size_t pi = d.assignments[i].plane;
                     const GameUnitSlot* s = slot(i);
-                    return s == nullptr || !units.unit_alive_and_visible(pi) ||
+                    return !units.unit_alive_and_visible(pi) ||
                         s->plane_death_c3a || s->plane_death_removed ||
                         (h.gunnery != nullptr && h.gunnery->unit_dead(pi));
                 }
