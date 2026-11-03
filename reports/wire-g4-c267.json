@@ -1,0 +1,36 @@
+{
+  "chain": 267,
+  "switch": "kWireGoal4Chain267Bound",
+  "rows": [
+    {
+      "native": "006BCD80",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::motion_step_00825f20 / PlaneBinding::land_set_held_006bcd80",
+      "state": "All live landing assignments are projected into the native 14h layout using actual GameUnitSlot pointers; the body sets held bytes and the host writes those bytes back.",
+      "evidence": "bsp.py show 006bcd80; block+8h is null for the existing single-threaded assignment owner; the OFF arm preserves the original scan.",
+      "call_graph": "REACHABLE; call at 1024DAC1 from PlaneBinding::land_set_held_006bcd80, reached through land_enter_abort_009b0980."
+    },
+    {
+      "native": "006BC890",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::motion_step_00825f20 / PlaneBinding::run_takeoff_run_step_009ce2c0",
+      "state": "The block's traffic pointer identifies the live CarrierElevator or selected ScenePathEntry. The +44h adapter reads its lift point or transforms entry point zero using the live owner frame; the returned Z drives the existing runway-end tolerance.",
+      "evidence": "bsp.py show 006bc890, 006d0120 and 006cf520. Missing host geometry retains end=40 without calling the body with a fabricated absent site. The OFF arm preserves the original endpoint code.",
+      "call_graph": "REACHABLE; call at 1029AB95 from PlaneBinding::run_takeoff_run_step_009ce2c0."
+    },
+    {
+      "native": "006C0B50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::landing_request_006c54c0",
+      "reason": "The existing native body requires native queue/slot storage, observer registrations and serialized slot-message routing; this host still owns an index-based landing queue without those producers."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "pc24": "tools/pc24_lint.py --staged: zero findings",
+    "wired_before": 9174,
+    "wired_after": 9176,
+    "reachability": "tools/call_graph.py rebuilt the graph after the build; who confirmed both exact reconstructed bodies are entry-reachable",
+    "runtime": "No game run; build and static call-graph evidence only"
+  }
+}
