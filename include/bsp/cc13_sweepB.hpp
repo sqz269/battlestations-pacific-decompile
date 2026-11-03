@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
+#include <utility>
 
 namespace bsp {
 
@@ -358,6 +359,14 @@ void cc13_sweepB_interface_view_draw_target_ortho_00535430(void* view, Cc13Sweep
 
 // 005457C0: 1 when party is neither the entity's own (+54h) nor neutral (2).
 bool cc13_sweepB_entity_is_hostile_to_party_005457c0(const void* entity, std::int32_t party);
+// 005457C0, typed view overload (wire goal 2 chain 75); the raw entry above wraps it.
+// View supplies party_54(), the entity's +54h party (005457C4 CMP [ECX+54h],EAX); the
+// body answers 1 when the argument differs from it (005457C7) and is not 2 (005457C9).
+// Viewless arguments (a raw pointer) are left to the raw entry.
+template <class View, class = decltype(std::declval<const View&>().party_54())>
+bool cc13_sweepB_entity_is_hostile_to_party_005457c0(const View& entity, std::int32_t party) {
+    return entity.party_54() != party && party != 2;
+}
 
 // 00548300: the weapon-group sight dispatch on the selected kind (+44h).
 void cc13_sweepB_weapon_group_update_sight_00548300(void* screen, Cc13SweepBHost& host);

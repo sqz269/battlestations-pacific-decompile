@@ -341,23 +341,37 @@ void bsp_director_path_object_destruct_0071fc70(Seg38_39Host& host, void* self) 
 
 // 0071fd10: BSP_DirectorPathObject_CopyFrom
 // Original ABI: __thiscall(ECX=self, stack other), RET 4.
-void bsp_director_path_object_copy_from_0071fd10(Seg38_39Host& host, void* self, const void* other) {
-  if (other == self) {
-    return;
+namespace {
+// The raw image path-object pair for the typed 0071FD10 overload; each step is the
+// image's own access through Seg38_39Host.
+struct RawDirectorPathCopy {
+  Seg38_39Host& host;
+  void* self;
+  const void* other;
+  bool same_object() const { return other == self; }
+  void copy_modes_08_0c() {
+    Raw dst = raw_of(self);
+    Raw src = raw_of(other);
+    dst.at<std::uint32_t>(0x08) = src.at<std::uint32_t>(0x08);
+    dst.at<std::uint32_t>(0x0c) = src.at<std::uint32_t>(0x0c);
   }
-  Raw dst = raw_of(self);
-  Raw src = raw_of(other);
-  dst.at<std::uint32_t>(0x08) = src.at<std::uint32_t>(0x08);
-  dst.at<std::uint32_t>(0x0c) = src.at<std::uint32_t>(0x0c);
-  host.path_source_ref_copy_from_007b1bf0(dst.p + 0x10, src.p + 0x10);
-  bsp_vec3_vector_assign_0071f9f0(host, dst.p + 0x40, src.p + 0x40);
-
-  void* src_source = src.ptr(0x14);
-  void* resolved_iface = nullptr;
-  if (src_source != nullptr) {
-    resolved_iface = host.vcall_24(src_source);
+  void copy_source_ref_007b1bf0() {
+    host.path_source_ref_copy_from_007b1bf0(raw_of(self).p + 0x10, raw_of(other).p + 0x10);
   }
-  if (resolved_iface == src.p + 0x40) {
+  void assign_points_0071f9f0() {
+    bsp_vec3_vector_assign_0071f9f0(host, raw_of(self).p + 0x40, raw_of(other).p + 0x40);
+  }
+  bool other_source_is_own_points() {
+    Raw src = raw_of(other);
+    void* src_source = src.ptr(0x14);
+    void* resolved_iface = nullptr;
+    if (src_source != nullptr) {
+      resolved_iface = host.vcall_24(src_source);
+    }
+    return resolved_iface == src.p + 0x40;
+  }
+  void adopt_own_points_source_007b2250() {
+    Raw dst = raw_of(self);
     void* temp_source = nullptr;
     void** created_slot = host.entity_path_source_create_for_slot_007b2250(&temp_source, dst.p + 0x40);
     bsp_ref_ptr_assign_0071f110(host, dst.p + 0x10, created_slot);
@@ -367,6 +381,12 @@ void bsp_director_path_object_copy_from_0071fd10(Seg38_39Host& host, void* self,
       }
     }
   }
+};
+}  // namespace
+
+void bsp_director_path_object_copy_from_0071fd10(Seg38_39Host& host, void* self, const void* other) {
+  RawDirectorPathCopy path{host, self, other};
+  bsp_director_path_object_copy_from_0071fd10(path);
 }
 
 // 00720180: BSP_CommandControllerBase_Construct

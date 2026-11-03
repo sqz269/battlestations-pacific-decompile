@@ -228,8 +228,18 @@ void cc13_sweepB_interface_view_draw_target_ortho_00535430(void* view, Cc13Sweep
 // Evidence 005457C0..005457D8. Callers 00547480, 00835F60 and 00836920 (rel32
 // census). Hosts: src/game_hosts_commands.cpp and src/gameplay_seg52_cc13.cpp
 // describe the same test inline; this is the standalone body.
+namespace {
+// The raw image entity for the typed 005457C0 overload: +54h read in place.
+struct RawHostilePartyEntity {
+    const void* entity;
+    std::int32_t party_54() const {
+        return cc13_sweepB_at<std::int32_t>(const_cast<void*>(entity), 0x54);
+    }
+};
+}  // namespace
+
 bool cc13_sweepB_entity_is_hostile_to_party_005457c0(const void* entity, std::int32_t party) {
-    return cc13_sweepB_at<std::int32_t>(const_cast<void*>(entity), 0x54) != party && party != 2;
+    return cc13_sweepB_entity_is_hostile_to_party_005457c0(RawHostilePartyEntity{entity}, party);
 }
 
 // 00548300 BSP_HudWeaponGroupScreen_UpdateGroupSight (hypothesis; ledger FUN_00548300).

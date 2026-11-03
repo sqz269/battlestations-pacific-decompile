@@ -36,7 +36,9 @@
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/wire_goal1_chain10_switches.hpp"
 #include "bsp/wire_goal2_chain42_switches.hpp"
+#include "bsp/wire_goal2_chain75_switches.hpp"
 #include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
+#include "bsp/cc13_sweepB.hpp"                       // 005457C0 typed view (chain 75)
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -3330,6 +3332,46 @@ void GameCommandsHost::bind_command_target_facts(
     impl_->target_facts = source;
 }
 
+namespace {
+// Wire goal 2 chain 75, 005457C0. Adapts the units host's GameCommandTargetFacts for
+// the director's unit (the [director+24Ch] entity of 00836BCE, read through
+// command_target_facts) to the typed overload: party_54() is its +54h side.
+struct CommandUnitPartyView {
+    const GameCommandTargetFacts& unit;
+    std::int32_t party_54() const { return unit.side_0054; }
+};
+
+// Wire goal 2 chain 75, 0071FD10. Adapts the slot-0 path object GameDirector carries
+// (the one of 00720450's ten 00720714 copies this host keeps) to the typed overload:
+// +8h/+0Ch are path_follow_mode/path_start_mode (0071C1B0's stores, 0071FB90's 1/5);
+// the +10h holder's source at +14h is path_name with its points path_points; +40h is
+// user_points (0071FDE0's vector); and "the source is the object's own +40h vector" is
+// path_user (0071FC40's attached test). 0071FD10 does not copy the holder's cursor
+// state +18h..+20h (path_cursor), so the successor keeps its own.
+struct DirectorPathObjectCopyView {
+    GameDirector& to;
+    const GameDirector& from;
+    bool same_object() const { return &to == &from; }
+    void copy_modes_08_0c() {
+        to.path_follow_mode = from.path_follow_mode;
+        to.path_start_mode = from.path_start_mode;
+    }
+    void copy_source_ref_007b1bf0() {
+        // The successor now shares the source, which is not its own +40h vector.
+        to.path_name = from.path_name;
+        to.path_points = from.path_points;
+        to.path_user = false;
+    }
+    void assign_points_0071f9f0() { to.user_points = from.user_points; }
+    bool other_source_is_own_points() const { return from.path_user; }
+    void adopt_own_points_source_007b2250() {
+        // 007B2250 wraps the successor's own +40h vector; 0071F110 makes it the source.
+        to.path_points = to.user_points;
+        to.path_user = true;
+    }
+};
+}  // namespace
+
 GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t unit_index,
     bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
     float heading_radians) {
@@ -3504,7 +3546,15 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
         } else if (host.target_facts->command_target_facts(unit_index, own)) {
             // 00836BCB..00836BDC: 005457C0(ECX = [director+24Ch], target+54h),
             // `unit+54h != side && side != 2`, false raises stage 2.
-            const bool hostile = own.side_0054 != facts.side_0054 && facts.side_0054 != 2;
+            bool hostile;
+            // 005457C0: cc13_sweepB_entity_is_hostile_to_party_005457c0 over the unit's
+            // facts and the target's +54h side; OFF keeps the inline side compare.
+            if constexpr (bsp::kWireGoal2Chain75Bound) {
+                hostile = bsp::cc13_sweepB_entity_is_hostile_to_party_005457c0(
+                    CommandUnitPartyView{own}, facts.side_0054);
+            } else {
+                hostile = own.side_0054 != facts.side_0054 && facts.side_0054 != 2;
+            }
             if (!hostile) {
                 raise = true;
                 why = "target not hostile (005457c0)";
@@ -4145,6 +4195,26 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
         if (from.slot_command[i] == bsp::gameplay_seg38_cc13::kCmdLand)
             ++host.summary.director_copy_land_kept;
     }
+    if constexpr (bsp::kWireGoal2Chain75Bound) {
+        // 0071FD10 at 00720714: bsp_director_path_object_copy_from_0071fd10 over slot 0's
+        // path fields; OFF keeps the wholesale copy, path_cursor included.
+        DirectorPathObjectCopyView path{to, from};
+        bsp::director_geommesh_seg38_39_argon::bsp_director_path_object_copy_from_0071fd10(path);
+        if (&to != &from) {
+            // This host's build memo and the slot descriptor's pending path, which
+            // 0071FD10 does not own; copied as before.
+            to.path_built = from.path_built;
+            to.path_start_index = from.path_start_index;
+            to.path_travelled = from.path_travelled;
+            to.path_last_x = from.path_last_x;
+            to.path_last_z = from.path_last_z;
+            to.path_last_valid = from.path_last_valid;
+            to.path_visited = from.path_visited;
+            to.pending_path_points = from.pending_path_points;
+            to.pending_path_name = from.pending_path_name;
+            to.pending_path_valid = from.pending_path_valid;
+        }
+    } else {
     if (&to != &from) {
         to.path_cursor = from.path_cursor;
         to.path_points = from.path_points;
@@ -4163,6 +4233,7 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
         to.pending_path_valid = from.pending_path_valid;
         to.user_points = from.user_points;
         to.path_user = from.path_user;
+    }
     }
     // The stage reset below makes the next step begin slot 0 again.
     to.path_begun = false;

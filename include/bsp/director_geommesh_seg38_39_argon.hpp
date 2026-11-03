@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <utility>
 
 namespace bsp::director_geommesh_seg38_39_argon {
 
@@ -180,6 +181,26 @@ void* triv_body_0071fc20(void* self);
 std::uint8_t triv_body_0071fc30(void* self);
 void bsp_director_path_object_destruct_0071fc70(Seg38_39Host& host, void* self);
 void bsp_director_path_object_copy_from_0071fd10(Seg38_39Host& host, void* self, const void* other);
+// 0071FD10, typed view overload (wire goal 2 chain 75); the raw entry above wraps it.
+// The View is the (self, other) pair of director path objects and supplies, in the
+// body's order: same_object() (0071FD2F CMP EDI,ESI), copy_modes_08_0c() (0071FD37..
+// 0071FD40, +8h and +0Ch), copy_source_ref_007b1bf0() (0071FD4C, the +10h holder's
+// refcounted source at +14h), assign_points_0071f9f0() (0071FD5A, the +40h vector),
+// other_source_is_own_points() (0071FD5F..0071FD7D: [other+14h] non-null and its
+// vt[24h]() equal to other+40h) and adopt_own_points_source_007b2250() (0071FD85..
+// 0071FDC0: 007B2250 over self+40h, 0071F110 into self+10h, the temporary released).
+template <class View, class = decltype(std::declval<View&>().other_source_is_own_points())>
+void bsp_director_path_object_copy_from_0071fd10(View& path) {
+  if (path.same_object()) {
+    return;
+  }
+  path.copy_modes_08_0c();
+  path.copy_source_ref_007b1bf0();
+  path.assign_points_0071f9f0();
+  if (path.other_source_is_own_points()) {
+    path.adopt_own_points_source_007b2250();
+  }
+}
 void* bsp_command_controller_base_construct_00720180(Seg38_39Host& host, void* self, void* owner);
 std::uint8_t triv_body_00720d80(const void* self);
 std::uint8_t triv_body_00720d90(const void* self);
