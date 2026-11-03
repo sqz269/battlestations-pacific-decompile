@@ -1,0 +1,78 @@
+{
+  "run": 554,
+  "harness": "claude",
+  "goal": 4,
+  "chain": 292,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "base": "063d0ea30",
+  "switch": "bsp::kWireGoal4Chain292Bound",
+  "wired_before": 9265,
+  "wired_after": 9269,
+  "rows": [
+    {
+      "native": "0071deb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::release_observed_target_0071ddb0 (0071DE85 vtable[74h], i > 0)",
+      "real_state": "The slot's command class category (class_of, the class's vtable[0Ch] answer) and the slot index; 0071DEB0 is slot 74h of all four director vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C).",
+      "change": "Replaces the inline `category == 1 || category == 2` stand-in; same rule, now the body."
+    },
+    {
+      "native": "00836040",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::normalize_self_target (0071E6C0's vtable[14h], ship family arm)",
+      "real_state": "director+34h is the director's own unit (0071EE6C reads its +FCh pose), so the self test is Impl::resolve_target_00521ea0(target) == this unit's handle; the class test is unit_kind_is_ship (IsKindOf 6, the nine ship vtables whose +9Ch builds 00D09F58); the zero point is [00F87574..7C], BSS zeroes.",
+      "change": "The idle tail's cruise/stop name the unit itself through 00465080 (00836E6C / 00836E84); the image empties that descriptor and 0071E73C refuses the push into a filled queue. The host used to answer 0 and stored the self target. Non-ship, non-squadron directors (base 00D09EC0 / 00CFDA40) answer 0071D540's constant 0, the old result.",
+      "body_fix": "SceneCommandTargetView gained the +1h point byte: MOV word ptr [ESI],0 at 00836095 / 0084DD75 clears +0h and +1h."
+    },
+    {
+      "native": "0084dd20",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::normalize_self_target (squadron controller arm, kSquadronSetCommandBound && squadron_row_)",
+      "real_state": "Slot 14h of the squadron block 00D0BD98 (00D0BDAC); the same own-unit resolution through block+34h; a self moveto answers 1 unchanged, a self stop is emptied."
+    },
+    {
+      "native": "0071edd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::release_observed_target_0071ddb0 (run_director_target_still_valid, the 0071DE57 vtable[70h] call)",
+      "real_state": "The descriptor the walk matched; released.is_plane (IsKindOf 0Fh); plane+9D4h as the plane_squadron_registry record holding the dying plane (by unit, else by name); +3D0h as member_units in array order without held wings; member +5Dh as released_05d or GameUnitsHost::unit_flag_005d (state->simulate, 0092639B); member and director-unit +FCh from unit_position_00fc; member id/object from the command-unit registry.",
+      "change": "A plane target with a live squadron mate is moved to the last live member among the first five and vt70 answers 0, so neither the 0071D810 raise nor the 0071D900 clear runs (0071DE5B). Everything else takes the point branch as before. The OFF arm keeps the old inline point rewrite."
+    },
+    {
+      "native": "00835b40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::release_observed_target_0071ddb0",
+      "reason": "Host directors carry no vtable class (00D09F58 vs 00D09EC0/00CFDA40); its only addition to 0071EDD0 in this walk is a second monotonic 0071D810(2) for the same primary that 0071DE74 repeats, so 0071EDD0 runs directly."
+    },
+    {
+      "native": "0084da60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::release_observed_target_0071ddb0 (squadron_block arm)",
+      "reason": "Squadron command block slot 70h answers 0 and sets [block+38h]+3Eh instead of the 0071D810 raise; the host has no +38h object and no reader of +3Eh, so the fused squadron slot keeps the old point rewrite and raise."
+    },
+    {
+      "native": "008364e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: DirectorStageBinding::fire_target",
+      "reason": "Getter of director+238h; the live fire target is kept inside the gunnery host (game_hosts_gunnery.cpp, in review by g4-w5) with no public per-unit accessor the commands host could read."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message",
+      "reason": "Session message tick-window gate on the loopback route; the commands host has no session message queue entry to gate (routing and drain are records here), so it belongs to the session-messages host."
+    },
+    {
+      "native": "0071f290",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: controller step (CommandController::update)",
+      "reason": "The host already runs bsp::run_command_controller_update, another reconstruction of 0071F290; calling gameplay_seg38 controller_update_0071f290 too would run the update twice. Merging the two models is the open item."
+    },
+    {
+      "native": "0084dc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding (squadron controller rows)",
+      "reason": "Squadron block slot +30h (00D0BDC8); no host path calls director vtable[30h] for a squadron row, and 0071E550 (its base first call) is not hosted. Same for slots +34h 0084DB90 and +20h 0084DAE0."
+    }
+  ]
+}

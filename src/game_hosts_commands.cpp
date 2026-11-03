@@ -46,6 +46,10 @@
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain276_switches.hpp"
 #include "bsp/wire_goal4_chain280_switches.hpp"
+#include "bsp/wire_goal4_chain292_switches.hpp"  // 0071EDD0 in the 0071DDB0 walk
+#include "bsp/plane_squadron_host.hpp"           // plane+9D4h / +3D0h stand-in (chain 292)
+#include "bsp/gameplay_seg52_cc13.hpp"           // 00836040 / 0084DD20 (chain 292)
+#include "bsp/band_0071_cc13.hpp"                // 0071DEB0 (chain 292)
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -1402,10 +1406,68 @@ public:
         // target that resolves to the director's own endpoint at director+34h
         // and the command is `cruise` or `stop`. The endpoint is the session
         // owner's and is null here, so no descriptor resolves to it.
+        if constexpr (kWireGoal4Chain292Bound) {
+            // Goal 4 chain 292. director+34h is the director's OWN UNIT, not a
+            // session endpoint: 0071EE6C loads it and reads its +FCh pose, and the
+            // idle tail names it through 00465080 for `cruise` and `stop`
+            // (00836E6C / 00836E84, make_command_target_00465080 above). So the
+            // self test is 00521EA0 answering this unit's handle, and the slot
+            // runs per director class, which the unit's class decides through its
+            // vtable +9Ch builder:
+            //  - a push through the squadron controller (00D0BD98+14h = 00D0BDAC,
+            //    kSquadronSetCommandBound's 0071E6C0 arm): 0084DD20, where a self
+            //    `moveto` answers 1 unchanged and a self `stop` is emptied;
+            //  - the ship family (IsKindOf 6, the nine vtables whose +9Ch is
+            //    00810F60 -> 008366D0, docs/CC13_FIX12.md): the derived director
+            //    00D09F58, +14h = 00D09F6C = 00836040;
+            //  - anything else (airfield 006D0C80, command building / fort
+            //    00743E90 and 008429E0 build the base 00D09EC0): +14h = 00D09ED4 =
+            //    0071D540, XOR AL,AL / RET 8, so 0 and the descriptor untouched.
+            // 0071E73C/0071E742 then refuse the push into a filled queue. The zero
+            // point [00F87574..7C] is BSS: three zeroes at load
+            // (default_command_position).
+            if (!(kSquadronSetCommandBound && squadron_row_)
+                && !bsp::unit_kind_is_ship(chain_.unit.class_id)) {
+                chain_.owner.done("WeaponDirector::base_self_target_0071d540", 0x0071d540u);
+                return false;
+            }
+            namespace g52 = bsp::gameplay_seg52_cc13;
+            const bool own_unit = chain_.owner.resolve_target_00521ea0(target)
+                == static_cast<std::uint32_t>(chain_.unit.index) + 1u;
+            g52::SceneCommandTargetView view;
+            view.b0 = target.kind;
+            view.b1 = target.position_valid;
+            view.w2 = target.object_id;
+            view.d4 = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target.object));
+            view.point_08 = {target.position[0], target.position[1], target.position[2]};
+            view.f14 = target.trailing;
+            const g52::Vec3f zero_point_f87574{};
+            bool answer = false;
+            if (kSquadronSetCommandBound && squadron_row_) {
+                answer = g52::squadron_filter_self_target_command_0084dd20(command, view,
+                    own_unit, zero_point_f87574);
+                chain_.owner.done("WeaponDirector::squadron_self_target_0084dd20", 0x0084dd20u);
+            } else {
+                answer = g52::director_normalize_self_target_00836040(command, view,
+                    own_unit, zero_point_f87574);
+                chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
+            }
+            target.kind = view.b0;
+            target.position_valid = view.b1;
+            target.object_id = view.w2;
+            target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(view.d4));
+            target.position[0] = view.point_08.x;
+            target.position[1] = view.point_08.y;
+            target.position[2] = view.point_08.z;
+            target.trailing = view.f14;
+            if (answer) ++chain_.owner.summary.self_target_answers;
+            return answer;
+        } else {
         chain_.owner.done("WeaponDirector::normalize_self_target", 0x00836040u);
         if (command != 0x00e08f70u && command != 0x00e08f88u) return false;
         if (target.object == nullptr) return false;
         return false;
+        }
     }
     void store_slot(int slot_index, std::uint32_t command,
         const bsp::SceneCommandTarget& target) override {
@@ -4568,6 +4630,90 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
     // override descriptor resolves.
     const std::uint32_t handle = static_cast<std::uint32_t>(released.unit) + 1u;
     std::size_t matches = 0;
+    // Goal 4 chain 292 (kWireGoal4Chain292Bound): 0071EDD0
+    // BSP_WeaponDirector_TargetStillValid, __thiscall(director, descriptor, char),
+    // RET 8, run whole on the descriptor the walk matched. It is slot 70h of the
+    // controller base 00CFDA40 (00CFDAB0) and of the weapon director base
+    // 00D09EC0 (00D09F30); the derived director 00D09F58 holds 00835B40 there,
+    // which calls it at 00835B70 and returns its answer, adding only a 0071D810(2)
+    // for the same primary that the walk's own i == 0 raise at 0071DE74 repeats
+    // (monotonic, so the result is the same). Inputs, all from this process:
+    //  - the resolved entity is the released one (00521EA0 matched its handle);
+    //  - vtable[5Ch](0Fh) is released.is_plane, the funnel's IsKindOf(0Fh);
+    //  - plane+9D4h is the registry record holding the plane. 00926390 delivers
+    //    through 00925C90 (009263A1) BEFORE its vtable[7Ch] tail jump to 007BCAA0
+    //    -> 007F3970, so the dying plane is still a member here; the units host's
+    //    death flush may have cleared its unit already and keeps the name;
+    //  - +3CCh / +3D0h are the record's member_units in array order, without the
+    //    held wings that never became units (the image has no member for them);
+    //  - a member's +5Dh is this walk's 00926390 store (released_05d) or the units
+    //    host's +5Dh (state->simulate, 0092639B); +FCh is unit_position_00fc, and
+    //    so is the director unit's (director+34h, 0071EE6C).
+    // LABELLED: the host fuses a squadron with its wing-0 plane, so the death of
+    // that slot offers the retarget too (the image's squadron entity outlives its
+    // first plane and is not delivered).
+    auto run_director_target_still_valid = [&](std::size_t d, bsp::SceneCommandTarget& target) {
+        namespace gp = bsp::gameplay_seg38_cc13;
+        const GameUnitsHost* const live = host.user_path_live_owner;
+        gp::CommandTarget descriptor = cc13_command_target(target);
+        gp::RetargetInputs in;
+        in.resolved_present = true;
+        in.resolved_is_kind_0f = released.is_plane;
+        in.resolved_position = {released.position[0], released.position[1], released.position[2]};
+        const bsp::PlaneSquadronHostRecord* squadron = nullptr;
+        if (released.is_plane && live != nullptr) {
+            bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
+            squadron = registry.find_by_member_unit(released.unit);
+            if (squadron == nullptr) {
+                const GameUnitRow* row = live->unit_row(released.unit);
+                if (row != nullptr && !row->name.empty()) {
+                    squadron = registry.find_by_member_name(row->name);
+                }
+            }
+        }
+        in.has_squadron_block = squadron != nullptr;
+        if (squadron != nullptr) {
+            if (d < live->count()) {
+                live->unit_position_00fc(d, in.director_unit_position.x,
+                    in.director_unit_position.y, in.director_unit_position.z);
+            }
+            for (const std::size_t unit : squadron->member_units) {
+                if (unit == bsp::kPlaneSquadronNoUnit || unit >= host.units.size()
+                    || unit >= live->count()) {
+                    continue;
+                }
+                gp::RetargetMember member;
+                member.marked_5d = (unit < host.released_05d.size() && host.released_05d[unit] != 0)
+                    || live->unit_flag_005d(unit);
+                live->unit_position_00fc(unit, member.position.x, member.position.y,
+                    member.position.z);
+                member.entity = static_cast<std::uint32_t>(
+                    reinterpret_cast<std::uintptr_t>(&host.units[unit]));
+                member.entity_index_174 = host.units[unit].object_id;
+                in.members.push_back(member);
+            }
+        }
+        const gp::RetargetResult result = gp::retarget_to_member_or_point_0071edd0(descriptor, in);
+        if (result.image_faults) ++host.summary.release_retarget_faults;
+        // Back into the host descriptor, field for field (cc13_command_target's
+        // inverse): +0h kind, +1h point byte, +2h id, +4h entity, +8h point, +14h.
+        target = bsp::SceneCommandTarget{};
+        target.kind = descriptor.has_entity_00 ? 1u : 0u;
+        target.position_valid = descriptor.has_point_01 ? 1u : 0u;
+        target.object_id = descriptor.entity_index_02;
+        target.object = reinterpret_cast<void*>(static_cast<std::uintptr_t>(descriptor.entity_04));
+        target.position[0] = descriptor.point_08.x;
+        target.position[1] = descriptor.point_08.y;
+        target.position[2] = descriptor.point_08.z;
+        std::memcpy(&target.trailing, &descriptor.param_14, sizeof(target.trailing));
+        if (result.member_chosen) {
+            ++host.summary.release_member_retargets;
+        } else {
+            ++host.summary.release_point_retargets;
+        }
+        host.done("WeaponDirector::release_retarget_0071edd0", 0x0071edd0u);
+        return result.answer;
+    };
     for (std::size_t d = 0; d < host.directors.size(); ++d) {
         GameDirector& director = host.directors[d];
         // 0071DE12..0071DE9C: i = 0..9, the command at director+54h+1Ch*i and
@@ -4586,9 +4732,11 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
             // member qualifies) and answers 0. Otherwise it rewrites the
             // descriptor to the position branch at the entity's +FCh (kind 0,
             // +1h = 1, no object) and answers 1.
-            // SUBSTITUTION: this host holds no squadron member list, so an
-            // aircraft takes the position branch; release_plane_matches counts
-            // every descriptor that would have been offered the retarget.
+            // SUBSTITUTION (kWireGoal4Chain292Bound off): this host holds no
+            // squadron member list, so an aircraft takes the position branch;
+            // release_plane_matches counts every descriptor that would have been
+            // offered the retarget. With the switch on, run_director_target_still_valid
+            // above runs the body on the squadron registry.
             const bsp::EntityOrderCommandClass* klass = host.class_of(director.slot_command[i]);
             const int category = klass != nullptr ? klass->category : -1;
             if (i == 0) {
@@ -4599,13 +4747,61 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                 ++host.summary.release_slot_kept;
             }
             if (!kDirectorTargetChecksBound) continue;
+            if constexpr (kWireGoal4Chain292Bound) {
+                // 0084DA60, slot 70h of the plane squadron command block (vtable
+                // 00D0BD98, which only 0084D810 builds, for a squadron) calls
+                // 0071EDD0 too (0084DA90) but answers 0 whenever the slot's
+                // primary +58h resolves to the same object, which at i == 0 it
+                // always does, and then sets [block+38h]+3Eh (0084DAAE) in place
+                // of the 0071D810 raise. This host has no +38h object nor a reader
+                // of +3Eh, so the fused squadron slot (the squadron's director
+                // here) keeps the point rewrite and the raise below. LABELLED.
+                bool squadron_block = false;
+                for (const bsp::PlaneSquadronHostRecord& r :
+                     bsp::plane_squadron_registry().records()) {
+                    if (r.squadron_unit == d) {
+                        squadron_block = true;
+                        break;
+                    }
+                }
+                if (squadron_block) {
+                    ++host.summary.release_squadron_blocks;
+                    target = bsp::SceneCommandTarget{};
+                    target.kind = 0;
+                    target.position_valid = 1;
+                    for (int lane = 0; lane < 3; ++lane) target.position[lane] = released.position[lane];
+                    host.record("WeaponDirector::squadron_block_retarget_0084da60", 0x0084da60u);
+                } else if (!run_director_target_still_valid(d, target)) {
+                    // 0071DE59 TEST AL,AL; 0071DE5B JZ 0071DE96: answer 0 skips both
+                    // the 0071D810 raise and the 0071D900 clear. The descriptor
+                    // now names the member and the command goes on.
+                    host.done("WeaponDirector::release_observed_target", 0x0071ddb0u);
+                    continue;
+                }
+            } else {
             target = bsp::SceneCommandTarget{};
             target.kind = 0;
             target.position_valid = 1;
             for (int lane = 0; lane < 3; ++lane) target.position[lane] = released.position[lane];
             host.done("WeaponDirector::release_retarget_0071edd0", 0x0071edd0u);
+            }
             // 0071DE5D: [[00E188A8]+1FE4h] == 2 skips; this process is mode 1.
             const bool player = released.controlled_unit == d;
+            bool slot_clearable = false;
+            if constexpr (kWireGoal4Chain292Bound) {
+                // 0071DE7B..0071DE8C, i > 0: director vtable[74h](command, i), which
+                // is 0071DEB0 BSP_WeaponDirector_SlotClearable in all four director
+                // vtables (00CFDAB4, 00D09F34, 00D09FCC, 00D0BE0C): the command's
+                // vtable[0Ch] category is 1 or 2 and the slot is above 0. The
+                // category is the class's own answer (class_of, as above).
+                if (i > 0) {
+                    slot_clearable = bsp::band_0071_cc13::weapon_director_slot_clearable_0071deb0(
+                        category, i);
+                    host.done("WeaponDirector::slot_clearable_0071deb0", 0x0071deb0u);
+                }
+            } else {
+                slot_clearable = category == 1 || category == 2;
+            }
             if (i == 0) {
                 // 0071DE72 0071D810(2), monotonic, then the 5Dh round trip.
                 if (bsp::stage_raise_applies(director.stage, 2)) {
@@ -4618,7 +4814,7 @@ std::size_t GameCommandsHost::release_observed_target_0071ddb0(
                             bsp::clear_command_message_for_queue_stage_done());
                     }
                 }
-            } else if (category == 1 || category == 2) {
+            } else if (slot_clearable) {
                 // 0071DE7B..0071DE91: 0071DEB0(command, i) true, 0071D900(i).
                 host.done("WeaponDirector::send_clear_command_slot", 0x0071d900u);
                 host.route_clear_command(d, player, clear_command_slot_message(i));
@@ -5201,6 +5397,14 @@ void GameCommandsHost::report() {
         host.summary.release_head_ends, host.summary.release_slot_clears,
         host.summary.release_slot_kept, host.summary.release_plane_matches,
         host.summary.target_refusals);
+    if constexpr (kWireGoal4Chain292Bound) {
+        host.log.notef("summary mission director release retarget member=%llu point=%llu "
+            "squadron_blocks=%llu faults=%llu self_target_answers=%llu (0071EDD0 in "
+            "0071DDB0, 0084DA60 kept; 00836040 / 0084DD20 in 0071E6C0; goal 4 chain 292)",
+            host.summary.release_member_retargets, host.summary.release_point_retargets,
+            host.summary.release_squadron_blocks, host.summary.release_retarget_faults,
+            host.summary.self_target_answers);
+    }
     host.log.notef("summary mission director extra tests bound=%d torpedo=%llu null=%llu kind=%llu "
         "fort_unread=%llu class_unknown=%llu path=%llu path_unit=%llu path_non_unit=%llu "
         "(0071D71F, 009229F0 / 007AC9D0, packet cc9_command_extra_tests)",
