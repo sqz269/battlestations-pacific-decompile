@@ -41,6 +41,8 @@
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain262_switches.hpp"
 #include "bsp/wire_goal4_chain266_switches.hpp"
+#include "bsp/wire_goal4_chain277_switches.hpp"
+#include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
@@ -144,6 +146,25 @@
 
 namespace bsp::game {
 namespace {
+
+// Reuse the native lane reductions on the loaded collision model's vertices
+// and retained bounds. bsp.py show 007AE330/007AE3E0 --asm: both read z/y/x
+// before writing the result; ties and unordered comparisons select operand b,
+// after the FLD/FSTP operand quieting. The output feeds mesh/element broadphase
+// and the section-centre calculation, rather than a diagnostic-only copy.
+void merge_loaded_collision_bounds(float* lo, float* hi,
+    const float* incoming_lo, const float* incoming_hi) noexcept {
+    namespace pm = bsp::path_movcam_seg46_argon;
+    const pm::Vec3 old_lo{lo[0], lo[1], lo[2]};
+    const pm::Vec3 old_hi{hi[0], hi[1], hi[2]};
+    const pm::Vec3 next_lo{incoming_lo[0], incoming_lo[1], incoming_lo[2]};
+    const pm::Vec3 next_hi{incoming_hi[0], incoming_hi[1], incoming_hi[2]};
+    pm::Vec3 merged_lo, merged_hi;
+    pm::vector3_component_min_007ae330(merged_lo, old_lo, next_lo);
+    pm::vector3_component_max_007ae3e0(merged_hi, old_hi, next_hi);
+    lo[0] = merged_lo.x; lo[1] = merged_lo.y; lo[2] = merged_lo.z;
+    hi[0] = merged_hi.x; hi[1] = merged_hi.y; hi[2] = merged_hi.z;
+}
 
 // Packets cc9_aa_targeting and cc9_rng_streams: the three gun-side acceptance
 // terms of 00729BC0's bot slots and 00865773's minimum-air-range skip, which the
@@ -5432,9 +5453,13 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     const auto& tree = *mesh.bounds_and_trees();
                     const float native_lo[3] = {tree.bounds_min.x, tree.bounds_min.y, tree.bounds_min.z};
                     const float native_hi[3] = {tree.bounds_max.x, tree.bounds_max.y, tree.bounds_max.z};
+                    if constexpr (bsp::kWireGoal4Chain277Bound) {
+                        merge_loaded_collision_bounds(lo, hi, native_lo, native_hi);
+                    } else {
                     for (int k = 0; k < 3; ++k) {
                         lo[k] = std::min(lo[k], native_lo[k]);
                         hi[k] = std::max(hi[k], native_hi[k]);
+                    }
                     }
                 }
                 entry.retain_trees_from(mesh);
@@ -5456,9 +5481,13 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     entry.element_kind.push_back(el.kind);
                     entry.element_index.push_back(static_cast<int>(el.node_index));
                     for (const auto& v : {a, b, c}) {
+                        if constexpr (bsp::kWireGoal4Chain277Bound) {
+                            merge_loaded_collision_bounds(range.lo, range.hi, v.data(), v.data());
+                        } else {
                         for (int k = 0; k < 3; ++k) {
                             range.lo[k] = std::min(range.lo[k], v[k]);
                             range.hi[k] = std::max(range.hi[k], v[k]);
+                        }
                         }
                     }
                 }
@@ -5477,9 +5506,14 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     for (std::uint16_t vi : {t.v0, t.v1, t.v2}) {
                         if (vi >= mesh.vertices.size()) continue;
                         any = true;
+                        if constexpr (bsp::kWireGoal4Chain277Bound) {
+                            const auto& vertex = mesh.vertices[vi];
+                            merge_loaded_collision_bounds(elo, ehi, vertex.data(), vertex.data());
+                        } else {
                         for (int k = 0; k < 3; ++k) {
                             elo[k] = std::min(elo[k], mesh.vertices[vi][k]);
                             ehi[k] = std::max(ehi[k], mesh.vertices[vi][k]);
+                        }
                         }
                     }
                 }
