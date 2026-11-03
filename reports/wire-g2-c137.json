@@ -1,0 +1,148 @@
+{
+  "run": 276,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 137,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 50 [0080da00-0081aa10]",
+  "tier": 2,
+  "selection": "Segment 94 was refused because its shared implementation/header were leased by g2-w3. Segment 50 offered four related barrel totals and shared native unit state. Inspection found that only the wake-copy row had a complete, reachable host site with its real inputs available.",
+  "host_file": "src/ship_ai_wake_trail.cpp",
+  "switch": "kWireGoal2Chain137Bound",
+  "switch_default": false,
+  "wired_before": 8974,
+  "wired_after": 8975,
+  "assigned_wired": 1,
+  "host_objects": [],
+  "reused_storage": "GameUnitSlot::wake already owns ShipAiWakeTrail::samples. ship_ai_wake_fill_00810020 produces the samples at create_units; ship_ai_wake_append_00810190 maintains them during motion. This chain constructs no new owner or sample snapshot.",
+  "off_build": {
+    "command": "./scripts/build.ps1",
+    "result": "passed",
+    "tests": "reconstructed_math and tool_tests: 2/2 passed",
+    "order": "After the successful ON compilation and automatic source restoration; readiness was measured from this OFF map."
+  },
+  "on_build": {
+    "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain137Bound",
+    "result": "passed",
+    "diagnostics": 0,
+    "source_restored": true,
+    "initial_failure": "The first attempt found C2244 because inline assembly could not choose between overloads. The native append's existing call now selects the same kernel through an explicitly typed function pointer; the repeated ON check passed."
+  },
+  "validation": {
+    "wire_readiness": "00810160: ready -> wired; overall wired 8974 -> 8975",
+    "compiled_kernel": "OFF object symbol for the typed overload is exactly 43 bytes: MOV EAX,ECX; MOV ECX,[ESP+4]; six sequential FLD/FSTP pairs; RET 4. The raw overload is a single FF25 indirect tail jump to that kernel; no second copy body, prologue, register changes or FP reset.",
+    "pc24_lint": "passed",
+    "report_calls": "passed",
+    "game_run": false
+  },
+  "on_effect": "On the wake append's short-span merge arm, use the original sequential x87 six-float load/store operation instead of C++ sample assignment. Source and destination are distinct live ring elements; the original floating-point status, NaN and exception behavior replaces the assignment's bit-copy behavior. The head/counters and all other host logic are unchanged.",
+  "off_preservation": "The OFF arm contains the original sample assignment unchanged. Typed adaptation moves the existing raw leaf's instruction sequence into the typed overload; the raw entry tail-forwards with the same register/stack behavior. The native append's internal call selects the same single kernel. No game path calls the typed host adaptation when the switch is OFF.",
+  "rows": [
+    {
+      "native": "0080da00",
+      "address": "0081fd6e",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units / construct_unit_order_ring_00812d40",
+      "status": "skipped",
+      "reason": "The image call consumes the Lua-reader result in 0081F980's serialized ship-property path. The host reaches a ring constructor and the scene start-speed projection, but has no producer for that saved immediate-rudder value and no equivalent immediate-rudder assignment to replace. Calling with the constructor's zero would duplicate existing initialization and pass an invented input.",
+      "reach": "static",
+      "coverage": "inspected body and both listed caller sites; no wiring"
+    },
+    {
+      "native": "0080fe10",
+      "address": "00825554",
+      "function": "00825450",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::run_torpedo_supply_tick_00825450",
+      "status": "skipped",
+      "reason": "The only original caller is repair-zone resupply. The host feeds area=0 from an empty repair-zone registry and labels stock>=0 as unreached; it does not model the resupply message. The zone/area producer needed to enter this construction path is unavailable. The script stock queue uses a different original path and merely wrapping its own stock value would not count.",
+      "reach": "static",
+      "coverage": "inspected body and sole original caller; no wiring"
+    },
+    {
+      "native": "0080fec0",
+      "address": "00812ac6",
+      "function": "00812a70",
+      "host_site": "src/game_hosts_gunnery.cpp / src/game_hosts_units.cpp:repair-settings producer search",
+      "status": "skipped",
+      "reason": "Requires the unit's six dwords at +1134h..+1148h and a repair-level change path that sends message 6Fh. Neither host owns that state or runs the lower/raise-repair caller. Existing standalone repair_level_lower_00812a70 and repair_level_raise_00827960 are not host implementations of that message path. No fabricated image or default settings were added.",
+      "reach": "static",
+      "other_original_site": {"address": "00827a12", "function": "00827960"},
+      "coverage": "inspected body and both original callers; no wiring"
+    },
+    {
+      "native": "00810160",
+      "address": "00810566",
+      "function": "00810190",
+      "host_site": "src/ship_ai_wake_trail.cpp:ship_ai_wake_append_00810190 / short-span merge",
+      "status": "wired",
+      "reach": "static",
+      "reach_path": "GameMissionFrameHost FixedStepBinding calls units->motion_step_00825f20 (game_hosts_mission_frame.cpp:2083); a ship-base slot reaches the enabled kShipMotionTailBound=true arm (game_hosts_units.cpp:47255); ship_motion_tail_00826c34 calls ShipMotionTailBinding::append_wake_sample_00810190, which passes the slot's wake to ship_ai_wake_append_00810190. That function's leg_shrank/short-span merge reaches this site. No other OFF switch gates the call. Candidate details supplied no mission counts, so reach is static, not live-run proof.",
+      "inputs": "Writable trail.samples[h] and readable trail.samples[ring_step_forward(h)] from the existing live host ring. EDX is an unused ABI slot, passed nullptr. static_asserts verify all six field offsets and the 0x18 size.",
+      "original_contract": "00810545 reads the head; 0081054B..0081055A select the forward source and form EDX; 00810561 PUSH EDX; 00810562 forms ECX from the head; 00810566 CALL 00810160. The leaf consumes its source with RET 4, returns destination in EAX, changes ECX to source and leaves unused EDX untouched. Six ascending x87 load/store pairs are retained once, in the typed overload.",
+      "coverage": "complete leaf; existing append algorithm otherwise unchanged",
+      "game_validated": false
+    },
+    {
+      "native": "00812310",
+      "address": "008201bf",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units / ship initialization; mission_lua_host.cpp:GetFirepower unbound",
+      "status": "skipped",
+      "reason": "No host barrel-total stand-in or consumer exists. The total feeds stored firepower inputs for GetFirepower, which remains unbound. Calculating and storing unused totals would not replace running host logic. Binding GetFirepower would require the separately owned game_hosts_lua.cpp path.",
+      "reach": "static",
+      "coverage": "inspected complete body and sole original caller; no wiring"
+    },
+    {
+      "native": "008123a0",
+      "address": "008201cc",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units / ship initialization; mission_lua_host.cpp:GetFirepower unbound",
+      "status": "skipped",
+      "reason": "The AA total has no host stand-in or active stored-firepower consumer; GetFirepower is unbound. Producing an unused total would not count. Binding its consumer would touch separately owned game_hosts_lua.cpp.",
+      "reach": "static",
+      "coverage": "inspected complete body and sole original caller; no wiring"
+    },
+    {
+      "native": "00812430",
+      "address": "008201d9",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units / ship initialization; mission_lua_host.cpp:GetFirepower unbound",
+      "status": "skipped",
+      "reason": "The total barrel count is not the live loaded-tube count used by torpedo stock logic. Its actual firepower-total consumer is unbound GetFirepower, so substituting it for loaded tubes would violate the contract and merely storing it would be unused work.",
+      "reach": "static",
+      "coverage": "inspected complete body and sole original caller; no wiring"
+    },
+    {
+      "native": "008124c0",
+      "address": "008201e6",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::create_units / ship initialization; mission_lua_host.cpp:GetFirepower unbound",
+      "status": "skipped",
+      "reason": "The depth-charge total has no host stand-in or active stored-firepower consumer; GetFirepower is unbound. Producing an unused total would not count. Binding its consumer would touch separately owned game_hosts_lua.cpp.",
+      "reach": "static",
+      "coverage": "inspected complete body and sole original caller; no wiring"
+    },
+    {
+      "native": "008127e0",
+      "address": "0088dd28",
+      "function": "0088dc10",
+      "host_site": "src/mission_lua_host.cpp:GetFirepower unbound registration",
+      "status": "skipped",
+      "reason": "Neither the unit initialization projection nor an implemented GetFirepower native consumes these ratios. Constructing totals and ratios without that consumer would not replace host logic. The Lua host file is assigned to another worker, and no producer/consumer path was invented here.",
+      "reach": "static",
+      "other_original_site": {"address": "008202ba", "function": "0081f980"},
+      "coverage": "inspected complete body and both original callers; no wiring"
+    },
+    {
+      "native": "00813830",
+      "address": "008263b5",
+      "function": "00825f20",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::motion_step_00825f20",
+      "status": "skipped",
+      "reason": "The image sends message 7Ah when the shipyard launch countdown decrements to zero. The host has neither that countdown's producer nor the corresponding message route. Adding a sender with a made-up timer or calling it on every ship-motion tick would not represent the image's live state.",
+      "reach": "static",
+      "coverage": "inspected complete body and sole original caller; no wiring"
+    }
+  ]
+}
