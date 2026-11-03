@@ -7908,8 +7908,20 @@ public:
         } else {
         in.slot_accepts_target = in_range;
         }
-        if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
-            && other < owner_.units.count()) {
+        const bool run_torpedo_acceptance = [&]() {
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                // 00729C13's side-2 refusal and the range/ammo/slot refusals
+                // precede vtable[1Ch]. Its assigning return must never revive
+                // one of those rejected candidates, or run another slot's bot.
+                return in.slot_accepts_target
+                    && selected_bot == bsp::GunBotClass::kTorpedo
+                    && other < owner_.units.count();
+            } else {
+                return row.category == bsp::kUnitGunneryTorpedoCategory && in_range
+                    && other < owner_.units.count();
+            }
+        }();
+        if (run_torpedo_acceptance) {
             // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
             const bool small_craft = owner_.units.unit_is_kind_of(other, 0x0E)
                 || (owner_.units.unit_is_kind_of(other, 0x0C)

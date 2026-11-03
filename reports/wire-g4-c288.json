@@ -67,6 +67,25 @@
   ],
   "wired_before": 9250,
   "wired_after": 9251,
+  "review_round_1": {
+    "review_run": 547,
+    "reviewed_head": "cabed86363b12bbd5f1fb866efac2928f01605b1",
+    "findings": [
+      {
+        "finding": "Gate torpedo acceptance on the selected kTorpedo slot and preserve preceding dispatch refusals with chain 288 ON; keep OFF behavior unchanged.",
+        "status": "fixed",
+        "change": "The ON guard requires the existing slot_accepts_target answer and selected_bot == kTorpedo before entering the assigning torpedo acceptance block. A side-2 ship, missing slot, missing ammunition or out-of-range target cannot reach that assignment. The OFF guard retains the original category/range/target predicate and the acceptance block is unchanged."
+      }
+    ],
+    "validation": {
+      "build": "scripts/build.ps1, MSVC Win32 Release; reconstructed_math and tool_tests passed",
+      "pc24": "pc24_lint.py --diff origin/main...HEAD: 0 findings",
+      "reachability": "call_graph.py who/path 00729bc0 and who 0072c6a0: both bodies retain reachable callers",
+      "wired_total": 9251,
+      "regression_inspection": "The ON guard short-circuits before TorpedoBot acceptance when the prior dispatch result is false or the selected slot is not kTorpedo. The OFF guard and shared acceptance body preserve their previous behavior.",
+      "game_run": false
+    }
+  },
   "validation": {
     "build": "scripts/build.ps1, MSVC Win32 Release",
     "tests": "reconstructed_math and tool_tests",
