@@ -56,6 +56,9 @@
 #include "bsp/session_context_cc13.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
+#include "bsp/profile_manager.hpp"
+#include "bsp/storage_backend.hpp"
+#include "bsp/wire_goal4_chain274_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -423,6 +426,99 @@ private:
     GuiLuaHost& host_;
     std::vector<GuiLuaRef> stack_;
 };
+
+// Goal 4 chain 274 (kWireGoal4Chain274Bound): 004374F0 BSP_ProfileManager_
+// RefreshCheckpointState on the mission Lua machine. Natively the machine
+// (game+1A0Ch) is built once by 00884BE0 from BSP_Game_OnInitOnce (004DD627),
+// and 004374F0 runs at sign-in (0067CC9F / 0067D49B, and 007FEDF1 inside the
+// profile read), replacing the global BSP_Chk_Save with a new table, then, for a
+// profile with a save name whose storage answers +1Ch for kind 2 ("game"),
+// reading that archive and importing its BSP_Chk_Save. SUBSTITUTION, labelled:
+// this process builds the machine at its first mission load (finish_scene_load)
+// and rebuilds it per load, so the refresh runs right after each build, on the
+// profile the title-time read filled (GameMenuHost binds the same owner). The
+// storage query is the read-only PcStorageBackend +1Ch (GENERIC_READ opens of
+// <name>\valid and <name>\game). The read 00BD3D70 is not hosted here: its
+// completion stamps <name>\valid, and its driver 006ADB50 needs the prompt screen
+// 00425D10 and the render-frame calls this load does not own. A present game
+// archive therefore throws at 00BD3D70 and leaves 004374F0's own empty table;
+// this installation's profile 0 holds only player/quick/valid, so the query
+// answers false and the body returns where the image does.
+class CheckpointRefreshStorageLua final : public bsp::PcStorageLuaHost {
+public:
+    void open_storage_archive_00b6a020(std::uint32_t) override {
+        throw std::logic_error("004374F0: the storage archive Lua (00B6A020) is not opened here");
+    }
+    lua_State* storage_lua_38() noexcept override { return nullptr; }
+    void close_storage_archive_00b65e80() noexcept override {}  // nothing was opened
+};
+
+class CheckpointRefreshHost final : public bsp::ProfileManagerRefreshHost,
+                                    public bsp::StorageOperationHost {
+public:
+    CheckpointRefreshHost(lua_State* game, bsp::PcStorageBackend& backend) noexcept
+        : game_(game), backend_(backend) {}
+
+    bool game_archive_present{false};
+
+    lua_State* game_lua_1a0c() override { return game_; }
+    lua_State* storage_lua_38() override { return backend_.storage_lua_38(); }
+    bool storage_query_1c(std::string_view name, std::uint32_t kind) override {
+        game_archive_present = backend_.storage_query_1c(name, kind);
+        return game_archive_present;
+    }
+    bool has_storage_buffer_30() override { return backend_.has_storage_buffer_30(); }
+    void free_and_clear_storage_buffer_30() override { backend_.free_and_clear_storage_buffer_30(); }
+    void close_storage_archive_00b65e80() override { backend_.close_storage_archive_00b65e80(); }
+    void request_read_00bd3d70(std::string_view, std::uint32_t) override {
+        throw std::logic_error("004374F0: the game-archive read 00BD3D70 (its completion stamps "
+            "<name>\\valid) and its 006ADB50 driver are not hosted at the mission load");
+    }
+
+    // 006ADB50's services, reached only after 00BD3D70, which throws above.
+    void storage_update_virtual_44(bsp::StorageManagerOperation&) override { unreached(); }
+    bsp::FrontEndPromptScreen& prompt_screen_00425d10() override { unreached(); }
+    bsp::FrontEndPromptHost& prompt_host() override { unreached(); }
+    void try_begin_render_frame_004c6c30() override { unreached(); }
+    void render_game_004ca440() override { unreached(); }
+    void finish_render_frame_004ca1f0() override { unreached(); }
+
+private:
+    [[noreturn]] static void unreached() {
+        throw std::logic_error("004374F0: 006ADB50 reached without the 00BD3D70 read");
+    }
+    lua_State* game_;
+    bsp::PcStorageBackend& backend_;
+};
+
+void refresh_checkpoints_after_machine_build(GameHostLog& log, GameMissionLuaHost& lua,
+    GameProfileOwner* owner) {
+    lua_State* const game = lua.mission_lua_state();
+    if (game == nullptr || owner == nullptr) {
+        log.unimplemented("MissionLua::refresh_checkpoints (no Lua machine or profile owner)",
+            "004374f0");
+        return;
+    }
+    bsp::ProfileResetState& profile = owner->profile();
+    CheckpointRefreshStorageLua storage_lua;
+    bsp::ArchiveCompressionState compression;   // the write half's buffer; never touched
+    bsp::PcStorageBackend backend(read_only_save_root(), bsp::crt_string_storage(), storage_lua,
+        compression);
+    CheckpointRefreshHost host(game, backend);
+    bsp::StorageOperationState storage{};
+    storage.manager_0109cecc = &backend.operation();
+    try {
+        bsp::refresh_profile_manager_004374f0(profile, host, storage, host);
+        log.implemented("MissionLua::refresh_checkpoints", "004374f0");
+    } catch (const std::exception& error) {
+        log.unimplemented("MissionLua::refresh_checkpoints game-archive read", "00bd3d70");
+        log.notef("checkpoint refresh: %s", error.what());
+    }
+    log.notef("checkpoint refresh: 004374F0 replaced BSP_Chk_Save on the mission Lua machine; "
+        "save name \"%s\", game archive %s", profile.save_name_34.c_str(),
+        profile.save_name_34.empty() ? "not queried (no save name)"
+            : host.game_archive_present ? "present (import not hosted)" : "absent");
+}
 
 }  // namespace
 
@@ -2876,6 +2972,9 @@ void GameMissionHost::Impl::finish_scene_load() {
     // this process reaches its first mission here, so the machine is built now
     // and kept for the rest of the run.
     lua->start_machine_00884be0();
+    // Goal 4 chain 274: 004374F0's BSP_Chk_Save on the machine just built (see
+    // refresh_checkpoints_after_machine_build for the labelled substitution).
+    if constexpr (kWireGoal4Chain274Bound) refresh_checkpoints_after_machine_build(log, *lua, profile);
     // Milestone 2g: game+2198h, the key the record commit writes under, and the
     // frame the executable makes the script's end-movie call on.
     frame_host->set_mission_key(summary.selected_id);

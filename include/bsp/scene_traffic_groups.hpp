@@ -185,6 +185,7 @@ struct PropLibraryGroup {
     std::string parent;       // empty when no parenthesised parent was authored
     ScenePropertyBlock body;
     bool created{false};      // false when an earlier file already declared it
+    std::vector<std::string> parents; // all authored parents, in merge order
 };
 
 // One `enum <Name> { ... }` declaration. The body's symbol parse is 008F31A0,
@@ -307,7 +308,9 @@ struct PropLibraryHost : PropLibraryFolderHost {
     virtual bool has_group(const std::string& name) = 0;
     virtual bool has_enum_table(const std::string& name) = 0;
 
-    // 008F6B42: 008F29A0 on library+4h, the group-map insert. Only on a miss.
+    // 008F6AD7 parses into the existing bag on a hit, or into a new bag on a
+    // miss before 008F6B42 publishes it. Apply both kinds of declaration;
+    // `created` tells the host whether publication is needed.
     virtual void register_group(const PropLibraryGroup& group) = 0;
     // 008F6A18: 008F2B90, the enum-table insert. Only on a miss.
     virtual void register_enum_table(const PropLibraryEnumTable& table) = 0;

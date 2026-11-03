@@ -20,6 +20,8 @@
 #include "bsp/wire_goal4_chain267_switches.hpp"
 #include "bsp/wire_goal4_chain273_switches.hpp"
 #include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
+#include "bsp/wire_goal4_chain283_switches.hpp"
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
@@ -19559,8 +19561,18 @@ template <class ImplT, class SlotT, class DeckT>
 void request_ground_state_007c3c90(ImplT& h, SlotT& p, DeckT& d, bool flag) {
     bsp::cc13_seg47b::plane_request_flight_state_007c1570(p.plane_control_mode_900,
         bsp::session_context().session_word_1fe4 == 2, 4 + (flag ? 1 : 0), false,
-        [&h, &p, &d, flag](std::uint8_t, std::uint8_t) {
+        [&h, &p, &d, flag](std::uint8_t current, std::uint8_t requested) {
+            if constexpr (bsp::kWireGoal4Chain283Bound) {
+                // 007C1570's C3h (current, 4 + flag) goes through 0076E520's
+                // local-copy codec before the existing immediate delivery.
+                // This callback only posts states 4/5, whose copied selector
+                // chooses the same 007CA3F0 flag as the former direct call.
+                const auto copy = h.commands.session_messages().queue_plane_change_state_c3(
+                    current, requested);
+                h.ground_state_from_locked_007ca3f0(p, d, copy.requested == 5);
+            } else {
             h.ground_state_from_locked_007ca3f0(p, d, flag);
+            }
         },
         [&h, &p](std::int32_t wanted) {
             bsp::PlaneSetStateInputs si;
@@ -20050,8 +20062,19 @@ void GameUnitsHost::Impl::plane_notify_takeoff_start_007c17d0(GameUnitSlot& p) {
         done("Plane::takeoff_enter_007c17d0", 0x007c17d0u);
         return;
     }
+    if constexpr (bsp::kWireGoal4Chain283Bound) {
+        // bsp.py show 007C17D0: +20h is the current +900h byte, +21h is 4.
+        // 0076E520 writes 00762940; its C3h factory copy is constructed with
+        // 00762880 and read by 007629A0. The slot retains that copy until the
+        // existing row-9 delivery, with its recipient identity kept out of band.
+        const auto copy = commands.session_messages().queue_plane_change_state_c3(
+            static_cast<std::uint8_t>(p.plane_control_mode_900), 4);
+        p.takeoff_notify_c3h_pending = copy.requested == 4;
+        p.takeoff_notify_c3h_current = copy.current;
+    } else {
     p.takeoff_notify_c3h_pending = true;
     p.takeoff_notify_c3h_current = p.plane_control_mode_900;          // +20h, the byte
+    }
     ++takeoff_notify_posts;
     if (takeoff_notify_posts <= 10) {
         log.notef("  takeoff start notify %s: +904h set, state=%d airborne=%.2f taxi910=%d "

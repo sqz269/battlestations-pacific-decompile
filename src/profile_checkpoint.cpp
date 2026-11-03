@@ -6,6 +6,7 @@
 #include <string_view>
 
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/wire_goal4_chain274_switches.hpp"
 extern "C" {
 #include <lua.h>
 }
@@ -172,8 +173,14 @@ void write_other_entries(lua_State* L, int checkpoints, const std::string& missi
     lua_pushnil(L);
     while (lua_next(L, checkpoints)) {
         const int value = lua_gettop(L);
-        if (lua_istable(L, value) && !same_name(lua_text(L, value - 1), mission_id))
+        if (lua_istable(L, value) && !same_name(lua_text(L, value - 1), mission_id)) {
+            if constexpr (kWireGoal4Chain274Bound) {
+                // 004388C6 (00438020) and 00437405 (00437250): CALL 00435D30.
+                write_lua_slot_archive_00435d30(L, value - 1, value, writer);
+            } else {
             write_slot(L, value - 1, value, writer, 0);
+            }
+        }
         lua_pop(L, 1);
     }
 }
@@ -233,7 +240,12 @@ void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
         lua_pushnil(script);
         while (lua_next(script, data_table)) {
             const int value = lua_gettop(script);
+            if constexpr (kWireGoal4Chain274Bound) {
+                // 00438747: CALL 00435D30 per script slot.
+                write_lua_slot_archive_00435d30(script, value - 1, value, *writer);
+            } else {
             write_slot(script, value - 1, value, *writer, 0);
+            }
             lua_pop(script, 1);
         }
         writer->end_section();
@@ -266,7 +278,12 @@ std::optional<float> load_checkpoint_004379c0(lua_State* mission, const std::str
     lua_pushnil(mission);
     while (lua_next(mission, entry)) {
         const int value = lua_gettop(mission);
+        if constexpr (kWireGoal4Chain274Bound) {
+            // 00437B21: CALL 00436730 per entry slot.
+            copy_lua_slot_00436730(mission, value - 1, value, destination, copy);
+        } else {
         copy_slot(mission, value - 1, value, destination, copy, 0);
+        }
         lua_pop(mission, 1);
     }
     lua_pop(mission, 2);

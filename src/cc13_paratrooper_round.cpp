@@ -6,14 +6,98 @@
 
 #include "bsp/bomb_torpedo_tick.hpp"   // bomb_air_velocity (006E1510)
 #include "bsp/gameplay_seg33_cc13.hpp"  // projectile_extrapolate_position_006e2220
+#include "bsp/cc13_seg33b.hpp"
 #include "bsp/wire_goal2_chain131_switches.hpp"
 #include "bsp/wire_goal2_chain179_switches.hpp"
+#include "bsp/wire_goal4_chain282_switches.hpp"
 
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
+#include <mutex>
+#include <new>
+
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
 
 namespace bsp {
 namespace cc13_paratrooper {
+
+// bsp.py show 006F39B0 and 006F34B0 --asm: +764h is a pointer to a
+// CRITICAL_SECTION followed by the depth dword at +18h; +7DCh is {data,size,cap}.
+// 006F5610 initializes the three vector cells to zero before creating +764h's
+// section. This partial layout owns exactly those fields. Padding is never consumed as
+// game state, and this owner is never passed to other command-building methods.
+struct NativeCommandBuildingCapturers::Impl final : cc13_seg33b::CommandBuildingCapturerHost {
+    struct Section {
+        CRITICAL_SECTION native;
+        std::int32_t depth{0};
+        void lock() { EnterCriticalSection(&native); }
+        void unlock() { LeaveCriticalSection(&native); }
+    };
+    struct Fields {
+        std::uint8_t omitted_000[0x764]{};
+        Section* section_764{};
+        std::uint8_t omitted_768[0x74]{};
+        std::uint32_t* data_7dc{};
+        std::int32_t size_7e0{};
+        std::int32_t capacity_7e4{};
+    } fields;
+    Section section;
+    static_assert(offsetof(Section, depth) == 0x18);
+    static_assert(offsetof(Fields, section_764) == 0x764);
+    static_assert(offsetof(Fields, data_7dc) == 0x7dc);
+    static_assert(offsetof(Fields, size_7e0) == 0x7e0);
+    static_assert(offsetof(Fields, capacity_7e4) == 0x7e4);
+
+    Impl() {
+        InitializeCriticalSection(&section.native);
+        fields.section_764 = &section;
+    }
+    ~Impl() override {
+        std::free(fields.data_7dc);
+        DeleteCriticalSection(&section.native);
+    }
+    cc13_seg33b::Object object() noexcept {
+        return reinterpret_cast<cc13_seg33b::Object>(&fields);
+    }
+    cc13_seg33b::Object operator_new_00bf55be(std::uint32_t bytes) override {
+        void* result = std::malloc(bytes);
+        if (result == nullptr) throw std::bad_alloc();
+        return static_cast<cc13_seg33b::Object>(result);
+    }
+    void free_00bf6989(void* block) override { std::free(block); }
+    void enter_critical_section(void* value) override {
+        EnterCriticalSection(static_cast<CRITICAL_SECTION*>(value));
+    }
+    void leave_critical_section(void* value) override {
+        LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(value));
+    }
+};
+
+NativeCommandBuildingCapturers::NativeCommandBuildingCapturers() : impl_(std::make_unique<Impl>()) {}
+NativeCommandBuildingCapturers::~NativeCommandBuildingCapturers() = default;
+
+void NativeCommandBuildingCapturers::add(std::uint32_t round) {
+    cc13_seg33b::command_building_add_paratrooper_006f39b0(*impl_, impl_->object(), round);
+}
+
+bool NativeCommandBuildingCapturers::remove(std::uint32_t round) {
+    std::lock_guard<Impl::Section> guard(impl_->section);
+    const std::int32_t before = impl_->fields.size_7e0;
+    cc13_seg33b::command_building_remove_paratrooper_006f34b0(*impl_, impl_->object(), round);
+    return impl_->fields.size_7e0 != before;
+}
+
+void NativeCommandBuildingCapturers::read(std::vector<std::uint32_t>& out) const {
+    std::lock_guard<Impl::Section> guard(impl_->section);
+    out.clear();
+    // Do not form an end pointer from the null data of a newly empty list.
+    if (impl_->fields.size_7e0 != 0) {
+        out.assign(impl_->fields.data_7dc, impl_->fields.data_7dc + impl_->fields.size_7e0);
+    }
+}
 
 namespace {
 
@@ -193,17 +277,28 @@ public:
     }
     void add_capturer(std::uint32_t building) override {
         // 006F39B0: append under the building's +764h lock.
-        world_.capturer_list_.emplace_back(building, round_.id);
+        if constexpr (kWireGoal4Chain282Bound) {
+            world_.native_capturer_lists_.try_emplace(building).first->second.add(round_.id);
+        } else {
+            world_.capturer_list_.emplace_back(building, round_.id);
+        }
         ++world_.counters_.capturer_adds;
     }
     void remove_capturer(std::uint32_t building) override {
         // 006F34B0: erase this round from the building's array.
-        auto& list = world_.capturer_list_;
-        for (auto it = list.begin(); it != list.end(); ++it) {
-            if (it->first == building && it->second == round_.id) {
-                list.erase(it);
+        if constexpr (kWireGoal4Chain282Bound) {
+            const auto found = world_.native_capturer_lists_.find(building);
+            if (found != world_.native_capturer_lists_.end() && found->second.remove(round_.id)) {
                 ++world_.counters_.capturer_removes;
-                return;
+            }
+        } else {
+            auto& list = world_.capturer_list_;
+            for (auto it = list.begin(); it != list.end(); ++it) {
+                if (it->first == building && it->second == round_.id) {
+                    list.erase(it);
+                    ++world_.counters_.capturer_removes;
+                    return;
+                }
             }
         }
     }
@@ -484,12 +579,26 @@ void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGl
 
 void RoundWorld::capturers(std::uint32_t building, std::vector<Capturer>& out) const {
     out.clear();
-    for (const auto& entry : capturer_list_) {
-        if (entry.first != building) continue;
-        for (const Round& r : rounds_) {
-            if (r.id != entry.second) continue;
-            out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
-            break;
+    if constexpr (kWireGoal4Chain282Bound) {
+        const auto found = native_capturer_lists_.find(building);
+        if (found == native_capturer_lists_.end()) return;
+        std::vector<std::uint32_t> ids;
+        found->second.read(ids);
+        for (const std::uint32_t id : ids) {
+            for (const Round& r : rounds_) {
+                if (r.id != id) continue;
+                out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
+                break;
+            }
+        }
+    } else {
+        for (const auto& entry : capturer_list_) {
+            if (entry.first != building) continue;
+            for (const Round& r : rounds_) {
+                if (r.id != entry.second) continue;
+                out.push_back(Capturer{r.s.side_54, r.cls.capture_power_d8});
+                break;
+            }
         }
     }
 }

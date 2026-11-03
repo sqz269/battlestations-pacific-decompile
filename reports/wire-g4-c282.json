@@ -1,0 +1,98 @@
+{
+  "goal": 4,
+  "chain": 282,
+  "slot": "g4-w3",
+  "baseline_head": "9fb7316af409089662c8faa2644a52fba473fe32",
+  "switch": "bsp::kWireGoal4Chain282Bound",
+  "selection": "Command-building landed-paratrooper capturer list ownership, mutation and capture-scoring consumption",
+  "wired_total": { "before": 9238, "after": 9242 },
+  "rows": [
+    {
+      "native": "006f39b0",
+      "status": "wired",
+      "host_site": "src/cc13_paratrooper_round.cpp: RoundAdapter::add_capturer via NativeCommandBuildingCapturers::add",
+      "state": "The real landing callback's building handle selects its list; round_.id is stored as an opaque equality-only key and resolved back to the same live Round for scoring.",
+      "original_abi": "__thiscall, ECX building, one stack dword, RET 4",
+      "evidence": "bsp.py show 006f39b0: enter +764h section, grow +7DCh vector, append value, increment size, decrement section+18h depth and leave. call_graph.py who: reachable call from RoundAdapter::add_capturer."
+    },
+    {
+      "native": "006f34b0",
+      "status": "wired",
+      "host_site": "src/cc13_paratrooper_round.cpp: RoundAdapter::remove_capturer via NativeCommandBuildingCapturers::remove",
+      "state": "The real round kill callback removes its ID from the same building's canonical list; the counter changes only when its size decreases.",
+      "original_abi": "__thiscall, ECX building, one stack dword, RET 4; confirmed in assembly despite the export's fastcall annotation",
+      "evidence": "bsp.py show 006f34b0 --asm: 006F34B4 +764h, 006F34C1 section+18h increment, 006F34CA +7DCh, 006F34D0 call 006F32B0, 006F34E8 RET 4. call_graph.py who: reachable call from RoundAdapter::remove_capturer."
+    },
+    {
+      "native": "006f30d0",
+      "status": "wired",
+      "host_site": "src/cc13_seg33b_command_building.cpp: command_building_add_paratrooper_006f39b0 via push_pointer",
+      "state": "Owns allocation, contents and capacity of the live building list; concrete malloc/free services preserve the original allocation/free pairing.",
+      "original_abi": "__thiscall, ECX vector, stack count, RET 4",
+      "evidence": "bsp.py show 006f30d0: clamp capacity to at least one, copy live dwords, free old buffer. call_graph.py who: reachable call from 006F39B0."
+    },
+    {
+      "native": "006f32b0",
+      "status": "wired",
+      "host_site": "src/cc13_seg33b_command_building.cpp: command_building_remove_paratrooper_006f34b0",
+      "state": "Restores the original first-match swap-erase order consumed by RoundWorld::capturers instead of the old order-preserving flat-vector erase.",
+      "original_abi": "__thiscall, ECX vector, stack pointer to value, RET 4, AL found flag",
+      "evidence": "bsp.py show 006f32b0: replace matched element with last and decrement size. Retained a noinline boundary for map/call-graph auditing; call_graph.py who reports a reachable call from 006F34B0."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::dive_bomb_rounds_remaining",
+      "reason": "Missing canonical SingleRackState and attached-kind-2Ah child counts from the gunnery device owner; current host counts include explicit substitutes."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::capture_plan_00a29fd0 and defend_think_00a28a60",
+      "reason": "Missing per-member live unit+304h ResourceUsage ownership and producer; planners currently use a constant zero resource sum."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party setup candidate; no matching caller selected",
+      "reason": "Missing a verified live caller for the reconstructed active-slot query; the nearby host reference describes difficulty and cannot establish the input contract."
+    },
+    {
+      "native": "004b43b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::input_edge_latch",
+      "reason": "Missing the primary-device any-button-down producer and persistent native screen+DDh latch owner; device queries currently return stand-ins."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "Missing the live ambient SoundInstance owner and channel binding; the host currently records and discards the supplied volume."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "Missing the controlled unit's live audio device list and audio-flag publication path; the callback currently only records the request."
+    },
+    {
+      "native": "006f5610",
+      "status": "skipped",
+      "host_site": "src/cc13_paratrooper_round.cpp: NativeCommandBuildingCapturers::Impl constructor, evidence only",
+      "reason": "Missing a complete native land-fort/command-building object and its other constructor dependencies; only its evidenced zero vector and real section initialization are needed by the owned list."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "call_graph": "All four wired bodies have calls reachable from the built game's entry; 006F39B0 and 006F34B0 are called by RoundAdapter, with 006F30D0 and 006F32B0 reached through them.",
+    "focused_fixture": "local/output/c282/run_capturer_probe.cmd passed: growth through five IDs, swap-erase order, absent/empty removal, building isolation, and owner destruction; Win32 probe links with /MANIFEST:EMBED.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "assumptions_and_limits": [
+    "The existing RoundWorld IDs are valid opaque list values because these four bodies only store or compare the original pointer-sized tokens; they never dereference them. Scoring resolves the stored IDs to real Round state.",
+    "The partial storage contains only the +764h section pointer and +7DCh vector; unrelated bytes are padding, never consumed as fabricated game fields. It is not a complete MCommandBuilding or a drop-in binary ABI.",
+    "Each list belongs to its actual building handle for the RoundWorld lifetime, and frees its buffer and Win32 section on teardown.",
+    "Build, fixture and compiled reachability evidence do not establish live gameplay behavior; the game was not run."
+  ]
+}

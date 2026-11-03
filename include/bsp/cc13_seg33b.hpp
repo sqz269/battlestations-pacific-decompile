@@ -12,7 +12,8 @@
 // Model: every routine works on the original object as raw bytes (Win32 layout, offsets as
 // in the image) and reaches the engine through Seg33bHost, whose methods name the image
 // routine, global or virtual slot they stand for. New C++ interfaces, not drop-in binary
-// replacements; nothing here is bound into bsp_game.
+// replacements. Chain 282 binds the paratrooper add/remove and vector helpers
+// through RoundWorld's live per-building capturer-list owner.
 
 #ifndef BSP_CC13_SEG33B_HPP
 #define BSP_CC13_SEG33B_HPP
@@ -107,7 +108,18 @@ inline constexpr float kTwoTo32 = 4294967296.0f;             // float 00CE3978 (
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine, global or virtual slot.
 // ---------------------------------------------------------------------------
-class Seg33bHost {
+// The capturer vector needs only allocation and the building's lock. Keep this
+// contract separate so a live list owner need not stub unrelated engine services.
+class CommandBuildingCapturerHost {
+public:
+    virtual ~CommandBuildingCapturerHost() = default;
+    virtual Object operator_new_00bf55be(std::uint32_t bytes) = 0;
+    virtual void free_00bf6989(void* block) = 0;
+    virtual void enter_critical_section(void* section) = 0;
+    virtual void leave_critical_section(void* section) = 0;
+};
+
+class Seg33bHost : public CommandBuildingCapturerHost {
 public:
     virtual ~Seg33bHost() = default;
 
@@ -605,7 +617,7 @@ void observer_member_set_target_006f30a0(Seg33bHost& host, Object member, Object
 void observer_member_set_target_006f3320(Seg33bHost& host, Object member, Object target);
 void observer_member_set_target_006f34f0(Seg33bHost& host, Object member, Object target);
 // 006F30D0 pointer vector reserve, __thiscall(ECX = vector)(n), RET 4.
-void pointer_vector_reserve_006f30d0(Seg33bHost& host, Object vector, std::int32_t count);
+void pointer_vector_reserve_006f30d0(CommandBuildingCapturerHost& host, Object vector, std::int32_t count);
 // 006F3140 dword vector grow to 2n+2, __fastcall(ECX = vector).
 void dword_vector_grow_006f3140(Seg33bHost& host, Object vector);
 // 006F31B0 garrison entry destructor, __fastcall(ECX = entry).
@@ -622,8 +634,8 @@ void dword_vector_push_back_006f3410(Seg33bHost& host, Object vector, std::uint3
 // 006F3490 __fastcall(ECX = entity) -> EAX: the entity when IsKindOf(0Ch), else null.
 Object entity_as_kind_0c_006f3490(Seg33bHost& host, Object entity);
 // 006F34B0 / 006F39B0 paratrooper list +7DCh remove / add under the lock, RET 4.
-void command_building_remove_paratrooper_006f34b0(Seg33bHost& host, Object building, std::uint32_t unit);
-void command_building_add_paratrooper_006f39b0(Seg33bHost& host, Object building, std::uint32_t unit);
+void command_building_remove_paratrooper_006f34b0(CommandBuildingCapturerHost& host, Object building, std::uint32_t unit);
+void command_building_add_paratrooper_006f39b0(CommandBuildingCapturerHost& host, Object building, std::uint32_t unit);
 // 006F3570 uint16 push_back, __thiscall(ECX = array)(value*), RET 4.
 void word_array_push_back_006f3570(Seg33bHost& host, Object array, const std::uint16_t* value);
 // 006F35E0 garrison entry copy, __thiscall(ECX = to)(from), RET 4 -> EAX = to.

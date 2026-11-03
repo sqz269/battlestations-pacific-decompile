@@ -171,6 +171,19 @@ public:
     };
     ClearCommandCopy queue_clear_command_5d(std::uint8_t arm, std::int32_t index) const;
 
+    // Goal 4 chain 283. 007C17D0 posts MT_PLANE_CHANGE_STATE (C3h) with
+    // +20h = the plane's current +900h byte and +21h = 4. Its inlined header
+    // stores match 00762880. The local route 0076E520 writes with 00762940;
+    // 00768530 case C3h constructs with 00762880 and reads with 007629A0.
+    // Both state bytes occupy three bits. The caller keeps this copy until
+    // its existing row-9 delivery; this method does not deliver the message.
+    struct PlaneChangeStateCopy {
+        std::uint8_t current{0};
+        std::uint8_t requested{0};
+    };
+    PlaneChangeStateCopy queue_plane_change_state_c3(std::uint8_t current,
+                                                     std::uint8_t requested) const;
+
 private:
     struct Image;
     std::unique_ptr<Image> image_;

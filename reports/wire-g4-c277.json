@@ -1,0 +1,135 @@
+{
+  "chain": 277,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain277Bound",
+  "scope": "Loaded collision-model mesh, element and section bounds",
+  "wired_total_before": 9229,
+  "wired_total_after": 9231,
+  "rows": [
+    {
+      "native": "007ae330",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::ship_model_slots -> merge_loaded_collision_bounds",
+      "state": "Mounted vehicle Mesh bytes -> GeomMeshResourcePayload retained bounds and triangle vertices -> mesh_box, ElementRange::lo and section box -> projectile broadphase and section-centre consumers",
+      "evidence": "bsp.py show 007ae330 --asm: z/y/x FLD/FSTP operands and FCOMIP/JBE select operand b on ties/unordered. Reuses the existing semantic_native_fixture_tested body without changing its ABI or implementation.",
+      "called": true,
+      "call_sites": 3
+    },
+    {
+      "native": "007ae3e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::ship_model_slots -> merge_loaded_collision_bounds",
+      "state": "Mounted vehicle Mesh bytes -> GeomMeshResourcePayload retained bounds and triangle vertices -> mesh_box, ElementRange::hi and section box -> projectile broadphase and section-centre consumers",
+      "evidence": "bsp.py show 007ae3e0 --asm: z/y/x FLD/FSTP operands and the maximum's reversed FCOMIP select operand b on ties/unordered. Reuses the existing semantic_native_fixture_tested body without changing its ABI or implementation.",
+      "called": true,
+      "call_sites": 3
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "The loading-screen stand-in lacks the RenderCommandQueue singleton and its worker/frame-cycle lifecycle needed by the reset body."
+    },
+    {
+      "native": "006e38e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::session_field_f4h_is_0_or_1",
+      "reason": "The existing caller reads SessionContext's live scalar but lacks the body's session+F4h view; command-host ownership was held by peer chain276 during selection, and the opportunity was sent to that worker."
+    },
+    {
+      "native": "007b22a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600",
+      "reason": "This branch lacks the retained PathComponentState/AuthoredPathSource producer; peer chain276 claimed that file/address and reported its completed implementation at c84acfb5e."
+    },
+    {
+      "native": "007b1010",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: path cursor queries",
+      "reason": "The host stores ShipAiPathCursor fields rather than a retained PathCursorState view; the command-path owner was peer chain276 during selection."
+    },
+    {
+      "native": "007adb90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_cursor_point and path_cursor_point3",
+      "reason": "The host lacks the PathCursorState::source_04 virtual source view needed to replace the direct world-point reads; retained authored-source work was owned by peer chain276."
+    },
+    {
+      "native": "007add50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::advance_path_cursor_00836bf0",
+      "reason": "The body needs a retained source-backed PathCursorState and cursor-set-index binding; this branch uses ShipAiPathCursor and the existing follow-step body."
+    },
+    {
+      "native": "007b1320",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: path cursor queries",
+      "reason": "The next-point body needs a source-backed PathCursorState and cursor-get-point binding, absent from the current command-host representation."
+    },
+    {
+      "native": "007b19b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600",
+      "reason": "The existing BuiltPathSource is stack-borrowed and cannot enter the native deleting refcount lifetime; an owned PathSourceBase producer is missing."
+    },
+    {
+      "native": "007b1d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600",
+      "reason": "The current host retains no owned PathSourceBase in PathCursorState::source_04, so there is no native deleting-refcount lifetime to release."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "The host carries aggregate rack ammo/census counts, lacking the body's separate per-rack attached kind-2Ah children and reserve ammo_484 producers."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ship screen gauge_digit_uv",
+      "reason": "The live gauge magnitude exists, but the widget's retained writable vertex stream and digit-icon UV record needed by the body are missing."
+    },
+    {
+      "native": "00abe6e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ship screen circle_progress",
+      "reason": "The layout bridge lacks a retained Section runtime geometry object and renderer consumer for the body's updated values."
+    },
+    {
+      "native": "00aa8b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ship screen cancel_unit_timed_entry",
+      "reason": "The layout-only circle widgets lack the timed-entry array and entry producer whose owned entry the body deletes."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD root advance_ticker",
+      "reason": "A nonempty award-vector producer, native ticker strings and retained ticker widget/timed-entry owners are missing."
+    }
+  ],
+  "checks": {
+    "initial_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "Both target bodies reachable, each with three call sites from ship_model_slots and its bounds adapter; zero unreachable callers",
+    "readiness": "Both rows state=wired, called=true, call_sites=3; wired total 9229 -> 9231",
+    "runtime": "Game was not run, as instructed; executable call-graph reachability is static evidence"
+  },
+  "merge_validation": {
+    "upstream": "c76aa7649313fd1adc54c5ecb94a101631905425",
+    "resolution": "The only conflict was adjacent includes in src/game_hosts_gunnery.cpp; retain chain275, chain277 and path_movcam_seg46_argon headers. Both bodies of work merged without a code-hunk conflict.",
+    "on_build": "off_switch_on_build.py --names kWireGoal4Chain277Bound passed with zero diagnostics and both tests passing; wrapper restored the assignment's true switch byte-for-byte",
+    "plain_build": "scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests passed",
+    "pc24_staged": "Zero findings over 12 merged source/header files",
+    "wire_readiness": "Merged tree wired total 9237; 007ae330 and 007ae3e0 remain state=wired, called=true, call_sites=3",
+    "call_graph": "Both bodies remain entry-reachable with three call sites each and zero unreachable callers",
+    "candidate_review_note": "Skipped rows above describe selection against e9423535c before the merge; the peer chain276 path-source implementation is now included from upstream."
+  },
+  "decisions": [
+    "Use existing geometry reductions on actual loaded collision geometry; no synthetic state or duplicate address body.",
+    "Retain the old scalar loops unchanged in the switch's else arms, and keep the preexisting bound seeds and input validation.",
+    "Native operand-b tie/unordered selection and operand quieting replace std::min/std::max semantics on enabled paths; normal finite unequal bounds retain the same values.",
+    "No new tests or address-suffixed functions were added; existing build tests and built executable call-graph checks cover this binding."
+  ]
+}

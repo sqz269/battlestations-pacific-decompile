@@ -39,6 +39,7 @@
 
 #include "bsp/fixed_step_callbacks.hpp"
 #include "bsp/gameplay_seg46_cc13.hpp"
+#include "bsp/native_command_building_capturers.hpp"
 #include "bsp/soldier_traffic_cc13.hpp"
 
 #include <cstddef>
@@ -197,6 +198,9 @@ private:
     void release_round_callbacks();
     std::vector<Round> rounds_;
     std::vector<std::pair<std::uint32_t, std::uint32_t>> capturer_list_;   // (building, round id)
+    // Chain 282: sole capturer-list owner while its switch is on, keyed by the
+    // same real building handles returned by RoundServices::building().
+    std::map<std::uint32_t, NativeCommandBuildingCapturers> native_capturer_lists_;
     std::uint32_t next_id_{1};
     RoundCounters counters_{};
     // Wire g2-w2 (kWireGoal2Chain179Bound): the list 00875A80 appends the rounds'

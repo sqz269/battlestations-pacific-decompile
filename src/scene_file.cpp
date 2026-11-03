@@ -11,8 +11,13 @@
 #include "bsp/wire_goal2_chain145_switches.hpp"
 #include "bsp/wire_goal2_chain202_switches.hpp"
 #include "bsp/wire_goal4_chain258_switches.hpp"
+#include "bsp/wire_goal4_chain284_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/native_scene_property_record_type2_string_storage.hpp"
+#include "bsp/native_scene_typed_property_providers.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cmath>
 
@@ -412,6 +417,41 @@ struct ScenePropertyTokenCompareAdapter final : cc13_sweepA::SceneTokenEqualsHos
     }
 };
 
+// An unassigned type-2 record, filled by the decoded authored S token. The
+// parser consumes its actual owned +0Ch result before this scope retires it.
+// Evidence: bsp.py show 008EF1B0 (nullable initial text) and 008F3370 --asm:
+// 008F3373 tests tag 2, 008F3394 duplicates the token, 008F3399 publishes +0Ch.
+// This Source owner uses the admitted current-CRT allocation/free pair; the
+// phase word is data, and no Original vtable/class or register ABI is invoked.
+class SceneAssignedStringProperty final {
+public:
+    explicit SceneAssignedStringProperty(const char* decoded_token) {
+        construct_native_scene_property_record_type2_string_storage_008ef1b0(
+            record_.data(), nullptr, nullptr);
+        assign_native_scene_property_from_token_008f3370(
+            record_.data(), decoded_token, game::game_native_string_process());
+    }
+    ~SceneAssignedStringProperty() {
+        singleton_lifetime_free(reinterpret_cast<void*>(
+            static_cast<std::uintptr_t>(record_[3])));
+    }
+    SceneAssignedStringProperty(const SceneAssignedStringProperty&) = delete;
+    SceneAssignedStringProperty& operator=(const SceneAssignedStringProperty&) = delete;
+
+    const char* text() const {
+        const auto* value = reinterpret_cast<const char*>(
+            static_cast<std::uintptr_t>(record_[3]));
+        // The successful Source domain requires a copy for the nonnull token.
+        if (value == nullptr) throw std::bad_alloc();
+        return value;
+    }
+
+private:
+    // Leave the raw constructor's preserved bytes alone; only its initialized
+    // type and owned payload fields are read by this adapter/the assignment.
+    std::array<std::uint32_t, native_scene_property_record_type2_string_storage_bytes / 4> record_;
+};
+
 ScenePropertyBlock parse_property_body(Cursor& cur);
 
 // The optional "( g1 g2 ... )" group list, then "{ body }". 008f5a00.
@@ -461,12 +501,24 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 // 0094FF10 and 009500A0 build the value. OFF keeps chain 115's
                 // std::string view and the inline run loop below.
                 SceneQuotedRunChunkView runs(cur.lexer());
+                if constexpr (kWireGoal4Chain284Bound) {
+                    const SceneAssignedStringProperty assigned(
+                        oct18_rec::read_quoted_runs_008efb00(runs));
+                    prop.values.emplace_back(assigned.text());
+                } else {
                 prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
+                }
             } else if constexpr (kWireGoal2Chain115Bound) {
                 // 008F5CF6 -> 008EFB00: read_quoted_runs_008efb00 consumes the
                 // quoted runs over this lexer; OFF keeps the inline run loop.
                 SceneQuotedRunView runs(cur.lexer());
+                if constexpr (kWireGoal4Chain284Bound) {
+                    const SceneAssignedStringProperty assigned(
+                        oct18_rec::read_quoted_runs_008efb00(runs));
+                    prop.values.emplace_back(assigned.text());
+                } else {
                 prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
+                }
             } else {
             // 008F5CF6 -> 008EFB00: consume quoted runs by +4h, not token text.
             // 008EE670 decodes each run before the builder appends without a
