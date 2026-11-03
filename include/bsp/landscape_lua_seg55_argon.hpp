@@ -938,7 +938,20 @@ struct MissionLuaScriptEnvironmentHost {
         std::vector<std::string>& out_variants) = 0;
 };
 
-struct MissionLuaEnvironmentHost : MissionLuaScriptEnvironmentHost {
+// 00885DA0 only pushes a record. Its live caller must not supply unrelated
+// file, result-sink or cross-thread services just to use that dispatch.
+struct MissionLuaArgumentPushHost {
+    virtual ~MissionLuaArgumentPushHost() = default;
+    virtual void lua_push_number_006b80e0(float val) = 0;
+    virtual void lua_push_string_006b8120(const char* str) = 0;
+    virtual void lua_push_boolean_006b80c0(bool val) = 0;
+    virtual void lua_push_nil_006b8130() = 0;
+    virtual void lua_push_entity_from_this_table(std::int16_t entity_id) = 0;
+    virtual void lua_create_table_006b84b0() = 0;
+    virtual void lua_push_table_pair_00885a70(const LuaVariantPair& pair) = 0;
+};
+
+struct MissionLuaEnvironmentHost : MissionLuaScriptEnvironmentHost, MissionLuaArgumentPushHost {
     virtual ~MissionLuaEnvironmentHost() = default;
     // 006B87C0 LuaMachine scalar deleting destructor (vslot 0)
     virtual void delete_lua_machine(void* machine) = 0;
@@ -950,13 +963,6 @@ struct MissionLuaEnvironmentHost : MissionLuaScriptEnvironmentHost {
         const LuaVariantRecord& rec,
         std::string& out_text) = 0;
     // Lua stack operations for 00885DA0 / 00886E00 / 00887220 / 008874C0:
-    virtual void lua_push_number_006b80e0(float val) = 0;
-    virtual void lua_push_string_006b8120(const char* str) = 0;
-    virtual void lua_push_boolean_006b80c0(bool val) = 0;
-    virtual void lua_push_nil_006b8130() = 0;
-    virtual void lua_push_entity_from_this_table(std::int16_t entity_id) = 0;
-    virtual void lua_create_table_006b84b0() = 0;
-    virtual void lua_push_table_pair_00885a70(const LuaVariantPair& pair) = 0;
     virtual int lua_get_top_006b7e70() = 0;
     virtual void lua_pop_006b85f0(int count) = 0;
     virtual int lua_stack_type_006b7ec0(int index) = 0;
@@ -1012,7 +1018,7 @@ void mission_lua_result_sink_append_all_as_text_00885a30(
 // __thiscall(ECX = record, LuaMachine* machine), RET 4. Switches on `record.tag` (0..6).
 void mission_lua_push_argument_record_00885da0(
     const LuaVariantRecord& record,
-    MissionLuaEnvironmentHost& env);
+    MissionLuaArgumentPushHost& env);
 
 // 00885FB0 BSP_MissionLuaHost_RunScriptWithVariants
 // __thiscall(ECX = host, const char* path, bool run_variants), RET 8.

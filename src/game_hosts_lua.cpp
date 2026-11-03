@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain287_switches.hpp"
+#include "bsp/wire_goal4_chain334_switches.hpp"
 #include "bsp/native_mission_lua_stack.hpp"
 #include "bsp/native_mission_lua_type.hpp"
 #include "bsp/native_mission_lua_predicates.hpp"
@@ -149,6 +150,7 @@ extern "C" {
 #include <cstdlib>
 #include <cstring>
 #include <functional>
+#include <list>
 #include <optional>
 #include <stdexcept>
 #include <type_traits>
@@ -14487,8 +14489,95 @@ void GameMissionLuaHost::lua_pushvalue(int index) {
     }
 }
 
+namespace {
+// 00885DA0 (bsp.py show): tag +4 selects the scalar at +8, the signed
+// entity id, or the table walk. Borrow the mission's actual Lua state; the
+// record projection owns strings and stable child records until that walk ends.
+// This remains a semantic interface, not a twenty-byte native record/ABI.
+class LiveMissionArgumentPush final
+    : public bsp::landscape_lua_seg55_argon::MissionLuaArgumentPushHost {
+    using Record = bsp::landscape_lua_seg55_argon::LuaVariantRecord;
+    using Pair = bsp::landscape_lua_seg55_argon::LuaVariantPair;
+public:
+    explicit LiveMissionArgumentPush(lua_State* state) : state_(state) {}
+
+    void push(const bsp::MissionLuaArgument& argument) {
+        const Record& record = project(argument);
+        bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(record, *this);
+    }
+    void lua_push_number_006b80e0(float value) override {
+        // Native 006B80E0 receives float32, then widens to Lua's double.
+        ::lua_pushnumber(state_, static_cast<lua_Number>(value));
+    }
+    void lua_push_string_006b8120(const char* value) override { ::lua_pushstring(state_, value); }
+    void lua_push_boolean_006b80c0(bool value) override { ::lua_pushboolean(state_, value); }
+    void lua_push_nil_006b8130() override { ::lua_pushnil(state_); }
+    void lua_create_table_006b84b0() override { ::lua_createtable(state_, 0, 0); }
+    void lua_push_entity_from_this_table(std::int16_t entity_id) override {
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(entity_id));
+        ::lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+        // Retain the host's existing missing-thisTable guard: leave its nil
+        // on the stack. 00885DA0 itself supplies nil for the zero-id arm.
+        if constexpr (bsp::kWireGoal4Chain287Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            if (bsp::is_nil_native_mission_lua_006b7ee0(&machine, -1) != 0) return;
+        } else {
+            if (lua_isnil(state_, -1)) return;
+        }
+        ::lua_getfield(state_, -1, key);
+        ::lua_remove(state_, -2);
+    }
+    void lua_push_table_pair_00885a70(const Pair& pair) override {
+        // The live host owns dense, ordered argument arrays, not the native
+        // keyed VariantMap. Retain that projection here; this is not a claim
+        // to wire the separate raw-map 00885A70 reconstruction.
+        if (pair.key_kind != 0 || pair.value == nullptr)
+            throw std::logic_error("mission argument array requires an integer key and value");
+        const int top = ::lua_gettop(state_);
+        bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
+        // Tag 4 pushes nothing. It must not let rawseti consume the parent
+        // table (the old recursive host path did so for a skipped member).
+        if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
+    }
+private:
+    Record& project(const bsp::MissionLuaArgument& argument) {
+        records_.emplace_back();
+        Record& record = records_.back();
+        record.tag = static_cast<int>(argument.type);
+        switch (argument.type) {
+        case bsp::MissionLuaArgumentType::Number:
+            record.num_val = static_cast<float>(argument.number);
+            break;
+        case bsp::MissionLuaArgumentType::String: record.str_val = argument.text; break;
+        case bsp::MissionLuaArgumentType::Boolean: record.bool_val = argument.boolean; break;
+        case bsp::MissionLuaArgumentType::EntityId: record.entity_id = argument.entity_id; break;
+        case bsp::MissionLuaArgumentType::Table:
+            for (std::size_t i = 0; i < argument.elements.size(); ++i) {
+                Pair pair;
+                pair.int_key = static_cast<int>(i) + 1;
+                pair.value = &project(argument.elements[i]);
+                record.table_entries.push_back(std::move(pair));
+            }
+            break;
+        case bsp::MissionLuaArgumentType::Skipped:
+        case bsp::MissionLuaArgumentType::Nil: break;
+        default: record.tag = 6; break; // the existing host's default is nil
+        }
+        return record;
+    }
+    lua_State* state_;
+    std::list<Record> records_;
+};
+} // namespace
+
 void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) {
     if (state_ == nullptr) return;
+    if constexpr (bsp::kWireGoal4Chain334Bound) {
+        LiveMissionArgumentPush push(state_);
+        push.push(argument);
+    } else {
     switch (argument.type) {
     case bsp::MissionLuaArgumentType::Number:
         lua_pushnumber(state_, static_cast<lua_Number>(argument.number));
@@ -14536,6 +14625,7 @@ void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) 
     default:
         lua_pushnil(state_);
         return;
+    }
     }
 }
 
