@@ -1,0 +1,53 @@
+{
+  "goal": 4,
+  "chain": 319,
+  "slot": "g4-w2",
+  "owner": "agent/g4-w2",
+  "switch": "kWireGoal4Chain319Bound",
+  "rows": [
+    {
+      "native": "008f3a20",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert_enum (via Impl::insert_into), reached by src/game_hosts_scene_contents.cpp::merge_property_block from SceneReaderBinding::instantiate_entity, PropertyLibrary::add_group and merge_group_into",
+      "inputs": "Closed 'key = E <table> : <symbol> ;' statements parsed by scene_file.cpp::parse_property_body (SceneProperty::has_enum); the genuine CEnum is read from the live library registry (LibraryNativeEnums::registry_, the [00E1867C] object 004D3040 builds) with 0048E960, after 008F2C10 confirms the table and 0048D480 confirms the symbol, because 0048E960/0048E840 dereference a miss.",
+      "output": "Native type-4 record (+28h CEnum, +0Ch the 0048E840 word) feeds the whole 008F54F0 merge; result() publishes the merged +0Ch as SceneProperty::enum_value, scene_enum_property copies it, and PropertyLibrary::resolve_enum hands it to the 13 E consumers instead of re-resolving (resolve_symbol stays the fallback for unmerged/unknown values).",
+      "evidence": "bsp.py show 008f5a00 --asm 008F5E05..008F5FD4: table token 008D9980 copied to ESP+C0h, 0048E960(ECX=[00E1867C]), 00467CC0(':' 00CF00B0) then 008D9980 symbol, push symbol/EDI/key, CALL 008F3A20; no ':' adds nothing. call_graph.py who 008f3a20: one entry-reachable call from Bag::insert_enum (path through GameSceneContentsHost::run_load_scene_contents_004d4df0). Ad hoc probe (local, not committed): real universe/library/global.enums (26 tables) in a native registry built as LibraryNativeEnums does, every entity body of all 259 installed .scn files: 85305 E statements, 85292 closed, 82503 admitted and merged through 008F3A20, 165006 existing-key keep/overwrite merges, 0 value mismatches against the enum file. Switch OFF build compiles."
+    },
+    {
+      "native": "008f3510",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "FA (type 9) arm: no FA assignment in any installed .scn/.def/.lua/library file, so no real input reaches it; chain 321 (g4-w1) holds the BIN precedent."
+    },
+    {
+      "native": "008f3610",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "V3A (type 11, '( x y z )' groups per 008F6610..008F6653) arm: no V3A assignment in any installed file, so no real input reaches it."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "NextTokenIsInt needs a native 008D9CF0 tokenizer; the live scene parser runs on SceneLexer, so the I arm's %d test stays scene_scan_int."
+    },
+    {
+      "native": "00bd6990",
+      "status": "skipped",
+      "host_site": "src/archive_text_writer.cpp::ArchiveTextWriter::indent",
+      "reason": "Archive emitters (also 00BD6AC0/00BD6BD0/00BD7B30/00BD7F50) take ArchiveEmitHost, a cc13_seg95::Host with ~60 virtuals and no implementation; the live writer is a std::string model, so a NativeStr adapter over 0041DD40/0041E870/004261A0 is missing."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/ai_planners.cpp::ai_planner_choose_attack_target",
+      "reason": "AiGroupScoreList insert (and 00A2BCC0 mark_chosen): the list's only reader is the unreachable 00A2CDD0 overlay (game_hosts_ai.cpp kAiGroupScoreListReleaseBound note), and the host keeps no per-group list object."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/pilot_controls.cpp::clamp_control_axes_007caf10",
+      "reason": "Engine list helpers (also 007DE5B0, 007EB0B0) need PlaneEngineSlots objects at unit+C98h; no host plane builds engines."
+    }
+  ]
+}

@@ -15,10 +15,24 @@ namespace bsp::game {
 // The whole native merge owns payload precedence; result() republishes those
 // bytes with the selected authored spelling/tokens. Unsupported entries stay
 // on the caller's existing host path. No Original class/stack ABI is supplied.
+
+// Chain 319: the live library's native CEnum registry, the [00E1867C] object
+// 004D3040 publishes and the parser's E arm reads through 0048E960. Returns the
+// genuine CEnum for `table` only when the registry holds that table AND the
+// table holds `symbol` (0048E960 and 0048E840 dereference a miss), else null.
+class SceneNativeEnumSource {
+public:
+    virtual ~SceneNativeEnumSource() = default;
+    virtual const void* known_enum_owner(const std::string& table, const std::string& symbol) = 0;
+};
+
 class SceneNumericPropertyMerge final {
 public:
+    // `enums` (chain 319) admits closed E values into the native merge through
+    // 008F3A20; null leaves every E value on the host path.
     SceneNumericPropertyMerge(const ScenePropertyBlock& destination,
-        const ScenePropertyBlock& source, bool overwrite);
+        const ScenePropertyBlock& source, bool overwrite,
+        SceneNativeEnumSource* enums = nullptr);
     ~SceneNumericPropertyMerge();
     SceneNumericPropertyMerge(const SceneNumericPropertyMerge&) = delete;
     SceneNumericPropertyMerge& operator=(const SceneNumericPropertyMerge&) = delete;

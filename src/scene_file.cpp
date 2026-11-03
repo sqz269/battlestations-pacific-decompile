@@ -11,6 +11,7 @@
 #include "bsp/wire_goal2_chain145_switches.hpp"
 #include "bsp/wire_goal2_chain202_switches.hpp"
 #include "bsp/wire_goal4_chain258_switches.hpp"
+#include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/wire_goal4_chain284_switches.hpp"
 #include "bsp/wire_goal4_chain307_switches.hpp"
 #include "bsp/wire_goal4_chain311_switches.hpp"
@@ -695,6 +696,26 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.boolean_value = static_cast<std::uint8_t>(is_true ? 1 : 0);
                 prop.has_boolean = true;
             }
+        }
+        if constexpr (kWireGoal4Chain319Bound) {
+            // bsp.py show 008F5A00 --asm, 008F5E15..008F5FCF: E reads the table
+            // token (008D9980), looks it up (0048E960, ECX = [00E1867C]), and
+            // only when ':' follows (00467CC0, 00CF00B0) reads the symbol token
+            // and calls 008F3A20(key, table, symbol); without ':' nothing is
+            // added. Mark the closed one-table/one-symbol form; the native merge
+            // decides whether the registry knows both (0048E840 needs a hit).
+            if (equal_insensitive(prop.type_letter, "E") && cur.at(";")
+                && prop.values.size() == 3 && prop.values[1] == ":"
+                && !prop.values[0].empty() && !prop.values[2].empty()) {
+                bool bounded = true;
+                for (const std::string& token : prop.values) {
+                    bounded = bounded && token.size() < 0x400
+                        && token.find('\0') == std::string::npos;
+                }
+                prop.has_enum = bounded;
+            }
+        } else {
+            // The prior parser retains only the raw E tokens.
         }
         // 008F5BB2 reads %d and 008F5BC6/008F3730 store the type-0 DWORD.
         // Keep the existing source CRT provider and raw diagnostics; bare I
