@@ -14,6 +14,7 @@
 #include "bsp/wire_goal4_chain253_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/cc13_left55.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
@@ -10544,12 +10545,64 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         }
         return 0;
     }
-    // 006EC8E0's bag: Type = LaunchedClass (the instance override +530h is -1 here),
-    // WingCount 1, Party, State (7 here, LABELLED), Equipment.
+    // 006EC8E0's bag: Type = LaunchedClass, WingCount 1, Party, State (7 here,
+    // LABELLED), Equipment. With kWireGoal4Chain270Bound off, the else arm below
+    // takes the instance override +530h as -1 and fills Type and Party only; the
+    // on arm builds the whole bag through 006EC8E0.
     bsp::DummyKamikazeSpawn spawn;
     spawn.carrier = ship;
+    if constexpr (bsp::kWireGoal4Chain270Bound) {
+        // Goal 4 chain 270: MCatapult::Fire's bag (006EC8E0, bsp show 006ec8e0 and its
+        // listing 006EC8FF..006ECA3F) from the ship's own state:
+        //  - 006EC8FF..006EC933: launched class = owner+530h, or class+C0h when
+        //    negative; equipment = owner+534h, or class+C4h (006EC8FF rule). The
+        //    overrides are the bag's LaunchClassID / LaunchEquipment (0095E5B0),
+        //    the constructor's -1 without them.
+        //  - 006EC987 Skill = owner vtable[12Ch]() (unit+390h, skill_level);
+        //    006EC9A6 Race = owner+58h; 006EC9BE Party = owner+54h; 006EC9D6
+        //    OwnerPlayer = owner+188h, the role-0 policy word; 006ECA01
+        //    PlaneParentID = owner+174h, the entity id (index + 1 here).
+        //  - 006ECA3F ResourceUsage = (float) launched-class+124h, the class `Cost`
+        //    integer 00960230 stores at 009610D4 (00B66380, default 0).
+        // LABELLED, unchanged from the OFF arm: State 3 (held on the catapult node,
+        // +CCh matrix) is not hosted, so the creator still makes the plane in flight
+        // (State 7) above the ship.
+        // Behaviour (006ECA2F, 1) is carried: 007F47C7 stores it at the squadron's
+        // +364h. PlaneParentID has a reader (007F479D -> 00521E30 -> the
+        // under-parent placement arm at 007F4817) but is deliberately not carried,
+        // because this host places the plane in world space, 30 m above the ship,
+        // not under a parent. ResourceUsage alone has no reader in the creator's
+        // record. The two uncarried values are logged.
+        const std::int32_t launched =
+            bsp::catapult_launch_input_006ec8ff(row->launch_class_530, cls.launched_class);
+        const std::int32_t equipment =
+            bsp::catapult_launch_input_006ec8ff(row->launch_equipment_534, cls.equipment);
+        std::int32_t owner_player = 9;
+        units->unit_role_permission(ship, 0, owner_player);
+        const std::int32_t cost =
+            static_cast<std::int32_t>(read_vehicle_class_number(launched, "Cost", 0.0f));
+        const bsp::CatapultSpawnProperties props = bsp::catapult_spawn_properties_006ec8e0(
+            launched, equipment, units->skill_level(ship), row->race_58, row->party,
+            owner_player, static_cast<std::uint16_t>(ship + 1u), cost);
+        spawn.plane_class = static_cast<int>(props.type);
+        spawn.behaviour = props.behaviour;     // 006ECA2F, 1 -> +364h via 007F47C7
+        spawn.party = props.party;
+        spawn.race = props.race;
+        spawn.skill = props.skill;
+        spawn.owner_player = props.owner_player;
+        spawn.equipment = props.equipment;
+        log_.notef("  ShipUseCatapult 00891d50: \"%s\" bag Type=%u Skill=%d Race=%d Party=%d "
+            "OwnerPlayer=%d State=%d(7 hosted) PlaneParentID=%d Equipment=%d Behaviour=%d "
+            "ResourceUsage=%.1f (006EC8E0, overrides +530h=%d +534h=%d)", row->name.c_str(),
+            props.type, props.skill, props.race, props.party, props.owner_player, props.state,
+            props.plane_parent_id, props.equipment, props.behaviour,
+            static_cast<double>(props.resource_usage), row->launch_class_530,
+            row->launch_equipment_534);
+        log_.implemented("MCatapult::fire_spawn_properties", "006ec8e0");
+    } else {
     spawn.plane_class = cls.launched_class;
     spawn.party = row->party;
+    }
     spawn.dummy_id = r->launches + 1u;
     const float yaw = static_cast<float>(static_cast<double>(row->heading_degrees) * 3.14159265358979 / 180.0);
     apply_scene_yaw_00467050(spawn.world.data(), yaw);
@@ -10565,17 +10618,20 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
         ++summary_.use_catapult_spawn_failed;
         return 0;
     }
+    // Chain 270: the class the bag created (the +530h override when authored).
+    const int created_class = bsp::kWireGoal4Chain270Bound ? spawn.plane_class
+                                                           : cls.launched_class;
     if constexpr (kSEntityInitAllBound) {
-        route_push_squadron(static_cast<int>(entity), name, cls.launched_class, units_before);
-    } else if (attach_created_entity_00928a00(static_cast<int>(entity), name, cls.launched_class)) {
-        attach_wing_member_tables(units_before, entity, cls.launched_class);
+        route_push_squadron(static_cast<int>(entity), name, created_class, units_before);
+    } else if (attach_created_entity_00928a00(static_cast<int>(entity), name, created_class)) {
+        attach_wing_member_tables(units_before, entity, created_class);
     }
     const int slot = bsp::ShipCatapultRegistry::add_child_00957450(*r, entity);
     ++r->launches;
     ++summary_.use_catapult_launches;
     log_.notef("  ShipUseCatapult 00891d50: \"%s\" launched %s (class %d) slot %d, stock now %d "
         "(008141E0 -> 006EC8E0 -> 00957450, packet p17_catapult_adapter)", row->name.c_str(),
-        name.c_str(), static_cast<int>(cls.launched_class), slot,
+        name.c_str(), created_class, slot,
         static_cast<int>(r->slots.pending_638));
     log_.implemented("MissionLuaNative::ShipUseCatapult", "00891d50");
     return 0;

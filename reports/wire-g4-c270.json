@@ -1,0 +1,64 @@
+{
+  "chain": 270,
+  "switch": "kWireGoal4Chain270Bound",
+  "rows": [
+    {
+      "native": "006EC8E0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ship_use_catapult_00891d50 (ShipUseCatapult -> 008141E0 gate -> MCatapult::Fire bag)",
+      "state": "The launch bag is built by catapult_spawn_properties_006ec8e0 from the ship's real state: launched class and equipment through the 006EC8FF rule over unit+530h/+534h (the scene bag's LaunchClassID/LaunchEquipment, read as 0095E5B0 does, else the constructor's -1) and the class Catapult block; Skill = skill_level (unit+390h); Race = the retained scene Race (unit+58h); Party = unit+54h; OwnerPlayer = the role-0 policy word unit+188h (unit_role_permission); PlaneParentID = entity id; ResourceUsage = launched class Cost (+124h). Type, Skill, Race, Party, OwnerPlayer, Equipment and Behaviour now reach the creator (Behaviour 1 through PlaneSquadronSpawnRequest to 007F47C7, squadron +364h) (bag_skill and bag_equipment are consumed by create_units); previously the catapult plane took the kamikaze defaults (Race -1, Skill 1, OwnerPlayer 9) and the plane class's default equipment.",
+      "evidence": "bsp.py show 006ec8e0 and ghidra disasm 006EC8FF..006ECA3F (owner+530h/+534h with class+C0h/+C4h fallback, vtable[12Ch], +58h, +54h, +188h, State 3, +174h, Behaviour 1, ResourceUsage from record+124h). 0095CDBE OR EAX,-1 then 0095CDEF/0095CDF5 store -1 at +530h/+534h; 0095E8DB..0095E912 read LaunchClassID (type code 0) and LaunchEquipment (no type test). String at 00D1ABA4 is `Cost`, stored at class+124h by 009610D4 via 00B66380. Scenes author `LaunchEquipment = E EquipmentIndex : none` on ships (e.g. ijn_02_force_z.scn Renown-class) and `LaunchClassID = I 171/172`.",
+      "call_graph": "REACHABLE; tools/call_graph.py who 006ec8e0: one call (at 1013933F in the round-1 build) from GameMissionLuaHost::run_ship_use_catapult_00891d50."
+    },
+    {
+      "native": "006EBD30",
+      "status": "skipped",
+      "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::gate_008141e0 (called from run_ship_use_catapult_00891d50)",
+      "reason": "No catapult device ammo producer: the gate needs the MCatapult's +3B8h disabled byte, +480h ammo and +414h reload timer; the constructor 006EC640 zeroes +480h/+484h and only SetAmmo 006EB660 (vtable slot 1BCh) writes them, whose caller for a catapult device is not traced; the gunnery host builds a GameGunRow per CATAPULT device (category 0Bh, reload_time) but keeps no ammo/disabled state for it, so the registry still uses only the class part.",
+      "climb": "Find the vtable[1BCh] caller that seeds a catapult device's ammo (ship Weapons table or LaunchStock), carry ammo/disabled/reload on the gunnery host's catapult GameGunRow, then replace ShipCatapultRegistry::gate_008141e0's class-only test with catapult_can_fire_006ebd30 over that row."
+    },
+    {
+      "native": "006ED1C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ship_use_catapult_00891d50",
+      "reason": "The catapult tick/launch timeline needs a plane held in State 3 on the catapult node (+CCh matrix) and the device's startLaunch/launchTick fields; the host creates the plane at once in flight (State 7) and has no catapult-held plane mode."
+    }
+  ],
+  "built": [
+    "GameUnitRow::race_58, launch_class_530, launch_equipment_534 retained from the scene record in GameUnitsHost::create_units",
+    "GameSceneEntityRecord::launch_class_530 / launch_equipment_534 read from the entity bag in game_hosts_scene_contents.cpp (0095E5B0's LaunchClassID / LaunchEquipment reads)",
+    "DummyKamikazeSpawn::equipment carried to GameSceneEntityRecord::bag_equipment by create_dummy_kamikaze_squadron_006fec00 (-1, the kamikaze bag's absent key, by default)",
+    "DummyKamikazeSpawn::behaviour carried to PlaneSquadronSpawnRequest::behaviour_present/behaviour by create_dummy_kamikaze_squadron_006fec00 (-1, the kamikaze bag's absent key, by default)"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "wired_before": 9181,
+    "wired_after": 9182,
+    "reachability": "tools/call_graph.py rebuilt after the build; who 006ec8e0 shows the new call from run_ship_use_catapult_00891d50",
+    "runtime": "No game run; build and static call-graph evidence only",
+    "review_round_1": "scripts/build.ps1 passed (reconstructed_math, tool_tests); call_graph who 006ec8e0 reachable, one call site; readiness 9182; no float math changed",
+    "merge_origin_main": "Merged origin/main (include-list conflicts in game_hosts_lua.cpp, game_hosts_scene_contents.cpp, game_hosts_units.cpp, both sides kept). scripts/build.ps1 passed with the switch on; call_graph who 006ec8e0 reachable, one call site from run_ship_use_catapult_00891d50; wire_readiness on the merged tree: wired 9230, 006EC8E0 wired and called."
+  },
+  "review_round_1": [
+    {
+      "finding": "kamikaze_task_host.hpp: add DummyKamikazeSpawn::behaviour = -1",
+      "outcome": "fixed"
+    },
+    {
+      "finding": "game_hosts_script_orders.cpp: set request.behaviour_present/behaviour from spawn.behaviour under the switch",
+      "outcome": "fixed; kamikaze path keeps behaviour_present false"
+    },
+    {
+      "finding": "game_hosts_lua.cpp: spawn.behaviour = props.behaviour after 006EC8E0",
+      "outcome": "fixed; +364h is now 1 for a catapult squadron, not the -1 seed"
+    },
+    {
+      "finding": "game_hosts_lua.cpp: wrong \"no reader\" comment",
+      "outcome": "fixed; Behaviour carried (007F47C7), PlaneParentID has a reader (007F479D -> 00521E30 -> 007F4817) but is left out because the host places the plane in world space 30 m above the ship, only ResourceUsage has no reader"
+    },
+    {
+      "finding": "game_hosts_lua.cpp: stale \"+530h is -1 here\" comment",
+      "outcome": "fixed; limited to the switch-off arm"
+    }
+  ]
+}
