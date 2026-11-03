@@ -1,7 +1,9 @@
 #include "bsp/locale_text_lookup.hpp"
+#include "bsp/cc13_seg87.hpp"
 #include "bsp/native_wide_string.hpp"
 #include "bsp/wide_string_substring_view.hpp"
 #include "bsp/wire_goal2_chain116_switches.hpp"
+#include "bsp/wire_goal2_chain163_switches.hpp"
 
 #include <cstdint>
 #include <cwchar>
@@ -153,7 +155,24 @@ void LocaleTextResolver::append_key_00a9f4b0(std::u16string& output,
     } else {
         const auto* text = tables_.find_00a9ec70(stripped);
         append_checked(output, text ? *text : widen_bytes_004c5e60(stripped));
+        std::size_t marker = [&]() -> std::size_t {
+        // 00A9EF60 calls the existing wide first-of body; OFF keeps the host marker search.
+        if constexpr (kWireGoal2Chain163Bound) {
+            // 00A9F5E2..00A9F5FC: the set is the widened "#" at 00CF828C;
+            // the haystack is the same output appended above, starting at its old length.
+            // Both headers borrow terminated backing for this call only. The body reads it.
+            char16_t separators[] = u"#";
+            const NativeWideStringHeader text{static_cast<std::uint32_t>(output.size()),
+                output.data()};
+            const NativeWideStringHeader set{1u, separators};
+            const std::int32_t index = find_first_of_native_wide_string_00a9ef60(
+                text, set, static_cast<std::int32_t>(old_length));
+            return index < 0 ? std::u16string::npos : static_cast<std::size_t>(index);
+        } else {
         std::size_t marker = output.find(u'#', old_length);
+        return marker;
+        }
+        }();
         while (marker != std::u16string::npos) {
             const std::size_t close = output.find(u'#', marker + 1);
             if (close == std::u16string::npos) {

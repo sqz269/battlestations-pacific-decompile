@@ -1,0 +1,98 @@
+{
+  "chain": 163,
+  "slot": "g2-w2",
+  "goal": 2,
+  "run": 321,
+  "harness": "codex",
+  "host_file": "src/locale_text_lookup.cpp",
+  "candidate": "segment 75 [00a9ac70-00aa0f50]",
+  "tier": 2,
+  "switch": "kWireGoal2Chain163Bound",
+  "switch_default": false,
+  "files": [
+    "src/locale_text_lookup.cpp",
+    "include/bsp/wire_goal2_chain163_switches.hpp",
+    "reports/wire-g2-c163.json"
+  ],
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "00a9ef60",
+      "address": "00a9f5fc",
+      "function": "00a9f4b0",
+      "host_site": "src/locale_text_lookup.cpp LocaleTextResolver::append_key_00a9f4b0, initial marker search",
+      "status": "wired",
+      "reach": "static",
+      "reach_path": "GameStartupHost::run_initialize_phases opens the sprite/text bridges and installs the device overlay (src/game_hosts.cpp:3770-3778); GameFrontendHost::draw_bridge -> Impl::build_quads -> append_text_quads -> GameTextHost::build_run -> GameGuiTextBinding::resolve_localised -> LocaleTextResolver::resolve -> append_key_list_00a9fad0 -> append_key_00a9f4b0. No false selector encloses the initial marker search. kWireGoal2Chain116Bound=false gates the later substring composition only. No surveyed mission counts were supplied for this range.",
+      "contract": "00A9EF60 RET 8 takes ECX=text and stack=(set,start); 00A9F5F4/F5F9 push saved old output length and the widened '#' header; F5FA loads ECX=ESI. ESI is output from [EBP+8] at F4E5; F4E8/F4EA capture its pre-append length in [ESP+28h]. The callee calls wcscspn, clamps negative starts, and returns -1 at end.",
+      "state": "Borrow the actual resolver output's terminated UTF-16 backing through the existing NativeWideStringHeader; set comes from the binary's '#' constant at 00CF828C, not a fabricated host value. Map -1 to std::u16string::npos. ON replaces the initial output.find call. OFF retains the original statement in the branch, with only result-scope plumbing. The later close/rescan searches remain unchanged.",
+      "coverage": "existing complete typed body; new C++ interface, not original ABI or gameplay validation"
+    },
+    {
+      "native": "00a9bf90",
+      "address": "0056dce8",
+      "function": "0056dcb0",
+      "host_site": "src/menu_screens_2.cpp session browser exit; other sites in src/frontend_screens_cc13.cpp and src/cc13_sweepB5.cpp",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No game host implements list_clear_00a9bf90, list_box_clear_items_00a9bf90, gui_listbox_clear_items_00a9bf90 or FrontendPromptHost::clear_navigation. The raw body owns the FC/100/104 list, 108/10C selection, 110 previous and 114 listener, and needs real row current34/current80 dispatch. GuiListboxRuntime exists, but none of these reconstructed screen callers is bound to its actual companion. Building a parallel raw list/image here would duplicate ownership, not replace reachable host logic. No typed-view overload landed without a host site."
+    },
+    {
+      "native": "00a9c860",
+      "address": "00425eee",
+      "function": "00425eb0",
+      "host_site": "src/scenes_seg1_cc13.cpp autotest_select_listbox_item_00425eb0; src/seg1_autotest_cc13.cpp autotest_ensure_screen_00426350",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Both image callers are AutoTest paths. No game host implements listbox_select_data_00a9c860 or runs that native AutoTest screen/listener graph. The mission host uses its separate explicitly labelled skirmish-entry projection (src/game_hosts_mission.cpp:1576 onward). Need an actual screen-owned GuiListboxRuntime and listener refresh dispatch; adding an isolated selection helper would be unreachable."
+    },
+    {
+      "native": "00a9f0b0",
+      "address": "00a9fce2",
+      "function": "00a9fc30",
+      "host_site": "src/native_locale_map_insertion.cpp insert_or_get_native_locale_value_00a9fc30; live projection src/locale_tables.cpp LocaleTables::insert_00a9fc30",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native insertion already calls the same address's direct allocate_native_locale_node_00a9f0b0 implementation. Replacing that with string_map_node_pool_allocate_00a9f0b0 would merely change duplicate address bodies, and needs the broad SweepC2Host interface. The reachable LocaleTables projection owns C++ Nodes, not 1Ch raw nodes, 7804h slabs or the canonical E1768C pool. GameSingletonHost::prepare_locale_manager has no application caller in this tree. Moving parser/map/pool ownership is beyond this chain's one-object cap; no constants or second pool fabricated."
+    },
+    {
+      "native": "00a9f460",
+      "address": "00a9fcfc",
+      "function": "00a9fc30",
+      "host_site": "src/native_locale_map_insertion.cpp copy_construct_key_00a9f460; live projection src/locale_tables.cpp LocaleTables::insert_00a9fc30",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Native insertion already invokes its direct F460 key constructor, so replacing it with copy_construct_native_string_record_00a9f460 duplicates an OFF address call. The live LocaleTables node has std::string/std::u16string fields, not a fresh 10h key/value native header with the matching NativeStringStorage producer and release path. No native key record that a counted row could use was built."
+    },
+    {
+      "native": "00aa0e20",
+      "address": "004e186a",
+      "function": "004dfb70",
+      "host_site": "src/mission_scene_load.cpp gui_set_enabled; src/game_hosts_menu.cpp MenuLoadingScreenHost::gui_set_enabled",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Existing loading GUI host calls are behind kFrontEndPointerCc13Bound=false (src/game_hosts_menu.cpp:89,2007). The available semantic pointer slot only sets layout visibility; AA0E20 requires a genuine current cursor widget current34(0) and the manager's SAME +50/+54/+58 resources. No reachable restart host method supplies those dispatch/lifetime operations. Wiring behind the existing false gate would not count; no fabricated cursor object."
+    },
+    {
+      "native": "00aa0e60",
+      "address": "005b5b49",
+      "function": "005b45c0",
+      "host_site": "src/cc13_sweepB10.cpp HudMapScreen update host.gui_manager_set_pointer_state_00aa0e60",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No game host implements gui_manager_set_pointer_state_00aa0e60. The body needs the actual manager current cursor +50h, its current88(target,0,1.0f), and the callback at manager+4 with the reloaded cursor. The sprite-bridge pointer adapter supplies visibility only, with neither animation dispatch nor that callback producer; building the widget animation graph exceeds a small typed-view adapter."
+    }
+  ],
+  "wired_before": 8996,
+  "wired_after": 8997,
+  "wired_addresses": ["00a9ef60"],
+  "checks": {
+    "off_build": "passed ./scripts/build.ps1, including reconstructed_math and tool_tests (2/2)",
+    "on_build": "passed python tools/off_switch_on_build.py --names kWireGoal2Chain163Bound; exit 0, 0 distinct diagnostics, local/off_switch_on_build.log",
+    "final_off_build": "passed ./scripts/build.ps1 after ON check; both existing tests passed; switch restored false",
+    "readiness": "passed final plain OFF-map recount: 8996 -> 8997; 00a9ef60 ready -> wired, the other six selected rows remain ready",
+    "report_calls": "passed python tools/verify_report_calls.py reports/wire-g2-c163.json: 7 call rows checked, 0 failed",
+    "pc24_lint": "not applicable: no x87 arithmetic added or changed",
+    "game_run": "not run, as assigned"
+  }
+}
