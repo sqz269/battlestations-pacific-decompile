@@ -763,12 +763,17 @@ void cc13_sweepB_hud_map_set_speaking_unit_005a2650(void* screen, void* unit, vo
 // FUN_00604A20). ABI: __thiscall(ECX screen), RET, EAX 0/1. Caller 007BB9A0
 // BSP_Plane_IsLocalInputEnabled (pilot_command_path.hpp models the answer as
 // global_block_00604a20). Evidence 00604A20..00604A4B.
+bool cc13_sweepB_interface_allows_input_00604a20(std::int32_t mode_900, std::uint8_t byte_904) {
+    const std::int32_t mode = mode_900;
+    if (mode == 7 || mode == 6 || mode == 3) return false;
+    if (mode == 4 && byte_904 == 0) return false;
+    return true;
+}
 bool cc13_sweepB_interface_allows_input_00604a20(const void* screen) {
     void* s = const_cast<void*>(screen);
     const std::int32_t mode = cc13_sweepB_at<std::int32_t>(s, 0x900);
-    if (mode == 7 || mode == 6 || mode == 3) return false;
-    if (mode == 4 && cc13_sweepB_at<std::uint8_t>(s, 0x904) == 0) return false;
-    return true;
+    if (mode != 4) return cc13_sweepB_interface_allows_input_00604a20(mode, std::uint8_t{1});
+    return cc13_sweepB_interface_allows_input_00604a20(mode, cc13_sweepB_at<std::uint8_t>(s, 0x904));
 }
 
 // 00604A50 (hypothesis; ledger FUN_00604A50). ABI: __thiscall(ECX entity),

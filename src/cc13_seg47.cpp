@@ -532,12 +532,16 @@ bool random_timer_step_007b5980(Seg47Host& host, Raw timer, float dt) {
 // 007B5BE0, __thiscall(ECX = unit), ST0. m = (+448h > +444h) ? +448h : +444h
 // (FCOMI/JA: a NaN pair takes +444h); result = (m > +434h) ? m : +434h
 // (JBE: a NaN takes +434h).
-float unit_largest_extent_007b5be0(Raw unit) {
-    const float a = unit.at<float>(0x444);
-    const float b = unit.at<float>(0x448);
+float unit_largest_extent_007b5be0(float extent_434, float extent_444, float extent_448) {
+    const float a = extent_444;
+    const float b = extent_448;
     const float m = (b > a) ? b : a;
-    const float c = unit.at<float>(0x434);
+    const float c = extent_434;
     return (m > c) ? m : c;
+}
+float unit_largest_extent_007b5be0(Raw unit) {
+    return unit_largest_extent_007b5be0(unit.at<float>(0x434), unit.at<float>(0x444),
+                                        unit.at<float>(0x448));
 }
 
 // 007B5C20 / 007B5D70 / 007B5E60 (three identical bodies), __thiscall(ECX =
@@ -2536,8 +2540,12 @@ void* plane_unit_instance_create_007d1c90(Seg47Host& host, Raw cls, void* arg) {
 
 // 007C4830, __thiscall(ECX = class), ST0: (float)(tuning+230h * class+184h)
 // (0042E740; one x87 product stored to a float).
+float plane_class_stall_range_speed_007c4830(float tuning_230, float class_184) {
+    return tuning_230 * class_184;
+}
 float plane_class_stall_range_speed_007c4830(Seg47Host& host, Raw cls) {
-    return host.ai_tuning_0042e740().at<float>(0x230) * cls.at<float>(0x184);
+    const float tuning_230 = host.ai_tuning_0042e740().at<float>(0x230);
+    return plane_class_stall_range_speed_007c4830(tuning_230, cls.at<float>(0x184));
 }
 
 // 007C4D90, __thiscall(ECX = plane), AL: alt = +9B4h; tuning+354h > alt ->

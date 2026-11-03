@@ -308,11 +308,16 @@ void* cc13_seg48_mplane_fighter_class_create_007ddae0(void* vehicle_class, std::
 
 // 007D7A40 BSP_PilotPlan_ResetCommandTimer, __thiscall(ECX = plan): when
 // [plan+10h] is non-null, its +C8h = 1.2f ([00CE3814], bytes 9A 99 99 3F).
+void cc13_seg48_pilot_plan_reset_command_timer_007d7a40(float* target_timer_c8) {
+    if (target_timer_c8 != nullptr) {
+        const std::uint32_t bits = 0x3F99999Au;
+        std::memcpy(target_timer_c8, &bits, sizeof(bits));
+    }
+}
 void cc13_seg48_pilot_plan_reset_command_timer_007d7a40(void* plan) {
     void* target = at<void*>(plan, 0x10);
-    if (target != nullptr) {
-        at<std::uint32_t>(target, 0xC8) = 0x3F99999Au;
-    }
+    cc13_seg48_pilot_plan_reset_command_timer_007d7a40(
+        target != nullptr ? &at<float>(target, 0xC8) : static_cast<float*>(nullptr));
 }
 
 // 007DDEA0 BSP_PlaneSubBlock_ResetTimer40, __thiscall(ECX = block): +40h =

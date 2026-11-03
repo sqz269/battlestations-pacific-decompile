@@ -478,6 +478,8 @@ void cc13_sweepB_node_set_child_factor_by_name_005a3ef0(void* node, Cc13SweepBNa
 // 00604A20: 0 when the screen mode +900h is 7, 6 or 3, or 4 with byte +904h
 // clear; otherwise 1.
 bool cc13_sweepB_interface_allows_input_00604a20(const void* screen);
+// 00604A20 over the two fields it reads, +900h and +904h; the Raw entry forwards here.
+bool cc13_sweepB_interface_allows_input_00604a20(std::int32_t mode_900, std::uint8_t byte_904);
 
 // 00604A50: 1 when the entity is kind 17h (vtable +5Ch) and byte +C24h is clear.
 bool cc13_sweepB_entity_kind17_ready_00604a50(void* entity, Cc13SweepBHost& host);

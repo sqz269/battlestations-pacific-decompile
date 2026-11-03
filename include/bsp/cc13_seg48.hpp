@@ -293,6 +293,9 @@ void* cc13_seg48_mplane_fighter_construct_007dd9b0(void* unit, std::uint32_t arg
 std::uint32_t cc13_seg48_mplane_fighter_slot0_return0a_007dda20();
 void* cc13_seg48_mplane_fighter_class_create_007ddae0(void* vehicle_class, std::uint32_t arg, Cc13Seg48Host& host);
 void cc13_seg48_pilot_plan_reset_command_timer_007d7a40(void* plan);
+// 007D7A40 over the timer it stores, [plan+10h]+C8h (null when [plan+10h] is null);
+// the Raw entry forwards here.
+void cc13_seg48_pilot_plan_reset_command_timer_007d7a40(float* target_timer_c8);
 void cc13_seg48_plane_sub_block_reset_timer40_007ddea0(void* block);
 
 // ---- engine pod arrays {data, count, capacity} ----

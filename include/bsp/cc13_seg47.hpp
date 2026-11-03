@@ -483,6 +483,9 @@ Raw rocket_attack_run_state_construct_007b4d90(Seg47Host& host, Raw state, void*
 float* rocket_approach_body_aim_offset_007b5400(Raw approach, float* out);
 bool random_timer_step_007b5980(Seg47Host& host, Raw timer, float dt);
 float unit_largest_extent_007b5be0(Raw unit);
+// 007B5BE0 over the three extents the body reads (+434h, +444h, +448h); the Raw entry
+// forwards here.
+float unit_largest_extent_007b5be0(float extent_434, float extent_444, float extent_448);
 void bot_condition_destruct_base_007b5c20(Seg47Host& host, Raw condition);
 Raw bot_condition_construct_base_007b5c70(Seg47Host& host, Raw condition, void* arg);
 Raw bot_condition_deleting_dtor_007b5cd0(Seg47Host& host, Raw condition, std::uint8_t flags);
@@ -666,6 +669,9 @@ void* plane_unit_instance_create_007d1c90(Seg47Host& host, Raw cls, void* arg);
 
 // --- plane class speed and altitude gates ---------------------------------------------------
 float plane_class_stall_range_speed_007c4830(Seg47Host& host, Raw cls);
+// 007C4830 over its two operands, tuning+230h (StallRangeMax) and class+184h (StallSpd);
+// the Raw entry forwards here.
+float plane_class_stall_range_speed_007c4830(float tuning_230, float class_184);
 bool plane_in_paratrooper_drop_altitude_007c4d90(Seg47Host& host, Raw plane);
 
 
