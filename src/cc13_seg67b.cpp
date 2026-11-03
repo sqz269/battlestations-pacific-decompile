@@ -1627,9 +1627,10 @@ void* bot_state_move_to_circle_construct_009c25d0(Cc13Seg67bHost& host, void* st
 // false (009AFA64): task+620h. Else 007B8AD0(u) (009AFA78) ? task+4C4h : task+500h.
 void* bot_task_land_pick_cruise_state_009afa50(Cc13Seg67bHost& host, void* task) {
     void* const unit = ptr_at(task, 0x3FC);
-    if (!host.object_vcall_38(ptr(unit, 0x72C))) return ptr(task, 0x620);
-    return host.unit_is_squadron_flight_leader_007b8ad0(unit) ? ptr(task, 0x4C4)
-                                                              : ptr(task, 0x500);
+    return bot_task_land_pick_cruise_state_009afa50(
+        [&host, unit] { return host.object_vcall_38(ptr(unit, 0x72C)); },
+        [&host, unit] { return host.unit_is_squadron_flight_leader_007b8ad0(unit); },
+        ptr(task, 0x620), ptr(task, 0x4C4), ptr(task, 0x500));
 }
 
 // 0099B260 (0099B260-0099B283). byte s+8h ? s+4h : s+0h, returned through a
@@ -2014,7 +2015,8 @@ float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, 
 // (0099B683).
 void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p) {
     void* const n = ptr_at(ptr_at(p, 0x2F4), 0xC50);
-    if (n != nullptr) host.vehicle_avoidance_007df4f0(n, p);
+    pilot_bot_avoid_vehicles_0099b670(n != nullptr,
+                                      [&host, n, p] { host.vehicle_avoidance_007df4f0(n, p); });
 }
 
 // ---------------------------------------------------------------------------
@@ -2129,8 +2131,8 @@ bool bot_state_dogfight_aim_is_bored_009a98f0(void* state) {
 // (009B1E40).
 bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o) {
     void* const t = ptr_at(o, 0x30);
-    if (t == nullptr) return false;
-    return host.object_vcall_5c(t, 9);
+    return land_target_is_kind9_009b1e30(
+        t != nullptr, [&host, t](std::uint32_t kind) { return host.object_vcall_5c(t, kind); });
 }
 
 // ---------------------------------------------------------------------------
@@ -2395,8 +2397,14 @@ constexpr float kMinusHalf_00ce69d0 = -0.5f;
 // 009B7A80 (009B7A80-009B7AA2). byte +A0h set -> 0; else +98h > [00CE69D0] (-0.5)
 // (COMISS, JBE -> 0, so NaN -> 0) -> 1.
 bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state) {
-    if (at<std::uint8_t>(state, 0xA0) != 0) return false;
-    return at<float>(state, 0x98) > kMinusHalf_00ce69d0;
+    return bot_state_level_bomb_prepare_is_waiting_009b7a80(at<std::uint8_t>(state, 0xA0) != 0,
+                                                            at<float>(state, 0x98));
+}
+
+// Typed view of 009B7A80: the same two reads over the caller's storage.
+bool bot_state_level_bomb_prepare_is_waiting_009b7a80(bool released_a0, float timer_98) {
+    if (released_a0) return false;
+    return timer_98 > kMinusHalf_00ce69d0;
 }
 
 // 009B7B10 (009B7B10-009B7B33). byte +18h set -> 1; byte +19h clear -> 0; else
@@ -2557,8 +2565,11 @@ void* bot_state_dive_bomb_attack_run_construct_009c4140(Cc13Seg67bHost& host, vo
 // 009C7850 (009C7850-009C7864). 007B9320(ECX = [[s+4h]+4h], 0) (009C7858); AL
 // clear -> 1, set -> 0 (NEG/SBB/ADD).
 bool bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(Cc13Seg67bHost& host, void* state) {
-    return !host.weapon_controller_has_general_bomb_ordnance_007b9320(
-        ptr_at(ptr_at(state, 0x04), 0x04), 0);
+    void* const controller = ptr_at(ptr_at(state, 0x04), 0x04);
+    return bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(
+        [&host, controller](std::int32_t arg) {
+            return host.weapon_controller_has_general_bomb_ordnance_007b9320(controller, arg);
+        });
 }
 
 // 009BE050 (009BE050-009BE099). c = unit+AB0h; c+18h..+20h = v[0..2] (FLD/FSTP);

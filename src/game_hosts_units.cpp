@@ -19,6 +19,7 @@
 #include "bsp/wire_goal2_chain56_switches.hpp"
 #include "bsp/wire_goal2_chain67_switches.hpp"
 #include "bsp/wire_goal2_chain73_switches.hpp"
+#include "bsp/wire_goal2_chain76_switches.hpp"
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -6516,7 +6517,19 @@ struct GameUnitsHost::Impl {
         // aimglide terminal for any aircraft still holding a bomb.
         in.aimglide_pull_out_76c = slot.db_aimglide_pull_out_76c;
         // 009C7850: !HasGeneralBombOrdnance.
+        if constexpr (bsp::kWireGoal2Chain76Bound) {
+            // 009C7850: the typed body asks 007B9320(0) now, as the image does, over the
+            // host's racks (the ordnance kinds and the rounds left, the +D1h producer's
+            // test); OFF keeps the +D1h value the approach tick cached.
+            in.aimglide_out_of_bombs = bsp::bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(
+                [&](std::int32_t) {
+                    return bsp::ordnance_has_general_bomb_2ah(
+                               bsp::OrdnanceKindSet{slot.ordnance_mask}) &&
+                           dive_bomb_rounds_remaining(slot) > 0;
+                });
+        } else {
         in.aimglide_out_of_bombs = !slot.db_has_bomb_d1;
+        }
         // 009C7EA0, reconstructed.
         // 009C7EA0 reads pose+C64h first and pose+C68h second. The slot's
         // own comment makes +C64h the pitch and +C68h the bank, so the pair
@@ -10232,7 +10245,14 @@ struct GameUnitsHost::Impl {
                 squadron_allows = sq == nullptr || (sq->sq_avoid_3a4 & 2u) != 0;
             }
             if ((u.task_mask_2e4 & 2) != 0 && squadron_allows) {
+                if constexpr (bsp::kWireGoal2Chain76Bound) {
+                    // 0099B670: the typed body tests the +C50h neighbours object
+                    // (nb_has_object_c50) before 007DF4F0; OFF calls 007DF4F0 directly.
+                    bsp::pilot_bot_avoid_vehicles_0099b670(nb_has_object_c50(u),
+                        [&] { vehicle_avoidance_007df4f0(u, dt); });
+                } else {
                 vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
+                }
             }
         }
         if constexpr (kPilotTerrainAvoidanceBound) {
@@ -32618,8 +32638,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ri.prepare_released_a0 = unit_.lb_prepare_a0;
                         // 009B7A80 on prepare: +A0h clear and +98h > -0.5. PARTIAL:
                         // prepare's tick 009B6670 is unread, so +98h keeps -1.0.
+                        if constexpr (bsp::kWireGoal2Chain76Bound) {
+                            // 009B7A80: the typed body over the prepare state's +A0h/+98h
+                            // (lb_prepare_a0/lb_prepare_98); OFF keeps the inline test.
+                            ri.prepare_waits = bsp::bot_state_level_bomb_prepare_is_waiting_009b7a80(
+                                unit_.lb_prepare_a0, unit_.lb_prepare_98);
+                        } else {
                         ri.prepare_waits = !unit_.lb_prepare_a0 &&
                                            unit_.lb_prepare_98 > bsp::level_bomb::kPrepareWaitFloor;
+                        }
                         ri.aim_release_18 = unit_.lb_aim_18;
                         ri.aim_abort_19 = unit_.lb_aim_19;
                         ri.force_release_3ae = false;
@@ -41211,11 +41238,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.land_park_target_24 < pz) {
                                 // 009B2228: on a class-9 target (009B1E30) the plane
                                 // at the lift (site vtable[3Ch], 006CFF70) is not done.
+                                if constexpr (bsp::kWireGoal2Chain76Bound) {
+                                    // 009B1E30: the typed body over the land target (the
+                                    // deck's owner, approach+30h) and its class's IsKindOf
+                                    // (vtable[5Ch]) answer; OFF keeps the caller's
+                                    // mother-ship flag.
+                                    const GameUnitSlot* const target =
+                                        d.owner < owner_.slots.size()
+                                            ? owner_.slots[d.owner].get() : nullptr;
+                                    const bool class9 = GameUnitsHost::Impl::kCarrierElevatorBound
+                                        && bsp::land_target_is_kind9_009b1e30(target != nullptr,
+                                            [target](std::uint32_t kind) {
+                                                return bsp::unit_is_kind_of(target->class_id,
+                                                    static_cast<int>(kind));
+                                            });
+                                    if (!(class9 && owner_.carrier_elevator_intake_006cff70(d,
+                                            unit_))) {
+                                        unit_.land_done_18 = true;
+                                        ++unit_.land_park_done_why[3];
+                                        return;
+                                    }
+                                } else {
                                 if (!(carrier && owner_.carrier_elevator_intake_006cff70(d,
                                         unit_))) {
                                     unit_.land_done_18 = true;
                                     ++unit_.land_park_done_why[3];
                                     return;
+                                }
                                 }
                             }
                             const float e = bsp::wrapped_angle_subtract_00438b10(
@@ -41999,6 +42048,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         case 1: {
                             // 009B3E51 009AFA50: not airborne -> land/park; a
                             // flight leader -> moveto (land); else follow (land).
+                            if constexpr (bsp::kWireGoal2Chain76Bound) {
+                                // 009AFA50: the typed body picks park (+620h), moveto (+4C4h)
+                                // or follow (+500h) from (+72Ch)->vtable[38h] (the host's
+                                // airborne mode, +900h == 7) and 007B8AD0; park stays
+                                // refused as OFF. OFF keeps the inline arm.
+                                const LS pick = bsp::bot_task_land_pick_cruise_state_009afa50(
+                                    [&] { return unit_.plane_control_mode_900 == 7; },
+                                    [&] {
+                                        return owner_.unit_is_flight_leader_007b8ad0(
+                                            unit_.process_index);
+                                    },
+                                    LS::kPark, LS::kMoveTo, LS::kFollow);
+                                if (pick == LS::kPark) {
+                                    land_refuse_state("land/park (009AFA6A)", 0x009afa6au);
+                                    return;
+                                }
+                                land_switch_state_009b3680(pick);
+                                break;
+                            } else {
                             if (unit_.plane_control_mode_900 != 7) {
                                 land_refuse_state("land/park (009AFA6A)", 0x009afa6au);
                                 return;
@@ -42007,6 +42075,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
                             land_switch_state_009b3680(leader ? LS::kMoveTo : LS::kFollow);
                             break;
+                            }
                         }
                         case 2:
                             if constexpr (GameUnitsHost::Impl::kLandStandbyStateBound) {

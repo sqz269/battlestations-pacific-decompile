@@ -821,6 +821,17 @@ void* bot_state_move_to_circle_construct_009c25d0(Cc13Seg67bHost& host, void* st
                                                   void* approach);
 // 009AFA50: __fastcall(ECX = task), RET, EAX = state.
 void* bot_task_land_pick_cruise_state_009afa50(Cc13Seg67bHost& host, void* task);
+// Typed view of 009AFA50 over the caller's storage: the unit's (+72Ch)->vtable[38h]
+// answer and 007B8AD0 through the caller's callables; the three states are the
+// task's +620h (park), +4C4h (moveto) and +500h (follow). The raw entry wraps it.
+template <class State, class Vslot38, class IsLeader007b8ad0>
+State bot_task_land_pick_cruise_state_009afa50(Vslot38&& unit_72c_vslot_38,
+                                               IsLeader007b8ad0&& is_flight_leader_007b8ad0,
+                                               State park_620, State moveto_4c4,
+                                               State follow_500) {
+    if (!unit_72c_vslot_38()) return park_620;
+    return is_flight_leader_007b8ad0() ? moveto_4c4 : follow_500;
+}
 // 0099B260: __fastcall(ECX = slot), RET, ST0.
 float pilot_bot_override_or_value_0099b260(void* slot);
 // 0099A9B0: __thiscall(ECX = plan, entity), RET 4.
@@ -869,6 +880,14 @@ void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void*
 float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan);
 // 0099B670: __fastcall(ECX = pilot task), RET.
 void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p);
+// Typed view of 0099B670 over the caller's storage: whether [p+2F4h]+C50h (the
+// neighbours object) is set, and 007DF4F0(ECX = it, p) through the caller's
+// callable. The raw entry wraps it.
+template <class VehicleAvoidance007df4f0>
+void pilot_bot_avoid_vehicles_0099b670(bool has_neighbours_c50,
+                                       VehicleAvoidance007df4f0&& vehicle_avoidance_007df4f0) {
+    if (has_neighbours_c50) vehicle_avoidance_007df4f0();
+}
 // 009AB370 / 009AEB80 / 009AF610: __fastcall(ECX = task), RET.
 void bot_task_dogfight_destruct_body_009ab370(Cc13Seg67bHost& host, void* task);
 void bot_task_drop_kamikaze_destruct_body_009aeb80(Cc13Seg67bHost& host, void* task);
@@ -889,6 +908,14 @@ void* bot_task_make_kamikaze_009af720(Cc13Seg67bHost& host, void* bot, void* tar
 bool bot_state_dogfight_aim_is_bored_009a98f0(void* state);
 // 009B1E30: __fastcall(ECX = land approach), RET, EAX.
 bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o);
+// Typed view of 009B1E30 over the caller's storage: whether the approach's +30h
+// target is set, and its vtable[5Ch](9) through the caller's callable. The raw
+// entry wraps it.
+template <class TargetVslot5c>
+bool land_target_is_kind9_009b1e30(bool has_target_30, TargetVslot5c&& target_vslot_5c) {
+    if (!has_target_30) return false;
+    return target_vslot_5c(std::uint32_t{9});
+}
 // 009B3F50 / 009B8E80 / 009BD9D0: __fastcall(ECX = task), RET.
 void bot_task_land_destruct_body_009b3f50(Cc13Seg67bHost& host, void* task);
 void bot_task_level_bomb_destruct_body_009b8e80(Cc13Seg67bHost& host, void* task);
@@ -929,6 +956,9 @@ void* bot_approach_move_on_path_construct_from_stream_009bc7e0(Cc13Seg67bHost& h
                                                                void* arg, void* archive);
 // 009B7A80 / 009B7B10 / 009B7B40: __fastcall(ECX = state), RET, EAX.
 bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state);
+// Typed view of 009B7A80 over the caller's prepare-state storage: the released
+// byte +A0h and the timer +98h. The raw entry wraps it.
+bool bot_state_level_bomb_prepare_is_waiting_009b7a80(bool released_a0, float timer_98);
 bool bot_state_level_bomb_aim_should_release_009b7b10(void* state);
 bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state);
 // 009B6C10: __thiscall(ECX = state, approach, target, float near, float far, float third),
@@ -962,6 +992,14 @@ void* bot_state_dive_bomb_attack_run_construct_009c4140(Cc13Seg67bHost& host, vo
                                                         void* approach);
 // 009C7850: __fastcall(ECX = aim-glide state), RET, EAX.
 bool bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(Cc13Seg67bHost& host, void* state);
+// Typed view of 009C7850 over the caller's storage: 007B9320(0) on the state's
+// weapon controller ([[s+4h]+4h]) through the caller's callable. The raw entry
+// wraps it.
+template <class HasGeneralBomb007b9320>
+bool bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(
+    HasGeneralBomb007b9320&& has_general_bomb_ordnance_007b9320) {
+    return !has_general_bomb_ordnance_007b9320(std::int32_t{0});
+}
 // 009BE050: __thiscall(ECX = unit, const float v[3]), RET 4.
 void plane_unit_copy_leader_velocity_009be050(Cc13Seg67bHost& host, void* unit,
                                               const float* v);
