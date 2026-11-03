@@ -1232,27 +1232,19 @@ void cc13_sweepB2_input_settings_load_for_current_profile_006ac030(void* setting
 // &name), 00B67700(&t), the string's data back to the sized pool (length + 1).
 // Names: "scoring" (00CF8268, 7), "thisTable" (00CE7494, 9), then the three C
 // strings of the .data table 00E08DF0..00E08DFB (read at run time; the image
-// holds 00CF5148, 00CF8240, 00CF8230), their lengths taken by an inline strlen.
+// holds 00CF5148 "Mission", 00CF8240 "MissionGlobals", 00CF8230 "MessageSender",
+// and nothing writes the table: every xref to 00E08DF0 is a read), their lengths
+// taken by an inline strlen. The per-name step (key, globals, 00B67350, release)
+// is MissionLuaGlobalClear::set_global_nil; see the header. Texts checked against
+// the PE at 00CF8268, 00CE7494 and the three table targets.
 // EH frame 00C7FBD0 is not modelled.
-void cc13_sweepB2_game_clear_mission_lua_globals_006ad600(Cc13SweepB2Host& host) {
-    auto clear = [&](const char* text, std::uint32_t length) {
-        Cc13SweepBNativeString name = {0, nullptr};
-        host.native_string_resize_0041dd40(&name, length, 1);
-        if (name.data != nullptr) host.crt_memcpy_00bf7680(name.data, text, name.length + 1);
-        alignas(4) std::uint8_t table[0x14];
-        void* machine = static_cast<std::uint8_t*>(host.global_00e188a8()) + 0x1A0C;
-        void* globals = host.lua_globals_00b67980(machine, table);
-        host.lua_object_set_nil_00b67350(globals, &name);
-        host.lua_object_destroy_00b67700(table);
-        if (name.data != nullptr) {
-            host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), name.data, name.length + 1, 1);
-        }
-    };
-    clear(static_cast<const char*>(host.image_global(0x00CF8268)), 7);
-    clear(static_cast<const char*>(host.image_global(0x00CE7494)), 9);
-    for (std::uint32_t slot = 0x00E08DF0; slot < 0x00E08DFC; slot += 4) {
-        const char* text = *static_cast<const char**>(host.image_global(slot));
-        clear(text, static_cast<std::uint32_t>(std::strlen(text)));
+void cc13_sweepB2_game_clear_mission_lua_globals_006ad600(MissionLuaGlobalClear& lua) {
+    lua.set_global_nil("scoring", 7);                  // 006AD626 / 006AD649 .. 006AD67D
+    lua.set_global_nil("thisTable", 9);                // 006AD6B8 / 006AD6DB .. 006AD714
+    // 006AD749..006AD7F5: EBP walks 00E08DF0 up to 00E08DFC.
+    static const char* const kTableNames_00e08df0[] = {"Mission", "MissionGlobals", "MessageSender"};
+    for (const char* text : kTableNames_00e08df0) {
+        lua.set_global_nil(text, static_cast<std::uint32_t>(std::strlen(text)));
     }
 }
 

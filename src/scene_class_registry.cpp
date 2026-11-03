@@ -101,8 +101,14 @@ SourcedSceneClass& get_or_create_vehicle_visual_class_0047b3c0(
                                  "VehicleClass", lua, hooks);
 }
 
-void reset_buoy_class_table_00474200(SceneClassLuaTables& lua) { lua.run_chunk("BuoyClass=nil\n"); }
+// 00474200..0047421E: 006B8AD0("BuoyClass=nil\n" at 00CE5E24, 0, 0, 2) on [[00E188A8]+1A08h]+4.
+void reset_buoy_class_table_00474200(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("BuoyClass=nil\n", kClassTableResetRunMode);
+}
 
-void reset_cloud_class_table_00476410(SceneClassLuaTables& lua) { lua.run_chunk("CloudClass=nil\n"); }
+// 00476410..0047642E: the same with "CloudClass=nil\n" (00CE5FA0).
+void reset_cloud_class_table_00476410(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("CloudClass=nil\n", kClassTableResetRunMode);
+}
 
 } // namespace bsp

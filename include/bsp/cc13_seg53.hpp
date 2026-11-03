@@ -10,6 +10,8 @@
 #include <cstdint>
 #include <cstdarg>
 
+#include "bsp/mission_lua_class_table_resets.hpp"
+
 namespace bsp::cc13_seg53 {
 
 using Object = std::uint8_t*;
@@ -238,7 +240,8 @@ struct Seg53Host {
     // 008671A0 BSP_EffectManager_FlushPendingDeletes, __thiscall(ECX = manager) (tail JMP).
     virtual void effect_manager_flush_pending_deletes_008671a0(Object manager) = 0;
     // [[[00E188A8]+1A08h]+4]: the Lua machine; 006B8AD0 BSP_LuaMachine_RunString,
-    // __thiscall(ECX = machine; const char*, a, b, c), RET 10h.
+    // __thiscall(ECX = machine; const char*, a, b, c), RET 10h. No body in this file
+    // calls them now: 00869D20, their one user, takes MissionLuaRunString instead.
     virtual Object lua_machine_00e188a8_1a08_4() = 0;
     virtual void lua_machine_run_string_006b8ad0(Object machine, const char* text, std::uint32_t a,
                                                  std::uint32_t b, std::uint32_t c) = 0;
@@ -473,7 +476,8 @@ void world_atmosphere_release_node_008658e0(Seg53Host& host, Object descriptor);
 Object rain_descriptor_construct_00865b80(Seg53Host& host, Object descriptor);
 Object rain_descriptor_get_singleton_00865cf0(Seg53Host& host);
 void effect_manager_clear_live_references_008674a0(Seg53Host& host, Object manager);
-void effects_clear_lua_table_00869d20(Seg53Host& host);
+// Its only call is 006B8AD0 on the mission machine, so it takes that call alone.
+void effects_clear_lua_table_00869d20(MissionLuaRunString& lua);
 void flag_grid_set_cell_00861c20(Object grid, std::int32_t column, std::int32_t row,
                                  std::uint8_t value);
 

@@ -1030,10 +1030,10 @@ void effect_manager_clear_live_references_008674a0(Seg53Host& host, Object manag
 }
 
 // 00869D20 BSP_Effects_ClearLuaTable(): 006B8AD0(ECX = [[[00E188A8]+1A08h]+4];
-// "Effects=nil\n" (00D0D4AC), 0, 0, 2).
-void effects_clear_lua_table_00869d20(Seg53Host& host) {
-    host.lua_machine_run_string_006b8ad0(host.lua_machine_00e188a8_1a08_4(), "Effects=nil\n", 0, 0,
-                                         2);
+// "Effects=nil\n" (00D0D4AC), 0, 0, 2) (00869D20..00869D3E). The machine is the
+// MissionLuaRunString implementer's.
+void effects_clear_lua_table_00869d20(MissionLuaRunString& lua) {
+    lua.run_string_006b8ad0("Effects=nil\n", kClassTableResetRunMode);
 }
 
 // 00861C20 BSP_FlagGridCC_SetCell, __thiscall(ECX grid; column, row, byte), RET 0Ch. Cells are

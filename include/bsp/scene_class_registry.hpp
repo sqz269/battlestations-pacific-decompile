@@ -7,6 +7,7 @@
 // the visual class registries"). Every name is a hypothesis.
 
 #include "bsp/input_settings.hpp"  // CaseInsensitiveLess
+#include "bsp/mission_lua_class_table_resets.hpp"
 
 #include <cstdint>
 #include <functional>
@@ -31,12 +32,12 @@ struct SceneClassLuaRow {
 
 // The game Lua state: BSP_LuaStateOwner_GetGlobals (00B67980), the table by
 // name (00B67800), then the row by string key (00B68100 / 00B67800) or by
-// integer (00B677E0); `run_chunk` is the 006B8AD0 call of the reset routines.
+// integer (00B677E0). The reset routines' 006B8AD0 call is MissionLuaRunString
+// (include/bsp/mission_lua_class_table_resets.hpp), which they now take on its own.
 struct SceneClassLuaTables {
     virtual ~SceneClassLuaTables() = default;
     virtual std::unique_ptr<SceneClassLuaRow> row(const char* table, const std::string& key) = 0;
     virtual std::unique_ptr<SceneClassLuaRow> row(const char* table, std::int32_t index) = 0;
-    virtual void run_chunk(const char* chunk) = 0;
 };
 
 // Engine services the readers call. The base class fields that 0048F670 fills
@@ -136,8 +137,9 @@ SourcedSceneClass& get_or_create_vehicle_visual_class_0047b3c0(
 // Addresses: 00474200 and 00476410. No arguments, RET. 006B8AD0(chunk, 0, 0, 2)
 // with "BuoyClass=nil\n" (00CE5E24) / "CloudClass=nil\n". Callers: 0045F600 and
 // BSP_Game_LoadMissionScene (004E0AB9 / 004E0ABE), each next to the other
-// class-table resets.
-void reset_buoy_class_table_00474200(SceneClassLuaTables& lua);
-void reset_cloud_class_table_00476410(SceneClassLuaTables& lua);
+// class-table resets. The machine is [[00E188A8]+1A08h]+4 (00474200..0047420B),
+// which the MissionLuaRunString implementer owns.
+void reset_buoy_class_table_00474200(MissionLuaRunString& lua);
+void reset_cloud_class_table_00476410(MissionLuaRunString& lua);
 
 } // namespace bsp

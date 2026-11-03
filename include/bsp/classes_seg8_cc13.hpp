@@ -14,6 +14,8 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bsp/mission_lua_class_table_resets.hpp"
+
 namespace bsp::cc13_sys {
 struct LazySingletonHost;
 }
@@ -52,6 +54,8 @@ struct Seg8Host {
     virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual void operator_delete_00bf65ac(void* block) = 0;
     // 006B8AD0 BSP_LuaMachine_RunString, __thiscall(machine, text, 0, 0, 2), RET 10h.
+    // No body in this file calls it now: the three Lua global teardowns below take
+    // MissionLuaRunString instead.
     virtual std::int32_t lua_run_string_006b8ad0(void* machine, const char* text, std::int32_t a,
                                                  std::int32_t b, std::int32_t c) = 0;
     // Class-entity and named-class bases (ECX = object).
@@ -106,9 +110,11 @@ struct Seg8Host {
 };
 
 // --- Lua global teardown (cdecl, RET) -----------------------------------
-void plane_part_class_clear_lua_global_004a7120(Seg8Host& host);
-void soldier_class_clear_lua_global_004af930(Seg8Host& host);
-void wreck_class_clear_lua_global_004b1890(Seg8Host& host);
+// The only call these make is 006B8AD0 on the mission machine, so they take that
+// call alone (MissionLuaRunString) rather than the whole Seg8Host.
+void plane_part_class_clear_lua_global_004a7120(MissionLuaRunString& lua);
+void soldier_class_clear_lua_global_004af930(MissionLuaRunString& lua);
+void wreck_class_clear_lua_global_004b1890(MissionLuaRunString& lua);
 
 // --- entities --------------------------------------------------------------
 void plane_part_refresh_visibility_004a7650(Raw part, Seg8Host& host);
