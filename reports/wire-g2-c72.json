@@ -1,0 +1,562 @@
+{
+  "run": 150,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 72,
+  "slot": "g2-w3",
+  "host_file": "src/game_hosts_script_orders.cpp",
+  "tier": 2,
+  "switch": "kWireGoal2Chain72Bound",
+  "switch_default": false,
+  "base_commit": "f11fc1d58",
+  "code_commit": "aad308b14",
+  "changed_files": [
+    "src/game_hosts_script_orders.cpp",
+    "src/cc13_seg87.cpp",
+    "include/bsp/cc13_seg87.hpp",
+    "include/bsp/wire_goal2_chain72_switches.hpp"
+  ],
+  "candidate_selection": {
+    "initial": "game_hosts_ai.cpp",
+    "final": "game_hosts_script_orders.cpp",
+    "reason": "AI live-site inspection found the coordinator's constant-false root; released the AI lease without edits, then claimed script orders. Only script orders is changed as a host."
+  },
+  "host_objects": [],
+  "host_storage_views": [
+    {
+      "name": "ScriptOrdersLuaStackView (existing)",
+      "where": "src/game_hosts_script_orders.cpp:83",
+      "producers": [
+        "Current state_ and argument_count_ saved by GameScriptOrdersHost::dispatch",
+        "stack_slot(index) selects the actual Lua argument",
+        "Existing native_lua_get_by_name_00b67800 produces and tracks lookup output",
+        "Existing native_lua_new_table_00b67930 produces the returned stack table and native header"
+      ],
+      "lifetime": "Borrowed for a single call, inside the ON arm; lookup result untracked before lua_settop. No persistent host object added.",
+      "rows": [
+        "00b67910",
+        "00b67930"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "006ac260",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::building_pads",
+      "status": "skipped",
+      "reason": "Typed-view extraction would edit src/cc13_sweepB.cpp, an explicitly excluded active worker file. The current host computes the forward XZ from the real marker frame; no change made.",
+      "skip_kind": "lease",
+      "reached": 0
+    },
+    {
+      "native": "006bc8e0",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::run_air_ops_player_launch_queue",
+      "status": "skipped",
+      "reason": "Host routes queued slots directly to air_ops_launch_start_006c7490. It has no native block+7Ch session router or current game/selected-slot owner required by the existing 0075B430 base constructor; constructing a message with fabricated owner fields would not preserve the contract.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "006c6540",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::run_air_ops_update_006cdc70",
+      "status": "skipped",
+      "reason": "006C6540 needs the ready-plane list at block+D8h/DC, held-plane +38h and observer owner +24h, populated by the native ready-plane enqueue path. AirOpsDeck tracks semantic slots and launched squadrons and does not produce that ready-plane/observer graph; the host explicitly says this sub-update is not run.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "006c77e0",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::run_air_ops_update_006cdc70",
+      "status": "skipped",
+      "reason": "006C77E0 compacts native 14h queue records at block+A8h/ACh and uses the block+8h lock and real entity flag bytes. The script host does not run that sub-update or produce the native queue records/lock owner. An empty invented queue would perform no replacement work.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "007bc550",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::run_air_ops_update_006cdc70",
+      "status": "skipped",
+      "reason": "Typed-view extraction requires src/cc13_seg47.cpp, an explicitly excluded active worker file. The body also needs the real plane+4A4h elevator/attachment owner; the script host's registry rows do not own that native elevator graph.",
+      "skip_kind": "lease",
+      "reached": 0
+    },
+    {
+      "native": "007ee8f0",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::ScriptOrderAttackCommandHost",
+      "status": "skipped",
+      "reason": "The raw body traverses the squadron's native +3D0h members, leader +C24h, target+538h class and first-slot weapon descriptors through Cc15Seg48Host. This host uses semantic squadron/ordnance facts through AttackCommandHost; that full raw callback interface and native graph are not a small adapter. Do not replace them with projected constants.",
+      "skip_kind": "interface_not_small",
+      "reached": 0
+    },
+    {
+      "native": "00822c20",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::dispatch(SetShipMaxSpeed)",
+      "status": "skipped",
+      "reason": "Full unit SEntityInit is a 40-callee native unit/property-holder/traffic/weapon-director init path. SetShipMaxSpeed owns a semantic max-speed update, not the native unit/class/holder and effect owners needed by Cc13BigB1Host; copying only max speed would omit the body's other effects.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "00905300",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::slot_counter_increment",
+      "status": "skipped",
+      "reason": "Requires game+21A0h scoring storage and the actual entity+1ACh slot producer. The host explicitly does not model that index/counter, so no authentic counter cell can be built for this call.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "00927050",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::scene spawn descriptor application",
+      "status": "skipped",
+      "reason": "Requires entity+C0h tagged holder, scene property bag, hierarchy matrices and Lua reader graph. The script host's semantic entity descriptors do not supply that canonical holder or hierarchy producer.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "00927610",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::script_entity_call_00927610_00898932",
+      "status": "skipped",
+      "reason": "Body drains/rebuilds the native pending init list at 00F899D0/D4 and calls SEntity_InitAll. The host method is a record-only stub and owns neither that pending-list producer nor the native entity lifecycle graph. Calling with a fake entity or an invented empty list would not replace its logic.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "00927b40",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::dispatch entity result tables",
+      "status": "skipped",
+      "reason": "Existing body requires the entity's canonical NativeString at +178h and actual published world+1A0Ch Lua owner. This host derives semantic keys and owns a separate Lua state view; it does not publish that native world/string owner. No substitute singleton constructed.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    },
+    {
+      "native": "009bdbb0",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::navigator_moveonpath",
+      "status": "skipped",
+      "reason": "Factory requires a real native bot and owned 520h task constructed by 009BCE50; this script caller already delegates installation through bot_install_command_task_0099a170 and the units host owns task state. Its raw implementation is also in excluded src/cc13_seg67b.cpp; a second creation here would duplicate the existing call.",
+      "skip_kind": "lease",
+      "reached": 0
+    },
+    {
+      "native": "00b663f0",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::binding argument count",
+      "status": "skipped",
+      "reason": "Body only reads the dword at +0Ch. Writing argument_count_ into temporary native storage and reading it back would only return the host's own value, which the counting rule excludes.",
+      "skip_kind": "identity_only",
+      "reached": 0
+    },
+    {
+      "native": "00c47f60",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::unit_parts_land_avoidance_disabled",
+      "status": "skipped",
+      "reason": "The referenced image site 0082643B is the sinking-state terrain-bit clear, not this method's 0092BD00/00C48020 mask store. The script host has no real Dyn shape+30h mask, body+4h manifold owner or world critical section; inventing a no-op clear-manifolds adapter would omit effects.",
+      "skip_kind": "wrong_site_and_missing_owner",
+      "reached": 0
+    },
+    {
+      "native": "00b67910",
+      "address": "0088a83b",
+      "function": "0088a810",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::argument_id_field_is_nil",
+      "status": "wired",
+      "identifier": "bsp::native_lua_get_by_literal_00b67910",
+      "abi": "raw_view",
+      "typed_view": "NativeLuaObjectStorage& object, NativeLuaObjectStorage& fresh, const char* key",
+      "reason": "Replaces the actual Lua ID-field lookup on the current dispatch VM and positive argument stack slot; the native result is untracked before the existing stack restore. Native tracking has 50 slots, so unusually large stacks (top >= 49) retain the old lookup.",
+      "reach": "live_USN04_pair",
+      "reached": 115,
+      "live_site_check": "GameMissionLuaHost native dispatch -> GameScriptOrdersHost::dispatch -> active navigator command body -> lua_read_command_target -> argument_id_field_is_nil. kScriptedOrderNativesBound, kLuaNavigatorCruiseBound and kLuaPutFormationToBound are true; no dependence on kWireScriptOrdersHostBound."
+    },
+    {
+      "native": "00b67930",
+      "address": "0089cd70",
+      "function": "0089cc50",
+      "host_file": "src/game_hosts_script_orders.cpp",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::dispatch(GetSquadronPlanes, FillPathPoints)",
+      "status": "wired",
+      "identifier": "bsp::native_lua_new_table_00b67930",
+      "abi": "raw_view",
+      "typed_view": "NativeLuaObjectStorage& object, NativeLuaObjectStorage& fresh",
+      "reason": "Replaces table creation on the current dispatch VM. Existing native owner/object layouts are borrowed for the call; the new-table header is untracked and does not pop the returned Lua stack value.",
+      "additional_sites": [
+        {
+          "native": "00b67930",
+          "address": "0089a2b7",
+          "function": "0089a190",
+          "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::dispatch(FillPathPoints)"
+        }
+      ],
+      "reach": "static",
+      "reached": 0,
+      "live_site_check": "Registered mission Lua natives -> GameScriptOrdersHost::handles -> dispatch. kGetSquadronPlanesBound=true and kFillPathPointsBound=true. No false gate on either site."
+    },
+    {
+      "native": "004f1830",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "005f98f0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "006e3260",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00778860",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "007b80a0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "007b80c0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a00020",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a04240",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a07e40",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a10710",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a10890",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a109b0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a10ae0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a10c60",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a15a70",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a2bdb0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "00a2c720",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::fixed_step / Impl",
+      "status": "skipped",
+      "reason": "Screened initial candidate before any edits: coordinator tick is dominated by kAiCoordinatorLoadGateBound=true and !ai_coordinator_created_at_load(); that accessor returns false while kSkirmishSessionCc13Bound=false. All coordinator descendants are dead with this chain's switch alone. No AI code retained; lease released before selecting script orders.",
+      "skip_kind": "dead_gate",
+      "reached": 0
+    },
+    {
+      "native": "008df2b0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::add_unit",
+      "status": "skipped",
+      "reason": "Screened initial AI candidate: GameObjectiveSets::add_unit has semantic membership vectors but no ObjectiveUnitHost unit-liveness producer or actual observer-pair owner. Constructing fabricated liveness/observer state would not satisfy the body.",
+      "skip_kind": "missing_producer",
+      "reached": 0
+    }
+  ],
+  "assigned_rows_wired": 2,
+  "wired_before": 8824,
+  "wired_after": 8832,
+  "readiness_note": "Both assigned rows were ready before and wired after a plain OFF build. The global total includes graph propagation; only the two assigned rows are claimed as this chain's direct wiring.",
+  "validation": {
+    "off_build": {
+      "exit": 0,
+      "tests": "2/2 passed",
+      "log": "local/output/g2-c72-off-build.txt"
+    },
+    "on_build": {
+      "exit": 0,
+      "tests": "2/2 passed",
+      "diagnostics": 0,
+      "log": "local/output/g2-c72-on-build.txt"
+    },
+    "committed_head_off_build": {
+      "exit": 0,
+      "commit": "aad308b14",
+      "clean_tree": true,
+      "tests": "2/2 passed",
+      "log": "local/output/g2-c72-off-head-build.txt"
+    },
+    "diff_check": "passed",
+    "pc24_lint": "not applicable: no new x87 arithmetic or changes to x87 bodies",
+    "ledger": "No new native address or implementation: existing identifiers received typed destination overloads; raw entries are thin wrappers."
+  },
+  "paired_run": {
+    "mission": "USN04",
+    "code_commit": "aad308b14",
+    "console_session": "console sqz269 ID 1 Active",
+    "arguments": [
+      "--frames",
+      "3200",
+      "--press-start-frame",
+      "30",
+      "--menu-select",
+      "USN04",
+      "--mission-frames",
+      "3000",
+      "--mission-frame-seconds",
+      "0.05"
+    ],
+    "off": {
+      "exe": "build/win32/Release/bsp_game.exe",
+      "sha256": "b78f4b675ec1544df992ecff70e703cb5a0cff9e1439a632bed054e3df2cc754",
+      "log": "local/g2-w3-off_USN04.log",
+      "exit": 0,
+      "launcher_exit": 0
+    },
+    "on": {
+      "exe": "local/g2-w3-on/build/win32/Release/bsp_game.exe",
+      "sha256": "03636f51e935aa181d88c39fa2b39fef3e5d3e8c9637ac44b2750b9a64e84401",
+      "log": "local/g2-w3-on_USN04.log",
+      "status": "completed",
+      "exit": 0,
+      "launcher_exit": 0
+    },
+    "export": {
+      "exit": 0,
+      "log": "local/output/g2-w3-on-export.txt",
+      "build_log": "local/g2-w3-on/pair_export_build.log"
+    },
+    "comparison_log": "local/output/g2-c72-pair-diff.txt",
+    "comparison": {
+      "exit": 1,
+      "verdict": "DIFFERENT, gameplay identical",
+      "gameplay_rows_moved": [],
+      "gameplay": {
+        "deaths": [
+          28,
+          28
+        ],
+        "hit_records": [
+          380,
+          380
+        ],
+        "hull_hits": [
+          276,
+          276
+        ],
+        "damage": [
+          6366.6,
+          6366.6
+        ],
+        "shots": [
+          5509,
+          5509
+        ],
+        "first_hit_seconds": [
+          86.15,
+          86.15
+        ],
+        "torpedo_task_releases": [
+          "0 of 16",
+          "0 of 16"
+        ],
+        "dive_bomb_task_releases": [
+          "0 of 19",
+          "0 of 19"
+        ],
+        "torpedo_drops": [
+          0,
+          0
+        ],
+        "plane_water_contacts": [
+          14,
+          14
+        ],
+        "controlled_moved": [
+          "Lexington-class01 2235.17",
+          "Lexington-class01 2235.17"
+        ],
+        "units": [
+          81,
+          81
+        ],
+        "mission_end": [
+          "none",
+          "none"
+        ]
+      },
+      "instrumentation_row_moved": {
+        "name": "host methods concrete/unimplemented",
+        "off": "1144 / 477",
+        "on": "1145 / 477"
+      },
+      "native_table": {
+        "off_rows": 1624,
+        "on_rows": 1625,
+        "added": [
+          {
+            "native": "00b67910",
+            "name": "LuaObject::GetByLiteral",
+            "off": "absent",
+            "on": "concrete",
+            "calls": 115
+          }
+        ],
+        "removed": [],
+        "status_changed": [],
+        "counts_moved": [],
+        "noise": [
+          {
+            "name": "PlatformLoopCallbacks::pretranslate",
+            "off_calls": 46,
+            "on_calls": 8
+          }
+        ]
+      },
+      "summary_lines": {
+        "off": 867,
+        "on": 867,
+        "changed": 0,
+        "only_on": 0,
+        "only_off": 0
+      },
+      "death_rows": {
+        "rows": 0,
+        "identical": true,
+        "note": "BSP_DEATH_TABLE was not enabled; no death-table parity claim."
+      },
+      "plane_death_modes": {
+        "rows": 25,
+        "identical": true
+      },
+      "unit_table": {
+        "rows": 81,
+        "identical": true
+      },
+      "other_lines": {
+        "only_off": 231,
+        "only_on": 231,
+        "explanation": "All 231 differences on each side are atlas source diagnostics whose decimal append_slot pointer is not masked by pair_diff. Across all 253 atlas source rows per log, masking the named pointer fields makes the multisets identical.",
+        "normalization_regex": "\\b(frame|allocation|returned|creator|texture|append_header|append_slot|receiver|manager|buffer)=[0-9A-Fa-f]+",
+        "after_named_pointer_mask_only_off": 0,
+        "after_named_pointer_mask_only_on": 0
+      }
+    }
+  },
+  "flip_proposal": {
+    "value": false,
+    "decision": "Keep kWireGoal2Chain72Bound OFF for integration.",
+    "reason": "00B67910 has 115 calls with identical USN04 gameplay, but 00B67930 has static live-site evidence only and is unreached in the prescribed pair. Propose an ON flip only after the integrator accepts that remaining coverage gap or validates a mission using GetSquadronPlanes/FillPathPoints."
+  },
+  "report_calls": {
+    "status": "passed",
+    "exit": 0,
+    "checked": 3,
+    "failed": 0,
+    "log": "local/output/g2-c72-report-calls.txt"
+  }
+}

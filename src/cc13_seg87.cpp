@@ -412,21 +412,34 @@ NativeLuaObjectStorage* native_lua_get_by_native_string_00b678e0(NativeLuaObject
 NativeLuaObjectStorage* native_lua_get_by_literal_00b67910(NativeLuaObjectStorage& object,
     void* fresh, const char* key)
 {
-    native_lua_get_by_name_00b67800(object, fresh, key);
-    return static_cast<NativeLuaObjectStorage*>(fresh);
+    return &native_lua_get_by_literal_00b67910(object,
+        *static_cast<NativeLuaObjectStorage*>(fresh), key);
+}
+
+NativeLuaObjectStorage& native_lua_get_by_literal_00b67910(NativeLuaObjectStorage& object,
+    NativeLuaObjectStorage& fresh, const char* key)
+{
+    native_lua_get_by_name_00b67800(object, &fresh, key);
+    return fresh;
 }
 
 NativeLuaObjectStorage* native_lua_new_table_00b67930(NativeLuaObjectStorage& object, void* fresh)
 {
+    return &native_lua_new_table_00b67930(object,
+        *static_cast<NativeLuaObjectStorage*>(fresh));
+}
+
+NativeLuaObjectStorage& native_lua_new_table_00b67930(NativeLuaObjectStorage& object,
+    NativeLuaObjectStorage& fresh)
+{
     lua_createtable(state_of(object), 0, 0);
     const int top = lua_gettop(state_of(object));
-    auto* result = static_cast<NativeLuaObjectStorage*>(fresh);
-    result->owner_00 = object.owner_00;
-    result->kind_04 = 2;
-    result->index_08 = top;
-    result->opaque_0c = 0;
-    result->tracked_10 = 0;
-    return result;
+    fresh.owner_00 = object.owner_00;
+    fresh.kind_04 = 2;
+    fresh.index_08 = top;
+    fresh.opaque_0c = 0;
+    fresh.tracked_10 = 0;
+    return fresh;
 }
 
 float* native_lua_get_vector2_00b679f0(NativeLuaObjectStorage& object, float* out)
