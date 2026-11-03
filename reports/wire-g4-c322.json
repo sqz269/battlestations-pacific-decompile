@@ -1,0 +1,94 @@
+{
+  "chain": 322,
+  "owner": "agent/g4-w3",
+  "base": "cf823bc104cae7c65b079d673dbadaae2503baa2",
+  "switch": "bsp::kWireGoal4Chain322Bound",
+  "scope": "Construct C6 plane lift-off request headers at the two existing ground-roll send sites; retain immediate host delivery.",
+  "rows": [
+    {
+      "native": "00762a00",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::ground_roll_007cbfa0 -> src/game_hosts_session_messages.cpp: HostSessionMessages::make_plane_takeoff_c6",
+      "evidence": "007CC212 and 007CC26E call 00762A00 with stack destinations before 0077C2A0(unit, message, 1, 0). The host calls the existing constructor using its retained session-header context, and dispatches its resulting C6h type to the same live plane's existing lift-off handler. The PE's 00CFAA20 profile is bound. Both old direct calls are unchanged in the switch's else arms.",
+      "limits": "Constructor/header only. Existing session context has no native player records; its owner pointer remains null. Immediate delivery and the existing lift-off handler's zero extra-push assumption remain. No codec, queue timing, native ABI, or gameplay equivalence is claimed."
+    },
+    {
+      "native": "006ebb10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::make_plane_takeoff_c6",
+      "reason": "Missing evidence-backed producer for C6 byte +20h: this writer reads +1Ch and +20h, while 00762A00 and both 007CBFA0 send sites leave +20h unwritten."
+    },
+    {
+      "native": "006ebb40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::make_plane_takeoff_c6",
+      "reason": "Missing complete C6 source message for the write/read round trip; the second payload bool at +20h has no recovered producer, so decoding a fabricated flag would not supply real state."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "Missing separate live reserve-ammo and attached-kind-2Ah-child counts: rack_ammo and rack_ammo_per_rack currently include the attached round, so neither can be passed as native +484h with an invented zero child count."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::clear_bot_fire_target_00728000",
+      "reason": "No binding established for the bot+38h native command-target record and bot+1Ch observer unregister pair; the inspected host clear operates on GameGunRow target identity and projected trigger caches."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile water-mode path",
+      "reason": "No binding established for the native shot +24h/+28h effect owners and +44h mode latch; this packet did not build their producer/lifecycle."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes",
+      "reason": "Missing bound native director presence and director vslot-48h(2) policy input at the inspected attach site; unit category alone cannot replace those answers."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call",
+      "reason": "Missing live frame-job-thread producer for the deferred queue path; its earlier frame-job-pool blocker was not repaired by this packet."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_leave_formation_00899eb0",
+      "reason": "Missing shared native scoring owner and its 284h-stride slot records at this host site; a private increment-only counter would not supply the formation message's real counter state."
+    },
+    {
+      "native": "0075ab10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: C6 lift-off request selection",
+      "reason": "Missing applicable PLANE_SYNC message producer/consumer in this packet; this predicate is for C1h/48h/46h and cannot classify C6h."
+    },
+    {
+      "native": "0075ab40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: C6 lift-off request selection",
+      "reason": "Missing live C9h control-factor copy path in this packet; C6h's original factory uses 00762A00, so this ConstructForRead body is not interchangeable."
+    },
+    {
+      "native": "0075ac80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: C6 lift-off request selection",
+      "reason": "Missing matching message lifetime at the selected sites: this destructor stores 00CE4974 and belongs to the pilot-command-last-time path, not C6h's 00CFAA20 profile."
+    }
+  ],
+  "verification": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "call_graph_before": {"reachable_reconstructed": 4352, "linked_reconstructed": 4787},
+    "call_graph_after": {"reachable_reconstructed": 4353, "linked_reconstructed": 4788},
+    "call_graph_who": "00762a00 REACHABLE: one native-body call site from HostSessionMessages::make_plane_takeoff_c6, which has two reachable call sites from PlaneBinding::ground_roll_007cbfa0",
+    "call_graph_path": "WinMainCRTStartup -> startup/frame/mission/fixed-step dispatch -> GameUnitsHost::motion_step_00825f20 -> PlaneBinding::ground_roll_007cbfa0 -> HostSessionMessages::make_plane_takeoff_c6 -> seg42::construct_plane_takeoff_00762a00",
+    "readiness_before": {"wired": 9321},
+    "readiness_after": {"wired": 9322, "00762a00": {"state": "wired", "called": true, "call_sites": 1}},
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "left": "Recover C6 +20h flag provenance before wiring 006EBB10/006EBB40 or replacing the existing extra-push assumption; reconstruct queued delivery separately."
+}
