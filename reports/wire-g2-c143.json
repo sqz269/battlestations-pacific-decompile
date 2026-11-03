@@ -1,0 +1,163 @@
+{
+  "goal": 2,
+  "chain": 143,
+  "run": 283,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "host_file": "src/game_hosts_lua.cpp",
+  "selection": {
+    "tier": 2,
+    "segment": 29,
+    "range": ["00696470", "006beb10"],
+    "reason": "Existing Lua VM, VFS byte producer and chunk service offered a reachable receiver without inventing native gameplay owners. All eleven offered rows were inspected."
+  },
+  "switch": "kWireGoal2Chain143Bound",
+  "switch_value": false,
+  "wired_before": 8975,
+  "wired_after": 8976,
+  "assigned_ready_to_wired": ["006b89f0"],
+  "host_objects": [],
+  "reused_views": [
+    {
+      "name": "Existing non-owning cc13_seg29::LuaMachine receiver",
+      "where": "src/game_hosts_lua.cpp:12039",
+      "producers": [
+        "GameMissionLuaHost::create_state supplies state_; initialise_mission_lua_host opens its actual Lua libraries before fundamentals.",
+        "Existing LuaMachine(lua_State*) / 006B7E30 initializes the borrowed receiver, including owns_state=false.",
+        "GameMissionLuaHost's VfsLocaleRuntime reads Scripts/fundamentals.lua into the existing bytes vector; this is the host's existing 00884770 cache substitute."
+      ],
+      "layout": "Reuse the existing Win32 sizeof(LuaMachine)==0x0C assertion: vptr +0 width 4, lua_State* +4 width 4, owns_state +8 width 1. The chunk body reads the current state at +4.",
+      "lifetime": "Temporary view exists only inside the ON arm; it neither creates nor closes a VM. The host keeps its existing VM lifetime. No new persistent host object or result owner is introduced.",
+      "rows": ["006b89f0"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00699bf0",
+      "address": "006aaaec",
+      "function": "006aa640",
+      "host_site": "src/native_input_keyboard_apply.cpp:apply_native_input_keyboard_bindings_006aa640 (no host root found)",
+      "status": "skipped",
+      "reason": "The predicate reads descriptor kind +0 and unsigned code +0xC. No game host supplies the native 0x14-byte descriptor/settings-device tree consumed by 006AA640; its native component implementation is not a host producer. No constants or fabricated descriptor were supplied.",
+      "reach": "static"
+    },
+    {
+      "native": "006b8060",
+      "address": "00886e94",
+      "function": "00886e00",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::get_string",
+      "status": "skipped",
+      "reason": "A real Countdown/MissionNarrative string path exists through 00887120 -> 00886E00, but wire_readiness resolves this row to the plain identifier to_string, shared by LuaMachine and GuiLua51Host (src/gui_lua_runtime.cpp:268). Cross-file uses of an ambiguous plain identifier do not count. The attempted receiver call was removed; no uncounted code, duplicate address body or identifier metadata was landed. Retry after canonical qualified identifier selection is repaired.",
+      "reach": "static",
+      "reach_evidence": "run_scene_load creates/attaches GameScriptOrdersHost; binding_trampoline dispatches Countdown and MissionNarrative. kLuaCountdownBound and kLuaMissionNarrativeBound are true. Both call get_string on the actual binding stack.",
+      "contract_evidence": "006B8060 RET 4; index captured from [ESP+4], state from machine+4, NULL length sink. Both image sites (00886E94 string value, 00886F3B string key) pass their actual signed stack index."
+    },
+    {
+      "native": "006b82a0",
+      "address": "00885d13",
+      "function": "00885a70",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::push_argument table arm",
+      "status": "skipped",
+      "reason": "00885A70 requires a numeric-key LuaVariant table entry. No Left55Host implementation routes that method. The current game host's sole Table argument producer creates an empty self table; no nonempty numeric-value entry producer reaches this arm. Adding a setter there would be dead with current host state.",
+      "reach": "static"
+    },
+    {
+      "native": "006b8320",
+      "address": "00885c7d",
+      "function": "00885a70",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::push_argument table arm",
+      "status": "skipped",
+      "reason": "The string-value/numeric-key variant entry has the same missing nonempty table-entry producer as 006B82A0. The host only supplies an empty self table; no live Left55Host table setter implementation exists. No synthetic entry was added.",
+      "reach": "static"
+    },
+    {
+      "native": "006b89f0",
+      "address": "00884c94",
+      "function": "00884be0",
+      "host_site": "src/game_hosts_lua.cpp:12034 GameMissionLuaHost::start_machine_00884be0 fundamentals arm",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "GameMissionHost's mission load calls GameMissionFrameHost::run_scene_load_004dfb70. Its ungated global_subsystems / run_mission_script steps start the Lua machine. The host constructs its VfsLocaleRuntime whenever the mounted VFS is ready; fundamentals reads real file bytes, then reaches this site. No intervening false switch. The assignment supplied no mission count for this range, so this is static reach evidence only.",
+      "implementation": "bsp::cc13_seg29::lua_machine_run_chunk_006b89f0",
+      "contract_evidence": "Union of callers: 006B8AD0 @006B8AFD, 00884BE0 @00884C94, 00885110 @008852E7. Callee RET 18h consumes buffer, byte count, chunk name, result sink, error sink and depth; ECX is the machine whose +4 is L. At the selected site EDI is the host receiver, ESI is the 00884770 byte count, ECX supplies the cached buffer, the host's +4 supplies the machine, depth is 2, and both sinks are NULL (00884C74..00884C94).",
+      "typed_storage": "The existing body already takes LuaMachine&, so reuse its constructed typed receiver over the real VM. No new raw buffer layout, second body or raw-pointer cast is needed. Both opaque optional sinks remain NULL exactly as at this native site.",
+      "adapter": "UncollectedLuaChunkHooks is constructed only ON. All five callbacks throw if called: the existing callee cannot reach any of them with NULL holder and error sinks. This does not emulate an unavailable variant/string owner.",
+      "off_arm": "The original run_lua_chunk call and fundamentals_ran assignment remain verbatim in else.",
+      "on_effect": "The existing body loads the actual fundamentals bytes, performs pcall with LUA_MULTRET and no error handler, restores a grown stack, and returns its native 0/1 failure bit. As the selected binary site does, it discards result values and error text. The host records that bit and chunk name and derives fundamentals_ran from it. This replaces the host service's detailed load/run error diagnostic at this site only."
+    },
+    {
+      "native": "006b9f70",
+      "address": "00648b66",
+      "function": "00648ab0",
+      "host_site": "src/ingame_gui_cc13.cpp:award_table_icon_006b9f70 callback (no host implementation)",
+      "status": "skipped",
+      "reason": "The body needs the native award-table tree at table+0x10 and a real 0050FC30 record producer, whose icon storage is at record+0x14. No host award-table owner/record producer was found. game_hosts_hud.cpp is also excluded by the assignment; inventing an empty registry would not unblock a counted row.",
+      "reach": "static"
+    },
+    {
+      "native": "006b9fd0",
+      "address": "00648af8",
+      "function": "00648ab0",
+      "host_site": "src/ingame_gui_cc13.cpp:award_table_text_006b9fd0 callback (no host implementation)",
+      "status": "skipped",
+      "reason": "Same missing native award-table owner and 0050FC30 record producer as 006B9F70; this row copies record+0 text. Both could share one genuine registry, but its producer is unavailable to this host and the HUD host is excluded.",
+      "reach": "static"
+    },
+    {
+      "native": "006bc030",
+      "address": "008170d8",
+      "function": "00816e30",
+      "host_site": "src/cruise_command.cpp:command_kind_is_1_or_2_006bc030 callback",
+      "status": "skipped",
+      "reason": "The body delegates native virtual +0xC through Seg29UHost before testing kind 1/2. The reconstructed command caller's hook has no host implementation; the available host command projections do not supply this native receiver/dispatch. A broad Seg29UHost with invented virtual-kind values would not satisfy the contract.",
+      "reach": "static"
+    },
+    {
+      "native": "006bc120",
+      "address": "007f17aa",
+      "function": "007f16d0",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::record_return_to_base_007f16d0",
+      "status": "skipped",
+      "reason": "The body reads a native owner pointer at block+0x7C and that owner's torn-down byte +0x5D. The current return-to-base host instead supplies site_block_refuses_6bc120=false (src/game_hosts_units.cpp:17245). No native owner/lifetime-byte producer is available there. Wrapping that false value in a fabricated image would only hand the host its own value back.",
+      "reach": "static"
+    },
+    {
+      "native": "006bd800",
+      "address": "008961a1",
+      "function": "00895ed0",
+      "host_site": "src/cc13_left55_seg56a.cpp:route_airbase_setslot_message_006bd800_0077c2a0 callback",
+      "status": "skipped",
+      "reason": "No host implements the SetAirBaseSlot message route. Construction requires the native block+0x4C array of 0x58-byte slot records, each class pointer's 0095B9C0 registry identity, and a session-message base/delivery owner. Current AirOpsDeck projections do not provide those native producers; constructing a throwaway message would not replace running host logic.",
+      "reach": "static"
+    },
+    {
+      "native": "006bd9e0",
+      "address": "006ca87e",
+      "function": "006ca770",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_add_air_base_stock_00896a90",
+      "status": "skipped",
+      "reason": "The running host updates deck stock through air_base_stock_add_006ca770 over class IDs; native replication is explicitly a record. This constructor requires the original VehicleClass pointer/0095B9C0 producer and session-message owner/delivery path. No such producer exists here; making and discarding a message would add a duplicate side computation, not replace host logic.",
+      "reach": "static"
+    }
+  ],
+  "validation": {
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain143Bound",
+      "passed": true,
+      "diagnostics": 0,
+      "log": "local/off_switch_on_build.log",
+      "tests": "reconstructed_math and tool_tests passed"
+    },
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "passed": true,
+      "tests": "reconstructed_math and tool_tests passed"
+    },
+    "readiness": "Measured from the normal OFF build map after the ON-build helper restored its temporary switch change; only 006B89F0 moves from ready to wired.",
+    "off_unchanged": "Only additions surround the original OFF statements; the original statements remain byte-for-byte in else. The borrowed machine and hook objects are constructed only in the new ON arm.",
+    "pc24_lint": "not applicable: no new ON-arm arithmetic or x87 body changes",
+    "game_run": "not run, as instructed",
+    "diff_review": "Reviewed the complete code diff; no reconstructed body or ledger was changed.",
+    "report_calls": "python tools/verify_report_calls.py reports/wire-g2-c143.json: 11 call rows checked, 0 failed"
+  }
+}
