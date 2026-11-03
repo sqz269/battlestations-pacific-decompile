@@ -8,23 +8,29 @@
 #include "bsp/native_scene_property_bool_add.hpp"
 #include "bsp/native_scene_property_float_add.hpp"
 #include "bsp/native_scene_property_integer_add.hpp"
+#include "bsp/native_scene_property_reference_subbag_add.hpp"
 #include "bsp/native_scene_property_string_add.hpp"
 #include "bsp/native_scene_typed_array_vector_providers.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain307_switches.hpp"
+#include "bsp/wire_goal4_chain311_switches.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cctype>
 #include <cstring>
+#include <new>
 #include <stdexcept>
 #include <vector>
 
 namespace bsp::game {
 
 // A bounded projection of the scene host's owning property trees. Only explicit
-// I/F/B/S/V3 values are admitted; their real parser-owned payloads feed the original
+// I/F/B/S/V3 (and, under chain 311, closed nonempty IA and one-quoted-token
+// reference letters) values are admitted;
+// their real parser-owned payloads feed the original
 // insertion producers and the whole 008F54F0 merge. Unsupported keys stay in the
 // host tree. Unique scalar keys are independent of the omitted keys/children;
 // scalar/child collisions and differing tags are deliberately left to the host.
@@ -103,6 +109,42 @@ public:
                 std::memcpy(value.vector3.data(), record + 0x0c, sizeof(value.vector3));
                 value.has_vector3 = true;
                 break;
+            case 5: {
+                if constexpr (kWireGoal4Chain311Bound) {
+                    // 008EF2B0 stores the owned duplicate at +1Ch; 008F0700's
+                    // type-5 arm copies the +18h/+1Ch payload through 008F0340
+                    // (keep 0 hit) and the 008F4F60 clone keeps it (miss). The
+                    // destination's +08h kind is retained; letters match here.
+                    const char* text;
+                    std::memcpy(&text, record + 0x1c, sizeof(text));
+                    if (text == nullptr) {
+                        throw std::logic_error("unexpected merged type-5 payload");
+                    }
+                    value.values.assign(1, text);
+                    value.has_reference = true;
+                    break;
+                }
+                throw std::logic_error("unexpected merged scene property tag");
+            }
+            case 10: {
+                if constexpr (kWireGoal4Chain311Bound) {
+                    // 008EF3E0 stores the payload at +20h and 4*count at
+                    // +24h; 008F0700's array arm (keep 0 hit) and the
+                    // 008F4F60 record clone (miss) keep that pair. Publish
+                    // the merged native words, not the authored tokens.
+                    const std::int32_t* words;
+                    std::uint32_t bytes;
+                    std::memcpy(&words, record + 0x20, sizeof(words));
+                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                    if (words == nullptr || bytes == 0 || bytes % 4 != 0) {
+                        throw std::logic_error("unexpected merged type-10 payload");
+                    }
+                    value.integer_array.assign(words, words + bytes / 4);
+                    value.has_integer_array = true;
+                    break;
+                }
+                throw std::logic_error("unexpected merged scene property tag");
+            }
             default:
                 throw std::logic_error("unexpected merged scene property tag");
             }
@@ -145,6 +187,17 @@ private:
     static bool supported(const SceneProperty& value) {
         if (std::any_of(value.key.begin(), value.key.end(),
                 [](unsigned char c) { return c == 0 || c >= 0x80; })) return false;
+        if constexpr (kWireGoal4Chain311Bound && kWireGoal4Chain307Bound) {
+            // Type 10 admits count in [1,3FFFFFFFh] (008EF3E0, 008F4F60).
+            if (value.type_letter == "IA") {
+                return value.has_integer_array && !value.integer_array.empty()
+                    && value.integer_array.size() <= 0x3fffffffu;
+            }
+            if (scene_reference_kind(value.type_letter) >= 0) {
+                return value.has_reference && value.values.size() == 1
+                    && value.values.front().find('\0') == std::string::npos;
+            }
+        }
         if constexpr (kWireGoal4Chain307Bound) {
             return (value.type_letter == "I" && value.has_integer)
                 || (value.type_letter == "F" && value.has_float)
@@ -183,6 +236,23 @@ private:
         Bag& operator=(const Bag&) = delete;
         void* data() { return storage_.data(); }
         void insert(const SceneProperty& value) {
+            if constexpr (kWireGoal4Chain311Bound && kWireGoal4Chain307Bound) {
+                if (value.type_letter == "IA") {
+                    insert_integer_array(value);
+                    return;
+                }
+                const int kind = scene_reference_kind(value.type_letter);
+                if (kind >= 0) {
+                    // bsp.py show 008F5A00 / disasm 008F6231..008F6259: a new
+                    // key's reference arm pushes word08 = the letter's kind
+                    // (EDI), word18 = 0 and the quoted 008D9980 token, then
+                    // 008F3AC0 duplicates that text into the type-5 +1Ch.
+                    add_native_scene_property_reference_008f3ac0(data(), value.key.c_str(),
+                        value.values.front().c_str(), 0u, static_cast<std::uint32_t>(kind),
+                        context_);
+                    return;
+                }
+            }
             if constexpr (kWireGoal4Chain307Bound) {
                 if (value.type_letter == "I") {
                     std::uint32_t bits;
@@ -234,6 +304,22 @@ private:
             return record;
         }
     private:
+        void insert_integer_array(const SceneProperty& value) {
+            // bsp.py show 008F5A00 / disasm 008F650C..008F658A: the parser's
+            // 008F6524 operator-new buffer of 4*count holds the 008D9AD0 words
+            // and 008F6585 passes (key, data, count, flags 0) to 008F3590, so
+            // 008EF3E0 RETAINS that exact allocation at +20h. Mirror it: one
+            // canonical current allocation (the provider 008F03F0 frees) owns
+            // a copy of the parser's words and transfers with the root.
+            const std::size_t bytes = value.integer_array.size() * sizeof(std::int32_t);
+            void* const payload = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, bytes});
+            if (payload == nullptr) throw std::bad_alloc();
+            std::memcpy(payload, value.integer_array.data(), bytes);
+            add_native_scene_property_type10_array_008f3590(data(), value.key.c_str(), payload,
+                static_cast<std::uint32_t>(value.integer_array.size()), 0u, context_);
+        }
+
         NativeScenePropertyInsertionContext& context_;
         alignas(std::uint32_t) std::array<std::byte, native_scene_property_bag_storage_bytes> storage_;
     };

@@ -113,6 +113,16 @@ struct SceneProperty {
     // A closed explicit S statement owns its decoded text in values.front().
     // Raw/context-dependent S token scans do not establish this payload.
     bool has_string{false};
+    // Chain 311: a closed explicit "IA n v1 .. vn ;" with n >= 1 and every
+    // token read by 008D9AD0's %d rule owns its n int32 values (native type 10,
+    // +20h payload / +24h byte size). Empty, short, long or failed forms stay raw.
+    std::vector<std::int32_t> integer_array;
+    bool has_integer_array{false};
+    // Chain 311: a closed reference letter (R RLand RFort RShip RPlane RPlnShp
+    // RLPlnShp RPath) followed by exactly one quoted token below 400h bytes owns
+    // that raw token text in values.front() (native type 5, +1Ch duplicate; the
+    // letter selects the +08h kind). Unquoted/empty/multi-token forms stay raw.
+    bool has_reference{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.
@@ -260,6 +270,12 @@ ScenePropertyBlock parse_scene_property_block_008f5a00(SceneLexer& lexer,
 // it still load.
 bool scene_scan_int(const std::string& text, std::int32_t& out) noexcept;
 bool scene_scan_float(const std::string& text, float& out) noexcept;
+
+// The type-5 kind 008F5A00 puts in EDI for a reference letter: both letter
+// chains (008F5FED..008F60A1 and 008F6163..008F6231, case-insensitive 00467CC0)
+// give R 0, RLand 1, RFort 2, RShip 3, RPlane 4 (EBP, set 4 at 008F5AED and
+// 008F66AF), RPlnShp 5, RLPlnShp 6, RPath 7. -1 for any other letter.
+int scene_reference_kind(const std::string& letter) noexcept;
 
 // ---------------------------------------------------------------------------
 // Scene record fields

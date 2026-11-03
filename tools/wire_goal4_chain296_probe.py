@@ -10,6 +10,7 @@ OUT = ROOT / "local/output/wire_g4_c296_probe"
 SOURCE = r'''
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/wire_goal4_chain307_switches.hpp"
+#include "bsp/wire_goal4_chain311_switches.hpp"
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -22,6 +23,7 @@ int main() {
             COUNT = I 12; Ratio = F 1.5; Visible = B true;
             Label = S "old"; Direction = V3 1 2 3;
             Unchanged = I 99; Mixed = F 2;
+            Vehicles = IA 3 1 2 3; Route = RPath "pathA"; Mismatch = R "m";
             Child { X = I 1; }
         } }
         entity "source" (Ship) {
@@ -30,6 +32,9 @@ int main() {
             Count = I -17; Ratio = F -0.0; Visible = B false; Added = I 73;
             Label = S "native"; Dup = I 1; dup = I 2; Mixed = I 4; Child = I 2;
             Direction = V3 -0.0 4 5; Empty = S ""; Raw = S;
+            Vehicles = IA 2 -5 7; Route = RPath "pathB"; Fresh = IA 1 42;
+            Ship = rship "Yamato"; Short = IA 3 1 2; Unquoted = R abc;
+            Mismatch = RFort "f"; EmptyIA = IA ;
         } }
     )");
     for (const auto& error : document.errors) std::fprintf(stderr, "%s\n", error.c_str());
@@ -39,7 +44,15 @@ int main() {
     assert(source.find("Label")->has_string == kWireGoal4Chain307Bound);
     assert(source.find("Empty")->has_string == kWireGoal4Chain307Bound);
     assert(!source.find("Raw")->has_string);
+    // Chain 311 parse admission: closed IA with n >= 1 and exactly n ints, one
+    // quoted token after a reference letter (case-insensitive letters).
+    constexpr bool c311 = kWireGoal4Chain311Bound && kWireGoal4Chain307Bound;
+    assert(source.find("Vehicles")->has_integer_array == kWireGoal4Chain311Bound);
+    assert(!source.find("Short")->has_integer_array && !source.find("EmptyIA")->has_integer_array);
+    assert(source.find("Ship")->has_reference == kWireGoal4Chain311Bound);
+    assert(!source.find("Unquoted")->has_reference);
     std::vector<SceneProperty> retained;
+    std::vector<SceneProperty> retained311;
     for (bool overwrite : {false, true}) {
         game::SceneNumericPropertyMerge merge(destination, source, overwrite);
         for (std::size_t i = 0; i < source.values.size(); ++i) {
@@ -47,7 +60,36 @@ int main() {
             const bool numeric = i < 4;
             const bool extended = kWireGoal4Chain307Bound
                 && (incoming.key == "Label" || incoming.key == "Direction" || incoming.key == "Empty");
-            assert(merge.handles(i) == (numeric || extended));
+            const bool native311 = c311 && (incoming.key == "Vehicles" || incoming.key == "Fresh"
+                || incoming.key == "Route" || incoming.key == "Ship");
+            assert(merge.handles(i) == (numeric || extended || native311));
+            if (native311) {
+                const auto* prior = destination.find(incoming.key);
+                auto metadata = prior != nullptr && !overwrite ? *prior : incoming;
+                // Payloads must come from the merged native type-10/type-5
+                // records (008F3590 / 008F3AC0), not the caller's copies.
+                metadata.integer_array.clear();
+                if (metadata.has_reference) metadata.values = {"diagnostic only"};
+                const auto value = merge.result(metadata);
+                assert(value.key == metadata.key);
+                if (incoming.key == "Vehicles") {
+                    const std::vector<std::int32_t> want = overwrite
+                        ? std::vector<std::int32_t>{-5, 7} : std::vector<std::int32_t>{1, 2, 3};
+                    assert(value.has_integer_array && value.integer_array == want);
+                }
+                if (incoming.key == "Fresh") {
+                    assert(value.has_integer_array && value.integer_array == std::vector<std::int32_t>{42});
+                }
+                if (incoming.key == "Route") {
+                    assert(value.has_reference && value.values.size() == 1);
+                    assert(value.values.front() == (overwrite ? "pathB" : "pathA"));
+                }
+                if (incoming.key == "Ship") {
+                    assert(value.has_reference && value.values == std::vector<std::string>{"Yamato"});
+                }
+                retained311.push_back(value);
+                continue;
+            }
             if (!numeric && !extended) continue;
             const auto* prior = destination.find(incoming.key);
             auto metadata = prior != nullptr && !overwrite ? *prior : incoming;
@@ -90,6 +132,16 @@ int main() {
         assert(source.find("Label")->values.front() == "native");
         assert(destination.find("Label")->values.front() == "old");
     }
+    if constexpr (c311) {
+        // Results own their payloads after both bags and the context retired.
+        assert(retained311.size() == 8);
+        assert(retained311[0].integer_array == std::vector<std::int32_t>({1, 2, 3}));
+        assert(retained311[1].values.front() == "pathA");
+        assert(retained311[5].values.front() == "pathB");
+        assert(source.find("Vehicles")->integer_array == std::vector<std::int32_t>({-5, 7}));
+    } else {
+        assert(retained311.empty());
+    }
 }
 '''
 
@@ -116,7 +168,7 @@ def main():
     inputs = [source, ROOT / "include/bsp/scene_numeric_property_merge.hpp",
         ROOT / "src/scene_numeric_property_merge.cpp", *libraries]
     result = {"status": "passed", "scope": "synthetic Win32 native-bag merge; no gameplay proof",
-        "checks": "parsed I/F/B plus decoded S/V3 payloads when chain307 is on, keep/overwrite, case-insensitive collision, miss clone, empty string, scalar/vector signed zero, unsupported/duplicate/child fallback, result ownership after canonical retirement",
+        "checks": "parsed I/F/B plus decoded S/V3 payloads when chain307 is on, IA (type 10, 008F3590) and quoted reference letters (type 5, 008F3AC0) when chain311 is on, keep/overwrite, case-insensitive collision, miss clone, empty string, scalar/vector signed zero, short/empty IA, unquoted reference and letter-mismatch fallback, unsupported/duplicate/child fallback, result ownership after canonical retirement",
         "inputs": {str(p.relative_to(ROOT)): hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}}
     (OUT / "result.json").write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(result))

@@ -7,8 +7,11 @@
 
 namespace bsp::game {
 
-// Projects supported parser-owned I/F/B, decoded S and V3 values into two
-// real native bags (the class name predates the S/V3 extension).
+// Projects supported parser-owned I/F/B, decoded S, V3 and (chain 311) closed
+// nonempty IA plus one-quoted-token reference values into two real native bags
+// (the class name predates the S/V3/IA/R extensions; IA enters through
+// 008F3590 as native type 10, the eight reference letters through 008F3AC0 as
+// type 5 with their kind word).
 // The whole native merge owns payload precedence; result() republishes those
 // bytes with the selected authored spelling/tokens. Unsupported entries stay
 // on the caller's existing host path. No Original class/stack ABI is supplied.

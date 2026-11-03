@@ -1,0 +1,105 @@
+{
+  "goal": 4,
+  "chain": 311,
+  "slot": "g4-w2",
+  "owner": "agent/g4-w2",
+  "switch": "kWireGoal4Chain311Bound",
+  "rows": [
+    {
+      "native": "008f3ac0",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert, reached by src/game_hosts_scene_contents.cpp::merge_property_block",
+      "inputs": "Actual key and the one quoted target token of a closed reference statement (R RLand RFort RShip RPlane RPlnShp RLPlnShp RPath) parsed from the scene/library property tree; word18 0 and word08 the letter's kind, as 008F6231..008F6259 push them for a new key.",
+      "output": "Owning native type-5 records feed the existing whole 008F54F0 merge; result() republishes the merged +1Ch target text into SceneProperty::values.",
+      "evidence": "disasm-raw 008f6231 (push EDI kind, push 0, push 008D9980 token, CALL 008F3AC0; unquoted -> [00CE3A0C] empty); disasm-raw 008f615b and 008f5fed give the letter->kind table (RPlane = EBP = 4 from 008F5AED/008F66AF). call_graph.py who 008f3ac0: one entry-reachable call from Bag::insert. Local probe over all 259 installed .scn files: 183298 reference statements, 183282 admitted, 366552 native merges, 0 payload mismatches."
+    },
+    {
+      "native": "008f3590",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert (insert_integer_array), reached by src/game_hosts_scene_contents.cpp::merge_property_block",
+      "inputs": "Closed explicit 'IA n v1..vn ;' (n >= 1, every token read by 008D9AD0's %d rule) parsed into an owning int32 payload; a canonical singleton_lifetime allocation is handed over with flags 0, as 008F6578..008F6585 retain the parser's operator-new buffer.",
+      "output": "Native type-10 record (+20h payload, +24h byte size) feeds the whole 008F54F0 merge; result() republishes the merged words into SceneProperty::integer_array.",
+      "evidence": "disasm-raw 008f64d9 and 008f6578 (count/element 008D9AD0 reads, 4*count operator new, push 0 flags, CALL 008F3590). call_graph.py who 008f3590: one entry-reachable call from Bag::insert. Caveat: the shipped scenes carry IA only in ijn_02_force_z.scn's header precache (not an entity property block), so installed data does not exercise this call; it runs when an entity/library property block carries IA."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "E/LUA_S enum values need the live 19Ch native enum owner (LibraryNativeEnums in game_hosts_scene_contents.cpp, in g4-w5 review) passed into the merge adapter, plus parser retention of the symbol."
+    },
+    {
+      "native": "008f3b60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::merge_property_block",
+      "reason": "Child bags are merged by the host loop over ScenePropertyBlock::blocks; routing them natively needs recursive raw61 child-bag production and a result() for nested blocks, changing the held host file."
+    },
+    {
+      "native": "008f0420",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "Existing-record reference setter: the host parses each body into a fresh tree and merges afterwards, so no populated native bag exists at parse time (the merge's 008F0700/008F0340 covers the overwrite)."
+    },
+    {
+      "native": "008f23e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::publish_scene_precache",
+      "reason": "Header precache (the only shipped IA user) is only counted by the host; a native precache bag needs edits in game_hosts_scene_contents.cpp (in g4-w5 review)."
+    },
+    {
+      "native": "008f3490",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "BIN (type 8, with 008EF6D0 hex bytes) never occurs in installed scenes; grammar only from the listing and no parser payload yet."
+    },
+    {
+      "native": "008f3510",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "FA (type 9) never occurs in installed scenes; no parser payload and no installed-file grammar check."
+    },
+    {
+      "native": "008f3610",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "V3A (type 11) never occurs in installed scenes; no parser payload and no installed-file grammar check."
+    },
+    {
+      "native": "009c8c70",
+      "status": "skipped",
+      "host_site": "src/attack_commands.cpp::bot_install_command_task_0099a170",
+      "reason": "bot_task_make_* (also 009b9030, 009ab570, 009cd300, 009d4e30, 009ca2b0, 009badb0, 009bdbb0, 009a6970) build native bot-task objects; the host installs semantic tasks via create_bot_task in game_hosts_ai/script_orders (in review)."
+    },
+    {
+      "native": "008fe740",
+      "status": "skipped",
+      "host_site": "src/gun_bot_ticks.cpp::gun_bot_slots_for_subtype_0072c6a0",
+      "reason": "GunBot class constructors (also 008fe9f0, 008fefd0, 008ff260, 008ff4a0) write native bot images; the host keeps semantic GunBotSlotAssignment slots, no native gun-bot object exists."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::set_ambient_volume",
+      "reason": "In-game interface host has no ambient SoundInstance (+104h) and no mission camera, so 0068C1F0 never reaches the volume arm."
+    },
+    {
+      "native": "00407a50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_dyn_hull.cpp::avoid_zone_dyn_hull_data_00c389c0",
+      "reason": "00C389C0's edge hash map (also 00407af0, 00408340) is built and cleared without feeding the output; wiring needs a live <20,128> MitPoolAllocator and adds no observable state."
+    }
+  ],
+  "built": [
+    "Parser retention of an owning int32 payload for closed explicit IA statements and of reference presence for a closed reference letter with one quoted target token (scene_file.cpp, chain 311).",
+    "scene_reference_kind(): the 008F5A00 letter->type-5 kind table read from the listing.",
+    "Extension of the existing raw61 owning-bag merge projection to matching-tag unique IA (type 10, 008F3590) and reference (type 5, 008F3AC0) keys, with merged payload publication back into the owning property tree."
+  ],
+  "wired_total": {
+    "readiness_wired_before": 9305,
+    "readiness_wired_after": 9305,
+    "note": "wire_readiness's text match does not count scene_numeric_property_merge.cpp (same as chain 307's 008F38A0/008F3690, still 'ready'); both rows report called=True with one call site.",
+    "call_graph_recon_called_before": 4332,
+    "call_graph_recon_called_after": 4334
+  },
+  "validation": "Win32 build and both CTests pass with the switch ON and OFF; tools/wire_goal4_chain296_probe.py passes ON and OFF (IA keep/overwrite/miss, reference keep/overwrite/miss with lowercase letter, short/empty IA, unquoted reference and letter-mismatch fallback, payloads read from native records, ownership after retirement). Local probe over all 259 installed .scn files: 0 parse errors, 0 merge payload mismatches. pc24_lint: no findings. No game run.",
+  "left": "E/LUA_S enums (008F3A20/008F39B0) need the native enum owner threaded into the merge adapter from game_hosts_scene_contents.cpp; child bags (008F3B60); header precache bag (008F23E0); BIN/FA/V3A arms (008F3490/008F3510/008F3610) have no shipped data."
+}
