@@ -67,6 +67,14 @@ struct GameProfileSettingsSinks {
     std::uint32_t pixel_shader_version_28{};          // 008D7671: renderer +104h -> +28h
     void* volatile* sound_alternate_00f8bbcc{};        // 008D5483/5490: +218h, +21Ch
     std::function<void(bool)> set_rumble_enabled_00a94c50;  // 008D5DE2
+    // Chain 90, bound only under kWireGoal2Chain90Bound (empty otherwise). The
+    // bool answers false when the host object is absent, and nothing ran.
+    // 008D54C3/008D54D9: 00A7ABF0 on [00F8BBD8]'s class table (running sound owner).
+    std::function<bool(std::uint32_t mask, float volume)> apply_sound_class_levels;
+    // 008D5B71/008D5B80: 00B1FFB0 on the actual renderer [00F8D394].
+    std::function<bool(std::uint32_t word)> store_renderer_texture_detail_bias;
+    // 008D5686/008D5C85: 004C1710's get-or-create of the 18h media manager 00F8AEF8.
+    std::function<void*()> media_manager;
 };
 
 // 0067CC60's profile half for a sign-in with save id `save_name` ("%llx" of

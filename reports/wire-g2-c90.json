@@ -1,0 +1,122 @@
+{
+  "chain": 90,
+  "slot": "g2-w5",
+  "goal": 2,
+  "harness": "claude",
+  "host_file": "src/game_profile_load.cpp",
+  "files": [
+    "src/game_profile_load.cpp",
+    "include/bsp/game_profile_load.hpp",
+    "src/game_hosts.cpp",
+    "include/bsp/wire_goal2_chain90_switches.hpp"
+  ],
+  "switch": "kWireGoal2Chain90Bound",
+  "rows": [
+    {
+      "native": "00a7abf0",
+      "address": "008d54d9",
+      "function": "008d5430",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::sound_set_group_volume",
+      "status": "wired",
+      "reached": 1,
+      "note": "Partial audio sequence: native overrides Warnings, GuiTestSpeech and GuiMusic after the 0xFFFF set (008D5531/008D55BC/008D5647, 00A7ACF0 + 00A7F8E0 through the still-unimplemented sound_set_named_bus_volume). Under ON those three classes keep the sfx volume until that row is wired. The USN04 pair cannot show this because every profile level was 0.5."
+    },
+    {
+      "native": "00b1ffb0",
+      "address": "008d5b80",
+      "function": "008d5b50",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::renderer_set_texture_detail_bias",
+      "status": "wired",
+      "reached": 1,
+      "note": "ON log: quick settings: 00B1FFB0 +1D84h=0 (2 - texture detail 2)"
+    },
+    {
+      "native": "004c1710",
+      "address": "008d5686",
+      "function": "008d5430",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::ui_sound_set_master_volume (and ui_set_subtitles_enabled, 008d5c85 in 008d5b50)",
+      "status": "wired",
+      "reached": 2,
+      "note": "two 008D5B50-path calls, both concrete calls=1 in the ON log: 008D5686 (ui_sound_set_master_volume, +10h=0.5) and 008D5C85 (ui_set_subtitles_enabled, +14h)"
+    },
+    {
+      "native": "00b0d580",
+      "address": "008d603c",
+      "function": "008d5b50",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::renderer_set_motion_blur",
+      "status": "skipped",
+      "reason": "host-object gap: the render service [00F8D39C] (scene renderer, +219h motion blur, textures +44h/+48h, targets +50h/+58h) is never constructed by any game host; the body needs that native object and building it is the scene renderer constructor, far past one chain's object cap",
+      "reached": 0
+    },
+    {
+      "native": "00b0d080",
+      "address": "008d610d",
+      "function": "008d5b50",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::renderer_set_old_film_effect",
+      "status": "skipped",
+      "reason": "host-object gap: same missing render service [00F8D39C] (+220h old-film mode); no game host constructs it",
+      "reached": 0
+    },
+    {
+      "native": "00b29e60",
+      "address": "008d6092",
+      "function": "008d5b50",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::renderer_change_presentation_mode",
+      "status": "skipped",
+      "reason": "needs NativeRendererPresentationModeContext over GameNativeRendererApplication's private NativeRendererDeviceRecreationContext (src/game_native_renderer_device.inc, not exposed and not in this chain's files); its ON path sets the pending reset 0108D4B8 or recreates the device at sign-in, which needs its own renderer-reset evidence run",
+      "reached": 0
+    },
+    {
+      "native": "00b72270",
+      "address": "008d5f0f",
+      "function": "008d5b50",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::foliage_group_set_visibility",
+      "status": "skipped",
+      "reason": "not reached: the sign-in apply runs with env.scene_present false (008D5ED9 gate, src/game_settings.cpp:389), so foliage_group_set_visibility never runs in USN04 (no record in the w1/w3 USN04 logs); the host also has no native SceneRoots at this site",
+      "reached": 0
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "native media manager 00F8AEF8 (18h, vtable 00D24D94) and the singleton drain's native_media deletion arm",
+      "where": "src/game_hosts.cpp:3663 (sinks block; native_media arm cleared at src/game_hosts.cpp:2640 before native_gui_manager_.reset())",
+      "producers": [
+        "004C1710 get_native_media_manager_004c1710 get-or-create (constructor 00A4C5A0 construct_native_media_manager_00a4c5a0, registration 00BD0C30 on 01090AA0)",
+        "GameNativeGuiManagerApplication::context() (cells 00F8BC5C/00F8AEF8, 00CE3800, 00D7A24C)",
+        "drain arm 00A4C620 scalar_delete_native_media_manager_00a4c620 via NativeSingletonDeletionBindings::native_media"
+      ],
+      "rows": [
+        "004c1710"
+      ],
+      "lifetime_difference": "Native's first 004C1710 caller is probably the WM_ACTIVATE handler 00BED3B0 (00BED42E/00BED4A7, src/platform_activation.cpp:36,51), which this host does not run (no host implements PlatformActivationMessageHost::media_get_or_create_004c1710). So the host builds the media manager later, at the sign-in apply (008D5686), and registers it later on 01090AA0, which changes the drain order. This looks harmless: 00A4C620 depends on no other singleton, and the USN04 pair drained the new slot cleanly (49 -> 50, exit 0)."
+    }
+  ],
+  "wired_before": 8907,
+  "wired_after": 8910,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "off_switch_on_build.py --names kWireGoal2Chain90Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pair_run": {
+    "mission": "USN04",
+    "frames": 3200,
+    "off_log": "local/g2-w5-off_USN04.log",
+    "on_log": "local/g2-w5-on_USN04.log",
+    "exit_codes": {
+      "off": 0,
+      "on": 0
+    },
+    "gameplay": "identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, units 81/81, unit table identical)",
+    "native_table": "QuickSettingsApply::sound_set_group_volume 00a7abf0, renderer_set_texture_detail_bias 00b1ffb0, ui_sound_set_master_volume 004c1710, ui_set_subtitles_enabled 004c1710: UNIMPLEMENTED -> concrete, calls 1 each; host methods concrete 1144 -> 1148, unimplemented 477 -> 473",
+    "other_lines": "singleton lifetime drained registered_slots 49 -> 50 (the media manager registered at sign-in and deleted by the drain via 00A4C620); two new quick-settings notes; atlas source item/parser lines differ only in allocation addresses shifted by the media manager allocation",
+    "verdict": "DIFFERENT, gameplay identical"
+  },
+  "flip_proposal": "flip kWireGoal2Chain90Bound to true: all three rows run once at the sign-in settings apply on host state, gameplay identical in the USN04 pair, clean shutdown with the media manager drained through its native arm. Caveat: native then overrides Warnings/GuiTestSpeech/GuiMusic (008D5531/55BC/5647, unimplemented 00A7ACF0 + 00A7F8E0), so under ON those three classes keep the sfx volume until that row is wired; the pair had every level at 0.5 and cannot show it. The media manager is built at sign-in rather than at the first WM_ACTIVATE.",
+  "pc24_lint": "0 findings over 4 files (no x87 arithmetic in the ON arms)",
+  "review_round_1": {
+    "review_run": 194,
+    "fixes": [
+      "host_objects lifetime_difference added; same sentence in the src/game_hosts.cpp chain 90 sinks comment",
+      "00a7abf0 note and flip_proposal caveat on the named-class overrides added"
+    ],
+    "code_change": "comment only (src/game_hosts.cpp); OFF and ON builds re-run"
+  }
+}

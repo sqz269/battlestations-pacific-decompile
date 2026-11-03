@@ -32,6 +32,7 @@
 #include "bsp/profile_commit.hpp"
 #include "bsp/settings_archive_reader.hpp"
 #include "bsp/storage_backend.hpp"
+#include "bsp/wire_goal2_chain90_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -348,13 +349,53 @@ public:
     void sound_store_music_volume(float volume) override { store_alternate(0x218, volume, "music"); }
     void sound_store_speech_volume(float volume) override { store_alternate(0x21C, volume, "speech"); }
     void music_player_set_volume(float) override { missing("music_player_set_volume", "00a864f0"); }
-    void sound_set_group_volume(std::uint32_t, float) override { missing("sound_set_group_volume", "00a7abf0"); }
+    void sound_set_group_volume([[maybe_unused]] std::uint32_t mask, [[maybe_unused]] float volume) override {
+        // 00A7ABF0 at 008D54D9: set_sound_class_levels_00a7abf0 on [00F8BBD8]'s
+        // class table (the running sound owner's levels); OFF keeps the record.
+        if constexpr (kWireGoal2Chain90Bound) {
+            if (!sinks_.apply_sound_class_levels || !sinks_.apply_sound_class_levels(mask, volume)) {
+                missing("sound_set_group_volume", "00a7abf0");
+                return;
+            }
+            log_.implemented("QuickSettingsApply::sound_set_group_volume", "00a7abf0");
+        } else {
+            missing("sound_set_group_volume", "00a7abf0");
+        }
+    }
     void sound_set_named_bus_volume(const char*, float) override {
         missing("sound_set_named_bus_volume", "00a7acf0");
     }
-    void ui_sound_set_master_volume(float) override { missing("ui_sound_set_master_volume", "004c1710+10h"); }
-    void renderer_set_texture_detail_bias(int) override {
-        missing("renderer_set_texture_detail_bias", "00b1ffb0");
+    void ui_sound_set_master_volume([[maybe_unused]] float volume) override {
+        // 004C1710 at 008D5686: get_native_media_manager_004c1710 gets or builds
+        // the 18h media manager (00F8AEF8), then 008D56B0 stores the clamped
+        // master at +10h; OFF keeps the record.
+        if constexpr (kWireGoal2Chain90Bound) {
+            void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
+            if (media == nullptr) {
+                missing("ui_sound_set_master_volume", "004c1710+10h");
+                return;
+            }
+            std::memcpy(static_cast<unsigned char*>(media) + 0x10, &volume, sizeof volume); // 008D56B0
+            log_.implemented("QuickSettingsApply::ui_sound_set_master_volume", "004c1710");
+            log_.notef("quick settings: 004C1710 media=%p +10h=%g", media, static_cast<double>(volume));
+        } else {
+            missing("ui_sound_set_master_volume", "004c1710+10h");
+        }
+    }
+    void renderer_set_texture_detail_bias([[maybe_unused]] int bias) override {
+        // 00B1FFB0 at 008D5B80: set_native_renderer_texture_detail_bias_00b1ffb0
+        // on [00F8D394] (receiver+1D84h = 2 - texture detail); OFF keeps the record.
+        if constexpr (kWireGoal2Chain90Bound) {
+            if (!sinks_.store_renderer_texture_detail_bias ||
+                !sinks_.store_renderer_texture_detail_bias(static_cast<std::uint32_t>(bias))) {
+                missing("renderer_set_texture_detail_bias", "00b1ffb0");
+                return;
+            }
+            log_.implemented("QuickSettingsApply::renderer_set_texture_detail_bias", "00b1ffb0");
+            log_.notef("quick settings: 00B1FFB0 +1D84h=%d", bias);
+        } else {
+            missing("renderer_set_texture_detail_bias", "00b1ffb0");
+        }
     }
     void renderer_set_gamma(float) override { missing("renderer_set_gamma", "00f8d394+f0h"); }
     void input_set_stick_modifiers(bool, bool, bool, bool) override {
@@ -365,7 +406,21 @@ public:
         missing("foliage_system_set_detail_scale", "00e188a8+19fch");
     }
     void ocean_set_reflection_enabled(bool) override { missing("ocean_set_reflection_enabled", "00e188a8+19f0h"); }
-    void ui_set_subtitles_enabled(bool) override { missing("ui_set_subtitles_enabled", "004c1710+14h"); }
+    void ui_set_subtitles_enabled([[maybe_unused]] bool enabled) override {
+        // 004C1710 at 008D5C85: the same media manager, then 008D5C8D stores
+        // settings+09h's byte at +14h; OFF keeps the record.
+        if constexpr (kWireGoal2Chain90Bound) {
+            void* const media = sinks_.media_manager ? sinks_.media_manager() : nullptr;
+            if (media == nullptr) {
+                missing("ui_set_subtitles_enabled", "004c1710+14h");
+                return;
+            }
+            static_cast<unsigned char*>(media)[0x14] = enabled ? 1u : 0u; // 008D5C8D
+            log_.implemented("QuickSettingsApply::ui_set_subtitles_enabled", "004c1710");
+        } else {
+            missing("ui_set_subtitles_enabled", "004c1710+14h");
+        }
+    }
     void font_registry_set_language_path(const char*, const char*) override {
         missing("font_registry_set_language_path", "007371d0");
     }
