@@ -105,8 +105,8 @@
       "host_site": "src/game_hosts_ship_ai.cpp:transport_launch_ring_points_cc13, four corner appends called by GameShipAiHost::transport_launch_craft_008206f0",
       "status": "wired",
       "reach": "static",
-      "host_path": "MissionFrame unit step -> GameUnitsHost::motion_step_00825f20 -> GameAiCoordinatorHost::fixed_step -> command ticking (PatrolTo / CloseAttack / DefendPosition) -> transport_moves_00a11b80 -> transport_launch_craft_008206f0 -> transport_launch_ring_points_cc13",
-      "live_site_check": "kLandingCraftLaunchBound=true in src/game_hosts_ai.cpp; kTransportLaunchCraftCc13Bound=true in include/bsp/game_hosts_ship_ai.hpp. The alternate approach landing sweep route has kShipAiApproachLandingSweepBound=true. Mission/session readiness and free-pad checks use real host state. No disabled switch encloses the site except this chain's new OFF switch. No mission call counts were supplied for this range, so reach is reported as static.",
+      "host_path": "MissionFrame unit step -> GameUnitsHost::motion_step_00825f20 -> GameShipAiHost::controller_step -> ship_ai_controller_step_009f50e0 -> attackmove ship_ai_attackmove_step_009e8820 -> approach ship_ai_attackmove_approach_step_009f3240 -> ApproachStepBinding::route_warning_message_0077c2a0 -> GameShipAiHost::transport_launch_craft_008206f0 -> transport_launch_ring_points_cc13",
+      "live_site_check": "The per-unit controller path is independent of coordinator command ticks: src/game_hosts_units.cpp:25143 invokes controller_step, whose active navigator/controller dispatch calls 009F50E0; the attackmove 009E8820 branch dispatches approach 009F3240, and its route_warning_message_0077c2a0 delivers to the troop transport. kShipAiApproachLandingSweepBound=true in src/game_hosts_ship_ai.cpp and kTransportLaunchCraftCc13Bound=true in include/bsp/game_hosts_ship_ai.hpp. Active-unit, navigator-enabled, attackmove/approach state, landing candidate, cooldown and free-pad checks consume real host state. The earlier coordinator path claim was incorrect: kSkirmishSessionCc13Bound=false makes ai_coordinator_created_at_load() return false, so GameAiCoordinatorHost::fixed_step does not run command ticks even though kLandingCraftLaunchBound=true. That blocked path is not reach evidence. No disabled switch encloses the documented per-unit approach path except this chain's new OFF switch. No mission call counts were supplied for this range, so reach remains static and one assigned row is counted.",
       "image_sites": ["0082093e", "008209a8", "00820a12", "00820a72"],
       "contract": "0074D450 ECX is the three-word point array; one const point pointer is pushed; RET 4 at 0074D495. Each of the four caller sites immediately loads ECX from the same local array and pushes the transformed stack point. Reads data+0/count+4/capacity+8, grows to max(1,2*capacity) when full, copies the three point components, increments count. The existing historical identifier points_push_back_0074d2f0 is shared by both image template instances. Raw remains a thin view/callback wrapper around the same typed body.",
       "on_behavior": "The reconstructed body chooses capacity growth, writes all three actual transformed corner components directly into the existing host vector, and commits the count. Its small reserve callback invokes std::vector::reserve on that same vector.",
@@ -140,6 +140,36 @@
     "report_calls": "PASS: verify_report_calls.py reports/wire-g2-c153.json; ten original CALL sites checked, zero failed.",
     "runtime": "Not run, as instructed. Static reach and compilation are not gameplay validation."
   },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 310,
+      "reviewed_head": "cea8338cfc2b6ad444ab5f90558d42c1ef280af7",
+      "findings": [
+        {
+          "id": 1,
+          "native": "0074d450",
+          "status": "fixed",
+          "change": "Report-only correction: replace the blocked coordinator path with the active per-unit ship-controller attackmove/approach sweep path; explicitly document the false skirmish/coordinator gate in live_site_check.",
+          "evidence": [
+            "include/bsp/session_context_cc13.hpp:22: kSkirmishSessionCc13Bound=false; src/game_hosts_ai.cpp:1123: ai_coordinator_created_at_load returns false with that switch OFF.",
+            "src/game_hosts_units.cpp:25143 invokes controller_step independently of the coordinator; src/game_hosts_ship_ai.cpp:13044 dispatches 009F50E0.",
+            "src/game_hosts_ship_ai.cpp:10937 invokes attackmove 009E8820; :7869 invokes approach 009F3240; :7738 routes its landing sweep to transport_launch_craft_008206f0."
+          ],
+          "reach": "static",
+          "assigned_rows_counted": 1
+        }
+      ],
+      "checks": {
+        "on_build": "PASS: exit 0, zero distinct diagnostics; sources restored OFF.",
+        "final_off_build": "PASS: scripts/build.ps1; reconstructed_math and tool_tests both passed after the ON check.",
+        "pc24_lint_diff": "PASS: zero findings for origin/main...HEAD.",
+        "report_calls": "PASS: ten call rows checked, zero failed.",
+        "readiness": "PASS: final OFF-map recount remains 8987 wired globally; assigned 0074d450 is wired and one assigned row is counted. The shared 0074d2f0 identifier alias remains excluded from independent credit.",
+        "runtime": "No game run, as instructed."
+      }
+    }
+  ],
   "wired_total_before": 8985,
   "wired_total_after": 8987,
   "assigned_ready_to_wired": ["0074d450"],
