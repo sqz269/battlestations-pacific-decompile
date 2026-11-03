@@ -56,6 +56,12 @@ struct NativeListNode {
     NativeListNode* prev;
 };
 
+// Borrowed string headers over the host's existing extension/directory pair.
+struct NativeStringPairView {
+    NativeString& first;
+    NativeString& second;
+};
+
 // {data, count, capacity} array header.
 struct NativeArrayHeader {
     void* data;
@@ -420,6 +426,7 @@ void push_back_physical_stream_slot_00bf5100(NativeArrayHeader& array, const std
 void release_string_at(void* object, std::size_t offset, NativeStringStorage& strings) noexcept;
 // 00BDB7C0 BSP_VfsExtensionPrefixPair_Destroy: the second string (+8h), then the first (+0h).
 void destroy_string_pair_00bdb7c0(void* pair, NativeStringStorage& strings) noexcept;
+void destroy_string_pair_00bdb7c0(NativeStringPairView pair, NativeStringStorage& strings) noexcept;
 // Scalar-deleting string records: release the string, free when flags & 1.
 // 00BE88C0 BSP_DebugFeatureRecord_ScalarDelete and 00BF04D0 BSP_NativeString_ScalarDelete (string at
 // +0h); 00BE6360 BSP_NativeStringAt0C_ScalarDelete (string at +0Ch).
@@ -549,6 +556,19 @@ void* vfs_find_mount_by_name_and_path_00bdba50(void* vfs, const NativeString& na
 // the first node whose value string (+14h) equals the prefix (00435C40) is the result; otherwise the head.
 NativeIterator& vfs_find_extension_prefix_pair_00bdc3f0(void* vfs, NativeIterator& result, const NativeString& extension,
                                                         const NativeString& prefix, VfsPathContext& context);
+// Narrow boundary for the same body over the host's actual +54h tree.
+class ExtensionPrefixFindHost {
+public:
+    virtual ~ExtensionPrefixFindHost() = default;
+    virtual void slash_terminate(NativeString& path) = 0;
+    virtual void* upper_bound(NativeContainerHeader&, const NativeString&) = 0;
+    virtual void* lower_bound(NativeContainerHeader&, const NativeString&) = 0;
+    virtual void advance(NativeIterator&) = 0;
+    virtual void invalid_parameter() = 0;
+};
+NativeIterator& vfs_find_extension_prefix_pair_00bdc3f0(NativeContainerHeader& tree,
+    NativeIterator& result, const NativeString& extension, const NativeString& prefix,
+    NativeStringStorage& strings, ExtensionPrefixFindHost& host);
 // 00BE0AE0 BSP_FileBlockScope_Construct, __thiscall(ECX scope, const string* name, arg) RET 8 -> EAX:
 // ref-counted base (00CEB130, count 1), vtable 00D68494, +8h..+10h = 0, name copy at +14h; 00BDF950
 // (scope); 00BE0980 (vfs 0109CEEC, &name, arg).

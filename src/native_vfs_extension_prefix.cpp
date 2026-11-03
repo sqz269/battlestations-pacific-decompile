@@ -1,4 +1,6 @@
 #include "bsp/native_vfs_extension_prefix.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/wire_goal2_chain148_switches.hpp"
 
 #include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -17,6 +19,7 @@ namespace {
 using Tree = detail::TreeInsertAccess<0x1c, 0x1d>;
 struct Header { std::uint32_t length; char* data; };
 static_assert(sizeof(Header) == 8);
+static_assert(offsetof(Header, length) == 0 && offsetof(Header, data) == 4);
 
 void* at(const void* base, std::uint32_t offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(base) + offset);
@@ -49,7 +52,7 @@ void normalize_directory(Header& value, ActualNativeStringPoolStorage& strings) 
     }
 }
 
-struct Pair {
+template<bool RegisteredPair = false> struct Pair {
     Header first{};
     Header second{};
     ActualNativeStringPoolStorage& strings;
@@ -64,10 +67,20 @@ struct Pair {
             if (second.data) destroy_native_string_header_0041dd20(&second, strings);
             return;
         }
-        if (state >= 1 && second.data)
-            destroy_native_string_header_0041dd20(&second, strings);
-        if (state >= 0 && first.data)
-            destroy_native_string_header_0041dd20(&first, strings);
+        // 00bdb7c0 calls the registered-pair destructor; OFF keeps local releases.
+        if constexpr (RegisteredPair && kWireGoal2Chain148Bound) {
+            if (state >= 0) {
+                engine_services_cc13::destroy_string_pair_00bdb7c0(
+                    engine_services_cc13::NativeStringPairView{
+                        *reinterpret_cast<NativeString*>(&first),
+                        *reinterpret_cast<NativeString*>(&second)}, strings);
+            }
+        } else {
+            if (state >= 1 && second.data)
+                destroy_native_string_header_0041dd20(&second, strings);
+            if (state >= 0 && first.data)
+                destroy_native_string_header_0041dd20(&first, strings);
+        }
     }
     void construct_extension_first(const void* extension, const void* directory) {
         copy_native_string_header_00be0a30_fragment(&first, strings, extension);
@@ -121,6 +134,30 @@ void* find_pair(void* tree, const void* extension, const void* directory,
     return Tree::head(tree);
 }
 
+// Borrows the existing +54h tree, pooled-string domain and validation boundary.
+// Directory normalization stays with the host's counted-header implementation.
+struct PrefixFindAdapter final : engine_services_cc13::ExtensionPrefixFindHost {
+    ActualNativeStringPoolStorage& strings;
+    const SingletonLifetimeCallbacks& callbacks;
+    PrefixFindAdapter(ActualNativeStringPoolStorage& storage,
+        const SingletonLifetimeCallbacks& validation) : strings(storage), callbacks(validation) {}
+    void slash_terminate(NativeString& path) override {
+        normalize_directory(*reinterpret_cast<Header*>(&path), strings);
+    }
+    void* upper_bound(engine_services_cc13::NativeContainerHeader& tree,
+        const NativeString& key) override {
+        return bsp::upper_bound(&tree, *reinterpret_cast<const Header*>(&key));
+    }
+    void* lower_bound(engine_services_cc13::NativeContainerHeader& tree,
+        const NativeString& key) override {
+        return lower_bound_native_physical_index_00bda260(&tree, &key);
+    }
+    void advance(engine_services_cc13::NativeIterator& iterator) override {
+        advance_native_physical_index_00bd9860(&iterator, callbacks);
+    }
+    void invalid_parameter() override { callbacks.invalid_parameter(callbacks.context); }
+};
+
 void* allocate_node(void* left, void* parent, void* right, const void* pair,
     std::uint8_t color, ActualNativeStringPoolStorage& strings) {
     void* node = singleton_lifetime_allocate({SingletonAllocationKind::object, 0x20, 0x20});
@@ -146,7 +183,7 @@ void* allocate_node(void* left, void* parent, void* right, const void* pair,
     }
 }
 
-void insert_pair(void* tree, const Pair& pair,
+void insert_pair(void* tree, const Pair<>& pair,
     ActualNativeStringPoolStorage& strings) {
     void* parent = Tree::head(tree);
     void* current = Tree::parent(parent);
@@ -175,8 +212,19 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
     const SingletonLifetimeCallbacks& callbacks) {
     void* tree = at(manager, 0x54);
     void* const captured_head = Tree::head(tree);
-    if (find_pair(tree, extension, directory, strings, callbacks) != captured_head) return;
-    Pair normalized(strings);
+    // 00bdc3f0 calls the native pair lookup; OFF keeps the local tree scan.
+    if constexpr (kWireGoal2Chain148Bound) {
+        PrefixFindAdapter host(strings, callbacks);
+        engine_services_cc13::NativeIterator result;
+        engine_services_cc13::vfs_find_extension_prefix_pair_00bdc3f0(
+            *static_cast<engine_services_cc13::NativeContainerHeader*>(tree), result,
+            *static_cast<const NativeString*>(extension),
+            *static_cast<const NativeString*>(directory), strings, host);
+        if (result.node != captured_head) return;
+    } else {
+        if (find_pair(tree, extension, directory, strings, callbacks) != captured_head) return;
+    }
+    Pair<kWireGoal2Chain148Bound> normalized(strings);
     normalized.construct_extension_first(extension, directory);
     normalized.lower_and_trail();
     Pair copied(strings);
