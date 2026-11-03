@@ -1,0 +1,249 @@
+{
+  "goal": 2,
+  "chain": 152,
+  "run": 303,
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "host_file": "src/game_hosts_lua.cpp",
+  "selection": {
+    "tier": 2,
+    "segment": 57,
+    "range": ["008dcda0", "008e3d50"],
+    "reason": "Segment 47 was claimed first and dropped after reading: its rocket rows sit behind kRocketTaskBound = false and the rest need plane/rack/session-message images no host builds. Segment 41 was then refused (g2-w3 holds it). Segments 16, 12, 11 and 10 were surveyed: their live callers reach the rows only through stub host methods with no object behind them, or through host interfaces no game host implements. Segment 57 has one row whose wired caller is the live mission Lua dispatcher."
+  },
+  "switch": "kWireGoal2Chain152Bound",
+  "switch_value": false,
+  "wired_before": 8985,
+  "wired_after": 8989,
+  "assigned_ready_to_wired": ["008df5d0"],
+  "host_objects": [
+    {
+      "name": "ObjectivePositionLists + ObjectivePositionHost (the position half of each objective's +20h list, and a bsp::ObjectiveUnitHost adapter over GameObjectiveSets)",
+      "where": "src/game_hosts_lua.cpp:366",
+      "producers": [
+        "GameObjectiveSets::slots[k] (game_objective_sets(), filled by this host's Objectives_Add / AddUnit through add_objective, 008E1F80) supplies each objective's name, kind (+18h) and state (+1Ch); the lists are index-parallel to it",
+        "008DEEB0 objective_position_entry_008deeb0, called by the 008DF5D0 body, makes each entry from the point read out of the Lua argument by this host's read_vector3_00888760",
+        "Lifetime: the image builds the sets with the world (004DF917); game_objective_sets() is process-wide with no reset caller (one mission per process), and this function-local static is the same; only the ON arm reaches it"
+      ],
+      "rows": ["008df5d0"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "008df5d0",
+      "address": "008cdc56",
+      "function": "008cd440",
+      "host_site": "src/game_hosts_lua.cpp:binding_trampoline, objective_row target walk (Objectives_Add 008CD440 and Objectives_AddUnit 008CDD60; the AddUnit site is 008CE42D)",
+      "status": "wired",
+      "reach": "static: Lua native -> binding_trampoline (every mission Lua native) -> objective_row && !error_replay -> per-slot loop -> ON arm ahead of the units walk; no switch on the path is false (kObjectiveAddTargetWalkBound = true governs only the list walk). Whether a shipped mission passes a vector3 target to Objectives_Add/AddUnit was not surveyed.",
+      "on_effect": "Each position target (a 0088B840 vector3 table, or a non-entity element of a list table) is pushed onto the named objective's position list when that objective already exists in the slot; OFF drops position targets. Nothing in this host reads the list yet (008DFE50's marker walk and the HUD markers are not hosted)."
+    },
+    {
+      "native": "008e2bf0",
+      "function": "005c0f20",
+      "host_site": "src/game_hosts_hud_world.cpp:GameHudMinimapHost::update_005c0f20",
+      "status": "skipped",
+      "reason": "Host-object gap: the minimap host has no map-ping list (008E2B90's std::list of timed pings). Its only producers are 008E2DA0 (a received network ping) and the HUD map screen's ping input (008E2EE0); this host runs neither, so a list built here would have no producer.",
+      "reach": "live caller (005C0F20 runs), object missing"
+    },
+    {
+      "native": "008e2ee0",
+      "function": "005b45c0",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::update_map_screen_005b45c0",
+      "status": "skipped",
+      "reason": "The host's map-screen update models only the helm release (005B4673..005B46B3); the map view and input block holding the 008E2EE0 call (005B45C0's IC 10Ah/10Bh test) is not hosted, and the body needs the session player record (game+18CCh, +18ECh), a ping message and the sound queue that this host does not have.",
+      "reach": "static; the site's block is not hosted"
+    },
+    {
+      "native": "008dce40",
+      "function": "008ddd30",
+      "host_site": "none (008DDD30 RemovePositionFromNamedObjective is not hosted; RemoveUnit position targets are dropped)",
+      "status": "skipped",
+      "reason": "Destroys the replication message that 008DDD30 builds only for a peer (game+1FE4h == 1 with a session); this host has no session/peer object and builds no session message, so there is nothing to destroy.",
+      "reach": "static"
+    },
+    {
+      "native": "008dcfa0",
+      "function": "008e20d0",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::set_status (status 1)",
+      "status": "skipped",
+      "reason": "008E20D0 replicates through 008DDA20 only when game+1FE4h == 1 and the slot has a peer, then destroys that message with 008DCFA0. The host's set_status has no session/peer object and builds no message; wiring the destroy would act on nothing.",
+      "reach": "static"
+    },
+    {
+      "native": "008dd120",
+      "function": "008e2200",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::set_status (status 2)",
+      "status": "skipped",
+      "reason": "Same as 008DCFA0: 008E2200 (the SetFailed sibling) builds its replication message (008DDB00) only for a multiplayer peer; this host has none, so the 008DD120 destroy has no message to act on.",
+      "reach": "static"
+    },
+    {
+      "native": "008e35d0",
+      "function": "006f5610",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Its only caller, 006F5610 command_building_construct, runs only through Seg33bHost::powerup_binding_construct_008e35d0, which no host implements; no game host constructs a command-building image.",
+      "reach": "static; no host root"
+    },
+    {
+      "native": "007b5400",
+      "function": "007b5430",
+      "host_site": "src/rocket_task_cc13.cpp:rocket_aim_tick_007b5430 (inline copy of body_offset_28)",
+      "status": "skipped",
+      "reason": "Sits behind another OFF switch: the rocket task arm run_rocket_task_arm_007b7c40 is called in game_hosts_units.cpp only under kRocketTaskBound = false (include/bsp/rocket_task_cc13.hpp:46).",
+      "reach": "dead (kRocketTaskBound = false)"
+    },
+    {
+      "native": "007b6f50",
+      "function": "007b7050",
+      "host_site": "src/rocket_task_cc13.cpp:rocket_task_arm_007b7c40 (state change at the rule's result)",
+      "status": "skipped",
+      "reason": "Sits behind another OFF switch: kRocketTaskBound = false gates the only host call of the rocket task arm.",
+      "reach": "dead (kRocketTaskBound = false)"
+    },
+    {
+      "native": "007b8450",
+      "function": "007ce040",
+      "host_site": "src/plane_flight.cpp:run_plane_fixed_step_007ce040",
+      "status": "skipped",
+      "reason": "The call at 007CE5FA is in the fixed step's arm 007CE5C3..007CE5FF (mode 4 with +6C8h and +6C4h set and [+6C4h]+3B0h clear); the host's plane step does not model that arm or carry +6C4h/+6C8h, so there is no host site.",
+      "reach": "static; arm not hosted"
+    },
+    {
+      "native": "007b9510",
+      "function": "007bc7a0",
+      "host_site": "src/game_hosts_units.cpp:player_bomb_release_006082d0",
+      "status": "skipped",
+      "reason": "Host-object gap: the body walks the plane's rack images through rack vtable[218h](2Ah). The units host models ordnance as a mask (OrdnanceKindSet) with no rack image, and 007BC7A0's rocket arm that consumes the result is a documented unmodelled deviation (cc13-D3).",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007baf90",
+      "function": "007cfd20",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Its caller plane_unit_instance_construct_007cfd20 is reached only through host interfaces nobody implements (Seg47Host / Seg48Host / PlaneCtorHost); no game host constructs a plane unit-instance image.",
+      "reach": "static; no host root"
+    },
+    {
+      "native": "007ba170",
+      "function": "007bbfa0",
+      "host_site": "src/game_hosts_units.cpp plane death path (plane_death_timer_c10_007bbfa0)",
+      "status": "skipped",
+      "reason": "Host-object gap: 007BBFA0's ENGINEFIREFAILURE session message is not built; the host substitutes the message route with plane_death_flags_007d0b80 in the same step and has no session-message storage or router for plane failures.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007ba1c0",
+      "function": "007bbfa0",
+      "host_site": "src/game_hosts_units.cpp plane death path",
+      "status": "skipped",
+      "reason": "Same as 007BA170 (ENGINESLOSTFAILURE): no session-message object for plane failures in the host.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007ba200",
+      "function": "007bbfa0",
+      "host_site": "src/game_hosts_units.cpp plane death path",
+      "status": "skipped",
+      "reason": "Same as 007BA170 (SPINNINGFAILURE): no session-message object for plane failures in the host.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007ba8d0",
+      "function": "007bbfa0",
+      "host_site": "src/game_hosts_units.cpp plane death path",
+      "status": "skipped",
+      "reason": "Same as 007BA170 (PLANE_DEADMEATROT, built from the plane image): no session-message object and no plane image in the host.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007ba990",
+      "function": "007ce040",
+      "host_site": "src/plane_flight.cpp:run_plane_fixed_step_007ce040",
+      "status": "skipped",
+      "reason": "PLANE_HIT session message (site 007CF08E): the host's plane step builds no session messages; hits come from the gunnery host directly.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007b8f20",
+      "function": "007d0b80",
+      "host_site": "src/game_hosts_units.cpp plane death path (plane_death_flags_007d0b80)",
+      "status": "skipped",
+      "reason": "The host's 007D0B80 is plane_death_flags_007d0b80 (flags only); the wing-break arm holding the two AABB-centre calls (007D0ED0, 007D1145) feeds debris and mesh holders the host does not have.",
+      "reach": "live caller, arm not hosted"
+    },
+    {
+      "native": "007caad0",
+      "function": "007d0b80",
+      "host_site": "src/game_hosts_units.cpp plane death path",
+      "status": "skipped",
+      "reason": "Debris spawn in 007D0B80's wing-break arm (007D1027, 007D12A6): no debris owner or plane mesh-node records in the host.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007d0820",
+      "function": "007d0b80",
+      "host_site": "src/game_hosts_units.cpp plane death path",
+      "status": "skipped",
+      "reason": "Hides the plane's other mesh holders (007D12CF): the host has no plane model/mesh-holder objects.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "007bc4e0",
+      "function": "007d0b80",
+      "host_site": "src/game_hosts_units.cpp plane death path; src/projectile_impact.cpp on_static_hit_007bc4e0",
+      "status": "skipped",
+      "reason": "Crash-effect bind needs a PlaneCrashEffectHost over a plane image and effect owner the host lacks; the host's 007D0B80 splash arm is substituted by flags, and the other caller 0084BF00 is not wired.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "00545270",
+      "function": "005484f0",
+      "host_site": "src/game_hosts_hud.cpp:WeaponGroupScreenBinding::hold_camera_005490a6 (record stub)",
+      "status": "skipped",
+      "reason": "Host-object gap: the call at 00549105 resets the orbit camera of [00E198C4]+7Ch's screen (+20h) through 0042C940; the HUD host has no such camera screen object and hold_camera_005490a6 is a record stub.",
+      "reach": "live caller (kHudWeaponGroupScreenBound = true), object missing"
+    },
+    {
+      "native": "005452b0",
+      "function": "005484f0",
+      "host_site": "src/game_hosts_hud.cpp:WeaponGroupScreenBinding::hold_camera_005490a6 (record stub)",
+      "status": "skipped",
+      "reason": "Same as 00545270: the call at 005490E8 orbits [00E198C4]+80h's camera (+2Ch) from the depth-charge child's heading; no camera screen object in the host.",
+      "reach": "live caller, object missing"
+    },
+    {
+      "native": "005495a0",
+      "function": "0054b530",
+      "host_site": "src/main_menu_command_bar.cpp:rebuild_main_menu_command_bar_0054b530",
+      "status": "skipped",
+      "reason": "Reached only through MainMenuCommandBarHost::hide_glyph_widgets_005495a0; no game host implements MainMenuCommandBarHost or the selection-listener services that call the rebuild.",
+      "reach": "static; no host root"
+    },
+    {
+      "native": "005495e0",
+      "function": "0054b530",
+      "host_site": "src/main_menu_command_bar.cpp:rebuild_main_menu_command_bar_0054b530",
+      "status": "skipped",
+      "reason": "Same as 005495A0 (hide_alternate_widgets_005495e0): no MainMenuCommandBarHost implementer.",
+      "reach": "static; no host root"
+    },
+    {
+      "native": "00519b00",
+      "address": "0068aff5",
+      "function": "0068aca0",
+      "host_site": "src/game_hosts_hud.cpp:screen_receive_unit (manager offset 70h does nothing)",
+      "status": "skipped",
+      "reason": "Host-object gap: binding a unit to the bomber view needs the bomber view screen (+1Ch unit, +24h, +28h), its camera (005198F0), unit messages (0077C470) and the observer registry; the HUD host has none of them for interface 23h.",
+      "reach": "live caller (0068ACA0 runs), object missing"
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 exit 0, 2/2 tests passed (OFF)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain152Bound: build.ps1 exit 0, 0 distinct diagnostics, switch restored",
+    "pc24_lint": "0 findings, 2 files (no x87 arithmetic in the ON arm)",
+    "wire_readiness": "after a plain OFF build: 008df5d0 wired; total wired 8985 -> 8989"
+  }
+}
