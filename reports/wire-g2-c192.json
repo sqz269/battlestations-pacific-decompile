@@ -25,7 +25,7 @@
       "reach_evidence": "game_hosts_mission_frame.cpp:3916 load_scene_contents step -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> load_scene_contents_004d4df0 (mission_scene_contents.cpp:115, unconditional pass 2 Registration) -> SceneContentsBinding::read_scene_file -> run_scene_file_reader_0046df00 -> SceneReaderBinding::instantiate_entity (Registration arm, game_hosts_scene_contents.cpp:3012ff; main_body when Type is present and the class is not short-circuited; owner.lua attached at mission_frame:3911) -> bsp::register_vehicle_class_preload (0095C640, scene_traffic_groups.cpp:382/386/403) -> append_census. No if-constexpr gate on the path; kVehicleClassPreloadCc15Bound is true and only gates code after the site.",
       "contract": "__fastcall ECX = class index, plain RET; the vector is the global at 00F8A09C (words +4 first, +8 last, +0Ch end). All three image call sites are in 0095C640 (0095C754, 0095C75B, 0095C99D), which the host's VehicleClassPreloadHost::append_census stands in for.",
       "replacement": "The existing body was split into one template core over a census view. The raw image-storage entry is a thin wrapper (same behaviour); a new typed overload with the same address runs the core over std::vector<int32_t>. The ON arm calls it over Impl::preload_census, the host's copy of 00F8A09C, replacing the host's own dedupe loop and push_back.",
-      "note": "The census's only current reader (004D4720 alias building, game_hosts_scene_contents.cpp:1880) runs under kSceneClassPreloadAliasesCc15Bound, which is false; the append itself runs on every mission load."
+      "note": "The census's only current reader is 004D4720 alias building: body scene_build_class_preload_aliases_004d4720 at game_hosts_scene_contents.cpp:1889, called at :3891 (plus the census-size log at :3904). Both sit under kSceneClassPreloadAliasesCc15Bound, which is false. The append itself runs on every mission load."
     },
     {
       "native": "0095ba30",
@@ -33,7 +33,7 @@
       "function": "004d2b10",
       "host_site": "none",
       "status": "skipped",
-      "reason": "Sole image caller is 004D2B10 BSP_Game_DestroyWorldContainers (world teardown). Its reconstruction (seg10_cc13.cpp:214) is reached only through Seg10Host/host methods nothing implements (cc13_left55_seg56c.cpp, cc13_sweepA3.cpp); no host path runs a world teardown, and the scene-contents host's VehicleClassRegistry lives for the whole process with no clear site. No live site."
+      "reason": "Sole image caller of 0095BA30 is 004D2B10 BSP_Game_DestroyWorldContainers, and no host path runs 004D2B10. 004D2B10 has two image callers. (1) 004D2BB0 BSP_Game_DestroyWorld calls it at 004D2FF5; the host's partial 004D2BB0 stand-in, GameGlobalSubsystemsHost::teardown_004d2bb0 (src/game_hosts_global_subsystems.cpp:225, run on rebuild and from the destructor), releases only the global subsystems (+21D0 traffic, +21C4 weather and the rest) and never calls 004D2B10. (2) 008C8560 class_enumeration, a Lua binding (listed at src/mission_lua_host.cpp:549), calls it four times; its reconstruction lua_class_enumeration (cc13_left55_seg56c.cpp:477) reaches 004D2B10 only through the Left55Seg56cHost method game_destroy_world_containers_004d2b10, which nothing implements (cc13_sweepA3.cpp's same-named method is also unimplemented). The reconstructed 004D2B10 body (seg10_cc13.cpp:214) therefore has no host caller. The scene-contents host's VehicleClassRegistry has no clear site of its own. No live site."
     },
     {
       "native": "00958e90",
@@ -41,7 +41,7 @@
       "function": "00960230",
       "host_site": "none",
       "status": "skipped",
-      "reason": "Both real callers are inside 00960230 BSP_VehicleClass_ReadLuaFields, which builds native 0Ch class-entry nodes (operator new, refcounted +8 reference). The host's stand-in for 00960230 (GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230) is in src/game_hosts_lua.cpp, which another worker holds, and it keeps host records rather than native entry nodes, so the body has no host storage to build into."
+      "reason": "00958E90 is the 0Ch node builder of a std::list of refcounted references (+0 next, +4 prev, +8 the retained reference). It has four call sites. Two are inside 00960230 BSP_VehicleClass_ReadLuaFields (00961520, 009615B8). Two are in undefined code: 0095AEC0 (call @0095AED5) and 0095BDC0 (call @0095BDD4). Disk-byte disassembly shows each is a list insert helper: 00958E90(where, where->prev, value), 0095A5E0 _Incsize(1), then link (RET 0Ch and RET 4). Neither gives a live site. A raw byte scan of the PE on disk (every E8/E9 rel32 in .text, plus absolute dwords in all sections) finds no reference to 0095AEC0 or 0095BDC0. Ghidra xrefs are empty too. The same scan does find all four 00958E90 calls, so the negative is not vacuous. Nothing in src/ names either helper. For the 00960230 path, the host's stand-in (GameMissionLuaHost::mark_vehicle_class_device_bullets_00960230) is in src/game_hosts_lua.cpp, which another worker holds. It also keeps host records rather than native list nodes, so the body has no host storage to build into."
     }
   ],
   "host_objects": [],
@@ -52,5 +52,14 @@
     "wire_readiness": "0095c550 wired after a plain OFF build; total wired 9011 -> 9012"
   },
   "on_effect": "At each mission load's registration pass, 0095C640's census appends (landing-ship class, the class itself, the catapult-launched class) go through the reconstructed 0095C550 dedupe scan and append over Impl::preload_census instead of the host's loop. The census content and order are unchanged for a well-formed vector. Switch remains OFF.",
-  "limitations": "Reach is static (read, not run). The census feeds 004D4720 only while kSceneClassPreloadAliasesCc15Bound is true."
+  "limitations": "Reach is static (read, not run). The census feeds 004D4720 only while kSceneClassPreloadAliasesCc15Bound is true.",
+  "review_round_1": {
+    "review_run": 372,
+    "fixes": [
+      "0095ba30 reason: fixed. It now names the host's partial 004D2BB0 stand-in (game_hosts_global_subsystems.cpp:225, which omits the image's 004D2FF5 call to 004D2B10) and the class_enumeration Lua binding (mission_lua_host.cpp:549), which reaches 004D2B10 only through an unimplemented host method.",
+      "00958e90 reason: fixed. It now names the undefined-code callers 0095AEC0 @0095AED5 and 0095BDC0 @0095BDD4. Both are std::list insert helpers with no rel32 or absolute reference anywhere in the image, so the skip stands.",
+      "0095c550 note: fixed. The 004D4720 reference now points at the body (:1889) and the gated call site (:3891)."
+    ],
+    "code_changed": false
+  }
 }
