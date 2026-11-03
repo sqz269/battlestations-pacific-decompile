@@ -35,7 +35,19 @@ struct ArchiveKey {
     std::uintptr_t value;
 };
 
-struct Seg47Host {
+// The read-only device traversal used by 007C1F60. Native callers retain the
+// +48h head / +44h next links; a host may traverse its actual device records
+// without fabricating native object layouts or implementing unrelated calls.
+struct DroppableRoundCountHost {
+    virtual ~DroppableRoundCountHost() = default;
+    virtual Raw first_round_device(Raw plane) { return plane.deref(0x48); }
+    virtual Raw next_round_device(Raw device) { return device.deref(0x44); }
+    virtual bool entity_vcall_is_kind_5c(Raw entity, std::int32_t kind) = 0;
+    virtual bool rack_vcall_holds_kind_210(Raw rack, std::int32_t kind, std::int32_t flag) = 0;
+    virtual std::int32_t bomb_platform_round_count_006e3500(Raw rack) = 0;
+};
+
+struct Seg47Host : DroppableRoundCountHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -675,7 +687,7 @@ float* plane_control_state_init_identity_007bdf50(Seg47Host& host, Raw state, fl
 void plane_reload_bomb_platforms_007c1d80(Seg47Host& host, Raw plane);
 std::int32_t unit_count_remaining_ordnance_rounds_007c1db0(Seg47Host& host, Raw plane);
 std::int32_t plane_rocket_round_count_007c1de0(Seg47Host& host, Raw plane);
-std::int32_t unit_count_droppable_rounds_007c1f60(Seg47Host& host, Raw plane);
+std::int32_t unit_count_droppable_rounds_007c1f60(DroppableRoundCountHost& host, Raw plane);
 void* plane_slot_d4_forward_to_df4_007c2050(Seg47Host& host, Raw plane, Raw out);
 void* plane_state_record_get_or_create_007c2810(Seg47Host& host, Raw holder);
 float plane_get_heading_angle_007c2aa0(Seg47Host& host, Raw plane);
