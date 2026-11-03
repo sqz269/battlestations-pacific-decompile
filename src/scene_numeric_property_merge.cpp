@@ -20,6 +20,7 @@
 #include "bsp/wire_goal4_chain307_switches.hpp"
 #include "bsp/wire_goal4_chain311_switches.hpp"
 #include "bsp/wire_goal4_chain321_switches.hpp"
+#include "bsp/wire_goal4_chain330_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -161,6 +162,27 @@ public:
                 }
                 break;
             }
+            case 11: {
+                if constexpr (kWireGoal4Chain330Bound) {
+                    // 008EF460 records 12*count bytes at +24h. The native
+                    // 008F0700 assignment / 008F4F60 clone owns the resulting
+                    // payload. Publish its bytes before either bag retires.
+                    const std::array<float, 3>* triples;
+                    std::uint32_t bytes;
+                    static_assert(sizeof(*triples) == 12);
+                    std::memcpy(&triples, record + 0x20, sizeof(triples));
+                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                    if (triples == nullptr || bytes == 0 || bytes % 12 != 0) {
+                        throw std::logic_error("unexpected merged type-11 payload");
+                    }
+                    value.vector3_array.resize(bytes / 12);
+                    std::memcpy(value.vector3_array.data(), triples, bytes);
+                    value.has_vector3_array = true;
+                } else {
+                    throw std::logic_error("unexpected merged scene property tag");
+                }
+                break;
+            }
             case 10: {
                 if constexpr (kWireGoal4Chain311Bound) {
                     // 008EF3E0 stores the payload at +20h and 4*count at
@@ -222,6 +244,14 @@ private:
     static bool supported(const SceneProperty& value) {
         if (std::any_of(value.key.begin(), value.key.end(),
                 [](unsigned char c) { return c == 0 || c >= 0x80; })) return false;
+        if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
+            if (same_key(value.type_letter, "V3A")) {
+                return value.has_vector3_array && !value.vector3_array.empty()
+                    && value.vector3_array.size() <= 0x15555555u;
+            }
+        } else {
+            // The prior projection leaves V3A on the caller's host path.
+        }
         if constexpr (kWireGoal4Chain321Bound && kWireGoal4Chain307Bound) {
             if (same_key(value.type_letter, "BIN")) {
                 return value.has_byte_array && !value.byte_array.empty()
@@ -279,6 +309,14 @@ private:
         Bag& operator=(const Bag&) = delete;
         void* data() { return storage_.data(); }
         void insert(const SceneProperty& value) {
+            if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
+                if (same_key(value.type_letter, "V3A")) {
+                    insert_vector3_array(value);
+                    return;
+                }
+            } else {
+                // The prior projection has no native V3A insertion.
+            }
             if constexpr (kWireGoal4Chain321Bound && kWireGoal4Chain307Bound) {
                 if (same_key(value.type_letter, "BIN")) {
                     insert_byte_array(value);
@@ -362,6 +400,21 @@ private:
             return record;
         }
     private:
+        void insert_vector3_array(const SceneProperty& value) {
+            // 008F65DE..008F669A builds an operator-new buffer of 12*count
+            // and transfers it to 008F3610 with flags 0. The type-11 root
+            // retains that sole-owned allocation, later freed by 008F03F0;
+            // never transfer std::vector's borrowed payload to this owner.
+            static_assert(sizeof(std::array<float, 3>) == 12);
+            const std::size_t bytes = value.vector3_array.size() * 12;
+            void* const payload = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, bytes});
+            if (payload == nullptr) throw std::bad_alloc();
+            std::memcpy(payload, value.vector3_array.data(), bytes);
+            add_native_scene_property_type11_array_008f3610(data(), value.key.c_str(), payload,
+                static_cast<std::uint32_t>(value.vector3_array.size()), 0u, context_);
+        }
+
         void insert_byte_array(const SceneProperty& value) {
             // bsp.py show 008F5A00 --asm, 008F6375/008F63CE..008F63DF:
             // operator-new(count) bytes pass to 008F3490 with flags 0. Its

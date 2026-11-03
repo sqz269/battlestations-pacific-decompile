@@ -16,6 +16,7 @@
 #include "bsp/wire_goal4_chain307_switches.hpp"
 #include "bsp/wire_goal4_chain311_switches.hpp"
 #include "bsp/wire_goal4_chain321_switches.hpp"
+#include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
@@ -688,6 +689,65 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.values.push_back(cur.read_token());
             }
             }
+        }
+        if constexpr (kWireGoal4Chain330Bound) {
+            // bsp.py disasm-raw 008F65CF: count at 65DE, allocate 12*count
+            // at 65F6, expect '(' / ')' at 6617 / 6653, three 008D9B40
+            // reads each FSTP binary32 at 6628/6638/6648. 669A hands the
+            // owned buffer to 008F3610 with flags 0. Admit only complete,
+            // positive-count ordinary decimal forms; preserve raw tokens for
+            // declaration-dependent, empty, malformed or failed reads.
+            if (equal_insensitive(prop.type_letter, "V3A") && cur.at(";")
+                && prop.values.size() >= 6) {
+                std::int32_t count = 0;
+                const char* const locale = std::setlocale(LC_NUMERIC, nullptr);
+                if (locale != nullptr && std::string(locale) == "C"
+                    && scene_scan_int(prop.values.front(), count) && count >= 1
+                    && count <= 0x15555555
+                    && static_cast<std::size_t>(count) == (prop.values.size() - 1) / 5
+                    && (prop.values.size() - 1) % 5 == 0) {
+                    std::vector<std::array<float, 3>> elements(static_cast<std::size_t>(count));
+                    bool all = true;
+                    for (std::size_t i = 0; i < elements.size() && all; ++i) {
+                        const std::size_t start = 1 + i * 5;
+                        all = prop.values[start] == "(" && prop.values[start + 4] == ")";
+                        for (std::size_t lane = 0; lane < 3 && all; ++lane) {
+                            const std::string& text = prop.values[start + lane + 1];
+                            std::size_t first = 0;
+                            while (first < text.size()
+                                && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
+                            if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
+                            const bool digit = first < text.size()
+                                && std::isdigit(static_cast<unsigned char>(text[first]));
+                            const bool fraction = first + 1 < text.size() && text[first] == '.'
+                                && std::isdigit(static_cast<unsigned char>(text[first + 1]));
+                            const bool hex = first + 1 < text.size() && text[first] == '0'
+                                && (text[first + 1] == 'x' || text[first + 1] == 'X');
+                            all = text.size() < 0x400 && text.find('\0') == std::string::npos
+                                && (digit || fraction) && !hex;
+                            if (!all) break;
+                            // Same bounded %f provider as V3 above. Historical
+                            // VS2005 CRT parity is not established; no float
+                            // arithmetic or extended-precision chain is added.
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+                            all = std::sscanf(text.c_str(), "%f", &elements[i][lane]) == 1
+                                && std::isfinite(elements[i][lane]);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+                        }
+                    }
+                    if (all) {
+                        prop.vector3_array = std::move(elements);
+                        prop.has_vector3_array = true;
+                    }
+                }
+            }
+        } else {
+            // The prior parser retains only V3A's raw tokens.
         }
         // 008F5D8A/5DA1 recognize true/false, then store type-3 byte +0Ch.
         // Keep the raw scan and admit only one literal with a closed statement;

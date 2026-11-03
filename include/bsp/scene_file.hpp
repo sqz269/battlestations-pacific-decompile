@@ -123,6 +123,10 @@ struct SceneProperty {
     // Empty, mismatched and context-dependent statements keep only raw tokens.
     std::vector<std::uint8_t> byte_array;
     bool has_byte_array{false};
+    // Chain 330: closed V3A n (x y z) ... statements own n binary32 triples
+    // (native type 11, +20h payload / +24h byte size). Other forms stay raw.
+    std::vector<std::array<float, 3>> vector3_array;
+    bool has_vector3_array{false};
     // Chain 311: a closed reference letter (R RLand RFort RShip RPlane RPlnShp
     // RLPlnShp RPath) followed by exactly one quoted token below 400h bytes owns
     // that raw token text in values.front() (native type 5, +1Ch duplicate; the
