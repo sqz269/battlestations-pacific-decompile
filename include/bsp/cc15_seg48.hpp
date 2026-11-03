@@ -234,6 +234,30 @@ void cc15_seg48_plane_squadron_set_home_air_base_007f1c00(void* squadron, void* 
                                                          Cc15Seg48Host& host);
 void cc15_seg48_plane_squadron_return_plane_to_stock_007f1ca0(void* squadron, void* base, void* plane,
                                                              Cc15Seg48Host& host);
+// Typed view of 007F1CA0 over the caller's storage. `ops` answers and performs each step, in
+// the image's order: leader_3b8(plane_is_leader()) (+3D0h == plane, 007F1CA9-007F1CB4);
+// name_10() (vtable +10h, 007F1CBE); link_home_base() (+3F0h link to the base,
+// 007F1CC0-007F1CEA); block_006bcd20() (007F1CF3); add_stock_006ca770(block) (plane+538h, 1;
+// 007F1D09); with member_count_3cc() == 1 (007F1D0E): deactivate_00922f80() (007F1D1A),
+// clear_game_193c() (007F1D25), notify_00696350() (EDX = 1, +404h; 007F1D37) and, unless
+// session_mode_1fe4() is 2 (007F1D42), return_slot_006c5950(block) (007F1D4E); then
+// kill_00926d90(5) (007F1D57) and returned_3ec() (+3ECh = 1, 007F1D5D). The raw entry wraps it.
+template <class Ops>
+void cc15_seg48_plane_squadron_return_plane_to_stock_007f1ca0(Ops& ops) {
+    ops.leader_3b8(ops.plane_is_leader());
+    ops.name_10();
+    ops.link_home_base();
+    auto block = ops.block_006bcd20();
+    ops.add_stock_006ca770(block);
+    if (ops.member_count_3cc() == 1) {
+        ops.deactivate_00922f80();
+        ops.clear_game_193c();
+        ops.notify_00696350();
+        if (ops.session_mode_1fe4() != 2) ops.return_slot_006c5950(block);
+    }
+    ops.kill_00926d90(std::int32_t{5});
+    ops.returned_3ec();
+}
 void cc15_seg48_plane_squadron_select_avoid_zone_layers_007f1d90(void* squadron, float slope, std::int32_t flag,
                                                                 Cc15Seg48Host& host);
 void cc15_seg48_plane_squadron_begin_from_creation_record_007f1fe0(void* squadron, Cc15Seg48Host& host);

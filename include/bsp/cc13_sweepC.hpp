@@ -377,6 +377,23 @@ void air_ops_block_set_orders_006bf650(SweepCHost& host, void* block, std::uint8
                                        std::uint8_t second, std::int32_t third);
 // 006C77E0, __fastcall(ECX = block): drops the +A8h records whose plane is gone or inactive.
 void air_ops_block_compact_records_006c77e0(SweepCHost& host, void* block);
+// Typed view of 006C77E0 over the caller's record storage. Between lock() and unlock() (the
+// block+8h tracked lock), the records are walked by index (006C7818 / 006C7839); a record that
+// records.gone(index) answers for (a null plane, 006C7875, or one failing 0043F080's test,
+// 006C788D-006C78B6) is removed by records.erase(index), the tail shifted down one record with
+// the order kept (006C78C3-006C7920), and the index stays on the record moved into its place.
+// The raw entry wraps it.
+template <class Records, class Lock, class Unlock>
+void air_ops_block_compact_records_006c77e0(Records& records, Lock&& lock, Unlock&& unlock) {
+    lock();
+    for (std::uint32_t index = 0; index < records.size(); ++index) {
+        if (records.gone(index)) {
+            records.erase(index);
+            --index;  // unsigned wrap from 0, undone by the ++ (the image's DEC / INC pair)
+        }
+    }
+    unlock();
+}
 // 006CA730, __thiscall(ECX = block, squadron), RET 4: push_back on the list at block+B4h.
 void air_ops_block_push_b8_006ca730(SweepCHost& host, void* block, void* squadron);
 // 006CC5C0, __thiscall(ECX = block, slot), RET 4: cancel a queued (state 2) slot.

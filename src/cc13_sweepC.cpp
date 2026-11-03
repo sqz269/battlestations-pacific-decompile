@@ -107,45 +107,49 @@ void air_ops_block_set_orders_006bf650(SweepCHost& host, void* block, std::uint8
 // every record whose plane (word 0) is null or whose plane has +5Ch clear or +5Dh, +60h or +5Eh
 // set. The debug-iterator checks call 00BF6713 at the same points as the image (unreachable for
 // a consistent vector). Called once per 006CDC70 update (006CDC89).
+namespace {
+// The block's 14h-record vector at +A8h (begin) / +ACh (end) for the typed 006C77E0 walk, with
+// the image's debug-iterator checks at their sites.
+struct BlockQueueRecords {
+    SweepCHost& host;
+    void* block;
+    std::uint8_t* begin() const { return static_cast<std::uint8_t*>(ptr(block, 0xA8)); }
+    std::uint8_t* end() const { return static_cast<std::uint8_t*>(ptr(block, 0xAC)); }
+    // 006C7818 / 006C7839: a null begin ends the walk.
+    std::uint32_t size() const {
+        return begin() == nullptr ? 0u : static_cast<std::uint32_t>((end() - begin()) / 0x14);
+    }
+    bool gone(std::uint32_t index) const {
+        const std::ptrdiff_t offset = static_cast<std::ptrdiff_t>(index) * 0x14;
+        if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7866
+        void* const plane = *reinterpret_cast<void**>(begin() + offset);
+        if (plane == nullptr) return true;                                    // 006C7875
+        if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7898
+        void* const p = *reinterpret_cast<void**>(begin() + offset);
+        return at<std::uint8_t>(p, 0x5C) == 0 || at<std::uint8_t>(p, 0x5D) != 0 ||
+               at<std::uint8_t>(p, 0x60) != 0 || at<std::uint8_t>(p, 0x5E) != 0;
+    }
+    void erase(std::uint32_t index) {
+        const std::ptrdiff_t offset = static_cast<std::ptrdiff_t>(index) * 0x14;
+        if (end() < begin()) host.invalid_iterator_00bf6713();              // 006C78CC
+        std::uint8_t* pos = begin() + offset;
+        if (end() < pos || pos < begin()) host.invalid_iterator_00bf6713();  // 006C78E3
+        std::uint8_t* const last = end();
+        std::uint8_t* src = pos;
+        while ((src += 0x14) != last) {
+            std::memcpy(pos, src, 0x14);
+            pos += 0x14;
+        }
+        at<std::uint8_t*>(block, 0xAC) = end() - 0x14;
+    }
+};
+}  // namespace
+
 void air_ops_block_compact_records_006c77e0(SweepCHost& host, void* block) {
     void* const section = ptr(block, 0x08);
-    lock_enter(host, section);
-    auto begin = [&] { return static_cast<std::uint8_t*>(ptr(block, 0xA8)); };
-    auto end = [&] { return static_cast<std::uint8_t*>(ptr(block, 0xAC)); };
-    auto size = [&] { return static_cast<std::uint32_t>((end() - begin()) / 0x14); };
-    std::uint32_t index = 0;
-    std::ptrdiff_t offset = 0;
-    for (;;) {
-        if (begin() == nullptr || index >= size()) break;                    // 006C7818 / 006C7839
-        if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7866
-        bool erase = false;
-        void* const plane = *reinterpret_cast<void**>(begin() + offset);
-        if (plane == nullptr) {                                              // 006C7875
-            erase = true;
-        } else {
-            if (begin() == nullptr || index >= size()) host.invalid_iterator_00bf6713();  // 006C7898
-            void* const p = *reinterpret_cast<void**>(begin() + offset);
-            erase = at<std::uint8_t>(p, 0x5C) == 0 || at<std::uint8_t>(p, 0x5D) != 0 ||
-                    at<std::uint8_t>(p, 0x60) != 0 || at<std::uint8_t>(p, 0x5E) != 0;
-        }
-        if (erase) {
-            if (end() < begin()) host.invalid_iterator_00bf6713();          // 006C78CC
-            std::uint8_t* pos = begin() + offset;
-            if (end() < pos || pos < begin()) host.invalid_iterator_00bf6713();  // 006C78E3
-            std::uint8_t* const last = end();
-            std::uint8_t* src = pos;
-            while ((src += 0x14) != last) {
-                std::memcpy(pos, src, 0x14);
-                pos += 0x14;
-            }
-            at<std::uint8_t*>(block, 0xAC) = end() - 0x14;
-            --index;
-            offset -= 0x14;
-        }
-        ++index;
-        offset += 0x14;
-    }
-    lock_leave(host, section);
+    BlockQueueRecords records{host, block};
+    air_ops_block_compact_records_006c77e0(records, [&host, section] { lock_enter(host, section); },
+                                           [&host, section] { lock_leave(host, section); });
 }
 
 // 006CA730-006CA766, __thiscall(ECX = block, [esp+4] = squadron), RET 4. push_back of the

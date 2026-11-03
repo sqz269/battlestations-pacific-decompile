@@ -20,9 +20,12 @@
 #include "bsp/wire_goal2_chain67_switches.hpp"
 #include "bsp/wire_goal2_chain73_switches.hpp"
 #include "bsp/wire_goal2_chain76_switches.hpp"
+#include "bsp/wire_goal2_chain84_switches.hpp"
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
+#include "bsp/cc13_sweepC.hpp"         // chain 84: 006C77E0 typed overload
+#include "bsp/cc15_seg48.hpp"          // chain 84: 007F1CA0 typed overload
 #include "bsp/cc13_seg47b.hpp"         // chain 73: 007C1570, 007C2090 typed overloads
 #include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
@@ -4499,8 +4502,18 @@ struct GameUnitsHost::Impl {
                 }
             }
         }
+        if constexpr (bsp::kWireGoal2Chain84Bound) {
+            // 007BB150 (0099B055): the typed body stores flag ? +9C3h : 0 at +DF0h, fed
+            // the 0099B003-0099B04D flag (own_9c3 = true leaves the fused helper's
+            // flag whole) and this unit's 9C3h; OFF keeps the fused helper.
+            const std::uint8_t flag_0099b04d =
+                rt::pilot_step_flag_df0_0099b055(mode, has_leader, leader_9c1, true);
+            s.pilot_step_flag_df0 = bsp::cc13_seg47::plane_publish_slot_byte_df0_007bb150(
+                flag_0099b04d, [own_9c3] { return static_cast<std::uint8_t>(own_9c3 ? 1 : 0); });
+        } else {
         s.pilot_step_flag_df0 = rt::pilot_step_flag_df0_0099b055(mode, has_leader,
                                                                   leader_9c1, own_9c3);
+        }
         const bool before = s.actuator_block_dec.channel_c.target;
         const bsp::OrdnanceKindSet set{s.ordnance_mask};
         if (rt::plane_bay_target_007c6a8d(s.actuator_block_dec, s.generic_suppress_520,
@@ -20112,6 +20125,90 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     } else if (deck == nullptr) {
         ++stock_return_no_deck;
     } else {
+        if constexpr (bsp::kWireGoal2Chain84Bound) {
+        // 007F1CA0 (007CC8B0 -> 007F1CA0): the typed body orders the holder's stock add, the
+        // +3CCh == 1 gate over the squadron's live members and, outside session mode 2
+        // (game+1FE4h), the slot return. The +3B8h/+3ECh bytes, the name call, the +404h link,
+        // 00922F80, game+193Ch and 00696350 are not carried (empty), and the Kill with its
+        // flush runs right after, below, as the body's last carried step. OFF keeps the inline
+        // stock add, live count and slot return.
+        struct HostReturnPlaneToStock {
+            Impl& h;
+            GameUnitSlot& p;
+            bsp::PlaneSquadronHostRecord& sq;
+            bsp::AirOpsDeck& deck;
+            std::size_t di;
+            bsp::AirOpsDeckRegistry& decks;
+            int& stock_after;
+            std::size_t& slots_returned;
+            bool plane_is_leader() const {
+                return !sq.member_units.empty() && sq.member_units[0] == p.process_index;
+            }
+            void leader_3b8(bool) {}
+            void name_10() {}
+            void link_home_base() {}
+            // The holder's block: the deck registry entry indexed by +BF4h.
+            bsp::AirOpsDeck* block_006bcd20() { return &deck; }
+            void add_stock_006ca770(bsp::AirOpsDeck* block) {
+                bsp::AirOpsStockEntry created{};
+                const bsp::AirOpsStockAddResult added = bsp::air_base_stock_add_006ca770(
+                    block->stock.data(), static_cast<int>(block->stock.size()),
+                    static_cast<int>(block->stock.size()) + 1,
+                    static_cast<std::uint32_t>(p.row.type_id), 1, &created);   // 007F1D09
+                if (added.created_entry) block->stock.push_back(created);
+                stock_after = added.entry_count;
+                ++h.stock_return_adds;
+            }
+            // +3CCh: the squadron's members still alive, this plane included.
+            std::int32_t member_count_3cc() const {
+                std::int32_t live = 0;
+                for (const std::size_t m : sq.member_units) {
+                    if (m == bsp::kPlaneSquadronNoUnit || m >= h.slots.size() || !h.slots[m]) continue;
+                    if (h.slots[m]->plane_death_removed) continue;
+                    if (h.gunnery != nullptr && h.gunnery->unit_dead(m)) continue;
+                    ++live;
+                }
+                return live;
+            }
+            void deactivate_00922f80() {}
+            void clear_game_193c() {}
+            void notify_00696350() {}
+            std::int32_t session_mode_1fe4() const {
+                return bsp::session_context().session_word_1fe4;
+            }
+            void return_slot_006c5950(bsp::AirOpsDeck* block) {
+                if (sq.squadron_unit == bsp::kPlaneSquadronNoUnit) return;
+                if constexpr (Impl::kStockReturnQueueEraseBound) {
+                    // 006C59A4-006C59DC, before the slot walk (as the OFF arm).
+                    if (di < h.landing_decks.size()) {
+                        auto& q = h.landing_decks[di].queue;
+                        const std::size_t sqi = static_cast<std::size_t>(
+                            &sq - bsp::plane_squadron_registry().records().data());
+                        std::size_t k = 0;
+                        while (k < q.size() && q[k].squadron != sqi) ++k;
+                        if (k < q.size()) {
+                            q[k] = q.back();
+                            q.pop_back();
+                            ++h.stock_return_queue_erases;
+                            h.log.notef("  stock return: squadron %s's landing-queue record erased "
+                                "at %s, %zu left (006C59A4 -> 006BF7F0, packet "
+                                "cc9_stock_return_queue_erase)", sq.name.c_str(),
+                                decks.name_at(di).c_str(), q.size());
+                        } else {
+                            ++h.stock_return_queue_misses;
+                        }
+                    }
+                }
+                slots_returned = bsp::air_ops_return_squadron_slot_006c5950(
+                    *block, static_cast<std::uint32_t>(sq.squadron_unit + 1u));   // 007F1D4E
+                h.stock_return_slot_returns += slots_returned;
+            }
+            void kill_00926d90(std::int32_t) {}
+            void returned_3ec() {}
+        };
+        HostReturnPlaneToStock ops{*this, p, *sq, *deck, di, decks, stock_after, slots_returned};
+        bsp::cc15_seg48_plane_squadron_return_plane_to_stock_007f1ca0(ops);
+        } else {
         bsp::AirOpsStockEntry created{};
         const bsp::AirOpsStockAddResult added = bsp::air_base_stock_add_006ca770(
             deck->stock.data(), static_cast<int>(deck->stock.size()),
@@ -20155,6 +20252,7 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
             slots_returned = bsp::air_ops_return_squadron_slot_006c5950(
                 *deck, static_cast<std::uint32_t>(sq->squadron_unit + 1u));   // 007F1D4E
             stock_return_slot_returns += slots_returned;
+        }
         }
     }
     // 007F1D57 Kill(plane, 5), and the flush taken at once.
@@ -22648,6 +22746,42 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
             // virtual, 006C64B0 and 006C6540 (none of which reads +A8h); +5Dh is the
             // host's death predicate (plane_death_c3a / removed / gunnery dead), as for
             // the leg manager above.
+            if constexpr (bsp::kWireGoal2Chain84Bound) {
+            // 006C77E0: the typed body's index walk and order-keeping erase over each deck's
+            // assignment records, its 0043F080 test answered by the host's death predicate;
+            // the host steps on one thread, so the block+8h lock pair is empty. OFF keeps
+            // the inline walk below.
+            struct LandingDeckAssignmentRecords {
+                GameUnitsHost& units;
+                Impl& h;
+                Impl::LandingDeck& d;
+                std::uint32_t size() const { return static_cast<std::uint32_t>(d.assignments.size()); }
+                const GameUnitSlot* slot(std::uint32_t i) const {
+                    const std::size_t pi = d.assignments[i].plane;
+                    return pi < h.slots.size() ? h.slots[pi].get() : nullptr;
+                }
+                bool gone(std::uint32_t i) const {
+                    const std::size_t pi = d.assignments[i].plane;
+                    const GameUnitSlot* s = slot(i);
+                    return s == nullptr || !units.unit_alive_and_visible(pi) ||
+                        s->plane_death_c3a || s->plane_death_removed ||
+                        (h.gunnery != nullptr && h.gunnery->unit_dead(pi));
+                }
+                void erase(std::uint32_t i) {
+                    const GameUnitSlot* s = slot(i);
+                    h.log.notef("  landing sequencer: record of %s erased (mode %d path=%.1f) at "
+                        "%.2f s (006C77E0, packet cc9_p12_queue_compact)",
+                        s != nullptr ? s->row.name.c_str() : "?", d.assignments[i].mode_10,
+                        static_cast<double>(d.assignments[i].path_4),
+                        static_cast<double>(h.summary.simulated_seconds));
+                    d.assignments.erase(d.assignments.begin() + static_cast<std::ptrdiff_t>(i));
+                }
+            };
+            for (Impl::LandingDeck& d : h.landing_decks) {
+                LandingDeckAssignmentRecords records{*this, h, d};
+                bsp::cc13_sweepC::air_ops_block_compact_records_006c77e0(records, [] {}, [] {});
+            }
+            } else {
             for (Impl::LandingDeck& d : h.landing_decks) {
                 for (std::size_t i = 0; i < d.assignments.size();) {
                     const std::size_t pi = d.assignments[i].plane;
@@ -22666,6 +22800,7 @@ void GameUnitsHost::run_landing_queue_006cd240(float dt) {
                         static_cast<double>(h.summary.simulated_seconds));
                     d.assignments.erase(d.assignments.begin() + static_cast<std::ptrdiff_t>(i));
                 }
+            }
             }
         }
         for (Impl::LandingDeck& d : h.landing_decks) {

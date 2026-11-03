@@ -588,6 +588,15 @@ bool unit_can_release_ordnance_007bb110(Seg47Host& host, Raw unit);
 
 // --- plane helpers 007BB150-007BBC50 ----------------------------------------------------
 void plane_publish_slot_byte_df0_007bb150(Seg47Host& host, Raw plane, std::uint8_t flag);
+// Typed view of 007BB150 over the caller's storage: the byte it stores at +DF0h,
+// flag ? the plane's local-slot byte (+[00F876B8]*8+9C3h, read only when the flag
+// is set, 007BB156) : 0. The raw entry wraps it.
+template <class SlotByte9c3>
+std::uint8_t plane_publish_slot_byte_df0_007bb150(std::uint8_t flag, SlotByte9c3&& slot_byte_9c3) {
+    std::uint8_t value = flag;
+    if (flag != 0) value = slot_byte_9c3();
+    return value;
+}
 void plane_set_pilot_command_last_time_007bb170(Seg47Host& host, Raw plane, std::int32_t slot, float time);
 void plane_refresh_ground_contact_007bb2c0(Seg47Host& host, Raw plane);
 void plane_update_cockpit_transform_007bb310(Seg47Host& host, Raw plane);

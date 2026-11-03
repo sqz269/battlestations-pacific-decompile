@@ -1501,9 +1501,9 @@ std::uint16_t local_slot(Seg47Host& host) {
 // 007BB150, __thiscall(ECX = plane; char flag), RET 4: +DF0h = flag ?
 // [plane + (uint16)[00F876B8]*8 + 9C3h] : 0.
 void plane_publish_slot_byte_df0_007bb150(Seg47Host& host, Raw plane, std::uint8_t flag) {
-    std::uint8_t value = flag;
-    if (flag != 0) value = plane.at<std::uint8_t>(static_cast<std::size_t>(local_slot(host)) * 8 + 0x9C3);
-    plane.at<std::uint8_t>(0xDF0) = value;
+    plane.at<std::uint8_t>(0xDF0) = plane_publish_slot_byte_df0_007bb150(flag, [&host, &plane] {
+        return plane.at<std::uint8_t>(static_cast<std::size_t>(local_slot(host)) * 8 + 0x9C3);
+    });
 }
 
 // 007BB170, __thiscall(ECX = plane; int slot, float time), RET 8, SEH frame.
