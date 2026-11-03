@@ -29,6 +29,8 @@
 #include "bsp/wire_goal4_chain303_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain320_switches.hpp"
+#include "bsp/wire_goal4_chain324_switches.hpp"
+#include "bsp/plane_rack_census_admission.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/wire_goal4_chain323_switches.hpp"
 #include "bsp/view_seg14_cc13.hpp"
@@ -536,6 +538,8 @@ struct GameUnitWorldLists {
 // type), single or multi, and its index among the single racks.
 struct PlaneOrdnanceRack {
     int class_id{0};
+    int platform_key{-1};     // identity of the default-device metadata
+    int device_class{-1};
     bool multi{false};
     int single_index{-1};
     int authored_ammo{-1};   // Equipments[DefaultEquipment][key].Ammo, -1 absent
@@ -2083,6 +2087,8 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // descriptor 007C0D90 asks vtable[8] of: 2Ah bomb, 2Bh torpedo, 2Ch depth
     // charge, 33h rocket) and its RepeatTime (desc+E0h), in census order.
     std::vector<int> rack_bullet_class_per_rack;
+    // Chain 324: identities captured by the equipment-resolved ammo census.
+    std::vector<SingleRackCensusIdentity> rack_identity_per_rack;
     // Packet cc9_lua53_kamikaze_impact: the rack's Bullet[1].Bullet id itself (the
     // vector above holds the descriptor's kind), census order. -1 when absent.
     std::vector<int> rack_bullet_id_per_rack;
@@ -5386,6 +5392,10 @@ struct GameUnitsHost::Impl {
             r.class_id = read_device_bullet_class_id(dev);
             std::snprintf(key, sizeof(key), "p%d_key", p);
             const int platform_key = lua.read_vehicle_class_integer(type_id, "BSPGun", key, -1);
+            if constexpr (kWireGoal4Chain324Bound) {
+                r.platform_key = platform_key;
+                r.device_class = dev;
+            }
             r.authored_ammo = rack_equipment_ammo(s, type_id, platform_key);
             r.generator_ammo = read_equipment_ammo(type_id, platform_key, 1);
             if (type == "BombPlatform") {
@@ -5508,6 +5518,91 @@ struct GameUnitsHost::Impl {
         return changed;
     }
 
+    // Chain 324: 007C1F60's read-only census over the owned rack records. The
+    // counts are the live combined attached/reserve counts: the release seed,
+    // per-rack drops and reload slice maintain them. Do not split them merely
+    // to call 006E3500, whose separate attached-child input is not available.
+    int droppable_round_count_or_stand_in(GameUnitSlot* unit) {
+        if (unit == nullptr) return 0;
+        const auto& racks = ordnance_racks(*unit);
+        bool complete = unit->rack_census_done && !racks.empty()
+            && racks.size() == unit->rack_ammo_per_rack.size()
+            && racks.size() == unit->rack_identity_per_rack.size()
+            && racks.size() == unit->rack_bullet_class_per_rack.size()
+            && unit->rack_multi_count == 0;
+        for (const auto& rack : racks) {
+            // Multi-rack attached lists are absent. Torpedo/rocket direct
+            // release paths also have separate counters, so keep their old
+            // query until every producer updates this per-rack owner.
+            if (!complete) break;
+            if (rack.multi || rack.single_index < 0
+                || static_cast<std::size_t>(rack.single_index) >= unit->rack_ammo_per_rack.size()) {
+                complete = false;
+                break;
+            }
+            const auto index = static_cast<std::size_t>(rack.single_index);
+            const auto& resolved = unit->rack_identity_per_rack[index];
+            // The ammo census resolves Equipments[e][key].Platform; the older
+            // ordnance metadata above uses BSPGun's default device. Validate
+            // both identities and the resolved kind, not just the vector size.
+            complete = resolved.projectile_kind == unit->rack_bullet_class_per_rack[index]
+                && admits_single_rack_round_census(
+                    {rack.platform_key, rack.device_class, rack.class_id}, resolved,
+                    unit->rack_ammo_per_rack[index]);
+        }
+        if (complete) {
+            struct Binding final : bsp::cc13_seg47::DroppableRoundCountHost {
+                using Raw = bsp::cc13_seg47::Raw;
+                Impl& owner;
+                GameUnitSlot& unit;
+                const std::vector<PlaneOrdnanceRack>& racks;
+                Binding(Impl& o, GameUnitSlot& u, const std::vector<PlaneOrdnanceRack>& r)
+                    : owner(o), unit(u), racks(r) {}
+                Raw handle(const PlaneOrdnanceRack* rack) {
+                    return bsp::cc13_seg47::raw(const_cast<PlaneOrdnanceRack*>(rack));
+                }
+                Raw first_round_device(Raw) override { return handle(racks.data()); }
+                Raw next_round_device(Raw device) override {
+                    const auto* rack = reinterpret_cast<const PlaneOrdnanceRack*>(device.p);
+                    const std::size_t next = static_cast<std::size_t>(rack - racks.data()) + 1;
+                    return handle(next < racks.size() ? &racks[next] : nullptr);
+                }
+                bool entity_vcall_is_kind_5c(Raw, std::int32_t kind) override {
+                    return kind == 0x25; // every record came from a BombPlatform
+                }
+                bool rack_vcall_holds_kind_210(Raw device, std::int32_t kind,
+                                               std::int32_t flag) override {
+                    const auto& rack = *reinterpret_cast<const PlaneOrdnanceRack*>(device.p);
+                    // 2Ah/2Ch/31h all answer 2Ah. Reuse the host's live held-round
+                    // query; do not synthesize a native child or attached count.
+                    return kind == 0x2A && flag == 0 && owner.plane_rack_holds_round(unit, rack);
+                }
+                std::int32_t bomb_platform_round_count_006e3500(Raw device) override {
+                    const auto& rack = *reinterpret_cast<const PlaneOrdnanceRack*>(device.p);
+                    return unit.rack_ammo_per_rack[static_cast<std::size_t>(rack.single_index)];
+                }
+            } binding(*this, *unit, racks);
+            // 007C1F61..007C1F9C: filter kind 25h, then holds(2Ah,0), then sum.
+            // BSPGun order replaces the unread native +44h child order only for
+            // this read-only integer sum; the original body remains the owner.
+            return bsp::cc13_seg47::unit_count_droppable_rounds_007c1f60(
+                binding, bsp::cc13_seg47::raw(unit));
+        }
+
+        // Existing substitution for racks whose complete live state is absent.
+        const bsp::OrdnanceKindSet set{unit->ordnance_mask};
+        if (bsp::ordnance_has_torpedo_2bh(set)) {
+            const int n = 1 - unit->torpedo_releases;
+            return n < 0 ? 0 : n;
+        }
+        if (kReleaseIssueStageValsBound && bsp::ordnance_has_general_bomb_2ah(set)) {
+            return unit->rack_ammo >= 0 ? unit->rack_ammo
+                : (kDiveBombCarriedRoundsBound && unit->rack_rounds_authored > 0)
+                    ? unit->rack_rounds_authored : unit->rack_single_count;
+        }
+        return 0;
+    }
+
     // Packet cc13-rackround (A, moved): PlaneBinding::plane_rack_census, the rack
     // census once per unit, hoisted here so one implementation serves every caller.
     // The body is the original's, re-indented; `owner_` names this Impl.
@@ -5563,6 +5658,10 @@ struct GameUnitsHost::Impl {
                 // the bullet is not read.
                 unit_.rack_bullet_class_per_rack.push_back(
                     owner_.read_device_bullet_class_id(dev));
+                if constexpr (kWireGoal4Chain324Bound) {
+                    unit_.rack_identity_per_rack.push_back(
+                        {pkey, dev, unit_.rack_bullet_class_per_rack.back()});
+                }
                 unit_.rack_bullet_id_per_rack.push_back(
                     owner_.read_device_bullet_id(dev));
                 // 006E0242 00B66330 default [00CE3D30] = 0.6f.
@@ -27258,10 +27357,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // reconstructed rule rather than a constant. The
                             // per-unit round count is 007C1F60, which sums
                             // 006E3500 over the aircraft's class 25h devices
-                            // holding ordnance 2Ah. This host has no device
-                            // model, so a torpedo-armed aircraft stands in with
-                            // one round until it releases: a SUBSTITUTION for
-                            // 007C1F60, not a reading of it.
+                            // holding ordnance 2Ah. Chain 324 reads the owned
+                            // single-rack census where its per-rack counts are
+                            // complete. Other cases keep the aggregate/one-
+                            // torpedo SUBSTITUTION in the fallback below.
                             std::vector<bool> enabled;
                             std::vector<int> rounds;
                             std::vector<bool> is_caller;
@@ -27269,21 +27368,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 const GameUnitSlot* const u = controlled(i);
                                 enabled.push_back(u != nullptr);
                                 int n = 0;
-                                if (u != nullptr) {
-                                    const bsp::OrdnanceKindSet set{u->ordnance_mask};
-                                    if (bsp::ordnance_has_torpedo_2bh(set)) {
-                                        n = 1 - u->torpedo_releases;
-                                        if (n < 0) n = 0;
-                                    } else if (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
-                                               bsp::ordnance_has_general_bomb_2ah(set)) {
-                                        // 006E3500 summed over the racks: the
-                                        // host's rack rounds (one per single
-                                        // rack until the issue's first check).
-                                        n = u->rack_ammo >= 0 ? u->rack_ammo
-                                            : (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
-                                               u->rack_rounds_authored > 0)
-                                                  ? u->rack_rounds_authored
-                                                  : u->rack_single_count;
+                                if constexpr (kWireGoal4Chain324Bound) {
+                                    n = owner_.droppable_round_count_or_stand_in(controlled(i));
+                                } else {
+                                    if (u != nullptr) {
+                                        const bsp::OrdnanceKindSet set{u->ordnance_mask};
+                                        if (bsp::ordnance_has_torpedo_2bh(set)) {
+                                            n = 1 - u->torpedo_releases;
+                                            if (n < 0) n = 0;
+                                        } else if (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
+                                                   bsp::ordnance_has_general_bomb_2ah(set)) {
+                                            // 006E3500 summed over the racks: the
+                                            // host's rack rounds (one per single
+                                            // rack until the issue's first check).
+                                            n = u->rack_ammo >= 0 ? u->rack_ammo
+                                                : (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                                   u->rack_rounds_authored > 0)
+                                                      ? u->rack_rounds_authored
+                                                      : u->rack_single_count;
+                                        }
                                     }
                                 }
                                 rounds.push_back(n);

@@ -2140,13 +2140,14 @@ std::int32_t plane_rocket_round_count_007c1de0(Seg47Host& host, Raw plane) {
 
 // 007C1F60, __thiscall(ECX = plane), EAX: the sum of 006E3500(child) over the
 // kind-25h children answering child->vtable[210h](2Ah, 0).
-std::int32_t unit_count_droppable_rounds_007c1f60(Seg47Host& host, Raw plane) {
+std::int32_t unit_count_droppable_rounds_007c1f60(DroppableRoundCountHost& host, Raw plane) {
     std::int32_t sum = 0;
-    for_each_child(plane, [&](Raw child) {
-        if (is_rack_child(host, child) && host.rack_vcall_holds_kind_210(child, 0x2A, 0))
+    // 007C1F61..007C1F9C: head +48h, next +44h; both virtual predicates
+    // precede 006E3500. The narrow host preserves that order on owned records.
+    for (Raw child = host.first_round_device(plane); child; child = host.next_round_device(child)) {
+        if (host.entity_vcall_is_kind_5c(child, 0x25) && host.rack_vcall_holds_kind_210(child, 0x2A, 0))
             sum += host.bomb_platform_round_count_006e3500(child);
-        return false;
-    });
+    }
     return sum;
 }
 
