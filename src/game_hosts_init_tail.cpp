@@ -9,7 +9,14 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/wire_goal2_chain46_switches.hpp"
+#include "bsp/wire_goal2_chain82_switches.hpp"
 
+#include <d3d9.h>
+#include <mmsystem.h>
+#include <dsound.h>
+#include <algorithm>
+#include <cstring>
+#include <stdexcept>
 #include <string>
 
 namespace bsp::game {
@@ -62,6 +69,215 @@ public:
 
 private:
     GameHardwareProbe& owner_;
+};
+
+namespace hardware = engine_seg11_35_66_cc13;
+
+// Native lifetime: 0073C467 constructs after the four registry reads succeed;
+// 0073C8A3..0073C8DD releases its vectors on leaving the probe. Producers below
+// own every read field.
+// The existing collector uses a borrowed typed view; the image offsets remain
+// explicit for the constructor's two vector headers and its LCID at +C38h.
+struct ProbeHardwareImage {
+    hardware::HardwareInfoVectors vectors_00;
+    std::uint32_t unused_20;
+    std::int32_t shader_model_24;
+    hardware::HardwareInfoFields fields_28;
+    char description_a34[0x100];
+    char driver_b34[0x100];
+    bool nt5_c34;
+    std::uint8_t padding_c35[3];
+    void* language_c38;
+};
+static_assert(offsetof(ProbeHardwareImage, fields_28) == 0x28);
+static_assert(offsetof(ProbeHardwareImage, fields_28)
+    + offsetof(hardware::HardwareInfoFields, memory_mb_2c) == 0x2c);
+static_assert(offsetof(ProbeHardwareImage, fields_28)
+    + offsetof(hardware::HardwareInfoFields, cpu_mhz_30) == 0x30);
+static_assert(offsetof(ProbeHardwareImage, fields_28)
+    + offsetof(hardware::HardwareInfoFields, cpu_name_34) == 0x34);
+static_assert(offsetof(ProbeHardwareImage, description_a34) == 0xa34);
+static_assert(offsetof(ProbeHardwareImage, driver_b34) == 0xb34);
+static_assert(offsetof(ProbeHardwareImage, nt5_c34) == 0xc34);
+static_assert(offsetof(ProbeHardwareImage, language_c38) == 0xc38);
+static_assert(sizeof(ProbeHardwareImage) == 0xc3c);
+
+// Adapts the Windows survey to the existing constructor/collector and the
+// probe tail. No hardware state is constructed until the chain's ON arm runs.
+class HardwareProbeMachine final : public hardware::HardwareCollectCalls,
+    public hardware::OsVersionCalls, public hardware::DisplayModeList,
+    public hardware::DirectSoundProbe, public HardwareProbeTailHost {
+public:
+    HardwareProbeMachine(GameHardwareProbe& owner, GameHostLog& log) : owner_(owner), log_(log) {}
+    ~HardwareProbeMachine() override {
+        if (sound_module_ != nullptr) FreeLibrary(sound_module_);
+    }
+    void construct(std::uint32_t language) {
+        hardware::construct_hardware_info_009927d0(
+            hardware::HardwareInfoConstructView{image_.vectors_00, image_.language_c38,
+                image_.fields_28}, language, *this);
+    }
+
+    void describe_os_version_0098c9c0() override {
+        std::string text;
+        hardware::describe_os_version_0098c9c0(text, image_.nt5_c34, *this);
+        // 0098C9C0's destination is +234h, within the CPU-name backing region.
+        std::strcpy(image_.fields_28.cpu_name_34 + 0x200, text.c_str());
+    }
+    bool get_version_ex(std::uint32_t size, hardware::OsVersionInfoEx& out) override {
+        OSVERSIONINFOEXA version{};
+        version.dwOSVersionInfoSize = size;
+        using GetVersion = BOOL(WINAPI*)(LPOSVERSIONINFOA);
+        const auto get_version = reinterpret_cast<GetVersion>(
+            GetProcAddress(GetModuleHandleA("kernel32.dll"), "GetVersionExA"));
+        if (get_version == nullptr || !get_version(reinterpret_cast<LPOSVERSIONINFOA>(&version)))
+            return false;
+        out = {version.dwMajorVersion, version.dwMinorVersion, version.dwBuildNumber,
+            version.dwPlatformId, version.szCSDVersion, version.wSuiteMask, version.wProductType};
+        return true;
+    }
+    bool reg_open_hklm(const char* path) override {
+        return RegOpenKeyExA(HKEY_LOCAL_MACHINE, path, 0, KEY_QUERY_VALUE, &os_key_) == ERROR_SUCCESS;
+    }
+    bool reg_query_string(const char* name, std::string& value, std::uint32_t& length) override {
+        char bytes[0x50]{};
+        DWORD size = (std::min)(static_cast<DWORD>(length), static_cast<DWORD>(sizeof bytes));
+        DWORD type = 0;
+        const LSTATUS status = RegQueryValueExA(os_key_, name, nullptr, &type,
+            reinterpret_cast<BYTE*>(bytes), &size);
+        length = size;
+        if (status != ERROR_SUCCESS) return false;
+        value.assign(bytes, strnlen(bytes, sizeof bytes));
+        return true;
+    }
+    void reg_close() override { RegCloseKey(os_key_); os_key_ = nullptr; }
+    std::uint32_t total_physical_memory() override {
+        MEMORYSTATUS status{};
+        status.dwLength = sizeof status;
+        GlobalMemoryStatus(&status);
+        return status.dwTotalPhys;
+    }
+    bool query_processor_info_00992180() override {
+        return hardware::query_processor_info_00992180(image_.fields_28);
+    }
+    std::uint32_t measure_cpu_clock_0098c940() override {
+        return hardware::measure_cpu_clock_0098c940();
+    }
+    void query_display_driver_00991ef0() override {
+        struct D3DOwner {
+            IDirect3D9* api{Direct3DCreate9(D3D_SDK_VERSION)};
+            ~D3DOwner() { if (api != nullptr) api->Release(); }
+        } d3d;
+        D3DADAPTER_IDENTIFIER9 id{};
+        D3DCAPS9 caps{};
+        if (d3d.api == nullptr
+            || FAILED(d3d.api->GetAdapterIdentifier(0, 0, &id))
+            || FAILED(d3d.api->GetDeviceCaps(0, D3DDEVTYPE_HAL, &caps)))
+            throw std::runtime_error("hardware probe: D3D9 adapter survey unavailable");
+        hardware::D3DAdapterSurvey survey{};
+        survey.driver_version_low = id.DriverVersion.LowPart;
+        survey.driver_version_high = static_cast<std::uint32_t>(id.DriverVersion.HighPart);
+        survey.description = id.Description;
+        survey.device_id = id.DeviceId;
+        survey.pixel_shader_version = caps.PixelShaderVersion;
+        const UINT count = d3d.api->GetAdapterModeCount(0, D3DFMT_X8R8G8B8);
+        for (UINT i = 0; i < count; ++i) {
+            D3DDISPLAYMODE mode{};
+            if (SUCCEEDED(d3d.api->EnumAdapterModes(0, D3DFMT_X8R8G8B8, i, &mode)))
+                survey.modes_x8r8g8b8.emplace_back(mode.Width, mode.Height);
+        }
+        survey.multisample_ok.resize(16);
+        for (unsigned i = 2; i < 16; ++i) {
+            DWORD quality = 0;
+            survey.multisample_ok[i] = SUCCEEDED(d3d.api->CheckDeviceMultiSampleType(0,
+                D3DDEVTYPE_HAL, D3DFMT_A8R8G8B8, FALSE, static_cast<D3DMULTISAMPLE_TYPE>(i), &quality));
+        }
+        hardware::query_display_driver_00991ef0(survey, gpu_catalog(),
+            {&image_.shader_model_24, &image_.fields_28.gpu_index_28,
+                image_.description_a34, image_.driver_b34}, *this);
+    }
+    bool contains_0098e0e0(std::uint32_t width, std::uint32_t height) override {
+        return std::find(modes_.begin(), modes_.end(), std::make_pair(width, height)) != modes_.end();
+    }
+    void append_00991c20(std::uint32_t width, std::uint32_t height) override {
+        modes_.emplace_back(width, height);
+        publish_vector(image_.vectors_00.words + 1, modes_);
+    }
+    void append_multisample_type(std::int32_t type) override {
+        samples_.push_back(type);
+        publish_vector(image_.vectors_00.words + 5, samples_);
+    }
+    void reset_sound_probe(std::uint32_t& counter, char& first) override {
+        sound_count_ = counter;
+        sound_name_[0] = first;
+    }
+    void enumerate_sound_devices() override {
+        sound_module_ = LoadLibraryA("dsound.dll");
+        using Enumerate = HRESULT(WINAPI*)(LPDSENUMCALLBACKA, LPVOID);
+        const auto enumerate = sound_module_ == nullptr ? nullptr : reinterpret_cast<Enumerate>(
+            GetProcAddress(sound_module_, "DirectSoundEnumerateA"));
+        if (enumerate == nullptr)
+            throw std::runtime_error("hardware probe: DirectSound enumeration unavailable");
+        enumerate(&sound_callback, this);
+    }
+    bool create_default_device() override {
+        using Create = HRESULT(WINAPI*)(LPCGUID, LPDIRECTSOUND*, LPUNKNOWN);
+        const auto create = reinterpret_cast<Create>(GetProcAddress(sound_module_, "DirectSoundCreate"));
+        if (create == nullptr) return false;
+        LPDIRECTSOUND device = nullptr;
+        const HRESULT status = create(nullptr, &device, nullptr);
+        if (SUCCEEDED(status)) device->Release();
+        return SUCCEEDED(status);
+    }
+    std::uint32_t current_gpu_device_id() override {
+        log_.implemented("HardwareProbe::current_gpu_device_id", "0098c870");
+        return hardware::gpu_device_id_0098c870(image_.fields_28, gpu_catalog());
+    }
+    std::string gpu_device_name(std::uint32_t id) override {
+        return hardware::gpu_device_name_0098c890(id, gpu_catalog());
+    }
+    std::string current_sound_device() override { return sound_name_; }
+    std::uint32_t current_cpu_speed() override { return image_.fields_28.cpu_mhz_30; }
+    std::uint32_t current_memory_size() override { return image_.fields_28.memory_mb_2c; }
+    std::string localized_message(std::int32_t index, const std::string& a,
+        const std::string& b) override { return owner_.localized_message(index, a, b); }
+    bool ask_write_default_options(const std::string& text, const std::string& caption) override {
+        return owner_.ask_write_default_options(text, caption);
+    }
+    void write_default_options_file(const std::string& path) override { owner_.write_default_options_file(path); }
+    void write_hardware_dword(const std::string& name, std::uint32_t value) override {
+        owner_.write_hardware_dword(name, value);
+    }
+    void write_hardware_string(const std::string& name, const std::string& value) override {
+        owner_.write_hardware_string(name, value);
+    }
+private:
+    static const hardware::GpuTableRow* gpu_catalog() {
+        // Producer: static image table 00E0CFF4 and its pointed-to strings.
+        static constexpr hardware::GpuTableRow rows[] = {
+#include "bsp/wire_goal2_chain46_gpu_catalog.inc"
+        };
+        return rows;
+    }
+    template<class T> static void publish_vector(std::uint32_t* header, std::vector<T>& values) {
+        header[0] = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(values.data()));
+        header[1] = header[0] + static_cast<std::uint32_t>(values.size() * sizeof(T));
+        header[2] = header[0] + static_cast<std::uint32_t>(values.capacity() * sizeof(T));
+    }
+    static BOOL CALLBACK sound_callback(LPGUID, LPCSTR description, LPCSTR, LPVOID context) {
+        auto& self = *static_cast<HardwareProbeMachine*>(context);
+        return hardware::direct_sound_enum_first_0098d360(description, self.sound_count_,
+            self.sound_name_, self) ? TRUE : FALSE;
+    }
+    GameHardwareProbe& owner_;
+    GameHostLog& log_;
+    ProbeHardwareImage image_{};
+    std::vector<std::pair<std::uint32_t, std::uint32_t>> modes_;
+    std::vector<std::int32_t> samples_;
+    HKEY os_key_{};
+    HMODULE sound_module_{};
+    std::uint32_t sound_count_{};
+    char sound_name_[0x100]{}; // 00F8A0E8, reset by 00992640 before enumeration.
 };
 
 }  // namespace
@@ -284,6 +500,25 @@ void GameHardwareProbe::run() {
         return;
     }
     summary_.profile_complete = true;
+    // 009927D0/0098C870 construct/read the survey; OFF keeps the host's accessor stand-ins.
+    if constexpr (kWireGoal2Chain82Bound) {
+        HardwareProbeMachine machine(*this, log_);
+        machine.construct(hardware::read_language_from_options_00992830());
+        log_.implemented("HardwareProbe::construct_detection_object", "009927d0");
+        HardwareProbeInputs inputs;
+        inputs.stored = profile;
+        inputs.current.gpu_device_id = machine.current_gpu_device_id();
+        inputs.current.sound_device = machine.current_sound_device();
+        inputs.current.cpu_speed = machine.current_cpu_speed();
+        inputs.current.mem_size = machine.current_memory_size();
+        summary_.changes = hardware_probe_changes_0073c3b0(inputs).size();
+        summary_.result = run_hardware_probe_tail_0073c3b0(profile, machine);
+        log_.notef("hardware probe stored gpu=%lu cpu=%lu mem=%lu sound=\"%s\" changes=%zu "
+            "result=%d", static_cast<unsigned long>(profile.gpu_device_id),
+            static_cast<unsigned long>(profile.cpu_speed),
+            static_cast<unsigned long>(profile.mem_size), profile.sound_device.c_str(),
+            summary_.changes, static_cast<int>(summary_.result));
+    } else {
     HardwareProbeInputs inputs;
     inputs.stored = profile;
     inputs.current.gpu_device_id = current_gpu_device_id();
@@ -297,6 +532,7 @@ void GameHardwareProbe::run() {
         static_cast<unsigned long>(profile.cpu_speed),
         static_cast<unsigned long>(profile.mem_size), profile.sound_device.c_str(),
         summary_.changes, static_cast<int>(summary_.result));
+    }
 }
 
 // ---------------------------------------------------------------------------

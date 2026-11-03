@@ -1,0 +1,498 @@
+{
+  "run": 173,
+  "harness": "codex",
+  "chain": 82,
+  "packet": "g2-w4",
+  "host_file": "src/game_hosts_init_tail.cpp",
+  "tier": 2,
+  "picked_reason": "Mission rows are disabled; scene-path lease was refused; the hardware constructor can own real producer-backed state in a bounded startup lifetime.",
+  "switch": "kWireGoal2Chain82Bound",
+  "switch_default": false,
+  "code_commit": "a30c9378ab843102ad4e7cfb78da072b96200b67",
+  "files": [
+    "src/game_hosts_init_tail.cpp",
+    "src/engine_seg11_35_66_cc13.cpp",
+    "include/bsp/engine_seg11_35_66_cc13.hpp",
+    "include/bsp/wire_goal2_chain82_switches.hpp"
+  ],
+  "host_objects": [
+    {
+      "name": "ProbeHardwareImage / HardwareProbeMachine",
+      "where": "src/game_hosts_init_tail.cpp:81",
+      "producers": [
+        "009927D0 initializes the two vector headers and stores the LCID from 00992830 (options.txt)",
+        "00992640 orders OS-version description, GlobalMemoryStatus memory MB, 00992180 registry processor info or 0098C940 measured clock, display survey, and sound reset/enumeration",
+        "0098C9C0 via GetVersionExA and its read-only ProductOptions/Hotfix registry callbacks",
+        "Direct3DCreate9(20h), adapter 0 identifier/modes/caps/multisample checks feed existing 00991EF0; GPU catalog is existing image-derived chain46 include at 00E0CFF4",
+        "DirectSoundEnumerateA and DirectSoundCreate(NULL) feed existing 0098D360; its reset counter/name are staged for the same probe lifetime"
+      ],
+      "rows": [
+        "009927d0",
+        "0098c870"
+      ],
+      "layout": "static_assert offsets: fields +28h, memory +2Ch, CPU MHz +30h, CPU name +34h, adapter description +A34h, driver +B34h, OS flag +C34h, LCID +C38h; size C3Ch. Two owned typed vectors publish their three pointer words to +4h and +14h.",
+      "lifetime": "Construct after profile completeness at image call 0073C467; leave scope and release vectors corresponding to 0073C8A3..0073C8DD; no OFF-arm construction."
+    }
+  ],
+  "rows": [
+    {
+      "native": "005da530",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "005e1cf0",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "005e3290",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "00688e40",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "00784790",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "007848f0",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::start_skirmish",
+      "status": "skipped",
+      "reason": "No live campaign host site: the lobby/session root is inside kSkirmishSessionCc13Bound=false at start_skirmish. 005E3290 is also already called by the OFF lobby code; duplicating that call cannot count.",
+      "reached": 0
+    },
+    {
+      "native": "00753810",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding",
+      "status": "skipped",
+      "reason": "metrics_enabled() returns false; no active metrics/sign-in collector producer exists.",
+      "reached": 0
+    },
+    {
+      "native": "0076f0e0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding",
+      "status": "skipped",
+      "reason": "Only the disabled kSkirmishSessionCc13Bound skirmish binding supplies this refresh callback; it has no native online session/member/name producer.",
+      "reached": 0
+    },
+    {
+      "native": "008d2f50",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::lobby_multi_menu_init_00689540",
+      "status": "skipped",
+      "reason": "Registry projection is called only by start_skirmish inside kSkirmishSessionCc13Bound=false. Constructing another registry cannot make the caller live.",
+      "reached": 0
+    },
+    {
+      "native": "00a41c70",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding::create_client_00a41c70",
+      "status": "skipped",
+      "reason": "The binding is constructed only behind kSkirmishSessionCc13Bound=false; its server-mode client callback throws and has no client transport producer.",
+      "reached": 0
+    },
+    {
+      "native": "0042e630",
+      "host_site": "src/game_hosts_ready.cpp:SpatialRefreshBinding",
+      "status": "skipped",
+      "reason": "No spatial-index singleton, registered node owner, or publication pair exists on this host path; first_root_node returns nullptr. The blast-grid host is a different owner.",
+      "reached": 0
+    },
+    {
+      "native": "004d32a0",
+      "host_site": "src/game_hosts_ready.cpp:run_load_scripted_name_baseline_004d30f0",
+      "status": "skipped",
+      "reason": "This host names 004D32A0 only in a baseline diagnostic. It has no teardown/nil-added-globals stand-in to replace; baseline construction is 004D30F0.",
+      "reached": 0
+    },
+    {
+      "native": "00768530",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_set_command_92",
+      "status": "skipped",
+      "reason": "The typed local stream exists, but the full factory needs SessionFactoryServices construction/dispatch ownership and the original default-message preimage. Neither is bound here; its body file oct18_tail_a.cpp is also assigned to another worker.",
+      "reached": 0
+    },
+    {
+      "native": "00ac6600",
+      "host_site": "src/game_hosts_frontend.cpp:GameGuiLayoutHost",
+      "status": "skipped",
+      "reason": "This host supplies only the Lua/page projection. The raw constructor requires native UIContext/page storage, real scene node registration, and a broad GuiLayerConstructHost interface; current model/root creation is unimplemented and returns diagnostic node IDs.",
+      "reached": 0
+    },
+    {
+      "native": "007b34f0",
+      "host_site": "src/game_hosts_scene_contents.cpp:retain_path_points",
+      "status": "skipped",
+      "reason": "Lease refused: agent/g2-w3 owns src/game_hosts_scene_contents.cpp, src/cc13_front3.cpp, include/bsp/cc13_front3.hpp and address 007B34F0. No edits made.",
+      "reached": 0
+    },
+    {
+      "native": "004f8fa0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "004f9d30",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00501670",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00504790",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00504d20",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "005055c0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00506bf0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00506c80",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0050a950",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0050b440",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0050b730",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0051e730",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00683320",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00683330",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00694af0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "006a9ea0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "006aa2d0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "007188a0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0076cb30",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "0093ccc0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a8fd30",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9ac70",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9c8f0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9cdc0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9ceb0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9cf30",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00a9d360",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00aa8f30",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00b101c0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00b1b830",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00b679f0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00b7bdf0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "00bbddb0",
+      "host_site": "src/frontend_seg12_17_cc13.cpp",
+      "status": "skipped",
+      "reason": "No implementation of this caller-file Host method exists in src/. Searching every assigned host.<method> identifier found only reconstructed callers or the separate callee body, not a running host override; per tier-3 rules this caller is not a live wiring site.",
+      "reached": 0
+    },
+    {
+      "native": "009927d0",
+      "address": "0073c467",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:GameHardwareProbe::run -> HardwareProbeMachine::construct",
+      "status": "wired",
+      "abi_before": "raw_view",
+      "reach": "static: first startup phase2, then the native four-registry-value runtime gate; no disabled ancestor switch",
+      "reason": "Existing constructor body moved to a typed borrowed-view overload; old entry is a thin wrapper. It initializes an image-shaped owner and calls the existing collector with real OS/memory/processor/D3D9/DirectSound producers. Comparison and tail consume those fields.",
+      "contract": "ECX=hardware object; one 32-bit LCID stack argument; RET 4 at 0099282A. Both original callers push 00992830 result (0073C458/005F6662). Constructor writes +4,+8,+C,+14,+18,+1C (4 bytes each), +C38 (4 bytes), then 00992640.",
+      "reached": 0,
+      "assignment_role": "assigned"
+    },
+    {
+      "native": "0098c870",
+      "address": "0073c49a",
+      "function": "0073c3b0",
+      "host_site": "src/game_hosts_init_tail.cpp:HardwareProbeMachine::current_gpu_device_id",
+      "status": "wired",
+      "abi_before": "typed",
+      "reach": "static: same startup registry gate as the constructor",
+      "reason": "Supporting ready row in this selected host: the existing accessor reads the collector-produced adapter table index at +28h and the original 00E0CFF4 GPU catalog, replacing the host zero stand-in.",
+      "contract": "ECX=detection object, plain RET, EAX=device id. Reads signed index +28h (4 bytes), clamps negative to row zero, then reads a 12-byte catalog row. No stack arguments.",
+      "reached": 0,
+      "assignment_role": "supporting_host_row"
+    }
+  ],
+  "validation": {
+    "off_build": "passed; both existing CTest tests passed",
+    "on_build": "passed; off_switch_on_build.py reports exit 0 and zero diagnostics; switch restored",
+    "final_off_build": "passed after ON check; committed clean-HEAD OFF build passed",
+    "readiness_before": 8902,
+    "readiness_after": 8906,
+    "assigned_rows_ready_to_wired": [
+      "009927d0"
+    ],
+    "supporting_host_rows_ready_to_wired": [
+      "0098c870"
+    ],
+    "overall_delta": 4,
+    "overall_delta_note": "Includes supporting/transitive census changes; assigned-row count is one, supporting explicit host row count is one.",
+    "pc24_lint": "not required: ON arm adds no x87 arithmetic",
+    "report_calls": "passed: 2 call rows checked, 0 failed",
+    "readiness_final_source": "plain OFF build after ON check; local/output/g2-w4-readiness-final.txt and wire_readiness.json"
+  },
+  "pair": {
+    "mission": "USN04",
+    "console_session": "Active console session 1 verified by query session",
+    "off_log": "local/g2-w4-off_USN04.log",
+    "on_log": "local/g2-w4-on_USN04.log",
+    "status": "completed; gameplay/native/summary identical, diagnostic differences remain",
+    "off_exit_code": 0,
+    "profile_gate": "Both logs line 68 report an incomplete HKLM SOFTWARE/Eidos/BSM_HWD profile and return before construction.",
+    "reached": {
+      "009927d0": 0,
+      "0098c870": 0
+    },
+    "on_export": "passed at code commit a30c9378ab843102ad4e7cfb78da072b96200b67; exported ON build and both existing tests passed",
+    "off_exe_sha256": "9d955ec9783a88739cfcb7856974732eacfa1439b6a5b47cc12cf272d8542783",
+    "on_exe_sha256": "9bd123a53fbd022131ff882a9ad6ab1df60b5d3825e05d0f9017a882095f8d53",
+    "on_exit_code": 0,
+    "pair_diff_exit_code": 1,
+    "pair_diff_output": "local/output/g2-w4-pair-diff.txt",
+    "pair_diff_summary": {
+      "verdict": "DIFFERENT, gameplay identical (exit 1)",
+      "gameplay": "identical",
+      "gameplay_rows_moved": [],
+      "deaths": [
+        28,
+        28
+      ],
+      "hit_records": [
+        380,
+        380
+      ],
+      "hull_hits": [
+        276,
+        276
+      ],
+      "damage": [
+        6366.6,
+        6366.6
+      ],
+      "shots": [
+        5509,
+        5509
+      ],
+      "first_hit_seconds": [
+        86.15,
+        86.15
+      ],
+      "native_table_rows": [
+        1624,
+        1624
+      ],
+      "native_table_added": 0,
+      "native_table_removed": 0,
+      "native_status_changes": [],
+      "native_count_changes": [],
+      "native_standin_or_unimplemented_to_concrete": [],
+      "summary_lines": [
+        867,
+        867
+      ],
+      "summary_changed": 0,
+      "summary_only_on": 0,
+      "summary_only_off": 0,
+      "other_lines_only_off": 231,
+      "other_lines_only_on": 231,
+      "other_line_note": "Displayed samples are atlas source parser/item allocation diagnostics with differing numerical pointer/header values; pair_diff does not mask all of those fields. This is not reported as a clean diff.",
+      "noise": "PlatformLoopCallbacks::pretranslate calls 5 -> 8",
+      "death_rows": "identical, 0 rows; BSP_DEATH_TABLE was not requested",
+      "plane_death_modes": "identical, 25 rows",
+      "unit_table": "identical, 81 rows"
+    },
+    "evidence_limit": "Mission pair proves unchanged observed behavior on the incomplete-profile path. It does not exercise the collector, its callbacks, or its comparison consumers."
+  },
+  "limitations": [
+    "No claim of original ABI compatibility or original-game validation.",
+    "Complete-profile branch may not be exercised by the USN04 pair. No registry preimage is fabricated to force it.",
+    "Existing localized-message and default-options-file stand-ins remain delegated; normal pair runs do not request hardware-probe-commit.",
+    "Unavailable D3D9 adapter/caps or DirectSound loader is reported as an explicit ON failure instead of supplying invented hardware values."
+  ],
+  "flip_proposal": "Keep kWireGoal2Chain82Bound=false. Require a naturally complete stored-profile run exercising 009927D0 and 0098C870 before proposing ON; do not fabricate or write a machine profile to force reach."
+}
