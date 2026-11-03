@@ -1,0 +1,65 @@
+{
+  "run": 389,
+  "harness": "claude",
+  "goal": 2,
+  "chain": 209,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": "segment 67 [00996120-009f6060]",
+  "tier": 2,
+  "selection": "Segment 67 offered 009B7B10, and its twin 009B7B40 was also ready. Chain 147 skipped both because the host had no producer for ctl+3AEh (the squadron byte SquadronSetForceRelease writes) and fed a literal false. This chain builds that producer as a host object, so both rows are fed by host state. The other candidates are single destructor or string-release rows whose only callers are host interface methods nothing implements, or raw callbacks with no host owner.",
+  "host_file": "src/game_hosts_units.cpp",
+  "switch": "kWireGoal2Chain209Bound",
+  "switch_file": "include/bsp/wire_goal2_chain209_switches.hpp",
+  "switch_default": false,
+  "wired_before": 9015,
+  "wired_after": 9017,
+  "rows_wired": 2,
+  "builds": {
+    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain209Bound", "result": "passed", "diagnostics": 0, "source_restored": true},
+    "off_build": {"command": "./scripts/build.ps1", "result": "passed", "tests": "2/2 passed", "order": "Run after the ON check; readiness was measured from this OFF map."},
+    "pc24_lint": "0 findings (the ON arms do no x87 arithmetic)",
+    "game_run": false
+  },
+  "on_effect": "When a mission script calls SquadronSetForceRelease(squadron, on), the new dispatch row stores the flag on the squadron's slot. Every level-bomb plane of that squadron then reads it: the aim tick's close test (009B5DC3) and steer (009B63EE), and 009B88F0's aim transition. That transition now runs the 009B7B10 and 009B7B40 bodies over aim+18h/+19h and the byte. A forced squadron releases (kRelease) where an unforced one aborts (kGoAway). No script in scripts/ or universe/ of this installation calls SquadronSetForceRelease (grep), so with this installation's missions the byte stays 0 and the transitions match OFF.",
+  "off_preservation": "OFF arms are the original code: the inline predicates in 009B88F0 and the literal false at both host sites. The OFF base of GameUnitSlot is empty, so the slot layout is unchanged. The dispatch row is constant-false OFF, and the new setter and handler are never called. The raw 009B7B10 and 009B7B40 entries forward to the typed views with the same tests in the same order (the squadron byte is read only on the path the listing reads it). No host path calls them.",
+  "host_objects": [
+    {
+      "name": "SquadronForceReleaseByte<kWireGoal2Chain209Bound> (squadron block byte +3AEh on GameUnitSlot), with its producer: the 008A28B0 dispatch row, GameMissionLuaHost::run_squadron_set_force_release and GameUnitsHost::set_squadron_force_release",
+      "where": "src/game_hosts_units.cpp:569 (storage), src/game_hosts_units.cpp:24247 (setter), src/game_hosts_lua.cpp:920 and :1262 (dispatch row), src/game_hosts_lua.cpp:9863 (Lua glue)",
+      "producers": [
+        "0 from the memset of the squadron block's new(414h), the same as the sibling +390h field; the host slot default-initialises it to false",
+        "Lua native 008A28B0 SquadronSetForceRelease (lua_squadron_set_force_release): MOV [ESI+3AEh], BL at 008A29FC, with BL = the boolean of argument 1 (00B66250) on the entity from argument 0 (00888AA0). The body needs LuaArgs/ImageAccess adapters this host lacks, so the host's Lua glue resolves the entity the way the sibling natives 008A1F40/008A24E0 do and makes the one store",
+        "A disp-3AEh byte scan of .text finds the only other byte writers, 0079C23E and 007A91D1, inside MovCam (0079C200, 007A91A0) on its own +3AEh, not the squadron block. Readers: 009B5E3C, 009B63EE, 009B7B22, 009B7B4C"
+      ],
+      "lifetime": "The host slot's: created with the squadron's unit slot (the block is created with the squadron in the image) and never cleared; only the Lua native writes it.",
+      "rows": ["009b7b10", "009b7b40"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "009b7b10",
+      "address": "009b8a26",
+      "function": "009b88f0",
+      "name": "bot_state_level_bomb_aim_should_release_009b7b10",
+      "abi": "raw_view",
+      "host_site": "src/plane_level_bomb_task.cpp:level_bomb_next_state_009b88f0 (case kAim), fed by src/game_hosts_units.cpp:run_level_bomb_task_arm_009b8b50 (LevelBombTransitionInputs ri: lb_aim_18, lb_aim_19, squadron force_release_3ae)",
+      "status": "wired",
+      "coverage": "New typed view overload (release_18, abort_19, force_release_3ae) of the existing body; the raw entry is now a thin wrapper over it. No second body. ON replaces 009B88F0's inline 'aim_release_18 || (aim_abort_19 && force_release_3ae)'.",
+      "reach": "static",
+      "reach_details": "pilot_think_and_commit -> run_level_bomb_task_arm_009b8b50 (kPlaneLevelBombTaskBound = true; runs while attack_command_class == kAttackCmdLevelBomb with a command target) -> level_bomb_next_state_009b88f0(ri) -> case kAim. No disabled gate on the path."
+    },
+    {
+      "native": "009b7b40",
+      "address": "009b8a45",
+      "function": "009b88f0",
+      "name": "bot_state_level_bomb_aim_should_abort_009b7b40",
+      "abi": "raw_view",
+      "host_site": "src/plane_level_bomb_task.cpp:level_bomb_next_state_009b88f0 (case kAim), fed by src/game_hosts_units.cpp:run_level_bomb_task_arm_009b8b50 (ri.aim_abort_19, squadron force_release_3ae)",
+      "status": "wired",
+      "coverage": "New typed view overload (abort_19, force_release_3ae) of the existing body; the raw entry is now a thin wrapper over it. No second body. ON replaces 009B88F0's inline 'aim_abort_19 && !force_release_3ae'.",
+      "reach": "static",
+      "reach_details": "Same path as 009B7B10: run_level_bomb_task_arm_009b8b50 -> level_bomb_next_state_009b88f0 -> case kAim, reached when 009B7B10 answers false."
+    }
+  ]
+}
