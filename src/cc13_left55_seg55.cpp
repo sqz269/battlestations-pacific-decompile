@@ -24,7 +24,7 @@ void* byte_message_9f_construct_00889940(Left55Host& host, void* message, std::u
 namespace {
 
 // The inlined NativeString copy assignment: resize to the source size, then copy when non-empty.
-void copy_into(Left55Host& host, NativeStr* dst, const NativeStr* src)
+void copy_into(VariantStringHost& host, NativeStr* dst, const NativeStr* src)
 {
     if (dst != src) {
         host.native_string_resize_0041dd40(dst, src->size, true);
@@ -295,7 +295,8 @@ LuaVariant* variant_construct_int_00884a00(LuaVariant* v, std::int32_t value)
     v->vtable = kLuaVariantVtable;
     v->tag = 0;
     v->name = {};
-    v->payload.number = static_cast<float>(value); // FILD / FSTP float
+    // 00884A00 CVTSI2SS / 00884A19 MOVSS, verified in the image listing.
+    v->payload.number = static_cast<float>(value);
     return v;
 }
 
@@ -408,7 +409,7 @@ LuaKey* lua_key_copy_00884ef0(Left55Host& host, LuaKey* key, const LuaKey* sourc
     return key;
 }
 
-LuaVariant* variant_construct_string_00884fc0(Left55Host& host, LuaVariant* v,
+LuaVariant* variant_construct_string_00884fc0(VariantStringHost& host, LuaVariant* v,
     const NativeStr* text)
 {
     v->vtable = kLuaVariantVtable;
