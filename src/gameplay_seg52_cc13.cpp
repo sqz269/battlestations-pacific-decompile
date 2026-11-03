@@ -8,6 +8,7 @@
 #include <cstring>
 
 #include "bsp/band_0080_cc13.hpp"  // stationary_check_destroyed_0084eb80
+#include "bsp/gun_platform_arc.hpp"
 
 namespace bsp {
 namespace gameplay_seg52_cc13 {
@@ -126,9 +127,19 @@ bool turning_gun_fire_if_ready_0084c4e0(bool fired, bool& request_4d4) noexcept 
     return true;
 }
 
-bool turning_gun_extra_fire_request_0084c5b0(bool request_4d4_after_tick) noexcept {
-    // 0084C5D4 CALL 0072D130; 0084C5DB CMP byte [ESI+1C4h], 0; JE skips the send.
-    return request_4d4_after_tick;
+TurningGunFireSyncResult turning_gun_extra_fire_request_0084c5b0(
+    GunFireRequestState& state, GunFireRequestHost& host,
+    const bool& request_4d4, float dt) {
+    // bsp.py show 0084c5b0 --asm: 0084C5D4 CALL 0072D130, then 0084C5DB
+    // reads the live gun+4D4h (sub-object+1C4h). The former predicate-only
+    // model omitted both the base tick and the extra message's side effect.
+    const bool base_sent = gun_fixed_step_tick_0072d130(state, host, dt);
+    if (!request_4d4) return {base_sent, false};
+    // 0084C5E3..0084C625: opcode ADh, vptr CF9628, target word zero at
+    // 0084C60E; route (message, 1, 0). Use the existing AD delivery seam,
+    // without the base tick's unit/disable/latch gates or its target id.
+    host.send_fire_message_0ad(0);
+    return {base_sent, true};
 }
 
 // --- weapon director ------------------------------------------------------------

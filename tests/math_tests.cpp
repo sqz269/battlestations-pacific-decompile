@@ -33,6 +33,7 @@
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
+#include "bsp/gameplay_seg52_cc13.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
@@ -249,6 +250,63 @@ private:
 }
 
 int main() {
+    {
+        // 0084C5D4 must tick once, then read the live +4D4h flag. Pin the
+        // ungated/untargeted extra send and a synchronous 0084C4E0 clear.
+        struct FireSyncRecorder final : bsp::GunFireRequestHost {
+            bool request{true}, blocked{true}, clear_on_send{false};
+            int ticks{0};
+            std::vector<std::uint16_t> targets;
+            bool has_owning_unit() const override { return true; }
+            bool unit_suppressed() const override { return false; }
+            bool gun_suppressed() const override { return false; }
+            void release_fire_target_ref_006952a0() override {}
+            bool is_rapid_fixed_slave_006e3d50(int) override { return false; }
+            void send_fixed_slave_fire_message_0077c7b0(bool) override {}
+            float random_stagger_00bd2f10(float lo, float) override { return lo; }
+            void stop_firing_0072b4c0() override {}
+            void release_effect_ref() override {}
+            void base_tick_0072ad40(float) override { ++ticks; }
+            void set_barrel_reload_timer_0072cf00(int, float) override {}
+            bool unit_fire_blocked() const override { return blocked; }
+            bool gun_disabled() const override { return false; }
+            void send_fire_message_0ad(std::uint16_t target) override {
+                targets.push_back(target);
+                if (clear_on_send) {
+                    bsp::gameplay_seg52_cc13::turning_gun_fire_if_ready_0084c4e0(
+                        true, request);
+                }
+            }
+        } host;
+        bsp::GunFireRequestState state;
+        state.fire_requested = true;
+        state.has_target_ref = true;
+        state.target_network_id = 42;
+        state.barrel_delay_time = 1.0f;
+        const auto tick = [&] {
+            return bsp::gameplay_seg52_cc13::turning_gun_extra_fire_request_0084c5b0(
+                state, host, host.request, 0.25f);
+        };
+        const auto blocked = tick();
+        check(!blocked.base_message_sent && blocked.extra_message_sent
+            && host.targets == std::vector<std::uint16_t>{0}
+            && host.ticks == 1 && state.barrel_delay_time == 0.75f,
+            "0084C5B0 ticks once and sends an untargeted extra AD despite the base gate");
+        host.blocked = false;
+        host.targets.clear();
+        const auto both = tick();
+        check(both.base_message_sent && both.extra_message_sent
+            && host.targets == std::vector<std::uint16_t>{42, 0}
+            && host.ticks == 2 && state.barrel_delay_time == 0.5f,
+            "0084C5B0 keeps the targeted base and untargeted extra messages distinct");
+        host.clear_on_send = true;
+        host.targets.clear();
+        const auto cleared = tick();
+        check(cleared.base_message_sent && !cleared.extra_message_sent && !host.request
+            && host.targets == std::vector<std::uint16_t>{42}
+            && host.ticks == 3 && state.barrel_delay_time == 0.25f,
+            "0084C5DB observes the 0084C4E0 latch clear during base-message delivery");
+    }
     {
         // Passive metadata fixture only: this ordinary header is never passed
         // to a Native provider, pool or destructor. The host exception is real.
