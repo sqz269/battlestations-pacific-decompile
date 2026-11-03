@@ -163,6 +163,36 @@
       "status": "skipped",
       "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail",
       "reason": "power-up use: the ready entries (008EA0C0) are empty unless 00E0C978 is set, and the host has no power-up manager entries to pass; with none the pass returns at 00A17A3A"
+    },
+    {
+      "native": "00729bc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bind_aa_acceptance / bullet_throw_magnitude_0073031d",
+      "reason": "the image picks the bot slot by projectile kind [proj+8h] (0 = cannot fire), the host by gun category; switching the dispatch changes which guns may fire (plane guns, mixed ammo) and needs a game pair, not just a call"
+    },
+    {
+      "native": "0075a2e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp planner join (commands_post_loopback_callback_0076e520)",
+      "reason": "the 76h FORMATION_JOIN round trip (write 0075c7c0, factory, read 0075c810) carries the member as a 12-bit id; host ids start at 50000 and would be cut, so the read-back member cannot be used until ids map to native handles"
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp capture spawn arm (record 00a2b400)",
+      "reason": "the spawn gate only guards a quick-spawn the host records instead of performing (no run-time unit creation), so the call would decide nothing"
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp group_value_record_00a04560",
+      "reason": "the hint-weight maps 00F8A740 / 00F8A750 are filled only by the Lua natives 00A07F60 / 00A07F80, which only the multiplayer competitive scripts call; needs those bindings and the maps hosted"
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp failure 'Periscope' (record)",
+      "reason": "needs the submarine's +1214h mast node, +122Ch state, +1254h..+125Ch clocks and the shape-collision bits in the units host (game_hosts_units.cpp, leased by g4-w4)"
     }
   ]
 }
