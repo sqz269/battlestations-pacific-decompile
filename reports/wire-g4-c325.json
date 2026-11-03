@@ -9,7 +9,14 @@
       "native": "008636a0",
       "status": "wired",
       "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes -> install_unit_policies (00864C18)",
-      "real_state": "IsKindOf 2/0Fh/18h/8 from the units host's class table; director slot 48h(2) from 0084D8F0 / 00836790 (vtable dwords 00D0BDE0 / 00D09FA0 read on disk)"
+      "real_state": "IsKindOf 2/8 from the units host's class table; vtable[114h] by the instance's class id, from the slot dword read on disk for every class in src/unit_kind_query.cpp (0047F180 null on planes 10h..17h, MLandVehicle 19h, LandConvoy 1Ah; 007ECFD0 squadron 18h; 0080E150 ships 07h..0Eh; 00743F30/006D0D30/00842A80 base directors on 1Bh/1Ch/45h/46h); director slot 48h(2) from 0084D8F0 / 00836790 / 008364B0 (vtable dwords 00D0BDE0 / 00D09FA0 / 00D09F08)",
+      "review_round_1": "run 643: MLandVehicle and LandConvoy now get the null provider (00CFFEF4 / 00CEA684 = 0047F180, confirmed on disk); forts, command buildings, airfields and shipyards ask the base director's 008364B0 instead of 00836790 (both true for 2, no behaviour change); null reads on those land classes are counted apart from the plane counters"
+    },
+    {
+      "native": "008364b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::install_unit_policies (base director vtable 00D09EC0 slot 48h, built by 008363E0 into +74Ch/+8C8h/+7A0h)",
+      "real_state": "category 2, the constant 008636CB pushes; selected for class ids 1Bh, 1Ch, 45h, 46h"
     },
     {
       "native": "00863640",
