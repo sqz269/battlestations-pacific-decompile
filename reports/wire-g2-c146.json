@@ -1,0 +1,217 @@
+{
+  "run": 286,
+  "chain": 146,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 21 [005c57d0-005cce70]",
+  "tier": 2,
+  "selection_reason": "The MissionTree Lua load supplies shared, populated host state. The camera candidates in this range require a different mover and screen graph from the host's MovCamNew graph.",
+  "host_file": "src/game_hosts_mission.cpp",
+  "switch": "kWireGoal2Chain146Bound",
+  "switch_default": false,
+  "wired_before": 8976,
+  "wired_after": 8977,
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 13,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "MissionStringVectorBinding",
+      "where": "src/game_hosts_mission.cpp:149",
+      "producers": [
+        "MissionTreeScriptBinding::open_table supplies the real Lua 5.1.1 reader and MissionTree root.",
+        "LiveMissionTreeView::stack_ supplies the current mission or side table; read_string_array supplies the requested authored key and result vector.",
+        "The current Lua element produces each NativeString temporary through the existing assign_0041e870 with crt_string_storage; release_to retires it after append."
+      ],
+      "rows": ["005c5860"],
+      "lifetime": "Stack adapter exists only inside the ON arm of read_string_array. It owns its entered-table/element references and temporary buffer, and borrows the parent table and output vector. No native image owner or persistent host object was added."
+    }
+  ],
+  "reach_evidence": {
+    "kind": "static",
+    "path": "GameFrameHost::game_on_move calls menu_->frame (game_hosts.cpp:1288); GameMenuHost::frame calls Impl::advance_path (game_hosts_menu.cpp:3144); MenuShellHost::create_manager_ac calls init_main_menu_00686380; MenuPayloadHost::register_screen dispatches the MissionTree slot to GameMissionHost::load_mission_tree_005caaf0; both picture and metadata paths reach read_mission_group_impl/read_mission_record_impl, side-block list reads, and LiveMissionTreeView::read_string_array.",
+    "gates": "No disabled switch encloses this host path. kWireGoal2Chain91Bound selects native leaf construction versus the existing screen registry; the OFF registry still registers the MissionTree slot. Picture binding is optional and both arms load string lists.",
+    "limit": "The assignment supplied no surveyed mission counts for these range rows. Source reach only; the game was not run."
+  },
+  "rows": [
+    {
+      "native": "005c5860",
+      "address": "005c5df7",
+      "function": "005c5da0",
+      "host_site": "src/game_hosts_mission.cpp:LiveMissionTreeView::read_string_array",
+      "status": "wired",
+      "reach": "static",
+      "readiness_before": "ready",
+      "readiness_after": "wired",
+      "coverage": "Existing complete normal-sequence algorithm shared by typed view and raw wrapper; native EH remains unmodelled.",
+      "contract": "005C597F RET 0Ch consumes kind/key/out. At 005C5DF7, ECX=ESI (reader loaded from the stack), EBP=00CF15B8 (primaryObjectives), EBX=0, and output=EDI+14h. Other 005C5DA0/005C6A70 list sites use the same name-kind contract.",
+      "change": "The ON arm calls cc13_sweepB2_mission_tree_read_string_vector_005c5860 with a narrow storage view/reader host over the real Lua table and vector. The body owns bounds checks, erase, enter, integer-key traversal, read/append/temporary release, and leave. The adapter calls lua_.to_string(element_) directly, preserving the native reader's numeric string conversion and null-to-empty fallback. The old raw entry delegates to this same body. OFF retains the original host loop byte for byte."
+    },
+    {
+      "native": "005c89b0",
+      "address": "005ca0f9",
+      "function": "005c9f70",
+      "host_site": "src/mission_tree_data.cpp:read_mission_group_impl / load_mission_tree_impl",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The live host constructs semantic MissionRecordData, not a 434h image. This body requires native 154h side-block constructors and a +428h integer-tree sentinel. There is no native record/storage bridge populated by the Lua reader in this host; building an unused image beside the semantic record would not replace host logic."
+    },
+    {
+      "native": "005c8ae0",
+      "address": "005c8e83",
+      "function": "005c8e80",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::tables lifetime",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No live native 434h record owner exists. The destructor expects native tree links, NativeString vectors, two image side blocks and an intrusive picture reference. MissionRecordData/std containers/MissionPictureOwner own different storage; feeding their addresses to this body would be invalid. The missing producer is a native record bridge filled by the live Lua reader, not merely a zeroed allocation."
+    },
+    {
+      "native": "005c9b60",
+      "address": "005c9dd3",
+      "function": "005c9dd0",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::tables lifetime",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The host owns semantic MissionGroupData and vector<MissionRecordData>, not the body's 34h group with native 434h record vector and three pool strings. No native group/record lifetime owner is supplied. A separate empty temporary solely to call this destructor would not replace destruction of the host's populated groups."
+    },
+    {
+      "native": "005c9f70",
+      "address": "005cad37",
+      "function": "005caaf0",
+      "host_site": "src/mission_tree_data.cpp:load_mission_tree_impl",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "OFF already calls read_mission_group_impl, the exact implementation used by read_mission_group_005c9f70. Calling its validation wrapper instead would add an identifier without replacing host logic with a previously unused body; no counting credit claimed. The metadata path also intentionally lacks picture services."
+    },
+    {
+      "native": "005cafb0",
+      "address": "0079f674",
+      "function": "0079f480",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam construction host reset_deviation_factor_005cafb0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No reachable host implementation owns the old MovCam limits screen's +54/+58 fields. GameHudHost builds MovCamNew with 0079D020, not the 0079F480 mover that produces and resets this receiver. The original default-field producer is not bound in this host."
+    },
+    {
+      "native": "005cafc0",
+      "address": "0079f67f",
+      "function": "0079f480",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam construction host reset_overview_height_005cafc0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No old MovCam limits receiver or producer of its +5C/+60 overview-height fields is held by GameHudHost. The live camera is the separate MovCamNew object; its state cannot substitute for this screen's authored defaults."
+    },
+    {
+      "native": "005cb160",
+      "address": "0045dc88",
+      "function": "0045db40",
+      "host_site": "src/actions_seg5_cc13.cpp:EngineMovie start host hud_movie_screen_005cb160",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host implements this EngineMovie-start adapter. The body additionally needs the native engine-movie screen's +0C/+1C bar-position/default state and HUD +BC/+C0 info-widget/page owners. GameHudHost::update_movie_screen_005cbaf0 only records black-bar update and steps its mission camera; it does not construct this state or graph."
+    },
+    {
+      "native": "005cb970",
+      "address": "0079f65e",
+      "function": "0079f480",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam construction host reset_speed_limits_005cb970",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The old MovCam limits screen and its authored +3C/+40 speed defaults and +44 acceleration time are absent. No reachable host implements the construction callback; the MovCamNew track object has a different layout and producer."
+    },
+    {
+      "native": "005cb9c0",
+      "address": "0079f669",
+      "function": "0079f480",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam construction host reset_accel_time_005cb9c0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No old MovCam limits owner supplies +34/+38 speeds or the authored +48 acceleration-time default. Constructing synthetic floats would not use host state; its original screen/config producer is not bound."
+    },
+    {
+      "native": "005cb9f0",
+      "address": "007902c6",
+      "function": "007901d0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam interpolator host set_linear_speed_limit_005cb9f0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Named reconstructed callers have no reachable host implementation carrying the old mover's limits_4d0 receiver. GameHudHost owns MovCamNew; it supplies neither this screen's angular limit/acceleration time nor a live old-MovCam interpolator path."
+    },
+    {
+      "native": "005cba20",
+      "address": "007902e7",
+      "function": "007901d0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam interpolator host set_angular_speed_limit_005cba20",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The old mover's +4D0 screen receiver and its +34/+44 input fields are not owned by a live host. None of its named set-angular-speed host methods is implemented over that state; the current MovCamNew update is a separate graph."
+    },
+    {
+      "native": "005cba50",
+      "address": "007a01a2",
+      "function": "0079f9e0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:MovCam edit-window host show_message_005cba50",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No reachable host implements the old MovCam edit-window path or owns its +2C widget and +80 display timer. The missing widget/page producer must be bound before the body can replace real display logic."
+    },
+    {
+      "native": "005cc5e0",
+      "address": "007a54b1",
+      "function": "007a5110",
+      "host_site": "src/cc13_sweepB2.cpp:MovCam mode host movcam_show_mode_text_005cc5e0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No live host implements the old MovCam mode callback or owns the screen's mode-text widget/page graph. The MovCamNew track host does not expose that screen; using an unrelated widget or echoed text would not count."
+    }
+  ],
+  "checks": {
+    "off_build": {"command": "./scripts/build.ps1", "result": "passed", "tests": "reconstructed_math and tool_tests: 2/2 passed", "log": "local/output/wire-g2-c146-r1-off.log"},
+    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain146Bound", "result": "passed", "diagnostics": 0, "log": "local/output/wire-g2-c146-r1-on.log"},
+    "order": "ON check completed before the final plain OFF build and readiness recount.",
+    "off_body_preservation": "Rechecked the original read_string_array body from pre-wiring base 617fd79f0 as an exact normalized-text substring of the current OFF arm: true. kWireGoal2Chain146Bound remains false.",
+    "readiness": "Initial wiring: 005c5860 ready -> wired, global wired 8976 -> 8977. Review round 1 recount after the final plain OFF build: global wired remains 8977 and 005c5860 remains wired; local/output/wire-g2-c146-r1-readiness.log. All 13 skipped rows remain ready.",
+    "report_calls": "python tools/verify_report_calls.py reports/wire-g2-c146.json: 14 call rows checked, 0 failed.",
+    "pc24_lint": "Not applicable: no x87 arithmetic in the ON arm or modified body.",
+    "game_run": "Not run, as assigned. No runtime or native-ABI equivalence claim."
+  },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 290,
+      "reviewed_head": "670ee4747d6711b3cd6a7fdbcba638a8ba7f563a",
+      "finding": {
+        "native": "005c5860",
+        "status": "fixed",
+        "reason": "Removed the exact GuiLuaType::String gate. The ON adapter now calls lua_.to_string(element_) directly and retains the null fallback. Local GuiLua51Host::to_string calls lua_tostring and anchors numeric replacements in their registry reference; gui_lua_store_ref_00bd63b0 uses this conversion for String fields. The OFF arm was not edited."
+      },
+      "accepted_skip_findings": [
+        {"native": "005c89b0", "reason": "Native record producer absent; skip retained."},
+        {"native": "005c8ae0", "reason": "Native record ownership absent; skip retained."},
+        {"native": "005c9b60", "reason": "Native group lifetime absent; skip retained."},
+        {"native": "005c9f70", "reason": "OFF already uses the same implementation; skip retained."},
+        {"native": "005cafb0", "reason": "Old MovCam receiver/default producer absent; skip retained."},
+        {"native": "005cafc0", "reason": "Overview state absent; skip retained."},
+        {"native": "005cb160", "reason": "Movie-screen graph absent; skip retained."},
+        {"native": "005cb970", "reason": "Speed defaults absent; skip retained."},
+        {"native": "005cb9c0", "reason": "Acceleration defaults absent; skip retained."},
+        {"native": "005cb9f0", "reason": "Old limits adapter absent; skip retained."},
+        {"native": "005cba20", "reason": "Old limits adapter absent; skip retained."},
+        {"native": "005cba50", "reason": "Edit-window graph absent; skip retained."},
+        {"native": "005cc5e0", "reason": "Mode-text graph absent; skip retained."}
+      ],
+      "focused_conversion_probe": {
+        "result": "passed",
+        "fixture": "Verbatim production MissionStringVectorBinding class extracted into a local standalone Win32 probe and linked to the existing 005c5860 body, GuiLua51Host, NativeString helpers and repository Lua 5.1.1. No production test hook or second reader body was added.",
+        "input": "MissionTree = { values = {42, 'text', true, {}} }; destination initially {'stale'}",
+        "expected_and_observed": ["42", "text", "", ""],
+        "log": "local/output/wire-g2-c146-r1-probe.log",
+        "executable_manifest": "Linked with /MANIFEST:EMBED. No game was run."
+      },
+      "switch_default": false,
+      "wired_before_review_fix": 8977,
+      "wired_after_review_fix": 8977,
+      "disagreements": []
+    }
+  ]
+}

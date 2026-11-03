@@ -4,6 +4,8 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/wire_goal2_chain29_switches.hpp"
+#include "bsp/wire_goal2_chain146_switches.hpp"
+#include "bsp/cc13_sweepB2.hpp"
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
@@ -144,6 +146,71 @@ void count_entities(const std::vector<SceneEntity>& entities,
 // GUI reader uses, so this view is the same shape as GuiLuaReader's: a stack of
 // references with the entered table on top. Nothing here is a reconstruction;
 // it is the bridge between the reconstructed readers and stock Lua.
+class MissionStringVectorBinding final : public MissionTreeStringVectorView,
+                                        public MissionTreeStringVectorHost {
+public:
+    MissionStringVectorBinding(GuiLuaHost& lua, GuiLuaRef parent,
+        std::vector<std::string>& out) : lua_(lua), parent_(parent), out_(out) {}
+    ~MissionStringVectorBinding() override {
+        temporary_.release_to(crt_string_storage());
+        if (element_.valid()) lua_.release(element_);
+        if (table_.valid()) lua_.release(table_);
+    }
+    std::uintptr_t first() const override {
+        return reinterpret_cast<std::uintptr_t>(out_.data());
+    }
+    std::uintptr_t last() const override {
+        return first() + out_.size() * sizeof(std::string);
+    }
+    void erase(std::uintptr_t, std::uintptr_t) override { out_.clear(); }
+    void append(const Cc13SweepBNativeString& text) override {
+        if (text.data != nullptr) out_.emplace_back(text.data, text.length);
+        else out_.emplace_back();
+    }
+    void invalid_parameter() override {
+        throw std::logic_error("invalid mission string-vector bounds");
+    }
+    void enter(std::int32_t kind, const char* key) override {
+        // All 005C5DA0/005C6A70 sites pass name-kind 0. The key and
+        // parent table are the live MissionTree.lua values, not a fixture.
+        if (kind != 0) throw std::logic_error("mission string-vector key is not a name");
+        if (lua_.type_of(parent_) == GuiLuaType::Table)
+            table_ = lua_.get_by_name(parent_, key);
+    }
+    bool has(std::uint32_t index) override {
+        if (element_.valid()) lua_.release(element_);
+        element_ = {};
+        if (lua_.type_of(table_) != GuiLuaType::Table) return false;
+        element_ = lua_.get_by_index(table_, static_cast<std::int32_t>(index));
+        const auto type = lua_.type_of(element_);
+        return type != GuiLuaType::Nil && type != GuiLuaType::None;
+    }
+    void read(std::uint32_t, Cc13SweepBNativeString& text) override {
+        // The native reader's String destination starts {0, null}. Its
+        // producer is this Lua element; host CRT storage owns the temporary.
+        // Reader slot +10h uses lua_tolstring, which also converts numbers.
+        const char* value = lua_.to_string(element_);
+        temporary_.assign_0041e870(crt_string_storage(), value != nullptr ? value : "");
+        text = {temporary_.length(), temporary_.data()};
+    }
+    void release(Cc13SweepBNativeString&) override {
+        temporary_.release_to(crt_string_storage());
+    }
+    void leave() override {
+        if (element_.valid()) lua_.release(element_);
+        element_ = {};
+        if (table_.valid()) lua_.release(table_);
+        table_ = {};
+    }
+private:
+    GuiLuaHost& lua_;
+    GuiLuaRef parent_;
+    std::vector<std::string>& out_;
+    GuiLuaRef table_{};
+    GuiLuaRef element_{};
+    NativeString temporary_{};
+};
+
 class LiveMissionTreeView final : public MissionTreeLuaView {
 public:
     LiveMissionTreeView(GuiLuaHost& host, GuiLuaRef root) : host_(host) {
@@ -236,6 +303,14 @@ public:
     }
 
     std::vector<std::string> read_string_array(std::string_view key) override {
+        if constexpr (kWireGoal2Chain146Bound) {
+            // 005C5860 reads the live Lua list; OFF keeps the host's list loop.
+            std::vector<std::string> out;
+            MissionStringVectorBinding binding(host_, stack_.back(), out);
+            const std::string name(key);
+            cc13_sweepB2_mission_tree_read_string_vector_005c5860(binding, 0, name.c_str(), binding);
+            return out;
+        } else {
         std::vector<std::string> out;
         const GuiLuaRef table = child(std::string(key).c_str());
         if (host_.type_of(table) == GuiLuaType::Table) {
@@ -257,6 +332,7 @@ public:
         }
         release(table);
         return out;
+        }
     }
     std::vector<std::int32_t> read_int_array(std::string_view key) override {
         std::vector<std::int32_t> out;
