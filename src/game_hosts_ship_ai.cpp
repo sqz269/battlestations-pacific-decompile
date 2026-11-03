@@ -35,6 +35,8 @@
 #include "bsp/wire_goal1_chain3_switches.hpp"
 #include "bsp/wire_goal2_chain71_switches.hpp"
 #include "bsp/wire_goal2_chain153_switches.hpp"
+#include "bsp/wire_goal2_chain218_switches.hpp"
+#include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
@@ -1277,6 +1279,24 @@ struct BuildingPadSiteView {
         out[2] = pad->position[2];
     }
     void set_occupant_006ac490(Pad p, Ship s) { pads.set_occupant_006ac490(p, s); }
+};
+
+// Wire goal 2 chain 218, 009278A0. Adapts one units-host slot to the typed view of
+// unit_set_role_009278a0: +180h is the AI coordinator's owner-player word
+// (ai_set_unit_owner_player, read by 009FFD20), and the unit instance's vtable +148h
+// is 0077F360 -> 00927D20, the host's set_role_availability_00927d20 (the same
+// mapping GameScriptOrdersHost::role_owner_set_role_available uses; 0077F360's
+// message-suppress tail stays unmodelled there and here).
+struct UnitSetRoleSlotView final : bsp::cc13_seg49::UnitSetRoleView {
+    GameUnitsHost& units;
+    std::size_t index;
+    UnitSetRoleSlotView(GameUnitsHost& u, std::size_t i) : units(u), index(i) {}
+    void store_role_owner_180(std::uint32_t value) override {
+        ai_set_unit_owner_player(index, static_cast<int>(value));
+    }
+    void set_role_availability_148(std::uint32_t mask, std::uint32_t value) override {
+        units.set_role_availability_00927d20(index, mask, static_cast<std::int32_t>(value));
+    }
 };
 
 }  // namespace
@@ -15182,7 +15202,16 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
             }
             const std::size_t craft = before;
             ++s.crafts_created;
-            if constexpr (kLandingCraftOwnerPlayerBound) ai_set_unit_owner_player(craft, 8);
+            if constexpr (bsp::kWireGoal2Chain218Bound) {
+                // 009278A0 at 0077F2D8 (0077F0E0's vtable[144h] = 0077F2D0 with the bag's OwnerPlayer):
+                // unit_set_role_009278a0 stores +180h and runs vtable[148h](1FFh, owner); OFF keeps the
+                // +180h store alone.
+                UnitSetRoleSlotView role_view{host.units, craft};
+                bsp::cc13_seg49::unit_set_role_009278a0(role_view,
+                                                        static_cast<std::uint32_t>(record.owner_player));
+            } else {
+                if constexpr (kLandingCraftOwnerPlayerBound) ai_set_unit_owner_player(craft, 8);
+            }
             // 00821B4F 006AC490(pad)(craft); then the craft's InitAll 0074BEC0
             // (0074C57C..0074C618) runs 0074A990(pad, building) with SpawnPhase
             // at +1208h. Delivered at the call (LABELLED): the draw and the

@@ -672,10 +672,30 @@ std::uint32_t controlled_target_00927880(Seg60Host& host, void* entity)
 
 // 009278A0, ABI: __thiscall(ECX = unit, value) RET 4. +180h = value, then vtable +148h(1FFh,
 // value).
+void unit_set_role_009278a0(UnitSetRoleView& unit, std::uint32_t value)
+{
+    unit.store_role_owner_180(value);
+    unit.set_role_availability_148(0x1FF, value);
+}
+
+namespace {
+// The Raw entry's view: image memory for +180h, Seg60Host for the vtable +148h call.
+struct RawUnitSetRoleView final : UnitSetRoleView {
+    Seg60Host& host;
+    Raw unit;
+    RawUnitSetRoleView(Seg60Host& h, Raw u) : host(h), unit(u) {}
+    void store_role_owner_180(std::uint32_t value) override { unit.at<std::uint32_t>(0x180) = value; }
+    void set_role_availability_148(std::uint32_t mask, std::uint32_t value) override
+    {
+        host.unit_virtual_148(unit.p, mask, value);
+    }
+};
+}  // namespace
+
 void unit_set_role_009278a0(Seg60Host& host, Raw unit, std::uint32_t value)
 {
-    unit.at<std::uint32_t>(0x180) = value;
-    host.unit_virtual_148(unit.p, 0x1FF, value);
+    RawUnitSetRoleView view{host, unit};
+    unit_set_role_009278a0(view, value);
 }
 
 // 00927C90, ABI: __thiscall(ECX = unit, index) RET 4 -> AL. The role word +188h + index * 4 is 9,
