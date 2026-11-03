@@ -1287,6 +1287,19 @@ void GameFrameHost::game_on_move(float seconds) {
     // menu_->frame drives; game_frame_control.cpp holds the timing block 004E4D3E..004E4D94
     // and mission_state_frame.cpp holds 004E4DF4..004E551E.
     log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
+    if constexpr (kWireGoal4Chain316Bound) {
+        if (!input_runtime_)
+            throw std::logic_error("normal-frame input refresh requires the application's input runtime");
+        // 004E4A63..72 updates input using the incoming frame delta before
+        // the close processor and state dispatch (including state 0Ch).
+        // +2Ch button queries only read device caches: refresh the canonical
+        // backend once here, including released frames, before any wait query.
+        // The inner semantic InputTickBinding remains record-only; refreshing
+        // there as well would poll twice in an in-mission normal frame.
+        input_runtime_->update_backend(seconds);
+    } else {
+        // Previously normal-frame dispatch did not refresh the native backend.
+    }
     // Native 004E4A79 calls the close processor before the front-end update.
     // Bind the actual online publication and current game state; an unavailable
     // confirmation owner is an explicit source boundary, never permission to exit.
@@ -3927,6 +3940,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
+    if constexpr (kWireGoal4Chain316Bound) {
+        frame_host_->bind_input_runtime(input_runtime_);
+    } else {
+        // OFF retains the previous unbound normal-frame input path.
+    }
     frame_host_->bind_loading_queue(singletons_->manager_publication_01090aa0(),
         singletons_->loading_queue_publication_00e18d4c());
     std::function<void(IDirect3DDevice9&)> capture;

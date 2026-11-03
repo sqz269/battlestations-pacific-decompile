@@ -8,10 +8,25 @@
   "wired_total_before": 9314,
   "wired_total_after": 9316,
   "newly_wired": ["00a91020", "004b43b0"],
+  "review_round_1": {
+    "review_run": 617,
+    "finding": 1,
+    "status": "fixed",
+    "cause": "The button query read cached device bytes, but the normal-frame path had not polled the canonical hardware backend after load/configuration.",
+    "change": "GameStartupHost binds the same application GameInputRuntime into GameFrameHost. Under chain316, GameFrameHost::game_on_move calls update_backend(seconds) once before close processing and menu/state dispatch, including state 0Ch.",
+    "delta": "The incoming normal-frame seconds parameter is passed unchanged; no fixed mission step, zero delta or synthesized delta is used.",
+    "single_refresh": "There is one normal-frame refresh call in the outer frame entry. The cached query does not refresh, and the inner semantic InputTickBinding remains record-only, so mission dispatch does not add a second normal-frame poll.",
+    "sample_flow": "The existing current-profile backend update polls its actual devices. For keyboard, 00A9A4A0 clears and fills the same +20Ch cache from Poll/GetDeviceState each pass. The later +2Ch query reads that cache and the edge body updates the same backend+DDh on both released and pressed frames.",
+    "off_check": "Switch temporarily false: scripts/build.ps1 and both CTests passed. Built graph did not link 00A91020 or 004B43B0. Restored true for the final build and commit.",
+    "on_check": "Final ON scripts/build.ps1 and both CTests passed; both claimed body calls remain entry-reachable and readiness remains 9316.",
+    "binary_order_check": "local/output/wire_g4_c316_review1_verification.json: GameFrameHost::game_on_move at 1001A480 has exactly one call to GameInputRuntime::update_backend at 1001A51B, before its sole GameMenuHost::frame call at 1001A5FB. Assertions over the emitted graph passed.",
+    "runtime_limit": "No game or hardware-input run performed; sample-flow evidence is source, native listing and built call-path verification."
+  },
   "built": [
     "Narrow DynamicInputButtonQueryHost interface, implemented by the existing GameInputRuntime with its actual native-device +2Ch dispatch and CRT validation service",
     "Borrow of the application's same GameInputRuntime through GameMissionHost and every subsequently loaded GameMissionFrameHost",
     "DeviceWaitBinding::poll_button_edge calls the reconstructed query and edge body once on the actual published backend and its actual +DDh byte",
+    "GameFrameHost refreshes that same canonical backend once per normal frame with its actual incoming delta before menu/state dispatch and any device-wait cache query",
     "SceneLoaded remains active across application frames while the real input sample has no rising edge; the old one-shot injection and semantic latch are bypassed on the ON path",
     "Existing host paths remain under the OFF arm of the single chain316 switch"
   ],
@@ -19,6 +34,7 @@
     "Live Ghidra window is Ghidra: bsp; config/target.json selects C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe; bsp.py brief reported that program up and ghidra count matched the snapshot",
     "bsp.py show 00a91020 --asm: 00A91030..98 walks three actual checked vectors, 24h apart, and calls each nonnull device's current +2Ch slot",
     "bsp.py ghidra disasm 004db955: captures [00F8BBF4], calls 00A91020 at 004DB95D, then computes the edge and stores the returned byte at the captured backend+DDh, 004DB962..977",
+    "bsp.py show 004e4a40 --asm: 004E4A63..72 passes the incoming frame delta to 00A92C40 before the close processor at 004E4A79 and device-wait state dispatch",
     "bsp.py show 004b43b0 --asm: 004B43B0..3DA performs the same edge/store operation; reused for the native inline device-wait sequence instead of writing a second implementation",
     "bsp.py ghidra disasm 0067d35b: 0067D363 loads [00F8BBF4] before CALL 004B43B0, correcting the old header's screen-receiver interpretation",
     "src/native_input_backend_owner.cpp: construct_native_input_backend_groups_00a91570 already initializes the real +DDh latch to zero",
@@ -28,10 +44,10 @@
     "index": "python tools/bsp.py index --if-stale: fresh",
     "baseline_build": "./scripts/build.ps1 passed, including both CTests",
     "build": "./scripts/build.ps1 passed, including reconstructed_math and tool_tests",
-    "call_graph": "34598/34782 functions reachable; 4345/4779 reconstructed addresses called",
+    "call_graph": "34600/34784 functions reachable; 4345/4779 reconstructed addresses called",
     "call_sites": {
-      "00a91020": "One reachable call at 1036566C from GameInputRuntime::poll_dynamic_button_edge",
-      "004b43b0": "One reachable call at 1036567E from GameInputRuntime::poll_dynamic_button_edge"
+      "00a91020": "One reachable call at 103656AC from GameInputRuntime::poll_dynamic_button_edge",
+      "004b43b0": "One reachable call at 103656BE from GameInputRuntime::poll_dynamic_button_edge"
     },
     "entry_path": "WinMain -> application initialization -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::enter_mission_state_004da6c0 -> DeviceWaitBinding::poll_button_edge -> GameInputRuntime::poll_dynamic_button_edge",
     "readiness": "Both newly wired rows report state=wired, called=true, call_sites=1 and callers_live=1",
@@ -44,6 +60,13 @@
     "These reconstructed C++ interfaces are not original binary ABI replacements"
   ],
   "rows": [
+    {
+      "native": "004e4a40",
+      "status": "wired",
+      "previously_wired": true,
+      "host_site": "src/game_hosts.cpp: GameFrameHost::game_on_move -> GameInputRuntime::update_backend(seconds)",
+      "note": "Review617 fix: one canonical native backend/device refresh per normal frame with the unchanged incoming delta, before menu/state dispatch and the cached device-wait query; excluded from the new-address count"
+    },
     {
       "native": "00a91020",
       "status": "wired",

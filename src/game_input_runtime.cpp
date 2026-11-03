@@ -161,6 +161,10 @@ void GameInputRuntime::backend_update_vslot04(void* backend, std::uint32_t profi
     impl_->backend_vslot04(backend, profile, seconds);
 }
 bool GameInputRuntime::poll_dynamic_button_edge() {
+    // Normal-frame producer: GameFrameHost::game_on_move calls update_backend
+    // with its incoming delta before dispatching to mission device-wait. Keep
+    // this query read-only apart from the shared latch, so additional consumers
+    // cannot resample hardware or advance device timers a second time.
     auto* const backend = static_cast<std::uint8_t*>(impl_->bound.backend_00f8bbf4);
     if (!backend) throw std::logic_error("input button edge requires the actual published backend");
     // Evidence: bsp.py ghidra disasm 0067D35B, MOV ECX,[F8BBF4] then
