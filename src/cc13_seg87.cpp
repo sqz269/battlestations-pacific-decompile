@@ -403,10 +403,17 @@ void native_lua_release_00b67050(NativeLuaObjectStorage& object, std::uint8_t re
 NativeLuaObjectStorage* native_lua_get_by_native_string_00b678e0(NativeLuaObjectStorage& object,
     void* fresh, const NativeString& key)
 {
+    return &native_lua_get_by_native_string_00b678e0(object,
+        *static_cast<NativeLuaObjectStorage*>(fresh), key);
+}
+
+NativeLuaObjectStorage& native_lua_get_by_native_string_00b678e0(NativeLuaObjectStorage& object,
+    NativeLuaObjectStorage& fresh, const NativeString& key)
+{
     const char* text = key.data();
     if (!text) text = "";
-    native_lua_get_by_name_00b67800(object, fresh, text);
-    return static_cast<NativeLuaObjectStorage*>(fresh);
+    native_lua_get_by_name_00b67800(object, &fresh, text);
+    return fresh;
 }
 
 NativeLuaObjectStorage* native_lua_get_by_literal_00b67910(NativeLuaObjectStorage& object,
