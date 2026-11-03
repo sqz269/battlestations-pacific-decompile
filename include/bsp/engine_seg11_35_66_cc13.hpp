@@ -980,6 +980,15 @@ void collect_hardware_info_00992640(HardwareInfoFields& info, HardwareCollectCal
 struct HardwareInfoVectors {
     std::uint32_t words[8];  // +0h..+1Fh as the constructor sees them
 };
+// Borrowed view over the collector's separately owned host storage. The opaque
+// +C38h word is the LCID returned by 00992830 at both original constructor sites.
+struct HardwareInfoConstructView {
+    HardwareInfoVectors& vectors;
+    void*& language_c38;
+    HardwareInfoFields& fields;
+};
+void construct_hardware_info_009927d0(HardwareInfoConstructView view, std::uint32_t language,
+                                      HardwareCollectCalls& calls);
 void construct_hardware_info_009927d0(HardwareInfoVectors& vectors, void*& owner_c38, void* owner,
                                       HardwareInfoFields& info, HardwareCollectCalls& calls);
 

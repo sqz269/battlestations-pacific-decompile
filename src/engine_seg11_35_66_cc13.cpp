@@ -1691,14 +1691,20 @@ void collect_hardware_info_00992640(HardwareInfoFields& info, HardwareCollectCal
 
 void construct_hardware_info_009927d0(HardwareInfoVectors& vectors, void*& owner_c38, void* owner,
                                       HardwareInfoFields& info, HardwareCollectCalls& calls) {
-    vectors.words[1] = 0;
-    vectors.words[2] = 0;
-    vectors.words[3] = 0;
-    vectors.words[5] = 0;
-    vectors.words[6] = 0;
-    vectors.words[7] = 0;
-    owner_c38 = owner;
-    collect_hardware_info_00992640(info, calls);
+    construct_hardware_info_009927d0(HardwareInfoConstructView{vectors, owner_c38, info},
+        static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(owner)), calls);
+}
+
+void construct_hardware_info_009927d0(HardwareInfoConstructView view, std::uint32_t language,
+                                      HardwareCollectCalls& calls) {
+    view.vectors.words[1] = 0;
+    view.vectors.words[2] = 0;
+    view.vectors.words[3] = 0;
+    view.vectors.words[5] = 0;
+    view.vectors.words[6] = 0;
+    view.vectors.words[7] = 0;
+    view.language_c38 = reinterpret_cast<void*>(static_cast<std::uintptr_t>(language));
+    collect_hardware_info_00992640(view.fields, calls);
 }
 
 std::uint32_t read_language_from_options_00992830(const char* path) {
