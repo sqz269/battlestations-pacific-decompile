@@ -1128,7 +1128,7 @@ Raw unit_reference_construct_004684f0(Raw reference, void* unit, SweepAHost& hos
 // byte 00E0C978 is set and the dword +88h + index*0Ch is non-zero, tail-jumps
 // to 008E6430 with the same arguments; otherwise 1.0 (FLD1). 3 calls.
 float gameplay_modifiers_powerup_multiplier_00470440(Raw modifiers, std::int32_t index, void* unit,
-                                                     SweepAHost& host) {
+                                                     PowerupMultiplierHost& host) {
     if (*static_cast<const std::uint8_t*>(host.global_address(0x00e0c978)) != 0 &&
         modifiers.at<std::uint32_t>(0x88 + 0xc * index) != 0) {
         return host.gameplay_modifiers_lookup_008e6430(modifiers, index, unit);
