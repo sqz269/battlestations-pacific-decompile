@@ -116,6 +116,16 @@
     "readiness": "Both rows state=wired, called=true, call_sites=3; wired total 9229 -> 9231",
     "runtime": "Game was not run, as instructed; executable call-graph reachability is static evidence"
   },
+  "merge_validation": {
+    "upstream": "c76aa7649313fd1adc54c5ecb94a101631905425",
+    "resolution": "The only conflict was adjacent includes in src/game_hosts_gunnery.cpp; retain chain275, chain277 and path_movcam_seg46_argon headers. Both bodies of work merged without a code-hunk conflict.",
+    "on_build": "off_switch_on_build.py --names kWireGoal4Chain277Bound passed with zero diagnostics and both tests passing; wrapper restored the assignment's true switch byte-for-byte",
+    "plain_build": "scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests passed",
+    "pc24_staged": "Zero findings over 12 merged source/header files",
+    "wire_readiness": "Merged tree wired total 9237; 007ae330 and 007ae3e0 remain state=wired, called=true, call_sites=3",
+    "call_graph": "Both bodies remain entry-reachable with three call sites each and zero unreachable callers",
+    "candidate_review_note": "Skipped rows above describe selection against e9423535c before the merge; the peer chain276 path-source implementation is now included from upstream."
+  },
   "decisions": [
     "Use existing geometry reductions on actual loaded collision geometry; no synthetic state or duplicate address body.",
     "Retain the old scalar loops unchanged in the switch's else arms, and keep the preexisting bound seeds and input validation.",

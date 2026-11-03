@@ -1,0 +1,142 @@
+{
+  "chain": 275,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain275Bound",
+  "scope": "Torpedo target-size selection for the live unit-target attack-range cache",
+  "wired_before": 9223,
+  "wired_after": 9224,
+  "evidence": [
+    "bsp.py show 00903420 --live and --asm --live: current /battlestationspacific.exe; 00903455..00903472 queries target kind 5 and loads class +A0h through target +538h.",
+    "src/game_hosts_gunnery.cpp build_guns: row.Length is flattened to length and retained in the index-aligned UnitState::hull_length.",
+    "GunneryPassBinding::set_bot_fire_target_00727f10 supplies the real resolved unit index and feeds the result through TorpedoBotRangeCache::attack_range_068.",
+    "The pre-existing 00903420 reconstruction is a semantic size-selector interface. Its native routine also invokes 00901BA0 and writes bot +68h; those operations remain in the existing host range callback and cache consumer. This is not native ABI replacement."
+  ],
+  "validation": {
+    "baseline_build": "passed; reconstructed_math and tool_tests passed",
+    "changed_build": "passed; reconstructed_math and tool_tests passed",
+    "call_graph": "00903420 REACHABLE with one direct call from GameGunneryHost::Impl::torpedo_attack_range_00901ba0; entry path traverses the in-mission fixed-step gunnery pass",
+    "pc24": "pc24_lint --diff origin/main: 0 findings; no arithmetic operations added or changed",
+    "game_run": "not run, as instructed"
+  },
+  "limitations": [
+    "Only actual kind-5 unit targets enter the new size-selector arm; non-unit bounds receivers retain the previous host path.",
+    "Reachability is built-executable call-graph evidence, not an observed gameplay invocation.",
+    "The existing flattened class Length and torpedo skill/profile adapters retain their prior precision and coverage limits."
+  ],
+  "rows": [
+    {
+      "native": "00903420",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::torpedo_attack_range_00901ba0",
+      "detail": "Reuses torpedo_bot_target_size_00903420 with the resolved target's real kind-5 predicate and retained class Length; the returned size drives the existing accuracy/range computation and persistent bot cache."
+    },
+    {
+      "native": "004b43b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::input_edge_latch",
+      "reason": "Missing dynamic-device table/poll provider and active prompt-screen producer; injected action state cannot supply AnyDynamicDeviceButtonDown."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::device_button_held",
+      "reason": "Missing primary-device producer and device vslot +20h binding; primary_device returns nullptr."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Readiness selects an unimplemented logging stub; missing actual native element/group attachment and dispatch receiver."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Readiness selects an unimplemented logging stub; missing actual native element/group attachment and dispatch receiver."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Readiness selects an unimplemented logging stub; missing actual interpolation element receiver and traversal producer."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Readiness selects an unimplemented logging stub; missing actual native element/group attachment and dispatch receiver."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller-snapshot provenance candidate",
+      "reason": "Missing persistent ControllerSnapshotMessage producer and routed consumer; wrapping flattened flags would only round-trip."
+    },
+    {
+      "native": "00447510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::sinking_wreck_debris_draws_00935540",
+      "reason": "Missing real debris node/shape spec, descriptor owner and physics-world/list callbacks; the host only consumes draws."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns",
+      "reason": "Missing NativeUnitHealthPartsView with native part-pointer vectors, descriptors and model bindings; scalar health fields are insufficient."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles",
+      "reason": "Missing persistent launch-delay/active/arming producers and complete BombTickHost expiry/effect/sweep lifecycle."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/hit_narrowphase.cpp: projectile_may_bind_006e6bb0 candidate",
+      "reason": "Existing helper covers only the teardown predicate; missing real owner-handle/observer registration and grace-reset wiring for full BindOwner."
+    },
+    {
+      "native": "00694af0",
+      "status": "skipped",
+      "host_site": "src/observer_edges.cpp: observer_pair_registered_00694af0 candidate",
+      "reason": "Missing matching NativeObserverOwnerStorage identities and lifetime provider at a live host query site."
+    },
+    {
+      "native": "00683320",
+      "status": "skipped",
+      "host_site": "src/frontend_screen_animation.cpp: end_thumb_drag candidate",
+      "reason": "Missing a live FrontEndScreenScroller drag-release callback binding; available sites are abstract host calls."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: MoverFrustumHost::fov_aspect_product_00b6fc30 candidate",
+      "reason": "Missing the live frustum/soldier/shadow caller adapter that supplies this same camera's projection fields."
+    },
+    {
+      "native": "008d41f0",
+      "status": "skipped",
+      "host_site": "src/settings_initial_state.cpp: initialize_game_settings_008d7710 candidate",
+      "reason": "Typed GameSettingsBlock startup is not the active native settings owner; missing a live typed reset-operation binding."
+    },
+    {
+      "native": "008d4520",
+      "status": "skipped",
+      "host_site": "src/settings_initial_state.cpp: initialize_game_settings_008d7710 candidate",
+      "reason": "Typed GameSettingsBlock startup is not the active native settings owner; missing a live typed reset-operation binding."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing off-main-thread named-call producer and source LuaVariantRecord vector; the host's deferred queue stays empty."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::push_argument",
+      "reason": "Missing deferred-call producer and MissionLuaEnvironmentHost binding; an empty queue never reaches this callback."
+    }
+  ]
+}
