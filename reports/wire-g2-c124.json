@@ -1,0 +1,204 @@
+{
+  "run": 247,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 124,
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "candidate": "segment 55 [00878530-0088b3d0]",
+  "tier": 2,
+  "host_file": "src/game_hosts_lua.cpp",
+  "switch": "kWireGoal2Chain124Bound",
+  "switch_default": false,
+  "wired_total_before": 8943,
+  "wired_total_after": 8944,
+  "wired_assigned_rows": [
+    "00885fb0"
+  ],
+  "build": {
+    "off": "passed: final plain scripts/build.ps1 after ON check; both reconstructed_math and tool_tests passed (2/2)",
+    "on": "passed: off_switch_on_build.py --names kWireGoal2Chain124Bound; exit 0, zero diagnostics, sources restored OFF",
+    "initial_on_failure": "Link check caught a core-library to executable-only runner dependency. Adapter moved from mission_lua_host.cpp to game_hosts_lua.cpp; the core file was restored exactly. Subsequent ON build passed.",
+    "pc24_lint": "not applicable: ON arm adds no x87 arithmetic",
+    "game_run": "not run, as instructed"
+  },
+  "off_preservation": "mission_lua_host.cpp is unchanged. OFF still calls bsp::run_mission_script(*this, script_name), retaining its original loop, file operations, chunk outcomes and summary consumers. The adapter and receiver view are constructed only in the chain124 ON arm.",
+  "on_behavior": "The existing 00885FB0 body replaces the base/override script sequencing loop for mission script loading. Its file and chunk callbacks use this host's existing script buffer, Lua state and VFS override lookup. Actual chunk outcomes feed the existing mission summary. No second body or substitute VM is introduced.",
+  "api_adaptation": "Extracted the three existing script callbacks into MissionLuaScriptEnvironmentHost, inherited by the full MissionLuaEnvironmentHost. Only the parameter type of the existing 00885110/00885FB0 bodies changes; both function bodies retain their logic. This avoids inventing callbacks for unrelated stack, result, entity or named-call operations.",
+  "host_objects": [
+    {
+      "name": "ScriptEnvironment (borrowed script-services adapter)",
+      "where": "src/game_hosts_lua.cpp:12090",
+      "producers": [
+        "GameMissionHost::Impl::finish_scene_load derives the script name from the loaded SceneRecord, preferring script_names[8] with kSceneStageScriptBound=true",
+        "GameMissionLuaHost::open_script/script_size/read_script use the host's existing VFS-backed OpenScript buffer",
+        "GameMissionLuaHost::script_variant_names calls resources_->override_paths_00bdef90(path)",
+        "bsp::run_lua_chunk uses the same GameMissionLuaHost's existing Lua state and returns the outcomes consumed by summary_.mission_chunks_run and mission_chunk_ok"
+      ],
+      "lifetime": "Constructed only during the ON mission-script phase corresponding to 00886190; destroyed after the base and override calls finish. Open scripts close after their chunks, matching the OFF helper. The accompanying typed MissionLuaHostState receiver is a borrowed services view, with no VM or queue ownership; its machine token is the real host and the callbacks use that host's existing state.",
+      "layout": "Typed callbacks only; no byte-offset reads or new native image storage. No result-sink, variant-map, terrain or saved-entity owner was fabricated.",
+      "rows": [
+        "00885fb0"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "0087bf80",
+      "address": "0095e5ee",
+      "function": "0095e5b0",
+      "host_site": "src/cc13_seg62.cpp:unit_read_common_lua_properties (unimplemented entity_init_slot_a4_0087bf80 seam)",
+      "status": "skipped",
+      "reason": "Requires saved-entity Lua data, replication state and the damage-frame/node graph. No implementation of the caller's entity_init_slot_a4_0087bf80 service supplies those owners; constructing a blank damage graph would not preserve its producers.",
+      "reach": "static: inspected the reconstructed common-property seam; no concrete host adapter established"
+    },
+    {
+      "native": "008826f0",
+      "address": "00882ae5",
+      "function": "00882ac0",
+      "host_site": "src/landscape_lua_seg55_argon.cpp:landscape_load_terrain_00882ac0/release_terrain_008826f0",
+      "status": "skipped",
+      "reason": "Body consumes native physics-body vectors +368/+36C and +378/+37C, ocean registration and refcounted terrain nodes. The typed LandscapeState caller has no concrete release adapter carrying that native ownership graph; a zero image would be a no-op.",
+      "reach": "static: only abstract release seam established"
+    },
+    {
+      "native": "008849b0",
+      "address": "0074fe2e",
+      "function": "0074fdd0",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::fire_lua_trigger_0074fdd0",
+      "status": "skipped",
+      "reason": "The host pushes trigger values directly onto Lua; it owns no 20-byte variant vector. This initializer writes only a fresh record identity/tag/payload/name. Calling it on a throwaway record before the unchanged pushes would not replace host logic; a complete native argument-vector owner is outside this script-runner adapter.",
+      "reach": "static: read fire_lua_trigger_0074fdd0 and its proximity-trigger caller"
+    },
+    {
+      "native": "00884ef0",
+      "address": "006ee0f2",
+      "function": "006ee0d0",
+      "host_site": "src/cc13_seg33b_misc.cpp:lua_key_copy_construct_00884ef0 service",
+      "status": "skipped",
+      "reason": "Needs actual native LuaKey and pooled string ownership from the variant pair/map producer. Caller has only an unimplemented host method; the script-runner host uses std::string paths and no native variant-key records.",
+      "reach": "static: pair construction has no concrete host-state adapter"
+    },
+    {
+      "native": "00885350",
+      "address": "008879f4",
+      "function": "00887750",
+      "host_site": "src/mission_lua_host.cpp:call_named_entry_point/run_named_call_body",
+      "status": "skipped",
+      "reason": "Needs the saved entry VFS block depth and an actual leave-file-block owner. MissionLuaHostServices exposes neither producer nor retained block invocation. Wiring constant depth zero would fabricate state; the script-runner adapter does not add a named-call/VFS scope owner.",
+      "reach": "static: named-call host path exists, but the scope/depth producer is absent from that interface"
+    },
+    {
+      "native": "00885fb0",
+      "address": "00886190",
+      "function": "008860b0",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_mission_script_008860b0:12088",
+      "status": "wired",
+      "reach": "static: GameMenuHost frame ScreenVisible -> GameMissionHost::advance SceneRecord -> Impl::finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70 run_mission_script step -> GameMissionLuaHost::run_mission_script_008860b0. No enclosing false switch; kSceneStageScriptBound=true only selects the authored name. Candidate provided no surveyed mission count.",
+      "contract": "0088618B PUSH 1; 0088618D PUSH path; 0088618E MOV ECX,ESI; CALL at 00886190. Callee RET 8 at 0088609E. The other original reference is vtable data 00D7F6C8, not another direct call.",
+      "state": "Path is summary_.mission_script_path derived from the loaded scene script name; run_variants=true is the binary caller's literal. File callbacks use existing host state, and actual results feed the existing summary. ON owns sequencing; OFF preserves bsp::run_mission_script.",
+      "coverage": "existing reconstructed body, callback-bound; build-tested only"
+    },
+    {
+      "native": "00886840",
+      "address": "006eef45",
+      "function": "006eeb20",
+      "host_site": "src/cc13_seg33b_misc.cpp:lua_variant_from_map_00886840 service",
+      "status": "skipped",
+      "reason": "Constructs a native variant map via allocated sentinel/tree copy. Input-event publication has no concrete native map/string allocator adapter or map producer in this host; std::vector script override paths are not that object.",
+      "reach": "static: input-event publication service only; no map owner supplied"
+    },
+    {
+      "native": "008869d0",
+      "address": "00886e86",
+      "function": "00886e00",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "Host result collection pops values and returns a count; it does not retain native variants. Setter requires a real variant receiver and cleanup ownership before replacing its payload. Creating a discarded numeric record would leave host logic unchanged.",
+      "reach": "static: collect_results exists, native variant storage/consumer absent"
+    },
+    {
+      "native": "008869f0",
+      "address": "00886e68",
+      "function": "00886e00",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "Boolean-to-number result conversion requires the same missing retained variant sink/cleanup owner. The alternative multiplayer score caller also needs its native argument-vector/session producer; no such owner is built here.",
+      "reach": "static: no host consumer for constructed result variants"
+    },
+    {
+      "native": "00886b30",
+      "address": "00887087",
+      "function": "00886e00",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "Light-userdata setter needs native variant storage plus valid prior-value cleanup. No host result receiver consumes the tag-4 record; a temporary pointer round trip would not count.",
+      "reach": "static: no native result variant storage/consumer"
+    },
+    {
+      "native": "00886b50",
+      "address": "00887044",
+      "function": "00886e00",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "Table result conversion needs the native variant tree, key/string producers and recursive cleanup owner. They are not present in the count-only collection path, and cannot be replaced with an empty map.",
+      "reach": "static: result collector has no native map producer"
+    },
+    {
+      "native": "00886da0",
+      "address": "006edf59",
+      "function": "006edf00",
+      "host_site": "src/cc13_seg33b_misc.cpp:lua_variant_copy_construct_00886da0 service",
+      "status": "skipped",
+      "reason": "Requires an owned native variant vector/pair and full string/map copy/retirement services. Reconstructed callers expose abstract methods with no implementation. The host's existing MissionLuaArgument/std::vector values have a different layout and ownership contract.",
+      "reach": "static: native vector/pair copy seams only"
+    },
+    {
+      "native": "008875d0",
+      "address": "008c83da",
+      "function": "008c8390",
+      "host_site": "src/game_hosts_lua.cpp:binding_trampoline (debugtrap registration)",
+      "status": "skipped",
+      "reason": "Original default sink belongs to DebugTrap or AutoTest. This host has no DebugTrap/AutoTest result-sink consumer. Initializing an empty unused sink around error logging would not replace a host operation.",
+      "reach": "static: binding is registered, but no concrete sink consumer is implemented"
+    },
+    {
+      "native": "008875f0",
+      "address": "007e2a72",
+      "function": "007e2a20",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_plane_globals_007e2a20",
+      "status": "skipped",
+      "reason": "Original tuning-load sink has a machine and variant-vector results across the tuning load. The host reads globals directly and retains no such sink/vector. Adding an empty sink to this path would not make a counted row; narrative/logging callers also lack that sink consumer.",
+      "reach": "static: tuning load host exists, native sink producer/consumer absent"
+    },
+    {
+      "native": "00887670",
+      "address": "007eab3f",
+      "function": "007e2a20",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_plane_globals_007e2a20",
+      "status": "skipped",
+      "reason": "No native result-sink vector is constructed or retained on this host path. Tidying an invented empty vector would change no real cleanup; the required sink/vector lifetime producer is missing.",
+      "reach": "static: same missing sink owner as 008875F0"
+    },
+    {
+      "native": "00887b30",
+      "address": "0045f5bf",
+      "function": "0045f520",
+      "host_site": "src/mission_lua_host.cpp:call_named_entry_point_forced",
+      "status": "skipped",
+      "reason": "Host already constructs the forced NamedCallRequest and invokes the named-call body. Existing reconstructed wrapper only forwards raw arguments with force=true. A typed raw-argument view and named-call environment/outcome adapter would be separate work from this script environment; merely reflecting the existing request through a callback would provide no additional body logic.",
+      "reach": "static: forced call path exists; no typed wrapper/argument adapter added"
+    },
+    {
+      "native": "00888c40",
+      "address": "007a138f",
+      "function": "007a0eb0",
+      "host_site": "src/hud_movie_camera.cpp:parse_007a0eb0",
+      "status": "skipped",
+      "reason": "Requires actual native LuaObject table/light-userdata wrappers and an entity vslot+5C(kind=2) owner. The host's script path strings and trigger identifiers do not supply those objects; the camera parser is only partially reconstructed. No small complete typed entity-object adapter established.",
+      "reach": "static: only partial camera parser caller established"
+    }
+  ],
+  "report_verification": "passed: 17 original CALL rows checked, 0 failed",
+  "readiness": "Final plain OFF-build map: 8943 -> 8944 wired, assigned row 00885FB0 confirmed wired; all 16 skipped rows remain ready."
+}

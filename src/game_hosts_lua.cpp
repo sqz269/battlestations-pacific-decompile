@@ -15,6 +15,7 @@
 #include "bsp/wire_goal2_chain69_switches.hpp"
 #include "bsp/wire_goal2_chain104_switches.hpp"
 #include "bsp/wire_goal2_chain119_switches.hpp"
+#include "bsp/wire_goal2_chain124_switches.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -12082,8 +12083,60 @@ bool GameMissionLuaHost::run_mission_script_008860b0(const std::string& script_n
     summary_.mission_script_path = bsp::mission_script_path(script_name);
     set_phase("mission chunk");
     log_.implemented("MissionLua::run_mission_script", "008860b0");
-    const std::vector<bsp::LuaChunkResult> results
-        = bsp::run_mission_script(*this, script_name);
+    const std::vector<bsp::LuaChunkResult> results = [this, &script_name]() {
+        // 00885FB0 runs the base/override sequence; OFF keeps the host's loop.
+        if constexpr (bsp::kWireGoal2Chain124Bound) {
+            namespace lua_model = bsp::landscape_lua_seg55_argon;
+            class ScriptEnvironment final : public lua_model::MissionLuaScriptEnvironmentHost {
+            public:
+                explicit ScriptEnvironment(bsp::MissionLuaHostServices& services)
+                    : host_(services) {}
+
+                bool read_vfs_file(const std::string& name, std::vector<char>& bytes) override {
+                    if (!host_.open_script(name)) {
+                        // Match run_script_file's outcome for an unavailable file.
+                        results.emplace_back();
+                        return false;
+                    }
+                    const int size = host_.script_size();
+                    bytes.resize(static_cast<std::size_t>(size < 0 ? 0 : size));
+                    host_.read_script(bytes.empty() ? nullptr : bytes.data(), size);
+                    return true;
+                }
+
+                void run_lua_chunk_006b89f0(void*, const char* data, std::size_t size,
+                    const char* name, lua_model::MissionLuaResultSink*,
+                    std::string&, int mode) override {
+                    bsp::LuaChunkResult result = bsp::run_lua_chunk(host_, size == 0 ? "" : data,
+                        host_.script_size(), name, true, false, mode);
+                    result.error_message.clear();
+                    result.error_message_captured = false;
+                    host_.close_script();
+                    results.push_back(std::move(result));
+                }
+
+                void append_lua_script_overrides_00bdef90(const std::string& name,
+                    std::vector<std::string>& variants) override {
+                    variants = host_.script_variant_names(name);
+                }
+
+                std::vector<bsp::LuaChunkResult> results;
+            private:
+                bsp::MissionLuaHostServices& host_;
+            } environment(*this);
+
+            // 00886190: borrow this host's existing Lua services for the load's
+            // script phase. This typed receiver view owns no VM or call queue;
+            // the adapter runs chunks on state_ through the same host methods.
+            lua_model::MissionLuaHostState receiver;
+            receiver.lua_machine = this;
+            lua_model::mission_lua_host_run_script_with_variants_00885fb0(
+                receiver, summary_.mission_script_path.c_str(), true, environment);
+            return std::move(environment.results);
+        } else {
+            return bsp::run_mission_script(*this, script_name);
+        }
+    }();
     summary_.mission_chunks_run = results.size();
     summary_.mission_chunk_ok = !results.empty()
         && results.front().status == bsp::LuaChunkStatus::Ok;
