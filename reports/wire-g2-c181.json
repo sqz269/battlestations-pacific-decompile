@@ -1,0 +1,102 @@
+{
+  "goal": 2,
+  "chain": 181,
+  "run": 348,
+  "harness": "codex",
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "candidate": "segment 39 [00723030-00728960]",
+  "tier": 2,
+  "host_file": "src/geom_mesh_resource.cpp",
+  "selection_reason": "The mesh parser already produces the positions, triangles and merged parts needed by one typed bounds/tree owner, unblocking two rows. Claims for segments 28, 54 and 73 overlapped other workers.",
+  "switch": "kWireGoal2Chain181Bound",
+  "switch_value": false,
+  "wired_total_before": 9004,
+  "wired_total_after": 9006,
+  "counting_scope": "Source-level readiness counts, measured with a plain OFF build map; not runtime or ABI proof.",
+  "rows": [
+    {
+      "native": "00725380",
+      "address": "00727a76",
+      "function": "00727310",
+      "host_site": "src/geom_mesh_resource.cpp:227 parse_geom_mesh_resource_00727310",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "src/game_hosts_mission.cpp -> GameMissionFrameHost::run_scene_load_004dfb70 load_scene_contents -> GameUnitsHost::create_units -> GameGunneryHost::attach_00864bd0 -> Impl::build_guns -> Impl::ship_model_slots -> read_mmod_geom_meshes -> parse_geom_mesh_resource_00727310. kShipPlatformAttachmentBound is true. The call is outside kWireGoal2Chain122Bound's conditional field-read site and needs no other OFF switch.",
+      "contract": "ECX mesh from 00727A72; no stack arguments, plain RET at 0072554E. All original callers: 00727310 at 00727A76, after the element merge.",
+      "replacement": "Builds the existing typed GeomMesh from decoded host vertices, signed low-word triangle indices and surviving element ordinal lists. Writes the reordered ordinals back; gunnery uses the produced all-position bounds instead of its per-triangle min/max loop.",
+      "coverage": "existing reconstructed body, unchanged"
+    },
+    {
+      "native": "007230f0",
+      "address": "007244c6",
+      "function": "007240e0",
+      "host_site": "src/leftovers_cc13.cpp:168 build_tree_node_007240e0",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "The same mission/model-load path reaches build_mesh_trees_00725380 -> build_part_tree_00724ce0 -> build_tree_node_007240e0. A part range above the image's 20-triangle leaf threshold reaches the dispatcher. Only this chain's switch gates the new path.",
+      "contract": "All original callers: 007240E0 at 007244C6. PUSH count, start, axis at 007244BD..007244C3; callee RET 0Ch. ECX is unused by the callee. The adapter supplies the live record and fixed scratch-half pointers as 00E19BD8/00E19BDC.",
+      "replacement": "Calls the existing dispatcher in place of the direct radix-sort call. Its key-0 body remains existing code; key-4/key-8 callbacks delegate to the existing parameterized sorter. Only the host interface was narrowed; no duplicate body was added.",
+      "coverage": "existing reconstructed dispatcher logic, unchanged"
+    },
+    {
+      "native": "00726d80",
+      "address": "00727370",
+      "function": "00727310",
+      "host_site": "src/geom_mesh_resource.cpp:parse_geom_mesh_resource_00727310 authored_elements.reserve",
+      "status": "skipped",
+      "reason": "The host owns std::vector<GeomMeshElement>, not the proxy/begin/end/cap native vector of 2Ch-byte elements. The body requires the native deep-copy/destroy allocator domain (007227E0, 00726A80, 00725670), including each element's nested vector and tree pointers. Building that separate native owner exceeds this chain's one-object scope; a synthetic mirror would not replace host storage.",
+      "reach": "static",
+      "reach_evidence": "Reachable parser reserve site; the storage contract is missing."
+    },
+    {
+      "native": "00728960",
+      "address": "0072e52e",
+      "function": "0072e510",
+      "host_site": "src/cc13_front5.cpp:gun_construct_0072e510 -> Front5Host::gun_base_construct_00728960",
+      "status": "skipped",
+      "reason": "Front5Host::gun_base_construct_00728960 has no concrete implementation or host path running gun_construct_0072e510. The required native unit-tickable-entity constructor 0087B670 and its state producers are absent from the gunnery host; GameGunRow is a different typed projection. Installing image vtable addresses into fabricated storage would not be wiring real host state.",
+      "reach": "static",
+      "reach_evidence": "Original call verified, but no current executable host path reaches this reconstructed constructor."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "Decoded GeomMesh bounds/tree owner",
+      "where": "src/geom_mesh_resource.cpp:211",
+      "storage": "Existing leftovers_cc13::GeomMesh typed projection. Its ON-only shared owners are retained by the decoded payload and copied into the existing ShipModelSlots class cache, surviving until that cache is released. Both OFF owner bases are empty.",
+      "producers": [
+        "00727A90/007268D0 resource load lifetime; ShipModelSlots retains every decoded tree owner until host model-cache teardown, after temporary decoded payloads are released",
+        "00727310 position reads at 00727492/0072749D/007274A8 -> mesh positions (+1Ch begin/+20h end, 12-byte records)",
+        "00727310 low-word triangle stores at 007276D4/007276DC/007276E5 -> mesh triangles (+2Ch begin/+30h end, 6-byte records); copied bit-for-bit to the existing signed-index view",
+        "00727310 element ordinal assignment at 00727646, followed by 00727704 merge -> mesh parts (+0Ch begin/+10h end, native 2Ch stride); part triangle list +14h/+18h",
+        "Existing 00725380/00724CE0/007240E0 bodies produce bounds +38h/+44h (12 bytes each), part node_min +20h, node_max +24h (32-bit native pointers), node_capacity +28h (u32)",
+        "Existing 00724CE0 builds n records plus n scratch records; GeomMeshRadixSortAdapter borrows those buffers as native 00E19BD8/00E19BDC pointer globals for the sort call"
+      ],
+      "rows": [
+        "00725380",
+        "007230f0"
+      ],
+      "consumers": [
+        "output.elements triangle_ordinals receive the native tree's sorted lists",
+        "src/game_hosts_gunnery.cpp:5352 ship_model_slots consumes native bounds for entry.mesh_box and retains the trees in the class cache; OFF preserves the old min/max loop byte for byte"
+      ]
+    }
+  ],
+  "checks": {
+    "on_build": "passed after cache lifetime refinement: off_switch_on_build.py --names kWireGoal2Chain181Bound; exit 0, zero diagnostics; reconstructed_math and tool_tests passed",
+    "on_build_log": "local/off_switch_on_build.log",
+    "off_build": "passed after cache lifetime refinement: final plain scripts/build.ps1; exit 0; reconstructed_math and tool_tests passed (2/2)",
+    "off_build_log": "local/chain181_off_build.log",
+    "readiness": "passed after final plain OFF build: 007230f0 and 00725380 both wired; total 9004 -> 9006",
+    "report_calls": "passed: 4 call rows checked, 0 failed",
+    "pc24_lint": "passed: --staged, 0 findings, 7 source/header files",
+    "game_run": "not run, as instructed",
+    "self_review": "Reviewed the complete code diff; native body logic is retained and original OFF statements remain in the OFF arms."
+  },
+  "on_effect": "Builds and retains model collision bounds/trees during GeomMesh payload decoding; traverses each merged element's triangles in the built order, replaces gunnery's mesh bounds reduction with produced all-vertex bounds, and dispatches non-leaf tree sorts through 007230F0. Switch remains OFF.",
+  "limitations": [
+    "Static host reach only: no mission call counts were supplied for this range and no game was run.",
+    "Existing typed reconstruction interfaces, not drop-in native ABI replacements."
+  ]
+}

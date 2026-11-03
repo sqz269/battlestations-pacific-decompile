@@ -1,7 +1,10 @@
 #include "bsp/geom_mesh_resource.hpp"
+#include "bsp/leftovers_cc13.hpp"
+#include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/wire_goal2_chain122_switches.hpp"
 
 #include <new>
+#include <cstring>
 #include <stdexcept>
 #include <utility>
 
@@ -202,6 +205,36 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
 
         output.elements = output.authored_elements;
         merge_same_kind_elements_00727704(output.elements);
+        if constexpr (kWireGoal2Chain181Bound) {
+            // 00725380 builds decoded mesh bounds/trees; OFF keeps the unbuilt payload.
+            namespace gm = leftovers_cc13;
+            auto tree = std::make_shared<gm::GeomMesh>();
+            // Producers: 00727492..007274A8 positions; 007276D4..007276E5
+            // low-word triangle indices (007240E0 subsequently MOVSX reads).
+            tree->positions.reserve(output.vertices.size());
+            for (const auto& v : output.vertices)
+                tree->positions.push_back({v[0], v[1], v[2]});
+            tree->triangles.resize(output.triangles.size());
+            for (std::size_t i = 0; i < output.triangles.size(); ++i) {
+                const auto& source = output.triangles[i];
+                const std::uint16_t words[3] = {source.v0, source.v1, source.v2};
+                std::memcpy(tree->triangles[i].data(), words, sizeof words);
+            }
+            // 00727704's surviving parts, including their authored ordinal lists.
+            tree->parts.resize(output.elements.size());
+            for (std::size_t i = 0; i < output.elements.size(); ++i)
+                tree->parts[i].triangle_list = output.elements[i].triangle_ordinals;
+            const auto built = gm::build_mesh_trees_00725380(*tree);
+            if (built != gm::GeomMeshBuild::ok) {
+                error = "GeomMesh tree references an invalid triangle or vertex.";
+                return false;
+            }
+            for (std::size_t i = 0; i < output.elements.size(); ++i)
+                output.elements[i].triangle_ordinals = tree->parts[i].triangle_list;
+            output.retain_bounds_and_trees(std::move(tree));
+        } else {
+            // Existing host payload has no bounds/tree owner.
+        }
         return true;
     } catch (const std::bad_alloc&) {
         error = "Could not allocate the decoded GeomMesh payload.";
