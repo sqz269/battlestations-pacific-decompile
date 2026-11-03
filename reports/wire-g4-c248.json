@@ -134,11 +134,12 @@
   "built": [
     "Persistent typed slot-0 DirectorPathObject, constructed with the stable live director as owner",
     "Copied Map/mode/session-selected world bounds from GameShipAiHost::load_avoid_zone_geometry",
-    "Real point-vector conversions for native erasure, segment clipping and 32-unit pruning"
+    "Real point-vector conversions for native erasure, segment clipping and 32-unit pruning",
+    "Borrowed live GameUnitsHost pose binding, installed after construction and withdrawn before unit teardown; owner XYZ sampled at message delivery"
   ],
   "scope": [
     "The bound insertion arm accepts an empty queue or one entity-free moveonpath, which both select the owned slot-0 path.",
-    "The existing host body remains verbatim in the OFF arm and in the ON fallback for missing Map/owner state, entity-bearing last commands, or other occupied slots.",
+    "The existing host body remains verbatim in the OFF arm and in the ON fallback for missing Map/path/live owner state, an unavailable live unit slot, entity-bearing last commands, or other occupied slots.",
     "This does not create ten independent path objects, recover the target+170h type interface, or model the online message-57h echo."
   ],
   "evidence": [
@@ -148,7 +149,8 @@
     "bsp.py show 007B1FB0 --asm --start 65: (dy*dy + dx*dx) + dz*dz instruction order",
     "bsp.py ghidra bytes 00CE7D78 --length 4: 00 00 00 42 = binary32 32.0f",
     "GameAvoidZoneRuntime::rebuild selects bounds directly from loaded Map using scene mode/forced/session",
-    "00D7A2F8 raw double bytes 00 00 00 40 e1 7a 94 3f confirm the retained 0.019999999552965164 threshold"
+    "00D7A2F8 raw double bytes 00 00 00 40 e1 7a 94 3f confirm the retained 0.019999999552965164 threshold",
+    "Review 445: GameUnitsHost::unit_position_00fc reads current slot.motion.position; the live-owner/count guard runs before path mutation or counters, and GameUnitsHost teardown withdraws the binding first"
   ],
   "validation": {
     "build": "scripts/build.ps1: Win32 Release and both existing CTest suites pass",
@@ -156,10 +158,30 @@
     "precision_fixture": "local/output/g4_path_probe.cpp, manifested x86 probe: original instruction PC24=4487abbd, reconstructed=4487abbd, old expression=4487abbc",
     "readiness": "local/output/wire_readiness.json: six selected addresses newly wired; 9070 -> 9076",
     "game_run": false,
-    "abi_compatibility_claimed": false
+    "abi_compatibility_claimed": false,
+    "review_round_1": "Review 445 finding 1 fixed: live pose at delivery, with unavailable-owner fallback; same six wires and switch scope."
   },
   "remaining": [
     "Recover independent per-slot path ownership/cursors before widening the ON arm beyond slot 0.",
     "Recover target+170h interface type and native world+16Ch list producer/membership/order."
+  ],
+  "review_fixes": [
+    {
+      "review_run": 445,
+      "round": 1,
+      "finding": 1,
+      "status": "fixed",
+      "finding_text": "Clipping origin used GameCommandUnit::position, a registration snapshot that becomes stale after movement.",
+      "change": "GameUnitsHost binds itself to its owned command host; apply_user_path_point_007207c0 queries unit_position_00fc for current XYZ at message delivery and passes that sample to AddPointInputs::owner_position.",
+      "fallback": "Missing live owner or unit_index >= owner.count() invokes the unchanged legacy lambda before any bound-path mutation/counter. The binding is withdrawn before unit teardown.",
+      "checks": [
+        "Win32 Release build and both existing CTest suites",
+        "staged and origin/main...HEAD PC24 lint",
+        "OFF insertion body identity against fa3b65aad",
+        "original-instruction PC24 clipping fixture",
+        "wire_readiness: six claimed calls remain wired"
+      ],
+      "limits": "The pose source and lifetime/availability guards were source-reviewed and build-checked; no game or live movement test was run."
+    }
   ]
 }

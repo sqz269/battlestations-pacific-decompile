@@ -17,6 +17,7 @@
 // include/bsp/game_hosts_commands.hpp.
 
 #include "bsp/game_hosts_commands.hpp"
+#include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -350,6 +351,7 @@ struct GameCommandsHost::Impl {
     std::vector<GameFireTargetRequest> fire_target_requests;   // cc9_weapon_director_fire_target
     std::deque<GameDirector> directors;
     std::optional<bsp::WorldMapBounds> user_path_world_bounds;
+    const GameUnitsHost* user_path_live_owner{nullptr};
     unsigned long long unit_pointers_kept{0};   // packet s57_unit_storage census
     // Packet s53_path_multileg: 007ADD70 calls, the hits its 0.5 lookahead
     // turned away, advances taken by force alone, and steps of two or more legs.
@@ -2519,7 +2521,8 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
         record("PathObject::user_path_echo_57", 0x0071ffbfu);
         };
         GameDirector& director = directors[unit_index];
-        if (!user_path_world_bounds || !director.user_path_object) {
+        if (!user_path_world_bounds || !director.user_path_object
+            || user_path_live_owner == nullptr || unit_index >= user_path_live_owner->count()) {
             legacy();
             return;
         }
@@ -2535,6 +2538,13 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
             legacy();
             return;
         }
+        // 0071FDE0 reads the owner's current +FCh XYZ through its +34h unit.
+        // Sample at message delivery: GameCommandUnit::position is only the
+        // registration snapshot. The guard above excludes the getter's
+        // out-of-range zero result before any path mutation or counters.
+        gp::Vec3f live_owner_position;
+        user_path_live_owner->unit_position_00fc(unit_index,
+            live_owner_position.x, live_owner_position.y, live_owner_position.z);
         ++director.user_points_received;
         const bool start_new = gp::last_command_needs_new_path_0071dc80(queue, std::nullopt);
         done("WeaponDirector::last_command_needs_new_path", 0x0071dc80u);
@@ -2563,8 +2573,7 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
         gp::AddPointInputs input;
         input.replace = start_new;
         input.cursor_18 = path.cursor_18;
-        const auto& position = units[unit_index].position;
-        input.owner_position = gp::Vec3f{position[0], position[1], position[2]};
+        input.owner_position = live_owner_position;
         input.session_mode = session_mode_1fe4();
         // 0071FE60..0071FE95 preserves the first point before bounds erasure;
         // the replacement path has already been cleared at that native site.
@@ -2693,6 +2702,10 @@ void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_ind
 
 void GameCommandsHost::bind_user_path_world_bounds(const bsp::WorldMapBounds& bounds) {
     impl_->user_path_world_bounds = bounds;
+}
+
+void GameCommandsHost::bind_user_path_live_owner(const GameUnitsHost* owner) noexcept {
+    impl_->user_path_live_owner = owner;
 }
 
 bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const {
