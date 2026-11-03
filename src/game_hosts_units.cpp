@@ -21,6 +21,7 @@
 #include "bsp/wire_goal2_chain73_switches.hpp"
 #include "bsp/wire_goal2_chain76_switches.hpp"
 #include "bsp/wire_goal2_chain84_switches.hpp"
+#include "bsp/wire_goal2_chain147_switches.hpp"
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -30354,8 +30355,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             ti.aim_too_close_6a0 = unit_.df_aim_state.too_close_24;
+                            if constexpr (bsp::kWireGoal2Chain147Bound) {
+                                // 009A98F0 (009AB0C4): the typed body over the aim state's
+                                // +18h/+1Ch (df_aim_state); OFF keeps the inline test.
+                                ti.aim_bored_98f0 = bsp::bot_state_dogfight_aim_is_bored_009a98f0(
+                                    unit_.df_aim_state.bored_18,
+                                    unit_.df_aim_state.bored_limit_1c);
+                            } else {
                             ti.aim_bored_98f0 =
                                 unit_.df_aim_state.bored_18 > unit_.df_aim_state.bored_limit_1c;
+                            }
                             ti.maneuver_on_target_9bd0 = bsp::dogfight_on_target_009a9bd0(
                                 unit_.df_local_ec[2], unit_.df_tan_f8[0], unit_.df_tan_f8[1]);
                             ti.avoid_timer = unit_.df_avoid_timer;

@@ -898,6 +898,9 @@ void* bot_task_make_drop_kamikaze_009aebe0(Cc13Seg67bHost& host, void* bot, void
 void* bot_task_make_kamikaze_009af720(Cc13Seg67bHost& host, void* bot, void* target);
 // 009A98F0: __fastcall(ECX = aim state), RET, EAX.
 bool bot_state_dogfight_aim_is_bored_009a98f0(void* state);
+// Typed view of 009A98F0 over the caller's aim-state storage: the boredom
+// accumulator +18h and its limit +1Ch. The raw entry wraps it.
+bool bot_state_dogfight_aim_is_bored_009a98f0(float bored_18, float bored_limit_1c);
 // 009B1E30: __fastcall(ECX = land approach), RET, EAX.
 bool land_target_is_kind9_009b1e30(Cc13Seg67bHost& host, void* o);
 // Typed view of 009B1E30 over the caller's storage: whether the approach's +30h

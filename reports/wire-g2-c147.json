@@ -1,0 +1,225 @@
+{
+  "run": 287,
+  "harness": "claude",
+  "goal": 2,
+  "chain": 147,
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "candidate": "segment 67 [00996120-009f6060]",
+  "tier": 2,
+  "selection": "Segment 56 was claimed first and released: its objective-entry rows need the mission objective owner (entries with entity/position, session-message contexts) that this host does not build, 008D8F10's only live host parser (scene_file.cpp) has no Int branch to gate, and the language-catalog rows already run their logic through internal helpers. A caller survey of all eight candidates against src/game_*.cpp showed segment 67 with the most rows whose image callers are modelled in src/game_hosts_units.cpp; reading those sites left one row with a real host stand-in fed by host state.",
+  "host_file": "src/game_hosts_units.cpp",
+  "switch": "kWireGoal2Chain147Bound",
+  "switch_default": false,
+  "wired_before": 8976,
+  "wired_after": 8977,
+  "assigned_wired": 1,
+  "host_objects": [],
+  "off_build": {
+    "command": "./scripts/build.ps1",
+    "result": "passed",
+    "tests": "2/2 passed",
+    "order": "Run after the ON check; readiness was measured from this OFF map."
+  },
+  "on_build": {
+    "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain147Bound",
+    "result": "passed",
+    "diagnostics": 0,
+    "source_restored": true
+  },
+  "validation": {
+    "wire_readiness": "009a98f0: ready -> wired; overall wired 8976 -> 8977",
+    "pc24_lint": "passed (the ON arm is a float comparison, no x87 arithmetic)",
+    "game_run": false
+  },
+  "on_effect": "In the dogfight task's transition inputs (run_dogfight_task_arm_009ab1c0 -> df_arm_body_009ab1c0), the aim-state boredom test that feeds DogfightTransitionInputs::aim_bored_98f0 is computed by the 009A98F0 body (typed overload over df_aim_state.bored_18 / bored_limit_1c) instead of the host's inline comparison. Same result, NaN included (both answer false on an unordered compare).",
+  "off_preservation": "The OFF arm is the original inline comparison, unchanged. The raw 009A98F0 entry now forwards its +18h/+1Ch reads to the typed overload (same comparison); no OFF host path calls either.",
+  "rows": [
+    {
+      "native": "009a98f0",
+      "address": "009ab0c4",
+      "function": "009aafa0",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::motion_step_00825f20 / df_arm_body_009ab1c0 (DogfightTransitionInputs::aim_bored_98f0)",
+      "status": "wired",
+      "reach": "live: dogfight task arm, gated by kDogfightTaskBound=true and kDogfightEngagedBound=true, reached from the plane task tick run_dogfight_task_arm_009ab1c0 for units with a dogfight order",
+      "coverage": "typed view overload of the existing body (chain 76's 009B7A80 pattern); raw entry kept as a thin wrapper"
+    },
+    {
+      "native": "009b7b10",
+      "address": "009b8a26",
+      "function": "009b88f0",
+      "host_site": "src/game_hosts_units.cpp:lb arm (LevelBombTransitionInputs ri, ri.aim_release_18)",
+      "status": "skipped",
+      "reason": "The body combines aim+18h, aim+19h and ctl+3AEh. The host has no ctl+3AEh producer (SquadronSetForceRelease's byte is held as the literal false at the site, labelled), so the body would only hand lb_aim_18 back: passes a constant, not host state.",
+      "reach": "live site, not wired"
+    },
+    {
+      "native": "009b7b40",
+      "address": "009b8a45",
+      "function": "009b88f0",
+      "host_site": "src/game_hosts_units.cpp:lb arm (LevelBombTransitionInputs ri, ri.aim_abort_19)",
+      "status": "skipped",
+      "reason": "Same as 009B7B10: with ctl+3AEh fixed false (no host producer) the body reduces to returning lb_aim_19, the host's own value.",
+      "reach": "live site, not wired"
+    },
+    {
+      "native": "0099ba10",
+      "address": "0099d6f1",
+      "function": "0099d300",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Both 0099D300 sites normalise the script overrides unit+9A8h/+9ACh (PlaneSetTargetRoll/PlaneSetTargetPitch, options_seg56_cc13.cpp) into plan+2C4h/+2BCh. This host models neither the bindings nor the plan slots, so there is no host stand-in to replace."
+    },
+    {
+      "native": "0099b260",
+      "address": "0099eb2e",
+      "function": "0099d300",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Its only site is 0099D300's tail check over the pitch slot plan+28Ch (0099EB0F-0099EB8C); the host does not model that block or the image-shaped slot {+0 value, +4 override, +8 flag}."
+    },
+    {
+      "native": "0099be30",
+      "address": "0099c729",
+      "function": "0099c6f0",
+      "host_site": "src/game_hosts_units.cpp:bot_task_ctor_seeds_0099c6f0",
+      "status": "skipped",
+      "reason": "Constructs the image-shaped 300h-byte pilot plan (three C8h elements, +258h..+2F8h, then 0099B450). The host keeps per-unit fields instead of a task-embedded plan, so the body has no storage to construct."
+    },
+    {
+      "native": "009be050",
+      "address": "009bf0dc",
+      "function": "009bee30",
+      "host_site": "src/game_hosts_units.cpp (follow hold arm, `if (c.locked) return;`)",
+      "status": "skipped",
+      "reason": "The host's locked hold arm returns without copying the leader velocity (labelled never for an AI leader); the body writes the image flight controller at unit+AB0h and calls 007D9C10, which this host does not hold."
+    },
+    {
+      "native": "009a2f40",
+      "address": "0099a43c",
+      "function": "0099a170",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Bot-task factory slot reached through 0099A170. The host installs tasks as per-unit flags and never allocates image bot tasks, so a Cc13Seg67bHost with an image bot (+2F0h unit, task allocator) would have to be built first."
+    },
+    {
+      "native": "009ab570",
+      "address": "0099a3d3",
+      "function": "0099a170",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Same as 009A2F40: needs an image-shaped bot and task allocation that the host does not build."
+    },
+    {
+      "native": "009badb0",
+      "address": "0099a484",
+      "function": "0099a170",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Same as 009A2F40; NativePilotBotCommandCalls::make_stop_009badb0 has no implementation in src/."
+    },
+    {
+      "native": "009cd300",
+      "address": "0099a32d",
+      "function": "0099a170",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Same as 009A2F40: needs an image-shaped bot and task allocation that the host does not build."
+    },
+    {
+      "native": "009be0f0",
+      "address": "009be356",
+      "function": "009be310",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Sole caller 009BE310 is not modelled by any host file; no host path reaches the site."
+    },
+    {
+      "native": "009c2ef0",
+      "address": "009c39d3",
+      "function": "009c3990",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Sole caller 009C3990 is not modelled by any host file; no host path reaches the site."
+    },
+    {
+      "native": "009e0130",
+      "address": "009e46d3",
+      "function": "009e46d0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Callers are destructors (009E46D0, 009E5460, EH funclets) of image ship-AI nav blocks that no host file builds."
+    },
+    {
+      "native": "008dacd0",
+      "address": "006439f3",
+      "function": "006435d0",
+      "host_site": "src/game_hosts_hud_world.cpp:sweep_objectives (record-only stub)",
+      "status": "skipped",
+      "reason": "Segment 56, inspected before switching candidates. The HUD map/minimap/markers objective sweeps need the objective containers [00E188A8+21A4h+team*4] with 10h entity/position entries; the host's GameObjectiveSets keeps names and unit ids only, and the markers host says the objective owner is not built."
+    },
+    {
+      "native": "008dad30",
+      "address": "005c1f21",
+      "function": "005c0f20",
+      "host_site": "src/game_hosts_hud_world.cpp:sweep_objectives (record-only stub)",
+      "status": "skipped",
+      "reason": "Segment 56: same missing objective owner as 008DACD0; no host objective entry {entity, x, y, z} exists to feed ObjectiveEntryView."
+    },
+    {
+      "native": "008db990",
+      "address": "008dedd9",
+      "function": "008dec10",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Segment 56: sole caller 008DEC10 (session message 55 entry properties) is not run by any host; objectives_seg57_argon's host interface has no implementation."
+    },
+    {
+      "native": "008dc7a0",
+      "address": "008e203e",
+      "function": "008e1f80",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::add_objective",
+      "status": "skipped",
+      "reason": "Segment 56: 008E1F80 builds and destroys a NativeSessionMessage56; the host's add_objective has no session message, profile or NativeSessionMessage56To62Context to destroy, so there is no stand-in to replace."
+    },
+    {
+      "native": "008dc980",
+      "address": "008dfa30",
+      "function": "008df9b0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Segment 56: same as 008DC7A0 for message 57 (008DF9B0); no host session-message context."
+    },
+    {
+      "native": "008dcb40",
+      "function": "008dfc00",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::remove_unit",
+      "status": "skipped",
+      "reason": "Segment 56: same as 008DC7A0 for message 58 (008DFC00); no host session-message context."
+    },
+    {
+      "native": "008d8f10",
+      "address": "008f5b9e",
+      "function": "008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "Segment 56: the live host parser (scene_file.cpp, used by game_hosts_scene_contents.cpp) has no Int branch to gate; I-typed values fall into the partial token scan. scene_property_bag.cpp's read_typed_value has the Int case but no ScenePropertyBagHost implementation runs it. Wiring would mean redesigning the parser."
+    },
+    {
+      "native": "008d5890",
+      "address": "008d6b44",
+      "function": "008d6af0",
+      "host_site": "src/native_language_catalog_storage.cpp (append/reserve)",
+      "status": "skipped",
+      "reason": "Segment 56: the live catalog build already runs this body's logic through the internal copy_row helper the exported entry wraps; calling the entry would duplicate logic the OFF code already runs."
+    },
+    {
+      "native": "008d5aa0",
+      "address": "00cdeea7",
+      "function": "00cdeea0",
+      "host_site": "src/native_language_catalog_lifetime.cpp:shutdown_native_language_catalog_00cdeea0",
+      "status": "skipped",
+      "reason": "Segment 56: the shutdown already runs the same internal resize helper the exported entry wraps; no host logic to replace."
+    }
+  ]
+}
