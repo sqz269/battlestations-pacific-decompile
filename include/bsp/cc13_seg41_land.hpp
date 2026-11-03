@@ -723,6 +723,23 @@ void land_vehicle_apply_sync_0074d230(std::uint8_t* vehicle, const std::uint8_t*
 // 0074D2F0 / 0074D450 (identical), __thiscall(ECX vector of 0Ch points, const
 // float[3]) RET 4: growth through 0074D190, FLD/FSTP copy, ++size.
 void points_push_back_0074d2f0(std::uint8_t* vector, const float* point, LandVehicleHost& host);
+// Typed access to the caller's point storage. writable_slot establishes the
+// element's C++ lifetime; set_count commits the image's final count update.
+struct PointsAppendView {
+    virtual ~PointsAppendView() = default;
+    virtual std::int32_t count() const = 0;
+    virtual std::int32_t capacity() const = 0;
+    virtual float* writable_slot(std::int32_t index) = 0;
+    virtual void set_count(std::int32_t count) = 0;
+};
+struct PointsAppendHost {
+    virtual ~PointsAppendHost() = default;
+    virtual void points_reserve_0074d190(std::int32_t count) = 0;
+};
+// The historical identifier is shared by image instances 0074d2f0 and
+// 0074d450. The Raw and typed overloads use one body, with no point arithmetic.
+void points_push_back_0074d2f0(PointsAppendView& vector, const float* point,
+    PointsAppendHost& host);
 // 0074D3B0, __thiscall(ECX vehicle, archive) RET 4: 0095BB10, begin
 // "_landVehicle", "convoyID" {4, +738h}, "convoyPosition" {1, +73Ch}, end.
 void land_vehicle_serialize_0074d3b0(std::uint8_t* vehicle, ArchiveWriter& archive, LandVehicleHost& host);

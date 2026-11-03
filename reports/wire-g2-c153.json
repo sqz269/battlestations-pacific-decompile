@@ -1,0 +1,185 @@
+{
+  "run": 304,
+  "goal": 2,
+  "chain": 153,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": "segment 41 [00735f30-00758eb0]",
+  "tier": 2,
+  "host_file": "src/game_hosts_ship_ai.cpp",
+  "switch": "kWireGoal2Chain153Bound",
+  "switch_default": false,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "TransportLaunchPointAppend",
+      "where": "src/game_hosts_ship_ai.cpp:transport_launch_ring_points_cc13",
+      "storage": "The existing std::vector<std::array<float, 3>> of transport launch candidates; no shadow points or owning host object.",
+      "producers": [
+        "GameShipAiHost::transport_launch_craft_008206f0 reads the transport class, live pose, free landing pad and ring index.",
+        "The existing PC24 to_world lambda transforms the four ring corners and zeros their y components."
+      ],
+      "lifetime": "The adapter exists only inside the new ON arm; the original per-ring candidate vector retains its lifetime and is consumed by the existing distance, candidate rejection and launch logic.",
+      "rows": ["0074d450"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00736540",
+      "address": "0073c97b",
+      "function": "0073c960",
+      "host_site": "src/native_locale_manager_constructor.cpp:construct_native_locale_manager_0073c960",
+      "status": "skipped",
+      "reason": "Dormant actual locale owner: GameSingletonHost::prepare_locale_manager has no host caller. The existing actual constructor already invokes its own 00736540 implementation. Replacing that invocation would duplicate an existing body call and would not create a reachable wiring site.",
+      "reach": "static"
+    },
+    {
+      "native": "0073c9f0",
+      "address": "0073caf3",
+      "function": "0073caf0",
+      "host_site": "src/native_locale_manager_retirement.cpp:delete_native_locale_manager_0073caf0",
+      "status": "skipped",
+      "reason": "Actual locale destruction has no active host owner/retirement path; the native scalar destructor already calls destroy_native_locale_manager_0073c9f0. The process owner is intentionally retained. Adding the candidate would be a duplicate call or a dormant adapter.",
+      "reach": "static"
+    },
+    {
+      "native": "0073e9a0",
+      "address": "00740d36",
+      "function": "00740840",
+      "host_site": "src/app_init_tail.cpp:parse_decal_definitions_00740840",
+      "status": "skipped",
+      "reason": "The active parser owns std::vector<DecalDefinition> whole C++ values, not a three-word native pointer array. Its decal_vector_growth fragment only computes a scalar. A faithful pointer array also needs native decal records whose constructor requires the unavailable renderer vertex-format producer; a temporary mirror or returning the existing capacity would not count.",
+      "reach": "static",
+      "host_path": "GameStartupHost::run_initialize_phases Phase 9 -> GameDecalTable::run -> load_decal_definitions_00740840 -> parse_decal_definitions_00740840"
+    },
+    {
+      "native": "0073f9c0",
+      "address": "006e9680",
+      "function": "006e8770",
+      "host_site": "src/projectile_kinds.cpp:load_weapon_class_base_fields / WeaponClassLoadHost::resolve_decal",
+      "status": "skipped",
+      "reason": "WeaponClassLoadHost::resolve_decal has no concrete host implementation or host call path to this loader. The native named-key pointer table is not published by GameDecalTable, which only retains semantic record values. No real lookup site is available to replace.",
+      "reach": "static"
+    },
+    {
+      "native": "00740270",
+      "address": "009257cf",
+      "function": "00925780",
+      "host_site": "src/entity_mission_seg60_argon.cpp:entity_destruct_base_00925780 / entity_life_ref_release_00740270",
+      "status": "skipped",
+      "reason": "No host implements entity_life_ref_release_00740270. The active unit host does not produce the native decal-manager registry and counted entity+168h registration objects this body erases and decrements. Cannot supply a synthetic reference or registry.",
+      "reach": "static"
+    },
+    {
+      "native": "00740410",
+      "address": "007409e2",
+      "function": "00740840",
+      "host_site": "src/game_hosts_init_tail.cpp:GameDecalTable::run",
+      "status": "skipped",
+      "reason": "Missing actual renderer resource producer for device slot +34h loading decal.mvfm. The host explicitly records requested resource names instead of resolving vertex formats, textures or shaders. A fabricated resource handle would violate the producer rule.",
+      "reach": "static",
+      "host_path": "GameStartupHost::run_initialize_phases Phase 9 -> GameDecalTable::run"
+    },
+    {
+      "native": "00740fe0",
+      "address": "00850c91",
+      "function": "008509f0",
+      "host_site": "src/cc13_seg52b.cpp:stationary_sentity_init_008509f0 / decal_list_register_owner_00740fe0",
+      "status": "skipped",
+      "reason": "No concrete host implementation of the registration callback. The live host has no image-shaped DecalManager lists registry paired with native entity+168h ownership and retirement. Constructing an isolated unused registry would not replace the live scene attach path; game_hosts_scene_contents.cpp is also assigned to another worker.",
+      "reach": "static"
+    },
+    {
+      "native": "00745200",
+      "address": "0095f3bd",
+      "function": "0095f1c0",
+      "host_site": "src/cc13_seg62.cpp:vehicle_class_destruct_base_0095f1c0 / list_clear_nodes_00745200",
+      "status": "skipped",
+      "reason": "The callback has no concrete host implementation. The semantic vehicle-class host does not own the native class intrusive nodes or their allocation producer. The reconstructed raw destructor alone does not establish a reachable host destruction path.",
+      "reach": "static"
+    },
+    {
+      "native": "0074d450",
+      "address": "0082093e",
+      "function": "008206f0",
+      "host_site": "src/game_hosts_ship_ai.cpp:transport_launch_ring_points_cc13, four corner appends called by GameShipAiHost::transport_launch_craft_008206f0",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "MissionFrame unit step -> GameUnitsHost::motion_step_00825f20 -> GameShipAiHost::controller_step -> ship_ai_controller_step_009f50e0 -> attackmove ship_ai_attackmove_step_009e8820 -> approach ship_ai_attackmove_approach_step_009f3240 -> ApproachStepBinding::route_warning_message_0077c2a0 -> GameShipAiHost::transport_launch_craft_008206f0 -> transport_launch_ring_points_cc13",
+      "live_site_check": "The per-unit controller path is independent of coordinator command ticks: src/game_hosts_units.cpp:25143 invokes controller_step, whose active navigator/controller dispatch calls 009F50E0; the attackmove 009E8820 branch dispatches approach 009F3240, and its route_warning_message_0077c2a0 delivers to the troop transport. kShipAiApproachLandingSweepBound=true in src/game_hosts_ship_ai.cpp and kTransportLaunchCraftCc13Bound=true in include/bsp/game_hosts_ship_ai.hpp. Active-unit, navigator-enabled, attackmove/approach state, landing candidate, cooldown and free-pad checks consume real host state. The earlier coordinator path claim was incorrect: kSkirmishSessionCc13Bound=false makes ai_coordinator_created_at_load() return false, so GameAiCoordinatorHost::fixed_step does not run command ticks even though kLandingCraftLaunchBound=true. That blocked path is not reach evidence. No disabled switch encloses the documented per-unit approach path except this chain's new OFF switch. No mission call counts were supplied for this range, so reach remains static and one assigned row is counted.",
+      "image_sites": ["0082093e", "008209a8", "00820a12", "00820a72"],
+      "contract": "0074D450 ECX is the three-word point array; one const point pointer is pushed; RET 4 at 0074D495. Each of the four caller sites immediately loads ECX from the same local array and pushes the transformed stack point. Reads data+0/count+4/capacity+8, grows to max(1,2*capacity) when full, copies the three point components, increments count. The existing historical identifier points_push_back_0074d2f0 is shared by both image template instances. Raw remains a thin view/callback wrapper around the same typed body.",
+      "on_behavior": "The reconstructed body chooses capacity growth, writes all three actual transformed corner components directly into the existing host vector, and commits the count. Its small reserve callback invokes std::vector::reserve on that same vector.",
+      "off_behavior": "The four original points.push_back(to_world(...)) statements are unchanged inside the OFF arm. No view is constructed. Inner-edge append and PC24 coordinate calculations remain unchanged."
+    },
+    {
+      "native": "0074fb30",
+      "address": "00886c52",
+      "function": "00886c10",
+      "host_site": "src/cc13_left55_seg55.cpp:variant_assign_00886c10 / variant_init_tag6_0074fb30",
+      "status": "skipped",
+      "reason": "No concrete host implements variant_init_tag6_0074fb30 or calls the native assignment path. The alternate initialize_native_lua_variant_tag6_0074fb30 also has no active consumer and requires the real variant-clear operation/string-pool/cleanup owner. Supplying a scratch variant would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "0074d2f0",
+      "host_site": "src/cc13_seg41_land.cpp:points_push_back_0074d2f0",
+      "assigned": false,
+      "status": "skipped",
+      "reason": "Collateral ledger alias inspected for identifier attribution. This separate image template instance has no original callers. It shares the existing C++ identifier/body with assigned 0074d450; an automatic readiness change for the alias is not a second independently wired image row.",
+      "reach": "static"
+    }
+  ],
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 9,
+  "validation": {
+    "off_build": "PASS: scripts/build.ps1; both reconstructed_math and tool_tests passed.",
+    "on_build": "PASS: off_switch_on_build.py --names kWireGoal2Chain153Bound; exit 0, zero distinct diagnostics. Source switch restored OFF.",
+    "final_build_order": "ON compile/link check completed before the final plain OFF build and readiness recount.",
+    "pc24_lint_staged": "PASS: zero findings for changed code. Whole-file lint separately reported five pre-existing findings on untouched torpedo/ramp lines; no such code was changed.",
+    "report_calls": "PASS: verify_report_calls.py reports/wire-g2-c153.json; ten original CALL sites checked, zero failed.",
+    "runtime": "Not run, as instructed. Static reach and compilation are not gameplay validation."
+  },
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 310,
+      "reviewed_head": "cea8338cfc2b6ad444ab5f90558d42c1ef280af7",
+      "findings": [
+        {
+          "id": 1,
+          "native": "0074d450",
+          "status": "fixed",
+          "change": "Report-only correction: replace the blocked coordinator path with the active per-unit ship-controller attackmove/approach sweep path; explicitly document the false skirmish/coordinator gate in live_site_check.",
+          "evidence": [
+            "include/bsp/session_context_cc13.hpp:22: kSkirmishSessionCc13Bound=false; src/game_hosts_ai.cpp:1123: ai_coordinator_created_at_load returns false with that switch OFF.",
+            "src/game_hosts_units.cpp:25143 invokes controller_step independently of the coordinator; src/game_hosts_ship_ai.cpp:13044 dispatches 009F50E0.",
+            "src/game_hosts_ship_ai.cpp:10937 invokes attackmove 009E8820; :7869 invokes approach 009F3240; :7738 routes its landing sweep to transport_launch_craft_008206f0."
+          ],
+          "reach": "static",
+          "assigned_rows_counted": 1
+        }
+      ],
+      "checks": {
+        "on_build": "PASS: exit 0, zero distinct diagnostics; sources restored OFF.",
+        "final_off_build": "PASS: scripts/build.ps1; reconstructed_math and tool_tests both passed after the ON check.",
+        "pc24_lint_diff": "PASS: zero findings for origin/main...HEAD.",
+        "report_calls": "PASS: ten call rows checked, zero failed.",
+        "readiness": "PASS: final OFF-map recount remains 8987 wired globally; assigned 0074d450 is wired and one assigned row is counted. The shared 0074d2f0 identifier alias remains excluded from independent credit.",
+        "runtime": "No game run, as instructed."
+      }
+    }
+  ],
+  "wired_total_before": 8985,
+  "wired_total_after": 8987,
+  "assigned_ready_to_wired": ["0074d450"],
+  "collateral_readiness_changes": [
+    {
+      "native": "0074d2f0",
+      "before": "callees_done_no_wired_caller",
+      "after": "wired",
+      "counted_as_assigned_wiring": false
+    }
+  ],
+  "readiness_alias_note": "The tool keys body use by C++ identifier, so 0074d2f0 moved with 0074d450; only assigned 0074d450 is claimed as independently wired."
+}
