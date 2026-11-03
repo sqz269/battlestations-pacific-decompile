@@ -14,7 +14,15 @@ struct Raw {
   void*& ptr(std::size_t off) const noexcept { return at<void*>(off); }
 };
 
-struct Seg66Host {
+// 00996060 only needs its language-row callee and the immutable message table.
+// Keep that contract usable without manufacturing the unrelated stream/online state.
+struct LocalizationMessageHost {
+  virtual ~LocalizationMessageHost() = default;
+  virtual void* image_address(std::uint32_t address) = 0;
+  virtual std::int32_t localization_language_row_for_lcid_0098d400(std::uint32_t lcid) = 0;
+};
+
+struct Seg66Host : LocalizationMessageHost {
   virtual ~Seg66Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -245,6 +253,6 @@ bool return_false_stub_00994ea0();
 void* cg_scalar_deleting_dtor_00994ef0(Seg66Host& host, void* self, std::uint8_t flags);
 void* cg_scalar_deleting_dtor_00995670(Seg66Host& host, void* self, std::uint8_t flags);
 const wchar_t* localization_already_running_message_00996060(
-    Seg66Host& host, std::uint32_t lcid, std::int32_t message_index);
+    LocalizationMessageHost& host, std::uint32_t lcid, std::int32_t message_index);
 
 }  // namespace bsp::hardware_options_seg66_argon

@@ -1831,7 +1831,7 @@ void* cg_scalar_deleting_dtor_00995670(Seg66Host& host, void* self, std::uint8_t
 
 // 0x00996060: BSP_Localization_AlreadyRunningMessage
 const wchar_t* localization_already_running_message_00996060(
-    Seg66Host& host, std::uint32_t lcid, std::int32_t message_index) {
+    LocalizationMessageHost& host, std::uint32_t lcid, std::int32_t message_index) {
   std::int32_t row = host.localization_language_row_for_lcid_0098d400(lcid);
   std::int32_t idx = row + message_index * 6;
   const void* table = host.image_address(0x00d1e918u);

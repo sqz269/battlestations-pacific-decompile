@@ -6,15 +6,19 @@
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_lua_runtime.hpp"
+#include "bsp/hardware_options_seg66_argon.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/wire_goal2_chain46_switches.hpp"
 #include "bsp/wire_goal2_chain82_switches.hpp"
+#include "bsp/wire_goal4_chain261_switches.hpp"
 
 #include <d3d9.h>
 #include <mmsystem.h>
 #include <dsound.h>
 #include <algorithm>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <stdexcept>
 #include <string>
@@ -72,6 +76,70 @@ private:
 };
 
 namespace hardware = engine_seg11_35_66_cc13;
+
+class HardwareProbeMessages final
+    : public hardware_options_seg66_argon::LocalizationMessageHost {
+public:
+    void* image_address(std::uint32_t address) override {
+        if (address != 0x00d1e918u)
+            throw std::runtime_error("hardware probe: unknown localization image address");
+        // Producer: the binary's complete 9-message, 6-language pointer table.
+        // Relocate its pointers to process-static copies of the UTF-16 strings.
+        static const wchar_t* messages[] = {
+#include "bsp/wire_goal4_chain261_messages.inc"
+        };
+        static_assert(sizeof messages / sizeof messages[0] == 9 * 6);
+        return messages;
+    }
+    std::int32_t localization_language_row_for_lcid_0098d400(std::uint32_t lcid) override {
+        return hardware::language_row_for_lcid_0098d400(lcid);
+    }
+};
+
+std::wstring hardware_message_wide(const std::string& text, UINT code_page) {
+    if (text.empty()) return {};
+    const int length = static_cast<int>(text.size());
+    const int count = MultiByteToWideChar(code_page, 0, text.data(), length, nullptr, 0);
+    if (count == 0) throw std::runtime_error("hardware probe: message conversion failed");
+    std::wstring wide(static_cast<std::size_t>(count), L'\0');
+    if (MultiByteToWideChar(code_page, 0, text.data(), length, wide.data(), count) != count)
+        throw std::runtime_error("hardware probe: message conversion failed");
+    return wide;
+}
+
+std::string hardware_probe_localized_message(std::uint32_t language, std::int32_t index,
+    const std::string& first, const std::string& second) {
+    HardwareProbeMessages messages;
+    // 0073C3B0 requests rows 2..7; 00996060 is __fastcall(LCID, message index).
+    // The two string arguments originate in the stored/detected GPU or sound
+    // names. The numeric arguments are the tail's decimal serialization of the
+    // stored/detected uint32 values, restored before the native %d formatting.
+    const wchar_t* format = hardware_options_seg66_argon::
+        localization_already_running_message_00996060(messages, language, index);
+    wchar_t buffer[0x1000]{}; // 00735450's capacity at each 0073C3B0 call site.
+    int written = 0;
+    if (index == 2 || index == 3) {
+        const auto a = hardware_message_wide(first, CP_ACP);
+        const auto b = hardware_message_wide(second, CP_ACP);
+        written = _swprintf_p(buffer, 0x1000, format, a.c_str(), b.c_str());
+    } else if (index == 4 || index == 5) {
+        written = _swprintf_p(buffer, 0x1000, format,
+            static_cast<int>(std::strtoul(first.c_str(), nullptr, 10)),
+            static_cast<int>(std::strtoul(second.c_str(), nullptr, 10)));
+    } else {
+        written = _swprintf_p(buffer, 0x1000, format);
+    }
+    if (written < 0) throw std::runtime_error("hardware probe: message formatting failed");
+    if (written == 0) return {};
+    // The probe-tail interface transports strings as UTF-8; restore UTF-16 at
+    // MessageBoxW rather than narrowing any of the catalog's six languages.
+    const int count = WideCharToMultiByte(CP_UTF8, 0, buffer, written, nullptr, 0, nullptr, nullptr);
+    if (count == 0) throw std::runtime_error("hardware probe: message encoding failed");
+    std::string text(static_cast<std::size_t>(count), '\0');
+    if (WideCharToMultiByte(CP_UTF8, 0, buffer, written, text.data(), count, nullptr, nullptr) != count)
+        throw std::runtime_error("hardware probe: message encoding failed");
+    return text;
+}
 
 // Native lifetime: 0073C467 constructs after the four registry reads succeed;
 // 0073C8A3..0073C8DD releases its vectors on leaving the probe. Producers below
@@ -240,7 +308,15 @@ public:
     std::uint32_t current_cpu_speed() override { return image_.fields_28.cpu_mhz_30; }
     std::uint32_t current_memory_size() override { return image_.fields_28.memory_mb_2c; }
     std::string localized_message(std::int32_t index, const std::string& a,
-        const std::string& b) override { return owner_.localized_message(index, a, b); }
+        const std::string& b) override {
+        if constexpr (kWireGoal4Chain261Bound) {
+            // 0073C467's detection object owns the LCID until the probe returns.
+            return hardware_probe_localized_message(static_cast<std::uint32_t>(
+                reinterpret_cast<std::uintptr_t>(image_.language_c38)), index, a, b);
+        } else {
+            return owner_.localized_message(index, a, b);
+        }
+    }
     bool ask_write_default_options(const std::string& text, const std::string& caption) override {
         return owner_.ask_write_default_options(text, caption);
     }
@@ -423,10 +499,17 @@ bool GameHardwareProbe::ask_write_default_options(const std::string& text,
             "taking the IDNO branch");
         return false;
     }
+    if constexpr (kWireGoal4Chain261Bound) {
+        const auto wide_text = hardware_message_wide(text, CP_UTF8);
+        const auto wide_caption = hardware_message_wide(caption, CP_UTF8);
+        return MessageBoxW(nullptr, wide_text.c_str(), wide_caption.c_str(),
+            MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
+    } else {
     const std::wstring wide_text(text.begin(), text.end());
     const std::wstring wide_caption(caption.begin(), caption.end());
     return MessageBoxW(nullptr, wide_text.c_str(), wide_caption.c_str(),
         MB_YESNO | MB_ICONEXCLAMATION) == IDYES;
+    }
 }
 
 void GameHardwareProbe::write_default_options_file(const std::string& path) {
@@ -445,6 +528,11 @@ void GameHardwareProbe::write_hardware_dword(const std::string& value_name,
             value_name.c_str(), static_cast<unsigned long>(value));
         return;
     }
+    if constexpr (kWireGoal4Chain261Bound) {
+        // 0073C856/86E/886 pass the detected MemSize/CPUSpeed/GPUDeviceID.
+        // 0098D570 -> 0098D470 owns the sole write and key-close on this arm.
+        hardware::write_hardware_dword_0098d570(value_name.c_str(), value);
+    } else {
     HKEY key = nullptr;
     DWORD disposition = 0;
     if (RegCreateKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, nullptr, 0,
@@ -458,6 +546,7 @@ void GameHardwareProbe::write_hardware_dword(const std::string& value_name,
     RegSetValueExA(key, value_name.c_str(), 0, REG_QWORD,
         reinterpret_cast<const BYTE*>(&value), sizeof(value));
     RegCloseKey(key);
+    }
 }
 
 void GameHardwareProbe::write_hardware_string(const std::string& value_name,
@@ -468,6 +557,11 @@ void GameHardwareProbe::write_hardware_string(const std::string& value_name,
             value_name.c_str(), value.c_str());
         return;
     }
+    if constexpr (kWireGoal4Chain261Bound) {
+        // 0073C89E supplies the detected DirectSound name. 0098D590 retains
+        // the image's REG_SZ strlen+1 convention; the host write is replaced.
+        hardware::write_hardware_string_0098d590(value_name.c_str(), value.c_str());
+    } else {
     HKEY key = nullptr;
     DWORD disposition = 0;
     if (RegCreateKeyExA(HKEY_LOCAL_MACHINE, kHardwareRegistryKey, 0, nullptr, 0,
@@ -480,6 +574,7 @@ void GameHardwareProbe::write_hardware_string(const std::string& value_name,
         reinterpret_cast<const BYTE*>(value.c_str()),
         static_cast<DWORD>(value.size() + 1));
     RegCloseKey(key);
+    }
 }
 
 void GameHardwareProbe::run() {
