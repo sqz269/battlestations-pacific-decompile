@@ -1,0 +1,280 @@
+{
+ "chain": 76,
+ "slot": "g2-w1",
+ "harness": "claude",
+ "host_file": "src/game_hosts_units.cpp",
+ "switch": "kWireGoal2Chain76Bound",
+ "switch_header": "include/bsp/wire_goal2_chain76_switches.hpp",
+ "rows": [
+  {
+   "native": "0x009b7a80",
+   "address": "0x009b89db",
+   "function": "0x009b88f0",
+   "host_site": "src/game_hosts_units.cpp level-bomb rule inputs (ri.prepare_waits) before level_bomb_next_state_009b88f0",
+   "status": "wired",
+   "reach_note": "live: the level-bomb task runs in USN18/USNC2/USNMD/IJN10/USNSS surveys; typed over lb_prepare_a0/lb_prepare_98",
+   "reached": 0
+  },
+  {
+   "native": "0x009c7850",
+   "address": "0x009c8695",
+   "function": "0x009c83e0",
+   "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::dive_bomb_transition_inputs (in.aimglide_out_of_bombs)",
+   "status": "wired",
+   "reach_note": "live: dive-bomb tasks run in IJN10/IJN11/IJN17/IJN19/USNCV/USNMD/USNSY surveys; 007B9320(0) over the host racks (ordnance kinds, rounds left)",
+   "reached": 11369
+  },
+  {
+   "native": "0x0099b670",
+   "address": "0x009a196d",
+   "function": "0x009a17d0",
+   "host_site": "src/game_hosts_units.cpp pilot avoidance think (009A17D0 vehicle arm) before vehicle_avoidance_007df4f0",
+   "status": "skipped",
+   "reason": "+C50h test equals the enclosing 009A184A gate (kAvoidanceDummyAiGateBound = true returns when u.row.party == kSceneDefaultDummyAi, and nb_has_object_c50 is party != kSceneDefaultDummyAi); always true at the only host site, no body logic replaces host logic. Review round 1: the ON arm and the typed overload are removed."
+  },
+  {
+   "native": "0x009afa50",
+   "address": "0x009b3e51",
+   "function": "0x009b3cf0",
+   "host_site": "src/game_hosts_units.cpp land task state rule (009B3CF0) mode-1 arm",
+   "status": "wired",
+   "reach_note": "reach: land tasks install in IJN01 survey; the mode-1 arm has no disabled gate; park stays refused as OFF",
+   "reached": 0
+  },
+  {
+   "native": "0x009b1e30",
+   "address": "0x009b2228",
+   "function": "0x009b21d0",
+   "host_site": "src/game_hosts_units.cpp land_park_done_009b21d0 (class-9 target test)",
+   "status": "wired",
+   "reach_note": "static: land/park is not entered in any surveyed mission; path gates kLandingLandedArmBound/kCarrierElevatorBound are true",
+   "reached": 0
+  },
+  {
+   "native": "0x004684f0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "dead path: the only host site, command_building_moveto_009f7d17, runs only under GameUnitsHost::Impl::kSquadronCommandBuildingMoveToBound = false (game_hosts_units.cpp:7614)",
+   "address": "0x009f7d68",
+   "function": "0x009f7c90"
+  },
+  {
+   "native": "0x0099c270",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "constant input: the published byte unit+9C2h+[00F876B8]*8 has no producer in this host; the follow hold/trail arms answer the literal false (leader_published_520), so the body would be fed a constant"
+  },
+  {
+   "native": "0x006cfff0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "no body logic to place: the body only builds the elevator message (00758B90) and routes it (0077C2A0, 5, 0); its handler 006D0050 is not reconstructed and the host delivers the three elevator arms at once, so the delivery would sit in a host route adapter",
+   "address": "0x006d071d",
+   "function": "0x006d0600"
+  },
+  {
+   "native": "0x006cedd0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "not reached: site+1Ch is never set in this host (006CF980 / 006D0600 notes), so 006CEDD0's arm never runs"
+  },
+  {
+   "native": "0x00837de0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "constant input: game+1FE4h is the literal single-player 0 at the units-host site (read_avoid_zone_draft_depths(0, ...)); the selection would pass a constant"
+  },
+  {
+   "native": "0x00815680",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: naked native copy of the image 3C8h wake ring; the host wake is a semantic member (slots[]->wake) copied at inherit_leader_wake_00815e20"
+  },
+  {
+   "native": "0x0070d0c0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: naked native body over the image group (+14h) and FACh unit prefixes; the host formation group keeps a slot index (fg.leader)"
+  },
+  {
+   "native": "0x00710ad0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: native body over image spatial attachment and publication cells; the host models the attach as the plane_hit_node_detached flag"
+  },
+  {
+   "native": "0x0090f6c0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: the per-player scoring object (slot record ushort->int map at +1B4h and the SA_IM/SA_OC granter); the units host carries no scoring object (007C16F0's scoring arm is not carried)"
+  },
+  {
+   "native": "0x007c18b0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "too large for this chain: the body needs the image pose matrix and Seg47bHost matrix callbacks (0085E4D0, 00B646E0, 00413920, 004134F0); the host derives the pose angles semantically"
+  },
+  {
+   "native": "0x007c74a0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: the global firing-gun pointer vector 00F87278 and its registry lock (007C2EC0); the host stands in with the gunFire byte +BC9h"
+  },
+  {
+   "native": "0x007ed920",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "no host site: 009F7C90's rocket arm (007ED920) is not modelled in the squadron ordnance latch; a rocket squadron latches through 009F8160 only"
+  },
+  {
+   "native": "0x007ee720",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "missing producer: each member head task's vtable[20h] answer is known only for the dive and torpedo tasks; the host takes the whole test as true"
+  },
+  {
+   "native": "0x007edac0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "hands the host value back: the body is a single read of leader+C24h; the typed view would return the host's plane_pilot_fires_0c24 answer unchanged"
+  },
+  {
+   "native": "0x006f39b0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "no body logic to place: lock + push_back on building+7DCh; the host append is RoundWorld::add_capturer in cc13_paratrooper_round.cpp (not this host) and no +764h lock object exists"
+  },
+  {
+   "native": "0x00523560",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: dogfight targets are plane slot indices; the host has no squadron entity for CastIfKind18 to test (its test is keyed on its own override)"
+  },
+  {
+   "native": "0x009b9030",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native level-bomb task image (operator new + 009B7990); the host installs a semantic task"
+  },
+  {
+   "native": "0x009c8c70",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native dive-bomb task image; the host installs a semantic task"
+  },
+  {
+   "native": "0x009d4e30",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native torpedo task image; the host installs a semantic task"
+  },
+  {
+   "native": "0x009a6970",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native depth-charge task image"
+  },
+  {
+   "native": "0x009ca2b0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native retreat task image"
+  },
+  {
+   "native": "0x009cff40",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native takeoff task image"
+  },
+  {
+   "native": "0x007b7fd0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: factory allocating a native rocket task image"
+  },
+  {
+   "native": "0x007b6830",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: native rocket approach constructor over image task storage"
+  },
+  {
+   "native": "0x009a4dc0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: native depth-charge approach constructor with state images"
+  },
+  {
+   "native": "0x009bcc60",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: native move-on-path approach constructor with state images"
+  },
+  {
+   "native": "0x009c1c30",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: native moveto approach constructor over image storage"
+  },
+  {
+   "native": "0x009ca780",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "host object missing: the body writes the approach target-reference image (+48h..+70h, +41h) and calls 009FA260/007B7870; the host models the re-arm inline on a stand-in seed"
+  },
+  {
+   "native": "0x007dc830",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "too large for this chain: the free-flight step runs over the flight controller image through Cc13Front3Host; the host runs its own flight model"
+  },
+  {
+   "native": "0x0095b9c0",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "no host site: the units-host mention is an abort stub of another interface; no host path computes the vehicle registry id"
+  },
+  {
+   "native": "0x007f1000",
+   "host_site": "src/game_hosts_units.cpp",
+   "status": "skipped",
+   "reason": "no host site: the mention is the return-to-base census name lookup; no command record is built"
+  }
+ ],
+ "host_objects": [],
+ "wired_before": 8899,
+ "wired_after": 8903,
+ "builds": {
+  "off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "on": "tools/off_switch_on_build.py --names kWireGoal2Chain76Bound: build.ps1 exit 0, 0 diagnostics",
+  "pc24_lint": "0 findings"
+ },
+ "pair_run": {
+  "mission": "USN04",
+  "off_log": "local/g2-w1-off_USN04.log",
+  "on_log": "local/g2-w1-on_USN04.log",
+  "gameplay": "identical (deaths 28, hits 380, damage 6366.6, shots 5509, units 81)",
+  "native_table": "0 status changes; Unit::count_remaining_rounds_007c1db0 calls 11517 -> 22886 (009C7850 asks 007B9320 over the racks at each dive transition read: dive_ceiling calls=11369)",
+  "summary_lines": "867 -> 867, 0 changed (vehicle avoidance plane_ticks=114 both)",
+  "other_lines": "231/231 atlas allocation-address lines (noise)",
+  "not_reached_in_usn04": [
+   "009b7a80 (no level-bomb task)",
+   "009afa50 (no land task)",
+   "009b1e30 (no land/park)"
+  ],
+  "note": "Run at 2021b2976 (before review round 1). The 0099B670 arm removed in round 1 was identical in both logs (vehicle avoidance plane_ticks=114 on each side), so no new pair was run."
+ },
+ "flip_proposal": "kWireGoal2Chain76Bound=true: USN04 gameplay identical. 009B7A80 and 009AFA50 are OFF rearrangements; 009C7850 was reached 11369 times with identical gameplay. 009B1E30 is the one semantic change (IsKindOf(9) on the deck owner in place of the mother_ship flag) and no run exercised it: run a carrier-park pair (JM05) before relying on it.",
+ "review_round_1": {
+  "run": 168,
+  "fixes": [
+   "fixed: removed the 0099B670 ON arm (game_hosts_units.cpp vehicle avoidance call is the plain call again)",
+   "fixed: 0x0099b670 row moved to skipped with the review's reason",
+   "fixed: wired_after 8904 -> 8903 (tools/wire_readiness.py after a plain build: 8903, 0099b670 ready)",
+   "fixed: stale +98h comment at the 009B7A80 site now names its producers 009B6600, 009B8100, 009B6670",
+   "fixed: 004684F0 reason cites game_hosts_units.cpp:7614",
+   "fixed: reran scripts/build.ps1 (exit 0, 2/2 tests) and off_switch_on_build.py (exit 0, 0 diagnostics)"
+  ],
+  "deviation": "The review allowed the 0099B670 typed overload to stay. It was removed too, with its raw entry restored: wire_readiness counts an identifier used anywhere in a host-reachable file, so the raw entry calling its own overload kept 0099B670 'wired' (8904) with no host site."
+ }
+}
