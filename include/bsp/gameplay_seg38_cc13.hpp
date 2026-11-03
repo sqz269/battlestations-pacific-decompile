@@ -407,6 +407,13 @@ struct NearestUnitAnswer {
     std::uint32_t entity = 0;
     std::uint16_t entity_index_174 = 0;
 };
+// The slot loop shared with the host whose stance/previous-command storage is
+// owned elsewhere. Paths here are views; the host copies its actual path owner
+// separately through 0071FD10. This is the same loop used by 00720450 below.
+void copy_director_queue_for_owner(DirectorQueue& dst, const DirectorQueue& src,
+    bool owner_is_kind_6,
+    const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
+    const std::function<Vec3f(const CommandTarget&)>& target_position);
 void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& src, bool owner_is_kind_6,
                               const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
                               const std::function<Vec3f(const CommandTarget&)>& target_position);

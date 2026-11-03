@@ -1,0 +1,138 @@
+{
+  "run": 453,
+  "harness": "codex",
+  "goal": 4,
+  "chain": 255,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "base": "96d603682",
+  "switch": "bsp::kWireGoal4Chain255Bound",
+  "wired_before": 9084,
+  "wired_after": 9085,
+  "census_scope": "Same-worktree source reachability; 0071DB90 is the one newly counted address. 00720450 was already counted before this packet.",
+  "rows": [
+    {
+      "native": "0071db90",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::copy_director_state_00720450 nearest_to callback",
+      "real_state": "GameUnitsHost world_list_size/world_list_entry(28), registration order, current unit_position_00fc; returned identity and object_id come from the same command-unit registry entry."
+    },
+    {
+      "native": "00720450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::copy_director_state_00720450",
+      "previously_counted_wired": true,
+      "reason": "Complete body adoption still lacks stance-byte and previous-command storage; this packet adopts its shared slot loop only and adds no new census credit for 00720450.",
+      "change": "Adopt the existing reconstruction's shared slot loop through copy_director_queue_for_owner; kind-6 destinations convert land to attackmove, clear descriptor point/trailing state, and choose a building through 0071DB90."
+    },
+    {
+      "native": "006f7dd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: copy_director_state_00720450 target_position callback",
+      "reason": "Raw Seg33bHost adapter is missing at this site; the callback uses existing live unit position/affine-transform APIs for the evidenced descriptor branches."
+    },
+    {
+      "native": "009514b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::load_traffic_block",
+      "reason": "The after-keyword reader already runs the shared traffic grammar; the census misses its differently named canonical entry, so another call would repeat parsing."
+    },
+    {
+      "native": "00469e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::load_browser_groups",
+      "reason": "The after-keyword reader already runs the browser-group grammar; adopting a canonical identifier requires census/API work rather than a second parsing call."
+    },
+    {
+      "native": "008f7100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library",
+      "reason": "Missing proof that the differently named legacy loader has native folder-order and parent-default semantics; prior skip history identifies multi-parent handling for reinspection."
+    },
+    {
+      "native": "0098d570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::write_hardware_dword",
+      "reason": "Default execution suppresses registry writes behind hardware-probe-commit; replacing the existing write duplication was deferred for the live director gap."
+    },
+    {
+      "native": "0098d590",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::write_hardware_string",
+      "reason": "Default execution suppresses registry writes behind hardware-probe-commit; replacing the existing write duplication was deferred for the live director gap."
+    },
+    {
+      "native": "0098f430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::write_default_options_file",
+      "reason": "The hardware-detection owner that supplies OptionsTextBuilder::build_default_options_text_0098e910 is missing."
+    },
+    {
+      "native": "00996060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::localized_message",
+      "reason": "The host lacks the wide localization table at 00D1E918 and its language row at this initialization phase."
+    },
+    {
+      "native": "009bdbb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::session_route_path_order_message",
+      "reason": "Direct factory adoption needs the allocator/constructor adapter in the units-owned task installation path; units was leased to another worker during selection."
+    },
+    {
+      "native": "0071bf70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: UnitFreeAttack ship arm",
+      "reason": "The ship arm already applies FreeAttack through live gunnery; wrapper adoption needs a WeaponDirectorHost adapter and supplies no missing stance behavior by itself."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline; session teardown consumer absent",
+      "reason": "Missing session-teardown invocation and native set/vector-to-Lua namespace adapter; baseline collection alone does not supply the removal call."
+    },
+    {
+      "native": "004dc6a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_global_subsystems.cpp: global owner construction",
+      "reason": "The host separately constructs four established owners; adapters for the complete constructor's remaining globals and effect acquisition are missing at this site."
+    },
+    {
+      "native": "007fbe20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: record_award",
+      "reason": "Missing live award-tracker counter-map storage and Host adapter; both award readiness gates currently answer false."
+    },
+    {
+      "native": "00a91020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: DeviceWaitBinding::any_dynamic_device_button_down",
+      "reason": "The host currently injects one sample and lacks a real dynamic-device registry/backend; fabricated device state cannot feed this reconstruction."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GUI widget users",
+      "reason": "Only the transform setter export was inspected; a live widget and GuiWidgetHost refresh adapter for an actual SetLocalZ call were not established."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0071db90 and --asm: +19CCh registry, +16Ch head, FSUB/store x and z, z*z + x*x, strict nearer comparison with unconditional first entry",
+    "bsp.py show 00720450 --start 65: destination kind-6 gate and land-to-attackmove descriptor reset at 00720600..00720660",
+    "bsp.py show 006f7dd0: point/zero/entity-pose/local-offset descriptor resolution branches",
+    "src/unit_world_registration.cpp: CommandBuilding creator 006F5C10 registrar 006F5A50 appends +168h; src/game_hosts_units.cpp register_in_world_lists populates the actual runtime registry",
+    "Existing user_path_live_owner binding is installed by GameUnitsHost construction and cleared by destruction; source positions are sampled at handoff, not from scene placement copies"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, reconstructed_math and tool_tests 2/2",
+    "pc24": "pc24_lint.py src/gameplay_seg38_cc13.cpp src/game_hosts_commands.cpp: zero findings; staged and origin/main...HEAD diff checks are the commit gates",
+    "focused_fixture": "local/output/g4_c255_probe/result.txt: Win32 manifested probe passed shared slot-loop self-copy, first-on-tie X/Z selection, empty registry, nonship preservation; synthetic evidence only",
+    "game_run": "Not run, as assigned"
+  },
+  "limits": [
+    "Director stance bytes +3Ch/+3Dh and previous-command record +16Ch remain outside this host's storage; their earlier copy gaps remain.",
+    "The host retains its existing independent slot-0 path-owner copy through 0071FD10; this does not establish ten independent live path owners.",
+    "An entity-bearing land descriptor must resolve in the command-unit registry; an invalid handle is reported as an invariant failure rather than supplied with fabricated coordinates.",
+    "Census totals measure source reachability; build and synthetic fixture evidence do not prove in-game handoff execution or ABI compatibility."
+  ]
+}
