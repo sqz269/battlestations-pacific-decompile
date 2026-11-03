@@ -92,9 +92,15 @@ NativeLuaObjectStorage* native_lua_get_by_native_string_00b678e0(NativeLuaObject
     void* fresh, const NativeString& key);
 NativeLuaObjectStorage* native_lua_get_by_literal_00b67910(NativeLuaObjectStorage&,
     void* fresh, const char* key);
+// Typed destination views over the host's actual 14h LuaObject storage. The
+// raw entries below/above delegate to these bodies; no second implementation.
+NativeLuaObjectStorage& native_lua_get_by_literal_00b67910(NativeLuaObjectStorage&,
+    NativeLuaObjectStorage& fresh, const char* key);
 // 00B67930, stack fresh, RET 4, EAX fresh: lua_createtable(0, 0) then an
 // UNTRACKED kind-2 object at the new top. No placement construction first.
 NativeLuaObjectStorage* native_lua_new_table_00b67930(NativeLuaObjectStorage&, void* fresh);
+NativeLuaObjectStorage& native_lua_new_table_00b67930(NativeLuaObjectStorage&,
+    NativeLuaObjectStorage& fresh);
 // 00B679F0 / 00B67A80 / 00B67B40 / 00B67C40, stack float* out, RET 4, EAX out:
 // elements 1..N through 00B67720, lua_tonumber rounded to float32, each
 // temporary released (remove flag 1) when bound. 00B67C40 is a byte-for-byte

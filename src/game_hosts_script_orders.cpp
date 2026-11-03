@@ -28,6 +28,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
+#include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/attack_commands.hpp"
@@ -1554,7 +1555,24 @@ bool GameScriptOrdersHost::argument_id_field_is_nil(int index) {
     if (state_ == nullptr) return true;
     const int slot = stack_slot(index);
     if (slot > argument_count_ || lua_type(state_, slot) != LUA_TTABLE) return true;
+    // 00B67910 calls native_lua_get_by_literal_00b67910; OFF keeps lua_getfield.
+    if constexpr (bsp::kWireGoal2Chain72Bound) {
+        // The borrowed owner/view lives only for this lookup. The real positive
+        // argument slot and VM come from dispatch; get-by-name produces the
+        // tracked result, which is released before the host restores its stack.
+        // NativeLuaStateStorage has 50 tracked slots (index 0 is unused here).
+        if (lua_gettop(state_) < 49) {
+            ScriptOrdersLuaStackView table(state_, slot);
+            bsp::NativeLuaObjectStorage result{};
+            bsp::native_lua_get_by_literal_00b67910(table.object, result, "ID");
+            bsp::native_lua_release_00b67050(result, 0);
+            log_.implemented("LuaObject::GetByLiteral", "00b67910");
+        } else {
+            lua_getfield(state_, slot, "ID");
+        }
+    } else {
     lua_getfield(state_, slot, "ID");
+    }
     const bool nil = lua_type(state_, -1) == LUA_TNIL;
     lua_settop(state_, argument_count_);
     log_.implemented("LuaCommandTarget::argument_id_field", "0088a83b");
@@ -4296,7 +4314,17 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         if (entity == nullptr) entity = entity_from_argument(0);
         const std::size_t index = index_of(entity);
         ++squadron_planes_calls_;
+        // 00B67930 calls native_lua_new_table_00b67930; OFF keeps lua_createtable.
+        if constexpr (bsp::kWireGoal2Chain72Bound) {
+            // 0089CD70 creates an untracked result on this dispatch's real VM.
+            // The temporary header borrows that stack value; no destructor pops it.
+            ScriptOrdersLuaStackView frame(state_, 0);
+            bsp::NativeLuaObjectStorage result{};
+            bsp::native_lua_new_table_00b67930(frame.object, result);
+            log_.implemented("LuaObject::NewTable", "00b67930");
+        } else {
         lua_createtable(state_, 0, 0);
+        }
         // Packet cc13-fix5: with kGetSquadronPlanesDepartedLeadBound, a dead lead
         // still names its squadron (find_by_member_or_departed_unit).
         const bsp::PlaneSquadronHostRecord* record =
@@ -4596,7 +4624,16 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         log_.notef("  FillPathPoints(%s) points=%zu (0089A190 -> 007AF800)",
             path_name.empty() ? "?" : path_name.c_str(), count);
         if (state_ != nullptr) {
+            // 00B67930 calls native_lua_new_table_00b67930; OFF keeps preallocated lua_createtable.
+            if constexpr (bsp::kWireGoal2Chain72Bound) {
+                // 0089A2B7: fresh table on the call frame's VM, before its points.
+                ScriptOrdersLuaStackView frame(state_, 0);
+                bsp::NativeLuaObjectStorage result{};
+                bsp::native_lua_new_table_00b67930(frame.object, result);
+                log_.implemented("LuaObject::NewTable", "00b67930");
+            } else {
             lua_createtable(state_, static_cast<int>(count), 0);
+            }
             for (std::size_t i = 0; i < count; ++i) {
                 push_vector3_table_0088ba30(authored->points_world[i].data());
                 lua_rawseti(state_, -2, static_cast<int>(i + 1));
