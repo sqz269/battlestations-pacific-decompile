@@ -6,10 +6,13 @@
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/wire_goal2_chain128_switches.hpp"
 #include "bsp/world_entity_update.hpp"
 
 #include <cmath>
+#include <type_traits>
 
 // Packet cc9_mission_camera, docs/MISSION_CAMERA.md.
 //
@@ -38,6 +41,24 @@ constexpr double kZoomStep = 20000.0;             // 00CE3CB8
 constexpr double kZoomDirFloor = -0.10000000149011612;  // 00CE3928
 constexpr float kZoomDirFloorF = -0.10000000149011612f; // 00CE3CB4
 constexpr double kHalf = 0.5;                     // 00D7A280
+
+// Borrow the mover's existing +2B8h matrix. Its row offsets are the native
+// 0042D5A0 layout; this view neither creates nor copies camera state.
+struct CameraBasisMatrixView {
+    CameraMatrix16& values;
+    template <class T>
+    T& at(std::size_t byte_offset) const noexcept {
+        static_assert(std::is_same_v<T, float>);
+        return values[byte_offset / sizeof(float)];
+    }
+};
+static_assert(sizeof(CameraMatrix16) == 0x40);
+
+struct CameraBasisHost {
+    void matrix_orthonormalize_0085dc80(CameraBasisMatrixView matrix) const noexcept {
+        orthonormalize_pose_matrix_0085dc80(matrix.values.data());
+    }
+};
 
 
 void rot_y(CameraMatrix16& out, float angle) {
@@ -339,13 +360,24 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         CameraMatrix16 rotation{};
         if (camera.mode_3f4 == 0) {
             // 00433085..004330BF: 0042D5A0 rows 2 and 1, then 0085DC80.
-            camera.orient_2b8[8] = unit.world[8];
-            camera.orient_2b8[9] = 0.0f;
-            camera.orient_2b8[10] = unit.world[10];
-            camera.orient_2b8[4] = kWorldUp00f8758c[0];
-            camera.orient_2b8[5] = kWorldUp00f8758c[1];
-            camera.orient_2b8[6] = kWorldUp00f8758c[2];
-            orthonormalize_pose_matrix_0085dc80(camera.orient_2b8.data());
+            // 0042D5A0 sets the live basis; OFF keeps the row stores and orthonormalization.
+            if constexpr (kWireGoal2Chain128Bound) {
+                // 00433085..004330B9 produces {world[8], 0, world[10]}; the
+                // original caller supplies the image's world-up at 00F8758C.
+                const float forward[3] = {unit.world[8], 0.0f, unit.world[10]};
+                CameraBasisHost basis_host;
+                profile_seg2_cc13::matrix_set_forward_up_orthonormalize_0042d5a0(
+                    CameraBasisMatrixView{camera.orient_2b8}, forward,
+                    kWorldUp00f8758c.data(), basis_host);
+            } else {
+                camera.orient_2b8[8] = unit.world[8];
+                camera.orient_2b8[9] = 0.0f;
+                camera.orient_2b8[10] = unit.world[10];
+                camera.orient_2b8[4] = kWorldUp00f8758c[0];
+                camera.orient_2b8[5] = kWorldUp00f8758c[1];
+                camera.orient_2b8[6] = kWorldUp00f8758c[2];
+                orthonormalize_pose_matrix_0085dc80(camera.orient_2b8.data());
+            }
             rot_y(rotation, kNegativeZero - camera.yaw_384);
             premultiply(camera.orient_2b8, rotation);
             // 0043310E..00433158: the sway along row 0.

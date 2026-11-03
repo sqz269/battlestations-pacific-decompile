@@ -137,6 +137,23 @@ Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host);
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
                                                   Seg2Host& host);
+
+// 0042D5A0's single body, shared by the Raw wrapper and typed host views.
+// MatrixView exposes at<float>(byte offset) over its existing 40h float matrix;
+// MatrixHost supplies matrix_orthonormalize_0085dc80(MatrixView). No other
+// Seg2Host service is used by this function. RET 8, EAX = the input matrix.
+template <class MatrixView, class MatrixHost>
+MatrixView matrix_set_forward_up_orthonormalize_0042d5a0(
+    MatrixView matrix, const float forward[3], const float up[3], MatrixHost& host) {
+    matrix.template at<float>(0x20) = forward[0];
+    matrix.template at<float>(0x24) = forward[1];
+    matrix.template at<float>(0x28) = forward[2];
+    matrix.template at<float>(0x10) = up[0];
+    matrix.template at<float>(0x14) = up[1];
+    matrix.template at<float>(0x18) = up[2];
+    host.matrix_orthonormalize_0085dc80(matrix);
+    return matrix;
+}
 float* transform_get_world_matrix_0042aff0(Raw node, Seg2Host& host);
 void transform_get_world_position_0042d210(Raw node, float out[3], Seg2Host& host);
 
