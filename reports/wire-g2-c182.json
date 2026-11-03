@@ -1,0 +1,99 @@
+{
+  "run": 349,
+  "chain": 182,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "harness": "claude",
+  "candidate": "segment 30 [006beb70-006d4340]",
+  "tier": 2,
+  "selection_reason": "Segment 25's eight rows all sit behind HudPowerupScreenHost / Cc13SweepBHost / cc13_front7 hooks that no host implements, and the powerup screen state has no host owner. Segments 19, 28, 58 and 60 have the same shape: their 'called only through host.X' rows go through SweepCHost, Seg58Host, Seg59bHost, Seg10Host, WarningTextHost or ScenesSeg1 hooks with no implementation in any game host; 0092bec0's host model (submarine_step_periscope_repair_00854650) has no caller; 008e4b00 sits in the active-use tail game_hosts_powerups.cpp throws on; 0068a670 is an image-layout body over a game object the render-only frame adapter does not fabricate. Segment 30 has a live host gate in src/air_operations.cpp that inlines 006BF620, reached from the mission Lua IsReadyToSendPlanes binding, so it was the only candidate with a row that truly counts. Its other five rows need image-layout air-ops blocks or an observer registry this host does not keep (reasons per row).",
+  "host_file": "src/air_operations.cpp",
+  "switch": "kWireGoal2Chain182Bound",
+  "switch_header": "include/bsp/wire_goal2_chain182_switches.hpp",
+  "switch_default": false,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain182Bound: flipped 1 site, build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings; the ON arm does no x87 arithmetic (byte and dword tests only)",
+  "wired_before": 9004,
+  "wired_after": 9005,
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 5,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "pool_pool13_cc13::AirOpsBlockReadyView, the typed view overload of 006BF620 (the image-layout Object entry is now a thin wrapper that reads the block into the view)",
+      "where": "include/bsp/pool_pool13_cc13.hpp, src/pool_pool13_cc13.cpp",
+      "producers": [
+        "AirOpsDeck::runway_failure / hangar_failure (block+1Ch/+1Dh, start clear, 006CADD0 mode 3 descriptors)",
+        "AirOpsDeck::owner_present / owner_blocked (block+7Ch and owner+5Dh, labelled substitution in air_operations.hpp)",
+        "AirOpsDeck::launch_in_progress (block+38h, written by the deck's launch/queue path in air_operations.cpp and released in game_hosts_units.cpp)"
+      ],
+      "rows": [
+        "006bf620"
+      ]
+    }
+  ],
+  "reach_evidence": {
+    "kind": "live",
+    "path": "mission Lua IsReadyToSendPlanes -> game_hosts_lua.cpp dispatch (ready_row, no constexpr gate; runtime: !error_replay) -> GameMissionLuaHost::run_is_ready_to_send_planes_00895d20 -> bsp::air_ops_is_ready_to_send_planes_00895d20 (air_operations.cpp) -> ON arm -> pool_pool13_cc13::air_ops_block_is_ready_to_send_planes_006bf620(AirOpsBlockReadyView).",
+    "gates": "No constexpr gate on the path besides kWireGoal2Chain182Bound. The ON arm runs only after the airfield early-out (deck.is_airfield && deck.airfield_blocked), as 00895E4F/00895E58 do before the 00895E5F call.",
+    "limit": "docs/AIROPS_LAUNCH_GATES.md records 82 IsReadyToSendPlanes calls in a 3000-frame USN04 run; that count predates current main and was not re-measured (the game was not run)."
+  },
+  "rows": [
+    {
+      "native": "006bf620",
+      "address": "00895e5f",
+      "function": "00895d20",
+      "host_site": "src/air_operations.cpp air_ops_is_ready_to_send_planes_00895d20",
+      "abi": "raw_view",
+      "status": "wired",
+      "reach": "live: USN04, 82 IsReadyToSendPlanes calls in 3000 frames (docs/AIROPS_LAUNCH_GATES.md, pre-dates current main)",
+      "on_change": "The host's inline copy of the five tests is replaced by the reconstructed body over the same deck fields; same answer, same order."
+    },
+    {
+      "native": "006c4f70",
+      "address": "006ccea9",
+      "function": "006ccda0",
+      "host_site": "src/air_operations.cpp air_ops_slot_command_006ccda0",
+      "abi": "raw_callback",
+      "status": "skipped",
+      "reason": "The body's work is the observer-pair swap (006952A0 / 00694A60 on the slot's +38h link). The host keeps the slot target as an id (order_target_4c = target+1) with no observer link or registry, so a Pool13Host adapter would no-op both calls and the ON arm would only store the host's own value back."
+    },
+    {
+      "native": "006c56b0",
+      "address": "007c5d21",
+      "function": "007c5ac0",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::plane_site_probe_007c5ac0",
+      "abi": "raw_callback",
+      "status": "skipped",
+      "reason": "The image call at 007C5D21 is inside the +C1Ch gear-request block 007C5C11-007C5EEF that the host probe states it does not carry; the body reads plane+9D4h and an image air-ops block (006C5640) that this host has no image object for."
+    },
+    {
+      "native": "006c83b0",
+      "address": "006cd713",
+      "function": "006cd6c0",
+      "host_site": "src/cc13_sweepC.cpp (SweepCHost::air_ops_apply_slot_record_006c83b0)",
+      "abi": "raw_callback",
+      "status": "skipped",
+      "reason": "Only caller is the network message 84h handler 006CD6C0, reconstructed in cc13_sweepC.cpp over SweepCHost, which no game host implements; no host path delivers air-ops message 84h in single player."
+    },
+    {
+      "native": "006cd810",
+      "address": "006cdd13",
+      "function": "006cdc70",
+      "host_site": "src/air_operations.cpp air_ops_update_decks_006cdc70",
+      "abi": "raw_callback",
+      "status": "skipped",
+      "reason": "Body reads an image-layout block (+F4h/+F8h timer, 58h slot records at +4Ch, stock map at +44h, quota +E8h, class vslot 1Ch); AirOpsDeck carries none of +E8h/+F4h/+F8h or the stock map nodes, and building that block is beyond one chain. air_operations.cpp's own BLOCKED note already lists it."
+    },
+    {
+      "native": "006d1990",
+      "address": "006d3dd9",
+      "function": "006d3c10",
+      "host_site": "src/game_hosts_units.cpp / game_hosts_scene_contents.cpp (006D3C10 runway build)",
+      "abi": "raw_callback",
+      "status": "skipped",
+      "reason": "Body constructs a 2Ch-byte image collision shape (vtables 00CE89DC/00CF8B94, origin from 00F87574, 0098AAB0 bounds); the host's airfield model builds no shape object, and the 006D3C10 site lives in game_hosts_scene_contents.cpp, which another worker holds."
+    }
+  ]
+}
