@@ -80,6 +80,7 @@
 #include "bsp/gameplay_seg48_cc13.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_ground_ops.hpp"
+#include "bsp/wire_goal4_chain263_switches.hpp"
 #include "bsp/plane_water_law.hpp"
 #include "bsp/plane_wanderer.hpp"
 #include "bsp/plane_death_modes.hpp"
@@ -9924,11 +9925,17 @@ struct GameUnitsHost::Impl {
     // PutTo's position set, after the base 00489760), 007F2F74, 007F2FC6 and
     // 007F4DB0 (pass C 007F4BA0, skipped when +408h is set).
     // SUBSTITUTIONS (labelled): the host fuses the squadron with member 0, so the
-    // member-0 arm is the squadron's own placement and is not repeated; 007C6340,
-    // 007C18B0, vt[D8h], [+310h]+0Ch and the +804h sync have no counterpart here
-    // (a member keeps its flight state); vt[3Ch] is set_forward_speed and is
+    // member-0 pose is the squadron's own placement and is not repeated;
+    // 007C18B0, vt[D8h], [+310h]+0Ch and the +804h sync retain their substitutes.
+    // OFF keeps flight state; ON applies 007C6340's typed selector below.
+    // vt[3Ch] is set_forward_speed and is
     // skipped for a plane whose velocity is not seeded yet (its seed is the same
     // class TravelSpeed along the nose the leader is seeded with).
+    // The selector's typed projection consumes the actual placed pose/class and
+    // updates this instance; its remaining native callbacks keep their existing
+    // host substitutions (controller reset, attachment, and presentation).
+    void apply_squadron_spawn_placement(GameUnitSlot& unit);
+
     std::size_t place_squadron_members_007f2920(std::size_t squadron_unit, const char* site) {
         if (squadron_unit >= slots.size() || slots[squadron_unit] == nullptr) return 0;
         const bsp::PlaneSquadronHostRecord* squadron = nullptr;
@@ -9943,6 +9950,13 @@ struct GameUnitsHost::Impl {
         GameUnitSlot& leader = *slots[squadron_unit];
         publish_pose(leader);   // the position the squadron was just given
         const float speed = leader_live_speed_007b8e60(leader);   // 007F294A vt[38h]
+        if constexpr (bsp::kWireGoal4Chain263Bound) {
+            // 007F2929 skips an empty member array. 007F299E then places
+            // member zero using the squadron pose just published above.
+            if (!squadron->member_units.empty()) apply_squadron_spawn_placement(leader);
+        } else {
+            // Previous fused-member-zero path keeps its flight state.
+        }
         std::size_t placed = 0, unseeded = 0;
         std::string where;
         for (const std::size_t member : squadron->member_units) {
@@ -9971,6 +9985,11 @@ struct GameUnitsHost::Impl {
             unit.motion.position[1] = y;
             unit.motion.position[2] = station.world[2];
             publish_pose(unit);                                   // 007F2B23 vt[88h]
+            if constexpr (bsp::kWireGoal4Chain263Bound) {
+                apply_squadron_spawn_placement(unit);               // 007F2B27
+            } else {
+                // Previous wing placement keeps its flight state.
+            }
             if (unit.plane_velocity_seeded) {                     // 007F2B3C vt[3Ch]
                 const float* fwd = unit.motion.pose_row2;
                 const float len = std::sqrt(fwd[0] * fwd[0] + fwd[1] * fwd[1] + fwd[2] * fwd[2]);
@@ -19106,6 +19125,57 @@ void GameUnitsHost::Impl::wing_fold_class_007eabc0(GameUnitSlot& u) {
         "(007EABC0, packet cc9_wing_fold)", u.row.name.c_str(), u.row.type_id,
         static_cast<double>(first), static_cast<double>(second), has_third ? ", [3]" : "",
         static_cast<double>(duration));
+}
+
+// Goal 4 chain 263: the existing scalar selector, called at 007F2920's two
+// actual placement sites. No raw plane/class image is fabricated. The ctor's
+// state and the live pose/class mirrors are the values the native body reads.
+void GameUnitsHost::Impl::apply_squadron_spawn_placement(GameUnitSlot& unit) {
+    const bsp::PlaneSpawnPlacement placement = bsp::choose_spawn_placement_007c6340({
+        unit.plane_control_mode_900, unit.motion.position[1],
+        unit.motion_class.hull_height, unit.plane_min_water_spd_198});
+    if (!placement.launch_arm) {
+        unit.plane_control_mode_900 = static_cast<int>(placement.state);
+        unit.plane_airborne_908 = placement.airborne_clock;
+        unit.plane_landed_904 = false;
+        unit.plane_taxi_queue_910 = false;
+        unit.plane_water_accum_90c = 0.0f;
+
+        // 007C641A / 007C649F notify with argument 1: set BOTH actuator
+        // targets and values instantly, even when the state did not change.
+        // Use the existing typed 007B8860 body over the real channel, borrowing
+        // only its four semantic cells rather than manufacturing a Raw image.
+        if (!unit.wing_fold_read) wing_fold_class_007eabc0(unit);
+        auto& block = unit.actuator_block_dec;
+        const auto instant = [&](bsp::PlaneActuatorChannel& channel, bool target) {
+            auto view = cc13_channel(channel);
+            std::uint8_t dirty = static_cast<std::uint8_t>(block.moving_any);
+            bsp::band_007a_cc13::actuator_channel_set_instant_007b8860(
+                view, static_cast<std::uint8_t>(target), dirty);
+            channel.target = view.target != 0;
+            channel.value = view.value;
+            channel.moving = view.dirty != 0;
+            block.moving_any = dirty != 0;
+        };
+        // Both selected states (6, or 7 with +908h=3600) retract the gear;
+        // both spread the wings (007C11E0's argument-1 branch).
+        instant(block.channel_b, false);
+        instant(block.channel_a, true);
+        unit.wing_notified_state_900 = unit.plane_control_mode_900;
+        done("PlaneActuatorBlock::set_gear_instant", 0x007b8860u);
+
+        if (placement.state == bsp::PlaneFlightState::Water) {
+            // 007C641F..007C644F: sample the current world field at this pose,
+            // then add the class's authored SwimHeight with x87 PC24 rounding.
+            OceanFieldBinding sea(*this);
+            const float water = bsp::ocean_water_height_0078cf20(
+                unit.motion.position[0], unit.motion.position[2], sea);
+            unit.motion.position[1] = static_cast<float>(bsp::cc13x87::x87_add24(
+                water, unit.plane_swim_height));
+            publish_pose(unit);
+        }
+    }
+    done("Plane::choose_spawn_placement", 0x007c6340u);
 }
 
 // 007C11E0 BSP_Plane_NotifyFlightState, channel +44h only: target = state in
@@ -42796,7 +42866,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (!(static_cast<double>(d2) > 3600.0)) return false;
                         if constexpr (bsp::kPlaneShipyardLaunchAa0Cc13Bound) {
+                            if constexpr (bsp::kWireGoal4Chain263Bound) {
+                                // 009CFC38 sends 7Ah with flag 0; 007CD171 calls
+                                // 007B83F0(0). Its result is the actual +AA0h cell
+                                // this leave gate reads, not a diagnostic copy.
+                                unit_.plane_shipyard_launch_aa0 =
+                                    bsp::band_007a_cc13::plane_launch_delay_007b83f0(false);
+                            } else {
                             unit_.plane_shipyard_launch_aa0 = -1.0f;            // 007B8412
+                            }
                             ++owner_.shipyard_launch_aa0_leaves;
                             owner_.done("Plane::message_7a_007b83f0", 0x007b83f0u);
                         } else {
