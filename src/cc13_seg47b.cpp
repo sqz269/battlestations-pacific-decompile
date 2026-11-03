@@ -103,17 +103,11 @@ void stop_and_pop_gun_effects(Seg47bHost& host, Raw plane) {
 void plane_request_flight_state_007c1570(Seg47bHost& host, Raw plane, std::int32_t requested, bool force) {
     const std::int32_t cur = plane.at<std::int32_t>(0x900);
     const bool client = session_is_client(host);
-    if (cur == 2 && requested == 4 && client) return;
-    if (!force && cur == requested) return;
-    if (!client) {
-        send_flight_state_message(host, plane, static_cast<std::uint8_t>(cur),
-                                  static_cast<std::uint8_t>(requested));
-        return;
-    }
-    if (requested == 3 ||
-        (state_in_7645(cur) && (requested == 7 || requested == 4 || requested == 5 || requested == 6))) {
-        host.plane_set_flight_state_007c1430(plane, requested);
-    }
+    plane_request_flight_state_007c1570(cur, client, requested, force,
+        [&host, plane](std::uint8_t current, std::uint8_t wanted) {
+            send_flight_state_message(host, plane, current, wanted);
+        },
+        [&host, plane](std::int32_t wanted) { host.plane_set_flight_state_007c1430(plane, wanted); });
 }
 
 // 007C17D0, __thiscall(ECX = plane), RET 0, SEH frame. Only when byte +904h
@@ -242,9 +236,11 @@ velocity_block : {
 // 007C2090, __thiscall(ECX = plane), RET 0, SEH frame: when +900h != 2 and the
 // session mode is not 2, the C3h message (byte +900h, 2). Nothing otherwise.
 void plane_request_flight_state_two_007c2090(Seg47bHost& host, Raw plane) {
-    if (plane.at<std::int32_t>(0x900) == 2) return;
-    if (session_is_client(host)) return;
-    send_flight_state_message(host, plane, plane.at<std::uint8_t>(0x900), 2);
+    plane_request_flight_state_two_007c2090(plane.at<std::int32_t>(0x900),
+        [&host] { return session_is_client(host); },
+        [&host, plane](std::uint8_t current, std::uint8_t wanted) {
+            send_flight_state_message(host, plane, current, wanted);
+        });
 }
 
 // 007C2130, __thiscall(ECX = plane), RET 0, SEH frame: 007C2090 with state 1.

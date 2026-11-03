@@ -273,12 +273,46 @@ struct Seg47bHost : cc13_seg47::Seg47Host {
 
 // 007C1570, __thiscall(ECX = plane; requested, force), RET 8.
 void plane_request_flight_state_007c1570(Seg47bHost& host, Raw plane, std::int32_t requested, bool force);
+// Typed view of 007C1570 over the caller's storage. cur (+900h) and the session
+// test ([[00E188A8]+1FE4h] == 2) are the two values the body reads before any
+// test. Mode != 2: send_c3(cur's low byte, requested's low byte), the C3h
+// message. Mode 2: set_state_007c1430(requested) on the direct arm. The raw
+// entry above wraps it.
+template <class SendC3, class SetState007c1430>
+void plane_request_flight_state_007c1570(std::int32_t state_900, bool session_is_client,
+                                         std::int32_t requested, bool force, SendC3&& send_c3,
+                                         SetState007c1430&& set_state_007c1430) {
+    const std::int32_t cur = state_900;
+    const bool client = session_is_client;
+    if (cur == 2 && requested == 4 && client) return;
+    if (!force && cur == requested) return;
+    if (!client) {
+        send_c3(static_cast<std::uint8_t>(cur), static_cast<std::uint8_t>(requested));
+        return;
+    }
+    const bool cur_in_7645 = cur == 7 || cur == 6 || cur == 4 || cur == 5;
+    if (requested == 3 ||
+        (cur_in_7645 && (requested == 7 || requested == 4 || requested == 5 || requested == 6))) {
+        set_state_007c1430(requested);
+    }
+}
 // 007C17D0, __thiscall(ECX = plane), RET 0.
 void plane_notify_takeoff_start_007c17d0(Seg47bHost& host, Raw plane);
 // 007C18B0, __thiscall(ECX = plane; float dt), RET 4.
 void plane_update_pose_derived_state_007c18b0(Seg47bHost& host, Raw plane, float dt);
 // 007C2090 / 007C2130, __thiscall(ECX = plane), RET 0.
 void plane_request_flight_state_two_007c2090(Seg47bHost& host, Raw plane);
+// Typed view of 007C2090 over the caller's storage: +900h, then the session
+// test, then send_c3(+900h's low byte, 2), the C3h message. The raw entry above
+// wraps it.
+template <class SessionIsClient, class SendC3>
+void plane_request_flight_state_two_007c2090(std::int32_t state_900,
+                                             SessionIsClient&& session_is_client,
+                                             SendC3&& send_c3) {
+    if (state_900 == 2) return;
+    if (session_is_client()) return;
+    send_c3(static_cast<std::uint8_t>(state_900), std::uint8_t{2});
+}
 void plane_request_flight_state_one_007c2130(Seg47bHost& host, Raw plane);
 // 007C2AF0, __thiscall(ECX = record; plane, owner), RET 8.
 void plane_state_record_serialize_007c2af0(Seg47bHost& host, Raw record, Raw plane, void* owner);

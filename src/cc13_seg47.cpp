@@ -1076,8 +1076,8 @@ bool plane_altitude_sink_predicate_007b9620(Raw plane) {
 
 // 007B96C0, __thiscall(ECX = plane): +C00h = 1; 00951F40(plane, 0).
 void plane_detach_into_hangar_007b96c0(Seg47Host& host, Raw plane) {
-    plane.at<std::uint8_t>(0xC00) = 1;
-    host.unit_instance_detach_00951f40(plane, 0);
+    plane_detach_into_hangar_007b96c0(plane.at<std::uint8_t>(0xC00),
+        [&host, plane](std::int32_t value) { host.unit_instance_detach_00951f40(plane, value); });
 }
 
 // 007B96F0, __thiscall(ECX = unit; f0, f1, f2, f3, f4, int n, float f6), RET 1Ch,

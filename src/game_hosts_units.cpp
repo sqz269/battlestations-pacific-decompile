@@ -18,7 +18,11 @@
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain56_switches.hpp"
 #include "bsp/wire_goal2_chain67_switches.hpp"
+#include "bsp/wire_goal2_chain73_switches.hpp"
+#include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
+#include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
+#include "bsp/cc13_seg47b.hpp"         // chain 73: 007C1570, 007C2090 typed overloads
 #include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
@@ -7944,7 +7948,13 @@ struct GameUnitsHost::Impl {
     void follow_exit_009bde40(GameUnitSlot& unit) {
         ++follow_exits;
         if constexpr (kFollowExitClearsBound) {
+            // 007B8A90: the typed body clears the plane's turbo byte +9F9h; OFF keeps
+            // the direct store.
+            if constexpr (bsp::kWireGoal2Chain73Bound) {
+                bsp::oct18_tail_b::plane_clear_turbo_007b8a90(unit.plane_turbo_9f9);
+            } else {
             unit.plane_turbo_9f9 = false;      // 009BDE49 007B8A90
+            }
             unit.df_gun.hold_4c = 0.0f;        // 009BDE57
         }
     }
@@ -17828,12 +17838,26 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     d.runway_heading_88 = static_cast<float>(std::atan2(static_cast<double>(d.frame_8[8]),
         static_cast<double>(d.frame_8[10])));
     // 006BC960, the airfield arm: block vtable[10h] = 006CA5A0 = 35.0 (00CE4D90).
+    // 006BC960: the typed body computes T from the holder's +B0h/+B4h, the owner's
+    // IsKindOf(9) and the airfield block's vtable[10h] (006CA5A0's constant 35.0,
+    // 00CE4D90); OFF keeps the inline airfield arm.
+    if constexpr (bsp::kWireGoal2Chain73Bound) {
+        bsp::cc13_seg29U::AirOpsHolderTouchdownInputs in{};
+        in.length_b4 = d.length_b4;
+        in.owner_is_kind_9 = bsp::unit_is_kind_of(o.class_id, bsp::kUnitKindQueryCarrier);
+        if (!in.owner_is_kind_9) {
+            in.width_b0 = d.width_b0;
+            in.block_vslot_10 = 35.0;   // 006CA5A0 BSP_AirOpsBlock_RunwayInset35
+        }
+        bsp::cc13_seg29U::air_ops_holder_refresh_touchdown_006bc960(d.t_a4, in);
+    } else {
     const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);  // 00D7A280
     const float x = static_cast<float>(
         (static_cast<double>(d.width_b0) - 35.0) * 0.5);
     d.t_a4[0] = 0.0f > x ? 0.0f : x;
     d.t_a4[1] = 0.5f;                                                   // 00CE3800
     d.t_a4[2] = static_cast<float>(static_cast<double>(half_len) + 35.0);  // 00CF8608
+    }
     const std::array<float, 3> tw = landing_t_world_006bca40(d);
     log.notef("landing sequencer: deck %s owner %s holder built: RunwayWidth=%.2f "
         "RunwayLength=%.2f heading=%.4f T local (%.2f, %.2f, %.2f) world (%.1f, %.1f, %.1f) "
@@ -17848,14 +17872,44 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     return &d;
 }
 
+namespace {
+// Adapter for 006BCC90's holder: the two image cells it reads, the inverse
+// (holder+48h, 0085DEA0's 4x4) and T (holder+A4h..+ACh, 006BC960), copied from
+// the host's LandingDeck into a query-local image so the native body reads them
+// at their offsets. Nothing else in the holder is read by 006BCC90..006BCCD9.
+struct LandingHolderLocalImage {
+    std::uint8_t unread_00[0x48];
+    bsp::CameraMatrix inverse_48;
+    std::uint8_t unread_88[0x1c];
+    float t_a4[3];
+};
+static_assert(sizeof(bsp::CameraMatrix) == 0x40);
+static_assert(offsetof(LandingHolderLocalImage, inverse_48) == 0x48);
+static_assert(offsetof(LandingHolderLocalImage, t_a4) == 0xa4);
+}  // namespace
+
 // 006BCC90 (RET 8): the position through the inverse (+48h), less T.
 std::array<float, 3> GameUnitsHost::Impl::landing_local_006bcc90(const LandingDeck& d,
     const float* pos) const {
+    // 006BCC90: the native body (004142E0 through +48h, then FSUB of +A4h..+ACh)
+    // over the deck's image cells; OFF keeps the host's transform and subtraction.
+    if constexpr (bsp::kWireGoal2Chain73Bound) {
+        LandingHolderLocalImage holder{};
+        holder.inverse_48 = d.inverse_48;
+        holder.t_a4[0] = d.t_a4[0];
+        holder.t_a4[1] = d.t_a4[1];
+        holder.t_a4[2] = d.t_a4[2];
+        const float source[3] = {pos[0], pos[1], pos[2]};
+        std::array<float, 3> out{};
+        bsp::native_air_ops_holder_local_less_t_006bcc90(&holder, nullptr, out.data(), source);
+        return out;
+    } else {
     std::array<float, 3> l = landing_xform_004142e0(d.inverse_48, pos);
     l[0] = l[0] - d.t_a4[0];
     l[1] = l[1] - d.t_a4[1];
     l[2] = l[2] - d.t_a4[2];
     return l;
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -18104,10 +18158,30 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     d.inverse_48 = inv;
     }
     d.runway_heading_88 = o.hull_heading_1050;
+    // 006BC960: the typed body computes T from the class runway length (+B4h) and
+    // the owner's IsKindOf(9); on that arm the body reads neither +B0h nor the
+    // block's vtable[10h]. OFF keeps the inline MotherShip arm.
+    if constexpr (bsp::kWireGoal2Chain73Bound) {
+        bsp::cc13_seg29U::AirOpsHolderTouchdownInputs in{};
+        in.length_b4 = d.length_b4;
+        in.owner_is_kind_9 = bsp::unit_is_kind_of(o.class_id, bsp::kUnitKindQueryCarrier);
+        if (in.owner_is_kind_9) {
+            bsp::cc13_seg29U::air_ops_holder_refresh_touchdown_006bc960(d.t_a4, in);
+        } else {
+            // LABELLED: an owner that is not IsKindOf(9) would take the body's
+            // other arm through its own block's vtable[10h], which this host
+            // does not model; the host's MotherShip arm is kept for it.
+            const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
+            d.t_a4[0] = 0.0f;
+            d.t_a4[1] = 0.5f;
+            d.t_a4[2] = static_cast<float>(static_cast<double>(half_len) + 10.0);
+        }
+    } else {
     const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
     d.t_a4[0] = 0.0f;
     d.t_a4[1] = 0.5f;
     d.t_a4[2] = static_cast<float>(static_cast<double>(half_len) + 10.0);
+    }
     return true;
 }
 
@@ -19274,13 +19348,54 @@ void GameUnitsHost::Impl::base_launch_task_tick_007f1f00(bsp::PlaneSquadronHostR
 // 007C5F60(plane, airfield+72Ch), 007C3C90(plane, 1), 0042ED50 and
 // (plane+310h)->vtable[8](0.0) (recorded); then, on both paths, the observer
 // at site+4h is unregistered and site+18h = 0 (006CFA43-006CFA54).
+namespace {
+// Chain 73: 007C3C90 BSP_Plane_RequestGroundState(flag) (007C3C90-007C3CA7) is
+// 007C1570(4 + flag, 0). The typed 007C1570 body reads +900h and the session
+// test (game+1FE4h == 2, the session context). Its C3h message reaches 007CCFA0,
+// whose requested-4/5 arm is this host's 007CA3F0 (delivered at once, as the OFF
+// call is). Its mode-2 arm calls 007C1430 directly: set_flight_state_007c1430's
+// effects on the slot, then 007C11E0 when the state changed (007C14C5).
+// A template only so that the OFF build, which never names it, has no
+// unreferenced internal function.
+template <class ImplT, class SlotT, class DeckT>
+void request_ground_state_007c3c90(ImplT& h, SlotT& p, DeckT& d, bool flag) {
+    bsp::cc13_seg47b::plane_request_flight_state_007c1570(p.plane_control_mode_900,
+        bsp::session_context().session_word_1fe4 == 2, 4 + (flag ? 1 : 0), false,
+        [&h, &p, &d, flag](std::uint8_t, std::uint8_t) {
+            h.ground_state_from_locked_007ca3f0(p, d, flag);
+        },
+        [&h, &p](std::int32_t wanted) {
+            bsp::PlaneSetStateInputs si;
+            si.requested_state = wanted;
+            si.current_state = p.plane_control_mode_900;
+            si.airborne_clock = p.plane_airborne_908;
+            si.class_min_water_spd = p.plane_min_water_spd_198;
+            si.landed_after_flight = p.plane_landed_904;
+            const bsp::PlaneSetStateEffects fx = bsp::set_flight_state_007c1430(si);
+            p.plane_control_mode_900 = fx.state;
+            if (fx.write_state_change_stamp) p.plane_site_timer_c04 = -1.0f;
+            if (fx.write_landed_after_flight) p.plane_landed_904 = fx.landed_after_flight;
+            if (fx.write_state_enter_marker) p.plane_c18 = 3;
+            if constexpr (bsp::kPlaneFlightStateNotifyCc13Bound) {
+                if (fx.changed) h.flight_state_notify_007c11e0(p);
+            }
+        });
+}
+}  // namespace
+
 void GameUnitsHost::Impl::airfield_site_tick_006cf980(std::size_t deck_index, LandingDeck& d) {
     if (d.site_ready_18 >= slots.size() || !slots[d.site_ready_18]) return;
     GameUnitSlot& p = *slots[d.site_ready_18];
     const bool owner_alive = d.owner < slots.size() && slots[d.owner]
         && !(gunnery != nullptr && gunnery->unit_dead(d.owner));
     if (owner_alive && place_on_launch_spot_007c5f60(p, deck_index, d, true)) {
+        // 007C3C90(plane, 1) -> 007C1570(5, 0): the typed body gates the C3h
+        // message (above); OFF keeps the direct 007CA3F0 call.
+        if constexpr (bsp::kWireGoal2Chain73Bound) {
+            request_ground_state_007c3c90(*this, p, d, true);
+        } else {
         ground_state_from_locked_007ca3f0(p, d, true);                  // 007C3C90(1)
+        }
         record("SceneNode::invalidate_subtree_pose_0042ed50", 0x0042ed50u);
         record("Plane::tick_node_advance_zero_006cfa41", 0x006cfa41u);
     } else {
@@ -20181,7 +20296,17 @@ void GameUnitsHost::Impl::carrier_elevator_take_006fc720(LandingDeck& d, GameUni
     e.plane_34 = p.process_index;
     const std::array<float, 3> l = carrier_local_point(d, p.motion.position);
     for (int k = 0; k < 3; ++k) e.off_38[k] = l[k] - e.lift[k];
+    // 007C2090: the typed body skips a plane already in state 2 and a client
+    // session (game+1FE4h == 2, the session context) and otherwise sends C3h
+    // (+900h, 2), whose handler 007CC820 -> 007CC7A0 this host delivers at once;
+    // OFF keeps the direct 007CC7A0 call.
+    if constexpr (bsp::kWireGoal2Chain73Bound) {
+        bsp::cc13_seg47b::plane_request_flight_state_two_007c2090(p.plane_control_mode_900,
+            [] { return bsp::session_context().session_word_1fe4 == 2; },
+            [this, &p](std::uint8_t, std::uint8_t) { plane_enter_state_two_007cc7a0(p); });
+    } else {
     plane_enter_state_two_007cc7a0(p);                                // 007C2090
+    }
     e.mode_50 = 2;
     ++e.intakes;
     log.notef("  carrier elevator %s: takes %s at %.2f s offset=(%.2f %.2f %.2f) "
@@ -20217,7 +20342,13 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
                 if (up < slots.size() && slots[up]
                     && !(gunnery != nullptr && gunnery->unit_dead(up))) {
                     slots[up]->plane_hit_node_detached = false;
+                    // 007C3C90(plane, 0) -> 007C1570(4, 0) (006D0684): the typed body
+                    // gates the C3h message; OFF keeps the direct 007CA3F0 call.
+                    if constexpr (bsp::kWireGoal2Chain73Bound) {
+                        request_ground_state_007c3c90(*this, *slots[up], d, false);
+                    } else {
                     ground_state_from_locked_007ca3f0(*slots[up], d, false);
+                    }
                 }
             }
         }
@@ -20258,7 +20389,14 @@ void GameUnitsHost::Impl::carrier_elevator_site_tick_006d0600(LandingDeck& d, fl
     if (!(e.p18 > e.depth_48)) return;                                // 006D0738
     if (e.plane_34 < slots.size()) {
         GameUnitSlot& p = *slots[e.plane_34];
+        // 007B96C0 (006D0600's call): the typed body sets +C00h and runs 00951F40(0),
+        // this host's node detach, before 006FC250; OFF keeps the store alone.
+        if constexpr (bsp::kWireGoal2Chain73Bound) {
+            bsp::cc13_seg47::plane_detach_into_hangar_007b96c0(p.plane_in_hangar_c00,
+                [&p](std::int32_t visible) { p.plane_hit_node_detached = visible == 0; });
+        } else {
         p.plane_in_hangar_c00 = true;                                 // 007B96C0
+        }
         log.notef("  carrier elevator %s: stows %s at %.2f s (007B96C0 / 006FC250, packet "
             "cc9_carrier_elevator)", slots[d.owner]->row.name.c_str(), p.row.name.c_str(),
             static_cast<double>(summary.simulated_seconds));
@@ -40983,7 +41121,54 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009B09A0 (009B09A0-009B09B6, RET), land/abort's exit: with
                     // approach+2Ch, 006BCE60(block, plane).
                     void land_exit_abort_009b09a0() {
+                        // 006BCE60: the reconstructed body clears +0Ch on every record of
+                        // the deck's assignment vector (block+A8h/+ACh) whose +0h is this
+                        // plane, over a query-local image of that vector with no block lock
+                        // (+8h null, as LandingAssignmentLookupHost documents); the image
+                        // bytes are written back. OFF keeps the host's held=false loop.
+                        if constexpr (bsp::kWireGoal2Chain73Bound) {
+                            if (unit_.land_deck_plus_one == 0) return;
+                            const std::size_t di = unit_.land_deck_plus_one - 1u;
+                            if (di >= owner_.landing_decks.size()) return;
+                            std::vector<GameUnitsHost::Impl::LandingAssignment>& recs =
+                                owner_.landing_decks[di].assignments;
+                            struct AssignmentImage {
+                                void* plane_00;
+                                float path_04;
+                                float spacing_08;
+                                std::uint8_t held_0c;
+                                std::uint8_t side_0d;
+                                std::uint16_t unused_0e;
+                                std::int32_t mode_10;
+                            };
+                            static_assert(sizeof(AssignmentImage) == 0x14);
+                            // One identity cell per host slot stands for the plane pointer.
+                            std::vector<std::uint8_t> planes(owner_.slots.size());
+                            std::vector<AssignmentImage> images;
+                            images.reserve(recs.size());
+                            for (const GameUnitsHost::Impl::LandingAssignment& rec : recs) {
+                                images.push_back({rec.plane < planes.size() ? &planes[rec.plane]
+                                                                            : nullptr,
+                                    rec.path_4, rec.spacing_8,
+                                    static_cast<std::uint8_t>(rec.held_0c),
+                                    static_cast<std::uint8_t>(rec.side_0d), 0, rec.mode_10});
+                            }
+                            if (unit_.process_index >= planes.size()) return;
+                            alignas(4) std::uint8_t block[0xb0]{};
+                            using bsp::cc13_seg29U::at;
+                            if (!images.empty()) {
+                                at<void*>(block, 0xa8) = images.data();
+                                at<void*>(block, 0xac) = images.data() + images.size();
+                            }
+                            LandingAssignmentLookupHost no_lock;
+                            bsp::cc13_seg29U::air_ops_block_release_landing_record_006bce60(
+                                block, &planes[unit_.process_index], no_lock);
+                            for (std::size_t i = 0; i < recs.size(); ++i) {
+                                recs[i].held_0c = images[i].held_0c != 0;
+                            }
+                        } else {
                         land_set_held_006bcd80(false);
+                        }
                     }
 
                     // 009B21A0 (009B21A0-009B21BA), land/park's enter: +1Ch = 0.0,
@@ -41250,8 +41435,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(owner_.summary.simulated_seconds),
                                             static_cast<double>(px), static_cast<double>(pz));
                                     }
+                                    // 007B96C0: the typed body sets +C00h and runs
+                                    // 00951F40(0), this host's node detach; OFF keeps
+                                    // the two direct stores.
+                                    if constexpr (bsp::kWireGoal2Chain73Bound) {
+                                        bsp::cc13_seg47::plane_detach_into_hangar_007b96c0(
+                                            unit_.plane_in_hangar_c00,
+                                            [this](std::int32_t visible) {
+                                                unit_.plane_hit_node_detached = visible == 0;
+                                            });
+                                    } else {
                                     unit_.plane_in_hangar_c00 = true;
                                     unit_.plane_hit_node_detached = true;   // 00951F40(0)
+                                    }
                                     ++unit_.land_park_hangar;
                                 }
                             } else if (carrier) {

@@ -422,24 +422,38 @@ void air_ops_route_do_launch_slot_006bc8e0(void* block, std::uint32_t slot, Seg2
 // +ACh = z, +A8h = 0.5f (00CE3800). 24-bit model: the difference rounds to float before the
 // exact halving.
 // ---------------------------------------------------------------------------
-void air_ops_holder_refresh_touchdown_006bc960(void* holder, Seg29UHost& host) {
-    const float half_length = static_cast<float>(-static_cast<double>(at<float>(holder, 0xB4)) * kHalf);
-    void* const block = ptr(holder, 0x04);
+void air_ops_holder_refresh_touchdown_006bc960(float* t_a4,
+    const AirOpsHolderTouchdownInputs& in) {
+    const float half_length = static_cast<float>(-static_cast<double>(in.length_b4) * kHalf);
     float x;
     float z;
-    if (host.entity_is_kind_of_5c(ptr(block, 0x7C), 9)) {
+    if (in.owner_is_kind_9) {
         x = 0.0f;
         z = static_cast<float>(static_cast<double>(half_length) + kMotherShipTouchdownOffset);
     } else {
-        const double width = at<float>(holder, 0xB0);
-        const float diff = static_cast<float>(width - host.object_vslot_10_x87(block));
+        const double width = in.width_b0;
+        const float diff = static_cast<float>(width - in.block_vslot_10);
         const float t = static_cast<float>(static_cast<double>(diff) * kHalf);
         x = 0.0f > t ? 0.0f : t;
         z = static_cast<float>(static_cast<double>(half_length) + kAirfieldTouchdownOffset);
     }
-    at<float>(holder, 0xA4) = x;
-    at<float>(holder, 0xAC) = z;
-    at<float>(holder, 0xA8) = kTouchdownHeight;
+    t_a4[0] = x;
+    t_a4[2] = z;
+    t_a4[1] = kTouchdownHeight;
+}
+
+// Raw entry: reads the holder and calls the two virtuals in 006BC960's order,
+// then runs the typed body over holder+A4h.
+void air_ops_holder_refresh_touchdown_006bc960(void* holder, Seg29UHost& host) {
+    AirOpsHolderTouchdownInputs in{};
+    in.length_b4 = at<float>(holder, 0xB4);
+    void* const block = ptr(holder, 0x04);
+    in.owner_is_kind_9 = host.entity_is_kind_of_5c(ptr(block, 0x7C), 9);
+    if (!in.owner_is_kind_9) {
+        in.width_b0 = at<float>(holder, 0xB0);
+        in.block_vslot_10 = host.object_vslot_10_x87(block);
+    }
+    air_ops_holder_refresh_touchdown_006bc960(&at<float>(holder, 0xA4), in);
 }
 
 // 006BCA40: T (+A4h) through the holder frame (+8h), 004142E0, copied to out.
