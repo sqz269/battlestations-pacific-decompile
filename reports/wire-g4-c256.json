@@ -4,11 +4,11 @@
   "owner": "agent/g4-w5",
   "switch": "kWireGoal4Chain256Bound",
   "wired_total_before": 9088,
-  "wired_total_after": 9089,
+  "wired_total_after": 9099,
   "validation": [
     "Baseline and changed ./scripts/build.ps1 passed; reconstructed_math and tool_tests passed.",
     "Static wire_readiness census only; game was not run.",
-    "Reachability review rejected a native binding-scan attempt despite an optimistic static-census increase; only the verified context getter wiring remains.",
+    "Reachability review rejected a native binding-scan attempt despite an optimistic static-census increase; that attempt was removed and only the verified context getter wiring remains.",
     "A temporary synthetic fixture verified context republishing and the typed level view, including signed DWORD bits; this is fixture evidence only."
   ],
   "rows": [
@@ -84,5 +84,10 @@
       "host_site": "src/native_input_action_binding_runtime.cpp: poll_native_input_action_00a92370; src/input_binding_poll.cpp: poll_input_action_bindings_00a92370",
       "reason": "No application constructs GameInputActions or binds the native configuration runtime/tick; mission-frame InputTickState records have no producer, so the binding scan is not live. Attempted adapter/wiring removed."
     }
-  ]
+  ],
+  "intermediate_census_before_final_map": 9089,
+  "reviewed_new_wired": [
+    "00a92290"
+  ],
+  "census_note": "Baseline 9088; source-only/intermediate-map census 9089; final rebuilt-map census 9099. The census uses linked-map identifiers and file reachability. Only 00A92290 is reviewed and claimed newly wired here; the additional ten census rows are not runtime-wiring claims."
 }
