@@ -131,5 +131,22 @@ void** unit_tickable_entity_find_damage_section_008782a0(
   std::int32_t key_a,
   std::int32_t key_b
 );
+// Typed body of 008782A0 over any section storage: [first, last) in vector
+// order (the image's +344h vector), `key_a_of(element)` standing for the
+// element's +4h dword and `key_b_of(element)` for its +8h dword. Returns the
+// first element whose +4h equals key_a and whose +8h equals key_b, or `last`
+// where the image returns null.
+template <class It, class KeyAOf, class KeyBOf>
+It unit_tickable_entity_find_damage_section_008782a0(
+  It first, It last, std::int32_t key_a, std::int32_t key_b,
+  KeyAOf key_a_of, KeyBOf key_b_of
+) {
+  for (; first != last; ++first) {
+    if (key_a_of(*first) == key_a && key_b_of(*first) == key_b) {
+      return first;
+    }
+  }
+  return last;
+}
 
 }  // namespace bsp::sim_damage_seg54_argon

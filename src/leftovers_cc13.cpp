@@ -475,8 +475,16 @@ bool ship_director_allows_category_00836790(int category) noexcept {
 
 // 00836EB0: __thiscall(class, target), RET 4, ST0 float. Assembly shows
 // MOVSS/FLD only, with no x87 arithmetic or excess precision to reproduce.
+float gun_class_value_for_target_00836eb0(const GunClassTargetValues& values,
+                                          bool target_is_kind_8) noexcept {
+    return target_is_kind_8 ? values.value_764 : values.value_768;
+}
+// Raw entry: the block's two floats and the target's vtable[5Ch](8) answer.
 float gun_class_value_for_target_00836eb0(const void* gun_class, void* target, Host& host) {
-    return get<float>(gun_class, host.is_kind_vslot_5c(target, 8) ? 0x764 : 0x768);
+    const bool target_is_kind_8 = host.is_kind_vslot_5c(target, 8);
+    return gun_class_value_for_target_00836eb0(
+        GunClassTargetValues{get<float>(gun_class, 0x764), get<float>(gun_class, 0x768)},
+        target_is_kind_8);
 }
 // 00837DE0: ECX=settings, RET, EAX=selected interior pointer. The actual
 // [00E188A8] global is supplied by the caller, without substituting host state.

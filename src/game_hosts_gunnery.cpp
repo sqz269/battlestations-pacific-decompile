@@ -9,6 +9,12 @@
 #include "bsp/wire_goal1_chain8_switches.hpp"
 #include "bsp/wire_goal1_chain22_switches.hpp"
 #include "bsp/wire_goal2_chain27_switches.hpp"
+#include "bsp/wire_goal2_chain68_switches.hpp"
+#include "bsp/director_geommesh_seg38_39_argon.hpp"   // chain 68: 00723030 typed view
+#include "bsp/oct18_tail_b.hpp"                       // chain 68: 00836EB0 typed view
+#include "bsp/sim_damage_seg54_argon.hpp"             // chain 68: 008782A0 typed body
+#include "bsp/cc13_left61.hpp"                        // chain 68: 0093A9E0 over image rows
+#include "bsp/seg59_bots_s53.hpp"                     // chain 68: 008FB890 typed body
 #include "bsp/cc13_front2.hpp"
 #include "bsp/blast_damage.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
@@ -5388,8 +5394,19 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     static_cast<double>(ehi[2]), static_cast<double>(lo[1]),
                     static_cast<double>(hi[1]));
                 entry.section_present[slot] = true;   // the last element of a kind wins
+                if constexpr (bsp::kWireGoal2Chain68Bound) {
+                    // 00723030 over the element's box (the host keeps one, its
+                    // triangle AABB, as the root box +20h/+24h, count +28h = 1);
+                    // OFF keeps the inline (lo + hi) * 0.5f.
+                    namespace gm = bsp::director_geommesh_seg38_39_argon;
+                    static const float kZeroVector00f87574[3] = {0.0f, 0.0f, 0.0f};
+                    gm::bsp_geom_mesh_element_root_box_centre_00723030(
+                        gm::GeomMeshElementBoxView{elo, ehi, 1}, 0.5 /* 00D7A280 */,
+                        kZeroVector00f87574, entry.section_point[slot].data());
+                } else {
                 for (int k = 0; k < 3; ++k) {
                     entry.section_point[slot][k] = (elo[k] + ehi[k]) * 0.5f;   // 00723030
+                }
                 }
             }
         }
@@ -9227,7 +9244,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
             bool drop = host_drop;
             if constexpr (kGunBotNotAllyDropCc13Bound) {
+                if constexpr (bsp::kWireGoal2Chain68Bound) {
+                    if (artillery_bot_aims(gun.category, g)) {
+                        // 008FB890 (006DF541, the ArtilleryGunnerBot tick) over the
+                        // same reads: target+5Dh as the target's dead flag, the gun's
+                        // parent [+3Ch] as its owner unit, 00803510 as same_party's
+                        // answer; the +5Ch test stays the host's. OFF (and the other
+                        // bots' inline copies) keep host_drop || same_party.
+                        bsp::GunBotTargetValidity v;
+                        v.target_resolved = true;                   // target_unit resolved
+                        v.target_alive = !unit_state[target].dead;  // target+5Dh
+                        v.gun_present = true;                       // bot+50h, this row
+                        v.gun_parent_present = true;                // [gun+3Ch], the owner
+                        v.gun_parent_alive = !unit_state[owner_unit].dead;   // parent+5Dh
+                        v.sides_related = !same_party;              // 00803510 != 0
+                        drop = !bsp::seg59_entity_is_live_other_party_008fb890(v)
+                            || !units.unit_alive_and_visible(target);
+                    } else {
+                        drop = host_drop || same_party;
+                    }
+                } else {
                 drop = host_drop || same_party;
+                }
             }
             if (drop) {
                 // 008FFA20's target-validity test: a dead target is dropped.
@@ -10725,8 +10763,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 ++fire_cooldown_sets;
             }
             if (gun.category == 7) {
+                if constexpr (bsp::kWireGoal2Chain68Bound) {
+                    // 00836EB0 (0072FB9B: ECX = 00424C40's block, arg = [gun+3F0h])
+                    // picks +764h / +768h by the owner's kind 08h; OFF keeps the
+                    // inline choice.
+                    state.torpedo_cooldown_6fc = bsp::oct18_tail_b::gun_class_value_for_target_00836eb0(
+                        bsp::oct18_tail_b::GunClassTargetValues{sub_torpedo_delay_764,
+                                                                ship_torpedo_delay_768},
+                        units.unit_is_kind_of(owner_unit, 8));
+                } else {
                 state.torpedo_cooldown_6fc = units.unit_is_kind_of(owner_unit, 8)
                     ? sub_torpedo_delay_764 : ship_torpedo_delay_768;   // 00836EB0
+                }
                 ++torpedo_cooldown_sets;
             }
         }
@@ -15690,6 +15738,21 @@ public:
     bool resolve_component(std::uint32_t kind, int segment, float* numerator,
                            float* denominator) override {
         const auto& dc = owner_.damage_control[unit_];
+        if constexpr (bsp::kWireGoal2Chain68Bound) {
+            // 008782A0 over the unit's Damage.Sections rows (+4h kind, +8h
+            // index); OFF keeps the inline scan.
+            const auto found = bsp::sim_damage_seg54_argon::
+                unit_tickable_entity_find_damage_section_008782a0(
+                    dc.sections.begin(), dc.sections.end(),
+                    static_cast<std::int32_t>(kind), static_cast<std::int32_t>(segment),
+                    [](const auto& sec) { return static_cast<std::int32_t>(sec.kind); },
+                    [](const auto& sec) { return static_cast<std::int32_t>(sec.index); });
+            if (found == dc.sections.end()) return false;
+            *numerator = found->chance;
+            *denominator = found->threshold;
+            ++owner_.cf_resolved;
+            return true;
+        } else {
         for (const auto& sec : dc.sections) {
             if (sec.kind == static_cast<int>(kind) && sec.index == segment) {
                 *numerator = sec.chance;
@@ -15699,6 +15762,7 @@ public:
             }
         }
         return false;
+        }
     }
     float random_unit_float() override {
         return owner_.draw(GameGunneryHost::Impl::Draw::component_failure, unit_, 0, 0.0f, 1.0f);
@@ -15716,11 +15780,50 @@ public:
     }
     // 0093A9E0 over task+18h with the row's name, 0093A5D0 against the end.
     bool failure_already_active(const std::string& name) override {
+        if constexpr (bsp::kWireGoal2Chain68Bound) {
+            // 0093A9E0 (0093C02E in 0093BED0; 0093C300 calls its 0093A8B0 directly,
+            // 0093C43D) over the task's failure rows laid out as the image's 10h
+            // rows; OFF keeps the exact-match scan.
+            FailureRowsImage rows(owner_.damage_control[unit_].task.failures);
+            const std::uint32_t key[2] = {static_cast<std::uint32_t>(name.size()),
+                static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(name.c_str()))};
+            std::uint32_t found[2] = {0u, 0u};
+            bsp::cc13_left61::named_row_find_iterator_0093a9e0(found, key, 0u, rows.first(),
+                                                               0u, rows.last());
+            return reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(found[1]))
+                != rows.last();
+        } else {
         for (const auto& f : owner_.damage_control[unit_].task.failures) {
             if (f.name == name) return true;
         }
         return false;
+        }
     }
+    // The repair task's failure list (task+18h..+20h) as the image's 10h-byte
+    // rows over the host's ActiveFailure records (unit_fire_flooding.hpp gives
+    // the same offsets): +0h id, +4h name length, +8h name characters, +0Ch
+    // seconds remaining. The characters stay in the host's strings, which
+    // outlive the search. Win32 only: the row holds a 32-bit pointer.
+    class FailureRowsImage {
+    public:
+        explicit FailureRowsImage(const std::vector<bsp::ActiveFailure>& failures)
+            : words_(failures.size() * 4u, 0u) {
+            static_assert(sizeof(void*) == 4, "the image row stores a 32-bit pointer");
+            for (std::size_t i = 0; i < failures.size(); ++i) {
+                const bsp::ActiveFailure& f = failures[i];
+                std::uint32_t* row = &words_[i * 4u];
+                row[0] = static_cast<std::uint32_t>(f.id);
+                row[1] = static_cast<std::uint32_t>(f.name.size());
+                row[2] = static_cast<std::uint32_t>(
+                    reinterpret_cast<std::uintptr_t>(f.name.c_str()));
+                std::memcpy(&row[3], &f.seconds_remaining, sizeof(float));
+            }
+        }
+        std::uint8_t* first() { return reinterpret_cast<std::uint8_t*>(words_.data()); }
+        std::uint8_t* last() { return first() + words_.size() * sizeof(std::uint32_t); }
+    private:
+        std::vector<std::uint32_t> words_;
+    };
     void session_route_failure_started(std::uint32_t, int) override {
         owner_.record("Failure::section_state_message_0093a2c0", 0x0093a2c0u);
     }

@@ -3,6 +3,7 @@
 // s54_seg59_helpers, 268). Transcribed from the disk listing.
 
 #include "bsp/seg59_bots_s53.hpp"
+#include "bsp/gun_bot_ticks.hpp"
 #include "bsp/seg59_ship_lead_s54.hpp"
 
 #include "bsp/camera_multiply.hpp"
@@ -74,18 +75,32 @@ void seg59_depth_charge_bot_attach_008fc060(void* bot, void* node, Seg59BotHost&
     cache_owner(bot);
 }
 
-bool seg59_entity_is_live_other_party_008fb890(void* gun, void* target, Seg59BotHost& host) {
-    if (target == nullptr) return false;            // 008FB890..008FB892, 008FB8C6 XOR AL,AL
+bool seg59_entity_is_live_other_party_008fb890(const GunBotTargetValidity& v) noexcept {
+    if (!v.target_resolved) return false;           // 008FB890..008FB892, 008FB8C6 XOR AL,AL
     // 008FB895: BL = 0 is "still good"; any failure sets BL = 1 (008FB8BB) and the
     // answer is SETZ on BL (008FB8C1).
-    if (load<std::uint8_t>(target, 0x5d) != 0) return false;   // 008FB897, the dead flag
-    if (gun == nullptr) return false;                           // 008FB89C
-    void* const parent = load<void*>(gun, 0x3c);               // 008FB8A0
-    if (parent == nullptr) return false;                        // 008FB8A3
-    if (load<std::uint8_t>(parent, 0x5d) != 0) return false;   // 008FB8A7
-    // 008FB8AC..008FB8B9: ECX = gun+54h, EDX = target+54h; a zero answer fails.
-    return host.party_relative_to_00803510(load<void*>(gun, 0x54),
+    if (!v.target_alive) return false;              // 008FB897, target+5Dh, the dead flag
+    if (!v.gun_present) return false;               // 008FB89C
+    if (!v.gun_parent_present) return false;        // 008FB8A0 / 008FB8A3, [gun+3Ch]
+    if (!v.gun_parent_alive) return false;          // 008FB8A7, parent+5Dh
+    // 008FB8AC..008FB8B9: 00803510(ECX = gun+54h, EDX = target+54h); zero fails.
+    return v.sides_related;
+}
+
+// Raw entry: fills the view in the image's read order, each read only once the
+// tests before it passed, and calls 00803510 last, as 008FB8AC does.
+bool seg59_entity_is_live_other_party_008fb890(void* gun, void* target, Seg59BotHost& host) {
+    GunBotTargetValidity v;
+    v.target_resolved = target != nullptr;
+    v.target_alive = v.target_resolved && load<std::uint8_t>(target, 0x5d) == 0;
+    v.gun_present = v.target_alive && gun != nullptr;
+    void* const parent = v.gun_present ? load<void*>(gun, 0x3c) : nullptr;
+    v.gun_parent_present = parent != nullptr;
+    v.gun_parent_alive = v.gun_parent_present && load<std::uint8_t>(parent, 0x5d) == 0;
+    v.sides_related = v.gun_parent_alive
+        && host.party_relative_to_00803510(load<void*>(gun, 0x54),
                                            load<void*>(target, 0x54)) != 0;
+    return seg59_entity_is_live_other_party_008fb890(v);
 }
 
 }  // namespace bsp

@@ -193,6 +193,20 @@ std::uint32_t bsp_geom_mesh_resource_item_get_runtime_type_token_00721cb0(Seg38_
 std::uint32_t bsp_geom_mesh_resource_item_get_runtime_type_name_address_00721cc0(Seg38_39Host& host);
 void bsp_geom_mesh_radix_sort_key0_00722210(std::uint32_t* records, std::int32_t count, std::uint32_t* scratch);
 void bsp_geom_mesh_element_root_box_centre_00723030(Seg38_39Host& host, const void* self, float* out_centre);
+// Typed view of a GeomMesh element's box arrays: element+20h (min corners),
+// +24h (max corners), +28h (box count); entry 0 is the root box.
+struct GeomMeshElementBoxView {
+  const float* min_box;
+  const float* max_box;
+  std::int32_t box_count;
+};
+// `half_00d7a280` is the image's double 0.5 at 00D7A280; `zero_vector_00f87574`
+// is read only when box_count <= 0 (the static zero vector 00F87574).
+void bsp_geom_mesh_element_root_box_centre_00723030(
+    const GeomMeshElementBoxView& element,
+    double half_00d7a280,
+    const float* zero_vector_00f87574,
+    float* out_centre);
 void bsp_geom_mesh_radix_sort_by_axis_007230f0(
     Seg38_39Host& host,
     std::int32_t axis,

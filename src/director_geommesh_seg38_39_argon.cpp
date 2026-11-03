@@ -634,31 +634,52 @@ void bsp_geom_mesh_radix_sort_key0_00722210(
 // Note: 0072309b is `dc c9 fmul st(1), st(0)`, multiplying the X sum in st(1) by 0.5 ([00d7a280]
 // in st(0)) while keeping 0.5 in st(0) for the Y and Z multiplies at 007230a5 and 007230aa.
 void bsp_geom_mesh_element_root_box_centre_00723030(
-    Seg38_39Host& host,
-    const void* self,
+    const GeomMeshElementBoxView& element,
+    double half_00d7a280,
+    const float* zero_vector_00f87574,
     float* out_centre) {
-  Raw s = raw_of(self);
-  if (s.at<std::int32_t>(0x28) > 0) {
-    const float* min_box = static_cast<const float*>(s.ptr(0x20));
+  if (element.box_count > 0) {
+    const float* min_box = element.min_box;
     const float min_x = min_box[0];
     const float min_z = min_box[2];
     const float min_y = min_box[1];
-    const float* max_box = static_cast<const float*>(s.ptr(0x24));
+    const float* max_box = element.max_box;
     const float max_x = max_box[0];
     const float max_y = max_box[1];
     const float max_z = max_box[2];
     const float sum_x = max_x + min_x;
     const float sum_y = max_y + min_y;
     const float sum_z = max_z + min_z;
-    const double half = host.global_f64(0x00d7a280);
+    const double half = half_00d7a280;
     out_centre[0] = static_cast<float>(static_cast<double>(sum_x) * half);
     out_centre[1] = static_cast<float>(static_cast<double>(sum_y) * half);
     out_centre[2] = static_cast<float>(half * static_cast<double>(sum_z));
     return;
   }
-  out_centre[0] = host.global_f32(0x00f87574);
-  out_centre[1] = host.global_f32(0x00f87578);
-  out_centre[2] = host.global_f32(0x00f8757c);
+  out_centre[0] = zero_vector_00f87574[0];
+  out_centre[1] = zero_vector_00f87574[1];
+  out_centre[2] = zero_vector_00f87574[2];
+}
+
+// Raw entry: the element's +20h / +24h / +28h fields and the image's two
+// globals, read through the host as before.
+void bsp_geom_mesh_element_root_box_centre_00723030(
+    Seg38_39Host& host,
+    const void* self,
+    float* out_centre) {
+  Raw s = raw_of(self);
+  const GeomMeshElementBoxView element{
+      static_cast<const float*>(s.ptr(0x20)),
+      static_cast<const float*>(s.ptr(0x24)),
+      s.at<std::int32_t>(0x28)};
+  if (element.box_count > 0) {
+    bsp_geom_mesh_element_root_box_centre_00723030(
+        element, host.global_f64(0x00d7a280), nullptr, out_centre);
+    return;
+  }
+  const float zero[3] = {host.global_f32(0x00f87574), host.global_f32(0x00f87578),
+                         host.global_f32(0x00f8757c)};
+  bsp_geom_mesh_element_root_box_centre_00723030(element, 0.0, zero, out_centre);
 }
 
 // 007230f0: BSP_GeomMesh_RadixSortByAxis
