@@ -89,6 +89,22 @@ struct GridServices {
 };
 void terrain_layer_set_dimension_00423960(void* self, std::int32_t dimension,
                                         const GridConstants& constants, GridServices& services);
+// The layer fields 00423960 writes, in its store order: +04h half extent, +08h
+// dimension, +10h scale, +0Ch cell width, then the +18h byte vector resized
+// (004219A0, fill 0) to the unsigned n * n and its [begin, end) cleared. A host
+// that keeps the layer in its own shape implements this over that storage.
+struct TerrainLayerDimensionFields {
+    virtual ~TerrainLayerDimensionFields() = default;
+    virtual void set_half_extent_04(float value) = 0;
+    virtual void set_dimension_08(std::int32_t value) = 0;
+    virtual void set_scale_10(float value) = 0;
+    virtual void set_cell_width_0c(float value) = 0;
+    virtual void resize_and_clear_grid_18(std::uint32_t bytes) = 0;
+};
+// 00423960 over a typed view of the layer; the void* overload above is this
+// body over the original 28h-byte layout.
+void terrain_layer_set_dimension_00423960(TerrainLayerDimensionFields& layer,
+                                        std::int32_t dimension, const GridConstants& constants);
 void reset_avoid_zone_layers_00423af0(void* self, const GridConstants& constants,
                                    GridServices& services);
 struct PendingClassState {
