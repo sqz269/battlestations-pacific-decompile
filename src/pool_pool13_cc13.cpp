@@ -46,15 +46,31 @@ std::int32_t air_ops_free_stock_for_class_006bf330(Pool13Host& host, Object bloc
 // Uncertainty: only AL is defined; on the true path the upper bytes of EAX
 // hold the owner pointer's, on the false paths whatever EAX held (callers
 // 00895D20 and 0089E3C0 are Lua bindings that read AL).
-// src/air_operations.cpp models the same test inline for the live host.
+// src/air_operations.cpp models the same test inline for the live host and,
+// under kWireGoal2Chain182Bound, calls the typed view entry instead.
+// The test lives in the typed view entry; the image-layout entry only reads
+// the block into the view. The view reads +38h and the owner byte up front,
+// which changes no answer: the owner byte is read only when +7Ch is set, as
+// in the image, and the tests run in the image's order.
 // ---------------------------------------------------------------------------
+bool air_ops_block_is_ready_to_send_planes_006bf620(const AirOpsBlockReadyView& block) noexcept {
+    if (block.runway_failure_1c) return false;   // 006BF620 +1Ch
+    if (block.hangar_failure_1d) return false;   // +1Dh
+    if (!block.owner_present_7c) return false;   // [+7Ch] null
+    if (block.owner_blocked_5d) return false;    // owner +5Dh
+    return block.held_entity_38 == 0;            // +38h
+}
+
 bool air_ops_block_is_ready_to_send_planes_006bf620(Object block) noexcept {
-    if (at<std::uint8_t>(block, 0x1C) != 0) return false;
-    if (at<std::uint8_t>(block, 0x1D) != 0) return false;
     Object owner = at<Object>(block, 0x7C);
-    if (owner == nullptr) return false;
-    if (at<std::uint8_t>(owner, 0x5D) != 0) return false;
-    return at<std::uint32_t>(block, 0x38) == 0;
+    const AirOpsBlockReadyView view{
+        at<std::uint8_t>(block, 0x1C) != 0,
+        at<std::uint8_t>(block, 0x1D) != 0,
+        owner != nullptr,
+        owner != nullptr && at<std::uint8_t>(owner, 0x5D) != 0,
+        at<std::uint32_t>(block, 0x38),
+    };
+    return air_ops_block_is_ready_to_send_planes_006bf620(view);
 }
 
 // ---------------------------------------------------------------------------
