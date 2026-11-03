@@ -6996,7 +6996,20 @@ void GameGunneryHost::Impl::rebuild_weapon_category_index_00956c20(std::size_t i
                     out.operational = true;   // 00729F10 over an undamaged gun
                 }
                 out.weapon_function = gun.category;
-                out.max_range = gun.max_range;  // 00731020
+                if constexpr (kWireGoal4Chain250Bound) {
+                    // Goal 4 chain 250: 00731020 on the gun class. Fire record 0
+                    // ([class+74h], present when [class+78h] != 0) is the class's
+                    // Bullet[1]; its bullet's +60h is the derived engagement
+                    // range the host holds in max_range. No record: FLD1.
+                    bsp::gameplay_seg40_59_cc13::GunClassFirstRecord first;
+                    first.present = gun.bullet_class >= 0;
+                    first.bullet_present = first.present;
+                    first.bullet_max_range_060 = gun.max_range;
+                    out.max_range =
+                        bsp::gameplay_seg40_59_cc13::gun_class_max_weapon_range_00731020(first);
+                } else {
+                    out.max_range = gun.max_range;  // 00731020
+                }
                 out.flak_alternate_range = gun.max_range;
                 if constexpr (kFlakSecondAmmoRangeCc13Bound) {
                     // 00956DCB: ammunition record 1's bullet +60h, the derived

@@ -97,6 +97,72 @@
       "host_site": "src/game_hosts_gunnery.cpp GunneryPassBinding bot slot accept 00729bc0 (category 7)",
       "status": "wired",
       "note": "adds the image's IsKindOf(6) and +5Dh refusals to the small-craft one; vtable[1D4h] answers 1 for a kind-7 gun"
+    },
+    {
+      "native": "00731020",
+      "host_site": "src/game_hosts_gunnery.cpp RebuildBinding::device_at (00956C20's rebuild)",
+      "status": "wired",
+      "note": "record 0 present = the class has Bullet[1]; +60h is the derived engagement range the host holds in max_range; a gun class with no record now answers FLD1 (1.0) as the image does"
+    },
+    {
+      "native": "0084c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp gun fixed-step pump (immediate_4d4)",
+      "reason": "the body is the identity on +4D4h (0084C5DB CMP/JE); the host's immediate_4d4 test already is the whole decision, a call would be a round-trip"
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp attach_passes / category_gate_slot4 / plane null provider",
+      "reason": "needs unit->vtable[114h] (the director) and that director's vtable[48h](2) answer per class; the host models neither, only the plane/squadron null-provider outcome"
+    },
+    {
+      "native": "008ff200",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp set_bot_fire_target_00727f10 (flak reroll)",
+      "reason": "the roll 008FDBE0 runs through UniformFn/NextU32Fn while the host's roll_aa_flak_error_008fdbe0 draws its own per-gun streams from a hand table; swapping moves the RNG stream (00BD2F10 shared), needs a game pair"
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "TailGunnerBot skill set: the host draws nothing at a skill change (no bot object with +84h/+88h/+8Ch); needs a per-gun tail-gunner bot state"
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp defend think (kDefendThinkImageBound)",
+      "reason": "already called there; wire_readiness reads the multi-line qualified call as a definition (owner_files regex), so the row stays 'ready'"
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp kCaptureGroupResource",
+      "reason": "needs each member's unit+304h ResourceUsage (0077E864); GameUnitsHost has no accessor (src/game_hosts_units.cpp would need to keep the scene property)"
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp tuning load (009FFC80)",
+      "reason": "only the effective-game-mode-0 arm of 009FFC80 calls it; a campaign mission is mode 8, and 00F8A89C's party records (+0Ch) are not hosted"
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp kAiGroupScoreListReleaseBound",
+      "reason": "the group score list's only reader is the 00A2CDD0 debug overlay (no rel32/abs32 reaches it); the host keeps no list on purpose"
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp kAiGroupScoreListReleaseBound",
+      "reason": "same debug-only score list as 00a2b950"
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail",
+      "reason": "power-up use: the ready entries (008EA0C0) are empty unless 00E0C978 is set, and the host has no power-up manager entries to pass; with none the pass returns at 00A17A3A"
     }
   ]
 }
