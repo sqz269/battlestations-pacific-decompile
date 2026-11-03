@@ -1,0 +1,187 @@
+{
+  "goal": 4,
+  "chain": 305,
+  "slot": "g4-w3",
+  "branch": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain305Bound",
+  "base": "8f0226bed0",
+  "wired_before": 9288,
+  "wired_after": 9290,
+  "rows": [
+    {
+      "native": "00bd2f90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire (00902D77/00902D95)",
+      "newly_wired": true
+    },
+    {
+      "native": "00bf0df0",
+      "status": "wired",
+      "host_site": "src/cc13_seg95.cpp: random_normal_sample_00bd2f90 (same startup-owned secondary RandomState)",
+      "newly_wired": false
+    },
+    {
+      "native": "00bd2f10",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::startup_random_range via random_range_00bd2f10/death_mode_draw_00bd2f10",
+      "newly_wired": false
+    },
+    {
+      "native": "00bd2e60",
+      "status": "wired",
+      "host_site": "src/native_particle_object_state.cpp: native_particle_random_range_00bd2f10 (same startup RandomThreads access)",
+      "newly_wired": false
+    },
+    {
+      "native": "00bd2fd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::reseed_shared_stream_00bd2fd0",
+      "newly_wired": false
+    },
+    {
+      "native": "00bd2ed0",
+      "status": "wired",
+      "host_site": "src/cc13_seg95.cpp: random_normal_sample_00bd2f90 / native_particle_object_state.cpp: native_particle_random_range_00bd2f10",
+      "newly_wired": false
+    },
+    {
+      "native": "00470440",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: powerup_site_product/powerup_site_product_for_view",
+      "reason": "Missing a raw modifier-manager header view and complete SweepAHost adapter; typed category-list ownership alone cannot call this raw body."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "reason": "Missing the native raw screen/manager owner and Fe5Host constructor/lifetime adapter; current host supplies only typed projections or null."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "reason": "Missing the native raw screen/manager owner and Fe5Host constructor/lifetime adapter; current host supplies only typed projections or null."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "reason": "Missing the native raw screen/manager owner and Fe5Host constructor/lifetime adapter; current host supplies only typed projections or null."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen",
+      "reason": "Missing the native raw screen/manager owner and Fe5Host constructor/lifetime adapter; current host supplies only typed projections or null."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing raw receiver ownership in the legacy typed group projection; attached native job waves bypass these recording-only wrappers."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing raw receiver ownership in the legacy typed group projection; attached native job waves bypass these recording-only wrappers."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing raw receiver ownership in the legacy typed group projection; attached native job waves bypass these recording-only wrappers."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Missing raw receiver ownership in the legacy typed group projection; attached native job waves bypass these recording-only wrappers."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread deferred-call owner/queue arguments; single-thread named calls do not produce the native deferred request."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "Missing the native movie-page widget/transform owner; load_movie_page/find_movie_page_child currently return null."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing native movie widget and decoder texture owners; the bridge has no video page or decoder."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing the native subtitle Text-child/widget owner; current schedule reset is only a typed projection."
+    },
+    {
+      "native": "008aadf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (ForceRecon)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    },
+    {
+      "native": "00894100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (GetSubmarineDepthLevel)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    },
+    {
+      "native": "0089cc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (GetSquadronPlanes)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    },
+    {
+      "native": "008a9f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (PutTo)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    },
+    {
+      "native": "008a7e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (GetRotation)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    },
+    {
+      "native": "0089b840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch (GetCapturePercentage)",
+      "reason": "Readiness resolves this ledger identifier to the common host dispatch stand-in, not a distinct existing address-suffixed reconstructed body; native binding/owner adapter remains missing."
+    }
+  ],
+  "real_state": "Borrows GameStartupHost random_threads_ after original startup initialization, keeps its existing thread registration and lifetime, and clears the borrow before shutdown/destruction. No new generator, seed or per-mission reset. Native conversion constants at 00CE3978/00D63B80. AA normal mean=0/sigma=e and stream=1 from 00902D6D..00902D95.",
+  "behavior": "Default gunnery uniforms/normals and explicit stream reseeds now share the startup RandomThreads. Stream-0 death/effect draws use that same owner, primary stream. BSP_GUNNERY_RNG_STREAMS=1 retains labelled keyed LCG measurement draws. Switch OFF retains old host operations.",
+  "evidence": [
+    "bsp.py show 00bd2f90 --asm: stream-selected state then 00BF0DF0, RET 8",
+    "bsp.py show 00902920 --asm --start 300: 00902D6D/00902D8B ECX=1; 00902D77/00902D95 normal calls",
+    "bsp.py show 00bf0df0 --asm --start 90/115: reject s>=1 only; 00BF0F6D FMUL then 00BF0F73 FDIV at PC24",
+    "bsp.py show 00bd2e60: existing native range body and binary scalar constants"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests 2/2",
+    "switch_off_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests 2/2; sampler not linked",
+    "switch_off_called_total": 4292,
+    "synthetic_fixture": "local/chain305_random_probe.cpp: same-owner normal/uniform sequence, primary/secondary isolation, unpublished/retired borrow guards passed; /MANIFEST:EMBED; no gameplay evidence",
+    "final_build": "scripts/build.ps1 passed with startup publication wired; reconstructed_math and tool_tests 2/2",
+    "call_graph": "00BD2F90 REACHABLE: two direct calls from GameGunneryHost::Impl::run_gun_aim_and_fire; entry path through mission frame/unit fixed-step. Native 00BD2F10 has five reachable gunnery call sites, and 00BD2E60 one call from that body.",
+    "switch_on_called_total": 4296,
+    "pc24_lint": "0 findings, 0 allowed, 5 files: python tools/pc24_lint.py --diff origin/main...HEAD",
+    "wire_readiness": "Final scan: wired=9290, ready=1646, callees_done_no_wired_caller=9528; all six reported RNG addresses called=True with 00BD2F90 call_sites=2."
+  },
+  "limitations": [
+    "Built executable call-graph reach is static evidence; game was not run.",
+    "Existing normal body uses std::log/std::sqrt for CRT calls; original CRT last-ulp behavior and binary ABI parity are not established.",
+    "Other host stream-0 stand-ins (powerups/HUD) remain separate; this packet fixes the gunnery domain only."
+  ],
+  "new_normal_wrapper_address": "00bd2f90"
+}

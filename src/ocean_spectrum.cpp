@@ -72,7 +72,14 @@ float ocean_normal_draw_00bf0df0(RandomState& state, float mean, float sigma) {
     } while (s >= 1.0f);                                                // 00BF0F50 FCOMI, JAE
     static_cast<void>(kTwoTo32);
     const float log_s = f32(std::log(static_cast<double>(s)));         // 00BF0F60, 00BF0F65
-    const float ratio = f32(static_cast<double>(log_s) * -2.0 / s);     // 00BF0F6D, 00BF0F73
+    float ratio;
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // 00BF0F6D FMUL qword [00D19660], 00BF0F73 FDIV [ESP+4]: PC24
+        // rounds BOTH instructions before 00BF0F77 spills the result.
+        ratio = f32(cc13x87::x87_div24(cc13x87::x87_mul24(log_s, -2.0), s));
+    } else {
+        ratio = f32(static_cast<double>(log_s) * -2.0 / s);
+    }
     const float k = f32(std::sqrt(static_cast<double>(ratio)));         // 00BF0F7F
     const float ku = f32(static_cast<double>(k) * u1);                  // 00BF0F8D
     float out;
