@@ -105,6 +105,11 @@ public:
     // this process does not model the latch and no 76h/77h arm reads +1Ch.
     std::uint16_t queue_formation_member_76_77(std::uint8_t type,
                                                std::uint16_t member_id) const;
+    // 008A8930's kind-2 arm builds MT_VEHICLE_SET_PARTY (7Fh), then the
+    // local route writes 007602F0 and rebuilds with 00760260 / 00760340.
+    // 0095ABE0's 7Fh arm uses the copy's three-bit unsigned +1Ch party;
+    // its current race is read at delivery, rather than stored in the message.
+    std::uint32_t queue_vehicle_party_7f(std::uint32_t party) const;
     // Goal 4 chain 260. MT_SHIPREPAIR_BODYREPAIR (9Fh, 008AD330 RepairEnable:
     // 0075B430(9Fh) at 008AD494, +18h = 0, +4h = 1, +1Ah = 0, vtable 00D03360,
     // +1Ch = the flag; 0077C2A0 at 008AD4CD flags 7). Those are 00760A50's

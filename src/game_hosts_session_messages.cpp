@@ -3,6 +3,7 @@
 #include "bsp/actions_seg5_cc13.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
+#include "bsp/wire_goal4_chain298_switches.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -76,6 +77,10 @@ struct HostSessionMessages::Image {
     // 00D02D30 0075CA20 0075C7C0 0075C810 0075A310; 00D02D44 0075CA40 0075C860
     // 0075C8B0 0075A360; 00D03360 00760BF0 00760AE0 00760B30 00760AB0.
     struct Seg42Vtables final : seg42::VtableBinding {
+        // bsp.py ghidra bytes 00D032E8 --length 20, bsp.gpr's
+        // /battlestationspacific.exe: delete, write, read, IsType, true.
+        std::uint32_t slots_00d032e8[5]{0x00760610u, 0x007602f0u, 0x00760340u,
+                                        0x007602c0u, 0x004499c0u};
         std::uint32_t slots_00d032d0[4]{0x007605f0u, 0x0075fff0u, 0x007600d0u, 0x0075ffd0u};
         std::uint32_t slots_00d02d30[5]{0x0075ca20u, 0x0075c7c0u, 0x0075c810u, 0x0075a310u,
                                         0x004499c0u};
@@ -100,6 +105,11 @@ struct HostSessionMessages::Image {
         std::uint32_t slots_00d03518[5]{0x00762b00u, 0x004645b0u, 0x004645d0u, 0x00762ad0u,
                                         0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if constexpr (kWireGoal4Chain298Bound) {
+                if (image_address == 0x00d032e8u) return slots_00d032e8;
+            } else {
+                // The previous binding had no 7Fh profile.
+            }
             if (image_address == 0x00d032d0u) return slots_00d032d0;
             if (image_address == 0x00d03518u) {
                 if constexpr (kWireGoal4Chain294Bound) {
@@ -346,6 +356,26 @@ std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t typ
     // deliver to the posting unit directly, so that store is not repeated.
     // The drain's scalar delete (0075CA20 / 0075CA40) has no owned storage.
     return queued.member_id_20;
+}
+
+std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) const {
+    const Image& image = *image_;
+    // bsp.py show 008a8930: 008A8A8D..008A8AC4 builds 7Fh with the
+    // requested party at +1Ch, zero id/relay, delivery 1 and vtable 00D032E8.
+    // 00760260 supplies that same header; the body is reused for the factory
+    // copy as at 007691C6, not run twice on the sender.
+    seg42::VehicleValueMessage sent{};
+    seg42::construct_vehicle_set_party_00760260(&sent, image.seg42);
+    sent.value_1c = party;
+    LocalStream stream;
+    seg42::write_vehicle_set_party_007602f0(&sent, &stream.out);
+    stream.begin_read();
+    seg42::VehicleValueMessage queued{};
+    seg42::construct_vehicle_set_party_00760260(&queued, image.seg42);
+    seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
+    // Both message lifetimes own no heap members. The native scalar delete
+    // only restamps the vtable before freeing its allocation.
+    return queued.value_1c;
 }
 
 bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
