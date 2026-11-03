@@ -1,0 +1,327 @@
+{
+  "chain": 289,
+  "worker": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain289Bound",
+  "rows": [
+    {
+      "native": "009e5e30",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: ApproachUpdateBinding::run_lander_side_and_bearing",
+      "evidence": "Original caller 009F2772 follows the +1208h guard at 009F275B; live Ghidra listing 009E5E30..009E5E4E reads [[nested]+B20h] and queries vt+5Ch(6) only for a non-null target.",
+      "state": "Read-only native-layout view projects goal_vector.raw_target_0b20 onto the actual GameUnitRow; the narrow callback queries that same unit through GameUnitsHost::unit_is_kind_of. Unobserved brain bytes remain unspecified and are never read.",
+      "replacement": "The ON arm invokes the existing body once when +1208h is clear. The OFF arm retains the former handle/kind expression. No second brain, target, or kind value is synthesized.",
+      "abi": "Original __thiscall(ECX=nested), RET, AL; the context-bearing C++ interface is not a drop-in binary ABI replacement."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_movie_camera",
+      "reason": "The movie-camera screen objects and their selection/visibility state are not produced by this host; invoking the generic spectate body would require those live screens."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_new_movie_camera",
+      "reason": "The alternate movie-camera screen objects and their selection/visibility state are missing from the live host."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::exit_free_camera_overlay",
+      "reason": "The host has no produced camera-screen spectating flags or raw in-game-interface object for the collapse operation."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_tactical_overlay",
+      "reason": "The tactical-overlay target, screen state and raw interface required by Fe5Host are not bound."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit::push_controlled_unit_interface_00647040",
+      "reason": "The selection screen's C0h/vector/D4h/30h state and its input-context callbacks are not produced by the host."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenBinding::gauge_digit",
+      "reason": "The sprite bridge lacks the digit icon's writable vertex stream and lock/unlock callbacks needed to publish native rolling UVs."
+    },
+    {
+      "native": "00927cc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::unit_bind_player",
+      "reason": "This stand-in is mislabeled as a player binding; the body computes a mask over nine role words and cannot replace that operation without its role-state consumer."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::untimed_entry_applies / timed_entry_applies",
+      "reason": "The HUD has no collected entry identity or native powerup-class/unit binding for the applicability query."
+    },
+    {
+      "native": "008e9af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::collect_powerups",
+      "reason": "The raw manager inventory, five native output vectors and Seg58Host collection services are not bound to the typed PowerupRuntime inventories."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::support_request_pending",
+      "reason": "The raw powerup manager and usable-item query services are not bound at this interface callback."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score-list policy",
+      "reason": "The host intentionally owns no candidate score list; the only native reader is an unreachable debug overlay, so creating a list here would not wire single-player gameplay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score-list policy",
+      "reason": "The native chosen-bit reader is the same unreachable debug overlay and the host keeps no score-list records to mark."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: CaptureGroupRec / kCaptureGroupResource",
+      "reason": "The coordinator/planner path is load-gated in the campaign and currently substitutes a constant instead of carrying member ResourceUsage through a live resource vector."
+    },
+    {
+      "native": "00a2c720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: close_in_target_group",
+      "reason": "The native checked membership body requires the group's 563Ch list/head/owner state; the host keeps a typed member vector and the surrounding planner is load-gated in campaign play."
+    },
+    {
+      "native": "006e3260",
+      "status": "skipped",
+      "host_site": "src/ai_target_weights.cpp: plane target-weight rocket eligibility",
+      "reason": "The candidate caller lies behind the campaign coordinator gate and the typed bullet facts are not a live native projectile-class object at E0h."
+    },
+    {
+      "native": "007b80a0",
+      "status": "skipped",
+      "host_site": "src/ai_target_weights.cpp: plane target-weight rocket eligibility",
+      "reason": "The candidate caller is campaign coordinator-gated and lacks the native projectile AntiAir byte/global service required by Seg47Host."
+    },
+    {
+      "native": "007b80c0",
+      "status": "skipped",
+      "host_site": "src/ai_target_weights.cpp: plane target-weight rocket eligibility",
+      "reason": "The candidate caller is campaign coordinator-gated and lacks the same native projectile/global binding as 007B80A0."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The deferred frame-job-thread enqueue arm has no live source LuaVariantRecord vector producer in this host."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::push_argument",
+      "reason": "The named-call queue has no producer and the MissionLuaEnvironmentHost argument push services are not bound here."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: deferred event queue",
+      "reason": "This file drains events rather than producing native hit records; the hit enqueue producer belongs to the gunnery host owned by another worker."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "reason": "The host returns its existing typed MainMenuManager; it has no compatible native menu layout or Fe5Host base constructor to initialize that same object."
+    },
+    {
+      "native": "006887e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager",
+      "reason": "The multiplayer manager is absent and multiplayer-only work is excluded from this single-player assignment."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "reason": "The options-manager producer currently returns null; native menu/base construction and the typed manager lifetime must be supplied together."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "reason": "The attract screen's allocation, base screen initialization and member services have no live producer here."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen",
+      "reason": "The existing typed title handover has no native base-manager layout or global title-pointer publication contract for this constructor."
+    },
+    {
+      "native": "00687c00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::refresh_downloadable_content",
+      "reason": "The native singleton guarded by F88950/F8894C is never constructed here, so this destruction path has no live object."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The host's remap-name getter always returns an empty string and no actual render-remap service is supplied at this callback."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The host lacks a real remap-name producer and render-remap service, as for slot 0."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The host lacks a real remap-name producer and render-remap service, as for slot 0."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The host lacks a real remap-name producer and render-remap service, as for slot 0."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "The host merges typed ScenePropertyBlocks; the native body requires canonical raw-constructed bags, owning pooled keys and a shared clone/insertion/retirement context whose provenance is not established at this site."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: clear_pending_class_ids",
+      "reason": "The native pending-class vector and singleton list/head/count with lifetime callbacks are not produced by this host callback."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetSubmarineDepthLevel",
+      "reason": "The live binding substitutes false for catapult surface demand; it lacks the produced 1279h flag and child catapult/state records required by the body."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: SetSkillLevel",
+      "reason": "The host stores the skill but has no audited adapter for the body's complete 6DCh object notification and role-device application plan; the gun bots already read the host skill directly."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: ship entity pose setter",
+      "reason": "The host collapses native physics and ship pose into one motion state; it has no separate live physics-body transform consumer to replace with this conversion."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot control planning",
+      "reason": "The native sites normalize script target roll/pitch overrides at 9A8h/9ACh into plan 2C4h/2BCh; this host has no produced bindings and destination slots for those sites."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Already reachable in the baseline from the chain285 classifier call; no duplicate wiring was added for the readiness identifier mismatch."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Already called by the baseline chain285 classifier beside 008F02B0; no duplicate wiring was added."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "The existing body already runs through the reference classifier under a different source identifier; no duplicate wrapper call was added."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: ByteArray value parser",
+      "reason": "The game parser retains raw property tokens and has no reached typed BIN byte-array consumer; adding an auxiliary conversion would not replace a live consumer."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "This reconstruction represents only cloud frame math despite its ocean name; the complete live cloud-manager frame/instance update state is not bound by GameWorldHost."
+    },
+    {
+      "native": "009e69d0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: heading_error_ramp_set_34_009e69d0",
+      "reason": "The body is unreferenced in the native reconstruction; no single-player gameplay caller or produced ramp object was found."
+    },
+    {
+      "native": "009e6a30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: heading_error_ramp_set_38_009e6a30",
+      "reason": "The body is unreferenced in the native reconstruction; no single-player gameplay caller or produced ramp object was found."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship brain construction policy",
+      "reason": "The controller is a typed projection rather than the native allocated brain; full constructor, nested state/vtable and ownership services must be bound together."
+    },
+    {
+      "native": "009f3cc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: ship_ai_gun_bot_sub_state_name_009f3cc0",
+      "reason": "This virtual returns a diagnostic state name; no required single-player gameplay consumer was identified."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort fire sync message",
+      "reason": "The D1h fire message is recorded without a complete native receiver/dispatch pipeline; constructing an unused message would not wire its gameplay effects."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort smoke/fire policy",
+      "reason": "The inspected capture-building path does not execute this death-fire arm and lacks a live owned death-fire effect binding."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: sound-volume stand-in",
+      "reason": "This HUD callback has no bound SoundInstance handle; a real instance lookup and ownership connection to the sound runtime are required."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: destroy_sound_configured_group_storage_00a7bfe0",
+      "reason": "The typed cleanup requires an active typed SoundConfigurationState owner; this packet did not establish a new live caller distinct from the separate raw cleanup path."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: destroy_sound_configured_type_storage_00a7c6c0",
+      "reason": "The typed cleanup requires an active typed configuration type array and shutdown caller; no audited ownership bridge was established in this packet."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed",
+    "call_graph_before": "009E5E30 absent from baseline executable; 4211 reconstructed addresses reachable",
+    "call_graph_after": "009E5E30 reachable with one call at 101F6BEC from ApproachUpdateBinding::run_lander_side_and_bearing; 4212 reconstructed addresses reachable",
+    "readiness_before": 9250,
+    "readiness_after": 9251,
+    "float_math_changed": false,
+    "game_run": false,
+    "readiness_measure": "Source-level, file-granular approximation; independently checked the newly emitted executable call."
+  },
+  "limits": "Source wiring, official build/tests and executable reachability only. No live gameplay execution or binary ABI compatibility claim. Existing land-attacker-stop constant policy remains unchanged."
+}

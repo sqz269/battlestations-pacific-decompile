@@ -42,6 +42,7 @@
 #include "bsp/wire_goal2_chain218_switches.hpp"
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/wire_goal4_chain289_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
@@ -6476,6 +6477,31 @@ private:
     const bsp::AvoidZonePolygon* zone_{nullptr};
 };
 
+// Read-only native-layout view for 009E5E30. Only [nested] and brain+B20h
+// are observed (live listing 009E5E30..009E5E4E, battlestationspacific.exe).
+// The remaining brain bytes are deliberately unspecified, never read. The
+// endpoint is the actual unit row selected by the controller's published
+// goal_vector.raw_target_0b20, not an invented entity or a second AI brain.
+struct ApproachTargetBrainView {
+    std::uint8_t unobserved[0xB20];
+    void* target;
+};
+static_assert(offsetof(ApproachTargetBrainView, target) == 0xB20);
+
+class ApproachTargetBinding final : public bsp::ShipAiApproachTargetHost {
+public:
+    ApproachTargetBinding(GameUnitsHost& units, std::size_t target)
+        : units_(units), target_(target) {}
+    bool object_vcall_5c(void* object, std::uint32_t kind) override {
+        if (object != units_.unit_row(target_))
+            throw std::logic_error("Ship approach target view lost its unit row");
+        return units_.unit_is_kind_of(target_, static_cast<int>(kind));
+    }
+private:
+    GameUnitsHost& units_;
+    std::size_t target_;
+};
+
 // bsp::ShipAiApproachUpdateHost, the seven calls of 009F3090 in their fixed
 // order. Only the first is run: it is the one that produces the approach point
 // and the goal range, and the other six need the 60-slot ring the four unread
@@ -7066,8 +7092,28 @@ private:
             // LABELLED: the byte is that constant, not a modelled global.
             constexpr bool kLandAttackerStopByte = true;
             const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+            const bool ship_target = [&] {
+                if constexpr (bsp::kWireGoal4Chain289Bound) {
+                    // 009F275B tests +1208h before CALL 009E5E30 at 009F2772.
+                    // The accessor then reads [[nested]+B20h] and calls only
+                    // that endpoint's vt+5Ch(6), per the complete live listing.
+                    if (a.flag_1208) return false;
+                    const std::size_t target = static_cast<std::size_t>(handle - 1u);
+                    ApproachTargetBrainView brain;
+                    brain.target = handle != 0u && target < owner_.units.count()
+                        ? const_cast<GameUnitRow*>(owner_.units.unit_row(target)) : nullptr;
+                    void* brain_pointer = &brain;
+                    ApproachTargetBinding binding(owner_.units, target);
+                    const bool result = bsp::ship_ai_approach_target_is_kind_6_009e5e30(
+                        binding, &brain_pointer);
+                    owner_.done("ShipAiApproach::target_is_kind_6", 0x009e5e30u);
+                    return result;
+                } else {
             const bool ship_target = handle != 0u && handle - 1u < owner_.units.count()
                 && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
+                    return ship_target;
+                }
+            }();
             const int side = a.flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1);
             if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
             a.speed_gate_1204 = side;
