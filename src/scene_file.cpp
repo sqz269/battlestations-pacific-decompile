@@ -5,7 +5,9 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/oct18_rec.hpp"
+#include "bsp/support_seg61_cc13.hpp"
 #include "bsp/wire_goal2_chain115_switches.hpp"
+#include "bsp/wire_goal2_chain145_switches.hpp"
 
 #include <cmath>
 
@@ -13,6 +15,7 @@
 #include <clocale>
 #include <cstdio>
 #include <cstdlib>
+#include <new>
 #include <stdexcept>
 #include <utility>
 
@@ -204,6 +207,160 @@ private:
     std::string value_;
 };
 
+// kWireGoal2Chain145Bound: Seg61Host for the text writer 008EFB00 builds on
+// its stack, over the C++ heap. 00BF681B (the 80Ch chunk) and 00BF55BE (the
+// joined text, which 008F5D0A/008F5D24 release with _free 00BF6989) are
+// malloc, failing as operator new does; 00BF65AC is free. The writer's slot 0
+// is 00950240 (disk dword [00D162CC] = 00950240h); a chunk's slot 0 is
+// 00950380 ([00D19B74]), whose body is 00950350's stores then operator delete.
+// With the indent depth 0 that 008EFB00 stores, 0094FDC0 writes nothing, so
+// no other host call is reachable from 009502E0, 0094FF10, 009500A0 and
+// 00950320; the rest throw.
+class SceneTextChunkWriterHost final : public support_seg61_cc13::Seg61Host {
+public:
+    std::uint32_t& global_u32(std::uint32_t) override { unreachable("global_u32"); }
+    void* image_address(std::uint32_t) override { unreachable("image_address"); }
+    void* operator_new_00bf55be(std::uint32_t bytes) override { return allocate(bytes); }
+    void* operator_new_00bf681b(std::uint32_t bytes) override { return allocate(bytes); }
+    void operator_delete_00bf65ac(void* block) override { std::free(block); }
+    void free_00bf6989(void* block) override { std::free(block); }
+    void* string_pool_00419cc0() override { unreachable("string_pool_00419cc0"); }
+    void string_pool_return_00bd1510(void*, void*, std::uint32_t, std::int32_t) override
+    {
+        unreachable("string_pool_return_00bd1510");
+    }
+    void* native_string_copy_construct_00426060(void*, const void*) override
+    {
+        unreachable("native_string_copy_construct_00426060");
+    }
+    void writer_write_slot0(support_seg61_cc13::Raw writer, const void* data,
+        std::uint32_t length) override
+    {
+        support_seg61_cc13::scene_text_chunk_list_write_00950240(writer, data, length, *this);
+    }
+    void object_delete_slot0(void* object) override
+    {
+        support_seg61_cc13::scene_text_chunk_destruct_00950350(
+            support_seg61_cc13::Raw{static_cast<std::uint8_t*>(object)}, *this);
+        std::free(object);
+    }
+    void itoa_00bf9010(std::int32_t, char*, std::int32_t) override { unreachable("itoa_00bf9010"); }
+    const char* format_static_00439ac0(const char*, std::uint32_t) override
+    {
+        unreachable("format_static_00439ac0");
+    }
+    void format_string256_004b8490(char*, const char*, double) override
+    {
+        unreachable("format_string256_004b8490");
+    }
+    std::uint32_t create_file_a_ce2260(const char*, std::uint32_t, std::uint32_t, void*,
+        std::uint32_t, std::uint32_t, void*) override
+    {
+        unreachable("create_file_a_ce2260");
+    }
+    std::int32_t write_file_ce2290(std::uint32_t, const void*, std::uint32_t, std::uint32_t*,
+        void*) override
+    {
+        unreachable("write_file_ce2290");
+    }
+    void entity_pose_refresh_00414db0(support_seg61_cc13::Raw) override
+    {
+        unreachable("entity_pose_refresh_00414db0");
+    }
+    void dyn_world_for_each_body_transform_006fa6d0(void*, const void*) override
+    {
+        unreachable("dyn_world_for_each_body_transform_006fa6d0");
+    }
+    void show_last_system_error_box_004531f0(const char*) override
+    {
+        unreachable("show_last_system_error_box_004531f0");
+    }
+
+private:
+    static void* allocate(std::uint32_t bytes)
+    {
+        void* const block = std::malloc(bytes);
+        if (block == nullptr) {
+            throw std::bad_alloc();
+        }
+        return block;
+    }
+    [[noreturn]] static void unreachable(const char* call)
+    {
+        throw std::logic_error(std::string("scene text chunk writer: unmodelled ") + call);
+    }
+};
+
+// kWireGoal2Chain145Bound: the view 008EFB00 runs over with the image's own
+// builder. The tokenizer and decode collaborators are SceneQuotedRunView's
+// (this lexer and the inline loop's guards); the builder is the 20h-byte
+// chunk-list writer 008EFB00 constructs on its stack, driven by segment 61's
+// bodies: 009502E0 reset, 0094FF10 write, 009500A0 join, 00950320 clear. The
+// unwind 008EF030 (state 0, funclet 00CA4700) is the vtable store and
+// 00950320; state 1 (00CA4708) only restores the base vtable. The joined
+// buffer is released when the view goes, after the caller has copied it, as
+// 008F5CF6's caller frees it with _free once stored.
+class SceneQuotedRunChunkView final : public oct18_rec::QuotedRunView {
+public:
+    explicit SceneQuotedRunChunkView(SceneLexer& lexer) noexcept : runs_(lexer)
+    {
+        // 008EFB00's writer stores, in the order oct18_rec's raw entry keeps:
+        // depth 0, width 2, fill ' ', line not yet indented, vtable 00D162CC,
+        // tail, head and total length 0.
+        writer().at<std::uint32_t>(0x8) = 0;
+        writer().at<std::uint32_t>(0xc) = 2;
+        writer().at<std::uint8_t>(0x10) = 0x20;
+        writer().at<std::uint8_t>(0x4) = 0;
+        writer().at<std::uint32_t>(0x0) = kReaderVtable;
+        writer().at<std::uint32_t>(0x18) = 0;
+        writer().at<std::uint32_t>(0x14) = 0;
+        writer().at<std::uint32_t>(0x1c) = 0;
+    }
+    ~SceneQuotedRunChunkView() override { std::free(joined_); }
+    SceneQuotedRunChunkView(const SceneQuotedRunChunkView&) = delete;
+    SceneQuotedRunChunkView& operator=(const SceneQuotedRunChunkView&) = delete;
+
+    void reset() override
+    {
+        support_seg61_cc13::scene_text_chunk_list_reset_009502e0(writer(), host_);
+    }
+    bool peek_quoted() override { return runs_.peek_quoted(); }
+    const char* read_token() override { return runs_.read_token(); }
+    const char* decode(const char* token) override { return runs_.decode(token); }
+    void append(const char* decoded) override
+    {
+        support_seg61_cc13::scene_text_writer_write_string_0094ff10(writer(), decoded, host_);
+    }
+    char* join() override
+    {
+        joined_ = support_seg61_cc13::scene_text_chunk_list_join_009500a0(writer(), host_);
+        return joined_;
+    }
+    void clear() override
+    {
+        writer().at<std::uint32_t>(0x0) = kReaderVtable;
+        support_seg61_cc13::scene_text_chunk_list_clear_00950320(writer(), host_);
+    }
+    void destroy_reader() noexcept override
+    {
+        try {
+            clear();
+        } catch (...) {
+        }
+    }
+    void destroy_base() noexcept override {}
+
+private:
+    static constexpr std::uint32_t kReaderVtable = 0x00d162ccu;
+
+    support_seg61_cc13::Raw writer() noexcept { return support_seg61_cc13::Raw{writer_}; }
+
+    SceneQuotedRunView runs_;
+    SceneTextChunkWriterHost host_;
+    alignas(4) std::uint8_t writer_[0x20]{};
+    char* joined_{nullptr};
+};
+
 ScenePropertyBlock parse_property_body(Cursor& cur);
 
 // The optional "( g1 g2 ... )" group list, then "{ body }". 008f5a00.
@@ -248,7 +405,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         prop.key = key;
         prop.type_letter = cur.read_token();
         if (equal_insensitive(prop.type_letter, "S") && cur.lexer().peek().quoted) {
-            if constexpr (kWireGoal2Chain115Bound) {
+            if constexpr (kWireGoal2Chain145Bound) {
+                // 008F5CF6 -> 008EFB00 with its chunk-list writer: 009502E0,
+                // 0094FF10 and 009500A0 build the value. OFF keeps chain 115's
+                // std::string view and the inline run loop below.
+                SceneQuotedRunChunkView runs(cur.lexer());
+                prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
+            } else if constexpr (kWireGoal2Chain115Bound) {
                 // 008F5CF6 -> 008EFB00: read_quoted_runs_008efb00 consumes the
                 // quoted runs over this lexer; OFF keeps the inline run loop.
                 SceneQuotedRunView runs(cur.lexer());
