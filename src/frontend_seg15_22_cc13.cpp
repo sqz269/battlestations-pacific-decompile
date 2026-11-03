@@ -900,15 +900,30 @@ void credits_item_vector_insert_n_0052f9e0(Raw vec, std::uint8_t* where, std::ui
 // 0052FCE0: listener vtable 00CED1E0 at +8h; vectors +28h and +50h emptied;
 // scroll speed +3Ch = 0.0444f (00CED1DC), +40h = 0.5f, +44h = 0.01389f (00CED1D8).
 Raw credits_construct_0052fce0(Raw s, Seg15Host& host) {
-    host.front_end_screen_construct_004f7180(s);
-    s.at<std::uint32_t>(0x8) = kWidgetListenerBaseVtable;
-    s.at<std::uint32_t>(0x0) = 0x00CED200;
-    s.at<std::uint32_t>(0x8) = 0x00CED1E0;
-    for (std::size_t off : {0x28u, 0x2Cu, 0x30u, 0x50u, 0x54u, 0x58u}) s.at<std::uint32_t>(off) = 0;
-    s.at<float>(0x3C) = 0.044444446f;
-    s.at<float>(0x40) = 0.5f;
-    s.at<float>(0x44) = 0.013888889f;
+    struct RawCreditsBase final : FrontendScreenConstructorHost {
+        Raw screen;
+        Seg15Host& original;
+        RawCreditsBase(Raw value, Seg15Host& calls) : screen(value), original(calls) {}
+        void construct_frontend_base() override { original.front_end_screen_construct_004f7180(screen); }
+    } base(s, host);
+    credits_construct_0052fce0(CreditsScreenConstructionView{
+        s.at<std::uint32_t>(0), s.at<std::uint32_t>(8),
+        {&s.at<std::uint32_t>(0x28), &s.at<std::uint32_t>(0x2c), &s.at<std::uint32_t>(0x30),
+         &s.at<std::uint32_t>(0x50), &s.at<std::uint32_t>(0x54), &s.at<std::uint32_t>(0x58)},
+        s.at<float>(0x3c), s.at<float>(0x40), s.at<float>(0x44)}, base);
     return s;
+}
+
+void credits_construct_0052fce0(CreditsScreenConstructionView screen,
+    FrontendScreenConstructorHost& host) {
+    host.construct_frontend_base();
+    screen.listener_vtable_08 = kWidgetListenerBaseVtable;
+    screen.primary_vtable_00 = 0x00CED200;
+    screen.listener_vtable_08 = 0x00CED1E0;
+    for (std::uint32_t* word : screen.vector_words_28_50) *word = 0;
+    screen.field_3c = 0.044444446f;
+    screen.field_40 = 0.5f;
+    screen.field_44 = 0.013888889f;
 }
 
 // 0052FD70, slot +24h, RET 4: the page slot +0Ch.

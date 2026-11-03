@@ -9,6 +9,8 @@
 // routine, not reproduced. Nothing here runs in the game.
 #include <cstddef>
 #include <cstdint>
+#include <array>
+#include "bsp/frontend_screen_constructor.hpp"
 
 namespace bsp::frontend_seg19_21_cc13 {
 
@@ -186,6 +188,15 @@ void mission_group_destroy_005c9b60(void* self, Seg19_21Host& host);
 void* mission_group_assign_005c9cc0(void* self, const void* source, Seg19_21Host& host);
 void mission_group_uninitialized_fill_005ca300(void* first, std::uint32_t count, const void* value, Seg19_21Host& host);
 void* mission_tree_screen_construct_005ca880(void* screen, Seg19_21Host& host);
+// Fields written by 005CA880, independent of the host's object representation.
+// The raw entry remains a wrapper around this body and its original base hook.
+struct MissionTreeScreenConstructionView {
+    std::uint32_t& primary_vtable_00;
+    std::uint32_t& listener_vtable_08;
+    std::array<std::uint32_t*, 6> vector_words_18_28;
+};
+void mission_tree_screen_construct_005ca880(MissionTreeScreenConstructionView screen,
+    FrontendScreenConstructorHost& host);
 std::int32_t mission_tree_screen_get_screen_id_005ca8e0() noexcept;
 void mission_tree_screen_destruct_005ca900(void* screen, Seg19_21Host& host);
 
