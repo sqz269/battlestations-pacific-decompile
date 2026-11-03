@@ -1,0 +1,163 @@
+{
+  "run": 299,
+  "chain": 150,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "harness": "claude",
+  "candidate": "segment 81 [00ada420-00af3750]",
+  "tier": 2,
+  "selection_reason": "Segment 81's terrain quadtree is built by a live host path (gunnery shell segment queries -> landscape_entry_segment_hit -> build_quadtree_00aea820), and the host node is the image's 14h node word for word. Other candidates were checked first: segment 21's rows were all skipped by chain 146 for lasting reasons; segment 11's scene-record readers have no host caller (scene_record_apply_header_properties_004f1d70 is never called); segment 84's shader-field host formatter is used only by d3d9_shader_probe.cpp; segments 16/47/41/7 bodies need image-shaped plane/HUD-camera/decal/traffic objects the host does not hold. The other 13 segment 81 rows hang off the native foliage system, a TDT writer, F32 tiles, shadow pointer vectors or the particle resource parser, none of which a host path reaches.",
+  "host_file": "src/game_hosts_scene_contents.cpp",
+  "switch": "kWireGoal2Chain150Bound",
+  "switch_header": "include/bsp/wire_goal2_chain150_switches.hpp",
+  "switch_default": false,
+  "wired_before": 8979,
+  "wired_after": 8980,
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 13,
+  "host_objects": [
+    {
+      "name": "SceneTerrainNativeQuadNodes (the height field's tree +3Ch 14h node array {data, count, capacity}), selected for SceneTerrainHeightField::quadtree by SceneTerrainQuadNodeStorage<kWireGoal2Chain150Bound>",
+      "where": "include/bsp/game_hosts_scene_contents.hpp:749 (methods src/game_hosts_scene_contents.cpp:4926-4952)",
+      "producers": [
+        "00ADD290 BSP_TerrainHeightField_Construct -> 00ADD33E 00AEA8C0 zeroes tree +3Ch..+44h (the array's default member initializers; the host constructs the field in load_terrain_height_field_00adda60 via make_shared)",
+        "00AEA820 BSP_TerrainQuadtree_BuildRoot: 00AEA82E 00AEA590(0), 00AEA875 00AEA530 root push",
+        "00AEA5F0 BSP_TerrainQuadtree_AppendChildren: inline push of each child (00AE9AC0 reserve to max(2 * capacity, 1) when full, then the 14h store), taken through the same out-of-line 00AEA530",
+        "00AEA900 BSP_TerrainQuadtree_SetBounds: node clear 00AEA590(0) (the chain 74 bounds view lambda)",
+        "00ADD1B0 BSP_TerrainHeightField_Destroy -> 00ADD1EC 00AEA8E0 -> 00AEA8A0 resize 0 and free (the class destructor, when the field's shared_ptr releases)",
+        "Node values: node_range_00ae9c80 over the host's loaded TDT blocks (unchanged host producers)"
+      ],
+      "rows": ["00aea530"]
+    }
+  ],
+  "reach_evidence": {
+    "kind": "static",
+    "path": "GameGunneryHost shell segment queries: query_segment_units_impl builds SegmentBinding (game_hosts_gunnery.cpp:11695), whose shape_trace_segment calls landscape_entry_segment_hit (game_hosts_gunnery.cpp:11388); landscape_segment_hit is also called at game_hosts_gunnery.cpp:3670. landscape_entry_segment_hit (game_hosts_scene_contents.cpp:6273), on a non-vertical segment, builds the quadtree on the field's first walk: if (field.quadtree.empty()) build_quadtree_00aea820(field) (game_hosts_scene_contents.cpp:6336). build_quadtree_00aea820 pushes the root at game_hosts_scene_contents.cpp:5093.",
+    "gates": "kTerrainSegmentQuadtreeBound = true (include/bsp/game_hosts_scene_contents.hpp) encloses the walk; no disabled switch on the path. kWireGoal2Chain74Bound (false) only moves the build to load time and swaps the bounds/clear stand-in; both of its arms reach the same root push.",
+    "limit": "No surveyed mission call counts were supplied for this range. Source reach only; the game was not run."
+  },
+  "rows": [
+    {
+      "native": "00aea530",
+      "address": "00aea875",
+      "function": "00aea820",
+      "host_site": "src/game_hosts_scene_contents.cpp:build_quadtree_00aea820 (root push) via SceneTerrainNativeQuadNodes::push_back",
+      "status": "wired",
+      "reach": "static: gunnery segment query -> landscape_entry_segment_hit -> lazy build_quadtree_00aea820 (see reach_evidence)",
+      "readiness_before": "ready",
+      "readiness_after": "wired",
+      "contract": "00AEA530 __thiscall(ECX = node array, tree+3Ch; const node* on the stack), RET 4; doubling growth with minimum 1 through 00AE9AC0, then a 14h copy and ++count. 00AEA820 passes ECX = EDI = ESI+3Ch and the root {min y, max y, 0, 0, 0} (00AEA859..00AEA871). Single image call site.",
+      "change": "ON: SceneTerrainHeightField::quadtree is the native 14h node array; push_back copies the host node (layout static_asserted) into a QuadNode14 and calls quad_nodes_push_back_00aea530, clear calls quad_nodes_resize_00aea590(0), the destructor quad_nodes_destroy_00aea8a0; build_quadtree_00aea820 adds the image's opening 00AEA590(0). OFF: std::vector<SceneTerrainQuadNode>, the same type and layout as before, and the same code. The child loop's pushes also take 00AEA530 under ON, which is the code 00AEA5F0 inlines."
+    },
+    {
+      "native": "00adac90",
+      "address": "00883a94",
+      "function": "00882ac0",
+      "host_site": "src/game_hosts_scene_contents.cpp:Landscape load (load_terrain_height_field_00adda60 caller)",
+      "status": "skipped",
+      "reason": "Host lacks the object: height_field_attach_foliage_00adac90 takes a native height-field image (void* field) plus TerrainHost and AtlasHost; the host's SceneTerrainHeightField is not image-shaped and the host has no foliage system or texture-atlas owner (game_hosts_mission_frame.cpp records the foliage stand-ins only). The reconstructed caller's load_foliage_default_00adac90 (landscape_lua_seg55_argon.cpp) has no implementation."
+    },
+    {
+      "native": "00adf960",
+      "address": "00adff2b",
+      "function": "00adfeb0",
+      "host_site": "src/game_hosts_scene_contents.cpp:load_terrain_height_field_00adda60 (F32 chunk arm)",
+      "status": "skipped",
+      "reason": "Not live: 00ADF960 builds the block for an F32 chunk; the host loader reports F32/U8 chunks as an error because none of this installation's island TDT files carries one (comment above load_terrain_height_field_00adda60), and the host's SceneTerrainBlock is U16-only, so a float block has no host storage."
+    },
+    {
+      "native": "00ae0250",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Not live (unchecked site: the only CALL, at 00ADDFD7, lies in undefined code past the 00ADDA60 body Ghidra defines): 00AE0250 writes a NODE chunk through a stream writer (BeginChunk/WriteDword/EndChunk); the host only reads TDT files and has no terrain writer or stream-writer object."
+    },
+    {
+      "native": "00ae0710",
+      "address": "00ad721b",
+      "function": "00ad71c0",
+      "host_site": "src/world_effects_startup.cpp:publish_foliage_enabled_00ad71c0 (host.set_foliage_type_enabled)",
+      "status": "skipped",
+      "reason": "Not live: the only path is publish_foliage_enabled_00ad71c0 over WorldEffectsStartupHost, which no game host implements; the host holds no native bush/foliage type objects for the body's raw group pointer."
+    },
+    {
+      "native": "00ae0a50",
+      "address": "00ae1622",
+      "function": "00ae15e0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Host lacks the object: callers are the foliage entry debug draw (00AE15E0) and the bush cell cull (00AE1A10); the host has no foliage cells, and foliage_cell_draw_box_00ae0a50 is implemented by no host."
+    },
+    {
+      "native": "00ae1870",
+      "address": "00ae276a",
+      "function": "00ae2450",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Host lacks the object: the bush model pool is reached only from BSP_BushGroup_Initialise (00AE2450); the host has no bush groups or the pool singleton 00F8C228, and bush_model_pool_allocate_00ae1870 is implemented by no host."
+    },
+    {
+      "native": "00ae19b0",
+      "address": "00ae1c56",
+      "function": "00ae1c20",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Host lacks the object: the callers are the naked-asm shadow node-array release/disposal bodies (00AE1C20, 00AE1C60) and BSP_BushGroup_Destruct (00AE1C80); the host holds no native shadow pointer vector, so a typed view has no host storage to read."
+    },
+    {
+      "native": "00ae22d0",
+      "address": "00ad719b",
+      "function": "00ad7140",
+      "host_site": "src/scene_weather_cc13.cpp (host.set_bush_diffuse_factor_00ad7140)",
+      "status": "skipped",
+      "reason": "Not live: 00AD7140 is reached through the scene-weather reader, whose host interface no game host implements (scene_record_side_blocks scene_read_* methods have no implementation and no caller), and the host has no bush groups."
+    },
+    {
+      "native": "00ae2c80",
+      "address": "00ad727b",
+      "function": "00ad71c0",
+      "host_site": "src/world_effects_startup.cpp:publish_foliage_enabled_00ad71c0 (host.set_foliage_group_enabled)",
+      "status": "skipped",
+      "reason": "Not live: same as 00AE0710; WorldEffectsStartupHost has no game-host implementation and the host has no tree group objects."
+    },
+    {
+      "native": "00ae5160",
+      "address": "00ad70be",
+      "function": "00ad7030",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Host lacks the object: tree group types are created only by the foliage system's 00AD7030 (find_tree_group_type_00ad7030, called from terrain_particles_cc13.cpp's foliage load), which no host path runs; the host has no tree group type storage."
+    },
+    {
+      "native": "00aedf60",
+      "address": "00af4f27",
+      "function": "00af4ba0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Not live: the only caller is BSP_ParticleResource_Parse (parse_native_particle_resource_00af4ba0, native_particle_resource_loader_raw.cpp), which no game host calls; the host has no particle resource text tokens to view."
+    },
+    {
+      "native": "00aee150",
+      "address": "00ad612f",
+      "function": "00ad60d0",
+      "host_site": "src/scene_weather_cc13.cpp (host.refresh_bush_textures_00ad60d0)",
+      "status": "skipped",
+      "reason": "Not live / host lacks the object: 00AD60D0 is reached only through the scene-weather reader that no game host runs, and the host has no texture atlas registry for the body's atlas pointer."
+    },
+    {
+      "native": "00af0990",
+      "address": "00af0e18",
+      "function": "00af0c50",
+      "host_site": "src/game_hosts_mission_frame.cpp:build_foliage_visible_set_00af0c50 (record-only stand-in)",
+      "status": "skipped",
+      "reason": "Host lacks the object: the caller 00AF0C50 builds the foliage visible set; the host's stand-in only records the call and holds no foliage groups or the graphics singleton 00F8C278 the lazy getter returns."
+    }
+  ],
+  "checks": {
+    "off_build": {"command": "./scripts/build.ps1", "result": "passed", "tests": "2/2 passed", "log": "local/g2w2_c150_build2.log"},
+    "on_build": {"command": "python tools/off_switch_on_build.py --names kWireGoal2Chain150Bound", "result": "passed", "diagnostics": 0, "log": "local/off_switch_on_build.log"},
+    "order": "ON check ran before the final plain OFF build and the readiness recount.",
+    "readiness": "python tools/wire_readiness.py after the final OFF build: 00aea530 ready -> wired; global wired 8979 -> 8980. The other 13 rows remain ready.",
+    "pc24_lint": "0 findings; the ON arms do no x87 arithmetic.",
+    "game_run": "Not run, as assigned."
+  }
+}

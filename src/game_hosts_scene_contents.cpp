@@ -4917,6 +4917,40 @@ double local_ground(const SceneTerrainHeightField& field, double lx, double lz) 
 }
 }  // namespace
 
+// Chain 150: SceneTerrainNativeQuadNodes, the tree +3Ch node array the
+// kWireGoal2Chain150Bound storage selects. The host node is the image's 14h
+// node word for word (static_asserts in the header), so a node is copied whole.
+static_assert(sizeof(bsp::cc13_terrain::QuadNode14) == sizeof(SceneTerrainQuadNode),
+    "QuadNode14 and the host node are the same 14h record");
+
+SceneTerrainNativeQuadNodes::~SceneTerrainNativeQuadNodes() {
+    // 00ADD1EC -> 00AEA8E0 -> 00AEA8A0: resize 0, then free the buffer.
+    bsp::cc13_terrain::quad_nodes_destroy_00aea8a0(nodes_);
+}
+
+SceneTerrainQuadNode& SceneTerrainNativeQuadNodes::operator[](std::size_t index) noexcept {
+    return reinterpret_cast<SceneTerrainQuadNode*>(nodes_.data)[index];
+}
+
+const SceneTerrainQuadNode& SceneTerrainNativeQuadNodes::operator[](std::size_t index) const noexcept {
+    return reinterpret_cast<const SceneTerrainQuadNode*>(nodes_.data)[index];
+}
+
+void SceneTerrainNativeQuadNodes::clear() {
+    // 00AEA82E (00AEA820's first call) and 00AEA900's node clear: 00AEA590(0).
+    bsp::cc13_terrain::quad_nodes_resize_00aea590(nodes_, 0);
+}
+
+void SceneTerrainNativeQuadNodes::push_back(const SceneTerrainQuadNode& node) {
+    // 00AEA875: 00AEA820 pushes the root through 00AEA530 (ECX = tree+3Ch, the
+    // node on the stack, RET 4). 00AEA5F0 inlines the same push for each child
+    // (00AE9AC0 reserve to max(2 * capacity, 1) when full, then the 14h store),
+    // so the host's child loop takes the out-of-line 00AEA530 for it.
+    bsp::cc13_terrain::QuadNode14 word_node;
+    std::memcpy(word_node.words, &node, sizeof word_node.words);
+    bsp::cc13_terrain::quad_nodes_push_back_00aea530(nodes_, word_node);
+}
+
 // ---------------------------------------------------------------------------
 // Packet cc9_terrain_segment_quadtree: terrain slot 3Ch 00ADA240's walk.
 // Rounding: every value the native stores through a float is kept as a float;
@@ -4989,7 +5023,7 @@ void node_range_00ae9c80(const SceneTerrainHeightField& field, int x, int z, int
 // (x,z), (x,z+h), (x+h,z), (x+h,z+h) with tile +0Ch = (k >> 1) + x and +10h =
 // (k & 1) + z, then each recursed while h > 1. Returns the first child's index.
 int build_children_00aea5f0(const SceneTerrainHeightField& field, int x, int z, int n) {
-    std::vector<SceneTerrainHeightField::QuadNode>& nodes = field.quadtree;
+    auto& nodes = field.quadtree;  // chain 150 ON: the native node array (push_back is 00AEA530)
     const int base = static_cast<int>(nodes.size());
     const int h = n / 2;
     for (int k = 0; k < 4; ++k) {
@@ -5043,11 +5077,19 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
     field.quadtree_leaves = 1 << depth;
     field.quadtree.clear();
     }
+    if constexpr (bsp::kWireGoal2Chain150Bound) {
+        // 00AEA82E: 00AEA820 itself opens with 00AEA590(0) on tree+3Ch. No OFF
+        // arm: the host's vector was already emptied above (or by 00AEA900's clear).
+        field.quadtree.clear();
+    }
     SceneTerrainHeightField::QuadNode root;
     node_range_00ae9c80(field, 0, 0, field.quadtree_leaves, root.min_y, root.max_y);
     root.children = 0;
     root.tile_x = 0;
     root.tile_z = 0;
+    // 00AEA875 calls quad_nodes_push_back_00aea530 (ECX = tree+3Ch) with the root:
+    // chain 150 ON stores the nodes in SceneTerrainNativeQuadNodes, whose push_back
+    // is that call; OFF keeps the vector's push_back.
     field.quadtree.push_back(root);
     const int first = build_children_00aea5f0(field, 0, 0, field.quadtree_leaves);
     field.quadtree[0].children = first;
