@@ -463,6 +463,21 @@ void turning_gun_aim_to_rest_angles_0085ad00(TurningGunPlatformHost& platform);
 double turning_gun_filter_heading_to_traverse_0085ab50(Seg53Host& host, Object gun, float heading,
                                                        float limit);
 void turning_gun_aim_to_rest_angles_0085ad00(Seg53Host& host, Object gun);
+// Resolved live state for 0085A9A0. The Raw adapter retains native platform
+// selection and pose refresh; the game adapter supplies its retained gun/target
+// poses and authored platform. One shared body owns the arithmetic and wraps.
+struct GunTargetFireWindowHost {
+    virtual ~GunTargetFireWindowHost() = default;
+    virtual void mount_position(float out[3]) = 0;
+    virtual void target_position(float out[3]) = 0;
+    virtual void transform_direction_to_local(float direction[3]) = 0;
+    virtual void normalize_direction_0042b260(float direction[3]) = 0;
+    virtual void direction_to_pitch_yaw_00521370(const float direction[3],
+                                               float* pitch, float* yaw) = 0;
+    virtual bool angles_in_fire_window_007f60a0(float horizontal, float vertical) = 0;
+};
+bool gun_target_in_fire_window_0085a9a0(GunTargetFireWindowHost& host,
+                                        float* direction, float* yaw, float* pitch);
 bool gun_target_in_fire_window_0085a9a0(Seg53Host& host, Object gun, Object target,
                                         float* direction, float* yaw, float* pitch);
 void turning_gun_aim_at_world_direction_0085b980(Seg53Host& host, Object gun,
