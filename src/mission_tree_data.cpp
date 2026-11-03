@@ -1,6 +1,7 @@
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_missionlua_cc13.hpp"
+#include "bsp/wire_goal4_chain314_switches.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -253,6 +254,11 @@ static void read_unique_multi_settings_by_name(MissionTreeLuaView& view, Mission
     view.leave();
 }
 
+// Keep the recovered reader boundary visible in the emitted call graph. The
+// metadata loader shares the implementation but supplies no picture services.
+#if defined(_MSC_VER)
+__declspec(noinline)
+#endif
 void read_mission_record_005c6a70(MissionTreeLuaView& view, MissionRecordData& out,
                                 const MissionPictureTextureServices& pictures) {
     validate_mission_picture_services(pictures);
@@ -286,12 +292,22 @@ static void read_mission_group_impl(MissionTreeLuaView& view, MissionGroupData& 
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         view.enter_by_index(index);
         out.missions.emplace_back();
+        if constexpr (kWireGoal4Chain314Bound) {
+            // 005CA170: 005C9F70 fills the newly appended mission through
+            // 005C6A70, using this same live Lua reader and picture owner.
+            if (pictures) read_mission_record_005c6a70(view, out.missions.back(), *pictures);
+            else read_mission_record_impl(view, out.missions.back(), pictures);
+        } else {
         read_mission_record_impl(view, out.missions.back(), pictures);
+        }
         view.leave();
     }
     view.leave();
 }
 
+#if defined(_MSC_VER)
+__declspec(noinline)
+#endif
 void read_mission_group_005c9f70(MissionTreeLuaView& view, MissionGroupData& out,
                                const MissionPictureTextureServices& pictures) {
     validate_mission_picture_services(pictures);
@@ -351,7 +367,14 @@ static MissionTreeTables load_mission_tree_impl(MissionTreeScriptHost& host,
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         tables.groups.emplace_back();
         view.enter_by_index(index);
+        if constexpr (kWireGoal4Chain314Bound) {
+            // 005CAD37: 005CAAF0 calls 005C9F70 after entering the real
+            // missionGroups[index] table, before Leave and progress reporting.
+            if (pictures) read_mission_group_005c9f70(view, tables.groups.back(), *pictures);
+            else read_mission_group_impl(view, tables.groups.back(), pictures);
+        } else {
         read_mission_group_impl(view, tables.groups.back(), pictures);
+        }
         view.leave();
         host.report_progress(mission_tree_load_progress(index));
     }
@@ -362,7 +385,14 @@ static MissionTreeTables load_mission_tree_impl(MissionTreeScriptHost& host,
     for (std::int32_t index = 1; view.has_index(index); ++index) {
         tables.multi.emplace_back();
         view.enter_by_index(index);
+        if constexpr (kWireGoal4Chain314Bound) {
+            // 005CAE47: the flat multiMissionInfos loop uses the same 005C6A70
+            // body as grouped missions; no second parse or picture load.
+            if (pictures) read_mission_record_005c6a70(view, tables.multi.back(), *pictures);
+            else read_mission_record_impl(view, tables.multi.back(), pictures);
+        } else {
         read_mission_record_impl(view, tables.multi.back(), pictures);
+        }
         view.leave();
     }
     view.leave();
