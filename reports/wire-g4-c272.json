@@ -1,0 +1,72 @@
+{
+  "chain": 272,
+  "switch": "kWireGoal4Chain272Bound",
+  "rows": [
+    {
+      "native": "0070DAB0",
+      "status": "wired",
+      "host_site": "src/game_hosts_unit_group.cpp: GameUnitGroupStorage::initialize, reached from GameUnitsHost::formation_join_0077f940 and GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0",
+      "state": "Persistent aligned 508h caller-owned group storage; whole constructor runs once per backing object. Member records come from the live formation registry; the speed caller produces +504h before reading it.",
+      "evidence": "bsp.py show 0070dab0; live Ghidra bytes at CF4888 are 00 C0 79 44 (999.0f). The profile word is retained as data and never dispatched.",
+      "call_graph": "REACHABLE; calls at 102B7B6C, 102B7BE2 and 102B7C15 from capture_members, initialize and publish_speed_ceiling (the compiler inlines the guarded initializer)."
+    },
+    {
+      "native": "0070D030",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290",
+      "state": "Fresh count and 34h member records project the current live group. The first matching one-based registry identity chooses the station record; the body never dereferences that identity.",
+      "evidence": "bsp.py show 0070d030; combined with whole 0070D070 this supplies the same record as native 0070D2A1's 0070D080 call. Groups exceeding native capacity retain the former vector search.",
+      "call_graph": "REACHABLE; call at 10240FBD from GameUnitsHost::formation_station_0070d290."
+    },
+    {
+      "native": "0070D070",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290",
+      "state": "The validated member index selects the native-layout record; its exact bytes supply the existing lateral/axial column arithmetic and wake station placement. Old vector lookup runs only in the OFF arm or outside native capacity.",
+      "evidence": "bsp.py show 0070d070; copies preserve all live record bits, including scripted offsets and post-swap/compaction ordering.",
+      "call_graph": "REACHABLE; call at 10240FD2 from GameUnitsHost::formation_station_0070d290."
+    },
+    {
+      "native": "0070D0F0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0",
+      "state": "Each live group has a retained +504h field. The existing ordered reduction of actual member class max speeds writes that field instead of the old local accumulator. The whole getter's result feeds leader and follower throttle arithmetic.",
+      "evidence": "bsp.py show 0070d0f0 --asm: FLD [ECX+504h], RET. Live 00CFD6F4 bytes are 7F 96 18 4B (9999999.0f seed). No member or class pointer is dereferenced by this raw getter.",
+      "call_graph": "REACHABLE; call at 101E166B from GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0."
+    },
+    {
+      "native": "0070D980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation member-vector provider, not added",
+      "reason": "The raw no-match path needs actual mutable native F87574/F87578/F8757C data; this host has neither their producer nor an admitted native-global binding."
+    },
+    {
+      "native": "0070D0C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation leader handover",
+      "reason": "Its wake handoff dereferences native unit/wake objects; the formation projection owns registry identity words and typed wake state without that raw unit layout."
+    },
+    {
+      "native": "00876EC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit model group-state setter, not added",
+      "reason": "This separate model-state setter needs native descriptor, model-group selection and announcement-manager ownership not supplied by the formation-group adapter."
+    },
+    {
+      "native": "008F54F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "The host still owns typed ScenePropertyBlock trees; the raw merge requires constructor-proven native bags, pooled keys and compatible owned payload graphs."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "projection_probe": "python tools/wire_goal4_chain272_probe.py passed: one Win32 lifecycle case covers exact record bits, member lookup, compaction refresh, signed-zero speed and capacity fallback",
+    "pc24": "tools/pc24_lint.py --staged passed with zero findings",
+    "wired_before": 9210,
+    "wired_after": 9214,
+    "reachability": "call_graph.py rebuilt after the final C++ build; who confirmed all four exact bodies entry-reachable from the changed host paths",
+    "runtime": "No game run; build, synthetic projection and static call-graph evidence only",
+    "scope": "New caller-owned C++ storage and adapters; no claim of original UnitGroup class/vtable ABI or native unit-pointer identity"
+  }
+}
