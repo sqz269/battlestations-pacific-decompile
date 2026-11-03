@@ -3831,7 +3831,7 @@ struct GameUnitsHost::Impl {
     // velocity (its vtable[34h]) in the plane's frame (0042D0D0 through the
     // inverse world +110h), z, times 0.1 (00D7A2F0) when z >= 0.0 (00D7A218) and
     // 0.8 (00CE74F8) below or unordered (COMISS / JC). False: ctl+44h alone.
-    static constexpr bool kPlaneForwardSpeedDeckTermBound = false;
+    static constexpr bool kPlaneForwardSpeedDeckTermBound = true;
     float plane_forward_speed_007d99c0(const GameUnitSlot& p, float ctl_44) const;
     mutable unsigned long long forward_speed_deck_terms{0};
     float landing_t_distance(const LandingDeck& d, const GameUnitSlot& p) const;
@@ -7307,7 +7307,7 @@ struct GameUnitsHost::Impl {
     // +BC8h is set (lockout +E88h at empty) and otherwise recharges it by step /
     // TurboRechargingTime up to 1.0 (never for the rocket-like plane). False:
     // the request is recorded only, and every plane's throttle is analogue.
-    static constexpr bool kKamikazeBoostTurboBound = false;
+    static constexpr bool kKamikazeBoostTurboBound = true;
     unsigned long long boost_turbo_steps_{0};
     // Packet cc13-PL3: the image's operation order inside the drag 007D9140 and
     // its coefficient 007C4990. 007C4990-007C4992 forms desc+50Ch as
@@ -7625,7 +7625,7 @@ struct GameUnitsHost::Impl {
     // 00CF8A58 +30h) on a carrier deck: false when an occupant of site+34h has
     // 006BCC90's z below Pilot/Landing/MinFreeRunwayLength (tuning+520h). True: a
     // carrier deck answers 006D0530. False: true, the airfield's 006CF3F0, as before.
-    static constexpr bool kCarrierSiteHasFreeRunwayCc13Bound = false;
+    static constexpr bool kCarrierSiteHasFreeRunwayCc13Bound = true;
     static_assert(!kCarrierSiteHasFreeRunwayCc13Bound ||
         (kLandingSiteSpacingBound && kCarrierLandingDeckBound),
         "006D0530 needs the site spacing arm and the carrier holder");
@@ -7645,7 +7645,7 @@ struct GameUnitsHost::Impl {
     // arm issues moveto 00E08F68 on a CommandBuilding target before its 0071E430
     // (009F7D17-009F7D75). Used by the fighter arm and the dead-target retest arm.
     // False: no moveto; the command only ends.
-    static constexpr bool kSquadronCommandBuildingMoveToBound = false;
+    static constexpr bool kSquadronCommandBuildingMoveToBound = true;
     static constexpr bool kSquadronLandTargetGoneBound = true;  // ON: mechanism (docs/OCEAN_WAVE_FIELD.md 41.1)
     // Packet cc9_landing_follower_spacing (docs/SQUADRON_LAND_TASK.md section 5r):
     // the landed byte plane+904h in the sequencer. 006C7960's first arm (mode 4,
@@ -7777,7 +7777,7 @@ struct GameUnitsHost::Impl {
     // +20h touched && !(plane+72Ch)->vt[38h]) and on true switches to land/park (+620h)
     // through 009B3680. True: the edge enters park. False: it is refused, as before.
     // LABELLED: vt[38h] is read as "airborne", the host's +900h == 7.
-    static constexpr bool kLandFinalParkEdgeBound = false;
+    static constexpr bool kLandFinalParkEdgeBound = true;
     // Packet p20_finder_noise (docs/OCEAN_WAVE_FIELD.md section 78). 007E2184-007E21B3:
     // for each candidate whose 007DEEC0 score is > 0 and when the noise argument is
     // > 0 ([00D7A218]), 007E2090 adds BSP_Random_UniformFloatRange(1, 0, noise) (00BD2F10,
@@ -7823,7 +7823,7 @@ struct GameUnitsHost::Impl {
     // moveto/circle change (a wingman promoted to leader) runs follow_exit_009bde40.
     // OFF: no exit call, as before. The follow enter (009BED80) stays with the follow
     // tick's entry detection.
-    static constexpr bool kMoveToFollowExitCc13Bound = false;
+    static constexpr bool kMoveToFollowExitCc13Bound = true;
     // Packet cc13-D5. 009B1420's x87 chains at the main thread's 24-bit precision, each
     // FMUL/FADD/FSUB rounded: the c1 softening (009B1538-009B1550), the asin
     // denominator (009B1713-009B1728), the glide height H and G and the raise
@@ -8166,17 +8166,17 @@ struct GameUnitsHost::Impl {
     // the image reads the byte 007CDC70 published for the step slot [00F876B8]; True
     // computes 007B9140(T, 0) live at the call, which can differ when T's racks change
     // within the step.
-    static constexpr bool kDfThreatOrdnanceClauseCc13Bound = false;
+    static constexpr bool kDfThreatOrdnanceClauseCc13Bound = true;
     // Packet cc13-D5. The cone arm 009A8682-009A86C6 at 24-bit precision:
     // ShootDistance x 1.5 (FMUL qword 00CE3D78) is rounded before the FCOMIP,
     // x / z and y / z are FSTP'd as floats, and 0042B2F0 forms (x*x + y*y) + z*z
     // per op in float. True: those roundings. False: the 53-bit double chain.
-    static constexpr bool kDfThreatConePc24Cc13Bound = false;
+    static constexpr bool kDfThreatConePc24Cc13Bound = true;
     // Packet cc13-D5. 009B4D00's spacing distances, own_d (009B4FE4-009B5054) and each
     // peer's (009B50EE-009B5154): dx and dz FSTP'd as floats, d2 = (dx*dx + 0) + dz*dz
     // per op in float, sqrt (00BF7030) only above 1e-10 (00CE3820), else 0; as 0042B2F0
     // with y = 0. True: gun_length3_0042b2f0<false>. False: the 53-bit double sqrt.
-    static constexpr bool kLevelBombSpacingDistPc24Cc13Bound = false;
+    static constexpr bool kLevelBombSpacingDistPc24Cc13Bound = true;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
     // Packet cc13-dogfight1 (docs/CC13_DOGFIGHT_DRAWS.md): three of those draws
@@ -8750,7 +8750,7 @@ struct GameUnitsHost::Impl {
     // REFUTED, stays OFF (5ey): the rack's constructor 006E3C00 stores ammo +484h
     // = orgAmmo +488h = 1 (006E3C20..006E3C3D), so a default rack 0095A880's flag
     // pass adds holds one round; the pool's fallback is the image's default.
-    static constexpr bool kRackUnequippedEmptyBound = false;
+    static constexpr bool kRackUnequippedEmptyBound = true;
     // Packet p13_bag0_round (docs/OCEAN_WAVE_FIELD.md 46). 007B9140's rack walk
     // asks each rack vtable[210h](2Ah), which answers while a round is attached.
     // A rack's owner bind 006E3350 (vtable 9Ch) skips the loadout walk when the
@@ -8900,7 +8900,7 @@ struct GameUnitsHost::Impl {
     // for the director, so the moveto-self also goes to every live wing member once it
     // is placed. False: the leader's row only, and the wings, whose rows
     // retire_ended_command_rows stripped, idle on the director tail and fly straight.
-    static constexpr bool kSquadronMoveToSelfWingFollowBound = false;
+    static constexpr bool kSquadronMoveToSelfWingFollowBound = true;
     // Packet cc9_lua45_rack_equipment_device (GUNNERY 144, SQUADRON_LAND_TASK 5ev).
     // True: (a) an absent RepeatTime reads as 006E0242's default, 00B66330 with
     // [00CE3D30] = 0.6f, at both rack readers; (b) a rack's device is the plane's
@@ -10586,7 +10586,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     // plane), whatever kPlaneCachedSpeedB1cCc13Bound says; that switch governs only its own
     // listed readers. So the pairs are: this switch ON vs OFF (all arms move together), and
     // kPlaneCachedSpeedB1cCc13Bound ON vs OFF separately; the two need no joint pair.
-    static constexpr bool kMovetoTargetSpeedClassCc13Bound = false;
+    static constexpr bool kMovetoTargetSpeedClassCc13Bound = true;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
         if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()

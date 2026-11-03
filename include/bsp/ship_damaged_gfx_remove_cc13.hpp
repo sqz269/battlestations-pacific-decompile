@@ -90,7 +90,7 @@
 
 namespace bsp {
 
-inline constexpr bool kShipDamagedGfxRemoveCc13Bound = false;
+inline constexpr bool kShipDamagedGfxRemoveCc13Bound = true;
 
 static_assert(!kShipDamagedGfxRemoveCc13Bound
         || (kGunDestroyedFailureCc13Bound && kGunDeviceHitDamageCc13Bound),

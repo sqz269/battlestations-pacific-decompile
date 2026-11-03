@@ -11,5 +11,5 @@ namespace bsp {
 //   application's focus-owner context, then 008D56B0's +10h store; the drain's
 //   native_media arm (00A4C620, vtable 00D24D94) is bound for that object.
 // OFF keeps every stand-in's unimplemented record and binds nothing.
-inline constexpr bool kWireGoal2Chain90Bound = false;
+inline constexpr bool kWireGoal2Chain90Bound = true;
 }

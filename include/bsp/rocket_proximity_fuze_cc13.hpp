@@ -44,12 +44,12 @@ namespace bsp {
 // ON: run_projectiles runs rocket_proximity_fuze_0080a55d after the air step on every
 // rocket whose class is AntiAir and bursts it through apply_impact_blast.
 // Movers predicted: none on any current row; no row releases an R4M (GUNNERY 202).
-inline constexpr bool kRocketProximityFuzeCc13Bound = false;
+inline constexpr bool kRocketProximityFuzeCc13Bound = true;
 static_assert(!kRocketProximityFuzeCc13Bound || kRocketHomingBound,
               "the fuze sits in the rocket air step that cc13-homing1 hosts");
 
 // [00F874FD]; see above.
-inline constexpr bool kRocketAirGroundTypeSameCc13 = false;
+inline constexpr bool kRocketAirGroundTypeSameCc13 = true;
 
 // One IsKindOf(0Fh) entry of the shooter side's contact list.
 struct RocketFuzeTarget {

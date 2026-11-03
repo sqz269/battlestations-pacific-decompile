@@ -9,6 +9,6 @@
 
 namespace bsp::game {
 
-inline constexpr bool kWireUnitsHostBound = false;
+inline constexpr bool kWireUnitsHostBound = true;
 
 }  // namespace bsp::game

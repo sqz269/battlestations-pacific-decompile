@@ -65,7 +65,7 @@ class GameHintTrackerSlot;
 // because the binding hands 0057D060's arguments over by reference and owns no
 // such temporary, so the release has nothing left to free. False: the step
 // stays an unimplemented record.
-inline constexpr bool kMissionStartTemporaryReleaseCc15Bound = false;
+inline constexpr bool kMissionStartTemporaryReleaseCc15Bound = true;
 
 // Packet cc15-chg. 00598B60's page-8 arm (00598BCF..00598BEC): when the list
 // published for the selection is page 8 (the "Training grounds" group 0, which

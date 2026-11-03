@@ -5,5 +5,5 @@
 // the mission frame's pending warning queue (the manager's +E0h list).
 // False: the drain stays the old no-op.
 namespace bsp {
-inline constexpr bool kWireGoal2Chain166Bound = false;
+inline constexpr bool kWireGoal2Chain166Bound = true;
 }

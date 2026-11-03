@@ -96,7 +96,7 @@ namespace bsp {
 // (plane_reload_bomb_platforms_007c1d80) and the device-reload slice 006E57A4.
 // Calling the census and the seed at Lua time is ON-only. OFF, the moved members
 // run exactly where they did before the move.
-inline constexpr bool kRackedRoundEntityCc13Bound = false;
+inline constexpr bool kRackedRoundEntityCc13Bound = true;
 
 // Part B. The Lua face of a racked round, used only when kRackedRoundEntityCc13Bound
 // is ON.

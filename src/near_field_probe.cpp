@@ -12,7 +12,7 @@ float magnitude(float v) noexcept { return v < 0.0f ? -v : v; }  // AND 7FFFFFFF
 // constants as the image has them: the near test against 00D7A270 =
 // 0.05000000074505806 (009C6B61) and the flyabove subtrahend 00CE3D10 =
 // 0.20000000298023224 (009C6BBE). OFF uses the doubles 0.05 and 0.2.
-inline constexpr bool kNearFieldFlyoverSubtrahendCc13Bound = false;
+inline constexpr bool kNearFieldFlyoverSubtrahendCc13Bound = true;
 
 NearFieldProbeResult near_field_probe_007f0280(const float extents[3], const float weights[3],
                                                int self_index_9d0,

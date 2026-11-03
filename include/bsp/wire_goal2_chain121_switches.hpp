@@ -7,5 +7,5 @@ namespace bsp {
 // ON: the kill and hit warning constructors (warning_reports_cc13.cpp) set
 // their watched-entity slots through 005B7F60 observer_slot_set over a typed
 // view of the warning's slot. OFF: the inline set_slot compare/unlink/store/link.
-inline constexpr bool kWireGoal2Chain121Bound = false;
+inline constexpr bool kWireGoal2Chain121Bound = true;
 } // namespace bsp

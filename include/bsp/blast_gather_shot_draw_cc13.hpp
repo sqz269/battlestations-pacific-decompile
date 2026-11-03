@@ -50,6 +50,6 @@
 
 namespace bsp {
 
-inline constexpr bool kBlastGatherShotDrawCc13Bound = false;
+inline constexpr bool kBlastGatherShotDrawCc13Bound = true;
 
 }  // namespace bsp

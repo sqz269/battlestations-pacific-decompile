@@ -9,5 +9,5 @@ namespace bsp {
 // the body's CreateDirectoryA probe of <CSIDL_PERSONAL>\Battlestations-Midway\save,
 // as the game does; that call creates the last folder when only its parent
 // exists. OFF keeps the stand-in's constant false and constructs nothing.
-inline constexpr bool kWireGoal2Chain111Bound = false;
+inline constexpr bool kWireGoal2Chain111Bound = true;
 }

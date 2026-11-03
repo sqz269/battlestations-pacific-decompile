@@ -2,6 +2,6 @@
 
 namespace bsp {
 
-inline constexpr bool kWireGoal2Chain42Bound = false;
+inline constexpr bool kWireGoal2Chain42Bound = true;
 
 } // namespace bsp

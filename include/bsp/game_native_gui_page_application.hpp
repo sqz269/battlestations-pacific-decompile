@@ -185,7 +185,7 @@ private:
 // reader/Model/lifetime service. Keep OFF until joint full-frontend authority,
 // current95/Frame/Game and all required integration/runtime gates close.
 // This component uses existing bodies and supplies no new Native-body credit.
-inline constexpr bool kNativeGuiPageChainCc15Bound = false;
+inline constexpr bool kNativeGuiPageChainCc15Bound = true;
 
 // Retained typed calls, not new Native owners or callbacks replacing a body.
 // A concrete provider owns the distinct nonmoving frame/context/backing behind

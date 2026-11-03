@@ -64,7 +64,7 @@ namespace bsp {
 // path 2 runs. The ON-only summary line counts each path.
 // Open (out of scope): the dive-bomb and torpedo approach refs embed the same sub-object
 // and its 009FAF90; whether their hosts freeze their aim points is not read here.
-inline constexpr bool kStrafeAimPointFreezeCc13Bound = false;
+inline constexpr bool kStrafeAimPointFreezeCc13Bound = true;
 static_assert(!kStrafeAimPointFreezeCc13Bound || kStrafeTargetFallback70Cc13Bound,
               "path 3 relies on strafe70's st_ref70_drop_009fada0 to latch +70h");
 

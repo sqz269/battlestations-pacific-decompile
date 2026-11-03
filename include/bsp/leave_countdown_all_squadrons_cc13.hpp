@@ -50,6 +50,6 @@ namespace bsp {
 // That order is the host's bot/fixed-step schedule: the image ticks the bot from vtable
 // 00D1F354, not from 007CE040. Under ON the retreat task also ticks on its elapsed time
 // while the countdown ticks on the fixed step.
-inline constexpr bool kLeaveCountdownAllSquadronsCc13Bound = false;
+inline constexpr bool kLeaveCountdownAllSquadronsCc13Bound = true;
 
 }  // namespace bsp

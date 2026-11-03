@@ -6,5 +6,5 @@ namespace bsp {
 //   constructor 00424680 at 004246B4, over a typed view of the host's
 //   TerrainGridLayerRecord (TerrainGridLayerRecordDimensionFields); OFF keeps
 //   the inline +04h/+08h/+0Ch/+10h/+18h stores of default_layer_00424680.
-inline constexpr bool kWireGoal2Chain78Bound = false;
+inline constexpr bool kWireGoal2Chain78Bound = true;
 }

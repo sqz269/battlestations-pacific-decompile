@@ -139,7 +139,7 @@ namespace {
 // settings globals (00B67350, 00B67580) run the native 14h-object field setters
 // over this state instead of stock push/setfield pairs. Each setter pushes the
 // key with lua_pushlstring, then the value, then lua_settable on the object.
-constexpr bool kLuaObjectFieldSettersCc13Bound = false;
+constexpr bool kLuaObjectFieldSettersCc13Bound = true;
 
 // Packet cc13-yardskill: 00844FC0's launch bag `Skill` is the shipyard's own skill.
 // 0084503C..00845046 call shipyard->vtable[12Ch]() (EDI = the shipyard), which is
@@ -580,7 +580,7 @@ constexpr bool kEntryPointIsFunctionBound = true;   // ON: SQUADRON_LAND_TASK 5h
 // only to a file beside the executable (the build or export tree), never the
 // game installation or a profile; 008ACB70's gamepad-force and input-manager
 // calls are not run. OFF: both rows stay unimplemented records.
-constexpr bool kMissionCheckpointBound = false;
+constexpr bool kMissionCheckpointBound = true;
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser

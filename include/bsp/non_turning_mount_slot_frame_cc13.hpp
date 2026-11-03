@@ -66,6 +66,6 @@ namespace bsp {
 //   - gun_barrel_muzzle_world_00730762 for any rack or base gun the aim step turned
 //     ("aimed" above).
 // Racks fire through 006EC8E0 / 006E4D50 via 00727E30 slot 1D8h, not 00730160.
-inline constexpr bool kNonTurningMountSlotFrameCc13Bound = false;
+inline constexpr bool kNonTurningMountSlotFrameCc13Bound = true;
 
 }  // namespace bsp

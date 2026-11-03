@@ -6,5 +6,5 @@
 namespace bsp {
 // ON: the scene reader's explicit S quoted-run value (scene_file.cpp) is read
 // by 008EFB00 read_quoted_runs over the host lexer. OFF: the inline run loop.
-inline constexpr bool kWireGoal2Chain115Bound = false;
+inline constexpr bool kWireGoal2Chain115Bound = true;
 } // namespace bsp

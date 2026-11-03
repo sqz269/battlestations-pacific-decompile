@@ -43,7 +43,7 @@ struct PilotBotParameters;
 // For the units host (cc9). True: an aircraft whose 007EEC50 class is rocket
 // (00E08F48) flies this task. It must land with the PilotSetTarget feed of
 // has_rocket_ordnance (007ED970), never before or after it. Committed OFF.
-inline constexpr bool kRocketTaskBound = false;   // OFF: docs/CC13_ROCKET_TASK.md 7
+inline constexpr bool kRocketTaskBound = true;   // OFF: docs/CC13_ROCKET_TASK.md 7
 
 // The task's +310h values, named by the strings 007B6830 registers.
 enum class RocketState : int {

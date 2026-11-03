@@ -8,5 +8,5 @@ namespace bsp {
 // 005885AD. 00686C90 releases it at 00686EDE..00686EF0 when the mission load
 // destroys the manager. ON builds that stream on the live sound core and runs
 // those bodies instead of only recording the calls.
-inline constexpr bool kWireGoal2Chain57Bound = false;
+inline constexpr bool kWireGoal2Chain57Bound = true;
 }

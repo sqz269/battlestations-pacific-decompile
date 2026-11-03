@@ -42,7 +42,7 @@
 
 namespace bsp {
 
-inline constexpr bool kGunDeviceBlastGunlessCc13Bound = false;
+inline constexpr bool kGunDeviceBlastGunlessCc13Bound = true;
 static_assert(!kGunDeviceBlastGunlessCc13Bound || kGunDeviceBlastDamageCc13Bound,
               "kGunDeviceBlastGunlessCc13Bound needs kGunDeviceBlastDamageCc13Bound");
 

@@ -87,7 +87,7 @@ constexpr bool kMenuPumpYieldsToMissionFrameBound = true;  // ON: 17 rows identi
 // Packet cc15-fe1: the front-end frame's two GUI-manager calls, 00aa0e50 at
 // 004e4c38..004e4c52 and 00aa0e00 after it, run blocking_screen.cpp's bodies on
 // the host manager's +50h pointer slot instead of only being recorded.
-constexpr bool kFrontEndPointerCc13Bound = false;
+constexpr bool kFrontEndPointerCc13Bound = true;
 
 // Packet cc15-ls1: the front-end shell's begin_loading (0057cb60) and end_loading
 // (0057c250) run frontend_entry.cpp's begin_loading_screen / end_loading_screen
@@ -104,7 +104,7 @@ constexpr bool kFrontEndPointerCc13Bound = false;
 // the image's behaviour, not a host artefact.
 // cc15-ls2: the same switch runs 0057BEC0 (report_loading_progress) at both
 // report sites over that screen. A report with no screen is the image's no-op.
-constexpr bool kLoadingScreenCc13Bound = false;
+constexpr bool kLoadingScreenCc13Bound = true;
 
 // 004f8710 publishes screen ids; the level-4 set the main-menu manager raises
 // has exactly one element (docs/MAIN_MENU_PATH.md).

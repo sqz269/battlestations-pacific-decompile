@@ -1,5 +1,5 @@
 #pragma once
 
 namespace bsp::game {
-inline constexpr bool kWireScriptOrdersHostBound = false;
+inline constexpr bool kWireScriptOrdersHostBound = true;
 }
