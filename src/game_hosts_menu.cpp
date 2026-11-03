@@ -359,67 +359,14 @@ private:
     SoundStreamOwnerContext owner_;
 };
 
-// Goal 4 chain 312 (kWireGoal4Chain312Bound): the sound service 004CA440's
-// front-end branch calls at 004CA5D4, 00735B50 BSP_SoundFrame_ServiceInline,
-// over the live sound core GameStartupHost::SoundServices publishes
-// (GameSingletonHost::bind_sound_runtime).
-//
-// 004CA4E7..004CA529 take the in-game view arms only when [00E198C4] (the
-// in-game interface manager) is non-null; otherwise 004CA5D4 is reached
-// directly. 00735B50 then tests the same word (00735B5E..00735BD7) and calls
-// 0068A670 for the listener only when it is non-null, and finally dispatches
-// [00F8BBD8]->vtable[4] (00735BE7..00735C1B), the per-frame update 00A87BF0 /
-// 00A7E630 (bsp.py disasm-raw 00735b50).
-//
-// In the front-end states [00E198C4] is null: it is BSS until 0068CC70
-// publishes it at mission load (0068CCFE), and the teardown that returns to
-// the front end deletes the manager and stores null (004DAB94 in
-// BSP_Game_TeardownSessionState, and 004DA6B3 in BSP_FrontEnd_DestroyManagers).
-// So this binding's interface word is that null publication, the listener
-// keeps 00735B50's own identity matrix and zero velocity, and 0068A670 is
-// never reached; its game/controlled publications are unread here. The
-// in-mission render (004CA440's job path 004BBD00, which calls 0068A670
-// unconditionally) is not bound by this class.
-//
-// The listener constants are the PE words 0068A670 reads (bsp.py ghidra
-// bytes): 00D7A24C 3F800000h, 00CE3D64 461C4000h (10000.0f), 00D7A218 0.0f,
-// 00D7A220 4059000000000000h (100.0); 00F87574 is BSS (three zero words).
-class FrontEndSoundFrameService final : public InterfaceSoundListenerCalls {
-public:
-    explicit FrontEndSoundFrameService(GameSoundRuntime& core)
-        : listener_{game_00e188a8_, controlled_00e188d8_, one_00d7a24c_, threshold_00ce3d64_,
-              compare_00d7a218_, scale_00d7a220_, fallback_00f87574_, *this,
-              application_camera_axes_crt()},
-          frame_(bind_game_sound_frame_service(core, interface_00e198c4_, listener_)) {}
-    FrontEndSoundFrameService(const FrontEndSoundFrameService&) = delete;
-    FrontEndSoundFrameService& operator=(const FrontEndSoundFrameService&) = delete;
-
-    // 004CA5D4 -> 00735B50.
-    void service() { service_sound_frame_00735b50(frame_); }
-
-    // 0068A670's dispatches. Unreachable: the front-end interface word is null,
-    // and 00735B50 skips 0068A670 for a null interface.
-    const void* call_slot120(void*, void*) override {
-        throw std::logic_error("front-end sound frame reached 0068A670 slot 120h without an "
-            "in-game interface");
-    }
-    const void* call_slot34(void*, void*) override {
-        throw std::logic_error("front-end sound frame reached 0068A670 slot 34h without an "
-            "in-game interface");
-    }
-
-private:
-    void* volatile interface_00e198c4_{nullptr};
-    void* volatile game_00e188a8_{nullptr};
-    void* volatile controlled_00e188d8_{nullptr};
-    const volatile std::uint32_t one_00d7a24c_{0x3f800000u};
-    const volatile float threshold_00ce3d64_{10000.0f};
-    const volatile float compare_00d7a218_{0.0f};
-    const volatile double scale_00d7a220_{100.0};
-    const volatile float fallback_00f87574_[3]{0.0f, 0.0f, 0.0f};
-    InterfaceSoundListenerContext listener_;
-    SoundFrameServiceContext frame_;
-};
+// Goal 4 chain 312 (kWireGoal4Chain312Bound): 004CA440's front-end branch
+// reaches 004CA5D4, 00735B50 BSP_SoundFrame_ServiceInline, directly:
+// 004CA4E7..004CA529 take the in-game view arms only when [00E198C4] is
+// non-null, and that word is null in the front-end states (see
+// bsp::NullInterfaceSoundFrame). 00735B50 then skips 0068A670 for the null
+// interface and dispatches [00F8BBD8]->vtable[4] (00735BE7..00735C1B), the
+// per-frame update 00A87BF0 / 00A7E630 (bsp.py disasm-raw 00735b50), over the
+// live core GameStartupHost::SoundServices publishes.
 
 }  // namespace
 
@@ -807,12 +754,12 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     }
     // kWireGoal4Chain312Bound: 004CA5D4's 00735B50 over the same started core,
     // bound at the first front-end render that finds it. Stays empty OFF.
-    std::unique_ptr<FrontEndSoundFrameService> sound_frame;
-    FrontEndSoundFrameService* bind_sound_frame() {
+    std::unique_ptr<NullInterfaceSoundFrame> sound_frame;
+    NullInterfaceSoundFrame* bind_sound_frame() {
         if (sound_frame) return sound_frame.get();
         GameSoundRuntime* const core = singletons.native_deletion_bindings().sound_runtime;
         if (core == nullptr || !core->started()) return nullptr;
-        sound_frame = std::make_unique<FrontEndSoundFrameService>(*core);
+        sound_frame = std::make_unique<NullInterfaceSoundFrame>(*core, application_camera_axes_crt());
         return sound_frame.get();
     }
 
@@ -1770,8 +1717,8 @@ public:
             // front-end states [00E198C4] is null, so 004CA4E7 falls through to
             // 004CA5D4's 00735B50. The rest of 004CA440 keeps its record.
             if (owner_.frame_state.render_queue_open) {
-                if (FrontEndSoundFrameService* const sound = owner_.bind_sound_frame()) {
-                    sound->service();
+                if (NullInterfaceSoundFrame* const sound = owner_.bind_sound_frame()) {
+                    service_sound_frame_00735b50(sound->context());
                     owner_.log.implemented("FrontEndFrame::sound_frame_service", "00735b50");
                 } else {
                     owner_.log.unimplemented("FrontEndFrame::sound_frame_service", "00735b50");
