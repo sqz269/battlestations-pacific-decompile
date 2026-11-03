@@ -9,7 +9,8 @@
 // Allocation model: the image's operator new (00BF55BE, 00BF681B) and free (00BF6989, 00BF65AC, 00BF9DC8)
 // are the project's singleton_lifetime_allocate/free boundary (bsp/singleton_lifetime.hpp), as in
 // src/sound_sample.cpp. Storage passed in must belong to that domain. Original C++ EH and SEH are not
-// claimed; nothing here is wired into a game host. Names are hypotheses, not recovered symbols.
+// claimed. 00A92290 also has a typed view used by the live front-end context
+// stack; other entries retain their individual integration boundaries. Names are hypotheses, not recovered symbols.
 
 #include <array>
 #include <cstdint>
@@ -261,6 +262,15 @@ bool text_listener_base_slot00_00a97220(void* self, std::uint32_t a, std::uint32
 std::uint8_t native_input_backend_byte_f4_00a97b80(const void* backend) noexcept;
 // 00A92290 BSP_InputManager_GetContextLevel, __thiscall(ECX manager, int context), RET 4 -> EAX:
 // ([+10h])[context].
+// The view borrows the actual mutable level array; it does not preselect a
+// value or manufacture a native manager. Signed storage matches the front-end
+// projection; the return preserves all DWORD bits, including negative levels.
+struct InputManagerContextLevelsView {
+    const std::int32_t* levels;
+};
+std::uint32_t input_manager_context_level_00a92290(InputManagerContextLevelsView manager,
+    std::int32_t context) noexcept;
+// Raw-layout adapter to the same indexed-read body. Neither form checks bounds.
 std::uint32_t input_manager_context_level_00a92290(const void* manager, std::int32_t context) noexcept;
 // 00A818D0 BSP_SoundSample_HasResourceWord08_Provisional, __fastcall(ECX sample) -> AL:
 // [[sample+78h]+8h] != 0.

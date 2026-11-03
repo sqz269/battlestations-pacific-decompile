@@ -1,0 +1,93 @@
+{
+  "goal": 4,
+  "chain": 256,
+  "owner": "agent/g4-w5",
+  "switch": "kWireGoal4Chain256Bound",
+  "wired_total_before": 9088,
+  "wired_total_after": 9099,
+  "validation": [
+    "Baseline and changed ./scripts/build.ps1 passed; reconstructed_math and tool_tests passed.",
+    "Static wire_readiness census only; game was not run.",
+    "Reachability review rejected a native binding-scan attempt despite an optimistic static-census increase; that attempt was removed and only the verified context getter wiring remains.",
+    "A temporary synthetic fixture verified context republishing and the typed level view, including signed DWORD bits; this is fixture evidence only."
+  ],
+  "rows": [
+    {
+      "native": "00a92290",
+      "status": "wired",
+      "host_site": "src/frontend_screen_sets.cpp: apply_input_context_levels_004c4300 (called by GameMenuHost context publishers)",
+      "evidence": "Original calls at 004C4323/004C4371; typed view borrows the live persistent context_level array; results drive clear/raise decisions, including signed comparison. Raw entry delegates to the same body."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "Needs root interface/observed-payload producers, first-member/plane flag and interface request payload handling before the closed-row transitions can run."
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: hud_root_screen_set_interface",
+      "reason": "Missing concrete root observer +D0h/+E4h owner and observer lifetime binding; current host hook only records the request."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_medals",
+      "reason": "Needs complete row presentation/gameplay providers, including native health terms, payload/weapon queries and widget/string ownership."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reconstructed avoid callers already call this body; no new live outer caller was established in this packet."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "The reserve body is already called there; message-35 native receiver/runtime registration is still needed for a new live path."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB4.cpp: curve host callbacks",
+      "reason": "Missing a live concrete curve/control-point owner and Cc13SweepB4Host callback binding; inventory readiness does not supply a runtime curve."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: widget presentation ordering",
+      "reason": "This body is an alphabetical reflection snapshot, whereas the live frontend ordering is draw ordering; no live property-descriptor writer was established."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "No frame-job-thread named-call producer supplies source argument vectors; the live queue drain is empty."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "on_frame_job_thread is always false because this host has no frame job pool; no real deferred named-call producer reaches enqueue."
+    },
+    {
+      "native": "009bdbb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: PilotMoveOnPath handling",
+      "reason": "Needs actual raw 520h task/009BCE50 constructor, bot receiver and owning lifetime bindings before native allocation can replace the semantic task path."
+    },
+    {
+      "native": "00a92050",
+      "status": "skipped",
+      "host_site": "src/native_input_action_binding_runtime.cpp: poll_native_input_action_00a92370; src/input_binding_poll.cpp: poll_input_action_bindings_00a92370",
+      "reason": "No application constructs GameInputActions or binds the native configuration runtime/tick; mission-frame InputTickState records have no producer, so the binding scan is not live. Attempted adapter/wiring removed."
+    }
+  ],
+  "intermediate_census_before_final_map": 9089,
+  "reviewed_new_wired": [
+    "00a92290"
+  ],
+  "census_note": "Baseline 9088; source-only/intermediate-map census 9089; final rebuilt-map census 9099. The census uses linked-map identifiers and file reachability. Only 00A92290 is reviewed and claimed newly wired here; the additional ten census rows are not runtime-wiring claims."
+}
