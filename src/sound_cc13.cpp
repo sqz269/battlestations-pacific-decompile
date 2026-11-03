@@ -1,6 +1,7 @@
 // Segment 74 leaves with a ledger name and no reconstruction record (cc13-sound1).
 // Reconstructed and build-tested only: not ABI-compatible, not fixture- or game-validated, and not
-// wired into any game host. See docs/CC13_SOUND_1.md and the address notes in bsp/sound_cc13.hpp.
+// generally wired into game hosts. 00A92290's typed view is used by the live
+// front-end input-context stack. See docs/CC13_SOUND_1.md and the address notes in bsp/sound_cc13.hpp.
 
 #include "bsp/sound_cc13.hpp"
 
@@ -709,9 +710,17 @@ std::uint8_t native_input_backend_byte_f4_00a97b80(const void* backend) noexcept
     return get<std::uint8_t>(backend, 0xF4);
 }
 
+std::uint32_t input_manager_context_level_00a92290(InputManagerContextLevelsView manager,
+    std::int32_t context) noexcept {
+    // 00A92290..00A9229A: load manager+10h, then the indexed DWORD, RET4.
+    // The view is that array, not a copy of the selected result. Both callers
+    // share this body so raw and projected state use the same indexing law.
+    return static_cast<std::uint32_t>(manager.levels[context]);
+}
+
 std::uint32_t input_manager_context_level_00a92290(const void* manager, std::int32_t context) noexcept {
-    const auto* const levels = get<const std::uint32_t*>(manager, 0x10);
-    return levels[context];
+    return input_manager_context_level_00a92290(
+        InputManagerContextLevelsView{get<const std::int32_t*>(manager, 0x10)}, context);
 }
 
 bool sound_sample_has_resource_word08_00a818d0(const void* sample) noexcept {

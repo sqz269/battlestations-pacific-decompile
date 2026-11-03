@@ -1,4 +1,6 @@
 #include "bsp/frontend_screen_sets.hpp"
+#include "bsp/sound_cc13.hpp"
+#include "bsp/wire_goal4_chain256_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -156,6 +158,34 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
     if (level < 1 || level > kGameInputContextSetLevels) {
         return;
     }
+    if constexpr (kWireGoal4Chain256Bound) {
+        // 004C4323 and 004C4371 call 00A92290 for the context id. Borrow
+        // this host's persistent manager-level array: its real writers below
+        // publish/clear levels from GameMenuHost's authored screen context sets
+        // (004D8A50/004D8AE0/004D8C00). Stores stay visible to later reads in
+        // this very walk. No raw manager/vtable is fabricated for the view.
+        const sound_cc13::InputManagerContextLevelsView manager{stack.context_level};
+        for (int current = level; current >= 1; --current) {
+            for (int id = 1; id < kGameInputContextCount; ++id) {
+                if (sound_cc13::input_manager_context_level_00a92290(manager, id)
+                    == static_cast<std::uint32_t>(current)) {
+                    stack.context_level[id] = 0;
+                }
+            }
+            const std::vector<int>& ids = stack.levels[current - 1];
+            for (std::size_t i = 0; i < ids.size(); ++i) {
+                const int id = ids[i];
+                if (id < 0 || id >= kGameInputContextCount) {
+                    continue; // retain the host's existing valid-index boundary
+                }
+                if (static_cast<std::int32_t>(
+                        sound_cc13::input_manager_context_level_00a92290(manager, id))
+                    < current) { // 004C437A..7C compares signed DWORD levels
+                    stack.context_level[id] = current;
+                }
+            }
+        }
+    } else {
     for (int current = level; current >= 1; --current) {
         // 004C4310: contexts 1..19h, not 0..19h.
         for (int id = 1; id < kGameInputContextCount; ++id) {
@@ -173,6 +203,7 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
                 stack.context_level[id] = current;
             }
         }
+    }
     }
 }
 
