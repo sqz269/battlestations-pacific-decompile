@@ -1,0 +1,60 @@
+{
+  "chain": 249,
+  "goal": 4,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain249Bound",
+  "switch_header": "include/bsp/wire_goal4_chain249_switches.hpp",
+  "subject": "in-mission interface audio into the live sound runtime (GameSoundRuntime core): listener environment and cinematic sound-class pause",
+  "rows": [
+    {
+      "native": "00a7b710",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp InGameInterfaceUpdate binding set_audio_environment (0068C1F0 tail, 0068CC4F), on GameSoundRuntime::owner().configuration bound by src/game_hosts.cpp"
+    },
+    {
+      "native": "00a7f890",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp Impl::cinematic_sound_classes_on_change_004cd0f0 (HintsScreen game_set_cinematic_004cd0f0, MissionEntry set_cinematic_mode, load step set_cinematic_mode) -> src/game_hosts_hud.cpp GameHudHost::pause_cinematic_sound_classes_004cd0f0 with 00A7ACF0"
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "reason": "needs the in-game interface ambient sound instance (+104h) and source (+100h); no host path creates them, so has_ambient_sound_instance() is false and the camera (game+19FCh) is absent"
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "reason": "004CD0F0's dialog pause needs a SweepCHost implementation (sound_stream_set_paused_00a85c40) over GameSoundDialogRuntime's native owner image; the change arm leaves it unmodelled"
+    },
+    {
+      "native": "00a94c50",
+      "status": "skipped",
+      "reason": "already wired elsewhere; 004CD0F0's call passes [00F889C0] == 0 (byte meaning not established), which the mission frame host does not hold"
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "reason": "needs the unit's +BBCh audio emitter and +6B4h byte; the units host builds no unit sound emitters"
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "reason": "needs unit+1279h and the submarine's catapult children (+490h launch state); the host models no submarine catapults"
+    },
+    {
+      "native": "006b8530",
+      "status": "skipped",
+      "reason": "the image's caller is the mission named call 00887750/00887E50, implemented in src/game_hosts_lua.cpp (leased to agent/g3-w2 during this run); the game_hosts_ready.cpp NamedCallBinding is the empty frame-job queue drain only"
+    },
+    {
+      "native": "006b8000",
+      "status": "skipped",
+      "reason": "caller 00886E00 reaches it through MissionLuaEnvironmentHost, which no host implements; the LuaMachine wrappers 006B7E90/006B7EA0/006B8020/006B8060/006B80A0 share the same blocker"
+    },
+    {
+      "native": "00b68630",
+      "status": "skipped",
+      "reason": "GameNativeLuaDisplayStringBindings feeds 008F2F70 (scene property LUA_S enum from a Lua global), which needs world+1A0Ch's mission Lua state at scene parse; the host parser has no such state"
+    }
+  ]
+}

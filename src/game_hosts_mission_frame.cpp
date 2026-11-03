@@ -78,6 +78,7 @@
 #include "bsp/wire_goal2_chain36_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
+#include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
 #include "bsp/warning_string_seg64_argon.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -685,6 +686,29 @@ struct GameMissionFrameHost::Impl {
         format_address(address, text);
         log.implemented(method, text);
     }
+    // Goal 4 chain 249. 004CD0F0's sound arm, taken only when the hide byte changes
+    // (004CD158 CMP [game+634h]; the caller passes the byte before its store).
+    // 004CD166..004CD1A9: the 3DEffect/Warnings/Sonar value is 0 only when the hide
+    // is being cleared outside state 10h (+5D4h) with no 10h request at the queue
+    // front (+5E8h count, 004C8520 front); else 1. InGameGUI takes the new +634h.
+    // NOT MODELLED here, as before: the 00425D10+25Ch arm that only stores +261h,
+    // and the change arm's 00A94C50 rumble, 00A77760 dialog pause and +21F0h store.
+    void cinematic_sound_classes_on_change_004cd0f0(bool hidden_before, bool hidden_after) {
+        if (hidden_before == hidden_after) return;
+        const bool teardown_state =
+            control.state == static_cast<std::uint32_t>(bsp::GameStateId::kMissionTeardown);
+        const bool teardown_front = control.requests.count != 0
+            && bsp::front_state_request(control.requests)
+                == static_cast<std::uint32_t>(bsp::GameStateId::kMissionTeardown);
+        const bool others_paused = hidden_after || teardown_state || teardown_front;
+        if (GameHudHost::pause_cinematic_sound_classes_004cd0f0(hidden_after, others_paused)) {
+            ++cinematic_sound_class_changes;
+            done("GameCinematic::pause_sound_classes", 0x00a7f890u);
+        } else {
+            record("GameCinematic::pause_sound_classes", 0x00a7f890u);
+        }
+    }
+    unsigned long long cinematic_sound_class_changes{0};
 };
 
 namespace {
@@ -1524,6 +1548,10 @@ public:
     bool game_cinematic_hidden_634() override { return host_.cinematic_hidden; }
     void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool) override {
         const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
+        if constexpr (bsp::kWireGoal4Chain249Bound) {
+            host_.cinematic_sound_classes_on_change_004cd0f0(host_.cinematic_hidden,
+                flags.hud_hidden);
+        }
         host_.cinematic_hidden = flags.hud_hidden;
         host_.cinematic_allow_simulation = flags.simulate_while_hidden;
         host_.frame_state.cinematic_hidden = flags.hud_hidden;
@@ -2564,6 +2592,10 @@ public:
         static_cast<void>(third);
         const bsp::CinematicModeFlags flags
             = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
+        if constexpr (bsp::kWireGoal4Chain249Bound) {
+            owner_.cinematic_sound_classes_on_change_004cd0f0(owner_.cinematic_hidden,
+                flags.hud_hidden);
+        }
         owner_.cinematic_hidden = flags.hud_hidden;
         owner_.cinematic_allow_simulation = flags.simulate_while_hidden;
         owner_.entry.cinematic_cleared = !flags.hud_hidden && !flags.simulate_while_hidden;
@@ -3861,6 +3893,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
 
         if (method == "set_cinematic_mode") {
             const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(false, false);
+            if constexpr (bsp::kWireGoal4Chain249Bound) {
+                host.cinematic_sound_classes_on_change_004cd0f0(host.cinematic_hidden,
+                    flags.hud_hidden);
+            }
             host.cinematic_hidden = flags.hud_hidden;
             host.cinematic_allow_simulation = flags.simulate_while_hidden;
             host.done(label, step.address);
@@ -6189,6 +6225,10 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.frames.requested, host.frames.frames, host.frames.simulated,
         host.frames.paused, host.frames.units_ticked, host.frames.mission_events_applied,
         host.frames.script_calls, host.frames.interface_updates);
+    if constexpr (bsp::kWireGoal4Chain249Bound) {
+        host.log.notef("summary mission cinematic sound classes (goal 4 chain 249, 004CD0F0 -> "
+            "00A7ACF0/00A7F890): changes=%llu", host.cinematic_sound_class_changes);
+    }
     host.log.notef("summary mission exit frames=%llu injected=%d completed=%d state=0x%02X",
         host.frames.exit_frames, host.frames.complete_injected ? 1 : 0,
         host.frames.exit_completed ? 1 : 0, host.control.state);

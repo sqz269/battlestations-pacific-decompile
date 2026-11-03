@@ -33,6 +33,7 @@
 
 namespace bsp {
 struct MovieKeyframeInput;
+class NativeStringStorage;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -43,6 +44,7 @@ class GameUnitsHost;
 class GameMissionLuaHost;
 class GameHudMinimapHost;
 class GameHudMarkersHost;
+class GameSoundRuntime;
 
 // One of the 42 screens the manager's Init constructs, as this run built it.
 struct GameHudScreenRecord {
@@ -78,6 +80,10 @@ struct GameHudSummary {
     // Step 17 of the in-mission frame, 0068c1f0 at 004e5252.
     unsigned long long update_frames{0};
     std::string audio_environment;   // what the update's tail chose, 00a7b710
+    // Goal 4 chain 249: the frames whose 00a7b710 ran on the live sound configuration,
+    // and how many of them moved its current listener (+10Ch).
+    unsigned long long audio_environment_selects{0};
+    unsigned long long audio_environment_changes{0};
     std::vector<GameHudScreenRecord> screens;
 };
 
@@ -90,6 +96,24 @@ public:
     ~GameHudHost();
     GameHudHost(const GameHudHost&) = delete;
     GameHudHost& operator=(const GameHudHost&) = delete;
+
+    // Goal 4 chain 249. [00F8BBD8], the running sound owner the update's tail hands
+    // 00A7B710 at 0068CC49 (ECX, no null test). The application binds its core sound
+    // runtime here beside the message manager's binding; null or a runtime that did
+    // not start leaves the environment a record. `strings` is the pool the
+    // class-name lookups below build their temporary native names in.
+    static void bind_sound_runtime(GameSoundRuntime* runtime,
+        NativeStringStorage* strings) noexcept;
+
+    // Goal 4 chain 249. The sound arm of 004CD0F0 (004CD1B7..004CD30E), which runs
+    // only when the hide byte +634h changes: for 3DEffect, InGameGUI, Warnings and
+    // Sonar in that order, 00A7ACF0 finds the class by name and 00A7F890 stores its
+    // pause byte. InGameGUI receives the new +634h itself, the other three
+    // `others_paused` (004CD166..004CD1A9). Returns false, having applied nothing,
+    // without a started runtime. A name the configuration lacks is skipped: the
+    // image would pass the -1 miss on to 00A7F890, which then indexes before the
+    // class table.
+    static bool pause_cinematic_sound_classes_004cd0f0(bool hidden_634, bool others_paused);
 
     // The `create_hud_manager` row of the load walk, 0068a990 at 004e046c, and
     // the Init 0068cc70 its caller runs. The construction itself is a record;
