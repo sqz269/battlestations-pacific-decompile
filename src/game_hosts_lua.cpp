@@ -14,7 +14,6 @@
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
 #include "bsp/wire_goal2_chain104_switches.hpp"
-#include "bsp/native_mission_lua_stack.hpp"  // chain 104: remove 006B7EA0
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -13209,32 +13208,11 @@ void GameMissionLuaHost::lua_gettable(int index) {
 }
 
 void GameMissionLuaHost::lua_remove(int index) {
-    // Chain 104, 006B7EA0: remove_native_mission_lua_006b7ea0 on a LuaMachine over state_
-    // (006B7E30; the leaf reads L at +4h), as 00887750 does at 008878B9/0088790A; OFF keeps
-    // lua_remove.
-    if constexpr (bsp::kWireGoal2Chain104Bound) {
-        if (state_ != nullptr) {
-            const bsp::cc13_seg29::LuaMachine machine(state_);
-            bsp::remove_native_mission_lua_006b7ea0(&machine, index);
-            log_.implemented("MissionLua::lua_remove", "006b7ea0");
-        }
-    } else {
-        if (state_ != nullptr) ::lua_remove(state_, index);
-    }
+    if (state_ != nullptr) ::lua_remove(state_, index);
 }
 
 void GameMissionLuaHost::lua_pushvalue(int index) {
-    // Chain 104, 006B7E90: LuaMachine::push_value on a LuaMachine over state_ (006B7E30), as
-    // 00887750 does at 0088795B; OFF keeps lua_pushvalue.
-    if constexpr (bsp::kWireGoal2Chain104Bound) {
-        if (state_ != nullptr) {
-            bsp::cc13_seg29::LuaMachine machine(state_);
-            machine.push_value(index);
-            log_.implemented("MissionLua::lua_pushvalue", "006b7e90");
-        }
-    } else {
-        if (state_ != nullptr) ::lua_pushvalue(state_, index);
-    }
+    if (state_ != nullptr) ::lua_pushvalue(state_, index);
 }
 
 void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) {
