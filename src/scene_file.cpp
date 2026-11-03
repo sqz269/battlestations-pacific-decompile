@@ -4,6 +4,8 @@
 //            008d9ad0, 008d9b40.
 #include "bsp/scene_file.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/oct18_rec.hpp"
+#include "bsp/wire_goal2_chain115_switches.hpp"
 
 #include <cmath>
 
@@ -136,6 +138,72 @@ private:
     std::vector<std::string>& errors_;
 };
 
+// kWireGoal2Chain115Bound: the view 008EFB00 (read_quoted_runs) runs over in
+// this reader. The tokenizer is this lexer: peek().quoted is the +4h byte
+// 008D8A70 leaves, next() is 008D9980's read. The builder is one std::string
+// (009502E0 empties it, 0094FF10 appends, 009500A0 hands back the joined
+// text); it owns no native storage, so clear and the unwind destructors have
+// nothing to release. The decode collaborator keeps this reader's own S rule
+// and source-binding guards (the inline loop's): 008EE670's reconstructed
+// body is in leftovers_cc13.cpp, which links only into bsp_game, and this
+// file is in bsp_core, which bsp_math_tests links.
+class SceneQuotedRunView final : public oct18_rec::QuotedRunView {
+public:
+    explicit SceneQuotedRunView(SceneLexer& lexer) noexcept : lexer_(lexer) {}
+
+    void reset() override { value_.clear(); }
+    bool peek_quoted() override { return lexer_.peek().quoted; }
+    const char* read_token() override
+    {
+        fragment_ = lexer_.next();
+        // The native cached/read buffers are 400h (+5h/+405h, cache +805h).
+        // Overflow, embedded NUL and a trailing single escape are outside
+        // this source binding, as in the inline loop.
+        const std::string& text = fragment_.text;
+        if (text.size() >= 0x400 || text.find('\0') != std::string::npos) {
+            throw std::runtime_error("unsupported quoted scene string fragment");
+        }
+        for (std::size_t i = 0; i < text.size();) {
+            if (text[i++] != '\\') {
+                continue;
+            }
+            if (i == text.size()) {
+                throw std::runtime_error("unsupported trailing scene string escape");
+            }
+            ++i;
+        }
+        return text.c_str();
+    }
+    const char* decode(const char* token) override
+    {
+        decoded_.clear();
+        for (const char* p = token; *p != '\0';) {
+            const char ch = *p++;
+            if (ch != '\\') {
+                decoded_.push_back(ch);
+                continue;
+            }
+            const char escape = *p++;   // read_token admitted only paired escapes
+            if (escape == '\\') decoded_.push_back('\\');
+            else if (escape == 'n') decoded_.push_back('\n');
+            else if (escape == 'q') decoded_.push_back('"');
+            // All other backslash pairs emit nothing in 008EE670.
+        }
+        return decoded_.c_str();
+    }
+    void append(const char* decoded) override { value_ += decoded; }
+    char* join() override { return value_.data(); }
+    void clear() override {}
+    void destroy_reader() noexcept override {}
+    void destroy_base() noexcept override {}
+
+private:
+    SceneLexer& lexer_;
+    SceneToken fragment_;
+    std::string decoded_;
+    std::string value_;
+};
+
 ScenePropertyBlock parse_property_body(Cursor& cur);
 
 // The optional "( g1 g2 ... )" group list, then "{ body }". 008f5a00.
@@ -180,6 +248,12 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         prop.key = key;
         prop.type_letter = cur.read_token();
         if (equal_insensitive(prop.type_letter, "S") && cur.lexer().peek().quoted) {
+            if constexpr (kWireGoal2Chain115Bound) {
+                // 008F5CF6 -> 008EFB00: read_quoted_runs_008efb00 consumes the
+                // quoted runs over this lexer; OFF keeps the inline run loop.
+                SceneQuotedRunView runs(cur.lexer());
+                prop.values.push_back(std::string(oct18_rec::read_quoted_runs_008efb00(runs)));
+            } else {
             // 008F5CF6 -> 008EFB00: consume quoted runs by +4h, not token text.
             // 008EE670 decodes each run before the builder appends without a
             // separator. The lexer itself retains raw tokens/backslashes.
@@ -210,6 +284,7 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 }
             } while (cur.lexer().peek().quoted);
             prop.values.push_back(std::move(value));
+            }
         } else if (equal_insensitive(prop.type_letter, "F") && !cur.at(";")) {
             // Successful explicit F: 008F5C55 reads, 008F5C5A stores binary32.
             // Empty F remains on the raw partial path: a native existing value

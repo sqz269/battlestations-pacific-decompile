@@ -71,5 +71,28 @@ struct QuotedRunCalls {
 };
 // Original stdcall tokenizer stack argument, EAX owning result, RET 4. The
 // original two-state unwind table is mirrored with host C++ exception handling.
+// A thin wrapper: it lays out the 20h-byte stack writer and runs the typed
+// overload below over that writer and these calls.
 char* read_quoted_runs_008efb00(void* tokenizer, const QuotedRunCalls&);
+
+// The typed view 008EFB00 runs over: its tokenizer (008D8A70 peek, then the
+// +4h quoted byte; 008D9980 read), the 008EE670 run decoder and the string
+// builder on its stack (009502E0 reset, 0094FF10 append, 009500A0 join, the
+// 00D162CCh vtable store with 00950320 clear, and the two unwind destructors
+// 008EF030 / 0045C4C0). A host implements it over its own lexer and string.
+class QuotedRunView {
+public:
+    virtual ~QuotedRunView() = default;
+    virtual void reset() = 0;                           // 009502E0
+    virtual bool peek_quoted() = 0;                     // 008D8A70, [tokenizer+4]
+    virtual const char* read_token() = 0;               // 008D9980
+    virtual const char* decode(const char* token) = 0;  // 008EE670
+    virtual void append(const char* decoded) = 0;       // 0094FF10
+    virtual char* join() = 0;                           // 009500A0, EAX
+    virtual void clear() = 0;                           // [writer] = 00D162CCh, 00950320
+    virtual void destroy_reader() noexcept = 0;         // state 0 funclet 00CA4700
+    virtual void destroy_base() noexcept = 0;           // state 1 funclet 00CA4708
+};
+// 008EFB00's body over the typed view; returns join()'s result.
+char* read_quoted_runs_008efb00(QuotedRunView& view);
 } // namespace bsp::oct18_rec

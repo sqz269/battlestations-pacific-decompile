@@ -125,6 +125,63 @@ bool mission_completed_0090c560(void* table, const void* key,
     return raw_read<std::int32_t>(node, 0x14) != 0;
 }
 
+char* read_quoted_runs_008efb00(QuotedRunView& view) {
+    char* joined;
+    try { // FuncInfo 00DD72B4 state 0 -> unwind funclet 00CA4700.
+        view.reset();                       // 008EFB4D
+        bool quoted = view.peek_quoted();   // 008EFB58, 008EFB5D CMP [ESI+4]
+        while (quoted) {
+            const char* token = view.read_token();          // 008EFB64
+            const char* decoded = view.decode(token);       // 008EFB6B
+            view.append(decoded);                           // 008EFB75
+            quoted = view.peek_quoted();                    // 008EFB7C, 008EFB81
+        }
+        joined = view.join();               // 008EFB8A
+    } catch (...) {
+        view.destroy_reader();
+        throw;
+    }
+    try { // State 1 -> 00CA4708: base only if normal clear throws.
+        view.clear();                       // 008EFB91 vtable store, 008EFBA5
+    } catch (...) {
+        view.destroy_base();
+        throw;
+    }
+    return joined;
+}
+
+namespace {
+// The raw entry's view: the caller's tokenizer and calls, and the stack writer.
+class RawQuotedRunView final : public QuotedRunView {
+public:
+    RawQuotedRunView(void* tokenizer, const QuotedRunCalls& calls, void* writer) noexcept
+        : tokenizer_(tokenizer), calls_(calls), writer_(writer) {}
+    void reset() override { calls_.reset_009502e0(writer_); }
+    bool peek_quoted() override {
+        calls_.peek_008d8a70(tokenizer_);
+        return raw_read<std::uint8_t>(tokenizer_, 4) != 0;
+    }
+    const char* read_token() override { return calls_.read_008d9980(tokenizer_); }
+    const char* decode(const char* token) override { return calls_.decode_008ee670(token); }
+    void append(const char* decoded) override { calls_.append_0094ff10(writer_, decoded); }
+    char* join() override { return calls_.join_009500a0(writer_); }
+    void clear() override {
+        raw_write<std::uint32_t>(writer_, 0, 0x00d162cc);
+        calls_.clear_00950320(writer_);
+    }
+    void destroy_reader() noexcept override {
+        unwind_cleanup(calls_.destroy_reader_008ef030, writer_);
+    }
+    void destroy_base() noexcept override {
+        unwind_cleanup(calls_.destroy_base_0045c4c0, writer_);
+    }
+private:
+    void* tokenizer_;
+    const QuotedRunCalls& calls_;
+    void* writer_;
+};
+} // namespace
+
 char* read_quoted_runs_008efb00(void* tokenizer, const QuotedRunCalls& calls) {
     alignas(4) std::byte writer[0x20]; // Preserve unspecified stack bytes.
     raw_write<std::uint32_t>(writer, 8, 0);
@@ -135,29 +192,8 @@ char* read_quoted_runs_008efb00(void* tokenizer, const QuotedRunCalls& calls) {
     raw_write<std::uint32_t>(writer, 0x18, 0);
     raw_write<std::uint32_t>(writer, 0x14, 0);
     raw_write<std::uint32_t>(writer, 0x1c, 0);
-    char* joined;
-    try { // FuncInfo 00DD72B4 state 0 -> unwind funclet 00CA4700.
-        calls.reset_009502e0(writer);
-        calls.peek_008d8a70(tokenizer);
-        while (raw_read<std::uint8_t>(tokenizer, 4) != 0) {
-            const char* token = calls.read_008d9980(tokenizer);
-            const char* decoded = calls.decode_008ee670(token);
-            calls.append_0094ff10(writer, decoded);
-            calls.peek_008d8a70(tokenizer);
-        }
-        joined = calls.join_009500a0(writer);
-    } catch (...) {
-        unwind_cleanup(calls.destroy_reader_008ef030, writer);
-        throw;
-    }
-    raw_write<std::uint32_t>(writer, 0, 0x00d162cc);
-    try { // State 1 -> 00CA4708: base only if normal clear throws.
-        calls.clear_00950320(writer);
-    } catch (...) {
-        unwind_cleanup(calls.destroy_base_0045c4c0, writer);
-        throw;
-    }
-    return joined;
+    RawQuotedRunView view(tokenizer, calls, writer);
+    return read_quoted_runs_008efb00(view);
 }
 } // namespace bsp::oct18_rec
 

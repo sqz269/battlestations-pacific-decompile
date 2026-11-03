@@ -1,0 +1,154 @@
+{
+  "chain": 115,
+  "slot": "g2-w4",
+  "goal": 2,
+  "harness": "claude",
+  "candidate": "segment 59 [008ee670-00922240], tier 2 range sweep",
+  "host_file": "src/scene_file.cpp",
+  "files": [
+    "src/scene_file.cpp",
+    "src/oct18_rec.cpp",
+    "include/bsp/oct18_rec.hpp",
+    "include/bsp/wire_goal2_chain115_switches.hpp"
+  ],
+  "switch": "kWireGoal2Chain115Bound",
+  "host_objects": [],
+  "host_object_note": "No host object built. The one wire uses a small typed-view adapter (SceneQuotedRunView, src/scene_file.cpp) over the scene reader's own lexer and one std::string.",
+  "wired_before": 8922,
+  "wired_after": 8923,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "off_switch_on_build.py --names kWireGoal2Chain115Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed (math_tests parses S quoted runs with \\n/\\q/\\\\ escapes and a two-run join; the ON arm produced the expected values)",
+  "pc24_lint": "not run: no x87 arithmetic in the ON arm",
+  "rows": [
+    {
+      "native": "008efb00",
+      "address": "008f5cf6",
+      "function": "008f5a00",
+      "host_site": "src/scene_file.cpp parse_property_body (explicit S quoted value)",
+      "status": "wired",
+      "reach": "live: GameMissionHost::Impl::read_scene_file (src/game_hosts_mission.cpp:2108) -> parse_scene_document -> parse_scene_header/parse_entity -> parse_property_section -> parse_property_body, on every mission scene load; no switch gates the path",
+      "note": "Raw row: added the typed view overload read_quoted_runs_008efb00(QuotedRunView&) in src/oct18_rec.cpp with the body's loop and its two unwind states; the raw entry keeps its 20h-byte writer layout and is a thin wrapper over RawQuotedRunView. ON replaces the reader's inline do/while run loop with the body over SceneQuotedRunView (peek().quoted = the +4h byte after 008D8A70, next() = 008D9980, one std::string as the 0094FF10/009500A0 builder). The decode collaborator keeps the reader's own S escape rule and its three source-binding guards (see 008ee670)."
+    },
+    {
+      "native": "008ee670",
+      "host_site": "src/scene_file.cpp SceneQuotedRunView::decode",
+      "status": "skipped",
+      "reason": "Not an assigned row (it became ready once 008EFB00 was wired). Its body decode_scene_fragment_008ee670 is in src/leftovers_cc13.cpp, which links only into bsp_game; scene_file.cpp is in bsp_core, which bsp_math_tests links, so calling it from the only site (the 008EFB00 view's decode) breaks the test link. Needs the body moved into bsp_core or a bsp_game-side site."
+    },
+    {
+      "native": "008ef6d0",
+      "host_site": "src/scene_file.cpp parse_property_body",
+      "status": "skipped",
+      "reason": "Only caller 008F5A00 uses it at 008F6391 for BIN hex-byte arrays. The host reader keeps BIN values as raw tokens (the partial token scan) and no host consumer reads decoded bytes, so there is no host logic for the body to replace; wiring would add an unread payload."
+    },
+    {
+      "native": "008f02b0",
+      "host_site": "src/scene_file.cpp parse_property_body",
+      "status": "skipped",
+      "reason": "008F5A00's 'E' declaration test (008F5DEC) selects the native enum path into native bag/enum tables. The host reader has no E branch (E values go through the partial token scan into ScenePropertyBlock); the classification alone replaces no host logic."
+    },
+    {
+      "native": "008f02e0",
+      "host_site": "src/scene_file.cpp parse_property_body",
+      "status": "skipped",
+      "reason": "Same as 008F02B0 for 'LUA_S' (008F5E85): the host reader has no LUA_S branch, so the letter test replaces no host logic."
+    },
+    {
+      "native": "008f1960",
+      "host_site": "src/cc13_seg59b.cpp scene_property_write_text_008f1ca0",
+      "status": "skipped",
+      "reason": "Only caller 008F1CA0 is the scene-property text writer; no host path writes scene text, so the site is unreached."
+    },
+    {
+      "native": "00903420",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::torpedo_attack_range_00901ba0",
+      "status": "skipped",
+      "reason": "The host passes units.unit_hull_length_09c8(target). Unit +9C8 is class +A0 (Length) copied by 00810FAF's no-model arm, which the host runs for every unit, so the body's IsKindOf(5) arm returns the host's own value. Its other arm needs the target node bounds ([target+360h]+10Ch..+120h, 0098A710), which no host object produces, so wiring would only hand back the host value."
+    },
+    {
+      "native": "008fe140",
+      "host_site": "src/game_hosts_gunnery.cpp torpedo bot tick (008FFF20)",
+      "status": "skipped",
+      "reason": "008FFF20 discards the result: after CALL 008FE140 at 009000D8 the code continues at 009000DD with FLD [ESI+5Ch] and never reads EAX. Wiring would run no logic that affects state."
+    },
+    {
+      "native": "008f84a0",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_spawn_new_00949750",
+      "status": "skipped",
+      "reason": "SpawnRefFrame assign registers the frame with its entity through 00694A60 (observer pair). The host's spawn path keeps a plain frame and has no native observer registry, so the body has no host object to run over."
+    },
+    {
+      "native": "008f84d0",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_spawn_new_00949750",
+      "status": "skipped",
+      "reason": "Image-shaped SpawnRefFrame (vtable 00D16AA4, +14h entity, +18h matrix) that the host does not keep; same missing frame/observer object as 008F84A0."
+    },
+    {
+      "native": "008f8610",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_spawn_new_00949750",
+      "status": "skipped",
+      "reason": "Copy-construct of the same SpawnRefFrame with 00694A60 registration; host lacks the frame and observer registry."
+    },
+    {
+      "native": "00903f30",
+      "host_site": "src/entity_mission_seg60_argon.cpp entity_destruct_base_00925780",
+      "status": "skipped",
+      "reason": "Only reached through Seg60Host::world_unlink_from_update_chain_00903f30, which no host implements; no host keeps the world update chain as an IntrusiveChain."
+    },
+    {
+      "native": "00905300",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::slot_counter_increment",
+      "status": "skipped",
+      "reason": "The stand-in is unreachable: GameScriptOrdersHost::entity_route_slot returns -1 (no instance carries entity+1ACh), which skips the counter at 0077C90A; the per-slot counter storage has no host producer."
+    },
+    {
+      "native": "00906430",
+      "host_site": "src/game_hosts_mission_result.cpp GameMissionResultHost::debrief_bringup_00920a20",
+      "status": "skipped",
+      "reason": "The host's debrief bring-up only records (nothing of 00920A20 or its GUI_scoring page is reconstructed), and the body reads the native owner's +147Ch script name, which no host object holds."
+    },
+    {
+      "native": "00915760",
+      "host_site": "src/game_hosts_mission_result.cpp GameMissionResultHost::reset_player_records_00916980",
+      "status": "skipped",
+      "reason": "Raw body clears an image-shaped score record (STL trees, 16-bit vectors, native strings). The host's bsp::MissionScoreRecord is a semantic struct, not that layout, and reset_player_records only records."
+    },
+    {
+      "native": "00911ce0",
+      "host_site": "src/ingame_gui.cpp host.damage_points_00911ce0",
+      "status": "skipped",
+      "reason": "No host implements damage_points_00911ce0 / kill_points_00911c00 / suicide_points_00910570; the bodies read the native scoring tables at game+21A0h, which no host object holds."
+    },
+    {
+      "native": "00911c00",
+      "host_site": "src/ingame_gui.cpp host.kill_points_00911c00",
+      "status": "skipped",
+      "reason": "Same as 00911CE0: no host implementation and no native scoring-table producer."
+    },
+    {
+      "native": "00910570",
+      "host_site": "src/ingame_gui.cpp host.suicide_points_00910570",
+      "status": "skipped",
+      "reason": "Same as 00911CE0: no host implementation and no native scoring-table producer."
+    },
+    {
+      "native": "0090c5d0",
+      "host_site": "src/oct18_tail_a.cpp midway_folder_0090c5d0",
+      "status": "skipped",
+      "reason": "No host implements the award-grant host's midway_folder_0090c5d0, and the body creates a directory under My Documents (CreateDirectoryA); not wired without a live award-grant host."
+    },
+    {
+      "native": "008f2f70",
+      "host_site": "src/game_native_enum_lua_declaration.cpp GameNativeEnumLuaDeclarationBindings::declare",
+      "status": "skipped",
+      "reason": "Native enum declaration over native string/Lua storage. The live scene parse (scene_file.cpp) keeps E values as tokens, and the property-library reader lives in src/game_hosts_scene_contents.cpp, leased by g2-w1 this run."
+    },
+    {
+      "native": "008f3940",
+      "host_site": "src/scene_file.cpp parse_property_body",
+      "status": "skipped",
+      "reason": "Native property-bag add (find-or-create record, type 3 byte). The host reader appends to a semantic ScenePropertyBlock and keeps native existing-record assignment out of its binding; the same holds for the other native bag rows here (008F3490, 008F3510, 008F3590, 008F3610, 008F3690, 008F3770, 008F37E0, 008F38A0, 008F3A20, 008F3AC0, 008F3B60, 008F0420, 008F0580, 008F23E0, 008F4DD0)."
+    }
+  ],
+  "turning_on": "With kWireGoal2Chain115Bound ON, every explicit S quoted value in a scene file read at mission load goes through 008EFB00's body (typed view) instead of the reader's inline loop. Output is the same joined, decoded string, with the same three source-binding errors."
+}
