@@ -24,6 +24,7 @@
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
 #include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
+#include "bsp/native_frame_transpose_inverse.hpp"  // chain 67: 0085DEA0
 #include "bsp/strike_release_ver_cc13.hpp"
 #include "bsp/native_scene_command_queue.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -17801,6 +17802,14 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     d.frame_8 = o.world;
     // 0085DEA0: copy, transpose the 3x3, translation = -0.0 - (t through the
     // transposed rotation, 0042D0D0 without normalising).
+    // 0085DEA0: transpose_inverse_native_frame_0085dea0 builds holder+48h from the +8h
+    // frame (both image-shaped 4x4 float matrices) with the -0.0 cell 00D7A208
+    // (kNegativeZero_00d7a208, plane_pose_commit.hpp);
+    // OFF keeps the inline transpose and negated translation.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        bsp::transpose_inverse_native_frame_0085dea0(d.inverse_48.data(), d.frame_8.data(),
+                                                     &bsp::kNegativeZero_00d7a208);
+    } else {
     bsp::CameraMatrix inv = d.frame_8;
     std::swap(inv[1], inv[4]);
     std::swap(inv[2], inv[8]);
@@ -17813,6 +17822,7 @@ GameUnitsHost::Impl::LandingDeck* GameUnitsHost::Impl::landing_deck_006c0750(
     inv[13] = -0.0f - ry;
     inv[14] = -0.0f - rz;
     d.inverse_48 = inv;
+    }
     // +88h = owner->vtable[50h]() = 006D2040: atan2 over local row 2 (x, z); this
     // host's airfield is top level, so its world rows are the local rows.
     d.runway_heading_88 = static_cast<float>(std::atan2(static_cast<double>(d.frame_8[8]),
@@ -18072,6 +18082,14 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     d.frame_8[13] = static_cast<float>(static_cast<double>(wy) + d.frame_8[13]);
     d.frame_8[14] = static_cast<float>(static_cast<double>(wz) + d.frame_8[14]);
     // 0085DEA0, as landing_deck_006c0750 builds it for an airfield.
+    // 0085DEA0: transpose_inverse_native_frame_0085dea0 builds holder+48h from the +8h
+    // frame (both image-shaped 4x4 float matrices) with the -0.0 cell 00D7A208
+    // (kNegativeZero_00d7a208, plane_pose_commit.hpp);
+    // OFF keeps the inline transpose and negated translation.
+    if constexpr (bsp::kWireGoal2Chain67Bound) {
+        bsp::transpose_inverse_native_frame_0085dea0(d.inverse_48.data(), d.frame_8.data(),
+                                                     &bsp::kNegativeZero_00d7a208);
+    } else {
     bsp::CameraMatrix inv = d.frame_8;
     std::swap(inv[1], inv[4]);
     std::swap(inv[2], inv[8]);
@@ -18084,6 +18102,7 @@ bool GameUnitsHost::Impl::carrier_holder_frame_006bee40(std::size_t owner, Landi
     inv[13] = -0.0f - ry;
     inv[14] = -0.0f - rz;
     d.inverse_48 = inv;
+    }
     d.runway_heading_88 = o.hull_heading_1050;
     const float half_len = static_cast<float>(-static_cast<double>(d.length_b4) * 0.5);
     d.t_a4[0] = 0.0f;
