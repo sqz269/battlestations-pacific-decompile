@@ -4,9 +4,11 @@
 #include <cmath>
 #include <cstddef>
 
+#include "bsp/cc13_seg68.hpp"             // approach_ref_set_aim_error_009fa380
 #include "bsp/geom_mesh_resource.hpp"      // GeomMeshResourcePayload
 #include "bsp/ship_ai_throttle_ring.hpp"  // heading_to_direction_006bc0c0
 #include "bsp/unit_rudder.hpp"            // wrapped_angle_subtract_00438b10
+#include "bsp/wire_goal2_chain160_switches.hpp"
 
 // Packet cc8_hull_aim_point. See include/bsp/approach_target_ref.hpp for the
 // addresses, the ABI and what is proved versus substituted.
@@ -173,11 +175,30 @@ void approach_target_ref_lead_tail_009faf05(ApproachTargetRefState& state,
     }
 }
 
+void approach_target_ref_set_aim_error(ApproachTargetRefState& state,
+                                       const std::array<float, 3>& error) noexcept {
+    // The host keeps the sub-object as ApproachTargetRefState; 009FA380 reads and
+    // writes it as the image's 74h-byte ref. Only sub+34h..3Ch and sub+41h are
+    // touched by the body, so only they cross the view.
+    cc13_seg68::NativeApproachTargetRef view{};
+    view.bias_34 = state.bias_34;
+    view.dirty_41 = state.dirty_41 ? std::uint8_t{1} : std::uint8_t{0};
+    cc13_seg68::approach_ref_set_aim_error_009fa380(view, error);
+    state.bias_34 = view.bias_34;
+    state.dirty_41 = view.dirty_41 != 0;
+}
+
 void approach_target_ref_apply_aim_error(ApproachTargetRefState& state,
                                          const ApproachAimErrorRow& row,
                                          float h_draw, float v_draw) noexcept {
-    // 009FA380: bias = (d_h, 0.0, d_v), dirty = 1 (009FA395).
-    state.bias_34 = {h_draw, 0.0f, v_draw};
+    if constexpr (kWireGoal2Chain160Bound) {
+        // 009C3E21 / 009D0324: 009FA380 approach_ref_set_aim_error_009fa380 stores the
+        // bias and the dirty byte; OFF keeps the inline bias store.
+        approach_target_ref_set_aim_error(state, {h_draw, 0.0f, v_draw});
+    } else {
+        // 009FA380: bias = (d_h, 0.0, d_v), dirty = 1 (009FA395).
+        state.bias_34 = {h_draw, 0.0f, v_draw};
+    }
     // 009C3E2E-009C3E38 / 009D032C-009D033B: one row value on all three axes.
     state.spread_48 = {row.select_prec, row.select_prec, row.select_prec};
     state.dirty_41 = true;  // 009C3E3D / 009D0348

@@ -359,6 +359,14 @@ void approach_target_ref_apply_aim_error(ApproachTargetRefState& state,
                                          const ApproachAimErrorRow& row,
                                          float h_draw, float v_draw) noexcept;
 
+// Typed view of the host's ApproachTargetRefState for 009FA380
+// (bsp::cc13_seg68::approach_ref_set_aim_error_009fa380, __thiscall(ref, const
+// float* error) RET 4): the bias (sub+34h..3Ch) and the dirty byte (sub+41h) go
+// through an image-shaped NativeApproachTargetRef, the body runs, and both come
+// back. Called only from kWireGoal2Chain160Bound ON arms.
+void approach_target_ref_set_aim_error(ApproachTargetRefState& state,
+                                       const std::array<float, 3>& error) noexcept;
+
 // ---------------------------------------------------------------------------
 // A deterministic stand-in for the four draws
 // ---------------------------------------------------------------------------
