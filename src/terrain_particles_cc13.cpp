@@ -1520,20 +1520,31 @@ void terrain_quadtree_destroy_00aea8e0(void* tree) {
     quad_nodes_destroy_00aea8a0(*reinterpret_cast<NativeArray<QuadNode14>*>(at(tree, 0x3C)));
 }
 
+void terrain_quadtree_set_bounds_00aea900(TerrainQuadtreeBoundsView tree, void* field, const float min[3], const float max[3],
+    std::int32_t depth) {
+    tree.field = field;
+    for (std::uint32_t k = 0; k < 3; ++k) {
+        tree.minimum[k] = min[k];
+        tree.maximum[k] = max[k];
+    }
+    tree.depth = depth;
+    tree.leaves = 1 << (depth & 0x1F);
+    for (std::uint32_t k = 0; k < 3; ++k)
+        tree.extent[k] = f(static_cast<double>(tree.maximum[k]) - tree.minimum[k]);
+    const double n = static_cast<float>(tree.leaves);
+    for (std::uint32_t k = 0; k < 3; ++k) tree.cell[k] = f(tree.extent[k] / n);
+    tree.clear_nodes();
+}
+
 void terrain_quadtree_set_bounds_00aea900(void* tree, void* field, const float min[3], const float max[3],
     std::int32_t depth) {
-    wr<void*>(tree, 0x48, field);
-    for (std::uint32_t k = 0; k < 3; ++k) {
-        wr<float>(tree, 4 + 4 * k, min[k]);
-        wr<float>(tree, 0x10 + 4 * k, max[k]);
-    }
-    wr<std::int32_t>(tree, 0x34, depth);
-    wr<std::int32_t>(tree, 0x38, 1 << (depth & 0x1F));
-    for (std::uint32_t k = 0; k < 3; ++k)
-        wr<float>(tree, 0x1C + 4 * k, f(static_cast<double>(rd<float>(tree, 0x10 + 4 * k)) - rd<float>(tree, 4 + 4 * k)));
-    const double n = static_cast<float>(rd<std::int32_t>(tree, 0x38));
-    for (std::uint32_t k = 0; k < 3; ++k) wr<float>(tree, 0x28 + 4 * k, f(rd<float>(tree, 0x1C + 4 * k) / n));
-    quad_nodes_resize_00aea590(*reinterpret_cast<NativeArray<QuadNode14>*>(at(tree, 0x3C)), 0);
+    terrain_quadtree_set_bounds_00aea900(TerrainQuadtreeBoundsView{
+        *reinterpret_cast<void**>(at(tree, 0x48)),
+        reinterpret_cast<float*>(at(tree, 0x04)), reinterpret_cast<float*>(at(tree, 0x10)),
+        reinterpret_cast<float*>(at(tree, 0x1C)), reinterpret_cast<float*>(at(tree, 0x28)),
+        *reinterpret_cast<std::int32_t*>(at(tree, 0x34)), *reinterpret_cast<std::int32_t*>(at(tree, 0x38)),
+        [tree] { quad_nodes_resize_00aea590(*reinterpret_cast<NativeArray<QuadNode14>*>(at(tree, 0x3C)), 0); }
+    }, field, min, max, depth);
 }
 
 void terrain_quadtree_tile_range_00ae9b50(const void* tree, float out[2], std::int32_t x, std::int32_t y) {
