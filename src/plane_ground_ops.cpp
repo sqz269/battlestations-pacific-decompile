@@ -122,16 +122,18 @@ PlaneSpawnPlacement choose_spawn_placement_007c6340(const PlaneSpawnPlacementInp
         out.state = PlaneFlightState::Launching;
         return out;
     }
-    // 007C636A: the height probe against the class reference, or any class with a
-    // planing speed, forces the airborne placement.
+    // 007C63C0..007C63D7: FSUB m64(0.5), FCOMIP, JBE to the airborne arm.
+    // JBE also takes an unordered height comparison. The strict greater-than
+    // complement preserves that case; <= would incorrectly put a NaN on water.
+    // 007C63DD..007C63EC also takes the airborne arm for nonzero/NaN MinWaterSpd.
     const bool airborne =
-        (in.class_height_reference - kPlaneGroundLandedYawScale) <= in.height_probe ||
+        !((in.class_height_reference - kPlaneGroundLandedYawScale) > in.height_probe) ||
         in.class_min_water_spd != 0.0f;
     if (airborne) {
-        out.state = PlaneFlightState::Flying;                 // 007C63F4
-        out.airborne_clock = kPlaneGroundSpawnedAirborneClock;  // 007C6417
+        out.state = PlaneFlightState::Flying;                 // 007C6481
+        out.airborne_clock = kPlaneGroundSpawnedAirborneClock;  // 007C6497
     } else {
-        out.state = PlaneFlightState::Water;  // 007C6481
+        out.state = PlaneFlightState::Water;  // 007C63F4
         out.airborne_clock = 0.0f;
     }
     return out;
