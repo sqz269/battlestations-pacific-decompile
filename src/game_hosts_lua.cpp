@@ -116,6 +116,9 @@
 #include "bsp/plane_issue_threshold_cc13.hpp"   // packet cc13-issuea0, 008A1F40
 #include "bsp/racked_round_entity_cc13.hpp"     // packet cc13-rackround
 #include "bsp/settings_seg29_cc13.hpp"          // packet wire-lua, LuaMachine 006B8xxx
+#include "bsp/native_mission_lua_conversions.hpp"
+#include "bsp/native_mission_lua_to_string.hpp"
+#include "bsp/wire_goal4_chain293_switches.hpp"
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/lua_listener_native_matchers.hpp" // goal 4 chain 286, 0096ACE0 / 00968FF0 / 00968440
@@ -628,7 +631,17 @@ unsigned int objective_slot_mask(bool have_party, int party, bool have_slot, int
 }
 
 GameMissionLuaHost* host_from_upvalue(lua_State* state) {
-    return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
+    if constexpr (bsp::kWireGoal4Chain293Bound) {
+        // 006B80A0 reads the signed index and machine+4, then forwards the
+        // actual lua_touserdata result. 006B7E30 borrows this callback's live
+        // Source VM; owns-state is false, so leaving the wrapper keeps it live.
+        bsp::cc13_seg29::LuaMachine machine(state);
+        return static_cast<GameMissionLuaHost*>(
+            bsp::to_userdata_native_mission_lua_006b80a0(
+                &machine, lua_upvalueindex(1)));
+    } else {
+        return static_cast<GameMissionLuaHost*>(lua_touserdata(state, lua_upvalueindex(1)));
+    }
 }
 
 // One body for all 560 rows of 00e0b7b8. 006b8610 uses nup = 0 because every
@@ -705,7 +718,17 @@ constexpr bool kMissionCheckpointBound = true;
 bool movie_number(lua_State* state, int table, const char* key, std::optional<float>& out) {
     lua_getfield(state, table, key);
     const bool is = lua_type(state, -1) == LUA_TNUMBER;
-    if (is) out = static_cast<float>(lua_tonumber(state, -1));
+    if constexpr (bsp::kWireGoal4Chain293Bound) {
+        if (is) {
+            // 006B8020 listing: lua_tonumber, FSTP F32, FLD the same F32.
+            // The existing body retains that x87 boundary; consume its float
+            // directly as the authored keyframe's optional numeric field.
+            bsp::cc13_seg29::LuaMachine machine(state);
+            out = bsp::to_float32_native_mission_lua_006b8020(&machine, -1);
+        }
+    } else {
+        if (is) out = static_cast<float>(lua_tonumber(state, -1));
+    }
     lua_pop(state, 1);
     return is;
 }
@@ -820,13 +843,32 @@ bsp::cc13cam::ModifierLuaValue movie_lua_value(lua_State* state, int index, int 
 void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& in) {
     const int top = lua_gettop(state);
     lua_getfield(state, table, "postype");
-    if (lua_type(state, -1) == LUA_TSTRING) in.postype = lua_tostring(state, -1);
+    if constexpr (bsp::kWireGoal4Chain293Bound) {
+        if (lua_type(state, -1) == LUA_TSTRING) {
+            // 006B8060 passes a null length sink to lua_tolstring. The actual
+            // field stays rooted on this stack until its borrowed text has
+            // been copied into the keyframe input, before the existing pop.
+            bsp::cc13_seg29::LuaMachine machine(state);
+            in.postype = bsp::to_string_native_mission_lua_006b8060(&machine, -1);
+        }
+    } else {
+        if (lua_type(state, -1) == LUA_TSTRING) in.postype = lua_tostring(state, -1);
+    }
     lua_pop(state, 1);
     lua_getfield(state, table, "transformtype");
     if (lua_type(state, -1) == LUA_TSTRING) in.transformtype = std::string(lua_tostring(state, -1));
     lua_pop(state, 1);
     lua_getfield(state, table, "wanderer");
-    if (lua_type(state, -1) == LUA_TBOOLEAN) in.wanderer = lua_toboolean(state, -1) != 0;
+    if constexpr (bsp::kWireGoal4Chain293Bound) {
+        if (lua_type(state, -1) == LUA_TBOOLEAN) {
+            // 006B8000 tests the full lua_toboolean result and returns bool.
+            // This value controls the existing keyframe's wanderer arm.
+            bsp::cc13_seg29::LuaMachine machine(state);
+            in.wanderer = bsp::to_boolean_native_mission_lua_006b8000(&machine, -1);
+        }
+    } else {
+        if (lua_type(state, -1) == LUA_TBOOLEAN) in.wanderer = lua_toboolean(state, -1) != 0;
+    }
     lua_pop(state, 1);
     lua_getfield(state, table, "position");
     if (lua_type(state, -1) == LUA_TTABLE) {

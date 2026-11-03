@@ -1,0 +1,150 @@
+{
+  "chain": 293,
+  "owner": "agent/g4-w5",
+  "baseline": "ccb76a8c59",
+  "switch": "bsp::kWireGoal4Chain293Bound",
+  "picked": "Mission Lua live-stack conversions for movie keyframes and callback dispatch",
+  "wired_before": 9266,
+  "wired_after": 9270,
+  "built": "Existing canonical native conversion bodies now consume the callback's actual Source Lua state through a borrowed 006B7E30 LuaMachine. The results feed existing keyframe inputs or callback dispatch. No new address body or VM was added.",
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "All four canonical bodies are entry-reachable from calls in game_hosts_lua.cpp; 006B8000: 1 site, 006B8020: 6 sites, 006B8060: 1 site, 006B80A0: 2 sites",
+    "readiness": "wire_readiness.py --standins: wired 9266 -> 9270; ready 1656 -> 1652",
+    "pc24": "pc24_lint.py --staged passed: 0 findings, 0 allowed, 2 files; the existing FSTP/FLD FLOAT32 conversion boundary is retained",
+    "evidence": "bsp.py show 006b8000, 006b8020, 006b8060, 006b80a0; bsp.py show 006b8020 --asm"
+  },
+  "assumptions": [
+    "Unattended selection: chose four existing canonical native getters after comparing rack, AI, scene-parser and physics candidates.",
+    "The borrowed LuaMachine retains the same live callback state at +4 and does not own or close it; text is copied while its actual Lua field remains rooted on the stack.",
+    "Old AI skip reports citing kSkirmishSessionCc13Bound=false are stale: the current switch is true. Other workers were notified; this packet does not establish per-session coordinator ownership."
+  ],
+  "limitations": "Build/test and static entry-reach evidence only. The game was not run. This does not establish Original binary ABI or gameplay parity.",
+  "rows": [
+    {
+      "native": "006b8000",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::parse_movie_keyframe (wanderer)",
+      "implementation": "src/native_mission_lua_conversions.cpp::to_boolean_native_mission_lua_006b8000",
+      "real_state": "Actual callback stack field at index -1; result becomes MovieKeyframeInput::wanderer"
+    },
+    {
+      "native": "006b8020",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::movie_number (inlined into parse_movie_keyframe)",
+      "implementation": "src/native_mission_lua_conversions.cpp::to_float32_native_mission_lua_006b8020",
+      "real_state": "Actual authored starttime/blendtime/linearblend/nonlinearblend/zoom/smoothtime field at stack index -1; returned FLOAT32 feeds the existing keyframe input"
+    },
+    {
+      "native": "006b8060",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::parse_movie_keyframe (postype)",
+      "implementation": "src/native_mission_lua_to_string.cpp::to_string_native_mission_lua_006b8060",
+      "real_state": "Actual postype Lua string remains rooted until its borrowed text is copied into MovieKeyframeInput::postype"
+    },
+    {
+      "native": "006b80a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp::host_from_upvalue (binding_trampoline and dofile_trampoline)",
+      "implementation": "src/native_mission_lua_conversions.cpp::to_userdata_native_mission_lua_006b80a0",
+      "real_state": "Actual closure upvalue 1 contains the GameMissionLuaHost pointer; returned pointer drives the existing callback"
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::Impl::dive_bomb_rounds_remaining",
+      "reason": "Host rack counts combine the attached round and reserve; separately retained attached-child and ammo+484h terms are still missing."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane touchdown gear gates",
+      "reason": "The host explicitly does not retain the native gear channel and its position; no real-state gear view was established."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::flight_state_notify",
+      "reason": "No persistent plane-FX timer and consuming FX step were established; a scratch constant store would be inert."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane FX step",
+      "reason": "The persistent FX component, engine/effect holders and sound/transform callback contract were not established in this packet."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::EntityTurnToEntity ship arm",
+      "reason": "The host fuses ship pose and physics into one motion state; there is no separate 3x4 physics-body transform consumer to replace."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "The live parser retains property tokens as strings; a consumed decoded BIN byte-array representation was not established."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "The classifier already calls this body under chain 285; no additional reachable parser consumer was established here."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "The classifier already calls this body under chain 285; no additional reachable parser consumer was established here."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "The existing scene_reference_kind_letter projection is already used by the classifier; no additional reachable consumer was established."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI tuning load",
+      "reason": "Selection review only: an actual active planner-slot and difficulty producer for the relevant non-campaign mode was not established here."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: old disabled-skirmish reason is stale; per-session live coordinator ownership and score-list call path need verification."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: old disabled-skirmish reason is stale; per-session live coordinator ownership and score-list call path need verification."
+    },
+    {
+      "native": "00a2bdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: old disabled-skirmish reason is stale; per-session live coordinator ownership and group-query call path need verification."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: old disabled-skirmish reason is stale; per-session live coordinator ownership and member ResourceUsage state need verification."
+    },
+    {
+      "native": "00a2c720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: old disabled-skirmish reason is stale; per-session live coordinator ownership and group-query call path need verification."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection review only: existing defend code already names the body; current per-session coordinator reach needs verification before claiming a new wire."
+    }
+  ]
+}
