@@ -33,6 +33,11 @@
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/cc13_seg68.hpp"
 #include "bsp/wire_goal1_chain3_switches.hpp"
+#include "bsp/wire_goal2_chain71_switches.hpp"
+#include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
+#include "bsp/cc13_seg67b.hpp"                // 009E5E30 typed view (chain 71)
+#include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
+#include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
 
 #include <algorithm>
 #include <array>
@@ -1225,6 +1230,52 @@ struct NeighbourList {
     static NeighbourNodeStore& store(bsp::ShipAiObstacleNode& node) noexcept {
         return *reinterpret_cast<NeighbourNodeStore*>(&node);
     }
+};
+
+// Wire goal 2 chain 71, 006F2A50. Adapts bsp::BuildingPadModel's per-building pad
+// vector (the CommandBuilding's +794h array of +798h pads, filled by 006F5CC0) to the
+// typed overload of command_building_take_landing_pad_006f2a50. Pads and ships are
+// host indices, -1 null; positions are the units host's +0FCh and the pad's authored
+// translation. Occupant stores go through the model's index-only 006AC490.
+struct BuildingPadSiteView {
+    using Pad = int;
+    using Ship = int;
+    bsp::BuildingPadModel& pads;
+    const GameUnitsHost& units;
+    int building;
+    static Pad null_pad() noexcept { return -1; }
+    static bool pad_is_null(Pad p) noexcept { return p < 0; }
+    static bool ship_is_null(Ship s) noexcept { return s < 0; }
+    std::int32_t pad_count_798() const {
+        return static_cast<std::int32_t>(pads.pads_of(building).size());
+    }
+    Pad pad_794(std::int32_t i) const {
+        return pads.pads_of(building)[static_cast<std::size_t>(i)];
+    }
+    // [+764h]: the model is read and written on the main thread only; no section.
+    static void lock_764() noexcept {}
+    static void unlock_764() noexcept {}
+    void reference_position(Ship ship, float out[3]) const {
+        if (ship < 0) {
+            // 00F87574 is copied for a null ship but never read: that arm takes the
+            // first free pad without a distance.
+            out[0] = out[1] = out[2] = 0.0f;
+            return;
+        }
+        units.unit_position_00fc(static_cast<std::size_t>(ship), out[0], out[1], out[2]);
+    }
+    // 006AC220 non-null; a pad index the model does not hold is skipped as held.
+    bool pad_occupied_006ac220(Pad p) const {
+        const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
+        return pad == nullptr || pad->occupant >= 0;
+    }
+    void pad_position(Pad p, float out[3]) const {
+        const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
+        out[0] = pad->position[0];
+        out[1] = pad->position[1];
+        out[2] = pad->position[2];
+    }
+    void set_occupant_006ac490(Pad p, Ship s) { pads.set_occupant_006ac490(p, s); }
 };
 
 }  // namespace
@@ -2811,10 +2862,40 @@ struct GameShipAiHost::Impl {
             }
             const float max_speed = units.unit_class_max_speed_0500(member);
             if (ceiling > max_speed) ceiling = max_speed;
-            if (member != leader && units.unit_is_kind_of(member, 6)) {
-                const float r = class_turn_radius_0082e850(member);
-                if (!(group_turn > r)) group_turn = r;
+            if constexpr (!bsp::kWireGoal2Chain71Bound) {
+                if (member != leader && units.unit_is_kind_of(member, 6)) {
+                    const float r = class_turn_radius_0082e850(member);
+                    if (!(group_turn > r)) group_turn = r;
+                }
             }
+        }
+        if constexpr (bsp::kWireGoal2Chain71Bound) {
+            // 0070E3C0 at 009F4EB5 / 009F503A: UnitGroup_GetMaxFollowerTurnRadius_0070e3c0 over
+            // this formation group; the OFF arm keeps the host's in-loop maximum.
+            // Adapts the units host's formation group (member list, leader) to the
+            // image group's +4F8h count, +18h records and +14h leader.
+            struct FormationGroupTurnRadiusView {
+                const Impl& host;
+                std::int32_t group;
+                std::size_t leader;
+                std::int32_t count;
+                float seed_00ce3d08() const { return 100.0f; }  // the float at 00CE3D08
+                std::int32_t member_count_4f8() const { return count; }
+                std::size_t member_18(std::int32_t i) const {
+                    return host.units.formation_member_unit(group, i);
+                }
+                bool member_present(std::size_t m) const {
+                    return m != static_cast<std::size_t>(-1) && m < host.controllers.size();
+                }
+                bool member_is_kind_6(std::size_t m) const { return host.units.unit_is_kind_of(m, 6); }
+                bool member_is_leader_14(std::size_t m) const { return m == leader; }
+                float member_turn_radius_0082e850(std::size_t m) const {
+                    return host.class_turn_radius_0082e850(m);
+                }
+            };
+            group_turn = bsp::flak_note_seg36_37_argon::UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(
+                FormationGroupTurnRadiusView{*this, group, leader, count});
+            log.implemented("ShipAiFormation::group_turn_radius_0070e3c0", "0070e3c0");
         }
         if (kShipFormationSpeedCeilingRowBound) {
             // 0070D140 at 009F4E1F over group+18h, count group+4F8h.
@@ -6055,15 +6136,28 @@ public:
         if (!owner_.units.unit_class_lands_troops_vtable_2c(index_)) return false;
         const auto it = owner_.transport_cooldown_1124.find(index_);
         if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
-        const bsp::BuildingPadModel& pads = bsp::building_pad_model();
-        for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
-            const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
-            if (p != nullptr && p->occupant < 0) {
-                ++owner_.lander_accept_true;
-                return true;
+        if constexpr (bsp::kWireGoal2Chain71Bound) {
+            // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
+            // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
+            BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
+                                     static_cast<int>(target - 1u)};
+            owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
+            if (bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) < 0) {
+                return false;
             }
+            ++owner_.lander_accept_true;
+            return true;
+        } else {
+            const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+            for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
+                const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+                if (p != nullptr && p->occupant < 0) {
+                    ++owner_.lander_accept_true;
+                    return true;
+                }
+            }
+            return false;
         }
-        return false;
     }
 
 private:
@@ -6626,7 +6720,28 @@ public:
         const std::uint32_t t = ctl_.goal_vector.raw_target_0b20;
         const bool target_known = t != 0u && t - 1u < owner_.units.count();
         const std::size_t target = target_known ? static_cast<std::size_t>(t - 1u) : 0u;
-        if (target_known && owner_.units.unit_is_kind_of(target, 5)) {
+        bool class05_target;
+        if constexpr (bsp::kWireGoal2Chain71Bound) {
+            // 008FE120 at 009F2400: entity_as_kind05_or_null_008fe120 on brain+B20h's target;
+            // the OFF arm keeps the host's own kind-5 test.
+            // Adapts a units-host handle (index + 1, 0 null) to the image entity pointer.
+            struct UnitHandleKind05View {
+                using Entity = std::uint32_t;
+                const GameUnitsHost& units;
+                static Entity null_entity() { return 0u; }
+                static bool entity_is_null(Entity e) { return e == 0u; }
+                bool entity_is_kind_of_vt5c(Entity e, std::int32_t kind) const {
+                    return units.unit_is_kind_of(static_cast<std::size_t>(e - 1u), kind);
+                }
+            };
+            UnitHandleKind05View view{owner_.units};
+            class05_target = bsp::cc13_seg59b::entity_as_kind05_or_null_008fe120(
+                view, target_known ? t : 0u) != 0u;
+            owner_.done("ShipAiApproach::target_as_kind05_008fe120", 0x008fe120u);
+        } else {
+            class05_target = target_known && owner_.units.unit_is_kind_of(target, 5);
+        }
+        if (class05_target) {
             // 008FE120 answers the target; [[t+538h]+0A8h] is the class's
             // hull height (bsp::ShipMotionClass), zero on this installation's ships.
             float forward = 0.0f;
@@ -6874,8 +6989,30 @@ private:
             // LABELLED: the byte is that constant, not a modelled global.
             constexpr bool kLandAttackerStopByte = true;
             const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
-            const bool ship_target = handle != 0u && handle - 1u < owner_.units.count()
-                && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
+            bool ship_target;
+            if constexpr (bsp::kWireGoal2Chain71Bound) {
+                // 009E5E30 at 009F2772: ship_ai_approach_target_is_kind_6_009e5e30 on this
+                // brain; the OFF arm keeps the host's own null and kind-6 test.
+                // Adapts the brain's +B20h target handle (index + 1; 0 or out of range is
+                // null) to the image's [[nested]+B20h] pointer.
+                struct BrainTargetKind6View {
+                    const GameUnitsHost& units;
+                    std::uint32_t handle_b20;
+                    std::uint32_t target_b20() const { return handle_b20; }
+                    bool target_is_null(std::uint32_t t) const {
+                        return t == 0u || t - 1u >= units.count();
+                    }
+                    bool target_is_kind_of_vt5c(std::uint32_t t, int kind) const {
+                        return units.unit_is_kind_of(static_cast<std::size_t>(t - 1u), kind);
+                    }
+                };
+                BrainTargetKind6View view{owner_.units, handle};
+                ship_target = bsp::ship_ai_approach_target_is_kind_6_009e5e30(view);
+                owner_.done("ShipAiApproach::target_is_kind6_009e5e30", 0x009e5e30u);
+            } else {
+                ship_target = handle != 0u && handle - 1u < owner_.units.count()
+                    && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
+            }
             const int side = a.flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1);
             if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
             a.speed_gate_1204 = side;
@@ -7582,12 +7719,21 @@ public:
         // kLandingCraftLaunchBound delivers it.
         const auto it = owner_.transport_cooldown_1124.find(c);
         if (it != owner_.transport_cooldown_1124.end() && it->second > 0.0f) return false;
-        const bsp::BuildingPadModel& pads = bsp::building_pad_model();
-        for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
-            const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
-            if (p != nullptr && p->occupant < 0) return true;
+        if constexpr (bsp::kWireGoal2Chain71Bound) {
+            // 006F2A50 at 00812945 (008128E0's target arm): command_building_take_landing_pad_006f2a50
+            // (target, null ship) over the pad model; the OFF arm keeps the host's free-pad scan.
+            BuildingPadSiteView view{bsp::building_pad_model(), owner_.units,
+                                     static_cast<int>(target - 1u)};
+            owner_.done("ShipAiApproach::take_landing_pad_006f2a50", 0x006f2a50u);
+            return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1) >= 0;
+        } else {
+            const bsp::BuildingPadModel& pads = bsp::building_pad_model();
+            for (const int pad : pads.pads_of(static_cast<int>(target - 1u))) {
+                const bsp::BuildingPadModel::Pad* p = pads.pad(pad);
+                if (p != nullptr && p->occupant < 0) return true;
+            }
+            return false;
         }
-        return false;
     }
     // 009F3598..009F35B3: 0064A820 builds message 94h (StartLanding) and
     // 0077C2A0(msg, 2, 0) routes it to the candidate: 00821F61 -> vt+238h,
@@ -14374,8 +14520,18 @@ int GameShipAiHost::landing_ship_request_landing_0074a4c0(std::size_t unit) {
         return -9;
     }
     // 0074A540 006F2A50(site)(ship): the nearest pad whose occupant is null.
-    const float unit_pos[3] = {ux, uy, uz};
-    const int pad = pads.pick_006f2e60(site, ship, unit_pos, true);
+    int pad;
+    if constexpr (bsp::kWireGoal2Chain71Bound) {
+        // 006F2A50 at 0074A540: command_building_take_landing_pad_006f2a50(site, ship) over the
+        // pad model, which also stores the ship as the pad's occupant (006AC490) as the image
+        // does before 0074A990; the OFF arm keeps the host's pick_006f2e60.
+        BuildingPadSiteView view{pads, host.units, site};
+        pad = bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, ship);
+        host.done("LandingShip::take_landing_pad_006f2a50", 0x006f2a50u);
+    } else {
+        const float unit_pos[3] = {ux, uy, uz};
+        pad = pads.pick_006f2e60(site, ship, unit_pos, true);
+    }
     if (pad < 0) {                                                   // 0074A547
         ++s.landing_requests_no_pad;
         return -4;
@@ -14712,11 +14868,20 @@ int GameShipAiHost::transport_launch_craft_008206f0(std::size_t unit) {
     bsp::BuildingPadModel& pads = bsp::building_pad_model();
     // 006F2A50(site)(0): the first pad of the vector whose +1F8h is null.
     auto first_free_pad = [&]() {
-        for (const int p : pads.pads_of(site)) {
-            const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
-            if (pad != nullptr && pad->occupant < 0) return p;
+        if constexpr (bsp::kWireGoal2Chain71Bound) {
+            // 006F2A50 at 00820844 / 00821BBB: command_building_take_landing_pad_006f2a50(site,
+            // null ship) over the pad model, the first free pad (its 006AC490(null) store leaves
+            // that pad free); the OFF arm keeps the host's scan.
+            BuildingPadSiteView view{pads, host.units, site};
+            host.done("TroopTransport::take_landing_pad_006f2a50", 0x006f2a50u);
+            return bsp::pool_pool02_cc13::command_building_take_landing_pad_006f2a50(view, -1);
+        } else {
+            for (const int p : pads.pads_of(site)) {
+                const bsp::BuildingPadModel::Pad* pad = pads.pad(p);
+                if (pad != nullptr && pad->occupant < 0) return p;
+            }
+            return -1;
         }
-        return -1;
     };
     const GameUnitsHost::VehicleClassLaunchKeys craft_keys =
         host.class_launch_keys(ship_keys.landing_ship_078c);

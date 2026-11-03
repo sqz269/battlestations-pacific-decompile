@@ -446,9 +446,20 @@ void robot_config_read_parameters_base_008fb770(void* descriptor, void* level_ta
 // Evidence: 008FE123 TEST ESI,ESI JZ -> null; 008FE12D entity->vt[5Ch](5); 008FE130 false -> null.
 // Caller 009F1BC0 (ship AI approach frame state).
 // ---------------------------------------------------------------------------
+namespace {
+// The raw image entity for the typed 008FE120 overload; IsKindOf through Seg59bHost.
+struct RawKind05Entity {
+    using Entity = void*;
+    Seg59bHost& host;
+    static Entity null_entity() noexcept { return nullptr; }
+    static bool entity_is_null(Entity e) noexcept { return e == nullptr; }
+    bool entity_is_kind_of_vt5c(Entity e, std::int32_t kind) { return host.entity_is_kind_of_vt5c(e, kind); }
+};
+}  // namespace
+
 void* entity_as_kind05_or_null_008fe120(Seg59bHost& host, void* entity) {
-    if (entity == nullptr) return nullptr;
-    return host.entity_is_kind_of_vt5c(entity, 5) ? entity : nullptr;
+    RawKind05Entity view{host};
+    return entity_as_kind05_or_null_008fe120(view, entity);
 }
 
 // ---------------------------------------------------------------------------

@@ -90,7 +90,58 @@ void command_building_handle_message_d5_006f29d0(Object building, float progress
 // the main thread's 24-bit precision control, modelled as one float rounding per operation;
 // PROVISIONAL if a fixed-step pool worker (53-bit) ever runs it. Host overlap: the landing AI
 // in game_hosts_ship_ai.cpp (0074A540 site) chooses pads with its own model; not replaced.
+// The raw entry below is a thin wrapper over the typed overload that follows it.
 Object command_building_take_landing_pad_006f2a50(Object site, Object ship, Pool02Host& host);
+
+// 006F2A50, typed view overload: the same body over a site the caller keeps in its own shape
+// (wire goal 2 chain 71). View supplies, by the image's offsets:
+//   Pad / Ship                handle types; null_pad(), pad_is_null(p), ship_is_null(s)
+//   pad_count_798()           +798h, re-read each step
+//   pad_794(i)                +794h[i]
+//   lock_764() / unlock_764() EnterCriticalSection [+764h] and depth +18h raised / lowered
+//   reference_position(s, out)  the ship's +0FCh (00414DB0 first when +0C8h is 0), or
+//                             00F87574 for a null ship
+//   pad_occupied_006ac220(p)  006AC220 non-null
+//   pad_position(p, out)      the pad's +0FCh (00414DB0 first when +0C8h is 0)
+//   set_occupant_006ac490(p, s)
+// Distance and order are the raw body's: float per operation, (y*y + x*x) + z*z, strict
+// best > dist from FLT_MAX (00D7A248), first free pad at once for a null ship.
+template <class View>
+typename View::Pad command_building_take_landing_pad_006f2a50(View& site, typename View::Ship ship) {
+    using Pad = typename View::Pad;
+    if (site.pad_count_798() == 0) return site.null_pad();
+    site.lock_764();
+    float best = 3.402823466e+38F;  // FLT_MAX, 00D7A248
+    Pad chosen = site.null_pad();
+    float ref[3];
+    site.reference_position(ship, ref);
+    const bool no_ship = site.ship_is_null(ship);
+    for (std::int32_t i = 0; i < site.pad_count_798(); ++i) {
+        const Pad pad = site.pad_794(i);
+        if (site.pad_occupied_006ac220(pad)) continue;
+        if (no_ship) {
+            chosen = pad;
+            break;
+        }
+        float p[3];
+        site.pad_position(pad, p);
+        const float dx = p[0] - ref[0];
+        const float dy = p[1] - ref[1];
+        const float dz = p[2] - ref[2];
+        const float xx = dx * dx;
+        const float yy = dy * dy;
+        const float xy = yy + xx;
+        const float zz = dz * dz;
+        const float dist = xy + zz;
+        if (best > dist) {
+            best = dist;
+            chosen = pad;
+        }
+    }
+    if (!site.pad_is_null(chosen)) site.set_occupant_006ac490(chosen, ship);
+    site.unlock_764();
+    return chosen;
+}
 // 006F57D0 BSP_LandFort_ShowsOnMinimap_False: XOR AL,AL / RET -> AL = 0 (2 instructions). The
 // minimap "never" body (hud_minimap.hpp kHudMinimapShowsFortBody).
 bool land_fort_shows_on_minimap_006f57d0() noexcept;

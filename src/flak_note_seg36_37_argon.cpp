@@ -824,26 +824,30 @@ void* Entity_AsKind06_0070e3a0(void* self) {
 
 // [0x0070e3c0] BSP_UnitGroup_GetMaxFollowerTurnRadius
 // Original ABI: __thiscall (ECX = self), RET (returns float in ST0).
-float UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(void* self) {
-    float max_r = *reinterpret_cast<const float*>(0x00ce3d08);
-    const std::int32_t count = field_at<std::int32_t>(self, 0x4f8);
-    const std::uint8_t* slot = static_cast<const std::uint8_t*>(self) + 0x18;
-    for (std::int32_t i = 0; i < count; ++i, slot += 0x34) {
-        void* member = field_at<void*>(slot, 0x00);
-        if (member != nullptr) {
-            using IsKindFn = std::uint8_t(__thiscall*)(void*, std::uint32_t);
-            if (vslot_at<IsKindFn>(member, 0x5c)(member, 6u) != 0u &&
-                member != field_at<void*>(self, 0x14)) {
-                const float r = fn_at<float(__thiscall*)(void*)>(0x0082e850)(
-                    field_at<void*>(member, 0x538)
-                );
-                if (!(max_r > r)) {
-                    max_r = r;
-                }
-            }
-        }
+namespace {
+// The raw image group for the typed 0070E3C0 overload.
+struct RawUnitGroupTurnRadiusView {
+    void* self;
+    float seed_00ce3d08() const { return *reinterpret_cast<const float*>(0x00ce3d08); }
+    std::int32_t member_count_4f8() const { return field_at<std::int32_t>(self, 0x4f8); }
+    void* member_18(std::int32_t i) const {
+        const std::uint8_t* slot = static_cast<const std::uint8_t*>(self) + 0x18 + 0x34 * i;
+        return field_at<void*>(slot, 0x00);
     }
-    return max_r;
+    static bool member_present(void* member) { return member != nullptr; }
+    static bool member_is_kind_6(void* member) {
+        using IsKindFn = std::uint8_t(__thiscall*)(void*, std::uint32_t);
+        return vslot_at<IsKindFn>(member, 0x5c)(member, 6u) != 0u;
+    }
+    bool member_is_leader_14(void* member) const { return member == field_at<void*>(self, 0x14); }
+    static float member_turn_radius_0082e850(void* member) {
+        return fn_at<float(__thiscall*)(void*)>(0x0082e850)(field_at<void*>(member, 0x538));
+    }
+};
+}  // namespace
+
+float UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(void* self) {
+    return UnitGroup_GetMaxFollowerTurnRadius_0070e3c0(RawUnitGroupTurnRadiusView{self});
 }
 
 // [0x0070e450] BSP_ShipGroup_ControllerAreaKey

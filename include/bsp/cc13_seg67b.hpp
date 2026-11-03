@@ -1017,6 +1017,14 @@ float* ship_ai_debug_colour_record_a_009d5e10(Cc13Seg67bHost& host);
 float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host);
 // 009E5E30: __thiscall(ECX = nested), RET, AL.
 bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested);
+// 009E5E30, typed view overload (wire goal 2 chain 71); the raw entry above wraps it.
+// View supplies target_b20() ([[nested]+B20h], 009E5E32), target_is_null(t) and
+// target_is_kind_of_vt5c(t, kind) (009E5E43, vt[5Ch]).
+template <class View>
+bool ship_ai_approach_target_is_kind_6_009e5e30(View& nested) {
+    const auto t = nested.target_b20();
+    return !nested.target_is_null(t) && nested.target_is_kind_of_vt5c(t, 6);
+}
 // 009C1DC0: __thiscall(ECX = approach, arg, archive), RET 8, EAX = approach.
 void* bot_approach_move_to_construct_from_stream_009c1dc0(Cc13Seg67bHost& host, void* a,
                                                           void* arg, void* archive);

@@ -2924,9 +2924,20 @@ float* ship_ai_debug_colour_record_b_009d5fd0(Cc13Seg67bHost& host) {
 
 // 009E5E30 (009E5E30-009E5E4E). t = [[nested]+B20h] (009E5E32); true when t is
 // set and t->vtable[5Ch](6) is true (009E5E43); else false.
+namespace {
+// The raw image brain for the typed 009E5E30 overload; IsKindOf through Cc13Seg67bHost.
+struct RawApproachTargetKind6 {
+    Cc13Seg67bHost& host;
+    void* nested;
+    void* target_b20() const { return ptr_at(ptr_at(nested, 0), 0xB20); }
+    static bool target_is_null(void* t) noexcept { return t == nullptr; }
+    bool target_is_kind_of_vt5c(void* t, std::uint32_t kind) { return host.object_vcall_5c(t, kind); }
+};
+}  // namespace
+
 bool ship_ai_approach_target_is_kind_6_009e5e30(Cc13Seg67bHost& host, void* nested) {
-    void* const t = ptr_at(ptr_at(nested, 0), 0xB20);
-    return t != nullptr && host.object_vcall_5c(t, 6);
+    RawApproachTargetKind6 view{host, nested};
+    return ship_ai_approach_target_is_kind_6_009e5e30(view);
 }
 
 namespace {
