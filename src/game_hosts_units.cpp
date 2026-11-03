@@ -23,6 +23,7 @@
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/gameplay_seg33_cc13.hpp"
+#include "bsp/wire_goal4_chain295_switches.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
@@ -32258,8 +32259,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.rack_repeat_default());
                             const int rounds = rack < unit_.rack_authored_per_rack.size()
                                 ? unit_.rack_authored_per_rack[rack] : 1;
+                            if constexpr (bsp::kWireGoal4Chain295Bound) {
+                                // 007C1FB0 dispatches live slot +1F8h = 006E4170.
+                                // The census's orgAmmo is the current count only
+                                // before the first release seed. After a drop or
+                                // rearm, use the retained per-rack total instead.
+                                int current_rounds = rounds;
+                                bool known_count = unit_.rack_ammo < 0 && rounds >= 0
+                                    && rack < unit_.rack_authored_per_rack.size();
+                                if (rack < unit_.rack_ammo_per_rack.size()) {
+                                    current_rounds = unit_.rack_ammo_per_rack[rack];
+                                    known_count = current_rounds >= 0;
+                                } else if (unit_.rack_ammo >= 0 && unit_.rack_single_count == 1) {
+                                    current_rounds = unit_.rack_ammo;
+                                    known_count = true;
+                                }
+                                const float span = known_count
+                                    ? bsp::gameplay_seg33_cc13::rack_remaining_drop_time_006e4170(
+                                        bsp::gameplay_seg33_cc13::SingleRackRoundCount{current_rounds}, r)
+                                    : r * static_cast<float>(rounds > 1 ? rounds - 1 : 0);
+                                if (span > longest) longest = span;
+                                if (known_count) owner_.done("SingleRack::remaining_drop_time", 0x006e4170u);
+                            } else {
                             const float span = r * static_cast<float>(rounds > 1 ? rounds - 1 : 0);
                             if (span > longest) longest = span;
+                            }
                             if (r > repeat) repeat = r;
                             ++rack;
                         }
@@ -46484,8 +46508,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 } else if (unit_.rack_ammo >= 0 && unit_.rack_single_count <= 1) {
                                     left = unit_.rack_ammo;
                                 }
+                                if constexpr (bsp::kWireGoal4Chain295Bound) {
+                                    // 006E4130 observes the combined child/reserve
+                                    // count, already retained by this host. Do not
+                                    // manufacture a hanging child or reserve value.
+                                    const bool known_count = i < unit_.rack_ammo_per_rack.size()
+                                        || unit_.rack_ammo < 0 || unit_.rack_single_count <= 1;
+                                    if (org >= 0 && left >= 0 && known_count) {
+                                        fraction = bsp::gameplay_seg33_cc13::rack_ammo_fraction_006e4130(
+                                            bsp::gameplay_seg33_cc13::SingleRackRoundCount{left}, org);
+                                        owner_.done("SingleRack::ammo_fraction", 0x006e4130u);
+                                    } else {
+                                        fraction = org != 0 ? static_cast<float>(left) / static_cast<float>(org)
+                                                            : 0.0f;
+                                    }
+                                } else {
                                 fraction = org != 0 ? static_cast<float>(left) / static_cast<float>(org)
                                                     : 0.0f;
+                                }
                             }
                             in.slot_weight = fraction;
                             break;   // 007C0F76: the first such slot only
