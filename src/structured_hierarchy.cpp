@@ -1,5 +1,7 @@
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/structured_resource.hpp"
+#include "bsp/native_resource_sphere_box.hpp"
+#include "bsp/wire_goal2_chain162_switches.hpp"
 #include <cstring>
 #include <new>
 #include <utility>
@@ -93,7 +95,13 @@ bool parse_hierarchy_item_00b7eb90(StructuredNode& item,
             } else if (_stricmp(tag, "BoundingSphere") == 0) {
                 field = "BoundingSphere";
                 success = read_sphere_00b932e0(*child, parsed.sphere);
+                // 00B7D220 calls the existing sphere wrapper; OFF keeps the host conversion.
+                if constexpr (kWireGoal2Chain162Bound) {
+                    if (success) set_native_bounds_from_sphere_00b7d220(
+                        parsed.box.data(), nullptr, parsed.sphere.data());
+                } else {
                 if (success) sphere_to_box_00b7d160(parsed.sphere, parsed.box);
+                }
             } else if (_stricmp(tag, "BoundingBox") == 0) {
                 field = "BoundingBox";
                 success = read_bounding_box_00b93310(*child, parsed.box);
