@@ -13,6 +13,71 @@
       "native": "00436730",
       "status": "wired",
       "host_site": "src/profile_checkpoint.cpp: load_checkpoint_004379c0 (00437B21), reached from GameMissionLuaHost::mission_checkpoint_binding (LoadCheckpoint 008ACA30)"
+    },
+    {
+      "native": "004374f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::finish_scene_load -> refresh_checkpoints_after_machine_build, right after start_machine_00884be0, on the bound GameProfileOwner (labelled substitution for the sign-in call; read-only storage query)"
+    },
+    {
+      "native": "00438a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::mission_checkpoint_binding",
+      "reason": "The body requests the profile storage write 00BD3E10 (game+684h, kind 2) and runs 006ADB50; this host never writes a profile save, and has no storage driver/prompt screen 00425D10."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-start stand-in (0058BF89)",
+      "reason": "Mission start runs before this host builds the mission Lua machine, so BSP_Chk_Save does not exist yet at that site; its 00437250 rewrite is also a storage write."
+    },
+    {
+      "native": "00436c50",
+      "status": "skipped",
+      "host_site": "src/profile_checkpoint.cpp: save_checkpoint_00438020 (004384B4)",
+      "reason": "The existing body copy_profile_lua_value_00436c50 takes native LuaObject storage (NativeLuaObjectStorage), not the lua_State/index pairs 00438020's reconstruction passes; needs a typed adapter."
+    },
+    {
+      "native": "0052b9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: Countdown binding (HudCountdown::show_text record)",
+      "reason": "Raw body over the HUD counters screen [[00E198C4]+C8h] and its 0ACh entries; no counters screen is hosted."
+    },
+    {
+      "native": "0052ab90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: CountdownCancel binding (HudCountdown::clear_text record)",
+      "reason": "Raw body over the unhosted HUD counters screen [[00E198C4]+C8h] (+10h countdown entry, +20h visible list)."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Reached only when a named call arrives on a frame-job thread (004C1130); this process has no frame job pool, so the queue insert never runs."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "Used only by 00706760's language sweep when the profile-hints owner 004C1E90 +8h is 2; no hints owner is hosted (mode answers 0), so the sweep is unreachable."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530",
+      "reason": "No concrete MainMenuCommandBarHost exists; the main-menu command bar [00E1930C] and its widget fields are not hosted, so 0054B530 is not linked."
+    },
+    {
+      "native": "005495e0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530",
+      "reason": "Same as 005495A0: no MainMenuCommandBarHost implementation or command-bar widgets in any host."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/cc13_front2.cpp: gamepad_force_clear_all_channels_00a95cb0",
+      "reason": "Its only caller 00A95CB0 is reached from session teardown 004DA780 and the limbo screen 00566080, neither of which this host runs."
     }
   ]
 }
