@@ -8,6 +8,7 @@
 #include "bsp/wire_goal2_chain132_switches.hpp"
 #include "bsp/wire_goal2_chain192_switches.hpp"
 #include "bsp/wire_goal4_chain268_switches.hpp"
+#include "bsp/wire_goal4_chain278_switches.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
@@ -392,6 +393,12 @@ public:
         }
         return false;
     }
+    bool has_table(const std::string& name) const {
+        for (const auto* owner : order_) {
+            if (equal_insensitive(name, owner->name)) return true;
+        }
+        return false;
+    }
     std::size_t enum_count() const noexcept { return registry_.map.count; }
     std::size_t symbol_count() const noexcept {
         std::size_t result = 0;
@@ -436,6 +443,39 @@ public:
     }
     void read_native_enum(SceneLexer& lexer, const std::string& name) {
         native_enums_->read(lexer, name);
+    }
+    bool has_enum_table(const std::string& name) const {
+        if constexpr (kWireGoal2Chain120Bound) {
+            return native_enums_ != nullptr && native_enums_->has_table(name);
+        } else {
+            for (const EnumTable& row : enums_) {
+                if (equal_insensitive(row.name, name)) return true;
+            }
+            return false;
+        }
+    }
+    void read_enum_body(const std::string& name, const std::string& body) {
+        // 008F67B0's owning enum adapter already implements 008F69FF followed
+        // by conditional 008F6A18 publication. Reuse it, including first-value
+        // retention on reopening, instead of building a second enum registry.
+        SceneLexer lexer("{" + body + "}", kPropertyLibraryDelimiters);
+        if constexpr (kWireGoal2Chain120Bound) {
+            read_native_enum(lexer, name);
+        } else {
+            EnumTable table;
+            table.name = name;
+            lexer.next(); // opening brace supplied by the loader callback
+            while (!lexer.at_end() && lexer.peek().text != "}") {
+                const SceneToken symbol = lexer.next();
+                if (lexer.peek().text != "=") continue;
+                lexer.next();
+                const SceneToken value = lexer.next();
+                std::int32_t parsed = 0;
+                if (scene_scan_int(value.text, parsed))
+                    insert_library_enum_symbol(table, symbol.text, static_cast<int>(parsed));
+            }
+            add_enum(std::move(table));
+        }
     }
     void add_group(PropertyGroupDefinition group);
     void add_enum(EnumTable table) {
@@ -1504,10 +1544,14 @@ void GameSceneContentsHost::Impl::load_property_library() {
     if constexpr (kWireGoal2Chain120Bound) {
         library.begin_load();
     }
+    if constexpr (kWireGoal4Chain278Bound && kWireGoal4Chain268Bound) {
+        log.implemented("SceneContents::property_library_load", "008f67b0");
+    } else {
     // 008f6fc0 enumerates the library directory through 00886280 and calls
     // 008f67b0 once per file. The enumeration is the recovered one; the load is
     // this file's stand-in, and the host record says so.
     log.unimplemented("SceneContents::property_library_load", "008f67b0");
+    }
     auto* manager = vfs.ready() ? &vfs.context() : nullptr;
     if (manager == nullptr) return;
     if constexpr (kWireGoal4Chain268Bound) {
@@ -1535,7 +1579,63 @@ void GameSceneContentsHost::Impl::load_property_library() {
             }
 
             bool load_library_file(const std::string& entry,
-                PropLibraryDocument&, std::string& error) override {
+                PropLibraryDocument& document, std::string& error) override {
+                if constexpr (kWireGoal4Chain278Bound) {
+                    class FileBinding final : public PropLibraryHost {
+                    public:
+                        explicit FileBinding(Impl& owner) : owner_(owner) {}
+                        std::vector<std::string> enumerate_library_files(
+                            const std::string& folder, const std::string& extension) override {
+                            std::vector<std::string> found;
+                            std::string error;
+                            if (!enumerate_resources_00bdd990_fragment(owner_.vfs.context(),
+                                    folder, extension, 1, found, error))
+                                throw std::runtime_error("property library: " + error);
+                            return found;
+                        }
+                        bool read_library_file(const std::string& path,
+                            std::string& text) override {
+                            return owner_.read_vfs_file(path, text)
+                                || owner_.read_vfs_file(
+                                    std::string(kPropertyLibraryDirectory) + "/" + path, text);
+                        }
+                        bool has_group(const std::string& name) override {
+                            return owner_.library.group(name) != nullptr;
+                        }
+                        bool has_enum_table(const std::string& name) override {
+                            return owner_.library.has_enum_table(name);
+                        }
+                        void register_group(const PropLibraryGroup& source) override {
+                            PropertyGroupDefinition group;
+                            group.name = source.name;
+                            group.bases = source.parents;
+                            group.block = source.body;
+                            owner_.library.add_group(std::move(group));
+                        }
+                        void parse_enum_body(const std::string& name,
+                            const std::string& body) override {
+                            owner_.library.read_enum_body(name, body);
+                        }
+                        void register_enum_table(const PropLibraryEnumTable& table) override {
+                            // read_enum_body already publishes the real owner after
+                            // parsing; a second insert would run 008F6A18 twice.
+                            if (!owner_.library.has_enum_table(table.name))
+                                throw std::logic_error("property library enum was not published");
+                        }
+                    private:
+                        Impl& owner_;
+                    } file(owner_);
+                    // Original 008F7092 -> 008F67B0. Actual mounted VFS bytes
+                    // feed the existing one-file body, and its callbacks update
+                    // the same library that entity loading reads. Typed C++
+                    // adapter; this does not establish original allocation ABI.
+                    if (!load_prop_library_file(entry, file, document, error)) {
+                        owner_.log.notef("property library: %s", error.c_str());
+                        return false;
+                    }
+                    ++owner_.summary.library_files;
+                    return true;
+                } else {
                 std::string text;
                 std::string full = entry;
                 if (!owner_.read_vfs_file(full, text)) {
@@ -1549,6 +1649,7 @@ void GameSceneContentsHost::Impl::load_property_library() {
                 owner_.parse_library_file(full, text);
                 ++owner_.summary.library_files;
                 return true;
+                }
             }
 
         private:
@@ -1596,11 +1697,18 @@ void GameSceneContentsHost::Impl::load_property_library() {
     summary.enum_tables = library.enum_count();
     summary.enum_symbols = library.symbol_count();
     summary.library_loaded = summary.library_files != 0;
+    if constexpr (kWireGoal4Chain278Bound && kWireGoal4Chain268Bound) {
+        log.notef("property library: %zu file(s) under %s, %zu property group(s), %zu enum "
+            "table(s), %zu symbol(s) (008f67b0 over mounted VFS and entity-consumed library)",
+            summary.library_files, kPropertyLibraryDirectory, summary.property_groups,
+            summary.enum_tables, summary.enum_symbols);
+    } else {
     log.notef("property library: %zu file(s) under %s, %zu property group(s), %zu enum "
         "table(s), %zu symbol(s) (008f67b0 CPropTreeLibrary::Load is not reconstructed; "
         "this is the executable's own reader over the recovered tokenizer and 008f5a00)",
         summary.library_files, kPropertyLibraryDirectory, summary.property_groups,
         summary.enum_tables, summary.enum_symbols);
+    }
 }
 
 namespace {

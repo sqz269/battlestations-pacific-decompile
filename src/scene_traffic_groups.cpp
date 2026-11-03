@@ -532,7 +532,11 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
                 if (!body.empty()) {
                     body.push_back(' ');
                 }
+                // Retokenizing in the native enum adapter must retain quoted
+                // names containing whitespace/delimiters (008D8A70 +4 flag).
+                if (token.quoted) body.push_back('"');
                 body += token.text;
+                if (token.quoted) body.push_back('"');
             }
             if (depth > 0) {
                 error = "unterminated enum " + table.name;
@@ -562,6 +566,7 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
                     if (group.parent.empty()) {
                         group.parent = name;
                     }
+                    group.parents.push_back(name);
                 }
                 if (!expect_token(lexer, ")", error)) {
                     return false;
@@ -573,9 +578,11 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
             if (!parse_errors.empty() && error.empty()) {
                 error = parse_errors.front();
             }
-            if (group.created) {
-                host.register_group(group);                 // 008F6B42
-            }
+            // bsp.py show 008f67b0: the lookup arm reuses the existing bag,
+            // then BOTH arms call 008F5A00 at 008F6AD7. Only map publication
+            // at 008F6B42 is conditional. Do not discard a redeclaration or
+            // the later parents that 008F5A00 merges at 008F5AB3.
+            host.register_group(group);
             document.groups.push_back(std::move(group));
             continue;
         }

@@ -1,0 +1,86 @@
+{
+  "goal": 4,
+  "chain": 278,
+  "worker": "agent/g4-w5",
+  "baseline_head": "741c90d7a1",
+  "switch": "bsp::game::kWireGoal4Chain278Bound",
+  "picked": "One-file property-library loading over mounted VFS bytes and the entity-consumed property/enum registries",
+  "wired_total_before": 9230,
+  "wired_total_after": 9231,
+  "changes": [
+    "FolderBinding now calls the existing load_prop_library_file body once per enumerated file; its OFF arm preserves the old file reader unchanged.",
+    "Forward every authored parent and apply repeated group declarations to the existing library bag, matching 008F6AD7 and the 008F5AB3 parent merges.",
+    "Preserve quoted enum symbols when passing the balanced enum body to the existing owning native-enum adapter; publish each new table once."
+  ],
+  "checks": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release and both CTest groups passed",
+    "regression": "One focused fixture in tests/math_tests.cpp checks repeated group writes, multiple parents, and a quoted enum symbol containing whitespace.",
+    "call_graph": "python tools/call_graph.py; who 008f67b0; who load_prop_library_file; path load_prop_library_file",
+    "call_site": "101985CB -> 10411070 from GameSceneContentsHost::Impl::load_property_library::FolderBinding::load_library_file; reachable from WinMain through scene loading",
+    "address_alias_note": "The pre-existing body has the identifier load_prop_library_file without an address suffix. who 008f67b0 cannot resolve it; the existing wire_readiness address_comment mapping and symbol-name queries identify the actual body.",
+    "off_identity": "Extraction against baseline HEAD confirms the old file-load block and Impl::parse_library_file are byte-identical.",
+    "float_math_changed": false,
+    "game_run": false,
+    "native_abi_proven": false
+  },
+  "assumptions": [
+    "Keep the existing chain268 folder/extension enumeration enabled; with that earlier switch off, its legacy application parser remains in control.",
+    "Use the already-established owning-tree property projection and native enum graph. This is typed C++ host wiring, not proof of native property-bag allocation ABI or gameplay parity."
+  ],
+  "rows": [
+    {
+      "native": "008f67b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library::FolderBinding::load_library_file -> bsp::load_prop_library_file",
+      "evidence": "bsp.py show 008f67b0 confirms reuse of existing group bags before 008F6AD7 and conditional publication at 008F6B42. Mounted VFS input feeds the same library subsequently consumed by entity loading."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The inspected fixed-step host lacks the off-main-thread named-call producer and argument-owning queue state that this copy routine needs."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: named-call binding push_argument",
+      "reason": "The inspected named-call binding has no live MissionLuaEnvironmentHost for pushing its argument records."
+    },
+    {
+      "native": "006b8530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: named-call binding lua_pcall",
+      "reason": "The inspected named-call binding still has placeholder Lua stack operations and needs the live mission Lua-machine binding before protected calls can execute."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie binding bind_movie_textures",
+      "reason": "The movie host needs the decoded video texture handles and native GUI-movie view consumed by GuiMovieHost."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie binding clear_movie_subtitles",
+      "reason": "The host currently owns a subtitle schedule projection; the native subtitle widget/row graph and GuiMovieSubtitleHost adapter are missing."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie binding set_widget_local_z",
+      "reason": "The movie host needs a retained GuiWidgetTransform and transform-update host for the actual movie widget."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD root toggle_closed_hud",
+      "reason": "The inspected HUD root path needs a HudClosedRowsHost that routes the required 22h/23h interface requests with the live unit/member state."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD root unit_rows",
+      "reason": "The inspected HUD root path needs a HudRootRowsHost adapter over its live unit, weapon, and row-widget state."
+    }
+  ]
+}
