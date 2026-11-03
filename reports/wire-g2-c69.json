@@ -1,0 +1,575 @@
+{
+  "goal": 2,
+  "chain": 69,
+  "run": 143,
+  "harness": "codex",
+  "packet": "g2-w3",
+  "tier": 2,
+  "host_file": "src/game_hosts_lua.cpp",
+  "branch": "agent/g2-w3",
+  "code_commit": "8429346d266c278fb39d3e8907ab4f93198d68b5",
+  "selection": "Lua and HUD full claims initially conflicted on addresses. AI was claimed then rejected by live-site inspection. Script-orders, scene-contents and ship-AI full claims conflicted. Menu lacked the required native input/profile/render owners; mission lobby/session paths were gated by kSkirmishSessionCc13Bound=false and metrics_enabled() returned false. Final work edits only the Lua host, using its non-overlapping rows; 0080FF80 remains external.",
+  "host_objects": [],
+  "existing_state_views": [
+    "UnitInferiorFailureView borrows the byte snapshot from the actual units-host inferior-failure state",
+    "SupportManagerListView borrows support_panel_disabled_list_1f8_; SupportDisabledEntitiesAdapter implements the sole list_remove_0065b1f0 interface"
+  ],
+  "switch": "kWireGoal2Chain69Bound",
+  "switch_header": "include/bsp/wire_goal2_chain69_switches.hpp",
+  "switch_default": false,
+  "wired_assigned_count": 2,
+  "wired_assigned": [
+    "0065bba0",
+    "00953e60"
+  ],
+  "wired_total_before": 8814,
+  "wired_total_after": 8824,
+  "counting_note": "Global totals are the actual before/after tool outputs. Exactly two assigned rows were individually verified ready -> wired; the other eight global transitions are not claimed as assigned-row credit. Initial census used the pre-existing map; final census used the freshly built OFF map.",
+  "checks": {
+    "off_build": "PASS; reconstructed_math and tool_tests, 2/2",
+    "on_build": "PASS; off_switch_on_build.py, exit 0, zero diagnostics",
+    "final_build_order": "ON compile/link check, then plain OFF build, then readiness census",
+    "off_build_log": "local/output/g2-w3-final-off-build.txt",
+    "on_build_log": "local/output/g2-w3-on-build.txt",
+    "readiness_before": "local/output/g2-w3-readiness-before.txt",
+    "readiness_after": "local/output/g2-w3-readiness-after.txt",
+    "pc24_lint": "not applicable; no x87 arithmetic introduced",
+    "diff_check": "PASS",
+    "off_arm": "Existing host name-test/read and list erase/remove statements preserved; new host calls and adapter construction are inside the single constexpr switch.",
+    "report_call_verification": "PASS: 2 call rows checked, 0 failed",
+    "ghidra": "ensure restored /battlestationspacific.exe in existing bsp project; live function count 77632 matches snapshot"
+  },
+  "pair_run": {
+    "mission": "USN04",
+    "frames": 3200,
+    "mission_frames": 3000,
+    "mission_frame_seconds": 0.05,
+    "console": "Active console session 1",
+    "off_exit": 0,
+    "on_exit": 0,
+    "off_log": "local/g2-w3-off_USN04.log",
+    "on_log": "local/g2-w3-on_USN04.log",
+    "export_log": "local/output/g2-w3-on-export.txt",
+    "diff_log": "local/output/g2-w3-pair-diff.txt",
+    "on_exe_sha256_prefix": "5002AE8ABD17",
+    "gameplay": "identical",
+    "gameplay_rows_moved": [],
+    "native_rows_to_concrete": [],
+    "native_status_changes": 0,
+    "native_call_count_changes": 0,
+    "native_table_rows": [
+      1624,
+      1624
+    ],
+    "summary_lines": [
+      867,
+      867
+    ],
+    "summary_lines_changed": 0,
+    "reached": {
+      "0065bba0": 0,
+      "00953e60": 0
+    },
+    "caveat": "Neither new call executed in this mission. Both are statically live Lua binding paths; the pair proves the surveyed mission remained unchanged, not that either body executed.",
+    "non_gameplay_noise": "pretranslate calls 6 -> 8; masked OTHER multiset 231 lines each side, primarily atlas pointer/allocation observations"
+  },
+  "flip_proposal": {
+    "action": "keep false",
+    "reason": "Both rows are build-checked and statically live, but USN04 reached neither. Retain OFF until a mission exercising GetFailure fallback and SupportManagerEnable(true) supplies body-execution evidence."
+  },
+  "ledger": "No new native address or second body. Existing entries delegate to their typed-view overloads.",
+  "rows": [
+    {
+      "native": "0065bba0",
+      "address": "0088cd08",
+      "function": "0088cbb0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp:10759 GameMissionLuaHost::run_support_manager_enable_0088cbb0",
+      "status": "wired",
+      "reached": 0,
+      "reach": "static_live_site; not reached by USN04",
+      "before_state": "ready",
+      "after_state": "wired",
+      "body": "support_manager_list_remove_0065bba0",
+      "contract": "Original ECX=screen; entity stack argument; RET 4. Sole caller 0088CBB0. The body forwards screen+1F8h to 0065B1F0. Typed view borrows the existing vector<int>; the one-method SupportListRemoveHost adapter binds list::remove to erase/remove of every matching real entity ID. Raw entry is a thin view wrapper.",
+      "producers": [
+        "support_panel_disabled_list_1f8_: existing member, initially empty; SupportManagerEnable(entity,false) appends the resolved Lua entity ID; enable removes it"
+      ],
+      "live_site": "Mission Lua dispatch 0088CBB0 -> run_support_manager_enable_0088cbb0. No disabled gate; enable comes from Lua argument 1. error_replay guard only suppresses replay effects."
+    },
+    {
+      "native": "00953e60",
+      "address": "00813650",
+      "function": "008135c0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp:10445 GameMissionLuaHost::run_get_failure_0088f1d0",
+      "status": "wired",
+      "reached": 0,
+      "reach": "static_live_site; not reached by USN04",
+      "before_state": "ready",
+      "after_state": "wired",
+      "body": "unit_query_inferior_failure_00953e60",
+      "contract": "Original ECX=unit; property, unused frame, out byte on stack; RET 0Ch. Name compare precedes the +720h byte read/write. Both direct callers 006D2350@006D23B9 and 008135C0@00813650 forward these three arguments; 00953E60 listing checks RET 0Ch and ESI=entry ECX. Existing scalar entry now delegates to the single typed-view body.",
+      "producers": [
+        "GameUnitsHost::inferior_failure_720 reads inferior_failure_steps; set_inferior_failure_720 models message 7Dh at 0095AD0A; clear_inferior_failure_720 models message 7Eh at 0095AD7F; the airfield destruction rule also advances that state"
+      ],
+      "live_site": "Mission Lua GetFailure dispatch 0088F1D0 -> run_get_failure_0088f1d0, kLuaSetFailureBound=true. Existing deck and ship jam arms retain priority. The new arm replaces the fallback name test and uses the host unit failure state and script property name."
+    },
+    {
+      "native": "00436690",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp mission_checkpoint_binding",
+      "status": "skipped",
+      "reason": "Dead path: kMissionCheckpointBound=false; checkpoint binding never reaches record construction.",
+      "reached": 0
+    },
+    {
+      "native": "00437f50",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_is_class_changed_008cc4b0",
+      "status": "skipped",
+      "reason": "Native registry and lifetime owner are absent. Lua class-row queries do not supply the 00437E10 descriptor-cache and two 800h-entry native index maps; creating a private default registry would disconnect real class state.",
+      "reached": 0
+    },
+    {
+      "native": "00438a00",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp mission_checkpoint_binding",
+      "status": "skipped",
+      "reason": "Dead path: kMissionCheckpointBound=false; native profile manager, storage continuation and checkpoint request are not active.",
+      "reached": 0
+    },
+    {
+      "native": "0046d930",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_generate_object_00944fd0",
+      "status": "skipped",
+      "reason": "Requires SceneEntityCreateHost over the scene database, class descriptors, generation gate and owned property-bag clone/ref graph. The Lua spawn-pool entry is semantic state, not that owner graph; a complete adapter exceeds the bounded object work in this chain.",
+      "reached": 0
+    },
+    {
+      "native": "004c6ba0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_generate_object_00944fd0 / spawn creation",
+      "status": "skipped",
+      "reason": "Same missing scene database/class-creator/property-bag owner contract as 0046D930. Calling the wrapper after the existing host creator would duplicate creation.",
+      "reached": 0
+    },
+    {
+      "native": "00526720",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_unit_set_player_commands_enabled_008a6c30",
+      "status": "skipped",
+      "reason": "Needs the pick-screen selected entity, candidate vectors and SweepA3Host collect/refresh/command graph. Lua only delegates UI consequences to the HUD; no typed native pick-screen view is available here.",
+      "reached": 0
+    },
+    {
+      "native": "0068b3f0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_support_manager_set_banned_0088c750_0088c8e0",
+      "status": "skipped",
+      "reason": "Missing spectator camera-screen object and level-3 screen/request graph. The existing banned byte and disabled-entity list do not produce those fields; do not create a panel with invented values.",
+      "reached": 0
+    },
+    {
+      "native": "00750790",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_add_proximity_trigger_008c9730 / run_add_squad_ordnance_dropped_trigger_008c9a10",
+      "status": "skipped",
+      "reason": "TriggerHost has allocation, observer, target-resolution, variant and callback interfaces beyond a small string adapter. Existing trigger strings are real state, but implementing the complete raw callback interface would require unsupported owner operations.",
+      "reached": 0
+    },
+    {
+      "native": "00768530",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp spawn pass D session-message projection",
+      "status": "skipped",
+      "reason": "No incoming native bitstream/default-message preimage or message-factory ownership is produced on this Lua path. Its local typed creation records are not a serialized session stream.",
+      "reached": 0
+    },
+    {
+      "native": "0077eed0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp spawn entity construction",
+      "status": "skipped",
+      "reason": "Requires the canonical native unit root, 00928630 base construction, observer lifetime and peer/list owners. Lua/units host semantic records do not expose that shared native allocation; a separate root would not be the game unit.",
+      "reached": 0
+    },
+    {
+      "native": "0080ff80",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp candidate claim",
+      "status": "skipped",
+      "reason": "Lease conflict with agent/g2-w2:g2-w2. Excluded from the final Lua address claim; no body or file edits attempted for this row.",
+      "reached": 0
+    },
+    {
+      "native": "00822c20",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp spawn init pass B",
+      "status": "skipped",
+      "reason": "Cc13BigB1Host and the full native unit/property holder/weapon director graph are not available in Lua. A projected subset would omit effects from the complete 00822C20 body.",
+      "reached": 0
+    },
+    {
+      "native": "008485f0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_add_shipyard_stock_00896cc0",
+      "status": "skipped",
+      "reason": "The constructor runs inside the stock owner helper shipyard_add_stock_0084ACB0; its raw Seg52bHost also includes the scene/weapon/observer interface. Lua cannot call the raw constructor after the existing append without duplicating stock creation, and that callback interface is not small.",
+      "reached": 0
+    },
+    {
+      "native": "00876020",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp proximity/ordnance trigger insertion",
+      "status": "skipped",
+      "reason": "Requires a real pending-registry lock owner, compatible guard prefix and volatile registry publication cells plus native tick-node links. The host trigger vectors do not produce these owners; a shadow insertion would not own the live triggers.",
+      "reached": 0
+    },
+    {
+      "native": "00884ac0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp kill-listener callback argument construction",
+      "status": "skipped",
+      "reason": "Body only boxes record+18h entity ID into a variant. Lua already has the resolved attacker ID; boxing and immediately extracting it to call the same resolver would only hand the host value back, which does not count.",
+      "reached": 0
+    },
+    {
+      "native": "008d2f50",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp multi-menu lobby table loading",
+      "status": "skipped",
+      "reason": "Frontend create_multi_menu_manager returns nullptr; init_multi_menu_00689540 is not a live root. The alternate mission skirmish path is behind kSkirmishSessionCc13Bound=false.",
+      "reached": 0
+    },
+    {
+      "native": "008f3710",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp create_shipyard_unit_00844fc0",
+      "status": "skipped",
+      "reason": "The launch request has a typed Skill value but no native scene-property bag insertion/ref owner. A private bag unused by the created unit would not replace its real launch state.",
+      "reached": 0
+    },
+    {
+      "native": "00905300",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_disband_formation_0089a020",
+      "status": "skipped",
+      "reason": "Missing scoring owner at game+21A0h and the actual per-entity +1ACh slot producer. The host explicitly does not model the slot counter; inventing an array and slot values is disallowed.",
+      "reached": 0
+    },
+    {
+      "native": "00927050",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp spawn descriptor apply pass A",
+      "status": "skipped",
+      "reason": "Requires the native entity +C0h tagged holder, scene property bag and hierarchy/Lua reader owner graph. The semantic descriptor fields are available only as partial host projections; complete Seg60Host is not a small callback adapter.",
+      "reached": 0
+    },
+    {
+      "native": "00927b40",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp bind_lua_class_009292b0 / Lua entity resolution",
+      "status": "skipped",
+      "reason": "Existing native API requires the same canonical entity NativeString+178h and real world publication whose +1A0Ch embeds the constructed owner. Lua has the interpreter and formatted key, not that canonical entity/world allocation; a copied key and fake world violate the body contract.",
+      "reached": 0
+    },
+    {
+      "native": "00945c30",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp run_spawn_new_00949750 groupMembers parsing",
+      "status": "skipped",
+      "reason": "Needs the native member-owned 114h property bag plus 009420A0 party seeding and 00944210 Lua reader adapters. The current host projects selected fields and has no complete native member/bag owner; no partial second constructor added.",
+      "reached": 0
+    },
+    {
+      "native": "00b663f0",
+      "host_file": "src/game_hosts_lua.cpp",
+      "host_site": "src/game_hosts_lua.cpp Lua argument-count checks",
+      "status": "skipped",
+      "reason": "Body is solely a dword getter at +0Ch. Storing the host argument_count there and reading it back would only hand the host value back and does not count.",
+      "reached": 0
+    },
+    {
+      "native": "004f1830",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "005f98f0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "006e3260",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "006f2a50",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00778860",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "007b80a0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "007b80c0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "008df2b0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "GameObjectiveSets::add_unit has no unit-liveness producer or observer-pair owner needed by ObjectiveUnitHost; do not substitute invented liveness or no-op registration.",
+      "reached": 0
+    },
+    {
+      "native": "00a00020",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a04240",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a07e40",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a10710",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a10890",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a109b0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a10ae0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a10c60",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a15a70",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a2bdb0",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a2c720",
+      "host_file": "src/game_hosts_ai.cpp",
+      "host_site": "src/game_hosts_ai.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead coordinator root: kAiCoordinatorLoadGateBound=true; ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound=false. The candidate call is below the fixed_step else arm. No closed gate was changed.",
+      "reached": 0
+    },
+    {
+      "native": "0067c880",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "primary_device() returns nullptr; the device-held path has no native input-device producer.",
+      "reached": 0
+    },
+    {
+      "native": "006ac030",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Cc13SweepB2Host includes the Lua/profile/archive interface; the menu record-only method has no complete keyboard-settings reader owner or small callback adapter.",
+      "reached": 0
+    },
+    {
+      "native": "0076f0e0",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Menu method create_default_profile is only a stand-in label. The actual body refreshes an online session; no native session/member/name owner is supplied here.",
+      "reached": 0
+    },
+    {
+      "native": "00a3e470",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Missing canonical Xenon manager, accepted-invite key and signed-in local-slot producers; menu flags and constants cannot replace these fields.",
+      "reached": 0
+    },
+    {
+      "native": "00a3e5d0",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Missing native selected-user slot and XenonCalls sign-in provider; returning the offline constant through the body would not count.",
+      "reached": 0
+    },
+    {
+      "native": "00aa4040",
+      "host_file": "src/game_hosts_menu.cpp",
+      "host_site": "src/game_hosts_menu.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead loading-screen path under kLoadingScreenCc13Bound=false, with no live render descriptor/worker owner.",
+      "reached": 0
+    },
+    {
+      "native": "005da530",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "005e1cf0",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "005e3290",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "00688e40",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "00753810",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "MissionStartHost::metrics_enabled() returns false; no metrics owner/sign-in collector producer is active.",
+      "reached": 0
+    },
+    {
+      "native": "0076f0e0",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "00784790",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "007848f0",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "008d2f50",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    },
+    {
+      "native": "00a41c70",
+      "host_file": "src/game_hosts_mission.cpp",
+      "host_site": "src/game_hosts_mission.cpp (screened before final host selection)",
+      "status": "skipped",
+      "reason": "Dead alternate lobby/session path under kSkirmishSessionCc13Bound=false. The campaign root does not construct or call this skirmish object; no gate changed.",
+      "reached": 0
+    }
+  ]
+}
