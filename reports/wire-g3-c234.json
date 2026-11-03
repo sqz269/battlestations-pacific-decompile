@@ -5,7 +5,7 @@
  "run": 419,
  "harness": "claude",
  "branch": "agent/g3-w2",
- "head": "8abac7e01cddf98ba72b8ebb2993fb9e18dcb075",
+ "head": "72b4cf1ac69c9de3ba27938669c1de711f4e854f",
  "picked": {
   "file": "src/game_hosts_mission.cpp",
   "tier": 1,
@@ -22,17 +22,16 @@
  },
  "wired_before": 9022,
  "wired_after": 9060,
- "wired_rows": 25,
- "skipped_rows": 3,
+ "wired_rows": 24,
+ "skipped_rows": 4,
  "rows": [
   {
    "native": "00951aa0",
    "address": "00964be3",
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row ReconPlane)",
-   "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "status": "skipped",
+   "reason": "data-dead: no VehicleClass row has Type ReconPlane in this installation (vehicleclasses.lua 0 rows, shipped_rows=0). The constructor stays in the kind dispatch with the other 21, but no data reaches it."
   },
   {
    "native": "00951af0",
@@ -40,8 +39,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row Fighter)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 37 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a Fighter row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP01 rows 183/189, ESMP09 row 26)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00951b40",
@@ -49,8 +48,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row DiveBomber)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 35 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a DiveBomber row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP06/ESMP09/ESMP10 row 38)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00951c20",
@@ -58,8 +57,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row TorpedoBomber)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 21 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a TorpedoBomber row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP09/ESMP10/ESMP11 row 16)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00951d00",
@@ -67,8 +66,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row Kamikaze)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 27 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a Kamikaze row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02/IJN02/IJN11 row 156)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00951de0",
@@ -76,8 +75,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row LevelBomber)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 16 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a LevelBomber row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. IJN10 row 136, IJN11 rows 136/186)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00951e30",
@@ -85,8 +84,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row CommandBuilding)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 37 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a CommandBuilding row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP04 row 6, ESMP10 row 97)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "009536e0",
@@ -94,8 +93,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row SmallReconPlane)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 76 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a SmallReconPlane row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP01 rows 121/171/172)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00953770",
@@ -103,8 +102,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row LargeReconPlane)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 23 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a LargeReconPlane row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02 row 125, ESMP03 row 175)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "0095fee0",
@@ -112,8 +111,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row AirField)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 36 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a AirField row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02 row 200, ESMP09 row 207)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "0095ff50",
@@ -121,8 +120,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row Shipyard)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 20 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a Shipyard row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02/IJN03/IJN09 row 205)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "0095ffc0",
@@ -130,8 +129,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row LandVehicle)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 13 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a LandVehicle row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02 rows 464..466)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00960050",
@@ -139,8 +138,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row DummyTargetVehicle)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "static: no surveyed census shows row 790, the one DummyTargetVehicle row (47 of 80 kept lists truncated). Host path: GameMissionLuaHost::mark_vehicle_class_row_00964790 ON arm -> resolve_vehicle_class_00964790 -> load_descriptor -> mark_vehicle_class_device_bullets_00960230 of DiveBomber row 110 or 649 (Platforms Gun device -> bullet 142, Type DummyTarget, DummyTargetVehicleClass = 790) -> mark_vehicle_class_row_00964790(790) -> construct_descriptor (DummyTargetVehicle row)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963c20",
@@ -148,8 +147,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row LandingShip)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 48 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a LandingShip row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP11/IJN01 row 40, IJN01 row 345)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963cb0",
@@ -157,8 +156,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row Cargo)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 54 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a Cargo row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP01 row 35, ESMP04 row 37)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963d30",
@@ -166,8 +165,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row BattleShip)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 65 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a BattleShip row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP01 row 10, ESMP02 row 347)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963db0",
@@ -175,8 +174,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row Submarine)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 36 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a Submarine row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP02 rows 30/31/93)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963e40",
@@ -184,8 +183,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row TorpedoBoat)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 34 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a TorpedoBoat row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP07/ESMP10/IJN01 row 27)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963ec0",
@@ -193,8 +192,8 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:284 GameVehicleClassDescriptorCache::construct_descriptor <- src/game_hosts_lua.cpp:5357 GameMissionLuaHost::mark_vehicle_class_row_00964790 (ON arm, resolve_vehicle_class_00964790) (kind row MotherShip)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type",
-   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers vtable[18h] kind tests (plane 0Fh, ship 06h) in place of the OFF Type-string ship match"
+   "reach": "live: 60 of 80 survey missions (survey-*.log, 004E0A9B purge census 0095CA70 kept list, mapped through vehicleclasses.lua; 47 lists truncated, so a lower bound) mark a MotherShip row through mark_vehicle_class_row_00964790, whose ON arm runs this constructor for it (e.g. ESMP01 rows 1/2/57)",
+   "replaces": "the descriptor it builds is the cache entry the resolve probes in place of vehicle_class_rows_marked_; its stored vtable answers the resolve's vtable[18h] kind tests (plane 0Fh, src/vehicle_class.cpp:231; ship 06h, :247) in place of the OFF Type-string ship match"
   },
   {
    "native": "00963380",
@@ -202,7 +201,7 @@
    "function": "00964790",
    "host_site": "src/game_host_vehicle_class.cpp:187 LeafConstructorBinding::call_00963380 and the inline Destroyer/Cruiser branch in construct_descriptor (009649C2 / 00964A1F)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (all eight ship kinds)"
+   "reach": "live: the ship base runs for all eight ship kinds (inline Destroyer/Cruiser and the six ship leaves); per kind, missions of 80 surveyed whose purge census marks a row of that Type (lower bounds, 47 lists truncated): Destroyer 79, Cruiser 76, LandingShip 48, Cargo 54, BattleShip 65, Submarine 36, TorpedoBoat 34, MotherShip 60"
   },
   {
    "native": "00749180",
@@ -210,15 +209,15 @@
    "function": "00951e30",
    "host_site": "src/game_host_vehicle_class.cpp:181 LeafConstructorBinding::call_00749180 (CommandBuilding) and construct_descriptor (LandFort row, 00964790 branch)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (LandFort, 368 shipped rows, and CommandBuilding)"
+   "reach": "live: LandFort rows directly and CommandBuilding (00951E30) through it; per kind, missions of 80 surveyed whose purge census marks a row of that Type (lower bounds, 47 lists truncated): LandFort 63, CommandBuilding 37"
   },
   {
    "native": "007d1e50",
    "address": "00951aa3",
    "function": "00951aa0",
-   "host_site": "src/game_host_vehicle_class.cpp:211 LeafConstructorBinding::call_007d1e50 (the eight plane leaves)",
+   "host_site": "src/game_host_vehicle_class.cpp:211 LeafConstructorBinding::call_007d1e50 (the plane leaves)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (plane kinds)"
+   "reach": "live: the plane base under every plane leaf with data (ReconPlane has none); per kind, missions of 80 surveyed whose purge census marks a row of that Type (lower bounds, 47 lists truncated): Fighter 37, DiveBomber 35, TorpedoBomber 21, Kamikaze 27, LevelBomber 16, SmallReconPlane 76, LargeReconPlane 23"
   },
   {
    "native": "00749050",
@@ -226,7 +225,7 @@
    "function": "00749180",
    "host_site": "src/game_host_vehicle_class.cpp:184/95/158 call_00749050, PlaneBaseBinding and LandFortBaseBinding::vehicle_class_base_construct_00749050",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (every kind)"
+   "reach": "live: the vehicle base under every kind; the most widely marked kind of each family shown; per kind, missions of 80 surveyed whose purge census marks a row of that Type (lower bounds, 47 lists truncated): Destroyer 79, SmallReconPlane 76, LandFort 63"
   },
   {
    "native": "0087c640",
@@ -234,13 +233,13 @@
    "function": "00749050",
    "host_site": "src/native_vehicle_class_base_constructor.cpp construct_native_vehicle_class_base_00749050, now reached from src/game_host_vehicle_class.cpp",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (every kind)"
+   "reach": "live: the damageable base under 00749050, so under every kind; per kind, missions of 80 surveyed whose purge census marks a row of that Type (lower bounds, 47 lists truncated): Destroyer 79, SmallReconPlane 76, LandFort 63"
   },
   {
    "native": "00749030",
    "host_site": "src/game_host_vehicle_class.cpp:357 GameVehicleClassDescriptorCache::descriptor_is_kind (LandFort vtable 00CFF790 slot +18h)",
    "status": "wired",
-   "reach": "live: GameMissionLuaHost::mark_vehicle_class_row_00964790 (kVehicleClassRowIdBound=true; callers under kVehicleClassPreloadCc15Bound=true) runs at every scene load; 79 survey mission logs (J:/PROG/battlestations-pacific-decompile-survey/local/survey-*.log, e.g. JM07=110, IJN20=164, ESMP06=28) mark 22..164 VehicleClass rows each, and every such miss now runs the kind branch for that row's Type (LandFort kind tests 0Fh/19h/1Bh/06h); a virtual slot, no direct CALL site"
+   "reach": "live: 63 of 80 survey missions mark a LandFort row (purge census, lower bound; e.g. ESMP01 row 484, ESMP02 rows 54/55). For each LandFort descriptor the reconstructed resolve makes two vtable[18h] tests that dispatch here: 0Fh (src/vehicle_class.cpp:231, the plane debug-name test) and 06h (:247, the ship tail); both answer false. The 19h/1Bh tests (0096507C / 0096508B) belong to the step-12 debug-name object branch, which is not built. A virtual slot, no direct CALL site"
   },
   {
    "native": "004d2a80",
@@ -279,7 +278,6 @@
     "ID / Got row writes 0096490C / 00964959 and the LandingShip / ship-tail recursion, inside 00964790"
    ],
    "rows": [
-    "00951aa0",
     "00951af0",
     "00951b40",
     "00951c20",
@@ -316,5 +314,21 @@
   }
  ],
  "on_effect": "ON, each VehicleClass row the mission resolves gets a real image descriptor built by its kind constructor chain and cached; the cache (not vehicle_class_rows_marked_) decides re-resolves; the ship linked-class recursion uses vtable[18h](6) of the built descriptor instead of the Type-string list; ID / Got writes and the device-bullet / LaunchedClass resolves are unchanged in effect. Unknown Types cache nothing (native). The DummyTargetVehicle / LandFort / Airfield etc. kinds construct through 00749050 / 0087C640.",
- "notes": "wired_after - wired_before = 38: the 25 rows above plus 13 more the tool now counts, most likely bodies in the newly reachable native_vehicle_class_base_constructor.cpp / native_damageable_class_construction.cpp; they were not enumerated (the baseline JSON was overwritten) and are not claimed. 00437BD0 (resize_descriptor_cache_00437bd0, called by the cache) stays ready/nodef in the tool and is not claimed."
+ "flip_notes": [
+  "(a) Dedup moves. OFF dedups at entry (vehicle_class_rows_marked_.insert before any read); ON dedups only once store_cached publishes the descriptor, which is after its load (009650DA load, then 00965119 store, as the binary does). A row reached again while its own LandingShip pre-resolve or load runs is resolved again. Checked against this installation (local/g3w2_cycles.py, a Lua table parser over vehicleclasses.lua and both the realistic and arcade bulletclasses.lua / deviceclasses.lua): the pre-store edges are LandingShip plus the device-bullet links mark_vehicle_class_device_bullets_00960230 follows (KamikazeBulletClass and Gun/DefaultGun devices -> DummyKamikazePlane / DummySubmarine / DummyTarget bullets), 13 (realistic) / 15 (arcade), e.g. LevelBomber 32 -> Kamikaze 156, Submarine 81 -> Submarine 4, DiveBomber 110/649 -> DummyTargetVehicle 790, Cargo 224 -> LandingShip 90. No self-loop, no cycle. The 57 Catapult.LaunchedClass edges run after the store and cannot re-enter. A future data cycle among the pre-store edges would recurse without end under ON: the host bullet projection has no bullet-level dedup, while OFF stops at entry.",
+  "(b) Linked-class marks lose their census site tag: OFF records 00965182 for a LaunchedClass mark, ON records nullptr (set_row_int records the first ID write with a null site; only the outer call keeps its caller site). This only changes the vehicle_class_mark_site_ column of the purge census log.",
+  "(c) The LaunchedClass tail recursion is no longer gated by kVehicleClassPreloadCc15Bound (the resolve always makes it, as the binary does). That switch is true today, so there is no effect yet; the device-bullet marks in load_descriptor stay gated by it.",
+  "(d) Order: the device-bullet marks now run inside the load (vtable +8h position), before the ship linked-class resolve; OFF ran them after it. Each row is still marked once, with the same ID / Got values."
+ ],
+ "review_round_1": {
+  "review_run": 442,
+  "fixes": [
+   "fixed: 00951aa0 moved to skipped as data-dead (no ReconPlane row; shipped_rows=0); wired_rows 24",
+   "fixed: 00749030 reach names only the resolve's 0Fh (vehicle_class.cpp:231) and 06h (:247) tests; 19h/1Bh are the unbuilt step-12 branch",
+   "fixed: every row's reach now cites per-kind census evidence (local/g3w2_kinds.py over 80 survey logs); 00960050 is labelled static with its host path (DiveBomber 110/649 DummyTarget bullet 142 -> row 790)",
+   "fixed: include/bsp/game_host_vehicle_class.hpp DIVERGENCE block documents the split copy (image read only at +0h; +4h/+70h/+74h/+7Ch/+0C0h in the separate VehicleClassDescriptor; release_slot touches only that copy; next climb must make one copy authoritative)",
+   "fixed: flip_notes (a)-(d) added; (a) includes a device-bullet cycle check over both bullet/device tables: no self-loop, no cycle"
+  ]
+ },
+ "notes": "wired_after - wired_before = 38: the 25 rows above (24 counted after review round 1, 00951aa0 moved to skipped as data-dead) plus 13 more the tool now counts, most likely bodies in the newly reachable native_vehicle_class_base_constructor.cpp / native_damageable_class_construction.cpp; they were not enumerated (the baseline JSON was overwritten) and are not claimed. 00437BD0 (resize_descriptor_cache_00437bd0, called by the cache) stays ready/nodef in the tool and is not claimed."
 }

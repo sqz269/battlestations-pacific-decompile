@@ -21,6 +21,19 @@
 // destructor sit behind Seg62Host, which nothing implements); the image bytes
 // are freed, and the 58h damageable tree head 00877FA0 allocated inside
 // 0087C640 is not.
+//
+// DIVERGENCE (split copy): one descriptor is held twice. The image bytes
+// (Entry::image) hold only the constructor chain's output, and only +0h (the
+// primary vtable) is read, by descriptor_is_kind. 00964790's own stores, the
+// +70h class index, +74h Type NativeString and +7Ch NumEngines, the +0C0h
+// linked class the load reports, and the +4h reference count live in the
+// separate bsp::VehicleClassDescriptor in Entry::descriptor, which is what the
+// cache slots and resolve_vehicle_class_00964790 see. So the image +4h stays
+// at the count 0087C640 writes while release_slot decrements only the
+// separate copy, and the image keeps zeros at +70h/+74h/+7Ch/+0C0h. The next
+// climb (running vtable +8h, the Lua load 00960230, on the image) must make
+// one copy authoritative: write 00964790's fields into the image and read
+// them back from it, or drop the semantic copy.
 
 #include <cstddef>
 #include <cstdint>

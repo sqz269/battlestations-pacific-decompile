@@ -274,7 +274,9 @@ void GameVehicleClassDescriptorCache::store_cached(int class_index,
 
 // The reference the slot held: InterlockedDecrement(+4h), vtable slot 0 at
 // zero (0096511B / 00437BD0). The host keeps the entry until the cache dies
-// (header, DIVERGENCE), so only the count is modelled.
+// (header, DIVERGENCE), so only the count is modelled, and only on the
+// separate VehicleClassDescriptor copy: the image's +4h is not touched (see
+// the split-copy note in the header).
 void GameVehicleClassDescriptorCache::release_slot(void* descriptor) noexcept {
     if (descriptor == nullptr) return;
     auto* semantic = static_cast<bsp::VehicleClassDescriptor*>(descriptor);
