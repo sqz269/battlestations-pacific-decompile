@@ -308,7 +308,7 @@ void* main_menu_construct_00686170(Raw menu, Fe5Host& host) {
     return menu.p;
 }
 
-void main_menu_register_localisation_tables_00686240(Fe5Host& host) {
+void main_menu_register_localisation_tables_00686240(MainMenuLocalisationHost& host) {
     host.localization_register_table_00aa0d30("FE");
     host.localization_register_table_00aa0d30("FE_pc");
 }

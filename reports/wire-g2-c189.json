@@ -1,0 +1,118 @@
+{
+  "goal": 2,
+  "chain": 189,
+  "run": 361,
+  "harness": "codex",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "picked": "segment 28 [00680db0-00696450]",
+  "tier": 2,
+  "host_file": "src/frontend_managers.cpp",
+  "host_files": [
+    "src/frontend_managers.cpp",
+    "src/game_hosts_menu.cpp"
+  ],
+  "selection": "The first claim, segment 80, was refused because engine_seg11_35_66_cc13.cpp is leased to agent/g2-w5. Segment 28 was claimed next. Its main-menu registration has an existing live initializer and an existing application-owned LocaleTables producer, so no raw GUI/session object needs to be invented.",
+  "switch": "kWireGoal2Chain189Bound",
+  "switch_default": false,
+  "wired_before": 9011,
+  "wired_after": 9012,
+  "assigned_ready_to_wired": [
+    "00686240"
+  ],
+  "builds": {
+    "off": {
+      "result": "passed",
+      "tests": "2/2",
+      "command": "./scripts/build.ps1",
+      "order": "after ON check; final map is OFF"
+    },
+    "on": {
+      "result": "passed",
+      "diagnostics": 0,
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain189Bound",
+      "log": "local/off_switch_on_build.log"
+    },
+    "pc24_lint": "not applicable: no x87 arithmetic added or changed"
+  },
+  "live_site": "GameMenuHost::frame -> Impl::advance_path -> advance_main_menu_path EnterShell -> MenuPathHost::enter_front_end_shell -> enter_front_end_shell -> MenuShellHost::create_manager_ac -> init_main_menu_00686380. No false switch gates this path; pressing Start reaches it. The new call is placed between the globals registration and reload, matching 00686668, 00686690 and 0068669c.",
+  "contract": "00686240 has one original caller, CALL at 00686690 inside 00686380 (live Ghidra proto confirms 00686380-006868fb). That call has no stack arguments or receiver input. The existing body registers the binary's FE and FE_pc literals. Only its C++ host parameter was narrowed to MainMenuLocalisationHost; the body logic is unchanged and Fe5Host inherits that contract. No duplicate body or new address-suffixed function was introduced.",
+  "off_preservation": "The initializer's new arm is discarded OFF. MenuManagerHost's former register_locale_table implementation remains byte-for-byte in the else arm. The borrow holder is an empty base OFF; only ON stores a pointer to the LocaleTables already passed by the application. No registry is allocated, no existing switch is required, and the new adapter is constructed only in the ON arm.",
+  "on_change": "During main-menu Init, route globals and the existing 00686240 body's FE/FE_pc registrations into the application's existing LocaleTables vector. The existing reload_locale_tables record-only behavior remains; this chain does not claim that FE files are reloaded or displayed.",
+  "host_objects": [
+    {
+      "name": "MenuLocalisationRegistration adapter over the existing locale registry",
+      "where": "src/frontend_managers.cpp:7",
+      "producers": [
+        "GameLocaleHost::initialize in src/game_hosts_vfs.cpp:341 creates/configures the existing semantic tables in startup phase 6",
+        "GameMenuHost constructor receives the same LocaleTables reference and binds it only ON",
+        "00686240 supplies the native FE and FE_pc names; 00686380 supplies globals before that call"
+      ],
+      "rows": [
+        "00686240"
+      ],
+      "fields": "No raw image fields: the callee requires one table-registration callback. The ON-only borrow points to the existing host registry; it is not replacement native storage.",
+      "lifetime": "Adapter is stack-local at native site 00686690, after globals registration and before reload. It does not own the application locale registry or extend its lifetime. The ON borrow lasts for GameMenuHost's lifetime."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00686240",
+      "address": "00686690",
+      "function": "00686380",
+      "host_site": "src/frontend_managers.cpp:255 init_main_menu_00686380 -> MenuLocalisationRegistration -> src/game_hosts_menu.cpp MenuManagerHost::register_locale_table",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": "Read the complete host path recorded in live_site. No mission call count was provided for this range candidate; no game was run.",
+      "coverage": "Existing registration body, unchanged logic, against the actual host LocaleTables registry."
+    },
+    {
+      "native": "00695e40",
+      "address": "004dac30",
+      "function": "004da780",
+      "host_site": "src/game_hosts_menu.cpp MenuManagerHost::lower_in_mission_interface; src/main_menu_path.cpp clear_all_screen_set_levels_004da780",
+      "status": "skipped",
+      "reason": "The complete session teardown is a record-only host call. The separately reached clear_all_screen_set_levels_004da780 is only the 004da99d-004da9cf slice, not the later 004dac30 observer site. Fe5Host::observer_purge_00695c50 has no implementation. Existing observer lock ownership alone cannot supply the missing purge producer/operation or the full teardown sequence.",
+      "reach": "static",
+      "reach_evidence": "Native caller inspected; no host path reaches this observer teardown site."
+    },
+    {
+      "native": "00682990",
+      "address": "0096e9ae",
+      "function": "0096e8f0",
+      "host_site": "src/options_hardware_cc13.cpp warning_manager_post_friendly_fire_text; src/game_hosts_hud.cpp warning screen",
+      "status": "skipped",
+      "reason": "OptionsHardwareHost::post_text_00682990 has no concrete implementation or reached reconstructed caller. The body needs the warning screen's +60h group with second_Text, second_1_Icon and second_2_Icon plus its NativeString source. This host path supplies neither that group graph nor a native-string producer; building one without its layout producer would fabricate state. The second original caller is 0096ef60 at 0096f03c.",
+      "reach": "static",
+      "reach_evidence": "Read body and both native callers; no concrete post_text host path found."
+    },
+    {
+      "native": "00689030",
+      "address": "004db0a1",
+      "function": "004db030",
+      "host_site": "src/seg10_cc13.cpp toggle-pause Host call; src/game_hosts_mission_frame.cpp MissionFrame::toggle_pause_menu_004db030",
+      "status": "skipped",
+      "reason": "The reached mission-frame pause boundary only records 004db030; it does not run its reconstructed caller. MenuManagerHost::create_multi_menu_manager returns nullptr. The required 00e198b4 menu, +20h current interface, +58h history vector, in-game interface dispatch and GUI enable operation are not produced on this path. The mission-frame host is also explicitly outside this worker's ownership.",
+      "reach": "static",
+      "reach_evidence": "Native sole caller confirmed. Host path stops at the record-only mission-frame pause boundary."
+    },
+    {
+      "native": "0068a670",
+      "address": "00735be2",
+      "function": "00735b50",
+      "host_site": "src/sound_frame_service.cpp service_sound_frame_00735b50 and run_sound_frame_job_004bbd00",
+      "status": "skipped",
+      "reason": "Existing sound-frame callers already invoke the body but have no application binding to the host roots. InterfaceSoundListenerContext requires actual raw game/interface publications, game+1ed4 or game+19fc storage and the current slot120/slot34 dispatch. The semantic interface/camera objects are not that raw storage; no safe producer for those publications and dynamic virtual contracts was found. Reusing the existing calls or returning host listener values would not count.",
+      "reach": "static",
+      "reach_evidence": "Read body and all four native callers. docs/INTERFACE_SOUND_LISTENER.md explicitly records actual game/interface publications and dynamic override bindings as remaining work."
+    }
+  ],
+  "runtime_validation": "Not run, as instructed. Static reach, OFF tests and ON compilation are separate evidence.",
+  "assigned_states_after": {
+    "00686240": "wired",
+    "00682990": "ready",
+    "00689030": "ready",
+    "0068a670": "ready",
+    "00695e40": "ready"
+  }
+}
