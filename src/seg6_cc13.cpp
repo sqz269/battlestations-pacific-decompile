@@ -1,5 +1,6 @@
 #include "bsp/seg6_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_string.hpp"
 
 #include <cmath>
 #include <initializer_list>
@@ -1140,28 +1141,61 @@ void cloud_entity_write_scene_properties_00477180(Seg6Host& host, Object entity,
     host.writer_vcall_0c(writer, 0, reinterpret_cast<const char*>(host.image_address(0x00CE5FC4u)), 0, name);
 }
 
-// 004772C0, __thiscall(bag, const char* name), RET 4. The NativeString copy is
-// searched first; on a hit it is searched again, on a miss the original C
-// string is searched; the second result is returned.
-Object property_bag_find_by_cstring_004772c0(Seg6Host& host, Object bag, const char* name) {
-    std::uint32_t text[2] = {0, 0};
-    Object text_obj = reinterpret_cast<Object>(text);
+namespace {
+// One body for the raw image entry and the typed property-bag overload.
+template <class View>
+auto find_property_by_cstring(View& view, const char* name) {
+    NativeString text;
     std::uint32_t length = 0;
     if (name != nullptr) while (name[length] != '\0') ++length;
-    host.native_string_resize_0041dd40(text_obj, length, 0);
-    char* data = reinterpret_cast<char*>(native_ptr(text_obj, 4));
-    const std::uint32_t size = u32(text_obj, 0);
-    const char* lookup = reinterpret_cast<const char*>(host.image_address(0x00E186A4u));
+    view.resize_key(text, length);
+    char* data = text.data();
+    const std::uint32_t size = text.length();
+    const char* lookup = view.empty_key();
     if (data != nullptr) {
-        host.crt_memcpy_00bf7680(data, name, size);
+        view.copy_key(data, name, size);
         lookup = data;
     }
     const char* second = name;
-    if (host.property_bag_find_008f2260(bag, lookup) != nullptr)
-        second = data != nullptr ? data : reinterpret_cast<const char*>(host.image_address(0x00E186A4u));
-    Object result = host.property_bag_find_008f2260(bag, second);
-    release_string_block(host, data, size);
+    if (view.find_008f2260(lookup) != nullptr)
+        second = data != nullptr ? data : view.empty_key();
+    auto result = view.find_008f2260(second);
+    view.release_key(data, size);
     return result;
+}
+
+class RawPropertyBagCStringView {
+public:
+    RawPropertyBagCStringView(Seg6Host& host, Object bag) : host_(host), bag_(bag) {}
+    void resize_key(NativeString& key, std::uint32_t length) {
+        host_.native_string_resize_0041dd40(reinterpret_cast<Object>(&key), length, 0);
+    }
+    void copy_key(char* destination, const char* source, std::uint32_t size) {
+        host_.crt_memcpy_00bf7680(destination, source, size);
+    }
+    const char* empty_key() {
+        return reinterpret_cast<const char*>(host_.image_address(0x00E186A4u));
+    }
+    Object find_008f2260(const char* name) { return host_.property_bag_find_008f2260(bag_, name); }
+    void release_key(char* data, std::uint32_t size) { release_string_block(host_, data, size); }
+private:
+    Seg6Host& host_;
+    Object bag_;
+};
+} // namespace
+
+// 004772C0, __thiscall(bag, const char* name), RET 4. The NativeString copy is
+// searched first; on a hit it is searched again, on a miss the original C
+// string is searched; the second result is returned. Thin raw entry to the
+// shared implementation above, also used by the typed host overload.
+Object property_bag_find_by_cstring_004772c0(Seg6Host& host, Object bag, const char* name) {
+    RawPropertyBagCStringView view(host, bag);
+    return find_property_by_cstring(view, name);
+}
+
+const SceneProperty* property_bag_find_by_cstring_004772c0(
+    PropertyBagCStringHost& host, const char* name) {
+    return find_property_by_cstring(host, name);
 }
 
 // 0047B660, __thiscall(entity, int id), RET 4, returns entity.

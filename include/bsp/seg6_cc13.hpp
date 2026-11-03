@@ -26,6 +26,11 @@
 
 #include <cstdint>
 
+namespace bsp {
+class NativeString;
+struct SceneProperty;
+}
+
 namespace bsp::cc13_seg6 {
 
 static_assert(sizeof(void*) == 4, "segment 6 bodies use the Win32 object layout");
@@ -231,6 +236,19 @@ void cloud_entity_create_visual_00476bd0(Seg6Host& host, Object entity);
 void cloud_entity_update_visibility_00476d80(Seg6Host& host, Object entity);
 void cloud_entity_write_scene_properties_00477180(Seg6Host& host, Object entity, Object writer);
 Object property_bag_find_by_cstring_004772c0(Seg6Host& host, Object bag, const char* name);
+
+// Typed collaborator for the same 004772C0 body over a host's property bag.
+// The bag remains with the adapter; no image offsets are applied to it.
+struct PropertyBagCStringHost {
+    virtual ~PropertyBagCStringHost() = default;
+    virtual void resize_key(NativeString& key, std::uint32_t length) = 0;
+    virtual void copy_key(char* destination, const char* source, std::uint32_t size) = 0;
+    virtual const char* empty_key() = 0;
+    virtual const SceneProperty* find_008f2260(const char* name) = 0;
+    virtual void release_key(char* data, std::uint32_t size) = 0;
+};
+const SceneProperty* property_bag_find_by_cstring_004772c0(
+    PropertyBagCStringHost& host, const char* name);
 Object path_entity_construct_0047b660(Seg6Host& host, Object entity, std::int32_t id);
 Object scene_database_create_hidden_entity_at_0046dc10(Seg6Host& host, Object database, const char* name,
                                                        Object second, const float* position, float heading);
