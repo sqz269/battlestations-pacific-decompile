@@ -11,6 +11,10 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_unit_group_storage.hpp"
+#include "bsp/native_unit_group_lookup.hpp"
+#include "bsp/native_unit_group_direct_views.hpp"
+#include "bsp/wire_goal4_chain272_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
@@ -3895,6 +3899,7 @@ struct GameUnitsHost::Impl {
     struct FormationGroup {
         std::size_t leader{0};                               // group+14h
         std::vector<bsp::ShipAiUnitGroupMember> members;     // group+18h, 34h each
+        mutable GameUnitGroupStorage native_members;        // chain272 read projection
         std::int32_t column{0};                              // group+500h, the
                                                              // pattern index the
                                                              // constructor leaves 0
@@ -48661,6 +48666,7 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
     // 0070D2A1 resolves the member record through 0070D080 and 0070D2A6/0070D2AF
     // take the leader branch when the unit IS the leader or has no record.
     const bsp::ShipAiUnitGroupMember* record = nullptr;
+    bsp::ShipAiUnitGroupMember projected_record;
     std::size_t leader = unit;
     if (group_index >= 0
         && static_cast<std::size_t>(group_index) < host.formation_groups.size()) {
@@ -48669,8 +48675,33 @@ GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
         leader = group.leader;
         if (leader != unit) {
             const std::uint32_t handle = static_cast<std::uint32_t>(unit + 1u);
-            for (const bsp::ShipAiUnitGroupMember& member : group.members) {
-                if (member.entity == handle) { record = &member; break; }
+            if constexpr (bsp::kWireGoal4Chain272Bound) {
+                // bsp.py show 0070D030 / 0070D070: captured signed count,
+                // first matching identity, then +18h + index*34h. Copy the
+                // current live records, including authored offset columns.
+                // This composition supplies the same record as the native
+                // 0070D2A1 call to 0070D080, with no added unit dereference.
+                // These bodies never dereference the registry identity word.
+                if (group.native_members.capture_members(group.members)) {
+                    const std::int32_t member_index = bsp::native_unit_group_member_index_0070d030(
+                        group.native_members.data(), reinterpret_cast<const void*>(handle));
+                    if (member_index >= 0) {
+                        const void* const native_record = bsp::native_unit_group_record_at_0070d070(
+                            group.native_members.data(), nullptr, static_cast<std::uint32_t>(member_index));
+                        std::memcpy(&projected_record, native_record, sizeof(projected_record));
+                        record = &projected_record;
+                    }
+                } else {
+                    // A host group beyond native capacity stays on its old
+                    // vector search rather than entering a raw body out of domain.
+                    for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+                        if (member.entity == handle) { record = &member; break; }
+                    }
+                }
+            } else {
+                for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+                    if (member.entity == handle) { record = &member; break; }
+                }
             }
         }
         if (record != nullptr) {
@@ -48813,6 +48844,11 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         group = static_cast<std::int32_t>(host.formation_groups.size());
         host.formation_groups.emplace_back();
         Impl::FormationGroup& created = host.formation_groups.back();
+        if constexpr (bsp::kWireGoal4Chain272Bound) {
+            // 0070DB20's fresh group's existing whole 0070DAB0 producer.
+            // No call through the constructor's original profile is admitted.
+            created.native_members.initialize();
+        }
         created.leader = leader;
         bsp::ShipAiUnitGroupMember record;
         record.entity = static_cast<std::uint32_t>(leader + 1u);

@@ -15,6 +15,9 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/game_unit_group_storage.hpp"
+#include "bsp/native_unit_group_direct_views.hpp"
+#include "bsp/wire_goal4_chain272_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
@@ -1323,6 +1326,10 @@ struct GameShipAiHost::Impl {
     GameHostLog& log;
     GameUnitsHost& units;
     GameAvoidZoneRuntime zones;
+    // Chain272: one native-layout speed field for each live formation group.
+    // The existing class-speed reduction produces +504h, and whole 0070D0F0
+    // reads it for the original 009F4E34 throttle-ceiling use.
+    mutable std::map<std::int32_t, GameUnitGroupStorage> formation_speed_groups;
     GameMissionLuaHost* settings_owner{}; // borrowed stored-settings projection
     // Packet cc8_ship_ai_firepower_inputs: the gunnery host, borrowed through
     // GameGunneryHost::set_ship_ai. It is the only thing in this process that
@@ -2877,6 +2884,11 @@ struct GameShipAiHost::Impl {
         float slot_min = 9999999.0f;
         // 0070DA00 / 0070D0F0: min of the members' class+500h, the same seed.
         float ceiling = 9999999.0f;
+        GameUnitGroupStorage* retained_group = nullptr;
+        if constexpr (bsp::kWireGoal4Chain272Bound) {
+            retained_group = &formation_speed_groups[group];
+            retained_group->publish_speed_ceiling(9999999.0f); // 00CFD6F4
+        }
         // 0070E3C0: max of 0082E850 over the ship members other than the leader,
         // seeded 100.0f (00CE3D08).
         float group_turn = 100.0f;
@@ -2888,7 +2900,13 @@ struct GameShipAiHost::Impl {
                 if (slot_min > slot) slot_min = slot;
             }
             const float max_speed = units.unit_class_max_speed_0500(member);
-            if (ceiling > max_speed) ceiling = max_speed;
+            if constexpr (bsp::kWireGoal4Chain272Bound) {
+                if (retained_group->speed_ceiling() > max_speed) {
+                    retained_group->publish_speed_ceiling(max_speed);
+                }
+            } else {
+                if (ceiling > max_speed) ceiling = max_speed;
+            }
             if constexpr (!bsp::kWireGoal2Chain71Bound) {
                 if (member != leader && units.unit_is_kind_of(member, 6)) {
                     const float r = class_turn_radius_0082e850(member);
@@ -2936,6 +2954,14 @@ struct GameShipAiHost::Impl {
                 bsp::ship_ai_formation_set_member_speed(r, controllers[member].member_speed_30);
             }
             slot_min = bsp::ship_ai_formation_speed_ceiling(records.data(), count);
+        }
+        if constexpr (bsp::kWireGoal4Chain272Bound) {
+            // bsp.py show 0070D0F0 --asm: FLD [ECX+504h], RET. Its ST0
+            // value, rather than the former local reduction, feeds both
+            // leader and follower throttle arithmetic below. No native
+            // profile, unit pointer, class pointer or global is dereferenced.
+            ceiling = bsp::native_unit_group_retained_speed_0070d0f0(
+                retained_group->data(), nullptr);
         }
         const float reference = units.throttle_ceiling_inputs(index).reference_speed; // 0080FC30
         const float own_turn = class_turn_radius_0082e850(index);
