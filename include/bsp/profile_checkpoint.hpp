@@ -49,6 +49,12 @@ void write_lua_slot_archive_00435d30(lua_State* L, int key, int value, SettingsW
 // keys keep their C-string prefix; any other key goes through float32
 // truncation. Same rules as 00436C50; tables are copied without alias
 // preservation and a cycle recurses without bound natively (the host throws).
+// Under kWireGoal4Chain299Bound the copy runs over native 14h LuaObjects
+// (00B66530/00B665D0/00B66580/00B66740/00B66670 for number keys, 00B673A0/
+// 00B67460/00B67400/00B66790/00B67580 for string keys) and, unlike 00436C50,
+// copies nothing for a key that is neither a string nor a number
+// (00436A0B..00436A13). A value nested deeper than the owner's 50 tracking
+// slots allow is refused up front (std::length_error, host admission).
 void copy_lua_slot_00436730(lua_State* source, int key, int value,
                             lua_State* destination, int table);
 
@@ -63,10 +69,15 @@ void copy_lua_slot_00436730(lua_State* source, int key, int value,
 // `include_other_missions`, every other table entry of BSP_Chk_Save whose key
 // differs case-insensitively from mission_id. The profile record upsert
 // (007FC2C0) and the storage continuation (00BD53C0) stay with the caller.
+// Under kWireGoal4Chain299Bound the data-table copy is the native iteration
+// 0043844D..004384DB calling 00436C50 (src/oct18_tail_a.cpp), whose string
+// setter needs the live 0108FF2C empty-string authority in `empty_0108ff2c`
+// (bsp_game: game_native_lua_globals_process()); null throws std::logic_error.
 void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
                               const CheckpointRecordFields& record, float play_time,
                               lua_State* script, int data_table, SettingsWriter* writer,
-                              bool include_other_missions);
+                              bool include_other_missions,
+                              const char* empty_0108ff2c = nullptr);
 
 // Address: 004379C0, reached from MW_LoadCheckpoint (008ACA30).
 // Original ABI: __thiscall, ECX = profile manager, [ESP+4] = destination

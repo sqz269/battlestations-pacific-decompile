@@ -119,6 +119,8 @@
 #include "bsp/native_mission_lua_conversions.hpp"
 #include "bsp/native_mission_lua_to_string.hpp"
 #include "bsp/wire_goal4_chain293_switches.hpp"
+#include "bsp/wire_goal4_chain299_switches.hpp"
+#include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/lua_listener_native_matchers.hpp" // goal 4 chain 286, 0096ACE0 / 00968FF0 / 00968440
@@ -13299,7 +13301,14 @@ int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) 
         output.buffered_0109cecc = &sink;
         bsp::ArchiveTextWriter writer(output);
         try {
-            bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true);
+            if constexpr (bsp::kWireGoal4Chain299Bound) {
+                // The 00436C50 copy's string setter 00B674C0 falls back to the
+                // live 0108FF2C empty string for a null NativeString buffer.
+                bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true,
+                    game_native_lua_globals_process().empty_string_0108ff2c());
+            } else {
+                bsp::save_checkpoint_00438020(state, id, record, 0.0f, state, 1, &writer, true);
+            }
             // Beside the executable only: the build or export tree.
             char* program = nullptr;
             std::string path;   // empty: no executable path, nothing written
