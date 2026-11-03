@@ -347,6 +347,19 @@ struct ObserverHost {
 };
 void* observer_slot_set(void* owner, std::uint32_t target, ObserverHost& host);
 
+// 005B7F60 typed view (chain 121), for hosts that keep the handle in their own
+// storage: the +14h target, and the two pair calls, which the image makes with
+// ECX = the entity (old target to 006952A0, new target to 00694A60) and EDX =
+// the handle. The raw entry above is a thin wrapper over this overload.
+struct ObserverSlotView {
+    virtual ~ObserverSlotView() = default;
+    virtual void* target_14() const = 0;
+    virtual void store_target_14(void* target) = 0;
+    virtual void unregister_pair(void* old_target) = 0;  // 006952A0 BSP_Observer_UnregisterPair
+    virtual void register_pair(void* new_target) = 0;    // 00694A60 BSP_Observer_RegisterPair
+};
+ObserverSlotView& observer_slot_set(ObserverSlotView& slot, void* target);
+
 // 0059BD20: optional vec3 {+01h present, +08h value}; out = value or the
 // default at 00F87574.
 void optional_vector3_get_or_default_0059bd20(const void* optional, const float* fallback_00f87574,

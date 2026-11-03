@@ -1,0 +1,264 @@
+{
+  "chain": 121,
+  "slot": "g2-w4",
+  "goal": 2,
+  "harness": "claude",
+  "candidate": "segment 20 [005805a0-005c5600], tier 2 range sweep (candidate 8)",
+  "candidate_note": "First claimed candidate 1 (segment 78); on reading, none of its rows had a live host site (see the 00aa/00ab/00ac rows below), so that lease was released and candidate 8 claimed. A caller census of all eight candidates (each row's image callers against calls from src/game_*.cpp) found few host-live sites; 005B7F60 was the one whose host stand-in sits on a live, ungated path.",
+  "host_file": "src/warning_reports_cc13.cpp",
+  "files": [
+    "src/warning_reports_cc13.cpp",
+    "src/frontend_screens_cc13.cpp",
+    "include/bsp/frontend_screens_cc13.hpp",
+    "include/bsp/wire_goal2_chain121_switches.hpp"
+  ],
+  "switch": "kWireGoal2Chain121Bound",
+  "host_objects": [],
+  "host_object_note": "No host object built. The one wire uses a small typed-view adapter (WarningObserverSlotView, src/warning_reports_cc13.cpp) over the Warning's own slot field and the warning host's 006952A0/00694A60 calls.",
+  "wired_before": 8936,
+  "wired_after": 8938,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed (reconstructed_math, tool_tests); rebuilt after the ON check so the map is the OFF build",
+  "build_on": "off_switch_on_build.py --names kWireGoal2Chain121Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed; switch restored to false",
+  "pc24_lint": "not run: no x87 arithmetic in the ON arm",
+  "turning_on": "With kWireGoal2Chain121Bound ON, the seven 005B7F60 slot sets in the kill warning (009744C0: 009746EB, 009748B0, 00974A41, 00974BB8) and hit warning (00974C70: 00975139, 009751A3, 00975317) constructors run 005B7F60's body (cc13_fe1::observer_slot_set, typed view) instead of set_slot's inline compare/unlink/store/link. The result is the same slot value and the same 006952A0/00694A60 host calls (no-ops in this host). The 00523B30 site (00975142) keeps set_slot.",
+  "rows": [
+    {
+      "native": "005b7f60",
+      "address": "009746eb",
+      "function": "009744c0",
+      "host_site": "src/warning_reports_cc13.cpp set_slot_via_observer_body (the seven 005B7F60 sites of construct_kill_warning_009744c0 and construct_hit_warning_00974c70)",
+      "status": "wired",
+      "reach": "live, read: kill path GameGunneryHost unit death (src/game_hosts_gunnery.cpp:16429, kLossWarningBound=true) -> game_warning_report_loss_009813a0 -> (kWarningMessageBankCc15Bound=true) game_warning_kill_block_00981e07 -> bsp::construct_kill_warning_009744c0 (src/game_hosts_mission_frame.cpp:1248); hit path game_hosts_lua.cpp:10123 -> game_warning_report_hit_00989604 (kWarningMessageBankCc15Bound) -> construct_hit_warning_00974c70 (game_hosts_mission_frame.cpp:3519). No disabled gate on either path; the kill block runs past the 4 s clock and recon-identified guards on every reportable loss.",
+      "note": "raw_callback row: added the typed view overload observer_slot_set(ObserverSlotView&, void*) in src/frontend_screens_cc13.cpp with the body (005B7F63..005B7F8E: compare +14h, 006952A0 on the old target, store, 00694A60 on the new one); the raw entry is now a thin wrapper (RawObserverSlotView over +14h and ObserverHost) and had no callers. Image sites: 009746EB, 009748B0, 00974A41, 00974BB8 (009744C0); 00975139, 009751A3, 00975317 (00974C70)."
+    },
+    {
+      "native": "005c0930",
+      "host_site": "src/game_hosts_hud_world.cpp GameHudMinimapHost::update_005c0f20",
+      "status": "skipped",
+      "reason": "Host lacks the object: the body manages the minimap screen's per-kind marker vectors and cursors (+108h, +148h.., +154h..+164h, vtable +5Ch kind tests 8/6/0Fh, BSP_HudMinimapMarker_Construct). The host minimap keeps a unit-to-icon map (host.icons) and has no marker pools or cursors to view."
+    },
+    {
+      "native": "005c0bd0",
+      "host_site": "src/game_hosts_hud_world.cpp GameHudMinimapHost::update_005c0f20",
+      "status": "skipped",
+      "reason": "Same as 005C0930: hides unused entries of the marker pools past their cursors; the host minimap has no marker pools or cursors."
+    },
+    {
+      "native": "005b6960",
+      "host_site": "src/game_hosts_menu.cpp GameMenuHost::pump_interface_only_004c40f0",
+      "status": "skipped",
+      "reason": "Only caller 004C40F0 tail-jumps to it at 004C42EF when [game+624h] != 0 (004C42A6). The host interface-only pass has no game+624h arm, and the one host producer of that field writes 0 (game_hosts_mission_result.cpp:438), so no host logic runs there to replace."
+    },
+    {
+      "native": "005b9760",
+      "host_site": "src/engine_seg56_cc13.cpp lua_sound_fade",
+      "status": "skipped",
+      "reason": "Callers 0045D930/0045DB40 (cutscene player) and 008D16B0 (Lua SoundFade) reach it only through PresentationHost::voice_begin_sound_fade and the actions_seg5/cc13_sweepA2 host methods, none of which any host implements."
+    },
+    {
+      "native": "0059abc0",
+      "host_site": "src/cc13_sweepB10.cpp cc13_sweepB10_hud_map_update_005b45c0",
+      "status": "skipped",
+      "reason": "Only caller 005B45C0 (HUD map update) has no host caller (Cc13SweepB10Host is not implemented by any host)."
+    },
+    {
+      "native": "00588a80",
+      "host_site": "src/main_menu_activation_runtime.cpp",
+      "status": "skipped",
+      "reason": "Reached only through MainMenuCommandServices::call_00588a80, which no host implements."
+    },
+    {
+      "native": "005942a0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says address taken (table slot); the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005943d0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says no src file names it; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "00597870",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through main_menu_build_mission_list_00597870 in cc13_sweepB4.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "0059d350",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_label_center_0059d350 in cc13_sweepB10.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "0059d940",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_is_unit_shown_at_zoom_0059d940 in cc13_sweepB5.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a07b0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says named in cc13_sweepB.cpp:517 as a host method; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a1c60",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says named in cc13_big5ad.cpp:1481 as a host method; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a2c30",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_create_simple_color_model_005a2c30 in cc13_sweepB3.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a31a0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through player_record_recon_changed_005a31a0 in mp_seg43_cc13.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a3610",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through arrow_widget_construct_005a3610 in frontend_screens_cc13.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005a9db0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_build_unit_order_overlays_005a9db0 in cc13_sweepB5.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005adda0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_update_unit_icon_005adda0 in cc13_sweepB5.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005b2cb0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says reached only through hud_map_get_or_create_layer_005b2cb0 in cc13_sweepB5.cpp; the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005b8ea0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says callers 005B8FA0/005B9AF0 (effect sound sample vectors); the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "005c4ad0",
+      "host_site": "(not located)",
+      "status": "skipped",
+      "reason": "not reached in this chain (time went to 005B7F60 and the candidate census); the candidate detail says address taken; callers 005C5440/005C6A70 (mission tree Lua reader); the HUD map family's callers (005B45C0 and its sweep hosts) have no host implementer per the census, but this row was not read individually."
+    },
+    {
+      "native": "00aad1c0",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00ab2150",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00abc410",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00abec40",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00ac1f30",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00ac80a0",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00ac9640",
+      "host_site": "src/native_gui_widget_pools_cc13.cpp free_gui_widget_pool_slot<T>",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already called: the wired FreeThunk free_gui_widget_pool_slot<T> (native_gui_widget_pools_cc13.cpp:61) calls NativeGuiWidgetPool<T>::free, the body this row maps to; wire_readiness does not see the use because its ident is the ambiguous plain name \"free\", which counts only inside native_material_pools.cpp. Wiring would duplicate a call the OFF code makes."
+    },
+    {
+      "native": "00ac6ff0",
+      "host_site": "src/native_material_pools.cpp NativeGuiGroupPool::allocate_00ac7590",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: already run: allocate_slot<NativeGuiGroupPool> calls the same engine initialize_slab<NativeGuiGroupPool> the named wrapper forwards to; calling the wrapper would duplicate it."
+    },
+    {
+      "native": "00ab3840",
+      "host_site": "src/gui_icon_runtime.cpp GuiIconRuntime::read_properties_00ab3310",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: the host icon runtime rejects DelayedTextureLoad outright (gui_icon_runtime.cpp:507, \"requires the unreconstructed frame updater 00AB6430\"), so the delayed texture apply never runs in the host."
+    },
+    {
+      "native": "00ab0220",
+      "host_site": "src/game_hosts_mission_result.cpp prepare_movie_subtitles",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: its only live-looking caller, the movie subtitle load 00AB0520, sits behind kMovieSubtitlesBound = false (game_hosts_mission_result.cpp:71)."
+    },
+    {
+      "native": "00abe030",
+      "host_site": "src/gui_widgets_cc13.cpp gui_widget_default_or_copy_factory",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: only caller 00AA1800 reaches it through GuiWidgetConstructionHost::construct_default, which no host implements (the host page application creates only Group and Icon, game_native_gui_page_application.cpp:513)."
+    },
+    {
+      "native": "00abe100",
+      "host_site": "src/gui_widgets_cc13.cpp gui_widget_default_or_copy_factory",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: same as 00ABE030 (copy arm, GuiWidgetConstructionHost::copy_construct, unimplemented)."
+    },
+    {
+      "native": "00ac2d00",
+      "host_site": "src/gui_widgets_cc13.cpp gui_widget_default_or_copy_factory",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: same as 00ABE030 (Line factory 00AA1530)."
+    },
+    {
+      "native": "00ac2d60",
+      "host_site": "src/gui_widgets_cc13.cpp gui_widget_default_or_copy_factory",
+      "status": "skipped",
+      "reason": "Examined under candidate 1 (segment 78), lease released: same as 00ABE030 (Line copy arm)."
+    },
+    {
+      "native": "008d4520",
+      "host_site": "src/game_hosts_menu.cpp PressStartHost::reset_offline_profile",
+      "status": "skipped",
+      "reason": "Census (candidate 7, not claimed): body looks wrong. The image 008D4520 ends at 008D45AF RET 8 after the +88h store, but reset_video_defaults_008d4520 (game_settings.cpp:175) also writes +B1h/+B2h/+B4h and calls 008D41F0/008D41C0, which are the constructor's inline stores 008D77A7..008D77F9. Its press-start site 0067D4C6 (reset_offline_profile, a log-only stand-in) would also need 008D4820/008D41C0/008D41F0/008D5B50 in the same arm."
+    },
+    {
+      "native": "008d76c0",
+      "host_site": "src/game_hosts_message_manager.cpp collect_language_names",
+      "status": "skipped",
+      "reason": "Census (candidate 7, not claimed): load_message_map_00706760 asks for the language list only when profile_hints_mode_plus8() == 2, and the host answers 0 (game_hosts_message_manager.cpp:538), so collect_language_names never runs."
+    },
+    {
+      "native": "004b7f70",
+      "host_site": "src/game_render_frame.cpp screenshot_directory_004bfbf0 / screenshot_frame_path_004c9a00",
+      "status": "skipped",
+      "reason": "Census (candidate 3, not claimed): the screenshot paths format inline, but capture never starts: the mission frame host answers input_action_pressed false (game_native_mission_frame.cpp:107) and GameMissionFrameHost::finish_render_frame_004ca1f0 only records."
+    }
+  ],
+  "wired_delta_note": "wired 8936 -> 8938 (+2). The assigned row is 005b7f60. The other is 005b7b40, the identical copy of the body (frontend_screens_cc13.hpp: \"005B7F60, 005B7B40 (identical)\") with no image callers: it shares the observer_slot_set identifier, so wire_readiness marks it too. It is a side effect, not a claimed or counted row."
+}

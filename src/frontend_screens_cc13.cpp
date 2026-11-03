@@ -352,13 +352,42 @@ void record14_clear_005b7fa0(void* record) noexcept {
         write_field<std::uint32_t>(record, offset, 0);
 }
 
-void* observer_slot_set(void* owner, std::uint32_t target, ObserverHost& host) {
-    const std::uint32_t current = read_field<std::uint32_t>(owner, 0x14);
+// 005B7F60 (005B7F63..005B7F8E): CMP [ESI+14h], new; on a change, 006952A0 on
+// the old target when set, MOV [ESI+14h], 00694A60 on the new one when non-null;
+// EAX = the slot.
+ObserverSlotView& observer_slot_set(ObserverSlotView& slot, void* target) {
+    void* const current = slot.target_14();
     if (current != target) {
-        if (current != 0) host.unregister_pair(owner);
-        write_field(owner, 0x14, target);
-        if (target != 0) host.register_pair(owner);
+        if (current != nullptr) slot.unregister_pair(current);
+        slot.store_target_14(target);
+        if (target != nullptr) slot.register_pair(target);
     }
+    return slot;
+}
+
+namespace {
+// The image handle: the target dword at +14h; the pair calls name the handle.
+class RawObserverSlotView final : public ObserverSlotView {
+public:
+    RawObserverSlotView(void* owner, ObserverHost& host) noexcept : owner_(owner), host_(host) {}
+    void* target_14() const override {
+        return reinterpret_cast<void*>(static_cast<std::uintptr_t>(read_field<std::uint32_t>(owner_, 0x14)));
+    }
+    void store_target_14(void* target) override {
+        write_field(owner_, 0x14, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(target)));
+    }
+    void unregister_pair(void*) override { host_.unregister_pair(owner_); }
+    void register_pair(void*) override { host_.register_pair(owner_); }
+
+private:
+    void* owner_;
+    ObserverHost& host_;
+};
+} // namespace
+
+void* observer_slot_set(void* owner, std::uint32_t target, ObserverHost& host) {
+    RawObserverSlotView slot(owner, host);
+    observer_slot_set(slot, reinterpret_cast<void*>(static_cast<std::uintptr_t>(target)));
     return owner;
 }
 

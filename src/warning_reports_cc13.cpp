@@ -2,6 +2,8 @@
 
 #include "bsp/engine_seg49_64_78_cc13.hpp" // WarningObject, base constructors
 #include "bsp/ship_ai_states.hpp" // party_relative_to_00803510
+#include "bsp/frontend_screens_cc13.hpp" // 005B7F60 observer_slot_set (chain 121)
+#include "bsp/wire_goal2_chain121_switches.hpp"
 
 #include <cstdint>
 
@@ -23,6 +25,38 @@ void set_slot(WarningHost& host, void*& current, WarningSlot slot, WarningEntity
     if (current != nullptr) host.observer_unlink_006952a0(current, slot);
     current = next;
     if (next != nullptr) host.observer_link_00694a60(next, slot);
+}
+
+// Chain 121: a Warning's watched-entity slot as 005B7F60's typed view. The
+// slot's pointer field is the handle's +14h target; the pair calls are this
+// host's 006952A0 unlink and 00694A60 link for the slot, given the entity as
+// the image passes it in ECX.
+class WarningObserverSlotView final : public cc13_fe1::ObserverSlotView {
+public:
+    WarningObserverSlotView(WarningHost& host, void*& current, WarningSlot slot) noexcept
+        : host_(host), current_(current), slot_(slot) {}
+    void* target_14() const override { return current_; }
+    void store_target_14(void* target) override { current_ = target; }
+    void unregister_pair(void* old_target) override { host_.observer_unlink_006952a0(old_target, slot_); }
+    void register_pair(void* new_target) override { host_.observer_link_00694a60(new_target, slot_); }
+
+private:
+    WarningHost& host_;
+    void*& current_;
+    WarningSlot slot_;
+};
+
+// The seven CALL 005B7F60 sites of 009744C0 and 00974C70; the 00523B30 site
+// (00975142) keeps set_slot.
+inline void set_slot_via_observer_body(WarningHost& host, void*& current, WarningSlot slot, WarningEntity entity)
+{
+    if constexpr (kWireGoal2Chain121Bound) {
+        // 005B7F60 cc13_fe1::observer_slot_set over the warning slot; OFF keeps set_slot inline.
+        WarningObserverSlotView view(host, current, slot);
+        cc13_fe1::observer_slot_set(view, const_cast<void*>(entity));
+    } else {
+        set_slot(host, current, slot, entity);
+    }
 }
 
 // Kind suffix shared by several branches: ship / plane / other.
@@ -125,7 +159,7 @@ WarningObject& construct_hit_warning_00974c70(WarningObject& w, WarningHost& hos
         if (target_player) {
             w.id += "player";
         } else {
-            set_slot(host, w.reporter, WarningSlot::Reporter54, target);   // 00975139 005B7F60
+            set_slot_via_observer_body(host, w.reporter, WarningSlot::Reporter54, target); // 00975139 005B7F60
             set_slot(host, w.shortcut, WarningSlot::Shortcut24, w.reporter); // 00975142 00523B30
         }
         w.area_exclusion = true; // 00975112 byte +84h = 1
@@ -138,7 +172,7 @@ WarningObject& construct_hit_warning_00974c70(WarningObject& w, WarningHost& hos
         if (relation != WarningRelation::Own) return w; // 00974E2E
         w.id += "friendlyfire";
         w.id += ship_plane_other(q, target, false);       // 00974E77..00975186
-        set_slot(host, w.reporter, WarningSlot::Reporter54, target); // 009751A3 005B7F60
+        set_slot_via_observer_body(host, w.reporter, WarningSlot::Reporter54, target); // 009751A3 005B7F60
         return w;
     }
 
@@ -151,7 +185,7 @@ WarningObject& construct_hit_warning_00974c70(WarningObject& w, WarningHost& hos
     }
     w.id += "plane";
     w.id += "ambient";
-    set_slot(host, w.ambient, WarningSlot::Ambient3C, carrier); // 00975317 005B7F60
+    set_slot_via_observer_body(host, w.ambient, WarningSlot::Ambient3C, carrier); // 00975317 005B7F60
     return w;
 }
 
@@ -176,7 +210,7 @@ WarningObject& construct_kill_warning_009744c0(WarningObject& w, WarningHost& ho
         } else if (q.is_kind_5c(victim, kWarningKindPlane)) {
             w.id += "plane";
             w.id += "ambient";
-            set_slot(host, w.ambient, WarningSlot::Ambient3C, victim); // 009746EB 005B7F60
+            set_slot_via_observer_body(host, w.ambient, WarningSlot::Ambient3C, victim); // 009746EB 005B7F60
         } else if (q.is_kind_5c(victim, kWarningKindSquadron)) {
             w.id += "planesquadron";
         } else if (q.is_kind_5c(victim, kWarningKindAirfield)) {
@@ -196,7 +230,7 @@ WarningObject& construct_kill_warning_009744c0(WarningObject& w, WarningHost& ho
             if (!q.is_kind_5c(victim, kWarningKindPlane)) return w;
             w.id += "plane";
             w.id += "ambient";
-            set_slot(host, w.ambient, WarningSlot::Ambient3C, killer); // 009748B0 005B7F60
+            set_slot_via_observer_body(host, w.ambient, WarningSlot::Ambient3C, killer); // 009748B0 005B7F60
             if (killer == nullptr) return w;
             w.id += ship_plane_other(q, killer, true);
             if (player_kill) w.id += "player";
@@ -205,7 +239,7 @@ WarningObject& construct_kill_warning_009744c0(WarningObject& w, WarningHost& ho
         w.id += ship ? "ship" : squadron ? "planesquadron" : "airfield";
         // 00974A22..00974A33: only a killer of our own side is named.
         if (killer != nullptr && local_relation_00968370(q, killer) == WarningRelation::Own) {
-            set_slot(host, w.reporter, WarningSlot::Reporter54, killer); // 00974A41 005B7F60
+            set_slot_via_observer_body(host, w.reporter, WarningSlot::Reporter54, killer); // 00974A41 005B7F60
             w.id += ship_plane_other(q, killer, true);
             if (player_kill) w.id += "player";
             return w;
@@ -217,7 +251,7 @@ WarningObject& construct_kill_warning_009744c0(WarningObject& w, WarningHost& ho
     case WarningRelation::Neutral:
         w.id += "neutral";
         w.id += "ambient";
-        set_slot(host, w.ambient, WarningSlot::Ambient3C, victim); // 00974BB8 005B7F60
+        set_slot_via_observer_body(host, w.ambient, WarningSlot::Ambient3C, victim); // 00974BB8 005B7F60
         if (q.is_kind_5c(victim, kWarningKindShip)) {
             w.id += "ship";
         } else if (q.is_kind_5c(victim, kWarningKindPlane)) {
