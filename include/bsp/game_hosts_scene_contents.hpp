@@ -98,6 +98,14 @@ struct GameSceneEntityRecord {
     // -1 when this record's creator carries no bag value (the units host then
     // keeps the class default). Wing records copy their squadron's.
     int bag_equipment{-1};
+    // Goal 4 chain 270: the per-instance catapult launch overrides 0095E5B0 reads
+    // from the bag. `LaunchClassID` (00CE9270) with type code 0 -> unit+530h
+    // (0095E8DB..0095E8F2); `LaunchEquipment` (00D1A98C), no type test -> unit+534h
+    // (0095E901..0095E912). The constructor's -1 (0095CDBE OR EAX,-1; 0095CDEF,
+    // 0095CDF5) stands when the bag has no such key; MCatapult::Fire (006EC905,
+    // 006EC91D) then takes the class Catapult block.
+    int launch_class_530{-1};
+    int launch_equipment_534{-1};
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};

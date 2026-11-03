@@ -14,6 +14,7 @@
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
+#include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
@@ -23056,6 +23057,14 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         row.type_symbol = entity.type_symbol;
         row.type_id = entity.type_id;
         row.party = entity.party;
+        if constexpr (bsp::kWireGoal4Chain270Bound) {
+            // unit+58h: 00927050's kind-1 arm stores the bag's Race (0092708F..
+            // 0092709C) with no presence test; MCatapult::Fire reads it back.
+            row.race_58 = entity.race;
+            // unit+530h / +534h as 0095E5B0 reads them (0095E8F2, 0095E912).
+            row.launch_class_530 = entity.launch_class_530;
+            row.launch_equipment_534 = entity.launch_equipment_534;
+        }
         // Milestone 2l: the two strings 004f0520's last step handed 00469610.
         // 00469610 queues the authored command; OFF keeps the direct string copies.
         if constexpr (bsp::kWireGoal2Chain51Bound) {

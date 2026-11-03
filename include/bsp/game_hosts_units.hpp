@@ -244,6 +244,17 @@ struct GameUnitRow {
     std::string type_symbol;  // the `Type = E ShipClasses : <symbol>` token
     int type_id{-1};          // the symbol resolved through the enum library
     int party{-1};
+    // unit+58h, the scene bag's `Race` as 00927050's kind-1 arm stores it
+    // (0092708F..0092709C; GameSceneEntityRecord::race, -1 when the bag has none).
+    // Retained under kWireGoal4Chain270Bound for MCatapult::Fire's bag (006EC9A6
+    // reads owner+58h); -1 while the switch is off. The SetPartyRace (00928F50)
+    // writes this host routes (command buildings only) carry the party alone.
+    int race_58{-1};
+    // unit+530h / unit+534h, the catapult launch overrides 0095E5B0 copies from the
+    // bag (GameSceneEntityRecord::launch_class_530 / launch_equipment_534); -1, the
+    // constructor's value (0095CDEF / 0095CDF5), takes the class default.
+    int launch_class_530{-1};
+    int launch_equipment_534{-1};
     std::string command;      // the authored `Command` token
     // Packet cc9_land_convoy_members: +738h (the convoy, by its scene name; the
     // host builds no convoy instance) and +73Ch (the slot). Empty / -1 outside

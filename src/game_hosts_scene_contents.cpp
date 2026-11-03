@@ -7,6 +7,7 @@
 #include "bsp/wire_goal2_chain120_switches.hpp"
 #include "bsp/wire_goal2_chain132_switches.hpp"
 #include "bsp/wire_goal2_chain192_switches.hpp"
+#include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
@@ -3191,6 +3192,26 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             // mode): 0, 1, 2 map to themselves, 3 to Elite 5, anything else 1.
             record.bag_skill = v == 0 ? 0 : v == 1 ? 1 : v == 2 ? 2 : v == 3 ? 5 : 1;
             record.bag_skill_source = "Crew";
+        }
+        if constexpr (bsp::kWireGoal4Chain270Bound) {
+            // Goal 4 chain 270: 0095E5B0 BSP_Unit_ReadCommonLuaProperties, after
+            // the constructor's -1 (0095CDEF / 0095CDF5). 0095E8DB..0095E8F2:
+            // `LaunchClassID` found with type code 0 (an `I` value, as authored
+            // `LaunchClassID = I 171`) -> +530h = its +0Ch. 0095E901..0095E912:
+            // `LaunchEquipment` found, no type test -> +534h = its +0Ch, which an
+            // `E EquipmentIndex : none` resolves to through the library.
+            const SceneProperty* launch_class = bag.find("LaunchClassID");   // 00CE9270
+            if (launch_class != nullptr && launch_class->type_letter == "I"
+                && !launch_class->values.empty()) {
+                std::int32_t parsed = 0;
+                if (scene_scan_int(launch_class->values.back(), parsed)) {
+                    record.launch_class_530 = static_cast<int>(parsed);
+                }
+            }
+            int launch_equipment = 0;
+            if (bag_int("LaunchEquipment", launch_equipment)) {              // 00D1A98C
+                record.launch_equipment_534 = launch_equipment;
+            }
         }
     }
     if (klass->class_id == 0x18) {

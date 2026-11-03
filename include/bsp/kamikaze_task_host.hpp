@@ -113,6 +113,10 @@ struct DummyKamikazeSpawn {
     int skill = 1;
     int owner_player = 9;
     std::uint32_t dummy_id = 0;
+    // The bag's `Equipment` (00CF69AC). -1: the bag has no Equipment key (006FEC00's
+    // kamikaze bag), so the units host keeps the class default. ShipUseCatapult
+    // sets MCatapult::Fire's resolved value (006ECA20) under kWireGoal4Chain270Bound.
+    int equipment = -1;
 };
 
 // Process-wide, like the squadron registry: the units host pushes a round at
