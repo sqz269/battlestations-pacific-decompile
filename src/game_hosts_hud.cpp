@@ -4651,7 +4651,7 @@ GuiLayoutWidget* GameHudHost::Impl::hud_root_closed_group_widget() {
 }
 
 // The row widgets 006463E0 stores: +34h..+84h found under GUI_unit, +3Ch under
-// GUI_selector (ingame_gui_cc13.cpp hud_root_load_layout_006463e0).
+// GUI_selector (the 006463E0 layout in src/ingame_gui_cc13.cpp).
 GuiLayoutWidget* GameHudHost::Impl::hud_root_row_widget(bsp::HudRowWidget widget) {
     if (!hud_root_row_widgets_bound) {
         hud_root_row_widgets_bound = true;
