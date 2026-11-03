@@ -1,0 +1,65 @@
+{
+  "packet": "g4-w5",
+  "chain": 252,
+  "switch": "kWireGoal4Chain252Bound",
+  "scope": "In-mission HUD host stand-ins",
+  "wired_before": 9070,
+  "wired_after": 9072,
+  "rows": [
+    {
+      "native": "00683a90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudInitBinding::base_init",
+      "evidence": "0068CD04 calls inherited manager virtual +4h; bsp.py show 00683a90 confirms the complete retail body is RET. Call the existing body on this initialization path."
+    },
+    {
+      "native": "0068a140",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudRootSelectionBinding::base_screen_active",
+      "evidence": "bsp.py show 0068a140 compares manager+20h with 32h/31h. The existing pending-record owner is supplied directly, replacing the inline comparisons. kWireGoal1Chain12Bound is true on the baseline."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "Missing root+CCh saved interface, distinct root+D0h observer/restore payload +E4h, and payload-aware pending-request delivery; the existing setter discards these inputs, so calling the toggle with default state would not implement its transitions."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_medals",
+      "reason": "Missing HudRootRowsHost bindings for the actual weapon source/cache, GUI animation/widget owners, selected-unit health metrics 00939F70/80/B0/C0 and denominator +36Ch; no complete live-state adapter exists for the body."
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_set_interface",
+      "reason": "Missing root+CCh/+E4h storage and the distinct root+D0h observer endpoint with unit destruction unregistration; the existing root+8h controlled-unit observer is a different member and cannot supply this lifetime."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_query",
+      "reason": "Missing bomb-view screen bind/store consumers for the actual controlled-unit identity; both callbacks discard the query result, so wiring only the getter would have no game-state consumer."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Missing controlled-unit audio flag +6B4h owner/consumer and ship sound instance +BBCh volume binding required to apply the returned AudioFlagPlan."
+    },
+    {
+      "native": "00927cc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::unit_bind_player",
+      "reason": "Host callback has no consumer for the role-mask return and models the caller's player/unit state with literal placeholders; supplying permission words alone would execute an unused plan."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "readiness": "tools/wire_readiness.py --standins: 9070 -> 9072 wired; both changed addresses now wired; this is source reachability, not measured runtime execution",
+    "game_run": "not run, as instructed",
+    "evidence_limit": "Source reachability and Win32 build/test validation; no runtime or binary ABI compatibility claim."
+  }
+}
