@@ -1,0 +1,98 @@
+{
+  "run": 359,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 187,
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "candidate": "segment 65 [0097ab70-0098c510]",
+  "tier": 2,
+  "host_file": "src/game_hosts_lua.cpp",
+  "switch": "kWireGoal2Chain187Bound",
+  "switch_file": "include/bsp/wire_goal2_chain187_switches.hpp",
+  "switch_default": false,
+  "wired_before": 9009,
+  "wired_after": 9010,
+  "rows_wired": 1,
+  "builds": {
+    "off": "PASS: scripts/build.ps1; reconstructed_math and tool_tests passed (2/2)",
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain187Bound; exit 0, zero distinct diagnostics; tool restored the header",
+    "final_off": "PASS: scripts/build.ps1 after the ON check; both tests passed (2/2); OFF map used for recount",
+    "off_arm": "Original run_remove_listener_008c6990 vector-removal loop retained verbatim (checked against HEAD)",
+    "pc24_lint": "not applicable: no x87 arithmetic added or changed",
+    "game_run": "not run, as instructed"
+  },
+  "host_objects": [
+    {
+      "name": "LuaListenerRemovalView",
+      "kind": "non-owning typed view; no new persistent/native manager",
+      "where": "src/game_hosts_lua.cpp:6771",
+      "producers": [
+        "GameMissionLuaHost::run_add_listener_008c6760 fills listeners_ from the actual AddListener(channel, id, block) Lua call; models 00980C10",
+        "listener_string_argument reads RemoveListener's actual Lua arguments 1 and 2 at run_remove_listener_008c6990",
+        "0096D6F0 compares the id through 00443D00 NativeString_LessCaseInsensitive; the existing listener_key_equal supplies that comparison for both host keys"
+      ],
+      "lifetime": "Constructed only in the batch ON arm for one synchronous RemoveListener call; borrows the existing mission Lua registry and argument strings. Lua dispatch is serial; the raw entry retains its native critical-section guard.",
+      "rows": ["00980d30"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00980d30",
+      "address": "008c6ae7",
+      "function": "008c6990",
+      "name": "warning_remove_listener_00980d30",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_remove_listener_008c6990",
+      "status": "wired",
+      "coverage": "Existing removal body shared by typed view overload and thin raw wrapper; native guard retained in raw wrapper",
+      "reach": "static",
+      "reach_details": "GameFrameHost::game_on_move (game_hosts.cpp:1292) -> GameMenuHost::frame (game_hosts_menu.cpp:3151) -> GameMissionHost::advance SceneRecord (game_hosts_mission.cpp:3040) -> finish_scene_load -> start_machine_00884be0 (2878) -> register_global_function (game_hosts_lua.cpp:13618) -> binding_trampoline -> RemoveListener arm -> run_remove_listener_008c6990. kLuaListenersBound=true; normal error_replay_=false; no other OFF switch encloses the site. No surveyed mission count was supplied for this range.",
+      "contract": "Single image caller 008C6990 at 008C6AE7; ECX loads manager from 00F8A0C4 at 008C6AD9; channel/id NativeString addresses are pushed at 008C6AD3/008C6AD8; callee RET 8 at 00980DF7. Proto query confirms caller body 008C6990-008C6BA1.",
+      "on_change": "Use reconstructed owner/end checks, conditional subscription destruction/clear and node erase over the real listener vector. An absent channel/id reaches a host logic_error for native checked-iterator failure; OFF keeps the existing tolerant search. No callback execution or new registry is introduced."
+    },
+    {
+      "native": "00984ba0",
+      "address": "006e5633",
+      "function": "006e4d50",
+      "name": "dispatch_ammo_type_00984ba0",
+      "host_site": "src/cc13_bombdrop.cpp:warning_dispatch_ammo_type_00984ba0 callback; src/mission_events.cpp:kChannelDispatches ammoType entry",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The mission_events entry is an address inventory, with no host dispatch consumer. The existing body needs a native warning manager (+24h lock, +F8h channel tree, +104h/+105h flags), channel subscription evaluators and Lua variant dispatch through Seg62Host; no concrete Seg62Host exists. The Lua registry has no ammoType subscription-filter producer. Building a manager without that producer would invent state rather than wire this bomb-drop notification."
+    },
+    {
+      "native": "00985590",
+      "address": "0077fe50",
+      "function": "0077fad0",
+      "name": "dispatch_generate_00985590",
+      "host_site": "src/cc13_front2.cpp:warning_manager_dispatch_generate_00985590 callback; src/mission_events.cpp:kChannelDispatches generate entry",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The original site is replication-state reception in 0077FAD0, not scene creation. Its warning_manager_dispatch_generate callback has no implementation or live host receiver path. The body additionally requires generated-object vtable+10h/name, +C4h type, and the native warning-channel/subscription/Lua-variant manager. The host's channel-name table supplies none of these producers."
+    },
+    {
+      "native": "00986b00",
+      "address": "008791eb",
+      "function": "00879070",
+      "name": "warning_dispatch_hp_00986b00",
+      "host_site": "src/mission_events.cpp:kChannelDispatches damage/hpEvent entries; src/unit_damage.cpp:unit_apply_damage_00879070",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The raw body requires the hpEvent tree and subscription+2Ch threshold, virtual subscription evaluation, ancestor/vtable eligibility and native Lua-variant dispatch. ListenerEntry/run_add_listener_008c6760 has no hpEvent threshold producer. The name/address inventory does not dispatch events, and making up thresholds or an empty channel would not exercise the reconstructed crossing logic with real state."
+    },
+    {
+      "native": "0098b7d0",
+      "address": "006d3e0f",
+      "function": "006d3c10",
+      "name": "spatial_node_union_shape_bounds_0098b7d0",
+      "host_site": "src/game_hosts_scene_contents.cpp:airfield runway branch after retain_airfield_runway",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The host retains runway dimensions in AirOpsDeck but not the airfield spatial node at entity+828h or its +D0h shape pointer array/+F8h count. Existing 006D1990 constructs the runway shape from that node, its owner and dimensions; 006D3C10 appends it before this call and attaches the node afterwards. The parent node/owner and collision-graph producers are unavailable at the host runway site. An isolated box built only from dimensions would not replace an existing host union or update the real spatial object."
+    }
+  ],
+  "verification": {
+    "report_calls": "PASS: verify_report_calls.py checked all 5 image CALL rows, 0 failed",
+    "diff_review": "Reviewed the complete source/header diff before commit; only the borrowed ON-arm adapter and shared typed/raw removal logic changed"
+  }
+}

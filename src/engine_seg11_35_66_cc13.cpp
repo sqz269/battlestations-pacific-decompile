@@ -3337,20 +3337,54 @@ private:
     void* section_;
 };
 }
+void warning_remove_listener_00980d30(WarningListenerRemovalView& view) {
+    view.find_listener();
+    if (!view.has_owner()) view.checked_iterator_failure();
+    if (view.at_end()) view.checked_iterator_failure();
+    if (view.has_subscription()) {
+        view.destroy_and_clear_subscription();
+    }
+    view.erase_listener();
+}
+namespace {
+class NativeWarningListenerRemovalView final : public WarningListenerRemovalView {
+public:
+    NativeWarningListenerRemovalView(void* manager, const void* channel, CWord id,
+        const WarningRemoveBindings& bindings)
+        : manager_(manager), channel_(channel), id_(id), bindings_(bindings) {}
+    void find_listener() override {
+        tree_ = bindings_.channel_00980150(c_at(manager_, 0xf8), channel_);
+        bindings_.find_0096d6f0(tree_, &iterator_, id_);
+    }
+    bool has_owner() const override { return iterator_.owner != nullptr; }
+    bool at_end() const override {
+        return iterator_.node == c_read<void*>(iterator_.owner, 4);
+    }
+    bool has_subscription() const override {
+        return c_read<void*>(iterator_.node, 0x14) != nullptr;
+    }
+    void destroy_and_clear_subscription() override {
+        c_virtual<void*>(c_read<void*>(iterator_.node, 0x14), 0, 1);
+        c_write<CWord>(iterator_.node, 0x14, 0);
+    }
+    void erase_listener() override {
+        bindings_.erase_009713d0(tree_, &iterator_, iterator_.owner, iterator_.node);
+    }
+    void checked_iterator_failure() override { bindings_.checked_iterator_bf6713(); }
+private:
+    void* manager_;
+    const void* channel_;
+    CWord id_;
+    const WarningRemoveBindings& bindings_;
+    void* tree_{};
+    WarningIteratorPair iterator_{};
+};
+}
 void warning_remove_listener_00980d30(void* manager, const void* channel, CWord id,
     const WarningRemoveBindings& b) {
     CWarningGuard guard(c_read<void*>(manager, 0x24));
-    void* const tree = b.channel_00980150(c_at(manager, 0xf8), channel);
-    WarningIteratorPair iterator;
-    b.find_0096d6f0(tree, &iterator, id);
-    if (!iterator.owner) b.checked_iterator_bf6713();
-    if (iterator.node == c_read<void*>(iterator.owner, 4)) b.checked_iterator_bf6713();
-    void* const subscription = c_read<void*>(iterator.node, 0x14);
-    if (subscription) {
-        c_virtual<void*>(subscription, 0, 1);
-        c_write<CWord>(iterator.node, 0x14, 0);
-    }
-    b.erase_009713d0(tree, &iterator, iterator.owner, iterator.node);
+    NativeWarningListenerRemovalView view(manager, channel, id, b);
+    warning_remove_listener_00980d30(view);
 }
 void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_output,
     const WholeFileBindings& b) {

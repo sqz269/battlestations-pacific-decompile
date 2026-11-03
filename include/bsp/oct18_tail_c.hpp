@@ -146,6 +146,21 @@ struct WarningRemoveBindings {
     WarningIteratorPair* (__thiscall* erase_009713d0)(void*, WarningIteratorPair*, void*, void*);
     CheckedIterator checked_iterator_bf6713;
 };
+// Typed view of the caller-owned channel/id lookup and subscription lifetime.
+// The body owns the checked-iterator tests and destroy-before-erase ordering;
+// the view supplies the tree operations for either native or host storage.
+class WarningListenerRemovalView {
+public:
+    virtual ~WarningListenerRemovalView() = default;
+    virtual void find_listener() = 0;
+    virtual bool has_owner() const = 0;
+    virtual bool at_end() const = 0;
+    virtual bool has_subscription() const = 0;
+    virtual void destroy_and_clear_subscription() = 0;
+    virtual void erase_listener() = 0;
+    virtual void checked_iterator_failure() = 0;
+};
+void warning_remove_listener_00980d30(WarningListenerRemovalView&);
 void warning_remove_listener_00980d30(void*, const void*, std::uint32_t, const WarningRemoveBindings&);
 struct WholeFileBindings {
     void (__thiscall* string_resize_0041dd40)(void*, std::uint32_t, std::uint32_t);

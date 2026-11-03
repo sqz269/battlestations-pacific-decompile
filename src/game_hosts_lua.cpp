@@ -19,6 +19,8 @@
 #include "bsp/wire_goal2_chain130_switches.hpp"
 #include "bsp/wire_goal2_chain143_switches.hpp"
 #include "bsp/wire_goal2_chain152_switches.hpp"
+#include "bsp/wire_goal2_chain187_switches.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/cc13_avoid1_seg61.hpp"  // 00947A30, chain 130
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
@@ -6761,12 +6763,56 @@ int GameMissionLuaHost::run_remove_listener_008c6990(lua_State* state, int argum
     ++summary_.listener_removes;
     const std::string channel = listener_string_argument(state, 1);
     const std::string id = listener_string_argument(state, 2);
+    // 00980D30 removes the checked subscription; OFF keeps the tolerant vector search.
+    if constexpr (bsp::kWireGoal2Chain187Bound) {
+        // 008C6AE7 passes the two Lua strings to 00980D30 (RET 8). The registry
+        // is the existing 008C6760 -> 00980C10 producer, not a second manager.
+        // Lua calls run serially on this host; no native critical section is owned.
+        class LuaListenerRemovalView final : public bsp::oct18_tail_c::WarningListenerRemovalView {
+        public:
+            LuaListenerRemovalView(std::vector<ListenerEntry>& entries,
+                const std::string& channel_key, const std::string& id_key)
+                : entries_(entries), channel_(channel_key), id_(id_key) {}
+            void find_listener() override {
+                index_ = 0;
+                while (index_ < entries_.size()) {
+                    if (listener_key_equal(entries_[index_].channel, channel_)
+                        && listener_key_equal(entries_[index_].id, id_)) break;
+                    ++index_;
+                }
+                subscription_ = index_ < entries_.size() ? &entries_[index_] : nullptr;
+            }
+            bool has_owner() const override { return true; }
+            bool at_end() const override { return index_ == entries_.size(); }
+            bool has_subscription() const override { return subscription_ != nullptr; }
+            void destroy_and_clear_subscription() override {
+                // Release the callback/filter payload before removing its registry slot,
+                // matching vtable[0](1), node+14h = 0, then 009713D0.
+                *subscription_ = ListenerEntry{};
+                subscription_ = nullptr;
+            }
+            void erase_listener() override {
+                entries_.erase(entries_.begin() + static_cast<std::ptrdiff_t>(index_));
+            }
+            void checked_iterator_failure() override {
+                throw std::logic_error("00980D30: RemoveListener channel/id was not registered");
+            }
+        private:
+            std::vector<ListenerEntry>& entries_;
+            const std::string& channel_;
+            const std::string& id_;
+            std::size_t index_{};
+            ListenerEntry* subscription_{};
+        } view(listeners_, channel, id);
+        bsp::oct18_tail_c::warning_remove_listener_00980d30(view);
+    } else {
     for (std::size_t i = 0; i < listeners_.size(); ++i) {
         if (listener_key_equal(listeners_[i].channel, channel)
             && listener_key_equal(listeners_[i].id, id)) {
             listeners_.erase(listeners_.begin() + static_cast<std::ptrdiff_t>(i));
             break;
         }
+    }
     }
     log_.implemented("MissionLuaNative::RemoveListener", "008c6990");
     return 0;
