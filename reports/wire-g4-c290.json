@@ -1,0 +1,92 @@
+{
+  "goal": 4,
+  "chain": 290,
+  "worker": "agent/g4-w1",
+  "baseline_head": "f78709d13c",
+  "switch": "bsp::kWireGoal4Chain290Bound",
+  "picked": "Class-preload enemy/own lookup over the live scene registry party bitmap",
+  "wired_total_before": 9258,
+  "wired_total_after": 9259,
+  "changes": [
+    "The existing 0095BAB0 body now borrows the scene registry's actual party-row vector; no copied bitmap or descriptor-cache stand-in is built.",
+    "The scene class-preload alias builder calls that body to select enemy_ or own_ before resolving the alias through the mounted VFS.",
+    "The chain290 switch is enabled; the OFF arm preserves the original helper body unchanged.",
+    "The existing reference-model guards and operations are unchanged; the ON host retains its old invalid-index/party policy, including row growth for an invalid party."
+  ],
+  "evidence": [
+    "bsp.py show 0095bab0 and --asm: 0095BAC0/0095BAC5 bound local player index; 0095BAE0 grows registry+4010h; 0095BAFC reads player+28h; 0095BB01 compares the indexed byte with zero.",
+    "Scene registration's mark_party_requires_class_0095ba60 and scene_class_preload_alias_0095c1c0 produce the same VehicleClassRegistry::party_required vector the body now reads.",
+    "The enabled kSceneClassPreloadAliasesCc15Bound path calls scene_build_class_preload_aliases_004d4720, then scene_resolve_preload_aliases_00bb5ac0 consumes the generated names."
+  ],
+  "assumptions": [
+    "Use this host's existing single-player slot 0 contract (004BB440 copies side block 0 to player 0); obtain its party from local_player_party(), which reads the published authored scene slot.",
+    "The vector is a typed C++ projection of registry+4010h, not native raw storage or proof of binary ABI compatibility."
+  ],
+  "checks": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release and both CTest groups passed",
+    "call_graph": "python tools/call_graph.py; who 0095bab0; path 0095bab0: one entry-reachable call from scene_class_preload_alias_0095c1c0 through scene loading",
+    "call_site": "101A5D0B -> 10308070 in the final built executable, from scene_class_preload_alias_0095c1c0",
+    "wire_readiness": "python tools/wire_readiness.py --standins: 9258 -> 9259; 0095bab0 wired, called=true, call_sites=1",
+    "off_identity": "Source extraction against baseline HEAD confirms the OFF arm is identical to the old helper body after newline normalization.",
+    "body_identity": "Source extraction confirms the reconstructed operations differ only by borrowing party_rows_4010 directly instead of accessing reg.party_rows_4010.",
+    "float_math_changed": false,
+    "game_run": false,
+    "native_abi_proven": false
+  },
+  "rows": [
+    {
+      "native": "0095bab0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene_class_is_enemy_0095bab0, inlined into scene_class_preload_alias_0095c1c0",
+      "state_source": "Impl::vehicle_registry.party_required, authored scene slot 0 party, and the class id from Impl::preload_census"
+    },
+    {
+      "native": "0095ba30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: VehicleClassRegistry lifecycle",
+      "reason": "The host's descriptor cache contains opaque live handles, not ClassRegistryModel's RefCountedClass records; a shared owning-cache lifecycle adapter is missing."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "ScenePropertyBlock owns projected values and child blocks; raw constructor-produced property bags and the shared NativeScenePropertyCloneContext required by the merge body are missing."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "entity_route_slot still has no producer for unit+1ACh and returns -1; the caller therefore never supplies a live bounded slot or native scoring-record owner."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen reset",
+      "reason": "The pick-screen owner still lacks the selection-mode +30h and selection-vector +C4h producer needed to reset its actual selection."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_movie_camera",
+      "reason": "The legacy +98h spectate-screen and target owner graph is missing; the separate new movie camera cannot supply that object's real state."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_new_movie_camera",
+      "reason": "The +9Ch screen visibility/target producer and HUD spectated-selection setter are missing; the existing setter only records the operation."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::exit_free_camera_overlay",
+      "reason": "The +BCh camera-screen owner and the level-3 scene-request graph are missing; the host callback only records the operation."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_tactical_overlay",
+      "reason": "The support-manager tracked-unit/list/audio owner, camera-screen blocker state and level-3 scene-request graph are missing."
+    }
+  ]
+}
