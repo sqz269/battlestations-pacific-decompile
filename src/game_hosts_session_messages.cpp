@@ -60,6 +60,8 @@ struct HostSessionMessages::Image {
     NativeSessionMessage92Profile profile92{context};
     // Goal 4 chain 260: the kind 5Ah profile (vtable 00CFD9C4).
     NativeSessionMessage90Profile profile90{context};
+    // Goal 4 chain 260: the 5Dh profile (vtable 00CFD9D8).
+    NativeSessionMessage93Profile profile93{context};
     NativeSessionMessage88Profile profile88{target};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
@@ -416,6 +418,32 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
     construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
     read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
     return DirectorSubKindCopy{queued.selector_20, queued.value_24};
+}
+
+HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5d(
+    std::uint8_t arm, std::int32_t index) const {
+    const Image& image = *image_;
+    // 0071C730..0071C75E: 0075B430(5Dh), +18h word 0, +1Ah 0, +1Ch 0, +20h =
+    // the arm byte, +4h = 1, vtable 00CFD9D8 (profile93), +24h = the index.
+    NativeSessionMessage93 sent{};
+    construct_native_session_message_0075b430(&sent.header.base, 0x5d, image.session);
+    sent.header.sender_18 = 0;
+    sent.header.relay_1a = 0;
+    sent.header.flag_1c = 0;
+    sent.flag_20 = arm;
+    sent.header.base.delivery_04 = 1;
+    sent.header.base.profile_00 = image.profile93.slots;
+    sent.value_24 = index;
+
+    LocalStream stream;
+    write_native_session_message93_0071c7a0(&sent, &stream.out, image.context);
+    // 00768530 case 5Dh: operator new(28h), 0075B030 at 00769D44; 0076A27B
+    // vtable[8] = 0071C7E0 (00428D30 sign-extends the 5-bit index).
+    stream.begin_read();
+    NativeSessionMessage93 queued{};
+    construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
+    read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
+    return ClearCommandCopy{queued.flag_20, queued.value_24};
 }
 
 } // namespace bsp

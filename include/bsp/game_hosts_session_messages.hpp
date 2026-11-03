@@ -159,6 +159,17 @@ public:
     };
     DirectorSubKindCopy queue_director_sub_kind_5a(std::uint32_t sub_kind,
                                                    std::uint32_t value) const;
+    // Goal 4 chain 260. MT_GAMEUNIT_CLEARCMD (5Dh, session message 93):
+    // 0071C730's stores (0075B430(5Dh), +18h/+1Ah/+1Ch zero, +20h = arm, +4h
+    // = 1, vtable 00CFD9D8, +24h = index), then 0071C7A0 write (arm 1 bit,
+    // index 5 signed bits), 00768530 case 5Dh at 00769D44 (0075B030), 0071C7E0
+    // read. Returns the copy's +20h (non-zero as 1) and +24h, what 00721A40's
+    // 5Dh arm reads.
+    struct ClearCommandCopy {
+        std::uint8_t arm{0};
+        std::int32_t index{0};
+    };
+    ClearCommandCopy queue_clear_command_5d(std::uint8_t arm, std::int32_t index) const;
 
 private:
     struct Image;
