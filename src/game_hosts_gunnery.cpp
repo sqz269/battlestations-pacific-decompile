@@ -43,6 +43,7 @@
 #include "bsp/wire_goal4_chain266_switches.hpp"
 #include "bsp/wire_goal4_chain275_switches.hpp"
 #include "bsp/wire_goal4_chain277_switches.hpp"
+#include "bsp/wire_goal4_chain288_switches.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
@@ -2866,6 +2867,10 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, ImmediateFireState> immediate_fire_by_gun;
     std::vector<int> gun_turning_class;   // parallel to guns
+    // Chain 288: the installed +390h..+3A4h bot identities, retained for each
+    // live gun. 0072C6A0 consumes the actual device Type and owner ancestry;
+    // 00729BC0 selects among these slots using the current ammunition class.
+    std::vector<bsp::GunBotSlotAssignment> gun_bot_slots;
     // Packet cc9_torpedo_tube_turn (kTorpedoSwimThrustBound): the swimming
     // torpedo's nose yaw, keyed by the shot's serial. The velocity follows it.
     std::map<unsigned long long, float> torpedo_nose_yaw;
@@ -6994,6 +6999,18 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             }
             guns.push_back(gun);
             gun_turning_class.push_back(flat(type_id, make("gcls"), 0));
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                // 00443090's Type -> factory, and the class ancestry in
+                // entity_class_ids.cpp (006FDE40 / 00730ED0 / 006FDF20 /
+                // 006FE050). Read Type itself rather than infer it from Function.
+                const std::string device_type = lua.read_device_class_string(
+                    gun.device_class, "Type");
+                const bool turning = _stricmp(device_type.c_str(), "Rapid_Turning_Gun") == 0
+                    || _stricmp(device_type.c_str(), "Single_Turning_Gun") == 0
+                    || _stricmp(device_type.c_str(), "Depth_Charge_Launcher") == 0;
+                gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
+                    gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+            }
         }
     }
 
@@ -7855,9 +7872,56 @@ public:
             }
             in_range = reach <= (dp != nullptr ? dp->max_range : row.max_range);  // 00729C8A JA
         }
+        bsp::GunBotClass selected_bot = bsp::GunBotClass::kNone;
+        if constexpr (bsp::kWireGoal4Chain288Bound) {
+            // BSP_Gun_BotSlotAcceptsTarget, export 00729BC0..00729D27:
+            // +3F4h/+74h selects Bullet[2] only for Function 6 vs a plane;
+            // the selected projectile's +8h chooses a slot, whose null value
+            // refuses the candidate. The typed slots were installed once at
+            // build_guns, not guessed from the candidate's category here.
+            const bool plane = other < owner_.units.count()
+                && owner_.units.unit_is_kind_of(other, 0x0f);
+            const auto* second = plane && row.category == 6
+                ? owner_.dp_air_ammo(slot, row.category, other) : nullptr;
+            const bool have_ammo = row.category != 6 || !plane || second != nullptr;
+            const int projectile_kind = second != nullptr
+                ? second->sub_type : row.bullet_sub_type;
+            const bool side2_fort = other < owner_.units.count()
+                && owner_.units.unit_is_kind_of(other, 5)
+                && owner_.units.unit_side_0054(other) == 2;
+            if (in_range && !side2_fort && have_ammo && slot < owner_.gun_bot_slots.size()) {
+                const auto& bots = owner_.gun_bot_slots[slot];
+                const std::size_t selected = bsp::bot_slot_for_projectile_kind_00729bc0(
+                    projectile_kind, row.category);
+                switch (selected) {
+                case 0x390: selected_bot = bots.primary; break;
+                case 0x394: selected_bot = bots.aa_flak; break;
+                case 0x398: selected_bot = bots.artillery_gunner; break;
+                case 0x39c: selected_bot = bots.torpedo; break;
+                case 0x3a0: selected_bot = bots.depth_charge; break;
+                case 0x3a4: selected_bot = bots.artillery_gunner_second; break;
+                default: break;
+                }
+            }
+            in.slot_accepts_target = in_range && !side2_fort
+                && selected_bot != bsp::GunBotClass::kNone;
+        } else {
         in.slot_accepts_target = in_range;
-        if (row.category == bsp::kUnitGunneryTorpedoCategory && in_range
-            && other < owner_.units.count()) {
+        }
+        const bool run_torpedo_acceptance = [&]() {
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                // 00729C13's side-2 refusal and the range/ammo/slot refusals
+                // precede vtable[1Ch]. Its assigning return must never revive
+                // one of those rejected candidates, or run another slot's bot.
+                return in.slot_accepts_target
+                    && selected_bot == bsp::GunBotClass::kTorpedo
+                    && other < owner_.units.count();
+            } else {
+                return row.category == bsp::kUnitGunneryTorpedoCategory && in_range
+                    && other < owner_.units.count();
+            }
+        }();
+        if (run_torpedo_acceptance) {
             // 008FC010 -> 00828EC0: a torpedo-proof small craft (kTorpedoBotSmallCraftBound).
             const bool small_craft = owner_.units.unit_is_kind_of(other, 0x0E)
                 || (owner_.units.unit_is_kind_of(other, 0x0C)
@@ -7894,7 +7958,11 @@ public:
             // Evaluated on every call; each term is applied only when its own
             // switch is on, and counted either way.
             bsp::GunneryGunInputs observed = in;
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                bind_aa_acceptance(row, other, observed, selected_bot);
+            } else {
             bind_aa_acceptance(row, other, observed);
+            }
             // DIAGNOSTIC, env-gated (GUNNERY 147.2 item 6): with BSP_FIRE_GATE_TRACE
             // naming this unit and BSP_FIRE_GATE_TARGET naming the candidate, each
             // gun's slot answer once a second: the range test and the term that
@@ -7924,6 +7992,12 @@ public:
                 in.is_torpedo_class_launcher = observed.is_torpedo_class_launcher;
                 in.minimum_air_range = observed.minimum_air_range;
             }
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                // The selected bot's acceptance is the return value, including
+                // the artillery slot of a kind-9 launcher. Keep the existing
+                // per-term switches inside bind_aa_acceptance.
+                in.slot_accepts_target = observed.slot_accepts_target;
+            } else {
             if constexpr (kAaFireWindowBound || kAaArmourBound) {
                 if (!observed.slot_accepts_target
                     && ((kAaFireWindowBound && last_refusal_ == AaRefusal::window)
@@ -7931,6 +8005,7 @@ public:
                         || (kAaLineOfFireBound && last_refusal_ == AaRefusal::line_of_fire))) {
                     in.slot_accepts_target = false;
                 }
+            }
             }
         }
         if (!in_range && other < owner_.unit_state.size()
@@ -7972,7 +8047,8 @@ public:
     enum class AaRefusal { none, window, armour, line_of_fire };
     AaRefusal last_refusal_{AaRefusal::none};
     void bind_aa_acceptance(const GameGunRow& row, std::size_t other,
-                            bsp::GunneryGunInputs& in) {
+                            bsp::GunneryGunInputs& in,
+                            bsp::GunBotClass selected_bot = bsp::GunBotClass::kNone) {
         last_refusal_ = AaRefusal::none;
         if (other >= owner_.units.count()) return;
         const bool plane = owner_.units.unit_is_kind_of(other,
@@ -8080,7 +8156,14 @@ public:
             }
             return reach;
         };
-        if (kind == 6 && !(kAaKind6GateBound && plane)) {
+        const bool kind6_artillery = [&]() {
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                return kind == 6 && selected_bot == bsp::GunBotClass::kArtilleryGunner;
+            } else {
+                return kind == 6 && !(kAaKind6GateBound && plane);
+            }
+        }();
+        if (kind6_artillery) {
             // 006DEF30, the ArtilleryGunnerBot accept, evaluated OFF too so the
             // refusals it would add are counted. [[bot+50h]+3Ch] is taken as
             // present (an unread precondition, labelled), and the solve takes
@@ -8102,7 +8185,14 @@ public:
             line_of_fire_refuses();
             return;
         }
-        if (kind == 2 || kind == 3 || kind == 4) {
+        const bool artillery = [&]() {
+            if constexpr (bsp::kWireGoal4Chain288Bound) {
+                return selected_bot == bsp::GunBotClass::kArtilleryGunner;
+            } else {
+                return kind == 2 || kind == 3 || kind == 4;
+            }
+        }();
+        if (artillery) {
             // kArtilleryAcceptGateBound: 006DEF30 for the ArtilleryGunnerBot kinds,
             // counted either way. No line of fire for these kinds (0072F6E0 answers 1).
             if (len <= 0.0f || row.arcs.empty()) return;
@@ -8117,7 +8207,13 @@ public:
         }
         // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
         // below and then the line of fire, as kind 5.
+        if constexpr (bsp::kWireGoal4Chain288Bound) {
+            if (selected_bot != bsp::GunBotClass::kAAGunner
+                && selected_bot != bsp::GunBotClass::kTailGunner
+                && selected_bot != bsp::GunBotClass::kAAFlak) return;
+        } else {
         if (kind != 1 && kind != 5 && kind != 6) return;
+        }
         if constexpr (kWireGoal4Chain250Bound) {
             // Goal 4 chain 250: the slot bot's vtable[1Ch] body. Kind 1 on a
             // ship is the AAGunnerBot (slot +390h, 008FBE00: the armour term,
@@ -8153,7 +8249,14 @@ public:
                 bsp::kUnitGunneryKindPlaneBase);
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
             bool accepts = false;
-            if (kind == 1 && !tail_gunner) {
+            const bool aa_gunner = [&]() {
+                if constexpr (bsp::kWireGoal4Chain288Bound) {
+                    return selected_bot == bsp::GunBotClass::kAAGunner;
+                } else {
+                    return kind == 1 && !tail_gunner;
+                }
+            }();
+            if (aa_gunner) {
                 s59::AaGunnerAcceptInputs a;
                 a.has_target = true;   // other < count, tested on entry
                 // LABELLED: a gun with no host bullet row keeps no armour term,
@@ -9484,9 +9587,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (!kGunWaveOrderBound) mst_salvo_test();
 
         // Which of the five aim bots this gun's weapon sub-type selects.
+        if constexpr (bsp::kWireGoal4Chain288Bound) {
+            // Slots now have a lifetime: build_guns installs them once.
+        } else {
         const bsp::GunBotSlotAssignment slots
             = bsp::gun_bot_slots_for_subtype_0072c6a0(gun.category, true, false);
         (void)slots;
+        }
 
         float want_horz = gun.rest_horz;
         float want_vert = gun.rest_vert;
