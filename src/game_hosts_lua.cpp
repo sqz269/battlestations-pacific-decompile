@@ -17,6 +17,7 @@
 #include "bsp/wire_goal2_chain119_switches.hpp"
 #include "bsp/wire_goal2_chain124_switches.hpp"
 #include "bsp/wire_goal2_chain130_switches.hpp"
+#include "bsp/wire_goal2_chain143_switches.hpp"
 #include "bsp/cc13_avoid1_seg61.hpp"  // 00947A30, chain 130
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
@@ -11979,6 +11980,29 @@ int GameMissionLuaHost::run_dofile(const std::string& path) {
 // Bring-up
 // ---------------------------------------------------------------------------
 
+namespace {
+
+// 00884C84..00884C94 supplies null result and error sinks. The existing chunk
+// body therefore cannot call any of these hooks. Reject an unexpected call
+// rather than inventing a variant owner or an error-string representation.
+class UncollectedLuaChunkHooks final : public bsp::cc13_seg29::LuaVariantHooks {
+public:
+    void copy_construct_variant_00886da0(void*, const void*) override { unexpected(); }
+    void construct_variant_008849b0(void*) override { unexpected(); }
+    void destroy_variant_virtual(void*) override { unexpected(); }
+    void collect_stack_results_00887220(bsp::cc13_seg29::LuaResultHolder*, int, int) override {
+        unexpected();
+    }
+    void native_string_assign_0041e350(void*, const char*) override { unexpected(); }
+
+private:
+    [[noreturn]] static void unexpected() {
+        throw std::logic_error("00884C94 has no Lua result or error sink");
+    }
+};
+
+}  // namespace
+
 bool GameMissionLuaHost::start_machine_00884be0() {
     if (state_ != nullptr) return true;
     set_phase("machine");
@@ -12006,10 +12030,27 @@ bool GameMissionLuaHost::start_machine_00884be0() {
     if (resources_ != nullptr && resources_->read_file("Scripts/fundamentals.lua",
             kScriptReadMode, bytes) && !bytes.empty()) {
         set_phase("fundamentals");
+        // 006B89F0 calls lua_machine_run_chunk_006b89f0; OFF keeps run_lua_chunk.
+        if constexpr (bsp::kWireGoal2Chain143Bound) {
+            // Reuse 006B7E30's non-owning machine view: +4h is this host's
+            // create_state() result and +8h is its constructor's owns=false.
+            // The VFS bytes are already the host's 00884770 substitute above.
+            // At 00884C94 the image passes depth=2 and both optional sinks null.
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            UncollectedLuaChunkHooks hooks;
+            const int failed = bsp::cc13_seg29::lua_machine_run_chunk_006b89f0(machine,
+                reinterpret_cast<const char*>(bytes.data()), bytes.size(),
+                bsp::kMissionLuaFundamentalsChunk, nullptr, nullptr, 2, hooks);
+            // The native reports one failure bit and discards error text here.
+            last_status_ = failed;
+            last_chunk_ = bsp::kMissionLuaFundamentalsChunk;
+            summary_.fundamentals_ran = failed == 0;
+        } else {
         const bsp::LuaChunkResult result = bsp::run_lua_chunk(*this,
             reinterpret_cast<const char*>(bytes.data()), static_cast<int>(bytes.size()),
             bsp::kMissionLuaFundamentalsChunk, true, false, 2);
         summary_.fundamentals_ran = result.status == bsp::LuaChunkStatus::Ok;
+        }
         log_.implemented("MissionLua::fundamentals_chunk", "00884c94");
     } else {
         log_.unimplemented("MissionLua::fundamentals_chunk", "00884770");
