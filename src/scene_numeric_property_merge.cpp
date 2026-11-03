@@ -8,8 +8,11 @@
 #include "bsp/native_scene_property_bool_add.hpp"
 #include "bsp/native_scene_property_float_add.hpp"
 #include "bsp/native_scene_property_integer_add.hpp"
+#include "bsp/native_scene_property_string_add.hpp"
+#include "bsp/native_scene_typed_array_vector_providers.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/wire_goal4_chain307_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -21,7 +24,7 @@
 namespace bsp::game {
 
 // A bounded projection of the scene host's owning property trees. Only explicit
-// I/F/B values are admitted; their real parser-owned payloads feed the original
+// I/F/B/S/V3 values are admitted; their real parser-owned payloads feed the original
 // insertion producers and the whole 008F54F0 merge. Unsupported keys stay in the
 // host tree. Unique scalar keys are independent of the omitted keys/children;
 // scalar/child collisions and differing tags are deliberately left to the host.
@@ -71,6 +74,39 @@ public:
         const auto* record = static_cast<const std::byte*>(destination_.find(value.key));
         std::uint32_t tag;
         std::memcpy(&tag, record + 4, sizeof(tag));
+        if constexpr (kWireGoal4Chain307Bound) {
+            switch (tag) {
+            case 0:
+                std::memcpy(&value.integer_value, record + 0x0c, sizeof(value.integer_value));
+                value.has_integer = true;
+                break;
+            case 1:
+                std::memcpy(&value.float_value, record + 0x0c, sizeof(value.float_value));
+                value.has_float = true;
+                break;
+            case 2: {
+                // bsp.py show 008F0700: native assignment frees/duplicates
+                // type-2 +0C, so publish the merged owner, not source tokens.
+                const char* text;
+                std::memcpy(&text, record + 0x0c, sizeof(text));
+                value.values.assign(1, text);
+                value.has_string = true;
+                break;
+            }
+            case 3:
+                std::memcpy(&value.boolean_value, record + 0x0c, sizeof(value.boolean_value));
+                value.has_boolean = true;
+                break;
+            case 7:
+                // 008F3690 and 008F0700 copy the three +0C/+10/+14 words.
+                // Bit transport preserves signed zero without float math.
+                std::memcpy(value.vector3.data(), record + 0x0c, sizeof(value.vector3));
+                value.has_vector3 = true;
+                break;
+            default:
+                throw std::logic_error("unexpected merged scene property tag");
+            }
+        } else {
         switch (tag) {
         case 0:
             std::memcpy(&value.integer_value, record + 0x0c, sizeof(value.integer_value));
@@ -87,6 +123,7 @@ public:
             break;
         default:
             throw std::logic_error("unexpected merged numeric property tag");
+        }
         }
         return value;
     }
@@ -108,9 +145,19 @@ private:
     static bool supported(const SceneProperty& value) {
         if (std::any_of(value.key.begin(), value.key.end(),
                 [](unsigned char c) { return c == 0 || c >= 0x80; })) return false;
+        if constexpr (kWireGoal4Chain307Bound) {
+            return (value.type_letter == "I" && value.has_integer)
+                || (value.type_letter == "F" && value.has_float)
+                || (value.type_letter == "B" && value.has_boolean)
+                || (value.type_letter == "V3" && value.has_vector3)
+                || (value.type_letter == "S" && value.has_string
+                    && value.values.size() == 1
+                    && value.values.front().find('\0') == std::string::npos);
+        } else {
         return (value.type_letter == "I" && value.has_integer)
             || (value.type_letter == "F" && value.has_float)
             || (value.type_letter == "B" && value.has_boolean);
+        }
     }
     static std::size_t occurrences(const ScenePropertyBlock& bag, const std::string& key) {
         return static_cast<std::size_t>(std::count_if(bag.values.begin(), bag.values.end(),
@@ -136,6 +183,30 @@ private:
         Bag& operator=(const Bag&) = delete;
         void* data() { return storage_.data(); }
         void insert(const SceneProperty& value) {
+            if constexpr (kWireGoal4Chain307Bound) {
+                if (value.type_letter == "I") {
+                    std::uint32_t bits;
+                    std::memcpy(&bits, &value.integer_value, sizeof(bits));
+                    add_native_scene_property_integer_word_008f3710(data(), value.key.c_str(), bits, context_);
+                } else if (value.type_letter == "F") {
+                    std::uint32_t bits;
+                    std::memcpy(&bits, &value.float_value, sizeof(bits));
+                    add_native_scene_property_float_bits_008f3770(data(), value.key.c_str(), bits, context_);
+                } else if (value.type_letter == "B") {
+                    add_native_scene_property_bool_byte_008f3940(
+                        data(), value.key.c_str(), value.boolean_value, context_);
+                } else if (value.type_letter == "S") {
+                    // bsp.py show 008F38A0: the whole producer duplicates
+                    // this borrowed decoded value into its owning type-2 root.
+                    add_native_scene_property_string_008f38a0(
+                        data(), value.key.c_str(), value.values.front().c_str(), context_);
+                } else {
+                    // bsp.py show 008F3690: native type 7 owns three inline
+                    // words copied from the parser's retained binary32 lanes.
+                    add_native_scene_property_three_word_008f3690(
+                        data(), value.key.c_str(), value.vector3.data(), context_);
+                }
+            } else {
             if (value.type_letter == "I") {
                 std::uint32_t bits;
                 std::memcpy(&bits, &value.integer_value, sizeof(bits));
@@ -147,6 +218,7 @@ private:
             } else {
                 add_native_scene_property_bool_byte_008f3940(
                     data(), value.key.c_str(), value.boolean_value, context_);
+            }
             }
         }
         void* find(const std::string& key) {

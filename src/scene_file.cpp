@@ -12,6 +12,7 @@
 #include "bsp/wire_goal2_chain202_switches.hpp"
 #include "bsp/wire_goal4_chain258_switches.hpp"
 #include "bsp/wire_goal4_chain284_switches.hpp"
+#include "bsp/wire_goal4_chain307_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -550,6 +551,14 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 }
             } while (cur.lexer().peek().quoted);
             prop.values.push_back(std::move(value));
+            }
+            if constexpr (kWireGoal4Chain307Bound) {
+                // 008F5CF6 reads quoted runs before 008F38A0 duplicates the
+                // decoded text. Retain presence only for a closed statement;
+                // empty quoted text is present, while bare S ';' stays raw.
+                prop.has_string = cur.at(";") && prop.values.size() == 1;
+            } else {
+                // The previous parser retained only the decoded token.
             }
         } else if (equal_insensitive(prop.type_letter, "F") && !cur.at(";")) {
             // Successful explicit F: 008F5C55 reads, 008F5C5A stores binary32.

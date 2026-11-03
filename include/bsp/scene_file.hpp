@@ -110,6 +110,9 @@ struct SceneProperty {
     bool has_boolean{false};
     std::int32_t integer_value{0};
     bool has_integer{false};
+    // A closed explicit S statement owns its decoded text in values.front().
+    // Raw/context-dependent S token scans do not establish this payload.
+    bool has_string{false};
 };
 
 // A property block: scalar assignments plus nested "Name" { ... } sub-blocks.
