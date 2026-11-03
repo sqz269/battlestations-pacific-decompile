@@ -2,6 +2,7 @@
 // Every constant here is quoted from a native store or compare; nothing is
 // invented to make a call site link.
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/wire_goal4_chain285_switches.hpp"
 
 #include <algorithm>
 #include <cctype>
@@ -12,10 +13,12 @@ namespace bsp {
 // Evidence: both complete listings, null guard then CRT _stricmp and SETZ AL.
 // CRT binding retains the active locale. This source API takes the +118h field
 // value rather than the original ECX layout and is not a native ABI replacement.
-bool scene_property_decl_is_enum_letter_008f02b0(const char* letter) noexcept {
+// Keep these address-bearing bodies out of line so the bound game caller can
+// be audited independently in the Release executable's call graph.
+__declspec(noinline) bool scene_property_decl_is_enum_letter_008f02b0(const char* letter) noexcept {
     return letter != nullptr && _stricmp(letter, "E") == 0;
 }
-bool scene_property_decl_is_lua_s_letter_008f02e0(const char* letter) noexcept {
+__declspec(noinline) bool scene_property_decl_is_lua_s_letter_008f02e0(const char* letter) noexcept {
     return letter != nullptr && _stricmp(letter, "LUA_S") == 0;
 }
 namespace {
@@ -109,14 +112,30 @@ bool scene_property_type_for_letter(const std::string& letter,
             return true;
         }
     }
-    if (equals_no_case(letter, "LUA_S")) {   // 00D162D8, the second type-4 letter
-        type = ScenePropertyType::Enum;
-        return true;
+    if constexpr (kWireGoal4Chain285Bound) {
+        // 008F02B0/008F02E0: null-guarded _stricmp of the declaration's
+        // +118h letter with E/LUA_S (bsp.py show for both complete bodies).
+        // The host projection supplies the actual authored type-letter field:
+        // world_map_bounds.cpp::decode passes SceneProperty::type_letter here.
+        if (scene_property_decl_is_enum_letter_008f02b0(letter.c_str()) ||
+            scene_property_decl_is_lua_s_letter_008f02e0(letter.c_str())) {
+            type = ScenePropertyType::Enum;
+            return true;
+        }
+    } else {
+        if (equals_no_case(letter, "LUA_S")) {   // 00D162D8, the second type-4 letter
+            type = ScenePropertyType::Enum;
+            return true;
+        }
     }
     for (int i = 0; i <= 11; ++i) {
         if (i == static_cast<int>(ScenePropertyType::Reference) ||
             i == static_cast<int>(ScenePropertyType::SubBag)) {
             continue;
+        }
+        if constexpr (kWireGoal4Chain285Bound) {
+            // E was already classified by 008F02B0; do not run its old test.
+            if (i == static_cast<int>(ScenePropertyType::Enum)) continue;
         }
         const auto candidate = static_cast<ScenePropertyType>(i);
         if (equals_no_case(letter, scene_property_type_letter(candidate))) {

@@ -1,0 +1,153 @@
+{
+  "chain": 285,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain285Bound",
+  "switch_header": "include/bsp/wire_goal4_chain285_switches.hpp",
+  "rows": [
+    {
+      "native": "008f02b0",
+      "status": "wired",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter, called by src/world_map_bounds.cpp::decode on SceneProperty::type_letter",
+      "evidence": "Complete 008F02B0 export: null guard and _stricmp(letter, \"E\"); existing explicit +118h-field projection reused."
+    },
+    {
+      "native": "008f02e0",
+      "status": "wired",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter, called by src/world_map_bounds.cpp::decode on SceneProperty::type_letter",
+      "evidence": "Complete 008F02E0 export: null guard and _stricmp(letter, \"LUA_S\"); existing explicit +118h-field projection reused."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0..3 / remap",
+      "reason": "The host has only a remap log stub; native service storage, texture-cache context and canonical renderer-owner lifetime bindings are missing."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0..3 / remap",
+      "reason": "The host has only a remap log stub; native service storage, texture-cache context and canonical renderer-owner lifetime bindings are missing."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0..3 / remap",
+      "reason": "The host has only a remap log stub; native service storage, texture-cache context and canonical renderer-owner lifetime bindings are missing."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0..3 / remap",
+      "reason": "The host has only a remap log stub; native service storage, texture-cache context and canonical renderer-owner lifetime bindings are missing."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party/difficulty setup",
+      "reason": "Single-player campaign mode bypasses the native difficulty caller; a verified native brain/planner selection contract for other modes is missing from this packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group capture planning",
+      "reason": "A native-style AiGroupScoreList producer and gameplay consumer are missing; the host currently plans with weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group capture planning",
+      "reason": "No consumed AiGroupScoreList entries exist to mark chosen; host assignment/live fields have a separate contract."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group resource scoring",
+      "reason": "The member ResourceUsage projection is missing; the existing capture resource value is a literal, not produced member state."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend think member loop",
+      "reason": "No additional wiring is needed: the existing kDefendThinkImageBound arm already calls this body with unit-kind and team-set membership state."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The ambient setter has no bound SoundInstance/channel owner; that producer is required before calling the volume mutator."
+    },
+    {
+      "native": "00a3e3b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: profile_change_pending",
+      "reason": "The online/profile-sign-in poll has no produced profile-change event state in this single-player menu host."
+    },
+    {
+      "native": "004b43b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: input_edge_latch",
+      "reason": "The binding from the live primary-input owner to this predicate's edge-latch state is missing; the current host method returns false."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: write_checkpoint",
+      "reason": "Mission start precedes the mission Lua owner, so its BSP_Chk_Save table is unavailable at this site; the native storage rewrite path is also missing."
+    },
+    {
+      "native": "005c9f70",
+      "status": "skipped",
+      "host_site": "src/mission_tree_data.cpp: mission group loader",
+      "reason": "The live group loader already calls this address's shared read_mission_group_impl with bound NativeMissionPictureLoader services; only the address-bearing wrapper's graph attribution is missing, so no duplicate validation call was added."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: read_typed_value / ScenePropertyBagHost::decode_byte_token",
+      "reason": "The parser host has no live byte-decoder implementation or reached BIN consumer; scene_file currently retains raw property tokens, so an auxiliary decode would not replace a live consumer."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "The existing reference-kind letter body already runs through the classifier; its ledger identifier differs from the source name, so no duplicate wiring was added."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_bigB1.cpp: cc13_bigB1_movcam_step_007a91a0",
+      "reason": "The enclosing camera-step body has no game host caller and its movcam_aim_delta_00794910 host method has no concrete implementation."
+    }
+  ],
+  "wired_total_before": 9245,
+  "validation": {
+    "baseline_build": "passed; reconstructed_math and tool_tests",
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Source projection and linked entry reachability; original ABI and gameplay behavior are not established.",
+    "final_build": "passed; reconstructed_math and tool_tests",
+    "call_graph": "Both address-bearing bodies have one direct call from entry-reachable scene_property_type_for_letter in the Release executable.",
+    "entry_path": "WinMain -> mission scene loading -> read_world_map_settings_004e6c00 -> decode -> scene_property_type_for_letter -> predicate",
+    "call_sites": {
+      "008f02b0": "105331eb",
+      "008f02e0": "10533206"
+    },
+    "diff_check": "passed",
+    "wire_readiness": {
+      "008f02b0": {
+        "state": "ready",
+        "called": true,
+        "call_sites": 1
+      },
+      "008f02e0": {
+        "state": "ready",
+        "called": true,
+        "call_sites": 1
+      }
+    },
+    "source_counter_caveat": "The file-granular source scanner follows address-suffixed and ledger-backed plain identifiers; it misses world_map_bounds.cpp::decode -> scene_property_type_for_letter. Both rows therefore remain ready despite called=true and one entry-reachable direct call each. The source total is 9245 -> 9245; the binary confirms two newly reached bodies."
+  },
+  "remaining": "Native E/LUA_S declaration/value assignment and live BIN byte consumption remain separate work; this packet binds type-letter classification only.",
+  "wired_total_after": 9245,
+  "new_entry_reachable_bodies": 2
+}
