@@ -37,12 +37,15 @@
 //   the soldier's own update is not modelled. Its 004B0F80 start-phase draw is
 //   taken only under its sub-switch.
 
+#include "bsp/fixed_step_callbacks.hpp"
 #include "bsp/gameplay_seg46_cc13.hpp"
 #include "bsp/soldier_traffic_cc13.hpp"
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace bsp {
@@ -116,6 +119,19 @@ struct Round {
     const char* death{nullptr};
 };
 
+// Wire g2-w2 (kWireGoal2Chain179Bound): the round's fixed-step callback node, the
+// sub-object at +3E4h that 007AC095 hands 00875A80 (ECX = round+3E4h). The node is
+// the first member, so the walk's node converts back to its owner as 007AB590's
+// ECX = node does. LABELLED: the host keys it by round id in RoundWorld (a std::map,
+// address-stable while linked) instead of embedding it in Round, whose vector moves.
+struct RoundCallbackNode {
+    FixedStepCallbackNode node{};
+    std::uint32_t round_id{0};
+};
+static_assert(std::is_standard_layout_v<RoundCallbackNode> &&
+                  offsetof(RoundCallbackNode, node) == 0,
+              "the walk's node converts back to its RoundCallbackNode");
+
 struct RoundCounters {
     unsigned long long constructs{0};
     unsigned long long construct_draws{0};
@@ -148,6 +164,11 @@ struct ChuteLengths {
 
 class RoundWorld {
 public:
+    RoundWorld();
+    // The callback list links its own sentinels (and the rounds' nodes), so the
+    // world is not copied.
+    RoundWorld(const RoundWorld&) = delete;
+    RoundWorld& operator=(const RoundWorld&) = delete;
     // 007AB8C0 then 007AC530 for a round 006E3E70 hangs on a 31h rack. The
     // constructor's U(ParachuteOpenAltitudeMin, Max) is stream 1 (007AB94A);
     // without `draw` it is not taken and +468h is the midpoint (recorded).
@@ -170,10 +191,22 @@ public:
 
 private:
     friend class RoundAdapter;
+    friend class RoundCallbackRun;
+    void land_registered_round(Round& r, float now, bool soldier_draw, RoundServices& svc);
+    void register_round_callback(Round& r);
+    void release_round_callbacks();
     std::vector<Round> rounds_;
     std::vector<std::pair<std::uint32_t, std::uint32_t>> capturer_list_;   // (building, round id)
     std::uint32_t next_id_{1};
     RoundCounters counters_{};
+    // Wire g2-w2 (kWireGoal2Chain179Bound): the list 00875A80 appends the rounds'
+    // nodes to and 00874DE0 walks at the head of step(). LABELLED: the image's list
+    // is the registry singleton's (00875340, head 00E0B748), walked by the fan-out
+    // at 00875E3F; this host runs the rounds inside the physics row (see
+    // para_round_step), ahead of 00875E3F, so the walk is taken where the model ran
+    // the callback, at the head of the next step, over a list only rounds join.
+    FixedStepCallbackList fixed_step_callbacks_{};
+    std::map<std::uint32_t, RoundCallbackNode> fixed_step_nodes_;
 };
 
 // 00803510 BSP_Party_RelativeTo(subject, reference): 2 when exactly one side is
