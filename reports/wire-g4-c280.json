@@ -1,0 +1,45 @@
+{
+  "chain": 280,
+  "slot": "g4-w3",
+  "base_head": "c76aa7649313fd1adc54c5ecb94a101631905425",
+  "picked": "Live weapon-director session-mode echo gate",
+  "switch": "bsp::kWireGoal4Chain280Bound",
+  "wired_before": 9235,
+  "wired_after": 9236,
+  "rows": [
+    {
+      "native": "006e38e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::session_field_f4h_is_0_or_1",
+      "evidence": "006E38E0..006E38F7 reads only session+F4h; original 0071E7C9 supplies game+1EF0h. The layout view reads its mode from the live SessionContext through session_mode_1fe4(). The reconstructed body replaces the host comparison."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The literal native initializer reads absolute sentinel words 00F87574/78/7C; this host lacks both a proven mapping for those runtime words and an owned native command-target record for the completion/event consumer."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::register_units",
+      "reason": "The native constructor needs a raw controller produced by 00720180, its owner endpoint and class-test callbacks; the live GameDirector currently owns typed fields rather than that controller/endpoint graph."
+    }
+  ],
+  "implementation": {
+    "state_origin": "session_mode_1fe4() reads SessionContext::session_word_1fe4 with the existing session switch semantics preserved.",
+    "layout": "A stack view publishes only the mode at original session offset F4h, checked by static_assert; 006E38E0 never reads the opaque prefix or retains the view.",
+    "switch_off": "The original inline mode==0 || mode==1 expression remains unchanged in the else arm.",
+    "scope": "Reuses the existing reconstructed body; no new address-suffixed function and no native ABI claim."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2).",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2).",
+    "call_graph": "call_graph.py who 006e38e0 reports REACHABLE with one direct call at 100794C0 from DirectorBinding::session_field_f4h_is_0_or_1; path runs through GameCommandsHost::issue and GameMissionFrameHost::run_mission_frame_004e4a40 to WinMainCRTStartup.",
+    "readiness": "wire_readiness.py --standins: 9235 -> 9236 wired; row 006e38e0 is wired, called=true, call_sites=1, callers_live=1; call graph is not stale.",
+    "float_math": "No floating-point arithmetic changed.",
+    "diff_check": "git diff --check passed.",
+    "game_run": "Not run, per assignment; build and static entry reachability do not establish gameplay or original ABI validation."
+  },
+  "left": "Native command-target result ownership and absolute sentinel mapping for 004F1830; native controller/endpoint production and kind callbacks for 008363E0."
+}

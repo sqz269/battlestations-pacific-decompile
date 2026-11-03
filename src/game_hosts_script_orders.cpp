@@ -33,6 +33,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/wire_goal4_chain257_switches.hpp"
+#include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/cc13_seg52.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
@@ -1328,6 +1329,11 @@ std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
     record.owner_player = spawn.owner_player;
     record.bag_skill = spawn.skill;
     record.bag_skill_source = "Skill";
+    if constexpr (bsp::kWireGoal4Chain270Bound) {
+        // The bag's Equipment when the caller's bag has one (MCatapult::Fire
+        // 006ECA20); the kamikaze bag has none and leaves the record's -1.
+        record.bag_equipment = spawn.equipment;
+    }
     record.created = true;
     for (int i = 0; i < 16; ++i) record.world[i] = spawn.world[static_cast<std::size_t>(i)];
 
@@ -1336,6 +1342,13 @@ std::uint32_t GameScriptOrdersHost::create_dummy_kamikaze_squadron_006fec00(
     request.type_class_id = spawn.plane_class;
     request.wing_count_present = true;
     request.wing_count_raw = 1;                       // 006FED63 PUSH 1, WingCount
+    if constexpr (bsp::kWireGoal4Chain270Bound) {
+        // The bag's Behaviour when the caller's bag has one (MCatapult::Fire
+        // 006ECA2F, 1); 007F47C7 stores it at +364h. The kamikaze bag has none,
+        // so -1 leaves the key absent and the constructor's -1 seed stands.
+        request.behaviour_present = spawn.behaviour >= 0;
+        request.behaviour = spawn.behaviour;
+    }
     const bsp::PlaneSquadronSpawnPlan plan = bsp::plane_squadron_plan_members_007f4580(request);
 
     const std::size_t before = units_.count();

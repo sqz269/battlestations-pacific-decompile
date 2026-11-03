@@ -1,0 +1,134 @@
+{
+  "chain": 276,
+  "slot": "g4-w3",
+  "base_head": "f95a3bb3e3",
+  "switch": "bsp::kWireGoal4Chain276Bound",
+  "picked": "Authored command-path source lifetime and point queries",
+  "wired_before": 9225,
+  "wired_after": 9229,
+  "rows": [
+    {
+      "native": "007b22a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600 -> DirectorAuthoredPath::DirectorAuthoredPath",
+      "evidence": "bsp.py show 007b22a0: 0071F6DB creates a ref-counted authored source over the resolved Path interface; reused the existing reconstructed body."
+    },
+    {
+      "native": "007b1030",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_cursor_has_no_legs_007adc30 -> DirectorAuthoredPath::count",
+      "evidence": "bsp.py show 007b1030: source+08h supplies the point-pointer vector counted at path+08h/+0Ch."
+    },
+    {
+      "native": "007b10a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_cursor_point/path_cursor_point3 -> DirectorAuthoredPath::point",
+      "evidence": "bsp.py show 007b10a0: delegates source+08h, output and index to 007AF800; the host supplies the scene loader's retained world-point output."
+    },
+    {
+      "native": "007b10c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::path_final_point_007b1350 -> DirectorAuthoredPath::last_point",
+      "evidence": "bsp.py show 007b10c0: selects count-1 and delegates the world-point read; existing positive-count/follow-mode guards remain."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl recon triple publication",
+      "reason": "Missing native recon-slot/group-member views, per-slot unit detection storage and observer/change-delegate delivery for group-level publication."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture/defend planner group-resource accounting",
+      "reason": "Missing live member+304h ResourceUsage producer/accessor; the current planner substitutes a constant zero for every group."
+    },
+    {
+      "native": "00a2c720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: close_in_target_group",
+      "reason": "Missing raw group+563Ch member-list/sentinel adapter for the existing native-layout reconstructed body."
+    },
+    {
+      "native": "00a10c60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: can_auto_merge",
+      "reason": "Missing native command/group leader views and AiBindings for the active-tuning and leader-position providers."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::create_00a32350 tuning selection",
+      "reason": "Missing reconciliation of the existing first-active-slot helper with the host's difficulty interpretation and actual difficulty producer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner score-list ownership",
+      "reason": "Missing runtime score-list owner and the full sixteen-term scored-record producer consumed by insert_sorted."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner score-list ownership",
+      "reason": "Missing populated score-list owner and chosen-record selection path on which mark_chosen operates."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend planner pass A",
+      "reason": "Already called by the ON kDefendThinkImageBound path: call_graph who confirms one reachable call from defend_think_00a28a60; readiness classification needs investigation, not duplicate wiring."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry::check_player_count",
+      "reason": "Multiplayer-only participant-count enforcement is outside the single-player wiring scope."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "Missing real movie decoder, video textures and loaded movie-page/widget objects."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Missing native movie/GUI subtitle owner; the current host only retains a typed subtitle schedule."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: set_widget_local_z",
+      "reason": "Missing loaded movie-page widget and its real transform state."
+    },
+    {
+      "native": "00aa31f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: release_movie_page",
+      "reason": "Missing loaded movie page, registry manager and native page lifetime provider."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "Missing actual command-target owner/result lifetime and native absolute seed publications required by the literal initializer."
+    }
+  ],
+  "implementation": {
+    "state_origin": "GameScriptOrdersHost::session_route_path_order_message and issue_shipyard_moveonpath_008454b4 pass ScenePathRegistry::points_world to begin_path_command_0071f600.",
+    "ownership": "DirectorAuthoredPath retains copied world points, stable PathComponentState point pointers and the existing constructor's AuthoredPathSource; director copies share the owner and user builds release it.",
+    "scope": "Typed host projection over already transformed scene points; no new address-suffixed body, no native ABI claim and no extra world transform.",
+    "switch_off": "All existing host-code replacements retain their old statements in the false arm; user-path queries retain their existing branch."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, reconstructed_math and tool_tests passed (2/2).",
+    "changed_build": "scripts/build.ps1 passed, reconstructed_math and tool_tests passed (2/2).",
+    "call_graph": "All four reconstructed bodies are REACHABLE with one direct call site each from game_hosts_commands.obj; who queried separately for every address.",
+    "readiness": "wire_readiness.py --standins: 9225 -> 9229 wired; each selected row is wired, called=true, call_sites=1 and callers_live=1 in local/output/wire_readiness.json.",
+    "float_math": "No float arithmetic changed; coordinates are copied only.",
+    "game_run": "Not run, per worker instruction; build and static executable reachability are not gameplay validation."
+  },
+  "left": "Native Path entity/ABI and archive-source load/save wiring, user-path source lifetime, recon publication, AI group/resource adapters and the missing movie GUI/decoder objects."
+}

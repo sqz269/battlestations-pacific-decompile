@@ -7,6 +7,7 @@
   "picked": "One-file property-library loading over mounted VFS bytes and the entity-consumed property/enum registries",
   "wired_total_before": 9230,
   "wired_total_after": 9231,
+  "count_note": "These totals record chain278's original one-function gain. The current total after merging other workers' changes is recorded under merge_origin_main.",
   "changes": [
     "FolderBinding now calls the existing load_prop_library_file body once per enumerated file; its OFF arm preserves the old file reader unchanged.",
     "Forward every authored parent and apply repeated group declarations to the existing library bag, matching 008F6AD7 and the 008F5AB3 parent merges.",
@@ -16,7 +17,7 @@
     "build": "./scripts/build.ps1: MSVC Win32 Release and both CTest groups passed",
     "regression": "One focused fixture in tests/math_tests.cpp checks repeated group writes, multiple parents, quoted enum symbols containing whitespace and an opening brace, and publication of both enum tables.",
     "call_graph": "python tools/call_graph.py; who 008f67b0; who load_prop_library_file; path load_prop_library_file",
-    "call_site": "101985CB -> 10411070 from GameSceneContentsHost::Impl::load_property_library::FolderBinding::load_library_file; reachable from WinMain through scene loading",
+    "call_site": "101998AB -> 104143B0 from GameSceneContentsHost::Impl::load_property_library::FolderBinding::load_library_file in the merged build; reachable from WinMain through scene loading",
     "address_alias_note": "The pre-existing body has the identifier load_prop_library_file without an address suffix. who 008f67b0 cannot resolve it; the existing wire_readiness address_comment mapping and symbol-name queries identify the actual body.",
     "off_identity": "Extraction against baseline HEAD confirms the old file-load block and Impl::parse_library_file are byte-identical.",
     "float_math_changed": false,
@@ -46,6 +47,24 @@
       "call_graph": "Rebuilt graph confirms the same entry-reachable 101985CB -> 10411070 host call and WinMain path.",
       "wiring": "Re-run wire_readiness.py --standins: 9231 wired; 008f67b0 remains wired and called.",
       "off_identity": "Host implementation and chain278 switch are unchanged from the reviewed HEAD; the previously verified OFF loader/parser remain intact.",
+      "game_run": false
+    }
+  },
+  "merge_origin_main": {
+    "merged_head": "c4cbd45a700f4edb9fe825a0e8d07bd66d9759a4",
+    "prior_branch_head": "77349d04e555ebaa572b5bf10c436d6991a56103",
+    "conflict": "src/game_hosts_scene_contents.cpp: adjacent chain270 and chain278 switch-header includes",
+    "resolution": "Keep both includes. Incoming catapult launch-property capture and the prior ON/OFF library loaders, application parser and enum termination fix are preserved.",
+    "ledger_or_cmake_conflicts": false,
+    "wired_total_after_merge": 9241,
+    "checks": {
+      "index": "python tools/bsp.py index --if-stale: fresh",
+      "build": "./scripts/build.ps1: MSVC Win32 Release and both CTest groups passed",
+      "on_build": "Verified kWireGoal4Chain278Bound=true, then ./scripts/build.ps1 -Target bsp_game -SkipTests passed; the full build also compiled this ON configuration",
+      "preservation": "Extraction verifies both prior ON/OFF library loaders and Impl::parse_library_file are byte-identical to 77349d04e, and the incoming chain270 catapult block is identical to origin/main",
+      "call_graph": "Rebuilt graph: load_prop_library_file is entry-reachable at 104143B0, called from FolderBinding::load_library_file at 101998AB",
+      "wire_readiness": "python tools/wire_readiness.py --standins: 9241 wired; 008f67b0 remains wired/called with two reachable static call sites",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: zero findings",
       "game_run": false
     }
   },
