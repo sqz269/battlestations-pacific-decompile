@@ -61,6 +61,18 @@ struct Pool13Host {
 // 006BF330: available stock of one plane class in an air-ops block.
 std::int32_t air_ops_free_stock_for_class_006bf330(Pool13Host& host, Object block, Object vehicle_class);
 // 006BF620: the block may send planes.
+// The five values the body tests, typed over whatever storage holds the block:
+// the bytes +1Ch and +1Dh, whether the owner [+7Ch] is set, the owner's byte
+// +5Dh (meaningful only when the owner is set) and the dword +38h.
+struct AirOpsBlockReadyView {
+    bool runway_failure_1c;
+    bool hangar_failure_1d;
+    bool owner_present_7c;
+    bool owner_blocked_5d;
+    std::uint32_t held_entity_38;
+};
+bool air_ops_block_is_ready_to_send_planes_006bf620(const AirOpsBlockReadyView& block) noexcept;
+// The image-layout entry: reads the block and forwards to the typed view.
 bool air_ops_block_is_ready_to_send_planes_006bf620(Object block) noexcept;
 // 006C2400: debug lines for the runway takeoff/touchdown distances.
 void air_ops_holder_debug_draw_runway_distances_006c2400(Pool13Host& host, Object holder);
