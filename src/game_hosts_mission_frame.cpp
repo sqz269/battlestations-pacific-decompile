@@ -74,6 +74,7 @@
 #include "bsp/wire_goal2_chain27_switches.hpp"
 #include "bsp/wire_goal2_chain36_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
+#include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/warning_string_seg64_argon.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -3221,6 +3222,49 @@ private:
     double image_double_00d7a308_{2.0};  // the double at 00D7A308
 };
 
+// Goal 2 chain 166 (kWireGoal2Chain166Bound): the WarningManagerHost 0096BF70
+// runs over. Its list is the manager's +E0h std::list (0096BFAB MOV EAX,[ESI+E4h],
+// 0096BFB3 ADD ESI,0E0h, 0096C010 MOV [ESI+8],0: head +E4h, size +E8h), the
+// list 009763E0 queues into, which this host keeps as WarningManagerState::
+// pending (chain 36's PendingWarningCancelView reads the same list). A node's
+// +8h payload is the queued Warning, deleted through vt[0](1) (0096BFE3..
+// 0096BFE9); the host's records are values, so a payload is the record's
+// address and its deletion is the clear that follows. The +24h critical section
+// has one thread here (as PowerupWarningReportBinding). SUBSTITUTION, labelled:
+// 0096C032..0096C042 run 005B83E0 BSP_VoiceOwner_StopAndClear on the in-game
+// GUI's +A4h voice owner when [00E198C4] is set. The HUD host's interface
+// manager builds no +A4h voice owner and this host plays no voice slot
+// (voice_ready 005B71D0 answers false, so no queued warning is ever spoken),
+// so there is nothing to stop: the GUI answers null and the stop is skipped,
+// the image's arm for a null [00E198C4]. 0096BF70 reaches nothing else.
+class PendingWarningClearBinding final : public bsp::cc13_seg49_64_78::WarningManagerHost {
+    using WarningObject = bsp::cc13_seg49_64_78::WarningObject;
+
+public:
+    explicit PendingWarningClearBinding(GameMissionFrameHost::Impl& host) : host_(host) {}
+    void lock_24() override {}
+    void unlock_24() override {}
+    void remove_from_list_0096c280(std::size_t, WarningObject*) override { unreached(); }
+    void delete_warning(WarningObject*) override { unreached(); }
+    std::vector<void*> waiting_payloads_e4() override {
+        std::vector<void*> payloads;
+        for (bsp::WarningRecord& record : host_.warning().pending) payloads.push_back(&record);
+        return payloads;
+    }
+    void delete_waiting_payload(void*) override { ++deleted_; }
+    void clear_waiting_list_e4() override { host_.warning().pending.clear(); }
+    void* ingame_gui_00e198c4() override { return nullptr; }
+    void voice_stop_005b83e0(void*) override { unreached(); }
+    std::size_t deleted() const noexcept { return deleted_; }
+
+private:
+    [[noreturn]] static void unreached() {
+        throw std::logic_error("0096BF70 does not reach this WarningManagerHost call");
+    }
+    GameMissionFrameHost::Impl& host_;
+    std::size_t deleted_{0};
+};
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -3565,6 +3609,18 @@ void game_warning_torpedo_effect_00977820(std::size_t unit) {
     // BSP_PointEffect_CreateWithParentMatrix(this+190h, entity+4A4h, identity)
     // and effect+9 = 1: render-side.
     host->record("WarningManager::torpedo_effect_spawn", 0x00977820u);
+}
+
+void game_warning_clear_waiting_queue() {
+    if constexpr (bsp::kWireGoal2Chain166Bound) {
+        // 008D0008 MOV ECX,ESI ([00F8A0C4]) / 008D000A CALL 0096BF70: the manager
+        // is this process's mission frame host; none exists before a mission.
+        GameMissionFrameHost::Impl* host = g_warning_owner;
+        if (host == nullptr) return;
+        PendingWarningClearBinding binding(*host);
+        bsp::cc13_seg49_64_78::warning_manager_clear_waiting_0096bf70(binding);
+        host->done("WarningManager::clear_waiting", 0x0096bf70u);
+    }
 }
 
 void GameMissionFrameHost::bind_observer_runtime(GameObserverRuntime& runtime) {

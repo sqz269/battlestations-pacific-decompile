@@ -89,6 +89,13 @@ inline constexpr bool kBotSchedulerWritersBound = true;
 // A no-op before a mission frame host exists.
 void game_scoring_set_real_play_time_running_00905340(bool running);
 
+// Goal 2 chain 166 (kWireGoal2Chain166Bound): 0096BF70
+// BSP_WarningManager_ClearWaitingQueue on [00F8A0C4], as EnableMessages(false)
+// with no entity calls it (008D000A): every queued warning of the +E0h list is
+// deleted and the list emptied. A no-op before a mission frame host exists, and
+// with the switch off.
+void game_warning_clear_waiting_queue();
+
 class GameHostLog;
 class GameVfsHost;
 class GameMissionLuaHost;

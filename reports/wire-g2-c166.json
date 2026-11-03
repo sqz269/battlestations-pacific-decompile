@@ -1,0 +1,140 @@
+{
+  "run": 330,
+  "chain": 166,
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "harness": "claude",
+  "candidate": "segment 64 [00968e80-0097aaf0]",
+  "tier": 2,
+  "selection_reason": "Claimed segment 69 first (its callers appear in game_hosts_ai.cpp), then found the whole AI coordinator is dead in this host: GameAiCoordinatorHost::fixed_step skips 00A32D50 because kAiCoordinatorLoadGateBound = true and ai_coordinator_created_at_load() folds to false under kSkirmishSessionCc13Bound = false, so none of its six rows has a live site. Released it and took segment 64, whose 0096BF70 has a live site (EnableMessages(false) with no entity, common in this installation's mission scripts) over host state the mission frame already keeps (the pending warning queue). Segment 46 (min/max rows inside the already-wired derive_camera_path_knots_007af150 model) and 35 (fish/flag/grid render rows) were looked at and offered nothing better; segment 12 was leased by g2-w1.",
+  "host_file": "src/game_hosts_mission_frame.cpp",
+  "switch": "kWireGoal2Chain166Bound",
+  "switch_header": "include/bsp/wire_goal2_chain166_switches.hpp",
+  "switch_default": false,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain166Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "not run: no x87 arithmetic in the ON arm",
+  "wired_before": 8999,
+  "wired_after": 9000,
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 5,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "PendingWarningClearBinding (cc13_seg49_64_78::WarningManagerHost over WarningManagerState::pending, the manager's +E0h list) and its entry game_warning_clear_waiting_queue",
+      "where": "src/game_hosts_mission_frame.cpp (declared include/bsp/game_hosts_mission_frame.hpp)",
+      "producers": [
+        "WarningManagerState::pending, filled by report_warning_009763e0 (mission_events.cpp) from the kill, torpedo, hit and power-up reports the mission frame already runs"
+      ],
+      "rows": [
+        "0096bf70"
+      ]
+    }
+  ],
+  "reach_evidence": {
+    "kind": "live",
+    "path": "Lua EnableMessages(false) -> GameScriptOrdersHost::dispatch (game_hosts_script_orders.cpp, binding row {EnableMessages, 008CFE40}, handles() true) -> bsp::lua_binding_enable_messages (lua_binding_core.cpp; entity null and flag false, the 008D0006 JNZ not taken) -> SetThinkCoreHost::message_system_drain_queue -> game_warning_clear_waiting_queue (game_hosts_mission_frame.cpp) -> warning_manager_clear_waiting_0096bf70.",
+    "gates": "No constexpr gate on the path besides kWireGoal2Chain166Bound; runtime: a mission frame host exists (g_warning_owner).",
+    "limit": "docs/LUA_BINDING_ROUTING_AUDIT.md counts 125 EnableMessages calls in its surveyed runs; this installation's scripts call EnableMessages(false) in dozens of mission files (e.g. line 6 of 17 files). How many queued warnings are pending at those calls was not measured; the game was not run."
+  },
+  "rows": [
+    {
+      "native": "0096bf70",
+      "address": "008d000a",
+      "function": "008cfe40",
+      "host_site": "src/game_hosts_script_orders.cpp:SetThinkCoreHost::message_system_drain_queue -> src/game_hosts_mission_frame.cpp:game_warning_clear_waiting_queue",
+      "status": "wired",
+      "reach": "live: EnableMessages(false) with no entity (125 EnableMessages calls in the routing audit's surveyed runs); the host path is read down to the site with no disabled gate",
+      "on_effect": "Each queued (+E0h) warning record is deleted and the queue emptied (0096BFC2..0096C030); the applied (+ECh) list and the +D0h suppression byte are untouched. The [00E198C4]+A4h voice-owner stop is skipped: this host owns no voice slots (voice_ready answers false), the labelled substitution in PendingWarningClearBinding."
+    },
+    {
+      "native": "0096dc00",
+      "address": "00982da1",
+      "function": "00982c50",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Its callers are the segment-65 dispatch channels; the host's Lua listener dispatch keys channels by std::string, and the body only copies a name into a {vtable, NativeString} record, so a wired call would hand the host's own string back."
+    },
+    {
+      "native": "009741e0",
+      "address": "0098133b",
+      "function": "00980e50",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::fire_recon_listeners_00980e50 (live, builds no warning)",
+      "status": "skipped",
+      "reason": "Constructing the recon warning needs WarningHost queries WarningObjectHostBinding leaves unreached (entity_world_position, relation_00803ce0, detector_for_side_210, plane_squadron_9d4, local_player_unit_00e188d8; the recon pass keeps no per-side detector), and queueing it through 009763E0 needs the 00D1B2A8 warning's record fields and activate variant, which the host's report path does not model. Too large for this chain."
+    },
+    {
+      "native": "00977ba0",
+      "address": "005faaa4",
+      "function": "005fa9f0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Callers are BSP_HudOrder_Regroup / BSP_HudOrder_Attack (seg23_cc13.cpp) through warning_report_confirm_00977ba0, which no host implements; no host path issues HUD orders from player input."
+    },
+    {
+      "native": "00977da0",
+      "address": "006f6dd4",
+      "function": "006f6760",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::capture_step (live, reports nothing)",
+      "status": "skipped",
+      "reason": "Needs a CaptureReportHost (about 25 queries) whose report_message_warning_00975ac0 queues the 00975AC0 message warning: its record fields and activate variant are not modelled in the host's report path, and the +218h capture range and +7B0h previous side have no host producer wired here. Too large for this chain."
+    },
+    {
+      "native": "009781e0",
+      "address": "006f542c",
+      "function": "006f4d10",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::apply_capture_flip_006f4d10 (live, reports nothing)",
+      "status": "skipped",
+      "reason": "Same CaptureReportHost gap as 00977da0 (00975AC0 message warning and 00974150 entity warning queued from the ship-AI host into the mission frame's manager, plus the +7B0h and +78Ch building fields). Too large for this chain."
+    },
+    {
+      "native": "00a03900",
+      "address": "00a0d6e3",
+      "function": "00a0d1d0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Segment 69 (looked at, then released). Reached only through SpawnCompositionHost::class_pair_value under ai_match_final_weight_00a0d1d0 / ai_choose_spawn_composition_00a23980, which no host implements; the AI coordinator never ticks in this host (kAiCoordinatorLoadGateBound = true, kSkirmishSessionCc13Bound = false)."
+    },
+    {
+      "native": "00a046c0",
+      "address": "00a048e0",
+      "function": "00a04860",
+      "host_site": "src/game_hosts_ai.cpp:party_brain_plan_tail (00A179E0 stand-in, records only)",
+      "status": "skipped",
+      "reason": "Segment 69. Its callers 00A04860 / 00A04910 go through PowerupScoreHost (unimplemented) and 00A179E0's host stand-in records only; all under the AI coordinator tick, which is dead (kSkirmishSessionCc13Bound = false)."
+    },
+    {
+      "native": "00a03a60",
+      "address": "00a32441",
+      "function": "00a32350",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::create_00a32350",
+      "status": "skipped",
+      "reason": "Segment 69. The host keeps no hint-weight maps (00F8A740, 00F8A750 + i*0Ch); only SetHintWeight fills them and no single-player script calls it, so the clear has no host state to act on."
+    },
+    {
+      "native": "00a08420",
+      "address": "00a25c01",
+      "function": "00a25b90",
+      "host_site": "src/game_hosts_ai.cpp:quick_spawn_named_group (records only)",
+      "status": "skipped",
+      "reason": "Segment 69. The host creates no unit at run time and has no spawn request manager; the caller is under the dead AI coordinator tick (kSkirmishSessionCc13Bound = false)."
+    },
+    {
+      "native": "00a102d0",
+      "address": "00a13560",
+      "function": "00a13340",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Segment 69. Host AI commands are not image-shaped (no vtables at +0h/+14h), so the constructor would only write image constants into scratch; its callers are under the dead AI coordinator tick."
+    },
+    {
+      "native": "00a10d50",
+      "address": "00a11fbc",
+      "function": "00a11f80",
+      "host_site": "src/game_hosts_ai.cpp:can_auto_merge (ai_command_can_merge_with)",
+      "status": "skipped",
+      "reason": "Segment 69. The only host site, can_auto_merge, is reached from ai_groups_compose_00a2e720 under ai_coordinator_fixed_step_00a32d50, which GameAiCoordinatorHost::fixed_step never calls in this host (kAiCoordinatorLoadGateBound = true, ai_coordinator_created_at_load() false under kSkirmishSessionCc13Bound = false)."
+    }
+  ],
+  "wired_note": "tools/wire_readiness.py on head 323fca4ff after a plain OFF build: 8999 without this branch, 9000 with it (0096bf70 ready -> wired)"
+}
