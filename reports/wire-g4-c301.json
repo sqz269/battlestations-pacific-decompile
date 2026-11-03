@@ -1,0 +1,77 @@
+{
+  "chain": 301,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain301Bound",
+  "scope": "Squadron free-attack leader PilotFires state",
+  "rows": [
+    {
+      "native": "007edac0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "state_source": "The selected live leader's GameUnitSlot::plane_pilot_fires_c24, populated by the existing enabled 007CD930 property-bag projection from VehicleClass.Platforms[].PilotFires and guns. The new authored flag admits only actual projection values 0/1; missing class rows or failed projection retain the old false input without calling 007EDAC0.",
+      "behavior": "Call the existing 007EDAC0 body through a borrowed typed field view. Feed its result to the native-tick arena, 007EDA90's existing kamikaze predicate, and 009F6C80's filter input. Previously all three inputs were fixed false.",
+      "evidence": [
+        "bsp.py show 007edac0 --asm: MOV EAX,[ECX+3D0h]; MOV AL,[EAX+C24h]; RET",
+        "bsp.py show 007cd930: only 0 and 1 are produced for unit+C24h",
+        "bsp.py show 007eda90: leader kind-17h and the same +C24h byte",
+        "bsp.py show 009f6c80: 007EDAC0 precedes the four ordnance predicates"
+      ],
+      "interface": "The sole existing address-suffixed body now borrows the retained boolean field. Its C++ interface is not a drop-in register-ABI replacement; there were no consumers of its former raw-only signature. No second body or fabricated native object was added."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "Missing a loaded movie page and retained native widget transform; load_movie_page still returns null."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing real movie decoder and video-texture resources; decoder_open still returns false."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing the native movie/subtitle widget owner; the existing disabled schedule projection is not that object's state."
+    },
+    {
+      "native": "007ed920",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_spent_ordnance_rtb_0084e010",
+      "reason": "Missing the complete 009F7C90 rocket-specific latch path and its ready-rocket state; replacing a different aggregate ordnance query would change semantics."
+    },
+    {
+      "native": "007ee720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_spent_ordnance_rtb_0084e010",
+      "reason": "Missing a common real per-member pilot task-stack head and vtable+20 readiness adapter; the host currently assumes this result is true."
+    },
+    {
+      "native": "007ee8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_spent_ordnance_rtb_0084e010",
+      "reason": "Missing the complete native squadron/target command-gate view and Cc15Seg48Host adapter; the current dead-target-only retest lacks those inputs."
+    }
+  ],
+  "baseline": {
+    "readiness_wired": 9279,
+    "entry_reachable_reconstructed_addresses_called": 4283,
+    "007edac0_called": false
+  },
+  "after": {
+    "readiness_wired": 9280,
+    "entry_reachable_reconstructed_addresses_called": 4284,
+    "007edac0_called": true,
+    "007edac0_call_sites": 1
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, reconstructed_math and tool_tests 2/2",
+    "changed_build": "scripts/build.ps1 passed, reconstructed_math and tool_tests 2/2",
+    "call_graph": "4283 -> 4284 entry-reachable reconstructed addresses called; 007EDAC0 has one reachable call from GameUnitsHost::run_squadron_free_attack_009f8470.",
+    "entry_path": "WinMainCRTStartup -> startup -> frame -> mission advance -> mission frame -> fixed simulation -> air-ops update -> landing queue -> run_spent_ordnance_rtb_0084e010 -> run_squadron_free_attack_009f8470 -> 007EDAC0",
+    "diff_check": "git diff --check passed",
+    "game_run": "Not run, per assignment; entry reachability is static built-executable evidence."
+  }
+}

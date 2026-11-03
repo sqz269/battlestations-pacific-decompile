@@ -1,0 +1,133 @@
+{
+  "chain": 298,
+  "worker": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain298Bound",
+  "picked": "SetParty's created-unit class query and native 7Fh local message copy",
+  "rows": [
+    {
+      "native": "00760260",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_party_7f",
+      "evidence": "008A8930 builds the same 7Fh header and party payload; 00768530 calls this constructor at 007691C6 for the local factory copy.",
+      "call_sites": 2
+    },
+    {
+      "native": "007602f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_party_7f",
+      "evidence": "00D032E8 slot +4h writes type, 12-bit id, relay and the requested party's low three bits.",
+      "call_sites": 1
+    },
+    {
+      "native": "00760340",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_party_7f",
+      "evidence": "00D032E8 slot +8h rebuilds the party at message+1Ch; this decoded value is captured by the existing commands loopback callback.",
+      "call_sites": 1
+    },
+    {
+      "native": "008a8930",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: SetThinkCoreHost::entity_vcall_5c and session_route_party_message",
+      "already_wired_before": true,
+      "evidence": "008A8A83 asks IsKindOf(2); created units use their recovered class chain, then route flags 7 at 008A8AC4. Script entities retain the direct setter. The existing party/race Lua mirror runs at loopback delivery."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall::queue_call",
+      "reason": "The named-call producer needs a call from a frame job thread and its argument records; this host only records that path."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Requires establishing the existing search runtime's live refresh caller; this packet does not bind a new search caller."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Requires the live search caller and its ShipAiAvoidZoneSearchAccess manager/layer state; no new caller was established here."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown gear gate",
+      "reason": "The host explicitly lacks the gear channel at unit+DECh and its +28h/+2Ch state."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: dive_bomb_rounds_remaining",
+      "reason": "The available host count combines attached and reserve rounds; the body needs the actual attached kind-2Ah child count and separate ammo+484h."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "00547480/00547A20 HUD gun-management callers",
+      "reason": "A live barrel-timer array view in those HUD callers was not established in this packet."
+    },
+    {
+      "native": "00960230",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_vehicle_class_base_fields_00960230",
+      "reason": "Needs a complete live VehicleClassFieldHost adapter; the constructor storage host alone does not supply the Lua field/resource readers."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Unresolved return ABI: exported pseudocode returns EAX/pointer values while the existing semantic body exposes a float score; listing review is needed."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: powerup scoring candidate",
+      "reason": "No live PowerupClassView/PowerupUnitInput adapter for the native multipliers, health, class weight and entity hint weight was established."
+    },
+    {
+      "native": "00951f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::set_unit_party_00928f50",
+      "reason": "The original thunk needs a native this pointer and vtable bridge; this packet reuses the existing semantic setter instead of claiming native ABI wiring."
+    },
+    {
+      "native": "00953da0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: unit_set_inferior_failure_00953da0",
+      "reason": "No native InferiorFailure property-value adapter is added by the SetParty packet."
+    },
+    {
+      "native": "00821e80",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: dispatch_unit_message_00821e80",
+      "reason": "The full UnitMessageArmHost receiver adapter is absent; this route uses the existing setter for the selected base 7Fh effect."
+    },
+    {
+      "native": "0095abe0",
+      "status": "skipped",
+      "host_site": "src/unit_message_arms.cpp: dispatch_base_message_0095abe0",
+      "reason": "The full UnitMessageArmHost adapter is absent; its 7Fh effect is delivered through the existing party/race Lua-mirror setter."
+    }
+  ],
+  "state_contract": {
+    "producer": "The live SetParty Lua call supplies the entity and requested party; the created unit class chain supplies IsKindOf(2).",
+    "owner": "The existing GameCommandsHost owns HostSessionMessages, the codec context and the loopback queue; no second session or participant owner is made.",
+    "consumer": "The existing set_unit_party_00928f50 updates unit+54h and the Lua mirror at delivery, preserving the current race.",
+    "fallback": "A standalone host without a live commands queue keeps its existing immediate setter; no placeholder session is manufactured.",
+    "uncertainty": "The receiver remains the existing semantic host setter; native thiscall replacement and gameplay timing are not validated."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and both CTest suites passed",
+    "call_graph": "00760260, 007602f0 and 00760340 each have entry-reachable calls from HostSessionMessages::queue_vehicle_party_7f",
+    "called_addresses_before": 4239,
+    "called_addresses_after": 4242,
+    "readiness_wired_before": 9277,
+    "readiness_wired_after": 9280,
+    "focused_probe": "local/output/wire_g4_c298_probe/result.json: synthetic Win32 codec and class-query case passed; /MANIFEST:EMBED",
+    "float_math": "No float arithmetic changed.",
+    "game_run": false
+  },
+  "left": "General UnitMessageArmHost receiver wiring, native thiscall unit objects and game validation."
+}

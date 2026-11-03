@@ -24,6 +24,7 @@
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
+#include "bsp/wire_goal4_chain301_switches.hpp"
 #include "bsp/wire_goal4_chain303_switches.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/material_effect_plane.hpp"
@@ -1584,6 +1585,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     bool df_station_valid{false};
     float df_leader_heading{0.0f};                 // followed unit vtable[50h]
     bool plane_pilot_fires_c24{true};              // unit+C24h PilotFires
+    bool plane_pilot_fires_c24_authored{false};    // chain 301: class projection supplied 0/1
     int df_moveto_speed_commands{0};
     float df_moveto_speed_min{1.0e9f};
     float df_moveto_speed_max{0.0f};
@@ -22212,20 +22214,44 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
     in.leader_slot_1b0 = lead.current_roles_01ac[1];
     in.leader_slot_ai_held_00927f10 = false;
     in.leader_player_184 = lead.role_player_0184;
-    in.leader_pilot_fires_c24 = false;
+    if constexpr (bsp::kWireGoal4Chain301Bound) {
+        // 009F6CB1 calls 007EDAC0 before its ordnance filters. The same
+        // leader+C24h is read by 009F8470's hosted command checks. This field
+        // is retained on the real leader slot, populated from the authored
+        // platform PilotFires entries by the 007CD930 producer at scene load.
+        // `leader` was selected from this squadron's live member list above.
+        // A failed/missing class projection keeps the old false input; its
+        // pre-existing true fallback is not evidence of a native +C24h value.
+        if (lead.plane_pilot_fires_c24_authored) {
+            in.leader_pilot_fires_c24 =
+                bsp::cc13_seg48_plane_squadron_leader_flag_c24_007edac0(
+                    bsp::PlaneSquadronPilotFireView{lead.plane_pilot_fires_c24}) != 0;
+        }
+    } else {
+        in.leader_pilot_fires_c24 = false;
+    }
     unit_position_00fc(leader, in.squadron_position[0], in.squadron_position[1],
                        in.squadron_position[2]);
     {
         bsp::PlaneSquadronLeadPlaneFacts facts;
         facts.has_lead_plane = true;
         facts.lead_is_kamikaze_17 = unit_is_kind_of(leader, 0x17);
-        facts.lead_pilot_fires_0c24 = false;
+        if constexpr (bsp::kWireGoal4Chain301Bound) {
+            // 007EDAAA tests this same byte after the leader's kind-17h test.
+            facts.lead_pilot_fires_0c24 = in.leader_pilot_fires_c24;
+        } else {
+            facts.lead_pilot_fires_0c24 = false;
+        }
         bsp::band009f::SquadronFilterInputs& f = in.filter_inputs;
         f.leader_uncommitted_kamikaze = bsp::plane_squadron_excluded_007eda90(facts);
         f.bomber_command_class = in.slot0_command_54 == bsp::kCommandMoveTo
             || in.slot0_command_54 == bsp::kCommandStop
             || in.slot0_command_54 == bsp::kCommandMoveOnPath;
-        f.has_007edac0 = false;   // leader+C24h
+        if constexpr (bsp::kWireGoal4Chain301Bound) {
+            f.has_007edac0 = in.leader_pilot_fires_c24;
+        } else {
+            f.has_007edac0 = false;   // leader+C24h
+        }
         // 007ED7E0 / 007ED8D0 / 007EDA10 / 007ED880 over +3D0h. LABELLED: the host's
         // mask is the union over a plane's guns, cleared by drops (as 007EDAD0's).
         for (const std::size_t m : alive) {
@@ -23327,8 +23353,21 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 // authored table is VehicleClass[id].Platforms[k].PilotFires with
                 // the platform's guns in .Gun; flattened once per class.
                 host.ensure_pilot_fires_flattened();
-                slot->plane_pilot_fires_c24 =
-                    host.lua.read_vehicle_class_number(row.type_id, "BSPPilotFires", 1.0f) != 0.0f;
+                if constexpr (bsp::kWireGoal4Chain301Bound) {
+                    // The projection writes exactly 0/1 for an actual class
+                    // row. -1 only detects a missing row/failed Lua chunk and
+                    // is never passed to 007EDAC0. Preserve the old true
+                    // fallback for existing users of the retained flag.
+                    const float pilot_fires = host.lua.read_vehicle_class_number(
+                        row.type_id, "BSPPilotFires", -1.0f);
+                    slot->plane_pilot_fires_c24_authored =
+                        pilot_fires == 0.0f || pilot_fires == 1.0f;
+                    slot->plane_pilot_fires_c24 =
+                        !slot->plane_pilot_fires_c24_authored || pilot_fires != 0.0f;
+                } else {
+                    slot->plane_pilot_fires_c24 =
+                        host.lua.read_vehicle_class_number(row.type_id, "BSPPilotFires", 1.0f) != 0.0f;
+                }
             }
             slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
             if constexpr (Impl::kKamikazeBoostTurboBound) {

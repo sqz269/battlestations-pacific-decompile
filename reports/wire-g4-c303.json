@@ -106,6 +106,20 @@
     "float_math": "No new arithmetic expressions; the inverse, point and non-normalizing direction paths reuse existing native-order kernels. The old conversion block remains unchanged in the switch-off arm.",
     "runtime": "Game not launched, as instructed; compiled reachability and existing math tests do not establish live gameplay or original object ABI compatibility"
   },
+  "merge_validation": {
+    "merged_origin_main": "8f0226bed0b5c18c40a25fcd2fe28d17a55822c6",
+    "resolution": "The only conflict was adjacent includes in src/game_hosts_units.cpp. Keep chain301's switch header together with chain303's switch, pose-derived and direction-kernel headers; both implementations remain intact.",
+    "merged_build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests 2/2",
+    "switch_off_build": "scripts/build.ps1 with kWireGoal4Chain303Bound=false passed; both test suites 2/2; 00414E10 absent from the built graph",
+    "switch_on_build": "scripts/build.ps1 after restoring kWireGoal4Chain303Bound=true passed; both test suites 2/2",
+    "compiled_addresses_called_off": 4292,
+    "compiled_addresses_called_on": 4293,
+    "selected_body_call_sites_on": 22,
+    "readiness_wired_on": 9289,
+    "readiness_selected_body": { "state": "wired", "called": true, "call_sites": 22, "callers_live": 8 },
+    "preserved_main_calls": "007EDAC0 remains entry-reachable from run_squadron_free_attack_009f8470; 00760260 remains entry-reachable from HostSessionMessages::queue_vehicle_party_7f.",
+    "runtime": "Game not launched; all reachability evidence is static."
+  },
   "implementation_notes": [
     "One existing body per address is reused. No new address-suffixed function or ledger entry was introduced.",
     "The published world matrix remains the conversion input in both switch arms. No current-motion snapshot or guessed parent matrix was substituted.",
