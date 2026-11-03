@@ -7,7 +7,9 @@
   "wired_total_after": 9089,
   "validation": [
     "Baseline and changed ./scripts/build.ps1 passed; reconstructed_math and tool_tests passed.",
-    "Static wire_readiness census only; game was not run."
+    "Static wire_readiness census only; game was not run.",
+    "Reachability review rejected a native binding-scan attempt despite an optimistic static-census increase; only the verified context getter wiring remains.",
+    "A temporary synthetic fixture verified context republishing and the typed level view, including signed DWORD bits; this is fixture evidence only."
   ],
   "rows": [
     {
@@ -25,7 +27,7 @@
     {
       "native": "00646040",
       "status": "skipped",
-      "host_site": "src/game_hosts_hud.cpp: InterfaceBinding::hud_root_screen_set_interface",
+      "host_site": "src/game_hosts_hud.cpp: hud_root_screen_set_interface",
       "reason": "Missing concrete root observer +D0h/+E4h owner and observer lifetime binding; current host hook only records the request."
     },
     {
@@ -75,6 +77,12 @@
       "status": "skipped",
       "host_site": "src/game_hosts_script_orders.cpp: PilotMoveOnPath handling",
       "reason": "Needs actual raw 520h task/009BCE50 constructor, bot receiver and owning lifetime bindings before native allocation can replace the semantic task path."
+    },
+    {
+      "native": "00a92050",
+      "status": "skipped",
+      "host_site": "src/native_input_action_binding_runtime.cpp: poll_native_input_action_00a92370; src/input_binding_poll.cpp: poll_input_action_bindings_00a92370",
+      "reason": "No application constructs GameInputActions or binds the native configuration runtime/tick; mission-frame InputTickState records have no producer, so the binding scan is not live. Attempted adapter/wiring removed."
     }
   ]
 }
