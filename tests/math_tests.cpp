@@ -85,6 +85,8 @@
 #include "bsp/scene_contents_hosts.hpp"
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_numeric_property_merge.hpp"
+#include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_instance_layout.hpp"
@@ -1886,6 +1888,59 @@ int main() {
                     && following->values[0] == "7",
                 "explicit V3 stores three floats, present-empty positive zeros differ "
                 "from absence, and the following key survives");
+        }
+    }
+
+    {
+        // Chain 330: one fixture covers authored V3A -> native owning bag ->
+        // keep/overwrite/miss merge -> independent publication after teardown.
+        if constexpr (bsp::kWireGoal4Chain330Bound) {
+            const SceneDocument doc = parse_scene_document(
+                "entity \"Array\" (Landscape) { "
+                "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
+                "Route = V3A 2 (1.25 -0 .75) (-2 3 4); "
+                "Short = V3A 2 (1 2 3); "
+                "Bad = V3A 1 (1 x 3); "
+                "Zero = V3A 0; After = I 7; } }");
+            const ScenePropertyBlock& source = doc.entities.at(0).properties;
+            const SceneProperty* route = source.find("Route");
+            check(doc.errors.empty() && route != nullptr && route->has_vector3_array
+                    && route->vector3_array.size() == 2
+                    && std::signbit(route->vector3_array[0][1])
+                    && !source.find("Short")->has_vector3_array
+                    && !source.find("Bad")->has_vector3_array
+                    && !source.find("Zero")->has_vector3_array
+                    && source.find("After")->integer_value == 7,
+                "V3A admits complete triples, preserves signed zero and bounds malformed statements");
+            if (route != nullptr && route->has_vector3_array) {
+                ScenePropertyBlock destination;
+                SceneProperty old = *route;
+                old.vector3_array = {{{9.0f, 8.0f, 7.0f}}};
+                destination.values.push_back(old);
+                SceneProperty kept, replaced, cloned;
+                {
+                    bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
+                    check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
+                        "native V3A projection handles only the complete payload");
+                    kept = merge.result(old);
+                }
+                {
+                    bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
+                    replaced = merge.result(*route);
+                }
+                {
+                    ScenePropertyBlock empty;
+                    bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
+                    cloned = merge.result(*route);
+                }
+                check(kept.has_vector3_array && kept.vector3_array == old.vector3_array
+                        && replaced.has_vector3_array && cloned.has_vector3_array
+                        && replaced.vector3_array == route->vector3_array
+                        && cloned.vector3_array == route->vector3_array
+                        && std::signbit(replaced.vector3_array[0][1])
+                        && std::signbit(cloned.vector3_array[0][1]),
+                    "native type-11 keep, assignment and clone publish owned bytes after both bags retire");
+            }
         }
     }
 
