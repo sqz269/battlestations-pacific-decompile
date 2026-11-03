@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
@@ -16241,9 +16242,20 @@ std::size_t units_deliver_ship_sink_92h_0082220d() {
 GameUnitsHost::GameUnitsHost(GameHostLog& log, GameMissionLuaHost& lua)
     : impl_(std::make_unique<Impl>(log, lua)) {
     if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) g_leak92_units = impl_.get();
+    if constexpr (bsp::kWireGoal4Chain248Bound) {
+        // commands is owned by this Impl, so the pose provider outlives it.
+        impl_->commands.bind_user_path_live_owner(this);
+    } else {
+    }
 }
 
 GameUnitsHost::~GameUnitsHost() {
+    if constexpr (bsp::kWireGoal4Chain248Bound) {
+        // Teardown callbacks may deliver commands; stop exposing live pose
+        // before retiring unit state, so they retain the legacy fallback.
+        impl_->commands.bind_user_path_live_owner(nullptr);
+    } else {
+    }
     if constexpr (bsp::kLeakMessageRouterDeliveryCc13Bound) {
         if (g_leak92_units == impl_.get()) g_leak92_units = nullptr;
     }

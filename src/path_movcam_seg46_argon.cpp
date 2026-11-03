@@ -303,13 +303,15 @@ void point3_vector_prune_from_index_007b1fb0(
         const float dx = to_f32(static_cast<double>(prev.x) - static_cast<double>(cur.x));
         const float dy = to_f32(static_cast<double>(prev.y) - static_cast<double>(cur.y));
         const float dz = to_f32(static_cast<double>(prev.z) - static_cast<double>(cur.z));
-        const float sum_sq = to_f32(
-            (static_cast<double>(dx) * static_cast<double>(dx) +
-             static_cast<double>(dy) * static_cast<double>(dy)) +
-            static_cast<double>(dz) * static_cast<double>(dz));
+        // 007B20B1..007B20CD: (dy*dy + dx*dx) + dz*dz, with one
+        // binary32 spill after the sum. The main thread rounds EACH x87
+        // operation to 24 bits, while retaining the extended exponent range.
+        const float sum_sq = to_f32(cc13x87::x87_add24(
+            cc13x87::x87_add24(cc13x87::x87_mul24(dy, dy), cc13x87::x87_mul24(dx, dx)),
+            cc13x87::x87_mul24(dz, dz)));
         float dist = 0.0f;
         if (static_cast<double>(sum_sq) > 1.0e-10) {
-            dist = to_f32(std::sqrt(static_cast<double>(sum_sq)));
+            dist = to_f32(cc13x87::x87_sqrt24(sum_sq));
         }
         if (min_distance_threshold_ce7d78 > dist) {
             points.erase(points.begin() + (ebp - 1));
