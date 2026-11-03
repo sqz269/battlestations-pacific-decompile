@@ -1,0 +1,294 @@
+{
+  "goal": 2,
+  "chain": 74,
+  "slot": "g2-w3",
+  "control_plane_run": 156,
+  "harness": "codex",
+  "branch": "agent/g2-w3",
+  "host_file": "src/game_hosts_scene_contents.cpp",
+  "tier": 2,
+  "switch": "kWireGoal2Chain74Bound",
+  "switch_default": false,
+  "selection": "Initially screened and released game_hosts_ai.cpp: its coordinator tick is disabled by kAiCoordinatorLoadGateBound=true and kSkirmishSessionCc13Bound=false; the live objective helper lacks observer ownership. Selected scene contents before any edits for the real terrain grid and quadtree storage.",
+  "wired_before": 8840,
+  "wired_after": 8841,
+  "wired_rows": [
+    "00aea900"
+  ],
+  "rows": [
+    {
+      "native": "00437f50",
+      "address": "00438061",
+      "function": "00438020",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:VehicleClassPreloadBinding::map_class_index",
+      "status": "skipped",
+      "reason": "The semantic vehicle_registry supplies class mappings and party rows, but not 00437E10's native descriptor cache, two native 800h-entry tables, critical-section publication and lifetime registration. A second registry would not replace the active owner's lookup.",
+      "reached": 0
+    },
+    {
+      "native": "0046d930",
+      "address": "004bab12",
+      "function": "004ba870",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::scatter_clouds / scene entity creation",
+      "status": "skipped",
+      "reason": "SceneDatabase's class map exists, but the active semantic entity creator lacks this body's owned native record/parent registry, property-bag clone/ref holder and descriptor-creator graph. Cannot construct the complete object from these host records.",
+      "reached": 0
+    },
+    {
+      "native": "004caf50",
+      "address": "004d0f34",
+      "function": "004d0ee0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::preload_record_effects::PreloadHost::push_effect_handle",
+      "status": "skipped",
+      "reason": "record_effect_name_count() returns zero because the scene header has no record+C6Ch/C70h effect-array producer; acquire_effect_by_name also has no native gameplay-effect context. The push site never runs.",
+      "reached": 0
+    },
+    {
+      "native": "00780db0",
+      "address": "004d557f",
+      "function": "004d4df0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::create_multi_score",
+      "status": "skipped",
+      "reason": "The campaign root has effective mode 8 and no network session, so 004D4DF0's mode!=8 && session gate is false. The alternate session producer is behind kSkirmishSessionCc13Bound=false; the native borrowed-Lua MultiScore owner is absent.",
+      "reached": 0
+    },
+    {
+      "native": "00822c20",
+      "address": "0074bee7",
+      "function": "0074bec0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneReaderBinding::instantiate_entity (semantic SEntityInit projection)",
+      "status": "skipped",
+      "reason": "The existing semantic scene bag does not provide this 40-callee body's full native unit+C0h property-holder, class image, traffic/FX and weapon-director graph. Wiring only the MaxSpeed projection would omit the rest of SEntityInit.",
+      "reached": 0
+    },
+    {
+      "native": "008f54f0",
+      "address": "00469d23",
+      "function": "00469bf0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block / merge_group_into",
+      "status": "skipped",
+      "reason": "The host uses ScenePropertyBlock values/blocks, not the body's native hash-map records, ordinal/refcount fields and clone/insertion lifetime context. An adapter cannot supply native record ownership without building another object beyond this chain's terrain object.",
+      "reached": 0
+    },
+    {
+      "native": "00926420",
+      "address": "004f0440",
+      "function": "004f03c0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneUnitCreatorBinding::hierarchy_parent_name",
+      "status": "skipped",
+      "reason": "inputs.parent_identity is always nullptr on the active host path; the creator has no native entity+3Ch parent chain or vtable+10h name producer. Authored parent labels alone are not that object graph.",
+      "reached": 0
+    },
+    {
+      "native": "0095c1c0",
+      "address": "004d47a7",
+      "function": "004d4720",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:scene_class_preload_alias_0095c1c0",
+      "status": "skipped",
+      "reason": "The sole enclosing caller scene_build_class_preload_aliases_004d4720 is gated by kSceneClassPreloadAliasesCc15Bound=false. Wiring here would sit behind another OFF switch.",
+      "reached": 0
+    },
+    {
+      "native": "00add290",
+      "address": "00882e0f",
+      "function": "00882ac0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:create_scene_world_object / load_terrain_height_field_00adda60",
+      "status": "skipped",
+      "reason": "The semantic height-field loader exists, but the constructor also requires the native weak-owner manager and retained strings/arrays, embedded native tree and lifetime graph. The new typed bounds storage is not a full native terrain constructor target.",
+      "reached": 0
+    },
+    {
+      "native": "00ade820",
+      "address": "00883058",
+      "function": "00882ac0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:create_scene_world_object (terrain node translation)",
+      "status": "skipped",
+      "reason": "The host retains terrain samples and authored world translation, but has no native model instance/refcount, allocated Terrain Visibility Group node or its parent/root registration producer. A translation-only call would omit the body's required resource and node operations.",
+      "reached": 0
+    },
+    {
+      "native": "00aea900",
+      "address": "00adddf2",
+      "function": "00adda60",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:build_quadtree_00aea820 / load_terrain_height_field_00adda60",
+      "status": "wired",
+      "coverage": "complete typed-view extraction of the existing body; Raw entry delegates",
+      "reach": "static enabled terrain-load site; USN04 pair has zero Landscape entities and does not reach it",
+      "reached": 0,
+      "reason": "The body computes quadtree_leaves and clears the existing nodes from the loaded terrain dimensions, replacing the host's two-line stand-in. All enclosing gates are enabled; this mission contains no Landscapes."
+    },
+    {
+      "native": "00b0fdc0",
+      "address": "004d4f95",
+      "function": "004d4df0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_1",
+      "status": "skipped",
+      "reason": "record_remap_texture_name() always returns an empty string; scene-record+C2Ch has no producer, and the native remap texture resource/refcount acquisition owner is absent. Do not pass a fabricated name.",
+      "reached": 0
+    },
+    {
+      "native": "00b0fe10",
+      "address": "004d4fb3",
+      "function": "004d4df0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_2",
+      "status": "skipped",
+      "reason": "record_remap_texture_name() always returns an empty string; scene-record+C34h has no producer, and the native remap texture resource/refcount acquisition owner is absent. Do not pass a fabricated name.",
+      "reached": 0
+    },
+    {
+      "native": "00b0fe60",
+      "address": "004d4fd0",
+      "function": "004d4df0",
+      "host_file": "src/game_hosts_scene_contents.cpp",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_3",
+      "status": "skipped",
+      "reason": "record_remap_texture_name() always returns an empty string; scene-record+C3Ch has no producer, and the native remap texture resource/refcount acquisition owner is absent. Do not pass a fabricated name.",
+      "reached": 0
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "SceneTerrainQuadtreeBoundsOwner<true> (metadata view of the existing host quadtree)",
+      "where": "include/bsp/game_hosts_scene_contents.hpp:717",
+      "producers": [
+        "00ADD290 embedded tree lifetime at terrain+88h, mirrored by SceneTerrainHeightField lifetime",
+        "00ADDA60 loaded TDT columns/rows (+38h/+3Ch) produce ceil(log2(max(columns, rows)))",
+        "00AE9870 binary constants: tile size 300, min Y -1000, max Y 1e10",
+        "00ADDDF2 CALL 00AEA900 initializes all bounds fields before 00AEA820 builds the existing node vector"
+      ],
+      "rows": [
+        "00aea900"
+      ],
+      "off_behavior": "Empty base specialization: no new bounds object, storage or initialization; original two-line leaf-count/clear arm retained byte for byte; original lazy build retained.",
+      "fields": [
+        {
+          "offset": "+04h/+10h/+1Ch/+28h",
+          "width": "four arrays of three floats",
+          "host": "minimum/maximum/extent/cell"
+        },
+        {
+          "offset": "+34h",
+          "width": "dword",
+          "host": "depth"
+        },
+        {
+          "offset": "+38h",
+          "width": "dword",
+          "host": "existing quadtree_leaves"
+        },
+        {
+          "offset": "+3Ch/+40h/+44h",
+          "width": "native array data/count/capacity",
+          "host": "existing quadtree vector via clear_nodes adapter"
+        },
+        {
+          "offset": "+48h",
+          "width": "borrowed pointer",
+          "host": "field"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "off_build": {
+      "passed": true,
+      "tests": "reconstructed_math and tool_tests: 2/2",
+      "log": "local/output/g2-w3-off-build-head.txt"
+    },
+    "on_build": {
+      "passed": true,
+      "diagnostics": 0,
+      "log": "local/output/g2-w3-on-build-final.txt"
+    },
+    "pc24_lint": {
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "passed": true,
+      "findings": 0
+    },
+    "readiness": {
+      "map": "plain OFF build/win32/bsp_game.map",
+      "before": 8840,
+      "after": 8841,
+      "row_state": "00aea900 ready -> wired; wired_callers=1"
+    },
+    "report_calls": {
+      "passed": true,
+      "checked": 14,
+      "failed": 0
+    }
+  },
+  "contract": {
+    "callee": "00AEA900 uses a typed storage view; all field writes and node clearing remain in one body. Existing Raw signature is a thin mapping wrapper.",
+    "abi": "image __thiscall ECX=tree, stack(field,min,max,depth), RET 0x10 at 00AEA9C4; source interfaces are not binary replacements",
+    "callers": "one image call at 00ADDDF2 in 00ADDA60; bounds from loaded grid dimensions and constructor constants",
+    "live_path": "MissionFrameHost 004D4DF0 step -> run_load_scene_contents -> scene reader instantiate -> create_scene_world_object (kScenePathLandscapeCreatorsBound=true, kSceneLandscapeTerrainBound=true) -> load_terrain_height_field -> ON bounds/root build. No other OFF switch is required. Reach is static because USN04 has landscape seen=0."
+  },
+  "pair": {
+    "status": "complete",
+    "mission": "USN04",
+    "console_session": "sqz269 console ID 1 Active",
+    "code_commit": "8313043c2",
+    "off_log": "local/g2-w3-off_USN04.log",
+    "on_log": "local/g2-w3-on_USN04.log",
+    "off_exit_code": 0,
+    "on_exit_code": 0,
+    "off_frames_presented": 3199,
+    "on_frames_presented": 3199,
+    "export_log": "local/output/g2-w3-on-export.txt",
+    "export_build_tests": "2/2 passed",
+    "diff_log": "local/output/g2-w3-pair-diff.txt",
+    "gameplay": "identical",
+    "gameplay_rows_moved": [],
+    "native_table": {
+      "off_rows": 1624,
+      "on_rows": 1624,
+      "added": [],
+      "removed": [],
+      "status_changed": [],
+      "counts_moved": []
+    },
+    "summary_lines": {
+      "off": 867,
+      "on": 867,
+      "changed": 0,
+      "only_on": 0,
+      "only_off": 0
+    },
+    "death_rows": {
+      "identical": true,
+      "rows": 0,
+      "note": "BSP_DEATH_TABLE was not enabled"
+    },
+    "plane_death_modes": {
+      "identical": true,
+      "rows": 25
+    },
+    "unit_table": {
+      "identical": true,
+      "rows": 81
+    },
+    "other_lines": {
+      "off_only": 231,
+      "on_only": 231,
+      "note": "Diagnostic multiset differences remain; the bounded pair_diff listing includes atlas source allocation/returned-pointer rows. No gameplay/native-table/summary rows changed."
+    },
+    "row_reach": {
+      "00aea900": 0
+    },
+    "reach_reason": "Both logs report landscapes=0 loaded=0, landscape seen=0; the terrain bounds body is compiled in the ON executable but unexercised by USN04."
+  },
+  "flip_proposal": "Keep kWireGoal2Chain74Bound=false. OFF/ON builds and the USN04 pair pass, but a terrain-bearing mission must exercise 00AEA900 before proposing true."
+}
