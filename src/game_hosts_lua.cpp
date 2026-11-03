@@ -18,6 +18,7 @@
 #include "bsp/wire_goal2_chain124_switches.hpp"
 #include "bsp/wire_goal2_chain130_switches.hpp"
 #include "bsp/wire_goal2_chain143_switches.hpp"
+#include "bsp/wire_goal2_chain152_switches.hpp"
 #include "bsp/cc13_avoid1_seg61.hpp"  // 00947A30, chain 130
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
@@ -346,6 +347,139 @@ void objective_argument_units(lua_State* state, int index,
             lua_pop(state, 1);
         }
         lua_pop(state, 1);
+    }
+    lua_settop(state, top);
+}
+
+// Defined with the vector3 readers below.
+bool read_vector3_00888760(lua_State* state, int index, float out[3]);
+
+// Goal 2 chain 152 (kWireGoal2Chain152Bound). The position half of each
+// objective's +20h list: the entries 008DEEB0 makes for 008DF5D0. The host's
+// GameObjectiveSets::Objective keeps only the units 008DDF90 reads, so these
+// lists sit beside it, index-parallel to GameObjectiveSets::slots[k] (008E1F80
+// only appends an objective and nothing here erases one). Unit entries stay in
+// Objective::units. Lifetime: the image builds the sets with the world at
+// 004DF917 and frees them with it; game_objective_sets() is process-wide with
+// no reset caller, one mission per process, and this store is the same. Only
+// the chain's ON arm reaches it, so the OFF build constructs nothing.
+struct ObjectivePositionLists {
+    std::vector<bsp::ObjectiveUnitList> slots[GameObjectiveSets::kSlotCount];
+};
+
+ObjectivePositionLists& objective_position_lists() {
+    static ObjectivePositionLists lists;
+    return lists;
+}
+
+// bsp::ObjectiveUnitHost over GameObjectiveSets, for 008DF5D0. That body asks
+// objective_in_slot and marker_bind_on_add_stub only; the other calls belong to
+// 008DF2B0 / 008DFE50 / 008CE510, which this adapter does not run.
+class ObjectivePositionHost final : public bsp::ObjectiveUnitHost {
+public:
+    explicit ObjectivePositionHost(GameObjectiveSets& sets) : sets_(sets) {}
+
+    int player_party(int) override { return 0; }
+    bool player_slot_active(int) override { return false; }
+
+    // The set's objective list (+24h) walked with 008DF2B0's case-insensitive
+    // name compare (GameObjectiveSets::add_objective's rule); no match is null,
+    // and 008DF5D0 then returns without creating one. The returned list carries
+    // the objective's own name, kind (+18h) and state (+1Ch).
+    bsp::ObjectiveUnitList* objective_in_slot(int slot, const std::string& name) override {
+        if (slot < 0 || static_cast<std::size_t>(slot) >= GameObjectiveSets::kSlotCount) {
+            return nullptr;
+        }
+        const std::size_t k = static_cast<std::size_t>(slot);
+        const std::vector<GameObjectiveSets::Objective>& objectives = sets_.slots[k];
+        for (std::size_t i = 0; i < objectives.size(); ++i) {
+            const GameObjectiveSets::Objective& o = objectives[i];
+            if (o.name.size() != name.size() || _stricmp(o.name.c_str(), name.c_str()) != 0) {
+                continue;
+            }
+            std::vector<bsp::ObjectiveUnitList>& lists = objective_position_lists().slots[k];
+            if (lists.size() < objectives.size()) lists.resize(objectives.size());
+            bsp::ObjectiveUnitList& list = lists[i];
+            list.name = o.name;
+            list.kind = o.kind;
+            list.state = o.state;
+            return &list;
+        }
+        return nullptr;
+    }
+
+    bsp::ObjectiveUnitLiveness unit_liveness(void*) override { return {}; }
+    bool observer_pair_registered(bsp::ObjectiveUnitList&, void*) override { return false; }
+    void observer_register_pair(bsp::ObjectiveUnitList&, void*) override {}
+    // 006DE3E0 at 008DF5D0's tail is a bare RET 8.
+    void marker_bind_on_add_stub(const std::string&, void*) override {}
+    void marker_rebind_unit(const std::string&, void*) override {}
+    void marker_clear_position(const std::string&, const bsp::ObjectiveWorldPoint&) override {}
+    void set_remove_unit(const std::string&, void*) override {}
+    void set_remove_position(const std::string&, const bsp::ObjectiveWorldPoint&) override {}
+    void objective_add_tail(const std::string&, void*) override {}
+
+private:
+    GameObjectiveSets& sets_;
+};
+
+// 0088B840 over stack slot `slot`: a table whose every entry has a string key
+// x, y or z (any case, 00BF7FBF / 00425850) and a number value, three entries
+// in all.
+bool objective_argument_is_vector3_table(lua_State* state, int slot) {
+    if (lua_type(state, slot) != LUA_TTABLE) return false;
+    const int top = lua_gettop(state);
+    int matched = 0;
+    bool all = true;
+    lua_pushnil(state);
+    while (lua_next(state, slot) != 0) {
+        const bool lane = lua_type(state, -2) == LUA_TSTRING && lua_type(state, -1) == LUA_TNUMBER;
+        const char* key = lane ? lua_tostring(state, -2) : nullptr;
+        if (key == nullptr || (_stricmp(key, "x") != 0 && _stricmp(key, "y") != 0
+                               && _stricmp(key, "z") != 0)) {
+            all = false;
+            break;
+        }
+        ++matched;
+        lua_pop(state, 1);
+    }
+    lua_settop(state, top);
+    return all && matched == 3;
+}
+
+// The position targets argument `index` names, in 008CD440 / 008CDD60's order:
+// an entity (this host's `ID` stand-in for 008889C0) names none; a vector3
+// table (0088B840) names itself; any other table, while
+// kObjectiveAddTargetWalkBound, names each element that is not an entity
+// (008CDB5E JE 008CDBE6), read by 00888760. LABELLED: an element that is not a
+// table is skipped, as the host's reader refuses it.
+void objective_argument_positions(lua_State* state, int index,
+                                  std::vector<bsp::ObjectiveWorldPoint>& out) {
+    std::size_t unit = 0;
+    if (objective_argument_unit(state, index, unit)) return;
+    const int slot = index + 1;
+    const int top = lua_gettop(state);
+    if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
+    float point[3] = {0.0f, 0.0f, 0.0f};
+    if (objective_argument_is_vector3_table(state, slot)) {
+        if (read_vector3_00888760(state, slot, point)) out.push_back({point[0], point[1], point[2]});
+        return;
+    }
+    if (!kObjectiveAddTargetWalkBound) return;
+    lua_pushnil(state);
+    while (lua_next(state, slot) != 0) {
+        const int element = lua_gettop(state);
+        if (lua_type(state, element) == LUA_TTABLE) {
+            lua_getfield(state, element, "ID");
+            const int type = lua_type(state, -1);
+            const bool entity = (type == LUA_TNUMBER || type == LUA_TSTRING)
+                && static_cast<int>(lua_tonumber(state, -1)) > 0;
+            lua_pop(state, 1);
+            if (!entity && read_vector3_00888760(state, element, point)) {
+                out.push_back({point[0], point[1], point[2]});
+            }
+        }
+        lua_settop(state, element - 1);
     }
     lua_settop(state, top);
 }
@@ -1013,6 +1147,24 @@ int binding_trampoline(lua_State* state) {
                 } else {
                     sets.add_objective(k, name);
                 }
+            }
+            // 008CDC56 (Add) / 008CE42D (AddUnit): 008DF5D0 objective_set_add_position_008df5d0
+            // for each position target, ahead of this host's add_unit, whose
+            // add_objective may create an objective 008DF2B0 never would. OFF keeps
+            // the host's rule: a position target adds nothing.
+            if constexpr (bsp::kWireGoal2Chain152Bound) {
+                if (!is_remove) {
+                    ObjectivePositionHost position_host(sets);
+                    for (int arg = first_target; arg < argc; ++arg) {
+                        std::vector<bsp::ObjectiveWorldPoint> points;
+                        objective_argument_positions(state, arg, points);
+                        for (const bsp::ObjectiveWorldPoint& point : points) {
+                            bsp::objective_set_add_position_008df5d0(position_host, k, name, point);
+                        }
+                    }
+                }
+            } else {
+                // Position targets are dropped (objective_argument_units reads entities only).
             }
             for (int arg = first_target; arg < argc; ++arg) {
                 std::vector<std::size_t> units;
