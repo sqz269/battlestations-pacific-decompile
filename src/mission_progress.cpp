@@ -1,8 +1,11 @@
 #include "bsp/mission_progress.hpp"
+#include "bsp/band_0080_cc13.hpp"
 #include "bsp/profile_archive.hpp"
+#include "bsp/wire_goal2_chain118_switches.hpp"
 
 #include <cstring>
 #include <stdexcept>
+#include <string>
 
 namespace bsp {
 namespace {
@@ -95,6 +98,13 @@ void write_named_counters(ProfileArchiveWriter& writer, const char* section,
 
 enum class EnumNames { Party, Unit };
 int enum_index(std::string_view name, EnumNames kind) {
+    if constexpr (kWireGoal2Chain118Bound) {
+        // 00805990 BSP_Party_FromName at 00916A00's five party keys (00917C3C,
+        // 00917FBC, 009182DE, 0091865E, 0091897D); OFF keeps the table walk
+        // below. Every caller passes text_key's C string.
+        if (kind == EnumNames::Party)
+            return cc13_band0080::party_from_name_00805990(std::string(name).c_str());
+    }
     // 00805990 compares 4 party strings then returns 4 on a miss. 0085BCE0
     // compares only unit classes 0..18 then returns 19, the valid 'other' slot.
     const int count = kind == EnumNames::Party ? 4 : 19;
