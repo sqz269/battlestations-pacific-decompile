@@ -104,7 +104,14 @@ void* pointer_slot_construct_null_0054d440(Raw slot) noexcept;
 // Engine services. Each method names the image routine it stands for; the
 // register that carries `this` in the image is noted where it is not obvious.
 // ---------------------------------------------------------------------------
-struct Fe5Host {
+// The complete 00686240 body needs only table-name registration. Keep that
+// contract separate so a live menu need not implement unrelated GUI services.
+struct MainMenuLocalisationHost {
+    virtual ~MainMenuLocalisationHost() = default;
+    virtual void localization_register_table_00aa0d30(std::string_view table) = 0;
+};
+
+struct Fe5Host : MainMenuLocalisationHost {
     virtual ~Fe5Host() = default;
 
     // Widget virtuals (00AA8000 family), ECX = widget.
@@ -838,7 +845,7 @@ inline constexpr std::uint32_t kMainMenuVtable = 0x00CF774C;
 void* main_menu_construct_00686170(Raw menu, Fe5Host& host);
 // 00686240 __cdecl(): register the "FE" (00CF7768) and "FE_pc" (00CF7760)
 // localisation tables.
-void main_menu_register_localisation_tables_00686240(Fe5Host& host);
+void main_menu_register_localisation_tables_00686240(MainMenuLocalisationHost& host);
 // 00687800 __thiscall(menu, int interface, int argument), RET 8 -> AL.
 bool multi_menu_apply_pending_interface_00687800(Raw menu, int interface_id, int argument, Fe5Host& host);
 // 006878D0 __thiscall(manager) -> EAX: element count of the dword vector

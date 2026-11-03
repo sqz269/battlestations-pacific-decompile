@@ -1,7 +1,19 @@
 #include "bsp/frontend_managers.hpp"
+#include "bsp/frontend_seg16_24_28_cc13.hpp"
+#include "bsp/wire_goal2_chain189_switches.hpp"
 
 namespace bsp {
 namespace {
+
+class MenuLocalisationRegistration final : public cc13_fe5::MainMenuLocalisationHost {
+public:
+    explicit MenuLocalisationRegistration(FrontEndManagerHost& host) : host_(host) {}
+    void localization_register_table_00aa0d30(std::string_view table) override {
+        host_.register_locale_table(table);
+    }
+private:
+    FrontEndManagerHost& host_;
+};
 
 // 00E08CD8, 45 entries. The strings live at 00CF7370..00CF76CD in descending
 // order, which is why the table indices run backwards through .rdata.
@@ -239,6 +251,12 @@ void init_main_menu_00686380(MainMenuManager& manager, FrontEndManagerSet& set,
         host.cache_music(path);
     }
     host.register_locale_table(kMainMenuLocaleTable);
+    // 00686240 at 00686690: register FE/FE_pc; OFF keeps the existing globals-only sequence.
+    if constexpr (kWireGoal2Chain189Bound) {
+        MenuLocalisationRegistration registration(host);
+        cc13_fe5::main_menu_register_localisation_tables_00686240(registration);
+    } else {
+    }
     host.reload_locale_tables();
     // A mission result waiting to be shown clears the return flag and raises
     // 00E08874 instead, before any screen is built.

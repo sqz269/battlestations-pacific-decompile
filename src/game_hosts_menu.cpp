@@ -39,6 +39,7 @@
 #include "bsp/wire_goal2_chain57_switches.hpp"
 #include "bsp/wire_goal2_chain91_switches.hpp"
 #include "bsp/wire_goal2_chain111_switches.hpp"
+#include "bsp/wire_goal2_chain189_switches.hpp"
 #include "bsp/award_grant.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_title_sound.hpp"
@@ -530,7 +531,21 @@ void release_menu_leaf(Screen& screen) {
 
 } // namespace
 
-struct GameMenuHost::Impl {
+// OFF has no borrow storage or initialization. ON borrows the already-created
+// phase-6 LocaleTables for the menu Init registration sites; it owns no registry.
+template<bool Bound>
+struct MenuLocaleTableBorrow {
+    void bind_menu_locale_tables(LocaleTables&) noexcept {}
+    LocaleTables* borrowed_menu_locale_tables() const noexcept { return nullptr; }
+};
+template<>
+struct MenuLocaleTableBorrow<true> {
+    LocaleTables* tables{};
+    void bind_menu_locale_tables(LocaleTables& value) noexcept { tables = &value; }
+    LocaleTables* borrowed_menu_locale_tables() const noexcept { return tables; }
+};
+
+struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // One registry slot. The flag bytes live in whichever object owns them
     // (004f7180 clears +4h and +5h in the base constructor), so this record
     // points at them rather than holding a second copy.
@@ -1906,9 +1921,17 @@ public:
         owner_.log.unimplemented("FrontEndManager::remove_music", "004fc150+remove");
     }
     void register_locale_table(std::string_view name) override {
+        // 00686240's registrations use the application's existing locale owner; OFF keeps the log stand-in.
+        if constexpr (kWireGoal2Chain189Bound) {
+            auto* const tables = owner_.borrowed_menu_locale_tables();
+            if (tables == nullptr)
+                throw std::logic_error("Main-menu locale registration requires the phase-6 tables");
+            tables->register_table_00aa0d30(std::string(name));
+        } else {
         owner_.log.unimplemented("FrontEndManager::register_locale_table", "00aa09d0");
         owner_.log.notef("front-end locale table %.*s", static_cast<int>(name.size()),
             name.data());
+        }
     }
     void reload_locale_tables() override {
         owner_.log.unimplemented("FrontEndManager::reload_locale_tables", "00aa06d0");
@@ -2654,6 +2677,9 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);
     impl_->profile_scripts = &scripts;
+    if constexpr (kWireGoal2Chain189Bound) {
+        impl_->bind_menu_locale_tables(locale);
+    }
     if constexpr (kHintTriggerPassesCc15Bound) {
         impl_->hint_registry = std::make_unique<MenuHintRegistry>(*impl_, *this, locale);
     }
