@@ -538,6 +538,18 @@ void session_message_start_dialog_apply_00451e50(Raw owner, Raw message, SweepAH
 void native_string_at4_destroy_storage_004567b0(Raw record, SweepAHost& host);
 void native_string_at4_destroy_storage_00456d10(Raw record, SweepAHost& host);
 void scene_record_eight_strings_destroy_0045cfc0(Raw record, SweepAHost& host);
+
+// The token text produced by 008D8A70; no tokenizer image fields are read by
+// 0045C440 itself. The raw entry below supplies this same borrowed view.
+struct SceneTokenView {
+    const char* text;
+};
+struct SceneTokenEqualsHost {
+    virtual ~SceneTokenEqualsHost() = default;
+    virtual std::int32_t compare_insensitive(const char* a, const char* b) = 0;
+};
+bool scene_token_equals_0045c440(SceneTokenView token, const char* text,
+                               SceneTokenEqualsHost& host);
 bool scene_token_equals_0045c440(void* tokenizer, const char* text, SweepAHost& host);
 void fire_target_holder_apply_004643a0(Raw holder, void* entity, SweepAHost& host);
 void entity_command_set_submarine_depth_004654d0(Raw command, void* entity, SweepAHost& host);

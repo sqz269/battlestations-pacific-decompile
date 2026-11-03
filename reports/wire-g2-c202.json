@@ -1,0 +1,101 @@
+{
+  "goal": 2,
+  "chain": 202,
+  "run": 379,
+  "harness": "codex",
+  "slot": "g2-w4",
+  "branch": "agent/g2-w4",
+  "host_file": "src/scene_file.cpp",
+  "picked": {
+    "tier": 2,
+    "segment": 5,
+    "range": [
+      "00453cc0",
+      "004654d0"
+    ],
+    "reason": "Segment 24 was unsuitable: its aim-widget producer is absent from the host. Segment 5 has an existing SceneLexer and real pending-token scan, requiring only a borrowed token view and one-method comparison adapter. The other assigned row needs native movie-action storage that the host does not own."
+  },
+  "switch": "kWireGoal2Chain202Bound",
+  "switch_default": false,
+  "wired_total_before": 9013,
+  "wired_total_after": 9014,
+  "rows": [
+    {
+      "native": "0045c440",
+      "address": "008f635e",
+      "function": "008f5a00",
+      "name": "scene_token_equals_0045c440",
+      "abi": "raw_callback",
+      "host_site": "src/scene_file.cpp:568 parse_property_body",
+      "status": "wired",
+      "coverage": "Existing callee's comparison logic; host retains its partial property-value scan.",
+      "reach": "static",
+      "reach_path": "game_hosts_mission_frame.cpp load_scene_contents -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> load_property_library -> parse_library_file -> parse_scene_property_block_008f5a00 -> parse_property_section -> parse_property_body. Also GameMissionHost::Impl::read_scene_file -> parse_scene_document -> parse_scene_header_00469bf0 -> parse_property_section. Neither path has an enclosing disabled switch; chain 120's enum branch and chains 115/145's quoted-string branches are independent. No surveyed-mission call count was supplied for this row.",
+      "contract": "0045C440's full 8-instruction listing calls 008D8A70 with its tokenizer ECX, loads the single stack argument into EDX, compares via 00438E10 and returns equality in EAX; RET 4. All 13 original callers belong to 008F5A00: nine reference-subtype probes and four pending-semicolon probes. 008F6353 pushes 00CE5698 (';' verified as 3B 00), 008F6358 loads ECX=ESI, 008F635E calls the row. The whole containing listing has only one ESI producer, 008F5A1E MOV ESI,[ESP+14Ch], and restores it at 008F6774; containing RET 0Ch at 008F6784.",
+      "binding": "Typed SceneTokenView borrows cur.lexer().peek().text.c_str(), produced from the VFS scene/library stream. ScenePropertyTokenCompareAdapter calls the existing compare_insensitive_00438e10 body. The single equality body is shared with the raw entry, which peeks through its existing SweepAHost and forwards through a compatibility adapter; no second equality algorithm was added. The ON arm substitutes that body for the scan's existing pending-semicolon predicate; braces, end/error guards, token consumption and partial property projection remain the host's existing logic.",
+      "off_behavior": "The previous scan loop is retained byte for byte in the else arm, checked against HEAD. The new host comparison adapter is constructed only in the ON arm. The raw compatibility entry has no other source callers, so its forwarding adapter is not constructed on the OFF host path.",
+      "limitations": "Source interface and static reach only; not a native ABI replacement or gameplay/CRT parity proof. The ON CRT comparison follows native NUL termination rather than the old std::string length loop."
+    },
+    {
+      "native": "0045cfc0",
+      "address": "0045d3e3",
+      "function": "0045d3e0",
+      "name": "scene_record_eight_strings_destroy_0045cfc0",
+      "abi": "raw_callback",
+      "host_site": "src/pool_pool16_cc13.cpp:289 movie_action_type_destroy_0045cfc0 abstract dispatch",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host implements movie_action_type_destroy_0045cfc0 or owns the native movie-action record. The callee returns pooled NativeString allocations at +4Ch,+40h,+38h,+2Ch,+20h,+14h,+8,+0, reading each length/data pair. The host's semantic action metadata does not supply those records, their native constructor or their sized-pool allocation ownership. Constructing invented strings or adapting std::string destruction would not release the binary-shaped object's real state. No live host path for the record lifetime was found."
+    },
+    {
+      "native": "00605630",
+      "address": "006084e6",
+      "function": "006082d0",
+      "name": "direction_angle_deltas_00605630",
+      "abi": "typed",
+      "host_site": "src/game_hosts_units.cpp:6979 GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Initial candidate rejected after reading its only original caller and all three call sites. The direction deltas feed plane HUD screen+94h's aim-widget state (+3E8h/+3F0h), from inverse-transformed predicted ordnance/rocket points and the native reference direction. The reachable player-bomb-release host explicitly omits the display path, has no aim-widget owner or producer for those transformed direction inputs, and never computes yaw/pitch deltas to replace. The other reconstructed caller exposes only an unimplemented plane_hud_update_bomb_fire_006082d0 callback. Wiring different flight-attitude logic or passing constant vectors would not count."
+    }
+  ],
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "ScenePropertyTokenCompareAdapter",
+      "where": "src/scene_file.cpp:369",
+      "producers": [
+        "VFS scene/library bytes -> existing SceneLexer::peek token text",
+        "Existing compare_insensitive_00438e10 body"
+      ],
+      "rows": [
+        "0045c440"
+      ],
+      "lifetime": "Local to the ON raw-property scan; holds no new native object or copied token storage."
+    }
+  ],
+  "checks": {
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain202Bound",
+      "exit_code": 0,
+      "result": "passed; zero distinct diagnostics; tool restored the switch header",
+      "log": "local/off_switch_on_build.log"
+    },
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "result": "passed after the ON check; reconstructed_math and tool_tests passed (2/2)",
+      "log": "local/wire-g2-c202-off-build.log"
+    },
+    "off_loop_preservation": "Original raw scan loop is a byte-for-byte substring of the new OFF arm; switch declaration remains false.",
+    "pc24_lint": "not applicable: new ON arm and target body perform no x87 arithmetic",
+    "game_run": "not run, as instructed",
+    "report_calls": "passed: 3 call rows checked, 0 failed",
+    "readiness": "passed after plain OFF build: 9013 -> 9014 wired; 0045c440 ready -> wired; 0045cfc0 and 00605630 remain ready"
+  },
+  "on_change": "Property raw-value scans call the existing 0045C440 equality body over the pending real lexer token to decide whether the semicolon terminates the scan.",
+  "wired_rows": [
+    "0045c440"
+  ],
+  "wired_count": 1
+}

@@ -8,6 +8,9 @@
 #include "bsp/support_seg61_cc13.hpp"
 #include "bsp/wire_goal2_chain115_switches.hpp"
 #include "bsp/wire_goal2_chain145_switches.hpp"
+#include "bsp/wire_goal2_chain202_switches.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/entity_identity.hpp"
 
 #include <cmath>
 
@@ -361,6 +364,14 @@ private:
     char* joined_{nullptr};
 };
 
+// Binds 00438E10 to its existing body; the borrowed token text is produced by
+// SceneLexer::peek (008D8A70) over the VFS scene/library stream, not a new token.
+struct ScenePropertyTokenCompareAdapter final : cc13_sweepA::SceneTokenEqualsHost {
+    std::int32_t compare_insensitive(const char* a, const char* b) override {
+        return compare_insensitive_00438e10(a, b);
+    }
+};
+
 ScenePropertyBlock parse_property_body(Cursor& cur);
 
 // The optional "( g1 g2 ... )" group list, then "{ body }". 008f5a00.
@@ -551,9 +562,19 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
             // braces as well as ';' so a missing terminator cannot swallow the
             // current closing brace and nest later blocks one level too deep
             // (scene175/scene907; docs/SCENE_FILE_READER.md Corrections).
+            // 008F635E -> 0045C440 checks the pending ';'; OFF keeps the raw token scan.
+            if constexpr (kWireGoal2Chain202Bound) {
+                ScenePropertyTokenCompareAdapter compare;
+                while (!cc13_sweepA::scene_token_equals_0045c440(
+                           cc13_sweepA::SceneTokenView{cur.lexer().peek().text.c_str()}, ";", compare)
+                    && !cur.at("{") && !cur.at("}") && !cur.at_end() && !cur.exhausted()) {
+                    prop.values.push_back(cur.read_token());
+                }
+            } else {
             while (!cur.at(";") && !cur.at("{") && !cur.at("}") && !cur.at_end()
                 && !cur.exhausted()) {
                 prop.values.push_back(cur.read_token());
+            }
             }
         }
         // 008F5D8A/5DA1 recognize true/false, then store type-3 byte +0Ch.

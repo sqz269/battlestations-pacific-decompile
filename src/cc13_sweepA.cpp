@@ -1056,9 +1056,21 @@ void scene_record_eight_strings_destroy_0045cfc0(Raw record, SweepAHost& host) {
 // 0045C440, ECX = tokenizer passed through untouched to 008D8A70, stack
 // (const char* text), RET 4, EAX = 1 when 00438E10(peeked token, text) is 0,
 // else 0 (NEG/SBB/ADD). 13 calls, the scene property parser among them.
+bool scene_token_equals_0045c440(SceneTokenView token, const char* text,
+                               SceneTokenEqualsHost& host) {
+    return host.compare_insensitive(token.text, text) == 0;
+}
+
 bool scene_token_equals_0045c440(void* tokenizer, const char* text, SweepAHost& host) {
-    const char* const token = host.scene_tokenizer_peek_token_008d8a70(tokenizer);
-    return host.cstring_compare_insensitive_00438e10(token, text) == 0;
+    struct RawTokenCompareAdapter final : SceneTokenEqualsHost {
+        explicit RawTokenCompareAdapter(SweepAHost& source) : source_(source) {}
+        std::int32_t compare_insensitive(const char* a, const char* b) override {
+            return source_.cstring_compare_insensitive_00438e10(a, b);
+        }
+        SweepAHost& source_;
+    } compare(host);
+    return scene_token_equals_0045c440(
+        SceneTokenView{host.scene_tokenizer_peek_token_008d8a70(tokenizer)}, text, compare);
 }
 
 // 004643A0, __thiscall(ECX = holder, entity), RET 4; vtable slot (00CE5500).
