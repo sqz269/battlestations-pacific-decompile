@@ -63,7 +63,18 @@ struct TaggedValue {
     std::uint32_t value;
 };
 
-class Left8Host {
+// The one call 004B6720 makes. Split out of Left8Host (goal 4 chain 306) so
+// 004BC120's spawn-border search can run 004B6720 without the rest of seg 8.
+class SegmentCrossing2dHost {
+public:
+    virtual ~SegmentCrossing2dHost() = default;
+    // 004F3730 __fastcall(ECX a0, EDX a1, b0, b1, out), RET 0Ch, AL (float2
+    // points). `out` is written only when AL is 1 (004F37E5/004F37EB).
+    virtual bool math_segment_crossing_2d_004f3730(const float* a0, const float* a1, const float* b0,
+                                                   const float* b1, float* out) = 0;
+};
+
+class Left8Host : public SegmentCrossing2dHost {
 public:
     virtual ~Left8Host() = default;
 
@@ -130,9 +141,7 @@ public:
     virtual void game_submit_main_scene_render_0068a0d0(Object game) = 0;          // ECX = [00E198C4]
     virtual std::uint32_t camera_classify_aabb_00b71590(Object frustum, const float* box) = 0;
     virtual void camera_set_near_plane_00b6fbf0(Object camera, float near_plane) = 0;
-    // 004F3730 __fastcall(ECX a0, EDX a1, b0, b1, out), RET 0Ch, AL (float2 points).
-    virtual bool math_segment_crossing_2d_004f3730(const float* a0, const float* a1, const float* b0,
-                                                   const float* b1, float* out) = 0;
+    // 004F3730 math_segment_crossing_2d_004f3730 comes from SegmentCrossing2dHost.
     virtual void frontend_screen_commit_visibility_004f83b0(Object screen) = 0;    // ECX = screen
     virtual void vcall_screen_refresh_18(Object screen) = 0;                         // +18h
 
@@ -422,8 +431,9 @@ Object mission_scoring_commit_record_004b4750(Object game);
 void render_camera_update_job_run_004b4820(Left8Host& host, Object job, std::uint32_t unused);
 bool game_is_aabb_in_view_004b48e0(Left8Host& host, Object game, const float* box);
 void game_set_camera_near_plane_004b4940(Left8Host& host, Object game, float near_plane);
-void segment_crossing_2d_float3_004b6720(Left8Host& host, const float* a0, const float* a1, const float* b0,
-                                         const float* b1, float* out);
+// Returns 004F3730's AL, which 004B6720 leaves in EAX (004BC353/004BC3BA test it).
+bool segment_crossing_2d_float3_004b6720(SegmentCrossing2dHost& host, const float* a0, const float* a1,
+                                         const float* b0, const float* b1, float* out);
 Object cloud_light_colours_construct_004b6980(Object colours);
 void frontend_screen_mark_visible_004b6e30(Left8Host& host, Object screen);
 int format_string_512_004b7f70(char* dst, const char* format, ...);

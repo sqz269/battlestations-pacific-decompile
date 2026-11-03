@@ -37,6 +37,8 @@ void movie_camera_fixed_driver_00790390(float& accumulator_53c, bool enabled_634
 //   block 0079A584..0079B2A2 is unreachable without a selected keyframe).
 // - Ground clearance: +4FCh is 0 from the constructor and nothing here sets it,
 //   so 0078FAF0 runs on a zero state and the height offset stays 0 (applied).
+//   Under kWireGoal4Chain306Bound the update calls 0078FAF0 itself each frame,
+//   as 0079B691 does; before, the goal was set and the step never ran.
 
 #include "bsp/cc13_camera_controllers.hpp"
 

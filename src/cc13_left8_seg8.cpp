@@ -2088,20 +2088,24 @@ void game_set_camera_near_plane_004b4940(Left8Host& host, Object game_object, fl
 
 // 004B6720 __fastcall(ECX a0, EDX a1, b0, b1, out), RET 0Ch: packs the x and z
 // of the four float3 points into float2 locals and calls 004F3730(ECX = a0',
-// EDX = a1', b0', b1', &cross) (its result is ignored); out = (cross.x, 0,
-// cross.z). On a miss the image copies its uninitialised locals; this code
-// starts them at 0 (MINOR).
-void segment_crossing_2d_float3_004b6720(Left8Host& host, const float* a0, const float* a1, const float* b0,
-                                         const float* b1, float* out) {
+// EDX = a1', b0', b1', &cross); out = (cross.x, 0, cross.z). Nothing after the
+// 004B6795 call writes EAX (004B679A..004B67BE use ECX and XMM0 only), so
+// 004F3730's AL is this function's result; 004BC120 tests it at 004BC353 and
+// 004BC3BA. (The earlier note here called the result ignored; it is returned.)
+// On a miss the image copies its uninitialised locals; this code starts them at
+// 0 (MINOR).
+bool segment_crossing_2d_float3_004b6720(SegmentCrossing2dHost& host, const float* a0, const float* a1,
+                                         const float* b0, const float* b1, float* out) {
     const float pa0[2] = {a0[0], a0[2]};
     const float pa1[2] = {a1[0], a1[2]};
     const float pb0[2] = {b0[0], b0[2]};
     const float pb1[2] = {b1[0], b1[2]};
     float cross[2] = {0.0f, 0.0f};
-    host.math_segment_crossing_2d_004f3730(pa0, pa1, pb0, pb1, cross);
+    const bool crossed = host.math_segment_crossing_2d_004f3730(pa0, pa1, pb0, pb1, cross);
     out[0] = cross[0];
     out[2] = cross[1];
     out[1] = 0.0f;
+    return crossed;
 }
 
 // 004B6980 __thiscall(colours), RET, EAX = colours: three RGBA rows (0.2, 0.2,

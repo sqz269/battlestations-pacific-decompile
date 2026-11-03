@@ -12,6 +12,8 @@
 #include <cstring>
 
 #include "bsp/gun_bot_remainder.hpp"   // segment_crossing_004f3730
+#include "bsp/cc13_left8_seg8.hpp"     // segment_crossing_2d_float3_004b6720
+#include "bsp/wire_goal4_chain306_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -36,6 +38,21 @@ void copy3(float out[3], const float in[3]) noexcept {
     out[1] = in[1];
     out[2] = in[2];
 }
+
+// 004B6720's one call, 004F3730, bound to the existing typed body. The image
+// writes `out` only on a hit (004F37E5/004F37EB); a miss returns AL = 0.
+class SpawnSegmentCrossing final : public cc13_left8::SegmentCrossing2dHost {
+public:
+    bool math_segment_crossing_2d_004f3730(const float* a0, const float* a1, const float* b0,
+                                           const float* b1, float* out) override {
+        const SegmentCrossingXZ hit = segment_crossing_004f3730(
+            {a0[0], a0[1]}, {a1[0], a1[1]}, {b0[0], b0[1]}, {b1[0], b1[1]});
+        if (!hit.crossed) return false;
+        out[0] = hit.point[0];
+        out[1] = hit.point[1];
+        return true;
+    }
+};
 
 }  // namespace
 
@@ -235,6 +252,29 @@ SpawnEdgeCrossing spawn_edge_crossing_004bc120(const SpawnWorldBox& box, const f
          {box.min_x, box.min_y, box.min_z}, {box.min_x, box.min_y, box.max_z}},
     };
     for (int i = 0; i < 4; ++i) {
+        if constexpr (kWireGoal4Chain306Bound) {
+            if (i >= 2) {
+                // 004BC33F..004BC34E and 004BC3A6..004BC3B5: 004B6720(ECX = a,
+                // EDX = b, b0, b1, out = the caller's cross). Edge 2 passes the
+                // locals at +44h {max_x, max_y, min_z} and +50h {min_x, min_y,
+                // min_z}; edge 3 passes +50h and +38h {min_x, min_y, max_z}
+                // (stores 004BC1AC..004BC1CA). Those are this edge's edge_a and
+                // edge_b. 004B6720 reads only their x and z.
+                SpawnSegmentCrossing crossing;
+                float cross[3] = {0.0f, 0.0f, 0.0f};
+                if (!cc13_left8::segment_crossing_2d_float3_004b6720(crossing, a, b,
+                        edges[i].edge_a, edges[i].edge_b, cross)) {
+                    continue;   // 004BC358 / 004BC3BF JZ
+                }
+                out.crossed = true;
+                out.cross_written = true;
+                out.edge = i;
+                copy3(out.cross, cross);   // x, 0 (004B67B6), z
+                copy3(out.edge_a, edges[i].edge_a);
+                copy3(out.edge_b, edges[i].edge_b);
+                return out;
+            }
+        }
         const SegmentCrossingXZ hit = segment_crossing_004f3730(a0, a1, edges[i].b0, edges[i].b1);
         if (!hit.crossed) continue;
         out.crossed = true;

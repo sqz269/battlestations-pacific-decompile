@@ -32,7 +32,15 @@ struct Mat16 {
     float m[16];
 };
 
-struct Seg2Host {
+// The one call 0042D5A0 makes. Split out of Seg2Host (goal 4 chain 306) so the
+// ship-captain camera update can run 0042D5A0 without the rest of segment 2.
+struct MatrixOrthonormalizeHost {
+    virtual ~MatrixOrthonormalizeHost() = default;
+    // 0085DC80, ECX = matrix: re-orthonormalise the basis rows.
+    virtual void matrix_orthonormalize_0085dc80(Raw matrix) = 0;
+};
+
+struct Seg2Host : MatrixOrthonormalizeHost {
     virtual ~Seg2Host() = default;
     // Image globals (dword storage at a fixed address) and image data addresses.
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -61,8 +69,7 @@ struct Seg2Host {
     virtual void build_rotation_z_00b64780(Mat16& out, const float& angle) = 0;
     // 004134F0, ECX = destination, stack source, RET 4: sequential FLD/FSTP copy.
     virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
-    // 0085DC80, ECX = matrix: re-orthonormalise the basis rows.
-    virtual void matrix_orthonormalize_0085dc80(Raw matrix) = 0;
+    // 0085DC80 matrix_orthonormalize_0085dc80 comes from MatrixOrthonormalizeHost.
     // Camera copy bodies (__thiscall(this, other), RET 4).
     virtual void ship_camera_copy_state_0042dc20(Raw camera, Raw other) = 0;
     virtual void plane_chase_copy_if_same_target_0042cd50(Raw camera, Raw other) = 0;
@@ -136,7 +143,7 @@ Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host);
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
-                                                  Seg2Host& host);
+                                                  MatrixOrthonormalizeHost& host);
 float* transform_get_world_matrix_0042aff0(Raw node, Seg2Host& host);
 void transform_get_world_position_0042d210(Raw node, float out[3], Seg2Host& host);
 
