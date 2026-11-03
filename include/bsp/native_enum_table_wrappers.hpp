@@ -1,6 +1,7 @@
 #pragma once
 
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/native_scene_enum_storage.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native enum table wrappers require MSVC Win32.
@@ -56,6 +57,8 @@ private:
 void insert_native_cenum_table_name_008f2b90(void* actual_owner,
     const char* key, void* new_actual_cenum_or_null,
     NativeEnumTableWrapperContext& context);
+void insert_native_cenum_table_name_008f2b90(NativeSceneEnumRegistryStorage&,
+    const char* key, NativeSceneEnumOwnerStorage*, NativeEnumTableWrapperContext&);
 
 // Whole [008F2C10,008F2C95),133B/41 instructions. ECX owner, stack CString,
 // RET4; only AL is Boolean. Call whole0048D4E0 on owner+4 using a private
@@ -64,5 +67,7 @@ void insert_native_cenum_table_name_008f2b90(void* actual_owner,
 // access/start enum pools; temporary key construction may start the string pool.
 bool contains_native_enum_table_name_008f2c10(const void* actual_owner,
     const char* key, NativeEnumTableWrapperContext& context);
+bool contains_native_enum_table_name_008f2c10(const NativeSceneEnumRegistryStorage&,
+    const char* key, NativeEnumTableWrapperContext&);
 
 } // namespace bsp
