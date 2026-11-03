@@ -6,21 +6,24 @@
   "rows": [
     {
       "native": "007c6340",
-      "status": "skipped",
-      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::place_squadron_members_007f2920",
-      "reason": "The unit-host placement call is pending its active g4-w3 lease; the selector unordered-height branch is corrected and native-branch-probed in this step."
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::place_squadron_members_007f2920 -> apply_squadron_spawn_placement",
+      "state": "Current plane+900h, placed world Y, VehicleClass Height and MinWaterSpd; writes live state/clock and clears landing/taxi/water latches. Water placement samples the existing world field and adds authored SwimHeight at PC24.",
+      "evidence": "007F299E and 007F2B27 call 007C6340; 007C63C0-007C63EC compares height/MinWaterSpd; 007C63F4/007C6481 store states 6/7; 007C6442-007C644F sample water and add SwimHeight."
     },
     {
       "native": "007b83f0",
-      "status": "skipped",
+      "status": "wired",
       "host_site": "src/game_hosts_units.cpp: takeoff_slow_leave_009cfb60",
-      "reason": "The live message-7A launch-delay replacement needs src/game_hosts_units.cpp, currently leased by g4-w3."
+      "state": "The native slow-takeoff leave event sends message 7A with flag 0; body result replaces the old -1 store in the actual plane_shipyard_launch_aa0 field.",
+      "evidence": "009CFC38 sends flag 0; 007CD171 calls 007B83F0(0); 007B8412 writes -1.0 to plane+AA0h."
     },
     {
       "native": "007b8860",
-      "status": "skipped",
-      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::place_squadron_members_007f2920",
-      "reason": "Placement notification needs the pending unit-host lease to pass its live actuator-channel state."
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::apply_squadron_spawn_placement instant actuator notification",
+      "state": "Borrows each existing PlaneActuatorChannel target/value/moving fields and the live block dirty byte; writes the results back. Placement states 6 and 7/3600 request gear target 0 and wings target 1, matching the native notify(1) inline operations.",
+      "evidence": "007C641A/007C649F notify with argument 1; existing typed 007B8860 body preserves target/value compare and dirty propagation."
     },
     {
       "native": "006e3500",
@@ -82,6 +85,40 @@
     "body_fix_build": "passed; reconstructed_math and tool_tests (2/2)",
     "placement_probe": "Win32 /MANIFEST:EMBED, PC24; six comparisons against the native x87/SSE branch sequence plus launch-state bypass passed",
     "probe_path": "local/chain263/placement_probe.cpp",
-    "game_run": false
-  }
+    "game_run": false,
+    "wiring_build": "passed after empty-squadron guard; reconstructed_math and tool_tests (2/2)",
+    "pc24_lint_staged": "0 findings (host and switch header); body-fix diff also passed",
+    "readiness": {
+      "summary": {
+        "wired": 9126,
+        "callees_done_no_wired_caller": 9618,
+        "ready": 1720,
+        "blocked_on_callees": 55,
+        "unknown_no_identifier": 206
+      },
+      "source_text_sha256": "15b2658265578d8d31ef261f0f621570a8b2fb8d9c08c7b05bd660af2bb956ce",
+      "map_text_sha256": "cc3ad681a1ec2d472761bb5cae8dd106b4715a8fb64ef7f39343737457e76dc6",
+      "classification": "source-level file-granular approximation, not gameplay reach proof"
+    },
+    "runtime_path_gates": {
+      "kSquadronPutToMembersBound": true,
+      "kSquadronPassCPlacementBound": true,
+      "kPlaneShipyardLaunchAa0Cc13Bound": true,
+      "empty_squadron": "member-zero selector call retains native +3CCh != 0 guard"
+    },
+    "ghidra": "Verified bsp /battlestationspacific.exe; appended assembly correction while preserving prior annotation, saved the project under the write lock, and refreshed the 007C6340 export.",
+    "ghidra_previous_values": "local/ghidra-annotations-20261103T181322Z.json"
+  },
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain263_switches.hpp",
+    "name": "bsp::kWireGoal4Chain263Bound",
+    "value": true
+  },
+  "limitations": [
+    "Source wiring of existing typed projections is established; no game was run and binary ABI/full native wrapper equivalence is not claimed.",
+    "007C6340 controller-reset, scene attachment, pose-derived/physics and presentation callbacks retain their existing host substitutions. The typed selector and supported live scalar/actuator/water-height effects are connected.",
+    "The original initial create_units flying seed is unchanged; this packet binds the actual later 007F2920 placement sites.",
+    "Gear PartAnims.Gears production remains absent. The instant body operates on the existing constructor-established channel state; this is not visual gear animation proof."
+  ],
+  "wired_after": 9126
 }
