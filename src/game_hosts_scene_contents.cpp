@@ -1525,13 +1525,12 @@ void GameSceneContentsHost::Impl::load_property_library() {
                 std::vector<std::string> found;
                 std::string error;
                 if (!enumerate_resources_00bdd990_fragment(owner_.vfs.context(),
-                        folder, extension, 0, found, error)) {
+                        folder, extension, 1, found, error)) {
                     owner_.log.notef("property library: %s enumeration failed: %s",
                         extension.c_str(), error.c_str());
                     found.clear();
                 }
-                // Retain the application's stable order within an extension.
-                std::sort(found.begin(), found.end());
+                // 008F7079..008F7092 consumes PopFront order unchanged.
                 return found;
             }
 
