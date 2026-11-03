@@ -21,6 +21,7 @@
 #include "bsp/wire_goal2_chain152_switches.hpp"
 #include "bsp/wire_goal2_chain187_switches.hpp"
 #include "bsp/wire_goal2_chain195_switches.hpp"
+#include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
 #include "bsp/cc13_left61.hpp"        // 009481A0, chain 195
 #include "bsp/gui_lua_runtime.hpp"   // GuiLua51Host, GuiLuaReader (00BD68D0), chain 195
 #include "bsp/oct18_tail_c.hpp"
@@ -914,6 +915,10 @@ int binding_trampoline(lua_State* state) {
     // Packet cc13-issuea0: its only reader is the ON arm of the 007EEF40 gate.
     const bool drop_all_bomb_row = bsp::kPlaneIssueThresholdZeroCc13Bound
         && dispatch_row.address == 0x008a1f40u;
+    // Goal 2 chain 209: 008A28B0 SquadronSetForceRelease, the producer of the
+    // squadron byte +3AEh that 009B7B10 / 009B7B40 and the aim tick read.
+    const bool force_release_row = bsp::kWireGoal2Chain209Bound
+        && dispatch_row.address == 0x008a28b0u;
     // Packet cc13-fix5.
     const bool remove_all_stock_row = kLuaRemoveAllAirBasePlanesBound
         && dispatch_row.address == 0x008975b0u;
@@ -1252,6 +1257,10 @@ int binding_trampoline(lua_State* state) {
         if (!host->error_replay()) {
             host->run_squadron_set_drop_all_bomb_percent_008a1f40(state, argc);
         }
+        return 0;
+    }
+    if (force_release_row) {
+        if (!host->error_replay()) host->run_squadron_set_force_release(state, argc);
         return 0;
     }
     if (in_formation_row && !host->error_replay()) {
@@ -9842,6 +9851,27 @@ int GameMissionLuaHost::run_squadron_set_drop_all_bomb_percent_008a1f40(lua_Stat
         "cc13-issuea0)", row != nullptr ? row->name.c_str() : "?",
         static_cast<double>(percent), stored ? 1 : 0);
     log_.implemented("MissionLuaNative::SquadronSetDropAllBombPercent", "008a1f40");
+    return 0;
+}
+
+// Goal 2 chain 209 (kWireGoal2Chain209Bound). 008A28B0
+// SquadronSetForceRelease(squadron, on), lua_squadron_set_force_release:
+// argument 0 through 00888AA0, argument 1 through 00B66250 (a missing or nil
+// argument reads false), then MOV [ESI+3AEh], BL (008A29FC). No result. The body's
+// LuaArgs/ImageAccess adapters do not exist in this host, so this glue resolves
+// the entity as the sibling natives do and GameUnitsHost makes the store.
+int GameMissionLuaHost::run_squadron_set_force_release(lua_State* state, int argument_count) {
+    GameUnitsHost* units = units_hooks_;
+    const int id = air_ops_entity_id(state);
+    const bool on = argument_count >= 2 && ::lua_toboolean(state, 2) != 0;
+    bool stored = false;
+    if (units != nullptr && id > 0 && static_cast<std::size_t>(id) <= units->count()) {
+        stored = units->set_squadron_force_release(static_cast<std::size_t>(id - 1), on);
+    }
+    const GameUnitRow* row = stored ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
+    log_.notef("  SquadronSetForceRelease 008a28b0: \"%s\" on=%d stored=%d (goal 2 chain 209)",
+        row != nullptr ? row->name.c_str() : "?", on ? 1 : 0, stored ? 1 : 0);
+    log_.implemented("MissionLuaNative::SquadronSetForceRelease", "008a28b0");
     return 0;
 }
 

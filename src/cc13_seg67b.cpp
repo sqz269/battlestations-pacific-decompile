@@ -2414,17 +2414,41 @@ bool bot_state_level_bomb_prepare_is_waiting_009b7a80(bool released_a0, float ti
 
 // 009B7B10 (009B7B10-009B7B33). byte +18h set -> 1; byte +19h clear -> 0; else
 // byte ([+4h]+0Ch)+3AEh set -> 1, clear -> 0.
+// The raw entry forwards its three byte reads to the typed view below; the
+// squadron byte is read only when +18h is clear and +19h set (009B7B1C), as in
+// the listing.
 bool bot_state_level_bomb_aim_should_release_009b7b10(void* state) {
-    if (at<std::uint8_t>(state, 0x18) != 0) return true;
-    if (at<std::uint8_t>(state, 0x19) == 0) return false;
-    return at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) != 0;
+    const bool release_18 = at<std::uint8_t>(state, 0x18) != 0;
+    const bool abort_19 = at<std::uint8_t>(state, 0x19) != 0;
+    if (release_18 || !abort_19) {
+        return bot_state_level_bomb_aim_should_release_009b7b10(release_18, abort_19, false);
+    }
+    return bot_state_level_bomb_aim_should_release_009b7b10(
+        release_18, abort_19,
+        at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) != 0);
+}
+
+// Typed view of 009B7B10: the same three tests over the caller's storage.
+bool bot_state_level_bomb_aim_should_release_009b7b10(bool release_18, bool abort_19,
+                                                      bool force_release_3ae) {
+    if (release_18) return true;          // 009B7B14 JNZ -> 1
+    if (!abort_19) return false;          // 009B7B1A JZ -> 0
+    return force_release_3ae;             // 009B7B22 CMP [ctl+3AEh], 0
 }
 
 // 009B7B40 (009B7B40-009B7B5D). byte +19h set and byte ([+4h]+0Ch)+3AEh clear -> 1;
 // else 0.
 bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state) {
-    if (at<std::uint8_t>(state, 0x19) == 0) return false;
-    return at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) == 0;
+    const bool abort_19 = at<std::uint8_t>(state, 0x19) != 0;
+    if (!abort_19) return bot_state_level_bomb_aim_should_abort_009b7b40(false, false);
+    return bot_state_level_bomb_aim_should_abort_009b7b40(
+        abort_19, at<std::uint8_t>(ptr_at(ptr_at(state, 0x04), 0x0C), 0x3AE) != 0);
+}
+
+// Typed view of 009B7B40: the same two tests over the caller's storage.
+bool bot_state_level_bomb_aim_should_abort_009b7b40(bool abort_19, bool force_release_3ae) {
+    if (!abort_19) return false;          // 009B7B44 JZ -> 0
+    return !force_release_3ae;            // 009B7B4C CMP [ctl+3AEh], 0; JNZ -> 0
 }
 
 namespace {

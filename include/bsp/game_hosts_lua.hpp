@@ -2081,6 +2081,8 @@ public:
     // Packet cc13-fix4, under kLuaSquadronLandAndKillBound.
     int run_squadron_land_and_kill_008a20e0(lua_State* state, int argument_count);
     int run_squadron_set_drop_all_bomb_percent_008a1f40(lua_State* state, int argument_count);
+    // Goal 2 chain 209, under kWireGoal2Chain209Bound: 008A28B0 SquadronSetForceRelease.
+    int run_squadron_set_force_release(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaRemoveAllAirBasePlanesBound.
     int run_remove_all_air_base_planes_008975b0(lua_State* state, int argument_count);
     // Packet cc13-fix5, under kLuaStartLanding2Bound.

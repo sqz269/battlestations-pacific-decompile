@@ -956,6 +956,12 @@ bool bot_state_level_bomb_prepare_is_waiting_009b7a80(void* state);
 bool bot_state_level_bomb_prepare_is_waiting_009b7a80(bool released_a0, float timer_98);
 bool bot_state_level_bomb_aim_should_release_009b7b10(void* state);
 bool bot_state_level_bomb_aim_should_abort_009b7b40(void* state);
+// Typed views of 009B7B10 / 009B7B40 over the caller's storage: the aim state's
+// release byte +18h and abort byte +19h, and the squadron block's force-release
+// byte ([state+4]+0Ch)+3AEh. The raw entries wrap them.
+bool bot_state_level_bomb_aim_should_release_009b7b10(bool release_18, bool abort_19,
+                                                      bool force_release_3ae);
+bool bot_state_level_bomb_aim_should_abort_009b7b40(bool abort_19, bool force_release_3ae);
 // 009B6C10: __thiscall(ECX = state, approach, target, float near, float far, float third),
 // RET 14h, EAX = state.
 void* bot_state_level_bomb_move_to_construct_009b6c10(Cc13Seg67bHost& host, void* s,

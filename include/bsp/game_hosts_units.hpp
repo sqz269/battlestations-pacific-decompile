@@ -671,6 +671,9 @@ public:
     bool set_squadron_release_alt_008a24e0(std::size_t unit_index, float altitude, bool force);
     // 008A1F40 SquadronSetDropAllBombPercent: squadron+390h (packet cc13-issuea0).
     bool set_squadron_drop_all_bomb_percent_008a1f40(std::size_t unit_index, float percent);
+    // Goal 2 chain 209 (kWireGoal2Chain209Bound): 008A28B0 SquadronSetForceRelease's
+    // store, squadron+3AEh. Called only from the ON dispatch row.
+    bool set_squadron_force_release(std::size_t unit_index, bool on);
     bool set_squadron_travel_alt_0089f550(std::size_t unit_index, float altitude, bool force);
     // Packet l68_travel_speed: 008A0630's four stores on the squadron's slot
     // (+388h countdown, +38Fh freeze, +3A0h speed, +3ACh lock).
