@@ -5,6 +5,7 @@
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 
 #include "bsp/band_0067_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -126,8 +127,16 @@ void warning_screen_play_sound_00682800(Raw screen, int alert, Fe5Host& host) {
 float warning_pulse_alpha(float phase) noexcept {
     const float angle = static_cast<float>(static_cast<double>(phase) * kWarningPulseRate);
     const float s = static_cast<float>(std::sin(static_cast<double>(angle)));
-    return static_cast<float>((static_cast<double>(s) + kWarningPulseOne) * kWarningPulseHalf *
-                                  kWarningPulseSpan + kWarningPulseFloor);
+    // 00682E58 FADD 1.0, 00682E64 FMUL 0.5, 00682E6A FMUL span, 00682E70 FADD floor
+    // (00682E10; the other three shows repeat it): the main thread's PC24 rounds each
+    // result to a 24-bit significand before the next, then FSTP float.
+    using bsp::cc13x87::x87_add24;
+    using bsp::cc13x87::x87_mul24;
+    double v = x87_add24(static_cast<double>(s), kWarningPulseOne);
+    v = x87_mul24(v, kWarningPulseHalf);
+    v = x87_mul24(v, kWarningPulseSpan);
+    v = x87_add24(v, kWarningPulseFloor);
+    return static_cast<float>(v);
 }
 
 void warning_screen_show_alert(Raw screen, int alert, Fe5Host& host) {

@@ -10,7 +10,8 @@
   "files": [
     "src/game_hosts_hud.cpp",
     "include/bsp/fe5_host_unreached.hpp",
-    "include/bsp/wire_goal3_chain233_switches.hpp"
+    "include/bsp/wire_goal3_chain233_switches.hpp",
+    "src/frontend_seg16_24_28_cc13.cpp"
   ],
   "switch": "kWireGoal3Chain233Bound",
   "switch_header": "include/bsp/wire_goal3_chain233_switches.hpp",
@@ -104,7 +105,9 @@
       "producers": [
         "GameMissionLuaHost::set_world_border_zones (src/game_hosts_lua.cpp:10707), called by the mission frame's avoid-zone load (src/game_hosts_mission_frame.cpp:3777) with select_world_map_bounds_004d5ede; the image fills the same box in 004E6C00's Map read"
       ],
-      "rows": ["00682e10"],
+      "rows": [
+        "00682e10"
+      ],
       "climb": [
         "00682E10 needs an active exit-zone alert <- 00681F40 on GGame+711Ch..+7130h (HUD stand-in fixed false) <- GameMissionLuaHost::world_border_bounds <- avoid-zone load select_world_map_bounds_004d5ede (host already runs it: stopped, built there)"
       ]
@@ -117,7 +120,9 @@
         "GameHudHost::Impl::warning_widget (006823C0's GUI_Warning lookups) for +50h/+54h/+58h/+68h",
         "samples +30h..+3Ch: screen 50h's constructor 006821C0 (00A83FD0 on the sample cache [00F8BBE8]) is not built by this host, so they stay null"
       ],
-      "rows": ["00682e10"],
+      "rows": [
+        "00682e10"
+      ],
       "climb": [
         "00682E10's sound half needs samples at screen+30h <- ctor 006821C0 via 00A83FD0 on [00F8BBE8] <- BSP_InGameInterface_Init 0068CC70 (HudInitBinding::construct_screen builds no native screens) and the GUI sound class [00E1988C] (stopped: no host owner; no sound, as before)"
       ]
@@ -128,7 +133,28 @@
   "wired_note": "Measured with python tools/wire_readiness.py after a plain ./scripts/build.ps1. The four rows 00682CB0/00682D60/00682E10/00682ED0 share the identifier warning_screen_show_alert, so all four turn wired; only 00682E10 is claimed (the others are dead arms, reported skipped). A first version of fe5_host_unreached.hpp with written-out override bodies also turned 004C1B90 and 005471B0 wired through same-named Fe5Host services; the bodies are now one macro and those two stay ready (checked by diffing the readiness output before and after).",
   "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed",
   "build_on": "python tools/off_switch_on_build.py --names kWireGoal3Chain233Bound: build.ps1 exit 0, 0 distinct diagnostics",
-  "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 3 files",
+  "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 4 files after the round-1 fix commit",
   "ledger": "no new address-suffixed functions; no ledger rows",
-  "pair_run": "none (not run, per the brief)"
+  "pair_run": "none (not run, per the brief)",
+  "review_round_1": {
+    "review_run": 434,
+    "fixes": [
+      {
+        "finding": "src/frontend_seg16_24_28_cc13.cpp warning_pulse_alpha rounded (s+1)*0.5*span+floor once in double",
+        "status": "fixed",
+        "change": "Each step narrowed in listing order with bsp::cc13x87::x87_add24 / x87_mul24: 00682E58 FADD 1.0, 00682E64 FMUL 0.5, 00682E6A FMUL span (00CEFFA0), 00682E70 FADD floor (00CE3DC8), then the FSTP float. Listing re-read from 00682E10 (python tools/bsp.py ghidra disasm 00682e10). At phase 0.0166667 the single-rounded form gives 0.6865850 and the per-op form 0.6865851 (one ulp).",
+        "off_effect": "none: warning_screen_show_alert is the only caller of warning_pulse_alpha (src and tests searched), and only the kWireGoal3Chain233Bound ON arm calls it"
+      }
+    ],
+    "notes_not_changed": [
+      "00681F40 as an extra row: not claimed. game_near_world_edge_00681f40 was already in state wired before this chain (wire_readiness before/after), so it cannot move the count; the units host fly-to solver inline copy (game_hosts_units.cpp) is left for a later chain.",
+      "GameWorldBoxImage per-frame allocation and the dropped 00ABBE50 same-source gate: kept as they are (cost only, no change to what is shown); the review lists them as notes, not fixes.",
+      "A chain that makes plane_stall_007c6e10 true must override award_tracker_trigger_hint_00690fd0 in WarningAlertFe5Binding; the base throws for it."
+    ],
+    "checks": {
+      "build_on": "python tools/off_switch_on_build.py --names kWireGoal3Chain233Bound: build.ps1 exit 0, 0 distinct diagnostics",
+      "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed",
+      "wired_after": 9026
+    }
+  }
 }
