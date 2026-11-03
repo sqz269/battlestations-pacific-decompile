@@ -10,6 +10,9 @@
 #include "bsp/wire_goal1_chain22_switches.hpp"
 #include "bsp/wire_goal2_chain27_switches.hpp"
 #include "bsp/wire_goal2_chain68_switches.hpp"
+#include "bsp/wire_goal2_chain123_switches.hpp"
+#include "bsp/gun_platform_arc.hpp"                   // chain 123: 007F6840 typed body
+#include "bsp/ship_ai_bearing_rating.hpp"             // chain 123: 00605070 wrap
 #include "bsp/director_geommesh_seg38_39_argon.hpp"   // chain 68: 00723030 typed view
 #include "bsp/oct18_tail_b.hpp"                       // chain 68: 00836EB0 typed view
 #include "bsp/sim_damage_seg54_argon.hpp"             // chain 68: 008782A0 typed body
@@ -10002,10 +10005,35 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // Packet cc13-trav: 0085AD96, a set gun+3B8h (0072B5BC) skips the whole
                 // step. LABELLED: 0085AD8C's owner test ([gun+3F0h]+5Dh) is this loop's
                 // `if (state.dead) continue;`, UnitState::dead taken as the owner's +5Dh.
+                if constexpr (bsp::kWireGoal2Chain123Bound) {
+                    // 0085B0C5 -> 007F6840 gun_find_traverse_window_007f6840 on the stepped
+                    // pair; OFF keeps the step without the traverse-window check.
+                    // 0085AFC8 saves the horizontal angle the add starts from (after the
+                    // 0085ADEB/0085ADF9 snaps: a zero speed gives the target) and
+                    // 0085B0CE restores it when no traverse window holds the pair. The
+                    // pair is wrapped first (00605070 at 0085AFD1 and on the vertical),
+                    // as 007F5FC0's clamp expects. A step that ends at the dead band
+                    // returns false here and leaves the horizontal angle at that value,
+                    // so the check is skipped only where it cannot move anything.
+                    const float add_start_horz = gun.speeds.horz <= 0.0f
+                        ? gun.angles.target_horz : gun.angles.horz;
+                    if (!gun.destroyed_3b8
+                        && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
+                        ++gun.aim_steps;
+                        ++summary.aim_steps;
+                        if (bsp::gun_find_traverse_window_007f6840(arcs,
+                                bsp::ship_ai_firepower_wrap_angle_00605070(gun.angles.horz),
+                                bsp::ship_ai_firepower_wrap_angle_00605070(gun.angles.vert)) < 0) {
+                            gun.angles.horz = add_start_horz;
+                        }
+                        done("Gun::find_traverse_window_007f6840", 0x007f6840u);
+                    }
+                } else {
                 if (!gun.destroyed_3b8
                     && bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
                     ++gun.aim_steps;
                     ++summary.aim_steps;
+                }
                 }
             } else {
                 if (bsp::gun_step_aim_0085ad80(gun.angles, gun.speeds, route.deltas, dt, false)) {
