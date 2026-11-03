@@ -27,6 +27,8 @@
 #include "bsp/wire_goal4_chain301_switches.hpp"
 #include "bsp/wire_goal4_chain303_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/wire_goal4_chain320_switches.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/material_effect_plane.hpp"
 #include "bsp/scene_terrain_forwarders.hpp"
@@ -22056,6 +22058,21 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             // and has left the map ends (0071E430(current, 1) at 009F83A8).
             const std::size_t t = over_target - 1u;
             bool end = false;
+            const auto target_as_plane = [&]() {
+                if constexpr (bsp::kWireGoal4Chain320Bound) {
+                    // 009F8420 calls 0071EA00 on the resolved target; the
+                    // helper's null test and vtable[5Ch](0Fh) decide whether
+                    // 009F842B proceeds to the out-of-map query (bsp.py show
+                    // 0071ea00 --asm / 009f8160 --asm). Its existing typed
+                    // body consumes the actual slot presence and the same
+                    // live class query that this host used here before.
+                    const bool present = h.slots[t] != nullptr;
+                    return bsp::gameplay_seg38_cc13::entity_as_kind_0f_0071ea00(
+                        present, present && unit_is_kind_of(t, 0x0F));
+                } else {
+                    return unit_is_kind_of(t, 0x0F);
+                }
+            };
             // SUBSTITUTION, labelled: "the target is the squadron this host's own
             // override named" (fa.override_squadron with the same target) stands for
             // 00523560's squadron test on the resolved object. A squadron target the
@@ -22079,7 +22096,7 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                     }
                     end = !inside;
                 }
-            } else if (unit_is_kind_of(t, 0x0F) && leash_world.outside_map_0071c4f0(t)) {
+            } else if (target_as_plane() && leash_world.outside_map_0071c4f0(t)) {
                 // 009F841E..009F8463: 0071EA00, a plane outside the map whose +9D4h
                 // squadron's command (vt+174h) is retreat. LABELLED: the squadron's
                 // command is its flight leader's.

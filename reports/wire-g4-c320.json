@@ -1,0 +1,253 @@
+{
+  "goal": 4,
+  "chain": 320,
+  "slot": "g4-w5",
+  "base": "5bb4f504d33dcc3c438973f2e08b66a11afe22e1",
+  "switch": "bsp::kWireGoal4Chain320Bound",
+  "switch_header": "include/bsp/wire_goal4_chain320_switches.hpp",
+  "summary": "Use the existing plane-kind body in the live free-attack dogfight revalidation gate, replacing the host's direct kind query on that path.",
+  "rows": [
+    {
+      "native": "0071ea00",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::run_squadron_free_attack_009f8470::target_as_plane (original CALL at 009F8420)",
+      "real_state": "The actual resolved override target selects h.slots[t]; its nonnull presence and GameUnitsHost::unit_is_kind_of(t,0x0F) feed the existing typed body. The result gates the world-map test and then retirement of a dogfight override whose target's squadron is retreating.",
+      "replacement": "Only the non-squadron arm invokes the lambda. ON calls the reconstructed body once using the same live class query; OFF retains the previous unit_is_kind_of expression. The map query and subsequent squadron/retreat checks keep their existing order.",
+      "original_abi": "ECX entity, null guard, vtable+5Ch(0Fh), EAX same entity on acceptance or null, plain RET. Existing source API returns the acceptance bool from presence and the actual class-query answer; it is not a binary replacement.",
+      "evidence": [
+        "bsp.py show 0071ea00 --asm: 0071EA03 null test; 0071EA0C PUSH 0Fh; 0071EA0E vcall; 0071EA14 preserves entity on success.",
+        "bsp.py show 009f8160 --asm --start 222 --lines 21: 009F8420 CALL 0071EA00, 009F8427 tests its result before 009F842D position and 009F8439 map queries.",
+        "Release call_graph.py who run_squadron_free_attack_009f8470: reached from GameUnitsHost::run_spent_ordnance_rtb_0084e010.",
+        "Release call_graph.py who 0071ea00: two call sites from the changed host function (first at 1029F52C); address is folded with three boolean twins, so the other callers are not claimed.",
+        "call_graph.py --build (/Ob0, /OPT:NOICF), then --build-dir build/callgraph who 0071ea00: unique body at 103E1880, two reachable calls from target_as_plane (first at 102D4642). With the switch OFF the body is not linked.",
+        "Unfolded path: WinMain -> startup -> GameFrameHost -> mission advance/frame -> FixedStepBinding -> air-ops update -> landing queue -> run_spent_ordnance_rtb_0084e010 -> run_squadron_free_attack_009f8470 -> target_as_plane -> 0071EA00."
+      ]
+    },
+    {
+      "native": "00aedf60",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_parser_raw.cpp::parse_native_particle_resource_00af4ba0",
+      "reason": "No entry-reachable particle parser/loader was linked; changing its three inline atof sites alone would not create a live caller."
+    },
+    {
+      "native": "00af4ba0",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_loader_raw.cpp::create_native_particle_resource_0086ba60",
+      "reason": "The native parser depends on the particle component/cache acquisition path, for which this build has no concrete entry-reachable producer."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_enum_decl_find_name_008f0d80 / scene_property_bag_collect_key_names_008f3270",
+      "reason": "Only abstract Seg59bHost iterator callbacks were found; a reached adapter over the actual 64-bucket iterator owner was not established."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_enum_decl_find_name_008f0d80 / scene_property_bag_collect_key_names_008f3270",
+      "reason": "The same concrete 64-bucket iterator adapter and reached caller needed by 008EEB10 remain unestablished."
+    },
+    {
+      "native": "008f0d80",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_enum_decl_find_name_008f0d80",
+      "reason": "The source-wired row still uses abstract Seg59bHost iterator callbacks; no live adapter for this declaration-name lookup was found."
+    },
+    {
+      "native": "008f3270",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp::scene_property_bag_collect_key_names_008f3270",
+      "reason": "No reached consumer of the key-name collection and no concrete Seg59bHost hash iterator binding were established."
+    },
+    {
+      "native": "008f23e0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_bag_assign_existing.cpp::assign_existing_native_scene_property_bag_008f23e0",
+      "reason": "No host caller supplies a populated actual destination/source bag pair with this assign-existing contract; the live scene path uses merge projections."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::load_property_library::FileBinding::has_group",
+      "reason": "Group membership uses PropertyGroupDefinition trees; an authoritative raw10Ch library with actual owned114h bags is missing, unlike the separate native enum registry."
+    },
+    {
+      "native": "008d5890",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_storage.cpp::reserve / append_native_language_catalog_008d6af0",
+      "reason": "Both live sites already run the same private copy_row kernel; calling its named wrapper would only repeat the previously rejected wrapper credit."
+    },
+    {
+      "native": "008d5aa0",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_lifetime.cpp::shutdown_native_language_catalog_00cdeea0",
+      "reason": "The existing path already uses the same private resize implementation; a wrapper-only change would add no reconstructed behavior."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture0_00b0fd70",
+      "reason": "No live caller carrying the actual render-remap service, current renderer profile and texture ownership context was found."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture1_00b0fdc0",
+      "reason": "The actual render-remap service and retained texture/renderer context are not connected to a reached setter caller."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture2_00b0fe10",
+      "reason": "The actual render-remap service and retained texture/renderer context are not connected to a reached setter caller."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture3_00b0fe60",
+      "reason": "The actual render-remap service and retained texture/renderer context are not connected to a reached setter caller."
+    },
+    {
+      "native": "00b1f700",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::render_scene_00b156c0",
+      "reason": "The target-sRGB call is still an abstract SceneRenderFrameHost method without an established reached composite/frame-target owner."
+    },
+    {
+      "native": "00b33e50",
+      "status": "skipped",
+      "host_site": "src/ocean_coverage_regions.cpp::mask loading",
+      "reason": "The host reads DDS data without the native texture-resource owner whose actual DWORD+14 this leaf requires."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::render_scene_00b156c0 / src/render_fx_cc13.cpp",
+      "reason": "No reached native PostEffectPass/frame-target owner was established for the raw+08 getter."
+    },
+    {
+      "native": "00ba7170",
+      "status": "skipped",
+      "host_site": "src/ocean_coverage_regions.cpp::coverage-region creation",
+      "reason": "The native ocean-height-generator owner and its+08 root-registration object are absent from the host coverage projection."
+    },
+    {
+      "native": "00bc3030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::cloud instance paths",
+      "reason": "No reached CloudInstanceHostC/native cloud-class owner supplies the actual manager pointer at+14."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::land-final ground checks",
+      "reason": "This raw body needs a native plane+DEC pointer to the gear channel; the existing semantic actuator block is not that raw plane owner."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::Impl::flight_state_notify_007c11e0",
+      "reason": "The host only records the FX reset and step, with no persistent FX component+40 timer producer/consumer; scratch storage would absorb a constant without replacing behavior."
+    },
+    {
+      "native": "007b80a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::rocket_accuracy",
+      "reason": "The native projectile-class+E4/shared-global view and coordinator-load reach contract were not established in this packet."
+    },
+    {
+      "native": "007b80c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::rocket_accuracy",
+      "reason": "The native projectile-class+E4/shared-global view and coordinator-load reach contract were not established in this packet."
+    },
+    {
+      "native": "004fa230",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp::unit-library model loader",
+      "reason": "The original model-preview caller still lacks a concrete Fe5Host and produced preview-model/named-point graph."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::angle override handling",
+      "reason": "No producer for the original unit+9A8/+9AC override angles was established; unrelated host angle arithmetic was not substituted."
+    },
+    {
+      "native": "00be3360",
+      "status": "skipped",
+      "host_site": "src/engine_core_cc13.cpp::ticks_to_seconds_00be3360",
+      "reason": "No native profiler tick source/calibrated0109DB48 consumer was connected; unrelated frame-clock conversion has a different owner contract."
+    },
+    {
+      "native": "00b65f70",
+      "status": "skipped",
+      "host_site": "src/lua_object.cpp::lua_object_write_lua_source_text_00b6a390 / src/native_lua_color.cpp::read_native_lua_color_00b67f10",
+      "reason": "These candidate native-object callers are absent from the linked game graph, so replacing their inline kind checks would not establish a live call."
+    },
+    {
+      "native": "00b662e0",
+      "status": "skipped",
+      "host_site": "src/gui_lua_runtime.cpp::TableSnapshot::table / src/mission_savedata_lua.cpp",
+      "reason": "Candidate host lua_topointer sites expose raw lua_State/index pairs, not a produced tracked NativeLuaObjectStorage accepted by this body."
+    },
+    {
+      "native": "00b679f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp::Fe5Host Lua vector2 calls",
+      "reason": "No reached concrete Fe5Host/native Lua vector2 object producer was established."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/ship_class_fields.cpp::field description",
+      "reason": "The address is a field-description label; no reached native float4 Lua-object conversion caller was established."
+    },
+    {
+      "native": "00b680a0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp::vehicle class Lua projection",
+      "reason": "The class field projection exposes VehicleClassLuaValue rather than the original tracked NativeLuaObjectStorage and fallback-vector view."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::parse_property_body",
+      "reason": "The BIN producer files/address were actively leased by agent/g4-w1; claim refused, no edits made, and work handed back to that owner."
+    },
+    {
+      "native": "008f3490",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::Impl::Bag::insert",
+      "reason": "The byte-array producer files/address belonged to agent/g4-w1's active BIN packet; no conflicting edits made."
+    },
+    {
+      "native": "008f3510",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::Impl::Bag::insert",
+      "reason": "FA parser payload production and native insertion would edit files held/reviewed by agent/g4-w1; left for a subsequent coordinated packet."
+    },
+    {
+      "native": "008f3610",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::Impl::Bag::insert",
+      "reason": "V3A needs parser-owned float-triplet payloads and result publication in files held/reviewed by agent/g4-w1; opportunity sent to that owner."
+    }
+  ],
+  "wired_total": {
+    "readiness_before": 9318,
+    "readiness_after": 9319,
+    "release_graph_called_before": 4347,
+    "release_graph_called_after": 4347,
+    "unfolded_graph_called_before": 5866,
+    "unfolded_graph_called_after": 5867,
+    "note": "Release ICF folds the newly linked body with three already-called boolean functions, so its aggregate canonical-address total stays unchanged. Readiness now marks 0071EA00 wired/called; only the changed host's call sites are claimed."
+  },
+  "validation": {
+    "baseline": "Win32 Release build and both CTests passed.",
+    "on": "Win32 Release build and both CTests passed; Release graph shows calls from the changed host function.",
+    "analysis": "Separate /Ob0 /OPT:NOICF Win32 build passed; unique helper has two reachable call sites from the new adapter. OFF has 5866 called addresses and no helper symbol; ON has 5867 called addresses and the actual helper symbol.",
+    "off": "Win32 Release build and both CTests passed. Separate analysis build passed and confirmed 0071EA00 is absent with the switch OFF.",
+    "scope": "No float math was changed, no new tests or address-suffixed bodies were added, and no game run was performed. Static entry reach is not gameplay/ABI parity proof."
+  }
+}
