@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2b: phase 7 of application initialize and the title GUI pages.
 // See include/bsp/game_hosts_frontend.hpp for the address list and the evidence.
 #include "bsp/game_hosts_frontend.hpp"
+#include "bsp/wire_goal4_chain251_switches.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
@@ -393,7 +394,8 @@ struct GameFrontendHost::Impl {
         return true;
     }
 
-    GuiLayoutPage* load_page(GuiLayoutHost& host, const std::string& name, bool log_tree);
+    GuiLayoutPage* load_page(GuiLayoutHost& host, const std::string& name, bool log_tree,
+        std::int32_t screen_flag = 1);
     void load_atlases();
     void build_quads();
     // Milestone 2d: the glyph quads of one visible Text widget, appended to `quads`.
@@ -825,13 +827,17 @@ void* GameFrontendHost::Impl::run_raw_pointer(GameFrontendHost& frontend,RawPoin
 }
 
 GuiLayoutPage* GameFrontendHost::Impl::load_page(GuiLayoutHost& host, const std::string& name,
-    bool log_tree) {
+    bool log_tree, std::int32_t screen_flag) {
     GamePageRecord record;
     record.name = name;
     ++summary.pages_requested;
     GuiLayoutPage* page = nullptr;
     try {
+        if constexpr (kWireGoal4Chain251Bound) {
+            page = load_gui_page_00aa5840(registry, host, name, screen_flag, false);
+        } else {
         page = load_gui_page_00aa5840(registry, host, name, 1, false);
+        }
     } catch (const std::exception& error) {
         record.error = error.what();
     }
@@ -1307,14 +1313,19 @@ void GameFrontendHost::draw_bridge(IDirect3DDevice9& device) {
 // Milestone 2c: pages a front-end screen owns
 // ---------------------------------------------------------------------------
 
-GuiLayoutPage* GameFrontendHost::load_screen_page(const std::string& name) {
+GuiLayoutPage* GameFrontendHost::load_screen_page(const std::string& name, std::int32_t screen_flag) {
     Impl& host = *impl_;
     if (!host.page_scripts) {
         throw std::logic_error("A screen page requires the GUI startup phase");
     }
     GameGuiLayoutHost layout(host, *host.page_scripts);
     const std::size_t before = host.widget_records.size();
-    GuiLayoutPage* page = host.load_page(layout, name, true);
+    GuiLayoutPage* page;
+    if constexpr (kWireGoal4Chain251Bound) {
+        page = host.load_page(layout, name, true, screen_flag);
+    } else {
+    page = host.load_page(layout, name, true);
+    }
     if (page == nullptr) return nullptr;
     host.screen_pages.insert(page);
     for (std::size_t index = before; index < host.widget_records.size(); ++index) {

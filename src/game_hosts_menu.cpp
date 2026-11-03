@@ -5,6 +5,11 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
+#include "bsp/loading_screen_elements.hpp"
+#include "bsp/locale_text_lookup.hpp"
+#include "bsp/native_frame_clock_lifetime.hpp"
+#include "bsp/native_frame_clock_publication.hpp"
+#include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
@@ -63,6 +68,7 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <cwctype>
 #include <map>
 #include <memory>
 #include <stdexcept>
@@ -623,6 +629,11 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
     LoadingScreen loading_screen{};  // the 00E194B4 singleton's recovered fields
+    // C251: value projections of that SAME screen's +0C..+50 fields. Reset
+    // publishes its +2C/+30 writes back to loading_screen, the progress owner.
+    LoadingScreenElementState loading_elements;
+    LoadingHintList loading_hints;
+    LocaleTables* loading_locale{}; // borrows the already-loaded phase-6 tables
     // 0057BEC0's bindings: 00CEF258 is the double 128.0 (4060000000000000h)
     // and 0109EEA4 the CRT's SSE2 mode word, bound as GameStartupHost binds it.
     const volatile double loading_progress_scale_00cef258{128.0};
@@ -631,7 +642,15 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // 0057BEC0 at every report: null unless 0057CB60 built the screen.
     void report_loading_progress_0057bec0(float progress) {
         const LoadingProgressCrtAccess crt{&loading_progress_scale_00cef258, &sse2_0109eea4};
+        if constexpr (kWireGoal4Chain251Bound) {
+            report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
+            if (loading_screen.created) {
+                loading_elements.rotation.progress = loading_screen.progress;
+                loading_elements.rotation.progress_units = loading_screen.progress_units;
+            }
+        } else {
         report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
+        }
     }
     GameSingletonHost& singletons;
 
@@ -2013,9 +2032,94 @@ private:
 // ---------------------------------------------------------------------------
 
 // The loading screen's native calls. The renderer, the screen object, its four
-// GUI elements and the render worker do not exist in this process, so those
-// calls are record rows; game_object_present is true because the host's game
-// state stands for 00E188A8 throughout the shell.
+// OFF retains the element/worker records. The game state stands for 00E188A8
+// throughout the shell; the render worker remains a separate integration.
+// C251 binds only 0057C560 and 0057C990's synchronous init/reset domain.
+// The renderer's separate 25-Hz callback is not installed by this adapter.
+class MenuLoadingElementHost final : public LoadingScreenElementHost,
+    private LocaleTextRuntimeHost {
+public:
+    explicit MenuLoadingElementHost(GameMenuHost::Impl& owner) : owner_(owner) {}
+
+    void register_front_end_screen(int screen_id) override {
+        auto& record = owner_.screens[screen_id];
+        record.slot = screen_id;
+        record.name = "loading";
+        record.flags = &owner_.loading_screen.base;
+        record.pages.clear();
+        register_front_end_screen_004f71d0(owner_.world.screens,
+            owner_.loading_screen.base, screen_id);
+        owner_.log.implemented("LoadingScreen::register_screen", "004f71d0");
+    }
+    void* create_gui_page(std::string_view name) override {
+        // bsp.py show 0057c560: 0057C5C2 pushes 0,0 before 00AA5840.
+        // Borrow the same page registry/text bridge as every other menu page.
+        GuiLayoutPage* page = owner_.frontend.load_screen_page(std::string(name), 0);
+        if (page == nullptr || !page->root)
+            throw std::runtime_error("LoadingScreen::Init could not load FE_loading");
+        owner_.screens.at(kLoadingScreenId).pages.push_back(page);
+        owner_.frontend.commit_page_visibility(*page, owner_.loading_screen.base.active);
+        return page;
+    }
+    void* find_element(void* parent, std::string_view name) override {
+        // This adapter's only caller is 0057C560: parent is its actual page.
+        // Use the current 00AA7E00 direct-child body (its second argument is
+        // unused), rather than the older loading packet's recursion hypothesis.
+        auto* page = static_cast<GuiLayoutPage*>(parent);
+        return owner_.frontend.find_page_child(*page, std::string(name));
+    }
+    ClockTimestamp sample_clock() override {
+        // 0057C393..3A9 samples CURRENT AB0 slot20, including fixed-clock mode.
+        // Reuse the startup clock's publication/methods; never advance another.
+        const auto* clock = owner_.singletons.native_deletion_bindings().frame_clock;
+        if (clock == nullptr)
+            throw std::logic_error("Loading hint requires the live application clock");
+        const NativeFrameClockPublicationContext publication{
+            clock->actual_clock_publication_01090ab0, clock->methods};
+        ClockTimestamp result;
+        sample_published_native_frame_clock(publication, &result);
+        return result;
+    }
+    std::int32_t resolve_localised_length(std::string_view key) override {
+        if (owner_.loading_locale == nullptr)
+            throw std::logic_error("Loading hint requires the phase-6 locale tables");
+        LocaleTextResolver resolver(*owner_.loading_locale, *this);
+        const auto text = resolver.resolve(std::string(key));
+        return static_cast<std::int32_t>(text.size());
+    }
+    void set_element_text(void* element, std::string_view key, bool localise) override {
+        if (!localise || element == nullptr)
+            throw std::logic_error("Loading hint requires the bound localized Text widget");
+        owner_.frontend.set_widget_text_source(*static_cast<GuiLayoutWidget*>(element),
+            std::string(key));
+        owner_.log.implemented("LoadingScreen::set_hint_source", "00abaed0");
+    }
+
+    // None of these operations occurs in BindElements/ResetHints. Refuse a
+    // future worker/configuration call instead of supplying invented results.
+    void update_element(void*, float) override { outside_init_reset(); }
+    void set_element_image(void*, int, int, float) override { outside_init_reset(); }
+    void set_element_visible(void*, bool) override { outside_init_reset(); }
+    void set_element_size(void*, LoadingPlateSize) override { outside_init_reset(); }
+    LoadingPlateSize element_size(void*) override { outside_init_reset(); }
+    float element_caption_width(void*) override { outside_init_reset(); }
+    void update_online_stats() override { outside_init_reset(); }
+
+private:
+    std::string context_string_00b692c0(const std::string&) override {
+        // The current application Lua owner is not exposed to this host.
+        // Plain installed loading keys need no context; do not guess for mods.
+        throw std::logic_error("Contextual loading hint requires the current application Lua owner");
+    }
+    char16_t crt_uppercase_00c0391c(char16_t value) override {
+        return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
+    }
+    [[noreturn]] static void outside_init_reset() {
+        throw std::logic_error("Loading element adapter is limited to init/reset");
+    }
+    GameMenuHost::Impl& owner_;
+};
+
 class MenuLoadingScreenHost final : public LoadingScreenHost {
 public:
     explicit MenuLoadingScreenHost(GameMenuHost::Impl& owner) : owner_(owner) {}
@@ -2041,8 +2145,17 @@ public:
         rec("LoadingScreen::gui_update", "00aa4f80");
     }
     void gui_refresh() override { rec("LoadingScreen::gui_refresh", "00aa2b80"); }
-    // The loading screen is not one of the registry screens the host commits.
-    void screen_registry_commit() override { rec("LoadingScreen::screen_registry_commit", "004f83b0"); }
+    // C251 publishes the loading screen's own page through the real registry.
+    void screen_registry_commit() override {
+        if constexpr (kWireGoal4Chain251Bound) {
+            MenuCommitHost commit(owner_);
+            commit_front_end_screen_visibility_004f83b0(owner_.loading_screen.base,
+                kLoadingScreenId, commit);
+            owner_.log.implemented("LoadingScreen::screen_registry_commit", "004f83b0");
+        } else {
+        rec("LoadingScreen::screen_registry_commit", "004f83b0");
+        }
+    }
     void screen_pump_reset() override { rec("LoadingScreen::screen_pump_reset", "004f8ac0"); }
     void close_previous_screen() override { rec("LoadingScreen::close_previous_screen", "00e19698"); }
     void load_texture_atlas(const char* path) override {
@@ -2050,10 +2163,33 @@ public:
         rec("LoadingScreen::load_texture_atlas", "00af0060");
     }
     void create_screen() override { rec("LoadingScreen::create_screen", "0057c1c0"); }
-    void screen_init() override { rec("LoadingScreen::screen_init", "00cef264+10h"); }
+    void screen_init() override {
+        if constexpr (kWireGoal4Chain251Bound) {
+            MenuLoadingElementHost elements(owner_);
+            bind_loading_screen_elements_0057c560(owner_.loading_elements.elements, elements);
+            owner_.log.implemented("LoadingScreen::bind_elements", "0057c560");
+        } else {
+        rec("LoadingScreen::screen_init", "00cef264+10h");
+        }
+    }
     void screen_show() override { rec("LoadingScreen::screen_show", "00cef264+18h"); }
     void screen_stop_worker() override { rec("LoadingScreen::screen_stop_worker", "00cef264+1Ch"); }
-    void screen_destroy() override { rec("LoadingScreen::screen_destroy", "00cef264+0Ch"); }
+    void screen_destroy() override {
+        if constexpr (kWireGoal4Chain251Bound) {
+            // end_loading_screen already committed active=false. Retire the
+            // borrowed view before the next load can initialize the singleton.
+            auto* page = static_cast<GuiLayoutPage*>(owner_.loading_elements.elements.page);
+            owner_.frontend.release_screen_page(page);
+            unregister_front_end_screen_004f71a0(owner_.world.screens,
+                owner_.loading_screen.base);
+            owner_.screens.erase(kLoadingScreenId);
+            owner_.loading_elements = {};
+            owner_.loading_hints = {};
+            rec("LoadingScreen::screen_destroy", "00cef264+0Ch");
+        } else {
+        rec("LoadingScreen::screen_destroy", "00cef264+0Ch");
+        }
+    }
     void lifetime_unregister() override { rec("LoadingScreen::lifetime_unregister", "00415350"); }
     void select_menu_layout(int layout, int flag) override {
         // 004c1ac0 returns the frame singleton the host's frame_layouts stand
@@ -2089,7 +2225,21 @@ public:
         rec("LoadingScreen::element_aspect_source", "element+114h");
         return 0.0f;
     }
-    void prepare_extra_elements() override { rec("LoadingScreen::prepare_extra_elements", "0057c990"); }
+    void prepare_extra_elements() override {
+        if constexpr (kWireGoal4Chain251Bound) {
+            // 0057CE83 -> 0057C990 -> 0057C360, then tail-jump 0057C4C0.
+            // Capture the keys from the actual 0057CFF0 config publication.
+            owner_.loading_hints.keys = owner_.loading_globals.images;
+            MenuLoadingElementHost elements(owner_);
+            reset_loading_hints_0057c990(owner_.loading_elements, owner_.loading_hints, elements);
+            // Both projections name the singleton's same native +2C/+30 pair.
+            owner_.loading_screen.progress_units = owner_.loading_elements.rotation.progress_units;
+            owner_.loading_screen.progress = owner_.loading_elements.rotation.progress;
+            owner_.log.implemented("LoadingScreen::reset_hints", "0057c990");
+        } else {
+        rec("LoadingScreen::prepare_extra_elements", "0057c990");
+        }
+    }
     void start_render_worker(int rate) override {
         static_cast<void>(rate);
         rec("LoadingScreen::start_render_worker", "00aa4040");
@@ -2673,6 +2823,9 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     std::string trajectory_csv, std::string order_command, std::string order_command_target,
     float order_speed, bool order_speed_set)
     : impl_(std::make_unique<Impl>(log, frontend, state, singletons, press_start_frame, vfs)) {
+    if constexpr (kWireGoal4Chain251Bound) {
+        impl_->loading_locale = &locale;
+    }
     // Milestone 2h: the in-mission HUD registers into the same registry this
     // object owns, so the HUD host is built here and handed to the mission.
     impl_->hud = std::make_unique<GameHudHost>(log, *this);

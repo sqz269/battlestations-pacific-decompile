@@ -1,0 +1,163 @@
+{
+  "chain": 251,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::game::kWireGoal4Chain251Bound",
+  "scope": "Loading-screen synchronous element initialization and first localized hint reset",
+  "baseline": "fa3b65aad",
+  "wired_before": 9070,
+  "wired_after": 9075,
+  "rows": [
+    {
+      "native": "0057c560",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::screen_init",
+      "detail": "Existing begin_loading_screen invokes the body once. Its host registers the existing LoadingScreen::base at slot 59, loads the real FE_loading page with native flag 0, and resolves its elements with the current direct-child 00AA7E00 implementation."
+    },
+    {
+      "native": "0057c990",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::prepare_extra_elements",
+      "detail": "Replaces the record with the existing body over persistent loading elements and a capture of the real loading_globals.images publication. The reset's +2C/+30 writes reach the existing LoadingScreen progress owner; subsequent reports keep both projections synchronized."
+    },
+    {
+      "native": "0057c360",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::prepare_extra_elements -> reset_loading_hints_0057c990",
+      "detail": "The reset selects the first actual published key, samples CURRENT application clock AB0 through its existing publication context, resolves its UTF-16 length from the same phase-6 LocaleTables, and updates the actual hint_Text source through the frontend text bridge."
+    },
+    {
+      "native": "0057c4c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::prepare_extra_elements -> reset_loading_hints_0057c990",
+      "detail": "Reached by the reset's native tail-call sequence. This packet covers the real just-reset progress=0 first-gate return, not later nonzero-progress worker ticks."
+    },
+    {
+      "native": "0057ca00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::start_render_worker",
+      "reason": "Missing the renderer's real 25-Hz callback scheduling and wave_Icon virtual+40 animation adapter; no callback or online-stat stand-in was installed."
+    },
+    {
+      "native": "0057c1c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::create_screen",
+      "reason": "Missing a native 58-byte loading-screen allocation and its singleton lifetime-hook ownership; this packet reuses the existing typed LoadingScreen owner and does not claim its raw constructor."
+    },
+    {
+      "native": "0057bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: GameMenuHost::Impl::report_loading_progress_0057bec0",
+      "reason": "No missing body call to replace: the existing host already calls report_loading_progress with its real screen and CRT bindings; this packet only synchronizes the newly retained rotation projection and claims no new wiring credit."
+    },
+    {
+      "native": "008f3370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: terrain-shadow string assignment",
+      "reason": "Missing the native owning property record and enum declaration/string storage behind the host's ScenePropertyBlock projection."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Missing native source/destination property-bag ownership and a NativeScenePropertyCloneContext for the logical ScenePropertyBlock trees."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Missing authored remap-name production (record_remap_texture_name returns empty) and a bound actual render-resource remap texture ownership context."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "Missing authored remap-name production and a bound actual render-resource remap texture ownership context."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "Missing authored remap-name production and a bound actual render-resource remap texture ownership context."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "Missing authored remap-name production and a bound actual render-resource remap texture ownership context."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown and ground-contact gear gates",
+      "reason": "Missing the plane's actual DEC actuator owner and enabled/value gear-channel producers; the current host explicitly substitutes gear-down."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight_state_notify plane FX reset",
+      "reason": "Missing a persistent plane-FX component and timer consumer; writing the binary's 60.0 into scratch storage would not replace the recorded FX behavior."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "Missing retained root CC/E4 interface/restore producer and D0 observer domain; findings sent to the concurrent HUD owner agent/g4-w5."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_medals",
+      "reason": "Missing the unit-row widget/weapon/health adapter composition; the concurrent HUD owner agent/g4-w5 held this address and file."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0057c560: page factory receives 0,0 at 0057C5C2; actual page is retained at +0C.",
+    "bsp.py show 0057c990 --asm: progress reset at 0057C99A/99F/9A2, first hint CALL 0057C360, tail JMP 0057C4C0.",
+    "bsp.py show 0057c360 and --asm: CURRENT AB0 clock sample, localized length, and hint_Text write at 0057C473.",
+    "bsp.py show 0057c4c0 --asm: strict progress gate at 0057C4D5; reset zero progress returns before clock/age arithmetic.",
+    "bsp.py show 00aa7e00: direct-child list walk; second stack argument unused, correcting the older loading packet's recursion hypothesis."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "build_log": "local/output/g4-c251-build.log",
+    "new_tests": 0,
+    "installed_layout": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/fe_loading.lua has top-level hint_Text and radar_Group; wave_Icon and background configuration elements are nested, so initialization may legitimately retain null for unused direct lookups.",
+    "installed_hint_keys": [
+      {
+        "key": "mp.loading_24",
+        "utf16_units": 93,
+        "context_marker": false
+      },
+      {
+        "key": "mp.loading_05",
+        "utf16_units": 109,
+        "context_marker": false
+      },
+      {
+        "key": "mp.loading_12",
+        "utf16_units": 67,
+        "context_marker": false
+      }
+    ],
+    "installed_hint_source": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/lockit/englishauthentic.lan",
+    "game_run": false,
+    "binary_abi_compatibility_claimed": false,
+    "readiness_log": "local/output/g4-c251-readiness.log",
+    "installed_asset_sha256": {
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\interface\\fe_loading.lua": "69215c86c9399479d204bfb175339e4132ef8774485bc81ffbf566f77bcf8765",
+      "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\lockit\\englishauthentic.lan": "89a4e97f656b9e4372863af13312ea929ab234dbabbef3803146d7d02f6a4acd"
+    }
+  },
+  "limitations": [
+    "Only synchronous initialization/reset and first-hint source publication are connected. No loading-screen render worker, rotating wave, subsequent hint progression, or visual playback is claimed.",
+    "Existing atlas/background/image/caption configuration records and raw loading-screen constructor/deletion records remain; typed page visibility and screen registration are paired through loading begin/end.",
+    "The page registry retains its pages after release under the existing frontend ownership policy; the loading page is hidden and its screen/element borrows are removed at end_loading_screen.",
+    "Contextual modded hints requiring application Lua selection fail explicitly because that owner is not exposed here; the three installed published keys need no such context.",
+    "The readiness total is a source-level census, not a game-run or original-ABI result."
+  ],
+  "new_connections": 4,
+  "census_reclassified_existing_calls": [
+    "0057bec0"
+  ]
+}
