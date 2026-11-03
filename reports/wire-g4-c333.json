@@ -1,0 +1,80 @@
+{
+  "goal": 4,
+  "chain": 333,
+  "slot": "g4-w5",
+  "base": "d08ee5ecb1",
+  "switch": "bsp::kWireGoal4Chain333Bound",
+  "rows": [
+    {
+      "native": "007c6760",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::landing_radius_006c3e50",
+      "evidence": "Materialized the previously inline body in src/cc13_seg47.cpp. Live plane class TurnCircleRadius, IsKindOf results and loaded GameTuningBlock circle multipliers feed the body. Its return feeds the landing-circle geometry, replacing the inline calculation. 007C6760 assembly and double constant bytes were checked; every x87 multiply/add rounds at PC24. Original native call is 006C3F28.",
+      "built_call": "bsp::cc13_seg47::landing_circle_radius_007c6760 at 10458bb0, one reachable call at 1025c661 from GameUnitsHost::Impl::landing_radius_006c3e50",
+      "entry_path": "WinMain -> mission frame -> fixed step -> air ops update -> run_landing_queue_006cd240 -> landing_sequencer_006cc9f0 -> landing_mode_006c7960 -> landing_on_circle_006c5c40 -> landing_radius_006c3e50 -> landing_circle_radius_007c6760",
+      "abi_compatible": false
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_touchdown_007cc440 / deliver_plane_touchdown",
+      "reason": "The gear channel exists but lacks PartAnims.Gears enable/rate loading and the automatic C1Ch gear-request producer in 007C5AC0; enabling its touchdown gate alone would prevent normal landing."
+    },
+    {
+      "native": "007c4d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "The level-bomber HUD arm returns unbound before the paratrooper-altitude gate; its 007C7750 dispatch and a complete Seg47Host/native tuning view are missing."
+    },
+    {
+      "native": "007c7600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0 / run_rack_tick_006e56f0",
+      "reason": "The inline pitch/roll subset lacks the complete per-slot 9C3h bay suppression and FirstBombClass rocket-descriptor E0h inputs required by the full native gate."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The live host has no persistent plane FX sub-block or timer consumer; both the reset and following 007EB380 FX step remain recorded only."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Mission named calls currently execute on the main thread; a real off-main-thread deferred-call producer and queue ownership path are missing."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::push_argument",
+      "reason": "NamedCallBinding still records Lua pushes and protected calls; an adapter to the actual mission Lua environment and argument records is missing."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "The host assumes campaign hint weights of one and has no live global/per-party hint maps published by SetHintWeight; fabricating empty native maps would not wire real state."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: single_player_effective_game_mode / GameAiCoordinatorHost::Impl::party_brain",
+      "reason": "A caller adapter from each actual brain's +0Ch planner-presence predicate into the AI effective-mode selection is still missing."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::auto_merge_dist / tuning_field",
+      "reason": "The host uses a typed tuning table; the raw body's coordinator+4 array with 23Ch stride and effective-mode index publication are not represented."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed before and after C++ changes; reconstructed_math and tool_tests passed",
+    "call_graph": "tools/call_graph.py who and path confirm one entry-reachable call from the changed host",
+    "readiness_before": 9337,
+    "readiness_after": 9338,
+    "game_run": false,
+    "scope": "Reconstructed C++ and built-executable reachability evidence; no native ABI or gameplay validation"
+  }
+}
