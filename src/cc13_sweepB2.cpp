@@ -346,34 +346,75 @@ void* cc13_sweepB2_mission_side_block_copy_construct_005c51f0(void* dest, const 
 //   &string); the string's data back to the sized pool (length + 1) when non-null.
 // - reader vslot 8h().
 // EH frame 00C72DF8 (the local string) is not modelled.
+void cc13_sweepB2_mission_tree_read_string_vector_005c5860(
+    MissionTreeStringVectorView& out, std::int32_t kind, const char* key,
+    MissionTreeStringVectorHost& host) {
+    const auto last = out.last();
+    if (out.first() > last) {
+        host.invalid_parameter();
+    }
+    const auto first = out.first();
+    if (first > out.last()) {
+        host.invalid_parameter();
+    }
+    out.erase(first, last);
+    host.enter(kind, key);
+    for (std::uint32_t i = 1;; ++i) {
+        if (!host.has(i)) break;
+        Cc13SweepBNativeString text = {0, nullptr};
+        host.read(i, text);
+        out.append(text);
+        if (text.data != nullptr) host.release(text);
+    }
+    host.leave();
+}
+
 void cc13_sweepB2_mission_tree_read_string_vector_005c5860(void* reader, std::int32_t kind, const char* key,
                                                            void* out, Cc13SweepB2Host& host) {
-    void* last = at<void*>(out, 0x8);
-    if (reinterpret_cast<std::uintptr_t>(at<void*>(out, 0x4)) > reinterpret_cast<std::uintptr_t>(last)) {
-        host.crt_invalid_parameter_noinfo_00bf6713();
-    }
-    void* first = at<void*>(out, 0x4);
-    if (reinterpret_cast<std::uintptr_t>(first) > reinterpret_cast<std::uintptr_t>(at<void*>(out, 0x8))) {
-        host.crt_invalid_parameter_noinfo_00bf6713();
-    }
-    alignas(4) std::uint8_t result[8];
-    host.string_vector_erase_range_004954f0(out, result, out, first, out, last);
-    host.lua_reader_vcall_04_enter(reader, kind, key);
-    for (std::uint32_t i = 1;; ++i) {
-        if (!host.lua_reader_vcall_14_has(reader, Cc13SweepB2Descriptor{1, reinterpret_cast<const void*>(
-                                                                              static_cast<std::uintptr_t>(i))})) {
-            break;
+    // Preserve the raw ABI-facing interface and route it to the same body.
+    class RawStringVector final : public MissionTreeStringVectorView,
+                                  public MissionTreeStringVectorHost {
+    public:
+        RawStringVector(void* reader, void* out, Cc13SweepB2Host& host)
+            : reader_(reader), out_(out), host_(host) {}
+        std::uintptr_t first() const override {
+            return reinterpret_cast<std::uintptr_t>(at<void*>(out_, 4));
         }
-        Cc13SweepBNativeString text = {0, nullptr};
-        host.lua_reader_vcall_10_read(reader,
-                                      Cc13SweepB2Descriptor{1, reinterpret_cast<const void*>(static_cast<std::uintptr_t>(i))},
-                                      Cc13SweepB2Descriptor{0, &text});
-        host.string_vector_append_00450540(out, &text);
-        if (text.data != nullptr) {
-            host.sized_pool_return_block_00bd1510(host.sized_pool_get_00419cc0(), text.data, text.length + 1, 1);
+        std::uintptr_t last() const override {
+            return reinterpret_cast<std::uintptr_t>(at<void*>(out_, 8));
         }
-    }
-    host.lua_reader_vcall_08_leave(reader);
+        void erase(std::uintptr_t first, std::uintptr_t last) override {
+            alignas(4) std::uint8_t result[8];
+            host_.string_vector_erase_range_004954f0(out_, result, out_,
+                reinterpret_cast<void*>(first), out_, reinterpret_cast<void*>(last));
+        }
+        void append(const Cc13SweepBNativeString& text) override {
+            host_.string_vector_append_00450540(out_, &text);
+        }
+        void invalid_parameter() override { host_.crt_invalid_parameter_noinfo_00bf6713(); }
+        void enter(std::int32_t kind, const char* key) override {
+            host_.lua_reader_vcall_04_enter(reader_, kind, key);
+        }
+        bool has(std::uint32_t index) override {
+            return host_.lua_reader_vcall_14_has(reader_, descriptor(index));
+        }
+        void read(std::uint32_t index, Cc13SweepBNativeString& text) override {
+            host_.lua_reader_vcall_10_read(reader_, descriptor(index), Cc13SweepB2Descriptor{0, &text});
+        }
+        void release(Cc13SweepBNativeString& text) override {
+            host_.sized_pool_return_block_00bd1510(host_.sized_pool_get_00419cc0(),
+                text.data, text.length + 1, 1);
+        }
+        void leave() override { host_.lua_reader_vcall_08_leave(reader_); }
+    private:
+        static Cc13SweepB2Descriptor descriptor(std::uint32_t index) {
+            return {1, reinterpret_cast<const void*>(static_cast<std::uintptr_t>(index))};
+        }
+        void* reader_;
+        void* out_;
+        Cc13SweepB2Host& host_;
+    } binding(reader, out, host);
+    cc13_sweepB2_mission_tree_read_string_vector_005c5860(binding, kind, key, binding);
 }
 
 // 005C5990 BSP_MissionTreeScreen_CollectMissingPrerequisites (hypothesis, ledger name).

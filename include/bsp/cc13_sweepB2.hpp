@@ -443,6 +443,30 @@ void* cc13_sweepB2_mission_record_header_assign_005c5470(void* dest, const void*
 void* cc13_sweepB2_mission_side_block_copy_construct_005c51f0(void* dest, const void* source, Cc13SweepB2Host& host);
 
 // 005C5860 BSP_MissionTree_ReadStringVector(reader, kind, key, out).
+// A storage view, not a second implementation: the raw wrapper below supplies
+// the image vector's +4/+8 pointers; the game host supplies its live vector.
+struct MissionTreeStringVectorView {
+    virtual ~MissionTreeStringVectorView() = default;
+    virtual std::uintptr_t first() const = 0;
+    virtual std::uintptr_t last() const = 0;
+    virtual void erase(std::uintptr_t first, std::uintptr_t last) = 0;
+    virtual void append(const Cc13SweepBNativeString& text) = 0;
+};
+
+// Only the reader and temporary-string operations used by 005C5860.
+struct MissionTreeStringVectorHost {
+    virtual ~MissionTreeStringVectorHost() = default;
+    virtual void invalid_parameter() = 0;
+    virtual void enter(std::int32_t kind, const char* key) = 0;
+    virtual bool has(std::uint32_t index) = 0;
+    virtual void read(std::uint32_t index, Cc13SweepBNativeString& text) = 0;
+    virtual void release(Cc13SweepBNativeString& text) = 0;
+    virtual void leave() = 0;
+};
+
+void cc13_sweepB2_mission_tree_read_string_vector_005c5860(
+    MissionTreeStringVectorView& out, std::int32_t kind, const char* key,
+    MissionTreeStringVectorHost& host);
 void cc13_sweepB2_mission_tree_read_string_vector_005c5860(void* reader, std::int32_t kind, const char* key,
                                                            void* out, Cc13SweepB2Host& host);
 
