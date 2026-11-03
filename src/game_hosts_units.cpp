@@ -14,6 +14,8 @@
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
+#include "bsp/wire_goal4_chain273_switches.hpp"
+#include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
@@ -283,6 +285,26 @@
 
 namespace bsp::game {
 namespace {
+
+// Chain 273: projections of the host's existing rack fields, not a second rack
+// simulation. Only the fields read/written by these two leaf bodies are bound.
+// Evidence: 006E3550..006E3567 is FLD +494h / FADD delay / FSTP +494h,
+// with +498h set; 006E3CD0..006E3CD6 returns that same busy byte.
+template <class Busy>
+void fire_host_single_rack(float& to_repeat, Busy& dropping, float delay) {
+    bsp::gameplay_seg33_cc13::SingleRackState rack;
+    rack.to_repeat_494 = to_repeat;
+    rack.drop_bombs_498 = dropping != 0;
+    bsp::gameplay_seg33_cc13::rack_fire_006e3550(rack, delay);
+    to_repeat = rack.to_repeat_494;
+    dropping = static_cast<Busy>(rack.drop_bombs_498);
+}
+
+bool host_single_rack_busy(bool dropping) {
+    bsp::gameplay_seg33_cc13::SingleRackState rack;
+    rack.drop_bombs_498 = dropping;
+    return bsp::gameplay_seg33_cc13::rack_is_busy_006e3cd0(rack);
+}
 
 constexpr double kPi = 3.14159265358979323846;
 
@@ -5491,8 +5513,23 @@ struct GameUnitsHost::Impl {
                 // cc9_dive_bomb_carried_rounds). -1 when absent.
                 const int ammo = owner_.rack_positive_bag_round(unit_,
                     owner_.rack_equipment_ammo(unit_, type_id, pkey));
-                if (ammo > 0) unit_.rack_rounds_authored += ammo;
-                unit_.rack_authored_per_rack.push_back(ammo);
+                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                    // 006E3530 writes ammo+484h and orgAmmo+488h from the same
+                    // equipment entry. Both outputs feed the existing load seed:
+                    // the total carried count and this rack's original capacity.
+                    // -1 is this reader's missing-entry sentinel, not native ammo.
+                    if (ammo >= 0) {
+                        bsp::gameplay_seg33_cc13::SingleRackState rack;
+                        bsp::gameplay_seg33_cc13::rack_set_ammo_006e3530(rack, ammo);
+                        if (rack.ammo_484 > 0) unit_.rack_rounds_authored += rack.ammo_484;
+                        unit_.rack_authored_per_rack.push_back(rack.org_ammo_488);
+                    } else {
+                        unit_.rack_authored_per_rack.push_back(ammo);
+                    }
+                } else {
+                    if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                    unit_.rack_authored_per_rack.push_back(ammo);
+                }
                 // Packet cc9_rack_bullet_kind. LABELLED: the class's
                 // default Bullet[1]; an equipment bag that changes
                 // the bullet is not read.
@@ -5511,10 +5548,24 @@ struct GameUnitsHost::Impl {
                 float reload = 30.0f;
                 const float authored_reload =
                     owner_.rack_equipment_reload_time(unit_, type_id, pkey);
-                if (authored_reload >= 0.0f)
-                    reload = authored_reload < 1.0f ? 1.0f : authored_reload;
-                unit_.rack_reload_time_per_rack.push_back(reload);
-                unit_.rack_reload_left_per_rack.push_back(reload);
+                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                    // 006E3A20..006E3A5D: both the configured period and live
+                    // countdown take the clamped equipment ReloadTime. Preserve
+                    // the existing missing-entry guard and constructor default.
+                    bsp::gameplay_seg33_cc13::SingleRackState rack;
+                    rack.reload_time_48c = reload;
+                    rack.reload_left_490 = reload;
+                    if (authored_reload >= 0.0f)
+                        bsp::gameplay_seg33_cc13::rack_set_reload_time_006e3a20(
+                            rack, authored_reload);
+                    unit_.rack_reload_time_per_rack.push_back(rack.reload_time_48c);
+                    unit_.rack_reload_left_per_rack.push_back(rack.reload_left_490);
+                } else {
+                    if (authored_reload >= 0.0f)
+                        reload = authored_reload < 1.0f ? 1.0f : authored_reload;
+                    unit_.rack_reload_time_per_rack.push_back(reload);
+                    unit_.rack_reload_left_per_rack.push_back(reload);
+                }
             } else if (type == "MultiBombPlatform") {
                 ++unit_.rack_multi_count;
             }
@@ -33268,8 +33319,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         for (std::size_t i = 0; i < unit_.rack_ammo_per_rack.size(); ++i) {
                             if (unit_.rack_ammo_per_rack[i] <= 0 || unit_.lb_rack_dropping[i]) continue;
                             // 006E3550 via 007C0E17: toRepeatTime += delay, dropBombs = 1.
-                            unit_.lb_rack_to_repeat[i] += delay;
-                            unit_.lb_rack_dropping[i] = 1;
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                fire_host_single_rack(unit_.lb_rack_to_repeat[i],
+                                    unit_.lb_rack_dropping[i], delay);
+                            } else {
+                                unit_.lb_rack_to_repeat[i] += delay;
+                                unit_.lb_rack_dropping[i] = 1;
+                            }
                             ++fired;
                             // 007C0E88-007C0EA0.
                             delay += rack_delay_draw_007c0e88() * unit_.plane_bomb_delay_1f4;
@@ -38273,10 +38329,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // keep their own dropBombs (lb_rack_dropping, 006E58E1),
                             // so the C25h the tail raised clears only after them.
                             for (const char d : unit_.lb_rack_dropping) {
-                                if (d != 0) return true;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    if (host_single_rack_busy(d != 0)) return true;
+                                } else {
+                                    if (d != 0) return true;
+                                }
                             }
                         }
-                        return unit_.rack_dropping;
+                        if constexpr (bsp::kWireGoal4Chain273Bound) {
+                            return host_single_rack_busy(unit_.rack_dropping);
+                        } else {
+                            return unit_.rack_dropping;
+                        }
                     }
 
                     // 006E56F0, the rack's fixed-step tick (ESI = rack+310h, so
@@ -38636,10 +38700,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             racks[i].bullet_class = unit_.rack_bullet_class_per_rack[i];
                             racks[i].holds_round = unit_.rack_ammo_per_rack[i] > 0;
                             // vt+1FCh, the rack's dropBombs: whichever tick runs it.
-                            racks[i].busy = lb_tick
-                                ? unit_.lb_rack_dropping[i] != 0
-                                : (unit_.rack_dropping &&
-                                   (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                racks[i].busy = lb_tick
+                                    ? host_single_rack_busy(unit_.lb_rack_dropping[i] != 0)
+                                    : (host_single_rack_busy(unit_.rack_dropping) &&
+                                       (unit_.rack_active < 0 ||
+                                        unit_.rack_active == static_cast<int>(i)));
+                            } else {
+                                racks[i].busy = lb_tick
+                                    ? unit_.lb_rack_dropping[i] != 0
+                                    : (unit_.rack_dropping &&
+                                       (unit_.rack_active < 0 || unit_.rack_active == static_cast<int>(i)));
+                            }
                         }
                         owner_.done("Plane::droppable_device_walk", 0x007c0d90u);
                         const dw::DeviceWalkResult w = dw::device_walk_007c0d90(
@@ -38673,14 +38745,26 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             if (lb_tick) {
-                                unit_.lb_rack_to_repeat[f.rack] += f.delay;
-                                unit_.lb_rack_dropping[f.rack] = 1;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    fire_host_single_rack(unit_.lb_rack_to_repeat[f.rack],
+                                        unit_.lb_rack_dropping[f.rack], f.delay);
+                                } else {
+                                    unit_.lb_rack_to_repeat[f.rack] += f.delay;
+                                    unit_.lb_rack_dropping[f.rack] = 1;
+                                }
                                 ++lb_fired;
                             } else if (!single_set) {
                                 single_set = true;
                                 if (unit_.rack_single_fired < unit_.rack_single_count)
                                     ++unit_.rack_single_fired;
-                                unit_.rack_dropping = true;
+                                if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                    // The same 007C0E17 call on the single-rack
+                                    // arm; f.delay is the device walk's own value.
+                                    fire_host_single_rack(unit_.rack_to_repeat,
+                                        unit_.rack_dropping, f.delay);
+                                } else {
+                                    unit_.rack_dropping = true;
+                                }
                                 unit_.rack_episode_drops = 0;   // GUNNERY 137 diagnostic
                                 unit_.rack_active = static_cast<int>(f.rack);
                             } else {
@@ -38751,7 +38835,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
                             // a single torpedo), dropBombs = 1.
-                            if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            if constexpr (bsp::kWireGoal4Chain273Bound) {
+                                if (unit_.rack_single_count > 0)
+                                    fire_host_single_rack(unit_.rack_to_repeat,
+                                        unit_.rack_dropping, 0.0f);
+                            } else {
+                                if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            }
                             unit_.rack_episode_drops = 0;  // GUNNERY 137 diagnostic
                             if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
                                 // 007C0DE3-007C0E17: the first rack holding a

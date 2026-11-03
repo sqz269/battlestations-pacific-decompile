@@ -1,0 +1,113 @@
+{
+  "chain": 273,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain273Bound",
+  "wired_before": 9214,
+  "wired_after": 9218,
+  "rows": [
+    {
+      "native": "006e3530",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_rack_census",
+      "state": "The selected equipment's nonnegative Ammo enters the existing setter; ammo_484 feeds the authored carried total and org_ammo_488 feeds the per-rack load/rearm capacity. Missing-entry -1 retains the existing sentinel path.",
+      "evidence": "bsp.py show 006e3530: native stores the same input at +484h and +488h. call_graph.py who: 1 reachable call site from plane_rack_census."
+    },
+    {
+      "native": "006e3550",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: fire_host_single_rack, called by PlaneBinding::run_device_walk_per_rack_007c0d90 and the level/single release-issue arms",
+      "state": "Projects each live rack's toRepeatTime and dropBombs, calls the existing body once per accepted fire, and writes both outputs back. The delay is the existing device walk's value; the single-rack fallback uses the native walk's initial zero.",
+      "evidence": "bsp.py show 006e3550 --asm: FLD +494h, set +498h, FADD delay, FSTP +494h. 007C0DA4 initializes the walk delay to zero and 007C0E17 calls vslot 1F0h. call_graph.py who: 2 reachable call sites from run_device_walk_per_rack_007c0d90."
+    },
+    {
+      "native": "006e3a20",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_rack_census",
+      "state": "Uses the selected equipment's ReloadTime and publishes both the configured reload period and live countdown into the existing per-rack arrays. Preserves the missing-entry guard and the native 30-second constructor default.",
+      "evidence": "bsp.py show 006e3a20 --asm: FLD1/FCOMIP/JBE and the two +48Ch/+490h stores. call_graph.py who: 1 reachable call site from plane_rack_census."
+    },
+    {
+      "native": "006e3cd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: host_single_rack_busy, called by PlaneBinding::run_device_walk_per_rack_007c0d90 and plane_device_walk_007ceb00",
+      "state": "Reads the same persistent per-rack or active single-rack dropBombs byte that the rack ticks clear. Its answer controls device eligibility and release-issue completion.",
+      "evidence": "bsp.py show 006e3cd0: return rack+498h. call_graph.py who: 4 reachable call sites, in the device walk and release-issue stage."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: rack_holds_round / per-rack carried-round arrays",
+      "reason": "The host's rack count combines reserve and attached rounds; it lacks the independent live kind-2Ah child count required by attached_rounds, so adding it to the combined count would double count."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile flight loop",
+      "reason": "The complete BombTickState and BombTickHost launch/arming, sweep, expiry and owner-grace lifecycle are not connected to this host's projectile flight loop."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: component failure statistics",
+      "reason": "Missing native per-slot scoring trees, attacker player records and award providers; the current failure adapter supplies semantic handles rather than that graph."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Missing the native scoring owner and per-player GA_PL award/counter graph consumed by the repair-completed body."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: direct-hit damage attribution",
+      "reason": "Missing native player/scoring/award and kill-list storage; semantic damage and attribution alone cannot run the existing complete scoring body."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The literal native body reads actual absolute 00F87574/78/7C addresses; this host does not provide that mapped native data domain."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "No single-player snapshot delivery/consumer path was identified in the commands host; this constructor also needs the three live director getter answers."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Outside the claimed rack packet: the live type-letter parser still needs to route its enum-letter comparison through this existing leaf."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Outside the claimed rack packet: the live type-letter parser still needs to route its LUA_S comparison through this existing leaf."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "The existing typed kind-to-letter helper is already used by scene_property_type_for_letter; no new native-body wiring was made in this rack packet."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: BIN token conversion / ScenePropertyBagHost::decode_byte_token",
+      "reason": "The existing hex decoder is not linked; its actual BIN-token host callback must be located and connected outside the claimed rack files."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release and both reconstructed_math/tool_tests suites",
+    "pc24": "pc24_lint.py --staged: zero findings",
+    "call_graph": "All four selected bodies have reachable calls from the changed host; path 006e3550 reaches WinMainCRTStartup through the mission fixed-step chain.",
+    "runtime": "Game was not run; build and static reachability evidence only."
+  },
+  "limitations": [
+    "Typed source projections reuse the existing host storage and substitutions; they do not establish original binary ABI compatibility.",
+    "Native attached-round objects and separate reserve ammunition remain unmodelled by this chain."
+  ]
+}
