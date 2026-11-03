@@ -43,6 +43,7 @@
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain255_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/wire_goal4_chain276_switches.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -57,6 +58,7 @@
 #include <cstring>
 #include <deque>
 #include <functional>
+#include <memory>
 #include <optional>
 #include <stdexcept>
 #include <string>
@@ -212,6 +214,65 @@ const char* outcome_name(bsp::SceneCommandOutcome outcome) noexcept {
 // The weapon director this process owns for one unit
 // ---------------------------------------------------------------------------
 
+// 0071F6DB builds 007B22A0's source over the resolved Path interface. The
+// script-order producer supplies ScenePathEntry::points_world, already transformed
+// by the scene loader. Retain those actual outputs: the 007AF800 callback below
+// reads them without applying the entity transform a second time. This is a
+// typed host view, not a native-layout Path entity or a binary ABI replacement.
+// The shared owner follows 0071FD10's source sharing across director copies and
+// keeps both the interface and its point pointers alive until the last holder.
+class DirectorAuthoredPath final : public bsp::path_movcam_seg46_argon::AuthoredPathWorldHost {
+    using Vec3 = bsp::path_movcam_seg46_argon::Vec3;
+    using Component = bsp::path_movcam_seg46_argon::PathComponentState;
+    using Source = bsp::path_movcam_seg46_argon::AuthoredPathSource;
+public:
+    explicit DirectorAuthoredPath(const std::vector<std::array<float, 3>>& points) {
+        world_points_.reserve(points.size());
+        for (const auto& p : points) world_points_.push_back({p[0], p[1], p[2]});
+        component_.points_08.reserve(world_points_.size());
+        for (Vec3& p : world_points_) component_.points_08.push_back(&p);
+        Source* made = nullptr;
+        bsp::path_movcam_seg46_argon::entity_path_source_create_for_entity_007b22a0(
+            made, &component_);
+        source_.reset(made);
+        if (!source_) throw std::bad_alloc();
+    }
+
+    int count() const {
+        // Saved listing 007B1030: source+8 -> path+8/+0Ch point-pointer vector.
+        return bsp::path_movcam_seg46_argon::authored_path_source_point_count_007b1030(*source_);
+    }
+    Vec3 point(int index) {
+        // Saved listing 007B10A0: delegate index/output to the scene-world read.
+        Vec3 out;
+        bsp::path_movcam_seg46_argon::authored_path_source_get_point_007b10a0(
+            *source_, out, index, *this);
+        return out;
+    }
+    Vec3 last_point() {
+        // Saved listing 007B10C0: the same read at point-count minus one.
+        Vec3 out;
+        bsp::path_movcam_seg46_argon::authored_path_source_last_point_007b10c0(
+            *source_, out, *this);
+        return out;
+    }
+
+private:
+    Vec3 transform_point_to_world_007af800(const Component* path, int index) override {
+        if (path != &component_ || index < 0
+            || static_cast<std::size_t>(index) >= path->points_08.size())
+            throw std::logic_error("authored director path index outside retained scene points");
+        return *path->points_08[static_cast<std::size_t>(index)];
+    }
+    int nearest_point_index_world_007b0900(const Component*, const Vec3&, float*) override {
+        throw std::logic_error("authored director count/point queries do not request nearest index");
+    }
+
+    std::vector<Vec3> world_points_;
+    Component component_;
+    std::unique_ptr<Source> source_;
+};
+
 // Only the fields the command path reads. The 250h-byte native object is
 // docs/WEAPON_DIRECTOR.md's; this holds its command slots (director+54h with
 // stride 1ch), the command mode at +30h, the stage counter at +48h and the
@@ -257,6 +318,7 @@ struct GameDirector {
     // them; this host carries the one that is read.
     bsp::ShipAiPathCursor path_cursor{};
     std::vector<std::array<float, 3>> path_points;   // the path source's points
+    std::shared_ptr<DirectorAuthoredPath> authored_path;
     std::string path_name;
     // command+8h / +0Ch, 0071C1B0's two stores; 0071FB90 constructs them as 1
     // and 5 (kPathObjectDefaultPairBound).
@@ -3643,7 +3705,12 @@ struct DirectorPathObjectCopyView {
         // 007B1C05: the successor now shares the source, which is not its own +40h
         // vector; 007B1C2E..007B1C3E: the cursor's +8h/+0Ch/+10h.
         to.path_name = from.path_name;
-        to.path_points = from.path_points;
+        if constexpr (bsp::kWireGoal4Chain276Bound) {
+            to.path_points = from.path_points;
+            to.authored_path = from.path_user ? nullptr : from.authored_path;
+        } else {
+            to.path_points = from.path_points;
+        }
         to.path_user = false;
         to.path_cursor = from.path_cursor;
     }
@@ -4012,7 +4079,13 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // `path_built` therefore means "a build ran", and the empty test is separate.
     director.path_points = points;
     director.path_name = path_name;
-    director.path_built = true;
+    if constexpr (bsp::kWireGoal4Chain276Bound) {
+        director.authored_path = director.path_user ? nullptr
+            : std::make_shared<DirectorAuthoredPath>(points);
+        director.path_built = true;
+    } else {
+        director.path_built = true;
+    }
     director.path_advances = 0;
     director.path_travelled = 0.0f;
     director.path_last_valid = false;
@@ -4145,7 +4218,13 @@ bool GameCommandsHost::path_cursor_has_no_legs_007adc30(std::size_t unit_index) 
     if (unit_index >= host.directors.size()) return true;
     const GameDirector& director = host.directors[unit_index];
     // 007ADC30: no path object, or a point count that is not positive.
-    return !director.path_built || director.path_points.empty();
+    if constexpr (bsp::kWireGoal4Chain276Bound) {
+        if (director.authored_path && !director.path_user)
+            return !director.path_built || director.authored_path->count() <= 0;
+        return !director.path_built || director.path_points.empty();
+    } else {
+        return !director.path_built || director.path_points.empty();
+    }
 }
 
 bool GameCommandsHost::path_cursor_on_final_leg_007adc60(std::size_t unit_index) const {
@@ -4166,8 +4245,19 @@ bool GameCommandsHost::path_cursor_point(std::size_t unit_index, int leg,
     int index = leg < 0 ? director.path_cursor.index_08 : leg;
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
-    x = director.path_points[static_cast<std::size_t>(index)][0];
-    z = director.path_points[static_cast<std::size_t>(index)][2];
+    if constexpr (bsp::kWireGoal4Chain276Bound) {
+        if (director.authored_path && !director.path_user) {
+            const auto point = director.authored_path->point(index);
+            x = point.x;
+            z = point.z;
+        } else {
+            x = director.path_points[static_cast<std::size_t>(index)][0];
+            z = director.path_points[static_cast<std::size_t>(index)][2];
+        }
+    } else {
+        x = director.path_points[static_cast<std::size_t>(index)][0];
+        z = director.path_points[static_cast<std::size_t>(index)][2];
+    }
     return true;
 }
 
@@ -4180,7 +4270,18 @@ bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) 
     int index = director.path_cursor.index_08;
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
-    for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
+    if constexpr (bsp::kWireGoal4Chain276Bound) {
+        if (director.authored_path && !director.path_user) {
+            const auto point = director.authored_path->point(index);
+            out[0] = point.x;
+            out[1] = point.y;
+            out[2] = point.z;
+        } else {
+            for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
+        }
+    } else {
+        for (int k = 0; k < 3; ++k) out[k] = director.path_points[static_cast<std::size_t>(index)][k];
+    }
     return true;
 }
 
@@ -4192,7 +4293,18 @@ bool GameCommandsHost::path_final_point_007b1350(std::size_t unit_index, float o
     const GameDirector& director = host.directors[unit_index];
     if (!director.path_built || director.path_points.empty()) return false;
     if (director.path_cursor.follow_mode_0c != 1) return false;
-    for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
+    if constexpr (bsp::kWireGoal4Chain276Bound) {
+        if (director.authored_path && !director.path_user) {
+            const auto point = director.authored_path->last_point();
+            out[0] = point.x;
+            out[1] = point.y;
+            out[2] = point.z;
+        } else {
+            for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
+        }
+    } else {
+        for (int k = 0; k < 3; ++k) out[k] = director.path_points.back()[k];
+    }
     return true;
 }
 
@@ -4633,7 +4745,12 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
     } else {
     if (&to != &from) {
         to.path_cursor = from.path_cursor;
-        to.path_points = from.path_points;
+        if constexpr (bsp::kWireGoal4Chain276Bound) {
+            to.path_points = from.path_points;
+            to.authored_path = from.path_user ? nullptr : from.authored_path;
+        } else {
+            to.path_points = from.path_points;
+        }
         to.path_name = from.path_name;
         to.path_follow_mode = from.path_follow_mode;
         to.path_start_mode = from.path_start_mode;
