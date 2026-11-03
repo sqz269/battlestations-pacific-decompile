@@ -1,0 +1,97 @@
+{
+  "goal": 4,
+  "chain": 266,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain266Bound",
+  "wired_before": 9173,
+  "wired_after": 9175,
+  "rows": [
+    {
+      "native": "0084c5b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire turning-gun fixed-step arm",
+      "state": "Live GameGunRow::fire, fixed-step dt, FireRequestBinding, and immediate_fire_by_gun[g].immediate_4d4. Repaired the predicate-only body to call 0072D130 once, read the live latch after that call, and send the distinct untargeted ADh through the existing fire-message delivery seam.",
+      "evidence": "bsp.py show 0084c5b0 --asm: CALL 0072D130 at 0084C5D4, flag read at 0084C5DB, zero target at 0084C60E, route flags 1,0 at 0084C625. Native ABI is thiscall(gun+310h, dt), RET 4; the C++ interface is not ABI compatible."
+    },
+    {
+      "native": "0084c4e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire accepted FireIfReady arm",
+      "state": "The actual CanFire answer and mutable immediate-fire latch replace the existing inline clear. An accepted normal ADh consumes the latch; the forced-only 008A7200 path retains its existing bypass.",
+      "evidence": "bsp.py show 0084c4e0 and 00727e30: the base FireIfReady returns CanFire's answer after invoking Gun_Fire; the wrapper clears gun+4D4h only on a true return (0084C4EC). Existing semantic body reused."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The host has no renderer/remap-service native object, actual texture-owner companions, or NativeRenderResourcesRemapContext required by the setter."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The host has no renderer/remap-service native object, actual texture-owner companions, or NativeRenderResourcesRemapContext required by the setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The host has no renderer/remap-service native object, actual texture-owner companions, or NativeRenderResourcesRemapContext required by the setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The host has no renderer/remap-service native object, actual texture-owner companions, or NativeRenderResourcesRemapContext required by the setter."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Temporary host recon records hold unit indices and levels; the native 1Ch entry, sensor-class subobject query, and owned member list are missing."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "The host rebuilds triples from scratch and has no persistent carry-over class list or registered observer pairs for this retire/unregister body."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0 group publication",
+      "reason": "The member-index vectors do not provide the native group/member entries or the group's per-party detection record, detector-pair ownership, and change delegate that publication mutates."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-zone lookup stand-in",
+      "reason": "No bound Seg49Host repair-zone vector or native area/unit objects supply the containing-area predicate called by this lookup."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun aiming/control setup",
+      "reason": "The raw body requires gun+3F4h class storage and the bound 0072D5B0 mode-selection operation; the typed gun rows need an adapter before this can replace host behavior."
+    },
+    {
+      "native": "00729bc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: target-acceptance input construction",
+      "reason": "An offset selection alone still lacks the installed bot-slot object and its vtable[1Ch](target) acceptance answer; category/range inputs cannot substitute for that state."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: apply_named_failure Periscope arm",
+      "reason": "The arm records a gap and returns 4; no live periscope shape, node, repair-state object, or deadline consumer exists for the reconstructed plan to update."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "focused_fixture": "One existing-suite fixture checks ungated target-zero send, distinct base/extra messages, one base tick per call, and live latch re-read after synchronous 0084C4E0 clearing.",
+    "pc24": "pc24_lint on changed C++ files: zero findings; no arithmetic changes in production code",
+    "call_graph": "Both functions have a call from GameGunneryHost::Impl::run_gun_aim_and_fire and are reachable from the built executable entry.",
+    "scope": "Build, fixture, and static reachability evidence only. The game was not run. Existing same-step FireIfReady attempt coalescing remains."
+  }
+}
