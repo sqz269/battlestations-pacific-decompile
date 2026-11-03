@@ -11,9 +11,10 @@
   "build": {
     "off": "scripts/build.ps1 exit 0, 2/2 tests passed",
     "on": "tools/off_switch_on_build.py --names kWireGoal2Chain145Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed (reconstructed_math includes the multi-run quoted S scene case, which ran through the chunk-list writer)",
-    "pc24": "not applicable: the ON arms do no x87 arithmetic (float fields are copied bytewise)"
+    "pc24": "not applicable: the ON arm does no x87 arithmetic; pc24_lint --diff origin/main...HEAD reports 0 findings"
   },
-  "wired_totals": {"before": 8975, "after": 8981},
+  "review": "run 291 round 1: all six fixes applied (00951220 arm, TrafficRecordCreation and its includes removed; switch comment narrowed to the quoted S arm; report row skipped, host object dropped, totals recounted)",
+  "wired_totals": {"before": 8975, "after": 8980},
   "host_objects": [
     {
       "name": "SceneQuotedRunChunkView + SceneTextChunkWriterHost (008EFB00's stack chunk-list text writer over the C++ heap)",
@@ -25,16 +26,6 @@
         "008F5D0A/008F5D24 _free of the joined text after the caller stores it"
       ],
       "rows": ["009502e0", "0094ff10", "009500a0"]
-    },
-    {
-      "name": "TrafficRecordCreation (TrafficRecordCreateHost over one 4Ch record buffer)",
-      "where": "src/scene_traffic_groups.cpp:244",
-      "producers": [
-        "00951220's constructor stores",
-        "image .rdata floats 00CE38B8 = 10.0f, 00CE3850 = 5.0f, 00CE685C = 40.0f (disk bytes, TrafficRecordDefaults)",
-        "the reader's path-entity lookup answer (SceneTrafficHost::resolve_path_entity)"
-      ],
-      "rows": ["00951220"]
     }
   ],
   "rows": [
@@ -66,9 +57,9 @@
       "native": "00951220",
       "address": "00951396",
       "function": "009512f0",
-      "host_site": "src/scene_traffic_groups.cpp read_traffic_item (TrafficRecordCreation::create_into)",
-      "status": "wired",
-      "reach": "static: game_hosts_scene_contents.cpp load_traffic_block (kSceneTrafficBlockBound = true) -> read_traffic_block_after_keyword -> read_traffic_block_body -> read_traffic_item; docs/SCENE_TRAFFIC_BLOCK.md census: 251 of 259 shipped scenes have a traffic block, 172 items. Note: every shipped item has a properties section whose applier (0049CF80) rewrites these fields afterwards, as in the image, so a flip changes no shipped record value."
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "no body logic to replace: read_traffic_item's out = TrafficRecord() (src/scene_traffic_groups.cpp) already holds exactly 00951220's constructor stores (TrafficRecordDefaults cites the 0095128x stores), and the host keeps no path-entity pointer and no native record vector, so the body has no host input or output to replace (review run 291 round 1; the arm and its TrafficRecordCreation adapter were removed)"
     },
     {
       "native": "0092e250",
