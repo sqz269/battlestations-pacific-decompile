@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain271_switches.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gui_aspect_extent.hpp"
@@ -655,9 +656,14 @@ public:
         owner_.record("InGameInterfaceUpdate::set_level3_screen_set", 0x004f8670u);
     }
     void set_level3_input_contexts(const int* ids, std::size_t count) override {
+        if constexpr (kWireGoal4Chain271Bound) {
+            owner_.menu.publish_level3_input_contexts(ids, count);
+            owner_.done("InGameInterfaceUpdate::set_level3_input_contexts", 0x004d8b70u);
+        } else {
         static_cast<void>(ids);
         static_cast<void>(count);
         owner_.record("InGameInterfaceUpdate::set_level3_input_contexts", 0x004d8b70u);
+        }
     }
 
     // The spectate walk over [[game+19cch]+58h]. construct_world 004de610 is a
