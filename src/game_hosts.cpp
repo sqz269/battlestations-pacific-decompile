@@ -66,7 +66,9 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_init_tail.hpp"
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/wire_goal4_chain249_switches.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
@@ -2670,6 +2672,9 @@ GameStartupHost::~GameStartupHost() {
         GameScriptOrdersHost::bind_music_dialog(nullptr);
     } else {
     }
+    if constexpr (kWireGoal4Chain249Bound) {
+        GameHudHost::bind_sound_runtime(nullptr);  // before the runtime it names goes
+    }
     sound_.reset();
     delete singletons_;
     singletons_ = nullptr;
@@ -3624,6 +3629,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     if constexpr (kWireGoal2Chain180Bound) {
         GameScriptOrdersHost::bind_music_dialog(sound_ ? &sound_->dialog : nullptr);
     } else {
+    }
+    if constexpr (kWireGoal4Chain249Bound) {
+        // [00F8BBD8] for the in-mission interface update's 00A7B710 (0068CC49).
+        GameHudHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr);
     }
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(),

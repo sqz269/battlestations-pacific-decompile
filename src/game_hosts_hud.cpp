@@ -42,6 +42,12 @@
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/wire_goal1_chain12_switches.hpp"
 #include "bsp/wire_goal2_chain35_switches.hpp"
+#include "bsp/wire_goal4_chain249_switches.hpp"
+#include "bsp/game_sound_runtime.hpp"
+#include "bsp/sound_configuration.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
+#include "bsp/sound_system_owner.hpp"
+#include "bsp/fmod_configuration_library.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -60,6 +66,9 @@
 
 namespace bsp::game {
 namespace {
+
+// Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 (GameHudHost::bind_sound_runtime).
+GameSoundRuntime* g_hud_sound_runtime = nullptr;
 
 // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md). True: 00526A40's
 // camera segment query 009043A0 runs over the gunnery host's units
@@ -801,7 +810,30 @@ public:
     }
     void set_audio_environment(std::string_view name) override {
         owner_.summary.audio_environment.assign(name.data(), name.size());
+        if constexpr (bsp::kWireGoal4Chain249Bound) {
+            // 0068CC3C..0068CC4F: PUSH the chosen literal, ECX = [00F8BBD8], CALL
+            // 00A7B710 on every update. The body finds the listener by name
+            // (00A7AE00), and only when that ordinal differs from +10Ch moves +10Ch
+            // to +110h, stores the new one and selects it (00A7AE80, +104h/+108h),
+            // on the listener table the sound Lua configuration (00A7FF80) built.
+            // The image has no null test; a runtime that never started has no
+            // configuration, so that case stays the record below.
+            GameSoundRuntime* const sound = g_hud_sound_runtime;
+            if (sound != nullptr && sound->started()) {
+                SoundConfigurationState& configuration = sound->owner().configuration;
+                const std::int32_t before = configuration.current_listener_10c;
+                bsp::cc13_audio::set_sound_listener_environment_00a7b710(configuration,
+                    owner_.summary.audio_environment.c_str(), sound->fmod());
+                ++owner_.summary.audio_environment_selects;
+                if (configuration.current_listener_10c != before)
+                    ++owner_.summary.audio_environment_changes;
+                owner_.done("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
+                return;
+            }
+            owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
+        } else {
         owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
+        }
     }
     void tick_profile_hints(int slot) override {
         static_cast<void>(slot);
@@ -937,6 +969,10 @@ GameHudHost::GameHudHost(GameHostLog& log, GameMenuHost& menu)
     : impl_(std::make_unique<Impl>(log, menu)) {}
 
 GameHudHost::~GameHudHost() = default;
+
+void GameHudHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
+    g_hud_sound_runtime = runtime;
+}
 
 const GameHudSummary& GameHudHost::summary() const noexcept { return impl_->summary; }
 
@@ -4672,6 +4708,11 @@ void GameHudHost::report() {
         impl.summary.pump_frames, impl.summary.update_frames,
         impl.summary.audio_environment.empty() ? "(none)"
                                                : impl.summary.audio_environment.c_str());
+    if constexpr (kWireGoal4Chain249Bound) {
+        impl.log.notef("summary mission hud listener environment (goal 4 chain 249, 00A7B710): "
+            "selects=%llu changes=%llu", impl.summary.audio_environment_selects,
+            impl.summary.audio_environment_changes);
+    }
     impl.log.notef("summary mission hud gun aim message 79h (cc15-smA, 00954A10 / 0075FFF0 / "
         "0075FF60 / 007600D0): bound=%d round_trips=%llu changed yaw=%llu pitch=%llu camera=%llu "
         "bools=%llu group=%llu target=%llu max_delta yaw=%.9g pitch=%.9g",
