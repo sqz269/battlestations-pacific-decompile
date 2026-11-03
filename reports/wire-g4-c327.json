@@ -1,0 +1,90 @@
+{
+  "rows": [
+    {
+      "native": "007b8f20",
+      "status": "wired",
+      "host_site": "src/pool_pool06_cc13.cpp: bsp::convex_object_compute_box_006f9ee0",
+      "evidence": "Live hull mesh points produce the min/max bounds consumed by the existing AABB-centre body. Listings 006FA25D-006FA2AF and 007B8F23-007B8F5F use the same per-operation float rounding and double half constant. Source-level helper reuse, not an original binary call edge or native ABI replacement."
+    },
+    {
+      "native": "00812310",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "008123a0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "00812430",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "008124c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "00812550",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "00812600",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "00812680",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "00812730",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg50_cc13.cpp: barrel-count helpers",
+      "reason": "No live GetFirepower consumer binds the per-category UnitDevice projection or consumes these totals; this packet owns the hull bounds path."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: bsp::scene_property_type_for_letter",
+      "reason": "No additional unbound classification site: chain285 already calls this body from entry-reachable scene-property parsing, confirmed by call_graph.py who."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: bsp::scene_property_type_for_letter",
+      "reason": "No additional unbound classification site: chain285 already calls this body from entry-reachable scene-property parsing, confirmed by call_graph.py who."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: bsp::scene_reference_kind_letter",
+      "reason": "Current parser already uses the semantic kind-letter table; address-bearing naming alone would not introduce a new body call."
+    }
+  ],
+  "validation": {
+    "build": "Final ON and OFF scripts/build.ps1 builds passed reconstructed_math, native_math_differential and tool_tests.",
+    "call_graph": "007b8f20 has one reachable call site, from convex_object_compute_box_006f9ee0; path continues through HullTerrainContactSolver and GameUnitsHost motion simulation to WinMainCRTStartup",
+    "evidence": "bsp.py show 007b8f20 --asm; bsp.py show 006f9ee0 --asm --start 215; source-level reuse only, not game-run or native ABI replacement",
+    "wired_before": 9326,
+    "wired_after": 9326,
+    "called_after": true,
+    "call_sites_after": 1,
+    "called_addresses_before": 4361,
+    "called_addresses_after": 4362,
+    "switch_off": "Build and all three tests passed; call_graph reports 4361 reached reconstructed addresses and no 007b8f20 function.",
+    "switch_on": "Final build has 4362 reached reconstructed addresses; 007b8f20 is REACHABLE with one call from convex_object_compute_box_006f9ee0.",
+    "counter_note": "The source-text wired summary stays 9326; executable reached reconstructed-address count increases 4361 to 4362."
+  }
+}

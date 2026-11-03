@@ -1,6 +1,8 @@
 // cc13 pool06 (segment 33). Descriptive names are hypotheses (cc13-poolw3, 2026-10-24).
 
 #include "bsp/pool_pool06_cc13.hpp"
+#include "bsp/band_007a_cc13.hpp"
+#include "bsp/wire_goal4_chain327_switches.hpp"
 
 namespace bsp {
 
@@ -53,9 +55,19 @@ void convex_object_compute_box_006f9ee0(ConvexObjectBox& object, const float* po
             if (p[k] > hi[k]) hi[k] = p[k];
         }
     }
-    for (int k = 0; k < 3; ++k) {
-        const float sum = static_cast<float>(static_cast<double>(lo[k]) + hi[k]);
-        object.centre[k] = static_cast<float>(static_cast<double>(sum) * 0.5);
+    if constexpr (kWireGoal4Chain327Bound) {
+        // The live hull loader supplies these extrema from the mesh points above.
+        // 006FA25D..006FA2AF and 007B8F23..007B8F5F both round min+max to
+        // float before multiplying by binary constant 00D7A280 (double 0.5).
+        // Reuse the existing 007B8F20 body with its min-xyz/max-xyz view;
+        // this is source-level reuse, not a recovered native call or ABI shim.
+        const float bounds[6] = {lo[0], lo[1], lo[2], hi[0], hi[1], hi[2]};
+        band_007a_cc13::aabb_center_007b8f20(bounds, object.centre);
+    } else {
+        for (int k = 0; k < 3; ++k) {
+            const float sum = static_cast<float>(static_cast<double>(lo[k]) + hi[k]);
+            object.centre[k] = static_cast<float>(static_cast<double>(sum) * 0.5);
+        }
     }
     for (int k = 0; k < 3; ++k) {
         const float diff = static_cast<float>(static_cast<double>(hi[k]) - lo[k]);
