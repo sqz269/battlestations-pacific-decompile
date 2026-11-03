@@ -580,8 +580,48 @@ void spawn_member_sort_009480b0(std::uint8_t* first, std::uint8_t* last, std::in
                                 Left61Host& host);
 
 // 009481A0 BSP_SpawnRequest_ReadExcludeRadius, __fastcall(ECX = float block[7]; LuaObject
-// by value), RET 14h. `object` is that by-value argument (destroyed here).
+// by value), RET 14h. `object` is that by-value argument (destroyed here). Thin wrapper:
+// it adapts Left61Host to SpawnExcludeRadiusReaderHost and runs the typed view below.
 void spawn_request_read_exclude_radius_009481a0(float* block, void* object, Left61Host& host);
+
+// 009481A0's block (ECX), typed. +0..+10h take the five keys in read order, +14h/+18h
+// the two horizontal squares. Its producer is the caller: 00949750 presets every field
+// (009498E1..0094994B) before the call, and the request keeps it at record+9Ch.
+struct SpawnExcludeRadiusBlock {
+    float own_horizontal;        // +00h `ownHorizontal` (00D19968)
+    float enemy_horizontal;      // +04h `enemyHorizontal` (00D19958)
+    float own_vertical;          // +08h `ownVertical` (00D1994C)
+    float enemy_vertical;        // +0Ch `enemyVertical` (00D1993C)
+    float formation_horizontal;  // +10h `formationHorizontal` (00D19928)
+    float own_horizontal_sq;     // +14h, own_horizontal^2 after a read
+    float enemy_horizontal_sq;   // +18h, enemy_horizontal^2 after a read
+};
+static_assert(offsetof(SpawnExcludeRadiusBlock, formation_horizontal) == 0x10);
+static_assert(offsetof(SpawnExcludeRadiusBlock, own_horizontal_sq) == 0x14);
+static_assert(offsetof(SpawnExcludeRadiusBlock, enemy_horizontal_sq) == 0x18);
+static_assert(sizeof(SpawnExcludeRadiusBlock) == 0x1c);
+
+// 009481A0's calls on its by-value LuaObject and on the 14h-byte reader it builds over a
+// copy of it, in the order the body makes them.
+struct SpawnExcludeRadiusReaderHost {
+    virtual ~SpawnExcludeRadiusReaderHost() = default;
+    // 00B65FB0 on the by-value argument.
+    virtual bool object_is_nil_00b65fb0() = 0;
+    // 00B66FA0 copies the argument, then 004425C0 builds the reader over the copy.
+    virtual void reader_open_004425c0() = 0;
+    // 00BD68D0 with {0, key}, {2, &field} and {2, fallback}: a float field, its default.
+    virtual void reader_read_float_or_default_00bd68d0(const char* key, float& field,
+                                                       float fallback) = 0;
+    // 00441A20 on the reader.
+    virtual void reader_close_00441a20() = 0;
+    // 00B67700 on the by-value argument, which the callee owns.
+    virtual void object_destruct_00b67700() = 0;
+};
+
+// 009481A0, typed view of the same body: when the argument is not nil, each key is read
+// with the field's current value as its default, then +14h/+18h are squared.
+void spawn_request_read_exclude_radius_009481a0(SpawnExcludeRadiusBlock& block,
+                                                SpawnExcludeRadiusReaderHost& host);
 
 // 00948BB0, __fastcall(ECX = spawn request): the request destructor.
 void spawn_request_destroy_00948bb0(Raw request, Left61Host& host);
