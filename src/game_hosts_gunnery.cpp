@@ -5403,6 +5403,7 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     gm::bsp_geom_mesh_element_root_box_centre_00723030(
                         gm::GeomMeshElementBoxView{elo, ehi, 1}, 0.5 /* 00D7A280 */,
                         kZeroVector00f87574, entry.section_point[slot].data());
+                    done("Geometry::element_root_box_centre_00723030", 0x00723030u);
                 } else {
                 for (int k = 0; k < 3; ++k) {
                     entry.section_point[slot][k] = (elo[k] + ehi[k]) * 0.5f;   // 00723030
@@ -9260,6 +9261,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         v.sides_related = !same_party;              // 00803510 != 0
                         drop = !bsp::seg59_entity_is_live_other_party_008fb890(v)
                             || !units.unit_alive_and_visible(target);
+                        done("GunBot::entity_is_live_other_party_008fb890", 0x008fb890u);
                     } else {
                         drop = host_drop || same_party;
                     }
@@ -10771,6 +10773,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                         bsp::oct18_tail_b::GunClassTargetValues{sub_torpedo_delay_764,
                                                                 ship_torpedo_delay_768},
                         units.unit_is_kind_of(owner_unit, 8));
+                    done("Gun::class_value_for_target_00836eb0", 0x00836eb0u);
                 } else {
                 state.torpedo_cooldown_6fc = units.unit_is_kind_of(owner_unit, 8)
                     ? sub_torpedo_delay_764 : ship_torpedo_delay_768;   // 00836EB0
@@ -15747,6 +15750,7 @@ public:
                     static_cast<std::int32_t>(kind), static_cast<std::int32_t>(segment),
                     [](const auto& sec) { return static_cast<std::int32_t>(sec.kind); },
                     [](const auto& sec) { return static_cast<std::int32_t>(sec.index); });
+            owner_.done("Failure::find_damage_section_008782a0", 0x008782a0u);
             if (found == dc.sections.end()) return false;
             *numerator = found->chance;
             *denominator = found->threshold;
@@ -15790,6 +15794,7 @@ public:
             std::uint32_t found[2] = {0u, 0u};
             bsp::cc13_left61::named_row_find_iterator_0093a9e0(found, key, 0u, rows.first(),
                                                                0u, rows.last());
+            owner_.done("Failure::named_row_find_iterator_0093a9e0", 0x0093a9e0u);
             return reinterpret_cast<std::uint8_t*>(static_cast<std::uintptr_t>(found[1]))
                 != rows.last();
         } else {
