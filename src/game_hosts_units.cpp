@@ -20329,24 +20329,6 @@ void GameUnitsHost::Impl::carrier_elevator_platform_tick_006fc480(LandingDeck& d
 // 007D9A4E-007D9A5F: FLD z, FMUL c, FADD ctl+44h, FSTP; per-op float rounding.
 float GameUnitsHost::Impl::plane_forward_speed_007d99c0(const GameUnitSlot& p,
                                                         float ctl_44) const {
-    // 007D99C0: flight_forward_speed_007d99c0 forms ctl+44h plus the scene parent's
-    // (unit+3Ch, deck_parent_plus_one) velocity z in the plane frame times 0.1 | 0.8;
-    // OFF keeps the host arm below (ctl+44h alone while kPlaneForwardSpeedDeckTermBound
-    // is false).
-    if constexpr (bsp::kWireGoal2Chain67Bound) {
-        const GameUnitSlot* o = nullptr;
-        if (p.deck_parent_plus_one != 0 && p.deck_parent_plus_one <= slots.size()) {
-            o = slots[p.deck_parent_plus_one - 1u].get();
-        }
-        float z = 0.0f;
-        if (o != nullptr) {
-            const bsp::OceanVec3& pv = o->motion.linear_velocity;
-            const float* const r2 = p.motion.pose_row2;
-            z = r2[0] * pv.x + r2[1] * pv.y + r2[2] * pv.z;
-            ++forward_speed_deck_terms;
-        }
-        return bsp::gameplay_seg48_cc13::flight_forward_speed_007d99c0(ctl_44, o != nullptr, z);
-    } else {
     if constexpr (!kPlaneForwardSpeedDeckTermBound) return ctl_44;
     if (p.deck_parent_plus_one == 0 || p.deck_parent_plus_one > slots.size()) return ctl_44;
     const GameUnitSlot* o = slots[p.deck_parent_plus_one - 1u].get();
@@ -20358,7 +20340,6 @@ float GameUnitsHost::Impl::plane_forward_speed_007d99c0(const GameUnitSlot& p,
     const float t = static_cast<float>(static_cast<double>(z) * static_cast<double>(c));
     ++forward_speed_deck_terms;
     return static_cast<float>(static_cast<double>(t) + static_cast<double>(ctl_44));
-    }
 }
 
 // 007C71E0 (007C71E0-007C742F), the re-parent arm (007C726C-007C72C5) and the
