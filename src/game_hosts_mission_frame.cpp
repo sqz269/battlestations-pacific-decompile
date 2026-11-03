@@ -82,6 +82,12 @@
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
 #include "bsp/wire_goal4_chain264_switches.hpp"   // the class-table resets after luaPrecacheUnits
+#include "bsp/wire_goal4_chain312_switches.hpp"   // 004DA780's session-teardown sound reset
+#include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/game_sound_runtime.hpp"
+#include "bsp/sound_frame_service.hpp"
+#include "bsp/sound_manager_levels.hpp"
+#include "bsp/sound_system_owner.hpp"
 #include "bsp/mission_lua_class_table_resets.hpp"
 #include "bsp/classes_seg8_cc13.hpp"
 #include "bsp/scene_class_registry.hpp"
@@ -128,6 +134,38 @@ namespace bsp::game {
 constexpr bool kAuthoredCommandsAfterLoadWalkBound = true;
 
 namespace {
+
+// Goal 4 chain 312 (kWireGoal4Chain312Bound): the sound reset of 004DA780
+// BSP_Game_TeardownSessionState, 004DA824..004DA999 (bsp.py disasm-raw
+// 004da820 / 004da889 / 004da91b), over the application's sound core and its
+// streamed-dialog owner [00F8BBCC] (GameScriptOrdersHost::bind_music_dialog):
+//  1. 004DA824..004DA83E: UCOMISS [[00F8BBD8]+6Ch] with 1.0 (00D7A24C);
+//     LAHF / TEST AH,44h / JNP skips only on equality, so an unequal or
+//     unordered level takes 004DA841: +6Ch = 1.0, then [00F8BBD8] is reloaded
+//     and 00A7A440 gets its +4Ch (the global level, re-applied unchanged).
+//  2. 004DA857..004DA85D: 00A77C10 on [00F8BBCC], which releases both logical
+//     channels' streams and requests and the physical stream and sets +208h
+//     (the music level) to -1.
+//  3. 004DA862..004DA86E: FLD1, 00A77860 on [00F8BBCC], the music target 1.0.
+//  4. 004DA873..004DA905 and again to 004DA999: [00F8BBD8]->vtable[4] with an
+//     identity matrix and zero velocity, which flush the cleared channels.
+// False, having done nothing, without a started core and dialog owner.
+bool reset_session_sound_004da824() {
+    GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+    GameSoundRuntime* const core = dialog != nullptr ? dialog->attached_core() : nullptr;
+    if (core == nullptr || !core->started() || !dialog->started()) return false;
+    SoundSystemOwner& owner = core->owner();
+    if (!(owner.level_6c == 1.0f)) {
+        owner.level_6c = 1.0f;
+        apply_sound_global_level_00a7a440(owner.levels, owner.levels.global_4c);
+    }
+    dialog->clear_channels();
+    dialog->set_music_target_level(1.0f);
+    NullInterfaceSoundFrame frame(*core, application_camera_axes_crt());
+    update_published_sound_with_identity_listener(frame.context());
+    update_published_sound_with_identity_listener(frame.context());
+    return true;
+}
 
 // 004e53ad's argument: the global clock in milliseconds, 00f876a4 times the
 // double 1000.0 at 00ce47a0.
@@ -2557,6 +2595,18 @@ public:
         owner_.result->run_end_scene_004d7970(false);
     }
     bool request_10_teardown_004e458a(bsp::GameFrameControlState& state) override {
+        if constexpr (bsp::kWireGoal4Chain312Bound) {
+            // Goal 4 chain 312: 004DA780's sound reset, 004DA824..004DA999, under
+            // the same 004DA7A0..004DA7BC gate (not front-end states 1/2/4). It
+            // runs before the 004DAD52 clock reset below, as in the image.
+            if (state.state != 1u && state.state != 2u && state.state != 4u) {
+                if (reset_session_sound_004da824()) {
+                    owner_.done("MissionTeardown::session_sound_reset", 0x004da824u);
+                } else {
+                    owner_.record("MissionTeardown::session_sound_reset", 0x004da824u);
+                }
+            }
+        }
         if constexpr (bsp::kWireGoal3Chain242Bound) {
             // 00874640 @004DAD52 resets A4..B4 in 004DA780. Its outer gate
             // excludes front-end states 1/2/4 (004DA7A0..004DA7BC). The result
