@@ -106,6 +106,10 @@ struct GameSceneEntityRecord {
     // 006EC91D) then takes the class Catapult block.
     int launch_class_530{-1};
     int launch_equipment_534{-1};
+    // 0077E849..0077E864: kind-1 descriptor ResourceUsage, read through
+    // 0048F5D0 and stored at entity+304h. An absent key supplies FLDZ.
+    // Carried with the owning record through Hidden/GenerateObject and wings.
+    float resource_usage_304{0.0f};
     bool created{false};       // the class creator ran and handed back an instance
     std::string skipped_because;
     float world[16]{};

@@ -255,6 +255,9 @@ struct GameUnitRow {
     // constructor's value (0095CDEF / 0095CDF5), takes the class default.
     int launch_class_530{-1};
     int launch_equipment_534{-1};
+    // 0077E864's retained ResourceUsage, from the actual creation bag. Read by
+    // 00A2C570 in group-member order; absent ResourceUsage takes native FLDZ.
+    float resource_usage_304{0.0f};
     std::string command;      // the authored `Command` token
     // Packet cc9_land_convoy_members: +738h (the convoy, by its scene name; the
     // host builds no convoy instance) and +73Ch (the slot). Empty / -1 outside

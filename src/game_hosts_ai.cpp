@@ -51,6 +51,7 @@
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain304_switches.hpp"
+#include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_ai_group_queries.hpp"
 
 namespace bsp::game {
@@ -4363,15 +4364,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // [00E0CFB4] * 0.5 - sum(unit+304h) - 009469F0(team). [00E0CFB4] holds
     // 2400.0 in the image's .data (and 00CE396C, the 2400.0 005E3262 stores
     // whenever 004BCA50 answers above 3, which a campaign mission does).
-    // unit+304h is the entity's `ResourceUsage` (0077E864), which nothing in
-    // this installation's scripts or reference scenes authors, so every unit
-    // holds 0. LABELLED: 009469F0 sums 009467B0 over the [00F89B3C] records
+    // LABELLED: this party-wide budget still omits the unit+304h subtraction;
+    // chain308 binds group demand below, not this independent budget query.
+    // 009469F0 sums 009467B0 over the [00F89B3C] records
     // of the team, which this process never creates (the spawn arm is a
     // record), so it is 0.
     static constexpr float kCaptureAvailableResources = 2400.0f * 0.5f;
-    // 00A2C530, the group's resource: sum(member+304h). 0 for every group on
-    // this installation (see above), so no assignment ever lowers a price.
+    // OFF arm's former group-resource stand-in. The ON arm reads the actual
+    // creation bags, including 006ECA3F's Cost-derived catapult ResourceUsage.
     static constexpr float kCaptureGroupResource = 0.0f;
+    float group_resource(const Group* group) const {
+        // 00A2C531..00A2C585 visits the actual +563Ch member list in order.
+        // The owning unit rows retain 0077E864's value; membership already
+        // names live allocated slots, including any not yet evicted this tick.
+        std::vector<float> member_values;
+        member_values.reserve(group->members.size());
+        for (const std::size_t member : group->members) {
+            const GameUnitRow* row = units.unit_row(member);
+            if (row == nullptr) throw std::logic_error("AI group has no unit row");
+            member_values.push_back(row->resource_usage_304);
+        }
+        return bsp::gameplay_seg69_70_cc13::ai_group_resource_sum_00a2c530(member_values);
+    }
     // LABELLED: the CommandBuilding's +7A0h CaptureRange (006F2780, default
     // 500 at 006F27E5). This installation's four reference CommandBuildings
     // (USN01 CB2, USN13 CB2 / CB4 / CBT) author 100; the host has no property
@@ -4770,7 +4784,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (Group* g : owned) {
             CaptureGroupRec gr;
             gr.g = g;
+            if constexpr (bsp::kWireGoal4Chain308Bound) {
+                gr.resource = group_resource(g);                           // 00A2A2C7
+            } else {
             gr.resource = kCaptureGroupResource;                           // 00A2A2C7
+            }
             gr.current = capture_current_target_00a1a7a0(g, side);         // 00A2A2D2
             gr.weight.assign(plan.targets.size(), 0.0f);
             gr.has_weight.assign(plan.targets.size(), 0);
@@ -5474,7 +5492,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 if (anchor == kCaptureNone) continue;
             }
             for (DefendRecord& r : records) {
+                if constexpr (bsp::kWireGoal4Chain308Bound) {
+                    if (r.entity == anchor) r.remaining -= group_resource(g);  // 00A2C530
+                } else {
                 if (r.entity == anchor) r.remaining -= kCaptureGroupResource;   // 00A2C530
+                }
             }
             if (!group_has_groupable_combatant(g)) {
                 defend_issue_position_00a2be20(g, side);
