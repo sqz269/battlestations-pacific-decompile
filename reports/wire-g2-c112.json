@@ -1,0 +1,248 @@
+{
+  "goal": 2,
+  "chain": 112,
+  "run": 217,
+  "harness": "codex",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "tier": 2,
+  "candidate": "segment 45 [0078d880-007a4860]",
+  "host_file": "src/cc13_camera_controllers.cpp",
+  "switch": "kWireGoal2Chain112Bound",
+  "switch_header": "include/bsp/wire_goal2_chain112_switches.hpp",
+  "switch_value": false,
+  "wired_before": 8921,
+  "wired_after": 8927,
+  "wired_delta": 6,
+  "counted_rows": ["0078e630", "00799b00", "00799fa0", "0079a040", "0079a0e0", "0079c000"],
+  "checks": {
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain112Bound",
+      "exit_code": 0,
+      "diagnostics": 0,
+      "tests_passed": "2/2 (reconstructed_math, tool_tests)",
+      "log": "local/off_switch_on_build.log",
+      "restored_off": true
+    },
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "exit_code": 0,
+      "tests_passed": "2/2 (reconstructed_math, tool_tests)",
+      "log": "local/output/wire-g2-c112-off-build.log",
+      "after_on_build": true
+    },
+    "readiness": {
+      "command": "python tools/wire_readiness.py",
+      "exit_code": 0,
+      "map": "build/win32/bsp_game.map from the final OFF build",
+      "before_snapshot": "local/output/wire-g2-c112-before.json",
+      "after_snapshot": "local/output/wire_readiness.json",
+      "all_six_ready_to_wired": true
+    },
+    "pc24_diff_lint": {
+      "command": "python tools/pc24_lint.py --staged",
+      "exit_code": 0,
+      "findings": 0,
+      "on_arm_arithmetic": "No new x87 arithmetic; only typed copies, calls, lifetime moves and integer handle translation."
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c112.json",
+      "exit_code": 0,
+      "checked": 23,
+      "failed": 0
+    }
+  },
+  "host_objects": [],
+  "host_state_reuse": [
+    {
+      "name": "existing MovieKeyframe / MovieTrack",
+      "where": "src/hud_movie_camera.cpp:43",
+      "producers": [
+        "cc13cam2::movie_keyframe_construct_00799b00 supplies every exposed default scalar/vector and the empty finish-script string",
+        "movie_camera_seed_007a0860 supplies seed-key camera/target selection and current-pose flags",
+        "MovieKeyframeInput and parse_007a0eb0 supply the authored key fields"
+      ],
+      "lifetime": "Existing track unique_ptr ownership, allocated at seed/add-position and released with its existing camera/track; no new persistent host object.",
+      "layout": "Typed adaptation from the existing MovieKeyframeInit to existing MovieKeyframe; no image-offset access through host storage. Null engine entity handle maps to kMovieNoParent.",
+      "rows": ["00799b00", "0078e630"]
+    },
+    {
+      "name": "existing KeyframeEvent",
+      "where": "src/cc13_camera_controllers.cpp:641",
+      "producers": [
+        "Lua event.type selects the existing constructor's kind argument",
+        "keyframe_event_construct supplies event defaults, including the binary's sunk depth -10",
+        "Lua event.function feeds keyframe_event_set_function_0079c000",
+        "The existing parent and Lua event.depth assignments remain unchanged"
+      ],
+      "lifetime": "Existing optional event on the key. Tick moves it to a local optional while a script may destroy the key, and restores it only if the reconstructed tick did not fire it.",
+      "rows": ["00799fa0", "0079a040", "0079a0e0", "0079c000", "0078e630"]
+    }
+  ],
+  "reach_evidence": {
+    "classification": "static; the assignment provided no surveyed mission counts for these rows",
+    "construction": "Normal Lua dispatch movie_add_row uses kMovieMoverBound=true for 008B79F0. It calls hud_movie_screen_camera_005cd240, MovieInterfaceBinding::ensure_movie_camera, build_movie_camera_005cc170, and movie_camera_seed_007a0860. It then parses the real Lua table and calls hud_movie_add_position_007a44d0 -> movie_camera_add_position_007a42c0.",
+    "events": "The same add-position path calls parse_007a0eb0 -> keyframe_event_parse_007a1f94 with the actual Lua event and parent. Both the Lua input parser and HUD parser admit events with kMovieKeyframeModifierBound=true.",
+    "tick": "HUD movie-screen update / minimap / markers -> step_mission_camera (kMissionCameraBound=true, movie_active) -> step_movie_camera -> movie_camera_key_ticks_00797ed0 with kMovieKeyframeModifierBound=true. No other OFF switch gates the six sites.",
+    "switches_verified": {
+      "kMovieMoverBound": true,
+      "kMovieKeyframeModifierBound": true,
+      "kMissionCameraBound": true
+    }
+  },
+  "abi_evidence": {
+    "00799b00": "ECX is the newly allocated key at 007A43AB, CALL at 007A43AD; constructor consumes no stack arguments (RET at 00799C91). Also wired the two seed allocations and target allocation, covering all reachable host construction sites.",
+    "00799fa0": "007A2119 MOV ECX,EAX (allocated event), CALL 007A211B; constructor RET at 00799FCA.",
+    "0079a040": "CALL 007A21A1 selects killed event, same ECX allocation contract; constructor RET at 0079A06A.",
+    "0079a0e0": "CALL 007A222B selects sunk event, same ECX allocation contract; constructor RET at 0079A117.",
+    "0079c000": "All four sites in 007A0EB0 were enumerated (007A20EF/2175/21FB/2285). 007A2172 PUSH EDX points at the parsed function NativeString; 007A2173 MOV ECX,ESI selects the constructed event. Callee RET 4 at 0079C033, internal memcpy ADD ESP,0Ch at 0079C02E.",
+    "0078e630": "00797F28 MOV ECX,[ESI+8] selects the actual track key, float dt pushed via FSTP [ESP] at 00797F2B, CALL at 00797F2E; callee RET 4 at 0078E6A0. Existing modifier slot +14h is a no-op in the supported modifier tables. The existing semantic tick owns state/dt/event eligibility, check/fire and deletion. Local optional only protects the host's reentrant script lifetime."
+  },
+  "rows": [
+    {
+      "native": "0078e230", "address": "005cc72b", "function": "005cc700",
+      "host_site": "src/frontend_seg19_21_cc13.cpp:vehicle_camera_array_construct_005cc700",
+      "status": "skipped", "reach": "static",
+      "reason": "No current host owns the native vehicle-camera array and its borrowed default-cell producer. Existing native resize already calls this initializer, so counting that call would duplicate OFF logic on a path with no host root."
+    },
+    {
+      "native": "0078e480", "address": "008b66db", "function": "008b65c0",
+      "host_site": "src/game_hosts_hud.cpp:MovieInterfaceBinding::ensure_movie_camera",
+      "status": "skipped", "reach": "static",
+      "reason": "Host constructs MovCamNew, not old MovCam. Missing old camera zoom +460/+4F4 and global base-FOV producer; no old MovCam Lua/update host path."
+    },
+    {
+      "native": "0078e630", "address": "00797f2e", "function": "00797ed0",
+      "host_site": "src/hud_movie_camera.cpp:839 movie_camera_key_ticks_00797ed0",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing semantic tick over the actual key state, dt, optional event and KeyframeEventBinding; supported modifier tick is a no-op."
+    },
+    {
+      "native": "0078fcc0", "address": "0079571b", "function": "00795650",
+      "host_site": "src/game_hosts_hud.cpp:MovieParentBinding::plane_velocity_810",
+      "status": "skipped", "reach": "static",
+      "reason": "Raw getter copies native plane +810..+818 only. Host supplies a semantic velocity vector, with no native plane image. A fabricated typed image would just hand that host vector back, which does not count."
+    },
+    {
+      "native": "007904d0", "address": "0079c424", "function": "0079c200",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_frame_0079c200",
+      "status": "skipped", "reach": "static",
+      "reason": "Old MovCam frame has no current host root or MovCamAngles state producer; current HUD mover is MovCamNew/ShipCaptain."
+    },
+    {
+      "native": "007906e0", "address": "007a0314", "function": "007a01f0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_debug_draw_vehicle_cameras_007a01f0",
+      "status": "skipped", "reach": "static",
+      "reason": "Only caller is old MovCam's vehicle-camera debug overlay. No host dispatch reaches it or produces its camera array/sector draw state."
+    },
+    {
+      "native": "00794910", "address": "007951f8", "function": "00795180",
+      "host_site": "src/cc13_camera_controllers.cpp:movcam_follow_00795180",
+      "status": "skipped", "reach": "static",
+      "reason": "No active old MovCam/follow object supplies +4D0 limits, +4B4/+4B8 aim state and +460 zoom. Wiring the unimplemented camera host method would remain unreachable."
+    },
+    {
+      "native": "00795180", "address": "0079c3c6", "function": "0079c200",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_frame_0079c200",
+      "status": "skipped", "reach": "static",
+      "reason": "Missing old MovCam frame/follow state and target/limit producers; no host path constructs or steps that camera."
+    },
+    {
+      "native": "00796bd0", "address": "008469e2", "function": "00846970",
+      "host_site": "src/cc13_seg52b.cpp:entity_observer_copy_construct_base_00796bd0 callback",
+      "status": "skipped", "reach": "static",
+      "reason": "Copy needs a stable observer object, source observer and real register-pair owner. No small reachable host copy path supplies that observer graph; no-op registration would discard the body's effect."
+    },
+    {
+      "native": "007972f0", "address": "007a5632", "function": "007a5110",
+      "host_site": "src/cc13_bigB1.cpp:camera_position_update_path_007972f0 callback",
+      "status": "skipped", "reach": "static",
+      "reason": "Missing old MovCam path +474/+47C, record/anchor producers and update root. MovCamNew tracks are a different object and cannot supply this graph."
+    },
+    {
+      "native": "007995f0", "address": "007a212c", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:keyframe_event_parse_007a1f94",
+      "status": "skipped", "reach": "static",
+      "reason": "Existing semantic event is moved into optional storage and has no stable observer-registration owner/notification producer. A no-op ObserverHost would omit actual register/unregister logic."
+    },
+    {
+      "native": "00799620", "address": "007a21b2", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:keyframe_event_parse_007a1f94",
+      "status": "skipped", "reach": "static",
+      "reason": "Same missing stable event observer and native registration/notification lifetime as 007995F0; polling killed state is not that registry."
+    },
+    {
+      "native": "00799650", "address": "007a223c", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:keyframe_event_parse_007a1f94",
+      "status": "skipped", "reach": "static",
+      "reason": "Same missing stable event observer and native registration/notification lifetime as 007995F0; polling sunk state is not that registry."
+    },
+    {
+      "native": "007996c0", "address": "007a011c", "function": "0079f9e0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_edit_vehicle_camera_window_0079f9e0",
+      "status": "skipped", "reach": "static",
+      "reason": "Only caller is old MovCam's camera-window editor dump. No host path runs the editor or supplies the generated dump string and sized-pool ownership."
+    },
+    {
+      "native": "00799750", "address": "0079c7d1", "function": "0079c200",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_frame_0079c200",
+      "status": "skipped", "reach": "static",
+      "reason": "No old MovCam host frame, +394 position/+3C4 angles or scene-node subtree invalidation owner. The current movie pose is MovCamNew, not this object."
+    },
+    {
+      "native": "00799b00", "address": "007a43ad", "function": "007a42c0",
+      "host_site": "src/hud_movie_camera.cpp:698 movie_camera_add_position_007a42c0 (also seed and target allocations)",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing reconstructed constructor supplies all fields exposed by existing MovieKeyframe; original allocation/parse/track lifetime is retained."
+    },
+    {
+      "native": "00799de0", "address": "007a1ba1", "function": "007a0eb0",
+      "host_site": "src/hud_movie_camera.cpp:parse_007a0eb0 modifier assignment",
+      "status": "skipped", "reach": "static",
+      "reason": "Raw body requires a native +E4 modifier pointer, deleting vtable, SetOwner and type-3 gamecamera/tuning state. Host owns shared_ptr<GoAroundModifier>, not that raw key/virtual ownership graph; no safe small typed overload with the full contract here."
+    },
+    {
+      "native": "00799fa0", "address": "007a211b", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:644 keyframe_event_parse_007a1f94",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing shared constructor called with NoEntity only on the real Lua noentity arm; its result becomes the key's event."
+    },
+    {
+      "native": "0079a040", "address": "007a21a1", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:645 keyframe_event_parse_007a1f94",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing shared constructor called with Killed only on the real Lua killed arm; its result becomes the key's event."
+    },
+    {
+      "native": "0079a0e0", "address": "007a222b", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:646 keyframe_event_parse_007a1f94",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing shared constructor called with Sunk only on the real Lua sunk arm; subsequent depth parser remains unchanged."
+    },
+    {
+      "native": "0079c000", "address": "007a2175", "function": "007a0eb0",
+      "host_site": "src/cc13_camera_controllers.cpp:658 keyframe_event_parse_007a1f94",
+      "status": "wired", "reach": "static",
+      "coverage": "Existing setter replaces assignment of the actual Lua function string into the constructed event for all event kinds."
+    },
+    {
+      "native": "007a06d0", "address": "007a1b41", "function": "007a0eb0",
+      "host_site": "src/hud_movie_camera.cpp:parse_007a0eb0 gamecamera unsupported arm",
+      "status": "skipped", "reach": "static",
+      "reason": "Constructing the modifier alone would be unused. Host lacks its ModifierKeyframe owner, gamecamera/FPS factory/update integration and linked-key matrix producer required to consume the object."
+    },
+    {
+      "native": "007a2cd0", "address": "007a43e2", "function": "007a42c0",
+      "host_site": "src/hud_movie_camera.cpp:movie_camera_add_position_007a42c0",
+      "status": "skipped", "reach": "static",
+      "reason": "MovieKeyHost needs the native ID/partner pairing graph and actual session/broadcast owner. Existing host only appends semantic keys; constant no-session or no-op pairing would drop the body's effects. Building that graph exceeds this bounded row batch."
+    }
+  ],
+  "on_behavior": "Use reconstructed keyframe defaults at all existing seed/add allocations, reconstructed noentity/killed/sunk constructors and function-name setter in the Lua event parser, and the reconstructed tick for event eligibility/check/fire/deletion. OFF retains each prior host block. No game was run; compilation/static host reach are not runtime or raw ABI proof.",
+  "notes": [
+    "No reconstructed body was replaced or corrected; only callers were wired, using existing typed interfaces.",
+    "No new address-suffixed function or ledger row was introduced.",
+    "An exploratory whole-file PC24 scan reported 18 pre-existing findings outside this diff; the required staged diff check reports zero. Those unrelated bodies were left unchanged.",
+    "The six counted rows are exact ready-to-wired transitions against the final OFF map; no additional readiness transitions are claimed."
+  ]
+}
