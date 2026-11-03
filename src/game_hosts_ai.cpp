@@ -52,6 +52,7 @@
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain304_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
 
 namespace bsp::game {
@@ -1363,6 +1364,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // Labelled substitution for 007F4580's per-wing loop.
     struct Squadron {
         bsp::PlaneSquadronEntity entity;
+        AiSquadronResourceOwner resource_owner;
         std::vector<std::size_t> member_units;  // unit indices in +3D0h order
         // Built from a registry record, so 007F3970's leave at death (packet
         // cc9_val_squadron_registry) shrinks the live +3D0h array under it.
@@ -4375,14 +4377,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     static constexpr float kCaptureGroupResource = 0.0f;
     float group_resource(const Group* group) const {
         // 00A2C531..00A2C585 visits the actual +563Ch member list in order.
-        // The owning unit rows retain 0077E864's value; membership already
-        // names live allocated slots, including any not yet evicted this tick.
+        // Ordinary candidates name unit rows. Logical squadron candidates
+        // instead use their stable creation row, captured when seeded below;
+        // proxy()/lead_member() are geometric links and can change on promotion.
         std::vector<float> member_values;
         member_values.reserve(group->members.size());
         for (const std::size_t member : group->members) {
-            const GameUnitRow* row = units.unit_row(member);
-            if (row == nullptr) throw std::logic_error("AI group has no unit row");
-            member_values.push_back(row->resource_usage_304);
+            const Squadron* squadron = squadron_of(member);
+            member_values.push_back(ai_candidate_resource_usage(member, units.count(),
+                squadron != nullptr ? &squadron->resource_owner : nullptr,
+                [this](std::size_t owner) { return units.unit_row(owner); }));
         }
         return bsp::gameplay_seg69_70_cc13::ai_group_resource_sum_00a2c530(member_values);
     }
@@ -6809,6 +6813,13 @@ void GameAiCoordinatorHost::Impl::seed_squadron_for_unit(std::size_t unit) {
     // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
     if (wing_units.front() != unit) return;
     Squadron s;
+    if constexpr (bsp::kWireGoal4Chain308Bound) {
+        // The canonical squadron's original fused creation slot survives
+        // 007ED610 promotion / 007F3970 member removal. Do not use wing_units[0]
+        // or proxy() here: a squadron can first be seeded after promotion too.
+        // An unregistered singleton squadron owns its one plane's creation row.
+        s.resource_owner.creation_unit = owner != nullptr ? owner->squadron_unit : unit;
+    }
     // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
     // the registry carries when there is one; the absent-key arm 007F4735,
     // which defaults to 3, is only right for a plane in no squadron.

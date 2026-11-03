@@ -9,7 +9,7 @@
       "native": "00a2c530",
       "status": "wired",
       "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::group_resource, used by capture_plan_00a29fd0 and defend_think_00a28a60",
-      "inputs": "Actual group.members order and each member's retained ResourceUsage at unit+304h. Scene/Hidden/GenerateObject records carry the merged creation bag's F/I/E numeric value, or 0077E849's absent-key FLDZ. ShipUseCatapult carries the existing 006ECA3F launched-class Cost-derived value through DummyKamikazeSpawn and the squadron creator.",
+      "inputs": "Actual group.members order and each candidate's owning ResourceUsage at unit+304h. Ordinary candidates use their unit row directly. Logical squadrons use a stable creation-row ID captured from canonical squadron_unit at seeding; flight-leader promotion never reseats it. Scene/Hidden/GenerateObject records carry the merged creation bag's F/I/E numeric value, or 0077E849's absent-key FLDZ. ShipUseCatapult carries the existing 006ECA3F launched-class Cost-derived value through DummyKamikazeSpawn and the squadron creator.",
       "output": "The whole existing reconstructed sum replaces kCaptureGroupResource in CaptureGroupRec.resource and the defend anchor's remaining-demand subtraction. The old assignments remain in the switch OFF arms.",
       "evidence": "bsp.py show 00a2c530 pseudocode and assembly: member+304h FLD at 00A2C570, FADD at 00A2C576, FSTP float at 00A2C57A. bsp.py show 0077e830 and 0048f5d0 establish creation-bag provenance and numeric/default rules. Existing catapult_spawn_properties_006ec8e0 supplies the catapult value.",
       "abi": "Existing source vector<float> interface; no original thiscall/class ABI claim.",
@@ -157,6 +157,21 @@
     "pc24_lint.py --diff origin/main...HEAD: passed with zero findings on the committed code diff.",
     "No new address-suffixed body or duplicate implementation; existing 00A2C530 now explicitly rounds each x87 addition to PC24."
   ],
+  "review_round_1": {
+    "review_run": 593,
+    "finding": "P1 src/game_hosts_ai.cpp:4383: logical squadron candidates are beyond units.count() and cannot be resolved by direct unit_row(candidate).",
+    "status": "fixed",
+    "change": "AI Squadron retains an AiSquadronResourceOwner holding canonical squadron_unit, the stable owning creation slot. group_resource uses the shared ai_candidate_resource_usage resolver: ordinary unit candidates retain direct row lookup; logical candidates resolve through their retained squadron owner. The owner is copied as an index rather than a pointer, survives row/squadron-vector growth, and is independent of proxy()/lead_member(). Registry-free singleton squadrons retain their original seed row.",
+    "ownership_evidence": "game_hosts_script_orders.cpp sets canonical squadron_unit at creation (air-ops, catapult/kamikaze and GenerateObject) or once during initial member resolution while unset. Promotion and member removal change the member arrays, not squadron_unit. seed_squadron_for_unit therefore captures the creation row even if first seeded after a promotion.",
+    "focused_regression": "One fixture in tests/math_tests.cpp exercises the production resolver with an ordinary unit (7.5), a logical squadron (creation ResourceUsage 37.5), and a wing priced 900. It verifies the group inputs total 45 without throwing, changes the canonical two-member array to the post-007ED610 order with the differently priced wing in slot zero, then verifies identical resource inputs afterward. This tests the owning-state boundary rather than promotion/reindex transport, whose game-only providers are outside this fixture target.",
+    "checks": [
+      "scripts/build.ps1 passed: Win32 Release and both CTest suites, including the new focused regression.",
+      "call_graph.py and who/path 00a2c530 passed: the same whole reconstructed sum remains entry-reachable at two sites from capture and defend; recon_called remains 4305.",
+      "pc24_lint.py --diff origin/main...HEAD passed with zero findings after the fix commit.",
+      "git diff --check passed."
+    ],
+    "scope": "Source/build/fixture/call-graph validation; no game run or original class ABI claim. The chain308 OFF arms remain unchanged."
+  },
   "remaining": [
     "The separate party-wide available-resource budget still uses kCaptureAvailableResources and omits the per-unit subtraction; queued spawn-request accounting remains a labeled stand-in.",
     "ResourceUsage storage admits retained F/I and resolvable E values. Unsupported/implicit-context property storage raises an explicit source boundary instead of inventing a payload.",
