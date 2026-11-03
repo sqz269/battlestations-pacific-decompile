@@ -84,6 +84,14 @@ void plane_clear_turbo_007b8a90(void*);
 bool director_allows_category_008364b0(int) noexcept;
 bool ship_director_allows_category_00836790(int) noexcept;
 float gun_class_value_for_target_00836eb0(const void*, void*, Host&);
+// Typed view of 00836EB0's receiver: the two floats it chooses between, block
+// +764h (target answers kind 08h, MSubmarine) and +768h (any other target).
+struct GunClassTargetValues {
+    float value_764;
+    float value_768;
+};
+float gun_class_value_for_target_00836eb0(const GunClassTargetValues& values,
+                                          bool target_is_kind_8) noexcept;
 void* ship_tuning_block_00837de0(void* settings, const void* game);
 void reset_stationary_class_table_0084eb60(Host&);
 void movie_camera_track_set_time_00797da0(void* track, float time, Host&);

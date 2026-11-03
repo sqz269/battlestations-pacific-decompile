@@ -11,6 +11,8 @@
 
 namespace bsp {
 
+struct GunBotTargetValidity;   // gun_bot_ticks.hpp
+
 class Seg59BotHost {
 public:
     virtual ~Seg59BotHost() = default;
@@ -40,5 +42,9 @@ void seg59_depth_charge_bot_attach_008fc060(void* bot, void* node, Seg59BotHost&
 // EDX = target), RET, AL. Body 008FB890..008FB8C9. Sole caller 006DF541 (the artillery
 // gunner tick 006DF520), whose host form is gun_bot_target_still_valid_008ffa20.
 bool seg59_entity_is_live_other_party_008fb890(void* gun, void* target, Seg59BotHost& host);
+// Typed body of 008FB890 over gun_bot_ticks.hpp's view of the same six reads:
+// target present, target+5Dh clear, gun present, [gun+3Ch] present, its +5Dh
+// clear, and 00803510(gun+54h, target+54h) non-zero (sides_related).
+bool seg59_entity_is_live_other_party_008fb890(const GunBotTargetValidity& v) noexcept;
 
 }  // namespace bsp

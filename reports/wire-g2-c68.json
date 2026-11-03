@@ -1,0 +1,301 @@
+{
+  "chain": 68,
+  "slot": "g2-w2",
+  "host_file": "src/game_hosts_gunnery.cpp",
+  "switch": "kWireGoal2Chain68Bound",
+  "switch_header": "include/bsp/wire_goal2_chain68_switches.hpp",
+  "files_changed": [
+    "src/game_hosts_gunnery.cpp",
+    "include/bsp/wire_goal2_chain68_switches.hpp",
+    "src/director_geommesh_seg38_39_argon.cpp",
+    "include/bsp/director_geommesh_seg38_39_argon.hpp",
+    "src/leftovers_cc13.cpp",
+    "include/bsp/oct18_tail_b.hpp",
+    "src/sim_damage_seg54_argon.cpp",
+    "include/bsp/sim_damage_seg54_argon.hpp",
+    "src/seg59_bots_s53.cpp",
+    "include/bsp/seg59_bots_s53.hpp"
+  ],
+  "build": "./scripts/build.ps1 exit 0, ctest 2/2 passed (OFF)",
+  "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain68Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings (10 files)",
+  "wired_total_before": 8822,
+  "wired_total_after": 8827,
+  "host_objects": [],
+  "pair": {
+    "mission": "USN04",
+    "frames": "3200 (mission 3000 at 0.05 s)",
+    "off_exe": "build/win32/Release/bsp_game.exe at b6d2cac12 (switch OFF)",
+    "on_exe": "local/g2-w2-on (pair_export --commit HEAD --flip kWireGoal2Chain68Bound=true), SHA-256 8A316D17F3B3",
+    "exits": "both 0",
+    "pair_diff": "VERDICT: DIFFERENT, gameplay identical (exit 1). GAMEPLAY identical (deaths 28/28, hit records 380/380, hull hits 276/276, damage 6366.6/6366.6, shots 5509/5509, units 81/81); DEATH ROWS identical; PLANE DEATH MODES identical (25); UNIT TABLE identical (81); SUMMARY LINES identical (867). NATIVE TABLE 1624 -> 1626: + Geometry::element_root_box_centre_00723030 concrete calls=24, + GunBot::entity_is_live_other_party_008fb890 concrete calls=10213; host methods concrete 1144 -> 1146. OTHER LINES 231/231 are the atlas source lines whose append_slot is a heap address printed in decimal (not masked); the previous pair in this slot (chain 57 logs) shows the same 232/232.",
+    "not_reached": "00836EB0 (torpedo_sets=0: no torpedo fired in the run), 008782A0 and 0093A9E0 (component-failure rolls=0: element_hits=0 in USN04)"
+  },
+  "flip_proposal": "Flip kWireGoal2Chain68Bound to true. USN04 pair: gameplay, unit table, death rows and summary lines identical; 00723030 (24 section points, bit-identical by construction) and 008FB890 (10213 artillery-bot validity tests, the drop differing from OFF only for a dead owner) ran. 00836EB0 is value-identical to OFF by construction; 008782A0 and 0093A9E0 run only on component-failure rolls (none in USN04), where 0093A9E0 matches failure names case-insensitively as the image's 0093A8B0 does (OFF: exact).",
+  "rows": [
+    {
+      "native": "00723030",
+      "address": "0082059a",
+      "function": "0081f980",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::ship_model_slots (section points, 0081F980 slots)",
+      "status": "wired",
+      "identifier": "bsp_geom_mesh_element_root_box_centre_00723030",
+      "note": "Typed overload over GeomMeshElementBoxView {+20h min, +24h max, +28h count}; the Raw entry wraps it. ON: each engine/magazine/fuel section point is the body's root-box centre over the host's element box (its triangle AABB, the one box it keeps), half = the image's 0.5 at 00D7A280, zero vector 00F87574. OFF: inline (lo + hi) * 0.5f. Float sum then exact *0.5: bit-identical.",
+      "reached": 24
+    },
+    {
+      "native": "00836eb0",
+      "address": "0072fb9b",
+      "function": "0072f830",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl gun fire (kUnitFireCooldownBound torpedo cooldown)",
+      "status": "wired",
+      "identifier": "gun_class_value_for_target_00836eb0",
+      "note": "Typed overload over GunClassTargetValues {+764h, +768h} and the receiver's kind-08h answer; the Raw entry wraps it. 0072FB9B passes ECX = 00424C40's block and [gun+3F0h], the owner. ON: state.torpedo_cooldown_6fc from the body over the host's sub/ship delays and unit_is_kind_of(owner, 8). OFF: the inline ternary.",
+      "reached": 0,
+      "reach": "static: no disabled gate on the path; not reached in the 3000-frame USN04 pair"
+    },
+    {
+      "native": "008782a0",
+      "address": "0093bf1b",
+      "function": "0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::resolve_component (0093BED0's section lookup)",
+      "status": "wired",
+      "identifier": "unit_tickable_entity_find_damage_section_008782a0",
+      "note": "Typed template over any section range with +4h/+8h key accessors; the Raw entry keeps the image's reachable debug-iterator checks and calls it. Contract union of 008198A0 / 0093AA90 / 0093BED0: (entity, kind, index). ON: the body's search over damage_control[unit].sections. OFF: the inline loop.",
+      "reached": 0,
+      "reach": "static: no disabled gate on the path; not reached in the 3000-frame USN04 pair"
+    },
+    {
+      "native": "0093a9e0",
+      "address": "0093c02e",
+      "function": "0093bed0",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::failure_already_active",
+      "status": "wired",
+      "identifier": "named_row_find_iterator_0093a9e0",
+      "note": "Adapter FailureRowsImage lays task.failures out as the image's 10h rows (+0 id, +4 length, +8 chars, +0Ch seconds, the offsets unit_fire_flooding.hpp records); the raw body runs over them unchanged, with the key {length, chars}. Case-insensitive length-first match as in 0093A8B0 (OFF: exact match). The same host method serves 0093C300, which calls 0093A8B0 directly at 0093C43D: same search.",
+      "reached": 0,
+      "reach": "static: no disabled gate on the path; not reached in the 3000-frame USN04 pair"
+    },
+    {
+      "native": "008fb890",
+      "address": "006df541",
+      "function": "006df520",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_gun_aim_and_fire (target-validity drop, ArtilleryGunnerBot guns)",
+      "status": "wired",
+      "identifier": "seg59_entity_is_live_other_party_008fb890",
+      "note": "Typed overload over gun_bot_ticks.hpp's GunBotTargetValidity; the Raw entry fills it in the image's read order. ON (inside kGunBotNotAllyDropCc13Bound, true): for guns artillery_bot_aims() selects, drop = !body(target+5Dh = unit_state.dead, parent = owner and its dead flag, 00803510 = same_party's answer) || !unit_alive_and_visible. OFF: host_drop || same_party. Other bots keep their inline copies.",
+      "reached": 10213
+    },
+    {
+      "native": "0042e630",
+      "host_site": "src/game_hosts_gunnery.cpp blast grid (chain 27 comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the spatial index world singleton and its publication pair (0042E630) do not exist in this host; the blast grid is a host-shaped stand-in (BlastGridCells), so a typed view would have no image fields to read. Building the singleton exceeds this chain.",
+      "reached": 0
+    },
+    {
+      "native": "004704e0",
+      "host_site": "src/game_hosts_gunnery.cpp apply_hit owner modifier (comment)",
+      "status": "skipped",
+      "reason": "No host site: 004704E0 reads [record+4h]->vtable[108h]()+ACh over an image hit record; the host names the shooter directly and keeps no hit record, so a view would hand back the host's own shooter.",
+      "reached": 0
+    },
+    {
+      "native": "004e6480",
+      "host_site": "src/game_hosts_gunnery.cpp BlastGridNode creation (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the body seeds image collision-node fields (+4h, +154h from globals); the host's BlastGridNode is its own shape with no image node storage.",
+      "reached": 0
+    },
+    {
+      "native": "005471b0",
+      "host_site": "src/game_hosts_gunnery.cpp 0085AD00 grow arm (comment)",
+      "status": "skipped",
+      "reason": "No host effect: the host's platform rows are complete from the class read, so 0085AD00's grow arm is labelled not modelled; no site calls a resize.",
+      "reached": 0
+    },
+    {
+      "native": "006e2e10",
+      "host_site": "src/game_hosts_gunnery.cpp depth charge activate (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the base activate works on the image projectile record and its effect owners, which the host's shot rows do not carry.",
+      "reached": 0
+    },
+    {
+      "native": "006e6450",
+      "host_site": "src/game_hosts_gunnery.cpp depth charge water entry",
+      "status": "skipped",
+      "reason": "Constants only: the host already sets shot.depth_charge_in_water; the body's remaining logic stops the +28h/+24h effect handles, which the host does not keep, so the view would pass null effects.",
+      "reached": 0
+    },
+    {
+      "native": "00710b80",
+      "host_site": "src/game_hosts_gunnery.cpp hit index detach (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the detach swap-removes from the unit's image spatial child array; the host models it as a flag (GameUnitsHost::unit_hit_node_detached).",
+      "reached": 0
+    },
+    {
+      "native": "00712440",
+      "host_site": "src/game_hosts_gunnery.cpp device/plane mesh (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the body builds image unit-part collision shapes through NativeUnitPartCollision globals/callbacks; the host builds its DeviceHitMesh from MMOD bytes in its own shape.",
+      "reached": 0
+    },
+    {
+      "native": "0071ad50",
+      "host_site": "src/game_hosts_gunnery.cpp device fire-point read node_with_note",
+      "status": "skipped",
+      "reason": "Deferred: the search is 0071AAE0 over the model's +7Ch vector of native-string notes; a typed 0071AD50 needs a typed 0071AAE0 as well, more than this chain's per-row budget.",
+      "reached": 0
+    },
+    {
+      "native": "00729f70",
+      "host_site": "src/game_hosts_gunnery.cpp player seat release lambda / 00959D8E",
+      "status": "skipped",
+      "reason": "No body logic to replace: 00729F70 only sequences vtable[154h](0,8), vtable[1E8h](0) and 00728000; every effect would stay host code behind an adapter (Cc13Front3Host has 60 methods).",
+      "reached": 0
+    },
+    {
+      "native": "0072bd50",
+      "host_site": "src/game_hosts_gunnery.cpp bot_clear_release_008ff2b0",
+      "status": "skipped",
+      "reason": "Host object missing: the body unregisters the bot+38h target record's observer pair and resets its image fields; the host keeps the target as gun.target_unit/target_name with no record or observer list.",
+      "reached": 0
+    },
+    {
+      "native": "007b96c0",
+      "host_site": "src/game_hosts_gunnery.cpp hit index detach (comment)",
+      "status": "skipped",
+      "reason": "Not this host: the hangar hide is the units host's; gunnery only mentions it.",
+      "reached": 0
+    },
+    {
+      "native": "007f1ca0",
+      "host_site": "src/game_hosts_gunnery.cpp plane kill seat note (comment)",
+      "status": "skipped",
+      "reason": "Not this host: the stock return is the squadron/units host's path; gunnery only mentions it.",
+      "reached": 0
+    },
+    {
+      "native": "007f7110",
+      "host_site": "src/game_hosts_gunnery.cpp store_non_turning_slot_basis",
+      "status": "skipped",
+      "reason": "Host object missing: the constructor builds an image gun platform (vptrs, +4Ch identity frame, windows); the host keeps an identity basis default, so a view would pass constants.",
+      "reached": 0
+    },
+    {
+      "native": "00804e70",
+      "host_site": "src/game_hosts_gunnery.cpp recon triples step 5",
+      "status": "skipped",
+      "reason": "Hands back host values: the constructor fills the image 1Ch recon entry (vtable, member list, unit+1E4h sensor class); the host's Rec {unit, level} would be copied straight back.",
+      "reached": 0
+    },
+    {
+      "native": "00805430",
+      "host_site": "src/game_hosts_gunnery.cpp recon groups (comment)",
+      "status": "skipped",
+      "reason": "No host site: the host rebuilds its recon triples every pass and keeps no carry-over lists to retire.",
+      "reached": 0
+    },
+    {
+      "native": "00809c50",
+      "host_site": "src/game_hosts_gunnery.cpp torpedo supply tick in.area",
+      "status": "skipped",
+      "reason": "Host object missing: no repair-zone area registry (00F874F0) in this host; area stays 0. Needs the registry built from the scene's repair zones.",
+      "reached": 0
+    },
+    {
+      "native": "0080ff30",
+      "host_site": "src/game_hosts_gunnery.cpp kamikaze detonate route",
+      "status": "skipped",
+      "reason": "Hands back host values: the constructor copies the payload into an image message 70h; the host routes the payload directly, there is no message object.",
+      "reached": 0
+    },
+    {
+      "native": "0080ff80",
+      "host_site": "src/game_hosts_gunnery.cpp route_hull_impact_effect",
+      "status": "skipped",
+      "reason": "Hands back host values: the constructor copies count/point into image message 90h; the host calls add_leak_0074f440 directly with them.",
+      "reached": 0
+    },
+    {
+      "native": "0080ffd0",
+      "host_site": "src/game_hosts_gunnery.cpp hull torque post",
+      "status": "skipped",
+      "reason": "Hands back host values: the constructor copies the torque into image message 93h; the host posts the payload itself.",
+      "reached": 0
+    },
+    {
+      "native": "008363e0",
+      "host_site": "src/game_hosts_gunnery.cpp apply_director_stance_008624c0",
+      "status": "skipped",
+      "reason": "Producer missing: for class 0Bh/9 owners 008363E0 leaves +3Ch/+3Dh at what 00720180 stored, which this host does not produce; its stance defaults are DirectorGunneryStance's.",
+      "reached": 0
+    },
+    {
+      "native": "0084c500",
+      "host_site": "src/game_hosts_gunnery.cpp player seat hand-over record()",
+      "status": "skipped",
+      "reason": "Callee missing: the body's only effect is 0072D5B0(gun; 1, flag), the fire-mode select, which this host does not model (the site is a record() stub).",
+      "reached": 0
+    },
+    {
+      "native": "0085ab50",
+      "host_site": "src/game_hosts_gunnery.cpp torpedo heading snap / player group 4",
+      "status": "skipped",
+      "reason": "Forwarder only: the host already calls gun_snap_heading_to_fire_window_007f6190 over gun.arcs; 0085AB50 adds only the platform-slot lookup, so the ON arm would hand the same call back.",
+      "reached": 0
+    },
+    {
+      "native": "008fe9f0",
+      "host_site": "src/game_hosts_gunnery.cpp tail gunner armour switch (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the TailGunnerBot constructor builds an image bot (vtable 00D18140); the host has no bot objects.",
+      "reached": 0
+    },
+    {
+      "native": "008ff260",
+      "host_site": "src/game_hosts_gunnery.cpp torpedo bot think timer (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the TorpedoBot constructor builds an image bot; the host keeps per-gun think state without bot objects.",
+      "reached": 0
+    },
+    {
+      "native": "00914100",
+      "host_site": "src/game_hosts_gunnery.cpp FailureBinding::repair_completed_notify",
+      "status": "skipped",
+      "reason": "Unreached and object missing: the binding stub is unreached(\"00914100\") and the body needs the mission scoring object, which the host lacks.",
+      "reached": 0
+    },
+    {
+      "native": "00922e90",
+      "host_site": "src/game_hosts_gunnery.cpp bullet throw seat / 0072C6A0 slots",
+      "status": "skipped",
+      "reason": "No live consumer: 00922E90's only gunnery use is 0072C6A0's owner_of_kind_0f, and the host discards that call's result ((void)slots); the bullet-throw seat reads the owner kind, not 00922E90.",
+      "reached": 0
+    },
+    {
+      "native": "00924f90",
+      "host_site": "src/game_hosts_gunnery.cpp device children rebuild (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the body links image entity parents; the host keeps device_children as index vectors.",
+      "reached": 0
+    },
+    {
+      "native": "0098a500",
+      "host_site": "src/game_hosts_gunnery.cpp hit index detach (comment)",
+      "status": "skipped",
+      "reason": "Host object missing: the detach works on image spatial nodes; the host models it as a flag.",
+      "reached": 0
+    },
+    {
+      "native": "00c35480",
+      "host_site": "src/game_hosts_gunnery.cpp hull contact report census",
+      "status": "skipped",
+      "reason": "Host object missing: the body walks the image Dyn scene's contact event queue; the host builds its events from its own world step.",
+      "reached": 0
+    }
+  ],
+  "head_before_report": "b6d2cac12"
+}

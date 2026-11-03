@@ -668,6 +668,13 @@ void unit_tickable_entity_set_scene_nodes_visible_008781f0(
 }
 
 // 0x008782a0 — BSP_UnitTickableEntity_FindDamageSection
+// Raw entry over the image's +344h vector of section pointers (begin +348h,
+// end +34Ch). The image's debug-iterator checks (00BF6713) that can fire run
+// here in its order: begin > end before the loop, then the loop-top begin > end
+// and vector-object null tests. The checks it repeats inside the loop test
+// cur against the same unchanged end and cannot fire once those pass; the
+// search itself is the typed body in the header, over the element's +4h and
+// +8h keys. Returns the matching slot, or null at the end.
 void** unit_tickable_entity_find_damage_section_008782a0(
   Seg54Host& host,
   void* this_ptr,
@@ -676,48 +683,21 @@ void** unit_tickable_entity_find_damage_section_008782a0(
 ) {
   Raw self{static_cast<std::uint8_t*>(this_ptr)};
   std::uint8_t* vec_obj = self.p + 0x344;
-  void** cur = static_cast<void**>(self.ptr(0x348));
-  if (cur > static_cast<void**>(self.ptr(0x34c))) {
+  void** const first = static_cast<void**>(self.ptr(0x348));
+  void** const last = static_cast<void**>(self.ptr(0x34c));
+  if (first > last) {
     host.invalid_parameter_noinfo_00bf6713();
   }
-
-  for (;;) {
-    void** end_ptr = static_cast<void**>(self.ptr(0x34c));
-    if (static_cast<void**>(self.ptr(0x348)) > end_ptr) {
-      host.invalid_parameter_noinfo_00bf6713();
-    }
-    if (vec_obj == nullptr) {
-      host.invalid_parameter_noinfo_00bf6713();
-    }
-    if (cur == end_ptr) {
-      return nullptr;
-    }
-    if (vec_obj == nullptr) {
-      host.invalid_parameter_noinfo_00bf6713();
-    }
-    if (cur >= static_cast<void**>(self.ptr(0x34c))) {
-      host.invalid_parameter_noinfo_00bf6713();
-    }
-
-    void* elem = *cur;
-    if (Raw{static_cast<std::uint8_t*>(elem)}.at<std::int32_t>(0x04) == key_a) {
-      if (cur >= static_cast<void**>(self.ptr(0x34c))) {
-        host.invalid_parameter_noinfo_00bf6713();
-      }
-      void* elem2 = *cur;
-      if (Raw{static_cast<std::uint8_t*>(elem2)}.at<std::int32_t>(0x08) == key_b) {
-        if (cur >= static_cast<void**>(self.ptr(0x34c))) {
-          host.invalid_parameter_noinfo_00bf6713();
-        }
-        return cur;
-      }
-    }
-
-    if (cur >= static_cast<void**>(self.ptr(0x34c))) {
-      host.invalid_parameter_noinfo_00bf6713();
-    }
-    ++cur;
+  if (first > last) {
+    host.invalid_parameter_noinfo_00bf6713();
   }
+  if (vec_obj == nullptr) {
+    host.invalid_parameter_noinfo_00bf6713();
+  }
+  void** const found = unit_tickable_entity_find_damage_section_008782a0(
+      first, last, key_a, key_b,
+      [](void* elem) { return Raw{static_cast<std::uint8_t*>(elem)}.at<std::int32_t>(0x04); },
+      [](void* elem) { return Raw{static_cast<std::uint8_t*>(elem)}.at<std::int32_t>(0x08); });
+  return found == last ? nullptr : found;
 }
-
 }  // namespace bsp::sim_damage_seg54_argon
