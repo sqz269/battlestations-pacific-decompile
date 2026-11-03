@@ -1383,13 +1383,36 @@ void ship_screen_trigger_unit_ping_0064a8e0(Raw s, ShipScreenWidgetHost& host) {
 // 0064D590, __thiscall(screen, unit), RET 4: on a new unit mark +188h and drop
 // timed entry 2 of the four widgets +E8h..+F4h; re-point the observer member
 // +170h (observed +184h); an active screen (+5h) re-applies the unit (0064AE20).
-void ship_screen_set_unit_0064d590(Raw s, void* unit, ShipScreenWidgetHost& host) {
-    if (s.ptr(0x184) != unit) {
-        s.at<std::uint8_t>(0x188) = 1;
-        for (std::size_t i = 0; i < 4; ++i) host.widget_delete_timed_entry_00aa8b80(s.ptr(0xE8 + i * 4), 2);
+void ship_screen_set_unit_0064d590(ShipScreenUnitHost& host, const void* unit) {
+    // Original 0064D598..0064D601 (bsp.py show 0064d590 --asm): only a changed
+    // identity cancels entries; an active screen reapplies even the same unit.
+    if (host.observed_unit() != unit) {
+        host.mark_unit_changed();
+        for (std::size_t i = 0; i < 4; ++i) host.delete_timed_entry(i, 2);
     }
-    observer_ref_set(Raw{s.p + 0x170}, unit, host);
-    if (s.at<std::uint8_t>(kActive) != 0) host.ship_screen_apply_unit_0064ae20(s);
+    host.observe_unit(unit);
+    if (host.screen_active()) host.apply_unit();
+}
+
+void ship_screen_set_unit_0064d590(Raw s, void* unit, ShipScreenWidgetHost& host) {
+    class Binding final : public ShipScreenUnitHost {
+    public:
+        Binding(Raw screen, ShipScreenWidgetHost& services) : s_(screen), host_(services) {}
+        const void* observed_unit() override { return s_.ptr(0x184); }
+        void mark_unit_changed() override { s_.at<std::uint8_t>(0x188) = 1; }
+        void delete_timed_entry(std::size_t widget, int entry) override {
+            host_.widget_delete_timed_entry_00aa8b80(s_.ptr(0xE8 + widget * 4), entry);
+        }
+        void observe_unit(const void* value) override {
+            observer_ref_set(Raw{s_.p + 0x170}, const_cast<void*>(value), host_);
+        }
+        bool screen_active() override { return s_.at<std::uint8_t>(kActive) != 0; }
+        void apply_unit() override { host_.ship_screen_apply_unit_0064ae20(s_); }
+    private:
+        Raw s_;
+        ShipScreenWidgetHost& host_;
+    } binding(s, host);
+    ship_screen_set_unit_0064d590(binding, unit);
 }
 
 // 00650210, __fastcall(screen): bind the weapon-group HUD to (unit +24h, camera

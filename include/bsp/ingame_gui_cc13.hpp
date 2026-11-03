@@ -612,6 +612,20 @@ struct ShipScreenWidgetHost : HudScreenHost {
     virtual void ship_screen_apply_unit_0064ae20(Raw screen) = 0;
 };
 void ship_screen_trigger_unit_ping_0064a8e0(Raw s, ShipScreenWidgetHost& host);
+// The same 0064D590 policy over a semantic screen owner. Unit identities are
+// borrowed from the live unit registry, not index+1 tokens or raw unit images.
+// observe_unit performs the existing observer-reference assignment, including
+// its same-unit gate; the policy deliberately calls it even on a repeated bind.
+struct ShipScreenUnitHost {
+    virtual ~ShipScreenUnitHost() = default;
+    virtual const void* observed_unit() = 0;
+    virtual void mark_unit_changed() = 0;
+    virtual void delete_timed_entry(std::size_t widget, int entry) = 0;
+    virtual void observe_unit(const void* unit) = 0;
+    virtual bool screen_active() = 0;
+    virtual void apply_unit() = 0;
+};
+void ship_screen_set_unit_0064d590(ShipScreenUnitHost& host, const void* unit);
 void ship_screen_set_unit_0064d590(Raw s, void* unit, ShipScreenWidgetHost& host);
 
 struct PressStartStorageHost {

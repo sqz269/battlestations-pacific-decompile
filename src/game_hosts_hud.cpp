@@ -46,6 +46,8 @@
 #include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/wire_goal4_chain252_switches.hpp"
+#include "bsp/wire_goal4_chain265_switches.hpp"
+#include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
 
@@ -195,6 +197,7 @@ struct GameHudHost::Impl {
     GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
     // 0064AE20 through the Big1Host adapter (kHudShipScreenApplyUnitBound).
     void apply_ship_screen_unit_0064ae20();
+    void bind_ship_screen_unit_0064d590(std::size_t unit);
     // Packet cc9_screen_50h: screen 50h's fields and its widgets.
     bsp::WarningScreenState warning_screen{};
     bool warning_widgets_bound{false};
@@ -494,6 +497,9 @@ public:
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
         if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
             const std::size_t unit = owner_.units->controlled_index();
+            if constexpr (kWireGoal4Chain265Bound) {
+                owner_.bind_ship_screen_unit_0064d590(unit);
+            } else {
             // 0064D598..0064D5B7: a different unit sets +188h (and stops the
             // timed entries of four widgets through 00AA8B80(2), which this
             // host never starts).
@@ -514,6 +520,7 @@ public:
                 } else {
                     owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
                 }
+            }
             }
         }
     }
@@ -2926,6 +2933,60 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
     }
     auto it = ship_screen_widgets.find(static_cast<int>(widget));
     return it != ship_screen_widgets.end() ? it->second : nullptr;
+}
+
+void GameHudHost::Impl::bind_ship_screen_unit_0064d590(std::size_t unit) {
+    class Binding final : public bsp::ingame_gui_cc13::ShipScreenUnitHost {
+    public:
+        Binding(Impl& owner, std::size_t next) : owner_(owner), next_(next) {}
+        const void* observed_unit() override {
+            return owner_.ship_screen.has_unit
+                ? owner_.units->unit_identity(owner_.ship_screen_unit) : nullptr;
+        }
+        void mark_unit_changed() override { owner_.ship_screen.unit_changed_188 = true; }
+        void delete_timed_entry(std::size_t widget, int entry) override {
+            // 0064D5A9..0064D5C3: +E8/+EC/+F0/+F4 are the four damage
+            // circles on the ship damage page.
+            // The bridge owns GuiLayoutWidget trees, not retained widget
+            // companions, and never creates their timed entries. There is no
+            // entry to retire on this path; keep the native lower call a record.
+            static_cast<void>(widget);
+            static_cast<void>(entry);
+            owner_.record("HudShipScreen::cancel_unit_timed_entry", 0x00aa8b80u);
+        }
+        void observe_unit(const void* value) override {
+            if (observed_unit() == value) return;
+            // Preserve the host's one +184h projection (has_unit/index). The
+            // native 00694A60/006952A0 graph and release callback for screen
+            // +170h are still unbound; do not call them implemented merely
+            // because the semantic reference changes.
+            if (owner_.ship_screen.has_unit)
+                owner_.record("HudShipScreen::unregister_unit_observer", 0x006952a0u);
+            owner_.ship_screen.has_unit = value != nullptr;
+            owner_.ship_screen_unit = next_;
+            if (value != nullptr)
+                owner_.record("HudShipScreen::register_unit_observer", 0x00694a60u);
+        }
+        bool screen_active() override { return owner_.ship_screen.active_05; }
+        void apply_unit() override {
+            // Same actual 0064AE20 adapter/gates as the previous host path.
+            if (kHudShipScreenGaugesBound) {
+                if constexpr (kHudShipScreenApplyUnitBound) {
+                    owner_.apply_ship_screen_unit_0064ae20();
+                } else {
+                    owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+                }
+            }
+        }
+    private:
+        Impl& owner_;
+        std::size_t next_;
+    } binding(*this, unit);
+    // The incoming identity and the previous identity both belong to the
+    // existing live unit registry; no raw-layout scratch unit is fabricated.
+    bsp::ingame_gui_cc13::ship_screen_set_unit_0064d590(
+        binding, units->unit_identity(unit));
+    done("HudShipScreen::set_unit", 0x0064d590u);
 }
 
 namespace {
