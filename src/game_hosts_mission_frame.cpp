@@ -29,6 +29,8 @@
 #include "bsp/game_profile_owner.hpp"
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
+#include "bsp/game_input_runtime.hpp"
+#include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/native_mission_clock_reset.hpp"
@@ -487,6 +489,7 @@ struct GameMissionFrameHost::Impl {
     GameVfsHost& vfs;
     GameMissionLuaHost& lua;
     GameObserverRuntime* observer_runtime{nullptr};
+    GameInputRuntime* input_runtime{nullptr};
     bsp::SessionParticipantPools& participants; // persistent GameMissionHost owner
     GameFrameProfiler* profiler{};
     std::string language;
@@ -2638,6 +2641,20 @@ public:
     DeviceWaitBinding(GameMissionFrameHost::Impl& owner, bool& entered)
         : owner_(owner), entered_(entered) {}
 
+    bool poll_button_edge(bsp::DeviceWaitLatch& legacy_latch) override {
+        if constexpr (kWireGoal4Chain316Bound) {
+            if (!owner_.input_runtime)
+                throw std::logic_error("mission device-wait requires the application's input runtime");
+            // 004DB962..977 is the same +DDh edge/store as 004B43B0. Reuse
+            // that body on the actual backend; the semantic latch below and
+            // its synthetic any-button sample do not run on this path.
+            return owner_.input_runtime->poll_dynamic_button_edge();
+        } else {
+            return bsp::MissionDeviceWaitHost::poll_button_edge(legacy_latch);
+        }
+    }
+
+    // Retained OFF implementation. ON poll_button_edge above bypasses it.
     bool any_dynamic_device_button_down() override {
         // 00a91020 with ECX = the device table 00f8bbf4. This process has no
         // input backend, so nothing would ever report a button down and the
@@ -3852,6 +3869,10 @@ void game_warning_clear_waiting_queue() {
     }
 }
 
+void GameMissionFrameHost::bind_input_runtime(GameInputRuntime* runtime) {
+    impl_->input_runtime = runtime;
+}
+
 void GameMissionFrameHost::bind_observer_runtime(GameObserverRuntime& runtime) {
     if (!runtime.has_live_dispatch_owner())
         throw std::logic_error("mission frame observer binding requires a live dispatch owner");
@@ -4758,21 +4779,40 @@ bool GameMissionFrameHost::enter_mission_state_004da6c0() {
         host.log.note("state 0Ch participant +9/+0E view is unavailable for the count arm");
         return false;
     }
+    if constexpr (kWireGoal4Chain316Bound) {
+        if (!host.entry.device_wait_ran)
+            host.log.notef("mission participant entry: view_available=%d unbound=%zu "
+                "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
+                host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
+                inputs.local_view_mode);
+    } else {
     host.log.notef("mission participant entry: view_available=%d unbound=%zu "
         "player_count_arm=%d mode=%d", host.entry.participant_view_available ? 1 : 0,
         host.entry.unbound_player_slots, host.entry.player_count_arm ? 1 : 0,
         inputs.local_view_mode);
+    }
 
     bool entered = false;
     DeviceWaitBinding device_wait(host, entered);
+    const bool first_device_wait = !host.entry.device_wait_ran;
     host.entry.device_wait_ran = true;
     const bool wait_entered
         = bsp::run_mission_device_wait(inputs, host.device_latch, device_wait);
     host.done("MissionState::device_wait", 0x004db920u);
 
     if (!entered && !wait_entered) {
+        if constexpr (kWireGoal4Chain316Bound) {
+            if (first_device_wait) {
+                if (!host.entry.player_count_arm)
+                    host.log.note("state 0Ch waiting for a real dynamic-device button edge");
+                else
+                    host.log.notef("state 0Ch did not enter: %zu player slot(s) still unbound",
+                        inputs.unbound_player_slots);
+            }
+        } else {
         host.log.notef("state 0Ch did not enter: %zu player slot(s) still unbound",
             inputs.unbound_player_slots);
+        }
         return false;
     }
 

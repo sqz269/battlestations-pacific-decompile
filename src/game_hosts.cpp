@@ -103,6 +103,7 @@
 #include "bsp/wire_goal2_chain180_switches.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_input_runtime.hpp"
+#include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/sound_alternate_owner.hpp"
@@ -3715,6 +3716,12 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         options_.order_speed, options_.order_speed_set);
     if constexpr (kWireGoal4Chain271Bound) {
         menu_->bind_input_context_manager(input_->context_manager);
+    }
+    if constexpr (kWireGoal4Chain316Bound) {
+        if (GameMissionHost* mission = menu_->mission())
+            mission->bind_input_runtime(input_runtime_);
+    } else {
+        // Previously mission device-wait had no native input binding.
     }
     if constexpr (kWireGoal4Chain302Bound) {
         // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game

@@ -102,6 +102,7 @@ class GameMissionLuaHost;
 class GameFrameProfiler;
 class GameHudHost;
 class GameObserverRuntime;
+class GameInputRuntime;
 
 // What the walk of the load inventory did. `concrete` counts the steps a
 // reconstruction performed in process; `records` counts the steps that took the
@@ -196,6 +197,7 @@ public:
 
     // The application runtime and Lua owner must outlive this frame's units.
     void bind_observer_runtime(GameObserverRuntime&);
+    void bind_input_runtime(GameInputRuntime*);
 
     // Walks the recovered load inventory in order from the step the mission
     // path's request 0Ah dispatches, performing every step whose owner area has

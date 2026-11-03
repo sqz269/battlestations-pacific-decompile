@@ -1,6 +1,7 @@
 #include "bsp/mission_state_entry.hpp"
 
 #include "bsp/game_settings.hpp"
+#include "bsp/wire_goal4_chain316_switches.hpp"
 
 #include <cstring>
 
@@ -101,7 +102,12 @@ bool run_mission_device_wait(const MissionDeviceWaitInputs& inputs, DeviceWaitLa
     MissionDeviceWaitHost& host)
 {
     if (!mission_entry_uses_player_count_arm(inputs.local_view_mode, inputs.session_flag_29c)) {
-        const bool edge = device_wait_button_edge(latch, host.any_dynamic_device_button_down());
+        bool edge;
+        if constexpr (kWireGoal4Chain316Bound) {
+            edge = host.poll_button_edge(latch);
+        } else {
+            edge = device_wait_button_edge(latch, host.any_dynamic_device_button_down());
+        }
         if (!edge) {
             return false; // 004db97d
         }

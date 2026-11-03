@@ -59,6 +59,7 @@
 #include "bsp/profile_manager.hpp"
 #include "bsp/storage_backend.hpp"
 #include "bsp/wire_goal4_chain274_switches.hpp"
+#include "bsp/wire_goal4_chain316_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -854,6 +855,7 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
     std::array<int, 8> scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
     std::unique_ptr<GameMissionLuaHost> lua;
     GameObserverRuntime* observer_runtime{nullptr};
+    GameInputRuntime* input_runtime{nullptr};
     std::unique_ptr<GameMissionFrameHost> frame_host;
     GameHudHost* hud{nullptr};  // milestone 2h, owned by GameMenuHost
     // cc15 lane L2, owned by GameMenuHost: game+650h and [00E198D0].
@@ -2613,6 +2615,10 @@ void GameMissionHost::bind_profile(GameProfileOwner& profile, GameHintTrackerSlo
     impl_->profile = &profile;
     impl_->hint_tracker = &hint_tracker;
 }
+void GameMissionHost::bind_input_runtime(GameInputRuntime* runtime) {
+    impl_->input_runtime = runtime;
+    if (impl_->frame_host) impl_->frame_host->bind_input_runtime(runtime);
+}
 
 void GameMissionHost::set_order_unit(std::string unit) {
     impl_->order_unit = std::move(unit);
@@ -2966,6 +2972,11 @@ void GameMissionHost::Impl::finish_scene_load() {
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         locale, profiler, language, hud);
     if (observer_runtime != nullptr) frame_host->bind_observer_runtime(*observer_runtime);
+    if constexpr (kWireGoal4Chain316Bound) {
+        frame_host->bind_input_runtime(input_runtime);
+    } else {
+        // Previously the device-wait host injected its input sample.
+    }
     // cc15 lane L2: the record commit 009205E0 writes [game+6B4h].
     if (GameMissionResultHost* result = lua->mission_result()) result->bind_profile(profile);
     // 00884be0 at 004dd627 runs from BSP_Game_OnInitOnce, well before the load;
@@ -3148,10 +3159,25 @@ bool GameMissionHost::advance(float seconds) {
         host.frame_host->enter_mission_state_004da6c0();
         host.publish_frame_summary();
         if (!host.summary.mission_entered) {
+            if constexpr (kWireGoal4Chain316Bound) {
+                // 004E5046 runs 004DB920 again on each game move while +5D4
+                // stays 0Ch. Real input may be up on the first pass; retain
+                // SceneLoaded and let the application's next frame poll it.
+                if (host.summary.mission_game_state == bsp::kGameStateSceneReady
+                    && host.frame_host->entry_summary().device_wait_ran
+                    && !host.frame_host->entry_summary().player_count_arm)
+                    return true;
+                host.log.notef("the mission state was not entered; the run stops at state 0x%02X",
+                    host.summary.mission_game_state);
+                host.step = GameMissionStep::Stopped;
+                return false;
+            } else {
+                // OFF retains the one-pass synthetic device-wait behavior.
             host.log.notef("the mission state was not entered; the run stops at state 0x%02X",
                 host.summary.mission_game_state);
             host.step = GameMissionStep::Stopped;
             return false;
+            }
         }
         host.step = GameMissionStep::InMission;
         return true;

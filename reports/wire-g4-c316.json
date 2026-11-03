@@ -1,0 +1,141 @@
+{
+  "goal": 4,
+  "chain": 316,
+  "slot": "g4-w3",
+  "base": "4f57b8224c",
+  "switch": "bsp::kWireGoal4Chain316Bound",
+  "picked": "Real native input backend button query and shared +DDh edge latch for single-player mission device-wait",
+  "wired_total_before": 9314,
+  "wired_total_after": 9316,
+  "newly_wired": ["00a91020", "004b43b0"],
+  "built": [
+    "Narrow DynamicInputButtonQueryHost interface, implemented by the existing GameInputRuntime with its actual native-device +2Ch dispatch and CRT validation service",
+    "Borrow of the application's same GameInputRuntime through GameMissionHost and every subsequently loaded GameMissionFrameHost",
+    "DeviceWaitBinding::poll_button_edge calls the reconstructed query and edge body once on the actual published backend and its actual +DDh byte",
+    "SceneLoaded remains active across application frames while the real input sample has no rising edge; the old one-shot injection and semantic latch are bypassed on the ON path",
+    "Existing host paths remain under the OFF arm of the single chain316 switch"
+  ],
+  "evidence": [
+    "Live Ghidra window is Ghidra: bsp; config/target.json selects C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe; bsp.py brief reported that program up and ghidra count matched the snapshot",
+    "bsp.py show 00a91020 --asm: 00A91030..98 walks three actual checked vectors, 24h apart, and calls each nonnull device's current +2Ch slot",
+    "bsp.py ghidra disasm 004db955: captures [00F8BBF4], calls 00A91020 at 004DB95D, then computes the edge and stores the returned byte at the captured backend+DDh, 004DB962..977",
+    "bsp.py show 004b43b0 --asm: 004B43B0..3DA performs the same edge/store operation; reused for the native inline device-wait sequence instead of writing a second implementation",
+    "bsp.py ghidra disasm 0067d35b: 0067D363 loads [00F8BBF4] before CALL 004B43B0, correcting the old header's screen-receiver interpretation",
+    "src/native_input_backend_owner.cpp: construct_native_input_backend_groups_00a91570 already initializes the real +DDh latch to zero",
+    "Earlier review139 in goal_skips.jsonl rejects the title-only site because its prompt-consumed path is unreachable; this packet uses the single-player mission device-wait path instead"
+  ],
+  "validation": {
+    "index": "python tools/bsp.py index --if-stale: fresh",
+    "baseline_build": "./scripts/build.ps1 passed, including both CTests",
+    "build": "./scripts/build.ps1 passed, including reconstructed_math and tool_tests",
+    "call_graph": "34598/34782 functions reachable; 4345/4779 reconstructed addresses called",
+    "call_sites": {
+      "00a91020": "One reachable call at 1036566C from GameInputRuntime::poll_dynamic_button_edge",
+      "004b43b0": "One reachable call at 1036567E from GameInputRuntime::poll_dynamic_button_edge"
+    },
+    "entry_path": "WinMain -> application initialization -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::enter_mission_state_004da6c0 -> DeviceWaitBinding::poll_button_edge -> GameInputRuntime::poll_dynamic_button_edge",
+    "readiness": "Both newly wired rows report state=wired, called=true, call_sites=1 and callers_live=1",
+    "float_math": "No float arithmetic changed",
+    "runtime": "No game launched, as instructed; hardware input and gameplay behavior remain unvalidated"
+  },
+  "assumptions": [
+    "Reuse of 004B43B0 for the identical inline 004DB962..977 edge sequence is intentional; the original title-only call site is still unbound",
+    "With the switch ON, automated mission runs must supply a real dynamic-device button edge to leave state 0Ch; the previous synthetic auto-entry is preserved only in the OFF arm",
+    "These reconstructed C++ interfaces are not original binary ABI replacements"
+  ],
+  "rows": [
+    {
+      "native": "00a91020",
+      "status": "wired",
+      "host_site": "src/game_input_runtime.cpp: GameInputRuntime::poll_dynamic_button_edge, called by src/game_hosts_mission_frame.cpp: DeviceWaitBinding::poll_button_edge",
+      "original_abi": "__fastcall ECX=actual backend, no stack arguments, AL=boolean",
+      "real_state": "Current application publication 00F8BBF4, its three checked device vectors, and current native +2Ch device dispatch"
+    },
+    {
+      "native": "004b43b0",
+      "status": "wired",
+      "host_site": "src/game_input_runtime.cpp: GameInputRuntime::poll_dynamic_button_edge, called by src/game_hosts_mission_frame.cpp: DeviceWaitBinding::poll_button_edge",
+      "original_abi": "__fastcall ECX=actual backend, no stack arguments, AL=rising edge",
+      "real_state": "The captured backend's actual +DDh byte and the actual 00A91020 result; no separate latch or injected sample",
+      "note": "Reuses the existing body for the equivalent native inline sequence at 004DB962..977; the title-only call site is not claimed"
+    },
+    {
+      "native": "004db920",
+      "status": "wired",
+      "previously_wired": true,
+      "host_site": "src/game_hosts_mission_frame.cpp: GameMissionFrameHost::enter_mission_state_004da6c0 -> src/mission_state_entry.cpp: run_mission_device_wait",
+      "note": "Existing wired caller now delegates its device-edge operation to the canonical backend provider; excluded from the new-address count"
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::rack_holds_round; src/game_hosts_gunnery.cpp: rack release paths",
+      "reason": "The unit host retains a combined attached/reserve count; separate live kind-2Ah child count and reserve +484h inputs required by this body were not established."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown close_result_gui record",
+      "reason": "No complete SoundLoadTransitionContext binding supplies the captured actual movie screen, current screen dispatch, input-context mutation and cinematic-mode provider together."
+    },
+    {
+      "native": "004a4520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: launch_pad_troops records",
+      "reason": "Landing indices do not supply the traffic-config+1FCh troop list, locked manager map, troop-group constructor inputs and live group lifecycle required by the raw body."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "The controlled-unit HUD hook lacks the actual ship+BBCh sound object, +428h device list and +6B4h byte needed by the native broadcast."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The hook carries the requested volume but has no canonical ambient SoundInstance receiver to mutate."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot planner projections",
+      "reason": "The real planner inputs corresponding to native normalization sites 0099D6F1 and 0099D736 were not established; substituting a different heading-angle calculation would not preserve those calls."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: read_typed_value ByteArray arm",
+      "reason": "The live scene-file parser has no established owning BIN payload/consumer through this model callback; changing its dormant callback alone would not create a game input path."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "No new live caller needing reference-kind-to-letter serialization was established; the scene reference producer work in chain311 was already in review."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "No real director queue/path-owner call site was established for the tail-clear operation; the return-slot model alone does not perform the native path mutation."
+    },
+    {
+      "native": "00694af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled-unit observer hooks",
+      "reason": "These hooks retain semantic observed-unit identity, not the actual endpoint owners and shared native edge arrays needed by the locked pair query."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_powerup_score_for_unit_00a046c0",
+      "reason": "A live score caller providing the current powerup class multipliers plus native unit hint multiplier and class weight was not established."
+    }
+  ],
+  "left_for_others": [
+    "Bind the actual title prompt/menu-command screen and native action path before claiming its original 0067D369 edge site",
+    "Bind device-wait screen-busy queries and zero-delta input-manager update to their native owners; this packet preserves the existing downstream hosts",
+    "Validate real hardware button transitions and mission entry in a permitted gameplay run"
+  ]
+}

@@ -144,9 +144,10 @@ bool input_action_is_held_004c5090(const std::vector<InputActionRecord>& actions
 // 004C50D0, __stdcall(action), RET 4, AL: +28h set and +20h clear.
 bool input_action_was_pressed_004c50d0(const std::vector<InputActionRecord>& actions, std::int32_t action);
 
-// 004B43B0, __fastcall(ECX screen), AL. any_button_down is the byte
+// 004B43B0, __fastcall(ECX backend), AL. any_button_down is the byte
 // BSP_InputDeviceTable_AnyDynamicDeviceButtonDown returned; it is stored in
-// screen+DDh on both paths. Returns 1 only on a 0 -> non-zero edge.
+// backend+DDh on both paths. Returns 1 only on a 0 -> non-zero edge.
+// Receiver evidence: 0067D363 MOV ECX,[00F8BBF4]; 0067D369 CALL 004B43B0.
 bool press_start_poll_button_edge_004b43b0(std::uint8_t& latch_dd, std::uint8_t any_button_down) noexcept;
 
 } // namespace bsp::cc13_band004b
