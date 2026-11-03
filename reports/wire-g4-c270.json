@@ -14,7 +14,8 @@
       "native": "006EBD30",
       "status": "skipped",
       "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::gate_008141e0 (called from run_ship_use_catapult_00891d50)",
-      "reason": "No catapult device instance: the gate needs the MCatapult's +3B8h disabled byte, +480h ammo and +414h reload timer, whose producers (device construction from the deviceclasses Catapult entry) the host does not build; the registry keeps only the class part."
+      "reason": "No catapult device ammo producer: the gate needs the MCatapult's +3B8h disabled byte, +480h ammo and +414h reload timer; the constructor 006EC640 zeroes +480h/+484h and only SetAmmo 006EB660 (vtable slot 1BCh) writes them, whose caller for a catapult device is not traced; the gunnery host builds a GameGunRow per CATAPULT device (category 0Bh, reload_time) but keeps no ammo/disabled state for it, so the registry still uses only the class part.",
+      "climb": "Find the vtable[1BCh] caller that seeds a catapult device's ammo (ship Weapons table or LaunchStock), carry ammo/disabled/reload on the gunnery host's catapult GameGunRow, then replace ShipCatapultRegistry::gate_008141e0's class-only test with catapult_can_fire_006ebd30 over that row."
     },
     {
       "native": "006ED1C0",
