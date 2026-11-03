@@ -1,0 +1,80 @@
+{
+  "goal": 2,
+  "chain": 179,
+  "run": 346,
+  "harness": "claude",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 54 [008742a0-00878350] (fragile, damage)",
+  "tier": 2,
+  "host_file": "src/cc13_paratrooper_round.cpp",
+  "switch": "kWireGoal2Chain179Bound",
+  "switch_header": "include/bsp/wire_goal2_chain179_switches.hpp",
+  "switch_default": false,
+  "wired_before": 9004,
+  "wired_after": 9005,
+  "wired_delta": 1,
+  "assigned_rows_wired": 1,
+  "rows": [
+    {
+      "native": "00875a80",
+      "address": "007ac095",
+      "function": "007ac000",
+      "host_site": "src/cc13_paratrooper_round.cpp:187 RoundAdapter::register_fixed_step_once (registration) and RoundWorld::register_round_callback; the walk at RoundWorld::step head",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "GameUnitsHost::motion_step_00825f20 (src/game_hosts_units.cpp:25003) -> host.para_round_step (25034) -> Impl::para_round_step under kParatrooperRoundBound = true (include/bsp/cc13_seg67b_switches.hpp:72) -> RoundWorld::step job wave 1 -> gameplay_seg46_cc13::step_landing_007ac000 (landed, soldier_478 == 0, a building found by 006F2C30) -> RoundAdapter::register_fixed_step_once, the 007AC095 site. No other gate on the path. Rounds exist once a level bomber's 31h rack drops paratroopers (JM08 per the switch notes); no mission call count was supplied for this row.",
+      "on_effect": "007AC095's 00875A80(ECX = round+3E4h, repeating 0) runs as fixed_step_callback_register_00875a80: the round's node is appended to the tail of a fixed-step callback list (or, if still linked, only its repeating/linked bytes are rewritten). At the head of the next RoundWorld::step the existing 00874DE0 body (fixed_step_callback_list_run_00874de0) walks that list, invokes 007AB590 (land_and_spawn_soldier_007ab590 plus the host's soldier creation) for each node whose round is still alive, and unlinks each non-repeating node. OFF keeps the callback_registered bool and the vector-order loop."
+    },
+    {
+      "native": "00875b30",
+      "address": "0074fcb4",
+      "function": "0074fc40",
+      "host_site": "none",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host path runs any caller. The 22 callers are destructors reached through Host interfaces nothing implements (cc13_seg30 tick_subnode_base_cleanup_00875b30, cc13_seg40, cc13_seg48, cg_rebuild_c_cc13, cc13_seg41_land trigger_base_destruct_00875b30); the two 'wired' callers 0071D480 and 0074FC40 are bodies whose host methods for 00875B30 have no override in src/. Also not the fixed-step node: 00875B30 unlinks through 00874E60 with +8h/+0Ch links on the pending-registry tick sublist, not the +0Ch/+10h links 00875A80 uses."
+    },
+    {
+      "native": "00876180",
+      "address": "00951f20",
+      "function": "00951f20",
+      "host_site": "none",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Body is MOV AL,1; RET. Its one call caller 00951F20 (vehicle_class_derive_constants_default_00951f20, gameplay_seg61_62_cc13.cpp:147) is reached only through Seg47b host method vehicle_class_derive_constants_default_00951f20, which nothing implements, and 00828F20's tail jump result is ignored by 0096515D (ship_ai_throttle_ring.cpp:173). The vtable slot 5 of 00D0E13C (no RTTI) has no host dispatch. Wiring would only hand back a constant on a dead path."
+    },
+    {
+      "native": "008776e0",
+      "address": "0095bb1e",
+      "function": "0095bb10",
+      "host_site": "none",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Mission save/archive writer (callers 0043FEA0 DeviceEntity_SaveArchive, 0095BB10 VehicleUnit_LoadArchiveCommon, vslot 42 from 006B7710 MissionSave_Write). The host methods unit_write_state_008776e0 (cc13_seg62.hpp:165, seg3_4_cc13.hpp:150) have no implementation and the host writes no save archive, so no host path reaches a site."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "RoundWorld fixed-step callback list + RoundCallbackNode per round (std::map keyed by round id)",
+      "where": "include/bsp/cc13_paratrooper_round.hpp:127 (RoundCallbackNode), RoundWorld private members fixed_step_callbacks_ / fixed_step_nodes_; src/cc13_paratrooper_round.cpp RoundWorld::RoundWorld, register_round_callback, release_round_callbacks, RoundCallbackRun",
+      "producers": [
+        "List sentinels: fixed_step_callback_list_init (src/fixed_step_callbacks.cpp), the same init GameStepSubsystemsHost uses for the image's registry list (00874C40 / 00875340)",
+        "Node: zero-initialised FixedStepCallbackNode as the round's +3E4h sub-object starts; linked by 00875A80 itself; step_slot_target 007AB590 ([[node]+10h], per include/bsp/fixed_step_callbacks.hpp registrant notes)",
+        "repeating = 0: the image's PUSH 0 at 007AC086"
+      ],
+      "lifetime": "Built with the paratrooper world (GameUnitsHost::Impl::para_world). A node is created at the round's first registration and dropped after its round is erased and the node is unlinked (the image's node lives inside the round; LABELLED storage substitution because rounds_ is a moving std::vector).",
+      "labelled_substitution": "The image links the node on the registry singleton's global list (head 00E0B748) walked by the fan-out at 00875E3F. This host runs the rounds inside the physics row (para_round_step from motion_step_00825f20), before its own 00875E3F row, so linking on GameStepSubsystemsHost::callbacks_ would fire 007AB590 one step early. The list is therefore the paratrooper world's, walked by the existing 00874DE0 body at the head of the next round step, where the model ran the callback.",
+      "rows": ["00875a80"]
+    }
+  ],
+  "checks": {
+    "off_build": "PASS: final plain ./scripts/build.ps1 after the ON check; exit 0; reconstructed_math and tool_tests passed (2/2)",
+    "on_build": "PASS: python tools/off_switch_on_build.py --names kWireGoal2Chain179Bound; build.ps1 exit 0, 0 distinct diagnostics; source restored",
+    "pc24_lint": "not applicable: the ON arms do no float arithmetic",
+    "wire_readiness": "00875a80 ready -> wired; total wired 9004 -> 9005",
+    "game_run": "not run, as assigned"
+  },
+  "on_effect": "Paratrooper rounds register their 007AB590 callback through the reconstructed 00875A80 onto a callback list walked by the reconstructed 00874DE0 at the head of the next round step, instead of a host bool. Expected behaviour is the same as OFF (same step, same round order, dead rounds skipped); the difference is that registration and walk semantics (append at tail, re-register only rewrites flags, non-repeating unlink after the call) now come from the image bodies.",
+  "off_preservation": "OFF keeps round_.callback_registered = true and the per-round loop. The loop's body moved verbatim into RoundWorld::land_registered_round (the ON walk calls the same helper); `continue` on !plan.run became `return` in the helper. RoundWorld gained a user-declared constructor (empty in OFF), deleted copy operations, and two unused members (an uninitialised list and an empty std::map) in the OFF build."
+}

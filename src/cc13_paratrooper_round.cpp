@@ -7,6 +7,7 @@
 #include "bsp/bomb_torpedo_tick.hpp"   // bomb_air_velocity (006E1510)
 #include "bsp/gameplay_seg33_cc13.hpp"  // projectile_extrapolate_position_006e2220
 #include "bsp/wire_goal2_chain131_switches.hpp"
+#include "bsp/wire_goal2_chain179_switches.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -181,7 +182,15 @@ public:
         if (b != 0) ++world_.counters_.building_found;
         return b;
     }
-    void register_fixed_step_once() override { round_.callback_registered = true; }
+    // 007AC095: 00875A80 (fixed_step_callback_register_00875a80) links the round's node
+    // on the world's callback list; OFF keeps the callback_registered bool.
+    void register_fixed_step_once() override {
+        if constexpr (kWireGoal2Chain179Bound) {
+            world_.register_round_callback(round_);
+        } else {
+            round_.callback_registered = true;
+        }
+    }
     void add_capturer(std::uint32_t building) override {
         // 006F39B0: append under the building's +764h lock.
         world_.capturer_list_.emplace_back(building, round_.id);
@@ -319,42 +328,112 @@ std::uint32_t RoundWorld::drop(const ParatrooperState& hung, const ParatrooperCl
     return placed.id;
 }
 
+// 007AB590 for one registered round (the callback list's slot +10h, ECX = the
+// round's node), then the soldier the host makes for it. OFF reaches it from the
+// callback_registered loop, ON from RoundCallbackRun.
+void RoundWorld::land_registered_round(Round& r, float now, bool soldier_draw,
+                                       RoundServices& svc) {
+    RoundAdapter host(*this, r, svc, now);
+    const seg46::LandSoldierPlan plan = seg46::land_and_spawn_soldier_007ab590(r.s, r.cls, host);
+    if (!plan.run) return;
+    // [[class+ECh]] vslot +8h makes the soldier (no null test follows, 007AB601).
+    r.s.soldier_478 = kSoldierHandleBase + r.id;
+    ++counters_.soldiers;
+    // 007AB6AC 004B0F80(&class+F0h, random start 1, 0): U(0, duration) on
+    // stream 0 at 004B102F when the soldier's +18Ch is set and the length is
+    // positive. LABELLED: both are taken as true, and the bound is 1.0 (the
+    // "fire2" length is not loaded); only the draw's place in stream 0 matters.
+    if (soldier_draw) {
+        svc.uniform(0, kRoundDrawKeyBase + r.id, 0.0f, 1.0f);
+        ++counters_.soldier_draws;
+    } else {
+        svc.record("MParatrooper::soldier_anim_draw_untaken", 0x004b102fu);
+    }
+    if (counters_.soldiers <= 8) {
+        const Vec3 b = svc.building_position_fc(plan.building);
+        char line[220];
+        std::snprintf(line, sizeof(line), "paratrooper soldier: id=%u t=%.2f building=%u "
+            "side=%d building_side=%d pos=(%.1f %.1f %.1f) building_at=(%.1f %.1f %.1f) "
+            "(007AB590 -> 006F39B0, packet cc13-para2)",
+            r.id, static_cast<double>(now), plan.building, r.s.side_54,
+            svc.building_side_54(plan.building), static_cast<double>(r.position.x),
+            static_cast<double>(r.position.y), static_cast<double>(r.position.z),
+            static_cast<double>(b.x), static_cast<double>(b.y), static_cast<double>(b.z));
+        svc.note(line);
+    }
+}
+
+// Wire g2-w2 (kWireGoal2Chain179Bound). The list starts as the registry
+// constructor leaves it (fixed_step_callback_list_init, the host's 00874C40 stand-in
+// that GameStepSubsystemsHost uses too).
+RoundWorld::RoundWorld() {
+    if constexpr (kWireGoal2Chain179Bound) fixed_step_callback_list_init(fixed_step_callbacks_);
+}
+
+// 007AC095: 00875A80(ECX = round+3E4h, repeating = 0, the PUSH 0 at 007AC086). The
+// node is the round's for the round's lifetime (a fresh one is unlinked, as the
+// image's is after its walk); [[node]+10h] is 007AB590.
+void RoundWorld::register_round_callback(Round& r) {
+    RoundCallbackNode& owner = fixed_step_nodes_[r.id];
+    owner.round_id = r.id;
+    owner.node.step_slot_target = 0x007ab590u;
+    fixed_step_callback_register_00875a80(fixed_step_callbacks_, owner.node, false);
+}
+
+// A node outlives its round only while it is still linked (a round killed in the
+// wave-1 pass that registered it); the next walk unlinks it, and it is dropped here.
+void RoundWorld::release_round_callbacks() {
+    for (auto it = fixed_step_nodes_.begin(); it != fixed_step_nodes_.end();) {
+        const bool round_present = std::any_of(rounds_.begin(), rounds_.end(),
+            [&](const Round& r) { return r.id == it->first; });
+        if (!round_present && !it->second.node.linked) {
+            it = fixed_step_nodes_.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+// 00874E01's CALL [[node]+10h] for the rounds' nodes: the node is the first member
+// of its RoundCallbackNode, so the walk's node converts back to the round's id as
+// 007AB590's ECX = node does to the round. A round already erased, or killed, does
+// not land (the OFF loop's `!r.alive` skip).
+class RoundCallbackRun final : public FixedStepCallbackHost {
+public:
+    RoundCallbackRun(RoundWorld& world, float now, bool soldier_draw, RoundServices& svc)
+        : world_(world), now_(now), soldier_draw_(soldier_draw), svc_(svc) {}
+    void invoke_step_callback(FixedStepCallbackNode& node, float) override {
+        const RoundCallbackNode& owner = *reinterpret_cast<const RoundCallbackNode*>(&node);
+        for (Round& r : world_.rounds_) {
+            if (r.id != owner.round_id) continue;
+            if (r.alive) world_.land_registered_round(r, now_, soldier_draw_, svc_);
+            return;
+        }
+    }
+
+private:
+    RoundWorld& world_;
+    float now_;
+    bool soldier_draw_;
+    RoundServices& svc_;
+};
+
 void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGlobals& g,
                       bool soldier_draw, RoundServices& svc) {
     if (rounds_.empty()) return;
     ++counters_.steps;
     // 00874DE0, the per-step callback list: 007AB590 for a round 007AC000
     // registered last step. The model clears +490h, so it runs once.
-    for (Round& r : rounds_) {
-        if (!r.alive || !r.callback_registered) continue;
-        r.callback_registered = false;
-        RoundAdapter host(*this, r, svc, now);
-        const seg46::LandSoldierPlan plan = seg46::land_and_spawn_soldier_007ab590(r.s, r.cls, host);
-        if (!plan.run) continue;
-        // [[class+ECh]] vslot +8h makes the soldier (no null test follows, 007AB601).
-        r.s.soldier_478 = kSoldierHandleBase + r.id;
-        ++counters_.soldiers;
-        // 007AB6AC 004B0F80(&class+F0h, random start 1, 0): U(0, duration) on
-        // stream 0 at 004B102F when the soldier's +18Ch is set and the length is
-        // positive. LABELLED: both are taken as true, and the bound is 1.0 (the
-        // "fire2" length is not loaded); only the draw's place in stream 0 matters.
-        if (soldier_draw) {
-            svc.uniform(0, kRoundDrawKeyBase + r.id, 0.0f, 1.0f);
-            ++counters_.soldier_draws;
-        } else {
-            svc.record("MParatrooper::soldier_anim_draw_untaken", 0x004b102fu);
-        }
-        if (counters_.soldiers <= 8) {
-            const Vec3 b = svc.building_position_fc(plan.building);
-            char line[220];
-            std::snprintf(line, sizeof(line), "paratrooper soldier: id=%u t=%.2f building=%u "
-                "side=%d building_side=%d pos=(%.1f %.1f %.1f) building_at=(%.1f %.1f %.1f) "
-                "(007AB590 -> 006F39B0, packet cc13-para2)",
-                r.id, static_cast<double>(now), plan.building, r.s.side_54,
-                svc.building_side_54(plan.building), static_cast<double>(r.position.x),
-                static_cast<double>(r.position.y), static_cast<double>(r.position.z),
-                static_cast<double>(b.x), static_cast<double>(b.y), static_cast<double>(b.z));
-            svc.note(line);
+    // 00874DE0 (wire g2-w2): ON walks the rounds' nodes 00875A80 linked, through
+    // fixed_step_callback_list_run_00874de0; OFF keeps the callback_registered loop.
+    if constexpr (kWireGoal2Chain179Bound) {
+        RoundCallbackRun run(*this, now, soldier_draw, svc);
+        fixed_step_callback_list_run_00874de0(fixed_step_callbacks_, dt, run);
+    } else {
+        for (Round& r : rounds_) {
+            if (!r.alive || !r.callback_registered) continue;
+            r.callback_registered = false;
+            land_registered_round(r, now, soldier_draw, svc);
         }
     }
     // Job wave 1: tick element +4h 006E1060 rescales the step by class+5Ch and
@@ -400,6 +479,7 @@ void RoundWorld::step(float dt, float now, const soldier_traffic_cc13::SoldierGl
     rounds_.erase(std::remove_if(rounds_.begin(), rounds_.end(),
                                  [](const Round& r) { return !r.alive; }),
                   rounds_.end());
+    if constexpr (kWireGoal2Chain179Bound) release_round_callbacks();
 }
 
 void RoundWorld::capturers(std::uint32_t building, std::vector<Capturer>& out) const {
