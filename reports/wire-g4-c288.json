@@ -1,0 +1,76 @@
+{
+  "chain": 288,
+  "slot": "g4-w5",
+  "switch": "bsp::kWireGoal4Chain288Bound",
+  "rows": [
+    {
+      "native": "00729bc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::gun_inputs / bind_aa_acceptance",
+      "detail": "The existing projectile-kind selector consumes the live first/second ammunition subtype and selects a retained typed bot slot. Absent slots, missing dual-purpose ammunition and side-2 forts refuse the candidate; selected AA/artillery identities drive the existing acceptance paths. This wires the existing selector body, not a replacement raw ABI implementation."
+    },
+    {
+      "native": "0072c6a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns",
+      "detail": "Already wired before this chain. Retain the existing constructor-plan result per gun, using its authored device Type (case-insensitive factory spellings) and real owner ancestry. Remove the unused per-tick call in the new arm. Slots append only after a gun survives construction filters."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes",
+      "reason": "The host has no general live unit-director pointer or director vslot-48h(2) predicate; those actual policy inputs are still missing."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::release_ordnance_drop / rack release paths",
+      "reason": "The attached kind-2Ah child list and rack ammo+484h reserve are private to the units host, which is held by g4-w4; no live count view is exposed here."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::apply_director_stance_008624c0",
+      "reason": "No controller snapshot producer/transport or complete director getter state exists here; copying flattened enable flags through a temporary snapshot would only round-trip them."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0 / remap",
+      "reason": "The scene remap stand-in lacks the actual render-resource service image, texture-cache context and owner/decrement bindings required by the native setter."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1 / remap",
+      "reason": "The scene remap stand-in lacks the actual render-resource service image, texture-cache context and owner/decrement bindings required by the native setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2 / remap",
+      "reason": "The scene remap stand-in lacks the actual render-resource service image, texture-cache context and owner/decrement bindings required by the native setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3 / remap",
+      "reason": "The scene remap stand-in lacks the actual render-resource service image, texture-cache context and owner/decrement bindings required by the native setter."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00729bc0: projectile +8h selects +390h/+394h/+398h/+39Ch/+3A0h/+3A4h; null slot returns false; kind-5 side-2 refusal precedes dispatch.",
+    "bsp.py show 0072c6a0: weapon Function, gun IsKindOf(22h), and owner IsKindOf(0Fh) select installed bots.",
+    "src/cc13_sweepA3.cpp: 00443090 compares Type case-insensitively with Rapid_Turning_Gun, Single_Turning_Gun and Depth_Charge_Launcher.",
+    "src/entity_class_ids.cpp: 23h/24h/27h derive from 22h; the other device factory classes do not.",
+    "Executable call_graph.py who/path 00729bc0 confirms GunneryPassBinding::gun_inputs reaches the existing body from the game entry."
+  ],
+  "wired_before": 9250,
+  "wired_after": 9251,
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 Release",
+    "tests": "reconstructed_math and tool_tests",
+    "game_run": false,
+    "limits": "Static source and executable reachability evidence only. Existing hull-frame/window, artillery solve and torpedo/depth acceptance adapters remain host approximations; this chain does not establish raw ABI or live gameplay parity."
+  }
+}
