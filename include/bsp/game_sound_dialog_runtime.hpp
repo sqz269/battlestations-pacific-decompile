@@ -58,6 +58,10 @@ public:
     bool owns_owner(const void*) const noexcept;
     NativeSoundAlternateOwnerStorage& owner();
     void update(void* actual_owner, float dt);
+    // Borrow the same published owner constructed at application phase5;
+    // these batch services have no effect with kWireGoal2Chain180Bound OFF.
+    void set_music_level(std::int32_t level);
+    void set_music_target_level(float level);
     void delete_alternate_slot00(void* actual_owner, std::uint32_t flags) override;
 
 private:

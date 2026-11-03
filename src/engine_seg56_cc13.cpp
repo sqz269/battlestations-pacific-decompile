@@ -527,7 +527,7 @@ int lua_music_control_suspend(LuaArgs& args, InterfaceHost& host)
     return 0;
 }
 
-int lua_music_fade(LuaArgs& args, InterfaceHost& host)
+int lua_music_fade(LuaBindingArgumentReader& args, MusicFadeHost& host)
 {
     host.music_set_target_level(narrow(args.get_number(0)));
     return 0;

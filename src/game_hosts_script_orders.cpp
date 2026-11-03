@@ -5,6 +5,10 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/wire_goal2_chain180_switches.hpp"
+#include <stdexcept>
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
 #include "bsp/game_hosts_lua.hpp"  // kReconLoadForceRefreshCc13Bound (cc13-reconload)
 #include "bsp/strafe_task.hpp"
@@ -395,6 +399,7 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     {"EnableMessages", 0x008cfe40u},
     {"LoadMessageMap", 0x008c61c0u},
     {"Music_Control_SetLevel", 0x008c4d10u},
+    {"MusicFade", 0x008c7190u},
     {"Scoring_SetFinalScoringFunctionName", 0x008b8640u},
     // Packet cc_mission_blackout: the fade whose completion callback is the only
     // route from the intro movie to `luaIn`. src/mission_blackout.cpp.
@@ -478,6 +483,24 @@ constexpr std::size_t kScriptEntityCapacity = 512;
 // GetDifficulty's. Every other method belongs to a binding not dispatched here
 // and records itself if it ever is; the two difficulty readers below do not,
 // because GetDifficulty reaches them on every call and each has a source.
+GameSoundDialogRuntime*& bound_music_dialog() noexcept {
+    // This slot is first accessed only in the ON application binding. The
+    // application retires it before destroying SoundServices.
+    static GameSoundDialogRuntime* runtime = nullptr;
+    return runtime;
+}
+GameSoundDialogRuntime& music_dialog() {
+    auto* const runtime = bound_music_dialog();
+    if (!runtime) throw std::logic_error("Mission music requires the application's dialog runtime");
+    return *runtime;
+}
+class ScriptMusicFadeAdapter final : public bsp::cc13_seg56::MusicFadeHost {
+public:
+    void music_set_target_level(float level) override {
+        music_dialog().set_music_target_level(level);
+    }
+};
+
 class SetThinkCoreHost final : public bsp::LuaBindingCoreHost {
 public:
     explicit SetThinkCoreHost(GameScriptOrdersHost& owner) : owner_(owner) {}
@@ -503,7 +526,13 @@ public:
     bool resolve_global_integer(const std::string&, int&) override { return false; }
     void vehicle_class_mark_party_required(int, int) override {}
     void vehicle_class_get_or_create(int, bool) override {}
-    void music_director_set_level(int) override {}
+    void music_director_set_level(int level) override {
+        // 00A788A0 calls the actual published manager's level body; OFF keeps the no-op.
+        if constexpr (kWireGoal2Chain180Bound) {
+            music_dialog().set_music_level(level);
+        } else {
+        }
+    }
     void session_send_music_level(int) override {}
     // The two SetParty virtuals and the session route. docs/LUA_BINDING_CORE.md
     // records that neither virtual has a resolved concrete vtable, so both are
@@ -670,6 +699,13 @@ bool record_director_artillery_enable_0071c231(const std::string& name, bool ena
 }
 }  // namespace
 
+void GameScriptOrdersHost::bind_music_dialog(GameSoundDialogRuntime* runtime) noexcept {
+    if constexpr (kWireGoal2Chain180Bound) {
+        bound_music_dialog() = runtime;
+    } else {
+    }
+}
+
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
     : log_(log), units_(units) {
     g_live_script_orders = this;
@@ -750,6 +786,7 @@ void GameScriptOrdersHost::after_order_delivery(std::function<void()> fn) {
 bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     const ScriptOrderBinding* binding = find_binding(binding_name);
     if (binding == nullptr) return false;
+    if (std::strcmp(binding->name, "MusicFade") == 0) return kWireGoal2Chain180Bound;
     // A switch that is off leaves its native an unimplemented record, not a
     // concrete binding that does nothing.
     if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
@@ -4787,6 +4824,13 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_music_control_set_level(*this, core);
+    } else if (std::strcmp(binding->name, "MusicFade") == 0) {
+        // 008C7190 calls its existing Lua body and 00A77860; OFF keeps fallback dispatch.
+        if constexpr (kWireGoal2Chain180Bound) {
+            ScriptMusicFadeAdapter music;
+            results = bsp::cc13_seg56::lua_music_fade(*this, music);
+        } else {
+        }
     } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);

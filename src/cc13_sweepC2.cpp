@@ -11,8 +11,8 @@ namespace bsp::cc13_sweepC2 {
 namespace {
 
 // Handle helpers defined further down.
-void ref_release(SweepC2Host& host, void* object);
-void ref_assign(SweepC2Host& host, void*& slot, void* value);
+void ref_release(DialogMusicHost& host, void* object);
+void ref_assign(DialogMusicHost& host, void*& slot, void* value);
 
 // The engine's tracked lock: EnterCriticalSection, then the +18h recursion counter, and the
 // reverse. A null section is skipped, as in every inlined copy.
@@ -273,7 +273,7 @@ namespace {
 
 // The ref-counted handle release the image inlines: InterlockedDecrement(object+4), and the
 // destroy slot vtable[0] (no argument) when it reaches zero.
-void ref_release(SweepC2Host& host, void* object) {
+void ref_release(DialogMusicHost& host, void* object) {
     if (object == nullptr) return;
     if (host.interlocked_decrement_00ce2220(&at<std::int32_t>(object, 0x04)) == 0) {
         host.refcounted_destroy_vslot_00(object);
@@ -620,7 +620,7 @@ struct NativeStringTemp {
     std::uint32_t length;
     char* data;
 };
-void release_temp(SweepC2Host& host, NativeStringTemp& text) {
+void release_temp(DialogMusicHost& host, NativeStringTemp& text) {
     if (text.data != nullptr) host.string_pool_release_00419cc0_00bd1510(text.data, text.length + 1);
 }
 
@@ -869,7 +869,7 @@ void native_string_copy(SweepC2Host& host, void* dest, const void* src) {
 }
 
 // The inlined ref-counted handle assignment: store, add-ref the new handle, release the old.
-void ref_assign(SweepC2Host& host, void*& slot, void* value) {
+void ref_assign(DialogMusicHost& host, void*& slot, void* value) {
     void* const previous = slot;
     if (previous == value) return;
     slot = value;
@@ -879,7 +879,7 @@ void ref_assign(SweepC2Host& host, void*& slot, void* value) {
 
 // Whether the channel's stream (+4) currently plays `name`: CopyName into a stack temporary,
 // EqualsInsensitive, release the temporary. No stream answers false without either call.
-bool stream_plays(SweepC2Host& host, void* channel, const void* name) {
+bool stream_plays(DialogMusicHost& host, void* channel, const void* name) {
     void* const stream = ptr(channel, 0x04);
     if (stream == nullptr) return false;
     NativeStringTemp current{0, nullptr};
@@ -919,7 +919,7 @@ void dialog_channel_set_volume_by_name_00a78330(SweepC2Host& host, void* channel
 // otherwise +2Ch = 0, record +10h takes the name, +28h the handle, +4Dh = 0, +4Ch = 1 and +30h
 // is cleared. The by-value handle is released last.
 // ---------------------------------------------------------------------------
-void dialog_request_music_00a786f0(SweepC2Host& host, void* director, const void* name,
+void dialog_request_music_00a786f0(DialogMusicHost& host, void* director, const void* name,
                                    void* handle, float fade) {
     void* const source = const_cast<void*>(name);
     const char* text = at<const char*>(source, 0x04);
@@ -954,6 +954,12 @@ void dialog_request_music_00a786f0(SweepC2Host& host, void* director, const void
 // handle +1C0h + (party*9 + level)*4 and fade 0.0f.
 // ---------------------------------------------------------------------------
 void music_director_set_level_00a788a0(SweepC2Host& host, void* manager, std::int32_t level) {
+    music_director_set_level_00a788a0(static_cast<DialogMusicHost&>(host),
+        *static_cast<NativeSoundAlternateOwnerStorage*>(manager), level);
+}
+void music_director_set_level_00a788a0(DialogMusicHost& host,
+    NativeSoundAlternateOwnerStorage& owner, std::int32_t level) {
+    void* const manager = &owner;
     if (at<std::int32_t>(manager, 0x208) == level) return;
     const std::int32_t party = at<std::int32_t>(manager, 0x210);
     at<std::int32_t>(manager, 0x208) = level;

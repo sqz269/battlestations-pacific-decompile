@@ -90,6 +90,8 @@
 #include "bsp/game_platform_services.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
+#include "bsp/wire_goal2_chain180_switches.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
@@ -2664,6 +2666,10 @@ GameStartupHost::~GameStartupHost() {
     }
     input_runtime_ = nullptr;
     input_.reset();
+    if constexpr (kWireGoal2Chain180Bound) {
+        GameScriptOrdersHost::bind_music_dialog(nullptr);
+    } else {
+    }
     sound_.reset();
     delete singletons_;
     singletons_ = nullptr;
@@ -3615,6 +3621,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         settings_view_.gameplay.language_index_04);
     // cc15-bank: the sample cache [00F8BBE8] 00A83FD0 reads (under kMessageSoundBankCc15Bound).
     GameMessageManagerHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr);
+    if constexpr (kWireGoal2Chain180Bound) {
+        GameScriptOrdersHost::bind_music_dialog(sound_ ? &sound_->dialog : nullptr);
+    } else {
+    }
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(),
         // cc13-mp1. Campaign identity: no --skirmish passes options_.menu_select as before.
