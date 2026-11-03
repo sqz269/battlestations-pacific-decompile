@@ -4499,8 +4499,11 @@ namespace {
 //  - 00884A90 / 006EDF00 / 006B88E0 / 00884AF0 and the frees keep the 0Ch variant
 //    vector on this process's heap.
 //  - 0065D070 on [[00E198C4]+BCh] and 00A16EF0 have no object here (no support
-//    manager, no script AI group factory): the arm is logged and nothing is made,
-//    which is also all the OFF path's global lookup of a bracketed name does.
+//    manager, no script AI group factory): the arm is logged and nothing is made.
+//    OFF looks a bracketed name up as a Lua global instead, fails, and so also
+//    makes nothing, but it bumps summary_.spawn_new_callback_missing and logs
+//    "defines no global"; ON does not bump that counter. No shipped mission
+//    script passes a '['-prefixed callback.
 class SpawnCompletionLuaAdapter final : public bsp::cc13_avoid1::Cc13SpawnCompletionHost {
 public:
     using Record = bsp::cc13_avoid1::Cc13SpawnRequestCompletionNative;

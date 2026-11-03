@@ -14,10 +14,19 @@
     "pc24_lint": "not needed: the ON arm does no x87 arithmetic"
   },
   "wired_total": {"before": 8959, "after": 8960},
+  "review_round_1": {
+    "review_run": 269,
+    "reviewed_head": "6b5ba4f2d",
+    "fixes": [
+      "fixed: 004b6720 skip reason rewritten; 004BC120 is spawn_edge_crossing_004bc120 (src/lua_spawn_cc13.cpp:214) on the live SpawnNew placement path and inlines 004B6720 for edges 3/4; the only blocker is Left8Host (174 pure virtuals, checked by count)",
+      "fixed: on_effect and the adapter comment (src/game_hosts_lua.cpp, above SpawnCompletionLuaAdapter) now state that ON no longer increments summary_.spawn_new_callback_missing for a '['-prefixed callback; comment-only code change"
+    ],
+    "rechecks": "ON build (off_switch_on_build.py) exit 0, 0 diagnostics; OFF build.ps1 exit 0, 2/2 tests passed; wire_readiness wired 8960, 00947a30 wired"
+  },
   "host_objects": [
     {
       "name": "SpawnCompletionLuaAdapter (Cc13SpawnCompletionHost over the host's spawn request and lua_State)",
-      "where": "src/game_hosts_lua.cpp:4504",
+      "where": "src/game_hosts_lua.cpp:4507",
       "producers": [
         "record+84h callback: the request's `callback` string read by the Lua SpawnNew binding (00949750, GameMissionLuaHost SpawnNew)",
         "record+CCh members: the entity ids fulfil_spawn_request_009483d0 creates (009483D0 member loop)",
@@ -90,8 +99,9 @@
       "native": "004b6720",
       "address": "004bc34e",
       "function": "004bc120",
+      "host_site": "src/lua_spawn_cc13.cpp spawn_edge_crossing_004bc120 (live: game_hosts_lua.cpp SpawnNew placement -> lua_spawn_resolve_position -> spawn_place_directly_00942cb0 / spawn_find_position_00944c44, kSpawnNewPlacementBound = true)",
       "status": "skipped",
-      "reason": "no live site: the caller 004BC120 world_first_box_edge_crossing has no host implementation (the Cc13Left55Seg56b host method is unimplemented), and the callback body needs Left8Host, which nothing implements"
+      "reason": "host-interface gap only: a live site exists. 004BC120 is reconstructed as spawn_edge_crossing_004bc120 (src/lua_spawn_cc13.cpp:214) on the live SpawnNew placement path, and it restates 004B6720 inline for edges 3 and 4 (004BC34E, 004BC3B5). The row is skipped because the callback body segment_crossing_2d_float3_004b6720 runs over Left8Host (174 pure virtuals, no implementation in any host). Wireable at those two edge calls once Left8Host, or a narrower interface for this body, is implemented"
     },
     {
       "native": "00498f80",
@@ -172,5 +182,5 @@
       "reason": "host-object gap: finds in the sceneDb+18h hidden record map that 004693C0's registration would fill; blocked on the same map (see 004693C0). Not leased this run"
     }
   ],
-  "on_effect": "With kWireGoal2Chain130Bound ON, a fulfilled SpawnNew request's completion runs through 00947A30 at its image position (inside 009483D0 after the member loop and SEntity InitAll, before +C0h): empty callback does nothing; '[supportmanager]' and other '['-names take the 0065D070 / 00A16EF0 arms (logged, no host object); any other name calls the Lua global with one entity table per created member in member order. The drain no longer calls complete_spawn_request_0094c777."
+  "on_effect": "With kWireGoal2Chain130Bound ON, a fulfilled SpawnNew request's completion runs through 00947A30 at its image position (inside 009483D0 after the member loop and SEntity InitAll, before +C0h): empty callback does nothing; '[supportmanager]' and other '['-names take the 0065D070 / 00A16EF0 arms (logged, no host object; unlike OFF's failed global lookup of the bracketed name, ON no longer increments summary_.spawn_new_callback_missing or logs 'defines no global'; no shipped mission script passes a '['-prefixed callback); any other name calls the Lua global with one entity table per created member in member order. The drain no longer calls complete_spawn_request_0094c777."
 }
