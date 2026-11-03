@@ -1,7 +1,9 @@
 #include "bsp/scene_traffic_groups.hpp"
+#include "bsp/wire_goal2_chain145_switches.hpp"
 
 #include <cctype>
 #include <cstdio>
+#include <stdexcept>
 #include <utility>
 #include <cstring>
 
@@ -226,6 +228,90 @@ void apply_traffic_properties(const ScenePropertyBlock& block, SceneTrafficHost&
     }
 }
 
+namespace {
+
+// kWireGoal2Chain145Bound: 00951220 creating one record over this reader.
+// operator new(4Ch) (00BF681B, 0095123C) hands out this object's buffer,
+// value-initialised. 0049F9B0 (00951258) is not run: its stores that
+// 00951220 leaves standing (+20h HP, the two maps at +34h/+40h) are not read
+// back, because only 00951220's own stores are copied into the record, so the
+// call is a no-op here. The three floats are the image's .rdata constants
+// 00951220 loads (disk bytes 00CE38B8 = 41200000h 10.0f, 00CE3850 = 40A00000h
+// 5.0f, 00CE685C = 42200000h 40.0f; TrafficRecordDefaults names the same
+// values). 00950FC0's push_back onto [00F8A084] is the host's: the reader
+// hands the finished record to add_traffic_record, as the OFF path does, so
+// the append here only keeps the pointer.
+class TrafficRecordCreation final : public TrafficRecordCreateHost {
+public:
+    std::uint8_t* call_00bf681b(std::uint32_t bytes) override
+    {
+        if (bytes != TrafficRecordOffsets::kSize) {
+            throw std::logic_error("00951220 allocation size is not 4Ch");
+        }
+        return storage_;
+    }
+    void call_0049f9b0(std::uint8_t* record) override { static_cast<void>(record); }
+    std::uint32_t read_global_u32(std::uint32_t address) override
+    {
+        switch (address) {
+        case 0x00ce38b8u: return float_bits(TrafficRecordDefaults::kColumnGap);
+        case 0x00ce3850u: return float_bits(TrafficRecordDefaults::kSpeed);
+        case 0x00ce685cu: return float_bits(TrafficRecordDefaults::kRowGap);
+        default: throw std::logic_error("00951220 read an unmodelled global");
+        }
+    }
+    void call_00950fc0(void* vector, std::uint8_t* const* record) override
+    {
+        if (vector != this) {
+            throw std::logic_error("00951220 appended to another vector");
+        }
+        created_ = *record;
+    }
+
+    // 00951396: the record for `path_entity`, then its stores copied into
+    // `out`. Only the fields 00951220 writes are copied; +0 is the path
+    // entity the reader passed in, which the host keeps as a bool.
+    void create_into(TrafficRecord& out)
+    {
+        create_traffic_record_00951220(*this, this, nullptr,
+            out.path_entity_resolved ? 1u : 0u);
+        if (created_ == nullptr) {
+            throw std::logic_error("00951220 appended no record");
+        }
+        out.start_point = load<std::int32_t>(TrafficRecordOffsets::kStartPoint);
+        out.end_point = load<std::int32_t>(TrafficRecordOffsets::kEndPoint);
+        out.cyclic = created_[TrafficRecordOffsets::kCyclic] != 0;
+        out.row_count = load<std::int32_t>(TrafficRecordOffsets::kRowCount);
+        out.columns = load<std::int32_t>(TrafficRecordOffsets::kColumns);
+        out.row_gap = load<float>(TrafficRecordOffsets::kRowGap);
+        out.column_gap = load<float>(TrafficRecordOffsets::kColumnGap);
+        out.speed = load<float>(TrafficRecordOffsets::kSpeed);
+        out.random_factor = load<float>(TrafficRecordOffsets::kRandomFactor);
+        out.row_deviation = load<float>(TrafficRecordOffsets::kRowDeviation);
+        out.column_deviation = load<float>(TrafficRecordOffsets::kColumnDeviation);
+    }
+
+private:
+    static std::uint32_t float_bits(float value) noexcept
+    {
+        std::uint32_t bits = 0;
+        std::memcpy(&bits, &value, sizeof(bits));
+        return bits;
+    }
+    template <class T>
+    T load(std::uint32_t offset) const noexcept
+    {
+        T value{};
+        std::memcpy(&value, created_ + offset, sizeof(value));
+        return value;
+    }
+
+    alignas(4) std::uint8_t storage_[TrafficRecordOffsets::kSize]{};
+    std::uint8_t* created_{nullptr};
+};
+
+} // namespace
+
 // ---------------------------------------------------------------------------
 // 009512F0 BSP_SceneFile_ReadTrafficItem
 // ---------------------------------------------------------------------------
@@ -254,6 +340,14 @@ bool read_traffic_item(SceneLexer& lexer, SceneTrafficHost& host, TrafficRecord&
     // 00951369/0095136D: the lookup runs only for a non-null, non-empty name.
     if (!out.path_entity_name.empty()) {
         out.path_entity_resolved = host.resolve_path_entity(out.path_entity_name);
+    }
+
+    if constexpr (kWireGoal2Chain145Bound) {
+        // 00951396 -> 00951220: the record's defaults are its constructor
+        // stores, made after the path lookup and before 009513E8 applies the
+        // properties. OFF keeps TrafficRecord's member initialisers.
+        TrafficRecordCreation creation;
+        creation.create_into(out);
     }
 
     // 009513A4: the optional `properties` section.

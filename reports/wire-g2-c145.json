@@ -1,0 +1,177 @@
+{
+  "chain": 145,
+  "goal": 2,
+  "slot": "g2-w1",
+  "run": 285,
+  "harness": "claude",
+  "candidate": "segment 61 [0092e0b0-00951f20] (tier 2, range sweep)",
+  "switch": "kWireGoal2Chain145Bound",
+  "switch_header": "include/bsp/wire_goal2_chain145_switches.hpp",
+  "host_file": "src/scene_file.cpp",
+  "build": {
+    "off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+    "on": "tools/off_switch_on_build.py --names kWireGoal2Chain145Bound: build.ps1 exit 0, 0 distinct diagnostics, 2/2 tests passed (reconstructed_math includes the multi-run quoted S scene case, which ran through the chunk-list writer)",
+    "pc24": "not applicable: the ON arms do no x87 arithmetic (float fields are copied bytewise)"
+  },
+  "wired_totals": {"before": 8975, "after": 8981},
+  "host_objects": [
+    {
+      "name": "SceneQuotedRunChunkView + SceneTextChunkWriterHost (008EFB00's stack chunk-list text writer over the C++ heap)",
+      "where": "src/scene_file.cpp:303",
+      "producers": [
+        "008EFB00 writer stores (depth 0, width 2, fill 20h, vtable 00D162CC, head/tail/total 0), as oct18_rec's raw read_quoted_runs_008efb00 entry",
+        "writer slot 0 = 00950240 (disk dword [00D162CC] = 00950240h)",
+        "chunk slot 0 = 00950380 ([00D19B74]): 00950350's stores then operator delete",
+        "008F5D0A/008F5D24 _free of the joined text after the caller stores it"
+      ],
+      "rows": ["009502e0", "0094ff10", "009500a0"]
+    },
+    {
+      "name": "TrafficRecordCreation (TrafficRecordCreateHost over one 4Ch record buffer)",
+      "where": "src/scene_traffic_groups.cpp:244",
+      "producers": [
+        "00951220's constructor stores",
+        "image .rdata floats 00CE38B8 = 10.0f, 00CE3850 = 5.0f, 00CE685C = 40.0f (disk bytes, TrafficRecordDefaults)",
+        "the reader's path-entity lookup answer (SceneTrafficHost::resolve_path_entity)"
+      ],
+      "rows": ["00951220"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "009502e0",
+      "address": "008efb4d",
+      "function": "008efb00",
+      "host_site": "src/scene_file.cpp parse_property_body -> SceneQuotedRunChunkView::reset",
+      "status": "wired",
+      "reach": "static: game_hosts_scene_contents.cpp SceneReaderBinding (SceneFileReaderHost) -> scene_file.cpp parse_entity -> parse_property_section -> parse_property_body, explicit S value with a quoted run; no disabled gate (the new arm is first in the if-constexpr chain, ahead of kWireGoal2Chain115Bound). Shipped .scn properties author quoted S values (FilePath etc.)."
+    },
+    {
+      "native": "0094ff10",
+      "address": "008efb75",
+      "function": "008efb00",
+      "host_site": "src/scene_file.cpp parse_property_body -> SceneQuotedRunChunkView::append",
+      "status": "wired",
+      "reach": "static: same path as 009502e0, once per quoted run"
+    },
+    {
+      "native": "009500a0",
+      "address": "008efb8a",
+      "function": "008efb00",
+      "host_site": "src/scene_file.cpp parse_property_body -> SceneQuotedRunChunkView::join",
+      "status": "wired",
+      "reach": "static: same path as 009502e0, once per quoted S value"
+    },
+    {
+      "native": "00951220",
+      "address": "00951396",
+      "function": "009512f0",
+      "host_site": "src/scene_traffic_groups.cpp read_traffic_item (TrafficRecordCreation::create_into)",
+      "status": "wired",
+      "reach": "static: game_hosts_scene_contents.cpp load_traffic_block (kSceneTrafficBlockBound = true) -> read_traffic_block_after_keyword -> read_traffic_block_body -> read_traffic_item; docs/SCENE_TRAFFIC_BLOCK.md census: 251 of 259 shipped scenes have a traffic block, 172 items. Note: every shipped item has a properties section whose applier (0049CF80) rewrites these fields afterwards, as in the image, so a flip changes no shipped record value."
+    },
+    {
+      "native": "0092e250",
+      "address": "00935196",
+      "function": "00934150",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "host lacks scene-graph node world matrices: callers 00934150 (unit_parts.cpp, via the apply_node_transform contract no host implements; game_hosts_gunnery.cpp labels 00934150's debris as counted only) and 00b91b20 (QuadBoundsServices::world_box, no host implementation)"
+    },
+    {
+      "native": "0093ac30",
+      "address": "0093c0ff",
+      "function": "0093bed0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "native-string release inside 0093BED0 and its EH funclets; the host's roll_component_failure_0093bed0 (game_hosts_gunnery.cpp) holds typed std::string rows, so there is no native string storage to release"
+    },
+    {
+      "native": "0093cc20",
+      "address": "0093cc99",
+      "function": "0093cc90",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "host lacks the Simple3dScene / InterfaceView object: render_interface_ortho_view_00535430/0059d7b0 are empty overrides in game_native_mission_frame.cpp and no host constructs a Simple3dScene"
+    },
+    {
+      "native": "0093d250",
+      "function": "00535430",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "reached only by tail JMPs from 00535430/0059d7b0, whose host hooks (game_native_mission_frame.cpp render_interface_ortho_view_*) are empty; host lacks the Simple3dScene render object"
+    },
+    {
+      "native": "0093fd00",
+      "address": "0093fe7f",
+      "function": "0093fdf0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "callers 0093FDF0 (copy_construct_sound_sample_options, state callees_done_no_wired_caller) and 00A82AE0 (copy_sound_sample_descriptor, no host caller): no host path builds sound sample descriptors"
+    },
+    {
+      "native": "00940ec0",
+      "address": "004dd6f6",
+      "function": "004dd5b0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "caller game_on_init_once_004dd5b0 (oct18_tail_a.cpp) runs through sound_set_initialize_00940ec0, which no host implements; host lacks the GUI sound set (sample cache [00F8BBE8], InPauseGUI class lookup), and nothing would play from it (see 00941070)"
+    },
+    {
+      "native": "00941070",
+      "address": "0094114d",
+      "function": "00941140",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "game_hosts_mission_frame.cpp apply_sound_requests_00941140 discards the decision and no host code ever writes SoundRequestQueue::requested/forced_slot, so the play would never run on host state; also needs the unbuilt GUI sound set object"
+    },
+    {
+      "native": "00943c00",
+      "address": "009478c4",
+      "function": "009478b0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "lease: the enqueue/requeue host sites are in game_hosts_lua.cpp, held by another worker this run; the queue (lua_spawn_new.cpp SpawnRequestQueue) is also a typed container with no image-shaped node list"
+    },
+    {
+      "native": "009481a0",
+      "address": "0094996d",
+      "function": "00949750",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "lease: the LuaSpawnNew host site is in game_hosts_lua.cpp, held by another worker this run"
+    },
+    {
+      "native": "0094bff0",
+      "address": "008eaf51",
+      "function": "008eada0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "game_hosts_powerups.cpp use_item_008eada0 throws '008EAEC3 air-support use not modelled' on this arm; the body needs a raw Large61Host over image game/player/unit objects ([00E188A8], player records, spawn manager) the host does not have"
+    },
+    {
+      "native": "00950000",
+      "address": "008f1e0e",
+      "function": "008f1ca0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "only callers are 008F1CA0 BSP_SceneProperty_WriteText (cc13_seg59b.cpp, through a Seg59bHost no host implements) and undefined code at 00457180: no host path writes scene text"
+    },
+    {
+      "native": "00950050",
+      "address": "008f1f4a",
+      "function": "008f1ca0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "only caller is 008F1CA0 BSP_SceneProperty_WriteText, which no host runs (scene text output)"
+    },
+    {
+      "native": "00950130",
+      "address": "008f1df2",
+      "function": "008f1ca0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "only callers are 008F1CA0 BSP_SceneProperty_WriteText and undefined code at 00457180; no host path writes scene text"
+    }
+  ]
+}
