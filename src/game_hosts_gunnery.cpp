@@ -19798,6 +19798,30 @@ void GameGunneryHost::set_director_fire_stance_0071be80(std::size_t unit_index, 
     }
 }
 
+void GameGunneryHost::store_director_stance_permissions(std::size_t unit_index, int stance,
+                                                       bool fire, bool move) {
+    // The reconstructed 0071BE80/0071BED0/0071BF20/0071BF70 sequence supplies
+    // both answers. Commit once to the existing store read by firing and AI;
+    // the script caller retains the 00836210 target-reference release.
+    ++impl_->stance_sets;
+    if (stance >= 0 && stance < 4) ++impl_->stance_by_value[stance];
+    if (unit_index >= impl_->director_stance_by_unit.size()) {
+        impl_->director_stance_by_unit.resize(unit_index + 1);
+    }
+    auto& row = impl_->director_stance_by_unit[unit_index];
+    row.allow_fire = fire;
+    row.allow_move = move;
+    row.set = true;
+    impl_->log.notef("  director stance: unit %zu stance=%d allowFire %d allowMove %d bound=%d "
+        "(0071BE80 -> 0071DA50/0071DAD0 5Ah)", unit_index, stance, fire ? 1 : 0, move ? 1 : 0,
+        kShipFireStanceBound ? 1 : 0);
+    if constexpr (kShipFireStanceBound) {
+        impl_->done("WeaponDirector::set_fire_stance_0071be80", 0x0071be80u);
+    } else {
+        impl_->record("WeaponDirector::set_fire_stance_0071be80", 0x0071be80u);
+    }
+}
+
 bool GameGunneryHost::director_allow_fire_3c(std::size_t unit_index) const noexcept {
     if (!kShipFireStanceBound || unit_index >= impl_->director_stance_by_unit.size()) return true;
     const auto& row = impl_->director_stance_by_unit[unit_index];

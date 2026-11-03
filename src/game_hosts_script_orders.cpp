@@ -32,6 +32,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
+#include "bsp/wire_goal4_chain257_switches.hpp"
+#include "bsp/cc13_seg52.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
@@ -3022,6 +3024,39 @@ int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
 // otherwise. A plane's vtable[114h] is 0047F180 (XOR EAX,EAX), so a plane
 // argument is the image's own no-op. A ship argument is left a record.
 namespace {
+// Chain 257. Evidence: `bsp.py show 0071BED0 --asm` (0071BEDB/0071BEE8
+// push 0) and 0071BF70 --asm (0071BF7B/0071BF88 push 2) call slots 24h,
+// 28h, 40h, 44h in that order, querying both permissions before either send.
+// 007ECFD0 returns the real squadron's +348h command block, whose slots
+// 24h/28h are 0084D910/0084D930; a ship uses 0071D560/0071D580. In particular,
+// stance 0 allows squadron movement but forbids ship movement. The two output
+// bytes below are committed by the caller to its existing live permission row.
+class ScriptDirectorStanceHost final : public bsp::WeaponDirectorStanceHost {
+public:
+    explicit ScriptDirectorStanceHost(bool squadron) : squadron_(squadron) {}
+
+    bool director_stance_allows_fire(bsp::FireStance stance) override {
+        return squadron_
+            ? bsp::cc13_seg52::squadron_block_allows_category24_0084d910(
+                  static_cast<std::int32_t>(stance)) != 0
+            : bsp::director_stance_allows_fire_0071d560(stance);
+    }
+    bool director_stance_allows_move(bsp::FireStance stance) override {
+        return squadron_
+            ? bsp::cc13_seg52::squadron_block_allows_category28_0084d930(
+                  static_cast<std::int32_t>(stance)) != 0
+            : bsp::director_stance_allows_move_0071d580(stance);
+    }
+    void send_allow_fire(bool allowed) override { allow_fire = allowed; }
+    void send_allow_move(bool allowed) override { allow_move = allowed; }
+
+    bool allow_fire{};
+    bool allow_move{};
+
+private:
+    bool squadron_;
+};
+
 GameScriptOrdersHost::SquadronPermissions squadron_permissions_0084d810(
     const bsp::PlaneSquadronHostRecord& squadron, bool fighter) noexcept {
     GameScriptOrdersHost::SquadronPermissions p;
@@ -3093,7 +3128,14 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
             // director predicates 0071D560 / 0071D580, stored by the gunnery host.
             // The director fire-target release when a stance forbids fire (00836210
             // at 0083622B) is kDirectorFirePermissionClearBound.
-            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            if constexpr (bsp::kWireGoal4Chain257Bound) {
+                ScriptDirectorStanceHost director(false);
+                bsp::set_fire_stance_0071be80(director, static_cast<bsp::FireStance>(stance));
+                units_.gunnery()->store_director_stance_permissions(row.unit_index, stance,
+                    director.allow_fire, director.allow_move);
+            } else {
+                units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+            }
             director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
             log_.implemented("MissionLuaNative::UnitSetFireStance ship arm (0071BE80)",
                              "0071be80");
@@ -3111,8 +3153,15 @@ int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
     const SquadronPermissions before = found != squadron_permissions_.end()
         ? found->second : squadron_permissions_0084d810(*squadron, fighter);
     SquadronPermissions after;
-    after.allow_fire = stance == 1 || stance == 2;                  // 0084D910
-    after.allow_move = stance == 0 || stance == 2 || stance == 3;   // 0084D930
+    if constexpr (bsp::kWireGoal4Chain257Bound) {
+        ScriptDirectorStanceHost director(true);
+        bsp::set_fire_stance_0071be80(director, static_cast<bsp::FireStance>(stance));
+        after.allow_fire = director.allow_fire;
+        after.allow_move = director.allow_move;
+    } else {
+        after.allow_fire = stance == 1 || stance == 2;                  // 0084D910
+        after.allow_move = stance == 0 || stance == 2 || stance == 3;   // 0084D930
+    }
     squadron_permissions_[squadron->name] = after;                  // 0071DA50/0071DAD0
     log_.notef("  UnitSetFireStance: squadron %s stance=%d allowFire %d->%d allowMove %d->%d "
         "(behaviour=%d fighter=%d; 008A6490 -> 007ECFD0 +348h -> 0071BE80)",
@@ -3136,7 +3185,14 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
         ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
     if (squadron != nullptr) {
         // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
-        squadron_permissions_[squadron->name] = SquadronPermissions{false, true};
+        if constexpr (bsp::kWireGoal4Chain257Bound) {
+            ScriptDirectorStanceHost director(true);
+            bsp::hold_fire_0071bed0(director);
+            squadron_permissions_[squadron->name] = SquadronPermissions{
+                director.allow_fire, director.allow_move};
+        } else {
+            squadron_permissions_[squadron->name] = SquadronPermissions{false, true};
+        }
         log_.notef("  UnitHoldFire: squadron %s allowFire 0 allowMove 1 "
             "(008A6AC0 -> 007ECFD0 +348h -> 0071BED0)", squadron->name.c_str());
     } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
@@ -3149,7 +3205,14 @@ int GameScriptOrdersHost::run_unit_hold_fire(GameScriptOrderRow& row) {
                && units_.gunnery() != nullptr) {
         // Packet cc9_ship_fire_stance (routed from gunnery13): 0071BED0 is
         // 0071BE80 with stance 0 on the ship's director.
-        units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        if constexpr (bsp::kWireGoal4Chain257Bound) {
+            ScriptDirectorStanceHost director(false);
+            bsp::hold_fire_0071bed0(director);
+            units_.gunnery()->store_director_stance_permissions(row.unit_index, 0,
+                director.allow_fire, director.allow_move);
+        } else {
+            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, 0);
+        }
         director_fire_permission_00836210(units_.ship_ai(), row.unit_index, 0);
         log_.implemented("MissionLuaNative::UnitHoldFire ship arm (0071BED0)", "0071bed0");
     } else {
@@ -3183,8 +3246,19 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
     if (squadron != nullptr) {
         // 007ECFD0 +348h: 0084D910 (stance 1 or 2) and 0084D930 (0, 2 or 3).
         SquadronPermissions after;
-        after.allow_fire = stance == 1 || stance == 2;
-        after.allow_move = stance == 0 || stance == 2 || stance == 3;
+        if constexpr (bsp::kWireGoal4Chain257Bound) {
+            ScriptDirectorStanceHost director(true);
+            if (order == bsp::ScriptFireOrder::kFreeAttack) {
+                bsp::free_attack_0071bf70(director);
+            } else {
+                bsp::free_fire_0071bf20(director);
+            }
+            after.allow_fire = director.allow_fire;
+            after.allow_move = director.allow_move;
+        } else {
+            after.allow_fire = stance == 1 || stance == 2;
+            after.allow_move = stance == 0 || stance == 2 || stance == 3;
+        }
         squadron_permissions_[squadron->name] = after;
         log_.notef("  %s: squadron %s allowFire %d allowMove %d (+348h stance %d)", native,
             squadron->name.c_str(), after.allow_fire ? 1 : 0, after.allow_move ? 1 : 0,
@@ -3195,7 +3269,18 @@ int GameScriptOrdersHost::run_unit_free_fire(GameScriptOrderRow& row,
             "the wrapper (recorded, nothing done)", native, row.unit.c_str());
     } else if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 6)
                && units_.gunnery() != nullptr) {
-        units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+        if constexpr (bsp::kWireGoal4Chain257Bound) {
+            ScriptDirectorStanceHost director(false);
+            if (order == bsp::ScriptFireOrder::kFreeAttack) {
+                bsp::free_attack_0071bf70(director);
+            } else {
+                bsp::free_fire_0071bf20(director);
+            }
+            units_.gunnery()->store_director_stance_permissions(row.unit_index, stance,
+                director.allow_fire, director.allow_move);
+        } else {
+            units_.gunnery()->set_director_fire_stance_0071be80(row.unit_index, stance);
+        }
         director_fire_permission_00836210(units_.ship_ai(), row.unit_index, stance);
         log_.implemented(order == bsp::ScriptFireOrder::kFreeAttack
             ? "MissionLuaNative::UnitFreeAttack ship arm (0071BF70)"

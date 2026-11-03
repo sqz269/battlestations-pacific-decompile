@@ -1,0 +1,92 @@
+{
+  "goal": 4,
+  "chain": 257,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain257Bound",
+  "base_head": "c7b918adf03cb6eb4ade18c0fd757204e4ebfdc0",
+  "readiness": {
+    "command": "python tools/wire_readiness.py --standins",
+    "wired_before": 9090,
+    "wired_after": 9094,
+    "newly_wired": 4,
+    "scope": "Source-level identifier reachability, not runtime coverage."
+  },
+  "native_abi": "0071BED0/0071BF20/0071BF70 use ECX=director, no stack arguments and plain RET; 0071BE80 and the squadron predicates take one stack stance/category and RET 4. The C++ callback interfaces are not binary replacements.",
+  "rows": [
+    {
+      "native": "0071bed0",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::run_unit_hold_fire",
+      "state": "Actual resolved ship or registered squadron; wrapper outputs replace the inline stance substitution and update the existing permission stores.",
+      "evidence": "bsp.py show 0071bed0 --asm: PUSH 0 at 0071BEDB/0071BEE8; predicates 24h/28h precede sends 40h/44h."
+    },
+    {
+      "native": "0071bf70",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::run_unit_free_fire, ScriptFireOrder::kFreeAttack",
+      "state": "The real UnitFreeAttack dispatch selects the existing wrapper; its outputs update the ship's director row or squadron_permissions_ by the resolved squadron name.",
+      "evidence": "bsp.py show 0071bf70 --asm: PUSH 2 at 0071BF7B/0071BF88; both predicate results are retained before the sends."
+    },
+    {
+      "native": "0084d910",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDirectorStanceHost::director_stance_allows_fire, called by run_unit_set_fire_stance/run_unit_hold_fire/run_unit_free_fire",
+      "state": "Only a resolved registered squadron selects this virtual predicate; its real script stance or native wrapper literal controls the stored allow_fire byte.",
+      "evidence": "bsp.py show 0084d910: the squadron command-block slot 24h returns true for categories 1 and 2."
+    },
+    {
+      "native": "0084d930",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDirectorStanceHost::director_stance_allows_move, called by run_unit_set_fire_stance/run_unit_hold_fire/run_unit_free_fire",
+      "state": "The squadron command-block predicate controls the real allow_move store, preserving movement under HoldFire, unlike a ship's 0071D580.",
+      "evidence": "bsp.py show 0084d930: slot 28h returns true for categories 0, 3 and 2."
+    },
+    {
+      "native": "0071be80",
+      "status": "wired",
+      "newly_wired": false,
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::run_unit_set_fire_stance and the existing hold/free wrapper bodies",
+      "state": "Reuse the existing set_fire_stance_0071be80 body through a four-method stance boundary; no new address-suffixed body is introduced.",
+      "evidence": "bsp.py show 0071be80 --asm: 0071BE8F/0071BE9D query both predicates, then 0071BEAF/0071BEBD send both results."
+    },
+    {
+      "native": "0071bf20",
+      "status": "wired",
+      "newly_wired": false,
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::run_unit_free_fire, ScriptFireOrder::kFreeFire",
+      "state": "Route the real UnitFreeFire binding through its already existing stance-1 wrapper, using the same live stores as HoldFire and FreeAttack."
+    },
+    {
+      "native": "0071d560",
+      "status": "wired",
+      "newly_wired": false,
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDirectorStanceHost::director_stance_allows_fire, ship arm",
+      "state": "Retain the ship's existing reconstructed fire predicate and the existing ship-AI target-release call after the permission commit."
+    },
+    {
+      "native": "0071d580",
+      "status": "wired",
+      "newly_wired": false,
+      "host_site": "src/game_hosts_script_orders.cpp: ScriptDirectorStanceHost::director_stance_allows_move, ship arm",
+      "state": "Retain the ship's existing reconstructed movement predicate; HoldFire and FreeFire prohibit movement."
+    },
+    {
+      "native": "007ecfd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: squadron resolution preceding the stance calls",
+      "reason": "The raw getter requires a native-layout squadron exposing its retained command-block pointer at +348h; this path resolves registry records and permission maps directly, so that pointer view still needs an adapter."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "changed_code": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "diff": "git diff --check passed",
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Source wiring and build/test evidence; no gameplay or original binary ABI claim. The previous host statements remain in the disabled switch arms."
+  }
+}

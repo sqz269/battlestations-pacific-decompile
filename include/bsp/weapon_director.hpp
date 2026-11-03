@@ -146,7 +146,18 @@ struct DirectorTargetMessage {
 // them. Nothing here has a default body: none of these stands in for
 // unrecovered game behaviour, and the session, the entity reference and the
 // command system stay contracts.
-struct WeaponDirectorHost {
+// 0071BE80 / 0071BED0 / 0071BF20 / 0071BF70 only call these four slots.
+// Keep that boundary usable by the live ship/squadron permission stores without
+// requiring an unrelated allocator, archive, command array or target provider.
+struct WeaponDirectorStanceHost {
+    virtual ~WeaponDirectorStanceHost() = default;
+    virtual bool director_stance_allows_fire(FireStance stance) = 0; // vtable[24h]
+    virtual bool director_stance_allows_move(FireStance stance) = 0; // vtable[28h]
+    virtual void send_allow_fire(bool allowed) = 0;                  // vtable[40h]
+    virtual void send_allow_move(bool allowed) = 0;                  // vtable[44h]
+};
+
+struct WeaponDirectorHost : WeaponDirectorStanceHost {
     virtual ~WeaponDirectorHost() = default;
 
     // -- construction -------------------------------------------------------
@@ -157,12 +168,6 @@ struct WeaponDirectorHost {
     // The two class questions 008363E0 asks the endpoint before defaulting the
     // two permissions to true. Ids 0Bh and 9; what they name is unread.
     virtual bool endpoint_class_test(NativeHandle endpoint, int class_id) = 0; // vtable[5Ch]
-
-    // -- stance -------------------------------------------------------------
-    virtual bool director_stance_allows_fire(FireStance stance) = 0; // vtable[24h] at 0071BE8F
-    virtual bool director_stance_allows_move(FireStance stance) = 0; // vtable[28h] at 0071BE9D
-    virtual void send_allow_fire(bool allowed) = 0;                  // vtable[40h] at 0071BEAF
-    virtual void send_allow_move(bool allowed) = 0;                  // vtable[44h] at 0071BEBD
 
     // -- session ------------------------------------------------------------
     virtual void session_message_construct_base(int kind) = 0;  // 0075B430 at 0071DA71
@@ -196,12 +201,12 @@ WeaponDirectorState construct_director_008366d0(WeaponDirectorHost& host,
 
 // 0071BE80: ask both questions, then apply both answers. The two questions come
 // first: neither answer is applied before the second is asked.
-void set_fire_stance_0071be80(WeaponDirectorHost& host, FireStance stance);
+void set_fire_stance_0071be80(WeaponDirectorStanceHost& host, FireStance stance);
 
 // 0071BED0, 0071BF20, 0071BF70: the same four virtuals with a literal stance.
-void hold_fire_0071bed0(WeaponDirectorHost& host);
-void free_fire_0071bf20(WeaponDirectorHost& host);
-void free_attack_0071bf70(WeaponDirectorHost& host);
+void hold_fire_0071bed0(WeaponDirectorStanceHost& host);
+void free_fire_0071bf20(WeaponDirectorStanceHost& host);
+void free_attack_0071bf70(WeaponDirectorStanceHost& host);
 
 // 0071DA50, 0071DAD0, 0071DFD0, 0071E0D0 and the six siblings: one builder.
 DirectorCommandMessage director_command_message_0071da50(DirectorCommandSubKind sub_kind,
