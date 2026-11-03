@@ -1,0 +1,83 @@
+{
+  "goal": 4,
+  "chain": 261,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain261Bound",
+  "base_head": "e822a477877d40e569c119cfa4877ac1ed6f2ca8",
+  "readiness": {
+    "command": "python tools/wire_readiness.py --standins",
+    "wired_before": 9111,
+    "wired_after": 9115,
+    "newly_wired": 4,
+    "scope": "Source-level identifier reachability; not game execution or runtime coverage."
+  },
+  "native_abi": "0098D570: __fastcall ECX=name, EDX=uint32 value, RET; 0098D590: __fastcall ECX=name, EDX=ANSI string, RET. 00996060: __fastcall ECX=LCID, EDX=message index, RET, EAX=UTF-16 pointer. 0098D400: __fastcall ECX=LCID, RET, EAX=language row. The C++ host interfaces are not drop-in binary replacements.",
+  "rows": [
+    {
+      "native": "0098d570",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::write_hardware_dword",
+      "state": "The existing --hardware-probe-commit gate admits the detected MemSize, CPUSpeed and GPUDeviceID supplied by run_hardware_probe_tail_0073c3b0; the reconstructed writer replaces the inline RegCreateKeyExA/RegSetValueExA/RegCloseKey sequence.",
+      "evidence": "bsp.py show 0098d570; native call sites 0073C856/0073C86E/0073C886; existing reconstruction retains four bytes typed REG_QWORD."
+    },
+    {
+      "native": "0098d590",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_init_tail.cpp: GameHardwareProbe::write_hardware_string",
+      "state": "The existing commit gate admits the detected DirectSound name from the survey; the reconstructed writer replaces the inline registry write, retaining REG_SZ and strlen+1.",
+      "evidence": "bsp.py show 0098d590; native call site 0073C89E."
+    },
+    {
+      "native": "00996060",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine::localized_message -> hardware_probe_localized_message",
+      "state": "The detection object constructed at 0073C467 owns the LCID at +C38h. The existing body selects from all 54 native UTF-16 message pointers relocated to static literals; hardware fragments receive real stored/detected device names or numeric values. UTF-8 transports the result through the tail and is decoded for MessageBoxW.",
+      "evidence": "bsp.py show 00996060 and 00735450; native table 00D1E918..00D1E9EF; source SHA-256 b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6. LocalizationMessageHost narrows the existing body contract without adding another body."
+    },
+    {
+      "native": "0098d400",
+      "status": "wired",
+      "newly_wired": true,
+      "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMessages::localization_language_row_for_lcid_0098d400, called by 00996060",
+      "state": "The lookup forwards the detection object LCID to the existing row mapper; its native English fallback and French/German/Italian/Polish/Russian rows determine the table column.",
+      "evidence": "bsp.py show 0098d400; fixture checks 0409/040C/0407/0410/0415/0419."
+    },
+    {
+      "native": "0098f430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine::write_default_options_file -> GameHardwareProbe::write_default_options_file",
+      "reason": "Missing OptionsTextBuilder bound to the live detection image and a verified producer for +20h, which gates recommendation for an unknown GPU; the constructor/survey do not populate that field."
+    },
+    {
+      "native": "0098e910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine::write_default_options_file (prospective OptionsTextBuilder)",
+      "reason": "Missing hardware-default-options callback bindings, +C3Ch output storage and verified +20h recommendation state; no fabricated detail level or empty defaults supplied."
+    },
+    {
+      "native": "0098df90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine (prospective detail callback for 0098E910)",
+      "reason": "Missing verified +20h producer for the unknown-GPU branch and a native score-column binding at 00E0CFF0; the existing 00E0CFF4 catalog begins with device ID, not score."
+    }
+  ],
+  "supporting_evidence": [
+    "bsp.py show 009927d0: constructor initializes only the vector triples and LCID before collection.",
+    "bsp.py show 00992640 and 00991ef0: survey supplies the existing hardware record, device names, vectors and shader model; +20h remains unproduced.",
+    "0098E0E0 was already wired at baseline and is not claimed as newly wired here."
+  ],
+  "validation": [
+    "Initial python tools/bsp.py index --if-stale: fresh; baseline ./scripts/build.ps1 passed reconstructed_math and tool_tests.",
+    "./scripts/build.ps1 after C++ changes: passed; reconstructed_math and tool_tests both passed.",
+    "54/54 catalog pointer targets match original UTF-16 bytes; six-language format directives verified for messages 2..7.",
+    "Win32 source-extracted host-adapter probe linked the rebuilt bsp_core.lib and called actual 00996060: six languages, device/numeric substitutions, UTF-8 round-trip and uint32 %d bit pattern passed. Compiled with /link /MANIFEST:EMBED.",
+    "git diff --check passed; no float math changed."
+  ],
+  "limits": [
+    "No game run, dialog or real HKLM writes were performed. Runtime hardware-profile gates and --hardware-probe-commit remain in force.",
+    "The localized formatting adapter calls the CRT wide formatter matching the 00735450 wrapper; this does not claim a separately reconstructed 00735450 body."
+  ]
+}
