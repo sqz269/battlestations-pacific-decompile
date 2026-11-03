@@ -38,6 +38,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/wire_goal2_chain181_switches.hpp"
+#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
@@ -1567,6 +1568,44 @@ constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
     {1.0f, 0.9f, 0.1f, 0.85f, 0.5f, 0.1f},   // ArtillerySubDirectorBot
     {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},    // PilotBot AimBulletThrowMul
 };
+// Goal 4 chain 250: 00730498 FMULs the seat bot's vtable[24h](level), the
+// BulletThrowMul getter of the descriptor 00901610 loaded from Robots.lua.
+// The five gun-side getters run on the copies cc13_torp_goaway keeps
+// (AAGunnerBot 008FB4C0, TailGunnerBot 008FB4E0, AAFlakBot 008FB500,
+// TorpedoBot 008FB550, DepthChargeBot 008FB570); nullopt when that descriptor
+// was not loaded, and for the artillery (006DEE00) and pilot (00999610) seats,
+// which keep the table above.
+std::optional<float> seat_bot_bullet_throw_mul(int seat, int level) noexcept {
+    namespace s59 = bsp::gameplay_seg40_59_cc13;
+    const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+        bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+    if (bots == nullptr || level < 0 || level > 5) return std::nullopt;
+    switch (seat) {
+    case kThrowAaGunner:
+        if (bots->aa_gunner_loaded)
+            return s59::aa_gunner_bot_bullet_throw_mul_008fb4c0(bots->aa_gunner, level);
+        break;
+    case kThrowTailGunner:
+        if (bots->tail_gunner_loaded)
+            return s59::tail_gunner_bot_bullet_throw_mul_008fb4e0(bots->tail_gunner, level);
+        break;
+    case kThrowAaFlak:
+        if (bots->aa_flak_loaded)
+            return s59::aa_flak_bot_bullet_throw_mul_008fb500(bots->aa_flak, level);
+        break;
+    case kThrowTorpedo:
+        if (bots->torpedo_loaded)
+            return s59::torpedo_bot_bullet_throw_mul_008fb550(bots->torpedo, level);
+        break;
+    case kThrowDepthCharge:
+        if (bots->depth_charge_loaded)
+            return s59::depth_charge_bot_bullet_throw_mul_008fb570(bots->depth_charge, level);
+        break;
+    default:
+        break;
+    }
+    return std::nullopt;
+}
 // Packet cc9_aa_lethality_audit (docs/AA_LETHALITY_AUDIT.md section 7). The AA
 // bots' own aim errors, which the host had left out as "exact at SPVeteran";
 // a unit no script re-skills stays at unit+390h = 1 (0095CCCC), SPNormal.
@@ -5174,7 +5213,14 @@ struct GameGunneryHost::Impl {
             }
         }
         if (seat >= 0) {
-            magnitude *= kBulletThrowMul[seat][level];                // 00730498 FMUL
+            if constexpr (kWireGoal4Chain250Bound) {
+                // The seat bot's getter on the loaded Robots.lua row; the
+                // table where no getter is hosted or nothing was loaded.
+                const std::optional<float> mul = seat_bot_bullet_throw_mul(seat, level);
+                magnitude *= mul ? *mul : kBulletThrowMul[seat][level];  // 00730498 FMUL
+            } else {
+                magnitude *= kBulletThrowMul[seat][level];                // 00730498 FMUL
+            }
             seat_out = seat;
         }
         return magnitude;
@@ -6950,7 +6996,20 @@ void GameGunneryHost::Impl::rebuild_weapon_category_index_00956c20(std::size_t i
                     out.operational = true;   // 00729F10 over an undamaged gun
                 }
                 out.weapon_function = gun.category;
-                out.max_range = gun.max_range;  // 00731020
+                if constexpr (kWireGoal4Chain250Bound) {
+                    // Goal 4 chain 250: 00731020 on the gun class. Fire record 0
+                    // ([class+74h], present when [class+78h] != 0) is the class's
+                    // Bullet[1]; its bullet's +60h is the derived engagement
+                    // range the host holds in max_range. No record: FLD1.
+                    bsp::gameplay_seg40_59_cc13::GunClassFirstRecord first;
+                    first.present = gun.bullet_class >= 0;
+                    first.bullet_present = first.present;
+                    first.bullet_max_range_060 = gun.max_range;
+                    out.max_range =
+                        bsp::gameplay_seg40_59_cc13::gun_class_max_weapon_range_00731020(first);
+                } else {
+                    out.max_range = gun.max_range;  // 00731020
+                }
                 out.flak_alternate_range = gun.max_range;
                 if constexpr (kFlakSecondAmmoRangeCc13Bound) {
                     // 00956DCB: ammunition record 1's bullet +60h, the derived
@@ -7712,10 +7771,29 @@ public:
                 || (owner_.units.unit_is_kind_of(other, 0x0C)
                     && !(owner_.ship_ai != nullptr
                          && owner_.ship_ai->unit_big_landing_ship_0808(other)));
-            if (small_craft && owner_.units.unit_class_max_speed_0500(other)
-                    >= kTorpedoProofMinMaxSpeed) {
-                ++owner_.torpedo_small_craft_refusals;
-                if constexpr (kTorpedoBotSmallCraftBound) in.slot_accepts_target = false;
+            if constexpr (kWireGoal4Chain250Bound) {
+                // Goal 4 chain 250: 008FC010 itself, the TorpedoBot's vtable[1Ch]:
+                // a target, IsKindOf(6) (008FC021), not torpedo-proof (00828EC0 as
+                // the host evaluates it above), +5Dh clear (008FC03A), then the
+                // gun's vtable[1D4h], which answers 1 for a kind-7 gun (00729560
+                // installs the 0072F6E0 decision for kinds 1, 5 and 6 only).
+                const bool proof = small_craft && owner_.units.unit_class_max_speed_0500(other)
+                    >= kTorpedoProofMinMaxSpeed;
+                if (proof) ++owner_.torpedo_small_craft_refusals;
+                bsp::gameplay_seg40_59_cc13::TorpedoAcceptInputs t;
+                t.has_target = true;   // other < count
+                t.target_kind_6 = owner_.units.unit_is_kind_of(other, 0x06);
+                t.torpedo_proof_small_craft_00828ec0 = proof;
+                t.target_dead_5d = owner_.units.unit_flag_005d(other);
+                in.slot_accepts_target = bsp::gameplay_seg40_59_cc13::torpedo_bot_accepts_008fc010(
+                    t, [] { return true; });
+                owner_.done("Gunnery::torpedo_bot_accepts_008fc010", 0x008fc010u);
+            } else {
+                if (small_craft && owner_.units.unit_class_max_speed_0500(other)
+                        >= kTorpedoProofMinMaxSpeed) {
+                    ++owner_.torpedo_small_craft_refusals;
+                    if constexpr (kTorpedoBotSmallCraftBound) in.slot_accepts_target = false;
+                }
             }
         }
         // Evaluated on every call so a run with the switch off still counts what
@@ -7948,35 +8026,105 @@ public:
         // Kind 6 against a plane under kAaKind6GateBound: 008FBFC0, the window
         // below and then the line of fire, as kind 5.
         if (kind != 1 && kind != 5 && kind != 6) return;
-        if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
-            const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
-            const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
-                                            : 0.0f;
-            // 008FBF70 (TailGunnerBot, a plane-owned kind-1 gun) has no armour term.
+        if constexpr (kWireGoal4Chain250Bound) {
+            // Goal 4 chain 250: the slot bot's vtable[1Ch] body. Kind 1 on a
+            // ship is the AAGunnerBot (slot +390h, 008FBE00: the armour term,
+            // the window, the line of fire); kind 1 on a plane the TailGunnerBot
+            // (008FBF70) and kinds 5 / 6 the AAFlakBot (slot +394h, 008FBFC0,
+            // byte-identical to 008FBF70): the window, then the line of fire.
+            // The window callback is the host's hull-frame 0085A9A0 substitution
+            // and the line of fire the 0072F6E0 cache above. A gun with no
+            // direction or no arcs is accepted with neither test, as before.
+            namespace s59 = bsp::gameplay_seg40_59_cc13;
+            bool no_window_frame = false;
+            auto fire_window_0085a9a0 = [&]() -> bool {
+                if (len <= 0.0f || row.arcs.empty()) {
+                    no_window_frame = true;
+                    return true;
+                }
+                const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+                const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));  // 0085AB17
+                const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
+                const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+                if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
+                    last_refusal_ = AaRefusal::window;
+                    ++owner_.aa_window_rejects;
+                    return false;
+                }
+                return true;
+            };
+            auto line_of_fire = [&]() -> bool {
+                if (no_window_frame) return true;
+                return !line_of_fire_refuses();
+            };
             const bool tail_gunner = owner_.units.unit_is_kind_of(unit_,
                 bsp::kUnitGunneryKindPlaneBase);
-            if (b != nullptr && best <= owner_.unit_state[other].armour) {
-                if (tail_gunner) ++owner_.aa_armour_rejects_tail;
-                if (!(kTailGunnerNoArmourTestBound && tail_gunner)) {
-                    in.slot_accepts_target = false;
+            const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
+            bool accepts = false;
+            if (kind == 1 && !tail_gunner) {
+                s59::AaGunnerAcceptInputs a;
+                a.has_target = true;   // other < count, tested on entry
+                // LABELLED: a gun with no host bullet row keeps no armour term,
+                // as the stand-in did; the image always has [gun+3F8h].
+                a.target_kind_4 = b != nullptr && owner_.units.unit_is_kind_of(other, 4);
+                a.target_armour_04c = owner_.unit_state[other].armour;   // class+4Ch
+                if (b != nullptr) {
+                    a.bullet_damage_max_0b0 = b->damage_max;
+                    a.bullet_blast_damage_max_0b8 = b->blast_damage_max;
+                }
+                accepts = s59::aa_gunner_bot_accepts_008fbe00(a, fire_window_0085a9a0,
+                                                              line_of_fire);
+                owner_.done("Gunnery::aa_gunner_bot_accepts_008fbe00", 0x008fbe00u);
+                if (!accepts && last_refusal_ == AaRefusal::none) {
+                    // Neither callback refused: the armour term did (008FBE7E).
                     last_refusal_ = AaRefusal::armour;
                     ++owner_.aa_armour_rejects;
-                    return;
+                }
+            } else {
+                if (kind == 1 && b != nullptr && owner_.units.unit_is_kind_of(other, 4)
+                    && std::max(b->damage_max, b->blast_damage_max)
+                           <= owner_.unit_state[other].armour) {
+                    ++owner_.aa_armour_rejects_tail;   // counted only; 008FBF70 has no term
+                }
+                accepts = s59::turret_or_flak_bot_accepts_008fbf70(true, fire_window_0085a9a0,
+                                                                   line_of_fire);
+                owner_.done(kind == 1 ? "Gunnery::tail_gunner_bot_accepts_008fbf70"
+                                      : "Gunnery::aa_flak_bot_accepts_008fbfc0",
+                            kind == 1 ? 0x008fbf70u : 0x008fbfc0u);
+            }
+            if (!accepts) in.slot_accepts_target = false;
+            return;
+        } else {
+            if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
+                const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
+                const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
+                                                : 0.0f;
+                // 008FBF70 (TailGunnerBot, a plane-owned kind-1 gun) has no armour term.
+                const bool tail_gunner = owner_.units.unit_is_kind_of(unit_,
+                    bsp::kUnitGunneryKindPlaneBase);
+                if (b != nullptr && best <= owner_.unit_state[other].armour) {
+                    if (tail_gunner) ++owner_.aa_armour_rejects_tail;
+                    if (!(kTailGunnerNoArmourTestBound && tail_gunner)) {
+                        in.slot_accepts_target = false;
+                        last_refusal_ = AaRefusal::armour;
+                        ++owner_.aa_armour_rejects;
+                        return;
+                    }
                 }
             }
+            if (len <= 0.0f || row.arcs.empty()) return;
+            const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+            const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));  // 0085AB17
+            const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
+            const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+            if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
+                in.slot_accepts_target = false;
+                last_refusal_ = AaRefusal::window;
+                ++owner_.aa_window_rejects;
+                return;
+            }
+            line_of_fire_refuses();
         }
-        if (len <= 0.0f || row.arcs.empty()) return;
-        const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
-        const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));  // 0085AB17
-        const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
-        const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
-        if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
-            in.slot_accepts_target = false;
-            last_refusal_ = AaRefusal::window;
-            ++owner_.aa_window_rejects;
-            return;
-        }
-        line_of_fire_refuses();
     }
     bool target_is_plane(void* target) override {
         const std::size_t other = unit_of(target);

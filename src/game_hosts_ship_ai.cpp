@@ -37,6 +37,9 @@
 #include "bsp/wire_goal2_chain71_switches.hpp"
 #include "bsp/wire_goal2_chain153_switches.hpp"
 #include "bsp/wire_goal2_chain218_switches.hpp"
+#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
+#include "bsp/cc13_torp_goaway.hpp"
+#include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
@@ -5289,7 +5292,20 @@ float torpedo_bot_fire_target_accuracy(int level) {
     static constexpr float kFireTargetAccuracy[6] = {0.03f, 0.35f, 0.055f, 0.04f, 0.045f,
                                                      0.055f};
     if (level < 0 || level > 5) level = 1;
-    return kFireTargetAccuracy[level];
+    if constexpr (kWireGoal4Chain250Bound) {
+        // Goal 4 chain 250: the TorpedoBot descriptor 00901610 registers
+        // ([00E1998C]) is kept by cc13_torp_goaway, so 008FB530 reads its
+        // level row; the table stands only when that load did not happen.
+        const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+            bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+        if (bots != nullptr && bots->torpedo_loaded) {
+            return bsp::gameplay_seg40_59_cc13::torpedo_bot_fire_target_accuracy_008fb530(
+                bots->torpedo, level);
+        }
+        return kFireTargetAccuracy[level];
+    } else {
+        return kFireTargetAccuracy[level];
+    }
 }
 
 // Packet cc9_torpedo_standoff. 0080DF40(unit): 00727D70(0.0) summed over the
@@ -6333,7 +6349,18 @@ public:
         // level order robot_config.cpp:773 gives (Stun 0, SPNormal 1, SPVeteran 2,
         // MPNormal 3, MPVeteran 4, Elite 5), and the level is the units host's
         // skill level with its out-of-range fallback 1, as the throw path uses it.
-        owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
+        if constexpr (kWireGoal4Chain250Bound) {
+            // Goal 4 chain 250: the body runs when the descriptor is loaded.
+            const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+                bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+            if (bots != nullptr && bots->torpedo_loaded) {
+                owner_.done("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
+            } else {
+                owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
+            }
+        } else {
+            owner_.record("ShipAiTorpedoStandoff::torpedo_bot_accuracy_008fb530", 0x008fb530u);
+        }
         return torpedo_bot_fire_target_accuracy(owner_.units.skill_level(index_));
     }
     float torpedo_range_044c() override {

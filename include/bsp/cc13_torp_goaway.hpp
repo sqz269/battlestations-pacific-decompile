@@ -158,4 +158,26 @@ const std::array<PilotBotParameters, 6>* loaded_pilot_bot_rows() noexcept;
 // Out of 0..5 there is no image row (it would read past the array); null.
 const PilotBotParameters* pilot_bot_row(int index) noexcept;
 
+// The gun-side bot descriptors the same load registers, behind the aliases
+// [00E19998] AAGunnerBot, [00E199A0] TailGunnerBot, [00E1999C] AAFlakBot,
+// [00E1998C] TorpedoBot and [00E19988] DepthChargeBot (00901610's alias
+// lookups). Copied out before the registry is released; each copy's name_08
+// is cleared (the buffer goes with the registry). Goal 4 chain 250: the
+// gunnery host's BulletThrowMul getters (008FB4C0..008FB570) read them.
+struct GunBotConfigs {
+    bool aa_gunner_loaded{false};
+    bool tail_gunner_loaded{false};
+    bool aa_flak_loaded{false};
+    bool torpedo_loaded{false};
+    bool depth_charge_loaded{false};
+    AAGunnerBotConfig aa_gunner{};
+    TailGunnerBotConfig tail_gunner{};
+    AAFlakBotConfig aa_flak{};
+    TorpedoBotConfig torpedo{};
+    DepthChargeBotConfig depth_charge{};
+};
+
+// The copies above, or null before a successful load.
+const GunBotConfigs* loaded_gun_bot_configs() noexcept;
+
 }  // namespace bsp::cc13_torp_goaway

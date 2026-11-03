@@ -48,6 +48,7 @@
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp4 (MP2b, the 004E17FD gate)
 #include "bsp/plane_task_reach_sw3.hpp"  // cc9-sweep3c reach counter (log only)
 #include "bsp/wire_goal2_chain58_switches.hpp"  // goal 2 chain 58 (kWireGoal2Chain58Bound)
+#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 
 namespace bsp::game {
 
@@ -4426,7 +4427,21 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 in.speed = 0.0f;
             }
             in.arrive_to_range_time = t.arrive_to_range_time;
-            return bsp::ai_tail_unit_arrival_value(in);
+            if constexpr (kWireGoal4Chain250Bound) {
+                // Goal 4 chain 250: the 00A03760 body (gameplay_seg69_70_cc13)
+                // in place of ai_planner_tails' second implementation. It takes
+                // target+7A0h as the dword 00A037CF FILDs, and its 00A037E5 JBE
+                // also returns the weight for an unordered (NaN) distance.
+                const int target_7a0 = static_cast<int>(
+                    kCaptureAccessorsBound
+                        ? h.units.command_building_capture_range_07a0(unit_index_of(target))
+                        : kCaptureRangeStandIn);
+                return bsp::gameplay_seg69_70_cc13::ai_unit_arrival_value_00a03760(
+                    in.capture_weight, in.distance, target_7a0, in.speed,
+                    in.arrive_to_range_time);
+            } else {
+                return bsp::ai_tail_unit_arrival_value(in);
+            }
         }
         int near_unit_count() override { return static_cast<int>(near_list.size()); }
         int near_unit_team(int i) override {
@@ -4520,38 +4535,87 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     std::size_t capture_defenders_00a24870(std::size_t target, int enemy_side,
                                             const CaptureTuning& t,
                                             std::vector<std::size_t>* collected = nullptr) const {
-        float tx = 0.0f, ty = 0.0f, tz = 0.0f;
-        units.unit_position_00fc(target, tx, ty, tz);
-        const float r2 = t.collect_defenders * t.collect_defenders;
-        std::size_t n = 0;
-        for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
-            const std::size_t u = units.world_list_entry(2, i);
-            if (u >= units.count()) continue;
-            if (!units.unit_active(u)) continue;   // LABELLED: +5Dh read as the active row
-            // Packet cc13-ver13: 00A07D73 reads +5Dh itself, set at the kill step's
-            // flush, so a sinking wreck is no defender; +5Ch stays the row above.
-            if (kCaptureDefenderDeadByteBound && units.unit_flag_005d(u)) continue;
-            if (units.unit_side_0054(u) != enemy_side) continue;
-            float x = 0.0f, y = 0.0f, z = 0.0f;
-            units.unit_position_00fc(u, x, y, z);
-            const float dx = x - tx, dy = y - ty, dz = z - tz;
-            float d2;
-            if constexpr (bsp::kPc24UnitsHostCc13Bound) {
-                // 00A1A68E-00A1A69E: (dx*dx + dy*dy) + dz*dz, stored as a float.
-                const float dv[3] = {dx, dy, dz};
-                d2 = bsp::pc24_unitshost::dot3(dv, dv);
-            } else {
-                d2 = dz * dz + dy * dy + dx * dx;
+        if constexpr (kWireGoal4Chain250Bound) {
+            // Goal 4 chain 250: 00A24870 itself (src/gameplay_seg69_70_cc13.cpp),
+            // over 00A07D40's walk of world list 2 ([[00E188A8]+19CCh]+34h) and
+            // 00A1A660's sphere test. Each view carries what 00A07D40 reads:
+            // +5Dh (00A07D73), +54h (00A07D81), +FCh after 00414DB0 (00A07DAC)
+            // and IsKindOf 6 / 18h / 1Bh / 45h / 46h (00A07DB2..00A07DDF). The
+            // image tests +5Dh alone, so the stand-in's +5Ch (unit_active) filter
+            // is dropped. ECX = planner+34h is enemy_side; the radius is
+            // Capture_CollectDefendersDist (tuning+1A4h).
+            std::vector<std::size_t> world_units;
+            std::vector<bsp::gameplay_seg69_70_cc13::TeamEntityView> world;
+            for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+                const std::size_t u = units.world_list_entry(2, i);
+                if (u >= units.count()) continue;
+                world_units.push_back(u);
             }
-            if (r2 < d2) continue;   // 00A1A660 answers 1: skip
-            if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
-                units.unit_is_kind_of(u, 0x1B)) {
-                ++n;
-                if (collected != nullptr) collected->push_back(u);
+            world.reserve(world_units.size());
+            for (const std::size_t u : world_units) {
+                bsp::gameplay_seg69_70_cc13::TeamEntityView v;
+                v.id = units.unit_identity(u);
+                v.byte_05d = units.unit_flag_005d(u);
+                v.team_054 = units.unit_side_0054(u);
+                units.unit_position_00fc(u, v.pos[0], v.pos[1], v.pos[2]);
+                v.kind_06 = units.unit_is_kind_of(u, 0x06);
+                v.kind_18 = units.unit_is_kind_of(u, 0x18);
+                v.kind_1b = units.unit_is_kind_of(u, 0x1B);
+                v.kind_45 = units.unit_is_kind_of(u, 0x45);
+                v.kind_46 = units.unit_is_kind_of(u, 0x46);
+                world.push_back(v);
             }
+            bsp::gameplay_seg69_70_cc13::TeamEntityView entity;
+            entity.id = units.unit_identity(target);
+            entity.byte_05d = units.unit_flag_005d(target);
+            entity.team_054 = units.unit_side_0054(target);
+            units.unit_position_00fc(target, entity.pos[0], entity.pos[1], entity.pos[2]);
+            const std::vector<const bsp::gameplay_seg69_70_cc13::TeamEntityView*> records =
+                bsp::gameplay_seg69_70_cc13::ai_collect_threats_near_00a24870(
+                    enemy_side, entity, t.collect_defenders, world);
+            if (collected != nullptr) {
+                for (const auto* r : records) {
+                    // 00A248FD's lone record is the target's own view.
+                    collected->push_back(r == &entity
+                        ? target
+                        : world_units[static_cast<std::size_t>(r - world.data())]);
+                }
+            }
+            return records.size();
+        } else {
+            float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+            units.unit_position_00fc(target, tx, ty, tz);
+            const float r2 = t.collect_defenders * t.collect_defenders;
+            std::size_t n = 0;
+            for (std::size_t i = 0; i < units.world_list_size(2); ++i) {
+                const std::size_t u = units.world_list_entry(2, i);
+                if (u >= units.count()) continue;
+                if (!units.unit_active(u)) continue;   // LABELLED: +5Dh read as the active row
+                // Packet cc13-ver13: 00A07D73 reads +5Dh itself, set at the kill step's
+                // flush, so a sinking wreck is no defender; +5Ch stays the row above.
+                if (kCaptureDefenderDeadByteBound && units.unit_flag_005d(u)) continue;
+                if (units.unit_side_0054(u) != enemy_side) continue;
+                float x = 0.0f, y = 0.0f, z = 0.0f;
+                units.unit_position_00fc(u, x, y, z);
+                const float dx = x - tx, dy = y - ty, dz = z - tz;
+                float d2;
+                if constexpr (bsp::kPc24UnitsHostCc13Bound) {
+                    // 00A1A68E-00A1A69E: (dx*dx + dy*dy) + dz*dz, stored as a float.
+                    const float dv[3] = {dx, dy, dz};
+                    d2 = bsp::pc24_unitshost::dot3(dv, dv);
+                } else {
+                    d2 = dz * dz + dy * dy + dx * dx;
+                }
+                if (r2 < d2) continue;   // 00A1A660 answers 1: skip
+                if (units.unit_is_kind_of(u, 0x06) || units.unit_is_kind_of(u, 0x18) ||
+                    units.unit_is_kind_of(u, 0x1B)) {
+                    ++n;
+                    if (collected != nullptr) collected->push_back(u);
+                }
+            }
+            if (n == 0 && collected != nullptr) collected->push_back(target);   // 00A248FD
+            return n == 0 ? 1u : n;   // 00A248FD: the target's own record
         }
-        if (n == 0 && collected != nullptr) collected->push_back(target);   // 00A248FD
-        return n == 0 ? 1u : n;   // 00A248FD: the target's own record
     }
 
     // 00A250A0, __thiscall(planner)(group, entity), returns ST0:
@@ -6074,8 +6138,24 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record("AiPlanners::quick_spawn_named_group", 0x00a25b90u);
     }
     void publish_spawn_bias(float bias) override {
-        (void)bias;
-        record("AiPlanners::publish_spawn_bias", 0x00a16450u);
+        if constexpr (kWireGoal4Chain250Bound) {
+            // Goal 4 chain 250: 00A25FEA..00A25FFA (and the Escort, Siege and
+            // Competitive arms at 00A26291 / 00A26590 / 00A26670) load the
+            // 0.5 at 00CE3800 and call 00A16450 with ECX = [00E0E344], the
+            // published party. It pulls next_think[party] (00F8A87C) forward
+            // to [00F876A4] + 0.5 when that is earlier. The image indexes the
+            // array with ECX unchecked; outside a party's think nothing calls it.
+            if (current_party >= 0 && current_party < bsp::kAiGroupPartySlotCount) {
+                bsp::band009f::ai_party_schedule_think_within_00a16450(
+                    next_think, current_party, clock_seconds, bias);
+                done("AiPlanners::publish_spawn_bias", 0x00a16450u);
+            } else {
+                record("AiPlanners::publish_spawn_bias", 0x00a16450u);
+            }
+        } else {
+            (void)bias;
+            record("AiPlanners::publish_spawn_bias", 0x00a16450u);
+        }
     }
     bool reset_target_flag() override {
         // [00F8A9E0] == 3. Nothing in this process writes it.
