@@ -1,0 +1,78 @@
+{
+  "goal": 2,
+  "chain": 165,
+  "run": 329,
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "host_file": "src/game_hosts_commands.cpp",
+  "candidate": {
+    "tier": 2,
+    "segment": 46,
+    "range": ["007a49a0", "007b2d80"],
+    "reason": "Survey of the eight candidates: segments 7, 12, 14, 35, 64, 69 and 92 are reached only through Host interfaces no game_host file implements (soldier traffic, frontend library, unit-pick screen, fish/flag/grid render, warning-manager queue, AI spawn composition, ocean/coast). Segment 46 is the one whose sources the game hosts include and whose path-cursor start runs on the live director/moveonpath path in game_hosts_commands.cpp."
+  },
+  "switch": "kWireGoal2Chain165Bound",
+  "switch_header": "include/bsp/wire_goal2_chain165_switches.hpp",
+  "switch_default": false,
+  "host_objects": [],
+  "host_object_note": "No new host object. The ON arm adapts the host's existing GameDirector state: path_cursor (index/follow/forward), the path_follow_mode/path_start_mode pair (0071C1B0's stores, or {1,5} on the user arm), and the joined index the build already computes. Two local adapters in the ON arm: BuiltPathSource (PathSourceBase over the director's pending path points, slot +10h answering the joined index) and DirectorCursorBinding (PathCursorHost; the 00BD2F10 draw keeps the OFF arm's labelled forward substitution).",
+  "wired_before": 8997,
+  "wired_after": 8998,
+  "rows": [
+    {
+      "native": "007b1d30",
+      "address": "0071f86f",
+      "function": "0071f600",
+      "host_site": "src/game_hosts_commands.cpp:3808 GameCommandsHost::build_path_object_0071f600",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "GameUnitsHost::run_director_steps_00836920 -> GameCommandsHost::begin_current_command_00835c70 -> build_path_object_0071f600 (moveonpath head, both the authored-path arm and the user-points arm); also GameScriptOrdersHost moveonpath delivery -> GameCommandsHost::begin_path_command_0071f600 -> begin_current_command_00835c70 -> build_path_object_0071f600. No switch gate on either path; the site runs whenever the built path has points.",
+      "on_effect": "The cursor start runs as the image's 007B1D30 -> 007B1C50 (entity_command_path_cursor_start_007b1c50): follow mode stored, forward byte set, start mode 6 -> index 0, 8 -> backward, 5/7 -> forward, index from the source's slot +10h; a start mode outside 5..8 now leaves the index as it was (007B1CB9 JNZ 007B1D29), where the OFF stand-in wrote the joined index."
+    },
+    {
+      "native": "007aed10",
+      "address": "007b09d0",
+      "function": "007b0900",
+      "host_site": "src/game_hosts_commands.cpp GameCommandsHost::build_path_object_0071f600 (ship_ai_path_nearest_index_007b1100 stand-in)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "007AED10 is a 3D nearest-point search (dx, dy, dz, sqrt) reached through 007B1100 -> 007B0900, which also transforms the position into the path's local frame. The commands host's path build is handed only the unit's x and z (begin_current_command_00835c70 / begin_path_command_0071f600 signatures; GameCommandTargetFacts carries x/z only) and keeps no path-entity transform, so the body would be fed a constant y. Needs the unit y (entity+FCh) and the path world matrix plumbed into GameCommandsHost."
+    },
+    {
+      "native": "007ae330",
+      "address": "007af335",
+      "function": "007af150",
+      "host_site": "src/game_hosts_scene_contents.cpp camera_path_derive_knots_007af150 / src/game_hosts_units.cpp LandConvoy bind_motion",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The component min feeds the path's bounding box in 007AF150; the host's derive_camera_path_knots_007af150 (camera_path_sampler.cpp) keeps no bounds (CameraPathKnotTotals has no bbox field) and nothing in the host reads one, so wiring would compute an unused value."
+    },
+    {
+      "native": "007ae3e0",
+      "address": "007af421",
+      "function": "007af150",
+      "host_site": "src/game_hosts_scene_contents.cpp camera_path_derive_knots_007af150 / src/game_hosts_units.cpp LandConvoy bind_motion",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Same as 007AE330: the component max is the bounding box's upper corner in 007AF150, which the host's knot derivation does not keep and no host code reads."
+    },
+    {
+      "native": "007a6710",
+      "address": "007a8c08",
+      "function": "007a87b0",
+      "host_site": "none (movie camera not hosted)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Both callers (007A87B0 MovCam_UpdateHandMode, 007A8C60 MovCam_PickDeckPointScored) reach it only through host.movcam_enter_vehicle_camera_007a6710 in cc13_segmix.cpp / cc13_sweepB2.cpp, Host interfaces no game_host file implements; the movie camera has no host owner."
+    }
+  ],
+  "checks": {
+    "build": "./scripts/build.ps1 exit 0, 2/2 tests passed (OFF)",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain165Bound: build.ps1 exit 0, 0 distinct diagnostics",
+    "pc24_lint": "0 findings (the ON arm does no x87 arithmetic)",
+    "wire_readiness": "007b1d30 ready -> wired; total wired 8997 -> 8998"
+  },
+  "on_effect": "Turning kWireGoal2Chain165Bound on routes every path-object build's cursor start (moveonpath and user paths) through 007B1D30/007B1C50 instead of the ship_ai_path_cursor_start_007b1c50 stand-in. For start modes 5, 6, 7 and 8 the cursor ends the same as OFF (mode 7 keeps the labelled forward substitution); a start mode outside 5..8 keeps the cursor's previous index instead of the joined index.",
+  "off_preservation": "The OFF arm is the original ship_ai_path_cursor_start_007b1c50 call, unchanged. Added includes (<stdexcept>, the switch header, path_movcam_seg46_argon.hpp) are declarations only.",
+  "game_run": "none (per brief)"
+}
