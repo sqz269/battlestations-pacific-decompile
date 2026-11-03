@@ -1,0 +1,32 @@
+{
+  "chain": 250,
+  "slot": "g4-w3",
+  "goal": 4,
+  "harness": "claude",
+  "switch": "kWireGoal4Chain250Bound",
+  "switch_header": "include/bsp/wire_goal4_chain250_switches.hpp",
+  "files": [
+    "src/game_hosts_ai.cpp",
+    "include/bsp/wire_goal4_chain250_switches.hpp"
+  ],
+  "rows": [
+    {
+      "native": "00a24870",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::capture_defenders_00a24870",
+      "status": "wired",
+      "note": "world list 2 as TeamEntityView (+5Dh, +54h, +FCh, IsKindOf 6/18h/1Bh/45h/46h); replaces the stand-in loop and its +5Ch (unit_active) filter, which the image does not test; also runs 00a07d40 and 00a1a660"
+    },
+    {
+      "native": "00a16450",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::publish_spawn_bias",
+      "status": "wired",
+      "note": "the spawn arm's 0.5 (00CE3800) pulls next_think[current_party] (00F8A87C) to clock (00F876A4) + 0.5; was a record"
+    },
+    {
+      "native": "00a03760",
+      "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::CaptureScoreHost::unit_arrival_value",
+      "status": "wired",
+      "note": "replaces the second implementation bsp::ai_tail_unit_arrival_value on this path; differs only for a NaN distance (00A037E5 JBE returns the weight)"
+    }
+  ]
+}
