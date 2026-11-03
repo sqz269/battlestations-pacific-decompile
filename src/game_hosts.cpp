@@ -3665,7 +3665,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             // and 004C1710 owners. The 18h media manager 004C1710 builds is
             // registered on 01090AA0, so the drain's native_media arm
             // (00A4C620, vtable 00D24D94) gets the same owners; it is cleared
-            // where the GUI manager application is reset.
+            // where the GUI manager application is reset. Native's first
+            // 004C1710 caller is probably the WM_ACTIVATE handler 00BED3B0
+            // (00BED42E/00BED4A7), which this host does not run, so the host
+            // builds the manager later, at sign-in (008D5686), and registers it
+            // later on 01090AA0; 00A4C620 depends on no other singleton.
             if (sound_) {
                 // 008D54C3/008D54D9: ECX = [00F8BBD8], the running sound owner.
                 SoundServices* const sound = sound_.get();

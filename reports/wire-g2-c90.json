@@ -18,7 +18,8 @@
       "function": "008d5430",
       "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::sound_set_group_volume",
       "status": "wired",
-      "reached": 1
+      "reached": 1,
+      "note": "Partial audio sequence: native overrides Warnings, GuiTestSpeech and GuiMusic after the 0xFFFF set (008D5531/008D55BC/008D5647, 00A7ACF0 + 00A7F8E0 through the still-unimplemented sound_set_named_bus_volume). Under ON those three classes keep the sfx volume until that row is wired. The USN04 pair cannot show this because every profile level was 0.5."
     },
     {
       "native": "00b1ffb0",
@@ -86,7 +87,8 @@
       ],
       "rows": [
         "004c1710"
-      ]
+      ],
+      "lifetime_difference": "Native's first 004C1710 caller is probably the WM_ACTIVATE handler 00BED3B0 (00BED42E/00BED4A7, src/platform_activation.cpp:36,51), which this host does not run (no host implements PlatformActivationMessageHost::media_get_or_create_004c1710). So the host builds the media manager later, at the sign-in apply (008D5686), and registers it later on 01090AA0, which changes the drain order. This looks harmless: 00A4C620 depends on no other singleton, and the USN04 pair drained the new slot cleanly (49 -> 50, exit 0)."
     }
   ],
   "wired_before": 8907,
@@ -107,6 +109,14 @@
     "other_lines": "singleton lifetime drained registered_slots 49 -> 50 (the media manager registered at sign-in and deleted by the drain via 00A4C620); two new quick-settings notes; atlas source item/parser lines differ only in allocation addresses shifted by the media manager allocation",
     "verdict": "DIFFERENT, gameplay identical"
   },
-  "flip_proposal": "flip kWireGoal2Chain90Bound to true: all three rows run once at the sign-in settings apply on host state, gameplay identical in the USN04 pair, clean shutdown with the media manager drained through its native arm",
-  "pc24_lint": "0 findings over 4 files (no x87 arithmetic in the ON arms)"
+  "flip_proposal": "flip kWireGoal2Chain90Bound to true: all three rows run once at the sign-in settings apply on host state, gameplay identical in the USN04 pair, clean shutdown with the media manager drained through its native arm. Caveat: native then overrides Warnings/GuiTestSpeech/GuiMusic (008D5531/55BC/5647, unimplemented 00A7ACF0 + 00A7F8E0), so under ON those three classes keep the sfx volume until that row is wired; the pair had every level at 0.5 and cannot show it. The media manager is built at sign-in rather than at the first WM_ACTIVATE.",
+  "pc24_lint": "0 findings over 4 files (no x87 arithmetic in the ON arms)",
+  "review_round_1": {
+    "review_run": 194,
+    "fixes": [
+      "host_objects lifetime_difference added; same sentence in the src/game_hosts.cpp chain 90 sinks comment",
+      "00a7abf0 note and flip_proposal caveat on the named-class overrides added"
+    ],
+    "code_change": "comment only (src/game_hosts.cpp); OFF and ON builds re-run"
+  }
 }
