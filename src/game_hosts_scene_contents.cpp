@@ -15,6 +15,7 @@
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/wire_goal4_chain329_switches.hpp"
+#include "bsp/wire_goal4_chain332_switches.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
@@ -637,6 +638,46 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
                 else if (overwrite) *existing = value;
             }
         }
+        if constexpr (kWireGoal4Chain332Bound) {
+        for (const auto& block : other.blocks) {
+            if (require_compatible_types) {
+                for (const SceneProperty& value : bag.values) {
+                    if (equal_insensitive(value.key, block.first)) {
+                        throw std::runtime_error("unsupported library child/scalar conflict: " + block.first);
+                    }
+                }
+            }
+            ScenePropertyBlock* target = nullptr;
+            for (auto& existing : bag.blocks) {
+                if (equal_insensitive(existing.first, block.first)) {
+                    target = &existing.second;
+                    break;
+                }
+            }
+            // The authored/group trees supply the complete supported child,
+            // including its real inherited destination. The native type-6
+            // merge determines all changed payloads; do not also run the old
+            // recursive host merge on a successfully projected subtree.
+            ScenePropertyBlock merged;
+            const bool unique_parent_key = std::none_of(bag.values.begin(), bag.values.end(),
+                    [&](const SceneProperty& value) { return equal_insensitive(value.key, block.first); })
+                && std::count_if(bag.blocks.begin(), bag.blocks.end(),
+                    [&](const auto& child) { return equal_insensitive(child.first, block.first); }) <= 1
+                && std::count_if(other.blocks.begin(), other.blocks.end(),
+                    [&](const auto& child) { return equal_insensitive(child.first, block.first); }) == 1;
+            if (unique_parent_key
+                && native_merge.merge_child(block.first, target, block.second, merged)) {
+                if (target == nullptr) bag.blocks.emplace_back(block.first, std::move(merged));
+                else *target = std::move(merged);
+            } else {
+                if (target == nullptr) {
+                    bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
+                    target = &bag.blocks.back().second;
+                }
+                merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
+            }
+        }
+        } else {
         for (const auto& block : other.blocks) {
             if (require_compatible_types) {
                 for (const SceneProperty& value : bag.values) {
@@ -657,6 +698,7 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
                 target = &bag.blocks.back().second;
             }
             merge_property_block(*target, block.second, overwrite, require_compatible_types, enums);
+        }
         }
     } else {
     for (const SceneProperty& value : other.values) {

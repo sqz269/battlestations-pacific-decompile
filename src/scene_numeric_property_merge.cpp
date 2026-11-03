@@ -39,6 +39,9 @@ namespace bsp::game {
 // insertion producers and the whole 008F54F0 merge. Unsupported keys stay in the
 // host tree. Unique scalar keys are independent of the omitted keys/children;
 // scalar/child collisions and differing tags are deliberately left to the host.
+// Chain 332 also projects complete supported child subtrees, including empty
+// children, through the owning 008F3B60 producer and recursive whole merge.
+// Unique parent names and compatible complete trees gate that separate path.
 // No original DATA phase word is called as a Source vtable.
 struct SceneNumericPropertyMerge::Impl final {
 public:
@@ -46,7 +49,7 @@ public:
         const ScenePropertyBlock& source, bool overwrite, SceneNativeEnumSource* enums)
         : context_(game_native_string_process(), property_process()),
           destination_(context_.insertion()), source_(context_.insertion()),
-          selected_(source.values.size(), false), enums_(enums) {
+          selected_(source.values.size(), false), enums_(enums), overwrite_(overwrite) {
         bool any = false;
         for (std::size_t i = 0; i < source.values.size(); ++i) {
             const auto& value = source.values[i];
@@ -75,6 +78,34 @@ public:
     bool handles(std::size_t source_index) const { return selected_[source_index]; }
 
     SceneProperty result(const SceneProperty& authored_metadata) {
+        return read_value(authored_metadata, destination_.find(authored_metadata.key));
+    }
+
+    bool merge_child(const std::string& key, const ScenePropertyBlock* destination,
+        const ScenePropertyBlock& source, ScenePropertyBlock& result) {
+        if (!closed_key(key) || !closed_tree(source)
+            || (destination != nullptr
+                && (!closed_tree(*destination) || !compatible_trees(*destination, source)))) {
+            return false;
+        }
+
+        Bag native_destination(context_.insertion());
+        Bag native_source(context_.insertion());
+        if (destination != nullptr) attach_tree(native_destination, key, *destination);
+        attach_tree(native_source, key, source);
+        // bsp.py show 008F54F0: a destination type-6 hit recurses BEFORE the
+        // keep-byte test; a miss clones the whole child. No host value merge
+        // also runs on this path. Both bags and all children use the same
+        // retained string/node/heap domain and retire before context_.
+        merge_native_scene_property_bag_008f54f0(native_destination.data(),
+            native_source.data(), overwrite_ ? 0u : 1u, context_);
+        result = read_tree(native_destination.child(key), destination, source);
+        return true;
+    }
+
+private:
+    static SceneProperty read_value(const SceneProperty& authored_metadata,
+        const void* actual_record) {
         // Keep source spelling/tokens (or the retained destination's when keep
         // is set) for diagnostics. Gameplay payload bytes come ONLY from the
         // merged native record, before publishing back into the owning tree.
@@ -82,7 +113,7 @@ public:
         value.key = authored_metadata.key;
         value.type_letter = authored_metadata.type_letter;
         value.values = authored_metadata.values;
-        const auto* record = static_cast<const std::byte*>(destination_.find(value.key));
+        const auto* record = static_cast<const std::byte*>(actual_record);
         std::uint32_t tag;
         std::memcpy(&tag, record + 4, sizeof(tag));
         if constexpr (kWireGoal4Chain307Bound) {
@@ -296,18 +327,52 @@ private:
 
     class Bag final {
     public:
-        explicit Bag(NativeScenePropertyInsertionContext& context) : context_(context) {
+        explicit Bag(NativeScenePropertyInsertionContext& context, bool owning_child = false)
+            : context_(context), owning_child_(owning_child),
+              root_(owning_child
+                  ? static_cast<std::byte*>(singleton_lifetime_allocate(
+                        {SingletonAllocationKind::object, native_scene_property_bag_storage_bytes,
+                            native_scene_property_bag_storage_bytes}))
+                  : storage_.data()) {
+            if (root_ == nullptr) throw std::bad_alloc();
             // Real raw61 producer, fresh aligned root, no borrowed owner.
-            initialize_native_scene_property_bag_storage_008f41a0(storage_.data(), 0, 0);
+            initialize_native_scene_property_bag_storage_008f41a0(root_, 0, 0);
         }
         ~Bag() {
             // Stack root survives; nested records, pooled keys and physical
             // nodes retire in their SAME canonical processes before the context.
-            destroy_native_scene_property_bag_008f5410(storage_.data(), context_.lifetimes());
+            if (root_ != nullptr) {
+                if (owning_child_) {
+                    scalar_delete_native_scene_property_bag_008f59e0(
+                        root_, 1u, context_.lifetimes());
+                } else {
+                    destroy_native_scene_property_bag_008f5410(root_, context_.lifetimes());
+                }
+            }
         }
         Bag(const Bag&) = delete;
         Bag& operator=(const Bag&) = delete;
-        void* data() { return storage_.data(); }
+        void* data() { return root_; }
+        void adopt_child(const std::string& key, Bag& child) {
+            // bsp.py show 008F3B60: the whole producer writes child+110h and
+            // adopts the canonical 114h allocation. It is neither a borrowed
+            // std::array nor a second owner. Parent retirement frees it once.
+            add_native_scene_property_subbag_008f3b60(data(), key.c_str(), child.data(), context_);
+            child.root_ = nullptr;
+        }
+        void* child(const std::string& key) {
+            return child_in(data(), key, context_);
+        }
+        static void* child_in(void* bag, const std::string& key,
+            NativeScenePropertyInsertionContext& context) {
+            const auto* record = static_cast<const std::byte*>(find_in(bag, key, context));
+            std::uint32_t tag;
+            std::memcpy(&tag, record + 4, sizeof(tag));
+            if (tag != 6u) throw std::logic_error("unexpected merged scene child tag");
+            void* child;
+            std::memcpy(&child, record + 0x0c, sizeof(child));
+            return child;
+        }
         void insert(const SceneProperty& value) {
             if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
                 if (same_key(value.type_letter, "V3A")) {
@@ -388,14 +453,19 @@ private:
                 value.values[2].c_str(), game_native_string_process(), context_);
         }
         void* find(const std::string& key) {
+            return find_in(data(), key, context_);
+        }
+        static void* find_in(void* bag, const std::string& key,
+            NativeScenePropertyInsertionContext& context) {
             NativeString query;
-            construct_native_string_header_0041e870(&query, context_.lifetimes().keys(), key.c_str());
+            construct_native_string_header_0041e870(&query, context.lifetimes().keys(), key.c_str());
             std::uint32_t bucket;
             const auto* node = static_cast<const std::byte*>(find_native_property_map_node_0043b8b0(
-                storage_.data() + 4, &query, bucket, context_.property_empty(), context_.query_empty()));
+                static_cast<std::byte*>(bag) + 4, &query, bucket,
+                context.property_empty(), context.query_empty()));
             void* record = nullptr;
             if (node != nullptr) std::memcpy(&record, node + 8, sizeof(record));
-            destroy_native_string_header_0041dd20(&query, context_.lifetimes().keys());
+            destroy_native_string_header_0041dd20(&query, context.lifetimes().keys());
             if (record == nullptr) throw std::logic_error("missing merged numeric property");
             return record;
         }
@@ -447,6 +517,8 @@ private:
 
         NativeScenePropertyInsertionContext& context_;
         alignas(std::uint32_t) std::array<std::byte, native_scene_property_bag_storage_bytes> storage_;
+        bool owning_child_;
+        std::byte* root_;
     };
 
     // Chain 319: the genuine CEnum for a closed E value, or null when there is
@@ -482,11 +554,99 @@ private:
         bag.insert(value);
     }
 
+    static bool closed_key(const std::string& key) {
+        return key.size() < 0x7fffffffu
+            && !std::any_of(key.begin(), key.end(),
+                [](unsigned char c) { return c == 0 || c >= 0x80; });
+    }
+
+    static const SceneProperty* named_value(const ScenePropertyBlock& block,
+        const std::string& key) {
+        const auto found = std::find_if(block.values.begin(), block.values.end(),
+            [&](const SceneProperty& value) { return same_key(value.key, key); });
+        return found == block.values.end() ? nullptr : &*found;
+    }
+
+    static const ScenePropertyBlock* named_child(const ScenePropertyBlock& block,
+        const std::string& key) {
+        const auto found = std::find_if(block.blocks.begin(), block.blocks.end(),
+            [&](const auto& child) { return same_key(child.first, key); });
+        return found == block.blocks.end() ? nullptr : &found->second;
+    }
+
+    bool closed_tree(const ScenePropertyBlock& block) const {
+        for (const auto& value : block.values) {
+            if (!admitted(value) || occurrences(block, value.key) != 1
+                || has_child(block, value.key)) return false;
+        }
+        for (const auto& child : block.blocks) {
+            if (!closed_key(child.first) || occurrences(block, child.first) != 0
+                || std::count_if(block.blocks.begin(), block.blocks.end(),
+                    [&](const auto& other) { return same_key(child.first, other.first); }) != 1
+                || !closed_tree(child.second)) return false;
+        }
+        return true;
+    }
+
+    static bool compatible_trees(const ScenePropertyBlock& destination,
+        const ScenePropertyBlock& source) {
+        for (const auto& value : source.values) {
+            const SceneProperty* prior = named_value(destination, value.key);
+            if (has_child(destination, value.key)
+                || (prior != nullptr && prior->type_letter != value.type_letter)) return false;
+        }
+        for (const auto& child : source.blocks) {
+            const ScenePropertyBlock* prior = named_child(destination, child.first);
+            if (named_value(destination, child.first) != nullptr
+                || (prior != nullptr && !compatible_trees(*prior, child.second))) return false;
+        }
+        return true;
+    }
+
+    void attach_tree(Bag& parent, const std::string& key, const ScenePropertyBlock& block) {
+        // Parser evidence: 008F66B9..008F6747 constructs a fresh raw61 child,
+        // attaches it through 008F3B60, then recurses. This projection already
+        // has the closed parser-owned subtree, so fills it before attachment;
+        // it supplies no parser allocation/observation timing equivalence.
+        // Attachment transfers the same heap root with its initial backlink0.
+        Bag child(context_.insertion(), true);
+        for (const auto& value : block.values) insert_into(child, value);
+        for (const auto& nested : block.blocks) attach_tree(child, nested.first, nested.second);
+        parent.adopt_child(key, child);
+    }
+
+    ScenePropertyBlock read_tree(void* actual_bag, const ScenePropertyBlock* destination,
+        const ScenePropertyBlock& source) {
+        ScenePropertyBlock result = destination != nullptr ? *destination : ScenePropertyBlock{};
+        for (const auto& value : source.values) {
+            const auto found = std::find_if(result.values.begin(), result.values.end(),
+                [&](const SceneProperty& prior) { return same_key(prior.key, value.key); });
+            const SceneProperty& metadata = found != result.values.end() && !overwrite_
+                ? *found : value;
+            SceneProperty merged = read_value(metadata,
+                Bag::find_in(actual_bag, value.key, context_.insertion()));
+            if (found == result.values.end()) result.values.push_back(std::move(merged));
+            else *found = std::move(merged);
+        }
+        for (const auto& child : source.blocks) {
+            ScenePropertyBlock merged = read_tree(
+                Bag::child_in(actual_bag, child.first, context_.insertion()),
+                destination != nullptr ? named_child(*destination, child.first) : nullptr,
+                child.second);
+            const auto found = std::find_if(result.blocks.begin(), result.blocks.end(),
+                [&](const auto& prior) { return same_key(prior.first, child.first); });
+            if (found == result.blocks.end()) result.blocks.emplace_back(child.first, std::move(merged));
+            else found->second = std::move(merged);
+        }
+        return result;
+    }
+
     NativeScenePropertyCloneContext context_;
     Bag destination_;
     Bag source_;
     std::vector<bool> selected_;
     SceneNativeEnumSource* enums_;
+    bool overwrite_;
 };
 
 SceneNumericPropertyMerge::SceneNumericPropertyMerge(const ScenePropertyBlock& destination,
@@ -501,6 +661,12 @@ bool SceneNumericPropertyMerge::handles(std::size_t source_index) const {
 
 SceneProperty SceneNumericPropertyMerge::result(const SceneProperty& authored_metadata) {
     return impl_->result(authored_metadata);
+}
+
+bool SceneNumericPropertyMerge::merge_child(const std::string& key,
+    const ScenePropertyBlock* destination, const ScenePropertyBlock& source,
+    ScenePropertyBlock& result) {
+    return impl_->merge_child(key, destination, source, result);
 }
 
 } // namespace bsp::game

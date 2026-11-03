@@ -1,0 +1,93 @@
+{
+  "chain": 332,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "base": "af2e5f9cb15ff7e3ae0bd285a8d8d08ce4b9e771",
+  "switch": "bsp::game::kWireGoal4Chain332Bound",
+  "rows": [
+    {
+      "native": "008f3b60",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block -> SceneNumericPropertyMerge::merge_child -> Impl::attach_tree -> Bag::adopt_child",
+      "state_source": "The live library/entity merge's actual parser-owned source child and inherited destination child; the existing overwrite argument supplies the native keep flag.",
+      "built": "Canonical owning raw61 114h child bags, recursively populated with the existing supported scalar producers and attached once through the existing whole 008F3B60 body. Whole 008F54F0 performs the merge; native payloads are copied back before recursive retirement.",
+      "evidence": [
+        "bsp.py show 008f3b60: adopts child, writes parent backlink at child+110h, then inserts type6 record",
+        "bsp.py show 008f5a00: 008F66B9..008F6747 creates/reuses a child; empty syntax retains inherited contents",
+        "native_scene_property_bag_merge.cpp / 008F54F0: type6 hit recurses before keep-byte test; miss clones the whole subtree",
+        "call_graph.py who 008f3b60: REACHABLE, one direct call site in Impl::attach_tree (adopt_child inlined)",
+        "call_graph.py path 008f3b60: merge_property_block <- instantiate_entity <- scene load <- mission advance <- menu frame <- game_on_move <- WinMain"
+      ],
+      "before_called": false,
+      "after_called": true,
+      "after_call_sites": 1
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread enqueue producer and its real LuaVariantRecord source vector; the current named-call queue has no producer."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::push_argument",
+      "reason": "Missing produced deferred calls/arguments and the live MissionLuaEnvironmentHost adapter at this record-only queue-drain callback."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command",
+      "reason": "Missing entity+16Ch AI-group producer on the observed authored-command path and current-command +564Ch vtable24 adapter; the callback is gated on a group."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl::Bag::insert_enum",
+      "reason": "No missing wiring at this site: the existing chain319 enum adapter already calls this body from entry-reachable scene merges."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl constructor and merge_child",
+      "reason": "No new address wiring to count: already entry-reachable from scalar merges; this packet additionally feeds its type6 recursion with real nested state."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: Win32 Release passes; reconstructed_math and tool_tests both pass",
+    "focused_case": "One regression case parses two nested blocks, checks keep/overwrite and case-insensitive metadata, missing-root clone, empty-child retention, and raw-leaf rejection; all native owners retire within the merge lifetime.",
+    "real_data_inspection": "Installed universe/Scenes/missions/USN/usn_2_java.scn contains supported nested Cloud/Area00..03 F/I blocks and IdleCameraPos reference children; this is input inspection, not a game run.",
+    "call_graph_unique_reconstructed_called_before": 4372,
+    "call_graph_unique_reconstructed_called_after": 4373,
+    "text_readiness_wired_before": 9337,
+    "text_readiness_wired_after": 9337,
+    "readiness_note": "The text reach classifier does not follow this adapter into scene_numeric_property_merge.cpp: 008F3B60 remains state=ready, but its binary called=true, call_sites=1, callers_live=1.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "merge_validation": {
+    "origin_main": "60c2f0163eddfc117a93350f1baac860ab0ec6d1",
+    "resolution": "Kept both chain329 terrain-normal headers and the chain332 switch at the adjacent-include conflict. Retained incoming chain330 V3A producer/decoder/tests in the shared adapter; removed the duplicate test include.",
+    "default_build": "./scripts/build.ps1 passes, including both CTests",
+    "on_build": "python tools/off_switch_on_build.py passes with kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled ON; zero distinct diagnostics; both CTests pass; tool restores both source files byte-for-byte",
+    "restored_default_build": "./scripts/build.ps1 passes again after ON-source restoration, including both CTests; final binary uses the committed switch values",
+    "wire_readiness": {
+      "command": "python tools/wire_readiness.py --standins",
+      "text_wired_total": 9346,
+      "008f3b60": {"state": "ready", "called": true, "call_sites": 1, "callers_live": 1}
+    },
+    "call_graph_unique_reconstructed_called": 4381,
+    "incoming_wiring_preserved": {
+      "004fa230": {"called": true, "call_sites": 4},
+      "008f3610": {"called": true, "call_sites": 1}
+    },
+    "pc24_lint_findings": 0,
+    "game_run": false,
+    "count_note": "The original packet's before/after counts above remain its historical delta. These post-merge totals also include the incoming main changes."
+  },
+  "limits": [
+    "Only complete supported, uniquely named, compatible subtrees enter native recursion. Raw forms, repeated names and scalar/child or tag conflicts keep the old host path.",
+    "The projection fills the already-parsed child before attachment; it makes no Original parser allocation/observer timing or class/register ABI claim.",
+    "Unknown enum declarations, unsupported array/reference forms, and native full-parser binding remain for later work."
+  ]
+}
