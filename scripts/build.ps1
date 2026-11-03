@@ -1,6 +1,12 @@
 param(
     [ValidateSet('Debug','Release')][string]$Configuration = 'Release',
-    [switch]$Diagnostic
+    [switch]$Diagnostic,
+    # Analysis builds (tools/call_graph.py --build): another build directory keeps its own CMake cache;
+    # -NoInline compiles with /Ob0 so every call stays a call; -Target builds one target; -SkipTests skips ctest.
+    [string]$BuildDir = 'build\win32',
+    [switch]$NoInline,
+    [string]$Target = '',
+    [switch]$SkipTests
 )
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
@@ -17,7 +23,7 @@ $generator = switch (($vsVersion -split '\.')[0]) {
     '17' { 'Visual Studio 17 2022' }
     default { throw "Unsupported Visual Studio version: $vsVersion" }
 }
-$buildPath = Join-Path $repoRoot 'build\win32'
+$buildPath = Join-Path $repoRoot $BuildDir
 $startupRegistry = Join-Path $repoRoot 'cmake\startup.cmake'
 
 # Machine-wide build slots. Every worktree builds through this script; with BSP_BUILD_SLOTS set it admits
@@ -42,16 +48,25 @@ while ($slotCount -gt 0 -and -not $slot) {
     }
 }
 try {
-    & $cmakeExe -S $repoRoot -B $buildPath -G $generator -A Win32 "-DCMAKE_GENERATOR_INSTANCE=$vsPath" "-DCMAKE_PROJECT_INCLUDE=$startupRegistry"
+    $configureArgs = @('-S', $repoRoot, '-B', $buildPath, '-G', $generator, '-A', 'Win32',
+        "-DCMAKE_GENERATOR_INSTANCE=$vsPath", "-DCMAKE_PROJECT_INCLUDE=$startupRegistry")
+    # /Ob0 changes the optimizer's flow analysis and raises C4702 (unreachable code) in a few files; the
+    # analysis build is only read, so that warning is off there
+    if ($NoInline) { $configureArgs += '-DCMAKE_CXX_FLAGS_RELEASE=/O2 /Ob0 /DNDEBUG /wd4702' }
+    & $cmakeExe @configureArgs
     if ($LASTEXITCODE) { throw 'CMake configure failed.' }
+    $buildArgs = @('--build', $buildPath, '--config', $Configuration, '--parallel', '4')
+    if ($Target) { $buildArgs += @('--target', $Target) }
     if ($Diagnostic) {
-        & $cmakeExe --build $buildPath --config $Configuration --parallel 4 -- /v:diag /nodeReuse:false
+        & $cmakeExe @buildArgs -- /v:diag /nodeReuse:false
     } else {
-        & $cmakeExe --build $buildPath --config $Configuration --parallel 4
+        & $cmakeExe @buildArgs
     }
     if ($LASTEXITCODE) { throw 'C++ build failed.' }
 } finally {
     if ($slot) { $slot.Dispose() }
 }
-& $ctestExe --test-dir $buildPath -C $Configuration --output-on-failure
-if ($LASTEXITCODE) { throw 'Tests failed.' }
+if (-not $SkipTests) {
+    & $ctestExe --test-dir $buildPath -C $Configuration --output-on-failure
+    if ($LASTEXITCODE) { throw 'Tests failed.' }
+}

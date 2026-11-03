@@ -458,6 +458,51 @@ for a, (name, seg, tag) in funcs.items():
         abi_counts[row['abi']] += 1
     rows.append(row)
 
+# ---- the compiler's view (tools/call_graph.py): does code reachable from the entry call the body?
+# 'wired' above is decided by text, per file; 'called' asks the built binary. A row's body is the function
+# built from the row's own source file (host files hold address-named stand-ins, which don't count). Rows
+# with no address-suffixed symbol fall back to the identifier's last name component. called is None when
+# the binary has no such function (not linked, or inlined everywhere in a build that inlines).
+cg_path = ROOT / 'local/output/call_graph.json'
+cg_meta = None
+if cg_path.is_file():
+    cg = json.loads(cg_path.read_text(encoding='utf-8'))
+    cg_meta = dict(cg['meta'], stale=cg['meta'].get('head') != pb.git('rev-parse', 'HEAD').strip())
+    cg_nodes = {n[0]: n for n in cg['nodes']}
+    cg_live = cg['parent']
+    by_last = collections.defaultdict(list)
+    for n in cg['nodes']:
+        if n[2] == 'f':
+            m = re.match(r'\?([A-Za-z_][A-Za-z0-9_]*)@', n[1])
+            if m:
+                by_last[m.group(1)].append(n[0])
+    host_obj = re.compile(r'(^|:)game_hosts?[_.]', re.I)
+
+    def obj_stem(o):
+        return o.split(':')[-1].rsplit('.', 1)[0].lower()
+
+    for r in rows:
+        vas = cg['by_addr'].get(r['address']) or [v for i in r.get('ident') or [] for v in by_last.get(i, [])]
+        stem = Path(r.get('implementation_source') or r['source'] or '').stem.lower()
+        own = [v for v in vas if obj_stem(cg_nodes[v][4]) == stem] or \
+              [v for v in vas if not host_obj.search(cg_nodes[v][4])]
+        if not own:
+            r['called'] = None
+            continue
+        sites = callers_live = 0
+        for v in own:
+            for s, kind, cnt, _ in cg['incoming'].get(v, []):
+                if s in cg_live and s != v and v in cg_live:
+                    callers_live += 1
+                    sites += cnt if kind in ('call', 'jmp') else 0
+        r['called'], r['call_sites'], r['callers_live'] = callers_live > 0, sites, callers_live
+    # kept out of 'summary', which other tools read as state counts
+    cg_meta['counts'] = dict(
+        called=sum(1 for r in rows if r.get('called')),
+        called_not_wired=sum(1 for r in rows if r.get('called') and r['state'] != 'wired'),
+        wired_not_called=sum(1 for r in rows if r['state'] == 'wired' and r.get('called') is False),
+        not_in_binary=sum(1 for r in rows if r.get('called') is None))
+
 by_cat = collections.defaultdict(collections.Counter)
 for r in rows:
     by_cat[r['category']][r['state']] += 1
@@ -472,7 +517,8 @@ inputs = dict(head=pb.git('rev-parse', 'HEAD').strip(),
               tool_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               scope_tool_sha256=hashlib.sha256((ROOT / 'tools/progress_board.py').read_bytes()).hexdigest(),
               identifier_manifests={p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-                                    for p in sorted((ROOT / 'config').glob('wire_identifiers*.json'))})
+                                    for p in sorted((ROOT / 'config').glob('wire_identifiers*.json'))},
+              call_graph=cg_meta)
 json.dump(dict(summary=dict(counts), inputs=inputs, excluded_recon=dict(excluded_recon),
                ready_abi=dict(abi_counts), by_category={k: dict(v) for k, v in by_cat.items()},
                edges=dict(ghidra=ghidra_edges, rel32_added=scan_edges, address_taken_funcs=len(address_taken)),
@@ -542,6 +588,9 @@ if args.standins:
 print('edges', ghidra_edges, '+rel32', scan_edges, 'address-taken functions', len(address_taken))
 print('roots', len(roots), 'reachable source files', len(reach), 'of', sum(1 for p in srcs if p.suffix == '.cpp'))
 print('recon game functions', len(rows), dict(counts))
+if cg_meta:
+    print('call graph', ('STALE ' if cg_meta['stale'] else '') + f"({cg_meta['build_dir']}"
+          + (', no inlining' if cg_meta.get('no_inline') else '') + '):', cg_meta['counts'])
 print('ready by ABI class', dict(abi_counts), '| with a host stand-in', sum(1 for r in ready if r['stand_in_hosts']))
 no_ident = sum(1 for r in rows if not ident_by_addr.get(int(r['address'], 16)))
 print('without any identifier (cannot be judged wired):', no_ident)
