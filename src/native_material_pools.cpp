@@ -2,6 +2,7 @@
 #include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal2_chain114_switches.hpp"
+#include "bsp/wire_goal4_chain309_switches.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <Windows.h>
@@ -113,7 +114,8 @@ template<class Pool> std::byte* initialize_slab(void* raw, std::uint32_t index) 
     }
     return bytes;
 }
-template<class Pool> void* allocate_slot(NativeMaterialPoolStorage& storage) {
+template<class Pool, auto Initialize = &initialize_slab<Pool>>
+void* allocate_slot(NativeMaterialPoolStorage& storage) {
     EnterCriticalSection(section(storage));
     adjust_recursion(storage, 1);
     // These allocators have no unwind region. Preserve early first-free and
@@ -122,7 +124,7 @@ template<class Pool> void* allocate_slot(NativeMaterialPoolStorage& storage) {
         storage.first_free_slab_34 = storage.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({
             SingletonAllocationKind::object, Pool::slab_bytes, Pool::slab_bytes});
-        auto* slab = raw ? initialize_slab<Pool>(raw, storage.first_free_slab_34) : nullptr;
+        auto* slab = raw ? static_cast<std::byte*>(Initialize(raw, storage.first_free_slab_34)) : nullptr;
         if (storage.slab_count_2c == storage.table_capacity_30) {
             storage.table_capacity_30 = storage.table_capacity_30 * 2u + 2u;
             replace_table(storage, allocate_table(storage.table_capacity_30));
@@ -256,7 +258,14 @@ void NativeMaterialPassPool::initialize_00b41090() {
     initialize_pool<NativeMaterialPassPool>(allocator_list_, storage_);
 }
 void* NativeMaterialPassPool::allocate_slot_00b41210() {
-    return allocate_slot<NativeMaterialPassPool>(storage_);
+    if constexpr (kWireGoal4Chain309Bound) {
+        // 00B41210's nonnull allocation arm calls 00B401D0 with the newly
+        // allocated 11C4h slab and the live, already-published first-free ID.
+        return allocate_slot<NativeMaterialPassPool,
+            &initialize_native_material_pass_slab_00b401d0>(storage_);
+    } else {
+        return allocate_slot<NativeMaterialPassPool>(storage_);
+    }
 }
 void NativeMaterialPassPool::return_slot_00b40a40(void* slot) noexcept {
     return_slot<NativeMaterialPassPool>(storage_, slot);
@@ -270,7 +279,9 @@ void NativeMaterialPassPool::destroy_00b40980() {
 void NativeMaterialPassPool::invoke_trim(void* context) {
     static_cast<NativeMaterialPassPool*>(context)->trim_empty_slabs_00b41170();
 }
-void* initialize_native_material_pass_slab_00b401d0(void* raw, std::uint32_t index) noexcept {
+// Keep recovered slab entries out of line so production allocation retains
+// their call boundaries; the metadata implementation remains shared once.
+__declspec(noinline) void* initialize_native_material_pass_slab_00b401d0(void* raw, std::uint32_t index) noexcept {
     return initialize_slab<NativeMaterialPassPool>(raw, index);
 }
 void destroy_native_material_pass_pool_table_00b402b0(void* header) noexcept {
@@ -301,7 +312,16 @@ NativeShaderStateListPool::NativeShaderStateListPool(AllocatorListDomain& list,N
     list.bind_virtual0(storage.allocator_00,{native_vtable,native_virtual0,this,&invoke_trim});
 }
 void NativeShaderStateListPool::initialize_00b623d0(){initialize_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
-void* NativeShaderStateListPool::allocate_slot_00b62630(){return allocate_slot<NativeShaderStateListPool>(storage_);}
+void* NativeShaderStateListPool::allocate_slot_00b62630(){
+    if constexpr (kWireGoal4Chain309Bound) {
+        // bsp.py show 00B62630: its actual 244h allocation and current +34 ID
+        // feed 00B620F0 before the slab table/count publication.
+        return allocate_slot<NativeShaderStateListPool,
+            &initialize_native_shader_state_list_slab_00b620f0>(storage_);
+    } else {
+        return allocate_slot<NativeShaderStateListPool>(storage_);
+    }
+}
 void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
     // Original SAR4 divides the signed byte offset. Valid slots are16-byte
     // aligned in this actual slab, so the common division is exactly equal.
@@ -310,7 +330,7 @@ void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
 void NativeShaderStateListPool::trim_empty_slabs_00b62590(){trim_empty_slabs<NativeShaderStateListPool>(storage_);}
 void NativeShaderStateListPool::destroy_00b62500(){destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
 void NativeShaderStateListPool::invoke_trim(void* context){static_cast<NativeShaderStateListPool*>(context)->trim_empty_slabs_00b62590();}
-void* initialize_native_shader_state_list_slab_00b620f0(void* raw,std::uint32_t index) noexcept {
+__declspec(noinline) void* initialize_native_shader_state_list_slab_00b620f0(void* raw,std::uint32_t index) noexcept {
     return initialize_slab<NativeShaderStateListPool>(raw,index);
 }
 void destroy_native_shader_state_list_pool_table_00b621b0(void* header) noexcept {
@@ -381,7 +401,14 @@ void NativeGuiGroupPool::initialize_00ac7410() {
     initialize_pool<NativeGuiGroupPool>(allocator_list_,storage_);
 }
 void* NativeGuiGroupPool::allocate_00ac7590() {
-    return allocate_slot<NativeGuiGroupPool>(storage_);
+    if constexpr (kWireGoal4Chain309Bound) {
+        // bsp.py show 00AC7590: initialize the actual new 1E44h slab through
+        // 00AC6FF0, retaining the native lock, null arm and publication order.
+        return allocate_slot<NativeGuiGroupPool,
+            &initialize_native_gui_group_slab_00ac6ff0>(storage_);
+    } else {
+        return allocate_slot<NativeGuiGroupPool>(storage_);
+    }
 }
 void NativeGuiGroupPool::return_00ac7260(void* slot) noexcept {
     return_slot<NativeGuiGroupPool>(storage_,slot);
@@ -395,7 +422,7 @@ void NativeGuiGroupPool::destroy_00ac71a0() {
 void NativeGuiGroupPool::invoke_trim(void* context) {
     static_cast<NativeGuiGroupPool*>(context)->trim_00ac74f0();
 }
-void* initialize_native_gui_group_slab_00ac6ff0(void* raw,std::uint32_t index) noexcept {
+__declspec(noinline) void* initialize_native_gui_group_slab_00ac6ff0(void* raw,std::uint32_t index) noexcept {
     return initialize_slab<NativeGuiGroupPool>(raw,index);
 }
 void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
