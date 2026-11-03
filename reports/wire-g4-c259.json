@@ -1,0 +1,67 @@
+{
+  "chain": 259,
+  "owner": "agent/g4-w1",
+  "switch": "kWireGoal4Chain259Bound",
+  "picked": "Carrier launch-brake readiness over the live squadron flight states",
+  "wired_before": 9093,
+  "wired_after": 9095,
+  "measurement": "wire_readiness.py source-level reachability; not runtime or native-ABI proof",
+  "rows": [
+    {
+      "native": "007ed740",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::release_launch_brake_006c5b70",
+      "state": "Resolved live members from PlaneSquadronHostRecord::member_units; each GameUnitSlot supplies its flight state and ground contact.",
+      "evidence": "bsp.py show 007ed740 --asm: member ECX at 007ED755, 007B8BD0 call at 007ED757, fresh count at 007ED766, final SETG at 007ED776. Raw and typed adapters share one loop."
+    },
+    {
+      "native": "007b8bd0",
+      "status": "wired",
+      "host_site": "src/cc13_seg48.cpp: cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(PlaneSquadronFlightReadinessView), reached by the launch-brake host",
+      "state": "The host's existing state-7 vslot answer, plane_control_mode_900 and plane_ground_contact_bf8; the latter is produced by the deck/contact probe at 007C5F0A.",
+      "evidence": "bsp.py show 007b8bd0 --asm: +72Ch vslot[38h], state +900h, contact +BF8h; state 5 rejects contact. Reuses the existing band_007a_cc13 body."
+    },
+    {
+      "native": "0070d0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0",
+      "reason": "Needs a shared native or typed group view retaining the +504h speed ceiling; this host path currently computes it from split controller records."
+    },
+    {
+      "native": "0070d100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFollow host publish_member_speed_0070d100",
+      "reason": "Needs a shared group member-record view so the existing body can update every matching member; the host currently writes one controller scalar."
+    },
+    {
+      "native": "007ed920",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron retreat/ordnance handling",
+      "reason": "The 009F7C90 rocket-specific caller arm is absent; wiring requires that caller and its real loadout argument."
+    },
+    {
+      "native": "007edac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: SquadronFreeAttackInput/filter input construction",
+      "reason": "The host hardcodes leader+C24h false and needs its real pilot-fire flag producer before this accessor can consume real state."
+    },
+    {
+      "native": "007ee720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron command completion handling",
+      "reason": "Needs real head-task vslot[20h] answers per squadron member; the current caller assumes all tasks answer true."
+    }
+  ],
+  "validation": [
+    "Fresh-tree index and baseline scripts/build.ps1 passed.",
+    "Changed-tree scripts/build.ps1 passed, including reconstructed_math and tool_tests.",
+    "Focused MSVC Win32 fixture passed: empty squadron, mixed ready states, state-5 contact rejection, state-6 readiness, state-4 ground-contact gate. Temporary source/result: local/output/g4_c259/flight_readiness_probe.cpp and result.json; executable embeds a manifest.",
+    "wire_readiness.py --standins reports both selected addresses wired, with total 9093 -> 9095.",
+    "No float arithmetic changed."
+  ],
+  "limits": [
+    "No game launch or live gameplay validation was performed.",
+    "The typed view is not a native ABI replacement.",
+    "Existing host attachment, dead-member compaction and observer-gone substitutions remain in force."
+  ]
+}

@@ -5,6 +5,7 @@
 // modelled: the image's EH state stores only select unwind actions.
 
 #include "bsp/cc13_seg48.hpp"
+#include "bsp/band_007a_cc13.hpp"
 #include "bsp/gameplay_seg48_cc13.hpp"
 
 #include <cstring>
@@ -975,13 +976,38 @@ void cc13_seg48_plane_squadron_stow_members_inside_007ed6e0(void* squadron, Cc13
 // squadron), AL. Bytes 007ED740-007ED782: false at the first member whose
 // 007B8BD0 answers false; after the loop, `setg` on count > 0 (so an empty
 // squadron answers false).
-bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(void* squadron, Cc13Seg48Host& host) {
-    for (std::int32_t i = 0; i < at<std::int32_t>(squadron, 0x3CC); ++i) {
-        if (!host.plane_is_free_flight_or_parked_007b8bd0(at<void*>(squadron, 0x3D0 + 4 * i))) {
+namespace {
+// Shared body for native and typed views. Count must remain a read, including
+// after each callback and at the final SETG (listing 007ED766 / 007ED770).
+template <class Count, class MemberReady>
+bool squadron_all_free_flight_or_parked(Count count, MemberReady member_ready) {
+    for (std::int32_t i = 0; i < count(); ++i) {
+        if (!member_ready(i)) {
             return false;
         }
     }
-    return at<std::int32_t>(squadron, 0x3CC) > 0;
+    return count() > 0;
+}
+}
+
+bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(void* squadron, Cc13Seg48Host& host) {
+    return squadron_all_free_flight_or_parked(
+        [&] { return at<std::int32_t>(squadron, 0x3CC); },
+        [&](std::int32_t i) {
+            return host.plane_is_free_flight_or_parked_007b8bd0(
+                at<void*>(squadron, 0x3D0 + 4 * i));
+        });
+}
+
+bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(
+    const PlaneSquadronFlightReadinessView& squadron) {
+    return squadron_all_free_flight_or_parked(
+        [&] { return squadron.count; },
+        [&](std::int32_t i) {
+            const PlaneSquadronFlightMemberView& member = squadron.members[i];
+            return band_007a_cc13::plane_free_flight_or_parked_007b8bd0(member.free_flight_72c,
+                member.flight_state_900, member.ground_contact_bf8);
+        });
 }
 
 // 007EDAC0 BSP_PlaneSquadron_LeaderFlagC24, __thiscall(ECX = squadron), AL =

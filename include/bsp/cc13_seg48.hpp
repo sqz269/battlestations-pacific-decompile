@@ -11,8 +11,9 @@
 // original ABI; each function's comment gives the native ABI. Native objects
 // are raw byte blocks touched only at the offsets the image reads or writes,
 // and every call the image makes goes through a named Cc13Seg48Host method at
-// the same point with the same arguments. Nothing here is wired into the game.
-// Build-tested only.
+// the same point with the same arguments. Selected entries also have typed
+// views used by game hosts; those call sites record their state producers.
+// Build-tested; live game validation is separate.
 
 #include <cstddef>
 #include <cstdint>
@@ -357,6 +358,20 @@ void cc13_seg48_plane_squadron_refresh_travel_speed_007ed5d0(void* squadron);
 void cc13_seg48_plane_squadron_re_equip_all_007ed690(void* squadron, std::uint32_t ammo_type, Cc13Seg48Host& host);
 void cc13_seg48_plane_squadron_stow_members_inside_007ed6e0(void* squadron, Cc13Seg48Host& host);
 bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(void* squadron, Cc13Seg48Host& host);
+// Typed projection of the attached, live +3D0h members. These fields come from
+// each member's +72Ch vslot[38h] answer, +900h and +BF8h, respectively. No native
+// object layout or vtable is fabricated. Empty squadrons still answer false.
+struct PlaneSquadronFlightMemberView {
+    bool free_flight_72c;
+    std::int32_t flight_state_900;
+    bool ground_contact_bf8;
+};
+struct PlaneSquadronFlightReadinessView {
+    const PlaneSquadronFlightMemberView* members;
+    std::int32_t count;
+};
+bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(
+    const PlaneSquadronFlightReadinessView& squadron);
 std::uint8_t cc13_seg48_plane_squadron_leader_flag_c24_007edac0(void* squadron);
 void* cc13_seg48_session_message_entity_relocate_construct_heading_007edeb0(void* message, float heading,
                                                                             std::uint32_t value_28,

@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
+#include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
@@ -22904,18 +22905,45 @@ void GameUnitsHost::Impl::release_launch_brake_006c5b70() {
         }
         std::size_t resolved = 0, live = 0;
         bool every = true;
-        for (const std::size_t m : rec->member_units) {
-            if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
-            ++resolved;
-            const GameUnitSlot& p = *slots[m];
-            // unit_scene_node_flags' fields +5Dh, +5Eh, +5Fh (as the plane count reads them).
-            if (p.scene_flags_available && p.state != nullptr && (p.state->simulate != 0
-                    || p.scene_destroyed_005e != 0 || p.scene_removed_005f != 0)) {
-                continue;
+        if constexpr (bsp::kWireGoal4Chain259Bound) {
+            std::vector<bsp::PlaneSquadronFlightMemberView> members;
+            members.reserve(rec->member_units.size());
+            for (const std::size_t m : rec->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+                ++resolved;
+                const GameUnitSlot& p = *slots[m];
+                if (p.scene_flags_available && p.state != nullptr && (p.state->simulate != 0
+                        || p.scene_destroyed_005e != 0 || p.scene_removed_005f != 0)) {
+                    continue;
+                }
+                // 007ED740 calls 007B8BD0 with each attached plane (007ED755).
+                // The host's +72Ch vslot[38h] answer is state 7 (0074E210).
+                // +900h is produced by the flight-state transitions;
+                // +BF8h by the deck/contact probe 007C5F0A.
+                // Keep the existing dead-member compaction and observer-gone
+                // handling outside the predicate; there are no synthetic members.
+                members.push_back({p.plane_control_mode_900 == 7,
+                    p.plane_control_mode_900, p.plane_ground_contact_bf8});
             }
-            ++live;
-            const int st = p.plane_control_mode_900;
-            if (!(st == 7 || st == 6 || (st == 4 && p.plane_ground_contact_bf8))) every = false;
+            live = members.size();
+            const bsp::PlaneSquadronFlightReadinessView view{
+                members.data(), static_cast<std::int32_t>(members.size())};
+            every = bsp::cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(view);
+            done("AirOps::squadron_all_free_flight_or_parked", 0x007ed740u);
+        } else {
+            for (const std::size_t m : rec->member_units) {
+                if (m == bsp::kPlaneSquadronNoUnit || m >= slots.size() || !slots[m]) continue;
+                ++resolved;
+                const GameUnitSlot& p = *slots[m];
+                // unit_scene_node_flags' fields +5Dh, +5Eh, +5Fh (as the plane count reads them).
+                if (p.scene_flags_available && p.state != nullptr && (p.state->simulate != 0
+                        || p.scene_destroyed_005e != 0 || p.scene_removed_005f != 0)) {
+                    continue;
+                }
+                ++live;
+                const int st = p.plane_control_mode_900;
+                if (!(st == 7 || st == 6 || (st == 4 && p.plane_ground_contact_bf8))) every = false;
+            }
         }
         if (resolved == 0) continue;
         const bool gone = live == 0;
