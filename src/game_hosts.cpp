@@ -2673,7 +2673,7 @@ GameStartupHost::~GameStartupHost() {
     } else {
     }
     if constexpr (kWireGoal4Chain249Bound) {
-        GameHudHost::bind_sound_runtime(nullptr);  // before the runtime it names goes
+        GameHudHost::bind_sound_runtime(nullptr, nullptr);  // before the runtime it names goes
     }
     sound_.reset();
     delete singletons_;
@@ -3632,7 +3632,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     }
     if constexpr (kWireGoal4Chain249Bound) {
         // [00F8BBD8] for the in-mission interface update's 00A7B710 (0068CC49).
-        GameHudHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr);
+        GameHudHost::bind_sound_runtime(sound_ ? &sound_->core : nullptr,
+            &vfs_->borrow_raw_services().strings);
     }
     menu_ = new GameMenuHost(log_, *frontend_, game_state_, *singletons_, options_.press_start_frame,
         *vfs_, *scripts_, locale_->tables(),
