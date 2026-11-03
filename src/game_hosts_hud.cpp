@@ -42,6 +42,9 @@
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/wire_goal1_chain12_switches.hpp"
 #include "bsp/wire_goal2_chain35_switches.hpp"
+#include "bsp/wire_goal4_chain252_switches.hpp"
+#include "bsp/frontend_managers.hpp"
+#include "bsp/simulation_gate.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -848,8 +851,15 @@ public:
         owner_.done("InGameInterface::publish_manager_global", 0x0068ccfeu);
     }
     void base_init() override {
+        if constexpr (kWireGoal4Chain252Bound) {
+            // 0068CD04 calls the inherited +4h virtual, 00683A90. Its entire
+            // retail body is RET (bsp.py show 00683a90); it needs no object fields.
+            bsp::front_end_manager_init_default_00683a90();
+            owner_.done("InGameInterface::base_init", 0x00683a90u);
+        } else {
         // 0068cd04, the base Init 00683a90, a bare RET in this build.
         owner_.done("InGameInterface::base_init", 0x00683a90u);
+        }
     }
     bool allocate_screen(std::size_t index, std::size_t size_bytes) override {
         static_cast<void>(index);
@@ -3814,8 +3824,15 @@ public:
         return owner_.menu.input_action_pressed(action);
     }
     bool base_screen_active() override {
+        if constexpr (kWireGoal4Chain252Bound) {
+            // 0068A140 reads the manager's last pending id at +20h, including
+            // after application. Preserve that owner here, not the applied id
+            // in summary (bsp.py show 0068a140).
+            return bsp::is_base_interface_0068a140(owner_.record_pending_id_20);
+        } else {
         // 0068A140 reads manager+20h (the pending record, not the applied id).
         return owner_.record_pending_id_20 == 0x31 || owner_.record_pending_id_20 == 0x32;
+        }
     }
     bool panel_54_active() override {
         // Manager+54h is registry slot 4Ch; +5h is its applied byte.
