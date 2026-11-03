@@ -14,6 +14,7 @@
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/native_lua_bootstrap.hpp"
 #include "bsp/native_string.hpp"
+#include "bsp/native_locale_string_record.hpp"
 
 #include <cstdint>
 
@@ -542,6 +543,9 @@ std::int32_t find_first_of_native_wide_string_00a9ef60(const NativeWideStringHea
 // many bytes; +8 and +0Ch = 0.
 void* copy_construct_native_string_record_00a9f460(void* fresh, const NativeString& source,
     NativeStringStorage&);
+// Typed view of the SAME body; the raw entry delegates to this overload.
+NativeLocaleStringRecord& copy_construct_native_string_record_00a9f460(
+    NativeLocaleStringRecord& fresh, const NativeString& source, NativeStringStorage&);
 
 class NativeGuiAnimatedValueCalls {
 public:

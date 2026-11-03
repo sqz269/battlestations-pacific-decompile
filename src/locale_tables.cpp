@@ -1,5 +1,6 @@
 #include "bsp/locale_tables.hpp"
 #include "bsp/language_catalog.hpp"
+#include "bsp/cc13_seg87.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -24,7 +25,8 @@ std::uint32_t fold_and_accumulate(std::uint32_t hash, unsigned char byte) noexce
 }
 
 // __stricmp on the native side; both keys are byte strings from the table file.
-bool equal_case_insensitive(const std::string& left, const std::string& right) noexcept {
+template<class Left>
+bool equal_case_insensitive(const Left& left, const std::string& right) noexcept {
     if (left.size() != right.size()) {
         return false;
     }
@@ -61,6 +63,30 @@ std::string decimal(std::size_t value) {
 }
 
 }  // namespace
+
+NativeLocaleKeyOwner::~NativeLocaleKeyOwner() {
+    if constexpr (kWireGoal2Chain215Bound)
+        record_.key.release_to(crt_string_storage());
+}
+
+NativeLocaleKeyOwner& NativeLocaleKeyOwner::operator=(std::string&& source) {
+    // 00A9F460 constructs the owned map key; OFF retains insert_00a9fc30's string move.
+    if constexpr (kWireGoal2Chain215Bound) {
+        // AA0192..AA01CE: zero temporary header, resize to strlen(composed key),
+        // then copy length+1. The host parser supplies the same complete key.
+        struct ParserKey {
+            NativeString text;
+            ~ParserKey() { text.release_to(crt_string_storage()); }
+        } temporary;
+        auto& strings = crt_string_storage();
+        const auto length = static_cast<std::uint32_t>(source.size());
+        temporary.text.resize_0041dd40(strings, length, true);
+        if (temporary.text.data() != nullptr)
+            std::memcpy(temporary.text.data(), source.c_str(), length + 1u);
+        copy_construct_native_string_record_00a9f460(record_, temporary.text, strings);
+    }
+    return *this;
+}
 
 LanguageEntry parse_language_descriptor_008d7bc0(const std::string& text) {
     return parse_native_language_descriptor_008d7bc0(
@@ -229,7 +255,12 @@ void LocaleTables::insert_00a9fc30(std::string key, std::u16string text) {
         }
     }
     auto node = std::make_unique<Node>();
-    node->key = std::move(key);
+    // 00A9F460 copies the parser key into the ON native owner; OFF keeps the string move.
+    if constexpr (kWireGoal2Chain215Bound) {
+        node->key = std::move(key);
+    } else {
+        node->key = std::move(key);
+    }
     node->text = std::move(text);
     node->next = buckets_[index];
     buckets_[index] = node.get();

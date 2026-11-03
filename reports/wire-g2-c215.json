@@ -1,0 +1,77 @@
+{
+  "run": 395,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 215,
+  "packet": "g2-w4",
+  "branch": "agent/g2-w4",
+  "tier": 2,
+  "range": ["00a9ac70", "00aa0f50"],
+  "host_file": "src/locale_tables.cpp",
+  "selection_reason": "The selected F460 row has an active semantic map-insertion host and needs one small owned native key record. The higher-scored candidates list unimplemented Host methods; the semantic locale map provides a bounded real-state producer and consumer.",
+  "switch": "kWireGoal2Chain215Bound",
+  "switch_default": false,
+  "wired_before": 9016,
+  "wired_after": 9017,
+  "checks": {
+    "off_build": "passed ./scripts/build.ps1 after the ON check; reconstructed_math and tool_tests both passed; local/output/wire-g2-c215-off-build.log",
+    "on_build": "passed python tools/off_switch_on_build.py --names kWireGoal2Chain215Bound; exit 0, zero distinct diagnostics; both existing CTests passed; switch automatically restored OFF",
+    "report_calls": "passed: 1 call rows checked, 0 failed",
+    "readiness": "passed after final plain OFF build: 00a9f460 ready -> wired; total 9016 -> 9017",
+    "ledger": "No new address-suffixed identifier: the typed overload and raw wrapper retain the existing F460 identifier and single reconstructed body",
+    "pc24_lint": "not applicable: no x87 arithmetic changed",
+    "game_run": "not run, as instructed"
+  },
+  "host_objects": [
+    {
+      "name": "NativeLocaleKeyOwner / NativeLocaleStringRecord",
+      "where": "include/bsp/locale_tables.hpp:23; include/bsp/native_locale_string_record.hpp:12; src/locale_tables.cpp:72",
+      "producers": [
+        "parse_lockit_table_00aa0020 supplies the category.name key from actual locale file records; tokens are truncated at embedded NUL and keys are bounded by kLockitKeyBufferBytes",
+        "AA0192..AA01CE creates the parser's temporary native key: zero header, 0041DD40 resize to composed-key length, length+1 byte copy; NativeString and ParserKey model this using the body's existing NativeStringStorage host interface with crt_string_storage",
+        "copy_construct_native_string_record_00a9f460 produces owned key length/data at +0/+4 and zero value words at +8/+C"
+      ],
+      "fields": [
+        {"offset": "0x00", "width": 4, "value": "owned key length produced by F460/0041DD40"},
+        {"offset": "0x04", "width": 4, "value": "owned key bytes produced by F460/0041DD40"},
+        {"offset": "0x08", "width": 4, "value": "zero from F460; semantic UTF-16 text remains in the host node's existing text member"},
+        {"offset": "0x0c", "width": 4, "value": "zero from F460; semantic UTF-16 text remains in the host node's existing text member"}
+      ],
+      "lifetime": "Constructed only for a newly inserted map node, at the native F460 edge in A9FC30. Key bytes are used by duplicate detection and find_00a9ec70. Retired with storage_.clear() in clear_0073c240 or host destruction; native 00737CE0 releases the narrow key after the wide payload. The temporary key is released after the copy or on a C++ exception. Native ABI, raw node-pool ownership and native EH are not claimed.",
+      "off_behavior": "Node::key remains exactly std::string through conditional_t; no NativeLocaleKeyOwner or ParserKey is constructed. The OFF insertion arm is the original node->key = std::move(key) statement. The comparison loop is unchanged and instantiated with std::string.",
+      "rows": ["00a9f460"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00a9f460",
+      "address": "00a9fcfc",
+      "function": "00a9fc30",
+      "name": "copy_construct_native_string_record_00a9f460",
+      "abi": "raw_view",
+      "status": "wired",
+      "host_site": "src/locale_tables.cpp:LocaleTables::insert_00a9fc30 -> NativeLocaleKeyOwner::operator=",
+      "reach": "static",
+      "host_path": [
+        "GameStartupHost::application_initialize -> run_initialize_phases (src/game_hosts.cpp:2918,2925)",
+        "unconditional locale_->initialize after particle manager startup (src/game_hosts.cpp:3424)",
+        "GameLocaleHost::initialize -> reload_00aa06d0 (src/game_hosts_vfs.cpp:341)",
+        "LocaleTables::reload_00aa06d0 -> load_current_language -> load_one_file -> insert_00a9fc30",
+        "new-node arm -> NativeLocaleKeyOwner::operator= -> typed F460 overload"
+      ],
+      "reach_evidence": "No disabled constexpr gate encloses locale initialization or the load/insert chain. Reload on the freshly created map has count_ == 0. F460 runs only for new parsed keys, as in the binary. No surveyed mission call count was supplied for this candidate, so no live execution claim is made.",
+      "contract": "The only original call site is A9FCFC inside A9FC30 (body A9FC30..A9FD48): PUSH source at A9FCF9, ECX=allocated node at A9FCFA, F460 RET 4. F460 uses ECX destination, stack const NativeString*, compares identity before zeroing, resizes with preserve=1, copies current destination length, then clears +8/+C. The existing body is moved to a typed NativeLocaleStringRecord& overload; its raw entry is a thin wrapper, with no second implementation or behavioral repair.",
+      "effect": "ON replaces the new node's moved std::string key with native owned key bytes constructed by the existing F460 logic. Both duplicate detection and lookup compare the produced storage directly; no shadow copy or constant input is used."
+    }
+  ],
+  "rejected_host_sites": [
+    {
+      "host_site": "src/native_locale_map_insertion.cpp:insert_or_get_native_locale_value_00a9fc30",
+      "reason": "Its parser-record/file/textual chain terminates at GameNativeLocaleManagerProcess::parse_textual_option1, which has no host caller. The row is wired through the active semantic locale map instead."
+    }
+  ],
+  "limitations": [
+    "Build and static reach evidence only; switches remain OFF and no game was run.",
+    "The host retains its semantic map allocation, links and UTF-16 text storage. This does not bind the original native map-node pool, native EH or binary ABI."
+  ]
+}
