@@ -1,0 +1,167 @@
+{
+  "goal": 2,
+  "chain": 144,
+  "run": 284,
+  "harness": "codex",
+  "packet": "g2-w5",
+  "branch": "agent/g2-w5",
+  "host_file": "src/game_hosts.cpp",
+  "candidate": {
+    "tier": 2,
+    "segment": 74,
+    "range": [
+      "00a7a440",
+      "00a9ac40"
+    ],
+    "selection_reason": "The sound owner and its configured class table already exist on the sign-in settings path; no replacement owner or constant-filled storage is needed."
+  },
+  "switch": "kWireGoal2Chain144Bound",
+  "switch_default": false,
+  "wired_before": 8975,
+  "wired_after": 8976,
+  "assigned_rows_wired": 1,
+  "host_objects": [],
+  "reused_host_state": {
+    "name": "SoundSystemOwner, SoundClassOwnership and configured sound class descriptors",
+    "where": "src/game_hosts.cpp:1688,3176,3667",
+    "producers": [
+      "GameStartupHost::SoundServices -> GameSoundRuntime::startup at the 0073DAFD phase",
+      "initialize_sound_configuration_00a7ff80 / apply_sound_configuration_lua_00a7ff80_fragment",
+      "008D7A50 / quick settings read supplies settings.audio.speech_30 and music_28",
+      "apply_audio_settings_008d5430 supplies Warnings, GUITestSpeech and GUIMusic names"
+    ],
+    "lifetime": "Borrowed after sound startup; sound, its FMOD name service and the VFS string pool outlive menu/profile application. No new persistent/native owner.",
+    "rows": [
+      "00a7f8e0"
+    ]
+  },
+  "checks": {
+    "off_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed",
+      "tests": "2/2 passed",
+      "log": "local/output/wire-g2-c144-off-final.log"
+    },
+    "on_build": {
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain144Bound",
+      "result": "passed; exit 0, zero distinct diagnostics; source restored OFF",
+      "log": "local/output/wire-g2-c144-on.log"
+    },
+    "measurement_order": "ON build check, then plain OFF build, then wire_readiness.py",
+    "readiness": "passed: 00a7f8e0 ready -> wired; total wired 8975 -> 8976, measured after the final plain OFF build",
+    "pc24_lint": "not applicable: ON arm performs no x87 arithmetic; it passes the profile's float unchanged",
+    "game_run": "not performed, as instructed",
+    "report_calls": "passed: 11 original CALL rows checked, 0 failed"
+  },
+  "on_effect": "At sign-in quick-settings application, look up each existing named sound class and call set_sound_class_level_00a7f8e0 with the profile's speech/music gain. Its existing body updates a changed class volume and dirties matching live entries. Missing owners or missing configured names retain the diagnostic and create no replacement state.",
+  "off_effect": "The original missing(\"sound_set_named_bus_volume\", \"00a7acf0\") arm is preserved. No sound/name/storage bindings are installed, no temporary bus name is constructed and no sound-class body is called.",
+  "rows": [
+    {
+      "native": "00a7f8e0",
+      "address": "008d5539",
+      "function": "008d5430",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp:3687:GameStartupHost::run_initialize_phases named-bus sink, called by src/game_profile_load.cpp:QuickSettingsApplyHost::sound_set_named_bus_volume",
+      "reach": "static",
+      "reach_evidence": "GameStartupHost::application_initialize -> run_initialize_phases binds the running sound owner independently of chain90 -> GameMenuHost::on_move -> Impl::advance_path -> load_signed_in_profile_0067cc60 -> load_signed_in_profile_read_only -> ReadOnlyProfileIoHost::apply_settings_008d5b50 -> apply_all_settings_008d5b50 -> apply_audio_settings_008d5430 -> sound_set_named_bus_volume. Existing kApplicationCc15Bound, kProfileOwnerCc15Bound, kProfileLoadCc15Bound and kQuickSettingsApplyCc15Bound are true; no other OFF switch gates this site.",
+      "original_call_sites": [
+        "008d5539",
+        "008d55c4",
+        "008d564f"
+      ],
+      "contract": "ECX is [00F8BBD8] saved in EDI; 00A7ACF0 returns the class index in EAX, pushed immediately before A7F8E0. Volume comes from settings/ESI+30h for Warnings/GUITestSpeech, ESI+28h for GUIMusic. Callee RET 8 at 00A7F94C. Typed SoundClassOwnership supplies both growth callbacks.",
+      "coverage": "existing body unchanged",
+      "limitation": "Reach is source inspection only; the assignment supplied no mission counts for this range. Unknown configured bus names retain the missing diagnostic instead of indexing -1."
+    },
+    {
+      "native": "00a7f890",
+      "address": "004cd1de",
+      "function": "004cd0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:game_set_cinematic_004cd0f0 / set_cinematic_mode",
+      "reach": "static",
+      "reason": "Cinematic-mode host implementations are in excluded game_hosts_mission_frame.cpp, assigned to another worker. Wiring the sound-class pause there requires that host's real sound binding; adding an unused sound adapter elsewhere would not count."
+    },
+    {
+      "native": "00a84450",
+      "address": "00a84564",
+      "function": "00a84530",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp:sound_cache_records_reserve_00a84450; src/sound_resource_cleanup.cpp",
+      "reach": "static",
+      "reason": "The existing sound resource owner stores std::vector<SoundResourceCacheRecord>, while this body allocates/copies/destroys native contiguous 2Ch records through NativePointerArray and native list sentinels. The host has no matching native record-storage producer; copying a synthetic header would not feed real host state."
+    },
+    {
+      "native": "00a845a0",
+      "address": "00a84cf3",
+      "function": "00a84c90",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cleanup.cpp:clear_sound_resource_cache_00a84c90 / destroy_sound_resource_cache_storage_00a84d00",
+      "reach": "static",
+      "reason": "The host reaches the documented shrink-only vector projection, not native header/count/capacity and 2Ch list-bearing records. Full body needs native reserve/sentinel/destroy producers; their storage cannot alias this vector. Do not create another body or invent a native record owner."
+    },
+    {
+      "native": "00a8a980",
+      "address": "00a8fe5a",
+      "function": "00a8fe30",
+      "status": "skipped",
+      "host_site": "src/native_shadow_depth_target_owner.cpp:construct_native_shadow_depth_target_00a8fe30",
+      "reach": "static",
+      "reason": "The reachable depth-target constructor already executes the same extents_construct implementation as construct_native_shadow_target_extents_00a8a980, inside its existing retained operation. Calling the public wrapper adds an operation and repeats already executed extents logic; it is not new wiring under the counting rule."
+    },
+    {
+      "native": "00a8e180",
+      "address": "00b3cc60",
+      "function": "00b3c960",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:host.shadow_render_single_view_00a8e180",
+      "reach": "static",
+      "reason": "No implementation of shadow_render_single_view_00a8e180 exists. Body requires directional-owner camera+20h/render-camera+30h/command-owner+34h/target+500h/viewport+504h and ShadowSingleViewHost queue/matrix/retain services; the reachable depth-target owner alone supplies none of that cockpit/directional graph."
+    },
+    {
+      "native": "00a8e860",
+      "address": "0059d92c",
+      "function": "0059d7b0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB2.cpp:host.shadow_owner_render_ground_ortho_00a8e860",
+      "reach": "static",
+      "reason": "No implementation of shadow_owner_render_ground_ortho_00a8e860 exists. It needs the directional owner and viewport/camera, live foliage-caster producer and named render-command queue adapter, not just the existing depth-target settings object. Those producers are unavailable on this host path."
+    },
+    {
+      "native": "00a8ea20",
+      "address": "00a8f9ca",
+      "function": "00a8f3b0",
+      "status": "skipped",
+      "host_site": "src/cc13_large3.cpp:host.shadow_owner_submit_cascades_00a8ea20",
+      "reach": "static",
+      "reason": "No implementation of shadow_owner_submit_cascades_00a8ea20 exists. Four cascade cameras/targets, render-camera and command-owner fields plus a real ShadowCascadeSubmitHost command/job/fit adapter are missing; they cannot be manufactured from the existing depth-target owner within one bounded object."
+    },
+    {
+      "native": "00a92290",
+      "address": "004c4323",
+      "function": "004c4300",
+      "status": "skipped",
+      "host_site": "src/frontend_screen_sets.cpp:apply_input_context_levels_004c4300",
+      "reach": "static",
+      "reason": "The reachable menu helper stores and directly reads GameInputContextSetStack::context_level, not the native action-owner+10h vector. A view getter returning that same host scalar would only hand the host's own value back, which the counting rule excludes; fabricating a manager is also invalid."
+    },
+    {
+      "native": "00a93020",
+      "address": "00a9342f",
+      "function": "00a933f0",
+      "status": "skipped",
+      "host_site": "src/game_input_actions.cpp:GameInputActions::set_context_level -> src/native_input_action_contexts.cpp:set_native_input_context_level_00a933f0",
+      "reach": "static",
+      "reason": "The existing native context-level setter already calls refresh_native_input_action_contexts_00a93020 unconditionally with the same real owner/context. Another ON call would duplicate OFF work. The other image site is system-pause logic, whose mission-frame host file is excluded from this assignment."
+    },
+    {
+      "native": "00a95890",
+      "address": "00a95d2c",
+      "function": "00a95cb0",
+      "status": "skipped",
+      "host_site": "src/cc13_front2.cpp:gamepad_force_clear_all_channels_00a95cb0 -> Cc13Front2Host::gamepad_force_clear_requests_00a95890",
+      "reach": "static",
+      "reason": "There is no implementation of the clear-all channel callback in src. The assigned full body requires semantic InputDevice/GamepadForceContext state, while application input owns native device images and NativeGamepadContext; clear_native_gamepad_force_00a95890 is a separate existing raw fragment. A semantic shadow state or renamed fragment would not run the assigned body over real host state."
+    }
+  ]
+}
