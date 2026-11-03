@@ -233,7 +233,7 @@ struct TorpedoReleaseOrderHost {
 // Packet cc13-ver6, finding 3b (docs/CC13_VER_6.md). 007EEF50 JBE lands on
 // 007EEF96, the leader block, not on the return, so the block runs whether or
 // not the 999 loop did. OFF keeps the early return.
-inline constexpr bool kReleaseOrderLeaderBlockBound = false;
+inline constexpr bool kReleaseOrderLeaderBlockBound = true;
 
 struct ReleaseOrderIssueResult {
     bool walk_found_device = false;

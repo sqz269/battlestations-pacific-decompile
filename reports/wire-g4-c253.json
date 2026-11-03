@@ -1,0 +1,138 @@
+{
+  "chain": 253,
+  "owner": "agent/g4-w5",
+  "picked": "Lua hit, kill, and exit-zone listener argument variants",
+  "switch": "bsp::kWireGoal4Chain253Bound",
+  "rows": [
+    {
+      "native": "008849d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_hit_listeners_00988510 -> push_listener_number",
+      "evidence": "00988E98, 00988ED1, and 00988F07 construct the hit's damage, fire, and leak float arguments. The live host event supplies these three values; Lua consumes the constructed payloads."
+    },
+    {
+      "native": "00884a00",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_kill_listeners_009813a0 and dispatch_hit_listeners_00988510 -> push_listener_integer",
+      "evidence": "Kill attacker_slot and hit attacker_player_index come from the existing event/attacker state. 00988E62 calls the integer constructor; 00884A00 CVTSI2SS and 00884A19 MOVSS establish the binary32 conversion before Lua number promotion."
+    },
+    {
+      "native": "00884a30",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_exit_zone_listeners_00982120 -> push_listener_boolean",
+      "evidence": "The existing exit-zone event supplies exited; the tag-2 constructor's boolean payload is pushed as the callback's second argument."
+    },
+    {
+      "native": "00884fc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_hit_listeners_00988510 -> push_listener_string",
+      "evidence": "00988E2C calls the string constructor for the attack-type name from the binary's 00E08E58 table. VariantStringHost exposes only allocation/resize; the live binding runs reconstructed 0041DD40 with CRT storage and releases the temporary after Lua copies its payload."
+    },
+    {
+      "native": "00884ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_kill_listeners_009813a0",
+      "reason": "Missing native attacker entity-record object with the id at +18h; the current callback path carries a resolved host id directly."
+    },
+    {
+      "native": "00884a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: SpawnCompletionLuaAdapter::variant_construct_entity_00884a90 and listener entity arguments",
+      "reason": "Missing native entity object with the id at +174h on these paths; SpawnCompletionLuaAdapter currently boxes the host's existing id inline."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing frame-job pool producer and its main-thread queue; on_frame_job_thread is always false in this host."
+    },
+    {
+      "native": "008f7100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library",
+      "reason": "Missing complete multi-parent handling in load_prop_library_file; it retains only the first authored parent, while the live host parser handles all parents."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block and SceneFile binding group merge",
+      "reason": "Missing native source/destination property bags and clone/insertion context on the live typed ScenePropertyBlock merge path."
+    },
+    {
+      "native": "008f3370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_terrain_shadow_string",
+      "reason": "Missing actual native property record returned by the bag lookup; this callback currently records the shadow write only."
+    },
+    {
+      "native": "00be4380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: vfs_open_stream",
+      "reason": "Missing native VFS stream owner on the navigation path, which currently returns a byte-buffer-backed host stream."
+    },
+    {
+      "native": "007ed740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron runtime",
+      "reason": "Missing raw squadron member view and Cc13Seg48Host free-flight/parked callback binding; game_hosts_units.cpp was also leased by agent/g4-w1."
+    },
+    {
+      "native": "007ed920",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron runtime",
+      "reason": "Missing raw squadron member view and weapon-controller rocket query binding; game_hosts_units.cpp was also leased by agent/g4-w1."
+    },
+    {
+      "native": "007edac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron free-attack filter inputs",
+      "reason": "Missing leader+C24h firing-byte producer and raw squadron view; the current filter input is literal false."
+    },
+    {
+      "native": "007ee720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron runtime",
+      "reason": "Missing first-member DF4h object adapter on the typed squadron runtime; game_hosts_units.cpp was leased by agent/g4-w1."
+    },
+    {
+      "native": "007ee8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp and src/game_hosts_script_orders.cpp: squadron command applicability",
+      "reason": "Missing Cc15Seg48Host binding over the live squadron and command target; the units implementation was leased by agent/g4-w1."
+    },
+    {
+      "native": "00c41ad0",
+      "status": "skipped",
+      "host_site": "src/dyn_world_settings.cpp: dyn_world_settings_game",
+      "reason": "No missing call at the inspected site: dyn_world_settings_game already invokes this body; its ready census classification needs identifier review."
+    },
+    {
+      "native": "00c5bb30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ShipMotion::rigid_body_substep_schedule",
+      "reason": "Missing full collision/contact-group/solver DynSubstepHost over the live world; the ship path currently runs the two integration phases directly."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission_detail_back",
+      "reason": "Missing built mission-list page consumer for MissionListRefreshHost; the current main-menu callback is a stand-in."
+    },
+    {
+      "native": "00588c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: drive_map",
+      "reason": "Missing world-map camera, point widgets, and their geometry state; the host explicitly does not build that camera."
+    }
+  ],
+  "wired_before": 9072,
+  "wired_after": 9076,
+  "measurement": "wire_readiness.py source/file-granular reachability approximation, not live gameplay proof",
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "pc24_lint": "--staged passed with 0 findings across 4 source/header files",
+    "game_run": "not run per worker instructions"
+  },
+  "limits": "Existing entity/device argument substitutions and callback scheduling are unchanged; only scalar and string boxing is replaced. Native binary ABI compatibility and live gameplay remain unverified."
+}

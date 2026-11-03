@@ -8,5 +8,5 @@ namespace bsp {
 // by 008EFB00 and built in its chunk-list text writer (009502E0 reset,
 // 0094FF10 write, 009500A0 join) instead of one std::string.
 // OFF: chain 115's arm and the inline run loop.
-inline constexpr bool kWireGoal2Chain145Bound = false;
+inline constexpr bool kWireGoal2Chain145Bound = true;
 } // namespace bsp

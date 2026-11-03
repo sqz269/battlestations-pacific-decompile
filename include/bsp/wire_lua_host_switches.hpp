@@ -6,6 +6,6 @@
 
 namespace bsp {
 
-inline constexpr bool kWireLuaHostBound = false;
+inline constexpr bool kWireLuaHostBound = true;
 
 }  // namespace bsp

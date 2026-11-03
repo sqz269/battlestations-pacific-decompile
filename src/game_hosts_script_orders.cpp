@@ -224,7 +224,7 @@ inline constexpr bool kChooserSurfaceSetBranchBound = true;   // ON: SQUADRON_LA
 // vtable[88h] 007C9540) instead of re-posing the whole squadron. False: any
 // member re-poses every member, as before. LABELLED: the leader plane and the
 // squadron are one host unit, so a script passing the leader still turns all.
-inline constexpr bool kTurnToEntityMemberPlaneArmBound = false;
+inline constexpr bool kTurnToEntityMemberPlaneArmBound = true;
 // Packet cc9_l65_moveto_member_launch (SQUADRON_LAND_TASK 5ia). 007F1688-007F16AD
 // issues the null-class moveto to the squadron (0071ECF0), whose 007ECF80 fan-out
 // reaches every +3D0h plane, on the deck or flying. True: the standing per-member

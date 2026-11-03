@@ -347,7 +347,7 @@ constexpr bool kAiSquadronLeaderPointBound = true;
 // 3.2-4 km off Zuikaku. The install runs at the delivery, one bot tick early,
 // as PilotMoveTo's does (SENTITY_INIT_ATTACH_ORDER 22.7). docs/SQUADRON_LAND_TASK.md 5ch.
 // ON (2026-09-30): controls identical; ESMP08 now promotes to CLOSEATTACK (5ch).
-constexpr bool kAiTickMovetoRetasksPlaneBound = false;   // OFF again: SQUADRON_LAND_TASK 5co
+constexpr bool kAiTickMovetoRetasksPlaneBound = true;   // OFF again: SQUADRON_LAND_TASK 5co
 
 // Packet cc9_plane_attacker_weight, docs/SQUADRON_LAND_TASK.md 5cq. 00A08460's
 // class type queries (vtable[+18h]) were a stub answering false, so a plane
@@ -458,7 +458,7 @@ constexpr bool kAiPartyReplanFlagBound = true;  // ON: pairs held, spread misses
 // ECX = the Sell planner, and 00A22750 sets +2Ch at 00A227A9 after the push.
 // True: the split group goes through planner_claim_group (00A22750). False:
 // the think links it to the planner itself and the byte stays clear.
-inline constexpr bool kAiSellSplitClaimBound = false;
+inline constexpr bool kAiSellSplitClaimBound = true;
 // R-B. The inlined claims at 00A2B1E3..00A2B22F and 00A2B2C3..00A2B30F (Capture
 // 00A29FD0, into brain+4h / +8h) and 00A28F49..00A28F95 and 00A297E2..00A29832
 // (Defend 00A28A60, into brain+0Ch) end `MOV byte [receiver+2Ch],1` whenever
@@ -1093,7 +1093,7 @@ constexpr bool kAiAutoMergeLeaveBound = true;
 // observer edge, so the change is seen at the start of the next AI fixed step by
 // comparing each unit's +54h with the value seen before. False: the next
 // 00A2DDE0 eviction removes the member instead.
-constexpr bool kAiGroupPartyChangeRemovalBound = false;
+constexpr bool kAiGroupPartyChangeRemovalBound = true;
 
 // Packet cc9_ai_coordinator_load_gate, docs/SHIP_AI_OPEN_ITEMS.md section 150.
 // The coordinator (00A31730, whose tick element 00A32D50 runs the compose pass

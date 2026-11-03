@@ -15,6 +15,7 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/gun_owner_inferior_operational_cc13.hpp"
 #include "bsp/gun_subobject_repair_cc13.hpp"
@@ -12698,6 +12699,12 @@ void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene
         }
     }
     impl_->zones.rebuild(scene, mode, forced, session);
+    if constexpr (bsp::kWireGoal4Chain248Bound) {
+        // These are the loaded Map's native bounds, not a second default box.
+        impl_->units.commands().bind_user_path_world_bounds(impl_->zones.world_bounds());
+    } else {
+        // The command host previously had no world-bound owner.
+    }
     impl_->log.notef("ship AI path turn ramp knee=%.9g limit=%.9g addon=%.9g",
         impl_->path_turn_ramp.knee_x, impl_->path_turn_ramp.limit_x, impl_->path_turn_ramp.limit_y);
 }

@@ -54,11 +54,13 @@
 #include "bsp/ship_ai_avoidance_request.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/unit_commanded_speed.hpp"
+#include "bsp/world_map_bounds.hpp"
 #include "bsp/unit_state_message.hpp"
 
 namespace bsp::game {
 
 class GameHostLog;
+class GameUnitsHost;
 
 // Only director+240h/+241h/+242h. The persistent command owner stores this
 // projection; its cruise, target and permission state is not duplicated here.
@@ -424,6 +426,12 @@ public:
     // The entities 0046aab0's target lookup 00925a90 would find, and the owners
     // its records name. Called once, after the instantiate pass.
     void register_units(std::vector<GameCommandUnit> units);
+    // Chain 248: the Map-derived +711Ch..+7130h values selected by the same
+    // scene/mode/session load as the ship-AI runtime. Copied, never borrowed.
+    void bind_user_path_world_bounds(const bsp::WorldMapBounds& bounds);
+    // Borrowed owning units host; XYZ is read at message delivery, never from
+    // the command-registration snapshot. Null withdraws the live pose source.
+    void bind_user_path_live_owner(const GameUnitsHost* owner) noexcept;
     // Packet cc9_formation_join_follow. 00720CD0 BSP_WeaponDirector_IssueTargetCommand,
     // director vtable[58h], called DIRECTLY (no message) from the join 0077F940 at
     // 0077FAB8. 00720CA0's clear first: 00720850 on every occupied slot, index 9 down

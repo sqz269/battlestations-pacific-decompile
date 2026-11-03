@@ -158,7 +158,15 @@ inline constexpr std::uint32_t kEmptyCString = 0x00F87904u;  // "" returned for 
 // ---------------------------------------------------------------------------
 // Host: one method per native callee
 // ---------------------------------------------------------------------------
-struct Left55Host {
+// The two callees needed by 00884FC0's owning string construction. Keeping
+// this boundary narrow lets live listeners bind it without unrelated services.
+struct VariantStringHost {
+    virtual ~VariantStringHost() = default;
+    virtual void native_string_resize_0041dd40(NativeStr* s, std::uint32_t size, bool keep) = 0;
+    virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
+};
+
+struct Left55Host : VariantStringHost {
     virtual ~Left55Host() = default;
 
     // --- strings ---
@@ -325,7 +333,7 @@ LuaKey* lua_key_construct_moved_00884e50(Left55Host& host, LuaKey* key, NativeSt
 // 00884EF0 __thiscall(ECX key, source), RET 4: copy constructor.
 LuaKey* lua_key_copy_00884ef0(Left55Host& host, LuaKey* key, const LuaKey* source);
 // 00884FC0 __thiscall(ECX variant, const NativeStr*), RET 4.
-LuaVariant* variant_construct_string_00884fc0(Left55Host& host, LuaVariant* v,
+LuaVariant* variant_construct_string_00884fc0(VariantStringHost& host, LuaVariant* v,
     const NativeStr* text);
 // 00885070 ECX map, EDX name, RET 4 (one stack dword never read).
 const char* variant_map_find_string_00885070(Left55Host& host, VariantMap* map,

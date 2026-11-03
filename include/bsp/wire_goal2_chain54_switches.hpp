@@ -7,5 +7,5 @@ namespace bsp {
 // destroys the builder at 006863D2 and leaves the block with 00BDCB30 at
 // 006868E4. ON runs that pair over the VFS host's native FileBlock context
 // instead of only recording the two calls.
-inline constexpr bool kWireGoal2Chain54Bound = false;
+inline constexpr bool kWireGoal2Chain54Bound = true;
 }

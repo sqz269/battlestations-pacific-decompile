@@ -731,30 +731,37 @@ bool game_clip_segment_to_world_bounds_004bbdd0(
     const WorldBoundsXZ& box, const std::array<float, 3>& start, std::array<float, 3>& end,
     std::array<float, 3>& out,
     const std::function<std::array<float, 3>(const std::array<float, 3>&)>& normalize_00419510) {
+    using namespace cc13x87;
     const std::array<float, 3> original = end;
     const double sx = start[0], sz = start[2];
     bool clipped = false;
-    // f(s + f(e - s) * r): the difference is stored, r stays on the stack.
-    auto lerp = [](double s, float e, double r) { return static_cast<float>(s + static_cast<double>(static_cast<float>(e - s)) * r); };
+    // 004BBE24..004BBE51 / 004BBE7D..004BBEAA (and Z counterparts):
+    // all FSUB/FDIV/FMUL/FADD operations use main-thread PC24. Only the
+    // interpolation difference and result are binary32 spills; the ratio
+    // retains x87's exponent range. Plain chained double math is too precise.
+    auto lerp = [](double s, float e, double r) {
+        const float difference = static_cast<float>(x87_sub24(e, s));
+        return static_cast<float>(x87_add24(s, x87_mul24(difference, r)));
+    };
     const double x = end[0];
     if (box.min_x_711c > x) {                                                     // 004BBDF5 FCOMIP; JBE
         clipped = true;
-        end[2] = lerp(sz, end[2], (sx - box.min_x_711c) / (sx - x));              // 004BBE24..004BBE51
-        end[0] = static_cast<float>(static_cast<double>(box.min_x_711c) + 1.0);   // 004BBE54..004BBE5C
+        end[2] = lerp(sz, end[2], x87_div24(x87_sub24(sx, box.min_x_711c), x87_sub24(sx, x)));
+        end[0] = static_cast<float>(x87_add24(box.min_x_711c, 1.0));             // 004BBE54..004BBE5C
     } else if (x > box.max_x_7128) {                                              // 004BBE68 FCOMI; JBE
         clipped = true;
-        end[2] = lerp(sz, end[2], (box.max_x_7128 - sx) / (x - sx));              // 004BBE7D..004BBEAA
-        end[0] = static_cast<float>(static_cast<double>(box.max_x_7128) - 1.0);   // 004BBEAD..004BBEB5
+        end[2] = lerp(sz, end[2], x87_div24(x87_sub24(box.max_x_7128, sx), x87_sub24(x, sx)));
+        end[0] = static_cast<float>(x87_sub24(box.max_x_7128, 1.0));             // 004BBEAD..004BBEB5
     }
     const double z = end[2];
     if (z > box.max_z_7124) {                                                     // 004BBECC FCOMI; JBE
         clipped = true;
-        end[0] = lerp(sx, end[0], (box.max_z_7124 - sz) / (z - sz));              // 004BBEE1..004BBF0B
-        end[2] = static_cast<float>(static_cast<double>(box.max_z_7124) - 1.0);   // 004BBF0D FSUBR
+        end[0] = lerp(sx, end[0], x87_div24(x87_sub24(box.max_z_7124, sz), x87_sub24(z, sz)));
+        end[2] = static_cast<float>(x87_sub24(box.max_z_7124, 1.0));             // 004BBF0D FSUBR
     } else if (box.min_z_7130 > z) {                                              // 004BBF1E FCOMIP; JBE
         clipped = true;
-        end[0] = lerp(sx, end[0], (sz - box.min_z_7130) / (sz - z));              // 004BBF31..004BBF5B
-        end[2] = static_cast<float>(1.0 + box.min_z_7130);                        // 004BBF5D
+        end[0] = lerp(sx, end[0], x87_div24(x87_sub24(sz, box.min_z_7130), x87_sub24(sz, z)));
+        end[2] = static_cast<float>(x87_add24(1.0, box.min_z_7130));              // 004BBF5D
     } else if (!clipped) {
         return false;                                                             // 004BBF6E
     }
@@ -772,11 +779,15 @@ bool game_clip_segment_to_world_bounds_004bbdd0(
     const float az = magnitude(n[2]);
     const float ax = magnitude(n[0]);
     float m = az > ax ? ax : az;                                                  // 004BC073 FCOMIP; JA
-    if (0.019999999552965164 > m) m = 0.02f;                                      // 004BC08C, 00CE746C
-    const float s = static_cast<float>(3000.0 / m);                               // 004BC0B0 FDIVR
-    out[0] = end[0] + n[0] * s;                                                   // 004BC0BA..004BC0E4
-    out[1] = original[1] + s * n[1];
-    out[2] = end[2] + s * n[2];
+    if (0.019999999552965164 > m) m = 0.02f;                                      // 004BC08C, 00D7A2F8 / 00CE746C
+    const float s = static_cast<float>(x87_div24(3000.0, m));                     // 004BC0B0 FDIVR
+    // 004BC0BA..004BC0F9 stores every product before the final additions.
+    const float nx = static_cast<float>(x87_mul24(n[0], s));
+    const float ny = static_cast<float>(x87_mul24(s, n[1]));
+    const float nz = static_cast<float>(x87_mul24(s, n[2]));
+    out[0] = static_cast<float>(x87_add24(end[0], nx));
+    out[1] = static_cast<float>(x87_add24(original[1], ny));
+    out[2] = static_cast<float>(x87_add24(end[2], nz));
     return true;
 }
 

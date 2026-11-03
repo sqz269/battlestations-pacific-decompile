@@ -683,7 +683,7 @@ struct GameRunSummary {
 inline constexpr bool kApplicationCc15Bound = true;
 // Coupled factory-only Source lane. Decoder consumers, installed callback ABI,
 // original unwind and ordinary-parent/runtime admission remain open.
-inline constexpr bool kMovieFactoryRootCc16Bound = false;
+inline constexpr bool kMovieFactoryRootCc16Bound = true;
 
 class GameStartupHost final : public StartupHost {
 public:

@@ -19,7 +19,7 @@ namespace bsp {
 //            session_counts_mission_start_004b6260; a skirmish still answers no)
 //   0046C550 scene gate play-area rows game+705Ch, from 004E6C00 / 004D5BD0
 //            (game_hosts_scene_contents.cpp SceneGateBinding::mode_area)
-inline constexpr bool kSkirmishSessionCc13Bound = false;
+inline constexpr bool kSkirmishSessionCc13Bound = true;
 
 // The five game fields. Descriptive names are hypotheses.
 struct SessionContext {

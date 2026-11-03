@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain253_switches.hpp"
+#include "bsp/cc13_left55.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
 #include "bsp/wire_goal2_chain104_switches.hpp"
@@ -135,11 +137,66 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+
+// Listener arguments are transient: the interpreter copies each value onto
+// its own stack before lua_pcall. The native constructors' 14h-byte variants
+// carry the actual event values consumed by the interpreter.
+void push_listener_number(lua_State* state, float value) {
+    bsp::cc13_left55::LuaVariant variant{};
+    bsp::cc13_left55::variant_construct_number_008849d0(&variant, value);
+    ::lua_pushnumber(state, static_cast<lua_Number>(variant.payload.number));
+}
+
+void push_listener_integer(lua_State* state, std::int32_t value) {
+    bsp::cc13_left55::LuaVariant variant{};
+    bsp::cc13_left55::variant_construct_int_00884a00(&variant, value);
+    ::lua_pushnumber(state, static_cast<lua_Number>(variant.payload.number));
+}
+
+void push_listener_boolean(lua_State* state, bool value) {
+    bsp::cc13_left55::LuaVariant variant{};
+    bsp::cc13_left55::variant_construct_bool_00884a30(&variant, value);
+    ::lua_pushboolean(state, variant.payload.boolean);
+}
+
+class ListenerVariantStringHost final : public bsp::cc13_left55::VariantStringHost {
+public:
+    ~ListenerVariantStringHost() override {
+        if (text_ != nullptr) {
+            // The binding owns the temporary header and its CRT-backed string
+            // storage; no native pooled pointer escapes to Lua.
+            bsp::destroy_native_string_header_0041dd20(text_, bsp::crt_string_storage());
+            ::operator delete(text_);
+        }
+    }
+    void* operator_new_00bf681b(std::uint32_t bytes) override {
+        text_ = static_cast<bsp::cc13_left55::NativeStr*>(::operator new(bytes));
+        return text_;
+    }
+    void native_string_resize_0041dd40(bsp::cc13_left55::NativeStr* text,
+        std::uint32_t size, bool keep) override {
+        bsp::resize_native_string_header_0041dd40(text, bsp::crt_string_storage(), size, keep);
+    }
+private:
+    bsp::cc13_left55::NativeStr* text_{nullptr};
+};
+
+void push_listener_string(lua_State* state, const char* value) {
+    // 00988E2C: the name from 00E08E58 is copied by 00884FC0.
+    bsp::cc13_left55::NativeStr source{
+        static_cast<std::uint32_t>(std::strlen(value)), const_cast<char*>(value)};
+    ListenerVariantStringHost storage;
+    bsp::cc13_left55::LuaVariant variant{};
+    bsp::cc13_left55::variant_construct_string_00884fc0(storage, &variant, &source);
+    const auto* text = variant.payload.text;
+    ::lua_pushlstring(state, text != nullptr && text->data != nullptr ? text->data : "",
+        text != nullptr ? text->size : 0u);
+}
 // Packet cc15-lua1: the VehicleClass row mark (0096490C, 00964959) and the lobby
 // settings globals (00B67350, 00B67580) run the native 14h-object field setters
 // over this state instead of stock push/setfield pairs. Each setter pushes the
 // key with lua_pushlstring, then the value, then lua_settable on the object.
-constexpr bool kLuaObjectFieldSettersCc13Bound = false;
+constexpr bool kLuaObjectFieldSettersCc13Bound = true;
 
 // Packet cc13-yardskill: 00844FC0's launch bag `Skill` is the shipyard's own skill.
 // 0084503C..00845046 call shipyard->vtable[12Ch]() (EDI = the shipyard), which is
@@ -580,7 +637,7 @@ constexpr bool kEntryPointIsFunctionBound = true;   // ON: SQUADRON_LAND_TASK 5h
 // only to a file beside the executable (the build or export tree), never the
 // game installation or a profile; 008ACB70's gamepad-force and input-manager
 // calls are not run. OFF: both rows stay unimplemented records.
-constexpr bool kMissionCheckpointBound = false;
+constexpr bool kMissionCheckpointBound = true;
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
@@ -7114,7 +7171,11 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
             if (kLuaListenerCallbackArgsBound) {
                 // 00884A90 the entity, 00884A30 the byte as a boolean.
                 if (!push_resolved_entity_by_id(state_, victim)) lua_pushnil(state_);
+                if constexpr (bsp::kWireGoal4Chain253Bound) {
+                    push_listener_boolean(state_, exited != 0);
+                } else {
                 ::lua_pushboolean(state_, exited);
+                }
                 pushed = 2;
             }
             if (::lua_pcall(state_, pushed, 0, 0) != 0) {
@@ -7820,7 +7881,11 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 if (attacker <= 0 || !push_resolved_entity_by_id(state_, attacker)) {
                     lua_pushnil(state_);
                 }
+                if constexpr (bsp::kWireGoal4Chain253Bound) {
+                    push_listener_integer(state_, attacker_slot);
+                } else {
                 ::lua_pushnumber(state_, static_cast<lua_Number>(attacker_slot));
+                }
                 pushed = 3;
                 ++summary_.listener_args_pushed;
             }
@@ -10614,11 +10679,19 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 if (!push_resolved_entity_by_id(state_, boxed_attacker)) lua_pushnil(state_);
                 // The attack-type name table 00E08E58 (char*[], read from the PE),
                 // indexed by the ordnance kind [[src+4]+8], the event's ordnance_kind.
+                if constexpr (bsp::kWireGoal4Chain253Bound) {
+                    push_listener_string(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
+                    push_listener_integer(state_, hit.attacker_player_index);
+                    push_listener_number(state_, hit.damage);
+                    push_listener_number(state_, hit.fire_caused);
+                    push_listener_number(state_, hit.leak_caused);
+                } else {
                 ::lua_pushstring(state_, hit_attack_type_name_00e08e58(hit.ordnance_kind));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.attacker_player_index));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.damage));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.fire_caused));
                 ::lua_pushnumber(state_, static_cast<lua_Number>(hit.leak_caused));
+                }
                 pushed = 8;
                 ++summary_.listener_args_pushed;
             }

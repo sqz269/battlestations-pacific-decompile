@@ -39,7 +39,7 @@ namespace bsp {
 // The last count is the steps where a level-bomb task is installed while a torpedo
 // or dive-bomb task is live, i.e. where the host's task priority substitution
 // could differ from the image's list order.
-inline constexpr bool kLevelBombBayOpenerCc13Bound = false;
+inline constexpr bool kLevelBombBayOpenerCc13Bound = true;
 
 // kLevelBombDropBayGateCc13Bound (b): the bay test of 007CC8E0
 // BSP_Plane_DropAttitudeGate for a level bomber (IsKindOf 10h), applied before
@@ -55,7 +55,7 @@ inline constexpr bool kLevelBombBayOpenerCc13Bound = false;
 // (channel_c, bay_rack_holds_round_9c3, read live). A refusal counts in
 // gate_refused and in the ON-only per-unit "levelbomb ... bay_refused=" line.
 // OFF: the bay test is skipped, as before.
-inline constexpr bool kLevelBombDropBayGateCc13Bound = false;
+inline constexpr bool kLevelBombDropBayGateCc13Bound = true;
 
 // Without the opener, a BayDoor level bomber's channel C stays at target 0,
 // value 0, and the gate would refuse every drop while a bay rack holds a round.

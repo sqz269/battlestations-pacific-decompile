@@ -3,5 +3,5 @@
 namespace bsp {
 // Goal 2 chain 84 (g2-w1): units-host raw stand-in rows wired through typed
 // view overloads of the existing bodies. OFF keeps every host stand-in.
-inline constexpr bool kWireGoal2Chain84Bound = false;
+inline constexpr bool kWireGoal2Chain84Bound = true;
 }

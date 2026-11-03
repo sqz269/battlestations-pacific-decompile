@@ -156,5 +156,16 @@
       "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed",
       "wired_after": 9026
     }
+  },
+  "merge_origin_main": {
+    "reason": "landing conflicted in src/game_hosts_hud.cpp",
+    "conflict": "include block only: this branch added wire_goal3_chain233_switches.hpp, fe5_host_unreached.hpp and world_map_bounds.hpp; origin/main added wire_goal4_chain252_switches.hpp, frontend_managers.hpp and simulation_gate.hpp. Resolved by keeping all six; no other hunk conflicted and no ledger shard or cmake/startup.cmake conflict, so tools/merge_resolve.py was not needed.",
+    "upstream_dependencies_checked": "origin/main since c75d0fb9e left Fe5Host, the warning screen (hud_warning_screen.*, frontend_seg16_24_28_cc13.*), world_border_bounds and set_widget_text_source unchanged; its only header edits are load_screen_page(name, flag = 1) and kLuaSquadronForceGunnerModeBound = true, neither used here.",
+    "checks": {
+      "build_on": "python tools/off_switch_on_build.py --names kWireGoal3Chain233Bound: build.ps1 exit 0, 0 distinct diagnostics",
+      "build_off": "./scripts/build.ps1 exit 0, 2/2 tests passed",
+      "wire_readiness_merged": 9097,
+      "wire_readiness_note": "00682E10/00682CB0/00682D60/00682ED0 wired (only 00682E10 claimed); 004C1B90 and 005471B0 stay ready. These four rows are the branch's only state changes (before/after diff in this chain), so origin/main alone reads 9093."
+    }
   }
 }

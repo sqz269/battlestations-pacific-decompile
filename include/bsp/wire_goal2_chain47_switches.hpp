@@ -7,5 +7,5 @@ namespace bsp {
 //   colour 005BE240 copied from those groups' item_ship_Icon, through
 //   MinimapIconEntryBinding; OFF keeps the clone of the colour group's
 //   item_ship_Icon chosen by the markers rule 00639990.
-inline constexpr bool kWireGoal2Chain47Bound = false;
+inline constexpr bool kWireGoal2Chain47Bound = true;
 }

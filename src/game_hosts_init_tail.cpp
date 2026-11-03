@@ -35,7 +35,7 @@ constexpr std::size_t kHardwareStringCapacity = 0x400;
 // (both through 0098d4e0, returning its bool). False: the host's own reads, as before.
 // Pair this on the read-only path only: never run a pair or test with
 // --hardware-probe-commit, which writes this machine's real HKLM Eidos key.
-constexpr bool kHardwareRegistryReadsCc13Bound = false;
+constexpr bool kHardwareRegistryReadsCc13Bound = true;
 
 // The read half of the probe, as bsp::probe_hardware_0073c3b0 wants it. The
 // decision is not taken here: it belongs to bsp::run_hardware_probe_tail_0073c3b0,

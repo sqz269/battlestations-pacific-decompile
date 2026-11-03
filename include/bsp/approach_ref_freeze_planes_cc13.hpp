@@ -57,6 +57,6 @@
 
 namespace bsp {
 
-inline constexpr bool kApproachRefFreezePlanesCc13Bound = false;
+inline constexpr bool kApproachRefFreezePlanesCc13Bound = true;
 
 }  // namespace bsp

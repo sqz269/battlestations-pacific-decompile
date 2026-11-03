@@ -551,7 +551,7 @@ inline constexpr bool kVehicleClassPreloadCc15Bound = true;
 // 0045F6C1. That runs mid-mission and can nil rows that were first read after
 // load, so it stays off until a census exists for a mission that takes the
 // movie-stop path (cc9).
-inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
+inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = true;
 
 // Packet cc15-wC1 (docs/CC15_SCENE_CONTENTS_WIRING.md). 004D4DF0's step between
 // scene-file passes 2 and 3: 004D4720 (ECX = 010904E4) turns each class index
@@ -563,7 +563,7 @@ inline constexpr bool kVehicleClassMovieStopPurgeCc15Bound = false;
 // two routines (xrefs 010904E4 / 010904E8), so the list has no consumer here
 // either; 0095C1C0's party-row marks land in VehicleClassRegistry::
 // party_required, which no host path reads. False: both stay records.
-inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
+inline constexpr bool kSceneClassPreloadAliasesCc15Bound = true;
 
 // Packet cc15-wf1 (docs/CC15_WIRE_FRONTIER.md). 004D4E80 calls 004CD7F0
 // BSP_Scene_DeriveShortName with ECX = out, EDX = game+90Ch and a pushed 1, so
@@ -574,7 +574,7 @@ inline constexpr bool kSceneClassPreloadAliasesCc15Bound = false;
 // derive_scene_short_name with the campaign stand-in mode (raw 8, not forced,
 // no session). Both give "SOLO" on a single-player load, so ON is expected to
 // move nothing but the evidence line.
-inline constexpr bool kSceneShortNameCc15Bound = false;
+inline constexpr bool kSceneShortNameCc15Bound = true;
 
 // cc15-ob4 (docs/CC15_OBJECT_SCENE_DATABASE.md). The scene database, the 170h
 // object at [00E18680]: BSP_Game_OnInit 004E3AA0 builds it at 004E3E60 through

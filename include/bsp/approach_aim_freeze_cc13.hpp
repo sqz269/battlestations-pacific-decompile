@@ -53,12 +53,12 @@ namespace bsp {
 
 // Dive bomb, approach+30h: update_dive_bomb_approach's 009C7B03 early-out and the
 // approach->vtable[0] readers (flyabove, aimdive error and tick, aimglide, goaway turn).
-inline constexpr bool kDiveAimPointFreezeCc13Bound = false;
+inline constexpr bool kDiveAimPointFreezeCc13Bound = true;
 // Level bomb, approach+30h: lb_approach_update_009b7c90's lb_aim. has_target is unchanged
 // (df_slot_live already drops the target on +5Dh).
-inline constexpr bool kLevelBombAimPointFreezeCc13Bound = false;
+inline constexpr bool kLevelBombAimPointFreezeCc13Bound = true;
 // Torpedo, approach+B4h: approach_target_point answers false once latched (the 009D3E21
 // arm in torpedo_approach_update.cpp), and the goaway reads the frozen point.
-inline constexpr bool kTorpedoAimPointFreezeCc13Bound = false;
+inline constexpr bool kTorpedoAimPointFreezeCc13Bound = true;
 
 }  // namespace bsp

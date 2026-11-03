@@ -51,7 +51,7 @@ namespace {
 // and data reloaded per unit; the host loop does the same, so ON is expected to
 // change nothing. Uncertainty: the native string's capacity word and the
 // terminator are not part of the view, and 00a9ec30 reads neither.
-inline constexpr bool kTextUppercaseCc15Bound = false;
+inline constexpr bool kTextUppercaseCc15Bound = true;
 } // namespace
 
 static_assert(sizeof(void*) == 4 && sizeof(int) == 4,

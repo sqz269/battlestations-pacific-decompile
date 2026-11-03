@@ -618,7 +618,7 @@ inline constexpr bool kLuaAttackTargetDeadNilBound = true;  // ON: SQUADRON_LAND
 // HUD root update (0064A1E0 on the controlled kind-18h unit) and 00647080, which
 // keep the player in the gunner interface (23h). True: the byte is kept per unit
 // for squadron_force_gunner_mode_379. False: unimplemented, nothing stored.
-inline constexpr bool kLuaSquadronForceGunnerModeBound = false;
+inline constexpr bool kLuaSquadronForceGunnerModeBound = true;
 inline constexpr bool kLuaSquadronSetSpeedBound = true;  // ON: pairs held (docs/LUA_BINDING_MISSION.md)
 
 // Packet cc9_is_class_changed (docs/LUA_BINDING_MISSION.md, "IsClassChanged, 008CC4B0").

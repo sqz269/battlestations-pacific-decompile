@@ -617,7 +617,7 @@ inline constexpr bool kLuaGetPlaneIsReloadingBound = true;  // ON, unexercised (
 // image lists (and its callers Kill, disarming the squadron) stay on the racks.
 // False: an unimplemented record that pushes nothing (usn_11 / prcp_11 then raise
 // in pairs(nil) and abort the rest of PrepareS1Phase4 / PrepareS2Phase4).
-inline constexpr bool kLuaGetSquadTorpedoesBound = false;
+inline constexpr bool kLuaGetSquadTorpedoesBound = true;
 // Packet cc13-fix21. `GetSubmarineAirSupply(unit)` 008938E0: 008939DF 00888AA0 on
 // argument 0 (no null and no class test), 008939F6 FLD float [unit+127Ch],
 // 008939FC FSTP float, 00B66480 PushFloat (lua_pushnumber of the float widened to

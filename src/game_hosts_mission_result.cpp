@@ -70,7 +70,7 @@ constexpr const char* kMoviePrefix = "movies/";
 // ON acceptance still needs widget/settings contracts and a real decoder clock;
 // this bridge currently opens no page or decoder.
 // See docs/CODEX_MOVIE_SUBTITLE_INTEGRATION.md. Kept OFF pending root gates.
-inline constexpr bool kMovieSubtitlesBound = false;
+inline constexpr bool kMovieSubtitlesBound = true;
 
 void format_address(std::uint32_t value, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(value));

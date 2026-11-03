@@ -65,6 +65,6 @@ namespace bsp {
 //   leader block (player-held flights) and each plane's own path.
 // - Torpedo and bomb releases in multi-plane flights change.
 // Without the pairing, the leader block's raises are lost as well.
-inline constexpr bool kPlaneIssueThresholdZeroCc13Bound = false;
+inline constexpr bool kPlaneIssueThresholdZeroCc13Bound = true;
 
 }  // namespace bsp

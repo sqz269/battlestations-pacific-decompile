@@ -208,7 +208,8 @@ public:
     // virtual (0067ca80 loads FE_initial this way). The page is marked
     // screen-owned, so the sprite bridge stops applying its substitute
     // visibility rule to it and reads the byte 004f83b0 published instead.
-    GuiLayoutPage* load_screen_page(const std::string& name);
+    // LoadingScreen::Init (0057C5C2) passes 0; other screen callers pass 1.
+    GuiLayoutPage* load_screen_page(const std::string& name, std::int32_t screen_flag = 1);
     // 00aa31f0 on the GUI manager. The reconstructed registry owns every page
     // for the run, so the release is recorded and the page is kept.
     void release_screen_page(GuiLayoutPage* page);

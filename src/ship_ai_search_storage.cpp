@@ -17,7 +17,7 @@ namespace {
 // ON zeroes the bounds right after the allocation, which is what the image reads
 // on a block carved from fresh OS pages. It makes runs independent of host heap
 // layout, but it is not the image's behaviour on a reused block.
-constexpr bool kSearcherCacheBoundsInitCc13Bound = false;
+constexpr bool kSearcherCacheBoundsInitCc13Bound = true;
 
 // Layout check only: never construct this aggregate, because its existing
 // members have semantic default initializers that overwrite native raw bounds.

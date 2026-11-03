@@ -36,6 +36,6 @@ namespace bsp {
 // Movers when ON: after a script SquadronSetSpeed, the plane's low-passed velocity
 // restarts at the new velocity. That moves the flight-path angle +C84h (pitch mode 2)
 // and the throttle correction for the next steps. The velocity changes by rounding only.
-inline constexpr bool kSetSpeedCtlAxisCc13Bound = false;
+inline constexpr bool kSetSpeedCtlAxisCc13Bound = true;
 
 }  // namespace bsp

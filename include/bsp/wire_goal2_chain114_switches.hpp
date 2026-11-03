@@ -1,5 +1,5 @@
 #pragma once
 
 namespace bsp {
-inline constexpr bool kWireGoal2Chain114Bound = false;
+inline constexpr bool kWireGoal2Chain114Bound = true;
 }

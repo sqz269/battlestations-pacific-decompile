@@ -247,7 +247,7 @@ static_assert(!kUnitDeathLimboPushCc13Bound || kUnitDeathRouteBound,
 // owner whose +914h is above 0.0 by its squadron head [[owner+9D4h]+3D0h] before
 // reading the role-1 slot at 0072C145. True: that replacement runs. False: the
 // owner is never replaced (before).
-constexpr bool kShotTeamSquadronHeadCc13Bound = false;
+constexpr bool kShotTeamSquadronHeadCc13Bound = true;
 // Packet cc9_cb_gunfire_gate (docs/GUNNERY_OPEN_ITEMS.md 125): a hit's AddDamage is
 // victim->vtable[1ACh] (008778C6, 00877A2E in 008777D0), and for a CommandBuilding
 // (vtable 00CFB028) that slot is 006F1F20, which damages only while +7D8h == 0.0
@@ -847,7 +847,7 @@ constexpr bool kGunBarrelCountBound = true;
 //    0072AB80 answers 1 on the empty class+98h (0072ABA5; GUN_BARREL_COUNT
 //    7.1). ON: those guns get 1. OFF: they keep the platform's `barrels`.
 //    Packet cc9_gun_fallbacks.
-constexpr bool kGunBarrelMeshlessOneBound = false;
+constexpr bool kGunBarrelMeshlessOneBound = true;
 //  * kShipPlatformAttachmentBound: a ship gun fires from its own mount, the
 //    platform frame's origin p0 of the ship model's ("slot", platform key)
 //    group (0095F500's slot pass into platform+4Ch; 0072DD20 hands that frame
@@ -1008,7 +1008,7 @@ constexpr bool kLuaOverrideHpBound = true;
 //    skip of the kill for a dead unit stays a deviation.
 //    Live: MissionLuaNative OverrideHP -> GameMissionLuaHost::run_override_hp_008c1930
 //    -> GameGunneryHost::override_hp_008c1930.
-constexpr bool kOverrideHpDeadUnitCc13Bound = false;
+constexpr bool kOverrideHpDeadUnitCc13Bound = true;
 //  * kAiUntouchableGateBound (packet cc9_untouchable_gate, docs/GUNNERY_OPEN_ITEMS.md
 //    section 40): 00862440, called only at 00865248 in the unit gunnery AI tick
 //    00864FE0, skips a candidate that 00863990 accepted when the candidate's proxy
@@ -1401,7 +1401,7 @@ static_assert(!kGunBotNotAllyDropCc13Bound || kTailGunnerClearReleaseBound,
 //    CONSTRUCTION: the arm needs a ship-kind AND a plane-kind owner, which
 //    never holds, mirroring the image's unreachable 008FFAB8. Do not pair it.
 //    OFF: counted only (aa_enable_blocked, always 0).
-constexpr bool kShipAaEnableGateCc13Bound = false;
+constexpr bool kShipAaEnableGateCc13Bound = true;
 static_assert(!kShipAaEnableGateCc13Bound || kShipDirectorEnablesBound,
     "kShipAaEnableGateCc13Bound reads the AAEnable byte from the scene director entry "
     "that kShipDirectorEnablesBound reads");
@@ -1725,7 +1725,7 @@ constexpr bool kLandStructureMeshHitTestBound = true;  // ON: JM08 b3 pair, mech
 //    per-element entries (a structure's elements are `body`, kind 9) is unread
 //    (docs/CC13_JM08_AA_TRUCK_HQ_DAMAGE.md section 4). OFF: the class box.
 //    Packet cc13_jm08_aa_truck_hq_damage.
-constexpr bool kLandStructureBlastElementEntriesBound = false;
+constexpr bool kLandStructureBlastElementEntriesBound = true;
 //  * kLandMasterDamageBound: the LandFort master +738h (packet cc9_land_master_damage,
 //    SHIP_AI 236). 00744A20 (BSP_LandFort_SetMaster), called by the airfield reader
 //    006D5220 and the shipyard reader 00849F70 (0084A083) on each "Hangar %d" object,
