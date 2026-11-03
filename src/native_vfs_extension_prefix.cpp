@@ -1,6 +1,7 @@
 #include "bsp/native_vfs_extension_prefix.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/wire_goal2_chain148_switches.hpp"
+#include "bsp/wire_goal2_chain208_switches.hpp"
 
 #include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -87,6 +88,18 @@ template<bool RegisteredPair = false> struct Pair {
         state = 0;
         copy_native_string_header_00be0a30_fragment(&second, strings, directory);
         state = 1;
+    }
+    // 00BE14DC CALL 00bdcbb0 on this pair. State 1 is set first: if the second copy throws,
+    // the destructor's null-data guards release only the first string, as 00bdcbb0's own
+    // state-0 funclet does; 00BE14E5 sets the caller's state after the return.
+    void construct_with_pair_constructor(const void* extension, const void* directory) {
+        state = 1;
+        engine_services_cc13::construct_string_pair_00bdcbb0(
+            engine_services_cc13::NativeStringPairView{
+                *reinterpret_cast<NativeString*>(&first),
+                *reinterpret_cast<NativeString*>(&second)},
+            *static_cast<const NativeString*>(extension),
+            *static_cast<const NativeString*>(directory), strings);
     }
     void lower_and_trail() {
         lowercase_native_string_header_004bcc00(&first);
@@ -225,7 +238,12 @@ void register_native_vfs_extension_prefix_00be1480(void* manager,
         if (find_pair(tree, extension, directory, strings, callbacks) != captured_head) return;
     }
     Pair<kWireGoal2Chain148Bound> normalized(strings);
-    normalized.construct_extension_first(extension, directory);
+    // 00BE14DC: 00bdcbb0 builds the extension-first pair; OFF keeps the local two-copy stand-in.
+    if constexpr (kWireGoal2Chain208Bound) {
+        normalized.construct_with_pair_constructor(extension, directory);
+    } else {
+        normalized.construct_extension_first(extension, directory);
+    }
     normalized.lower_and_trail();
     Pair copied(strings);
     copied.construct_extension_first(&normalized.first, &normalized.second);

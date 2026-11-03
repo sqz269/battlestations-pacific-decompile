@@ -1,0 +1,45 @@
+{
+  "chain": 208,
+  "goal": 2,
+  "slot": "g2-w1",
+  "run": 388,
+  "harness": "claude",
+  "picked": "segment 96 [00bd9220-00be4410] (tier 2, range sweep)",
+  "host_file": "src/native_vfs_extension_prefix.cpp",
+  "switch": "kWireGoal2Chain208Bound",
+  "switch_header": "include/bsp/wire_goal2_chain208_switches.hpp",
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain208Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "not run: the ON arm does no x87 arithmetic",
+  "wired_before": 9015,
+  "wired_after": 9016,
+  "rows": [
+    {
+      "native": "00bdcbb0",
+      "address": "00be14dc",
+      "function": "00be1480",
+      "host_site": "src/native_vfs_extension_prefix.cpp register_native_vfs_extension_prefix_00be1480 (normalized pair, via Pair::construct_with_pair_constructor)",
+      "status": "wired",
+      "abi": "raw_view",
+      "change": "Added the typed view overload construct_string_pair_00bdcbb0(NativeStringPairView, first, second, strings) in src/engine_services_cc13.cpp; the raw void* entry is now a thin wrapper over it (no src caller uses the raw entry). The ON arm runs the body over the host's normalized Pair headers in place of the local two-copy stand-in (construct_extension_first), which the OFF arm keeps.",
+      "reach": "static read, startup path with no switch gate: GameVfsHost::phase2 (src/game_hosts_vfs.cpp:181, unconditional) -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 (13 register_native_vfs_extension_prefix_00be1480 calls, no if constexpr) -> 00be1480. The pair is built when the extension is not yet registered (captured_head check), so it runs on every launch. No mission call count was given for this row."
+    },
+    {
+      "native": "009b7b10",
+      "status": "skipped",
+      "reason": "lease: agent/g2-w3 holds 009b7b10/009b7b40 and src/plane_level_bomb_task.cpp, src/cc13_seg67b.cpp (claim refused)."
+    },
+    {
+      "native": "00a2c050",
+      "status": "skipped",
+      "reason": "Not picked: reached only through AiGroupDebugHost::call_00a2c050 from the AI debug overlay ai_debug_group_target_text_00a2cdd0 (src/ai_group_think.cpp:66); no host implements AiGroupDebugHost, so no host path reaches the site and wiring needs a whole debug-overlay host."
+    },
+    {
+      "native": "00740270",
+      "status": "skipped",
+      "reason": "Not picked: only call is Seg60Host::entity_life_ref_release_00740270 in entity_destruct_base_00925780 (src/entity_mission_seg60_argon.cpp:383); nothing implements Seg60Host, and 00925780 lies in range 009222e0-0092dfe0 that another worker held."
+    }
+  ],
+  "host_objects": [],
+  "on_effect": "Turning kWireGoal2Chain208Bound on makes each startup extension-prefix registration build its normalized {extension, directory} pair through the reconstructed 00BDCBB0 body (zero each header, then the BE0A30 copy fragment) instead of the host's inline pair of copy_native_string_header_00be0a30_fragment calls. Expected result: identical strings, identical tree contents. The only intended difference is on an allocation throw: Pair state 1 is set before the call so the destructor's null-data guards release just the first string, which is what 00bdcbb0's own state-0 funclet does."
+}

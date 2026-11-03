@@ -779,9 +779,15 @@ void* copy_string_int_pair(void* record, const void* source, NativeStringStorage
 
 void* construct_string_pair_00bdcbb0(void* pair, const NativeString& first, const NativeString& second,
                                      NativeStringStorage& strings) {
-    construct_string_copy(string_at(pair, 0), first, strings);
-    construct_string_copy(string_at(pair, 8), second, strings);
+    construct_string_pair_00bdcbb0(NativeStringPairView{string_at(pair, 0), string_at(pair, 8)}, first, second,
+                                   strings);
     return pair;
+}
+
+void construct_string_pair_00bdcbb0(NativeStringPairView pair, const NativeString& first,
+                                    const NativeString& second, NativeStringStorage& strings) {
+    construct_string_copy(pair.first, first, strings);
+    construct_string_copy(pair.second, second, strings);
 }
 
 void* copy_string_pair_00bdcea0(void* pair, const void* source, NativeStringStorage& strings) {
