@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
+#include "bsp/wire_goal4_chain267_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
 #include "bsp/wire_goal1_chain24_switches.hpp"
 #include "bsp/wire_goal2_chain28_switches.hpp"  // chain 28: kWireGoal2Chain28Bound
@@ -502,7 +503,7 @@ struct PlaneOrdnanceRack {
 // Adapter for the single-threaded landing-assignment snapshot. The body can
 // only report an invalid index: there is no host lock at block+8h. All other
 // segment services trap rather than provide unrelated placeholder behavior.
-class LandingAssignmentLookupHost final : public bsp::cc13_seg29U::Seg29UHost {
+class LandingAssignmentLookupHost : public bsp::cc13_seg29U::Seg29UHost {
     using NativeStr = bsp::cc13_seg29U::NativeStr;
 public:
     void* global_pointer(std::uint32_t) override { std::abort(); }
@@ -41466,12 +41467,62 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // block lock, the plane's record in the vector at block+A8h gets
                     // +0Ch = 1 / 0 (006BCE32, 006BCF12).
                     void land_set_held_006bcd80(bool held) {
+                        if constexpr (bsp::kWireGoal4Chain267Bound) {
+                            // 006BCD80 / 006BCE60 (bsp.py show): scan every 14h-byte
+                            // assignment, changing only +0Ch for matching plane pointers.
+                            // These are the live host slot identities, including every
+                            // assignment; no matching record is selected in advance.
+                            if (unit_.land_deck_plus_one == 0) return;
+                            const std::size_t di = unit_.land_deck_plus_one - 1u;
+                            if (di >= owner_.landing_decks.size()) return;
+                            auto& records = owner_.landing_decks[di].assignments;
+                            struct AssignmentImage {
+                                GameUnitSlot* plane_00;
+                                float path_04;
+                                float spacing_08;
+                                std::uint8_t held_0c;
+                                std::uint8_t side_0d;
+                                std::uint16_t unused_0e;
+                                std::int32_t mode_10;
+                            };
+                            static_assert(sizeof(AssignmentImage) == 0x14);
+                            static_assert(offsetof(AssignmentImage, held_0c) == 0x0c);
+                            std::vector<AssignmentImage> images;
+                            images.reserve(records.size());
+                            for (const auto& record : records) {
+                                images.push_back({owner_.slots.at(record.plane).get(),
+                                    record.path_4, record.spacing_8,
+                                    static_cast<std::uint8_t>(record.held_0c),
+                                    static_cast<std::uint8_t>(record.side_0d), 0,
+                                    record.mode_10});
+                            }
+                            alignas(4) std::uint8_t block[0xb0]{};
+                            using bsp::cc13_seg29U::at;
+                            if (!images.empty()) {
+                                at<void*>(block, 0xa8) = images.data();
+                                at<void*>(block, 0xac) = images.data() + images.size();
+                            }
+                            // This host owns the assignment vector on the fixed-step
+                            // thread; +8h is null, as in the existing lookup/release views.
+                            LandingAssignmentLookupHost no_lock;
+                            if (held) {
+                                bsp::cc13_seg29U::air_ops_block_hold_landing_record_006bcd80(
+                                    block, &unit_, no_lock);
+                            } else {
+                                bsp::cc13_seg29U::air_ops_block_release_landing_record_006bce60(
+                                    block, &unit_, no_lock);
+                            }
+                            for (std::size_t i = 0; i < records.size(); ++i) {
+                                records[i].held_0c = images[i].held_0c != 0;
+                            }
+                        } else {
                         if (unit_.land_deck_plus_one == 0) return;
                         const std::size_t di = unit_.land_deck_plus_one - 1u;
                         if (di >= owner_.landing_decks.size()) return;
                         for (GameUnitsHost::Impl::LandingAssignment& a :
                              owner_.landing_decks[di].assignments) {
                             if (a.plane == unit_.process_index) a.held_0c = held;
+                        }
                         }
                     }
 
@@ -43272,6 +43323,57 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 006BC890: the site's vtable[44h]; the lift point (006D0120) on a
                         // carrier, the queue origin (006CF520) in the airfield's frame.
                         float end = 40.0f;
+                        if constexpr (bsp::kWireGoal4Chain267Bound) {
+                            // 006BC890 (bsp.py show) calls traffic+44h. Its native
+                            // services are 006D0120 (the elevator's class lift) and
+                            // 006CF520 (hangar entry point 0 in the owner's frame).
+                            // Resolve a real site before calling: missing host geometry
+                            // keeps the existing end=40 fallback, rather than asserting
+                            // that a native traffic object is absent.
+                            struct RunwayEndPointHost final : LandingAssignmentLookupHost {
+                                Impl& owner;
+                                Impl::LandingDeck& deck;
+                                const Impl::CarrierElevator* elevator;
+                                const bsp::game::ScenePathEntry* path;
+
+                                RunwayEndPointHost(Impl& h, Impl::LandingDeck& d,
+                                    const Impl::CarrierElevator* e,
+                                    const bsp::game::ScenePathEntry* p)
+                                    : owner(h), deck(d), elevator(e), path(p) {}
+
+                                void object_vslot_44(void* site, float* out) override {
+                                    if (elevator != nullptr && site == elevator) {
+                                        for (int k = 0; k < 3; ++k) out[k] = elevator->lift[k];
+                                        return;
+                                    }
+                                    if (path != nullptr && site == path) {
+                                        const auto point = owner.carrier_local_point(deck,
+                                            path->points_world.front().data());
+                                        for (int k = 0; k < 3; ++k) out[k] = point[k];
+                                        return;
+                                    }
+                                    std::abort();
+                                }
+                            };
+                            const Impl::CarrierElevator* elevator = carrier
+                                ? owner_.carrier_elevator_ready(*d) : nullptr;
+                            const bsp::game::ScenePathEntry* path = carrier ? nullptr
+                                : owner_.landing_hangar_path_006d2780_006d2640(*d, true);
+                            const void* site = elevator != nullptr
+                                ? static_cast<const void*>(elevator)
+                                : path != nullptr && !path->points_world.empty()
+                                    ? static_cast<const void*>(path) : nullptr;
+                            if (site != nullptr) {
+                                alignas(4) std::uint8_t block[0x40]{};
+                                bsp::cc13_seg29U::at<void*>(block, 0x3c) =
+                                    const_cast<void*>(site);
+                                float endpoint[3];
+                                RunwayEndPointHost endpoint_host(owner_, *d, elevator, path);
+                                bsp::cc13_seg29U::air_ops_block_runway_end_point_006bc890(
+                                    block, endpoint, endpoint_host);
+                                end = static_cast<float>(static_cast<double>(endpoint[2]) + 40.0);
+                            }
+                        } else {
                         {
                             float ez = 0.0f;
                             bool have = false;
@@ -43288,6 +43390,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 }
                             }
                             if (have) end = static_cast<float>(static_cast<double>(ez) + 40.0);
+                        }
                         }
                         if (lz > end) {
                             const float c = static_cast<float>((static_cast<double>(lz) - end) * 0.25);
