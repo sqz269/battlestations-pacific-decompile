@@ -41,6 +41,7 @@
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain262_switches.hpp"
 #include "bsp/wire_goal4_chain266_switches.hpp"
+#include "bsp/wire_goal4_chain275_switches.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
@@ -2912,9 +2913,34 @@ struct GameGunneryHost::Impl {
         bsp::TorpedoBotParameters row{};
         row.fire_target_accuracy_014 = kAccuracy[level][0];
         row.any_target_accuracy_018 = kAccuracy[level][1];
-        const float range = bsp::ship_torpedo_ver_cc13::torpedo_attack_range_00901ba0(
-            torpedo_hit_profiles[2], row, units.unit_hull_length_09c8(target), fire_target,
-            tube_range);
+        const float range = [&]() {
+            if constexpr (bsp::kWireGoal4Chain275Bound) {
+                float target_size = units.unit_hull_length_09c8(target);
+                if (target < unit_state.size() && units.unit_is_kind_of(target, 5)) {
+                    // 00903420, ECX bot / RET0: 00903455..00903472 tests the
+                    // resolved target's kind 5 and reads [target+538h]+A0h.
+                    // Reuse its existing semantic size body over the live class
+                    // Length loaded in build_guns (row.Length), rather
+                    // than the unit+9C8h hull/model extent. The native routine's
+                    // final 00901BA0 call and +68h cache store remain in this
+                    // host's range callback / TorpedoBotRangeCache consumer.
+                    // Evidence: bsp.py show 00903420 --asm --live. Non-unit
+                    // bounds receivers are not supplied by this adapter.
+                    bsp::gameplay_seg40_59_cc13::TorpedoTargetSizeInputs input{};
+                    input.has_target = target < units.count();
+                    input.target_is_unit_kind_5 = units.unit_is_kind_of(target, 5);
+                    input.unit_class_0a0 = unit_state[target].hull_length;
+                    target_size = bsp::gameplay_seg40_59_cc13::torpedo_bot_target_size_00903420(input);
+                }
+                return bsp::ship_torpedo_ver_cc13::torpedo_attack_range_00901ba0(
+                    torpedo_hit_profiles[2], row, target_size, fire_target, tube_range);
+            } else {
+                const float range = bsp::ship_torpedo_ver_cc13::torpedo_attack_range_00901ba0(
+                    torpedo_hit_profiles[2], row, units.unit_hull_length_09c8(target), fire_target,
+                    tube_range);
+                return range;
+            }
+        }();
         torpedo_attack_range_sum += static_cast<double>(range);
         ++torpedo_attack_range_samples;
         done("TorpedoBot::attack_range_00901ba0", 0x00901ba0u);
