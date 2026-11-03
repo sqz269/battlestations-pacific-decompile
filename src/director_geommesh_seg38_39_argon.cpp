@@ -1,6 +1,7 @@
 #include "bsp/director_geommesh_seg38_39_argon.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include "bsp/cc13_sweepA.hpp"
+#include "bsp/scene_deferred_refs.hpp"
 
 #include <cstring>
 
@@ -137,16 +138,30 @@ void* cg_adjustor_thunk_0071d5f0(Seg38_39Host& host, void* self, std::uint8_t fl
 // 0071db50: BSP_WeaponDirector_AssignSlotTarget
 // Original ABI: __thiscall(ECX=self, stack src_target), RET 4. Copies 0x18-byte descriptor.
 void bsp_weapon_director_assign_slot_target_0071db50(void* self, const void* src_target) {
-  Raw dst = raw_of(self);
-  Raw src = raw_of(src_target);
-  dst.at<std::uint8_t>(0x00) = src.at<std::uint8_t>(0x00);
-  dst.at<std::uint8_t>(0x01) = src.at<std::uint8_t>(0x01);
-  dst.at<std::uint16_t>(0x02) = src.at<std::uint16_t>(0x02);
-  dst.at<std::uint32_t>(0x04) = src.at<std::uint32_t>(0x04);
-  dst.at<float>(0x08) = src.at<float>(0x08);
-  dst.at<float>(0x0c) = src.at<float>(0x0c);
-  dst.at<float>(0x10) = src.at<float>(0x10);
-  dst.at<float>(0x14) = src.at<float>(0x14);
+  bsp_weapon_director_assign_slot_target_0071db50(
+      *static_cast<SceneCommandTarget*>(self),
+      *static_cast<const SceneCommandTarget*>(src_target));
+}
+
+void bsp_weapon_director_assign_slot_target_0071db50(
+    SceneCommandTarget& self, const SceneCommandTarget& src_target) {
+  // 0071DB56..0071DB85: byte, byte, word, dword, then four FLD/FSTP copies.
+  // SceneCommandTarget's producer is 0077D600; this is its native Win32 image.
+  static_assert(sizeof(SceneCommandTarget) == 0x18);
+  static_assert(offsetof(SceneCommandTarget, kind) == 0x00);
+  static_assert(offsetof(SceneCommandTarget, position_valid) == 0x01);
+  static_assert(offsetof(SceneCommandTarget, object_id) == 0x02);
+  static_assert(offsetof(SceneCommandTarget, object) == 0x04);
+  static_assert(offsetof(SceneCommandTarget, position) == 0x08);
+  static_assert(offsetof(SceneCommandTarget, trailing) == 0x14);
+  self.kind = src_target.kind;
+  self.position_valid = src_target.position_valid;
+  self.object_id = src_target.object_id;
+  self.object = src_target.object;
+  self.position[0] = src_target.position[0];
+  self.position[1] = src_target.position[1];
+  self.position[2] = src_target.position[2];
+  self.trailing = src_target.trailing;
 }
 
 // 0071ea60: BSP_RefPtr_Release_0071ea60

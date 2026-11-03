@@ -37,6 +37,7 @@
 #include "bsp/wire_goal1_chain10_switches.hpp"
 #include "bsp/wire_goal2_chain42_switches.hpp"
 #include "bsp/wire_goal2_chain75_switches.hpp"
+#include "bsp/wire_goal2_chain158_switches.hpp"
 #include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
 #include "bsp/cc13_sweepB.hpp"                       // 005457C0 typed view (chain 75)
 #include <algorithm>
@@ -1331,7 +1332,13 @@ public:
         const bsp::SceneCommandTarget& target) override {
         if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return;
         chain_.director.slot_command[slot_index] = command;
-        chain_.director.slot_target[slot_index] = target;
+        // 0071DB50 copies the incoming target at 0071E76C; OFF keeps the host's slot assignment.
+        if constexpr (bsp::kWireGoal2Chain158Bound) {
+            bsp::director_geommesh_seg38_39_argon::bsp_weapon_director_assign_slot_target_0071db50(
+                chain_.director.slot_target[slot_index], target);
+        } else {
+            chain_.director.slot_target[slot_index] = target;
+        }
         chain_.owner.done("WeaponDirector::store_slot", 0x0071e764u);
         if (chain_.row != nullptr) {
             chain_.row->slot_pushed = true;

@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <utility>
 
+namespace bsp { struct SceneCommandTarget; }
+
 namespace bsp::director_geommesh_seg38_39_argon {
 
 struct Raw {
@@ -169,6 +171,9 @@ std::uint32_t triv_body_0071d5b0(void* self);
 void triv_body_0071d5c0(void* self, std::uint32_t arg1);
 void* cg_adjustor_thunk_0071d5f0(Seg38_39Host& host, void* self, std::uint8_t flags);
 void bsp_weapon_director_assign_slot_target_0071db50(void* self, const void* src_target);
+// The same 0071DB50 field-copy body over the host's existing 18h-byte target.
+void bsp_weapon_director_assign_slot_target_0071db50(
+    SceneCommandTarget& self, const SceneCommandTarget& src_target);
 void* bsp_ref_ptr_release_0071ea60(Seg38_39Host& host, void* self);
 void bsp_ref_ptr_release_0071f0e0(Seg38_39Host& host, void* self);
 void bsp_ref_ptr_assign_0071f110(Seg38_39Host& host, void* self, void* const* src_slot);
