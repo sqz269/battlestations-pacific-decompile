@@ -804,21 +804,34 @@ void cc15_seg48_plane_squadron_set_home_air_base_007f1c00(void* squadron, void* 
 // 006C5950(block, squadron); then 00926D90(plane, 5) and byte +3ECh = 1. cc9's host carries
 // only the stock add, the slot return and the kill (game_hosts_units.cpp:15741).
 // ---------------------------------------------------------------------------
+namespace {
+// The image squadron, base and plane for the typed 007F1CA0.
+struct ImageReturnPlaneToStock {
+    void* squadron;
+    void* base;
+    void* plane;
+    Cc15Seg48Host& host;
+    bool plane_is_leader() const { return plane == member(squadron, 0); }
+    void leader_3b8(bool leader) { at<std::uint8_t>(squadron, 0x3B8) = leader ? 1 : 0; }
+    void name_10() { host.object_vcall_10_name(squadron); }
+    void link_home_base() { set_home_link(squadron, base, host); }
+    void* block_006bcd20() { return host.air_ops_get_block_006bcd20(base, 0); }
+    void add_stock_006ca770(void* block) { host.air_ops_add_stock_006ca770(block, ptr(plane, 0x538), 1); }
+    std::int32_t member_count_3cc() const { return member_count(squadron); }
+    void deactivate_00922f80() { host.fun_00922f80(squadron, 0); }
+    void clear_game_193c() { at<std::uint8_t>(game_pointer(host), 0x193C) = 0; }
+    void notify_00696350() { host.fun_00696350(squadron, 1, ptr(squadron, 0x404)); }
+    std::int32_t session_mode_1fe4() { return rd<std::int32_t>(game_pointer(host), 0x1FE4); }
+    void return_slot_006c5950(void* block) { host.air_ops_return_slot_006c5950(block, squadron); }
+    void kill_00926d90(std::int32_t reason) { host.unit_kill_00926d90(plane, reason); }
+    void returned_3ec() { at<std::uint8_t>(squadron, 0x3EC) = 1; }
+};
+}  // namespace
+
 void cc15_seg48_plane_squadron_return_plane_to_stock_007f1ca0(void* squadron, void* base, void* plane,
                                                              Cc15Seg48Host& host) {
-    at<std::uint8_t>(squadron, 0x3B8) = plane == member(squadron, 0) ? 1 : 0;
-    host.object_vcall_10_name(squadron);
-    set_home_link(squadron, base, host);
-    void* const block = host.air_ops_get_block_006bcd20(base, 0);
-    host.air_ops_add_stock_006ca770(block, ptr(plane, 0x538), 1);
-    if (member_count(squadron) == 1) {
-        host.fun_00922f80(squadron, 0);
-        at<std::uint8_t>(game_pointer(host), 0x193C) = 0;
-        host.fun_00696350(squadron, 1, ptr(squadron, 0x404));
-        if (rd<std::int32_t>(game_pointer(host), 0x1FE4) != 2) host.air_ops_return_slot_006c5950(block, squadron);
-    }
-    host.unit_kill_00926d90(plane, 5);
-    at<std::uint8_t>(squadron, 0x3EC) = 1;
+    ImageReturnPlaneToStock ops{squadron, base, plane, host};
+    cc15_seg48_plane_squadron_return_plane_to_stock_007f1ca0(ops);
 }
 
 // ---------------------------------------------------------------------------
