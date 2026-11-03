@@ -62,6 +62,8 @@ void engine_blur_blend_noop_007e23d0() noexcept;
 #include <functional>
 #include <vector>
 
+#include "bsp/plane_flight.hpp"   // goal 4 chain 279: 007D9140, 007D92B0, 007D8470 fragments
+
 namespace bsp {
 namespace gameplay_seg48_cc13 {
 
@@ -694,9 +696,12 @@ struct TrialCallbacks {
     std::function<float(float, float, float, float, float)> interpolate_clamped_00419010;
     std::function<float(float speed, float one, float angle)> drag_007d9140;
     std::function<float(float ratio)> aero_007d92b0;
-    // 007D7C00 seeds the record from (world, body); 007D8470 integrates it by
-    // dt and answers the new body and world velocities.
-    std::function<void(TrialDynamics&, Vec3& body, Vec3& world, float dt)> integrate_007d8470;
+    // 007D9824: 007D8470(record, dt, pose, inverse pose) on the record 007D7C00
+    // seeded from (world, body) at 007D94E5 and the step's forces were added into;
+    // it leaves the new body velocity at +64h and the world velocity at +4Ch,
+    // which 007D982C..007D987C copy back. (Goal 4 chain 279: the record replaces
+    // the earlier (TrialDynamics&, body, world, dt) form, which no caller used.)
+    std::function<void(PlaneDynAccumulators& record, float dt)> integrate_007d8470;
 };
 // One step's force accumulation, exposed so a caller can check it alone.
 TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, float angle,
@@ -706,6 +711,33 @@ TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, fl
 Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, float dt, int count,
                                              const TrialClass& cls, const TrialGlobals& g,
                                              const TrialCallbacks& cb);
+
+// Goal 4 chain 279: 007D9360 as 007D98F0 calls it, with the image's own callees
+// bound (bsp::PlaneClimbTrial007d9360 in bsp/plane_flight.hpp):
+//   007D936C..007D93CB: the trial pose P = 00B64640 RotationX(-0.0f [00D7A208] -
+//     angle), copied twice by 004134F0 (exact copies), and 0085DEA0's inverse;
+//   007D93F6: the world velocity 0042D0D0(body, P, 0);
+//   00419010, 007D9140(speed, 1.0f, angle, 0, 0) and 007D92B0 as the forces call
+//     them (src/plane_flight.cpp, src/unit_rudder.cpp);
+//   007D8470(record, dt, P, P^-1) on the trial record. 007D9360 leaves the record's
+//     +88h..+90h at 00F87574's zero vector (007D9465..007D94C6), +94h at 0
+//     (007D7C00), the bytes +A4h/+C4h at 0 and +C0h/+C8h/+CCh at 0.0f
+//     (007D94AD..007D94D8), so 007D8470 reduces to its three folds and deadband
+//     (fold_world_into_body_007d8470; +34h and +40h hold nothing), the per-axis
+//     step 007D8611..007D87C2 (integrate_body_velocity_007d8611, whose +88h add
+//     is the zero vector here), and the world velocity 007D8C6B..007D8CF0, which
+//     is 0042D0D0's arithmetic on P. The arms gated on +C8h, +A4h/+94h, +C0h and
+//     +C4h are not reached, and the +A8h/+58h/+7Ch outputs are not read back.
+// The context is a ClimbTrialSetup; the answer is the out slot's z (007D9973).
+struct ClimbTrialSetup {
+    TrialClass cls;
+    TrialGlobals globals;
+    PlaneDragAccelClass drag;
+    PlaneDragAccelTuning drag_tuning;
+    PlaneFreeFlightTuning aero;   // 007D92B0's DragRangeMin/Max and DragFuncPower
+};
+float climb_trial_speed_left(const void* setup, float angle, float probe_speed, float dt,
+                             int count);
 
 // ---- cc13-ver1: the pieces of the flight step the hosts do not carry -------
 //

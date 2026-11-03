@@ -1,0 +1,27 @@
+{
+  "chain": 279,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "switch": "kWireGoal4Chain279Bound (include/bsp/wire_goal4_chain279_switches.hpp)",
+  "summary": "The plane class climb-angle solver 007D98F0 runs the image's own predicate, the trial integration 007D9360, instead of the labelled closed-form substitution. 007D9360 now seeds its record through 007D7C00 and integrates it through the 007D8470 path a fresh record takes (fold, 007D8611 step, body-to-world). The drag 007D9140 and thrust 007D9050, previously host-inline code, are each one callable body in src/plane_flight.cpp; the live flight law (run_core_law_007db680) and the trial both call them. The flight-law ON arms are bit-identical to the old inline arms (2,000,000 random cases each in a throwaway PC24 probe).",
+  "evidence": [
+    "007D98F0-007D99B6 listing: probe kept on the x87 stack, mid = float((high+low)*0.5), predicate 007D9360(mid, probe, 0.04f, 10).z >= probe (JC sends less or unordered to high), loop while float(high-low) > the double DEG(0.01) (JA). Constants read from the PE: 00CF8858 = 3FB2B8C3, 00D06850 = 3F26E05A80000000, 00CE3910 = 0.04f.",
+    "007D9360 listing: record at ESP+78h (vtable 00D06844), +88h..+90h from 00F87574 (BSS zero), +A4h/+C4h = 0, +C0h/+C8h/+CCh = 0.0f, 007D7C00 at 007D94E5, 007D8470(record, dt, P, P^-1) at 007D9824, copy-back of +64h/+4Ch at 007D982C..007D987C; 007D9140 called with (speed, 1.0f, angle, 0, 0).",
+    "007D8470 listing: with those record values only the three folds + 0.001 deadband, the per-axis step 007D8611..007D87C2 and the world velocity 007D8C6B..007D8CF0 (((x+y)+z) per component, the 0042D0D0 arithmetic on P) are reached.",
+    "Throwaway probe at PC24 with F4F-like class values (Accel 7, MaxSpd 83.33, StallSpd 17.5): ON 0.419799 rad vs the substitution's 0.419798; two other classes 1.067310 vs 1.067477 and 0.218507 vs 0.218507; MaxSpd 0 gives 0 either way."
+  ],
+  "rows": [
+    {"native": "007d9360", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::create_units (007C4BC5 class derive) -> max_sustainable_climb_angle_007d98f0 -> gameplay_seg48_cc13::climb_trial_speed_left -> trial_integrate_at_climb_angle_007d9360"},
+    {"native": "007d7c00", "status": "wired", "host_site": "src/gameplay_seg48_cc13.cpp trial_integrate_at_climb_angle_007d9360 (each trial step; inlined in the release build, visible in the /Ob0 call graph build)"},
+    {"native": "007d9140", "status": "wired", "host_site": "src/game_hosts_units.cpp PlaneBinding::run_core_law_007db680 (flight-law drag) and src/gameplay_seg48_cc13.cpp climb_trial_speed_left (trial drag); new callable body plane_drag_accel_007d9140 replaces the host inline"},
+    {"native": "007d9050", "status": "wired", "host_site": "src/game_hosts_units.cpp PlaneBinding::run_core_law_007db680 (flight-law thrust); new callable body plane_thrust_accel_007d9050 replaces the host inline"},
+    {"native": "007d98f0", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::create_units; body fixed: the image bisection with 007D9360 replaces the substituted predicate (was already called)"},
+    {"native": "007d92b0", "status": "wired", "host_site": "src/gameplay_seg48_cc13.cpp climb_trial_speed_left (the trial's aero term); previously not linked into the exe"}
+  ],
+  "left": [
+    "007C4850's second solve, desc+1E8h = 007D98F0(TravelSpeed), is not computed: the units host has no consumer of desc+1E8h.",
+    "desc+50Ch (007C4990-007C499C, a fragment of the class derive 007C4850) is formed at each call site as (Accel / MaxSpd) / MaxSpd; the units host keeps per-slot class fields, not a native class descriptor.",
+    "007D9360's not-reached climbing branch (angle < 0) takes sin in double; FSIN is extended precision, so a last-bit difference is possible if a negative angle is ever probed (007D98F0 never does).",
+    "The sw1b reach notes for kPlaneDragOrderCc13Bound now run only in the chain-279 OFF arm."
+  ]
+}

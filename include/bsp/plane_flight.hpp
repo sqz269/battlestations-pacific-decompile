@@ -568,19 +568,106 @@ float aero_response_curve_007d92b0(float speed_ratio, const PlaneFreeFlightTunin
 // is at least the probe speed, so the search returns the steepest climb the
 // aircraft can hold at that speed.
 //
-// SUBSTITUTION, labelled: 007D9360 is a 1330-byte trial simulation and is NOT
-// reproduced. Ten steps of 0.04 s test the sign of dv/dt at the probe speed,
-// and this host's own law gives that sign in closed form, so the predicate here
-// is `thrust - drag(v) - AccelCheatMul * 9.81 * sin(angle) >= 0`. The bisection
-// around it keeps the native's bounds, midpoint, tolerance and acceptance test.
+// kWireGoal4Chain279Bound (bsp/wire_goal4_chain279_switches.hpp) with a trial
+// injected: the predicate is 007D9360 itself (trial_integrate_at_climb_angle_007d9360,
+// src/gameplay_seg48_cc13.cpp, which is bsp_game code, hence the callback), and
+// the bisection is 007D98F0's listing (007D98F0-007D99B6):
+//   007D98F3..007D9924: FLD double DEG(80) [00D05A28], FSUB double 0.0 [00D7A258]
+//     (rounded at 24 bits), FCOMIP against the double DEG(0.01) [00D06850]; JBE
+//     returns low = 0.0. Never taken for these constants.
+//   007D992A: the probe speed stays on the x87 stack for the whole loop.
+//   007D9932..007D9964: mid = float((high + low) * 0.5 [00D7A280]); 007D9360(mid,
+//     probe, 0.04f [00CE3910], 10) into a stack Vec3.
+//   007D9969..007D9983: FCOMIP out.z against the probe; JC (less or unordered)
+//     sets high = mid, otherwise low = mid.
+//   007D9989..007D99A1: diff = float(high - low); JA (strictly greater, not
+//     unordered) against the tolerance loops; the result is low.
+// The two double constants are float values widened (3FF6571860000000 is the
+// float 3FB2B8C3 at 00CF8858; 3F26E05A80000000), so float compares are exact.
+//
+// OFF (or no trial): SUBSTITUTION, labelled: ten steps of 0.04 s test the sign
+// of dv/dt at the probe speed, and this host's own law gives that sign in
+// closed form, so the predicate is `thrust - drag(v) - AccelCheatMul * 9.81 *
+// sin(angle) >= 0`, with the rounded literals 1.39626f and 1.745e-4f.
+using PlaneClimbTrial007d9360 = float (*)(const void* context, float angle, float probe_speed,
+                                          float dt, int count);
 struct PlaneClimbAngleInputs {
     float accel{0.0f};        // desc+164h Accel
     float max_spd{0.0f};      // desc+188h MaxSpd; desc+50Ch is Accel / MaxSpd^2
     float probe_speed{0.0f};  // LevelFlight * StallSpd, or TravelSpeed
     float throttle{1.0f};     // the trial throttle; 007D9360's own is unread
     float accel_cheat_mul{1.5f};  // tuning+31Ch, the scale on both 9.81 terms
+    // Goal 4 chain 279: 007D9360 as 007D98F0 calls it, answering the z of the body
+    // velocity it leaves (the out slot's +8h, read at 007D9973). Null keeps the
+    // substitution.
+    PlaneClimbTrial007d9360 trial_007d9360{nullptr};
+    const void* trial_context{nullptr};
 };
 float max_sustainable_climb_angle_007d98f0(const PlaneClimbAngleInputs& in);
+
+// 007D9140 BSP_PlaneFlight_DragAccel, __fastcall(ECX = desc; float speed, float
+// throttle, float pitch, float airbrake, float elevator), RET 14h, body
+// 007D9140-007D92A4, read from the listing (goal 4 chain 279):
+//   007D9141..007D9183: c = 1.0 - throttle (FSUBRP, stored as a float); 0 when
+//     0 > c (FCOMI / JBE: NaN keeps c), else 1.0f (00D7A24C) when c > 1.0f.
+//   007D9189..007D919E: L = (c * c) * desc+208h GlideRate, stored as a float.
+//   007D918D..007D91B7: e = elevator when elevator > 0 (COMISS / JBE), else
+//     -0.0f (00D7A208) - elevator, written over the throttle slot.
+//   007D91BD..007D91D8: kc = ((desc+1D4h DragPitchRatio * e) + (L + 1)) * desc+50Ch.
+//   007D91DC..007D91F0: KB = (desc+1DCh AirBrakeDrag * airbrake + 1) * kc.
+//   007D91F4..007D923D: floor = 00419010(0, MaxSpd * [00F873F4] MinDragSpdMul,
+//     [00F873F8] MaxDragPitch, MaxSpd * [00F873F0] MaxDragSpdMul, pitch), with
+//     MaxSpd = desc+188h and both products stored as floats.
+//   007D9246..007D9266: v = floor when floor > speed (FCOMIP / JBE: equality or
+//     NaN keeps the speed).
+//   007D926C..007D92A2: s = -1 when 0 > v, 1 when v > 0, else 0 (two COMISS, so a
+//     NaN gives 0); EAX = -s, FILD, and ((-s * v) * v) * KB, stored as a float.
+// desc+50Ch is not authored: 007C4990-007C499C derives it as (Accel / MaxSpd) /
+// MaxSpd. The mirror cells 00F873F0..00F873F8 are tuning+310h..+318h.
+struct PlaneDragAccelClass {
+    float glide_rate_208{0.0f};        // desc+208h GlideRate
+    float drag_pitch_ratio_1d4{0.0f};  // desc+1D4h DragPitchRatio
+    float coefficient_50c{0.0f};       // desc+50Ch, (Accel / MaxSpd) / MaxSpd
+    float air_brake_drag_1dc{0.0f};    // desc+1DCh AirBrakeDrag
+    float max_spd_188{0.0f};           // desc+188h MaxSpd
+};
+struct PlaneDragAccelTuning {
+    float max_drag_spd_mul{0.1f};  // tuning+310h MaxDragSpdMul, mirror 00F873F0
+    float min_drag_spd_mul{0.1f};  // tuning+314h MinDragSpdMul, mirror 00F873F4
+    float max_drag_pitch{1.0f};    // tuning+318h MaxDragPitch, mirror 00F873F8
+};
+float plane_drag_accel_007d9140(const PlaneDragAccelClass& cls, const PlaneDragAccelTuning& tuning,
+                                float speed, float throttle, float pitch, float airbrake,
+                                float elevator);
+
+// 007D9050 BSP_PlaneFlight_ThrustAccel, __fastcall(ECX = desc, DL = turbo; float
+// pitch, float throttle, byte boost), RET 0Ch, body 007D9050-007D9135, read from
+// the listing (goal 4 chain 279):
+//   007D9052..007D905C: a = desc+164h Accel * throttle, stored as a float.
+//   007D9060..007D906C: turbo -> a = [00F87410] TurboMultiplier * a.
+//   007D9070..007D9081: boost -> a = desc+604h TurboStrength * a.
+//   007D9085..007D90F7: when 0 > pitch (COMISS / JBE): u = 00419010([00F87408],
+//     0, [00F8740C], pi/2 [00CE3C64], -0.0f [00D7A208] - pitch), FSIN of u stored
+//     as a float s, then a = ((k - 1) * s + 1) * a with k = [00F87404]
+//     AccelCheatFallMul (FSUB ST(1),ST(0), FMULP, FADDP, FMUL).
+//   007D90FB..007D9135: 0 when 0 > a (COMISS / JA), 100.0f (00CE3D08) when a
+//     compares above the double 100.0 (00D7A220; FCOMIP / JBE), else a; a NaN
+//     passes through.
+// The mirror cells are tuning+324h..+330h (00F87404..00F87410).
+struct PlaneThrustAccelClass {
+    float accel_164{0.0f};           // desc+164h Accel
+    float turbo_strength_604{0.0f};  // desc+604h TurboStrength
+};
+struct PlaneThrustAccelTuning {
+    float fall_mul{2.6f};            // tuning+324h AccelCheatFallMul, [00F87404]
+    float fall_pitch_range_1{0.174533f};  // tuning+328h, [00F87408]
+    float fall_pitch_range_2{1.047198f};  // tuning+32Ch, [00F8740C]
+    // tuning+330h TurboMultiplier, [00F87410]; read only on the turbo arm.
+    float turbo_multiplier{0.0f};
+};
+float plane_thrust_accel_007d9050(const PlaneThrustAccelClass& cls,
+                                  const PlaneThrustAccelTuning& tuning, bool turbo,
+                                  float pitch, float throttle, bool boost);
 
 // 007DB8A7..007DB8B9. |vz| is formed as -0.0f - vz (00D7A208), so a zero vz
 // with either sign fails the >= 0.1f test (00D7A3A0, a double) and the angle is
