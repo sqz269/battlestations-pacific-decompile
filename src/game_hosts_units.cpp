@@ -22,6 +22,7 @@
 #include "bsp/wire_goal2_chain76_switches.hpp"
 #include "bsp/wire_goal2_chain84_switches.hpp"
 #include "bsp/wire_goal2_chain147_switches.hpp"
+#include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -557,7 +558,26 @@ public:
     void* landing_vector_at_006ba7b0(void*,  std::int32_t) override { std::abort(); }
 };
 
-struct GameUnitSlot {
+// Goal 2 chain 209 (kWireGoal2Chain209Bound): the squadron block's byte +3AEh.
+// Producers in the image (a disp-3AEh byte scan of .text): 0 from the memset of
+// the block's new(414h); the Lua native 008A28B0 SquadronSetForceRelease, MOV
+// [ESI+3AEh], BL at 008A29FC (lua_squadron_set_force_release). The two other
+// byte writers, 0079C23E and 007A91D1, are MovCam's own +3AEh. Readers:
+// 009B5E3C / 009B63EE (aim tick 009B5C80), 009B7B22 (009B7B10), 009B7B4C
+// (009B7B40). Lifetime: the host slot's, as the block's (created with the
+// squadron, never cleared). OFF: an empty base, so the slot's layout is unchanged.
+template <bool Bound> struct SquadronForceReleaseByte {
+    // Only the ON arms call these; they are discarded statements here.
+    bool force_release_3ae() const { return false; }
+    void set_force_release_3ae(bool) {}
+};
+template <> struct SquadronForceReleaseByte<true> {
+    bool force_release_3ae() const { return sq_force_release_3ae; }
+    void set_force_release_3ae(bool on) { sq_force_release_3ae = on; }
+    bool sq_force_release_3ae{false};   // +3AEh, memset 0 at new(414h)
+};
+
+struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     GameUnitSlot() {
         // Partial projections of the two actual bases, not a whole unit ctor.
         bsp::initialize_unit_observed_prefix_00925cff(observer_prefix);
@@ -24217,6 +24237,22 @@ bool GameUnitsHost::set_squadron_drop_all_bomb_percent_008a1f40(std::size_t unit
     return true;
 }
 
+// Goal 2 chain 209. The store of 008A28B0 SquadronSetForceRelease
+// (lua_squadron_set_force_release): argument 0 through 00888AA0, then
+// MOV [ESI+3AEh], BL (008A29FC) with BL = 00B66250's boolean of argument 1. That
+// body takes LuaArgs/ImageAccess adapters this host does not have, so the Lua
+// glue resolves the entity and this setter makes the one store, as for 008A1F40
+// above. squadron_slot_of maps the entity to the slot its planes read as
+// [state+4]+0Ch (falling back to the entity's own slot, as 008A1F40 does).
+bool GameUnitsHost::set_squadron_force_release(std::size_t unit_index, bool on) {
+    Impl& host = *impl_;
+    GameUnitSlot* sq = host.squadron_slot_of(unit_index);
+    if (sq == nullptr) return false;
+    sq->set_force_release_3ae(on);
+    host.done("PlaneSquadron::set_force_release", 0x008a28b0u);
+    return true;
+}
+
 // Packet cc13-luawire 7b. 00951F40(visible) on one entity: attach (1) or detach
 // (0) part +4A4h's spatial node, which is this host's plane_hit_node_detached.
 // The squadron fan-out and its null-member case belong to the 008A13D0 runner.
@@ -32405,12 +32441,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::LevelBombAimInputs in;
                         in.g = bsp::level_bomb_aim_geometry_009b5c86(a.bearing_c0, heading,
                             unit_.lb_aim, a.impact, unit_.plane_turn_circle_radius);
+                        if constexpr (bsp::kWireGoal2Chain209Bound) {
+                            // 009B5E3C / 009B63EE read ctl+3AEh, the squadron byte
+                            // SquadronSetForceRelease (008A28B0) writes; OFF keeps false.
+                            const GameUnitSlot* sq =
+                                owner_.squadron_slot_of(unit_.process_index);
+                            in.force_release_3ae = sq != nullptr && sq->force_release_3ae();
+                            bsp::level_bomb_aim_close_009b5dc3(in.g, a.has_ordnance_ce,
+                                                               in.force_release_3ae,
+                                                               unit_.lb_aim_18, unit_.lb_aim_19);
+                        } else {
                         bsp::level_bomb_aim_close_009b5dc3(in.g, a.has_ordnance_ce, false,
                                                            unit_.lb_aim_18, unit_.lb_aim_19);
                         // ctl+3AEh is SquadronSetForceRelease's byte (008A28B0), which
                         // 007A91D1 clears; no script of this installation is known to
                         // set it, so it is false here. LABELLED.
                         in.force_release_3ae = false;
+                        }
                         if (!unit_.lb_aim_19) {
                             if constexpr (GameUnitsHost::Impl::kNearFieldProbeBound) {
                                 // 009B5E8A-009B5F17: mode 1, box (len, 400, 400),
@@ -32790,7 +32837,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         ri.aim_release_18 = unit_.lb_aim_18;
                         ri.aim_abort_19 = unit_.lb_aim_19;
+                        if constexpr (bsp::kWireGoal2Chain209Bound) {
+                            // 009B7B22 / 009B7B4C (009B88F0's 009B7B10 / 009B7B40) read
+                            // ctl+3AEh, the squadron byte 008A28B0 writes; OFF keeps false.
+                            const GameUnitSlot* sq =
+                                owner_.squadron_slot_of(unit_.process_index);
+                            ri.force_release_3ae = sq != nullptr && sq->force_release_3ae();
+                        } else {
                         ri.force_release_3ae = false;
+                        }
                         ri.release_timer_1c = unit_.lb_release.timer_1c;
                         ri.goaway_ready = bsp::level_bomb_goaway_ready_009b7ab0(
                             unit_.lb_ga_standoff_18, a.planar_bc, bin.reload_369_e17bf2,
