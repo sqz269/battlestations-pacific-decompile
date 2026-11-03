@@ -11,6 +11,11 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain287_switches.hpp"
+#include "bsp/native_mission_lua_stack.hpp"
+#include "bsp/native_mission_lua_type.hpp"
+#include "bsp/native_mission_lua_predicates.hpp"
+#include "bsp/native_mission_lua_iteration.hpp"
 #include "bsp/wire_goal4_chain253_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/game_hosts_session_messages.hpp"
@@ -357,11 +362,25 @@ int objective_kind_008dbf40(const std::string& text) {
 }
 
 std::string objective_argument_string(lua_State* state, int index) {
-    const int slot = index + 1;
-    if (slot > lua_gettop(state)) return std::string();
-    if (lua_type(state, slot) != LUA_TSTRING) return std::string();
-    const char* text = lua_tolstring(state, slot, nullptr);
-    return text != nullptr ? std::string(text) : std::string();
+    if constexpr (bsp::kWireGoal4Chain287Bound) {
+        const int slot = index + 1;
+        if (slot > lua_gettop(state)) return std::string();
+        // 006B7E30 wraps the actual callback state at machine+4 and clears
+        // owns-state at +8. The MSVC Win32 LuaMachine layout is 0Ch bytes.
+        // 006B7F60's listing compares lua_type with 4, strictly excluding
+        // numbers even though lua_isstring would accept them.
+        bsp::cc13_seg29::LuaMachine machine(state);
+        if (bsp::is_string_native_mission_lua_006b7f60(&machine, slot) == 0)
+            return std::string();
+        const char* text = lua_tolstring(state, slot, nullptr);
+        return text != nullptr ? std::string(text) : std::string();
+    } else {
+        const int slot = index + 1;
+        if (slot > lua_gettop(state)) return std::string();
+        if (lua_type(state, slot) != LUA_TSTRING) return std::string();
+        const char* text = lua_tolstring(state, slot, nullptr);
+        return text != nullptr ? std::string(text) : std::string();
+    }
 }
 
 // 00888AA0's stand-in: the `ID` field 00928A00 seeds, minus one.
@@ -394,29 +413,62 @@ inline constexpr bool kObjectiveAddTargetWalkBound = true;
 // Positions (vector3 tables) carry no ID and add no unit, as before.
 void objective_argument_units(lua_State* state, int index,
                               std::vector<std::size_t>& out) {
-    std::size_t unit = 0;
-    if (objective_argument_unit(state, index, unit)) {
-        out.push_back(unit);
-        return;
-    }
-    if (!kObjectiveAddTargetWalkBound) return;
-    const int slot = index + 1;
-    const int top = lua_gettop(state);
-    if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
-    lua_pushnil(state);
-    while (lua_next(state, slot) != 0) {
-        if (lua_type(state, -1) == LUA_TTABLE) {
-            lua_getfield(state, -1, "ID");
-            const int type = lua_type(state, -1);
-            if (type == LUA_TNUMBER || type == LUA_TSTRING) {
-                const int id = static_cast<int>(lua_tonumber(state, -1));
-                if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
+    if constexpr (bsp::kWireGoal4Chain287Bound) {
+        std::size_t unit = 0;
+        if (objective_argument_unit(state, index, unit)) {
+            out.push_back(unit);
+            return;
+        }
+        if (!kObjectiveAddTargetWalkBound) return;
+        const int slot = index + 1;
+        const int top = lua_gettop(state);
+        if (slot > top) return;
+        bsp::cc13_seg29::LuaMachine machine(state);
+        if (bsp::is_table_native_mission_lua_006b7f00(&machine, slot) == 0) return;
+        // 006B8130, 006B85B0 and 006B85F0 listings: push nil, pass the
+        // unchanged table index to lua_next, then settop(-1-count). Retain
+        // each live key while dropping its ID field and value exactly once.
+        bsp::push_nil_native_mission_lua_006b8130(&machine);
+        for (;;) {
+            const int more = bsp::next_native_mission_lua_006b85b0(&machine, slot);
+            if (more == 0) break;
+            if (bsp::is_table_native_mission_lua_006b7f00(&machine, -1) != 0) {
+                lua_getfield(state, -1, "ID");
+                const int type = bsp::type_native_mission_lua_006b7ec0(&machine, -1);
+                if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+                    const int id = static_cast<int>(lua_tonumber(state, -1));
+                    if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
+                }
+                bsp::pop_native_mission_lua_006b85f0(&machine, 1);
+            }
+            bsp::pop_native_mission_lua_006b85f0(&machine, 1);
+        }
+        lua_settop(state, top);
+    } else {
+        std::size_t unit = 0;
+        if (objective_argument_unit(state, index, unit)) {
+            out.push_back(unit);
+            return;
+        }
+        if (!kObjectiveAddTargetWalkBound) return;
+        const int slot = index + 1;
+        const int top = lua_gettop(state);
+        if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
+        lua_pushnil(state);
+        while (lua_next(state, slot) != 0) {
+            if (lua_type(state, -1) == LUA_TTABLE) {
+                lua_getfield(state, -1, "ID");
+                const int type = lua_type(state, -1);
+                if (type == LUA_TNUMBER || type == LUA_TSTRING) {
+                    const int id = static_cast<int>(lua_tonumber(state, -1));
+                    if (id > 0) out.push_back(static_cast<std::size_t>(id - 1));
+                }
+                lua_pop(state, 1);
             }
             lua_pop(state, 1);
         }
-        lua_pop(state, 1);
+        lua_settop(state, top);
     }
-    lua_settop(state, top);
 }
 
 // Defined with the vector3 readers below.
@@ -14261,11 +14313,28 @@ void GameMissionLuaHost::lua_gettable(int index) {
 }
 
 void GameMissionLuaHost::lua_remove(int index) {
-    if (state_ != nullptr) ::lua_remove(state_, index);
+    if constexpr (bsp::kWireGoal4Chain287Bound) {
+        if (state_ != nullptr) {
+            // 006B7EA0 loads state from machine+4 after capturing the index;
+            // the borrowed 006B7E30 machine retains this host's live state.
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::remove_native_mission_lua_006b7ea0(&machine, index);
+        }
+    } else {
+        if (state_ != nullptr) ::lua_remove(state_, index);
+    }
 }
 
 void GameMissionLuaHost::lua_pushvalue(int index) {
-    if (state_ != nullptr) ::lua_pushvalue(state_, index);
+    if constexpr (bsp::kWireGoal4Chain287Bound) {
+        if (state_ != nullptr) {
+            // 006B7E90 has the same machine+4/index forwarding contract.
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::push_value_native_mission_lua_006b7e90(&machine, index);
+        }
+    } else {
+        if (state_ != nullptr) ::lua_pushvalue(state_, index);
+    }
 }
 
 void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) {
@@ -14292,7 +14361,14 @@ void GameMissionLuaHost::push_argument(const bsp::MissionLuaArgument& argument) 
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
             static_cast<int>(argument.entity_id));
         lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
-        if (lua_isnil(state_, -1)) return;  // the nil stays as the argument
+        if constexpr (bsp::kWireGoal4Chain287Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            // 006B7EE0 returns 1 only for type 0; leave that actual nil on
+            // the stack as the argument, including the missing-self case.
+            if (bsp::is_nil_native_mission_lua_006b7ee0(&machine, -1) != 0) return;
+        } else {
+            if (lua_isnil(state_, -1)) return;  // the nil stays as the argument
+        }
         lua_getfield(state_, -1, key);
         ::lua_remove(state_, -2);
         return;
