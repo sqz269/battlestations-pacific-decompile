@@ -1,0 +1,93 @@
+{
+  "goal": 4,
+  "chain": 296,
+  "slot": "g4-w5",
+  "owner": "agent/g4-w5",
+  "switch": "kWireGoal4Chain296Bound",
+  "rows": [
+    {
+      "native": "008f54f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp::merge_property_block -> src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl",
+      "inputs": "Unique explicit I/F/B source properties and matching-tag destination properties from the real scene/library owning trees; the existing overwrite policy supplies the native keep byte.",
+      "output": "Merged native record payloads replace the host's scalar-copy arm and are published into the same ScenePropertyBlock consumed by scene initialization.",
+      "evidence": "bsp.py show 008f54f0 pseudocode and assembly 008F55FD..008F563B; call_graph.py who/path 008f54f0 shows entry reach through SceneReaderBinding::instantiate_entity."
+    },
+    {
+      "native": "008f3710",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert, called by src/game_hosts_scene_contents.cpp::merge_property_block",
+      "inputs": "Parser-retained integer_value bits and the actual property key, including installed ship.props Numbering = I 1.",
+      "output": "Publishes real native type-0 records used as the source/destination of 008F54F0."
+    },
+    {
+      "native": "008f3770",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert, called by src/game_hosts_scene_contents.cpp::merge_property_block",
+      "inputs": "Bit copies of parser-retained float_value and the actual key; no additional float arithmetic.",
+      "output": "Publishes real native type-1 records used as the source/destination of 008F54F0."
+    },
+    {
+      "native": "008f3940",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Bag::insert, called by src/game_hosts_scene_contents.cpp::merge_property_block",
+      "inputs": "Parser-retained boolean_value byte and the actual key, including installed ship.props ArtilleryDirector/TorpedoDirector fields.",
+      "output": "Publishes real native type-3 records used as the source/destination of 008F54F0."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuPressStartHost::device_button_held",
+      "reason": "The current host ignores the device and returns false; the actual device vslot button-state provider is missing."
+    },
+    {
+      "native": "004b43b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuPressStartHost::input_edge_latch",
+      "reason": "The current host only records and returns false; native dynamic-device any-button state and its retained edge latch are missing."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuPressStartHost::apply_input_settings",
+      "reason": "The current method only records the call; native input-settings storage and current-profile binding are missing from this host."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "The host explicitly has no producer for the native ammo+48h flak-alternate object required by record assignment."
+    }
+  ],
+  "wired_total": {
+    "metric": "call_graph.summary.recon_called: reconstructed addresses called from entry-reachable code in the built executable",
+    "before": 4234,
+    "after": 4275,
+    "direct_target_bodies": 4,
+    "note": "The other 37 newly reachable addresses are downstream property helpers pulled in by the native merge/ownership graph; this is structural reach, not a claim that every tag-specific branch executes for the admitted numeric inputs."
+  },
+  "built": [
+    "Owning raw61-produced source/destination bags, real native I/F/B insertion, whole native merge, and native result lookup/publication.",
+    "Explicit CC8A30 property-pool startup and same-process string/node/record retirement before context destruction.",
+    "Numeric-domain admission preserves duplicate-key, scalar/child and differing-tag cases on the existing host path; property order and diagnostic tokens remain in their original order.",
+    "One switch around the complete host change, with the original else body verified byte-for-byte unchanged."
+  ],
+  "validation": {
+    "baseline_build": "passed: scripts/build.ps1, 2/2 tests",
+    "switch_off_build": "passed: scripts/build.ps1, 2/2 tests; call graph recon_called 4234",
+    "switch_on_build": "passed: scripts/build.ps1, 2/2 tests; call graph recon_called 4275",
+    "focused_probe": "passed: python tools/wire_goal4_chain296_probe.py; parsed I/F/B values, keep/overwrite, case-insensitive collision, missing-key clone, negative-zero bits, unsupported/duplicate/child fallback and canonical retirement",
+    "call_sites": "call_graph.py who confirms all four target bodies REACHABLE, with one reachable call site each in SceneNumericPropertyMerge",
+    "artifacts": [
+      "local/output/wire_g4_c296_call_graph_off.json",
+      "local/output/call_graph.json",
+      "local/output/wire_g4_c296_probe/result.json",
+      "local/output/wire_g4_c296_readiness_on.txt"
+    ]
+  },
+  "left": [
+    "Strings, enums, vectors, arrays, child-bag ownership and duplicate/mismatched-tag keys still use the host tree merge; broadening native bag production is separate work.",
+    "Existing host precedence policy is preserved. This wiring does not independently change group-list precedence.",
+    "No game was run. Build, synthetic ownership/merge and executable call-graph checks do not establish gameplay or Original register/class ABI equivalence."
+  ]
+}

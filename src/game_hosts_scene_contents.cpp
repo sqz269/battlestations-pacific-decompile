@@ -11,6 +11,8 @@
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_goal4_chain278_switches.hpp"
 #include "bsp/wire_goal4_chain290_switches.hpp"
+#include "bsp/wire_goal4_chain296_switches.hpp"
+#include "bsp/scene_numeric_property_merge.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
@@ -556,6 +558,57 @@ private:
 // then the authored group body overwrites (008F5AB3, 008F6AD7).
 void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& other,
     bool overwrite, bool require_compatible_types = false) {
+    if constexpr (kWireGoal4Chain296Bound) {
+        SceneNumericPropertyMerge native_merge(bag, other, overwrite);
+        for (std::size_t i = 0; i < other.values.size(); ++i) {
+            const SceneProperty& value = other.values[i];
+            if (require_compatible_types) {
+                for (const auto& child : bag.blocks) {
+                    if (equal_insensitive(child.first, value.key)) {
+                        throw std::runtime_error("unsupported library scalar/child conflict: " + value.key);
+                    }
+                }
+            }
+            SceneProperty* existing = nullptr;
+            for (SceneProperty& candidate : bag.values) {
+                if (equal_insensitive(candidate.key, value.key)) { existing = &candidate; break; }
+            }
+            if (require_compatible_types && existing != nullptr
+                && existing->type_letter != value.type_letter) {
+                throw std::runtime_error("unsupported library scalar type conflict: " + value.key);
+            }
+            if (native_merge.handles(i)) {
+                SceneProperty merged = native_merge.result(
+                    existing != nullptr && !overwrite ? *existing : value);
+                if (existing == nullptr) bag.values.push_back(std::move(merged));
+                else *existing = std::move(merged);
+            } else {
+                if (existing == nullptr) bag.values.push_back(value);
+                else if (overwrite) *existing = value;
+            }
+        }
+        for (const auto& block : other.blocks) {
+            if (require_compatible_types) {
+                for (const SceneProperty& value : bag.values) {
+                    if (equal_insensitive(value.key, block.first)) {
+                        throw std::runtime_error("unsupported library child/scalar conflict: " + block.first);
+                    }
+                }
+            }
+            ScenePropertyBlock* target = nullptr;
+            for (auto& existing : bag.blocks) {
+                if (equal_insensitive(existing.first, block.first)) {
+                    target = &existing.second;
+                    break;
+                }
+            }
+            if (target == nullptr) {
+                bag.blocks.emplace_back(block.first, ScenePropertyBlock{});
+                target = &bag.blocks.back().second;
+            }
+            merge_property_block(*target, block.second, overwrite, require_compatible_types);
+        }
+    } else {
     for (const SceneProperty& value : other.values) {
         if (require_compatible_types) {
             for (const auto& child : bag.blocks) {
@@ -598,6 +651,7 @@ void merge_property_block(ScenePropertyBlock& bag, const ScenePropertyBlock& oth
             target = &bag.blocks.back().second;
         }
         merge_property_block(*target, block.second, overwrite, require_compatible_types);
+    }
     }
 }
 
