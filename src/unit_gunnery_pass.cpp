@@ -2,10 +2,51 @@
 // docs/UNIT_GUNNERY_PASS.md; each routine is a projection of one native body and
 // the coverage of each is in that document's routine table.
 #include "bsp/unit_gunnery_pass.hpp"
+#include "bsp/cc13_seg53.hpp"
+#include "bsp/wire_goal2_chain113_switches.hpp"
+
+#include <exception>
 
 namespace bsp {
 
 namespace {
+
+template <std::size_t N>
+constexpr std::array<std::int32_t, N + 1> terminated_categories(const std::array<int, N>& source) {
+    std::array<std::int32_t, N + 1> result{};
+    for (std::size_t i = 0; i < N; ++i) result[i] = source[i];
+    result[N] = kUnitGunneryCategoryCount;
+    return result;
+}
+
+// Adapts the existing category state, initialized by 00864580 and carried by
+// GameGunneryHost::UnitState, rather than allocating a second gunnery object.
+class GunneryCategoryGroups final : public cc13_seg53::GunneryGroupHost {
+public:
+    explicit GunneryCategoryGroups(UnitGunneryCategoryState& state) : state_(state) {}
+    const std::int32_t* category_list(std::uint32_t address) override {
+        // The already recovered image tables, with their >=0Ch terminator.
+        static constexpr auto artillery = terminated_categories(kArtilleryCategories);
+        static constexpr auto aa = terminated_categories(kAaFlakCategories);
+        static constexpr auto torpedo = terminated_categories(kTorpedoCategories);
+        static constexpr auto depth_charge = terminated_categories(kDepthChargeCategories);
+        switch (address) {
+        case 0x00e0a4f8: return artillery.data();
+        case 0x00e0a510: return aa.data();
+        case 0x00e0a520: return torpedo.data();
+        case 0x00e0a528: return depth_charge.data();
+        default: std::terminate();
+        }
+    }
+    void store_torpedo_flag(std::uint8_t value) override {
+        state_.torpedo_group_flag = value != 0;
+    }
+    void store_depth_charge_flag(std::uint8_t value) override {
+        state_.depth_charge_group_flag = value != 0;
+    }
+private:
+    UnitGunneryCategoryState& state_;
+};
 
 // 00861CD0 and 00861D20 edit one bit of the mask word; 00861D70 and 00861DC0
 // store 3 or 0 over the whole word. The loops run while the list entry is
@@ -125,6 +166,18 @@ UnitGunneryCategoryState apply_director_stance_008624c0(
     // Steps 4 to 7. Each list is walked in full; the change test the native code
     // makes against adapter+0Dh..+10h only saves work, it does not change the
     // result, so the projection applies every group every time.
+    if constexpr (kWireGoal2Chain113Bound) {
+        GunneryCategoryGroups groups(state);
+        const cc13_seg53::GunneryGroupView view{state.mask.data()};
+        // 00861D70 calls the existing torpedo setter; OFF keeps the word loop and flag store.
+        cc13_seg53::unit_gunnery_ai_set_torpedo_group_allowed_00861d70(view, stance.torpedo, groups);
+        // 00861CD0 calls the existing artillery setter; OFF keeps the category bit loop.
+        cc13_seg53::unit_gunnery_ai_set_artillery_group_allowed_00861cd0(view, stance.artillery, groups);
+        // 00861D20 calls the existing AA setter; OFF keeps the category bit loop.
+        cc13_seg53::unit_gunnery_ai_set_aa_group_allowed_00861d20(view, stance.anti_air, groups);
+        // 00861DC0 calls the existing depth-charge setter; OFF keeps the word loop and flag store.
+        cc13_seg53::unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(view, stance.depth_charge, groups);
+    } else {
     for (const int category : kTorpedoCategories) {          // 00861D70
         store_mask_word(state, category, stance.torpedo);
     }
@@ -142,6 +195,7 @@ UnitGunneryCategoryState apply_director_stance_008624c0(
         store_mask_word(state, category, stance.depth_charge);
     }
     state.depth_charge_group_flag = stance.depth_charge;     // 00861E07
+    }
 
     return state;
 }

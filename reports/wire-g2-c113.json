@@ -1,0 +1,354 @@
+{
+  "run": 218,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 113,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "base_head": "ebcf6f550",
+  "candidate": {
+    "segment": 53,
+    "range": [
+      "00851e10",
+      "008740e0"
+    ],
+    "tier": 2,
+    "choice": "Shared existing category-state view unblocks four setters; active mesh segment loop unblocks the geometry leaf.",
+    "refused_before_pick": [
+      "segment 45: lease held by agent/g2-w2",
+      "segment 86: lease held by agent/g2-w5"
+    ]
+  },
+  "host_file": "src/unit_gunnery_pass.cpp",
+  "switch": "kWireGoal2Chain113Bound",
+  "switch_value": false,
+  "wired_before": 8921,
+  "wired_after": 8926,
+  "rows_wired": 5,
+  "rows_skipped": 17,
+  "host_objects": [
+    {
+      "name": "GunneryCategoryGroups adapter over existing UnitGunneryCategoryState",
+      "kind": "typed view; no new persistent object",
+      "where": "src/unit_gunnery_pass.cpp:170",
+      "producers": [
+        "unit_gunnery_initial_category_state_00864580, already called by GameGunneryHost attach/rebuild, initializes the existing category masks and flags",
+        "GunneryPassBinding::apply_director_stance_008624c0 reads live scene director enables and script fire stance into DirectorGunneryStance",
+        "Existing kArtilleryCategories/kAaFlakCategories/kTorpedoCategories/kDepthChargeCategories are the recovered 00E0A4F8/00E0A510/00E0A520/00E0A528 lists; append the native >=0Ch terminator"
+      ],
+      "lifetime": "Stack adapter constructed only inside the batch ON arm; underlying state remains owned by the pre-existing per-unit pass. No new runtime construction when OFF.",
+      "rows": [
+        "00861cd0",
+        "00861d20",
+        "00861d70",
+        "00861dc0"
+      ]
+    }
+  ],
+  "checks": {
+    "off_build": {
+      "result": "passed",
+      "command": "./scripts/build.ps1",
+      "tests": "reconstructed_math and tool_tests, 2/2 passed",
+      "log": "local/output/wire-g2-c113-final-off-build.log"
+    },
+    "on_build": {
+      "result": "passed",
+      "command": "python tools/off_switch_on_build.py --names kWireGoal2Chain113Bound",
+      "diagnostics": 0,
+      "log": "local/output/wire-g2-c113-on-build.log",
+      "sources_restored": true
+    },
+    "pc24_lint": {
+      "result": "passed",
+      "command": "python tools/pc24_lint.py --staged",
+      "findings": 0,
+      "committed_diff_command": "python tools/pc24_lint.py --diff origin/main...HEAD"
+    },
+    "off_host_blocks_byte_preserved": true,
+    "readiness": "Exactly the five listed assigned rows moved ready -> wired, measured after final plain OFF build.",
+    "report_calls": {
+      "result": "passed",
+      "command": "python tools/verify_report_calls.py reports/wire-g2-c113.json",
+      "checked": 22,
+      "failed": 0
+    }
+  },
+  "contract_evidence": {
+    "group_setters": "All four each have exactly one image CALL from 008624C0: 00862581, 008625A6, 008625CB, 008625EC. ECX reloads [ESI] (AI owner); pushed low byte comes from director+222h/+220h/+221h/+223h. All four callee listings end RET 4. Mask DWORDs at +80h+4*c; flag bytes at +77h/+78h. Typed overloads contain the prior body; raw entries adapt and delegate, with no duplicate implementation.",
+    "triangle": "Only image CALL: 007239F9 inside 007238E0. ECX derives query+18h, EBX/query+24h supplies EDX; four pushes are three mesh vertices and output query+30h. Callee RET 10h at 0085D300. Original caller copies the body-produced hit into its segment end at 00723A09/0E/14. Host input comes from existing mesh loader and current entity pose/segment."
+  },
+  "on_effect": "Uses existing reconstructed group-setter logic on real category masks/flags; replaces active host mesh triangle math with native-reconstructed epsilon/barycentric/segment logic and hit-based segment shortening. Existing bridge projection cadence and surrounding host mesh traversal/record mapping stay as before.",
+  "limitations": [
+    "All reach labels are static source-path evidence because this candidate provided no mission call counts. No game was run.",
+    "Compilation, existing tests, lint and readiness are not runtime, ABI or gameplay parity proof.",
+    "Existing bridge projection still pushes all four groups each call rather than modeling native change-only caches. The old OFF block has the same projection.",
+    "Triangle ON path retains the host mesh traversal and nearest-hit record mapping. Its hit-point-to-full-segment parameter projection can differ in rounding; runtime behavior awaits the later multi-mission switch activation batch."
+  ],
+  "rows": [
+    {
+      "native": "00852140",
+      "address": "0043cdde",
+      "function": "0043cc20",
+      "host_site": "src/game_hosts_mission_result.cpp (no FormatPlayTime root)",
+      "status": "skipped",
+      "reason": "The native caller 0043CC20 has no active host implementation or fixed builder/localized NativeString producers. Adding a scratch builder solely to consume its result would not replace a live site.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The native caller 0043CC20 has no active host implementation or fixed builder/localized NativeString producers. Adding a scratch builder solely to consume its result would not replace a live site.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "008533e0",
+      "address": "00853ce6",
+      "function": "00853630",
+      "host_site": "src/game_hosts_units.cpp submarine attachment",
+      "status": "skipped",
+      "reason": "The host keeps periscope presence as a boolean, not the owner/node object and captured world-matrix/name producers required by the debris initializer. A disconnected debris record would have no active consumer.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The host keeps periscope presence as a boolean, not the owner/node object and captured world-matrix/name producers required by the debris initializer. A disconnected debris record would have no active consumer.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00858260",
+      "address": "008592fa",
+      "function": "00859240",
+      "host_site": "src/game_hosts_gunnery.cpp tracer presentation",
+      "status": "skipped",
+      "reason": "Requires the real 00B75030 generated-model constructor result and its native child/sibling graph. The host has no NativeParticleTracerState storage or generated-model owner at the original allocation site.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Requires the real 00B75030 generated-model constructor result and its native child/sibling graph. The host has no NativeParticleTracerState storage or generated-model owner at the original allocation site.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00859830",
+      "address": "00959e41",
+      "function": "00959c20",
+      "host_site": "src/game_hosts_gunnery.cpp Impl::apply_gun_aim_message",
+      "status": "skipped",
+      "reason": "The host computes the current message direction transiently but has no unit+4A0h..4B8h aim-record owner or consumers. Creating an unused timestamp/camera/direction cache would not replace the original saved-record behavior.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The host computes the current message direction transiently but has no unit+4A0h..4B8h aim-record owner or consumers. Creating an unused timestamp/camera/direction cache would not replace the original saved-record behavior.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "0085b0f0",
+      "address": "0084c71c",
+      "function": "0084c6e0",
+      "host_site": "src/game_hosts_gunnery.cpp gun angle handling",
+      "status": "skipped",
+      "reason": "Existing gun_snap_angle_into_window_0085b0f0 is only the three-candidate arc-search projection of the native setter, not its current/target-angle stores and node application. No matching active search site was found; do not treat it as the full setter or repair it in this chain.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Existing gun_snap_angle_into_window_0085b0f0 is only the three-candidate arc-search projection of the native setter, not its current/target-angle stores and node application. No matching active search site was found; do not treat it as the full setter or repair it in this chain.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "0085bce0",
+      "address": "00917b86",
+      "function": "00916a00",
+      "host_site": "src/game_hosts_mission_result.cpp score persistence",
+      "status": "skipped",
+      "reason": "Native callers are score-archive readers with no active corresponding host path found. The related game_hosts_lua.cpp recon-name host is explicitly assigned to another worker and is excluded from this batch.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Native callers are score-archive readers with no active corresponding host path found. The related game_hosts_lua.cpp recon-name host is explicitly assigned to another worker and is excluded from this batch.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "0085d020",
+      "address": "007239f9",
+      "function": "007238e0",
+      "host_site": "src/game_hosts_gunnery.cpp:11456 SegmentBinding::shape_trace_segment",
+      "status": "wired",
+      "reason": "Replaces the active host determinant/barycentric triangle loop with segment_intersect_triangle_0085d020 over the current model-space segment and loaded mesh vertices. The body-produced hit shortens the segment as at 00723A09/0E/14; its point supplies the host nearest-hit ordering parameter.",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost in-mission tick -> DynamicsFrameBinding fixed-step driver -> FixedStepBinding::run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> GameGunneryHost::fixed_step -> gun/projectile segment query -> SegmentBinding::shape_trace_segment -> hit_mesh_of -> loaded ship/plane/land-structure triangles; kShellHullHitTestBound, kPlaneMeshHitTestBound, kLandStructureMeshHitTestBound and kHullElementSegmentBound are true. Only the new batch switch is OFF.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "0085d770",
+      "address": "007df8d6",
+      "function": "007df4f0",
+      "host_site": "src/game_hosts_units.cpp Impl::vehicle_avoidance_007df4f0",
+      "status": "skipped",
+      "reason": "The current avoidance stand-in uses the inverse pose directly. It does not produce the original conditional velocity-derived own-frame matrix at this site; orthonormalizing an arbitrary pose would wire a different computation.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The current avoidance stand-in uses the inverse pose directly. It does not produce the original conditional velocity-derived own-frame matrix at this site; orthonormalizing an arbitrary pose would wire a different computation.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "0085e8c0",
+      "address": "0042d670",
+      "function": "0042d610",
+      "host_site": "src/segment2_camera_cc13.cpp orbit_about_axis_0042d610",
+      "status": "skipped",
+      "reason": "Only reconstructed caller invokes an unimplemented rotate_about_axis_0085e8c0 host hook; no active host implementation of the orbit caller was found. Do not add a disconnected Host implementation.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Only reconstructed caller invokes an unimplemented rotate_about_axis_0085e8c0 host hook; no active host implementation of the orbit caller was found. Do not add a disconnected Host implementation.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00860030",
+      "address": "00416967",
+      "function": "00416840",
+      "host_site": "src/cc13_avoid1.cpp debug outline",
+      "status": "skipped",
+      "reason": "The reconstructed debug callers have no active screen-line renderer host/00F8D394 endpoint found. A no-op Seg53Host debug callback would not count.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The reconstructed debug callers have no active screen-line renderer host/00F8D394 endpoint found. A no-op Seg53Host debug callback would not count.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00860bb0",
+      "address": "009dda4f",
+      "function": "009dd9c0",
+      "host_site": "src/cc13_seg67b.cpp ship-AI debug draw",
+      "status": "skipped",
+      "reason": "The ShipAiDebug callers have no active debug-draw host root or arc-renderer endpoint. No live circle site can be established.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The ShipAiDebug callers have no active debug-draw host root or arc-renderer endpoint. No live circle site can be established.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00861cd0",
+      "address": "008625a6",
+      "function": "008624c0",
+      "host_site": "src/unit_gunnery_pass.cpp:175 apply_director_stance_008624c0",
+      "status": "wired",
+      "reason": "Replaces the existing artillery category-mask loop with its reconstructed setter. GunneryGroupView points directly into the real state.mask array; the narrow GunneryGroupHost maps the two flag stores back to the same owning state. Raw entries are thin wrappers around this single body.",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost in-mission tick -> DynamicsFrameBinding fixed-step driver -> FixedStepBinding::run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> GameGunneryHost::fixed_step -> Impl::run_gunnery_pass -> unit_gunnery_pass_tick_00864fe0 -> GunneryPassBinding::apply_director_stance_008624c0 -> apply_director_stance_008624c0; no enclosing OFF gate. Real director permissions are read under kShipDirectorEnablesBound=true, kLuaArtilleryEnableBound=true and kShipFireStanceBound=true. Existing category state comes from unit_gunnery_initial_category_state_00864580.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "00861d20",
+      "address": "008625cb",
+      "function": "008624c0",
+      "host_site": "src/unit_gunnery_pass.cpp:177 apply_director_stance_008624c0",
+      "status": "wired",
+      "reason": "Replaces the existing anti-air category-mask loop with its reconstructed setter. GunneryGroupView points directly into the real state.mask array; the narrow GunneryGroupHost maps the two flag stores back to the same owning state. Raw entries are thin wrappers around this single body.",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost in-mission tick -> DynamicsFrameBinding fixed-step driver -> FixedStepBinding::run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> GameGunneryHost::fixed_step -> Impl::run_gunnery_pass -> unit_gunnery_pass_tick_00864fe0 -> GunneryPassBinding::apply_director_stance_008624c0 -> apply_director_stance_008624c0; no enclosing OFF gate. Real director permissions are read under kShipDirectorEnablesBound=true, kLuaArtilleryEnableBound=true and kShipFireStanceBound=true. Existing category state comes from unit_gunnery_initial_category_state_00864580.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "00861d70",
+      "address": "00862581",
+      "function": "008624c0",
+      "host_site": "src/unit_gunnery_pass.cpp:173 apply_director_stance_008624c0",
+      "status": "wired",
+      "reason": "Replaces the existing torpedo category-mask loop with its reconstructed setter. GunneryGroupView points directly into the real state.mask array; the narrow GunneryGroupHost maps the two flag stores back to the same owning state. Raw entries are thin wrappers around this single body.",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost in-mission tick -> DynamicsFrameBinding fixed-step driver -> FixedStepBinding::run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> GameGunneryHost::fixed_step -> Impl::run_gunnery_pass -> unit_gunnery_pass_tick_00864fe0 -> GunneryPassBinding::apply_director_stance_008624c0 -> apply_director_stance_008624c0; no enclosing OFF gate. Real director permissions are read under kShipDirectorEnablesBound=true, kLuaArtilleryEnableBound=true and kShipFireStanceBound=true. Existing category state comes from unit_gunnery_initial_category_state_00864580.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "00861dc0",
+      "address": "008625ec",
+      "function": "008624c0",
+      "host_site": "src/unit_gunnery_pass.cpp:179 apply_director_stance_008624c0",
+      "status": "wired",
+      "reason": "Replaces the existing depth-charge category-mask loop with its reconstructed setter. GunneryGroupView points directly into the real state.mask array; the narrow GunneryGroupHost maps the two flag stores back to the same owning state. Raw entries are thin wrappers around this single body.",
+      "reach": "static",
+      "reach_evidence": "GameMissionFrameHost in-mission tick -> DynamicsFrameBinding fixed-step driver -> FixedStepBinding::run_step_subsystems -> GameUnitsHost::motion_step_00825f20 -> GameGunneryHost::fixed_step -> Impl::run_gunnery_pass -> unit_gunnery_pass_tick_00864fe0 -> GunneryPassBinding::apply_director_stance_008624c0 -> apply_director_stance_008624c0; no enclosing OFF gate. Real director permissions are read under kShipDirectorEnablesBound=true, kLuaArtilleryEnableBound=true and kShipFireStanceBound=true. Existing category state comes from unit_gunnery_initial_category_state_00864580.",
+      "state_before": "ready",
+      "state_after": "wired"
+    },
+    {
+      "native": "00866c60",
+      "address": "00867f31",
+      "function": "00867ee0",
+      "host_site": "src/game_hosts_mission_frame.cpp update_effect_manager_00867ee0",
+      "status": "skipped",
+      "reason": "The mission-frame hook only records a trace. It has no real NativeLiveEffectManagerStorage entry array, effect-job/frame-job owners, or component insertion producers. An empty invented manager would dispatch no real effects.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The mission-frame hook only records a trace. It has no real NativeLiveEffectManagerStorage entry array, effect-job/frame-job owners, or component insertion producers. An empty invented manager would dispatch no real effects.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00866cd0",
+      "address": "00822e77",
+      "function": "00822c20",
+      "host_site": "src/game_hosts_units.cpp entity effect initialization",
+      "status": "skipped",
+      "reason": "No native PointEffectInstanceStorage, current definition+84h, component factory, or real child owner is built in this host. The raw caller hook is not implemented over such storage; zeroing an empty point would not supply the missing producers.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; No native PointEffectInstanceStorage, current definition+84h, component factory, or real child owner is built in this host. The raw caller hook is not implemented over such storage; zeroing an empty point would not supply the missing producers.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00866e60",
+      "address": "007c4fe9",
+      "function": "007c4dd0",
+      "host_site": "src/game_hosts_units.cpp plane effects / src/game_hosts_gunnery.cpp torpedo wake",
+      "status": "skipped",
+      "reason": "Requires the actual point-effect child graph and manager/child-event lifetime interfaces. Neither plane nor torpedo host owns that graph; no constant or empty child list is substituted.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Requires the actual point-effect child graph and manager/child-event lifetime interfaces. Neither plane nor torpedo host owns that graph; no constant or empty child list is substituted.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00867320",
+      "address": "0086783d",
+      "function": "00867790",
+      "host_site": "src/point_effect_children.cpp update_point_effect_children_00867790",
+      "status": "skipped",
+      "reason": "Reconstructed child-update/stop paths already call this body, but have no active native point-effect host root. Duplicating their existing call would not count and the needed child reference/lifetime producers are absent.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Reconstructed child-update/stop paths already call this body, but have no active native point-effect host root. Duplicating their existing call would not count and the needed child reference/lifetime producers are absent.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00867d00",
+      "address": "00867f18",
+      "function": "00867ee0",
+      "host_site": "src/game_hosts_mission_frame.cpp update_effect_manager_00867ee0",
+      "status": "skipped",
+      "reason": "Complete update body already calls it, but the active host update is trace-only. Real point instances, attachment/node transforms, row restart/event owners and insertion producers are absent; a new empty manager would not repair those contracts.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Complete update body already calls it, but the active host update is trace-only. Real point instances, attachment/node transforms, row restart/event owners and insertion producers are absent; a new empty manager would not repair those contracts.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "0086a350",
+      "address": "00abc997",
+      "function": "00abc970",
+      "host_site": "src/cc13_front5.cpp qword_vector_reserve_0086a350 hooks",
+      "status": "skipped",
+      "reason": "Native qword backing/count/capacity storage and allocator ownership are not present at an active caller found in this host. Existing raw GUI/effect callers only name unimplemented reserve hooks; no disconnected buffer is added.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; Native qword backing/count/capacity storage and allocator ownership are not present at an active caller found in this host. Existing raw GUI/effect callers only name unimplemented reserve hooks; no disconnected buffer is added.",
+      "state_before": "ready",
+      "state_after": "ready"
+    },
+    {
+      "native": "00870cd0",
+      "address": "00440b35",
+      "function": "00440ac0",
+      "host_site": "src/game_hosts_scene_contents.cpp acquire_effect",
+      "status": "skipped",
+      "reason": "The scene host explicitly lacks GameplayEffectAcquisitionContext: manager, native-string/name-index, definitions and scalar-component dispatcher. Building only a handle or returning a placeholder would bypass the actual producers.",
+      "reach": "static",
+      "reach_evidence": "Original caller and body inspected; The scene host explicitly lacks GameplayEffectAcquisitionContext: manager, native-string/name-index, definitions and scalar-component dispatcher. Building only a handle or returning a placeholder would bypass the actual producers.",
+      "state_before": "ready",
+      "state_after": "ready"
+    }
+  ]
+}

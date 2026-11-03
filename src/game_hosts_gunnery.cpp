@@ -122,6 +122,8 @@
 #include "bsp/frontier_wiring_cc13.hpp"   // packet cc13-frontier
 #include "bsp/aa_pick_ver_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"
+#include "bsp/band_0080_cc13.hpp"
+#include "bsp/wire_goal2_chain113_switches.hpp"
 #include "bsp/ship_torpedo_ver_cc13.hpp"
 #include "bsp/game_avoid_zone_runtime.hpp"
 #include "bsp/plane_release_ver_cc13.hpp"
@@ -11452,6 +11454,39 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         const bool by_element = (kHullElementSegmentBound && !model->element_tris.empty()
             && ship_model) || plane_elements;
         const auto& tri = by_element ? model->element_tris : model->tris;
+        // 0085D020 calls the existing segment/triangle body; OFF keeps the host determinant loop.
+        if constexpr (bsp::kWireGoal2Chain113Bound) {
+            using bsp::cc13_band0080::Vec3f;
+            const Vec3f local_from{o[0], o[1], o[2]};
+            Vec3f local_to{o[0] + d[0], o[1] + d[1], o[2] + d[2]};
+            int axis = std::fabs(d[0]) > std::fabs(d[1]) ? 0 : 1;
+            if (std::fabs(d[2]) > std::fabs(d[axis])) axis = 2;
+            for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
+                const auto& a = tri[n];
+                const auto& b = tri[n + 1];
+                const auto& c = tri[n + 2];
+                Vec3f local_hit;
+                if (!bsp::cc13_band0080::segment_intersect_triangle_0085d020(
+                        local_from, local_to, {a[0], a[1], a[2]}, {b[0], b[1], b[2]},
+                        {c[0], c[1], c[2]}, local_hit)) continue;
+                // Convert the body's point back to the host's full-segment
+                // ordering parameter. A zero segment cannot pass its determinant.
+                const float component = axis == 0 ? local_hit.x : axis == 1 ? local_hit.y : local_hit.z;
+                const float distance = component - o[axis];
+                const float t = distance / d[axis];
+                if (by_element) {
+                    if (t >= 0.0f && t <= 1.0f && t <= best) {
+                        best = t;
+                        best_kind = model->element_kind[n / 3];
+                        best_index = model->element_index[n / 3];
+                        local_to = local_hit; // 007239FE..00723A18 shortens the query after each hit.
+                    }
+                } else if (t >= 0.0f && t <= 1.0f && t < best) {
+                    best = t;
+                    local_to = local_hit;
+                }
+            }
+        } else {
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
             const auto& b = tri[n + 1];
@@ -11482,6 +11517,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
             } else if (t >= 0.0f && t <= 1.0f && t < best) {
                 best = t;
             }
+        }
         }
         if (best > 1.0f) return false;
         bsp::HitQueryPoint point;
