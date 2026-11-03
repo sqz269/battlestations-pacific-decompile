@@ -1,0 +1,379 @@
+{
+  "chain": 116,
+  "goal": 2,
+  "run": 226,
+  "harness": "codex",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "picked": "segment 43 [0076aa00-00787040]",
+  "tier": 2,
+  "host_file": "src/locale_text_lookup.cpp",
+  "switch": "kWireGoal2Chain116Bound",
+  "switch_default": false,
+  "wired_before": 8928,
+  "wired_after": 8929,
+  "wired_count": 1,
+  "skipped_count": 35,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "LocaleWideSubstringAdapter",
+      "where": "src/locale_text_lookup.cpp:62",
+      "producers": [
+        "existing resolved UTF-16 output and actual marker/close positions",
+        "existing crt_string_storage domain; resize 004C53E0 and copy 004C8DD0"
+      ],
+      "rows": [
+        "00770e50"
+      ]
+    }
+  ],
+  "checks": {
+    "off_build": "passed: scripts/build.ps1, both CTest tests; final OFF build after ON check",
+    "on_build": "passed: off_switch_on_build.py --names kWireGoal2Chain116Bound; exit 0, zero diagnostics, sources restored false",
+    "focused_fixture": "passed: local/output/locale_substring_probe.exe linked against temporary ON bsp_core.lib, no game run; token/prefix/suffix, empty token, escaped marker, recursive replacement and append boundary",
+    "readiness": "passed: final OFF map, 00770e50 ready -> wired, total 8928 -> 8929",
+    "report_calls": "passed: 36 call rows checked, 0 failed",
+    "pc24_lint": "not applicable: new ON arms perform string operations only, no x87 arithmetic",
+    "off_block": "passed: exact prior substitution block is present byte for byte inside OFF else"
+  },
+  "limits": [
+    "Static host reach, not mission/runtime game validation.",
+    "Existing sweepB2 normal-path semantics and EH limitation retained; exact native provider/FH3/ABI parity is not asserted.",
+    "No persistent host object or networking state was invented for skipped rows."
+  ],
+  "rows": [
+    {
+      "native": "0076aa00",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "No actual session transport/embedded console is produced by the active local-session pump. The only server factory host is the labelled kNoPeerServer substitution inside kSkirmishSessionCc13Bound=false; binding it would invent the transport.",
+      "reach": "static",
+      "function": "00778450",
+      "address": "0077850b"
+    },
+    {
+      "native": "0076c4a0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "Active flush takes the local-mode early-out; no actual session +188/+18C transport or +48 countdown is owned here. The candidate needs those live fields, not a made-up countdown image.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "0077007e"
+    },
+    {
+      "native": "0076c500",
+      "host_site": "src/game_hosts_mission_frame.cpp:multiplayer interface update",
+      "status": "skipped",
+      "reason": "The reconstructed UpdateMultiplayerInterface host callback session_broadcast_queued_messages_0076c500 has no implementation or host-owned native queued-message vector/transport. Local session has no producer for that network queue.",
+      "reach": "static",
+      "function": "004d80d0",
+      "address": "004d85ef"
+    },
+    {
+      "native": "0076cc20",
+      "host_site": "src/multiplayer_session_cc13.cpp:route_receive_00777850",
+      "status": "skipped",
+      "reason": "ReceiveAiEnable is reached through the unbound network receive dispatcher. Metadata names the 0076CB90 setter for this receiver address; no separate receiver body/active incoming packet owner is available. Do not count calling the setter twice.",
+      "reach": "static",
+      "function": "00777850",
+      "address": "00777dfe"
+    },
+    {
+      "native": "0076d280",
+      "host_site": "src/game_hosts_script_orders.cpp:SetThinkCoreHost::session_send_music_level",
+      "status": "skipped",
+      "reason": "lua_binding_music_control_set_level calls this only when game_non_campaign_flag()==1; its active host returns 0. No live broadcast transport exists on that path.",
+      "reach": "static",
+      "function": "008c4d10",
+      "address": "008c4e74"
+    },
+    {
+      "native": "0076f210",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "Flush returns at the local session mode gate. This body needs native replicated-entity/peer owners; none is produced by the active host flush.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "00770043"
+    },
+    {
+      "native": "0076f2b0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:session host-remove-peer callback",
+      "status": "skipped",
+      "reason": "reassign_peer_units_0076f2b0 is unimplemented. The active local host has neither a departed peer nor the session player/unit ownership graph required to reassign its units.",
+      "reach": "static",
+      "function": "007702e0",
+      "address": "00770340"
+    },
+    {
+      "native": "0076f8c0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:session_send_chat_00772170",
+      "status": "skipped",
+      "reason": "No active host calls the native session chat producer or owns its username/peer/scene chat state. Wiring the constructor in the reconstructed sender alone would leave it off the host path.",
+      "reach": "static",
+      "function": "00772170",
+      "address": "007721db"
+    },
+    {
+      "native": "0076fec0",
+      "host_site": "src/engine_seg43_45_cc13.cpp:session_update_start_gate_007713a0",
+      "status": "skipped",
+      "reason": "The network start-gate broadcaster needs its native server/peer state. The local mission-start host has no such producer; a call inside the unbound network gate would not count.",
+      "reach": "static",
+      "function": "007713a0",
+      "address": "007714dc"
+    },
+    {
+      "native": "007700e0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "UpdateClientClockScale requires the client transport and native timer/clock samples. The active local-session pump produces neither; fabricating a client clock is outside this chain.",
+      "reach": "static",
+      "function": "00778450",
+      "address": "00778521"
+    },
+    {
+      "native": "00770750",
+      "host_site": "src/mp_seg43_cc13.cpp:session_set_player_surrender_00770750 callback",
+      "status": "skipped",
+      "reason": "The surrender request/receive network path has no active host implementation or incoming session player state. The existing MpSeg43Hooks callback is unimplemented.",
+      "reach": "static",
+      "function": "00771f20",
+      "address": "00771f52"
+    },
+    {
+      "native": "00770e50",
+      "address": "00a9f6a4",
+      "function": "00a9f4b0",
+      "host_site": "src/locale_text_lookup.cpp:LocaleTextResolver::append_key_00a9f4b0",
+      "status": "wired",
+      "reach": "static",
+      "coverage": "existing complete normal-path sweepB2 body; original EH limitation unchanged",
+      "reason": "The existing substring logic replaces all three host substr operations over the actual resolved output, marker and close positions. Raw entry delegates to the same typed implementation; five-call adapter uses the existing native resize/copy bodies and explicit CRT storage.",
+      "additional_native_call_sites": [
+        "00a9f859",
+        "00a9f876"
+      ],
+      "host_path": "GameStartupHost::run_initialize_phases -> device overlay -> GameFrontendHost::draw_bridge -> Impl::build_quads -> append_text_quads -> GameTextHost::build_run -> GameGuiTextBinding::resolve_localised -> LocaleTextResolver::resolve -> append_key_list_00a9fad0 -> append_key_00a9f4b0. No disabled constexpr gate. Substitution requires actual #...# text; no mission count supplied, so static reach only.",
+      "contract": "ECX source, output/position/count stack args, RET 0Ch at 00770F2E/00770F53; _wcsncpy cleanup ADD ESP,0Ch at 00770EDF. Input header +0 length DWORD, +4 UTF-16 backing pointer; source length/data come from the live resolved output. Temporary/result are allocated at the body resize/copy sites, then released in the same explicit CRT storage domain.",
+      "off_unchanged": "The entire prior substitution block is retained byte for byte in the else arm; no new adapter/scratch is constructed on the active OFF host path."
+    },
+    {
+      "native": "007717a0",
+      "host_site": "src/cc13_sweepB2.cpp:session_host_refresh_scene_007717a0 callback",
+      "status": "skipped",
+      "reason": "HostRefreshScene is reached from network peer queues/receive dispatch, neither implemented over active host state. Its scene/peer-online producer is missing.",
+      "reach": "static",
+      "function": "00776230",
+      "address": "007762cf"
+    },
+    {
+      "native": "007727a0",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost::run_end_scene_004d7970",
+      "status": "skipped",
+      "reason": "BroadcastEndScene requires a real primary transport, peer list and peer metadata, then a flush. The local result host owns only scalar session mode; the network transport producer is unavailable.",
+      "reach": "static",
+      "function": "004d7970",
+      "address": "004d7a78"
+    },
+    {
+      "native": "00777850",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "No incoming native message queue, peer registry or receive-dispatch Host implementation is produced by the active local pump. Wiring a dispatcher with synthetic packets/state would not count.",
+      "reach": "static",
+      "function": "00778450",
+      "address": "00778528"
+    },
+    {
+      "native": "00779e20",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::apply_pending_entity_creates_0077ec20",
+      "status": "skipped",
+      "reason": "The host explicitly models no deferred network creates at F871A8 and has no native pending-create list/net-ID tables. Resolving an invented pending create would not use host state.",
+      "reach": "static",
+      "function": "0077ec20",
+      "address": "0077edce"
+    },
+    {
+      "native": "00779f90",
+      "host_site": "src/game_hosts_commands.cpp:local session routing",
+      "status": "skipped",
+      "reason": "The native entity-send-to-host wrapper needs a real network session/secondary transport. The active command router is local delivery and does not send to a host; no small legitimate transport producer exists.",
+      "reach": "static",
+      "function": "0077c2a0",
+      "address": "0077c3b3"
+    },
+    {
+      "native": "00779ff0",
+      "host_site": "src/game_hosts_commands.cpp:local session routing",
+      "status": "skipped",
+      "reason": "The local routing projection never needs the privileged predicate. No SessionMessageDispatchHost::message_is_privileged implementation or native routed-message type view exists; injecting one into local routing would add a call the image local arm does not make.",
+      "reach": "static",
+      "function": "0077c2a0",
+      "address": "0077c344"
+    },
+    {
+      "native": "0077cc80",
+      "host_site": "src/game_hosts_gunnery.cpp:kill attribution; src/game_hosts_mission_frame.cpp:hit warning projection",
+      "status": "skipped",
+      "reason": "Host attribution/hit events carry semantic attacker fields, not the native observer reference at +14/+18 or its register/unregister pair lists. The missing observer owner cannot be replaced by an attacker ID.",
+      "reach": "static",
+      "function": "0077ce60",
+      "address": "0077cf84"
+    },
+    {
+      "native": "0077ccc0",
+      "host_site": "src/cc13_small2.cpp:entity_set_gui_name_0077d3f0 callback",
+      "status": "skipped",
+      "reason": "The reconstructed setter has an unimplemented msg_setguiname_construct_0077ccc0 callback. No active host setter owns the native outgoing GUI-name message/string-by-value lifetime, so constructing an unused message would not count.",
+      "reach": "static",
+      "function": "0077d3f0",
+      "address": "0077d4bb"
+    },
+    {
+      "native": "00781430",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "The active result collector discards stack results; it owns no LuaVariant key-map sink. The other caller is network MultiScore sync, which has no active peer/table producer. A detached NetTableKey would be unused.",
+      "reach": "static",
+      "function": "00782020",
+      "address": "007823a3"
+    },
+    {
+      "native": "007814e0",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::collect_results",
+      "status": "skipped",
+      "reason": "Same missing native LuaVariant key-map result sink as 00781430. The active collector only pops results; the network MultiScore caller also lacks a peer producer.",
+      "reach": "static",
+      "function": "00782020",
+      "address": "00782382"
+    },
+    {
+      "native": "00782870",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "StepCurrent needs an actual host/client dispatch table and peer list. Active local flush exits before transport stepping; no admitted A42280/A41130 transport is constructed.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "0077006f"
+    },
+    {
+      "native": "007828c0",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost::run_teardown_arm_004e458a",
+      "status": "skipped",
+      "reason": "The native state-request client-disconnect branch needs the client transport and virtual +48 disconnect owner. Active local teardown has no client transport; building just a state word would bypass the missing disconnect.",
+      "reach": "static",
+      "function": "004e4430",
+      "address": "004e49dc"
+    },
+    {
+      "native": "007839d0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding",
+      "status": "skipped",
+      "reason": "SessionTarget constructor requires real network peer/XLive session info and lifetime ownership. Active server creation is a labelled no-peer scalar behind kSkirmishSessionCc13Bound=false; neither network target producer is available.",
+      "reach": "static",
+      "function": "00773120",
+      "address": "0077322f"
+    },
+    {
+      "native": "007844e0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding",
+      "status": "skipped",
+      "reason": "No active host constructs the native MNetwork object or its allocator/list/stream owners. Wiring its destructor without that paired lifetime is invalid.",
+      "reach": "static",
+      "function": "00a41360",
+      "address": "00a413ac"
+    },
+    {
+      "native": "00784b10",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "KickPeer needs the real transport peer-removal queue and locks. No network transport or queue is produced by the active local host.",
+      "reach": "static",
+      "function": "0076c790",
+      "address": "0076c7a0"
+    },
+    {
+      "native": "00784c40",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "Timeout sweep needs native peers and timer samples. No such native peer/timer owner exists in the local pump; the reconstructed network kick callback is unimplemented.",
+      "reach": "static",
+      "function": "00776230",
+      "address": "00776393"
+    },
+    {
+      "native": "00784cd0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "ConsumeSinglePeerFlag requires the actual transport peer sentinel/count and peer +1A flag. Local flush exits before this network branch and owns no such list.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "007700b7"
+    },
+    {
+      "native": "007850e0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "Server-silence check requires the client peer and clock samples, absent in the local session pump. The existing client-check callback has no active host implementation.",
+      "reach": "static",
+      "function": "00776230",
+      "address": "007763ac"
+    },
+    {
+      "native": "00785cc0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::pump_session_00778450",
+      "status": "skipped",
+      "reason": "MergePendingHosts needs actual locked client pending-host lists and their network producers. The local pump owns no client transport or pending-host queue.",
+      "reach": "static",
+      "function": "00778450",
+      "address": "0077851a"
+    },
+    {
+      "native": "00785f90",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "The only native call is in network outbound flush. The local-mode early-out prevents reaching it, and PeerRows has no active host constructor/reset producer.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "0077000c"
+    },
+    {
+      "native": "00785fc0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "The only native call is in network outbound flush. Local mode exits before the probe branch; the only host peer-row reset is a record inside kSkirmishSessionCc13Bound=false.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "0077001f"
+    },
+    {
+      "native": "007864e0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding",
+      "status": "skipped",
+      "reason": "OnPeerAdded needs the actual network peer and initialized PeerRows. The active host creates neither; its only reset_peer_rows_007868c0 is a record behind kSkirmishSessionCc13Bound=false.",
+      "reach": "static",
+      "function": "00774ab0",
+      "address": "00774b1d"
+    },
+    {
+      "native": "007866b0",
+      "host_site": "src/game_hosts_fixed_step.cpp:GameFixedStepHost::flush_outbound_session_0076ffc0",
+      "status": "skipped",
+      "reason": "The network-only outbound update needs initialized PeerRows and its probe/send host. Active local flush exits before it; the peer-row reset/send producers are missing.",
+      "reach": "static",
+      "function": "0076ffc0",
+      "address": "0077002f"
+    },
+    {
+      "native": "00786be0",
+      "host_site": "src/game_hosts_mission.cpp:SkirmishSessionModeBinding",
+      "status": "skipped",
+      "reason": "OnPeerRemoved requires a registered peer and the initialized PeerRows reset contract. Neither exists in the active host; creating a row table solely to remove an invented peer would not count.",
+      "reach": "static",
+      "function": "00772ec0",
+      "address": "00772eee"
+    }
+  ]
+}
