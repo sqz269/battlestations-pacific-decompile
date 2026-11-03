@@ -38,6 +38,8 @@
 #include "bsp/wire_goal2_chain42_switches.hpp"
 #include "bsp/wire_goal2_chain75_switches.hpp"
 #include "bsp/wire_goal2_chain158_switches.hpp"
+#include "bsp/wire_goal2_chain165_switches.hpp"
+#include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
 #include "bsp/director_geommesh_seg38_39_argon.hpp"  // 00721030
 #include "bsp/cc13_sweepB.hpp"                       // 005457C0 typed view (chain 75)
 #include <algorithm>
@@ -49,6 +51,7 @@
 #include <cstring>
 #include <deque>
 #include <functional>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -3802,9 +3805,63 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // which is what start modes 5 and 6 give anyway and what every USN04 call
     // asks for (the eight sites pass three arguments, so the start mode is the
     // 008A3734 default 5).
-    bsp::ship_ai_path_cursor_start_007b1c50(director.path_cursor,
-        director.path_follow_mode, director.path_start_mode, joined,
-        /*random_forward=*/true);
+    if constexpr (bsp::kWireGoal2Chain165Bound) {
+        // 007B1D30 at 0071F86F (both arms of 0071F600 jump there): the thunk unpacks the
+        // director's pair into 007B1C50; the OFF arm keeps ship_ai_path_cursor_start_007b1c50.
+        namespace pm = bsp::path_movcam_seg46_argon;
+        // The source 007B22A0 (authored path) or 007B2250 (user points) builds for the
+        // cursor. Its slot +10h is 007B11F0, whose answer is `joined` above: 007B11F0's
+        // direction is 007B1C50's forward byte, which the projection above took as
+        // start mode != 8, and the start-mode-7 draw below keeps forward, so the two
+        // agree. 007B1C50 reads slot +10h only, for start modes 5, 7 and 8.
+        struct BuiltPathSource final : pm::PathSourceBase {
+            const std::vector<std::array<float, 3>>& pts;
+            int joined_index;
+            BuiltPathSource(const std::vector<std::array<float, 3>>& p, int j)
+                : pts(p), joined_index(j) {}
+            pm::Vec3 get_point_vslot08(int index) override {
+                const std::array<float, 3>& p = pts[static_cast<std::size_t>(index)];
+                return {p[0], p[1], p[2]};
+            }
+            int point_count_vslot0c() override { return static_cast<int>(pts.size()); }
+            int start_index_for_pos_vslot10(const pm::Vec3&, float, bool) override {
+                return joined_index;
+            }
+        } source(points, joined);
+        struct DirectorCursorBinding final : pm::PathCursorHost {
+            pm::Vec3 cursor_get_point_vslot04(const pm::PathCursorState&, int) override {
+                throw std::logic_error("007B1C50 does not reach the cursor's vtable[4]");
+            }
+            void cursor_set_index_vslot08(pm::PathCursorState&, int) override {
+                throw std::logic_error("007B1C50 does not reach the cursor's vtable[8]");
+            }
+            // SUBSTITUTION, the OFF arm's random_forward = true: 00BD2F10 draws from
+            // the thread's random state, which this host does not keep. The range's
+            // top is strictly above 00CE3800's 0.5, so start mode 7 keeps forward.
+            float uniform_float_00bd2f10(int, float, float high) override { return high; }
+        } cursor_host;
+        // The director's cursor (+1A4h)+10h. This host keeps no source between builds,
+        // so the old-source release (007B1C72..007B1C8A) has nothing to drop.
+        pm::PathCursorState cursor;
+        cursor.source_04 = nullptr;
+        cursor.index_08 = director.path_cursor.index_08;
+        cursor.follow_mode_0c = director.path_cursor.follow_mode_0c;
+        cursor.forward_10 = director.path_cursor.forward_10;
+        // The pair at command+8h (0071C1B0's stores), or {1, 5} on the user arm.
+        const int pair[2] = {director.path_follow_mode, director.path_start_mode};
+        // entity+FCh and entity vtable[50h]'s radius only reach slot +10h, which
+        // answers `joined` (computed from this x and z) and never reads them.
+        const pm::Vec3 position{unit_x, 0.0f, unit_z};
+        pm::entity_command_path_cursor_start_thunk_007b1d30(cursor, &source, position, 0.0f,
+            pair, cursor_host);
+        director.path_cursor.index_08 = cursor.index_08;
+        director.path_cursor.follow_mode_0c = cursor.follow_mode_0c;
+        director.path_cursor.forward_10 = cursor.forward_10;
+    } else {
+        bsp::ship_ai_path_cursor_start_007b1c50(director.path_cursor,
+            director.path_follow_mode, director.path_start_mode, joined,
+            /*random_forward=*/true);
+    }
     director.path_start_index = director.path_cursor.index_08;
     director.path_visited.push_back(director.path_cursor.index_08);
     host.done("WeaponDirector::path_build_0071f600", 0x0071f600u);
