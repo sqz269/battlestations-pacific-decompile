@@ -447,6 +447,36 @@ void net_path_register_in_world_lists_007b3370(Seg47Host& host, Raw entity);
 void net_path_unregister_from_world_lists_007b33a0(Seg47Host& host, Raw entity);
 void net_path_destruct_007b3400(Seg47Host& host, Raw entity);
 void point3_ptr_array_add_point_007b34b0(Seg47Host& host, Raw array, const float* point);
+
+// Writable lanes and identity of a point allocated by the owning array.
+// References allow both native float storage and the host's Vec3 storage
+// without interpreting either owner's container as the other's layout.
+struct WritablePoint3View {
+    float& x;
+    float& y;
+    float& z;
+    void* identity;
+};
+
+struct Point3PtrArrayAddHost {
+    virtual ~Point3PtrArrayAddHost() = default;
+    virtual WritablePoint3View point_array_vcall_new_point_20() = 0;
+    virtual void ptr_vector_push_back_007b3190(void* point_identity) = 0;
+};
+
+// 007B34B0's shared typed overload; the raw entry above is a wrapper.
+// Allocation precedes the three sequential reads/stores, then the resulting
+// point identity is appended. In particular, source/destination alias order
+// is unchanged. Original ECX=array, stack point, RET 4.
+inline void point3_ptr_array_add_point_007b34b0(Point3PtrArrayAddHost& host,
+                                             const float* point) {
+    WritablePoint3View node = host.point_array_vcall_new_point_20();
+    node.x = point[0];
+    node.y = point[1];
+    node.z = point[2];
+    host.ptr_vector_push_back_007b3190(node.identity);
+}
+
 void camera_path_load_path_points_007b3730(Seg47Host& host, Raw component, void* holder);
 void scene_path_entity_load_holder_properties_007b38d0(Seg47Host& host, Raw entity);
 void entity_path_activate_load_points_007b3920(Seg47Host& host, Raw entity);
