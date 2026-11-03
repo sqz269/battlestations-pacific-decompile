@@ -683,16 +683,11 @@ void tmpl_owned_ptr_delete_reset_006d7140(
 
 // 006d74b0 | BSP_MarkerClasses_ResetLuaTable
 // Original ABI: __cdecl(void) -> void, RET.
-void marker_classes_reset_lua_table_006d74b0(Seg31_32Host& host) {
-  Raw app = raw_from_u32(host.global_u32(0x00e188a8u));
-  Raw lua_holder = raw_from_ptr(app.ptr(0x1a08));
-  void* lua_machine = lua_holder.ptr(0x04);
-  host.lua_machine_run_string_006b8ad0(
-      lua_machine,
-      static_cast<const char*>(host.image_address(0x00cf8f54u)),
-      nullptr,
-      nullptr,
-      2);
+// 006D74B0..006D74CE: 006B8AD0("MarkerClasses=nil\n" at 00CF8F54, 0, 0, 2) on the
+// machine [[00E188A8]+1A08h]+4, which the MissionLuaRunString implementer owns (the
+// text is the image's bytes at 00CF8F54).
+void marker_classes_reset_lua_table_006d74b0(MissionLuaRunString& lua) {
+  lua.run_string_006b8ad0("MarkerClasses=nil\n", kClassTableResetRunMode);
 }
 
 // 006d74d0 | BSP_MarkerInstance_Destruct

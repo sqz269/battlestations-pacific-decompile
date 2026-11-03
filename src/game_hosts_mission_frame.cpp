@@ -79,6 +79,12 @@
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
+#include "bsp/wire_goal4_chain264_switches.hpp"   // the class-table resets after luaPrecacheUnits
+#include "bsp/mission_lua_class_table_resets.hpp"
+#include "bsp/classes_seg8_cc13.hpp"
+#include "bsp/scene_class_registry.hpp"
+#include "bsp/airfield_marker_seg31_32_argon.hpp"
+#include "bsp/cc13_seg53.hpp"
 #include "bsp/warning_string_seg64_argon.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -153,6 +159,71 @@ constexpr unsigned long long kMaxExitFrames = 8;
 
 void format_address(std::uint32_t value, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(value));
+}
+
+// Goal 4 chain 264 (kWireGoal4Chain264Bound). 006B8AD0 on the mission machine
+// [[00E188A8]+1A08h]+4, which in this process is the GameMissionLuaHost's state:
+// an inline strlen (006B8AE0..006B8AE7), then 006B89F0(text, length, text, sink,
+// error, mode) (006B8AE9..006B8AFD), so the text is also the chunk name. The resets
+// push null sinks, so nothing is captured; bsp::run_lua_chunk is the host's
+// reconstruction of 006B89F0 over the machine's MissionLuaHostServices (load, pcall,
+// restore the top). A failed load or run is counted, as 006B89F0 only reports it.
+class MissionLuaResetRunner final : public bsp::MissionLuaRunString {
+public:
+    explicit MissionLuaResetRunner(GameMissionLuaHost& lua) : lua_(lua) {}
+    void run_string_006b8ad0(const char* text, int mode) override {
+        const bsp::LuaChunkResult result = bsp::run_lua_chunk(lua_, text,
+            static_cast<int>(std::strlen(text)), text, false, false, mode);
+        if (result.status == bsp::LuaChunkStatus::Ok) {
+            ++ran_;
+        } else {
+            ++failed_;
+        }
+    }
+    std::size_t ran() const noexcept { return ran_; }
+    std::size_t failed() const noexcept { return failed_; }
+
+private:
+    GameMissionLuaHost& lua_;
+    std::size_t ran_{0};
+    std::size_t failed_{0};
+};
+
+// The class-table resets after luaPrecacheUnits and the VehicleClass purge
+// (0095CA70, which the caller already runs as its census purge): BSP_Game_LoadMissionScene
+// 004E0AA0..004E0ACD and BSP_EngineMovie_Stop 0045F6C6..0045F6F8, the same calls in
+// the same order (the movie stop adds 004708A0, a bare RET, at 0045F6E9). Each table
+// is defined again by Scripts/datatables/autoload on the next scene load (the
+// global script folders run in the global_subsystems step).
+//
+// Run here: the seven whose tables nothing in this process reads after this point.
+// The reconstructed readers of those tables (the segment 8 wreck, soldier and plane
+// part class loaders, the BuoyClass and CloudClass registries of
+// scene_class_registry.cpp, the MarkerClasses loader and the effect-name index of
+// gameplay_effect_name_index.cpp) are not linked into this executable (checked with
+// tools/call_graph.py), and no host file names these tables. The image runs the same
+// resets at the same point, so a script that read one of them afterwards would find
+// nil there too.
+//
+// Not run, recorded by the caller: 004423A0 (DeviceClass), 006E9C50 (Bullets, which
+// also rebuilds the bullet class cache) and 0084EB60 (StationaryClass).
+// game_hosts_lua.cpp reads DeviceClass, Bullets and StationaryClass straight from Lua
+// while the mission runs, where the image reads its class caches, so clearing
+// those three would starve live host readers.
+void run_class_table_resets_cc264(GameMissionLuaHost& lua, GameHostLog& log, const char* site) {
+    MissionLuaResetRunner run(lua);
+    bsp::classes_seg8_cc13::wreck_class_clear_lua_global_004b1890(run);          // 004E0AAF / 0045F6D5
+    bsp::classes_seg8_cc13::soldier_class_clear_lua_global_004af930(run);        // 004E0AB4 / 0045F6DA
+    bsp::reset_buoy_class_table_00474200(run);                                   // 004E0AB9 / 0045F6DF
+    bsp::reset_cloud_class_table_00476410(run);                                  // 004E0ABE / 0045F6E4
+    bsp::classes_seg8_cc13::plane_part_class_clear_lua_global_004a7120(run);     // 004E0AC3 / 0045F6EE
+    bsp::airfield_marker_seg31_32_argon::marker_classes_reset_lua_table_006d74b0(run);  // 004E0AC8 / 0045F6F3
+    bsp::cc13_seg53::effects_clear_lua_table_00869d20(run);                      // 004E0ACD / 0045F6F8
+    log.implemented("MissionLua::class_table_resets", "004b1890");
+    log.notef("class-table resets at %s: WreckClass SoldierClass BuoyClass CloudClass "
+        "PlanePartClass MarkerClasses Effects = nil, %zu ran, %zu failed (DeviceClass, "
+        "Bullets and StationaryClass kept for the host's lazy readers; kWireGoal4Chain264Bound)",
+        site, run.ran(), run.failed());
 }
 
 }  // namespace
@@ -2720,7 +2791,16 @@ public:
                 owner_.lua.census_vehicle_class_purge_0095ca70("0045F6C1",
                     bsp::game::kVehicleClassMovieStopPurgeCc15Bound);
             }
+            if constexpr (bsp::kWireGoal4Chain264Bound) {
+                // 0045F6C6..0045F6F8: the seven resets with no live host reader run;
+                // the three the host still reads lazily stay records.
+                run_class_table_resets_cc264(owner_.lua, owner_.log, "0045F6C6");
+                owner_.record("EngineMovieStop::device_class_reset", 0x0045f6c6u);
+                owner_.record("EngineMovieStop::bullet_classes_reload", 0x0045f6cbu);
+                owner_.record("EngineMovieStop::stationary_class_reset", 0x0045f6d0u);
+            } else {
             owner_.record("EngineMovieStop::class_table_resets", 0x0045f6dfu);
+            }
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
             owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
@@ -4440,6 +4520,16 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
                 // 004E0A9B, the first of the eleven calls after luaPrecacheUnits.
                 host.lua.census_vehicle_class_purge_0095ca70("004E0A9B", true);
+            }
+            if constexpr (bsp::kWireGoal4Chain264Bound) {
+                // 004E0AA0..004E0ACD, the other ten, before luaStageInitMulti: the
+                // seven with no live host reader run; the three the host still reads
+                // lazily stay records. (The step table's precache_units row names the
+                // same calls but sits after luaStageInit; it stays a record.)
+                run_class_table_resets_cc264(host.lua, host.log, "004E0AA0");
+                host.record("MissionSceneLoad::device_class_reset", 0x004e0aa0u);
+                host.record("MissionSceneLoad::bullet_classes_reload", 0x004e0aa5u);
+                host.record("MissionSceneLoad::stationary_class_reset", 0x004e0aaau);
             }
             host.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             ++host.load.concrete;
