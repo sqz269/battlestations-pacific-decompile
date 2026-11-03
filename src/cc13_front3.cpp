@@ -159,7 +159,7 @@ void cc13_front3_gun_bot_clear_fire_target_0072bd50(void* bot, Cc13Front3Host& h
 // (the last call is a tail JMP). Body 00729F70-00729F96: slot +154h(0, 8),
 // slot +1E8h(0), then 00728000(ECX = gun), which clears the five bots' fire
 // targets.
-void cc13_front3_gun_release_player_control_00729f70(void* gun, Cc13Front3Host& host) {
+void cc13_front3_gun_release_player_control_00729f70(void* gun, GunPlayerControlReleaseHost& host) {
     host.vcall_154(gun, 0, 8);                                               // 00729F7F
     host.vcall_1e8(gun, 0);                                                  // 00729F8D
     host.gun_clear_bot_fire_target_00728000(gun);                            // 00729F92
