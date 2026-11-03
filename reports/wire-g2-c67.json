@@ -26,6 +26,19 @@
   "pc24_lint": "0 findings (origin/main...HEAD)",
   "wired_before": 8822,
   "wired_after": 8830,
+  "ran_in_usn04": [
+    "0x0059bbd0",
+    "0x007c4830",
+    "0x007d7a40",
+    "0x0085dea0"
+  ],
+  "static_reach": [
+    "0x00604a20",
+    "0x006049f0",
+    "0x007b5be0",
+    "0x0099bb00"
+  ],
+  "review_round_1": "run 147: report-only fixes applied (0099bb00 static reach, 006049f0 and 007b5be0 static reach with gates and consumers named); no code change",
   "pair": {
     "mission": "USN04",
     "off_log": "local/g2-w1-off_USN04.log",
@@ -61,7 +74,7 @@
       "host_site": "src/game_hosts_units.cpp motion_step_00825f20 core law run_core_law_007db680 wire band (kCarrierDeckParentBound ON)",
       "status": "wired",
       "reached": 0,
-      "note": "typed overload (contact +BF8h, owner +BF4h); needs a landed plane with wire > epsilon, and USN04 had no carrier landing (carrier landing leads=0)"
+      "note": "static reach: gates read: kPlaneDeathModesBound ON on the motion_step_00825f20 plane arm, the core law ground arm, kCarrierDeckParentBound ON; then the runtime tests plane_landed_904 (+904h) set and wire > kPlaneGroundLiftOffEpsilon. USN04 had no carrier landing (carrier landing leads=0), so it did not run. Typed overload (contact +BF8h, owner +BF4h)"
     },
     {
       "native": "0x007b5be0",
@@ -70,7 +83,7 @@
       "host_site": "src/game_hosts_units.cpp GameUnitsHost::Impl::goaway_target_extent_007b5be0 (dive/torpedo/level goaway enters, all three extent switches ON)",
       "status": "wired",
       "reached": 0,
-      "note": "typed overload over the gunnery row ranges +434h/+444h/+448h; USN04 had no goaway enter (0 of 16 torpedo, 0 of 19 dive releases)"
+      "note": "static reach: goaway_target_extent_007b5be0 is called through goaway_target_term from the torpedo goaway enter (009D0DF2), the level bomb goaway enter (009B56DF) and the dive bomb goaway enter (009C49B4); its result feeds gameplay through kTorpGoawayTargetExtentCc13Bound, kLevelGoawayTargetExtentCc13Bound and kDiveGoawayTargetExtentCc13Bound, all true (cc13_torp_goaway.hpp:102-104). USN04 had no goaway enter (0 of 16 torpedo, 0 of 19 dive releases). Typed overload over the gunnery row ranges +434h/+444h/+448h"
     },
     {
       "native": "0x007c4830",
@@ -106,7 +119,7 @@
       "host_site": "src/game_hosts_units.cpp terrain_shape_band_0099cab0 from terrain_avoidance_0099f1c0 (kPlaneYawGainBc4Bound ON)",
       "status": "wired",
       "reached": 0,
-      "note": "typed overload over unit+BC4h (plane_yaw_gain_bc4); the log counts raises only (0 in both runs), not latch calls"
+      "note": "static reach: 0 latch calls in USN04; the first call on any unit raises (+BC4h starts at 1.0, v >= 1.0 on the m > 0.4 arm), and raises=0 in both runs. Gates read: kPilotAvoidanceUpdateBound, kPilotTerrainAvoidanceBound, kPc24PlaneTasksCc13Bound and kPlaneYawGainBc4Bound all ON; then the runtime pass != 1 and m > 0.4 tests. Typed overload over unit+BC4h (plane_yaw_gain_bc4)"
     },
     {
       "native": "0x007d99c0",
