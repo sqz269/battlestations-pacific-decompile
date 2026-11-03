@@ -47,7 +47,19 @@ inline constexpr std::size_t kAwardMapOffset = 0x70;            // record: strin
 inline constexpr std::size_t kAwardMapHeadOffset = 0x74;        // that map's head (end) node
 inline constexpr std::size_t kSessionMessageSize = 0x18C;       // [ESP+24h]..[ESP+1B0h) in 0090EDE0
 
-struct Seg59aHost {
+// Only the two providers used by 0090BFC0. A typed field view lets a host retain
+// the real eight-byte name without manufacturing the rest of the raw manager.
+struct ScoringFunctionNameHost {
+    virtual ~ScoringFunctionNameHost() = default;
+    virtual void native_string_resize_0041dd40(NativeStr* s, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) = 0;
+};
+
+struct ScoringFunctionNameView {
+    NativeStr& field_147c;
+};
+
+struct Seg59aHost : ScoringFunctionNameHost {
     virtual ~Seg59aHost() = default;
 
     // --- globals ---
@@ -146,6 +158,8 @@ void score_record_set_condition_message_0090bda0(Seg59aHost& host, void* record,
 void score_record_set_victory_message_0090be30(Seg59aHost& host, void* record, NativeStr text);
 void score_record_set_message_264_0090bec0(Seg59aHost& host, void* record, NativeStr text);
 void scoring_set_final_function_name_0090bfc0(Seg59aHost& host, void* scoring, const NativeStr* name);
+void scoring_set_final_function_name_0090bfc0(ScoringFunctionNameHost& host,
+    ScoringFunctionNameView scoring, const NativeStr* name);
 
 // --- rewards point formulas (main thread, x87 24-bit precision control assumed) ---
 std::int32_t scoring_map_usage_points_009064d0(void* scoring, float seconds);

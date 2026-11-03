@@ -71,6 +71,7 @@ namespace bsp::game {
 
 class GameUnitsHost;
 class GameHostLog;
+class GameMissionResultHost;
 
 // The plane-squadron member write-back, as a free function so that a caller
 // which holds no scripts-orders host can drive it. It fills the registry's
@@ -748,6 +749,10 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
     ~GameScriptOrdersHost();
+    void attach_scoring_name_owner(GameMissionResultHost* owner) noexcept {
+        scoring_name_owner_ = owner;
+    }
+    void set_final_scoring_function_name(const std::string& name);
     // Packet cc13-reconload, log-only: the scene load's recon publication entry
     // count (dry run when OFF), for the end-of-run summary line; also marks
     // that the scene-load block ran.
@@ -1306,6 +1311,9 @@ private:
     bool in_think_walk_{false};
     std::vector<std::uint32_t> think_erase_after_walk_{};
     float mission_clock_{0.0f};     // 00F876A4, advanced by the caller's step
+    // Borrow the frame's scoring owner; frame creates it before the Lua dispatch
+    // and destroys script orders first. Only chain127 ON publishes this borrow.
+    GameMissionResultHost* scoring_name_owner_{nullptr};
     bool measure_imperial_{false};  // 00F88988, untouched by this process
     // The stream 00BD2ED0 hands 00BD2F10. This process has no thread-local random
     // state object, so the sequence is this generator's and not the game's; a run

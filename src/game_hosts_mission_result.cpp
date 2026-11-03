@@ -43,6 +43,8 @@
 #include "bsp/movie_subtitles.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/session_context_cc13.hpp"
+#include "bsp/cc13_seg59a.hpp"
+#include "bsp/wire_goal2_chain127_switches.hpp"
 
 #include <cstdio>
 #include <cstring>
@@ -311,13 +313,49 @@ struct GameMissionResultHost::CompletionBridge final : public bsp::GameMovieComp
 // GameMissionResultHost
 // ---------------------------------------------------------------------------
 
+struct GameMissionResultHost::FinalScoringName final : bsp::cc13_seg59a::ScoringFunctionNameHost {
+    // The producer is 0091D640's two zero stores at 0091D706/0091D70C.
+    // This is the actual field storage, not a copied raw manager image.
+    bsp::cc13_seg59a::NativeStr value{};
+    static_assert(sizeof(bsp::cc13_seg59a::NativeStr) == 8);
+    static_assert(offsetof(bsp::cc13_seg59a::NativeStr, length) == 0);
+    static_assert(offsetof(bsp::cc13_seg59a::NativeStr, data) == 4);
+
+    ~FinalScoringName() override {
+        bsp::destroy_native_string_header_0041dd20(&value, bsp::crt_string_storage());
+    }
+    void native_string_resize_0041dd40(bsp::cc13_seg59a::NativeStr* field,
+        std::uint32_t length, std::int32_t preserve) override {
+        bsp::resize_native_string_header_0041dd40(field, bsp::crt_string_storage(), length,
+            preserve != 0);
+    }
+    void memcpy_00bf7680(void* dst, const void* src, std::uint32_t size) override {
+        std::memcpy(dst, src, size);
+    }
+};
+
 GameMissionResultHost::GameMissionResultHost(GameHostLog& log,
     bsp::GameFrameControlState& control, GameVfsHost& vfs, const bsp::LocaleTables& locale)
     : log_(log), control_(control),
       movie_bridge_(std::make_unique<MovieBridge>(log, vfs, locale)),
-      completion_bridge_(std::make_unique<CompletionBridge>(log, control)) {}
+      completion_bridge_(std::make_unique<CompletionBridge>(log, control)) {
+    if constexpr (bsp::kWireGoal2Chain127Bound) {
+        final_scoring_name_ = std::make_unique<FinalScoringName>();
+    }
+}
 
 GameMissionResultHost::~GameMissionResultHost() = default;
+
+void GameMissionResultHost::set_final_scoring_function_name(const std::string& name) {
+    // 0090BFC0 assigns the Lua-produced name; OFF keeps the former empty setter.
+    if constexpr (bsp::kWireGoal2Chain127Bound) {
+        const bsp::cc13_seg59a::NativeStr input{
+            static_cast<std::uint32_t>(name.size()), const_cast<char*>(name.data())};
+        bsp::cc13_seg59a::scoring_set_final_function_name_0090bfc0(*final_scoring_name_,
+            bsp::cc13_seg59a::ScoringFunctionNameView{final_scoring_name_->value}, &input);
+    } else {
+    }
+}
 
 void GameMissionResultHost::record(const char* method, std::uint32_t address) {
     char text[16];
