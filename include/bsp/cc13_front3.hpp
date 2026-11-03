@@ -23,7 +23,38 @@ inline T& cc13_front3_at(void* base, std::size_t offset) {
     return *reinterpret_cast<T*>(static_cast<std::uint8_t*>(base) + offset);
 }
 
-class Cc13Front3Host {
+// The twelve callbacks consumed by 007B34F0. Keeping this subset separate
+// lets a property-bag path owner implement its actual contract.
+class ScenePathSourceHost {
+public:
+    virtual ~ScenePathSourceHost() = default;
+    // Path object slot +8h(const float* xyz): appends one point (007B34F0).
+    virtual void vcall_08_append_point(void* path, const float* xyz) = 0;
+    // 008F2260 BSP_ScenePropertyBag_Find, __thiscall(ECX = bag; const char* key), RET 4, EAX = entry.
+    virtual void* scene_property_bag_find_008f2260(void* bag, const char* key) = 0;
+    // 00415870 STL_Vector_Size_00415870, __thiscall(ECX = path), EAX = point count.
+    virtual std::int32_t vector_size_00415870(void* path) = 0;
+    // 004F9A80 BSP_FormatString128, __cdecl(char* dst, const char* fmt, ...).
+    virtual void format_string128_004f9a80(char* dst, const char* fmt, std::int32_t value) = 0;
+    // 00BF6713 (the CRT invalid-parameter report behind the checked vector index).
+    virtual void crt_invalid_parameter_00bf6713() = 0;
+    // 009238A0 SEntity_GetSavedEntityLuaData, __thiscall(ECX = entity; out 14h LuaObject), RET 4.
+    virtual void saved_entity_lua_data_009238a0(void* entity, void* out_lua_object) = 0;
+    // 004425C0 BSP_LuaReader_Construct, __thiscall(ECX = 14h reader; LuaObject by value), RET 14h.
+    virtual void lua_reader_construct_004425c0(void* reader, void* lua_object_by_value) = 0;
+    // 00BD8E20 BSP_LuaReader_EnterKey, __thiscall(ECX = reader; 8-byte {tag, text} by value), RET 8.
+    virtual void lua_reader_enter_key_00bd8e20(void* reader, std::uint32_t tag, const char* text) = 0;
+    // 00BD7A20 BSP_LuaReader_LeaveKeyThunk, __thiscall(ECX = reader).
+    virtual void lua_reader_leave_key_00bd7a20(void* reader) = 0;
+    // 00441A20 BSP_LuaReader_DestroyStackInstance, __thiscall(ECX = reader).
+    virtual void lua_reader_destroy_00441a20(void* reader) = 0;
+    // Path slot +18h(reader*): loads the path from a saved-entity reader.
+    virtual void vcall_18_load_from_reader(void* path, void* reader) = 0;
+    // 007AF150 BSP_CameraPath_DeriveKnots, __fastcall(ECX = path).
+    virtual void camera_path_derive_knots_007af150(void* path) = 0;
+};
+
+class Cc13Front3Host : public ScenePathSourceHost {
 public:
     virtual ~Cc13Front3Host() = default;
 
@@ -68,8 +99,6 @@ public:
     virtual void vcall_1cc(void* gun, void* message) = 0;
     // Gun slot +1DCh() (opcode ADh, the fire-if-ready slot).
     virtual void vcall_1dc(void* gun) = 0;
-    // Path object slot +8h(const float* xyz): appends one point (007B34F0).
-    virtual void vcall_08_append_point(void* path, const float* xyz) = 0;
 
     // ---- segment 3 / gun helpers ----
     // 00442A30 gun_records_resize, __thiscall(ECX = record array; count), RET 4.
@@ -122,30 +151,6 @@ public:
     // __thiscall(ECX = [game+21A0h]; plane, kind), RET 8.
     virtual void achievement_record_0090f6c0(void* recorder, void* plane, std::int32_t kind) = 0;
 
-    // ---- scene paths (007B34F0) ----
-    // 008F2260 BSP_ScenePropertyBag_Find, __thiscall(ECX = bag; const char* key), RET 4, EAX = entry.
-    virtual void* scene_property_bag_find_008f2260(void* bag, const char* key) = 0;
-    // 00415870 STL_Vector_Size_00415870, __thiscall(ECX = path), EAX = point count.
-    virtual std::int32_t vector_size_00415870(void* path) = 0;
-    // 004F9A80 BSP_FormatString128, __cdecl(char* dst, const char* fmt, ...).
-    virtual void format_string128_004f9a80(char* dst, const char* fmt, std::int32_t value) = 0;
-    // 00BF6713 (the CRT invalid-parameter report behind the checked vector index).
-    virtual void crt_invalid_parameter_00bf6713() = 0;
-    // 009238A0 SEntity_GetSavedEntityLuaData, __thiscall(ECX = entity; out 14h LuaObject), RET 4.
-    virtual void saved_entity_lua_data_009238a0(void* entity, void* out_lua_object) = 0;
-    // 004425C0 BSP_LuaReader_Construct, __thiscall(ECX = 14h reader; LuaObject by value), RET 14h.
-    virtual void lua_reader_construct_004425c0(void* reader, void* lua_object_by_value) = 0;
-    // 00BD8E20 BSP_LuaReader_EnterKey, __thiscall(ECX = reader; 8-byte {tag, text} by value), RET 8.
-    virtual void lua_reader_enter_key_00bd8e20(void* reader, std::uint32_t tag, const char* text) = 0;
-    // 00BD7A20 BSP_LuaReader_LeaveKeyThunk, __thiscall(ECX = reader).
-    virtual void lua_reader_leave_key_00bd7a20(void* reader) = 0;
-    // 00441A20 BSP_LuaReader_DestroyStackInstance, __thiscall(ECX = reader).
-    virtual void lua_reader_destroy_00441a20(void* reader) = 0;
-    // Path slot +18h(reader*): loads the path from a saved-entity reader.
-    virtual void vcall_18_load_from_reader(void* path, void* reader) = 0;
-    // 007AF150 BSP_CameraPath_DeriveKnots, __fastcall(ECX = path).
-    virtual void camera_path_derive_knots_007af150(void* path) = 0;
-
     // ---- plane flight controller (007DC830) ----
     // The float at an address of the Dynamics tuning mirror 00F872F0..00F873FC
     // (zero-filled .data past the raw size; filled at run time from Dynamics/*,
@@ -180,6 +185,68 @@ void cc13_front3_gun_release_player_control_00729f70(void* gun, Cc13Front3Host& 
 
 // Segment 47 (planes and scene paths).
 void cc13_front3_scene_path_load_source_holder_007b34f0(void* path, void* holder, Cc13Front3Host& host);
+// Typed view of the existing 007B34F0 body, shared with the raw wrapper.
+// View accessors name the native offset and width: holder +04 i32/+08 ptr;
+// property +04 i32/+0C ptr,u32,XYZ; path +14 ptr/+18 u8/+20 u32;
+// kind-2 object +114/+118 pointer range. No field is seeded by this view.
+template <class View>
+void cc13_front3_scene_path_load_source_holder_007b34f0(
+    View& view, ScenePathSourceHost& host) {
+    void* const path = view.path();
+    void* const holder = view.holder();
+    if (holder != nullptr) {                                                 // 007B351C
+        const std::int32_t kind = view.holder_kind_04(holder);
+        if (kind == 1) {
+            void* bag = view.holder_object_08(holder);
+            void* group = host.scene_property_bag_find_008f2260(bag, "Group");   // 007B3536
+            view.path_group_20(path) = group == nullptr ? 0u : view.property_word_0c(group);
+            void* points = host.scene_property_bag_find_008f2260(view.holder_object_08(holder), "PathPoints");  // 007B3552
+            void* table = view.property_object_0c(points);
+            char name[0x80];
+            host.format_string128_004f9a80(name, "Point%002i", host.vector_size_00415870(path));  // 007B355C-007B356C
+            void* entry = host.scene_property_bag_find_008f2260(table, name);    // 007B357B
+            while (entry != nullptr && view.property_is_block_04(entry)) {        // 007B3580-007B3593
+                void* pos = host.scene_property_bag_find_008f2260(view.property_object_0c(entry), "Pos");  // 007B35A3
+                float xyz[3] = {view.property_position_0c(pos, 0), view.property_position_0c(pos, 1), view.property_position_0c(pos, 2)};
+                host.vcall_08_append_point(path, xyz);                           // 007B35D8
+                host.format_string128_004f9a80(name, "Point%002i", host.vector_size_00415870(path));  // 007B35DC-007B35EC
+                entry = host.scene_property_bag_find_008f2260(table, name);      // 007B35FB
+            }
+        } else if constexpr (View::kNativeAlternateSources) {
+            if (kind == 2) {
+                void* object = view.holder_object_08(holder);
+                auto count = [&]() {
+                    const std::int32_t bytes = static_cast<std::int32_t>(
+                        view.object_end_118(object) - view.object_begin_114(object));
+                    return static_cast<std::uint32_t>(bytes / 12);
+                };
+                for (std::uint32_t i = 0;; ++i) {
+                    if (view.object_begin_114(object) == 0 || i >= count()) {     // 007B3620-007B3648
+                        break;
+                    }
+                    if (view.object_begin_114(object) == 0 || i >= count()) {     // 007B364E-007B3672
+                        host.crt_invalid_parameter_00bf6713();                       // 007B3674
+                    }
+                    host.vcall_08_append_point(path, reinterpret_cast<const float*>(
+                        static_cast<std::uint8_t*>(view.object_points_114(object)) + 12u * i));  // 007B3689
+                }
+            } else if (kind == 3) {
+                alignas(4) std::uint8_t lua_object[0x14];
+                host.saved_entity_lua_data_009238a0(view.path_entity_14(path), lua_object);  // 007B36A5
+                alignas(4) std::uint8_t reader[0x14];
+                host.lua_reader_construct_004425c0(reader, lua_object);              // 007B36AE
+                host.lua_reader_enter_key_00bd8e20(reader, 0, "_pathBaseEntity");    // 007B36D0
+                host.vcall_18_load_from_reader(path, reader);                        // 007B36E1
+                host.lua_reader_leave_key_00bd7a20(reader);                          // 007B36E7
+                host.lua_reader_destroy_00441a20(reader);                            // 007B36FB
+            }
+        }
+    }
+    if (view.path_built_18(path) == 0) {                                 // 007B3700
+        host.camera_path_derive_knots_007af150(path);                        // 007B3708
+    }
+}
+
 void cc13_front3_plane_notify_flight_state_007c11e0(void* plane, bool immediate, Cc13Front3Host& host);
 void cc13_front3_plane_on_water_contact_007cb7f0(void* plane, Cc13Front3Host& host);
 

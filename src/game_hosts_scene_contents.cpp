@@ -3,6 +3,11 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
+#include "bsp/wire_goal2_chain81_switches.hpp"
+#include "bsp/cc13_front3.hpp"
+#include "bsp/camera_path_sampler.hpp"
+#include "bsp/mission_camera.hpp"
+#include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/terrain_particles_cc13.hpp"
 #include "bsp/game_hosts_avoid_zones.hpp"
 
@@ -62,6 +67,7 @@ extern "C" {
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <deque>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -69,6 +75,21 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
+
+struct ScenePathSourceState {
+    path_movcam_seg46_argon::PathComponentState component;
+    std::deque<path_movcam_seg46_argon::Vec3> point_storage;
+    std::vector<CameraPathKnotWords> knots;
+    CameraPathKnotTotals totals;
+};
+
+// 007B28C0 constructs the Path's component before 007B390C loads its source.
+// The native component dies with the scene entity. Like scene_path_registry,
+// this ON-only table is cleared for the next scene and at host destruction.
+std::map<std::size_t, std::unique_ptr<ScenePathSourceState>>& scene_path_sources() {
+    static std::map<std::size_t, std::unique_ptr<ScenePathSourceState>> states;
+    return states;
+}
 
 // Packet cc15-bg1: the SceneBrowserGroups block (00469E40, called at 0046EBD3)
 // is parsed by scene_traffic_groups.cpp's body instead of being only recorded.
@@ -578,6 +599,139 @@ void retain_land_convoy_roster(const ScenePropertyBlock& bag, GameSceneEntityRec
                 record.convoy_slot_symbols[static_cast<std::size_t>(position - 1)] = symbol;
             }
         }
+    }
+}
+
+// Adapts a scene-file property-bag source and its Path component to 007B34F0.
+// 007B38D0 passes the entity's kind-1 holder at 007B390C. The merged bag is
+// already produced by 0046CF40; the adapter never creates authored values.
+class ScenePathSourceAdapter final : public ScenePathSourceHost {
+public:
+    // This view represents the source produced by the scene-file property
+    // reader. Raw views retain object-point and saved-Lua sources as well.
+    static constexpr bool kNativeAlternateSources = false;
+    ScenePathSourceAdapter(const ScenePropertyBlock& bag, const PropertyLibrary& library,
+        GameSceneEntityRecord& record, ScenePathSourceState& state)
+        : bag_(bag), library_(library), record_(record), state_(state) {}
+
+    void* path() { return &state_; }
+    void* holder() { return this; }
+    std::int32_t holder_kind_04(void*) const { return 1; } // property-bag holder's native tag
+    void* holder_object_08(void*) { return const_cast<ScenePropertyBlock*>(&bag_); }
+    std::uint32_t& path_group_20(void*) { return state_.component.extra_20; }
+    bool property_is_block_04(void* p) const { return entry(p).block != nullptr; }
+    void* property_object_0c(void* p) const {
+        if (entry(p).block == nullptr) throw std::runtime_error("path source property is not a block");
+        return const_cast<ScenePropertyBlock*>(entry(p).block);
+    }
+    std::uint32_t property_word_0c(void* p) const {
+        const SceneProperty* prop = entry(p).scalar;
+        if (prop == nullptr) throw std::runtime_error("path Group is not a scalar");
+        if (prop->has_integer) return static_cast<std::uint32_t>(prop->integer_value);
+        std::int32_t value = 0;
+        if (prop->type_letter == "I" && !prop->values.empty()
+            && scene_scan_int(prop->values.back(), value)) return static_cast<std::uint32_t>(value);
+        const SceneEnumProperty e = scene_enum_property(bag_, prop->key);
+        int resolved = 0;
+        if (e.present && library_.resolve_symbol(e.table, e.symbol, resolved))
+            return static_cast<std::uint32_t>(resolved);
+        throw std::runtime_error("path Group has no readable integer payload");
+    }
+    float property_position_0c(void* p, std::size_t lane) const {
+        const SceneProperty* prop = entry(p).scalar;
+        if (prop != nullptr && prop->has_vector3) return prop->vector3.at(lane);
+        // Same legacy typed-bag conversion as retain_path_points; normal parsed
+        // V3 fields have already been converted by the scene property parser.
+        float value = 0.0f;
+        if (prop != nullptr && prop->type_letter == "V3" && prop->values.size() == 3
+            && scene_scan_float(prop->values.at(lane), value)) return value;
+        throw std::runtime_error("path Pos is not a readable V3");
+    }
+    void* path_entity_14(void*) { return &record_; }
+    std::uint8_t path_built_18(void*) const {
+        return static_cast<std::uint8_t>(state_.component.knots_dirty_18);
+    }
+
+    void* scene_property_bag_find_008f2260(void* actual_bag, const char* key) override {
+        if (actual_bag == nullptr) throw std::runtime_error("path source has no property block");
+        const auto& bag = *static_cast<const ScenePropertyBlock*>(actual_bag);
+        if (const SceneProperty* prop = bag.find(key)) {
+            entries_.push_back({prop, nullptr});
+            return &entries_.back();
+        }
+        for (const auto& block : bag.blocks) {
+            if (equal_insensitive(block.first, key)) {
+                entries_.push_back({nullptr, &block.second});
+                return &entries_.back();
+            }
+        }
+        return nullptr;
+    }
+    std::int32_t vector_size_00415870(void*) override {
+        return static_cast<std::int32_t>(state_.component.points_08.size());
+    }
+    void format_string128_004f9a80(char* dst, const char* fmt, std::int32_t value) override {
+        std::snprintf(dst, 0x80, fmt, value); // 007B3571/007B35F1: ADD ESP,0Ch
+    }
+    void vcall_08_append_point(void*, const float* xyz) override {
+        // 00D053D8[08h] = 00480890 clears +18h, then 007B34B0 allocates
+        // the point, copies these XYZ lanes, and appends its pointer.
+        state_.component.knots_dirty_18 = false;
+        state_.point_storage.push_back({xyz[0], xyz[1], xyz[2]});
+        state_.component.points_08.push_back(&state_.point_storage.back());
+    }
+    void camera_path_derive_knots_007af150(void*) override {
+        state_.knots.reserve(state_.component.points_08.size());
+        for (const auto* point : state_.component.points_08)
+            state_.knots.push_back({point->x, point->y, point->z});
+        state_.totals = derive_camera_path_knots_007af150(state_.knots, kWorldUp00f8758c);
+        state_.component.cached_length_1c = state_.totals.running_1c;
+        state_.component.knots_dirty_18 = state_.totals.built_18;
+    }
+    void crt_invalid_parameter_00bf6713() override { unsupported(); }
+    void saved_entity_lua_data_009238a0(void*, void*) override { unsupported(); }
+    void lua_reader_construct_004425c0(void*, void*) override { unsupported(); }
+    void lua_reader_enter_key_00bd8e20(void*, std::uint32_t, const char*) override { unsupported(); }
+    void lua_reader_leave_key_00bd7a20(void*) override { unsupported(); }
+    void lua_reader_destroy_00441a20(void*) override { unsupported(); }
+    void vcall_18_load_from_reader(void*, void*) override { unsupported(); }
+
+private:
+    struct Entry { const SceneProperty* scalar; const ScenePropertyBlock* block; };
+    static const Entry& entry(void* p) {
+        if (p == nullptr) throw std::runtime_error("required path source property absent");
+        return *static_cast<Entry*>(p);
+    }
+    [[noreturn]] static void unsupported() {
+        throw std::logic_error("scene-file Path owner only produces property-bag sources");
+    }
+    const ScenePropertyBlock& bag_;
+    const PropertyLibrary& library_;
+    GameSceneEntityRecord& record_;
+    ScenePathSourceState& state_;
+    std::deque<Entry> entries_;
+};
+
+void load_scene_path_source(const ScenePropertyBlock& bag, const PropertyLibrary& library,
+    GameSceneEntityRecord& record, GameHostLog& log) {
+    auto& owned = scene_path_sources()[record.scene_id];
+    owned = std::make_unique<ScenePathSourceState>();
+    ScenePathSourceState& state = *owned;
+    // 007B28C0 supplies every component field's initial value. The typed
+    // constructor's entity token is the host's stable scene identity.
+    path_movcam_seg46_argon::path_component_construct_007b28c0(
+        state.component, static_cast<std::uint32_t>(record.scene_id));
+    ScenePathSourceAdapter adapter(bag, library, record, state);
+    try {
+        cc13_front3_scene_path_load_source_holder_007b34f0(adapter, adapter);
+        for (const auto* point : state.component.points_08)
+            record.path_points_local.push_back({point->x, point->y, point->z});
+        record.path_points_retained = true;
+        log.implemented("ScenePath::load_source_holder", "007b34f0");
+    } catch (const std::runtime_error& error) {
+        // Keep the existing host's malformed-source policy: no invented points.
+        record.path_points_error = error.what();
+        record.path_points_local.clear();
     }
 }
 
@@ -2838,7 +2992,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     std::copy(authored_parent.world.begin(), authored_parent.world.end(), record.parent_world);
     if (klass->class_id == 0x1a) retain_land_convoy_roster(bag, record, owner.library);
     if (klass->class_id == 0x47) {
+        // 007B34F0 loads the authored Path source; OFF keeps the retention loop.
+        if constexpr (kWireGoal2Chain81Bound) {
+            load_scene_path_source(bag, owner.library, record, owner.log);
+        } else {
         retain_path_points(bag, record);
+        }
         owner.log.notef("scene path retained: id=%zu parent=%zu name=%s points=%zu "
             "valid=%d creator_concrete=0", record.scene_id, record.parent_scene_id,
             record.name.c_str(), record.path_points_local.size(), record.path_points_retained);
@@ -4025,6 +4184,9 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameSceneContentsHost::~GameSceneContentsHost() {
+    if constexpr (kWireGoal2Chain81Bound) {
+        scene_path_sources().clear();
+    }
     if (g_live_scene_contents == this) g_live_scene_contents = nullptr;
 }
 
@@ -6104,6 +6266,9 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.mode_areas = {};
     // Same reason again: the authored Path entities belong to this scene.
     scene_path_registry().clear();
+    if constexpr (kWireGoal2Chain81Bound) {
+        scene_path_sources().clear();
+    }
     scene_world_class_lists().clear();
     scene_director_enables_clear();
     // Same reason as the pool above: the squadron table belongs to the scene

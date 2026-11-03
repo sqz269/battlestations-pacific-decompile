@@ -167,6 +167,28 @@ void cc13_front3_gun_release_player_control_00729f70(void* gun, Cc13Front3Host& 
 
 // ---------------------------------------------------------------- segment 47
 
+namespace {
+struct RawScenePathSourceView {
+    static constexpr bool kNativeAlternateSources = true;
+    void* path_storage;
+    void* holder_storage;
+    void* path() const { return path_storage; }
+    void* holder() const { return holder_storage; }
+    std::int32_t holder_kind_04(void* p) const { return at<std::int32_t>(p, 4); }
+    void* holder_object_08(void* p) const { return at<void*>(p, 8); }
+    std::uint32_t& path_group_20(void* p) const { return at<std::uint32_t>(p, 0x20); }
+    std::uint32_t property_word_0c(void* p) const { return at<std::uint32_t>(p, 0xc); }
+    void* property_object_0c(void* p) const { return at<void*>(p, 0xc); }
+    bool property_is_block_04(void* p) const { return at<std::int32_t>(p, 4) == 6; }
+    float property_position_0c(void* p, std::size_t lane) const { return at<float>(p, 0xc + 4 * lane); }
+    std::uint32_t object_end_118(void* p) const { return at<std::uint32_t>(p, 0x118); }
+    std::uint32_t object_begin_114(void* p) const { return at<std::uint32_t>(p, 0x114); }
+    void* object_points_114(void* p) const { return at<void*>(p, 0x114); }
+    void* path_entity_14(void* p) const { return at<void*>(p, 0x14); }
+    std::uint8_t path_built_18(void* p) const { return at<std::uint8_t>(p, 0x18); }
+};
+} // namespace
+
 // 007B34F0 BSP_ScenePath_LoadSourceHolder, __thiscall(ECX = path; holder),
 // RET 4. Body 007B34F0-007B3725 (EH frame 00C8BFAB; 0A4h bytes of locals: the
 // point at ESP+14h, the 14h Lua reader at ESP+20h, the 80h name buffer at
@@ -188,55 +210,8 @@ void cc13_front3_gun_release_player_control_00729f70(void* gun, Cc13Front3Host& 
 // The Find results are dereferenced without null tests where the image has
 // none ("PathPoints", "Pos").
 void cc13_front3_scene_path_load_source_holder_007b34f0(void* path, void* holder, Cc13Front3Host& host) {
-    if (holder != nullptr) {                                                 // 007B351C
-        const std::int32_t kind = at<std::int32_t>(holder, 4);
-        if (kind == 1) {
-            void* bag = at<void*>(holder, 8);
-            void* group = host.scene_property_bag_find_008f2260(bag, "Group");   // 007B3536
-            at<std::uint32_t>(path, 0x20) = group == nullptr ? 0u : at<std::uint32_t>(group, 0x0C);
-            void* points = host.scene_property_bag_find_008f2260(at<void*>(holder, 8), "PathPoints");  // 007B3552
-            void* table = at<void*>(points, 0x0C);
-            char name[0x80];
-            host.format_string128_004f9a80(name, "Point%002i", host.vector_size_00415870(path));  // 007B355C-007B356C
-            void* entry = host.scene_property_bag_find_008f2260(table, name);    // 007B357B
-            while (entry != nullptr && at<std::int32_t>(entry, 4) == 6) {        // 007B3580-007B3593
-                void* pos = host.scene_property_bag_find_008f2260(at<void*>(entry, 0x0C), "Pos");  // 007B35A3
-                float xyz[3] = {at<float>(pos, 0x0C), at<float>(pos, 0x10), at<float>(pos, 0x14)};
-                host.vcall_08_append_point(path, xyz);                           // 007B35D8
-                host.format_string128_004f9a80(name, "Point%002i", host.vector_size_00415870(path));  // 007B35DC-007B35EC
-                entry = host.scene_property_bag_find_008f2260(table, name);      // 007B35FB
-            }
-        } else if (kind == 2) {
-            void* object = at<void*>(holder, 8);
-            auto count = [&]() {
-                const std::int32_t bytes = static_cast<std::int32_t>(
-                    at<std::uint32_t>(object, 0x118) - at<std::uint32_t>(object, 0x114));
-                return static_cast<std::uint32_t>(bytes / 12);
-            };
-            for (std::uint32_t i = 0;; ++i) {
-                if (at<std::uint32_t>(object, 0x114) == 0 || i >= count()) {     // 007B3620-007B3648
-                    break;
-                }
-                if (at<std::uint32_t>(object, 0x114) == 0 || i >= count()) {     // 007B364E-007B3672
-                    host.crt_invalid_parameter_00bf6713();                       // 007B3674
-                }
-                host.vcall_08_append_point(path, reinterpret_cast<const float*>(
-                    static_cast<std::uint8_t*>(at<void*>(object, 0x114)) + 12u * i));  // 007B3689
-            }
-        } else if (kind == 3) {
-            alignas(4) std::uint8_t lua_object[0x14];
-            host.saved_entity_lua_data_009238a0(at<void*>(path, 0x14), lua_object);  // 007B36A5
-            alignas(4) std::uint8_t reader[0x14];
-            host.lua_reader_construct_004425c0(reader, lua_object);              // 007B36AE
-            host.lua_reader_enter_key_00bd8e20(reader, 0, "_pathBaseEntity");    // 007B36D0
-            host.vcall_18_load_from_reader(path, reader);                        // 007B36E1
-            host.lua_reader_leave_key_00bd7a20(reader);                          // 007B36E7
-            host.lua_reader_destroy_00441a20(reader);                            // 007B36FB
-        }
-    }
-    if (at<std::uint8_t>(path, 0x18) == 0) {                                 // 007B3700
-        host.camera_path_derive_knots_007af150(path);                        // 007B3708
-    }
+    RawScenePathSourceView view{path, holder};
+    cc13_front3_scene_path_load_source_holder_007b34f0(view, host);
 }
 
 // 007C11E0 BSP_Plane_NotifyFlightState, __thiscall(ECX = plane; byte
