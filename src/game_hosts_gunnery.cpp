@@ -40,6 +40,7 @@
 #include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain262_switches.hpp"
+#include "bsp/wire_goal4_chain266_switches.hpp"
 #include "bsp/cc13_seg53.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
@@ -10864,6 +10865,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++summary.trigger_rises;
         }
 
+        bool sent = [&] {
+        if constexpr (bsp::kWireGoal4Chain266Bound) {
+            if (turning == kTurningClassRapid || turning == kTurningClassSingle) {
+                // 0084C5D4 owns the one base tick on this path. Both its base
+                // and its untargeted extra ADh reach FireRequestBinding, then
+                // the existing FireIfReady consumer below. That consumer
+                // coalesces same-step attempts as before (barrel-delay gate).
+                const auto sync = bsp::gameplay_seg52_cc13::
+                    turning_gun_extra_fire_request_0084c5b0(gun.fire, fire_host,
+                        immediate_fire_by_gun[g].immediate_4d4, dt);
+                if (sync.extra_message_sent) {
+                    if (!sync.base_message_sent) ++immediate_extra_sends;
+                    done("Gun::rapid_turning_tick_0084c5b0", 0x0084c5b0u);
+                }
+                done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
+                return sync.base_message_sent || sync.extra_message_sent;
+            } else {
+                const bool base_sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
+                done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
+                return base_sent;
+            }
+        } else {
         bool sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
         done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
         if (turning == kTurningClassRapid || turning == kTurningClassSingle) {
@@ -10876,6 +10899,9 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 done("Gun::rapid_turning_tick_0084c5b0", 0x0084c5b0u);
             }
         }
+        return sent;
+        }
+        }();
         if (kGunWaveOrderBound) {
             // 006FE0D0: after 0084C5B0's send, before the pump's FireIfReady.
             mst_salvo_test();
@@ -10929,11 +10955,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++summary.can_fire_refusals;
             continue;
         }
+        if constexpr (bsp::kWireGoal4Chain266Bound) {
+            if (kTurningGunFireClearsRequestBound && can_fire && sent
+                && (turning == kTurningClassRapid || turning == kTurningClassSingle)) {
+                bool& request = immediate_fire_by_gun[g].immediate_4d4;
+                const bool was_requested = request;
+                // 00727E30 returns CanFire's answer after calling Gun_Fire;
+                // 0084C4EC clears the actual latch only on that true answer.
+                // Forced 008A7200 calls bypass this wrapper, as before.
+                const bool fire_if_ready_accepted = bsp::gameplay_seg52_cc13::
+                    turning_gun_fire_if_ready_0084c4e0(can_fire, request);
+                if (fire_if_ready_accepted && was_requested) {
+                    ++immediate_fire_clears;
+                }
+                done("Gun::turning_fire_if_ready_0084c4e0", 0x0084c4e0u);
+            }
+        } else {
         if (kTurningGunFireClearsRequestBound && can_fire && sent
             && (turning == kTurningClassRapid || turning == kTurningClassSingle)
             && immediate_fire_by_gun[g].immediate_4d4) {
             immediate_fire_by_gun[g].immediate_4d4 = false;   // 0084C4EC
             ++immediate_fire_clears;
+        }
         }
 
         if constexpr (bsp::kGunDestroyedFailureCc13Bound) {

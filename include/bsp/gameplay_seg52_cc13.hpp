@@ -53,6 +53,8 @@
 #include <vector>
 
 namespace bsp {
+struct GunFireRequestState;
+struct GunFireRequestHost;
 namespace gameplay_seg52_cc13 {
 
 struct Vec3f {
@@ -174,11 +176,17 @@ bool turning_gun_fire_if_ready_0084c4e0(bool fired, bool& request_4d4) noexcept;
 // 0084C5B0, slot 8 of the +310h sub-object, __thiscall(gun+310h, float dt), RET 4.
 // Runs 0072D130 (the host's tick) and then, if +4D4h is still set (0084C5DB reads
 // it through the sub-object as +1C4h), builds message 0ADh (vtable 00CF9628) and
-// routes it on the gun with (msg, 1, 0) (0084C625). Answers whether that extra
-// 0ADh is sent. `request_4d4_after_tick` is +4D4h after 0072D130 returns: when
-// the routed 0ADh of 0072D130 is delivered at once, its 0084C4E0 may already have
-// cleared the request.
-bool turning_gun_extra_fire_request_0084c5b0(bool request_4d4_after_tick) noexcept;
+// routes it on the gun with (msg, 1, 0) (0084C625). The two sends are distinct;
+// the extra message has target id zero and bypasses the base tick's gates.
+// Borrow the live +4D4h flag: synchronous base-message delivery can clear it
+// through 0084C4E0 before the read at 0084C5DB. New C++ ABI, not an image thunk.
+struct TurningGunFireSyncResult {
+    bool base_message_sent;
+    bool extra_message_sent;
+};
+TurningGunFireSyncResult turning_gun_extra_fire_request_0084c5b0(
+    GunFireRequestState& state, GunFireRequestHost& host,
+    const bool& request_4d4, float dt);
 
 // ---------------------------------------------------------------------------
 // Weapon director.
