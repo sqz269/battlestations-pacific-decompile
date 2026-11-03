@@ -1373,42 +1373,71 @@ void node_ref_release(Seg53Host& host, Object* handle) {
 //    the doubles [00CE3D28] = pi, [00CE3828] = 2pi, [00CE3D18] = -pi.
 //  * 007F60A0(ECX = platform; horz = -0.0f - *yaw (SUBSS), vert = *pitch).
 // ---------------------------------------------------------------------------
-bool gun_target_in_fire_window_0085a9a0(Seg53Host& host, Object gun, Object target,
+namespace {
+class RawGunTargetFireWindow final : public GunTargetFireWindowHost {
+public:
+    RawGunTargetFireWindow(Seg53Host& host, Object gun, Object target)
+        : host_(host), gun_(gun), target_(target) {
+        Object array = field<Object>(field<Object>(gun, 0x3F0), 0x538) + 0x94;
+        const std::int32_t index = field<std::int32_t>(gun, 0x38C);
+        if (index >= field<std::int32_t>(array, 0x4)) {
+            host_.ref_counted_pointer_array_resize_005471b0(array, index + 1);
+        }
+        // 0085A9DD keeps the slot address, then reads its pointer at 0085AB23.
+        platform_slot_ = field<Object*>(array, 0x0) + index;
+    }
+    void mount_position(float out[3]) override {
+        Object mount = field<Object>(gun_, 0x3CC);
+        if ((field<std::uint8_t>(mount, 0x5C) & 2) == 0) {
+            host_.transform_refresh_world_matrix_00b6db70(mount);
+        }
+        for (int i = 0; i < 3; ++i) out[i] = field<float>(mount, 0x120 + i * 4);
+    }
+    void target_position(float out[3]) override {
+        if (field<std::uint8_t>(target_, 0xC8) == 0) {
+            host_.entity_pose_refresh_world_00414db0(target_);
+        }
+        for (int i = 0; i < 3; ++i) out[i] = field<float>(target_, 0xFC + i * 4);
+    }
+    void transform_direction_to_local(float direction[3]) override {
+        Object pose = field<Object>(gun_, 0x3C);
+        if (field<std::uint8_t>(pose, 0x10C) == 0) {
+            host_.entity_pose_refresh_world_00414db0(pose);
+            field<std::uint8_t>(pose, 0x10C) = 1;
+            host_.matrix_build_affine_inverse_00b63d50(pose + 0x110, pose + 0xCC);
+        }
+        float d[3];
+        const float* local = host_.vector3_transform_direction_0042d0d0(d, direction, pose + 0x110, 0);
+        for (int i = 0; i < 3; ++i) direction[i] = local[i];
+    }
+    void normalize_direction_0042b260(float direction[3]) override {
+        host_.geometry_normalize_with_floor_0042b260(direction);
+    }
+    void direction_to_pitch_yaw_00521370(const float direction[3], float* pitch, float* yaw) override {
+        host_.direction_to_pitch_yaw_00521370(direction, pitch, yaw);
+    }
+    bool angles_in_fire_window_007f60a0(float horizontal, float vertical) override {
+        return host_.gun_platform_angles_in_fire_window_007f60a0(*platform_slot_, horizontal, vertical);
+    }
+private:
+    Seg53Host& host_;
+    Object gun_;
+    Object target_;
+    Object* platform_slot_;
+};
+}  // namespace
+
+bool gun_target_in_fire_window_0085a9a0(GunTargetFireWindowHost& host,
                                         float* direction, float* yaw, float* pitch) {
     constexpr double kPi_00ce3d28 = 3.1415927410125732;
     constexpr double kTwoPi_00ce3828 = 6.2831854820251465;
     constexpr double kNegPi_00ce3d18 = -3.1415927410125732;
-    Object array = field<Object>(field<Object>(gun, 0x3F0), 0x538) + 0x94;
-    std::int32_t index = field<std::int32_t>(gun, 0x38C);
-    if (index >= field<std::int32_t>(array, 0x4)) {
-        host.ref_counted_pointer_array_resize_005471b0(array, index + 1);
-    }
-    Object* platform_slot = field<Object*>(array, 0x0) + index;
-    Object mount = field<Object>(gun, 0x3CC);
-    if ((field<std::uint8_t>(mount, 0x5C) & 2) == 0) {
-        host.transform_refresh_world_matrix_00b6db70(mount);
-    }
-    const float position[3] = {field<float>(mount, 0x120), field<float>(mount, 0x124),
-                               field<float>(mount, 0x128)};
-    if (field<std::uint8_t>(target, 0xC8) == 0) {
-        host.entity_pose_refresh_world_00414db0(target);
-    }
-    float d[3] = {field<float>(target, 0xFC) - position[0], field<float>(target, 0x100) - position[1],
-                  field<float>(target, 0x104) - position[2]};
-    direction[0] = d[0];
-    direction[1] = d[1];
-    direction[2] = d[2];
-    Object pose = field<Object>(gun, 0x3C);
-    if (field<std::uint8_t>(pose, 0x10C) == 0) {
-        host.entity_pose_refresh_world_00414db0(pose);
-        field<std::uint8_t>(pose, 0x10C) = 1;
-        host.matrix_build_affine_inverse_00b63d50(pose + 0x110, pose + 0xCC);
-    }
-    const float* local = host.vector3_transform_direction_0042d0d0(d, direction, pose + 0x110, 0);
-    direction[0] = local[0];
-    direction[1] = local[1];
-    direction[2] = local[2];
-    host.geometry_normalize_with_floor_0042b260(direction);
+    float position[3], target[3];
+    host.mount_position(position);
+    host.target_position(target);
+    for (int i = 0; i < 3; ++i) direction[i] = target[i] - position[i];
+    host.transform_direction_to_local(direction);
+    host.normalize_direction_0042b260(direction);
     host.direction_to_pitch_yaw_00521370(direction, pitch, yaw);
     double y = *yaw;
     if (y >= kPi_00ce3d28) {
@@ -1419,7 +1448,13 @@ bool gun_target_in_fire_window_0085a9a0(Seg53Host& host, Object gun, Object targ
         *pitch = static_cast<float>(p + kTwoPi_00ce3828);
     }
     float horz = kNegZero_00d7a208 - *yaw;
-    return host.gun_platform_angles_in_fire_window_007f60a0(*platform_slot, horz, *pitch);
+    return host.angles_in_fire_window_007f60a0(horz, *pitch);
+}
+
+bool gun_target_in_fire_window_0085a9a0(Seg53Host& host, Object gun, Object target,
+                                        float* direction, float* yaw, float* pitch) {
+    RawGunTargetFireWindow binding(host, gun, target);
+    return gun_target_in_fire_window_0085a9a0(binding, direction, yaw, pitch);
 }
 
 namespace {

@@ -7,6 +7,8 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_startup_random.hpp"
 #include "bsp/wire_goal4_chain305_switches.hpp"
+#include "bsp/wire_goal4_chain313_switches.hpp"
+#include "bsp/camera_decomposition.hpp"
 #include "bsp/cc13_seg95.hpp"
 #include "bsp/native_particle_object_state.hpp"
 #include "bsp/native_particle_unit_random.hpp"
@@ -2343,6 +2345,53 @@ struct GunneryDirectionAnglesBinding final : bsp::GunBotAnglesHost {
         *pitch = std::asin(vertical);
         *yaw = std::atan2(direction[0], direction[2]);
     }
+};
+
+// Chain 313: 0085A9A0 consumes the same retained live muzzle, target position,
+// hull basis and authored arcs as the AA acceptance path. The existing hull
+// frame substitution for [gun+3Ch] remains explicit; no native node allocation
+// or binary ABI equivalence is claimed. The body now owns its local-direction
+// normalization and the ordered pi wraps (bsp.py show 0085a9a0 --asm,
+// 0085AA67..0085AB32), instead of the host's normalize-before-transform formula.
+struct GunneryTargetFireWindowBinding final : bsp::cc13_seg53::GunTargetFireWindowHost {
+    GunneryTargetFireWindowBinding(const GameGunRow& gun, const float* muzzle,
+        const float* target, const float* right, const float* up, const float* forward)
+        : gun_(gun), muzzle_(muzzle), target_(target), inverse_frame_{
+            right[0], up[0], forward[0], 0.0f,
+            right[1], up[1], forward[1], 0.0f,
+            right[2], up[2], forward[2], 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f} {}
+    void mount_position(float out[3]) override {
+        std::copy_n(muzzle_, 3, out);
+    }
+    void target_position(float out[3]) override {
+        std::copy_n(target_, 3, out);
+    }
+    void transform_direction_to_local(float direction[3]) override {
+        float local[3];
+        bsp::vector3f_transform_direction_optional_normalize_0042d0d0(
+            local, direction, inverse_frame_, 0);
+        std::copy_n(local, 3, direction);
+    }
+    void normalize_direction_0042b260(float direction[3]) override {
+        std::array<float, 3> local{direction[0], direction[1], direction[2]};
+        bsp::normalize_camera_basis_0042b260(local);
+        std::copy(local.begin(), local.end(), direction);
+    }
+    void direction_to_pitch_yaw_00521370(const float direction[3],
+        float* pitch, float* yaw) override {
+        angles_.direction_to_pitch_yaw_00521370(direction, pitch, yaw);
+    }
+    bool angles_in_fire_window_007f60a0(float horizontal, float vertical) override {
+        return bsp::gun_fire_allowed_007f60a0(
+            {gun_.arcs.data(), gun_.arcs.size()}, horizontal, vertical);
+    }
+private:
+    const GameGunRow& gun_;
+    const float* muzzle_;
+    const float* target_;
+    float inverse_frame_[16];
+    GunneryDirectionAnglesBinding angles_;
 };
 
 // Chain 262: GameGunRow is already the gun's resolved authored platform,
@@ -8243,7 +8292,7 @@ public:
             // the window, the line of fire); kind 1 on a plane the TailGunnerBot
             // (008FBF70) and kinds 5 / 6 the AAFlakBot (slot +394h, 008FBFC0,
             // byte-identical to 008FBF70): the window, then the line of fire.
-            // The window callback is the host's hull-frame 0085A9A0 substitution
+            // The window callback uses the retained hull frame for 0085A9A0
             // and the line of fire the 0072F6E0 cache above. A gun with no
             // direction or no arcs is accepted with neither test, as before.
             namespace s59 = bsp::gameplay_seg40_59_cc13;
@@ -8253,6 +8302,19 @@ public:
                     no_window_frame = true;
                     return true;
                 }
+                if constexpr (bsp::kWireGoal4Chain313Bound) {
+                    GunneryTargetFireWindowBinding binding(
+                        row, muzzle, target_pos, right, up, forward);
+                    float direction[3], yaw, pitch;
+                    const bool allowed = bsp::cc13_seg53::gun_target_in_fire_window_0085a9a0(
+                        binding, direction, &yaw, &pitch);
+                    owner_.done("Gunnery::target_in_fire_window_0085a9a0", 0x0085a9a0u);
+                    if (!allowed) {
+                        last_refusal_ = AaRefusal::window;
+                        ++owner_.aa_window_rejects;
+                    }
+                    return allowed;
+                } else {
                 const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
                 const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));  // 0085AB17
                 const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
@@ -8263,6 +8325,7 @@ public:
                     return false;
                 }
                 return true;
+                }
             };
             auto line_of_fire = [&]() -> bool {
                 if (no_window_frame) return true;

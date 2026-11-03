@@ -1,0 +1,99 @@
+{
+  "chain": 313,
+  "worker": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain313Bound",
+  "rows": [
+    {
+      "native": "0085a9a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::bind_aa_acceptance / fire_window_0085a9a0 callback",
+      "reason": "Live retained muzzle/target positions, hull basis and authored arcs feed the existing body through GunTargetFireWindowHost; old host arithmetic is confined to the switch-off arm."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding / Failure::statistics_00913d80 event",
+      "reason": "Needs the scoring records, attacker player-record and award-counter adapters; this packet does not construct them."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Needs award-table threshold and per-slot damaged-unit/repair-event vector adapters."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate direct-hit notifications",
+      "reason": "Needs real scoring, player attribution and hit-record views before calling the raw scoring body."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0",
+      "reason": "Needs owned recon-entry storage and the sensor-class-index adapter; current triples use unit-index records."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0 carry-over retirement",
+      "reason": "Needs owned native carry-over lists and observer-pair lifetime adapters."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0 group fold",
+      "reason": "Needs group/member recon-entry lists and group detection publication adapter instead of the current vector maximum."
+    },
+    {
+      "native": "00806a60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0 convoy fold",
+      "reason": "Needs convoy entity ownership and stored group recon-entry/detection publication views."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::run_projectiles",
+      "reason": "Needs a BombTickState owner and BombTickHost integration for sweep, expiry, owner grace and kind-specific advance."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::clear_bot_fire_target_00728000",
+      "reason": "Needs per-bot command-target storage and matching observer-pair ownership; current target clearing is gun-row based."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: player gun-seat flak aim-message path",
+      "reason": "Needs the function-id/gun fire-mode adapter for this raw body; not part of the target fire-window packet."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: entity-order and director AI-group forwarding",
+      "reason": "Needs the live AI-group command owner; the entity-order host explicitly supplies no group."
+    }
+  ],
+  "measurement": {
+    "readiness_wired_before": 9311,
+    "readiness_wired_after": 9312,
+    "call_graph_reconstructed_called_before": 4338,
+    "call_graph_reconstructed_called_after": 4339,
+    "target_called": true,
+    "target_call_sites": 1
+  },
+  "validation": {
+    "build": "./scripts/build.ps1: PASS; reconstructed_math and tool_tests (2/2)",
+    "fixture": "local/chain313_probe.exe: PASS; one synthetic case checks rotated direction, normalization, callback order, exact pi wraps and rejection propagation",
+    "call_graph": "python tools/call_graph.py; who/path 0085a9a0: reachable from AA acceptance callback, one call site",
+    "evidence": "bsp.py show 0085a9a0, including assembly 0085A9DD and 0085AAD7..0085AB32"
+  },
+  "limits": [
+    "No game run performed, as assigned.",
+    "Retains current hull-frame and muzzle-offset projection and asin/atan2 provider boundary; no binary-ABI or gameplay parity claim.",
+    "No-direction and empty-arc paths retain their prior short circuit.",
+    "Other candidates were scoped only; their missing adapters were not implemented."
+  ]
+}
