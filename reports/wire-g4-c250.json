@@ -7,7 +7,11 @@
   "switch_header": "include/bsp/wire_goal4_chain250_switches.hpp",
   "files": [
     "src/game_hosts_ai.cpp",
-    "include/bsp/wire_goal4_chain250_switches.hpp"
+    "include/bsp/wire_goal4_chain250_switches.hpp",
+    "src/game_hosts_gunnery.cpp",
+    "src/game_hosts_ship_ai.cpp",
+    "src/cc13_torp_goaway.cpp",
+    "include/bsp/cc13_torp_goaway.hpp"
   ],
   "rows": [
     {
@@ -27,6 +31,48 @@
       "host_site": "src/game_hosts_ai.cpp GameAiCoordinatorHost::Impl::CaptureScoreHost::unit_arrival_value",
       "status": "wired",
       "note": "replaces the second implementation bsp::ai_tail_unit_arrival_value on this path; differs only for a NaN distance (00A037E5 JBE returns the weight)"
+    },
+    {
+      "native": "008fb4c0",
+      "host_site": "src/game_hosts_gunnery.cpp seat_bot_bullet_throw_mul <- GameGunneryHost::Impl::bullet_throw_magnitude_0073031d",
+      "status": "wired",
+      "note": "AAGunnerBot getter on the [00E19998] descriptor 00901610 loaded (copied out by cc13_torp_goaway); replaces the hand-copied robots.lua table at 00730498"
+    },
+    {
+      "native": "008fb4e0",
+      "host_site": "src/game_hosts_gunnery.cpp seat_bot_bullet_throw_mul <- bullet_throw_magnitude_0073031d",
+      "status": "wired",
+      "note": "TailGunnerBot getter on the loaded [00E199A0] descriptor"
+    },
+    {
+      "native": "008fb500",
+      "host_site": "src/game_hosts_gunnery.cpp seat_bot_bullet_throw_mul <- bullet_throw_magnitude_0073031d",
+      "status": "wired",
+      "note": "AAFlakBot getter on the loaded [00E1999C] descriptor"
+    },
+    {
+      "native": "008fb550",
+      "host_site": "src/game_hosts_gunnery.cpp seat_bot_bullet_throw_mul <- bullet_throw_magnitude_0073031d",
+      "status": "wired",
+      "note": "TorpedoBot getter on the loaded [00E1998C] descriptor"
+    },
+    {
+      "native": "008fb570",
+      "host_site": "src/game_hosts_gunnery.cpp seat_bot_bullet_throw_mul <- bullet_throw_magnitude_0073031d",
+      "status": "wired",
+      "note": "DepthChargeBot getter on the loaded [00E19988] descriptor"
+    },
+    {
+      "native": "008fb530",
+      "host_site": "src/game_hosts_ship_ai.cpp torpedo_bot_fire_target_accuracy <- ShipAiTorpedoStandoff::first_torpedo_bot_accuracy_00729f40",
+      "status": "wired",
+      "note": "TorpedoBot FireTargetAccuracy on the loaded descriptor; replaces the hand-copied six values"
+    },
+    {
+      "native": "006dee00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp bullet_throw_magnitude_0073031d (kThrowArtillery seat)",
+      "reason": "the body takes Pool01Host (16 pure virtuals) and a raw bot whose +34h is the level; no ArtillerySubDirectorBot copy is kept yet (cc13_torp_goaway GunBotConfigs could add it) and no Pool01Host adapter exists"
     }
   ]
 }

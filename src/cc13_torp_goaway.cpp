@@ -29,7 +29,19 @@ struct LoadedRows {
     bool attempted{false};
     bool loaded{false};
     std::array<PilotBotParameters, 6> rows{};
+    bool gun_bots_loaded{false};
+    GunBotConfigs gun_bots{};
 };
+
+// Copies one registered descriptor out of the registry before it is released.
+// The levels are what the reader stored; name_08 belongs to the registry.
+template <class Config>
+bool copy_robot_config(const RobotDescriptor* descriptor, Config& out) noexcept {
+    if (descriptor == nullptr) return false;
+    std::memcpy(&out, descriptor, sizeof(Config));
+    out.descriptor.name_08 = nullptr;
+    return true;
+}
 LoadedRows& loaded_rows() noexcept {
     static LoadedRows rows;
     return rows;
@@ -122,6 +134,16 @@ PilotBotLoadResult load_pilot_bot_config_00901610(LuaScriptFiles& files) {
             cache.loaded = true;
             result.loaded = true;
         }
+        // The gun-side bots of the same load ([00E19998], [00E199A0],
+        // [00E1999C], [00E1998C], [00E19988]), kept for their getters.
+        GunBotConfigs& bots = cache.gun_bots;
+        bots.aa_gunner_loaded = copy_robot_config(aa_gunner, bots.aa_gunner);
+        bots.tail_gunner_loaded = copy_robot_config(tail_gunner, bots.tail_gunner);
+        bots.aa_flak_loaded = copy_robot_config(aa_flak, bots.aa_flak);
+        bots.torpedo_loaded = copy_robot_config(torpedo, bots.torpedo);
+        bots.depth_charge_loaded = copy_robot_config(depth_charge, bots.depth_charge);
+        cache.gun_bots_loaded = bots.aa_gunner_loaded || bots.tail_gunner_loaded
+            || bots.aa_flak_loaded || bots.torpedo_loaded || bots.depth_charge_loaded;
     } catch (const std::exception& failure) {
         result.error = failure.what();
     }
@@ -144,6 +166,11 @@ const PilotBotParameters* pilot_bot_row(int index) noexcept {
     const auto* rows = loaded_pilot_bot_rows();
     if (rows == nullptr || index < 0 || index > 5) return nullptr;
     return &(*rows)[static_cast<std::size_t>(index)];
+}
+
+const GunBotConfigs* loaded_gun_bot_configs() noexcept {
+    const LoadedRows& cache = loaded_rows();
+    return cache.gun_bots_loaded ? &cache.gun_bots : nullptr;
 }
 
 }  // namespace bsp::cc13_torp_goaway

@@ -38,6 +38,7 @@
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/wire_goal2_chain181_switches.hpp"
+#include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/gun_destroyed_failure_cc13.hpp"  // packet cc13-gunB
 #include "bsp/gun_subobject_repair_cc13.hpp"   // packet cc13-gunD
@@ -1567,6 +1568,44 @@ constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
     {1.0f, 0.9f, 0.1f, 0.85f, 0.5f, 0.1f},   // ArtillerySubDirectorBot
     {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},    // PilotBot AimBulletThrowMul
 };
+// Goal 4 chain 250: 00730498 FMULs the seat bot's vtable[24h](level), the
+// BulletThrowMul getter of the descriptor 00901610 loaded from Robots.lua.
+// The five gun-side getters run on the copies cc13_torp_goaway keeps
+// (AAGunnerBot 008FB4C0, TailGunnerBot 008FB4E0, AAFlakBot 008FB500,
+// TorpedoBot 008FB550, DepthChargeBot 008FB570); nullopt when that descriptor
+// was not loaded, and for the artillery (006DEE00) and pilot (00999610) seats,
+// which keep the table above.
+std::optional<float> seat_bot_bullet_throw_mul(int seat, int level) noexcept {
+    namespace s59 = bsp::gameplay_seg40_59_cc13;
+    const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+        bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+    if (bots == nullptr || level < 0 || level > 5) return std::nullopt;
+    switch (seat) {
+    case kThrowAaGunner:
+        if (bots->aa_gunner_loaded)
+            return s59::aa_gunner_bot_bullet_throw_mul_008fb4c0(bots->aa_gunner, level);
+        break;
+    case kThrowTailGunner:
+        if (bots->tail_gunner_loaded)
+            return s59::tail_gunner_bot_bullet_throw_mul_008fb4e0(bots->tail_gunner, level);
+        break;
+    case kThrowAaFlak:
+        if (bots->aa_flak_loaded)
+            return s59::aa_flak_bot_bullet_throw_mul_008fb500(bots->aa_flak, level);
+        break;
+    case kThrowTorpedo:
+        if (bots->torpedo_loaded)
+            return s59::torpedo_bot_bullet_throw_mul_008fb550(bots->torpedo, level);
+        break;
+    case kThrowDepthCharge:
+        if (bots->depth_charge_loaded)
+            return s59::depth_charge_bot_bullet_throw_mul_008fb570(bots->depth_charge, level);
+        break;
+    default:
+        break;
+    }
+    return std::nullopt;
+}
 // Packet cc9_aa_lethality_audit (docs/AA_LETHALITY_AUDIT.md section 7). The AA
 // bots' own aim errors, which the host had left out as "exact at SPVeteran";
 // a unit no script re-skills stays at unit+390h = 1 (0095CCCC), SPNormal.
@@ -5174,7 +5213,14 @@ struct GameGunneryHost::Impl {
             }
         }
         if (seat >= 0) {
-            magnitude *= kBulletThrowMul[seat][level];                // 00730498 FMUL
+            if constexpr (kWireGoal4Chain250Bound) {
+                // The seat bot's getter on the loaded Robots.lua row; the
+                // table where no getter is hosted or nothing was loaded.
+                const std::optional<float> mul = seat_bot_bullet_throw_mul(seat, level);
+                magnitude *= mul ? *mul : kBulletThrowMul[seat][level];  // 00730498 FMUL
+            } else {
+                magnitude *= kBulletThrowMul[seat][level];                // 00730498 FMUL
+            }
             seat_out = seat;
         }
         return magnitude;
