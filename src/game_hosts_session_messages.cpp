@@ -5,6 +5,8 @@
 #include "bsp/camera_position_modes.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstring>
@@ -56,15 +58,46 @@ struct HostSessionMessages::Image {
                                          &plus_one_00d7a24c};
     NativeSessionMessage90To93Context context{&session, target, &position_scale_00cf9360};
     NativeSessionMessage92Profile profile92{context};
+    // Goal 4 chain 260: the kind 5Ah profile (vtable 00CFD9C4).
+    NativeSessionMessage90Profile profile90{context};
+    // Goal 4 chain 260: the 5Dh profile (vtable 00CFD9D8).
+    NativeSessionMessage93Profile profile93{context};
     NativeSessionMessage88Profile profile88{target};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
     // The only table these bodies store here.
+    // Goal 4 chain 260: the 76h, 77h and 9Fh tables, five slots each read from
+    // the PE (scalar delete, write, read, IsType, 004499C0 always true):
+    // 00D02D30 0075CA20 0075C7C0 0075C810 0075A310; 00D02D44 0075CA40 0075C860
+    // 0075C8B0 0075A360; 00D03360 00760BF0 00760AE0 00760B30 00760AB0.
     struct Seg42Vtables final : seg42::VtableBinding {
         std::uint32_t slots_00d032d0[4]{0x007605f0u, 0x0075fff0u, 0x007600d0u, 0x0075ffd0u};
+        std::uint32_t slots_00d02d30[5]{0x0075ca20u, 0x0075c7c0u, 0x0075c810u, 0x0075a310u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d02d44[5]{0x0075ca40u, 0x0075c860u, 0x0075c8b0u, 0x0075a360u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d03360[5]{0x00760bf0u, 0x00760ae0u, 0x00760b30u, 0x00760ab0u,
+                                        0x004499c0u};
+        // 90h 00D034A0 and 8Fh 00D034DC, read from the PE the same way.
+        std::uint32_t slots_00d034a0[5]{0x00762660u, 0x00761ff0u, 0x00762090u, 0x00761fc0u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d034dc[5]{0x007626c0u, 0x00762460u, 0x007624b0u, 0x00762430u,
+                                        0x004499c0u};
+        // 83h 00D03554.
+        std::uint32_t slots_00d03554[5]{0x00763240u, 0x00763260u, 0x007632c0u, 0x00763210u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
-            return image_address == 0x00d032d0u ? slots_00d032d0 : nullptr;
+            if (image_address == 0x00d032d0u) return slots_00d032d0;
+            if constexpr (kWireGoal4Chain260Bound) {
+                if (image_address == 0x00d02d30u) return slots_00d02d30;
+                if (image_address == 0x00d02d44u) return slots_00d02d44;
+                if (image_address == 0x00d03360u) return slots_00d03360;
+                if (image_address == 0x00d034a0u) return slots_00d034a0;
+                if (image_address == 0x00d034dcu) return slots_00d034dc;
+                if (image_address == 0x00d03554u) return slots_00d03554;
+            }
+            return nullptr;
         }
     } seg42_vtables;
     seg42::Context seg42{current_game, seg42_vtables};
@@ -227,6 +260,190 @@ game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
     result.target_38 = result.has_target_36 ? posted.target_38 : queued.target_id_38;
     result.angles_carried = true;
     return result;
+}
+
+std::uint16_t HostSessionMessages::queue_formation_member_76_77(std::uint8_t type,
+                                                               std::uint16_t member_id) const {
+    const Image& image = *image_;
+    const bool join = type == 0x76;
+    // 0077C920..0077C951 (join) / 0077C9F5..0077CA2F (leave): 0075B430(type)
+    // on the stack message, then +18h word 0, +1Ah byte 0, +4h 1, +1Ch byte 0,
+    // the class vtable, and +20h the other entity's +174h word.
+    seg42::FormationMemberMessage sent{};
+    construct_native_session_message_0075b430(&sent.u.h.base, type, image.session);
+    sent.u.h.id_18 = 0;
+    sent.u.h.relay_1a = 0;
+    sent.u.h.base.delivery_04 = 1;
+    sent.u.flag_1c = 0;
+    sent.u.h.base.profile_00 = image.seg42_vtables.vtable(join ? 0x00d02d30u : 0x00d02d44u);
+    sent.member_id_20 = member_id;
+
+    // 0076E575: vtable[4], the class writer: type byte, 12-bit id, relay and
+    // +1Ch bits (0075B480 + 004290B0), then +20h in 12 bits.
+    LocalStream stream;
+    if (join) {
+        seg42::write_formation_join_0075c7c0(&sent, &stream.out);
+    } else {
+        seg42::write_formation_leave_0075c860(&sent, &stream.out);
+    }
+    // 0076E5A4 -> 00768530: the type read and rewind, then operator new(24h)
+    // and the case's ConstructForRead (007690E6 / 00769106), then 0076A27B
+    // vtable[8], the class reader.
+    stream.begin_read();
+    seg42::FormationMemberMessage queued{};
+    if (join) {
+        seg42::construct_for_read_formation_join_0075a2e0(&queued, image.seg42);
+        seg42::read_formation_join_0075c810(&queued, &stream.in);
+    } else {
+        seg42::construct_for_read_formation_leave_0075a330(&queued, image.seg42);
+        seg42::read_formation_leave_0075c8b0(&queued, &stream.in);
+    }
+    // 0076E5B2 then stores the sender's +174h at the copy's +18h; the hosts
+    // deliver to the posting unit directly, so that store is not repeated.
+    // The drain's scalar delete (0075CA20 / 0075CA40) has no owned storage.
+    return queued.member_id_20;
+}
+
+bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
+    const Image& image = *image_;
+    // 008AD48B..008AD4B7: 0075B430(9Fh), +18h = EBP (0), +4h = 1, +1Ah = 0,
+    // vtable 00D03360, +1Ch = the Lua flag byte. 00760A50 makes the same
+    // stores (0075B430, the zero header, delivery 1, vtable 00D03360).
+    seg42::RepairBodyMessage sent{};
+    seg42::construct_shiprepair_bodyrepair_00760a50(&sent, image.seg42);
+    sent.flag_1c = enabled ? 1u : 0u;
+
+    LocalStream stream;
+    seg42::write_shiprepair_bodyrepair_00760ae0(&sent, &stream.out);
+    // 00768530 case 9Fh: operator new(20h), 00760A50 at 0076960E; 0076A27B
+    // vtable[8] = 00760B30.
+    stream.begin_read();
+    seg42::RepairBodyMessage queued{};
+    seg42::construct_shiprepair_bodyrepair_00760a50(&queued, image.seg42);
+    seg42::read_shiprepair_bodyrepair_00760b30(&queued, &stream.in);
+    return queued.flag_1c != 0;
+}
+
+HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
+    std::uint32_t count, const float (&point)[3]) const {
+    const Image& image = *image_;
+    // 0080FF80: 0075B430(90h), +18h word 0, +1Ah 0, +1Ch = value, +4h = 1,
+    // vtable 00D034A0, +20h..+28h the point; 00761F60 is those stores
+    // without the two arguments.
+    seg42::ShipLeakMessage sent{};
+    seg42::construct_ship_leak_00761f60(&sent, image.seg42);
+    sent.leak_1c = count;
+    for (int i = 0; i < 3; ++i) sent.vector_20[i] = point[i];
+
+    LocalStream stream;
+    seg42::write_ship_leak_00761ff0(&sent, &stream.out, image.numeric);
+    // 00768530 case 90h: operator new(2Ch), 00761F60 at 0076946E; 0076A27B
+    // vtable[8] = 00762090.
+    stream.begin_read();
+    seg42::ShipLeakMessage queued{};
+    seg42::construct_ship_leak_00761f60(&queued, image.seg42);
+    seg42::read_ship_leak_00762090(&queued, &stream.in, image.numeric);
+    ShipLeakCopy copy;
+    copy.count = queued.leak_1c;
+    for (int i = 0; i < 3; ++i) copy.point[i] = queued.vector_20[i];
+    return copy;
+}
+
+HostSessionMessages::ShipAvoidSideCopy HostSessionMessages::queue_ship_avoid_side_8f(
+    std::uint16_t other_id, std::int32_t side) const {
+    const Image& image = *image_;
+    // 009D66B0..009D66E6: 0075B430(8Fh), +18h word 0, +1Ah 0, +4h = 1, vtable
+    // 00D034DC (007623D0's stores), +1Ch = observed+174h, +20h = side.
+    seg42::ShipAvoidSideMessage sent{};
+    seg42::construct_ship_avoidside_007623d0(&sent, image.seg42);
+    sent.other_id_1c = other_id;
+    sent.side_20 = side;
+
+    LocalStream stream;
+    seg42::write_ship_avoidside_00762460(&sent, &stream.out);
+    // 00768530 case 8Fh: operator new(24h), 007623D0 at 0076944E; 0076A27B
+    // vtable[8] = 007624B0 (00428D30 sign-extends the 3-bit side).
+    stream.begin_read();
+    seg42::ShipAvoidSideMessage queued{};
+    seg42::construct_ship_avoidside_007623d0(&queued, image.seg42);
+    seg42::read_ship_avoidside_007624b0(&queued, &stream.in);
+    return ShipAvoidSideCopy{queued.other_id_1c, queued.side_20};
+}
+
+HostSessionMessages::AirbaseLaunchSlotCopy HostSessionMessages::queue_airbase_launch_slot_83(
+    std::uint32_t slot, bool now) const {
+    const Image& image = *image_;
+    // 00896915..0089694C: 0075B430(83h), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0,
+    // vtable 00D03554 (007631A0's stores), +20h = EDI (slot - 1), +24h = CL.
+    seg42::AirbaseLaunchSlotMessage sent{};
+    seg42::construct_airbase_launchslot_007631a0(&sent, image.seg42);
+    sent.slot_20 = slot;
+    sent.flag_24 = now ? 1u : 0u;
+
+    LocalStream stream;
+    seg42::write_airbase_launchslot_00763260(&sent, &stream.out);
+    // 00768530 case 83h: operator new(28h), 007631A0 at 00769246; 0076A27B
+    // vtable[8] = 007632C0.
+    stream.begin_read();
+    seg42::AirbaseLaunchSlotMessage queued{};
+    seg42::construct_airbase_launchslot_007631a0(&queued, image.seg42);
+    seg42::read_airbase_launchslot_007632c0(&queued, &stream.in);
+    return AirbaseLaunchSlotCopy{queued.slot_20, queued.flag_24 != 0};
+}
+
+HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub_kind_5a(
+    std::uint32_t sub_kind, std::uint32_t value) const {
+    const Image& image = *image_;
+    // 0071DD30's message: type 5Ah, +20h the sub-kind, +24h the value.
+    const gameplay_seg38_cc13::RoutedDirectorMessage posted =
+        gameplay_seg38_cc13::director_sub_kind_message(sub_kind, value);
+    // 0071DD4B..0071DD81: 0075B430 on the stack message, then +18h word 0,
+    // +1Ah 0, +4h = 1, +1Ch 0, the vtable 00CFD9C4 (profile90), +20h, +24h.
+    NativeSessionMessage90 sent{};
+    construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
+    sent.header.sender_18 = 0;
+    sent.header.relay_1a = 0;
+    sent.header.base.delivery_04 = 1;
+    sent.header.flag_1c = 0;
+    sent.header.base.profile_00 = image.profile90.slots;
+    sent.selector_20 = posted.field_20;
+    sent.value_24 = posted.field_24;
+
+    LocalStream stream;
+    write_native_session_message90_0071c670(&sent, &stream.out, image.context);
+    // 00768530 case 5Ah: operator new(28h), 0075AF60 at 00769CE4; 0076A27B
+    // vtable[8] = 0071C6C0. The drain's delete (0071E370) frees nothing.
+    stream.begin_read();
+    NativeSessionMessage90 queued{};
+    construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
+    read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
+    return DirectorSubKindCopy{queued.selector_20, queued.value_24};
+}
+
+HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5d(
+    std::uint8_t arm, std::int32_t index) const {
+    const Image& image = *image_;
+    // 0071C730..0071C75E: 0075B430(5Dh), +18h word 0, +1Ah 0, +1Ch 0, +20h =
+    // the arm byte, +4h = 1, vtable 00CFD9D8 (profile93), +24h = the index.
+    NativeSessionMessage93 sent{};
+    construct_native_session_message_0075b430(&sent.header.base, 0x5d, image.session);
+    sent.header.sender_18 = 0;
+    sent.header.relay_1a = 0;
+    sent.header.flag_1c = 0;
+    sent.flag_20 = arm;
+    sent.header.base.delivery_04 = 1;
+    sent.header.base.profile_00 = image.profile93.slots;
+    sent.value_24 = index;
+
+    LocalStream stream;
+    write_native_session_message93_0071c7a0(&sent, &stream.out, image.context);
+    // 00768530 case 5Dh: operator new(28h), 0075B030 at 00769D44; 0076A27B
+    // vtable[8] = 0071C7E0 (00428D30 sign-extends the 5-bit index).
+    stream.begin_read();
+    NativeSessionMessage93 queued{};
+    construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
+    read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
+    return ClearCommandCopy{queued.flag_20, queued.value_24};
 }
 
 } // namespace bsp

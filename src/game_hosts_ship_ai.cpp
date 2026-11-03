@@ -38,6 +38,8 @@
 #include "bsp/wire_goal2_chain153_switches.hpp"
 #include "bsp/wire_goal2_chain218_switches.hpp"
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
@@ -8197,8 +8199,28 @@ public:
                     return;
                 }
                 owner.done("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
+                if constexpr (kWireGoal4Chain260Bound) {
+                    // Goal 4 chain 260: the queue holds 0076E520's copy (009D66B0
+                    // stores via 007623D0, 00762460 write, 007624B0 read). The
+                    // observed unit's +174h is its index + 1 here (12 bits on
+                    // the wire); an index that does not fit keeps the posted one.
+                    const std::size_t other = NeighbourList::store(node_608(i)).unit;
+                    const bsp::HostSessionMessages* messages =
+                        bsp::game::commands_session_messages();
+                    if (messages != nullptr && other + 1u <= 0xfffu) {
+                        // other + 1 is 1..FFFh, so the copy's id is too.
+                        const bsp::HostSessionMessages::ShipAvoidSideCopy copy =
+                            messages->queue_ship_avoid_side_8f(
+                                static_cast<std::uint16_t>(other + 1u), side);
+                        owner.pass_side_queue.push_back(
+                            {index, static_cast<std::size_t>(copy.other_id) - 1u, copy.side});
+                    } else {
+                        owner.pass_side_queue.push_back({index, other, side});
+                    }
+                } else {
                 owner.pass_side_queue.push_back(
                     {index, NeighbourList::store(node_608(i)).unit, side});
+                }
             }
         } host(owner_, ctl_, index_, owner_.rows[index_]);
         const bsp::GameplayTuningSettings& settings = owner_.neighbour_settings();
@@ -11892,7 +11914,13 @@ public:
                     owner_.capture_clock, r != nullptr ? r->name.c_str() : "?",
                     static_cast<unsigned>(owner_.units.director_current_command_0071be40(index_)));
             }
+            if constexpr (kWireGoal4Chain260Bound) {
+                // Goal 4 chain 260: 0077C980's 77h (null other, PUSH 0 at
+                // 009F5DE9) through 0076E520's copy, then 0077BD70 here.
+                owner_.units.leave_formation_message_0077c980(index_);
+            } else {
             owner_.units.leave_group_on_destroy_0077bd70(index_);
+            }
             ++owner_.summary.autotarget_follower_leaves;
         }
         owner_.done("AutoTarget::release_controller", 0x0077c980u);

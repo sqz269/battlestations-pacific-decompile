@@ -12,6 +12,8 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain253_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/cc13_left55.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
@@ -8955,6 +8957,28 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
         ++summary_.water_load_routed;
         float right[3], up[3], forward[3], origin[3];
         if (units->unit_pose(index, right, up, forward, origin)) {
+            if constexpr (kWireGoal4Chain260Bound) {
+                // Goal 4 chain 260: the receiver reads 0076E520's copy of the 90h
+                // (0080FF80 stores via 00761F60, 00761FF0 write, 00762090 read):
+                // its +1Ch count and its unit-local +20h point, which 004142E0
+                // then takes through the pose as below.
+                const float local[3] = {local_x, 0.0f, local_z};
+                bsp::HostSessionMessages::ShipLeakCopy copy;
+                copy.count = static_cast<std::uint32_t>(count);
+                for (int lane = 0; lane < 3; ++lane) copy.point[lane] = local[lane];
+                if (const bsp::HostSessionMessages* messages =
+                        bsp::game::commands_session_messages()) {
+                    copy = messages->queue_ship_leak_90(copy.count, local);
+                }
+                float world[3];
+                for (int lane = 0; lane < 3; ++lane) {
+                    const float across = copy.point[0] * right[lane];
+                    const float along = copy.point[2] * forward[lane];
+                    const float lift = copy.point[1] * up[lane];
+                    world[lane] = ((across + lift) + along) + origin[lane];
+                }
+                applied = units->add_leak_0074f440(index, copy.count, world);
+            } else {
             float world[3];
             for (int lane = 0; lane < 3; ++lane) {
                 const float across = local_x * right[lane];
@@ -8963,6 +8987,7 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
                 world[lane] = ((across + lift) + along) + origin[lane];
             }
             applied = units->add_leak_0074f440(index, static_cast<std::uint32_t>(count), world);
+            }
             if (applied) ++summary_.water_load_applied;
         }
     }
@@ -9113,7 +9138,21 @@ int GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30(lua_State*
             "slot (packet cc13-luawire)", id);
         return 0;
     }
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0071DD30's 5Ah reaches 0071C1E0 as 0076E520's copy
+        // (0071C670 write: the sub-kind in 4 bits, a sub-kind-2 value in 9;
+        // 0075AF60, 0071C6C0 read), so arm 2 stores the copy's 9-bit value.
+        bsp::HostSessionMessages::DirectorSubKindCopy copy{
+            2u, static_cast<std::uint32_t>(mask)};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_director_sub_kind_5a(2u, static_cast<std::uint32_t>(mask));
+        }
+        if (copy.sub_kind == 2u) {
+            director_player_commands_1cc_[director] = static_cast<std::int32_t>(copy.value);
+        }
+    } else {
     director_player_commands_1cc_[director] = mask;   // 0071C1E0 arm 2: director+1CCh
+    }
     ++summary_.player_commands_stored;
     const GameUnitRow* row = units->unit_row(director);
     log_.notef("  UnitSetPlayerCommandsEnabled 008a6c30: director \"%s\" +1CCh = 0x%X "
@@ -9624,7 +9663,12 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
         for (const std::size_t u : snapshot) {
             if (units->unit_formation_group_0284(u) < 0) continue;
             if (!defer || !units->post_formation_leave_0077c980(u)) {
+                if constexpr (kWireGoal4Chain260Bound) {
+                    // Goal 4 chain 260: the 77h through 0076E520's copy first.
+                    units->leave_formation_message_0077c980(u);
+                } else {
                 units->leave_group_on_destroy_0077bd70(u);
+                }
             } else {
                 ++posted;
             }
@@ -9727,9 +9771,28 @@ int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
             "(packet cc13-fix5)", id, slot_number);
         return 0;
     }
+    bsp::AirOpsLaunchSlotMessageResult message{};
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: the 83h is routed (00896964) before the +34h store
+        // (00896972); 0076E520's copy (00763260 write, 007631A0, 007632C0 read)
+        // is what 006CA8E0 receives: the copy's 6-bit slot and its flag.
+        bsp::HostSessionMessages::AirbaseLaunchSlotCopy copy{
+            static_cast<std::uint32_t>(index), now};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_airbase_launch_slot_83(static_cast<std::uint32_t>(index), now);
+        }
+        deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
+        if (copy.slot < deck->slots.size()) {
+            message = bsp::air_ops_launch_slot_message_006ca8e0(
+                *deck, static_cast<int>(copy.slot), copy.now);
+        } else {
+            // LABELLED: the image's receiver indexes the copy's slot unchecked.
+            log_.unimplemented("AirOps::launch_slot_copy_out_of_range", "006ca8e0");
+        }
+    } else {
     deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
-    const bsp::AirOpsLaunchSlotMessageResult message =
-        bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    message = bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    }
     log_.unimplemented("AirOps::launch_slot_peer_messages", "006bf150");
     if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
         extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00896976u);
@@ -10603,7 +10666,12 @@ int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argum
         const std::size_t u = static_cast<std::size_t>(id - 1);
         posted = units->formation_leave_waits_for_handover(u)
             && units->post_formation_leave_0077c980(u);
+        if constexpr (kWireGoal4Chain260Bound) {
+            // Goal 4 chain 260: the 77h through 0076E520's copy first.
+            if (!posted) units->leave_formation_message_0077c980(u);
+        } else {
         if (!posted) units->leave_group_on_destroy_0077bd70(u);
+        }
         ++summary_.leave_formation_left;
     }
     const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;
@@ -10669,7 +10737,18 @@ int GameMissionLuaHost::run_aa_enable_0089c740(lua_State* state, int argument_co
     if (const bsp::game::SceneDirectorEnables* e = bsp::game::scene_director_enables_find(row->name)) {
         enables = *e;
     }
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: 0071E050 sends 5Ah sub-kind 4 with the MOVZX flag
+        // (0071E076, 0071E09A); 0071C1E0 receives 0076E520's copy (0071C670
+        // write, 1 value bit for sub-kind 4; 0075AF60, 0071C6C0 read).
+        bsp::HostSessionMessages::DirectorSubKindCopy copy{4u, flag ? 1u : 0u};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_director_sub_kind_5a(4u, flag ? 1u : 0u);
+        }
+        if (copy.sub_kind == 4u) enables.anti_air = copy.value != 0;   // 0071C246, +221h
+    } else {
     enables.anti_air = flag;                                   // 0071C246, +221h
+    }
     bsp::game::scene_director_enables_set(row->name, enables);
     if (!flag) ++summary_.aa_enable_disables;
     log_.notef("  AAEnable 0089c740: \"%s\" aaEnabled=%d (packet cc9_lua_aa_enable)",

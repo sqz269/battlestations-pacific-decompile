@@ -27,6 +27,7 @@
 #include "bsp/wire_goal2_chain147_switches.hpp"
 #include "bsp/wire_goal2_chain209_switches.hpp"  // chain 209: kWireGoal2Chain209Bound
 #include "bsp/wire_goal4_chain254_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
@@ -48585,9 +48586,37 @@ bool GameUnitsHost::post_formation_leave_0077c980(std::size_t index) {
                 [this, index]() { leave_group_on_destroy_0077bd70(index); })) {
             return false;
         }
+        if constexpr (kWireGoal4Chain260Bound) {
+            // Goal 4 chain 260: 0077C980 at 0077CA21 sends +20h = 0 (a Lua
+            // leave names no other); 0076E520's copy is what the queue holds
+            // (0075C860 write, 00768530 case 77h 0075A330, 0075C8B0 read), and
+            // 0077FE80 arm 3 resolves its +20h for 0077BD70. This host's leave
+            // models the null-other arm only, so a copy naming one is recorded.
+            // Made once the post succeeded: a failed post leaves synchronously
+            // through leave_formation_message_0077c980, which makes its own.
+            const std::size_t other =
+                commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
+            if (other != kNoFormationMember) {
+                impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+            }
+        }
         ++host.director_lua_leaves_posted;
         return true;
     }
+}
+
+void GameUnitsHost::leave_formation_message_0077c980(std::size_t index) {
+    // Goal 4 chain 260: the 77h copy as in post_formation_leave_0077c980, then
+    // 0077BD70 at the call (the synchronous leave's substitution). 0077C980
+    // builds the message only while [unit+284h] is set (0077C99C..0077C9A6).
+    if (unit_formation_group_0284(index) >= 0) {
+        const std::size_t other =
+            commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
+        if (other != kNoFormationMember) {
+            impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+        }
+    }
+    leave_group_on_destroy_0077bd70(index);
 }
 
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
