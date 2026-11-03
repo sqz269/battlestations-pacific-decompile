@@ -1455,27 +1455,59 @@ void spawn_member_sort_009480b0(std::uint8_t* first, std::uint8_t* last, std::in
 // value reloaded from float before the FMUL ST0. The reader lives in a 14h-byte
 // frame slot ([ESP+0Ch] of the frame). The unwind actions (reader, by-value
 // object) are not modelled.
-void spawn_request_read_exclude_radius_009481a0(float* block, void* object, Left61Host& host) {
+void spawn_request_read_exclude_radius_009481a0(SpawnExcludeRadiusBlock& block,
+                                                SpawnExcludeRadiusReaderHost& host) {
     static const char* const kKeys[5] = {"ownHorizontal", "enemyHorizontal", "ownVertical", "enemyVertical",
                                          "formationHorizontal"};
-    if (!host.lua_object_is_nil_00b65fb0(object)) {
-        alignas(4) std::uint8_t copy[0x14];
-        host.lua_object_copy_construct_00b66fa0(copy, object);
-        alignas(4) std::uint8_t reader[0x14];
-        host.lua_reader_construct_004425c0(reader, copy);
+    float* const fields[5] = {&block.own_horizontal, &block.enemy_horizontal, &block.own_vertical,
+                              &block.enemy_vertical, &block.formation_horizontal};
+    if (!host.object_is_nil_00b65fb0()) {
+        host.reader_open_004425c0();
         for (int i = 0; i < 5; ++i) {
-            std::uint32_t value_bits;
-            std::memcpy(&value_bits, &block[i], sizeof value_bits);
-            const std::uint32_t fallback[2] = {2, value_bits};
-            const std::uint32_t destination[2] = {2, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&block[i]))};
-            const std::uint32_t key[2] = {0, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(kKeys[i]))};
-            host.lua_reader_read_field_or_default_00bd68d0(reader, key, destination, fallback);
+            host.reader_read_float_or_default_00bd68d0(kKeys[i], *fields[i], *fields[i]);
         }
-        block[5] = block[0] * block[0];
-        block[6] = block[1] * block[1];
-        host.lua_reader_destroy_00441a20(reader);
+        block.own_horizontal_sq = block.own_horizontal * block.own_horizontal;
+        block.enemy_horizontal_sq = block.enemy_horizontal * block.enemy_horizontal;
+        host.reader_close_00441a20();
     }
-    host.lua_object_destruct_00b67700(object);
+    host.object_destruct_00b67700();
+}
+
+namespace {
+
+// The Raw entry's adapter: the image's by-value LuaObject, its copy and the reader in
+// their 14h-byte frame slots, each call through the Left61Host method the image makes.
+class Left61ExcludeRadiusReader final : public SpawnExcludeRadiusReaderHost {
+public:
+    Left61ExcludeRadiusReader(void* object, Left61Host& host) : object_(object), host_(host) {}
+    bool object_is_nil_00b65fb0() override { return host_.lua_object_is_nil_00b65fb0(object_); }
+    void reader_open_004425c0() override {
+        host_.lua_object_copy_construct_00b66fa0(copy_, object_);
+        host_.lua_reader_construct_004425c0(reader_, copy_);
+    }
+    void reader_read_float_or_default_00bd68d0(const char* key, float& field, float fallback) override {
+        std::uint32_t value_bits;
+        std::memcpy(&value_bits, &fallback, sizeof value_bits);
+        const std::uint32_t fallback_variant[2] = {2, value_bits};
+        const std::uint32_t destination[2] = {2, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(&field))};
+        const std::uint32_t key_variant[2] = {0, static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(key))};
+        host_.lua_reader_read_field_or_default_00bd68d0(reader_, key_variant, destination, fallback_variant);
+    }
+    void reader_close_00441a20() override { host_.lua_reader_destroy_00441a20(reader_); }
+    void object_destruct_00b67700() override { host_.lua_object_destruct_00b67700(object_); }
+
+private:
+    void* object_;
+    Left61Host& host_;
+    alignas(4) std::uint8_t copy_[0x14];
+    alignas(4) std::uint8_t reader_[0x14];
+};
+
+}  // namespace
+
+void spawn_request_read_exclude_radius_009481a0(float* block, void* object, Left61Host& host) {
+    Left61ExcludeRadiusReader reader(object, host);
+    spawn_request_read_exclude_radius_009481a0(*reinterpret_cast<SpawnExcludeRadiusBlock*>(block), reader);
 }
 
 // 00948BB0. In order: the dword vector at +0CCh (storage +0D0h) through operator

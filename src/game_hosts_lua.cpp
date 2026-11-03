@@ -20,6 +20,9 @@
 #include "bsp/wire_goal2_chain143_switches.hpp"
 #include "bsp/wire_goal2_chain152_switches.hpp"
 #include "bsp/wire_goal2_chain187_switches.hpp"
+#include "bsp/wire_goal2_chain195_switches.hpp"
+#include "bsp/cc13_left61.hpp"        // 009481A0, chain 195
+#include "bsp/gui_lua_runtime.hpp"   // GuiLua51Host, GuiLuaReader (00BD68D0), chain 195
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/cc13_avoid1_seg61.hpp"  // 00947A30, chain 130
 #include "bsp/gameplay_seg61_62_cc13.hpp"
@@ -4140,6 +4143,57 @@ bool read_range_pair(lua_State* state, int table_index, const char* key,
     return read;
 }
 
+// Goal 2 chain 195: 009481A0's LuaObject and reader over the mission state. The by-value
+// argument is the stack slot holding `excludeRadiusOverride` (00B67800's result at
+// 00949961 in the image), a borrowed alias that GuiLua51Host gives for an integer index
+// of the globals object (LUA_GLOBALSINDEX + key, 00B677B7..D4), so slot n is key
+// n - LUA_GLOBALSINDEX. 00B66FA0 is GuiLua51Host::copy_ref_00b66fa0 and the 004425C0
+// reader is the reconstructed GuiLuaReader, so each key goes through 00BD68D0: nil takes
+// the default, anything else 00BD63B0's float conversion. Used only under
+// kWireGoal2Chain195Bound.
+class SpawnExcludeRadiusLuaReader final : public bsp::cc13_left61::SpawnExcludeRadiusReaderHost {
+public:
+    SpawnExcludeRadiusLuaReader(bsp::GuiLua51Host& lua, int slot, const bool& crt_sse2_conversion)
+        : lua_(lua), crt_sse2_conversion_(crt_sse2_conversion) {
+        const bsp::GuiLuaRef globals = lua_.globals();
+        const std::uint32_t key =
+            static_cast<std::uint32_t>(slot) - static_cast<std::uint32_t>(LUA_GLOBALSINDEX);
+        object_ = lua_.get_by_index(globals, static_cast<std::int32_t>(key));
+        lua_.release(globals);
+    }
+    ~SpawnExcludeRadiusLuaReader() override {
+        reader_.reset();
+        if (object_.valid()) lua_.release(object_);
+    }
+    SpawnExcludeRadiusLuaReader(const SpawnExcludeRadiusLuaReader&) = delete;
+    SpawnExcludeRadiusLuaReader& operator=(const SpawnExcludeRadiusLuaReader&) = delete;
+
+    bool object_is_nil_00b65fb0() override { return bsp::gui_lua_is_nil_00b65fb0(lua_, object_); }
+    void reader_open_004425c0() override {
+        reader_ = std::make_unique<bsp::GuiLuaReader>(lua_, lua_.copy_ref_00b66fa0(object_),
+                                                      crt_sse2_conversion_);
+    }
+    void reader_read_float_or_default_00bd68d0(const char* key, float& field, float fallback) override {
+        bsp::GuiLuaVariant fallback_variant;
+        fallback_variant.tag = static_cast<std::int32_t>(bsp::GuiLuaFieldType::Float);
+        fallback_variant.value.number = fallback;
+        reader_->read_or_default_00bd68d0(bsp::gui_lua_key_by_name(key),
+                                          bsp::gui_lua_field(bsp::GuiLuaFieldType::Float, &field),
+                                          fallback_variant);
+    }
+    void reader_close_00441a20() override { reader_.reset(); }
+    void object_destruct_00b67700() override {
+        lua_.release(object_);
+        object_ = bsp::GuiLuaRef{};
+    }
+
+private:
+    bsp::GuiLua51Host& lua_;
+    const bool& crt_sse2_conversion_;
+    bsp::GuiLuaRef object_{};
+    std::unique_ptr<bsp::GuiLuaReader> reader_;
+};
+
 }  // namespace
 
 int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_count) {
@@ -4280,6 +4334,33 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
     }
 
     ::lua_getfield(state, 1, "excludeRadiusOverride");
+    if constexpr (bsp::kWireGoal2Chain195Bound) {
+        // 009481A0 (call 0094996D): ON reads a table override through the body, over the
+        // block 00949750 presets, so an omitted key keeps the image's preset; OFF keeps the
+        // host's five reads, with 0 for an omitted key. Presets (009498E1..0094994B):
+        // [00CE3D08] 100.0 for both own extents, [00CFFD60] 2000.0 enemyHorizontal,
+        // [00CE397C] 500.0 enemyVertical, 0.0 formationHorizontal, [00CE3D64] 10000.0 and
+        // [00D19914] 4000000.0 for the squares. A nil or string override leaves the image
+        // at those presets and a number or boolean raises in the first read, so the body
+        // runs for a table, as the host's `present` already requires; other values keep
+        // the OFF result. The host squares the extents where it uses them (00941D30), so
+        // the block's +14h/+18h are not carried over.
+        if (::lua_type(state, -1) == LUA_TTABLE) {
+            request.exclude.present = true;
+            bsp::cc13_left61::SpawnExcludeRadiusBlock block{100.0f, 2000.0f, 100.0f, 500.0f,
+                                                            0.0f, 10000.0f, 4000000.0f};
+            const bool crt_sse2_conversion =
+                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+            bsp::GuiLua51Host lua(*state);
+            SpawnExcludeRadiusLuaReader reader(lua, ::lua_gettop(state), crt_sse2_conversion);
+            bsp::cc13_left61::spawn_request_read_exclude_radius_009481a0(block, reader);
+            request.exclude.own_horizontal = block.own_horizontal;
+            request.exclude.enemy_horizontal = block.enemy_horizontal;
+            request.exclude.own_vertical = block.own_vertical;
+            request.exclude.enemy_vertical = block.enemy_vertical;
+            request.exclude.formation_horizontal = block.formation_horizontal;
+        }
+    } else {
     if (::lua_type(state, -1) == LUA_TTABLE) {
         const int block = ::lua_gettop(state);
         request.exclude.present = true;
@@ -4289,6 +4370,7 @@ int GameMissionLuaHost::run_spawn_new_00949750(lua_State* state, int argument_co
         request.exclude.enemy_vertical = read_member_float(state, block, "enemyVertical");
         request.exclude.formation_horizontal
             = read_member_float(state, block, "formationHorizontal");
+    }
     }
     ::lua_settop(state, ::lua_gettop(state) - 1);
 
