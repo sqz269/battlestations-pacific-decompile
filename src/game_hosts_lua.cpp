@@ -16,6 +16,8 @@
 #include "bsp/wire_goal2_chain104_switches.hpp"
 #include "bsp/wire_goal2_chain119_switches.hpp"
 #include "bsp/wire_goal2_chain124_switches.hpp"
+#include "bsp/wire_goal2_chain130_switches.hpp"
+#include "bsp/cc13_avoid1_seg61.hpp"  // 00947A30, chain 130
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -120,6 +122,7 @@ extern "C" {
 #include <cstring>
 #include <functional>
 #include <optional>
+#include <stdexcept>
 #include <type_traits>
 
 namespace bsp::game {
@@ -4238,7 +4241,11 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
         return;
     }
     ++summary_.spawn_new_fulfilled;
-    complete_spawn_request_0094c777(request);
+    if constexpr (kWireGoal2Chain130Bound) {
+        // 00947A30 already ran inside fulfil_spawn_request_009483d0 (009487A1).
+    } else {
+        complete_spawn_request_0094c777(request);
+    }
 }
 
 namespace {
@@ -4478,6 +4485,157 @@ bool GameMissionLuaHost::spawn_ref_entity_frame_008f8680(std::int32_t entity_id,
     return true;
 }
 
+namespace {
+// Chain 130 (kWireGoal2Chain130Bound): the Cc13SpawnCompletionHost that 00947A30
+// (cc13_avoid1_seg61.cpp) runs over, adapted to this host's request and Lua state.
+// The record view carries the request's own `callback` (record+84h/+88h) and its
+// created entities (record+CCh). The image holds Entity* there and 00884A90 reads
+// the id at entity+174h; this host's created list already holds the entity ids,
+// so the variant's +08h keeps the 32-bit id (this host's ids pass 16 bits).
+//  - 00887E50 (the runner [[00E188A8]+1A08h] is this host's lua_State): the named
+//    global, one `thisTable` entity table per variant in vector order (nil when
+//    the id does not resolve), lua_pcall; its game+1FE4h == 2 refusal never
+//    applies in this single-player host.
+//  - 00884A90 / 006EDF00 / 006B88E0 / 00884AF0 and the frees keep the 0Ch variant
+//    vector on this process's heap.
+//  - 0065D070 on [[00E198C4]+BCh] and 00A16EF0 have no object here (no support
+//    manager, no script AI group factory): the arm is logged and nothing is made,
+//    which is also all the OFF path's global lookup of a bracketed name does.
+class SpawnCompletionLuaAdapter final : public bsp::cc13_avoid1::Cc13SpawnCompletionHost {
+public:
+    using Record = bsp::cc13_avoid1::Cc13SpawnRequestCompletionNative;
+    using DwordVector = bsp::cc13_avoid1::Cc13NativeDwordVector;
+    using VariantVector = bsp::cc13_avoid1::Cc13LuaVariantVectorNative;
+    using Variant = bsp::cc13_left55::LuaVariant;
+    using Str = bsp::cc13_left55::NativeStr;
+
+    SpawnCompletionLuaAdapter(lua_State* state, GameHostLog& log,
+        GameMissionLuaSummary& summary, GameMissionLuaHost& owner,
+        bsp::SpawnNewRequest& request)
+        : state_(state), log_(log), summary_(summary), owner_(owner), request_(request) {
+        std::memset(&record_, 0, sizeof(record_));
+        record_.callback.size = static_cast<std::uint32_t>(request.callback.size());
+        record_.callback.data = request.callback.empty() ? nullptr : request.callback.data();
+        point_at(record_.members, request.created);
+    }
+    Record& record() noexcept { return record_; }
+
+    void member_vector_copy_00947810(DwordVector& destination,
+        const DwordVector& source) override {
+        copy_.assign(source.first, source.last);
+        point_at(destination, copy_);
+    }
+    void* support_orders_owner_00e198c4_bc() override { return nullptr; }
+    void support_member_orders_0065d070(void*, DwordVector& by_value) override {
+        log_.notef("  spawn completion 00947a30: serial %u \"[supportmanager]\" -> 0065D070 "
+            "with %u member(s); this host has no support manager, nothing ordered",
+            request_.serial, static_cast<unsigned>(by_value.last - by_value.first));
+    }
+    void ai_group_from_script_00a16ef0(const Str& name, const DwordVector& members) override {
+        log_.notef("  spawn completion 00947a30: serial %u \"%s\" -> 00A16EF0 with %u "
+            "member(s); this host has no script AI group factory, nothing made",
+            request_.serial, std::string(name.data, name.size).c_str(),
+            static_cast<unsigned>(members.last - members.first));
+    }
+    void* allocate_00bf681b(std::uint32_t bytes) override { return ::operator new(bytes); }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("00947A30: member index outside the created list (00BF6713)");
+    }
+    void variant_construct_entity_00884a90(Variant& variant, std::uint32_t entity) override {
+        static_assert(sizeof(variant.payload) >= sizeof(std::uint32_t));
+        variant.vtable = bsp::cc13_left55::kLuaVariantVtable;
+        variant.tag = kEntityTag;
+        variant.name = {};
+        std::memset(&variant.payload, 0, sizeof(variant.payload));
+        std::memcpy(&variant.payload, &entity, sizeof(entity));
+    }
+    void variant_vector_push_back_006edf00(VariantVector* vector,
+        const Variant& variant) override {
+        if (vector == nullptr) throw std::logic_error("00947A30: no argument vector (006EDF00)");
+        const std::size_t size = static_cast<std::size_t>(vector->last - vector->first);
+        const std::size_t capacity = static_cast<std::size_t>(vector->end - vector->first);
+        if (size == capacity) {
+            const std::size_t grown = capacity == 0 ? 1 : capacity * 2;
+            auto* block = static_cast<Variant*>(::operator new(grown * sizeof(Variant)));
+            if (size != 0) std::memcpy(block, vector->first, size * sizeof(Variant));
+            ::operator delete(vector->first);
+            vector->first = block;
+            vector->last = block + size;
+            vector->end = block + grown;
+        }
+        *vector->last = variant;
+        ++vector->last;
+    }
+    void variant_destruct_00884af0(Variant& variant) override { variant.name = {}; }
+    void* lua_runner_00e188a8_1a08() override { return state_; }
+    void call_named_00887e50(void* runner, std::uint32_t, const Str& name,
+        VariantVector* args, std::uint32_t, std::int32_t) override {
+        lua_State* const state = static_cast<lua_State*>(runner);
+        if (state == nullptr) return;
+        const std::string global(name.data, name.size);
+        const int top = ::lua_gettop(state);
+        lua_getfield(state, LUA_GLOBALSINDEX, global.c_str());
+        if (!lua_isfunction(state, -1)) {
+            ++summary_.spawn_new_callback_missing;
+            ::lua_settop(state, top);
+            log_.notef("  spawn queue 0094c490: serial %u created %zu unit(s) but the script "
+                "defines no global \"%s\", so nothing was called (00947a30)",
+                request_.serial, request_.created.size(), global.c_str());
+            return;
+        }
+        int pushed = 0;
+        const std::size_t count = args != nullptr
+            ? static_cast<std::size_t>(args->last - args->first) : 0u;
+        for (std::size_t i = 0; i < count; ++i) {
+            const Variant& variant = args->first[i];
+            std::uint32_t entity = 0;
+            if (variant.tag == kEntityTag) std::memcpy(&entity, &variant.payload, sizeof(entity));
+            if (!push_resolved_entity_by_id(state, static_cast<int>(entity))) {
+                lua_pushnil(state);
+            }
+            ++pushed;
+        }
+        if (::lua_pcall(state, pushed, 0, 0) != 0) {
+            const char* message = lua_tolstring(state, -1, nullptr);
+            log_.notef("  spawn queue 0094c490: \"%s\" raised: %s (00947a30)", global.c_str(),
+                message != nullptr ? message : "(no message)");
+            owner_.note_error(message != nullptr ? message : std::string("(no message)"));
+            ::lua_settop(state, top);
+            return;
+        }
+        ++summary_.spawn_new_callbacks;
+        ::lua_settop(state, top);
+        log_.notef("  spawn queue 0094c490: serial %u fulfilled, \"%s\"(%d unit table(s)) ran "
+            "(00947a30)", request_.serial, global.c_str(), pushed);
+    }
+    void variant_vector_resize_006b88e0(VariantVector* vector, std::uint32_t size) override {
+        if (vector == nullptr) return;
+        const auto held = static_cast<std::uint32_t>(vector->last - vector->first);
+        if (size > held) throw std::logic_error("00947A30: 006B88E0 asked to grow");
+        vector->last = vector->first + size;
+    }
+    void free_array_00bf6989(void* block) noexcept override { ::operator delete(block); }
+    void free_record_00bf65ac(void* block) noexcept override { ::operator delete(block); }
+
+private:
+    static constexpr std::int32_t kEntityTag = 3;  // 00884A90's tag
+    static void point_at(DwordVector& view, std::vector<std::uint32_t>& ids) noexcept {
+        view.proxy = 0;
+        view.first = ids.empty() ? nullptr : ids.data();
+        view.last = view.first == nullptr ? nullptr : view.first + ids.size();
+        view.end = view.first == nullptr ? nullptr : view.first + ids.capacity();
+    }
+
+    lua_State* state_;
+    GameHostLog& log_;
+    GameMissionLuaSummary& summary_;
+    GameMissionLuaHost& owner_;
+    bsp::SpawnNewRequest& request_;
+    Record record_;
+    std::vector<std::uint32_t> copy_;
+};
+}  // namespace
+
 void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request) {
     // 00949300 creates nothing unless EVERY member's placement passes; 009483D0
     // then makes them all and sets record+C0h. The all-or-nothing rule is kept;
@@ -4705,6 +4863,11 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
     }
     summary_.spawn_new_units += made.size();
     request.created = std::move(made);
+    if constexpr (kWireGoal2Chain130Bound) {
+        // 009487A1: 00947A30 completes the request (callback over the created members) before +C0h; OFF keeps complete_spawn_request_0094c777 in the drain.
+        SpawnCompletionLuaAdapter completion(state_, log_, summary_, *this, request);
+        bsp::cc13_avoid1::cc13_spawn_request_complete_00947a30(completion.record(), completion);
+    }
     request.fulfilled = true;  // 009487AD MOV byte ptr [EBX + 0xc0],0x1
 }
 
