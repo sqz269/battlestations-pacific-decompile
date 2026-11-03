@@ -3,6 +3,7 @@
 // header for the ABI of each routine and the adoption note. Build-tested only.
 
 #include "bsp/gameplay_seg38_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -329,17 +330,13 @@ ControllerUpdateActions controller_update_0071f290(ControllerUpdateState& s,
     return a;
 }
 
-void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& src, bool owner_is_kind_6,
-                              const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
-                              const std::function<Vec3f(const CommandTarget&)>& target_position) {
-    dst.byte_3c = src.byte_3c;
-    dst.byte_3d = src.byte_3d;
-    dst.field_16c = src.field_16c;
-    dst.target_170 = src.target_170;
-    dst.mode_30 = src.mode_30;
+void copy_director_queue_for_owner(DirectorQueue& dst, const DirectorQueue& src,
+    bool owner_is_kind_6,
+    const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
+    const std::function<Vec3f(const CommandTarget&)>& target_position) {
     for (int i = 0; i < kCommandSlots; ++i) {
         const auto u = static_cast<std::size_t>(i);
-        CommandSlot s = src.queue.slots[u];
+        CommandSlot s = src.slots[u];
         if (owner_is_kind_6 && s.command_class == kCmdLand) {     // 00720600..
             const Vec3f at = target_position(s.target);           // BSP_TargetDescriptor_ResolvePosition
             const NearestUnitAnswer n = nearest_to(at);
@@ -351,9 +348,20 @@ void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& s
                 s.target.entity_index_02 = n.entity_index_174;
             }
         }
-        dst.queue.slots[u] = s;
-        dst.queue.paths[u] = src.queue.paths[u];                 // 0071FD10
+        dst.slots[u] = s;
+        dst.paths[u] = src.paths[u];                 // 0071FD10
     }
+}
+
+void copy_state_from_00720450(DirectorCopyState& dst, const DirectorCopyState& src, bool owner_is_kind_6,
+                              const std::function<NearestUnitAnswer(const Vec3f&)>& nearest_to,
+                              const std::function<Vec3f(const CommandTarget&)>& target_position) {
+    dst.byte_3c = src.byte_3c;
+    dst.byte_3d = src.byte_3d;
+    dst.field_16c = src.field_16c;
+    dst.target_170 = src.target_170;
+    dst.mode_30 = src.mode_30;
+    copy_director_queue_for_owner(dst.queue, src.queue, owner_is_kind_6, nearest_to, target_position);
     dst.override_188 = CommandSlot{};
     dst.override_acceptance_4c = false;
     dst.acceptance_44 = false;
@@ -590,12 +598,15 @@ AddPointResult director_path_add_point_0071fde0(
 }
 
 int nearest_unit_index_0071db90(const Vec3f& pos, const std::vector<Vec3f>& units) noexcept {
+    using namespace bsp::cc13x87;
     int best = -1;
     float best_d = kFltMax_00d7a248;
     for (std::size_t i = 0; i < units.size(); ++i) {
-        const float dx = pos.x - units[i].x;
-        const float dz = pos.z - units[i].z;
-        const float d = dz * dz + dx * dx;
+        // 0071DC15..0071DC3E: FSUB/store x, FSUB/store z, z*z, x*x,
+        // FADDP/store. The main thread uses PC24 for each x87 operation.
+        const float dx = static_cast<float>(x87_sub24(pos.x, units[i].x));
+        const float dz = static_cast<float>(x87_sub24(pos.z, units[i].z));
+        const float d = static_cast<float>(x87_add24(x87_mul24(dz, dz), x87_mul24(dx, dx)));
         if (best < 0 || d < best_d) {
             best = static_cast<int>(i);
             best_d = d;

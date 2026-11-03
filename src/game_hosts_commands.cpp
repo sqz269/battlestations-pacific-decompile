@@ -41,6 +41,7 @@
 #include "bsp/wire_goal2_chain158_switches.hpp"
 #include "bsp/wire_goal2_chain165_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
+#include "bsp/wire_goal4_chain255_switches.hpp"
 #include "bsp/engine_seg4_6_9_cc13.hpp"
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/path_movcam_seg46_argon.hpp"           // 007B1D30 (chain 165)
@@ -4466,6 +4467,82 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
     to.mode = from.mode;
     // 007204E3 0071E610 on dst: its override cleared, vtable[6Ch](0) when it ran.
     clear_override_in_place(host, dst);
+    if constexpr (bsp::kWireGoal4Chain255Bound) {
+        namespace gp = bsp::gameplay_seg38_cc13;
+        const GameUnitsHost* const live = host.user_path_live_owner;
+        // 007205F1 queries the destination owner, not the dead source leader.
+        const bool ship = live != nullptr && live->unit_is_kind_of(dst, 6);
+        gp::DirectorQueue copied;
+        gp::copy_director_queue_for_owner(copied, cc13_director_queue(from), ship,
+            [&](const gp::Vec3f& position) {
+                std::vector<gp::Vec3f> positions;
+                std::vector<std::size_t> indices;
+                // 0071DBAB loads [[game+19CCh]+16Ch]. The registry has
+                // {count,head,tail} at +18h + class*0Ch, hence class 28's
+                // head is +16Ch. Preserve its registration order, including
+                // the image's first-on-ties/empty-list behavior.
+                // Producer: unit_world_registration.cpp's 006F5A50 schedule
+                // appends CommandBuilding to +168h (count, head at +16Ch).
+                const std::size_t count = live->world_list_size(28);
+                positions.reserve(count);
+                indices.reserve(count);
+                for (std::size_t i = 0; i < count; ++i) {
+                    const std::size_t unit = live->world_list_entry(28, i);
+                    gp::Vec3f point;
+                    live->unit_position_00fc(unit, point.x, point.y, point.z);
+                    positions.push_back(point);
+                    indices.push_back(unit);
+                }
+                const int nearest = gp::nearest_unit_index_0071db90(position, positions);
+                host.done("WeaponDirector::nearest_unit_in_list16c", 0x0071db90u);
+                gp::NearestUnitAnswer answer;
+                if (nearest >= 0) {
+                    const GameCommandUnit& unit = host.units.at(indices[nearest]);
+                    answer.entity = static_cast<std::uint32_t>(
+                        reinterpret_cast<std::uintptr_t>(&unit));
+                    answer.entity_index_174 = unit.object_id;
+                }
+                return answer;
+            },
+            [&](const gp::CommandTarget& target) {
+                // 006F7DD0 at 0072060D: the descriptor's point, the image's
+                // zero vector, or the entity's current world pose (with its
+                // local offset transformed when both descriptor bytes are set).
+                gp::Vec3f point = target.has_point_01 ? target.point_08 : gp::Vec3f{};
+                if (target.has_entity_00) {
+                    const auto unit = std::find_if(host.units.begin(), host.units.end(),
+                        [&](const GameCommandUnit& entry) {
+                            return entry.object_id == target.entity_index_02;
+                        });
+                    if (unit == host.units.end())
+                        throw std::logic_error("director copy: land target is not a live command entity");
+                    if (target.has_point_01) {
+                        live->transform_by_unit_matrix_004142e0(unit->index,
+                            point.x, point.y, point.z, point.x, point.y, point.z);
+                    } else {
+                        live->unit_position_00fc(unit->index, point.x, point.y, point.z);
+                    }
+                }
+                return point;
+            });
+        for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i) {
+            const gp::CommandSlot& slot = copied.slots[i];
+            const std::uint32_t original_command = from.slot_command[i];
+            to.slot_command[i] = slot.command_class;
+            // Keep unconverted descriptors verbatim; only 00720600's land
+            // arm resets the point, trailing word, cached entity and handle.
+            to.slot_target[i] = from.slot_target[i];
+            if (ship && original_command == gp::kCmdLand) {
+                to.slot_target[i] = bsp::SceneCommandTarget{};
+                to.slot_target[i].kind = slot.target.has_entity_00 ? 1u : 0u;
+                to.slot_target[i].object_id = slot.target.entity_index_02;
+                to.slot_target[i].object = reinterpret_cast<void*>(
+                    static_cast<std::uintptr_t>(slot.target.entity_04));
+            } else if (original_command == gp::kCmdLand) {
+                ++host.summary.director_copy_land_kept;
+            }
+        }
+    } else {
     // 007204E8..0072072B: the ten records, each with its descriptor (the
     // observer pair moved with it; this host has no registry, 0071DDB0 walks
     // every director) and its path object (0071FD10 at 00720714 per slot; this
@@ -4481,6 +4558,7 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
         to.slot_target[i] = from.slot_target[i];
         if (from.slot_command[i] == bsp::gameplay_seg38_cc13::kCmdLand)
             ++host.summary.director_copy_land_kept;
+    }
     }
     if constexpr (bsp::kWireGoal2Chain75Bound) {
         // 0071FD10 at 00720714: bsp_director_path_object_copy_from_0071fd10 over slot 0's
