@@ -283,11 +283,16 @@ bool unit_clear_inferior_failure_00953ea0(const char* name,
     return true;
 }
 
-bool unit_query_inferior_failure_00953e60(const char* name, std::uint8_t byte_720,
+bool unit_query_inferior_failure_00953e60(const char* name, UnitInferiorFailureView unit,
                                           std::uint8_t* out) noexcept {
     if (!is_inferior_failure_name(name)) return false;
-    if (out != nullptr) *out = byte_720;   // 00953E85..00953E8F
+    if (out != nullptr) *out = unit.byte_720;   // 00953E85..00953E8F
     return true;
+}
+
+bool unit_query_inferior_failure_00953e60(const char* name, std::uint8_t byte_720,
+                                          std::uint8_t* out) noexcept {
+    return unit_query_inferior_failure_00953e60(name, UnitInferiorFailureView{byte_720}, out);
 }
 
 // ---------------------------------------------------------------------------

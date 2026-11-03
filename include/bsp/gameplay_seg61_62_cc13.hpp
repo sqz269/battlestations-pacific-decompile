@@ -206,6 +206,11 @@ bool unit_clear_inferior_failure_00953ea0(const char* name,
     const std::function<void(const InferiorFailureMessage&, int channel, int flags)>& route);
 // 00953E60 `__thiscall(unit, property, frame, out)`, RET 0Ch: on a match
 // *out = unit+720h and true; otherwise false and *out untouched.
+struct UnitInferiorFailureView {
+    const std::uint8_t& byte_720;
+};
+bool unit_query_inferior_failure_00953e60(const char* name, UnitInferiorFailureView unit,
+                                          std::uint8_t* out) noexcept;
 bool unit_query_inferior_failure_00953e60(const char* name, std::uint8_t byte_720,
                                           std::uint8_t* out) noexcept;
 

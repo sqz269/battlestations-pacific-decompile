@@ -12,6 +12,9 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
+#include "bsp/wire_goal2_chain69_switches.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"
+#include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
 #include "bsp/lobby_option_defaults_cc13.hpp"  // packet cc13-mp3 (MP3c)
 #include "bsp/lua_exec_guard.hpp"
@@ -10434,6 +10437,17 @@ int GameMissionLuaHost::run_get_failure_0088f1d0(lua_State* state, int argument_
         } else if (ship && units->gunnery() != nullptr
                    && failure_name_equals(name, "EngineJam")) {
             out = units->gunnery()->ship_jam_flag(index, false);
+        // 00953E60 calls the reconstructed name/byte query; OFF keeps the host's name test.
+        } else if constexpr (bsp::kWireGoal2Chain69Bound) {
+            // The units host's +720h producer is the inferior-failure message/destruction arm.
+            const std::uint8_t byte_720 = units->inferior_failure_720(index) ? 1u : 0u;
+            std::uint8_t result = 0;
+            if (bsp::gameplay_seg61_62_cc13::unit_query_inferior_failure_00953e60(
+                    name.c_str(), bsp::gameplay_seg61_62_cc13::UnitInferiorFailureView{byte_720},
+                    &result)) {
+                out = result != 0;
+            }
+            log_.implemented("MissionLuaNative::query_inferior_failure", "00953e60");
         } else if (failure_name_equals(name, "InferiorFailure")) {
             out = units->inferior_failure_720(index);
         }
@@ -10733,7 +10747,22 @@ int GameMissionLuaHost::run_support_manager_enable_0088cbb0(lua_State* state,
     }
     std::vector<int>& list = support_panel_disabled_list_1f8_;
     if (enable) {
+        // 0065BBA0 calls the reconstructed list dispatch; OFF keeps the host's erase/remove.
+        if constexpr (bsp::kWireGoal2Chain69Bound) {
+            struct SupportDisabledEntitiesAdapter final : bsp::seg27_cc13::SupportListRemoveHost {
+                void list_remove_0065b1f0(void* storage, void* const& entity) override {
+                    auto& disabled = *static_cast<std::vector<int>*>(storage);
+                    const int entity_id = static_cast<int>(reinterpret_cast<std::uintptr_t>(entity));
+                    disabled.erase(std::remove(disabled.begin(), disabled.end(), entity_id), disabled.end());
+                }
+            } adapter;
+            bsp::seg27_cc13::support_manager_list_remove_0065bba0(
+                bsp::seg27_cc13::SupportManagerListView<std::vector<int>>{list},
+                reinterpret_cast<void*>(static_cast<std::uintptr_t>(id)), adapter);
+            log_.implemented("MissionLuaNative::support_disabled_list_remove", "0065bba0");
+        } else {
         list.erase(std::remove(list.begin(), list.end(), id), list.end());  // 0065B1F0
+        }
     } else {
         list.push_back(id);                                                  // 00665EF0
     }

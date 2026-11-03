@@ -103,6 +103,17 @@ struct SupportListRemoveHost {
     virtual void list_remove_0065b1f0(void* list, void* const& value) = 0;
 };
 // 0065BBA0, __thiscall(screen, entity), RET 4.
+// The body only passes the disabled-entity list to 0065B1F0. The view borrows
+// that list in its owner's representation; the Raw entry retains the native offset.
+template<class DisabledEntities>
+struct SupportManagerListView {
+    DisabledEntities& disabled_entities;
+};
+template<class DisabledEntities>
+void support_manager_list_remove_0065bba0(SupportManagerListView<DisabledEntities> s,
+                                         void* entity, SupportListRemoveHost& host) {
+    host.list_remove_0065b1f0(&s.disabled_entities, entity);
+}
 void support_manager_list_remove_0065bba0(Raw s, void* entity, SupportListRemoveHost& host);
 
 struct SupportMapHost : CheckedIteratorHost {

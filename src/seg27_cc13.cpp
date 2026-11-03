@@ -278,7 +278,10 @@ void* support_manager_catalog_entry_2e4_0065ae90(Raw s, CheckedIteratorHost& hos
 // 0065BBA0: `lea eax,[esp+4]; push eax; add ecx,1F8h; call 0065B1F0; ret 4`. Caller: the Lua
 // binding SupportManagerEnable (src/options_seg56_cc13.cpp calls it panel_list_remove_0065bba0).
 void support_manager_list_remove_0065bba0(Raw s, void* entity, SupportListRemoveHost& host) {
-    host.list_remove_0065b1f0(s.p + 0x1F8, entity);
+    struct NativeDisabledEntities;
+    support_manager_list_remove_0065bba0(
+        SupportManagerListView<NativeDisabledEntities>{
+            *reinterpret_cast<NativeDisabledEntities*>(s.p + 0x1F8)}, entity, host);
 }
 
 // 0065C9A0: a linear walk of the map +50h (head +54h, size +58h) for the node whose key +0Ch is
