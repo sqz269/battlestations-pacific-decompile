@@ -1,0 +1,74 @@
+{
+  "goal": 2,
+  "chain": 217,
+  "run": 398,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "base_head": "09021bf789a093a62dcf3103bc3c08f716a07d12",
+  "tier": 2,
+  "segment": 45,
+  "range": ["0078d880", "007a4860"],
+  "host_file": "src/hud_movie_camera.cpp",
+  "switch": "kWireGoal2Chain217Bound",
+  "switch_default": false,
+  "wired_before": 9016,
+  "wired_after": 9017,
+  "host_objects": [],
+  "storage": "No new native object. MovieKeyEventView borrows the existing MovieKeyframe::event_ec optional; MovieKeyEventOwner is constructed only in the ON arm.",
+  "on_behavior": "Replace the live event tick's optional reset with the existing 0078E540 identity-check/delete/store algorithm through a typed optional view. The integer-handle entry is a thin wrapper over the same algorithm. Preserve the host's existing move-to-stack/clear-before-script ordering for scripts that destroy their camera.",
+  "off_behavior": "The existing k.event_ec.reset() statement remains unchanged in the OFF arm. No new adapter is constructed or called with this switch OFF.",
+  "validation": {
+    "on_build": "passed: python tools/off_switch_on_build.py --names kWireGoal2Chain217Bound; exit 0, zero distinct diagnostics; sources restored",
+    "off_build": "passed after ON check: ./scripts/build.ps1; reconstructed_math and tool_tests both passed (2/2)",
+    "pc24_staged": "passed: python tools/pc24_lint.py --staged; zero findings; changed body and ON arm contain no x87 arithmetic",
+    "pc24_full_files": "An earlier full-file lint found 8 pre-existing arithmetic findings outside this change; those bodies were not changed.",
+    "readiness": "passed after plain OFF build: total wired 9016 -> 9017; 0078E540 is wired",
+    "report_calls": "passed: 4 call rows checked, 0 failed",
+    "game_run": "not run, as instructed"
+  },
+  "rows": [
+    {
+      "native": "0078e540",
+      "address": "0078e69a",
+      "function": "0078e630",
+      "identifier": "movie_key_set_event_0078e540",
+      "host_site": "src/hud_movie_camera.cpp:870 movie_camera_key_ticks_00797ed0",
+      "status": "wired",
+      "coverage": "complete existing replacement algorithm; typed storage projection and retained raw wrapper share one implementation",
+      "reach": "static",
+      "reach_evidence": "game_hosts_menu.cpp screen-update dispatch slot 37h (kMovieMoverBound=true) -> GameHudHost::update_movie_screen_005cbaf0 -> step_mission_camera (kMissionCameraBound=true, movie_active) -> step_movie_camera -> movie_camera_key_ticks_00797ed0 (kMovieKeyframeModifierBound=true). The site is in the live ELSE of kWireGoal2Chain112Bound=false. Active keys with dt>0 and a triggered real event enter it. Candidate supplied no mission call count.",
+      "contract": "Only original caller is 0078E630. 0078E696 PUSH 0, 0078E698 MOV ECX,ESI, 0078E69A CALL 0078E540. Callee 0078E541 takes key from ECX, loads event at +ECh, compares the one stack event, calls old event slot 0 with PUSH 1, stores replacement, and RET 4 at 0078E566. nullptr is the binary's argument, not invented input; the owned slot and deletion identity come from the real key.",
+      "limitations": "Semantic host ownership, not a binary ABI replacement or gameplay proof. Preserve the already labelled host reentrancy ordering (clear before script); the image fires then clears. No new observer registry is invented."
+    },
+    {
+      "native": "00605630",
+      "address": "006084e6",
+      "function": "006082d0",
+      "host_site": "src/game_hosts_units.cpp:6979 GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "status": "skipped",
+      "reason": "Initial segment-24 candidate: extending the lease to its actual host file was refused because agent/g2-w3 owns src/game_hosts_units.cpp. Released the initial source/header lease and selected another candidate. No code changed for this row.",
+      "reach": "static",
+      "reach_evidence": "Original callers are three sites inside 006082D0; host-site qualification stopped at lease refusal. Temporary contention, not a permanent contract rejection."
+    },
+    {
+      "native": "00a782e0",
+      "address": "00a78956",
+      "function": "00a788a0",
+      "host_site": "src/game_sound_dialog_runtime.cpp:112 MusicDirectorAdapter::music_director_select_row_00a782e0",
+      "status": "skipped",
+      "reason": "The existing adapter already calls the reconstructed body, but it is constructed only by GameSoundDialogRuntime::set_music_level behind kWireGoal2Chain180Bound=false. The script-order host entry is also behind that false switch. Adding another call would sit behind another OFF switch and duplicate the existing call. Released this candidate's lease without edits.",
+      "reach": "static",
+      "reach_evidence": "game_hosts_script_orders.cpp:529 music_director_set_level -> game_sound_dialog_runtime.cpp:267 set_music_level -> MusicDirectorAdapter, blocked by kWireGoal2Chain180Bound=false at both host entry and service."
+    },
+    {
+      "native": "00440a30",
+      "address": "0060aefa",
+      "function": "0060abd0",
+      "host_site": "src/cc13_bigB1.cpp:822 cc13_bigB1_hud_plane_effects_update_0060abd0 create_effect lambda",
+      "status": "skipped",
+      "reason": "Candidate inspection found only calls to ref_ptr_slot_release_00440a30 in cc13_bigB1.cpp and cc13_seg47.cpp, with no concrete implementation of that host hook in src. This would require establishing the effect/reference owner and its host path; selected the existing live movie-event owner instead. No lease or edits for this row.",
+      "reach": "static",
+      "reach_evidence": "Inspected the reconstructed 0060ABD0 effect creation/release lambda and 00440A30 body; a live concrete host provider was not established in this chain."
+    }
+  ]
+}

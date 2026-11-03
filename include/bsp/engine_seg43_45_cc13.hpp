@@ -16,6 +16,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -191,6 +192,14 @@ void movcam_add_interpolator_0079f6d0(std::vector<cc13cam::MovCamInterpolator>& 
 // 0078E540: ECX keyframe, stack event, RET 4. A different event replaces
 // +ECh; the old one is deleted (slot 0 with 1).
 void movie_key_set_event_0078e540(std::uintptr_t& event_ec, std::uintptr_t event, OwnedObjectHost& host);
+// Semantic view of the host's actual +ECh owner, with no image-offset access.
+// Both entries share the replacement body; the integer-handle entry remains
+// available to image-shaped callers. A non-null event transfers its value.
+struct MovieKeyEventView {
+    std::optional<cc13cam::KeyframeEvent>& event_ec;
+};
+void movie_key_set_event_0078e540(MovieKeyEventView key, cc13cam::KeyframeEvent* event,
+                                  OwnedObjectHost& host);
 // 00796BD0: ECX observer, stack const observer*, RET 4, EAX observer. Base
 // vtable 00CE3C8C, +4h..+Ch zero, +14h = source +14h, +10h = 1, registered
 // when the entity is set. Callers then install vtable 00CE3CF0.

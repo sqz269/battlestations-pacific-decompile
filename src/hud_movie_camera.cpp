@@ -1,6 +1,7 @@
 #include "bsp/hud_movie_camera.hpp"
 #include "bsp/engine_seg43_45_cc13.hpp"
 #include "bsp/wire_goal2_chain112_switches.hpp"
+#include "bsp/wire_goal2_chain217_switches.hpp"
 
 namespace bsp {
 void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float dt,
@@ -23,6 +24,7 @@ void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float 
 #include "bsp/ship_ai_switch_reach.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cmath>
 #include <cctype>
 
@@ -35,6 +37,22 @@ namespace {
 
 using Vec3 = std::array<float, 3>;
 using Mat16 = std::array<float, 16>;
+
+// Adapts the existing optional owner: this host has no observer registration
+// for events, and destroying the optional releases its owned script string.
+// Constructed only at the ON clear site; the key's storage and lifetime stay
+// owned by the Lua-created track, including its existing reentrant script rule.
+class MovieKeyEventOwner final : public cc13cam2::OwnedObjectHost {
+public:
+    explicit MovieKeyEventOwner(std::optional<cc13cam::KeyframeEvent>& event) : event_(event) {}
+    void scalar_delete(std::uintptr_t object) override {
+        assert(event_ && object == reinterpret_cast<std::uintptr_t>(&*event_));
+        (void)object;
+        event_.reset();
+    }
+private:
+    std::optional<cc13cam::KeyframeEvent>& event_;
+};
 
 // Adapt the existing constructor's semantic fields to the HUD's existing key.
 // 007A08B6/007A0929 seed keys and 007A43AD/007A4430 parsed keys own these
@@ -849,7 +867,14 @@ int movie_camera_key_ticks_00797ed0(HudMovieCamera& camera, float dt,
                 continue;
             }
             cc13cam::KeyframeEvent ev = std::move(*k.event_ec);
+            if constexpr (kWireGoal2Chain217Bound) {
+                // 0078E540 calls the existing event replacement body; OFF keeps optional reset.
+                MovieKeyEventOwner owner(k.event_ec);
+                cc13cam2::movie_key_set_event_0078e540(
+                    cc13cam2::MovieKeyEventView{k.event_ec}, nullptr, owner);
+            } else {
             k.event_ec.reset();
+            }
             ++fired;
             cc13cam::keyframe_event_fire_00791540(ev, events);
             }
