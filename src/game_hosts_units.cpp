@@ -1312,6 +1312,9 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     unsigned long long bank_yaw_steps{0};
     // kPlaneDeckClampBound: dyn+A4h, and the clamp's counters.
     bool plane_contact_a4{false};
+    // Chain 254: the actual per-plane contact normal and flag written when
+    // the deck clamp raises this plane; the integrator consumes/clears +A4h.
+    bsp::gameplay_seg48_cc13::GroundContactUp plane_ground_contact{};
     unsigned long long deck_clamp_lifts{0};
     double deck_clamp_lift_total{0.0};
     // kPlanePoseFirstBound: ctl+7Ch and the levelling mode the last core law left.
@@ -26046,7 +26049,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 : 0.0f;
                             bool contact_a4 = false;
                             if constexpr (GameUnitsHost::Impl::kPlaneDeckClampBound) {
+                                if constexpr (bsp::kWireGoal4Chain254Bound) {
+                                    contact_a4 = ground && unit_.plane_ground_contact.contact_a4;
+                                } else {
                                 contact_a4 = ground && unit_.plane_contact_a4;
+                                }
                             }
                             if (ground && (pen > 0.0f || contact_a4)) {
                                 // 007D87F6-007D8838: with dyn+A4h set (007D87FD JNE) or dyn+94h > 0,
@@ -26195,7 +26202,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // ctl+0B0h (0042D0D0 with 0).
                                 if (pen > 0.0f || contact_a4) {
                                     if constexpr (GameUnitsHost::Impl::kPlaneDeckClampBound) {
+                                        if constexpr (bsp::kWireGoal4Chain254Bound) {
+                                            unit_.plane_ground_contact.contact_a4 = false;
+                                        } else {
                                         unit_.plane_contact_a4 = false;
+                                        }
                                     }
                                     const float g2 = gw[0] * gw[0] + gw[1] * gw[1] + gw[2] * gw[2];
                                     if (g2 > 0.0f && 0.0f > gw[1]) {
@@ -45793,7 +45804,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                      0.01));                                  // 007DA303-007DA318
                                 if (0.0f > dd) {                              // 007DA320 FCOMI / JBE
                                     unit_.motion.position[1] = unit_.motion.position[1] - dd;
+                                    if constexpr (bsp::kWireGoal4Chain254Bound) {
+                                        // 007DA331 calls 007D7D70 on ctl+10h
+                                        // only after this attached-deck lift.
+                                        // Its +A4h output is consumed by the
+                                        // next dynamics integration above.
+                                        bsp::gameplay_seg48_cc13::plane_dyn_set_ground_contact_up_007d7d70(
+                                            unit_.plane_ground_contact);
+                                        owner_.done("PlaneDynamics::set_ground_contact_up_007d7d70",
+                                            0x007d7d70u);
+                                    } else {
                                     unit_.plane_contact_a4 = true;            // 007D7D70
+                                    }
                                     ++unit_.deck_clamp_lifts;
                                     unit_.deck_clamp_lift_total += -static_cast<double>(dd);
                                 }
