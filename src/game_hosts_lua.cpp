@@ -118,6 +118,8 @@
 #include "bsp/settings_seg29_cc13.hpp"          // packet wire-lua, LuaMachine 006B8xxx
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
+#include "bsp/lua_listener_native_matchers.hpp" // goal 4 chain 286, 0096ACE0 / 00968FF0 / 00968440
+#include "bsp/wire_goal4_chain286_switches.hpp" // goal 4 chain 286 (kWireGoal4Chain286Bound)
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
 #include "bsp/wire_goal1_chain20_switches.hpp"
@@ -7290,6 +7292,32 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
         const char* const kReason = (cause >= 0 && cause < 7) ? kKillReasons[cause] : "harm";
         // 0097B8C0 collects every matching callback first, then 00887E50 calls each.
         std::vector<std::string> callbacks;
+        if constexpr (bsp::kWireGoal4Chain286Bound) {
+            // Goal 4 chain 286: each subscription's condition is its vtable[3]
+            // 00968FF0 on the boxed (entity, killReason): the +0Ch id set, then
+            // the +1Ch string set (_stricmp order); 0097B8C0 collects. The sets
+            // are the host's AddListener parse. OFF keeps the inline loop below.
+            namespace seg64 = bsp::cc13_seg49_64_78;
+            namespace matchers = bsp::lua_listener_native_matchers;
+            const seg64::EventParam entity_param = matchers::word_param(victim);
+            const seg64::EventParam reason_param = matchers::text_param(kReason);
+            const seg64::EventParams params{&entity_param, &reason_param};
+            matchers::MatchesHost matches_host;
+            std::vector<bsp::WarningSubscription> subscriptions;
+            for (const ListenerEntry& entry : listeners_) {
+                if (!listener_key_equal(entry.channel, "entityKilled") || entry.callback.empty()) {
+                    continue;
+                }
+                seg64::EntityKilledSubscription subscription;
+                bsp::WarningSubscription collected;
+                collected.callback = entry.callback;
+                collected.condition_holds = matchers::build_entity_killed_subscription(
+                        subscription, entry.entity_ids, entry.kill_reasons)
+                    && seg64::entity_killed_matches_00968ff0(subscription, params, matches_host);
+                subscriptions.push_back(std::move(collected));
+            }
+            callbacks = bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+        } else {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "entityKilled")) continue;
             if (!entry.entity_ids.empty()
@@ -7305,6 +7333,7 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
                 if (!reason) continue;
             }
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
         }
         for (const std::string& name : callbacks) {
             const int top = ::lua_gettop(state_);
@@ -8069,6 +8098,39 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
         }
         std::vector<std::string> callbacks;
         auto evaluate = [&](int attacker_id) {
+        if constexpr (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound) {
+            // Goal 4 chain 286: 0097B8C0 over the channel, each subscription's
+            // condition its vtable[3] 0096ACE0 on the boxed (victim, lastAttacker,
+            // +2D8h slot) against the entry's +0Ch / +1Ch / +2Ch sets, all three
+            // filters evaluated before they combine. The sets are the host's
+            // AddListener parse (lua_listener_native_matchers.hpp). OFF keeps the
+            // inline comparisons below.
+            namespace seg64 = bsp::cc13_seg49_64_78;
+            namespace matchers = bsp::lua_listener_native_matchers;
+            const seg64::EventParam victim_param = matchers::word_param(victim);
+            const seg64::EventParam attacker_param = matchers::word_param(attacker_id);
+            const seg64::EventParam slot_param = matchers::word_param(attacker_slot);
+            const seg64::EventParams params{&victim_param, &attacker_param, &slot_param};
+            matchers::MatchesHost matches_host;
+            std::vector<bsp::WarningSubscription> subscriptions;
+            for (const ListenerEntry& entry : listeners_) {
+                if (!listener_key_equal(entry.channel, "kill")) continue;
+                seg64::KillSubscription subscription;
+                const bool holds = matchers::build_kill_subscription(subscription,
+                        entry.entity_ids, entry.last_attacker_ids, entry.last_attacker_set,
+                        entry.last_attacker_player_indices)
+                    && seg64::kill_matches_0096ace0(subscription, params, matches_host);
+                if (holds && entry.attacker_filters_set) ++summary_.listener_kill_attacker_matched;
+                if (entry.callback.empty()) continue;
+                bsp::WarningSubscription collected;
+                collected.callback = entry.callback;
+                collected.condition_holds = holds;
+                subscriptions.push_back(std::move(collected));
+            }
+            const std::vector<std::string> matched =
+                bsp::evaluate_warning_channel_0097b8c0(subscriptions);
+            callbacks.insert(callbacks.end(), matched.begin(), matched.end());
+        } else {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "kill")) continue;
             if (!entry.entity_ids.empty()
@@ -8098,6 +8160,7 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
                 continue;
             }
             if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+        }
         }
         };
         evaluate(attacker);
@@ -10999,6 +11062,37 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                 }
                 if (!any) continue;
             }
+            if constexpr (bsp::kWireGoal4Chain286Bound) {
+                // Goal 4 chain 286: 009685B0's keys 5..7 go through each range
+                // filter's slot 0, 00968440 (ordered, inclusive; an unordered value
+                // fails), against the boxed damage, fire and leak: the hit record's
+                // +4Ch / +50h (GameGunneryHitEvent::fire_caused / leak_caused, the
+                // values 00988D87..00988F2C also pass as callback arguments 7 and 8),
+                // in place of the 0.0 the OFF arm still assumes. The device and
+                // attackerPlayerIndex keys keep the host's tests.
+                namespace seg64 = bsp::cc13_seg49_64_78;
+                namespace matchers = bsp::lua_listener_native_matchers;
+                if (entry.damage_range.size() >= 2
+                    && !seg64::range_filter_matches_00968440(
+                        matchers::range_filter(entry.damage_range[0], entry.damage_range[1]),
+                        matchers::number_param(hit.damage))) {
+                    continue;
+                }
+                if (entry.hit_device_filter) continue;
+                if (!holds(entry.attacker_player_indices, hit.attacker_player_index)) continue;
+                if (entry.fire_range.size() >= 2
+                    && !seg64::range_filter_matches_00968440(
+                        matchers::range_filter(entry.fire_range[0], entry.fire_range[1]),
+                        matchers::number_param(hit.fire_caused))) {
+                    continue;
+                }
+                if (entry.leak_range.size() >= 2
+                    && !seg64::range_filter_matches_00968440(
+                        matchers::range_filter(entry.leak_range[0], entry.leak_range[1]),
+                        matchers::number_param(hit.leak_caused))) {
+                    continue;
+                }
+            } else {
             if (entry.damage_range.size() >= 2
                 && (hit.damage < entry.damage_range[0] || hit.damage > entry.damage_range[1])) {
                 continue;
@@ -11018,6 +11112,7 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
             if (entry.leak_range.size() >= 2
                 && (0.0f < entry.leak_range[0] || 0.0f > entry.leak_range[1])) {
                 continue;
+            }
             }
             if (entry.hit_filters_unmodelled) {
                 ++summary_.listener_hit_unmodelled;
