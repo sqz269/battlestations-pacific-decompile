@@ -2,6 +2,8 @@
 #include "bsp/native_string_vector.hpp"
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/sound_lifetime_access.hpp"
+#include "bsp/game_settings.hpp"
+#include "bsp/wire_goal4_chain328_switches.hpp"
 #include <cstdlib>
 #include <cstring>
 #include <exception>
@@ -18,6 +20,35 @@ void* at(void* p,U offset) noexcept {return reinterpret_cast<void*>(reinterpret_
 template<class T=U> T get(void* p,U offset=0) noexcept {T value;std::memcpy(&value,at(p,offset),sizeof value);return value;}
 void word(void* p,U offset,U value) noexcept {std::memcpy(at(p,offset),&value,4);}
 void byte(void* p,U offset,std::uint8_t value) noexcept {*static_cast<std::uint8_t*>(at(p,offset))=value;}
+void float_word(void* p,U offset,const float& value) noexcept {
+    std::memcpy(at(p,offset),&value,4);
+}
+// The real 00F88980 settings owner remains authoritative. These temporary
+// projections carry only reset outputs back to its native sparse store set;
+// they do not replace the owner, its clan string, or its opaque bytes.
+void constructor_audio_defaults(void* p,U image_bits) noexcept {
+    GameSettingsBlock values;
+    reset_audio_defaults_008d41f0(values,image_bits);
+    float_word(p,0x20,values.audio.master_20);
+    float_word(p,0x28,values.audio.music_28);
+    float_word(p,0x2c,values.audio.effects_2c);
+    float_word(p,0x30,values.audio.speech_30);
+}
+void constructor_video_defaults(void* p,U image_bits) noexcept {
+    GameSettingsBlock values;
+    reset_video_defaults_008d4520(values,true,false,image_bits);
+    const auto& v=values.options_file;
+    const auto& x=values.presentation;
+    word(p,0x78,v.resolution_index_78);word(p,0x14,v.width_14);word(p,0x18,v.height_18);
+    word(p,0x5c,v.antialias_index_5c);word(p,0x58,v.antialias_58);byte(p,0x60,v.vsync_60);
+    float_word(p,0x64,x.gamma_64);word(p,0x68,v.texture_detail_68);
+    byte(p,0x1d,v.hires_shadow_1d);byte(p,0x1c,v.no_lod_1c);word(p,0x54,v.object_detail_54);
+    byte(p,0x84,v.shadow_84);byte(p,0x85,v.shadow_85);byte(p,0x6c,v.reflection_6c);
+    word(p,0x70,x.unknown_70);byte(p,0x74,v.clouds_74);byte(p,0x7c,values.gameplay.water_drops_7c);
+    byte(p,0x8c,x.shader_flag_8c);byte(p,0x8d,x.motion_blur_8d);word(p,0x90,x.old_film_effect_90);
+    byte(p,0x1e,v.fullscreen_1e);float_word(p,0x34,x.unknown_34);
+    byte(p,0x86,v.foliage_86);word(p,0x88,v.shader_model_88);
+}
 void begin(void* p,NativeGameSettingsContext& c,Op& op) {
     if(op.phase!=Op::Phase::fresh)throw std::logic_error("native settings operation cannot replay");
     op.owner=p;op.context=&c;op.phase=Op::Phase::running;
@@ -85,15 +116,30 @@ void* construct_native_game_settings_008d7710(void* p,NativeGameSettingsContext&
         op.unwind_state=1;byte(p,0xb0,0);byte(p,0xb1,0);byte(p,0xb2,1);op.native_site=0x008d77b4;
         construct_native_string_header_0041e870(at(p,0xb4),c.raw_strings,c.empty_00ce3a0c);
         const U audio=c.audio_bits_00ce3800;
+        if constexpr(kWireGoal4Chain328Bound) {
+            // bsp.py show 008D7710 --asm: 008D77C4..008D77D3 inlines 008D41F0's
+            // four audio stores. Call its existing body with the captured cell.
+            constructor_audio_defaults(p,audio);
+        } else {
         word(p,0x20,audio);word(p,0x28,audio);word(p,0x2c,audio);word(p,0x30,audio);
+        }
         const U video=c.video_bits_00ce7d20;
         byte(p,8,1);byte(p,9,0);word(p,0xc,2);byte(p,0x10,1);byte(p,0x4a,1);byte(p,0xb2,1);
+        if constexpr(kWireGoal4Chain328Bound) {
+            // 008D7801..008D7871 is 008D4520's complete store set with
+            // reset_resolution=true, keep_fullscreen=false. Keep +80h's
+            // gameplay store separate; no whole-owner copy or second run.
+            word(p,0x80,0);
+            constructor_video_defaults(p,video);
+        } else {
         word(p,0x80,0);word(p,0x78,0);word(p,0x14,0x280);word(p,0x18,0x1e0);
         word(p,0x5c,0);word(p,0x58,0);byte(p,0x60,1);word(p,0x64,0);word(p,0x68,2);
         byte(p,0x1d,0);byte(p,0x1c,0);word(p,0x54,2);byte(p,0x84,1);byte(p,0x85,0);
         byte(p,0x6c,1);word(p,0x70,0);byte(p,0x74,1);byte(p,0x7c,1);byte(p,0x8c,1);
         byte(p,0x8d,1);word(p,0x90,1);byte(p,0x1e,1);word(p,0x34,video);
-        byte(p,0x86,1);word(p,0x88,1);byte(p,0x42,0);byte(p,0x43,0);byte(p,0x41,1);
+        byte(p,0x86,1);word(p,0x88,1);
+        }
+        byte(p,0x42,0);byte(p,0x43,0);byte(p,0x41,1);
         byte(p,0x40,0);byte(p,0x44,1);
         auto* const manager=c.profile.current_manager_00f8abe8;op.unwind_state=2;
         if(manager) {
