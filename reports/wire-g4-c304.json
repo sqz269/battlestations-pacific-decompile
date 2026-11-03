@@ -1,0 +1,96 @@
+{
+  "goal": 4,
+  "chain": 304,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "bsp::game::kWireGoal4Chain304Bound",
+  "switch_header": "include/bsp/wire_goal4_chain304_switches.hpp",
+  "rows": [
+    {
+      "native": "00a10c60",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::can_auto_merge",
+      "state": "Both group member orders, first-member current positions, and the actual selected AiTuningBlock+208h are borrowed from the host. The reconstructed x87 body replaces the typed distance implementation in the ON arm.",
+      "called": true,
+      "call_sites": 1,
+      "reachable_call_site": "1004b672"
+    },
+    {
+      "native": "00a10d50",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::can_auto_merge",
+      "state": "The absorbed and absorbing groups' actual first-member class weights feed ECX/ST0 bridges. The existing body preserves its own-weight qword spill and candidate>=own x87 comparison before the distance call.",
+      "called": true,
+      "call_sites": 1,
+      "reachable_call_site": "1004b651"
+    },
+    {
+      "native": "00a2c720",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::close_in_target_group",
+      "state": "A fixed-lifetime native list view projects every current member in order using the existing entity handles. The candidate keeps its identity, including squadron handles; the old std::find runs only in OFF.",
+      "called": true,
+      "call_sites": 1,
+      "reachable_call_site": "1004f9a6"
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture resource accounting",
+      "reason": "No per-member ResourceUsage+304h projection is bound here; the current aggregate constant zero is not a populated vector of real member fields. A unit-field producer/accessor is still needed."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: auto_merge_dist and tuning_field",
+      "reason": "The host owns one selected AiTuningBlock, not the native coordinator+4 seven-record owner and mode-selector Seg70Host binding that this pointer-arithmetic body requires."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Whole merge needs raw61-produced 114h bags and one canonical clone/assignment/retirement domain for all payloads and children; the existing numeric-scalar merge projection does not supply that full ownership graph."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::untimed_entry_applies and timed_entry_applies",
+      "reason": "The HUD has no raw entry/descriptor/scope and unit views borrowed from the typed PowerupRuntime; that adapter must precede the applies-to-unit body."
+    },
+    {
+      "native": "008e9af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::collect_powerups",
+      "reason": "The typed PowerupRuntime is present, but its active collections and the collector's five native output vectors are not projected into the HUD binding."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: support_request_pending",
+      "reason": "The HUD bool stand-in does not borrow the actual local-player inventory, descriptor and uses-left fields from PowerupRuntime; this raw inventory adapter is still missing."
+    }
+  ],
+  "wired_total_before": 9287,
+  "wired_total_after": 9290,
+  "built": [
+    "Read-only native-offset list, command owner and leader views populated synchronously from existing live AI group state",
+    "Scoped active-tuning borrowing and Win32 ECX/ST0 callback bridges; invalid iterators or a stale projected pose fail closed",
+    "One focused standalone Win32 probe for layout, callback ABI, list identity, radius boundary, origin fallback and nested tuning lifetime"
+  ],
+  "verification": {
+    "baseline": "bsp.py index --if-stale fresh; scripts/build.ps1 passed both tests before edits",
+    "build": "scripts/build.ps1 passed Win32 Release and reconstructed_math/tool_tests after C++ changes",
+    "probe": "python tools/wire_goal4_chain304_probe.py passed; local/output/wire_g4_c304_probe/result.json records input SHA-256 values",
+    "probe_scope": "Synthetic Win32 fixture at x87 PC24, not a gameplay run",
+    "call_graph": "python tools/call_graph.py then who for each address: all three reachable, one direct host call apiece",
+    "readiness": "python tools/wire_readiness.py --standins: all three wired, called=true, call_sites=1",
+    "float_lint": "python tools/pc24_lint.py --staged: 0 findings, 3 files",
+    "old_paths": "The existing host statements remain unchanged in the OFF arms; no second body was added for any native address"
+  },
+  "limits": [
+    "No game launch or gameplay validation, as instructed",
+    "Read-only query views are C++ adapters, not original binary object or calling-ABI replacement claims",
+    "Leader position and class-weight provenance retains the existing host's squadron proxy and tuning behavior; full native entity ownership is outside this packet",
+    "Call-graph reachability includes vtable edges and proves executable call sites, not that a particular mission executes these branches"
+  ]
+}

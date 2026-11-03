@@ -50,6 +50,8 @@
 #include "bsp/wire_goal2_chain58_switches.hpp"  // goal 2 chain 58 (kWireGoal2Chain58Bound)
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/wire_goal4_chain304_switches.hpp"
+#include "bsp/game_ai_group_queries.hpp"
 
 namespace bsp::game {
 
@@ -2087,6 +2089,35 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             done("AiGroups::can_auto_merge", 0x00a2c8d0u);
             return false;
         }
+        if constexpr (kWireGoal4Chain304Bound) {
+            // The shared gates of 00A11F80 / 00A12450 precede their calls to
+            // 00A10D50 and 00A10C60. Other command classes use 00A0FC80 (false).
+            if (!bsp::ai_command_overrides_merge(b->command.type)
+                || group_has_groupable_combatant(from) != group_has_groupable_combatant(into)
+                || (b->command.type == bsp::AiCommandType::Idle
+                    && group_matches_009fe0b0(b) != group_matches_009fe0b0(a))) {
+                done("AiGroups::can_auto_merge", 0x00a2c8d0u);
+                return false;
+            }
+            AiGroupListQuery own(b->members, [this](std::size_t member) { return handle(member); });
+            AiGroupListQuery other(a->members, [this](std::size_t member) { return handle(member); });
+            AiGroupLeaderQuery own_leader(group_leader_position(from), group_leader_order_key(from));
+            AiGroupLeaderQuery other_leader(group_leader_position(into), group_leader_order_key(into));
+            own.bind_first_entity(&own_leader);
+            other.bind_first_entity(&other_leader);
+            AiCommandGroupQuery command;
+            command.owner_group = own.data(); // command+4, the absorbed group
+            AiGroupMergeQueryBinding query(tuning);
+            // bsp.py show 00a10d50 --asm: candidate >= own via unrounded ST0;
+            // show 00a10c60 --asm: spilled X/Z deltas, radius and squared terms.
+            // Reuse those bodies; the old typed arithmetic is only in OFF.
+            const bool ok = bsp::oct18_tail_c::ai_merge_strength_00a10d50(
+                &command, other.data(), query.bindings())
+                && bsp::oct18_tail_c::ai_merge_distance_00a10c60(
+                    &command, other.data(), query.bindings());
+            done("AiGroups::can_auto_merge", 0x00a2c8d0u);
+            return ok;
+        } else {
         bsp::AiCommandMergeFacts facts;
         facts.type = b->command.type;              // the absorbed group's command
         facts.other_group_present = true;          // `into` is the argument
@@ -2114,6 +2145,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const bool ok = bsp::ai_command_can_merge_with(facts);
         done("AiGroups::can_auto_merge", 0x00a2c8d0u);
         return ok;
+        }
     }
 
     void merge_group(void* into, void* from) override {
@@ -2669,8 +2701,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A2C720 walks the group's +563Ch list for the entity.
         Group* g = group_at(target_group);
         if (g == nullptr) return false;
+        if constexpr (kWireGoal4Chain304Bound) {
+            AiGroupListQuery query(g->members, [this](std::size_t member) { return handle(member); });
+            // Preserve the host's entity handles (including squadron identity)
+            // and member order; a candidate is not replaced by its flight proxy.
+            return bsp::oct18_tail_c::ai_group_contains_entity_00a2c720(
+                query.data(), candidate, ai_group_query_invalid_iterator);
+        } else {
         const std::size_t unit = unit_index_of(candidate);
         return std::find(g->members.begin(), g->members.end(), unit) != g->members.end();
+        }
     }
     void* close_member_current_target(void* member) override {
         // The member's vtable[+114h] then 0071EB60, then 00521EA0 to resolve
