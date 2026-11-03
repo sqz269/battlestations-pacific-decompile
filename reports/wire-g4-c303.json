@@ -1,0 +1,130 @@
+{
+  "chain": 303,
+  "worker": "agent/g4-w5",
+  "base": "a8e6ea038466e45a4cb44b326f5ad3efaef9ac68",
+  "switch": "bsp::kWireGoal4Chain303Bound",
+  "scope": "Canonical unit derived-pose cache used by live point and direction conversions",
+  "rows": [
+    {
+      "native": "00414e10",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::follow_to_body",
+      "evidence": "bsp.py show 00414e10 --asm: 00414E13 tests the owner's +10Ch byte; 00414E1C refreshes its pose; 00414E2D sets that byte before 00414E34 calls 00B63D50 into the owner's +110h output. 009BEE30's existing native call graph includes 00414E10, 004142E0 and 0042D0D0.",
+      "state": "The existing body borrows each GameUnitSlot's persistent PoseRefreshView and a new inverse matrix owned by the same slot. The existing motion-to-pose publisher invalidates that same derived-valid byte at creation and every later publication. Call inputs remain the live unit's published world pose and the actual caller's point or direction; repeated queries reuse the cache.",
+      "call_sites": 22,
+      "callers": [
+        "Impl::vehicle_avoidance_007df4f0 (8)",
+        "Impl::run_follow_hold_arm_009bee56 (5)",
+        "Impl::gunfire_detect_0099ec40 (3)",
+        "PlaneBinding::run_takeoff_run_step_009ce2c0 (2)",
+        "PlaneBinding::df_avoid_common_009a7a50 (1)",
+        "PlaneBinding::df_maneuver_enter_009a87f0 (1)",
+        "Impl::follow_sight_tick_009c211d (1)",
+        "Impl::friendly_in_line_eval_007dedb0 (1)"
+      ]
+    },
+    {
+      "native": "00b63d50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::follow_to_body through get_pose_derived_00414e10",
+      "reason": "Already called before this chain by rocket_homing_step_0080a25c; reused through the existing accessor without claiming another newly wired address."
+    },
+    {
+      "native": "004142e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::follow_to_body",
+      "reason": "Already called before this chain; its existing native-order point kernel is reused after the newly wired inverse accessor."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "Missing a persistent FrontEndScreenScroller with real attached content/thumb/arrow widgets and track measurements; briefing_text_height still returns zero."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::animate_detail_group and animate_page_group",
+      "reason": "Missing the two retained screen scrollers, attached widget graph, real input-axis provider and drag state."
+    },
+    {
+      "native": "00588c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::drive_map",
+      "reason": "Missing the world-map camera and persistent anchor, carried-zoom and selected/companion widget geometry needed by the full map update."
+    },
+    {
+      "native": "004842c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: UnitInstanceBinding::publish_bow_anchor and publish_stern_anchor",
+      "reason": "Missing owned bow/stern point effects with real scene-node and parent-relative matrix storage; the current anchor transforms and publications are records."
+    },
+    {
+      "native": "00815370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: UnitInstanceBinding::tick_part",
+      "reason": "Missing the actual unit-part effect pointer arrays and scalar-target owners; the unit instance currently has part_count zero."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::dive_bomb_rounds_remaining",
+      "reason": "The host retains aggregate/per-rack remaining ammo but not the separate attached kind-2Ah child count and reserve ammo required by this body."
+    },
+    {
+      "native": "00bd2f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::draw_normal",
+      "reason": "Missing a state-preserving RandomThreads/MT owner: the live host owns an LCG and keyed LCG streams, which cannot be passed as RandomThreads state."
+    },
+    {
+      "native": "007c4850",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane descriptor/tuning construction",
+      "reason": "Missing the full native plane-class descriptor projection and all its authored/derived field producers; the existing host carries only separate flight tuning subsets."
+    },
+    {
+      "native": "00aa31f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GuiManagerResources::release_page",
+      "reason": "Missing an actual native manager/page pair and native page refcount/virtual lifetime; GuiPageRegistry retains host GuiLayoutPage objects for the executable lifetime."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: BSP_UnitDebugInspector_PrintFlooded reconstruction",
+      "reason": "The original consumer is debug-only unit inspection; skipped as instructed."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed",
+    "call_graph_before": { "reconstructed_addresses_called": 4288 },
+    "call_graph_after": { "reconstructed_addresses_called": 4289 },
+    "readiness_before": { "wired": 9284 },
+    "readiness_after": { "wired": 9285, "selected_body_called": true, "selected_body_call_sites": 22, "selected_body_live_callers": 8 },
+    "entry_path": "WinMainCRTStartup -> startup/frame hosts -> GameMissionFrameHost::run_mission_frame_004e4a40 -> fixed simulation -> GameUnitsHost::motion_step_00825f20 -> PlaneBinding::run_takeoff_run_step_009ce2c0 -> get_pose_derived_00414e10",
+    "float_math": "No new arithmetic expressions; the inverse, point and non-normalizing direction paths reuse existing native-order kernels. The old conversion block remains unchanged in the switch-off arm.",
+    "runtime": "Game not launched, as instructed; compiled reachability and existing math tests do not establish live gameplay or original object ABI compatibility"
+  },
+  "merge_validation": {
+    "merged_origin_main": "8f0226bed0b5c18c40a25fcd2fe28d17a55822c6",
+    "resolution": "The only conflict was adjacent includes in src/game_hosts_units.cpp. Keep chain301's switch header together with chain303's switch, pose-derived and direction-kernel headers; both implementations remain intact.",
+    "merged_build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests 2/2",
+    "switch_off_build": "scripts/build.ps1 with kWireGoal4Chain303Bound=false passed; both test suites 2/2; 00414E10 absent from the built graph",
+    "switch_on_build": "scripts/build.ps1 after restoring kWireGoal4Chain303Bound=true passed; both test suites 2/2",
+    "compiled_addresses_called_off": 4292,
+    "compiled_addresses_called_on": 4293,
+    "selected_body_call_sites_on": 22,
+    "readiness_wired_on": 9289,
+    "readiness_selected_body": { "state": "wired", "called": true, "call_sites": 22, "callers_live": 8 },
+    "preserved_main_calls": "007EDAC0 remains entry-reachable from run_squadron_free_attack_009f8470; 00760260 remains entry-reachable from HostSessionMessages::queue_vehicle_party_7f.",
+    "runtime": "Game not launched; all reachability evidence is static."
+  },
+  "implementation_notes": [
+    "One existing body per address is reused. No new address-suffixed function or ledger entry was introduced.",
+    "The published world matrix remains the conversion input in both switch arms. No current-motion snapshot or guessed parent matrix was substituted.",
+    "Creation publishes the pose before placing the slot in the live registry, so its first inverse query sees derived_valid zero. Later pose publications invalidate the same byte; clean queries read the retained matrix.",
+    "The derived matrix is a cache owned for the full GameUnitSlot lifetime. The temporary PoseDerivedView contains only references to that owner's existing pose and cache.",
+    "No new tests were added; existing matrix inverse cases and the required build/test suites were used."
+  ]
+}

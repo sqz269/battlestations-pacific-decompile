@@ -25,6 +25,9 @@
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
 #include "bsp/wire_goal4_chain301_switches.hpp"
+#include "bsp/wire_goal4_chain303_switches.hpp"
+#include "bsp/pose_derived.hpp"
+#include "bsp/material_effect_plane.hpp"
 #include "bsp/scene_terrain_forwarders.hpp"
 #include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain295_switches.hpp"
@@ -2626,6 +2629,9 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // mission is top level (docs/GAME_EXECUTABLE.md milestone 2h, correction 8).
     bsp::CameraMatrix local{};
     bsp::CameraMatrix world{};
+    // The inverse at unit+110h belongs to this same pose. Mutable because a
+    // const frame query can lazily fill the cache through PoseRefreshView.
+    mutable bsp::CameraMatrix derived{};
     std::uint8_t world_valid{1};
     std::uint8_t derived_valid{1};
     bsp::PoseRefreshView* parent{nullptr};
@@ -7264,6 +7270,12 @@ struct GameUnitsHost::Impl {
         slot.world[11] = 0.0f;
         slot.world[15] = 1.0f;
         slot.local = slot.world;
+        if constexpr (bsp::kWireGoal4Chain303Bound) {
+            // Motion has published new +74h/+CCh rows. Invalidate the SAME
+            // +10Ch byte that 00414E10 tests, including the first publication
+            // during creation; no inverse exists before that publication.
+            slot.derived_valid = 0;
+        }
     }
 
     // 009BFD70, the first half of the follow tick 009C1FD0. The plane wing's
@@ -11228,6 +11240,25 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     }
     static void follow_to_body(const GameUnitSlot& u, const float p[3], bool direction,
                                float out[3]) {
+        if constexpr (bsp::kWireGoal4Chain303Bound) {
+            // bsp.py show 00414e10 --asm: +10Ch gates the retained +110h
+            // output; the dirty path refreshes +CCh before 00B63D50. Borrow
+            // the canonical unit pose and its cache, never a fresh pose or a
+            // separately guessed inverse. The old path below also reads
+            // u.world, so publication timing is unchanged.
+            bsp::PoseDerivedView view{*u.pose, u.derived};
+            const bsp::CameraMatrix& inverse = bsp::get_pose_derived_00414e10(view);
+            if (direction) {
+                // The follow law passes normalize=0 to 0042D0D0. Reuse its
+                // existing native-order kernel on the same cached inverse.
+                bsp::transform_native_effect_direction_0042d0d0_no_normalize(
+                    out, p, inverse.data());
+            } else {
+                std::array<float, 3> result{};
+                bsp::transform_point_004142e0({p[0], p[1], p[2]}, inverse, result);
+                for (std::size_t i = 0; i < result.size(); ++i) out[i] = result[i];
+            }
+        } else {
         const float* m = u.world.data();
         if constexpr (bsp::kFollowToBodyPc24Cc13Bound) {
             to_body_image_004142e0(m, p, direction, out);
@@ -11245,6 +11276,7 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
             // pc24-lint: allow SUBSTITUTION, see above
             out[r] = static_cast<float>(
                 (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+        }
         }
         }
     }
