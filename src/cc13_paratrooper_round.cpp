@@ -5,6 +5,8 @@
 #include "bsp/cc13_paratrooper_round.hpp"
 
 #include "bsp/bomb_torpedo_tick.hpp"   // bomb_air_velocity (006E1510)
+#include "bsp/gameplay_seg33_cc13.hpp"  // projectile_extrapolate_position_006e2220
+#include "bsp/wire_goal2_chain131_switches.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -93,12 +95,27 @@ public:
     void extrapolate_position(ParatrooperState& s, float dt) override {
         // 006E2220: +A4h = +448h + t * v. +448h is the pose 006E1010 committed
         // last step, which is the position this host keeps.
-        round_.position.x = f32(static_cast<double>(round_.position.x) +
-                                static_cast<double>(dt) * s.velocity_318.x);
-        round_.position.y = f32(static_cast<double>(round_.position.y) +
-                                static_cast<double>(s.velocity_318.y) * dt);
-        round_.position.z = f32(static_cast<double>(round_.position.z) +
-                                static_cast<double>(dt) * s.velocity_318.z);
+        // 006E2220 (007AC0FE): ON runs projectile_extrapolate_position_006e2220 on the round's
+        // position (+448h) and velocity (+318h); OFF keeps the double-chain stand-in below.
+        if constexpr (kWireGoal2Chain131Bound) {
+            const gameplay_seg33_cc13::Seg33Vec3 out =
+                gameplay_seg33_cc13::projectile_extrapolate_position_006e2220(
+                    gameplay_seg33_cc13::Seg33Vec3{round_.position.x, round_.position.y,
+                                                   round_.position.z},
+                    gameplay_seg33_cc13::Seg33Vec3{s.velocity_318.x, s.velocity_318.y,
+                                                   s.velocity_318.z},
+                    dt);
+            round_.position.x = out.x;
+            round_.position.y = out.y;
+            round_.position.z = out.z;
+        } else {
+            round_.position.x = f32(static_cast<double>(round_.position.x) +
+                                    static_cast<double>(dt) * s.velocity_318.x);
+            round_.position.y = f32(static_cast<double>(round_.position.y) +
+                                    static_cast<double>(s.velocity_318.y) * dt);
+            round_.position.z = f32(static_cast<double>(round_.position.z) +
+                                    static_cast<double>(dt) * s.velocity_318.z);
+        }
     }
     void orthonormalize_upright() override {}             // 0085DAD0: the pose only
     bool chute_anim_present() override { return true; }   // [[+464h]+0Ch]: the chute model
