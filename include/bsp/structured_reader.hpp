@@ -91,6 +91,9 @@ public:
     // Outputs remain unchanged on host failure. These use nonnull actual-count
     // reads in the complete-transfer domain, never font-style short zero-fill.
     bool read_u32(std::uint32_t& output) noexcept;
+    // Complete-transfer binding for the two native node word-consumption
+    // wrappers. Keeps the host's diagnostic value and sticky failure policy.
+    bool read_u32_with_native_node_wrapper(std::uint32_t& output, bool slot34) noexcept;
     bool read_float(float& output) noexcept;
     // Raw payload transfer through the same nonnull count/full-read domain.
     // Destination must hold count bytes; nullptr is valid only for count=0.

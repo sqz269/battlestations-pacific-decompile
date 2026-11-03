@@ -1490,11 +1490,19 @@ std::uint32_t* node_remaining(void* const* handle) noexcept { return &field<std:
 } // namespace
 
 void structured_node_read_u32_discarded_00be99e0(void** handle, EngineServiceCalls& calls) {
-    calls.read_dword_slot34_and_debit_00bf0280(node_reader(handle), node_remaining(handle));
+    structured_node_read_u32_discarded_00be99e0(
+        StructuredNodeWordView<void>{node_reader(handle), node_remaining(handle)},
+        [&calls](void* reader, std::uint32_t* remaining) {
+            calls.read_dword_slot34_and_debit_00bf0280(reader, remaining);
+        });
 }
 
 void structured_node_skip_u32_00be9a10(void** handle, EngineServiceCalls& calls) {
-    calls.read_dword_and_debit_00bf02a0(node_reader(handle), node_remaining(handle));
+    structured_node_skip_u32_00be9a10(
+        StructuredNodeWordView<void>{node_reader(handle), node_remaining(handle)},
+        [&calls](void* reader, std::uint32_t* remaining) {
+            calls.read_dword_and_debit_00bf02a0(reader, remaining);
+        });
 }
 
 void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls) {

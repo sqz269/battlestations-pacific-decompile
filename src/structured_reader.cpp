@@ -1,4 +1,6 @@
 #include "bsp/structured_reader.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/wire_goal2_chain122_switches.hpp"
 #include <new>
 #include <utility>
 
@@ -201,6 +203,37 @@ bool StructuredNode::read_u32(std::uint32_t& output) noexcept {
     if (!reader_->read_exact(&value, 4, remaining_, true)) return false;
     output = value;
     return true;
+}
+
+bool StructuredNode::read_u32_with_native_node_wrapper(
+    std::uint32_t& output, bool slot34) noexcept {
+    if constexpr (kWireGoal2Chain122Bound) {
+        if (!reader_ || !reader_->check_leaf(*this)) return false;
+        std::uint32_t value;
+        bool success = false;
+        // create_node produces reader_ and remaining_ from the same stream's
+        // chunk header. No image, reader budget, cursor or payload is copied.
+        engine_services_cc13::StructuredNodeWordView<StructuredReader> view{
+            reader_, &remaining_};
+        auto read_word = [&](StructuredReader* reader, std::uint32_t* remaining) {
+            // Both slots are little-endian DWORD reads in this host's existing
+            // complete-transfer domain. read_exact debits the actual byte count
+            // and updates the same expected cursor, including sticky failures.
+            success = reader->read_exact(&value, 4, *remaining, true);
+        };
+        if (slot34) {
+            // 00BE99E0 consumes via its typed body; OFF keeps read_u32 below.
+            engine_services_cc13::structured_node_read_u32_discarded_00be99e0(view, read_word);
+        } else {
+            // 00BE9A10 consumes via its typed body; OFF keeps read_u32 below.
+            engine_services_cc13::structured_node_skip_u32_00be9a10(view, read_word);
+        }
+        if (!success) return false;
+        output = value;
+        return true;
+    } else {
+        return read_u32(output);
+    }
 }
 
 bool StructuredNode::read_float(float& output) noexcept {
