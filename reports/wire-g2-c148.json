@@ -1,0 +1,142 @@
+{
+  "chain": 148,
+  "goal": 2,
+  "slot": "g2-w5",
+  "run": 292,
+  "branch": "agent/g2-w5",
+  "candidate": "segment 96 [00bd9220-00be4410]",
+  "tier": 2,
+  "host_file": "src/native_vfs_extension_prefix.cpp",
+  "switch": "kWireGoal2Chain148Bound",
+  "switch_default": false,
+  "wired_before": 8977,
+  "wired_after": 8980,
+  "wired_delta": 3,
+  "host_objects": [],
+  "storage": "No new owning object. Borrow the existing phase-2 VFS manager+54h prefix tree, its extension/directory string headers, its ActualNativeStringPoolStorage and validation callbacks, and the package enumeration caller's actual list and copied name header.",
+  "adapters": [
+    {
+      "name": "PrefixFindAdapter",
+      "where": "src/native_vfs_extension_prefix.cpp:139",
+      "producers": [
+        "GameStartupHost::run_initialize_phases -> GameVfsHost::phase2 -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 supplies extension/directory headers from the existing startup constants",
+        "GameNativeVfsApplication initializes the existing manager and canonical pooled-string owner; register_native_vfs_extension_prefix_00be1480 receives that manager, pool and validation callbacks"
+      ],
+      "rows": [
+        "00bdc3f0"
+      ]
+    },
+    {
+      "name": "NativeStringPairView",
+      "where": "include/bsp/engine_services_cc13.hpp:60",
+      "producers": [
+        "Pair::construct_extension_first deep-copies the actual extension/directory headers; Pair::lower_and_trail performs the existing lowercase/directory normalization",
+        "Only Pair<kWireGoal2Chain148Bound> normalized has the native 00bdb7c0 destructor role; copied insertion pairs and lookup temporaries retain their original cleanup"
+      ],
+      "rows": [
+        "00bdb7c0"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "00bdbfd0",
+      "address": "00be0ffb",
+      "function": "00be0fc0",
+      "host_site": "src/native_vfs_enumeration.cpp:append_unique_00be0fc0",
+      "status": "wired",
+      "reach": "static",
+      "path": "GameStartupHost::application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> GameNativeVfsRuntime::scan_phase2_packages -> scan_native_vfs_packages_0073cb10 -> enumerate_native_vfs_resources_00bdd990 -> visit_native_vfs_enumeration_mounts_00bdd0a0 -> enumerate_mount_00be1130 -> append_unique_00be0fc0. No disabled switch gates this path; names come from the mounted providers.",
+      "contract": "ECX output iterator; EDX by-value name header; four stack words for begin/end checked iterators; RET 10h at 00bdc02f. The ON arm replaces the local equal-length/insensitive list scan, then uses its selected node for the existing duplicate/append branch.",
+      "coverage": "existing body; host wiring only"
+    },
+    {
+      "native": "00bdb7c0",
+      "address": "00be1584",
+      "function": "00be1480",
+      "host_site": "src/native_vfs_extension_prefix.cpp:Pair<kWireGoal2Chain148Bound>::~Pair for register_native_vfs_extension_prefix_00be1480::normalized",
+      "status": "wired",
+      "reach": "static",
+      "path": "GameStartupHost::application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 -> register_native_vfs_extension_prefix_00be1480 -> normalized pair cleanup. No disabled switch gates this path.",
+      "contract": "ECX pair (saved in ESI at 00bdb7d7), plain RET at 00bdb835. Release directory header +8h/+0Ch before extension +0h/+4h, retaining headers. Typed borrowed-header overload owns the only body; raw entry delegates. Partial construction keeps the existing state guard; copied pairs and directory-first lookup temporaries do not select this role.",
+      "coverage": "existing body; typed view and host wiring only"
+    },
+    {
+      "native": "00bdc3f0",
+      "address": "00be14b5",
+      "function": "00be1480",
+      "host_site": "src/native_vfs_extension_prefix.cpp:register_native_vfs_extension_prefix_00be1480",
+      "status": "wired",
+      "reach": "static",
+      "path": "GameStartupHost::application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 -> register_native_vfs_extension_prefix_00be1480. No disabled switch gates this path.",
+      "contract": "ECX manager, stack output/extension/directory; RET 0Ch at 00bdc605 and 00bdc673. 00be1480 loads EBP extension from its first stack argument and EDI directory from its second, then pushes directory, extension and result. The ON arm replaces the local duplicate search; the body's actual selected node controls registration. A typed tree overload owns the only body; the raw entry forwards through the original VfsPathContext services. PrefixFindAdapter borrows the actual tree and string pool and forwards existing normalization/bounds/iterator operations.",
+      "coverage": "existing body; typed view and host wiring only"
+    },
+    {
+      "native": "00bdcbb0",
+      "address": "00be14dc",
+      "function": "00be1480",
+      "host_site": "src/native_vfs_extension_prefix.cpp:Pair::construct_extension_first",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "construct_string_pair_00bdcbb0 in engine_services_cc13.cpp performs two copies without unwinding the first if the second allocation throws. The live Pair tracks construction state and releases that first header; wiring the body directly loses that cleanup. Body repair is outside this chain."
+    },
+    {
+      "native": "00be0b90",
+      "address": "00be1565",
+      "function": "00be1480",
+      "host_site": "src/native_vfs_extension_prefix.cpp:insert_pair",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "prefix_tree_insert_equal_00be0b90 descends into buy_prefix_tree_node_00bdf700/copy_string_pair_00bdcea0 with no partial-node exception cleanup. The current allocate_node path frees the detached node and first string if the second copy throws. Do not replace that path with the incomplete dependency or fix bodies in this run."
+    },
+    {
+      "native": "00be10a0",
+      "address": "00be2450",
+      "function": "00be2310",
+      "host_site": "src/native_vfs_search_groups.cpp:Payload::construct",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "construct_search_group_payload_00be10a0 has no cleanup for the copied name/first list sentinel when a later sentinel allocation fails. The current Payload tracks states 0/1/2 and unwinds exactly the initialized parts; the native listing also records EH states around the two 004c3020 calls. Fixing this body or exporting construction-progress callbacks is outside the chain."
+    },
+    {
+      "native": "00bdeb40",
+      "address": "00bdf547",
+      "function": "00bdf4c0",
+      "host_site": "src/native_vfs_name_resolution.cpp:resolve_native_vfs_existing_name_00bdf4c0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The OFF resolution path already calls log_resolved_name, the same implementation called by log_native_vfs_resolved_name_00bdeb40. Replacing that with the wrapper identifier would only duplicate the existing implementation call and would not satisfy the counting rule."
+    },
+    {
+      "native": "00be2ac0",
+      "address": "00becdbf",
+      "function": "00becda0",
+      "host_site": "src/native_platform_construction.cpp:construct_native_win32_platform_00becda0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The OFF host already calls construct_native_window_platform_base_00be2ac0, a reconstruction of this same address. Switching to the legacy window_platform_base_construct_00be2ac0 would duplicate the native role and change its current raw singleton-registration domain and x87 FILD/FIDIV preimage handling."
+    },
+    {
+      "native": "00be3fd0",
+      "address": "004cce3b",
+      "function": "004cccc0",
+      "host_site": "src/engine_seg4_6_9_cc13.cpp:game_leave_session_004cccc0 -> LeaveSessionHost::allocation_report_00be3fd0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The actual allocation-stat publication and constructor exist, but no host implements LeaveSessionHost::allocation_report_00be3fd0 or invokes game_leave_session_004cccc0. The other original caller is the reconstructed teardown body. Neither supplies a reachable host call site for this row; adding a report to unrelated application shutdown would invent the site."
+    }
+  ],
+  "checks": {
+    "off_build": "passed: final scripts/build.ps1 after ON check; 2/2 CTest checks passed",
+    "on_build": "passed: off_switch_on_build.py --names kWireGoal2Chain148Bound; exit 0, 0 distinct diagnostics; switch restored",
+    "call_sites": "passed: verify_report_calls.py reports/wire-g2-c148.json; 9 call rows checked, 0 failed",
+    "pc24_lint": "not applicable: ON arms contain no x87 arithmetic and no x87 body was changed",
+    "game_run": "not run, as instructed",
+    "diff_review": "reviewed all four code/header diffs; OFF host scans/releases remain in the else arms; Raw helpers delegate to their single typed bodies",
+    "readiness": "passed after final OFF build: 00bdbfd0=wired, 00bdb7c0=wired, 00bdc3f0=wired"
+  },
+  "on_effect": "Use existing reconstructed name-list lookup during provider enumeration, reconstructed extension/prefix duplicate lookup during phase-2 registration, and the reconstructed normalized-pair destructor at its existing lifetime boundary. No new owning object or constant-fed surrogate state.",
+  "wired_count": 3,
+  "skipped_count": 6
+}

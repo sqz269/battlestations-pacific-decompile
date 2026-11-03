@@ -741,8 +741,12 @@ void release_string_at(void* object, std::size_t offset, NativeStringStorage& st
 }
 
 void destroy_string_pair_00bdb7c0(void* pair, NativeStringStorage& strings) noexcept {
-    release_string_at(pair, 8, strings);
-    release_string_at(pair, 0, strings);
+    destroy_string_pair_00bdb7c0(NativeStringPairView{string_at(pair, 0), string_at(pair, 8)}, strings);
+}
+
+void destroy_string_pair_00bdb7c0(NativeStringPairView pair, NativeStringStorage& strings) noexcept {
+    destroy_native_string_header_0041dd20(&pair.second, strings);
+    destroy_native_string_header_0041dd20(&pair.first, strings);
 }
 
 void* scalar_delete_string_record(void* object, std::uint32_t flags, std::size_t offset,
@@ -1047,27 +1051,48 @@ void* vfs_find_mount_by_name_and_path_00bdba50(void* vfs, const NativeString& na
 
 NativeIterator& vfs_find_extension_prefix_pair_00bdc3f0(void* vfs, NativeIterator& result, const NativeString& extension,
                                                         const NativeString& prefix, VfsPathContext& context) {
+    struct Adapter final : ExtensionPrefixFindHost {
+        VfsPathContext& context;
+        explicit Adapter(VfsPathContext& value) : context(value) {}
+        void slash_terminate(NativeString& path) override {
+            engine_services_cc13::slash_terminate(path, context);
+        }
+        void* upper_bound(NativeContainerHeader& tree, const NativeString& key) override {
+            return context.calls.upper_bound_extension_prefix_00bda2c0(tree, key);
+        }
+        void* lower_bound(NativeContainerHeader& tree, const NativeString& key) override {
+            return context.calls.lower_bound_indexed_name_00bda260(tree, key);
+        }
+        void advance(NativeIterator& it) override { context.calls.advance_physical_index_iterator_00bd9860(it); }
+        void invalid_parameter() override { context.calls.invalid_parameter_00bf6713(); }
+    } host(context);
+    return vfs_find_extension_prefix_pair_00bdc3f0(field<NativeContainerHeader>(vfs, 0x54),
+        result, extension, prefix, context.strings, host);
+}
+
+NativeIterator& vfs_find_extension_prefix_pair_00bdc3f0(NativeContainerHeader& tree,
+    NativeIterator& result, const NativeString& extension, const NativeString& prefix,
+    NativeStringStorage& strings, ExtensionPrefixFindHost& host) {
     // The tree pointer (vfs+54h) is tested for null before each iterator use in the listing; it cannot be
     // null for a real object, so those tests are omitted.
-    TemporaryString wanted(context.strings);
-    wanted.value.copy_from_00be0a30_fragment(context.strings, prefix);
-    TemporaryString key(context.strings);
-    key.value.copy_from_00be0a30_fragment(context.strings, extension);
+    TemporaryString wanted(strings);
+    wanted.value.copy_from_00be0a30_fragment(strings, prefix);
+    TemporaryString key(strings);
+    key.value.copy_from_00be0a30_fragment(strings, extension);
     lowercase_native_string_header_004bcc00(&wanted.value);
     lowercase_native_string_header_004bcc00(&key.value);
-    slash_terminate(wanted.value, context);
-    auto& tree = field<NativeContainerHeader>(vfs, 0x54);
-    void* const hi = context.calls.upper_bound_extension_prefix_00bda2c0(tree, key.value);
-    NativeIterator it{&tree, context.calls.lower_bound_indexed_name_00bda260(tree, key.value)};
+    host.slash_terminate(wanted.value);
+    void* const hi = host.upper_bound(tree, key.value);
+    NativeIterator it{&tree, host.lower_bound(tree, key.value)};
     if (it.node != hi) {
         while (it.node != hi && it.node != tree.head) {
-            if (it.node == tree.head) context.calls.invalid_parameter_00bf6713();
+            if (it.node == tree.head) host.invalid_parameter();
             if (equal_native_string_headers_00435c40(bytes(it.node) + 0x14, &wanted.value)) {
                 result.container = &tree;
                 result.node = it.node;
                 return result;
             }
-            context.calls.advance_physical_index_iterator_00bd9860(it);
+            host.advance(it);
         }
     }
     result.node = tree.head;
