@@ -1,0 +1,103 @@
+{
+  "goal": 4,
+  "chain": 315,
+  "slot": "g4-w1",
+  "base": "56fa7cd945",
+  "switch": "bsp::kWireGoal4Chain315Bound",
+  "summary": "Bind the existing segment-38 path-follower queries to the command host's live user-path attachment predicates and cursor, and consume the remaining-count result in the plane moveonpath waypoint getter.",
+  "wired_total_before": 9313,
+  "wired_total_after": 9315,
+  "called_addresses_before": 4340,
+  "called_addresses_after": 4342,
+  "count_note": "0071D2A0 was already textually wired through same-address host method names; this change adds actual calls to its existing reconstructed body. 0071D270 and 0071D2E0 are newly wired addresses.",
+  "rows": [
+    {
+      "native": "0071d270",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::user_path_attached_0071fc40",
+      "state": "Existing moveonpath head, path_begun, path_built and path_user fields establish the host's source-presence and own-list relationship. The result feeds path-follow and waypoint queries.",
+      "evidence": "bsp.py show 0071d270 and 0071fc40: identical source+14h / source virtual+24h == path+40h tests. The typed predicate retains the host's existing conjunction.",
+      "call_proof": "call_graph.py who 0071d270: reachable direct call at 1007c382 from user_path_attached_0071fc40; Release ICF folds the body with other identical predicates, so the two other callers reported at this address are not claimed."
+    },
+    {
+      "native": "0071d2a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::user_path_remaining_0071d2a0 and GameCommandsHost::path_cursor_point3",
+      "state": "The reconstructed wrapper selects the attached follower's virtual+14h answer or -1. path_cursor_point3 consumes it as the current user-path index; authored entity paths retain their separate cursor read.",
+      "evidence": "bsp.py show 0071d2a0: call virtual+14h only when the source returns the owner's list; otherwise return -1. No director access or virtual query occurs for a missing attachment.",
+      "call_proof": "call_graph.py who 0071d2a0: the reconstructed gameplay_seg38_cc13 body has reachable calls at 1007554b from path_cursor_point3 and 1007c3f1 from user_path_remaining_0071d2a0. The pre-existing same-address AI/host methods are not substituted for this proof."
+    },
+    {
+      "native": "0071d2e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::user_path_remaining_0071d2a0 and GameCommandsHost::path_cursor_point3",
+      "state": "Read the existing attached user's path_cursor.index_08 as the host's path+18h cursor; pass the actual user-point count. The body is invoked only for the attached branch, matching 0071D2A0's virtual-call guard.",
+      "evidence": "bsp.py show 0071d2e0: attached returns +18h; detached returns 0 for a nonempty own list or -1 otherwise. This packet uses the attached branch and preserves the existing host cursor interpretation.",
+      "call_proof": "call_graph.py who 0071d2e0: reachable calls at 1007553a from path_cursor_point3 and 1007c3e3 from user_path_remaining_0071d2a0. The plane moveonpath approach_inputs callback consumes path_cursor_point3's waypoint in src/game_hosts_units.cpp."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "Missing caller-owned command-target storage/consumer and readable original absolute globals 00F87574/78/7C required by the existing naked body; the host callback currently returns an empty handle."
+    },
+    {
+      "native": "00523560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "reason": "Missing resolved target-object kind-18h producer and ViewSeg14Hooks binding; this site explicitly substitutes its own override_squadron marker for the native target-kind query."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: aircraft rack-round queries",
+      "reason": "Missing separation of live attached kind-2Ah children from reserve ammo+484h at the queried sites; host aggregate/authored rack totals alone cannot supply both terms without assuming their split."
+    },
+    {
+      "native": "0075eb40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::session_broadcast_blackout_0076d310",
+      "reason": "No single-player sender at this site: the native blackout broadcaster is gated by session mode exactly 1; campaign blackout applies locally without this message constructor."
+    },
+    {
+      "native": "00762a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_liftoff_c6h_007c6f50",
+      "reason": "Missing provenance for message byte +20h: native 00762A00 leaves it unwritten and this liftoff host explicitly substitutes zero; adding a codec would propagate that unsupported flag."
+    },
+    {
+      "native": "007611d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: ShipSetTorpedoStock dispatch",
+      "reason": "No type-96h message producer on this Lua path: 0089EEE0 calls 0081F8B0 directly, whose stock/body inspection shows local tube/reserve updates, so a fabricated serialization hop would not match the binary."
+    },
+    {
+      "native": "007613b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: ExplodeToParts dispatch",
+      "reason": "No type-9Ah message producer on this Lua path: native 0088E1B0 directly fetches the parts object and calls 00935C70; its existing host queue is not evidence of a native serialized message."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::place_at_world_position_008193a0",
+      "reason": "Missing complete native pose/controller and child-invalidation binding: current position/wake stores do not implement the virtual+114h, mirrored +6A4h, subtree invalidation and owner callbacks required by the native setter."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "final_build": "scripts/build.ps1 passed after the live waypoint consumer change; both CTests passed",
+    "diff_check": "git diff --check passed",
+    "call_graph": "Final Release executable: 34574/34758 functions reachable; 4342/4777 reconstructed addresses called; 179687 edges. All three reconstructed query bodies have calls from edited host code.",
+    "readiness": "wire_readiness.py --standins reports 9315 wired versus baseline 9313; the three selected rows are called=true",
+    "pc24": "Not applicable: no float arithmetic changed",
+    "tests_added": 0,
+    "game_run": false
+  },
+  "limits": [
+    "Typed host integration, not a drop-in original ABI replacement or a new native source-object implementation.",
+    "Preserves the existing path source-presence projection and path+18h cursor interpretation; source-native pointer/observer reconstruction remains separate work.",
+    "The campaign consumer is the plane moveonpath waypoint getter. The separate AI coordinator cautious-route callback is not claimed to be campaign-active merely because its vtable is reachable.",
+    "No game was launched; executable call-graph reachability is not runtime execution evidence."
+  ]
+}
