@@ -1,0 +1,164 @@
+{
+ "chain": 104,
+ "slot": "g2-w4",
+ "goal": 2,
+ "harness": "claude",
+ "host_file": "src/native_mission_lua_stack.cpp",
+ "files": [
+  "src/game_hosts_lua.cpp",
+  "include/bsp/wire_goal2_chain104_switches.hpp"
+ ],
+ "switch": "kWireGoal2Chain104Bound",
+ "rows": [
+  {
+   "native": "006b7e80",
+   "address": "008879bf",
+   "function": "00887750",
+   "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::lua_settop",
+   "status": "wired",
+   "reached": 614,
+   "note": "ON calls LuaMachine::set_top (src/settings_seg29_cc13.cpp). The readiness tool binds this row to that body: it is the address's first ledger record, matched by ledger_snake. The machine is a non-owning bsp::cc13_seg29::LuaMachine over state_, built by its 006B7E30 constructor. GameMissionLuaHost::lua_settop is the MissionLuaHostServices stand-in for 006B7E80 (include/bsp/mission_lua_host.hpp:226). Its callers are run_named_call_body (the 00887750/00887e50 body) and run_lua_chunk. Host-only stand-in chunks in game_hosts_units/gunnery also call it; they get the same lua_settop on the same state. The only row wired in this chain. A second body exists at src/native_mission_lua_stack.cpp:36 (set_top_native_mission_lua_006b7e80). It is not called: with the call behind an OFF switch, the OFF map never shows that suffixed name, so the row would never count as wired."
+  },
+  {
+   "native": "006b7e90",
+   "status": "skipped",
+   "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::lua_pushvalue",
+   "reason": "No live host path reaches it. The host calls lua_pushvalue only at mission_lua_host.cpp:766, inside the forward_first != 0 branch, and both request builders this host reaches set forward_stack_first = 0 (mission_lua_host.cpp:805, :829). The other NamedCallRequest builders run on hosts nobody implements: mission_named_call_args.cpp has its own host interface, and panel_sequence/voice_fade_update/voice_sequence_update reach the Lua host through accessors (current_mission_lua_1a08, mission_lua_005b8d14) that no host implements. Arm reverted in review round 1."
+  },
+  {
+   "native": "006b7ea0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::lua_remove",
+   "reason": "No live host path reaches it. lua_remove runs only for a self key or a dotted entry name (mission_lua_host.cpp:748/756). No builder this host reaches sets self_key. The only live entry, call_entry_point_if_defined (game_hosts_lua.cpp:12121/12498), first calls global_is_defined, which looks up the whole name as one global key (game_hosts_lua.cpp:13287), so a dotted name never passes. The direct call_named_entry_point_threadsafe callers (panel_sequence, voice_*) are not live (no host implements their Lua accessors). The push_argument EntityId arm (00885E51) is no alternative: the host never produces EntityId arguments. Arm and include reverted in review round 1."
+  },
+  {
+   "native": "00c42ba0",
+   "status": "skipped",
+   "host_site": "src/hull_terrain_contact.cpp",
+   "reason": "Already running. HullTerrainContactSolver::step calls dyn_apply_warm_start_00c42ba0 (src/hull_terrain_contact.cpp:634, also 1711), and game_hosts_units.cpp runs host.hull_terrain.step with kHullTerrainContactSolverBound = true. Readiness misses it because the solver's methods are plain names, which keeps hull_terrain_contact.cpp out of its reach set. Wiring it again would duplicate a call the OFF code already makes."
+  },
+  {
+   "native": "00c4de40",
+   "status": "skipped",
+   "host_site": "src/hull_terrain_contact.cpp",
+   "reason": "Already running. HullTerrainContactSolver::step calls dyn_build_contact_rows_00c4de40 (src/hull_terrain_contact.cpp:621, also 1696), reached from game_hosts_units.cpp with kHullTerrainContactSolverBound = true. This is a readiness reach artifact, not an unwired row."
+  },
+  {
+   "native": "00662210",
+   "status": "skipped",
+   "host_site": "src/pool_pool21_cc13.cpp",
+   "reason": "No host implements support_highlight_hangar_loadout_00662210. The name appears only as calls and the interface declaration in pool_pool21_cc13 and seg27_cc13, so the caller isn't running."
+  },
+  {
+   "native": "00666dc0",
+   "status": "skipped",
+   "host_site": "src/pool_pool21_cc13.cpp",
+   "reason": "No host implements support_build_hangar_loadout_ring_00666dc0; only pool_pool21_cc13/seg27_cc13 calls and declarations exist. The caller isn't running."
+  },
+  {
+   "native": "0066b6c0",
+   "status": "skipped",
+   "host_site": "src/pool_pool21_cc13.cpp",
+   "reason": "No host implements support_refresh_info_panel_0066b6c0; only pool_pool21_cc13/seg27_cc13 calls and declarations exist. The caller isn't running."
+  },
+  {
+   "native": "0065f170",
+   "status": "skipped",
+   "host_site": "src/frontend_seg16_24_28_cc13.cpp",
+   "reason": "No host implements support_play_unavailable_sound_0065f170; only frontend_seg16_24_28_cc13/pool_pool21_cc13 calls and declarations exist. The caller isn't running."
+  },
+  {
+   "native": "00b679f0",
+   "status": "skipped",
+   "host_site": "src/frontend_seg16_24_28_cc13.cpp",
+   "reason": "No host implements lua_get_vector2_00b679f0. It is declared in frontend_seg12_17_cc13.hpp and frontend_seg16_24_28_cc13.hpp and implemented nowhere, which agrees with the c85/c88 skips."
+  },
+  {
+   "native": "00475710",
+   "status": "skipped",
+   "host_site": "src/cg_rebuild_a_cc13.cpp",
+   "reason": "No host implements buoy_class_get_or_create_00475710; only cg_rebuild_a_cc13/cc13_left8b_seg8 calls and declarations exist. cg_rebuild_a_cc13.hpp is included only by its own .cpp."
+  },
+  {
+   "native": "0047b3c0",
+   "status": "skipped",
+   "host_site": "src/cg_rebuild_a_cc13.cpp",
+   "reason": "No host implements vehicle_visual_class_get_or_create_0047b3c0; only cc13 callers and declarations exist. Agrees with the c88 skip."
+  },
+  {
+   "native": "00829180",
+   "status": "skipped",
+   "host_site": "src/cg_rebuild_a_cc13.cpp",
+   "reason": "No host implements indexed_points_reserve_00829180; only cg_rebuild_a_cc13/cc13_big53 calls and declarations exist."
+  },
+  {
+   "native": "00b67c40",
+   "status": "skipped",
+   "host_site": "src/ship_class_fields.cpp",
+   "reason": "ship_class_fields.cpp names 00B67C40 only in a field-table documentation string (Camos[].GunColor). No host converts ShipClassConversion::Vector4 or CamoArray, so this file has no live site. Unverified lead for a later chain: the image's other callers are 008082a0 (game_hosts_gunnery.cpp, build_sensor_class_table_008082a0) and 00b1b980."
+  },
+  {
+   "native": "0048e8d0",
+   "status": "skipped",
+   "host_site": "src/ship_class_fields.cpp",
+   "reason": "Named only in a documentation string (Idle[].templates). No host converts ShipClassConversion::ClassWeightMap, and the body needs the native enum dictionary storage (LandVehicleclasses, 00CE6710), which this host does not build."
+  },
+  {
+   "native": "0048e960",
+   "status": "skipped",
+   "host_site": "src/ship_class_fields.cpp",
+   "reason": "Named only in a documentation string (Idle[].templates). No host consumer exists, and the body needs the native enum dictionary storage."
+  },
+  {
+   "native": "00b4ed70",
+   "status": "skipped",
+   "host_site": "src/render_fx_cc13.cpp",
+   "reason": "Appears only as a parameter name (reserve_00b4ed70). render_fx_cc13.hpp is included only by tests, so no host path reaches the caller."
+  },
+  {
+   "native": "00b4ee20",
+   "status": "skipped",
+   "host_site": "src/render_fx_cc13.cpp",
+   "reason": "Only a distortion_release_objects parameter. render_fx_cc13.hpp is included only by tests."
+  },
+  {
+   "native": "0074fa80",
+   "status": "skipped",
+   "host_site": "src/dummy_depth_seg34_argon.cpp",
+   "reason": "dummy_depth_seg34_argon.hpp is included only by its own .cpp and tests/cc13_leaf_fixture_tests.cpp, so the fn_at(0x0074FA80) site has no host root."
+  },
+  {
+   "native": "00c32d20",
+   "status": "skipped",
+   "host_site": "src/dummy_depth_seg34_argon.cpp",
+   "reason": "Same file: the header is included only by tests, so the fn_at(0x00C32D20) site has no host root."
+  },
+  {
+   "native": "0051f5e0",
+   "status": "skipped",
+   "host_site": "src/dummy_depth_seg34_argon.cpp",
+   "reason": "Same file: the header is included only by tests, so the fn_at(0x0051F5E0) site has no host root."
+  }
+ ],
+ "host_objects": [],
+ "host_object_note": "No new host object. Each ON arm builds the existing image-shaped bsp::cc13_seg29::LuaMachine (sizeof 0Ch) over GameMissionLuaHost::state_ with its reconstructed non-owning constructor 006B7E30. mirror_identity_00928100 already uses the same pattern.",
+ "wired_before": 8921,
+ "wired_after": 8922,
+ "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+ "build_on": "off_switch_on_build.py --names kWireGoal2Chain104Bound: build.ps1 exit 0, 0 distinct diagnostics",
+ "pc24_lint": "0 findings (no x87 arithmetic in the ON arms)",
+ "pair_run": "USN04, 3200 frames, both exit_code=0, run at 526c57292 (three arms; the lua_pushvalue/lua_remove arms ran 0 times, so the pair also stands for the one-arm branch after round 1). GAMEPLAY identical: 28 deaths, 380 hits, 6366.6 damage, 5509 shots. UNIT TABLE identical (81 rows). NATIVE TABLE 1624 -> 1625: + MissionLua::lua_settop 006b7e80 concrete calls=614. OTHER LINES: 231/231 'atlas source' lines that print heap pointers in decimal (append_slot), which is address noise. pair_diff verdict: DIFFERENT, gameplay identical.",
+ "flip_proposal": "Flip kWireGoal2Chain104Bound to true. Its one arm sends GameMissionLuaHost::lua_settop through the reconstructed LuaMachine::set_top on a non-owning LuaMachine over state_ (614 calls in USN04, identical gameplay). The wrapper never closes the state.",
+ "review_round_1": {
+  "review": "run 215, verdict fix, rows counted 1 of 3",
+  "fixes": [
+   "src/game_hosts_lua.cpp lua_pushvalue: 006B7E90 arm reverted to the original line (fixed)",
+   "src/game_hosts_lua.cpp lua_remove: 006B7EA0 arm reverted, native_mission_lua_stack.hpp include removed (fixed)",
+   "reports rows 006b7e90/006b7ea0: now skipped with the unreachable reasons; 'data-dependent' wording removed (fixed)",
+   "wired_after 8922, one wired row (fixed)",
+   "flip_proposal limited to lua_settop (fixed)"
+  ],
+  "added_check": "The reviewer did not cite three direct call_named_entry_point_threadsafe callers that bypass global_is_defined (panel_sequence.cpp:276, voice_fade_update.cpp:61, voice_sequence_update.cpp:204). They get their Lua host through accessors no host implements, so the conclusion holds.",
+  "checks": "off_switch_on_build.py exit 0 (0 diagnostics); scripts/build.ps1 exit 0, 2/2 tests; wire_readiness 8921 -> 8922; pc24_lint 0 findings"
+ }
+}

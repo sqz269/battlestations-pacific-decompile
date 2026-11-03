@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
+#include "bsp/wire_goal2_chain104_switches.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/seg27_cc13.hpp"
 #include "bsp/session_context_cc13.hpp"  // packet cc13-mp2c
@@ -13139,7 +13140,17 @@ int GameMissionLuaHost::lua_gettop() {
 }
 
 void GameMissionLuaHost::lua_settop(int index) {
-    if (state_ != nullptr) ::lua_settop(state_, index);
+    // Chain 104, 006B7E80: LuaMachine::set_top on a LuaMachine over state_ (006B7E30 wraps
+    // without owning), as 00887750 does at 008879BF; OFF keeps lua_settop.
+    if constexpr (bsp::kWireGoal2Chain104Bound) {
+        if (state_ != nullptr) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            machine.set_top(index);
+            log_.implemented("MissionLua::lua_settop", "006b7e80");
+        }
+    } else {
+        if (state_ != nullptr) ::lua_settop(state_, index);
+    }
 }
 
 int GameMissionLuaHost::luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) {
