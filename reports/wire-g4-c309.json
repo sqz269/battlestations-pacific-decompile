@@ -1,0 +1,151 @@
+{
+  "goal": 4,
+  "chain": 309,
+  "owner": "agent/g4-w3",
+  "scope": "Production material-pass, shader-state-list and GUI-group slab construction",
+  "switch": "bsp::kWireGoal4Chain309Bound",
+  "switch_header": "include/bsp/wire_goal4_chain309_switches.hpp",
+  "base": "ab22b0bfd4",
+  "wired_total_before": 9296,
+  "wired_total_after": 9299,
+  "executable_reconstructed_addresses_called_before": 4308,
+  "executable_reconstructed_addresses_called_after": 4311,
+  "implementation": [
+    "The existing allocate_slot template accepts a compile-time initializer, retaining its original initialize_slab default for every other pool and for the three switch-off arms.",
+    "Each switch-on allocator supplies its existing recovered constructor. The nonnull branch passes the actual freshly allocated slab and storage.first_free_slab_34, loaded after allocation as before.",
+    "Each recovered constructor remains the sole address-named entry and shares the existing initialize_slab implementation. noinline preserves its executable call boundary.",
+    "The old metadata path no longer executes separately on the selected switch-on arms. Locking, early first-free publication, null handling, table growth, count publication and payload bytes retain the existing behavior.",
+    "No floating-point calculations, new reconstructed addresses, ledger records or Ghidra annotations were introduced."
+  ],
+  "validation": {
+    "baseline": "bsp.py brief; index --if-stale (fresh); scripts/build.ps1 passed both existing tests before selection",
+    "final_build": "scripts/build.ps1 passed reconstructed_math and tool_tests, 2/2",
+    "original_evidence": "bsp.py show 00B401D0, 00B620F0, 00AC6FF0, 00B41210, 00B62630 and 00AC7590: each native allocator calls its matching metadata constructor only for a nonnull new slab",
+    "call_graph": "call_graph.py rebuilt from the final Win32 exe: 4311/4745 reconstructed addresses called; each exact standalone slab constructor has one direct entry-reachable call site from its allocate_slot specialization in native_material_pools.obj",
+    "material_pass_call_site": "1047006C -> initialize_native_material_pass_slab_00b401d0 at 104715A0",
+    "shader_state_list_call_site": "1047037C -> initialize_native_shader_state_list_slab_00b620f0 at 104715F0",
+    "gui_group_call_site": "1046FBBC -> initialize_native_gui_group_slab_00ac6ff0 at 10471550",
+    "call_graph_queries": "who and path checked for all three addresses; NTTP allocator names also contain the constructor identifiers, so readiness call_sites includes allocator callers as well as the exact constructor call",
+    "readiness": "Final wire_readiness.py: wired 9299, ready 1637; all three selected rows wired and called=true",
+    "runtime_limit": "Static executable reach and build/test evidence only. The game was not launched; allocation-branch execution during gameplay and original binary ABI compatibility are not claimed."
+  },
+  "rows": [
+    {
+      "native": "00b401d0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeMaterialPassPool::allocate_slot_00b41210 -> allocate_slot<NativeMaterialPassPool, &initialize_native_material_pass_slab_00b401d0>",
+      "real_state": "Actual 11C4h slab allocation and current first-free ID from the production material-pass pool; used by the native material compiler.",
+      "direct_constructor_call_sites": 1
+    },
+    {
+      "native": "00b620f0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeShaderStateListPool::allocate_slot_00b62630 -> allocate_slot<NativeShaderStateListPool, &initialize_native_shader_state_list_slab_00b620f0>",
+      "real_state": "Actual 244h slab allocation and current first-free ID from the production descriptor-state pool; consumed by read_states in native_shader_sampler_reader.cpp.",
+      "direct_constructor_call_sites": 1
+    },
+    {
+      "native": "00ac6ff0",
+      "status": "wired",
+      "host_site": "src/native_material_pools.cpp: NativeGuiGroupPool::allocate_00ac7590 -> allocate_slot<NativeGuiGroupPool, &initialize_native_gui_group_slab_00ac6ff0>",
+      "real_state": "Actual 1E44h slab allocation and current first-free ID from the retained GUI-group pool; supplies create_native_gui_group_00aa12f0 for authored page widgets.",
+      "direct_constructor_call_sites": 1
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit screen-reset records",
+      "reason": "Missing retained reset inputs: screen+30 mode and the selection vector at +C4..D0; the existing pick-screen projection does not produce them."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudShipScreen gauge digit UV callback",
+      "reason": "Missing the live digit icon vertex stream and its lock/unlock provider; the current sprite bridge draws the authored first state."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship director snapshot provenance",
+      "reason": "Missing a controller snapshot producer and routed snapshot consumer; copying flattened director flags into a temporary and back would only round-trip state."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-start finish_start",
+      "reason": "Missing an owned native loading-config temporary: publish_loading_config borrows the record rather than constructing the string/vector block this destructor consumes."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0 explanatory comment",
+      "reason": "Missing a teardown consumer with the native baseline set and Lua-object/vector host; this load-time site only collects the pre-script namespace baseline."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured group storage destructor",
+      "reason": "Missing a distinct replacement site: existing raw same-address group destruction already has raw reserve/resize callers; a second typed call would duplicate that work."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured type storage destructor",
+      "reason": "Missing a distinct replacement site: existing raw same-address type destruction already has raw reserve/resize callers; a second typed call would duplicate that work."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: close_sound_system_00a7e240",
+      "reason": "Missing a new replacement site in this packet: close_sound_system_00a7e240 already invokes this body on its owner; adding another stop would replay shutdown."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing a live text-editor/menu-prompt caller with TextEditorActivationBindings; this pool packet owns neither the prompt lifecycle nor its activation state."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a bound original caller's projection adapter in this packet; the inspected shadow-slice caller is unreferenced and is unsuitable as the execution root."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing a native caller: this older slice-fit path is unreferenced in the original image; the active cascade submission uses 00A8BD20."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui record",
+      "reason": "Missing the raw game/movie-screen transition receiver and complete SoundLoadTransitionHost binding; the body also requires current listener/input/cinematic operations."
+    },
+    {
+      "native": "00b1f700",
+      "status": "skipped",
+      "host_site": "src/native_frame_target_owner.cpp: set_native_frame_target_srgb_byte_00b1f700",
+      "reason": "Missing an identified live sRGB setter caller; the inspected constructor initializes its own byte and the renderer path reads it rather than requesting a change."
+    },
+    {
+      "native": "00b22e90",
+      "status": "skipped",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: resize_native_renderer_third_state_cache_00b22e90",
+      "reason": "Missing an identified production third-state-cache resize request; wiring a cleanup alias without the owning caller and current requested count is outside this slab packet."
+    },
+    {
+      "native": "00b38390",
+      "status": "skipped",
+      "host_site": "src/native_compiled_shader_owner.cpp: compiled constant-array resize/append reserve helper",
+      "reason": "Missing a safe nested-operation contract: resize and append already begin their retained Operation before calling reserve; the public reserve entry would begin that same operation again."
+    },
+    {
+      "native": "00b29e60",
+      "status": "skipped",
+      "host_site": "src/native_renderer_presentation_mode.cpp: change_native_renderer_presentation_mode_00b29e60",
+      "reason": "Missing an identified presentation-mode command producer and its device-recreation context binding in this packet."
+    }
+  ]
+}
