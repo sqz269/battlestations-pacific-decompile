@@ -733,6 +733,12 @@ float plane_class_stall_range_speed_007c4830(Seg47Host& host, Raw cls);
 float plane_class_stall_range_speed_007c4830(float tuning_230, float class_184);
 bool plane_in_paratrooper_drop_altitude_007c4d90(Seg47Host& host, Raw plane);
 
+// 007C6760, originally __thiscall(ECX = plane), ST0. Scalar view of class+268h,
+// tuning+4F8h/+4FCh and the ordered IsKindOf(10h), IsKindOf(12h/14h/11h)
+// results. The interface is reconstructed C++, not the native binary ABI.
+float landing_circle_radius_007c6760(float class_turn_radius, float multiplier_min,
+    float multiplier_max, bool kind_10, bool kind_12_14_11);
+
 
 // --- plane engine-effect vector -----------------------------------------------------------
 void plane_engine_effect_vector_reserve_007c9170(Seg47Host& host, Raw vector, std::int32_t count);

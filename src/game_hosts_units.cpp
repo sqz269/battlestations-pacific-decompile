@@ -22,6 +22,7 @@
 #include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/wire_goal4_chain322_switches.hpp"
+#include "bsp/wire_goal4_chain333_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -21212,6 +21213,22 @@ float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
     const bsp::GameTuningBlock& g = lua.plane_globals();
     const float f = bsp::clamped_interpolate_00419010(g.pilot_landing_radius_change_1, 1.0f,
         g.pilot_landing_radius_change_2, 2.5f, static_cast<float>(d.assignments.size()));
+    if constexpr (bsp::kWireGoal4Chain333Bound) {
+        // 006C3F28 calls 007C6760 for this assigned plane. Feed the class and
+        // tuning mirrors already loaded by the scene; its result supplies the
+        // circle radius used by the live landing geometry below.
+        const bool kind_10 = bsp::unit_is_kind_of(p.class_id, 0x10);
+        const bool kind_12_14_11 = !kind_10 &&
+            (bsp::unit_is_kind_of(p.class_id, 0x12) ||
+             bsp::unit_is_kind_of(p.class_id, 0x14) ||
+             bsp::unit_is_kind_of(p.class_id, 0x11));
+        const float turn = bsp::cc13_seg47::landing_circle_radius_007c6760(
+            p.plane_turn_circle_radius, g.pilot_landing_circle_multiplier_min,
+            g.pilot_landing_circle_multiplier_max, kind_10, kind_12_14_11);
+        // 006C3F35/3F38: retain the caller's two PC24 multiplies by f.
+        return static_cast<float>(bsp::cc13x87::x87_mul24(
+            bsp::cc13x87::x87_mul24(turn, f), f));
+    } else {
     // 007C6760: class+268h TurnCircleRadius x m.
     const float mn = g.pilot_landing_circle_multiplier_min;
     const float mx = g.pilot_landing_circle_multiplier_max;
@@ -21239,6 +21256,7 @@ float GameUnitsHost::Impl::landing_radius_006c3e50(const LandingDeck& d,
         radius = static_cast<float>(static_cast<double>(turn) * f * f);
     }
     return radius;
+    }
 }
 
 // 006C5C40 (006C5C40-006C5E18, RET 4): on the landing circle.
