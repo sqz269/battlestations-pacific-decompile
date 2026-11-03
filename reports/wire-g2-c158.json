@@ -1,0 +1,99 @@
+{
+  "goal": 2,
+  "chain": 158,
+  "run": 311,
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "host_file": "src/game_hosts_commands.cpp",
+  "candidate": {
+    "tier": 2,
+    "segment": 38,
+    "range": ["0071ba20", "00722fb0"],
+    "reason": "The director command host already owns real slot targets and a reachable command queue; check its small typed and view rows together."
+  },
+  "switch": "kWireGoal2Chain158Bound",
+  "switch_header": "include/bsp/wire_goal2_chain158_switches.hpp",
+  "switch_default": false,
+  "host_objects": [],
+  "host_object_note": "No new host object. The typed view aliases the existing GameDirector::slot_target storage, whose producer is DirectorBinding::store_slot on command delivery.",
+  "wired_before": 8989,
+  "wired_after": 8990,
+  "rows": [
+    {
+      "native": "0071db50",
+      "address": "0071e76c",
+      "function": "0071e6c0",
+      "host_site": "src/game_hosts_commands.cpp:1331 DirectorBinding::store_slot",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "GameMissionFrameHost::run_scene_load_004dfb70 load_scene_contents -> GameUnitsHost::issue_authored_commands/issue_authored_command_at -> GameCommandsHost::issue -> SceneResolveBinding::issue_command -> EntityIssueBinding::route_message -> session loopback drain -> deliver_entity_command -> DirectorBinding::director_issue_command -> route_set_command_message -> deliver_loopback(Set) -> gameunit_apply_set_command_00721a40 -> director_set_command_008358d0 -> director_push_command_slot_0071e6c0 -> DirectorBinding::store_slot. The squadron director_set_command arm also reaches the same push directly.",
+      "gates": {
+        "kAuthoredCommandsAfterLoadWalkBound": true,
+        "kSetCommandQueueDelayBound": true,
+        "kSetCommandMessageCc13Bound": true,
+        "kGatedFanoutBodiesBound": true,
+        "kSquadronSetCommandBound": true
+      },
+      "contract": "0071DB50 copies bytes +00/+01, word +02, dword +04 and floats +08/+0C/+10/+14. The existing SceneCommandTarget has these offsets and size 18h, all asserted. The source is the real incoming target and the destination is the real selected slot; no projection is returned unchanged.",
+      "abi_evidence": "0071DB52 loads its sole stack argument; 0071DB88 RET 4. 0071E6F3 loads EBX from the target argument and no later body write changes it before 0071E767 PUSH EBX; 0071E768 forms ECX=director+58h+i*1Ch; 0071E76C calls 0071DB50. The other caller 007F1940 uses 007F1B08 PUSH ECX (ESP+28h target), 007F1B09 LEA ECX,[ESP+10h], then 007F1B0D CALL 0071DB50; the same descriptor-copy contract applies.",
+      "on": "Call the typed overload of the existing 0071DB50 field-copy body into GameDirector::slot_target[slot_index]. The Raw entry is a thin wrapper around that one body.",
+      "off": "chain_.director.slot_target[slot_index] = target;",
+      "coverage": "One host call site wired; no runtime or binary ABI claim. Candidate detail supplied no mission call count, so reach is explicitly static."
+    },
+    {
+      "native": "0071bfc0",
+      "address": "00817152",
+      "function": "00816e30",
+      "host_site": "src/game_hosts_commands.cpp:deliver_entity_command / EntityCommandArmsBinding",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native body indexes the director's +1A4h per-slot path-object pointer array. This host stores one projected path cursor/point vector and does not implement director_slot_path_object_0071bfc0 or the original caller's path-object branch. No producer creates the per-slot native path-object owner here; a temporary array handing the host its own pointer back would not count."
+    },
+    {
+      "native": "0071f3b0",
+      "address": "0071f880",
+      "function": "0071f600",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::build_path_object_0071f600",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The body decrements a native path-source object's +04h refcount, invokes its destruction vtable at zero and clears the holder. build_path_object_0071f600 copies projected point vectors and a ShipAiPathCursor; no native refcounted source, holder, refcount producer or destruction dispatch exists on this host path. Cannot supply its raw_callback view from real host storage."
+    },
+    {
+      "native": "0071f5d0",
+      "address": "00721c4b",
+      "function": "00721a40",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::Impl::deliver_loopback(UserPathPoint)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The reconstructed clear_user_path_points_slot_0071f5d0 only returns first_empty_slot(q)-1; it omits the native body's 0071F570 path-point mutation. The host dispatches only 5Fh with the presence byte set (apply_user_path_point_007207c0), not the absent-point clear arm. An index-only call would neither replace that mutation nor have a reachable receiver here; fixing bodies is outside this chain."
+    },
+    {
+      "native": "00720fe0",
+      "address": "00721be9",
+      "function": "00721a40",
+      "host_site": "src/game_hosts_commands.cpp:DirectorBinding / GameCommandsHost::Impl::deliver_loopback",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native resolves message+20h through the two session handle tables (00F89A0C/00F89A54 and 00F89A60/00F89AA8, split 00F89A10). Those tables and their producer are absent here; the command host uses its own one-based unit handles. It also has no 00721A40 5Eh target-update receiver. Substituting a fabricated table or another message arm would not wire the original site."
+    },
+    {
+      "native": "00721070",
+      "address": "007ecf0c",
+      "function": "007ecf00",
+      "host_site": "src/game_hosts_commands.cpp:GameDirector (no command-target-pair owner)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native initializes wire command descriptors in controller snapshots and ship/squadron-create message command-target pairs. Its callers exist in cc13_seg30_seg50.cpp and cc13_seg48.cpp, but no host implements command_target_descriptor_init_00721070 or creates those pairs on a reachable path. GameDirector::slot_target is a different 18h descriptor with a different layout/producer. An unused initialized pair would not count."
+    }
+  ],
+  "checks": {
+    "off_build": "PASS: ./scripts/build.ps1; reconstructed_math and tool_tests, 2/2 passed (final OFF build after ON check).",
+    "on_build": "PASS: python tools/off_switch_on_build.py --names kWireGoal2Chain158Bound; build exit 0, zero distinct diagnostics; restored switch to false.",
+    "pc24_lint": "PASS: both changed C++ files, zero findings. Only float loads/stores were moved; no arithmetic added.",
+    "report_calls": "PASS: verify_report_calls.py reports/wire-g2-c158.json; 6 call rows checked, zero failed.",
+    "readiness": "PASS: wire_readiness.py after final OFF build; 0071DB50 ready -> wired, total 8989 -> 8990; other five assigned rows remain ready."
+  },
+  "on_effect": "The real director slot-target assignment runs the reconstructed field-copy body instead of C++ struct assignment. No new object, constants, extra command, lifetime change or unrelated switched path is introduced.",
+  "off_preservation": "The OFF arm is the original slot-target assignment verbatim. The existing Raw implementation delegates to its typed overload with the same native Win32 field layout and field copies.",
+  "game_run": false
+}
