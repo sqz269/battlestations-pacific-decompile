@@ -2123,7 +2123,13 @@ void* bot_task_make_kamikaze_009af720(Cc13Seg67bHost& host, void* bot, void* tar
 // 009A98F0 (009A98F0-009A9904). 009A98F6 FCOMIP of +18h against +1Ch: JBE
 // (+18h <= +1Ch, or NaN) -> 0, else 1.
 bool bot_state_dogfight_aim_is_bored_009a98f0(void* state) {
-    return at<float>(state, 0x18) > at<float>(state, 0x1C);
+    return bot_state_dogfight_aim_is_bored_009a98f0(at<float>(state, 0x18),
+                                                    at<float>(state, 0x1C));
+}
+
+// Typed view of 009A98F0: the same two reads over the caller's aim-state storage.
+bool bot_state_dogfight_aim_is_bored_009a98f0(float bored_18, float bored_limit_1c) {
+    return bored_18 > bored_limit_1c;
 }
 
 // 009B1E30 (009B1E30-009B1E4E). +30h null -> 0; else ([+30h])->vtable[5Ch](9) ? 1 : 0
