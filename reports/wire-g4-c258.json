@@ -1,0 +1,120 @@
+{
+  "chain": 258,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain258Bound",
+  "rows": [
+    {
+      "native": "008ee670",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp: SceneQuotedRunView::decode, called by SceneQuotedRunChunkView::decode / read_quoted_runs_008efb00 in parse_property_body; live caller GameMissionHost::Impl::read_scene_file in src/game_hosts_mission.cpp",
+      "evidence": "Moved the single unchanged reconstructed body from the bsp_game-only leftovers TU into bsp_core. The ON arm decodes the real quoted token into reader-owned 0x400 scratch after the existing size/NUL/paired-escape guards. Its result is appended by the existing chunk writer. The OFF arm retains the previous decode loop."
+    },
+    {
+      "native": "007b22a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::build_path_object_0071f600",
+      "reason": "The host retains resolved world-point snapshots; an owned PathComponentState and an authored-source lifetime/consumer binding are still missing."
+    },
+    {
+      "native": "00729bc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryGunInputs gun_inputs",
+      "reason": "The available helper only selects a bot-slot offset; installed bot object presence and its vtable[1Ch] acceptance binding remain missing."
+    },
+    {
+      "native": "00731020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: RebuildBinding::device_at",
+      "reason": "This site has the finalized gun.max_range answer; class first-record presence/count and its bullet descriptor producer are missing."
+    },
+    {
+      "native": "0084c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: rapid-turning tick",
+      "reason": "The current reconstructed helper returns the supplied request boolean unchanged; the enclosing native tick/send binding is missing."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes",
+      "reason": "Real director-pointer presence and director vslot-48h(2) state are missing from this host policy installation boundary."
+    },
+    {
+      "native": "008ef6d0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: parse_property_body",
+      "reason": "The live parser retains raw BIN tokens; a typed byte-array producer/consumer binding is missing, so hex decoding alone would be unused work."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: parse_property_body",
+      "reason": "The helper expects a declaration +118h type-letter field; this packet has no live declaration object or lookup binding."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: parse_property_body",
+      "reason": "The helper expects a declaration +118h type-letter field; this packet has no live declaration object or lookup binding."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI coordinator score list",
+      "reason": "Candidate selection only: prior coordinator reach-gate skips require live revalidation and score-list ownership review outside the chosen scene-decoder packet."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI coordinator chosen record",
+      "reason": "Candidate selection only: prior coordinator reach-gate skips require live revalidation and score-list ownership review outside the chosen scene-decoder packet."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: difficulty lookup",
+      "reason": "Candidate selection only: single-player effective-mode reach and real brain-slot/difficulty producers need revalidation outside the chosen packet."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group resource scoring",
+      "reason": "Candidate selection only: a real member+304h ResourceUsage producer was not established; the prior skip reports a literal zero resource."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-member candidate selection",
+      "reason": "An existing source call is present under kDefendThinkImageBound; its coordinator reach gate still needs revalidation rather than a duplicate call."
+    }
+  ],
+  "validation": {
+    "baseline": {
+      "build": "scripts/build.ps1 PASS",
+      "ctest": "2/2 PASS",
+      "source_level_wired": 9092
+    },
+    "changed": {
+      "build": "scripts/build.ps1 PASS",
+      "ctest": "2/2 PASS; existing actual-parser quoted-run fixture covers slash/n, slash/q, slash/slash, unknown/lower/upper escapes, punctuation, concatenation and following property",
+      "installed_scene_probe": "bsp_mission_scene_probe.exe PASS: installed usn_2_java.scn 48680 bytes, 34 entities, zero recovered errors",
+      "single_body_check": "Compared relocated definition against git HEAD body text: identical; exactly one src/*.cpp definition remains.",
+      "source_level_wired": 9093,
+      "wired_address_state": {
+        "008ee670": "wired"
+      }
+    },
+    "game_run": false,
+    "abi_compatible": false,
+    "float_math_changed": false,
+    "measurement": "wire_readiness.py --standins; source-level/file-granular reachability, not gameplay proof"
+  },
+  "assumptions": [
+    "Reader-owned scratch preserves the admitted parser value semantics; native global scratch identity, aliasing and reentry are outside this source binding.",
+    "No game execution was performed, as instructed."
+  ],
+  "left_for_others": [
+    "BIN typed-byte-array decoding and declaration-backed enum/LUA_S queries need real producers/consumers.",
+    "Authored path source lifetime and bot-slot/director-policy bindings remain separate packets."
+  ]
+}
