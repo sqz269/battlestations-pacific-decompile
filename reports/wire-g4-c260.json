@@ -20,6 +20,11 @@
     {"native": "007623D0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_ship_avoid_side_8f <- game_hosts_ship_ai.cpp post_pass_side_009d8c60 (8Fh sent stores of 009D66B0 and factory case 8Fh)"},
     {"native": "00762460", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_ship_avoid_side_8f (8Fh write)"},
     {"native": "007624B0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_ship_avoid_side_8f (8Fh read; the pass-side queue holds the copy's other and side)"},
+    {"native": "007631A0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_airbase_launch_slot_83 <- game_hosts_lua.cpp GameMissionLuaHost::run_launch_air_base_slot_00896750 (83h sent stores and factory case 83h)"},
+    {"native": "00763260", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_airbase_launch_slot_83 (83h write)"},
+    {"native": "007632C0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_airbase_launch_slot_83 (83h read; 006CA8E0 receives the copy's slot and flag)"},
+    {"native": "0075AF00", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp landing mode 3 (009F2304, 00749D90 A5h)", "reason": "A5h carries the pad's and building's +174h entity ids; the host's BuildingPadModel pads have no entity ids, so the copy's fields cannot be mapped back"},
+    {"native": "00749D90", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp landing mode 3 (009F2304)", "reason": "same as 0075AF00: needs native pad/building objects (+174h ids) and a SessionMessageHost; the host delivers 0074A990 directly"},
     {"native": "0080FF80", "status": "skipped", "host_site": "src/game_hosts_lua.cpp run_add_water_load_00893380", "reason": "the 90h sender builder takes SweepCHost (138 pure virtuals) for one 0075B430 call; the sent message uses 00761F60's identical stores plus the two fields"}
   ]
 }

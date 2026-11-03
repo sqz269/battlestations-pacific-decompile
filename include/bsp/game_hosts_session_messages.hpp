@@ -134,6 +134,17 @@ public:
         std::int32_t side{0};
     };
     ShipAvoidSideCopy queue_ship_avoid_side_8f(std::uint16_t other_id, std::int32_t side) const;
+    // Goal 4 chain 260. MT_AIRBASE_LAUNCHSLOT (83h): 00896750 LaunchAirBaseSlot
+    // at 00896915..0089694C makes 007631A0's stores (0075B430(83h), +18h/+1Ah/
+    // +1Ch zero, +4h = 1, vtable 00D03554) plus +20h = slot - 1 and +24h = the
+    // `now` byte, routed at 00896964 (flags 0); then 00763260 write (6-bit
+    // slot, 1-bit flag), 00768530 case 83h at 00769246 (007631A0), 007632C0
+    // read. The receiver 006CA8E0 reads the copy's slot and flag.
+    struct AirbaseLaunchSlotCopy {
+        std::uint32_t slot{0};
+        bool now{false};
+    };
+    AirbaseLaunchSlotCopy queue_airbase_launch_slot_83(std::uint32_t slot, bool now) const;
 
 private:
     struct Image;

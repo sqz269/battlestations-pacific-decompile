@@ -79,6 +79,9 @@ struct HostSessionMessages::Image {
                                         0x004499c0u};
         std::uint32_t slots_00d034dc[5]{0x007626c0u, 0x00762460u, 0x007624b0u, 0x00762430u,
                                         0x004499c0u};
+        // 83h 00D03554.
+        std::uint32_t slots_00d03554[5]{0x00763240u, 0x00763260u, 0x007632c0u, 0x00763210u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if (image_address == 0x00d032d0u) return slots_00d032d0;
             if constexpr (kWireGoal4Chain260Bound) {
@@ -87,6 +90,7 @@ struct HostSessionMessages::Image {
                 if (image_address == 0x00d03360u) return slots_00d03360;
                 if (image_address == 0x00d034a0u) return slots_00d034a0;
                 if (image_address == 0x00d034dcu) return slots_00d034dc;
+                if (image_address == 0x00d03554u) return slots_00d03554;
             }
             return nullptr;
         }
@@ -359,6 +363,27 @@ HostSessionMessages::ShipAvoidSideCopy HostSessionMessages::queue_ship_avoid_sid
     seg42::construct_ship_avoidside_007623d0(&queued, image.seg42);
     seg42::read_ship_avoidside_007624b0(&queued, &stream.in);
     return ShipAvoidSideCopy{queued.other_id_1c, queued.side_20};
+}
+
+HostSessionMessages::AirbaseLaunchSlotCopy HostSessionMessages::queue_airbase_launch_slot_83(
+    std::uint32_t slot, bool now) const {
+    const Image& image = *image_;
+    // 00896915..0089694C: 0075B430(83h), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0,
+    // vtable 00D03554 (007631A0's stores), +20h = EDI (slot - 1), +24h = CL.
+    seg42::AirbaseLaunchSlotMessage sent{};
+    seg42::construct_airbase_launchslot_007631a0(&sent, image.seg42);
+    sent.slot_20 = slot;
+    sent.flag_24 = now ? 1u : 0u;
+
+    LocalStream stream;
+    seg42::write_airbase_launchslot_00763260(&sent, &stream.out);
+    // 00768530 case 83h: operator new(28h), 007631A0 at 00769246; 0076A27B
+    // vtable[8] = 007632C0.
+    stream.begin_read();
+    seg42::AirbaseLaunchSlotMessage queued{};
+    seg42::construct_airbase_launchslot_007631a0(&queued, image.seg42);
+    seg42::read_airbase_launchslot_007632c0(&queued, &stream.in);
+    return AirbaseLaunchSlotCopy{queued.slot_20, queued.flag_24 != 0};
 }
 
 } // namespace bsp

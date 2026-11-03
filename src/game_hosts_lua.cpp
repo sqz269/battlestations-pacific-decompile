@@ -9549,9 +9549,28 @@ int GameMissionLuaHost::run_launch_air_base_slot_00896750(lua_State* state,
             "(packet cc13-fix5)", id, slot_number);
         return 0;
     }
+    bsp::AirOpsLaunchSlotMessageResult message{};
+    if constexpr (kWireGoal4Chain260Bound) {
+        // Goal 4 chain 260: the 83h is routed (00896964) before the +34h store
+        // (00896972); 0076E520's copy (00763260 write, 007631A0, 007632C0 read)
+        // is what 006CA8E0 receives: the copy's 6-bit slot and its flag.
+        bsp::HostSessionMessages::AirbaseLaunchSlotCopy copy{
+            static_cast<std::uint32_t>(index), now};
+        if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+            copy = messages->queue_airbase_launch_slot_83(static_cast<std::uint32_t>(index), now);
+        }
+        deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
+        if (copy.slot < deck->slots.size()) {
+            message = bsp::air_ops_launch_slot_message_006ca8e0(
+                *deck, static_cast<int>(copy.slot), copy.now);
+        } else {
+            // LABELLED: the image's receiver indexes the copy's slot unchecked.
+            log_.unimplemented("AirOps::launch_slot_copy_out_of_range", "006ca8e0");
+        }
+    } else {
     deck->slots[static_cast<std::size_t>(index)].launch_requested = true;   // 00896972
-    const bsp::AirOpsLaunchSlotMessageResult message =
-        bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    message = bsp::air_ops_launch_slot_message_006ca8e0(*deck, index, now);
+    }
     log_.unimplemented("AirOps::launch_slot_peer_messages", "006bf150");
     if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
         extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00896976u);
