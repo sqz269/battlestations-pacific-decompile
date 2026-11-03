@@ -4,15 +4,15 @@
   "slot": "g4-w3",
   "branch": "agent/g4-w3",
   "switch": "include/bsp/wire_goal4_chain271_switches.hpp: bsp::game::kWireGoal4Chain271Bound",
-  "summary": "Wire the existing native level-3 input-context body over the menu-owned persistent context stack and reuse the existing level-2/shared setter bodies.",
+  "summary": "Wire the native level-3 input-context body to menu-owned context lists and the application raw input-action owner; complete priority writes recompute the maximum and refresh actions.",
   "wired_before": 9209,
-  "wired_after": 9210,
+  "wired_after": 9211,
   "rows": [
     {
       "native": "004d8b70",
       "status": "wired",
       "host_site": "src/game_hosts_menu.cpp: GameMenuHost::clear_level3_screen_and_context_sets / publish_level3_input_contexts; src/game_hosts_hud.cpp: HudUpdateBinding::set_level3_input_contexts",
-      "detail": "Existing seg10 body receives the persistent menu context lists through borrowed native vector headers; assignments, priority application and context 1Dh writes update the same owner."
+      "detail": "Native vector headers borrow menu lists; context reads and complete A933F0 writes use the same application raw input-action owner/table, including the 1Dh priority publication."
     },
     {
       "native": "004d8ae0",
@@ -127,17 +127,74 @@
       "status": "skipped",
       "host_site": "src/game_hosts_menu.cpp: GameMenuHost::publish_level1_input_contexts_004d8a50",
       "reason": "Already wired by the existing host body; level-1 conversion is outside this level-2/3 binding."
+    },
+    {
+      "native": "00a933f0",
+      "status": "wired",
+      "host_site": "src/frontend_screen_sets.cpp: GameInputContextManagerBinding::set_level; apply_input_context_levels_004c4300 and MenuInputContextBinding::input_manager_set_context_level_00a933f0",
+      "detail": "Existing complete native body now receives the actual GameInputRuntime owner and records/devices/configuration services. Writes the real +10h table, recomputes +20h, refreshes actions. Previously counted wired; no new address credit claimed."
+    },
+    {
+      "native": "00a93020",
+      "status": "wired",
+      "host_site": "src/native_input_action_contexts.cpp: set_native_input_context_level_00a933f0, reached from the frontend context binding",
+      "detail": "The complete refresh body is inlined into A933F0 in Release; executable has a direct reachable call from A933F0 to A92D40, and the native-record fixture verifies action activation changes."
+    },
+    {
+      "native": "004c4300",
+      "status": "wired",
+      "host_site": "src/frontend_screen_sets.cpp: apply_input_context_levels_004c4300",
+      "detail": "Reused existing level walk; ON reads actual manager contexts and invokes complete A933F0 for every write, capturing the current raw manager once per level as the image does. Old mirror is used only by the OFF implementation."
+    },
+    {
+      "native": "0086a430",
+      "status": "wired",
+      "host_site": "src/frontend_screen_sets.cpp: GameInputContextManagerBinding::prepare",
+      "detail": "Reuses the native resize to provide the same actual owner table through binary-required index 1Dh. Preserves existing context entries and zeros only newly appended slots; creates no actions."
+    },
+    {
+      "native": "00a92d40",
+      "status": "wired",
+      "host_site": "src/native_input_action_contexts.cpp: refresh_native_input_action_contexts_00a93020, inlined into set_native_input_context_level_00a933f0",
+      "detail": "Existing actual-record activation body receives the same manager table and maximum for each action; raw records, listener calls and device dispatch all borrow GameInputRuntime services."
+    },
+    {
+      "native": "00698a10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::commit_input_manager",
+      "reason": "Full native input-configuration script/parser/application composition is still unbound; this fix provides canonical context storage and preserves existing action records without fabricating actions."
     }
   ],
   "validation": {
-    "build": "./scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed.",
-    "focused_fixture": "One synthetic input-context sequence in tests/math_tests.cpp checks terminated/bounded ids, live level-4 priority, newly assigned level-3 headers, empty-list clearing, and native default priority 1.",
-    "call_graph": "004D8B70 reachable: publish_native_input_context_set -> GameMenuHost::publish_level3_input_contexts -> HUD mission frame -> WinMainCRTStartup. 004D8AE0 segment body also reachable. 004D6410 is inlined.",
+    "build": "Review round 1: ./scripts/build.ps1 Win32 Release passed; reconstructed_math and tool_tests passed.",
+    "focused_fixture": "One synthetic sequence constructs the real raw owner and two records through native bodies, then checks actual context words, owner maximum +20h and both action active flags after publish/clear; legacy menu level storage remains untouched.",
+    "call_graph": "004D8B70/004D8AE0 remain reachable. Full A933F0 has three reachable call sites from the level walk and the 1Dh adapter; it directly calls native A92D40. A93020 and 004D6410 are inlined in Release.",
     "evidence": [
       "bsp.py show 004d8b70",
-      "bsp.py show 004d6410"
+      "bsp.py show 004d6410",
+      "bsp.py show 004c4300",
+      "bsp.py show 00a933f0",
+      "bsp.py ghidra bytes 00e12f20 --length 12"
     ],
-    "limits": "No game launched. Fixture/build/call-graph evidence is not original binary ABI or gameplay validation. No float math changed."
+    "limits": "No game launched. Fixture/build/call-graph evidence is not original binary ABI or gameplay validation. No float math changed.",
+    "pc24": "python tools/pc24_lint.py --staged: 0 findings, 0 allowed, 6 files.",
+    "switch_off": "Temporarily set chain271 false; ./scripts/build.ps1 -Target bsp_game -SkipTests linked successfully; restored true before final build and commit."
   },
-  "left": "Level-1 host body remains unchanged. Camera/tactical-overlay, award queue, texture-resource, pose-plan and traffic runtime bindings remain as recorded in skipped rows."
+  "left": "Level-1 host body remains unchanged. Camera/tactical-overlay, award queue, texture-resource, pose-plan and traffic runtime bindings remain as recorded in skipped rows. Full native action-configuration loading 00698A10 remains unbound; context ownership and complete refresh now share the actual runtime owner.",
+  "review_round_1": {
+    "review_run": 496,
+    "base_head": "90533c464d6db027f3e0d628c0d306d00ded554d",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "resolution": "Bind the menu to InputServices.core.action_context(), core.records_context() and core.devices(); all ON context writes including 1Dh call complete A933F0 on that actual owner. A933F0 recomputes owner+20h then refreshes actions via A93020/A92D40. No independent menu-only level mirror is read or written ON; old storage remains solely for the required OFF implementation."
+      }
+    ],
+    "storage": "Prepare extends the actual owner context header to the binary-required range 1..19h plus 1Dh, preserving prior entries and zeroing only appended slots using the native growth routine. The same header is used by native action configuration and activation.",
+    "providers": "InputServices borrows existing runtime raw records, concrete device dispatcher and application CRT; native binding constants are binary constants. Mutable timing cells start at verified E12F20..28 bits 3e800000/3f000000/3dcccccd.",
+    "limits": "No game run. The full 00698A10 action loader remains unbound; no action is invented to obtain wiring credit. Two synthetic actions exercise the full refresh behavior in the fixture.",
+    "wired_before": 9210,
+    "wired_after": 9211
+  }
 }

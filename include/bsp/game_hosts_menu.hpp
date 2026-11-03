@@ -33,6 +33,7 @@
 
 namespace bsp {
 class LocaleTables;
+struct GameInputContextManagerBinding;
 struct GuiLayoutPage;
 }  // namespace bsp
 
@@ -159,6 +160,9 @@ public:
     ~GameMenuHost();
     GameMenuHost(const GameMenuHost&) = delete;
     GameMenuHost& operator=(const GameMenuHost&) = delete;
+    // Borrow the application's actual input-action owner/configuration before
+    // the first menu publication. It outlives the menu and the raw manager drain.
+    void bind_input_context_manager(GameInputContextManagerBinding&);
 
     // 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     void run_title_init_004c9a70();

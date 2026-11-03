@@ -1,7 +1,9 @@
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/seg10_cc13.hpp"
+#include "bsp/native_input_action_contexts.hpp"
 #include "bsp/sound_cc13.hpp"
 #include "bsp/wire_goal4_chain256_switches.hpp"
+#include "bsp/wire_goal4_chain271_switches.hpp"
 
 #include <cstddef>
 #include <stdexcept>
@@ -14,7 +16,8 @@ namespace {
 // 004D8B70: builds an int vector and calls that body with level 3.
 // Evidence: exports/bsp/functions/{004d6410,004d8b70}/decompiled.c.
 // This is a borrowed field view, not a replacement GGame or input singleton.
-// The only durable data is the menu's existing GameInputContextSetStack.
+// Lists stay in the menu; manager levels/actions stay in the application's
+// actual input owner. There is no ON-path level mirror in the menu.
 struct InputContextVectorFields {
     void* proxy{}; // neither body reads the checked-iterator proxy
     int* first{};
@@ -63,13 +66,14 @@ public:
         apply_input_context_levels_004c4300(stack_, level);
     }
     Object input_manager_004bec00() override {
-        return reinterpret_cast<Object>(&stack_);
+        if (!stack_.manager) throw std::logic_error("input-context manager is not bound");
+        return static_cast<Object>(stack_.manager->current_owner());
     }
     void input_manager_set_context_level_00a933f0(Object manager, std::int32_t index,
         std::int32_t level) override {
-        if (manager != reinterpret_cast<Object>(&stack_) || index != 0x1D)
+        if (!stack_.manager || index != 0x1D)
             throw std::logic_error("unbound input-context manager field");
-        stack_.context_level[index] = level;
+        stack_.manager->set_level(manager, index, level);
     }
 
 private:
@@ -138,6 +142,33 @@ void copy_terminated_list(std::vector<int>& out, const int* ids, std::size_t cou
 }
 
 } // namespace
+
+void* GameInputContextManagerBinding::current_owner() {
+    return get_native_input_action_owner_004bec00(owner);
+}
+
+void GameInputContextManagerBinding::prepare() {
+    auto* const actual = static_cast<std::uint8_t*>(current_owner());
+    // Native 004C4300 indexes 1..19h even before a list raises a context;
+    // 004D6410 writes 1Dh. The existing host has not loaded action bindings
+    // yet, so provide those binary-required zero slots in the SAME raw owner.
+    // Existing configured actions/contexts are preserved; no action is made.
+    const auto old_count = cc13_seg10::native_at<std::int32_t>(actual, 0x14);
+    if (old_count < kGameInputContextStorageCount) {
+        resize_native_input_dwords_0086a430(actual + 0x10, kGameInputContextStorageCount);
+        auto* const levels = cc13_seg10::native_at<std::uint32_t*>(actual, 0x10);
+        for (auto index = old_count; index < kGameInputContextStorageCount; ++index)
+            levels[index] = 0;
+    }
+}
+
+void GameInputContextManagerBinding::set_level(void* captured_owner,
+    std::uint32_t index, std::uint32_t level) {
+    // A933F0 writes the actual table, recomputes owner+20h's unsigned maximum
+    // (floor 1), then A93020 refreshes every actual action through A92D40.
+    // Do this even for context 1Dh and unchanged values; never store a mirror.
+    set_native_input_context_level_00a933f0(captured_owner, index, level, configuration);
+}
 
 int multi_menu_screen_id_00687330(int interface_id) noexcept {
     if (interface_id < kMultiMenuInterfaceIdFirst || interface_id > kMultiMenuInterfaceIdLast) {
@@ -241,6 +272,27 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
     if (level < 1 || level > kGameInputContextSetLevels) {
         return;
     }
+    if constexpr (game::kWireGoal4Chain271Bound) {
+        if (!stack.manager) throw std::logic_error("input-context manager is not bound");
+        // 004C4300 captures 004BEC00 once for each level, then uses that same
+        // actual receiver for queries and COMPLETE A933F0 writes. Each write
+        // can change action activation and listener state before the next read.
+        for (int current = level; current >= 1; --current) {
+            void* const manager = stack.manager->current_owner();
+            for (int id = 1; id < kGameInputContextCount; ++id) {
+                if (sound_cc13::input_manager_context_level_00a92290(manager, id)
+                    == static_cast<std::uint32_t>(current))
+                    stack.manager->set_level(manager, id, 0);
+            }
+            const auto& ids = stack.levels[current - 1];
+            for (std::size_t i = 0; i < ids.size(); ++i) {
+                const int id = ids[i];
+                if (static_cast<std::int32_t>(
+                        sound_cc13::input_manager_context_level_00a92290(manager, id)) < current)
+                    stack.manager->set_level(manager, id, current);
+            }
+        }
+    } else {
     if constexpr (kWireGoal4Chain256Bound) {
         // 004C4323 and 004C4371 call 00A92290 for the context id. Borrow
         // this host's persistent manager-level array: its real writers below
@@ -286,6 +338,7 @@ void apply_input_context_levels_004c4300(GameInputContextSetStack& stack, int le
                 stack.context_level[id] = current;
             }
         }
+    }
     }
     }
 }

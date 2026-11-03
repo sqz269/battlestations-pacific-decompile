@@ -2857,6 +2857,11 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
 
 GameMenuHost::~GameMenuHost() = default;
 
+void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
+    binding.prepare();
+    impl_->input_contexts.manager = &binding;
+}
+
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;

@@ -51,6 +51,10 @@
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_screen_sets.hpp"
+#include "bsp/native_input_action_contexts.hpp"
+#include "bsp/wire_goal4_chain271_switches.hpp"
+#include "bsp/seg10_cc13.hpp"
+#include "bsp/sound_cc13.hpp"
 #include "bsp/hud_screens.hpp"
 #include "bsp/hud_minimap.hpp"
 #include "bsp/hud_updates.hpp"
@@ -4158,11 +4162,63 @@ int main() {
         ::operator delete(slabs);
     }
 
-    {
-        // Chain 271: one sequence checks the raw header view after assignment,
-        // the zero sentinel, and the highest-level scan when overlays clear.
-        // Synthetic state; this is not a native ABI or gameplay comparison.
+    if constexpr (bsp::game::kWireGoal4Chain271Bound) {
+        // Chain 271: one synthetic sequence uses the complete native context
+        // operation and two actual action records. Check table writes, maximum
+        // priority AND action activation through publish/clear. No gameplay proof.
+        struct Records final : bsp::NativeInputActionRecordCalls {
+            void call_listener_slot0(void*, std::uint32_t) override {
+                throw std::logic_error("fixture has no listener allocation");
+            }
+        } records_calls;
+        struct Devices final : bsp::NativeInputActionBindingCalls {
+            std::uint8_t relative_vslot1c(void*, std::uint32_t, std::uint32_t) override {
+                throw std::logic_error("fixture has no device bindings");
+            }
+            std::uint8_t query_vslot20(void*, std::uint32_t, std::uint32_t) override {
+                throw std::logic_error("fixture has no device bindings");
+            }
+            float value_vslot24(void*, std::uint32_t, std::uint32_t) override {
+                throw std::logic_error("fixture has no device bindings");
+            }
+        } devices;
+        const volatile float half = 0.5f, negative_zero = -0.0f, one = 1.0f;
+        const volatile double quarter = 0.25, half_double = 0.5, gain = 0.875, eighth = 0.125;
+        const volatile std::uint32_t one_bits = 0x3f800000, bypass = 1;
+        const bsp::CameraAxesCrtAccess crt{&bypass,
+            [](std::int32_t, bsp::CameraAxesCrtException*, std::uint16_t*) {
+                throw std::logic_error("fixture has no arithmetic device bindings");
+            }};
+        bsp::NativeInputActionBindingContext bindings{devices, crt,
+            {half, negative_zero, one, quarter, half_double, gain, eighth}};
+        bsp::NativeInputActionRecordsContext records{{one_bits}, records_calls};
+        bsp::NativeInputActionStorageCalls action_storage(records);
+        bsp::InputActionTimingThresholds timing;
+        bsp::NativeInputActionConfigurationContext configuration{records, bindings,
+            {timing.quick_edge_and_hold, timing.repeat_delay, timing.repeat_step}};
+        bsp::NativeInputActionOwnerStorage owner;
+        auto* const raw = static_cast<std::uint8_t*>(
+            bsp::construct_native_input_action_owner_00a93da0(&owner));
+        void* volatile publication = raw;
+        void* volatile unused_manager = nullptr; // owner getter takes its nonnull fast path
+        bsp::NativeInputActionOwnerContext owner_context{publication,
+            bsp::SoundLifetimeAccess(unused_manager), action_storage};
+        bsp::GameInputContextManagerBinding manager{owner_context, configuration};
+        manager.prepare();
+        const std::uint32_t action_contexts[] = {6, 0x14};
+        for (std::uint32_t index = 0; index < 2; ++index) {
+            const bsp::NativeInputArrayHeader source{const_cast<std::uint32_t*>(&action_contexts[index]), 1, 1};
+            bsp::configure_native_input_action_00a93c80(raw, index, &source, 0, configuration);
+        }
+        const auto level = [&](int id) {
+            return bsp::sound_cc13::input_manager_context_level_00a92290(raw, id);
+        };
+        const auto active = [&](unsigned index) {
+            const auto actions = bsp::cc13_seg10::native_at<std::uint8_t*>(raw, 4);
+            return actions[index * 0x30 + 1] != 0;
+        };
         bsp::GameInputContextSetStack contexts;
+        contexts.manager = &manager;
         const int top[] = {8, 0};
         const int second[] = {4, 6, 0, 9};
         const int third[] = {6, 0x14}; // bounded host list need not carry a zero
@@ -4170,19 +4226,24 @@ int main() {
         bsp::set_game_input_context_set_004d8c00(contexts, top, 2);
         bsp::publish_native_input_context_set(contexts, 2, second, 4);
         check(contexts.levels[1] == std::vector<int>({4, 6})
-            && contexts.context_level[6] == 2 && contexts.context_level[9] == 0
-            && contexts.context_level[0x1D] == 4, "chain271 bounded ids and live level-4 priority");
+            && level(6) == 2 && level(9) == 0 && level(0x1D) == 4
+            && bsp::cc13_seg10::native_at<std::uint32_t>(raw, 0x20) == 4
+            && !active(0) && !active(1), "chain271 actual level-4 maximum disables lower actions");
         bsp::set_game_input_context_set_004d8c00(contexts, none, 1);
         bsp::publish_native_input_context_set(contexts, 3, third, 2);
-        check(contexts.context_level[6] == 3 && contexts.context_level[0x14] == 3
-            && contexts.context_level[0x1D] == 3, "chain271 new level-3 header visible to scan");
+        check(level(6) == 3 && level(0x14) == 3 && level(0x1D) == 3
+            && bsp::cc13_seg10::native_at<std::uint32_t>(raw, 0x20) == 3
+            && active(0) && active(1), "chain271 level-3 publication activates actual actions");
         bsp::publish_native_input_context_set(contexts, 3, nullptr, 1);
-        check(contexts.levels[2].empty() && contexts.context_level[6] == 2
-            && contexts.context_level[0x14] == 0 && contexts.context_level[0x1D] == 2,
-            "chain271 empty level 3 restores level 2");
+        check(contexts.levels[2].empty() && level(6) == 2 && level(0x14) == 0 && level(0x1D) == 2
+            && bsp::cc13_seg10::native_at<std::uint32_t>(raw, 0x20) == 2
+            && active(0) && !active(1), "chain271 clearing level 3 refreshes action activation");
         bsp::publish_native_input_context_set(contexts, 2, none, 1);
-        check(contexts.levels[1].empty() && contexts.context_level[6] == 0
-            && contexts.context_level[0x1D] == 1, "chain271 empty stacks use native default level 1");
+        check(contexts.levels[1].empty() && level(6) == 0 && level(0x1D) == 1
+            && bsp::cc13_seg10::native_at<std::uint32_t>(raw, 0x20) == 1
+            && !active(0) && !active(1) && contexts.context_level[6] == 0,
+            "chain271 empty stacks refresh actions at floor 1 without a menu mirror");
+        bsp::destroy_native_input_action_owner_00a93dd0(raw, owner_context);
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
