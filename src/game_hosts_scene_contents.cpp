@@ -5,6 +5,7 @@
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
 #include "bsp/wire_goal2_chain120_switches.hpp"
+#include "bsp/wire_goal2_chain132_switches.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
@@ -2640,6 +2641,27 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
     return field;
 }
 
+// 00883C82's bag is the merged scene/library bag already used by this host.
+// String services use this process's existing native-string storage; the
+// 004772C0 body owns name scanning, the two searches and the captured release.
+class SceneLandscapePropertyAdapter final : public seg6::PropertyBagCStringHost {
+public:
+    explicit SceneLandscapePropertyAdapter(const ScenePropertyBlock& bag) : bag_(bag) {}
+    void resize_key(NativeString& key, std::uint32_t length) override {
+        key.resize_0041dd40(crt_string_storage(), length, false);
+    }
+    void copy_key(char* destination, const char* source, std::uint32_t size) override {
+        std::memcpy(destination, source, size);
+    }
+    const char* empty_key() override { return ""; } // 00E186A4's empty literal.
+    const SceneProperty* find_008f2260(const char* name) override { return bag_.find(name); }
+    void release_key(char* data, std::uint32_t size) override {
+        if (data != nullptr) crt_string_storage().release(data, size + 1u);
+    }
+private:
+    const ScenePropertyBlock& bag_; // Merged scene/library bag from instantiate_entity.
+};
+
 // 004EA650 (Path) and 004F1460 (Landscape), with what PlaceInWorld 00928860
 // does through slot 130h, then the InitAll passes that fill the class's own
 // fields (pass B 007B38D0 for a Path, pass A 00883BB0 for a Landscape). The
@@ -2671,7 +2693,16 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
         object.path_points_valid = record.path_points_retained;
     } else {
         object.file_path = scene_deck_text(bag, "FilePath");      // 00883C5E -> +3C4h
+        // 004772C0 calls property_bag_find_by_cstring at 00883C82; OFF keeps scene_deck_text's lookup.
+        if constexpr (bsp::kWireGoal2Chain132Bound) {
+            SceneLandscapePropertyAdapter properties(bag);
+            const SceneProperty* model = seg6::property_bag_find_by_cstring_004772c0(
+                properties, "ModelPath");
+            object.model_path = model == nullptr || model->values.empty()
+                ? std::string() : model->values.back();
+        } else {
         object.model_path = scene_deck_text(bag, "ModelPath");    // 00883C7B -> +424h
+        }
         object.shallow_water_block = scene_deck_sub_block(bag, "ShallowWater") != nullptr
             || bag.find("ShallowWater") != nullptr;               // 00883E1D
         // 00882AC0 with ECX = the Landscape and the FilePath string (00883DD3).

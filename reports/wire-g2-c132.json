@@ -1,0 +1,126 @@
+{
+  "goal": 2,
+  "chain": 132,
+  "run": 263,
+  "harness": "codex",
+  "packet": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 6 [00465610-0047c680]",
+  "tier": 2,
+  "host_file": "src/game_hosts_scene_contents.cpp",
+  "switch": "kWireGoal2Chain132Bound",
+  "switch_default": false,
+  "wired_before": 8961,
+  "wired_after": 8962,
+  "wired_delta": 1,
+  "assigned_rows_wired": 1,
+  "readiness_note": "Baseline measured with --standins before edits. After the final plain OFF build, 004772c0 changed ready -> wired and the total increased by one. The identifier resolves to property_bag_find_by_cstring_004772c0 through the address comment above its raw entry. No support-closure rows are claimed.",
+  "report_calls": "PASS: verify_report_calls.py; 1 call row checked, 0 failed",
+  "build": {
+    "off": "PASS: scripts/build.ps1; reconstructed_math and tool_tests passed (2/2), after the ON check",
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain132Bound; build.ps1 exit 0, zero distinct diagnostics; source restored",
+    "on_log": "local/off_switch_on_build.log",
+    "pc24_lint": "not applicable: the ON arm performs no x87 arithmetic",
+    "game_run": "not run, as assigned"
+  },
+  "reach_evidence": "Static source reach; no mission call counts were supplied for this range. GameMissionHost::Impl::finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70 load_scene_contents step -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> load_scene_contents_004d4df0 -> SceneContentsBinding::read_scene_file -> run_scene_file_reader_0046df00 -> SceneReaderBinding::instantiate_entity -> create_scene_world_object. kScenePathLandscapeCreatorsBound is true. The Landscape arm has no enclosing false switch. kWireGoal2Chain74Bound gates terrain quadtree construction later, not the ModelPath read.",
+  "on_effect": "Landscape ModelPath lookup runs the existing 004772C0 name scan, NativeString copy, two property searches and captured string release over the actual merged scene/library bag. Its returned SceneProperty supplies object.model_path. OFF retains the existing scene_deck_text lookup verbatim. No owned host object is introduced.",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "00465610",
+      "host_site": "src/actions_seg5_cc13.cpp:ActionsSeg5Host::action_destroy_00465610 call sites",
+      "status": "skipped",
+      "reason": "No implementation of action_destroy_00465610 exists in src. Its action/string storage has no active host owner; the movie-factory root is additionally gated by kMovieFactoryRootCc16Bound=false.",
+      "reach": "static"
+    },
+    {
+      "native": "004658d0",
+      "host_site": "src/actions_seg5_cc13.cpp:ActionsSeg5Host::timed_value_construct_004658d0 call sites",
+      "status": "skipped",
+      "reason": "No implementation of timed_value_construct_004658d0 exists in src. Camera-track/timed-value image storage and its 00465850 producer are not supplied by a live host path.",
+      "reach": "static"
+    },
+    {
+      "native": "00466020",
+      "host_site": "src/cc13_sweepA4.cpp:movie-action registration/factory table",
+      "status": "skipped",
+      "reason": "A factory address-table entry alone does not run the constructor. kMovieFactoryRootCc16Bound=false, and no active camera-track Host implementation supplies the other FOV construction sites.",
+      "reach": "static"
+    },
+    {
+      "native": "004691b0",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneSpawnPool::find",
+      "status": "skipped",
+      "reason": "The native scene database exists, but its hidden-record map is not populated by this host. SceneSpawnPool::add retains projected GameSceneEntityRecord values, not native map nodes/record pointers. A callback returning the existing vector-search result would not replace that search with the native lookup.",
+      "reach": "static"
+    },
+    {
+      "native": "004693c0",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneSpawnPool::add",
+      "status": "skipped",
+      "reason": "The constructor owns a cloned property bag at +04h, independently allocated name/class strings at +08h/+0Ch, party +10h, frame +14h and parent string +54h. This pool receives only a projected record; the native property-bag clone producer (008F41F0) and native map-insertion owner are absent. An unused mirror constructor would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "004722d0",
+      "host_site": "src/cc13_left8_seg8.cpp:TempAddedAnim constructor's anim_class_get_or_create_004722d0 call",
+      "status": "skipped",
+      "reason": "No anim_class_get_or_create_004722d0 Host implementation exists. A populated AnimClass registry with live Lua AnimClass rows and the 0048F670 named-base producer is not provided on a host path running TempAddedAnim construction.",
+      "reach": "static"
+    },
+    {
+      "native": "00472420",
+      "host_site": "src/seg10_cc13.cpp:game_destroy_world_containers_004d2b10",
+      "status": "skipped",
+      "reason": "No anim_class_registry_delete_00472420 Host implementation or populated host AnimClass visual registry exists. Constructing an empty registry solely to clear it would not replace live host class teardown.",
+      "reach": "static"
+    },
+    {
+      "native": "00475860",
+      "host_site": "src/seg10_cc13.cpp:game_destroy_world_containers_004d2b10",
+      "status": "skipped",
+      "reason": "No buoy_class_registry_delete_00475860 Host implementation or populated host BuoyClass visual registry exists. The class population/destructor producer is missing, so an empty-only owner would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "004772c0",
+      "address": "00883c82",
+      "function": "00883bb0",
+      "host_site": "src/game_hosts_scene_contents.cpp:2697 create_scene_world_object, Landscape ModelPath arm",
+      "status": "wired",
+      "reach": "static",
+      "reason": "Replaces the direct ModelPath lookup with the existing reconstructed 004772C0 body over the actual merged ScenePropertyBlock. The adapter searches by the body's supplied key; it does not accept a prefetched property/result. The result populates SceneWorldObject::model_path.",
+      "contract_evidence": "00883C7B pushes ModelPath, 00883C80 sets ECX=EDI, CALL at 00883C82. Filtering the whole containing listing shows EDI loaded from the property-bag wrapper at 00883C5B and unchanged until this call. 00477391 RET 4 confirms one stack argument. Ghidra proto confirms 00883BB0..008840A0 contains the site. The shared implementation retains null-name handling, resize preserve=false, copied-name first search, copied/original second search and captured data/size release.",
+      "adapter": "PropertyBagCStringHost and SceneLandscapePropertyAdapter. The existing raw entry is a thin RawPropertyBagCStringView wrapper around the same shared find_property_by_cstring implementation; no second address body or bag image reinterpretation."
+    },
+    {
+      "native": "00479ac0",
+      "host_site": "src/seg10_cc13.cpp:game_destroy_world_containers_004d2b10",
+      "status": "skipped",
+      "reason": "No cloud_class_registry_delete_00479ac0 Host implementation or populated host CloudClass visual registry exists. Cloud class/resource/particle producers are not supplied; clearing a new empty registry would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "0047b4e0",
+      "host_site": "src/seg10_cc13.cpp:game_destroy_world_containers_004d2b10",
+      "status": "skipped",
+      "reason": "No vehicle_visual_registry_delete_0047b4e0 Host implementation or populated sourced visual-class registry exists. The existing VehicleClassPreload registry is a different gameplay-class object and cannot substitute for it.",
+      "reach": "static"
+    },
+    {
+      "native": "0047ba40",
+      "host_site": "src/cc13_left8_seg8.cpp and src/classes_seg7_cc13.cpp:quad_cell_range_0047ba40 calls",
+      "status": "skipped",
+      "reason": "No quad_cell_range_0047ba40 Host implementation runs these spatial-index callers. They need their own tree bounds/cell-size producer (+40h); the host's terrain quadtree is a different object and cannot supply that state.",
+      "reach": "static"
+    },
+    {
+      "native": "0047c210",
+      "host_site": "src/game_hosts_units.cpp:soldier_muzzle_effect callback (unreached)",
+      "status": "skipped",
+      "reason": "Neither original caller has an active matrix-bearing host site: soldier_muzzle_effect remains unreached, and 006E5D70's multiple-bomb ammo generator is not wired. Substituting unrelated host matrix math would not wire the original call path.",
+      "reach": "static"
+    }
+  ]
+}
