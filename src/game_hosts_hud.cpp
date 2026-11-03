@@ -42,6 +42,9 @@
 #include "bsp/local_player_unit_lists.hpp"
 #include "bsp/wire_goal1_chain12_switches.hpp"
 #include "bsp/wire_goal2_chain35_switches.hpp"
+#include "bsp/wire_goal3_chain233_switches.hpp"
+#include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
+#include "bsp/world_map_bounds.hpp"
 #include "bsp/wire_goal4_chain252_switches.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -67,7 +70,10 @@
 #include <cmath>
 #include <cstdio>
 #include <cstring>
+#include <cstddef>
 #include <map>
+#include <memory>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -3366,6 +3372,106 @@ GuiLayoutWidget* GameHudHost::Impl::warning_widget(bsp::WarningWidget widget) {
 }
 
 namespace {
+// Goal 3 chain 233 (kWireGoal3Chain233Bound). GGame's world box as 00681F40
+// reads it through ECX = [00E188A8]: +711Ch the north-west corner (minimum x,
+// y, maximum z) and +7128h the south-east corner (maximum x, y, minimum z), the
+// layout world_map_bounds.hpp and GameMissionLuaHost::world_border_bounds
+// document. 00681F40 reads nothing else of GGame, so only the box is filled.
+struct GameWorldBoxImage {
+    std::uint8_t before_711c[0x711C];
+    float north_west[3];  // +711Ch..+7124h
+    float south_east[3];  // +7128h..+7130h
+};
+static_assert(offsetof(GameWorldBoxImage, north_west) == 0x711C);
+static_assert(offsetof(GameWorldBoxImage, south_east) == 0x7128);
+static_assert(sizeof(GameWorldBoxImage) == 0x7134);
+
+// Goal 3 chain 233. Screen 50h (GUI_Warning, vtable 00CF7184, 7Ch bytes) as the
+// show routines 00682CB0/00682D60/00682E10/00682ED0 (warning_screen_show_alert)
+// and their 00682800 read it: offsets from frontend_seg16_24_28_cc13.cpp kWarn*
+// and the constructor 006821C0 (cg_rebuild_c_cc13.cpp). A per-show view: the
+// host's WarningScreenState and its warning widgets stay the one copy, and the
+// phase the body advances is written back after the call.
+struct WarningScreenImage {
+    std::uint8_t head_00[0x18];
+    float phase[4];             // +18h..+24h, kWarnPhase
+    std::uint8_t active[4];     // +28h..+2Bh
+    std::uint8_t latch_2c;      // +2Ch, kWarnLatch
+    std::uint8_t pad_2d[3];
+    void* sample[4];            // +30h..+3Ch, kWarnSample: 006821C0's 00A83FD0 samples
+    void* sound[4];             // +40h..+4Ch, kWarnSound: the tracked sounds 00682800 makes
+    void* text;                 // +50h, kWarnText (warning_text)
+    void* icon1;                // +54h, kWarnIcon1 (warning_1_Icon)
+    void* icon2;                // +58h, kWarnIcon2 (warning_2_Icon)
+    void* field_5c;             // +5Ch
+    void* second_group;         // +60h
+    void* third_group;          // +64h
+    void* first_group;          // +68h, kWarnFirstGroup (first_Group)
+    void* field_6c;             // +6Ch
+    void* page;                 // +70h, kWarnPage
+    std::uint32_t last_unit;    // +74h
+    float dt;                   // +78h, kWarnDt
+};
+static_assert(offsetof(WarningScreenImage, phase) == 0x18);
+static_assert(offsetof(WarningScreenImage, sample) == 0x30);
+static_assert(offsetof(WarningScreenImage, sound) == 0x40);
+static_assert(offsetof(WarningScreenImage, text) == 0x50);
+static_assert(offsetof(WarningScreenImage, icon1) == 0x54);
+static_assert(offsetof(WarningScreenImage, icon2) == 0x58);
+static_assert(offsetof(WarningScreenImage, first_group) == 0x68);
+static_assert(offsetof(WarningScreenImage, dt) == 0x78);
+static_assert(sizeof(WarningScreenImage) == 0x7C);
+
+// Goal 3 chain 233. The Fe5Host services warning_screen_show_alert and its
+// 00682800 reach, over this process's HUD. Widget pointers are the HUD's own
+// GuiLayoutWidget objects (GameHudHost::Impl::warning_widget, 006823C0's
+// lookups on GUI_Warning). Every other Fe5Host service stays the base's loud
+// failure (fe5_host_unreached.hpp): award_tracker_trigger_hint_00690fd0 is the
+// stall show's (alert 0) only, and this host never raises a stall
+// (plane_stall_007c6e10 answers false).
+class WarningAlertFe5Binding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    explicit WarningAlertFe5Binding(GameHudHost::Impl& owner) : owner_(owner) {}
+    // Vtable +34h, the call WarningScreenBinding::set_visible makes; a widget
+    // the page did not supply stays untouched, as there.
+    void widget_set_visible_34(void* widget, bool visible) override {
+        if (widget == nullptr) return;
+        owner_.menu.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), visible);
+    }
+    // Vtable +4Ch: the alpha over the widget's own colour, as set_alpha.
+    void widget_set_alpha_4c(void* widget, float alpha) override {
+        if (widget == nullptr) return;
+        GuiLayoutWidget& w = *static_cast<GuiLayoutWidget*>(widget);
+        owner_.menu.frontend().set_widget_color(w, w.color[0], w.color[1], w.color[2], alpha);
+    }
+    // 00ABBE50(text, key, 1): the key becomes the Text widget's localised
+    // source through 00ABAED0, the host's set_widget_text_source. (00ABBE50's
+    // case-insensitive same-source gate only skips a relayout of the same text.)
+    void text_set_localised_key_00abbe50(void* text, const char* key) override {
+        if (text == nullptr) return;
+        owner_.menu.frontend().set_widget_text_source(*static_cast<GuiLayoutWidget*>(text),
+            key != nullptr ? std::string(key) : std::string());
+    }
+    // 00682800. [00E1988C], the in-game GUI sound class, has no owner in this
+    // host, and the samples at +30h come from screen 50h's constructor 006821C0
+    // (00A83FD0 on the sample cache [00F8BBE8]), which this host does not build:
+    // the slots are null, so no tracked sound is made (the host's alerts have
+    // never had sound). A sample would need the sound owner this host lacks.
+    void* ingame_gui_sound_class_00e1988c() override {
+        owner_.record("HudWarningScreen::gui_sound_class", 0x00e1988cu);
+        return nullptr;
+    }
+    void* sound_create_tracked_normal(void* sample, void* sound_class) override {
+        static_cast<void>(sound_class);
+        if (sample != nullptr) bsp::cc13_fe5::fe5_unreached("sound_create_tracked_normal");
+        owner_.record("HudWarningScreen::sound_create", 0x00682800u);
+        return nullptr;
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+
 // bsp::WarningScreenHost over this process's HUD.
 class WarningScreenBinding final : public bsp::WarningScreenHost {
 public:
@@ -3410,10 +3516,39 @@ public:
     }
     void refresh_pose_00414db0() override {}
     bool near_world_edge_00681f40() override {
-        // SUBSTITUTION: GGame+711Ch..+7130h, the world bounds 00681F40 tests,
-        // are unmodelled (as in the units host's fly-to solver).
-        owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
-        return false;
+        // 00683140..00683158, 00681F40(ECX = [00E188A8], &unit+FCh, 0.0f): ON runs
+        // game_near_world_edge_00681f40 over the host's border box; OFF keeps the
+        // substitution's false.
+        if constexpr (bsp::kWireGoal3Chain233Bound) {
+            // GGame+711Ch..+7130h is the box GameMissionLuaHost keeps from the
+            // avoid-zone load (select_world_map_bounds_004d5ede, set before any
+            // script runs). Before that load there is no box, and no mission
+            // frame runs this update then.
+            const bsp::WorldMapBounds* bounds =
+                owner_.lua != nullptr ? owner_.lua->world_border_bounds() : nullptr;
+            if (bounds == nullptr) {
+                owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
+                return false;
+            }
+            auto game = std::make_unique<GameWorldBoxImage>();
+            for (int i = 0; i < 3; ++i) {
+                game->north_west[i] = bounds->north_west[static_cast<std::size_t>(i)];
+                game->south_east[i] = bounds->south_east[static_cast<std::size_t>(i)];
+            }
+            // &[00E188D8]+FCh, the controlled unit's world translation (its pose
+            // is current here, pose_current_c8).
+            float position[3];
+            owner_.units->unit_position_00fc(owner_.units->controlled_index(),
+                position[0], position[1], position[2]);
+            owner_.done("HudWarningScreen::world_edge", 0x00681f40u);
+            return bsp::cc13_fe5::game_near_world_edge_00681f40(
+                bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(game.get())}, position, 0.0f);
+        } else {
+            // SUBSTITUTION: GGame+711Ch..+7130h, the world bounds 00681F40 tests,
+            // are unmodelled (as in the units host's fly-to solver).
+            owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
+            return false;
+        }
     }
     void set_visible(bsp::WarningWidget widget, bool visible) override {
         GuiLayoutWidget* w = owner_.warning_widget(widget);
@@ -3440,10 +3575,36 @@ public:
         owner_.record("HudWarningScreen::sound_release", 0x0068322fu);
     }
     void show_alert(bsp::WarningScreenState& screen, int alert) override {
-        static_cast<void>(screen);
         static const std::uint32_t kShow[4] = {0x00682ed0u, 0x00682cb0u, 0x00682d60u,
                                                0x00682e10u};
-        owner_.record("HudWarningScreen::show_alert", kShow[alert & 3]);
+        // 00683282's jump table to 00682ED0/00682CB0/00682D60/00682E10: ON runs
+        // warning_screen_show_alert (phase += dt, first_Group shown, the alert's
+        // key, the pulsed alpha on the three widgets, 00682800) over the HUD's
+        // warning widgets; OFF keeps the record.
+        if constexpr (bsp::kWireGoal3Chain233Bound) {
+            const std::size_t i = static_cast<std::size_t>(alert & 3);
+            WarningScreenImage image{};
+            for (std::size_t k = 0; k < 4; ++k) {
+                image.phase[k] = screen.phase[k];
+                // A non-null +40h slot is a tracked sound 00682800 made; this host
+                // has made none (its samples are null), so a set flag has no handle.
+                if (screen.sound[k]) bsp::cc13_fe5::fe5_unreached("warning sound handle");
+            }
+            image.dt = screen.dt_78;
+            image.text = owner_.warning_widget(bsp::WarningWidget::Text);
+            image.icon1 = owner_.warning_widget(bsp::WarningWidget::Icon1);
+            image.icon2 = owner_.warning_widget(bsp::WarningWidget::Icon2);
+            image.first_group = owner_.warning_widget(bsp::WarningWidget::FirstGroup);
+            WarningAlertFe5Binding fe5(owner_);
+            bsp::cc13_fe5::warning_screen_show_alert(
+                bsp::cc13_fe5::Raw{reinterpret_cast<std::uint8_t*>(&image)}, alert & 3, fe5);
+            screen.phase[i] = image.phase[i];
+            screen.sound[i] = image.sound[i] != nullptr;
+            owner_.done("HudWarningScreen::show_alert", kShow[i]);
+        } else {
+            static_cast<void>(screen);
+            owner_.record("HudWarningScreen::show_alert", kShow[alert & 3]);
+        }
     }
 
 private:
