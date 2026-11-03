@@ -112,6 +112,28 @@ public:
     // 00768530 case 9Fh at 0076960E (00760A50), 00760B30 read. Returns the
     // copy's +1Ch bool, the flag 00821E80's 9Fh arm hands 00939FD0.
     bool queue_repair_body_9f(bool enabled) const;
+    // Goal 4 chain 260. MT_SHIP_LEAK (90h): the sender 0080FF80 makes
+    // 00761F60's stores (0075B430(90h), the zero header, +4h = 1, vtable
+    // 00D034A0) plus +1Ch = the leak count and +20h..+28h = the unit-local
+    // point, so the sent message is 00761F60 with those fields; then 00761FF0
+    // write (count 6 bits, three raw floats), 00768530 case 90h at 0076946E
+    // (00761F60), 00762090 read. The receiver 008221A7 -> 0074F440 reads the
+    // copy's count and point.
+    struct ShipLeakCopy {
+        std::uint32_t count{0};
+        float point[3]{0.0f, 0.0f, 0.0f};
+    };
+    ShipLeakCopy queue_ship_leak_90(std::uint32_t count, const float (&point)[3]) const;
+    // Goal 4 chain 260. MT_SHIP_AVOIDSIDE (8Fh): the sender 009D66B0 makes
+    // 007623D0's stores (0075B430(8Fh), +18h/+1Ah zero, +4h = 1, vtable
+    // 00D034DC) plus +1Ch = the observed unit's +174h word and +20h = side;
+    // then 00762460 write (12-bit id, 3-bit signed side), 00768530 case 8Fh
+    // at 0076944E (007623D0), 007624B0 read. Returns the copy's two fields.
+    struct ShipAvoidSideCopy {
+        std::uint16_t other_id{0};
+        std::int32_t side{0};
+    };
+    ShipAvoidSideCopy queue_ship_avoid_side_8f(std::uint16_t other_id, std::int32_t side) const;
 
 private:
     struct Image;

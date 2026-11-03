@@ -74,12 +74,19 @@ struct HostSessionMessages::Image {
                                         0x004499c0u};
         std::uint32_t slots_00d03360[5]{0x00760bf0u, 0x00760ae0u, 0x00760b30u, 0x00760ab0u,
                                         0x004499c0u};
+        // 90h 00D034A0 and 8Fh 00D034DC, read from the PE the same way.
+        std::uint32_t slots_00d034a0[5]{0x00762660u, 0x00761ff0u, 0x00762090u, 0x00761fc0u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d034dc[5]{0x007626c0u, 0x00762460u, 0x007624b0u, 0x00762430u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if (image_address == 0x00d032d0u) return slots_00d032d0;
             if constexpr (kWireGoal4Chain260Bound) {
                 if (image_address == 0x00d02d30u) return slots_00d02d30;
                 if (image_address == 0x00d02d44u) return slots_00d02d44;
                 if (image_address == 0x00d03360u) return slots_00d03360;
+                if (image_address == 0x00d034a0u) return slots_00d034a0;
+                if (image_address == 0x00d034dcu) return slots_00d034dc;
             }
             return nullptr;
         }
@@ -306,6 +313,52 @@ bool HostSessionMessages::queue_repair_body_9f(bool enabled) const {
     seg42::construct_shiprepair_bodyrepair_00760a50(&queued, image.seg42);
     seg42::read_shiprepair_bodyrepair_00760b30(&queued, &stream.in);
     return queued.flag_1c != 0;
+}
+
+HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
+    std::uint32_t count, const float (&point)[3]) const {
+    const Image& image = *image_;
+    // 0080FF80: 0075B430(90h), +18h word 0, +1Ah 0, +1Ch = value, +4h = 1,
+    // vtable 00D034A0, +20h..+28h the point; 00761F60 is those stores
+    // without the two arguments.
+    seg42::ShipLeakMessage sent{};
+    seg42::construct_ship_leak_00761f60(&sent, image.seg42);
+    sent.leak_1c = count;
+    for (int i = 0; i < 3; ++i) sent.vector_20[i] = point[i];
+
+    LocalStream stream;
+    seg42::write_ship_leak_00761ff0(&sent, &stream.out, image.numeric);
+    // 00768530 case 90h: operator new(2Ch), 00761F60 at 0076946E; 0076A27B
+    // vtable[8] = 00762090.
+    stream.begin_read();
+    seg42::ShipLeakMessage queued{};
+    seg42::construct_ship_leak_00761f60(&queued, image.seg42);
+    seg42::read_ship_leak_00762090(&queued, &stream.in, image.numeric);
+    ShipLeakCopy copy;
+    copy.count = queued.leak_1c;
+    for (int i = 0; i < 3; ++i) copy.point[i] = queued.vector_20[i];
+    return copy;
+}
+
+HostSessionMessages::ShipAvoidSideCopy HostSessionMessages::queue_ship_avoid_side_8f(
+    std::uint16_t other_id, std::int32_t side) const {
+    const Image& image = *image_;
+    // 009D66B0..009D66E6: 0075B430(8Fh), +18h word 0, +1Ah 0, +4h = 1, vtable
+    // 00D034DC (007623D0's stores), +1Ch = observed+174h, +20h = side.
+    seg42::ShipAvoidSideMessage sent{};
+    seg42::construct_ship_avoidside_007623d0(&sent, image.seg42);
+    sent.other_id_1c = other_id;
+    sent.side_20 = side;
+
+    LocalStream stream;
+    seg42::write_ship_avoidside_00762460(&sent, &stream.out);
+    // 00768530 case 8Fh: operator new(24h), 007623D0 at 0076944E; 0076A27B
+    // vtable[8] = 007624B0 (00428D30 sign-extends the 3-bit side).
+    stream.begin_read();
+    seg42::ShipAvoidSideMessage queued{};
+    seg42::construct_ship_avoidside_007623d0(&queued, image.seg42);
+    seg42::read_ship_avoidside_007624b0(&queued, &stream.in);
+    return ShipAvoidSideCopy{queued.other_id_1c, queued.side_20};
 }
 
 } // namespace bsp

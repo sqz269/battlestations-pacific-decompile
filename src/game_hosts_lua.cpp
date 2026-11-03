@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain253_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/cc13_left55.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
@@ -8748,6 +8749,28 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
         ++summary_.water_load_routed;
         float right[3], up[3], forward[3], origin[3];
         if (units->unit_pose(index, right, up, forward, origin)) {
+            if constexpr (kWireGoal4Chain260Bound) {
+                // Goal 4 chain 260: the receiver reads 0076E520's copy of the 90h
+                // (0080FF80 stores via 00761F60, 00761FF0 write, 00762090 read):
+                // its +1Ch count and its unit-local +20h point, which 004142E0
+                // then takes through the pose as below.
+                const float local[3] = {local_x, 0.0f, local_z};
+                bsp::HostSessionMessages::ShipLeakCopy copy;
+                copy.count = static_cast<std::uint32_t>(count);
+                for (int lane = 0; lane < 3; ++lane) copy.point[lane] = local[lane];
+                if (const bsp::HostSessionMessages* messages =
+                        bsp::game::commands_session_messages()) {
+                    copy = messages->queue_ship_leak_90(copy.count, local);
+                }
+                float world[3];
+                for (int lane = 0; lane < 3; ++lane) {
+                    const float across = copy.point[0] * right[lane];
+                    const float along = copy.point[2] * forward[lane];
+                    const float lift = copy.point[1] * up[lane];
+                    world[lane] = ((across + lift) + along) + origin[lane];
+                }
+                applied = units->add_leak_0074f440(index, copy.count, world);
+            } else {
             float world[3];
             for (int lane = 0; lane < 3; ++lane) {
                 const float across = local_x * right[lane];
@@ -8756,6 +8779,7 @@ int GameMissionLuaHost::run_add_water_load_00893380(lua_State* state, int argume
                 world[lane] = ((across + lift) + along) + origin[lane];
             }
             applied = units->add_leak_0074f440(index, static_cast<std::uint32_t>(count), world);
+            }
             if (applied) ++summary_.water_load_applied;
         }
     }

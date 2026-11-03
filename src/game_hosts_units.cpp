@@ -48398,11 +48398,14 @@ bool GameUnitsHost::post_formation_leave_0077c980(std::size_t index) {
 
 void GameUnitsHost::leave_formation_message_0077c980(std::size_t index) {
     // Goal 4 chain 260: the 77h copy as in post_formation_leave_0077c980, then
-    // 0077BD70 at the call (the synchronous Lua leave's substitution).
-    const std::size_t other =
-        commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
-    if (other != kNoFormationMember) {
-        impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+    // 0077BD70 at the call (the synchronous leave's substitution). 0077C980
+    // builds the message only while [unit+284h] is set (0077C99C..0077C9A6).
+    if (unit_formation_group_0284(index) >= 0) {
+        const std::size_t other =
+            commands_formation_member_copy_0076e520(0x77, kNoFormationMember);
+        if (other != kNoFormationMember) {
+            impl_->log.unimplemented("UnitGroup::leave_message_other", "0077fe80");
+        }
     }
     leave_group_on_destroy_0077bd70(index);
 }
