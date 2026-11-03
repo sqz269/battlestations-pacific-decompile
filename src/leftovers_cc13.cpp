@@ -1713,19 +1713,75 @@ float engine_jam_seconds_0093a3f0(const void* task, Host& host) {
 }
 // 0095C550, ECX=class id, RET. Supplied actual vector is 00F8A09C, not
 // an independent census. Keep the duplicate scan and capacity fast append.
-void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host) {
-    auto cursor = get<std::uintptr_t>(vector, 4);
-    const auto end = get<std::uintptr_t>(vector, 8);
-    if (end < cursor) invalid(host);
-    while (cursor != end) {
-        if (get<std::int32_t>(reinterpret_cast<void*>(cursor), 0) == class_id) return;
-        cursor += 4;
+// One body over a census view: the raw entry reads the image's vector words
+// (+4h first, +8h last, +0Ch end); the typed entry reads a std::vector that a
+// host keeps as its copy of 00F8A09C.
+namespace {
+template <class CensusView>
+void append_vehicle_census_body(CensusView& census, std::int32_t class_id) {
+    const std::int32_t* cursor = census.first();
+    const std::int32_t* const last = census.last();
+    if (last < cursor) census.report_invalid();
+    for (; cursor != last; ++cursor) {
+        if (census.read(cursor) == class_id) return;
     }
-    const auto begin = get<std::uintptr_t>(vector, 4);
-    if (begin != 0 && (end - begin) / 4 < (get<std::uintptr_t>(vector, 0xc) - begin) / 4) {
+    const std::int32_t* const first = census.first();
+    if (first != nullptr && static_cast<std::size_t>(last - first) < census.capacity()) {
+        census.store_at_last(class_id);
+    } else {
+        census.insert_at_last(class_id);   // 00441F30 at last
+    }
+}
+
+struct RawCensusVector {
+    void* vector;
+    Host& host;
+    const std::int32_t* first() const {
+        return reinterpret_cast<const std::int32_t*>(get<std::uintptr_t>(vector, 4));
+    }
+    const std::int32_t* last() const {
+        return reinterpret_cast<const std::int32_t*>(get<std::uintptr_t>(vector, 8));
+    }
+    std::size_t capacity() const {
+        const auto begin = get<std::uintptr_t>(vector, 4);
+        return (get<std::uintptr_t>(vector, 0xc) - begin) / 4;
+    }
+    static std::int32_t read(const std::int32_t* element) { return get<std::int32_t>(element, 0); }
+    void store_at_last(std::int32_t class_id) {
+        const auto end = get<std::uintptr_t>(vector, 8);
         put<std::int32_t>(reinterpret_cast<void*>(end), 0, class_id);
         put<std::uintptr_t>(vector, 8, end + 4);
-    } else host.insert_census_00441f30(vector, reinterpret_cast<void*>(end), &class_id);
+    }
+    void insert_at_last(std::int32_t class_id) {
+        host.insert_census_00441f30(vector,
+            reinterpret_cast<void*>(get<std::uintptr_t>(vector, 8)), &class_id);
+    }
+    [[noreturn]] void report_invalid() { invalid(host); }
+};
+
+struct StdCensusVector {
+    std::vector<std::int32_t>& census;
+    const std::int32_t* first() const { return census.data(); }
+    const std::int32_t* last() const { return census.data() + census.size(); }
+    std::size_t capacity() const { return census.capacity(); }
+    static std::int32_t read(const std::int32_t* element) { return *element; }
+    void store_at_last(std::int32_t class_id) { census.push_back(class_id); }
+    void insert_at_last(std::int32_t class_id) { census.insert(census.end(), class_id); }
+    // A std::vector cannot report last before first; the image's 00BF6713.
+    [[noreturn]] void report_invalid() {
+        throw std::logic_error("0095C550: census last precedes first");
+    }
+};
+} // namespace
+
+void append_vehicle_census_0095c550(void* vector, std::int32_t class_id, Host& host) {
+    RawCensusVector census{vector, host};
+    append_vehicle_census_body(census, class_id);
+}
+
+void append_vehicle_census_0095c550(std::vector<std::int32_t>& census, std::int32_t class_id) {
+    StdCensusVector view{census};
+    append_vehicle_census_body(view, class_id);
 }
 // 009277E0: five-byte JMP00923840, unchanged ECX. Bind the existing
 // complete raw-storage implementation rather than copy its flag writes.
