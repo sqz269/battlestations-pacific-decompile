@@ -85,6 +85,10 @@
 #include "bsp/scene_class_registry.hpp"
 #include "bsp/airfield_marker_seg31_32_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
+#include "bsp/cc13_sweepB2.hpp"        // 006AD600, the mission Lua globals clear
+#include "bsp/cc13_seg87.hpp"          // 00B67350
+#include "bsp/native_lua_objects.hpp"  // 00B66BD0, 00B67980, 00B67700
+#include "bsp/native_string.hpp"
 #include "bsp/warning_string_seg64_argon.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -224,6 +228,68 @@ void run_class_table_resets_cc264(GameMissionLuaHost& lua, GameHostLog& log, con
         "PlanePartClass MarkerClasses Effects = nil, %zu ran, %zu failed (DeviceClass, "
         "Bullets and StationaryClass kept for the host's lazy readers; kWireGoal4Chain264Bound)",
         site, run.ran(), run.failed());
+}
+
+// Goal 4 chain 264 (kWireGoal4Chain264Bound). 006AD600's per-name step on the
+// mission state, through the image's own bodies: the key NativeString as
+// 0041DD40(length, 1) plus memcpy(length + 1) builds it, the globals LuaObject of
+// the state owner at [00E188A8]+1A0Ch (00B67980, an untracked kind-1 object at
+// LUA_GLOBALSINDEX; the owner storage is 00B66BD0's over the borrowed state, as the
+// Lua host's binding frames make it), 00B67350 (globals[key] = nil through
+// lua_settable), 00B67700 on the globals object, and the key released with
+// length + 1 (00BD1510's block size). The state owner at +1A0Ch and the machine at
+// +1A08h wrap the GameMissionLuaHost's one lua_State.
+class MissionLuaGlobalNilBinding final : public bsp::MissionLuaGlobalClear {
+public:
+    explicit MissionLuaGlobalNilBinding(lua_State* state) noexcept {
+        bsp::construct_native_lua_state_00b66bd0(&owner_);
+        owner_.state_04 = state;
+    }
+    MissionLuaGlobalNilBinding(const MissionLuaGlobalNilBinding&) = delete;
+    MissionLuaGlobalNilBinding& operator=(const MissionLuaGlobalNilBinding&) = delete;
+
+    void set_global_nil(const char* name, std::uint32_t length) override {
+        if (owner_.state_04 == nullptr) {
+            // No machine yet; the image has no such state at 004E019F.
+            ++skipped_;
+            return;
+        }
+        bsp::NativeStringStorage& strings = bsp::crt_string_storage();
+        bsp::NativeString key;
+        key.resize_0041dd40(strings, length, true);
+        if (key.data() != nullptr) std::memcpy(key.data(), name, key.length() + 1);
+        alignas(4) std::byte storage[sizeof(bsp::NativeLuaObjectStorage)];
+        bsp::NativeLuaObjectStorage* globals = bsp::native_lua_globals_00b67980(owner_, storage);
+        bsp::native_lua_set_nil_00b67350(*globals, key);
+        bsp::destroy_native_lua_object_00b67700(*globals);
+        key.release_to(strings);
+        ++cleared_;
+    }
+    std::size_t cleared() const noexcept { return cleared_; }
+    std::size_t skipped() const noexcept { return skipped_; }
+
+private:
+    bsp::NativeLuaStateStorage owner_{};
+    std::size_t cleared_{0};
+    std::size_t skipped_{0};
+};
+
+// 004E019F: BSP_Game_ClearMissionLuaGlobals (006AD600) after 00874640 and before
+// the scene file. It clears scoring, thisTable, Mission, MissionGlobals and
+// MessageSender. Global scripts define none of the last four at top level (the
+// mission script and functions do), so on a first load only thisTable, which
+// Scripts/global/luamw_init.lua set to {} in the global_subsystems step, changes:
+// it is nil until the sync_lobby_settings_from_lua step's 004E0305 makes the fresh
+// table (create_self_table_004e0305), the order of 004E019F and 004E0249/004E0305
+// in the image. Nothing between the two reads it. A later load in the same process
+// drops the previous mission's roots here, as the image does.
+void clear_mission_lua_globals_cc264(GameMissionLuaHost& lua, GameHostLog& log) {
+    MissionLuaGlobalNilBinding binding(lua.mission_lua_state());
+    bsp::cc13_sweepB2_game_clear_mission_lua_globals_006ad600(binding);
+    log.implemented("MissionLua::clear_mission_lua_globals", "006ad600");
+    log.notef("mission Lua globals cleared at 004E019F: scoring thisTable Mission "
+        "MissionGlobals MessageSender = nil (%zu cleared, %zu without a machine; "
+        "kWireGoal4Chain264Bound)", binding.cleared(), binding.skipped());
 }
 
 }  // namespace
@@ -3906,6 +3972,17 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         if constexpr (bsp::kWireGoal3Chain242Bound) {
             if (method == "reset_render_scene") {
                 host.reset_shared_frame_mission_clock();
+                host.done(label, step.address);
+                ++host.load.concrete;
+                continue;
+            }
+        }
+        if constexpr (bsp::kWireGoal4Chain264Bound) {
+            // 004E019F CALL 006AD600. The step table's "reset_effect_atlas" row is
+            // that call (cc13_sweepB2.cpp: the body clears five mission Lua
+            // globals; nothing about an atlas). OFF leaves the row a record.
+            if (method == "reset_effect_atlas") {
+                clear_mission_lua_globals_cc264(host.lua, host.log);
                 host.done(label, step.address);
                 ++host.load.concrete;
                 continue;

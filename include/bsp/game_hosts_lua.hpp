@@ -1773,6 +1773,10 @@ public:
     bool read_minimap_globals_0087d7b0(float& minimap_range, float& visibility_range);
 
     bool started() const noexcept;
+    // The mission machine's state ([[00E188A8]+1A08h]+4 and the state owner at
+    // +1A0Ch wrap this one lua_State), for host bindings that run the image's own
+    // LuaObject bodies on it (goal 4 chain 264). Null before create_state().
+    lua_State* mission_lua_state() const noexcept { return state_; }
     const GameMissionLuaSummary& summary() const noexcept;
     // Logs the distinct bindings the scripts reached, highest count first.
     void report_natives(std::size_t limit);
