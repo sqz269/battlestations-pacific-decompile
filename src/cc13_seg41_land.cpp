@@ -952,19 +952,38 @@ void land_vehicle_apply_sync_0074d230(std::uint8_t* vehicle, const std::uint8_t*
     host.motion_step_slot04(vehicle + 0x310, step_00f876ac);  // 0074D2DD
 }
 
-void points_push_back_0074d2f0(std::uint8_t* vector, const float* point, LandVehicleHost& host) {
-    if (at<std::int32_t>(vector, 4) == at<std::int32_t>(vector, 8)) {
-        std::int32_t grown = at<std::int32_t>(vector, 8) * 2;
+void points_push_back_0074d2f0(PointsAppendView& vector, const float* point, PointsAppendHost& host) {
+    if (vector.count() == vector.capacity()) {
+        std::int32_t grown = vector.capacity() * 2;
         if (grown <= 1) grown = 1;
-        host.points_reserve_0074d190(vector, grown);
+        host.points_reserve_0074d190(grown);
     }
-    float* slot = reinterpret_cast<float*>(at<std::uint8_t*>(vector, 0) + at<std::int32_t>(vector, 4) * 0x0C);
+    const std::int32_t count = vector.count();
+    float* slot = vector.writable_slot(count);
     if (slot != nullptr) {
         slot[0] = point[0];
         slot[1] = point[1];
         slot[2] = point[2];
     }
-    ++at<std::int32_t>(vector, 4);
+    vector.set_count(count + 1);
+}
+
+void points_push_back_0074d2f0(std::uint8_t* vector, const float* point, LandVehicleHost& host) {
+    struct RawPoints final : PointsAppendView, PointsAppendHost {
+        std::uint8_t* storage;
+        LandVehicleHost& source;
+        RawPoints(std::uint8_t* value, LandVehicleHost& calls) : storage(value), source(calls) {}
+        std::int32_t count() const override { return at<std::int32_t>(storage, 4); }
+        std::int32_t capacity() const override { return at<std::int32_t>(storage, 8); }
+        float* writable_slot(std::int32_t index) override {
+            return reinterpret_cast<float*>(at<std::uint8_t*>(storage, 0) + index * 0x0C);
+        }
+        void set_count(std::int32_t value) override { at<std::int32_t>(storage, 4) = value; }
+        void points_reserve_0074d190(std::int32_t value) override {
+            source.points_reserve_0074d190(storage, value);
+        }
+    } view(vector, host);
+    points_push_back_0074d2f0(view, point, view);
 }
 
 void land_vehicle_serialize_0074d3b0(std::uint8_t* vehicle, ArchiveWriter& archive, LandVehicleHost& host) {

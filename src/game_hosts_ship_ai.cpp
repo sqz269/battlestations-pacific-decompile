@@ -34,6 +34,8 @@
 #include "bsp/cc13_seg68.hpp"
 #include "bsp/wire_goal1_chain3_switches.hpp"
 #include "bsp/wire_goal2_chain71_switches.hpp"
+#include "bsp/wire_goal2_chain153_switches.hpp"
+#include "bsp/cc13_seg41_land.hpp"
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
 #include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
@@ -14737,6 +14739,30 @@ float transport_launch_length3_0042b2f0(const float v[3]) {
     return len;
 }
 
+// Adapts the actual candidate vector, not an image cast over STL. The native
+// 0074D450 stores into its unused end slot before advancing count. Establish
+// that slot's C++ object lifetime first; no callback observes the vector between
+// writable_slot and the body's final set_count. Capacity and element stores
+// remain decisions of the existing reconstructed append body.
+class TransportLaunchPointAppend final : public bsp::cc13_seg41::PointsAppendView,
+    public bsp::cc13_seg41::PointsAppendHost {
+public:
+    explicit TransportLaunchPointAppend(std::vector<std::array<float, 3>>& points)
+        : points_(points) {}
+    std::int32_t count() const override { return static_cast<std::int32_t>(points_.size()); }
+    std::int32_t capacity() const override { return static_cast<std::int32_t>(points_.capacity()); }
+    float* writable_slot(std::int32_t index) override {
+        points_.resize(static_cast<std::size_t>(index) + 1);
+        return points_[static_cast<std::size_t>(index)].data();
+    }
+    void set_count(std::int32_t value) override { points_.resize(static_cast<std::size_t>(value)); }
+    void points_reserve_0074d190(std::int32_t value) override {
+        points_.reserve(static_cast<std::size_t>(value));
+    }
+private:
+    std::vector<std::array<float, 3>>& points_;
+};
+
 // 008208BB..00820CBF at PC24: the ring's four corners through the transport's
 // matrix (004142E0, ECX = the local (x, 0, z): ((y*up + x*right) + z*forward) +
 // origin per component), their world y zeroed (00820A7B..00820A95), then each
@@ -14763,10 +14789,23 @@ void transport_launch_ring_points_cc13(int ring, float ring_step, float spacing,
         out[1] = 0.0f;
         return out;
     };
+    if constexpr (bsp::kWireGoal2Chain153Bound) {
+        // 0074D450 calls points_push_back_0074d2f0 for each real transformed corner; OFF keeps STL append.
+        TransportLaunchPointAppend view(points);
+        const auto p0 = to_world(cx0, cz0);
+        bsp::cc13_seg41::points_push_back_0074d2f0(view, p0.data(), view);
+        const auto p1 = to_world(cx1, cz0);
+        bsp::cc13_seg41::points_push_back_0074d2f0(view, p1.data(), view);
+        const auto p2 = to_world(cx1, cz1);
+        bsp::cc13_seg41::points_push_back_0074d2f0(view, p2.data(), view);
+        const auto p3 = to_world(cx0, cz1);
+        bsp::cc13_seg41::points_push_back_0074d2f0(view, p3.data(), view);
+    } else {
     points.push_back(to_world(cx0, cz0));
     points.push_back(to_world(cx1, cz0));
     points.push_back(to_world(cx1, cz1));
     points.push_back(to_world(cx0, cz1));
+    }
     for (int e = 0; e < 4; ++e) {
         const std::array<float, 3> a = points[static_cast<std::size_t>(e)];
         const std::array<float, 3> b = points[static_cast<std::size_t>(e == 3 ? 0 : e + 1)];
