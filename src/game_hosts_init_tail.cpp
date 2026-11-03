@@ -87,6 +87,20 @@ const hardware::GpuTableRow* probe_gpu_catalog() {
     return rows;
 }
 
+std::vector<std::uint32_t> probe_gpu_scores() {
+    std::vector<std::uint32_t> scores;
+    // 0098DFC5 reads 00E0CFF0 + row*12. The existing catalog starts at
+    // 00E0CFF4: its third word is the FOLLOWING row's score. Seed from the
+    // original word at 00E0CFF0, then carry each catalog word to the next row.
+    // tools/wire_goal4_chain269_probe.py checks every score against the binary.
+    std::uint32_t native_score = 1;
+    for (const auto* row = probe_gpu_catalog(); row->name != nullptr; ++row) {
+        scores.push_back(native_score);
+        native_score = row->score;
+    }
+    return scores;
+}
+
 class HardwareProbeMessages final
     : public hardware_options_seg66_argon::LocalizationMessageHost {
 public:
@@ -171,25 +185,16 @@ struct ProbeHardwareImage {
     char default_options_c3c[0x4000];
 
     std::int32_t options_detail() const {
+        // The writer retains its previous path for an unknown GPU. Neither
+        // 00992640 nor 009927D0 supplies +20h, which 0098DFCE consumes when
+        // +28h == -1. Reject a bypass of that gate instead of inventing state.
+        if (fields_28.gpu_index_28 == -1)
+            throw std::logic_error("hardware probe: unknown-GPU +20h has no producer");
         band0090::HardwareSnapshot state;
         state.gpu_row = fields_28.gpu_index_28;
         state.memory_mb = fields_28.memory_mb_2c;
         state.cpu_mhz = fields_28.cpu_mhz_30;
-        std::vector<std::uint32_t> scores;
-        const auto* const catalog = probe_gpu_catalog();
-        for (const auto* row = catalog; row->name != nullptr; ++row)
-            scores.push_back(row->score);
-        // 0098DFB4..0098DFE7: an unknown GPU selects catalog row zero,
-        // conditional on +20h. That word has no producer in 00992640 or
-        // 009927D0. The installed catalog's row-zero score is zero, so BOTH
-        // outcomes return zero. Normalize to that actual fallback row; no
-        // invented +20h value is consumed by the existing detail body.
-        if (state.gpu_row == -1) {
-            if (scores.at(0) != 0)
-                throw std::runtime_error("hardware probe: unknown-GPU +20h has no producer");
-            state.gpu_row = 0;
-        }
-        return band0090::recommend_detail_level(state, scores);
+        return band0090::recommend_detail_level(state, probe_gpu_scores());
     }
     std::uint8_t options_supports(std::uint32_t width, std::uint32_t height) const {
         band0090::HardwareSnapshot state;
@@ -381,6 +386,13 @@ public:
     }
     void write_default_options_file(const std::string& path) override {
         if constexpr (kWireGoal4Chain269Bound) {
+            // Native row zero has score 1, so its unknown-GPU +20h gate
+            // changes the recommendation. Keep index -1 and the old writer
+            // until that word has an evidenced producer; do not open a file.
+            if (image_.fields_28.gpu_index_28 == -1) {
+                owner_.write_default_options_file(path);
+                return;
+            }
             // 0073C83E reaches this only after the real probe dialog's IDYES.
             // 0098F430 opens first, then calls 0098E910 twice (strlen/write).
             // Keep the same live detection owner through both formatter calls.

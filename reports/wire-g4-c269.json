@@ -12,25 +12,25 @@
       "native": "0098df90",
       "status": "wired",
       "host_site": "src/game_hosts_init_tail.cpp: ProbeHardwareImage::options_detail",
-      "state": "CPU and memory from the existing Windows survey; GPU row and scores from the original catalog. The unknown-GPU fallback uses catalog row zero: its immutable score is zero, so both native +20h gate outcomes return zero without consuming an invented +20h word.",
+      "state": "Known GPUs only: CPU and memory come from the existing Windows survey, and scores align with native 00E0CFF0 + row*12. The catalog starts at 00E0CFF4, so its third word supplies the following row's score; probe_gpu_scores seeds the original first score 1 and carries those words forward. Unknown index -1 is preserved and takes the previous writer path because +20h has no producer.",
       "evidence": "bsp.py show 0098df90 --asm --start 7 --lines 48; native 0098DFB4..0098DFDF; existing recommend_detail_level body reused unchanged",
-      "built_call": "1010531B calls recommend_detail_level at 10030EB0; reachable from entry"
+      "built_call": "101051F1 calls recommend_detail_level at 10030EB0; reachable from entry"
     },
     {
       "native": "0098e910",
       "status": "wired",
       "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine::build_default_options_text_0098e910",
-      "state": "The same detection owner supplies shader model +24h, published antialias vector +14h/+18h, language +C38h, display modes, and the real DirectSound enumeration counter. Its native 4C3Ch allocation now includes the output buffer at +C3Ch.",
+      "state": "For known GPUs, the same detection owner supplies shader model +24h, published antialias vector +14h/+18h, language +C38h, display modes, and the real DirectSound enumeration counter. Its native 4C3Ch allocation includes the output buffer at +C3Ch; unknown GPUs do not enter the formatter.",
       "evidence": "bsp.py show 0098e910 --lines 90; existing complete oct18_tail_c formatter reused, including the eight fixed settings; MSVC Win32 nonvirtual-member callback representations checked at compile time and exercised by the focused probe",
-      "built_call": "101044AA calls hardware_default_options_0098e910 at 103C5820; reachable from entry"
+      "built_call": "1010450A calls hardware_default_options_0098e910 at 103C5810; reachable from entry"
     },
     {
       "native": "0098f430",
       "status": "wired",
       "host_site": "src/game_hosts_init_tail.cpp: HardwareProbeMachine::write_default_options_file",
-      "state": "Real path supplied by run_hardware_probe_tail_0073c3b0 after the existing hardware-change dialog returns IDYES. The writer opens first and invokes the same live owner's formatter twice for strlen and fwrite.",
+      "state": "Real path supplied by run_hardware_probe_tail_0073c3b0 after the existing hardware-change dialog returns IDYES. Known GPUs enter the reconstructed writer, which opens first and invokes the same owner's formatter twice for strlen and fwrite. Unknown index -1 delegates to GameHardwareProbe::write_default_options_file before any open, preserving the previous path.",
       "evidence": "bsp.py show 0098f430; call_graph.py path 0098f430 reaches GameHardwareProbe::run through phase2 and WinMain",
-      "built_call": "10106B8A calls write_default_options_file_0098f430 at 103C8060; reachable from entry"
+      "built_call": "10106B7A calls write_default_options_file_0098f430 at 103C8050; reachable from entry"
     },
     {
       "native": "00bb9f40",
@@ -51,12 +51,28 @@
       "reason": "Requires a binding of the unit host's actual attached kind-2Ah child count and rack ammo+484h reserve into this consumer; this packet does not own the rack storage."
     }
   ],
+  "review_round_1": {
+    "reviewed_head": "fd798fa63df6948af196c45076b5769420af36b1",
+    "original_binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "findings": [
+      {
+        "finding": "P1 GPU-score alignment",
+        "status": "fixed",
+        "resolution": "All 396 adapter scores now match dwords at native 00E0CFF0 + row*12. The old adapter had the reported 21 mismatches; Quadro2 Pro now receives 0 rather than 1."
+      },
+      {
+        "finding": "P1 unsupported unknown-GPU normalization",
+        "status": "fixed",
+        "resolution": "Removed normalization to row zero. Native row zero has score 1, so the old equivalence claim was wrong. The writer retains index -1 and delegates to the previous host method until +20h has an evidenced producer; it never opens the output or calls the formatter on this path."
+      }
+    ]
+  },
   "validation": {
     "baseline": "Fresh index and scripts/build.ps1 passed before selection; baseline wire_readiness --standins reported 9179 wired.",
     "build": "scripts/build.ps1 passed MSVC Win32 Release and both existing tests: reconstructed_math and tool_tests.",
-    "focused_fixture": "local/output/wire_g4_c269_probe.py extracted the actual owner/callback adapter unchanged, linked the existing reconstructed bodies, and passed one synthetic formatter/writer fixture: both __thiscall signatures, high-detail resolution/AA, language/sound/fixed settings, two formatter builds, 280 matching output bytes, and unknown-GPU +20h invariance.",
+    "focused_fixture": "python tools/wire_goal4_chain269_probe.py passes. It compares every adapter score with the matching original binary and extracts the actual owner, callbacks and writer methods into one Win32 fixture. Checks cover 396 scores, Quadro2 Pro's zero recommendation, high-detail resolution/AA, language/sound/fixed settings, two formatter builds, 280 matching output bytes, unknown GPUs retaining -1 and taking only the old writer with no file creation for either +20h sentinel, and OFF identity.",
     "call_graph": "call_graph.py who 0098e910, who 0098f430, and who recommend_detail_level each show one direct call from the edited host and entry reachability. The plain-name 0098DF90 body is found by its identifier, not an address suffix.",
     "readiness": "All three selected native rows are wired, called=true, call_sites=1. Total source-level wired count is 9183, including the separately disclosed incidental CRC row.",
-    "limits": "The game was not run. The hardware-profile, hardware-change, commit-mode and IDYES gates remain in place; this is build/call-graph/fixture evidence, not live dialog or installed-game validation. No float arithmetic body was changed."
+    "limits": "The game was not run. The hardware-profile, hardware-change, commit-mode and IDYES gates remain in place; this is build/call-graph/fixture evidence, not live dialog or installed-game validation. Unknown-GPU default-options generation remains on the previous path until native +20h state is produced. No float arithmetic body was changed."
   }
 }
