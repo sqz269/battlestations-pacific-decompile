@@ -454,14 +454,14 @@ Raw pod8_copy_backward_00523af0(const void* first, const void* last, Raw destina
 }
 
 namespace {
-Raw cast_if_kind(Raw entity, std::uint32_t kind, ViewSeg14Hooks& hooks) {
+Raw cast_if_kind(Raw entity, std::uint32_t kind, EntityKindHooks& hooks) {
     if (entity == nullptr || !hooks.object_is_kind_virtual_5c(entity, kind)) return nullptr;
     return entity;
 }
 } // namespace
 
 Raw entity_cast_if_kind_00523540(Raw entity, ViewSeg14Hooks& hooks) { return cast_if_kind(entity, 1, hooks); }
-Raw entity_cast_if_kind_00523560(Raw entity, ViewSeg14Hooks& hooks) { return cast_if_kind(entity, 0x18, hooks); }
+__declspec(noinline) Raw entity_cast_if_kind_00523560(Raw entity, EntityKindHooks& hooks) { return cast_if_kind(entity, 0x18, hooks); }
 Raw entity_cast_if_kind_00523580(Raw entity, ViewSeg14Hooks& hooks) { return cast_if_kind(entity, 2, hooks); }
 
 // ---------------------------------------------------------------------------------------------

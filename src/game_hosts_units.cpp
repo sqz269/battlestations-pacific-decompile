@@ -27,6 +27,8 @@
 #include "bsp/wire_goal4_chain301_switches.hpp"
 #include "bsp/wire_goal4_chain303_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/wire_goal4_chain323_switches.hpp"
+#include "bsp/view_seg14_cc13.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/material_effect_plane.hpp"
 #include "bsp/scene_terrain_forwarders.hpp"
@@ -22068,8 +22070,35 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
                 // LABELLED: the target squadron's command is its flight leader's;
                 // its members are the registry's live member_units; the image's
                 // index > 4 reads a null member (009F836F), which is not reproduced.
-                const bsp::PlaneSquadronHostRecord* tsq =
-                    bsp::plane_squadron_registry().find_by_member_or_departed_unit(t);
+                const bsp::PlaneSquadronHostRecord* tsq = [&]() {
+                    if constexpr (bsp::kWireGoal4Chain323Bound) {
+                        // 009F8319 calls 00523560 on the resolved target before
+                        // reading its command/members. This override retains the
+                        // target's squadron identity; use its live registry object,
+                        // never the member plane as the cast receiver. The existing
+                        // leader-command projection below is still a substitution.
+                        const auto* squadron = bsp::plane_squadron_registry()
+                            .find_by_member_or_departed_unit(t);
+                        struct SquadronKind final : bsp::cc13_seg14::EntityKindHooks {
+                            explicit SquadronKind(const bsp::PlaneSquadronHostRecord* value)
+                                : record(value) {}
+                            bool object_is_kind_virtual_5c(void* object, std::uint32_t kind) override {
+                                // 007EFB00..007EFB24 accepts 18h before any
+                                // receiver-field read. The receiver here is a real
+                                // PlaneSquadron registry object, not raw image storage.
+                                return object == record && record != nullptr && kind == 0x18u;
+                            }
+                            const bsp::PlaneSquadronHostRecord* record;
+                        } kinds(squadron);
+                        return static_cast<const bsp::PlaneSquadronHostRecord*>(
+                            bsp::cc13_seg14::entity_cast_if_kind_00523560(
+                                const_cast<bsp::PlaneSquadronHostRecord*>(squadron), kinds));
+                    } else {
+                        const bsp::PlaneSquadronHostRecord* tsq =
+                            bsp::plane_squadron_registry().find_by_member_or_departed_unit(t);
+                        return tsq;
+                    }
+                }();
                 if (tsq != nullptr && commands.current_command_0071be40(t) == 0x00E08F90u) {
                     bool inside = false;
                     for (const std::size_t mm : tsq->member_units) {

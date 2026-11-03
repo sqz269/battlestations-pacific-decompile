@@ -1,0 +1,143 @@
+{
+  "goal": 4,
+  "chain": 323,
+  "owner": "agent/g4-w1",
+  "base": "4b3fdd7494",
+  "switch": "bsp::kWireGoal4Chain323Bound",
+  "rows": [
+    {
+      "native": "00523560",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470, fused 009F8160 dogfight squadron retreat arm",
+      "state": "The current override's squadron identity selects the live PlaneSquadronRegistry object; the cast result is used by the existing retreat command/member check.",
+      "evidence": "bsp.py show 00523560: null guard, vslot 5Ch(18h), return receiver/null; show 009f8160 lines 90-124: cast before retreat/member walk; show 007efb00: the concrete squadron kind slot accepts literal 18h before receiver-field access.",
+      "built_caller": "bsp::game::GameUnitsHost::run_squadron_free_attack_009f8470",
+      "built_call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Whole merge requires two disjoint raw property bags with live pooled keys, records, clone/assignment payloads and one canonical physical-pool context; this packet has no such whole-bag producer binding."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::attach_passes",
+      "reason": "The policy initializer still needs the actual per-unit director-presence and director vslot-48h(2) results; the gunnery host does not expose those inputs."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "No live alternate ammo+48h producer or native retained-reference/tree ownership binding is available at this host callback."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building D3/effects callbacks",
+      "reason": "Clearing the native unit+660h vector needs its real 44h-element storage and resize/destruction providers, which this host does not own."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing begin/final/abort owner callback",
+      "reason": "The landing host has no native pilot-plan object with a live +25Ch owner field and downstream consumers; a detached write would not bind plan state."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task tick gate",
+      "reason": "The task+2F4h receiver and unit+9C2h per-side byte producer are missing from the current typed pilot-task state."
+    },
+    {
+      "native": "009a7650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: df_adopt_gun_target_009a797f",
+      "reason": "Whole target setter requires the live raw approach, its observer pair, aim-reference state and rocket receiver; the existing df_target_plus_one field alone does not supply them."
+    },
+    {
+      "native": "008da140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission/objective presentation",
+      "reason": "No natural objective presentation consumer with the original objective kind+18h and state+1Ch is exposed by this host."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective_entry_is_revealed",
+      "reason": "The live marker host lacks the original objective-entry container/entity and per-side reveal view needed to call this predicate."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot-plan override-angle normalization",
+      "reason": "Original callers normalize unit+9A8h/+9ACh override angles; their live producer is absent, so unrelated host angle calculations cannot supply the original inputs."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path point handling",
+      "reason": "The host retains a user path but has no natural remove-last-point command/input route for the native queue-selected operation."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene property type classifier",
+      "reason": "Chain285 already names this body in the classifier; no additional declaration consumer was selected, and its whole-bag merge caller requires raw ownership state outside this packet."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene property type classifier",
+      "reason": "Chain285 already names this body in the classifier; no additional declaration consumer was selected, and its whole-bag merge caller requires raw ownership state outside this packet."
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/frontend_seg15_22_cc13.cpp: vec2f_equal_00533d30",
+      "reason": "A live frontend caller with the original two vector receivers was not identified; unrelated gameplay comparisons are not evidence of that call site."
+    },
+    {
+      "native": "008d7710",
+      "status": "skipped",
+      "host_site": "src/settings_initial_state.cpp: initialize_game_settings_008d7710",
+      "reason": "The built runtime already reaches construct_native_game_settings_008d7710 through initialize_native_game_settings_static_00cd2d80; wiring the legacy typed initializer would introduce a second implementation for this address."
+    },
+    {
+      "native": "008d41f0",
+      "status": "skipped",
+      "host_site": "src/game_settings.cpp: reset_audio_defaults_008d41f0",
+      "reason": "The typed initializer uses this helper but runtime construction already follows the native settings owner; no separate live audio-reset action was found."
+    },
+    {
+      "native": "008d4520",
+      "status": "skipped",
+      "host_site": "src/game_settings.cpp: reset_video_defaults_008d4520",
+      "reason": "The typed initializer uses this helper but runtime construction already follows the native settings owner; no independent owned frontend reset binding was selected."
+    },
+    {
+      "native": "007efb00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: chain323 SquadronKind binding",
+      "reason": "The raw whole-kind entry requires an actual squadron receiver with live native +C4h storage; PlaneSquadronHostRecord is a typed registry object, so only the evidenced literal-18h kind answer is adapted here."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "python tools/call_graph.py; who 00523560; path 00523560",
+    "reconstructed_addresses_called_before": 4355,
+    "reconstructed_addresses_called_after": 4356,
+    "readiness_wired_before": 9322,
+    "readiness_wired_after": 9323,
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "Entry reachability is static built-executable evidence; no gameplay run was performed.",
+    "The existing override identity and flight-leader command projection remain host representations; this is not native class/vtable ABI integration.",
+    "Existing ViewSeg14Hooks implementers inherit the narrow kind service; no unrelated HUD callbacks or new address-bearing function were added."
+  ]
+}

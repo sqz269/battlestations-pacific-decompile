@@ -27,11 +27,17 @@ struct ViewGlobals {
     std::uint32_t& current_widget_00e08670;
 };
 
-struct ViewSeg14Hooks {
+// The entity casts need only the kind slot, independently of the HUD services.
+// This is a source binding interface, not an original vtable/ABI declaration.
+struct EntityKindHooks {
+    virtual ~EntityKindHooks() = default;
+    virtual bool object_is_kind_virtual_5c(Raw object, std::uint32_t kind) = 0;
+};
+
+struct ViewSeg14Hooks : EntityKindHooks {
     virtual ~ViewSeg14Hooks() = default;
     // Virtual slots, named by slot.
     virtual void widget_show_virtual_34(Raw widget, std::uint32_t flag) = 0;
-    virtual bool object_is_kind_virtual_5c(Raw object, std::uint32_t kind) = 0;
     virtual std::int32_t widget_kind_virtual_5c(Raw widget) = 0;
     virtual void widget_set_alpha_virtual_4c(Raw widget, float value) = 0;
     virtual Raw handle_target_virtual_04(Raw handle) = 0;
@@ -147,7 +153,7 @@ void pod8_fill_005235a0(Raw first, Raw last, const void* value) noexcept;
 void pod8_uninitialized_fill_n_00523640(Raw destination, std::uint32_t count, const void* value) noexcept;
 Raw pod8_copy_backward_00523af0(const void* first, const void* last, Raw destination_end) noexcept;
 Raw entity_cast_if_kind_00523540(Raw entity, ViewSeg14Hooks& hooks); // kind 1
-Raw entity_cast_if_kind_00523560(Raw entity, ViewSeg14Hooks& hooks); // kind 18h
+Raw entity_cast_if_kind_00523560(Raw entity, EntityKindHooks& hooks); // kind 18h
 Raw entity_cast_if_kind_00523580(Raw entity, ViewSeg14Hooks& hooks); // kind 2
 
 // ---- control-layout listeners -------------------------------------------------------------------
