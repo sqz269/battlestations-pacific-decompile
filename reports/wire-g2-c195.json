@@ -1,0 +1,78 @@
+{
+  "run": 369,
+  "harness": "claude",
+  "goal": 2,
+  "chain": 195,
+  "packet": "g2-w1",
+  "branch": "agent/g2-w1",
+  "candidate": "segment 61 [0092e0b0-00951f20]",
+  "tier": 2,
+  "host_file": "src/game_hosts_lua.cpp",
+  "switch": "kWireGoal2Chain195Bound",
+  "switch_file": "include/bsp/wire_goal2_chain195_switches.hpp",
+  "switch_default": false,
+  "wired_before": 9012,
+  "wired_after": 9013,
+  "rows_wired": 1,
+  "builds": {
+    "off": "PASS: scripts/build.ps1 exit 0 with its tests",
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain195Bound; build.ps1 exit 0, 0 distinct diagnostics; 1 site flipped and restored",
+    "final_off": "PASS: scripts/build.ps1 after the ON check; OFF map used for the wire_readiness recount",
+    "off_arm": "The host's five read_member_float reads of excludeRadiusOverride kept verbatim in the else arm",
+    "pc24_lint": "PASS: pc24_lint --diff origin/main...HEAD, 0 findings (the ON arm adds no arithmetic; the body's two float squares were moved into the typed view unchanged)",
+    "game_run": "not run, as instructed"
+  },
+  "host_objects": [
+    {
+      "name": "SpawnExcludeRadiusLuaReader",
+      "kind": "non-owning adapter for the new SpawnExcludeRadiusReaderHost; no persistent object",
+      "where": "src/game_hosts_lua.cpp:4154",
+      "producers": [
+        "the `excludeRadiusOverride` value of spawnNew's argument table, pushed by run_spawn_new_00949750's lua_getfield (00B67800 at 00949961 in the image)",
+        "GuiLua51Host borrowing the mission lua_State; its globals integer index is the borrowed stack-index alias (00B677B7..D4), 00B66FA0 is copy_ref_00b66fa0",
+        "the reconstructed GuiLuaReader for 004425C0 / 00BD68D0 / 00441A20 (nil -> default through 00BD61C0, otherwise 00BD63B0's float conversion)",
+        "block presets from the caller 00949750 (009498E1..0094994B): [00CE3D08] 100.0, [00CFFD60] 2000.0, [00CE3D08] 100.0, [00CE397C] 500.0, 0.0, [00CE3D64] 10000.0, [00D19914] 4000000.0"
+      ],
+      "lifetime": "Constructed in the ON arm for one synchronous spawnNew call, after the field is pushed and before the host pops it; the image's by-value LuaObject likewise lives only across the 0094996D call.",
+      "rows": ["009481a0"]
+    }
+  ],
+  "rows": [
+    {
+      "native": "009481a0",
+      "address": "0094996d",
+      "function": "00949750",
+      "name": "spawn_request_read_exclude_radius_009481a0",
+      "abi": "raw_callback",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_spawn_new_00949750",
+      "status": "wired",
+      "coverage": "Typed view overload of the existing body (SpawnExcludeRadiusBlock, offsets asserted, plus a five-call SpawnExcludeRadiusReaderHost); the Raw/Left61Host entry is now a thin wrapper over it. No second body.",
+      "reach": "static",
+      "reach_details": "Lua spawnNew -> binding_trampoline (game_hosts_lua.cpp:796), spawn_new_row = dispatch address 0094C480 with no switch gate (line 984), called when !error_replay (line 1479) -> run_spawn_new_00949750 -> the excludeRadiusOverride read. No OFF switch encloses the site; the only early returns refuse a missing or non-table argument 1. The shipped scripts pass the key (global/commandhelpers.lua:16801, missions/bsm/bsm_01_stationed_at_pearl.lua:1444, bsm_02). No surveyed mission count was supplied for this range.",
+      "contract": "Single image caller 00949750 at 0094996D: ECX = block at the caller's [ESP+94h] (LEA ECX,[ESP+0A8h] after SUB ESP,14h), the 14h by-value LuaObject reserved by SUB ESP,14h and filled by 00B67800(\"excludeRadiusOverride\") at 00949961; callee owns and destroys it (RET 14h).",
+      "on_change": "A table override is read by the body: each key via 00BD68D0 with the field's current value as default, starting from 00949750's presets, so an omitted key now keeps 100/2000/100/500/0 instead of the host's 0. A nil, string, number or boolean override keeps the OFF result (present=false): the image leaves nil/string at the presets the host does not use, and raises for number/boolean in the first read. The host squares the extents where it uses them (00941D30), so the block's +14h/+18h are not carried over."
+    },
+    {
+      "native": "00943c00",
+      "address": "009495e2",
+      "function": "00949530",
+      "name": "spawn_list_buy_node_00943c00",
+      "abi": "raw_callback",
+      "host_site": "src/lua_spawn_new.cpp:SpawnRequestQueue::enqueue_00949530 / requeue_009478b0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The body allocates and links a 0Ch MSVC9 std::list node holding a request pointer. The host's request queue is a std::vector<SpawnNewRequest> projection (documented deviation cc13-D3 in lua_spawn_new.cpp), so there is no image list or node storage to feed it; building the native list would replace the host's queue representation, beyond this chain."
+    },
+    {
+      "native": "0093ac30",
+      "address": "0093c0ff",
+      "function": "0093bed0",
+      "name": "named_row_release_name_0093ac30",
+      "abi": "raw_callback",
+      "host_site": "none (callers 0093BED0 BSP_ShipSystems_RollComponentFailure and the EH funclets of 0093B690/0093BA80/0093BD80/0093C300)",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The body returns a named row's NativeString to the string pool through Left61Host. The host's component-failure rows hold std::string names, not image NativeString rows, and the other five sites are EH unwind funclets; there is no host NativeString row to release."
+    }
+  ]
+}
