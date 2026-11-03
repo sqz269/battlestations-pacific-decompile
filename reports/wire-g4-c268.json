@@ -1,0 +1,103 @@
+{
+  "goal": 4,
+  "chain": 268,
+  "worker": "agent/g4-w5",
+  "baseline_head": "c6c1792ab2",
+  "switch": "bsp::game::kWireGoal4Chain268Bound",
+  "picked": "Property-library folder and per-extension loading over live VFS/PropertyLibrary state",
+  "wired_total_before": 9177,
+  "wired_total_after": 9178,
+  "count_note": "Two original-address rows become wired through one existing combined body. 008F67B0 changes from textually wired to ready after delegating file loads to the actual application parser, so the net measured gain is one.",
+  "checks": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release and both existing CTest suites passed",
+    "call_graph": "python tools/call_graph.py; who load_prop_library; path load_prop_library",
+    "call_site": "10198177 -> 1040dca0 from GameSceneContentsHost::Impl::load_property_library, entry reachable",
+    "address_alias_note": "The existing combined body is named load_prop_library without an address suffix; call_graph who by address does not resolve its aliases, while wire_readiness resolves the existing identifier mapping.",
+    "float_math_changed": false,
+    "game_run": false,
+    "native_abi_proven": false
+  },
+  "assumptions": [
+    "Use the existing application parser for file contents and preserve sorted VFS enumeration within each extension; only the folder orchestration is newly bound."
+  ],
+  "rows": [
+    {
+      "native": "008f7100",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library -> bsp::load_prop_library",
+      "evidence": "008F710E/008F711B load .enums before .props; the live VFS and existing entity-consumed PropertyLibrary are supplied by FolderBinding."
+    },
+    {
+      "native": "008f6fc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library -> bsp::load_prop_library",
+      "evidence": "Existing config/wire_identifiers_high.json maps the per-extension walk to this same combined C++ body; one entry-reachable call serves both original addresses, not two distinct new C++ bodies."
+    },
+    {
+      "native": "008f67b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: FolderBinding::load_library_file -> Impl::parse_library_file",
+      "reason": "The standalone load_prop_library_file parser lacks the live PropertyLibrary registration/merge adapter; keep the existing application parser for file contents, with no new standalone-parser wiring credit."
+    },
+    {
+      "native": "008f3370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents set_terrain_shadow_string",
+      "reason": "Needs an actual typed native property record and its shared native-string lifetime domain; this weather bag is ScenePropertyBlock storage."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / merge_group_into",
+      "reason": "Needs actual owning 114h native bags, compatible native records and a live NativeScenePropertyCloneContext; the library currently owns ScenePropertyBlock projections."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "Needs the live native render service, texture-cache/remap context and canonical actual-owner/profile domain; the current scene remap host only records this operation."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Needs the live native render service, texture-cache/remap context and canonical actual-owner/profile domain; the current scene remap host only records this operation."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Needs the live native render service, texture-cache/remap context and canonical actual-owner/profile domain; the current scene remap host only records this operation."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Needs the live native render service, texture-cache/remap context and canonical actual-owner/profile domain; the current scene remap host only records this operation."
+    },
+    {
+      "native": "00815680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::inherit_leader_wake_00815e20",
+      "reason": "Needs actual wake storage with samples at +8 and head at +3C8; ShipAiWakeTrail is a value projection, and the unit host was leased by g4-w4 when selecting work."
+    },
+    {
+      "native": "00811150",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290",
+      "reason": "Needs a real unit+BD0 wake mapping and a concrete wake-query provider for SweepCHost; the unit host was leased by g4-w4 when selecting work."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen toggle_closed_hud",
+      "reason": "Needs the root closed/interface/restore-payload state and controlled-member interface-request adapter; selected the independent property-library work instead."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen update_medals",
+      "reason": "Needs a complete HudRootRowsHost backed by real selected-unit health/weapon terms and live row widgets/animation sources."
+    }
+  ]
+}

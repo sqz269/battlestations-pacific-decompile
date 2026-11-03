@@ -589,10 +589,16 @@ bool load_prop_library_file(const std::string& path, PropLibraryHost& host,
     return error.empty();
 }
 
+bool PropLibraryHost::load_library_file(const std::string& path,
+    PropLibraryDocument& document, std::string& error)
+{
+    return load_prop_library_file(path, *this, document, error);
+}
+
 // ---------------------------------------------------------------------------
 // 008F7100 then 008F6FC0 twice
 // ---------------------------------------------------------------------------
-PropLibraryLoadResult load_prop_library(const std::string& folder, PropLibraryHost& host)
+PropLibraryLoadResult load_prop_library(const std::string& folder, PropLibraryFolderHost& host)
 {
     PropLibraryLoadResult result;
 
@@ -603,7 +609,7 @@ PropLibraryLoadResult load_prop_library(const std::string& folder, PropLibraryHo
         const std::vector<std::string> files = host.enumerate_library_files(folder, extension);
         for (const std::string& file : files) {
             std::string error;
-            if (!load_prop_library_file(file, host, result.document, error)
+            if (!host.load_library_file(file, result.document, error)
                 && result.error.empty()) {
                 result.error = error;
             }
