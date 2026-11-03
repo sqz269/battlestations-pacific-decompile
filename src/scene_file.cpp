@@ -13,6 +13,7 @@
 #include "bsp/wire_goal4_chain258_switches.hpp"
 #include "bsp/wire_goal4_chain284_switches.hpp"
 #include "bsp/wire_goal4_chain307_switches.hpp"
+#include "bsp/wire_goal4_chain311_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/game_native_string_process.hpp"
@@ -496,6 +497,12 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         SceneProperty prop;
         prop.key = key;
         prop.type_letter = cur.read_token();
+        // Chain 311: the +4h quoted byte of the token after the letter, as the
+        // reference arm tests it at 008F623A before 008D9980 reads the target.
+        bool first_value_quoted = false;
+        if constexpr (kWireGoal4Chain311Bound) {
+            first_value_quoted = cur.lexer().peek().quoted;
+        }
         if (equal_insensitive(prop.type_letter, "S") && cur.lexer().peek().quoted) {
             if constexpr (kWireGoal2Chain145Bound) {
                 // 008F5CF6 -> 008EFB00 with its chunk-list writer: 009502E0,
@@ -695,6 +702,45 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
         if (equal_insensitive(prop.type_letter, "I") && cur.at(";")
             && prop.values.size() == 1 && !prop.values.front().empty()) {
             prop.has_integer = scene_scan_int(prop.values.front(), prop.integer_value);
+        }
+        if constexpr (kWireGoal4Chain311Bound) {
+            // 008F64E5 matches "IA" [00D16514]; unless the next token is ';'
+            // (008F64FC, 0045C440 on [00CE5698]) 008F650C reads the count with
+            // 008D9AD0, 008F6524 allocates 4*count, and 008F653B reads each
+            // element with 008D9AD0 into the buffer; 008F6585 then hands
+            // (data, count, flags 0) to 008F3590 and 008F66A6 expects ';'.
+            // Admit only a closed statement whose first token is a count n >= 1
+            // followed by exactly n tokens, all accepted by the same %d rule.
+            // A failed read (native 0 without consuming), a count mismatch or
+            // an empty/zero count stays on the raw token path.
+            if (equal_insensitive(prop.type_letter, "IA") && cur.at(";")
+                && prop.values.size() >= 2) {
+                std::int32_t count = 0;
+                if (scene_scan_int(prop.values.front(), count) && count >= 1
+                    && static_cast<std::size_t>(count) == prop.values.size() - 1) {
+                    std::vector<std::int32_t> elements(static_cast<std::size_t>(count));
+                    bool all = true;
+                    for (std::size_t i = 0; i < elements.size() && all; ++i) {
+                        all = scene_scan_int(prop.values[i + 1], elements[i]);
+                    }
+                    if (all) {
+                        prop.integer_array = std::move(elements);
+                        prop.has_integer_array = true;
+                    }
+                }
+            }
+            // 008F6163..008F6231 consume one of eight reference letters (case-
+            // insensitive 00467CC0) and put its kind in EDI; 008F623A tests the
+            // peeked token's quoted byte and 008F6245 (008D9980) reads it as
+            // the target of 008F3AC0 (word18 0, word08 kind); an unquoted next
+            // token gives target "" [00CE3A0C] and is left for 008F66A6. Admit
+            // only the closed one-quoted-token form, within the 400h buffer.
+            if (scene_reference_kind(prop.type_letter) >= 0 && cur.at(";")
+                && prop.values.size() == 1 && first_value_quoted
+                && prop.values.front().size() < 0x400
+                && prop.values.front().find('\0') == std::string::npos) {
+                prop.has_reference = true;
+            }
         }
         cur.expect(";");
         block.values.push_back(std::move(prop));
@@ -1024,6 +1070,21 @@ bool scene_scan_int(const std::string& text, std::int32_t& out) noexcept
 #if defined(_MSC_VER)
 #pragma warning(pop)
 #endif
+
+int scene_reference_kind(const std::string& letter) noexcept
+{
+    // Letter strings: R [00CE60EC], RLand [00D1637C], RFort [00D16384],
+    // RShip [00D1636C], RPlane [00D16374], RPlnShp [00D16364],
+    // RLPlnShp [00D16358], RPath [00D1638C]; kinds from 008F6163..008F6231.
+    static constexpr struct { const char* text; int kind; } kLetters[] = {
+        {"R", 0}, {"RLand", 1}, {"RFort", 2}, {"RShip", 3},
+        {"RPlane", 4}, {"RPlnShp", 5}, {"RLPlnShp", 6}, {"RPath", 7},
+    };
+    for (const auto& entry : kLetters) {
+        if (equal_insensitive(letter, entry.text)) return entry.kind;
+    }
+    return -1;
+}
 
 bool scene_scan_float(const std::string& text, float& out) noexcept
 {
