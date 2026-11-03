@@ -3,15 +3,18 @@
 #include "bsp/game_hosts_init_tail.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/band_0090_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/hardware_options_seg66_argon.hpp"
 #include "bsp/memory_stream.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/vfs_mounts.hpp"
 #include "bsp/wire_goal2_chain46_switches.hpp"
 #include "bsp/wire_goal2_chain82_switches.hpp"
 #include "bsp/wire_goal4_chain261_switches.hpp"
+#include "bsp/wire_goal4_chain269_switches.hpp"
 
 #include <d3d9.h>
 #include <mmsystem.h>
@@ -76,6 +79,13 @@ private:
 };
 
 namespace hardware = engine_seg11_35_66_cc13;
+
+const hardware::GpuTableRow* probe_gpu_catalog() {
+    static constexpr hardware::GpuTableRow rows[] = {
+#include "bsp/wire_goal2_chain46_gpu_catalog.inc"
+    };
+    return rows;
+}
 
 class HardwareProbeMessages final
     : public hardware_options_seg66_argon::LocalizationMessageHost {
@@ -156,6 +166,41 @@ struct ProbeHardwareImage {
     bool nt5_c34;
     std::uint8_t padding_c35[3];
     void* language_c38;
+    // The native caller owns a 4C3Ch hardware object (also retained by
+    // cc13_pkt642.cpp). 0098E910 writes its text into the final 4000h bytes.
+    char default_options_c3c[0x4000];
+
+    std::int32_t options_detail() const {
+        band0090::HardwareSnapshot state;
+        state.gpu_row = fields_28.gpu_index_28;
+        state.memory_mb = fields_28.memory_mb_2c;
+        state.cpu_mhz = fields_28.cpu_mhz_30;
+        std::vector<std::uint32_t> scores;
+        const auto* const catalog = probe_gpu_catalog();
+        for (const auto* row = catalog; row->name != nullptr; ++row)
+            scores.push_back(row->score);
+        // 0098DFB4..0098DFE7: an unknown GPU selects catalog row zero,
+        // conditional on +20h. That word has no producer in 00992640 or
+        // 009927D0. The installed catalog's row-zero score is zero, so BOTH
+        // outcomes return zero. Normalize to that actual fallback row; no
+        // invented +20h value is consumed by the existing detail body.
+        if (state.gpu_row == -1) {
+            if (scores.at(0) != 0)
+                throw std::runtime_error("hardware probe: unknown-GPU +20h has no producer");
+            state.gpu_row = 0;
+        }
+        return band0090::recommend_detail_level(state, scores);
+    }
+    std::uint8_t options_supports(std::uint32_t width, std::uint32_t height) const {
+        band0090::HardwareSnapshot state;
+        const auto* const first = reinterpret_cast<const std::pair<std::uint32_t, std::uint32_t>*>(
+            static_cast<std::uintptr_t>(vectors_00.words[1]));
+        const std::uint32_t bytes = vectors_00.words[2] - vectors_00.words[1];
+        for (std::uint32_t i = 0; i < bytes / 8; ++i)
+            state.display_modes.emplace_back(first[i].first, first[i].second);
+        return band0090::supports_display_mode(state, static_cast<std::int32_t>(width),
+            static_cast<std::int32_t>(height)) ? 1 : 0;
+    }
 };
 static_assert(offsetof(ProbeHardwareImage, fields_28) == 0x28);
 static_assert(offsetof(ProbeHardwareImage, fields_28)
@@ -168,13 +213,27 @@ static_assert(offsetof(ProbeHardwareImage, description_a34) == 0xa34);
 static_assert(offsetof(ProbeHardwareImage, driver_b34) == 0xb34);
 static_assert(offsetof(ProbeHardwareImage, nt5_c34) == 0xc34);
 static_assert(offsetof(ProbeHardwareImage, language_c38) == 0xc38);
-static_assert(sizeof(ProbeHardwareImage) == 0xc3c);
+static_assert(offsetof(ProbeHardwareImage, default_options_c3c) == 0xc3c);
+static_assert(sizeof(ProbeHardwareImage) == 0x4c3c);
+
+// MSVC Win32 single-class member pointers are one code pointer. These two
+// nonvirtual members have exactly the bindings' __thiscall ABI: ECX is the
+// actual image, with zero / two stack arguments and RET / RET 8. Copy the
+// representation without a mismatched-function-type cast (C4191).
+template <class Callback, class Method>
+Callback probe_hardware_callback(Method method) {
+    static_assert(sizeof(Callback) == sizeof(Method));
+    Callback callback;
+    std::memcpy(&callback, &method, sizeof(callback));
+    return callback;
+}
 
 // Adapts the Windows survey to the existing constructor/collector and the
 // probe tail. No hardware state is constructed until the chain's ON arm runs.
 class HardwareProbeMachine final : public hardware::HardwareCollectCalls,
     public hardware::OsVersionCalls, public hardware::DisplayModeList,
-    public hardware::DirectSoundProbe, public HardwareProbeTailHost {
+    public hardware::DirectSoundProbe, public HardwareProbeTailHost,
+    public hardware::OptionsTextBuilder {
 public:
     HardwareProbeMachine(GameHardwareProbe& owner, GameHostLog& log) : owner_(owner), log_(log) {}
     ~HardwareProbeMachine() override {
@@ -320,7 +379,28 @@ public:
     bool ask_write_default_options(const std::string& text, const std::string& caption) override {
         return owner_.ask_write_default_options(text, caption);
     }
-    void write_default_options_file(const std::string& path) override { owner_.write_default_options_file(path); }
+    void write_default_options_file(const std::string& path) override {
+        if constexpr (kWireGoal4Chain269Bound) {
+            // 0073C83E reaches this only after the real probe dialog's IDYES.
+            // 0098F430 opens first, then calls 0098E910 twice (strlen/write).
+            // Keep the same live detection owner through both formatter calls.
+            const bool written = hardware::write_default_options_file_0098f430(path.c_str(), *this);
+            log_.implemented("HardwareProbe::write_default_options_file", "0098f430");
+            log_.notef("hardware default options path=%s written=%d", path.c_str(), written ? 1 : 0);
+        } else {
+            owner_.write_default_options_file(path);
+        }
+    }
+    const char* build_default_options_text_0098e910() override {
+        using Bindings = oct18_tail_c::HardwareOptionsBindings;
+        const Bindings bindings{
+            probe_hardware_callback<decltype(Bindings::detail_0098df90)>(
+                &ProbeHardwareImage::options_detail),
+            probe_hardware_callback<decltype(Bindings::supports_0098e0e0)>(
+                &ProbeHardwareImage::options_supports),
+            [] { throw std::runtime_error("hardware probe: invalid antialias iterator"); }};
+        return oct18_tail_c::hardware_default_options_0098e910(&image_, sound_count_, bindings);
+    }
     void write_hardware_dword(const std::string& name, std::uint32_t value) override {
         owner_.write_hardware_dword(name, value);
     }
