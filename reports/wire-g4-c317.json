@@ -1,0 +1,181 @@
+{
+  "schema_version": 1,
+  "chain": 317,
+  "slot": "g4-w5",
+  "base": "b1692a88f6",
+  "switch": "bsp::kWireGoal4Chain317Bound",
+  "switch_header": "include/bsp/wire_goal4_chain317_switches.hpp",
+  "summary": "Route the live Group sphere merge through the existing 00B8E980 entry, adapting its added numeric-context argument without changing the x87 kernel or the caller's stack layout.",
+  "wired_before": 9315,
+  "wired_after": 9316,
+  "rows": [
+    {
+      "native": "00b8e980",
+      "status": "wired",
+      "host_site": "src/native_group_world_sphere.cpp:merge_native_group_sphere_00b8e9f0 (original call 00B8EA44)",
+      "real_state": "ECX direction output, EDX delta input and length output all point into the existing live Group merge's scratch. EBX borrows that caller's CameraAxesCrtAccess and native D7A280 address.",
+      "adaptation": "Pop the already-pushed length pointer into EAX, push the existing numeric context, push length, and call the existing RET8 wrapper. The wrapper returns at the same ESP as the old direct RET4 kernel call. The else arm retains the old call unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "built_call_site": "105993ca",
+      "built_callee": "10599520",
+      "original_abi": "ECX output XYZ; EDX input XYZ; stack length output; EAX output XYZ; RET4. Existing C++ entry adds borrowed numeric access as the second stack argument and returns with RET8.",
+      "evidence": [
+        "python tools/bsp.py show 00b8e9f0 --asm --lines 39: 00B8EA01 length pointer, 00B8EA07 push, 00B8EA44 normalization call, subsequent ESP-relative float loads",
+        "python tools/bsp.py show 00b8e980 --asm --lines 68: original register/stack inputs, x87 spills and RET4 exits",
+        "Built instructions: 105993c7 pop eax; 105993c8 push ebx; 105993c9 push eax; 105993ca call 10599520; 105993cf fld [edi+0xc]"
+      ]
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:run_load_scripted_name_baseline_004d30f0",
+      "reason": "Only a teardown comment mentions this address; the current site builds the pre-script baseline and lacks a mission-teardown consumer."
+    },
+    {
+      "native": "006b8530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::lua_pcall",
+      "reason": "The deferred-call queue has no producer on the main-thread-only named-call path, and this binding does not expose an actual Lua machine."
+    },
+    {
+      "native": "00885da0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::push_argument",
+      "reason": "The named-call queue has no producer and the binding lacks the live Lua argument environment needed to push a real argument."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call; src/game_hosts_fixed_step.cpp:drain_queued_lua_calls_00888230",
+      "reason": "No frame-job-thread named-call producer supplies a real source LuaVariantRecord vector or deferred destination here."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::place_at_world_position_008193a0",
+      "reason": "The existing plan also requires relocation gating, previous-position and dirty-state writes, and device/subobject virtual notifications; the candidate site currently only stores translation."
+    },
+    {
+      "native": "009585b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::put_rel_to_00819840",
+      "reason": "The matrix-plan replay lacks previous-position/dirty-state writes and device/subobject notifications; the current site only copies and publishes the pose."
+    },
+    {
+      "native": "006e3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "The host retains combined per-rack round counts, without separate live attached-child and ammo+484h terms required by this body's SingleRackState interface."
+    },
+    {
+      "native": "007c1db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "Already classified wired before this chain; replacing its projected sum with the raw body needs an actual native child list and Seg47Host rack callbacks."
+    },
+    {
+      "native": "007c1f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:ctl+374h armed-fraction calculation",
+      "reason": "The candidate uses aggregate aircraft ordnance substitutions and lacks the raw kind-25h device list plus per-rack holds-kind and count callbacks."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller flag/snapshot stand-in",
+      "reason": "No real controller-snapshot producer or consumer transport is present at the flattened scene-flag site."
+    },
+    {
+      "native": "00761310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:ship_death_message_00827ab0",
+      "reason": "The wrecked message remains a presentation record; no actual UnitMessage payload consumer is available at this site."
+    },
+    {
+      "native": "008636a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:Gunnery::install_policies_008636a0",
+      "reason": "The general live director pointer and its vslot-48h kind-2 predicate still have no producer in this host."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "The ammunition handle is a projected gun row and has no live alternate-ammunition record producer."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:command_building_set_owner_player_006f4d10",
+      "reason": "The address appears only in the unmodelled capture-side-effects comment; there is no live unit+660h vector at this site."
+    },
+    {
+      "native": "00749aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landing ramp latch",
+      "reason": "The 0A6h route is still a record and no native ramp-message payload consumer is bound."
+    },
+    {
+      "native": "00749d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:landing mode 3 and landing-request dispatch",
+      "reason": "The host applies projected pad state directly instead of routing a real 0A5h message through a payload consumer."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "007df4f0:BSP_PlaneNeighbours_InsertCollisionBands",
+      "reason": "The only native caller remains an off-switch host substitution; no live collision-band frame producer was selected for this packet."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:pose math candidate search",
+      "reason": "No existing host call site was found supplying the native pivot, axis and angle together."
+    },
+    {
+      "native": "008d4520",
+      "status": "skipped",
+      "host_site": "005f7c40/005f8960 options and 0067cfb0 press-start callers",
+      "reason": "No selected live options-reset event consumer was available to supply the existing GameSettingsBlock and original flags."
+    },
+    {
+      "native": "00be4380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContents vfs_open_stream",
+      "reason": "The candidate reads bytes through the projected VFS and returns a vector; the raw body requires a native VFS virtual stream interface."
+    }
+  ],
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "final_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "call_graph": "python tools/call_graph.py: 34587/34771 functions reachable; 4343/4777 reconstructed addresses called",
+    "who": "python tools/call_graph.py who 00b8e980: REACHABLE, one call at 105993ca from merge_native_group_sphere_00b8e9f0",
+    "entry_path": "WinMainCRTStartup -> startup -> GameLoopCallbacks::frame -> clear_and_present -> draw_mission_ship -> scene submit/traverse -> render_native_group_children_00b8ef10 -> get_native_group_world_sphere_00b8f100 -> aggregate_native_group_world_sphere_00b8ebe0 -> merge_native_group_sphere_00b8e9f0 -> normalize_native_group_sphere_delta_00b8e980",
+    "readiness": "wired=9316, ready=1628; 00b8e980 state=wired, called=true, call_sites=1, callers_live=1",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 2 files; bridge adds no floating-point instruction",
+    "focused_probe": {
+      "source": "local/output/g4_c317_probe.cpp (ignored)",
+      "source_sha256": "3bba9ae589640dd0768a898e8e0318e0d7c0c4d00a0ad622916ceb8f2be35ab9",
+      "on_command": "cmd /c local\\output\\g4_c317_probe_build.cmd",
+      "off_command": "cmd /c local\\output\\g4_c317_off_probe_build.cmd",
+      "on_result": "passed, exit 0, 72000 comparisons",
+      "off_result": "passed, exit 0, 72000 comparisons; isolated source compiled with a shadow false-switch header, production header remains true",
+      "flags": "/std:c++17 /W4 /WX /O2 /Oy- /MD /fp:strict /link /MANIFEST:EMBED",
+      "native_bytes": "Original installed PE 00B8E980..00B8EB1D, 414 bytes, SHA256 4e69a4affd3e2291629c16f225b41b1f8ae95a42898e97f9340e14dd3393663e",
+      "relocations": "Original normalization calls the same existing camera_vector_length_00419440/CRT dependency as the reconstructed body; original half multiply borrows the fixture half address.",
+      "cases": "12 x87 precision/rounding modes; 1200 deterministic special/raw-word samples; five separate, equal and partially overlapping sphere layouts",
+      "compared": "All 16 storage words, preserved control word, exception flags bits 0..5, x87 TOP, unchanged ESP, destination return pointer and CRT callback counts",
+      "limits": "Synthetic differential fixture with shared reconstructed length/CRT dependency; no independent CRT equivalence or unmasked-exception proof."
+    },
+    "game_run": false,
+    "limits": "Built entry reachability and differential numeric/stack evidence; no gameplay, rendering or binary drop-in ABI claim."
+  },
+  "coordination": {
+    "packet": "g4-w5",
+    "claimed_addresses": ["00b8e980", "00b8e9f0"],
+    "other_review_files_changed": false,
+    "no_new_address_suffixed_body": true
+  }
+}
