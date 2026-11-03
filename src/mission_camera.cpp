@@ -6,10 +6,13 @@
 #include "bsp/gamepad_force_events.hpp"
 #include "bsp/pc24_camera_cc13.hpp"
 #include "bsp/plane_pose_commit.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/wire_goal4_chain306_switches.hpp"
 #include "bsp/world_entity_update.hpp"
 
 #include <cmath>
+#include <cstdint>
 
 // Packet cc9_mission_camera, docs/MISSION_CAMERA.md.
 //
@@ -53,6 +56,15 @@ void premultiply(CameraMatrix16& target, const CameraMatrix16& left) {
     multiply_camera_matrices_00413920(product, left, target);
     target = product;
 }
+
+// 0042D5A0's one call, 0085DC80 (ECX = the matrix), on the mover's +2B8h
+// basis: the existing body in plane_pose_commit.
+class OrientOrthonormalize final : public profile_seg2_cc13::MatrixOrthonormalizeHost {
+public:
+    void matrix_orthonormalize_0085dc80(profile_seg2_cc13::Raw matrix) override {
+        orthonormalize_pose_matrix_0085dc80(reinterpret_cast<float*>(matrix.p));
+    }
+};
 
 // 0042DCD0, __thiscall(mover, float dt, bool flag), RET 8. The gate only.
 void focus_gate_0042dcd0(ShipCaptainCamera& camera) {
@@ -339,6 +351,17 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
         CameraMatrix16 rotation{};
         if (camera.mode_3f4 == 0) {
             // 00433085..004330BF: 0042D5A0 rows 2 and 1, then 0085DC80.
+            if constexpr (kWireGoal4Chain306Bound) {
+                // 00433085..004330BF: the forward local is {unit+ECh, 0.0 (004330AD
+                // XORPS, stored 004330B9), unit+F4h}, i.e. world[8], 0, world[10];
+                // the up argument is the image's 00F8758C (0043309E PUSH); ECX
+                // = mover+2B8h. 004330BF calls 0042D5A0 over that matrix.
+                const float forward[3] = {unit.world[8], 0.0f, unit.world[10]};
+                OrientOrthonormalize orthonormalize;
+                profile_seg2_cc13::matrix_set_forward_up_orthonormalize_0042d5a0(
+                    profile_seg2_cc13::Raw{reinterpret_cast<std::uint8_t*>(camera.orient_2b8.data())},
+                    forward, kWorldUp00f8758c.data(), orthonormalize);
+            } else {
             camera.orient_2b8[8] = unit.world[8];
             camera.orient_2b8[9] = 0.0f;
             camera.orient_2b8[10] = unit.world[10];
@@ -346,6 +369,7 @@ bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTa
             camera.orient_2b8[5] = kWorldUp00f8758c[1];
             camera.orient_2b8[6] = kWorldUp00f8758c[2];
             orthonormalize_pose_matrix_0085dc80(camera.orient_2b8.data());
+            }
             rot_y(rotation, kNegativeZero - camera.yaw_384);
             premultiply(camera.orient_2b8, rotation);
             // 0043310E..00433158: the sway along row 0.

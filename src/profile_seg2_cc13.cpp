@@ -395,7 +395,7 @@ Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host) { return matrix_set
 // (+20h..+28h) = forward and row 1 (+10h..+18h) = up (FLD/FSTP float
 // copies), then 0085DC80.
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
-                                                  Seg2Host& host) {
+                                                  MatrixOrthonormalizeHost& host) {
     matrix.at<float>(0x20) = forward[0];
     matrix.at<float>(0x24) = forward[1];
     matrix.at<float>(0x28) = forward[2];

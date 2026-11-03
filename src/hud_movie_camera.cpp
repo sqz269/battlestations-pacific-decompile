@@ -2,6 +2,7 @@
 #include "bsp/engine_seg43_45_cc13.hpp"
 #include "bsp/wire_goal2_chain112_switches.hpp"
 #include "bsp/wire_goal2_chain217_switches.hpp"
+#include "bsp/wire_goal4_chain306_switches.hpp"
 
 namespace bsp {
 void movie_camera_fixed_driver_00790390(float& accumulator, bool enabled, float dt,
@@ -798,11 +799,25 @@ bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost&
     const Vec3 up = camera.camera_498.up_10;
     const float zoom = camera.camera_498.zoom_60;        // +4F8h
     // 0079B634..0079B6A8: +4FCh clear, so 0078FAF0 runs on the zero state.
+    if constexpr (kWireGoal4Chain306Bound) {
+        // Every +4FCh-clear path (0079B3B8/0079B3C5 JZ 0079B631, 0079B3E3 JZ
+        // 0079B634) sets the goal +520h only when dt > 0 (0079B63C JBE), then
+        // reaches 0079B684..0079B691: 0078FAF0(ECX = +51Ch, dt) on every frame,
+        // dt <= 0 included. The offset added at 0079B696..0079B6A8 is the +524h
+        // that step leaves.
+        if (dt > 0.0f) {
+            const float v = camera.ground_51c[0] + camera.ground_51c[0] + camera.ground_51c[2];
+            camera.ground_51c[1] = v > 0.0f ? static_cast<float>(-v * 0.6000000238418579) : -0.0f - v;
+        }
+        cc13cam2::movcam_approach_0078faf0(camera.ground_51c, dt);
+        pos[1] = camera.ground_51c[2] + pos[1];
+    } else {
     if (dt > 0.0f) {
         const float v = camera.ground_51c[0] + camera.ground_51c[0] + camera.ground_51c[2];
         camera.ground_51c[1] = v > 0.0f ? static_cast<float>(-v * 0.6000000238418579) : -0.0f - v;
     }
     pos[1] = camera.ground_51c[2] + pos[1];
+    }
     Vec3 f{};
     for (int i = 0; i < 3; ++i) {
         f[static_cast<std::size_t>(i)] = target[static_cast<std::size_t>(i)] - pos[static_cast<std::size_t>(i)];
