@@ -1,0 +1,106 @@
+{
+  "chain": 78,
+  "goal": 2,
+  "slot": "g2-w2",
+  "harness": "claude",
+  "switch": "kWireGoal2Chain78Bound",
+  "switch_header": "include/bsp/wire_goal2_chain78_switches.hpp",
+  "host_file": "src/game_hosts_avoid_zones.cpp",
+  "files_changed": [
+    "include/bsp/wire_goal2_chain78_switches.hpp",
+    "include/bsp/oct18_tail_a.hpp",
+    "src/oct18_tail_a.cpp",
+    "src/game_hosts_avoid_zones.cpp"
+  ],
+  "pick": "First claimed game_hosts_mission_frame.cpp (tier 2, its six unskipped rows). None was wireable without inventing state or building an object larger than a chain, so 00423960 from game_hosts_avoid_zones.cpp (tier 2) was claimed and wired as a typed view over the host's TerrainGridLayerRecord.",
+  "build": "./scripts/build.ps1 exit 0, 2/2 tests passed (OFF)",
+  "on_build": "python tools/off_switch_on_build.py --names kWireGoal2Chain78Bound: exit 0, 0 distinct diagnostics",
+  "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings over 4 files",
+  "wired_total_before": 8902,
+  "wired_total_after": 8903,
+  "pair_run": {
+    "mission": "USN04",
+    "off_log": "local/g2-w2-off_USN04.log",
+    "on_log": "local/g2-w2-on_USN04.log",
+    "both_exit": "exit_code=0, 3199 frames presented each",
+    "pair_diff": "GAMEPLAY identical (28 deaths, 380 hit records, 5509 shots, 81 units); NATIVE TABLE 1624 -> 1624, 0 status changed, 0 counts moved; SUMMARY LINES 867 -> 867, 0 changed; OTHER LINES 231/231 differ only in heap pointer fields of the atlas-source diagnostics (frame=, allocation=, append_header=, append_slot=), a code-layout effect.",
+    "expected": "USN04 has a .nav, so the scene load (004248A0, 004248C1 0041DED0) deletes the three constructor defaults before any sample; no gameplay change is expected there. Missions without a .nav (USN10, USN11, ALT02) sample those defaults."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain78Bound to true. In USN04 the ON pair is gameplay-identical and the native table did not move. The ON arm writes the same values the OFF stores did (12000.0, 10, 2400.0 = 24000.0/10 through FILD/FDIVR/FSTP, 2.0, 100 zero bytes), now through the reconstructed body.",
+  "host_objects": [],
+  "rows": [
+    {
+      "native": "00423960",
+      "address": "004246b4",
+      "function": "00424680",
+      "host_site": "src/game_hosts_avoid_zones.cpp: default_layer_00424680 (GameAvoidZoneRegistry constructor defaults)",
+      "status": "wired",
+      "reached": 3,
+      "reach_evidence": "The body has no log line of its own. GameAvoidZoneRegistry::instance() builds the three default layers (10/20/70 degrees, kAvoidZoneRegistryImageLayoutBound) on its first call. The ON log's `avoid zones:` scene-load line follows that call, so the body ran 3 times in the USN04 ON run.",
+      "note": "Typed view overload terrain_layer_set_dimension_00423960(TerrainLayerDimensionFields&, int, const GridConstants&) holds the body. The void* entry is now a thin wrapper over the original 28h layout (same store order, 004219A0 resize, validated clear). The host adapter TerrainGridLayerRecordDimensionFields maps +04h/+08h/+0Ch/+10h/+18h onto TerrainGridLayerRecord. The argument is the image's PUSH 0Ah at 004246AE. The constants are the image's bytes: 00CE3968 463B8000h, 00CE3960 40D7700000000000h, 00CE3958 40000000h, 00CE396C 45160000h. The +14h tan(angle) (00412E20) stays host code."
+    },
+    {
+      "native": "0096ae90",
+      "address": "009816b5",
+      "function": "009813a0",
+      "host_site": "src/game_hosts_mission_frame.cpp: game_warning_report_loss_009813a0 proximity record erase",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built. The record's +8h effect is created only by 0096C070 through the point-effect owner (008687C0 -> 008680B0 constructor, unreconstructed; camera transforms; RenderCommandReference counts). No host owns that. The proximity record keeps only effect_live, so a token effect pointer would be invented state (the same reason chain 36 gave for 0096C070). The site itself is live (kLossWarningBound and kScanProximityUnitsEntriesBound are true)."
+    },
+    {
+      "native": "005cf3d0",
+      "address": "00981602",
+      "function": "009813a0",
+      "host_site": "src/game_hosts_mission_frame.cpp: game_warning_report_loss_009813a0 loss text record",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The two stack arguments are NativeStrings the host does not build: the class-lost text from [00E0B630 + class*4] through 0041E350, and the slot/side text at ESP+18h. The host's loss text is a SUBSTITUTION that only counts by side. The body posts only when game+1FE4h == 1 (005CF320), a session the campaign host never has, and its Seg15Host (157 pure virtuals plus HudScreenServices) has no host implementation. Empty strings would be constants."
+    },
+    {
+      "native": "005bbdc0",
+      "address": "009740cb",
+      "function": "00974070",
+      "host_site": "src/game_hosts_mission_frame.cpp: PendingWarningCancelView::voice_manager_play_positional_line_005bbdc0 (unreached)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Reached only through 00974070's apply, after voice_ready 005B71D0. The mission frame keeps both empty because it hosts no voice playback manager [00E198C4]+A4. The only host site is an unreached Seg64Host slot of PendingWarningCancelView, used behind kWireGoal2Chain36Bound = false. Building the voice manager + VoiceLineHost would also need 00974070 and 005B71D0 wired: too large for one row."
+    },
+    {
+      "native": "0078cff0",
+      "address": "0068a0ec",
+      "function": "0068a0d0",
+      "host_site": "src/game_hosts_mission_frame.cpp: render_004ca440 (ocean_live_field_render_job_0068a0d0)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Host-object gap not built: the body reads a native environment object, which no host constructs: fog scalars +08h..+30h, colours +34h/+44h..+74h/+84h, wave field +A8h, beams +ACh, particles +B0h. It also needs a camera with fog owner +184h and +174h/+198h. environment_fog_apply is used only by d3d9_mesh_probe. The host's render step runs only the 00BA0090 ocean step."
+    },
+    {
+      "native": "007f8890",
+      "address": "004e13b8",
+      "function": "004dfb70",
+      "host_site": "src/game_hosts_mission_frame.cpp: load_warning_bank step (comment only)",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The mission frame names 007F8890 only in a comment: this host does not choose the Warnings bank FileBlock name, so no call site exists to wire. The profile+D0h owned-content list has no producer (007FDF00 does not write it). The live 007F8890 use belongs to game_hosts_message_manager.cpp."
+    },
+    {
+      "native": "00525250",
+      "address": "00527b02",
+      "function": "00527260",
+      "host_site": "src/game_hosts_mission_frame.cpp: squadron_target helm order",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "The host site is a harness-scripted stand-in for the player's pick (the file names the target). The body needs the HUD unit-pick screen and 00523130's screen-centre pick through SweepA2Host, and this host runs neither."
+    },
+    {
+      "native": "008dda20",
+      "address": "008e21a8",
+      "function": "008e20d0",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "status": "skipped",
+      "reached": 0,
+      "reason": "Dead in the campaign: mission_result.cpp's set_completed calls replicate_objective_state only when objective_replicates_008e20d0(local_player_mode, slot_has_peer) is true, i.e. with a session peer. The body builds the MT_OBJ_COMPLETED (3Dh) session message."
+    }
+  ]
+}
