@@ -880,14 +880,6 @@ void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void*
 float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan);
 // 0099B670: __fastcall(ECX = pilot task), RET.
 void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p);
-// Typed view of 0099B670 over the caller's storage: whether [p+2F4h]+C50h (the
-// neighbours object) is set, and 007DF4F0(ECX = it, p) through the caller's
-// callable. The raw entry wraps it.
-template <class VehicleAvoidance007df4f0>
-void pilot_bot_avoid_vehicles_0099b670(bool has_neighbours_c50,
-                                       VehicleAvoidance007df4f0&& vehicle_avoidance_007df4f0) {
-    if (has_neighbours_c50) vehicle_avoidance_007df4f0();
-}
 // 009AB370 / 009AEB80 / 009AF610: __fastcall(ECX = task), RET.
 void bot_task_dogfight_destruct_body_009ab370(Cc13Seg67bHost& host, void* task);
 void bot_task_drop_kamikaze_destruct_body_009aeb80(Cc13Seg67bHost& host, void* task);

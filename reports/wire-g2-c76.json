@@ -29,9 +29,8 @@
    "address": "0x009a196d",
    "function": "0x009a17d0",
    "host_site": "src/game_hosts_units.cpp pilot avoidance think (009A17D0 vehicle arm) before vehicle_avoidance_007df4f0",
-   "status": "wired",
-   "reach_note": "live: every AI plane with task mask bit 2; the +C50h test is nb_has_object_c50 (party != dummy AI)",
-   "reached": 114
+   "status": "skipped",
+   "reason": "+C50h test equals the enclosing 009A184A gate (kAvoidanceDummyAiGateBound = true returns when u.row.party == kSceneDefaultDummyAi, and nb_has_object_c50 is party != kSceneDefaultDummyAi); always true at the only host site, no body logic replaces host logic. Review round 1: the ON arm and the typed overload are removed."
   },
   {
    "native": "0x009afa50",
@@ -55,7 +54,7 @@
    "native": "0x004684f0",
    "host_site": "src/game_hosts_units.cpp",
    "status": "skipped",
-   "reason": "dead path: the only host site, command_building_moveto_009f7d17, runs only under GameUnitsHost::Impl::kSquadronCommandBuildingMoveToBound = false (game_hosts_units.cpp:7601)",
+   "reason": "dead path: the only host site, command_building_moveto_009f7d17, runs only under GameUnitsHost::Impl::kSquadronCommandBuildingMoveToBound = false (game_hosts_units.cpp:7614)",
    "address": "0x009f7d68",
    "function": "0x009f7c90"
   },
@@ -244,7 +243,7 @@
  ],
  "host_objects": [],
  "wired_before": 8899,
- "wired_after": 8904,
+ "wired_after": 8903,
  "builds": {
   "off": "scripts/build.ps1 exit 0, 2/2 tests passed",
   "on": "tools/off_switch_on_build.py --names kWireGoal2Chain76Bound: build.ps1 exit 0, 0 diagnostics",
@@ -262,7 +261,20 @@
    "009b7a80 (no level-bomb task)",
    "009afa50 (no land task)",
    "009b1e30 (no land/park)"
-  ]
+  ],
+  "note": "Run at 2021b2976 (before review round 1). The 0099B670 arm removed in round 1 was identical in both logs (vehicle avoidance plane_ticks=114 on each side), so no new pair was run."
  },
- "flip_proposal": "kWireGoal2Chain76Bound=true: USN04 gameplay identical; the two reached rows (0099B670 114 calls, 009C7850 11369 calls) agree with OFF"
+ "flip_proposal": "kWireGoal2Chain76Bound=true: USN04 gameplay identical. 009B7A80 and 009AFA50 are OFF rearrangements; 009C7850 was reached 11369 times with identical gameplay. 009B1E30 is the one semantic change (IsKindOf(9) on the deck owner in place of the mother_ship flag) and no run exercised it: run a carrier-park pair (JM05) before relying on it.",
+ "review_round_1": {
+  "run": 168,
+  "fixes": [
+   "fixed: removed the 0099B670 ON arm (game_hosts_units.cpp vehicle avoidance call is the plain call again)",
+   "fixed: 0x0099b670 row moved to skipped with the review's reason",
+   "fixed: wired_after 8904 -> 8903 (tools/wire_readiness.py after a plain build: 8903, 0099b670 ready)",
+   "fixed: stale +98h comment at the 009B7A80 site now names its producers 009B6600, 009B8100, 009B6670",
+   "fixed: 004684F0 reason cites game_hosts_units.cpp:7614",
+   "fixed: reran scripts/build.ps1 (exit 0, 2/2 tests) and off_switch_on_build.py (exit 0, 0 diagnostics)"
+  ],
+  "deviation": "The review allowed the 0099B670 typed overload to stay. It was removed too, with its raw entry restored: wire_readiness counts an identifier used anywhere in a host-reachable file, so the raw entry calling its own overload kept 0099B670 'wired' (8904) with no host site."
+ }
 }

@@ -2015,8 +2015,7 @@ float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, 
 // (0099B683).
 void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p) {
     void* const n = ptr_at(ptr_at(p, 0x2F4), 0xC50);
-    pilot_bot_avoid_vehicles_0099b670(n != nullptr,
-                                      [&host, n, p] { host.vehicle_avoidance_007df4f0(n, p); });
+    if (n != nullptr) host.vehicle_avoidance_007df4f0(n, p);
 }
 
 // ---------------------------------------------------------------------------

@@ -10245,14 +10245,7 @@ struct GameUnitsHost::Impl {
                 squadron_allows = sq == nullptr || (sq->sq_avoid_3a4 & 2u) != 0;
             }
             if ((u.task_mask_2e4 & 2) != 0 && squadron_allows) {
-                if constexpr (bsp::kWireGoal2Chain76Bound) {
-                    // 0099B670: the typed body tests the +C50h neighbours object
-                    // (nb_has_object_c50) before 007DF4F0; OFF calls 007DF4F0 directly.
-                    bsp::pilot_bot_avoid_vehicles_0099b670(nb_has_object_c50(u),
-                        [&] { vehicle_avoidance_007df4f0(u, dt); });
-                } else {
                 vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
-                }
             }
         }
         if constexpr (kPilotTerrainAvoidanceBound) {
@@ -32636,8 +32629,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.lb_break_off_now && !was_break) ++unit_.lb_break_offs;
                         ri.break_off = unit_.lb_break_off_now;
                         ri.prepare_released_a0 = unit_.lb_prepare_a0;
-                        // 009B7A80 on prepare: +A0h clear and +98h > -0.5. PARTIAL:
-                        // prepare's tick 009B6670 is unread, so +98h keeps -1.0.
+                        // 009B7A80 on prepare: +A0h clear and +98h > -0.5. +98h is
+                        // written by the prepare enter 009B6600, the arm 009B8100
+                        // (lb_prepare_arm_009b8100) and the tick 009B6670
+                        // (lb_prepare_tick_009b6670), all under kLevelBombPrepareTickBound.
                         if constexpr (bsp::kWireGoal2Chain76Bound) {
                             // 009B7A80: the typed body over the prepare state's +A0h/+98h
                             // (lb_prepare_a0/lb_prepare_98); OFF keeps the inline test.
