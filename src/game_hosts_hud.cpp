@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain291_switches.hpp"
+#include "bsp/ai_close_attack_tick.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/gui_aspect_extent.hpp"
@@ -4198,33 +4199,36 @@ public:
         return bsp::hud_root_cursor_unit_00644a60(owner_.root_lists);
     }
     bool panel_byte(std::uint32_t manager_offset, std::uint32_t byte_offset) override {
-        // [00E198C4]+N is registry slot N - 8h (+54h is slot 4Ch, as in
-        // HudRootSelectionBinding::panel_54_active). +5h is the applied byte,
-        // +4h the requested byte 004F7620 writes.
-        const int slot = static_cast<int>(manager_offset) - 8;
+        // [00E198C4]+N is the screen 0068CC70 stores at manager offset N; its
+        // registry slot comes from kInGameHudScreens (src/ingame_interface.cpp):
+        // +50h is slot 2Eh, +54h slot 4Ch, +6Ch slot 3Fh, +74h slot 41h. +5h is
+        // the applied byte, +4h the requested byte 004F7620 writes.
+        const std::size_t at = bsp::in_game_hud_screen_index_at(
+            static_cast<std::uint16_t>(manager_offset));
+        if (at >= bsp::kInGameHudScreenCount) return false;
+        const int slot = bsp::kInGameHudScreens[at].registry_slot;
         if (byte_offset == 5) return owner_.menu.in_game_screen_applied(slot);
         if (byte_offset == 4) return owner_.menu.in_game_screen_wanted(slot);
         // 00648D0F: [manager+6Ch]+BDh, read only after +5h of the same screen
-        // (slot 64h) was found set. SUBSTITUTION, labelled: no slot-64h screen
-        // state exists in this host, so the byte reads clear.
+        // (slot 3Fh) was found set. SUBSTITUTION, labelled: this host keeps no
+        // slot-3Fh screen object, so the byte reads clear.
         owner_.record("HudRootRows::panel_6c_bd", 0x00648d0fu);
         return false;
     }
     std::uint32_t panel_74_override_unit() override {
-        // 00648C66..00648C82: [manager+74h] (slot 6Ch) applied, then its +20h
-        // object's +9D4h. SUBSTITUTION, labelled: the slot-6Ch screen's +20h
+        // 00648C66..00648C82: [manager+74h] (slot 41h) applied, then its +20h
+        // object's +9D4h. SUBSTITUTION, labelled: the slot-41h screen's +20h
         // object is not modelled; while the screen is not applied the image
         // takes no override either.
-        if (!owner_.menu.in_game_screen_applied(0x6c)) return 0u;
+        if (!owner_.menu.in_game_screen_applied(0x41)) return 0u;
         owner_.record("HudRootRows::panel_74_override_unit", 0x00648c74u);
         return 0u;
     }
     int panel_50_weapon_mode() override {
-        // 00648D9C: [[manager+50h]+44h], the slot-48h screen's weapon mode.
-        // SUBSTITUTION, labelled: that screen's +44h is written by its own
-        // update, which this host does not run; 0 is the noweapon arm.
-        owner_.record("HudRootRows::panel_50_weapon_mode", 0x00648d9cu);
-        return 0;
+        // 00649017: [[manager+50h]+44h] through the 0..5 jump table, screen
+        // 2Eh's selected weapon group, which 005494C0 / 005484F0 / 005470A0
+        // keep in this host's weapon_group state.
+        return owner_.weapon_group.group_44;
     }
     bool unit_is_kind(std::uint32_t unit, int kind) override {
         return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
@@ -4354,14 +4358,17 @@ public:
         return unit_health(unit);
     }
     long double unit_health(std::uint32_t unit) override {
-        // 00923BE0: 0 for a dead unit, else +370h / +36Ch, which the gunnery
-        // host keeps as health / max_health.
+        // 00923BE0 (ai_unit_health_00923be0): the +5Dh arm, else the fraction
+        // +370h / +36Ch clamped into [0, 1]; the gunnery host keeps both
+        // halves, as ShipAiTorpedoStandoff::own_health_00923be0 reads them.
         const GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
         if (unit == 0 || gunnery == nullptr) return 0.0L;
         const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
-        if (unit - 1 >= rows.size() || gunnery->unit_dead(unit - 1)) return 0.0L;
-        return static_cast<float>(static_cast<double>(rows[unit - 1].health) /
-                                  static_cast<double>(rows[unit - 1].max_health));
+        if (unit - 1 >= rows.size()) return 0.0L;
+        const GameGunneryUnitRow& row = rows[unit - 1];
+        return bsp::ai_unit_health_00923be0(gunnery->unit_dead(unit - 1),
+            row.max_health > 0.0f ? row.health / row.max_health : 0.0f,
+            row.max_health > 0.0f);
     }
     void widget_width(bsp::HudRowWidget widget, float, float) override {
         // Virtual +48h, the scale pair; no bridge operation.

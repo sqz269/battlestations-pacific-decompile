@@ -8,7 +8,8 @@
       "native": "00648c20",
       "status": "wired",
       "host_site": "src/game_hosts_hud.cpp HudRootUpdateBinding::update_medals (00649860's call), through HudRootRowsBinding",
-      "note": "Per-frame unit rows: 00648290 list rebuild (with its 006485A0 tail on a pending cycle), WeaponInfo_Text source and alpha, FlagJP/FlagUS and HP-damage visibility reach the frontend. Records: icon state select (+88h), scale pair (+48h), WeaponInfo animation, unit display name (0081C0A0 strings not in host), slot-64h/6Ch/48h screen fields, repair-task metrics (gunnery-private)."
+      "note": "Per-frame unit rows: 00648290 list rebuild (with its 006485A0 tail on a pending cycle), WeaponInfo_Text source and alpha, FlagJP/FlagUS and HP-damage visibility reach the frontend. Manager offsets map to registry slots through kInGameHudScreens (+50h slot 2Eh, +54h 4Ch, +6Ch 3Fh, +74h 41h). The WeaponInfo source reads screen 2Eh's selected weapon group (weapon_group.group_44, the +44h 00649017 reads). Health goes through the existing 00923BE0 body ai_unit_health_00923be0 (clamped). Records: icon state select (+88h), scale pair (+48h), WeaponInfo animation, unit display name (0081C0A0 strings not in host), screen 3Fh +BDh and screen 41h +20h object, repair-task metrics (gunnery-private).",
+      "review_round_1": "run 561 findings 1 and 2 fixed: slot mapping via kInGameHudScreens, 74h gate on slot 41h, weapon mode from screen 2Eh group_44, health via ai_unit_health_00923be0"
     },
     {
       "native": "00647080",
