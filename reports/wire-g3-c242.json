@@ -1,0 +1,119 @@
+{
+  "chain": 242,
+  "goal": 3,
+  "slot": "g3-w3",
+  "run": 428,
+  "harness": "codex",
+  "picked": "game_hosts_mission_frame.cpp (tier 1) - shared mission-clock cells",
+  "host_file": "src/game_hosts_mission_frame.cpp",
+  "switch": "kWireGoal3Chain242Bound",
+  "switch_header": "include/bsp/wire_goal3_chain242_switches.hpp",
+  "selection_reason": "The reset can use the existing running fixed-step owner and frame-clock consumers, with no additional OFF gate or invented initial clock values.",
+  "build_off": "scripts/build.ps1 exit 0; final plain OFF build passed 2/2 existing tests (reconstructed_math, tool_tests)",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal3Chain242Bound: exit 0; 2/2 existing tests; zero distinct compiler/linker diagnostics; header restored OFF",
+  "pc24_lint": "zero findings (--staged, 2 C++ files); whole host-file scan also zero findings with one pre-existing allowed expression",
+  "wired_total_before": 9022,
+  "wired_total_after": 9071,
+  "rows_wired": 1,
+  "rows_skipped": 0,
+  "host_objects": [
+    {
+      "name": "Shared mission-clock cells",
+      "type": "Existing bsp::FixedStepClock storage with a borrowed bsp::NativeMissionClockResetContext",
+      "where": "src/game_hosts_mission_frame.cpp:388",
+      "constructor": "No heap constructor: these are native globals. Setter/reset 00874640 initializes the five cells at the recovered load sites.",
+      "fields": [
+        {
+          "native": "00f876a4",
+          "offset_from_a4": "00h",
+          "width": 4,
+          "host": "fixed_clock.simulation_clock; world_clock is its ON reference alias"
+        },
+        {
+          "native": "00f876a8",
+          "offset_from_a4": "04h",
+          "width": 4,
+          "host": "fixed_clock.raw_accumulated"
+        },
+        {
+          "native": "00f876ac",
+          "offset_from_a4": "08h",
+          "width": 4,
+          "host": "fixed_clock.accumulator"
+        },
+        {
+          "native": "00f876b0",
+          "offset_from_a4": "0Ch",
+          "width": 4,
+          "host": "fixed_clock.step_count"
+        },
+        {
+          "native": "00f876b4",
+          "offset_from_a4": "10h",
+          "width": 4,
+          "host": "fixed_clock.interpolation_left"
+        },
+        {
+          "native": "00d7a270",
+          "width": 8,
+          "host": "Exact native constant 0x1.99999ap-5; verified bytes 00 00 00 A0 99 99 A9 3F"
+        },
+        {
+          "native": "0109eea4",
+          "width": 4,
+          "host": "Current mutable CRT conversion cell borrowed from the already-initialized process Dyn owner"
+        }
+      ],
+      "producers": [
+        "004DFB70 calls 00874640 at 004E0194 before scene/world construction and at 004E1890 after the final interface handoff; each passes positive-zero float bits via FLDZ/FSTP [ESP].",
+        "004DA780 calls 00874640 at 004DAD52 during teardown; the frame's existing request-10 phase binds it and preserves the native states-1/2/4 exclusion at 004DA7A0..004DA7BC.",
+        "Existing run_fixed_step_driver_00875bb0 updates the same five fields on the live 004C40A0 -> 004C40AD path; the ON frame has no independent raw-delta clock increment.",
+        "game_main.cpp unconditionally initializes canonical CRT data and binds its feature word through initialize_convex_pool_once_00cc89c0 before creating the mission host. The reset borrows this cell, without creating another process or feature flag.",
+        "Frame, WorldTickState and mission-result by-value publications are refreshed after reset and after the fixed-step driver, before the following world pass. Direct frame warning/hint consumers read the world_clock alias during callbacks."
+      ],
+      "rows": [
+        "00874640"
+      ],
+      "climb": [
+        "00874640 needs five distinct shared clock cells <- existing FixedStepClock owner <- GameMissionFrameHost::Impl <- existing mission-load host phase run_scene_load_004dfb70 (reached).",
+        "00874640 needs exact D7A270 and current 0109EEA4 <- verified native constant and already-bound process CRT cell <- existing game_main startup (reached).",
+        "frame clock consumers need the same A4 as reset/advance <- ON world_clock reference alias <- existing 00875BB0 driver (reached)."
+      ],
+      "lifetime": "The existing Impl owns the cells for the mission-host lifetime. The reference alias has that same lifetime; the reset context borrows only for its synchronous call. No new heap owner or native image overlay is introduced. The stepping flag and buffer fields remain under the existing driver, because 00874640 does not initialize them."
+    }
+  ],
+  "rows": [
+    {
+      "native": "00874640",
+      "address": "004e0194",
+      "function": "004dfb70",
+      "host_site": "src/game_hosts_mission_frame.cpp GameMissionFrameHost::run_scene_load_004dfb70 -> Impl::reset_shared_frame_mission_clock; also FrameControlBinding::request_10_teardown_004e458a",
+      "status": "wired",
+      "reach": "static: game_hosts_mission.cpp constructs the frame host and calls run_scene_load_004dfb70 at its existing mission-load site. The reset catalogue branch and final load tail have no other OFF gate. In-mission frames call the existing fixed-step driver through MissionFrameBinding -> InMissionTickBinding, and request 10 reaches the existing teardown binding. No mission count was supplied for this gap; no game run was performed.",
+      "contract": "Complete 00874640..00874690 body already reconstructed in native_mission_clock_reset.cpp. One float argument, RET 4, no ECX input. Its two MOVSS stores publish A4/A8; BF7420 conversion writes B0, signed FILD and retained x87 operands derive AC then B4. For the native zero argument B4 is the nonzero step, so a zero aggregate is not a substitute. All six original call sites were checked for FLDZ/stack argument setup, and the exact D7A270 bytes were read live.",
+      "on_change": "Load and teardown execute the existing reset body over the actual driver state. The frame reads the driver clock through a reference alias, removes the separate once-per-frame increment, and refreshes downstream snapshots after the driver's remainder publication.",
+      "off_preservation": "The conditional clock member is an independent float initialized to positive zero when OFF. The existing frame increment and load record fallback are retained. New reset contexts, CRT borrows, teardown reset and snapshot refreshes execute only when this switch is ON.",
+      "additional_verified_sites": [
+        {
+          "address": "004e1890",
+          "function": "004dfb70"
+        },
+        {
+          "address": "004dad52",
+          "function": "004da780"
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Build/static wiring evidence only; switch lands OFF. No game, OFF/ON pair or runtime validation was run.",
+    "The existing fixed-step driver remains a partial projection with a new C++ ABI. This change supplies reset/storage identity for the frame host; it does not establish global clock identity for the other hosts' independent private timelines.",
+    "Save-data restore 006B5960 has no static caller; the two session start/receive reset sites enter the excluded online-session graph and are not added here."
+  ],
+  "wired_total_note": "Measured after the final plain OFF build following the ON check. Only assigned gap 00874640 (ready -> wired) is claimed. The broader recount also reclassifies unassigned rows; no cause or wiring credit for those rows is asserted here.",
+  "unassigned_census_changes": {
+    "newly_wired": 49,
+    "no_longer_wired": 1,
+    "claimed_here": 0
+  }
+}

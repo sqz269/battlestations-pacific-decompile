@@ -30,6 +30,9 @@
 #include "bsp/cc13_hitq_switches.hpp"   // packet cc13-hitq2
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
+#include "bsp/game_native_dyn_process.hpp"
+#include "bsp/native_mission_clock_reset.hpp"
+#include "bsp/wire_goal3_chain242_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_lua.hpp"
@@ -102,6 +105,7 @@
 #include <map>
 #include <random>
 #include <string>
+#include <type_traits>
 #include <vector>
 #include <sstream>
 
@@ -381,7 +385,31 @@ struct GameMissionFrameHost::Impl {
     // in-mission frame owes 0045F600's tail (the player's skip).
     bool engine_movie_skip_pending{false};
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
-    float world_clock{0.0f};                  // 00f876a4
+    bsp::FixedStepClock fixed_clock{};        // 00f876a1..00f876b8
+    // 00874640 and 00875BB0 write the same five global cells. ON borrows the
+    // existing driver's A4 cell; OFF retains the independently advanced float,
+    // initialized to the same positive zero as before. No second ON clock.
+    std::conditional_t<bsp::kWireGoal3Chain242Bound, float&, float> world_clock{
+        fixed_clock.simulation_clock};       // 00f876a4
+
+    void reset_shared_frame_mission_clock() {
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            // Native static storage has no heap constructor. The live load's
+            // 004E0194/004E1890 calls initialize all five cells with FLDZ/RET4.
+            // D7A270 bytes 00 00 00 A0 99 99 A9 3F, not binary64 literal 0.05.
+            const volatile double native_step{0x1.99999ap-5};
+            const auto& conversion = game_native_dyn_process(
+                application_camera_axes_crt()).crt_conversion_0109eea4();
+            const bsp::NativeMissionClockResetContext context{
+                fixed_clock.simulation_clock, fixed_clock.raw_accumulated,
+                fixed_clock.accumulator, fixed_clock.step_count,
+                fixed_clock.interpolation_left, native_step, conversion};
+            bsp::reset_native_mission_clock_00874640(0u, context);
+            frame_state.global_time = world_clock;
+            world.game.elapsed = world_clock;
+            result->set_mission_clock(world_clock);
+        }
+    }
     // Packet cc9_warning_manager_tick: the manager's fields this process holds.
     bsp::WarningManagerState warning_host_state{};
     std::map<std::size_t, float> warning_effect_deadline;  // 00975D00 record +0h, per unit
@@ -474,7 +502,6 @@ struct GameMissionFrameHost::Impl {
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
-    bsp::FixedStepClock fixed_clock{};        // 00f876a1..00f876b8
     bsp::GameDynamicsState dynamics{};        // game+30h
     bool unit_lists_built{false};             // game+193Ch
     unsigned long long fixed_steps{0};
@@ -2221,6 +2248,13 @@ public:
         const bool world_active = kWorldActiveByteBound && owner_.world.world_gate.enabled;
         const std::uint32_t steps = bsp::run_fixed_step_driver_00875bb0(
             owner_.fixed_clock, gate, scaled_delta, world_active, 0, host);
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            // 00875BB0 has now published A4, including the final remainder.
+            // Refresh later consumers before 004C40A0 enters the world pass.
+            owner_.frame_state.global_time = owner_.world_clock;
+            owner_.world.game.elapsed = owner_.world_clock;
+            owner_.result->set_mission_clock(owner_.world_clock);
+        }
         owner_.fixed_steps += steps;
         // 00875fd1..00875ff7, the tail hook's four-test gate. The driver
         // reconstruction stops after the interpolation wave and carries no host
@@ -2346,6 +2380,14 @@ public:
         owner_.result->run_end_scene_004d7970(false);
     }
     bool request_10_teardown_004e458a(bsp::GameFrameControlState& state) override {
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            // 00874640 @004DAD52 resets A4..B4 in 004DA780. Its outer gate
+            // excludes front-end states 1/2/4 (004DA7A0..004DA7BC). The result
+            // host records the rest of that call and consumes no clock in it.
+            if (state.state != 1u && state.state != 2u && state.state != 4u) {
+                owner_.reset_shared_frame_mission_clock();
+            }
+        }
         return owner_.result->run_teardown_arm_004e458a(state);
     }
     void request_12_resume_004cd0f0() override {
@@ -3738,6 +3780,17 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             continue;
         }
 
+        // 00874640 @004E0194 resets the shared clock; OFF keeps the original
+        // catalogue fallback below, including its record and record count.
+        if constexpr (bsp::kWireGoal3Chain242Bound) {
+            if (method == "reset_render_scene") {
+                host.reset_shared_frame_mission_clock();
+                host.done(label, step.address);
+                ++host.load.concrete;
+                continue;
+            }
+        }
+
         // Milestone 2m. The three rows packet cc2_mission_load_hosts
         // reconstructed and renamed. Both spellings are accepted because the
         // interface's own names are being corrected on main at the same time.
@@ -4448,6 +4501,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
         ++host.load.records;
     }
 
+    if constexpr (bsp::kWireGoal3Chain242Bound) {
+        // 00874640 @004E1890 is the second load reset, after the final
+        // 004C9CA0(1). The old catalogue contains only the first reset row.
+        // OFF keeps its existing tail without an additional reset.
+        host.reset_shared_frame_mission_clock();
+    }
+
     // 004e086b, immediately after 0077f5e0.
     host.scene_state.state = bsp::kGameStateSceneReady;
     host.load.state_after = bsp::kGameStateSceneReady;
@@ -5066,7 +5126,13 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     const float raw_delta
         = host.mission_frame_seconds > 0.0f ? host.mission_frame_seconds : raw_delta_in;
 
-    host.world_clock += raw_delta;
+    // 00874640 supplies reset state and 00875BB0 advances its shared A4 cell;
+    // OFF keeps the host's independent once-per-frame increment.
+    if constexpr (bsp::kWireGoal3Chain242Bound) {
+        // The fixed-step driver owns every frame write, including gate-zero.
+    } else {
+        host.world_clock += raw_delta;
+    }
     host.frame_state.raw_delta = raw_delta;
     host.frame_state.scaled_delta = raw_delta;  // no time dilation in this process
     host.frame_state.global_time = host.world_clock;
