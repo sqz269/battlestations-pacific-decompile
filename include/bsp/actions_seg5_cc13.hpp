@@ -31,7 +31,17 @@ T& native_at(Object base, std::uint32_t offset) {
     return *reinterpret_cast<T*>(base + offset);
 }
 
-struct Seg5Host {
+// The shared 004645B0/004645D0 codec is also used by plane touchdown (C5h,
+// vtable 00D03518). Keep its four real boundaries independent of movie actions.
+struct SessionBoolMessageHost {
+    virtual ~SessionBoolMessageHost() = default;
+    virtual void session_message_write_extended_header_0075b480(Object message, Object stream) = 0;
+    virtual void session_message_read_extended_header_0075b4c0(Object message, Object stream) = 0;
+    virtual void bit_cursor_write_boolean_004290b0(Object cursor, std::uint8_t value) = 0;
+    virtual void bit_cursor_read_boolean_00428d70(Object cursor, Object out_byte) = 0;
+};
+
+struct Seg5Host : SessionBoolMessageHost {
     virtual ~Seg5Host() = default;
 
     // Globals, read where the image reads them.
@@ -57,10 +67,6 @@ struct Seg5Host {
     virtual void gun_set_barrel_reload_timer_0072cf00(Object gun, std::int32_t barrel, float time,
                                                       std::int32_t flag) = 0;
     virtual void session_message_construct_base_0075b430(Object message, std::int32_t type) = 0;
-    virtual void session_message_write_extended_header_0075b480(Object message, Object stream) = 0;
-    virtual void session_message_read_extended_header_0075b4c0(Object message, Object stream) = 0;
-    virtual void bit_cursor_write_boolean_004290b0(Object cursor, std::uint8_t value) = 0;
-    virtual void bit_cursor_read_boolean_00428d70(Object cursor, Object out_byte) = 0;
     virtual void session_route_message_0077c2a0(Object entity, Object message, std::int32_t a,
                                                 std::int32_t b) = 0;
     virtual void entity_issue_command_0077d600(Object entity, Object command, Object target,
@@ -406,8 +412,8 @@ bool session_message7b_is_kind_of_004647b0(std::int32_t type);
 // 004645B0 / 004645D0, __thiscall(ECX message, [ESP+4] stream), RET 4: the
 // extended header, then the bool at message+1Ch (written to the stream itself,
 // read through the cursor at stream+4).
-void session_bool_message_write_004645b0(Seg5Host& host, Object message, Object stream);
-void session_bool_message_read_004645d0(Seg5Host& host, Object message, Object stream);
+void session_bool_message_write_004645b0(SessionBoolMessageHost& host, Object message, Object stream);
+void session_bool_message_read_004645d0(SessionBoolMessageHost& host, Object message, Object stream);
 
 // 00464710 __thiscall(ECX message, [ESP+4] float), RET 4: 0075B430(7Bh),
 // then +18h word 0, +1Ah byte 0, +1Ch byte 0, +4 = 1, vtable 00CE53AC,

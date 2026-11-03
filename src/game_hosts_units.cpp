@@ -22,6 +22,7 @@
 #include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
@@ -3866,6 +3867,7 @@ struct GameUnitsHost::Impl {
     std::size_t plane_landing_site_006c0840(const GameUnitSlot& p, float& dist);
     void plane_site_probe_007c5ac0(GameUnitSlot& p, float step);
     bool plane_touchdown_007cc440(GameUnitSlot& p);
+    bool deliver_plane_touchdown(GameUnitSlot& p);
     std::array<float, 3> landing_t_world_006bca40(const LandingDeck& d) const;
     float landing_run_length_006ba620(const LandingDeck& d) const;
     // Packet p19_fwd_speed (docs/OCEAN_WAVE_FIELD.md section 74). True:
@@ -18893,6 +18895,22 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
     ++p.td_low_steps;
     if (!(p.plane_airborne_908 > 10.0f)) { ++p.td_refused_airborne; return false; }
     if (!(p.plane_world_velocity[1] > -6.0f)) { ++p.td_refused_vy; return false; }
+    if constexpr (bsp::kWireGoal4Chain294Bound) {
+        // 007CC4B6 posts C5h after these contact gates; 007CCFA0's C5h case
+        // delivers 007C71E0. Dispatch the decoded local copy to this live plane.
+        switch (commands.session_messages().queue_plane_touchdown_c5()) {
+        case 0xc5: return deliver_plane_touchdown(p);
+        default: return false;
+        }
+    } else {
+        return deliver_plane_touchdown(p);
+    }
+}
+
+// The previous direct C5h delivery, extracted without changing its operations.
+// Timing stays synchronous, as in the existing host; this is not the native
+// row-9 FIFO or a reconstruction of the entire 007C71E0/007CB5F0 bodies.
+bool GameUnitsHost::Impl::deliver_plane_touchdown(GameUnitSlot& p) {
     // 007C71E0 (007C71E6-007C721A).
     if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
     LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];

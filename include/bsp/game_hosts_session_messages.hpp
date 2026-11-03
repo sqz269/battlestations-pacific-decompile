@@ -184,6 +184,11 @@ public:
     PlaneChangeStateCopy queue_plane_change_state_c3(std::uint8_t current,
                                                      std::uint8_t requested) const;
 
+    // C5h is an empty touchdown request: 00762A60 supplies the whole payload.
+    // 00D03518 selects 004645B0/004645D0 for its local bitstream copy. Return
+    // the decoded type so the caller dispatches that copy to its live plane.
+    std::uint8_t queue_plane_touchdown_c5() const;
+
 private:
     struct Image;
     std::unique_ptr<Image> image_;
