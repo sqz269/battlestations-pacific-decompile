@@ -1,0 +1,82 @@
+{
+  "run": 316,
+  "chain": 160,
+  "packet": "g2-w1",
+  "branch": "agent/g2-w1",
+  "harness": "claude",
+  "candidate": "segment 68 [009f6090-009fe120]",
+  "tier": 2,
+  "selection_reason": "Segment 68 had the most typed rows of the tier-2 list (4 typed + 1 callback), and its bodies sit under the plane bot tasks that GameUnitsHost runs every tick. Before claiming nothing else was weighed; afterwards a quick look at segments 35 (fish school / flag cloth: no host reaches 00709310 or 008E2560), 46 (camera path knots behind OFF-switch callers) and 69 (party-brain AI, host file game_hosts_ai.cpp held by another worker) found nothing better, so the claim stood. Only 009FA380 has a host stand-in the body can replace; the other four need native observer, singleton-lock or task-alias storage the host does not hold.",
+  "host_file": "src/approach_target_ref.cpp",
+  "switch": "kWireGoal2Chain160Bound",
+  "switch_header": "include/bsp/wire_goal2_chain160_switches.hpp",
+  "switch_default": false,
+  "build_off": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "build_on": "tools/off_switch_on_build.py --names kWireGoal2Chain160Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings (no x87 arithmetic in the ON arms)",
+  "wired_before": 8991,
+  "wired_after": 8992,
+  "assigned_rows_wired": 1,
+  "assigned_rows_skipped": 4,
+  "host_objects": [],
+  "adapters": [
+    {
+      "name": "approach_target_ref_set_aim_error (typed view of ApproachTargetRefState as cc13_seg68::NativeApproachTargetRef for 009FA380: bias sub+34h..3Ch and dirty sub+41h cross the view)",
+      "where": "src/approach_target_ref.cpp (declared include/bsp/approach_target_ref.hpp)",
+      "rows": ["009fa380"]
+    }
+  ],
+  "reach_evidence": {
+    "kind": "static",
+    "path": "GameUnitsHost::motion_step_00825f20 (game_hosts_units.cpp) -> per-slot PlaneBinding::pilot_think_and_commit -> run_dive_bomb_task_arm_009c8790 / run_torpedo_task_arm_009d4850 (runtime gates only: task installed, not a strafe order) -> GameUnitsHost::redraw_aim_error -> approach_target_ref_apply_aim_error (approach_target_ref.cpp), under kAimErrorDrawBound = true. Same pilot think: run_depth_charge_task_arm_009a66c0 (kDepthChargeTaskBound = true) -> depth_charge_task_construct_009a5240 -> depth_charge_pick_aim_offset_009a31a0; run_kamikaze_task_arm_009af510 (kKamikazeTaskBound = true) -> kz_install_009af720 -> kamikaze enter -> kamikaze_aim_error_009abf60; run_drop_kamikaze_task_arm_009ae8a0 (kDropKamikazeTaskBound = true) -> dkz_install_009aebe0 -> drop_kamikaze_task_construct_009adbf0 -> drop_kamikaze_approach_seed_009abab0.",
+    "gates": "Every constexpr gate on these paths is true; the remaining conditions are runtime (plane slot, installed task, attack command class).",
+    "limit": "No surveyed mission call counts were supplied for this range. Reach was read from source; the game was not run."
+  },
+  "rows": [
+    {
+      "native": "009fa380",
+      "address": "009c3e21",
+      "function": "009c3da0",
+      "host_site": "src/approach_target_ref.cpp:approach_target_ref_apply_aim_error (dive 009C3E21 / torpedo 009D0324); also src/depth_charge_task_cc13.cpp:depth_charge_pick_aim_offset_009a31a0 (009A322D), src/kamikaze_task_cc13.cpp:kamikaze_aim_error_009abf60 (009AC092) and drop_kamikaze_approach_seed_009abab0 (009ABB84)",
+      "status": "wired",
+      "reach": "static: GameUnitsHost::motion_step_00825f20 -> pilot_think_and_commit -> run_dive_bomb_task_arm_009c8790 / run_torpedo_task_arm_009d4850 -> redraw_aim_error (kAimErrorDrawBound = true) -> approach_target_ref_apply_aim_error",
+      "on_change": "The bias store (and the dirty byte) after each aim-error draw is made by the body over a NativeApproachTargetRef view instead of inline host stores; values are the same drawn errors (the image's zero vector 00F87574 at the drop-kamikaze seed)."
+    },
+    {
+      "native": "009f9980",
+      "address": "009a52cc",
+      "function": "009a5240",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Lasting: the body copies task+4/+314h/+38Ch into the approach alias cells task+410h/414h/418h (NativeLandTaskConstructorView). The host's plane tasks (DepthChargeTask, RocketTask, MoveOnPathTask in GameUnitSlot) have no approach object with alias cells; their approaches read task state directly (depth_charge_task_cc13.cpp: '009F9980 ... the host's', moveonpath_task_cc13.cpp:277 'host-side'). No host logic to replace; wiring needs image-shaped task storage.",
+      "reach": "static: the task constructors that call it (depth_charge_task_construct_009a5240, rocket_task_construct_007b6a40, moveonpath_task_construct_009bce50) run from game_hosts_units.cpp, but none has a bind step"
+    },
+    {
+      "native": "009fb010",
+      "address": "009fc01c",
+      "function": "009fc000",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Lasting: 009FB010 lazily creates the path-leg lock singleton (global 00F8A724) through the native singleton manager and its critical section (LegSingletonHost). The host's LegAltitudeManager (leg_altitude_manager_cc13.cpp, GameUnitsHost::leg_manager_cc13_) is single-threaded and takes no lock, so there is no host logic for the body to replace; it would need a native singleton manager and lock object that nothing then uses.",
+      "reach": "static: register_009fc000 / remove_009fc1c0 / altitude_009fc260 run from game_hosts_units.cpp, without a lock step"
+    },
+    {
+      "native": "009fcf90",
+      "address": "009fd2f0",
+      "function": "009fd0e0",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Lasting: the body re-points an observed rocket pointer (ObservedPointerHolder, unregister/register on a NativeObserverLifetime). The host's opportunistic_rocket_tick_009fd0e0 (opportunistic_rocket_cc13.cpp, run from game_hosts_units.cpp run_opportunistic_rocket_009fd0e0) keeps the rocket as a plus-one index (rocket_plus_one_58) of host rockets that are not native observer owners. Needs a native observer registry for host rockets.",
+      "reach": "static: run_opportunistic_rocket_009fd0e0 -> opportunistic_rocket_tick_009fd0e0 (rocket re-find at 009FD2CB-009FD2F0)"
+    },
+    {
+      "native": "009fcfd0",
+      "address": "009fd71f",
+      "function": "009fd570",
+      "host_site": "none",
+      "status": "skipped",
+      "reason": "Lasting: the body pushes an 18h-byte observer element (vtable 00CF5C94, copy-registered on a NativeObserverLifetime) into a NativeLandStateObserverVector. The host's fly_to_point_heading_009fd570 (plane_fly_to_solver.cpp) takes its obstacles as a std::vector<FlyToObstacle> built in game_hosts_units.cpp (cc9_fly_to_obstacles); host units are not native observer owners. Needs a native observer registry.",
+      "reach": "static: game_hosts_units.cpp fly_to_heading_009fd570 adapters -> fly_to_point_heading_009fd570"
+    }
+  ]
+}

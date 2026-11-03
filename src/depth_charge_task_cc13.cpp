@@ -21,6 +21,7 @@
 #include "bsp/robot_config.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/vector_helpers.hpp"
+#include "bsp/wire_goal2_chain160_switches.hpp"
 
 namespace bsp {
 
@@ -164,8 +165,14 @@ void depth_charge_pick_aim_offset_009a31a0(DepthChargeApproach& ap, const DepthC
                           row.target_h_error_0cc);
     const float bz = draw(rng, DepthChargeDraw::kBiasZ, -row.target_v_error_0d0,
                           row.target_v_error_0d0);
-    ap.ref.bias_34 = {bx, 0.0f, bz};                                  // 009FA380
-    ap.ref.dirty_41 = true;                                           // 009FA395
+    if constexpr (kWireGoal2Chain160Bound) {
+        // 009A322D: 009FA380 approach_ref_set_aim_error_009fa380 stores the bias and
+        // the dirty byte; OFF keeps the two inline stores.
+        approach_target_ref_set_aim_error(ap.ref, {bx, 0.0f, bz});
+    } else {
+        ap.ref.bias_34 = {bx, 0.0f, bz};                              // 009FA380
+        ap.ref.dirty_41 = true;                                       // 009FA395
+    }
     const float s = row.target_point_select_prec_0dc;                 // 009A3235
     ap.ref.spread_48 = {s, s, s};
     ap.ref.dirty_41 = true;                                           // 009A324E
