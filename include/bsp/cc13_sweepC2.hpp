@@ -15,6 +15,8 @@
 
 #include "bsp/cc13_sweepC.hpp"
 
+namespace bsp { struct NativeSoundAlternateOwnerStorage; }
+
 namespace bsp::cc13_sweepC2 {
 
 using cc13_sweepC::add;
@@ -71,7 +73,27 @@ struct TreeIter {
 // Engine boundary. Every call the reconstructed bodies make goes through here, at the point the
 // image makes it.
 // ---------------------------------------------------------------------------
-struct SweepC2Host {
+// Only the services consumed by A788A0 and its existing A786F0 callee.
+// Kept separate from the unrelated air-ops/network/gui sweep boundary.
+struct DialogMusicHost {
+    virtual ~DialogMusicHost() = default;
+    virtual void* image_address(std::uint32_t address) = 0;
+    virtual std::int32_t interlocked_increment_00ce221c(std::int32_t* counter) = 0;
+    virtual std::int32_t interlocked_decrement_00ce2220(std::int32_t* counter) = 0;
+    virtual void refcounted_destroy_vslot_00(void* object) = 0;
+    virtual void string_pool_release_00419cc0_00bd1510(void* data, std::uint32_t size) = 0;
+    virtual void* sound_stream_copy_name_00a77ff0(void* stream, void* out) = 0;
+    virtual bool native_string_equals_insensitive_00435c40(void* string, const void* other) = 0;
+    virtual void log_printf_text_int_004254b0(const char* format, const char* text,
+                                             std::int32_t value) = 0;
+    virtual void log_printf_int_int_004254b0(const char* format, std::int32_t first,
+                                            std::int32_t second) = 0;
+    virtual void logical_dialog_record_assign_00a78230(void* record, const void* name) = 0;
+    virtual void logical_dialog_configuration_clear_00a77bb0(void* configuration) = 0;
+    virtual void music_director_select_row_00a782e0(void* director, void* field) = 0;
+};
+
+struct SweepC2Host : DialogMusicHost {
     virtual ~SweepC2Host() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The +18h recursion
@@ -508,10 +530,14 @@ void dialog_channel_set_volume_by_name_00a78330(SweepC2Host& host, void* channel
                                                 const void* name, float volume);
 // 00A786F0 BSP_StreamedDialogManager_RequestMusic. __thiscall(ECX = director, const
 // NativeString* name, ref handle by value (released here), float fade), RET 0Ch.
-void dialog_request_music_00a786f0(SweepC2Host& host, void* director, const void* name,
+void dialog_request_music_00a786f0(DialogMusicHost& host, void* director, const void* name,
                                    void* handle, float fade);
 // 00A788A0 BSP_MusicDirector_SetLevel. __thiscall(ECX = manager, level), RET 4.
 void music_director_set_level_00a788a0(SweepC2Host& host, void* manager, std::int32_t level);
+// Actual234h storage from A79230. Reads +8 pointer, 18h records at +10,
+// handle words at +1C0, level +208 and party +210; callbacks see live storage.
+void music_director_set_level_00a788a0(DialogMusicHost& host,
+    NativeSoundAlternateOwnerStorage& manager, std::int32_t level);
 // 00A78CE0 BSP_StreamedDialogManager_PlayDialogStream. __thiscall(ECX = manager, const
 // NativeString* name, float unused), RET 8.
 void dialog_play_stream_00a78ce0(SweepC2Host& host, void* manager, const void* name,

@@ -1,3 +1,4 @@
+#include "bsp/cc13_sweepC2.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_alternate_owner.hpp"
@@ -7,7 +8,14 @@
 #include "bsp/sound_stream_owner.hpp"
 #include "bsp/sound_stream_runtime.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/wire_goal2_chain180_switches.hpp"
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <Windows.h>
 #include <cstddef>
+#include <cstdio>
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -59,6 +67,60 @@ struct GameSoundDialogRuntime::Impl final : SoundAlternateOwnerDependencies,
         if (!contexts) throw std::logic_error("Dialog runtime is not attached to core sound");
         return *contexts;
     }
+    // Stack-only adapter, constructed only by the ON service. It borrows the
+    // A79230 owner/channels, its actual string allocator, and its live refs.
+    struct MusicDirectorAdapter final : cc13_sweepC2::DialogMusicHost,
+        cc13_sweepC::MusicRowHost {
+        Impl& runtime;
+        explicit MusicDirectorAdapter(Impl& value) : runtime(value) {}
+        void* image_address(std::uint32_t address) override {
+            // A786F0 uses F8BBD0 only as the log's verified empty C string.
+            if (address == cc13_sweepC2::kEmptyNativeText)
+                return const_cast<char*>(cc13_sweepC2::kEmptyText);
+            throw std::logic_error("Music adapter received an unrelated image address");
+        }
+        std::int32_t interlocked_increment_00ce221c(std::int32_t* p) override {
+            return InterlockedIncrement(reinterpret_cast<volatile LONG*>(p));
+        }
+        std::int32_t interlocked_decrement_00ce2220(std::int32_t* p) override {
+            return InterlockedDecrement(reinterpret_cast<volatile LONG*>(p));
+        }
+        void refcounted_destroy_vslot_00(void* object) override {
+            runtime.zero_references_slot_00(object);
+        }
+        void string_pool_release_00419cc0_00bd1510(void* data, std::uint32_t size) override {
+            runtime.bound().table.strings.release(static_cast<char*>(data), size);
+        }
+        void* sound_stream_copy_name_00a77ff0(void* stream, void* out) override {
+            return &copy_sound_stream_name_00a77ff0(stream, *static_cast<NativeString*>(out),
+                runtime.bound().table.strings);
+        }
+        bool native_string_equals_insensitive_00435c40(void* text, const void* other) override {
+            return equal_native_string_headers_00435c40(text, other);
+        }
+        void log_printf_text_int_004254b0(const char* format, const char* text,
+            std::int32_t value) override { std::fprintf(stderr, format, text, value); }
+        void log_printf_int_int_004254b0(const char* format, std::int32_t first,
+            std::int32_t second) override { std::fprintf(stderr, format, first, second); }
+        void logical_dialog_record_assign_00a78230(void* record, const void* source) override {
+            copy_sound_dialog_record_00a78230(record, source,
+                runtime.bound().table.strings, runtime);
+        }
+        void logical_dialog_configuration_clear_00a77bb0(void* configuration) override {
+            clear_sound_dialog_configuration_references_00a77bb0(configuration, runtime);
+        }
+        void music_director_select_row_00a782e0(void* director, void* field) override {
+            cc13_sweepC::music_director_select_row_and_store_name_00a782e0(*this, director, field);
+        }
+        void sound_stream_select_row_00a86710(void* stream, const void* name) override {
+            cc13_audio::select_sound_stream_row_00a86710(stream, name);
+        }
+        void native_string_resize_0041dd40(void* string, std::uint32_t length,
+            std::uint32_t keep) override {
+            resize_native_string_header_0041dd40(string, runtime.bound().table.strings,
+                length, keep != 0);
+        }
+    };
     void check_owner(void* object) const {
         if (!constructed || object != allocation || !object || profile(object) != 0x00d58f78)
             throw std::logic_error("Dialog service requires its constructed actual234h owner");
@@ -201,6 +263,32 @@ NativeSoundAlternateOwnerStorage& GameSoundDialogRuntime::owner() {
 void GameSoundDialogRuntime::update(void* object, float dt) {
     impl_->check_owner(object);
     update_sound_alternate_owner_00a789c0(*impl_->allocation, dt, impl_->bound().alternate);
+}
+void GameSoundDialogRuntime::set_music_level(std::int32_t level) {
+    if constexpr (kWireGoal2Chain180Bound) {
+        auto& self = *impl_;
+        auto* const current = self.globals.alternate_00f8bbcc;
+        self.check_owner(current);
+        Impl::MusicDirectorAdapter calls(self);
+        // 00A788A0 calls the existing level/row selection body; OFF keeps no service.
+        cc13_sweepC2::music_director_set_level_00a788a0(calls,
+            *static_cast<NativeSoundAlternateOwnerStorage*>(current), level);
+    } else {
+    }
+}
+void GameSoundDialogRuntime::set_music_target_level(float level) {
+    if constexpr (kWireGoal2Chain180Bound) {
+        auto& self = *impl_;
+        void* const current = self.globals.alternate_00f8bbcc;
+        self.check_owner(current);
+        // A79230 produces these float words as 1,1,0; A789C0 updates +220h.
+        cc13_sweepC::StreamedDialogLevelView view{
+            cc13_sweepC::at<float>(current, 0x220), cc13_sweepC::at<float>(current, 0x224),
+            cc13_sweepC::at<float>(current, 0x228)};
+        // 00A77860 calls the existing fade target/rate body; OFF keeps no service.
+        cc13_sweepC::streamed_dialog_manager_set_target_level_00a77860(view, level);
+    } else {
+    }
 }
 void GameSoundDialogRuntime::delete_alternate_slot00(void* object, std::uint32_t flags) {
     impl_->destroy(object, flags);

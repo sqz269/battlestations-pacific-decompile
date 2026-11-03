@@ -1362,15 +1362,21 @@ void streamed_dialog_manager_set_channel_byte_4e_00a77840(void* manager, std::in
 // 00A77860, RET 4: d = float(+220h - level) (FLD/FSUB float, FSTP float); +224h = level (stored
 // first); +228h = |float(d x 0.5 (double 00D7A280))| (the sign bit cleared with AND 7FFFFFFFh).
 void streamed_dialog_manager_set_target_level_00a77860(void* manager, float level) {
-    const float d = static_cast<float>(static_cast<double>(at<float>(manager, 0x220)) -
+    streamed_dialog_manager_set_target_level_00a77860(
+        StreamedDialogLevelView{at<float>(manager, 0x220), at<float>(manager, 0x224),
+            at<float>(manager, 0x228)}, level);
+}
+void streamed_dialog_manager_set_target_level_00a77860(StreamedDialogLevelView manager,
+                                                       float level) {
+    const float d = static_cast<float>(static_cast<double>(manager.current_220) -
                                        static_cast<double>(level));
-    at<float>(manager, 0x224) = level;
+    manager.target_224 = level;
     float half = static_cast<float>(static_cast<double>(d) * 0.5);
     std::uint32_t bits;
     std::memcpy(&bits, &half, 4);
     bits &= 0x7FFFFFFFu;
     std::memcpy(&half, &bits, 4);
-    at<float>(manager, 0x228) = half;
+    manager.rate_228 = half;
 }
 
 // 00A77B30, __thiscall(ECX = slot, value), RET 4 -> slot. Releases the old non-null pointer
@@ -1424,7 +1430,7 @@ void* dialog_channel_record_construct_00a77f80(SweepCHost& host, void* record) {
 // 00A782E0, RET 4: 00A86710(ECX = +4h stream, name); then, unless name is the +8h string itself,
 // +8h is resized to the name's length (0041DD40(len, 1)) and, for a non-empty name, the name's
 // data copied over with the CRT memcpy (00BF7680) for +8h's new length.
-void music_director_select_row_and_store_name_00a782e0(SweepCHost& host, void* director,
+void music_director_select_row_and_store_name_00a782e0(MusicRowHost& host, void* director,
                                                       const void* name) {
     host.sound_stream_select_row_00a86710(ptr(director, 0x04), name);
     void* const stored = add(director, 0x08);

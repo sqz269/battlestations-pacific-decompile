@@ -749,6 +749,8 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
     ~GameScriptOrdersHost();
+    // Application phase5's existing dialog owner; no new manager lifetime.
+    static void bind_music_dialog(class GameSoundDialogRuntime*) noexcept;
     void attach_scoring_name_owner(GameMissionResultHost* owner) noexcept {
         scoring_name_owner_ = owner;
     }

@@ -288,7 +288,12 @@ int lua_get_camera_pos_rot(LuaResults& results, CameraHost& host);     // 008B7D
 // Map screen, sound, input and GUI bindings
 // ---------------------------------------------------------------------------
 
-struct InterfaceHost {
+struct MusicFadeHost {
+    virtual ~MusicFadeHost() = default;
+    virtual void music_set_target_level(float level) = 0; // 00A77860
+};
+
+struct InterfaceHost : MusicFadeHost {
     virtual ~InterfaceHost() = default;
     // Map screen [[00E198C4]+54h].
     virtual float map_cursor_x_554() = 0;
@@ -343,7 +348,7 @@ int lua_force_map_cursor_pos(LuaArgs& args, InterfaceHost& host);           // 0
 int lua_map_hide_node_by_name(LuaArgs& args, InterfaceHost& host);          // 008C03B0
 int lua_map_unit_highlight(LuaArgs& args, InterfaceHost& host);             // 008C27C0
 int lua_music_control_suspend(LuaArgs& args, InterfaceHost& host);          // 008C4ED0
-int lua_music_fade(LuaArgs& args, InterfaceHost& host);                     // 008C7190
+int lua_music_fade(LuaBindingArgumentReader& args, MusicFadeHost& host);     // 008C7190
 int lua_black_bars(LuaArgs& args, InterfaceHost& host);                     // 008C7300
 // EnableInput 008AFBD0: context 1Eh level = enable ? 0 : 5 ((-(b != 0) & ~4) + 5).
 int lua_enable_input(LuaArgs& args, InterfaceHost& host);

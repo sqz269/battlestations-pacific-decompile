@@ -1,0 +1,110 @@
+{
+  "run": 347,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 180,
+  "slot": "g2-w1",
+  "branch": "agent/g2-w1",
+  "base": "2330d2402",
+  "tier": 2,
+  "range": ["00a62660", "00a7a3f0"],
+  "host_file": "src/game_sound_dialog_runtime.cpp",
+  "selection_reason": "Six ready audio rows could share the existing actual234h manager. Two have a complete host path; four require absent voice/scene producer paths.",
+  "switch": "kWireGoal2Chain180Bound",
+  "switch_default": false,
+  "wired_total_before": 9004,
+  "wired_total_after": 9006,
+  "assigned_rows_wired": 2,
+  "assigned_rows_skipped": 4,
+  "rows": [
+    {
+      "native": "00a77860",
+      "address": "008c72a0",
+      "function": "008c7190",
+      "host_site": "src/game_sound_dialog_runtime.cpp:GameSoundDialogRuntime::set_music_target_level",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "GameStartupHost::run_initialize_phases binds the existing sound dialog before constructing the menu; campaign scene load constructs GameScriptOrdersHost; GameMissionLuaHost::binding_trampoline -> handles/dispatch(MusicFade) -> existing lua_music_fade -> ScriptMusicFadeAdapter -> set_music_target_level. Only this batch switch gates the new route; no other OFF gate encloses it.",
+      "contract": "008C7285 loads ESI from CURRENT F8BBCC; 008C7295 reads Lua arg0 as a number; FSTP [ESP] at 008C729D supplies one float; A778A5 RET4. Typed references borrow current/target/rate float words +220/+224/+228. The raw entry delegates to the same typed body and preserves its arithmetic/rounding.",
+      "off": "MusicFade remains unhandled by GameScriptOrdersHost and keeps the prior mission binding fallback. No new mission-runtime loan publication, view construction or body call occurs."
+    },
+    {
+      "native": "00a788a0",
+      "address": "008c4e1d",
+      "function": "008c4d10",
+      "host_site": "src/game_sound_dialog_runtime.cpp:GameSoundDialogRuntime::set_music_level",
+      "status": "wired",
+      "reach": "static",
+      "host_path": "GameStartupHost::run_initialize_phases -> menu/campaign mission -> GameMissionLuaHost::binding_trampoline -> existing GameScriptOrdersHost::dispatch(Music_Control_SetLevel) -> lua_binding_music_control_set_level -> SetThinkCoreHost::music_director_set_level -> published GameSoundDialogRuntime. No additional OFF gate is on this path.",
+      "contract": "008C4E05 loads ESI from F8BBCC; 008C4E15 reads the integer argument; PUSH EAX at 008C4E1A, MOV ECX,ESI at 008C4E1B, CALL at 008C4E1D; A788F9/A78962/A789B2 RET4. Typed overload borrows NativeSoundAlternateOwnerStorage; raw entry is a thin wrapper. Existing level/party/records/handles and the real string/refcount/stream services feed the sole body.",
+      "off": "SetThinkCoreHost::music_director_set_level keeps its existing empty implementation. The stack-only MusicDirectorAdapter is never constructed.",
+      "limitation": "The existing constructor validly produces empty music records. SceneMusicHost has no application implementation, so this chain does not load missing scene tracks; the body can record a changed level and log MUSIC NOT FOUND until a real track producer populates the owner."
+    },
+    {
+      "native": "00a78330",
+      "address": "0070188b",
+      "function": "00701870",
+      "host_site": "src/voice_manager_update.cpp:set_named_voice_volume_00701870",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "VoiceManagerUpdateHost::set_alternate_channel_volume_00a78330 is pure virtual with no concrete src implementation. The existing manager supplies channels, but no live voice-manager update host produces this call's current slot/name/volume and owns the caller path. Adding an isolated adapter here would remain unrooted."
+    },
+    {
+      "native": "00a78620",
+      "address": "00702797",
+      "function": "007026f0",
+      "host_site": "src/voice_manager_update.cpp:stop_voice_slot_007026f0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "VoiceManagerUpdateHost::stop_alternate_00a78620 has no concrete src implementation. The sole caller requires a real state-2 VoicePlaybackSlot and concrete VoiceSlotHost/VoiceManagerUpdateHost stop lifecycle; no running host owns that path. The existing dialog manager alone does not supply the missing slot producer."
+    },
+    {
+      "native": "00a78ce0",
+      "address": "00702eb0",
+      "function": "00702cc0",
+      "host_site": "src/voice_slot_start.cpp:construct_voice_slot_00702cc0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "VoiceSlotStartHost::play_alternate_00a78ce0 is pure virtual with no concrete src implementation. No live host supplies the complete VoiceSlotStartContext/slot construction and playback lifecycle. A fabricated name or a direct music-dialog call would bypass this caller's real slot state."
+    },
+    {
+      "native": "00a79480",
+      "address": "004ed513",
+      "function": "004ed2d0",
+      "host_site": "src/scene_weather_cc13.cpp:read_music_state",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "SceneMusicHost::set_music_track_00a79480 has no concrete src implementation, and no game_hosts source invokes the SceneMusicFields reader. The actual owner already exists, but the live scene FileName/Channel/SoundEffect producer path and its per-party/state load site are absent. Wiring the detached reader would not count."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "existing NativeSoundAlternateOwnerStorage, borrowed through GameSoundDialogRuntime",
+      "where": "src/game_hosts.cpp:1709",
+      "existing": true,
+      "built_in_this_chain": false,
+      "producers": [
+        "Existing GameSoundDialogRuntime::startup calls construct_sound_alternate_owner_00a79230 at src/game_sound_dialog_runtime.cpp:237, in application sound phase5 (native constructor site 0073DB2B).",
+        "A79230 constructs the eighteen 18h records and eighteen 4-byte handle slots, sets level+208=-1 and party+210=0, and initializes float words +220/+224/+228 to 1/1/0; NativeSoundAlternateOwnerStorage retains the existing 234h size assertion.",
+        "Existing update_sound_alternate_owner_00a789c0 updates the same current-level word at +220; Lua argument0 supplies the new level/target, with the existing binding body doing the conversion.",
+        "The adapter borrows existing Contexts string storage, actual reference destruction and sound-stream functions. The native empty log fallback is constant empty text; it is not manager state."
+      ],
+      "lifetime": "Existing application startup, sound update and native drain/destruction are retained. Only the ON arm publishes a nonowning mission loan; it is cleared before sound_.reset(). The service adapter is stack-only inside the ON call.",
+      "rows": ["00a77860", "00a788a0"]
+    }
+  ],
+  "supporting_routes": [
+    "Existing lua_music_fade body is routed rather than reimplemented; its interfaces are narrowed to LuaBindingArgumentReader and MusicFadeHost.",
+    "Existing A782E0 selection body is called by the small adapter through MusicRowHost; existing A786F0 request body consumes DialogMusicHost. Neither logic body is duplicated or repaired."
+  ],
+  "validation": {
+    "off_build": "scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests both passed.",
+    "on_build": "off_switch_on_build.py --names kWireGoal2Chain180Bound passed, exit0, zero diagnostics; restored the header to false.",
+    "pc24_lint_staged": "passed: 0 findings, 12 files",
+    "pc24_lint_committed_diff": "0 findings; exact origin/main...HEAD diff checked after commit",
+    "report_call_sites": "verify_report_calls.py: 6 call rows checked, 0 failed",
+    "readiness": "9004 -> 9006 after the final plain-OFF build. Assigned 00a77860 and 00a788a0 both changed ready -> wired; the other four assigned rows remain ready.",
+    "game_run": "not run, as assigned",
+    "new_tests": 0
+  }
+}

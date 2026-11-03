@@ -53,7 +53,16 @@ inline constexpr std::uint32_t kFixedStepClock = 0x00F876A4;      // float, the 
 // Engine boundary. Every call the reconstructed bodies make goes through here, at the point the
 // image makes it.
 // ---------------------------------------------------------------------------
-struct SweepCHost {
+// Narrow boundary used by the existing A782E0 body. Sweep hosts retain the
+// same overrides; application adapters need only these two real services.
+struct MusicRowHost {
+    virtual ~MusicRowHost() = default;
+    virtual void sound_stream_select_row_00a86710(void* stream, const void* name) = 0;
+    virtual void native_string_resize_0041dd40(void* string, std::uint32_t length,
+                                               std::uint32_t keep) = 0;
+};
+
+struct SweepCHost : MusicRowHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
@@ -609,11 +618,20 @@ void streamed_dialog_manager_draw_debug_00a777a0(SweepCHost& host, void* manager
 void streamed_dialog_manager_set_channel_byte_4e_00a77840(void* manager, std::int32_t channel,
                                                           std::uint8_t value);
 void streamed_dialog_manager_set_target_level_00a77860(void* manager, float level);
+// References borrow the constructor-produced actual234h owner's three float
+// words at +220h/+224h/+228h; no snapshot or independent fade state.
+struct StreamedDialogLevelView {
+    float& current_220;
+    float& target_224;
+    float& rate_228;
+};
+void streamed_dialog_manager_set_target_level_00a77860(StreamedDialogLevelView manager,
+                                                       float level);
 void* streamed_dialog_refptr_assign_00a77b30(SweepCHost& host, void* slot, void* value);
 void dialog_channel_record_release_ref_10_00a77b70(SweepCHost& host, void* record);
 void streamed_dialog_physical_pair_array_delete_00a77ec0(SweepCHost& host, void* owner);
 void* dialog_channel_record_construct_00a77f80(SweepCHost& host, void* record);
-void music_director_select_row_and_store_name_00a782e0(SweepCHost& host, void* director,
+void music_director_select_row_and_store_name_00a782e0(MusicRowHost& host, void* director,
                                                       const void* name);
 void streamed_dialog_manager_end_dialog_stream_00a78620(SweepCHost& host, void* manager);
 void streamed_dialog_logical_delete_00a78f80(SweepCHost& host, void* owner);
