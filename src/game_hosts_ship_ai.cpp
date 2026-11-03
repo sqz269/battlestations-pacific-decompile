@@ -35,7 +35,6 @@
 #include "bsp/wire_goal1_chain3_switches.hpp"
 #include "bsp/wire_goal2_chain71_switches.hpp"
 #include "bsp/cc13_seg59b.hpp"                // 008FE120 typed view (chain 71)
-#include "bsp/cc13_seg67b.hpp"                // 009E5E30 typed view (chain 71)
 #include "bsp/flak_note_seg36_37_argon.hpp"   // 0070E3C0 typed view (chain 71)
 #include "bsp/pool_pool02_cc13.hpp"           // 006F2A50 typed view (chain 71)
 
@@ -6989,30 +6988,8 @@ private:
             // LABELLED: the byte is that constant, not a modelled global.
             constexpr bool kLandAttackerStopByte = true;
             const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
-            bool ship_target;
-            if constexpr (bsp::kWireGoal2Chain71Bound) {
-                // 009E5E30 at 009F2772: ship_ai_approach_target_is_kind_6_009e5e30 on this
-                // brain; the OFF arm keeps the host's own null and kind-6 test.
-                // Adapts the brain's +B20h target handle (index + 1; 0 or out of range is
-                // null) to the image's [[nested]+B20h] pointer.
-                struct BrainTargetKind6View {
-                    const GameUnitsHost& units;
-                    std::uint32_t handle_b20;
-                    std::uint32_t target_b20() const { return handle_b20; }
-                    bool target_is_null(std::uint32_t t) const {
-                        return t == 0u || t - 1u >= units.count();
-                    }
-                    bool target_is_kind_of_vt5c(std::uint32_t t, int kind) const {
-                        return units.unit_is_kind_of(static_cast<std::size_t>(t - 1u), kind);
-                    }
-                };
-                BrainTargetKind6View view{owner_.units, handle};
-                ship_target = bsp::ship_ai_approach_target_is_kind_6_009e5e30(view);
-                owner_.done("ShipAiApproach::target_is_kind6_009e5e30", 0x009e5e30u);
-            } else {
-                ship_target = handle != 0u && handle - 1u < owner_.units.count()
-                    && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
-            }
+            const bool ship_target = handle != 0u && handle - 1u < owner_.units.count()
+                && owner_.units.unit_is_kind_of(static_cast<std::size_t>(handle - 1u), 6);
             const int side = a.flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1);
             if (side != a.speed_gate_1204) ++owner_.lander_side_byte_changes;
             a.speed_gate_1204 = side;
