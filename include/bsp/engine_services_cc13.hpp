@@ -728,6 +728,27 @@ void debug_feature_disable_00be8720(void* owner, const NativeString& name, Debug
 // __fastcall(ECX handle, EDX unused) leaves: 00BE99E0 ReadU32Discarded (00BF0280), 00BE9A10 SkipU32
 // (00BF02A0). With an out-parameter, RET 4, EAX handle: 00BE9A60 ReadFloat (00BF02C0), 00BE9A80
 // ReadU32ToOutParam (00BF0280), 00BE9AA0 ReadU32 (00BF02A0).
+// Typed view of the same reader/budget pair selected by the raw node's +8h/+20h.
+// Reader is the host's actual reader type; the read binding implements the
+// existing lower-level word/debit operation, including its transfer policy.
+template<class Reader>
+struct StructuredNodeWordView {
+    Reader* reader;
+    std::uint32_t* remaining;
+};
+
+template<class Reader, class ReadWord>
+void structured_node_read_u32_discarded_00be99e0(
+    StructuredNodeWordView<Reader> node, ReadWord&& read_word) {
+    read_word(node.reader, node.remaining);
+}
+
+template<class Reader, class ReadWord>
+void structured_node_skip_u32_00be9a10(
+    StructuredNodeWordView<Reader> node, ReadWord&& read_word) {
+    read_word(node.reader, node.remaining);
+}
+
 void structured_node_read_u32_discarded_00be99e0(void** handle, EngineServiceCalls& calls);
 void structured_node_skip_u32_00be9a10(void** handle, EngineServiceCalls& calls);
 void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls);

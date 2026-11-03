@@ -1,0 +1,165 @@
+{
+  "run": 241,
+  "harness": "codex",
+  "goal": 2,
+  "chain": 122,
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": "segment 97 [00be4460-00c30570]",
+  "tier": 2,
+  "host_file": "src/structured_reader.cpp",
+  "switch": "kWireGoal2Chain122Bound",
+  "switch_default": false,
+  "wired_before": 8936,
+  "wired_after": 8938,
+  "wired_delta": 2,
+  "build": {"off": "passed; scripts/build.ps1 exit 0; reconstructed_math and tool_tests both passed", "on": "passed; off_switch_on_build.py --names kWireGoal2Chain122Bound exit 0, zero distinct diagnostics; local/off_switch_on_build.log"},
+  "host_objects": [],
+  "existing_host_state": {
+    "name": "StructuredNode and StructuredReader",
+    "producer": "StructuredReader::create_node reads the chunk header from the existing MemoryStream, then sets the node reader and remaining byte count",
+    "view": "StructuredNodeWordView<StructuredReader> borrows reader_ and remaining_ directly; no shadow image, copied budget or replacement stream",
+    "lifetime": "Existing MMOD reader/node scope; no new host object is constructed",
+    "contract": "Both raw wrappers select reader at node+08h and budget at node+20h. Their six-instruction listings push only the budget pointer and RET without a stack immediate; EDX is not read. The typed body performs the same lower-level word/debit call. Raw entries now delegate to that body.",
+    "domain": "Existing complete-transfer little-endian DWORD domain. The binding uses read_exact on the actual reader and budget, retaining cursor updates, actual-byte debit, sticky errors and output-on-success. The diagnostic leading-word output is retained by the binding even though the native caller discards EAX."
+  },
+  "rows": [
+    {
+      "native": "00be5cf0",
+      "address": "00be7845",
+      "function": "00be7760",
+      "host_site": "src/native_filestore_completion.cpp:PairCleanup::finish / add_native_file_store_file_00be7760",
+      "status": "skipped",
+      "reason": "The current cleanup already calls destroy_native_file_store_payload_00be5d70. The reconstructed 00be5cf0 body delegates to that same cleanup; substituting the alias would duplicate an OFF call rather than replace host logic.",
+      "reach": "static: inspected native FileStore cleanup; no new counted use"
+    },
+    {
+      "native": "00be7ab0",
+      "address": "0073e239",
+      "function": "0073d410",
+      "host_site": "src/mounted_streams.cpp:cache_resource_00be7ab0_fragment / src/resource_preload.cpp:preload_startup_scripts_0073d410_fragment",
+      "status": "skipped",
+      "reason": "The available FileStore/VfsMountContext cache stand-in is reached by asset/resource preload probes, not the game host root. The live native VFS runtime has no synchronous cache request/binding to this FileStoreBindings body. A probe-only adapter would not count.",
+      "reach": "static: available cache callers traced to asset_stream_probe.hpp and resource_preload_probe.cpp"
+    },
+    {
+      "native": "00be99e0",
+      "address": "0072767e",
+      "function": "00727310",
+      "host_site": "src/geom_mesh_resource.cpp:parse_geom_mesh_resource_00727310 triangle leading-word branch -> src/structured_reader.cpp:StructuredNode::read_u32_with_native_node_wrapper(slot34=true)",
+      "status": "wired",
+      "reach": "static: GameMissionHost::Impl::finish_scene_load (game_hosts_mission.cpp:2742) -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameUnitsHost::create_units -> GameGunneryHost::attach_00864bd0 -> Impl::build_guns -> ship_model_slots -> read_mmod_geom_meshes -> parse_geom_mesh_resource_00727310 -> node wrapper. kShipPlatformAttachmentBound=true; kPlanePlatformAttachmentBound=true. The wrapper consumes the real MMOD stream and debits the existing node budget. No other OFF switch gates this path.",
+      "coverage": "Existing complete word-consumption body through a typed view; raw entry retained as a thin wrapper. Existing triangle guard and host error/output behavior retained."
+    },
+    {
+      "native": "00be9a10",
+      "address": "006fad8a",
+      "function": "006fad70",
+      "host_site": "src/mmod_hull_convex_box.cpp:read_convex_points optional leading-word branch -> src/structured_reader.cpp:StructuredNode::read_u32_with_native_node_wrapper(slot34=false)",
+      "status": "wired",
+      "reach": "static: GameMissionHost::Impl::finish_scene_load (game_hosts_mission.cpp:2742) -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameUnitsHost::create_units -> Impl::class_hull_box -> read_mmod_hull_convex_box -> read_convex_points -> node wrapper. kHullInertiaFromShapesBound=true. The wrapper consumes the actual class Mesh payload and debits the existing node budget. No other OFF switch gates this path.",
+      "coverage": "Existing complete word-consumption body through a typed view; raw entry retained as a thin wrapper. Existing 0Ch guard and sticky reader errors retained."
+    },
+    {
+      "native": "00be9b20",
+      "address": "00727336",
+      "function": "00727310",
+      "host_site": "src/geom_mesh_resource.cpp:parse_geom_mesh_resource_00727310 / src/mmod_hull_convex_box.cpp:read_convex_points",
+      "status": "skipped",
+      "reason": "The body reads the stream object's +64h, not the node's +20h budget. The host only supplies node.remaining(); the distinct native stream +64h producer is unavailable. Mapping the getter to remaining() would merely hand the host's value back and would not establish that native field.",
+      "reach": "static: MMOD parsing under unit/gunnery model loading"
+    },
+    {
+      "native": "00bea800",
+      "address": "008f8432",
+      "function": "008f81f0",
+      "host_site": "src/game_hosts.cpp:GameStartupHost::platform_run_loop_dispatch",
+      "status": "skipped",
+      "reason": "The live stand-in is in game_hosts.cpp, explicitly reserved for another worker by this assignment. No edit attempted. A separate forwarding wrapper around the existing StartupHost call would add no dispatch over real platform image state.",
+      "retry": "after game_hosts.cpp ownership is available",
+      "reach": "static: winmain_startup.cpp invokes the startup host between initialization and shutdown"
+    },
+    {
+      "native": "00befb60",
+      "address": "00befeb7",
+      "function": "00befdc0",
+      "host_site": "src/file_store_cc13.cpp:decode_tga_00befdc0 / src/terrain_particles_cc13.cpp:RamImageHost::ram_image_data_00befb60 boundary",
+      "status": "skipped",
+      "reason": "This is only the native image +18h pixel-pointer getter. The host RamImage owns a pixels vector; a typed getter returning pixels.data() would only hand the host's own pointer back. The terrain boundary has no concrete host implementation providing a native image owner.",
+      "reach": "static: inspected TGA and terrain call sites; getter substitution does not count"
+    },
+    {
+      "native": "00bf0340",
+      "address": "00ae02e8",
+      "function": "00ae0250",
+      "host_site": "src/terrain_particles_cc13.cpp:terrain_tile_write_node_chunk_00ae0250 / ChunkHost::write_dword",
+      "status": "skipped",
+      "reason": "The native body needs an actual stream slot +54h and a caller-owned debit counter. No concrete game ChunkHost supplies those producers; the separate ByteStream ChunkWriter has no debit budget. Inventing a budget to exercise the wrapper is forbidden.",
+      "reach": "static: native terrain writer and its abstract ChunkHost boundary inspected; no game writer root"
+    },
+    {
+      "native": "00bf0810",
+      "address": "00bf0944",
+      "function": "00bf08a0",
+      "host_site": "src/file_store_cc13.cpp:ChunkWriter::begin_chunk",
+      "status": "skipped",
+      "reason": "The native body needs a 0Ch NativeString/DWORD chunk vector and its native copy/reserve services. The host uses vector<Open> with std::string and a 64-bit position. No game writer root or native chunk/string-owner producer reaches this stand-in; building a parallel vector solely for push_back would not count.",
+      "reach": "static: inspected available ChunkWriter and native chunk-stack body"
+    },
+    {
+      "native": "00bf1130",
+      "address": "00bb8d21",
+      "function": "00bb8be0",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp:MPKG entry stream adopted_00bf1130 binding / src/mpkg_archive.cpp:MpkgArchive::open_entry_00bb8d60_fragment",
+      "status": "skipped",
+      "reason": "The raw binding has no concrete implementation. The host large-entry route materializes through MpkgReopenSource, not an owned native source with a current vtable/refcount and a 28h adopted-stream owner. Those source/ownership producers are unavailable at a live native entry-opening host; constructing a shadow owner around the materialized result would not replace its logic.",
+      "reach": "static: traced raw entry caller and the separate MPKG materialization route"
+    },
+    {
+      "native": "00bf1400",
+      "address": "00bf27c5",
+      "function": "00bf26c0",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "status": "skipped",
+      "reason": "No game host constructs or uses this ErrorContextNode map. Its reporter singleton/thread-context push/pop producers are standalone reconstruction boundaries. Wiring the generic tree helper here would remain below an unreachable host root.",
+      "reach": "static: error-context erase -> reporter push/pop; no game host caller"
+    },
+    {
+      "native": "00bf1420",
+      "address": "00bf27a3",
+      "function": "00bf26c0",
+      "host_site": "src/engine_services_cc13.cpp:error_context_erase_00bf26c0",
+      "status": "skipped",
+      "reason": "The same missing live error-reporter singleton and thread-context producers as 00bf1400 prevent a real map owner. Replacing the generic minimum helper in an unrooted reconstruction would not count.",
+      "reach": "static: error-context erase -> reporter push/pop; no game host caller"
+    },
+    {
+      "native": "00bf15e0",
+      "address": "00bf2385",
+      "function": "00bf2270",
+      "host_site": "src/engine_services_cc13.cpp:error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "status": "skipped",
+      "reason": "The same missing live error-reporter singleton and thread-context producers prevent a real map owner. Rotations hidden inside generic tree helpers have no reachable game root here.",
+      "reach": "static: error-context insert/erase -> reporter push/pop; no game host caller"
+    },
+    {
+      "native": "00bf1630",
+      "address": "00bf23a3",
+      "function": "00bf2270",
+      "host_site": "src/engine_services_cc13.cpp:error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "status": "skipped",
+      "reason": "The same missing live error-reporter singleton and thread-context producers prevent a real map owner. Rotations hidden inside generic tree helpers have no reachable game root here.",
+      "reach": "static: error-context insert/erase -> reporter push/pop; no game host caller"
+    },
+    {
+      "native": "00c304a0",
+      "address": "00c30553",
+      "function": "00c30550",
+      "host_site": "src/native_texture_source_virtual_leaves.cpp:delete_native_texture_source_00c30550",
+      "status": "skipped",
+      "reason": "The existing OFF deletion body already calls destroy_native_procedural_resource_00c304a0 with its actual owner and operation. Adding a switched duplicate cannot count as new wiring.",
+      "reach": "static: existing native scalar-delete call already uses this body"
+    }
+  ],
+  "verification": {"report_calls": "passed: 15 call rows checked, zero failures", "readiness": "passed after final plain OFF build: 00be99e0 and 00be9a10 are wired; ready 1636 -> 1634; wired 8936 -> 8938", "game_run": "not run as instructed", "pc24_lint": "not applicable: neither native row nor the ON arms performs x87 arithmetic", "new_address_identifiers": "none: existing function identifiers gained typed overloads and retained their raw entries"}
+}

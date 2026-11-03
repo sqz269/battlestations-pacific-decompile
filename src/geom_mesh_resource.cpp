@@ -1,4 +1,5 @@
 #include "bsp/geom_mesh_resource.hpp"
+#include "bsp/wire_goal2_chain122_switches.hpp"
 
 #include <new>
 #include <stdexcept>
@@ -163,8 +164,16 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
             // only while at least seven bytes remain. The value is discarded.
             std::uint32_t leading = 0;
             if (node.remaining() >= 7) {
-                if (!read_u32_field(node, leading, "triangle leading word", error))
-                    return false;
+                if constexpr (kWireGoal2Chain122Bound) {
+                    // 00BE99E0 consumes the word; OFF keeps the host field read.
+                    if (!node.read_u32_with_native_node_wrapper(leading, true)) {
+                        error = "Could not read GeomMesh triangle leading word.";
+                        return false;
+                    }
+                } else {
+                    if (!read_u32_field(node, leading, "triangle leading word", error))
+                        return false;
+                }
             }
             std::uint32_t corner[3] = {0, 0, 0};
             for (std::uint32_t& value : corner) {
