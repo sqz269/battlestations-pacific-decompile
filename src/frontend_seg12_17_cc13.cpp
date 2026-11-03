@@ -1,6 +1,7 @@
 // Segments 12 and 17 front-end reconstructions, packet cc13-fe3 (docs/CC13_FE_3.md).
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/frontend_menus.hpp"
+#include "bsp/system_camera_axes.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -820,13 +821,17 @@ void library_carousel_apply(Fe3LibraryHost& host) {
 
 } // namespace
 
-void* vector3_assign_cross_004fa230(float* out, const float* a, const float* b) noexcept {
-    const double x = static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1];
-    const double y = static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2];
-    const double z = static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0];
-    out[0] = static_cast<float>(x);
-    out[1] = static_cast<float>(y);
-    out[2] = static_cast<float>(z);
+__declspec(noinline) void* vector3_assign_cross_004fa230(float* out, const float* a, const float* b) noexcept {
+    // bsp.py show 004fa230 --asm: 004FA234 reserves a three-float temporary;
+    // 004FA23F calls 004F9B30 before 004FA244..004FA253 copy all three lanes.
+    // Reuse that recovered kernel: its FMUL/FSUB operations obey the caller's
+    // x87 control word (PC24 on the main thread), unlike the old double sums.
+    // The separate temporary also preserves out==a and out==b assignment.
+    float temporary[3];
+    camera_vector_cross_004f9b30(temporary, a, b);
+    out[0] = temporary[0];
+    out[1] = temporary[1];
+    out[2] = temporary[2];
     return out;
 }
 
