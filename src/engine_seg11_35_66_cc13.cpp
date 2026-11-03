@@ -550,8 +550,9 @@ void read_message_record_00704590(VoiceClipRecord& record, PropertyVisitor& read
         auto take = [&](const std::string& file) {
             void* bank = calls.load_sound_bank_00a83fd0(file);
             if constexpr (kWireGoal2Chain157Bound) {
-                // 00704FF9: 004E7BB0(ECX = &slot, &temporary) assigns the sample into the record
-                // slot through the reconstructed body; OFF keeps the inline compare/retain/release.
+                // 004E7BB0(ECX = &slot, &temporary) assigns the sample into the record slot:
+                // take(path) replaces the image's inlined copy at 00704E57..00704E93, take(plain)
+                // the real call at 00704FF9. OFF keeps the inline compare/retain/release.
                 assign_sound_sample_reference_004e7bb0(&record.resources_20[slot], &bank,
                     calls.sample_reference_lifetime());
             } else {
