@@ -1,0 +1,79 @@
+{
+  "chain": 286,
+  "goal": 4,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain286Bound",
+  "switch_header": "include/bsp/wire_goal4_chain286_switches.hpp",
+  "wired_total": {"before": 9245, "after": 9248},
+  "checks": "scripts/build.ps1 (both test suites pass); tools/call_graph.py who: 0096ACE0 1 call site, 00968FF0 1, 00968440 3, all reachable from the entry. No game run.",
+  "summary": "The mission Lua host's kill, entityKilled and hit listener channels now test each subscription with the image's own matchers: 0096ACE0 (kill) and 00968FF0 (entityKilled) over the native subscription filter model built from the host's parsed sets, collected through the already wired 0097B8C0, and the range predicate 00968440 for the hit channel's damageCaused/fireCaused/leakCaused brackets. The hit fire and leak brackets now test the hit record's real +4Ch/+50h values (GameGunneryHitEvent::fire_caused/leak_caused, the values the callback already receives as arguments 7 and 8) instead of the stale 0.0 substitution. OFF keeps the host's inline comparisons.",
+  "rows": [
+    {
+      "native": "0096ace0",
+      "name": "BSP_KillSubscription_Matches (bsp::cc13_seg49_64_78::kill_matches_0096ace0)",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_kill_listeners_009813a0 (evaluate lambda, both passes; subscription from include/bsp/lua_listener_native_matchers.hpp build_kill_subscription, callbacks collected by 0097B8C0)"
+    },
+    {
+      "native": "00968ff0",
+      "name": "BSP_EntityKilledSubscription_Matches (bsp::cc13_seg49_64_78::entity_killed_matches_00968ff0)",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_entity_killed_listeners_00986480 (subscription from include/bsp/lua_listener_native_matchers.hpp build_entity_killed_subscription, callbacks collected by 0097B8C0)"
+    },
+    {
+      "native": "00968440",
+      "name": "bsp::cc13_seg49_64_78::range_filter_matches_00968440",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_hit_listeners_00988510 (damage, fire and leak brackets; filter from include/bsp/lua_listener_native_matchers.hpp range_filter)"
+    },
+    {
+      "native": "00968e80",
+      "name": "BSP_PlayerSubscription_Matches",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (no `player` channel dispatcher)",
+      "reason": "The mission Lua host parses and dispatches no `player` listener channel; the body needs a player-event producer (player index, event name) that the host does not raise."
+    },
+    {
+      "native": "00968f40",
+      "name": "BSP_ChatSubscription_Matches",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (no `chat` channel dispatcher)",
+      "reason": "Chat events are multiplayer session traffic; single player raises none and the host has no `chat` channel."
+    },
+    {
+      "native": "009690b0",
+      "name": "BSP_HpEventSubscription_Matches",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (no `hpEvent` channel dispatcher)",
+      "reason": "The host neither parses `hpEvent` blocks (entity, reason, hp) nor raises HP-threshold events; a dispatcher plus its producer (the native HP-event poster) must be built first."
+    },
+    {
+      "native": "009685b0",
+      "name": "BSP_HitSubscription_Matches",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::dispatch_hit_listeners_00988510",
+      "reason": "The body is the raw SweepCHost form (void* subscription/params, vtable[0] filter calls); no typed HitSubscription adapter exists, and the host has no device entity for key 1. Only its range predicate 00968440 was wired."
+    },
+    {
+      "native": "0097a450",
+      "name": "construct_kill_0097a450 / destruct_kill_0097a530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::run_add_listener_008c6760",
+      "reason": "The constructor runs inside 0097E360 before the Load slot; the host replaces that whole parse with its own ListenerEntry read, so constructing per evaluation would not be the native lifetime. Needs the host to keep native subscription objects in ListenerEntry (a game_hosts_lua.hpp change)."
+    },
+    {
+      "native": "006b1190",
+      "name": "strip_table_names_006b1190 (mission Lua save pickler 006ADDC0..006B68C0)",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "include/bsp/mission_savedata_lua.hpp records no rel32, RVA or absolute reference to its entries 006B7710/006B5960/006AFB00; the whole pickler looks unreachable in this build."
+    },
+    {
+      "native": "00bbda50",
+      "name": "cloud_manager_construct_00bbda50 (and the cloud/sky vector helpers 00bbd110..00bc33b0)",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "atmosphere_construct_00bbdff0 counts as wired only textually; no AtmosphereHostC implementation exists, so nothing the game runs constructs the cloud manager these helpers operate on."
+    }
+  ]
+}
