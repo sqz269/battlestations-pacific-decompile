@@ -21,6 +21,7 @@
 #include "bsp/wire_goal4_chain273_switches.hpp"
 #include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
 #include "bsp/wire_goal4_chain283_switches.hpp"
+#include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -47132,12 +47133,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     static_cast<double>(unit_.plane_world_velocity[1]) >
                                         0.10000000149011612) {
                                     ++unit_.ground_liftoff_requests;
+                                    if constexpr (bsp::kWireGoal4Chain322Bound) {
+                                        // 007CC212: the constructor supplies the routed type.
+                                        if (owner_.commands.session_messages().make_plane_takeoff_c6() == 0xc6u)
+                                            owner_.plane_liftoff_c6h_007c6f50(unit_, "height");
+                                    } else {
                                     owner_.plane_liftoff_c6h_007c6f50(unit_, "height");
+                                    }
                                 } else if (!unit_.plane_ground_contact_bf8) {
                                     if (hd != 0 && hd <= owner_.landing_decks.size()
                                         && owner_.landing_decks[hd - 1u].mother_ship) {
                                         ++owner_.carrier_deck_edge_takeoffs;
+                                        if constexpr (bsp::kWireGoal4Chain322Bound) {
+                                            // 007CC26E: the carrier-edge arm builds the same request.
+                                            if (owner_.commands.session_messages().make_plane_takeoff_c6() == 0xc6u)
+                                                owner_.plane_liftoff_c6h_007c6f50(unit_, "deck edge");
+                                        } else {
                                         owner_.plane_liftoff_c6h_007c6f50(unit_, "deck edge");
+                                        }
                                     } else {
                                         unit_.plane_c01 = 2;                  // 007CC2AD
                                         ++owner_.base_launch_c01_sets;

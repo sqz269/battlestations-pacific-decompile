@@ -4,6 +4,7 @@
 #include "bsp/native_bit_cursor_fields.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain298_switches.hpp"
+#include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -104,7 +105,16 @@ struct HostSessionMessages::Image {
         // scalar delete, shared bool writer/reader, IsType, always true.
         std::uint32_t slots_00d03518[5]{0x00762b00u, 0x004645b0u, 0x004645d0u, 0x00762ad0u,
                                         0x004499c0u};
+        // bsp.py ghidra bytes 00CFAA20 --length 20, bsp.gpr's
+        // /battlestationspacific.exe: delete, write, read, IsType, true.
+        std::uint32_t slots_00cfaa20[5]{0x006ebb70u, 0x006ebb10u, 0x006ebb40u, 0x006ebae0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if constexpr (kWireGoal4Chain322Bound) {
+                if (image_address == 0x00cfaa20u) return slots_00cfaa20;
+            } else {
+                // The previous binding had no C6h profile.
+            }
             if constexpr (kWireGoal4Chain298Bound) {
                 if (image_address == 0x00d032e8u) return slots_00d032e8;
             } else {
@@ -511,6 +521,16 @@ std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
         reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in));
     return queued.h.base.type_10;
+}
+
+std::uint8_t HostSessionMessages::make_plane_takeoff_c6() const {
+    // 00762A00..00762A58 (ECX = destination, RET): the native stores build
+    // the 20h-byte header, including type C6h, delivery 1, and the selected
+    // session owner. Neither this object nor the constructor supplies +20h.
+    // Keep the established immediate-delivery path until that flag's producer
+    // is recovered, rather than invoking 006EBB10 on an invented tail byte.
+    seg42::UnitMessage sent{};
+    return seg42::construct_plane_takeoff_00762a00(&sent, image_->seg42)->h.base.type_10;
 }
 
 HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub_kind_5a(
