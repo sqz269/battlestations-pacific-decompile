@@ -44,6 +44,7 @@
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain289_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain326_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
@@ -1413,6 +1414,13 @@ struct GameShipAiHost::Impl {
     void command_building_garrison_006f3660(CaptureBuilding& b, const char* source);
     void command_building_level_006f38e0(CaptureBuilding& b, std::int32_t level,
                                          const char* source);
+    // Goal 4 chain 326 (kWireGoal4Chain326Bound): the D3h / D4h sends through
+    // 0077C2A0's local copy, delivered by the copy's type as 006F5460 does.
+    bool deliver_set_owner_d3(CaptureBuilding& b, std::uint32_t player, bool flag,
+                              bsp::CommandBuildingFlipOutcome& flip, const char* source);
+    void deliver_set_level_d4(CaptureBuilding& b, std::int32_t level, const char* source);
+    unsigned long long command_building_d3_copies{0};
+    unsigned long long command_building_d4_copies{0};
     bool building_health_of(std::size_t unit, float& health, float& max_health) const;
     void landfort_fire_roll_007470b0(CaptureBuilding& b, float amount);
     void landfort_fire_frame_00745be0(CaptureBuilding& b, float seconds);
@@ -13684,7 +13692,12 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
             b.level_timer_774 += seconds;                             // 006F757C
             if (!(b.level_timer_774 > static_cast<float>(b.level_up_seconds_76c))) continue;
             if (b.level_770 >= 3) continue;                           // 006F759D
+            if constexpr (bsp::kWireGoal4Chain326Bound) {
+                // 006F759F..006F75E6: D4h(+1Ch = level + 1, +20h = 0), flags 7.
+                deliver_set_level_d4(b, b.level_770 + 1, "level-up D4h 006F759F");
+            } else {
             command_building_level_006f38e0(b, b.level_770 + 1, "level-up D4h 006F759F");
+            }
         }
     }
     if constexpr (kCaptureStatePartyFromUnitBound) {
@@ -13835,8 +13848,19 @@ void GameShipAiHost::Impl::capture_step(float seconds) {
         }
         // +2D8h has no producer here, so the old owner's retake exemption never
         // applies (prior slot -1, 006F4FC2 JA).
-        const bsp::CommandBuildingFlipOutcome flip = bsp::command_building_flip_006f4d10(
+        bsp::CommandBuildingFlipOutcome flip;
+        if constexpr (bsp::kWireGoal4Chain326Bound) {
+            // 006F727A..006F72DE: D3h(+1Ch = ESI, the slot; byte +20h = 0), flags
+            // 7. The receiver derives the party from the copy's slot; the slot
+            // came from the side's published record, so that is tick.side.
+            if (!deliver_set_owner_d3(b, static_cast<std::uint32_t>(slot), false, flip,
+                    "capture D3h 006F727A")) {
+                continue;
+            }
+        } else {
+        flip = bsp::command_building_flip_006f4d10(
             b.state, slot, tick.side, -1);
+        }
         const GameUnitRow* row = units.unit_row(b.unit);
         log.notef("command building capture: unit=%s flipped to party=%d side=%d slot=%d "
             "repair=%d at t=%.2f (006F6760 -> D3h 006F4D10)", row != nullptr ? row->name.c_str()
@@ -13876,7 +13900,12 @@ void GameShipAiHost::Impl::apply_capture_flip_006f4d10(CaptureBuilding& b,
         }
     }
     // 006F5362..006F53A4: D4h with level 0, after the repair.
+    if constexpr (bsp::kWireGoal4Chain326Bound) {
+        // +1Ch and +20h are both EBP (0) at 006F538A / 006F538E, flags 7.
+        if (kCommandBuildingLevelBound) deliver_set_level_d4(b, 0, "flip D4h 006F5362");
+    } else {
     if (kCommandBuildingLevelBound) command_building_level_006f38e0(b, 0, "flip D4h 006F5362");
+    }
 }
 
 bool GameShipAiHost::Impl::building_health_of(std::size_t unit, float& health,
@@ -14281,6 +14310,23 @@ bool GameShipAiHost::command_building_set_owner_player_006f4d10(std::size_t unit
     if (!host.capture_built) host.build_capture_buildings();
     Impl::CaptureBuilding* b = host.capture_building_of(unit_index);
     if (b == nullptr) return false;
+    if constexpr (bsp::kWireGoal4Chain326Bound) {
+        // 008A8EE7..008A8F2A: D3h(+1Ch = EDI, the Lua player; byte +20h = 1),
+        // flags 7. The range substitution below now applies to the copy's
+        // 6-bit player, the value 006F4D10 indexes the slot records with.
+        bsp::CommandBuildingFlipOutcome flip;
+        if (!host.deliver_set_owner_d3(*b, static_cast<std::uint32_t>(player), true, flip,
+                "SetCommandBuildingOwnerPlayer D3h 008A8EE7")) {
+            return false;
+        }
+        const GameUnitRow* row = host.units.unit_row(b->unit);
+        host.log.notef("command building owner player: unit=%s player=%d -> party=%d repair=%d "
+            "(008A8D90 SetCommandBuildingOwnerPlayer -> D3h 006F4D10, packet cc13-fix13)",
+            row != nullptr ? row->name.c_str() : "?", player, flip.new_party,
+            flip.repair ? 1 : 0);
+        host.apply_capture_flip_006f4d10(*b, flip);
+        return true;
+    } else {
     std::int32_t slot_party = 2;
     if (player != 8 && player != 9) {
         if (player < 0 || player > 7) return false;
@@ -14297,6 +14343,7 @@ bool GameShipAiHost::command_building_set_owner_player_006f4d10(std::size_t unit
         flip.repair ? 1 : 0);
     host.apply_capture_flip_006f4d10(*b, flip);
     return true;
+    }
 }
 
 // Packet cc9_cb_hit_gate_entry: see the header. The lander bleed
@@ -14349,6 +14396,80 @@ void GameShipAiHost::Impl::command_building_level_006f38e0(CaptureBuilding& b,
     if (kCommandBuildingGarrisonBound && !b.garrison.empty()) {
         command_building_garrison_006f3660(b, source);
     }
+}
+
+// Goal 4 chain 326. A D3h sender stores +1Ch and byte +20h, and 0077C2A0
+// (flags 7; [00E188A8]+1FE4h == 0 in single player, so the local bit alone:
+// 0077C329..0077C333 MOV EBX, 1) hands the message to 0076E520, whose rebuilt copy the
+// receiver 006F5460 switches on: D3h -> 006F4D10(+1Ch, byte +20h)
+// (006F549E..006F54A9). The copy is delivered at the send, as the direct call
+// was (the drain's turn 0076C600 is not modelled). For a slot other than 8 / 9,
+// 006F4D10's party is the slot record's +28h; here the scene's published
+// MultiPlay.PlayerN party, the substitution both direct paths already used. A
+// slot past the eight records, or one with no published party, does nothing.
+// The flag (0 posts the cblost / cbneutralized announcements) is carried but
+// not consumed: those announcements are not modelled, as before.
+bool GameShipAiHost::Impl::deliver_set_owner_d3(CaptureBuilding& b, std::uint32_t player,
+    bool flag, bsp::CommandBuildingFlipOutcome& flip, const char* source) {
+    std::uint32_t slot = player;
+    bool copy_flag = flag;
+    if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+        const bsp::HostSessionMessages::CommandBuildingCopy copy =
+            messages->queue_command_building_set_owner_d3(player, flag);
+        if (copy.type != 0xD3u) {
+            // 006F5460 hands any other type to its other arms; none is this send.
+            record("CommandBuilding::d3_copy_type_006f5460", 0x006f5460u);
+            return false;
+        }
+        slot = copy.value_1c;
+        copy_flag = copy.value_20 != 0u;
+        ++command_building_d3_copies;
+        done("CommandBuilding::d3_local_copy_00764220", 0x00764220u);
+    } else {
+        // No commands host: the posted values, as the direct call took them.
+        record("CommandBuilding::d3_local_copy_00764220", 0x00764220u);
+    }
+    if (command_building_d3_copies <= 40) {
+        const GameUnitRow* row = units.unit_row(b.unit);
+        log.notef("command building D3h copy: unit=%s posted player=%u flag=%d -> slot %u "
+            "flag %d (%s, 0076E520 -> 00768530 00764220 -> 006F2550)",
+            row != nullptr ? row->name.c_str() : "?", player, flag ? 1 : 0, slot,
+            copy_flag ? 1 : 0, source);
+    }
+    std::int32_t slot_party = 2;
+    if (slot != 8u && slot != 9u) {
+        if (slot > 7u) return false;
+        const std::int32_t index = static_cast<std::int32_t>(slot);
+        slot_party = bsp::game::kLocalPartyFromSceneBound
+            ? bsp::game::scene_slot_party(index, -1) : index;
+        if (slot_party < 0) return false;
+    }
+    flip = bsp::command_building_flip_006f4d10(b.state, static_cast<std::int32_t>(slot),
+        slot_party, -1);
+    return true;
+}
+
+// Goal 4 chain 326. D4h through the same local copy: 006F5460's D4h arm hands
+// 006F38E0 the copy's +1Ch (3 bits on the wire) and +20h (4 bits). Every D4h
+// sender here stores +20h = 0, and 006F38E0 reads it only on the level-4 arm.
+void GameShipAiHost::Impl::deliver_set_level_d4(CaptureBuilding& b, std::int32_t level,
+    const char* source) {
+    const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages();
+    if (messages == nullptr) {
+        // No commands host: the posted level, as the direct call took it.
+        record("CommandBuilding::d4_local_copy_00764280", 0x00764280u);
+        command_building_level_006f38e0(b, level, source);
+        return;
+    }
+    const bsp::HostSessionMessages::CommandBuildingCopy copy =
+        messages->queue_command_building_set_level_d4(static_cast<std::uint32_t>(level), 0u);
+    if (copy.type != 0xD4u) {
+        record("CommandBuilding::d4_copy_type_006f5460", 0x006f5460u);
+        return;
+    }
+    ++command_building_d4_copies;
+    done("CommandBuilding::d4_local_copy_00764280", 0x00764280u);
+    command_building_level_006f38e0(b, static_cast<std::int32_t>(copy.value_1c), source);
 }
 
 // 006F3660 (packet cc9_command_building_garrison, SHIP_AI_OPEN_ITEMS 175), body
@@ -14450,7 +14571,12 @@ bool GameShipAiHost::command_building_health_zero_006f3270(std::size_t unit_inde
         if (host.gunnery_draws != nullptr) host.gunnery_draws->refresh_unit_side(unit_index);
         // 006F5362..006F53A4: D4h with level 0.
         if (kCommandBuildingLevelBound) {
+            if constexpr (bsp::kWireGoal4Chain326Bound) {
+                // 006F4D10's D4h, sent while it handles 006F2940's D3h slot 9.
+                host.deliver_set_level_d4(*b, 0, "neutralize D4h 006F5362");
+            } else {
             host.command_building_level_006f38e0(*b, 0, "neutralize D4h 006F5362");
+            }
         }
         const GameUnitRow* row = host.units.unit_row(unit_index);
         host.log.notef("command building capture: unit=%s neutralized (prior party=%d) at "

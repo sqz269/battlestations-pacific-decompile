@@ -119,7 +119,31 @@ public:
     virtual void leave_critical_section(void* section) = 0;
 };
 
-class Seg33bHost : public CommandBuildingCapturerHost {
+// The ten boundaries the D3h / D4h / D5h command-building message codecs
+// (006F2520..006F2700) call, kept separate so a session-message owner can run
+// those codecs without the rest of the engine services. Seg33bHost redeclares
+// the same methods below, as it does for CommandBuildingCapturerHost.
+class CommandBuildingMessageCodecHost {
+public:
+    virtual ~CommandBuildingMessageCodecHost() = default;
+    // 0075B480 write / 0075B4C0 read the extended header(ECX = message)(stream), RET 4.
+    virtual void session_message_write_header_0075b480(Object message, Object stream) = 0;
+    virtual void session_message_read_header_0075b4c0(Object message, Object stream) = 0;
+    // ECX raw cursor, value/output and width (RET 8), boolean value/output (RET 4),
+    // numeric float value/output, 0, 1, scale, width (RET 14h).
+    virtual void bit_write_unsigned_00429070(Object cursor, std::uint32_t value, std::int32_t bits) = 0;
+    virtual void bit_read_unsigned_00428d10(Object cursor, std::uint32_t* value, std::int32_t bits) = 0;
+    virtual void bit_write_signed_00429090(Object cursor, std::int32_t value, std::int32_t bits) = 0;
+    virtual void bit_read_signed_00428d30(Object cursor, std::int32_t* value, std::int32_t bits) = 0;
+    virtual void bit_write_boolean_004290b0(Object cursor, std::uint32_t value) = 0;
+    virtual void bit_read_boolean_00428d70(Object cursor, std::uint8_t* value) = 0;
+    virtual void bit_write_float_004295c0(Object cursor, float value, std::int32_t zero,
+                                         std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+    virtual void bit_read_float_004293f0(Object cursor, float* value, std::int32_t zero,
+                                        std::int32_t is_signed, float scale, std::int32_t bits) = 0;
+};
+
+class Seg33bHost : public CommandBuildingCapturerHost, public CommandBuildingMessageCodecHost {
 public:
     virtual ~Seg33bHost() = default;
 
@@ -733,12 +757,14 @@ inline constexpr std::uint32_t kConvexObjectVtable = 0x00CFB6A4;
 
 // oct18b-nA3 additions; names remain hypotheses, new source interfaces, build-only.
 bool fog_chunk_all_slots_free_006f0800(Object chunk);
-void command_building_set_owner_message_write_006f2520(Seg33bHost&, Object message, Object cursor);
-void command_building_set_owner_message_read_006f2550(Seg33bHost&, Object message, Object stream);
-void command_building_set_level_message_write_006f25e0(Seg33bHost&, Object message, Object cursor);
-void command_building_set_level_message_read_006f2610(Seg33bHost&, Object message, Object stream);
-void command_building_capture_message_write_006f26b0(Seg33bHost&, Object message, Object cursor);
-void command_building_capture_message_read_006f2700(Seg33bHost&, Object message, Object stream);
+// The six codecs need only the narrow CommandBuildingMessageCodecHost (goal 4
+// chain 326); a Seg33bHost converts to it.
+void command_building_set_owner_message_write_006f2520(CommandBuildingMessageCodecHost&, Object message, Object cursor);
+void command_building_set_owner_message_read_006f2550(CommandBuildingMessageCodecHost&, Object message, Object stream);
+void command_building_set_level_message_write_006f25e0(CommandBuildingMessageCodecHost&, Object message, Object cursor);
+void command_building_set_level_message_read_006f2610(CommandBuildingMessageCodecHost&, Object message, Object stream);
+void command_building_capture_message_write_006f26b0(CommandBuildingMessageCodecHost&, Object message, Object cursor);
+void command_building_capture_message_read_006f2700(CommandBuildingMessageCodecHost&, Object message, Object stream);
 void command_building_apply_fire_target_order_006f2bd0(Seg33bHost&, Object building, Object order);
 Object command_building_powerup_binding_006f5840(Object building);
 float land_fort_constant_million_006f58d0() noexcept;
