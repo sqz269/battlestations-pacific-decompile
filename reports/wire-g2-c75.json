@@ -1,0 +1,244 @@
+{
+  "chain": 75,
+  "goal": 2,
+  "slot": "g2-w2",
+  "harness": "claude",
+  "host_file": "src/game_hosts_commands.cpp",
+  "tier": 2,
+  "pick_note": "First claimed src/game_hosts_ai.cpp (score 13), then released it after reading every site: all its raw rows sit under the AI coordinator, which ai_coordinator_created_at_load() folds to false while kSkirmishSessionCc13Bound = false (session_context_cc13.hpp:22; game_hosts_ai.cpp:1124 and the step gate at 6817). The USN04 OFF log confirms it: coordinator created_at_load=0, parties calls=0, plane weight plane_arm_calls=0, target weight queries=0. Switched to src/game_hosts_commands.cpp, whose weapon-director paths are live and gate-free.",
+  "switch": "kWireGoal2Chain75Bound",
+  "switch_header": "include/bsp/wire_goal2_chain75_switches.hpp",
+  "files_changed": [
+    "include/bsp/wire_goal2_chain75_switches.hpp",
+    "include/bsp/cc13_sweepB.hpp",
+    "src/cc13_sweepB.cpp",
+    "include/bsp/director_geommesh_seg38_39_argon.hpp",
+    "src/director_geommesh_seg38_39_argon.cpp",
+    "src/game_hosts_commands.cpp"
+  ],
+  "method": "Each raw body's logic moved into a typed view overload template (same identifier, same address) in its own header; the raw entry is a thin wrapper that builds a raw image view and calls it. The host ON arm calls the typed overload with an adapter over the host's storage. OFF arms are the existing host code.",
+  "build": "scripts/build.ps1 exit 0, 2/2 tests passed",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain75Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "0 findings, 6 files (no x87 arithmetic in the ON arms)",
+  "wired_total_before": 8892,
+  "wired_total_after": 8894,
+  "wired_total_note": "Measured in this tree with plain wire_readiness.py after build.ps1 (base 1e0fbeb50: 8892; head: 8894). The +2 are this chain's two rows, 005457c0 (3 wired callers) and 0071fd10 (1 wired caller).",
+  "rows": [
+    {
+      "native": "005457c0",
+      "address": "00836bd5",
+      "function": "00836920",
+      "host_site": "src/game_hosts_commands.cpp GameCommandsHost::director_step_00836920, the attackmove arm's hostility test (00836BCB..00836BDC)",
+      "status": "wired",
+      "adapter": "CommandUnitPartyView: party_54() is the unit's GameCommandTargetFacts::side_0054 (the [director+24Ch] entity's +54h); the party argument is the target's +54h side",
+      "reach": "static: no run has observed it. The 005457C0 test runs only for an attackmove target that is live and neither a nav point (41h) nor a command building (1Ch). The host's 'USN13 1002, USN01 8' counts (game_hosts_commands.cpp, command_building_1c arm) are the building sub-branch, not this one, and USN04 has no attackmove-arm entries. No disabled gate: arms_run holds whatever kDirectorCommandArmsBound is, and target_facts is bound by game_hosts_ship_ai.cpp:12649",
+      "reached": 0
+    },
+    {
+      "native": "0071fd10",
+      "address": "00720714",
+      "function": "00720450",
+      "host_site": "src/game_hosts_commands.cpp GameCommandsHost::copy_director_state_00720450, slot 0's path object",
+      "status": "wired",
+      "adapter": "DirectorPathObjectCopyView over GameDirector: +8h/+0Ch = path_follow_mode/path_start_mode; 007B1BF0's copy of the +10h holder = path_name + path_points (the source at +14h) and path_cursor (the cursor +18h/+1Ch/+20h: index_08, follow_mode_0c, forward_10); +40h = user_points; 'source is own +40h vector' = path_user (0071FC40's attached test). 0071F110 in the adopt step reassigns only the source, so the copied cursor stays. The host's build memo and pending path are still copied as before",
+      "reach": "static in USN04 (OFF log: leader handover run=0). Caller chain game_hosts_units.cpp director_handover_0071c150 under kDeadLeaderDirectorStateCopyBound = true (cc13_jm08_switches.hpp), live at a formation leader's death (JM08)",
+      "reached": 0
+    },
+    {
+      "native": "004f1830",
+      "address": "00836d3e",
+      "function": "00836920",
+      "host_site": "src/game_hosts_commands.cpp GameCommandsHost::director_step_00836920 moveonpath finish (report_command_event_00984300); also WeaponDirector::make_command_target record",
+      "status": "skipped",
+      "reason": "The raw entry is a byte-exact __declspec(naked) _emit body (src/native_command_target_initialize.cpp) with ABI fixtures; it cannot become a thin wrapper over a typed overload without giving up that whole-body identity, and a typed copy would be a second body. The site only builds the zero/default descriptor that 00984300 hands to an empty event channel.",
+      "reached": 0
+    },
+    {
+      "native": "00984800",
+      "address": "0071f7e8",
+      "function": "0071f600",
+      "host_site": "src/game_hosts_commands.cpp WeaponDirector notify_command_target / report_target_event records",
+      "status": "skipped",
+      "reason": "Host-object gap not built: the mission-event 'target' channel has no subscription producer. 0097E360 (input_channel_subscriptions) is UNIMPLEMENTED (3000 calls, USN04 OFF log) and the twin channel's command_event_subscriptions vector is declared but never filled, so the body would only take its empty-channel early return.",
+      "reached": 0
+    },
+    {
+      "native": "00a2bd90",
+      "address": "0077d7a7",
+      "function": "0077d600",
+      "host_site": "src/game_hosts_commands.cpp EntityOrder ai_group_forward_command / director_ai_group_forward records",
+      "status": "skipped",
+      "reason": "Dead root: the entity's AI group exists only when the AI coordinator runs, and ai_coordinator_created_at_load() is false under kSkirmishSessionCc13Bound = false; the host notes the site is not reached because the entity has no group.",
+      "reached": 0
+    },
+    {
+      "native": "00768530",
+      "address": "0076e5a4",
+      "function": "0076e520",
+      "host_site": "src/game_hosts_commands.cpp",
+      "status": "skipped",
+      "reason": "Lasting reason from wire-g2-c69: no incoming native bitstream/default-message preimage or message-factory owner on this path.",
+      "reached": 0
+    },
+    {
+      "native": "008363e0",
+      "address": "006d0cca",
+      "function": "006d0c80",
+      "host_site": "src/game_hosts_commands.cpp",
+      "status": "skipped",
+      "reason": "Lasting reasons from wire-g2-c68/c71: the host keeps bsp::WeaponDirectorState defaults, not a native director object, and +3Ch/+3Dh for class 0Bh/9 owners have no producer here. Its body file src/leftovers_cc13.cpp is also leased by g2-w1.",
+      "reached": 0
+    },
+    {
+      "native": "00a15a70",
+      "host_site": "src/game_hosts_ai.cpp create_party_brain",
+      "status": "skipped",
+      "reason": "Dead coordinator root in game_hosts_ai.cpp too: kSkirmishSessionCc13Bound = false makes ai_coordinator_created_at_load() false; USN04 OFF log parties calls=0.",
+      "reached": 0
+    },
+    {
+      "native": "00a10c60",
+      "host_site": "src/game_hosts_ai.cpp can_auto_merge",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false); USN04 auto_merges=0.",
+      "reached": 0
+    },
+    {
+      "native": "00a2c720",
+      "host_site": "src/game_hosts_ai.cpp close_in_target_group",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false); close-attack target pass never runs (target weight queries=0).",
+      "reached": 0
+    },
+    {
+      "native": "00a07e40",
+      "host_site": "src/game_hosts_ai.cpp planner group records",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a00020",
+      "host_site": "src/game_hosts_ai.cpp planner entity records",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a04240",
+      "host_site": "src/game_hosts_ai.cpp planner entity records",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a10710",
+      "host_site": "src/game_hosts_ai.cpp AI command construction",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a10890",
+      "host_site": "src/game_hosts_ai.cpp merge_group / order attack",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a109b0",
+      "host_site": "src/game_hosts_ai.cpp merge_group / order attack",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a10ae0",
+      "host_site": "src/game_hosts_ai.cpp merge_group",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "00a2bdb0",
+      "host_site": "src/game_hosts_ai.cpp group attacking-target test",
+      "status": "skipped",
+      "reason": "Dead coordinator root (kSkirmishSessionCc13Bound = false).",
+      "reached": 0
+    },
+    {
+      "native": "006e3260",
+      "host_site": "src/game_hosts_ai.cpp rocket_accuracy",
+      "status": "skipped",
+      "reason": "Only reader is the planner plane-option weight (ai_target_weights.cpp), under the dead coordinator; USN04 plane_arm_calls=0.",
+      "reached": 0
+    },
+    {
+      "native": "00778860",
+      "host_site": "src/game_hosts_ai.cpp cautious route (route_unit)",
+      "status": "skipped",
+      "reason": "AI command cautious-route tick under the dead coordinator (kSkirmishSessionCc13Bound = false); USN04 cautious route builds=0.",
+      "reached": 0
+    },
+    {
+      "native": "005f98f0",
+      "host_site": "src/game_hosts_ai.cpp selling_tick_00a11ff0",
+      "status": "skipped",
+      "reason": "SELLING command tick under the dead coordinator (kSkirmishSessionCc13Bound = false); USN04 selling ticks=0.",
+      "reached": 0
+    },
+    {
+      "native": "007b80a0",
+      "host_site": "src/game_hosts_ai.cpp rocket_accuracy",
+      "status": "skipped",
+      "reason": "Under the dead coordinator (planner plane-option weight), and its body file src/cc13_seg47.cpp is leased by g2-w1.",
+      "reached": 0
+    },
+    {
+      "native": "007b80c0",
+      "host_site": "src/game_hosts_ai.cpp rocket_accuracy",
+      "status": "skipped",
+      "reason": "Under the dead coordinator (planner plane-option weight), and its body file src/cc13_seg47.cpp is leased by g2-w1.",
+      "reached": 0
+    }
+  ],
+  "host_objects": [],
+  "pair_run": {
+    "status": "skipped",
+    "reason": "Neither wired row is on a path bsp_game executes in USN04: the USN04 OFF log (g2-w1-off_USN04.log, current main lineage) has no attackmove-arm entries and 'leader handover run=0'. A USN04 pair would report reached=0 for both."
+  },
+  "flip_proposal": "Flip kWireGoal2Chain75Bound ON after a pair on missions that reach the rows: JM08 (formation leader death, 0071FD10 via 00720450, expect copy_state_from > 0) and a mission whose attackmove arm meets a live non-building, non-nav target (005457C0). 005457C0's ON arm equals the OFF compare by construction. 0071FD10's ON arm equals OFF except one edge: when from.path_user is set and from.path_points has fallen behind from.user_points, ON adopts user_points, as the image's 007B2250 source over the successor's own +40h vector does.",
+  "review_round_1": {
+    "review_run": 161,
+    "reviewed_head": "ade834619ede",
+    "findings": [
+      {
+        "finding": "copy_source_ref_007b1bf0() must also copy path_cursor",
+        "status": "fixed",
+        "evidence": "007B1C2E..007B1C3E copy holder +8h/+0Ch/+10h (path_movcam_seg46_argon.cpp path_source_ref_copy_from_007b1bf0); 0071F110 writes only [ECX+4]"
+      },
+      {
+        "finding": "host adapter comment claimed 0071FD10 leaves the cursor",
+        "status": "fixed"
+      },
+      {
+        "finding": "ON-arm comment implied ON omits the cursor",
+        "status": "fixed"
+      },
+      {
+        "finding": "header comment for copy_source_ref_007b1bf0()",
+        "status": "fixed"
+      },
+      {
+        "finding": "report rows[1].adapter and flip_proposal",
+        "status": "fixed"
+      },
+      {
+        "finding": "report rows[0].reach cited building sub-branch counts",
+        "status": "fixed"
+      }
+    ],
+    "note": "The first wiring commit's message (6fd5437f1) also says ON leaves the cursor; that statement is superseded by this round.",
+    "checks": "after fixes: build.ps1 exit 0, 2/2 tests; off_switch_on_build exit 0, 0 diagnostics; pc24_lint 0 findings; wire_readiness 8894 (both rows wired); verify_report_calls 7 checked, 0 failed"
+  }
+}
