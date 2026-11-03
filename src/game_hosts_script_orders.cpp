@@ -30,6 +30,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
+#include "bsp/wire_goal2_chain166_switches.hpp"
+#include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
@@ -547,7 +549,15 @@ public:
     void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
     void set_entity_message_suppression(void*, bool) override {}
     void set_global_message_suppression(bool) override {}
-    void message_system_drain_queue() override {}
+    void message_system_drain_queue() override {
+        // 0096BF70 (008D000A): ON calls game_warning_clear_waiting_queue, which
+        // runs warning_manager_clear_waiting_0096bf70 over the mission frame's
+        // pending warning queue; OFF keeps the no-op.
+        if constexpr (bsp::kWireGoal2Chain166Bound) {
+            game_warning_clear_waiting_queue();
+        } else {
+        }
+    }
 
 private:
     GameScriptOrdersHost& owner_;
