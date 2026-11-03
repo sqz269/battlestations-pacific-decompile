@@ -43,6 +43,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
 #include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/voice_playback.hpp"                // VoiceClipRecord, for 004483F0's record
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
@@ -7437,6 +7438,12 @@ void GameScriptOrdersHost::report() {
             kDialogSequencerBound ? 1 : 0, dialog_messages_, dialog_callbacks_, dialog_pauses_,
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
+        if constexpr (bsp::kWireGoal4Chain331Bound) {
+            log_.notef("summary message maps loaded=%llu without_manager=%llu dialog records "
+                "resolved=%llu (008C6308 00706760, 00448416 00705E00, goal 4 chain 331)",
+                message_maps_loaded_, message_maps_without_manager_, dialog_records_resolved_);
+        } else {
+        }
         if (mission_end_.seen) {
             // Packet cc9_lua_mission_narrative: with the narrative bound the
             // callback fires, so the line says whether EndScene was reached.
@@ -7729,7 +7736,36 @@ std::pair<float, float> GameScriptOrdersHost::dialog_message_timing(const std::s
     if (cached != dialog_message_cache_.end()) return cached->second;
     std::pair<float, float> timing{0.0f, 0.0f};
     std::string voice;
-    if (state_ != nullptr && !message_map_name_.empty()) {
+    bool from_record = false;
+    if constexpr (bsp::kWireGoal4Chain331Bound) {
+        // 004483F0 (src/panel_sequence.cpp request_panel_voice_004483f0):
+        // 00448416 CALL 00705E00 on [game+21DCh] with the command's name and 0,
+        // over the records 00706760 loaded for LoadMessageMap and 007065E0 for
+        // Messages.lua. 005B94D0 (begin_panel_voice_record_005b94d0) then holds
+        // the row for keys.back().end_14 when the record has keys. A miss is
+        // 00705E00's own "<name>" record (kMessageRecordMissCc15Bound). The
+        // voice is the record's +0Ch, 00704590's "voice" with its "tutorials"
+        // language insert. LABELLED: a record with no keys takes 005B94D0's
+        // text/voice-poll arm, which this host does not model (hold 0, as the
+        // map-file read below gives for no subtitles). OFF, or with no manager,
+        // keeps the host's own read of the last-loaded map file.
+        if (message_manager_ != nullptr && message_manager_->constructed()) {
+            const bsp::VoiceClipRecord* record = message_manager_->resolve_record_00705e00(message);
+            if (record != nullptr) {
+                if (!record->timed_keys_34.empty()) {
+                    timing.second = record->timed_keys_34.back().end_14;
+                }
+                const NativeString& name = record->auxiliary_0c;
+                if (name.data() != nullptr && name.length() != 0) {
+                    voice.assign(name.data(), name.length());
+                }
+                from_record = true;
+                ++dialog_records_resolved_;
+            }
+        }
+    } else {
+    }
+    if (!from_record && state_ != nullptr && !message_map_name_.empty()) {
         std::string text;
         const std::string path = "scripts/datatables/messagemaps/" + message_map_name_ + ".lua";
         FILE* f = nullptr;

@@ -1235,6 +1235,7 @@ private:
     unsigned long long dialog_pauses_{0};
     unsigned long long dialog_finished_{0};
     unsigned long long dialog_missing_voice_{0};
+    unsigned long long dialog_records_resolved_{0};  // goal 4 chain 331, 004483F0's 00705E00
     void dialog_parse_entry(int table_slot, DialogEntry& entry);
     void dialog_tick(float step);
     void dialog_advance_004527f0();
