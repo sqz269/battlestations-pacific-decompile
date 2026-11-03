@@ -227,10 +227,35 @@ void movcam_add_interpolator_0079f6d0(std::vector<cc13cam::MovCamInterpolator>& 
     list_4d8.push_back(record);
 }
 
+namespace {
+// One replacement body for both storage views of 0078E540. The store belongs
+// to the view; identity comparison and deletion order are the image's logic.
+template<class Store>
+void replace_movie_key_event(std::uintptr_t current, std::uintptr_t event,
+                              OwnedObjectHost& host, Store store) {
+    if (current == event) return;
+    if (current != 0) host.scalar_delete(current);
+    store(event);
+}
+} // namespace
+
 void movie_key_set_event_0078e540(std::uintptr_t& event_ec, std::uintptr_t event, OwnedObjectHost& host) {
-    if (event_ec == event) return;
-    if (event_ec != 0) host.scalar_delete(event_ec);
-    event_ec = event;
+    replace_movie_key_event(event_ec, event, host,
+        [&](std::uintptr_t value) { event_ec = value; });
+}
+
+void movie_key_set_event_0078e540(MovieKeyEventView key, cc13cam::KeyframeEvent* event,
+                                  OwnedObjectHost& host) {
+    const auto current = key.event_ec
+        ? reinterpret_cast<std::uintptr_t>(&*key.event_ec) : 0;
+    replace_movie_key_event(current, reinterpret_cast<std::uintptr_t>(event), host,
+        [&](std::uintptr_t value) {
+            if (value != 0) {
+                key.event_ec.emplace(std::move(*reinterpret_cast<cc13cam::KeyframeEvent*>(value)));
+            } else {
+                key.event_ec.reset();
+            }
+        });
 }
 
 void entity_observer_copy_base_00796bd0(EntityObserverBase& o, const EntityObserverBase& src, ObserverHost& host) {
