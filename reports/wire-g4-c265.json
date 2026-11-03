@@ -1,0 +1,74 @@
+{
+  "packet": "g4-w4",
+  "chain": 265,
+  "switch": "kWireGoal4Chain265Bound",
+  "scope": "Ship HUD unit rebinding through the active interface+78h handoff",
+  "wired_before": 9171,
+  "wired_after": 9172,
+  "rows": [
+    {
+      "native": "0064d590",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::screen_receive_unit -> GameHudHost::Impl::bind_ship_screen_unit_0064d590",
+      "evidence": "Original listing 0064D598..0064D601: changed unit sets +188h and cancels entry 2 on four widgets; observer-reference assignment follows; active screen reapplies even the same unit. Existing raw wrapper and new typed host share one policy body. The host supplies stable unit_identity pointers and its existing has_unit/index, changed and active fields. The old manual block is unchanged in the switch's else arm.",
+      "built_call": "The final Win32 exe calls the body at 103BEF90 from HudInterfaceBinding::screen_receive_unit at 100F913C; call_graph reports REACHABLE from WinMainCRTStartup."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "Missing saved root+CCh/+E4h interface/payload and payload-aware pending delivery; the current setter discards them, so the toggle cannot restore the actual interface."
+    },
+    {
+      "native": "00648c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::update_medals",
+      "reason": "Missing live weapon-source/cache, animation owners and selected-unit health metric bindings for HudRootRowsHost; no complete real-state adapter exists."
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_set_interface",
+      "reason": "Missing distinct root+D0h observer endpoint, saved root+CCh/+E4h storage and destruction callback; root+8h's controlled-unit observer cannot replace this member."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_query",
+      "reason": "Missing bomb-view bind/store consumers of the returned controlled-unit identity; both existing consumers discard their input."
+    },
+    {
+      "native": "008f3370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::set_terrain_shadow_string",
+      "reason": "Missing owning native reader property record/bag at this record-only weather callback; the native setter needs the actual typed record and string/enum lifetime context."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Missing native property-bag owners and clone/insertion context for the semantic ScenePropertyBlock merge; raw map-node and payload lifetimes cannot be borrowed from its vectors."
+    },
+    {
+      "native": "0095bab0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene_class_is_enemy_0095bab0",
+      "reason": "Caller remains under disabled kSceneClassPreloadAliasesCc15Bound; needs an active class-preload owner/consumer rather than adding a call to the disabled path."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: clear_pending_class_ids callback",
+      "reason": "Missing actual pending class-ID registry/vector in the record-only clear callback; no real container is available to clear."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "changed_build": "scripts/build.ps1 passed after final C++ changes; reconstructed_math and tool_tests passed (2/2)",
+    "readiness": "tools/wire_readiness.py --standins: source wired 9171 -> 9172; 0064d590 changed from ready to wired",
+    "call_graph": "tools/call_graph.py is absent in this worktree. Imported the existing J:/PROG/battlestations-pacific-decompile-plane/tools/call_graph.py read-only with ROOT/OUT set to this worktree; generated local/output/call_graph.json from this worktree's final built map/exe, then queried who/path ship_screen_set_unit_0064d590. One reachable direct call at 100F913C -> 103BEF90. No shared tool file was modified.",
+    "float_math": "No floating-point arithmetic changed; existing apply-unit behavior/gates retained.",
+    "game_run": "Not run, as instructed.",
+    "limits": "The body now controls actual semantic screen state. Native screen+170h observer registration/unregistration/release callbacks remain records. The legacy GUI bridge has no timed-entry producer/owner for these four circles; cancellation stays a lower-call record. Existing 0064AE20 adapter and its limitations are unchanged. This establishes emitted reachability and build/test validity, not runtime execution or native ABI compatibility."
+  }
+}
