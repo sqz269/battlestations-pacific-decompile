@@ -2,6 +2,8 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_startup_random.hpp"
+#include "bsp/wire_goal4_chain305_switches.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/platform_control_messages.hpp"
 #include "bsp/platform_text_messages.hpp"
@@ -2719,7 +2721,12 @@ GameStartupHost::~GameStartupHost() {
     delete window_host_;
     xinput_library_.reset();
     delete vfs_;
+    if constexpr (bsp::kWireGoal4Chain305Bound) {
+        publish_startup_random(nullptr);
+        delete random_threads_;
+    } else {
     delete random_threads_;
+    }
 }
 
 long GameStartupHost::com_initialize() {
@@ -2797,7 +2804,14 @@ void GameStartupHost::exit_process(int code) {
 
 void GameStartupHost::random_threads_initialize() {
     log_.implemented("StartupHost::random_threads_initialize", "00bd2e20");
+    if constexpr (bsp::kWireGoal4Chain305Bound) {
+        if (random_threads_ == nullptr) random_threads_ = new RandomThreads();
+        // Borrow the original startup owner, before WinMain registers its
+        // current thread and before any mission/AA-bot consumer is constructed.
+        publish_startup_random(random_threads_);
+    } else {
     if (random_threads_ == nullptr) random_threads_ = new RandomThreads();
+    }
 }
 
 void* GameStartupHost::allocate_thread_slot() {
@@ -2822,7 +2836,12 @@ void GameStartupHost::release_thread_slot(void* slot) {
 
 void GameStartupHost::random_threads_shutdown() {
     log_.implemented("StartupHost::random_threads_shutdown", "00bd30d0");
+    if constexpr (bsp::kWireGoal4Chain305Bound) {
+        publish_startup_random(nullptr);
+        delete random_threads_;
+    } else {
     delete random_threads_;
+    }
     random_threads_ = nullptr;
 }
 

@@ -5,6 +5,11 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_startup_random.hpp"
+#include "bsp/wire_goal4_chain305_switches.hpp"
+#include "bsp/cc13_seg95.hpp"
+#include "bsp/native_particle_object_state.hpp"
+#include "bsp/native_particle_unit_random.hpp"
 #include "bsp/wire_goal1_chain1_switches.hpp"
 #include "bsp/wire_goal1_chain8_switches.hpp"
 #include "bsp/wire_goal1_chain22_switches.hpp"
@@ -2764,10 +2769,26 @@ struct GameGunneryHost::Impl {
     std::uint32_t rng{0x9E3779B9u};
 
     float random_range_00bd2f10(float low, float high) {
+        if constexpr (bsp::kWireGoal4Chain305Bound) {
+            return startup_random_range(bsp::RandomStream::secondary, low, high);
+        } else {
         rng = rng * 1664525u + 1013904223u;
         const float unit = static_cast<float>((rng >> 8) & 0xFFFFFFu)
             / static_cast<float>(0x1000000u);
         return low + (high - low) * unit;
+        }
+    }
+
+    static float startup_random_range(bsp::RandomStream stream, float low, float high) {
+        // 00BD2E60: [00CE3978] = 2^32, [00D63B80] = 2^-32. These are the
+        // binary's conversion constants, not a new seed or generator. Reuse the
+        // existing native range body so uniform and normal draws advance the
+        // same startup-owned thread/stream state and retain its PC24 arithmetic.
+        static constexpr float unsigned_correction = 4294967296.0f;
+        static constexpr double unit_scale = 0x1p-32;
+        const bsp::NativeParticleUnitRandomAccess access{
+            &require_startup_random(), &unsigned_correction, &unit_scale};
+        return bsp::native_particle_random_range_00bd2f10(stream, &access, low, high);
     }
 
     // Packet cc9_rng_streams: the gunnery draws, each named by its consumer.
@@ -10252,10 +10273,36 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                             e /= role_ai_held_00521e70(target, 0) ? kAaGunnerModifierVersusAi
                                                                   : kAaGunnerModifierVersusPlayer;
                         }
+                        if constexpr (bsp::kWireGoal4Chain305Bound) {
+                            if (!rng_streams_enabled()) {
+                                // 00902D6D/00902D8B select ECX=1 before
+                                // 00902D77/00902D95 call 00BD2F90 with mean=0
+                                // and the live, difficulty-scaled error sigma.
+                                // 00BF0F50 rejects only s>=1 (no s==0 guard).
+                                const float nh = bsp::cc13_seg95::random_normal_sample_00bd2f90(
+                                    require_startup_random(), bsp::RandomStream::secondary, 0.0f, e);
+                                const float nv = bsp::cc13_seg95::random_normal_sample_00bd2f90(
+                                    require_startup_random(), bsp::RandomStream::secondary, 0.0f, e);
+                                // 00902DA2/00902DAD FSUB, 00902DC5 FDIV:
+                                // round each main-thread x87 operation at PC24.
+                                sw.rh = static_cast<float>(cc13x87::x87_div24(
+                                    cc13x87::x87_sub24(nh, sw.h), sw.timer));
+                                sw.rv = static_cast<float>(cc13x87::x87_div24(
+                                    cc13x87::x87_sub24(nv, sw.v), sw.timer));
+                            } else {
+                                // The explicit keyed measurement mode keeps
+                                // its labelled host LCG and normal calculation.
+                                const float nh = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
+                                const float nv = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
+                                sw.rh = (nh - sw.h) / sw.timer;
+                                sw.rv = (nv - sw.v) / sw.timer;
+                            }
+                        } else {
                         const float nh = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
                         const float nv = draw_normal(Draw::aa_gunner_error, g, 0, 0.0f, e);
                         sw.rh = (nh - sw.h) / sw.timer;
                         sw.rv = (nv - sw.v) / sw.timer;
+                        }
                         ++aa_gunner_rolls;
                         ++aa_gunner_rolls_by_level[aa_level];
                     }
@@ -19583,6 +19630,9 @@ float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_ind
     if (Impl::rng_streams_enabled()) {
         return impl_->draw(Impl::Draw::death_delay, unit_index, 0, low, high);
     }
+    if constexpr (bsp::kWireGoal4Chain305Bound) {
+        return Impl::startup_random_range(bsp::RandomStream::primary, low, high);
+    } else {
     // Stream 0 is a separate generator in the image (ECX = 0). SUBSTITUTION,
     // labelled: its seed and sequence are not reproduced, only its separation.
     static std::uint32_t stream0 = 0x2545F491u;
@@ -19590,6 +19640,7 @@ float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_ind
     const float unit = static_cast<float>((stream0 >> 8) & 0xFFFFFFu)
         / static_cast<float>(0x1000000u);
     return low + (high - low) * unit;
+    }
 }
 
 void GameGunneryHost::fighter_aim_distortion_009fa7e0(std::size_t unit_index, float dt,
@@ -22335,9 +22386,15 @@ bool GameGunneryHost::force_recon_refresh_00807a50() {
 }
 
 bool GameGunneryHost::reseed_shared_stream_00bd2fd0(int stream, std::uint32_t seed) {
+    if constexpr (bsp::kWireGoal4Chain305Bound) {
+        if (stream != 0 && stream != 1) return false;
+        require_startup_random().seed_00bd2fd0(static_cast<bsp::RandomStream>(stream), seed);
+        return true;
+    } else {
     if (stream != 1) return false;   // stream 0: no generator in this host
     impl_->rng = seed;               // SUBSTITUTION: the LCG stand-in's state
     return true;
+    }
 }
 
 }  // namespace bsp::game
