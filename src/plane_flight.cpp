@@ -1,5 +1,7 @@
 #include "bsp/plane_flight.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
+#include "bsp/unit_rudder.hpp"
+#include "bsp/wire_goal4_chain279_switches.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_flightrender_cc13.hpp"
 
@@ -702,7 +704,87 @@ float tick_contact_timer_007d81b0(float seconds, float step, bool hold) {
     return hold ? decayed : kPlaneContactTimerExpired;
 }
 
+float plane_drag_accel_007d9140(const PlaneDragAccelClass& cls, const PlaneDragAccelTuning& tuning,
+                                float speed, float throttle, float pitch, float airbrake,
+                                float elevator) {
+    // 007D9148..007D9150: FLD1, FSUBRP: c = 1.0 - throttle, stored as a float.
+    float closed = 1.0f - throttle;
+    // 007D9158..007D9183: FLDZ / FCOMI / JBE, then COMISS against 00D7A24C.
+    if (0.0f > closed) {
+        closed = 0.0f;
+    } else if (closed > 1.0f) {
+        closed = 1.0f;
+    }
+    // 007D9189..007D919E: (c * c) * desc+208h, stored as a float.
+    const float glide = (closed * closed) * cls.glide_rate_208;
+    // 007D918D..007D91B7: |elevator| as elevator or -0.0f (00D7A208) - elevator.
+    const float elevator_magnitude = elevator > 0.0f ? elevator : (-0.0f - elevator);
+    // 007D91BD..007D91D8: ((DragPitchRatio * e) + (L + 1)) * desc+50Ch.
+    const float k_coefficient =
+        ((cls.drag_pitch_ratio_1d4 * elevator_magnitude) + (glide + 1.0f)) * cls.coefficient_50c;
+    // 007D91DC..007D91EC: (AirBrakeDrag * airbrake + 1) * kc.
+    const float kb = (cls.air_brake_drag_1dc * airbrake + 1.0f) * k_coefficient;
+    // 007D91F4..007D923D: the speed floor through 00419010.
+    const float floor_high = cls.max_spd_188 * tuning.max_drag_spd_mul;   // [00F873F0]
+    const float floor_low = cls.max_spd_188 * tuning.min_drag_spd_mul;    // [00F873F4]
+    const float floor_speed = clamped_interpolate_00419010(0.0f, floor_low, tuning.max_drag_pitch,
+                                                           floor_high, pitch);
+    // 007D924E FCOMIP floor, speed / JBE: the speed stays unless the floor is greater.
+    const float v = floor_speed > speed ? floor_speed : speed;
+    // 007D926C..007D9287: EAX = -1, 1 or 0 by two COMISS, then NEG.
+    const float negated_sign = (0.0f > v) ? 1.0f : ((v > 0.0f) ? -1.0f : 0.0f);
+    // 007D928D..007D9299: FILD, FMUL ST1, FMULP, FMUL KB, stored as a float.
+    return ((negated_sign * v) * v) * kb;
+}
+
+float plane_thrust_accel_007d9050(const PlaneThrustAccelClass& cls,
+                                  const PlaneThrustAccelTuning& tuning, bool turbo,
+                                  float pitch, float throttle, bool boost) {
+    float a = cls.accel_164 * throttle;                       // 007D9052..007D905C
+    if (turbo) a = tuning.turbo_multiplier * a;               // 007D9062..007D906C
+    if (boost) a = cls.turbo_strength_604 * a;                // 007D9077..007D9081
+    if (0.0f > pitch) {                                       // 007D908E COMISS / JBE
+        const float u = clamped_interpolate_00419010(tuning.fall_pitch_range_1, 0.0f,
+            tuning.fall_pitch_range_2, 1.57079637f /* 00CE3C64 */, -0.0f - pitch);
+        // 007D90D8 FSIN, 007D90DA FSTP float: the sine is rounded to a float once.
+        const float s = static_cast<float>(std::sin(static_cast<double>(u)));
+        a = ((tuning.fall_mul - 1.0f) * s + 1.0f) * a;       // 007D90DE..007D90F7
+    }
+    if (0.0f > a) return 0.0f;                                // 007D9101 COMISS / JA
+    if (a > 100.0f) return 100.0f;                            // 007D9110 FCOMIP / JBE
+    return a;
+}
+
 float max_sustainable_climb_angle_007d98f0(const PlaneClimbAngleInputs& in) {
+    if constexpr (kWireGoal4Chain279Bound) {
+        if (in.trial_007d9360 != nullptr) {
+            // The image's constants, read from the PE: 00CF8858 float 3FB2B8C3 (and
+            // the double at 00D05A28, the same value widened), 00D06850 the double
+            // 3F26E05A80000000 (a float widened), 00CE3910 float 0.04f.
+            const float upper = 1.3962634801864624f;
+            const float tolerance = 0.0001745329354889691f;
+            const float probe = in.probe_speed;
+            float low = 0.0f;
+            float high = upper;
+            // 007D98F3..007D9924: never taken for these constants.
+            if (!(upper - 0.0f > tolerance)) return low;
+            float diff = 0.0f;
+            do {
+                // 007D9932..007D994B: FLD high, FADD low, FMUL 0.5, FSTP float.
+                const float mid = (high + low) * 0.5f;
+                const float speed_left =
+                    in.trial_007d9360(in.trial_context, mid, probe, 0.03999999910593033f, 10);
+                // 007D9977 FCOMIP / JC: less or unordered moves the upper bound.
+                if (!(speed_left >= probe)) {
+                    high = mid;
+                } else {
+                    low = mid;
+                }
+                diff = high - low;           // 007D9993 FSUBP, at 24 bits
+            } while (diff > tolerance);      // 007D99A1 JA
+            return low;
+        }
+    }
     // 00CF8858 float and 00D05A28 double are both 1.39626 = DEG(80).
     const float kUpper = 1.39626f;
     // 00D06850, the double 1.745e-4 = DEG(0.01).

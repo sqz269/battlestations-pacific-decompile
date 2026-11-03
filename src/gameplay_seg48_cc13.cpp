@@ -14,6 +14,12 @@ void engine_blur_blend_noop_007e23d0() noexcept {}
 #include "bsp/dive_bomb_task.hpp"  // dive_bomb_interpolate_clamped_00419010
 #include "bsp/plane_wanderer.hpp"   // plane_wanderer_random_direction_00439950
 #include "bsp/unit_motion.hpp"     // unit_step_towards_0042ac60
+// Goal 4 chain 279: the climb trial's callees.
+#include "bsp/cc13_front2.hpp"                      // 0042D0D0
+#include "bsp/native_frame_transpose_inverse.hpp"   // 0085DEA0
+#include "bsp/native_particle_axial_loading.hpp"    // 00B64640
+#include "bsp/plane_pose_commit.hpp"                // kNegativeZero_00d7a208
+#include "bsp/unit_rudder.hpp"                      // 00419010
 
 #include <cmath>
 #include <utility>
@@ -683,10 +689,16 @@ TrialDynamics trial_step_forces_007d9360(const Vec3& body, const Vec3& world, fl
     float c;
     if (-2.0f > m) c = -2.0f;                  // 00CE7D7C
     else c = (m > 2.0f) ? 2.0f : m;            // 00CE3958
-    const double gravity = 9.8100004196167;    // 00CF9058
+    // 00CF9058 is the double 40239EB860000000, the float 9.81f widened, so each
+    // FMUL by it rounds at 24 bits like a float multiply. Goal 4 chain 279 (now
+    // live): 007D9663 FMUL ST(1),ST(0) then FADDP for dyn+20h, and 007D9680 FMULP
+    // then FSUBP for dyn+2Ch, each rounded per operation.
+    const float gravity = 9.81f;               // 00CF9058
     const float kc = g.accel_cheat_mul_f873fc * c;
-    d.lift_20 = static_cast<float>(d.lift_20 + static_cast<double>(kc) * gravity);
-    d.gravity_2c = static_cast<float>(d.gravity_2c - static_cast<double>(g.accel_cheat_mul_f873fc) * gravity);
+    const float lift_term = kc * gravity;
+    d.lift_20 = lift_term + d.lift_20;
+    const float weight_term = g.accel_cheat_mul_f873fc * gravity;
+    d.gravity_2c = d.gravity_2c - weight_term;
     // 007D968B..007D97A8: drag along the world velocity.
     const float drag = cb.drag_007d9140(speed, 1.0f, angle);
     const float mag = static_cast<float>(std::sqrt(static_cast<double>((x2 + y2) + z2)));
@@ -710,10 +722,100 @@ Vec3 trial_integrate_at_climb_angle_007d9360(float angle, float probe_speed, flo
     Vec3 body{0.0f, 0.0f, probe_speed};          // 007D93DC..007D93F1
     Vec3 world = cb.body_to_world(body);         // 007D93F6
     for (int i = 0; i < count; ++i) {            // 007D9400 JLE, 007D9829 SUB EBX,1
-        TrialDynamics d = trial_step_forces_007d9360(body, world, angle, cls, g, cb);
-        cb.integrate_007d8470(d, body, world, dt);
+        // 007D94A2..007D94E5: the stack record (vtable 00D06844) is seeded by
+        // 007D7C00 from the world velocity [ESP+2Ch] and the body velocity [ESI].
+        PlaneDynAccumulators record;
+        plane_dyn_begin_step_007d7c00(record, world, body);
+        const TrialDynamics d = trial_step_forces_007d9360(body, world, angle, cls, g, cb);
+        // The force stores are FADDs into the zeroed record (007D95A4, 007D966C,
+        // 007D9682, 007D977D..007D97A8, 007D97FE..007D9817).
+        record.accumulators_04[0].x += d.aero_04;   // +04h
+        record.accumulators_04[0].y += d.aero_08;   // +08h
+        record.accumulators_04[1].x += d.drag_10.x; // +10h..+18h
+        record.accumulators_04[1].y += d.drag_10.y;
+        record.accumulators_04[1].z += d.drag_10.z;
+        record.accumulators_04[2].y += d.lift_20;   // +20h
+        record.accumulators_04[2].z += d.thrust_24; // +24h
+        record.accumulators_04[3].y += d.gravity_2c; // +2Ch
+        cb.integrate_007d8470(record, dt);          // 007D9824
+        body = record.body_velocity_64;             // 007D982C..007D9850
+        world = record.world_velocity_4c;           // 007D9855..007D987C
     }
     return body;
+}
+
+float climb_trial_speed_left(const void* setup, float angle, float probe_speed, float dt,
+                             int count) {
+    const ClimbTrialSetup& s = *static_cast<const ClimbTrialSetup*>(setup);
+    // 007D936C..007D93CB: RotationX(-0.0f - angle) (SUBSS from 00D7A208), the two
+    // 004134F0 copies, and 0085DEA0's inverse of the copy.
+    const float negated_angle = -0.0f - angle;
+    alignas(16) float pose[16] = {};
+    alignas(16) float inverse[16] = {};
+    build_native_particle_rotation_x_00b64640(pose, &negated_angle, &kNegativeZero_00d7a208,
+                                              &kOne);
+    transpose_inverse_native_frame_0085dea0(inverse, pose, &kNegativeZero_00d7a208);
+    // fold_world_into_body_007d8470 takes the 3x3 as body[r] = sum_c M[r*3+c] *
+    // world[c]; 0042D0D0 on a row-major 4x4 is out[j] = sum_i v[i] * M[i*4+j],
+    // both summed (x + y) + z, so the 3x3 is the transpose of the 4x4's block.
+    float world_to_body[9];
+    for (int r = 0; r < 3; ++r) {
+        for (int c = 0; c < 3; ++c) world_to_body[r * 3 + c] = inverse[c * 4 + r];
+    }
+    const auto apply_pose = [&pose](const float in[3], float out[3]) {
+        vector3f_transform_direction_optional_normalize_0042d0d0(out, in, pose, 0);
+    };
+
+    TrialCallbacks cb;
+    cb.body_to_world = [&apply_pose](const Vec3& b) {
+        const float in[3] = {b.x, b.y, b.z};
+        float out[3];
+        apply_pose(in, out);
+        return Vec3{out[0], out[1], out[2]};
+    };
+    cb.interpolate_clamped_00419010 = [](float x0, float y0, float x1, float y1, float x) {
+        return clamped_interpolate_00419010(x0, y0, x1, y1, x);
+    };
+    // 007D968B..007D96A7: 007D9140(speed, 1.0f, angle, 0.0f, 0.0f).
+    cb.drag_007d9140 = [&s](float speed, float one, float pitch) {
+        return plane_drag_accel_007d9140(s.drag, s.drag_tuning, speed, one, pitch, 0.0f, 0.0f);
+    };
+    cb.aero_007d92b0 = [&s](float ratio) { return aero_response_curve_007d92b0(ratio, s.aero); };
+    cb.integrate_007d8470 = [&apply_pose, &world_to_body](PlaneDynAccumulators& record,
+                                                          float step) {
+        // 007D8480..007D85A5: the folds of +28h into +1Ch and +10h into +04h, then
+        // the 0.001f deadband. +34h is empty, so the third fold leaves +40h zero.
+        bsp::PlaneDynAccumulators acc;
+        const Vec3* const a = record.accumulators_04.data();
+        const float damping[3] = {a[0].x, a[0].y, a[0].z};
+        const float drag[3] = {a[1].x, a[1].y, a[1].z};
+        const float lift[3] = {a[2].x, a[2].y, a[2].z};
+        const float gravity[3] = {a[3].x, a[3].y, a[3].z};
+        for (int i = 0; i < 3; ++i) {
+            acc.body_damping[i] = damping[i];
+            acc.world_drag[i] = drag[i];
+            acc.body_lift[i] = lift[i];
+            acc.world_gravity[i] = gravity[i];
+            acc.body_resist_40[i] = 0.0f;
+        }
+        const PlaneBodyAcceleration folded =
+            fold_world_into_body_007d8470(static_cast<const bsp::PlaneDynAccumulators&>(acc),
+                                          world_to_body);
+        // 007D8602..007D87C2: the per-axis step on +64h, + the zero +88h, and the
+        // 0.01f deadband.
+        const float body[3] = {record.body_velocity_64.x, record.body_velocity_64.y,
+                               record.body_velocity_64.z};
+        const float resist_40[3] = {0.0f, 0.0f, 0.0f};
+        const PlaneBodyVelocityStep stepped = integrate_body_velocity_007d8611(
+            body, folded.pair_1c, folded.pair_04, resist_40, step);
+        record.body_velocity_64 = {stepped.velocity[0], stepped.velocity[1], stepped.velocity[2]};
+        // 007D8C6B..007D8CF0: +4Ch = the pose applied to the new body velocity.
+        float world[3];
+        apply_pose(stepped.velocity, world);
+        record.world_velocity_4c = {world[0], world[1], world[2]};
+    };
+    return trial_integrate_at_climb_angle_007d9360(angle, probe_speed, dt, count, s.cls,
+                                                   s.globals, cb).z;
 }
 
 // ---- cc13-ver1 -------------------------------------------------------------

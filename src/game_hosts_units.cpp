@@ -19,6 +19,7 @@
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
 #include "bsp/wire_goal4_chain273_switches.hpp"
+#include "bsp/wire_goal4_chain279_switches.hpp"  // goal 4 chain 279: 007D98F0 / 007D9360 / 007D9140
 #include "bsp/gameplay_seg33_cc13.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_units_host_switches.hpp"  // packet wire-units: kWireUnitsHostBound
@@ -23307,6 +23308,45 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
                 }
                 cai.accel_cheat_mul = accel_cheat_mul;
                 cai.probe_speed = level_flight * slot->plane_stall_spd;
+                // Goal 4 chain 279: 007D98F0's predicate is 007D9360 itself, over
+                // this slot's class fields and the loaded PlaneGlobals (the struct
+                // defaults are the same fallbacks the flight law uses when the data
+                // file did not load).
+                bsp::gameplay_seg48_cc13::ClimbTrialSetup trial;
+                if constexpr (bsp::kWireGoal4Chain279Bound) {
+                    trial.cls.speed_ref_184 = slot->plane_stall_spd;   // desc+184h StallSpd
+                    trial.cls.thrust_164 = slot->plane_accel;          // desc+164h Accel
+                    trial.cls.aero_x_174 = slot->plane_x_drag;         // desc+174h XDrag
+                    trial.cls.aero_y_170 = slot->plane_y_drag;         // desc+170h YDrag
+                    trial.drag.glide_rate_208 = slot->plane_glide_rate;
+                    trial.drag.drag_pitch_ratio_1d4 = slot->plane_drag_pitch_ratio;
+                    trial.drag.air_brake_drag_1dc = slot->plane_air_brake_drag;
+                    trial.drag.max_spd_188 = slot->plane_max_spd;
+                    // desc+50Ch, 007C4990-007C499C: (Accel / MaxSpd) / MaxSpd.
+                    trial.drag.coefficient_50c =
+                        (slot->plane_accel / slot->plane_max_spd) / slot->plane_max_spd;
+                    trial.globals.level_flight_f8732c = level_flight;
+                    trial.globals.accel_cheat_mul_f873fc = accel_cheat_mul;
+                    trial.globals.climb_thrust_k_f87404 = 2.6f;       // tuning+324h
+                    trial.globals.climb_blend_x0_f87408 = 0.174533f;  // tuning+328h
+                    trial.globals.climb_blend_x1_f8740c = 1.047198f;  // tuning+32Ch
+                    if (host.lua.plane_globals_loaded()) {
+                        const bsp::GameTuningBlock& g = host.lua.plane_globals();
+                        trial.globals.climb_thrust_k_f87404 = g.dynamics_accel_cheat_fall_mul;
+                        trial.globals.climb_blend_x0_f87408 =
+                            g.dynamics_accel_cheat_fall_pitch_range_1;
+                        trial.globals.climb_blend_x1_f8740c =
+                            g.dynamics_accel_cheat_fall_pitch_range_2;
+                        trial.drag_tuning.max_drag_spd_mul = g.dynamics_max_drag_spd_mul;
+                        trial.drag_tuning.min_drag_spd_mul = g.dynamics_min_drag_spd_mul;
+                        trial.drag_tuning.max_drag_pitch = g.dynamics_max_drag_pitch;
+                        trial.aero.drag_func_power = g.dynamics_drag_func_power;
+                        trial.aero.drag_range_min = g.dynamics_spd_multipliers_drag_range_min;
+                        trial.aero.drag_range_max = g.dynamics_spd_multipliers_drag_range_max;
+                    }
+                    cai.trial_007d9360 = &bsp::gameplay_seg48_cc13::climb_trial_speed_left;
+                    cai.trial_context = &trial;
+                }
                 slot->plane_climb_angle_1e4 =
                     bsp::max_sustainable_climb_angle_007d98f0(cai);
                 slot->plane_climb_angle_1ec = slot->plane_climb_angle_1e4 * 0.6f;
@@ -25812,7 +25852,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // the two turbo factors); the product comes from the
                         // power-up store below (packet cc13-powerup-bind).
                         if (unit_.plane_latched_throttle > 0.01f) {
-                            float a = unit_.plane_accel * unit_.plane_latched_throttle;
+                            float a = 0.0f;
+                            if constexpr (bsp::kWireGoal4Chain279Bound) {
+                                // Goal 4 chain 279: 007D9050 whole, with the two
+                                // controller flags as the call site gates them below.
+                                bool turbo = false;
+                                if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
+                                    if (unit_.plane_turbo_9f9 && !water_.active
+                                        && owner_.lua.plane_globals_loaded()) {
+                                        turbo = true;
+                                        ++owner_.follow_turbo_steps;
+                                    }
+                                }
+                                bool boost = false;
+                                if constexpr (GameUnitsHost::Impl::kKamikazeBoostTurboBound) {
+                                    if (unit_.plane_boost_9f8 && !water_.active && !ground) {
+                                        boost = true;
+                                        ++owner_.boost_turbo_steps_;
+                                    }
+                                }
+                                bsp::PlaneThrustAccelClass thrust_class;
+                                thrust_class.accel_164 = unit_.plane_accel;
+                                thrust_class.turbo_strength_604 = unit_.plane_turbo_strength;
+                                bsp::PlaneThrustAccelTuning thrust_tuning;
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                    thrust_tuning.fall_mul = g.dynamics_accel_cheat_fall_mul;
+                                    thrust_tuning.fall_pitch_range_1 =
+                                        g.dynamics_accel_cheat_fall_pitch_range_1;
+                                    thrust_tuning.fall_pitch_range_2 =
+                                        g.dynamics_accel_cheat_fall_pitch_range_2;
+                                    thrust_tuning.turbo_multiplier =
+                                        g.dynamics_spd_multipliers_turbo_multiplier;
+                                }
+                                a = bsp::plane_thrust_accel_007d9050(thrust_class, thrust_tuning,
+                                    turbo, state.pitch, unit_.plane_latched_throttle, boost);
+                            } else {
+                            a = unit_.plane_accel * unit_.plane_latched_throttle;
                             if constexpr (GameUnitsHost::Impl::kFollowTurboBound) {
                                 // 007D9062: ctl+4h (unit+9F9h, 007DC84F) multiplies
                                 // by tuning+330h TurboMultiplier (1.95 here).
@@ -25850,6 +25926,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             if (a < 0.0f) a = 0.0f;
                             if (a > 100.0f) a = 100.0f;
+                            }  // kWireGoal4Chain279Bound
                             // Packet cc13-powerup-bind, 007DB7C7..007DB7FF: the
                             // category 6 (PLANE_SPEED) product behind its gate,
                             // FLD product, FMUL (unit+0CC8h * a), one rounding.
@@ -25885,6 +25962,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plane_world_velocity[0] * unit_.plane_world_velocity[0]
                                 + unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1]
                                 + unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2]);
+                            float d = 0.0f;
+                            if constexpr (bsp::kWireGoal4Chain279Bound) {
+                                // Goal 4 chain 279: 007D9140 whole, the one body the
+                                // climb trial 007D9360 also calls, with the five
+                                // arguments the inline code below reads (speed,
+                                // throttle, pitch, air brake, elevator).
+                                bsp::PlaneDragAccelClass drag_class;
+                                drag_class.glide_rate_208 = unit_.plane_glide_rate;
+                                drag_class.drag_pitch_ratio_1d4 = unit_.plane_drag_pitch_ratio;
+                                // 007C4990: (Accel / MaxSpd) / MaxSpd.
+                                drag_class.coefficient_50c =
+                                    (unit_.plane_accel / unit_.plane_max_spd) / unit_.plane_max_spd;
+                                drag_class.air_brake_drag_1dc = unit_.plane_air_brake_drag;
+                                drag_class.max_spd_188 = unit_.plane_max_spd;
+                                bsp::PlaneDragAccelTuning drag_tuning;
+                                drag_tuning.max_drag_spd_mul = max_drag_spd_mul;
+                                drag_tuning.min_drag_spd_mul = min_drag_spd_mul;
+                                drag_tuning.max_drag_pitch = max_drag_pitch;
+                                d = bsp::plane_drag_accel_007d9140(drag_class, drag_tuning,
+                                    world_speed, unit_.plane_latched_throttle, state.pitch,
+                                    unit_.plane_latched_air_brake, unit_.plane_latched_controls[1]);
+                            } else {
                             // The speed floor, whose two endpoints are both
                             // MaxSpd * 0.1 in this installation's PlaneGlobals.
                             const float floor_speed = bsp::clamped_interpolate_00419010(
@@ -25912,7 +26011,6 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007D926C-007D929B multiplies in -sgn(v), so the
                             // value opposes forward motion.
                             const float sign = v > 0.0f ? 1.0f : (v < 0.0f ? -1.0f : 0.0f);
-                            float d = 0.0f;
                             if constexpr (GameUnitsHost::Impl::kPlaneDragOrderCc13Bound) {
                                 // 007C4990: (Accel / MaxSpd) / MaxSpd. 007D91D2-007D91EC
                                 // and 007D928D-007D9295: ((-sgn * v) * v) * (brake * (k * coef)).
@@ -25932,6 +26030,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     ((-sign * v) * v) * kb,
                                     -sign * v * v * k * coefficient * brake);
                             }
+                            }  // kWireGoal4Chain279Bound
                             // 007DBB0E / 007DBB23, the two pitch ramps the call
                             // site multiplies in. Both endpoints of the second
                             // are 1.0 for a healthy aircraft, so r2 is 1.0 until
