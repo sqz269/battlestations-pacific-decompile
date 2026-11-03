@@ -94,7 +94,12 @@
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/sound_alternate_owner.hpp"
+#include "bsp/sound_manager_levels.hpp"
+#include "bsp/sound_system_owner.hpp"
+#include "bsp/native_platform_focus_owners.hpp"
+#include "bsp/native_world_configuration_leaves.hpp"
 #include "bsp/legacy_crt_math.hpp"
+#include "bsp/wire_goal2_chain90_switches.hpp"
 
 namespace bsp::game {
 namespace {
@@ -2632,6 +2637,12 @@ GameStartupHost::~GameStartupHost() {
         }
         // Page bindings are gone; the singleton host is deleted below, so
         // the manager's deletion binding and publication cells go first.
+        if constexpr (kWireGoal2Chain90Bound) {
+            // Chain 90: the native_media arm borrowed the manager's owners.
+            if (singletons_ && native_gui_manager_ &&
+                singletons_->native_deletion_bindings().native_media == &native_gui_manager_->context())
+                singletons_->native_deletion_bindings().native_media = nullptr;
+        }
         if constexpr (kGuiManagerCc15Bound) native_gui_manager_.reset();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
@@ -3648,6 +3659,38 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             sinks.set_rumble_enabled_00a94c50 = [input](bool enabled) {
                 input->set_rumble_enabled_00a94c50(enabled);
             };
+        }
+        if constexpr (kWireGoal2Chain90Bound) {
+            // Chain 90: 008D5B50's [00F8BBD8] class table, [00F8D394] renderer
+            // and 004C1710 owners. The 18h media manager 004C1710 builds is
+            // registered on 01090AA0, so the drain's native_media arm
+            // (00A4C620, vtable 00D24D94) gets the same owners; it is cleared
+            // where the GUI manager application is reset.
+            if (sound_) {
+                // 008D54C3/008D54D9: ECX = [00F8BBD8], the running sound owner.
+                SoundServices* const sound = sound_.get();
+                sinks.apply_sound_class_levels = [sound](std::uint32_t mask, float volume) {
+                    if (!sound->core.started()) return false;
+                    set_sound_class_levels_00a7abf0(sound->core.owner().levels, mask, volume);
+                    return true;
+                };
+            }
+            if (native_renderer_) {
+                // 008D5B71/008D5B80: ECX = [00F8D394], the 1D94h actual renderer.
+                void* const volatile* const renderer_cell = &native_renderer_->publication_00f8d394();
+                sinks.store_renderer_texture_detail_bias = [renderer_cell](std::uint32_t word) {
+                    void* const renderer = *renderer_cell;
+                    if (renderer == nullptr) return false;
+                    set_native_renderer_texture_detail_bias_00b1ffb0(renderer, nullptr, word);
+                    return true;
+                };
+            }
+            if (native_gui_manager_ && singletons_) {
+                // 008D5686/008D5C85: 004C1710 over the cells 00F8AEF8/01090AA0.
+                NativePlatformFocusOwnersContext* const owners = &native_gui_manager_->context();
+                singletons_->native_deletion_bindings().native_media = owners;
+                sinks.media_manager = [owners]() { return get_native_media_manager_004c1710(*owners); };
+            }
         }
         menu_->bind_profile_settings_sinks(sinks);
     }
