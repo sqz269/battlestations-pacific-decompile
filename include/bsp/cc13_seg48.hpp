@@ -372,7 +372,14 @@ struct PlaneSquadronFlightReadinessView {
 };
 bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(
     const PlaneSquadronFlightReadinessView& squadron);
-std::uint8_t cc13_seg48_plane_squadron_leader_flag_c24_007edac0(void* squadron);
+// The only field 007EDAC0 reads after loading the leader at squadron+3D0h.
+// The game host retains this byte as a bool from the authored PilotFires
+// platform entries (007CD930); borrow it without fabricating a native object.
+struct PlaneSquadronPilotFireView {
+    const bool& leader_pilot_fires_c24;
+};
+std::uint8_t cc13_seg48_plane_squadron_leader_flag_c24_007edac0(
+    const PlaneSquadronPilotFireView& squadron);
 void* cc13_seg48_session_message_entity_relocate_construct_heading_007edeb0(void* message, float heading,
                                                                             std::uint32_t value_28,
                                                                             Cc13Seg48Host& host);

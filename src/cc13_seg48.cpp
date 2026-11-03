@@ -1012,8 +1012,14 @@ bool cc13_seg48_plane_squadron_all_free_flight_or_parked_007ed740(
 
 // 007EDAC0 BSP_PlaneSquadron_LeaderFlagC24, __thiscall(ECX = squadron), AL =
 // byte [[+3D0h]+C24h] (no null test; EAX's upper bytes are the pointer's).
-std::uint8_t cc13_seg48_plane_squadron_leader_flag_c24_007edac0(void* squadron) {
-    return at<std::uint8_t>(at<void*>(squadron, 0x3D0), 0xC24);
+// Chain 301: the same body now accepts a typed view of the retained leader's
+// field. Evidence: bsp.py show 007edac0 --asm, MOV EAX,[ECX+3D0h];
+// MOV AL,[EAX+C24h]; RET. 007CD930 writes only 0 or 1 to this field, so the
+// host's bool preserves every produced AL value. This is a new C++ interface,
+// not an original register-ABI replacement; the caller must supply a leader.
+std::uint8_t cc13_seg48_plane_squadron_leader_flag_c24_007edac0(
+    const PlaneSquadronPilotFireView& squadron) {
+    return squadron.leader_pilot_fires_c24 ? 1u : 0u;
 }
 
 // 007F3500 BSP_PlaneSquadron_CloneFrom, __thiscall(ECX = source), EAX = the
