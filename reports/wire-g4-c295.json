@@ -1,0 +1,32 @@
+{
+  "chain": 295,
+  "switch": "kWireGoal4Chain295Bound",
+  "wired_total_before": 9268,
+  "wired_total_after": 9268,
+  "rows": [
+    {
+      "native": "006E4130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::bomb_load_factor",
+      "reason": "The count-view adapter builds, but the consumer edit is pending the units.cpp lease held by agent/g4-w3."
+    },
+    {
+      "native": "006E4170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::lb_rack_timing_007c1fb0",
+      "reason": "The count-view adapter builds, but the consumer edit is pending the units.cpp lease held by agent/g4-w3."
+    },
+    {
+      "native": "006E3500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::dive_bomb_rounds_remaining",
+      "reason": "The host retains combined per-rack totals; the native child-count and reserve-ammo components required by this sum body have no separate live producers."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "evidence": "bsp.py show 006e4130 --asm; bsp.py show 006e4170 --asm; bsp.py show 007c1fb0",
+    "call_graph": "The intended bomb_load_factor and lb_rack_timing consumers are entry-reachable before the host edit; no new wiring is claimed yet.",
+    "game_validation": "Not run, per assignment."
+  }
+}
