@@ -11,6 +11,8 @@
 #include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
+#include "bsp/wire_goal4_chain302_switches.hpp"
+#include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
@@ -620,6 +622,8 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // --- the screen sets and the input contexts ----------------------------
     FrontEndScreenSetStack screen_sets{};
     GameInputContextSetStack input_contexts{};
+    // Goal 4 chain 302: game+3Ch, borrowed from the application (null when unbound).
+    GameNativeInputConfigurationApplication* input_configuration{};
 
     // --- the front-end managers --------------------------------------------
     FrontEndManagerRegistry manager_registry{};
@@ -1107,7 +1111,21 @@ public:
         owner_.log.unimplemented("PressStartScreen::refresh_input_bindings", "008d44c0");
     }
     void commit_input_manager() override {
-        owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+        if constexpr (kWireGoal4Chain302Bound) {
+            // 0067CEB9 (apply_sign_in) and 0067D50F (the no-user arm): ECX =
+            // [00E188A8]+3Ch, CALL 00698A10, unconditionally (no +55Ch gate,
+            // unlike OnInitOnce 004DD739): Inputs.lua is re-read into the action
+            // owner, rebound, ticked once at zero seconds, and the keyboard
+            // defaults preserved when [00F88A30] is clear.
+            if (owner_.input_configuration == nullptr) {
+                owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+                return;
+            }
+            owner_.input_configuration->load();
+            owner_.log.implemented("PressStartScreen::commit_input_manager", "00698a10");
+        } else {
+            owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+        }
     }
 
     // --- frame tail ---------------------------------------------------------
@@ -2860,6 +2878,10 @@ GameMenuHost::~GameMenuHost() = default;
 void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
     binding.prepare();
     impl_->input_contexts.manager = &binding;
+}
+
+void GameMenuHost::bind_input_configuration(GameNativeInputConfigurationApplication* configuration) {
+    impl_->input_configuration = configuration;
 }
 
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }

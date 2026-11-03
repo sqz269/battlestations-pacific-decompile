@@ -2613,3 +2613,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_gam
 
 # Chain296: native numeric scene/library property merge projection.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/scene_numeric_property_merge.cpp)
+
+# Chain302: the application's embedded input configuration (game+3Ch, 00698680/00698A10/004DCEB0).
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/game_native_input_configuration_application.cpp)
