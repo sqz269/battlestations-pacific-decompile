@@ -1,0 +1,86 @@
+{
+  "chain": 157,
+  "goal": 2,
+  "slot": "g2-w5",
+  "harness": "claude",
+  "picked": "segment 10 [004d0920-004e7db0] (tier 2, range sweep)",
+  "host_file": "src/engine_seg11_35_66_cc13.cpp",
+  "switch": "kWireGoal2Chain157Bound",
+  "switch_header": "include/bsp/wire_goal2_chain157_switches.hpp",
+  "build": "scripts/build.ps1 exit 0, tests 2/2 passed (OFF)",
+  "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain157Bound: build.ps1 exit 0, 0 distinct diagnostics",
+  "pc24_lint": "round 0 ran before the commit against an empty origin/main...HEAD diff and covered nothing; round 1 re-run after commit is recorded in review_round_1",
+  "wired_before": 8988,
+  "wired_after": 8989,
+  "review_round_1": {
+    "review_run": 319,
+    "fixes": [
+      "src/engine_seg11_35_66_cc13.cpp ON comment: fixed, names take(path) = inlined copy 00704E57..00704E93 and take(plain) = CALL 00704FF9",
+      "row 004e7bb0 address/host_site: fixed in host_site and new image_sites; address stays 00704ff9 because verify_report_calls.py checks a CALL there and the inlined copy has none",
+      "row 004e7bb0 reach: fixed, cites the USN04 census log counters (230 executions all at the actor-path inlined site, 0 at 00704FF9)",
+      "pc24_lint: fixed, round 0 covered nothing; round 1 ran after the commit"
+    ],
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD after git fetch: 0 findings, 0 allowed, 4 files (the committed diff; round 1 changes only a comment)",
+    "build": "scripts/build.ps1 exit 0, tests 2/2 passed (OFF)",
+    "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain157Bound: build.ps1 exit 0, 0 distinct diagnostics",
+    "wired_after": 8989
+  },
+  "rows": [
+    {
+      "native": "004e7bb0",
+      "address": "00704ff9",
+      "function": "00704590",
+      "image_sites": ["00704e57..00704e93 (actor-path bank load: inlined copy of 004E7BB0, no CALL)", "00704ff9 (plain-path bank load: CALL 004E7BB0)"],
+      "address_note": "address stays the one CALL site because tools/verify_report_calls.py checks for CALL <native> there; the inlined copy has no call instruction to check",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp:read_message_record_00704590 take lambda, serving both image sites: take(path) = inlined copy 00704E57..00704E93, take(plain) = CALL at 00704FF9; lifetime from src/game_hosts_message_manager.cpp:GameMessageManagerHost::Impl::sample_reference_lifetime",
+      "status": "wired",
+      "reach": "live: GameMessageManagerHost (constructed by src/game_hosts_mission_frame.cpp) -> load_messages_007065e0 / load_message_map_00706760 -> load_actors_and_messages_00706160 -> read_message_record_00704590 -> take(); sound banks load with kMessageSoundBankCc15Bound = true. USN04 (2026-10-29, main checkout local/coverage-census-20261030/bsp/runs/reference-untraced/usn04.log): records=247 voice_probe_hits=230 voice_probe_misses=34 streamed_probes_not_evaluated=17, sound banks acquired=230 released=230. The 34 misses are the 17 streamed-fallback records missing both probes, so all 230 executions were at the actor-path take(path) site (the image's inlined copy 00704E57..00704E93) and 0 at the plain-path CALL at 00704FF9. The ON arm therefore stays on both sites.",
+      "note": "ON replaces the inline compare/publish/retain/release with 004E7BB0, fed with the record slot, the 00A83FD0 temporary and the started sound runtime's sample lifetime (the service release_sample_reference already dispatches to at zero). 00704BA3 nulls the slot earlier in the same iteration, so the old-sample release branch does not fire at either site, in the image as here; summary.sound_bank_references_released therefore stays identical ON and OFF."
+    },
+    {
+      "native": "004da2a0",
+      "status": "skipped",
+      "reason": "host-object gap: the body builds the 0x1098-byte image scene record (vtable 00CE7950, +C78 tree, +990 environment block, Pool17Host), but the host's run_build_scene_record_004e1d70 (src/mission_load_path.cpp, bound in src/game_hosts_mission.cpp PendingSceneBinding) keeps a C++ SceneRecord value type; no image-shaped record exists in the host and building one is far past the chain cap."
+    },
+    {
+      "native": "004db190",
+      "status": "skipped",
+      "reason": "not reached: its only wired caller poll_platform_session_events_004db290 (src/session_polls.cpp) runs through SessionPollHost, which no host implements (run_session_polls has no caller); teardown_menu_objects_004db190 is an unimplemented SessionPollHost method."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "reason": "not reached: the call site would be delete_native_game_004de270 (src/native_game_lifetime.cpp), whose only path is GameNativeGameRuntime::scalar_delete; nothing constructs GameNativeGameRuntime or GameNativeGameApplicationFrame (GameFixedStepHost::attach_native_game has no caller)."
+    },
+    {
+      "native": "004e60e0",
+      "status": "skipped",
+      "reason": "not reached and host interface too large: the site is scene_load_cloud_areas_004e7220 (src/gui_screens_3.cpp std::snprintf \"Area%02d\"), which no host calls (only SceneRecordSideBlocksHost::scene_load_cloud_areas_004e7220, which nothing implements); the body also needs a Seg10Host (117 pure virtuals, no implementation)."
+    },
+    {
+      "native": "004dc200",
+      "status": "skipped",
+      "reason": "not reached and host interface too large: its wired caller game_on_init_once_004dd5b0 (src/oct18_tail_a.cpp) is reached only through host.game_on_init_once_004dd5b0 in src/frontend_seg16_24_28_cc13.cpp, which nothing implements; the body needs a Seg10Host (117 pure virtuals, no implementation)."
+    },
+    {
+      "native": "004d0fc0",
+      "status": "skipped",
+      "reason": "not reached: multiplayer peer removal; callers go through host.notify_player_left_004d0fc0 (src/engine_seg43_45_cc13.cpp) and host.clear_player_record_004d0fc0 (src/multiplayer_session_cc13.cpp), which nothing implements; the body needs a Seg10Host (117 pure virtuals, no implementation)."
+    },
+    {
+      "native": "004d2660",
+      "status": "skipped",
+      "reason": "host storage mismatch: the body appends a pooled-string node to the image list at owner+48h; the host's only site (src/game_profile_owner.cpp:359 mission_seen_48_.push_back, HintTrackerHost::mission_seen_push_back_48) keeps a std::vector<std::string>, and a typed overload over that vector would be a second body, not a view of this one."
+    }
+  ],
+  "host_objects": [
+    {
+      "name": "MessageManagerCalls::sample_reference_lifetime (adapter, no new object)",
+      "where": "src/game_hosts_message_manager.cpp:480",
+      "producers": ["GameSoundRuntime::samples() via bound_sound_runtime() (SoundSampleRuntime, a GameplayEffectComponentLifetime)"],
+      "rows": ["004e7bb0"]
+    }
+  ],
+  "on_effect": "With the switch ON, every sound bank the message manager loads for a voice record slot (00704590) is published, retained and old-released by the reconstructed 004E7BB0 body instead of the inline host code; behaviour is otherwise identical.",
+  "candidate_notes": "Segment 16's weapon-group rows need src/game_hosts_hud.cpp (held by another worker); segment 12's tactical-library bodies have no host driver (game_hosts_menu.cpp calls none of them)."
+}

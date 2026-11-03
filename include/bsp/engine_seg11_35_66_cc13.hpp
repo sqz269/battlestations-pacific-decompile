@@ -31,6 +31,10 @@
 #include "bsp/scheduled_voice_types.hpp"
 #include "bsp/voice_playback.hpp"
 
+namespace bsp {
+struct GameplayEffectComponentLifetime;
+}
+
 namespace bsp::engine_seg11_35_66_cc13 {
 
 // ---------------------------------------------------------------------------------------------------
@@ -172,6 +176,10 @@ public:
     // References: InterlockedIncrement / InterlockedDecrement at +4h, slot 0 at zero.
     virtual void retain_reference(void* object) = 0;
     virtual void release_reference(void* object) = 0;
+    // The zero-reference service 004E7BB0 takes for the D5B074 samples 00A83FD0 returns (the
+    // slot-0 dispatch release_reference performs at zero). Read only by the
+    // kWireGoal2Chain157Bound ON arm in 00704590.
+    virtual GameplayEffectComponentLifetime& sample_reference_lifetime() = 0;
     // The file store [0109CEEC]: vtable +8h and +0Ch existence probes.
     virtual bool file_store_exists_vslot8(const std::string& path) = 0;
     virtual bool file_store_exists_vslotc(const std::string& path) = 0;
