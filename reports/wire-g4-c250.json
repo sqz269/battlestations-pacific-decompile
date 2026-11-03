@@ -73,6 +73,30 @@
       "status": "skipped",
       "host_site": "src/game_hosts_gunnery.cpp bullet_throw_magnitude_0073031d (kThrowArtillery seat)",
       "reason": "the body takes Pool01Host (16 pure virtuals) and a raw bot whose +34h is the level; no ArtillerySubDirectorBot copy is kept yet (cc13_torp_goaway GunBotConfigs could add it) and no Pool01Host adapter exists"
+    },
+    {
+      "native": "008fbe00",
+      "host_site": "src/game_hosts_gunnery.cpp GunneryPassBinding::bind_aa_acceptance (kind 1 on a ship, AAGunnerBot slot +390h)",
+      "status": "wired",
+      "note": "armour term, then the host's hull-frame 0085A9A0 window and the 0072F6E0 line-of-fire cache as callbacks; refusal reasons and counters kept"
+    },
+    {
+      "native": "008fbf70",
+      "host_site": "src/game_hosts_gunnery.cpp GunneryPassBinding::bind_aa_acceptance (kind 1 on a plane, TailGunnerBot)",
+      "status": "wired",
+      "note": "window then line of fire, no armour term (the tail-gunner armour count stays a diagnostic)"
+    },
+    {
+      "native": "008fbfc0",
+      "host_site": "src/game_hosts_gunnery.cpp GunneryPassBinding::bind_aa_acceptance (kinds 5 / 6 vs plane, AAFlakBot slot +394h)",
+      "status": "wired",
+      "note": "byte-identical to 008fbf70; the one body turret_or_flak_bot_accepts_008fbf70 serves both addresses"
+    },
+    {
+      "native": "008fc010",
+      "host_site": "src/game_hosts_gunnery.cpp GunneryPassBinding bot slot accept 00729bc0 (category 7)",
+      "status": "wired",
+      "note": "adds the image's IsKindOf(6) and +5Dh refusals to the small-craft one; vtable[1D4h] answers 1 for a kind-7 gun"
     }
   ]
 }
