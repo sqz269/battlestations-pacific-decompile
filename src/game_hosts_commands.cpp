@@ -47,6 +47,7 @@
 #include "bsp/wire_goal4_chain276_switches.hpp"
 #include "bsp/wire_goal4_chain280_switches.hpp"
 #include "bsp/wire_goal4_chain292_switches.hpp"  // 0071EDD0 in the 0071DDB0 walk
+#include "bsp/wire_goal4_chain315_switches.hpp"
 #include "bsp/plane_squadron_host.hpp"           // plane+9D4h / +3D0h stand-in (chain 292)
 #include "bsp/gameplay_seg52_cc13.hpp"           // 00836040 / 0084DD20 (chain 292)
 #include "bsp/band_0071_cc13.hpp"                // 0071DEB0 (chain 292)
@@ -2855,16 +2856,45 @@ bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     const GameDirector& director = host.directors[unit_index];
+    if constexpr (bsp::kWireGoal4Chain315Bound) {
+        // bsp.py show 0071D270 / 0071FC40: the identical native entries test
+        // source+14h and source->vtable[24h]() == path+40h. The host already
+        // represents that link: begin_current_command_00835c70 installs the
+        // source for a begun moveonpath, build_path_object_0071f600 publishes
+        // it, and path_user distinguishes the owner's list from an authored
+        // entity path. Keep those existing predicates; use the reconstructed
+        // query to decide the answer consumed by 007ADD70 / the AI route.
+        const bool source_present = director.slot_command[0] == 0x00e08f80u
+            && director.path_begun && director.path_built;
+        return bsp::gameplay_seg38_cc13::path_follower_attached_0071d270(
+            source_present, director.path_user);
+    } else {
     return director.slot_command[0] == 0x00e08f80u && director.path_begun
         && director.path_built && director.path_user;
+    }
 }
 
 int GameCommandsHost::user_path_remaining_0071d2a0(std::size_t unit_index) const {
     // 0071D2A0 -> 0071D2E0: [slot+18h] when attached, else -1. LABELLED: +18h
     // is taken as the follower's current index (the listener at +10h is how the
     // follower reports it; its body was not read).
+    if constexpr (bsp::kWireGoal4Chain315Bound) {
+        namespace gp = bsp::gameplay_seg38_cc13;
+        const bool attached = user_path_attached_0071fc40(unit_index);
+        // bsp.py show 0071D2A0 / 0071D2E0: only an attached source invokes
+        // virtual +14h; that body returns path+18h. Feed the same live cursor
+        // as the old arm. No source means no virtual call or director access.
+        int remaining = -1;
+        if (attached) {
+            const GameDirector& director = impl_->directors[unit_index];
+            remaining = gp::path_follower_remaining_0071d2e0(attached,
+                director.path_cursor.index_08, static_cast<int>(director.user_points.size()));
+        }
+        return gp::path_follower_remaining_or_minus_one_0071d2a0(attached, remaining);
+    } else {
     if (!user_path_attached_0071fc40(unit_index)) return -1;
     return impl_->directors[unit_index].path_cursor.index_08;
+    }
 }
 
 void GameCommandsHost::begin_loopback_drain_0076c600() {
@@ -4346,7 +4376,21 @@ bool GameCommandsHost::path_cursor_point3(std::size_t unit_index, float out[3]) 
     const GameDirector& director = host.directors[unit_index];
     if (!director.path_built || director.path_points.empty()) return false;
     const int count = static_cast<int>(director.path_points.size());
-    int index = director.path_cursor.index_08;
+    int index = [&]() {
+        if constexpr (bsp::kWireGoal4Chain315Bound) {
+            // For a follower attached to its own user list, 0071D2A0's
+            // virtual +14h query returns precisely this live cursor. Consume
+            // that answer here too: the campaign path-follow step runs even
+            // when the AI coordinator's cautious-route tick is not active.
+            // An authored entity path has a different source; keep its own
+            // cursor read rather than applying the user-list query to it.
+            return user_path_attached_0071fc40(unit_index)
+                ? user_path_remaining_0071d2a0(unit_index)
+                : director.path_cursor.index_08;
+        } else {
+            return director.path_cursor.index_08;
+        }
+    }();
     if (index < 0) index = 0;
     if (index >= count) index = count - 1;
     if constexpr (bsp::kWireGoal4Chain276Bound) {
