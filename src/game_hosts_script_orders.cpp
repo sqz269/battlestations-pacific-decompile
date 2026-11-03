@@ -34,6 +34,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/wire_goal4_chain257_switches.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
+#include "bsp/wire_goal4_chain298_switches.hpp"
 #include "bsp/cc13_seg52.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
@@ -539,16 +540,22 @@ public:
         }
     }
     void session_send_music_level(int) override {}
-    // The two SetParty virtuals and the session route. docs/LUA_BINDING_CORE.md
-    // records that neither virtual has a resolved concrete vtable, so both are
-    // named by slot and both are reported rather than answered; the false here
-    // is the no-session-message arm taken by choice, not a recovered answer.
+    // SetParty's virtuals and local route. Chain 298 binds the kind query to
+    // the created unit's class chain; OFF retains the previous direct arm.
     bool entity_vcall_5c(void* entity, int selector) override {
+        if constexpr (bsp::kWireGoal4Chain298Bound) {
+            // 008A8A83 queries IsKindOf(2). The created unit's recovered
+            // class chain supplies this virtual; a script entity is kind 3
+            // under kind 1 and continues through the direct +2Ch arm.
+            return static_cast<bsp::LuaBindingNavigatorHost&>(owner_)
+                .entity_is_kind_of(entity, selector);
+        } else {
         static_cast<void>(entity);
         static_cast<void>(selector);
         owner_.record_unimplemented("LuaBindingCore::entity_party_query_vtable_5c",
             "008a8a83");
         return false;
+        }
     }
     void entity_vcall_2c(void* entity, int party, std::uint32_t field_58) override {
         static_cast<void>(field_58);
@@ -566,10 +573,32 @@ public:
             "008a8ae3");
     }
     void session_route_party_message(void* entity, int party) override {
+        if constexpr (bsp::kWireGoal4Chain298Bound) {
+            const auto* messages = commands_session_messages();
+            const int copy_party = messages != nullptr
+                ? static_cast<int>(messages->queue_vehicle_party_7f(
+                    static_cast<std::uint32_t>(party))) : party;
+            // 008A8AC4 routes flags 7 through the same local loopback used by
+            // formation orders. entity_object_id is this host's existing
+            // unit-index+1 handle. Capture the long-lived owner, not this
+            // temporary SetThinkCoreHost. The setter reads the current race
+            // and mirrors Lua at delivery (0095ABE0's 7Fh arm).
+            auto* owner = &owner_;
+            const auto id = static_cast<bsp::LuaCommandTargetSource&>(owner_)
+                .entity_object_id(entity);
+            if (id != 0 && commands_post_loopback_callback_0076e520(
+                    static_cast<std::size_t>(id) - 1u, [owner, entity, copy_party] {
+                        owner->set_unit_party_00928f50(entity, copy_party);
+                    })) return;
+            // As in formation delivery, a standalone host without a live
+            // commands queue retains its existing immediate setter.
+            owner_.set_unit_party_00928f50(entity, copy_party);
+        } else {
         static_cast<void>(entity);
         static_cast<void>(party);
         owner_.record_unimplemented("LuaBindingCore::session_route_party_message",
             "008a8ac4");
+        }
     }
     void scoring_set_real_play_time_running(bool) override {}
     void scoring_set_final_scoring_function_name(const std::string& name) override {
