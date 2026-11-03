@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain253_switches.hpp"
+#include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/cc13_left55.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain69_switches.hpp"
@@ -9416,7 +9417,12 @@ int GameMissionLuaHost::run_disband_formation_0089a020(lua_State* state, int arg
         for (const std::size_t u : snapshot) {
             if (units->unit_formation_group_0284(u) < 0) continue;
             if (!defer || !units->post_formation_leave_0077c980(u)) {
+                if constexpr (kWireGoal4Chain260Bound) {
+                    // Goal 4 chain 260: the 77h through 0076E520's copy first.
+                    units->leave_formation_message_0077c980(u);
+                } else {
                 units->leave_group_on_destroy_0077bd70(u);
+                }
             } else {
                 ++posted;
             }
@@ -10395,7 +10401,12 @@ int GameMissionLuaHost::run_leave_formation_00899eb0(lua_State* state, int argum
         const std::size_t u = static_cast<std::size_t>(id - 1);
         posted = units->formation_leave_waits_for_handover(u)
             && units->post_formation_leave_0077c980(u);
+        if constexpr (kWireGoal4Chain260Bound) {
+            // Goal 4 chain 260: the 77h through 0076E520's copy first.
+            if (!posted) units->leave_formation_message_0077c980(u);
+        } else {
         if (!posted) units->leave_group_on_destroy_0077bd70(u);
+        }
         ++summary_.leave_formation_left;
     }
     const GameUnitRow* row = valid ? units->unit_row(static_cast<std::size_t>(id - 1)) : nullptr;

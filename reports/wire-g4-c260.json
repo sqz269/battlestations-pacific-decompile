@@ -1,0 +1,18 @@
+{
+  "chain": 260,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain260Bound",
+  "switch_header": "include/bsp/wire_goal4_chain260_switches.hpp",
+  "summary": "Session-message loopback round trips (0076E520 local copy through the 00768530 factory) for the message types the hosts already route, in HostSessionMessages.",
+  "rows": [
+    {"native": "0075C7C0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 <- game_hosts_commands.cpp commands_formation_member_copy_0076e520 <- game_hosts_script_orders.cpp GameScriptOrdersHost::session_route_formation_message, game_hosts_ai.cpp planner follower pass (76h join)"},
+    {"native": "0075A2E0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 (factory case 76h ConstructForRead)"},
+    {"native": "0075C810", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 (76h read; the copy's +20h is the leader the delivery joins)"},
+    {"native": "0075C860", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 <- game_hosts_units.cpp GameUnitsHost::post_formation_leave_0077c980 / leave_formation_message_0077c980 <- game_hosts_lua.cpp LeaveFormation, DisbandFormation (77h leave)"},
+    {"native": "0075A330", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 (factory case 77h ConstructForRead)"},
+    {"native": "0075C8B0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_formation_member_76_77 (77h read)"},
+    {"native": "00760A50", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_repair_body_9f <- game_hosts_script_orders.cpp GameScriptOrdersHost::session_route_repair_enable_message (sender stores and factory case 9Fh)"},
+    {"native": "00760AE0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_repair_body_9f (9Fh write)"},
+    {"native": "00760B30", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_repair_body_9f (9Fh read; the copy's +1Ch is the flag 00939FD0 receives)"}
+  ]
+}

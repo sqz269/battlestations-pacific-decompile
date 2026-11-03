@@ -1275,6 +1275,10 @@ public:
     // whatever is already queued. False (nothing posted) when the switch is off or
     // the post fails; the caller then leaves synchronously.
     bool post_formation_leave_0077c980(std::size_t index);
+    // Goal 4 chain 260: a Lua leave that is not posted. 0077C980's 77h (null
+    // other) through 0076E520's copy (0075C860 write, 0075A330, 0075C8B0
+    // read), then 0077BD70 at the call, the synchronous leave's substitution.
+    void leave_formation_message_0077c980(std::size_t index);
     // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
     // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
     // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,

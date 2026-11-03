@@ -57,6 +57,10 @@
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/unit_state_message.hpp"
 
+namespace bsp {
+class HostSessionMessages;
+}  // namespace bsp
+
 namespace bsp::game {
 
 class GameHostLog;
@@ -474,6 +478,9 @@ public:
     // commands_post_loopback_callback_0076e520's body (packet
     // cc9_formation_join_loopback).
     bool post_loopback_callback(std::size_t unit_index, std::function<void()> deliver);
+    // Goal 4 chain 260: the image-shaped session context the MT_COMMAND and
+    // MT_GAMEUNIT_SETCMD round trips use, for the other hosts' routed messages.
+    const bsp::HostSessionMessages& session_messages() const;
     // When the last issue's MT_COMMAND waits in the queue, `fn` is taken and
     // run after that chain's delivery (its push and finish tail); answers
     // false, leaving `fn`, when the order was delivered already or the switch
@@ -740,5 +747,17 @@ bool commands_after_last_issue_delivery(std::function<void()>& fn);
 // False when there is no live host (the caller then delivers at once).
 bool commands_post_loopback_callback_0076e520(std::size_t unit_index,
                                               std::function<void()> deliver);
+// Goal 4 chain 260: the live host's session_messages(), or null when there is
+// no live host (the caller then keeps the posted values).
+const bsp::HostSessionMessages* commands_session_messages();
+// Goal 4 chain 260: the 76h join (type 0x76, 0077C8D0) or 77h leave (0x77,
+// 0077C980) through 0076E520's copy (HostSessionMessages::
+// queue_formation_member_76_77). `member_index` is the other unit's index, or
+// kNoFormationMember for a null other. Answers the index the copy's +20h names
+// (kNoFormationMember for 0); without a live host, or for an index the 12-bit
+// field cannot carry, the posted index.
+inline constexpr std::size_t kNoFormationMember = static_cast<std::size_t>(-1);
+std::size_t commands_formation_member_copy_0076e520(std::uint8_t type,
+                                                    std::size_t member_index);
 
 }  // namespace bsp::game

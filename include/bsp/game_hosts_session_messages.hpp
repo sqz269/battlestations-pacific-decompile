@@ -18,6 +18,7 @@
 // is where the image's drain frees it.
 #include "bsp/entity_orders.hpp"
 #include "bsp/native_session_message_tags_90_to93.hpp"
+#include <cstdint>
 #include <memory>
 
 namespace bsp::game {
@@ -91,6 +92,26 @@ public:
     // not fit. The drain's delete (007605F0) only restamps +0h, so the copy
     // ends here.
     game::GunAimMessage79 queue_gun_aim_79(const game::GunAimMessage79& posted) const;
+
+    // Goal 4 chain 260 (kWireGoal4Chain260Bound). MT_FORMATION_JOIN (76h,
+    // 0077C8D0: 0075B430 at 0077C926, vtable 00D02D30, +4h = 1, +18h/+1Ah/+1Ch
+    // zero, the other entity's id at +20h, routed at 0077C964 flags 7) or
+    // MT_FORMATION_LEAVE (77h, 0077C980: 0075B430(77h), vtable 00D02D44, the
+    // same stores, +20h = other ? other+174h : 0), through 0076E520's local
+    // copy: 0075C7C0 / 0075C860 write, 00768530 case 76h at 007690E6 (0075A2E0)
+    // or 77h at 00769106 (0075A330), then 0075C810 / 0075C8B0 read. `type` is
+    // 0x76 or 0x77. Returns the copy's +20h member id (12 bits on the wire).
+    // The router's +1Ch audit marker (0077C37F, [00E18DB7]) is not set here:
+    // this process does not model the latch and no 76h/77h arm reads +1Ch.
+    std::uint16_t queue_formation_member_76_77(std::uint8_t type,
+                                               std::uint16_t member_id) const;
+    // Goal 4 chain 260. MT_SHIPREPAIR_BODYREPAIR (9Fh, 008AD330 RepairEnable:
+    // 0075B430(9Fh) at 008AD494, +18h = 0, +4h = 1, +1Ah = 0, vtable 00D03360,
+    // +1Ch = the flag; 0077C2A0 at 008AD4CD flags 7). Those are 00760A50's
+    // stores, so the sent message is built with it, then 00760AE0 write,
+    // 00768530 case 9Fh at 0076960E (00760A50), 00760B30 read. Returns the
+    // copy's +1Ch bool, the flag 00821E80's 9Fh arm hands 00939FD0.
+    bool queue_repair_body_9f(bool enabled) const;
 
 private:
     struct Image;

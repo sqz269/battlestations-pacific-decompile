@@ -2790,6 +2790,32 @@ bool commands_post_loopback_callback_0076e520(std::size_t unit_index,
     return live != nullptr && live->post_loopback_callback(unit_index, std::move(deliver));
 }
 
+const bsp::HostSessionMessages* commands_session_messages() {
+    GameCommandsHost* live = live_commands_host();
+    return live != nullptr ? &live->session_messages() : nullptr;
+}
+
+const bsp::HostSessionMessages& GameCommandsHost::session_messages() const {
+    return impl_->session_messages;
+}
+
+std::size_t commands_formation_member_copy_0076e520(std::uint8_t type,
+                                                    std::size_t member_index) {
+    // The sender's +20h is the other entity's +174h word, or 0 without one
+    // (0077CA21). This process stands the unit index + 1 in for +174h (the
+    // id GameScriptOrdersHost::entity_object_id answers and its receiver's
+    // 00521E30 lookup inverts), so the copy's id - 1 is the member's index.
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    const std::size_t posted =
+        member_index == kNoFormationMember ? 0u : member_index + 1u;
+    // LABELLED: an index the copy's 12 bits cannot carry keeps the posted one,
+    // as queue_gun_aim_79 keeps its target id.
+    if (messages == nullptr || posted > 0xfffu) return member_index;
+    const std::uint16_t copy = messages->queue_formation_member_76_77(
+        type, static_cast<std::uint16_t>(posted));
+    return copy == 0 ? kNoFormationMember : static_cast<std::size_t>(copy) - 1u;
+}
+
 bool GameCommandsHost::post_loopback_callback(std::size_t unit_index,
                                               std::function<void()> deliver) {
     Impl& host = *impl_;
