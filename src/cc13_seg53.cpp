@@ -1027,14 +1027,30 @@ void flag_grid_set_cell_00861c20(Object grid, std::int32_t column, std::int32_t 
 // through the image at call time.
 // ---------------------------------------------------------------------------
 namespace {
-const std::int32_t* category_list(Seg53Host& host, std::uint32_t address) {
-    return reinterpret_cast<const std::int32_t*>(host.global_dword_ptr(address));
+class NativeGunneryGroups final : public GunneryGroupHost {
+public:
+    NativeGunneryGroups(Seg53Host& host, Object ai) : host_(host), ai_(ai) {}
+    const std::int32_t* category_list(std::uint32_t address) override {
+        return reinterpret_cast<const std::int32_t*>(host_.global_dword_ptr(address));
+    }
+    void store_torpedo_flag(std::uint8_t value) override {
+        field<std::uint8_t>(ai_, 0x77) = value;
+    }
+    void store_depth_charge_flag(std::uint8_t value) override {
+        field<std::uint8_t>(ai_, 0x78) = value;
+    }
+private:
+    Seg53Host& host_;
+    Object ai_;
+};
+GunneryGroupView native_gunnery_group_view(Object ai) {
+    return {reinterpret_cast<std::uint32_t*>(ai + 0x80)};
 }
-void set_category_bit(Seg53Host& host, Object ai, std::uint32_t list_address, std::uint32_t bit,
+void set_category_bit(GunneryGroupHost& host, GunneryGroupView ai, std::uint32_t list_address, std::uint32_t bit,
                       bool allowed) {
-    const std::int32_t* list = category_list(host, list_address);
+    const std::int32_t* list = host.category_list(list_address);
     for (int i = 0; list[i] < 12; ++i) {
-        std::uint32_t& word = field<std::uint32_t>(ai, 0x80 + list[i] * 4);
+        std::uint32_t& word = ai.masks_80[list[i]];
         if (allowed) {
             word |= bit;
         } else {
@@ -1042,28 +1058,48 @@ void set_category_bit(Seg53Host& host, Object ai, std::uint32_t list_address, st
         }
     }
 }
-void store_category_words(Seg53Host& host, Object ai, std::uint32_t list_address, bool allowed) {
-    const std::int32_t* list = category_list(host, list_address);
+void store_category_words(GunneryGroupHost& host, GunneryGroupView ai, std::uint32_t list_address, bool allowed) {
+    const std::int32_t* list = host.category_list(list_address);
     for (int i = 0; list[i] < 12; ++i) {
-        field<std::uint32_t>(ai, 0x80 + list[i] * 4) = allowed ? 3u : 0u;
+        ai.masks_80[list[i]] = allowed ? 3u : 0u;
     }
 }
 }  // namespace
 
-void unit_gunnery_ai_set_artillery_group_allowed_00861cd0(Seg53Host& host, Object ai, std::uint8_t allowed) {
+void unit_gunnery_ai_set_artillery_group_allowed_00861cd0(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host) {
     set_category_bit(host, ai, 0x00E0A4F8, 2, allowed != 0);
 }
-void unit_gunnery_ai_set_aa_group_allowed_00861d20(Seg53Host& host, Object ai, std::uint8_t allowed) {
+void unit_gunnery_ai_set_aa_group_allowed_00861d20(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host) {
     set_category_bit(host, ai, 0x00E0A510, 1, allowed != 0);
 }
-void unit_gunnery_ai_set_torpedo_group_allowed_00861d70(Seg53Host& host, Object ai, std::uint8_t allowed) {
+void unit_gunnery_ai_set_torpedo_group_allowed_00861d70(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host) {
     store_category_words(host, ai, 0x00E0A520, allowed != 0);
-    field<std::uint8_t>(ai, 0x77) = allowed;
+    host.store_torpedo_flag(allowed);
 }
-void unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(Seg53Host& host, Object ai,
-                                                             std::uint8_t allowed) {
+void unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host) {
     store_category_words(host, ai, 0x00E0A528, allowed != 0);
-    field<std::uint8_t>(ai, 0x78) = allowed;
+    host.store_depth_charge_flag(allowed);
+}
+
+void unit_gunnery_ai_set_artillery_group_allowed_00861cd0(Seg53Host& host, Object ai, std::uint8_t allowed) {
+    NativeGunneryGroups groups(host, ai);
+    unit_gunnery_ai_set_artillery_group_allowed_00861cd0(native_gunnery_group_view(ai), allowed, groups);
+}
+void unit_gunnery_ai_set_aa_group_allowed_00861d20(Seg53Host& host, Object ai, std::uint8_t allowed) {
+    NativeGunneryGroups groups(host, ai);
+    unit_gunnery_ai_set_aa_group_allowed_00861d20(native_gunnery_group_view(ai), allowed, groups);
+}
+void unit_gunnery_ai_set_torpedo_group_allowed_00861d70(Seg53Host& host, Object ai, std::uint8_t allowed) {
+    NativeGunneryGroups groups(host, ai);
+    unit_gunnery_ai_set_torpedo_group_allowed_00861d70(native_gunnery_group_view(ai), allowed, groups);
+}
+void unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(Seg53Host& host, Object ai, std::uint8_t allowed) {
+    NativeGunneryGroups groups(host, ai);
+    unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(native_gunnery_group_view(ai), allowed, groups);
 }
 
 // ---------------------------------------------------------------------------

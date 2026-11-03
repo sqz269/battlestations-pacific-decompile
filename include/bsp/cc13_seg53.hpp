@@ -495,6 +495,27 @@ std::int32_t recon_category_index_from_name_0085bce0(Seg53Host& host, Object nam
 std::int32_t recon_category_from_class_type_name_0085bd50(Seg53Host& host, Object name);
 
 // --- unit gunnery AI group switches (category mask words at +80h + 4*category) ---
+// Typed view of the actual twelve DWORD masks at native ai+80h. The host
+// supplies the image category tables and maps the two byte flags (+77h/+78h)
+// to its storage; the raw entry points below delegate to these same bodies.
+struct GunneryGroupView {
+    std::uint32_t* masks_80;
+};
+struct GunneryGroupHost {
+    virtual ~GunneryGroupHost() = default;
+    virtual const std::int32_t* category_list(std::uint32_t image_address) = 0;
+    virtual void store_torpedo_flag(std::uint8_t value) = 0;
+    virtual void store_depth_charge_flag(std::uint8_t value) = 0;
+};
+void unit_gunnery_ai_set_artillery_group_allowed_00861cd0(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host);
+void unit_gunnery_ai_set_aa_group_allowed_00861d20(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host);
+void unit_gunnery_ai_set_torpedo_group_allowed_00861d70(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host);
+void unit_gunnery_ai_set_depth_charge_group_allowed_00861dc0(
+    GunneryGroupView ai, std::uint8_t allowed, GunneryGroupHost& host);
+
 void unit_gunnery_ai_set_artillery_group_allowed_00861cd0(Seg53Host& host, Object ai, std::uint8_t allowed);
 void unit_gunnery_ai_set_aa_group_allowed_00861d20(Seg53Host& host, Object ai, std::uint8_t allowed);
 void unit_gunnery_ai_set_torpedo_group_allowed_00861d70(Seg53Host& host, Object ai, std::uint8_t allowed);
