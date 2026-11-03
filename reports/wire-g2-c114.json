@@ -5,80 +5,76 @@
   "run": 219,
   "harness": "codex",
   "branch": "agent/g2-w5",
-  "host_file": "src/native_physical_buffer_owner.cpp",
+  "host_file": "src/native_shader_sampler_owner.cpp",
   "candidate": {
     "tier": 2,
     "segment": 86,
-    "range": ["00b4b490", "00b65ac0"],
-    "selection": "One segment sweep: existing physical-buffer and canonical shader-pool ownership provide reachable state without constructing a speculative post-effect or MSHD graph."
+    "range": [
+      "00b4b490",
+      "00b65ac0"
+    ],
+    "selection": "One segment sweep: retain canonical shader-pool selection on real sampler cleanup; reject shared-helper-only routing."
   },
   "switch": "kWireGoal2Chain114Bound",
   "switch_header": "include/bsp/wire_goal2_chain114_switches.hpp",
   "switch_default": false,
   "wired_before": 8921,
-  "wired_after": 8925,
-  "wired_delta": 4,
-  "assigned_ready_to_wired": ["00b4b490", "00b4b530", "00b620f0", "00b623c0"],
+  "wired_after": 8922,
+  "wired_delta": 1,
+  "assigned_ready_to_wired": [
+    "00b623c0"
+  ],
   "checks": {
-    "off_build": "scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests both passed (2/2).",
-    "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain114Bound passed: build.ps1 exit 0, zero distinct diagnostics; tool restored the switch header.",
-    "readiness": "Final tools/wire_readiness.py ran after the final plain OFF build; all four assigned rows changed from ready to wired, total 8921 to 8925.",
-    "pc24": "Not applicable: no arithmetic or x87 body changed; ON arms only select existing cleanup and pool bodies.",
-    "runtime": "No game, pair export, or runtime probe was run. Reach is static source evidence, with no mission call-count claim."
+    "off_build": "Review round 1: scripts/build.ps1 passed after the ON check; reconstructed_math and tool_tests both passed (2/2). Log: local/output/wire-g2-c114-review1-off-build.log.",
+    "on_build": "Review round 1: tools/off_switch_on_build.py --names kWireGoal2Chain114Bound passed: build.ps1 exit 0, zero distinct diagnostics; header restored OFF. Log: local/output/wire-g2-c114-review1-on-build.log.",
+    "readiness": "Review round 1: final wire_readiness.py ran after the final plain OFF build. Total 8921 to 8922; only 00b623c0 promoted to wired. The three rejected helper routes are ready again. Mechanical delta and independently accepted eligible delta now both equal 1.",
+    "pc24": "Not applicable: no arithmetic or x87 body changed; the sole retained ON route selects the reconstructed canonical pool.",
+    "runtime": "No game, pair export, or runtime probe was run. Reach is static source evidence, with no mission call-count claim.",
+    "report_calls": "Review round 1: verify_report_calls.py reports/wire-g2-c114.json checked 22 original call rows with zero failures."
   },
   "host_objects": [],
   "storage_views": [
     {
-      "name": "NativePhysicalBufferBaseStorage",
-      "where": "include/bsp/native_physical_buffer_owner.hpp",
-      "ownership": "Borrowed 14h prefix of the already existing 2Ch physical-buffer allocation; no new object or lifetime.",
-      "producers": ["construct_native_physical_index_buffer_00b4bb60", "construct_native_physical_vertex_buffer_00b4bbb0", "existing resize_native_physical_buffer_pointer_array_00b49700"],
-      "fields": ["+00 DWORD vtable", "+04 DWORD reference count", "+08 DWORD array pointer", "+0C DWORD count", "+10 DWORD capacity"],
-      "rows": ["00b4b490", "00b4b530"]
-    },
-    {
-      "name": "NativeShaderStateListSlabStorage",
-      "where": "include/bsp/native_material_pools.hpp",
-      "ownership": "Borrowed view of the existing allocator's 244h allocation; initialization still uses the single existing initialize_slab engine.",
-      "producers": ["NativeShaderStateListPool::allocate_slot_00b62630 allocates Pool::slab_bytes and supplies storage.first_free_slab_34", "initialize_slab<NativeShaderStateListPool> initializes the native metadata"],
-      "fields": ["32 slots of 10h, slab ID DWORD at each slot+0C", "+200 WORD[32] free indices", "+240 WORD free count", "+242 two untouched bytes"],
-      "rows": ["00b620f0"]
-    },
-    {
       "name": "NativeShaderDescriptorArray / existing NativeShaderStateListStorage alias",
       "where": "include/bsp/native_shader_descriptor_owner.hpp",
       "ownership": "Existing sampler-owned 0Ch header inside a 10h slot, returned without payload destruction by the global wrapper.",
-      "producers": ["read_native_shader_sampler_00b57b50", "initialize_native_shader_state_list_00b621a0", "GameNativeShaderProcess::initialize_state_pool_once_00cd7cc0 binds canonical 0108FEE4"],
-      "rows": ["00b623c0"]
+      "producers": [
+        "read_native_shader_sampler_00b57b50",
+        "initialize_native_shader_state_list_00b621a0",
+        "GameNativeShaderProcess::initialize_state_pool_once_00cd7cc0 binds canonical 0108FEE4"
+      ],
+      "rows": [
+        "00b623c0"
+      ]
     }
   ],
   "contract": {
-    "single_bodies": "Typed overloads retain the same existing identifiers and shared engines; raw entries are thin wrappers. No second reconstructed body or new address identity was added, so wiring requires no new ledger record.",
-    "physical_abi": "Both base entries receive ECX=owner, RET without stack arguments. Listings B4B4AE/B4B54E form owner+08, resize to zero, free CURRENT data, then install the base profile; normal and noexcept unwind behavior are preserved.",
-    "slab_abi": "B620F0 receives ECX=slab, stack slab index (EBX loaded at B620F1); RET 4 at B6212D. The index passed ON is the existing allocator's current first_free_slab_34.",
+    "single_bodies": "Only the existing canonical-pool return identifier gains a typed overload; its raw entry remains a thin wrapper. No new reconstructed address identity or second body was introduced.",
     "return_abi": "B623C0 PUSH ECX; MOV ECX,0108FEE4; CALL B62280; RET. ON preserves fixed-global pool selection instead of passing through the caller's pool companion.",
-    "off": "Physical cleanup retains its original shared helper calls. Pool allocation retains its generic initializer. Sampler list cleanup retains the passed-pool return and holder clear. New views are borrowed only; OFF constructs no additional object."
+    "off": "Physical-buffer source/header and shader-slab initializer are restored to their pre-chain code. Sampler cleanup retains its original passed-pool return and holder clear in OFF. The raw global-return entry retains its original OFF call. No additional objects are constructed."
   },
   "rows": [
     {
       "native": "00b4b490",
       "address": "00b4b950",
       "function": "00b4b900",
-      "host_site": "src/native_physical_buffer_owner.cpp:destroy -> destroy_selected_base (index), reached from destroy_native_physical_index_buffer_00b4b900",
-      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp:destroy (original shared destroy_base cleanup, unchanged)",
+      "status": "skipped",
       "reach": "static",
-      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical index deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-index owner cleanup also reaches pooled deletion. No other OFF switch gates this wiring.",
-      "coverage": "complete existing body; normal and noexcept unwind paths selected over the same host owner"
+      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical index deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-index owner cleanup also reaches pooled deletion. No other OFF switch gates this host path.",
+      "coverage": "Existing reconstructed body remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called destroy_base, which OFF already calls. Removed the wrapper, storage view and ON routing; no eligible replacement remains."
     },
     {
       "native": "00b4b530",
       "address": "00b4bb00",
       "function": "00b4bab0",
-      "host_site": "src/native_physical_buffer_owner.cpp:destroy -> destroy_selected_base (vertex), reached from destroy_native_physical_vertex_buffer_00b4bab0",
-      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp:destroy (original shared destroy_base cleanup, unchanged)",
+      "status": "skipped",
       "reach": "static",
-      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical vertex deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-vertex owner cleanup also reaches pooled deletion. No other OFF switch gates this wiring.",
-      "coverage": "complete existing body; normal and noexcept unwind paths selected over the same host owner"
+      "reach_evidence": "Application native renderer binds graph.destructor in game_native_renderer_application.cpp. Native singleton renderer deletion -> native_renderer_destructor.cpp release_zero -> private/pooled physical vertex deletion -> derived destructor -> this helper. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are true. The parallel logical-vertex owner cleanup also reaches pooled deletion. No other OFF switch gates this host path.",
+      "coverage": "Existing reconstructed body remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called destroy_base, which OFF already calls. Removed the wrapper, storage view and ON routing; no eligible replacement remains."
     },
     {
       "native": "00b4caf0",
@@ -237,11 +233,12 @@
       "native": "00b620f0",
       "address": "00b6266d",
       "function": "00b62630",
-      "host_site": "src/native_material_pools.cpp:allocate_slot<NativeShaderStateListPool>, reached by NativeShaderStateListPool::allocate_slot_00b62630",
-      "status": "wired",
+      "host_site": "src/native_material_pools.cpp:allocate_slot<NativeShaderStateListPool> (original generic initialize_slab call, unchanged)",
+      "status": "skipped",
       "reach": "static",
       "reach_evidence": "game_main.cpp initializes and binds the canonical shader pool. game_hosts.cpp kNativeShaderPreloadStartupCc16Bound=true -> GameNativeRendererApplication::preload_startup_shaders -> StartupShaderPreload::open -> real material-effect descriptor reader -> read_native_shader_samplers_00b41830 -> read_states -> this allocator. kApplicationCc15Bound and kNativeRendererStartupCc15Bound are also true; no false selector is on this path.",
-      "coverage": "complete existing metadata initializer, preserving payload and final two bytes"
+      "coverage": "Existing reconstructed initializer remains unchanged; not eligible wiring.",
+      "reason": "Shared-helper counting exclusion: the proposed typed wrapper only called initialize_slab<NativeShaderStateListPool>, which OFF already uses. Removed the wrapper, slab view and ON routing; no eligible replacement remains."
     },
     {
       "native": "00b623c0",
@@ -262,5 +259,48 @@
       "reason": "The classifier is only exposed through a pure-virtual CameraServices method with no implementation. Existing camera-frustum publication is used for device clip planes, not a host AABB-classification site; no reachable caller supplies this plane set and box together.",
       "reach": "static"
     }
-  ]
+  ],
+  "readiness_tool": {
+    "before": 8921,
+    "reviewed_head_before_fix": 8925,
+    "after": 8922,
+    "eligible_promotions": 1,
+    "note": "The original readiness result included three identifier matches that only named a shared helper already called by OFF. Those matches were ineligible. Their routes and typed views have now been removed; only canonical-pool selection counts.",
+    "final_row_states": {
+      "00b4b490": "ready",
+      "00b4b530": "ready",
+      "00b620f0": "ready",
+      "00b623c0": "wired"
+    }
+  },
+  "review": {
+    "run": 225,
+    "round": 1,
+    "reviewed_head": "0ea6203ecc1283fe1dab396a6be1e9fb3136e54d",
+    "accepted_count": 1,
+    "decisions": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "addresses": [
+          "00b4b490",
+          "00b4b530"
+        ],
+        "resolution": "Reclassified as skipped and removed shared-helper-only routes, typed overloads and storage view."
+      },
+      {
+        "finding": 2,
+        "status": "fixed",
+        "addresses": [
+          "00b620f0"
+        ],
+        "resolution": "Reclassified as skipped and removed shared-initializer-only route, typed overload and slab view."
+      },
+      {
+        "finding": 3,
+        "status": "fixed",
+        "resolution": "Host is native_shader_sampler_owner.cpp; only 00b623c0 is wired; eligible delta 1 and total 8922. Readiness matches are recorded separately from eligibility."
+      }
+    ]
+  }
 }

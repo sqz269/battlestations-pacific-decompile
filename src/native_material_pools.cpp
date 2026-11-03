@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <new>
-#include <type_traits>
 
 namespace bsp {
 namespace {
@@ -123,14 +122,7 @@ template<class Pool> void* allocate_slot(NativeMaterialPoolStorage& storage) {
         storage.first_free_slab_34 = storage.slab_count_2c;
         auto* raw = singleton_lifetime_allocate({
             SingletonAllocationKind::object, Pool::slab_bytes, Pool::slab_bytes});
-        std::byte* slab;
-        // 00B620F0: initialize this shader slab through its body; OFF keeps the generic initializer.
-        if constexpr (kWireGoal2Chain114Bound && std::is_same_v<Pool, NativeShaderStateListPool>) {
-            slab = raw ? static_cast<std::byte*>(initialize_native_shader_state_list_slab_00b620f0(
-                *static_cast<NativeShaderStateListSlabStorage*>(raw), storage.first_free_slab_34)) : nullptr;
-        } else {
-        slab = raw ? initialize_slab<Pool>(raw, storage.first_free_slab_34) : nullptr;
-        }
+        auto* slab = raw ? initialize_slab<Pool>(raw, storage.first_free_slab_34) : nullptr;
         if (storage.slab_count_2c == storage.table_capacity_30) {
             storage.table_capacity_30 = storage.table_capacity_30 * 2u + 2u;
             replace_table(storage, allocate_table(storage.table_capacity_30));
@@ -318,16 +310,8 @@ void NativeShaderStateListPool::return_slot_00b62280(void* slot) noexcept {
 void NativeShaderStateListPool::trim_empty_slabs_00b62590(){trim_empty_slabs<NativeShaderStateListPool>(storage_);}
 void NativeShaderStateListPool::destroy_00b62500(){destroy_pool<NativeShaderStateListPool>(allocator_list_,storage_);}
 void NativeShaderStateListPool::invoke_trim(void* context){static_cast<NativeShaderStateListPool*>(context)->trim_empty_slabs_00b62590();}
-void* initialize_native_shader_state_list_slab_00b620f0(NativeShaderStateListSlabStorage& raw,std::uint32_t index) noexcept {
-    return initialize_slab<NativeShaderStateListPool>(&raw,index);
-}
 void* initialize_native_shader_state_list_slab_00b620f0(void* raw,std::uint32_t index) noexcept {
-    // 00B620F0: forward raw storage to its typed view; OFF keeps the original engine call.
-    if constexpr (kWireGoal2Chain114Bound) {
-        return initialize_native_shader_state_list_slab_00b620f0(*static_cast<NativeShaderStateListSlabStorage*>(raw),index);
-    } else {
     return initialize_slab<NativeShaderStateListPool>(raw,index);
-    }
 }
 void destroy_native_shader_state_list_pool_table_00b621b0(void* header) noexcept {
     void* data;std::memcpy(&data,header,sizeof(data));if(data)singleton_lifetime_free(data);
