@@ -1,0 +1,93 @@
+{
+  "goal": 4,
+  "chain": 284,
+  "slot": "g4-w5",
+  "base": "e629a9d2ab7d0acc663ace7a1e0207b9937ab202",
+  "switch": "bsp::kWireGoal4Chain284Bound",
+  "picked": "Owning native type-2 string assignment in the live scene-property parser",
+  "rows": [
+    {
+      "native": "008f3370",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp: parse_property_body, explicit quoted S arms",
+      "state": "The existing 008EFB00 quoted-run reader supplies the decoded token from the scene/library stream. SceneAssignedStringProperty owns a genuine 38h type-2 record constructed by 008EF1B0. 008F3370 writes its owned +0Ch string, which becomes the SceneProperty value consumed by existing callers; the adapter then frees that allocation once.",
+      "scope": "Newly initialized type-2 string records only. The native enum branch, existing-record declaration context, whole-parser and Original ABI equivalence are not established.",
+      "call_graph": {
+        "reachable_from_entry": true,
+        "reachable_call_sites": 1,
+        "caller": "src/scene_file.cpp: parse_property_body",
+        "path": "WinMainCRTStartup -> game frame/menu -> mission advance/read_scene_file -> load_mission_idle_camera_shots -> parse_scene_property_block_008f5a00 -> parse_property_body -> assign_native_scene_property_from_token_008f3370"
+      }
+    },
+    {
+      "native": "008ef1b0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: SceneAssignedStringProperty constructor",
+      "reason": "Already wired before this chain; reused as the genuine nullable-initial-text type-2 record producer, with no additional wiring credit."
+    },
+    {
+      "native": "0048e840",
+      "status": "skipped",
+      "host_site": "src/native_scene_typed_property_providers.cpp: assign_native_scene_property_from_token_008f3370, non-type-2 arm",
+      "reason": "Readiness additionally marks this enum getter wired through whole-file/function reach, but this chain produces only tag-2 records, so it supplies no new live enum declaration/token state and claims no runtime wiring credit."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / merge_group_into",
+      "reason": "ScenePropertyBlock has no genuine 114h native bag/map or retained insertion/clone context; a native owning bag producer and projection are still needed."
+    },
+    {
+      "native": "00a2c530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture and defend group resource accounting",
+      "reason": "The host still substitutes kCaptureGroupResource=0 and exposes no actual per-member +304h ResourceUsage state; a real member-resource producer is needed."
+    },
+    {
+      "native": "00a2c720",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: close_in_target_group",
+      "reason": "The coordinator uses a projected member vector, without the native +563Ch list/sentinel required by this body; native membership storage and coordinator activation are still needed."
+    },
+    {
+      "native": "009514b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::load_traffic_block",
+      "reason": "The host already invokes read_traffic_block_after_keyword with the live lexer; adding another parse would duplicate consumption, while native traffic-unit creation remains unmodeled."
+    },
+    {
+      "native": "00469e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::load_browser_groups",
+      "reason": "The host already invokes read_browser_groups_after_keyword with the live lexer; another parse would duplicate consumption, while its host retains only an entry count."
+    }
+  ],
+  "implementation": [
+    "Retain the previous direct-string parse unchanged in the OFF arms of kWireGoal4Chain284Bound.",
+    "Use the established native type-2 constructor and token setter; no second address body, fake vtable, pooled-key authority or replacement native global was introduced.",
+    "Move the existing game_native_string_process.cpp registration from bsp_game to bsp_core so the game, parser probe and tests resolve the same canonical process implementation."
+  ],
+  "selection_notes": [
+    "The weather setter was considered first, but the installed weather table is empty and the reader bag has no corresponding live property. The quoted-S parser provides real loaded stream tokens instead.",
+    "The initial null payload is the admitted constructor's unassigned-string state; the nonnull value comes solely from the existing quoted-run reader."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 008f3370 --lines 50",
+    "python tools/bsp.py show 008f3370 --asm --lines 48: tag-2 test at 008F3373, duplicate at 008F3394, payload store at 008F3399; free returns normally.",
+    "python tools/bsp.py show 008ef1b0 --lines 50 and include/bsp/native_scene_property_record_type2_string_storage.hpp: genuine nullable-text constructor and same-current-CRT ownership contract.",
+    "Existing tests/math_tests.cpp quoted-S parser fixture checks joined runs, case-sensitive escapes, quoted punctuation and the following property."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed (2/2).",
+    "call_graph": "python tools/call_graph.py; python tools/call_graph.py who 008f3370; python tools/call_graph.py path 008f3370",
+    "diff_check": "git diff --check passed",
+    "new_tests": 0,
+    "float_math_changed": false,
+    "game_run": false,
+    "readiness_delta_audit": "Readiness was rerun read-only with HEAD's baseline scene_file.cpp substituted in memory and the current linked map retained: baseline 9241, current 9243. The only state changes are 008F3370 and 0048E840. Only 008F3370 has a new real-state binding; 0048E840 is incidental conservative source reach through the setter's unused enum arm.",
+    "limits": "Build/test and linked entry-reach evidence only; no live game, Original ABI, exceptional-unwind or historical CRT proof."
+  },
+  "new_real_state_bindings": ["008f3370"],
+  "wired_before": 9241,
+  "wired_after": 9243
+}
