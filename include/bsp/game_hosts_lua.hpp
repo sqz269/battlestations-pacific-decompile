@@ -925,6 +925,7 @@ bool lua_unit_untouchable_1d4(std::size_t index) noexcept;
 
 class GameHostLog;
 class GameVfsHost;
+class GameVehicleClassDescriptorCache;
 class GameScriptOrdersHost;
 class GameUnitsHost;
 class GameMissionResultHost;
@@ -2466,6 +2467,12 @@ private:
     // Packet s54_class_id (kVehicleClassRowIdBound): the class rows 00964790's
     // miss path has written `ID` / `Got` on, once each (its cache stands in).
     std::set<int> vehicle_class_rows_marked_;
+    // Goal 3 chain 234 (kWireGoal3Chain234Bound): 00964790's descriptor cache,
+    // singleton 00437F50 +4h, with the image descriptors it builds
+    // (bsp/game_host_vehicle_class.hpp). ON it is the cache in place of
+    // vehicle_class_rows_marked_; OFF it is never created.
+    std::unique_ptr<GameVehicleClassDescriptorCache> vehicle_class_cache_;
+    friend class GameMissionLuaVehicleClassBinding;
     void mark_vehicle_class_row_00964790(int class_index, const char* site = nullptr);
     void mark_vehicle_class_device_bullets_00960230(int class_index);
     // cc15-vcp1: the rows the last census found unmarked, with the reads
