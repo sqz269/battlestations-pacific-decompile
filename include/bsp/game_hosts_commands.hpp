@@ -349,6 +349,13 @@ struct GameCommandsSummary {
     unsigned long long release_slot_clears{0};  // slot > 0, category 1 or 2: 0071D900
     unsigned long long release_slot_kept{0};    // slot > 0, other category: descriptor only
     unsigned long long release_plane_matches{0};// a plane target: 0071EDD0's retarget arm
+    // Goal 4 chain 292 (kWireGoal4Chain292Bound): what 0071EDD0 answered in the
+    // walk. head_ends/slot_clears/slot_kept above classify the matched
+    // descriptors before vtable[70h] answers; a member retarget is neither.
+    unsigned long long release_member_retargets{0};  // answer 0: a live squadron member
+    unsigned long long release_point_retargets{0};   // answer 1: the point branch
+    unsigned long long release_squadron_blocks{0};   // 0084DA60 directors, old path kept
+    unsigned long long release_retarget_faults{0};   // a sixth member: the image reads null+5Dh
     // Packet cc9_set_command_queue_delay. Counted in both builds; with the switch
     // off every post is delivered where it is made (delivered_in_place).
     unsigned long long loopback_command_posts{0};  // MT_COMMAND, 0077D7BD
