@@ -539,14 +539,14 @@ void class_registry_clear_0095ba30(ClassRegistryModel& reg) {
     reg.party_rows_4010.clear();  // 0095BA4F 004359E0(0)
 }
 
-bool class_registry_party_row_clear_0095bab0(ClassRegistryModel& reg, std::int32_t index,
-                                             std::int32_t local_player_index,
-                                             std::int32_t player_party_28) {
+__declspec(noinline) bool class_registry_party_row_clear_0095bab0(
+    ClassRegistryPartyRows& party_rows_4010, std::int32_t index,
+    std::int32_t local_player_index, std::int32_t player_party_28) {
     if (local_player_index < 0 || local_player_index > 7) return false;  // 0095BAC0 / 0095BAC5
     if (index < 0 || player_party_28 < 0 || player_party_28 > 2) return false;  // model guard
     const auto i = static_cast<std::size_t>(index);
-    if (i >= reg.party_rows_4010.size()) reg.party_rows_4010.resize(i + 1);   // 0095BAE0
-    return reg.party_rows_4010[i][static_cast<std::size_t>(player_party_28)] == 0;  // 0095BB01
+    if (i >= party_rows_4010.size()) party_rows_4010.resize(i + 1);   // 0095BAE0
+    return party_rows_4010[i][static_cast<std::size_t>(player_party_28)] == 0;  // 0095BB01
 }
 
 bool unit_is_current_player_unit_00965810(std::uintptr_t unit, bool is_plane,

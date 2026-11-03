@@ -10,6 +10,8 @@
 #include "bsp/wire_goal4_chain268_switches.hpp"
 #include "bsp/wire_goal4_chain270_switches.hpp"
 #include "bsp/wire_goal4_chain278_switches.hpp"
+#include "bsp/wire_goal4_chain290_switches.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/oct18_tail_b.hpp"                 // chain 192: 0095C550 typed view
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
@@ -1980,6 +1982,26 @@ void scene_stock_lists_0046bf70(GameSceneContentsHost::Impl& owner,
 // UNCERTAIN: a party outside 0..2 would read the next row's byte in the image;
 // here it reads as unmarked.
 bool scene_class_is_enemy_0095bab0(GameSceneContentsHost::Impl& owner, std::int32_t index) {
+    if constexpr (bsp::kWireGoal4Chain290Bound) {
+        // 0095BAC0..0095BB06 (bsp.py show 0095bab0): read the local party's
+        // byte from the same rows that scene registration/0095BA60 and the
+        // plane preload alias below produce. Borrow the vector so native
+        // resize semantics affect subsequent class registrations/lookups.
+        // The supported single-player load copies side block 0 to player 0
+        // (004BB440); local_player_party() reads that published slot's +28h.
+        // Preserve this host's existing policy outside the model's domain.
+        if (index < 0) return true;
+        const int party = local_player_party();
+        if (party < 0 || party >= kVehicleClassPartyStride) {
+            auto& rows = owner.vehicle_registry.party_required;
+            if (static_cast<std::size_t>(index) >= rows.size()) {
+                rows.resize(static_cast<std::size_t>(index) + 1);
+            }
+            return true;
+        }
+        return bsp::gameplay_seg61_62_cc13::class_registry_party_row_clear_0095bab0(
+            owner.vehicle_registry.party_required, index, 0, party);
+    } else {
     auto& rows = owner.vehicle_registry.party_required;
     if (index < 0) return true;
     if (static_cast<std::size_t>(index) >= rows.size()) {
@@ -1988,6 +2010,7 @@ bool scene_class_is_enemy_0095bab0(GameSceneContentsHost::Impl& owner, std::int3
     const int party = local_player_party();
     if (party < 0 || party >= kVehicleClassPartyStride) return true;
     return rows[static_cast<std::size_t>(index)][static_cast<std::size_t>(party)] == 0;
+    }
 }
 
 // 0095C1C0, __fastcall(ECX = out string, EDX = class id), EAX = out. The entry

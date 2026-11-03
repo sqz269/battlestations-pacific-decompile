@@ -414,21 +414,24 @@ FrozenForcesPlan controller_apply_frozen_forces_00937630(std::uint8_t unit_byte_
 
 // The registry keeps a class cache (registry+4h, a vector of reference-counted
 // class pointers) and per-class party rows (registry+4010h, 3-byte elements).
+using ClassRegistryPartyRows = std::vector<std::array<std::uint8_t, 3>>;
 struct ClassRegistryModel {
     std::vector<RefCountedClass*> cache_4;
-    std::vector<std::array<std::uint8_t, 3>> party_rows_4010;
+    ClassRegistryPartyRows party_rows_4010;
 };
 // 0095B9E0 `__thiscall(index)`: grow the cache to index+1 (00437BD0) when
 // needed, release the entry (destroy at a zero count) and store null.
 void class_registry_release_cached_0095b9e0(ClassRegistryModel& reg, std::int32_t index);
 // 0095BA30: both vectors resized to 0 (00437BD0(0), 004359E0(0)).
 void class_registry_clear_0095ba30(ClassRegistryModel& reg);
-// 0095BAB0 `__thiscall(index)` -> bool: false unless the local player index
+// 0095BAB0 `__fastcall(ECX=index)` -> bool: false unless the local player index
 // world+18ECh is 0..7; grows the party rows to index+1 (004359E0) and answers
-// party_rows[index][player+28h] == 0.
-bool class_registry_party_row_clear_0095bab0(ClassRegistryModel& reg, std::int32_t index,
-                                             std::int32_t local_player_index,
-                                             std::int32_t player_party_28);
+// party_rows[index][player+28h] == 0. This C++ interface borrows the actual
+// registry+4010h rows directly, including resize writes; it does not need the
+// unrelated descriptor cache in ClassRegistryModel. Original ECX=class index,
+// AL=result; this is a typed interface, not a native ABI replacement.
+bool class_registry_party_row_clear_0095bab0(ClassRegistryPartyRows& party_rows_4010,
+    std::int32_t index, std::int32_t local_player_index, std::int32_t player_party_28);
 
 // 00965810 `__thiscall(unit)` -> bool: false for null; a plane (IsKindOf 0Fh)
 // compares its +9D4h with the current player unit [00E188D8], anything else
