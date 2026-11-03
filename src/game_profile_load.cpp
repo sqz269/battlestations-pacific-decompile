@@ -219,8 +219,10 @@ SettingsCommitLatches& settings_commit_latches_00f88a48() {
 
 // 008D7A50 / 008D79A0 / 008D6DC0's host calls: the read half of PcStorageBackend
 // only, as for the player read. The keyboardSetup table goes to the input
-// settings 00698A10 builds; the host builds none, so the table is entered and
-// left with nothing to read (006ABA50 reads only names the settings hold).
+// settings through 006ABA50, which is still unwired (goal 4 chain 302 builds
+// the game+3Ch input configuration 00698A10 loads, not this reader), so the
+// table is entered and left with nothing to read (006ABA50 reads only names
+// the settings hold).
 class QuickSettingsReadHost final : public ProfileSettingsRestoreHost,
     public SettingsArchiveReadHost, public KeyboardRuntimeHost {
 public:
@@ -272,8 +274,14 @@ public:
     void deserialize_settings_008d6dc0(GameSettingsBlock& settings) override {
         read_settings_archive_008d6dc0(settings, readers_.back()->reader, input_, *this, *this);
         log_.implemented("QuickSettings::read_settings_archive", "008d6dc0");
-        log_.unimplemented("QuickSettings::keyboard_setup (no input configuration 00698a10)",
-            "006aba50");
+        if constexpr (kWireGoal4Chain302Bound) {
+            // The input configuration exists now; only the 006ABA50 reader is missing.
+            log_.unimplemented("QuickSettings::keyboard_setup (keyboardSetup reader unwired)",
+                "006aba50");
+        } else {
+            log_.unimplemented("QuickSettings::keyboard_setup (no input configuration 00698a10)",
+                "006aba50");
+        }
         log_.notef("quick settings: read masterVolume=%.6g musicVol=%.6g sfxVol=%.6g speechVol=%.6g "
             "rumbleOff=%d swapSticks=%d invertCameraY=%d invertPlaneY=%d swapMapSticks=%d gamma=%.6g "
             "markerAlpha=%.6g CockpitMode=%d HardwareReported=%d XboxCompatibilityMode=%d dlc=%zu",

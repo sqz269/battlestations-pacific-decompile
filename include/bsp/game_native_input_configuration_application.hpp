@@ -59,8 +59,10 @@ public:
     void set_device_flags_004b46e0(bool swap_sticks_41, bool invert_camera_y_42,
         bool invert_plane_y_43, bool swap_map_sticks_44);
     // 004DCEB0 on the same span: flat buffers, rows, then the Lua owner close.
-    // Once only; a failed load retains the span (no invented rollback).
-    void retire();
+    // Once only. After a failed or interrupted load it runs nothing and returns
+    // false: the span must be retained (not freed) and the process must not go
+    // on into the shared drain (no invented rollback).
+    [[nodiscard]] bool retire();
 
     bool loaded_520() const noexcept;
     std::uint32_t loads() const noexcept;

@@ -5,31 +5,141 @@
   "switch_header": "include/bsp/wire_goal4_chain302_switches.hpp",
   "summary": "Built the application's embedded input configuration (game+3Ch, 524h, Lua owner at +0) as GameNativeInputConfigurationApplication over the live input runtime/action owner, input settings, Lua/VFS strings and raw settings block; constructed with 00698680, loaded through 00698A10 at OnInitOnce (004DD739..004DD745 gate on +520h) and at the press-start commit (0067CEB9/0067D50F), retired with 004DCEB0 after the menu and before the raw singleton drain; the profile settings apply (008D5BB6) reaches 004B46E0 -> 00699B80 on the same span. Wired 9283 -> 9292 (readiness); reconstructed addresses called 4287 -> 4309 (call_graph).",
   "rows": [
-    {"native": "00698a10", "status": "wired", "host_site": "src/game_hosts.cpp GameStartupHost OnInitOnce site (load_if_unloaded) and src/game_hosts_menu.cpp MenuPressStartHost::commit_input_manager, via GameNativeInputConfigurationApplication::Impl::load"},
-    {"native": "00698680", "status": "wired", "host_site": "src/game_native_input_configuration_application.cpp GameNativeInputConfigurationApplication::Impl::Impl (built from GameStartupHost after the menu, 004DDBE2's call)"},
-    {"native": "004dceb0", "status": "wired", "host_site": "src/game_hosts.cpp GameStartupHost::retire_native_input_configuration -> GameNativeInputConfigurationApplication::retire"},
-    {"native": "00699b80", "status": "wired", "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::input_set_stick_modifiers (008D5BB6) -> sink from src/game_hosts_menu.cpp GameMenuHost::Impl::publish_input_device_flags_sink -> GameNativeInputConfigurationApplication::set_device_flags_004b46e0"},
-    {"native": "004b46e0", "status": "wired", "host_site": "src/game_native_input_configuration_application.cpp GameNativeInputConfigurationApplication::set_device_flags_004b46e0 (the adjustor thunk body: ECX+3Ch, JMP 00699B80)"},
-    {"native": "005547d0", "status": "wired", "host_site": "src/native_input_configuration_runtime.cpp load_native_input_configuration_00698a10 ([00F88A30] clear arm, inside 00698A10)"},
-    {"native": "00698730", "status": "wired", "host_site": "src/native_input_configuration_load.cpp load_native_input_configuration_script_prefix_00698a10 (inside 00698A10)"},
-    {"native": "00a93c80", "status": "wired", "host_site": "src/native_input_configuration_parse.cpp parse_actions (inside 00698A10)"},
-    {"native": "006974f0", "status": "wired", "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"},
-    {"native": "006ab820", "status": "wired", "host_site": "src/native_input_configuration_runtime.cpp load_native_input_configuration_00698a10 ([00F88A30] clear arm)"},
-    {"native": "006aa640", "status": "wired", "host_site": "src/native_input_settings_defaults.cpp preserve_native_input_default_bindings_006ab820 via NativeInputKeyboardApplication"},
-    {"native": "00a93350", "status": "wired", "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"},
-    {"native": "00a93620", "status": "wired", "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"},
-    {"native": "00a93070", "status": "wired", "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"},
-    {"native": "006965a0", "status": "skipped", "reason": "[00F8BBFC] deadline callback is installed by OnInitOnce 004DD71B over the native game's clock (game+64Ch) and map 00E18A7C; this host builds no native 71A0h game or map, so the cell stays zero and A92C40 skips it"},
-    {"native": "0090e670", "status": "skipped", "reason": "mission scoring bodies (0090E670/0090EB80/0090EC40/0090ED40/0090F860/00913AB0/0091D780) need the native scoring object at game+21A0h; host keeps semantic MissionScoreRecord slots only"},
-    {"native": "006c0b50", "status": "skipped", "reason": "landing queue needs the native AirOps block; caller 006C54C0 is a labelled host substitution over semantic unit slots"},
-    {"native": "009f9980", "status": "skipped", "reason": "binds native bot-task alias words; host bot tasks are adapters without NativeLandTaskConstructorView storage"},
-    {"native": "00a9bf90", "status": "skipped", "reason": "native GUI listbox (+100h row list) absent; prompt screen 00532360 is reconstructed semantically without listbox storage"},
-    {"native": "00c321b0", "status": "skipped", "reason": "already executed inside the naked-asm world step simulate_native_dyn_world_00c5c540 (reset_kernel label); calling the C++ wrapper would only add a name"},
-    {"native": "00c4d980", "status": "skipped", "reason": "already executed as part of the naked-asm 00C5C540 schedule; wrapper call would be a second path"},
-    {"native": "00470440", "status": "skipped", "reason": "raw modifier-owner body (owner+88h lists); host power-ups are semantic lists (game_hosts_powerups.cpp) with no native owner"},
-    {"native": "00ac2f20", "status": "skipped", "reason": "HUD WeaponInfo ticker animation object (00AA8B00) has no bridge object; the setter alone would only store into nothing"},
-    {"native": "007c2450", "status": "skipped", "reason": "blocked on 00904400, a gunnery-host fragment (game_hosts_gunnery.cpp in review by g4-w5), and raw plane memory"},
-    {"native": "007a06d0", "status": "skipped", "reason": "gamecamera/fpscamera modifier needs native in-game camera movers (+3E8h etc.) the movie camera host does not build"},
-    {"native": "0071ea00", "status": "skipped", "reason": "trivial present&&kind predicate; replacing the host test would add a call without body logic"}
+    {
+      "native": "00698a10",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp GameStartupHost OnInitOnce site (load_if_unloaded) and src/game_hosts_menu.cpp MenuPressStartHost::commit_input_manager, via GameNativeInputConfigurationApplication::Impl::load"
+    },
+    {
+      "native": "00698680",
+      "status": "wired",
+      "host_site": "src/game_native_input_configuration_application.cpp GameNativeInputConfigurationApplication::Impl::Impl (built from GameStartupHost after the menu, 004DDBE2's call)"
+    },
+    {
+      "native": "004dceb0",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp GameStartupHost::retire_native_input_configuration -> GameNativeInputConfigurationApplication::retire"
+    },
+    {
+      "native": "00699b80",
+      "status": "wired",
+      "host_site": "src/game_profile_load.cpp QuickSettingsApplyHost::input_set_stick_modifiers (008D5BB6) -> sink from src/game_hosts_menu.cpp GameMenuHost::Impl::publish_input_device_flags_sink -> GameNativeInputConfigurationApplication::set_device_flags_004b46e0"
+    },
+    {
+      "native": "004b46e0",
+      "status": "wired",
+      "host_site": "src/game_native_input_configuration_application.cpp GameNativeInputConfigurationApplication::set_device_flags_004b46e0 (the adjustor thunk body: ECX+3Ch, JMP 00699B80)"
+    },
+    {
+      "native": "005547d0",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_runtime.cpp load_native_input_configuration_00698a10 ([00F88A30] clear arm, inside 00698A10)"
+    },
+    {
+      "native": "00698730",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_load.cpp load_native_input_configuration_script_prefix_00698a10 (inside 00698A10)"
+    },
+    {
+      "native": "00a93c80",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_parse.cpp parse_actions (inside 00698A10)"
+    },
+    {
+      "native": "006974f0",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"
+    },
+    {
+      "native": "006ab820",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_runtime.cpp load_native_input_configuration_00698a10 ([00F88A30] clear arm)"
+    },
+    {
+      "native": "006aa640",
+      "status": "wired",
+      "host_site": "src/native_input_settings_defaults.cpp preserve_native_input_default_bindings_006ab820 via NativeInputKeyboardApplication"
+    },
+    {
+      "native": "00a93350",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"
+    },
+    {
+      "native": "00a93620",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"
+    },
+    {
+      "native": "00a93070",
+      "status": "wired",
+      "host_site": "src/native_input_configuration_parse.cpp (inside 00698A10)"
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "reason": "[00F8BBFC] deadline callback is installed by OnInitOnce 004DD71B over the native game's clock (game+64Ch) and map 00E18A7C; this host builds no native 71A0h game or map, so the cell stays zero and A92C40 skips it"
+    },
+    {
+      "native": "0090e670",
+      "status": "skipped",
+      "reason": "mission scoring bodies (0090E670/0090EB80/0090EC40/0090ED40/0090F860/00913AB0/0091D780) need the native scoring object at game+21A0h; host keeps semantic MissionScoreRecord slots only"
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "reason": "landing queue needs the native AirOps block; caller 006C54C0 is a labelled host substitution over semantic unit slots"
+    },
+    {
+      "native": "009f9980",
+      "status": "skipped",
+      "reason": "binds native bot-task alias words; host bot tasks are adapters without NativeLandTaskConstructorView storage"
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "reason": "native GUI listbox (+100h row list) absent; prompt screen 00532360 is reconstructed semantically without listbox storage"
+    },
+    {
+      "native": "00c321b0",
+      "status": "skipped",
+      "reason": "already executed inside the naked-asm world step simulate_native_dyn_world_00c5c540 (reset_kernel label); calling the C++ wrapper would only add a name"
+    },
+    {
+      "native": "00c4d980",
+      "status": "skipped",
+      "reason": "already executed as part of the naked-asm 00C5C540 schedule; wrapper call would be a second path"
+    },
+    {
+      "native": "00470440",
+      "status": "skipped",
+      "reason": "raw modifier-owner body (owner+88h lists); host power-ups are semantic lists (game_hosts_powerups.cpp) with no native owner"
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "reason": "HUD WeaponInfo ticker animation object (00AA8B00) has no bridge object; the setter alone would only store into nothing"
+    },
+    {
+      "native": "007c2450",
+      "status": "skipped",
+      "reason": "blocked on 00904400, a gunnery-host fragment (game_hosts_gunnery.cpp in review by g4-w5), and raw plane memory"
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "reason": "gamecamera/fpscamera modifier needs native in-game camera movers (+3E8h etc.) the movie camera host does not build"
+    },
+    {
+      "native": "0071ea00",
+      "status": "skipped",
+      "reason": "trivial present&&kind predicate; replacing the host test would add a call without body logic"
+    }
+  ],
+  "review_round_1": [
+    "fixed: a failed/interrupted 00698A10 load no longer frees the span; retire() returns false (nothing run, span retained) and GameStartupHost::retire_native_input_configuration logs, closes the log and std::_Exit(1) before any reset or drain, like the interrupted input settings/settings loader owners",
+    "nit fixed: src/game_profile_load.cpp comment and the keyboard_setup unimplemented label (under kWireGoal4Chain302Bound) now say only the 006ABA50 keyboardSetup reader is unwired",
+    "nit acknowledged: 004B46E0 counts as wired though its only logic is the +3Ch adjust implied by passing the owned span",
+    "gap noted for later workers (predates this branch): native 0073E485 runs 008D5B50 (so 00699B80) right after OnInitOnce; the host never runs that apply, so +4C9h..+4CCh stay zero until the press-start apply"
   ]
 }

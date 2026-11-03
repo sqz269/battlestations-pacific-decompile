@@ -2366,7 +2366,14 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 void GameStartupHost::retire_native_input_configuration() noexcept {
     if (!input_configuration_) return;
     try {
-        input_configuration_->retire();
+        if (!input_configuration_->retire()) {
+            // An interrupted 00698A10 load: keep the span (its Lua owner and
+            // vectors) unfreed and do not drain over it, as the interrupted
+            // input settings and settings loader owners do.
+            try { log_.note("native input configuration interrupted; retaining it until process exit"); log_.close(); }
+            catch (...) {}
+            std::_Exit(1);
+        }
     } catch (const std::exception& error) {
         // The Lua owner close failed part way; do not drain over that state.
         try { log_.notef("native input configuration retirement incomplete: %s", error.what()); log_.close(); }

@@ -189,14 +189,17 @@ void GameNativeInputConfigurationApplication::set_device_flags_004b46e0(bool swa
         invert_plane_y_43 ? 1u : 0u, swap_map_sticks_44 ? 1u : 0u);
 }
 
-void GameNativeInputConfigurationApplication::retire() {
+bool GameNativeInputConfigurationApplication::retire() {
     auto& p = *impl_;
-    if (p.phase == Impl::Phase::retired) return;
+    if (p.phase == Impl::Phase::retired) return true;
     if (p.phase == Impl::Phase::failed || p.phase == Impl::Phase::loading) {
-        // An interrupted load leaves partial native state; keep the span as is.
+        // An interrupted load leaves partial native state (an opened Lua owner
+        // at +0, partly filled vectors, actions on the shared owner). Neither run
+        // 004DCEB0 over it nor let the owner free the span: report retention so
+        // the application exits before the shared drain, as the sibling
+        // interrupted owners (input settings, settings loader) do.
         p.b.log.note("native input configuration retained: interrupted 00698A10 load");
-        p.phase = Impl::Phase::retired;
-        return;
+        return false;
     }
     {
         NativeLuaServiceBindings::Activation activation(p.b.lua.binding());
@@ -204,6 +207,7 @@ void GameNativeInputConfigurationApplication::retire() {
     }
     p.phase = Impl::Phase::retired;
     p.b.log.notef("native input configuration 004DCEB0 retired after %u load(s)", p.loads);
+    return true;
 }
 
 bool GameNativeInputConfigurationApplication::loaded_520() const noexcept {
