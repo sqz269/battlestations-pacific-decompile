@@ -33,6 +33,7 @@
 #include "bsp/settings_archive_reader.hpp"
 #include "bsp/storage_backend.hpp"
 #include "bsp/wire_goal2_chain90_switches.hpp"
+#include "bsp/wire_goal2_chain144_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -362,8 +363,18 @@ public:
             missing("sound_set_group_volume", "00a7abf0");
         }
     }
-    void sound_set_named_bus_volume(const char*, float) override {
-        missing("sound_set_named_bus_volume", "00a7acf0");
+    void sound_set_named_bus_volume([[maybe_unused]] const char* bus,
+        [[maybe_unused]] float volume) override {
+        // 00A7F8E0: the startup-bound sink applies the profile gain; OFF keeps the missing-call record.
+        if constexpr (kWireGoal2Chain144Bound) {
+            if (!sinks_.apply_named_sound_class_level || !sinks_.apply_named_sound_class_level(bus, volume)) {
+                missing("sound_set_named_bus_volume", "00a7acf0");
+                return;
+            }
+            log_.implemented("QuickSettingsApply::sound_set_named_bus_volume", "00a7f8e0");
+        } else {
+            missing("sound_set_named_bus_volume", "00a7acf0");
+        }
     }
     void ui_sound_set_master_volume([[maybe_unused]] float volume) override {
         // 004C1710 at 008D5686: get_native_media_manager_004c1710 gets or builds

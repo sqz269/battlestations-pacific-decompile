@@ -94,12 +94,14 @@
 #include "bsp/gui_input_runtime.hpp"
 #include "bsp/fmod_configuration_library.hpp"
 #include "bsp/sound_alternate_owner.hpp"
+#include "bsp/sound_class_ownership.hpp"
 #include "bsp/sound_manager_levels.hpp"
 #include "bsp/sound_system_owner.hpp"
 #include "bsp/native_platform_focus_owners.hpp"
 #include "bsp/native_world_configuration_leaves.hpp"
 #include "bsp/legacy_crt_math.hpp"
 #include "bsp/wire_goal2_chain90_switches.hpp"
+#include "bsp/wire_goal2_chain144_switches.hpp"
 
 namespace bsp::game {
 namespace {
@@ -3654,6 +3656,39 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         sinks.languages = &settings_host_->language_catalog();
         sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
         sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        // 00A7F8E0: set_sound_class_level_00a7f8e0 applies named profile gains; OFF keeps the unbound sink.
+        if constexpr (kWireGoal2Chain144Bound) {
+            // 008D5539/55C4/564F borrow [00F8BBD8], initialized at 0073DAFD.
+            // Keep these bindings through profile application; sound and VFS
+            // already outlive the menu and its borrowed settings sinks.
+            if (sound_ && sound_->core.started()) {
+                SoundServices* const sound = sound_.get();
+                NativeStringStorage* const strings = &vfs_->borrow_raw_services().strings;
+                sinks.apply_named_sound_class_level = [sound, strings](const char* bus, float volume) {
+                    if (!sound->core.started()) return false;
+                    // 008D54DE..5539, 5565..55C4 and 55F0..564F construct
+                    // Warnings/GUITestSpeech/GUIMusic, find the class, then
+                    // pass settings+30h/+30h/+28h to A7F8E0 (RET8).
+                    // Configuration setup produced the existing descriptors,
+                    // names and live entry references; settings supplies gain.
+                    struct BusName {
+                        NativeString value;
+                        NativeStringStorage& strings;
+                        BusName(NativeStringStorage& storage, const char* text) : strings(storage) {
+                            value.assign_0041e870(strings, text);
+                        }
+                        ~BusName() { value.release_to(strings); }
+                    } name(*strings, bus);
+                    auto& owner = sound->core.owner();
+                    const auto index = find_sound_class_00a7acf0(owner.levels, name.value, sound->core.fmod());
+                    // A missing configured name supplies no descriptor. Keep
+                    // the diagnostic rather than inventing a class or index.
+                    if (index < 0) return false;
+                    set_sound_class_level_00a7f8e0(owner.levels, index, volume, owner.classes);
+                    return true;
+                };
+            }
+        }
         if (input_) {
             GameInputRuntime* input = &input_->core;
             sinks.set_rumble_enabled_00a94c50 = [input](bool enabled) {
