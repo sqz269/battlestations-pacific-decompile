@@ -153,25 +153,13 @@ void* checkpoint_record_copy_construct_00437490(void* self, const void* source,
 // Only the completed FIRST header is armed while constructing the second.
 void* traffic_string_pair_construct_0048e1f0(void* self, const void* first,
                                           const void* second, NativeStringRawPoolContext& strings) {
-    empty_header(self);
-    copy_header(self, first, strings);
-    HeaderCleanup cleanup{self, strings};
-    void* const header = add(self, 8);
-    empty_header(header);
-    copy_header(header, second, strings);
-    cleanup.armed = false;
+    traffic_pair_detail::construct_headers(self, first, second, strings);
     return self;
 }
 // ECX fresh10h destination; stack pair source; EAX self; RET4.
 void* traffic_string_pair_copy_construct_0048e500(void* self, const void* source,
                                                NativeStringRawPoolContext& strings) {
-    empty_header(self);
-    copy_header(self, source, strings);
-    HeaderCleanup cleanup{self, strings};
-    void* const header = add(self, 8);
-    empty_header(header);
-    copy_header(header, add(source, 8), strings);
-    cleanup.armed = false;
+    traffic_pair_detail::construct_headers(self, source, add(source, 8), strings);
     return self;
 }
 // Each original is one JMP 0048DBD0; ECX entity, no stack inputs, RET via target.

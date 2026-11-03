@@ -1,0 +1,165 @@
+{
+  "goal": 2,
+  "chain": 169,
+  "run": 333,
+  "harness": "codex",
+  "packet": "g2-w3",
+  "branch": "agent/g2-w3",
+  "candidate": "segment 7 [0047c6a0-00491070]",
+  "tier": 2,
+  "host_file": "src/traffic_config.cpp",
+  "switch": "kWireGoal2Chain169Bound",
+  "switch_default": false,
+  "wired_before": 9000,
+  "wired_after": 9002,
+  "wired_delta": 2,
+  "assigned_rows_wired": 2,
+  "build": {
+    "off": "PASS: final plain scripts/build.ps1 after the ON check; reconstructed_math and tool_tests both passed (2/2)",
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain169Bound; build.ps1 exit 0, zero diagnostics; source restored",
+    "off_log": "local/output/wire-g2-c169-off-build.txt",
+    "on_log": "local/output/wire-g2-c169-on-build.txt",
+    "pc24_lint": "not applicable: no new arithmetic or x87 ON arms",
+    "game_run": "not run, as assigned",
+    "off_source_check": "PASS: original lookup_traffic_pair_0049c9c0 fallback block retained verbatim after newline normalization"
+  },
+  "reach_evidence": "Static source reach; this range candidate supplied no mission call counts. GameMissionHost::Impl::finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70 global_subsystems step -> GameGlobalSubsystemsHost::build_traffic_and_panel -> load_traffic_config_0049d690 -> read_pairs -> lookup_traffic_pair_0049c9c0 missing-key insertion. kGlobalSubsystemsCc15Bound is true at src/game_hosts_mission_frame.cpp:216; the skirmish switch affects session input only, not this load step. No enclosing OFF gate; the new pair calls depend only on kWireGoal2Chain169Bound and the real map's missing-key condition.",
+  "on_effect": "On a missing PartyPairs key, execute the existing reconstructed pair constructor and pair copy constructor over the authored NativeString key, the binary's empty mapped source, and the host's existing NativeStringStorage. Move the resulting insertion copy into the same authoritative TrafficStringMap. Existing-key lookup and the OFF fallback retain their prior code.",
+  "host_objects": [
+    {
+      "name": "TrafficPairOwner temporary and insertion copy over TrafficStringPairStorage",
+      "where": "src/traffic_config.cpp:30; instances at 207 and 212 in lookup_traffic_pair_0049c9c0",
+      "producers": [
+        "PartyPairs.Soldiers and PartyPairs.Vehicles from Scripts\\datatables\\TrafficGlobals.lua, consumed by existing load_traffic_config_0049d690/read_pairs; the actual current NativeString name is passed through",
+        "0049CA0A/0049CA0E zero the temporary empty mapped-source header; const NativeString empty supplies those native zero length/pointer fields",
+        "0048E1F0 initializes the temporary's two actual 8h headers; 0048E500 initializes and copies both insertion headers",
+        "TrafficConfigContext.strings: the existing host NativeStringStorage (CRT provider at GameGlobalSubsystemsHost::build_traffic_and_panel), used for both construction and release"
+      ],
+      "layout": "TrafficStringPairStorage contains first at +0 and second at +8, size 10h, all statically asserted. Each existing NativeString is the native 8h header (DWORD length +0, char* +4); no mirrored values or invented allocator fields.",
+      "lifetime": "Both objects exist only in the switch's ON arm and only on the actual insertion branch. The temporary corresponds to 0049CA20 and releases second then first at the 0049CA46 cleanup phase. The insertion copy corresponds to 004909EA, transfers its actual buffers to the authoritative map, and leaves moved-from empty headers for local cleanup; map retirement remains the existing release_traffic_config_startup_storage. A failed second-header construction releases the completed first header inside the shared body; outer owners arm only after construction succeeds.",
+      "rows": [
+        "0048e1f0",
+        "0048e500"
+      ]
+    }
+  ],
+  "interface_changes": "Added typed actual-pair storage overloads of the existing identifiers. Raw entries remain thin adapters; both interfaces use one shared header-construction schedule with the existing initialization, source reload, copy, and first-header exception cleanup. The small shared body is inline so core-only targets do not pull unrelated game-only dependencies from oct18_tail_a.cpp. No new address-suffixed identifier or second body was added; wiring requires no ledger records. Original STL node layout, native EH/ABI, and gameplay are not claimed.",
+  "contracts": [
+    "0048E1F0: only image caller 0049CA20 in 0049C9C0; ECX is the fresh 10h temporary pair, two stack pointers are authored key and zeroed mapped header; RET 8 at 0048E29D. 0049C9C0 loads EBP from its key argument, uses EBX=0 for the empty header, pushes its address then EBP, and takes ECX from the temporary's stack address.",
+    "0048E500: all callers inspected (0048F36F and 00BDEE3F undefined blocks; 004909EA traffic tree; 00BDF75A VFS tree). One source pair pointer on the stack, ECX fresh destination; RET 4 at 0048E5AC. At 004909DD/E3, the producer takes the existing pair argument at [EBP+14h], pushes it, and sets ECX=node+0Ch. The typed host insertion preserves its existing semantic map convention while replacing both copy operations with that body."
+  ],
+  "rows": [
+    {
+      "native": "0048e1f0",
+      "address": "0049ca20",
+      "function": "0049c9c0",
+      "host_site": "src/traffic_config.cpp:210 lookup_traffic_pair_0049c9c0, missing-key ON arm",
+      "status": "wired",
+      "reach": "static",
+      "reason": "The reconstructed pair body initializes and copies the real authored key/empty mapped value; its owned buffers feed the insertion copy. Replaces the old separate temporary-header operations.",
+      "readiness_before": "ready",
+      "readiness_after": "wired"
+    },
+    {
+      "native": "0048e500",
+      "address": "004909ea",
+      "function": "00490990",
+      "host_site": "src/traffic_config.cpp:214 lookup_traffic_pair_0049c9c0, insertion-copy ON arm",
+      "status": "wired",
+      "reach": "static",
+      "reason": "The reconstructed pair-copy body supplies both actual owned strings moved into the authoritative host map. Replaces the old separate node-key/node-value copies; the OFF arm did not call this identifier.",
+      "readiness_before": "ready",
+      "readiness_after": "wired"
+    },
+    {
+      "native": "00481510",
+      "address": "00498d0a",
+      "function": "00498c40",
+      "host_site": "src/cc13_left8_seg8.cpp:517 traffic_visible_cells_00498c40 -> Left8Host::quad_node_construct_00481510",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No implementation of that Left8Host method or host-owned traffic cell tree/visible-cell root. The body writes a 70h quadrant node, whose real bounds/slot producer is the absent traffic visibility runtime; creating a dummy node would not replace reachable host work.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00484620",
+      "address": "00824f80",
+      "function": "00824b60",
+      "host_site": "src/cc13_segmix.cpp:841 cc13_segmix_ship_on_wrecked_00824b60 native effect-reference slot reset seam",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The existing body requires a real volatile effect cell plus NativeRenderActualOwners binding each captured effect's actual +4 atomic and terminal virtual callback. The gameplay host supplies neither this native wreck/effect object nor its owning FX producer; unrelated GUI resource owners cannot substitute for it. A null constant or shadow reference would not count.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "00487470",
+      "address": "0048a688",
+      "function": "0048a650",
+      "host_site": "src/soldier_traffic_cc13.cpp:343 traffic_view_gate_0048a650 remap seam",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Requires scene traffic runtime template vectors and side field +16Ch. SceneTrafficRecorder only records/counts commit_traffic_records (004A5620); it does not construct 004A50D0's ambient traffic runtime or produce live template vectors. TrafficConfig's PartyPairs maps alone do not supply that object.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "004881f0",
+      "address": "0046b763",
+      "function": "0046b730",
+      "host_site": "src/cc13_sweepA1b.cpp:221 scene_database_kill_pass_0046b730 -> game_object_list_walk_004881f0",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The method has no implementation. The host TrafficConfig group remains an empty canonical startup group; no kind-1/kind-2 runtime object producer or their scalar-deleting-destructor dispatch exists there. Wiring an empty-list walk would add no replacement logic on real host state.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0048a5a0",
+      "address": "0049a3fc",
+      "function": "0049a360",
+      "host_site": "src/cc13_left8_seg8.cpp:628 traffic_runtime_kill_all_members_0048a5a0 seam",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "No host implementation or populated runtime +6Ch member-list producer. Scene traffic spawning/commit is count-only; its entity ownership, vslot114 clear and 00926D90 kill callbacks cannot be built from recorded template names.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0048c190",
+      "address": "00491f2a",
+      "function": "00491e70",
+      "host_site": "src/cc13_left8_seg8.cpp:224 landing_troop_on_ship_left_0048c190 seam",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "Typed body is available, but no gameplay host owns a LandingTroopState or implements the seam. The real attached-ship and three member lists (including each fade/timer) are produced by the absent landing-troop manager/runtime, so supplying a fresh empty troop would be a dummy no-op.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0048e840",
+      "address": "008f3a7d",
+      "function": "008f3a20",
+      "host_site": "src/native_scene_property_enum_add.cpp:58 add_native_scene_property_enum_symbol_008f3a20; alternate LibraryNativeEnums::resolve_symbol",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The native property provider already calls this body, so adding a duplicate there would not count. The scene host's actual CEnum registry and resolve_symbol path are constructed only behind kWireGoal2Chain120Bound=false; the active OFF path owns std::map symbols instead. This chain cannot count a new call behind that gate or fabricate an unowned CEnum.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    },
+    {
+      "native": "0048f5d0",
+      "address": "0077e857",
+      "function": "0077e830",
+      "host_site": "src/mission_entity_lua_attach.cpp:92 mission_entity_attach_lua_self_0077e830 -> read_resource_usage_property",
+      "status": "skipped",
+      "reach": "static",
+      "reason": "The only original caller uses descriptor-owner property storage; no production MissionEntityLuaAttachHost implementation drives that caller or supplies its native ResourceUsage bag/find-record seam. The active mission Lua host records this attach step. A float projection fed back as its own property value would not execute the body's real bag lookup contract.",
+      "readiness_before": "ready",
+      "readiness_after": "ready"
+    }
+  ],
+  "report_call_verification": "PASS: verify_report_calls.py reports/wire-g2-c169.json; 10 call rows checked, 0 failed",
+  "readiness_note": "Both assigned rows changed ready -> wired after the final plain OFF build; global wired count increased by exactly two."
+}

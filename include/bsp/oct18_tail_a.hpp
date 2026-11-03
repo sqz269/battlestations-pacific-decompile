@@ -1,6 +1,9 @@
 #pragma once
 #include "bsp/native_legacy_sbo_string.hpp"
+#include "bsp/native_string.hpp"
+#include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/cc13_seg48U.hpp"
 #include "bsp/frontend_state_machine.hpp"
@@ -44,6 +47,70 @@ void trace_message_004c9c90(const char* message) noexcept;
 void* checkpoint_record_construct_00436690(void* self, NativeStringRawPoolContext& strings);
 void* checkpoint_record_copy_construct_00437490(void* self, const void* source,
                                              NativeStringRawPoolContext& strings);
+// The native pair is two owning 8h string headers, not a std::pair node.
+// Typed storage lets the traffic host use its existing string-storage provider;
+// both source interfaces below share the raw entries' construction schedule.
+struct TrafficStringPairStorage {
+    NativeString first;
+    NativeString second;
+};
+static_assert(offsetof(TrafficStringPairStorage, first) == 0);
+static_assert(offsetof(TrafficStringPairStorage, second) == 8);
+static_assert(sizeof(TrafficStringPairStorage) == 0x10);
+
+namespace traffic_pair_detail {
+template<class T> T read(const void* header, std::size_t offset) noexcept {
+    T result;
+    std::memcpy(&result, static_cast<const std::byte*>(header) + offset, sizeof(result));
+    return result;
+}
+template<class T> void write(void* header, std::size_t offset, T value) noexcept {
+    std::memcpy(static_cast<std::byte*>(header) + offset, &value, sizeof(value));
+}
+template<class Storage> struct FirstHeaderCleanup {
+    void* header;
+    Storage& strings;
+    bool armed{true};
+    ~FirstHeaderCleanup() noexcept {
+        if (armed) destroy_native_string_header_0041dd20(header, strings);
+    }
+};
+// One header schedule for both image constructors and both storage interfaces.
+// Keep this small shared body here: the large oct18 source module also depends
+// on game-only providers, whereas TrafficConfig is linked by core-only probes.
+template<class Storage>
+void construct_headers(void* self, const void* first, const void* second, Storage& strings) {
+    const auto construct = [&strings](void* destination, const void* source) {
+        write<std::uint32_t>(destination, 0, 0);
+        write<void*>(destination, 4, nullptr);
+        if (destination != source) {
+            resize_native_string_header_0041dd40(destination, strings,
+                read<std::uint32_t>(source, 0), true);
+            if (read<std::uint32_t>(source, 0) != 0) {
+                std::memmove(read<void*>(destination, 4), read<const void*>(source, 4),
+                    read<std::uint32_t>(destination, 0));
+            }
+        }
+    };
+    construct(self, first);
+    FirstHeaderCleanup<Storage> cleanup{self, strings};
+    construct(static_cast<std::byte*>(self) + 8, second);
+    cleanup.armed = false;
+}
+} // namespace traffic_pair_detail
+
+inline TrafficStringPairStorage& traffic_string_pair_construct_0048e1f0(
+    TrafficStringPairStorage& self, const NativeString& first,
+    const NativeString& second, NativeStringStorage& strings) {
+    traffic_pair_detail::construct_headers(&self, &first, &second, strings);
+    return self;
+}
+inline TrafficStringPairStorage& traffic_string_pair_copy_construct_0048e500(
+    TrafficStringPairStorage& self, const TrafficStringPairStorage& source,
+    NativeStringStorage& strings) {
+    traffic_pair_detail::construct_headers(&self, &source.first, &source.second, strings);
+    return self;
+}
 void* traffic_string_pair_construct_0048e1f0(void* self, const void* first,
                                           const void* second, NativeStringRawPoolContext& strings);
 void* traffic_string_pair_copy_construct_0048e500(void* self, const void* source,

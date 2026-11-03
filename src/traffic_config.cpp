@@ -2,7 +2,9 @@
 
 #include "bsp/gui_lua_runtime.hpp"
 #include "bsp/native_pooled_string_substring.hpp"
+#include "bsp/oct18_tail_a.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal2_chain169_switches.hpp"
 
 #include <cstddef>
 #include <cstring>
@@ -20,6 +22,21 @@ struct StringOwner {
     NativeString value;
     bool owns = true;
     ~StringOwner() { if (owns) destroy_native_string_header_0041dd20(&value, strings); }
+};
+// 0049CA20 creates the temporary pair; 004909EA copies it during insertion.
+// Their key producer is PartyPairs.Soldiers/Vehicles in TrafficGlobals.lua;
+// the empty mapped source is 0049CA0A/0049CA0E's zeroed local header. The
+// temporary retires at 0049CA46; the insertion copy transfers to the host map.
+struct TrafficPairOwner {
+    NativeStringStorage& strings;
+    oct18_tail_a::TrafficStringPairStorage value;
+    bool owns{false};
+    ~TrafficPairOwner() {
+        if (owns) {
+            destroy_native_string_header_0041dd20(&value.second, strings);
+            destroy_native_string_header_0041dd20(&value.first, strings);
+        }
+    }
 };
 struct RefOwner {
     GuiLua51Host& host;
@@ -186,6 +203,20 @@ NativeString& lookup_traffic_pair_0049c9c0(TrafficStringMap& map,
     const auto lower = map.lower_bound(name); //00485790, same existing comparator
     if (lower != map.end() && !native_string_less_case_insensitive_00443d00(name, lower->first))
         return lower->second;
+    if constexpr (kWireGoal2Chain169Bound) {
+        TrafficPairOwner pair{strings, {}};
+        const NativeString empty;
+        // 0048E1F0 constructs the authored key/empty value; OFF keeps the separate string copies.
+        oct18_tail_a::traffic_string_pair_construct_0048e1f0(pair.value, name, empty, strings);
+        pair.owns = true;
+        TrafficPairOwner node{strings, {}};
+        // 0048E500 copies both headers for insertion; OFF keeps the separate node string copies.
+        oct18_tail_a::traffic_string_pair_copy_construct_0048e500(node.value, pair.value, strings);
+        node.owns = true;
+        const auto inserted = map.emplace_hint(lower,
+            std::move(node.value.first), std::move(node.value.second));
+        return inserted->second;
+    } else {
     //0048E1F0 constructs key then empty mapped string. Node construction copies
     // both again;00489D50 releases the temporary value then key after insertion.
     StringOwner pair_key{strings, {}};
@@ -197,6 +228,7 @@ NativeString& lookup_traffic_pair_0049c9c0(TrafficStringMap& map,
     copy_construct_native_string_header_00426060(&node_value.value, &pair_value.value, strings);
     const auto inserted = map.emplace_hint(lower, std::move(node_key.value), std::move(node_value.value));
     return inserted->second;
+    }
 }
 
 void load_traffic_config_0049d690(TrafficConfig& owner, LuaStateOwnerEnvironment environment,
