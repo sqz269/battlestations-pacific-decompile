@@ -41,6 +41,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
+#include "bsp/game_hosts_message_manager.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
@@ -609,7 +611,16 @@ public:
         } else {
         }
     }
-    void message_map_load(const std::string&, int) override {}
+    void message_map_load(const std::string& name, int side) override {
+        // 008C62F6..008C6308: 00706760 on [game+21DCh] with the two Lua
+        // arguments; OFF keeps the no-op.
+        if constexpr (bsp::kWireGoal4Chain331Bound) {
+            owner_.load_mission_message_map(name, side);
+        } else {
+            static_cast<void>(name);
+            static_cast<void>(side);
+        }
+    }
     void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
     void set_entity_message_suppression(void*, bool) override {}
     void set_global_message_suppression(bool) override {}
@@ -757,6 +768,27 @@ void GameScriptOrdersHost::set_final_scoring_function_name(const std::string& na
     if constexpr (bsp::kWireGoal2Chain127Bound) {
         scoring_name_owner_->set_final_scoring_function_name(name);
     }
+}
+
+void GameScriptOrdersHost::load_mission_message_map(const std::string& name, int side) {
+    // Goal 4 chain 331. 008C62F6 MOV ECX,[00E188A8]; 008C62FC MOV ECX,[ECX+21DCh];
+    // 008C6302/008C6307 push the integer then &name; 008C6308 CALL 00706760. No null
+    // test: [game+21DCh] is built at 004DFA39 inside construct_world, which the
+    // load walk runs before luaStageInit (where the missions call LoadMessageMap,
+    // e.g. bsm_01_stationed_at_pearl.lua:39 LoadMessageMap("bsmdlg",1)). The
+    // host builds it only under kMessageManagerCc15Bound, so a missing manager is
+    // counted instead of dereferenced.
+    if (message_manager_ == nullptr || !message_manager_->constructed()) {
+        ++message_maps_without_manager_;
+        log_.notef("LoadMessageMap(\"%s\", %d): no MessageManager [game+21DCh] (00706760 "
+            "not run, goal 4 chain 331)", name.c_str(), side);
+        return;
+    }
+    const std::size_t before = message_manager_->record_count();
+    message_manager_->load_message_map_00706760(name, side);
+    ++message_maps_loaded_;
+    log_.notef("LoadMessageMap(\"%s\", %d): 00706760 records %zu -> %zu (goal 4 chain 331)",
+        name.c_str(), side, before, message_manager_->record_count());
 }
 
 std::size_t script_orders_drain_loopback_0076c600() {

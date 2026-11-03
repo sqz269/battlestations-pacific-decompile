@@ -72,6 +72,7 @@ namespace bsp::game {
 class GameUnitsHost;
 class GameHostLog;
 class GameMissionResultHost;
+class GameMessageManagerHost;
 
 // The plane-squadron member write-back, as a free function so that a caller
 // which holds no scripts-orders host can drive it. It fills the registry's
@@ -758,6 +759,15 @@ public:
         scoring_name_owner_ = owner;
     }
     void set_final_scoring_function_name(const std::string& name);
+    // Goal 4 chain 331: the MessageManager [game+21DCh] the LoadMessageMap
+    // binding loads into (008C62F6..008C6308). The mission frame owns it,
+    // builds it in construct_world and destroys script orders first.
+    void attach_message_manager(GameMessageManagerHost* manager) noexcept {
+        message_manager_ = manager;
+    }
+    // 008C6308: 00706760(this = [game+21DCh], &name, side), for
+    // bsp::lua_binding_load_message_map's message_map_load.
+    void load_mission_message_map(const std::string& name, int side);
     // Packet cc13-reconload, log-only: the scene load's recon publication entry
     // count (dry run when OFF), for the end-of-run summary line; also marks
     // that the scene-load block ran.
@@ -1319,6 +1329,10 @@ private:
     // Borrow the frame's scoring owner; frame creates it before the Lua dispatch
     // and destroys script orders first. Only chain127 ON publishes this borrow.
     GameMissionResultHost* scoring_name_owner_{nullptr};
+    // Goal 4 chain 331: borrowed [game+21DCh]; see attach_message_manager.
+    GameMessageManagerHost* message_manager_{nullptr};
+    unsigned long long message_maps_loaded_{0};
+    unsigned long long message_maps_without_manager_{0};
     bool measure_imperial_{false};  // 00F88988, untouched by this process
     // The stream 00BD2ED0 hands 00BD2F10. This process has no thread-local random
     // state object, so the sequence is this generator's and not the game's; a run
