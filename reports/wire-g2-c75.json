@@ -31,7 +31,7 @@
       "host_site": "src/game_hosts_commands.cpp GameCommandsHost::director_step_00836920, the attackmove arm's hostility test (00836BCB..00836BDC)",
       "status": "wired",
       "adapter": "CommandUnitPartyView: party_54() is the unit's GameCommandTargetFacts::side_0054 (the [director+24Ch] entity's +54h); the party argument is the target's +54h side",
-      "reach": "static in USN04 (no attackmove arm entries in the OFF log); the arm is live in other missions (the host's own note: USN13 1002, USN01 8). No disabled gate: arms_run holds whatever kDirectorCommandArmsBound is, and target_facts is bound by game_hosts_ship_ai.cpp:12649",
+      "reach": "static: no run has observed it. The 005457C0 test runs only for an attackmove target that is live and neither a nav point (41h) nor a command building (1Ch). The host's 'USN13 1002, USN01 8' counts (game_hosts_commands.cpp, command_building_1c arm) are the building sub-branch, not this one, and USN04 has no attackmove-arm entries. No disabled gate: arms_run holds whatever kDirectorCommandArmsBound is, and target_facts is bound by game_hosts_ship_ai.cpp:12649",
       "reached": 0
     },
     {
@@ -40,7 +40,7 @@
       "function": "00720450",
       "host_site": "src/game_hosts_commands.cpp GameCommandsHost::copy_director_state_00720450, slot 0's path object",
       "status": "wired",
-      "adapter": "DirectorPathObjectCopyView over GameDirector: +8h/+0Ch = path_follow_mode/path_start_mode, the +10h holder's source = path_name + path_points, +40h = user_points, 'source is own +40h vector' = path_user (0071FC40's attached test). ON leaves path_cursor (+18h..+20h), which 0071FD10 does not copy; the host's build memo and pending path are still copied as before",
+      "adapter": "DirectorPathObjectCopyView over GameDirector: +8h/+0Ch = path_follow_mode/path_start_mode; 007B1BF0's copy of the +10h holder = path_name + path_points (the source at +14h) and path_cursor (the cursor +18h/+1Ch/+20h: index_08, follow_mode_0c, forward_10); +40h = user_points; 'source is own +40h vector' = path_user (0071FC40's attached test). 0071F110 in the adopt step reassigns only the source, so the copied cursor stays. The host's build memo and pending path are still copied as before",
       "reach": "static in USN04 (OFF log: leader handover run=0). Caller chain game_hosts_units.cpp director_handover_0071c150 under kDeadLeaderDirectorStateCopyBound = true (cc13_jm08_switches.hpp), live at a formation leader's death (JM08)",
       "reached": 0
     },
@@ -207,5 +207,38 @@
     "status": "skipped",
     "reason": "Neither wired row is on a path bsp_game executes in USN04: the USN04 OFF log (g2-w1-off_USN04.log, current main lineage) has no attackmove-arm entries and 'leader handover run=0'. A USN04 pair would report reached=0 for both."
   },
-  "flip_proposal": "Flip kWireGoal2Chain75Bound ON after a pair on a mission that reaches the rows: JM08 (formation leader death, 0071FD10 via 00720450) and USN13 or USN01 (attackmove arm, 005457C0). 005457C0's ON arm equals the OFF compare by construction. 0071FD10's ON arm differs only in leaving the successor's path_cursor; the stage reset that follows makes the next begin rebuild it through 0071F600."
+  "flip_proposal": "Flip kWireGoal2Chain75Bound ON after a pair on missions that reach the rows: JM08 (formation leader death, 0071FD10 via 00720450, expect copy_state_from > 0) and a mission whose attackmove arm meets a live non-building, non-nav target (005457C0). 005457C0's ON arm equals the OFF compare by construction. 0071FD10's ON arm equals OFF except one edge: when from.path_user is set and from.path_points has fallen behind from.user_points, ON adopts user_points, as the image's 007B2250 source over the successor's own +40h vector does.",
+  "review_round_1": {
+    "review_run": 161,
+    "reviewed_head": "ade834619ede",
+    "findings": [
+      {
+        "finding": "copy_source_ref_007b1bf0() must also copy path_cursor",
+        "status": "fixed",
+        "evidence": "007B1C2E..007B1C3E copy holder +8h/+0Ch/+10h (path_movcam_seg46_argon.cpp path_source_ref_copy_from_007b1bf0); 0071F110 writes only [ECX+4]"
+      },
+      {
+        "finding": "host adapter comment claimed 0071FD10 leaves the cursor",
+        "status": "fixed"
+      },
+      {
+        "finding": "ON-arm comment implied ON omits the cursor",
+        "status": "fixed"
+      },
+      {
+        "finding": "header comment for copy_source_ref_007b1bf0()",
+        "status": "fixed"
+      },
+      {
+        "finding": "report rows[1].adapter and flip_proposal",
+        "status": "fixed"
+      },
+      {
+        "finding": "report rows[0].reach cited building sub-branch counts",
+        "status": "fixed"
+      }
+    ],
+    "note": "The first wiring commit's message (6fd5437f1) also says ON leaves the cursor; that statement is superseded by this round.",
+    "checks": "after fixes: build.ps1 exit 0, 2/2 tests; off_switch_on_build exit 0, 0 diagnostics; pc24_lint 0 findings; wire_readiness 8894 (both rows wired); verify_report_calls 7 checked, 0 failed"
+  }
 }

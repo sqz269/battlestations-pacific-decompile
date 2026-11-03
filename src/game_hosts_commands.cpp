@@ -3346,8 +3346,9 @@ struct CommandUnitPartyView {
 // +8h/+0Ch are path_follow_mode/path_start_mode (0071C1B0's stores, 0071FB90's 1/5);
 // the +10h holder's source at +14h is path_name with its points path_points; +40h is
 // user_points (0071FDE0's vector); and "the source is the object's own +40h vector" is
-// path_user (0071FC40's attached test). 0071FD10 does not copy the holder's cursor
-// state +18h..+20h (path_cursor), so the successor keeps its own.
+// path_user (0071FC40's attached test). 007B1BF0 copies the holder's source (+14h)
+// and its cursor (+18h/+1Ch/+20h, path_cursor: index_08, follow_mode_0c, forward_10);
+// 0071F110 in the adopt step reassigns only the source, so the copied cursor stays.
 struct DirectorPathObjectCopyView {
     GameDirector& to;
     const GameDirector& from;
@@ -3357,10 +3358,12 @@ struct DirectorPathObjectCopyView {
         to.path_start_mode = from.path_start_mode;
     }
     void copy_source_ref_007b1bf0() {
-        // The successor now shares the source, which is not its own +40h vector.
+        // 007B1C05: the successor now shares the source, which is not its own +40h
+        // vector; 007B1C2E..007B1C3E: the cursor's +8h/+0Ch/+10h.
         to.path_name = from.path_name;
         to.path_points = from.path_points;
         to.path_user = false;
+        to.path_cursor = from.path_cursor;
     }
     void assign_points_0071f9f0() { to.user_points = from.user_points; }
     bool other_source_is_own_points() const { return from.path_user; }
@@ -4197,7 +4200,7 @@ bool GameCommandsHost::copy_director_state_00720450(std::size_t dst, std::size_t
     }
     if constexpr (bsp::kWireGoal2Chain75Bound) {
         // 0071FD10 at 00720714: bsp_director_path_object_copy_from_0071fd10 over slot 0's
-        // path fields; OFF keeps the wholesale copy, path_cursor included.
+        // path fields (modes, source, cursor, points); OFF keeps the field-by-field copy.
         DirectorPathObjectCopyView path{to, from};
         bsp::director_geommesh_seg38_39_argon::bsp_director_path_object_copy_from_0071fd10(path);
         if (&to != &from) {

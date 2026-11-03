@@ -185,7 +185,8 @@ void bsp_director_path_object_copy_from_0071fd10(Seg38_39Host& host, void* self,
 // The View is the (self, other) pair of director path objects and supplies, in the
 // body's order: same_object() (0071FD2F CMP EDI,ESI), copy_modes_08_0c() (0071FD37..
 // 0071FD40, +8h and +0Ch), copy_source_ref_007b1bf0() (0071FD4C, the +10h holder's
-// refcounted source at +14h), assign_points_0071f9f0() (0071FD5A, the +40h vector),
+// refcounted source at +14h plus its cursor +18h/+1Ch/+20h, 007B1C2E..007B1C3E),
+// assign_points_0071f9f0() (0071FD5A, the +40h vector),
 // other_source_is_own_points() (0071FD5F..0071FD7D: [other+14h] non-null and its
 // vt[24h]() equal to other+40h) and adopt_own_points_source_007b2250() (0071FD85..
 // 0071FDC0: 007B2250 over self+40h, 0071F110 into self+10h, the temporary released).
