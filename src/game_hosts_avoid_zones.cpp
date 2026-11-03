@@ -7,6 +7,8 @@
 #include <cstring>
 
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/oct18_tail_a.hpp"
+#include "bsp/wire_goal2_chain78_switches.hpp"
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -23,18 +25,50 @@ float float_bits(std::uint32_t bits) noexcept {
     return value;
 }
 
+// 00423960's typed view over the host's own layer record (the image's 28h-byte
+// layer is +04h half extent, +08h n, +0Ch cell, +10h scale, +18h grid vector).
+class TerrainGridLayerRecordDimensionFields final
+    : public bsp::oct18_tail_a::TerrainLayerDimensionFields {
+public:
+    explicit TerrainGridLayerRecordDimensionFields(bsp::TerrainGridLayerRecord& layer)
+        : layer_(layer) {}
+    void set_half_extent_04(float value) override { layer_.half_extent = value; }
+    void set_dimension_08(std::int32_t value) override { layer_.dimension = value; }
+    void set_scale_10(float value) override { layer_.file_scalar = value; }
+    void set_cell_width_0c(float value) override { layer_.cell_size = value; }
+    // 004219A0 resizes the byte vector with fill 0, then 00BF79F0 zeroes [begin, end).
+    void resize_and_clear_grid_18(std::uint32_t bytes) override { layer_.grid.assign(bytes, 0); }
+
+private:
+    bsp::TerrainGridLayerRecord& layer_;
+};
+
 // 00424680 with [00CE3990] (0.17453286, ten degrees): 00423960(10) sets the
 // half extent [00CE3968] 12000.0, the cell 24000.0 [00CE3960] / 10, the scale
 // [00CE3958] 2.0 and a zeroed 10 * 10 grid; +14h is tan(angle) through 00412E20.
 bsp::TerrainGridLayerRecord default_layer_00424680() {
     bsp::TerrainGridLayerRecord layer;
     layer.class_name = "TerrainGridLayer";
+    if constexpr (bsp::kWireGoal2Chain78Bound) {
+        // 004246B4 00423960 terrain_layer_set_dimension_00423960(10) over the record; OFF keeps the inline stores.
+        // The image's constants, as its bytes read: 00CE3968 463B8000h, 00CE3960
+        // 40D7700000000000h, 00CE3958 40000000h, 00CE396C 45160000h (unread here).
+        static const volatile float extent_00ce3968 = 12000.0f;
+        static const volatile double diameter_00ce3960 = 24000.0;
+        static const volatile float scale_00ce3958 = 2.0f;
+        static const volatile float default_width_00ce396c = 2400.0f;
+        const bsp::oct18_tail_a::GridConstants constants{
+            extent_00ce3968, diameter_00ce3960, scale_00ce3958, default_width_00ce396c};
+        TerrainGridLayerRecordDimensionFields fields(layer);
+        bsp::oct18_tail_a::terrain_layer_set_dimension_00423960(fields, 10, constants);  // 004246AE PUSH 0Ah
+    } else {
     layer.dimension = 10;
     layer.half_extent = 12000.0f;
     layer.cell_size = static_cast<float>(24000.0 / 10.0);
     layer.file_scalar = 2.0f;
+    }
     layer.slope_limit = static_cast<float>(std::tan(static_cast<double>(0.17453286f)));
-    layer.grid.assign(100, 0);
+    if constexpr (!bsp::kWireGoal2Chain78Bound) layer.grid.assign(100, 0);
     return layer;
 }
 

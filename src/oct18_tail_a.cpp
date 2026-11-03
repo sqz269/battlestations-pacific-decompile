@@ -264,8 +264,8 @@ struct LegacyName {
 
 // ECX layer, stack signed dimension, RET4. Preserve native FILD/FDIVR64/FSTP32,
 // including the caller's x87 control word and signed zero/infinity behavior.
-void terrain_layer_set_dimension_00423960(void* self, std::int32_t dimension,
-                                        const GridConstants& constants, GridServices& services) {
+void terrain_layer_set_dimension_00423960(TerrainLayerDimensionFields& layer,
+                                        std::int32_t dimension, const GridConstants& constants) {
     const float extent = constants.extent_00ce3968;
     const double diameter = constants.diameter_00ce3960;
     float width;
@@ -274,15 +274,33 @@ void terrain_layer_set_dimension_00423960(void* self, std::int32_t dimension,
         fdivr qword ptr diameter
         fstp dword ptr width
     }
-    write(self, 4, extent);
+    layer.set_half_extent_04(extent);
     const float multiplier = constants.multiplier_00ce3958;
-    write(self, 8, dimension);
-    write(self, 0x10, multiplier);
-    write(self, 0xc, width);
-    void* const vector = add(self, 0x18);
+    layer.set_dimension_08(dimension);
+    layer.set_scale_10(multiplier);
+    layer.set_cell_width_0c(width);
     const Word unsigned_dimension = static_cast<Word>(dimension);
-    services.resize_bytes_004219a0(vector, unsigned_dimension * unsigned_dimension, 0);
-    clear_layer_bytes(vector, services);
+    layer.resize_and_clear_grid_18(unsigned_dimension * unsigned_dimension);
+}
+// The same body over the original-layout storage the image passes in ECX.
+void terrain_layer_set_dimension_00423960(void* self, std::int32_t dimension,
+                                        const GridConstants& constants, GridServices& services) {
+    struct NativeLayout final : TerrainLayerDimensionFields {
+        NativeLayout(void* layer, GridServices& grid) : self(layer), services(grid) {}
+        void set_half_extent_04(float value) override { write(self, 4, value); }
+        void set_dimension_08(std::int32_t value) override { write(self, 8, value); }
+        void set_scale_10(float value) override { write(self, 0x10, value); }
+        void set_cell_width_0c(float value) override { write(self, 0xc, value); }
+        void resize_and_clear_grid_18(std::uint32_t bytes) override {
+            void* const vector = add(self, 0x18);
+            services.resize_bytes_004219a0(vector, bytes, 0);
+            clear_layer_bytes(vector, services);
+        }
+        void* self;
+        GridServices& services;
+    };
+    NativeLayout layout(self, services);
+    terrain_layer_set_dimension_00423960(layout, dimension, constants);
 }
 // ECX registry, RET. Entry sentinel is captured; the live sentinel is rechecked
 // before dereference and increment, so returning handlers may repair storage.
