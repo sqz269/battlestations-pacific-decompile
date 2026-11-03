@@ -29,6 +29,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/wire_script_orders_host_switches.hpp"
 #include "bsp/wire_goal2_chain72_switches.hpp"
+#include "bsp/wire_goal2_chain127_switches.hpp"
+#include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include "bsp/attack_commands.hpp"
@@ -534,7 +536,13 @@ public:
             "008a8ac4");
     }
     void scoring_set_real_play_time_running(bool) override {}
-    void scoring_set_final_scoring_function_name(const std::string&) override {}
+    void scoring_set_final_scoring_function_name(const std::string& name) override {
+        // 0090BFC0 stores the binding's name on its scoring owner; OFF keeps the no-op.
+        if constexpr (bsp::kWireGoal2Chain127Bound) {
+            owner_.set_final_scoring_function_name(name);
+        } else {
+        }
+    }
     void message_map_load(const std::string&, int) override {}
     void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
     void set_entity_message_suppression(void*, bool) override {}
@@ -659,6 +667,12 @@ GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& unit
 
 GameScriptOrdersHost::~GameScriptOrdersHost() {
     if (g_live_script_orders == this) g_live_script_orders = nullptr;
+}
+
+void GameScriptOrdersHost::set_final_scoring_function_name(const std::string& name) {
+    if constexpr (bsp::kWireGoal2Chain127Bound) {
+        scoring_name_owner_->set_final_scoring_function_name(name);
+    }
 }
 
 std::size_t script_orders_drain_loopback_0076c600() {

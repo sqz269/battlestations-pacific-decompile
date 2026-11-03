@@ -73,6 +73,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal2_chain27_switches.hpp"
 #include "bsp/wire_goal2_chain36_switches.hpp"
+#include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/warning_string_seg64_argon.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -4063,6 +4064,9 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // created instances instead of being counted as records.
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
+            if constexpr (bsp::kWireGoal2Chain127Bound) {
+                host.script_orders->attach_scoring_name_owner(host.result.get());
+            }
             for (const GameSceneMarkerSeed& marker : markers) {
                 // Packet cc9_building_pad_model: the class id lets the pad model
                 // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).

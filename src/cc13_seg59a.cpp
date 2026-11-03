@@ -468,7 +468,13 @@ void score_record_set_message_264_0090bec0(Seg59aHost& host, void* record, Nativ
 // scoring+147Ch (the final-scoring Lua function name), skipped on self-assignment; the copy
 // length is the destination's after resize, and the copy is skipped when the source is empty.
 void scoring_set_final_function_name_0090bfc0(Seg59aHost& host, void* scoring, const NativeStr* name) {
-    NativeStr* const field = &at<NativeStr>(scoring, 0x147C);
+    scoring_set_final_function_name_0090bfc0(host,
+        ScoringFunctionNameView{at<NativeStr>(scoring, 0x147C)}, name);
+}
+
+void scoring_set_final_function_name_0090bfc0(ScoringFunctionNameHost& host,
+    ScoringFunctionNameView scoring, const NativeStr* name) {
+    NativeStr* const field = &scoring.field_147c;
     if (field == name) return;
     host.native_string_resize_0041dd40(field, name->length, 1);
     if (name->length != 0) host.memcpy_00bf7680(field->data, name->data, field->length);

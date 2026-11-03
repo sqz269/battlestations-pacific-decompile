@@ -1,0 +1,331 @@
+{
+  "goal": 2,
+  "chain": 127,
+  "slot": "g2-w2",
+  "branch": "agent/g2-w2",
+  "candidate": "segment 59 [008ee670-00922240]",
+  "tier": 2,
+  "host_file": "src/game_hosts_mission_result.cpp",
+  "switch": "kWireGoal2Chain127Bound",
+  "switch_default": false,
+  "wired_before": 8956,
+  "wired_after": 8957,
+  "wired_rows": 1,
+  "skipped_rows": 28,
+  "builds": {
+    "on": "PASS: off_switch_on_build.py --names kWireGoal2Chain127Bound, exit 0, zero diagnostics",
+    "off": "PASS: scripts/build.ps1, exit 0; reconstructed_math and tool_tests both passed"
+  },
+  "host_objects": [
+    {
+      "name": "GameMissionResultHost::FinalScoringName",
+      "where": "src/game_hosts_mission_result.cpp:316",
+      "producers": [
+        "0091D640: zero length/data stores at 0091D706 and 0091D70C",
+        "Lua argument 0 -> 008B8640 -> 0090BFC0; borrowed source retained for the whole copy",
+        "Existing resize_native_string_header_0041dd40 using crt_string_storage for the host allocation domain"
+      ],
+      "fields": [
+        {
+          "offset": "0x0",
+          "width": 4,
+          "role": "length"
+        },
+        {
+          "offset": "0x4",
+          "width": 4,
+          "role": "owned data pointer"
+        }
+      ],
+      "lifetime": "Created alongside the existing result scoring owner only on chain127 ON; persists through release_units and scene loads; releases its header through 0041DD20 at scoring-owner destruction, matching 0091CCD0 ownership.",
+      "rows": [
+        "0x0090bfc0"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "native": "0x008ef7c0",
+      "address": "0x0094bc70",
+      "function": "0x0094b600",
+      "host_site": "src/cc13_large61.cpp:spawn_manager_handle_message_0094b600",
+      "status": "skipped",
+      "reason": "The only reconstructed Host method property_set_field0c_008ef7c0 has no implementation. The active spawn queue is in peer-owned game_hosts_lua.cpp; it is excluded from this chain. No reachable replacement site in owned files was established.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f0420",
+      "address": "0x008f60c1",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "Declared-reference setter needs the owned raw38h record, including the old +1Ch target allocation. The scene parser owns projected SceneProperty values and no raw declaration records; a temporary copy would only return the host input. Native declaration-record production is outside the selected one-object budget.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f0580",
+      "address": "0x008f6684",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "Declared V3A assignment frees and replaces record+20h and stores byte size at +24h. No native declared-record/owning payload producer is retained on the parser path. A scratch record would not replace its real storage.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f23e0",
+      "address": "0x00469d37",
+      "function": "0x00469bf0",
+      "host_site": "src/scene_file.cpp:parse_scene_file",
+      "status": "skipped",
+      "reason": "Whole assignment requires two actual raw61-produced 114h property bags, matching property records, pooled keys and physical map nodes. Header parsing retains projected blocks; replacing that graph exceeds this chain one-object budget.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3590",
+      "address": "0x008f6585",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The type10 array provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3610",
+      "address": "0x008f669a",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The type11 array provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3690",
+      "address": "0x008f6319",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The three-word vector provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f38a0",
+      "address": "0x008f5d1e",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The string provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3a20",
+      "address": "0x008f5fcf",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The enum symbol provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3ac0",
+      "address": "0x008f6254",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The reference provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f3b60",
+      "address": "0x008f672e",
+      "function": "0x008f5a00",
+      "host_site": "src/scene_file.cpp:parse_property_body",
+      "status": "skipped",
+      "reason": "The owned subbag provider publishes into an actual 114h bag using NativeScenePropertyInsertionContext. The live parser has only ScenePropertyBlock, with no native bag/node/key graph or owner-bound E175B0/E188B4 insertion domain. Building and replacing the full graph exceeds the selected one-object budget; no scratch publication is counted.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008f37e0",
+      "address": "0x006fee18",
+      "function": "0x006fec00",
+      "host_site": "src/game_hosts_script_orders.cpp:dummy kamikaze spawn path",
+      "status": "skipped",
+      "reason": "The XYZ adder requires a raw property bag and insertion Host, not just the three component values. No native bag owner/insert provider is retained in the dummy spawn path; allocating an unused record and copying its vector back would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008fafc0",
+      "address": "0x004dd79a",
+      "function": "0x004dd5b0",
+      "host_site": "src/oct18_tail_a.cpp:preload_cache_008fafc0",
+      "status": "skipped",
+      "reason": "CommonResourceCache needs persistent reference vectors plus real texture/model/sound acquire/release and loading owners. No preload_cache Host implementation exists. A complete resource owner is outside this chain one-object budget.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008fe740",
+      "address": "0x0072c736",
+      "function": "0x0072c6a0",
+      "host_site": "src/game_hosts_gunnery.cpp:gun bot attachment",
+      "status": "skipped",
+      "reason": "Raw AAGunnerBot construction needs the class descriptor published at 00E19998 and the full 0072BBD0 tick/observer base producer. The host projects bot state; no actual descriptor/base construction provider is available at attachment.",
+      "reach": "static"
+    },
+    {
+      "native": "0x008fefd0",
+      "address": "0x0072c79e",
+      "function": "0x0072c6a0",
+      "host_site": "src/game_hosts_gunnery.cpp:gun bot attachment",
+      "status": "skipped",
+      "reason": "Raw AAFlakBot construction needs the class descriptor published at 00E1999C and the full 0072BBD0 tick/observer base producer. Neither is retained on the host attachment path; vtable constants alone cannot produce them.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090abb0",
+      "address": "0x0076d1f0",
+      "function": "0x0076d1b0",
+      "host_site": "src/multiplayer_session_cc13.cpp:scoring_send_row_0090abb0",
+      "status": "skipped",
+      "reason": "The server scoring send path needs a mode-1 session, native score-container iterators and real message transport. Campaign frame state has no such session producer, and the optional skirmish session gate is OFF; this would not be a reachable campaign replacement.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090bfc0",
+      "address": "0x008b8766",
+      "function": "0x008b8640",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost::set_final_scoring_function_name",
+      "status": "wired",
+      "reach": "static",
+      "reach_evidence": [
+        "GameMissionFrameHost::Impl creates the result owner before scene loading.",
+        "run_scene_load_004dfb70 load_scene_contents creates script orders, binds this same result, then publishes orders to Lua.",
+        "game_hosts_lua.cpp dispatches handled rows to GameScriptOrdersHost::dispatch; handles falls through true for Scoring_SetFinalScoringFunctionName.",
+        "GameScriptOrdersHost::dispatch -> lua_binding_scoring_set_final_scoring_function_name -> SetThinkCoreHost setter -> retained result field -> typed 0090BFC0 body. No other OFF switch encloses this route.",
+        "The normal Lua dispatch route is handled && !error_replay(); no false compile-time gate encloses it."
+      ],
+      "contract": "Original ECX=scoring, stack const NativeString* name, RET4. Sole call 008B8766 in 008B8640. Typed view retains self-assignment guard, resize-before-copy order and destination length reload; raw entry delegates to this same body.",
+      "coverage": "complete",
+      "off_behavior": "Existing SetThinkCoreHost setter remains a no-op. The retained string is not allocated, the owner borrow is not published, and no reconstructed name-assignment call is emitted on the OFF host route."
+    },
+    {
+      "native": "0x0090e670",
+      "address": "0x006e56c4",
+      "function": "0x006e4d50",
+      "host_site": "src/cc13_bombdrop.cpp:slot_drop_interval_record_0090e670",
+      "status": "skipped",
+      "reason": "The only reconstructed bomb-drop Host method has no implementation. The active host does not retain the native per-slot +160h drop-record vector or the raw unit record at that site; adding a separate scoring event owner exceeds the selected object budget.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090ea00",
+      "address": "0x009150d3",
+      "function": "0x009150a0",
+      "host_site": "src/cc13_seg59b.cpp:scoring_force_refresh_009150a0",
+      "status": "skipped",
+      "reason": "Publishing needs the real game+1A0Ch Lua owner, native LuaObject/holder lifetime and score-record archive dispatch. No Seg59bHost publish/force-refresh adapter provides this object graph to the existing result host.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090eb80",
+      "address": "0x0094c772",
+      "function": "0x0094c490",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_spawn_queue_0094c490",
+      "status": "skipped",
+      "reason": "The reachable original-equivalent spawn site is in explicitly excluded peer-owned game_hosts_lua.cpp. No implementation can be wired there under this assignment; an uncalled adapter elsewhere would not count.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090ebf0",
+      "address": "0x0077a67a",
+      "function": "0x0077a650",
+      "host_site": "src/cc13_small2.cpp:expiry_notice_0090ebf0",
+      "status": "skipped",
+      "reason": "The only reconstructed scheduled-expiry Host method expiry_notice_0090ebf0 has no implementation. No host root running this original scheduled-expiry caller with its owner/category state was established; the world removal-counter walk is a different caller.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090ec40",
+      "address": "0x0077d193",
+      "function": "0x0077ce60",
+      "host_site": "src/game_hosts_gunnery.cpp:damage attribution",
+      "status": "skipped",
+      "reason": "The live damage path uses the partial kill_attribution_0077ce60 projection and retains no scorer +130h unique shooter vector or +0DCh category map. The second original caller is the OFF full plane-tick body. A second scoring event owner is outside the selected object budget.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090ed40",
+      "address": "0x00928022",
+      "function": "0x00927f60",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost::notify_scoring_entities_00927f60",
+      "status": "skipped",
+      "reason": "The result host records entity notification but owns no entity list or unit+1ACh usage-time producer. Its header explicitly leaves the unit_usage map unwritten; passing zero or a fabricated elapsed time would violate producer provenance.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090f5a0",
+      "address": "0x008eb06d",
+      "function": "0x008eada0",
+      "host_site": "src/powerup_seg58_argon.cpp:fun_0090f5a0",
+      "status": "skipped",
+      "reason": "Powerup Host fun_0090f5a0 has no implementation. The full grant needs each slot award map and the HUD/online/tracker consumers; the retained name field supplies none of these producers.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0090f860",
+      "address": "0x006f7323",
+      "function": "0x006f6760",
+      "host_site": "src/cc13_seg59a.cpp:scoring_capture_awards_0090f860",
+      "status": "skipped",
+      "reason": "Capture award body needs the per-slot +178h capture counter, +70h award map and real award grant services. These runtime-only fields are absent from the persisted MissionScoreRecord and have no bound capture-event scoring owner in this chain.",
+      "reach": "static"
+    },
+    {
+      "native": "0x00913ab0",
+      "address": "0x0094c746",
+      "function": "0x0094c490",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::run_spawn_queue_0094c490",
+      "status": "skipped",
+      "reason": "The spawn delivery site is peer-owned/excluded. The body also needs the real RUA_MU award-table +48h rank-threshold vector and slot award maps; those are not provided by the selected final-name owner.",
+      "reach": "static"
+    },
+    {
+      "native": "0x00914270",
+      "address": "0x00914e8b",
+      "function": "0x00914390",
+      "host_site": "src/cc13_seg59a.cpp:award_registry_score_for_name_00914270",
+      "status": "skipped",
+      "reason": "The badge score must come from an actual 0050FC30 award record +3Ch, through published registry 00E19900. No native award registry producer is retained on the host recompute path; returning an invented threshold or score is disallowed.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0091d620",
+      "address": "0x00594ac1",
+      "function": "0x00594a70",
+      "host_site": "src/mission_progress.cpp:mission_record_00594a70",
+      "status": "skipped",
+      "reason": "The body requires the full raw 0091CE90 container constructor and writes +284h. The live mission map stores non-image MissionScoreRecord values whose defaults already initialize the projected fields. Reinitializing only count would duplicate existing initialization and not run the required native container body.",
+      "reach": "static"
+    },
+    {
+      "native": "0x0091d780",
+      "address": "0x00920a79",
+      "function": "0x00920a20",
+      "host_site": "src/cc13_seg59b.cpp:score_record_evaluate_campaign_awards_0091d780",
+      "status": "skipped",
+      "reason": "Campaign award evaluation needs the native campaign progress/counter trees, slot award maps, campaign identity and grant providers. The result host retains only the persistence projection; no complete Seg59bHost campaign award graph is available.",
+      "reach": "static"
+    }
+  ],
+  "runtime_validation": "Not run, as instructed. Reach established by static host reading; no mission call-count evidence supplied for this range candidate.",
+  "limitations": [
+    "Storing the final-scoring name is wired; executing the named final-scoring Lua function remains outside this chain.",
+    "Only existing body logic was moved to the typed overload; the raw entry is a thin delegate, with no second assignment implementation."
+  ],
+  "wired_delta": 1,
+  "validation": {
+    "report_calls": "PASS: 29 call rows checked, 0 failed",
+    "diff_check": "PASS",
+    "pc24_lint": "Not applicable: the ON arm and refactored 0090BFC0 body contain no floating-point arithmetic.",
+    "tests": "Existing reconstructed_math and tool_tests passed; no new tests added.",
+    "readiness": "PASS after final plain OFF build: 0090bfc0 ready -> wired; 8956 -> 8957."
+  }
+}

@@ -114,6 +114,8 @@ public:
     void set_mission_key(std::string key);
     void set_session_mode(std::uint32_t mode) noexcept;
     void set_mission_clock(float seconds) noexcept;
+    // 008B8766 -> 0090BFC0 on the same owner as the mission scoring records.
+    void set_final_scoring_function_name(const std::string& name);
     // game+1EE3h, written by the state entry 004da71e. The drain's 10h arm
     // tests it at 004e4715 and takes the early-return sub-path when it is set.
     void set_session_networked(bool networked) noexcept;
@@ -218,6 +220,11 @@ private:
     std::unique_ptr<CompletionBridge> completion_bridge_;
 
     bsp::MissionScoringManagerState scoring_{};            // [game+21A0h]
+    // 0091D706/0091D70C initialize this owned eight-byte field; 0091CD2E..
+    // 0091CD54 release it. Follow the existing scoring owner's lifetime,
+    // including across release_units/scene loads. Allocated only by chain127 ON.
+    struct FinalScoringName;
+    std::unique_ptr<FinalScoringName> final_scoring_name_;
     bsp::MissionProgress progress_{};                      // game+6B4h stand-in
     GameProfileOwner* profile_{nullptr};                   // game+650h when bound
     bsp::MissionObjectiveSet objectives_[bsp::kObjectiveSetCount]{};  // game+21A4h
