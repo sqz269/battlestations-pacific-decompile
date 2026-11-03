@@ -1410,10 +1410,12 @@ std::int32_t find_first_of_native_wide_string_00a9ef60(const NativeWideStringHea
     return index == text.length_00 ? -1 : static_cast<std::int32_t>(index);
 }
 
-void* copy_construct_native_string_record_00a9f460(void* fresh, const NativeString& source,
+NativeLocaleStringRecord& copy_construct_native_string_record_00a9f460(
+    NativeLocaleStringRecord& record, const NativeString& source,
     NativeStringStorage& strings)
 {
-    auto* const text = static_cast<NativeString*>(fresh);
+    void* const fresh = &record;
+    auto* const text = &record.key;
     set_dword(fresh, 0, 0);
     set_dword(fresh, 4, 0);
     if (static_cast<const void*>(text) != static_cast<const void*>(&source)) {
@@ -1423,7 +1425,14 @@ void* copy_construct_native_string_record_00a9f460(void* fresh, const NativeStri
     }
     set_dword(fresh, 8, 0);
     set_dword(fresh, 0xc, 0);
-    return fresh;
+    return record;
+}
+
+void* copy_construct_native_string_record_00a9f460(void* fresh, const NativeString& source,
+    NativeStringStorage& strings)
+{
+    return &copy_construct_native_string_record_00a9f460(
+        *static_cast<NativeLocaleStringRecord*>(fresh), source, strings);
 }
 
 void restart_native_gui_animated_value_00aa0e20(void* value, std::uint8_t forward,

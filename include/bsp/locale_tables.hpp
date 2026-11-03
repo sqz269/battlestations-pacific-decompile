@@ -4,13 +4,35 @@
 //            00a9fc30, 00a9ec70, 0073c240, 008d7bc0, 0073bae0.
 // Every name below is a hypothesis, not a recovered symbol. See
 // docs/APP_INIT_LOCALE.md for the evidence behind each claim.
+#include "bsp/native_locale_string_record.hpp"
+#include "bsp/wire_goal2_chain215_switches.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 namespace bsp {
+
+// ON-only key owner. Constructed at the new-node edge of 00A9FC30 and retired
+// with its host node by clear_0073c240 (native payload destructor 00737CE0).
+// The source is the AA0020 parser's composed category.name record key; its
+// temporary NativeString follows AA0192..AA01CE and is released after F460.
+class NativeLocaleKeyOwner {
+public:
+    NativeLocaleKeyOwner() noexcept = default;
+    ~NativeLocaleKeyOwner();
+    NativeLocaleKeyOwner(const NativeLocaleKeyOwner&) = delete;
+    NativeLocaleKeyOwner& operator=(const NativeLocaleKeyOwner&) = delete;
+    NativeLocaleKeyOwner& operator=(std::string&& source);
+    std::size_t size() const noexcept { return record_.key.length(); }
+    char operator[](std::size_t index) const noexcept { return record_.key.data()[index]; }
+
+private:
+    NativeLocaleStringRecord record_;
+};
 
 // One row of the runtime language table the native build keeps behind the
 // pointer global 00f88974, stride 0x20 (008d4870 shifts the index left by 5).
@@ -155,7 +177,7 @@ public:
 
 private:
     struct Node {
-        std::string key;
+        std::conditional_t<kWireGoal2Chain215Bound, NativeLocaleKeyOwner, std::string> key;
         std::u16string text;
         Node* next = nullptr;
     };
