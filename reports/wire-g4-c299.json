@@ -1,0 +1,43 @@
+{
+  "chain": 299,
+  "slot": "g4-w4",
+  "switch": "kWireGoal4Chain299Bound",
+  "switch_header": "include/bsp/wire_goal4_chain299_switches.hpp",
+  "summary": "Checkpoint Lua copies run through the native 14h LuaObject bodies over the live mission state. MW_LoadCheckpoint's 004379C0 per-slot copy 00436730 now executes its listing (string-key setters 00B673A0/00B67460/00B67400/00B66790/00B67580+00B67800, number-key setters 00B66530/00B665D0/00B66580/00B66740/00B66670+00B67720, number-key gate 00436A0B..00436A13) instead of the raw Lua API copy_slot. MW_SaveCheckpoint's 00438020 script-table copy is the native iteration 0043844D..004384DB (00B65F50, 00B67080, 00B66420, 00B67190) calling the existing 00436C50 body with services bound to the existing setter bodies and the live raw string pool / 0108FF2C authorities. OFF keeps copy_slot on both paths.",
+  "evidence": [
+    "00436730 listing: 0043675D/00436762 key type 4 -> jump table 00436C20 on the value type; 00436A0B..00436A13 key type 3 else return at 00436C09 -> jump table 00436C34; 00436A36..00436A57 00B66290(key), 00B66670, 00B66290(key), 00B67720.",
+    "00438020 listing: 00438045 EBP = ECX (profile manager); 00438452..0043846A two 00B65F50; 00438489 00B67080; 00438495/004384D4 00B66420(key) (stack argument, RET 4, ECX ignored: 00B66420 listing); 004384B4 CALL 00436C50 with ECX = EBP and stack (destination [ESP+50h], key, value); 004384C8 00B67190.",
+    "00436C50 forwards its ECX only to its own recursion (src/oct18_tail_a.cpp copy_profile_lua_value_00436c50, 'ECX manager (recursion only)'); the host has no profile-manager object, so nullptr is passed and never read.",
+    "Owner tracking: src/native_lua_objects.cpp registers a tracked object in slots_14[stack_offset + absolute index] with no bound (50 slots); each nested table level holds three tracked objects, so the host refuses a value nested past the remaining slots before copying (labelled host admission, std::length_error caught by mission_checkpoint_binding)."
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 ON and a temporary OFF build both pass; both CTest targets pass",
+    "call_graph": "called 4239 -> 4247; 00B66530/00B66740/00436C50/00B67400/00B66580/00B65F80/00B674C0 reachable from WinMain through GameMissionLuaHost::mission_checkpoint_binding (load and save)",
+    "readiness": "wired 9278 -> 9280 on this tree's base",
+    "game_run": "not run"
+  },
+  "rows": [
+    {"native": "00B66530", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_checkpoint_slot_objects (00436730 ON arm, number key + boolean) and CheckpointProfileLuaServices::boolean_index_00b66530 (00436C50 from save_checkpoint_00438020)"},
+    {"native": "00B66740", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_checkpoint_slot_objects (00436730 ON arm, number key + string) and CheckpointProfileLuaServices::string_index_00b66740 (00436C50)"},
+    {"native": "00436C50", "status": "wired", "host_site": "src/profile_checkpoint.cpp save_checkpoint_00438020 ON arm (native iteration 0043844D..004384DB), from GameMissionLuaHost::mission_checkpoint_binding (src/game_hosts_lua.cpp)"},
+    {"native": "00436730", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_lua_slot_00436730 ON arm, from load_checkpoint_004379c0 (MW_LoadCheckpoint 008ACA30)"},
+    {"native": "00B67400", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_checkpoint_slot_objects (string key, non-integral number); also inside 00436C50"},
+    {"native": "00B66580", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_checkpoint_slot_objects (number key, non-integral number); also inside 00436C50"},
+    {"native": "00B65F80", "status": "wired", "host_site": "src/profile_checkpoint.cpp copy_checkpoint_slot_objects key/value type tests and CheckpointProfileLuaServices::type_00b65f80"},
+    {"native": "00B65F70", "status": "skipped", "host_site": "src/profile_checkpoint.cpp write_other_checkpoints_00437250 / save_checkpoint_00438020", "reason": "At 0043730A/0043878D it only tests a 00B67800 named lookup's wrapper, which is always kind 2; the host keeps BSP_Chk_Save as a stack index with a table check, so a call would be a constant-true round trip."},
+    {"native": "00B680A0", "status": "skipped", "host_site": "src/vehicle_class_fields.cpp read_vehicle_class_base_fields_00960230", "reason": "Only caller 00960230 is not linked into the built exe (call_graph: no function); no live vehicle-class Lua reader to route through it."},
+    {"native": "00B67C40", "status": "skipped", "host_site": "src/sensor_table_data.cpp build_sensor_class_table_008082a0", "reason": "Callers 00831840 (ship class fields) is not linked and 008082A0's live host path builds the sensor table from baked robots data, not a Lua row, so there is no Lua float4 read to replace."},
+    {"native": "00B679F0", "status": "skipped", "host_site": "none", "reason": "Callers 005072C0/00680DB0 are the tactical/unit library model loaders, which no host constructs."},
+    {"native": "00B662E0", "status": "skipped", "host_site": "src/lua_text_dump.cpp 0043C1C0", "reason": "0043C1C0 is not linked in the exe; the other callers (006B2D30/006B2E90/006B2FC0/006B3DD0) belong to the mission Lua pickler that the image never references."},
+    {"native": "00B664E0", "status": "skipped", "host_site": "none", "reason": "Only caller 00742C10 (land convoy parent/placement cache) has no host object."},
+    {"native": "00B66620", "status": "skipped", "host_site": "none", "reason": "Only caller 006AE870 is in the mission Lua pickler restore path (006B5960/006AF8B0), which has no absolute, RVA or rel32 reference in the image (include/bsp/mission_savedata_lua.hpp)."},
+    {"native": "006B1190", "status": "skipped", "host_site": "src/mission_savedata_lua.cpp", "reason": "Mission Lua pickler save entry 006B7710 is unreferenced in the image; retained but unreachable code (include/bsp/mission_savedata_lua.hpp)."},
+    {"native": "006B1490", "status": "skipped", "host_site": "src/mission_savedata_lua.cpp", "reason": "Restore pass 006B23E0 hangs off the unreferenced load tail 006B5960; unreachable in the image."},
+    {"native": "006B1870", "status": "skipped", "host_site": "src/mission_savedata_lua.cpp", "reason": "Naming pass of the unreferenced 006B7710 save entry; unreachable in the image."},
+    {"native": "006B3FD0", "status": "skipped", "host_site": "src/mission_savedata_lua.cpp", "reason": "Encode pass of the unreferenced 006B7710 save entry; unreachable in the image."},
+    {"native": "006B5BF0", "status": "skipped", "host_site": "src/mission_savedata_lua.cpp", "reason": "Global-root encode of the unreferenced 006B7710 save entry; unreachable in the image."},
+    {"native": "00437C70", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp EndScene (008B01B0)", "reason": "Its in-mission caller is the EndScene prompt callback 0088B360 (choice 3 = restart from start); the host's EndScene binding only records (no 00531B00 prompt, no 004D7920 state 0Bh restart), and the menu/prompt callers 0058BDF0/005FD5B0 run before a mission Lua state holds BSP_Chk_Save. Needs the end-scene prompt and restart flow first."},
+    {"native": "00866C60", "status": "skipped", "host_site": "src/game_hosts_mission_frame.cpp update_effect_manager_00867ee0", "reason": "Caller 00867EE0 needs the native live effect manager (00866440 singleton, 00867500 inserts); no point effect is created natively in this build (00866440/008680B0 not linked), and the mission-frame stand-in only records."},
+    {"native": "00867D00", "status": "skipped", "host_site": "src/game_hosts_mission_frame.cpp update_effect_manager_00867ee0", "reason": "Same missing native live effect manager as 00866C60; advancing an empty or fabricated manager would run on no game state."}
+  ]
+}
