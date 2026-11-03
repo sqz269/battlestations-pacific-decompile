@@ -1,4 +1,5 @@
 #include "bsp/native_physical_buffer_owner.hpp"
+#include "bsp/wire_goal2_chain114_switches.hpp"
 
 #include <cstring>
 #include <type_traits>
@@ -119,6 +120,16 @@ void unwind_destroy_base(void* owner) noexcept {
     // C++ exception terminates; normal base destruction remains throwable.
     destroy_base(owner);
 }
+void destroy_selected_base(void* owner, std::uint32_t profile) {
+    auto& base = *static_cast<NativePhysicalBufferBaseStorage*>(owner);
+    if (profile == 0x00d61e10u)
+        destroy_native_physical_index_buffer_base_00b4b490(base);
+    else
+        destroy_native_physical_vertex_buffer_base_00b4b530(base);
+}
+void unwind_selected_base(void* owner, std::uint32_t profile) noexcept {
+    destroy_selected_base(owner, profile);
+}
 void destroy(void* owner, std::uint32_t profile, NativePhysicalBufferOwnerContext& context) {
     word(owner) = profile;
     try {
@@ -128,10 +139,20 @@ void destroy(void* owner, std::uint32_t profile, NativePhysicalBufferOwnerContex
             word(owner, 0x28) = 0;
         }
     } catch (...) {
+        // 00B4B490/00B4B530: select the actual base destructor; OFF keeps shared unwind cleanup.
+        if constexpr (kWireGoal2Chain114Bound) {
+            unwind_selected_base(owner, profile);
+        } else {
         unwind_destroy_base(owner);
+        }
         throw;
     }
+    // 00B4B490/00B4B530: call the typed base body; OFF keeps the existing shared cleanup.
+    if constexpr (kWireGoal2Chain114Bound) {
+        destroy_selected_base(owner, profile);
+    } else {
     destroy_base(owner);
+    }
 }
 } // namespace
 
@@ -153,8 +174,24 @@ void destroy_native_buffer_diagnostic_record_00b3f4c0(void* record,
     if (auto* const data = static_cast<char*>(pointer(record, 8)))
         storage.release(data, word(record, 4) + 1u);
 }
-void destroy_native_physical_index_buffer_base_00b4b490(void* owner) { destroy_base(owner); }
-void destroy_native_physical_vertex_buffer_base_00b4b530(void* owner) { destroy_base(owner); }
+void destroy_native_physical_index_buffer_base_00b4b490(NativePhysicalBufferBaseStorage& owner) { destroy_base(&owner); }
+void destroy_native_physical_vertex_buffer_base_00b4b530(NativePhysicalBufferBaseStorage& owner) { destroy_base(&owner); }
+void destroy_native_physical_index_buffer_base_00b4b490(void* owner) {
+    // 00B4B490: forward raw storage to its typed view; OFF keeps the original engine call.
+    if constexpr (kWireGoal2Chain114Bound) {
+        destroy_native_physical_index_buffer_base_00b4b490(*static_cast<NativePhysicalBufferBaseStorage*>(owner));
+    } else {
+        destroy_base(owner);
+    }
+}
+void destroy_native_physical_vertex_buffer_base_00b4b530(void* owner) {
+    // 00B4B530: forward raw storage to its typed view; OFF keeps the original engine call.
+    if constexpr (kWireGoal2Chain114Bound) {
+        destroy_native_physical_vertex_buffer_base_00b4b530(*static_cast<NativePhysicalBufferBaseStorage*>(owner));
+    } else {
+        destroy_base(owner);
+    }
+}
 void destroy_native_physical_index_buffer_00b4b900(void* owner,
     NativePhysicalBufferOwnerContext& context) { destroy(owner, 0x00d61e10u, context); }
 void destroy_native_physical_vertex_buffer_00b4bab0(void* owner,

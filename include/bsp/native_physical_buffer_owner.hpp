@@ -41,6 +41,21 @@ void destroy_native_buffer_diagnostic_record_00b3f4c0(void* actual_record,
 // Complete native ECX/RET base and derived destructors. The derived entries
 // install PRIVATE physical profiles D61E10/D61E34 even for pooled objects, call
 // actual support, reload COM+28, release/clear it, then destroy the raw +08 array.
+// Borrowed image prefix, not a new owner: the constructors above produce these
+// fields inside the existing 2Ch physical buffer (30h when held in a pool).
+struct NativePhysicalBufferBaseStorage {
+    std::uintptr_t vtable_00;
+    std::uint32_t references_04;
+    void* pointers_08;
+    std::int32_t pointer_count_0c;
+    std::int32_t pointer_capacity_10;
+};
+static_assert(sizeof(NativePhysicalBufferBaseStorage) == 0x14);
+static_assert(offsetof(NativePhysicalBufferBaseStorage, pointers_08) == 8);
+static_assert(offsetof(NativePhysicalBufferBaseStorage, pointer_count_0c) == 0x0c);
+static_assert(offsetof(NativePhysicalBufferBaseStorage, pointer_capacity_10) == 0x10);
+void destroy_native_physical_index_buffer_base_00b4b490(NativePhysicalBufferBaseStorage&);
+void destroy_native_physical_vertex_buffer_base_00b4b530(NativePhysicalBufferBaseStorage&);
 void destroy_native_physical_index_buffer_base_00b4b490(void* actual_owner);
 void destroy_native_physical_vertex_buffer_base_00b4b530(void* actual_owner);
 void destroy_native_physical_index_buffer_00b4b900(void* actual_owner,

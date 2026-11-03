@@ -176,11 +176,25 @@ private:
     NativeShaderStateListPoolStorage& storage_;
     static void invoke_trim(void*);
 };
+// Typed view of the existing allocator's 244h allocation; B620F0 initializes
+// metadata only. The object payloads and the final two bytes remain untouched.
+struct NativeShaderStateListSlabStorage {
+    alignas(4) std::byte slots_000[0x200];
+    std::uint16_t free_indices_200[32];
+    std::uint16_t free_count_240;
+    std::byte untouched_242[2];
+};
+static_assert(sizeof(NativeShaderStateListSlabStorage) == 0x244);
+static_assert(offsetof(NativeShaderStateListSlabStorage, free_indices_200) == 0x200);
+static_assert(offsetof(NativeShaderStateListSlabStorage, free_count_240) == 0x240);
+void* initialize_native_shader_state_list_slab_00b620f0(NativeShaderStateListSlabStorage&,std::uint32_t index) noexcept;
 void* initialize_native_shader_state_list_slab_00b620f0(void*,std::uint32_t index) noexcept;
 void destroy_native_shader_state_list_pool_table_00b621b0(void* actual_header) noexcept;
 // Same explicit fixed-global/real-CRT-atexit contract as the pass pool above.
 void bind_static_native_shader_state_list_pool_0108fee4(NativeShaderStateListPool&) noexcept;
 void* allocate_static_native_shader_state_list_slot_00b62760();
+struct NativeShaderDescriptorArray;
+void return_static_native_shader_state_list_slot_00b623c0(NativeShaderDescriptorArray&);
 void return_static_native_shader_state_list_slot_00b623c0(void*);
 int initialize_static_native_shader_state_list_pool_00cd7cc0();
 void destroy_static_native_shader_state_list_pool_00ce0d50() noexcept;
