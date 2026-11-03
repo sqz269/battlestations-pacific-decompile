@@ -92,6 +92,8 @@
 #include "bsp/native_input_action_contexts.hpp"
 #include "bsp/input_action_classifier.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
+#include "bsp/wire_goal4_chain302_switches.hpp"
+#include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -2363,6 +2365,30 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
     std::_Exit(1);
 }
 
+void GameStartupHost::retire_native_input_configuration() noexcept {
+    if (!input_configuration_) return;
+    try {
+        if (!input_configuration_->retire()) {
+            // An interrupted 00698A10 load: keep the span (its Lua owner and
+            // vectors) unfreed and do not drain over it, as the interrupted
+            // input settings and settings loader owners do.
+            try { log_.note("native input configuration interrupted; retaining it until process exit"); log_.close(); }
+            catch (...) {}
+            std::_Exit(1);
+        }
+    } catch (const std::exception& error) {
+        // The Lua owner close failed part way; do not drain over that state.
+        try { log_.notef("native input configuration retirement incomplete: %s", error.what()); log_.close(); }
+        catch (...) {}
+        std::_Exit(1);
+    } catch (...) {
+        try { log_.note("native input configuration retirement incomplete"); log_.close(); }
+        catch (...) {}
+        std::_Exit(1);
+    }
+    input_configuration_.reset();
+}
+
 void GameStartupHost::drain_native_singletons() {
     exit_if_native_texture_atlas_interrupted();
     exit_if_native_mesh_interrupted();
@@ -2623,6 +2649,10 @@ GameStartupHost::~GameStartupHost() {
     }
     delete menu_;
     menu_ = nullptr;
+    if constexpr (kWireGoal4Chain302Bound) {
+        retire_native_input_configuration();
+    } else {
+    }
     if (page_frontend_phase_ != PageFrontendPhase::unselected) {
         retire_page_frontend_resources_before_drain();
         exit_if_native_gui_resources_retained();
@@ -3686,6 +3716,28 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     if constexpr (kWireGoal4Chain271Bound) {
         menu_->bind_input_context_manager(input_->context_manager);
     }
+    if constexpr (kWireGoal4Chain302Bound) {
+        // 004DDB90 at 004DDBE2: LEA ECX,[game+3Ch]; CALL 00698680, the game
+        // constructor's embedded input configuration. No native game exists in
+        // this process, so the application owns that span and builds it here,
+        // before OnInitOnce (004DD745) and the press-start commits load it. Its
+        // services are the ones already live: the input runtime and its action
+        // owner/records, the input settings tables loaded in phase 5, the Lua and
+        // VFS strings, and the raw settings block (+41h, +44h, +B0h). The binding
+        // constants and timing are the same cells action_bindings uses.
+        input_configuration_ = std::make_unique<GameNativeInputConfigurationApplication>(
+            GameNativeInputConfigurationBindings{log_, input_->core, scripts_->input(),
+                *lua_services_, vfs_->borrow_raw_services().strings, *native_data_,
+                settings_process_->settings(), input_backend_00f8bbf4_,
+                input_->sse2_available, application_camera_axes_crt(),
+                {input_->trigger_threshold_00ce3800, input_->negative_zero_00d7a208,
+                    input_->one_00d7a24c, input_->quarter_00d7a348, input_->half_00d7a280,
+                    input_->seven_eighths_00ce42e0, input_->eighth_00d04380},
+                {input_->action_timing.quick_edge_and_hold, input_->action_timing.repeat_delay,
+                    input_->action_timing.repeat_step},
+                input_->zero_00d7a218});
+        menu_->bind_input_configuration(input_configuration_.get());
+    }
     // Milestone 2n, --order-unit <name>. It is a setter rather than another
     // constructor argument so the menu host, which this packet does not own,
     // keeps its signature.
@@ -3819,6 +3871,18 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // separate initialization work, not implied by this fragment's log entry.
     input_runtime_->initialize_classes_004dd6a8();
     log_.implemented("OnInitOnce::configure_input_classes_fragment", "004dd6b4");
+    if constexpr (kWireGoal4Chain302Bound) {
+        // The same OnInitOnce, later: 004DD739 CMP byte [game+55Ch],0 (the
+        // configuration's +520h loaded byte); clear, 004DD742 LEA ECX,[game+3Ch]
+        // and 004DD745 CALL 00698A10 (Scripts\datatables\Inputs.lua into the
+        // action owner, then rebind, a zero-second tick and the keyboard
+        // defaults). The intervening OnInitOnce steps (readers, sound set, GUI
+        // hooks, safe zone) are not run by this host; [00F8BBFC], stored at
+        // 004DD71B, has no writer here (see the application's comment).
+        if (input_configuration_ && input_configuration_->load_if_unloaded())
+            log_.implemented("OnInitOnce::load_input_configuration", "00698a10");
+    } else {
+    }
     menu_->run_title_init_004c9a70();
     const GameFrontendSummary& frontend = frontend_->summary();
     summary_.gui_pages_loaded = frontend.pages_loaded;
@@ -4023,6 +4087,14 @@ void GameStartupHost::application_shutdown() {
     }
     delete menu_;
     menu_ = nullptr;
+    if constexpr (kWireGoal4Chain302Bound) {
+        // Native reaches 004DCEB0 on game+3Ch from the game's destructor
+        // (004DE270 -> 004DCF90, CALL at 004DD577), which still borrows the live
+        // singleton manager (docs/CC16_FRONTEND_FRAME_SELECTION_CLOSURE.md), so
+        // it precedes the 008F8449 raw drain; provisional placement here.
+        retire_native_input_configuration();
+    } else {
+    }
     if (page_frontend_phase_ != PageFrontendPhase::unselected) {
         retire_page_frontend_resources_before_drain();
         exit_if_native_gui_resources_retained();

@@ -44,6 +44,7 @@ class GameSingletonHost;
 class GameFrontendHost;
 class GameVfsHost;
 class GameScriptHost;
+class GameNativeInputConfigurationApplication;
 class GameMissionHost;
 class GameHudHost;
 struct GameProfileSettingsSinks;
@@ -163,6 +164,10 @@ public:
     // Borrow the application's actual input-action owner/configuration before
     // the first menu publication. It outlives the menu and the raw manager drain.
     void bind_input_context_manager(GameInputContextManagerBinding&);
+    // Goal 4 chain 302: the application's embedded input configuration
+    // (game+3Ch), which the press-start commits load through 00698A10.
+    // Borrowed; the application retires it only after this menu is deleted.
+    void bind_input_configuration(GameNativeInputConfigurationApplication*);
 
     // 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     void run_title_init_004c9a70();

@@ -11,6 +11,8 @@
 #include "bsp/native_frame_clock_publication.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
+#include "bsp/wire_goal4_chain302_switches.hpp"
+#include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
@@ -620,6 +622,9 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // --- the screen sets and the input contexts ----------------------------
     FrontEndScreenSetStack screen_sets{};
     GameInputContextSetStack input_contexts{};
+    // Goal 4 chain 302: game+3Ch, borrowed from the application (null when unbound).
+    GameNativeInputConfigurationApplication* input_configuration{};
+    void publish_input_device_flags_sink();
 
     // --- the front-end managers --------------------------------------------
     FrontEndManagerRegistry manager_registry{};
@@ -1107,7 +1112,21 @@ public:
         owner_.log.unimplemented("PressStartScreen::refresh_input_bindings", "008d44c0");
     }
     void commit_input_manager() override {
-        owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+        if constexpr (kWireGoal4Chain302Bound) {
+            // 0067CEB9 (apply_sign_in) and 0067D50F (the no-user arm): ECX =
+            // [00E188A8]+3Ch, CALL 00698A10, unconditionally (no +55Ch gate,
+            // unlike OnInitOnce 004DD739): Inputs.lua is re-read into the action
+            // owner, rebound, ticked once at zero seconds, and the keyboard
+            // defaults preserved when [00F88A30] is clear.
+            if (owner_.input_configuration == nullptr) {
+                owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+                return;
+            }
+            owner_.input_configuration->load();
+            owner_.log.implemented("PressStartScreen::commit_input_manager", "00698a10");
+        } else {
+            owner_.log.unimplemented("PressStartScreen::commit_input_manager", "00698a10");
+        }
     }
 
     // --- frame tail ---------------------------------------------------------
@@ -2862,9 +2881,36 @@ void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& bi
     impl_->input_contexts.manager = &binding;
 }
 
+void GameMenuHost::bind_input_configuration(GameNativeInputConfigurationApplication* configuration) {
+    impl_->input_configuration = configuration;
+    impl_->publish_input_device_flags_sink();
+}
+
+// Goal 4 chain 302: the profile's settings apply (008D5B50) reaches 00699B80 on
+// the same game+3Ch at 008D5BB6. Published into the sinks whichever binder runs
+// last, so the application's later bind_profile_settings_sinks keeps it.
+void GameMenuHost::Impl::publish_input_device_flags_sink() {
+    if (input_configuration == nullptr) {
+        profile_settings_sinks.set_input_device_flags_00699b80 = nullptr;
+        return;
+    }
+    GameNativeInputConfigurationApplication* const configuration = input_configuration;
+    profile_settings_sinks.set_input_device_flags_00699b80 =
+        [configuration](bool swap_sticks, bool invert_camera_y, bool invert_plane_y,
+            bool swap_map_sticks) {
+            configuration->set_device_flags_004b46e0(swap_sticks, invert_camera_y, invert_plane_y,
+                swap_map_sticks);
+            return true;
+        };
+}
+
 GameMissionHost* GameMenuHost::mission() const noexcept { return impl_->mission.get(); }
 void GameMenuHost::bind_profile_settings_sinks(const GameProfileSettingsSinks& sinks) {
     impl_->profile_settings_sinks = sinks;
+    if constexpr (kWireGoal4Chain302Bound) {
+        impl_->publish_input_device_flags_sink();
+    } else {
+    }
 }
 
 GameHudHost* GameMenuHost::hud() const noexcept { return impl_->hud.get(); }

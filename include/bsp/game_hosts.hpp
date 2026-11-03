@@ -85,6 +85,7 @@ class GameNativeSettingsApplication;
 class GameNativeSettingsProcess;
 class GameScriptHost;
 class GameNativeLuaServices;
+class GameNativeInputConfigurationApplication;
 class GameNativeRendererApplication;
 class GameNativeMissionFactories;
 class GameNativeShadowTargetApplication;
@@ -801,6 +802,9 @@ private:
     void exit_if_native_gui_icon_interrupted() noexcept;
     void verify_native_gui_icon_after_drain();
     void drain_native_singletons();
+    // Goal 4 chain 302: 004DCEB0 on the embedded input configuration, after the
+    // menu (its borrower) and before the raw singleton drain and input/Lua teardown.
+    void retire_native_input_configuration() noexcept;
     void exit_if_native_fonts_interrupted() noexcept;
     void exit_if_native_page_frontend_interrupted() noexcept;
     void retire_page_frontend_resources_before_drain() noexcept;
@@ -849,6 +853,10 @@ private:
     std::unique_ptr<XInputLibrary> xinput_library_;
     struct InputServices;
     std::unique_ptr<InputServices> input_;
+    // Goal 4 chain 302: game+3Ch's 524h input configuration (00698680). It
+    // borrows input_, scripts_' input settings and lua_services_, so it is
+    // retired and reset before any of them (retire_native_input_configuration).
+    std::unique_ptr<GameNativeInputConfigurationApplication> input_configuration_;
     void* volatile input_backend_00f8bbf4_{};
     void* volatile input_actions_00f8bbf8_{};
     GameInputRuntime* volatile input_runtime_{}; // nonowning source service publication

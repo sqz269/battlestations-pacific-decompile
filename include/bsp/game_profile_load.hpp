@@ -78,6 +78,11 @@ struct GameProfileSettingsSinks {
     // Chain 144 borrows the already initialized sound/configuration owners.
     // Empty unless its switch is ON; no additional sound owner is constructed.
     std::function<bool(const char* bus, float volume)> apply_named_sound_class_level;
+    // Goal 4 chain 302: 008D5BB6 -> 004B46E0 -> 00699B80 on game+3Ch with the
+    // settings bytes +41h..+44h. Empty unless its switch is ON and the menu has
+    // the application's input configuration; false when nothing ran.
+    std::function<bool(bool swap_sticks, bool invert_camera_y, bool invert_plane_y,
+        bool swap_map_sticks)> set_input_device_flags_00699b80;
 };
 
 // 0067CC60's profile half for a sign-in with save id `save_name` ("%llx" of
