@@ -396,7 +396,14 @@ Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host) { return matrix_set
 // copies), then 0085DC80.
 Raw matrix_set_forward_up_orthonormalize_0042d5a0(Raw matrix, const float forward[3], const float up[3],
                                                   Seg2Host& host) {
-    return matrix_set_forward_up_orthonormalize_0042d5a0<Raw, Seg2Host>(matrix, forward, up, host);
+    matrix.at<float>(0x20) = forward[0];
+    matrix.at<float>(0x24) = forward[1];
+    matrix.at<float>(0x28) = forward[2];
+    matrix.at<float>(0x10) = up[0];
+    matrix.at<float>(0x14) = up[1];
+    matrix.at<float>(0x18) = up[2];
+    host.matrix_orthonormalize_0085dc80(matrix);
+    return matrix;
 }
 
 // 0042AFF0, __thiscall(node), RET, EAX = node+F0h: 00B6DB70 first when bit 1
