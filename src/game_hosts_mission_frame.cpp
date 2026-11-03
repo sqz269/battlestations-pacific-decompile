@@ -33,6 +33,8 @@
 #include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_native_dyn_process.hpp"
+#include "bsp/game_native_physical_pool.hpp"
+#include "bsp/wire_goal4_chain336_switches.hpp"
 #include "bsp/native_mission_clock_reset.hpp"
 #include "bsp/wire_goal3_chain242_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
@@ -2936,9 +2938,24 @@ public:
             }
             owner_.lua.call_entry_point(bsp::kLuaStageInitMulti, false);
             owner_.lua.call_entry_point(bsp::kLuaStageInit, true);
+            if constexpr (bsp::kWireGoal4Chain336Bound) {
+                // 0045F955, after the stage-init arm: 004B46B0 walks E188B4,
+                // invokes each allocator's virtual0, then reloads next+8
+                // (004B46C8). Borrow the application's SAME list: CRT pool
+                // startup has already published its real elements and bound
+                // their concrete trim callbacks. No pool/list is born here.
+                // The preceding HUD/dialog/quad-tree work remains unbound.
+                game_native_physical_pool_process()
+                    .allocator_list_domain_00e188b4().trim_all_004b46b0();
+                owner_.done("EngineMovieStop::allocator_list_trim_all", 0x004b46b0u);
+                owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
+                    "luaStageInitMulti and luaStageInit on the first in-mission frame "
+                    "(kEngineMovieEntryBound)");
+            } else {
             owner_.log.notef("engine movie skipped: 0045F600's tail ran luaPrecacheUnits, "
                 "luaStageInitMulti and luaStageInit on the first in-mission frame "
                 "(kEngineMovieEntryBound)");
+            }
         }
     }
     void begin_engine_movie_004cce50() override {
