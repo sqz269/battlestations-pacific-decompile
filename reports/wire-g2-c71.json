@@ -15,16 +15,14 @@
     "include/bsp/flak_note_seg36_37_argon.hpp",
     "src/flak_note_seg36_37_argon.cpp",
     "include/bsp/cc13_seg59b.hpp",
-    "src/cc13_seg59b.cpp",
-    "include/bsp/cc13_seg67b.hpp",
-    "src/cc13_seg67b.cpp"
+    "src/cc13_seg59b.cpp"
   ],
   "method": "Each raw body's logic moved into a typed view overload template (same identifier, same address) in its own header; the raw entry is a thin wrapper that builds a raw image view and calls it. The host ON arm calls the typed overload with an adapter over the host's storage.",
   "build": "scripts/build.ps1 exit 0, 2/2 tests passed",
   "on_build": "tools/off_switch_on_build.py --names kWireGoal2Chain71Bound: build.ps1 exit 0, 0 distinct diagnostics",
   "pc24_lint": "0 findings, 10 files",
   "wired_total_before": 8829,
-  "wired_total_after": 8882,
+  "wired_total_after": 8881,
   "rows": [
     {
       "native": "006f2a50",
@@ -60,10 +58,9 @@
       "address": "009f2772",
       "function": "009f1bc0",
       "host_site": "src/game_hosts_ship_ai.cpp approach frame mode-0 side byte +1204h (under kAttackMoveApproachImageBound=true)",
-      "status": "wired",
-      "adapter": "BrainTargetKind6View: brain+B20h handle (goal_vector.raw_target_0b20) and unit_is_kind_of",
+      "status": "skipped",
       "reached": 0,
-      "reach": "static: frame_state_009f1bc0 -> run_lander_side_and_bearing under kShipAiApproachLanderTermsBound=true, mode-0 arm under kAttackMoveApproachImageBound=true; not reached in USN04"
+      "reason": "result masked: side byte is 0 or 2 regardless because kLandAttackerStopByte is constexpr true (game_hosts_ship_ai.cpp, side = flag_1208 ? 2 : ((ship_target || kLandAttackerStopByte) ? 0 : 1)); ship_target has no other reader. Arm, include and typed overload removed in review round 1."
     },
     {
       "native": "0064a820",
@@ -155,7 +152,19 @@
     "both_exit": 0,
     "gameplay": "identical (deaths 28/28, hits 380/380, damage 6366.6/6366.6, shots 5509/5509, unit table 81 rows identical)",
     "native_table": "1624 -> 1625 rows: + ShipAiFormation::group_turn_radius_0070e3c0 0070e3c0 concrete calls=54000; 0 status changed, 0 counts moved",
-    "other_lines": "231/231 masked atlas allocation lines only (address noise)"
+    "other_lines": "231/231 masked atlas allocation lines only (address noise)",
+    "note": "Pair run from the first commit (029fce3d2), before review round 1. Round 1 removes only the 009E5E30 ON arm, which logged 0 calls in that ON run and whose result was masked, so the pair result stands without a rerun."
   },
-  "flip_proposal": "Flip kWireGoal2Chain71Bound ON: USN04 pair is gameplay-identical with 0070E3C0 running 54000 times (it reproduces the host maximum). 006F2A50, 008FE120 and 009E5E30 are static in USN04; a landing-ship/approach mission (e.g. one with LandingShip or troop transports) should be paired before or after the flip to exercise them."
+  "flip_proposal": "Flip kWireGoal2Chain71Bound ON: the USN04 pair is gameplay-identical while 0070E3C0 runs 54000 times (it gives the host's maximum). 006F2A50 and 008FE120 are static in USN04; pair a mission with landing ships or troop transports to exercise them at runtime.",
+  "wired_total_note": "Measured in this tree with plain wire_readiness.py after build.ps1: base f11fc1d58 sources 8829 (reproduced), head 8881. This chain's counted rows are 3 (006f2a50, 0070e3c0, 008fe120). The other +49 are NOT credited to this chain: they are every row of files that became include-reachable to the tool (reachable_files 2065 -> 2071) once game_hosts_ship_ai.cpp included flak_note_seg36_37_argon.hpp, pool_pool02_cc13.hpp and cc13_seg59b.hpp: src/flak_note_seg36_37_argon.cpp 27 rows besides 0070e3c0 (e.g. 0070da00, 0070e3a0, 0070e4c0, 00710630, 00718f50), src/dummy_depth_seg34_argon.cpp 20 rows (006fb750..00700a20), src/lua_text_dump.cpp 2 rows (0043c1c0, 0043c530); a further 4 rows moved callees_done_no_wired_caller -> ready (0070b9d0, 00b662e0, 00711c30, 0074fa80). No code calls them: the linked object set in bsp_game.map is the same at base and head (flak_note_seg36_37_argon.obj 5 references both; dummy_depth_seg34_argon, lua_text_dump, pool_pool02_cc13, cc13_seg59b 0 both).",
+  "review_round_1": {
+    "review_run": 153,
+    "findings": [
+      "fixed: removed the 009E5E30 arm, restored the single ship_target expression, dropped the chain-71 cc13_seg67b.hpp include",
+      "fixed: cc13_seg67b.hpp/.cpp returned to the branch base f11fc1d58 (not origin/main, which has since moved for these files)",
+      "fixed: 009E5E30 row marked skipped with the masked-result reason",
+      "fixed: wired_total_after recomputed (8881) with the extra +49 listed and not credited"
+    ],
+    "checks": "off_switch_on_build.py --names kWireGoal2Chain71Bound: exit 0, 0 diagnostics; build.ps1 exit 0, 2/2 tests; wire_readiness: 006f2a50 / 0070e3c0 / 008fe120 wired, 009e5e30 ready"
+  }
 }
