@@ -5,15 +5,18 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/oct18_rec.hpp"
+#include "bsp/oct18_tail_b.hpp"
 #include "bsp/support_seg61_cc13.hpp"
 #include "bsp/wire_goal2_chain115_switches.hpp"
 #include "bsp/wire_goal2_chain145_switches.hpp"
 #include "bsp/wire_goal2_chain202_switches.hpp"
+#include "bsp/wire_goal4_chain258_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
 
 #include <cmath>
 
+#include <array>
 #include <cctype>
 #include <clocale>
 #include <cstdio>
@@ -21,6 +24,36 @@
 #include <new>
 #include <stdexcept>
 #include <utility>
+
+namespace bsp::oct18_tail_b {
+
+// 008EE670: ECX=nullable text, RET, EAX=00F88C50 scratch. The source API
+// supplies that actual scratch explicitly; forward aliasing/read/write order
+// is retained. Preconditions: terminated input, no lone trailing backslash,
+// and sufficient scratch storage, matching the native valid domain.
+// Chain 258 moves the single existing body from leftovers_cc13.cpp into
+// bsp_core, where the actual scene parser and its existing tests can use it.
+// Evidence: bsp.py show 008ee670, complete exported body; no arithmetic/ABI
+// change. SceneQuotedRunView supplies guarded tokens and reader-owned scratch
+// instead of adopting the native global buffer's aliasing/reentry contract.
+char* decode_scene_fragment_008ee670(const char* input, char* scratch) {
+    char* output = scratch;
+    if (input != nullptr) {
+        while (*input != '\0') {
+            if (*input == '\\') {
+                const char escaped = input[1];
+                input += 2;
+                if (escaped == '\\') *output++ = '\\';
+                else if (escaped == 'n') *output++ = '\n';
+                else if (escaped == 'q') *output++ = '"';
+            } else *output++ = *input++;
+        }
+    }
+    *output = '\0';
+    return scratch;
+}
+
+} // namespace bsp::oct18_tail_b
 
 namespace bsp {
 namespace {
@@ -150,9 +183,8 @@ private:
 // (009502E0 empties it, 0094FF10 appends, 009500A0 hands back the joined
 // text); it owns no native storage, so clear and the unwind destructors have
 // nothing to release. The decode collaborator keeps this reader's own S rule
-// and source-binding guards (the inline loop's): 008EE670's reconstructed
-// body is in leftovers_cc13.cpp, which links only into bsp_game, and this
-// file is in bsp_core, which bsp_math_tests links.
+// and source-binding guards (the inline loop's). Chain 258 uses the single
+// reconstructed 008EE670 body, now in bsp_core, over the guarded fragment.
 class SceneQuotedRunView final : public oct18_rec::QuotedRunView {
 public:
     explicit SceneQuotedRunView(SceneLexer& lexer) noexcept : lexer_(lexer) {}
@@ -182,6 +214,12 @@ public:
     }
     const char* decode(const char* token) override
     {
+        if constexpr (kWireGoal4Chain258Bound) {
+            // 008EFB00's 008EE670 call: token is exactly read_token()'s real
+            // fragment. Its <400h, NUL-free, paired-escape guards above imply
+            // at most 3FFh output bytes plus NUL; escapes never expand text.
+            return oct18_tail_b::decode_scene_fragment_008ee670(token, scratch_.data());
+        } else {
         decoded_.clear();
         for (const char* p = token; *p != '\0';) {
             const char ch = *p++;
@@ -196,6 +234,7 @@ public:
             // All other backslash pairs emit nothing in 008EE670.
         }
         return decoded_.c_str();
+        }
     }
     void append(const char* decoded) override { value_ += decoded; }
     char* join() override { return value_.data(); }
@@ -206,6 +245,7 @@ public:
 private:
     SceneLexer& lexer_;
     SceneToken fragment_;
+    std::array<char, 0x400> scratch_{};
     std::string decoded_;
     std::string value_;
 };

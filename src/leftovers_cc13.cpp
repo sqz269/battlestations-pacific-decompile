@@ -1804,26 +1804,6 @@ void read_vehicle_fields_thunk_008429c0(void* descriptor, void* lua_row, Host& h
 bool event_subscription_matches_00968af0(const void* subscription, const void* parameters, Host& host) {
     return recon_subscription_matches_00968470(subscription, parameters, host);
 }
-// 008EE670: ECX=nullable text, RET, EAX=00F88C50 scratch. The source API
-// supplies that actual scratch explicitly; forward aliasing/read/write order
-// is retained. Preconditions: terminated input, no lone trailing backslash,
-// and sufficient scratch storage, matching the native valid domain.
-char* decode_scene_fragment_008ee670(const char* input, char* scratch) {
-    char* output = scratch;
-    if (input != nullptr) {
-        while (*input != '\0') {
-            if (*input == '\\') {
-                const char escaped = input[1];
-                input += 2;
-                if (escaped == '\\') *output++ = '\\';
-                else if (escaped == 'n') *output++ = '\n';
-                else if (escaped == 'q') *output++ = '"';
-            } else *output++ = *input++;
-        }
-    }
-    *output = '\0';
-    return scratch;
-}
 } // namespace bsp::oct18_tail_b
 
 namespace bsp::oct18_tail_b {
