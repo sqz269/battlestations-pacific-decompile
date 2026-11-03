@@ -40,6 +40,7 @@
 
 #include "bsp/air_operations.hpp"
 #include "bsp/scene_file.hpp"
+#include "bsp/wire_goal2_chain74_switches.hpp"
 
 namespace bsp::game {
 
@@ -700,7 +701,24 @@ struct SceneTerrainBlock {
 //   (00ADADC0, from the root's two dwords); the origin +80h / +84h, which
 //   00ADDA60 sets for a `TRNV2` root to floor(min / 300 - 1) * 300 of the box
 //   00ADA420 accumulates at +68h / +70h (0 for any other root name).
-struct SceneTerrainHeightField {
+struct SceneTerrainQuadtreeBounds {
+    void* field{nullptr}; // borrowed owner, native tree+48h
+    float minimum[3]{};  // tree+04h
+    float maximum[3]{};  // tree+10h
+    float extent[3]{};   // tree+1Ch
+    float cell[3]{};     // tree+28h
+    std::int32_t depth{0}; // tree+34h
+};
+
+// The OFF specialization has no storage or construction work. The ON fields
+// belong to the height field from its load-time construction through release,
+// like 00ADD290's embedded tree (+88h), initialized by 00ADDA60 at 00ADDDF2.
+template <bool Bound> struct SceneTerrainQuadtreeBoundsOwner {};
+template <> struct SceneTerrainQuadtreeBoundsOwner<true> {
+    mutable SceneTerrainQuadtreeBounds quadtree_bounds;
+};
+
+struct SceneTerrainHeightField : SceneTerrainQuadtreeBoundsOwner<bsp::kWireGoal2Chain74Bound> {
     std::string root;               // `TRNV2` on this installation's islands
     int tiles_wide{0};              // +38h
     int tiles_deep{0};              // +3Ch

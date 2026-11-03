@@ -2,6 +2,8 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
+#include "bsp/wire_goal2_chain74_switches.hpp"
+#include "bsp/terrain_particles_cc13.hpp"
 #include "bsp/game_hosts_avoid_zones.hpp"
 
 #include "bsp/air_operations.hpp"
@@ -2203,6 +2205,8 @@ static bool terrain_tag_is(const bsp::StructuredNode& node, const char* name) no
 // skipped here: none of this installation's island files was seen to carry
 // one, and a file that did is reported, not approximated. The origin is
 // 00ADDB60..00ADDBFB for a `TRNV2` root.
+void build_quadtree_00aea820(const SceneTerrainHeightField& field);
+
 static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda60(
     const std::string& bytes, float box_min_x, float box_min_z, std::string& error) {
     auto stream = std::make_shared<bsp::MemoryStream>(
@@ -2273,6 +2277,10 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
             if (!chunk->close()) { error = "bad chunk close"; return nullptr; }
         }
         if (!node->close()) { error = "bad NODE close"; return nullptr; }
+    }
+    if constexpr (bsp::kWireGoal2Chain74Bound) {
+        // 00ADDDF2 then 00AEA820: initialize bounds and build nodes at the native load phase.
+        build_quadtree_00aea820(*field);
     }
     return field;
 }
@@ -2374,6 +2382,9 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
                 field->sample_min = lo;
                 field->sample_max = hi;
                 owner.log.implemented("Landscape::load_height_field", "00adda60");
+                if constexpr (bsp::kWireGoal2Chain74Bound) {
+                    owner.log.implemented("Landscape::quadtree_set_bounds", "00aea900");
+                }
                 object.terrain = std::move(field);
             } else {
                 owner.log.notef("scene terrain refused: landscape=%s heightmap=%s: %s",
@@ -4607,6 +4618,16 @@ int build_children_00aea5f0(const SceneTerrainHeightField& field, int x, int z, 
 // 00ADDA60's tail: depth = ceil(log2(max(+38h, +3Ch))) (unsigned max), then
 // 00AEA900 (box (0, -1000, 0)..(2^depth * 300, 1e10, 2^depth * 300)) and
 // 00AEA820 (the root, then its children).
+// Adapts the host's existing vector nodes and leaf count. Only the ON
+// specialization owns bounds storage; no second tree is constructed.
+template <bool Bound>
+bsp::cc13_terrain::TerrainQuadtreeBoundsView scene_terrain_quadtree_bounds(
+    const SceneTerrainHeightField& field) {
+    auto& bounds = static_cast<const SceneTerrainQuadtreeBoundsOwner<Bound>&>(field).quadtree_bounds;
+    return {bounds.field, bounds.minimum, bounds.maximum, bounds.extent, bounds.cell,
+        bounds.depth, field.quadtree_leaves, [&field] { field.quadtree.clear(); }};
+}
+
 void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
     const unsigned wide = static_cast<unsigned>(field.tiles_wide);
     const unsigned deep = static_cast<unsigned>(field.tiles_deep);
@@ -4614,8 +4635,20 @@ void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
     int depth = 0;
     for (int u = n; 1 < u; u >>= 1) ++depth;
     if ((1 << depth) < n) ++depth;
+    // 00AEA900 calls terrain_quadtree_set_bounds_00aea900; OFF keeps the host's leaf-count/clear stand-in.
+    if constexpr (bsp::kWireGoal2Chain74Bound) {
+        // 00ADDA60's tail: span from the loaded grid's depth and the
+        // 00AE9870 tile size (300); low/high Y are the binary's own constants.
+        const float span = terrain_f32(static_cast<double>(1 << depth) * kQuadTileSize);
+        const float minimum[3] = {0.0f, kTerrainNoGround, 0.0f};
+        const float maximum[3] = {span, kQuadTreeTop, span};
+        auto view = scene_terrain_quadtree_bounds<bsp::kWireGoal2Chain74Bound>(field);
+        bsp::cc13_terrain::terrain_quadtree_set_bounds_00aea900(
+            view, const_cast<SceneTerrainHeightField*>(&field), minimum, maximum, depth);
+    } else {
     field.quadtree_leaves = 1 << depth;
     field.quadtree.clear();
+    }
     SceneTerrainHeightField::QuadNode root;
     node_range_00ae9c80(field, 0, 0, field.quadtree_leaves, root.min_y, root.max_y);
     root.children = 0;

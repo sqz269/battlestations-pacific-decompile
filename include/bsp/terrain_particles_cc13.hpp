@@ -810,6 +810,22 @@ void terrain_quadtree_destroy_00aea8e0(void* tree);
 // float max[3], int depth), RET 10h: +48h = field, +04..+0Ch = min, +10h..+18h = max, +34h =
 // depth, +38h = 1 << depth, +1Ch..+24h = f(max - min), +28h..+30h = f(extent / (float)(1 <<
 // depth)), then the node array resized to 0.
+// Typed view of the same writes: native offsets +04/+10/+1C/+28 (three floats
+// each), +34/+38 (dwords), +48 (borrowed field), and the +3C node array.
+// The clear operation adapts the array's storage; bounds/depth arithmetic stays
+// in the single reconstructed body below.
+struct TerrainQuadtreeBoundsView {
+    void*& field;
+    float* minimum;
+    float* maximum;
+    float* extent;
+    float* cell;
+    std::int32_t& depth;
+    std::int32_t& leaves;
+    std::function<void()> clear_nodes;
+};
+void terrain_quadtree_set_bounds_00aea900(TerrainQuadtreeBoundsView tree, void* field,
+    const float min[3], const float max[3], std::int32_t depth);
 void terrain_quadtree_set_bounds_00aea900(void* tree, void* field, const float min[3], const float max[3],
     std::int32_t depth);
 // 00AE9B50 (ledger: BSP_TerrainTileGrid_GetTileOrigin; it returns the tile's height range),
