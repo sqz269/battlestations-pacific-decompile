@@ -1,0 +1,69 @@
+{
+  "chain": 321,
+  "worker": "agent/g4-w1",
+  "base": "03bc99cefe",
+  "picked": "Scene BIN byte decoding and native type-8 property merge",
+  "switch": "bsp::kWireGoal4Chain321Bound",
+  "rows": [
+    {
+      "native": "008ef6a0",
+      "status": "wired",
+      "host_site": "src/band_0080_cc13.cpp: decode_hex_byte_token_008ef6d0 -> hex_digit_value_008ef6a0, reached through the new scene BIN arm",
+      "real_state": "First and second characters of each actual BIN byte token; the existing decoder supplies them unchanged",
+      "evidence": "Existing decoder body calls the sole existing digit body; neither address is linked with chain321 OFF, and both are reachable with it ON",
+      "note": "Already text-labelled wired before this chain, but now newly called in the built executable"
+    },
+    {
+      "native": "008ef6d0",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp: parse_property_body, reached by parse_scene_property_block_008f5a00 and scene loading",
+      "real_state": "Each token of a complete explicit nonempty BIN statement read from the loaded scene; the count uses the existing 008D9AD0 reader's scan rule",
+      "built_call_site": "10402500 from bsp::parse_property_body",
+      "evidence": "bsp.py show 008ef6d0; bsp.py show 008f5a00 --asm --start 670 --lines 85: 008F638A reads the actual token, 008F638F moves it to ECX, 008F6391 calls 008EF6D0"
+    },
+    {
+      "native": "008f3490",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert -> insert_byte_array; game_hosts_scene_contents.cpp merge_property_block remains the existing caller",
+      "real_state": "Canonical allocation containing the parser-owned byte payload, its actual byte count, and the original parser's flags 0; native 008EF2F0 adopts the allocation",
+      "built_call_site": "1041c0eb from SceneNumericPropertyMerge::Impl::Bag::insert",
+      "evidence": "bsp.py show 008f3490; bsp.py show 008f5a00 --asm --start 755 --lines 21: 008F63D2..008F63DF push flags 0, count, data and key before calling 008F3490"
+    },
+    {
+      "native": "008f3510",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: parse_property_body; src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "FA has no parser-owned four-byte array payload or type-9 publication in SceneNumericPropertyMerge."
+    }
+  ],
+  "built": [
+    "Owning SceneProperty byte payload and presence bit, preserving raw diagnostic tokens",
+    "Switch-controlled admission of closed explicit BIN statements with positive count and exactly that many bounded tokens",
+    "Native type-8 insertion, keep/overwrite and clone-on-miss merge, followed by owning publication from the merged record"
+  ],
+  "wired_total": {
+    "before": 9319,
+    "after": 9320,
+    "measure": "wire_readiness summary state; 008F3490 remains labelled ready despite called:true and one live call site"
+  },
+  "entry_reachable_reconstructed_total": {
+    "before": 4348,
+    "after": 4351,
+    "measure": "call_graph.py with chain321 OFF versus ON; all three wired rows are absent from the OFF executable"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "focused_probe": "tools/wire_goal4_chain321_probe.py passed: native digit behavior including one/long/invalid-digit tokens, lowercase BIN, keep/overwrite, miss clone, malformed/empty/zero/negative fallback, result ownership after both native bags retire",
+    "existing_probe": "tools/wire_goal4_chain296_probe.py passed",
+    "switch_off": "scripts/build.ps1 and tools/wire_goal4_chain321_probe.py passed with the switch false; no BIN payloads or native BIN merges are selected",
+    "call_graph": "008EF6D0 and 008F3490 REACHABLE with one call site each from the changed code; their 008EF6A0 callee is newly linked/reachable too; 4351/4786 reconstructed addresses called in the final build",
+    "float_math_changed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Only closed explicit nonempty BIN statements are admitted; implicit existing-record types, empty/zero count, count mismatches and oversized/embedded-NUL tokens retain the previous raw-token fallback",
+    "Native merge admission retains the existing duplicate-key, child-conflict, differing-tag/spelling and ASCII-key restrictions",
+    "Source interfaces and reconstructed executable reachability are verified; original parser ABI and live gameplay are not verified"
+  ],
+  "left": "FA/type-9 parser payload, insertion and merge publication; empty/context-dependent BIN forms"
+}
