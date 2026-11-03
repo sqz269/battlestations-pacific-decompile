@@ -62,6 +62,13 @@
       "reason": "The constructor runs inside 0097E360 before the Load slot; the host replaces that whole parse with its own ListenerEntry read, so constructing per evaluation would not be the native lifetime. Needs the host to keep native subscription objects in ListenerEntry (a game_hosts_lua.hpp change)."
     },
     {
+      "native": "00887c30",
+      "name": "mission_lua_call_queue_insert_node_00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Reached only when 00887750/00887E50 run on a frame-job thread; this process has no frame job pool (on_frame_job_thread answers false), so no deferred call is ever queued. Needs the job pool and its main-thread drain first."
+    },
+    {
       "native": "006b1190",
       "name": "strip_table_names_006b1190 (mission Lua save pickler 006ADDC0..006B68C0)",
       "status": "skipped",
