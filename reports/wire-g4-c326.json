@@ -1,0 +1,71 @@
+{
+  "chain": 326,
+  "owner": "agent/g4-w3",
+  "base": "914aa8d72f4a02cfd542ecb0f90225007e810d3f",
+  "switch": "bsp::kWireGoal4Chain326Bound",
+  "scope": "Route the command building's D3h SETOWNER and D4h SETLEVEL messages through 0077C2A0's single-player local copy (0076E520 write, 00768530 rebuild, read) and deliver the copy by its type to the ship-AI host's existing 006F4D10 / 006F38E0 handlers.",
+  "rows": [
+    {
+      "native": "00764220",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_set_owner_d3 (capture flip 006F727A, SetCommandBuildingOwnerPlayer 008A8EE7) -> src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_owner_d3",
+      "evidence": "Both senders inline 0075B430(D3h) plus 00764220's header stores (+18h word 0, +1Ah 0, +4h 1, vtable 00CFADBC) and store +1Ch / byte +20h (006F72BA/006F72C1; 008A8F0F/008A8F13), then 0077C2A0 flags 7, which with [00E188A8]+1FE4h == 0 sets the local bit alone (0077C329..0077C333) and reaches 0076E520. 00768530 case D3h allocates 24h (00769F47) and calls 00764220 (00769F59). The copy's type is dispatched as 006F5460 does (D3h -> 006F4D10), and the copy's 6-bit player is what the existing range substitution and flip now consume.",
+      "limits": "Delivery stays immediate at the send (the drain's turn is not modelled, as before). The flag byte is carried but not consumed: the cblost / cbneutralized announcements are not modelled. No ABI or game-run claim."
+    },
+    {
+      "native": "00764280",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_set_level_d4 (level-up 006F759F, flip D4h 006F5362, neutralize D4h) -> src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_level_d4",
+      "evidence": "006F759F..006F75E6 (+1Ch = level + 1, +20h = 0) and 006F5362..006F53A4 (+1Ch = +20h = EBP 0) route D4h with flags 7. 00768530 case D4h allocates 24h (00769F67) and calls 00764280 (00769F79). The copy's +1Ch is the level 006F38E0 receives.",
+      "limits": "Immediate delivery as before. 006F38E0's +20h only matters on its level-4 arm, which no sender here reaches."
+    },
+    {
+      "native": "006f2520",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_owner_d3",
+      "evidence": "Vtable 00CFADBC slot 1 (bsp.py ghidra bytes 00CFADBC). Now takes the narrow CommandBuildingMessageCodecHost split out of Seg33bHost; bound to the process's 0075B480 / 00429070 / 004290B0 bodies."
+    },
+    {
+      "native": "006f2550",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_owner_d3",
+      "evidence": "Vtable 00CFADBC slot 2, dispatched by 0076A27B vtable[8]; reads the header (0075B4C0), 6-bit player and bool through the process's bit-cursor bodies."
+    },
+    {
+      "native": "006f25e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_level_d4",
+      "evidence": "Vtable 00CFADD0 slot 1: header, 3-bit level, 4-bit argument."
+    },
+    {
+      "native": "006f2610",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_command_building_set_level_d4",
+      "evidence": "Vtable 00CFADD0 slot 2, dispatched by 0076A27B vtable[8]."
+    },
+    {
+      "native": "007642e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl capture tick (006F6760)",
+      "reason": "D5h UPDATECAPTURE is routed with 0077C2A0 flags 4 (PUSH 4 at 006F707D and 006F7262, the 006F7022 / 006F71FB sends); in single player 0077C30D..0077C323 drops flags 4 unless [00E188A8]+1FE4h == 1, so no local copy is ever built."
+    },
+    {
+      "native": "006f26b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp (codec adapter bound, no D5h sender)",
+      "reason": "D5h writer: its only senders use flags 4, which single player drops before 0076E520; the codec now takes the narrow host, so a hosting-mode route could call it."
+    },
+    {
+      "native": "006f2700",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp (codec adapter bound, no D5h sender)",
+      "reason": "D5h reader: same flags-4 drop as 006F26B0; nothing in single player rebuilds a D5h copy."
+    },
+    {
+      "native": "006f5460",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_set_owner_d3 / deliver_set_level_d4",
+      "reason": "The dispatcher's D6h and default arms need the raw building image (+778h garrison records, +77Ch count), HUD root and land-fort handler that the typed CaptureBuilding host does not hold; the host dispatches the copy's D3h / D4h type itself."
+    }
+  ]
+}

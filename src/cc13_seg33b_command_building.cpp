@@ -876,35 +876,37 @@ void command_building_globals_load_006f7670(Seg33bHost& host, Object tuning) {
 // band_006b_cc13 type rules: 00CFADBC D3 SETOWNER, 00CFADD0 D4 SETLEVEL,
 // 00CFADE4 D5 UPDATECAPTURE. All codecs: ECX message, cursor/read-stream,
 // RET4. Each reader calls the extended header with the wrapper, then uses
-// wrapper+4 for its raw cursor. New source interfaces, build-only.
-void command_building_set_owner_message_write_006f2520(Seg33bHost& h, Object m, Object c) {
+// wrapper+4 for its raw cursor. New source interfaces. Goal 4 chain 326:
+// they take the narrow CommandBuildingMessageCodecHost, the only engine
+// boundaries they call, so HostSessionMessages runs D3h / D4h on the local route.
+void command_building_set_owner_message_write_006f2520(CommandBuildingMessageCodecHost& h, Object m, Object c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x1C), 6);
     h.bit_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x20));
 }
-void command_building_set_owner_message_read_006f2550(Seg33bHost& h, Object m, Object s) {
+void command_building_set_owner_message_read_006f2550(CommandBuildingMessageCodecHost& h, Object m, Object s) {
     h.session_message_read_header_0075b4c0(m, s);
     h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x1C), 6);
     h.bit_read_boolean_00428d70(s + 4, &at<std::uint8_t>(m, 0x20));
 }
-void command_building_set_level_message_write_006f25e0(Seg33bHost& h, Object m, Object c) {
+void command_building_set_level_message_write_006f25e0(CommandBuildingMessageCodecHost& h, Object m, Object c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x1C), 3);
     h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x20), 4);
 }
-void command_building_set_level_message_read_006f2610(Seg33bHost& h, Object m, Object s) {
+void command_building_set_level_message_read_006f2610(CommandBuildingMessageCodecHost& h, Object m, Object s) {
     h.session_message_read_header_0075b4c0(m, s);
     h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x1C), 3);
     h.bit_read_unsigned_00428d10(s + 4, &at<std::uint32_t>(m, 0x20), 4);
 }
 // D5: signed21 DWORD+20, numeric32 float+1C (FLT_MAX bits7F7FFFFF), unsigned3+24.
-void command_building_capture_message_write_006f26b0(Seg33bHost& h, Object m, Object c) {
+void command_building_capture_message_write_006f26b0(CommandBuildingMessageCodecHost& h, Object m, Object c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_write_signed_00429090(c, at<std::int32_t>(m, 0x20), 21);
     h.bit_write_float_004295c0(c, at<float>(m, 0x1C), 0, 1, 3.40282346638528859812e38f, 32);
     h.bit_write_unsigned_00429070(c, at<std::uint32_t>(m, 0x24), 3);
 }
-void command_building_capture_message_read_006f2700(Seg33bHost& h, Object m, Object s) {
+void command_building_capture_message_read_006f2700(CommandBuildingMessageCodecHost& h, Object m, Object s) {
     h.session_message_read_header_0075b4c0(m, s);
     h.bit_read_signed_00428d30(s + 4, &at<std::int32_t>(m, 0x20), 21);
     h.bit_read_float_004293f0(s + 4, &at<float>(m, 0x1C), 0, 1, 3.40282346638528859812e38f, 32);

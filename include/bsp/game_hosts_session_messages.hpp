@@ -201,6 +201,33 @@ public:
     // codec (006EBB10 / 006EBB40) is not bound by inventing a flag value.
     std::uint8_t make_plane_takeoff_c6() const;
 
+    // Goal 4 chain 326 (kWireGoal4Chain326Bound). The command building's
+    // MT_COMMANDBUILDING_SETOWNER (D3h) and _SETLEVEL (D4h). Every sender
+    // inlines 0075B430 plus 00764220's / 00764280's header stores (+18h word 0,
+    // +1Ah 0, +4h = 1, vtable 00CFADBC / 00CFADD0), stores +1Ch and +20h, and
+    // routes the 24h-byte message with 0077C2A0 flags 7, which in single player
+    // ([00E188A8]+1FE4h == 0, 0077C329..0077C333) is the local bit alone (D5h's
+    // flags 4 is dropped there, 0077C30D..0077C323): 0076E520 writes it
+    // (006F2520: 6-bit player, bool; 006F25E0: 3-bit level, 4-bit argument)
+    // and 00768530 rebuilds the copy (case D3h 00769F59 00764220, case D4h
+    // 00769F79 00764280; 0076A27B vtable[8] = 006F2550 / 006F2610). The
+    // receiver 006F5460 switches on the copy's +10h type. Returned: that type
+    // and the copy's +1Ch / +20h, which are what 006F4D10 / 006F38E0 receive.
+    struct CommandBuildingCopy {
+        std::uint8_t type{0};
+        std::uint32_t value_1c{0};
+        std::uint32_t value_20{0};
+    };
+    // D3h: +1Ch the player slot, byte +20h the flag (006F6760's capture flip
+    // sends 0 at 006F72C1, routed at 006F72DE; 008A8D90
+    // SetCommandBuildingOwnerPlayer sends 1 at 008A8F13, routed at 008A8F2A).
+    CommandBuildingCopy queue_command_building_set_owner_d3(std::uint32_t player,
+                                                            bool flag) const;
+    // D4h: +1Ch the level, +20h the argument (006F7360's level-up at 006F75CC
+    // and 006F4D10's level 0 at 006F538A both store 0 there).
+    CommandBuildingCopy queue_command_building_set_level_d4(std::uint32_t level,
+                                                            std::uint32_t argument) const;
+
 private:
     struct Image;
     std::unique_ptr<Image> image_;

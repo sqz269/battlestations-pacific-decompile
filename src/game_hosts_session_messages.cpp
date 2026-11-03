@@ -5,6 +5,8 @@
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain298_switches.hpp"
 #include "bsp/wire_goal4_chain322_switches.hpp"
+#include "bsp/wire_goal4_chain326_switches.hpp"
+#include "bsp/cc13_seg33b.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
 #include "bsp/camera_position_modes.hpp"
@@ -15,6 +17,7 @@
 #include "bsp/gameplay_seg38_cc13.hpp"
 #include <cfloat>
 #include <cmath>
+#include <cstddef>
 #include <cstring>
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -109,7 +112,20 @@ struct HostSessionMessages::Image {
         // /battlestationspacific.exe: delete, write, read, IsType, true.
         std::uint32_t slots_00cfaa20[5]{0x006ebb70u, 0x006ebb10u, 0x006ebb40u, 0x006ebae0u,
                                         0x004499c0u};
+        // Goal 4 chain 326. bsp.py ghidra bytes 00CFADBC --length 60, bsp.gpr's
+        // /battlestationspacific.exe: D3h 00CFADBC and D4h 00CFADD0, each
+        // scalar delete, write, read, IsType, 004499C0 always true.
+        std::uint32_t slots_00cfadbc[5]{0x006f3210u, 0x006f2520u, 0x006f2550u, 0x006f2500u,
+                                        0x004499c0u};
+        std::uint32_t slots_00cfadd0[5]{0x006f3230u, 0x006f25e0u, 0x006f2610u, 0x006f25c0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if constexpr (kWireGoal4Chain326Bound) {
+                if (image_address == 0x00cfadbcu) return slots_00cfadbc;
+                if (image_address == 0x00cfadd0u) return slots_00cfadd0;
+            } else {
+                // The previous binding had no D3h / D4h profile.
+            }
             if constexpr (kWireGoal4Chain322Bound) {
                 if (image_address == 0x00cfaa20u) return slots_00cfaa20;
             } else {
@@ -186,6 +202,85 @@ struct SessionBoolCodec final : cc13_seg5::SessionBoolMessageHost {
             reinterpret_cast<bool*>(out_byte));
     }
 };
+
+// Goal 4 chain 326: the ten boundaries the command-building codecs
+// (006F2520..006F2700) call, bound to the process's bit-cursor bodies. Write
+// calls receive the 10h cursor itself; read calls receive the 18h stream for
+// the header and stream+4 (its cursor) for the fields, as the codecs pass them.
+struct CommandBuildingCodec final : cc13_seg33b::CommandBuildingMessageCodecHost {
+    using Object = cc13_seg33b::Object;
+    explicit CommandBuildingCodec(const NativeBitNumericContext& numeric) : numeric_(numeric) {}
+    void session_message_write_header_0075b480(Object message, Object stream) override {
+        write_native_session_message_header_0075b480(message,
+            reinterpret_cast<NativeBitCursor*>(stream));
+    }
+    void session_message_read_header_0075b4c0(Object message, Object stream) override {
+        read_native_session_message_header_0075b4c0(message,
+            reinterpret_cast<NativeSessionReadStream*>(stream));
+    }
+    void bit_write_unsigned_00429070(Object cursor, std::uint32_t value, std::int32_t bits) override {
+        write_native_unsigned_dword_bits_00429070(reinterpret_cast<NativeBitCursor*>(cursor),
+            value, static_cast<std::uint32_t>(bits));
+    }
+    void bit_read_unsigned_00428d10(Object cursor, std::uint32_t* value, std::int32_t bits) override {
+        read_native_u32_bits_00428d10(reinterpret_cast<NativeBitCursor*>(cursor), value,
+            static_cast<std::uint32_t>(bits));
+    }
+    void bit_write_signed_00429090(Object cursor, std::int32_t value, std::int32_t bits) override {
+        write_native_signed_dword_bits_00429090(reinterpret_cast<NativeBitCursor*>(cursor),
+            static_cast<std::uint32_t>(value), static_cast<std::uint32_t>(bits));
+    }
+    void bit_read_signed_00428d30(Object cursor, std::int32_t* value, std::int32_t bits) override {
+        read_native_i32_bits_00428d30(reinterpret_cast<NativeBitCursor*>(cursor), value,
+            static_cast<std::uint32_t>(bits));
+    }
+    void bit_write_boolean_004290b0(Object cursor, std::uint32_t value) override {
+        write_native_bool_bit_004290b0(reinterpret_cast<NativeBitCursor*>(cursor), value);
+    }
+    void bit_read_boolean_00428d70(Object cursor, std::uint8_t* value) override {
+        read_native_bool_bit_00428d70(reinterpret_cast<NativeBitCursor*>(cursor),
+            reinterpret_cast<bool*>(value));
+    }
+    // D5h's numeric codec (004295C0 / 004293F0) on raw float bits, as the
+    // shared bodies take them. D3h / D4h never reach these two.
+    void bit_write_float_004295c0(Object cursor, float value, std::int32_t zero,
+                                 std::int32_t is_signed, float scale, std::int32_t bits) override {
+        std::uint32_t value_bits = 0;
+        std::uint32_t scale_bits = 0;
+        std::memcpy(&value_bits, &value, sizeof value_bits);
+        std::memcpy(&scale_bits, &scale, sizeof scale_bits);
+        write_native_numeric_float_004295c0(reinterpret_cast<NativeBitCursor*>(cursor), value_bits,
+            static_cast<std::uint32_t>(zero), static_cast<std::uint32_t>(is_signed), scale_bits,
+            static_cast<std::uint32_t>(bits), numeric_);
+    }
+    void bit_read_float_004293f0(Object cursor, float* value, std::int32_t zero,
+                                std::int32_t is_signed, float scale, std::int32_t bits) override {
+        std::uint32_t value_bits = 0;
+        std::uint32_t scale_bits = 0;
+        std::memcpy(&scale_bits, &scale, sizeof scale_bits);
+        read_native_numeric_float_004293f0(reinterpret_cast<NativeBitCursor*>(cursor), &value_bits,
+            static_cast<std::uint32_t>(zero), static_cast<std::uint32_t>(is_signed), scale_bits,
+            static_cast<std::uint32_t>(bits), numeric_);
+        std::memcpy(value, &value_bits, sizeof value_bits);
+    }
+
+private:
+    const NativeBitNumericContext& numeric_;
+};
+
+// D3h / D4h: 00768530 allocates 24h bytes for either (00769F45 / 00769F65):
+// the 1Ch extended header, +1Ch, and +20h (D3h's codec moves only its byte).
+struct CommandBuildingMessage24 {
+    seg42::HeaderedMessage h;
+    std::uint32_t value_1c;
+    std::uint32_t value_20;
+};
+static_assert(sizeof(CommandBuildingMessage24) == 0x24);
+static_assert(offsetof(CommandBuildingMessage24, value_20) == 0x20);
+
+cc13_seg33b::Object command_building_object(CommandBuildingMessage24& message) noexcept {
+    return reinterpret_cast<cc13_seg33b::Object>(&message);
+}
 }  // namespace
 
 HostSessionMessages::HostSessionMessages() : image_(std::make_unique<Image>()) {}
@@ -586,6 +681,59 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
     read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
     return ClearCommandCopy{queued.flag_20, queued.value_24};
+}
+
+HostSessionMessages::CommandBuildingCopy HostSessionMessages::queue_command_building_set_owner_d3(
+    std::uint32_t player, bool flag) const {
+    const Image& image = *image_;
+    // 006F727A..006F72C1 / 008A8EE7..008A8F13: 0075B430(D3h), +18h word 0, +4h
+    // = 1, +1Ah 0, vtable 00CFADBC (00764220's stores), +1Ch = the slot, byte
+    // +20h = the flag. Bytes +21h..+23h are never written by a sender.
+    CommandBuildingMessage24 sent{};
+    seg42::construct_commandbuilding_setowner_00764220(&sent.h, image.seg42);
+    sent.value_1c = player;
+    sent.value_20 = flag ? 1u : 0u;
+
+    CommandBuildingCodec codec(image.numeric);
+    LocalStream stream;
+    cc13_seg33b::command_building_set_owner_message_write_006f2520(codec,
+        command_building_object(sent), reinterpret_cast<cc13_seg33b::Object>(&stream.out));
+    // 00768530 case D3h: operator new(24h) at 00769F47, 00764220 at 00769F59;
+    // 0076A27B vtable[8] = 006F2550 (6-bit player, then the bool).
+    stream.begin_read();
+    CommandBuildingMessage24 queued{};
+    seg42::construct_commandbuilding_setowner_00764220(&queued.h, image.seg42);
+    cc13_seg33b::command_building_set_owner_message_read_006f2550(codec,
+        command_building_object(queued), reinterpret_cast<cc13_seg33b::Object>(&stream.in));
+    // Neither message owns a reference; 006F3210's scalar delete only restamps.
+    // 006F5460 hands 006F4D10 the copy's +1Ch and byte +20h (006F549E..006F54A9).
+    return CommandBuildingCopy{queued.h.base.type_10, queued.value_1c, queued.value_20 & 0xFFu};
+}
+
+HostSessionMessages::CommandBuildingCopy HostSessionMessages::queue_command_building_set_level_d4(
+    std::uint32_t level, std::uint32_t argument) const {
+    const Image& image = *image_;
+    // 006F759F..006F75D0 / 006F5362..006F538E: 0075B430(D4h), +18h word 0, +4h
+    // = 1, +1Ah 0, vtable 00CFADD0 (00764280's stores), +1Ch = the level, +20h
+    // = the argument.
+    CommandBuildingMessage24 sent{};
+    seg42::construct_commandbuilding_setlevel_00764280(&sent.h, image.seg42);
+    sent.value_1c = level;
+    sent.value_20 = argument;
+
+    CommandBuildingCodec codec(image.numeric);
+    LocalStream stream;
+    cc13_seg33b::command_building_set_level_message_write_006f25e0(codec,
+        command_building_object(sent), reinterpret_cast<cc13_seg33b::Object>(&stream.out));
+    // 00768530 case D4h: operator new(24h) at 00769F67, 00764280 at 00769F79;
+    // 0076A27B vtable[8] = 006F2610 (3-bit level, 4-bit argument).
+    stream.begin_read();
+    CommandBuildingMessage24 queued{};
+    seg42::construct_commandbuilding_setlevel_00764280(&queued.h, image.seg42);
+    cc13_seg33b::command_building_set_level_message_read_006f2610(codec,
+        command_building_object(queued), reinterpret_cast<cc13_seg33b::Object>(&stream.in));
+    // 006F5460 hands 006F38E0 the copy's +1Ch and +20h.
+    return CommandBuildingCopy{queued.h.base.type_10, queued.value_1c, queued.value_20};
 }
 
 } // namespace bsp
