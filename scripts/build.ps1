@@ -51,8 +51,13 @@ try {
     $configureArgs = @('-S', $repoRoot, '-B', $buildPath, '-G', $generator, '-A', 'Win32',
         "-DCMAKE_GENERATOR_INSTANCE=$vsPath", "-DCMAKE_PROJECT_INCLUDE=$startupRegistry")
     # /Ob0 changes the optimizer's flow analysis and raises C4702 (unreachable code) in a few files; the
-    # analysis build is only read, so that warning is off there
-    if ($NoInline) { $configureArgs += '-DCMAKE_CXX_FLAGS_RELEASE=/O2 /Ob0 /DNDEBUG /wd4702' }
+    # analysis build is only read, so that warning is off there. /OPT:NOICF keeps every function at its own
+    # address: identical-code folding (the release linker's default) merged ~730 reconstructed bodies with
+    # unrelated twins (one with std::string's destructor), so their callers could not be told apart.
+    if ($NoInline) {
+        $configureArgs += '-DCMAKE_CXX_FLAGS_RELEASE=/O2 /Ob0 /DNDEBUG /wd4702'
+        $configureArgs += '-DCMAKE_EXE_LINKER_FLAGS_RELEASE=/INCREMENTAL:NO /OPT:REF /OPT:NOICF'
+    }
     & $cmakeExe @configureArgs
     if ($LASTEXITCODE) { throw 'CMake configure failed.' }
     $buildArgs = @('--build', $buildPath, '--config', $Configuration, '--parallel', '4')

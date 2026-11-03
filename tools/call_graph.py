@@ -218,8 +218,11 @@ def analyse(build_dir):
     incoming = collections.defaultdict(list)
     for (s, d, k), (n, first) in edges.items():
         incoming[d].append([f"{s:08x}", k, n, f"{first:08x}"])
-    nodes = [[f"{va:08x}", names[va][0], "f" if is_func[va] else "d", ends[va] - va, obj[va], int(va in parent)]
-             for va in starts]
+    # the last field counts the names folded onto one address (identical-code folding, /OPT:ICF). Above 1, a
+    # caller can't be told apart from its twins' callers; the analysis build links /OPT:NOICF to avoid it.
+    nodes = [[f"{va:08x}", names[va][0], "f" if is_func[va] else "d", ends[va] - va, obj[va], int(va in parent),
+              len(set(names[va]))] for va in starts]
+    aliases = {f"{va:08x}": sorted(set(names[va]))[:12] for va in starts if is_func[va] and len(set(names[va])) > 1}
     by_addr = collections.defaultdict(list)
     for va in starts:
         if not is_func[va]:
@@ -235,7 +238,7 @@ def analyse(build_dir):
     # references it. tools/wire_readiness.py matches each row to the function built from its own source file.
     called = 0
     for a, vas in by_addr.items():
-        if any(int(v, 16) in parent and not HOST_OBJ.search(obj[int(v, 16)])
+        if any(int(v, 16) in parent and not HOST_OBJ.search(obj[int(v, 16)]) and len(set(names[int(v, 16)])) == 1
                and any(int(s, 16) in parent and s != v for s, _, _, _ in incoming.get(int(v, 16), []))
                for v in vas):
             called += 1
@@ -246,7 +249,8 @@ def analyse(build_dir):
                "recon_addresses": sum(1 for vas in by_addr.values()
                                       if any(not HOST_OBJ.search(obj[int(v, 16)]) for v in vas)),
                "recon_called": called,
-               "orphan_refs_ignored": sum(orphan_refs.values())}
+               "orphan_refs_ignored": sum(orphan_refs.values()),
+               "folded_functions": len(aliases)}
     head = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     meta = {"build_dir": str(bdir), "map_mtime": map_path.stat().st_mtime, "exe_mtime": exe_path.stat().st_mtime,
             "head": head, "no_inline": (bdir.name == Path(ANALYSIS_DIR).name), "seconds": round(time.time() - t0, 1),
@@ -254,7 +258,7 @@ def analyse(build_dir):
     data = {"meta": meta, "summary": summary, "nodes": nodes,
             "incoming": {f"{k:08x}": v for k, v in incoming.items()},
             "parent": {f"{k:08x}": (f"{v:08x}" if v is not None else None) for k, v in parent.items()},
-            "by_addr": by_addr}
+            "by_addr": by_addr, "aliases": aliases}
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, separators=(",", ":")), encoding="utf-8")
     return data
@@ -289,8 +293,15 @@ def who(data, query, limit):
         live = [e for e in inc if e[0] in data["parent"]]
         calls = sum(e[2] for e in live if e[1] in ("call", "jmp"))
         refs = sum(e[2] for e in live if e[1] == "ref")
-        print(f"{short_name(n[1])} @{va} ({n[4]}): {'REACHABLE' if n[5] else 'not reachable from the entry'}; "
+        al = data.get("aliases", {}).get(va, [])
+        q = query.lower().removeprefix("0x")
+        shown = next((a for a in al if q in a.lower()), n[1])
+        print(f"{short_name(shown)} @{va} ({n[4]}): {'REACHABLE' if n[5] else 'not reachable from the entry'}; "
               f"{calls} call sites and {refs} references from reachable code; {len(inc) - len(live)} callers unreachable")
+        if al:
+            print(f"   FOLDED with {len(al) - 1} other function(s) at this address (identical code): these callers may "
+                  f"belong to any of them, e.g. {short_name([a for a in al if a != shown][0])}. The --build analysis "
+                  f"build links /OPT:NOICF.")
         for s, k, cnt, site in sorted(inc, key=lambda e: (e[0] not in data["parent"], -e[2]))[:limit]:
             sn = nodes.get(s)
             print(f"   <- {k:4s} x{cnt} at {site} from {short_name(sn[1]) if sn else s}"
