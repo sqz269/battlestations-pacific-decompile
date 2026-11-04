@@ -1,0 +1,165 @@
+{
+  "chain": 351,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain351Bound",
+  "base": "83886ded9c",
+  "scope": "Restore original renderer array destructor-to-resize edges, using existing native member headers and the binary's resize-to-zero constants.",
+  "newly_wired": [
+    "00b25cf0",
+    "00b25d40",
+    "00b22e90"
+  ],
+  "additional_existing_edge": "00b29e40 -> 00b260b0 (00b260b0 was already wired through 00b2f690)",
+  "readiness_before": 9421,
+  "readiness_after": 9424,
+  "analysis_called_before": 5990,
+  "analysis_called_after": 5993,
+  "validation": {
+    "build": "scripts/build.ps1: all three existing tests passed",
+    "graph": "tools/call_graph.py --build: each new resize has one reachable call from its matching destructor; no ICF or inlining in this analysis build",
+    "native_evidence": "bsp.py show --asm: B29B65->B25CF0, B29B85->B25D40, B28095->B22E90, B29E45->B260B0; each reloads header+0 after resize and calls BF6989",
+    "real_state": "NativeRendererApplication constructs the actual renderer; constructor/destructor unwind_parent passes renderer+1AC4, +1AD0, +1ADC, and +1B18+44. No copied or synthesized array is introduced.",
+    "failure_order": "Resize must return before the volatile data-pointer reload and singleton_lifetime_free. The old shared destructor does not also execute.",
+    "limits": "The three newly wired entries are reached through real renderer failure cleanup; ordinary renderer destruction retains its separately reconstructed inline clears. Release builds inline these small wrappers. Graph reachability is not an observed exception or gameplay test; the game was not run.",
+    "float_math": "No floating-point operations changed.",
+    "baseline": "Measured after temporarily restoring only the two owned .cpp files to HEAD and rebuilding build/callgraph; initial copied/stale artifacts were not used for the delta."
+  },
+  "rows": [
+    {
+      "native": "00b25cf0",
+      "status": "wired",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: destroy_native_renderer_vertex_shader_registry_00b29b60",
+      "new": true,
+      "state": "Actual renderer+1AC4h header in renderer construction/destruction unwind; zero is PUSH 0 at B29B61."
+    },
+    {
+      "native": "00b25d40",
+      "status": "wired",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: destroy_native_renderer_pixel_shader_registry_00b29b80",
+      "new": true,
+      "state": "Actual renderer+1AD0h header in renderer construction/destruction unwind; zero is PUSH 0 at B29B81."
+    },
+    {
+      "native": "00b22e90",
+      "status": "wired",
+      "host_site": "src/native_renderer_record_array_cleanup.cpp: destroy_native_renderer_third_state_cache_00b28090",
+      "new": true,
+      "state": "Actual renderer+1ADCh header in renderer construction/destruction unwind; zero is PUSH 0 at B28091."
+    },
+    {
+      "native": "00b260b0",
+      "status": "wired",
+      "host_site": "src/native_renderer_capability_array_cleanup.cpp: destroy_native_capability_dwords_00b29e40",
+      "new": false,
+      "state": "Actual renderer capabilities+44h header; additional destructor caller, already called from destroy_native_renderer_capabilities_00b2f690."
+    },
+    {
+      "native": "00b29b60",
+      "status": "wired",
+      "host_site": "src/native_renderer_constructor.cpp / src/native_renderer_destructor.cpp: unwind_parent",
+      "new": false
+    },
+    {
+      "native": "00b29b80",
+      "status": "wired",
+      "host_site": "src/native_renderer_constructor.cpp / src/native_renderer_destructor.cpp: unwind_parent",
+      "new": false
+    },
+    {
+      "native": "00b28090",
+      "status": "wired",
+      "host_site": "src/native_renderer_constructor.cpp / src/native_renderer_destructor.cpp: unwind_parent",
+      "new": false
+    },
+    {
+      "native": "00b29e40",
+      "status": "wired",
+      "host_site": "src/native_renderer_destructor.cpp: unwind_parent; src/native_renderer_parent_member_cleanup.cpp: CapabilityDwordsUnwind",
+      "new": false
+    },
+    {
+      "native": "00b282f0",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: RendererVertexShaderPointerArray_Clear descriptor",
+      "reason": "The reconstruction row identifies a generic Shape::kClearViaResize descriptor, not an address-specific callable body; a matching runtime clear-dispatch adapter is still needed."
+    },
+    {
+      "native": "00b28300",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp: RendererPixelShaderPointerArray_Clear descriptor",
+      "reason": "The reconstruction row identifies a generic Shape::kClearViaResize descriptor, not an address-specific callable body; a matching runtime clear-dispatch adapter is still needed."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The inspected command stand-ins have no AI-group/controller owner and only record the event; a real group command adapter is missing."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target / report_target_event",
+      "reason": "The inspected director sites only record the address; a target-event context that owns the live report recipients is missing."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "This director site returns zero and owns no native command-target storage; a target producer and typed initialization adapter are missing."
+    },
+    {
+      "native": "00aa31f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::release_movie_page",
+      "reason": "The movie host has no loaded native GUI page or page-registry ownership to remove and destroy."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "The movie host has no native widget produced by load_movie_page on which to apply local Z."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Native movie scene-node, decoder/player texture, and material-sampler producers are missing from this host."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The host clears a typed subtitle schedule but lacks the native movie widget's text child and owned subtitle/extra-title record vectors."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui log",
+      "reason": "This is a native sound-transition operation requiring the real game, movie-screen, input, and listener transition owners; the inspected log supplies none of that context."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Peer objective replication is a network path; single-player has no peer recipient, so it is outside this wiring assignment."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: write_checkpoint",
+      "reason": "The inspected host only logs this call and lacks a native profile/checkpoint persistence binding."
+    },
+    {
+      "native": "004d92b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: action_fired",
+      "reason": "This site consumes a scripted pending action; the front-end input device and native action-record table needed by the reconstructed body are missing."
+    },
+    {
+      "native": "004bbd00",
+      "status": "skipped",
+      "host_site": "src/sound_frame_service.cpp: run_sound_frame_job_004bbd00",
+      "reason": "The separate sound frame job has no entry-reachable scheduling caller in the inspected pool; a real frame-job scheduling binding is still missing."
+    }
+  ]
+}
