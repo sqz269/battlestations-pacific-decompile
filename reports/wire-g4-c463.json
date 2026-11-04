@@ -2,6 +2,19 @@
   "chain": 463,
   "slot": "g4-w3",
   "switch": "bsp::game::kWireGoal4Chain463Bound",
+  "merge_validation": {
+    "origin_main": "ff1733346d7b90fbe3038bca8964b2f85bac423c",
+    "resolution": "The only conflict was adjacent chain462/chain463 includes in game_hosts_mission.cpp. Kept both switches and the input runtime include; preserved chain462 loading-config ownership/publication and both chain463 scroller call sites. No ledger or CMake conflicts.",
+    "switch_enabled": true,
+    "build": "scripts/build.ps1 passed; 4/4 CTest groups passed, including cc462_loading_config",
+    "pc24": "pc24_lint.py --staged: 0 findings across 24 files",
+    "called_total": 4809,
+    "wired_total": 9733,
+    "readiness": "wire_readiness.py --standins: 00683820 is wired, called=true, call_sites=2, callers_live=2",
+    "scroller_call_sites": 2,
+    "loading_config_call_sites": 1,
+    "game_validated": false
+  },
   "rows": [
     {
       "native": "00683820",

@@ -14,6 +14,7 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_profile_load.hpp"
 #include "bsp/game_profile_owner.hpp"
+#include "bsp/game_loading_config.hpp"
 #include "bsp/mission_map_flag_policy.hpp"
 
 #include "bsp/game_hosts.hpp"
@@ -65,6 +66,7 @@
 #include "bsp/wire_goal4_chain387_switches.hpp"
 #include "bsp/wire_goal4_chain407_switches.hpp"
 #include "bsp/wire_goal4_chain432_switches.hpp"
+#include "bsp/wire_goal4_chain462_switches.hpp"
 #include "bsp/wire_goal4_chain463_switches.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/frontend_screen_animation.hpp"
@@ -855,6 +857,9 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
     GameFrontendHost& frontend;
     LocaleTables& locale;
     std::string requested_id;
+
+    // E08780/E0879C: retain both published configs past MissionStartBinding.
+    std::unique_ptr<GameLoadingConfig> loading_config;
 
     // Declared before `tables` so every picture reference the records hold is
     // released before these services and their acquisition frames go.
@@ -1762,10 +1767,19 @@ public:
     }
     void publish_loading_config(const std::vector<std::string>& text,
         std::string_view mission_name, bool second_side_enabled) override {
+        if constexpr (kWireGoal4Chain462Bound) {
+            if (!owner_.loading_config)
+                owner_.loading_config = std::make_unique<GameLoadingConfig>(game_native_string_process());
+            // 0058BEDE -> 0057D060 -> 0057CFF0, using the selected record's
+            // actual side vector, title and record+20Ch low-byte projection.
+            owner_.loading_config->publish(text, mission_name, second_side_enabled);
+            owner_.log.implemented("MissionStart::publish_loading_config", "0057d060");
+        } else {
         static_cast<void>(text);
         static_cast<void>(mission_name);
         static_cast<void>(second_side_enabled);
         owner_.log.unimplemented("MissionStart::publish_loading_config", "0057d060");
+        }
     }
     void set_mission_key_mirror(std::string_view mission_id) override {
         static_cast<void>(mission_id);

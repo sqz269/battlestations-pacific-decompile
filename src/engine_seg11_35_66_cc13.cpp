@@ -3425,7 +3425,46 @@ void* vfs_load_whole_file_00bdc8b0(void* manager, const void* name, CWord* size_
 } // namespace bsp::oct18_tail_c
 
 #include "bsp/native_mpkg_directory.hpp"
+#include "bsp/native_mpkg_archive.hpp"
+#include "bsp/wire_goal4_chain459_switches.hpp"
 namespace bsp::oct18_tail_c {
+namespace {
+// Chain459: profiles in actual owners contain original numeric entries, not
+// executable host pointers. Capture each current slot exactly where the old
+// indirect call did, then use the application's existing stream dispatch.
+void mpkg_seek(void* source, CWord offset, const MpkgBindings& b) {
+    if (b.native_context) {
+        const auto target = c_read<CWord>(c_read<void*>(source,0),0x1c);
+        (void)b.native_context->directory.streams.source_seek(target,source,offset,0,0);
+    } else {
+        c_virtual<void>(source,0x1c,offset,CWord{0},CWord{0});
+    }
+}
+void mpkg_read(void* source, void* bytes, CWord size, CWord* actual, const MpkgBindings& b) {
+    if (b.native_context) {
+        const auto target = c_read<CWord>(c_read<void*>(source,0),0x24);
+        b.native_context->directory.streams.source_read(target,source,bytes,size,actual);
+    } else {
+        c_virtual<void>(source,0x24,bytes,size,actual);
+    }
+}
+void mpkg_zero_reference(void* source, const MpkgBindings& b) {
+    if (b.native_context) {
+        const auto table = c_read<CWord>(source,0);
+        const auto target = c_read<CWord>(reinterpret_cast<const void*>(table),0);
+        b.native_context->directory.streams.source_zero_reference(target,source,table);
+    } else {
+        c_virtual<void>(source,0);
+    }
+}
+void* mpkg_reopen(void* manager, const void* name, const MpkgBindings& b) {
+    if (b.native_context) {
+        const auto target = c_read<CWord>(c_read<void*>(manager,0),4);
+        return b.native_context->services.open_manager_00bb99a0(target,manager,name,2);
+    }
+    return c_virtual<void*>(manager,4,name,CWord{2});
+}
+}
 void archive_write_field_00bd8cd0(void* writer, GuiTaggedWord key, GuiTaggedWord value,
     const ArchiveFieldBindings& b) {
     b.indent_00bd6990(c_read<CWord>(writer, 4));
@@ -3433,14 +3472,22 @@ void archive_write_field_00bd8cd0(void* writer, GuiTaggedWord key, GuiTaggedWord
     b.value_00bd7f50(value);
     b.terminator_00bd6ac0(c_read<CWord>(writer, 4) == 0);
 }
-std::uint32_t mpkg_entry_offset_00bb8a90(void* state, void* entry, const MpkgBindings& b) {
+__declspec(noinline) std::uint32_t mpkg_entry_offset_00bb8a90(void* state, void* entry, const MpkgBindings& b) {
     if (c_read<std::uint8_t>(entry, 0xc)) return c_read<CWord>(entry, 0x10);
+    if constexpr (kWireGoal4Chain459Bound) {
+        mpkg_seek(c_read<void*>(state,0xc),c_read<CWord>(entry,8),b);
+    } else {
     c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, c_read<CWord>(entry, 8), CWord{0}, CWord{0});
+    }
     void* const source = c_read<void*>(state, 0xc); // captured before allocation
     struct Reader { void* base; CWord reported; void* cursor; } reader;
     static_assert(sizeof(Reader) == 0xc);
     reader.base = b.allocate_header_00bf55be(0x1e);
+    if constexpr (kWireGoal4Chain459Bound) {
+        mpkg_read(source,reader.base,0x1e,&reader.reported,b);
+    } else {
     c_virtual<void>(source, 0x24, reader.base, CWord{0x1e}, &reader.reported);
+    }
     reader.cursor = reader.base;
     alignas(4) unsigned char header[0x34]; // actual header; local-only fields stay unwritten
     read_native_mpkg_header_00bb8850(&reader, header, 1);
@@ -3456,7 +3503,11 @@ void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
     (void)flags; // original stacked flags are unused
     const CWord offset = mpkg_entry_offset_00bb8a90(state, entry, b);
     if (c_read<std::uint16_t>(entry, 0x14) != 0) {
+        if constexpr (kWireGoal4Chain459Bound) {
+            mpkg_seek(c_read<void*>(state,0xc),offset,b);
+        } else {
         c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        }
         void* const allocation = b.allocate_owner_00bf681b(0x34);
         void* inflate = nullptr;
         if (allocation) {
@@ -3465,15 +3516,29 @@ void* mpkg_open_entry_00bb8be0(void* state, void* entry, CWord flags,
             inflate = b.inflate_00bbc1d0(allocation, c_read<void*>(state, 0xc), parameters, 0x4000, 0x10000);
         }
         void* const memory = b.memory_00bef750(inflate);
-        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(inflate, 4))) == 0)
+        if (InterlockedDecrement(static_cast<volatile LONG*>(c_at(inflate, 4))) == 0) {
+            if constexpr (kWireGoal4Chain459Bound) {
+                mpkg_zero_reference(inflate,b);
+            } else {
             c_virtual<void>(inflate, 0);
+            }
+        }
         return memory;
     }
     if (c_read<CWord>(entry, 0x1c) <= 0x40000) {
+        if constexpr (kWireGoal4Chain459Bound) {
+            mpkg_seek(c_read<void*>(state,0xc),offset,b);
+        } else {
         c_virtual<void>(c_read<void*>(state, 0xc), 0x1c, offset, CWord{0}, CWord{0});
+        }
         return b.copy_range_00bef840(c_read<void*>(state, 0xc), offset, 0, c_read<CWord>(entry, 0x1c), 0);
     }
-    void* const reopened = c_virtual<void*>(vfs, 4, c_at(state, 4), CWord{2});
+    void* reopened;
+    if constexpr (kWireGoal4Chain459Bound) {
+        reopened = mpkg_reopen(vfs,c_at(state,4),b);
+    } else {
+        reopened = c_virtual<void*>(vfs, 4, c_at(state, 4), CWord{2});
+    }
     void* const allocation = b.allocate_owner_00bf681b(0x28);
     if (!allocation) return nullptr; // original does not retire reopened source here
     return b.adopted_00bf1130(allocation, reopened, offset, 0, c_read<CWord>(entry, 0x1c), 0);

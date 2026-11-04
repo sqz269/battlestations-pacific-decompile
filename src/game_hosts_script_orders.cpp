@@ -7,6 +7,8 @@
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/band_0071_cc13.hpp"
+#include "bsp/wire_goal4_chain460_switches.hpp"
 #include "bsp/wire_goal2_chain180_switches.hpp"
 #include <stdexcept>
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
@@ -760,6 +762,35 @@ public:
 
 private:
     bsp::LuaBindingArgumentReader& core_;
+};
+
+// Goal 4 chain 460. These callbacks borrow the current script orders owner;
+// neither adapter creates another narrative queue or another Lua call frame.
+class NarrativeQueueBinding final : public bsp::cc13_seg56::NarrativeContentHost {
+public:
+    NarrativeQueueBinding(std::function<int()> size, std::function<void()> clear)
+        : size_(std::move(size)), clear_(std::move(clear)) {}
+    int narrative_size() override { return size_(); }
+    void narrative_clear() override { clear_(); }
+private:
+    std::function<int()> size_;
+    std::function<void()> clear_;
+};
+
+class NarrativePostBinding final : public bsp::cc13_seg56::NarrativePostHost {
+public:
+    using Append = std::function<void(const std::string&, const std::string&, int)>;
+    explicit NarrativePostBinding(Append append) : append_(std::move(append)) {}
+    void narrative_post(std::uint32_t entry_point, const std::string& text,
+        const std::string& callback, bsp::cc13_seg56::LuaArgs&, int extras_from) override {
+        // 008B0DAC calls 00734870 for both registered aliases. Urgent and
+        // Override are separate native bindings, outside this adapter.
+        if (entry_point != bsp::cc13_seg56::kNarrativePost)
+            throw std::logic_error("MissionNarrative append received another queue entry point");
+        append_(text, callback, extras_from);
+    }
+private:
+    Append append_;
 };
 
 // 008AD540's two callees. The class test's answer is discarded by the binding
@@ -5382,6 +5413,33 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = state_ != nullptr ? 1 : 0;
     } else if (std::strcmp(binding->name, "MissionNarrative") == 0 ||
                std::strcmp(binding->name, "MissionNarrativeEnqueue") == 0) {
+        if constexpr (bsp::kWireGoal4Chain460Bound) {
+            // Evidence: bsp.py show 008B0C10, 008B0D0A..008B0DAC. Reuse
+            // the body for argument selection and literal result count. Its
+            // append callback retains the actual Lua arguments in this owner's
+            // existing queue, consumed by run_narrative_update_00735100.
+            RepairBindingArgs args(*this);
+            NarrativePostBinding host([&](const std::string& text,
+                const std::string& callback, int extras_from) {
+                NarrativeEntry entry;
+                entry.text = text;
+                entry.callback = callback;
+                if (extras_from >= 0) {
+                    for (int index = extras_from; index < count(); ++index) {
+                        lua_pushvalue(state_, stack_slot(index));
+                        entry.argument_refs.push_back(luaL_ref(state_, LUA_REGISTRYINDEX));
+                    }
+                }
+                log_.notef("  MissionNarrative(\"%s\", \"%s\") at %.2f s, %zu more argument(s), "
+                    "queue %zu (008B0C10 -> 00734870)", entry.text.c_str(), entry.callback.c_str(),
+                    static_cast<double>(mission_clock_), entry.argument_refs.size(),
+                    narrative_queue_.size() + 1);
+                narrative_queue_.push_back(std::move(entry));
+                ++narrative_enqueues_;
+            });
+            results = bsp::cc13_seg56::lua_mission_narrative_post(
+                bsp::cc13_seg56::kNarrativePost, args, host);
+        } else {
         // 008B0C10 (both rows): 00887120(-1, 4) reads the frame; argument 0 is the
         // text (the variant at +8h), argument 1 the callback name when there are
         // more than one (008B0D0A), arguments 2..n a new vector (008B0D50-
@@ -5400,6 +5458,7 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         narrative_queue_.push_back(std::move(entry));
         ++narrative_enqueues_;
         results = 0;  // 008B0E07, nothing pushed
+        }
     } else if (std::strcmp(binding->name, "DisplayScores") == 0) {
         // 008C20D0: six arguments -> 0052B780(arg0, arg1, line arg2, line arg3,
         // arg4, arg5) (008C22DA); four -> 0052B620(arg0, arg1, line arg2, line
@@ -5443,15 +5502,41 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         }
         results = 0;
     } else if (std::strcmp(binding->name, "MissionNarrativeClear") == 0) {
+        if constexpr (bsp::kWireGoal4Chain460Bound) {
+            // 008B15B0 calls 00734FA0 once; its callback releases the same
+            // queued/showing registry references as the previous host arm.
+            NarrativeQueueBinding host([&] {
+                return bsp::band_0071_cc13::mission_narrative_size_00733260(
+                    static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+            }, [&] {
+                narrative_clear_00734fa0();
+                ++narrative_clears_;
+            });
+            results = bsp::cc13_seg56::lua_mission_narrative_clear(host);
+        } else {
         // 008B15B0 -> 00734FA0 on [game+21E8h].
         narrative_clear_00734fa0();
         ++narrative_clears_;
         results = 0;
+        }
     } else if (std::strcmp(binding->name, "MissionNarrativeSize") == 0) {
+        if constexpr (bsp::kWireGoal4Chain460Bound) {
+            // 008B0AC0 -> 00733260 reads the retained queue count and the
+            // current showing byte, then uses the existing 00B664B0 writer.
+            NarrativeQueueBinding host([&] {
+                return bsp::band_0071_cc13::mission_narrative_size_00733260(
+                    static_cast<std::int32_t>(narrative_queue_.size()), narrative_active_14_);
+            }, [&] {
+                narrative_clear_00734fa0();
+                ++narrative_clears_;
+            });
+            results = bsp::cc13_seg56::lua_mission_narrative_size(*this, host);
+        } else {
         // 008B0AC0 -> 00733260: the list count +0Ch plus 1 while an entry shows.
         lua_pushinteger(state_, static_cast<lua_Integer>(narrative_queue_.size() +
                                                          (narrative_active_14_ ? 1u : 0u)));
         results = state_ != nullptr ? 1 : 0;
+        }
     } else if (std::strcmp(binding->name, "EndScene") == 0) {
         // 008B01B0. RECORD, labelled: for a failed single-player mission it raises
         // the restart prompt (00531B00) and returns; otherwise it reaches

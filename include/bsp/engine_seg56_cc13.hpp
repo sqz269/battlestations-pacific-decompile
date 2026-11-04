@@ -394,7 +394,16 @@ int lua_display_unit_hp(LuaArgs& args, HudScoreHost& host);
 // Localisation, environment, narrative, effects and class bindings
 // ---------------------------------------------------------------------------
 
-struct ContentHost {
+// The size/clear bindings only touch the retained mission narrative owner.
+// Keep that contract separate so a live narrative binding need not supply
+// unrelated atmosphere, lighting, localisation or effects services.
+struct NarrativeContentHost {
+    virtual ~NarrativeContentHost() = default;
+    virtual int narrative_size() = 0;   // 00733260
+    virtual void narrative_clear() = 0; // 00734FA0
+};
+
+struct ContentHost : NarrativeContentHost {
     virtual ~ContentHost() = default;
     // Localisation manager [00F8BC4C].
     virtual void localization_register_table_name(const std::string& name) = 0; // 00AA0D30
@@ -411,8 +420,6 @@ struct ContentHost {
     // Vehicle class registry singleton 00437F50: dword at +2010h + id*4.
     virtual std::int32_t vehicle_class_remap(int class_id) = 0;
     // Mission narrative [[00E188A8]+21E8h].
-    virtual int narrative_size() = 0;  // 00733260
-    virtual void narrative_clear() = 0; // 00734FA0
     virtual void narrative_send_to_party(int party, const std::string& text) = 0;   // 00734B10
     virtual void narrative_send_to_player(int player, const std::string& text) = 0; // 00734BF0
     // Dialog panel owner [[00E188A8]+21E4h].
@@ -439,8 +446,8 @@ inline constexpr std::size_t kLightDiffuseOffset = 0xFC8;
 inline constexpr std::size_t kLightHorizontalAngleOffset = 0x1004;
 inline constexpr std::size_t kLightVerticalAngleOffset = 0x1008;
 int lua_is_class_changed(LuaArgs& args, LuaResults& results, ContentHost& host); // 008CC4B0
-int lua_mission_narrative_size(LuaResults& results, ContentHost& host);  // 008B0AC0
-int lua_mission_narrative_clear(ContentHost& host);                      // 008B15B0
+int lua_mission_narrative_size(LuaBindingResultWriter& results, NarrativeContentHost& host); // 008B0AC0
+int lua_mission_narrative_clear(NarrativeContentHost& host);                                // 008B15B0
 int lua_mission_narrative_party(LuaArgs& args, ContentHost& host);       // 008B1210
 int lua_mission_narrative_player(LuaArgs& args, ContentHost& host);      // 008B13E0
 int lua_break_dialog(LuaArgs& args, ContentHost& host);                  // 008B07C0
@@ -894,13 +901,15 @@ int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host);
 // (include/bsp/mission_named_call_args.hpp). A string variant keeps a pointer to its native
 // string at record +8h. The records after a fixed prefix are pushed one by one (006EDF00) into a
 // new 0Ch-byte vector the callee takes. The bindings return a literal 0.
-struct NarrativeHost {
-    virtual ~NarrativeHost() = default;
+struct NarrativePostHost {
+    virtual ~NarrativePostHost() = default;
     // The three queue entry points on [[00E188A8]+21E8h], each __thiscall(text, &callback,
     // extras or null): 00734870 (MissionNarrative), 007349C0 (Urgent), 00734E50 (Override).
     // `extras_from` is the first argument index of the extras vector, -1 for null.
     virtual void narrative_post(std::uint32_t entry_point, const std::string& text,
         const std::string& callback, LuaArgs& args, int extras_from) = 0;
+};
+struct NarrativeHost : NarrativePostHost {
     // 009291D0 on the entity with the collected variants of arguments 1..n (00887370(2, -1, 4));
     // the same publisher BSP_MissionLua_PublishInputEvent and the Lua death notice use.
     virtual void entity_publish_lua_message(void* entity, LuaArgs& args, int first) = 0;
@@ -911,7 +920,7 @@ inline constexpr std::uint32_t kNarrativePostOverride = 0x00734E50u;
 // MissionNarrative 008B0C10 / Urgent 008B0E10 / Override 008B1010: text = variant 0's string,
 // passed by pointer; callback = variant 1's string copied when there are at least two
 // arguments, else empty; extras = variants 2..n when there are at least three (CMP 3 / JL).
-int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host);
+int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativePostHost& host);
 // Message 00898C60: entity arg0 (00888AA0, read before the holder is built), then the publish.
 int lua_message(LuaArgs& args, NarrativeHost& host);
 

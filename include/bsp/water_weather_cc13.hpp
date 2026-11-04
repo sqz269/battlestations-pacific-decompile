@@ -16,6 +16,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -1922,7 +1923,7 @@ void* w3_memory_stream_cast_00bb8690(void* stream, void* memory_file_type_0109db
 // 00BB8E70 BSP_MpkgProvider_OpenEntry, __thiscall(ECX provider, name, flags) RET 8: tail jump to
 // BSP_MPKG_OpenNamedEntry 00BB8D60 with ECX = provider +14h.
 void* w3_mpkg_provider_open_entry_00bb8e70(void* provider, const void* name, std::uint32_t flags,
-    void* (*open_named_entry_00bb8d60)(void* state, const void* name, std::uint32_t flags));
+    const std::function<void*(void* state, const void* name, std::uint32_t flags)>& open_named_entry_00bb8d60);
 // 00BB5330 BSP_MpakDirectory_MakeMemberIterator: ECX out, EDX name (a register input; the body pushes it
 // as the third argument of 00BB4F40), stack (container, first, unused, end) RET 10h -> EAX out:
 // out +4h = BSP_MpakDirectoryVector_FindMember 00BB4F40(ECX first, EDX end, name); out +0h = container.

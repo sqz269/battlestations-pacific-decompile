@@ -1,0 +1,253 @@
+{
+  "chain": 462,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain462Bound",
+  "summary": "Retained native loading-screen pending/current configuration publication from actual selected-mission state.",
+  "rows": [
+    {
+      "native": "0057d060",
+      "status": "wired",
+      "host_site": "include/bsp/game_loading_config.hpp: GameLoadingConfig::publish",
+      "wiring": "direct",
+      "state": "Selected mission side loading_text, record title and second-side flag; Source borrowed headers feed two retained native config owners."
+    },
+    {
+      "native": "0057cff0",
+      "status": "wired",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: loading_screen_set_mission_text_0057d060",
+      "wiring": "direct",
+      "state": "Reads the same retained pending config written by 0057D060 and deep-copies it to the retained current config."
+    },
+    {
+      "native": "00506c80",
+      "status": "wired",
+      "host_site": "include/bsp/game_loading_config.hpp: GameLoadingConfig::Host::string_vector_assign_00506c80",
+      "wiring": "direct",
+      "state": "Actual checked native string-vector headers backed by real mission strings; destination ownership uses the application's permanent raw string-pool context."
+    },
+    {
+      "native": "00432090",
+      "status": "wired",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "wiring": "transitive",
+      "state": "Native destination vector allocation on assignment growth."
+    },
+    {
+      "native": "00432360",
+      "status": "wired",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "wiring": "transitive",
+      "state": "Native current-range destruction on replacement."
+    },
+    {
+      "native": "0048f400",
+      "status": "wired",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "wiring": "transitive",
+      "state": "Native existing-prefix assignment on reuse/shrink."
+    },
+    {
+      "native": "00498ff0",
+      "status": "wired",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "wiring": "transitive",
+      "state": "Native clear on an empty source while retaining destination backing."
+    },
+    {
+      "native": "00505ad0",
+      "status": "wired",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "wiring": "transitive",
+      "state": "Native uninitialized suffix/replacement copy."
+    },
+    {
+      "native": "0044d0c0",
+      "status": "wired",
+      "host_site": "src/native_string_uninitialized_copy.cpp: copy_native_string_uninitialized_dispatch_00505ad0",
+      "wiring": "transitive",
+      "state": "Native range-copy core uses the application's raw string-pool publications."
+    },
+    {
+      "native": "0048da50",
+      "status": "wired",
+      "host_site": "src/native_string_vector_erase.cpp: clear_native_string_header_vector_00498ff0",
+      "wiring": "transitive",
+      "state": "Native assignment range reached by the clear implementation."
+    },
+    {
+      "native": "00431f40",
+      "status": "wired",
+      "host_site": "src/native_string_uninitialized_copy.cpp: copy_native_string_uninitialized_range_0044d0c0 catch cleanup",
+      "wiring": "transitive_exception_branch",
+      "state": "Graph-reachable cleanup of constructed headers if a real copy allocation throws; exceptional execution was not induced."
+    },
+    {
+      "native": "00431f70",
+      "status": "wired",
+      "host_site": "src/native_string_vector_allocation.cpp: buy_native_checked_string_vector_00432090 length-error arm",
+      "wiring": "transitive_exception_branch",
+      "state": "Graph-reachable original length-error transport; an over-limit allocation was not induced."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Missing actual render-resource receiver/texture context and authored remap-name producer; record_remap_texture_name currently returns an empty string."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "Missing actual render-resource receiver/texture context and authored remap-name producer."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "Missing actual render-resource receiver/texture context and authored remap-name producer."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "Missing actual render-resource receiver/texture context and authored remap-name producer."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum insertion",
+      "reason": "Already entry-reachable through SceneNumericPropertyMerge in the initial readiness graph; no new wiring needed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native bag merge",
+      "reason": "Already entry-reachable through SceneNumericPropertyMerge in the initial readiness graph; no new wiring needed."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target (candidate)",
+      "reason": "Missing real mutable native F87574/F87578/F8757C cells read by the literal body; loader-zero assumptions cannot supply their current values."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline (candidate teardown)",
+      "reason": "Missing native game+1930h baseline-set ownership, game+1A0Ch owner and a connected teardown adapter; existing baseline is a host string vector."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing a real checkpoint-difference result/current-key boundary; checkpoint_differs returns false before the write branch."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: entity hint weighting (candidate)",
+      "reason": "No native global/per-party hint-map and entity-record owner was established in this packet; inspection stopped before rebuilding the coordinator producer chain."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing native ammo+48h flak-alternate producer; the existing host explicitly records that boundary."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit clear vector660 (candidate)",
+      "reason": "No live native unit+660h vector owner or clear call site was established; only the ledger lookup was inspected."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: effect preload push_effect_handle",
+      "reason": "Missing the live record effect-name/acquisition chain and retained native effect-handle vector; current push only records a log entry."
+    },
+    {
+      "native": "0042b680",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_frame_0079c200 (candidate)",
+      "reason": "No live MovCam frame caller/host was established for the sole Original caller 0079C200; an unrelated matrix copy was not substituted."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "Missing real entity+1ACh route-slot and native scoring-record owner; entity_route_slot currently returns -1 and skips the counter."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship AI registration (candidate)",
+      "reason": "Missing complete native 2268h brain/ship owner graph and constructor host; current controller records do not provide that layout."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call",
+      "reason": "Missing a real off-main-thread named-call producer; this executable keeps mission Lua on the main thread and the deferred queue empty."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start",
+      "reason": "No owning native source temporary exists on this path: selected mission strings are borrowed and the new pending/current copies have independent retained ownership."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile_owns_content",
+      "reason": "Missing native profile+D0h owned-content list and string nodes; current host returns false."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: queued-message gate (candidate)",
+      "reason": "No complete real sender/tick-window input adapter was established in this packet; existing session paths were left for separate bounded work."
+    },
+    {
+      "native": "0057d0d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: default loading config (candidate)",
+      "reason": "Missing the separate front-end default-config startup boundary; the selected-mission path must use its actual record values rather than default image names."
+    },
+    {
+      "native": "0058bdf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding",
+      "reason": "Already wired before this packet; reused its selected-record publication callback as the real caller of 0057D060."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 0057d060",
+    "bsp.py show 0057cff0",
+    "bsp.py show 0058bdf0 --start 50 --lines 70",
+    "bsp.py show 0057d0d0 --lines 28",
+    "call_graph.py who 0057d060",
+    "call_graph.py who 0057cff0",
+    "call_graph.py who 00506c80",
+    "call_graph.py path 0057cff0"
+  ],
+  "checks": {
+    "build": "scripts/build.ps1 passed with the final enabled switch",
+    "ctest": "3/3 passed: reconstructed_math, tool_tests, cc462_loading_config",
+    "fixture": "Source mutation, independent pending/current backing, shrink, replacement growth, empty source and teardown; no game execution.",
+    "switch_off": "All three direct target bodies absent from a fresh Release executable graph.",
+    "call_graph_off_recon_called": 4786,
+    "call_graph_on_recon_called": 4799,
+    "new_native_addresses": 12,
+    "graph_count_note": "The +13 graph-node delta includes the address-named Host adapter as well as 12 unique Original addresses. Nine are unmodified transitive string-vector services; exception branches are graph evidence only.",
+    "readiness_text_before": 9720,
+    "readiness_text_after": 9722,
+    "graph_off_artifact": "local/output/wire_g4_c462_graph_off.json",
+    "graph_on_artifact": "local/output/wire_g4_c462_graph_on.json"
+  },
+  "limitations": [
+    "Source-level native-layout adapters, not original entry/stack/FH3 ABI replacements.",
+    "No game was run; loading-screen appearance and gameplay remain unvalidated.",
+    "Only the selected-mission publication path is connected here; default-loading-screen construction/display remain separate work."
+  ]
+}
