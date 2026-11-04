@@ -1,0 +1,164 @@
+{
+  "chain": 336,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain336Bound",
+  "baseline": {
+    "head": "60c2f0163eddfc117a93350f1baac860ab0ec6d1",
+    "readiness_wired": 9346,
+    "entry_reachable_reconstructed_addresses": 4380,
+    "target_linked": false
+  },
+  "rows": [
+    {
+      "native": "004b46b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionFrameBinding::update_in_mission_subsystems_004c40a0, engine-movie stop tail",
+      "evidence": "0045F955 calls 004B46B0 after luaStageInit, HUD visibility, dialog unpause and scene quad-tree work; 004B46B1 loads E188B4, calls each element virtual0 and reloads next+8 at 004B46C8.",
+      "state": "Borrow GameNativePhysicalPoolProcess's existing allocator_list_domain_00e188b4, shared by the application's actual process pool owners; do not create a second list or initialize pools at the call site.",
+      "limitations": "Existing host omits the preceding HUD visibility, dialog and scene-quad-tree operations. This change implements only the final independent allocator trim. Build/call-graph proof does not establish gameplay or original ABI parity."
+    },
+    {
+      "native": "008e9af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen adapter collect_powerups",
+      "reason": "The typed PowerupRuntime producer needs a native active-collection/output-vector bridge before this raw manager collector can replace the five empty HUD projections."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen adapter powerup_applies",
+      "reason": "No borrowed native power-up entry/descriptor/scope owner is established in this HUD path; the active collection bridge must come first."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterface adapter support_request_pending",
+      "reason": "The usable-item query needs the same manager's per-slot inventory and descriptor/uses-left storage; no native inventory bridge is established here."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterface adapter map_screen_busy",
+      "reason": "The host has no owned power-up carousel scrolling bytes +1F9/+13F or their writers."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI planner score-list stand-in",
+      "reason": "The host intentionally retains no diagnostic candidate-score list; the coordinator's load gate also prevents its planner from running in the current campaign path."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI planner chosen-score stand-in",
+      "reason": "There are no native score-list entries to mark and no campaign-reachable coordinator planner producing them."
+    },
+    {
+      "native": "00a2bdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI coordinator group target query",
+      "reason": "The current campaign load gate leaves the coordinator unconstructed, so wiring its group query would remain unreachable."
+    },
+    {
+      "native": "007b8d70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land-final touchdown gate",
+      "reason": "The ordnance actuator block exists but the separate gear channel +28/+2C and its native enabled/value producers are still absent."
+    },
+    {
+      "native": "0070d0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation leader change",
+      "reason": "Raw SetLeader requires actual group and unit prefixes plus pose ancestors for its raw wake handoff; the current formation groups and wake trails are typed storage."
+    },
+    {
+      "native": "00815680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::inherit_leader_wake_00815e20",
+      "reason": "The current typed ShipAiWakeTrail cannot be borrowed as the raw ring layout with head at +3C8; replacing its producer and consumers is required first."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::place_at_world_position_008193a0",
+      "reason": "The existing reconstruction is only a PoseSetPlan projection, not the whole setter; wiring the projection alone would not implement native unit pose/previous-position and side effects."
+    },
+    {
+      "native": "009585b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit world-matrix placement",
+      "reason": "The existing body returns a fixed PoseSetPlan; the complete native matrix setter and owned scene-pose bridge remain missing."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::device_button_held",
+      "reason": "primary_device still has no input-device owner; a button-query adapter alone cannot reach the body's nonnull-device caller arm."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: title sign_in_state_valid",
+      "reason": "This pending-invite query requires online-manager selected-user/invitee state; excluded from this single-player packet."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: create_main_menu_manager",
+      "reason": "The raw constructor's manager/base/registry and screen graph are not the typed MainMenuManager consumed by this host; a complete producer migration is still required."
+    },
+    {
+      "native": "00940ec0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp: GUI sound set initialization",
+      "reason": "The mission host does not own or construct the GUI sound set and has no GuiSoundSetHost tracked-sound creation adapter."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: GUI sound playback stand-in",
+      "reason": "The GUI sound-set producer 00940DD0/00940EC0 and its tracked-sound owner must be wired before playback."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp: sound-cache record reserve",
+      "reason": "No campaign host cache-record producer/consumer bridge was established during bounded selection; retain the existing native record interface for a dedicated sound-cache packet."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message-35 word storage",
+      "reason": "Native message-35 already calls this reserve body; the missing work is making its message/profile producer reachable, not adding a duplicate reserve call."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message-35 word storage",
+      "reason": "The existing native message-35 caller already invokes this resize body but lacks a host-reachable producer/profile path."
+    }
+  ],
+  "validation": {
+    "baseline_build": "Win32 Release and reconstructed_math/tool_tests passed",
+    "final_build": "./scripts/build.ps1 passed: Win32 Release, reconstructed_math and tool_tests (2/2)",
+    "readiness": {
+      "wired_before": 9346,
+      "wired_after": 9347,
+      "target_state": "wired",
+      "target_called": true,
+      "target_call_sites": 1
+    },
+    "call_graph": {
+      "entry_reachable_reconstructed_addresses_before": 4380,
+      "entry_reachable_reconstructed_addresses_after": 4381,
+      "target": "bsp::AllocatorListDomain::trim_all_004b46b0 @10377ea0",
+      "target_call_sites": 1,
+      "caller": "MissionFrameBinding::update_in_mission_subsystems_004c40a0",
+      "call_instruction": "10181821",
+      "entry_reachable": true,
+      "commands": ["python tools/call_graph.py", "python tools/call_graph.py who 004b46b0", "python tools/call_graph.py path 004b46b0"]
+    },
+    "game_run": false,
+    "float_math_changed": false
+  }
+}
