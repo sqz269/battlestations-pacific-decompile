@@ -159,14 +159,26 @@ struct ObjectiveUnitHost {
 
     // 008dfc00 at 008e0035 and 008ce510's own dispatch: hand a live unit back to the
     // set-level removal. Only the dispatch of 008dfc00 and 008df400 was read, so the erase
-    // itself (008dc3e0) is a contract.
-    virtual void set_remove_unit(const std::string& objective_name, void* unit) = 0;
-    // 008ddd30, the position twin of the removal, reached from 008ce510.
-    virtual void set_remove_position(const std::string& objective_name,
+    // itself (008dc3e0) is a contract. `slot` is the set the native passes in ECX: 008ceb55
+    // MOV ECX,[ECX+EBP] over EBP = 21A4h + 4*slot before 008ceb5e CALL 008dfc00, and the set
+    // 008dfe50 keeps from its own ECX (008dfe74) for 008e0035 (goal 4 chain 376).
+    virtual void set_remove_unit(int slot, const std::string& objective_name, void* unit) = 0;
+    // 008ddd30, the position twin of the removal, reached from 008ce510 with the same set in
+    // ECX (008cebd1 MOV ECX,[EDX+EBP], 008cebdd CALL 008ddd30).
+    virtual void set_remove_position(int slot, const std::string& objective_name,
                                      const ObjectiveWorldPoint& point) = 0;
 
-    // 008de6a0 at 008df3d7, the second call of the add path. Contract unread.
-    virtual void objective_add_tail(const std::string& marker_class, void* unit) = 0;
+    // 008de6a0 at 008df3d7, the second call of the add path, ECX = set+18h of the set
+    // 008df2b0 runs on. Contract unread.
+    virtual void objective_add_tail(int slot, const std::string& marker_class, void* unit) = 0;
+};
+
+// The argument reads of 008cdd60 and 008ce510. Arguments 0 and 1 are tested with 00B66A60
+// (BSP_LuaObject_IsInteger: lua type 3 and the float32 value equal to its CVTTSS2SI
+// truncation, 00b66a7d..00b66ab4) before they are read, at 008cde73 / 008cdf19 and
+// 008ce623 / 008ce6c9. A nil test would accept a string or a table there.
+struct ObjectiveArgumentReader : LuaBindingArgumentReader {
+    virtual bool is_integer(int index) = 0;   // 00B66A60
 };
 
 // The marker class string at 00D16100, immediately before its vtable at 00D1610C.
@@ -186,7 +198,9 @@ void objective_set_add_position_008df5d0(ObjectiveUnitHost& host, int slot,
 // 008dfe50, the walk the completed and failed transitions run. Its ABI is
 // __thiscall(ObjectiveSet*, Objective*), RET 4: ECX is stored at 008dfe74 and read back at
 // 008e002d as the `this` of the removal call, which the ledger's __stdcall note predates.
-void objective_walk_unit_markers_008dfe50(ObjectiveUnitHost& host, ObjectiveUnitList& objective);
+// `slot` names that set.
+void objective_walk_unit_markers_008dfe50(ObjectiveUnitHost& host, int slot,
+                                          ObjectiveUnitList& objective);
 
 // One trailing argument of either binding, after 008889C0 and 0088B840 have classified it.
 // Reading a Vector3 table (00888760) and flattening a table argument into several targets
@@ -200,10 +214,10 @@ struct ObjectiveTarget {
 
 // 008cdd60 and 008ce510. Arguments 0 to 2 come from the reader; the targets are arguments 3
 // upward, already classified and flattened.
-int lua_binding_objectives_add_unit_008cdd60(LuaBindingArgumentReader& args,
+int lua_binding_objectives_add_unit_008cdd60(ObjectiveArgumentReader& args,
                                               ObjectiveUnitHost& host,
                                               const std::vector<ObjectiveTarget>& targets);
-int lua_binding_objectives_remove_unit_008ce510(LuaBindingArgumentReader& args,
+int lua_binding_objectives_remove_unit_008ce510(ObjectiveArgumentReader& args,
                                                  ObjectiveUnitHost& host,
                                                  const std::vector<ObjectiveTarget>& targets);
 
