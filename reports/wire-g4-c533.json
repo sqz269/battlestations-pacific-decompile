@@ -1,0 +1,91 @@
+{
+  "chain": 533,
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain533Bound",
+  "scope": "Native shadow-target construction and destruction with the actual startup allocation and retained operation",
+  "rows": [
+    {
+      "native": "00a8a820",
+      "status": "wired",
+      "host_site": "src/native_shadow_depth_target_owner.cpp: extents_construct, reached from GameNativeShadowTargetApplication::construct",
+      "evidence": "Original A8A983 calls A8A820 before dimension reads; the named entry receives the same actual owner, context, and enclosing running operation."
+    },
+    {
+      "native": "00a8a980",
+      "status": "wired",
+      "host_site": "src/native_shadow_depth_target_owner.cpp: construct_native_shadow_depth_target_00a8fe30",
+      "evidence": "Original A8FE5A calls A8A980 on the fresh 2Ch owner and captured dimensions; the old inline helper call runs only with the switch disabled."
+    },
+    {
+      "native": "00a8fff0",
+      "status": "wired",
+      "host_site": "src/native_shadow_depth_target_owner.cpp: delete_native_shadow_depth_target_00a900c0, reached through the singleton drain",
+      "evidence": "Original A900C3 calls A8FFF0 on the same constructed owner before testing the scalar-delete flag and freeing it."
+    },
+    {
+      "native": "00a8a9d0",
+      "status": "wired",
+      "host_site": "src/native_shadow_depth_target_owner.cpp: destroy_target, reached from destroy_native_shadow_depth_target_00a8fff0",
+      "evidence": "Original A9009C calls A8A9D0 after the same ordered child releases; the existing two-instruction extents destructor is reused."
+    },
+    {
+      "native": "00a8a8c0",
+      "status": "wired",
+      "host_site": "src/native_shadow_depth_target_owner.cpp: extents_destroy, reached from destroy_native_shadow_target_extents_00a8a9d0",
+      "evidence": "Original A8A9D6 tail-jumps to A8A8C0 after the profile stamp. Current publication, captured section and original import epoch remain in the enclosing operation."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command",
+      "reason": "Missing live AI-group/current-command producer: the inspected entity-order path has no entity+16Ch group or group+564Ch command object."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation_station_0070d290",
+      "reason": "Missing relative-vector consumer on this path: 0070D980 copies member+04h..0Ch, while formation_station consumes column arrays at +10h/+20h; network-create miss handling also lacks native F87574/78/7C ownership."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing off-main-thread named-call producer and live deferred argument queue; the inspected fixed-step path only drains the empty queue."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: active-use tail after modifier insertion",
+      "reason": "Missing active-use tail: the current host throws at 008EAFF8, and its supported passive-grant path does not start this cooldown."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message35 read path",
+      "reason": "Missing live message35 owner/read-dispatch producer; the word-array capacity body is already called within that currently unwired message codec."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message35 read path",
+      "reason": "Missing live message35 owner/read-dispatch producer; constructing an unrelated word array would not supply game state."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest tests passed",
+    "call_graph_reconstructed_addresses_before": 4907,
+    "call_graph_reconstructed_addresses_after": 4912,
+    "calls": "All five selected existing bodies have entry-reachable CALL sites in the rebuilt bsp_game.exe, from the startup constructor and real singleton-drain scalar deletion",
+    "readiness_wired_before": 9842,
+    "readiness_wired_after": 9846,
+    "readiness_delta": 4,
+    "entry_reachable_address_delta": 5,
+    "game_run": false,
+    "qualification": "Build and linked entry reachability only; gameplay, rendered shadows and original binary ABI were not tested. No float arithmetic changed."
+  },
+  "decisions": [
+    "Reuse the enclosing retained operation rather than allocate a separate nested record, preserving the existing failure/publication/lock evidence and operation indices.",
+    "Readiness excludes the existing 00A8A9D0 compiler-tagged extents destructor; call_graph.py independently confirms its actual reachable call along with the other four addresses.",
+    "The optional enclosing argument changes the new C++ interface only; original binary ABI compatibility is not claimed."
+  ]
+}

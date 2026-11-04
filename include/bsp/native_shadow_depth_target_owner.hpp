@@ -97,13 +97,20 @@ private:
 // 415350 manager+10 section; real enter/+18++, then publish/register or
 // unregister CURRENT publication after the second getter. Clear after removal;
 // --/leave original section. Destructor receiver need not equal publication.
-void* construct_native_shadow_target_singleton_00a8a820(void*,NativeShadowDepthTargetContext&);
-void destroy_native_shadow_target_singleton_00a8a8c0(void*,NativeShadowDepthTargetContext&);
+// An enclosing frame borrows the caller's already retained running operation
+// for this same receiver. Native nested lifetime calls must not allocate another
+// observation frame or detach its failure/lock/publication evidence.
+void* construct_native_shadow_target_singleton_00a8a820(void*,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
+void destroy_native_shadow_target_singleton_00a8a8c0(void*,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
 // A8A980: base call before width/height argument-cell reads; EAX owner, RET8.
 // A8A9D0: stamp D5B558 then tail A8A8C0. No implicit allocation or free.
 void* construct_native_shadow_target_extents_00a8a980(void*,
-    const volatile NativeShadowDepthTargetDimensions&,NativeShadowDepthTargetContext&);
-void destroy_native_shadow_target_extents_00a8a9d0(void*,NativeShadowDepthTargetContext&);
+    const volatile NativeShadowDepthTargetDimensions&,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
+void destroy_native_shadow_target_extents_00a8a9d0(void*,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
 // A8FE30: ECX fresh2Ch, width/height stack, EAX owner, RET8. Full native writes
 // and current +104/+F8 probes; real B1FF50 and B21EC0. Padding stays untouched.
 NativeShadowDepthTargetStorage* construct_native_shadow_depth_target_00a8fe30(void*,
@@ -117,7 +124,7 @@ void create_native_shadow_depth_target_00a8ff30(NativeShadowDepthTargetStorage&,
 // current14/10/1C/18, actual+04 decrement/current0->fresh4 only at zero, clear
 // after callback. Then A8A9D0. A900C0: destroy, shared free iff flags&1, RET4.
 void destroy_native_shadow_depth_target_00a8fff0(NativeShadowDepthTargetStorage&,
-    NativeShadowDepthTargetContext&);
+    NativeShadowDepthTargetContext&,NativeShadowDepthTargetOperation* enclosing = nullptr);
 void* delete_native_shadow_depth_target_00a900c0(void*,std::uint32_t flags,
     NativeShadowDepthTargetContext&);
 // Borrow the real fields for existing A8FDD0/A8FD90/A8FDB0 adapters. Resolver
