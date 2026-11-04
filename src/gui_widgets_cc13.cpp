@@ -295,7 +295,9 @@ void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTr
 }
 
 void gui_widget_set_rotate_00aa7930(GuiWidgetTransform& w, float rotate, GuiWidgetTransformHost& host) {
-    w.rotate = rotate;
+    // Saved listing 00AA7930..00AA7936: MOVSS, not FLD/FSTP. Preserve the
+    // incoming payload, including a signalling NaN, before the recompose.
+    std::memcpy(&w.rotate, &rotate, sizeof(rotate));
     recompose_local_transform(w, host);
 }
 

@@ -1,0 +1,83 @@
+{
+  "chain": 433,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain433Bound",
+  "rows": [
+    {
+      "native": "00aa7930",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_rotation",
+      "contract": "Uses the live GuiLayoutWidget transform and requested HUD/minimap angle. Replaces the old store and quad invalidation. The transform host publishes the reconstructed rotation into the actual bridge draw path; the old path remains in the switch's else arm.",
+      "evidence": "Saved listing 00AA7930/00AA7936 uses MOVSS; the existing body now preserves input bits with memcpy. The call at rebuilt 10089DAF reaches gui_widget_set_rotate_00aa7930 at 103B7460."
+    },
+    {
+      "native": "00aa7950",
+      "status": "skipped",
+      "host_site": "src/gui_icon_runtime.cpp: GuiIconRuntime::set_scale48_00ab2820",
+      "reason": "The typed Icon runtime is not linked in the current game; a live scale virtual48 owner and dispatch path are missing."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MoviePlayerHost::set_widget_local_z",
+      "reason": "Movie page load and child lookup still return null; there is no retained live movie widget to pass to the body."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The weapon-animation lookup returns handle zero; the retained ticker object and its range fields are missing."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::map_screen_busy",
+      "reason": "The powerup-manager screen storage carrying scrolling flags at +13Fh and +1F9h is not exposed by this host."
+    },
+    {
+      "native": "007fbe20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndShell::record_award",
+      "reason": "GameProfileOwner is a typed projection; the raw profile+0A0h counter map and native string/map adapter required by this body are missing."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI difficulty selection",
+      "reason": "The eight native party-slot activity flags at each party+0Ch have no authoritative producer/adapter in the inspected host path."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::entity_set_skill_level",
+      "reason": "The skill index exists, but the +6DCh notification object and role-device fan-out owners needed to apply the body's complete plan are missing."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio",
+      "reason": "The live ship +BBCh sound-component owner and the controlled-audio byte recipient are missing from this hook."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI hint-weight evaluation",
+      "reason": "The reconstructed body needs native global/per-party hint-weight map lookups; no matching live map adapter was found in the inspected host."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "The ambient-volume hook has no retained live SoundInstance handle to supply to the reconstructed setter."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, native_math_differential, tool_tests (3/3)",
+    "entry_path": "WinMainCRTStartup -> GameMenuHost::frame -> GameHudMinimapHost::update_005c0f20 -> GameFrontendHost::set_widget_rotation -> gui_widget_set_rotate_00aa7930",
+    "called_before": 4702,
+    "called_after": 4703,
+    "wired_before": 9676,
+    "wired_after": 9677,
+    "runtime_boundary": "Built-executable reachability and real host-state wiring verified; the game was not run and original native ABI compatibility is not claimed."
+  }
+}

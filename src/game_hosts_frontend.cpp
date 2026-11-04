@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/wire_goal4_chain370_switches.hpp"
+#include "bsp/wire_goal4_chain433_switches.hpp"
 #include "bsp/frontend_scroller_bridge.hpp"
 #include "bsp/cc13_sweepA2.hpp"
 
@@ -25,6 +26,7 @@
 #include "bsp/gui_page_script.hpp"
 #include "bsp/gui_startup.hpp"
 #include "bsp/gui_widget.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/locale_tables.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/texture_atlas.hpp"
@@ -160,6 +162,52 @@ struct GameFrontendHost::Impl {
     // widgets as widget_nodes. Registry pages outlive this map's borrowers.
     using DigitUvs = std::array<std::array<float, 2>, 4>;
     std::map<const GuiLayoutWidget*, DigitUvs> digit_uvs;
+    // Render output of 00AA7930 -> 00AA7220, over the same live widgets as
+    // widget_nodes. Pages and their runtime clones outlive these borrowers.
+    // Retain the input bits so an independently edited widget cannot consume
+    // an earlier publication. This is derived draw state, not another widget.
+    struct PublishedRotation {
+        std::uint32_t input_bits;
+        float angle;
+    };
+    std::map<const GuiLayoutWidget*, PublishedRotation> published_rotations;
+    struct RotationPublication final : GuiWidgetTransformHost {
+        Impl& owner;
+        GuiLayoutWidget& node;
+        RotationPublication(Impl& host, GuiLayoutWidget& widget) : owner(host), node(widget) {}
+        bool widescreen_enabled() override { return owner.widescreen; }
+        void publish_local_transform(GuiWidgetTransform& widget,
+            const GuiWidgetLocalTransform& transform) override {
+            if (&widget != &node.transform)
+                throw std::logic_error("GUI rotation must publish its same live widget");
+            PublishedRotation output;
+            std::memcpy(&output.input_bits, &widget.rotate, sizeof(output.input_bits));
+            std::memcpy(&output.angle, &transform.rotation_z, sizeof(output.angle));
+            // The sprite bridge applies its rotation while building quads,
+            // rather than owning the native widget+4Ch scene-node matrix.
+            // Deliver the reconstructed rotation to that actual draw path.
+            owner.published_rotations.insert_or_assign(&node, output);
+            owner.quads_built = false;
+        }
+        void publish_local_bounds(GuiWidgetTransform&, const GuiWidgetBounds&) override {
+            throw std::logic_error("GUI rotation does not refresh bounds");
+        }
+        void notify_layout_changed(GuiWidgetTransform&) override {
+            throw std::logic_error("GUI rotation does not notify layout");
+        }
+        void on_layout_finished(GuiWidgetTransform&) override {
+            throw std::logic_error("GUI rotation does not finish layout");
+        }
+    };
+    float published_rotation_angle(const GuiLayoutWidget& node) const {
+        std::uint32_t input_bits;
+        std::memcpy(&input_bits, &node.transform.rotate, sizeof(input_bits));
+        const auto found = published_rotations.find(&node);
+        if (found != published_rotations.end() && found->second.input_bits == input_bits)
+            return found->second.angle;
+        // Authored widgets and direct layout edits have no setter publication.
+        return -node.transform.rotate;
+    }
     // The widgets 00aa5e20's virtual +34h calls reached, so a false there can be told from
     // the projected constructor default. Milestone 2c: the page roots that a front-end
     // screen's 004f83b0 commit reached land here too, which is what takes those pages out
@@ -1253,7 +1301,13 @@ void GameFrontendHost::Impl::build_quads() {
             // where the resolved position sits.
             const float pivot_x = record.x * screen_w;
             const float pivot_y = record.y * screen_h;
-            const float angle = -node->transform.rotate;
+            const float angle = [&] {
+                if constexpr (bsp::kWireGoal4Chain433Bound) {
+                    return published_rotation_angle(*node);
+                } else {
+                    return -node->transform.rotate;
+                }
+            }();
             const float cosine = std::cos(angle);
             const float sine = std::sin(angle);
             const auto spin = [&](BridgeVertex& vertex) {
@@ -1617,9 +1671,19 @@ void GameFrontendHost::set_widget_local_position(GuiLayoutWidget& widget, float 
 
 void GameFrontendHost::set_widget_rotation(GuiLayoutWidget& widget, float radians) {
     Impl& host = *impl_;
+    if constexpr (bsp::kWireGoal4Chain433Bound) {
+        if (widget.transform.rotate == radians) return;
+        // 00AA7930 stores the actual requested angle then calls 00AA7220.
+        // Keep the bridge's existing unchanged-angle gate; the publication
+        // below replaces its old store/cache invalidation exactly once.
+        Impl::RotationPublication publication(host, widget);
+        bsp::gui_widgets_cc13::gui_widget_set_rotate_00aa7930(widget.transform,
+            radians, publication);
+    } else {
     if (widget.transform.rotate == radians) return;
     widget.transform.rotate = radians;
     host.quads_built = false;
+    }
 }
 
 std::size_t GameFrontendHost::runtime_widgets_drawn() const noexcept {
