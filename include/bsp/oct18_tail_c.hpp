@@ -77,9 +77,20 @@ struct GroupSphereBindings {
 };
 void* group_world_sphere_00b8f100(void*, const GroupSphereBindings&);
 void release_whole_file_00bd91f0(void*, void (__cdecl* free_bf6989)(void*));
+// Source dispatch for the runtime's numeric original profiles. These are the
+// actual native stream/store owners, never callable-vtable substitutes.
+// The body below still owns the open -> memory view -> insert -> release order.
+struct FileStoreCacheHost {
+    virtual ~FileStoreCacheHost() = default;
+    virtual void* open_stream(void* vfs, const void* name, std::uint32_t flags) = 0;
+    virtual void* memory_view(void* stream) = 0;
+    virtual void add_file(void* store, const void* name, void* memory) = 0;
+    virtual void release_temporary(void* stream) = 0;
+};
 struct FileStoreBindings {
     void* (__thiscall* memory_view_00bef750)(void*);
     void (__thiscall* add_file_00be7760)(void*, const void*, void*);
+    FileStoreCacheHost* source_host{};
 };
 void cache_file_from_vfs_00be7ab0(void*, void*, const void*, std::uint32_t,
     const FileStoreBindings&);

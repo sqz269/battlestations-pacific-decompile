@@ -76,6 +76,7 @@
 #include "bsp/native_loading_queue_owner.hpp"
 #include "bsp/native_render_service_base.hpp"
 #include "bsp/native_shader_preload.hpp"
+#include "bsp/wire_goal4_chain418_switches.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_observer_runtime.hpp"
@@ -3694,6 +3695,15 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     decals_ = new GameDecalTable(log_, *vfs_);
     decals_->run();
     summary_.decal_definitions = decals_->summary().definitions;
+
+    if constexpr (kWireGoal4Chain418Bound) {
+        // 0073E239/E2B7/E335/E3B3/E431: the five binary-authored names and
+        // flags32 populate the SAME native FileStore used by mounted readers,
+        // before game entry/OnInitTitle (0073E45C). No second cache walk runs.
+        vfs_->preload_startup_scripts();
+    } else {
+        // These five startup cache calls were previously absent.
+    }
 
     // GGame::OnInitTitle 004c9a70, reached from BSP_Game_BeginStartupSequence 004e5753.
     // It writes game state 2, selects front-end frame set 0 (FE_frame and

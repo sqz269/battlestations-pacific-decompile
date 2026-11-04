@@ -18,6 +18,7 @@
 #include "bsp/memory_stream.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/resource_lookup.hpp"
+#include "bsp/resource_preload.hpp"
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_fileblock_owner.hpp"
 #include "bsp/native_string.hpp"
@@ -223,6 +224,13 @@ bool GameVfsHost::exists(const std::string& name) {
 }
 void GameVfsHost::pump_pending() {
     invoke_native([&] { active_runtime().pump_pending(); });
+}
+void GameVfsHost::preload_startup_scripts() {
+    invoke_native([&] {
+        for (const auto& request : startup_script_preloads_0073d410())
+            active_runtime().cache_file_store(request.name, request.flags);
+    });
+    log_.implemented("Application::preload_startup_scripts", "00be7ab0");
 }
 bool GameVfsHost::probe_and_replace_file_name(std::string& name) {
     if (!core_ready_)

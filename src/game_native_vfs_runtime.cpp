@@ -1,6 +1,7 @@
 #include "bsp/game_native_vfs_runtime.hpp"
 
 #include "bsp/engine_services_cc13.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal4_chain342_switches.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -221,6 +222,43 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
     NativeFileStoreCompletionContext filestore_completion;
     NativeFileStoreRequestContext filestore_request_context;
     std::unique_ptr<FileStoreRequestInvocation> filestore_request;
+    struct FileStoreCacheCall final : oct18_tail_c::FileStoreCacheHost {
+        Impl& owner;
+        PooledHeader name;
+        std::uint32_t site{0x00be7ab0};
+        unsigned releases{};
+        void* source{};
+        void* memory{};
+
+        FileStoreCacheCall(Impl& runtime, const char* path)
+            : owner(runtime), name(runtime.inputs.owners.strings(), path) {}
+        void* open_stream(void* vfs, const void* actual_name, std::uint32_t flags) override {
+            site = 0x00be7acb;
+            source = owner.bindings.open(word(vfs), vfs,
+                *static_cast<const NativeString*>(actual_name), flags);
+            return source;
+        }
+        void* memory_view(void* stream) override {
+            site = 0x00be7ad1;
+            memory = convert_native_stored_stream_00bef750(stream, owner.conversion);
+            return memory;
+        }
+        void add_file(void* store, const void* actual_name, void* stream) override {
+            site = 0x00be7adc;
+            add_native_file_store_file_00be7760(store, actual_name, stream,
+                owner.filestore_completion);
+        }
+        void release_temporary(void* stream) override {
+            site = releases++ == 0 ? 0x00be7aef : 0x00be7b05;
+            // The original tests null, decrements actual+4, and reads slot0
+            // only on zero. Numeric stream profiles use the existing native
+            // dispatch, including memory, physical, adopted and inflate owners.
+            if (stream && InterlockedDecrement(reinterpret_cast<volatile LONG*>(
+                    static_cast<std::byte*>(stream) + 4)) == 0)
+                owner.bindings.zero_reference(word(stream), stream);
+        }
+    };
+    std::unique_ptr<FileStoreCacheCall> filestore_cache;
     bool filestore_request_started{};
     struct IconCompletionAdapter final : NativeFileStoreCompletionDispatch {
         struct Call {
@@ -269,6 +307,7 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         return 0;
     }
     bool unknown_icon_request() const noexcept {
+        if(filestore_cache) return true;
         if(filestore_request && filestore_request->acquired.phase()==NativeFileStoreRequestPhase::failed) return true;
         for(const auto& call:raw_icon_file_calls)
             if(call->phase()==NativeGuiIconDelayedRequestFileInvocation::Phase::unknown_source_escape) return true;
@@ -737,7 +776,7 @@ void GameNativeVfsRuntime::pump_pending() {
 bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t callback) {
     if (!impl_->core_registered || !impl_->completion_dispatch())
         throw std::logic_error("Native FileStore request requires core and completion binding");
-    if (impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
+    if (impl_->filestore_cache || impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
         throw std::logic_error("Native FileStore retains an invocation");
     impl_->filestore_request_started=true;
     auto* const factory = get_native_filestore_factory_004fc150(impl_->filestore_factory_context);
@@ -758,9 +797,31 @@ bool GameNativeVfsRuntime::request_file_store(const char* path, std::uint32_t ca
         throw;
     }
 }
+void GameNativeVfsRuntime::cache_file_store(const char* path, std::uint32_t flags) {
+    if (!impl_->core_registered || impl_->retired || impl_->filestore_cache ||
+        impl_->filestore_request || file_store_request_failure_site() || name_resolution_failure_site())
+        throw std::logic_error("Native FileStore cache requires the live uninterrupted VFS runtime");
+    impl_->filestore_cache = std::make_unique<Impl::FileStoreCacheCall>(*impl_, path);
+    auto& call = *impl_->filestore_cache;
+    // 0073E229..0073E239: reacquire the current factory and its existing
+    // provider, the same object mounted at priority300 by phase2. BE80B0
+    // creates it only if absent; this is not a separate cache domain.
+    auto* const factory = get_native_filestore_factory_004fc150(impl_->filestore_factory_context);
+    NativeFileStoreProviderLifetimeContext provider{
+        impl_->inputs.owners.strings(), impl_->bindings, impl_->inputs.invalid_parameters};
+    auto* const store = get_native_file_store_provider_00be80b0(factory, provider);
+    oct18_tail_c::FileStoreBindings bindings{};
+    bindings.source_host = &call;
+    oct18_tail_c::cache_file_from_vfs_00be7ab0(store, actual_manager(),
+        &call.name.value, flags, bindings);
+    // Only normal completion releases the caller's pooled name. If any
+    // nested native dispatch escapes, keep the actual name and phase record;
+    // the application's existing failure gate prevents replay/shared drain.
+    impl_->filestore_cache.reset();
+}
 NativeGuiIconDelayedRequestFileInvocation& GameNativeVfsRuntime::prepare_icon_delayed_request_file_call() {
     if (!impl_->core_registered || impl_->retired || !impl_->completion_dispatch() ||
-        impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
+        impl_->filestore_cache || impl_->filestore_request || impl_->raw_icon_failure_site() || impl_->icon_completion_failure_site())
         throw std::logic_error("Raw Icon FileStore preparation requires the existing live initialized Runtime");
     auto call = std::make_unique<Impl::RawIconFileCall>(*impl_);
     auto& result = *call;
@@ -795,6 +856,7 @@ NativeGuiIconDelayedDeliveryFileInvocation& GameNativeVfsRuntime::prepare_icon_d
     p.raw_icon_delivery_file_calls.push_back(std::move(call));return result;
 }
 std::uint32_t GameNativeVfsRuntime::file_store_request_failure_site() const noexcept {
+    if (impl_->filestore_cache) return impl_->filestore_cache->site;
     if (impl_->filestore_request) {
         const auto site = impl_->filestore_request->acquired.failure_site();
         if (site) return site;
