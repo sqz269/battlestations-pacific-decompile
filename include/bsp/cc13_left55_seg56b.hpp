@@ -106,14 +106,24 @@ struct CommandTargetBuffer {
 };
 
 // ---------------------------------------------------------------------------
-// The host: one method per native callee
+// Goal 4 chain 365: the two callees of 008AD540 FailureRepairEnable, split out of
+// the full host below (which still carries them) so that the binding runs on a host
+// implementing only these two.
 // ---------------------------------------------------------------------------
-struct Left55Seg56bHost {
-    virtual ~Left55Seg56bHost() = default;
-
-    // --- entity virtuals (ECX = entity) ---
+struct Left55FailureRepairEnableHost {
+    virtual ~Left55FailureRepairEnableHost() = default;
     // vtable+5Ch, __thiscall(entity, int class_id) -> bool, RET 4: the class test.
     virtual bool entity_vcall_5c(void* entity, int class_id) = 0;
+    // 00939FE0, __thiscall(repair task = unit+A20h, bool), RET 4: byte +46h.
+    virtual void repair_task_set_failure_repair_enabled_00939fe0(void* task, bool enabled) = 0;
+};
+
+// ---------------------------------------------------------------------------
+// The host: one method per native callee
+// ---------------------------------------------------------------------------
+struct Left55Seg56bHost : Left55FailureRepairEnableHost {
+    // --- entity virtuals (ECX = entity) ---
+    // entity_vcall_5c (vtable+5Ch) comes from Left55FailureRepairEnableHost.
     // vtable+2Ch, __thiscall(entity, int party, dword entity+58h, int* zero), RET 0Ch.
     virtual void entity_vcall_2c(void* entity, int party, std::int32_t field_58, int* zero) = 0;
     // vtable+34h, __thiscall(entity, Vec3* out) -> out, RET 4. The reconstruction takes the
@@ -169,8 +179,8 @@ struct Left55Seg56bHost {
     virtual void unit_set_repair_level_00827a40(void* unit, int category, int level) = 0;
     // 0080E130, __thiscall(unit, int category) -> int, RET 4.
     virtual int unit_get_repair_level_0080e130(void* unit, int category) = 0;
-    // 00939FE0, __thiscall(repair task = unit+A20h, bool), RET 4: byte +46h.
-    virtual void repair_task_set_failure_repair_enabled_00939fe0(void* task, bool enabled) = 0;
+    // repair_task_set_failure_repair_enabled_00939fe0 (00939FE0) comes from
+    // Left55FailureRepairEnableHost.
     // 006BCD20, __fastcall(ECX = entity, DL = require_active) -> air-operations block.
     virtual void* air_ops_block_006bcd20(void* entity, bool require_active) = 0;
     // 006BF650, __thiscall(block, bool, bool, int), RET 0Ch.
@@ -276,7 +286,7 @@ int lua_save();                                                                 
 int lua_add_fire(LuaArgs& args);                                                                         // 008ACD10
 int lua_get_fire(LuaArgs& args, LuaResults& results, ImageAccess& image, Left55Seg56bHost& host);        // 008ACF00
 int lua_set_repair_level(LuaArgs& args, Left55Seg56bHost& host);                                         // 008AD150
-int lua_failure_repair_enable(LuaArgs& args, Left55Seg56bHost& host);                                    // 008AD540
+int lua_failure_repair_enable(LuaArgs& args, Left55FailureRepairEnableHost& host);                       // 008AD540
 int lua_get_repair_level(LuaArgs& args, LuaResults& results, Left55Seg56bHost& host);                    // 008ADC40
 int lua_kill_stationaries(ImageAccess& image, Left55Seg56bHost& host);                                   // 008AE180
 int lua_kill_bullets(ImageAccess& image, Left55Seg56bHost& host);                                        // 008AE2F0

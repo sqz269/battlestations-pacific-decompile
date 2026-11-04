@@ -391,7 +391,7 @@ int lua_set_repair_level(LuaArgs& args, Left55Seg56bHost& host)
 }
 
 // 008AD540 FailureRepairEnable: the class-6 test result is discarded (no TEST after 008AD65F).
-int lua_failure_repair_enable(LuaArgs& args, Left55Seg56bHost& host)
+int lua_failure_repair_enable(LuaArgs& args, Left55FailureRepairEnableHost& host)
 {
     void* entity = args.entity_at(0);
     (void)host.entity_vcall_5c(entity, 6);

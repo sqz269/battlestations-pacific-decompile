@@ -5,6 +5,7 @@
 // every FSTP to a float slot is an explicit f32().
 
 #include "bsp/gameplay_seg61_62_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cctype>
 #include <cstring>
@@ -200,9 +201,14 @@ namespace {
 // water product FLD +34h FMUL +2Ch and the fire product +38h * +30h (FMULP ST3,
 // DE C9+i) are added in extended, FCOMIP sum ? health, JBE returns. An
 // unordered pair returns.
+// Goal 4 chain 365: both adders run on the main thread (00821E80's 9Eh arm), whose
+// control word is PC24, so each FMUL and the FADDP round to 24 bits
+// (docs/CC13_FPU_PRECISION.md); the earlier 53-bit sum could differ in the last place.
 bool pending_exceeds_health(const RepairTask& task, float health) noexcept {
-    const double sum = static_cast<double>(task.water_seconds_34) * task.water_tick_2c +
-                       static_cast<double>(task.fire_seconds_38) * task.fire_tick_30;
+    namespace x8 = bsp::cc13x87;
+    const double water = x8::x87_mul24(task.water_seconds_34, task.water_tick_2c);
+    const double fire = x8::x87_mul24(task.fire_seconds_38, task.fire_tick_30);
+    const double sum = x8::x87_add24(water, fire);
     return sum > static_cast<double>(health);
 }
 
@@ -213,10 +219,11 @@ bool repair_add_fire_seconds_0093a470(RepairTask& task, float seconds, float uni
     // 0093A484: the statistics call runs for every amount.
     if (host.warning_fire_channel_00983780) host.warning_fire_channel_00983780(seconds);
     // 0093A489..0093A4A4: FLD +38h, FLD s, FADDP ST2, FSTP tmp, FLD tmp, FST +38h.
-    task.fire_seconds_38 = f32(static_cast<double>(task.fire_seconds_38) + seconds);
+    // Each FADDP rounds to 24 bits under PC24 (chain 365, as above).
+    task.fire_seconds_38 = f32(bsp::cc13x87::x87_add24(task.fire_seconds_38, seconds));
     task.byte_44 = 0;                                                 // 0093A494
     // 0093A4A7..0093A4AE: FLD +3Ch, FADDP with s, FSTP +3Ch.
-    task.fire_total_3c = f32(static_cast<double>(task.fire_total_3c) + seconds);
+    task.fire_total_3c = f32(bsp::cc13x87::x87_add24(task.fire_total_3c, seconds));
     if (!pending_exceeds_health(task, unit_health_370)) return false;
     if (host.pending_exceeds_health_0090e6c0) host.pending_exceeds_health_0090e6c0();
     return true;
@@ -229,7 +236,8 @@ bool repair_add_water_seconds_0093a4f0(RepairTask& task, float seconds, float un
         host.warning_leak_channel_009832f0(seconds);
     }
     // 0093A518..0093A530: FLD +34h, FADD s, FSTP tmp, FLD tmp, FST +34h, FST +40h.
-    task.water_seconds_34 = f32(static_cast<double>(task.water_seconds_34) + seconds);
+    // The FADD rounds to 24 bits under PC24 (chain 365, as above).
+    task.water_seconds_34 = f32(bsp::cc13x87::x87_add24(task.water_seconds_34, seconds));
     task.water_last_40 = task.water_seconds_34;
     task.byte_44 = 0;                                                 // 0093A521
     if (!pending_exceeds_health(task, unit_health_370)) return false;

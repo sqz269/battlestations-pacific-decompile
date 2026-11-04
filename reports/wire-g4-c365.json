@@ -1,0 +1,24 @@
+{
+  "chain": 365,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "kWireGoal4Chain365Bound",
+  "switch_header": "include/bsp/wire_goal4_chain365_switches.hpp",
+  "summary": "The ship repair task at unit+A20h. 00821E80's 9Eh add arm (0082205C / 008220A3) now runs the reconstructed adders 0093A4F0 (water) and 0093A470 (fire) over a task view of the gunnery host's DamageControl fields (+2Ch/+30h ticks, +34h water, +38h fire, new +3Ch fire total and +40h water copy, +44h = task.reported_repaired, which both adders clear), replacing the inline add; their pending-damage test (0090E6C0 tail) and the two adds were re-modelled per op at PC24 (x87_mul24 / x87_add24; listing 0093A489..0093A4CB and 0093A518..0093A54D), matching what the host's float code already computed. The script orders host now dispatches FailureRepairEnable (008AD540) through its body on a narrow base split out of Left55Seg56bHost (Left55FailureRepairEnableHost: vtable+5Ch and 00939FE0); the task address the body forms (entity+A20h) maps back to the host's id handle, and GameGunneryHost::set_failure_repair_enabled_00939fe0 calls 00939FE0 on a task view of task.failure_repair_enabled (+46h, read by 0093C520's failure step), kept across build_guns like the 9Fh hull flag. AddFire (008ACD10), an inert native that only reads its four arguments, is dispatched through its body instead of the unimplemented record. Validation: Win32 build and both CTests pass ON and with the switch temporarily OFF; tools/call_graph.py shows each body called from entry-reachable host code; readiness wired 9575 -> 9580. Not game-run.",
+  "rows": [
+    {"native": "0093A470", "status": "wired", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds (9Eh add arm, fire channel)"},
+    {"native": "0093A4F0", "status": "wired", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::Impl::damage_control_add_seconds (9Eh add arm, water channel)"},
+    {"native": "00939FE0", "status": "wired", "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::set_failure_repair_enabled_00939fe0 (from FailureRepairEnable 008AD540)"},
+    {"native": "008AD540", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch (FailureRepairEnable, FailureRepairEnableAdapter)"},
+    {"native": "008ACD10", "status": "wired", "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::dispatch (AddFire)"},
+    {"native": "00939F90", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp route_set_damage_channel (9Eh)", "reason": "9Eh set arm (msg+20h clear, 008220BD) has no single-player sender: the three 0080FA50 calls (00827372, 0082740F, 00827D9A) all push add = 1 (00827356, 008273F3, 00827D84)"},
+    {"native": "00939FA0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp route_set_damage_channel (9Eh)", "reason": "9Eh set arm (msg+20h clear, 00822076) has no single-player sender: the three 0080FA50 calls all push add = 1 (00827356, 008273F3, 00827D84)"},
+    {"native": "00983780", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp damage_control_add_seconds (recorded)", "reason": "listener manager [00F8A0C4] 'fire' dispatch is a raw Seg62Host body over the manager's native layout; no host object; game_hosts_lua.cpp loads 'fire' subscriptions but has no dispatcher to feed"},
+    {"native": "009832F0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp damage_control_add_seconds (recorded)", "reason": "listener manager [00F8A0C4] 'leak' dispatch: raw Seg62Host body, no host object; the Lua host's 'leak' subscriptions have no dispatcher"},
+    {"native": "008AD150", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp dispatch", "reason": "SetRepairLevel needs the crew repair levels int[6] at unit+1134h (00827A40 raise/lower over the pool), which no host models"},
+    {"native": "008ADC40", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp dispatch", "reason": "GetRepairLevel reads unit+1134h repair levels (0080E130); not modelled by any host"},
+    {"native": "008ACF00", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp dispatch", "reason": "GetFire walks the fire record vector at unit+344h, which the gunnery host does not hold"},
+    {"native": "0093BCC0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp build_guns DamageControl init", "reason": "constructor seeds +2Ch/+30h from settings+3B0h/+3ACh while the host seeds them from class rows dcwater/dcfire; adopting it needs those sources reconciled (UnitSubObjectA20 view)"},
+    {"native": "009373C0", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp script_set_failure_008132c0 Periscope arm (recorded)", "reason": "periscope state +122Ch/+1254h/+1258h and the mast node +1214h are not modelled; the submarine state lives in game_hosts_units.cpp (leased by another worker)"}
+  ]
+}
