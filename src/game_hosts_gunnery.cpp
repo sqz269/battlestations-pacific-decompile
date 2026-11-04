@@ -7,6 +7,8 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
 #include "bsp/wire_goal4_chain401_switches.hpp"
+#include "bsp/wire_goal4_chain406_switches.hpp"
+#include "bsp/native_unit_part_storage.hpp"
 #include "bsp/cc13_seg48U.hpp"
 #include "bsp/gameplay_seg50_cc13.hpp"
 #include "bsp/band_0080_cc13.hpp"
@@ -98,6 +100,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <type_traits>
 
 #include <algorithm>
 #include <cfloat>
@@ -4486,8 +4489,9 @@ struct GameGunneryHost::Impl {
     //    or the loose array, which 0098C630 never walks. Here at the first step
     //    that sees the unit with a hull box. The body 0098BA10 already has,
     //    attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp),
-    //    works on raw image-shaped node and index storage; BlastGridNode is not
-    //    image-shaped, so blast_grid_step_0098bdb0 restates its root branch over
+    //    works on raw image-shaped node and index storage. Chain 406 gives the
+    //    ON node an image-shaped prefix; the index is still typed host storage,
+    //    so blast_grid_step_0098bdb0 restates its root branch over
     //    the same existing sub-bodies (0098BAD2, 0098A310);
     //  * re-bucketed every step by 0098BDB0, which the image runs among the
     //    per-step calls (00875E0C) after step N's job waves; here at the head of
@@ -4497,6 +4501,8 @@ struct GameGunneryHost::Impl {
     //    fresher; that changes a query only for a node at a cell boundary.
     // The node bounds are SegmentBinding::entity_bounds, this host's 0098A750:
     // the posed hull box grown over the device mounts (0098B530).
+    // OFF retains the previous node and its field initializers verbatim.
+    struct LegacyBlastGridStorage {
     struct BlastGridNode {
         bsp::SpatialCellLink links[bsp::kSpatialNodeCellLinkSlots]{};  // node+0Ch..+3Bh
         std::uint32_t cell_key_3c{0};                 // node+3Ch, 0098A310
@@ -4510,6 +4516,61 @@ struct GameGunneryHost::Impl {
         bool loose{false};                             // 0098BB2C, the loose push
         std::size_t unit{0};
     };
+    };
+    // 004E6480 initializes the node the live 0098A310/0098C630 adapters use.
+    // Keep its native offsets through +158h;
+    // the unit index and loose-list marker are host bookkeeping after that.
+    // Evidence: bsp.py show 004e6480 / 004e6570; bytes 00d7a244 gives
+    // FF FF 7F FF / FF FF 7F 7F, the two bound seeds copied without float math.
+    // This supplies typed host storage, not original vtable/FH3/SEH ABI proof.
+    struct NativeBlastGridNode {
+        std::uint32_t table_0{0x00ce89e8u};           // 004E6540's base table
+        std::uint32_t sphere_stamp_4;                // 004E6480 -> 0098C762
+        std::uint32_t reserved_8;
+        bsp::SpatialCellLink links[bsp::kSpatialNodeCellLinkSlots];
+        std::uint32_t cell_key_3c;                   // first written by 0098A310
+        int cell_count_40;
+        NativeBlastGridNode* root_prev_44;
+        NativeBlastGridNode* root_next_48;
+        unsigned char fields_4c[0xf8 - 0x4c];
+        std::uint32_t shape_count_f8;
+        void* children_fc;
+        std::uint32_t child_count_100;
+        std::uint32_t child_capacity_104;
+        std::uint32_t fields_108;
+        std::uint32_t bound_seeds_10c[6];
+        unsigned char fields_124[0x13c - 0x124];
+        bsp::HitQueryBounds world_bounds;
+        std::uint32_t bounds_stamp_154;
+        bool attached_158;
+        unsigned char padding_159[3];
+        bool loose{false};
+        std::size_t unit{0};
+
+        NativeBlastGridNode() {
+            static constexpr std::uint32_t minimum_seed_00d7a248 = 0x7f7fffffu;
+            static constexpr std::uint32_t maximum_seed_00d7a244 = 0xff7fffffu;
+            bsp::initialize_native_collision_node_fields_004e6480(this,
+                minimum_seed_00d7a248, maximum_seed_00d7a244);
+        }
+        ~NativeBlastGridNode() {
+            // 004E6570 frees the constructor's child slots. unique_ptr then
+            // releases the enclosing node; no second child-storage owner exists.
+            bsp::destroy_native_collision_node_base_004e6570(this);
+        }
+        NativeBlastGridNode(const NativeBlastGridNode&) = delete;
+        NativeBlastGridNode& operator=(const NativeBlastGridNode&) = delete;
+    };
+    static_assert(sizeof(bsp::SpatialCellLink) == 0x0c);
+    static_assert(offsetof(NativeBlastGridNode, links) == 0x0c);
+    static_assert(offsetof(NativeBlastGridNode, cell_count_40) == 0x40);
+    static_assert(offsetof(NativeBlastGridNode, root_next_48) == 0x48);
+    static_assert(offsetof(NativeBlastGridNode, children_fc) == 0xfc);
+    static_assert(offsetof(NativeBlastGridNode, world_bounds) == 0x13c);
+    static_assert(offsetof(NativeBlastGridNode, bounds_stamp_154) == 0x154);
+    static_assert(offsetof(NativeBlastGridNode, attached_158) == 0x158);
+    using BlastGridNode = std::conditional_t<kWireGoal4Chain406Bound,
+        NativeBlastGridNode, LegacyBlastGridStorage::BlastGridNode>;
     struct BlastGrid {
         std::vector<void*> cell_head_84;                        // index+84h
         std::vector<std::unique_ptr<BlastGridNode>> nodes;      // by unit index
@@ -16521,7 +16582,7 @@ void GameGunneryHost::Impl::blast_grid_step_0098bdb0(float step) {
     bsp::spatial_refresh_moved_nodes_0098bdb0(refresh, step);
     // 0098BA10's root branch for each unit that has no node yet. The existing body
     // attach_native_spatial_node_0098ba10 (src/native_spatial_attachment.cpp) takes
-    // raw image-shaped node/index storage, which BlastGridNode is not, so the branch
+    // raw image-shaped node/index storage; the index is still typed, so the branch
     // is restated here over its existing sub-bodies: the 0098AD60 corners
     // (spatial_cell_rect_of_bounds), 0098BAD2 and 0098A310.
     BlastGridCells cells(*this);
@@ -16531,9 +16592,20 @@ void GameGunneryHost::Impl::blast_grid_step_0098bdb0(float step) {
         if (blast_grid.nodes[i] != nullptr) continue;
         bsp::HitQueryBounds bounds;
         if (!blast_grid_node_bounds(i, bounds)) continue;
+        auto node = [i]() {
+            if constexpr (kWireGoal4Chain406Bound) {
+                auto created = std::make_unique<BlastGridNode>();
+                created->unit = i;
+                // 004E6480 already supplied stamps, empty links/count/root and
+                // each link's real node back-pointer. Do not run the old producer.
+                return created;
+            } else {
         auto node = std::make_unique<BlastGridNode>();   // 004E6540 / 004E6480
         node->unit = i;
         for (bsp::SpatialCellLink& link : node->links) link.owner = node.get();   // link+8h
+                return node;
+            }
+        }();
         node->world_bounds = bounds;                      // 0098A750
         node->bounds_stamp_154 = frame;
         const bsp::SpatialCellRect rect =
