@@ -1636,19 +1636,8 @@ int lua_hack_press_input(LuaArgs& args, HackInputHost& host)
 // Small accessors and value types
 // ---------------------------------------------------------------------------
 
-bool scene_token_is_int(const std::string& token)
-{
-    // sscanf("%d") assigns a field when, after optional white space and one sign, a digit
-    // follows; overflow still counts as an assignment.
-    std::size_t i = 0;
-    while (i < token.size() && std::isspace(static_cast<unsigned char>(token[i]))) {
-        ++i;
-    }
-    if (i < token.size() && (token[i] == '+' || token[i] == '-')) {
-        ++i;
-    }
-    return i < token.size() && std::isdigit(static_cast<unsigned char>(token[i])) != 0;
-}
+// The existing 008D8F10 typed predicate is defined in native_scene_numeric_lookahead.cpp so the
+// core parser can use it without depending on this startup-only translation unit.
 
 namespace {
 
