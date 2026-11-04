@@ -1552,14 +1552,40 @@ void structured_node_skip_u32_00be9a10(void** handle, EngineServiceCalls& calls)
         });
 }
 
-void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls) {
-    *out = calls.read_float_and_account_00bf02c0(node_reader(handle), node_remaining(handle));
+void* structured_node_read_float_00be9a60(void* handle, StructuredNodeWordView<void> node,
+    float* out, StructuredNodeValueReadBinding<float> read) {
+    // 00BE9A60-7A: node+08h reader, node+20h budget, CALL 00BF02C0,
+    // FSTP32 through out; EAX is the unchanged handle (ECX), RET 4.
+    *out = read.read(read.context, node.reader, node.remaining);
     return handle;
 }
 
-void** structured_node_read_u32_slot34_00be9a80(void** handle, std::uint32_t* out, EngineServiceCalls& calls) {
-    *out = calls.read_dword_slot34_and_debit_00bf0280(node_reader(handle), node_remaining(handle));
+void* structured_node_read_u32_slot34_00be9a80(void* handle, StructuredNodeWordView<void> node,
+    std::uint32_t* out, StructuredNodeValueReadBinding<std::uint32_t> read) {
+    // 00BE9A80-9A: same fields, CALL 00BF0280, DWORD output store and handle
+    // return. This is a four-byte read, including GeomMesh's 00727694 chain.
+    *out = read.read(read.context, node.reader, node.remaining);
     return handle;
+}
+
+void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls) {
+    return static_cast<void**>(structured_node_read_float_00be9a60(handle,
+        StructuredNodeWordView<void>{node_reader(handle), node_remaining(handle)}, out,
+        StructuredNodeValueReadBinding<float>{&calls,
+            [](void* context, void* reader, std::uint32_t* remaining) {
+                return static_cast<EngineServiceCalls*>(context)->read_float_and_account_00bf02c0(
+                    reader, remaining);
+            }}));
+}
+
+void** structured_node_read_u32_slot34_00be9a80(void** handle, std::uint32_t* out, EngineServiceCalls& calls) {
+    return static_cast<void**>(structured_node_read_u32_slot34_00be9a80(handle,
+        StructuredNodeWordView<void>{node_reader(handle), node_remaining(handle)}, out,
+        StructuredNodeValueReadBinding<std::uint32_t>{&calls,
+            [](void* context, void* reader, std::uint32_t* remaining) {
+                return static_cast<EngineServiceCalls*>(context)->read_dword_slot34_and_debit_00bf0280(
+                    reader, remaining);
+            }}));
 }
 
 void** structured_node_read_u32_00be9aa0(void** handle, std::uint32_t* out, EngineServiceCalls& calls) {

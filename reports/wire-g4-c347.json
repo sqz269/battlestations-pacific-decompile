@@ -1,0 +1,83 @@
+{
+  "chain": 347,
+  "slot": "g4-w5",
+  "switch": "bsp::kWireGoal4Chain347Bound",
+  "scope": "Structured-node float and DWORD output wrappers over the retained installed-resource stream",
+  "rows": [
+    {
+      "native": "00be9a60",
+      "status": "wired",
+      "host_site": "src/structured_reader.cpp: StructuredNode::read_float",
+      "binding": "Borrow reader_ and remaining_; perform one existing complete-transfer read and FLD32/FSTP32 conversion; publish the staged output only on success.",
+      "compiled_call_sites": 1,
+      "entry_reachable": true,
+      "evidence": "bsp.py show 00be9a60 (including --asm): 00BE9A60-7A loads node+08h/+20h, calls 00BF02C0, stores ST0 to float output and returns the same handle."
+    },
+    {
+      "native": "00be9a80",
+      "status": "wired",
+      "host_site": "src/structured_reader.cpp: StructuredNode::read_u32 (also inlined into read_control_00be9a40 and read_string)",
+      "binding": "Borrow the same reader/budget pair and retain the host's complete-transfer, sticky-error and unchanged-output-on-failure policies. Raw native-layout callers delegate to the same canonical body.",
+      "compiled_call_sites": 3,
+      "entry_reachable": true,
+      "evidence": "bsp.py show/lookup 00be9a80: DWORD slot34/00BF0280 read, output store, handle return; GeomMesh 00727310 uses this wrapper (including the 00727694 chain)."
+    },
+    {
+      "native": "00be9aa0",
+      "status": "skipped",
+      "host_site": "src/structured_reader.cpp: StructuredNode::read_u32 (candidate)",
+      "reason": "No original image references or specific live out-parameter 00BF02A0 caller are established; bind the originally called 00BE9A80 slot34 wrapper instead."
+    },
+    {
+      "native": "00be9b20",
+      "status": "skipped",
+      "host_site": "include/bsp/structured_reader.hpp: StructuredNode::remaining (candidate)",
+      "reason": "The body reads reader+64h (the control word); remaining() exposes node+20h payload bytes, so this site lacks the matching field contract."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "record_remap_texture_name still returns empty and remap has no renderer/texture-cache/actual-owner context; establish those producers before calling the native remap setter."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "record_remap_texture_name still returns empty and remap has no renderer/texture-cache/actual-owner context; establish those producers before calling the native remap setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "record_remap_texture_name still returns empty and remap has no renderer/texture-cache/actual-owner context; establish those producers before calling the native remap setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "record_remap_texture_name still returns empty and remap has no renderer/texture-cache/actual-owner context; establish those producers before calling the native remap setter."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed (MSVC Win32 Release); reconstructed_math and tool_tests passed (2/2).",
+    "float_model": "No float arithmetic changed. The existing x87 FLD32/FSTP32 conversion is preserved in a helper because MSVC forbids inline assembly inside lambdas.",
+    "installed_resource_probe": "bsp_d3d9_probe.exe --structured-resource I:/SteamLibrary/steamapps/common/Battlestations Pacific passed; before/after output matches exactly.",
+    "installed_assets": [
+      "models/clouds/cloud_10.mmod: control=12, cursor=265/265, box bits, source retention/release and unread-child no-seek checks passed",
+      "models/misc/repulogepdarabok_004.mmod: control=14, cursor=1303, matrix bits, vertex/compressed/index bytes, subset fields, LOD, group parameters and resource dispatch checks passed"
+    ],
+    "compiled_graph": "python tools/call_graph.py then who 00be9a60 and who 00be9a80: both REACHABLE; direct calls from StructuredNode methods; 1 and 3 call sites respectively.",
+    "reachable_called_addresses_before": 4414,
+    "reachable_called_addresses_after": 4416,
+    "text_wired_before": 9382,
+    "text_wired_after": 9384,
+    "original_abi_compatible": false,
+    "game_validated": false
+  },
+  "assumptions": [
+    "Use the existing single-threaded retained MemoryStream complete-transfer projection; this does not widen it to native partial-read or pointer-seeded result semantics.",
+    "Keep native raw entry adapters and host adapters on one shared implementation per address; do not manufacture node images or execute both switch arms."
+  ],
+  "left": "Native partial-read/ABI parity, remap texture producers/renderer ownership, and an appropriate reader+64h consumer remain separate work."
+}
