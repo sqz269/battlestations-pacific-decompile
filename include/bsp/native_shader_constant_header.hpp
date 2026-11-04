@@ -2,6 +2,7 @@
 #include "bsp/native_material_program_compiler.hpp"
 #include "bsp/native_system_constant_registry.hpp"
 #include <cstdarg>
+#include <memory>
 
 namespace bsp {
 // These references borrow the application's actual cells/buffer. No registry,
@@ -27,7 +28,7 @@ struct NativeShaderConstantHeaderOperation final {
         number_resize, number_copy, number_release, suffix_append,
         temporary_release, declaration, line_format, line_resize, line_append,
         line_release, newline_resize, newline_append, newline_release,
-        suffix_release, cursor };
+        suffix_release, cursor, constant_call, decimal_call };
     Phase phase{Phase::fresh};
     Step step{Step::none};
     std::uint32_t function{}, native_site{}, completed_rows{}, cursor{};
@@ -44,6 +45,12 @@ struct NativeShaderConstantHeaderOperation final {
     std::uint32_t decimal_length{}, line_length{}, old_length{}, append_length{};
     bool suffix_live{}, temporary_live{}, decimal_live{}, line_live{};
     bool decimal_captured{}, line_captured{};
+    // B39032 -> B38C60 -> B38D0B -> 5F1840. Each entry has its own
+    // one-shot frame, borrowing this SAME builder/context and temporary.
+    // Interrupted children retain their actual native headers/buffers here;
+    // clean up and retire the deepest child before retiring its parent.
+    std::unique_ptr<NativeShaderConstantHeaderOperation> constant_child;
+    std::unique_ptr<NativeShaderConstantHeaderOperation> decimal_child;
     NativeShaderConstantHeaderOperation() = default;
     ~NativeShaderConstantHeaderOperation();
     NativeShaderConstantHeaderOperation(const NativeShaderConstantHeaderOperation&) = delete;
