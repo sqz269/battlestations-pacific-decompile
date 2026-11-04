@@ -31,6 +31,7 @@
 #include "bsp/wire_goal4_chain390_switches.hpp"
 #include "bsp/wire_goal4_chain416_switches.hpp"
 #include "bsp/wire_goal4_chain421_switches.hpp"
+#include "bsp/wire_goal4_chain425_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -77,6 +78,15 @@ public:
                 if (prior != destination.values.end()) {
                     if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
                     insert_into(destination_, *prior);
+                    if constexpr (kWireGoal4Chain425Bound) {
+                        if (overwrite && same_key(value.type_letter, "FA")) {
+                            destination_.replace_float_array(value);
+                            selected_[i] = true;
+                            continue;
+                        }
+                    } else {
+                        // FA previously stayed on the host path.
+                    }
                     if (overwrite && (same_key(value.type_letter, "V3A")
                             || same_key(value.type_letter, "BIN") || value.type_letter == "IA")) {
                         // The admitted same-tag overwrite has a complete,
@@ -343,6 +353,25 @@ private:
                 }
                 break;
             }
+            case 9: {
+                if constexpr (kWireGoal4Chain425Bound) {
+                    // 008EF360 owns +20h and records 4*count at +24h.
+                    // Publish the merged native bytes before bag retirement;
+                    // no decimal conversion or float arithmetic occurs here.
+                    const void* payload;
+                    std::uint32_t bytes;
+                    std::memcpy(&payload, record + 0x20, sizeof(payload));
+                    std::memcpy(&bytes, record + 0x24, sizeof(bytes));
+                    if (payload == nullptr || bytes == 0 || bytes % 4 != 0)
+                        throw std::logic_error("unexpected merged type-9 payload");
+                    value.float_array.resize(bytes / 4);
+                    std::memcpy(value.float_array.data(), payload, bytes);
+                    value.has_float_array = true;
+                } else {
+                    throw std::logic_error("unexpected merged scene property tag");
+                }
+                break;
+            }
             case 11: {
                 if constexpr (kWireGoal4Chain330Bound) {
                     // 008EF460 records 12*count bytes at +24h. The native
@@ -425,6 +454,14 @@ private:
     static bool supported(const SceneProperty& value) {
         if (std::any_of(value.key.begin(), value.key.end(),
                 [](unsigned char c) { return c == 0 || c >= 0x80; })) return false;
+        if constexpr (kWireGoal4Chain425Bound && kWireGoal4Chain307Bound) {
+            if (same_key(value.type_letter, "FA")) {
+                return value.has_float_array && !value.float_array.empty()
+                    && value.float_array.size() <= 0x3fffffffu;
+            }
+        } else {
+            // The prior projection leaves FA on the caller's host path.
+        }
         if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
             if (same_key(value.type_letter, "V3A")) {
                 return value.has_vector3_array && !value.vector3_array.empty()
@@ -530,6 +567,14 @@ private:
             return child;
         }
         void insert(const SceneProperty& value) {
+            if constexpr (kWireGoal4Chain425Bound && kWireGoal4Chain307Bound) {
+                if (same_key(value.type_letter, "FA")) {
+                    insert_float_array(value);
+                    return;
+                }
+            } else {
+                // The prior projection has no native FA insertion.
+            }
             if constexpr (kWireGoal4Chain330Bound && kWireGoal4Chain307Bound) {
                 if (same_key(value.type_letter, "V3A")) {
                     insert_vector3_array(value);
@@ -656,6 +701,22 @@ private:
                 value.values.front().c_str(), 0u,
                 static_cast<std::uint32_t>(scene_reference_kind(value.type_letter)));
         }
+        void replace_float_array(const SceneProperty& value) {
+            // bsp.py show 008F5A00 --asm 008F647E..008F64A0 frees old +20h
+            // and adopts the new 4*count buffer. Reuse the existing complete
+            // 008F04C0 flags-0 body for these identical stores (Source reuse,
+            // not a recovered CALL at this inlined parser site). The actual
+            // type-9 record was built by 008F3510/008EF360, and 008F03F0
+            // retires the sole-owned replacement. Do not also merge this key.
+            void* const record = find(value.key);
+            const std::size_t bytes = value.float_array.size() * sizeof(float);
+            void* const payload = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, bytes});
+            if (payload == nullptr) throw std::bad_alloc();
+            std::memcpy(payload, value.float_array.data(), bytes);
+            reassign_native_scene_property_four_byte_groups_008f04c0(record,
+                nullptr, static_cast<std::uint32_t>(value.float_array.size()), payload, 0u);
+        }
         void replace_owned_array(const SceneProperty& value) {
             // bsp.py show 008F0460 / 008F0520 / 008F0580: replace +20h/+24h,
             // freeing the old allocation before adopting the new flags-0 one.
@@ -696,6 +757,19 @@ private:
             }
         }
     private:
+        void insert_float_array(const SceneProperty& value) {
+            // 008F644C allocates 4*count and 008F64B9 transfers that buffer
+            // to 008F3510 with flags 0. Give its type-9 owner a canonical
+            // allocation, never std::vector's borrowed backing storage.
+            static_assert(sizeof(float) == 4);
+            const std::size_t bytes = value.float_array.size() * sizeof(float);
+            void* const payload = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, bytes});
+            if (payload == nullptr) throw std::bad_alloc();
+            std::memcpy(payload, value.float_array.data(), bytes);
+            add_native_scene_property_four_byte_array_008f3510(data(), value.key.c_str(), payload,
+                static_cast<std::uint32_t>(value.float_array.size()), 0u, context_);
+        }
         void insert_vector3_array(const SceneProperty& value) {
             // 008F65DE..008F669A builds an operator-new buffer of 12*count
             // and transfers it to 008F3610 with flags 0. The type-11 root

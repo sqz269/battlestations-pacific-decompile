@@ -118,6 +118,10 @@ struct SceneProperty {
     // +20h payload / +24h byte size). Empty, short, long or failed forms stay raw.
     std::vector<std::int32_t> integer_array;
     bool has_integer_array{false};
+    // Chain 425: a closed nonempty FA statement owns count binary32 values
+    // (native type 9, +20h payload / +24h byte size). Other forms stay raw.
+    std::vector<float> float_array;
+    bool has_float_array{false};
     // Chain 321: a closed explicit "BIN n b1 .. bn ;" with n >= 1 owns n
     // bytes decoded by 008EF6D0 (native type 8, +20h payload / +24h size).
     // Empty, mismatched and context-dependent statements keep only raw tokens.
