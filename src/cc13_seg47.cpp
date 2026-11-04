@@ -807,7 +807,7 @@ std::int32_t target_flag_e4_set_or_global_007b80a0(Seg47Host& host, Raw target) 
 }
 
 // 007B80C0, __thiscall(ECX = target), EAX: 1 when +E4h is clear or [00F874FD] is set.
-std::int32_t target_flag_e4_clear_or_global_007b80c0(Seg47Host& host, Raw target) {
+std::int32_t target_flag_e4_clear_or_global_007b80c0(TargetFlagGlobalsHost& host, Raw target) {
     if (target.at<std::uint8_t>(0xE4) == 0) return 1;
     if (*static_cast<const std::uint8_t*>(host.global_address(0x00F874FDu)) != 0) return 1;
     return 0;

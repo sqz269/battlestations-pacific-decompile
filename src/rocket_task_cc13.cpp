@@ -6,7 +6,10 @@
 #include "bsp/rocket_task_cc13.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/native_rocket_class_query.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
+#include "bsp/pool_pool01_cc13.hpp"
+#include "bsp/wire_goal4_chain346_switches.hpp"
 
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-7): rocket_flight_time_00809e10
 // (00809E77-00809EF3). The chains of 007B3EA0, 007B78F0, 007B4980, 007B4F60, 007B5430
@@ -271,9 +274,23 @@ int rocket_target_size_007b3c00(const RocketTargetKinds& k) noexcept {
 
 bool rocket_platform_qualifies_007c1eb0(const RocketPlatformView& p,
                                         bool air_ground_same_f874fd) noexcept {
-    if (!p.weapon_platform_25 || !p.carries_rocket_33) return false;   // vt[5Ch](25h), vt[210h](33h, 0)
-    if (p.ignition_delay_e0 <= 0.0f) return false;   // (+E0h <= 0) == param_2 (0)
-    return !p.anti_air_e4 || air_ground_same_f874fd; // param_3 = 0: +E4h clear, or [00F874FD]
+    if constexpr (kWireGoal4Chain346Bound) {
+        if (!p.weapon_platform_25 || !p.carries_rocket_33) return false;
+        // bsp.py show 007C1EB0: this (want_small=0, anti_air=0) caller
+        // inlines the exact 006E3260 and 007B80C0 predicates. The live
+        // RocketHostAdapter supplies both fields from read_rocket_bullet_row
+        // for the first loaded rack with a remaining rocket. Preserve its
+        // F874FD input, traversal and attached-round substitution unchanged.
+        NativeRocketClassQuery query(p.ignition_delay_e0, p.anti_air_e4,
+                                    air_ground_same_f874fd);
+        if (pool_pool01_cc13::target_state_field_e0_not_positive_006e3260(query.data())) return false;
+        return cc13_seg47::target_flag_e4_clear_or_global_007b80c0(
+            query, cc13_seg47::raw(query.data())) != 0;
+    } else {
+        if (!p.weapon_platform_25 || !p.carries_rocket_33) return false;   // vt[5Ch](25h), vt[210h](33h, 0)
+        if (p.ignition_delay_e0 <= 0.0f) return false;   // (+E0h <= 0) == param_2 (0)
+        return !p.anti_air_e4 || air_ground_same_f874fd; // param_3 = 0: +E4h clear, or [00F874FD]
+    }
 }
 
 void rocket_glide_seed_007b3ea0(RocketApproach& ap, float ctl_alt_398,

@@ -47,7 +47,14 @@ struct DroppableRoundCountHost {
     virtual std::int32_t bomb_platform_round_count_006e3500(Raw rack) = 0;
 };
 
-struct Seg47Host : DroppableRoundCountHost {
+// 007B80C0 reads only this image-global binding. Keep its caller independent
+// of the unrelated flight, allocation and archive callbacks in Seg47Host.
+struct TargetFlagGlobalsHost {
+    virtual ~TargetFlagGlobalsHost() = default;
+    virtual void* global_address(std::uint32_t address) = 0;
+};
+
+struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -555,7 +562,7 @@ void* bot_task_make_rocket_007b7fd0(Seg47Host& host, void* a, void* b);
 
 // --- plane state and weapon-controller band 007B80A0-007B9510 ----------------------
 std::int32_t target_flag_e4_set_or_global_007b80a0(Seg47Host& host, Raw target);
-std::int32_t target_flag_e4_clear_or_global_007b80c0(Seg47Host& host, Raw target);
+std::int32_t target_flag_e4_clear_or_global_007b80c0(TargetFlagGlobalsHost& host, Raw target);
 void float_window_set_sample_and_sum_007b8140(Raw window, std::int32_t index, std::int32_t count, float sample);
 void plane_clear_flag_904_007b8450(Raw plane);
 void index_block_decrement_all_007b8550(Raw block);

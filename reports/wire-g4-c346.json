@@ -1,0 +1,93 @@
+{
+  "goal": 4,
+  "chain": 346,
+  "slot": "g4-w1",
+  "owner": "agent/g4-w1",
+  "switch": "kWireGoal4Chain346Bound",
+  "rows": [
+    {
+      "native": "006e3260",
+      "status": "wired",
+      "host_site": "src/rocket_task_cc13.cpp::rocket_platform_qualifies_007c1eb0, called by src/game_hosts_units.cpp::RocketHostAdapter::aimed_rack_plus_one",
+      "inputs": "The live selected rack's bullet ID resolves through read_rocket_bullet_row; its Lua-loaded IgnitionDelay is projected at +E0h. No unread class fields are initialized or consumed.",
+      "output": "The existing body rejects a class with IgnitionDelay <= 0 on the existing want_small=0 selector path. NaN still answers false from the predicate and passes this particular gate, exactly as the old comparison did.",
+      "evidence": "bsp.py show 006e3260 --asm: XORPS/COMISS XMM0,[ECX+E0h]/JC, returning false for unordered. show 007c1eb0: the native selector inlines this same <=0 test and compares its result to want_small. Existing host rack kind/ammo admission and bullet-row production are retained.",
+      "abi": "Reuses the existing pool_pool01_cc13 body with a synchronous read-only class-field projection. This is a C++ binding, not an original register-ABI replacement.",
+      "called": true,
+      "call_sites": 1,
+      "callers": ["bsp::rocket_platform_qualifies_007c1eb0"]
+    },
+    {
+      "native": "007b80c0",
+      "status": "wired",
+      "host_site": "src/rocket_task_cc13.cpp::rocket_platform_qualifies_007c1eb0, called by src/game_hosts_units.cpp::RocketHostAdapter::aimed_rack_plus_one",
+      "inputs": "The same live bullet row's AntiAir byte is projected at +E4h. TargetFlagGlobalsHost supplies the selector's existing air_ground_same_f874fd argument at the sole requested image address F874FD; the current scene-load caller passes false.",
+      "output": "The existing body accepts AntiAir clear or the caller's shared flag set. It replaces the prior inline boolean expression on the enabled path; no double evaluation or extra selector traversal is added.",
+      "evidence": "bsp.py show 007b80c0 and 007c1eb0: AntiAir-clear-or-F874FD is the native selector's anti_air=0 arm. The body is unchanged apart from extracting its one global_address service from the full Seg47Host contract.",
+      "abi": "Seg47Host inherits TargetFlagGlobalsHost for existing consumers; the new query implements only the global read this predicate uses. No allocator, archive or flight callback stand-ins were introduced.",
+      "called": true,
+      "call_sites": 1,
+      "callers": ["bsp::rocket_platform_qualifies_007c1eb0"]
+    },
+    {
+      "native": "007c1eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::RocketHostAdapter::aimed_rack_plus_one / src/rocket_task_cc13.cpp::rocket_platform_qualifies_007c1eb0",
+      "reason": "Already wired and reused as the caller; this packet adds no new whole-function claim. Its existing rack-round substitution for a native attached rocket record remains a limitation."
+    },
+    {
+      "native": "007b80a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiWeightModelBinding::rocket_accuracy",
+      "reason": "The selected real-rack caller requests the AntiAir-clear arm only; the AI model lacks a complete bound producer for the plane bullet's IgnitionDelay/AntiAir inputs, so its AntiAir-set sibling is deferred."
+    },
+    {
+      "native": "00a10710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::order_attack",
+      "reason": "Host commands are typed AiCommandObject values; native command storage, the +8h observer object and target observer-pair registration/lifetime remain unbound."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::order_attack",
+      "reason": "MOVETOATTACK requires the unbound 00A10710 native command/observer owner and target-pair lifetime; enabling the coordinator load gate alone does not supply those objects."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::order_attack",
+      "reason": "CAUTIOUSATTACK requires the native command/observer owner plus persistent +20h approach storage; the current typed command assignment does not construct either native subobject."
+    },
+    {
+      "native": "00a10ae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::tick_replace_command",
+      "reason": "CLOSEATTACK requires the unbound 00A10710 native command/observer owner and target-pair lifetime before it can replace the typed command promotion."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::observe_target_choice",
+      "reason": "The host has no owned native score list and complete 16-term score/label producer; the selected gameplay rack predicate path supplies neither and does not need debug score records."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::observe_target_choice",
+      "reason": "No persistent AiGroupScoreList populated by 00A2B950 exists in the inspected host; marking an empty invented score list would not bind real state."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "diff_check": "git diff --check passed",
+    "readiness_before": {"wired": 9379, "ready": 1596},
+    "readiness_after": {"wired": 9381, "ready": 1594},
+    "entry_reachable_native_addresses_before": 4410,
+    "entry_reachable_native_addresses_after": 4412,
+    "graph": "call_graph.py who confirms one reachable direct call to each new body from rocket_platform_qualifies_007c1eb0; path 007b80c0 reaches RocketHostAdapter::aimed_rack_plus_one, pilot_think_and_commit, the fixed-step mission frame and WinMainCRTStartup",
+    "switch": "ON by default; the entire old selector body is retained unchanged in the else arm",
+    "floating_point": "No float arithmetic changed; the binding copies the existing field and reuses its ordered <=0 predicate",
+    "proof_boundary": "Build/test and executable entry-reach evidence only. No game run or visual/gameplay proof. Existing native attached-round substitution and source bullet-row loader defaults are unchanged."
+  }
+}
