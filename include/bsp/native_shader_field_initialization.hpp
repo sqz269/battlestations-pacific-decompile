@@ -37,6 +37,9 @@ struct NativeShaderFieldInitializationOperation final {
     // Retains the actual existing B35110 child on a failed row. Successful
     // children have released native temporaries before the next child is made.
     std::unique_ptr<NativeShaderConstantHeaderOperation> line;
+    // Chain 381: the actual B34E90 call has its own retained continuation.
+    // Its output still belongs to this frame's swizzle and is released here.
+    std::unique_ptr<NativeShaderFieldInitializationOperation> swizzle_call;
     NativeShaderFieldInitializationOperation() = default;
     ~NativeShaderFieldInitializationOperation();
     NativeShaderFieldInitializationOperation(const NativeShaderFieldInitializationOperation&) = delete;

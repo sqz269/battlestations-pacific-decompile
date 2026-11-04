@@ -1,4 +1,5 @@
 #include "bsp/native_shader_struct_declarations.hpp"
+#include "bsp/wire_goal4_chain381_switches.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_string_append.hpp"
 #include <cstring>
@@ -142,6 +143,7 @@ NativeShaderStructDeclarationOperation::~NativeShaderStructDeclarationOperation(
 void NativeShaderStructDeclarationOperation::acknowledge_diagnostic_cleanup() noexcept {
     if (phase == Phase::failed) {
         if (formatted_line) formatted_line->acknowledge_diagnostic_cleanup();
+        if (field_format_call) field_format_call->acknowledge_diagnostic_cleanup();
         phase = Phase::diagnostic_retired;
     }
 }
@@ -160,7 +162,7 @@ void append_native_shader_string_line_00b35030(NativeString& out, const NativeSt
         a.phase = Frame::Phase::complete;
     } catch (...) { a.phase = Frame::Phase::failed; throw; }
 }
-NativeString& format_native_shader_field_00b385b0(const NativeShaderFieldStorage& field,
+__declspec(noinline) NativeString& format_native_shader_field_00b385b0(const NativeShaderFieldStorage& field,
     NativeString& out, std::uint8_t semantics, NativeShaderConstantHeaderContext& context, Frame& a) {
     begin(a, context, 0x00b385b0);
     try { field_declaration(field, out, semantics, a); a.phase = Frame::Phase::complete; return out; }
@@ -178,7 +180,17 @@ void append_native_shader_struct_00b38b50(NativeMaterialProgramBuilderStorage& o
             const auto* slots = pointer<NativeShaderFieldStorage*>(&fields, 0);
             const auto* field = *reinterpret_cast<NativeShaderFieldStorage* const volatile*>(slots + a.row);
             at(a, Step::field_format, 0x00b38bb2); a.field_output_live = true;
+            if constexpr (kWireGoal4Chain381Bound) {
+                // bsp.py show 00B38B50: B38BB2 calls B385B0 with the current
+                // actual field, fresh output and caller's semantics byte.
+                // Keep its continuation alive on failure, as for B35110;
+                // successful output is consumed and freed by this caller.
+                a.field_format_call = std::make_unique<NativeShaderStructDeclarationOperation>();
+                format_native_shader_field_00b385b0(
+                    *field, a.field_output, semantics, context, *a.field_format_call);
+            } else {
             field_declaration(*field, a.field_output, semantics, a);
+            }
             const auto* text = pointer<char>(&a.field_output);
             formatted(owner.source_4c, a, 0x00b38bd2, "\t%s", text ? text : context.actual_empty_0108d6f2);
             at(a, Step::field_release, 0x00b38bfc);

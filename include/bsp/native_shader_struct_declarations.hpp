@@ -36,6 +36,9 @@ struct NativeShaderStructDeclarationOperation final {
     // The exact existing B35110 child survives failure. Completed children may
     // be replaced for the next line; their native acquisitions are then gone.
     std::unique_ptr<NativeShaderConstantHeaderOperation> formatted_line;
+    // Chain 381: retain B385B0's acquisitions separately from the caller's
+    // formatted-line state. The caller owns/reclaims field_output as before.
+    std::unique_ptr<NativeShaderStructDeclarationOperation> field_format_call;
     NativeShaderStructDeclarationOperation() = default;
     ~NativeShaderStructDeclarationOperation();
     NativeShaderStructDeclarationOperation(const NativeShaderStructDeclarationOperation&) = delete;
