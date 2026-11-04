@@ -1,0 +1,238 @@
+{
+  "chain": 497,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "picked": "Real TDT U16 terrain-block chunk decoding through the existing 00ADC6C0 reader",
+  "switch": "bsp::kWireGoal4Chain497Bound",
+  "implementation": {
+    "state_source": "load_terrain_height_field_00adda60 opens each U16 child from the actual TDT StructuredNode and passes its live cursor to the existing terrain_block_read_chunk with selector 0x00ADC6C0.",
+    "storage": "TerrainU16ReadView has asserted native offsets 2C/30/34/38/3C/40 and points directly at the actual SceneTerrainBlock sample array. Dimensions 0x21 by 0x21 come from native 00ADFD70 -> 00ADC420. Offset and inverse scale are published only after successful decoding; no second decode runs.",
+    "evidence": "bsp.py show 00ADC6C0 --asm: 00ADC6CB/00ADC6D5 read the two floats, 00ADC6EC/00ADC6EE divide/store the reciprocal, and 00ADC700..00ADC730 read/store row-major u16 samples. bsp.py show 00ADFD70 supplies the 21h dimensions. Existing src/terrain_particles_cc13.cpp body reused unchanged.",
+    "failure_policy": "The ChunkHost adapter propagates failed StructuredNode reads to the existing U16 lacks its floats / short U16 loader errors and rejects the local incomplete field before publication.",
+    "abi": "C++ storage and cursor adaptation; no original machine-code ABI, SEH, or gameplay equivalence claim.",
+    "new_address_suffixed_bodies": false
+  },
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all five CTests; index rebuilt. Re-ran readiness against HEAD host source with the fresh index: source_text_wired=9780. The earlier stale-index result 9778 is discarded. The fresh switch-off binary has no linked terrain_block_read_chunk symbol.",
+    "enabled_build": "scripts/build.ps1 passed all five CTests.",
+    "entry_reach": "call_graph.py who terrain_block_read_chunk reports one reachable call from read_terrain_u16_chunk. path walks scene loading -> mission advance -> menu frame -> WinMainCRTStartup. who 00adc6c0 does not resolve this shared address-parameterized symbol.",
+    "enabled_installed_data_probe": "Ignored local/output/wire_g4_c497_probe.ps1 compiles an embedded-manifest console fixture including the real host loader, without game_main. Installed Okinawa TDT: grid=97x120, blocks=6672, samples=7265808, output_hash=a9618d973bf8c71a (all offsets, inverse scales, and sample bytes).",
+    "pc24": "pc24_lint.py src/game_hosts_scene_contents.cpp: 0 findings, 2 allowed. The existing reciprocal has one division and a float store.",
+    "game_run": false,
+    "disabled_build": "scripts/build.ps1 passed all five CTests with kWireGoal4Chain497Bound=false; call_graph.py who terrain_block_read_chunk finds no linked function. Address-suffix reach totals are unchanged at 4851 because this shared body lacks an address suffix.",
+    "disabled_installed_data_probe": "The same installed Okinawa TDT console fixture passed with switch false: grid=97x120 blocks=6672 samples=7265808 output_hash=a9618d973bf8c71a, bit-identical to switch true.",
+    "readiness_caveat": "The shared terrain_block_read_chunk identifier labels both 00ADC6C0 and 00ADFBD0 as wired/called in readiness. Only selector 0x00ADC6C0 is passed here; this report explicitly leaves 00ADFBD0 skipped. The call graph resolves the shared function by name, not by either native address.",
+    "readiness": "wire_readiness.py --standins with fresh index and enabled code: source_text_wired=9782; 00ADC6C0 is wired/called with one reachable call site. It also labels U8 through the shared identifier, so only one native function is claimed.",
+    "final_enabled_build": "After restoring kWireGoal4Chain497Bound=true, scripts/build.ps1 passed all five CTests. The final call graph again shows one reachable call to terrain_block_read_chunk at built address 10458A30, from read_terrain_u16_chunk at call site 101BF630.",
+    "diff_check": "git diff --check passed.",
+    "limits": "Compilation, existing CTests, linked entry reach, and bitwise decoded-output parity on one shipped TDT are established. No game execution, original ABI execution, U8/F32 block load, or runtime frame/gameplay validation was performed."
+  },
+  "rows": [
+    {
+      "native": "00adc6c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: load_terrain_height_field_00adda60 -> read_terrain_u16_chunk -> cc13_terrain::terrain_block_read_chunk(0x00adc6c0)",
+      "evidence": "Replaces the host U16 float/sample decoder using the actual chunk and sample buffer."
+    },
+    {
+      "native": "00adfbd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: load_terrain_height_field_00adda60",
+      "reason": "Missing a hosted U8 terrain-block representation and load path; the shared body is called only with the U16 selector 0x00ADC6C0."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: remap texture setters",
+      "reason": "Missing authored remap texture names at this boundary: record_remap_texture_name returns empty, and the native service/cache acquisition owner is not supplied."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: remap texture setters",
+      "reason": "Missing authored remap texture names at this boundary: record_remap_texture_name returns empty, and the native service/cache acquisition owner is not supplied."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: remap texture setters",
+      "reason": "Missing authored remap texture names at this boundary: record_remap_texture_name returns empty, and the native service/cache acquisition owner is not supplied."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: remap texture setters",
+      "reason": "Missing authored remap texture names at this boundary: record_remap_texture_name returns empty, and the native service/cache acquisition owner is not supplied."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the complete native profile-record erase/storage rewrite continuation; the existing clear_checkpoint body models only its Lua table mutation."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command / director_ai_group_forward",
+      "reason": "Missing the actual native AI group and its command-forwarding receivers; the host currently records this boundary without group state."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target / report_target_event",
+      "reason": "Missing native director target event state at the record-only boundary."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "Missing the actual native target object and initializer context; this boundary returns a zero handle."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: rebuild scripted-name baseline",
+      "reason": "Missing a teardown consumer here; this boundary records the pre-script baseline and mentions 004D32A0 only in explanatory comments."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread deferred-call producer and actual argument vector; the current main-thread queue remains empty."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio",
+      "reason": "Missing the ship sound object/device-list state required by the native controlled-audio plan."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing the live ambient SoundInstance; this callback currently only records the requested volume."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing native retained ammunition-record/tree ownership and a producer for the alternate record at ammo+48h."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: vector660 cleanup",
+      "reason": "Missing an identified live unit+660h vector owner at the inspected host boundary."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selection screen reset",
+      "reason": "Missing the native selection vector and input-context state consumed by the raw screen reset body."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: timed entry advancement",
+      "reason": "No missing body call to replace: the prior skip evidence says this owner already calls advance_gui_timed_entry_00ad39a0; no new native state path established in this packet."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/cc13_gui1.cpp: timed alpha-entry construction",
+      "reason": "Missing an enabled page/widget owner route; prior skip evidence records this construction behind the disabled native GUI page chain."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: child ordering",
+      "reason": "Missing the reflection/property-descriptor writer path that uses the alphabetical snapshot; render ordering has a different contract."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "Missing a live installed-language table at this boundary; the warning loader host has no implementation of installed_languages and this message callback returns an empty list."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "Missing the live text input/GuiLeafHost consumer; inspected references are declarations and probe checks."
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: vehicle registry preload aliases",
+      "reason": "Missing the native 401Ch lazy singleton owner at this typed host registry boundary; the source match is explanatory, not a getter call."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command_menu_sort_006f7c20",
+      "reason": "Missing the live native collected-command menu list and its native ordering consumer in the inspected hosts."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg52.cpp / src/cc13_seg53.cpp: turning_gun_set_angles_immediate_0085b0f0",
+      "reason": "Missing a host boundary with the full four-angle native gun state; a single-angle snap cannot replace these callbacks."
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: landscape height queries",
+      "reason": "Missing the slot-2Ch combined height-field implementation; existing SceneTerrainHeightField world height models slot 28h, not this additional-layer query."
+    },
+    {
+      "native": "00adc520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: terrain range construction",
+      "reason": "Missing a native generic block range-query consumer; existing U16/quadtree ranges are derived from actual loaded samples, not these generic sentinel accessors."
+    },
+    {
+      "native": "00adc530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: terrain range construction",
+      "reason": "Missing a native generic block range-query consumer; existing U16/quadtree ranges are derived from actual loaded samples, not these generic sentinel accessors."
+    },
+    {
+      "native": "00adc580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: terrain U16 blocks",
+      "reason": "Missing a terrain editing/sample-set consumer; the actual load path reads encoded samples directly and must not re-encode them."
+    },
+    {
+      "native": "00adfd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: load_terrain_height_field_00adda60",
+      "reason": "Missing a reconstructed complete U16 tile creation body; the existing entry remains a labelled host substitution, used here only as evidence for dimensions."
+    },
+    {
+      "native": "00ada810",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneTerrainHeightField::normal_00adaba0",
+      "reason": "Missing PC24 per-operation arithmetic in this existing world-to-cell body; reusing its double chain would weaken the current main-thread rounding contract."
+    },
+    {
+      "native": "00ada990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneTerrainHeightField height query",
+      "reason": "Missing the additional slot-50h layer state required by this combined height query; current host provides the slot-28h base height only."
+    }
+  ],
+  "counts": {
+    "source_text_wired_before": 9780,
+    "source_text_wired_after": 9782,
+    "claimed_new_native_functions": [
+      "00adc6c0"
+    ],
+    "unclaimed_shared_identifier_aliases": [
+      "00adfbd0"
+    ],
+    "entry_reachable_address_labels_switch_off": 4851,
+    "entry_reachable_address_labels_switch_on": 4851,
+    "reachable_shared_reader_call_sites_switch_off": 0,
+    "reachable_shared_reader_call_sites_switch_on": 1
+  }
+}

@@ -9,6 +9,7 @@
 #include "bsp/wire_goal4_chain465_switches.hpp"
 #include "bsp/wire_goal4_chain476_switches.hpp"
 #include "bsp/wire_goal4_chain480_switches.hpp"
+#include "bsp/wire_goal4_chain497_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -3156,6 +3157,74 @@ static bool terrain_tag_is(const bsp::StructuredNode& node, const char* name) no
 // 00ADDB60..00ADDBFB for a `TRNV2` root.
 void build_quadtree_00aea820(const SceneTerrainHeightField& field);
 
+// Chain 497: the slot-10h reader works on a view of the block being loaded,
+// with +40h pointing directly at its actual sample array. The dimensions are
+// the 21h,21h arguments of 00ADFD70 -> 00ADC420, not inferred from file length.
+// 00ADC6C0's listing stores offset/range/inverse at +2Ch/+30h/+34h, then reads
+// two bytes per cell in row-major order (00ADC700..00ADC730). This is a C++
+// storage adapter; original machine-code ABI and exception equivalence are unproven.
+struct TerrainU16ReadView {
+    std::uint8_t unused_00[0x2c]{};
+    float offset{};
+    float range{};
+    float inverse_range{};
+    std::int32_t columns{0x21};
+    std::int32_t rows{0x21};
+    std::uint16_t* samples{};
+};
+static_assert(offsetof(TerrainU16ReadView, offset) == 0x2c);
+static_assert(offsetof(TerrainU16ReadView, range) == 0x30);
+static_assert(offsetof(TerrainU16ReadView, inverse_range) == 0x34);
+static_assert(offsetof(TerrainU16ReadView, columns) == 0x38);
+static_assert(offsetof(TerrainU16ReadView, rows) == 0x3c);
+static_assert(offsetof(TerrainU16ReadView, samples) == 0x40);
+static_assert(sizeof(TerrainU16ReadView) == 0x44);
+
+struct TerrainU16ReadFailure { const char* message; };
+
+class TerrainU16ChunkBinding final : public bsp::cc13_terrain::ChunkHost {
+public:
+    float node_read_float_00be99d0(void* node) override {
+        float value = 0.0f;
+        if (!static_cast<bsp::StructuredNode*>(node)->read_float(value))
+            throw TerrainU16ReadFailure{"U16 lacks its floats"};
+        return value;
+    }
+    void node_read_raw_bytes(void* node, void* out, std::uint32_t count) override {
+        if (!static_cast<bsp::StructuredNode*>(node)->read_bytes(out, count))
+            throw TerrainU16ReadFailure{"short U16"};
+    }
+    void begin_chunk(void*, const char*) override { no_writer(); }
+    void end_chunk(void*, const char*) override { no_writer(); }
+    void write_float(void*, float) override { no_writer(); }
+    void write_dword(void*, std::uint32_t) override { no_writer(); }
+    void write_bytes(void*, const void*, std::uint32_t) override { no_writer(); }
+    void block_slot14_write(void*, void*) override { no_writer(); }
+
+private:
+    [[noreturn]] static void no_writer() {
+        throw std::logic_error("terrain U16 reader requested a writer");
+    }
+};
+
+static bool read_terrain_u16_chunk(bsp::StructuredNode& chunk,
+    SceneTerrainBlock& block, std::string& error) {
+    TerrainU16ReadView view;
+    view.samples = block.samples.data();
+    TerrainU16ChunkBinding binding;
+    try {
+        // 00ADC6EC FDIVRP / 00ADC6EE FSTP: the existing body has one
+        // division followed by a float store, with no unrounded float chain.
+        bsp::cc13_terrain::terrain_block_read_chunk(0x00adc6c0, &view, &chunk, binding);
+    } catch (const TerrainU16ReadFailure& failure) {
+        error = failure.message;
+        return false;
+    }
+    block.offset = view.offset;
+    block.inv_scale = view.inverse_range;
+    return true;
+}
+
 static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda60(
     const std::string& bytes, float box_min_x, float box_min_z, std::string& error) {
     auto stream = std::make_shared<bsp::MemoryStream>(
@@ -3207,6 +3276,9 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
             if (!chunk) { error = "bad NODE child"; return nullptr; }
             if (terrain_tag_is(*chunk, "U16")) {
                 SceneTerrainBlock block;
+                if constexpr (bsp::kWireGoal4Chain497Bound) {
+                    if (!read_terrain_u16_chunk(*chunk, block, error)) return nullptr;
+                } else {
                 float scale = 0.0f;
                 if (!chunk->read_float(block.offset) || !chunk->read_float(scale)) {
                     error = "U16 lacks its floats"; return nullptr;
@@ -3214,6 +3286,7 @@ static std::shared_ptr<SceneTerrainHeightField> load_terrain_height_field_00adda
                 block.inv_scale = terrain_f32(1.0 / static_cast<double>(scale));  // +34h
                 for (std::uint16_t& sample : block.samples) {
                     if (!chunk->read_bytes(&sample, 2)) { error = "short U16"; return nullptr; }
+                }
                 }
                 field->block_index[static_cast<std::size_t>(wide) * tz + tx]
                     = static_cast<int>(field->blocks.size());
