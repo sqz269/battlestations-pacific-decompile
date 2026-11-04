@@ -52,6 +52,9 @@ void destroy_native_procedural_resource_base_00b19750(void*) noexcept;
 // nonnull identity has its genuine +04 atomic/canonical zero provider. Native
 // null children are not guarded. No payload/header/atomic construction occurs.
 // No payload/string cleanup at +08/+0C and no field nulling after free.
+// A direct call requires a fresh operation. The BBC6D0/BBC7F0 wrappers may
+// lend their running operation for the SAME owner; their outer boundary then
+// retains responsibility for completion/failure and the conditional free.
 void destroy_native_procedural_resource_00c304a0(void*, NativeRenderActualOwners&,
     NativeProceduralResourceLifetimeOperation&);
 // Complete BBC6D0..BBC6ED and BBC7F0..BBC80D. ECX owner, stack flags,
