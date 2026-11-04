@@ -4,9 +4,9 @@
   "owner": "agent/g4-w5",
   "base": "4ccf3969b5",
   "switch": "bsp::kWireGoal4Chain376Bound",
-  "summary": "Mission objective unit lists run through their reconstructed bodies. Objectives_AddUnit / Objectives_RemoveUnit (Lua natives) call 008CDD60 / 008CE510; the unit targets of Objectives_Add and AddUnit go through 008DF2B0 (record 008DEE50); Objectives_Completed / Failed run the 008DFE50 walk; removals erase entries with 008DC3E0. The chain-152 position list becomes the whole objective+20h list (units and positions in push order) and GameObjectiveSets::Objective::units is its unit projection. Body fixes: 008CDD60/008CE510 test arguments 0/1 with 00B66A60 IsInteger (was is_nil); the removal hooks and the add tail take the set slot the native passes in ECX (008CEB55, 008CEBD1, 008DFE74, 008DF3D7).",
+  "summary": "Mission objective unit lists run through their reconstructed bodies. Objectives_AddUnit / Objectives_RemoveUnit (Lua natives) call 008CDD60 / 008CE510; the unit targets of Objectives_Add and AddUnit go through 008DF2B0 (record 008DEE50); Objectives_Completed / Failed run the 008DFE50 walk; removals erase entries with 008DC3E0. The chain-152 position list becomes the whole objective+20h list (units and positions in push order) and GameObjectiveSets::Objective::units is its unit projection. Body fixes: 008CDD60/008CE510 test arguments 0/1 with 00B66A60 IsInteger (was is_nil); the removal hooks and the add tail take the set slot the native passes in ECX (008CEB55, 008CEBD1, 008DFE74, 008DF3D7). The objective set membership test 008DDF90 runs as its body at the HUD grey-arrow and marker sites.",
   "called_before": 5715,
-  "called_after": 5718,
+  "called_after": 5719,
   "behaviour_changes_on": [
     "AddUnit on an objective the slot does not hold adds nothing (008DF2B0 returns); the old host created the objective.",
     "AddUnit / RemoveUnit with neither an integer party nor an integer slot select no set (mask starts 0 at 008CDD8B); the old host used slot 0.",
@@ -58,6 +58,20 @@
       "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_remove_unit (the 008DFC00 -> 008DF400 removal)",
       "called": true,
       "call_sites": 1
+    },
+    {
+      "native": "008ddf90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::grey_arrow_contains_008ddf90; src/game_hosts_hud_world.cpp: MarkerRuntimeBinding::objective_container_contains (00643183)",
+      "called": true,
+      "call_sites": 2,
+      "scope": "The membership body over the local slot's +18h tree (GameObjectiveSets::units_in_slot(0)); the squadron arm's +3D0h plane is not exposed and stays a record."
+    },
+    {
+      "native": "00a2c450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group_has_member_in_world_set and the 00A0F8B5 target-weight read",
+      "reason": "Both AI sites still test membership inline without 008DDF90's kind arms; routing them through the body changes AI decisions and needs a game-run pair, not done in this unattended run."
     },
     {
       "native": "008bd340",
