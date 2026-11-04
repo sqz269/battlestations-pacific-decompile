@@ -1,6 +1,11 @@
 #include "bsp/robot_config.hpp"
 #include "bsp/lua_numeric.hpp"
+#include "bsp/cc13_front8.hpp"
+#include "bsp/oct18_tail_a.hpp"
+#include "bsp/save_settings_cc13.hpp"
+#include "bsp/wire_goal4_chain410_switches.hpp"
 
+#include <cstdlib>
 #include <cstring>
 #include <new>
 #include <stdexcept>
@@ -21,6 +26,38 @@ struct OwnedString {
     NativeString value;
     ~OwnedString() { destroy_native_string_header_0041dd20(&value, storage); }
 };
+
+// Goal 4 chain 410: the native robot registry's temporary key is the actual
+// 8-byte {pointer, ownership byte} object, not an owned copy of the class name.
+// 00900B0B..00900B3D constructs/destroys it around find; 0090157D..009015BE
+// reloads descriptor+8, constructs it, transfers it into the insertion pair,
+// then destroys both wrappers (bsp.py show 00900af0/009013d0 --asm).
+// The map remains the existing standard-container projection; its keys borrow
+// the descriptor's name bytes after both temporary wrappers have died.
+struct RobotNameKey {
+    cc13_save::OwnedCStringKey value;
+
+    explicit RobotNameKey(const char* name) noexcept {
+        oct18_tail_a::construct_borrowed_key_00438f80(&value, name);
+    }
+    RobotNameKey(RobotNameKey&& source) noexcept {
+        cc13_front8::transfer_cstring_key_00438fe0(
+            {reinterpret_cast<std::uint8_t*>(&value)},
+            {reinterpret_cast<std::uint8_t*>(&source.value)});
+    }
+    ~RobotNameKey() {
+        // 00438F80 always clears ownership; 00438FE0 transfers that false
+        // byte. The recovered destructor therefore leaves the borrowed name
+        // alive. std::free is the native CRT dependency, not a no-op provider.
+        cc13_save::destroy_cstring_key_00439000(value, std::free);
+    }
+    RobotNameKey(const RobotNameKey&) = delete;
+    RobotNameKey& operator=(const RobotNameKey&) = delete;
+};
+static_assert(sizeof(cc13_save::OwnedCStringKey) == 8);
+static_assert(offsetof(cc13_save::OwnedCStringKey, data) == 0);
+static_assert(offsetof(cc13_save::OwnedCStringKey, owns) == 4);
+
 float float_bits(std::uint32_t bits) noexcept {
     float value;
     std::memcpy(&value, &bits, sizeof(value));
@@ -741,8 +778,17 @@ std::pair<RobotConfigRegistry::iterator, bool> insert_robot_config_00901210(
 }
 
 RobotDescriptor* find_robot_config_00900af0(RobotConfigRegistry& registry, const char* name) {
+    if constexpr (kWireGoal4Chain410Bound) {
+        RobotConfigRegistry::iterator found;
+        {
+            RobotNameKey key(name); // 00900B10, caller's actual class-name pointer
+            found = registry.find(key.value.data);
+        } // 00900B3D destroys the borrowed wrapper before inspecting the iterator
+        return found == registry.end() ? nullptr : found->second;
+    } else {
     const auto found = registry.find(name);
     return found == registry.end() ? nullptr : found->second;
+    }
 }
 
 bool validate_robot_descriptor(RobotDescriptor& object) {
@@ -780,7 +826,14 @@ void register_robot_config_009013d0(RobotConfigRegistry& registry, RobotDescript
     (void)validate_robot_descriptor(object); // native ignores AL
     name = object.name_08; // reload after all virtual/read callbacks
     if (!name) name = "unnamed MBotClass";
+    if constexpr (kWireGoal4Chain410Bound) {
+        RobotNameKey key(name);                       // 0090158E
+        RobotNameKey pair_key(std::move(key));        // 009015A1
+        (void)insert_robot_config_00901210(registry, pair_key.value.data, &object);
+        // 009015C3 onward: pair key, then original key, before the Lua refs.
+    } else {
     (void)insert_robot_config_00901210(registry, name, &object);
+    }
     // Native borrowed key wrappers own no bytes. The two live Lua refs release
     // in this scope's reverse order, after the unique map insertion.
 }
