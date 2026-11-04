@@ -5,6 +5,8 @@
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_property_bag.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
+#include "bsp/wire_goal4_chain537_switches.hpp"
 #include "bsp/wire_goal4_chain491_switches.hpp"
 #include "bsp/wire_goal4_chain477_switches.hpp"
 #include "bsp/plane_pose_commit.hpp"
@@ -1052,6 +1054,21 @@ void visit_entity(SceneFileReaderHost& host, const SceneEntity& ent, const float
     }
 }
 
+void visit_root_entity(SceneFileReaderHost& host, const SceneEntity& ent,
+    SceneFilePass pass, std::size_t& visited)
+{
+    // Goal 4 chain 537. The original root parent is the identity constructed
+    // at 0046EA4C..0046EB01: XORPS supplies every zero, including translation,
+    // and [00D7A24C] supplies its four 1.0f diagonal entries (bsp.py show
+    // 0046df00 --asm). Reuse the existing 0047C240 translation initializer
+    // with those same constants. Its output is the actual parent consumed by
+    // multiply_frames and host.instantiate_entity, not an auxiliary matrix.
+    // This is the Source Matrix4 interface, not the original ECX/EDX ABI.
+    cc13_sys::Matrix4 parent;
+    cc13_sys::transform_init_translation_0047c240(parent, {0.0f, 0.0f, 0.0f});
+    visit_entity(host, ent, parent.data(), pass, visited);
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -1567,7 +1584,11 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
                 // frame built at 0046EA4C..0046EB01); visit_entity is its
                 // instantiation half (0046C550), as before.
                 SceneEntity ent = parse_scene_entity_0046cf40(lexer, doc.errors);
-                visit_entity(host, ent, kIdentity, pass, result.entities_visited);
+                if constexpr (kWireGoal4Chain537Bound) {
+                    visit_root_entity(host, ent, pass, result.entities_visited);
+                } else {
+                    visit_entity(host, ent, kIdentity, pass, result.entities_visited);
+                }
                 doc.entities.push_back(std::move(ent));
                 continue;
             }
@@ -1632,7 +1653,11 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
         const SceneToken token = lexer.next();
         if (equal_insensitive(token.text, "entity")) {
             SceneEntity ent = parse_entity(cur);
-            visit_entity(host, ent, kIdentity, pass, result.entities_visited);
+            if constexpr (kWireGoal4Chain537Bound) {
+                visit_root_entity(host, ent, pass, result.entities_visited);
+            } else {
+                visit_entity(host, ent, kIdentity, pass, result.entities_visited);
+            }
             doc.entities.push_back(std::move(ent));
             continue;
         }
