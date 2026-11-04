@@ -277,7 +277,13 @@ void set_widget_alphas(const FrontEndScreenScroller& scroller, float thumb_alpha
 void begin_thumb_drag(FrontEndScreenScroller& scroller, FrontEndScrollerHost& host);
 
 // 00683320 __fastcall(this) RET, `MOV byte ptr [ECX+48h],0`.
-void end_thumb_drag(FrontEndScreenScroller& scroller) noexcept;
+void end_thumb_drag_00683320(FrontEndScreenScroller& scroller) noexcept;
+
+// Keep existing listener users on the same body after adding its address to
+// the name. This forwards only; the drag-flag store has one implementation.
+inline void end_thumb_drag(FrontEndScreenScroller& scroller) noexcept {
+    end_thumb_drag_00683320(scroller);
+}
 
 // 00683820 __thiscall(this, bool allow_pad_fallback) RET 4. The per-frame pump;
 // callers are the screens' update virtuals, for example 00599DB0. It takes no

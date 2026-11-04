@@ -1,4 +1,5 @@
 #include "bsp/frontend_screen_animation.hpp"
+#include "bsp/wire_goal4_chain397_switches.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_frontend_cc13.hpp"
@@ -220,7 +221,16 @@ void attach_content_00683790(FrontEndScreenScroller& scroller, void* content_wid
     scroller.scroll_offset = 0.0f;
     scroller.auto_scroll = ScrollDirection::kNone;
     scroller.auto_scroll_step = 0.0f;
-    scroller.dragging = false;
+    if constexpr (kWireGoal4Chain397Bound) {
+        // bsp.py show 00683790: the reset clears native +48h between the
+        // +24h and +58h stores. 00683320 is exactly that byte store (bsp.py
+        // show 00683320). Reuse its existing body on this same retained
+        // scroller; this is a source call replacing the store, not a claim
+        // that the original 00683790 issued a CALL here.
+        end_thumb_drag_00683320(scroller);
+    } else {
+        scroller.dragging = false;
+    }
     scroller.auto_scroll_overridden = false;
     scroller.drag_anchor_thumb_offset = 0.0f;
     push_content_position(scroller, host);
@@ -354,7 +364,7 @@ void begin_thumb_drag(FrontEndScreenScroller& scroller, FrontEndScrollerHost& ho
     scroller.drag_anchor_thumb_offset = thumb.y - scroller.thumb_base.y;
 }
 
-void end_thumb_drag(FrontEndScreenScroller& scroller) noexcept
+__declspec(noinline) void end_thumb_drag_00683320(FrontEndScreenScroller& scroller) noexcept
 {
     scroller.dragging = false;
 }
