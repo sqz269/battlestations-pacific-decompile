@@ -4,6 +4,8 @@
 #include "bsp/native_render_batch_keys.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/sound_cc13.hpp"
+#include "bsp/wire_goal4_chain504_switches.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -161,8 +163,17 @@ __declspec(naked) void __fastcall normalize_axes(void*, const volatile std::uint
 void* construct_native_gamepad_00a95d70(void* owner, NativeGamepadContext& context) {
     write<std::uint32_t>(owner, 0, 0x00ceb130);
     write<std::int32_t>(owner, 4, 1);
+    if constexpr (kWireGoal4Chain504Bound) {
+        // bsp.py show 00A95D70 / 00A93EC0: both clear exactly the two
+        // 100h-byte button histories at +0Ch/+10Ch. Reuse the existing
+        // clear body on the actual device being constructed; it preserves
+        // the profile/refcount and precedes the force-registry construction.
+        // This is C++ composition, not a claim of the original register ABI.
+        sound_cc13::input_device_clear_states_00a93ec0(owner);
+    } else {
     std::memset(static_cast<std::byte*>(owner) + 0x0c, 0, 0x100);
     std::memset(static_cast<std::byte*>(owner) + 0x10c, 0, 0x100);
+    }
     void* const tree = tree_of(owner);
     bool tree_completed = false;
     try {
