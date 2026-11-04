@@ -1,0 +1,147 @@
+{
+  "goal": 4,
+  "chain": 478,
+  "slot": "g4-w3",
+  "base": "0b8b8fa786",
+  "switch": "include/bsp/wire_goal4_chain478_switches.hpp:kWireGoal4Chain478Bound",
+  "summary": "Own decoded kamikaze and gun-destroyed messages with the existing native allocation owner, then call their existing scalar deleting bodies exactly once after payload consumption. Stack senders retain their existing non-deleting teardown. The unchanged old paths are in the switch's else arms.",
+  "wired_before": 9754,
+  "wired_after": 9757,
+  "validation": {
+    "baseline": "index --if-stale; scripts/build.ps1: all five tests passed",
+    "build": "scripts/build.ps1: all five tests passed after the change",
+    "readiness": "wire_readiness.py --standins: all three selected addresses wired and called",
+    "release_graph": "All three names are reachable from queue_kamikaze_detonate_70 or queue_gun_destroyed_68_69. Release ICF folds their identical scalar-delete bodies with other messages; its reconstructed-address aggregate stays 4820 before and after and is not a distinct-address delta.",
+    "analysis_graph": "call_graph.py --build: 6418/6449 reconstructed addresses reachable. Separate no-inline/no-ICF bodies at 10598730 (00762640), 10599020 (00729050), and 10599050 (00729070); who queries confirm each has an explicit call from its new OwnedDecodedMessage destructor, reached from the changed host queue function.",
+    "float_math": "No float arithmetic changed; the existing payload memcpy and numeric codecs are preserved",
+    "runtime_boundary": "Compiled and entry-reachable call sites verified; the game was not launched"
+  },
+  "rows": [
+    {
+      "native": "00762640",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_kamikaze_detonate_70",
+      "evidence": "bsp.py show 00762640: root-profile CE4974 store, free BF65AC iff flags bit 0; existing factory case 70h allocates 2Ch and constructs with 00761D90",
+      "abi": "Original __thiscall(this, flags), RET 4; reused source interface with flags=1 on matching heap storage",
+      "real_state": "The existing live collision sender's other-unit ID and XYZ pass through the same writer and reader into the owned receive object; copy the decoded payload before native deletion"
+    },
+    {
+      "native": "00729050",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_gun_destroyed_68_69, set arm",
+      "evidence": "bsp.py show 00729050: root-profile CE4974 store, free BF65AC iff flags bit 0; existing factory case 68h allocates 24h and constructs with 00728F20",
+      "abi": "Original __thiscall(this, flags), RET 4; reused source interface with flags=1 on matching heap storage",
+      "real_state": "The existing gun-destroyed sender and shared scalar codec produce the actual decoded message; preserve receiver-ladder and gun dispatch results before native deletion"
+    },
+    {
+      "native": "00729070",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_gun_destroyed_68_69, clear arm",
+      "evidence": "bsp.py show 00729070: root-profile CE4974 store, free BF65AC iff flags bit 0; existing factory case 69h allocates 24h and constructs with 00728FA0",
+      "abi": "Original __thiscall(this, flags), RET 4; reused source interface with flags=1 on matching heap storage",
+      "real_state": "The existing gun-repair sender and shared scalar codec produce the actual decoded message; preserve receiver-ladder and gun dispatch results before native deletion"
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "No native land-fort effect owner or integer D1h effect producer is retained here; the inspected fire-start send uses the float form and flags 4 for remote delivery."
+    },
+    {
+      "native": "007448b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "00746320 assembly gates the D1h send on the actual +740h effect reference and routes with flags 4; this host owns a boolean and has no remote peer, so a new local loopback would invent a route."
+    },
+    {
+      "native": "00744920",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "D1h lacks an eligible single-player sender and actual effect-reference owner at this site; serializing its recorded-only send would invent work."
+    },
+    {
+      "native": "00744990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "The inspected native fire-start route is remote-only; no received D1h object or real remote effect state reaches this single-player host."
+    },
+    {
+      "native": "0075aed0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:D1h factory candidate",
+      "reason": "No eligible local D1h receive route exists for the inspected fire sender; constructing a read object only to increase reachability would not consume real state."
+    },
+    {
+      "native": "00746320",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "Inspected existing hosted fire behavior only; a complete native fire-start binding still needs actual +740h/+744h effect references and authored template ownership."
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "The site owns only a fire boolean and duration, with no consumed RenderCommandReference template, current camera transform, or actual point-effect constructor owner."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "The native ammo record, its +48h flak alternate, retained class/effect references and tree producer are absent from this host."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "The capture host has no native +660h vector or producers for its 44h elements; an empty invented vector would not bind real state."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp:profile_owns_content",
+      "reason": "The host explicitly owns no profile content list at profile+D0h; a real owned-content-list producer is needed before lookup can bind content."
+    },
+    {
+      "native": "00ac6600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GuiPageScriptLayoutHost",
+      "reason": "Only a semantic script projection exists here; the full body needs a native 124h page, widget base, UI-context and scene ownership."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:scroller candidate",
+      "reason": "No live persistent scroller with attached content/thumb/arrow widgets and measured track/range producers is available at the inspected host boundary."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickScreen::project; src/game_hosts_hud_world.cpp:MarkerRuntimeBinding::gui_extent",
+      "reason": "Both sites already call gui_aspect_extent_00aa1fe0 with active platform state; the ready row selects a different nodef identifier, so there is no new unwired call to add."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:SetSelectedUnit / ForceSelectUnit",
+      "reason": "The pick-screen selection vector and mode +30h producers are absent; adding zero-filled native reset storage would invent the state."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:cockpit_screen_mode",
+      "reason": "cockpit_screen_wanted is false and there is no plane-effects cockpit-screen object supplying +B8h and +FCh."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:map_screen_busy",
+      "reason": "No powerup-screen carousel/scroller object supplies the tested +1F9h/+13Fh bytes and map_screen_wanted remains false."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:SetControlledUnit::set_unit_controlled_audio",
+      "reason": "The selected-unit binding has no native ship +BBCh sound object or +428h device-list owner on which to broadcast the controlled-audio flag."
+    }
+  ]
+}
