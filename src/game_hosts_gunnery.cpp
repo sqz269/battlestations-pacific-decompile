@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_recon_sensor_class_registry.hpp"
+#include "bsp/wire_goal4_chain452_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/wire_goal4_chain442_switches.hpp"
 #include "bsp/wire_goal4_chain434_switches.hpp"
@@ -5601,6 +5603,7 @@ struct GameGunneryHost::Impl {
         std::array<bsp::GunneryReconSensorRow, bsp::kSensorListCount> rows;
     };
     std::map<int, std::unique_ptr<ReconClassRecord>> recon_classes;
+    GameReconSensorClassRegistry recon_class_registry;
     // Per unit, resolved once from the authored row: the class's `ReconClass`
     // record and the SQUARE of its `ReconModifier`, which is what class+B8h
     // holds (009623CF FMUL ST0,ST0 before the 009623D9 store).
@@ -9383,9 +9386,19 @@ GameGunneryHost::Impl::recon_record_for_class(int recon_class_id) {
     auto found = recon_classes.find(recon_class_id);
     if (found != recon_classes.end()) return found->second.get();
     auto made = std::make_unique<ReconClassRecord>();
+    if constexpr (bsp::kWireGoal4Chain452Bound) {
+        // 00962419 -> 00808F90 -> 008082A0: the real VehicleClass.ReconClass
+        // id and the same loaded mission Lua state resolve the cached sensor
+        // record. The existing sensor pass below consumes this record's rows;
+        // no fixed ArcadeTable rebuild runs on this arm. resolve_recon_inputs
+        // obtains the id from this Lua state before reaching this call.
+        auto registry = recon_class_registry.bind(*lua.mission_lua_state());
+        made->table = *bsp::resolve_sensor_class_00808f90(recon_class_id, *registry);
+    } else {
     // 008082A0 on the authored rows. An id outside 1..12 gives the empty record
     // the loader leaves behind, which 008048A0 then reads as "no entries".
     made->table = bsp::build_sensor_class_table_008082a0(kReconVariant, recon_class_id);
+    }
     for (std::size_t i = 0; i < bsp::kSensorListCount; ++i) {
         const std::vector<bsp::SensorTableEntry>& src = made->table.lists[i];
         std::vector<bsp::ReconSensorEntry>& dst = made->entries[i];
