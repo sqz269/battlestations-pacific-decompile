@@ -6,6 +6,7 @@
 #include "bsp/wire_goal4_chain440_switches.hpp"
 #include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/wire_goal4_chain478_switches.hpp"
+#include "bsp/wire_goal4_chain509_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -1149,11 +1150,26 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     // 00768530 case 9Eh: 007608E0 at 007695EE; 0076A27B vtable[8] = 007609E0
     // (00428D30 sign-extends the 3-bit channel).
     stream.begin_read();
+    if constexpr (kWireGoal4Chain509Bound) {
+        // 007695DA..007695F5: factory case 9Eh allocates 28h and constructs
+        // 007608E0, then joins the real decoder at 0076A27B. Keep this owned
+        // receive object through projection and release it through its actual
+        // scalar-delete slot (00D0334C -> 00760BD0), flags=1. The sender stays
+        // stack-owned. Both paths read the same stream and return the same copy.
+        static_assert(sizeof(seg42::RepairAddDamageMessage) == 0x28);
+        OwnedDecodedMessage<seg42::RepairAddDamageMessage,
+            seg42::delete_shiprepair_adddamage_00760bd0> owner;
+        auto& queued = owner.get();
+        seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
+        seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
+        return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
+    } else {
     seg42::RepairAddDamageMessage queued{};
     seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
     seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
     // Neither message owns storage; 00760BD0's scalar delete only restamps.
     return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
+    }
 }
 
 HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool steering) const {

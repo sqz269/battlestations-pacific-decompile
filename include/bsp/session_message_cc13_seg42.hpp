@@ -314,6 +314,10 @@ VehicleShipyardLaunchMessage* construct_vehicle_shipyard_launch_007604c0(Vehicle
 HitMarkerMessage* construct_hitmarker_00760680(HitMarkerMessage*, const Context&);
 HitWarningMessage* construct_hitwarning_007607b0(HitWarningMessage*, const Context&);
 RepairAddDamageMessage* construct_shiprepair_adddamage_007608e0(RepairAddDamageMessage*, const Context&);
+// Native 00760BD0: ECX=this, stack flags, RET4, EAX=this. Stamps the root
+// CE4974 profile, frees this iff flags bit0 is set. Explicit C++ interface.
+RepairAddDamageMessage* delete_shiprepair_adddamage_00760bd0(
+    RepairAddDamageMessage*, std::uint32_t flags);
 RepairBodyMessage* construct_shiprepair_bodyrepair_00760a50(RepairBodyMessage*, const Context&);
 HeaderedMessage* construct_shiprepair_repairpriority_00760b70(HeaderedMessage*, const Context&);
 LandingShipsLaunchedMessage* construct_ship_landingshipslaunched_00760e90(LandingShipsLaunchedMessage*, const Context&);
