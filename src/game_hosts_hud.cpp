@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain530_switches.hpp"
 #include "bsp/wire_goal4_chain520_switches.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/wire_goal4_chain505_switches.hpp"
@@ -181,6 +182,69 @@ private:
     HudRootConstructionStorage& screen_;
 };
 
+// 0068CC70's manager+D4h / slot 5Ah allocation is 34h bytes. As with the
+// root screen, the registry borrows the actual base constructed by the leaf;
+// there is no second set of wanted/active flags. The page and Message_Text
+// pointers at +1Ch/+20h borrow this menu owner's installed GUI tree.
+struct HudSceneInitStorage {
+    std::uint32_t vtable{};
+    FrontEndScreen flags{};
+    std::array<std::uint8_t, 0x34 - 6> tail{};
+    std::uint8_t* data() { return reinterpret_cast<std::uint8_t*>(this); }
+};
+static_assert(offsetof(HudSceneInitStorage, flags) == 4);
+static_assert(offsetof(HudSceneInitStorage, tail) == 6);
+static_assert(sizeof(HudSceneInitStorage) == 0x34);
+constexpr int kSceneInitRegistrySlot = 0x5A;
+
+class HudSceneInitBinding final : public bsp::ingame_gui_cc13::HudSceneInitHost {
+public:
+    HudSceneInitBinding(HudSceneInitStorage& screen, GameMenuHost& menu)
+        : screen_(screen), menu_(menu) {}
+
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        require_screen(screen);
+        bsp::construct_front_end_screen_004f7180(screen_.flags);
+        screen.at<std::uint32_t>(0) = 0x00CEAE54u;
+    }
+    void front_end_screen_register_004f71d0(bsp::ingame_gui_cc13::Raw screen) override {
+        require_screen(screen);
+        const HudScreenLayout* layout = hud_screen_layout_for_slot(kSceneInitRegistrySlot);
+        if (layout == nullptr || !menu_.register_in_game_screen(kSceneInitRegistrySlot,
+                "HUD5A", layout->register_virtual, layout->layout_virtual, &screen_.flags))
+            throw std::runtime_error("00636F30 could not register scene-init screen 5Ah");
+    }
+    void* gui_load_page_00aa5840(std::string_view name) override {
+        const std::string page_name(name);
+        if (!menu_.attach_in_game_page(kSceneInitRegistrySlot, page_name))
+            throw std::runtime_error("00636F30 could not load " + page_name);
+        GuiLayoutPage* page = menu_.in_game_page(kSceneInitRegistrySlot, page_name);
+        if (page == nullptr || !page->root)
+            throw std::runtime_error("00636F30 scene-init page has no root");
+        return page->root.get();
+    }
+    void* gui_find_child_00aa7e00(void* parent, std::string_view name) override {
+        auto* child = bsp::find_descendant_by_name(*static_cast<GuiLayoutWidget*>(parent), name);
+        if (child == nullptr)
+            throw std::runtime_error("00636F30 scene-init page lacks " + std::string(name));
+        return child;
+    }
+    void widget_set_visible_34(void* widget, bool visible) override {
+        menu_.frontend().set_widget_visible(*static_cast<GuiLayoutWidget*>(widget), visible);
+    }
+    void widget_get_colour_54(void* widget, float rgba[4]) override {
+        const auto& colour = static_cast<GuiLayoutWidget*>(widget)->color;
+        std::memcpy(rgba, colour, sizeof(float) * 4);
+    }
+private:
+    void require_screen(bsp::ingame_gui_cc13::Raw screen) const {
+        if (screen.p != reinterpret_cast<const std::uint8_t*>(&screen_))
+            throw std::logic_error("scene-init base belongs to a different screen");
+    }
+    HudSceneInitStorage& screen_;
+    GameMenuHost& menu_;
+};
+
 // Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
 // (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
 GameSoundRuntime* g_hud_sound_runtime = nullptr;
@@ -333,6 +397,7 @@ struct GameHudHost::Impl {
     // stored here: +E4h is GameUnitsHost's stable canonical unit identity.
     alignas(4) std::array<std::uint8_t, 0xE8> root_interface_fields{};
     HudRootConstructionStorage constructed_root_screen{};
+    HudSceneInitStorage constructed_scene_init_screen{};
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
@@ -1211,8 +1276,20 @@ public:
                 owner_.done("InGameInterface::allocate_root_screen", 0x00bf681bu);
                 return true;
             }
+            if constexpr (kWireGoal4Chain530Bound) {
+                if (index < kInGameHudScreenCount
+                    && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
+                    if (size_bytes != sizeof(HudSceneInitStorage))
+                        throw std::logic_error("0068CC70 scene-init allocation size changed");
+                    owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
+                    return true;
+                }
+                owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
+                return true;
+            } else {
             owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
             return true;
+            }
         } else {
         static_cast<void>(index);
         static_cast<void>(size_bytes);
@@ -1232,8 +1309,26 @@ public:
                 ++owner_.summary.screen_constructors;
                 owner_.done("InGameInterface::root_screen_constructor", constructor);
             } else {
+                if constexpr (kWireGoal4Chain530Bound) {
+                    if (index < kInGameHudScreenCount
+                        && kInGameHudScreens[index].registry_slot == kSceneInitRegistrySlot) {
+                        if (constructor != 0x00636D90u)
+                            throw std::logic_error("0068CC70 scene-init constructor changed");
+                        // bsp.py show 00636d90: base construction, callback
+                        // owner zero stores and the two native vtable values.
+                        HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
+                        bsp::ingame_gui_cc13::scene_init_construct_00636d90(
+                            {owner_.constructed_scene_init_screen.data()}, binding);
+                        ++owner_.summary.screen_constructors;
+                        owner_.done("InGameInterface::scene_init_constructor", constructor);
+                    } else {
+                        if (constructor != 0) ++owner_.summary.screen_constructors;
+                        owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
+                    }
+                } else {
                 if (constructor != 0) ++owner_.summary.screen_constructors;
                 owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
+                }
             }
         } else {
         static_cast<void>(index);
@@ -1259,6 +1354,28 @@ public:
         std::snprintf(name, sizeof(name), "HUD%02X",
             static_cast<unsigned>(slot.registry_slot));
         const bool registered = [&]() {
+            if (slot.registry_slot == kSceneInitRegistrySlot) {
+                if constexpr (kWireGoal4Chain530Bound) {
+                    // bsp.py show 00636f30: register this exact base, load
+                    // FE_sceneinit, bind Message_Text, retain its four colour
+                    // words and hide the loaded page. The generic host page
+                    // loader below must not also run on this screen.
+                    HudSceneInitBinding binding(owner_.constructed_scene_init_screen, owner_.menu);
+                    bsp::ingame_gui_cc13::scene_init_register_00636f30(
+                        {owner_.constructed_scene_init_screen.data()}, binding);
+                    owner_.done("InGameInterface::scene_init_register", 0x00636f30u);
+                    return true;
+                } else {
+                    if constexpr (kWireGoal4Chain461Bound) {
+                        return owner_.menu.register_in_game_screen(slot.registry_slot, name,
+                            record.register_virtual, record.layout_virtual,
+                            index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
+                    } else {
+                        return owner_.menu.register_in_game_screen(slot.registry_slot, name,
+                            record.register_virtual, record.layout_virtual);
+                    }
+                }
+            }
             if constexpr (kWireGoal4Chain461Bound) {
                 return owner_.menu.register_in_game_screen(slot.registry_slot, name,
                     record.register_virtual, record.layout_virtual,
@@ -1281,7 +1398,16 @@ public:
                 const std::string page = layout->pages[p];
                 record.pages.push_back(page);
                 ++owner_.summary.pages_requested;
-                if (owner_.menu.attach_in_game_page(slot.registry_slot, page)) {
+                const bool loaded = [&]() {
+                    if constexpr (kWireGoal4Chain530Bound) {
+                        if (slot.registry_slot == kSceneInitRegistrySlot)
+                            return owner_.menu.in_game_page(slot.registry_slot, page) != nullptr;
+                        return owner_.menu.attach_in_game_page(slot.registry_slot, page);
+                    } else {
+                        return owner_.menu.attach_in_game_page(slot.registry_slot, page);
+                    }
+                }();
+                if (loaded) {
                     ++record.pages_loaded;
                     ++owner_.summary.pages_loaded;
                 }
@@ -1290,7 +1416,17 @@ public:
                 const std::string widget = layout->widgets[w].name;
                 ++record.widgets_requested;
                 ++owner_.summary.widgets_requested;
-                if (owner_.menu.in_game_page_has_child(slot.registry_slot, widget)) {
+                const bool bound = [&]() {
+                    if constexpr (kWireGoal4Chain530Bound) {
+                        if (slot.registry_slot == kSceneInitRegistrySlot && widget == "Message_Text")
+                            return bsp::ingame_gui_cc13::Raw{
+                                owner_.constructed_scene_init_screen.data()}.ptr(0x20) != nullptr;
+                        return owner_.menu.in_game_page_has_child(slot.registry_slot, widget);
+                    } else {
+                        return owner_.menu.in_game_page_has_child(slot.registry_slot, widget);
+                    }
+                }();
+                if (bound) {
                     ++record.widgets_bound;
                     ++owner_.summary.widgets_bound;
                 }
