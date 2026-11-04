@@ -1,0 +1,125 @@
+{
+  "chain": 361,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain361Bound",
+  "switch_header": "include/bsp/wire_goal4_chain361_switches.hpp",
+  "summary": "The scene file reader 0046DF00 now dispatches its top-level blocks as the image does (0046E9F7..0046EBD8): it peeks each keyword, consumes only `entity` (0046EA47 008D8960) before calling 0046CF40, and leaves `traffic` / `SceneBrowserGroups` pending for the whole 009514B0 / 00469E40 readers, which expect their own keyword. The landscape segment walker (00AECA60/00AEC3F0/00AEC090/00AEBD20) now calls its seven small helpers as their own bodies (walker construct/copy/prepare, edge ground, upper clip) instead of inline field writes. Called rows (call_graph --build, wire_readiness): 5584 -> 5587 -> 5594.",
+  "rows": [
+    {
+      "native": "0046cf40",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp run_scene_file_reader_0046df00 (0046EB0F), reached from src/game_hosts_scene_contents.cpp SceneContentsBinding::read_scene_file"
+    },
+    {
+      "native": "009514b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp SceneReaderBinding::load_traffic_block (0046EB5B) -> read_traffic_block"
+    },
+    {
+      "native": "00469e40",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp SceneReaderBinding::load_browser_groups (0046EBD3) -> read_browser_groups_block"
+    },
+    {
+      "native": "00aebb90",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_clip_00aebd20 (both upper bounds, 00AEBD57 and the axis-2 call)"
+    },
+    {
+      "native": "00aeae70",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_tile_00aec3f0 (00AEC572)"
+    },
+    {
+      "native": "00aeb7e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_tile_00aec3f0 (00AEC5D5)"
+    },
+    {
+      "native": "00aeafa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_cell_edge_00aec090 (00AEC108)"
+    },
+    {
+      "native": "00aeb770",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECB9E)"
+    },
+    {
+      "native": "00aeade0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECBAF)"
+    },
+    {
+      "native": "00aeb890",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECC12)"
+    },
+    {
+      "native": "00467e10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp run_scene_file_reader_0046df00 (0046EB95)",
+      "reason": "Already called. Native 00467E10 expects `groups` itself (00467E15); the recovered body starts at `{` per scene_file.hpp's keyword-consumed contract, so the new reader arm performs that expect just before the call."
+    },
+    {
+      "native": "008d9cf0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp run_scene_file_reader_0046df00 (host.read_scene_file + SceneLexer)",
+      "reason": "construct_native_scene_file_tokenizer_008d9cf0 builds the native 834h-byte tokenizer image; the reader runs on the SceneLexer model, so there is no native tokenizer for it to construct."
+    },
+    {
+      "native": "00951220",
+      "status": "skipped",
+      "host_site": "src/scene_traffic_groups.cpp read_traffic_item (009512F0)",
+      "reason": "create_traffic_record_00951220 pushes into the native traffic-record vector image; read_traffic_item fills the typed TrafficRecord model, and 004A5620's runtime build (the only reader) is not modelled."
+    },
+    {
+      "native": "0095ca10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp SceneReaderBinding::skip_traffic_block (0046EBDD)",
+      "reason": "drain_stock_class_queue pops the stock queue, but native 0095CA10 only walks the [00F8A0B0] list (0095CA18..0095CA37) and 004C8AA0 clears it later; needs a non-popping walk over owner_.stock_queue. Registration pass with a traffic block only; row is tagged STL so it does not count."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp GameSceneContentsHost::run_load_scene_content_004d4df0",
+      "reason": "Raw body over the native std::vector image at 00F8A09C and std::list image at 00F8A0B0; the host keeps the preload census and stock queue as typed std::vector members, so no native image exists to pass."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp parse_property_section (008F5B9E)",
+      "reason": "Looked at only: scene_file.cpp's property parser reads a value and scans it afterwards (scene_scan_int); I did not locate where the 008F5B9E next-token-is-int lookahead maps into parse_property_section, so no call site was replaced."
+    },
+    {
+      "native": "00867ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp MissionFrameBinding::update_effect_manager_00867ee0",
+      "reason": "The host method is a record. The body needs NativeLiveEffectManagerStorage plus the native frame-job and effect-job runtime (LiveEffectUpdateBindings), and no point effect is ever created (008689C0 is not called)."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp MissionFrameBinding::update_ocean_00bbddd0",
+      "reason": "Cloud manager update. No cloud instance exists: the 004BA870 scatter gate at scene record +C84h..+CACh is never filled by the header pass, and ocean_orthonormalize_00bbd310 models only the frame arithmetic."
+    },
+    {
+      "native": "00b9ae00",
+      "status": "skipped",
+      "host_site": "src/ocean_spectrum.cpp ocean_live_field_render_frame_00ba0090",
+      "reason": "The host renderer draws no ocean; the projector, grid-corner, ring-mesh and reflection-camera bodies (00B9AE00, 00B9CA00, 00B9CB80, 00B9F0A0) would compute data nothing reads."
+    },
+    {
+      "native": "006b7710",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Mission save-data writer (and 006B5960 load finish) has no static reference in the image; dead in the shipping single-player game."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp GameScriptOrdersHost::mission_lua_call_named_00887e50",
+      "reason": "00887E50 queues a deferred call (00887560 copy, 00887C30 insert) only off the main thread; the host runs mission Lua on one thread, so the queue never fills."
+    }
+  ]
+}

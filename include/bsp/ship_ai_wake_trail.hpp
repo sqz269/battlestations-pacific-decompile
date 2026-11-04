@@ -23,7 +23,9 @@
 #ifndef BSP_SHIP_AI_WAKE_TRAIL_HPP
 #define BSP_SHIP_AI_WAKE_TRAIL_HPP
 
+#include <cstddef>
 #include <cstdint>
+#include <type_traits>
 
 #include "bsp/ship_ai_formation.hpp"
 
@@ -52,6 +54,11 @@ inline constexpr float kShipAiWakeWalkExhausted = 1.0f;
 // The ring, `entity+0BD0h`. The three counters at the end are this host's
 // bookkeeping and have no address in the image.
 struct ShipAiWakeTrail {
+    // Keep the live samples/head at the offsets consumed by 00815680. These
+    // unused bytes reserve the native vptr/lock cells; this typed host object
+    // does not construct or expose either native service. The copy never reads
+    // or writes them (00815685..00815845, bsp.py show 00815680 --asm).
+    std::byte reserved_prefix[8]{};
     ShipAiWakeSample samples[kShipAiWakeSampleCount]{};  // wake+008h
     std::int32_t head{0};                                // wake+3C8h
     // wake+3CCh. Set at 0081048C on the arm the listing reaches when the leg to
@@ -74,6 +81,14 @@ struct ShipAiWakeTrail {
     // filled reads below it. Only the reported trail length uses this.
     std::uint32_t written{0};
 };
+
+// 00815680 receives this persistent ring directly, not a scratch projection.
+// Its integer head store precedes the 240 float32 FLD/FSTP sample stores.
+static_assert(std::is_standard_layout_v<ShipAiWakeTrail>);
+static_assert(offsetof(ShipAiWakeTrail, samples) == 0x8);
+static_assert(offsetof(ShipAiWakeTrail, head) == 0x3C8);
+static_assert(offsetof(ShipAiWakeTrail, leg_shrank) == 0x3CC);
+static_assert(offsetof(ShipAiWakeTrail, residual) == 0x3D0);
 
 // 00810020 BSP_UnitPoseHistoryRing_Fill, __thiscall(wake)(const float pos[3],
 // float heading), RET 8, body 00810020-00810157, read whole in packet

@@ -1,0 +1,198 @@
+{
+  "chain": 363,
+  "goal": 4,
+  "slot": "g4-w2",
+  "base": "df2c1835ed",
+  "picked": "Canonical profile-hints constructor entry from the active native singleton getter",
+  "switch": "bsp::kWireGoal4Chain363Bound",
+  "behavior": "The getter previously executed the private constructor implementation directly. It now calls the existing 00426250 entry with the same allocation, strings, publication and operation record. Constructor behavior is unchanged and runs once.",
+  "built": "An explicit constructor_pending operation phase lets the canonical constructor borrow the getter's progress without completing its held guard/allocation/publication operation or prematurely assigning its result.",
+  "counts": {
+    "wired_before": 9501,
+    "wired_after": 9502,
+    "reachable_reconstructed_before": 4515,
+    "reachable_reconstructed_after": 4516,
+    "new_reachable_constructor_call_sites": 1
+  },
+  "evidence": [
+    "python tools/bsp.py show 004c1e90 --lines 85: native getter allocates 50h, calls 00426250, publishes its return, registers the current publication, then releases the captured section",
+    "python tools/bsp.py show 00426250 --lines 70: constructor initializes the actual owner's fields and temporary native string",
+    "python tools/call_graph.py who 00426250: one reachable call at 105375b9 from get_native_profile_hints_owner_004c1e90",
+    "python tools/call_graph.py path 00426250: WinMain -> GameStartupHost initialization -> GameNativeSettingsApplication::load -> load_native_game_settings_008d8190 -> build_native_language_catalog_008d7bc0 -> get_native_profile_hints_owner_004c1e90 -> construct_native_profile_hints_owner_00426250"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 3 suites",
+    "changed_build": "scripts/build.ps1 passed, all 3 suites",
+    "readiness": "wire_readiness.py --standins: 00426250 state=wired, called=true, call_sites=1",
+    "focused_fixture": "local/g4_c363_probe.cpp built as an MSVC Win32 /MANIFEST:EMBED probe against bsp_core; passed shared-operation construction, unchanged fast getter, registration escape retaining guard/allocation/temporary progress, and standalone constructor completion",
+    "fixture_scope": "Synthetic owner/manager/string-pool fixture; no game was run. Scratch source and executable remain local and are not part of the patch.",
+    "float_math": "No floating-point math changed; pc24_lint not required",
+    "runtime": "Built-executable reachability verified; gameplay and startup execution were not run"
+  },
+  "rows": [
+    {
+      "native": "00426250",
+      "status": "wired",
+      "host_site": "src/native_profile_hints_owner.cpp:get_native_profile_hints_owner_004c1e90",
+      "newly_wired": true
+    },
+    {
+      "native": "004c1e90",
+      "status": "wired",
+      "host_site": "src/game_native_settings_application.cpp:GameNativeSettingsApplication::Impl; src/native_language_catalog_producer.cpp:build_native_language_catalog_008d7bc0",
+      "newly_wired": false,
+      "note": "Existing reachable caller; its constructor call now uses the canonical entry"
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:FrontEndManager::create_main_menu_manager",
+      "reason": "Missing consumed native main-menu image and Fe5Host/Page graph binding; existing host owns a typed manager."
+    },
+    {
+      "native": "006887e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:FrontEndManager::create_multi_menu_manager",
+      "reason": "Missing native multiplayer-manager consumer and Fe5Host binding; multiplayer service work is outside the single-player packet."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:FrontEndManager::create_options_manager",
+      "reason": "Missing owned native options-manager image, its screen consumers and Fe5Host binding."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:TitleInit::create_attract_screen",
+      "reason": "Missing native attract-screen/Page producer, init/update consumers and Fe5Host binding."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:TitleInit::create_title_screen",
+      "reason": "Missing native title-screen image/consumer binding; existing consumers operate on the typed host screen."
+    },
+    {
+      "native": "00687c00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:FrontEndManager::refresh_downloadable_content",
+      "reason": "Missing owned native lobby-registry singleton and Fe5Host destructor binding."
+    },
+    {
+      "native": "0057c1c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:LoadingScreen::create_screen",
+      "reason": "Missing a consumed native loading-screen image and its producer binding; the current boundary records the call."
+    },
+    {
+      "native": "006ac030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:PressStartScreen::apply_input_settings",
+      "reason": "Missing established completed-sign-in path and native settings consumer in this packet; prior skip requires that producer climb."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:native scene-property enum composition",
+      "reason": "No missing call to add: baseline call graph already reports two reachable call sites despite readiness state=ready."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:native scene-property bag composition",
+      "reason": "No missing call to add: baseline call graph already reports two reachable call sites despite readiness state=ready."
+    },
+    {
+      "native": "00add290",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:terrain creation boundary",
+      "reason": "Missing consumed actual terrain owner, base-manager producer and SweepC2Host construction binding."
+    },
+    {
+      "native": "00ade820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:terrain model attachment boundary",
+      "reason": "Missing actual terrain/model/node owners and the heightmap-load consumer binding required by SweepC2Host."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_0",
+      "reason": "Missing scene-record remap-name producer (record_remap_texture_name returns empty) and actual remap-service/context binding."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_1",
+      "reason": "Missing scene-record remap-name producer (record_remap_texture_name returns empty) and actual remap-service/context binding."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_2",
+      "reason": "Missing scene-record remap-name producer (record_remap_texture_name returns empty) and actual remap-service/context binding."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:SceneContentsBinding::set_remap_texture_3",
+      "reason": "Missing scene-record remap-name producer (record_remap_texture_name returns empty) and actual remap-service/context binding."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::entity_set_skill_level",
+      "reason": "Missing weapon-director and child-device re-skill consumers for the complete returned SkillApplyPlan."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost GetSubmarineDepthLevel binding",
+      "reason": "Missing live unit+1279h and child catapult +490h producer/view; the current Lua binding labels catapult=false as unimplemented."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:Formation::slot_counter_increment",
+      "reason": "Missing entity+1ACh slot and owned scoring-counter state for the increment."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::run_entity_turn_to_entity",
+      "reason": "Missing separate native physics-body pose consumer; the host currently uses one shared ship/motion pose, so an unused compact transform would add no behavior."
+    },
+    {
+      "native": "004eb9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:scene weather/record integration",
+      "reason": "Missing complete scene-record property-model input and consumed SceneOceanFields owner binding in this packet."
+    },
+    {
+      "native": "004ee9e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:scene weather/record integration",
+      "reason": "Missing complete terrain property-model/current-record input and consumed terrain shader-field binding in this packet."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::set_widget_local_z",
+      "reason": "Missing actual movie Page/widget producer; load_movie_page returns nullptr."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::bind_movie_textures",
+      "reason": "Missing actual movie widget, decoder textures and renderer binding."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native movie-widget subtitle owner; the existing callback only clears the retained schedule projection."
+    }
+  ],
+  "left": "Native menu/Page consumers, terrain/remap producer chains, complete unit re-skill/catapult state and movie widget/decoder bindings remain for separate packets."
+}

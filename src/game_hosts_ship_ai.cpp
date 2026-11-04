@@ -46,7 +46,9 @@
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain326_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
+#include "bsp/wire_goal4_chain375_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
+#include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
 #include "bsp/cc13_seg41_land.hpp"
@@ -10559,8 +10561,16 @@ public:
             const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
                 static_cast<std::size_t>(std::max(row.barrel_num, 0)));
             bool loaded = false;
+            if constexpr (bsp::kWireGoal4Chain375Bound) {
+                // Native 009E9910/009E9A50 call 00727D30 with this gun's
+                // +414h timers, +448h count and the caller's readiness horizon.
+                // Keep the existing bounded view of that same live storage.
+                loaded = bsp::band_0071_cc13::gun_any_barrel_ready_within_00727d30(
+                    row.fire.barrel_timers.data(), static_cast<int>(barrels), horizon);
+            } else {
             for (std::size_t b = 0; b < barrels; ++b) {
                 if (row.fire.barrel_timers[b] <= horizon) { loaded = true; break; }
+            }
             }
             if (loaded && operational(row)) ++ready;
         }
@@ -10576,8 +10586,16 @@ public:
             float timer = 3600.0f;
             const std::size_t barrels = std::min(row.fire.barrel_timers.size(),
                 static_cast<std::size_t>(std::max(row.barrel_num, 0)));
+            if constexpr (bsp::kWireGoal4Chain375Bound) {
+                // Native 009E99A0/009E9AE0 call 00729920. Its FCOMIP/JA
+                // (0072996F..0072997B) also replaces an unordered minimum;
+                // use the existing body rather than the host's <= loop.
+                timer = bsp::gameplay_seg40_59_cc13::gun_least_barrel_timer_00729920(
+                    row.fire.barrel_timers.data(), static_cast<int>(barrels));
+            } else {
             for (std::size_t b = 0; b < barrels; ++b) {
                 if (row.fire.barrel_timers[b] <= timer) timer = row.fire.barrel_timers[b];
+            }
             }
             if (timer < least) least = timer;
         }

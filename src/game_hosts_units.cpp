@@ -61,11 +61,18 @@
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
+#include "bsp/wire_goal4_chain378_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"         // chain 84: 006C77E0 typed overload
 #include "bsp/cc15_seg48.hpp"          // chain 84: 007F1CA0 typed overload
 #include "bsp/cc13_seg47b.hpp"         // chain 73: 007C1570, 007C2090 typed overloads
 #include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
+#include "bsp/wire_goal4_chain362_switches.hpp"
+#include "bsp/wire_goal4_chain367_switches.hpp"
+#include "bsp/wire_goal4_chain369_switches.hpp"   // 008522C0 / 00852410
+#include "bsp/wire_goal4_chain374_switches.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"            // chain 369: 00852410's typed body
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
 #include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
@@ -256,6 +263,8 @@
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
+#include "bsp/native_unit_wake_copy.hpp"
+#include "bsp/wire_goal4_chain371_switches.hpp"
 #include "bsp/ship_ai_rudder_hop.hpp"
 #include "bsp/unit_group_slot_swap.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
@@ -306,6 +315,7 @@
 #include <cctype>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -2645,6 +2655,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // mission is top level (docs/GAME_EXECUTABLE.md milestone 2h, correction 8).
     bsp::CameraMatrix local{};
     bsp::CameraMatrix world{};
+    // Produced by the position/matrix setters below, not the plane controller's
+    // separate +608h history (007CED84, ESI=unit+310h). No initial value is
+    // assumed while the host has not replayed either native store.
+    std::optional<std::array<float, 3>> previous_position_6a4;
     // The inverse at unit+110h belongs to this same pose. Mutable because a
     // const frame query can lazily fill the cache through PoseRefreshView.
     mutable bsp::CameraMatrix derived{};
@@ -4041,7 +4055,27 @@ struct GameUnitsHost::Impl {
     // (00815680 on old+0BD0h). +FA0h/+FA4h/+FA8h have no host field: recorded.
     void inherit_leader_wake_00815e20(std::size_t new_leader, std::size_t old_leader) {
         if (new_leader >= slots.size() || old_leader >= slots.size()) return;
-        slots[new_leader]->wake = slots[old_leader]->wake;
+        if constexpr (bsp::kWireGoal4Chain371Bound) {
+            bsp::ShipAiWakeTrail& destination = slots[new_leader]->wake;
+            const bsp::ShipAiWakeTrail& source = slots[old_leader]->wake;
+            // 00815EAA calls 00815680 on the new/old leaders' inline rings.
+            // These are the authoritative samples filled at spawn and updated
+            // by append, also read by the formation/follower queries. Preserve
+            // the whole original head-first x87 copy, including self-copy.
+            bsp::copy_native_unit_wake_00815680(&destination, nullptr, &source);
+            // Preserve the existing outer handover projection for fields the
+            // primitive does not touch. Full 00815E20 pose/residual rebasing
+            // remains unbound; this does not claim that larger native owner.
+            destination.leg_shrank = source.leg_shrank;
+            for (std::size_t i = 0; i < 3; ++i) destination.residual[i] = source.residual[i];
+            destination.appends = source.appends;
+            destination.advances = source.advances;
+            destination.merges = source.merges;
+            destination.written = source.written;
+            done("UnitGroup::copy_leader_wake_00815680", 0x00815680u);
+        } else {
+            slots[new_leader]->wake = slots[old_leader]->wake;
+        }
         done("UnitGroup::inherit_leader_wake_00815e20", 0x00815e20u);
         record("UnitGroup::leader_offset_fa0_00815e20", 0x00815e7cu);
         ++formation_death_handovers;
@@ -7406,6 +7440,26 @@ struct GameUnitsHost::Impl {
         }
     }
 
+    // Replay the represented tail of 009583C0/009584D0/009585B0. Evidence:
+    // bsp.py show 009583c0 --asm, 009585b0 --asm: +6A4h is written only by
+    // position/matrix setters; all three clear C8h/10Ch. Keep the produced
+    // +6A4h value separate from the plane controller's finite-difference history.
+    // These instances have no child PoseRefreshViews. The native +310h/0Ch
+    // and D8h notifications retain the host's existing substitutions; this
+    // does not claim their native callback/physics ABI. The enclosing placement
+    // routines refresh C8h before their wake/formation work (008193A0/008196B0).
+    static void publish_pose_set_plan(GameUnitSlot& slot,
+        const bsp::gameplay_seg61_62_cc13::PoseSetPlan& plan) {
+        if (plan.set_previous_6a4) {
+            slot.previous_position_6a4 = std::array<float, 3>{
+                slot.motion.position[0], slot.motion.position[1], slot.motion.position[2]};
+        }
+        publish_pose(slot);
+        slot.world_valid = 0;
+        slot.derived_valid = 0;
+        bsp::refresh_pose_00414db0(*slot.pose);
+    }
+
     // 009BFD70, the first half of the follow tick 009C1FD0. The plane wing's
     // formation, which is NOT the ship unit group: see docs/PLANE_FORMATION.md
     // and the header note on why 0077C8D0 cannot reach a plane.
@@ -10276,9 +10330,22 @@ struct GameUnitsHost::Impl {
         bsp::PilotHeadingDiffInputs in;
         in.bank_request = u.plane_bank_angle_c68;
         in.pitch_angle = u.plane_pitch_angle_c64;
+        if constexpr (bsp::kWireGoal4Chain362Bound) {
+            // 0099B260 (bsp.py show --asm): byte +8 selects float +4 or +0.
+            // PilotPlanSlot is the retained live plan slot, not a fabricated
+            // input buffer. This replaces the same inline selection below;
+            // 0099D0A0 consumes its result as the commanded pitch.
+            static_assert(offsetof(bsp::PilotPlanSlot, current) == 0);
+            static_assert(offsetof(bsp::PilotPlanSlot, desired) == 4);
+            static_assert(offsetof(bsp::PilotPlanSlot, active) == 8);
+            static_assert(sizeof(bsp::PilotPlanSlot) == 0x0c);
+            in.pitch_command = bsp::pilot_bot_override_or_value_0099b260(
+                &u.plan_slots[bsp::kPilotSlotPitch]);
+        } else {
         in.pitch_command = u.plan_slots[bsp::kPilotSlotPitch].active != 0
                                ? u.plan_slots[bsp::kPilotSlotPitch].desired
                                : u.plan_slots[bsp::kPilotSlotPitch].current;
+        }
         in.unit_is_null = false;
         in.caps_rate_at_one = bsp::unit_is_kind_of(u.class_id, 0x10) ||
                               bsp::unit_is_kind_of(u.class_id, 0x16);
@@ -10517,7 +10584,43 @@ struct GameUnitsHost::Impl {
                 squadron_allows = sq == nullptr || (sq->sq_avoid_3a4 & 2u) != 0;
             }
             if ((u.task_mask_2e4 & 2) != 0 && squadron_allows) {
+                if constexpr (bsp::kWireGoal4Chain367Bound) {
+                    // bsp.py show 0099B670 --asm: only [pilot+2F4h] and
+                    // [unit+C50h] are read before the nullable dispatch. Borrow
+                    // those two cells; the neighbour identity is this live
+                    // unit's retained +30h list, refreshed by 007E2010. Presence
+                    // uses the same 007D621F allocation predicate as that refresh.
+                    // These are call-scoped views, not full native unit/task
+                    // objects, and their unobserved padding is never consumed.
+                    struct UnitView {
+                        std::byte unobserved[0xc50];
+                        void* neighbours;
+                    } unit_view{{}, nb_has_object_c50(u) ? &u.nb_near_30 : nullptr};
+                    struct PilotView {
+                        std::byte unobserved[0x2f4];
+                        UnitView* unit;
+                    } pilot_view{{}, &unit_view};
+                    static_assert(offsetof(UnitView, neighbours) == 0xc50);
+                    static_assert(offsetof(PilotView, unit) == 0x2f4);
+                    class Calls final : public bsp::PilotVehicleAvoidanceCalls {
+                    public:
+                        Calls(Impl& owner, GameUnitSlot& unit, float dt)
+                            : owner_(owner), unit_(unit), dt_(dt) {}
+                        void vehicle_avoidance_007df4f0(void*, void*) override {
+                            // The borrowed identities above bind this one unit;
+                            // the existing geometry/band implementation reads and
+                            // writes its real state. No second collision pass.
+                            owner_.vehicle_avoidance_007df4f0(unit_, dt_);
+                        }
+                    private:
+                        Impl& owner_;
+                        GameUnitSlot& unit_;
+                        float dt_;
+                    } calls(*this, u, dt);
+                    bsp::pilot_bot_avoid_vehicles_0099b670(calls, &pilot_view);
+                } else {
                 vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
+                }
             }
         }
         if constexpr (kPilotTerrainAvoidanceBound) {
@@ -13899,8 +14002,8 @@ public:
     // force callback: velocities read first (00936DD0/00936DDD), the
     // hydrodynamics 009329C0 (00936DF8), then the dive law and the write-back
     // (0093739A, 009373A7). The rudder torque of 00937440 is not part of it.
-    // SUBSTITUTIONS (labelled): needAir (+1281h), 008522C0 and the kamikaze test
-    // read false; there are no seabed samples, so the clearance never clamps and
+    // SUBSTITUTIONS (labelled): needAir (+1281h), 008522C0 (answered since goal 4
+    // chain 369) and the kamikaze test read false; there are no seabed samples, so the clearance never clamps and
     // the gain stays 1.0; the ring writes at +844h/+848h (slot +0Ch/+10h, 2.0 and
     // -1.0, 00936E11/00936E2B) and the unused vtable[34h] read (009371E5) are not
     // made; the reference speed is this binding's 0080FC30.
@@ -13921,6 +14024,12 @@ public:
         band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
         band.dead = dead;
         band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
+        if constexpr (bsp::kWireGoal4Chain369Bound) {
+            // Goal 4 chain 369: 00936E53 008522C0 on the boat, over its catapult
+            // devices and its catapult launch record (GameGunneryHost's adapter).
+            band.catapult_wants_surface = owner_.gunnery != nullptr
+                && owner_.gunnery->submarine_catapult_wants_surface(slot_.process_index);
+        }
         // 00936E5C..00936E80: the same class test exempts a kamikaze boat from
         // the surfacing override (packet cc13-subdive; OFF false, LABELLED).
         band.kamikaze_class = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound
@@ -24763,6 +24872,35 @@ bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y)
     return true;
 }
 
+// Goal 4 chain 369. 00852410 (bsp show 00852410) on a seeded submarine, through
+// its typed body: the fields are what the boat's dive law 00936DC0 steps here
+// (run_submarine_dive_00936dc0), +100h the hull y, the rates the class keys the
+// seed read (UpDownAccel, UpSpeed, DownSpeed), the body velocity 0092D6A0 the
+// linear velocity the dive law last wrote, and 008522C0 the gunnery's adapter.
+bool GameUnitsHost::predict_submarine_depth(std::size_t unit_index, float dt, float& y) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || host.slots[unit_index] == nullptr) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.row.submarine_depth_seeded) return false;
+    bsp::gameplay_seg53_cc13::SubmarineDepthFields fields;
+    fields.world_y_100 = slot.motion.position[1];                       // +100h
+    for (int band = 0; band < 4; ++band) fields.bands_1200[band] = slot.sub_bands[band];
+    fields.clearance_123c = slot.sub_scan.clearance;                     // +123Ch
+    fields.depth_level_1268 = slot.row.submarine_depth_level;            // +1268h
+    fields.sink_1270 = slot.sub_sink_1270;                               // +1270h
+    fields.need_air_1281 = kSubmarineAirBound && slot.sub_air.need_air;  // +1281h
+    bsp::gameplay_seg53_cc13::SubmarineDiveRates rates;
+    rates.accel_824 = slot.sub_accel;                                    // class+824h
+    rates.up_speed_830 = slot.sub_up_speed;                              // class+830h
+    rates.down_speed_834 = slot.sub_down_speed;                          // class+834h
+    const GameGunneryHost* const gun = host.gunnery.get();
+    const bool catapult = gun != nullptr
+        && gun->submarine_catapult_wants_surface(slot.process_index);   // 008524AA
+    y = bsp::gameplay_seg53_cc13::submarine_predict_depth_after_00852410(
+        fields, rates, slot.motion.linear_velocity.y, catapult, dt);
+    return true;
+}
+
 // Packet cc13-fix21. 008938E0's read of unit+127Ch (008939F6 FLD float): the
 // value as 00855250 and 00893A60 last left it. The image reads any entity; a
 // slot that is not a seeded submarine has no air state here.
@@ -30831,6 +30969,52 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return pick == bsp::kPlaneSquadronNoUnit ? nullptr : owner_.slots[pick].get();
                     }
 
+                    // Chain 378. Evidence: bsp.py show 007B96F0 / 007B9740:
+                    // the wrappers only test +C50h and forward to 007E2090 /
+                    // 007E2070. The live neighbours cache, clocks and enemy list
+                    // already belong to unit_; every aircraft entering these
+                    // gun/early-aim paths owns that finder (see p20_df_early_clear).
+                    // Raw is an identity token here, never an image-offset view.
+                    struct GunTargetBinding final : bsp::cc13_seg47::PlaneGunTargetHost {
+                        using Raw = bsp::cc13_seg47::Raw;
+                        PlaneBinding& plane;
+                        explicit GunTargetBinding(PlaneBinding& value) : plane(value) {}
+                        Raw unit_gun_target_finder(Raw unit) override { return unit; }
+                        void* scan_gun_target(Raw, float cone, float inner,
+                                float range, float near_distance, float threshold,
+                                std::int32_t squadron, float noise) override {
+                            bsp::PlaneFinderParams fp;
+                            fp.cone_b8 = cone;
+                            fp.inner_c0 = inner;
+                            fp.range_bc = range;
+                            fp.near_c4 = near_distance;
+                            const auto* filter = reinterpret_cast<const bsp::PlaneSquadronHostRecord*>(
+                                static_cast<std::uintptr_t>(static_cast<std::uint32_t>(squadron)));
+                            // The existing 007E2090 host accepts a midpoint and
+                            // doubles it for U(0, noise). Halving is exact binary
+                            // scaling, rounded by the float parameter store.
+                            return const_cast<GameUnitSlot*>(plane.df_finder_scan_007e2090(
+                                fp, threshold, filter, noise * 0.5f));
+                        }
+                        void clear_gun_target(Raw) override {
+                            // The cache holds a slot identity, not a native
+                            // observer reference; no unregister is needed.
+                            plane.unit_.nb_found_plus_one = 0;
+                        }
+                    };
+
+                    const GameUnitSlot* find_gun_target(const bsp::PlaneFinderParams& fp,
+                            float threshold, const bsp::PlaneSquadronHostRecord* squadron,
+                            float noise) {
+                        GunTargetBinding binding(*this);
+                        return static_cast<GameUnitSlot*>(
+                            bsp::cc13_seg47::unit_find_gun_target_007b96f0(binding,
+                                bsp::cc13_seg47::raw(&unit_), fp.cone_b8, fp.inner_c0,
+                                fp.range_bc, fp.near_c4, threshold,
+                                static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(squadron)),
+                                noise));
+                    }
+
                     // 009AAA80, read from the listing (packet cc9_plane_gun_pass):
                     // approach+DCh > 0.0 and +E0h < 1.0, else 007B9740 and false;
                     // 007B96F0(+DCh, row+220h, task+344h, row+20Ch, +E0h, task+4C4h,
@@ -30843,7 +31027,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009AAC5D-009AAC63: 007B9740 -> 007E2070 clears the cache.
                             ++owner_.df_early_edge_clears;
                             if constexpr (GameUnitsHost::Impl::kDogfightEarlyEdgeClearBound) {
-                                unit_.nb_found_plus_one = 0;
+                                if constexpr (bsp::kWireGoal4Chain378Bound) {
+                                    GunTargetBinding binding(*this);
+                                    bsp::cc13_seg47::plane_neighbours_clear_target_007b9740(
+                                        binding, bsp::cc13_seg47::raw(&unit_));
+                                } else {
+                                    unit_.nb_found_plus_one = 0;
+                                }
                             }
                             return false;
                         }
@@ -30861,7 +31051,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         fp.range_bc = unit_.df_row.aim_shoot_distance + 650.0f;  // task+344h
                         fp.near_c4 = unit_.df_row.follow_dist;             // row+20Ch
                         // 00CE7638 = 0.05, the U(0, 0.05) draw at its midpoint.
-                        const GameUnitSlot* f = df_finder_scan_007e2090(fp, unit_.df_e0, tsq, 0.025f);
+                        const GameUnitSlot* f;
+                        if constexpr (bsp::kWireGoal4Chain378Bound) {
+                            f = find_gun_target(fp, unit_.df_e0, tsq, 0.05f);
+                        } else {
+                            f = df_finder_scan_007e2090(fp, unit_.df_e0, tsq, 0.025f);
+                        }
                         if (f == nullptr) return false;
                         const double dx = static_cast<double>(f->motion.position[0]) - unit_.motion.position[0];
                         const double dy = static_cast<double>(f->motion.position[1]) - unit_.motion.position[1];
@@ -30969,7 +31164,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fp.inner_c0 = gi.lateral_cap_38;
                             fp.range_bc = gi.search_range_30;
                             fp.near_c4 = static_cast<float>(gi.shoot_distance * 0.30000001192092896);
-                            found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
+                            if constexpr (bsp::kWireGoal4Chain378Bound) {
+                                found = find_gun_target(fp, -1.0f, nullptr, 0.0f);
+                            } else {
+                                found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
+                            }
                         }
                         // 009FC917: +74h = the search result, before the live test.
                         unit_.gun_target_74_plus_one = found != nullptr ? unit_.nb_found_plus_one : 0;
@@ -46154,10 +46353,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         rin.roll_spd = unit_.plane_class.roll_spd;
                         rin.roll_accel = unit_.plane_class.roll_accel;
                         rin.scale.pitch_angle = unit_.plane_pitch_angle_c64;
+                        if constexpr (bsp::kWireGoal4Chain362Bound) {
+                            // The same +0/+4/+8 selector used above, now on
+                            // 0099D300's live roll-law input. The returned pitch
+                            // drives 0099D0A0's scale, then the roll demand.
+                            rin.scale.pitch_command = bsp::pilot_bot_override_or_value_0099b260(
+                                &unit_.plan_slots[bsp::kPilotSlotPitch]);
+                        } else {
                         rin.scale.pitch_command =
                             unit_.plan_slots[bsp::kPilotSlotPitch].active != 0
                                 ? unit_.plan_slots[bsp::kPilotSlotPitch].desired
                                 : unit_.plan_slots[bsp::kPilotSlotPitch].current;
+                        }
                         rin.scale.roll_spd = unit_.plane_class.roll_spd;
                         rin.scale.pitch_spd = unit_.plane_class.pitch_spd;
                         rin.scale.yaw_spd = unit_.plane_class.yaw_spd;
@@ -48808,7 +49015,28 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
         at[2] = st.z;
         station = true;
     }
-    for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        // 009583C0's ship arm suppresses ENTITY_RELOCATE regardless of the
+        // session. Keep the previous non-ship substitution until its message
+        // and device-notification consumers exist; do not invent those owners.
+        if (unit_is_kind_of(index, 6)) {
+            const auto& session = bsp::session_context();
+            const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_world_position_009583c0(
+                unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0f),
+                session.session_word_1fe4, static_cast<std::uint8_t>(session.skirmish_218c));
+            // For ships, vtable[114h] is the side-effect-free +738h director
+            // getter 0080E150 (00CF90B0+114h, also 00CFC3D0+114h). 00958443
+            // discards its result, so call_vtable_114 requires no state change.
+            if (plan.set_translation_a4) {
+                for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];
+            }
+            Impl::publish_pose_set_plan(slot, plan);
+        } else {
+            for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];
+        }
+    } else {
+        for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
+    }
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));
@@ -48862,17 +49090,38 @@ bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
         host.record("UnitPlace::set_heading_008196b0 (not a ship)", 0x008196b0u);
         return false;
     }
-    // 009584D0 -> 0047F200: RotationY(-0.0 - heading) (00B646E0: m[0] = cos, m[2] =
-    // -sin, row 2 = (sin, 0, cos)) times the translation of the current position.
-    const float yaw = -0.0f - heading;
-    const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
-    const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
-    slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
-    slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
-    slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
-    Impl::publish_pose(slot);
-    // 008196B0's 00818EA0: the wake ring refilled along the new heading.
-    bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        const auto& session = bsp::session_context();
+        const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_heading_009584d0(
+            unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0f),
+            session.session_word_1fe4, static_cast<std::uint8_t>(session.skirmish_218c));
+        // 00958556 calls 0047F200. Preserve the existing ship RotationY
+        // projection: each unary subtraction is one float operation, and the
+        // CRT sine/cosine calls are unchanged. No previous-position store.
+        const float yaw = -0.0f - heading;
+        if (plan.rotate_heading_0047f200) {
+            const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
+            const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
+            slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
+            slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
+            slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+        }
+        Impl::publish_pose_set_plan(slot, plan);
+        // 008196B0's 00818EA0: the wake ring refilled along the new heading.
+        bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    } else {
+        // 009584D0 -> 0047F200: RotationY(-0.0 - heading) (00B646E0: m[0] = cos, m[2] =
+        // -sin, row 2 = (sin, 0, cos)) times the translation of the current position.
+        const float yaw = -0.0f - heading;
+        const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
+        const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
+        slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
+        slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
+        slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+        Impl::publish_pose(slot);
+        // 008196B0's 00818EA0: the wake ring refilled along the new heading.
+        bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    }
     ++host.putto_headings;
     host.done("UnitPlace::set_heading_008196b0", 0x008196b0u);
     // 0081968F..: an occupant owner (00778890: the group's leader) re-places the
@@ -48912,13 +49161,29 @@ bool GameUnitsHost::put_rel_to_00819840(std::size_t index, std::size_t ref, cons
         rows[2][lane] = rm.pose_row2[lane];
     }
     GameUnitSlot& slot = *host.slots[index];
-    for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
-        slot.motion.pose_row0[lane] = rows[0][lane];
-        slot.motion.pose_row1[lane] = rows[1][lane];
-        slot.motion.pose_row2[lane] = rows[2][lane];
-        slot.motion.position[lane] = at[lane];
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_world_matrix_009585b0();
+        if (plan.copy_matrix_004134f0) {
+            // The actual reference unit's matrix and transformed scene/script
+            // point above supply all rows; publish_pose supplies the unchanged
+            // homogeneous column of this rigid matrix.
+            for (int lane = 0; lane < 3; ++lane) {
+                slot.motion.pose_row0[lane] = rows[0][lane];
+                slot.motion.pose_row1[lane] = rows[1][lane];
+                slot.motion.pose_row2[lane] = rows[2][lane];
+                slot.motion.position[lane] = at[lane];
+            }
+        }
+        Impl::publish_pose_set_plan(slot, plan);
+    } else {
+        for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
+            slot.motion.pose_row0[lane] = rows[0][lane];
+            slot.motion.pose_row1[lane] = rows[1][lane];
+            slot.motion.pose_row2[lane] = rows[2][lane];
+            slot.motion.position[lane] = at[lane];
+        }
+        Impl::publish_pose(slot);
     }
-    Impl::publish_pose(slot);
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));

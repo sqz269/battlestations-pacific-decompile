@@ -11,7 +11,8 @@ namespace bsp {
 struct NativeShaderInterpolatorOperation final {
     enum class Phase { fresh, field_allocation, temporary_name, field_copy,
         field_reserve, field_publication, temporary_cleanup, word_allocation,
-        word_copy, word_free, word_publication, complete, failed, diagnostic_retired };
+        word_copy, word_free, word_publication, complete, failed, diagnostic_retired,
+        word_reserve };
     NativeString temporary_name;
     NativeMaterialProgramBuilderStorage* builder{};
     NativeShaderDescriptorArray* output{};
@@ -41,6 +42,9 @@ struct NativeShaderInterpolatorOperation final {
 // B346E0 ECX actual0Ch header, signed stacked capacity, RET4. Reserve TWO-byte
 // elements, minimum1, allocate through shared CRT service, copy current rows,
 // free current old data, then publish data/capacity. Count remains unchanged.
+// B34AA0 may enter at word_reserve with the same operation and its actual
+// builder's 54h/60h array. Preserve that caller's fields/output and leave its
+// completion to B34AA0; failed allocations remain in the same retained frame.
 void reserve_native_shader_interpolator_words_00b346e0(
     NativeShaderDescriptorArray&, std::int32_t, NativeShaderInterpolatorOperation&);
 

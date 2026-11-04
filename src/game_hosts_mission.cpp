@@ -60,6 +60,8 @@
 #include "bsp/storage_backend.hpp"
 #include "bsp/wire_goal4_chain274_switches.hpp"
 #include "bsp/wire_goal4_chain316_switches.hpp"
+#include "bsp/wire_goal4_chain366_switches.hpp"
+#include "bsp/scenes_seg1_cc13.hpp"
 
 #include <algorithm>
 #include <array>
@@ -2212,10 +2214,23 @@ void GameMissionHost::Impl::lobby_multi_menu_init_00689540() {
     // number becomes an enabled slot-1 option keyed by that number, payload its ordinal.
     std::int32_t ordinal = 0;
     for (const MissionRecordData& map : tables.multi) {
-        const long number = std::atol(map.screen.name.c_str());
-        if (number == 0) continue;
-        registry.enabled_28[1][static_cast<std::int32_t>(number)] = 1;
-        registry.numbers_1c[1][static_cast<std::int32_t>(number)] = ++ordinal;
+        if constexpr (bsp::kWireGoal4Chain366Bound) {
+            // 00425BD0: NativeString +4h -> _atol, with an empty-string fallback
+            // for a null buffer (bsp.py show 00425bd0, complete leaf). Reuse that
+            // conversion on the authored map-record name, represented here by
+            // std::string. Its result is the live registry key, not a census.
+            // This is a source-level substitution for 008D2F50's inline _atol;
+            // the image does not call 00425BD0 at this site.
+            const std::int32_t number = bsp::seg1_cc13::native_string_to_long_00425bd0(map.screen.name.c_str());
+            if (number == 0) continue;
+            registry.enabled_28[1][number] = 1;
+            registry.numbers_1c[1][number] = ++ordinal;
+        } else {
+            const long number = std::atol(map.screen.name.c_str());
+            if (number == 0) continue;
+            registry.enabled_28[1][static_cast<std::int32_t>(number)] = 1;
+            registry.numbers_1c[1][static_cast<std::int32_t>(number)] = ++ordinal;
+        }
     }
     registry.loaded = true;
     lobby.registry = registry;
@@ -2272,7 +2287,13 @@ std::uint64_t GameMissionHost::Impl::map_content_mask_005d9c50() const {
     if (name.empty()) return 0;
     const std::size_t underscore = name.rfind('_');
     const std::string suffix = name.substr(underscore == std::string::npos ? 0 : underscore + 1);
-    return bsp::lobby_content_mask_005d9c50(static_cast<std::int32_t>(std::atol(suffix.c_str())));
+    if constexpr (bsp::kWireGoal4Chain366Bound) {
+        // Same canonical NativeString numeric conversion as the map-id keys
+        // above; this actual content-ID suffix selects the consumed mask bit.
+        return bsp::lobby_content_mask_005d9c50(bsp::seg1_cc13::native_string_to_long_00425bd0(suffix.c_str()));
+    } else {
+        return bsp::lobby_content_mask_005d9c50(static_cast<std::int32_t>(std::atol(suffix.c_str())));
+    }
 }
 
 // 005E51D0 (lobby enter), 005E57B0..005E58B7, as the host (+1FE4h == 1).

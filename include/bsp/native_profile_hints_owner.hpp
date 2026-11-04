@@ -23,7 +23,7 @@ struct NativeProfileHintsOwnerContext {
     const char* initialization_label_00ce3a38; // verified "_auto_.log", including NUL
 };
 struct NativeProfileHintsOwnerOperation final {
-    enum class Phase {fresh,running,complete,failed,diagnostic_retired};
+    enum class Phase {fresh,running,complete,failed,diagnostic_retired,constructor_pending};
     Phase phase{Phase::fresh};
     void* owner{};
     void* allocation{};
@@ -47,6 +47,9 @@ struct NativeProfileHintsOwnerOperation final {
 // Complete normal 426250: ECX actual50h owner, EAX owner, RET. Partial writes;
 // the temporary 8h header is resized to10, receives current length+1 bytes
 // from CE3A38, and returns its captured data/size through the actual pool.
+// 004C1E90 arms constructor_pending to borrow its operation across this call;
+// on success the constructor leaves that outer operation running. Standalone
+// construction still requires fresh and completes its own operation.
 void* construct_native_profile_hints_owner_00426250(void*,
     NativeProfileHintsOwnerContext&,NativeProfileHintsOwnerOperation&);
 // Complete426300: ECXowner, RET. Unconditionally clear E17664, then write

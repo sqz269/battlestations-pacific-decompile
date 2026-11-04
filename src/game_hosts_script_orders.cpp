@@ -45,6 +45,7 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal4_chain354_switches.hpp"
 #include "bsp/wire_goal4_chain365_switches.hpp"
 #include "bsp/cc13_left55_seg56b.hpp"   // goal 4 chain 365: 008AD540 / 008ACD10 bodies
+#include "bsp/wire_goal4_chain369_switches.hpp"  // goal 4 chain 369 (008522C0)
 #include "bsp/cc13_sweepB.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
@@ -4764,7 +4765,15 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             }
             const GameGunneryHost* gunnery = units_.gunnery();
             const bool need_air = false;        // +1281h, LABELLED
-            const bool catapult = false;        // 008522C0, LABELLED
+            bool catapult = false;              // 008522C0
+            if constexpr (bsp::kWireGoal4Chain369Bound) {
+                // 0089422E: 008522C0 on the boat, over its catapult devices and
+                // the ship's catapult launch record (GameGunneryHost's adapter).
+                catapult = gunnery != nullptr
+                    && gunnery->submarine_catapult_wants_surface(index);
+            } else {
+                catapult = false;               // 008522C0, LABELLED
+            }
             const bool dead = gunnery != nullptr && gunnery->unit_dead(index);
             const bool kamikaze = false;        // class+510h/+514h, LABELLED
             if ((need_air || dead || catapult) && !kamikaze && level != 0) {

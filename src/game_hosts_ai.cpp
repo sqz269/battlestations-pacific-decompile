@@ -56,6 +56,7 @@
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain341_switches.hpp"
 #include "bsp/wire_goal4_chain359_switches.hpp"
+#include "bsp/wire_goal4_chain364_switches.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -1267,6 +1268,46 @@ int ai_scene_unit_slot_009ffd20(int team, const std::string& name) {
     if constexpr (!kAiOwnerPlayerSlotBound) return ai_team_slot_009ffd20(team);
     return slot_from_owner_player(scene_owner_player_by_name(name), team);
 }
+
+// Goal 4 chain 364: the two read fields of 00A2BDB0, projected from the
+// capture planner's actual Group::command. No synthetic command/vtable is
+// installed. The +8h virtual query uses the same live command's recovered
+// IsType implementation; the +1Ch target preserves the host group's pointer
+// identity. Unused bytes are never read by the body (show 00a2bdb0 --asm).
+class CaptureAttackTargetQuery final : public bsp::cc13_seg70::CommandTypeQueryHost {
+public:
+    explicit CaptureAttackTargetQuery(const bsp::AiCommandObject& command) noexcept
+        : command_(command) {
+        native_command_.target_group = command.target_group;
+        native_group_.command = &native_command_;
+    }
+
+    bool matches(void* target_group) {
+        return bsp::cc13_seg70::group_is_attacking_target_00a2bdb0(*this,
+            bsp::cc13_seg70::Raw{reinterpret_cast<std::uint8_t*>(&native_group_)}, target_group);
+    }
+
+    bool command_is_type_08(void* receiver, int type) override {
+        if (receiver != &native_command_ || type != bsp::cc13_seg70::kCommandTypeAttack)
+            std::abort();
+        return bsp::ai_command_is_type(command_.type, bsp::AiCommandType::Attack);
+    }
+
+private:
+    struct NativeCommandQuery {
+        std::array<std::byte, 0x1c> unused;
+        void* target_group;
+    };
+    struct NativeGroupQuery {
+        std::array<std::byte, bsp::cc13_seg70::kGroupCommand> unused;
+        NativeCommandQuery* command;
+    };
+    static_assert(offsetof(NativeCommandQuery, target_group) == 0x1c);
+    static_assert(offsetof(NativeGroupQuery, command) == bsp::cc13_seg70::kGroupCommand);
+    const bsp::AiCommandObject& command_;
+    NativeCommandQuery native_command_;
+    NativeGroupQuery native_group_;
+};
 
 struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                      public bsp::AiPlannerHost,
@@ -4647,9 +4688,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             const std::size_t e = units.world_list_entry(28, i);
             if (e >= units.count() || units.unit_side_0054(e) == side) continue;
             Group* eg = e < group_of_unit.size() ? group_of_unit[e] : nullptr;
-            if (bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::Attack) &&
-                cmd.target_group == static_cast<void*>(eg)) {
-                return e;
+            if constexpr (bsp::kWireGoal4Chain364Bound) {
+                // 00A1A7DE calls 00A2BDB0 before any point/pose query.
+                // The returned match selects this real world-list-28 entity.
+                CaptureAttackTargetQuery query(cmd);
+                if (query.matches(eg)) return e;
+            } else {
+                if (bsp::ai_command_is_type(cmd.type, bsp::AiCommandType::Attack) &&
+                    cmd.target_group == static_cast<void*>(eg)) {
+                    return e;
+                }
             }
             float ex = 0.0f, ey = 0.0f, ez = 0.0f;
             units.unit_position_00fc(e, ex, ey, ez);

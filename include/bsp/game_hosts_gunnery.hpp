@@ -1444,6 +1444,16 @@ public:
     // submarine whose hull y is in (-15, -3), and on 1 in 15 the 00933BB0 spray
     // (008546FC); the draws are taken only when kSubmarineWakeDrawsBound is on.
     void submarine_wake_draws_008546df(std::size_t unit_index, float hull_y);
+    // Goal 4 chain 369 (kWireGoal4Chain369Bound). 008522C0 BSP_SubmarineUnit_
+    // CatapultNeedsSurface on unit_index: unit+1279h is 00853E10's "some child
+    // answers IsKindOf(28h)", here a CATAPULT gun row of the unit (Function and
+    // Type agree in this installation, docs/GUN_REST_ANGLES.md 4.1), and each such
+    // child's +490h is MCatapult's launch tick (-1 from 006EC640 until 006EC070
+    // stores the tick). LABELLED: the host keeps one catapult per ship and no tick
+    // (include/bsp/ship_catapult_host.hpp), so a child reads 0 once the ship's
+    // catapult launch record counts a launch and -1 before; 008522C0 reads only
+    // the sign (JGE at 008522E8).
+    bool submarine_catapult_wants_surface(std::size_t unit_index) const;
     // Packet s53_wreck_debris: 00935540's stream-1 draws for one sinking wreck
     // (eight per piece); `class_kind` is unit+C4h, `z_extent` the body's local box
     // length (B+44h - B+38h, z), `num_per_meter` ShipGlobals DebrisNumPerMeter.

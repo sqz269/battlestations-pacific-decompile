@@ -1,0 +1,225 @@
+{
+  "chain": 366,
+  "slot": "g4-w4",
+  "switch": "bsp::kWireGoal4Chain366Bound",
+  "baseline_head": "fd3debc9d001426c1c087b40c0a42e943bde5ee8",
+  "wired_before": 9577,
+  "called_before": 4529,
+  "rows": [
+    {
+      "native": "00425bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::lobby_multi_menu_init_00689540 and map_content_mask_005d9c50",
+      "reason": "Reuse the existing NativeString-to-long body on authored offline-skirmish map names and content-ID suffixes; results become live option keys and content masks. Source-level substitution for inline atol, not an original call edge."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command target construction",
+      "reason": "Missing actual absolute-address origin globals and a retained native command-target receiver/consumer at an available live site."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship brain registration",
+      "reason": "Missing retained 2268h native brain and the complete constructor callback graph; current registration retains typed tasks and constructor draws."
+    },
+    {
+      "native": "008d9cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene loading",
+      "reason": "Native constructor needs retained 838h tokenizer plus VFS ownership; scene-file projection dispatch is leased to agent/g4-w3."
+    },
+    {
+      "native": "0046cf40",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: read_scene_file",
+      "reason": "Shared entity parser already supplies behavior; canonical dispatch wiring is leased to agent/g4-w3."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread named-call producer and its source argument vector; this executable executes mission Lua on the main thread."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::queue_deferred_hit",
+      "reason": "Missing retained native list/sentinel, lock publication and raw HitRecord ownership bridge; gunnery file is leased to agent/g4-w1."
+    },
+    {
+      "native": "004684f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron command targets",
+      "reason": "Missing retained native target/receiver bridge and origin provider; units file is leased to agent/g4-w2."
+    },
+    {
+      "native": "007f1000",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: return-to-base home arm",
+      "reason": "Missing consumed 1Ch native command record and entity-handle receiver bridge; current return-to-base path retains a typed result."
+    },
+    {
+      "native": "00837de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: read_ship_depth_protected / read_draft_depths_protected",
+      "reason": "Missing retained native gameplay-settings backing object and game+1FE4h view at these Lua-only readers; offset-only scratch storage would add no real state."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot control planning",
+      "reason": "Exact 0099D6F1/0099D736 normalization inputs and caller operation order need recovery; units/seg67b are leased to agent/g4-w2."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown",
+      "reason": "Missing actual game+7184h, captured movie-screen, input and sound-frame contexts required by the complete transition body."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "No new call gap: baseline executable already reaches the existing body from scene_property_type_for_letter."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "No new call gap: baseline executable already reaches the existing body from scene_property_type_for_letter."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "Existing generic-name implementation already serves reference-letter decoding; adding an address-only wrapper would add no behavior."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reachable query-refresh body already calls this helper; its standalone body is not separately emitted in the baseline Release graph."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing reachable query-refresh body already calls this helper; its standalone body is not separately emitted in the baseline Release graph."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/effects_cc13.cpp: scale_effect_sound_instance_volume_00872670",
+      "reason": "Missing live EffectInstanceServices implementation carrying the actual retained SoundInstance/sample owner."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing checkpoint-difference producer and full profile-record/storage rewrite continuation; helper only erases the Lua table entry."
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: unit damage-state handling",
+      "reason": "Missing actual instance damage-state vector extent ([instance+170h]-[instance+16Ch]) at the host damage callers."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: set_unit_skill_index_006d1eb0",
+      "reason": "Missing retained director/gun-bot skill notification state; current readers share the unit index, and units/gunnery sources are leased to other workers."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage-control Periscope failure",
+      "reason": "Missing actual periscope model shape, collision bits and persistent break/repair clock consumer; host currently records the event."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine dive / GetSubmarineDepthLevel",
+      "reason": "Missing catapult child/state+490h producers and retained unit+1279h enable flag; current host substitutes false."
+    },
+    {
+      "native": "00a16ef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: quick_spawn_named_group",
+      "reason": "Missing live named-group spawn producer and target entity-handle resolution; quick_spawn_named_group currently records the request."
+    },
+    {
+      "native": "00a06840",
+      "status": "skipped",
+      "host_site": "src/ai_planners.cpp: ai_debug_parse_class_equipment_list_00a06840",
+      "reason": "Debug-only parser with no linked live caller; excluded by assignment."
+    },
+    {
+      "native": "00a072d0",
+      "status": "skipped",
+      "host_site": "src/ai_planners.cpp: ai_debug_parse_class_list_00a072d0",
+      "reason": "Debug-only parser with no linked live caller; excluded by assignment."
+    },
+    {
+      "native": "00453120",
+      "status": "skipped",
+      "host_site": "src/band_0045_cc13.cpp: parse_comma_separated_longs_00453120",
+      "reason": "Missing live caller; baseline executable has no emitted function or call site."
+    },
+    {
+      "native": "0042e630",
+      "status": "skipped",
+      "host_site": "src/native_spatial_index_publication.cpp: get_native_spatial_index_0042e630",
+      "reason": "Missing live native spatial-manager/index owner and node lifecycle consumer in the current host projections."
+    },
+    {
+      "native": "00521f10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::lock_branch",
+      "reason": "Missing retained packed 34h pick-row table for the native row-value accessor."
+    },
+    {
+      "native": "00521fd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::lock_branch",
+      "reason": "Missing retained native pick-entry +F0h/+FCh position/validity producer at the corresponding lock branch."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director snapshot handling",
+      "reason": "No complete live ControllerStateMessage/director-getter snapshot producer was established during bounded selection."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live default-descriptor initialization site with the actual class ordinal was established during bounded selection."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: entity_from_message_nonzero_00720fe0",
+      "reason": "No live nonzero-message resolver site with the actual two-table handle owner was established during bounded selection."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2).",
+    "call_graph": "00425bd0 reachable with two direct calls: lobby_multi_menu_init_00689540 at 10168b2b and map_content_mask_005d9c50 at 1016983d; entry path includes start_skirmish.",
+    "runtime": "Not run, as instructed. Static executable reach is not gameplay or ABI validation.",
+    "float_math": "No float arithmetic changed; pc24_lint not required.",
+    "wire_readiness": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 2
+    }
+  },
+  "called_after": 4530,
+  "limitations": [
+    "The two host sites substitute the existing numeric conversion for their inline atol calls; these are not recovered native call edges.",
+    "The new calls use authored map-record strings from the live offline-skirmish tables. No runtime values, scratch records or duplicate bodies were introduced."
+  ],
+  "wired_after": 9578
+}

@@ -54,7 +54,18 @@ struct TargetFlagGlobalsHost {
     virtual void* global_address(std::uint32_t address) = 0;
 };
 
-struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost {
+// 007B96F0 / 007B9740 only need the unit's +C50h finder and its two calls.
+// Native views retain the offset access; executable hosts can expose the
+// finder they already own without manufacturing an image-shaped plane.
+struct PlaneGunTargetHost {
+    virtual ~PlaneGunTargetHost() = default;
+    virtual Raw unit_gun_target_finder(Raw unit) { return unit.deref(0xC50); }
+    virtual void* scan_gun_target(Raw finder, float cone, float inner,
+        float range, float near_distance, float threshold, std::int32_t squadron, float noise) = 0;
+    virtual void clear_gun_target(Raw finder) = 0;
+};
+
+struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost, PlaneGunTargetHost {
     virtual ~Seg47Host() = default;
 
     // The address of the image global at `address`; the pointer stored there.
@@ -247,6 +258,12 @@ struct Seg47Host : DroppableRoundCountHost, TargetFlagGlobalsHost {
                                                   std::int32_t n, float f6) = 0;
     // 007E2070 gun target finder clear, __thiscall(ECX = finder) (tail jump).
     virtual void gun_target_finder_clear_007e2070(Raw finder) = 0;
+    void* scan_gun_target(Raw finder, float cone, float inner, float range,
+            float near_distance, float threshold, std::int32_t squadron, float noise) override {
+        return gun_target_finder_scan_007e2090(finder, cone, inner, range,
+            near_distance, threshold, squadron, noise);
+    }
+    void clear_gun_target(Raw finder) override { gun_target_finder_clear_007e2070(finder); }
     // 00413920 matrix product, __thiscall(ECX = left; out, right), RET 8, EAX = out.
     virtual void* matrix_multiply_00413920(Raw left, void* out, const void* right) = 0;
     // 004134F0 matrix assign, __thiscall(ECX = matrix; const matrix*), RET 4, EAX = matrix.
@@ -610,9 +627,9 @@ void plane_detach_into_hangar_007b96c0(Byte& in_hangar_c00,
     in_hangar_c00 = static_cast<Byte>(1);
     unit_instance_detach_00951f40(std::int32_t{0});
 }
-void* unit_find_gun_target_007b96f0(Seg47Host& host, Raw unit, float f0, float f1, float f2, float f3, float f4,
+void* unit_find_gun_target_007b96f0(PlaneGunTargetHost& host, Raw unit, float f0, float f1, float f2, float f3, float f4,
                                     std::int32_t n, float f6);
-void plane_neighbours_clear_target_007b9740(Seg47Host& host, Raw unit);
+void plane_neighbours_clear_target_007b9740(PlaneGunTargetHost& host, Raw unit);
 void* plane_get_squadron_007b97e0(Raw plane);
 void firing_gun_registry_destruct_unwind_007b98a0(Seg47Host& host, Raw registry);
 Raw matrix_multiply_in_place_007ba020(Seg47Host& host, Raw matrix, const void* other);

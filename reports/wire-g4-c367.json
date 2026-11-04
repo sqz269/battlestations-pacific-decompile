@@ -1,0 +1,117 @@
+{
+  "chain": 367,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain367Bound",
+  "wired_total_before": 9577,
+  "wired_total_before_source": "Assignment pool census",
+  "wired_total_after": 9578,
+  "initial_local_scan_total": 9572,
+  "census_note": "The first local --standins scan began while the baseline build was still running and reported 9572. The assignment pool census was 9577; the final completed-build scan is 9578. Only 0099B670 is claimed as newly wired, independently verified by its previously absent and now reachable direct call.",
+  "rows": [
+    {
+      "native": "0099B670",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::gunfire_avoidance_009a17d0",
+      "evidence": "bsp.py show 0099b670 --asm, 0099B670..0099B688: load pilot+2F4, load unit+C50, null-test, call 007DF4F0 with the pilot. Borrowed pointer-cell views bind the live slot's retained nb_near_30 list; nb_has_object_c50 is the same allocation predicate used by the fixed-step refresh. Offset assertions guard the views. The narrow callback invokes the existing geometry/band implementation once with this slot and its actual think dt. The old direct call is unchanged in the OFF arm.",
+      "call_graph": "REACHABLE: one call at 1025C3BC from GameUnitsHost::Impl::gunfire_avoidance_009a17d0; entry path runs through mission frame, fixed-step simulation and PlaneBinding::pilot_think_and_commit.",
+      "boundary": "Borrowed call-scoped pointer-cell views and a semantic neighbour callback; not complete native task/unit objects or original binary ABI validation. Geometry, list refresh, and the host's existing allocation/DummyAI interpretation remain the existing implementations."
+    },
+    {
+      "native": "0099C270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::pilot_think_and_commit task fast-path gate",
+      "reason": "Missing retained published unit+9C2/+9CA parity bytes and their producer; generic_suppress_520 is a current value, not the previous published copy read by the native gate."
+    },
+    {
+      "native": "0099B650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::run_land_task_tick_009b3eb0",
+      "reason": "Missing a retained task-owner identity at plan+25C and its downstream consumer; the landing path currently only records this store."
+    },
+    {
+      "native": "0099B2A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot plan-slot seeding",
+      "reason": "Missing a verified live use of this separate slot-array entry: original caller query returns no sites, while the existing think path already runs the 0099B450 reset."
+    },
+    {
+      "native": "0099B590",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot plan-slot seeding",
+      "reason": "Missing a verified hold-at-current trigger: original caller query returns no sites, and replacing the ordinary think reset would incorrectly set every active flag and zero the modes."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: deliver_takeoff_notify_c3h_007cd02c; src/game_hosts_script_orders.cpp: drain_deferred_orders_0076c600",
+      "reason": "Missing general per-message tick, category, entity-readiness and game-state metadata in these specialized host loopback records; cannot fill those gate inputs with unconditional passing constants."
+    },
+    {
+      "native": "0070D0C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::leave_group_on_destroy_0077bd70 leader handover",
+      "reason": "Missing native FAC-byte unit/pose prefixes for the raw wake handoff; GameUnitGroupStorage explicitly carries registry identity words rather than dereferenceable native unit pointers."
+    },
+    {
+      "native": "0070DB20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: FormationGroup construction",
+      "reason": "Missing a complete native leader object and group lifetime binding; the existing native member storage is restricted to non-dereferencing record/identity getters."
+    },
+    {
+      "native": "00C47F60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: sunk hull terrain mask and GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing native Dyn hull shape/body storage and the world-lock/manifold-clear binding; the current hull contact path carries mask decisions as host booleans."
+    },
+    {
+      "native": "00C47F90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing native Dyn hull shape/body storage and the world-lock/manifold-clear binding; setting only a temporary shape mask would not affect the actual contact path."
+    },
+    {
+      "native": "00B0FD70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "Missing remap texture-name production and a live resource owner: record_remap_texture_name currently returns an empty string and remap only logs."
+    },
+    {
+      "native": "00B0FDC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Missing remap texture-name production and a live resource owner: record_remap_texture_name currently returns an empty string and remap only logs."
+    },
+    {
+      "native": "00B0FE10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Missing remap texture-name production and a live resource owner: record_remap_texture_name currently returns an empty string and remap only logs."
+    },
+    {
+      "native": "00B0FE60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Missing remap texture-name production and a live resource owner: record_remap_texture_name currently returns an empty string and remap only logs."
+    },
+    {
+      "native": "008F3A20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene property enum adapters",
+      "reason": "No missing call identified: baseline readiness already reports two entry-reachable call sites despite the ready spelling; no additional operation was selected."
+    },
+    {
+      "native": "008F54F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene property merge adapters",
+      "reason": "No missing call identified: baseline readiness already reports two entry-reachable call sites despite the ready spelling; no additional operation was selected."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, all 3 checks",
+    "changed_build": "scripts/build.ps1 passed, all 3 checks",
+    "call_graph": "python tools/call_graph.py; who 0099b670; path 0099b670: one reachable direct call from the changed host",
+    "float_math": "No arithmetic operations changed; the adapter forwards the existing think delta unchanged.",
+    "game_validation": "Not run, as instructed."
+  }
+}

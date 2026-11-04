@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain372_switches.hpp"
+#include "bsp/cc13_seg41_land.hpp"
 #include "bsp/wire_goal4_chain287_switches.hpp"
 #include "bsp/wire_goal4_chain334_switches.hpp"
 #include "bsp/wire_goal4_chain340_switches.hpp"
@@ -74,6 +76,9 @@
 #include "bsp/hud_movie_camera.hpp"
 #include "bsp/archive_text_writer.hpp"   // packet cc9_lua49_checkpoint
 #include "bsp/profile_checkpoint.hpp"   // packet cc9_lua49_checkpoint
+#include "bsp/oct18_tail_a.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/wire_goal4_chain368_switches.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -718,6 +723,32 @@ constexpr bool kEntryPointIsFunctionBound = true;   // ON: SQUADRON_LAND_TASK 5h
 // game installation or a profile; 008ACB70's gamepad-force and input-manager
 // calls are not run. OFF: both rows stay unimplemented records.
 constexpr bool kMissionCheckpointBound = true;
+
+// Goal 4 chain 368: actual 14h record consumed by SaveCheckpoint. Evidence:
+// bsp.py show 00436690: words 0/-1/-1, followed by the owned 8h string at +Ch.
+// This is ordinary source storage, not the original __thiscall/SEH ABI.
+struct MissionCheckpointRecord {
+    std::int32_t difficulty;
+    std::int32_t unlock_from;
+    std::int32_t unlock_to;
+    NativeString unlock_name;
+};
+static_assert(sizeof(MissionCheckpointRecord) == 0x14);
+static_assert(offsetof(MissionCheckpointRecord, unlock_name) == 0x0c);
+
+struct ScopedMissionCheckpointRecord {
+    MissionCheckpointRecord value;
+    ScopedMissionCheckpointRecord() {
+        bsp::oct18_tail_a::checkpoint_record_construct_00436690(
+            &value, game_native_string_process().raw_context());
+    }
+    ~ScopedMissionCheckpointRecord() {
+        destroy_native_string_header_0041dd20(
+            &value.unlock_name, game_native_string_process().raw_context());
+    }
+    ScopedMissionCheckpointRecord(const ScopedMissionCheckpointRecord&) = delete;
+    ScopedMissionCheckpointRecord& operator=(const ScopedMissionCheckpointRecord&) = delete;
+};
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
@@ -7039,6 +7070,72 @@ std::string listener_string_argument(lua_State* state, int slot) {
     return text != nullptr ? std::string(text) : std::string();
 }
 
+// Goal 4 chain 372, bsp.py show 00750790: the native setter copies two
+// eight-byte string headers and the optional-name flag at name+8. The live
+// Lua arguments supply every value; this view projects only the base trigger
+// fields that body touches. Its output becomes the retained trigger's name
+// and callback used by RemoveTrigger and fire_lua_trigger_0074fdd0.
+struct TriggerCallbackView {
+    std::uint8_t unused_00[0x1c]{};
+    bsp::NativeString name;
+    std::uint8_t named{};
+    std::uint8_t unused_25[3]{};
+    bsp::NativeString callback;
+    bsp::NativeStringStorage* storage;
+
+    explicit TriggerCallbackView(bsp::NativeStringStorage& strings) : storage(&strings) {}
+    ~TriggerCallbackView() {
+        callback.release_to(*storage);
+        name.release_to(*storage);
+    }
+};
+struct TriggerCallbackArgument {
+    std::uint32_t length;
+    const char* data;
+    std::uint8_t named;
+};
+static_assert(sizeof(bsp::NativeString) == 8);
+static_assert(offsetof(TriggerCallbackView, name) == 0x1c);
+static_assert(offsetof(TriggerCallbackView, named) == 0x24);
+static_assert(offsetof(TriggerCallbackView, callback) == 0x28);
+static_assert(offsetof(TriggerCallbackArgument, data) == 4);
+static_assert(offsetof(TriggerCallbackArgument, named) == 8);
+
+class TriggerCallbackStrings final : public bsp::cc13_seg41::TriggerStringHost {
+public:
+    explicit TriggerCallbackStrings(bsp::NativeStringStorage& strings) : storage_(strings) {}
+    void native_string_resize_0041dd40(std::uint8_t* string,
+        std::uint32_t size, std::uint32_t flag) override {
+        bsp::resize_native_string_header_0041dd40(string, storage_, size, flag != 0);
+    }
+    void memcpy_00bf7680(void* destination, const void* source, std::size_t bytes) override {
+        std::memcpy(destination, source, bytes);
+    }
+private:
+    bsp::NativeStringStorage& storage_;
+};
+
+void read_trigger_callback_names(lua_State* state, std::string& name, bool& named,
+    std::string& callback) {
+    const bool has_name = !lua_isnoneornil(state, 2);
+    const std::string source_name = has_name ? listener_string_argument(state, 2) : std::string();
+    const std::string source_callback = listener_string_argument(state, 3);
+    const TriggerCallbackArgument name_argument{static_cast<std::uint32_t>(source_name.size()),
+        source_name.c_str(), static_cast<std::uint8_t>(has_name)};
+    const TriggerCallbackArgument callback_argument{static_cast<std::uint32_t>(source_callback.size()),
+        source_callback.c_str(), 0};
+    auto& strings = game_native_string_process().strings();
+    TriggerCallbackView view(strings);
+    TriggerCallbackStrings binding(strings);
+    bsp::cc13_seg41::lua_trigger_set_callback_name_00750790(
+        reinterpret_cast<std::uint8_t*>(&view),
+        reinterpret_cast<const std::uint8_t*>(&name_argument),
+        reinterpret_cast<const std::uint8_t*>(&callback_argument), binding);
+    name.assign(view.name.data() != nullptr ? view.name.data() : "", view.name.length());
+    named = view.named != 0;
+    callback.assign(view.callback.data() != nullptr ? view.callback.data() : "", view.callback.length());
+}
+
 int listener_entity_id_at(lua_State* state, int index) {
     if (::lua_type(state, index) != LUA_TTABLE) return 0;
     ::lua_getfield(state, index, "ID");
@@ -7910,6 +8007,10 @@ int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
     // 00B66270 on argument 4, FSTP float; 0074FF4E FMUL ST0,ST0 then FSTP float.
     const float range = static_cast<float>(::lua_tonumber(state, 5));
     trigger.radius_sq_5c = bsp::gameplay_seg41_cc13::trigger_radius_squared(range);
+    if constexpr (bsp::kWireGoal4Chain372Bound) {
+        read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
+        log_.implemented("LuaTrigger::set_callback_name", "00750790");
+    } else {
     // 008C9350 on argument 1: nil leaves +24h clear.
     if (!lua_isnoneornil(state, 2)) {
         trigger.named_24 = true;
@@ -7917,6 +8018,7 @@ int GameMissionLuaHost::run_add_proximity_trigger_008c9730(lua_State* state,
     }
     // 00B662B0 on argument 2.
     trigger.callback_28 = listener_string_argument(state, 3);
+    }
     // 00888AA0 on argument 0, then vtable[60h]().
     const int id = air_ops_entity_id(state);
     if (units_hooks_ == nullptr || id <= 0
@@ -8053,6 +8155,10 @@ int GameMissionLuaHost::run_add_squad_ordnance_dropped_trigger_008c9a10(lua_Stat
     ++summary_.ordnance_trigger_adds;
     ProximityTrigger trigger;
     trigger.kind = ProximityTrigger::Kind::SquadOrdnanceDropped;
+    if constexpr (bsp::kWireGoal4Chain372Bound) {
+        read_trigger_callback_names(state, trigger.name_1c, trigger.named_24, trigger.callback_28);
+        log_.implemented("LuaTrigger::set_callback_name", "00750790");
+    } else {
     // 008C9350 on argument 1: nil leaves +24h clear.
     if (!lua_isnoneornil(state, 2)) {
         trigger.named_24 = true;
@@ -8060,6 +8166,7 @@ int GameMissionLuaHost::run_add_squad_ordnance_dropped_trigger_008c9a10(lua_Stat
     }
     // 00B662B0 on argument 2.
     trigger.callback_28 = listener_string_argument(state, 3);
+    }
     // 00888AA0 on argument 0, then vtable[60h]().
     const int id = air_ops_entity_id(state);
     bool squadron = false;
@@ -13708,7 +13815,24 @@ int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) 
     }
     const int top = ::lua_gettop(state);
     if (top >= 1 && ::lua_type(state, 1) == LUA_TTABLE) {
-        bsp::CheckpointRecordFields record;   // 00436690's defaults
+        bsp::CheckpointRecordFields record = [&] {
+            if constexpr (bsp::kWireGoal4Chain368Bound) {
+                ScopedMissionCheckpointRecord native;
+                bsp::CheckpointRecordFields fields;
+                fields.difficulty = native.value.difficulty;
+                fields.unlock_from = native.value.unlock_from;
+                fields.unlock_to = native.value.unlock_to;
+                if (native.value.unlock_name.data() != nullptr) {
+                    fields.unlock_name.assign(native.value.unlock_name.data(),
+                        native.value.unlock_name.length());
+                }
+                log_.implemented("MissionLuaNative::checkpoint_record", "00436690");
+                return fields;
+            } else {
+                bsp::CheckpointRecordFields record;   // 00436690's defaults
+                return record;
+            }
+        }();
         record.difficulty = bsp::game::game_effective_difficulty_6ac();
         bsp::ArchiveStringSink sink;
         bsp::ArchiveTextOutput output;

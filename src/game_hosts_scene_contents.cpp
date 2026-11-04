@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
+#include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
@@ -143,7 +144,15 @@ constexpr bool kSceneBrowserGroupsBound = true;
 // are counted only; no traffic unit is created. False: the record, as before,
 // and the scene loop steps over the block's tokens as unknown keywords.
 // ON by cc9-ships59 (SHIP_AI_OPEN_ITEMS 292): JM05 12000 gameplay-identical.
+// Chain 361 (kWireGoal4Chain361Bound): the reader now leaves the keyword
+// pending and the whole 009514B0 / 00469E40 bodies consume it.
 constexpr bool kSceneTrafficBlockBound = true;
+
+// The chain 361 reader leaves `traffic` and `SceneBrowserGroups` for their
+// block readers to consume (0046EB5B, 0046EBD3). The recorded stand-ins
+// consume nothing, so the reader would peek the same keyword forever.
+static_assert(!kWireGoal4Chain361Bound || (kSceneTrafficBlockBound && kSceneBrowserGroupsBound),
+    "chain 361's peeking scene reader needs the 009514B0 and 00469E40 loaders");
 
 class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
 public:
@@ -2682,8 +2691,16 @@ public:
                     return static_cast<const PropertyLibrary*>(library)
                         ->resolve_symbol(table, symbol, value);
                 });
-            const SceneTrafficReadResult read =
-                read_traffic_block_after_keyword(lexer, recorder);
+            const SceneTrafficReadResult read = [&] {
+                if constexpr (kWireGoal4Chain361Bound) {
+                    // 0046EB5B: the reader left `traffic` pending, as the image
+                    // does; 009514B0 clears (009514B5), expects the keyword
+                    // and reads the block.
+                    return read_traffic_block(lexer, recorder);
+                } else {
+                    return read_traffic_block_after_keyword(lexer, recorder);
+                }
+            }();
             owner_.log.implemented("SceneContents::load_traffic_block", "009514b0");
             std::size_t templates = 0;
             for (const TrafficRecord& record : recorder.records) {
@@ -2718,7 +2735,15 @@ public:
     void load_browser_groups(SceneLexer& lexer) override {
         if constexpr (kSceneBrowserGroupsBound) {
             SceneBrowserGroupsCounter counter;
-            const SceneBrowserGroupsReadResult read = read_browser_groups_after_keyword(lexer, counter);
+            const SceneBrowserGroupsReadResult read = [&] {
+                if constexpr (kWireGoal4Chain361Bound) {
+                    // 0046EBD3: the reader left `SceneBrowserGroups` pending;
+                    // 00469E40 expects it (00469E48..00469E4F), then `{`.
+                    return read_browser_groups_block(lexer, counter);
+                } else {
+                    return read_browser_groups_after_keyword(lexer, counter);
+                }
+            }();
             owner_.log.implemented("SceneContents::load_browser_groups", "00469e40");
             owner_.log.notef("scene browser groups: %zu entries, ok=%d%s%s", counter.count,
                 read.ok ? 1 : 0, read.error.empty() ? "" : " error=", read.error.c_str());
@@ -6298,12 +6323,52 @@ bool vsub_clip_00aeba00(float s[6], float v, int axis, bool upper) noexcept {
     return true;
 }
 
+// 00AEBB90, __thiscall(ECX = segment {x0,y0,z0,x1,y1,z1}; float v, axis 0 or 2,
+// an unused dword), RET 0Ch, AL: the upper-bound clip on its own (chain 361;
+// vsub_clip_00aeba00's `upper` arm stays for the OFF build). Listing read whole:
+// 00AEBBA6..00AEBBBB false when both ends exceed v (p0 > v, then p1 > v);
+// 00AEBBBE..00AEBBD3 true when neither does; d = end - start per axis, stored
+// float (00AEBBD6..00AEBC18); |d[axis]| (00AEBC1C..00AEBC37: d > [00D7A218] 0.0,
+// else [00D7A208] - d) below [00CF7FE8] returns true unclipped (00AEBC43);
+// p0 > v (00AEBC62) moves the start: f = (v - p0) / d[axis] (00AEBC66..00AEBC71,
+// stored float), s[k] += f * d[k] (00AEBC79..00AEBCA9); otherwise the end:
+// f = (p1 - v) / d[axis] (00AEBCC1..00AEBCC8), s[3 + k] -= f * d[k]; the moved
+// coordinate on the clipped axis is v (00AEBCAC).
+bool vsub_clip_upper_00aebb90(float s[6], float v, int axis) noexcept {
+    const float p0 = s[axis];
+    const float p1 = s[axis + 3];
+    if (v < p0 && v < p1) return false;
+    if (p0 <= v && p1 <= v) return true;
+    const float d[3] = {s[3] - s[0], s[4] - s[1], s[5] - s[2]};
+    float m = d[axis];
+    if (m <= 0.0f) m = -0.0f - m;
+    if (!(kVsubClipEps <= m)) return true;
+    if (p0 <= v) {
+        const float f = (p1 - v) / d[axis];
+        for (int k = 0; k < 3; ++k) s[3 + k] = s[3 + k] - f * d[k];
+        s[axis + 3] = v;
+    } else {
+        const float f = (v - p0) / d[axis];
+        for (int k = 0; k < 3; ++k) s[k] = s[k] + f * d[k];
+        s[axis] = v;
+    }
+    return true;
+}
+
 // 00AEBD20 (thiscall segment; min pair, max pair), RET 8.
 bool vsub_clip_00aebd20(float s[6], const float lo[2], const float hi[2]) noexcept {
+    if constexpr (kWireGoal4Chain361Bound) {
+        // The upper bounds call 00AEBB90, the lower ones 00AEBA00.
+        if (!vsub_clip_00aeba00(s, lo[0], 0, false)) return false;
+        if (!vsub_clip_upper_00aebb90(s, hi[0], 0)) return false;
+        if (!vsub_clip_00aeba00(s, lo[1], 2, false)) return false;
+        return vsub_clip_upper_00aebb90(s, hi[1], 2);
+    } else {
     if (!vsub_clip_00aeba00(s, lo[0], 0, false)) return false;
     if (!vsub_clip_00aeba00(s, hi[0], 0, true)) return false;
     if (!vsub_clip_00aeba00(s, lo[1], 2, false)) return false;
     return vsub_clip_00aeba00(s, hi[1], 2, true);
+    }
 }
 
 // 00AEB7E0 / 00AEB890: dy (double) over the 2-D length (float).
@@ -6332,9 +6397,37 @@ struct VsubCellWalker {
     float ha{0}, hb{0};                        // +2Ch, +30h ground at the ends
     float ya{0}, yb{0};                        // +34h, +38h segment y at the ends
     float hit[3]{};                            // +3Ch .. +44h
+    float seg[6]{};                            // +48h .. +5Ch clipped segment (chain 361)
     float sx{0}, sz{0}, ex{0}, ez{0};          // +60h .. +6Ch (2-D segment)
     float y0{0}, y1{0}, slope{0};              // +70h, +74h, +78h
 };
+
+// 00AEAE70, __thiscall(ECX = cell walker; const walker* source), RET 4: copies
+// +0h..+44h field by field (dwords by MOV, floats by FLD/FSTP). 00AEC3F0 hands
+// it a stack source with only +0h (the block, 00AEC564) and +4h (node y,
+// 00AEC56B) written; the walk writes the rest before reading it.
+void vsub_cell_walker_copy_00aeae70(VsubCellWalker& w, const VsubCellWalker& source) noexcept {
+    w.block = source.block;
+    w.node_y = source.node_y;
+    w.ax = source.ax; w.az = source.az; w.bx = source.bx; w.bz = source.bz;
+    w.e0i = source.e0i; w.e0j = source.e0j; w.e1i = source.e1i; w.e1j = source.e1j;
+    w.frac = source.frac;
+    w.ha = source.ha; w.hb = source.hb; w.ya = source.ya; w.yb = source.yb;
+    for (int k = 0; k < 3; ++k) w.hit[k] = source.hit[k];
+}
+
+// 00AEB7E0, __thiscall(ECX = cell walker), RET: the segment +48h..+5Ch into
+// +60h (x0), +64h (z0), +70h (y0), +68h (x1), +6Ch (z1), +74h (y1)
+// (00AEB7E6..00AEB819), then +78h the slope (00AEB81E..00AEB87C, vsub_slope).
+void vsub_cell_walker_prepare_00aeb7e0(VsubCellWalker& w) noexcept {
+    w.sx = w.seg[0];
+    w.sz = w.seg[2];
+    w.y0 = w.seg[1];
+    w.ex = w.seg[3];
+    w.ez = w.seg[5];
+    w.y1 = w.seg[4];
+    w.slope = vsub_slope(w.sx, w.sz, w.y0, w.ex, w.ez, w.y1);
+}
 
 float vsub_sample(const VsubCellWalker& w, int i, int j) noexcept {
     // vt+8h of block+1Ch (00ADC5F0) plus the node y, stored float.
@@ -6420,12 +6513,35 @@ bool vsub_cell_last_00aec050(VsubCellWalker& w, float bx, float bz, float yb) no
     return vsub_cross_00aeb940(w);
 }
 
+// 00AEAFA0, __thiscall(ECX = cell walker; const int e0[2], const int e1[2],
+// float t), RET 0Ch, ST0: the ground on a cell edge. Each end is the block
+// sampler (00ADEA70 vt+8h) plus the node y (+4h), stored float (00AEAFC5..
+// 00AEAFCE, 00AEAFF0..00AEAFF9); then s1 * t (00AEB007), 1 - t (00AEB00B),
+// times s0 (00AEB00D), the sum (00AEB010), stored float (00AEB012).
+float vsub_edge_ground_00aeafa0(const VsubCellWalker& w, const int e0[2], const int e1[2],
+                                float t) noexcept {
+    const float s0 = vsub_sample(w, e0[0], e0[1]);
+    const float s1 = vsub_sample(w, e1[0], e1[1]);
+    if constexpr (kPc24FlightRenderCc13Bound) {
+        // Each x87 op rounded at PC24, as the pc24w1-sweep1-6 chain below.
+        return terrain_f32(pc24::x87_add24(pc24::x87_mul24(s1, t),
+                                           pc24::x87_mul24(pc24::x87_sub24(1.0, t), s0)));
+    } else {
+        return terrain_f32(static_cast<double>(s1) * t + (1.0 - t) * s0);
+    }
+}
+
 // 00AEC090 (b, yb), RET 8: a piece ending on a cell edge; the ground there is
 // the edge's two samples lerped by +28h (00AEAFA0), or the corner sample.
 bool vsub_cell_edge_00aec090(VsubCellWalker& w, float bx, float bz, float yb) noexcept {
     w.yb = yb; w.bx = bx; w.bz = bz;
     if (w.e0i == w.e1i && w.e0j == w.e1j) {
         w.hb = vsub_sample(w, w.e0i, w.e0j);
+    } else if constexpr (kWireGoal4Chain361Bound) {
+        // 00AEC0FD..00AEC10D: 00AEAFA0(&walker+18h, &walker+20h, walker+28h).
+        const int e0[2] = {w.e0i, w.e0j};
+        const int e1[2] = {w.e1i, w.e1j};
+        w.hb = vsub_edge_ground_00aeafa0(w, e0, e1, w.frac);
     } else {
         const float s0 = vsub_sample(w, w.e0i, w.e0j);
         const float s1 = vsub_sample(w, w.e1i, w.e1j);
@@ -6492,14 +6608,59 @@ bool vsub_cell_walk_00aec120(VsubCellWalker& w, float out[3], unsigned long long
 // 00AEADE0; only the first 10h are initialised there).
 struct VsubTileWalker {
     const SceneTerrainHeightField* field{nullptr};   // +0h
+    int tiles_wide_04{0}, tiles_deep_08{0};          // +4h, +8h (chain 361)
     float node_y{0};                                 // +Ch, node +124h
     float ax{0}, az{0}, bx{0}, bz{0};                // +20h .. +2Ch
     int ti{0}, tj{0};                                // +30h, +34h
     float ya{0}, yb{0};                              // +40h, +44h
     float hit[3]{};                                  // +48h .. +50h
+    float seg[6]{};                                  // +54h .. +68h clipped segment (chain 361)
     float sx{0}, sz{0}, ex{0}, ez{0};                // +6Ch .. +78h
     float y0{0}, y1{0}, slope{0};                    // +7Ch, +80h, +84h
 };
+
+// 00AEB770, __thiscall(ECX = tile walker; terrain), RET 4, EAX = this: +0h the
+// terrain (00AEB778), +4h 00ADAC30 (terrain +38h, tiles wide), +8h 00ADAC40
+// (+3Ch, tiles deep) (00AEB77A..00AEB78B), +Ch the terrain node's +124h
+// (vt+40h, 00AEB792..00AEB7AD). LABELLED: 00B6DB70 refreshes that node first
+// when its +5Ch bit 1 is clear; the host's node_y is the world translation y
+// set from the Landscape frame at load (00ADE820), so there is no refresh here.
+VsubTileWalker& vsub_tile_walker_construct_00aeb770(VsubTileWalker& w,
+                                                    const SceneTerrainHeightField& field) noexcept {
+    w.field = &field;
+    w.tiles_wide_04 = field.tiles_wide;
+    w.tiles_deep_08 = field.tiles_deep;
+    w.node_y = field.node_y;
+    return w;
+}
+
+// 00AEADE0, __thiscall(ECX = tile walker; const walker* source), RET 4: copies
+// +0h..+50h field by field (dwords by MOV, floats by FLD/FSTP). +10h..+1Ch and
+// +38h/+3Ch are not modelled; 00AECA60's source is 00AEB770's temporary, whose
+// fields past +Ch are unwritten until the walk sets them.
+void vsub_tile_walker_copy_00aeade0(VsubTileWalker& w, const VsubTileWalker& source) noexcept {
+    w.field = source.field;
+    w.tiles_wide_04 = source.tiles_wide_04;
+    w.tiles_deep_08 = source.tiles_deep_08;
+    w.node_y = source.node_y;
+    w.ax = source.ax; w.az = source.az; w.bx = source.bx; w.bz = source.bz;
+    w.ti = source.ti; w.tj = source.tj;
+    w.ya = source.ya; w.yb = source.yb;
+    for (int k = 0; k < 3; ++k) w.hit[k] = source.hit[k];
+}
+
+// 00AEB890, __thiscall(ECX = tile walker), RET: 00AEB7E0's twin. The segment
+// +54h..+68h into +6Ch (x0), +70h (z0), +7Ch (y0), +74h (x1), +78h (z1), +80h
+// (y1) (00AEB896..00AEB8C9), then +84h the slope (00AEB8D1..00AEB92F).
+void vsub_tile_walker_prepare_00aeb890(VsubTileWalker& w) noexcept {
+    w.sx = w.seg[0];
+    w.sz = w.seg[2];
+    w.y0 = w.seg[1];
+    w.ex = w.seg[3];
+    w.ez = w.seg[5];
+    w.y1 = w.seg[4];
+    w.slope = vsub_slope(w.sx, w.sz, w.y0, w.ex, w.ez, w.y1);
+}
 
 // 00AEC3F0 (fastcall tile walker): one tile.
 bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
@@ -6526,11 +6687,22 @@ bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
     const float hi[2] = {n, n};
     (void)vsub_clip_00aebd20(s, lo, hi);                         // 00AEC544, AL not tested
     VsubCellWalker c;
+    if constexpr (kWireGoal4Chain361Bound) {
+        // 00AEC549..00AEC572: the {block, node y} source and 00AEAE70; the
+        // clipped segment into +48h..+5Ch (00AEC577..00AEC5CC); 00AEB7E0.
+        VsubCellWalker source;
+        source.block = block;
+        source.node_y = w.node_y;
+        vsub_cell_walker_copy_00aeae70(c, source);
+        for (int k = 0; k < 6; ++k) c.seg[k] = s[k];
+        vsub_cell_walker_prepare_00aeb7e0(c);
+    } else {
     c.block = block;
     c.node_y = w.node_y;
     c.sx = s[0]; c.sz = s[2]; c.ex = s[3]; c.ez = s[5];
     c.y0 = s[1]; c.y1 = s[4];
     c.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);  // 00AEB7E0
+    }
     float out[3];
     if (!vsub_cell_walk_00aec120(c, out, cells)) return false;
     w.hit[1] = out[1];
@@ -6632,11 +6804,21 @@ bool vsub_subwalk_00aeca60(const SceneTerrainHeightField& field, const float fro
         return false;
     }
     VsubTileWalker w;
+    if constexpr (kWireGoal4Chain361Bound) {
+        // 00AECB96..00AECBAF: 00AEB770 builds a temporary over the terrain
+        // and 00AEADE0 copies it into the walker; the clipped segment into
+        // +54h..+68h (00AECBB4..00AECC09); 00AEB890 (00AECC12).
+        VsubTileWalker temporary;
+        vsub_tile_walker_copy_00aeade0(w, vsub_tile_walker_construct_00aeb770(temporary, field));
+        for (int k = 0; k < 6; ++k) w.seg[k] = s[k];
+        vsub_tile_walker_prepare_00aeb890(w);
+    } else {
     w.field = &field;
     w.node_y = field.node_y;                                     // 00AEB770, node +124h
     w.sx = s[0]; w.sz = s[2]; w.ex = s[3]; w.ez = s[5];          // 00AEB890
     w.y0 = s[1]; w.y1 = s[4];
     w.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);
+    }
     return vsub_tile_walk_00aec7c0(w, out, tiles, cells);
 }
 

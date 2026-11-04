@@ -399,7 +399,10 @@ struct SceneFileReaderHost {
         SceneFilePass pass) = 0;
 
     // 009514b0 (`traffic`, instantiate pass) and 0095ca10 (`traffic`,
-    // registration pass, which also ends the loop).
+    // registration pass, which also ends the loop). With
+    // kWireGoal4Chain361Bound the lexer is still at the `traffic` keyword (and
+    // load_browser_groups at `SceneBrowserGroups`), as the image's peek leaves
+    // it, and the loader must consume it; otherwise the keyword is consumed.
     virtual void load_traffic_block(SceneLexer& lexer) = 0;
     virtual void skip_traffic_block(SceneLexer& lexer) = 0;
     // 00925f20, called once before the first tail block of the instantiate

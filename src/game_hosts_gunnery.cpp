@@ -59,6 +59,9 @@
 #include "bsp/wire_goal4_chain356_switches.hpp"
 #include "bsp/wire_goal4_chain365_switches.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"   // goal 4 chain 365: the repair task at unit+A20h
+#include "bsp/wire_goal4_chain369_switches.hpp"       // chain 369: 008522C0 / 00852410
+#include "bsp/ship_catapult_host.hpp"                 // chain 369: catapult launch record
+#include "bsp/pc24_unitshost_cc13.hpp"                // chain 369: 0042B2F0
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
 #include "bsp/game_hosts_session_messages.hpp"        // chain 335: 93h / 70h / 9Eh copies
 #include "bsp/cc13_seg52.hpp"                         // chain 325: 0084D8F0
@@ -2971,6 +2974,9 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_swim3d_starts{0}, torpedo_swim3d_steps{0},
         torpedo_homing_scans{0}, torpedo_homing_binds{0}, torpedo_homing_turn_steps{0},
         torpedo_sub_vs_sub_launches{0};
+    // Goal 4 chain 369: launches whose swim depth 00852410 predicted, and the sum.
+    unsigned long long torpedo_sub_depth_predictions{0};
+    double torpedo_sub_depth_prediction_sum{0.0};
     // kTorpedoBotAttackRangeBound: bot+68h / bot+6Ch and the bot's target, by gun.
     struct TorpedoBotRange {
         bsp::ship_torpedo_ver_cc13::TorpedoBotRangeCache cache;
@@ -11872,6 +11878,38 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (kTorpedoSwimDepthHomingBound && torpedo_gun && have_target
             && units.unit_is_kind_of(owner_unit, 8) && units.unit_is_kind_of(target, 8)) {
             ++torpedo_sub_vs_sub_launches;   // 0072C970 would predict 00852410's depth
+            if constexpr (bsp::kWireGoal4Chain369Bound) {
+                // Goal 4 chain 369: 0072C970 BSP_Gun_TorpedoSwimDepth (bsp show 0072c970
+                // --asm), the swim depth 007311B0 carries into +47Ch. Owner kind 8 and a
+                // submarine target (0072C9CB AsKind08) are the test above; then the
+                // device Function [+3F4h]+80h == 7 (0072C9A3) and the round class
+                // [[+3F4h]+74h]+34h with +8h == 0Ah, MTorpedo (0072CA13). 0072CA19..
+                // 0072CA36: 0042B2F0 of the target's pose position minus the gun's,
+                // FDIV by the round's WaterTravelSpeed +0E4h (0072CA50), stored as the
+                // float argument of 00852410(ECX = the target). LABELLED: the gun's
+                // pose (00427EB0 on the gun) is this host's gun point (muzzle), and
+                // the second arm (0072C9D6: the owner's +738h object cast to a
+                // submarine when the target is not one) is not taken.
+                const GameBulletClassRow* const round = bullet(gun.bullet_class);
+                if (gun.category == bsp::kUnitGunneryTorpedoCategory && round != nullptr
+                    && round->type == "Torpedo") {
+                    float tr[3], tu[3], tf[3], target_origin[3];
+                    unit_pose(target, tr, tu, tf, target_origin);
+                    const float dx = target_origin[0] - muzzle[0];
+                    const float dy = target_origin[1] - muzzle[1];
+                    const float dz = target_origin[2] - muzzle[2];
+                    const float range = bsp::pc24_unitshost::length3_0042b2f0(dx, dy, dz);
+                    const float run_time = range / round->water_travel_speed;   // 0072CA50
+                    float predicted_y = 0.0f;
+                    if (units.predict_submarine_depth(target, run_time, predicted_y)) {
+                        shot.swim_depth = predicted_y;   // replaces 00D0C314's -2.5
+                        ++torpedo_sub_depth_predictions;
+                        torpedo_sub_depth_prediction_sum += predicted_y;
+                        done("Gun::torpedo_swim_depth_0072c970", 0x0072c970u);
+                        done("SubmarineUnit::predict_depth_after_00852410", 0x00852410u);
+                    }
+                }
+            }
         }
         if (kPlayerTorpedoGroupFireBound && kTorpedoGyroHeadingBound && torpedo_gun
             && gun.player_order_heading != 10000.0f) {
@@ -20148,6 +20186,34 @@ void GameGunneryHost::submarine_wake_draws_008546df(std::size_t unit_index, floa
     ship_systems_sink_draws_00933da0_00933bb0(unit_index, false, true);   // 008546FC
 }
 
+// Goal 4 chain 369. 008522C0 (bsp show 008522c0; header in game_hosts_gunnery.hpp).
+// The children are the unit's CATAPULT gun rows, the devices 00853E10 walks for
+// +1279h (00853E2D.., the byte cleared and then set when a child answers
+// IsKindOf(28h)). MCatapult+490h is -1 from its constructor (006EC640) and the
+// launch tick once 006EC070 has run (006ECB0F inside MCatapult::Fire); the host's
+// ShipUseCatapult (packet p17_catapult_adapter) counts that launch on the ship's
+// record in the same call. LABELLED: no tick is kept, so a child reads 0 after
+// the first counted launch, which only the sign test 008522E8 consumes.
+bool GameGunneryHost::submarine_catapult_wants_surface(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    const bsp::ShipCatapultRecord* const record = bsp::ship_catapult_registry().find(unit_index);
+    const std::int32_t launch_tick_490 = (record != nullptr && record->launches > 0u) ? 0 : -1;
+    std::vector<bsp::gameplay_seg53_cc13::SubmarineChild> children;
+    for (const GameGunRow& gun : host.guns) {
+        if (gun.unit_index != unit_index
+            || gun.category != static_cast<int>(bsp::GunneryCategory::kCatapult)) {
+            continue;
+        }
+        bsp::gameplay_seg53_cc13::SubmarineChild child;
+        child.is_catapult = true;                  // vtable[5Ch](28h)
+        child.launch_state_490 = launch_tick_490;  // +490h
+        children.push_back(child);
+    }
+    const bool catapult_child_1279 = !children.empty();   // 00853E10's +1279h
+    return bsp::gameplay_seg53_cc13::submarine_catapult_needs_surface_008522c0(
+        catapult_child_1279, children);
+}
+
 int GameGunneryHost::plane_spin_side_800(std::size_t unit_index) const {
     if (!kPlaneSpinSideBound || unit_index >= impl_->plane_spin_side_800.size()) return -1;
     return impl_->plane_spin_side_800[unit_index];
@@ -21731,6 +21797,13 @@ void GameGunneryHost::report() {
                 : 0.0,
             host.torpedo_homing_scans, host.torpedo_homing_binds,
             host.torpedo_homing_turn_steps, host.torpedo_sub_vs_sub_launches);
+        host.log.notef("summary mission gunnery torpedo sub depth bound=%d predicted=%llu "
+            "mean_swim_y=%.2f (0072C970 / 00852410, goal 4 chain 369)",
+            bsp::kWireGoal4Chain369Bound ? 1 : 0, host.torpedo_sub_depth_predictions,
+            host.torpedo_sub_depth_predictions
+                ? host.torpedo_sub_depth_prediction_sum
+                    / static_cast<double>(host.torpedo_sub_depth_predictions)
+                : 0.0);
         host.log.notef("summary mission gunnery torpedo bot range gate_a_drops=%llu gate_b_drops=%llu "
             "passes=%llu mean_attack_range=%.0f over %llu submerged_drops=%llu bound=%d stale=%d "
             "submerged=%d (008FFF20 / 00901BA0 / 008FFFB2, CC13_VER_23 D1/D2/D4)",

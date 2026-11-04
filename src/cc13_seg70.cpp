@@ -489,7 +489,10 @@ void group_forward_command_00a2bd90(Seg70Host& host, Raw group, std::uint32_t a,
     if (command != nullptr) host.command_forward_24(command, a, b);   // JMP [vtable+24h]
 }
 
-bool group_is_attacking_target_00a2bdb0(Seg70Host& host, Raw group, void* target_group) {
+// Original __thiscall: ECX = group, stack target group, RET 4, bool in EAX.
+// bsp.py show 00a2bdb0 --asm: +564Ch is reloaded after IsType(6), and
+// command+1Ch is compared directly, including a null target-group argument.
+bool group_is_attacking_target_00a2bdb0(CommandTypeQueryHost& host, Raw group, void* target_group) {
     if (!host.command_is_type_08(group.ptr(kGroupCommand), kCommandTypeAttack)) return false;
     return Raw{static_cast<std::uint8_t*>(group.ptr(kGroupCommand))}.ptr(0x1C) == target_group;
 }
