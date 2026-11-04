@@ -5,6 +5,7 @@
 // 007D1F70, 00831840.
 
 #include "bsp/vehicle_class_fields.hpp"
+#include "bsp/wire_goal4_chain408_switches.hpp"
 
 #include <cstring>
 #include <limits>
@@ -864,6 +865,18 @@ void read_platform(VehicleClassFieldHost& host, const GuiLuaRef& entry, std::int
 
 }  // namespace
 
+void VehicleClassFieldHost::read_vector3_or_default(const GuiLuaRef& object,
+    float out[3], const float fallback[3]) {
+    if (inspect(object).is_table()) {
+        for (int i = 0; i < 3; ++i) {
+            ScopedRef component(*this, get_by_index(object, i + 1));
+            out[i] = vehicle_class_number_00b66270(inspect(component.get()));
+        }
+    } else {
+        for (int i = 0; i < 3; ++i) out[i] = fallback[i];
+    }
+}
+
 void read_vehicle_class_base_fields_00960230(VehicleClassFieldHost& host, const GuiLuaRef& row,
                                              VehicleClassBaseFields& out) {
     // 0096026C: SMIcon, with the literal fallback taking the same GUI load.
@@ -897,6 +910,13 @@ void read_vehicle_class_base_fields_00960230(VehicleClassFieldHost& host, const 
     // 00960659: three floats out of a Lua vector object; a missing key leaves zero.
     {
         ScopedRef position(host, host.get_by_name(row, "CockpitCameraPos"));
+        if constexpr (kWireGoal4Chain408Bound) {
+            // Listing 0096065E PUSH 00F87574, 00960672 CALL 00B680A0;
+            // 00960677..00960697 copy the result to class+84h/+88h/+8Ch.
+            // The image bytes at 00F87574..7F are twelve zero bytes.
+            static constexpr float kOrigin00f87574[3] = {0.0f, 0.0f, 0.0f};
+            host.read_vector3_or_default(position.get(), out.cockpit_camera, kOrigin00f87574);
+        } else {
         const VehicleClassLuaValue value = host.inspect(position.get());
         if (value.is_table()) {
             for (int i = 0; i < 3; ++i) {
@@ -904,6 +924,7 @@ void read_vehicle_class_base_fields_00960230(VehicleClassFieldHost& host, const 
                 out.cockpit_camera[i] =
                     vehicle_class_number_00b66270(host.inspect(component.get()));
             }
+        }
         }
     }
     out.spec_role =

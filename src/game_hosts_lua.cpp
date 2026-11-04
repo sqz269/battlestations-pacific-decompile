@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain408_switches.hpp"
 #include "bsp/wire_goal4_chain403_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
@@ -6087,6 +6088,20 @@ public:
     void release(const bsp::GuiLuaRef& object) override {
         const int ref = static_cast<int>(object.id) - 3;
         if (ref > 0) luaL_unref(state_, LUA_REGISTRYINDEX, ref);
+    }
+    void read_vector3_or_default(const bsp::GuiLuaRef& object, float out[3],
+                                const float fallback[3]) override {
+        // The registry reference belongs to the live VehicleClass row, not a
+        // copied value view. 00B680A0 chooses the table or fallback arm, and
+        // 00B67A80 owns/pops each tracked component temporary on the table arm.
+        NativeLuaStateStorage owner;
+        construct_native_lua_state_00b66bd0(&owner);
+        owner.state_04 = state_;
+        push(object);
+        auto value = stack_object(owner, ::lua_gettop(state_));
+        native_lua_get_vector3_or_00b680a0(value, out, fallback);
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        log_.implemented("VehicleClassFields::read_vector3_or_default", "00b680a0");
     }
     bsp::VehicleClassLuaValue inspect(const bsp::GuiLuaRef& object) override {
         bsp::VehicleClassLuaValue value;
