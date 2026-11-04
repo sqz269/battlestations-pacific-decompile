@@ -777,13 +777,13 @@ int lua_is_class_changed(LuaArgs& args, LuaResults& results, ContentHost& host)
     return 1;
 }
 
-int lua_mission_narrative_size(LuaResults& results, ContentHost& host)
+int lua_mission_narrative_size(LuaBindingResultWriter& results, NarrativeContentHost& host)
 {
     results.push_number(host.narrative_size());
     return 1;
 }
 
-int lua_mission_narrative_clear(ContentHost& host)
+int lua_mission_narrative_clear(NarrativeContentHost& host)
 {
     host.narrative_clear(); // through the LuaStateHolder path; returns a literal 0
     return 0;
@@ -1554,7 +1554,7 @@ int lua_get_bounding(LuaArgs& args, LuaResults& results, QueryHost& host)
 // Variant-argument bindings (cc13-sys5b)
 // ---------------------------------------------------------------------------
 
-int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativeHost& host)
+int lua_mission_narrative_post(std::uint32_t entry_point, LuaArgs& args, NarrativePostHost& host)
 {
     const std::string text = args.get_string(0); // variant 0, +8h, passed as the pointer
     std::string callback;
