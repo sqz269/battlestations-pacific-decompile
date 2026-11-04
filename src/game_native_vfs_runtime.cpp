@@ -3,6 +3,8 @@
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal4_chain342_switches.hpp"
+#include "bsp/wire_goal4_chain464_switches.hpp"
+#include "bsp/vfs_whole_stream_reader.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_filestore_open.hpp"
@@ -1023,6 +1025,19 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
             static_cast<std::uint64_t>((std::numeric_limits<std::uint32_t>::max)()));
     if (length > win32_count_limit || length > bytes.max_size())
         throw std::length_error("Native VFS file exceeds Win32 read/allocation limit");
+    if constexpr (kWireGoal4Chain464Bound) {
+        // 00BE4770 (bsp.py show 00be4770): read byte, append, repeat until
+        // zero bytes; embedded NULs are data. Its existing typed body consumes
+        // the real opened stream through this bounded, buffered view. Keep
+        // the caller's existing extent/short-read policy and OpenedStream
+        // cleanup, including unwind, rather than constructing another owner.
+        VfsWholeStreamReader reader(static_cast<std::uint32_t>(length),
+            [&](void* destination, std::uint32_t requested, std::uint32_t* actual) {
+                impl_->bindings.read(word(stream), stream, destination, requested, actual);
+            });
+        const auto contents = cc13_files::read_stream_to_end_00be4770(reader);
+        bytes.assign(contents.begin(), contents.end());
+    } else {
     bytes.resize(static_cast<std::size_t>(length));
     std::size_t offset = 0;
     while (offset < bytes.size()) {
@@ -1033,6 +1048,7 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
         if (actual == 0 || actual > requested)
             throw std::runtime_error("Native VFS full-file read was short or invalid");
         offset += actual;
+    }
     }
     opened.release();
     return std::move(bytes);
