@@ -17,6 +17,9 @@
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/gameplay_tuning_lua_rows.hpp"
+#include "bsp/game_ship_depth_tables.hpp"
+#include "bsp/oct18_tail_b.hpp"
+#include "bsp/wire_goal4_chain523_switches.hpp"
 #include "bsp/wire_goal4_chain423_switches.hpp"
 #include "bsp/wire_goal4_chain424_switches.hpp"
 #include "bsp/band_004b_cc13.hpp"
@@ -190,6 +193,26 @@ extern "C" {
 #include <type_traits>
 
 namespace bsp::game {
+LoadedShipDepthTable select_loaded_ship_depth_table(GameplayTuningSettings& settings,
+    std::int32_t session_mode) noexcept {
+    // Source layout adapter, not a native game allocation: +1FE4 is the ONLY
+    // game field read by 00837DE0 (bsp.py show 00837de0). The caller supplies
+    // its actual scene/session mode; the unread prefix supplies no world state.
+    // The returned pointer aliases the SAME load-time settings object.
+    // Original ECX=settings, [00E188A8] game, EAX=interior pointer, RET0.
+    // Existing reconstruction has a C++ interface, not the Original ABI.
+    struct ModeView {
+        std::byte unread_prefix[0x1fe4];
+        std::int32_t mode_1fe4;
+    } game;
+    static_assert(offsetof(ModeView, mode_1fe4) == 0x1fe4);
+    game.mode_1fe4 = session_mode;
+    const auto* table = static_cast<const std::byte*>(
+        oct18_tail_b::ship_tuning_block_00837de0(&settings, &game));
+    const auto* root = reinterpret_cast<const std::byte*>(&settings);
+    return {table, static_cast<std::uint32_t>(table - root)};
+}
+
 namespace {
 
 // Listener arguments are transient: the interpreter copies each value onto
@@ -2874,6 +2897,15 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
                 log_.notef("keyed gameplay settings load failed: %s", error.c_str());
                 return false;
             }
+            if constexpr (bsp::kWireGoal4Chain523Bound) {
+                if (!read_ship_depth_tables_lua(*state_, *settings, sse2, error)) {
+                    log_.notef("gameplay depth tables load failed: %s", error.c_str());
+                    return false;
+                }
+            } else {
+                // Previously +80..15F remained unrepresented; class/draft
+                // readers below fetched their depths from Lua on every call.
+            }
             // Preserve the established snapshots for other consumers, now from
             // the same load-time object that the neighbour walk borrows.
             constexpr std::uint32_t offsets[] = {0x194, 0x1d4, 0x1d8, 0x214, 0x218};
@@ -3749,6 +3781,7 @@ struct ShipDepthReadContext {
     const bool* crt_sse2_conversion;
     bool read_array;
     GameShipNavigationInput result;
+    GameplayTuningSettings* loaded_settings;
 };
 static_assert(std::is_trivially_destructible_v<ShipDepthReadContext>);
 
@@ -3831,6 +3864,25 @@ int read_ship_depth_protected(lua_State* state) {
     destroy_native_lua_object_00b67700(row);
     destroy_native_lua_object_00b67700(classes);
 
+    if (context.loaded_settings != nullptr) {
+        const auto selected = select_loaded_ship_depth_table(*context.loaded_settings,
+            context.session_mode);
+        context.result.tuning.scalar = selected.word(source->scalar_source);
+        context.result.tuning.array_source = source->array_source;
+        context.result.tuning.scalar_source = source->scalar_source;
+        context.result.settings_block_offset = selected.settings_offset;
+        context.result.class_key = key;
+        if (context.read_array) {
+            for (std::size_t i = 0; i < ShipLeafTuningOffsets::kTuningArrayCount; ++i) {
+                const auto offset = leaf->leaf == ShipLeafClass::Submarine
+                    ? kSubmarineTuningArraySources[i] : source->array_source;
+                context.result.tuning.array[i] = selected.word(offset);
+            }
+        }
+        destroy_native_lua_object_00b67700(globals);
+        return 0;
+    }
+
     const auto settings_offset = ship_tuning_block_offset(context.session_mode);
     NativeLuaObjectStorage ship_globals, depths, values, first;
     native_lua_get_by_name_00b67800(globals, &ship_globals, "ShipGlobals");
@@ -3878,12 +3930,14 @@ int read_ship_depth_protected(lua_State* state) {
 }
 bool read_ship_tuning_lua(lua_State& state, int type_id, std::int32_t session_mode,
     const bool& crt_sse2_conversion, bool read_array,
-    GameShipNavigationInput& output, std::string& error) {
+    GameShipNavigationInput& output, std::string& error,
+    GameplayTuningSettings* loaded_settings = nullptr) {
     if (type_id < 0) {
         error = "ship depth requires an actual VehicleClass index";
         return false;
     }
-    ShipDepthReadContext context{type_id, session_mode, &crt_sse2_conversion, read_array, {}};
+    ShipDepthReadContext context{type_id, session_mode, &crt_sse2_conversion, read_array, {},
+        loaded_settings};
     const int top = lua_gettop(&state);
     lua_pushlightuserdata(&state, &context);
     lua_pushcclosure(&state, &read_ship_depth_protected, 1);
@@ -4032,8 +4086,21 @@ bool GameMissionLuaHost::read_ship_depth_input(int type_id, std::int32_t session
     // loader. The pure reader accepts the borrowed conversion mode explicitly.
     const bool sse2_conversion =
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    if constexpr (bsp::kWireGoal4Chain523Bound) {
+        if (!gameplay_tuning_settings_) {
+            error = "ship depth requires the completed load-time gameplay settings";
+            return false;
+        }
+        GameShipNavigationInput loaded{};
+        if (!read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
+                false, loaded, error, gameplay_tuning_settings_.get())) return false;
+        output = {loaded.tuning.scalar, loaded.settings_block_offset,
+            loaded.tuning.scalar_source, loaded.class_key};
+        return true;
+    } else {
     return read_ship_depth_input_lua(*state_, type_id, session_mode,
         sse2_conversion, output, error);
+    }
 }
 
 bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
@@ -4042,6 +4109,25 @@ bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
         error = "avoid-zone draft depths require the live mission Lua state";
         return false;
     }
+    if constexpr (bsp::kWireGoal4Chain523Bound) {
+        if (!gameplay_tuning_settings_) {
+            error = "avoid-zone draft depths require the completed load-time gameplay settings";
+            return false;
+        }
+        const auto selected = select_loaded_ship_depth_table(*gameplay_tuning_settings_, session_mode);
+        // 00424DDF..004253FF: same nine class scalars as the old Lua reader.
+        constexpr AvoidZoneDepthSlot slots[] = {AvoidZoneDepthSlot::kBattleShip,
+            AvoidZoneDepthSlot::kMotherShip, AvoidZoneDepthSlot::kDestroyer,
+            AvoidZoneDepthSlot::kTBoat, AvoidZoneDepthSlot::kLargeLandingShip,
+            AvoidZoneDepthSlot::kCargoShip, AvoidZoneDepthSlot::kLightCruiser,
+            AvoidZoneDepthSlot::kHeavyCruiser, AvoidZoneDepthSlot::kSubmarine};
+        for (std::size_t i = 0; i < output.size(); ++i) {
+            const auto word = selected.word(static_cast<std::uint32_t>(slots[i]));
+            std::memcpy(&output[i], &word, sizeof(word));
+        }
+        error.clear();
+        return true;
+    } else {
     const bool sse2_conversion =
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
     DraftDepthReadContext context{session_mode, &sse2_conversion, {}};
@@ -4059,6 +4145,7 @@ bool GameMissionLuaHost::read_avoid_zone_draft_depths(std::int32_t session_mode,
     output = context.result;
     error.clear();
     return true;
+    }
 }
 
 bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t session_mode,
@@ -4069,8 +4156,17 @@ bool GameMissionLuaHost::read_ship_navigation_input(int type_id, std::int32_t se
     }
     const bool sse2_conversion =
         IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    if constexpr (bsp::kWireGoal4Chain523Bound) {
+        if (!gameplay_tuning_settings_) {
+            error = "ship navigation requires the completed load-time gameplay settings";
+            return false;
+        }
+        return read_ship_tuning_lua(*state_, type_id, session_mode, sse2_conversion,
+            true, output, error, gameplay_tuning_settings_.get());
+    } else {
     return read_ship_navigation_input_lua(*state_, type_id, session_mode,
         sse2_conversion, output, error);
+    }
 }
 
 bool GameMissionLuaHost::read_ship_layer_timing_input(std::array<float, 6>& output,

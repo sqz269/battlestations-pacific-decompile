@@ -1,0 +1,151 @@
+{
+  "chain": 523,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "picked": "Load-time ship-depth table ownership and the existing 00837DE0 selector",
+  "switch": "bsp::kWireGoal4Chain523Bound",
+  "rows": [
+    {
+      "native": "00837de0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: read_ship_depth_protected and GameMissionLuaHost::read_avoid_zone_draft_depths, through select_loaded_ship_depth_table",
+      "reason": "The existing selector returns an interior pointer into the retained GameplayTuningSettings, using the actual caller-supplied scene/session mode. Ship class scalar/array copies and draft-body depths consume that table; the old Lua depth reads do not also run."
+    },
+    {
+      "native": "00710ad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_plane_visible_00951f40",
+      "reason": "Missing canonical native unit-part, parent collision-node and spatial attachment owners; the current plane flag cannot supply this graph."
+    },
+    {
+      "native": "00710b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_plane_visible_00951f40",
+      "reason": "Missing the actual native collision-part/spatial-index ownership required to detach a node; the current flag only models visibility."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing the actual hull shape chain, body manifold ownership and Cc13Dyn1Calls lock/notification binding at this flag-only host path."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing the actual hull shape chain and complete filter-change manifold notification; mutating a projected mask alone would not wire the body."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "Missing the produced flak-alternate ammunition record at ammo+48h and the native counted/vector assignment storage."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "Missing the owned unit+660h native vector and its element teardown providers in the capture-flip host."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call",
+      "reason": "Missing a real off-main-thread deferred-call argument producer; the current single-thread named-call path does not take this copy arm."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: mission Lua deferred-call queue",
+      "reason": "Missing the frame-job pool/on_frame_job_thread producer that makes this queue insertion run."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message boundary",
+      "reason": "Missing the controller state-message producer, retained message and transport consumer; a temporary snapshot of host flags would not wire state delivery."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list boundary",
+      "reason": "The score records feed the debug overlay 00A2CDD0; no single-player gameplay consumer is missing that warrants activating this debug-only list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list boundary",
+      "reason": "The chosen-byte reader is the debug overlay; missing a single-player gameplay consumer, so no auxiliary debug score table was fabricated."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text source boundary",
+      "reason": "Missing a live text-edit input-byte acceptance call site with its selected font; text rendering alone does not use this input predicate."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker",
+      "reason": "Missing the native E197C4..E197D8 margin publications and complete original widget-emission caller; its clip rectangle is not evidence for those separate globals."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::scoring_slot",
+      "reason": "Missing the HUD-map time producer and native scoring-record +18h ownership at its 005B45C0 caller."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing an entry-reachable original camera/frustum or shadow-fit caller; adding the leaf only to currently unlinked fitters would not wire it."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task construction boundary",
+      "reason": "Missing the complete MoveToTaskCalls object-memory, state-registry, target and task-activation providers needed by the existing factory chain."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::create_units",
+      "reason": "Missing the complete actual descriptor/part-set/model graph and native unit health-part constructor/dispatch providers."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum property insertion",
+      "reason": "No missing runtime call: the existing enum-symbol insertion already runs from SceneNumericPropertyMerge before this chain."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Impl and merge_child",
+      "reason": "No missing runtime call: baseline call_graph.py already shows two entry-reachable merge calls despite the readiness text-match classification."
+    }
+  ],
+  "implementation": {
+    "producer": "read_ship_depth_tables_lua fills all 56 DWORDs at settings+80..15F using native Lua GetInteger calls, Single then Multi, in the original store order. Publication occurs only after both tables load successfully.",
+    "state": "Uses the same retained settings owner created by chain423; the game receiver is an explicitly documented source layout view carrying only the real session-mode word read by 00837DE0. No native object, vtable or binary ABI is fabricated.",
+    "consumers": ["ship class+570 scalar", "ship class+560..56C navigation array", "avoid-zone draft collision-body depth inputs"],
+    "rollback": "Turning kWireGoal4Chain523Bound off keeps the previous Lua reads unchanged in the else arms and omits the new table capture."
+  },
+  "evidence": [
+    "python tools/bsp.py show 00837de0 --lines 75: reads only game+1FE4 and returns settings+80 or settings+F0",
+    "python tools/bsp.py disasm-raw 00841bab --length 2660: 28 stores per pass, starting BattleShip+28/+2C; 008425D2..D8 repeats exactly twice",
+    "docs/GAMEPLAY_SETTINGS.md:326-370: class keys, 70h record extent, scalar/array meanings",
+    "src/game_hosts_mission_frame.cpp: settings load precedes create_units; register_ship_ai_unit passes its actual scene session mode"
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader all passed",
+    "focused_probe": "./local/output/wire_g4_c523_probe.ps1 passed: exact layout/aliasing, zero and four nonzero modes, 56 Lua reads in native pass order, numeric/nil conversion, captured state after Lua mutation, stack balance and no partial publication on error",
+    "call_graph": {"before_called": 4884, "after_called": 4885, "new_reachable_address": "00837de0", "call_sites": ["GameMissionLuaHost::read_avoid_zone_draft_depths", "read_ship_depth_protected"]},
+    "readiness_before_wired": 9819,
+    "readiness_after_wired": 9820,
+    "readiness_row": "00837de0 state=wired, called=true, call_sites=2, callers_live=2",
+    "runtime": "Game not run, as instructed. Build, synthetic fixture and executable reachability evidence only; no Original ABI or gameplay-validation claim."
+  },
+  "left": "Other functions remain as recorded above; full native settings constructor/subobjects and Original runtime ABI remain outside this bounded source integration."
+}
