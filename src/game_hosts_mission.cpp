@@ -1,6 +1,9 @@
 // bsp_game.exe milestone 2e: from the main menu to the mission load request.
 // See include/bsp/game_hosts_mission.hpp for the address list and the evidence.
 #include "bsp/game_hosts_mission.hpp"
+#include "bsp/wire_goal4_chain484_switches.hpp"
+#include "bsp/game_native_texture_atlas_application.hpp"
+#include "bsp/native_particle_texture_names_raw.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/wire_goal2_chain29_switches.hpp"
@@ -586,6 +589,13 @@ struct NativeMissionPictureLoader {
     GameFrontendHost& frontend;
     GuiTextureCallbacks callbacks;
     MissionPictureTextureServices services;
+    // The SMIcon resolver has the same real renderer/ownership domain, but
+    // must probe the actual atlas: the mission-picture-only miss assumption
+    // above does not apply to gui/units names. This is a borrowed result view,
+    // not a second atlas or a parallel texture cache.
+    GuiTextureCallbacks class_icon_callbacks;
+    MissionPictureTextureServices class_icon_services;
+    TextureAtlasItem class_icon_item;
     // B31C20 needs persistent acquisition frames. A frame left running or
     // failed by a throwing load is retained to process exit (its destructor
     // would terminate), as the host retains other interrupted native graphs.
@@ -595,7 +605,7 @@ struct NativeMissionPictureLoader {
     std::vector<std::string> first_names;
 
     NativeMissionPictureLoader(GameHostLog& l, GameNativeRendererApplication& r,
-        GameFrontendHost& f)
+        GameFrontendHost& f, GameVfsHost& vfs)
         : log(l), renderer(r), frontend(f),
           services{callbacks, r.actual_owners(),
               [this] { return frontend.gui_manager_004c12b0(); },
@@ -606,6 +616,9 @@ struct NativeMissionPictureLoader {
               // No atlas hit is reachable here (find_atlas_item below), so
               // the value is unobservable; zero is a host choice, not a
               // recovered preimage.
+              [] { return std::array<float, 2>{0.0f, 0.0f}; }},
+          class_icon_services{class_icon_callbacks, r.actual_owners(),
+              [this] { return frontend.gui_manager_004c12b0(); },
               [] { return std::array<float, 2>{0.0f, 0.0f}; }} {
         // 00AA2660's atlas lookup, 00AEFB20 on the manager at 00F8C26C. The
         // host never constructs that manager (00AF0060 is unimplemented in
@@ -642,6 +655,33 @@ struct NativeMissionPictureLoader {
         // Existing ready/native-acquisition gate the font producer uses.
         (void)renderer.section_layout_services();
         validate_mission_picture_services(services);
+        if constexpr (bsp::kWireGoal4Chain484Bound) {
+            class_icon_callbacks = callbacks;
+            class_icon_callbacks.find_atlas_item = [this, &vfs](std::string_view name)
+                -> const TextureAtlasItem* {
+                // Saved AEFB20: current F8C26C manager, borrowed item result.
+                // Reuse its one raw reconstructed body and the application's
+                // actual string pool/null-pattern role. Do not project the
+                // sprite bridge atlas (whose textures are COM pointers).
+                void* manager = GameNativeTextureAtlasApplication::process_roles()
+                    .atlas_publication_00f8c26c();
+                if (!manager)
+                    throw std::logic_error("vehicle class icon requires the live native atlas manager");
+                const std::string terminated(name);
+                const void* item = find_native_particle_atlas_item_00aefb20(manager,
+                    terminated.c_str(), vfs.raw_strings(),
+                    vfs.native_application().borrow_null_pattern_00e17bf0());
+                if (!item) return nullptr;
+                // AA2660 reads only item+08h (texture) and +14h..+20h (UV).
+                // The snapshot borrows those same values for this call alone;
+                // AA2660 performs its one actual +04 retain on an atlas hit.
+                const auto* bytes = static_cast<const unsigned char*>(item);
+                std::memcpy(&class_icon_item.texture, bytes + 8, sizeof(void*));
+                std::memcpy(class_icon_item.uv.data(), bytes + 0x14, sizeof(float) * 4);
+                return &class_icon_item;
+            };
+            validate_mission_picture_services(class_icon_services);
+        }
     }
     NativeMissionPictureLoader(const NativeMissionPictureLoader&) = delete;
     NativeMissionPictureLoader& operator=(const NativeMissionPictureLoader&) = delete;
@@ -2983,7 +3023,7 @@ void GameMissionHost::bind_native_mission_pictures(GameNativeRendererApplication
     if (impl_->native_pictures)
         throw std::logic_error("Native mission picture services bind once");
     auto loader = std::make_unique<NativeMissionPictureLoader>(impl_->log, renderer,
-        impl_->frontend);
+        impl_->frontend, impl_->vfs);
     bind_mission_picture_services(loader->services);
     impl_->native_pictures = std::move(loader);
 }
@@ -3362,7 +3402,12 @@ void GameMissionHost::Impl::finish_scene_load() {
     // The previous frame and its children borrow the previous Lua owner.
     // Destroy those borrowers before replacing that owner on a later load.
     frame_host.reset();
+    if constexpr (bsp::kWireGoal4Chain484Bound) {
+        lua = std::make_unique<GameMissionLuaHost>(log, vfs,
+            native_pictures ? &native_pictures->class_icon_services : nullptr);
+    } else {
     lua = std::make_unique<GameMissionLuaHost>(log, vfs);
+    }
     // Forward the retained live table; keep the independent copied language input.
     frame_host = std::make_unique<GameMissionFrameHost>(log, vfs, *lua, participants,
         locale, profiler, language, hud);

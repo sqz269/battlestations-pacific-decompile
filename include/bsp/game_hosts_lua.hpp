@@ -59,6 +59,7 @@ struct ShipAiPathSearchTurnRamp;
 struct ShipCameraSettings;
 struct ShipClassCameraInputs;
 struct GameplayTuningSettings;
+struct MissionPictureTextureServices;
 }
 
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
@@ -1487,10 +1488,17 @@ class GameMissionLuaHost final : public bsp::MissionLuaHostServices,
                                  public bsp::SpawnQueueDrain,
                                  public GameEntityInitAllRunner {
 public:
-    GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);
+    // Optional borrowed native texture services must outlive this host; its
+    // acquired class-icon references are released before those services retire.
+    GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs,
+        const bsp::MissionPictureTextureServices* class_icon_services = nullptr);
     ~GameMissionLuaHost() override;
     GameMissionLuaHost(const GameMissionLuaHost&) = delete;
     GameMissionLuaHost& operator=(const GameMissionLuaHost&) = delete;
+
+    // 009602C1/00960314: the SMIcon preload returns an acquired native texture
+    // for class+D4h. The class fields borrow it until this Lua owner retires.
+    void* preload_vehicle_class_icon(const char* path);
 
     // 00884be0 at 004dd627, then the fundamentals chunk whose bytes the host
     // owns (00884770) and the DoFile global from the owner layer at 00b6a303.
@@ -2320,6 +2328,8 @@ private:
 
     GameHostLog& log_;
     GameVfsHost& vfs_;
+    const bsp::MissionPictureTextureServices* class_icon_services_{};
+    std::vector<void*> class_icon_references_;
     // Declared before the adapter that borrows it: the adapter keeps a
     // reference to this list for its whole life.
     std::vector<std::string> content_suffixes_; // manager +48h/+4Ch, empty here
