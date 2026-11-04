@@ -103,14 +103,16 @@ static_assert(offsetof(CollectionVector, first) == 4);
 static_assert(offsetof(CollectionVector, last) == 8);
 static_assert(offsetof(CollectionVector, capacity) == 0x0c);
 
-class PowerupCollectionBinding final : public powerup_seg58_argon::PowerupCollectionHost {
+class PowerupCollectionBinding final : public powerup_seg58_argon::PowerupCollectionHost,
+    public powerup_seg58_argon::PowerupUsableInventoryHost {
 public:
-    explicit PowerupCollectionBinding(cc13_powerup::PowerupRuntime& runtime)
+    explicit PowerupCollectionBinding(cc13_powerup::PowerupRuntime& runtime,
+        bool include_disabled_inventory = false)
         : runtime_(runtime), enabled_(runtime.host->powerups_enabled_00e0c978() ? 1 : 0),
           clock_(runtime.host->clock_00f876a4()) {
         // The image returns after clearing its outputs when EnablePowerups is
         // clear; it does not inspect a player or an inventory on that path.
-        if (enabled_ == 0) return;
+        if (enabled_ == 0 && !include_disabled_inventory) return;
         game_.local_slot = runtime.host->local_player_slot_18ec();
         if (game_.local_slot < 0 || game_.local_slot >= 8)
             throw std::logic_error("008E9AF0 local player outside 0..7");
@@ -141,6 +143,47 @@ public:
             manager_.lists[slot].size = static_cast<std::uint32_t>(nodes.size());
         }
         game_word_ = reinterpret_cast<std::uint32_t>(&game_);
+    }
+
+    bool usable() {
+        return powerup_seg58_argon::power_up_manager_local_player_has_usable_item_008ed9c0(
+            *this, &manager_) != 0;
+    }
+    // bsp.py show 008ED9C0: copy list (+20h + localSlot*0Ch), then read node
+    // class+8h and node+14h, finally clear nodes and free the sentinel on either
+    // return. These callbacks own a distinct snapshot of the real inventory.
+    void* stl_list_copy_construct_008ed660(void* dst, const void* src) override {
+        const CollectionList* source = nullptr;
+        for (const auto& list : manager_.lists) if (&list == src) source = &list;
+        if (source == nullptr || copy_live_) invalid_parameter_noinfo_00bf6713();
+        copy_nodes_.clear();
+        copy_nodes_.reserve(source->size);
+        for (auto* node = source->head->next; node != source->head; node = node->next)
+            copy_nodes_.push_back(*node);
+        for (std::size_t i = 0; i < copy_nodes_.size(); ++i) {
+            copy_nodes_[i].next = i + 1 == copy_nodes_.size() ? &copy_head_ : &copy_nodes_[i + 1];
+            copy_nodes_[i].previous = i == 0 ? &copy_head_ : &copy_nodes_[i - 1];
+        }
+        copy_head_.next = copy_nodes_.empty() ? &copy_head_ : &copy_nodes_.front();
+        copy_head_.previous = copy_nodes_.empty() ? &copy_head_ : &copy_nodes_.back();
+        const CollectionList copy{0, &copy_head_, static_cast<std::uint32_t>(copy_nodes_.size())};
+        std::memcpy(dst, &copy, sizeof(copy));
+        copy_live_ = true;
+        copy_list_ = dst;
+        return dst;
+    }
+    void stl_inst_008e7da0(void* list) override {
+        if (!copy_live_ || list != copy_list_) invalid_parameter_noinfo_00bf6713();
+        copy_nodes_.clear();
+        copy_head_.next = copy_head_.previous = &copy_head_;
+        const CollectionList empty{0, &copy_head_, 0};
+        std::memcpy(list, &empty, sizeof(empty));
+    }
+    void free_00bf65ac(void* ptr) override {
+        if (!copy_live_ || ptr != &copy_head_ || !copy_nodes_.empty())
+            invalid_parameter_noinfo_00bf6713();
+        copy_live_ = false;
+        copy_list_ = nullptr;
     }
 
     void collect(HudPowerupEntries& entries) {
@@ -251,6 +294,10 @@ private:
     std::array<CollectionNode, 8> heads_{};
     std::array<std::vector<CollectionNode>, 8> nodes_{};
     std::array<CollectionVector, 5> vectors_{};
+    CollectionNode copy_head_{};
+    std::vector<CollectionNode> copy_nodes_;
+    void* copy_list_{};
+    bool copy_live_{};
     CollectionCooldown cooldown_;
     std::uint32_t game_word_{};
     std::uint8_t enabled_{};
@@ -272,6 +319,14 @@ void collect_hud_powerups(HudPowerupEntries& entries) {
     if (runtime.manager == nullptr || runtime.host == nullptr) return;
     PowerupCollectionBinding binding(runtime);
     binding.collect(entries);
+}
+
+bool local_player_has_usable_powerup() {
+    auto& runtime = cc13_powerup::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr) return false;
+    // Unlike 008E9AF0, 008ED9C0 has no EnablePowerups early return.
+    PowerupCollectionBinding binding(runtime, true);
+    return binding.usable();
 }
 
 // [BSP reconstruction 008e4680]

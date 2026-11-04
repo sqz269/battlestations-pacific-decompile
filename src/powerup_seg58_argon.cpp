@@ -2493,7 +2493,7 @@ void command_building_powerup_binding_init_from_properties_008ed720(
 // Hypothesis, not a recovered symbol. Copies the local player's item list and
 // returns 1 if any item has class type 3 or nonzero remaining uses (+0x14 on node).
 std::uint8_t power_up_manager_local_player_has_usable_item_008ed9c0(
-    Seg58Host& host, void* manager) {
+    PowerupUsableInventoryHost& host, void* manager) {
   void* const game = ptr_from_u32(host.global_u32(0x00e188a8));
   const std::int32_t local_slot = raw_of(game).at<std::int32_t>(0x18ec);
   void* const src_list = raw_of(manager).p + 0x20 + local_slot * 0xc;

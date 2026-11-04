@@ -1,0 +1,13 @@
+{
+  "chain": 360,
+  "switch": "kWireGoal4Chain360Bound",
+  "baseline_wired": 9471,
+  "rows": [
+    {
+      "native": "008ed9c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::support_request_pending -> game_powerups::local_player_has_usable_powerup",
+      "evidence": "Original 008ED9C0 export; live runtime inventories, local slot and descriptor layouts; copied-list ownership. Build and both CTests pass; call_graph who shows reachable direct call from local_player_has_usable_powerup."
+    }
+  ]
+}

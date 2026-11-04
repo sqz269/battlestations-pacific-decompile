@@ -177,5 +177,7 @@ struct HudPowerupEntries {
     std::vector<float> deadlines;
 };
 void collect_hud_powerups(HudPowerupEntries& entries);
+// 00689940's 008ED9C0 query uses the current local slot's actual inventory.
+bool local_player_has_usable_powerup();
 
 }  // namespace bsp::game_powerups

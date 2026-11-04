@@ -50,7 +50,18 @@ struct PowerupCollectionHost : PowerupSlotClockHost {
   virtual void stl_vector_push_back_005a7960(void* vec, const void* val_ptr) = 0;
 };
 
-struct Seg58Host : PowerupCollectionHost {
+// 008ED9C0 only reads the local inventory through a temporary copied list.
+// Keep this usable by the live typed inventory without unrelated segment hooks.
+struct PowerupUsableInventoryHost {
+  virtual ~PowerupUsableInventoryHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void invalid_parameter_noinfo_00bf6713() = 0;
+  virtual void* stl_list_copy_construct_008ed660(void* dst_list, const void* src_list) = 0;
+  virtual void stl_inst_008e7da0(void* list) = 0;
+  virtual void free_00bf65ac(void* ptr) = 0;
+};
+
+struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost {
   virtual ~Seg58Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -344,7 +355,7 @@ void command_building_powerup_binding_init_from_properties_008ed720(
     Seg58Host& host, void* binding, void* prop_container);
 
 std::uint8_t power_up_manager_local_player_has_usable_item_008ed9c0(
-    Seg58Host& host, void* manager);
+    PowerupUsableInventoryHost& host, void* manager);
 
 void cg_vector_deleting_dtor_008edad0(Seg58Host& host, void* manager);
 

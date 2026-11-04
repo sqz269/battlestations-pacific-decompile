@@ -4,6 +4,7 @@
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain291_switches.hpp"
 #include "bsp/wire_goal4_chain339_switches.hpp"
+#include "bsp/wire_goal4_chain360_switches.hpp"
 #include "bsp/game_hosts_powerups.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
 
@@ -793,7 +794,11 @@ public:
     bool pause_screen_flag_05() override { return false; }
     bool pause_screen_flag_08() override { return false; }
     bool pause_screen_child_query() override { return false; }
-    bool support_request_pending() override { return record_false("008ed9c0", 0x008ed9c0u); }
+    bool support_request_pending() override {
+        if constexpr (kWireGoal4Chain360Bound) {
+            return game_powerups::local_player_has_usable_powerup();
+        } else { return record_false("008ed9c0", 0x008ed9c0u); }
+    }
 
     void input_manager_update(float seconds) override {
         static_cast<void>(seconds);
