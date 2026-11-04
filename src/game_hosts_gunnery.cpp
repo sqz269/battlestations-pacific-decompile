@@ -23,6 +23,8 @@
 #include "bsp/game_recon_sensor_class_registry.hpp"
 #include "bsp/wire_goal4_chain452_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
+#include "bsp/camera_position_modes.hpp"
+#include "bsp/wire_goal4_chain529_switches.hpp"
 #include "bsp/wire_goal4_chain442_switches.hpp"
 #include "bsp/wire_goal4_chain434_switches.hpp"
 #include "bsp/camera_look_at.hpp"
@@ -2560,6 +2562,14 @@ struct WaterEntryKinematics {
     return result;
 }
 
+// Chain 529: only the recovered asin provider is needed by 00521370. The
+// current thread's x87 control word governs its staged float operations.
+struct GunneryDirectionPitchYawBinding final : bsp::cc13_sweepA::DirectionPitchYawHost {
+    float geometry_asin_clamped_0042cf10(float value) override {
+        return bsp::camera_asin_clamped_0042cf10(value);
+    }
+};
+
 // Bind the gun bot's arithmetic calls to the retained hull frame and the
 // host's float math boundary. The bot body owns subtraction, normalization
 // and horizontal negation; no already-computed angle is passed back to it.
@@ -2574,11 +2584,19 @@ struct GunneryDirectionAnglesBinding final : bsp::GunBotAnglesHost {
     }
     void direction_to_pitch_yaw_00521370(const float direction[3],
         float* pitch, float* yaw) override {
+        if constexpr (kWireGoal4Chain529Bound) {
+            // bsp.py show 00521370 --asm, 00521374..005213BE: clamp the
+            // live direction's Y, call 0042CF10, then atan2(X,Z). Preserve
+            // the body's float stores and unordered-input behavior.
+            GunneryDirectionPitchYawBinding binding;
+            bsp::cc13_sweepA::direction_to_pitch_yaw_00521370(direction, pitch, yaw, binding);
+        } else {
         // Preserve this host's asin/atan2 provider boundary. No native CRT
         // exception or binary-ABI equivalence is claimed by this adapter.
         const float vertical = std::max(-1.0f, std::min(1.0f, direction[1]));
         *pitch = std::asin(vertical);
         *yaw = std::atan2(direction[0], direction[2]);
+        }
     }
 };
 
@@ -13985,9 +14003,18 @@ void GameGunneryHost::Impl::torpedo_swim3d_step(GameProjectileRow& shot, float d
         }
         void direction_to_pitch_yaw(const bsp::BombVector3& d, float& pitch,
                                     float& yaw) override {
+            if constexpr (kWireGoal4Chain529Bound) {
+                // 00856D9F / 00856E14 use the hull-forward and target
+                // directions supplied by the live torpedo swim body.
+                const float direction[3] = {d.x, d.y, d.z};
+                GunneryDirectionPitchYawBinding binding;
+                bsp::cc13_sweepA::direction_to_pitch_yaw_00521370(
+                    direction, &pitch, &yaw, binding);
+            } else {
             // 00521370: asin(clamp(d.y)) and atan2(d.x, d.z).
             pitch = std::asin(std::max(-1.0f, std::min(1.0f, d.y)));
             yaw = std::atan2(d.x, d.z);
+            }
         }
         bsp::BombVector3 direction_to_target(void* target) override {
             // 00856DCA: normalize(target+FCh - record+FCh) through 00419510.

@@ -49,7 +49,14 @@ struct UnitReferenceHost {
     virtual std::uint16_t unit_object_id_174(const void* unit) = 0;
 };
 
-struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost {
+// Complete provider surface of 00521370. Direction decomposition needs no
+// scene, archive, input or allocation services from the larger sweep host.
+struct DirectionPitchYawHost {
+    virtual ~DirectionPitchYawHost() = default;
+    virtual float geometry_asin_clamped_0042cf10(float value) = 0;
+};
+
+struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost, DirectionPitchYawHost {
     virtual ~SweepAHost() = default;
 
     // Existing raw-layout callers retain the original WORD load. Typed live
@@ -650,7 +657,7 @@ void hud_view_bind_unit_0051e730(Raw view, void* unit, SweepAHost& host);
 void hud_bomber_view_bind_unit_00519b00(Raw view, void* unit, SweepAHost& host);
 void front_end_screen_reset_descendant_colors_0051c3a0(void* root, std::uint8_t flag, SweepAHost& host);
 void direction_to_pitch_yaw_00521370(const float* direction, float* pitch, float* yaw,
-                                     SweepAHost& host);
+                                     DirectionPitchYawHost& host);
 std::uint32_t unit_pick_row_value_00521f10(Raw rows, std::int32_t index);
 std::uint8_t unit_pick_read_position_00521fd0(Raw entry, float* out);
 const void* unit_pick_attackmove_color_00522680(void* entity, std::uint32_t arg, SweepAHost& host);
