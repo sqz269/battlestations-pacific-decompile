@@ -60,7 +60,7 @@ struct HudClosedRowsHost {
     virtual void push_interface_request(int id, std::uint32_t payload) = 0; // 004CC460
 };
 // 00647080, ECX=root, RET. Native caller guarantees the required unit/member.
-void hud_root_toggle_closed(HudClosedRowsState& state, HudClosedRowsHost& host);
+void hud_root_toggle_closed_00647080(HudClosedRowsState& state, HudClosedRowsHost& host);
 
 enum class HudRowWidget : std::uint32_t {
     UnitName = 0x34, WeaponInfo = 0x3c, Payload = 0x50,

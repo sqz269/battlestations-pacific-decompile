@@ -555,7 +555,7 @@ Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head) 
 // Observer references
 // ---------------------------------------------------------------------------
 
-Raw observer_ref_set(Raw ref, void* observed, HudScreenHost& host) {
+Raw observer_ref_set(Raw ref, void* observed, HudObserverReferenceHost& host) {
     if (ref.ptr(0x14) != observed) {
         if (ref.ptr(0x14) != nullptr) host.observer_unregister_006952a0(ref.p, ref.ptr(0x14));
         ref.ptr(0x14) = observed;
@@ -1360,7 +1360,8 @@ bool unit_is_local_player_unit_00645180(Raw unit, UnitSelectHost& host) {
 
 // 00646040, __thiscall(root, iface, observed), RET 8: only while +1Ch is clear,
 // store +CCh and re-point the observer member +D0h (observed +E4h).
-void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed, HudScreenHost& host) {
+void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed,
+                                    HudObserverReferenceHost& host) {
     if (s.at<std::uint32_t>(0x1C) != 0) return;
     s.at<std::uint32_t>(0xCC) = iface;
     observer_ref_set(Raw{s.p + 0xD0}, observed, host);

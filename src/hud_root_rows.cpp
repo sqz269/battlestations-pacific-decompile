@@ -206,7 +206,7 @@ void hud_root_force_select_unit_006485a0(HudRootUnitLists& lists, HudRootUnitLis
     if (host.controlled_unit() != 0) host.push_controlled_unit_interface_00647040();
 }
 
-void hud_root_toggle_closed(HudClosedRowsState& state, HudClosedRowsHost& host) {
+void hud_root_toggle_closed_00647080(HudClosedRowsState& state, HudClosedRowsHost& host) {
     if (state.closed == 0) {
         if (state.interface_id == 0x22) {
             const auto unit = host.controlled_unit();

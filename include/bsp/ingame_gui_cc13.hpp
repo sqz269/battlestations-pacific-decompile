@@ -36,7 +36,15 @@ struct Raw {
 // ---------------------------------------------------------------------------
 // Engine services the screens call. Each method names the image routine.
 // ---------------------------------------------------------------------------
-struct HudScreenServices {
+// The setter/weak-reference bodies need only this pair, not every GUI service.
+// Keeping the same callbacks lets live owners bind their real saved reference.
+struct HudObserverReferenceHost {
+    virtual ~HudObserverReferenceHost() = default;
+    virtual void observer_register_00694a60(void* observer, void* observed) = 0;
+    virtual void observer_unregister_006952a0(void* observer, void* observed) = 0;
+};
+
+struct HudScreenServices : HudObserverReferenceHost {
     virtual ~HudScreenServices() = default;
     // Front-end screen base (src/frontend_state_machine.cpp).
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
@@ -63,8 +71,6 @@ struct HudScreenServices {
     virtual void push_page_slot_004d6790(void* vector, void** slot) = 0;
     // Observer pair: 00694A60 register, 006952A0 unregister, 00694AF0 is-registered.
     // Each takes the observing object and the observed one.
-    virtual void observer_register_00694a60(void* observer, void* observed) = 0;
-    virtual void observer_unregister_006952a0(void* observer, void* observed) = 0;
     virtual bool observer_is_registered_00694af0(void* observer, void* observed) = 0;
     // 004D92B0, ECX = *00E188A8: action pressed this frame or auto-repeating.
     virtual bool action_edge_or_repeat_004d92b0(int action) = 0;
@@ -385,7 +391,7 @@ Raw hud_markers_construct_00640c80(Raw s, HudScreenHost& host, void* tree_head);
 // __thiscall(ref, observed), RET 4. Unregister the old, store, register the new.
 inline constexpr std::array<std::uint32_t, 5> kObserverRefSetters{
     0x0064B340, 0x00656DE0, 0x00656E20, 0x0064B610, 0x0064BB50};
-Raw observer_ref_set(Raw ref, void* observed, HudScreenHost& host);
+Raw observer_ref_set(Raw ref, void* observed, HudObserverReferenceHost& host);
 // 0064B590 / 0065AFA0 / 0065B040 / 0065B090: __thiscall(ref, released), RET 4.
 // released->vtable[+4h]() yields the object; if it is +14h, clear and unregister.
 inline constexpr std::array<std::uint32_t, 5> kObserverRefReleased{
@@ -639,7 +645,8 @@ void press_start_on_storage_complete_0067ca40(PressStartStorageHost& host);
 Raw hud_colour_icon_set_construct_0063dec0(Raw set, void* page, HudScreenHost& host, HudMarkerCloneHost& clone);
 void hud_unit_marker_widgets_destruct_00638f50(Raw w, HudScreenHost& host);
 void text_owner_set_ellipsized_00646d30(Raw owner, const char* text, HudScreenHost& host);
-void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed, HudScreenHost& host);
+void hud_root_set_interface_00646040(Raw s, std::uint32_t iface, void* observed,
+                                    HudObserverReferenceHost& host);
 void periscope_attach_unit_00650210(Raw s, HudScreenHost& host);
 void periscope_detach_unit_006506e0(Raw s, HudScreenHost& host);
 void periscope_enter_00650750(Raw s, HudScreenHost& host);
