@@ -194,7 +194,25 @@ WeaponEnableMessage torpedo_enable_message_0071e0d0(bool enabled) noexcept;
 // opaque.
 using NativeHandle = std::uintptr_t;
 
-struct UnitWeaponHost {
+// The 0081F8B0 body needs only live stock and direct-child gun access. Keeping
+// this boundary separate lets the gunnery owner call the existing body without
+// supplying unrelated Lua, weapon-director, or result-table operations.
+struct TorpedoStockHost {
+    virtual ~TorpedoStockHost() = default;
+    virtual bool class_test(NativeHandle object, int class_id) = 0;
+    virtual NativeHandle node_first_child(NativeHandle node) = 0;
+    virtual NativeHandle node_next_sibling(NativeHandle node) = 0;
+    virtual int gun_barrel_num(NativeHandle gun) = 0;
+    virtual float gun_reload_timer(NativeHandle gun, int barrel) = 0;
+    virtual int gun_weapon_type(NativeHandle gun) = 0;
+    virtual float gun_reload_empty_threshold() = 0;
+    virtual void gun_rearm_barrel(NativeHandle gun, int barrel, bool full) = 0;
+    virtual int loaded_torpedo_barrels_00810e90(NativeHandle unit) = 0;
+    virtual void unload_random_torpedo_barrel_0081dcb0(NativeHandle unit) = 0;
+    virtual void unit_set_torpedo_spare(NativeHandle unit, int spare) = 0;
+};
+
+struct UnitWeaponHost : TorpedoStockHost {
     virtual ~UnitWeaponHost() = default;
 
     // -- mission binding argument plumbing (docs/LUA_BINDING_CORE.md) --------
@@ -328,7 +346,7 @@ void director_set_stance_0071be80(UnitWeaponHost& host, NativeHandle director, i
 // random barrels while more are loaded than the stock allows, else keeping the
 // rest as the spare +104Ch), then re-arm every pinned barrel of every
 // direct-child torpedo gun.
-void set_torpedo_stock_0081f8b0(UnitWeaponHost& host, NativeHandle unit, int stock);
+void set_torpedo_stock_0081f8b0(TorpedoStockHost& host, NativeHandle unit, int stock);
 
 // Packet cc9_torpedo_supply_tick (docs/UNIT_WEAPON_DEVICES.md, "The supply
 // tick"). 00825450, __thiscall(unit)(float seconds), body 00825450-0082558F,

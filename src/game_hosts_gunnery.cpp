@@ -73,6 +73,7 @@
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/wire_goal4_chain250_switches.hpp"  // goal 4 chain 250 (kWireGoal4Chain250Bound)
+#include "bsp/wire_goal4_chain500_switches.hpp"
 #include "bsp/wire_goal4_chain262_switches.hpp"
 #include "bsp/wire_goal4_chain266_switches.hpp"
 #include "bsp/wire_goal4_chain275_switches.hpp"
@@ -5345,9 +5346,83 @@ struct GameGunneryHost::Impl {
         if (unit >= unit_state.size()) return;
         auto& us = unit_state[unit];
         if (!us.torpedo_stock_set) torpedo_stock_pass_c_0081f8b0(unit);
-        const int loaded = loaded_torpedo_barrels_00810e90(unit);
+        const int loaded = loaded_torpedo_barrels_00810e90(unit); // before-count for the log
         const int spare_before = us.torpedo_spare;
         int unloaded = 0;
+        int rearmed = 0;
+        if constexpr (bsp::kWireGoal4Chain500Bound) {
+            // 0089EEE0 calls 0081F8B0 directly (bsp.py show 0089eee0).
+            // The registered gun rows are this host's device-child projection;
+            // retain their registration order and borrow their actual timers.
+            // Handles below are live row identities, never fabricated layouts.
+            class StockBinding final : public bsp::TorpedoStockHost {
+            public:
+                StockBinding(Impl& owner, std::size_t unit, int& unloaded, int& rearmed)
+                    : owner_(owner), unit_(unit), unloaded_(unloaded), rearmed_(rearmed) {}
+                bool class_test(bsp::NativeHandle, int kind) override {
+                    return kind == bsp::kClassTestGun; // every GameGunRow is a gun
+                }
+                bsp::NativeHandle node_first_child(bsp::NativeHandle) override {
+                    return next(0);
+                }
+                bsp::NativeHandle node_next_sibling(bsp::NativeHandle node) override {
+                    return next(static_cast<std::size_t>(&gun(node) - owner_.guns.data()) + 1);
+                }
+                int gun_barrel_num(bsp::NativeHandle node) override {
+                    return static_cast<int>(gun(node).fire.barrel_timers.size());
+                }
+                float gun_reload_timer(bsp::NativeHandle node, int barrel) override {
+                    return gun(node).fire.barrel_timers[static_cast<std::size_t>(barrel)];
+                }
+                int gun_weapon_type(bsp::NativeHandle node) override { return gun(node).category; }
+                float gun_reload_empty_threshold() override { return FLT_MAX; } // 00D7A278
+                int loaded_torpedo_barrels_00810e90(bsp::NativeHandle) override {
+                    return owner_.loaded_torpedo_barrels_00810e90(unit_);
+                }
+                void unload_random_torpedo_barrel_0081dcb0(bsp::NativeHandle) override {
+                    owner_.unload_random_torpedo_barrel_0081dcb0(unit_);
+                    ++unloaded_;
+                }
+                void unit_set_torpedo_spare(bsp::NativeHandle, int spare) override {
+                    owner_.unit_state[unit_].torpedo_spare = spare;
+                }
+                void gun_rearm_barrel(bsp::NativeHandle node, int barrel, bool full) override {
+                    auto& state = owner_.unit_state[unit_];
+                    GameGunRow& row = gun(node);
+                    float& timer = row.fire.barrel_timers[static_cast<std::size_t>(barrel)];
+                    // 0072D592..0072D5A5 also pins an unordered timer when
+                    // 00810D80 reports no round; no reload draw on that arm.
+                    if (state.torpedo_spare == 0) { timer = FLT_MAX; return; }
+                    if (state.torpedo_spare > 0) --state.torpedo_spare; // 00810DA0
+                    if (!full) return;
+                    timer = row.reload_time;
+                    if (kReloadDrawBound) {
+                        timer = owner_.draw(Draw::reload,
+                            static_cast<std::size_t>(&row - owner_.guns.data()), 0,
+                            row.reload_time, row.reload_time);
+                        ++owner_.reload_draws;
+                    }
+                    ++rearmed_;
+                }
+            private:
+                static GameGunRow& gun(bsp::NativeHandle node) {
+                    return *reinterpret_cast<GameGunRow*>(node);
+                }
+                bsp::NativeHandle next(std::size_t start) {
+                    for (std::size_t i = start; i < owner_.guns.size(); ++i)
+                        if (owner_.guns[i].unit_index == unit_)
+                            return reinterpret_cast<bsp::NativeHandle>(&owner_.guns[i]);
+                    return 0;
+                }
+                Impl& owner_;
+                std::size_t unit_;
+                int& unloaded_;
+                int& rearmed_;
+            } binding(*this, unit, unloaded, rearmed);
+            bsp::set_torpedo_stock_0081f8b0(binding,
+                reinterpret_cast<bsp::NativeHandle>(&us), stock);
+            done("ShipSetTorpedoStock::body_0081f8b0", 0x0081f8b0u);
+        } else {
         if (stock < loaded) {
             us.torpedo_spare = 0;
             const int wanted = stock < 0 ? 0 : stock;
@@ -5362,7 +5437,6 @@ struct GameGunneryHost::Impl {
         } else {
             us.torpedo_spare = stock - loaded;
         }
-        int rearmed = 0;
         for (GameGunRow& g : guns) {
             if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
             for (float& timer : g.fire.barrel_timers) {
@@ -5378,6 +5452,7 @@ struct GameGunneryHost::Impl {
                     ++rearmed;
                 }                                  // else 0072CF00(FLT_MAX): stays pinned
             }
+        }
         }
         ++torpedo_stock_lua_sets;
         log.notef("  torpedo stock: %s ShipSetTorpedoStock(%d) loaded=%d spare %d -> %d "
