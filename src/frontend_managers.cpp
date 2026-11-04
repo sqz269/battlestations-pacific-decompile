@@ -1,6 +1,9 @@
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/wire_goal2_chain189_switches.hpp"
+#include "bsp/wire_goal4_chain503_switches.hpp"
+
+#include <algorithm>
 
 namespace bsp {
 namespace {
@@ -379,7 +382,17 @@ void construct_front_end_managers_004e4171(FrontEndManagerSet& set,
     if (set.main_menu == nullptr) {
         MainMenuManager* main_menu = host.create_main_menu_manager();
         if (main_menu != nullptr) {
+            if constexpr (kWireGoal4Chain503Bound) {
+                // The actual 00686170/00684E10 constructor already publishes
+                // the base. Retain this helper's support for hosts that hand
+                // back a preconstructed typed manager without registering it.
+                if (std::find(registry.managers.begin(), registry.managers.end(), &main_menu->base)
+                    == registry.managers.end()) {
+                    registry.managers.push_back(&main_menu->base);
+                }
+            } else {
             registry.managers.push_back(&main_menu->base);
+            }
             init_main_menu_00686380(
                 *main_menu, set, lock, host, payloads, screens, registry);
         }

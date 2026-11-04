@@ -3,6 +3,8 @@
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/wire_goal4_chain461_switches.hpp"
+#include "bsp/wire_goal4_chain503_switches.hpp"
+#include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
@@ -2055,10 +2057,19 @@ public:
         return nullptr;
     }
     MainMenuManager* create_main_menu_manager() override {
+        if constexpr (kWireGoal4Chain503Bound) {
+            // 004E41B0 constructs before Init. Run the recovered body over the
+            // actual owner used below and publish its base in the real registry.
+            auto* manager = cc13_fe5::main_menu_construct_00686170(
+                owner_.main_menu, owner_.manager_registry);
+            owner_.log.implemented("FrontEndManager::create_main_menu_manager", "00686170");
+            return manager;
+        } else {
         // operator new(78h) then 00686170. Only the fields the recovered Init
         // and destructor touch are modelled.
         owner_.log.implemented("FrontEndManager::create_main_menu_manager", "00686170");
         return &owner_.main_menu;
+        }
     }
     MultiMenuManager* create_multi_menu_manager() override {
         owner_.log.unimplemented("FrontEndManager::create_multi_menu_manager", "006887e0");
@@ -2504,7 +2515,11 @@ public:
         init_main_menu_00686380(*manager, owner_.managers, owner_.interface_lock, managers_,
             payloads_, screens_, owner_.manager_registry);
         owner_.managers.main_menu = manager;
+        if constexpr (kWireGoal4Chain503Bound) {
+            // 00684E10 already inserted this base before 00686380 ran.
+        } else {
         owner_.manager_registry.managers.push_back(&manager->base);
+        }
         owner_.log.implemented("FrontEndShell::create_manager_ac", "00686380");
     }
     void create_manager_b4() override {

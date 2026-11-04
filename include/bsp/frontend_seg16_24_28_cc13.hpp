@@ -13,12 +13,14 @@
 // (Win32 layout, offsets as in the image) and reaches the engine through
 // Fe5Host, whose methods are named after the image routine. Vtable stores keep
 // the image's vtable addresses. New C++ interfaces, not drop-in binary
-// replacements; nothing here is wired into bsp_game or was run there.
+// replacements. The constructor chain 006844F0/00684E10/00686170 instead
+// projects onto the typed front-end manager consumed by bsp_game (chain 503).
 
 #ifndef BSP_FRONTEND_SEG16_24_28_CC13_HPP
 #define BSP_FRONTEND_SEG16_24_28_CC13_HPP
 
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/frontend_managers.hpp"
 
 #include <array>
 #include <cstddef>
@@ -794,7 +796,10 @@ std::size_t tree_erase_key_00684ef0(Raw tree, std::uint32_t key, Fe5Host& host);
 
 // 006844F0 __thiscall(ref): +0h, +8h, +0Ch, +10h, +18h = 0; byte +14h = 1;
 // vtable 00CE3CF0 at +4h (the observer sub-object's base vtable).
-void observer_ref_construct_006844f0(Raw ref) noexcept;
+// Chain 503 projects onto the canonical manager records consumed by the menu
+// host. Original __thiscall/RET ABI is evidence only; these typed interfaces
+// are not binary overlays. There is one implementation per native address.
+void observer_ref_construct_006844f0(InterfaceRequestRecord& ref) noexcept;
 inline constexpr std::uint32_t kObserverBaseVtable = 0x00CE3CF0;
 
 // 00684E10 __thiscall(manager) -> EAX: vtable 00CF76D0, two observer
@@ -803,7 +808,8 @@ inline constexpr std::uint32_t kObserverBaseVtable = 0x00CE3CF0;
 // 00684FA0 __thiscall(manager): vtable back, erase from the registry, destroy
 // +24h then +8h.
 inline constexpr std::uint32_t kFrontEndManagerVtable = 0x00CF76D0;
-void* front_end_manager_construct_base_00684e10(Raw manager, Fe5Host& host);
+FrontEndManagerBase* front_end_manager_construct_base_00684e10(
+    FrontEndManagerBase& manager, FrontEndManagerRegistry& registry);
 void front_end_manager_destroy_base_00684fa0(Raw manager, Fe5Host& host);
 
 // The logo sequence object (80h, vtable 00CF76E4): fmv strings +40h (begin
@@ -842,7 +848,8 @@ void interface_update_music_streams_00685c80(Raw manager, float seconds, Fe5Host
 // 00686170 __thiscall(menu) -> EAX: base construct, vtable 00CF774C, zero
 // +40h..+70h, byte +74h = 0.
 inline constexpr std::uint32_t kMainMenuVtable = 0x00CF774C;
-void* main_menu_construct_00686170(Raw menu, Fe5Host& host);
+MainMenuManager* main_menu_construct_00686170(
+    MainMenuManager& menu, FrontEndManagerRegistry& registry);
 // 00686240 __cdecl(): register the "FE" (00CF7768) and "FE_pc" (00CF7760)
 // localisation tables.
 void main_menu_register_localisation_tables_00686240(MainMenuLocalisationHost& host);

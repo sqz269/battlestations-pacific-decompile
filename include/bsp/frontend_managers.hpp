@@ -54,11 +54,15 @@ const char* front_end_interface_name(int interface_id) noexcept;
 // interface id followed by an embedded object whose vtable is 00CE3CF0 (fields
 // +0Ch..+18h of the first record, +28h..+34h of the second, all zeroed except a
 // byte set to 1) and a refcounted payload pointer. Only the id and the payload
-// are used by anything this packet traced, so only those two are modelled; the
-// embedded object is left as an opaque hole in the layout comments.
+// are used by the interface-request consumers. Chain 503 also retains the
+// constructor's observer fields below; these are semantic fields, not a raw
+// 1Ch-byte overlay or a replacement for native virtual dispatch.
 struct InterfaceRequestRecord {
     int interface_id{0};      // +04h in `applied`, +20h in `pending`
     void* payload{nullptr};   // +1Ch in `applied`, +38h in `pending`
+    std::uint32_t observer_vtable{0}; // record+04h, native 00CE3CF0
+    std::array<std::uint32_t, 3> observer_words{}; // record+08h/+0Ch/+10h
+    bool observer_enabled{false}; // record+14h
 };
 
 struct FrontEndManagerBase {
@@ -70,6 +74,7 @@ struct FrontEndManagerBase {
     // +3Ch. Set by 00684700, cleared by 00683AA0, tested by 006840FE, by the
     // OnMove drain tail at 004E4873 and by the blocking-screen gate.
     bool active{false};
+    std::uint32_t native_vtable{0}; // image +00h; identity, never a callable C++ vtable
 };
 
 // The registry the base constructor joins and the base destructor leaves. The

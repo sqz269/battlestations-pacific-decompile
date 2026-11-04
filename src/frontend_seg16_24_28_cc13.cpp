@@ -7,6 +7,7 @@
 #include "bsp/band_0067_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 #include <initializer_list>
@@ -210,23 +211,34 @@ std::size_t tree_erase_key_00684ef0(Raw tree, std::uint32_t key, Fe5Host& host) 
     return count;
 }
 
-void observer_ref_construct_006844f0(Raw ref) noexcept {
-    ref.at<std::uint32_t>(0x00) = 0;
-    ref.at<std::uint32_t>(0x08) = 0;
-    ref.at<std::uint32_t>(0x0C) = 0;
-    ref.at<std::uint32_t>(0x10) = 0;
-    ref.at<std::uint32_t>(0x18) = 0;
-    ref.at<std::uint8_t>(0x14) = 1;
-    ref.at<std::uint32_t>(0x04) = kObserverBaseVtable;
+// Retain callable bodies for the constructor chain's executable-call audit.
+__declspec(noinline) void observer_ref_construct_006844f0(InterfaceRequestRecord& ref) noexcept {
+    // 006844F0 export: zero +00/+08/+0C/+10/+18, byte +14=1,
+    // then vtable +04=00CE3CF0. The id/payload are the actual request fields.
+    ref.interface_id = 0;
+    ref.observer_words[0] = 0;
+    ref.observer_words[1] = 0;
+    ref.observer_words[2] = 0;
+    ref.payload = nullptr;
+    ref.observer_enabled = true;
+    ref.observer_vtable = kObserverBaseVtable;
 }
 
-void* front_end_manager_construct_base_00684e10(Raw manager, Fe5Host& host) {
-    manager.at<std::uint32_t>(0x00) = kFrontEndManagerVtable;
-    observer_ref_construct_006844f0(Raw{manager.p + 0x04});
-    observer_ref_construct_006844f0(Raw{manager.p + 0x20});
-    manager.at<std::uint8_t>(0x3C) = 0;
-    host.front_end_registry_insert_00684c40(manager.p);
-    return manager.p;
+__declspec(noinline) FrontEndManagerBase* front_end_manager_construct_base_00684e10(
+    FrontEndManagerBase& manager, FrontEndManagerRegistry& registry) {
+    // 00684E10 export: both embedded records are constructed before the
+    // +3C active clear and the 00684C40 unique insertion at 00684E8A. The
+    // host's existing vector is the canonical registry (its walkers only
+    // deactivate); preserve insert-unique semantics when this owner is reused.
+    manager.native_vtable = kFrontEndManagerVtable;
+    observer_ref_construct_006844f0(manager.applied);
+    observer_ref_construct_006844f0(manager.pending);
+    manager.active = false;
+    if (std::find(registry.managers.begin(), registry.managers.end(), &manager)
+        == registry.managers.end()) {
+        registry.managers.push_back(&manager);
+    }
+    return &manager;
 }
 
 void front_end_manager_destroy_base_00684fa0(Raw manager, Fe5Host& host) {
@@ -309,12 +321,20 @@ void interface_update_music_streams_00685c80(Raw manager, float seconds, Fe5Host
     host.sound_stream_update_00a874d0(manager.ptr(0x54), seconds);
 }
 
-void* main_menu_construct_00686170(Raw menu, Fe5Host& host) {
-    host.front_end_manager_construct_base_00684e10(menu);
-    menu.at<std::uint32_t>(0) = kMainMenuVtable;
-    for (std::size_t off = 0x40; off <= 0x70; off += 4) menu.at<std::uint32_t>(off) = 0;
-    menu.at<std::uint8_t>(0x74) = 0;
-    return menu.p;
+MainMenuManager* main_menu_construct_00686170(
+    MainMenuManager& menu, FrontEndManagerRegistry& registry) {
+    // 00686170 export: native strings +40/+48, screens +58..+70,
+    // handles +54/+50, then byte +74. These are the same members consumed by
+    // 00686380/00686C90 in the live host, not a parallel raw 78h image.
+    front_end_manager_construct_base_00684e10(menu.base, registry);
+    menu.base.native_vtable = kMainMenuVtable;
+    menu.music_paths[0] = {};
+    menu.music_paths[1] = {};
+    for (void*& screen : menu.screens) screen = nullptr;
+    menu.music_handles[1] = nullptr;
+    menu.music_handles[0] = nullptr;
+    menu.flag_74 = false;
+    return &menu;
 }
 
 void main_menu_register_localisation_tables_00686240(MainMenuLocalisationHost& host) {

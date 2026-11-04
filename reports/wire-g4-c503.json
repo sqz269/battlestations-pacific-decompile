@@ -1,0 +1,119 @@
+{
+  "chain": 503,
+  "slot": "g4-w3",
+  "base_head": "b4c8faa1219b5a3bdaa6e9961454432568c8ebf9",
+  "switch": "bsp::kWireGoal4Chain503Bound",
+  "picked": "Main-menu construction over the canonical typed manager and its existing registry",
+  "wired_total_before": 9800,
+  "wired_total_after": 9801,
+  "rows": [
+    {
+      "native": "00686170",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager / MenuShellHost::create_manager_ac",
+      "body": "src/frontend_seg16_24_28_cc13.cpp: bsp::cc13_fe5::main_menu_construct_00686170",
+      "real_state": "GameMenuHost::Impl::main_menu: the same music paths, handles, screens, flag and base consumed by init_main_menu_00686380 and destroy_main_menu_manager_00686c90",
+      "evidence": "bsp.py show 00686170: base construction, vtable 00CF774C, clear +40h..+70h and byte +74h",
+      "call_graph": "Release bsp_game.exe: actual bsp_core:frontend_seg16_24_28_cc13.obj body reachable, 2 direct call sites from MenuManagerHost::create_main_menu_manager and MenuShellHost::create_manager_ac"
+    },
+    {
+      "native": "00684e10",
+      "status": "wired",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: main_menu_construct_00686170, reached from src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "body": "src/frontend_seg16_24_28_cc13.cpp: bsp::cc13_fe5::front_end_manager_construct_base_00684e10",
+      "real_state": "main_menu.base and GameMenuHost::Impl::manager_registry; inserts the actual base before Init, replacing the shell's post-Init append on the ON path",
+      "evidence": "bsp.py show 00684e10 --asm: 00684E2D..00684E6C constructs both records; 00684E6F clears active; 00684E8A calls insert-unique 00684C40",
+      "call_graph": "Release bsp_game.exe: actual bsp_core:frontend_seg16_24_28_cc13.obj body reachable, 1 direct call from main_menu_construct_00686170; exclude same-address Fe5HostUnreached method from this claim"
+    },
+    {
+      "native": "006844f0",
+      "status": "wired",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: front_end_manager_construct_base_00684e10, reached from src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "body": "src/frontend_seg16_24_28_cc13.cpp: bsp::cc13_fe5::observer_ref_construct_006844f0",
+      "real_state": "main_menu.base.applied and main_menu.base.pending, including the actual interface ids and payloads read by the request update/dispatch path; preserves the constructor's remaining observer fields on those same records",
+      "evidence": "bsp.py show 006844f0: zero record+00/+08/+0C/+10/+18, byte +14=1, vtable +04=00CE3CF0; 00684E10 inlines the same field schedule in the original",
+      "call_graph": "Release bsp_game.exe: actual bsp_core:frontend_seg16_24_28_cc13.obj body reachable, 2 direct call sites from front_end_manager_construct_base_00684e10"
+    },
+    {
+      "native": "0057c1c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::create_screen",
+      "reason": "Missing adapter from the raw constructor/singleton lifetime registration to the consumed typed LoadingScreen owner; its current create_screen hook only records the site."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen",
+      "reason": "Missing typed title-manager base/registry construction and global-publication adapter; the current TitleScreen owns only attached_screen and cannot be passed to the raw Fe5Host constructor."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager / MenuShellHost::create_manager_b8",
+      "reason": "Missing owned options-manager instance and consumed constructor/Init adapter; both host creation hooks still record the site or return null."
+    },
+    {
+      "native": "006887e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_multi_menu_manager",
+      "reason": "Multiplayer menu excluded from this single-player wiring packet; the host also lacks an owned multi-menu constructor/Init adapter."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "reason": "Missing consumed attract-screen owner and movie/camera initialization adapter; the host currently records the site and returns null."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing loading-screen adapter that borrows and resets the actual renderer command queue; the current gui_refresh hook only records the site."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 5 tests before edits",
+    "build": "scripts/build.ps1 passed all 5 tests after the final C++ changes",
+    "focused_probe": "local/output/wire_g4_c503_probe.ps1: poisoned canonical owner reset and unique registry publication passed; linked with /MANIFEST:EMBED",
+    "call_graph": "python tools/call_graph.py; who 00686170; who 00684e10; who 006844f0; path 006844f0: all three actual reconstructed bodies reachable from WinMainCRTStartup in the Release executable",
+    "float_math": "No floating-point arithmetic changed",
+    "game_run": false,
+    "abi_compatible": false,
+    "readiness_summary_after": {
+      "wired": 9801,
+      "callees_done_no_wired_caller": 9217,
+      "ready": 1454,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "readiness_note": "After summary uses the freshly built build/win32 Release call graph. Before summary is the baseline source classification; its embedded build/callgraph cache was older, so no before/after called-count delta is claimed.",
+    "readiness_body_rows": [
+      {
+        "address": "006844f0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      },
+      {
+        "address": "00684e10",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1
+      },
+      {
+        "address": "00686170",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2
+      }
+    ]
+  },
+  "assumptions_and_limits": [
+    "Retained the host's existing semantic registry vector and insert-unique semantics; native pointer-key tree ordering is not reproduced, as existing registry consumers only deactivate entries.",
+    "The three existing bodies now accept the canonical typed manager/records instead of raw image storage; native vtable constants are stored as identity metadata, never invoked as C++ vtables.",
+    "The persistent typed manager is reused on menu return; constructor insertion is unique and the old shell append runs only with the switch OFF.",
+    "Request/base identifiers were already text-wired through other reachable source/Host methods before this packet; only the main-menu row increases the text-wired total. Actual body call sites are checked separately.",
+    "Build, focused fixture, and executable call-graph evidence do not establish native ABI or live game behavior; no game was run."
+  ],
+  "compatibility_helper": "src/frontend_managers.cpp: construct_front_end_managers_004e4171 also preserves unique registration when given the real constructor or a preconstructed host owner; no new reachability is claimed for this helper."
+}
