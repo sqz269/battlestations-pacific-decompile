@@ -1,0 +1,123 @@
+{
+  "chain": 509,
+  "worker": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain509Bound",
+  "wired_total_before": 9805,
+  "wired_total_after": 9805,
+  "wired_total_note": "The readiness pool excludes the original CG_ compiler-generated name/tag for 00760BD0. Its new reachable call is proven separately; no classification or counting-tool changes were made.",
+  "new_native_bodies_called": ["00760bd0"],
+  "rows": [
+    {
+      "native": "00760bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_repair_add_damage_9e / OwnedDecodedMessage teardown",
+      "source": "src/session_message_cc13_seg42.cpp: delete_shiprepair_adddamage_00760bd0",
+      "evidence": "31 native bytes: ECX=this, stack flags bit0, root CE4974 store before BF65AC free, EAX=this, RET4. Live bsp.gpr /battlestationspacific.exe table 00D0334C identifies the 9Eh scalar-delete slot. Factory 007695DA allocates 28h and 007695EE calls 007608E0.",
+      "real_state": "The existing hit/failure callers supply the damage channel, duration and add/remove flag; the existing 00760970/007609E0 codecs produce the owned decoded message. Its copied values are returned before flags=1 teardown frees the same allocation once.",
+      "call_graph": "Release executable has a reachable direct call at 101F0632 from HostSessionMessages::queue_repair_add_damage_9e to the body at 10462C30. Identical-code folding shares that implementation with other scalar deletes. The original build had no 00760BD0 body."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing live ShadowFitHost and shadow-slice caller/owner; the existing projection getter cannot be wired by changing a slice that is absent from the executable."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing live ShadowFitHost implementation and owner producer; the built call graph has no linked slice body or caller."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: Impl::collect_language_names",
+      "reason": "Missing profile-hints mode producer: profile_hints_mode_plus8 returns zero, so the mode-2 language sweep does not execute even though the catalog is available."
+    },
+    {
+      "native": "0067c170",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime selection paths",
+      "reason": "Missing the separate 0067 listbox object's actual enabled+0Ch/locked+10Ch arrays; the native GUI widget listbox owns rows and visibility rather than those byte arrays."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text rendering; src/native_font_resources.cpp: glyph lookup",
+      "reason": "Missing an active byte-input acceptance caller with the FontData view; render-time glyph fallback is a different operation and native font owners use their own image map."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list commentary",
+      "reason": "Debug-only score overlay list: the host documents that no gameplay decision reads it; the job excludes debug-only wiring."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list commentary",
+      "reason": "Debug-only score overlay chosen marker: the host documents that no gameplay decision reads it; the job excludes debug-only wiring."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ShipHydro leak tick",
+      "reason": "Missing a gameplay consumer of normalized flooding fraction; the active hydro path uses total leak water mass directly, and diagnostic logging is outside this job."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: loaded_torpedo_barrels_00810e90",
+      "reason": "Missing the original sight-status boolean query at this site: the active torpedo helper counts every loaded barrel, so inserting an any-barrel predicate would add a redundant scan."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/camera_frame_state.cpp: clear_00b21430 call",
+      "reason": "Missing an original value-getter caller: the active clear path borrows the live clear-color field by pointer, so replacing it with a copied getter result changes that contract."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "No additional call is missing: this host already calls the existing set_scroll_range body on its persistent briefing scroller with a real layout measurement."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No additional binding is missing: the existing refresh body already calls contains_point_00414f50 on the retained cache bounds and actual query corners."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "No additional binding is missing: the built graph already shows the reconstructed refresh body called by the reachable runtime refresh_search method."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: message_tick_window commentary",
+      "reason": "Missing the native posted-message queue/drain and its tick-window state; the inspected host mentions this gate in its description of the absent queue."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall::queue_call; src/game_hosts_fixed_step.cpp: producer commentary",
+      "reason": "Missing an actual off-main-thread deferred named call with source LuaVariantRecord arguments and destination queue ownership; the inspected named-call host does not enqueue that arm."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: pre-script globals baseline commentary",
+      "reason": "Missing the teardown globals consumer at this site; the inspected ready host only collects the pre-script baseline through 004D30F0."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed for MSVC Win32 Release; all 5 existing CTests passed",
+    "call_graph": "python tools/call_graph.py; python tools/call_graph.py who 00760bd0",
+    "float_math": "No float arithmetic changed; the existing wire codec is reused unchanged",
+    "ghidra": "Renamed and commented 00760BD0 through ghidra_annotate.py --apply under its write lock; prior annotations recorded locally, project saved, affected export refreshed",
+    "limits": "Source/build/call-graph evidence only; no game run, native differential fixture or drop-in ABI claim"
+  }
+}
