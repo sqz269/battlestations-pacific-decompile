@@ -1,0 +1,181 @@
+{
+  "goal": 4,
+  "chain": 390,
+  "slot": "g4-w4",
+  "owner": "agent/g4-w4",
+  "base": "326376452e6d28700db512a37ea792e4cb7eae1c",
+  "picked": "Assign existing parser-produced native scene-property scalars on collision-only overwrites",
+  "switch": "bsp::kWireGoal4Chain390Bound",
+  "rows": [
+    {
+      "native": "008f23e0",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl, reached through game_hosts_scene_contents.cpp::merge_property_block",
+      "real_state": "The existing scalar projection of the live scene/library parser's destination and source values. Both raw61 bags and all records are built by the existing native producers with the same canonical string/property-pool insertion context. No object, payload, key or input constant is invented for this call.",
+      "admission": "At least one scalar is selected; overwrite is true; every selected source scalar has one admitted destination scalar with the same type letter. Existing source-duplicate, destination-duplicate, scalar/child-conflict and unsupported-value gates remain in force. Native owners are disjoint and independently own their payloads. Nested child merges use their existing path.",
+      "behavior": "The complete existing AssignExistingFrom body replaces the merge on this domain. Both bodies look up the same keys, retire the query before assignment and call full 008F0700 for each scalar hit. All selected keys exist, so 008F54F0's clone/ordinal/insertion arm cannot run; overwrite=true excludes its keep arm. Publish the resulting native records once through the existing read_value path. Missing-key and keep-existing cases retain the previous dispatch. The old code is unchanged in the switch's else arm.",
+      "evidence": "bsp.py show 008f23e0 and 008f54f0; complete existing native_scene_property_bag_assign_existing.cpp and native_scene_property_bag_merge.cpp. Original 008F23E0 uses ECX destination, source stack argument and RET4; this call uses the existing C++ interface, not a new original-ABI bridge.",
+      "call_graph": "Baseline: no matching linked function. ON: REACHABLE at 10577AE0; direct call at 10437580 from SceneNumericPropertyMerge::Impl::Impl. Entry chain passes through merge_property_block, SceneReaderBinding::instantiate_entity, GameSceneContentsHost::run_load_scene_contents_004d4df0, GameMissionFrameHost, GameMissionHost, GameMenuHost and WinMain."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::copy_or_merge",
+      "reason": "Already entry-reachable in the baseline executable; retained for merges with missing keys, keep-existing precedence and nested children."
+    },
+    {
+      "native": "008f5470",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::copy_or_merge",
+      "reason": "Already entry-reachable in the baseline executable; retained for an empty native destination."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already entry-reachable in the baseline executable despite readiness's ready label."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already entry-reachable in the baseline executable despite readiness's ready label."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "Already entry-reachable in the baseline executable despite readiness's ready label."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "Already entry-reachable in the baseline executable despite readiness's ready label."
+    },
+    {
+      "native": "008f5670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::PropertyLibrary::begin_load (selection only)",
+      "reason": "Property groups still live in the host vector; the actual 10Ch property-tree-library owner, node producer and downstream raw-bag consumer are missing."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::PropertyLibrary::group (selection only)",
+      "reason": "The genuine native property-library map/key/node owner is missing; LibraryNativeEnums owns a different enum registry and cannot supply this receiver."
+    },
+    {
+      "native": "00bf1130",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp::adopted_00bf1130 binding (selection only)",
+      "reason": "The required live adopted source stream, raw28h substream owner producer and source-method dispatch were not established in the running VFS path."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::land-task state setup (selection only)",
+      "reason": "The host land-state enum is not the actual embedded native registry; a complete approach/task storage producer and consumers of its state identities remain missing."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp::destroy_native_land_approach_009b2c80 (selection only)",
+      "reason": "No live host-owned native approach registry lifetime was established; wiring cleanup requires the corresponding constructor/owner rather than a temporary registry."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::land-task state setup (selection only)",
+      "reason": "Requires the same actual approach+0B8h registry and eight embedded state identities; the current host state enum does not provide that object."
+    },
+    {
+      "native": "004e6480",
+      "status": "skipped",
+      "host_site": "src/native_unit_part_storage.cpp::NativeUnitPartStorageBindings::call_004e6480 (selection only)",
+      "reason": "Existing reconstruction already forwards to the body; the missing work is a real host unit-part/collision-node producer and its collision-global bindings."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp::destroy_owner",
+      "reason": "Already entry-reachable in the baseline executable through native distortion destruction."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp::resize_native_distortion_records_00b4ee20",
+      "reason": "The existing resize body already calls reserve; establishing a live nonempty record-growth producer is missing, and the destruction path only requests zero."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::QueueClearBinding::notify_command_target",
+      "reason": "The recording site lacks a concrete Seg62 target-channel manager/observer argument binding; no complete event dispatch was established."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/native_lua_variant_header_initializer.cpp::initialize_native_lua_variant_header_006eeaf0 (selection only)",
+      "reason": "No live native variant-link header owner/consumer was established; the host's scalar LuaVariant arguments are different objects."
+    },
+    {
+      "native": "00884ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::spawn completion variant construction (selection only)",
+      "reason": "The callback carries an extracted entity id, not the required genuine entity-record receiver with its id at +18h."
+    },
+    {
+      "native": "00b663f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::Lua argument-count sites (selection only)",
+      "reason": "These sites own already extracted Lua argument counts, not the original native Lua-call context at +0Ch; manufacturing a count header would be a value round trip."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/gui_layout_loader.cpp::Scrollbar factory route (selection only)",
+      "reason": "The live generic widget factory does not establish the raw native Scrollbar construction/layout-call context required by this factory."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp::gui_button_construct_00aac6f0 (selection only)",
+      "reason": "The required native Button member construction/registry context was not established for replacing the generic widget producer."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp::set_native_render_remap_texture0_00b0fd70 (selection only)",
+      "reason": "A game-triggered remap-texture selection/name producer was not established; resource initialization's material getter is not a setter call."
+    }
+  ],
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed, including reconstructed_math and tool_tests (2/2).",
+    "changed_build": "./scripts/build.ps1 passed, including reconstructed_math and tool_tests (2/2).",
+    "existing_fixture": "tests/math_tests.cpp's genuine enum fixture captures Alpha=7, updates the live symbol dictionary to 9, then checks keep remains 7 and fresh overwrite becomes 9. Its one-key overwrite satisfies the new all-existing gate. Existing V3A and nested-child fixtures also pass; no new test or body was added.",
+    "reconstructed_called_before": 4568,
+    "reconstructed_called_after": 4569,
+    "source_wired_before": 9616,
+    "float_math_changed": false,
+    "new_address_suffixed_bodies": false,
+    "runtime_boundary": "No game run. Evidence is the MSVC Win32 build, existing fixture/tool tests and executable entry-reachable direct call graph. No new Original ABI, EH/OOM or gameplay qualification.",
+    "source_wired_after": 9616,
+    "readiness_008f23e0": {
+      "state": "ready",
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    "source_count_boundary": "The text-match state remains ready and the source-wired total is unchanged; the fresh executable call graph and readiness called=true establish the new entry-reachable call from this helper-file path.",
+    "switch_off": "./scripts/build.ps1 passed 2/2 tests; call graph returned to the baseline 4568 called addresses and exactly the same reachable address set, with 008F23E0 absent. Switch restored to true for final build.",
+    "reachable_address_delta": {
+      "added": [
+        "008f23e0"
+      ],
+      "lost": []
+    },
+    "final_switch_on": "Switch true; final ./scripts/build.ps1 passed both tests; rebuilt call graph again reports 4569 reconstructed addresses, one direct 008F23E0 call at 10437580, and no lost addresses."
+  },
+  "left": "Recursive child merges, missing-key clone/insertion, keep-existing precedence and unsupported parser values retain their prior paths. Broader property-library, land-task, VFS and Lua candidates need the concrete owners/callers named above."
+}
