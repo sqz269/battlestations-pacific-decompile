@@ -17,6 +17,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/wire_goal4_chain532_switches.hpp"
+#include "bsp/wire_goal4_chain540_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
 #include "bsp/wire_goal4_chain272_switches.hpp"
@@ -3822,14 +3823,61 @@ public:
         owner_.done("ShipAiFollow::reference_speed", 0x0080fc30u);
         return owner_.units.throttle_ceiling_inputs(index_).reference_speed;
     }
-    void publish_member_speed_0070d100(std::uint32_t, float speed) override {
+    void publish_member_speed_0070d100(std::uint32_t unit, float speed) override {
         // 0070D100 stores into this unit's own member record at +30h, which
         // 0070D140 reduces for the leader's ceiling (packet cc9_ship_formation_speed).
         if (!kShipFormationSpeedBound || index_ >= owner_.controllers.size()) {
             owner_.record("ShipAiFollow::publish_member_speed", 0x0070d100u);
             return;
         }
+        if constexpr (bsp::kWireGoal4Chain540Bound) {
+            const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+            const std::int32_t count = owner_.units.formation_member_count(group);
+            bool admitted = group >= 0 && count > 0 && count <= 24;
+            std::vector<bsp::ShipAiUnitGroupMember> records;
+            if (admitted) {
+                records.resize(static_cast<std::size_t>(count));
+                for (std::int32_t i = 0; i < count; ++i) {
+                    const std::size_t member = owner_.units.formation_member_unit(group, i);
+                    if (member >= owner_.controllers.size()) { admitted = false; break; }
+                    auto& record = records[static_cast<std::size_t>(i)];
+                    record.entity = static_cast<std::uint32_t>(member + 1u);
+                    bsp::ship_ai_formation_set_member_speed(record,
+                        owner_.controllers[member].member_speed_30);
+                }
+            }
+            if (admitted) {
+                GameUnitGroupStorage native;
+                native.capture_members(records);
+                std::uint32_t bits;
+                std::memcpy(&bits, &speed, sizeof(bits));
+                // bsp.py show 0070D100 --asm: reads only signed +4F8h,
+                // record+00h identity and writes every matching +30h. These
+                // are the current units-host members and controller speeds
+                // used by 0070D140 above; other record lanes are not read.
+                // 009DF6AA supplies this same unit identity and speed word.
+                // The whole MOVSS body never dereferences an identity as a
+                // native unit pointer. No x87 conversion or float math here.
+                bsp::publish_native_unit_group_member_speed_0070d100(native.data(), nullptr,
+                    reinterpret_cast<void*>(static_cast<std::uintptr_t>(unit)), bits);
+                for (std::int32_t i = 0; i < count; ++i) {
+                    const auto& record = records[static_cast<std::size_t>(i)];
+                    if (record.entity != unit) continue;
+                    // Consume the body's actual store in the controller
+                    // field that the next leader-speed reduction reads.
+                    const auto* result = static_cast<const std::byte*>(native.data())
+                        + 0x18 + static_cast<std::size_t>(i) * 0x34 + 0x30;
+                    std::memcpy(&owner_.controllers[record.entity - 1u].member_speed_30,
+                        result, sizeof(float));
+                }
+            } else {
+                // Oversized/stale host groups cannot enter the raw 24-record
+                // layout. Preserve their previous controller publication.
+                owner_.controllers[index_].member_speed_30 = speed;
+            }
+        } else {
         owner_.controllers[index_].member_speed_30 = speed;
+        }
         owner_.done("ShipAiFollow::publish_member_speed", 0x0070d100u);
     }
 

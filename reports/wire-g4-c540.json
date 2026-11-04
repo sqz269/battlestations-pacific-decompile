@@ -1,0 +1,41 @@
+{
+  "chain": 540,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain540Bound",
+  "rows": [
+    {
+      "native": "0070d100",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: FollowFormationPointBinding::publish_member_speed_0070d100",
+      "evidence": "bsp.py show 0070d100 --asm: signed count at +4F8h; stride34h identity comparison and MOVSS to each matching record+30h; RET8. 009DF6AA supplies the actual follower identity and recovered speed word.",
+      "state": "Current units-host formation membership and each controller's live member_speed_30 populate the existing 508h GameUnitGroupStorage. The raw body consumes this state; its stored bytes return to controller member_speed_30, which 0070D140's live leader ceiling reduction reads. No identity is dereferenced as a native object.",
+      "admission": "Positive groups of at most24 records with all members in the controller registry. Oversized or stale groups keep the previous publication. On the admitted path the previous assignment does not run.",
+      "verification": "MSVC Win32 build and all5 existing tests pass. Built raw function is REACHABLE with one direct call at10213BF8 from the changed host callback, independently of that callback's vtable reference. pc24 lint clean; only exact float-bit copies added. No game run."
+    },
+    {"native":"008f3a20","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_enum","reason":"Already called from entry-reachable numeric property merge; the scene-contents stand-in row is a text-readiness false negative."},
+    {"native":"008f39b0","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_enum","reason":"Already called from entry-reachable enum-word preservation; no missing runtime call at this site."},
+    {"native":"008f54f0","status":"skipped","host_site":"src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl","reason":"Already called from entry-reachable native property merge; adding a second host call would duplicate work."},
+    {"native":"004d32a0","status":"skipped","host_site":"src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0","reason":"This site produces the baseline rather than tearing it down; wiring requires a genuine teardown consumer and the raw set/Lua/string lifetime adapter."},
+    {"native":"00954990","status":"skipped","host_site":"src/game_hosts_hud.cpp: set_unit_controlled_audio","reason":"Needs the unit's engine emitter, child gun list and controlled-audio byte producer; this host site only records the event."},
+    {"native":"00611750","status":"skipped","host_site":"src/game_hosts_hud.cpp: map_screen_busy","reason":"No carousel owner produces screen+1F9h/+13Fh, and map_screen_wanted remains false."},
+    {"native":"00648060","status":"skipped","host_site":"src/game_hosts_hud.cpp: HudRootUpdateBinding::advance_ticker","reason":"Award queue count is explicitly zero; the live award enqueue producer and native ticker entries/widgets are missing."},
+    {"native":"00604f30","status":"skipped","host_site":"src/game_hosts_hud.cpp: cockpit_screen_mode","reason":"No plane-effects screen owner produces +B8h/+FCh, and cockpit_screen_wanted remains false."},
+    {"native":"0068c0b0","status":"skipped","host_site":"src/game_hosts_hud.cpp: in-game interface overlay bindings","reason":"Requires the support-manager owner, camera-screen state and blockers plus a real tracked-unit/level3 consumer; no bounded producer was established."},
+    {"native":"00887560","status":"skipped","host_site":"src/game_hosts_ready.cpp: named-call queue binding","reason":"This queue has no deferred source-argument producer; a real frame-job-thread enqueue path is needed before its copy body can run usefully."},
+    {"native":"005296a0","status":"skipped","host_site":"src/native_session_message35.cpp: read_native_session_message35","reason":"Native word-array storage exists, but its session-message35 caller is not yet a real single-player producer/consumer path."},
+    {"native":"00529980","status":"skipped","host_site":"src/native_session_message35.cpp: read_native_session_message35","reason":"Native word-array storage exists, but its session-message35 caller is not yet a real single-player producer/consumer path."},
+    {"native":"0052ad30","status":"skipped","host_site":"src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30","reason":"No live owning word-array lifetime was established for a destructor call in this packet."},
+    {"native":"008dda20","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: objective replication binding","reason":"The objective-completed replication arm requires mode1 and slot_has_peer; the host does not produce a peer, so it is outside this single-player packet."},
+    {"native":"008dcfa0","status":"skipped","host_site":"src/native_session_message_tags_56_to_62.cpp: message61 lifetime","reason":"No live single-player message61 replication owner was established; its destructor requires that owning lifetime."},
+    {"native":"008f2f70","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: LibraryNativeEnums","reason":"The Lua declaration body requires the genuine world+1A0Ch publication and consumed NativeString context; this file currently supplies enum declarations through the file lexer."},
+    {"native":"0041d1e0","status":"skipped","host_site":"src/game_avoid_zone_runtime.cpp: avoidance group construction","reason":"Needs a raw entity/path/vtable chain and real world-pointer cell; the current runtime constructs polygons through typed scene adapters."},
+    {"native":"0070d980","status":"skipped","host_site":"src/game_hosts_units.cpp: formation record access","reason":"No real consumer of the record+4/+8/+Ch vector was identified, and the missing-member arm requires actual absolute DATA at F87574/F87578/F8757C."},
+    {"native":"0070d8d0","status":"skipped","host_site":"src/game_hosts_units.cpp: Impl::group_successor_0070d8d0","reason":"Raw successor selection dereferences member+5Dh; current group identities are registry words rather than native unit pointers, so a genuine unit object view is missing."}
+  ],
+  "checks": {
+    "build": "./scripts/build.ps1: PASS,5/5 tests",
+    "call_graph": "python tools/call_graph.py; who0070d100; path0070d100: raw body has1 reachable direct call from the edited callback",
+    "float_math": "No arithmetic changed; speed travels through memcpy and the existing MOVSS-only body",
+    "runtime": "Not run per worker instructions"
+  }
+}
