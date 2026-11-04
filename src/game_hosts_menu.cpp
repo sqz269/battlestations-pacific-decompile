@@ -5,6 +5,7 @@
 #include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/wire_goal4_chain503_switches.hpp"
 #include "bsp/wire_goal4_chain507_switches.hpp"
+#include "bsp/wire_goal4_chain528_switches.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -1433,16 +1434,34 @@ public:
         owner_.log.unimplemented("TitleInit::attract_screen_init", "00689d90+4h");
     }
     void* create_title_screen() override {
+        if constexpr (kWireGoal4Chain528Bound) {
+            auto* title = cc13_fe5::title_screen_construct_0068d760(
+                owner_.title_object, owner_.manager_registry, owner_.world.title);
+            owner_.log.implemented("TitleInit::create_title_screen", "0068d760");
+            return title;
+        } else {
         // operator new(44h) then 0068d760. Only +40h is recovered.
         owner_.log.implemented("TitleInit::create_title_screen", "0068d760");
         return &owner_.title_object;
+        }
     }
     void title_screen_activate(void* screen) override {
+        if constexpr (kWireGoal4Chain528Bound) {
+            auto& title = *static_cast<TitleScreen*>(screen);
+            // 0068D8D0 receives the constructor's object. Its +40h is the
+            // source and destination of the activation projection, including
+            // the skip-title arm, which does not create a new screen.
+            owner_.handover.press_start = title.attached_screen;
+            activate_title_screen_0068d8d0(owner_.handover, owner_.world.screens, handover_);
+            title.attached_screen = owner_.handover.press_start;
+            owner_.log.implemented("TitleInit::title_screen_activate", "0068d8d0");
+        } else {
         static_cast<void>(screen);
         activate_title_screen_0068d8d0(owner_.handover, owner_.world.screens, handover_);
         owner_.title_object.attached_screen = owner_.handover.press_start;
         owner_.world.title = &owner_.title_object;
         owner_.log.implemented("TitleInit::title_screen_activate", "0068d8d0");
+        }
     }
     void title_screen_skip() override {
         owner_.log.unimplemented("TitleInit::title_screen_skip", "0068d8a0");
@@ -1756,7 +1775,16 @@ public:
         owner_.log.unimplemented("FrontEndFrame::reinitialize_title_screen", "004db220");
     }
     void update_title_screen(float raw_delta) override {
+        if constexpr (kWireGoal4Chain528Bound) {
+            // The state-2 driver tested world.title before this callback.
+            // 0068D850 reads that very object's +40h; retain the handover's
+            // other real state while taking the attachment from its owner.
+            auto live_title = owner_.handover;
+            live_title.press_start = owner_.world.title->attached_screen;
+            update_title_screen_0068d850(live_title, handover_, raw_delta);
+        } else {
         update_title_screen_0068d850(owner_.handover, handover_, raw_delta);
+        }
         owner_.log.implemented("FrontEndFrame::update_title_screen", "0068d850");
     }
     // 00aa0e50 is MOV ECX,[ECX+50h]; JMP [vtable+34h]: the pointer widget's
@@ -2477,12 +2505,26 @@ public:
     }
     bool title_screen_present() override { return owner_.world.title != nullptr; }
     void destroy_title_screen() override {
+        if constexpr (kWireGoal4Chain528Bound) {
+            // 0068D7E0 -> 00684FA0 erases this manager from 00E19898. Remove
+            // the newly owned base here too, before the main menu activates;
+            // otherwise 00684700 would visit a destroyed title manager and
+            // clear screen sets. The press-start lifetime remains with the
+            // existing screen owner below; this is not whole-dtor wiring.
+            auto& managers = owner_.manager_registry.managers;
+            managers.erase(std::remove(managers.begin(), managers.end(),
+                &owner_.title_object.base), managers.end());
+            owner_.world.title = nullptr;
+            owner_.title_init.title_screen = nullptr;
+            owner_.log.implemented("FrontEndShell::destroy_title_screen", "004e4071");
+        } else {
         // 004e4071: the 44h object's vtable +0h with 1, then the global is
         // nulled. Its press-start screen stays registered until the screen sets
         // drop it, which is what the pump's exit pass then does.
         owner_.world.title = nullptr;
         owner_.title_init.title_screen = nullptr;
         owner_.log.implemented("FrontEndShell::destroy_title_screen", "004e4071");
+        }
     }
     bool front_end_manager_b8_present() override { return owner_.managers.options != nullptr; }
     bool front_end_manager_ac_present() override { return owner_.managers.main_menu != nullptr; }

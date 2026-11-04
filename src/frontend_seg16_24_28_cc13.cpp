@@ -3,6 +3,7 @@
 // docs/CC13_FE_5.md.
 
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
+#include "bsp/frontend_states.hpp"
 
 #include "bsp/band_0067_cc13.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -865,12 +866,16 @@ void* hud_root_screen_construct_0068bf60(Raw screen, Fe5Host& host) {
     return screen.p;
 }
 
-void* title_screen_construct_0068d760(Raw title, Fe5Host& host) {
-    host.front_end_manager_construct_base_00684e10(title);
-    title.at<std::uint32_t>(0) = kTitleScreenVtable;
-    host.set_title_screen_global_00e198c8(title.p);
-    title.at<std::uint32_t>(0x40) = 0;
-    return title.p;
+__declspec(noinline) TitleScreen* title_screen_construct_0068d760(TitleScreen& title,
+    FrontEndManagerRegistry& registry, TitleScreen*& singleton) {
+    // bsp.py show 0068D760: base construction, leaf vtable, singleton publish,
+    // then +40h clear, in that order. These are the same records read by the
+    // manager walk and title-state pump, rather than a separate raw image.
+    front_end_manager_construct_base_00684e10(title.base, registry);
+    title.base.native_vtable = kTitleScreenVtable;
+    singleton = &title;
+    title.attached_screen = nullptr;
+    return &title;
 }
 
 void title_screen_activate_and_show_0068d7b0(Raw title, Fe5Host& host) {
