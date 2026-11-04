@@ -1,0 +1,240 @@
+{
+  "chain": 467,
+  "slot": "g4-w5",
+  "run": 946,
+  "switch": "bsp::kWireGoal4Chain467Bound",
+  "switch_header": "include/bsp/wire_goal4_chain467_switches.hpp",
+  "scope": "Squadron command-building moveto unit-reference construction",
+  "rows": [
+    {
+      "native": "004684f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_spent_ordnance_rtb_0084e010, command_building_moveto_009f7d17 lambda",
+      "details": "009F7D68 constructor result is passed directly to the existing 009F7D75 moveto issue; typed unit-ID access preserves the actual unit identity, and the origin comes from GameNativeGeometryGlobals mutable F87574/F87578/F8757C cells.",
+      "call_graph": {
+        "reachable": true,
+        "call_sites": 1,
+        "built_address": "10393cf0",
+        "caller_call_site": "102459e8"
+      }
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost formation creation",
+      "reason": "Existing body still calls original absolute allocator/constructor addresses and writes leader+284h; a rebuilt factory and actual leader/group ownership adapter are missing."
+    },
+    {
+      "native": "0070d0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation leader changes",
+      "reason": "Wake handoff dereferences native leader storage; GameUnitGroupStorage explicitly permits identity-only reads and lacks that native wake/unit ownership contract."
+    },
+    {
+      "native": "00710ad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: carrier platform collision reattachment",
+      "reason": "The host retains a detached flag but lacks the actual native spatial index, collision-part storage and complete owner virtual-dispatch bindings required by the body."
+    },
+    {
+      "native": "00710b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: carrier platform collision detachment",
+      "reason": "A boolean collision-detached projection does not supply the native part/index/node ownership needed by the full detach body."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_issue_clearorders",
+      "reason": "The naked body reads absolute F87574/F87578/F8757C addresses; binding those reads to rebuilt mutable cells is missing and was not added in this chain."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen reset",
+      "reason": "The host reset records lack the selection-mode +30h and native selection-vector +C4h producers needed by the complete reset body."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate cockpit_screen_mode",
+      "reason": "cockpit_screen_wanted remains false and no actual plane-effects screen provides the cockpit mode fields required by this getter."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate map_screen_busy",
+      "reason": "map_screen_wanted remains false and no actual powerup scroller supplies the scrolling bytes read by this body."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "weapon_animation returns zero and there is no owned timed-entry record for animation_interval to update."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: skill notification",
+      "reason": "A source call already exists; this selection pass did not establish its entry-reachable activation path, so no second call or reroll was introduced."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: fort death-fire candidate",
+      "reason": "The existing host path covers damaged fire rather than the destroyed handler; a live death-fire producer/caller was not established."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "The live callback explicitly has no producer for the alternate ammo+48h record that assignment needs."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit vector660 candidate",
+      "reason": "Inventory screening only; the complete vector660 owner and its actual clear trigger were not established before choosing the unit-reference packet."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: single-player party selection candidate",
+      "reason": "Campaign effective mode is 8 and bypasses the original modes0..3 caller; a qualifying single-player caller is missing."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList insertion",
+      "reason": "The host documents the score trace as debug-overlay-only and retains no gameplay score list; no single-player decision consumer needs this trace insertion."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList mark-chosen",
+      "reason": "The host documents the score trace as debug-overlay-only and retains no gameplay score list; the required list owner is absent."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate filtering",
+      "reason": "The source already names the body, but this selection pass did not establish entry-reachable coordinator activation; no duplicate predicate path was added."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GUI pointer update candidate",
+      "reason": "The body requires complete cursor/device sampling, widget ownership and hit-test services; their live host installation was not established in this selection pass."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: GUI sorted-child reflection candidate",
+      "reason": "The native consumer is a reflection/description writer, not the frontend render order; a game-run descriptor-writer caller is missing."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: GUI layer live-entry candidate",
+      "reason": "A live layer-host call chain into the existing screen-entry owner was not established in this selection pass."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: GUI screen reset candidate",
+      "reason": "A live reset request with complete GuiResourceOwner/GuiWidgetOwnerRuntime ownership was not established in this selection pass."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: input-filter setter candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: clear items candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00a9c860",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: select by data candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: silent index selection candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: clear selection candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: highlight reset candidate",
+      "reason": "Existing raw body requires native list/header fields and NativeGuiListboxCalls; the typed companion has no installed adapter or verified game-run caller for this operation."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: animated-value restart candidate",
+      "reason": "Selection screening only; no actual animated-value storage, lifecycle service adapter and game-run request were established for this operation."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: animated-value set target candidate",
+      "reason": "Selection screening only; no actual animated-value storage, lifecycle service adapter and game-run request were established for this operation."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: alpha-entry constructor candidate",
+      "reason": "A game-run allocation/request supplying the actual timed-entry widget owner was not established in this selection pass."
+    },
+    {
+      "native": "00bdcea0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: string-pair copy candidate",
+      "reason": "Selection screening only; no game-run pair-copy request with its actual NativeStringStorage owner was established."
+    },
+    {
+      "native": "00be10a0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: search-group payload candidate",
+      "reason": "Selection screening only; no actual search-group factory caller and ownership adapter were established."
+    },
+    {
+      "native": "00465080",
+      "status": "skipped",
+      "host_site": "src/actions_seg5_cc13.cpp: command_target_from_entity_00465080",
+      "reason": "No missing wiring: readiness and the baseline call graph already show a reachable call; this separate constructor was left unchanged."
+    }
+  ],
+  "counts": {
+    "wired_before": 9732,
+    "wired_after": 9733,
+    "entry_reachable_reconstructed_before": 4808,
+    "entry_reachable_reconstructed_after": 4809
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all 3 CTests passed",
+    "call_graph": "python tools/call_graph.py; who 004684f0; path 004684f0; one reachable call from the changed lambda",
+    "source_evidence": [
+      "bsp.py show 004684f0 --live: unit pointer, uint16 unit+174h, F87574/F87578/F8757C and zero trailer",
+      "bsp.py ghidra xrefs 004684f0: sole native caller 009F7D68 in BSP_SquadronAutoTarget_OrdnanceLatch",
+      "bsp.py ghidra proto 004684f0: 23 instructions, 004684F0..00468552, battlestationspacific.exe"
+    ],
+    "runtime": "Game not launched; call-graph reach is static evidence, not gameplay validation."
+  },
+  "assumptions": [
+    "The live host registry one-based uint16 slot ID is authoritative, as already used by this command-resolution path; the actual unit identity is preserved in output+4h."
+  ],
+  "left_for_others": "Native formation/wake/spatial ownership, GUI/listbox caller adapters, and the other screened dependencies listed in skipped rows."
+}

@@ -1106,7 +1106,7 @@ void entity_command_set_submarine_depth_004654d0(Raw command, void* entity, Swee
 // copy the float3 global at 00F87574..00F8757C; word +0 = 0; +4 = unit; then a
 // null unit gives byte +0 = 0 and word +2 = 0, a unit gives byte +0 = 1 and
 // word +2 = [unit+174h]; +14h = 0.0f either way. One call.
-Raw unit_reference_construct_004684f0(Raw reference, void* unit, SweepAHost& host) {
+Raw unit_reference_construct_004684f0(Raw reference, void* unit, UnitReferenceHost& host) {
     const auto* origin = static_cast<const float*>(host.global_address(0x00f87574));
     reference.at<float>(8) = origin[0];
     reference.at<float>(0xc) = origin[1];
@@ -1118,7 +1118,9 @@ Raw unit_reference_construct_004684f0(Raw reference, void* unit, SweepAHost& hos
         reference.at<std::uint16_t>(2) = 0;
     } else {
         reference.at<std::uint8_t>(0) = 1;
-        reference.at<std::uint16_t>(2) = *reinterpret_cast<const std::uint16_t*>(static_cast<std::uint8_t*>(unit) + 0x174);
+        // bsp.py show 004684f0 --live: the unit's only dereference is its
+        // WORD +174h. Keep the same body for raw and canonical typed owners.
+        reference.at<std::uint16_t>(2) = host.unit_object_id_174(unit);
     }
     reference.at<float>(0x14) = 0.0f;
     return reference;
