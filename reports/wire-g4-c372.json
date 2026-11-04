@@ -1,0 +1,98 @@
+{
+  "chain": 372,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain372Bound",
+  "scope": "Lua trigger callback/name assignment for proximity and squad-ordnance triggers",
+  "wired_total_before": 9582,
+  "wired_total_after": 9583,
+  "rows": [
+    {
+      "native": "00750790",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: read_trigger_callback_names, called by GameMissionLuaHost::run_add_proximity_trigger_008c9730 and run_add_squad_ordnance_dropped_trigger_008c9a10",
+      "evidence": "bsp.py show 00750790: assign native string at +1Ch, copy name+8 to +24h, assign callback at +28h; both callers supply actual Lua slots 2 and 3, and retain the setter outputs in the trigger used for removal and callback execution",
+      "call_graph": "REACHABLE; call at 1013aa15 from read_trigger_callback_names to body at 103f3d70 in the Win32 Release build"
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::run_loopback_list",
+      "reason": "Command loopback entries lack the real message/current tick, game-state binding and entity+BDh readiness needed to preserve native keep/drop decisions."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command",
+      "reason": "Requires the commanded entity's actual AI group and group+564Ch current-command object; the inspected command path has no such group producer."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "Requires a retained scroller and real briefing text layout height; briefing_text_height currently returns an unimplemented zero."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::animate_detail_group and animate_page_group",
+      "reason": "Requires retained content/thumb scrollers and actual input-manager axes and cursor state, which these bindings do not expose."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::mission_detail_back",
+      "reason": "Requires a return-to-list host connecting the selected mission and DLC flag to the mission-list page rebuild; this callback remains a log record."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::register_generated_units",
+      "reason": "Requires the actual 2268h composite brain allocation and 009F3BA0 constructor contract rather than the existing typed controller storage."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "Only the load-time baseline is exposed here; teardown still needs native Lua-object iteration, string-set views and a cleanup caller."
+    },
+    {
+      "native": "006b8610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::register_global_function",
+      "reason": "Native registration uses distinct zero-upvalue functions; the host's shared dispatcher requires host and binding-index upvalues, so direct substitution loses binding identity."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: land-fort damage/fire handling",
+      "reason": "Requires the death-smoke producer and owned renderer effect at fort+744h, absent from the inspected capture-building fire path."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::set_widget_local_z",
+      "reason": "Movie page loading and child lookup return null, so there is no actual movie/backdrop widget to mutate."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::bind_movie_textures",
+      "reason": "Decoder and movie-page providers are unimplemented, leaving no real decoder textures or retained widget bindings."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::clear_movie_subtitles",
+      "reason": "The host retains a typed subtitle schedule but lacks the native movie widget and subtitle-vector ownership required by this raw widget body."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed reconstructed_math and tool_tests",
+    "changed_build": "scripts/build.ps1 passed reconstructed_math and tool_tests",
+    "call_graph": "python tools/call_graph.py; who 00750790 and path 00750790 confirm entry reachability and the changed helper's call",
+    "wire_readiness": "python tools/wire_readiness.py --standins: 00750790 is wired, called=true, call_sites=1, callers_live=1",
+    "float_math": "unchanged",
+    "game_run": "not run, per worker assignment",
+    "boundary": "Real Lua argument and retained trigger state through a checked native field view; source integration, not original binary ABI or live gameplay validation"
+  }
+}
