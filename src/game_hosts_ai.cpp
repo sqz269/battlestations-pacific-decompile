@@ -1422,6 +1422,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             return bsp::cc13_seg69::Raw{bytes.data()}.ptr(4);
         }
 
+        void store_route_state(const bsp::AiCommandObject& command) {
+            const bsp::cc13_seg69::Raw view{bytes.data()};
+            if (view.at<std::uint32_t>(0) != bsp::cc13_seg69::kCautiousAttackVtable) return;
+            if (command.type != bsp::AiCommandType::CautiousAttack ||
+                command.owner_group != view.ptr(4))
+                throw std::logic_error("CAUTIOUSATTACK route state has no matching native owner");
+            // 00A14DD0 receives command+20h: 00A14E63/AC and 00A1525C
+            // mutate command+24h, and 00A14F48 decrements command+28h.
+            // The source tick uses the typed projection; publish its result
+            // back before any subsequent retained-state read or notification.
+            view.at<std::uint8_t>(0x24) = static_cast<std::uint8_t>(command.route_flag_24);
+            view.at<std::int32_t>(0x28) = command.route_counter_28;
+        }
+
         bsp::AiCommandObject state() {
             namespace native = bsp::cc13_seg69;
             const native::Raw view{bytes.data()};
@@ -1490,6 +1504,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         g->native_attack = std::move(native);
         g->command = result;
+    }
+
+    void store_command_route_state(Group* g) {
+        if (g != nullptr && g->native_attack)
+            g->native_attack->store_route_state(g->command);
     }
 
     struct Planner {
@@ -2660,6 +2679,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             auto_merge_leave_00a10ec0(group_at(cmd->owner_group));
         }
         bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            if (tick.route_ran) store_command_route_state(group_at(cmd->owner_group));
+        }
         if (tick.route_ran) {
             // Packet cc9_director_moveonpath_route: the census of 00A14DD0.
             Group* rg = group_at(cmd->owner_group);

@@ -2,18 +2,28 @@
   "chain": 544,
   "owner": "agent/g4-w3",
   "switch": "bsp::kWireGoal4Chain544Bound",
-  "summary": "Install the existing ATTACK-family constructors over retained command storage with live planner owner/target groups; consume their fields and GetType results in the actual command ticks, retain target observers, and unregister them on replacement, promotion, retargeting and teardown.",
+  "summary": "Install the existing ATTACK-family constructors over retained command storage with live planner owner/target groups; consume their fields and GetType results in the actual command ticks, publish mutable CAUTIOUSATTACK route fields back to retained storage after each route tick, retain target observers, and unregister them on replacement, promotion, retargeting and teardown.",
   "wired_total_before": 9860,
   "wired_total_after": 9865,
   "metric_note": "Readiness's textual wired total increases by five. 00A10710 and 00A10AE0 were already textually wired at baseline; this chain supplies actual entry-reachable calls for all seven selected bodies. No baseline binary-called total was captured.",
   "validation": {
     "release_build_and_tests": "./scripts/build.ps1: all five existing tests pass",
-    "lifetime_fixture": "python tools/wire_goal4_chain544_probe.py: production constructor/storage/install/notification code passes all three subclass outputs, retarget, promotion, non-attack replacement, multiple target observers, unobserved target, target-before-attacker shutdown and heap checks",
+    "lifetime_fixture": "python tools/wire_goal4_chain544_probe.py: production constructor/storage/install/notification code passes all three subclass outputs, one real 00A14DD0 route build and retained-state readback, retarget, promotion, non-attack replacement, multiple target observers, unobserved target, target-before-attacker shutdown and heap checks",
     "analysis_build": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests",
     "call_graph": "python tools/call_graph.py --build-dir build/analysis, followed by who for each wired address: all seven are entry-reachable with distinct call sites; Release also calls all three subclass constructors and GetType bodies, while the shared base is inlined",
     "evidence": "bsp.py show 00A10890, 00A109B0 and 00A10710; 00A10710 assembly confirms ECX=target and EDX=command+8 at observer registration",
     "limits": "Build, focused source-host fixture and binary call-graph evidence only. The game was not run. These source adapters and retained byte buffers do not claim native observer/container or binary vtable ABI compatibility."
   },
+  "review_fixes": [
+    {
+      "review_run": 1121,
+      "round": 1,
+      "finding": 1,
+      "status": "fixed",
+      "change": "NativeAttackCommand::store_route_state publishes the typed tick result to native offsets +24h/+28h immediately after ai_command_tick_vt000c reports a route pass. It verifies the CAUTIOUSATTACK class and owner before writing; promotion replaces the old native command, so CLOSEATTACK is never written through the route view. The existing chain544 switch guards the new host-side publication.",
+      "verification": "The lifetime fixture runs the existing ai_cautious_approach_pass_00a14dd0 against a single-leader route fixture. It builds three route points plus the destination, changes the flag false -> true and counter 4 -> 3, calls the production store_command_route_state helper, and verifies the same true/3 values through both NativeAttackCommand::state() and raw bytes +24h/+28h. Subsequent retargeting still resets route state to false/4."
+    }
+  ],
   "rows": [
     {
       "native": "00a10710",
