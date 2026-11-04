@@ -1,0 +1,152 @@
+{
+  "chain": 504,
+  "switch": "bsp::kWireGoal4Chain504Bound",
+  "rows": [
+    {
+      "native": "00a93ec0",
+      "status": "wired",
+      "host_site": "src/native_gamepad_xinput.cpp: bsp::construct_native_gamepad_00a95d70",
+      "evidence": "bsp.py show 00a95d70 and 00a93ec0: identical ordered clears of the two 256-byte histories at actual device+0Ch/+10Ch, before force-registry construction; replaces both inline memsets.",
+      "call_graph": "sound_cc13.obj body at 10590640; one reachable call at 105FC22C from construct_native_gamepad_00a95d70 in native_gamepad_xinput.obj"
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message",
+      "reason": "Loopback routing lacks the native current/post tick domain and message category/sender-active inputs required by the complete queued-message gate."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost objective replication",
+      "reason": "Objective replication is peer-gated and never called in the single-player host."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The firepower host has no producer for the ammo record's flak-alternate source object."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall queue_call",
+      "reason": "The live named-call host runs on the main thread and has no worker-thread deferred-call producer."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation_station_0070d290",
+      "reason": "Formation station consumes lateral/axial columns, not the raw relative vector; the lookup-miss native DATA owner at F87574/78/7C also remains unbound."
+    },
+    {
+      "native": "00876ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit model-group state",
+      "reason": "No complete live unit model-group/point-announcement binding supplies this raw unit-state transition."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition",
+      "reason": "SpawnCompositionHost class-pair table binding and its live composition caller remain absent."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: quick_spawn_named_group",
+      "reason": "The live spawn path does not produce the spawn-manager request sum, threat-record count and candidate-source inputs."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path delivery",
+      "reason": "User-path add delivery exists, but no live user-path undo/clear operation reaches the last-point removal contract."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI frame",
+      "reason": "The frontend retains layout widgets rather than the complete GuiResourceOwner/GuiWidgetOwnerRuntime required by this frame reset."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI frame",
+      "reason": "No GuiPointerRuntime and matching GuiResourceOwner are bound in the live frontend."
+    },
+    {
+      "native": "00aa3f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI frame",
+      "reason": "No concrete GuiPageListUpdateHost over the frontend's live page graph supplies the native page-list update contract."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HUD direction calculations",
+      "reason": "Survey found scalar heading calculations rather than an existing pair-of-3D-directions angle-delta operation to replace."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "weapon_animation still returns zero and has no animation/ticker owner; range fields would have no live consumer."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission objective queries",
+      "reason": "No matching live objective visibility query or ObjectiveRevealView producer was found in this host."
+    },
+    {
+      "native": "008dad30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission objective queries",
+      "reason": "No matching live objective position query or ObjectiveEntityHost implementation was found in this host."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The host owns a typed subtitle schedule; native 14h/24h vectors, Text child and extratitle ownership are not bound."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ground_state_from_locked_007ca3f0",
+      "reason": "The plane host has no retained native impulse vectors/timer or impulse-pose image at entity+4A8h..+51Fh."
+    },
+    {
+      "native": "0092bd30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: kill_and_remove_00814595 and kill-depth cleanup",
+      "reason": "Ship physics retains a typed body and shape counts/AABB, not the native linked shape objects and per-shape fields to clear."
+    },
+    {
+      "native": "00a90180",
+      "status": "skipped",
+      "host_site": "src/game_input_runtime.cpp: dynamic-device button query",
+      "reason": "This raw helper invokes literal device vtable function pointers; the live owners use profile words with explicit runtime dispatch."
+    },
+    {
+      "native": "00a97b80",
+      "status": "skipped",
+      "host_site": "src/game_input_runtime.cpp: backend queries",
+      "reason": "Only producers for backend+F4h were found; no existing live read of that byte needs this getter."
+    }
+  ],
+  "validation": {
+    "initial_build": "scripts/build.ps1 passed all 4 CTest groups",
+    "changed_build": "scripts/build.ps1 passed all 4 CTest groups; git diff --check passed",
+    "wired_before": 9801,
+    "wired_after": 9802,
+    "readiness": "00A93EC0: state wired, called true, call_sites 1, callers_live 1",
+    "call_graph_before": "00A93EC0 absent from linked build; 00A95D70 reachable via NativeInputDeviceRuntime and XInput construction",
+    "called_before": 4862,
+    "called_after": 4863,
+    "call_graph_after": "00A93EC0 has exactly one reachable call from the changed constructor; path traces through input-runtime construction to WinMainCRTStartup",
+    "float_math": "No float arithmetic changed; existing float expressions remain unchanged.",
+    "runtime": "Game not run; no gameplay or original register-ABI claim."
+  }
+}
