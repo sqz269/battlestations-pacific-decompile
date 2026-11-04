@@ -3,6 +3,7 @@
 
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
 
 #include <cstring>
 #include <string.h>
@@ -1330,15 +1331,16 @@ std::uint32_t streamed_dialog_manager_is_dialog_playing_00a77730(void* manager) 
     return sound_stream_is_active_00a776d0(stream);
 }
 
+// Goal 4 chain 439 connects the existing stream setter directly on these same raw objects.
 // 00A77760, RET 4: +215h = paused; for the two logical channels at +8h and +0Ch, a non-null
 // stream (+4h) gets 00A85C40(ECX = stream, +215h) (the byte re-read each time).
-void streamed_dialog_manager_set_all_paused_00a77760(SweepCHost& host, void* manager,
-                                                     std::uint8_t paused) {
+void streamed_dialog_manager_set_all_paused_00a77760(void* manager, std::uint8_t paused) {
     at<std::uint8_t>(manager, 0x215) = paused;
     for (std::size_t i = 0; i < 2; ++i) {
         void* const stream = ptr(ptr(manager, 0x08 + i * 4), 0x04);
         if (stream != nullptr) {
-            host.sound_stream_set_paused_00a85c40(stream, at<std::uint8_t>(manager, 0x215));
+            cc13_audio::set_sound_stream_paused_00a85c40(stream,
+                at<std::uint8_t>(manager, 0x215));
         }
     }
 }

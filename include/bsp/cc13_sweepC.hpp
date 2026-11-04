@@ -618,8 +618,8 @@ void streamed_dialog_logical_set_byte_4e_00a77700(void* logical, std::uint8_t va
 std::uint8_t streamed_dialog_logical_get_byte_4e_00a77710(void* logical);
 std::uint32_t streamed_dialog_logical_get_category_00a77720(void* logical);
 std::uint32_t streamed_dialog_manager_is_dialog_playing_00a77730(void* manager);
-void streamed_dialog_manager_set_all_paused_00a77760(SweepCHost& host, void* manager,
-                                                     std::uint8_t paused);
+// Calls the existing 00A85C40 body directly on the actual stream objects.
+void streamed_dialog_manager_set_all_paused_00a77760(void* manager, std::uint8_t paused);
 void streamed_dialog_manager_draw_debug_00a777a0(SweepCHost& host, void* manager);
 void streamed_dialog_manager_set_channel_byte_4e_00a77840(void* manager, std::int32_t channel,
                                                           std::uint8_t value);
