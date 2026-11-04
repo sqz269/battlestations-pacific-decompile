@@ -190,6 +190,11 @@
 #include "bsp/plane_retreat_task.hpp"         // packet cc9_plane_retreat_task
 #include "bsp/ship_nav_ver_cc13.hpp"           // packet cc9_ship_exit_zone (00826D70)
 #include "bsp/command_execution.hpp"           // packet cc9_ship_exit_zone (command classes)
+#include "bsp/classes_seg7_cc13.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
+#include "bsp/native_camera_matrix_math.hpp"
+#include "bsp/native_particle_axial_loading.hpp"
+#include "bsp/wire_goal4_chain454_switches.hpp"
 #include "bsp/plane_level_bomb_task.hpp"      // packet cc9_plane_level_bomb_task
 #include "bsp/cc13_devwalk.hpp"               // packet cc13-devwalk (007C0D90 per rack)
 #include "bsp/cc13_seg67b_switches.hpp"       // packet cc13-seg67b (009A7932)
@@ -49587,6 +49592,42 @@ void GameUnitsHost::relocate_formation_members_00819672(std::size_t leader) {
     }
 }
 
+namespace {
+class ShipHeadingMatrixBinding final : public bsp::cc13_seg7::SceneNodeHeadingHost {
+    using Object = bsp::cc13_seg7::Object;
+public:
+    void matrix_copy_004134f0(Object destination, Object source) override {
+        bsp::copy_native_camera_matrix_004134f0(destination, nullptr, source);
+    }
+    Object matrix_build_rotation_y_00b646e0(Object out, const float* angle) override {
+        // Immutable binary operands, 00D7A208 and 00D7A24C. The provider retains
+        // B646E0's separate FSIN/FCOS spills and SSE negative-zero subtraction.
+        static constexpr float negative_zero = -0.0f;
+        static constexpr float one = 1.0f;
+        return static_cast<Object>(bsp::build_native_particle_rotation_y_00b646e0(
+            out, angle, &negative_zero, &one));
+    }
+    Object matrix_multiply_00413920(Object left, Object out, Object right) override {
+        return static_cast<Object>(bsp::multiply_native_camera_matrices_00413920(
+            left, nullptr, out, right));
+    }
+};
+
+void set_live_ship_scene_heading(bsp::ShipMotionState& motion, float heading) {
+    // bsp.py show 0047F200 --asm: 0047F24A..266 read only node+A4h..ACh;
+    // 0047F2D4..2D7 publish the complete matrix at +74h. This borrowed view
+    // carries the real current translation, not a second persistent node.
+    alignas(4) std::uint8_t node[0xb4];
+    std::memcpy(node + 0xa4, motion.position, sizeof(motion.position));
+    ShipHeadingMatrixBinding binding;
+    bsp::cc13_seg7::scene_node_set_heading_0047f200(binding, node, heading);
+    std::memcpy(motion.pose_row0, node + 0x74, sizeof(motion.pose_row0));
+    std::memcpy(motion.pose_row1, node + 0x84, sizeof(motion.pose_row1));
+    std::memcpy(motion.pose_row2, node + 0x94, sizeof(motion.pose_row2));
+    std::memcpy(motion.position, node + 0xa4, sizeof(motion.position));
+}
+} // namespace
+
 bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
     Impl& host = *impl_;
     if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
@@ -49602,16 +49643,20 @@ bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
         const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_heading_009584d0(
             unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0f),
             session.session_word_1fe4, static_cast<std::uint8_t>(session.skirmish_218c));
-        // 00958556 calls 0047F200. Preserve the existing ship RotationY
-        // projection: each unary subtraction is one float operation, and the
-        // CRT sine/cosine calls are unchanged. No previous-position store.
+        // 00958556 calls 0047F200. Chain 454 runs that existing body on the
+        // current ship translation, with native matrix arithmetic providers.
+        // The OFF arm retains the former CRT RotationY projection.
         const float yaw = -0.0f - heading;
         if (plan.rotate_heading_0047f200) {
+            if constexpr (bsp::kWireGoal4Chain454Bound) {
+                set_live_ship_scene_heading(slot.motion, heading);
+            } else {
             const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
             const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
             slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
             slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
             slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+            }
         }
         Impl::publish_pose_set_plan(slot, plan);
         // 008196B0's 00818EA0: the wake ring refilled along the new heading.

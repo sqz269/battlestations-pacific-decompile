@@ -1,0 +1,98 @@
+{
+  "chain": 454,
+  "slot": "g4-w5",
+  "switch": "bsp::kWireGoal4Chain454Bound",
+  "rows": [
+    {
+      "native": "0047f200",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_heading_008196b0 -> set_live_ship_scene_heading",
+      "evidence": "bsp.py show 0047f200 --asm; native translation reads 0047F24A..0047F266 and matrix publication 0047F2D4..0047F2D7; built call graph has one reachable call from GameUnitsHost::set_heading_008196b0",
+      "state": "The borrowed node view receives the current ShipMotionState position; the resulting three matrix axes and translation replace the live pose before the existing publication/wake path. Existing body is reused through a narrow matrix-service interface. The native rotation, copy and multiply providers retain original arithmetic."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "The live UnitPickScreenState still lacks producers for selection mode +30h and selection-vector contents +C4h..+D0h required by the reset body."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "The live control-audio callback only records the call; a consumer for the ship +BBCh sound object, +428h device list and +6B4h controlled-audio byte is still needed."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: CaptureScoreHost::available_resources",
+      "reason": "The capture scorer still returns the fixed budget; wiring needs a live resource Host adapter carrying world-unit flags, squadron-leader ownership and queued spawn usage in addition to retained ResourceUsage."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::map_screen_frame_step",
+      "reason": "The existing init_map_scene_zoom_0093ccc0 reconstructs only the zoom fragment; the scene-handler/camera/light producers and remaining native constructor are not reconstructed."
+    },
+    {
+      "native": "0047c210",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ShipHeadingMatrixBinding::matrix_multiply_00413920",
+      "reason": "0047F200 calls the existing 00413920 matrix product directly; no live in-place multiply call site requiring the separate 0047C210 wrapper was identified."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Impl and merge_child",
+      "reason": "Already called by two reachable native scene-property adapter sites in the current executable; the readiness name match misses this existing wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree and insert_into",
+      "reason": "Already called by two reachable native scene-property adapter sites in the current executable; the readiness name match misses this existing wiring."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost tuning initialization",
+      "reason": "The inspected tuning initialization supplies zero directly; the active party-slot lookup and its campaign caller contract are not provided on this path."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail",
+      "reason": "The live host still records this pass; wiring needs the powerup-ready entry producer, scoring services and item-use consumer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score-list release contract",
+      "reason": "The host intentionally retains no candidate score list because its only native reader is the debug overlay; excluded as debug-only work."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate score-list release contract",
+      "reason": "The chosen-score marker belongs to the same debug-overlay-only candidate list; excluded as debug-only work."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend_think pass A",
+      "reason": "Already invoked by the existing defend pass with real member-kind and objective-set state; adding another call would duplicate existing behavior."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph_reconstructed_called_before": 4757,
+    "call_graph_reconstructed_called_after": 4758,
+    "call_graph_0047f200": "REACHABLE; one call site at 102c4604 from GameUnitsHost::set_heading_008196b0",
+    "wire_readiness_before": 9713,
+    "game_run": false,
+    "abi": "Existing reconstructed source interface narrowed to SceneNodeHeadingHost; no original register ABI is claimed.",
+    "wire_readiness_after": 9714,
+    "pc24_lint": "python tools/pc24_lint.py --staged: 0 findings, 4 files"
+  }
+}
