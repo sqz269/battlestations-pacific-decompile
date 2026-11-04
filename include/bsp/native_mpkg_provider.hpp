@@ -44,6 +44,8 @@ public:
     virtual void* construct_00bb9920(void* actual_archive,
         const void* actual_system_name) = 0;
     virtual void destroy_00bb9c10(void* actual_archive) = 0;
+    virtual void* open_named(void* actual_archive,
+        const void* actual_name, std::uint32_t flags) = 0;
 };
 struct NativeMpkgProviderContext {
     ActualNativeStringPoolStorage& strings;

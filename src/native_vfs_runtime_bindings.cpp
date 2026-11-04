@@ -17,6 +17,8 @@
 #include "bsp/native_raw_inflate_stream.hpp"
 #include "bsp/native_vfs_startup_callbacks.hpp"
 #include "bsp/native_resource_stream_reads.hpp"
+#include "bsp/water_weather_cc13.hpp"
+#include "bsp/wire_goal4_chain459_switches.hpp"
 #include <stdexcept>
 namespace bsp {
 namespace {
@@ -240,6 +242,26 @@ void NativeVfsRuntimeBindings::source_zero_reference(std::uintptr_t entry,void* 
 }
 void* NativeVfsRuntimeBindings::provider_open(void* provider,const void* name,std::uint32_t flags) {
     const auto table=capture_native_lua_vfs_table(provider);
+    if constexpr (kWireGoal4Chain459Bound) {
+        // D64390+8 = BB8E70. Forward this provider's actual archive+14h,
+        // original name header and flags; the archive services borrow this VFS.
+        if (table == 0x00d64390) {
+            if (slot(table,8) != 0x00bb8e70 || !mpkg_) unsupported();
+            return water_weather_cc13::w3_mpkg_provider_open_entry_00bb8e70(provider,name,flags,
+                [this](void* archive,const void* original_name,std::uint32_t original_flags) {
+                    return mpkg_->archives.open_named(archive,original_name,original_flags);
+                });
+        }
+        if(table!=0x00d69168 && table!=0x00d689e8 && table!=0x00d641f8)unsupported();
+        switch(slot(table,8)) {
+        case 0x00bf4ba0:return open_native_physical_provider_00bf4ba0(provider,name,flags,physical_);
+        case 0x00be5fa0:return open_native_file_store_00be5fa0(provider,name,flags,physical_.physical.invalid_parameters,store_);
+        case 0x00bb5bb0:
+            if(!mpak_)unsupported();
+            return open_native_mpak_file_00bb5bb0(provider,name,flags,mpak_->open);
+        default:unsupported();
+        }
+    } else {
     if(table!=0x00d69168 && table!=0x00d689e8 && table!=0x00d641f8)unsupported();
     switch(slot(table,8)) {
     case 0x00bf4ba0:return open_native_physical_provider_00bf4ba0(provider,name,flags,physical_);
@@ -248,6 +270,7 @@ void* NativeVfsRuntimeBindings::provider_open(void* provider,const void* name,st
         if(!mpak_)unsupported();
         return open_native_mpak_file_00bb5bb0(provider,name,flags,mpak_->open);
     default:unsupported();
+    }
     }
 }
 std::uint32_t NativeVfsRuntimeBindings::stream_size_low(void* stream,std::uint32_t argument) {

@@ -1,6 +1,9 @@
 #pragma once
 #include <cstdint>
 #include <cstddef>
+#include <functional>
+
+namespace bsp { struct NativeMpkgArchiveContext; }
 
 // Exact-address lane tC leaves. Names describe hypotheses, not recovered symbols.
 // Raw getters borrow the original 32-bit storage. Callback setters receive the
@@ -190,14 +193,17 @@ struct ArchiveFieldBindings {
 };
 void archive_write_field_00bd8cd0(void*, GuiTaggedWord, GuiTaggedWord, const ArchiveFieldBindings&);
 struct MpkgBindings {
-    void* (__cdecl* allocate_header_00bf55be)(std::uint32_t);
-    void (__cdecl* free_header_00bf65ac)(void*);
-    void* (__cdecl* allocate_owner_00bf681b)(std::uint32_t);
-    void* (__thiscall* inflate_00bbc1d0)(void*, void*, const std::uint32_t*, std::uint32_t, std::uint32_t);
-    void* (__thiscall* memory_00bef750)(void*);
-    void* (__thiscall* copy_range_00bef840)(void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t);
-    void* (__thiscall* adopted_00bf1130)(void*, void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t);
+    std::function<void*(std::uint32_t)> allocate_header_00bf55be;
+    std::function<void(void*)> free_header_00bf65ac;
+    std::function<void*(std::uint32_t)> allocate_owner_00bf681b;
+    std::function<void*(void*, void*, const std::uint32_t*, std::uint32_t, std::uint32_t)> inflate_00bbc1d0;
+    std::function<void*(void*)> memory_00bef750;
+    std::function<void*(void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t)> copy_range_00bef840;
+    std::function<void*(void*, void*, std::uint32_t, std::uint32_t, std::uint32_t, std::uint32_t)> adopted_00bf1130;
     int (__cdecl* stricmp_00bf7fbf)(const char*, const char*);
+    // Optional actual-storage services for the application VFS route. Legacy
+    // explicit callbacks retain their original behavior when this is null.
+    NativeMpkgArchiveContext* native_context = nullptr;
 };
 std::uint32_t mpkg_entry_offset_00bb8a90(void*, void*, const MpkgBindings&);
 void* mpkg_open_entry_00bb8be0(void*, void*, std::uint32_t, void* volatile& image_109ceec, const MpkgBindings&);

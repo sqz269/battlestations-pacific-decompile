@@ -35,6 +35,7 @@ public:
     explicit NativeMpkgArchiveRuntimeOperations(NativeMpkgArchiveContext&) noexcept;
     void* construct_00bb9920(void*,const void*) override;
     void destroy_00bb9c10(void*) override;
+    void* open_named(void*,const void*,std::uint32_t) override;
 private:
     NativeMpkgArchiveContext& context_;
 };
