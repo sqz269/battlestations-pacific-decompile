@@ -7151,14 +7151,16 @@ private:
 //  - entityKilled: 0097E840 calls 0097D210, which this value model has no body for (its
 //    reconstruction is the raw cc13_seg62 one); the empty filters are what it builds.
 //    Then 00972F00 (callback, entity +0Ch, killReason +1Ch through 00970FF0);
-//  - exitzone: 0097A620 then 009726D0 (callback, entity +0Ch, exited +1Ch, 00972390).
+//  - exitzone: 0097A620 then 009726D0 (callback, entity +0Ch, exited +1Ch, 00972390);
+//  - recon: 0097A220 then 00972450 (callback, entity +0Ch, oldLevel +1Ch, newLevel
+//    +2Ch, and party +3Ch only when 009724F1 has_key finds it).
 // The shipped scripts give every filter key (`lastAttacker = {}` and so on): the native
 // lua_next on an absent key's nil has no type test. GuiLua51Host::next throws there
 // instead, and that block falls back to the host parse (counted, logged).
 bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                                                            ListenerEntry& entry) {
     namespace seg64 = bsp::cc13_seg49_64_78;
-    enum class Channel { none, kill, entity_killed, exit_zone };
+    enum class Channel { none, kill, entity_killed, exit_zone, recon };
     Channel channel = Channel::none;
     // Each channel only where the dispatcher that consumes it runs the value-model arm.
     if (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound
@@ -7170,6 +7172,8 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
     } else if (bsp::kWireLuaHostBound && kLuaExitZoneListenersBound
                && listener_key_equal(entry.channel, "exitzone")) {
         channel = Channel::exit_zone;
+    } else if (listener_key_equal(entry.channel, "recon")) {
+        channel = Channel::recon;   // fire_recon_listeners_00980e50 has no OFF-gated arm
     }
     if (channel == Channel::none) return false;
 
@@ -7214,6 +7218,14 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             entry.native_exit_zone = std::move(subscription);
             break;
         }
+        case Channel::recon: {
+            auto subscription =
+                std::make_shared<seg64::ReconSubscription>(seg64::construct_recon_0097a220());
+            seg64::load_recon_00972450(*subscription, reader, handles);
+            entry.callback = subscription->callback;
+            entry.native_recon = std::move(subscription);
+            break;
+        }
         case Channel::none:
             break;
         }
@@ -7224,6 +7236,7 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         entry.native_kill.reset();
         entry.native_entity_killed.reset();
         entry.native_exit_zone.reset();
+        entry.native_recon.reset();
         ++summary_.listener_native_load_fallbacks;
         log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" native load threw (%s); "
             "host parse (goal 4 chain 352)", entry.channel.c_str(), entry.id.c_str(), error.what());
@@ -7243,8 +7256,8 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
     entry.channel = listener_string_argument(state, 1);
     entry.id = listener_string_argument(state, 2);
     if (argument_count >= 3 && ::lua_type(state, 3) == LUA_TTABLE) {
-        // Goal 4 chain 352: the native construct + Load for kill, entityKilled and
-        // exitzone (load_listener_subscription_native). OFF, any other channel, or a
+        // Goal 4 chain 352: the native construct + Load for kill, entityKilled,
+        // exitzone and recon (load_listener_subscription_native). OFF, any other channel, or a
         // load that threw keeps the host parse below.
         bool native_loaded = false;
         if constexpr (bsp::kWireGoal4Chain352Bound) {
@@ -8586,6 +8599,22 @@ void GameMissionLuaHost::fire_recon_listeners_00980e50(std::size_t u, int old, i
             std::vector<std::string> callbacks;
             for (const ListenerEntry& entry : listeners_) {
                 if (!listener_key_equal(entry.channel, "recon")) continue;
+                if (bsp::kWireGoal4Chain352Bound && entry.native_recon != nullptr) {
+                    // Goal 4 chain 352: the subscription AddListener loaded (00972450),
+                    // tested as 00968470 does: slot 0 of the +0Ch entity filter (00979140)
+                    // on the boxed unit, then +1Ch, +2Ch and +3Ch (00979320) on the old
+                    // level, the new level and the party; the first that fails ends it.
+                    namespace matchers = bsp::lua_listener_native_matchers;
+                    const bsp::cc13_seg49_64_78::ReconSubscription& s = *entry.native_recon;
+                    if (!s.entity.matches(matchers::word_param(unit_id))
+                        || !s.old_level.matches(matchers::word_param(old))
+                        || !s.new_level.matches(matchers::word_param(level))
+                        || !s.party.matches(matchers::word_param(party))) {
+                        continue;
+                    }
+                    if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+                    continue;
+                }
                 auto holds = [](const std::vector<int>& set, int v) {
                     return set.empty() || std::find(set.begin(), set.end(), v) != set.end();
                 };

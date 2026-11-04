@@ -3,7 +3,7 @@
   "slot": "g4-w4",
   "switch": "kWireGoal4Chain352Bound",
   "switch_header": "include/bsp/wire_goal4_chain352_switches.hpp",
-  "summary": "Mission Lua AddListener (008C6760 -> 00980C10) now builds the kill, entityKilled and exitzone subscriptions with the image's constructors and Load slots over a GuiLuaReader (004425C0) on the block, resolving entity handles through 00888AA0 and the host's Ptr identity; the kill/entityKilled/exitzone dispatchers match those loaded filters, and the entityKilled reason parameter is the 0096DC00 string box. OFF, any other channel, or a block whose load throws (an absent filter key) keeps the host parse.",
+  "summary": "Mission Lua AddListener (008C6760 -> 00980C10) now builds the kill, entityKilled, exitzone and recon subscriptions with the image's constructors and Load slots over a GuiLuaReader (004425C0) on the block, resolving entity handles through 00888AA0 and the host's Ptr identity; the kill/entityKilled/exitzone/recon dispatchers match those loaded filters, and the entityKilled reason parameter is the 0096DC00 string box. OFF, any other channel, or a block whose load throws (an absent filter key) keeps the host parse.",
   "rows": [
     {
       "native": "0097a450",
@@ -34,6 +34,16 @@
       "native": "0096dc00",
       "status": "wired",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::dispatch_entity_killed_listeners_00986480 (the killReason parameter, 009865F2)"
+    },
+    {
+      "native": "0097a220",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (recon arm), from run_add_listener_008c6760"
+    },
+    {
+      "native": "00972450",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (recon arm); its filters are tested in 00968470's order in fire_recon_listeners_00980e50"
     },
     {
       "native": "0097d210",

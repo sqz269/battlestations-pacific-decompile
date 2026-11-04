@@ -61,6 +61,7 @@ struct ShipClassCameraInputs;
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
 // that AddListener loads (ListenerEntry::native_*).
 namespace bsp::cc13_seg49_64_78 {
+struct ReconSubscription;
 struct KillSubscription;
 struct EntityKilledSubscription;
 struct ExitZoneSubscription;
@@ -2364,10 +2365,11 @@ private:
         std::shared_ptr<const bsp::cc13_seg49_64_78::EntityKilledSubscription>
             native_entity_killed;
         std::shared_ptr<const bsp::cc13_seg49_64_78::ExitZoneSubscription> native_exit_zone;
+        std::shared_ptr<const bsp::cc13_seg49_64_78::ReconSubscription> native_recon;
     };
     std::vector<ListenerEntry> listeners_;
     // Goal 4 chain 352: 00980C10's 004425C0 reader over AddListener's block (argument 3)
-    // and 0097E360's construct + Load for kill, entityKilled and exitzone. False for any
+    // and 0097E360's construct + Load for kill, entityKilled, exitzone and recon. False for any
     // other channel, or when the load threw; the caller then runs the host parse.
     bool load_listener_subscription_native(lua_State* state, ListenerEntry& entry);
     // Packet cc9_get_closest_border_zone: world+711Ch..+7130h and world+7134h.
