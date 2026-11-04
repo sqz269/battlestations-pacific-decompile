@@ -8,7 +8,8 @@
 // Objects are reached through byte offsets in their Win32 layout (Object plus at<T>). Every call
 // the image makes goes through a Pool10Host method named for its target address, at the same
 // point and with the same arguments; library code (operator new, _free, the std::map head-node
-// and erase instantiations) is bound there with no credit. Build only: no host path calls these.
+// and erase instantiations) is bound there with no credit. Chain431 calls the
+// BrowserGroup reader from the live scene lexer; registry providers remain separate.
 
 #include <cstddef>
 #include <cstdint>
@@ -30,7 +31,22 @@ struct TreeIterator {
     Object node;
 };
 
-struct Pool10Host {
+// The BrowserGroup reader needs only tokenizer and temporary-string calls.
+// Keep this boundary separate from the unrelated class-registry providers so
+// the live scene lexer can call the one existing 004694F0 body.
+struct SceneBrowserGroupEntryCalls {
+    virtual ~SceneBrowserGroupEntryCalls() = default;
+    virtual void scene_tokenizer_expect_token_008d9930(Object tokenizer, const char* literal) = 0;
+    virtual const char* scene_tokenizer_read_token_008d9980(Object tokenizer) = 0;
+    virtual void scene_tokenizer_read_int_008d9ad0(Object tokenizer, std::int32_t* out) = 0;
+    virtual void native_string_construct_0041e870(Object string, const char* text) = 0;
+    virtual void native_string_destroy_storage_0041dd20(Object string) = 0;
+    virtual Object sized_pool_get_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(Object pool, void* data, std::uint32_t bytes,
+                                               std::uint32_t flag) = 0;
+};
+
+struct Pool10Host : SceneBrowserGroupEntryCalls {
     virtual ~Pool10Host() = default;
 
     // Class entities.
@@ -49,16 +65,6 @@ struct Pool10Host {
     virtual void bullet_visual_class_registry_clear_singleton_00472990(Object registry) = 0;
     virtual void buoy_class_registry_clear_singleton_00474220(Object registry) = 0;
 
-    // Scene tokenizer and NativeString {size +0, data +4}.
-    virtual void scene_tokenizer_expect_token_008d9930(Object tokenizer, const char* literal) = 0;  // RET 4
-    virtual const char* scene_tokenizer_read_token_008d9980(Object tokenizer) = 0;                 // RET
-    virtual void scene_tokenizer_read_int_008d9ad0(Object tokenizer, std::int32_t* out) = 0;       // RET 4
-    virtual void native_string_construct_0041e870(Object string, const char* text) = 0;            // RET 4
-    virtual void native_string_destroy_storage_0041dd20(Object string) = 0;  // EH unwind only
-    virtual Object sized_pool_get_00419cc0() = 0;
-    virtual void sized_pool_return_block_00bd1510(Object pool, void* data, std::uint32_t bytes,
-                                                  std::uint32_t flag) = 0;                         // RET 0Ch
-
     // std::map instantiations of the three class registries (library, bound).
     virtual Object tree_buy_head_node_00471210(Object tree) = 0;  // AnimClass, 1Ch-byte node
     virtual Object tree_buy_head_node_00472e10(Object tree) = 0;  // Bullets, 18h-byte node
@@ -75,7 +81,7 @@ struct Pool10Host {
 
 // 004694F0 __thiscall(ECX unused, SceneTokenizer*), RET 4: parses and discards one
 // BrowserGroup { GroupName = TOKEN GroupID = INT Parent = TOKEN } entry.
-void scene_file_read_browser_group_entry_004694f0(Pool10Host& host, Object tokenizer);
+void scene_file_read_browser_group_entry_004694f0(SceneBrowserGroupEntryCalls& host, Object tokenizer);
 
 // CreateEntity, visual-class vtable slot +8h: __thiscall(class), RET, EAX = new entity.
 Object anim_class_create_entity_00470c90(Pool10Host& host, Object anim_class);

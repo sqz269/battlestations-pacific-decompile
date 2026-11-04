@@ -23,7 +23,7 @@ namespace {
 // The inline NativeString release the image emits after each local string: when data (+4) is
 // non-null, 00419CC0() then 00BD1510(ECX = pool, data, size + 1, 1). The three arguments are
 // pushed before the 00419CC0 call, which leaves them for 00BD1510.
-void release_native_string(Pool10Host& host, Object string) {
+void release_native_string(SceneBrowserGroupEntryCalls& host, Object string) {
     void* data = at<void*>(string, 4);
     if (data != nullptr) {
         const std::uint32_t bytes = at<std::uint32_t>(string, 0) + 1;
@@ -130,10 +130,11 @@ void destruct_registry(Pool10Host& host, Object registry,
 // (state back to 0), then the name (state -1), each through the inline pool release.
 // Unwind map (FuncInfo 00D89154): state 1 -> 0 runs 0041DD20 on the parent string, state 0 -> -1
 // runs 0041DD20 on the name string.
-// Host overlap: src/scene_traffic_groups.cpp (read_browser_groups_after_keyword, the loop body
-// at "004694F0: eleven ExpectToken calls") parses the same grammar over SceneLexer in the live
-// path under kSceneBrowserGroupsBound, and keeps the entries. This body is not wired in.
-void scene_file_read_browser_group_entry_004694f0(Pool10Host& host, Object tokenizer) {
+// Live caller: src/scene_traffic_groups.cpp::read_browser_groups_after_keyword
+// binds the actual SceneLexer and retained process string pool (chain 431).
+// Keep the address-bearing body visible in the Release call graph.
+__declspec(noinline) void scene_file_read_browser_group_entry_004694f0(
+    SceneBrowserGroupEntryCalls& host, Object tokenizer) {
     alignas(4) std::uint8_t name[8] = {};
     alignas(4) std::uint8_t parent[8] = {};
     std::int32_t group_id = 0;
