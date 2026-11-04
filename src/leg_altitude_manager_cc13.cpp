@@ -2,8 +2,12 @@
 // in docs/CC13_LEG_ALTITUDE_MANAGER.md; layout notes in the header.
 
 #include "bsp/leg_altitude_manager_cc13.hpp"
+#include "bsp/cc13_seg68.hpp"
+#include "bsp/singleton_lifetime.hpp"
 
 #include <cstddef>
+#include <cstring>
+#include <type_traits>
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -13,11 +17,78 @@
 // return blend at 009FC776-009FC78A.
 
 namespace bsp {
+
+// Chain 494: this 10h image owns the actual records read and updated by the
+// existing live algorithms. The record's unit word retains their established
+// host unit identity (slot+1); no raw Unit ABI or singleton/lock is asserted.
+// Evidence: bsp.py show 009FAA40, 009F9B60, 009FA430, 009F9AD0. The latter
+// three use the same pointer/count/capacity and 10h copies as 009FC0EA..157.
+// Allocator callbacks throw on failure and use the process CRT free boundary.
+struct LegAltitudeRecords::Native final : cc13_seg68::LegArrayStorageCalls {
+    cc13_seg68::LegManager manager;
+    Native() { cc13_seg68::leg_manager_construct_009faa40(manager); }
+    ~Native() {
+        cc13_seg68::free_owned_buffer_009f9ad0(*this, manager.records_04.data_00);
+    }
+    cc13_seg68::Handle operator_new(std::uint32_t bytes) override {
+        return reinterpret_cast<cc13_seg68::Handle>(singleton_lifetime_allocate(
+            {SingletonAllocationKind::object, bytes, bytes}));
+    }
+    void free_00bf65ac(cc13_seg68::Handle block) override {
+        singleton_lifetime_free(reinterpret_cast<void*>(block));
+    }
+    void copy16(cc13_seg68::Handle destination, cc13_seg68::Handle source) override {
+        std::memcpy(reinterpret_cast<void*>(destination), reinterpret_cast<const void*>(source), 0x10);
+    }
+    LegAltitudeRecord* data() const noexcept {
+        return reinterpret_cast<LegAltitudeRecord*>(manager.records_04.data_00);
+    }
+};
+static_assert(sizeof(void*) == 4);
+static_assert(sizeof(cc13_seg68::LegManager) == 0x10);
+static_assert(sizeof(LegAltitudeRecord) == 0x10);
+static_assert(offsetof(LegAltitudeRecord, point) == 4);
+static_assert(std::is_trivially_copyable_v<LegAltitudeRecord>);
+
+LegAltitudeRecords::LegAltitudeRecords(LegAltitudeStorage storage) {
+    if (storage == LegAltitudeStorage::native) native_ = std::make_unique<Native>();
+}
+LegAltitudeRecords::~LegAltitudeRecords() = default;
+std::size_t LegAltitudeRecords::size() const noexcept {
+    return native_ ? native_->manager.records_04.count_04 : projected_.size();
+}
+std::size_t LegAltitudeRecords::capacity() const noexcept {
+    return native_ ? native_->manager.records_04.capacity_08 : projected_.capacity();
+}
+LegAltitudeRecord& LegAltitudeRecords::operator[](std::size_t i) noexcept {
+    return native_ ? native_->data()[i] : projected_[i];
+}
+const LegAltitudeRecord& LegAltitudeRecords::operator[](std::size_t i) const noexcept {
+    return native_ ? native_->data()[i] : projected_[i];
+}
+void LegAltitudeRecords::pop_back() noexcept {
+    if (native_) --native_->manager.records_04.count_04;
+    else projected_.pop_back();
+}
+void LegAltitudeRecords::push_back(const LegAltitudeRecord& record) {
+    if (native_) {
+        cc13_seg68::array16_push_back_009fa430(*native_, native_->manager.records_04,
+            reinterpret_cast<cc13_seg68::Handle>(&record));
+    } else projected_.push_back(record);
+}
+void LegAltitudeRecords::clear() noexcept {
+    if (native_) native_->manager.records_04.count_04 = 0;
+    else projected_.clear();
+}
+LegAltitudeRecordView LegAltitudeRecords::view() const noexcept {
+    return {native_ ? native_->data() : projected_.data(), size()};
+}
+
 namespace {
 
 // Swap-remove at index i, as 009FC07B / 009FC20D / 009FC356 do: the last record
 // is copied over slot i and the count drops; the scan re-reads slot i.
-void swap_remove(std::vector<LegAltitudeRecord>& v, std::size_t i) {
+void swap_remove(LegAltitudeRecords& v, std::size_t i) {
     v[i] = v.back();
     v.pop_back();
 }
@@ -28,7 +99,8 @@ void swap_remove(std::vector<LegAltitudeRecord>& v, std::size_t i) {
 // (009FC073 CMP EAX,[ESP+3Ch] / JZ 009FC190, which skips the append and leaves
 // the stored point as it was). A null unit (009FC0BA) appends nothing. The append
 // grows the array to 2 * capacity + 2 records (009FC0EA-009FC157); the copy is
-// order-preserving, so std::vector stands for it.
+// order-preserving. Chain 494 selects the reconstructed array owner for the
+// live host; the projected owner remains available to compare the algorithms.
 void LegAltitudeManager::register_009fc000(const LegAltitudeUnitHost& host, LegUnitId unit,
                                            const std::array<float, 3>& point) {
     std::size_t i = 0;

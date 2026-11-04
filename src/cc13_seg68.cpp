@@ -658,7 +658,7 @@ void squadron_free_attack_targets_load_009f89f0(FreeAttackLoaderHost& host, Hand
 // Converging-leg lock and manager plumbing
 // ===========================================================================
 
-void array16_grow_009f9b60(LegSingletonHost& host, Array16& array)
+void array16_grow_009f9b60(LegArrayStorageCalls& host, Array16& array)
 {
     // capacity = capacity * 2 + 2, stored before the allocation.
     array.capacity_08 = array.capacity_08 * 2 + 2;
@@ -673,7 +673,7 @@ void array16_grow_009f9b60(LegSingletonHost& host, Array16& array)
     array.data_00 = fresh;
 }
 
-void array16_push_back_009fa430(LegSingletonHost& host, Array16& array, Handle record)
+void array16_push_back_009fa430(LegArrayStorageCalls& host, Array16& array, Handle record)
 {
     if (array.count_04 == array.capacity_08) array16_grow_009f9b60(host, array);  // inlined
     const Handle slot = array.data_00 + array.count_04 * 0x10;
@@ -681,7 +681,7 @@ void array16_push_back_009fa430(LegSingletonHost& host, Array16& array, Handle r
     ++array.count_04;
 }
 
-void free_owned_buffer_009f9ad0(LegSingletonHost& host, Handle& buffer)
+void free_owned_buffer_009f9ad0(LegArrayStorageCalls& host, Handle& buffer)
 {
     if (buffer != 0) host.free_00bf65ac(buffer);
 }
