@@ -1,0 +1,138 @@
+{
+  "chain": 393,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain393Bound",
+  "summary": "Reuse the complete shared-white body for the live Text StateColors fallback, retaining the original inline path when the switch is off or the property domain is independently owned.",
+  "rows": [
+    {
+      "native": "00ab7060",
+      "status": "wired",
+      "host_site": "src/gui_text_properties.cpp: initialize_default_color, called for Normal/Focus/Selected/Disabled by read_gui_text_properties_after_base_00abb630",
+      "evidence": "The render application supplies game_native_gui_text_state()'s actual F8BE48 mask and F8BE38 quartet plus its image-backed D7A24C cell. Identity checks admit that same backing to white_color_00ab7060. Its result is consumed by each real StateColors field's fallback; the old inline gate does not also run. Original 00AB7065..7093 and the four ABB630 inline gates have the same test/load/OR/four-store schedule.",
+      "abi": "Existing typed C++ process-owner method, not the original no-argument EAX-return ABI. No new address-suffixed body or original caller claim."
+    },
+    {
+      "native": "00bd5680",
+      "status": "skipped",
+      "host_site": "src/game_settings.cpp: write_settings_008d64a0",
+      "reason": "Missing entry-reachable settings-save route: the current executable does not link write_settings_008d64a0, so replacing its default comparison would leave tagged equality dormant."
+    },
+    {
+      "native": "00453f40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "Missing concrete entry-reachable tagged-value equality caller carrying real Vec3 payloads; the current equality body reaches this address only through an unimplemented Host contract."
+    },
+    {
+      "native": "00475df0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "Missing concrete entry-reachable tagged-value equality caller carrying real Vec4 payloads; wiring scalar settings tags would not establish that vector path."
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "Missing concrete tagged-equality or HUD-formation Host binding carrying the actual two-component values; current callers retain virtual hooks."
+    },
+    {
+      "native": "00bd4bf0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "Missing entry-reachable concrete tagged-equality caller with actual matrix payloads; the parent equality body is not linked in the baseline executable."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing live checkpoint-diff and complete clear/rewrite ownership: checkpoint_differs still returns false, and the Lua-only clear body does not implement the native profile erase/storage-write continuation."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickScreenState",
+      "reason": "Missing native reset inputs: the retained pick-screen projection does not own the +30 mode and +C4 selection-vector producer needed for the reset and input-context branches."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native movie subtitle Text-child and vector ownership; the existing bridge owns a schedule projection and opens no decoder or movie page."
+    },
+    {
+      "native": "00ab0fe0",
+      "status": "skipped",
+      "host_site": "src/oct18b_nc_mid.cpp: gui_color_equal_00ab0fe0",
+      "reason": "Missing a live color-equality decision to replace in the selected Text reader; the shared-white gate tests a mask and does not compare two colors."
+    },
+    {
+      "native": "0042b680",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: matrix_assign_0042b680",
+      "reason": "Missing a concrete Seg2Host binding for the native matrix-copy call in the selected runtime path; the reconstructed assignment still delegates its copy to a virtual hook."
+    },
+    {
+      "native": "0042e630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: blast spatial grid",
+      "reason": "Missing consumption of the getter's native 16018h spatial-index backing: the current blast-grid host owns a separate typed cell collection, so an unused singleton allocation would not wire its state."
+    },
+    {
+      "native": "009af9a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: install_land_task_core_009b41c0",
+      "reason": "Missing the actual native approach/state-object backing and registry lifetime; the current land-task host retains projected task fields rather than that registry and its borrowed state identities."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: GameSceneContentsHost::Impl::load_property_library",
+      "reason": "Missing a genuine native 10Ch property-library owner/map at this host boundary; the library load remains an unimplemented boundary rather than the raw map required by this reader."
+    },
+    {
+      "native": "00469b60",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp: read_native_property_library_word_00469b60",
+      "reason": "Missing a live native library owner and found-node guarantee for the raw +8 mapped-word load; substituting a host property projection would violate the existing reader contract."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "Missing an entry-reachable concrete enum-declaration caller supplying the native enum owner, consumed raw key and canonical world+1A0C Lua state; the existing binding is not linked in this executable."
+    },
+    {
+      "native": "004e6480",
+      "status": "skipped",
+      "host_site": "src/native_unit_part_storage.cpp: initialize_native_collision_node_fields_004e6480",
+      "reason": "Missing an entry-reachable producer of the native collision-node backing at the examined gunnery host boundary; its current spatial cells are a different typed representation."
+    },
+    {
+      "native": "00bf1130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp: native VFS open route",
+      "reason": "Missing an actual adopted-substream construction site supplying owned source identity, slice base and length; the constructor is not linked in the current executable."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_submission.cpp: submit_native_loading_work_item_00504d20",
+      "reason": "Missing the entry-reachable loading-job/work-item producer and callback ownership needed to submit into the loader's actual nested work-item vector."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed reconstructed_math and tool_tests",
+    "switch_on_build": "scripts/build.ps1 passed reconstructed_math and tool_tests",
+    "switch_off_build": "scripts/build.ps1 passed reconstructed_math and tool_tests; 00ab7060 is absent from the executable call graph",
+    "final_build": "Switch restored to true; scripts/build.ps1 passed reconstructed_math and tool_tests",
+    "call_graph": "00ab7060 has one entry-reachable call site from the StateColors lambda in read_gui_text_properties_after_base_00abb630",
+    "compiled_body": "Disassembly confirms a cold-bit test, one MOVSS read before the mask OR, and four forward STOSD stores of that captured word; no float arithmetic was added",
+    "source_wired_before": 9623,
+    "source_wired_after": 9624,
+    "source_count_control": "Baseline recounted with the unchanged HEAD sources and fresh baseline executable graph. The initial scan had retained a stale 006b7f00 host stand-in from the previous build; controlled before/after rows differ only at 00ab7060.",
+    "entry_reachable_reconstructed_before": 4578,
+    "entry_reachable_reconstructed_after": 4579,
+    "runtime": "No game launch or live visual validation, per assignment"
+  },
+  "remaining": "Native movie subtitle ownership, real checkpoint clearing/saving, tagged-value equality callers, native land-state registry and property-library owner remain separate work."
+}
