@@ -146,13 +146,21 @@ bool submarine_is_above_deck_gun_depth_008527a0(const SubmarineDepthFields& unit
 // 00852820, __thiscall(unit), RET -> EAX: world y > (band1 + band0) / 3.0.
 bool submarine_is_above_depth_charge_depth_00852820(const SubmarineDepthFields& unit) noexcept;
 
-// 00852FF0, __thiscall(unit), RET -> EAX: the class's navigation group for the
-// current depthLevel, 0082ADA0(class = unit+538h)(depthLevel), unclamped.
-template <class NavGroupAtDepth>
-auto submarine_navigation_group_at_depth_00852ff0(const SubmarineDepthFields& unit,
-                                                  NavGroupAtDepth&& class_group_at_depth) {
-    return class_group_at_depth(unit.depth_level_1268);
-}
+// 0082ADA0 BSP_ShipClass_NavigationGroupAtDepth, __thiscall(ECX = class)(depth),
+// RET 4: 004218E0's avoid-zone manager, then [class+depth*4+560h] handed to
+// 004120D0 (tail jump). The host owns the class dwords and the manager.
+class ShipClassNavigationGroupHost {
+public:
+    virtual ~ShipClassNavigationGroupHost() = default;
+    virtual std::uint32_t class_navigation_group_at_depth_0082ada0(std::int32_t depth) = 0;
+};
+
+// 00852FF0, __thiscall(unit), RET -> EAX, submarine vtable 00D0BF80 +218h: the
+// class's navigation group for the current depthLevel, 0082ADA0(class =
+// unit+538h)(depthLevel), unclamped (00852FF0..00853004: MOV EAX,ECX; MOV
+// ECX,[EAX+538h]; MOV EAX,[EAX+1268h]; PUSH EAX; CALL 0082ADA0; RET).
+std::uint32_t submarine_navigation_group_at_depth_00852ff0(const SubmarineDepthFields& unit,
+                                                           ShipClassNavigationGroupHost& host);
 
 // 00853E10, submarine vtable 00D0BF34 slot F0h (00D0C024), __thiscall(unit),
 // RET 0. Not a serializer: after the ship's 0081F980 it LOADS state.

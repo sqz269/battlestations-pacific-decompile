@@ -1,0 +1,99 @@
+{
+  "goal": 4,
+  "chain": 348,
+  "slot": "g4-w1",
+  "owner": "agent/g4-w1",
+  "switch": "kWireGoal4Chain348Bound",
+  "rows": [
+    {
+      "native": "00852fd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp::GameShipAiHost::Impl::unit_navigation_layer_v214, called by LayerSelectionBinding::unit_navigation_layer_v214 (the 009ECA20 host) and Impl::formation_navigation_layer_0070e450",
+      "inputs": "The controller's leaf_tuning (class+560h..+56Ch, MSubmarine's four sources 60h..6Ch loaded by vehicle_class_lua_load.cpp) and GameUnitRow::submarine_depth_level (unit+1268h), seeded at creation for every kind-8 unit by the units host (00853630 stages) and kept in 0..3 by 008528B0. submarine_depth_seeded marks exactly those rows.",
+      "output": "A submarine's navigation layer is class[560h + 4*depthLevel], as its vtable+214h answers; every other ship keeps 006DFD80 (class+560h). The old host read class+560h for submarines too.",
+      "evidence": "disasm-raw 00852FD0: MOV EAX,[ECX+1268h]; MOV ECX,[ECX+538h]; MOV EAX,[ECX+EAX*4+560h]; RET. 00852F10 stores vtable 00D0BF80 at 00852F27; bsp.py callers 00852fd0: its only data slot is 00D0C194 (vtable 00D0BF80 +214h). 009ECA60 and 0070E487 load [reg+214h] and call it.",
+      "abi": "Existing ship_ai_layer_selection.cpp body, C++ interface (tuning, depth). Not an original __thiscall replacement.",
+      "called": true,
+      "call_sites": 2,
+      "callers": ["bsp::game::GameShipAiHost::Impl::formation_navigation_layer_0070e450", "LayerSelectionBinding::unit_navigation_layer_v214"]
+    },
+    {
+      "native": "00852ff0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp::GameShipAiHost::Impl::unit_zone_group_v218, called by the follower's zone_set_vtable_218 (009DF41A) and the ring probe's probe_space_vtable_0218 (009E66EB)",
+      "inputs": "Same depthLevel row field; 0082ADA0 is bound as ShipClassNavigationGroupHost over the controller's leaf_tuning and the live GameAvoidZoneRuntime (004120D0 group_for_layer).",
+      "output": "A submarine's avoid-zone group comes from its depth layer; other ships keep 006DFD90's 0082ADA0(0). The body was a header template; it is now a compiled function with a host interface, same semantics.",
+      "evidence": "disasm-raw 00852FF0: MOV EAX,ECX; MOV ECX,[EAX+538h]; MOV EAX,[EAX+1268h]; PUSH EAX; CALL 0082ADA0; RET. disasm-raw 0082ADA0: 004218E0, then [ESI+ECX*4+560h] to 004120D0. 006DFD90 pushes 0. Data slot 00D0C198 = vtable 00D0BF80 +218h; 009DF414 and 009E66E3 load [EDX+218h].",
+      "abi": "C++ interface (SubmarineDepthFields, ShipClassNavigationGroupHost&). Not an original __thiscall replacement.",
+      "called": true,
+      "call_sites": 1,
+      "callers": ["bsp::game::GameShipAiHost::Impl::unit_zone_group_v218"]
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiParties::party_brain_plan_tail",
+      "reason": "The AI picks only kind 1 (air support) and kind 2 (active) power-ups, and the host use_item_008eada0 (game_hosts_powerups.cpp) throws for both: 008EAEC3 air-support use and the 008EAFF8 active-use tail are not modelled. The air-support class objects (block+20h) also need 008E34F0, which game_hosts_mission_frame.cpp only records. Runs only with the skirmish coordinator."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_powerup_choose_00a179e0",
+      "reason": "Reached only from 00A179E0, which needs the power-up use tails above."
+    },
+    {
+      "native": "00a0f680",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp::ai_powerup_choose_00a179e0",
+      "reason": "Reached only from 00A179E0. Needs the air-support class block's +20h class object, which 008E34F0 does not resolve in this host."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_0",
+      "reason": "No live render-resources service [00F8D39C] (+66Ch..+678h). GameNativeRendererApplication::construct_render_resources (00B14A10) has no caller, so the four remap setters 00B0FD70/00B0FDC0/00B0FE10/00B0FE60 have no object to write."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionDetail::set_scroll_range",
+      "reason": "The range needs the briefing text height 00AB6BD0, and the frontend bridge has no text-height producer (the host returns a literal 0). The scroller object and its widget services (00683380/00683790) are not retained either."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp (main-menu update 00599DB0)",
+      "reason": "Same missing scroller object and text-height producer as 006834A0."
+    },
+    {
+      "native": "007995f0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp::parse_007a0eb0 (keyframe event)",
+      "reason": "The movie-camera host does not model the 006952A0/00694A60 observer pair. 007A1F94's parse binds the entity directly, so the SetEntity rebinds (007995F0/00799620/00799650) have no observer to move."
+    },
+    {
+      "native": "00977da0",
+      "status": "skipped",
+      "host_site": "src/command_building_capture.cpp::command_building_capture_tick_006f6760",
+      "reason": "Multiplayer only (game+1FE4h guard); same for 009781E0."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::deliver_loopback",
+      "reason": "Only the whole 00721A40 (GameUnitMessageHost) calls it, and no host implements that host. The live loopback posts only presence-set 5Fh user points, so nothing produces the clear arm (+2Ch == 0)."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp::gameunit_apply_message_00721a40",
+      "reason": "Only the unimplemented whole-message 00721A40 host calls it. The live hosts run only the set-command arm, which does not reach 00720FE0."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::GetSubmarineDepthLevel",
+      "reason": "The units host models neither the unit+1279h catapult-surface flag nor the child catapult launch state (+490h) the body walks."
+    }
+  ]
+}

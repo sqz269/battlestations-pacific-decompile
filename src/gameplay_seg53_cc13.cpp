@@ -224,6 +224,13 @@ bool submarine_is_above_depth_charge_depth_00852820(const SubmarineDepthFields& 
     return unit.world_y_100 > limit;
 }
 
+// 00852FF0..00853004: the depthLevel at +1268h is pushed as is (no clamp) and
+// the class call's EAX is returned.
+std::uint32_t submarine_navigation_group_at_depth_00852ff0(const SubmarineDepthFields& unit,
+                                                           ShipClassNavigationGroupHost& host) {
+    return host.class_navigation_group_at_depth_0082ada0(unit.depth_level_1268);
+}
+
 // 00853E2D..0085420A. 00CE3800 (0.5), 00D06888 (-0.3), 00CE69C8 (+0.3),
 // 00CF8850 (double 250.0). The y component of the direction is not scaled or
 // used: the point's y is band 1 (00854168..00854190).
