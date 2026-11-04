@@ -69,7 +69,14 @@ struct MpGlobals {
     EntityRegistryGlobals registry;
 };
 
-struct MpSeg43Hooks {
+// 00781740 uses only the float constructor hook; a caller supplying the
+// actual string pool does not need multiplayer/session services.
+struct NativeStringFloatFormatHost {
+    virtual ~NativeStringFloatFormatHost() = default;
+    virtual void native_string_from_float_0043bdf0(Raw out, float value) = 0;
+};
+
+struct MpSeg43Hooks : NativeStringFloatFormatHost {
     virtual ~MpSeg43Hooks() = default;
     // Allocation: operator new 00BF55BE / 00BF681B, _free 00BF6989 / 00BF65AC.
     virtual void* operator_new(std::size_t bytes) = 0;
@@ -310,7 +317,7 @@ void multi_score_holder_destruct_00780c50(Raw holder, ListHooks& lists, NativeSt
 void entity_register_in_world_lists_007811d0(Raw entity, ListHooks& lists);
 void entity_detach_from_world_lists_00781200(Raw entity, ListHooks& lists);
 // 00781740, __thiscall(NativeString*, float) RET 4: append the 0043BDF0 text.
-void native_string_append_float_00781740(Raw string, float value, MpSeg43Hooks& hooks, NativeStringStorage& strings);
+void native_string_append_float_00781740(Raw string, float value, NativeStringFloatFormatHost& hooks, NativeStringStorage& strings);
 void lan_host_record_set_blob88_00783540(Raw record, const void* blob, std::uint32_t size, MpSeg43Hooks& hooks);
 void session_target_history_destruct_00783950(Raw history, MpSeg43Hooks& hooks);
 void lan_host_record_destruct_00784e00(Raw record, MpSeg43Hooks& hooks);

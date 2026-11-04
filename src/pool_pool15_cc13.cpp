@@ -177,7 +177,7 @@ void world_border_zone_at_point_004c74c0(void* world, const float* point, void* 
 // size n + 1. Callers include 004CD450, 0074BEC0, 00781910, 0095C1C0, 00964790,
 // 00AE84E0 (x8), 00BD7B30; the host's text writers append ints themselves.
 // ---------------------------------------------------------------------------
-void native_string_append_int_004caca0(void* string, std::int32_t value, Pool15Host& host) {
+void native_string_append_int_004caca0(void* string, std::int32_t value, NativeStringAppendIntHost& host) {
     struct { std::uint32_t length; void* data; } temporary;
     host.native_string_from_int_004260b0(&temporary, value);
     const std::uint32_t n = temporary.length;

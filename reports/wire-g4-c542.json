@@ -10,23 +10,23 @@
     {
       "native": "00bd6990",
       "status": "wired",
-      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::indent (inlined into begin_section/end_section/write_field)",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::indent",
       "called": true,
-      "call_sites": 3
+      "call_sites": 1
     },
     {
       "native": "00bd6ac0",
       "status": "wired",
-      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::terminate_row (inlined into end_section/write_field)",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::terminate_row",
       "called": true,
-      "call_sites": 2
+      "call_sites": 1
     },
     {
       "native": "00bd6bd0",
       "status": "wired",
       "host_site": "src/archive_text_writer.cpp: ArchiveEmitter::emit / ArchiveTextOutput::emit",
       "called": true,
-      "call_sites": 2
+      "call_sites": 1
     },
     {
       "native": "00bd7b30",
@@ -199,7 +199,9 @@
     "Complete emitter-only Host boundary without unrelated Lua/VFS stubs",
     "Native pooled-string/output adapter borrowing GameNativeStringProcess and the actual ArchiveTextOutput sinks",
     "Actual GuiLuaVariant and SettingsValue tag/payload conversion; no double formatting/emission",
-    "One exact-byte fixture for nested scalar output and signed compact encoding"
+    "One exact-byte fixture for nested scalar output and signed compact encoding",
+    "Review fix: existing native string operation reuse, minimal int/float append provider surfaces and one shared raw/typed 00425E10 core",
+    "Review fix: provider error deferral through native pooled-string release schedules; throwing-sink and failed compact FILE regression checks"
   ],
   "evidence": [
     "python tools/bsp.py show 00bd7f50 --lines 45",
@@ -207,23 +209,68 @@
     "python tools/bsp.py show 00bd6990 --lines 35",
     "src/game_hosts_lua.cpp: mission_checkpoint_binding constructs ArchiveTextWriter over actual SaveCheckpoint data; kMissionCheckpointBound=true",
     "python tools/call_graph.py who 00bd6100|00bd6990|00bd6ac0|00bd6bd0|00bd7b30|00bd7f50",
-    "python tools/call_graph.py path 00bd7f50"
+    "python tools/call_graph.py path 00bd7f50",
+    "include/bsp/native_physical_file_date.hpp: existing raw-pool concat and assign bodies",
+    "include/bsp/native_particle_texture_names_raw.hpp: existing raw-pool substring replacement",
+    "config/reconstruction/00420000.jsonl: 00425E10 raw-header interface shares the original append core",
+    "Review round 1 call_graph.py who confirms all five claimed emitter bodies still have direct entry-reachable calls"
   ],
   "validation": {
-    "build": "./scripts/build.ps1: passed MSVC Win32 Release and all four CTests",
-    "focused_fixture": "tests/math_tests.cpp archive fixture: exact nested text, escaped backslash/quote with raw LF/TAB, INT_MIN, float key/value, bool, FILE precedence, high-bit signed encoding and embedded NUL",
-    "pc24_lint": "python tools/pc24_lint.py --diff origin/main: 0 findings; no changed arithmetic files; origin/main...HEAD rerun after commit",
+    "build": "Review round 1: ./scripts/build.ps1 passed MSVC Win32 Release and all four CTests, including exact bytes and both new failure-path assertions",
+    "focused_fixture": "Existing archive exact-byte/encoding fixture plus one rejection scenario: throwing plain sink and read-only FILE compact fwrite failure propagate their original errors and preserve actual shared-pool bump/free counts (no missing or double return)",
+    "pc24_lint": "Review round 1: python tools/pc24_lint.py --staged passed with 0 findings across 8 files; required origin/main...HEAD command is also rerun after commit",
     "game_run": false
   },
   "boundaries": [
     "New C++ host composition; no Original ABI, CRT/EH, fault or allocation-failure parity claim",
     "Existing writer domain remains scalar tags 0..3; object/vector/matrix tags are not newly admitted",
     "The existing uncompressed byte sink is retained; no native compressed-block storage manager is fabricated",
-    "Current game SaveCheckpoint emits plain buffered output; compact FILE mode is checked only by the focused fixture"
+    "Current game SaveCheckpoint emits plain buffered output; compact FILE mode is checked only by the focused fixture",
+    "Output-provider exceptions are rethrown after native releases; helper/allocation-failure behavior retains each existing reconstruction boundary. No Original EH/SEH equivalence is claimed."
   ],
   "left": [
     "Native compressed archive storage and live compact FILE producer",
     "Extended archive value owners and object-id provider",
     "Live game save/load validation (game not run by assignment)"
+  ],
+  "review_rounds": [
+    {
+      "round": 1,
+      "review_run": 1119,
+      "reviewed_head": "a482282e8e2740a42e20e401a9b6a77a45f5b744",
+      "findings": [
+        {
+          "id": 1,
+          "status": "fixed",
+          "summary": "Removed duplicate native string operations from ArchiveEmitter and delegated to existing reconstructions over the same GameNativeStringProcess pool.",
+          "delegates": [
+            "004261A0 concatenate_native_string_headers_004261a0, raw_context",
+            "004CAD40 replace_native_particle_string_substrings_004cad40, raw_context",
+            "00425F40 assign_native_string_header_00425f40, raw_context",
+            "00425E10 append_native_string_00425e10, strings() sharing the same process publication cells",
+            "004CACA0 pool15_cc13::native_string_append_int_004caca0, narrow existing-body host",
+            "00781740 cc13_seg43::native_string_append_float_00781740, narrow existing-body host and same strings()",
+            "004260B0 existing native_string_from_int_004260b0, genuine fresh NativeString header transferred to raw caller",
+            "0043BDF0 construct_native_string_float_header_0043bdf0, raw_context"
+          ],
+          "interface_changes": "Added minimal string-only provider bases for the existing int/float append bodies; exposed the existing 00425E10 core through a raw-header overload, with the typed entry forwarding to that same body and a ledger fragment recording the interface.",
+          "extended_values": "Unused concat-float/concat-int duplicates were removed. Their callbacks reject unsupported extended tags; the public writer continues to admit only scalar tags 0..3."
+        },
+        {
+          "id": 2,
+          "status": "fixed",
+          "summary": "Output providers capture their first exception; ArchiveEmitter::run rethrows only after the native emitter has completed its normal releases. Later output is suppressed while an error is pending.",
+          "plain": "A rejecting ArchiveByteSink no longer unwinds past the owned NativeStr release.",
+          "compact": "A failed fwrite no longer unwinds past either the by-value compact copy release or the original string release.",
+          "no_double_release": "There is no second cleanup loop or RAII owner for buffers already released by native bodies; the original release schedule runs once.",
+          "verification": "One rejection scenario in tests/math_tests.cpp checks original exception messages, sink call count and unchanged actual shared native-pool bump/free counters for plain and compact output; all assertions pass."
+        }
+      ],
+      "rows_claimed": 5,
+      "rows_still_entry_reachable": 5,
+      "text_wired_total_after": 9864,
+      "game_run": false,
+      "disagreements": []
+    }
   ]
 }

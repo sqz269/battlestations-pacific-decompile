@@ -1,10 +1,18 @@
 #include "bsp/archive_text_writer.hpp"
 #include "bsp/cc13_front5.hpp"
 #include "bsp/game_native_string_process.hpp"
+#include "bsp/main_menu_selection_listener.hpp"
+#include "bsp/mp_seg43_cc13.hpp"
+#include "bsp/native_particle_texture_names_raw.hpp"
+#include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_string_append.hpp"
+#include "bsp/native_string_float_format.hpp"
+#include "bsp/pool_pool15_cc13.hpp"
 #include "bsp/wire_goal4_chain542_switches.hpp"
 
 #include <array>
 #include <cstring>
+#include <exception>
 #include <limits>
 #include <stdexcept>
 
@@ -67,7 +75,9 @@ void file_fragment(std::FILE* file, std::string_view bytes) {
 // boundary below preserves the existing supported settings domain (tags 0..3),
 // checked FILE failures and explicit host byte sink; it supplies no Lua/VFS
 // stand-ins and does not claim the Original CRT/stack/EH ABI.
-class ArchiveEmitter final : public cc13_front5::ArchiveEmitHost {
+class ArchiveEmitter final : public cc13_front5::ArchiveEmitHost,
+    public pool15_cc13::NativeStringAppendIntHost,
+    public cc13_seg43::NativeStringFloatFormatHost {
     using NativeStr = cc13_front5::NativeStr;
 public:
     explicit ArchiveEmitter(ArchiveTextOutput& output)
@@ -82,10 +92,20 @@ public:
     }
     const cc13_front5::ArchiveWriterGlobals& globals() const noexcept { return globals_; }
 
+    template<class Emit> void run(Emit emit) {
+        emit();
+        // Output errors are held inside their providers until the native body
+        // has finished all trailing releases. This includes both the original
+        // string and emit_text's separate by-value copy in compact mode.
+        // The host error then escapes at the same public emitter boundary;
+        // no cleanup repeats a native release or reads an unwound local header.
+        if (output_failure_) std::rethrow_exception(output_failure_);
+    }
+
     void emit(std::string_view bytes) {
         NativeStr owned{0, nullptr};
         assign_bytes(owned, bytes);
-        cc13_front5::archive_emit_string_00bd6bd0(owned, globals_, *this);
+        run([&] { cc13_front5::archive_emit_string_00bd6bd0(owned, globals_, *this); });
         // 00BD6BD0 owns and releases the argument, including its encoded copy.
     }
 
@@ -96,6 +116,24 @@ public:
     void native_string_resize_0041dd40(NativeStr* self, std::uint32_t length,
         std::uint32_t preserve) override {
         resize_native_string_header_0041dd40(self, strings_.raw_context(), length, preserve != 0);
+    }
+    void native_string_resize_0041dd40(void* self, std::uint32_t length,
+        std::uint32_t preserve) override {
+        resize_native_string_header_0041dd40(self, strings_.raw_context(), length, preserve != 0);
+    }
+    void native_string_from_int_004260b0(void* header, std::int32_t value) override {
+        NativeString fresh;
+        bsp::native_string_from_int_004260b0(fresh, value, strings_.strings());
+        // Transfer the resulting 8-byte header to the native caller's fresh
+        // storage. NativeString has no implicit buffer-releasing destructor.
+        static_assert(sizeof fresh == sizeof(NativeStr));
+        std::memcpy(header, &fresh, sizeof fresh);
+    }
+    void native_string_from_float_0043bdf0(void* header, float value) override {
+        construct_native_string_float_header_0043bdf0(header, strings_.raw_context(), value);
+    }
+    void memcpy_00bf7680(void* target, const void* source, std::uint32_t size) override {
+        if (size != 0) std::memcpy(target, source, size);
     }
     void native_string_destroy_0041dd20(NativeStr* self) override {
         destroy_native_string_header_0041dd20(self, strings_.raw_context());
@@ -109,16 +147,31 @@ public:
         return_native_string_pool_00bd1510(static_cast<NativeStringPoolStorage*>(pool),
             block, size, strings_.returns_disabled_01090aa4());
     }
+    void sized_pool_return_block_00bd1510(void* pool, void* block, std::uint32_t size,
+        std::uint32_t flag) override {
+        sized_pool_return_00bd1510(pool, block, size, flag);
+    }
     std::size_t fwrite_00bfb08b(const void* data, std::size_t size,
         std::size_t count, std::FILE* file) override {
-        const auto written = std::fwrite(data, size, count, file);
-        if (size != 0 && written != count) throw std::runtime_error("archive fwrite failed");
-        return written;
+        if (output_failure_) return 0;
+        try {
+            const auto written = std::fwrite(data, size, count, file);
+            if (size != 0 && written != count) throw std::runtime_error("archive fwrite failed");
+            return written;
+        } catch (...) {
+            output_failure_ = std::current_exception();
+            return 0;
+        }
     }
     void save_storage_append_00bd49b0(void* storage, const NativeStr* bytes) override {
         // This is the existing explicitly supplied uncompressed byte sink,
         // not an invented native compressed-block manager at 0109CECC.
-        static_cast<ArchiveByteSink*>(storage)->write(view(*bytes));
+        if (output_failure_) return;
+        try {
+            static_cast<ArchiveByteSink*>(storage)->write(view(*bytes));
+        } catch (...) {
+            output_failure_ = std::current_exception();
+        }
     }
     std::int32_t object_id_fn_0109cedc(void*) override {
         // ArchiveTextWriter validates its supported scalar tags before output.
@@ -126,49 +179,34 @@ public:
     }
     NativeStr* native_string_concat_004261a0(const NativeStr* left, NativeStr* out,
         const NativeStr* right) override {
-        const std::string joined = std::string(view(*left)) + std::string(view(*right));
-        *out = {0, nullptr};
-        assign_bytes(*out, joined);
-        return out;
+        return static_cast<NativeStr*>(concatenate_native_string_headers_004261a0(
+            left, out, right, strings_.raw_context()));
     }
     void native_string_append_int_004caca0(NativeStr* self, std::int32_t value) override {
-        append(*self, integer_text(value));
+        pool15_cc13::native_string_append_int_004caca0(self, value, *this);
     }
     void native_string_append_float_00781740(NativeStr* self, float value) override {
-        append(*self, float_text(value));
+        cc13_seg43::native_string_append_float_00781740(self, value, *this, strings_.strings());
     }
     void string_replace_substrings_004cad40(NativeStr* self, const NativeStr* find,
         const NativeStr* replacement, std::uint32_t count) override {
-        const std::string needle(view(*find)), inserted(view(*replacement));
-        if (needle.empty()) throw std::logic_error("archive escape pattern is empty");
-        std::string text(view(*self));
-        std::size_t position = 0;
-        while (count != 0 && (position = text.find(needle, position)) != std::string::npos) {
-            text.replace(position, needle.size(), inserted);
-            position += inserted.size();
-            --count;
-        }
-        assign_bytes(*self, text);
+        replace_native_particle_string_substrings_004cad40(self, find, replacement,
+            count, strings_.raw_context());
     }
-    NativeStr* native_string_concat_float_006af2b0(const NativeStr* left, NativeStr* out,
-        float value) override {
-        const std::string joined = std::string(view(*left)) + float_text(value);
-        *out = {0, nullptr};
-        assign_bytes(*out, joined);
-        return out;
+    NativeStr* native_string_concat_float_006af2b0(const NativeStr*, NativeStr*, float) override {
+        // Only extended value tags 5..8 use this operation; the public writer
+        // admits scalar tags 0..3. Do not duplicate an unused native body.
+        throw std::logic_error("extended archive values require an extended-value provider");
     }
-    NativeStr* native_string_concat_int_004263b0(const NativeStr* left, NativeStr* out,
-        std::int32_t value) override {
-        const std::string joined = std::string(view(*left)) + integer_text(value);
-        *out = {0, nullptr};
-        assign_bytes(*out, joined);
-        return out;
+    NativeStr* native_string_concat_int_004263b0(const NativeStr*, NativeStr*, std::int32_t) override {
+        // Quoted-integer tag 10 is likewise outside the admitted domain.
+        throw std::logic_error("extended archive values require an extended-value provider");
     }
     void native_string_append_00425e10(NativeStr* self, const NativeStr* source) override {
-        append(*self, view(*source));
+        append_native_string_00425e10(self, source, strings_.strings());
     }
     void native_string_assign_header_00425f40(NativeStr* self, const NativeStr* source) override {
-        if (self != source) assign_bytes(*self, view(*source));
+        assign_native_string_header_00425f40(self, source, strings_.raw_context());
     }
 
 private:
@@ -184,12 +222,9 @@ private:
             static_cast<std::uint32_t>(copy.size()), true);
         if (!copy.empty()) std::memcpy(target.data, copy.data(), copy.size());
     }
-    void append(NativeStr& target, std::string_view bytes) {
-        const std::string joined = std::string(view(target)) + std::string(bytes);
-        assign_bytes(target, joined);
-    }
     game::GameNativeStringProcess& strings_;
     cc13_front5::ArchiveWriterGlobals globals_;
+    std::exception_ptr output_failure_;
 };
 
 cc13_front5::TaggedValue archive_key(const GuiLuaVariant& key, bool root) {
@@ -288,7 +323,7 @@ std::string ArchiveTextWriter::format_key(const GuiLuaVariant& key) const {
 void ArchiveTextWriter::indent() {
     if constexpr (kWireGoal4Chain542Bound) {
         ArchiveEmitter emitter(output_);
-        cc13_front5::archive_emit_indent_00bd6990(depth_, emitter.globals(), emitter);
+        emitter.run([&] { cc13_front5::archive_emit_indent_00bd6990(depth_, emitter.globals(), emitter); });
     } else {
     //00BD6990 fills with spaces, then overwrites the entire string with09h.
     output_.emit(std::string(depth_, '\t'));
@@ -298,7 +333,7 @@ void ArchiveTextWriter::indent() {
 void ArchiveTextWriter::terminate_row() {
     if constexpr (kWireGoal4Chain542Bound) {
         ArchiveEmitter emitter(output_);
-        cc13_front5::archive_emit_terminator_00bd6ac0(depth_ == 0, emitter.globals(), emitter);
+        emitter.run([&] { cc13_front5::archive_emit_terminator_00bd6ac0(depth_ == 0, emitter.globals(), emitter); });
     } else {
     output_.emit(depth_ == 0 ? "\n" : ",\n");
     }
@@ -315,7 +350,7 @@ void ArchiveTextWriter::begin_section(const GuiLuaVariant& key) {
         const auto native_key = archive_key(key, depth_ == 0);
         indent();
         ArchiveEmitter emitter(output_);
-        cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter);
+        emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
         output_.emit("{\n");
         ++depth_;
     } else {
@@ -345,8 +380,8 @@ void ArchiveTextWriter::write_field(const GuiLuaVariant& key, const SettingsValu
         const auto native_value = archive_value(value);
         indent();
         ArchiveEmitter emitter(output_);
-        cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter);
-        cc13_front5::archive_emit_value_00bd7f50(native_value, emitter.globals(), emitter);
+        emitter.run([&] { cc13_front5::archive_emit_key_00bd7b30(depth_ == 0, native_key, emitter.globals(), emitter); });
+        emitter.run([&] { cc13_front5::archive_emit_value_00bd7f50(native_value, emitter.globals(), emitter); });
         terminate_row();
     } else {
     const std::string formatted_key = format_key(key);
