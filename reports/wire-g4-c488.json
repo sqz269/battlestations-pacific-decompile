@@ -1,0 +1,192 @@
+{
+  "chain": 488,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain488Bound",
+  "scope": "Use the existing unit damage predicate in live command-building/garrison hull repair.",
+  "rows": [
+    {
+      "native": "00859c60",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::repair_unit_to_fraction",
+      "evidence": "bsp.py show 00859c60 and --asm: current +370h below maximum +36Ch; FCOMIP/JBE returns zero for equality or unordered inputs.",
+      "real_state": "Impl::UnitState::max_health and health are the authoritative mutable unit health fields already consumed by this repair guard.",
+      "replacement": "The enabled arm calls the existing body instead of evaluating the old comparison. The unchanged old guard remains in the disabled arm; healing and its notifications still execute once.",
+      "abi": "Existing typed C++ interface over health values; new equivalent call site in hull repair, not restoration of the original ship-sync caller or native register ABI.",
+      "called": true,
+      "call_sites": 1,
+      "built_caller": "bsp::game::GameGunneryHost::repair_unit_to_fraction at 100ce2bd"
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: scene director-enable inputs",
+      "reason": "Missing retained ControllerSnapshotMessage producer/transport/consumer; wrapping flattened scene flags and copying them back would only round-trip existing values."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list comments and release_group_reference",
+      "reason": "Missing native score-list storage and a gameplay consumer; the documented list reader is a debug overlay excluded by this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list comments and release_group_reference",
+      "reason": "Missing candidate score-list records and a gameplay reader of their chosen byte; current command state is a separate object."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector binding make_command_target",
+      "reason": "Missing actual native absolute-state binding for writable F87574/F87578/F8757C and an owned native command-target object; the existing body reads those addresses literally."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl recon triple rebuild",
+      "reason": "Missing canonical 1Ch recon-entry ownership and unit+1E4h sensor subobject binding; current triples store compact unit-index/level records."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl recon triple rebuild",
+      "reason": "Missing native carry-over ReconList ownership and observer-pair lifetime for the slot; current aggregate vectors are rebuilt without that persistent object graph."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl recon triple rebuild group lambda",
+      "reason": "Missing canonical group-entry/member ReconLists and per-party detection delegate binding; the host currently folds scalar levels into compact triples."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::run_torpedo_supply_tick_00825450",
+      "reason": "Missing repair-zone registry/area producer and containment bindings; the existing host documents the registry as empty rather than owning native area records."
+    },
+    {
+      "native": "00868420",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: sinking point-effect presentation",
+      "reason": "Missing PointEffectConstruction manager, eligibility and actual owner-constructor bindings for the recorded sinking effects."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: active gun aiming",
+      "reason": "Missing replicated SetAnglesImmediate/snapshot consumer; the active local aiming step has a different native operation and must retain its incremental traverse logic."
+    },
+    {
+      "native": "0085a270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun update loop",
+      "reason": "Missing barrel recoil state and barrel-node transform writes required by GunAimHost; current firing/aiming state alone cannot supply that update."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot initialization",
+      "reason": "Missing canonical native bot storage, descriptor global and base-constructor binding; live tail-gunner state currently uses separate typed host records."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: torpedo bot initialization/range cache",
+      "reason": "Missing canonical native bot storage, descriptor global and base-constructor binding; creating an unused 70h constructor buffer would not replace the live range/timer owner."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: depth-charge device class projection",
+      "reason": "Missing owned native class object and NativeDeviceClassConstructionAccess base/vtable bindings; current device metadata is a Lua-derived projection."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: world marker projection",
+      "reason": "Missing the native screen-margin constants and matching marker-widget consumer; the existing world marker stand-in documents its own unrelated margin."
+    },
+    {
+      "native": "006501a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: submarine HUD screen",
+      "reason": "Missing active submarine-screen pulse state and widget consumer; the raw 00650450 update and its pulse callback are not bound here."
+    },
+    {
+      "native": "0064a740",
+      "status": "skipped",
+      "host_site": "src/cc13_bigB1.cpp: math_sign_float_0064a740 callback",
+      "reason": "Missing a live binding for the caller's unit+50Ch producer and host callback; no corresponding sign query was found in the active HUD host."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing off-main-thread deferred-call enqueue producer and its source/destination LuaVariantRecord vectors; the current named-call path does not create those arguments."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry check_multiplayer_player_count",
+      "reason": "Missing multiplayer participant/session state; online/multiplayer-only player-count work is excluded from the single-player assignment."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group value/spawn planning",
+      "reason": "Missing loaded ClassPairRow table for this lookup and its matching spawn-composition consumer; current pair attack weighting uses the separate 00A08460 model."
+    },
+    {
+      "native": "00a04530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::group_value_record_00a04560",
+      "reason": "Missing real hint-weight map ownership/producer binding for 00A04240; multiplying the current class weight by an introduced identity solely to call this leaf would not add a missing state path."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: power-up AI scoring",
+      "reason": "Missing active AI power-up evaluation consumer and its PowerupUnitInputs projection; current group pair weighting is a different calculation."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate collection",
+      "reason": "No additional binding needed at the inspected site: it already calls this reconstructed predicate over member-kind and team-set inputs."
+    },
+    {
+      "native": "008160b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::run_damage_control",
+      "reason": "Missing exact native class/activation/teardown byte view and embedded repair-task callback binding; this loop currently labels several native flags together as not-dead."
+    },
+    {
+      "native": "00827a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage-control priority state",
+      "reason": "Missing the native six-category repair-level allocation array and its raise/lower message consumer; current repair-task priority is a separate field."
+    },
+    {
+      "native": "0081ad40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage-control priority state",
+      "reason": "Missing a category-name setter/getter consumer in this owned host; the active repair toggles use explicit typed fields rather than category-name lookup."
+    },
+    {
+      "native": "0071cdd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path following",
+      "reason": "Missing native path-listener callback, queued 60h message and delivery consumer; current path cursor advancement does not route this listener message."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all five tests before edits",
+    "build": "scripts/build.ps1 passed all five tests after edits",
+    "call_graph": "4840 -> 4841 reconstructed addresses called from entry-reachable code; new direct call from GameGunneryHost::repair_unit_to_fraction",
+    "readiness_before": 9771,
+    "readiness_after": 9772,
+    "readiness_row": "00859c60 state=wired, called=true, call_sites=1, callers_live=1",
+    "float_math_changed": false,
+    "runtime": "Not run; evidence is source, saved original assembly, build/tests and built-executable call graph."
+  }
+}
