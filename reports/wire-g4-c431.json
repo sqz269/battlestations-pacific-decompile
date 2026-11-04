@@ -1,0 +1,163 @@
+{
+  "chain": 431,
+  "owner": "agent/g4-w3",
+  "picked": "Scene BrowserGroup entry parsing on the live scene-loading path",
+  "switch": "bsp::kWireGoal4Chain431Bound",
+  "wired_before": 9673,
+  "wired_after": 9674,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all 3 registered test groups passed",
+    "focused_check": "Completed first BrowserGroup survives a malformed second entry; both temporary strings enter the body cleanup path and the mismatched token stays unread",
+    "call_graph": "004694F0 is reachable, one call site from bsp::read_browser_groups_after_keyword at 1044CFA5 in this build",
+    "entry_path": "WinMain -> scene load -> SceneReaderBinding::load_browser_groups -> read_browser_groups_block -> read_browser_groups_after_keyword -> scene_file_read_browser_group_entry_004694f0",
+    "native_abi": "Source adapter only; Original ECX/RET4 ABI is not claimed",
+    "game_run": false,
+    "float_math_changed": false
+  },
+  "rows": [
+    {
+      "native": "004694f0",
+      "status": "wired",
+      "host_site": "src/scene_traffic_groups.cpp::read_browser_groups_after_keyword (called by SceneReaderBinding::load_browser_groups)",
+      "evidence": "bsp.py show 004694F0; existing sole body in src/pool_pool10_cc13.cpp; live SceneLexer, authored tokens and retained GameNativeStringProcess raw pool; prior inline grammar retained unchanged in switch OFF arm"
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::FailureBinding statistics notification",
+      "reason": "Missing the native per-slot 0x284-stride scoring graph, attacker player-record fields and award-table providers; the current site records statistics only."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::repair_completed_notify",
+      "reason": "Needs the native scoring record's repaired-ID/event vectors, unit owner slot and award threshold table; the current site is an unreached notification."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::KamikazeDetonate direct_hit notification",
+      "reason": "Missing native source player records and nested per-source/relation/target-class score maps; the semantic direct-hit notification alone cannot supply the full body."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp controller snapshot candidate from readiness",
+      "reason": "Needs a controller/director snapshot producer and a concrete live caller audit; the constructor's complete state, flags and three getter inputs were not bound in this packet."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI difficulty lookup",
+      "reason": "Needs a mode-eligible caller and audited active-party-slot/planner inputs; the earlier campaign bypass and missing planner-provider skip was not resolved by this scene packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI coordinator score-list insertion",
+      "reason": "Needs the coordinator load/tick reachability gate resolved and a body-level caller audit; the existing score-list API alone did not establish a new reachable address body."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI coordinator chosen-score marking",
+      "reason": "Needs the coordinator load/tick reachability gate resolved and a body-level caller audit; the existing score-list API alone did not establish a new reachable address body."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::defend-member candidate selection",
+      "reason": "A source call already exists; resolving the coordinator load/tick gate and verifying the compiled caller remains separate work."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_0",
+      "reason": "Needs the retained render-resource service, current renderer profile/slot64, texture cache and actual reference owners; this site currently records the authored name only."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_1",
+      "reason": "Needs the same actual renderer/texture-cache/reference-owner graph as texture0; this site currently records the authored name only."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_2",
+      "reason": "Needs the same actual renderer/texture-cache/reference-owner graph as texture0; this site currently records the authored name only."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_3",
+      "reason": "Needs the same actual renderer/texture-cache/reference-owner graph as texture0; this site currently records the authored name only."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStartBinding::write_checkpoint",
+      "reason": "The preceding checkpoint_differs provider still returns false; a real checkpoint/profile/storage owner and eligible clear/rewrite caller must be established before binding the Lua-only helper."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::set_widget_local_z",
+      "reason": "Missing an actual movie page/widget owner; load_movie_page and find_movie_page_child return null, so a fabricated widget would not provide game state."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::bind_textures",
+      "reason": "Missing the actual movie widget, decoder and video-texture owners; the current movie host records texture binding without loading a page."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::clear_movie_subtitles",
+      "reason": "The host clears a schedule projection; the complete native widget/settings/subtitle-owner graph remains absent."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::publish_recon_triples_008073c0",
+      "reason": "Current entries are semantic unit/level pairs; binding the full entry constructor needs retained raw 0x1C entries and the real unit+0x1E4 sensor-class getter."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::publish_recon_triples_008073c0",
+      "reason": "Needs a retained carry-over recon-entry/list owner; the current pass rebuilds semantic buckets rather than retiring native carried records."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::publish_recon_triples_008073c0",
+      "reason": "Needs native group-entry member lists and publication destinations; the current host computes group levels into semantic pairs and records this publish call."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp repair-zone area lookup",
+      "reason": "The site supplies zero for an empty repair-zone registry; a real area registry/shape producer and Seg49 providers are required before binding the containing-area walk."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "Already reachable before chain431: baseline call_graph who shows the existing enum-letter body called from scene_property_type_for_letter; no new wiring needed."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "An existing source call already binds the Lua-string letter predicate under chain285; no replacement was needed for the selected BrowserGroup packet."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_reference_kind_letter",
+      "reason": "The existing helper already decodes reference letters for the property parser; a separate compiled-symbol/accounting audit is needed before treating readiness's address-name mismatch as missing execution."
+    }
+  ]
+}

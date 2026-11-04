@@ -402,6 +402,23 @@ int main() {
             "AI squadron ResourceUsage stays on its owning creation row after leader promotion");
     }
     {
+        // A malformed second BrowserGroup must unwind both raw8 strings, keep
+        // the completed first entry, and leave the mismatched token unread.
+        struct BrowserGroupsObserver final : bsp::SceneBrowserGroupsHost {
+            int observed{};
+            void observe_browser_group(const bsp::SceneBrowserGroupEntry&) override { ++observed; }
+        } host;
+        bsp::SceneLexer lexer("SceneBrowserGroups { "
+            "BrowserGroup { GroupName = \"two words\" GroupID = -7 Parent = \"\" } "
+            "BrowserGroup { GroupName = second GroupID = 9 Parent = root Wrong } }");
+        const auto result = bsp::read_browser_groups_block(lexer, host);
+        check(!result.ok && result.entries.size() == 1 && host.observed == 1
+                && result.entries[0].group_name == "two words"
+                && result.entries[0].group_id == -7 && result.entries[0].parent.empty()
+                && lexer.peek().text == "Wrong" && result.error.find("expected }") != std::string::npos,
+            "BrowserGroup native entry adapter retains completed entries and stops at a malformed closing token");
+    }
+    {
         // 008F6AD7 must apply a redeclaration to its existing bag, preserving
         // every parent for 008F5AB3. The enum adapter retokenizes quoted names;
         // 008F31A0 treats an opening brace as a symbol, not a nested block.

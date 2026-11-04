@@ -1,4 +1,7 @@
 #include "bsp/scene_traffic_groups.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/pool_pool10_cc13.hpp"
+#include "bsp/wire_goal4_chain431_switches.hpp"
 
 #include <cctype>
 #include <cstdio>
@@ -87,6 +90,60 @@ std::int32_t read_int_token(SceneLexer& lexer, std::string& error)
     }
     return value;
 }
+
+// Source parser failure, caught only at the existing per-entry recovery point.
+// Throwing through 004694F0 also runs its original temporary-string cleanup.
+struct BrowserGroupParseFailure {};
+
+class BrowserGroupEntryBinding final : public cc13_pool10::SceneBrowserGroupEntryCalls {
+public:
+    BrowserGroupEntryBinding(SceneBrowserGroupEntry& entry, std::string& error)
+        : entry_(entry), error_(error) {}
+
+    void scene_tokenizer_expect_token_008d9930(cc13_pool10::Object tokenizer,
+        const char* literal) override {
+        if (!expect_token(*reinterpret_cast<SceneLexer*>(tokenizer), literal, error_))
+            throw BrowserGroupParseFailure{};
+    }
+    const char* scene_tokenizer_read_token_008d9980(cc13_pool10::Object tokenizer) override {
+        token_ = read_any_token(*reinterpret_cast<SceneLexer*>(tokenizer), error_);
+        // Original discards both strings. Retain the existing host's diagnostic
+        // projection before constructing the raw8 local, so a copying failure
+        // cannot strand a newly allocated native string outside its EH state.
+        (next_string_++ == 0 ? entry_.group_name : entry_.parent) = token_;
+        return token_.c_str();
+    }
+    void scene_tokenizer_read_int_008d9ad0(cc13_pool10::Object tokenizer,
+        std::int32_t* out) override {
+        *out = read_int_token(*reinterpret_cast<SceneLexer*>(tokenizer), error_);
+        entry_.group_id = *out;
+    }
+    void native_string_construct_0041e870(cc13_pool10::Object string,
+        const char* text) override {
+        construct_native_string_header_0041e870(string,
+            game::game_native_string_process().raw_context(), text);
+    }
+    void native_string_destroy_storage_0041dd20(cc13_pool10::Object string) override {
+        destroy_native_string_header_0041dd20(string,
+            game::game_native_string_process().raw_context());
+    }
+    cc13_pool10::Object sized_pool_get_00419cc0() override {
+        auto& context = game::game_native_string_process().raw_context();
+        return reinterpret_cast<cc13_pool10::Object>(native_string_pool_get_or_create_00419cc0(
+            context.actual_published_01090aa8, context.actual_manager_publication_01090aa0));
+    }
+    void sized_pool_return_block_00bd1510(cc13_pool10::Object pool, void* data,
+        std::uint32_t bytes, std::uint32_t) override {
+        return_native_string_pool_00bd1510(reinterpret_cast<NativeStringPoolStorage*>(pool),
+            data, bytes, game::game_native_string_process().returns_disabled_01090aa4());
+    }
+
+private:
+    SceneBrowserGroupEntry& entry_;
+    std::string& error_;
+    std::string token_;
+    unsigned next_string_{};
+};
 
 // 0049CF80 reads the 38h property record's type code at +04h and takes the
 // float at +0Ch directly when it is 1, otherwise converts the same dword with
@@ -451,6 +508,19 @@ SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer
     // closing `}` expect reports it.
     while (at_token(lexer, kBrowserGroupKeyword)) {
         SceneBrowserGroupEntry entry;
+        if constexpr (kWireGoal4Chain431Bound) {
+            // Evidence: bsp.py show 004694F0, calls 00469512..004695B4.
+            // The original ECX is unused; its sole input is this live tokenizer.
+            // This is a Source adapter, not the Original register/stack ABI.
+            BrowserGroupEntryBinding calls(entry, error);
+            try {
+                cc13_pool10::scene_file_read_browser_group_entry_004694f0(calls,
+                    reinterpret_cast<cc13_pool10::Object>(&lexer));
+            } catch (const BrowserGroupParseFailure&) {
+                result.error = error;
+                return result;
+            }
+        } else {
         // 004694F0: eleven ExpectToken calls in fixed order, no dispatch.
         if (!expect_token(lexer, kBrowserGroupKeyword, error)
             || !expect_token(lexer, "{", error)
@@ -477,6 +547,7 @@ SceneBrowserGroupsReadResult read_browser_groups_after_keyword(SceneLexer& lexer
         if (!expect_token(lexer, "}", error)) {
             result.error = error;
             return result;
+        }
         }
         host.observe_browser_group(entry);
         result.entries.push_back(std::move(entry));
