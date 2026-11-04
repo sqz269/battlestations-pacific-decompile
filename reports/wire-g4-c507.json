@@ -1,0 +1,107 @@
+{
+  "chain": 507,
+  "slot": "g4-w3",
+  "run": 1038,
+  "base": "3bafbd2cd9",
+  "switch": "bsp::kWireGoal4Chain507Bound",
+  "picked": "Press-start cached gamepad device and held-button gate",
+  "wired_before": 9803,
+  "wired_after": 9804,
+  "rows": [
+    {
+      "native": "0067c880",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp::MenuPressStartHost::device_button_held",
+      "source": "src/ingame_gui_cc13.cpp::press_start_device_button_held_0067c880",
+      "state": "The live 0067CFB0 idle arm captures class 2/index 0 from the application's current F8BBF4 backend through its existing 004BA6D0 provider; its actual device allocation supplies cached +20h button queries and the +34h pad identifier.",
+      "evidence": [
+        "bsp.py show 0067C880: ECX device, no stacked arguments, AL result; short-circuit virtual +20h queries with 0 then 0Eh.",
+        "bsp.py show 0067CFB0, lines 115-219 and 225-304: captures 004BA6D0(class 2,index 0), checks the actual null result, reads +34h on the sign-in arm and calls 0067C880 on the consumed-prompt arm.",
+        "bsp.py show 004BA6D0: native class vectors at backend+6Ch+class*24h, bounds-checked index and null result when absent.",
+        "Application composition in game_hosts.cpp binds the same input runtime through GameNativeInputConfigurationApplication before normal menu updates. No device copy, invented sample, extra enumeration or hardware poll is added."
+      ],
+      "built_call_graph": {
+        "called": true,
+        "call_sites": 1,
+        "caller": "MenuPressStartHost::device_button_held",
+        "site": "1015da7a",
+        "body": "103fce80",
+        "entry_reachable": true
+      }
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuTitleInitHost::sign_in_state_valid",
+      "reason": "Invite-state validation needs the real E19880 pending invite and online selected-user/invitee-slot providers; the menu still records these platform operations, and online services are outside this single-player packet."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::MenuLoadingScreenHost::gui_refresh",
+      "reason": "The menu/frontend host exposes no GuiRenderQueueHost binding for the actual 004C11F0 command queue and 00B1C4B0 reset; the real queue borrow and loading-end caller still need tracing before replacement."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp (scroller consumer not selected)",
+      "reason": "A live scroller with its actual thumb/content/arrow widgets and measured track/text range was not traced in this packet; that state producer is required before selecting set_scroll_range wiring."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::run_teardown_arm_004e458a (close_result_gui recorded site)",
+      "reason": "The recorded teardown operation lacks a binding for the actual game+7184 receiver, movie-screen publication and SoundLoadTransitionContext listener/update providers; semantic result flags alone cannot supply this body."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp::font_accepts_text_byte_00ab6d00 (no live consumer selected)",
+      "reason": "No live text-entry consumer with its decoded font and incoming text byte was traced in this packet; a caller with both actual values is required before wiring this acceptance predicate."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/render_fx_cc13.cpp::add_half_texel via PostEffectHost::pass_frame_targets_00b4cb90",
+      "reason": "No concrete post-effect pass/frame-target provider was found in the live renderer composition; the actual pass graph is needed before invoking this raw +08h getter."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::render_scene_00b156c0 post-effect pass dispatch",
+      "reason": "No concrete post-effect pass provider was found in the live renderer composition; the actual pass allocation is needed before invoking this raw +18h getter."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::render_scene_00b156c0 post-effect owner reads",
+      "reason": "No concrete post-effect owner provider was found in the live renderer composition; the actual owner/pass graph is needed before invoking this raw +23Ch getter."
+    },
+    {
+      "native": "00b38a70",
+      "status": "skipped",
+      "host_site": "src/native_shader_binary_cache.cpp::create_native_shader_binary_cache_00b3a600",
+      "reason": "Cache creation already calls the shared construct implementation used by the named 00B38A70 wrapper; a distinct missing live constructor operation was not identified, so adding a wrapper call would only change the counted name."
+    }
+  ],
+  "built": [
+    "GameInputRuntime::input_device borrows the current native backend and delegates to the application's existing class/index lookup provider.",
+    "GameNativeInputConfigurationApplication exposes its existing borrowed GameInputRuntime to its menu consumer.",
+    "PressStartDeviceButtons implements the existing DeviceButtonHost through NativeInputDeviceRuntime::query_20; the reconstructed 0067C880 body runs once instead of its recording-only stand-in.",
+    "Class/index lookup, held-button check and pad-index read are guarded by kWireGoal4Chain507Bound with the previous host statements unchanged in each else arm."
+  ],
+  "validation": [
+    "Fresh-tree index --if-stale and baseline scripts/build.ps1 passed; five tests passed.",
+    "Final scripts/build.ps1 passed; all five existing tests passed.",
+    "tools/call_graph.py reports 37240/37405 functions reachable and 4868/5343 reconstructed addresses called.",
+    "tools/call_graph.py who 0067c880 reports one direct call from the modified MenuPressStartHost::device_button_held and no unreachable callers.",
+    "tools/call_graph.py path 0067c880 reaches WinMainCRTStartup through the menu host vtable and startup composition.",
+    "Final wire_readiness.py --standins reports wired=9804 and 0067c880 called=true, call_sites=1, callers_live=1.",
+    "git diff --check passed. No float arithmetic changed, so pc24_lint is not required. No new address-suffixed body or ledger record was introduced."
+  ],
+  "left": [
+    "MenuPressStartHost::rebind_primary_input and input_edge_latch still record their operations; existing source runtime bindings elsewhere may support a later menu adapter.",
+    "The menu's online sign-in providers remain stand-ins and were not expanded.",
+    "Game execution, visual behavior and controller input playback were not tested; the evidence here is build/tests and entry-reachable built calls, not live game validation."
+  ]
+}

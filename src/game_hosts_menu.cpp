@@ -4,6 +4,7 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/wire_goal4_chain503_switches.hpp"
+#include "bsp/wire_goal4_chain507_switches.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -20,6 +21,8 @@
 #include "bsp/engine_core_cc13.hpp"
 #include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
+#include "bsp/game_input_runtime.hpp"
+#include "bsp/ingame_gui_cc13.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/frontend_managers.hpp"
 #include "bsp/frontend_screen_sets.hpp"
@@ -922,6 +925,19 @@ private:
 // The press-start screen's host, 0067cfb0 and its neighbours
 // ---------------------------------------------------------------------------
 
+// 0067C880's virtual +20h queries stay on the captured native device. The
+// application's finite dispatcher reads that device's current profile/state;
+// it does not poll hardware or advance action history a second time.
+class PressStartDeviceButtons final : public ingame_gui_cc13::DeviceButtonHost {
+public:
+    explicit PressStartDeviceButtons(NativeInputDeviceRuntime& devices) : devices_(devices) {}
+    bool button_held_20(void* device, int button) override {
+        return devices_.query_20(device, static_cast<std::uint32_t>(button)) != 0;
+    }
+private:
+    NativeInputDeviceRuntime& devices_;
+};
+
 class MenuPressStartHost final : public PressStartScreenHost {
 public:
     explicit MenuPressStartHost(GameMenuHost::Impl& owner) : owner_(owner) {}
@@ -1029,18 +1045,44 @@ public:
             && action_pressed_this_frame_004c43c0(owner_.press_action);
     }
     void* primary_device() override {
+        if constexpr (kWireGoal4Chain507Bound) {
+            // bsp.py show 0067CFB0: 0067D19A..1AE captures the existing
+            // F8BBF4 backend's class-2/index-0 device (004BA6D0), including its
+            // real null result when that vector is empty.
+            void* const device = input_runtime().input_device(2, 0);
+            owner_.log.implemented("PressStartScreen::primary_device", "004ba6d0");
+            return device;
+        } else {
         owner_.log.unimplemented("PressStartScreen::primary_device", "004ba6d0");
         return nullptr;
+        }
     }
     bool device_button_held(void* device) override {
+        if constexpr (kWireGoal4Chain507Bound) {
+            // bsp.py show 0067C880: +20h(0) || +20h(0Eh), with the second
+            // query skipped when the first succeeds. Reuse the existing body
+            // on the same device the live press-start update just captured.
+            PressStartDeviceButtons buttons(input_runtime().devices());
+            const bool held = ingame_gui_cc13::press_start_device_button_held_0067c880(device, buttons);
+            owner_.log.implemented("PressStartScreen::device_button_held", "0067c880");
+            return held;
+        } else {
         static_cast<void>(device);
         owner_.log.unimplemented("PressStartScreen::device_button_held", "0067c880");
         return false;
+        }
     }
     int device_pad_index(void* device) override {
+        if constexpr (kWireGoal4Chain507Bound) {
+            // 0067D29F..2AE invokes +34h on this same captured device.
+            const int index = input_runtime().devices().identifier_vslot34(device);
+            owner_.log.implemented("PressStartScreen::device_pad_index", "0067c880+34h");
+            return index;
+        } else {
         static_cast<void>(device);
         owner_.log.unimplemented("PressStartScreen::device_pad_index", "0067c880+34h");
         return 0;
+        }
     }
     void rebind_primary_input() override {
         owner_.log.unimplemented("PressStartScreen::rebind_primary_input", "0067c970");
@@ -1189,6 +1231,11 @@ public:
     }
 
 private:
+    GameInputRuntime& input_runtime() const {
+        if (!owner_.input_configuration)
+            throw std::logic_error("press-start input requires the application's input runtime");
+        return owner_.input_configuration->input_runtime();
+    }
     GameMenuHost::Impl& owner_;
 };
 
