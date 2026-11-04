@@ -1,0 +1,139 @@
+{
+  "goal": 4,
+  "chain": 403,
+  "owner": "agent/g4-w1",
+  "base": "596ef152fb",
+  "switch": "bsp::kWireGoal4Chain403Bound",
+  "wired_before": 9645,
+  "wired_after": 9646,
+  "rows": [
+    {
+      "native": "00968060",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: hit_listener_target_key, called by GameMissionLuaHost::dispatch_hit_listeners_00988510",
+      "source": "src/cc13_sweepC.cpp: hit_channel_entity_key_construct_00968060",
+      "state": "The actual hit target, after the existing plane-to-squadron resolution, supplies the entity id word used by ListenerEntityHandles. A partial entity view binds that word at +174h. The constructor's output word at +4h supplies the subscription target predicate.",
+      "evidence": [
+        "bsp.py show 00968060: original thiscall constructor writes vtable 00D1AF24 and copies entity+174h, or zero for a null entity",
+        "bsp.py show 00988510 --asm: 00988B38..00988B3F passes the resolved target to 00968060; 00988D17 evaluates the channel",
+        "Existing ListenerEntityHandles documents and implements the live host identity producer: unit index + 1, with 16-bit scene marker ids"
+      ],
+      "call_graph": {
+        "reachable": true,
+        "call_sites": 1,
+        "site": "1011ec58",
+        "caller": "hit-listener target-matching lambda in src/game_hosts_lua.cpp"
+      }
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing task update, 009B3900 host arm",
+      "reason": "The host records this store but lacks an owned plan+25Ch owner field on that path; the units host is also leased to another worker."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task tick gate candidate",
+      "reason": "Needs the actual task+2F4h unit pointer, side index and unit+9C2h side byte; this packet does not provide that task view and the units host is leased."
+    },
+    {
+      "native": "009681d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_active candidate",
+      "reason": "Needs a view backed by all four authoritative entity flags +5Ch/+5Dh/+5Eh/+60h; this listener packet owns only identity state and the units host is leased."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: hud_root_screen_query",
+      "reason": "Needs the persistent controlled-unit pointer publication corresponding to 00E188D8; the present HUD callback only records the address and returns zero."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30",
+      "reason": "The command-mask setter supplies only +1CCh; a complete controller snapshot owner and a single-player consumer for its other fields are still needed."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "Needs a complete controller-state input and an actual snapshot consumer; the gunnery host also has an outstanding review branch."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path-slot query candidate",
+      "reason": "Needs an owned native director slot-pointer array at +1A4h; a bare host path index is insufficient for this raw getter."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 and fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "The shadow-fit callers themselves still need an entry-reached runtime owner; replacing their inline product alone would not wire this getter."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane bomb-aim HUD candidate",
+      "reason": "Needs the live 006082D0 bomb-aim update path and its two real direction vectors; this packet does not bind that caller."
+    },
+    {
+      "native": "00b680a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameTuning number_triple adapter",
+      "reason": "The current tuning caller requires 00B67A80 and is already wired; a real optional-vector caller with its native fallback is needed for 00B680A0."
+    },
+    {
+      "native": "00506c80",
+      "status": "skipped",
+      "host_site": "src/native_string_vector_assignment.cpp: assign_native_string_header_vector_00506c80",
+      "reason": "Needs an entry-reached assignment site supplying both live NativeString vector headers and their pool; this packet does not build that adapter."
+    },
+    {
+      "native": "0078e230",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: initialize_native_vehicle_camera_limits_0078e230",
+      "reason": "Needs a live camera-row producer owning the four limit words and the binary default constants; no such producer is added in this packet."
+    },
+    {
+      "native": "005cd640",
+      "status": "skipped",
+      "host_site": "src/native_vehicle_camera_array.cpp: resize_native_vehicle_camera_array_005cd640",
+      "reason": "Needs the game-owned native camera-array header, string pool and default provider at a live resize call; this packet does not attach that owner."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "The formation path has no producer for entity+1ACh route slot and returns -1, so it skips the counter; the actual scoring-record owner is also needed."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native enum property projection",
+      "reason": "No additional wiring needed: the baseline readiness row already reports called=true with two reachable call sites despite its ready text state."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block native child projection",
+      "reason": "No additional wiring needed: the baseline readiness row already reports called=true with two reachable call sites despite its ready text state."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "call_graph.py rebuilt the executable graph; who 00968060 reports REACHABLE with one call site; path includes dispatch_hit_listeners_00988510 and run_spawn_queue_0094c490",
+    "readiness": "wire_readiness.py --standins: wired 9645 -> 9646; 00968060 state=wired, called=true, call_sites=1",
+    "diff_check": "git diff --check passed",
+    "float_math": "No floating-point operations changed",
+    "game_run": "Not run, as instructed"
+  },
+  "limitations": [
+    "Uses the existing host entity-identity contract; does not create a complete native entity or dispatch its native vtable.",
+    "Device filters and attacker matching retain their existing behavior.",
+    "Static entry reach and passing builds do not prove runtime event coverage or gameplay parity."
+  ]
+}

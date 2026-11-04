@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain403_switches.hpp"
+#include "bsp/cc13_sweepC.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
 #include "bsp/wire_goal4_chain372_switches.hpp"
 #include "bsp/cc13_seg41_land.hpp"
@@ -7894,6 +7896,36 @@ namespace {
 
 namespace listener_seg64 = bsp::cc13_seg49_64_78;
 
+// 00988B38..00988B3F boxes the resolved hit target through 00968060 before
+// 00988D17 evaluates the hit subscription. Only entity+174h is read by that
+// constructor (bsp.py show 00968060). This partial view supplies that real
+// identity word; its unrelated prefix is never read or treated as a unit.
+// The identity producer is the same one ListenerEntityHandles uses below:
+// host entity handles carry the unit/scene entity id in their low word.
+struct HitTargetIdentityProjection {
+    unsigned char unrelated_000[0x174];
+    std::uint16_t entity_id_174;
+};
+struct HitTargetKeyProjection {
+    std::uint32_t vtable_00;
+    std::uint16_t entity_id_04;
+};
+static_assert(offsetof(HitTargetIdentityProjection, entity_id_174) == 0x174);
+static_assert(offsetof(HitTargetKeyProjection, entity_id_04) == 4);
+static_assert(sizeof(HitTargetKeyProjection) == 8);
+
+listener_seg64::EventParam hit_listener_target_key(int entity_id) {
+    HitTargetIdentityProjection target;
+    target.entity_id_174 = static_cast<std::uint16_t>(static_cast<std::uint32_t>(entity_id));
+    HitTargetKeyProjection key;
+    bsp::cc13_sweepC::hit_channel_entity_key_construct_00968060(
+        &key, entity_id != 0 ? &target : nullptr);
+    listener_seg64::EventParam param;
+    // EntityIdFilter consumes the constructed word, never the native vtable.
+    param.word04 = key.entity_id_04;
+    return param;
+}
+
 // Goal 4 chain 352. The two Handle resolvers 006AD0D0 installs (0109CED4 006AD080 for a
 // number, 0109CED8 00888AA0 for a table) and the 009721C0 [entity+174h] read, over this
 // host's entity identity: the self table's `Ptr` is lightuserdata(entity id)
@@ -12331,7 +12363,14 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
                                     int shooter) {
             namespace seg64 = bsp::cc13_seg49_64_78;
             namespace matchers = bsp::lua_listener_native_matchers;
+            const bool target = [&]() {
+                if constexpr (bsp::kWireGoal4Chain403Bound) {
+                    return s.target.matches(hit_listener_target_key(victim));       // +0Ch
+                } else {
             const bool target = s.target.matches(matchers::word_param(victim));      // +0Ch
+                    return target;
+                }
+            }();
             const bool attacker = s.attacker.matches(matchers::word_param(shooter)); // +2Ch
             if (target && attacker && !s.attack_type.values.empty()
                 && (s.attack_type.values.count(type) != 0)
