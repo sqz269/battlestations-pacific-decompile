@@ -31,6 +31,7 @@
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/wire_goal4_chain316_switches.hpp"
+#include "bsp/wire_goal4_chain424_switches.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
 #include "bsp/game_native_dyn_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
@@ -489,10 +490,16 @@ struct GameMissionFrameHost::Impl {
         lua.attach_extra_fixed_step(fixed_step.get());
         // Packet cc13-fix20: the Scoring_SetMissionCompleted and PlayBinkMovie rows.
         lua.attach_mission_result(result.get());
+        if constexpr (bsp::kWireGoal4Chain424Bound) {
+            lua.attach_spawn_participants(&participants);
+        }
     }
 
     ~Impl() {
         release_units();
+        if constexpr (bsp::kWireGoal4Chain424Bound) {
+            lua.attach_spawn_participants(nullptr);
+        }
         // Not in release_units: the scene load calls that before the scripts run,
         // and the result object lives for the whole mission.
         lua.attach_mission_result(nullptr);

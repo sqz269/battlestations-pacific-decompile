@@ -11,6 +11,9 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain424_switches.hpp"
+#include "bsp/band_004b_cc13.hpp"
+#include "bsp/session_participant_pools.hpp"
 #include "bsp/wire_goal4_chain408_switches.hpp"
 #include "bsp/wire_goal4_chain403_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -5149,13 +5152,55 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     if (script_orders_ == nullptr) return;
     if (!queue.attempt_due(spawn_world_clock_, spawn_attempt_delay_0087f800())) return;
 
-    // DEVIATION, labelled. 0094C508's walk prefers a record whose party is
-    // active in the table at `game+18CCh + party*4`. This process has no party
-    // table, so every party counts as active and the walk always answers the
-    // head - which is what the native itself does whenever the queue holds one
-    // record or none (0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B).
-    const std::vector<bool> party_active(8, true);
-    const std::size_t index = queue.select_0094c508(party_active);
+    std::size_t selected_index = 0;
+    if constexpr (bsp::kWireGoal4Chain424Bound) {
+        // 0094C4FA..0094C4FF takes a sole request without reading its party.
+        if (queue.size() > 1) {
+            // 0094C53C..0094C551 reads the CURRENT game+18CCh record, then
+            // tests +08h != 0 && +09h == 0: exactly 004B54F0's body (also
+            // called by this drain at 0094C69C). Reuse that body on the two
+            // real flag bytes; do not infer occupancy from scene Party/Race.
+            // Evidence: bsp.py show 0094c490 --asm, 004b54f0.
+            std::vector<bool> party_active(bsp::kSceneSlotRecordCount, false);
+            std::array<bool, bsp::kSceneSlotRecordCount> read{};
+            for (const bsp::SpawnNewRequest& pending : queue.requests()) {
+                if (pending.party < 0
+                    || static_cast<std::size_t>(pending.party) >= party_active.size()) continue;
+                const auto party = static_cast<std::size_t>(pending.party);
+                if (read[party]) continue;
+                if (spawn_participants_ == nullptr) return;
+                bsp::ParticipantRecordId identity;
+                bsp::ParticipantRecordBytes bytes;
+                if (!spawn_participants_->active_record(party, identity)
+                    || !spawn_participants_->read_record_bytes(identity, bytes)
+                    || !bytes.claimed_08.available || !bytes.ai_held_09.available) {
+                    // The partial owner cannot answer this native read. Leave
+                    // the queue and attempt timestamp untouched for a retry.
+                    return;
+                }
+                bsp::cc13_band004b::ParticipantSlotRecord participant;
+                participant.occupied_08 = bytes.claimed_08.value;
+                participant.flag_09 = bytes.ai_held_09.value;
+                party_active[party] = bsp::cc13_band004b::
+                    participant_slot_is_occupied_human_004b54f0(participant);
+                read[party] = true;
+                // The native walk stops at its first human party. Do not
+                // require an available view of a later, unvisited record.
+                if (party_active[party]) break;
+            }
+            selected_index = queue.select_0094c508(party_active);
+        }
+    } else {
+        // DEVIATION, labelled. 0094C508's walk prefers a record whose party is
+        // active in the table at `game+18CCh + party*4`. This process has no party
+        // table, so every party counts as active and the walk always answers the
+        // head - which is what the native itself does whenever the queue holds one
+        // record or none (0094C4FA CMP EAX,0x1 / 0094C4FF JBE 0094C56B).
+        const std::vector<bool> party_active(8, true);
+        const std::size_t index = queue.select_0094c508(party_active);
+        selected_index = index;
+    }
+    const std::size_t index = selected_index;
     bsp::SpawnNewRequest request = queue.erase_009439b0(index);
     queue.stamp_attempt(spawn_world_clock_);
     ++summary_.spawn_new_attempts;
