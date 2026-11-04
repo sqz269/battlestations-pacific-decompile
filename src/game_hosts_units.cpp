@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain526_switches.hpp"
 #include "bsp/wire_goal4_chain520_switches.hpp"
 #include "bsp/entity_local_matrix.hpp"
 #include "bsp/wire_goal4_chain508_switches.hpp"
@@ -20989,7 +20990,14 @@ void GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c(GameUnitSlot& p) {
     }
     if (p.plane_control_mode_900 == 4 || p.plane_control_mode_900 == 5) {   // 0042A7E0
         ++takeoff_notify_arm_7c7430;
+        if constexpr (kWireGoal4Chain526Bound) {
+            // 007C7460 is the same conditional +904h clear as 007B8450.
+            // Borrow the live flag used by taxi, touchdown and takeoff; the
+            // original native 007B8450 call site is 007CE5FA, not this receive.
+            bsp::cc13_seg47::plane_clear_flag_904_007b8450(p.plane_landed_904);
+        } else {
         if (p.plane_landed_904) p.plane_landed_904 = false;              // 007C7460
+        }
         p.plane_taxi_queue_910 = false;                                  // 007C746F
         p.plane_airborne_908 = 0.0f;                                     // 007C7475
         if (!p.plane_ground_contact_bf8 && p.plane_control_mode_900 == 5) {
@@ -46939,7 +46947,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 0099BF0F plan+2E5h -> cmd+15h (unit+A11h), then
                             // 007BB8D0-007BB8D6 into unit+9F9h; the unit+61h
                             // gate at 007BB8D3 has no writer, so it is open.
+                            if constexpr (kWireGoal4Chain526Bound) {
+                                // 007BB8D0..007BB8D6's +9F9h store has the same
+                                // effect as 007B8AA0; consume the real planner
+                                // command and publish to the dynamics' flag.
+                                bsp::cc13_seg47::plane_set_turbo_byte_007b8aa0(
+                                    unit_.plane_turbo_9f9, unit_.plan_turbo_2e5);
+                            } else {
                             unit_.plane_turbo_9f9 = unit_.plan_turbo_2e5;
+                            }
                         }
                         unit_.pilot_command_pending_a14 = false;   // 007BB990
                         ++owner_.summary.pilot_commits;

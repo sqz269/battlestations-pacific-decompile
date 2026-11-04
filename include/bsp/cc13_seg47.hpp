@@ -583,9 +583,12 @@ void* bot_task_make_rocket_007b7fd0(Seg47Host& host, void* a, void* b);
 std::int32_t target_flag_e4_set_or_global_007b80a0(TargetFlagGlobalsHost& host, Raw target);
 std::int32_t target_flag_e4_clear_or_global_007b80c0(TargetFlagGlobalsHost& host, Raw target);
 void float_window_set_sample_and_sum_007b8140(Raw window, std::int32_t index, std::int32_t count, float sample);
-void plane_clear_flag_904_007b8450(Raw plane);
+// Borrow the canonical landed flag; the original ECX object stores this byte
+// at +904h. This typed projection is not a binary-compatible entry point.
+void plane_clear_flag_904_007b8450(bool& landed_904);
 void index_block_decrement_all_007b8550(Raw block);
-void plane_set_turbo_byte_007b8aa0(Raw plane, std::uint8_t value);
+// The game host owns a canonical boolean for the native +9F9h byte.
+void plane_set_turbo_byte_007b8aa0(bool& turbo_9f9, bool value);
 bool plane_is_cockpit_view_active_007b8c20(Raw plane);
 void plane_set_control_enabled_007b8c30(Seg47Host& host, Raw plane, bool enabled);
 void plane_set_gear_mode_007b8ce0(Seg47Host& host, Raw plane, std::int32_t mode, std::uint8_t flag);

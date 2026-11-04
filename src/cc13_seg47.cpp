@@ -825,9 +825,11 @@ void float_window_set_sample_and_sum_007b8140(Raw window, std::int32_t index, st
     window.at<float>(8) = static_cast<float>(static_cast<double>(sum) / static_cast<double>(count));
 }
 
-// 007B8450, __thiscall(ECX = plane): when +904h is set, clear it.
-void plane_clear_flag_904_007b8450(Raw plane) {
-    if (plane.at<std::uint8_t>(0x904) != 0) plane.at<std::uint8_t>(0x904) = 0;
+// 007B8450, ECX = plane: when the byte at +904h is set, clear it.
+// Evidence: bsp.py show 007b8450. Borrow the host's canonical bool directly;
+// no synthetic plane image or second implementation of this address is needed.
+void plane_clear_flag_904_007b8450(bool& landed_904) {
+    if (landed_904) landed_904 = false;
 }
 
 // 007B8550, __thiscall(ECX = block): decrements the fourteen dwords +18h, +1Ch,
@@ -864,7 +866,10 @@ void index_block_decrement_all_007b8550(Raw block) {
 }
 
 // 007B8AA0, __thiscall(ECX = plane; char), RET 4: +9F9h = the byte.
-void plane_set_turbo_byte_007b8aa0(Raw plane, std::uint8_t value) { plane.at<std::uint8_t>(0x9F9) = value; }
+// Evidence: bsp.py show 007b8aa0. The executable host's pilot command producer
+// supplies a canonical bool, so borrow its actual +9F9h state, not a Raw image.
+// This typed C++ interface is not an ABI-compatible replacement.
+void plane_set_turbo_byte_007b8aa0(bool& turbo_9f9, bool value) { turbo_9f9 = value; }
 
 // 007B8C20, __thiscall(ECX = plane), AL = +A9Dh.
 bool plane_is_cockpit_view_active_007b8c20(Raw plane) { return plane.at<std::uint8_t>(0xA9D) != 0; }
