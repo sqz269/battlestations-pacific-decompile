@@ -18,6 +18,7 @@
 #include "bsp/oct18_tail_a.hpp"                 // 00436C50
 #include "bsp/wire_goal4_chain274_switches.hpp"
 #include "bsp/wire_goal4_chain299_switches.hpp"
+#include "bsp/wire_goal4_chain422_switches.hpp"
 extern "C" {
 #include <lua.h>
 }
@@ -348,6 +349,19 @@ void copy_checkpoint_slot_objects(NativeLuaObjectStorage& destination,
     }
 }
 
+// Chain 422: use the existing 00B65F70 body on the actual iteration key.
+// Evidence: bsp.py show 00b65f70 / 00b66420: kind+04 != 0 versus == 0,
+// with no callbacks or writes. This is a predicate substitution, not a claim
+// that the original 00436730/00438020 loops called 00B65F70. The existing
+// 00B67080/00B67190 producers retain the key's real owner/index/lifetime.
+bool checkpoint_key_is_bound(const NativeLuaObjectStorage& key) noexcept {
+    if constexpr (kWireGoal4Chain422Bound) {
+        return native_lua_is_bound_00b65f70(key);
+    } else {
+        return !native_lua_is_unbound_00b66420(key);
+    }
+}
+
 // The 00436730 table arm's loop: 00B65F50 twice, 00B67080, then 00436730 per
 // slot while 00B66420 reports the key bound, 00B67190 between; the value and
 // key objects are destroyed before the caller's child.
@@ -360,7 +374,7 @@ void copy_checkpoint_children(NativeLuaObjectStorage& child,
     construct_native_lua_object_00b65f50(&value);
     NativeObjectCleanup value_cleanup{value};
     native_lua_iterate_first_00b67080(source, key, value);
-    while (!native_lua_is_unbound_00b66420(key)) {
+    while (checkpoint_key_is_bound(key)) {
         copy_checkpoint_slot_objects(child, key, value, context);
         native_lua_iterate_next_00b67190(source, key, value);
     }
@@ -506,7 +520,7 @@ void save_checkpoint_00438020(lua_State* mission, const std::string& mission_id,
         oct18_tail_a::ProfileLuaContext context{game::game_native_string_process().raw_context(),
             crt_sse2_conversion(), empty_0108ff2c, services};
         native_lua_iterate_first_00b67080(data, key, value);
-        while (!native_lua_is_unbound_00b66420(key)) {
+        while (checkpoint_key_is_bound(key)) {
             oct18_tail_a::copy_profile_lua_value_00436c50(nullptr, destination, key, value, context);
             native_lua_iterate_next_00b67190(data, key, value);
         }
