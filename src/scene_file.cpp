@@ -18,6 +18,7 @@
 #include "bsp/wire_goal4_chain321_switches.hpp"
 #include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/wire_goal4_chain361_switches.hpp"
+#include "bsp/wire_goal4_chain425_switches.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
@@ -690,6 +691,57 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 prop.values.push_back(cur.read_token());
             }
             }
+        }
+        if constexpr (kWireGoal4Chain425Bound) {
+            // bsp.py show 008F5A00 --asm, 008F6432..008F64B9: read the
+            // count with 008D9AD0, allocate 4*count, and FSTP each 008D9B40
+            // return into that buffer before the flags-0 008F3510 insertion.
+            // Match the existing V3/V3A finite decimal %f provider; historical
+            // VS2005 CRT parity is unproven. Ambiguous/empty/failed forms keep
+            // their raw tokens and never enter the native owning projection.
+            if (equal_insensitive(prop.type_letter, "FA") && cur.at(";")
+                && prop.values.size() >= 2) {
+                std::int32_t count = 0;
+                const char* const locale = std::setlocale(LC_NUMERIC, nullptr);
+                if (locale != nullptr && std::string(locale) == "C"
+                    && scene_scan_int(prop.values.front(), count) && count >= 1
+                    && count <= 0x3fffffff
+                    && static_cast<std::size_t>(count) == prop.values.size() - 1) {
+                    std::vector<float> elements(static_cast<std::size_t>(count));
+                    bool all = true;
+                    for (std::size_t i = 0; i < elements.size() && all; ++i) {
+                        const std::string& text = prop.values[i + 1];
+                        std::size_t first = 0;
+                        while (first < text.size()
+                            && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
+                        if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
+                        const bool digit = first < text.size()
+                            && std::isdigit(static_cast<unsigned char>(text[first]));
+                        const bool fraction = first + 1 < text.size() && text[first] == '.'
+                            && std::isdigit(static_cast<unsigned char>(text[first + 1]));
+                        const bool hex = first + 1 < text.size() && text[first] == '0'
+                            && (text[first + 1] == 'x' || text[first + 1] == 'X');
+                        all = text.size() < 0x400 && text.find('\0') == std::string::npos
+                            && (digit || fraction) && !hex;
+                        if (!all) break;
+#if defined(_MSC_VER)
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
+                        all = std::sscanf(text.c_str(), "%f", &elements[i]) == 1
+                            && std::isfinite(elements[i]);
+#if defined(_MSC_VER)
+#pragma warning(pop)
+#endif
+                    }
+                    if (all) {
+                        prop.float_array = std::move(elements);
+                        prop.has_float_array = true;
+                    }
+                }
+            }
+        } else {
+            // The prior parser retains only FA's raw tokens.
         }
         if constexpr (kWireGoal4Chain330Bound) {
             // bsp.py disasm-raw 008F65CF: count at 65DE, allocate 12*count
