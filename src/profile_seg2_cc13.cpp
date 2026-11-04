@@ -374,7 +374,7 @@ Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, Seg2Host& ho
 }
 
 // 0042B680, __thiscall(matrix, const source*), RET 4, EAX = matrix: 004134F0.
-Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, Seg2Host& host) {
+Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, MatrixCopyHost& host) {
     host.matrix_copy_004134f0(matrix, source);
     return matrix;
 }

@@ -1,6 +1,9 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain505_switches.hpp"
+#include "bsp/profile_seg2_cc13.hpp"
+#include "bsp/native_camera_matrix_copy.hpp"
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/wire_goal4_chain499_switches.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
@@ -1575,9 +1578,29 @@ bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
     if (units == nullptr) return false;
     float right[3], up[3], forward[3], translation[3];
     if (!units->unit_pose(camera_unit, right, up, forward, translation)) return false;
+    if constexpr (bsp::kWireGoal4Chain505Bound) {
+        namespace seg2 = bsp::profile_seg2_cc13;
+        struct Copy final : seg2::MatrixCopyHost {
+            void matrix_copy_004134f0(seg2::Raw destination, const seg2::Mat16& source) override {
+                bsp::copy_native_camera_matrix_004134f0(destination.p, nullptr, source.m);
+            }
+        } copy;
+        // bsp.py show 0042B680: assign invokes 004134F0 once and returns
+        // its destination. Reuse that body for the live target-view copy.
+        // The basis/translation are this controlled unit's current pose;
+        // homogeneous 0/1 cells are the same affine layout as the old arm.
+        // No copied diagnostic matrix: the destination is the camera input
+        // consumed by bind_ship_captain_0064da40 / update_ship_captain_00432ed0.
+        const seg2::Mat16 source{{right[0], right[1], right[2], 0.0f,
+            up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
+            translation[0], translation[1], translation[2], 1.0f}};
+        seg2::matrix_assign_0042b680(
+            {reinterpret_cast<std::uint8_t*>(out.world.data())}, source, copy);
+    } else {
     out.world = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
         forward[0], forward[1], forward[2], 0.0f,
         translation[0], translation[1], translation[2], 1.0f};
+    }
     const GameUnitRow* row = units->unit_row(camera_unit);
     out.throttle = row != nullptr ? row->throttle : 0.0f;        // unit+980h
     out.rudder = row != nullptr ? row->ordered_rudder : 0.0f;    // unit+984h

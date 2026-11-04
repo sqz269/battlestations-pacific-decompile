@@ -1,0 +1,299 @@
+{
+  "goal": 4,
+  "chain": 505,
+  "owner": "agent/g4-w4",
+  "baseline_head": "bfbe245e60498fb1cb136b5718e9ee9b609f5317",
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain505_switches.hpp",
+    "name": "kWireGoal4Chain505Bound",
+    "enabled": true
+  },
+  "summary": "Reuse the existing matrix assignment body to copy the controlled unit's live affine pose into the captain-camera target view.",
+  "rows": [
+    {
+      "native": "0042b680",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::Impl::camera_target_view"
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::helm_aim_track_target",
+      "reason": "The proposed aim-tracker caller is debug-only; the normal bomb-sight consumer and its screen/camera binding are missing."
+    },
+    {
+      "native": "00794750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::helm_aim_track_target",
+      "reason": "The proposed aim-tracker caller is debug-only; no normal angle-delta consumer was established in this packet."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::helm_aim_track_target",
+      "reason": "The normal camera target-follow owner, local-point flag, lead divisor and scale are not bound at the candidate site."
+    },
+    {
+      "native": "008f39b0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::native enum projection",
+      "reason": "No missing wiring: the existing scene-property projection already reaches this body in the baseline executable."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::native enum projection",
+      "reason": "No missing wiring: the existing scene-property projection already reaches this body in the baseline executable."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::native property merge",
+      "reason": "No missing wiring: the existing scene-property merge already reaches this body in the baseline executable."
+    },
+    {
+      "native": "00940dd0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp::GameSoundRuntime::Impl::initialize_gui_sound_set",
+      "reason": "No missing wiring: the baseline executable already calls the GUI sound constructor."
+    },
+    {
+      "native": "00940ec0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp::GameSoundRuntime::Impl::initialize_gui_sound_set",
+      "reason": "No missing wiring: the baseline executable already calls GUI sound initialization with the running cache and class table."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::apply_sound_requests_00941140",
+      "reason": "The shared GUI request producer and tracked-sound playback binding are missing; the frame's separate queue has no real requests."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::pilot task update",
+      "reason": "The candidate host has no complete raw task-to-unit binding for task+2F4h and the current unit parity-byte gate."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::BotApproachLand update",
+      "reason": "The landing host records this operation but lacks the retained raw plan whose owner field at +25Ch must be written."
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::vehicle class lookup",
+      "reason": "The actual 401Ch registry owner, its constructor host and shared lazy-publication/lifetime contract are missing at this lookup."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::run_load_scripted_name_baseline_004d30f0",
+      "reason": "This site is the baseline producer; the teardown consumer with its raw set and mission-Lua owner is missing."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStart::write_checkpoint",
+      "reason": "The pre-load site lacks the checkpoint-difference producer and current checkpoint Lua table/key; its caller remains gated false."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::UnitPickScreen::gui_extent",
+      "reason": "No missing wiring: the real platform aspect is already passed to the existing inline semantic body; the readiness identifier differs."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::native message word-array storage",
+      "reason": "A real message35 sender/receiver path is missing; its raw word-array owner is not produced by the candidate host."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::native message word-array storage",
+      "reason": "A real message35 sender/receiver path is missing; its raw word-array owner is not produced by the candidate host."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::native message word-array storage",
+      "reason": "The runtime message35 owner and its retirement path are missing; there is no actual word-array lifetime to destroy here."
+    },
+    {
+      "native": "0052aef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp::message35 candidate",
+      "reason": "No actual message35 posting/decoding path was established; adding a constructor-only synthetic message would not wire real state."
+    },
+    {
+      "native": "00a7aaf0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::shutdown_sound_configuration_effects_00a7f560",
+      "reason": "No new host replacement chosen: the existing configuration shutdown already uses this group-release body; separate address emission may be inlined."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::sound type retirement",
+      "reason": "No separate real-state replacement was established beyond the existing sound configuration retirement chain."
+    },
+    {
+      "native": "00a83120",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp::apply_sound_sample_settings_00a83120",
+      "reason": "This applies edited sample settings and writes a definition file; a normal single-player sample-edit consumer is missing."
+    },
+    {
+      "native": "00a82ae0",
+      "status": "skipped",
+      "host_site": "src/sound_streaming_cc13.cpp::copy_sound_sample_descriptor_00a82ae0",
+      "reason": "The inspected candidate is the sample-edit application path, whose normal single-player consumer is missing."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group recon candidate",
+      "reason": "The AI host does not retain the per-member recon values consumed by this ratio; no real input producer was found."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group score candidate",
+      "reason": "The host has no retained native score-list producer or the sixteen real labeled score terms needed for insertion."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::group score candidate",
+      "reason": "The host has no retained score-list insertion/selection owner whose chosen byte this body could update."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::text input candidate",
+      "reason": "A normal editable text-context byte consumer with its actual font owner was not established in this packet."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRows::animation_interval",
+      "reason": "The animation factory returns zero and retains no live animation object; the actual interval owner and consumer are missing."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::recon invalidation candidate",
+      "reason": "The raw recon-slot dirty-byte table and current-world/player-context access contract are not bound to this host."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp::clear_gamepad_force_requests_00a95890",
+      "reason": "The inspected typed force state is distinct from the runtime raw gamepad state; no normal explicit-clear consumer was established."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path message handling",
+      "reason": "The point-removal message consumer is missing; the existing path producer appends points and has no last-point removal branch."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::user-path message handling",
+      "reason": "The runtime point-removal message branch is missing; calling it from the append producer would remove a real point incorrectly."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::command descriptor candidate",
+      "reason": "The inspected typed descriptor is not the runtime native descriptor owner; a consumer of this initializer's result is missing."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::command descriptor candidate",
+      "reason": "The inspected typed descriptor is not the runtime native descriptor owner; a consumer of this builder's result is missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::camera projection candidate",
+      "reason": "No normal consumer requiring this FOV-times-aspect result was established; the existing callbacks needing it are not hosted here."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp::msar_verify_checksum_00bbbab0",
+      "reason": "The candidate MSAR verification chain has no runtime host caller; no live archive checksum consumer was established."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/native_platform_construction.cpp::construct_native_win32_platform",
+      "reason": "No missing platform construction: the actual platform already uses the raw reconstruction for this same address; do not run the semantic model too."
+    },
+    {
+      "native": "004b8410",
+      "status": "skipped",
+      "host_site": "src/cc13_left8_seg8.cpp::format_string_255_004b8410",
+      "reason": "The only established original caller is diagnostic printf; debug-only work is excluded."
+    },
+    {
+      "native": "005b6960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::update_interface_only_004c40f0",
+      "reason": "The runtime termination-reason +624h producer and forced narrative-overlay transition are missing; this host currently assumes zero."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MissionTeardown::close_result_gui",
+      "reason": "The required current screen/input/cinematic transition receiver bindings are missing at the recorded teardown site."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp::rebuild_main_menu_command_bar_0054b530",
+      "reason": "A live command-bar owner and its field-offset-to-widget binding are missing; no concrete MainMenuCommandBarHost exists."
+    },
+    {
+      "native": "005495e0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp::rebuild_main_menu_command_bar_0054b530",
+      "reason": "A live command-bar owner and its field-offset-to-widget binding are missing; no concrete MainMenuCommandBarHost exists."
+    }
+  ],
+  "implementation": [
+    "Split the existing MatrixCopyHost contract from Seg2Host; the one 0042B680 body and its return behavior are retained.",
+    "ON constructs the source affine matrix from the existing unit_pose result and invokes 0042B680 on out.world; its sole callback invokes the existing raw 004134F0 x87 copy.",
+    "OFF preserves the previous aggregate assignment unchanged. The ON path does not also execute it.",
+    "The stored target view is consumed by bind_ship_captain_0064da40 and update_ship_captain_00432ed0."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed MSVC Win32 Release and all four existing CTests; no game launch or new tests.",
+    "call_graph": {
+      "before_reconstructed_addresses_called": 4863,
+      "after_reconstructed_addresses_called": 4864,
+      "body": "bsp::profile_seg2_cc13::matrix_assign_0042b680",
+      "reachable": true,
+      "call_sites": 1,
+      "site": "100f93de",
+      "caller": "bsp::game::GameHudHost::Impl::camera_target_view",
+      "path": "WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> MenuScreenHost::screen_update -> GameHudHost::update_minimap_screen_005c0f20 -> GameHudHost::Impl::step_mission_camera -> camera_target_view -> matrix_assign_0042b680"
+    },
+    "readiness": {
+      "before_wired": 9802,
+      "after_wired": 9803,
+      "address_state": "wired",
+      "address_called": true,
+      "address_call_sites": 1
+    },
+    "pc24": "No arithmetic changed; assignment delegates to the existing FLD/FSTP32 matrix-copy body. pc24_lint on the working diff found no issues.",
+    "runtime": "Game not launched as instructed. Build and executable reachability are not gameplay or native ABI validation."
+  }
+}
