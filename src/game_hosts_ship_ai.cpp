@@ -85,6 +85,8 @@
 #include "bsp/ship_ai_torpedo_response.hpp"
 #include "bsp/ship_ai_arm_final_step.hpp"
 #include "bsp/ship_ai_layer_selection.hpp"
+#include "bsp/gameplay_seg53_cc13.hpp"      // 00852FF0 (chain 348)
+#include "bsp/wire_goal4_chain348_switches.hpp"
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/ship_ai_free_bearing.hpp"
 #include "bsp/gameplay_seg52_cc13.hpp"
@@ -2134,6 +2136,52 @@ struct GameShipAiHost::Impl {
     // (007202FD) for a name without an entry.
     // Packet cc9_torpedo_gate_bytes: all four director bytes +220h..+223h, the
     // constructor's four 1s for a name without an entry.
+    // Goal 4 chain 348: a unit's own vtable+214h (travel layer) and +218h
+    // (avoid-zone group). The submarine constructor 00852F10 installs vtable
+    // 00D0BF80 (00852F27), whose +214h is 00852FD0 (MOV EAX,[ECX+1268h]; MOV
+    // ECX,[ECX+538h]; MOV EAX,[ECX+EAX*4+560h]) and +218h 00852FF0 (PUSH
+    // [unit+1268h]; ECX = [unit+538h]; CALL 0082ADA0, which reads
+    // [class+depth*4+560h] and tail-jumps to 004120D0). Every other ship keeps
+    // 006DFD80 / 006DFD90, the depth-0 slot class+560h. depthLevel (unit+1268h)
+    // is GameUnitRow::submarine_depth_level: the units host seeds it at creation
+    // for every kind-8 unit (00853630's stages) and 008528B0 keeps it in 0..3;
+    // `submarine_depth_seeded` marks exactly those rows. The class+560h..+56Ch
+    // dwords are the controller's leaf_tuning (MSubmarine's four sources
+    // 60h..6Ch, vehicle_class_lua_load.cpp).
+    const GameUnitRow* submarine_row_1268(std::size_t index) const {
+        const GameUnitRow* row = units.unit_row(index);
+        return row != nullptr && row->submarine_depth_seeded ? row : nullptr;
+    }
+    std::uint32_t unit_navigation_layer_v214(std::size_t index,
+                                             const bsp::ShipLeafTuning& tuning) const {
+        if (const GameUnitRow* row = submarine_row_1268(index)) {
+            return bsp::ship_ai_submarine_navigation_layer_00852fd0(tuning,
+                                                                   row->submarine_depth_level);
+        }
+        return bsp::ship_ai_unit_navigation_layer_006dfd80(tuning);
+    }
+    std::uint32_t unit_zone_group_v218(std::size_t index, const bsp::ShipLeafTuning& tuning) const {
+        // 0082ADA0(class)(depth): [class+depth*4+560h] into 004120D0.
+        struct ClassGroup final : bsp::gameplay_seg53_cc13::ShipClassNavigationGroupHost {
+            const GameAvoidZoneRuntime& zones;
+            const bsp::ShipLeafTuning& tuning;
+            ClassGroup(const GameAvoidZoneRuntime& z, const bsp::ShipLeafTuning& t)
+                : zones(z), tuning(t) {}
+            std::uint32_t class_navigation_group_at_depth_0082ada0(std::int32_t depth) override {
+                if (depth < 0 || depth >= 4) {
+                    throw std::out_of_range("0082ADA0 depth must address class+560h..+56Ch");
+                }
+                return zones.group_for_layer(tuning.array[static_cast<std::size_t>(depth)]);
+            }
+        } group(zones, tuning);
+        if (const GameUnitRow* row = submarine_row_1268(index)) {
+            bsp::gameplay_seg53_cc13::SubmarineDepthFields fields;
+            fields.depth_level_1268 = row->submarine_depth_level;
+            return bsp::gameplay_seg53_cc13::submarine_navigation_group_at_depth_00852ff0(
+                fields, group);
+        }
+        return group.class_navigation_group_at_depth_0082ada0(0);   // 006DFD90: PUSH 0
+    }
     // 0070E450 (0070E450-0070E4B3) on the unit's formation: over the [+4F8h]
     // members at +18h stride 34h, the largest vtable[214h]() among members that
     // answer vtable[5Ch](6), starting from 0. A unit with no formation answers 0.
@@ -2147,7 +2195,12 @@ struct GameShipAiHost::Impl {
             if (!units.unit_is_kind_of(member, 6)) continue;
             const auto& other = controllers[member];
             if (!other.leaf_tuning_loaded) continue;
+            if constexpr (bsp::kWireGoal4Chain348Bound) {
+                // 0070E48F: the member's own vtable[214h], 00852FD0 for a submarine.
+                best = std::max(best, unit_navigation_layer_v214(member, other.leaf_tuning));
+            } else {
             best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
+            }
         }
         return static_cast<std::int32_t>(best);
     }
@@ -3597,8 +3650,13 @@ public:
         }
         owner_.done("ShipAiFollow::zone_set_218", 0x009df41au);
         ++owner_.summary.follow_zone_sets;
+        if constexpr (bsp::kWireGoal4Chain348Bound) {
+            // 009DF414 loads vtable[218h]: 00852FF0 for a submarine follower.
+            return owner_.unit_zone_group_v218(index_, owner_.controllers[index_].leaf_tuning);
+        } else {
         return owner_.zones.group_for_layer(
             owner_.controllers[index_].leaf_tuning.array[0]);   // [class+560h]
+        }
     }
     bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t zone_set,
                                                        bsp::ShipAiFollowLandXZ point,
@@ -5382,7 +5440,12 @@ public:
         }
         owner_.done("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
         ++owner_.summary.ring_probe_spaces;
+        if constexpr (bsp::kWireGoal4Chain348Bound) {
+            // 009E66E3 loads vtable[218h]: 00852FF0 for a submarine.
+            return owner_.unit_zone_group_v218(index_, ctl_.leaf_tuning);
+        } else {
         return owner_.zones.group_for_layer(ctl_.leaf_tuning.array[0]);  // [class+560h]
+        }
     }
     bool unit_pose_fresh_00c8() override {
         return owner_.units.unit_pose_valid_00c8(index_);
@@ -9517,8 +9580,18 @@ public:
         return owner_.formation_navigation_layer_0070e450(index_);
     }
     std::uint32_t unit_navigation_layer_v214() override {
+        if constexpr (bsp::kWireGoal4Chain348Bound) {
+            // 009ECA60 loads vtable[214h]: 00852FD0 for a submarine.
+            if (owner_.submarine_row_1268(index_) != nullptr) {
+                owner_.done("ShipAiLayer::unit_layer_00852fd0", 0x00852fd0u);
+            } else {
+                owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
+            }
+            return owner_.unit_navigation_layer_v214(index_, ctl_.leaf_tuning);
+        } else {
         owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
         return bsp::ship_ai_unit_navigation_layer_006dfd80(ctl_.leaf_tuning);
+        }
     }
     bool unit_is_kind_v5c(std::uint32_t kind) override {
         return owner_.units.unit_is_kind_of(index_, static_cast<int>(kind));
