@@ -8,6 +8,7 @@
 #include "bsp/wire_goal4_chain326_switches.hpp"
 #include "bsp/wire_goal4_chain335_switches.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
+#include "bsp/native_session_message_tags_107_108.hpp"
 #include "bsp/cc13_seg33b.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
@@ -79,6 +80,20 @@ struct HostSessionMessages::Image {
     // 32-bit float scale) through this context.
     NativeSessionMessage111To112Context context112{&session, &numeric, &maximum_00d7a248};
     NativeSessionMessage112Profile profile112{context112};
+    // Goal 4 chain 335: the scalar codec of 6Bh / 6Ch (sessions 107 / 108).
+    // bsp.py ghidra bytes, bsp.gpr's /battlestationspacific.exe: 00CF8B3C
+    // 43800000h (256.0f, the default +20h), 00D7A3A0 3FB99999A0000000h (0.1f
+    // widened, the presence threshold), 00D7A328 4010000000000000h (4.0, the
+    // write scale), 00D7A348 3FD0000000000000h (0.25, the read scale).
+    volatile float default_00cf8b3c{256.0f};
+    volatile double threshold_00d7a3a0{static_cast<double>(0.1f)};
+    volatile double write_scale_00d7a328{4.0};
+    volatile double read_scale_00d7a348{0.25};
+    NativeSessionMessage99To102Context context98{&session, &numeric, &default_00cf8b3c,
+                                                 &threshold_00d7a3a0, &write_scale_00d7a328,
+                                                 &read_scale_00d7a348};
+    NativeSessionMessage107Profile profile107{context98};
+    NativeSessionMessage108Profile profile108{context98};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
@@ -832,6 +847,46 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
     // Neither message owns storage; 00760BD0's scalar delete only restamps.
     return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
+}
+
+HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool steering) const {
+    const Image& image = *image_;
+    LocalStream stream;
+    ShipJamCopy copy;
+    // 008198A0: vtable[0Ch](6Ah) at 008198C6, then (6Bh) at 0081999D, then
+    // (6Ch); the first true answer takes its arm.
+    const auto answer = [&copy](bool (*is_type)(std::uint32_t)) {
+        copy.explosion_6a = is_type(0x6A);
+        copy.steering_jam_6b = !copy.explosion_6a && is_type(0x6B);
+        copy.engine_jam_6c = !copy.explosion_6a && !copy.steering_jam_6b && is_type(0x6C);
+    };
+    if (steering) {
+        // 00827D09..00827D37 / 008134C4: 0075B430(6Bh) and 007618E0's stores.
+        NativeSessionMessage107 sent{};
+        construct_native_session_message107_007618e0(&sent, image.context98, image.profile107);
+        // 0076E575 vtable[4] = 006D2F20 (vtable 00D03428 read from the PE:
+        // 00761990, 006D2F20, 006D1550, 00761960, 004499C0).
+        write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        NativeSessionMessage107 queued{};
+        construct_native_session_message107_007618e0(&queued, image.context98, image.profile107);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        copy.type = queued.header.base.type_10;
+        answer(&native_session_message_is107_00761960);
+    } else {
+        // 00827D65 / 00813530: 007619B0 itself.
+        NativeSessionMessage108 sent{};
+        construct_native_session_message108_007619b0(&sent, image.context98, image.profile108);
+        write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+        stream.begin_read();
+        NativeSessionMessage108 queued{};
+        construct_native_session_message108_007619b0(&queued, image.context98, image.profile108);
+        read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+        copy.type = queued.header.base.type_10;
+        answer(&native_session_message_is108_00761a30);
+    }
+    // Neither message owns storage; 00761990 / 00761A60 only restamp.
+    return copy;
 }
 
 } // namespace bsp

@@ -4603,6 +4603,9 @@ struct GameGunneryHost::Impl {
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
+    // Goal 4 chain 335: a 6Bh / 6Ch jam send (00827B90, 008132C0) through
+    // 0076E520's copy, delivered as 008198A0 answers it: +9E4h / +9E5h.
+    void route_ship_jam_6b_6c(std::size_t unit, bool steering);
     bool mothership_failure_message(std::size_t unit, const std::string& name, bool set);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
     void run_damage_control(float dt);
@@ -16794,16 +16797,56 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
     } else if (failure_name_is(name, "Fire")) {
         ++cf_fires;
         if constexpr (kShipDamageControlTickBound) {
+            if constexpr (bsp::kWireGoal4Chain335Bound) {
+                // Goal 4 chain 335: 00827D9A 0080FA50(channel 0, settings+3C0h,
+                // flag 1), routed at 00827DAD flags 7, through the 9Eh copy;
+                // 00821E80's 9Eh arm reads the copy's channel, flag and seconds.
+                bsp::HostSessionMessages::RepairAddDamageCopy copy{0, fire_failure_seconds, true};
+                if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+                    copy = messages->queue_repair_add_damage_9e(0, fire_failure_seconds, true);
+                }
+                if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
+                    damage_control_add_seconds(unit, copy.channel == 1, copy.seconds);
+                }
+            } else {
             damage_control_add_seconds(unit, false, fire_failure_seconds);
+            }
         }
     } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
         record(steering_jam ? "Failure::steering_jam_flag_0081999d"
                             : "Failure::engine_jam_flag_008199c7",
             steering_jam ? 0x0081999du : 0x008199c7u);
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            // Goal 4 chain 335: 00827D09..00827D37 (6Bh) / 00827D65 (6Ch),
+            // routed at 00827DAD, through the copy.
+            route_ship_jam_6b_6c(unit, steering_jam);
+        } else {
         // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
         if (steering_jam) damage_control[unit].steering_jam_9e4 = true;
         else damage_control[unit].engine_jam_9e5 = true;
+        }
+    }
+}
+
+void GameGunneryHost::Impl::route_ship_jam_6b_6c(std::size_t unit, bool steering) {
+    // Goal 4 chain 335. 0077C2A0 (flags 7) queues 0076E520's copy of the
+    // 6Bh / 6Ch message; 00821E80 hands it to the ship's vtable[220h], 008198A0,
+    // whose IsType answers set +9E4h (6Bh, 008199A7) or +9E5h (6Ch, 008199C7).
+    // 008199C7's 00867B10 stop of unit+A14h's effects has no host counterpart,
+    // as before. No live commands host sets the posted byte.
+    DamageControl& dc = damage_control[unit];
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    if (messages == nullptr) {
+        if (steering) dc.steering_jam_9e4 = true;
+        else dc.engine_jam_9e5 = true;
+        return;
+    }
+    const bsp::HostSessionMessages::ShipJamCopy copy = messages->queue_ship_jam_6b_6c(steering);
+    if (copy.steering_jam_6b) {
+        dc.steering_jam_9e4 = true;
+    } else if (copy.engine_jam_6c) {
+        dc.engine_jam_9e5 = true;
     }
 }
 
@@ -16846,11 +16889,19 @@ int GameGunneryHost::script_set_failure_008132c0(std::size_t unit_index,
         return 1;
     }
     if (failure_name_is(name, "SteeringJam")) {
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            host.route_ship_jam_6b_6c(unit_index, true);   // goal 4 chain 335
+        } else {
         dc.steering_jam_9e4 = true;   // 008134C4 message 6Bh -> 0081999D
+        }
         return 2;
     }
     if (failure_name_is(name, "EngineJam")) {
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            host.route_ship_jam_6b_6c(unit_index, false);  // goal 4 chain 335
+        } else {
         dc.engine_jam_9e5 = true;     // 00813530 007619B0 message 6Ch -> 008199C7
+        }
         // 0081356F 0093BD80 -> 0093BE89 0093BC30: no active-name test.
         bsp::ActiveFailure record;
         record.id = 5;

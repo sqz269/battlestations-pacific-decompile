@@ -4,14 +4,14 @@
   "baseline": "2e8164349a",
   "switch": "bsp::kWireGoal4Chain335Bound",
   "switch_header": "include/bsp/wire_goal4_chain335_switches.hpp",
-  "picked": "The gunnery host's ship-hit and contact session sends (93h ADDTORQUE, 70h kamikaze detonate, 9Eh SHIPREPAIR_ADDDAMAGE) through 0076E520's local copy, as chains 260/326 route their messages",
+  "picked": "The gunnery host's ship-hit, contact and failure session sends (93h ADDTORQUE, 70h kamikaze detonate, 9Eh SHIPREPAIR_ADDDAMAGE, 6Bh/6Ch steering/engine jam) through 0076E520's local copy, as chains 260/326 route their messages",
   "wired_before": 9345,
-  "wired_after": 9354,
+  "wired_after": 9362,
   "checks": {
     "build_on": "scripts/build.ps1 passed (2/2 tests)",
-    "build_off": "scripts/build.ps1 with kWireGoal4Chain335Bound temporarily false passed; reverted before commit",
+    "build_off": "scripts/build.ps1 with kWireGoal4Chain335Bound temporarily false passed for both batches (93h/70h/9Eh, then 6Bh/6Ch); reverted before each commit",
     "pc24_lint": "0 findings (no float arithmetic added; the copies move float bits on the raw 32-bit codec path)",
-    "call_graph": "all nine addresses REACHABLE from the entry; callers HostSessionMessages::queue_ship_add_torque_93 <- ShipHitBinding::route_add_hull_torque, queue_repair_add_damage_9e <- ShipHitBinding::route_set_damage_channel, queue_kamikaze_detonate_70 <- GameGunneryHost::Impl::run_kamikaze_contacts (route_kamikaze_detonate_70h inlined)"
+    "call_graph": "all nine addresses REACHABLE from the entry; callers HostSessionMessages::queue_ship_add_torque_93 <- ShipHitBinding::route_add_hull_torque, queue_repair_add_damage_9e <- ShipHitBinding::route_set_damage_channel, queue_kamikaze_detonate_70 <- GameGunneryHost::Impl::run_kamikaze_contacts (route_kamikaze_detonate_70h inlined); queue_ship_jam_6b_6c <- GameGunneryHost::Impl::route_ship_jam_6b_6c <- apply_failure_effect_00827b90 and GameGunneryHost::script_set_failure_008132c0"
   },
   "rows": [
     {
@@ -89,6 +89,73 @@
       "call_sites": 1
     },
     {
+      "native": "007618e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c <- src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::route_ship_jam_6b_6c <- apply_failure_effect_00827b90 (component failure) and script_set_failure_008132c0 (Lua SetFailure)",
+      "real_state": "a SteeringJam failure the component-failure roll (00827B90) or the mission script (008132C0) chose for this unit",
+      "evidence": "00768530 case 6Bh calls 007618E0 at 00768F86; 00827D09..00827D37 and 008132C0's 6Bh arm inline 0075B430(6Bh) and the same stores (+18h/+1Ah/+1Ch 0, +4h 1, +20h [00CF8B3C] = 256.0f, vtable 00D03428), routed at 00827DAD flags 7",
+      "abi": "Original __thiscall(ECX message); explicit (message, context, profile) C++ API, no drop-in ABI claim",
+      "call_sites": 2
+    },
+    {
+      "native": "007619b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c <- src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::route_ship_jam_6b_6c <- apply_failure_effect_00827b90 (component failure) and script_set_failure_008132c0 (Lua SetFailure)",
+      "real_state": "an EngineJam failure from the same two producers",
+      "evidence": "called by the senders themselves (00827D65, 00813530) and by 00768530 case 6Ch at 00768FA6 (bsp.py callers 007619b0)",
+      "call_sites": 2
+    },
+    {
+      "native": "006d2f20",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c",
+      "real_state": "the sent 6Bh/6Ch message",
+      "evidence": "vtable 00D03428 slot 1 (bsp.py ghidra bytes 00D03428 --length 20: 00761990 006D2F20 006D1550 00761960 004499C0); the scalar codec constants 00CF8B3C/00D7A3A0/00D7A328/00D7A348 read from the PE",
+      "call_sites": 2
+    },
+    {
+      "native": "006d1550",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c",
+      "real_state": "the local stream the writer filled",
+      "evidence": "vtable 00D03428 slot 2, through 0076A27B vtable[8]",
+      "call_sites": 2
+    },
+    {
+      "native": "00761960",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c",
+      "real_state": "the 6Bh copy's IsType, asked for 6Ah, 6Bh, 6Ch in 008198A0's order (PUSH 6Ah at 008198C6, PUSH 6Bh at 0081999D); its answer sets +9E4h",
+      "evidence": "vtable 00D03428 slot 3; 008198A0 calls the message's vtable[0Ch] (bsp.py show 008198a0 --asm)",
+      "call_sites": 1
+    },
+    {
+      "native": "00761a30",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_jam_6b_6c",
+      "real_state": "the 6Ch copy's IsType in the same order; its answer sets +9E5h",
+      "evidence": "the 108 profile's IsType slot (native_session_message_tags_107_108.cpp)",
+      "call_sites": 1
+    },
+    {
+      "native": "0075c520",
+      "status": "skipped",
+      "host_site": "none (text-credited through src/native_session_message_tags_99_to102.cpp)",
+      "reason": "Message 101's writer: readiness counts it once the file is reached, but no host sender builds message 101 and the exe never calls it"
+    },
+    {
+      "native": "0075c540",
+      "status": "skipped",
+      "host_site": "none (text-credited through src/native_session_message_tags_99_to102.cpp)",
+      "reason": "Message 101's reader: same as 0075C520"
+    },
+    {
+      "native": "00761710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::script_set_failure_008132c0 / apply_failure_effect_00827b90 (Explosion arm)",
+      "reason": "6Ah needs Lua arguments 2..6 (or hit record +30h/+34h) that the host does not keep (msg+24h..+34h); its 00761710 / 007617E0 / 00761860 stay unwired"
+    },
+    {
       "native": "0080ffd0",
       "status": "skipped",
       "host_site": "src/game_hosts_gunnery.cpp::ShipHitBinding::route_add_hull_torque",
@@ -130,5 +197,6 @@
       "host_site": "src/game_hosts_lua.cpp::binding_trampoline (GetFirepower)",
       "reason": "Lua GetFirepower has no live caller in this installation's scripts (commandhelpers.lua:2413 is inside a --[[ ]] block), so 008127E0 and the 00812310..008124C0 barrel totals stay unreached"
     }
-  ]
+  ],
+  "wired_note": "15 addresses are newly called (rows below). The text matcher also credits 0075C520/0075C540 (message 101's codec, in the 99_to102 file the 6Bh/6Ch copy now reaches); nothing calls them, so they are listed as skipped"
 }

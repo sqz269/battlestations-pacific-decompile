@@ -266,6 +266,23 @@ public:
     };
     RepairAddDamageCopy queue_repair_add_damage_9e(std::int32_t channel, float seconds,
                                                    bool add) const;
+    // Goal 4 chain 335. The steering-jam (6Bh, session message 107) and
+    // engine-jam (6Ch, 108) failures. 00827B90 inlines 0075B430(6Bh) and
+    // 007618E0's stores (+18h word 0, +1Ah 0, +4h = 1, +1Ch 0, +20h =
+    // [00CF8B3C], vtable 00D03428) at 00827D09..00827D37, and calls 007619B0
+    // for 6Ch at 00827D65; 008132C0 does the same at 008134C4 / 00813530.
+    // Both route with 0077C2A0 flags 7. The local copy: 006D2F20 write (the
+    // scalar on its 8-bit path), 00768530 case 6Bh 007618E0 (00768F86) or 6Ch
+    // 007619B0 (00768FA6), 006D1550 read. 008198A0 asks the copy's IsType
+    // (00761960 / 00761A30) for 6Ah, then 6Bh, then 6Ch, the first answer
+    // choosing the arm; the three flags are those answers in that order.
+    struct ShipJamCopy {
+        std::uint8_t type{0};
+        bool explosion_6a{false};
+        bool steering_jam_6b{false};
+        bool engine_jam_6c{false};
+    };
+    ShipJamCopy queue_ship_jam_6b_6c(bool steering) const;
 
 private:
     struct Image;
