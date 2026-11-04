@@ -245,6 +245,7 @@ struct GameHudHost::Impl {
     // stored here: +E4h is GameUnitsHost's stable canonical unit identity.
     alignas(4) std::array<std::uint8_t, 0xE8> root_interface_fields{};
     void* root_saved_observer_identity{nullptr};
+    bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
         return {root_interface_fields.data()};
     }
@@ -259,7 +260,13 @@ struct GameHudHost::Impl {
         }
         return SIZE_MAX;
     }
-    void save_root_interface(int id, std::size_t payload);
+    std::size_t first_squadron_member(std::size_t unit) const {
+        for (const bsp::PlaneSquadronHostRecord& squadron : bsp::plane_squadron_registry().records())
+            if (squadron.squadron_unit == unit) return squadron.flight_leader();
+        return SIZE_MAX;
+    }
+    void save_root_interface(int id, bsp::HudRootPayload payload);
+    bool release_destroyed_payload(bsp::HudRootPayload& payload) const;
     void refresh_root_saved_payload();
     bool hud_root_widgets_bound{false};
     GuiLayoutWidget* hud_root_closed_group{nullptr};
@@ -384,7 +391,7 @@ struct GameHudHost::Impl {
     // The 00647080 push carries a member, which can differ from the controlled
     // squadron. Keep that exact UnitRef until the existing service consumes it.
     bool pending_explicit_payload{false};
-    std::size_t pending_payload_unit{SIZE_MAX};
+    bsp::HudRootPayload pending_payload{};
     unsigned long long movie_calls{0};
     unsigned long long movie_engages{0};
     unsigned long long movie_pushes{0};
@@ -454,35 +461,48 @@ private:
 };
 }
 
-void GameHudHost::Impl::save_root_interface(int id, std::size_t payload) {
+void GameHudHost::Impl::save_root_interface(int id, bsp::HudRootPayload payload) {
     RootSavedInterfaceObserver observer(*this);
-    void* identity = units != nullptr && payload < units->count()
-        ? const_cast<void*>(units->unit_identity(payload)) : nullptr;
+    void* identity = units != nullptr && payload.unit < units->count()
+        ? const_cast<void*>(units->unit_identity(payload.unit)) : nullptr;
+    const bool saves_payload = root_interface_view().at<std::int32_t>(0x1C) == 0;
     // bsp.py show 00646040: +1Ch suppresses both stores while temporarily
     // closed. The existing body owns the +CCh/+E4h update and pair replacement.
     bsp::ingame_gui_cc13::hud_root_set_interface_00646040(
         root_interface_view(), static_cast<std::uint32_t>(id), identity, observer);
+    // The fused identity can be unchanged when the 20h squadron request
+    // delegates to its first plane. Update meaning even without a pair relink,
+    // but freeze it alongside +CCh/+E4h while the root is closed.
+    if (saves_payload) root_saved_payload_kind = payload.kind;
     done("InGameInterface::hud_root_set_interface", 0x00646040u);
 }
 
-void GameHudHost::Impl::refresh_root_saved_payload() {
-    const std::size_t unit = root_identity_index(root_saved_observer_identity);
-    if (units == nullptr || unit == SIZE_MAX) return;
+bool GameHudHost::Impl::release_destroyed_payload(bsp::HudRootPayload& payload) const {
+    if (units == nullptr || payload.unit == SIZE_MAX) return false;
     bool destroyed = false;
     for (const auto& death : units->destroyed_units()) {
-        if (death.first == unit) { destroyed = true; break; }
+        if (death.first == payload.unit) { destroyed = true; break; }
     }
-    // Same fused-slot lifetime projection as run_root_observer_notice: the
-    // squadron persists while a surviving member remains in its actual record.
+    bool survivors = false;
+    // 0068ACA0 delegates a squadron's 20h request through +3D0h; 22h/23h
+    // carry a PLANE. Only an actual squadron reference may outlive that plane.
     if constexpr (kSquadronObserverLivenessBound) {
-        for (const bsp::PlaneSquadronHostRecord& squadron : bsp::plane_squadron_registry().records()) {
-            if (squadron.squadron_unit == unit) {
-                destroyed = destroyed && squadron.live_count() <= 0;
-                break;
+        if (payload.kind == bsp::HudRootPayloadKind::Squadron) {
+            for (const bsp::PlaneSquadronHostRecord& squadron : bsp::plane_squadron_registry().records()) {
+                if (squadron.squadron_unit == payload.unit) {
+                    survivors = squadron.live_count() > 0;
+                    break;
+                }
             }
         }
     }
-    if (!destroyed) return;
+    return payload.release_if_destroyed(destroyed, survivors);
+}
+
+void GameHudHost::Impl::refresh_root_saved_payload() {
+    bsp::HudRootPayload payload{root_identity_index(root_saved_observer_identity),
+        root_saved_payload_kind};
+    if (!release_destroyed_payload(payload)) return;
     // observer_ref_released's +14h store on the member at root+D0h. Native
     // callback dispatch remains unbound; the actual death list delivers it at
     // the HUD update boundary, before any saved payload can be restored.
@@ -490,6 +510,7 @@ void GameHudHost::Impl::refresh_root_saved_payload() {
     root_interface_view().ptr(0xE4) = nullptr;
     RootSavedInterfaceObserver observer(*this);
     observer.observer_unregister_006952a0(root_interface_fields.data() + 0xD0, old);
+    root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
 }
 
 // ---------------------------------------------------------------------------
@@ -506,11 +527,13 @@ namespace {
 class HudUnitQuery final : public InGameInterfaceUnitQuery {
 public:
     explicit HudUnitQuery(GameHudHost::Impl& owner) : owner_(owner) {}
-    void use_payload(std::size_t unit) { explicit_payload_ = true; payload_ = unit; }
-    std::size_t payload_index() const {
+    void use_payload(bsp::HudRootPayload payload) { explicit_payload_ = true; payload_ = payload; }
+    bsp::HudRootPayload payload() const {
         if (explicit_payload_) return payload_;
-        return owner_.units != nullptr && owner_.units->controlled_bound()
+        const std::size_t unit = owner_.units != nullptr && owner_.units->controlled_bound()
             ? owner_.units->controlled_index() : SIZE_MAX;
+        return {unit, unit != SIZE_MAX && owner_.is_squadron_slot(unit)
+            ? bsp::HudRootPayloadKind::Squadron : bsp::HudRootPayloadKind::Unit};
     }
     bool unit_is_kind_of(int type_code) override {
         if (owner_.units != nullptr && owner_.units->controlled_bound()) {
@@ -550,7 +573,7 @@ public:
 private:
     GameHudHost::Impl& owner_;
     bool explicit_payload_{false};
-    std::size_t payload_{SIZE_MAX};
+    bsp::HudRootPayload payload_{};
 };
 
 class HudInterfaceBinding final : public InGameInterfaceHost {
@@ -573,7 +596,16 @@ public:
     }
     void hud_root_screen_set_interface(int interface_id, bool has_payload) override {
         if constexpr (kWireGoal4Chain413Bound) {
-            owner_.save_root_interface(interface_id, has_payload ? query_.payload_index() : SIZE_MAX);
+            bsp::HudRootPayload payload = has_payload ? query_.payload() : bsp::HudRootPayload{};
+            if (has_payload && (interface_id == kInterfacePlane
+                || interface_id == kInterfacePlaneBomber || interface_id == kInterfacePlaneSpawn)) {
+                // Native 0068AF18 delegates through +3D0h before these plane
+                // interfaces. Keep a previously explicit plane exact, including
+                // one whose index happens to equal the fused squadron slot.
+                payload = payload.plane_member(owner_.first_squadron_member(payload.unit));
+                query_.use_payload(payload);
+            }
+            owner_.save_root_interface(interface_id, payload);
         } else {
         static_cast<void>(interface_id);
         static_cast<void>(has_payload);
@@ -1230,20 +1262,21 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         // A pending member payload is also a weak reference (+38h in the
         // native request record). A member that died after the push must not
         // be restored from its still-allocated host slot on the next frame.
-        if (impl.pending_explicit_payload && impl.units != nullptr) {
-            for (const auto& death : impl.units->destroyed_units()) {
-                if (death.first != impl.pending_payload_unit) continue;
-                impl.pending_payload_unit = SIZE_MAX;
-                impl.record_pending_payload_38 = SIZE_MAX;
-                break;
-            }
-        }
+        if (impl.pending_explicit_payload && impl.release_destroyed_payload(impl.pending_payload))
+            impl.record_pending_payload_38 = SIZE_MAX;
     } else {
         // The old service has no separately retained member payload.
     }
     bool has_payload = false;
-    std::size_t payload_unit = impl.units != nullptr && impl.units->controlled_bound()
+    const std::size_t controlled = impl.units != nullptr && impl.units->controlled_bound()
         ? impl.units->controlled_index() : SIZE_MAX;
+    bsp::HudRootPayload payload{controlled, bsp::HudRootPayloadKind::Unit};
+    if constexpr (kWireGoal4Chain413Bound) {
+        if (controlled != SIZE_MAX && impl.is_squadron_slot(controlled))
+            payload.kind = bsp::HudRootPayloadKind::Squadron;
+    } else {
+        // The old service has no payload provenance to classify.
+    }
     int requested = kInterfaceScene3d;
     if (!impl.summary.interface_applied) {
         has_payload = false;
@@ -1254,9 +1287,9 @@ void GameHudHost::apply_pending_interface_0068aca0() {
         impl.pending_interface_id = 0;
         if constexpr (kWireGoal4Chain413Bound) {
             if (impl.pending_explicit_payload) {
-                payload_unit = impl.pending_payload_unit;
+                payload = impl.pending_payload;
                 impl.pending_explicit_payload = false;
-                has_payload = impl.units != nullptr && payload_unit < impl.units->count();
+                has_payload = impl.units != nullptr && payload.unit < impl.units->count();
             } else {
                 has_payload = impl.units != nullptr && impl.units->controlled_bound();
             }
@@ -1278,7 +1311,7 @@ void GameHudHost::apply_pending_interface_0068aca0() {
     if constexpr (kWireGoal4Chain413Bound) {
         // 00647080 emits 22h/23h with the actual first member. Those arms do
         // not run the 20h classifier; preserve their identity for 00646040.
-        query.use_payload(has_payload ? payload_unit : SIZE_MAX);
+        query.use_payload(has_payload ? payload : bsp::HudRootPayload{});
     } else {
         // The original query derives its payload from the controlled unit.
     }
@@ -2232,9 +2265,10 @@ void GameHudHost::detach_world_2k() noexcept {
     if constexpr (kWireGoal4Chain413Bound) {
         impl.root_interface_fields.fill(0);
         impl.root_saved_observer_identity = nullptr;
+        impl.root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
         impl.set_root_closed_value(0);
         impl.pending_explicit_payload = false;
-        impl.pending_payload_unit = SIZE_MAX;
+        impl.pending_payload = {};
     } else {
         // The old path retains no root interface/payload fields.
     }
@@ -4656,20 +4690,17 @@ private:
 // before the native body's required-member branch is entered.
 class HudClosedRowsBinding final : public bsp::HudClosedRowsHost {
 public:
-    explicit HudClosedRowsBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    HudClosedRowsBinding(GameHudHost::Impl& owner, bsp::HudRootPayloadKind pushed_kind)
+        : owner_(owner), pushed_kind_(pushed_kind) {}
     std::uint32_t controlled_unit() override {
         return owner_.units != nullptr && owner_.units->controlled_bound()
             ? static_cast<std::uint32_t>(owner_.units->controlled_index() + 1) : 0u;
     }
     std::uint32_t first_member(std::uint32_t unit) override {
         if (unit == 0) return 0;
-        for (const bsp::PlaneSquadronHostRecord& squadron : bsp::plane_squadron_registry().records()) {
-            if (squadron.squadron_unit != unit - 1) continue;
-            const std::size_t first = squadron.flight_leader();
-            return owner_.units != nullptr && first < owner_.units->count()
-                ? static_cast<std::uint32_t>(first + 1) : 0u;
-        }
-        return 0;
+        const std::size_t first = owner_.first_squadron_member(unit - 1);
+        return owner_.units != nullptr && first < owner_.units->count()
+            ? static_cast<std::uint32_t>(first + 1) : 0u;
     }
     bool unit_is_kind(std::uint32_t unit, int kind) override {
         return unit != 0 && owner_.units != nullptr && unit <= owner_.units->count()
@@ -4698,12 +4729,13 @@ public:
         owner_.pending_interface_id = id;
         owner_.note_pending_record_004cc460(id, false);
         owner_.pending_explicit_payload = true;
-        owner_.pending_payload_unit = unit;
+        owner_.pending_payload = {unit, pushed_kind_};
         owner_.record_pending_payload_38 = unit;
         owner_.done("HudRootScreen::push_closed_rows_interface", 0x004cc460u);
     }
 private:
     GameHudHost::Impl& owner_;
+    bsp::HudRootPayloadKind pushed_kind_;
 };
 
 // bsp::HudRootUpdateHost over this process's HUD, for 00649860. Inputs the
@@ -4965,7 +4997,11 @@ public:
             bsp::HudClosedRowsState state{
                 root.at<std::int32_t>(0x1C), root.at<std::int32_t>(0xCC),
                 saved != SIZE_MAX ? static_cast<std::uint32_t>(saved + 1) : 0u};
-            HudClosedRowsBinding binding(owner_);
+            // Closing pushes the current first PLANE; reopening preserves the
+            // saved payload's original meaning rather than reclassifying its
+            // index as a squadron after that plane's death.
+            HudClosedRowsBinding binding(owner_, state.closed == 1
+                ? owner_.root_saved_payload_kind : bsp::HudRootPayloadKind::Plane);
             if (state.closed == 0 && (state.interface_id == 0x22 || state.interface_id == 0x23)
                 && binding.first_member(binding.controlled_unit()) == 0) {
                 owner_.record("HudRootScreen::unresolved_closed_rows_member", 0x00647080u);

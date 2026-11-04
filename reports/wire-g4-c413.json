@@ -10,26 +10,41 @@
     "Retained HUD root +1Ch/+CCh/+E4h state, produced by the existing 00646040 body over actual applied interface IDs and canonical GameUnitsHost identities",
     "00647080 adapter over the actual squadron first member, Lua force-gunner flag and role-8 permission; explicit member payload survives the existing pending-interface service",
     "Saved and pending weak-payload release at the existing destroyed-unit delivery boundary; shared closed flag for init, interface update, toggle and controlled-unit destruction",
-    "Narrow observer-reference callback interface and an address-suffixed rename of the one existing toggle body"
+    "Narrow observer-reference callback interface and an address-suffixed rename of the one existing toggle body",
+    "Review 834: saved and pending payload provenance distinguishes planes from actual squadron references, including when they share the same fused host index"
   ],
   "validation": {
     "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
     "call_graph": "Both 00646040 and 00647080 have one call site reachable from WinMainCRTStartup, in HudInterfaceBinding::hud_root_screen_set_interface and HudRootUpdateBinding::toggle_closed_hud respectively",
     "readiness": "Both rows are wired and called=true with call_sites=1",
     "float_math_changed": false,
-    "fixture_tested": false,
+    "fixture_tested": true,
+    "regression_fixture": "tests/math_tests.cpp chain413 review834: close with plane 0 sharing squadron slot 0, remove plane 0 while plane 1 survives, release the saved and pending plane references while retaining the squadron, then reopen with no extra interface request",
     "game_validated": false,
     "game_run": false
   },
   "assumptions_and_limits": [
     "Single-player local player slot is the current mission owner's slot 0; it is distinct from the scene party",
-    "The existing fused squadron-slot representation and its surviving-member lifetime rule are retained",
+    "The existing fused squadron-slot representation is retained; its surviving-member lifetime rule applies only to payloads explicitly produced as squadron references, never to plane payloads sharing that index",
     "Missing squadron-member producers are reported and refused before entering the native required-member branch; no member is invented",
     "Native 00694A60/006952A0 callback dispatch remains recorded; semantic saved-reference release uses the host's existing destroyed-unit delivery boundary",
     "Plane screen lower handoffs and the root caller's existing game+19C4h substitution remain outside this packet",
     "Blackout ScriptOrdersHost 00644220/004CC460 callbacks remain unbound outside this host file",
     "Build and entry-reachable call evidence do not establish gameplay or visual behavior"
   ],
+  "review_round_1": {
+    "review_run": 834,
+    "reviewed_head": "a1d3ae7fc9b091692cc76ba6dbb11c982e8261b3",
+    "finding": "P2 saved plane payload conflated with fused squadron identity",
+    "status": "fixed",
+    "decision": "Accepted: the old refresh code inferred reference lifetime from the shared slot index and could preserve a dead plane while another squadron member survived.",
+    "changes": "Carry Unit/Plane/Squadron provenance through query, saved reference and pending request. Plane interfaces resolve an actual squadron request to its first member and keep explicit plane identities exact. Freeze saved provenance alongside the native setter's +CCh/+E4h fields. Use one release policy for saved and pending references, with survivor retention limited to Squadron provenance.",
+    "evidence": "bsp.py show 0068aca0: the 18h classifier delegates 20h through unit+3D0h before the plane interface arms; 00646040 freezes the saved reference while closed; 00647080 reopens without pushing when saved +E4h has been cleared.",
+    "verification": "Focused close/member-death-with-survivor/reopen fixture uses the actual 00647080 body and production payload identity/lifetime policy with a two-member fixture snapshot; requires exactly the original close request and no reopen restore request. This is fixture evidence, not native observer delivery or gameplay validation.",
+    "wired_before": 9659,
+    "wired_after": 9659,
+    "game_validated": false
+  },
   "rows": [
     {
       "native": "00646040",

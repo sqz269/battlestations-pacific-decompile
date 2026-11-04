@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
@@ -43,6 +44,26 @@ HudUnitSelection hud_root_find_unit(HudUnitListView primary, HudUnitListView sec
 // 00644DB0: ECX=root, one unused four-byte stack argument, RET 4.
 void hud_root_poll_selection(HudRootSelectionState& state, HudUnitListView primary,
     HudUnitListView secondary, HudRootSelectionHost& host);
+
+// A fused host slot can denote either the squadron or its original plane.
+// Carry the native payload's meaning from its producer instead of inferring
+// lifetime from that shared index (chain 413, review run 834).
+enum class HudRootPayloadKind { Unit, Plane, Squadron };
+struct HudRootPayload {
+    std::size_t unit{static_cast<std::size_t>(-1)};
+    HudRootPayloadKind kind{HudRootPayloadKind::Unit};
+
+    HudRootPayload plane_member(std::size_t first_member) const noexcept {
+        return {kind == HudRootPayloadKind::Squadron ? first_member : unit,
+            HudRootPayloadKind::Plane};
+    }
+    bool release_if_destroyed(bool slot_destroyed, bool squadron_has_survivors) noexcept {
+        if (unit == static_cast<std::size_t>(-1) || !slot_destroyed
+            || (kind == HudRootPayloadKind::Squadron && squadron_has_survivors)) return false;
+        unit = static_cast<std::size_t>(-1);
+        return true;
+    }
+};
 
 struct HudClosedRowsState {
     std::int32_t closed{}; // +1Ch: only exactly 0 and 1 have transitions

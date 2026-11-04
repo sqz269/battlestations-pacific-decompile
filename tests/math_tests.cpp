@@ -67,6 +67,7 @@
 #include "bsp/hud_minimap.hpp"
 #include "bsp/hud_updates.hpp"
 #include "bsp/ingame_interface.hpp"
+#include "bsp/hud_root_rows.hpp"
 #include "bsp/game_render_frame.hpp"
 #include "bsp/lua_binding_entity_lookup.hpp"
 #include "bsp/mission_lobby_settings.hpp"
@@ -270,6 +271,52 @@ private:
 }
 
 int main() {
+    {
+        // Chain413 review834: the first plane aliases the fused squadron
+        // index. Its saved and pending weak references still die with that
+        // plane, while the controlled squadron outlives it. Reopening must
+        // clear +1Ch without adding even a null-payload restore request.
+        struct ClosedRowsFixture final : bsp::HudClosedRowsHost {
+            std::vector<std::size_t> members{0, 1};
+            std::vector<std::pair<int, bsp::HudRootPayload>> pushes;
+            std::uint32_t controlled_unit() override { return 1; }
+            std::uint32_t first_member(std::uint32_t) override {
+                return static_cast<std::uint32_t>(members.front() + 1);
+            }
+            bool unit_is_kind(std::uint32_t unit, int kind) override {
+                return unit != 0 && kind == 0x10;
+            }
+            bool unit_flag_379(std::uint32_t) override { return false; }
+            int unit_owner_1a8(std::uint32_t) override { return 9; }
+            int local_team() override { return 0; }
+            void push_interface_request(int id, std::uint32_t ref) override {
+                pushes.push_back({id, {static_cast<std::size_t>(ref - 1),
+                    bsp::HudRootPayloadKind::Plane}});
+            }
+        } host;
+        bsp::HudRootPayload controlled{0, bsp::HudRootPayloadKind::Squadron};
+        auto saved = controlled.plane_member(host.members.front());
+        bsp::HudClosedRowsState state{0, 0x22, static_cast<std::uint32_t>(saved.unit + 1)};
+        bsp::hud_root_toggle_closed_00647080(state, host);
+        check(state.closed == 1 && host.pushes.size() == 1 && host.pushes.front().first == 0x23
+            && state.interface_id == 0x22 && saved.kind == bsp::HudRootPayloadKind::Plane,
+            "chain413 close saves a plane and freezes the original interface");
+
+        // Deliver the fixture's plane-0 death and compacted member snapshot.
+        const bool removed = host.members.front() == 0;
+        host.members.erase(host.members.begin());
+        const bool survivors = !host.members.empty();
+        const bool keeps_original_plane = saved.plane_member(host.members.front()).unit == 0;
+        const bool pending_released = host.pushes.front().second.release_if_destroyed(true, survivors);
+        if (saved.release_if_destroyed(true, survivors)) state.restore_payload = 0;
+        check(removed && host.members.size() == 1 && pending_released
+            && keeps_original_plane && state.restore_payload == 0
+            && !controlled.release_if_destroyed(true, survivors),
+            "chain413 death releases saved/pending planes while retaining the actual squadron");
+        bsp::hud_root_toggle_closed_00647080(state, host);
+        check(state.closed == 0 && host.pushes.size() == 1,
+            "chain413 reopen after original-member death queues no restore request");
+    }
     {
         // Chain357: a scaled, rotated, translated authored path must choose
         // in LOCAL XYZ. Its first point wins the old world-XZ-only search,
