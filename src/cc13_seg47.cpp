@@ -1956,18 +1956,41 @@ Raw session_message_plane_create_construct_007bd3e0(Seg47Host& host, Raw message
 // [plane + (uint16)[00F876B8]*8 + 9C3h] set -> 0. Then |+C68h| (bank) >
 // tuning+550h -> 0 and |+C64h| (pitch) > tuning+550h -> 0 (FCOMI/JA: NaN
 // passes; 0042E740 fetched for each test); else 1.
-bool plane_level_bomb_attitude_gate_007c7750(Seg47Host& host, Raw plane, std::uint8_t check_doors) {
-    if (check_doors != 0) {
-        const Raw channel = plane.deref(0xDEC).sub(0x60);
-        if (channel.at<std::uint8_t>(0) != 0 && !(channel.at<float>(4) == kOne_00d7a24c) &&
-            plane.at<std::uint8_t>(static_cast<std::size_t>(local_slot(host)) * 8 + 0x9C3) != 0)
-            return false;
+namespace {
+class RawPlaneBombModeFields final : public PlaneBombModeFields {
+public:
+    RawPlaneBombModeFields(Seg47Host& host, Raw plane) : host_(host), plane_(plane) {}
+    bool bay_blocks_release() override {
+        const Raw channel = plane_.deref(0xDEC).sub(0x60);
+        return channel.at<std::uint8_t>(0) != 0 && !(channel.at<float>(4) == kOne_00d7a24c) &&
+            plane_.at<std::uint8_t>(static_cast<std::size_t>(local_slot(host_)) * 8 + 0x9C3) != 0;
     }
-    const float bank = std::fabs(plane.at<float>(0xC68));
-    if (bank > host.ai_tuning_0042e740().at<float>(0x550)) return false;
-    const float pitch = std::fabs(plane.at<float>(0xC64));
-    if (pitch > host.ai_tuning_0042e740().at<float>(0x550)) return false;
+    float bank_c68() override { return plane_.at<float>(0xC68); }
+    float pitch_c64() override { return plane_.at<float>(0xC64); }
+    float height_above_surface_9b4() override { return plane_.at<float>(0x9B4); }
+    float level_bomb_angle_max_550() override { return host_.ai_tuning_0042e740().at<float>(0x550); }
+    float paratrooper_min_altitude_354() override { return host_.ai_tuning_0042e740().at<float>(0x354); }
+    float paratrooper_max_altitude_358() override { return host_.ai_tuning_0042e740().at<float>(0x358); }
+private:
+    Seg47Host& host_;
+    Raw plane_;
+};
+} // namespace
+
+bool plane_level_bomb_attitude_gate_007c7750(PlaneBombModeFields& fields, std::uint8_t check_doors) {
+    if (check_doors != 0 && fields.bay_blocks_release()) return false;
+    // Listing 007C77AC/77DD fetches tuning per comparison. FCOMIP/JA rejects
+    // strictly greater only; unordered (NaN) passes, unlike a <= conjunction.
+    const float bank = std::fabs(fields.bank_c68());
+    if (bank > fields.level_bomb_angle_max_550()) return false;
+    const float pitch = std::fabs(fields.pitch_c64());
+    if (pitch > fields.level_bomb_angle_max_550()) return false;
     return true;
+}
+
+bool plane_level_bomb_attitude_gate_007c7750(Seg47Host& host, Raw plane, std::uint8_t check_doors) {
+    RawPlaneBombModeFields fields(host, plane);
+    return plane_level_bomb_attitude_gate_007c7750(fields, check_doors);
 }
 
 // ============================================================================
@@ -2579,9 +2602,15 @@ float plane_class_stall_range_speed_007c4830(Seg47Host& host, Raw cls) {
 // 0; alt > tuning+358h -> 0 (FCOMI/JA both: a NaN passes); else 1.
 // 0042E740 is fetched for each test.
 bool plane_in_paratrooper_drop_altitude_007c4d90(Seg47Host& host, Raw plane) {
-    const float alt = plane.at<float>(0x9B4);
-    if (host.ai_tuning_0042e740().at<float>(0x354) > alt) return false;
-    if (alt > host.ai_tuning_0042e740().at<float>(0x358)) return false;
+    RawPlaneBombModeFields fields(host, plane);
+    return plane_in_paratrooper_drop_altitude_007c4d90(fields);
+}
+
+bool plane_in_paratrooper_drop_altitude_007c4d90(PlaneBombModeFields& fields) {
+    const float alt = fields.height_above_surface_9b4();
+    // Listing 007C4DAC/4DC0: both FCOMIP/JA branches admit unordered values.
+    if (fields.paratrooper_min_altitude_354() > alt) return false;
+    if (alt > fields.paratrooper_max_altitude_358()) return false;
     return true;
 }
 

@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain414_switches.hpp"
 #include "bsp/wire_goal4_chain412_switches.hpp"
 #include "bsp/wire_goal4_chain404_switches.hpp"
 #include "bsp/cc13_dyn1.hpp"
@@ -2141,6 +2142,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     int rack_tick_calls{0}, rack_ret_census{0}, rack_ret_dead{0}, rack_ret_idle{0};
     int rack_ret_level{0}, rack_ticks_after_drop{0};
     float rack_last_drop_t{-1.0f}, rack_last_tick_t{-1.0f};
+    // Chain 414: publish 007CE90D's existing sample for the HUD altitude gate.
+    // Until that native writer runs, do not substitute world Y or a sea height.
+    float plane_height_above_surface_9b4{};
+    bool plane_height_above_surface_ready{false};
     float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
     float hull_heading_1050{0.0f};     // unit+1050h, written at 00826C56
     float occupant_timer_1158{0.0f};   // unit+1158h, 0 from 00823C30
@@ -7358,6 +7363,33 @@ struct GameUnitsHost::Impl {
     // switch input (+1F78h/+1F74h) is taken as held and the mode as entered on an
     // earlier frame (its entry frame sets +BCh); the latch is one press per line;
     // the HUD timer +CCh and 0042ECA0 are display.
+    // Borrow the same retained fields as the native bomb-mode gate. No native
+    // aircraft buffer, auxiliary attitude state, or fallback tuning is made.
+    class PlayerBombModeFields final : public bsp::cc13_seg47::PlaneBombModeFields {
+    public:
+        PlayerBombModeFields(Impl& owner, GameUnitSlot& slot)
+            : owner_(owner), slot_(slot) {}
+        bool bay_blocks_release() override {
+            const bsp::PlaneActuatorChannel& bay = slot_.actuator_block_dec.channel_c;
+            return bay.enabled && !(bay.value == 1.0f) && owner_.bay_rack_holds_round_9c3(slot_);
+        }
+        float bank_c68() override { return slot_.plane_bank_angle_c68; }
+        float pitch_c64() override { return slot_.plane_pitch_angle_c64; }
+        float height_above_surface_9b4() override { return slot_.plane_height_above_surface_9b4; }
+        float level_bomb_angle_max_550() override {
+            return owner_.lua.plane_globals().pilot_general_level_bomb_angle_max;
+        }
+        float paratrooper_min_altitude_354() override {
+            return owner_.lua.plane_globals().paratrooper_drop_min_altitude;
+        }
+        float paratrooper_max_altitude_358() override {
+            return owner_.lua.plane_globals().paratrooper_drop_max_altitude;
+        }
+    private:
+        Impl& owner_;
+        GameUnitSlot& slot_;
+    };
+
     GameUnitsHost::PlayerBombRelease player_bomb_release_006082d0(std::size_t index) {
         GameUnitsHost::PlayerBombRelease r;
         if (index >= slots.size()) { r.reason = "no such unit"; return r; }
@@ -7378,24 +7410,79 @@ struct GameUnitsHost::Impl {
             return r;
         }
         const bsp::OrdnanceKindSet set{slot.ordnance_mask};
+        bool has_paratrooper_round = false;
+        if constexpr (bsp::kWireGoal4Chain414Bound) {
+            // 007B9140 asks the racks for 2Ah; a 31h paratrooper also answers
+            // 2Ah. The old general-bomb-only test excluded its entire HUD arm.
+            // Keep the other specialised ordnance outside this host's scope.
+            const bool para = bsp::ordnance_has_paratrooper_31h(set);
+            // Do not open the new paratrooper path on the older salvo-count
+            // substitute: its actual single-rack census must own the rounds.
+            if (para && (!slot.rack_census_done || slot.rack_single_count <= 0 ||
+                         slot.rack_multi_count != 0 || slot.rack_rounds_authored <= 0)) {
+                r.reason = "paratrooper single-rack Ammo census unavailable";
+                return r;
+            }
+            if (para) {
+                // The loadout mask retains ancestry after ammunition is spent.
+                // Match kind 31h against the current rack counts, so an empty
+                // paratrooper rack cannot put other ordnance through 007C4D90.
+                const std::size_t n = std::min(slot.rack_bullet_class_per_rack.size(),
+                                               slot.rack_ammo_per_rack.size());
+                for (std::size_t i = 0; i < n; ++i) {
+                    if (slot.rack_bullet_class_per_rack[i] == 0x31 &&
+                        slot.rack_ammo_per_rack[i] > 0) {
+                        has_paratrooper_round = true;
+                        break;
+                    }
+                }
+            }
+            if ((!bsp::ordnance_has_general_bomb_2ah(set) && !has_paratrooper_round) ||
+                dive_bomb_rounds_remaining(slot) <= 0) {
+                r.reason = "007B9140: no bomb or paratrooper rack has rounds";
+                return r;
+            }
+        } else {
         if (!bsp::ordnance_has_general_bomb_2ah(set) || dive_bomb_rounds_remaining(slot) <= 0) {
             r.reason = "007B9140: no rack holds a bomb (2Ah)";
             return r;
+        }
         }
         // 00608338 (unit+72Ch)->vtable[38h], free flight.
         if (slot.plane_control_mode_900 != 7) {
             r.reason = "00608338: not in free flight (unit+900h != 7)";
             return r;
         }
+        bool needs_dive_gate = true;
+        if constexpr (bsp::kWireGoal4Chain414Bound) {
+            if (bsp::unit_is_kind_of(slot.class_id, 0x10)) {
+                if (!lua.plane_globals_loaded()) {
+                    r.reason = "007C7750: GameTuning has not loaded";
+                    return r;
+                }
+                PlayerBombModeFields fields(*this, slot);
+                // bsp.py show 006082d0 --asm: 00608357 PUSH 0, 0060835B
+                // CALL 007C7750. Bomb-mode entry checks attitude without the
+                // bay-door gate; the later release path checks the bay itself.
+                if (!bsp::cc13_seg47::plane_level_bomb_attitude_gate_007c7750(fields, 0)) {
+                    r.reason = "007C7750: bank or pitch above LevelBombAngleMax";
+                    return r;
+                }
+                done("Plane::level_bomb_attitude_gate_007c7750", 0x007c7750u);
+                needs_dive_gate = false;
+            }
+        } else {
         if (bsp::unit_is_kind_of(slot.class_id, 0x10)) {
             // 00608360 007C7750 and the level-bomb arm 007C4D90: unread.
             r.reason = "level bomber: 007C7750 / 007C4D90 not bound";
             return r;
         }
-        // 00608367 007C7600, the same attitude gate the rack tick applies
-        // (run_rack_tick_006e56f0). The bay byte unit+9C3h is not modelled.
+        }
         const float pitch = slot.plane_pitch_angle_c64;
         const float bank = slot.plane_bank_angle_c68;
+        if (needs_dive_gate) {
+        // 00608367 007C7600, the same attitude gate the rack tick applies
+        // (run_rack_tick_006e56f0). The bay byte unit+9C3h is not modelled.
         float pmin = 1.0471976f, pmax = 1.5707964f;
         float rmin = 1.0471976f, rmax = 1.5707964f;
         float rmin_p = -1.3962634f, rmax_p = 1.5707964f;
@@ -7417,6 +7504,7 @@ struct GameUnitsHost::Impl {
             r.reason = "007C7600: bank outside the roll curve";
             return r;
         }
+        }
         // 0060876C 007BC7A0: above -50 deg of pitch ([00D05A30]) the bank must
         // be within max(0, 80 deg ([00D05A28]) - |pitch|). Its rocket arm
         // (007BC7BA-007BC7D4: ordnance 33h, then 007BC7CD COMISS 0,[desc+E0h] /
@@ -7436,7 +7524,39 @@ struct GameUnitsHost::Impl {
         // 006087DC 007BB110: channel C of unit+DECh idle or at the top passes;
         // otherwise the per-slot byte unit+9C3h, which this host does not have
         // (the same omission as release_ordnance_007bbba0), so it passes.
+        if constexpr (bsp::kWireGoal4Chain414Bound) {
+            if (has_paratrooper_round) {
+                // 00608388 and 00608806 both call 007C4D90 for kind 31h.
+                // This host represents one press while already in bomb mode;
+                // enforce the release-site test on the last fixed-step sample.
+                if (!lua.plane_globals_loaded() || !slot.plane_height_above_surface_ready) {
+                    r.reason = "007C4D90: waiting for GameTuning and the 007CE90D height sample";
+                    return r;
+                }
+                PlayerBombModeFields fields(*this, slot);
+                if (!bsp::cc13_seg47::plane_in_paratrooper_drop_altitude_007c4d90(fields)) {
+                    r.reason = "007C4D90: outside ParatrooperDrop altitude range";
+                    return r;
+                }
+                done("Plane::paratrooper_drop_altitude_007c4d90", 0x007c4d90u);
+            } else {
+                // 006087DC CALL 007BB110. Unlike the paratrooper arm at
+                // 00608806, the newly admitted level bomber must wait for the
+                // live bay latch. The older dive-bomber substitution above is
+                // unchanged; its bomb-mode entry/latch remains outside this packet.
+                if (!needs_dive_gate) {
+                    const bsp::PlaneActuatorChannel& bay = slot.actuator_block_dec.channel_c;
+                    if (!bsp::cc13_release_timer::unit_can_release_007bb110(
+                            bay.enabled, bay.value, bay_rack_holds_round_9c3(slot))) {
+                        r.reason = "007BB110: bomb bay is still opening";
+                        return r;
+                    }
+                }
+                done("Unit::can_release_007bb110", 0x007bb110u);
+            }
+        } else {
         done("Unit::can_release_007bb110", 0x007bb110u);
+        }
         // 0060882B -> 007CD0B4 -> 007BBBA0.
         ++slot.player_bomb_releases;
         log.notef("player bomb release: unit=%s t=%.2f alt=%.1f pitch=%.4f bank=%.4f "
@@ -39618,6 +39738,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const double y = p[1];
                         const float h9b4 = static_cast<float>(
                             y - avoid_zone_sample_0041bc20(*layer, p[0], p[2]));  // 007CE904
+                        if constexpr (bsp::kWireGoal4Chain414Bound) {
+                            // bsp.py ghidra disasm 007CE904: FSUBR then FSTP
+                            // [ESI+6A4h] at 007CE90D (ESI = unit+310h).
+                            // Retain the existing producer's result, including
+                            // its null-squadron/layer guard and world pose.
+                            unit_.plane_height_above_surface_9b4 = h9b4;
+                            unit_.plane_height_above_surface_ready = true;
+                        }
                         const float t = static_cast<float>(
                             static_cast<double>(b) - avoid_zone_sample_0041bc20(*layer, a, c));
                         unit_.plane_height_rate_9b8 = static_cast<float>(
