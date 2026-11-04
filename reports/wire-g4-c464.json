@@ -1,0 +1,121 @@
+{
+  "goal": 4,
+  "chain": 464,
+  "slot": "g4-w2",
+  "base": "e98378014b",
+  "switch": "bsp::kWireGoal4Chain464Bound",
+  "summary": "Run the existing 00BE4770 whole-stream reader on the opened VFS stream used by GameNativeVfsRuntime::read_all.",
+  "rows": [
+    {
+      "native": "00BE4770",
+      "status": "wired",
+      "host_site": "src/game_native_vfs_runtime.cpp: GameNativeVfsRuntime::read_all(const char*, uint32_t)",
+      "evidence": "bsp.py show 00be4770: current stream Read slot +24h supplies one byte; 0054AA70 appends it until read count is zero; no NUL test.",
+      "state": "The existing opened stream, its current native profile, its reported extent, and bytes returned by NativeVfsRuntimeBindings::read. The original OpenedStream owns and releases the same single reference.",
+      "call_graph": "Enabled: read_stream_to_end_00be4770 at 10535240, direct call at 1036479a from GameNativeVfsRuntime::read_all; entry-reachable via GameVfsHost::open. Disabled: no matching function linked in bsp_game."
+    },
+    {
+      "native": "004D32A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "This site produces the pre-script baseline; the teardown consumer still needs a bridge for the actual raw game baseline tree, live Lua objects, and removal operations."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "The drain has no frame-job-thread deferred-call argument producer or live source/destination LuaVariantRecord vectors to copy."
+    },
+    {
+      "native": "00A8A980",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_camera.inc: CameraGraph",
+      "reason": "A shadow-target extents owner with the actual singleton publication, dimensions and complete subsequent shadow-target lifetime has not been composed on this application path."
+    },
+    {
+      "native": "00B1F700",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_device.inc: DeviceGraph",
+      "reason": "The scene-render callback still lacks a concrete running frame-target group owner on which to set byte +3Ch; the renderer-wide sRGB byte is a different object."
+    },
+    {
+      "native": "008FE9F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl tail-gunner state",
+      "reason": "Typed loaded bot configuration and aim state do not provide the native gun-bot base object, current descriptor identity and construction/destruction contract required by 0072BBD0."
+    },
+    {
+      "native": "008FF260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl torpedo_bot_range_by_gun",
+      "reason": "The range projection is not a retained 70h native bot with the live E1998C descriptor and 0072BBD0 base lifetime."
+    },
+    {
+      "native": "00729A40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::loaded_torpedo_barrels_00810e90",
+      "reason": "This consumer counts every loaded barrel rather than asking whether any is loaded; wiring the predicate here would add a redundant scan, while the actual HUD sight consumers need their own owner bridge."
+    },
+    {
+      "native": "0072AB10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit part/damage-state ownership",
+      "reason": "No live damage-state model instance and its 10h-stride state-vector extent were established for a replacement at the inspected unit/gunnery sites."
+    },
+    {
+      "native": "007465E0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "The capture-building fire path has no death-smoke +744h producer or actual effect owner/create/release bridge required by this death-only routine."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::landfort_fire_roll_007470b0",
+      "reason": "The D1h synchronization site remains a record because actual fire-effect creation, its selected effect identity and a concrete local delivery path are missing."
+    },
+    {
+      "native": "0080DA00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: issue_unit_order_record and write-slot rudder paths",
+      "reason": "The inspected sites publish queued or current write-slot steering, not the immediate pending-span-plus-current setter; no equivalent immediate-steering caller was established."
+    },
+    {
+      "native": "0087BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit creation/health ownership",
+      "reason": "The complete initializer needs the native descriptor part array, raw pointer vector, parent virtual dispatch and model-instance producer; health scalar projections alone do not supply them."
+    },
+    {
+      "native": "008F1960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene-property loading",
+      "reason": "The inspected live path consumes authored type letters; no live serialization consumer of a current reference sub-kind was established to replace with this reverse mapping."
+    },
+    {
+      "native": "00803C20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_world.cpp: reconnaissance presentation ownership",
+      "reason": "The current four relation-style tables and fallback owner were not established on the application presentation path."
+    }
+  ],
+  "validation": {
+    "initial_build": "scripts/build.ps1: passed all 3 original checks",
+    "enabled_build": "scripts/build.ps1: passed all 4 checks, including cc464_vfs_stream_reader",
+    "disabled_build": "scripts/build.ps1: passed all 4 checks; original bulk-read else arm unchanged",
+    "fixture": "Real MemoryStream backing crosses the 4096-byte buffer boundary, preserves embedded NUL and FF bytes, accepts progressing short reads, preserves final cursor, handles empty extent without I/O and rejects premature EOF.",
+    "source_wired_before": 9727,
+    "source_wired_after": 9728,
+    "entry_called_before": 4789,
+    "entry_called_after": 4790,
+    "entry_called_with_switch_disabled": 4789,
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "Build, fixture and executable call-graph evidence only; no game execution or binary-ABI compatibility claim.",
+    "00BE4770 remains the existing typed C++ body, returning std::string; this is a source-level application adapter, not a replacement for its original NativeString ABI.",
+    "The buffered view preserves read_all's captured-length and short-read policy, including stopping at that extent. It does not convert arbitrary native EOF or error behavior into success.",
+    "The new path retains a temporary string while creating the returned byte vector; its byte-at-a-time append work has not been profiled in gameplay."
+  ]
+}
