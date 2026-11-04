@@ -1,0 +1,117 @@
+{
+  "goal": 4,
+  "chain": 397,
+  "run": 789,
+  "owner": "agent/g4-w3",
+  "switch": "kWireGoal4Chain397Bound",
+  "picked": "Retained main-menu scroller drag reset",
+  "baseline_head": "44286fbc76464863a57eb9df92e0921418513b56",
+  "rows": [
+    {
+      "native": "00683320",
+      "status": "wired",
+      "host_site": "src/frontend_screen_animation.cpp::attach_content_00683790, reached from src/game_hosts_mission.cpp::GameMissionHost::bind_main_menu_layout_005861b0 and MissionDetailBinding::reset_scroller",
+      "source_body": "src/frontend_screen_animation.cpp::end_thumb_drag_00683320",
+      "evidence": "bsp.py show 00683320: sole drag-byte clear at native +48h; show 00683790: same store between the +24h and +58h reset writes. The ON arm delegates this store on the same retained FrontEndScreenScroller; OFF keeps the previous direct store. No second reset or invented argument runs.",
+      "call_site": "104174d9",
+      "callee": "10417650",
+      "entry_reachable": true,
+      "note": "Renamed the existing end_thumb_drag body to its address-bearing name and kept the old API as a forwarding inline alias. noinline makes the new direct call separately auditable; this is Source reuse, not an original CALL or binary-ABI claim."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionDetailBinding::set_scroll_range",
+      "reason": "The scroller and layout widget adapter exist, but briefing_text_height still returns an unimplemented zero; missing real 00AB6BD0 text-height production prevents supplying the range without a stand-in."
+    },
+    {
+      "native": "00683330",
+      "status": "skipped",
+      "host_site": "src/frontend_screen_animation.cpp::set_scroll_range",
+      "reason": "The same alpha stores can delegate to set_widget_alphas, but this range-setting caller is not entry-reachable until the real briefing text-height/range producer is bound."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MainMenuScrollerLayoutHost",
+      "reason": "The retained layout-only adapter has no actual scroll action records, pad-axis provider or GUI cursor binding; its four input callbacks deliberately throw."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::GameScriptOrdersHost::slot_counter_increment",
+      "reason": "entity_route_slot has no producer for real entity+1ACh and returns -1, so the navigator's 0..7 gate skips the counter; adding only its scoring storage would not wire a real formation event."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::make_command_target",
+      "reason": "The existing naked body reads original absolute F87574/F87578/F8757C cells; the command host has no retained native-address mapping or proved current values for those cells."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::spawn-composition selection",
+      "reason": "Missing a concrete SpawnCompositionHost::class_pair_value caller and its authored per-mode ClassPairRow producer; the live AI host does not own that composition table."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::CaptureScoreHost::available_resources",
+      "reason": "The callback returns kCaptureAvailableResources; actual support-total global, native live-unit resource views and queued spawn-manager usage are missing for team_available_resources_00946fc0."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp::BSP_PilotBot_PlanControls caller boundary 0099D300",
+      "reason": "The only original caller is pilot plan-controls, whose real retained input/output adapter is missing; replacing an unrelated ship-angle wrap would not establish that caller contract."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::Cursor::read_int",
+      "reason": "The complete existing native lookahead requires NativeSceneTokenizerStorage and its retained context; Cursor owns a SceneLexer projection, so no actual native tokenizer receiver is available at this site."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "No remaining binding gap: chain285 already calls this body with the authored type letter, and baseline call_graph who 008F02B0 confirms an entry-reachable call."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_for_letter",
+      "reason": "No new binding needed: the existing chain285 ON arm already invokes scene_property_decl_is_lua_s_letter_008f02e0 on the same authored type letter."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No new binding needed: the existing native property-merge projection already uses this enum-symbol insertion body and its real registry/string contexts."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No new binding needed: scalar and recursive child paths already call merge_native_scene_property_bag_008f54f0 over the parser-owned projection."
+    }
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; 2/2 registered tests",
+    "final_build": "scripts/build.ps1 passed; 2/2 registered tests",
+    "call_graph": "call_graph.py, who 00683320 and path 00683320 passed: one direct reachable call from attach_content_00683790",
+    "wire_readiness_before": 9626,
+    "wire_readiness_after": 9627,
+    "called_reconstructed_addresses_before": 4645,
+    "called_reconstructed_addresses_after": 4646,
+    "new_tests": "none; single-store reuse uses the existing build/tests",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "Typed Source interface over the host's retained scroller state, not a native layout or drop-in ABI.",
+    "Entry-reachable executable call and build/test evidence; no game or visual validation was run.",
+    "No new text-height, scroller input, pad or GUI cursor values were manufactured."
+  ]
+}
