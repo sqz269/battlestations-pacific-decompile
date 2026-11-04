@@ -1,0 +1,79 @@
+{
+  "chain": 338,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain338Bound",
+  "summary": "Share the existing 007B8D70 gear-down decision between its raw entry and a borrowed channel view, then use that body for both live plane touchdown gates.",
+  "wired_before": 9350,
+  "wired_after": 9351,
+  "checks": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "final_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "diff_check": "git diff --check passed",
+    "call_graph": "007B8D70 is entry-reachable with two direct call sites: deliver_plane_touchdown at 1023EA10 and plane_touchdown_007cc440 at 10276237 in this build",
+    "readiness": "007b8d70: state=wired, called=true, call_sites=2, callers_live=2",
+    "game_validation": "Not run, as instructed"
+  },
+  "evidence": [
+    "bsp.py show 007b8d70 --asm: 007B8D79-007B8D98 bypasses the value load for a disabled channel and otherwise accepts ordered equality with 1.0f at 00D7A24C",
+    "bsp.py show 007cc2f0 --asm --start 75: 007CC47F-007CC494 implements the same gear gate before world vertical velocity",
+    "bsp.py show 007c71e0 --asm: 007C7229-007C723E implements the same gear gate after class+198h and holder checks",
+    "The raw entry forwards to the typed view's sole decision kernel; the host passes the actual plane actuator_block_dec.channel_b enabled/value cells without a fabricated raw object"
+  ],
+  "limitations": [
+    "The host does not yet produce the class+5D4h gear animation channel from the native animated-model object. Its existing live channel_b therefore retains the native constructor's disabled default. This change wires the decision over real host state; it does not complete gear animation or enable a substitute channel.",
+    "The 007C5AC0 mission-state-0Dh automatic gear-request arm and the land-final completion path remain unchanged.",
+    "Entry reachability and passing tests establish build/static evidence, not a touchdown observed in gameplay or native drop-in ABI compatibility."
+  ],
+  "rows": [
+    {
+      "native": "007b8d70",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_touchdown_007cc440 and GameUnitsHost::Impl::deliver_plane_touchdown",
+      "source": "src/cc13_seg47.cpp",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "007eabc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::wing_fold_class_007eabc0",
+      "reason": "Full constructor needs the native animated-model object, its +130h animation group, and class+5D4h gear animation publication; the host currently retains a labelled class-data projection for wings/bay only."
+    },
+    {
+      "native": "007c5ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::plane_site_probe_007c5ac0",
+      "reason": "Whole gear-request arm needs plane+C08h gear mode, plane+C1Ch request ownership, class+5F8h delay, and the director/landing acceptance chain; existing host probe omits that arm."
+    },
+    {
+      "native": "00815680",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::inherit_leader_wake_00815e20",
+      "reason": "Existing literal raw copy needs actual native wake backing with samples at +8h and head at +3C8h; ShipAiWakeTrail starts samples at offset zero and includes host bookkeeping, so passing it to the raw entry would corrupt state."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list candidate survey",
+      "reason": "The host retains no score list; source evidence identifies its only native reader as an unreachable debug text overlay, which this single-player assignment excludes."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list candidate survey",
+      "reason": "No live score-list storage or gameplay reader exists in this host; the retained native reader is the excluded debug overlay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-think member candidate filtering",
+      "reason": "Existing kDefendThinkImageBound arm already calls this body with live member-kind and objective-set inputs; adding another call would duplicate the decision."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: auto_merge_dist and tuning_field",
+      "reason": "Native selector requires contiguous 0x23C-stride coordinator mode records; the host exposes one projected AiTuningBlock without that native storage producer."
+    }
+  ]
+}
