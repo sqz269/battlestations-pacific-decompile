@@ -1,0 +1,164 @@
+{
+  "chain": 424,
+  "owner": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain424Bound",
+  "scope": "SpawnNew human-party preference from the mission owner's current participant records",
+  "merge_revalidation": {
+    "origin_main": "743acad6956accd2bc98f106297dc930da94b75b",
+    "merge_commits": ["f30f91e42", "3073d11849"],
+    "resolution": "Kept both chain420 objective-removal includes and chain424 participant includes in game_hosts_lua.cpp; no ledger or startup.cmake conflicts.",
+    "build": "scripts/build.ps1 passed with reconstructed_math and tool_tests (2/2)",
+    "on_build": "tools/off_switch_on_build.py passed with both tests (2/2), zero diagnostics, and both temporary switch edits restored",
+    "default_rebuild_after_on": "scripts/build.ps1 passed again with both tests (2/2) before regenerating graph/readiness",
+    "pc24_lint": "0 findings, 0 allowed, 4 files against origin/main...HEAD",
+    "wire_readiness": {"wired": 9671, "ready": 1497, "callees_done_no_wired_caller": 9302, "blocked_on_callees": 53, "unknown_no_identifier": 202},
+    "function": {"native": "004b54f0", "state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "call_graph": "One reachable direct call at 10150538 from GameMissionLuaHost::run_spawn_queue_0094c490 to participant_slot_is_occupied_human_004b54f0 at 103ffbb0; 4700 reconstructed addresses called overall",
+    "game_run": false,
+    "note": "The verification object below preserves original-submission measurements; this object records validation after merging main."
+  },
+  "verification": {
+    "build": "scripts/build.ps1 passed: Win32 Release, reconstructed_math and tool_tests (2/2)",
+    "call_graph": "004b54f0 reachable with one direct call at 1014fdc8 from GameMissionLuaHost::run_spawn_queue_0094c490",
+    "reconstructed_addresses_called_before": 4696,
+    "reconstructed_addresses_called_after": 4697,
+    "wired_before": 9669,
+    "wired_after": 9670,
+    "game_run": false,
+    "float_math_changed": false
+  },
+  "evidence": [
+    "bsp.py show 004b54f0: +08h != 0 && +09h == 0",
+    "bsp.py show 0094c490 --asm: 0094C4FA..0094C4FF bypasses the party read for one request; 0094C53C..0094C551 uses the identical human predicate over game+18CCh; 0094C69C calls 004B54F0",
+    "GameMissionHost owns SessionParticipantPools initialized from ZeroedGameAllocation; reset_and_claim_local_flags and lobby publications produce current identities and flag bytes",
+    "GameMissionFrameHost borrows that same owner into GameMissionLuaHost for the frame lifetime and detaches it on destruction"
+  ],
+  "limitations": [
+    "An unavailable participant identity or required flag byte defers selection without erasing a request or stamping an attempt; no active-party fallback is fabricated.",
+    "The existing bounded selector still excludes party indices outside 0..7; this does not establish native out-of-bounds behavior.",
+    "Only +08h and +09h of ParticipantSlotRecord are consumed by the helper; their values come directly from current participant bytes.",
+    "No game or gameplay probe was run. The CRT particle parser remains dormant."
+  ],
+  "rows": [
+    {
+      "native": "004b54f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_spawn_queue_0094c490",
+      "behavior": "Multiple requests prefer the first occupied human party using live current-record +08h/+09h bytes; one request and no-match queues retain the native head fallback."
+    },
+    {
+      "native": "00aedf60",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_parser_raw.cpp: parse_native_particle_resource_00af4ba0",
+      "reason": "Raw resource parser and its loader have no linked entry-reachable caller; replacing the three atof stand-ins alone would not run this helper in the game."
+    },
+    {
+      "native": "00af4ba0",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_loader_raw.cpp: create_native_particle_resource_0086ba60",
+      "reason": "Missing entry-reachable particle resource loader/cache consumer; neither raw parser nor loader is present in the built game call graph."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen-reset records",
+      "reason": "Missing live producers for screen+30h mode and the +C4h native selection vector; existing pick-screen state cannot supply the reset body's inputs."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: ScenePropertyParseHost::next_token_is_number",
+      "reason": "No concrete entry-reachable ScenePropertyParseHost consumer of this numeric-lookahead callback was found; owning a tokenizer context alone is insufficient."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/native_scene_numeric_lookahead.cpp: next_native_scene_token_is_float_008d8f40",
+      "reason": "Missing a live parser consumer of the native float-lookahead operation; the existing raw helper has no call sites."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message and loopback drain",
+      "reason": "Loopback projections do not retain the native message+0Ch/current F876B0 tick domain and sender+BDh readiness required by the full queue gate."
+    },
+    {
+      "native": "006bc030",
+      "status": "skipped",
+      "host_site": "src/cc13_seg29U.cpp: entity_kind_is_1_or_2_006bc030",
+      "reason": "No concrete entry-reachable Seg29UHost producer for the vtable+0Ch kind read was identified in this bounded participant work."
+    },
+    {
+      "native": "00645180",
+      "status": "skipped",
+      "host_site": "src/ingame_gui_cc13.cpp: unit_is_local_player_unit_00645180",
+      "reason": "Missing live capture-point consumer with UnitSelectHost session/local-record inputs; existing HUD marker paths do not run that original pass."
+    },
+    {
+      "native": "004b5510",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: participant_slot_is_active_ai_004b5510",
+      "reason": "Native caller 009FFE50 uses the session AI arm; the campaign bypasses it, and the SpawnNew selection consumes the human predicate instead."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party-brain slot selection",
+      "reason": "Campaign effective game mode bypasses the original 009FFC80 slot query; no live brain-array/planner input producer was identified."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score insertion",
+      "reason": "Campaign load leaves the AI coordinator uncreated, so its group-score list consumer is gated off."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score marking",
+      "reason": "Campaign load leaves the AI coordinator uncreated, so its group-score list consumer is gated off."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator defend-member candidate pass",
+      "reason": "Campaign load leaves the AI coordinator uncreated, so its defend-member consumer is gated off."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot record",
+      "reason": "Missing controller snapshot producer and transport; flattened scene flags cannot replace the native snapshot state."
+    },
+    {
+      "native": "00868420",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: point-effect construction record",
+      "reason": "Missing a consumed RenderCommandReference template and native effect-manager/constructor ownership; draw counters do not supply those inputs."
+    },
+    {
+      "native": "004fb1f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: BSP_NativeString_ToUpperAscii",
+      "reason": "No concrete entry-reachable Fe10GuiHost string consumer was found; existing rewards/tactical-library paths remain dormant."
+    },
+    {
+      "native": "00b1f700",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: SceneRenderFrameHost sRGB operation",
+      "reason": "Missing a concrete SceneRenderFrameHost consumer reaching the frame-target owner; a method-only binding would not prove a live call."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "The existing native word-array reserve call is inside message-35 decoding without a linked host consumer."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: read_native_session_message35_0052abe0",
+      "reason": "The existing native word-array resize call is inside message-35 decoding without a linked host consumer."
+    }
+  ]
+}
