@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain520_switches.hpp"
 #include "bsp/entity_local_matrix.hpp"
 #include "bsp/wire_goal4_chain508_switches.hpp"
 #include "bsp/wire_goal4_chain494_switches.hpp"
@@ -14244,7 +14245,18 @@ public:
     bool occupant_owns_unit_00778890() override {
         const std::int32_t g = slot_.formation_group;
         if (g < 0 || static_cast<std::size_t>(g) >= owner_.formation_groups.size()) return false;
+        if constexpr (bsp::kWireGoal4Chain520Bound) {
+            // bsp.py show 00778890: test group presence, then compare its +14h
+            // identity with the unit. These are the host's existing one-based
+            // registry identities; this pure body never dereferences them.
+            return bsp::ship_ai_unit_group_leads_00778890(
+                static_cast<std::uint32_t>(index_ + 1u),
+                static_cast<std::uint32_t>(g) + 1u,
+                static_cast<std::uint32_t>(
+                    owner_.formation_groups[static_cast<std::size_t>(g)].leader + 1u));
+        } else {
         return owner_.formation_groups[static_cast<std::size_t>(g)].leader == index_;
+        }
     }
     // 00826D21..00826D26: settings+430h, Formacio.UpdateInterval.
     float occupant_timer_refill_00424c40_430() override {
@@ -50233,6 +50245,32 @@ bool GameUnitsHost::set_formation_member_offset_0070d080(std::size_t leader,
     Impl::FormationGroup& group = host.formation_groups[static_cast<std::size_t>(g)];
     // 0070D081..0070D0A1: a linear search of group+18h for the entity, stride 34h.
     const std::uint32_t handle = static_cast<std::uint32_t>(member + 1u);
+    if constexpr (bsp::kWireGoal4Chain520Bound) {
+        bsp::ShipAiUnitGroupMember* record = nullptr;
+        if (group.native_members.capture_members(group.members)) {
+            // bsp.py show 0070D080 and 00A11690 @00A1193E: the first
+            // matching record controls the formation-offset write. Refresh
+            // the live records, then map the returned record to its mutable
+            // host owner; no registry identity is dereferenced as a pointer.
+            const void* const found = bsp::native_unit_group_member_record_0070d080(
+                group.native_members.data(), reinterpret_cast<const void*>(handle));
+            if (found != nullptr) {
+                const auto offset = static_cast<const std::byte*>(found)
+                    - static_cast<const std::byte*>(group.native_members.data()) - 0x18;
+                record = &group.members[static_cast<std::size_t>(offset) / 0x34u];
+            }
+        } else {
+            // Host-only groups beyond the native 24-record capacity retain
+            // the existing vector search; never enter a raw body out of range.
+            for (bsp::ShipAiUnitGroupMember& candidate : group.members) {
+                if (candidate.entity == handle) { record = &candidate; break; }
+            }
+        }
+        if (record == nullptr) return false;
+        record->lateral[static_cast<std::size_t>(column)] = lateral;
+        record->axial[static_cast<std::size_t>(column)] = axial;
+        return true;
+    } else {
     for (bsp::ShipAiUnitGroupMember& record : group.members) {
         if (record.entity != handle) continue;
         record.lateral[static_cast<std::size_t>(column)] = lateral;   // record+10h (00A11A57)
@@ -50240,6 +50278,7 @@ bool GameUnitsHost::set_formation_member_offset_0070d080(std::size_t leader,
         return true;
     }
     return false;                                                     // 0070D0A3: no record
+    }
 }
 
 bool GameUnitsHost::Impl::ship_unit(std::size_t u) const {
@@ -50532,8 +50571,20 @@ std::size_t GameUnitsHost::formation_member_unit(std::int32_t group,
     if (slot < 0 || static_cast<std::size_t>(slot) >= members.size()) {
         return static_cast<std::size_t>(-1);
     }
+    if constexpr (bsp::kWireGoal4Chain520Bound) {
+        auto& native = host.formation_groups[static_cast<std::size_t>(group)].native_members;
+        // bsp.py show 0070D060: return record[index].entity without a unit
+        // dereference. Bounds above and capture's 24-record limit admit the
+        // raw indexed load; membership is refreshed at this read boundary.
+        const std::uint32_t entity = native.capture_members(members)
+            ? reinterpret_cast<std::uint32_t>(bsp::native_unit_group_member_at_0070d060(
+                native.data(), nullptr, static_cast<std::uint32_t>(slot)))
+            : members[static_cast<std::size_t>(slot)].entity;
+        return entity == 0u ? static_cast<std::size_t>(-1) : static_cast<std::size_t>(entity - 1u);
+    } else {
     const std::uint32_t entity = members[static_cast<std::size_t>(slot)].entity;
     return entity == 0u ? static_cast<std::size_t>(-1) : static_cast<std::size_t>(entity - 1u);
+    }
 }
 
 GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(

@@ -1,6 +1,8 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain520_switches.hpp"
+#include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/wire_goal4_chain505_switches.hpp"
 #include "bsp/profile_seg2_cc13.hpp"
 #include "bsp/native_camera_matrix_copy.hpp"
@@ -3228,7 +3230,17 @@ public:
     }
     bool unit_is_group_leader_00778890(std::uint32_t unit) override {
         const std::int32_t group = group_of(unit);
+        if constexpr (bsp::kWireGoal4Chain520Bound) {
+            // bsp.py show 00778890: a null +284h is false; otherwise compare
+            // the current +14h leader with this unit. Keep the HUD's existing
+            // one-based identities, including zero for a missing group.
+            return bsp::ship_ai_unit_group_leads_00778890(unit,
+                group < 0 ? 0u : static_cast<std::uint32_t>(group) + 1u,
+                group < 0 ? 0u : static_cast<std::uint32_t>(
+                    owner_.units->formation_leader_0014(group) + 1u));
+        } else {
         return group >= 0 && owner_.units->formation_leader_0014(group) == unit - 1;
+        }
     }
     bool unit_is_group_member_007788b0(std::uint32_t unit) override {
         return unit != 0 && owner_.units->unit_is_formation_follower_007788b0(unit - 1);

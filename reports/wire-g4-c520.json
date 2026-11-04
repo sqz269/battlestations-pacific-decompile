@@ -1,0 +1,72 @@
+{
+  "chain": 520,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain520Bound",
+  "picked": "Live formation member lookup and group leadership",
+  "rows": [
+    {
+      "native": "0070D060",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_member_unit",
+      "evidence": "bsp.py show 0070D060: indexed group+18h record identity, stride 34h. Existing bounds and refreshed live member records supply the indexed load; the returned identity selects the mission unit.",
+      "called": true,
+      "call_sites": 2,
+      "built_callers": [
+        "GameUnitsHost::formation_member_unit",
+        "GameUnitsHost::relocate_formation_members_00819672 (compiler inlining)"
+      ]
+    },
+    {
+      "native": "0070D080",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_formation_member_offset_0070d080",
+      "evidence": "bsp.py show 0070D080 and 00A11690 @00A1193E: find the first matching record before storing formation offsets. The returned projection offset selects the owning live vector record; subsequent formation station reads consume the changed offsets.",
+      "called": true,
+      "call_sites": 1,
+      "built_callers": [
+        "GameUnitsHost::set_formation_member_offset_0070d080"
+      ]
+    },
+    {
+      "native": "00778890",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudRootListsBinding::unit_is_group_leader_00778890; src/game_hosts_units.cpp: ShipMotionTailBinding::occupant_owns_unit_00778890",
+      "evidence": "bsp.py show 00778890: a null unit+284h returns false, otherwise compare group+14h with the unit. Reuse ship_ai_unit_group_leads_00778890 with the existing one-based unit/group identities, which this pure body never dereferences.",
+      "called": true,
+      "call_sites": 3,
+      "built_callers": [
+        "HudRootListsBinding::unit_is_group_leader_00778890",
+        "HudRootSelectionBinding::unit_is_group_leader (compiler inlining)",
+        "ShipMotionTailBinding::occupant_owns_unit_00778890"
+      ]
+    },
+    {
+      "native": "007214C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship director enables provenance",
+      "reason": "Missing a live ControllerSnapshotMessage producer, transport and consumer; this host only reads flattened director flags, so a temporary snapshot copy would add no behavior."
+    },
+    {
+      "native": "00A79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding set_ambient_volume",
+      "reason": "Missing the ambient sound-instance owner and real camera-height/ground inputs; this binding currently records the call and returns constant camera values."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 4 CTests before edits",
+    "build": "scripts/build.ps1 passed all 4 CTests after edits",
+    "call_graph": "All three reconstructed bodies have direct calls from changed host code reachable from the executable entry",
+    "wired_total_metric": "call_graph.py reconstructed addresses called from entry-reachable code",
+    "wired_total_before": 4876,
+    "wired_total_after": 4879,
+    "no_float_arithmetic_changed": true,
+    "game_run": false
+  },
+  "limits": [
+    "The native-layout lookups admit the existing 24-record group projection; larger host groups retain the previous vector path.",
+    "Projection identities are comparison-only registry words and are never dereferenced as native unit objects.",
+    "This establishes source wiring, Win32 build/test success and static executable reachability; gameplay and original class ABI parity were not exercised."
+  ],
+  "left": "Other formation operations and raw native unit/group object ownership remain unchanged."
+}
