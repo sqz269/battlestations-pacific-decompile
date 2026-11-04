@@ -1,0 +1,53 @@
+{
+  "chain": 422,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain422Bound",
+  "summary": "Reuse the native bound predicate on real checkpoint iteration keys in place of the inverse unbound predicate.",
+  "rows": [
+    {
+      "native": "00b65f70",
+      "status": "wired",
+      "host_site": "src/profile_checkpoint.cpp: checkpoint_key_is_bound, used by copy_checkpoint_children and save_checkpoint_00438020",
+      "evidence": "bsp.py show 00b65f70 and 00b66420: pure inverse predicates over NativeLuaObjectStorage.kind_04; keys are produced by native_lua_iterate_first_00b67080 and native_lua_iterate_next_00b67190.",
+      "scope": "Equivalent predicate substitution in reconstructed callers; original loops used the inverse unbound predicate. No new Lua owner, lookup, or synthetic key; no binary ABI claim."
+    },
+    {"native":"005251c0","status":"skipped","host_site":"src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit","reason":"Missing native pick-screen mode and selection-vector producers; resetting an invented empty selection would not use the game's state."},
+    {"native":"00611750","status":"skipped","host_site":"src/game_hosts_hud.cpp: map_screen_busy","reason":"Missing power-up carousel/scroller owner and writers for bytes +1F9h/+13Fh."},
+    {"native":"00604f30","status":"skipped","host_site":"src/game_hosts_hud.cpp: cockpit_screen_mode","reason":"Missing cockpit screen owner supplying the plane and cockpit-mode fields."},
+    {"native":"0068a160","status":"skipped","host_site":"src/game_hosts_hud.cpp: toggle_movie_camera","reason":"Missing legacy spectate-screen owner graph; the retained new movie camera is a different object."},
+    {"native":"0068a1f0","status":"skipped","host_site":"src/game_hosts_hud.cpp: toggle_new_movie_camera","reason":"Missing spectate selection and screen visibility/target producer behind the toggle."},
+    {"native":"00927cc0","status":"skipped","host_site":"src/game_hosts_hud.cpp: unit_bind_player","reason":"Missing role-availability-mask consumer; the current callback binds a player rather than consuming this getter's result."},
+    {"native":"00ac2f20","status":"skipped","host_site":"src/game_hosts_hud.cpp: HudRootRows::animation_interval","reason":"Missing animation owner: weapon_animation returns zero and no live ticker range object reaches animation_interval."},
+    {"native":"0095cf80","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate_0095cf80","reason":"Missing producer for the flak-alternate ammo record at ammo+48h."},
+    {"native":"0095d3c0","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: command_building_set_owner_player_006f4d10","reason":"Missing native unit+660h effect-vector owner; the capture host does not model this vector."},
+    {"native":"00744870","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: land-fort D1h synchronization","reason":"Missing retained D1h message dispatch/serialization owner at this site."},
+    {"native":"00986820","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: ship_landed_00986820","reason":"Missing warning/event-manager channel, subscriptions, lock and Lua dispatch owner."},
+    {"native":"00aa7950","status":"skipped","host_site":"src/game_hosts_frontend.cpp: widget transform setters","reason":"No live scale-setter operation over the required GuiWidgetTransform view was identified; native widget storage uses a separate transform binding."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/game_hosts_text.cpp: text rendering binding","reason":"Missing text-entry byte-event caller; this binding renders text rather than accepting byte input."},
+    {"native":"00abca10","status":"skipped","host_site":"src/game_native_gui_render_application.cpp: GUI render application","reason":"Missing live curve control-point owner and curve-rebuild dispatch at the inspected rendering site."},
+    {"native":"00ad4c30","status":"skipped","host_site":"src/game_hosts_fonts.cpp: native font loading","reason":"No complete adapter from the sole native-font loading operation to FontLoadBindings was established; ownership and resource publication must remain intact."},
+    {"native":"00b1f700","status":"skipped","host_site":"src/native_frame_target_owner.cpp: sRGB setter","reason":"Missing concrete reachable SceneRenderFrameHost dispatch supplying this frame-target operation; existing constructor zeroing is not an sRGB setter call."},
+    {"native":"00b6fe60","status":"skipped","host_site":"src/native_main_scene_execution_prefix.cpp: camera clear-color capture","reason":"Already has an actual-storage body and caller at this address; the unused CameraView projection must not create a second run."},
+    {"native":"00aa2b80","status":"skipped","host_site":"src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh","reason":"Missing concrete render-command queue/reset adapter at the loading-screen callback."},
+    {"native":"00a15950","status":"skipped","host_site":"src/game_hosts_ai.cpp: difficulty selection","reason":"Missing live noncampaign caller consuming first-active brain slot; campaign mode bypasses this selection."},
+    {"native":"0072bd50","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: gun-bot clear-target path","reason":"Missing actual bot+38h target-record and observer-owner adapter; current gun-bot gameplay state is typed separately."},
+    {"native":"0042b680","status":"skipped","host_site":"src/profile_seg2_cc13.cpp: matrix_assign_0042b680","reason":"No reachable matrix-assignment caller with the required Seg2Host/raw matrix owner was established."},
+    {"native":"00605630","status":"skipped","host_site":"src/game_hosts_hud.cpp: camera heading/pitch calculations","reason":"No original-compatible caller with both direction vectors was established; existing camera calculations have different inputs."},
+    {"native":"00b67f10","status":"skipped","host_site":"src/native_lua_color.cpp: read_native_lua_color_00b67f10","reason":"No linked entry-reachable caller for this color conversion exists in the baseline build."},
+    {"native":"00b67c40","status":"skipped","host_site":"src/native_lua_field_values.cpp: store_native_lua_field_value_00bd63b0 case 8","reason":"Field writer resolves elements in reverse order before converting; getter resolves and releases them sequentially, so direct substitution changes lookup/lifetime order."}
+  ],
+  "validation": {
+    "baseline_build": "passed; reconstructed_math and tool_tests",
+    "final_build": "passed; reconstructed_math and tool_tests (10.15 seconds)",
+    "wired_before": 9667,
+    "wired_after": 9668,
+    "readiness_row": "00b65f70 state=wired, called=true, call_sites=4, callers_live=2",
+    "entry_reachable_called_before": 4692,
+    "entry_reachable_called_after": 4693,
+    "new_body_call_sites": 4,
+    "new_body_callers": ["copy_checkpoint_children (2 sites)", "save_checkpoint_00438020 (2 sites)"],
+    "call_graph": "00b65f70 REACHABLE; path includes save_checkpoint_00438020 and GameMissionLuaHost::mission_checkpoint_binding",
+    "float_math_changed": false,
+    "game_run": false
+  }
+}
