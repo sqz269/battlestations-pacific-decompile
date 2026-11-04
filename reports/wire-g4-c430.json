@@ -1,0 +1,126 @@
+{
+  "chain": 430,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain430Bound",
+  "scope": "Native scene-library CEnum registry construction and nested map teardown",
+  "rows": [
+    {
+      "native": "004d25f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums::LibraryNativeEnums",
+      "evidence": "Reuses the existing whole raw 10Ch constructor on registry_, replacing the equivalent 004D3069 inline initializer exactly once. Original 004D25F0 listing writes CE78BC/CE7514, zero count and 64 zero heads. The real universe/library loader populates this retained registry.",
+      "abi": "Existing Win32 fastcall raw-storage entry; no claim that the original 004D3040 factory called this out-of-line body.",
+      "called": true,
+      "call_site": "10233b65",
+      "call_graph_build": "build/callgraph (no inlining)"
+    },
+    {
+      "native": "004d0ea0",
+      "status": "wired",
+      "host_site": "src/native_enum_registry_lifetime.cpp: destroy_native_scene_enum_registry_008f4f00, reached by LibraryNativeEnums::~LibraryNativeEnums in src/game_hosts_scene_contents.cpp",
+      "evidence": "After the existing first clear, owner+4 and the same live table pool, symbol pool and raw string context enter the existing whole map destructor. Its phase write and clear replace the previous inline second phase, preserving the required second empty clear without an extra run. Original 004D0EA0 is MOV [ECX],CE7514 followed by JMP 004D0760; Original 008F4F00 inlines that phase.",
+      "abi": "Existing explicit-context C++ API, not the original ECX/tail-JMP transport or native class/EH ABI.",
+      "called": true,
+      "call_site": "106f9bea",
+      "call_graph_build": "build/callgraph (no inlining)"
+    },
+    {
+      "native": "004ba130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums::LibraryNativeEnums",
+      "reason": "No separate nested-map construction phase is needed: 004D25F0 already constructs the complete registry and its interior map; adding 004BA130 would initialize the same map twice."
+    },
+    {
+      "native": "008f4f00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums::~LibraryNativeEnums via delete_native_scene_enum_registry_004d2620",
+      "reason": "Already called before this chain; retained as the existing teardown caller for the newly wired 004D0EA0 body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_enum",
+      "reason": "Already called through the live scene numeric-property projection; the readiness stand-in row refers to the registry-provider comment rather than a missing call."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "Already called through the existing owning native-bag projection; the readiness stand-in row does not represent an unwired body."
+    },
+    {
+      "native": "008f04c0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::replace_float_array",
+      "reason": "Existing chain425 already supplies the setter call and ownership transfer; its absent old analysis-build symbol needs a fresh call graph rather than another wiring."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::add_group",
+      "reason": "The library retains host ScenePropertyBlock groups; native insertion requires complete supported group capture into uniquely owned 114h bags and retained native library ownership."
+    },
+    {
+      "native": "008f5670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::begin_load",
+      "reason": "A native property-tree library still needs the group-bag producers and ownership/lookup adapters; constructing an unused empty library would not replace the host registry."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: numeric token parsing",
+      "reason": "Only screened while choosing; the current source exposes scanner projections, and a complete tokenizer receiver/CRT scan adapter was not established for this chain."
+    },
+    {
+      "native": "00ac6600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GUI page script projection",
+      "reason": "The complete constructor needs native 124h page ownership, UI-context construction and Lua/widget-tree adapters; the existing semantic script projection is not that receiver."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "The movie-page loader and child lookup return null, so this path lacks a real native GUI widget receiver."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "The host lacks the native movie scene node, opened decoder and material/texture producers required by the complete binding body."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "The schedule projection does not own the native subtitle widget, subtitle record vector or extratitle vector required by the complete clear body."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: device_button_held callback",
+      "reason": "The primary-device producer returns null; a real input-device object and button-state adapter are needed before calling the predicate."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign_in_state_valid callback",
+      "reason": "Online invite/sign-in state is outside this single-player wiring assignment."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 9672,
+    "readiness_wired_after": 9673,
+    "readiness_called_after": 5828,
+    "newly_called_bodies": 2,
+    "note": "004D0EA0 is absent from readiness rows and retains the pre-existing cg_adjustor_thunk tag; its new entry-reachable direct call is independently confirmed by the rebuilt call graph. Do not count 004BA130, which remains uncalled."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "python tools/call_graph.py --build; who and path both confirm entry reach and one direct call site for each newly wired body",
+    "float_math": "No float arithmetic changed; pc24 lint is not applicable.",
+    "runtime": "Game was not run; static entry reach and build/test evidence only. Original class/EH ABI and gameplay remain unproven."
+  }
+}
