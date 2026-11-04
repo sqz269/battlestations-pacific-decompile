@@ -1,0 +1,264 @@
+{
+  "chain": 402,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain402Bound",
+  "scope": "Live unit pose ingestion/publication format conversion",
+  "rows": [
+    {
+      "native": "00c336c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_local_matrix_006e00a0",
+      "evidence": "00C336C0..00C3370A assembly: twelve FLD/FSTP copies remove the homogeneous column; original scripted-turn call 008A0E4F. Converted rows replace direct extraction into the actual live motion state."
+    },
+    {
+      "native": "00c33650",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::publish_pose",
+      "evidence": "00C33650..00C336B9 assembly: expand twelve body floats into a 4x4 pose, with native zero/one constants. Replaces the hand-written world-matrix publication; world/local matrices remain the consumed output. Previously only its same-named Host callback counted as textual wiring."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "The HUD reset requires the screen owner/listener state; the selection host currently records this operation without that raw screen object."
+    },
+    {
+      "native": "005fb080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "Order-screen idle needs the missing +3B screen state and its WidgetHost services; the interface callback only records it."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "No cockpit screen +B8 plane/+FC mode producer; cockpit_screen_wanted remains false."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "No power-up carousel scrolling-byte producers for +1F9/+13F; map_screen_wanted remains false."
+    },
+    {
+      "native": "0068a160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "No live movie-camera/spectate-screen object for the raw screen transition."
+    },
+    {
+      "native": "0068a1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "No live new-movie-camera/spectate-screen object for the raw screen transition."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "HUD closed-row storage and interface request 22h/23h service remain missing; see prior chain281 skip."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "No ambient sound instance or in-mission camera is produced by the HUD interface host."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp",
+      "reason": "The HUD rows callback records an interval; binding the ticker requires its actual range/animation owner, which this packet does not construct."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "Formation entity+1AC route-slot producer is missing; entity_route_slot currently returns -1 and no scoring-row backing is supplied."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "The one-time tuning load has no eligible eight-brain/+0C planner array; campaign effective mode 8 does not take the native first-active-slot branch."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "No native-style AiGroupScoreList producer/consumer replaces the current weight-vector capture planner; coordinator activation remains gated."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "No live AiGroupScoreList entry storage to mark; coordinator activation remains gated."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "The examined word-array caller is the type-35 session-message family; no single-player producer was established, so this packet does not activate it."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "The examined word-array caller is the type-35 session-message family; no single-player producer was established, so this packet does not activate it."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "The examined word-array caller is the type-35 session-message family; no single-player producer was established, so this packet does not activate it."
+    },
+    {
+      "native": "005294f0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "0052abe0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "0052af40",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "0052af50",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "0052aef0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "0052b010",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp",
+      "reason": "No single-player type-35 message producer was established; the profile, raw strings and stream lifetime would need a real producer before wiring."
+    },
+    {
+      "native": "00aa4440",
+      "status": "skipped",
+      "host_site": "src/native_gui_button_storage.cpp",
+      "reason": "No live application call to the concrete Button factory was found; its default arm additionally requires the sole initialized registry/focus owner."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/native_gui_scrollbar_storage.cpp",
+      "reason": "No concrete live Scrollbar factory dispatch was established; preserve the existing GUI activation gates."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The callback only records the checkpoint operation; the actual mission-state/profile checkpoint rewrite contract was not established in this packet."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: join_local_player_007752d0",
+      "reason": "The examined setter path remains inside the disabled skirmish-session arm and does not retain the native local-slot owner field."
+    },
+    {
+      "native": "00927c90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: squadron land-target-gone guard",
+      "reason": "Unit role-word table +188 has no producer in the examined flattened squadron guard; the host labels the single-player predicate substitution false."
+    },
+    {
+      "native": "00927cc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg49_seg60.cpp: unit_role_mask_for_00927cc0",
+      "reason": "The native nine-word +188 role table has no established producer/consumer for the examined HUD path."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneFx reset_timer40",
+      "reason": "The live host has no plane FX component timer/consumer; its callback only records the reset."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: DcHost::clear_fire_target_slot38",
+      "reason": "The examined depth-charge adapter has no bot+38 target-record/observer-pair owner; its resolver substitutes the local host pointer."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/cc13_seg49.cpp: repair_zone_area_find_containing_00809c50",
+      "reason": "No repair-zone area vector 00F874F0 owner/provider was found in the examined gunnery host."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: SceneCommandTarget initialization",
+      "reason": "The existing literal body reads native absolute 00F87574/78/7C; no actual address backing was established for this host and the typed descriptor is not the raw receiver."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp / src/sound_configuration_shutdown.cpp",
+      "reason": "Already invoked by the reconstructed sound teardown chain; a missing separate built symbol can be inlining, so no new real-state replacement was established here."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp / src/sound_configuration_shutdown.cpp",
+      "reason": "Already invoked by the reconstructed sound teardown chain; a missing separate built symbol can be inlining, so no new real-state replacement was established here."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp / src/sound_configuration_shutdown.cpp",
+      "reason": "Already invoked by the reconstructed sound teardown chain; a missing separate built symbol can be inlining, so no new real-state replacement was established here."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: sound-pause transition",
+      "reason": "The examined transition only documents this call; binding the raw streamed-dialog manager needs its actual owner and channel pause services."
+    }
+  ],
+  "validation": {
+    "baseline_build": "MSVC Win32 Release and all three CTests passed",
+    "build": "MSVC Win32 Release and all three CTests passed",
+    "call_graph": "Both existing bodies have direct entry-reachable calls from game_hosts_units.obj; 00C336C0 from set_local_matrix_006e00a0; 00C33650 from publish_pose and its inlined create_units copy.",
+    "runtime": "Game not run. Source-interface integration and static built reachability only; no native physics-object ABI claim.",
+    "wire_readiness": {
+      "wired_before": 9644,
+      "wired_after": 9645,
+      "entry_called_rows_before": 4849,
+      "entry_called_rows_after": 4881,
+      "targets": [
+        {
+          "address": "00c33650",
+          "called": true,
+          "call_sites": 2,
+          "state": "wired"
+        },
+        {
+          "address": "00c336c0",
+          "called": true,
+          "call_sites": 1,
+          "state": "wired"
+        }
+      ],
+      "note": "The entry_called_rows metric also includes other functions exposed by linking cc13_dyn1.obj; this packet claims only the two direct converter bindings."
+    },
+    "pc24_lint": "Staged diff: zero findings (the two changed source/header files)."
+  }
+}
