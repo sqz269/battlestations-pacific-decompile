@@ -1,0 +1,51 @@
+{
+  "chain": 420,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain420Bound",
+  "picked": "Live Lua objective position-entry removal through the existing 008DC500 body",
+  "rows": [
+    {
+      "native": "008dc500",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_remove_position -> ObjectivePositionEraseList::erase",
+      "evidence": "bsp.py show 008dc500: objective+24h head, +28h size, node next/prev/record, record unit word and float3; call_graph.py who finds one entry-reachable call from ObjectiveListHost::set_remove_position",
+      "state": "Actual mixed objective entries and Lua-supplied target position; an owning VC9 list projection supplies the existing body, whose surviving node identities select the host entries to retain",
+      "limits": "Source ABI adapter; compiled reachability and focused fixture proof, no game execution or native binary ABI claim"
+    },
+    {"native":"0095cf80","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate","reason":"Missing producer for the flak-alternate ammunition record at ammo+48h; the host records this operation."},
+    {"native":"0095d3c0","status":"skipped","host_site":"src/game_hosts_ship_ai.cpp: command-building message path","reason":"No owned native +660h vector established during selection; the raw vector lifetime adapter was not built in this packet."},
+    {"native":"004d32a0","status":"skipped","host_site":"src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0","reason":"Missing teardown consumer and raw baseline-set/Lua-owner adapter; this host site builds the baseline rather than removing script globals."},
+    {"native":"00a04240","status":"skipped","host_site":"src/game_hosts_ai.cpp: AI coordinator hint scoring","reason":"Campaign coordinator graph publication was not established during selection; this packet does not build the global/per-party hint-map owner."},
+    {"native":"00a15950","status":"skipped","host_site":"src/game_hosts_ai.cpp: difficulty setup","reason":"Missing native brain-array/planner owner for first-active-slot selection; single-player difficulty is not that owner."},
+    {"native":"00a2def0","status":"skipped","host_site":"src/game_hosts_ai.cpp: defend candidate walk","reason":"Existing source already calls the body; an active campaign coordinator producer was not established, so another leaf call would not repair its reachability."},
+    {"native":"005f98f0","status":"skipped","host_site":"src/game_hosts_ai.cpp: coordinator capture-radius query","reason":"Missing verified live coordinator/world-unit graph publication for this candidate; no coordinator changes are included."},
+    {"native":"008f54f0","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: merge_property_block","reason":"No missing body call to add: chain421's owner confirmed existing entry-reachable merge calls and holds the scene-property files."},
+    {"native":"00605630","status":"skipped","host_site":"src/game_hosts_hud.cpp: plane bomb HUD","reason":"Missing bomb-sight direction-display input and output owner; the current release-gate path is not the three original direction-comparison sites."},
+    {"native":"00a2bd90","status":"skipped","host_site":"src/game_hosts_commands.cpp: EntityOrder::ai_group_forward_command","reason":"Missing entity AI-group owner; the host explicitly returns no group before this forwarding site."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/font_data.cpp: font_accepts_text_byte_00ab6d00","reason":"Missing live text-input/GuiLeafHost character-acceptance consumer for the decoded font; standalone glyph probes do not supply one."},
+    {"native":"00437c70","status":"skipped","host_site":"src/game_hosts_mission.cpp: MissionStart::write_checkpoint","reason":"Missing pre-load checkpoint-table owner and real checkpoint-diff result; checkpoint_differs returns false before this site."},
+    {"native":"00a79880","status":"skipped","host_site":"src/sound_instance.cpp: scale_sound_instance_volume_00a79880","reason":"Missing live effect-sound service adapter supplying the actual SoundInstance and requested gain from the original caller path."},
+    {"native":"00872670","status":"skipped","host_site":"src/effects_cc13.cpp: scale_effect_sound_instance_volume_00872670","reason":"Missing live EffectTrackedSound/EffectInstanceServices producer and volume-change consumer; no such game-host implementation was found in the bounded search."},
+    {"native":"005296a0","status":"skipped","host_site":"src/native_session_message35.cpp: read_native_session_message35_0052abe0","reason":"Existing reader already calls this body; missing live message35 receive/factory path, which this single-player packet does not build."},
+    {"native":"00529980","status":"skipped","host_site":"src/native_session_message35.cpp: read_native_session_message35_0052abe0","reason":"Existing reader already calls this body; missing live message35 receive/factory path, which this single-player packet does not build."},
+    {"native":"0052aef0","status":"skipped","host_site":"src/game_hosts_session_messages.cpp: message receive/factory integration","reason":"Missing live message35 factory/receive integration; its only original caller is the session bitstream factory, outside this single-player objective packet."},
+    {"native":"0057c1c0","status":"skipped","host_site":"src/game_hosts_menu.cpp: LoadingScreen::create_screen","reason":"Missing owned native loading-screen storage and base-frontend constructor adapter; create_screen currently records the operation."},
+    {"native":"00453f40","status":"skipped","host_site":"src/cc13_seg95.cpp: tagged_value_equals_00bd5680","reason":"Missing live tagged-value equality owner/caller for the original vector3 comparison; this packet uses the objective erase body directly instead."},
+    {"native":"00475df0","status":"skipped","host_site":"src/cc13_seg95.cpp: tagged_value_equals_00bd5680","reason":"Missing live tagged-value equality owner/caller for the original vector4 comparison; no independent vector4 state producer was built."},
+    {"native":"0047c210","status":"skipped","host_site":"src/engine_seg4_6_9_cc13.cpp: matrix_multiply_into_0047c210","reason":"Missing verified live soldier-muzzle or multiple-bomb matrix caller; unrelated scene-frame multiplication is not used as a substitute."},
+    {"native":"0071f5d0","status":"skipped","host_site":"src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0","reason":"Missing original director queue/path-drop caller; the leaf only returns a slot and cannot itself supply the owning director operation."},
+    {"native":"00638b90","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: GameHudMarkersHost::Impl::place_marker","reason":"Missing real marker camera/view-projection owner; this host explicitly fits a synthetic orthographic camera and pre-culls to its own clip rectangle."},
+    {"native":"00add290","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: Landscape terrain load","reason":"Missing native terrain/model/render-node owner; current terrain load holds a decoded height-field projection instead."},
+    {"native":"00ade820","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: Landscape terrain load","reason":"Missing actual terrain model/resource attachment owner; copying the Landscape translation into the decoded field is not that object."},
+    {"native":"009bdbb0","status":"skipped","host_site":"src/game_hosts_script_orders.cpp: pilot move-on-path dispatch","reason":"Missing verified raw move-on-path constructor adapter in this packet; its units-host implementation was leased/in review during selection."}
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "focused_fixture": "python tools/wire_goal4_chain420_probe.py passed using the exact production adapter class and linked reconstructed body: duplicate points, retained unit entries/order/position_valid, NaN non-match, signed-zero match, empty list",
+    "call_graph_before": {"reconstructed_addresses_called":4689,"reconstructed_addresses_linked":5134},
+    "call_graph_after": {"reconstructed_addresses_called":4690,"reconstructed_addresses_linked":5135},
+    "readiness_before": {"wired":9664},
+    "readiness_after": {"wired":9664,"target_called":true,"target_call_sites":1},
+    "note": "Readiness already classified 008DC500 as wired through a same-named Host method; the baseline executable did not link it. Compiled call reachability is the added wiring evidence. No game was run."
+  }
+}

@@ -54,6 +54,7 @@ struct lua_State;
 
 namespace bsp {
 class VfsLocaleRuntime;
+class SessionParticipantPools;
 struct ShipAiPathSearchTurnRamp;
 struct ShipCameraSettings;
 struct ShipClassCameraInputs;
@@ -1946,6 +1947,12 @@ public:
     void attach_script_orders(GameScriptOrdersHost* orders) noexcept;
     GameScriptOrdersHost* script_orders() const noexcept;
 
+    // Borrow the mission owner's current game+18CCh participant identities and
+    // flag bytes for SpawnNew's 0094C508 selection. Detached with the frame.
+    void attach_spawn_participants(const bsp::SessionParticipantPools* participants) noexcept {
+        spawn_participants_ = participants;
+    }
+
     // Packet cc13-fix20: the mission result object that the Scoring_SetMissionCompleted
     // (008B8AD0) and PlayBinkMovie (0089A480) rows reach, when their switches
     // in game_hosts_mission_result.hpp are on. The frame host owns it.
@@ -2333,6 +2340,7 @@ private:
     // slot is keyed by. This is the executable's stand-in for 00925a90.
     std::map<std::string, int> scene_entity_ids_;
     GameScriptOrdersHost* script_orders_{nullptr};
+    const bsp::SessionParticipantPools* spawn_participants_{nullptr};
     // Packet cc9_run_extra_fixed_step: the fixed-step host's 00874D00.
     GameExtraFixedStepRunner* extra_fixed_step_{nullptr};
     // Packet cc9_squadron_pass_hooks_calls: the units host, writable, for its

@@ -1,0 +1,175 @@
+{
+  "chain": 425,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "switch": "kWireGoal4Chain425Bound",
+  "picked": "Owning native FA scene-property insertion and same-tag replacement",
+  "rows": [
+    {
+      "native": "008f3510",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_float_array, reached through GameSceneContentsHost::run_load_scene_contents_004d4df0",
+      "reason": "Closed nonempty authored FA statements retain binary32 payloads; the live merge transfers a canonical current-heap buffer to the existing type-9 producer with native flags 0 and publishes the resulting owned bytes.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008f04c0",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::replace_float_array, inlined into Impl::Impl",
+      "reason": "The same-tag overwrite adopts a fresh authored FA buffer through the existing complete count-times-four setter and bypasses the old merge for that key. This is explicit Source reuse of the parser's identical inlined free/size/adopt sequence, not a recovered original CALL.",
+      "called": true,
+      "call_sites": 2,
+      "release_icf_note": "MSVC folds this body with 008f0520; one new call is in Impl::Impl, while replace_owned_array's existing IA call still names 008f0520 in source."
+    },
+    {
+      "native": "005b8ea0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: resize_effect_sound_samples_005b8fa0 / append_effect_sound_sample_005b9af0",
+      "reason": "The apparent source callers have no linked sound-effect scalar dispatcher in this executable; wiring reserve only inside that family would not produce an entry-reachable call."
+    },
+    {
+      "native": "005b8fa0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: destroy_effect_sound_0086fa90",
+      "reason": "The built executable has no linked Sound component reader/destructor composition or caller for this sample-array resize body."
+    },
+    {
+      "native": "005b9af0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: acquire_and_append / read_effect_sound_0086ef60",
+      "reason": "The existing scalar Sound dispatcher is not linked from the game's entry; its sample acquisition producer must be composed into the real gameplay-effect runtime first."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "The loading-screen host supplies no actual render-command queue owner or native reset provider."
+    },
+    {
+      "native": "00aa4040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::start_render_worker",
+      "reason": "The host records the worker request but has no render-mode worker/thread ownership composition for the reconstructed body."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::cockpit_screen_mode",
+      "reason": "cockpit_screen_wanted remains false and no plane-effects cockpit-mode owner supplies the body's state."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::map_screen_busy",
+      "reason": "map_screen_wanted remains false and the host has no scrolling-state owner for the power-up screen's native bytes."
+    },
+    {
+      "native": "00927cc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::unit_bind_player",
+      "reason": "The host's void binding operation has no consumer for this body's returned role-availability mask; its contract is not a player-binding setter."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target adapter",
+      "reason": "The literal existing body requires readable actual image addresses 00F87574/78/7C and stable native target storage; the current token-valued adapter does not provide them."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB5.cpp: cc13_sweepB5_weapon_group_gun_sight_status_00547480",
+      "reason": "Its native HUD sight-status caller still requires a concrete Cc13SweepB5Host gun/screen composition; the real gunnery timers alone do not wire that caller."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: debug flooded-fraction caller 006fb750",
+      "reason": "The only original caller is a debug inspector; debug-only code is outside the assignment."
+    },
+    {
+      "native": "00b1f700",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: SceneRenderFrameHost sRGB target operation",
+      "reason": "No current game renderer composition owns the required NativeFrameTargetOwnerStorage; a concrete SceneRenderFrameHost target provider is still missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/soldier_traffic_cc13.cpp: fov_aspect_product_00b6fc30 boundary",
+      "reason": "The original camera-mover/soldier consumers need their concrete camera adapter; the inspected active GetCameraState path consumes plain FOV instead of this product."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "This alphabetical child snapshot is explicitly outside the draw path, and no active runtime snapshot consumer was found."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: accepts_glyph_byte_00ab6d00 boundary",
+      "reason": "The inspected game hosts expose no concrete text-entry glyph-validation adapter with the required FontData owner."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/ship_class_fields.cpp: read_ship_class_fields_00831840 Camos.GunColor",
+      "reason": "The inspected ship-class field reader is not linked in this executable and its semantic Lua host does not expose a NativeLuaObjectStorage for this body."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: pass-side local message drain",
+      "reason": "That local queue retains sender/other/side but not the native game-state, post-tick/current-tick domain and readiness inputs required by the dispatch gate."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding",
+      "reason": "The live process runs mission Lua only on the main thread; no off-thread deferred-call producer supplies a real source argument vector to copy."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "There is no stored ControllerSnapshotMessage producer/transport/consumer here; wrapping and immediately returning current flattened flags would only round-trip them."
+    },
+    {
+      "native": "00934150",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: destroyed segment publication",
+      "reason": "The host publishes destroyed segment indices but does not supply the native part scene nodes, dynamics instances and owned debris/effect resources required by UnitPartDetachHost."
+    }
+  ],
+  "evidence": [
+    "Saved bsp.gpr /battlestationspacific.exe exports: bsp.py show 008f3510, show 008f04c0, and show 008f5a00 --asm --start 765 --lines 76.",
+    "008F6434 reads FA count, 008F644C allocates 4*count, 008F6467/6470 read and store each float, 008F647E..64A0 replace existing storage, 008F64B9 calls 008F3510 for an absent key.",
+    "call_graph.py who 008f3510 and who 008f04c0 identify reachable calls from the changed native merge, and path for each reaches scene loading and WinMainCRTStartup.",
+    "No new address-suffixed function was defined; both reconstructed bodies and their existing ledger records were reused."
+  ],
+  "metrics": {
+    "source_wired_before": 9669,
+    "source_wired_after": 9669,
+    "new_entry_reachable_address_identifiers": ["008f04c0", "008f3510"],
+    "distinct_entry_reachable_source_address_identifiers_before": 6347,
+    "distinct_entry_reachable_source_address_identifiers_after": 6349,
+    "readiness_called_rows_after": 4920,
+    "call_graph_recon_called_before": 4697,
+    "call_graph_recon_called_after": 4697,
+    "note": "Readiness's source-text state stays unchanged for calls in this adapter file; both selected rows now have called=true. The initial readiness called count was cache-stale for five unrelated functions already present in the fresh baseline graph, so its apparent +7 is not claimed. Comparing fresh built graphs adds precisely these two address identifiers and removes none; Release ICF folds 008F04C0 with its existing twin."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed, including reconstructed_math, native_math_differential and tool_tests",
+    "focused_fixture": "One FA fixture covers malformed/raw admission, signed zero, changed-count overwrite, keep, clone and publication surviving native owner retirement",
+    "pc24": "No float arithmetic chain added; pc24_lint.py --diff origin/main...HEAD is checked after the commit",
+    "diff_check": "git diff --check passed",
+    "game_run": false
+  },
+  "limits": [
+    "Only closed, positive-count, finite decimal FA statements in the C numeric locale are admitted; empty, malformed, nonfinite and context-dependent forms stay on the prior raw-token path.",
+    "The existing bounded modern-CRT %f provider is reused; VS2005 CRT differential parity and original object/stack ABI are not claimed.",
+    "Entry reachability and fixture execution are verified; no game or gameplay validation was performed."
+  ]
+}

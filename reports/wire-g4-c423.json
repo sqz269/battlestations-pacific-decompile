@@ -341,5 +341,29 @@
     },
     "keyed_loader_metric_note": "0083B5E0 is text-wired through host aliases; inspect call_graph.py who load_gameplay_tuning_settings for the actual body, not the host suffix."
   },
-  "left": "Unkeyed settings subobjects/resources and the native private-state runner remain with their existing hosts. Other examined gaps are recorded per row."
+  "left": "Unkeyed settings subobjects/resources and the native private-state runner remain with their existing hosts. Other examined gaps are recorded per row.",
+  "merge_revalidation": {
+    "merged_origin_main": "f254a6acb4e68447cccadee97469dbbe9af7e4b7",
+    "resolution": "Only manual conflict was adjacent includes in src/game_hosts_lua.cpp; retained chain420 objective-removal, chain424 participant, and chain423 gameplay-settings dependencies. No ledger or cmake conflict.",
+    "build": "./scripts/build.ps1 PASS; reconstructed_math and tool_tests pass",
+    "on_build": "tools/off_switch_on_build.py --names kWireGoal4Chain423Bound PASS; zero distinct diagnostics; switch restored to its original true value",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: zero findings",
+    "probe": "Recompiled Win32 probe against merged bsp_core; installed ShipGlobals comparison PASS for all 24 consumed fields and stack/failed-read preservation",
+    "compiled_reconstructed_addresses_called": 4701,
+    "preserved_reachable_functions": [
+      "00424a10",
+      "load_gameplay_tuning_settings",
+      "008dc500",
+      "004b54f0"
+    ],
+    "game_run": false,
+    "readiness_summary": {
+      "wired": 9672,
+      "callees_done_no_wired_caller": 9302,
+      "ready": 1496,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 202
+    },
+    "constructor_readiness": "wired; called true; one reachable compiled call"
+  }
 }

@@ -1,0 +1,83 @@
+{
+  "chain": 421,
+  "slot": "g4-w2",
+  "base": "1a525465ce",
+  "switch": "bsp::game::kWireGoal4Chain421Bound",
+  "scope": "Same-key, same-letter overwrites of admitted parser-owned reference properties",
+  "rows": [
+    {
+      "native": "008f0420",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor -> Bag::replace_reference",
+      "evidence": "bsp.py show 008f0420 --asm; bsp.py show 008f5a00 --asm --start 500 --lines 31 (008F60B4..008F60C1 pushes kind, scalar0, tokenizer target; ECX is the existing record)",
+      "state": "The existing 008F3AC0 producer constructs the actual type-5 destination record and its sole-owned current-heap target. The setter borrows the separate authored token, scalar0 and the real letter-derived kind. Publication consumes the replaced +1Ch payload before native bag retirement.",
+      "no_double_run": "The key is marked selected and excluded from the source assignment/merge after replacement. Keep-existing, absent keys, differing letters and unsupported input retain the prior path.",
+      "call_sites": 1,
+      "entry_reachable": true,
+      "compiled_caller": "bsp::game::SceneNumericPropertyMerge::Impl::Impl",
+      "entry_path": "WinMain -> game/menu/mission frame -> GameSceneContentsHost::run_load_scene_contents_004d4df0 -> SceneContentsBinding::read_scene_file -> SceneReaderBinding::instantiate_entity -> merge_property_block -> SceneNumericPropertyMerge -> existing setter"
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_enum",
+      "reason": "Already has two reachable compiled call sites through the existing native enum projection; another call would duplicate insertion rather than add a missing binding."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl and copy_or_merge",
+      "reason": "Already has reachable compiled calls from the native bag projection; no missing merge caller was found on the selected path."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter -> scene_reference_kind_letter",
+      "reason": "The existing helper is already used by the type-letter parser; the optimized executable has no separate matching symbol, and adding a redundant call would not establish a new binding."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate-score list",
+      "reason": "The host intentionally has no native candidate-score list; its only record reader is the debug overlay, so a gameplay consumer is missing and debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate-score list",
+      "reason": "The host has no AiGroupScoreList records or gameplay consumer of their chosen marks; creating a debug-only auxiliary list is excluded."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate pass",
+      "reason": "The existing kDefendThinkImageBound arm already calls the predicate with unit-kind and team-set state; no additional independent caller was selected."
+    },
+    {
+      "native": "008b16e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: Countdown dispatch arm",
+      "reason": "The address already maps to the live partial dispatch handler; native HUD show/begin effects remain missing, and wrapping that same handler would add no body call."
+    },
+    {
+      "native": "008b19a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: CountdownCancel dispatch arm",
+      "reason": "The address already maps to the live partial dispatch handler; native HUD clearing remains missing, and wrapping that same handler would add no body call."
+    }
+  ],
+  "text_wired_before": 9665,
+  "text_wired_after": 9665,
+  "compiled_reconstructed_called_before": 4690,
+  "compiled_reconstructed_called_after": 4691,
+  "measurement_note": "Text readiness stays ready for 008F0420, but called=true, call_sites=1 and callers_live=1 after the change. Only 008F0420 is claimed as new wiring.",
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and all three CTests pass",
+    "fixture": "Existing tools/wire_goal4_chain296_probe.py passes: reference keep/overwrite, native payload publication with deliberately different metadata, mismatch fallback and owning results surviving bag retirement",
+    "graph": "tools/call_graph.py who/path 008f0420 confirms one call from the constructor reachable through scene loading",
+    "switch_off": "With only chain421 disabled, Win32 Release, all three CTests and the same existing ownership fixture pass; the graph counts 4690 reconstructed addresses and 008F0420 is absent. Enabled counts 4691 and one reachable setter call.",
+    "float_math": "No float arithmetic changed",
+    "game": "Not run; compiled reachability and synthetic ownership evidence do not establish gameplay or Original binary ABI equivalence"
+  },
+  "left": "Nested references continue through the existing recursive merge. Unsupported references and FA/type-9 array projection remain for later work. Enum insertion and bag merge need no additional call on this path."
+}

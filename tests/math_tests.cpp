@@ -92,6 +92,7 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
+#include "bsp/wire_goal4_chain425_switches.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/native_enum_scalar_delete.hpp"
@@ -2132,6 +2133,57 @@ int main() {
                         && std::signbit(replaced.vector3_array[0][1])
                         && std::signbit(cloned.vector3_array[0][1]),
                     "native type-11 keep, assignment and clone publish owned bytes after both bags retire");
+            }
+        }
+    }
+
+    {
+        // Chain 425: FA parser -> actual type-9 owner -> keep/replace/clone,
+        // with an independent published payload surviving both native bags.
+        if constexpr (bsp::kWireGoal4Chain425Bound) {
+            const SceneDocument doc = parse_scene_document(
+                "entity \"Array\" (Landscape) { "
+                "localframe 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1; properties { "
+                "Weights = FA 3 1.25 -0 .75; Short = FA 2 1; "
+                "Bad = FA 1 x; Zero = FA 0; After = I 7; } }");
+            const ScenePropertyBlock& source = doc.entities.at(0).properties;
+            const SceneProperty* weights = source.find("Weights");
+            check(doc.errors.empty() && weights != nullptr && weights->has_float_array
+                    && weights->float_array == std::vector<float>({1.25f, -0.0f, 0.75f})
+                    && std::signbit(weights->float_array[1])
+                    && !source.find("Short")->has_float_array
+                    && !source.find("Bad")->has_float_array
+                    && !source.find("Zero")->has_float_array
+                    && source.find("After")->integer_value == 7,
+                "FA retains complete finite payloads and leaves malformed statements raw");
+            if (weights != nullptr && weights->has_float_array) {
+                ScenePropertyBlock destination;
+                SceneProperty old = *weights;
+                old.float_array = {9.0f};
+                destination.values.push_back(old);
+                SceneProperty kept, replaced, cloned;
+                {
+                    bsp::game::SceneNumericPropertyMerge merge(destination, source, false);
+                    check(merge.handles(0) && !merge.handles(1) && !merge.handles(2),
+                        "native FA projection selects complete payloads only");
+                    kept = merge.result(old);
+                }
+                {
+                    bsp::game::SceneNumericPropertyMerge merge(destination, source, true);
+                    replaced = merge.result(*weights);
+                }
+                {
+                    ScenePropertyBlock empty;
+                    bsp::game::SceneNumericPropertyMerge merge(empty, source, false);
+                    cloned = merge.result(*weights);
+                }
+                check(kept.has_float_array && kept.float_array == old.float_array
+                        && replaced.has_float_array && cloned.has_float_array
+                        && replaced.float_array == weights->float_array
+                        && cloned.float_array == weights->float_array
+                        && std::signbit(replaced.float_array[1])
+                        && std::signbit(cloned.float_array[1]),
+                    "native type-9 keep, replacement and clone publish bytes after owner retirement");
             }
         }
     }

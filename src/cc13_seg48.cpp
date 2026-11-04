@@ -1155,10 +1155,15 @@ bool cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(void* squadron, std::uint32_t
 }
 
 // 007ED920 BSP_PlaneSquadron_AnyHasRockets: 007B9400 (kind 33h) per member.
-bool cc13_seg48_plane_squadron_any_has_rockets_007ed920(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
-        return host.weapon_controller_has_rocket_kind33_007b9400(m, loadout);
-    });
+bool cc13_seg48_plane_squadron_any_has_rockets_007ed920(void* squadron, std::uint32_t loadout, Cc13SquadronRocketHost& host) {
+    // Listing 007ED927..007ED958: read the count on every test, visit the
+    // member pointers in order and return at the first nonzero AL. The host
+    // defaults retain the native offsets and RET4 argument semantics.
+    for (std::int32_t i = 0; i < host.rocket_member_count(squadron); ++i) {
+        if (host.weapon_controller_has_rocket_kind33_007b9400(
+                host.rocket_member(squadron, i), loadout)) return true;
+    }
+    return false;
 }
 
 // 007ED970 BSP_Unit_HasRocketOrdnance: 007B9480 per member.
