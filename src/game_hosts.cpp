@@ -96,6 +96,7 @@
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain302_switches.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
+#include "bsp/wire_goal4_chain463_switches.hpp"
 #include "bsp/native_renderer_parameters.hpp"
 #include "bsp/physical_file.hpp"
 #include "bsp/renderer_startup.hpp"
@@ -1290,6 +1291,14 @@ void GameFrameHost::game_on_move(float seconds) {
     // menu_->frame drives; game_frame_control.cpp holds the timing block 004E4D3E..004E4D94
     // and mission_state_frame.cpp holds 004E4DF4..004E551E.
     log_.implemented("ApplicationFrameHost::game_on_move", "004e4a40");
+    if constexpr (kWireGoal4Chain463Bound) {
+        if (!input_configuration_)
+            throw std::logic_error("normal-frame input requires the application's input configuration");
+        // bsp.py show 004E4A40: 004E4A63..72 calls 004BEC00 then A92C40
+        // before the close processor. The whole tick already polls the same
+        // backend once, then updates the real configured action/listener rows.
+        input_configuration_->update_actions(seconds);
+    } else {
     if constexpr (kWireGoal4Chain316Bound) {
         if (!input_runtime_)
             throw std::logic_error("normal-frame input refresh requires the application's input runtime");
@@ -1302,6 +1311,7 @@ void GameFrameHost::game_on_move(float seconds) {
         input_runtime_->update_backend(seconds);
     } else {
         // Previously normal-frame dispatch did not refresh the native backend.
+    }
     }
     // Native 004E4A79 calls the close processor before the front-end update.
     // Bind the actual online publication and current game state; an unavailable
@@ -3972,6 +3982,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
 
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), *platform_, *loop_, game_state_, profiler_,
         menu_, *vfs_, settings_process_->online_00f8abe8());
+    if constexpr (kWireGoal4Chain463Bound) {
+        frame_host_->bind_input_configuration(input_configuration_.get());
+    } else {
+        // Previous frame host borrows only the backend runtime below.
+    }
     if constexpr (kWireGoal4Chain316Bound) {
         frame_host_->bind_input_runtime(input_runtime_);
     } else {

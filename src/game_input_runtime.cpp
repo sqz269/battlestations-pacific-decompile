@@ -7,6 +7,7 @@
 #include "bsp/native_input_action_listener_owner.hpp"
 #include "bsp/native_gamepad_rumble.hpp"
 #include <optional>
+#include <cstring>
 #include <stdexcept>
 
 namespace bsp::game {
@@ -178,6 +179,35 @@ bool GameInputRuntime::poll_dynamic_button_edge() {
     return cc13_band004b::press_start_poll_button_edge_004b43b0(backend[0xdd], down);
 }
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }
+float GameInputRuntime::frontend_scroll_axis() {
+    // bsp.py show 00683820 --asm: 0068383A/5C each call 004BEC00, then
+    // load [owner+4]+36B4/3714. Those are action 123h/125h's +24 value
+    // lanes in the actual 30h records produced by 00698A10.
+    const auto read_axis = [this](std::size_t offset) {
+        const auto* owner = static_cast<const std::byte*>(action_owner());
+        const std::byte* records;
+        std::uint32_t count;
+        std::memcpy(&records, owner + 4, sizeof records);
+        std::memcpy(&count, owner + 8, sizeof count);
+        if (!records || count <= offset / 0x30)
+            throw std::logic_error("front-end scroll requires the configured native action records");
+        float axis;
+        std::memcpy(&axis, records + offset, sizeof axis);
+        return axis;
+    };
+    const float axis = read_axis(0x36b4);
+    return axis == 0.0f ? read_axis(0x3714) : axis;
+}
+bool GameInputRuntime::frontend_scroll_pad_axis(std::uint32_t code, double& value) {
+    // 00683885..A1 captures the current backend and returned device, then
+    // invokes its current slot24. Use the application's own finite provider.
+    void* const backend = impl_->bound.backend_00f8bbf4;
+    if (!backend) throw std::logic_error("front-end scroll requires the published native backend");
+    void* const pad = impl_->bound.lookup_device_004ba6d0(backend, 1, 0);
+    if (!pad) return false;
+    value = impl_->device_runtime.value_24(pad, code);
+    return true;
+}
 void GameInputRuntime::release_sdk_after_native_drain() {
     if (impl_->bound.backend_00f8bbf4 || impl_->bound.actions_00f8bbf8)
         throw std::logic_error("input SDK release requires completed native backend/action drain");

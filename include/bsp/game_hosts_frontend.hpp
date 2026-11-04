@@ -38,6 +38,7 @@ namespace bsp {
 struct GuiLayoutPage;
 struct GuiLayoutWidget;
 struct FrontEndScreenScroller;
+struct GuiWidgetPoint;
 // bsp/locale_tables.hpp, milestone 2d: the tables the Text widgets resolve through.
 class LocaleTables;
 }  // namespace bsp
@@ -237,6 +238,9 @@ public:
     bool widget_text_height(GuiLayoutWidget& widget, float& height);
     // Follow 006834A0's live thumb/arrow size and color in the sprite bridge.
     void bind_scroller_controls(const FrontEndScreenScroller& scroller);
+    // Read the bound actual manager's cursor lanes (+5C/+60), never reinterpret
+    // the sprite bridge's ManagerState as a native manager.
+    GuiWidgetPoint scroller_cursor();
     // Makes the sprite bridge rebuild its quad list on the next draw, so a
     // visibility change or a newly loaded page is on screen the same frame.
     void invalidate_bridge();

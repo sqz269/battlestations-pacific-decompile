@@ -179,6 +179,13 @@ bool GameNativeInputConfigurationApplication::load_if_unloaded() {
 
 void GameNativeInputConfigurationApplication::load() { impl_->load(); }
 
+void GameNativeInputConfigurationApplication::update_actions(float seconds) {
+    auto& p = *impl_;
+    if (p.phase != Impl::Phase::loaded)
+        throw std::logic_error("native action frame requires the loaded input configuration");
+    p.actions.update(seconds);
+}
+
 void GameNativeInputConfigurationApplication::set_device_flags_004b46e0(bool swap_sticks_41,
     bool invert_camera_y_42, bool invert_plane_y_43, bool swap_map_sticks_44) {
     // 004B46E0 (CG_adjustor_thunk_004b46e0): ADD ECX,3Ch; JMP 00699B80, from

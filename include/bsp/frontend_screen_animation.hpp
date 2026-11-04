@@ -288,6 +288,7 @@ inline void end_thumb_drag(FrontEndScreenScroller& scroller) noexcept {
 // 00683820 __thiscall(this, bool allow_pad_fallback) RET 4. The per-frame pump;
 // callers are the screens' update virtuals, for example 00599DB0. It takes no
 // frame delta: the step in +24h is applied once per call.
-void update_front_end_screen_scroller(FrontEndScreenScroller& scroller,
+void update_front_end_screen_scroller_00683820(FrontEndScreenScroller& scroller,
     bool allow_pad_fallback, FrontEndScrollerHost& host);
+inline constexpr auto& update_front_end_screen_scroller = update_front_end_screen_scroller_00683820;
 }

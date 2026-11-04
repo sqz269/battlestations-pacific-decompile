@@ -60,6 +60,7 @@
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/frontend_scroller_bridge.hpp"
+#include "bsp/wire_goal4_chain463_switches.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/native_input_action_contexts.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
@@ -1700,6 +1701,18 @@ int main() {
             "the branch just below that boundary agrees with it");
         check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
             "a zero range fills the track with the thumb and reports not scrollable");
+        if constexpr (bsp::game::kWireGoal4Chain463Bound) {
+            // Each vector differs by one binary32 ULP from the old double
+            // chain. Values stay inside the drag track; compare the native
+            // PC24 operation schedule, not a tolerance that hides the error.
+            check(bsp::dragged_thumb_y(0.08659771829843521f, 0.48606812953948975f,
+                      0.03748560696840286f, 0.023717306554317474f, 0.8193197250366211f)
+                    == 0.5864341855049133f,
+                "00683820 drag rounds FSUB and both FADD operations at PC24");
+            check(bsp::scroll_offset_from_thumb_y(0.22475291788578033f, 0.0728134736418724f,
+                      0.746063232421875f, 0.9753149747848511f) == -0.19862771034240723f,
+                "00683820 drag ratio rounds FSUB before FDIV and its DWORD spill");
+        }
     }
 
     {

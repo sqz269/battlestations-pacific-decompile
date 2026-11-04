@@ -466,6 +466,9 @@ public:
     // Same application-owned backend used by mission device-wait. Its lifetime
     // encloses this frame host; normal frames refresh it before state dispatch.
     void bind_input_runtime(GameInputRuntime* runtime) noexcept { input_runtime_ = runtime; }
+    void bind_input_configuration(GameNativeInputConfigurationApplication* config) noexcept {
+        input_configuration_ = config;
+    }
     bool exit_requested() override;
     void request_loop_exit() override;
     void tick_vfs_providers() override;
@@ -503,6 +506,7 @@ private:
     GameFrameProfiler* profiler_{};
     GameMenuHost* menu_{};
     GameInputRuntime* input_runtime_{};
+    GameNativeInputConfigurationApplication* input_configuration_{};
     GameVfsHost& vfs_;
     NativeOnlineManagerStorage* volatile& online_;
     WindowClosePromptCalls* close_prompt_{};

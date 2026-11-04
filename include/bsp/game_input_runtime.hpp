@@ -66,6 +66,10 @@ public:
     // Entry for a raw caller which already captured its receiver/profile.
     void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();
+    // 00683820's two action values from the SAME configured raw owner. These
+    // queries never poll hardware or advance listeners a second time.
+    float frontend_scroll_axis();
+    bool frontend_scroll_pad_axis(std::uint32_t code, double& value);
     // Call after the shared raw manager drain while window and DLLs still live.
     // Does not initiate a second raw drain or repair surviving native state.
     void release_sdk_after_native_drain();

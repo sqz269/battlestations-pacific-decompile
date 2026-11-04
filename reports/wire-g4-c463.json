@@ -1,0 +1,31 @@
+{
+  "chain": 463,
+  "slot": "g4-w3",
+  "switch": "bsp::game::kWireGoal4Chain463Bound",
+  "rows": [
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MenuUpdateBinding::animate_detail_group / animate_page_group",
+      "reason": "The input producer and adapters build; the two host call sites await the mission.cpp lease held by agent/g4-w5."
+    }
+  ],
+  "built": [
+    "Normal-frame native action tick using the existing configuration, owner and backend; replaces the backend-only refresh so devices poll once.",
+    "Read-only scroll-axis and pad-device queries over the current input publications.",
+    "Cursor query over the actual GUI manager, distinct from the sprite bridge ManagerState.",
+    "Address suffix on the existing 00683820 body, old spelling retained as a reference alias; PC24 drag arithmetic corrected from original assembly."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; 3/3 CTest groups passed, including two one-ULP drag regression checks",
+    "pc24": "pc24_lint.py src/frontend_screen_animation.cpp src/game_input_runtime.cpp: 0 findings",
+    "game_validated": false,
+    "abi_compatible": false
+  },
+  "wired_before": 9721,
+  "called_before": 4788,
+  "limits": [
+    "No game launch or visual scroll proof.",
+    "This connects existing Source state and services; it does not supply the original binary ABI."
+  ]
+}
