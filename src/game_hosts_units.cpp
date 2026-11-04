@@ -14,6 +14,9 @@
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
 #include "bsp/wire_goal4_chain467_switches.hpp"
+#include "bsp/wire_goal4_chain470_switches.hpp"
+#include "bsp/gameplay_settings.hpp"
+#include "bsp/camera_decomposition.hpp"
 #include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/wire_goal4_chain447_switches.hpp"
 #include "bsp/native_mlandfort_kind.hpp"
@@ -50322,6 +50325,14 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     Impl& host = *impl_;
     if (follower >= host.slots.size() || leader >= host.slots.size()) return false;
     if (follower == leader) return false;                 // 00779824, the identity arm
+    if constexpr (bsp::kWireGoal4Chain470Bound) {
+        // 0070ED30 consumes the settings produced by 0083B5E0. Refuse before
+        // any detach when that producer failed; do not invent tuning values.
+        if (host.lua.gameplay_tuning_settings() == nullptr) {
+            host.record("UnitGroup::member_slots_settings_unavailable", 0x0070ed30u);
+            return false;
+        }
+    }
 
     // Packet cc8_ship_station: 0077F940's merge arm, read whole from the listing
     // (126 instructions, body 0077F940-0077FAC8, RET 4). USN01 reaches it - the
@@ -50445,6 +50456,85 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     host.slots[follower]->formation_group = group;
     bsp::ShipAiUnitGroupMember record;
     record.entity = handle;
+    if constexpr (bsp::kWireGoal4Chain470Bound) {
+        // bsp.py show 0070EF30: 0070EF85 calls the existing 0070ED30 body
+        // with the JOIN index, before count changes. Its inputs below borrow
+        // the actual mission settings, entity poses/cache and leader wake.
+        // Registry words are identities only; no raw unit ABI is fabricated.
+        struct MemberSlots final : bsp::ShipAiFormationSlotHost {
+            Impl& h;
+            const bsp::GameplayTuningSettings& settings;
+            MemberSlots(Impl& owner, const bsp::GameplayTuningSettings& tuning)
+                : h(owner), settings(tuning) {}
+            GameUnitSlot& unit(std::uint32_t identity) {
+                return *h.slots.at(static_cast<std::size_t>(identity - 1u));
+            }
+            void refresh_world_pose_00414db0(std::uint32_t identity) override {
+                bsp::refresh_pose_00414db0(*unit(identity).pose);
+            }
+            void build_world_inverse_00b63d50(std::uint32_t identity) override {
+                auto& u = unit(identity);
+                bsp::PoseDerivedView view{*u.pose, u.derived};
+                bsp::get_pose_derived_00414e10(view);
+            }
+            void world_position_0fc(std::uint32_t identity, float out[3]) override {
+                const auto& world = unit(identity).world;
+                for (std::size_t i = 0; i < 3; ++i) out[i] = world[12 + i];
+            }
+            void transform_by_leader_inverse_004142e0(std::uint32_t identity,
+                const float in[3], float out[3]) override {
+                auto& u = unit(identity);
+                bsp::PoseDerivedView view{*u.pose, u.derived};
+                const auto& inverse = bsp::get_pose_derived_00414e10(view);
+                std::array<float, 3> result;
+                bsp::transform_point_004142e0({in[0], in[1], in[2]}, inverse, result);
+                std::memcpy(out, result.data(), sizeof(result));
+            }
+            void transform_by_leader_world_004142e0(std::uint32_t identity,
+                const float in[3], float out[3]) override {
+                auto& u = unit(identity);
+                bsp::refresh_pose_00414db0(*u.pose);
+                std::array<float, 3> result;
+                bsp::transform_point_004142e0({in[0], in[1], in[2]}, u.world, result);
+                std::memcpy(out, result.data(), sizeof(result));
+            }
+            float game_settings_follower_max_dist_00424c40() override {
+                return settings.formacio_follower_max_dist;
+            }
+            float game_settings_formation_ship_dist_00424c40() override {
+                return settings.formacio_formation_ship_dist;
+            }
+            void normalize_in_place_0042b260(float v[3]) override {
+                std::array<float, 3> vector{v[0], v[1], v[2]};
+                bsp::normalize_camera_basis_0042b260(vector);
+                std::memcpy(v, vector.data(), sizeof(vector));
+                ++h.formation_clamped;
+            }
+            void wake_decompose_00811180(std::uint32_t identity, const float point[3],
+                float& across, float& along) override {
+                const auto decomposition = bsp::ship_ai_wake_decompose_00811180(
+                    unit(identity).wake, point);
+                if (decomposition.valid) {
+                    across = decomposition.across;
+                    along = decomposition.along;
+                } else {
+                    // Preserve the existing unfilled-ring diagnostic. Normal
+                    // creation fills the real wake at 00818EA0 -> 00810020.
+                    ++h.formation_columns_unmeasurable;
+                }
+            }
+        } binding{host, *host.lua.gameplay_tuning_settings()};
+        bsp::ShipAiFormationMemberSlots slots;
+        bsp::ship_ai_formation_produce_member_slots(binding,
+            static_cast<std::uint32_t>(target.leader + 1u), handle,
+            target.members.size(), slots);
+        std::memcpy(record.field_04.data(), slots.relative, sizeof(slots.relative));
+        record.lateral = slots.columns.across;
+        record.axial = slots.columns.along;
+        // 0070EF78..0070EF85 copies CF4888's FLOAT 999.0, not integer 999.
+        bsp::ship_ai_formation_set_member_speed(record, bsp::kShipAiFormationMemberSpeedUnset);
+        host.done("UnitGroup::produce_member_slots", 0x0070ed30u);
+    } else {
     record.field_30 = 999u;                                // 0070EF85's record+30h
 
     // 0070ED30, the column-0 arm, run at the join index before the count moves.
@@ -50515,6 +50605,7 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
             static_cast<double>(decomposition.across),
             static_cast<double>(decomposition.along),
             decomposition.valid ? 1 : 0);
+    }
     }
     target.members.push_back(record);
     ++host.formation_joins;

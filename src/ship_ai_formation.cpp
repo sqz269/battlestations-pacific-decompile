@@ -279,10 +279,17 @@ bool ship_ai_formation_produce_member_slots(ShipAiFormationSlotHost& host,
 
     // 0070EDD3-0070EE3A: clamp the relative position to FollowerMaxDist.
     const float max_dist = host.game_settings_follower_max_dist_00424c40();
-    const double length_sq = static_cast<double>(out.relative[0]) * out.relative[0] +
-                             static_cast<double>(out.relative[1]) * out.relative[1] +
-                             static_cast<double>(out.relative[2]) * out.relative[2];
-    if (static_cast<double>(max_dist) * max_dist < length_sq) {
+    // bsp.py show 0070ED30 --asm, 0070EDE2..0070EE1C: ((y*y + x*x) + z*z)
+    // and max_dist*max_dist round at EVERY PC24 op, then spill to float. JBE
+    // skips the clamp for <= or unordered; a double-only chain can choose a
+    // different side of the boundary before the final store.
+    using namespace cc13x87;
+    const float length_sq = static_cast<float>(x87_add24(
+        x87_add24(x87_mul24(out.relative[1], out.relative[1]),
+                  x87_mul24(out.relative[0], out.relative[0])),
+        x87_mul24(out.relative[2], out.relative[2])));
+    const float max_dist_sq = static_cast<float>(x87_mul24(max_dist, max_dist));
+    if (max_dist_sq < length_sq) {
         host.normalize_in_place_0042b260(out.relative);
         out.relative[0] = max_dist * out.relative[0];
         out.relative[1] = max_dist * out.relative[1];

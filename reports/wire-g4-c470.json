@@ -1,0 +1,114 @@
+{
+  "chain": 470,
+  "worker": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain470Bound",
+  "summary": "Wire the existing formation member-slot producer to the mission's poses, inverse cache, settings and leader wake; publish relative coordinates and all four offset columns at the join index.",
+  "wired_before": 9743,
+  "wired_after": 9744,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "readiness": "0070ed30: wired, called=true, call_sites=1, callers_live=1",
+    "call_graph": "who ship_ai_formation_produce_member_slots: REACHABLE, one call at 10265336 from GameUnitsHost::formation_join_0077f940; the legacy unsuffixed symbol requires a name query",
+    "evidence": "bsp.py show 0070ed30 --asm (complete listing) and show 0070ef30; PC24 length comparison follows 0070EDE2..0070EE1C",
+    "runtime": "Game was not run; static entry reach and build checks do not establish gameplay parity or original class ABI"
+  },
+  "decisions": [
+    "Use the already loaded GameplayTuningSettings fields at 424h/42Ch; refuse a join before detach if that producer is unavailable.",
+    "Use the target group's real leader and its canonical PoseRefreshView/PoseDerivedView rather than reconstructing a second inverse or assuming an unrotated frame.",
+    "Correct the caller's new-record speed sentinel to the binary's CF4888 float 999.0; the switch-off arm retains the prior integer bits unchanged.",
+    "Keep the existing diagnostic behavior for an unfilled wake; normal entity creation fills its wake before joins.",
+    "Do not wire the whole join with empty observer callbacks: persistent group observer-owner lifetime is still missing."
+  ],
+  "rows": [
+    {
+      "native": "0070ed30",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_join_0077f940",
+      "reason": "Existing body now produces the actual appended member record from mission settings, live world/derived poses and leader wake; the old clamp/decomposition executes only in the switch-off arm."
+    },
+    {
+      "native": "0070ef30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_join_0077f940",
+      "reason": "Whole join needs persistent group observer-pair ownership/lifetime and its refresh-speed callback; this host does not yet provide that complete contract."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_station_0070d290 (candidate survey)",
+      "reason": "Its native caller is the entity-create serializer 00766FC0, not station evaluation; no live serializer caller and no native DATA provider for its miss branch were established."
+    },
+    {
+      "native": "0070d0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::leave_group_on_destroy_0077bd70 (candidate survey)",
+      "reason": "Raw leader handoff dereferences full native unit/wake/pose prefixes; group registry identities are not those native objects."
+    },
+    {
+      "native": "0070d1b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_class_max_speed_0500 (candidate survey)",
+      "reason": "Whole raw class-speed body needs actual unit virtual dispatch and native class storage; no suitable unit object ABI was established in this packet."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::selling_tick_00a11ff0",
+      "reason": "The per-member sale eligibility/message path is only recorded; supplying the raw world-list walk also requires an owned game/world/unit layout adapter."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostic survey",
+      "reason": "Candidate records feed the unreached debug overlay 00A2CDD0; debug-only work is excluded by the assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate score-list diagnostic survey",
+      "reason": "Chosen-record marks feed the unreached debug overlay 00A2CDD0; debug-only work is excluded by the assignment."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: animation_interval override",
+      "reason": "Weapon-animation lookup returns no persistent ticker object, so there is no real animation range state for the body to update."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "Remap callback only records the name; an owned native render-remap object and texture publication are missing."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Remap callback only records the name; an owned native render-remap object and texture publication are missing."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Remap callback only records the name; an owned native render-remap object and texture publication are missing."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Remap callback only records the name; an owned native render-remap object and texture publication are missing."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::selling_tick_00a11ff0 (target construction survey)",
+      "reason": "Initializer reads mutable native DATA at F87574/78/7C; this packet established neither its real provider nor a compatible caller-owned raw target."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::flight_state_notify_007c11e0",
+      "reason": "Flight-state notifications only record the FX timer reset; the persistent native plane-FX component and consuming tick remain missing."
+    }
+  ]
+}
