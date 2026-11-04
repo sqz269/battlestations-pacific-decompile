@@ -743,6 +743,15 @@ NativeSessionMessageStorage* delete_ship_sync_00762500(S* m, U flags, const Cont
     if ((flags & 1u) != 0) singleton_lifetime_free(m);
     return m;
 }
+ShipAddTorqueMessage* delete_ship_addtorque_007626a0(ShipAddTorqueMessage* m, U flags) {
+    // bsp.py show 007626A0 --asm: TEST byte [ESP+4],1; MOV [ESI],CE4974
+    // at 007626A8; conditional _free at 007626B1; EAX=ESI; RET 4.
+    // CE4974 is relocated to the existing canonical root profile. The native
+    // body has no torque reads or owned-member destruction before the free.
+    static_cast<volatile S&>(m->h.base).profile_00 = native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(m);
+    return m;
+}
 void destruct_voiceover_007656e0(VoiceOverMessage* m, const Context& c, NativeStringRawPoolContext& pool) {
     m->base.profile_00 = vt(c, 0x00D03658u);
     destroy_native_string_header_0041dd20(&m->text_18, pool);  // inlined in the native body

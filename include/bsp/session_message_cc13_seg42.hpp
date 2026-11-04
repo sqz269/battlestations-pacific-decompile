@@ -530,6 +530,11 @@ bool shipyard_spawn_target_resolves_00763e70(const ShipyardSpawnMessage*, const 
 // 00762500, slot 0 of 00D02D94 (SHIP_SYNC): __thiscall(this, flags) RET 4.
 // Stamps the root vtable 00CE4974, frees through _free when bit0 is set.
 NativeSessionMessageStorage* delete_ship_sync_00762500(NativeSessionMessageStorage*, std::uint32_t flags, const Context&);
+// 007626A0, slot 0 of 00D034C8 (SHIP_ADDTORQUE): __thiscall(this, flags),
+// RET 4, EAX=this. Stamps CE4974, then _free(this) iff the low flags bit is set.
+// The typed C++ interface uses the relocated root profile and matching allocator;
+// it is not a drop-in binary replacement. No payload subobjects are destroyed.
+ShipAddTorqueMessage* delete_ship_addtorque_007626a0(ShipAddTorqueMessage*, std::uint32_t flags);
 // 007656E0 non-deleting destructor: own vtable, 0041DD20 on +18h, root vtable.
 void destruct_voiceover_007656e0(VoiceOverMessage*, const Context&, NativeStringRawPoolContext&);
 // 007674C0 non-deleting destructor: own vtable, free the frame vector, root vtable.
