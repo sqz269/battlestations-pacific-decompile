@@ -418,12 +418,21 @@ const std::vector<GameSceneEntityRecord>* live_scene_entities() noexcept;
 struct ScenePathEntry {
     std::string name;
     std::vector<std::array<float, 3>> points_world;
+    // Chain 357: 007B0900 searches the original local points after applying
+    // the owner's inverse composed frame to the query. World points alone
+    // lose that metric when the authored frame has nonuniform scale.
+    std::vector<std::array<float, 3>> points_local;
+    std::array<float, 16> world{};
+    bool has_local_geometry{false};
 };
 
 class ScenePathRegistry {
 public:
     void clear() noexcept;
     void add(const std::string& name, std::vector<std::array<float, 3>> points_world);
+    void add_authored(const std::string& name,
+        std::vector<std::array<float, 3>> points_world,
+        const std::vector<std::array<float, 3>>& points_local, const float (&world)[16]);
     const ScenePathEntry* find(const std::string& name) const noexcept;
     std::size_t size() const noexcept;
 
