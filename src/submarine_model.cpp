@@ -271,7 +271,11 @@ SubmarinePeriscopeRepairStep submarine_step_periscope_repair_00854650(
     out.repair = repair;
     // 00854E56: the multiplier applies only when unit+A44h is 1.
     const float step = repair_boosted ? dt * kSubFailureRepairMultiplierInstalled : dt;
-    out.repair.clock_fast = repair.clock_fast + step * 2.0f;  // 00854E8F FADD ST,ST
+    // 00854E85..00854E95: FLD +125Ch, FLD step, FLD ST(0), FADDP ST(2), FXCH,
+    // FSTP +125Ch, so +125Ch gains one step. Disk bytes (bsp.py disasm-raw
+    // 00854e85) read D9 C0 `fld st(0)` at 00854E8F, not `fadd st,st`; the earlier
+    // `step * 2` doubled it (goal 4 chain 369).
+    out.repair.clock_fast = repair.clock_fast + step;         // 00854E91 FADDP
     out.repair.clock = repair.clock + step;                   // 00854E9B
     // 00854EAF: the deadline is absolute, so this is a comparison and not a
     // countdown. JB on the inverted compare makes completion inclusive.

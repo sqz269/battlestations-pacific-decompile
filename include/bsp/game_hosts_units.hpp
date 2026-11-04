@@ -658,6 +658,14 @@ public:
     // Packet cc9_submarine_ai_states: unit+1200h..+120Ch, bands[band] of a seeded
     // submarine (00853A90's table), and false for any other slot or band.
     bool submarine_band_y(std::size_t unit_index, int band, float& y) const;
+    // Goal 4 chain 369 (kWireGoal4Chain369Bound). 00852410 BSP_SubmarineUnit_
+    // PredictDepthAfter(ECX = the boat, dt) on a seeded submarine: the world y
+    // after dt seconds of the dive law's ramp, read off the slot's +100h y,
+    // +1200h..+120Ch bands, +123Ch clearance, +1268h level, +1270h sink and +1281h
+    // needAir, the class's UpDownAccel/UpSpeed/DownSpeed (+824h/+830h/+834h), the
+    // body's linear velocity y (0092D6A0) and 008522C0 (the gunnery's adapter).
+    // False, `y` untouched, for any other slot.
+    bool predict_submarine_depth(std::size_t unit_index, float dt, float& y) const;
     // Packet cc13-fix21. unit+127Ch "air", 008938E0's read (008939F6): the slot's
     // sub_air.air. False, `air` untouched, when the slot is not a seeded submarine.
     bool submarine_air_008938e0(std::size_t unit_index, float& air) const;
