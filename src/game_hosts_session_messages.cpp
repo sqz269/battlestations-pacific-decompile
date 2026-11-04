@@ -1,5 +1,7 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/native_plane_session_message_lifetime.hpp"
+#include "bsp/wire_goal4_chain506_switches.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/wire_goal4_chain415_switches.hpp"
 #include "bsp/wire_goal4_chain428_switches.hpp"
@@ -831,10 +833,24 @@ HostSessionMessages::PlaneChangeStateCopy HostSessionMessages::queue_plane_chang
     // vtable[8] at 0076A27B to 007629A0. These message lifetimes own no
     // references; the host keeps the two bytes read by 007CCFA0's C3h arm.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain506Bound) {
+        // 00769B70..00769B84 allocates 24h, then runs the same constructor.
+        // Keep that real decoded object until its payload has been copied;
+        // 00762920(1) then frees it once. The stack sender takes flags=0.
+        OwnedDecodedMessage<seg42::PlaneChangeStateMessage,
+            delete_plane_change_state_message_00762920> owner;
+        auto& queued = owner.get();
+        seg42::construct_plane_change_state_00762880(&queued, image.seg42);
+        seg42::read_plane_change_state_007629a0(&queued, &stream.in);
+        const PlaneChangeStateCopy copy{queued.state_20, queued.state_21};
+        delete_plane_change_state_message_00762920(&sent, 0u);
+        return copy;
+    } else {
     seg42::PlaneChangeStateMessage queued{};
     seg42::construct_plane_change_state_00762880(&queued, image.seg42);
     seg42::read_plane_change_state_007629a0(&queued, &stream.in);
     return PlaneChangeStateCopy{queued.state_20, queued.state_21};
+    }
 }
 
 std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
@@ -855,12 +871,25 @@ std::uint8_t HostSessionMessages::queue_plane_touchdown_c5() const {
     // The reader reloads
     // the serialized type, sender and flag. The direct delivery retains the
     // posting plane's registry identity, as the other local message routes do.
+    if constexpr (kWireGoal4Chain506Bound) {
+        OwnedDecodedMessage<seg42::UnitMessage,
+            delete_plane_touchdown_message_00762b00> owner;
+        auto& queued = owner.get();
+        seg42::construct_plane_touchdown_00762a60(&queued, image.seg42);
+        cc13_seg5::session_bool_message_read_004645d0(codec,
+            reinterpret_cast<cc13_seg5::Object>(&queued),
+            reinterpret_cast<cc13_seg5::Object>(&stream.in));
+        const auto type = queued.h.base.type_10;
+        delete_plane_touchdown_message_00762b00(&sent, 0u);
+        return type; // 00762B00(1) releases the factory's 20h allocation.
+    } else {
     seg42::UnitMessage queued{};
     seg42::construct_plane_touchdown_00762a60(&queued, image.seg42);
     cc13_seg5::session_bool_message_read_004645d0(codec,
         reinterpret_cast<cc13_seg5::Object>(&queued),
         reinterpret_cast<cc13_seg5::Object>(&stream.in));
     return queued.h.base.type_10;
+    }
 }
 
 std::uint8_t HostSessionMessages::make_plane_takeoff_c6() const {
@@ -1748,6 +1777,18 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     // 00768530 case C7h: operator new(24h), 00762B20 at 00769C04; 0076A27B
     // vtable[8] = 00762C30.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain506Bound) {
+        OwnedDecodedMessage<seg42::PlaneDisappearMessage,
+            delete_plane_disappear_message_00762bc0> owner;
+        auto& queued = owner.get();
+        seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
+        seg42::read_plane_disappear_00762c30(&queued, &stream.in);
+        PlaneDisappearCopy copy;
+        copy.type = queued.u.h.base.type_10;
+        copy.holder_id = queued.id_20;
+        delete_plane_disappear_message_00762bc0(&sent, 0u);
+        return copy; // 00762BC0(1) releases the factory's 24h allocation.
+    } else {
     seg42::PlaneDisappearMessage queued{};
     seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
     seg42::read_plane_disappear_00762c30(&queued, &stream.in);
@@ -1756,6 +1797,7 @@ HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappe
     copy.holder_id = queued.id_20;
     // Neither message owns storage; 00762BC0 only restamps.
     return copy;
+    }
 }
 
 } // namespace bsp
