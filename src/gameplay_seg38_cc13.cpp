@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstring>
 #include <limits>
+#include <stdexcept>
 
 namespace bsp {
 namespace gameplay_seg38_cc13 {
@@ -80,9 +81,19 @@ bool has_free_command_slot_0071c0c0(const DirectorQueue& q, int want) noexcept {
     return first_empty_slot(q) < kCommandSlots;
 }
 
-int path_follow_mode_slot_0071c1b0(const DirectorQueue& q) noexcept {
-    // 0071C1C9: MOV ECX,[ESI+EAX*4+1A0h] with EAX = first empty index.
-    return first_empty_slot(q) - 1;
+int path_follow_mode_slot_0071c1b0(const DirectorQueue& q,
+    const std::array<DirectorPathObject*, kCommandSlots>& paths,
+    const std::array<std::int32_t, 2>& pair) {
+    // bsp.py show 0071C1B0 --asm, 0071C1B2..0071C1D8: scan the
+    // classes, load [director+1A0h+first_empty*4], then store BOTH words.
+    // Paths begin at +1A4h, so the loaded object is first_empty-1.
+    // The former index-only projection omitted the two observable stores.
+    const int slot = first_empty_slot(q) - 1;
+    if (slot < 0 || paths[slot] == nullptr)
+        throw std::logic_error("0071C1B0 requires the selected live director path");
+    paths[slot]->follow_mode_08 = pair[0];
+    paths[slot]->start_mode_0c = pair[1];
+    return slot;
 }
 
 int command_count_0071d780(const DirectorQueue& q) noexcept {

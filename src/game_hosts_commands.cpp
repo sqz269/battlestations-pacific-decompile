@@ -23,6 +23,7 @@
 #include "bsp/pose_derived.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain450_switches.hpp"
+#include "bsp/wire_goal4_chain475_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -4183,8 +4184,29 @@ bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
     Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
     GameDirector& director = host.directors[unit_index];
+    if constexpr (bsp::kWireGoal4Chain475Bound) {
+        namespace gp = bsp::gameplay_seg38_cc13;
+        const gp::DirectorQueue queue = cc13_director_queue(director);
+        // The host owns the actual slot-0 path constructed at registration.
+        // 0071C1C5 selects it only when the first empty command slot is 1.
+        // Other path slots and the empty-queue +1A0h read have no owner here;
+        // retain the existing host policy for those cases.
+        if (gp::first_empty_slot(queue) == 1 && director.user_path_object) {
+            std::array<gp::DirectorPathObject*, gp::kCommandSlots> paths{};
+            paths[0] = &*director.user_path_object;
+            gp::path_follow_mode_slot_0071c1b0(queue, paths, {follow_mode, start_mode});
+            // These are the retained slot-0 view consumed by 0071F600's
+            // authored-path start; publish the stores from its real owner.
+            director.path_follow_mode = director.user_path_object->follow_mode_08;
+            director.path_start_mode = director.user_path_object->start_mode_0c;
+        } else {
+            director.path_follow_mode = follow_mode;
+            director.path_start_mode = start_mode;
+        }
+    } else {
     director.path_follow_mode = follow_mode;   // 0071C1D2, [slot+8h]
     director.path_start_mode = start_mode;     // 0071C1D8, [slot+0Ch]
+    }
     host.done("Navigator::path_object_set_follow_mode", 0x0071c1b0u);
     return true;
 }

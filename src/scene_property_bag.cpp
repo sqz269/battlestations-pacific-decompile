@@ -84,7 +84,10 @@ const char* scene_property_type_letter(ScenePropertyType type) noexcept {
 // without touching *out. cc13-D6, intended: the host returns the letter instead of
 // assigning a NativeString (host ABI), the table decodes to exactly the cases below,
 // and the "R" fallback is unreachable because every caller passes an enum value 0..7.
-const char* scene_reference_kind_letter(SceneReferenceKind kind) noexcept {
+// Chain 477: retain the existing semantic projection and expose its original
+// address in the symbol. The noinline boundary makes the live parser call
+// independently observable in the Release executable's call graph.
+__declspec(noinline) const char* scene_reference_kind_letter_008f1960(SceneReferenceKind kind) noexcept {
     switch (kind) {
         case SceneReferenceKind::Any: return "R";                   // 00CE60EC
         case SceneReferenceKind::Land: return "RLand";              // 00D1637C

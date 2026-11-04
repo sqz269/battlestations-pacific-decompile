@@ -185,7 +185,10 @@ void bot_task_stop_save_009bac30(Cc13Seg67nHost& host, void* task, void* archive
 }
 
 // 009BE140: MOV EAX,[ECX+10h]; RET.
-void* move_to_target_entity_009be140(void* target) { return ptr_at(target, 0x10); }
+void* move_to_target_entity_009be140(const void* target) {
+    // Read-only view of the same +10h word (bsp.py show 009be140).
+    return *reinterpret_cast<void* const*>(static_cast<const std::uint8_t*>(target) + 0x10);
+}
 
 // ---- batch C ----
 namespace {

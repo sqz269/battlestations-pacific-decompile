@@ -29,7 +29,7 @@
   ],
   "verification": {
     "baseline_build": "scripts/build.ps1 passed; 4/4 test suites",
-    "final_build": "scripts/build.ps1 passed after final noinline boundary annotation; 4/4 test suites including the focused brain-transition regression",
+    "final_build": "Merged origin/main 5b83d2ec21b9 and passed scripts/build.ps1 twice with the switch on; 4/4 suites in each run, retaining both independent fixtures.",
     "call_graph": "00a15950 REACHABLE: direct call at 10030ebb from ai_tuning_refresh_current; body at 10031730. Canonical ai_tuning_mode_009ffc80 REACHABLE: direct call at 10030ed2 from the same helper; body at 10030dd0. Each has one live direct call site.",
     "entry_path": "Entry -> GameAiCoordinatorHost runtime/creation -> Impl::refresh_tuning_selection -> ai_tuning_refresh_current -> ai_first_active_party_slot_00a15950",
     "readiness": "00a15950: wired, called=true, call_sites=1, callers_live=1",
@@ -94,5 +94,54 @@
     ],
     "wired_before": 9748,
     "wired_after": 9748
+  },
+  "counts_scope": "Top-level before/after counts retain the original chain474 baseline; merge_validation records the current merged-main totals.",
+  "merge_validation": {
+    "premerge_head": "38b20b3ec6e44415762223d6654a1695a33c2768",
+    "origin_main": "5b83d2ec21b9c9fe1c9b168a1618171c4b71a4bc",
+    "conflicts": [
+      "tests/math_tests.cpp"
+    ],
+    "resolution": "Retained the complete chain474 tuning-transition fixture and the complete incoming chain468 entity-target/retarget fixture as separate scoped blocks.",
+    "fixture_preservation": "Compared each fixture body with its premerge parent: both are retained exactly. No ledger shard or cmake/startup.cmake conflicts occurred.",
+    "build": "scripts/build.ps1 passed on the merged tree; all four test suites passed.",
+    "on_build": "Repeated scripts/build.ps1 with kWireGoal4Chain474Bound=true; all four suites passed, including both retained fixtures.",
+    "pc24_lint": "pc24_lint.py --diff origin/main: 0 findings.",
+    "call_graph_recon_called": 4832,
+    "native_rows": {
+      "00a15950": {
+        "called": true,
+        "direct_live_call_sites": 1,
+        "caller": "ai_tuning_refresh_current",
+        "call_site": "10030ebb"
+      },
+      "009ffc80": {
+        "called": true,
+        "direct_live_call_sites": 1,
+        "caller": "ai_tuning_refresh_current",
+        "call_site": "10030ed2"
+      }
+    },
+    "readiness": {
+      "wired": 9764,
+      "callees_done_no_wired_caller": 9246,
+      "ready": 1461,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 201
+    },
+    "readiness_rows": {
+      "009ffc80": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 2
+      },
+      "00a15950": {
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    }
   }
 }

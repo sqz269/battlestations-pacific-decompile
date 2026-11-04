@@ -5,9 +5,15 @@
 #include "bsp/native_render_service_vector_cleanup.hpp"
 #include "bsp/native_string.hpp"
 #include "bsp/native_string_vector_assignment.hpp"
+#include "bsp/native_string_pool_owner.hpp"
+#include "bsp/native_string_pool_storage.hpp"
+#include "bsp/seg10_cc13.hpp"
+#include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain473_switches.hpp"
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -42,6 +48,9 @@ public:
     GameLoadingConfig(const GameLoadingConfig&) = delete;
     GameLoadingConfig& operator=(const GameLoadingConfig&) = delete;
     ~GameLoadingConfig() {
+        if constexpr (kWireGoal4Chain473Bound) {
+            if (temporary_present_) release(temporary_);
+        }
         release(current_);
         release(pending_);
     }
@@ -67,8 +76,39 @@ public:
             const_cast<char*>(mission_name.data())};
         source.second_side_enabled = static_cast<std::uint8_t>(second_side_enabled);
         Host host(*this);
-        frontend_seg19_21_cc13::loading_screen_set_mission_text_0057d060(&source, host);
+        if constexpr (kWireGoal4Chain473Bound) {
+            // bsp.py show 0058BDF0, BE9A..BEDE/BFEF: the mission-start
+            // temporary owns its vector/title before 0057D060 deep-copies it;
+            // 004D2A80 releases it at the later finish_start hook. A caller
+            // that republishes without that hook must retire its previous
+            // temporary before replacing it, without draining either global.
+            if (temporary_present_) {
+                release(temporary_);
+                temporary_present_ = false;
+            }
+            temporary_ = {};
+            temporary_present_ = true;
+            try {
+                assign_native_string_header_vector_00506c80(&temporary_, &source, strings_);
+                resize_native_string_header_0041dd40(&temporary_.name, strings_,
+                    source.name.length, true);
+                if (source.name.length != 0)
+                    std::memcpy(temporary_.name.data, source.name.data, source.name.length);
+                temporary_.second_side_enabled = source.second_side_enabled;
+                frontend_seg19_21_cc13::loading_screen_set_mission_text_0057d060(&temporary_, host);
+            } catch (...) {
+                release(temporary_);
+                temporary_present_ = false;
+                throw;
+            }
+        } else {
+            frontend_seg19_21_cc13::loading_screen_set_mission_text_0057d060(&source, host);
+        }
     }
+
+    // MissionStartBinding's actual 0058BFEF hook consumes only the owning
+    // temporary. Pending/current remain available to the loading screen.
+    void finish_start();
 
     const GameLoadingConfigRecord& current() const noexcept { return current_; }
     const GameLoadingConfigRecord& pending() const noexcept { return pending_; }
@@ -101,12 +141,43 @@ private:
         }
         GameLoadingConfig& owner_;
     };
+    class ReleaseHost final : public cc13_seg10::LoadingConfigReleaseHost {
+    public:
+        explicit ReleaseHost(NativeStringRawPoolContext& strings) noexcept : strings_(strings) {}
+    private:
+        void crt_free_00bf65ac(void* memory) override { singleton_lifetime_free(memory); }
+        cc13_seg10::Object sized_pool_singleton_00419cc0(
+            void*, std::uint32_t, std::int32_t) override {
+            return reinterpret_cast<cc13_seg10::Object>(native_string_pool_get_or_create_00419cc0(
+                strings_.actual_published_01090aa8, strings_.actual_manager_publication_01090aa0));
+        }
+        void sized_pool_return_block_00bd1510(cc13_seg10::Object pool, void* data,
+            std::uint32_t bytes, std::int32_t) override {
+            return_native_string_pool_00bd1510(reinterpret_cast<NativeStringPoolStorage*>(pool),
+                data, bytes, strings_.actual_small_returns_disabled_01090aa4);
+        }
+        void native_string_range_destroy_00432050(cc13_seg10::Object first,
+            cc13_seg10::Object last, cc13_seg10::Object, cc13_seg10::Object) override {
+            destroy_native_string_header_range_00432050(first, last, strings_);
+        }
+        NativeStringRawPoolContext& strings_;
+    };
     void release(GameLoadingConfigRecord& config) {
-        destroy_native_string_header_vector_004324a0(&config, strings_);
-        destroy_native_string_header_0041dd20(&config.name, strings_);
+        if constexpr (kWireGoal4Chain473Bound) {
+            // bsp.py show 004D2A80: title return precedes vector destruction;
+            // the body itself clears +4/+8/+C. Call once per owned record.
+            ReleaseHost host(strings_);
+            cc13_seg10::game_clear_pending_mission_name_004d2a80(
+                host, reinterpret_cast<cc13_seg10::Object>(&config));
+        } else {
+            destroy_native_string_header_vector_004324a0(&config, strings_);
+            destroy_native_string_header_0041dd20(&config.name, strings_);
+        }
     }
 
     NativeStringRawPoolContext& strings_;
+    GameLoadingConfigRecord temporary_;
+    bool temporary_present_{false};
     GameLoadingConfigRecord current_;
     GameLoadingConfigRecord pending_;
 };

@@ -518,9 +518,9 @@
    "address": "008f1960",
    "source": "src/scene_property_bag.cpp",
    "identifiers": [
-    "scene_reference_kind_letter"
+    "scene_reference_kind_letter_008f1960"
    ],
-   "evidence": "docs/CC13_SEG59B.md:152 explicitly names scene_reference_kind_letter; source70-82 implements all eight reference-kind letters. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
+   "evidence": "docs/CC13_SEG59B.md:152 names the existing scene_reference_kind_letter projection. Chain477 renames that same eight-arm body to scene_reference_kind_letter_008f1960, retains the old source API as an inline forwarder, and calls it from the live scene parser's inverse letter lookup. Existing ABI/layout/host qualifications remain; source-level mapping is not runtime proof."
   },
   {
    "address": "008f6fc0",

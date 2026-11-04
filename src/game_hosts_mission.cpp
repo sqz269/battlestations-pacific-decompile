@@ -68,6 +68,7 @@
 #include "bsp/wire_goal4_chain432_switches.hpp"
 #include "bsp/wire_goal4_chain462_switches.hpp"
 #include "bsp/wire_goal4_chain463_switches.hpp"
+#include "bsp/wire_goal4_chain473_switches.hpp"
 #include "bsp/game_input_runtime.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/cc13_x87_model.hpp"
@@ -88,6 +89,20 @@
 #include <vector>
 
 namespace bsp::game {
+
+void GameLoadingConfig::finish_start() {
+    if constexpr (kWireGoal4Chain473Bound) {
+        if (!temporary_present_) return;
+        // 0058BFEF -> 004D2A80 on the same owning config constructed for
+        // 0058BEDE's 0057D060 publication. Release its name/vector once;
+        // never pass the borrowed mission headers or the retained globals.
+        ReleaseHost host(strings_);
+        cc13_seg10::game_clear_pending_mission_name_004d2a80(
+            host, reinterpret_cast<cc13_seg10::Object>(&temporary_));
+        temporary_present_ = false;
+    }
+}
+
 namespace {
 
 // Packet cc15-fe2: the mission-detail page's 00414130 call (0059A36F..0059A39C)
@@ -1851,6 +1866,10 @@ public:
         owner_.log.unimplemented("MissionStart::report_metrics", "00753810");
     }
     void finish_start() override {
+        if constexpr (kWireGoal4Chain473Bound) {
+            if (owner_.loading_config) owner_.loading_config->finish_start();
+            owner_.log.implemented("MissionStart::finish_start", "004d2a80");
+        } else {
         if constexpr (kMissionStartTemporaryReleaseCc15Bound) {
             // 0058BFEF 004D2A80 on the [ESP+10h] loading-config block: the
             // binding built no copy of it (publish_loading_config took the
@@ -1858,6 +1877,7 @@ public:
             owner_.log.implemented("MissionStart::finish_start", "004d2a80");
         } else {
             owner_.log.unimplemented("MissionStart::finish_start", "004d2a80");
+        }
         }
     }
 

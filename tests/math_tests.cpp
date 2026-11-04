@@ -8,6 +8,8 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/cc13_seg67b.hpp"
+#include "bsp/cc13_seg67n.hpp"
 #include "bsp/unit_weapons.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
@@ -303,6 +305,66 @@ int main() {
         check(no_brain && created && removed && mode_changed &&
             selected.mode == bsp::AiTuningMode::IslandCaptureRegular,
             "chain474 tuning values and mode follow brain creation/removal and live mode changes");
+    }
+    {
+        // Chain468: the constructor must read the live position AFTER the
+        // dirty-pose callback, and a null entity must leave its point alone.
+        struct TargetPose final : bsp::MoveToEntityPoseHost {
+            std::uint8_t valid{0};
+            float position[3]{1.0f, 2.0f, 3.0f};
+            int refreshes{0};
+            bsp::MoveToEntityPoseView move_to_entity_pose(void*) override {
+                return {valid, position};
+            }
+            void entity_pose_refresh_world_00414db0(void*) override {
+                ++refreshes;
+                position[0] = 4.0f;
+                valid = 1;
+            }
+        } host;
+        bsp::MoveToEntityTargetStorage target{};
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        check(target.profile_00 == 0x00d209c4u && target.initial_world_04[0] == 4.0f
+            && target.initial_world_04[1] == 2.0f && target.initial_world_04[2] == 3.0f
+            && bsp::move_to_target_entity_009be140(&target) == &host && host.refreshes == 1,
+            "chain468 entity target borrows identity and copies the refreshed live pose");
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        const std::uint32_t signalling_nan = 0x7fa12345u;
+        std::memcpy(&host.position[1], &signalling_nan, sizeof(signalling_nan));
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        std::uint32_t copied_nan;
+        std::memcpy(&copied_nan, &target.initial_world_04[1], sizeof(copied_nan));
+        check(copied_nan == 0x7fe12345u,
+            "chain468 native FLD/FSTP copy quiets signalling NaN without losing payload");
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, nullptr);
+        check(host.refreshes == 1 && target.entity_10 == nullptr
+            && target.initial_world_04[0] == 4.0f,
+            "chain468 valid/null target paths preserve refresh and point semantics");
+
+        // Review961: reissue between periodic refreshes of an installed task.
+        // The new entity is far below the cruise/path altitude. It must not
+        // become the steering height while the existing 0.4s timer is pending.
+        host.position[1] = -200.0f;
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        float steer_point[3]{100.0f, 1200.0f, 200.0f};
+        bool retarget_pending = false;
+        bsp::stage_move_to_entity_point(target, steer_point, retarget_pending);
+        check(steer_point[1] == 1200.0f && retarget_pending,
+            "chain468 retarget preserves the active cruise/path height before refresh");
+        int approach_refreshes = 0;
+        const auto refresh_approach = [&] {
+            ++approach_refreshes;
+            steer_point[1] = 1250.0f; // fixture's newly resolved cruise/path height
+        };
+        const float remaining = 0.4f, elapsed = 0.1f;
+        bsp::refresh_move_to_target_before_steering(!(elapsed < remaining),
+            retarget_pending, refresh_approach);
+        check(approach_refreshes == 1 && !retarget_pending && steer_point[1] == 1250.0f,
+            "chain468 reissued target refreshes before steering despite a positive periodic timer");
+        bsp::stage_move_to_entity_point(target, steer_point, retarget_pending);
+        bsp::refresh_move_to_target_before_steering(true, retarget_pending, refresh_approach);
+        check(approach_refreshes == 2 && steer_point[1] == 1250.0f,
+            "chain468 simultaneous retarget and periodic requests refresh only once");
     }
     {
         // Chain413 review834: the first plane aliases the fused squadron

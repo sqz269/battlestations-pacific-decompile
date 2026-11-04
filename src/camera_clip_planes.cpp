@@ -6,11 +6,12 @@ static_assert(sizeof(CameraPlaneRecord) == 0x14);
 static_assert(offsetof(CameraPlaneRecord, flags) == 0x10);
 static_assert(offsetof(CameraPlaneSet, count) == 0x140);
 
-void set_camera_plane_count_00b65070(CameraPlaneSet& planes,
+// Keep the one reconstructed store body visible in the Release call graph.
+__declspec(noinline) void set_camera_plane_count_00b65070(CameraPlaneSet& planes,
     std::uint32_t count) noexcept {
     // The integer store accepts the complete native DWORD, including counts
     // outside the subsequent append API's valid-storage precondition.
-    planes.count = count;
+    static_cast<volatile std::uint32_t&>(planes.count) = count;
 }
 
 void append_camera_plane_00b65990(CameraPlaneSet& planes,
