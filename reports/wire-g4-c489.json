@@ -1,0 +1,249 @@
+{
+  "chain": 489,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain489Bound",
+  "scope": "WM_ACTIVATE sound pause/resume over the application's live typed SoundSystemOwner",
+  "rows": [
+    {
+      "native": "00a7a480",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp: bsp::game::game_window_procedure",
+      "body": "src/platform_activation.cpp: bsp::pause_sound_manager_00a7a480",
+      "evidence": "bsp.py show 00a7a480 and 00bed3b0 case 6: inactive LOWORD(WPARAM) changes owner+50 before dirtying mask 0xffff"
+    },
+    {
+      "native": "00a7a4a0",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp: bsp::game::game_window_procedure",
+      "body": "src/platform_activation.cpp: bsp::resume_sound_manager_00a7a4a0",
+      "evidence": "bsp.py show 00a7a4a0 and 00bed3b0 case 6: active LOWORD(WPARAM) clears owner+50 before dirtying mask 0xffff"
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message",
+      "reason": "The local command queue lacks the native message post/current tick domain and category/sender fields required by the window gate."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command",
+      "reason": "The callback has no live native AI-group receiver; its current entity path reports no group."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The host returns a null command target and has no native target-record owner for the raw initializer and downstream event consumer."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::report_target_event",
+      "reason": "The callback lacks the native event-manager channel map and observed-entity argument owners required by Seg62Host dispatch."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit screen reset and HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "No owned selection-screen receiver supplies the real +C4 vector, +30 mode and input-context reset services."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::map_screen_busy",
+      "reason": "The host returns recorded false and has no retained map-screen object whose scrolling fields the raw view can read."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "weapon_animation returns zero; the host has no real animation/ticker receiver to retain and consume the range stores."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::set_ambient_volume",
+      "reason": "The HUD callback has no owning ambient SoundInstance/sample reference to pass to the existing volume body."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator/capture planning",
+      "reason": "The active planner uses weight vectors; integrating AiGroupScoreList requires replacing its assignment consumer, not adding an unused sorted list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator/capture planning",
+      "reason": "No active AiGroupScoreList selection consumer owns the entries that mark_chosen mutates."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate walk",
+      "reason": "The existing kDefendThinkImageBound arm already calls the body with real kind/set state; no new caller was added."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "The pre-load path lacks the live BSP_Chk_Save Lua table/current key and its checkpoint_differs callback remains false."
+    },
+    {
+      "native": "00852c60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_submarine_depth_level_008528b0",
+      "reason": "Existing callers supply an absolute requested depth; no live relative deeper/shallower input producer was found."
+    },
+    {
+      "native": "00443cb0",
+      "status": "skipped",
+      "host_site": "src/native_string_ordering_wrappers.cpp: less_native_string_scalar_keys_0076eaa0",
+      "reason": "The scalar-key ordering caller has no live host consumer; replacing another equivalent comparator solely to add this alias was not justified."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_00444070",
+      "reason": "No original caller or live scalar-record producer was found for this copy constructor."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The game runs named Lua calls on the main thread and has no off-thread argument-vector producer for deferred copies."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "The frame-job-thread enqueue arm has no live job-pool producer in this host."
+    },
+    {
+      "native": "00749210",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: vehicle-class descriptor loading",
+      "reason": "The descriptor is still a split semantic/raw copy and lacks the leaf effect ownership, append and release services needed by this loader."
+    },
+    {
+      "native": "0074d4a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: vehicle-class descriptor loading",
+      "reason": "The raw wreckable descriptor needs authoritative base fields and live explosion/wreck/smoke owners before its leaf loader can replace the semantic path."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: collision-mask binding",
+      "reason": "The host lacks a canonical raw shape/body and native manifold-clear owner; a detached mask buffer would not change collision state."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: collision-mask binding",
+      "reason": "The host lacks a canonical raw shape/body and native manifold-clear owner for the set-mask operation."
+    },
+    {
+      "native": "00c56cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: EntityTurnToEntity ship pose",
+      "reason": "The current motion-state pose has no live DynBodyStorage/broadphase owner for the raw transform and bounds update."
+    },
+    {
+      "native": "00bef8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp: text loading",
+      "reason": "The helper preserves an uncleared compacted tail and has no original caller; substituting it for logical-length text loading changes semantics."
+    },
+    {
+      "native": "00befcb0",
+      "status": "skipped",
+      "host_site": "src/d3d9_texture.cpp: retained texture loading",
+      "reason": "The live path uses D3DX image inspection and supports more than RAMImage's TGA-only path rule; no live RAMImage filename consumer was found."
+    },
+    {
+      "native": "00a7aaf0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "reason": "The release body already has its reconstructed shutdown caller; no missing application shutdown binding was established in this pass."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp: mark_native_recon_slot_dirty_00803ba0",
+      "reason": "No live NativeReconDirtyAccess owner was identified for the recon slot, world cache flag and local player's context cells."
+    },
+    {
+      "native": "00837de0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_lua_load.cpp: ship_tuning_block_offset",
+      "reason": "The pure offset rule is available, but no authoritative raw settings-block owner was established for the native receiver path."
+    },
+    {
+      "native": "00953720",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: small_recon_plane_class_name_00953720",
+      "reason": "No live runtime class-name virtual consumer was found; the descriptor table already supplies construction metadata."
+    },
+    {
+      "native": "009537b0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: large_recon_plane_class_name_009537b0",
+      "reason": "No live runtime class-name virtual consumer was found; the descriptor table already supplies construction metadata."
+    },
+    {
+      "native": "00963e00",
+      "status": "skipped",
+      "host_site": "src/vehicle_class.cpp: submarine_class_name_00963e00",
+      "reason": "No live runtime class-name virtual consumer was found; the descriptor table already supplies construction metadata."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert_enum",
+      "reason": "The source already forwards the real enum owner and symbol to this body; no additional wiring was needed for the selected sound packet."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "The existing native projection already merges supported property graphs; no missing raw-bag producer was established in this pass."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Fresh baseline call_graph who confirms an existing entry-reachable call; the readiness text state was stale/incomplete for this provider."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "Fresh baseline call_graph who confirms existing reachable constructor calls; no additional wiring is needed."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "The existing input/surrender constructors are linked and folded together; the host already calls both source bodies."
+    }
+  ],
+  "state_and_lifetime": {
+    "producer": "SoundServices publishes its GameSoundRuntime after construction; core startup precedes the real game-window creation.",
+    "receiver": "GameSoundRuntime::owner() returns the running manager with the same SoundManagerLevels and entries consumed by normal sound frames.",
+    "teardown": "SoundServices withdraws the borrowed runtime before member destruction; started() guards managers already retired by shared singleton deletion.",
+    "switch_off": "Restores the old final DefWindowProcA path and omits runtime publication/withdrawal."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTest groups passed",
+    "readiness_wired_before": 9772,
+    "readiness_wired_after": 9774,
+    "entry_reachable_reconstructed_before": 4842,
+    "entry_reachable_reconstructed_after": 4844,
+    "callers": "Each selected body has one reachable call site from game_window_procedure; path reaches WinMainCRTStartup.",
+    "float_math": "No float arithmetic changed.",
+    "runtime": "Game was not run. Focus/audio behavior and original ABI equivalence remain unvalidated."
+  },
+  "left": "Full WM_ACTIVATE input/media/GUI/renderer sequencing and raw-layout sound-manager integration remain separate work."
+}

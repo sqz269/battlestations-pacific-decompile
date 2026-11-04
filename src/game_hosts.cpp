@@ -5,6 +5,8 @@
 #include "bsp/game_startup_random.hpp"
 #include "bsp/wire_goal4_chain305_switches.hpp"
 #include "bsp/wire_goal4_chain445_switches.hpp"
+#include "bsp/wire_goal4_chain489_switches.hpp"
+#include "bsp/platform_activation.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/platform_control_messages.hpp"
 #include "bsp/platform_text_messages.hpp"
@@ -168,6 +170,10 @@ double input_image_double(std::uint64_t bits) noexcept {
 // The application binds both to its projection, preserving their distinct roles.
 Win32PlatformState* volatile g_active_platform = nullptr;
 PlatformTextInput* g_active_platform_text = nullptr;
+// Borrow the same core whose live manager the sound frame updates. Its
+// SoundServices owner withdraws this before any member teardown; started()
+// also rejects a manager already retired by the shared singleton drain.
+GameSoundRuntime* g_window_sound_runtime = nullptr;
 
 // Window title and class name, the temporary string 00becee0 receives as argument 2.
 const char kWindowName[] = "Battlestations Pacific";
@@ -263,7 +269,27 @@ LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
         if (g_active_platform != nullptr) g_active_platform->close_requested = true;
         return 0;
     }
+    if constexpr (kWireGoal4Chain489Bound) {
+        // bsp.py show 00BED3B0, case 6 (BED3F3..BED507): TEST BX,BX
+        // selects A7A480 for an inactive LOWORD, A7A4A0 otherwise. Feed the
+        // existing typed bodies the actual manager and class-entry collection,
+        // never a raw-layout copy. Their dirty flags are consumed by A7AA80
+        // during the normal sound frame, where owner.flag_50 mutes the level.
+        // This binds the sound calls only; the remaining activation services
+        // still require their own application bindings.
+        if (message == WM_ACTIVATE && g_active_platform != nullptr) {
+            auto* const runtime = g_window_sound_runtime;
+            if (runtime != nullptr && runtime->started()) {
+                if (static_cast<std::uint16_t>(wparam) == WA_INACTIVE)
+                    pause_sound_manager_00a7a480(runtime->owner());
+                else
+                    resume_sound_manager_00a7a4a0(runtime->owner());
+            }
+        }
+        return DefWindowProcA(window, message, wparam, lparam);
+    } else {
     return DefWindowProcA(window, message, wparam, lparam);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -1768,8 +1794,16 @@ struct GameStartupHost::SoundServices {
         // Registration happens in startup, after the raw deletion dispatcher
         // has this exact core allocation available.
         app.singletons_->bind_sound_runtime(&core);
+        if constexpr (kWireGoal4Chain489Bound) {
+            g_window_sound_runtime = &core;
+        } else {
+        }
     }
     ~SoundServices() {
+        if constexpr (kWireGoal4Chain489Bound) {
+            if (g_window_sound_runtime == &core) g_window_sound_runtime = nullptr;
+        } else {
+        }
         try{settings_process.bind_profile_sdk(nullptr);}
         catch(...){std::fputs("bsp_game: online owner outlived settings SDK binding\n",stderr);std::fflush(stderr);std::_Exit(1);}
     }
