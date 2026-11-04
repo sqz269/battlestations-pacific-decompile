@@ -22,7 +22,28 @@ inline void* add_bytes(const void* ptr, std::ptrdiff_t off) noexcept {
   return const_cast<std::uint8_t*>(static_cast<const std::uint8_t*>(ptr)) + off;
 }
 
-struct Seg58Host {
+// The collector only needs globals, checked dword-vector operations and the
+// per-player cooldown map. Keep that contract usable without fabricating the
+// unrelated Lua/network callbacks of the whole segment.
+struct PowerupCollectionHost {
+  virtual ~PowerupCollectionHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual std::uint8_t& global_u8(std::uint32_t address) = 0;
+  virtual float& global_f32(std::uint32_t address) = 0;
+  virtual void invalid_parameter_noinfo_00bf6713() = 0;
+  virtual void* stl_map_subscript_00617030(void* map, const void* key_ptr) = 0;
+  virtual void* stl_vector_erase_range_004685a0(void* vec, void* out_iter, void* first_owner, void* first, void* last_owner, void* last) = 0;
+  virtual void* stl_vector_erase_range_00488bf0(void* vec, void* out_iter, void* first_owner, void* first, void* last_owner, void* last) = 0;
+  virtual void* stl_vector_erase_range_005a0be0(void* vec, void* out_iter, void* first_owner, void* first, void* last_owner, void* last) = 0;
+  virtual void* stl_vector_insert_one_00441f30(void* vec, void* out_iter, void* owner, void* pos, const void* val_ptr) = 0;
+  virtual void* stl_vector_insert_one_005a6580(void* vec, void* out_iter, void* owner, void* pos, const void* val_ptr) = 0;
+  virtual void* stl_checked_float_vector_insert_one_0045a120(void* vec, void* out_iter, void* owner, void* pos, const void* val_ptr) = 0;
+  virtual void stl_vector_push_back_00442190(void* vec, const void* val_ptr) = 0;
+  virtual void stl_vector_push_back_0045afd0(void* vec, const void* val_ptr) = 0;
+  virtual void stl_vector_push_back_005a7960(void* vec, const void* val_ptr) = 0;
+};
+
+struct Seg58Host : PowerupCollectionHost {
   virtual ~Seg58Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -253,7 +274,7 @@ void command_building_powerup_binding_destruct_008e9a70(Seg58Host& host,
                                                         void* self);
 
 void power_up_manager_collect_active_008e9af0(
-    Seg58Host& host, void* self, void* out_vec_type3, void* out_vec_items,
+    PowerupCollectionHost& host, void* self, void* out_vec_type3, void* out_vec_items,
     void* out_vec_counts, void* out_vec_end_times, void* out_vec_start_times,
     std::uint8_t include_all_players, std::uint8_t include_zero_limit);
 

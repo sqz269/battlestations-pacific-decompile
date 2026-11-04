@@ -1,0 +1,51 @@
+{
+  "goal": 4,
+  "chain": 339,
+  "owner": "agent/g4-w5",
+  "baseline_head": "121aa293caf277c4310022dd0e0724bb599ab13b",
+  "switch": "bsp::kWireGoal4Chain339Bound",
+  "wired_total_before": 9351,
+  "wired_total_after": 9352,
+  "rows": [
+    {
+      "native": "008e9af0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp:HudRootUpdateBinding::collect_powerups -> src/game_hosts_powerups.cpp:collect_hud_powerups -> PowerupCollectionBinding::collect",
+      "called": true,
+      "call_sites": 1,
+      "evidence": "Native caller 00649A36 passes five vectors and literals 0,1. The adapter projects the published PowerupRuntime inventories, actual E4h descriptors, local-player slot, scene player parties, EnablePowerups and world clock. Map reads use slot_record_00617030 on the same runtime, retaining native insertion effects. Collected pointers map back to original inventory items before temporary nodes die.",
+      "abi": "Original __thiscall manager plus five vector pointers and two bytes, RET 1Ch. Source body now takes the narrower PowerupCollectionHost contract; this is a compiled source integration, not a drop-in binary ABI replacement."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootUpdateBinding::untimed_entry_applies / timed_entry_applies",
+      "reason": "Still needs the unit-kind predicate and native views of item+8h's granting-building binding and all sixteen target modifier lists; the new collector views only cover the class/uses fields it actually reads."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudUpdateBinding::support_request_pending",
+      "reason": "Real inventories now exist, but both map_screen_wanted and overlay_c_extra_gate remain constant false, preventing this query's native caller branches from running; bind their screen/input producers before adding its list-copy adapter."
+    }
+  ],
+  "built": [
+    "Read-only native inventory/player/cooldown views and checked word-vector adapter for the existing 008E9AF0 body; no duplicate body.",
+    "Five typed HUD output vectors carrying live item identities, counts and times, consumed by the existing HUD root traversal.",
+    "PowerUpSlot.absolute_start retains record+0Ch, explicitly initialized to zero by 008E3710; existing runtime records have no cooldown writers beyond construction yet.",
+    "PC24 addition in the collector's relative time arms, matching FLD/FADD/FSTP at 008E9DB6..008E9DC2 and 008E9F14..008E9F20 and their duration counterparts."
+  ],
+  "checks": [
+    "Initial index --if-stale and Win32 build passed before selection.",
+    "Final scripts/build.ps1 passed; reconstructed_math and tool_tests both passed.",
+    "call_graph.py who/path 008e9af0: one reachable call from PowerupCollectionBinding::collect, through the HUD root update and GameMenuHost::frame to WinMainCRTStartup.",
+    "wire_readiness.py --standins: 9351 -> 9352 wired; 008e9af0 called=true, call_sites=1.",
+    "pc24_lint.py --diff origin/main...HEAD: zero findings across seven changed code files.",
+    "Local synthetic Win32 probe local/output/g4_c339_probe.cpp compiled /MD /Gy /O2 with /MANIFEST:EMBED and assertions enabled: mixed local/ally/enemy inventories, seven-copy vector growth, zero/unlimited uses, relative/absolute cooldowns, disabled gate and item identity after temporary view destruction passed."
+  ],
+  "limitations": [
+    "Game was not run. Build, static entry reachability and synthetic fixture evidence only.",
+    "Power-up applicability and GUI icon/circle cloning still use their prior labelled stand-ins; no icon rendering is claimed.",
+    "The collector honors the published scene parties and the existing manager host's local-player slot; it does not add online services or a new player-slot producer."
+  ]
+}

@@ -1,7 +1,8 @@
 // Packet cc13-powerup-bind: the power-up category lists and their product. See
 // include/bsp/game_hosts_powerups.hpp. Re-derived from the image bytes
-// (disasm-raw); src/powerup_seg58_argon.cpp was a cross-check only. Names are
-// hypotheses, not recovered symbols.
+// (disasm-raw); the corresponding modifier copies in powerup_seg58_argon.cpp
+// were a cross-check only. Chain 339 below calls its active-item collector.
+// Names are hypotheses, not recovered symbols.
 
 #include "bsp/game_hosts_powerups.hpp"
 
@@ -11,7 +12,10 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/powerup_session_broadcast_cc13.hpp"
 #include "bsp/wire_goal4_chain310_switches.hpp"
+#include "bsp/powerup_seg58_argon.hpp"
 
+#include <cstddef>
+#include <cstring>
 #include <iterator>
 #include <random>
 #include <stdexcept>
@@ -24,6 +28,235 @@ namespace {
 
 const PowerupUnitResolver* g_unit_resolver = nullptr;
 
+// Goal 4 chain 339: read-only native views for 008E9AF0. Each node retains
+// its actual inventory item; class descriptors already have the E4h layout.
+// Only fields read by this collector are projected. Its item+8h binding and
+// modifier list are not dereferenced and are not reconstructed here.
+struct CollectionNode {
+    CollectionNode* next{};
+    CollectionNode* previous{};
+    std::uint32_t word{};
+    const PowerupClassConfig* cls{};
+    void* unused_binding{};
+    std::int32_t uses{};
+    const cc13_powerup::PowerupItem* source{};
+};
+struct CollectionList {
+    std::uint32_t unused{};
+    CollectionNode* head{};
+    std::uint32_t size{};
+};
+struct CollectionManager {
+    std::uint8_t unused_00[0x20]{};
+    std::array<CollectionList, 8> lists{};
+    std::uint8_t unused_80[0xcc]{};
+    std::array<std::array<std::uint8_t, 0x0c>, 8> maps{};
+};
+struct CollectionPlayer {
+    std::uint8_t unused[0x28]{};
+    std::int32_t party{};
+};
+struct CollectionGame {
+    std::uint8_t unused[0x18cc]{};
+    std::array<CollectionPlayer*, 8> players{};
+    std::int32_t local_slot{};
+};
+struct CollectionCooldown {
+    std::uint32_t notified{};
+    std::uint32_t unused{};
+    void* source{};
+    float start{};
+    float end{};
+    std::uint8_t relative{};
+};
+static_assert(sizeof(void*) == 4);
+static_assert(offsetof(CollectionNode, word) == 8);
+static_assert(offsetof(CollectionNode, uses) == 0x14);
+static_assert(sizeof(CollectionList) == 0x0c);
+static_assert(offsetof(CollectionManager, maps) == 0x14c);
+static_assert(offsetof(CollectionGame, local_slot) == 0x18ec);
+static_assert(offsetof(CollectionCooldown, relative) == 0x14);
+static_assert(offsetof(PowerupClassConfig, group_08) == 8);
+
+// Live uint32_t objects occupy the native capacity, so direct stores by the
+// body and append callbacks share one buffer and the same last pointer.
+struct CollectionVector {
+    std::uint32_t unused{};
+    std::uint32_t* first{};
+    std::uint32_t* last{};
+    std::uint32_t* capacity{};
+    std::vector<std::uint32_t> storage;
+
+    void append(const void* value) {
+        const std::size_t count = size();
+        if (count == storage.size()) storage.resize(count == 0 ? 4 : count * 2);
+        first = storage.data();
+        last = first + count;
+        capacity = first + storage.size();
+        std::memcpy(last++, value, sizeof(std::uint32_t));
+    }
+    std::size_t size() const {
+        return first == nullptr ? 0u : static_cast<std::size_t>(last - first);
+    }
+};
+static_assert(offsetof(CollectionVector, first) == 4);
+static_assert(offsetof(CollectionVector, last) == 8);
+static_assert(offsetof(CollectionVector, capacity) == 0x0c);
+
+class PowerupCollectionBinding final : public powerup_seg58_argon::PowerupCollectionHost {
+public:
+    explicit PowerupCollectionBinding(cc13_powerup::PowerupRuntime& runtime)
+        : runtime_(runtime), enabled_(runtime.host->powerups_enabled_00e0c978() ? 1 : 0),
+          clock_(runtime.host->clock_00f876a4()) {
+        // The image returns after clearing its outputs when EnablePowerups is
+        // clear; it does not inspect a player or an inventory on that path.
+        if (enabled_ == 0) return;
+        game_.local_slot = runtime.host->local_player_slot_18ec();
+        if (game_.local_slot < 0 || game_.local_slot >= 8)
+            throw std::logic_error("008E9AF0 local player outside 0..7");
+        for (std::size_t slot = 0; slot < heads_.size(); ++slot) {
+            // 004C6890's published scene parties; an unauthored Party is -1.
+            players_[slot].party = static_cast<int>(slot) == game_.local_slot
+                ? game::local_player_party() : game::scene_slot_party(static_cast<int>(slot), -1);
+            game_.players[slot] = &players_[slot];
+            CollectionNode& head = heads_[slot];
+            auto& nodes = nodes_[slot];
+            const auto& inventory = runtime.inventories[slot];
+            nodes.resize(inventory.size());
+            std::size_t index = 0;
+            for (const auto& item : inventory) {
+                if (item.cls == nullptr) throw std::logic_error("008E9AF0 item without class");
+                CollectionNode& node = nodes[index];
+                node.next = index + 1 == nodes.size() ? &head : &nodes[index + 1];
+                node.previous = index == 0 ? &head : &nodes[index - 1];
+                node.word = item.word_00;
+                node.cls = item.cls;
+                node.uses = item.use_limit;
+                node.source = &item;
+                ++index;
+            }
+            head.next = nodes.empty() ? &head : &nodes.front();
+            head.previous = nodes.empty() ? &head : &nodes.back();
+            manager_.lists[slot].head = &head;
+            manager_.lists[slot].size = static_cast<std::uint32_t>(nodes.size());
+        }
+        game_word_ = reinterpret_cast<std::uint32_t>(&game_);
+    }
+
+    void collect(HudPowerupEntries& entries) {
+        entries.clock = clock_;
+        // 00649A36: five output vectors followed by the image's literal 0, 1.
+        powerup_seg58_argon::power_up_manager_collect_active_008e9af0(*this, &manager_,
+            &vectors_[0], &vectors_[1], &vectors_[2], &vectors_[3], &vectors_[4], 0, 1);
+        for (std::size_t i = 0; i < vectors_[0].size(); ++i)
+            entries.untimed.push_back(source_item(vectors_[0].first[i]));
+        for (std::size_t i = 0; i < vectors_[1].size(); ++i)
+            entries.timed.push_back(source_item(vectors_[1].first[i]));
+        for (std::size_t i = 0; i < vectors_[2].size(); ++i) {
+            std::int32_t count;
+            std::memcpy(&count, &vectors_[2].first[i], sizeof(count));
+            entries.counts.push_back(count);
+        }
+        copy_floats(vectors_[3], entries.cooldown_ends);
+        copy_floats(vectors_[4], entries.deadlines);
+    }
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address != 0x00e188a8u) throw std::logic_error("008E9AF0 unexpected dword global");
+        return game_word_;
+    }
+    std::uint8_t& global_u8(std::uint32_t address) override {
+        if (address != 0x00e0c978u) throw std::logic_error("008E9AF0 unexpected byte global");
+        return enabled_;
+    }
+    float& global_f32(std::uint32_t address) override {
+        if (address != 0x00f876a4u) throw std::logic_error("008E9AF0 unexpected clock global");
+        return clock_;
+    }
+    void invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("008E9AF0 invalid checked container");
+    }
+    void* stl_map_subscript_00617030(void* map, const void* key) override {
+        for (std::size_t slot = 0; slot < manager_.maps.size(); ++slot) {
+            if (map != manager_.maps[slot].data()) continue;
+            const PowerupClassConfig* cls;
+            std::memcpy(&cls, key, sizeof(cls));
+            const PowerUpSlot& record = cc13_powerup::slot_record_00617030(
+                runtime_, static_cast<std::int32_t>(slot), cls);
+            cooldown_.notified = record.notified ? 1u : 0u;
+            cooldown_.source = record.source;
+            cooldown_.start = record.absolute_start;
+            cooldown_.end = record.absolute_expiry;
+            cooldown_.relative = record.relative_deadline ? 1u : 0u;
+            if (record.relative_deadline && record.source == nullptr)
+                throw std::logic_error("008E9AF0 relative cooldown without source");
+            return &cooldown_;
+        }
+        throw std::logic_error("008E9AF0 foreign cooldown map");
+    }
+    void* stl_vector_erase_range_004685a0(void* v, void* out, void* a, void* first, void* b, void* last) override {
+        return clear(v, out, a, first, b, last);
+    }
+    void* stl_vector_erase_range_00488bf0(void* v, void* out, void* a, void* first, void* b, void* last) override {
+        return clear(v, out, a, first, b, last);
+    }
+    void* stl_vector_erase_range_005a0be0(void* v, void* out, void* a, void* first, void* b, void* last) override {
+        return clear(v, out, a, first, b, last);
+    }
+    void* stl_vector_insert_one_00441f30(void* v, void* out, void* owner, void* pos, const void* value) override {
+        return insert(v, out, owner, pos, value);
+    }
+    void* stl_vector_insert_one_005a6580(void* v, void* out, void* owner, void* pos, const void* value) override {
+        return insert(v, out, owner, pos, value);
+    }
+    void* stl_checked_float_vector_insert_one_0045a120(void* v, void* out, void* owner, void* pos, const void* value) override {
+        return insert(v, out, owner, pos, value);
+    }
+    void stl_vector_push_back_00442190(void* v, const void* value) override { vector(v).append(value); }
+    void stl_vector_push_back_0045afd0(void* v, const void* value) override { vector(v).append(value); }
+    void stl_vector_push_back_005a7960(void* v, const void* value) override { vector(v).append(value); }
+
+private:
+    CollectionVector& vector(void* address) {
+        for (auto& candidate : vectors_) if (&candidate == address) return candidate;
+        throw std::logic_error("008E9AF0 foreign vector");
+    }
+    void* clear(void* v, void* out, void* a, void* first, void* b, void* last) {
+        CollectionVector& vec = vector(v);
+        if (a != v || b != v || first != vec.first || last != vec.last)
+            invalid_parameter_noinfo_00bf6713();
+        vec.last = vec.first;
+        void* result[2]{v, vec.last};
+        std::memcpy(out, result, sizeof(result));
+        return out;
+    }
+    void* insert(void* v, void* out, void* owner, void* pos, const void* value) {
+        CollectionVector& vec = vector(v);
+        if (owner != v || pos != vec.last) invalid_parameter_noinfo_00bf6713();
+        vec.append(value);
+        void* result[2]{v, vec.last - 1};
+        std::memcpy(out, result, sizeof(result));
+        return out;
+    }
+    static const cc13_powerup::PowerupItem* source_item(std::uint32_t item) {
+        return reinterpret_cast<const CollectionNode*>(item - 8u)->source;
+    }
+    static void copy_floats(const CollectionVector& vec, std::vector<float>& out) {
+        out.resize(vec.size());
+        if (!out.empty()) std::memcpy(out.data(), vec.first, out.size() * sizeof(float));
+    }
+    cc13_powerup::PowerupRuntime& runtime_;
+    CollectionManager manager_;
+    CollectionGame game_;
+    std::array<CollectionPlayer, 8> players_{};
+    std::array<CollectionNode, 8> heads_{};
+    std::array<std::vector<CollectionNode>, 8> nodes_{};
+    std::array<CollectionVector, 5> vectors_{};
+    CollectionCooldown cooldown_;
+    std::uint32_t game_word_{};
+    std::uint8_t enabled_{};
+    float clock_{};
+};
+
 // [00CE6A04], 1000000.0f: what 006F58D0, slot 0 of the command-building binding
 // vtable 00D16194, loads. 008E477E..008E4786 reach it as the centre unit's
 // vtable[64h]() (its binding at +758h) then that object's slot 0.
@@ -32,6 +265,14 @@ const PowerupUnitResolver* g_unit_resolver = nullptr;
 constexpr float kBindingRadiusSquared = 1000000.0f;
 
 }  // namespace
+
+void collect_hud_powerups(HudPowerupEntries& entries) {
+    entries = {};
+    auto& runtime = cc13_powerup::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr) return;
+    PowerupCollectionBinding binding(runtime);
+    binding.collect(entries);
+}
 
 // [BSP reconstruction 008e4680]
 // Original ABI: __thiscall(ECX = manager, const record* = node+8h, unit*), RET 8;

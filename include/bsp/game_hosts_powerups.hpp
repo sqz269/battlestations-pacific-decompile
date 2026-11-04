@@ -5,8 +5,9 @@
 // Every gameplay modifier site of this image tests EnablePowerups [00E0C978] and
 // the category list's size, then multiplies by 008E6430's product or takes the
 // 1.0f at 00D7A24C. The bodies here are re-derived from the image bytes; the
-// earlier src/powerup_seg58_argon.cpp copies served only as a cross-check and
-// are not called. Names are hypotheses, not recovered symbols.
+// earlier src/powerup_seg58_argon.cpp copies of those modifier routines served
+// only as a cross-check and are not called. Chain 339 does call that file's
+// existing active-item collector. Names are hypotheses, not recovered symbols.
 //
 // Phase 1: the store, 008E6430 and 008E4680, and every host reader routed
 // through powerup_site_product.
@@ -44,6 +45,7 @@
 #include <list>
 #include <optional>
 #include <string_view>
+#include <vector>
 
 namespace bsp {
 struct PowerupClassConfig;
@@ -163,5 +165,17 @@ void powerup_manager_observed_event_008ed620(std::size_t unit, int code);
 // 008EB110's sweep (008EB139..008EB181): each category list in order, each
 // record whose end time the clock has passed expires through 008E8C30.
 void expire_due_modifiers_008eb110();
+
+// HUD root +164h, +124h, +134h, +144h and +154h. Item pointers refer to the
+// live runtime inventory, never to the temporary native list view.
+struct HudPowerupEntries {
+    float clock{};
+    std::vector<const cc13_powerup::PowerupItem*> untimed;
+    std::vector<const cc13_powerup::PowerupItem*> timed;
+    std::vector<std::int32_t> counts;
+    std::vector<float> cooldown_ends;
+    std::vector<float> deadlines;
+};
+void collect_hud_powerups(HudPowerupEntries& entries);
 
 }  // namespace bsp::game_powerups

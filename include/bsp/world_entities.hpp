@@ -218,6 +218,9 @@ struct PowerUpSlot {
     // relative_deadline is set, which re-derives the deadline every frame.
     void* source{};
     float source_offset{}; // *(source+80h)
+    // Record+0Ch, retained for 008E9AF0's fifth output vector. 008E3710
+    // explicitly zeroes it; later cooldown writers must retain their start here.
+    float absolute_start{};
 };
 
 struct PowerUpManagerState {

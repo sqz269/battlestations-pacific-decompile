@@ -3,6 +3,8 @@
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain291_switches.hpp"
+#include "bsp/wire_goal4_chain339_switches.hpp"
+#include "bsp/game_hosts_powerups.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
 
 #include "bsp/game_hosts.hpp"
@@ -4447,25 +4449,45 @@ public:
         return false;
     }
     float mission_clock() override {
+        if constexpr (kWireGoal4Chain339Bound) {
+            return powerup_entries_.clock;
+        } else {
         owner_.record("HudRootScreen::mission_clock", 0x00649c6bu);
         return 0.0f;
+        }
     }
     bool controlled_unit_present() override {
         return owner_.units != nullptr && owner_.units->controlled_bound();
     }
-    // The clone vectors +104h and +114h: nothing is ever cloned here (the
-    // power-up collection is a record answering none), so both are empty and
-    // the destroy-and-erase loops at 006498AC..006499CC do nothing.
+    // The clone vectors +104h and +114h remain empty: the applicability and
+    // widget-clone adapters below still answer false/zero.
     void release_icon_clones() override {}
     void release_circle_clones() override {}
     void collect_powerups() override {
+        if constexpr (kWireGoal4Chain339Bound) {
+            game_powerups::collect_hud_powerups(powerup_entries_);
+            owner_.done("HudRootScreen::collect_powerups", 0x008e9af0u);
+        } else {
         // SUBSTITUTION: the power-up manager [00F88C30] is not built; 008E9AF0
         // answers five empty vectors.
         owner_.record("HudRootScreen::collect_powerups", 0x008e9af0u);
+        }
     }
-    std::size_t untimed_entry_count() override { return 0; }
-    std::size_t timed_entry_count() override { return 0; }
-    float timed_entry_deadline(std::size_t) override { return 0.0f; }
+    std::size_t untimed_entry_count() override {
+        if constexpr (kWireGoal4Chain339Bound) {
+            return powerup_entries_.untimed.size();
+        } else { return 0; }
+    }
+    std::size_t timed_entry_count() override {
+        if constexpr (kWireGoal4Chain339Bound) {
+            return powerup_entries_.timed.size();
+        } else { return 0; }
+    }
+    float timed_entry_deadline(std::size_t index) override {
+        if constexpr (kWireGoal4Chain339Bound) {
+            return powerup_entries_.deadlines.at(index);
+        } else { return 0.0f; }
+    }
     bool untimed_entry_applies(std::size_t) override {
         owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
         return false;
@@ -4643,6 +4665,7 @@ public:
     }
 
 private:
+    game_powerups::HudPowerupEntries powerup_entries_;
     GameHudHost::Impl& owner_;
 };
 }  // namespace
