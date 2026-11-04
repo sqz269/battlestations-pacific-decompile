@@ -6,6 +6,8 @@
 #include "bsp/wire_goal4_chain305_switches.hpp"
 #include "bsp/wire_goal4_chain445_switches.hpp"
 #include "bsp/wire_goal4_chain489_switches.hpp"
+#include "bsp/wire_goal4_chain495_switches.hpp"
+#include "bsp/engine_services_cc13.hpp"
 #include "bsp/platform_activation.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/platform_control_messages.hpp"
@@ -4067,7 +4069,33 @@ void GameStartupHost::platform_run_loop_dispatch() {
     if (!loop_->frames_enabled) {
         log_.note("frames are disabled; the loop would never call the frame callback");
     }
-    platform_run_loop_00bec1a0(*loop_, *loop_callbacks_);
+    if constexpr (kWireGoal4Chain495Bound) {
+        native_platform_->require_ready();
+        // 00D68CC4+24h = 00BEC1A0. This resolves the original table's
+        // identity onto the existing Source loop, with the SAME native
+        // +42h/+181h/+43h cells and application callbacks as the old path.
+        // It neither substitutes a C++ object for the platform nor runs a
+        // second loop after dispatch.
+        struct RunLoopBinding final : engine_services_cc13::PlatformRunLoopDispatchCalls {
+            void* owner;
+            Win32PlatformState& state;
+            PlatformLoopCallbacks& callbacks;
+            RunLoopBinding(void* p, Win32PlatformState& s, PlatformLoopCallbacks& c)
+                : owner(p), state(s), callbacks(c) {}
+            void run_loop_vtable_24(void* actual_platform, const void* actual_vtable) override {
+                if (actual_platform != owner ||
+                    actual_vtable != reinterpret_cast<const void*>(0x00d68cc4u))
+                    throw std::logic_error("Platform loop requires the current native Win32 owner/table");
+                platform_run_loop_00bec1a0(state, callbacks);
+            }
+        } calls(native_platform_->allocated, *native_platform_->view, *loop_callbacks_);
+        if (platform_ != native_platform_->view.get() || loop_ != platform_)
+            throw std::logic_error("Platform loop view must alias the published owner's cells");
+        engine_services_cc13::platform_run_loop_dispatch_00bea800(native_platform_->publication, &calls);
+        log_.implemented("StartupHost::published_platform_loop_dispatch", "00bea800");
+    } else {
+        platform_run_loop_00bec1a0(*loop_, *loop_callbacks_);
+    }
     summary_.loop_finished = loop_->loop_finished;
     summary_.frames_presented = device_ != nullptr ? device_->presented() : 0ull;
     summary_.presents_skipped = device_ != nullptr ? device_->presents_skipped() : 0ull;

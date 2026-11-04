@@ -1,0 +1,160 @@
+{
+  "goal": 4,
+  "chain": 495,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain495Bound",
+  "rows": [
+    {
+      "native": "00bea800",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp:GameStartupHost::platform_run_loop_dispatch",
+      "reason": "Dispatch the current published native platform through its actual 00D68CC4 table identity; +24h resolves to existing 00BEC1A0 using the same actual loop state and callbacks."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:GameCommandsHost::Impl::run_loopback_list",
+      "reason": "Missing native post/current tick domain, game state and sender initialization metadata in the retained loopback entries."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing persistent plane FX component and timer consumer; adding timer-only storage would not replace live behavior."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ShipAiFirepower ammo-select stand-in",
+      "reason": "Missing a reviewed live native ammo-record/source binding for the alternate flak selection."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost",
+      "reason": "Missing an identified live owner/consumer for the native unit+660h vector."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing frame-job-thread named-call producer; current mission Lua runs only on the main thread."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing frame-job-thread queue producer; current on_frame_job_thread returns false."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootRows animation_interval binding",
+      "reason": "Missing a live weapon-animation object: weapon_animation returns zero and only records the lookup."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiHost::Impl score-list stand-in",
+      "reason": "Missing actual retained group score-list ownership and its insertion consumer; current retained reference is a command target."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiHost::Impl score-list stand-in",
+      "reason": "Missing the retained candidate score list whose key would be marked chosen."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp:font_accepts_text_byte_00ab6d00",
+      "reason": "Missing a live text-input accepts-glyph callback with actual font state; current direct callers are probes."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp:gui_curve_control_points_00abca10",
+      "reason": "Missing a live authored-curve consumer and concrete Cc13SweepB4Host implementation."
+    },
+    {
+      "native": "00abced0",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp:gui_curve_tessellate_00abced0",
+      "reason": "Missing a live authored-curve tessellation/render consumer."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp:direction_angle_deltas_00605630",
+      "reason": "Missing the plane sight-display camera/impact-point consumer; the selected host paths do not own that display."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:director state snapshot provenance",
+      "reason": "Missing a live controller-state message producer and routed consumer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot provenance",
+      "reason": "Missing a retained/routed controller snapshot consumer; copying flattened flags out and back would round-trip."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStart write_checkpoint binding",
+      "reason": "Missing a real checkpoint_differs result and pre-load mission Lua checkpoint table; the current gate returns false."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:local-player join binding",
+      "reason": "Missing a live local-player slot producer on this branch; the identified setter path remains behind the disabled skirmish arm."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp:get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a concrete live consumer of the named FOV/aspect callback; existing references are abstract host services."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp:GameStartupHost::NativePlatformServices::construct",
+      "reason": "Startup already uses the actual native window-platform constructor; wiring the older engine_services body would duplicate construction."
+    }
+  ],
+  "evidence": {
+    "native_dispatch": "00BEA800: MOV ECX,[0109CF04]; MOV EAX,[ECX]; MOV EDX,[EAX+24h]; JMP EDX",
+    "native_table": "Ghidra bytes 00D68CE8 = A0 C1 BE 00, hence 00D68CC4+24h -> 00BEC1A0",
+    "state": "NativePlatformServices retains the publication, original table identity and actual 184h owner. Win32PlatformState aliases its +42h frames, +181h exit and +43h finished bytes. The dispatch binding checks the same owner/table and enters the existing loop once.",
+    "call_graph": "00bea800 is entry-reachable, one direct call site 1001df66 from GameStartupHost::platform_run_loop_dispatch",
+    "build": "scripts/build.ps1 passed; all five existing CTest tests passed",
+    "runtime": "Game not run. Source interface and built reachability verified; no original binary ABI or gameplay validation claimed.",
+    "float_math_changed": false,
+    "readiness_row": {
+      "address": "00bea800",
+      "name": "platform_run_loop_dispatch_00bea800",
+      "source": "src/engine_services_cc13.cpp",
+      "category": "files",
+      "state": "wired",
+      "callers": 1,
+      "wired_callers": 1,
+      "callees": 0,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": true,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    "built_graph_totals": {
+      "reachable_reconstructed_addresses": 4849,
+      "reconstructed_addresses": 5321
+    }
+  },
+  "wired_before": 9778,
+  "wired_after": 9779
+}

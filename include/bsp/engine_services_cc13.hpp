@@ -686,8 +686,17 @@ void frame_clock_base_destroy_00bedfa0(void* object, void*& published_01090ab0, 
 void* frame_clock_variant_construct_00bedf60(void* object, EngineServiceCalls& calls);
 // 00BE28B0 BSP_AllocationStats_DerivedConstruct_Unreferenced: 00BE2750, vtable 00D685E4.
 void* allocation_stats_derived_construct_00be28b0(void* object, EngineServiceCalls& calls);
-// 00BEA800 BSP_Platform_RunLoopDispatch: the published platform's (0109CF04) vtable +24h, ECX = platform.
-void platform_run_loop_dispatch_00bea800(void* platform_0109cf04);
+// Source binding for an original-image vtable identity whose code pointers are
+// not executable in bsp_game. It must dispatch +24h on this same actual owner.
+struct PlatformRunLoopDispatchCalls {
+    virtual ~PlatformRunLoopDispatchCalls() = default;
+    virtual void run_loop_vtable_24(void* actual_platform, const void* actual_vtable) = 0;
+};
+// 00BEA800: load the current 0109CF04 publication, then its vtable +24h,
+// ECX = platform, tail JMP. The optional binding changes only virtual dispatch
+// resolution; the default retains the executable-vtable ABI boundary.
+void platform_run_loop_dispatch_00bea800(void* const volatile& platform_0109cf04,
+    PlatformRunLoopDispatchCalls* calls = nullptr);
 // 00BEC3B0 BSP_Win32Platform_WindowProcThunk, __stdcall(HWND, UINT, WPARAM, LPARAM) RET 10h: the published
 // platform's vtable +28h as a __stdcall (platform, hwnd, message, wparam, lparam); ECX is left holding the
 // vtable pointer.

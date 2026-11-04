@@ -1329,9 +1329,19 @@ void* allocation_stats_derived_construct_00be28b0(void* object, EngineServiceCal
     return object;
 }
 
-void platform_run_loop_dispatch_00bea800(void* platform_0109cf04) {
+void platform_run_loop_dispatch_00bea800(void* const volatile& platform_0109cf04,
+    PlatformRunLoopDispatchCalls* calls) {
+    // 00BEA800/806/808/80B: load the current singleton, its table and +24h,
+    // then tail-dispatch with that owner in ECX. Source virtual resolution is
+    // necessary for the native platform's retained 00D68CC4 table identity;
+    // its original +24h word is 00BEC1A0 (bytes at 00D68CE8).
+    void* const platform = platform_0109cf04;
+    if (calls) {
+        calls->run_loop_vtable_24(platform, *static_cast<void**>(platform));
+        return;
+    }
     using Dispatch = void(__thiscall*)(void*);
-    vtable_slot<Dispatch>(platform_0109cf04, 0x24)(platform_0109cf04);
+    vtable_slot<Dispatch>(platform, 0x24)(platform);
 }
 
 std::int32_t win32_platform_window_proc_00bec3b0(void* platform_0109cf04, void* window, std::uint32_t message,
