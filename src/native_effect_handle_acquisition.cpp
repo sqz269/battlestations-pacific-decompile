@@ -49,6 +49,10 @@ void publish_insert_result(NativeIntPointerTree18InsertResult* output,
 }
 } // namespace
 
+[[noreturn]] void throw_native_tree18_length_error() {
+    throw_tree_length_error();
+}
+
 NativeIntPointerTree18Iterator* find_native_int_pointer_tree18_0086b650(
     void* tree, NativeIntPointerTree18Iterator* output,
     const std::int32_t* key) {

@@ -1,8 +1,10 @@
 #include "bsp/native_gui_camera_store_map.hpp"
+#include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_int_pointer_tree18_leaves.hpp"
 #include "bsp/native_int_pointer_tree18_erase.hpp"
 #include "bsp/gui_text_type_dispatch.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain355_switches.hpp"
 #include <cstdlib>
 
 namespace bsp {
@@ -155,7 +157,38 @@ void* allocate_native_gui_camera_store_tree_node_00aa2960(
 NativeIntPointerTree18Iterator* link_native_gui_camera_store_tree_node_00aa41b0(
     void* tree, NativeIntPointerTree18Iterator* output, std::uint8_t insert_left,
     void* parent, const NativeGuiCameraStorePair* pair) {
-    return link_native_int_pointer_tree18_node_0086ebe0(tree, output, insert_left, parent, pair);
+    if constexpr (kWireGoal4Chain355Bound) {
+        // Evidence: bsp.py show 00aa41b0 (allocation and left/right repair
+        // calls; the final mirrored left rotation is inlined).
+        // Use its camera-store leaves on the SAME actual manager+8 tree,
+        // caller iterator and pair, instead of routing every call through the
+        // generic EBE0 instantiation. AA2960 preserves the float key's bits in
+        // its existing 18h-node allocator; AA1080/AA2180 use the same +14/+15
+        // color/nil layout (bsp.py show <address> --asm). Native rotations are
+        // thiscall(tree, pivot), RET4; their existing Source fastcall adapters
+        // carry ECX=tree, unused EDX, stack pivot. No extra tree or replay.
+        // The shared length-error boundary retains the existing Source ABI;
+        // Original CRT/FH3 identity and game behavior remain unvalidated.
+        using Access = detail::TreeInsertAccess<0x14, 0x15>;
+        detail::link_tree_node<Access>(tree, output, insert_left, parent, pair,
+            0x1ffffffeu,
+            [](void* left, void* parent_node, void* right, const void* value,
+                std::uint8_t color) {
+                return allocate_native_gui_camera_store_tree_node_00aa2960(
+                    left, parent_node, right,
+                    static_cast<const NativeGuiCameraStorePair*>(value), color);
+            },
+            [](void* actual_tree, void* pivot) {
+                rotate_native_gui_camera_store_left_00aa2180(actual_tree, nullptr, pivot);
+            },
+            [](void* actual_tree, void* pivot) {
+                rotate_native_gui_camera_store_right_00aa1080(actual_tree, nullptr, pivot);
+            },
+            throw_native_tree18_length_error);
+        return output;
+    } else {
+        return link_native_int_pointer_tree18_node_0086ebe0(tree, output, insert_left, parent, pair);
+    }
 }
 
 NativeGuiCameraStoreInsertResult* insert_native_gui_camera_store_00aa4960(

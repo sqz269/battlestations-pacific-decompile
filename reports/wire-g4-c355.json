@@ -1,0 +1,134 @@
+{
+  "goal": 4,
+  "chain": 355,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain355Bound",
+  "baseline": {
+    "head": "3107f225c",
+    "wired": 9462
+  },
+  "change": "Route the existing raw camera-store tree linker through its existing camera-store allocation and rotation bodies, using the same shared insertion mechanics, real manager+8 tree, caller-owned pair and iterator output. The disabled switch arm retains the old EBE0 delegation.",
+  "evidence": [
+    "bsp.py show 00aa41b0: count limit 1FFFFFFEh; AA2960 allocation; AA1080/AA2180 rotation calls; final mirrored left rotation inlined; node then owner publication",
+    "bsp.py show 00aa2960: physical 18h node, raw key/value copy, color +14h, nil +15h",
+    "bsp.py show 00aa1080 --asm and show 00aa2180 --asm: ECX tree, stack pivot, RET4; existing Source fastcall adapters preserve these inputs",
+    "detail::link_tree_node<TreeInsertAccess<0x14,0x15>> is the same insertion/rebalance implementation the previous EBE0 delegation used",
+    "Current include/bsp/game_native_gui_page_application.hpp enables kNativeGuiPageChainCc15Bound; game_hosts.cpp binds the actual native Page application to the frontend"
+  ],
+  "rows": [
+    {
+      "native": "00aa1080",
+      "status": "wired",
+      "host_site": "src/native_gui_camera_store_map.cpp:link_native_gui_camera_store_tree_node_00aa41b0 right-rotation callback"
+    },
+    {
+      "native": "00aa2180",
+      "status": "wired",
+      "host_site": "src/native_gui_camera_store_map.cpp:link_native_gui_camera_store_tree_node_00aa41b0 left-rotation callback"
+    },
+    {
+      "native": "00aa2960",
+      "status": "wired",
+      "host_site": "src/native_gui_camera_store_map.cpp:link_native_gui_camera_store_tree_node_00aa41b0 allocation callback"
+    },
+    {
+      "native": "00aa41b0",
+      "status": "wired",
+      "host_site": "src/native_gui_camera_store_map.cpp:insert_native_gui_camera_store_00aa4960",
+      "note": "Already reachable before this change; reconnected its address-specific callees. Not counted as a newly wired function."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:controller snapshot provenance",
+      "reason": "Selection pass did not establish a real controller-message producer and routed consumer; constructing a temporary message from flattened host flags would not establish native ownership or transport."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot provenance",
+      "reason": "No controller snapshot producer or consumer was established in the selection pass; existing host flags alone do not justify a copy-only snapshot round trip."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:navigation angle overrides",
+      "reason": "No producer for the native unit+9A8h/+9ACh override-angle inputs was established; substituting a different heading wrap would not wire the original call site."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:difficulty selection",
+      "reason": "No native brain/planner activity projection for the eight-slot helper was established during selection; scene party-slot booleans are not sufficient evidence for its inputs."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:set_ambient_volume",
+      "reason": "has_ambient_sound_instance returns false and the volume callback only records the address; a real ambient SoundInstance/sample producer is missing on this path."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootRows::animation_interval",
+      "reason": "weapon_animation returns zero and animation_interval only records the address; no real animation/ticker range owner reaches this callback."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MoviePlayer::set_widget_local_z",
+      "reason": "The movie callback logs an unimplemented operation; a verified movie widget and its real scene transform publication were not established in this pass."
+    },
+    {
+      "native": "00aa7930",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::set_widget_rotation",
+      "reason": "The bridge edits GuiLayoutWidget scalar rotation and redraws quads; AA7930 additionally publishes the real scene-node transform, whose transform host is missing at this bridge site."
+    },
+    {
+      "native": "00aa7950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:runtime widget transforms",
+      "reason": "No scale setter with a real GuiWidgetTransformHost scene publication was established; adding a no-op publisher would omit the reconstructed body's effect."
+    },
+    {
+      "native": "00aa7d40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::set_widget_local_position",
+      "reason": "The bridge lacks the real scene-node transform/bounds publication required after the local-Z write; current scalar position storage alone is insufficient."
+    },
+    {
+      "native": "00aa7d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::set_widget_local_position",
+      "reason": "The native authored-X setter recomposes and refreshes bounds before storing authored X; the bridge has no verified transform/bounds host for those effects."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::Impl draw ordering",
+      "reason": "AA5A00 collects an alphabetical child snapshot, whereas the host site sorts draw records by layer/runtime/Z; replacing that draw sort would use the wrong operation."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 3 CTests passed",
+    "changed_build": "scripts/build.ps1 passed; all 3 CTests passed",
+    "analysis_build": "python tools/call_graph.py --build passed; non-inlined build/callgraph executable, 6020/6051 reconstructed addresses called",
+    "call_sites": {
+      "00aa1080": "REACHABLE, 1 reachable call at 105D811B from the AA41B0 right-rotation lambda",
+      "00aa2180": "REACHABLE, 1 reachable call at 105D80FB from the AA41B0 left-rotation lambda",
+      "00aa2960": "REACHABLE, 1 reachable call at 105D8142 from the AA41B0 allocation lambda"
+    },
+    "entry_path": "WinMain -> GameStartupHost::run_initialize_phases -> actual Page application / Page properties -> read_native_gui_page_properties_00ac4c50 -> acquire_scene -> create_native_gui_camera_store_00aa5070 -> insert_native_gui_camera_store_00aa4960 -> link_native_gui_camera_store_tree_node_00aa41b0 -> allocation/rotation callbacks",
+    "entry_path_limit": "The call graph includes virtual-table edges; source inspection confirms the native Page chain is currently enabled. No live execution claimed.",
+    "readiness_after": {
+      "wired": 9465,
+      "ready": 1559,
+      "called": 5576,
+      "new_rows": "00aa1080, 00aa2180, 00aa2960 each state=wired, called=true, call_sites=1, callers_live=1"
+    },
+    "float_math": "No float arithmetic changed; the new wiring only selects existing raw tree leaves.",
+    "new_tests": "None; shared insertion mechanics and existing leaf bodies retained.",
+    "limits": "Source interfaces over real raw runtime storage. No Original binary ABI/FH3 identity or live game validation claimed; the game was not run."
+  }
+}

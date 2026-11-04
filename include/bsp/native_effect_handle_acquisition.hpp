@@ -59,6 +59,11 @@ NativeIntPointerTree18Iterator* link_native_int_pointer_tree18_node_0086ebe0(
     std::uint8_t insert_left, void* parent,
     const NativeIntPointerTree18Pair* pair);
 
+// Shared Source failure boundary for layout-identical tree insertion bodies.
+// Uses the same recovered SBO message and source-layout length_error as EBE0;
+// this adapter does not claim an additional original address or Original FH3 ABI.
+[[noreturn]] void throw_native_tree18_length_error();
+
 // 0086F930[185]: original ECX tree, stack output/pair, EAX output, RET8.
 // Signed unique search; predecessor is checked through00869990 when needed.
 // A duplicate preserves its current mapped pointer and publishes inserted=0.
