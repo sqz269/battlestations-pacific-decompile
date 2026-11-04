@@ -3,6 +3,8 @@
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_misc_cc13.hpp"
 #include "bsp/ship_ai_switch_reach.hpp"
+#include "bsp/native_rocket_class_query.hpp"
+#include "bsp/wire_goal4_chain517_switches.hpp"
 
 // Evidence: docs/AI_GLOBALS_AND_TARGET_WEIGHTS.md.
 // Target MSVC Win32. Nothing here is a binary-compatible replacement: the native
@@ -573,10 +575,28 @@ void ai_plane_loadout_arm(AiTargetWeightModelHost& host, const AiTargetWeightKey
             // 006E3260 true (IgnitionDelay <= 0): the small rocket. 00A08882
             // clears [ESP+2Bh] before either test can fail.
             penalty = false;
+            const bool permitted = [&] {
+                if constexpr (kWireGoal4Chain517Bound) {
+                    // bsp.py show 00a08460 --asm, 00A08889..00A088C4:
+                    // +E4h belongs to this loadout's Lua-loaded MRocket class,
+                    // not the target entity. Preserve the plane-only first
+                    // call and the unconditional second predicate, then OR.
+                    NativeRocketClassQuery query(bullet.ignition_delay, bullet.anti_air,
+                        host.rocket_air_ground_same());
+                    const auto view = cc13_seg47::raw(query.data());
+                    const bool air = target_plane
+                        && cc13_seg47::target_flag_e4_set_or_global_007b80a0(query, view) != 0;
+                    const bool ground = cc13_seg47::target_flag_e4_clear_or_global_007b80c0(query, view) != 0
+                        && !target_plane && !target_sub;
+                    return air || ground;
+                } else {
             const bool same = host.rocket_air_ground_same();
             const bool air = target_plane && (bullet.anti_air || same);          // 007B80A0
             const bool ground = (!bullet.anti_air || same) && !target_plane && !target_sub; // 007B80C0
-            if (!air && !ground) break; // 00A088C4
+                    return air || ground;
+                }
+            }();
+            if (!permitted) break; // 00A088C4
             rate = static_cast<float>(static_cast<double>(ammo) / static_cast<double>(min_reload));
             gun_walk = true; // 00A088E0: the gun walk still runs
             cap = target_plane

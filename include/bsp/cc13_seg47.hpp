@@ -49,7 +49,7 @@ struct DroppableRoundCountHost : RackRoundCountHost {
     virtual bool rack_vcall_holds_kind_210(Raw rack, std::int32_t kind, std::int32_t flag) = 0;
 };
 
-// 007B80C0 reads only this image-global binding. Keep its caller independent
+// 007B80A0 / 007B80C0 read only this image-global binding. Keep their callers independent
 // of the unrelated flight, allocation and archive callbacks in Seg47Host.
 struct TargetFlagGlobalsHost {
     virtual ~TargetFlagGlobalsHost() = default;
@@ -580,7 +580,7 @@ void* bot_task_make_rocket_007b7fd0(Seg47Host& host, void* a, void* b);
 
 
 // --- plane state and weapon-controller band 007B80A0-007B9510 ----------------------
-std::int32_t target_flag_e4_set_or_global_007b80a0(Seg47Host& host, Raw target);
+std::int32_t target_flag_e4_set_or_global_007b80a0(TargetFlagGlobalsHost& host, Raw target);
 std::int32_t target_flag_e4_clear_or_global_007b80c0(TargetFlagGlobalsHost& host, Raw target);
 void float_window_set_sample_and_sum_007b8140(Raw window, std::int32_t index, std::int32_t count, float sample);
 void plane_clear_flag_904_007b8450(Raw plane);

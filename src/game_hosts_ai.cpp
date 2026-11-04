@@ -35,6 +35,8 @@
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/building_pads.hpp"
 #include "bsp/ai_target_weights.hpp"
+#include "bsp/native_rocket_class_query.hpp"
+#include "bsp/wire_goal4_chain517_switches.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -953,12 +955,28 @@ public:
     float rocket_accuracy(const void* attacker, const bsp::AiPlaneBulletFacts& bullet,
                           const void* target) override {
         if (!group_) return 0.0f;
+        if constexpr (bsp::kWireGoal4Chain517Bound) {
+            // bsp.py show 009fe270 --asm, 009FE516 / 009FE530: both
+            // predicates read this loaded rocket class's AntiAir (+E4h).
+            // Use the selector's existing read-only class view; its global
+            // input is the same host F874FD value used by the prior path.
+            bsp::NativeRocketClassQuery query(bullet.ignition_delay, bullet.anti_air,
+                rocket_air_ground_same());
+            const auto view = bsp::cc13_seg47::raw(query.data());
+            const bool air = bsp::cc13_seg47::target_flag_e4_set_or_global_007b80a0(query, view) != 0;
+            const bool ground = bsp::cc13_seg47::target_flag_e4_clear_or_global_007b80c0(query, view) != 0;
+            const std::uint32_t offset = bsp::ai_rocket_accuracy_offset_009fe4f1(
+                entity_is_type(attacker, 0x0F), bullet.ignition_delay <= 0.0f,
+                air, ground, static_cast<int>(group_(index_of(target))));
+            return offset == 0u ? 0.0f : block_.at(offset);
+        } else {
         const bool same = rocket_air_ground_same();
         const std::uint32_t offset = bsp::ai_rocket_accuracy_offset_009fe4f1(
             entity_is_type(attacker, 0x0F), bullet.ignition_delay <= 0.0f,
             bullet.anti_air || same, !bullet.anti_air || same,
             static_cast<int>(group_(index_of(target))));
         return offset == 0u ? 0.0f : block_.at(offset);
+        }
     }
     void note_plane_option(std::uint32_t descriptor, float value) override {
         const int loadout_slot = ai_loadout_descriptor_slot(descriptor);
