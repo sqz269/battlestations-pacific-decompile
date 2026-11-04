@@ -222,17 +222,22 @@ struct FrontEndScrollerHost {
 // ---------------------------------------------------------------------------
 
 // 00683610 __thiscall(this) RET. Field initialisation only, no callees.
-void construct_front_end_screen_scroller(FrontEndScreenScroller& scroller) noexcept;
+void construct_front_end_screen_scroller_00683610(FrontEndScreenScroller& scroller) noexcept;
+// Preserve existing callers as references to the SAME address-identified body.
+// No wrapper or second reconstruction is emitted for these legacy spellings.
+inline constexpr auto& construct_front_end_screen_scroller = construct_front_end_screen_scroller_00683610;
 
 // 00683380 __thiscall(this, widget, float track, void* arrow_start,
 // void* arrow_end) RET 10h. Captures the thumb's position and height.
-void attach_scroll_bar(FrontEndScreenScroller& scroller, void* thumb_widget,
+void attach_scroll_bar_00683380(FrontEndScreenScroller& scroller, void* thumb_widget,
     float track, void* arrow_start, void* arrow_end, FrontEndScrollerHost& host);
+inline constexpr auto& attach_scroll_bar = attach_scroll_bar_00683380;
 
 // 00683790 __thiscall(this, widget) RET 4. A null widget keeps the previous
 // content widget and its captured base but still resets the scroll state.
-void attach_content(FrontEndScreenScroller& scroller, void* content_widget,
+void attach_content_00683790(FrontEndScreenScroller& scroller, void* content_widget,
     FrontEndScrollerHost& host);
+inline constexpr auto& attach_content = attach_content_00683790;
 
 // 006833F0 __fastcall(this) RET. Re-reads both base positions from the widgets
 // that are currently attached.

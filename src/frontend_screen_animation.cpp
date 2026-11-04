@@ -166,7 +166,7 @@ AutoScrollCommand classify_scroll_axis(float axis) noexcept
     return command;
 }
 
-void construct_front_end_screen_scroller(FrontEndScreenScroller& scroller) noexcept
+void construct_front_end_screen_scroller_00683610(FrontEndScreenScroller& scroller) noexcept
 {
     // 00683610 writes every field below and leaves +4Ch and +50h untouched.
     scroller.content_widget = nullptr;
@@ -191,7 +191,7 @@ void construct_front_end_screen_scroller(FrontEndScreenScroller& scroller) noexc
     scroller.tint_widgets = true;   // +5Bh = 1
 }
 
-void attach_scroll_bar(FrontEndScreenScroller& scroller, void* thumb_widget,
+void attach_scroll_bar_00683380(FrontEndScreenScroller& scroller, void* thumb_widget,
     float track, void* arrow_start, void* arrow_end, FrontEndScrollerHost& host)
 {
     // 00683380. Both +30h and +2Ch take the track length; the first 006834A0
@@ -209,7 +209,7 @@ void attach_scroll_bar(FrontEndScreenScroller& scroller, void* thumb_widget,
     scroller.arrow_end_widget = arrow_end;
 }
 
-void attach_content(FrontEndScreenScroller& scroller, void* content_widget,
+void attach_content_00683790(FrontEndScreenScroller& scroller, void* content_widget,
     FrontEndScrollerHost& host)
 {
     // 00683790. A null argument leaves +00h and the captured base alone.

@@ -1,0 +1,157 @@
+{
+  "chain": 387,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain387Bound",
+  "base": "e0235f5ffc",
+  "rows": [
+    {
+      "native": "00683610",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::Impl"
+    },
+    {
+      "native": "00683380",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::bind_main_menu_layout_005861b0"
+    },
+    {
+      "native": "00683790",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::bind_main_menu_layout_005861b0; MissionDetailBinding::reset_scroller"
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "The retained scroller and authored thumb/track now exist; briefing_text_height still returns a placeholder, so a real text-context height producer is required before passing a range."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::animate_detail_group/animate_page_group",
+      "reason": "Both scrollers now persist with real layout attachments; the original scroll action records, pad provider, GUI cursor samples and widget drag/listener path remain unbound."
+    },
+    {
+      "native": "00ab6bd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::briefing_text_height",
+      "reason": "A verified current-widget text-height producer is missing: the cached bridge runs do not expose the wrapped flag, measured height and signed font-height state consumed at +FC/+178/+108 by this body."
+    },
+    {
+      "native": "006833f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: retained main-menu scrollers",
+      "reason": "A real screen layout-recapture call site is not yet bound; the verified detail reset calls 00683790 with null and must not acquire an extra recapture."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: native class-construction candidate survey",
+      "reason": "Deferred outside this scroller packet: wiring needs verification of the actual native class allocation, damageable-construction access and genuine dispatch-table producer."
+    },
+    {
+      "native": "0042d450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: spatial-index candidate survey",
+      "reason": "Deferred outside this scroller packet: the host spatial consumer must be connected to the actual manager/index publication cells before this native singleton path is used."
+    },
+    {
+      "native": "0042e630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: spatial-index candidate survey",
+      "reason": "Deferred outside this scroller packet: the host spatial consumer must be connected to the actual manager/index publication cells before this native singleton path is used."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge candidate survey",
+      "reason": "The movie host still needs actual movie-widget storage and decoder/resource/subtitle-child bindings; its retained subtitle schedule projection is not that native widget object."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge candidate survey",
+      "reason": "The movie host still needs actual movie-widget storage and decoder/resource/subtitle-child bindings; its retained subtitle schedule projection is not that native widget object."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge candidate survey",
+      "reason": "The movie host still needs actual movie-widget storage and decoder/resource/subtitle-child bindings; its retained subtitle schedule projection is not that native widget object."
+    }
+  ],
+  "built": "Two persistent main-menu scrollers constructed by the existing 00683610 body; exact authored content/thumb/arrow hierarchy and binary track dimensions; null-content detail reset; function-reference compatibility aliases retain one body per original address.",
+  "evidence": [
+    "bsp.py show 00683610, 00683380, 00683790, 006834a0, 00ab6bd0",
+    "Live original /battlestationspacific.exe listing: 00586E02/00586E0B/00586E22/00586E25/00586E32 track subtraction; 005874A2 loads float 00CEF9C8 (28 7D D2 3D); 0058C84E resets with null",
+    "call_graph.py who: all three wired addresses REACHABLE, with 2/2/3 call sites from the changed host"
+  ],
+  "counts": {
+    "source_wired_before": 9614,
+    "compiled_reachable_original_addresses_before": 4558,
+    "compiled_reachable_original_addresses_after": 4561,
+    "source_wired_after": 9615
+  },
+  "validation": {
+    "win32_build": "passed",
+    "reconstructed_math": "passed",
+    "tool_tests": "passed",
+    "game_run": false,
+    "original_abi_compatible": false,
+    "pc24_lint": "passed --staged: 0 findings, 0 allowed",
+    "readiness_target_calls": {
+      "00683610": 2,
+      "00683380": 2,
+      "00683790": 3
+    },
+    "compiled_total_basis": "Same default build/win32 graph before and after; readiness analysis-build aggregate is not compared."
+  },
+  "assumptions": [
+    "Use the existing semantic GuiLayoutWidget ownership/transform/render bridge; no claim of native Page ABI parity.",
+    "If the complete authored attachment hierarchy is absent, log the missing layout instead of manufacturing widgets or dimensions.",
+    "The switch-off arm retains prior host operations; legacy C++ spellings refer to the same renamed bodies."
+  ],
+  "remaining": "Range/pump and full scrolling interaction remain blocked by the actual text-context height and original input/cursor/listener producers. No game was launched."
+}
