@@ -1,6 +1,7 @@
 #include "bsp/native_shader_interpolators.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain377_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -116,8 +117,10 @@ void NativeShaderInterpolatorOperation::acknowledge_diagnostic_cleanup() noexcep
 }
 void reserve_native_shader_interpolator_words_00b346e0(NativeShaderDescriptorArray& rows,
     std::int32_t capacity, Operation& a) {
-    begin(a, 0x00b346e0); a.output = &rows;
-    try { reserve_words(rows, capacity, a); a.phase = Phase::complete; }
+    const bool nested = a.phase == Phase::word_reserve && a.function == 0x00b34aa0
+        && a.builder && (&rows == &a.builder->words_54 || &rows == &a.builder->words_60);
+    if (!nested) { begin(a, 0x00b346e0); a.output = &rows; }
+    try { reserve_words(rows, capacity, a); if (!nested) a.phase = Phase::complete; }
     catch (...) { a.phase = Phase::failed; throw; }
 }
 void select_native_shader_interpolator_fields_00b36800(NativeMaterialProgramBuilderStorage& builder,
@@ -198,7 +201,16 @@ void append_native_shader_interpolator_mapping_00b34aa0(NativeMaterialProgramBui
                     if (current<std::int32_t>(&rows, 4) == capacity) {
                         auto next = signed_bits(static_cast<std::uint32_t>(capacity) * 2u);
                         if (next < 2) next = 1;
+                        if constexpr (kWireGoal4Chain377Bound) {
+                            // bsp.py show 00b34aa0: both TEXCOORD/COLOR arms
+                            // call 00B346E0 on builder+54h/+60h before append.
+                            // Retain the mapping index/mask/output on the SAME
+                            // operation if reserve acquires storage then fails.
+                            a.phase = Phase::word_reserve;
+                            reserve_native_shader_interpolator_words_00b346e0(rows, next, a);
+                        } else {
                         reserve_words(rows, next, a);
+                        }
                     }
                     a.phase = Phase::word_publication; a.native_site = semantic == 2 ? 0x00b34b28 : 0x00b34b97;
                     const auto count = current<std::uint32_t>(&rows, 4);

@@ -1,0 +1,158 @@
+{
+  "goal": 4,
+  "chain": 377,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "base_commit": "d52465cf53c426618c7d2250a66382881f6d7c64",
+  "picked": "Native shader interpolator-word and reflected-constant array reserves",
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain377_switches.hpp",
+    "name": "bsp::kWireGoal4Chain377Bound",
+    "enabled": true,
+    "off_behavior": "The unchanged private-helper calls remain in the else arms; the new nested-operation entry markers are used only by the enabled arms."
+  },
+  "rows": [
+    {
+      "native": "00b346e0",
+      "status": "wired",
+      "host_site": "src/native_shader_interpolators.cpp: append_native_shader_interpolator_mapping_00b34aa0",
+      "state": "The actual material-program builder words_54/words_60 arrays, existing field semantic/mask records and current native count/capacity determine the reserve request.",
+      "evidence": "bsp.py show 00b34aa0: TEXCOORD and COLOR arms call 00B346E0 on builder+54h/+60h before publishing the same two-byte mapping. bsp.py show 00b346e0 confirms minimum1, copy, free, then data/capacity publication.",
+      "called_before": false,
+      "called_after": true,
+      "reachable_call_sites": 1,
+      "built_caller": "bsp::append_native_shader_interpolator_mapping_00b34aa0",
+      "built_call_site": "105874f7"
+    },
+    {
+      "native": "00b38390",
+      "status": "wired",
+      "host_site": "src/native_compiled_shader_owner.cpp: append_native_compiled_shader_constant_00b3a660 and resize_native_compiled_shader_constants_00b38490",
+      "state": "The same actual compiled-shader constants array and reflected source record supply count, capacity, growth request, payload and name ownership.",
+      "evidence": "bsp.py callees 00b3a660: original call 00B3A695 -> 00B38390; bsp.py callees 00b38490: original call 00B384BB -> 00B38390. bsp.py show 00b38390 confirms minimum16, forward live-row copy/name release, free, then publication.",
+      "called_before": false,
+      "called_after": true,
+      "reachable_call_sites": 2,
+      "built_callers": [
+        {
+          "name": "bsp::append_native_compiled_shader_constant_00b3a660",
+          "call_site": "104ce2aa"
+        },
+        {
+          "name": "bsp::resize_native_compiled_shader_constants_00b38490",
+          "call_site": "104ce9d5"
+        }
+      ]
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit/ForceSelectUnit screen_reset records",
+      "reason": "Needs the actual pick-screen reset owner, including mode +30h and selection vector +C4h; current call sites only record this operation and those producers require a separate screen-owner audit."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate cockpit_screen_mode",
+      "reason": "Needs the plane-effects screen's plane/cockpit-mode owner; the current adapter reports cockpit_screen_wanted false and records a constant mode result."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate exit_free_camera_overlay",
+      "reason": "Needs the actual camera-screen flag and request/level3 owners; the current adapter substitutes camera flags and only records screen-set/request effects."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate toggle_tactical_overlay",
+      "reason": "Needs the support-manager/camera-screen tracked state and request graph; the current adapter supplies record-only overlay and screen-set operations."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen toggle_closed_hud",
+      "reason": "Needs persistent HudClosedRowsState closed/interface_id/restore_payload producers and the interface-request dispatch; current host only records this toggle."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: BotApproachLand set_owner_0099b650",
+      "reason": "Needs the same live plan owner at [approach+18h] and its +25Ch consumer; land update explicitly records the unmodelled pointer assignment."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: prospective bot task tick-gate binding",
+      "reason": "Needs the actual task+2F4h unit, per-side unit+9C2h gate bytes and global-side producer; this packet has no verified owner for those inputs."
+    },
+    {
+      "native": "00be9b20",
+      "status": "skipped",
+      "host_site": "src/geom_mesh_resource.cpp: prospective GeomMesh payload remaining-byte binding",
+      "reason": "Needs the original handle -> node+8h stream -> stream+64h remaining-byte owner; substituting a node-local payload budget would read different state."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: rewind_engine_movie_clock_0045c5b0 (prospective movie owner)",
+      "reason": "Needs a runtime EngineMovieClock owner and action-playback consumer; current EngineMovieClock references are the standalone reconstruction interface/bodies."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: advance_engine_movie_clock_0045f970 (prospective movie owner)",
+      "reason": "Needs the same persistent EngineMovieClock with real state/length/history and its action-playback consumer before advancing it from a game frame."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: resize_native_distortion_records_00b4ee20",
+      "reason": "No missing call edge at this layer: resize already calls this reserve; a new distortion-record growth producer was outside the chosen shader-array packet."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: delete_native_distortion_owner_00b4f540 and destroy_native_distortion_records_00b4f0a0",
+      "reason": "Already reachable with two call sites in the pre-change binary; it needs no additional wiring for this chain despite its readiness text classification."
+    }
+  ],
+  "operation_lifetime": {
+    "compiled_constants": "An explicit reserve_call step admits the running caller operation only for the identical actual array. Nested reserve retains append_source/request and acquisitions, and leaves successful completion to the outer append/resize.",
+    "interpolator_words": "An explicit word_reserve phase admits only the 00B34AA0 operation with its own builder+54h/+60h array. Preserve its fields output and mapping cursor; failed acquisitions remain in the same operation.",
+    "replay": "Standalone operations still begin once and complete themselves. Failed/completed frames are not accepted as new reserve calls; original diagnostic cleanup obligations remain."
+  },
+  "real_runtime_path": {
+    "startup": "GameStartupHost::run_initialize_phases -> GameNativeRendererApplication::preload_startup_shaders -> StartupShaderPreload::open -> GameNativeGuiEffectApplication -> NativeMaterialProgramCompilerActual::continue_material_pass_00b3b3c0",
+    "enabled_gate": "include/bsp/game_native_renderer_application.hpp: kNativeShaderPreloadStartupCc16Bound = true",
+    "mapping": "continue_material_pass_00b3b3c0 -> append_native_shader_interpolator_mapping_00b34aa0 -> reserve_native_shader_interpolator_words_00b346e0",
+    "reflection": "continue_material_pass_00b3b3c0 -> reflect_native_compiled_shader_00b3aea0 -> append_native_shader_material_constant_00b3a750 -> append_native_compiled_shader_constant_00b3a660 -> reserve_native_compiled_shader_constants_00b38390",
+    "graph_path_note": "call_graph.py path chooses the shorter optional GUI-effect probe path. Source and call_graph.py who additionally confirm the enabled startup-preload constructor path, independent of that probe."
+  },
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "changed_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "call_graph": "python tools/call_graph.py, who 00b346e0, who 00b38390 and path for both passed; all three new direct call sites are reachable",
+    "readiness": "python tools/wire_readiness.py --standins: both target rows state=wired, called=true; call_sites=1/2 respectively; fresh Release graph, stale=false",
+    "wired_before": 9597,
+    "wired_after": 9599,
+    "binary_reconstructed_addresses_called_before": 4538,
+    "binary_reconstructed_addresses_called_after": 4540,
+    "focused_probe": {
+      "command": "./local/output/run_shader_reserve_probe.ps1",
+      "result": "passed",
+      "scope": "Synthetic actual-layout inputs exercise constant append growth16->24, resize growth to25, sparse TEXCOORD/COLOR growth, standalone reserve, retained mid-copy failure with unchanged old array, failed replay rejection and explicit diagnostic cleanup.",
+      "compiler": "MSVC Win32 /std:c++20 /W4 /WX /O2 /MD /fp:strict; current bsp_core.lib; /link /MANIFEST:EMBED",
+      "source": "local/output/shader_reserve_probe.cpp",
+      "runner": "local/output/run_shader_reserve_probe.ps1",
+      "committed": false,
+      "source_sha256": "2f2cc552c1333b3f1f78f45066fb0298ce45957912f9bb6ae7ecb9928b708a7a",
+      "runner_sha256": "a6f202c2454d5686b37e00b341e0d79283de206ecd686810ac9f5e6f182c0fb5"
+    },
+    "float_math": "No floating-point operations changed; pc24_lint not required",
+    "game_run": false,
+    "abi_claim": "No new ABI-equivalence claim; typed retained host operation interfaces are preserved/extended, not installed binary replacements",
+    "limits": "Build/static call reach and the focused synthetic lifetime probe do not prove execution, shader compilation success, appearance or stability in a running game."
+  },
+  "left_for_others": "Skipped screen/task/movie owners need real input producers and consumers. Distortion rows already have existing call edges. No other host files were edited."
+}
