@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain538_switches.hpp"
+#include "bsp/cc13_seg49.hpp"
 #include "bsp/wire_goal4_chain518_switches.hpp"
 #include "bsp/native_device_class_construction.hpp"
 #include "bsp/native_damageable_class_construction.hpp"
@@ -2692,6 +2694,54 @@ bsp::game_powerups::PowerupUnitView torpedo_powerup_view(const GameProjectileRow
     view.position[2] = shot.position[2];
     return view;
 }
+
+// Chain 538: actual ownership for a slot's five published recon lists. Nodes
+// have the recovered Win32 {prev,next,payload} layout; payloads borrow this
+// owner's stable unit-index projection of the live world-registry entries.
+// No synthetic whole-unit / ReconEntry storage or vtable is constructed.
+// Evidence: bsp.py show 00804C30 / 00804E10 / 008042B0. Each copied node owns
+// only its allocation and shares its source payload, exactly as 00804E10 does.
+class PublishedReconUnitLists final : private bsp::cc13_seg49::ReconListStorageHost {
+public:
+    static_assert(sizeof(bsp::cc13_seg49::ReconNode) == 0x0C);
+    static_assert(sizeof(bsp::cc13_seg49::ReconList) == 0x0C);
+    PublishedReconUnitLists() = default;
+    PublishedReconUnitLists(const PublishedReconUnitLists&) = delete;
+    PublishedReconUnitLists& operator=(const PublishedReconUnitLists&) = delete;
+    ~PublishedReconUnitLists() override {
+        for (auto& list : lists_) bsp::cc13_seg49::recon_list_clear_008042b0(*this, list);
+    }
+
+    void append(std::size_t list, std::size_t unit) {
+        auto& payload = payloads_.try_emplace(unit, unit).first->second;
+        bsp::cc13_seg49::recon_list_push_back_00804c30(*this, lists_[list], &payload);
+    }
+    void copy_append(std::size_t destination, std::size_t source) {
+        bsp::cc13_seg49::recon_list_copy_append_00804e10(*this,
+            lists_[destination], lists_[source]);
+    }
+    void project(std::array<std::vector<std::size_t>, 5>& output) const {
+        // Existing indexed/public APIs consume a read projection. These
+        // vectors never feed the native copy; its result is the published
+        // union consumed by recon_triple_units and the gunnery target walks.
+        for (std::size_t i = 0; i < lists_.size(); ++i) {
+            auto& view = output[i];
+            view.clear();
+            view.reserve(static_cast<std::size_t>(lists_[i].count));
+            for (const auto* node = lists_[i].head; node != nullptr; node = node->next)
+                view.push_back(*static_cast<const std::size_t*>(node->payload));
+        }
+    }
+
+private:
+    void* operator_new_00bf681b(std::size_t size) override { return ::operator new(size); }
+    void free_00bf65ac(void* block) override { ::operator delete(block); }
+
+    // std::map node addresses survive insertion. All lists are cleared in the
+    // destructor body before these borrowed payloads can be destroyed.
+    std::map<std::size_t, std::size_t> payloads_;
+    std::array<bsp::cc13_seg49::ReconList, 5> lists_{};
+};
 
 }  // namespace
 
@@ -5934,6 +5984,9 @@ struct GameGunneryHost::Impl {
         int side{0};
         std::array<std::vector<std::size_t>, 5> lists{};
         std::vector<bool> enemy_squadron_record;   // parallel to lists[1]
+        // Canonical node/payload ownership on chain 538; lists above are its
+        // indexed read projection. The whole owner moves with the slot.
+        std::unique_ptr<PublishedReconUnitLists> published;
     };
     std::vector<ReconSlotTriples> recon_triples;
     unsigned long long recon_triple_builds{0};
@@ -10120,6 +10173,8 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
     for (const int side : sides) {
         ReconSlotTriples t;
         t.side = side;
+        if constexpr (bsp::kWireGoal4Chain538Bound)
+            t.published = std::make_unique<PublishedReconUnitLists>();
         // Step 5: the three relation arrays, bucketed by class id, in scan order,
         // with each record's level (+0Ch): own records carry 2 (00804E70).
         struct Rec { std::size_t unit; int level; };
@@ -10210,7 +10265,13 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
         for (const int id : walk) {
             const auto found = own.find(id);
             if (found == own.end()) continue;
-            for (const Rec& r : found->second) t.lists[0].push_back(r.unit);
+            for (const Rec& r : found->second) {
+                if constexpr (bsp::kWireGoal4Chain538Bound) {
+                    t.published->append(0, r.unit);
+                } else {
+                    t.lists[0].push_back(r.unit);
+                }
+            }
         }
         std::vector<std::size_t> unknown_enemy, unknown_neutral;
         // Steps 9 and 10: every bucket in class order; the drain keeps level 2,
@@ -10221,7 +10282,11 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 const auto found = arr.find(id);
                 if (found == arr.end()) continue;
                 for (const Rec& r : found->second) {
-                    if (r.level == 2) t.lists[which == 0 ? 1 : 2].push_back(r.unit);
+                    if constexpr (bsp::kWireGoal4Chain538Bound) {
+                        if (r.level == 2) t.published->append(which == 0 ? 1 : 2, r.unit);
+                    } else {
+                        if (r.level == 2) t.lists[which == 0 ? 1 : 2].push_back(r.unit);
+                    }
                     if (r.level == 2 && which == 0) t.enemy_squadron_record.push_back(id == 0x18);
                     else if (r.level == 1) (which == 0 ? unknown_enemy : unknown_neutral).push_back(r.unit);
                     if (id == 0x18 && r.level == 2 && which == 0) ++recon_group_enemy_identified;
@@ -10235,7 +10300,11 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
             const auto found = own.find(0x18);
             if (found != own.end()) {
                 for (const Rec& r : found->second) {
-                    t.lists[0].push_back(r.unit);
+                    if constexpr (bsp::kWireGoal4Chain538Bound) {
+                        t.published->append(0, r.unit);
+                    } else {
+                        t.lists[0].push_back(r.unit);
+                    }
                     ++recon_group_own;
                 }
             }
@@ -10243,10 +10312,19 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
             record("Recon::group_members_under_convoy_00805680", 0x00805680u);
             record("Recon::publish_group_level_008069a0", 0x008069a0u);
         }
-        t.lists[3] = unknown_enemy;                                         // 00807644
-        t.lists[3].insert(t.lists[3].end(), unknown_neutral.begin(), unknown_neutral.end());
-        for (int k = 0; k < 4; ++k) {                                       // step 13
-            t.lists[4].insert(t.lists[4].end(), t.lists[k].begin(), t.lists[k].end());
+        if constexpr (bsp::kWireGoal4Chain538Bound) {
+            for (const auto unit : unknown_enemy) t.published->append(3, unit);
+            for (const auto unit : unknown_neutral) t.published->append(3, unit);
+            // 00807933..00807966 (bsp.py show 008073c0 --asm): four calls,
+            // DD8h/DE4h/DF0h/DFCh -> E08h, with source lists left intact.
+            for (std::size_t k = 0; k < 4; ++k) t.published->copy_append(4, k);
+            t.published->project(t.lists);
+        } else {
+            t.lists[3] = unknown_enemy;                                         // 00807644
+            t.lists[3].insert(t.lists[3].end(), unknown_neutral.begin(), unknown_neutral.end());
+            for (int k = 0; k < 4; ++k) {                                       // step 13
+                t.lists[4].insert(t.lists[4].end(), t.lists[k].begin(), t.lists[k].end());
+            }
         }
         for (int k = 0; k < 5; ++k) recon_triple_sum[k] += t.lists[k].size();
         recon_triples.push_back(std::move(t));
