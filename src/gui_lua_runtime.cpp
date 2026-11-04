@@ -1,4 +1,6 @@
 #include "bsp/gui_lua_runtime.hpp"
+#include "bsp/cc13_seg87.hpp"
+#include "bsp/wire_goal4_chain398_switches.hpp"
 #include <limits>
 #include <cmath>
 #include <cstring>
@@ -83,6 +85,7 @@ struct TableSnapshot {
     std::unordered_map<const void*, std::shared_ptr<GuiTable>> tables;
     std::unordered_set<const void*> active;
     std::size_t entries{};
+    NativeLuaStateStorage identity_owner{};
 
     GuiValue value(int index, std::size_t depth) {
         switch (lua_type(state, index)) {
@@ -103,7 +106,19 @@ struct TableSnapshot {
         if (depth > 128) throw std::runtime_error("GUI table exceeds host snapshot depth");
         if (!lua_checkstack(state, 8))
             throw std::runtime_error("GUI table snapshot could not extend the Lua stack");
-        const void* identity = lua_topointer(state, index);
+        const void* identity;
+        if constexpr (kWireGoal4Chain398Bound) {
+            // 00B662E0 listing: read object+0 -> owner+4 and object+8,
+            // then tail-jump to lua_topointer. This borrowed owner view holds
+            // the evaluator's actual Lua state; the object names the live
+            // table stack slot, including negative indices during recursion.
+            // No stack/reference-tracking fields are read or acquired here.
+            identity_owner.state_04 = state;
+            NativeLuaObjectStorage object{&identity_owner, 2, index, 0, 0, {}};
+            identity = native_lua_to_pointer_00b662e0(object);
+        } else {
+            identity = lua_topointer(state, index);
+        }
         if (active.count(identity)) throw std::runtime_error("GUI table contains a cycle");
         const auto previous = tables.find(identity);
         if (previous != tables.end()) return previous->second;
