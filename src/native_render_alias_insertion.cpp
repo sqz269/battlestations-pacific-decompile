@@ -18,8 +18,9 @@ NativeRenderResourceAliasNode* sentinel(void* actual_owner) {
 }
 }
 
-void append_native_render_alias_004d2660(void* actual_destination_owner,
-    const void* actual_source_string_header, SizedStoragePool& actual_string_pool) {
+template<class Pool>
+static __forceinline void append_alias_with_pool(void* actual_destination_owner,
+    const void* actual_source_string_header, Pool& actual_string_pool) {
     auto* const captured_sentinel = sentinel(actual_destination_owner);
     volatile auto* const end = captured_sentinel;
     auto* const previous = end->previous_04;
@@ -30,6 +31,18 @@ void append_native_render_alias_004d2660(void* actual_destination_owner,
     volatile auto* const current_inserted = inserted;
     volatile auto* const current_previous = current_inserted->previous_04;
     current_previous->next_00 = inserted;
+}
+
+void append_native_render_alias_004d2660(void* actual_destination_owner,
+    const void* actual_source_string_header, SizedStoragePool& actual_string_pool) {
+    append_alias_with_pool(actual_destination_owner, actual_source_string_header,
+        actual_string_pool);
+}
+
+__declspec(noinline) void append_native_render_alias_004d2660(void* actual_destination_owner,
+    const void* actual_source_string_header, ActualNativeStringPoolStorage& actual_string_pool) {
+    append_alias_with_pool(actual_destination_owner, actual_source_string_header,
+        actual_string_pool);
 }
 
 template<class Pool>
