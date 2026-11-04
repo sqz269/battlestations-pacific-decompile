@@ -5,27 +5,99 @@
   "rows": [
     {
       "native": "00683820",
-      "status": "skipped",
+      "status": "wired",
       "host_site": "src/game_hosts_mission.cpp::MenuUpdateBinding::animate_detail_group / animate_page_group",
-      "reason": "The input producer and adapters build; the two host call sites await the mission.cpp lease held by agent/g4-w5."
+      "proof": "call_graph.py who 00683820: entry-reachable with two calls, one from each changed menu method. wire_readiness.py reports wired, called=true, call_sites=2.",
+      "state": "Existing retained +354h/+1D4h scrollers and frontend widgets; native configured action values at records+36B4/+3714; current backend class1/index0 pad; actual GUI manager cursor +5C/+60.",
+      "original_sites": "00599DB0 calls at 0059A41C (this+354h, byte1) and 0059A6B5 (this+1D4h, screen+56Ch).",
+      "newly_wired": true
+    },
+    {
+      "native": "00a92c40",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp::GameFrameHost::game_on_move -> GameNativeInputConfigurationApplication::update_actions -> GameInputActions::update",
+      "proof": "Existing native body now also receives the real normal-frame seconds before close/state dispatch, matching 004E4A63..72. It polls the backend itself; the old backend-only refresh is in the disabled arm.",
+      "newly_wired": false
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::attach_tree / insert_into",
+      "reason": "No missing compiled caller: already entry-reachable through two existing scene-property callers despite its readiness ready classification."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl / merge_child",
+      "reason": "No missing compiled caller: already entry-reachable through the existing whole-bag merge composition."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionDetailBinding::set_scroll_range",
+      "reason": "No missing compiled caller: the unsuffixed set_scroll_range body already has an entry-reachable call from the mission-detail host."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_0",
+      "reason": "Missing authored remap-name producer and composed actual render-resource service/texture-load context; current record_remap_texture_name returns an empty string."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_1",
+      "reason": "Missing authored remap-name producer and composed actual render-resource service/texture-load context."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_2",
+      "reason": "Missing authored remap-name producer and composed actual render-resource service/texture-load context."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::set_remap_texture_3",
+      "reason": "Missing authored remap-name producer and composed actual render-resource service/texture-load context."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::run_teardown_arm_004e458a",
+      "reason": "Missing actual movie-screen visibility/slot18, input-context and cinematic-mode providers required by SoundLoadTransitionHost; the current teardown site is only a record."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::session pump/deferred-create boundary",
+      "reason": "Missing a unified queued-message receiver/state adapter and delivery composition; local host paths currently deliver their own queues outside this gate."
     }
   ],
   "built": [
     "Normal-frame native action tick using the existing configuration, owner and backend; replaces the backend-only refresh so devices poll once.",
     "Read-only scroll-axis and pad-device queries over the current input publications.",
     "Cursor query over the actual GUI manager, distinct from the sprite bridge ManagerState.",
-    "Address suffix on the existing 00683820 body, old spelling retained as a reference alias; PC24 drag arithmetic corrected from original assembly."
+    "Address suffix on the existing 00683820 body, old spelling retained as a reference alias; PC24 drag arithmetic corrected from original assembly.",
+    "Two switched main-menu calls over the existing retained scrollers and widgets."
   ],
   "validation": {
     "build": "scripts/build.ps1 passed; 3/3 CTest groups passed, including two one-ULP drag regression checks",
-    "pc24": "pc24_lint.py src/frontend_screen_animation.cpp src/game_input_runtime.cpp: 0 findings",
+    "pc24": "pc24_lint.py --staged and --diff origin/main...HEAD: 0 findings",
+    "call_graph_on": "4789/5255 reconstructed addresses called; 00683820 has two entry-reachable calls",
+    "call_graph_off": "4788/5254 reconstructed addresses called; 00683820 is not linked",
+    "switch": "Disabled build and 3/3 CTests passed; restored true for the final build and commit",
     "game_validated": false,
     "abi_compatible": false
   },
   "wired_before": 9721,
+  "wired_after": 9722,
   "called_before": 4788,
+  "called_after": 4789,
   "limits": [
     "No game launch or visual scroll proof.",
+    "GUI events that begin/end thumb drag and arrow callbacks, plus the mission-list range producer, remain separate work; this packet neither fabricates dragging nor forces a nonzero range.",
+    "Uses the configuration application's existing native callback binding; does not install a new post-tick callback or a second input owner.",
     "This connects existing Source state and services; it does not supply the original binary ABI."
   ]
 }

@@ -65,6 +65,8 @@
 #include "bsp/wire_goal4_chain387_switches.hpp"
 #include "bsp/wire_goal4_chain407_switches.hpp"
 #include "bsp/wire_goal4_chain432_switches.hpp"
+#include "bsp/wire_goal4_chain463_switches.hpp"
+#include "bsp/game_input_runtime.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/scenes_seg1_cc13.hpp"
@@ -769,13 +771,14 @@ void load_mission_idle_camera_shots(Owner& owner, const ScenePropertyBlock& head
 // GameMissionHost::Impl
 // ---------------------------------------------------------------------------
 
-// Layout-only binding for the retained screen scrollers. These are the same
-// GuiLayoutWidget objects the frontend owns and renders, not a second widget
-// tree. Input is deliberately unavailable here: 00683820 must not be enabled
-// until its action records, pad provider and GUI cursor are connected.
+// The retained scrollers borrow the same GuiLayoutWidget objects the frontend
+// owns and renders. Layout-only callers need no input runtime; chain463's
+// update callers also borrow the application's configured raw input owner.
 class MainMenuScrollerLayoutHost final : public FrontEndScrollerHost {
 public:
     explicit MainMenuScrollerLayoutHost(GameFrontendHost& frontend) : frontend_(frontend) {}
+    MainMenuScrollerLayoutHost(GameFrontendHost& frontend, GameInputRuntime& input)
+        : frontend_(frontend), input_(&input) {}
     GuiWidgetPoint widget_position(void* widget) override {
         return resolved_position(node(widget).transform);
     }
@@ -800,10 +803,36 @@ public:
         auto& target = node(widget);
         frontend_.set_widget_color(target, target.color[0], target.color[1], target.color[2], alpha);
     }
-    float scroll_axis() override { throw std::logic_error("Main-menu scroller action records are not bound"); }
-    bool pad_axis(int, double&) override { throw std::logic_error("Main-menu scroller pad provider is not bound"); }
-    float cursor_x() override { throw std::logic_error("Main-menu scroller GUI cursor is not bound"); }
-    float cursor_y() override { throw std::logic_error("Main-menu scroller GUI cursor is not bound"); }
+    float scroll_axis() override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            if (!input_) throw std::logic_error("Main-menu scroller action records are not bound");
+            return input_->frontend_scroll_axis();
+        } else {
+            throw std::logic_error("Main-menu scroller action records are not bound");
+        }
+    }
+    bool pad_axis(int axis, double& value) override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            if (!input_) throw std::logic_error("Main-menu scroller pad provider is not bound");
+            return input_->frontend_scroll_pad_axis(static_cast<std::uint32_t>(axis), value);
+        } else {
+            throw std::logic_error("Main-menu scroller pad provider is not bound");
+        }
+    }
+    float cursor_x() override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            return frontend_.scroller_cursor().x;
+        } else {
+            throw std::logic_error("Main-menu scroller GUI cursor is not bound");
+        }
+    }
+    float cursor_y() override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            return frontend_.scroller_cursor().y;
+        } else {
+            throw std::logic_error("Main-menu scroller GUI cursor is not bound");
+        }
+    }
 private:
     static GuiLayoutWidget& node(void* widget) {
         if (!widget) throw std::logic_error("Main-menu scroller requires an attached layout widget");
@@ -816,6 +845,7 @@ private:
         target.transform.authored_x = authored_x;
     }
     GameFrontendHost& frontend_;
+    GameInputRuntime* input_{};
 };
 
 struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Bound> {
@@ -1574,11 +1604,32 @@ public:
         return MapZoomInput{};
     }
     void animate_detail_group() override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            if (!owner_.input_runtime)
+                throw std::logic_error("Main-menu scroll update requires the application's input runtime");
+            // 0059A414..41C: this+354h and stack byte1, over the retained briefing
+            // scroller attached by 005861B0 and ranged by 0058C010.
+            MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
+            update_front_end_screen_scroller_00683820(owner_.briefing_scroller_354, true, binding);
+            owner_.log.implemented("MainMenuUpdate::animate_detail_group", "00683820");
+        } else {
         owner_.log.unimplemented("MainMenuUpdate::animate_detail_group", "00683820");
+        }
     }
     void animate_page_group(bool pad_axis_override_off) override {
+        if constexpr (kWireGoal4Chain463Bound) {
+            if (!owner_.input_runtime)
+                throw std::logic_error("Main-menu scroll update requires the application's input runtime");
+            // 0059A6A7..6B5: this+1D4h, with the exact screen+56Ch byte supplied
+            // by the reconstructed 00599DB0 caller. No second input poll.
+            MainMenuScrollerLayoutHost binding(owner_.frontend, *owner_.input_runtime);
+            update_front_end_screen_scroller_00683820(owner_.mission_scroller_1d4,
+                pad_axis_override_off, binding);
+            owner_.log.implemented("MainMenuUpdate::animate_page_group", "00683820");
+        } else {
         static_cast<void>(pad_axis_override_off);
         owner_.log.unimplemented("MainMenuUpdate::animate_page_group", "00683820");
+        }
     }
     void update_scene(int scene_id) override {
         static_cast<void>(scene_id);
