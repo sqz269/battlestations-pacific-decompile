@@ -290,7 +290,9 @@ void gui_layer_set_name_00ac57e0(void* layer, const void* name, GuiNativeStringH
 }
 
 void gui_widget_set_local_z_00aa7910(GuiWidgetTransform& w, float z, GuiWidgetTransformHost& host) {
-    w.position.z = z;
+    // Saved listing 00AA7910..00AA7916: MOVSS preserves the argument bits,
+    // including signalling NaNs; an x87 load/store would quiet them.
+    std::memcpy(&w.position.z, &z, sizeof(z));
     recompose_local_transform(w, host);
 }
 

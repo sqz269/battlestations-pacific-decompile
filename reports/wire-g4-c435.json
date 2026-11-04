@@ -1,0 +1,217 @@
+{
+  "goal": 4,
+  "chain": 435,
+  "slot": "g4-w3",
+  "baseline_head": "05466e73498696168418eda0f8322e70b368d009",
+  "switch": "bsp::kWireGoal4Chain435Bound",
+  "summary": "Wire the reconstructed GUI local-Z setter on retained frontend widgets and consume its published translation in runtime draw depths.",
+  "counts": {
+    "readiness_wired_before": 9678,
+    "readiness_wired_after": 9679,
+    "entry_reachable_reconstructed_before": 4706,
+    "entry_reachable_reconstructed_after": 4707
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 3 existing CTest groups passed",
+    "changed_build": "scripts/build.ps1 passed; all 3 existing CTest groups passed",
+    "call_graph": "00AA7910 is entry-reachable with one direct call site at 10089E29 from GameFrontendHost::set_widget_local_position in the changed Release build",
+    "real_state": "The same retained GuiLayoutWidget::transform and requested Z supplied by marker/minimap and menu layout callers; parent depth comes from the current parent transform.",
+    "evidence": "bsp.py show 00aa7910 --asm: MOVSS [ESP+4] to [ECX+14h], CALL 00AA7220, RET 4. The setter does not call the bounds-refresh path of 00AA7D40.",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD passed: 0 findings, 0 allowed, 3 files",
+    "runtime": "Game was not run. Static entry reachability and successful build/tests do not establish visual or original ABI parity."
+  },
+  "rows": [
+    {
+      "native": "00AA7910",
+      "status": "wired",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_local_position",
+      "details": "The ON arm replaces the old Z store/invalidation with gui_widget_set_local_z_00aa7910 on the live transform. LocalZPublication retains the recomposed translation Z for the runtime bridge draw records. An input-bit guard rejects a publication after an independent Z edit; the parent is read at draw time. The unchanged old path remains in the OFF arm. MOVSS payload copying is explicit in the existing body."
+    },
+    {
+      "native": "00AA7950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: frontend widget transform setters",
+      "reason": "No reachable runtime scale-setting producer or scale-consuming bridge path was established; the existing API exposes position and rotation setters."
+    },
+    {
+      "native": "00AA7930",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::set_widget_rotation",
+      "reason": "Already implemented by chain 433 on agent/g4-w2 in review; its rotation setter/publication changes were left to that branch."
+    },
+    {
+      "native": "008F54F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "Already entry-reachable through two direct SceneNumericPropertyMerge call sites in the baseline; the readiness name mismatch does not require duplicate wiring."
+    },
+    {
+      "native": "008F3A20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "Already entry-reachable through SceneNumericPropertyMerge::attach_tree and insert_into; no new call is needed for this readiness row."
+    },
+    {
+      "native": "0099B650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing approach owner notification",
+      "reason": "Missing a persistent raw plan+25Ch owner slot corresponding to the host's semantic landing task; an unrelated raw task buffer would not supply the real owner."
+    },
+    {
+      "native": "0099C270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: bot task tick path",
+      "reason": "Missing the task+2F4h unit pointer and live per-side unit+9C2h recognition-byte view required by the raw gate."
+    },
+    {
+      "native": "00A04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group_target_value_00a0f970 hint multiplier",
+      "reason": "Missing the two persistent raw checked-map owners and current-party binding required by Front6Host; synthesizing empty maps to reproduce the campaign constant would not establish them."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate score diagnostics",
+      "reason": "The host records that this score list feeds only an unreachable debug overlay, which the assignment excludes."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group candidate score diagnostics",
+      "reason": "The chosen bit belongs to the same debug-only candidate score list, with no single-player gameplay reader."
+    },
+    {
+      "native": "00A15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: effective mode/difficulty setup",
+      "reason": "The actual caller uses the brain/planner selection only for effective modes 0..3; the campaign effective mode is 8, and no applicable caller was established."
+    },
+    {
+      "native": "00946FC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planner available_resources",
+      "reason": "Missing a complete Left61Host binding for the live support-points word, unit costs and queued spawn-resource usage; replacing the constant requires those producers together."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ground_state_from_locked_007ca3f0",
+      "reason": "Missing the retained entity impulse vectors, timer, +4D8h/+4DCh flags and copied +4E0h matrix owner; the plane velocity zeroing is a different operation."
+    },
+    {
+      "native": "0095CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: device_ammo_record / ammo_select_flak_alternate",
+      "reason": "Missing the raw alternate ammo+48h record, retained-reference ownership and copied +3Ch tree; the host currently uses the gun handle as its ammo handle."
+    },
+    {
+      "native": "0095D3C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building message handling",
+      "reason": "Missing the persistent unit+660h vector of 44h elements and its resize/retirement provider."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: queued session-message path",
+      "reason": "No owned queued-message adapter with real category, sender resolution and tick-delta state was established in this packet."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: drain_queued_lua_calls_00888230",
+      "reason": "Missing the off-main-thread named-call producer that supplies real source and destination argument vectors; the existing drain alone supplies neither."
+    },
+    {
+      "native": "0067C880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: device_button_held",
+      "reason": "The primary-device producer returns null; wiring the button predicate also requires the real device and its vtable+20h held-button adapter."
+    },
+    {
+      "native": "0067C8F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign_in_state_valid",
+      "reason": "This pending-invite/selected-user validation is an online-service path excluded by the assignment."
+    },
+    {
+      "native": "009565A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: set_skill_level_007b8ae0 / set_unit_skill_index_006d1eb0",
+      "reason": "The inspected host setter updates pilot skill, while 009565A0 needs the separate unit+38Ch skill object, +6DCh notifier and kind-20h device fanout; those are not interchangeable."
+    },
+    {
+      "native": "00AC2F20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: animation_interval",
+      "reason": "Missing the retained weapon-animation ticker: weapon_animation currently returns zero, so there is no real object for its range fields."
+    },
+    {
+      "native": "00A03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: spawn composition class-pair scoring",
+      "reason": "No live class-pair table and reachable SpawnCompositionHost binding was established in this packet."
+    },
+    {
+      "native": "00A046C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: per-unit powerup scoring",
+      "reason": "No adapter supplying the full real PowerupUnitInputs and reaching this per-unit scoring body was established in this packet."
+    },
+    {
+      "native": "00638B90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: place_marker",
+      "reason": "Missing the binary's live 00E197C4..00E197D8 margin publication; the existing marker camera and cull rectangle are host substitutes."
+    },
+    {
+      "native": "004CD610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: close_result_gui",
+      "reason": "Missing the captured movie-screen owner, visibility/entry dispatch, input context and cinematic bindings required by the sound-load transition; it is not a close-GUI substitute."
+    },
+    {
+      "native": "00A79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The unit ambient-source and start-ambient producers return zero, so there is no actual SoundInstance to scale; camera/listener height binding is also absent here."
+    },
+    {
+      "native": "00B6FC30",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_camera.inc: MissionShipCameraGraph",
+      "reason": "No reachable FOV-times-aspect consumer was found to replace; evaluating the getter without a consumer would not wire useful behavior."
+    },
+    {
+      "native": "00B70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: clip-plane publication",
+      "reason": "The body already has a source caller, but no independent reachable host integration for that submission path was established in this packet."
+    },
+    {
+      "native": "00B70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: clip-plane reset",
+      "reason": "The body already has a source caller, but no independent reachable host integration for that submission path was established in this packet."
+    },
+    {
+      "native": "00419FA0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search via ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the entry-reachable search-refresh implementation; Release has no separate address-suffixed symbol, so no duplicate call was added."
+    },
+    {
+      "native": "004224C0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search via ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the entry-reachable search-refresh implementation; Release has no separate address-suffixed symbol, so no duplicate call was added."
+    },
+    {
+      "native": "009D7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "Already entry-reachable with a direct call from GameAvoidZoneRuntime::refresh_search; this packet adds no wiring for it."
+    }
+  ]
+}
