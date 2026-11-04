@@ -4796,6 +4796,7 @@ struct GameGunneryHost::Impl {
                 ++aa_flak_rolls;
                 ++aa_flak_rolls_by_level[level];
                 // Diagnostics only: the drawn magnitudes back in degrees.
+                // pc24-lint: allow diagnostic statistic for the log, no gameplay reader
                 aa_flak_angle_sum_deg += (std::fabs(static_cast<double>(e.horz_058))
                     + std::fabs(static_cast<double>(e.vert_05c))) * (180.0 / 3.14159265358979) * 0.5;
                 aa_flak_dist_abs_sum += std::fabs(static_cast<double>(e.dist_060));
