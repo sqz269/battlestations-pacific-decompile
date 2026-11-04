@@ -782,6 +782,21 @@ void structured_node_skip_u32_00be9a10(
     read_word(node.reader, node.remaining);
 }
 
+// Borrow the actual reader/budget without manufacturing a native node image.
+// The shared out-parameter bodies below perform the read, store and handle
+// return once; the native-layout overloads only select +08h/+20h and bind the
+// lower EngineServiceCalls operation. Host transfer guards stay in the binding.
+template<class Value>
+struct StructuredNodeValueReadBinding {
+    void* context;
+    Value (*read)(void* context, void* reader, std::uint32_t* remaining);
+};
+
+void* structured_node_read_float_00be9a60(void* handle, StructuredNodeWordView<void> node,
+    float* out, StructuredNodeValueReadBinding<float> read);
+void* structured_node_read_u32_slot34_00be9a80(void* handle, StructuredNodeWordView<void> node,
+    std::uint32_t* out, StructuredNodeValueReadBinding<std::uint32_t> read);
+
 void structured_node_read_u32_discarded_00be99e0(void** handle, EngineServiceCalls& calls);
 void structured_node_skip_u32_00be9a10(void** handle, EngineServiceCalls& calls);
 void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls);
