@@ -11,6 +11,9 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain484_switches.hpp"
+#include "bsp/mission_picture_owner.hpp"
+#include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/gameplay_tuning_lua_rows.hpp"
 #include "bsp/wire_goal4_chain423_switches.hpp"
 #include "bsp/wire_goal4_chain424_switches.hpp"
@@ -2409,8 +2412,9 @@ static GameHostLog* g_exec_refusal_log = nullptr;
 // Packet cc9_player_air_ops_launch: the host whose class table answers class+134h.
 static GameMissionLuaHost* g_class_arm_host = nullptr;
 
-GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
-    : log_(log), vfs_(vfs) {
+GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs,
+    const bsp::MissionPictureTextureServices* class_icon_services)
+    : log_(log), vfs_(vfs), class_icon_services_(class_icon_services) {
     // The guard's refusal line into this run's log (stderr is discarded).
     g_exec_refusal_log = &log_;
     bsp::g_lua_exec_refused_sink = [](const char* command) {
@@ -2485,6 +2489,38 @@ GameMissionLuaHost::~GameMissionLuaHost() {
         lua_close(state_);
         state_ = nullptr;
     }
+    if constexpr (bsp::kWireGoal4Chain484Bound) {
+        // End descriptor borrowers after Lua's finalizers, while the mission
+        // host still owns the native loader/renderer services. Each successful
+        // AA2B30 invocation contributes exactly one credit, including hits on
+        // a texture that an earlier class also acquired.
+        vehicle_class_base_fields_.clear();
+        for (void* texture : class_icon_references_)
+            bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
+    }
+}
+
+void* GameMissionLuaHost::preload_vehicle_class_icon(const char* path) {
+    if (!class_icon_services_) {
+        log_.unimplemented("VehicleClassFields::load_small_map_icon", "00aa2b30");
+        return nullptr;
+    }
+    // Saved 00960230: both the authored SMIcon and the binary's b25 fallback
+    // call 004C12B0 first, then AA2B30, and store its EAX at descriptor+D4h.
+    // These are the SAME real native renderer/atlas/owner bindings used by
+    // the mission host; a sprite-bridge COM texture never enters class state.
+    (void)class_icon_services_->get_gui_manager_004c12b0();
+    void* texture = bsp::gui_widgets_cc13::gui_preload_texture_00aa2b30(
+        path, class_icon_services_->resolve);
+    if (texture) {
+        try { class_icon_references_.push_back(texture); }
+        catch (...) {
+            bsp::release_native_render_actual_owner(class_icon_services_->actual_owners, texture);
+            throw;
+        }
+    }
+    log_.implemented("VehicleClassFields::load_small_map_icon", "00aa2b30");
+    return texture;
 }
 
 GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
@@ -6250,8 +6286,9 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
 // lua_type; a number is Integer when it has no fractional part (00B66A60's
 // test) and Number otherwise. String values are copied into storage owned by
 // this binding, so a view stays valid after its ref is released.
-// The resource loads 00960230 makes (004C12B0 + 00AA2B30 the SMIcon image,
-// 007188A0 the cockpit mesh, 00A83FD0 the ambient sound, the Flags texture
+// Chain 484 supplies 004C12B0 + 00AA2B30 for SMIcon through the mission host's
+// actual native atlas/texture services. The remaining resource loads
+// (007188A0 the cockpit mesh, 00A83FD0 the ambient sound, the Flags texture
 // through (*00F8D394)->vtable[64h]) and the +94h platform-slot growth (007F7110)
 // have no owner in this process: each is recorded through the unimplemented
 // policy and leaves its descriptor slot null. 00808F90 (ReconClass) returns the
@@ -6259,8 +6296,9 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
 // (GameGunneryHost::recon_record_for_class), so that id is what is kept.
 class GameMissionLuaVehicleClassFieldBinding final : public bsp::VehicleClassFieldHost {
 public:
-    GameMissionLuaVehicleClassFieldBinding(lua_State* state, GameHostLog& log)
-        : state_(state), log_(log) {}
+    GameMissionLuaVehicleClassFieldBinding(lua_State* state, GameHostLog& log,
+        GameMissionLuaHost& owner)
+        : state_(state), log_(log), owner_(owner) {}
 
     // VehicleClass[class_index], read as the 00964790 binding reads it (the
     // LuaObject 00964790 hands its load as the row argument).
@@ -6361,9 +6399,13 @@ public:
         return step(table, key, value, false);
     }
 
-    void* load_small_map_icon(const char*) override {
+    void* load_small_map_icon(const char* path) override {
+        if constexpr (bsp::kWireGoal4Chain484Bound) {
+            return owner_.preload_vehicle_class_icon(path);
+        } else {
         log_.unimplemented("VehicleClassFields::load_small_map_icon", "00aa2b30");
         return nullptr;
+        }
     }
     void* load_cockpit_mesh(const char*) override {
         log_.unimplemented("VehicleClassFields::load_cockpit_mesh", "007188a0");
@@ -6430,6 +6472,7 @@ private:
 
     lua_State* state_;
     GameHostLog& log_;
+    GameMissionLuaHost& owner_;
     std::deque<std::string> strings_;
 };
 
@@ -6595,7 +6638,7 @@ public:
             // bytes are not written; the read lives beside the semantic descriptor.
             // The kind-specific remainder of each loader (00831840 for ships,
             // 007D1F70 for planes, ...) is not run here.
-            GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_);
+            GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_, owner_);
             const bsp::GuiLuaRef row = lua.row(descriptor->class_index);
             bsp::VehicleClassBaseFields fields;
             bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);

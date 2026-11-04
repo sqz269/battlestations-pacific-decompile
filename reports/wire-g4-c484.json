@@ -1,0 +1,70 @@
+{
+  "run": 990,
+  "slot": "g4-w5",
+  "chain": 484,
+  "picked": "Vehicle-class SMIcon preload through the mission host's native atlas, renderer texture cache, and actual-owner registry",
+  "switch": "bsp::kWireGoal4Chain484Bound",
+  "wired_before": 9765,
+  "wired_after": 9766,
+  "built": [
+    "Pass the retained native mission texture services into the live mission Lua owner before its VehicleClass rows load.",
+    "Reuse the existing AA2B30 body for both authored SMIcon paths and the existing 00960230 b25 fallback; store its native result in the existing semantic class+D4h field.",
+    "Probe the current actual F8C26C atlas through the existing raw AEFB20 body; project only its borrowed texture and UV fields for AA2660.",
+    "Reuse B319B0 and its retained acquisition frames on atlas misses, plus the same native dimension getters and actual atomic retain on atlas hits.",
+    "Hold exactly one credit per nonnull preload result until the Lua/class owner retires, including repeated cache hits, and release before the mission loader/renderer domains retire."
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all four checks before edits",
+    "on_build": "scripts/build.ps1 passed all four checks",
+    "off_build": "scripts/build.ps1 passed all four checks; rebuilt call graph has no linked AA2B30 function",
+    "call_graph": "AA2B30 is entry-reachable with one call site from GameMissionLuaHost::preload_vehicle_class_icon; its class-field loader is reached through the existing 00964790 descriptor path",
+    "readiness": "AA2B30 ready -> wired; called=true, call_sites=1, callers_live=1; game_hosts_lua.cpp stand-ins 38 -> 37",
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Win32 build and static entry-reachability evidence; no gameplay, visual, or original binary ABI validation"
+  },
+  "notes": [
+    "Reused the existing semantic class-field projection from chain391; this packet does not turn that descriptor into a native-layout object.",
+    "The existing AA2B30 C++ wrapper initializes its unobserved size output scratch to zero; this packet does not change that source-interface policy.",
+    "The actual atlas manager is constructed by the existing application startup before GUI/mission work; the class loader rejects a missing manager rather than inventing an empty atlas.",
+    "Native texture services must outlive GameMissionLuaHost and all its acquired class-icon credits; GameMissionHost member order already provides that lifetime.",
+    "No new address-suffixed reconstruction was introduced, so no new function ledger record is required."
+  ],
+  "left": [
+    "VehicleClass cockpit-mesh, ambient-sound, Flags texture and platform-slot producers remain recorded by the existing field binding.",
+    "Live class-icon appearance and repeated mission-load retirement still need a gameplay check by an authorized runner."
+  ],
+  "rows": [
+    {"native": "00aa2b30", "status": "wired", "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::preload_vehicle_class_icon, called by GameMissionLuaVehicleClassFieldBinding::load_small_map_icon", "evidence": "bsp.py show 00aa2b30 and show 00960230 --start 90; original sites 009602C1/00960314 store EAX at class+D4h; call_graph.py who/path 00aa2b30"},
+    {"native": "00960230", "status": "skipped", "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor", "reason": "Already wired by chain391; reused its real VehicleClass row and existing class-field owner instead of introducing another reader."},
+    {"native": "00aefb20", "status": "skipped", "host_site": "src/game_hosts_mission.cpp: NativeMissionPictureLoader class_icon_callbacks.find_atlas_item", "reason": "Already wired at baseline; reused its existing raw body with the current actual atlas publication, string pool, and verified null-pattern role."},
+    {"native": "00aa2660", "status": "skipped", "host_site": "src/gui_widgets_cc13.cpp: gui_preload_texture_00aa2b30", "reason": "Already wired resolver; reused the existing body through AA2B30 with actual native texture services."},
+    {"native": "00686170", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager", "reason": "Needs consumed native base/manager/registry storage; current MainMenuManager is a semantic projection, so a parallel raw constructor image would not replace its state."},
+    {"native": "00689800", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager", "reason": "Missing owned native options-manager/base and its screen-registration consumers; constructor-only raw storage would be unused."},
+    {"native": "00689d90", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen", "reason": "Missing consumed attract-screen owner, FE_attract page publication, and init/update integration."},
+    {"native": "0068d760", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen", "reason": "Needs native base-manager/registry ownership and a title+40h view consumed by existing title activation; current TitleScreen is a typed projection."},
+    {"native": "00687c00", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::refresh_downloadable_content", "reason": "The reconstructed routine destroys singleton F8894C; this host does not construct that native singleton, and its refresh-labelled site is not the destructor boundary."},
+    {"native": "006834a0", "status": "skipped", "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range", "reason": "Existing chain407 already calls set_scroll_range on the real briefing scroller and measured text height; no new wiring is needed at that site."},
+    {"native": "00a2b950", "status": "skipped", "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted (no live host caller)", "reason": "Missing a gameplay consumer for the native debug score list; game_hosts_ai.cpp documents the unreachable text-overlay reader, and debug-only work is excluded by the assignment."},
+    {"native": "00a2bcc0", "status": "skipped", "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen (no live host caller)", "reason": "Missing consumed native score-list entries; marking a separate debug table would not replace planner behavior."},
+    {"native": "00a2def0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: defend planner candidate loop", "reason": "The existing host arm already calls this predicate with live member-kind and objective-set state; activating a missing coordinator load path is a separate packet."},
+    {"native": "00887560", "status": "skipped", "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call", "reason": "Missing off-main-thread named-call producer; the current mission Lua machine runs on the main thread and does not enter the deferred argument-copy path."},
+    {"native": "00401c20", "status": "skipped", "host_site": "src/math.cpp: cross_reversed_00401c20", "reason": "Missing live Vec3d dynamics owner in the inspected host paths; their float geometry cannot be replaced by unrelated double-vector operations."},
+    {"native": "00401cb0", "status": "skipped", "host_site": "src/math.cpp: subtract_reversed_00401cb0", "reason": "Missing live Vec3d dynamics caller in the inspected host paths; converting float state solely to enter this body would change the arithmetic contract."},
+    {"native": "00401cd0", "status": "skipped", "host_site": "src/math.cpp: scale_00401cd0", "reason": "Missing live Vec3d dynamics caller with the binary's double-vector scaling contract."},
+    {"native": "00401cf0", "status": "skipped", "host_site": "src/math.cpp: length_squared_00401cf0", "reason": "Missing live Vec3d dynamics caller; the inspected host distance calculations operate on float state."},
+    {"native": "00b6fc30", "status": "skipped", "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0", "reason": "The inspected shadow-slice caller is unwired; no consumed live host fov-times-aspect site was established in this packet."},
+    {"native": "00b70410", "status": "skipped", "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410", "reason": "Missing live extra-clip-plane request/consumer over the application's CameraClipPlaneState."},
+    {"native": "00b70470", "status": "skipped", "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470", "reason": "Missing corresponding live extra-clip-plane lifetime; clearing an invented plane would not replace a host operation."},
+    {"native": "00b6fec0", "status": "skipped", "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_box_view_00a8aeb0", "reason": "Missing wired shadow-fit owner whose actual depth-scale field can be borrowed by the camera."},
+    {"native": "00be6040", "status": "skipped", "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_file_store_name_00be6040", "reason": "Missing live file-store name-getter boundary; the inspected VFS existence route correctly calls the native string copy constructor directly."},
+    {"native": "00bb5540", "status": "skipped", "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_package_name_00bb5540", "reason": "Missing live package-name getter consumer; substituting this wrapper at an unrelated native copy-constructor call would not recover its caller."},
+    {"native": "00bef8f0", "status": "skipped", "host_site": "src/game_hosts_vfs.cpp: GameSettingsBinding::read_options_file", "reason": "Missing RAM text-stream producer/consumer; the inspected options reader uses CRT text translation and cannot adopt the native full-length compacted-tail contract."},
+    {"native": "00befcb0", "status": "skipped", "host_site": "src/file_store_cc13.cpp: ram_image_path_is_tga_00befcb0", "reason": "Missing live RAM-image load caller; the renderer texture cache is not this path-classification interface."},
+    {"native": "00bf0050", "status": "skipped", "host_site": "src/file_store_cc13.cpp: encode_tga_00bf0050", "reason": "Missing live RAM-image TGA writer and mode-5 output-stream owner; existing screenshot export writes PNG."},
+    {"native": "00735b30", "status": "skipped", "host_site": "src/native_vfs_startup_callbacks.cpp: ignore_native_vfs_callback_00735b30", "reason": "Missing reached generic VFS callback boundary for the installed manager+8Ch target; no artificial no-op invocation was added."},
+    {"native": "00be4530", "status": "skipped", "host_site": "src/native_stream_type_ids.cpp: NativeStreamTypeIds::initialize_file_00be4530", "reason": "Existing memory/physical type initializers already call this guarded file-type initializer; no replacement host boundary was needed."},
+    {"native": "004dcf90", "status": "skipped", "host_site": "src/native_game_lifetime.cpp: destroy_native_game_004dcf90", "reason": "Needs a fully constructed NativeGameStorage and its complete lifetime contexts; the inspected GameStartupHost owns semantic subsystems instead."},
+    {"native": "00aa7950", "status": "skipped", "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_scale_00aa7950", "reason": "Missing runtime scale-setting request in the inspected frontend host; authored layout scale alone is not a setter call site."}
+  ]
+}
