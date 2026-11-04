@@ -156,7 +156,8 @@ void director_set_stance_0071be80(UnitWeaponHost& host, NativeHandle director, i
 // Torpedo stock: 0081F8B0
 // ---------------------------------------------------------------------------
 
-void set_torpedo_stock_0081f8b0(UnitWeaponHost& host, NativeHandle unit, int stock) {
+// Retain the addressed body as a call boundary in the optimized Win32 image.
+__declspec(noinline) void set_torpedo_stock_0081f8b0(TorpedoStockHost& host, NativeHandle unit, int stock) {
     if (unit == 0) {
         return;
     }
@@ -195,7 +196,10 @@ void set_torpedo_stock_0081f8b0(UnitWeaponHost& host, NativeHandle unit, int sto
         }
         const int barrels = host.gun_barrel_num(node);
         for (int barrel = 0; barrel < barrels; ++barrel) {
-            if (host.gun_reload_timer(node, barrel) >= empty) {
+            // bsp.py show 0081f8b0 --asm: 0081F949 FLD empty; 0081F94F
+            // FCOMIP; 0081F953 JA skips only when empty > timer. Unordered
+            // also reaches 0072D520, unlike the former ordered >= test.
+            if (!(host.gun_reload_timer(node, barrel) < empty)) {
                 host.gun_rearm_barrel(node, barrel, true);
             }
         }
