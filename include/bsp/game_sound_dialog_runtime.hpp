@@ -65,6 +65,9 @@ public:
     // 00A77C10 on the current published owner [00F8BBCC], the call the session
     // teardown 004DA780 makes at 004DA85D (goal 4 chain 312).
     void clear_channels();
+    // 004CD325/004CD34E borrow [00F8BBCC] for 00A77760. Uses this runtime's
+    // actual logical channels and streams, including their current +20h state.
+    void set_all_paused(std::uint8_t paused);
     // The core this runtime was attached to, or null before attach().
     GameSoundRuntime* attached_core() const noexcept;
     void delete_alternate_slot00(void* actual_owner, std::uint32_t flags) override;

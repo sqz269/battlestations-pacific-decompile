@@ -84,6 +84,7 @@
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
+#include "bsp/wire_goal4_chain439_switches.hpp"   // 004CD0F0's dialog pause arm
 #include "bsp/wire_goal4_chain264_switches.hpp"   // the class-table resets after luaPrecacheUnits
 #include "bsp/wire_goal4_chain312_switches.hpp"   // 004DA780's session-teardown sound reset
 #include "bsp/wire_goal4_chain331_switches.hpp"   // LoadMessageMap's 00706760 on game+21DCh
@@ -880,7 +881,8 @@ struct GameMissionFrameHost::Impl {
     // is being cleared outside state 10h (+5D4h) with no 10h request at the queue
     // front (+5E8h count, 004C8520 front); else 1. InGameGUI takes the new +634h.
     // NOT MODELLED here, as before: the 00425D10+25Ch arm that only stores +261h,
-    // and the change arm's 00A94C50 rumble, 00A77760 dialog pause and +21F0h store.
+    // and the change arm's 00A94C50 rumble and +21F0h store. Chain 439 below
+    // supplies the separate 00A77760 dialog arm.
     void cinematic_sound_classes_on_change_004cd0f0(bool hidden_before, bool hidden_after) {
         if (hidden_before == hidden_after) return;
         const bool teardown_state =
@@ -897,6 +899,25 @@ struct GameMissionFrameHost::Impl {
         }
     }
     unsigned long long cinematic_sound_class_changes{0};
+    void cinematic_dialog_pause_on_change(bool hidden_before, bool hidden_after,
+        bool pause_dialog_on_hide) {
+        if (hidden_before == hidden_after || (hidden_after && !pause_dialog_on_hide)) return;
+        // 004CD31E..004CD32D pauses on hide only for the caller's third byte.
+        // 004CD33F..004CD355 always applies EBX on unhide, keeping the pause
+        // during state10h or a queued state10h. ECX is the CURRENT [00F8BBCC].
+        const bool teardown_state =
+            control.state == static_cast<std::uint32_t>(bsp::GameStateId::kMissionTeardown);
+        const bool teardown_front = control.requests.count != 0
+            && bsp::front_state_request(control.requests)
+                == static_cast<std::uint32_t>(bsp::GameStateId::kMissionTeardown);
+        GameSoundDialogRuntime* const dialog = GameScriptOrdersHost::bound_music_dialog_runtime();
+        if (dialog == nullptr || !dialog->started()) {
+            record("GameCinematic::pause_dialog", 0x00a77760u);
+            return;
+        }
+        dialog->set_all_paused(hidden_after || teardown_state || teardown_front ? 1u : 0u);
+        done("GameCinematic::pause_dialog", 0x00a77760u);
+    }
 };
 
 namespace {
@@ -1734,11 +1755,17 @@ public:
         return 0;
     }
     bool game_cinematic_hidden_634() override { return host_.cinematic_hidden; }
-    void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool) override {
+    void game_set_cinematic_004cd0f0(bool hide, bool allow_simulation, bool pause_dialog_on_hide) override {
         const bsp::CinematicModeFlags flags = bsp::cinematic_flags_004cd0f0(hide, allow_simulation);
         if constexpr (bsp::kWireGoal4Chain249Bound) {
             host_.cinematic_sound_classes_on_change_004cd0f0(host_.cinematic_hidden,
                 flags.hud_hidden);
+        }
+        if constexpr (bsp::kWireGoal4Chain439Bound) {
+            host_.cinematic_dialog_pause_on_change(host_.cinematic_hidden,
+                flags.hud_hidden, pause_dialog_on_hide);
+        } else {
+            // Original host left the dialog pause arm unimplemented.
         }
         host_.cinematic_hidden = flags.hud_hidden;
         host_.cinematic_allow_simulation = flags.simulate_while_hidden;
@@ -2809,6 +2836,12 @@ public:
         if constexpr (bsp::kWireGoal4Chain249Bound) {
             owner_.cinematic_sound_classes_on_change_004cd0f0(owner_.cinematic_hidden,
                 flags.hud_hidden);
+        }
+        if constexpr (bsp::kWireGoal4Chain439Bound) {
+            owner_.cinematic_dialog_pause_on_change(owner_.cinematic_hidden,
+                flags.hud_hidden, third);
+        } else {
+            // Original host left the dialog pause arm unimplemented.
         }
         owner_.cinematic_hidden = flags.hud_hidden;
         owner_.cinematic_allow_simulation = flags.simulate_while_hidden;
@@ -4149,6 +4182,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             if constexpr (bsp::kWireGoal4Chain249Bound) {
                 host.cinematic_sound_classes_on_change_004cd0f0(host.cinematic_hidden,
                     flags.hud_hidden);
+            }
+            if constexpr (bsp::kWireGoal4Chain439Bound) {
+                // This load step unhides; the third byte is not read on that arm.
+                host.cinematic_dialog_pause_on_change(host.cinematic_hidden,
+                    flags.hud_hidden, false);
+            } else {
+                // Original host left the dialog pause arm unimplemented.
             }
             host.cinematic_hidden = flags.hud_hidden;
             host.cinematic_allow_simulation = flags.simulate_while_hidden;

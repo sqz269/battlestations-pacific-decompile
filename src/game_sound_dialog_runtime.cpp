@@ -299,6 +299,15 @@ void GameSoundDialogRuntime::clear_channels() {
     clear_sound_alternate_channels_00a77c10(
         *static_cast<NativeSoundAlternateOwnerStorage*>(current), self.bound().alternate);
 }
+void GameSoundDialogRuntime::set_all_paused(std::uint8_t paused) {
+    auto& self = *impl_;
+    void* const current = self.globals.alternate_00f8bbcc;
+    self.check_owner(current);
+    // Reuse the existing body: stores owner+215h, visits owner+8/+Ch and
+    // logical+4h, then changes stream+8h only in its real STARTING/PLAY state.
+    // The running stream updater applies that byte to the live FMOD channel.
+    cc13_sweepC::streamed_dialog_manager_set_all_paused_00a77760(current, paused);
+}
 GameSoundRuntime* GameSoundDialogRuntime::attached_core() const noexcept { return impl_->core; }
 void GameSoundDialogRuntime::delete_alternate_slot00(void* object, std::uint32_t flags) {
     impl_->destroy(object, flags);

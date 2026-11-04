@@ -1,0 +1,64 @@
+{
+  "chain": 439,
+  "slot": "g4-w5",
+  "run": 883,
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain439Bound",
+  "scope": "Cinematic-transition dialog pause on the published application sound owner and its actual logical channels/streams.",
+  "rows": [
+    {
+      "native": "00a77760",
+      "status": "wired",
+      "host_site": "src/game_sound_dialog_runtime.cpp: GameSoundDialogRuntime::set_all_paused, called by src/game_hosts_mission_frame.cpp: Impl::cinematic_dialog_pause_on_change",
+      "body": "src/cc13_sweepC.cpp: streamed_dialog_manager_set_all_paused_00a77760",
+      "state": "Borrows the CURRENT alternate_00f8bbcc publication after checking it is this runtime's constructed actual234h owner. Stores owner+215h, visits the two real logical channel pointers at +8h/+Ch and each logical+4h stream. The caller retains the third cinematic argument, pauses on hide only when that argument is true, and on unhide passes the actual state10h/queued-state10h gate. Same-value hide changes do not run the body.",
+      "evidence": [
+        "bsp.py show 004cd0f0: change-only gate and third-argument hide arm; listing 004CD31E..004CD355 reads [00F8BBCC] and calls 00A77760",
+        "bsp.py show 00a77760 --asm: 00A77769 stores +215h; 00A77777..00A77793 follows logical+4h and calls 00A85C40 with the re-read byte",
+        "src/game_hosts.cpp binds sound_->dialog through GameScriptOrdersHost at application startup; GameSoundDialogRuntime validates the current publication before use",
+        "src/sound_alternate_owner.cpp updates both logical channels before checking owner+215h"
+      ],
+      "original_abi": "__thiscall ECX=manager, stack(byte paused), RET 4; new C++ raw-object interface calls the existing stream body directly.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "00a85c40",
+      "status": "wired",
+      "host_site": "src/cc13_sweepC.cpp: streamed_dialog_manager_set_all_paused_00a77760, reached through GameSoundDialogRuntime::set_all_paused",
+      "body": "src/sound_streaming_cc13.cpp: set_sound_stream_paused_00a85c40",
+      "state": "Receives the real stream pointer from the live logical channel. Existing body changes stream+8h only when the byte differs and the actual stream+20h state is STARTING or PLAY. The existing stream updater consumes +8h through its real FMOD channel_set_paused service.",
+      "evidence": [
+        "bsp.py show 00a85c40: byte differs and unsigned(state-1)<2 guards exactly match the existing body",
+        "src/sound_stream_runtime.cpp applies stream+8h through channel_set_paused in both start/play update paths",
+        "call_graph.py who 00a85c40: one entry-reachable direct call from streamed_dialog_manager_set_all_paused_00a77760"
+      ],
+      "original_abi": "__thiscall ECX=stream, stack(byte paused), RET 4; existing reconstructed raw-object C++ interface.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "004cd0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: HintFrameBinding::game_set_cinematic_004cd0f0, MissionEntryBinding::set_cinematic_mode and run_scene_load_004dfb70",
+      "reason": "Existing cinematic flag body was already wired; this packet adds its missing dialog arm only. The menu-command override, gamepad rumble service and game+21F0 reset remain unmodeled in this host."
+    }
+  ],
+  "readiness": {
+    "wired_before": 9684,
+    "wired_after": 9685,
+    "new_entry_reachable_calls": {
+      "00a77760": 1,
+      "00a85c40": 1
+    },
+    "scanner_note": "The text-based scan retains 00A77760 as ready/nodef, while its binary-graph fields are called=true, call_sites=1 and callers_live=1. The direct body call is also confirmed independently by call_graph.py who/path. 00A85C40 is both text-wired and called."
+  },
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed Win32 Release and both existing CTest targets",
+    "final_build": "./scripts/build.ps1 passed Win32 Release; reconstructed_math and tool_tests passed",
+    "call_graph": "Both real reconstructed bodies have one direct call site from entry-reachable code; path reaches WinMainCRTStartup through the scene-load/cinematic host",
+    "pc24": "No float arithmetic changed",
+    "game_run": false
+  },
+  "limitations": "Static entry reachability and build/test evidence only. No game was run. With no constructed application dialog owner the host records the missing service. The existing cinematic network/menu override coverage and other unmodeled cinematic side effects remain outside this packet."
+}
