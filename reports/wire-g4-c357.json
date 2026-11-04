@@ -1,0 +1,238 @@
+{
+  "chain": 357,
+  "slot": "g4-w3",
+  "branch": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain357Bound",
+  "picked": "Authored-path nearest-point binding with retained local geometry and live owner XYZ",
+  "rows": [
+    {
+      "native": "007aed10",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp::DirectorAuthoredPath::nearest_point_index_world_007b0900",
+      "note": "Full existing nearest-index body consumes retained scene-local XYZ points and the live unit query transformed by the original inverse/transform/divide chain."
+    },
+    {
+      "native": "007b0900",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp::DirectorAuthoredPath::nearest_point_index_world_007b0900",
+      "note": "Existing partial homogeneous-divide body is now called; host supplies the original inverse construction and vector transform. Ledger coverage remains partial and no native ABI replacement is claimed."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::remap",
+      "reason": "record_remap_texture_name still supplies an empty stand-in; this path lacks the native renderer/resource-owner context and authored texture-name producer."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::remap",
+      "reason": "record_remap_texture_name still supplies an empty stand-in; this path lacks the native renderer/resource-owner context and authored texture-name producer."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::remap",
+      "reason": "record_remap_texture_name still supplies an empty stand-in; this path lacks the native renderer/resource-owner context and authored texture-name producer."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::remap",
+      "reason": "record_remap_texture_name still supplies an empty stand-in; this path lacks the native renderer/resource-owner context and authored texture-name producer."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::AirOpsBlock queue_squadron record",
+      "reason": "Native queue block/slots, observer registration, and health-message route context are not supplied by the evaluated host event record."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::coordinator difficulty selection",
+      "reason": "Campaign effective mode 8 bypasses the original first-active-party-slot query; no campaign binding is needed."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Existing coordinator path is gated by the coordinator load gate; no reviewed campaign producer/consumer for a new score-list binding was established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Existing coordinator path is gated by the coordinator load gate; no reviewed campaign producer/consumer for a new score-list binding was established."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::fixed_step",
+      "reason": "Existing coordinator path is gated by the coordinator load gate; no reviewed campaign producer/consumer for a new score-list binding was established."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp::BSP_UnitDebugInspector_PrintFlooded",
+      "reason": "Original sole caller 006FB750 is a debug inspector; debug-only code is excluded from this assignment."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::run_submarine_dive_00936dc0",
+      "reason": "The evaluated dive host lacks the unit+1279 enable producer and catapult child+490 launch-state projection."
+    },
+    {
+      "native": "00812310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship_section_points_0081f980",
+      "reason": "The evaluated host has no UnitDevice-list projection plus persistent barrel-baseline/firepower-ratio consumer; section-point initialization alone cannot supply them."
+    },
+    {
+      "native": "008123a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship_section_points_0081f980",
+      "reason": "The evaluated host has no UnitDevice-list projection plus persistent barrel-baseline/firepower-ratio consumer; section-point initialization alone cannot supply them."
+    },
+    {
+      "native": "00812430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship_section_points_0081f980",
+      "reason": "The evaluated host has no UnitDevice-list projection plus persistent barrel-baseline/firepower-ratio consumer; section-point initialization alone cannot supply them."
+    },
+    {
+      "native": "008124c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship_section_points_0081f980",
+      "reason": "The evaluated host has no UnitDevice-list projection plus persistent barrel-baseline/firepower-ratio consumer; section-point initialization alone cannot supply them."
+    },
+    {
+      "native": "008127e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::ship_section_points_0081f980",
+      "reason": "The evaluated host has no UnitDevice-list projection plus persistent barrel-baseline/firepower-ratio consumer; section-point initialization alone cannot supply them."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane death-state handling",
+      "reason": "Original sites 007D0ED0/007D1145 need plane state-message box inputs; no reviewed mapping of those boxes to this host death-state path was established."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::flight_state_notify_007c11e0",
+      "reason": "No native plane-engine-slot list producer was identified in the evaluated flight-state host; it currently records presentation effects."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::flight_state_notify_007c11e0",
+      "reason": "No native plane-engine-slot list producer was identified in the evaluated flight-state host; it currently records presentation effects."
+    },
+    {
+      "native": "007eb0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::flight_state_notify_007c11e0",
+      "reason": "No native plane-engine-slot list producer was identified in the evaluated flight-state host; it currently records presentation effects."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_from_letter",
+      "reason": "No missing binding: chain285 already calls these predicates with real authored declaration letters."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_property_type_from_letter",
+      "reason": "No missing binding: chain285 already calls these predicates with real authored declaration letters."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_reference_kind_letter",
+      "reason": "Existing semantic reference-kind letter helper was inspected; no additional live consumer requiring a new binding was established."
+    },
+    {
+      "native": "005290d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HUD counter visibility",
+      "reason": "The evaluated HUD host lacks a HudCounterEntryFlags owner and the native A6/A7 visibility-event adapter."
+    },
+    {
+      "native": "005292e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HUD counter visibility",
+      "reason": "The evaluated HUD host lacks a HudCounterEntryFlags owner and the native A6/A7 visibility-event adapter."
+    },
+    {
+      "native": "00529350",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HUD counter visibility",
+      "reason": "The evaluated HUD host lacks a HudCounterEntryFlags owner and the native A6/A7 visibility-event adapter."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::pilot control planning",
+      "reason": "Original 0099D6F1/0099D736 query unit+9A8/+9AC override angles; no producer for those overrides was established in this packet."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp::destroy_member_stage stage7",
+      "reason": "Existing shrink_sound_configured_types fragment already names this cleanup; no distinct missing host replacement was selected."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::marker lifecycle",
+      "reason": "The evaluated host lacks the native marker-manager slot, entry keep flags, and observer-pair membership needed by this body."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRowsBinding::animation_interval",
+      "reason": "weapon_animation returns a recorded zero handle; there is no produced ticker object whose range can be changed."
+    }
+  ],
+  "wired_total": {
+    "before": 9466,
+    "after": 9467,
+    "metric": "wire_readiness summary.wired"
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed with switch on and switch off; reconstructed_math and tool_tests passed",
+    "focused_fixture": "One math block covers scaled/rotated/translated local XYZ selection and a PC24 near-tie that final-only rounding gets wrong.",
+    "switch_off_graph": "007AED10 and path_local_from_homogeneous_007B0900 are absent from the game executable; the adapter vtable reference alone remains.",
+    "switch_on_graph": "Both existing address-suffixed bodies receive direct calls from DirectorAuthoredPath::nearest_point_index_world_007b0900, reachable through path build/session-route code.",
+    "switch_off_reconstructed_addresses_called": 4479,
+    "switch_on_reconstructed_addresses_called": 4481,
+    "readiness_rows": {
+      "007aed10": {
+        "state": "wired",
+        "called": true
+      },
+      "007b0900": {
+        "state": "wired",
+        "called": true
+      }
+    },
+    "pc24_lint": {
+      "command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+      "findings": 0,
+      "checked_files": 6,
+      "not_checked": {
+        "moved_from_base": 1
+      }
+    }
+  },
+  "left": [
+    "Dynamic movement of authored path owners is not modeled by the existing scene registry; this binding retains the same loader-time composed frame that produced its world points.",
+    "User/world-only paths retain the previous host nearest policy; a missing frame or live owner does not fabricate local geometry.",
+    "Existing start-mode-7 random direction substitution is unchanged.",
+    "No native ABI compatibility or game/runtime validation claimed; the game was not run."
+  ]
+}

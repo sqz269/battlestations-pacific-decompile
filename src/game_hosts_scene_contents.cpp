@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the scene contents pass.
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
@@ -3650,7 +3651,12 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                 world_points.push_back({transformed[0] / w, transformed[1] / w,
                                         transformed[2] / w});
             }
+            if constexpr (bsp::kWireGoal4Chain357Bound) {
+                scene_path_registry().add_authored(record.name, std::move(world_points),
+                    record.path_points_local, record.world);
+            } else {
             scene_path_registry().add(record.name, std::move(world_points));
+            }
         }
     }
 
@@ -4879,11 +4885,33 @@ void ScenePathRegistry::add(const std::string& name,
                             std::vector<std::array<float, 3>> points_world) {
     for (ScenePathEntry& entry : entries_) {
         if (entry.name == name) {
+            if constexpr (bsp::kWireGoal4Chain357Bound) {
+                // A world-only replacement cannot retain a previous owner's
+                // local points/frame. This overload remains world-only.
+                entry.points_local.clear();
+                entry.has_local_geometry = false;
+            }
             entry.points_world = std::move(points_world);
             return;
         }
     }
     entries_.push_back(ScenePathEntry{name, std::move(points_world)});
+}
+
+void ScenePathRegistry::add_authored(const std::string& name,
+    std::vector<std::array<float, 3>> points_world,
+    const std::vector<std::array<float, 3>>& points_local, const float (&world)[16]) {
+    ScenePathEntry authored{name, std::move(points_world)};
+    authored.points_local = points_local;
+    std::copy(std::begin(world), std::end(world), authored.world.begin());
+    authored.has_local_geometry = true;
+    for (ScenePathEntry& entry : entries_) {
+        if (entry.name == name) {
+            entry = std::move(authored);
+            return;
+        }
+    }
+    entries_.push_back(std::move(authored));
 }
 
 const ScenePathEntry* ScenePathRegistry::find(const std::string& name) const noexcept {

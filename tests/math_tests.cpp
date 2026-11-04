@@ -39,6 +39,8 @@
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/gameplay_seg52_cc13.hpp"
+#include "bsp/gameplay_seg46_cc13.hpp"
+#include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
 #include "bsp/game_tuning_singleton.hpp"
@@ -262,6 +264,31 @@ private:
 }
 
 int main() {
+    {
+        // Chain357: a scaled, rotated, translated authored path must choose
+        // in LOCAL XYZ. Its first point wins the old world-XZ-only search,
+        // while the second is closer under the image's local 3-D metric.
+        namespace path = bsp::gameplay_seg46_cc13;
+        const bsp::CameraMatrix world{0, 0, -8, 0, 0, 2, 0, 0,
+            1, 0, 0, 0, 10, 3, 20, 1};
+        bsp::CameraMatrix inverse;
+        bsp::derive_pose_affine_inverse_00b63d50(inverse, world);
+        const float query[4]{10, 3, 20, 1};
+        float homogeneous[4];
+        bsp::transform_native_vector4_00b62d10(query, homogeneous, inverse.data());
+        const auto local = path::path_local_from_homogeneous_007b0900(homogeneous);
+        const path::Vec3 points[]{{0, 8, 0}, {2, 0, 0}};
+        float distance = -1.0f;
+        check(path::nearest_point_index_007aed10(points, 2, local, &distance) == 1
+            && distance == 2.0f, "chain357 searches authored local XYZ through the owner inverse");
+
+        // With one final float rounding these distances tie (44A07779).
+        // PC24 per operation gives the second point 44A07778 instead.
+        const path::Vec3 near_tie[]{{1283.7335205078125f, 0, 0},
+            {-166.87620544433594f, 977.4307250976562f, -815.3239135742188f}};
+        check(path::nearest_point_index_007aed10(near_tie, 2, {0, 0, 0}, &distance) == 1
+            && distance == 1283.7333984375f, "chain357 PC24 rounding decides the near-tie winner");
+    }
     {
         // Chain324 review635: installed arcade Rikufu (VehicleClass[312])
         // keeps two racks at keys 10/11 when equipment 2 substitutes rockets.

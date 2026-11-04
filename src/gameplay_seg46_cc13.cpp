@@ -6,6 +6,7 @@
 // float slot is an explicit f32().
 
 #include "bsp/gameplay_seg46_cc13.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include <cstring>
 
 namespace bsp::gameplay_seg46_cc13 {
@@ -364,23 +365,41 @@ constexpr float kFloatMax_00d7a248 = 3.40282347e+38f;
 
 // 007AED54-007AEDB6 / 007AEE08-007AEE6A: the difference stored per axis, the
 // squared sum stored to float, then 0 or f(sqrt).
-float point_distance_007aed10(const Vec3& q, const Vec3& p) noexcept {
-    const float dx = f32(static_cast<double>(q.x) - p.x);
-    const float dy = f32(static_cast<double>(q.y) - p.y);
-    const float dz = f32(static_cast<double>(q.z) - p.z);
-    const float sum = f32((static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) +
-                          static_cast<double>(dz) * dz);
+float point_distance_007aed10(const Vec3& q, const Vec3& p,
+    bool pc24 = false, bool first = true) noexcept {
+    using namespace bsp::cc13x87;
+    if (!pc24) {
+        // Preserve the separate 007ADA60 caller's existing precision policy.
+        const float dx = f32(static_cast<double>(q.x) - p.x);
+        const float dy = f32(static_cast<double>(q.y) - p.y);
+        const float dz = f32(static_cast<double>(q.z) - p.z);
+        const float sum = f32((static_cast<double>(dx) * dx + static_cast<double>(dy) * dy) +
+            static_cast<double>(dz) * dz);
+        if (!(static_cast<double>(sum) > kZeroDistanceSq_00ce3820)) return 0.0f;
+        return f32(std::sqrt(static_cast<double>(sum)));
+    }
+    const float dx = f32(x87_sub24(q.x, p.x));
+    const float dy = f32(x87_sub24(q.y, p.y));
+    const float dz = f32(x87_sub24(q.z, p.z));
+    // 007AED6E..007AED8A sums X^2,Y^2,Z^2; 007AEE22..007AEE3E
+    // sums Y^2,X^2,Z^2. The x87 main thread rounds EACH operation to PC24,
+    // retaining extended exponents until the final FSTP. A double chain
+    // rounded only at the end can change the winning point near a tie.
+    const double a = first ? dx : dy;
+    const double b = first ? dy : dx;
+    const float sum = f32(x87_add24(x87_add24(x87_mul24(a, a), x87_mul24(b, b)),
+        x87_mul24(dz, dz)));
     if (!(static_cast<double>(sum) > kZeroDistanceSq_00ce3820)) return 0.0f;  // FCOMI / JBE
-    return f32(std::sqrt(static_cast<double>(sum)));                         // 00BF7030
+    return f32(x87_sqrt24(sum));                                           // 00BF7030
 }
 
 }  // namespace
 
 int nearest_point_index_007aed10(const Vec3* points, int count, const Vec3& pos, float* distance) {
     int best_index = 0;
-    float best = point_distance_007aed10(pos, points[0]);
+    float best = point_distance_007aed10(pos, points[0], true, true);
     for (int i = 1; i < count; ++i) {
-        const float d = point_distance_007aed10(pos, points[i]);
+        const float d = point_distance_007aed10(pos, points[i], true, false);
         if (best > d) {  // 007AEE78 FCOMPI(best, d), JBE skips
             best = d;
             best_index = i;
@@ -391,9 +410,10 @@ int nearest_point_index_007aed10(const Vec3* points, int count, const Vec3& pos,
 }
 
 Vec3 path_local_from_homogeneous_007b0900(const float h[4]) noexcept {
-    const float inv = f32(1.0 / static_cast<double>(h[3]));  // 007B09A8
-    return Vec3{f32(static_cast<double>(h[0]) * inv), f32(static_cast<double>(h[1]) * inv),
-                f32(static_cast<double>(inv) * h[2])};
+    using namespace bsp::cc13x87;
+    const float inv = f32(x87_div24(1.0, h[3]));  // 007B09A8, FSTP DWORD
+    return Vec3{f32(x87_mul24(h[0], inv)), f32(x87_mul24(h[1], inv)),
+                f32(x87_mul24(inv, h[2]))};
 }
 
 int start_index_for_position_007b11f0(PathJoinSource& source, const Vec3& pos, bool forward) {

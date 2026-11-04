@@ -18,6 +18,10 @@
 
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/native_camera_plane_transform.hpp"
+#include "bsp/pose_derived.hpp"
+#include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -233,7 +237,8 @@ class DirectorAuthoredPath final : public bsp::path_movcam_seg46_argon::Authored
     using Component = bsp::path_movcam_seg46_argon::PathComponentState;
     using Source = bsp::path_movcam_seg46_argon::AuthoredPathSource;
 public:
-    explicit DirectorAuthoredPath(const std::vector<std::array<float, 3>>& points) {
+    explicit DirectorAuthoredPath(const std::vector<std::array<float, 3>>& points,
+        const ScenePathEntry* authored = nullptr) {
         world_points_.reserve(points.size());
         for (const auto& p : points) world_points_.push_back({p[0], p[1], p[2]});
         component_.points_08.reserve(world_points_.size());
@@ -243,6 +248,22 @@ public:
             made, &component_);
         source_.reset(made);
         if (!source_) throw std::bad_alloc();
+        if (authored && authored->has_local_geometry && authored->points_world == points) {
+            if (authored->points_local.size() != points.size())
+                throw std::logic_error("authored path local/world point counts disagree");
+            local_points_.reserve(authored->points_local.size());
+            for (const auto& p : authored->points_local)
+                local_points_.push_back({p[0], p[1], p[2]});
+            world_frame_ = authored->world;
+            has_local_geometry_ = true;
+        }
+    }
+
+    bool has_local_geometry() const noexcept { return has_local_geometry_; }
+
+    int nearest(const Vec3& position) {
+        return bsp::path_movcam_seg46_argon::authored_path_source_nearest_index_007b1100(
+            *source_, position, *this);
     }
 
     int count() const {
@@ -271,13 +292,37 @@ private:
             throw std::logic_error("authored director path index outside retained scene points");
         return *path->points_08[static_cast<std::size_t>(index)];
     }
-    int nearest_point_index_world_007b0900(const Component*, const Vec3&, float*) override {
+    int nearest_point_index_world_007b0900(const Component* path, const Vec3& position,
+        float* distance) override {
+        if constexpr (bsp::kWireGoal4Chain357Bound) {
+            if (path != &component_ || !has_local_geometry_ || local_points_.empty())
+                throw std::logic_error("authored path nearest query has no retained local geometry");
+            // 007B0900: 007B092D obtains owner+110h through the 00B63D50
+            // inverse; 007B0974 calls 00B62D10 with (world XYZ,1), then
+            // 007B09A8..007B09CC divides by W before 007B09D0's 007AED10. Both
+            // frame and points are the scene loader's actual authored data,
+            // retained together for this source's lifetime. No identity-frame
+            // assumption, flattened Y, or second local-to-world transform.
+            bsp::CameraMatrix inverse;
+            bsp::derive_pose_affine_inverse_00b63d50(inverse, world_frame_);
+            const float query[4]{position.x, position.y, position.z, 1.0f}; // D7A24C
+            float homogeneous[4];
+            bsp::transform_native_vector4_00b62d10(query, homogeneous, inverse.data());
+            const auto local = bsp::gameplay_seg46_cc13::path_local_from_homogeneous_007b0900(
+                homogeneous);
+            return bsp::gameplay_seg46_cc13::nearest_point_index_007aed10(
+                local_points_.data(), static_cast<int>(local_points_.size()), local, distance);
+        } else {
         throw std::logic_error("authored director count/point queries do not request nearest index");
+        }
     }
 
     std::vector<Vec3> world_points_;
     Component component_;
     std::unique_ptr<Source> source_;
+    std::vector<bsp::gameplay_seg46_cc13::Vec3> local_points_;
+    bsp::CameraMatrix world_frame_{};
+    bool has_local_geometry_{false};
 };
 
 // Only the fields the command path reads. The 250h-byte native object is
@@ -4188,12 +4233,19 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // `path_built` therefore means "a build ran", and the empty test is separate.
     director.path_points = points;
     director.path_name = path_name;
+    if constexpr (bsp::kWireGoal4Chain357Bound) {
+        director.authored_path = director.path_user ? nullptr
+            : std::make_shared<DirectorAuthoredPath>(points,
+                scene_path_registry().find(path_name));
+        director.path_built = true;
+    } else {
     if constexpr (bsp::kWireGoal4Chain276Bound) {
         director.authored_path = director.path_user ? nullptr
             : std::make_shared<DirectorAuthoredPath>(points);
         director.path_built = true;
     } else {
         director.path_built = true;
+    }
     }
     director.path_advances = 0;
     director.path_travelled = 0.0f;
@@ -4209,6 +4261,37 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     // direction as a second candidate. With kPathJoinProjectionBound off the
     // projection test that chooses between them (007B1263 onwards) is skipped and
     // the nearest is taken alone.
+    int joined = [&]() {
+    if constexpr (bsp::kWireGoal4Chain357Bound) {
+        // 007B1C50 reaches authored source slot10 only for join modes 5/7/8;
+        // mode6 starts at zero, and the other modes retain the cursor index.
+        if (director.path_start_mode != 5 && director.path_start_mode != 7
+            && director.path_start_mode != 8) return 0;
+        const GameUnitsHost* const live = host.user_path_live_owner;
+        if (director.authored_path && director.authored_path->has_local_geometry()
+            && live != nullptr && unit_index < live->count()) {
+            // 0071F600 -> 007B1D30/007B1C50 -> authored source slot14.
+            // The command registry's position is a creation snapshot: obtain
+            // all three lanes from the actual owner when this command begins.
+            bsp::path_movcam_seg46_argon::Vec3 position;
+            live->unit_position_00fc(unit_index, position.x, position.y, position.z);
+            const int nearest = director.authored_path->nearest(position);
+            host.done("PathSource::nearest_local_point_007aed10", 0x007aed10u);
+            return nearest;
+        } else {
+            // User paths and compatibility callers have only world points;
+            // keep their existing nearest policy rather than invent a frame.
+            std::vector<float> flat;
+            flat.reserve(points.size() * 3);
+            for (const auto& point : points) {
+                flat.push_back(point[0]);
+                flat.push_back(point[1]);
+                flat.push_back(point[2]);
+            }
+            return bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
+                static_cast<int>(points.size()), unit_x, unit_z);
+        }
+    } else {
     std::vector<float> flat;
     flat.reserve(points.size() * 3);
     for (const std::array<float, 3>& point : points) {
@@ -4218,6 +4301,9 @@ bool GameCommandsHost::build_path_object_0071f600(std::size_t unit_index,
     }
     int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
         static_cast<int>(points.size()), unit_x, unit_z);
+    return joined;
+    }
+    }();
     if (kPathJoinProjectionBound && director.path_start_mode >= 5
         && director.path_start_mode <= 8 && director.path_start_mode != 6) {
         // Packet s57_path_join (CC13_VERIFY7 R1): 007B1D24's vt+10h is 007B11F0 for an
