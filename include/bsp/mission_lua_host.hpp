@@ -228,6 +228,13 @@ struct MissionLuaHostServices {
     virtual int luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) = 0;
     // 00a680e0. 006b8530 forwards nargs in EDX and the rest on the stack.
     virtual int lua_pcall(int nargs, int nresults, int errfunc_index) = 0;
+    // 006b8530 BSP_LuaMachine_ProtectedCall, the named-call body's pcall
+    // (00887989 in 00887750, 00888094 in 00887e50). The chunk runner 006b89f0
+    // calls 00a680e0 itself (006b8a21), so only the named-call body uses this.
+    // The default is the plain pcall above, for hosts without a machine.
+    virtual int lua_protected_call_006b8530(int nargs, int nresults, int errfunc_index) {
+        return lua_pcall(nargs, nresults, errfunc_index);
+    }
     // 00a67810 with index -1 and a null length pointer.
     virtual std::string lua_tolstring_at_top() = 0;
     // 00887220: pop the top values into the caller's result vector. The third

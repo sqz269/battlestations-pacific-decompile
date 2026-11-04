@@ -1798,6 +1798,7 @@ public:
     void lua_settop(int index) override;
     int luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) override;
     int lua_pcall(int nargs, int nresults, int errfunc_index) override;
+    int lua_protected_call_006b8530(int nargs, int nresults, int errfunc_index) override;
     std::string lua_tolstring_at_top() override;
     int collect_results(int count, int mode) override;
 

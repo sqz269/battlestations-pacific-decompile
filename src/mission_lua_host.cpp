@@ -1,6 +1,7 @@
 #include "bsp/mission_lua_host.hpp"
 
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/wire_goal4_chain340_switches.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -770,7 +771,13 @@ NamedCallOutcome run_named_call_body(
 
     const int marker = host.lua_gettop();
     host.adjust_call_stack_marker(marker);
+    if constexpr (kWireGoal4Chain340Bound) {
+        // 00887989 / 00888094: CALL 006B8530 on the machine, not 00a680e0.
+        outcome.pcall_status =
+            host.lua_protected_call_006b8530(nargs, kLuaMultRet, error_handler_index);
+    } else {
     outcome.pcall_status = host.lua_pcall(nargs, kLuaMultRet, error_handler_index);
+    }
     host.adjust_call_stack_marker(-marker);
 
     const int results = host.lua_gettop() - saved_top;
