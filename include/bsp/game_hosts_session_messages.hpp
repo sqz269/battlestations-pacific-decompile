@@ -228,6 +228,45 @@ public:
     CommandBuildingCopy queue_command_building_set_level_d4(std::uint32_t level,
                                                             std::uint32_t argument) const;
 
+    // Goal 4 chain 335 (kWireGoal4Chain335Bound). MT_SHIP_ADDTORQUE (93h): the
+    // ship-hit sender 0080FFD0 (at 00827312) makes 0075B430(93h), +18h word 0,
+    // +1Ah 0, +4h = 1, vtable 00D034C8 and +1Ch..+24h = the torque, routed at
+    // 00827329 flags 7. Those header stores are 00762220's, the constructor
+    // 00768530 calls for case 93h (0076942E), so both messages are built with
+    // it; then 007622B0 write (three floats on 004295C0's raw 32-bit path,
+    // scale FLT_MAX) and 00762340 read. 00821E80's 93h arm hands the copy's
+    // +1Ch..+24h to 0092BF30 (AddHullTorque).
+    struct ShipAddTorqueCopy {
+        float torque[3]{0.0f, 0.0f, 0.0f};
+    };
+    ShipAddTorqueCopy queue_ship_add_torque_93(const float (&torque)[3]) const;
+    // Goal 4 chain 335. The kamikaze detonate (70h): 0080FF30 makes
+    // 0075B430(70h), +18h word 0, +1Ah 0, +4h = 1, vtable 00D0348C, +1Ch = the
+    // other entity's +174h word and +20h..+28h = the contact point. 00768530
+    // case 70h constructs with 00761D90 (00769026); 00761E20 write (12-bit
+    // id, three raw floats), 00761EC0 read. 00821E80's 70h arm resolves the
+    // copy's +1Ch and hands it and the copy's +20h point to 00819A20.
+    struct KamikazeDetonateCopy {
+        std::uint16_t other_id{0};
+        float point[3]{0.0f, 0.0f, 0.0f};
+    };
+    KamikazeDetonateCopy queue_kamikaze_detonate_70(std::uint16_t other_id,
+                                                    const float (&point)[3]) const;
+    // Goal 4 chain 335. MT_SHIPREPAIR_ADDDAMAGE (9Eh): the ship-hit sender
+    // 0080FA50 (00827372 water, 0082740F fire) makes 0075B430(9Eh), +18h word
+    // 0, +1Ah 0, +4h = 1, vtable 00D0334C, +1Ch = the seconds, +20h = the
+    // flag byte, +24h = the channel. 007608E0 is those header stores and the
+    // constructor of 00768530's case 9Eh (007695EE); 00760970 write (3-bit
+    // signed channel, raw float, bool), 007609E0 read. 00821E80's 9Eh arm
+    // switches on the copy's +24h (0 fire, 1 water) and +20h (add or set).
+    struct RepairAddDamageCopy {
+        std::int32_t channel{0};
+        float seconds{0.0f};
+        bool add{false};
+    };
+    RepairAddDamageCopy queue_repair_add_damage_9e(std::int32_t channel, float seconds,
+                                                   bool add) const;
+
 private:
     struct Image;
     std::unique_ptr<Image> image_;

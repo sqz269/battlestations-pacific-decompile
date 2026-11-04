@@ -6,6 +6,8 @@
 #include "bsp/wire_goal4_chain298_switches.hpp"
 #include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/wire_goal4_chain326_switches.hpp"
+#include "bsp/wire_goal4_chain335_switches.hpp"
+#include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/cc13_seg33b.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
@@ -72,6 +74,11 @@ struct HostSessionMessages::Image {
     // Goal 4 chain 260: the 5Dh profile (vtable 00CFD9D8).
     NativeSessionMessage93Profile profile93{context};
     NativeSessionMessage88Profile profile88{target};
+    // Goal 4 chain 335: the 70h class (session message 112). Its codec reads
+    // the session, the numeric constants and 00D7A248 (FLT_MAX, the raw
+    // 32-bit float scale) through this context.
+    NativeSessionMessage111To112Context context112{&session, &numeric, &maximum_00d7a248};
+    NativeSessionMessage112Profile profile112{context112};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
@@ -119,7 +126,22 @@ struct HostSessionMessages::Image {
                                         0x004499c0u};
         std::uint32_t slots_00cfadd0[5]{0x006f3230u, 0x006f25e0u, 0x006f2610u, 0x006f25c0u,
                                         0x004499c0u};
+        // Goal 4 chain 335. bsp.py ghidra bytes 00D034C8 --length 20 and
+        // 00D0334C --length 20, bsp.gpr's /battlestationspacific.exe: 93h
+        // (007626A0 scalar delete, 007622B0 write, 00762340 read, 00762280
+        // IsType, 004499C0) and 9Eh (00760BD0, 00760970, 007609E0, 00760940,
+        // 004499C0).
+        std::uint32_t slots_00d034c8[5]{0x007626a0u, 0x007622b0u, 0x00762340u, 0x00762280u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d0334c[5]{0x00760bd0u, 0x00760970u, 0x007609e0u, 0x00760940u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if constexpr (kWireGoal4Chain335Bound) {
+                if (image_address == 0x00d034c8u) return slots_00d034c8;
+                if (image_address == 0x00d0334cu) return slots_00d0334c;
+            } else {
+                // The previous binding had no 93h / 9Eh profile.
+            }
             if constexpr (kWireGoal4Chain326Bound) {
                 if (image_address == 0x00cfadbcu) return slots_00cfadbc;
                 if (image_address == 0x00cfadd0u) return slots_00cfadd0;
@@ -734,6 +756,82 @@ HostSessionMessages::CommandBuildingCopy HostSessionMessages::queue_command_buil
         command_building_object(queued), reinterpret_cast<cc13_seg33b::Object>(&stream.in));
     // 006F5460 hands 006F38E0 the copy's +1Ch and +20h.
     return CommandBuildingCopy{queued.h.base.type_10, queued.value_1c, queued.value_20};
+}
+
+HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torque_93(
+    const float (&torque)[3]) const {
+    const Image& image = *image_;
+    // 0080FFD0 (called at 00827312): 0075B430(93h), +18h word 0, +1Ah 0,
+    // +1Ch/+20h/+24h = the three torque dwords, +4h = 1, vtable 00D034C8.
+    // 00762220 makes the same header stores, so the sent message is 00762220
+    // with the torque; 0077C2A0 at 00827329 (flags 7) takes the local route.
+    seg42::ShipAddTorqueMessage sent{};
+    seg42::construct_ship_addtorque_00762220(&sent.h, image.seg42);
+    for (int i = 0; i < 3; ++i) sent.torque_1c[i] = torque[i];
+
+    LocalStream stream;
+    seg42::write_ship_addtorque_007622b0(&sent, &stream.out, image.numeric);
+    // 00768530 case 93h: operator new(28h), 00762220 at 0076942E; 0076A27B
+    // vtable[8] = 00762340.
+    stream.begin_read();
+    seg42::ShipAddTorqueMessage queued{};
+    seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
+    seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
+    // Neither message owns storage; 007626A0's scalar delete only restamps.
+    ShipAddTorqueCopy copy;
+    for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
+    return copy;
+}
+
+HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_detonate_70(
+    std::uint16_t other_id, const float (&point)[3]) const {
+    const Image& image = *image_;
+    // 0080FF30: 0075B430(70h), +18h word 0, +1Ah 0, +4h = 1, vtable 00D0348C,
+    // +1Ch word = other+174h, +20h..+28h = the point (FLD/FSTP copies).
+    // 00761D90 makes the header stores (+1Ch cleared); the sent message is
+    // 00761D90 with the id and the point.
+    NativeSessionMessage112 sent{};
+    construct_native_session_message112_00761d90(&sent, image.context112, image.profile112);
+    sent.value_1c = other_id;
+    for (int i = 0; i < 3; ++i) std::memcpy(&sent.float_bits_20[i], &point[i], sizeof point[i]);
+
+    LocalStream stream;
+    write_native_session_message112_00761e20(&sent, &stream.out, image.context112);
+    // 00768530 case 70h: 00761D90 at 00769026; 0076A27B vtable[8] = 00761EC0.
+    stream.begin_read();
+    NativeSessionMessage112 queued{};
+    construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
+    read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
+    // Neither message owns storage; the drain's 00762640 scalar delete only
+    // restamps the root profile.
+    KamikazeDetonateCopy copy;
+    copy.other_id = queued.value_1c;
+    for (int i = 0; i < 3; ++i) std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
+    return copy;
+}
+
+HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_damage_9e(
+    std::int32_t channel, float seconds, bool add) const {
+    const Image& image = *image_;
+    // 0080FA50 (00827372 water, 0082740F fire): 0075B430(9Eh), +18h word 0,
+    // +1Ah 0, +20h = the flag byte, +4h = 1, vtable 00D0334C, +1Ch = the
+    // seconds, +24h = the channel. 007608E0 is the header stores.
+    seg42::RepairAddDamageMessage sent{};
+    seg42::construct_shiprepair_adddamage_007608e0(&sent, image.seg42);
+    sent.flag_20 = add ? 1u : 0u;
+    sent.amount_1c = seconds;
+    sent.section_24 = channel;
+
+    LocalStream stream;
+    seg42::write_shiprepair_adddamage_00760970(&sent, &stream.out, image.numeric);
+    // 00768530 case 9Eh: 007608E0 at 007695EE; 0076A27B vtable[8] = 007609E0
+    // (00428D30 sign-extends the 3-bit channel).
+    stream.begin_read();
+    seg42::RepairAddDamageMessage queued{};
+    seg42::construct_shiprepair_adddamage_007608e0(&queued, image.seg42);
+    seg42::read_shiprepair_adddamage_007609e0(&queued, &stream.in, image.numeric);
+    // Neither message owns storage; 00760BD0's scalar delete only restamps.
+    return RepairAddDamageCopy{queued.section_24, queued.amount_1c, queued.flag_20 != 0};
 }
 
 } // namespace bsp
