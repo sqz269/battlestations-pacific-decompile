@@ -15,6 +15,9 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/wire_goal4_chain539_switches.hpp"
+#include "bsp/session_message_dispatch.hpp"
+#include "bsp/session_message_cc13_seg42.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/wire_goal4_chain532_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
@@ -1604,8 +1607,16 @@ struct GameShipAiHost::Impl {
         std::size_t sender{0};
         std::size_t other{0};
         int side{0};
+        std::uint32_t send_tick{0};
     };
     std::vector<PassSideMessage> pass_side_queue;
+    const std::uint32_t* message_game_state{};
+    const std::uint32_t* message_step_count{};
+    std::uint32_t local_message_tick() const {
+        if (message_step_count == nullptr)
+            throw std::logic_error("Ship loopback requires the live mission step counter");
+        return *message_step_count;
+    }
     // 00778450 -> ... -> 009F3E30 -> 009D8CE0 for every queued message, in order.
     void deliver_pass_side_messages();
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
@@ -8499,6 +8510,11 @@ public:
                 owner.pass_side_queue.push_back(
                     {index, NeighbourList::store(node_608(i)).unit, side});
                 }
+                if constexpr (bsp::kWireGoal4Chain539Bound) {
+                    // 0076E5BD..0076E5C6 reads 00F876B0 after the local copy
+                    // is decoded; 00782790 stores it at that copy's +0Ch.
+                    owner.pass_side_queue.back().send_tick = owner.local_message_tick();
+                }
             }
         } host(owner_, ctl_, index_, owner_.rows[index_]);
         const bsp::GameplayTuningSettings& settings = owner_.neighbour_settings();
@@ -13049,6 +13065,12 @@ void GameShipAiHost::bind_session_participants(
     impl_->session_participants = &owner;
 }
 
+void GameShipAiHost::bind_local_message_clock(const std::uint32_t& game_state,
+    const std::uint32_t& step_count) noexcept {
+    impl_->message_game_state = &game_state;
+    impl_->message_step_count = &step_count;
+}
+
 const bsp::SessionParticipantPools* GameShipAiHost::session_participants() const noexcept {
     return impl_->session_participants;
 }
@@ -13352,9 +13374,46 @@ void GameShipAiHost::Impl::deliver_pass_side_messages() {
                                         record.distance_48};
     };
     for (const PassSideMessage& m : due) {
+        if constexpr (bsp::kWireGoal4Chain539Bound) {
+            if (message_game_state == nullptr)
+                throw std::logic_error("Ship loopback requires the live mission game state");
+            const auto game_state = static_cast<std::int32_t>(*message_game_state);
+            // 0076C600 discards the local queue below 0Ah. At/above 0Ah,
+            // 00780670 owns the state/tick/readiness decision. The queue's
+            // stable sender index resolves in this SAME unit registry, even
+            // when its independent +5Ch tick gate has since been disabled.
+            if (game_state < bsp::kRouteMinimumGameState) continue;
+            bsp::QueuedMessageInputs input;
+            input.game_state = game_state;
+            // 00762430 is vtable 00D034DC slot +0Ch, the actual class built
+            // by this queue's 007623D0 producer. Use its body for all four
+            // category tests; do not synthesize a class from a type number.
+            input.is_entity_create = bsp::seg42::is_ship_avoidside_00762430(
+                bsp::kMessageCategoryEntityCreate);
+            input.is_sub_object = bsp::seg42::is_ship_avoidside_00762430(
+                bsp::kMessageCategorySubObject);
+            input.is_long_window = bsp::seg42::is_ship_avoidside_00762430(
+                bsp::kMessageCategoryLongWindow);
+            input.is_entity_sync = bsp::seg42::is_ship_avoidside_00762430(
+                bsp::kMessageCategoryEntitySync);
+            input.sender_resolved = units.unit_identity(m.sender) != nullptr;
+            input.entity_ready = units.unit_message_ready(m.sender);
+            // 0078074B SUB is a wrapping DWORD subtraction followed by signed
+            // tests. Copy its bits instead of overflowing a signed C++ int.
+            const std::uint32_t delta_bits = m.send_tick - local_message_tick();
+            static_assert(sizeof(input.tick_delta) == sizeof(delta_bits));
+            std::memcpy(&input.tick_delta, &delta_bits, sizeof(delta_bits));
+            const auto decision = bsp::gate_queued_message_00780670(input);
+            if (decision.status == bsp::QueuedMessageStatus::kKeep) {
+                pass_side_queue.push_back(m);
+                continue;
+            }
+            if (decision.route != bsp::QueuedMessageRoute::kEntityGeneric) continue;
+        } else {
         // 00780670: the addressee (msg+18h, the sender) must resolve; this host
         // takes an inactive unit as unresolved and drops the message.
         if (!units.unit_active(m.sender)) continue;
+        }
         done("ShipAiNeighbour::pass_side_deliver_00821e80", 0x00822294u);
         // 00822298: 00521E30 resolves msg+1Ch, 00815010 keeps a kind-6 unit.
         if (m.other >= controllers.size() || !units.unit_is_kind_of(m.other, 6)) continue;

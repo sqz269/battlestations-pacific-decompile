@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain539_switches.hpp"
 #include "bsp/wire_goal4_chain526_switches.hpp"
 #include "bsp/wire_goal4_chain535_switches.hpp"
 #include "bsp/wire_goal4_chain520_switches.hpp"
@@ -739,6 +740,9 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     GameUnitRow row;
     bsp::NativeUnitObserverPrefixStorage observer_prefix;
     bool observer_prefix_ready{false};
+    // 00925CE0 constructs +BDh as zero; 00923840 publishes one after +A0
+    // initialization. This is not the independently mutable active byte.
+    std::uint8_t message_ready_00bd{0};
     // The unit took 004F0FB0's stationary arm: no vehicle-class descriptor, so
     // no creator to key the observer tables on, and no motion dispatch either
     // because the 1ACh prop has no slot at 310h.
@@ -25003,6 +25007,11 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         slot->state->active = 1;
         slot->state->simulate = 0;
         slot->scene_flags_available = slot->motion_dispatch.creator != 0;
+        if constexpr (bsp::kWireGoal4Chain539Bound) {
+            // bsp.py show 00923840: the SAME supported kind1 initializer
+            // which publishes active above also writes entity+BDh = 1.
+            if (slot->scene_flags_available) slot->message_ready_00bd = 1;
+        }
         row.active = slot->state->active != 0;
         slot->state->has_scene_node = false;  // +4A4h, 00928860 is a 2h record
         slot->state->part_count = 0;     // +A18h, the instance has no parts here
@@ -51454,6 +51463,10 @@ std::size_t GameUnitsHost::count() const noexcept { return impl_->slots.size(); 
 bool GameUnitsHost::unit_active(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return false;
     return impl_->slots[index]->state->active != 0;
+}
+
+bool GameUnitsHost::unit_message_ready(std::size_t index) const noexcept {
+    return index < impl_->slots.size() && impl_->slots[index]->message_ready_00bd != 0;
 }
 
 const void* GameUnitsHost::unit_identity(std::size_t index) const noexcept {
