@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain494_switches.hpp"
 #include "bsp/wire_goal4_chain485_switches.hpp"
 #include "bsp/cc13_left8_seg8.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
@@ -10225,7 +10226,16 @@ struct GameUnitsHost::Impl {
         }
         const Impl& h_;
     };
-    bsp::LegAltitudeManager leg_manager_cc13_;
+    bsp::LegAltitudeManager leg_manager_cc13_{[] {
+        if constexpr (bsp::kWireGoal4Chain494Bound) {
+            // The same actual aircraft/goal records now live in 009FAA40's
+            // pointer/count/capacity array; growth, append and teardown call
+            // 009F9B60 / 009FA430 / 009F9AD0 rather than a vector mirror.
+            return bsp::LegAltitudeManager(bsp::LegAltitudeStorage::native);
+        } else {
+            return bsp::LegAltitudeManager{};
+        }
+    }()};
     LegUnits leg_units_cc13_{*this};
     void squadron_leave_on_death_007bcaa0() {
         for (const auto& owned : slots) {

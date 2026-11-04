@@ -11,8 +11,9 @@
 // small unit and entity helpers.
 //
 // Every name is a hypothesis, not a recovered symbol. These are new C++
-// interfaces, not ABI-compatible replacements; build-tested only, nothing is
-// wired into the game. Every engine call the image makes is a named host hook
+// interfaces, not ABI-compatible replacements. Chain 494 binds the leg array
+// construction/append/free entries; other adoption status is packet-specific.
+// Every engine call the image makes is a named host hook
 // invoked at the same point, named after the callee's address. `Handle` is a
 // native pointer value the host resolves; 0 is null.
 //
@@ -337,7 +338,16 @@ void squadron_free_attack_targets_load_009f89f0(FreeAttackLoaderHost& host, Hand
 
 struct LegLock;
 
-struct LegSingletonHost {
+// Array ownership does not require a singleton/lock implementation. Keep this
+// narrow contract usable by the live leg manager's retained record storage.
+struct LegArrayStorageCalls {
+    virtual ~LegArrayStorageCalls() = default;
+    virtual Handle operator_new(std::uint32_t bytes) = 0;
+    virtual void free_00bf65ac(Handle block) = 0;
+    virtual void copy16(Handle destination, Handle source) = 0;
+};
+
+struct LegSingletonHost : LegArrayStorageCalls {
     virtual ~LegSingletonHost() = default;
     virtual Handle singleton_manager_get() = 0;                    // BSP_SingletonLifetime_GetManager
     virtual void singleton_register(Handle manager, Handle object) = 0;
@@ -345,11 +355,8 @@ struct LegSingletonHost {
     virtual void enter_critical_section(Handle section) = 0;
     virtual void leave_critical_section(Handle section) = 0;
     virtual void section_depth_add_18(Handle section, int delta) = 0;  // ++/-- [section+18h]
-    virtual Handle operator_new(std::uint32_t bytes) = 0;
-    virtual void free_00bf65ac(Handle block) = 0;
     virtual Handle critical_section_create() = 0;                  // BSP_CriticalSection_Create
     virtual void critical_section_destroy_owned(Handle lock) = 0;  // BSP_CriticalSection_DestroyOwned
-    virtual void copy16(Handle destination, Handle source) = 0;    // the 10h-byte record copy
     virtual Handle& global_00f8a724() = 0;                         // the lock singleton
     virtual Handle& global_00f8a720() = 0;                         // the manager singleton
     virtual LegLock& lock_at(Handle object) = 0;            // the 8-byte block as a lock
@@ -375,9 +382,9 @@ inline constexpr std::uint32_t kLegLockVtable = 0x00D21C7Cu;
 inline constexpr std::uint32_t kLegManagerVtable = 0x00D21C80u;
 inline constexpr std::uint32_t kSingletonBaseVtable = 0x00CE3818u;
 
-void array16_grow_009f9b60(LegSingletonHost& host, Array16& array);
-void array16_push_back_009fa430(LegSingletonHost& host, Array16& array, Handle record);
-void free_owned_buffer_009f9ad0(LegSingletonHost& host, Handle& buffer);
+void array16_grow_009f9b60(LegArrayStorageCalls& host, Array16& array);
+void array16_push_back_009fa430(LegArrayStorageCalls& host, Array16& array, Handle record);
+void free_owned_buffer_009f9ad0(LegArrayStorageCalls& host, Handle& buffer);
 LegLock& leg_lock_construct_009fa9f0(LegSingletonHost& host, LegLock& self);
 void leg_lock_reset_singleton_009f9a70(LegSingletonHost& host, LegLock& self);
 void leg_lock_destruct_009fb120(LegSingletonHost& host, LegLock& self);

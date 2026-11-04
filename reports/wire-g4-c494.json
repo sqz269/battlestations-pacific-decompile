@@ -1,0 +1,251 @@
+{
+  "chain": 494,
+  "slot": "g4-w5",
+  "run": 1010,
+  "scope": "Converging-leg manager native record-array ownership",
+  "switch": "bsp::kWireGoal4Chain494Bound",
+  "baseline": {
+    "wired": 9777,
+    "compiled_reconstructed_called": 4847
+  },
+  "after": {
+    "wired": 9780,
+    "compiled_reconstructed_called": 4850
+  },
+  "rows": [
+    {
+      "native": "009faa40",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: Impl::leg_manager_cc13_ -> LegAltitudeRecords::Native construction",
+      "evidence": "Initializes the sole 10h pointer/count/capacity record owner used by live move-to and move-on-path altitude separation. Compiled call from LegAltitudeRecords::LegAltitudeRecords; native profile and array words match the export."
+    },
+    {
+      "native": "009fa430",
+      "status": "wired",
+      "host_site": "src/leg_altitude_manager_cc13.cpp: LegAltitudeRecords::push_back -> LegAltitudeManager::register_009fc000",
+      "evidence": "Appends the same actual aircraft slot+1 identity and actual goal point already consumed by the live manager. Existing registration/removal/altitude bodies read and update this array directly; no vector mirror or copy-back. Compiled call from register_009fc000."
+    },
+    {
+      "native": "009f9ad0",
+      "status": "wired",
+      "host_site": "src/leg_altitude_manager_cc13.cpp: LegAltitudeRecords::Native destruction",
+      "evidence": "Frees the current native record allocation through the process CRT boundary at actual manager retirement and constructor cleanup. Four compiled reachable call sites including LegAltitudeRecords destruction."
+    },
+    {
+      "native": "009f9b60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg68.cpp: array16_push_back_009fa430",
+      "reason": "The growth body runs inlined in append; Release emits no distinct address-suffixed function or call site, so it is excluded from the three-address compiled gain."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::leg_manager_cc13_",
+      "reason": "The retained per-host record owner is now native-backed, but the process singleton publication, singleton registration and manager critical-section provider required by this getter remain unbound."
+    },
+    {
+      "native": "009faa60",
+      "status": "skipped",
+      "host_site": "src/leg_altitude_manager_cc13.cpp: LegAltitudeRecords::Native destruction",
+      "reason": "The manager is retained by the existing units host, not published as the F8A720 singleton; the destructor requires the genuine global publication to reset. Array teardown uses 009F9AD0 instead."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land task owner notification",
+      "reason": "Missing the retained task owner at approach+18h and its +25Ch owner-pointer consumer; the current landing path still records the store."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task tick gate",
+      "reason": "Missing the native task+2F4h unit view and its side-indexed unit+9C2h publication; using the current generic_suppress_520 value would change the publication timing."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene property enum merge",
+      "reason": "Already called from entry-reachable code in the baseline; no missing wiring to add."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Already called from entry-reachable code in the baseline; no missing wiring to add."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding set_ambient_volume",
+      "reason": "Missing the retained ambient sound instance and in-mission camera; has_ambient_sound_instance currently returns false."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart binding write_checkpoint",
+      "reason": "Missing the pre-load BSP_Chk_Save Lua owner/current mission key and real checkpoint-diff producer; checkpoint_differs returns false, so this callback is unreachable."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: accepts_text_byte",
+      "reason": "Missing a live editable-text acceptance caller; accepts_text_byte has no call sites and the raw image font has no typed FontData owner required by this body."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: construct_gui_timed_entry_alpha_00ac2ed0",
+      "reason": "Missing the live canonical typed GuiLayoutWidget/GuiWidgetOwner timed-entry path; the raw page factory already uses the separate established native constructor."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: reset_gui_timed_entry_base_00ad3990",
+      "reason": "Missing an active typed timed-entry retirement path; inspected typed owner route is separate from the active raw entry storage."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: advance_gui_timed_entry_00ad39a0",
+      "reason": "Missing an active typed timed-entry/widget dispatch route; the active raw entry representation cannot be substituted with the typed owner."
+    },
+    {
+      "native": "005f1840",
+      "status": "skipped",
+      "host_site": "src/native_shader_constant_header.cpp: declaration decimal formatting",
+      "reason": "No entry-reachable constant-header declaration body was established; composing the existing decimal entry also requires retaining its separate one-shot operation through allocation failures."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: wave-one gun aim update",
+      "reason": "This is a replicated immediate-angle setter fragment, not the ordinary gun-step seam check; missing its real replication producer and current/target four-angle setter path."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope break",
+      "reason": "Missing the actual periscope shape at controller+394h and its transform/collision side effects; only common break-state 009327F0 is implemented on this path."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit/ForceSelectUnit screen reset",
+      "reason": "Missing the raw selection screen mode+30h and owned C4h vector/input-context binding; the current typed UnitPickScreenState does not contain those fields."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a controller snapshot producer, retained snapshot object and routed consumer; the current host reads flattened flags."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: notify_gun_skill_level",
+      "reason": "Already has a baseline compiled reachable call from notify_gun_skill_level; no missing wiring to add."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: attack-move task construction",
+      "reason": "Missing the retained 550h task owner and actual target/approach constructor adapter; the current host stores semantic task state."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message-35 word-array read",
+      "reason": "Missing the message-35 live producer/queue path; this body is already called by the reconstructed but unhosted message reader."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message-35 word-array read",
+      "reason": "Missing the message-35 live producer/queue path; this body is already called by the reconstructed but unhosted message reader."
+    },
+    {
+      "native": "0052aef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: prospective message-35 transport",
+      "reason": "Missing the live DisplayUnitHP/DisplayScores Lua HUD sender composition and corresponding local queue route."
+    },
+    {
+      "native": "00aa15c0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: widget factory",
+      "reason": "Missing the active Scrollbar current-layout binding and factory composition; the inspected generic factory accepts only default Group/Icon."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: InitOnce pointer reader registration",
+      "reason": "Missing a concrete InitOnceServices registration route and consumed host-owned F8BC84 callback cell."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: InitOnce selection callback registration",
+      "reason": "Missing a concrete InitOnceServices registration route and consumed host-owned F8BCFC callback cell."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: failure warning notification",
+      "reason": "Missing the retained raw warning manager lock/subscription/suppression/name maps and actual entity/local-player views."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-task leak notification",
+      "reason": "Missing the retained raw warning manager lock/subscription/suppression/name maps and actual entity/local-player views."
+    },
+    {
+      "native": "00983780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-task fire notification",
+      "reason": "Missing the retained raw warning manager lock/subscription/suppression/name maps and actual entity/local-player views."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "Ready texture context exists, but missing the genuinely initialized render-resource service and mission-record remap-name producer; record_remap_texture_name currently returns empty."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Ready texture context exists, but missing the genuinely initialized render-resource service and mission-record remap-name producer."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Ready texture context exists, but missing the genuinely initialized render-resource service and mission-record remap-name producer."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Ready texture context exists, but missing the genuinely initialized render-resource service and mission-record remap-name producer."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: passed Win32 Release and all four CTest suites",
+    "call_graph": "python tools/call_graph.py: 4850 reconstructed addresses called; who confirms 009FAA40 (1), 009FA430 (1), 009F9AD0 (4) reachable call sites; 009F9B60 inlined",
+    "readiness": "python tools/wire_readiness.py --standins: source wired 9777 -> 9780; compiled called 4847 -> 4850",
+    "focused_probe": "./local/output/wire_g4_c494_probe.ps1: PASS against built object/core libraries, /MANIFEST:EMBED; native/vector trace covers 0/2/6/14 growth, duplicate/dead/null swap removal, altitude bit equality, NaN/signed-zero raw copies, clear/reuse and scoped teardown",
+    "float_math": "No float arithmetic changed; existing 009FC260 arithmetic and PC24 branches are unchanged",
+    "game": "Not run, as instructed; compiled reachability and fixture evidence only"
+  },
+  "contracts": [
+    "The canonical record data/count/capacity is the reconstructed 10h manager in native mode; no vector mirror or copy-back is maintained.",
+    "Aircraft identities retain the established LegUnitId=slot+1 convention and resolve through the same live LegAltitudeUnitHost; no raw Unit pointer ABI is claimed.",
+    "Allocation uses the established process CRT allocation/free boundary; the existing bodies preserve capacity-before-allocation order and raw 16-byte copies.",
+    "Storage is retained by the existing per-units-host manager. Global singleton publication, registration, native locking and 009FAA60 remain future work.",
+    "The OFF arm constructs the projected owner and the focused probe compares both owners through the same existing algorithms."
+  ],
+  "assumptions": [
+    "Kept the existing per-host manager lifetime and unit-handle convention; this packet changes storage ownership only."
+  ]
+}
