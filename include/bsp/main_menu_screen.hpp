@@ -362,6 +362,9 @@ struct MainMenuScreenUpdateHost {
     virtual void position_backdrop() = 0;                      // 00AA8240(this+328h, this+124h)
     virtual void drive_map(float seconds, MissionGroup group, float zoom_delta,
                            bool moved) = 0;                    // 00588C70
+    // A complete geometry binding writes screen+130h itself. Older bindings
+    // still require the caller's delta-only projection below drive_map.
+    virtual bool map_geometry_updates_zoom() const noexcept { return false; }
     virtual MapZoomInput map_zoom_input() = 0;
     virtual void animate_detail_group() = 0;                   // 00683820(this+354h, 1)
     virtual void animate_page_group(bool pad_axis_override_off) = 0; // 00683820(this+1D4h, +56Ch)

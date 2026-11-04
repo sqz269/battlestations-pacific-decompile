@@ -31,6 +31,7 @@
 #include "bsp/lua_object.hpp"
 #include "bsp/lua_state_owner.hpp"
 #include "bsp/main_menu_mission_detail.hpp"
+#include "bsp/main_menu_map_point_geometry.hpp"
 #include "bsp/main_menu_screen.hpp"
 #include "bsp/main_menu_screens.hpp"
 #include "bsp/memory_stream.hpp"
@@ -63,6 +64,7 @@
 #include "bsp/wire_goal4_chain366_switches.hpp"
 #include "bsp/wire_goal4_chain387_switches.hpp"
 #include "bsp/wire_goal4_chain407_switches.hpp"
+#include "bsp/wire_goal4_chain432_switches.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/scenes_seg1_cc13.hpp"
@@ -844,6 +846,12 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
     std::array<float, 3> backdrop{0.0f, 0.0f, 0.0f};    // +124h
     // +134h + index*10h, the five point vectors.
     std::array<std::vector<std::array<float, 3>>, 5> point_lists{};
+    // This screen's retained map fields. Zoom is copied from/to screen_state
+    // at the typed call boundary, never updated by a second owner. Anchor's
+    // initial zero and zoom 1 are 005987F0's entry stores. The host has no
+    // carried mouse-button zoom command; its released-control value is zero
+    // (005819BF XORPS/MOVSS +19Ch in the current0C widget listener).
+    MainMenuMapGeometryState map_geometry;
 
     // 005902E0 embeds these at +1D4h/+354h; 005861B0 attaches the real
     // content, thumbs and arrows. Keep their captured bases across selections.
@@ -1206,7 +1214,12 @@ public:
     }
     std::array<float, 3> map_point_position(std::string_view widget_name) override {
         GuiLayoutWidget* node = find_in_group(widget_name);
+        if constexpr (kWireGoal4Chain432Bound) {
+            if (node == nullptr)
+                throw std::logic_error("Mission-map point list requires its authored point icon");
+        } else {
         if (node == nullptr) return {0.0f, 0.0f, 0.0f};
+        }
         const GuiWidgetPoint point = resolved_position(node->transform);
         owner_.log.implemented("MissionDetail::map_point_position", "00aa6750");
         return {point.x, point.y, point.z};
@@ -1368,6 +1381,71 @@ private:
 // 00599DB0's MainMenuScreenUpdateHost
 // ---------------------------------------------------------------------------
 
+// Borrow the SAME widgets, point vectors and published indices used by
+// MissionDetailBinding. The existing frontend renders these projected objects;
+// no native widget-owner or original call ABI is asserted by this adapter.
+class MissionMapGeometryBinding final : public MainMenuMapGeometryHost {
+public:
+    explicit MissionMapGeometryBinding(GameMissionHost::Impl& owner) : owner_(owner) {}
+
+    std::uint32_t selected_mission_index() override { return owner_.published_mission; }
+    std::size_t current_group_mission_count() override {
+        return owner_.tables.groups.at(owner_.published_group).missions.size();
+    }
+    std::array<float, 3> point_at(std::size_t list, std::uint32_t index) override {
+        return owner_.point_lists.at(list).at(index);
+    }
+    std::uintptr_t find_map_point(std::uintptr_t root, std::string_view name, int) override {
+        return find(root, name);
+    }
+    std::uintptr_t find_map_flag(std::uintptr_t root, std::string_view name, int) override {
+        return find(root, name);
+    }
+    void move_map_point(std::uintptr_t widget, const std::array<float, 3>& position) override {
+        move(reinterpret_cast<GuiLayoutWidget*>(widget), position);
+    }
+    void move_map_flag(std::uintptr_t widget, const std::array<float, 3>& position) override {
+        move(reinterpret_cast<GuiLayoutWidget*>(widget), position);
+    }
+    void move_backdrop(const std::array<float, 3>& position) override {
+        move(owner_.widget(0x328), position);
+    }
+    void resize_backdrop(const std::array<float, 2>& extent) override {
+        auto& backdrop = require(owner_.widget(0x328));
+        // The sprite bridge consumes this retained layout's size directly.
+        // This projects the size58 result; native Icon state/vertex caches
+        // remain the responsibility of the separate native GUI runtime.
+        backdrop.transform.size = {extent[0], extent[1]};
+        owner_.frontend.refresh_widget_geometry(backdrop);
+    }
+    std::array<float, 3> selected_point_position() override {
+        const auto point = resolved_position(require(owner_.selected_map_point).transform);
+        return {point.x, point.y, point.z};
+    }
+    void move_selection_companion(const std::array<float, 3>& position) override {
+        move(owner_.widget(0x338), position);
+    }
+
+private:
+    static GuiLayoutWidget& require(GuiLayoutWidget* widget) {
+        if (widget == nullptr)
+            throw std::logic_error("Mission-map geometry requires its bound layout widget");
+        return *widget;
+    }
+    static std::uintptr_t find(std::uintptr_t root, std::string_view name) {
+        auto& parent = require(reinterpret_cast<GuiLayoutWidget*>(root));
+        return reinterpret_cast<std::uintptr_t>(find_child_by_name_00aa7e00(parent, name));
+    }
+    void move(GuiLayoutWidget* widget, const std::array<float, 3>& position) {
+        auto& target = require(widget);
+        const auto local = local_position_for_resolved(target.transform,
+            {position[0], position[1], position[2]});
+        owner_.frontend.set_widget_local_position(target, local.x, local.y, local.z);
+        owner_.frontend.refresh_widget_geometry(target);
+    }
+    GameMissionHost::Impl& owner_;
+};
+
 class MenuUpdateBinding final : public MainMenuScreenUpdateHost {
 public:
     explicit MenuUpdateBinding(GameMissionHost::Impl& owner) : owner_(owner) {}
@@ -1455,9 +1533,31 @@ public:
         owner_.log.implemented("MainMenuUpdate::set_active_mission_group", "0059a4b4");
     }
     void position_backdrop() override {
+        if constexpr (kWireGoal4Chain432Bound) {
+            MissionMapGeometryBinding(owner_).move_backdrop(owner_.backdrop);
+        } else {
         owner_.log.unimplemented("MainMenuUpdate::position_backdrop", "00aa8240");
+        }
     }
     void drive_map(float seconds, MissionGroup group, float zoom_delta, bool moved) override {
+        if constexpr (kWireGoal4Chain432Bound) {
+            static_cast<void>(seconds); // Native first stack argument is unread.
+            auto& geometry = owner_.map_geometry;
+            geometry.zoom = owner_.screen_state.map_zoom;
+            MainMenuMapGeometryInput input;
+            input.lookup_root = reinterpret_cast<std::uintptr_t>(owner_.active_group);
+            input.zoom_delta = zoom_delta;
+            input.point_list_index = static_cast<std::size_t>(group);
+            // 0059A3CB/0059A678 borrow screen+1A4h. Registration 00582F30
+            // clears x/z; the page machine supplies the live +1A8h y value.
+            input.additional_offset = {0.0f, owner_.screen_state.map_offset_y, 0.0f};
+            input.immediate_when_zooming = moved;
+            input.has_selected_point_widget = owner_.selected_map_point != nullptr;
+            MissionMapGeometryBinding binding(owner_);
+            update_main_menu_map_geometry_00588c70(geometry, input, binding);
+            owner_.screen_state.map_zoom = geometry.zoom;
+            owner_.log.implemented("MainMenuUpdate::drive_map", "00588c70");
+        } else {
         static_cast<void>(seconds);
         static_cast<void>(group);
         static_cast<void>(zoom_delta);
@@ -1465,7 +1565,9 @@ public:
         // 00588C70's own body is the map anchor and the point-list walk, which
         // needs the world-map camera this process does not build.
         owner_.log.unimplemented("MainMenuUpdate::drive_map", "00588c70");
+        }
     }
+    bool map_geometry_updates_zoom() const noexcept override { return kWireGoal4Chain432Bound; }
     MapZoomInput map_zoom_input() override {
         // Records 121h and 122h have no entry in this process's action table.
         owner_.log.implemented("MainMenuUpdate::map_zoom_input", "0059a517");
@@ -3037,6 +3139,23 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
     if (backdrop != nullptr) {
         const GuiWidgetPoint point = resolved_position(backdrop->transform);
         host.backdrop = {point.x, point.y, point.z};
+    }
+    if constexpr (kWireGoal4Chain432Bound) {
+        // 00586F8A binds the selection companion from this same world-map
+        // root. Do not clone it or substitute a numbered mission point.
+        host.widgets[0x338] = find_child_by_name_00aa7e00(root, "selector_Icon");
+        auto& geometry = host.map_geometry;
+        // 0058300D/0058301D/00583028 registration constants: 00CE54A0=.2f,
+        // 00CEF7BC bytes 14 AE C7 3E=.39f, and XORPS +0. Entry 005987F0
+        // resets +184h/+188h/+18Ch; retain that anchor across map frames.
+        geometry.base_offset = {0.2f, 0.39f, 0.0f};
+        geometry.anchor = {};
+        if (backdrop != nullptr) {
+            const auto extent = widget_size(backdrop->transform); //00587A7C
+            geometry.backdrop_extent = {extent.width, extent.height};
+            geometry.backdrop_position = host.backdrop; //00587A9D
+        }
+    } else {
     }
     host.log.notef("main-menu layout bound: %zu pages, %zu widgets, %zu missing",
         host.summary.detail_pages_loaded, host.summary.detail_widgets_bound,

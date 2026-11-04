@@ -1,0 +1,143 @@
+{
+  "chain": 432,
+  "owner": "agent/g4-w4",
+  "switch": "kWireGoal4Chain432Bound",
+  "wired_before": 9674,
+  "rows": [
+    {
+      "native": "00588c70",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::drive_map",
+      "binding": "Retained mission screen geometry, published mission/group indices, authored point vectors, active layout group, backdrop and selector. Caller opts out of its former second zoom application."
+    },
+    {
+      "native": "005803e0",
+      "status": "skipped",
+      "host_site": "src/main_menu_map_point_geometry.cpp: update_main_menu_map_geometry_00588c70",
+      "reason": "No missing call in baseline: this interpolation helper was already wired and entry-reachable; the geometry driver reuses its existing body."
+    },
+    {
+      "native": "00599db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::run_page_machine",
+      "reason": "No missing call in baseline: this caller already ran; its zoom-ownership opt-in now prevents double application when drive_map runs the completed body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: property-library loading",
+      "reason": "No missing executable call identified: baseline readiness already reports two entry-reachable call sites to the enum-symbol insertion body."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: property-library merge",
+      "reason": "No missing executable call identified: baseline readiness already reports two entry-reachable call sites to the merge body."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start",
+      "reason": "The loading-config NativeString/vector temporary holder is not constructed by this host; it borrows the mission record instead, so no genuine holder exists to destroy."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "A checkpoint-clear/rewrite manager binding is missing at this host site; its current checkpoint_differs gate is also a stand-in."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: skip_balanced_block",
+      "reason": "The semantic SceneLexer has no borrowed raw native tokenizer owner and NativeSceneTokenValueContext at this skip site."
+    },
+    {
+      "native": "008f56a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary lifetime",
+      "reason": "PropertyLibrary does not yet own the native property-tree-library hash-map layout required by this destructor."
+    },
+    {
+      "native": "008f0310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene reference property handling",
+      "reason": "A retained two-word native reference payload holder and its current allocation ownership are missing from the surveyed semantic property path."
+    },
+    {
+      "native": "008f0380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene reference property handling",
+      "reason": "A retained two-word native reference payload holder and its current allocation ownership are missing from the surveyed semantic property path."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "A live SceneReferenceKind formatting consumer was not identified in the surveyed host path, which retains serialized type strings."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party-brain slot selection",
+      "reason": "The surveyed party-brain host lacks the body interface's eight-slot active-state input binding at a real selection call site."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "A retained AiGroupScoreList owner with the real sixteen-term score producer is missing from the surveyed host path."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "A retained AiGroupScoreList owner and actual chosen-key producer are missing from the surveyed host path."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: text-byte admission",
+      "reason": "A FontData-backed text-byte validation call site was not identified in the surveyed frontend hosts."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00588c70 and docs/MAIN_MENU_MAP_POINT_GEOMETRY.md: call ABI, point-list selectors and callback schedule.",
+    "bsp.py show 005987f0 --start 133 --lines 27: zoom=1 and zero anchor entry stores.",
+    "main_menu_registration.cpp / 00582F30: base offsets .2/.39/0 and zero additional x/z; live y is screen_state.map_offset_y.",
+    "bsp.py ghidra bytes 00cef7bc --length 4: 14 ae c7 3e (.39f).",
+    "bsp.py show 005861b0 --start 880 --lines 66 and --start 946 --lines 30: original backdrop size/position capture.",
+    "main_menu_layout_binding.cpp 00586F8A: selector_Icon is the real +338h world-map child.",
+    "main_menu_widget_listener.cpp 005819BF: released mouse-button zoom stores binary zero to +19Ch."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests passed (2/2).",
+    "call_graph": "00588c70 REACHABLE, direct call from MenuUpdateBinding::drive_map; path through run_page_machine, advance, GameMenuHost::frame and WinMain.",
+    "game_run": false,
+    "readiness_00588c70": {
+      "address": "00588c70",
+      "name": "update_main_menu_map_geometry_00588c70",
+      "source": "src/main_menu_map_point_geometry.cpp",
+      "category": "gui",
+      "state": "wired",
+      "callers": 1,
+      "wired_callers": 1,
+      "callees": 9,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 1,
+      "callers_live": 1
+    }
+  },
+  "limits": [
+    "This is the existing projected frontend/mission-screen path, not original native widget ownership or original binary ABI replacement.",
+    "Bridge callbacks update the retained layout positions/sizes and cached draw records; native Icon state/vertex caches remain in the separate native GUI runtime.",
+    "The host has no carried mouse-button zoom-command producer; the retained +19Ch projection starts at the binary released-control zero. Existing map_zoom_input still has no input device records.",
+    "Missing authored map point widgets now throw instead of feeding invented zero coordinates to the point list.",
+    "No game was run; visual map behavior remains unvalidated."
+  ],
+  "wired_after": 9675
+}
