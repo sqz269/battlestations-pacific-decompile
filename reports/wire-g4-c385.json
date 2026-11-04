@@ -1,0 +1,78 @@
+{
+  "chain": 385,
+  "slot": "g4-w4",
+  "base": "6cfda6389c",
+  "picked": "Native language catalog shutdown calls its reconstructed resize body",
+  "switch": "bsp::kWireGoal4Chain385Bound",
+  "rows": [
+    {
+      "native": "008d5aa0",
+      "status": "wired",
+      "host_site": "src/native_language_catalog_lifetime.cpp::shutdown_native_language_catalog_00cdeea0, reached through GameNativeSettingsProcess::shutdown_catalog",
+      "real_state": "The existing process-owned F88974 catalog, canonical raw-string pool context, allocation service and lifetime operation; zero is the original CDEEA7 argument.",
+      "evidence": "bsp.py show 00cdeea0 and 008d5aa0: resize to zero at CDEEA7, decrement current count before each row destructor, reload current backing at CDEEAC and free at CDEEB2.",
+      "call_graph": "REACHABLE: shutdown_native_language_catalog_00cdeea0 calls resize_native_language_catalog_008d5aa0 at built 10546DAF; one call site. Baseline had no linked function for 008D5AA0."
+    },
+    {
+      "native": "008d4f50",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_storage.cpp::reserve (selection only; unchanged)",
+      "reason": "Already reachable at baseline from the resize helper and catalog producer; no missing entry-reachable call to fix, so the private reserve helper remains unchanged."
+    },
+    {
+      "native": "008d59c0",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_lifetime.cpp::resize (selection only; unchanged)",
+      "reason": "Already reachable at baseline from the existing resize helper; no missing entry-reachable call to fix."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_reference_kind_letter (selection only; unchanged)",
+      "reason": "The existing body already runs through scene_property_type_for_letter; adding an address suffix would only change the measurement and supply no new behavior."
+    },
+    {
+      "native": "00b700a0",
+      "status": "skipped",
+      "host_site": "src/camera_frame_state.cpp::D3D9CameraFrameAccess::execute_camera_command_00b71360 (selection only; unchanged)",
+      "reason": "The active camera-command path has its own direct B713C2 renderer-clear call and x87 argument schedule; its native path has no B700A0 call site to replace."
+    },
+    {
+      "native": "004a5620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneTrafficRecorder::commit_traffic_records (selection only; unchanged)",
+      "reason": "The reader owns typed traffic rows but still lacks the actual F8A088 pointer range, manager map, resolved path owners and complete 004A50D0 runtime-constructor bindings."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Failure::periscope_shape_bits_009373c0 (selection only; unchanged)",
+      "reason": "The failure arm only records shape work; actual controller+394h shape ownership and the periscope repair-state/deadline consumer remain missing."
+    },
+    {
+      "native": "006b7710",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp::save_mission_lua_globals_006b7710 (selection only; unchanged)",
+      "reason": "The savedata API documents no original image reference to this retained save entry; no actual mission-save caller/archive contract was established for wiring it."
+    }
+  ],
+  "implementation": {
+    "old_path": "Preserved unchanged in the switch's else arm.",
+    "ownership": "No new catalog, rows, pooled strings or allocations; the whole resize body receives the same lifetime operation as shutdown.",
+    "failure_state": "Fresh-operation replay guard remains outside the catch. Resize failures remain on the same operation. After successful resize the operation returns to running before backing free; free failure retains released_backing, native_site CDEEB2 and failed phase.",
+    "float_math_changed": false,
+    "new_address_suffixed_bodies": false
+  },
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "changed_build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "call_graph_reconstructed_called_before": 4554,
+    "call_graph_reconstructed_called_after": 4555,
+    "source_wired_before": 9613,
+    "source_wired_after": 9614,
+    "readiness_008d5aa0": {"state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "graph_path": "resize_native_language_catalog_008d5aa0 <- shutdown_native_language_catalog_00cdeea0 <- GameNativeSettingsProcess::shutdown_catalog <- GameNativeSettingsProcess::initialize_once <- GameStartupHost <- WinMain <- WinMainCRTStartup",
+    "runtime": "No game run or live shutdown observation. This is build/test and executable call-graph evidence; no new ABI/FH3 claim."
+  },
+  "left": "No outstanding work in the claimed catalog-resize path. Broader frontend, traffic, periscope and retained savedata candidates need the owners/callers identified in skipped rows."
+}
