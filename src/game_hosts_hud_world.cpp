@@ -29,6 +29,10 @@
 #include "bsp/hud_heading_vtable50_cc13.hpp"  // packet cc13-hudhdg
 #include "bsp/wire_goal2_chain47_switches.hpp"
 #include "bsp/wire_goal4_chain376_switches.hpp"
+#include "bsp/wire_goal4_chain513_switches.hpp"
+#include "bsp/pool_pool02_cc13.hpp"
+#include "bsp/pool_pool09_cc13.hpp"
+#include "bsp/pool_pool13_cc13.hpp"
 #include "bsp/game_hosts_ai.hpp"           // game_objective_sets, goal 4 chain 376
 #include "bsp/local_player_unit_lists.hpp"  // 008DDF90, goal 4 chain 376
 
@@ -322,12 +326,33 @@ public:
             ? owner_.units->unit_class_id(owner_.index_of(unit)) : -1;
         switch (bsp::hud_minimap_unit_shows_body(class_id)) {
         case bsp::HudMinimapUnitShows::Always:
+            if constexpr (bsp::kWireGoal4Chain513Bound) {
+                // 005C1675 dispatches the current unit's +B8h slot. Evidence:
+                // bsp.py show 006d1fa0: MOV AL,1 / RET; ECX is unused, so the
+                // live minimap unit handle needs no native-layout adapter.
+                owner_.done("HudMinimap::unit_shows_on_minimap", bsp::kHudMinimapShowsAlwaysBody);
+                return bsp::pool_pool13_cc13::unit_shows_on_minimap_true_006d1fa0(
+                    static_cast<std::uint8_t*>(unit));
+            } else {
             owner_.done("HudMinimap::unit_shows_on_minimap", bsp::kHudMinimapShowsAlwaysBody);
             return true;
+            }
         case bsp::HudMinimapUnitShows::Never:
+            if constexpr (bsp::kWireGoal4Chain513Bound) {
+                // The recovered most-derived vtables distinguish class35's
+                // 007001E0 from the 006F57D0 shared by land forts/command
+                // buildings. Both bodies are XOR AL,AL / RET and read no
+                // object fields (bsp.py show 006f57d0 and 007001e0).
+                const auto body = bsp::hud_minimap_unit_shows_address(class_id);
+                owner_.done("HudMinimap::unit_shows_on_minimap(fort)", body);
+                return body == bsp::kHudMinimapShowsClass35Body
+                    ? bsp::cc13_pool09::class35_shows_on_minimap_007001e0()
+                    : bsp::pool_pool02_cc13::land_fort_shows_on_minimap_006f57d0();
+            } else {
             owner_.done("HudMinimap::unit_shows_on_minimap(fort)",
                 bsp::hud_minimap_unit_shows_address(class_id));
             return false;
+            }
         case bsp::HudMinimapUnitShows::PlayerQuery:
             // SUBSTITUTION: 0074DDF0 asks 008DDF00 on the local player's object at
             // [[00E188A8]+[..+18ECh]*4+21A4h], which is not reconstructed. The
