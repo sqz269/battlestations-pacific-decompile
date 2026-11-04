@@ -40,6 +40,7 @@ public:
     AvoidZoneBoundaryQueries& operator=(AvoidZoneBoundaryQueries&&) = delete;
 
     const std::vector<AvoidZoneBoundaryZoneView>& zones() const noexcept;
+    float distance_within_slack(const std::array<float, 2>& point, float slack);
     float distance_normal(std::size_t zone, const std::array<float, 2>& point,
         float slack, std::array<float, 2>& direction);
     std::array<float, 2> nearest_boundary_point(const std::array<float, 2>& point,
