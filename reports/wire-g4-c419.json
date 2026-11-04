@@ -1,0 +1,139 @@
+{
+  "chain": 419,
+  "slot": "g4-w1",
+  "base": "aac159bcf3",
+  "switch": "bsp::kWireGoal4Chain419Bound",
+  "summary": "Bind the squadron kind-33h member query to the non-fighter rocket-depletion arm of 009F7C90 and the existing return-to-base latch consumer.",
+  "validation": {
+    "baseline_build": "passed; reconstructed_math and tool_tests",
+    "switch_off_build": "passed; both existing suites; 007ED920 absent from linked call graph",
+    "switch_on_build": "passed; both existing suites",
+    "entry_reachable_reconstructed_before": 4686,
+    "entry_reachable_reconstructed_after": 4687,
+    "source_wired_before": 9664,
+    "call_graph_007ed920": "REACHABLE: one call at 102B251D from GameUnitsHost::run_spent_ordnance_rtb_0084e010",
+    "float_math": "No new float arithmetic; only existing timestamp stores and log conversion.",
+    "runtime": "Not run, as assigned. Build/static entry reach does not prove a mission exercised rocket depletion.",
+    "source_wired_after": 9665,
+    "readiness_note": "007ED920 changed from ready to wired and has called=true/call_sites=1. The pre-existing source-wired states of lower 007B9400/007B91C0 do not prove their bodies run; they remain explicitly skipped here."
+  },
+  "evidence": [
+    "007ED927-007ED958: reload signed member count each test, visit +3D0h pointers in order, short circuit on 007B9400 AL.",
+    "009F7CAD-009F7CD8: non-fighter; literal loadout 0; latch +3Ch on previous +28h true/current false when squadron reload or global reload is disabled; store current +28h regardless of reload.",
+    "009F75F4 initializes +28h to zero; 009F6DD0 clears only +3Ch/+3Dh/+3Eh, so rocket history survives host latch-record resets.",
+    "007F2C60 writes the squadron reload byte +369h to the binary constant 1.",
+    "007B91C0 queries rack[220h](loadout) then descriptor[8](kind). 006E4060 and 006E4640 do not use the class fallback for loadout 0.",
+    "plane_rack_census resolves authored equipment and Bullets.Type=Rocket into ORX kind 1/2/3 and ammo. Successful small-rocket and big-rocket release hosts decrement that same ORX ammo array. The generic ordnance mask does not track multi-rocket depletion."
+  ],
+  "assumptions_and_limits": [
+    "Reuse the existing host live-member snapshot, leader kind-13h class proxy, and default squadron reload byte plus actual Lua global reload setting.",
+    "As in the existing rocket release hosts, positive per-rack attached/reserve round counts stand for a held rocket child; no native attached-child graph or separate attachment/reload timing is claimed.",
+    "Rocket history is mission-owned and separate from SpentOrdnanceRtb because the host can reset its latch record on a lost landing target.",
+    "The new C++ query interface preserves native raw-offset defaults for existing Seg48 callers; it is not a drop-in binary ABI replacement.",
+    "No questions or game runs; choices were made from local source, native exports and built-executable reachability."
+  ],
+  "rows": [
+    {
+      "native": "007ED920",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::run_spent_ordnance_rtb_0084e010",
+      "behavior": "Current ordered live members and their actual rocket firing counters feed persistent +28h history, +3Ch depletion latch, and the existing task-breakoff/return-to-base consumer."
+    },
+    {
+      "native": "007B9400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::run_spent_ordnance_rtb_0084e010::RocketMembers::weapon_controller_has_rocket_kind33_007b9400",
+      "reason": "The reconstructed Seg47 body still needs a concrete narrow WeaponController/rack/descriptor binding; this callback supplies the kind-33h answer from the live ORX records, not a call to that body."
+    },
+    {
+      "native": "007B91C0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp:weapon_controller_has_rocket_kind33_007b9400",
+      "reason": "Missing native +974h/+994h slot view and rack[220h]/descriptor[8] adapters for the generic reconstructed query; current packet binds only the squadron loop."
+    },
+    {
+      "native": "006E4060",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp:weapon_controller_has_ordnance_of_kind_007b91c0",
+      "reason": "Missing native attached-child list and child+314h descriptor objects; the rocket host owns combined per-rack round counters instead."
+    },
+    {
+      "native": "006E4640",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp:weapon_controller_has_ordnance_of_kind_007b91c0",
+      "reason": "Missing native multi-rack forty-slot attached-object graph and loaded-descriptor adapter; actual ORX round counters are used by the bound squadron query."
+    },
+    {
+      "native": "007ED970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::unit_has_rocket_ordnance_007b9480",
+      "reason": "Needs a reached squadron target-feed adapter for the big-rocket predicate 007B9480; that predicate differs from the all-kind-33h depletion query wired here."
+    },
+    {
+      "native": "009565A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "Missing unit+6DCh object callback and per-device re-skill bindings; current setter only retains pilot_skill_index."
+    },
+    {
+      "native": "005296A0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "Needs a reached message-35 dispatch/read producer; the existing reserve call is already in the currently unreached reader."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "Needs a reached message-35 dispatch/read producer; the existing resize call is already in the currently unreached reader."
+    },
+    {
+      "native": "00913D80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding (Failure::statistics_00913d80 record)",
+      "reason": "Missing the native per-player scoring owner, hit/player records and award graph required by the complete body."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding::repair_completed_notify",
+      "reason": "Missing the native scoring owner and player/award graph; current repair-completion callback is explicitly unreached."
+    },
+    {
+      "native": "00915F20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (KamikazeDetonate::direct_hit_00915f20 record)",
+      "reason": "Missing native scoring/player/award graph and per-source score maps; semantic direct-hit attribution alone cannot bind the complete body."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp (controller-state message provenance near 10534)",
+      "reason": "No live controller-state message producer and routed consumer identified at the surveyed provenance site."
+    },
+    {
+      "native": "007214C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (controller snapshot provenance near 22208)",
+      "reason": "Missing a stored ControllerSnapshotMessage and routed snapshot consumer; copying existing flags through a temporary would only round-trip."
+    },
+    {
+      "native": "00A79880",
+      "status": "skipped",
+      "host_site": "src/effects_cc13.cpp:scale_effect_sound_instance_volume_00872670",
+      "reason": "Needs a reached concrete scale-volume callback supplying the owned SoundInstance; the inspected effect wrapper delegates through a host interface."
+    },
+    {
+      "native": "00872670",
+      "status": "skipped",
+      "host_site": "src/effects_cc13.cpp:scale_effect_sound_instance_volume_00872670",
+      "reason": "Missing a reached effect-sound instance scale-volume dispatch binding; this packet does not build that sound callback."
+    },
+    {
+      "native": "00B6FC30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp (fov_aspect_product_00b6fc30 host call)",
+      "reason": "Needs a concrete reached camera-consumer getter binding; inspected callers expose only virtual host hooks for the product."
+    }
+  ]
+}

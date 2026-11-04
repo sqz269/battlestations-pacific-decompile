@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain419_switches.hpp"
 #include "bsp/wire_goal4_chain414_switches.hpp"
 #include "bsp/wire_goal4_chain412_switches.hpp"
 #include "bsp/wire_goal4_chain404_switches.hpp"
@@ -3554,6 +3555,10 @@ struct GameUnitsHost::Impl {
     };
     unsigned long long moveto_self_issues{0}, moveto_self_placed{0}, moveto_self_wings{0};
     std::map<std::string, SpentOrdnanceRtb> spent_rtb;
+    // 009F75F4 initializes auto-target+28h to zero. It survives the native
+    // clear-latches operation 009F6DD0, so keep it outside SpentOrdnanceRtb:
+    // the host resets that record when a landing target disappears.
+    std::map<std::string, bool> squadron_rockets_previous_28;
     // Packet cc13-steptail (kSquadronGeneralStepTailBound): the head the general
     // tail last issued on, so it issues once per head.
     struct StepTailGuard {
@@ -22332,8 +22337,8 @@ bool GameUnitsHost::Impl::landing_request_006c54c0(GameUnitSlot& plane) {
 // leader's (the host fuses them); the queue holds one command, so
 // 0071BE60() < 2 holds; sq+368h is 0 (007F2C60 never writes it) and sq+369h is
 // kLuaDeviceReloadEnabledBound's default 1; the class's fighter test is the
-// leader's IsKindOf(13h); 009F7C90's rocket arm (007ED920) is not modelled, a
-// rocket squadron latches through 009F8160 only; 007EE6B0 reads each member's
+// leader's IsKindOf(13h); chain419 binds 009F7C90's rocket arm (007ED920)
+// below, retaining the same class/reload providers; 007EE6B0 reads each member's
 // dive-bomb (009C8A90) or torpedo (009D4C10) break-off answer, a member with
 // neither task counting as broken off (007EE6E0's empty-list skip); B5 issues
 // `returntobase` on the squadron (issue_return_to_base_007f16d0), whose
@@ -23258,6 +23263,61 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
                         static_cast<double>(now));
                 }
             }
+        }
+        if constexpr (bsp::kWireGoal4Chain419Bound) {
+            // 009F7CAD..009F7CD8: for a non-fighter, sample 007ED920(0),
+            // latch +3Ch on true->false when device reload is disabled, then
+            // store +28h regardless of reload. This does not depend on command
+            // class: the existing 009F8160 arm below has a different gate.
+            if (!unit_is_kind_of(leader, 0x13)) {
+                struct RocketMembers final : bsp::Cc13SquadronRocketHost {
+                    Impl& owner;
+                    const std::vector<std::size_t>& members;
+                    RocketMembers(Impl& o, const std::vector<std::size_t>& m)
+                        : owner(o), members(m) {}
+                    std::int32_t rocket_member_count(void*) override {
+                        return static_cast<std::int32_t>(members.size());
+                    }
+                    void* rocket_member(void*, std::int32_t i) override {
+                        return owner.slots[members[static_cast<std::size_t>(i)]].get();
+                    }
+                    bool weapon_controller_has_rocket_kind33_007b9400(
+                        void* member, std::uint32_t loadout) override {
+                        // 007B91C0 -> rack[220h](0): 006E4060 / 006E4640
+                        // inspect held rounds, with no loadout fallback for 0.
+                        // Use the actual rocket firing counters, not the class
+                        // ordnance mask (multi-rack depletion never clears it).
+                        // SUBSTITUTION: as in the rocket release hosts, positive
+                        // attached/reserve rounds stand for the rack's child.
+                        if (loadout != 0) throw std::logic_error("unbound rocket loadout query");
+                        static_assert(bsp::kOpportunisticRocketBound);
+                        auto& unit = *static_cast<GameUnitSlot*>(member);
+                        owner.plane_rack_census(unit); // lazy authored equipment/round producer
+                        for (std::size_t i = 0; i < unit.orx_rack_kind.size()
+                                && i < unit.orx_rack_ammo.size(); ++i) {
+                            // Census kind 1/2/3 all come from Bullets.Type=Rocket
+                            // (descriptor kind 33h); both release hosts decrement
+                            // this same ammo array after a successful launch.
+                            if (unit.orx_rack_kind[i] > 0 && unit.orx_rack_ammo[i] > 0) return true;
+                        }
+                        return false;
+                    }
+                } rockets(h, alive);
+                const bool current = bsp::cc13_seg48_plane_squadron_any_has_rockets_007ed920(
+                    const_cast<bsp::PlaneSquadronHostRecord*>(&sq), 0, rockets);
+                bool& previous = h.squadron_rockets_previous_28[sq.name];
+                if (previous && !current && reload_open && !st.latch_3c) {
+                    st.latch_3c = true;
+                    st.latch_at = now;
+                    st.command = h.slots[leader]->attack_command_class;
+                    ++h.spent_rtb_latches;
+                    h.log.notef("spent rockets: squadron \"%s\" latched at %.2f s "
+                        "(007ED920 / 009F7CD4, chain419)", sq.name.c_str(), static_cast<double>(now));
+                }
+                previous = current;
+            }
+        } else {
+            // Previous host: rocket squadrons latch through 009F8160 only.
         }
         if (st.issued) continue;
         const std::uint32_t command = h.slots[leader]->attack_command_class;
