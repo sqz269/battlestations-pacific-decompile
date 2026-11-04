@@ -17,6 +17,7 @@
 // include/bsp/game_hosts_commands.hpp.
 
 #include "bsp/game_hosts_commands.hpp"
+#include "bsp/wire_goal4_chain527_switches.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
@@ -769,6 +770,17 @@ struct GameCommandsHost::Impl {
     }
 
     int command_count(const GameDirector& director) const noexcept {
+        if constexpr (bsp::kWireGoal4Chain527Bound) {
+            // bsp.py show 0071BE60 --asm: EAX counts the +54h command words,
+            // stride 1Ch, stopping at the first null or ten slots. The export's
+            // void prototype loses that EAX result. Project only the words
+            // this body reads, avoiding unrelated target/path classification.
+            bsp::gameplay_seg38_cc13::DirectorQueue queue;
+            for (int i = 0; i < bsp::kDirectorCommandSlotCount; ++i)
+                queue.slots[i].command_class = director.slot_command[i];
+            return bsp::gameplay_seg38_cc13::filled_slot_count_0071be60(
+                queue);
+        } else {
         // 0071E6D6..0071E6EE and 0071E56B..0071E57E, the unweighted walk from
         // director+54h with stride 1Ch that stops at the first null command:
         // the index of the first empty slot. This is what every site that wants
@@ -781,6 +793,7 @@ struct GameCommandsHost::Impl {
             ++index;
         }
         return index;
+        }
     }
 
     // Packet cc9_set_command_queue_delay: the loopback vector session+24Ch
