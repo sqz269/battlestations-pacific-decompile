@@ -195,5 +195,40 @@
     "No range-body call on missing layout/font/clip inputs; the previous zero-height fallback is not consumed.",
     "Unsupported empty wrapped/sentinel layout remains unavailable under the existing builder's policy.",
     "Input/drag-driven scrolling remains unbound at 00683820."
-  ]
+  ],
+  "review_round_1": {
+    "run": 820,
+    "finding": "P2: 006834A0 size and alpha mutations did not reach authored-widget bridge rendering",
+    "disposition": "fixed",
+    "agreement": "The review is correct: invalidation alone rebuilt cached authored dimensions with constant-white diffuse color.",
+    "change": "MissionDetailBinding registers the exact retained thumb and arrows with FrontendScrollerBridge before calling 006834A0. With chain407 ON, build_quads refreshes those authored records from current layout state and writes current packed RGBA into all six quad vertices. Runtime remains false, so authored draw ordering and axis-aligned rotation behavior remain unchanged. Registration and propagation are gated by chain407; other authored widgets retain prior rendering.",
+    "fixture": "One focused case added to reconstructed_math drives 006834A0 at ranges 0 and 0.2 with track 0.4 and minimum thumb height 0.12. It exercises the production bridge refresh/diffuse selector on runtime=false widgets: at viewport height 720, thumb draw inputs become 374.4 and 230.4 pixels; thumb ARGB is 0x338040FF then 0xFF8040FF; both arrows are 0x40FFFFFF then 0xFFFFFFFF. It also checks unrelated authored widgets. The same case under chain407 OFF expects the cached 0.12 height and constant-white tint.",
+    "checks": {
+      "switch_off": "./scripts/build.ps1 passed all 3 checks, including cached-size/constant-white assertions",
+      "switch_on": "./scripts/build.ps1 passed all 3 checks, including zero/positive range thumb geometry and both arrow tints",
+      "call_graph": "Both reconstructed bodies remain entry-reachable with one direct call each; native reconstructed-address total remains 4667",
+      "pc24_lint": "Direct scan of changed C++/header/test files: 0 findings; unchanged moved bridge helpers are not Original native routines",
+      "readiness": "Both counted rows still called=true, call_sites=1, callers_live=1"
+    },
+    "boundary": "Render-input fixture and production quad-source inspection, not a live GPU/game screenshot.",
+    "production_path": "MissionDetailBinding::set_scroll_range -> bind_scroller_controls -> FrontendScrollerBridge::refresh/color in build_quads -> record.height used for bottom = top + height*screen_h and packed color copied to all six vertices -> draw_bridge modulates texture COLOR/ALPHA with DIFFUSE, uses SRCALPHA/INVSRCALPHA blending, then submits those vertices with DrawPrimitiveUP.",
+    "readiness": {
+      "static_wired": 9649,
+      "executable_called_rows": 4889,
+      "targets": [
+        {
+          "address": "006834a0",
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        },
+        {
+          "address": "00ab6bd0",
+          "called": true,
+          "call_sites": 1,
+          "callers_live": 1
+        }
+      ]
+    }
+  }
 }

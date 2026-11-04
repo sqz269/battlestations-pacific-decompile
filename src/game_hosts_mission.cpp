@@ -1278,6 +1278,9 @@ public:
                 return;
             }
             MainMenuScrollerLayoutHost layout(owner_.frontend);
+            // Review R1: authored controls otherwise retain their load-time
+            // dimensions and constant-white diffuse color in the bridge.
+            owner_.frontend.bind_scroller_controls(owner_.briefing_scroller_354);
             bsp::set_scroll_range(owner_.briefing_scroller_354, static_cast<float>(range), layout);
             owner_.log.implemented("MissionDetail::set_scroll_range", "006834a0");
         } else {
