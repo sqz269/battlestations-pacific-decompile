@@ -1,0 +1,109 @@
+{
+  "goal": 4,
+  "chain": 475,
+  "run": 969,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain475Bound",
+  "totals": {
+    "readiness_wired_before": 9748,
+    "readiness_wired_after": 9748,
+    "entry_called_reconstructed_addresses_before": 4818,
+    "entry_called_reconstructed_addresses_after": 4819,
+    "note": "A clean baseline rebuild with the old host source already classified this address as wired through a host-side match, but the reconstructed gameplay_seg38_cc13.obj body was absent from the linked executable. The new host arm supplies its first reachable direct call. Initial stale-graph scan totals are not used."
+  },
+  "rows": [
+    {
+      "native": "0071c1b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::set_path_follow_pair_0071c1b0",
+      "scope": "The real command queue has exactly one filled slot and its retained slot-0 DirectorPathObject is present; other ownership cases retain the existing host policy.",
+      "built": "Completed the existing address body with both ordered stores, using borrowed live path owners and the received follow/start pair; its stored modes feed authored-path startup.",
+      "evidence": "bsp.py show 0071c1b0 --asm: 0071C1B2..0071C1D8. Class scan is bounded by ten; path pointers start at +1A4h, so +1A0h+first_empty*4 selects first_empty-1, followed by stores at path+08h and path+0Ch.",
+      "called": true,
+      "call_sites": 1,
+      "abi_compatible": false
+    },
+    {
+      "native": "007207c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::apply_user_path_point_007207c0",
+      "reason": "The existing address body only returns an AddUserPathPlan; it lacks the complete point-operation receiver, while the live owned-slot route already performs 0071FDE0."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: UnitSetPlayerCommandsEnabled provenance",
+      "reason": "No single-player controller-state message producer or consumer was identified; the host mention is snapshot provenance."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "The host has no retained ControllerSnapshotMessage producer and routed consumer; wrapping the flattened flags would only round-trip them."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "This site only collects the pre-script baseline; a teardown consumer carrying that set and the live Lua global namespace is missing here."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile_owns_content",
+      "reason": "The adapter has no live profile content-entitlement inventory to pass to the body."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner::update_entries_00aa87b0_fragment",
+      "reason": "The existing owner already calls this body; no additional live timed-entry owner path was identified for this packet."
+    },
+    {
+      "native": "00b8b350",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: flare_centre_weight",
+      "reason": "No live projected-flare coordinate and visibility producer was identified in the selected host work."
+    },
+    {
+      "native": "00b8b3b0",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: flare_edge_fade",
+      "reason": "No live projected-flare coordinate, visibility and limit-state producer was identified in the selected host work."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The scene adapter has neither a populated record remap name nor the live native renderer/cache/reference-owner context required by the setter."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The scene adapter has neither a populated record remap name nor the live native renderer/cache/reference-owner context required by the setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The scene adapter has neither a populated record remap name nor the live native renderer/cache/reference-owner context required by the setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The scene adapter has neither a populated record remap name nor the live native renderer/cache/reference-owner context required by the setter."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing tests passed.",
+    "focused_probe": "local/chain475_mode_probe.cpp compiled as MSVC Win32 with /MANIFEST:EMBED; a synthetic two-slot queue verified both stores select slot 1 and leave slot 0 unchanged.",
+    "call_graph": "The built gameplay_seg38_cc13.obj body has one direct call from GameCommandsHost::set_path_follow_pair_0071c1b0 in game_hosts_commands.obj and is reachable from the executable entry under call-graph analysis.",
+    "baseline_comparison": "local/chain475_build_compare.py rebuilt HEAD's original host source against the same body interface, refreshed the call graph and readiness scan, then restored and rebuilt the patched host and repeated those checks. The baseline graph had only the host method with this suffix; the patched graph also has the reconstructed body and its direct host call.",
+    "ghidra": "Existing bsp project/program verified by the annotation tool; prior plate comments journaled, evidence appended, program saved, and the affected export refreshed.",
+    "float_math": "No float arithmetic changed.",
+    "runtime": "The game was not launched, as instructed; gameplay and original binary ABI compatibility remain unproven."
+  },
+  "remaining": "Own path objects for slots 1 through 9 and recover the empty-queue +1A0h domain before extending host adoption beyond the guarded slot-0 case."
+}
