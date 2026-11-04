@@ -266,11 +266,12 @@ bool submarine_periscope_is_out_00855057(float mast_local_y, float periscope_res
 }
 
 SubmarinePeriscopeRepairStep submarine_step_periscope_repair_00854650(
-    const SubmarinePeriscopeRepair& repair, float dt, bool repair_boosted) noexcept {
+    const SubmarinePeriscopeRepair& repair, float dt, bool repair_boosted,
+    float priority_multiplier) noexcept {
     SubmarinePeriscopeRepairStep out;
     out.repair = repair;
     // 00854E56: the multiplier applies only when unit+A44h is 1.
-    const float step = repair_boosted ? dt * kSubFailureRepairMultiplierInstalled : dt;
+    const float step = repair_boosted ? dt * priority_multiplier : dt;
     // 00854E85..00854E95: FLD +125Ch, FLD step, FLD ST(0), FADDP ST(2), FXCH,
     // FSTP +125Ch, so +125Ch gains one step. Disk bytes (bsp.py disasm-raw
     // 00854e85) read D9 C0 `fld st(0)` at 00854E8F, not `fadd st,st`; the earlier

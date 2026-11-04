@@ -1403,6 +1403,8 @@ public:
     // 00939FE0 directly on unit+A20h (008AD69F), storing the flag at task+46h, which
     // 0093C520's failure step reads. No message is routed.
     void set_failure_repair_enabled_00939fe0(std::size_t unit_index, bool enabled);
+    // Chain 479: current repair-task priority for the submarine repair arm.
+    bool periscope_repair_priority(std::size_t unit_index, int& priority) const;
     bool director_allow_fire_3c(std::size_t unit_index) const noexcept;
     bool director_allow_move_3d(std::size_t unit_index) const noexcept;   // 009F5614's read
     // Packet cc13-jm08: 00720450's raw copy of director+3Ch / +3Dh (0072045D..

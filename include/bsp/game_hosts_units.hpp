@@ -674,6 +674,10 @@ public:
     // node test 00854AF8 (+1214h) and the class's PeriscopeMoveRange (+81Ch).
     void set_submarine_periscope_state_122c(std::size_t unit_index, int state,
                                             bool has_node, float move_range);
+    // Chain 479: the same live unit+122Ch cell for AI, failure and repair.
+    int submarine_periscope_state_122c(std::size_t unit_index) const;
+    // Bind the common 009327F0 stores only; 009373C0's scene/Dyn calls remain open.
+    bool begin_submarine_periscope_failure(std::size_t unit_index, float clock);
     // Packet cc9_periscope_out. periscopeOut (+1234h) as 00854650 last left it;
     // false for any other slot and while kSubmarinePeriscopeOutBound is false.
     bool submarine_periscope_out_1234(std::size_t unit_index) const;

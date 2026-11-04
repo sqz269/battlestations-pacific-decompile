@@ -324,7 +324,8 @@ struct SubmarinePeriscopeRepairStep {
     bool completed{false}; // 0092BEC0: unhide the mast, restore its collision
 };
 SubmarinePeriscopeRepairStep submarine_step_periscope_repair_00854650(
-    const SubmarinePeriscopeRepair& repair, float dt, bool repair_boosted) noexcept;
+    const SubmarinePeriscopeRepair& repair, float dt, bool repair_boosted,
+    float priority_multiplier = kSubFailureRepairMultiplierInstalled) noexcept;
 
 // 009373C0 and its reference-free twin 009327F0. No caller of
 // 00977500 BSP_WarningManager_ReportSubmarinePeriscopeBroken exists anywhere in

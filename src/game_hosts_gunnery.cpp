@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/game_recon_sensor_class_registry.hpp"
 #include "bsp/wire_goal4_chain452_switches.hpp"
@@ -17677,10 +17678,26 @@ int GameGunneryHost::script_set_failure_008132c0(std::size_t unit_index,
         return 3;
     }
     if (failure_name_is(name, "Periscope")) {
+        if constexpr (bsp::kWireGoal4Chain479Bound) {
+            // 00813586..00813595: skip an already-broken +122Ch. The units
+            // host binds the common stores using the live clock/settings;
+            // native mast visibility and collision calls remain recorded.
+            host.units.begin_submarine_periscope_failure(unit_index, host.clock_seconds);
+        } else {
         host.record("Failure::periscope_shape_bits_009373c0", 0x009373c0u);
+        }
         return 4;
     }
     return 0;
+}
+
+bool GameGunneryHost::periscope_repair_priority(std::size_t unit_index, int& priority) const {
+    if (unit_index >= impl_->damage_control.size()) return false;
+    // The host repair task keeps its constructor priority (0); the UI's
+    // 0064A2F0 unit+A44h / task+24h priority setter is not hosted. Read that
+    // actual task cell so the timer does not invent a boosted priority.
+    priority = static_cast<int>(impl_->damage_control[unit_index].task.priority);
+    return true;
 }
 
 bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const {
