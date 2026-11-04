@@ -70,6 +70,7 @@
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/frontend_seg19_21_cc13.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -114,6 +115,15 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
         return;
     }
     switch (profile) {
+    case 0x00cef28c:
+        if (bindings.loading_screen != nullptr &&
+            owner == bindings.loading_screen->registered_hook &&
+            bindings.loading_screen->context != nullptr &&
+            bindings.loading_screen->destroy != nullptr) {
+            bindings.loading_screen->destroy(bindings.loading_screen->context, owner, flags);
+            return;
+        }
+        break;
     case 0x00cfeae8:
         if (bindings.texture_atlas != nullptr) {
             (void)bindings.texture_atlas->delete_registered_00737f10(owner, flags);

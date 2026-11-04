@@ -1266,6 +1266,10 @@ public:
 
     std::size_t count() const noexcept;
     bool unit_active(std::size_t index) const noexcept;
+    // Entity+BDh, published by the supported scene initializer (00923840).
+    // Separate from the +5Ch world-tick gate: disabling a unit does not undo
+    // its initialization. Invalid indices have no ready entity.
+    bool unit_message_ready(std::size_t index) const noexcept;
     // Stable identity shared with world_list_node_unit; not a native address,
     // scene ID, Lua handle, or index+1 token. Valid for this host's lifetime.
     const void* unit_identity(std::size_t index) const noexcept;

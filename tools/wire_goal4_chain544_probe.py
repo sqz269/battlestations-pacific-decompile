@@ -12,6 +12,13 @@ start = source.index("    struct Planner;\n")
 end = source.index("    struct Planner {", start)
 owner = source[start:end]
 
+# Keep the merged MOVETO constructor and command-install sequence together in
+# the fixture: its native output must also release an outgoing ATTACK observer.
+start = source.index("    void order_cautious_move_00a2ccf0(")
+start = source.index("        bsp::AiCommandObject c;", start)
+end = source.index("        ++mode_think_moves;", start)
+move_install = source[start:end]
+
 # Exercise the actual notification loop as well as the actual retained command
 # implementation. No reimplementation of constructor, projection or teardown.
 start = source.index("while (g->attack_endpoint && !g->attack_endpoint->commands.empty()) {")
@@ -26,15 +33,23 @@ probe.write_text(r'''
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_command_tick.hpp"
+#include "bsp/gameplay_seg69_70_cc13.hpp"
+#include "bsp/wire_goal4_chain541_switches.hpp"
+#include "bsp/wire_goal4_chain544_switches.hpp"
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <cstdio>
+#include <cstdlib>
 #include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
 #include <malloc.h>
+
+using bsp::kWireGoal4Chain541Bound;
+static_assert(kWireGoal4Chain541Bound && bsp::kWireGoal4Chain544Bound,
+    "The merged command lifetime fixture requires both switches ON");
 
 struct Owner {
 ''' + owner + r'''
@@ -43,6 +58,11 @@ struct Owner {
     void done(const char*, std::uint32_t) { ++notifications; }
     void notify(Group* g) {
 ''' + notification + r'''
+    }
+    void install_move(Group* g, const float point[3]) {
+        using Choice = bsp::gameplay_seg69_70_cc13::OrderMoveChoice;
+        const Choice choice = Choice::MoveTo;
+''' + move_install + r'''
     }
 };
 
@@ -153,6 +173,16 @@ int main() {
         assert(successor.attack_endpoint->commands.empty());
     }
 
+    // The merged chain541 MOVETO output must feed chain544's installation
+    // path, which removes the preceding ATTACK registration.
+    install(attacker, target, Type::MoveToAttack);
+    const float move_point[3] = {10.0f, 20.0f, 30.0f};
+    owner.install_move(&attacker, move_point);
+    assert(attacker.command.type == Type::MoveTo);
+    assert(attacker.command.owner_group == &attacker && !attacker.command.target_group);
+    assert(std::equal(std::begin(move_point), std::end(move_point), attacker.command.target_position));
+    assert(!attacker.native_attack && target.attack_endpoint->commands.empty());
+
     // Promotion replaces a command on the same endpoint. Target destruction
     // consumes both registered observers and installs IDLE once for each.
     install(attacker, target, Type::CautiousAttack);
@@ -178,7 +208,7 @@ int main() {
     attacker.native_attack.reset();
     assert(retained.expired());
     assert(_heapchk() == _HEAPOK);
-    std::puts("ATTACK construction/route-state synchronization/retarget/promotion/notification/shutdown lifetime passed; heap valid");
+    std::puts("ATTACK construction/route-state synchronization/MOVETO replacement/retarget/promotion/notification/shutdown lifetime passed; both switches ON; heap valid");
 }
 ''')
 

@@ -1,0 +1,242 @@
+{
+  "run": 1107,
+  "harness": "codex",
+  "chain": 539,
+  "branch": "agent/g4-w2",
+  "picked": "SHIP_AVOIDSIDE local queue dispatch with actual mission state/tick and retained unit initialization",
+  "switch": "bsp::kWireGoal4Chain539Bound",
+  "switch_header": "include/bsp/wire_goal4_chain539_switches.hpp",
+  "wired_total": {
+    "before": 9852,
+    "after": 9854,
+    "metric": "wire_readiness text reachability"
+  },
+  "built_called_total": {
+    "before": 4919,
+    "after": 4921,
+    "metric": "call_graph reconstructed addresses reachable from entry",
+    "baseline": "same source built with chain539 switch false"
+  },
+  "validation": {
+    "baseline_build": "passed, 5/5 tests",
+    "switch_off_build": "passed, 5/5 tests",
+    "switch_on_build": "passed, 5/5 tests",
+    "call_graph": "00780670 one direct call and 00762430 four direct calls from the entry-reached ship controller path; both absent with the switch off",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "evidence": [
+    "bsp.py show 00780670, with assembly 00780748..0078074B for DWORD subtraction",
+    "bsp.py show 00762430: native class vtable +0C answers 8F/46",
+    "bsp.py show 0076e520 --asm: 0076E5BD..0076E5C6 stamps the actual 00F876B0 after decoding",
+    "bsp.py show 00782790: writes copy+0C",
+    "bsp.py show 00923840 and 00925ce0: initialized +BD publication and constructor zero"
+  ],
+  "scope": [
+    "The existing queue still delivers at the next controller step, as before; no scheduler reordering was added.",
+    "Sender identity is the same retained stable unit registry index used by this host queue; this does not add native handle-table release/reuse.",
+    "Only the existing kind-8F queue is bound; other session categories, raw ABI and in-game behavior are not claimed."
+  ],
+  "rows": [
+    {
+      "native": "00780670",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_pass_side_messages",
+      "call_sites": 1,
+      "evidence": "Existing gate body receives the borrowed mission game state, wrapping send_tick-current_tick, actual retained sender identity and canonical initialized +BD byte; keep entries return to the live queue."
+    },
+    {
+      "native": "00762430",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::deliver_pass_side_messages",
+      "call_sites": 4,
+      "evidence": "Existing SHIP_AVOIDSIDE class IsType body supplies the four category answers for the queue produced by 007623D0."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit",
+      "reason": "The native selection-screen storage, selection vector and two input-context levels have no owner on the recorded reset path."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::map_screen_busy",
+      "reason": "No power-up carousel/scroller bytes +1F9/+13F are produced; map_screen_wanted is also fixed false."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::advance_ticker",
+      "reason": "The +AC award vector, native strings and ticker widgets lack an award-queue producer; the host explicitly publishes an empty queue."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "weapon_animation returns zero; a real timed-animation owner and its producer are missing."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::set_ambient_volume",
+      "reason": "Already called by the retained sound path; this HUD arm has no ambient SoundInstance/sample owner to supply."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: RawTimedEntries::Invocation",
+      "reason": "The page path already constructs the native timed-entry representation; no live typed GuiTimedEntryStorage owner exists for this alternative body."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: reset_gui_timed_entry_base_00ad3990",
+      "reason": "The typed timed-entry owner is not on the live page path, which uses the existing native storage/profile teardown."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: timed-entry advance",
+      "reason": "No reachable typed entry/GuiWidgetOwner owner; existing typed callers cannot be counted by wrapping the same call."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: pointer update route",
+      "reason": "The GuiPointerRuntimeServices owner, cursor sampling and owned-widget hit-test dispatch are missing from the current host route."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect sorted children",
+      "reason": "The native caller is reflection/property description, not the game rendering order; its descriptor-writer path has no host root."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "A native command-target storage/producer and its event consumer are missing; the host method currently returns zero."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target / report_target_event",
+      "reason": "The target-event observer/dispatch owner is missing; both host sites only record the event."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The entity has no AI group/controller-owner publication on these paths, so the forward target does not exist."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "The ammo-record +48 alternate producer and owning ammo record are missing; the current handle denotes the gun row."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message35 word-array decode",
+      "reason": "The native message35 producer/dispatch route is not linked from the game host; the array helper only has that unused owner."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: message35 word-array decode",
+      "reason": "A game-reached native message35 owner is missing, so resizing its word array cannot yet be wired."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0",
+      "reason": "The error-context map/iterator owner has no entry-reachable application route; even its advance body is not linked."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "The error-context map/iterator owner has no entry-reachable application route; the advance body is not linked."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context insertion/rebalance",
+      "reason": "A live error-context map producer and application owner are missing; changing the unused generic rebalance would not execute the body."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error-context insertion/rebalance",
+      "reason": "A live error-context map producer and application owner are missing; changing the unused generic rebalance would not execute the body."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: MoverFrustumHost::fov_aspect_product_00b6fc30",
+      "reason": "No concrete host implements the frustum/traffic getter with the actual CameraProjection owner on this path."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_get_190_00b6fe60",
+      "reason": "The typed CameraView +190 owner and a live consumer of that word are missing."
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "No game-owned CloudInstanceC is produced; scene scatter/cloud visual creation remains a missing producer."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/cc13_front2.cpp: gamepad force clear",
+      "reason": "The live XInput route already uses clear_native_gamepad_force_00a95890; no typed GamepadForceState owner exists on that route."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCamInterpolatorHost::set_zoom_0078e480",
+      "reason": "A live MovCamZoom owner and interpolator-host implementation are missing."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCamFrameHost::wrap_and_clamp_007904d0",
+      "reason": "A game-owned MovCamAngles/MovCamFrame and concrete frame-host route are missing."
+    },
+    {
+      "native": "004eb9b0",
+      "status": "skipped",
+      "host_site": "src/scene_record_side_blocks.cpp: scene header water properties",
+      "reason": "The SceneHeaderApplyHost route is not instantiated and has no persistent SceneOceanFields owner/consumer."
+    },
+    {
+      "native": "004ee9e0",
+      "status": "skipped",
+      "host_site": "src/scene_record_side_blocks.cpp: scene header terrain textures",
+      "reason": "The SceneHeaderApplyHost route lacks a persistent SceneTerrainFields owner and renderer consumer."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "This legacy ocean name actually denotes a cloud-manager update; the current scene has no cloud-manager instance owner to update."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: construct_unit_instance_subobjects",
+      "reason": "The complete typed UnitInstanceSubObjects constructor route has no game-reached owner; adding a disconnected reference-slot copy would not wire it."
+    },
+    {
+      "native": "00923840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::create_units",
+      "reason": "A full raw entity/parent layout is missing for the complete body; this change only retains its proven +BD publication beside the existing +5C initializer projection."
+    }
+  ]
+}

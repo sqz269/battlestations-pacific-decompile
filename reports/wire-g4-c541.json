@@ -1,0 +1,104 @@
+{
+  "chain": 541,
+  "worker": "agent/g4-w5",
+  "base": "b6a61512435b566e6a220464e4904c98c79fd0e0",
+  "switch": "bsp::kWireGoal4Chain541Bound",
+  "summary": "Construct MOVETO from the active planner's owner group and destination; publish constructor outputs and dispatch its GetType leaf into the installed command.",
+  "wired_total_before": 9857,
+  "wired_total_after": 9859,
+  "rows": [
+    {
+      "native": "00a10240",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0",
+      "reason": "Missing a runtime-selectable CAUTIOUSMOVE producer: the sole current order_cautious_move caller passes ratio=1.0, so uniform01 > ratio never selects this arm; a static CALL would not make it run."
+    },
+    {
+      "native": "00a10270",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0, constructed MOVETO primary-vtable +4h dispatch",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a10310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_cautious_move_00a2ccf0, constructed CAUTIOUSMOVE primary-vtable +4h dispatch",
+      "reason": "Missing a runtime-selectable CAUTIOUSMOVE producer: the sole current order_cautious_move caller passes ratio=1.0, so uniform01 > ratio never selects this arm; a static CALL would not make it run."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_attack",
+      "reason": "Missing persistent Original-shaped attack observer ownership and registration/lifetime integration for the active group; Seg69Host cannot be replaced with dummy callbacks."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::order_attack",
+      "reason": "Missing persistent Original-shaped attack observer ownership and registration/lifetime integration for the active group; the cautious state alone does not supply the attack base."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: kAiGroupScoreListReleaseBound explanation",
+      "reason": "No single-player gameplay consumer: this score list is read by the unreachable debug overlay, so the assignment excludes constructing it merely for coverage."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: kAiGroupScoreListReleaseBound explanation",
+      "reason": "No single-player gameplay consumer: marking a chosen score-list record feeds only the unreachable debug overlay."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameDirector command targets",
+      "reason": "Missing runtime-backed absolute globals 00F87574/00F87578/00F8757C for this literal native entry; PE zero-fill alone cannot supply their current values."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner spawn-budget consumers",
+      "reason": "Missing a Left61Host projection of the live raw unit list, support-points global and queued team resource usage; a constant budget would invent game state."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::insert_into and attach_tree",
+      "reason": "No additional wiring is missing: the baseline already calls this body from two entry-reachable sites despite its ready text classification."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor and merge_child",
+      "reason": "No additional wiring is missing: the baseline already calls this body from two entry-reachable sites despite its ready text classification."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 00a2ccf0: MOVETO is built inline from the group and destination, then installed; its final layout matches 00A10240.",
+    "bsp.py show 00a10240: owner at +4h, destination at +8h..+10h, primary vtable 00D22ABC.",
+    "bsp.py show 00a10270: the constructed MOVETO class GetType returns native class id 3.",
+    "call_graph.py who: both MOVETO bodies have one direct entry-reachable CALL from mode_think_apply, which contains the inlined order_cautious_move wrapper.",
+    "wire_readiness.py --standins: both MOVETO rows wired, called=true, call_sites=1.",
+    "game_hosts_ai.cpp mode_think_apply passes ratio=1.0; gameplay_seg69_70_cc13.cpp ai_order_cautious_move selects CAUTIOUSMOVE only for uniform01 > ratio. No static-only cautious calls retained."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTest checks passed",
+    "diff_check": "git diff --check passed",
+    "float_math": "No float arithmetic changed; destination values are copied from constructor output.",
+    "game_run": false,
+    "abi": "Existing reconstructed C++ interfaces with an aligned 0x14-byte Original-shaped temporary; not a drop-in binary replacement."
+  },
+  "assumptions": [
+    "Reuse 00A10240 for the byte-equivalent inline MOVETO construction in 00A2CCF0."
+  ],
+  "left": "CAUTIOUSMOVE constructor/GetType need a real selectable producer, such as an owning Lua command factory or an original-backed non-unit ratio. Attack-family constructors still need observer registration and lifetime storage."
+}

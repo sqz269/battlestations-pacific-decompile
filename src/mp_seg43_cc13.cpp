@@ -887,7 +887,7 @@ void entity_detach_from_world_lists_00781200(Raw entity, ListHooks& lists) {
     }
 }
 
-void native_string_append_float_00781740(Raw string, float value, MpSeg43Hooks& hooks, NativeStringStorage& strings) {
+void native_string_append_float_00781740(Raw string, float value, NativeStringFloatFormatHost& hooks, NativeStringStorage& strings) {
     alignas(4) unsigned char text[8]; // the formatted temporary {length, chars}
     hooks.native_string_from_float_0043bdf0(text, value);
     const auto length = get<std::uint32_t>(text, 0);

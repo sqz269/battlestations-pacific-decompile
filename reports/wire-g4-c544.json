@@ -5,10 +5,10 @@
   "summary": "Install the existing ATTACK-family constructors over retained command storage with live planner owner/target groups; consume their fields and GetType results in the actual command ticks, publish mutable CAUTIOUSATTACK route fields back to retained storage after each route tick, retain target observers, and unregister them on replacement, promotion, retargeting and teardown.",
   "wired_total_before": 9860,
   "wired_total_after": 9865,
-  "metric_note": "Readiness's textual wired total increases by five. 00A10710 and 00A10AE0 were already textually wired at baseline; this chain supplies actual entry-reachable calls for all seven selected bodies. No baseline binary-called total was captured.",
+  "metric_note": "The original isolated chain544 run increased readiness's textual wired total by five, from 9860 to 9865. 00A10710 and 00A10AE0 were already textually wired at baseline; this chain supplies actual entry-reachable calls for all seven selected bodies. No baseline binary-called total was captured. The post-merge total is recorded separately in merge_validation.",
   "validation": {
     "release_build_and_tests": "./scripts/build.ps1: all five existing tests pass",
-    "lifetime_fixture": "python tools/wire_goal4_chain544_probe.py: production constructor/storage/install/notification code passes all three subclass outputs, one real 00A14DD0 route build and retained-state readback, retarget, promotion, non-attack replacement, multiple target observers, unobserved target, target-before-attacker shutdown and heap checks",
+    "lifetime_fixture": "python tools/wire_goal4_chain544_probe.py: production constructor/storage/install/notification code passes all three subclass outputs, one real 00A14DD0 route build and retained-state readback, merged chain541 MOVETO construction/replacement, retarget, promotion, non-attack replacement, multiple target observers, unobserved target, target-before-attacker shutdown and heap checks; both chain541 and chain544 switches are asserted ON",
     "analysis_build": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests",
     "call_graph": "python tools/call_graph.py --build-dir build/analysis, followed by who for each wired address: all seven are entry-reachable with distinct call sites; Release also calls all three subclass constructors and GetType bodies, while the shared base is inlined",
     "evidence": "bsp.py show 00A10890, 00A109B0 and 00A10710; 00A10710 assembly confirms ECX=target and EDX=command+8 at observer registration",
@@ -24,6 +24,17 @@
       "verification": "The lifetime fixture runs the existing ai_cautious_approach_pass_00a14dd0 against a single-leader route fixture. It builds three route points plus the destination, changes the flag false -> true and counter 4 -> 3, calls the production store_command_route_state helper, and verifies the same true/3 values through both NativeAttackCommand::state() and raw bytes +24h/+28h. Subsequent retargeting still resets route state to false/4."
     }
   ],
+  "merge_validation": {
+    "origin_main": "23d8834e1aa9ca37aa7e8f83620d8af92537e727",
+    "conflicts": "Two content conflicts in src/game_hosts_ai.cpp: switch includes and the MOVETO command installation point. No ledger shard or cmake/startup.cmake conflict occurred.",
+    "resolution": "Retain both switch includes. Complete chain541's constructor/projection selection before chain544's installation switch, so both the constructor result and its old fallback pass through replace_command when chain544 is ON. This preserves actual MOVETO fields and releases an outgoing ATTACK observer.",
+    "release_build": "./scripts/build.ps1 passes with both switches ON and all five existing tests passing",
+    "on_analysis_build": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passes; the focused Win32 fixture statically requires both switches ON",
+    "fixture": "The fixture extracts the merged production MOVETO construction/install block, replaces a live ATTACK with MOVETO, and verifies type, owner, all three point fields, null attack storage and removal of the previous target registration. Existing mutable-route readback and lifetime cases still pass.",
+    "wire_readiness": "python tools/wire_readiness.py --standins",
+    "wired_total_after_merge": 9876,
+    "call_graph": "All seven chain544 bodies remain entry-reachable with call sites 3/1/1/1/1/1/1. Chain541 bodies 00A10240 and 00A10270 each retain one entry-reachable call from order_cautious_move_00a2ccf0."
+  },
   "rows": [
     {
       "native": "00a10710",

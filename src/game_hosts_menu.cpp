@@ -6,6 +6,7 @@
 #include "bsp/wire_goal4_chain503_switches.hpp"
 #include "bsp/wire_goal4_chain507_switches.hpp"
 #include "bsp/wire_goal4_chain528_switches.hpp"
+#include "bsp/wire_goal4_chain545_switches.hpp"
 #include "bsp/frontend_seg16_24_28_cc13.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
@@ -675,6 +676,8 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     FrontEndShellState shell_state{};
     LoadingScreenConfig loading_globals{};
     LoadingScreen loading_screen{};  // the 00E194B4 singleton's recovered fields
+    LoadingScreen* loading_screen_singleton{}; // actual source E194B4 publication
+    frontend_seg19_21_cc13::LoadingScreenDeletionBinding loading_screen_deletion{};
     // C251: value projections of that SAME screen's +0C..+50 fields. Reset
     // publishes its +2C/+30 writes back to loading_screen, the progress owner.
     LoadingScreenElementState loading_elements;
@@ -688,6 +691,16 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
     // 0057BEC0 at every report: null unless 0057CB60 built the screen.
     void report_loading_progress_0057bec0(float progress) {
         const LoadingProgressCrtAccess crt{&loading_progress_scale_00cef258, &sse2_0109eea4};
+        if constexpr (kWireGoal4Chain545Bound) {
+            // 0057BFF0 publishes before virtual Init returns. Progress raised
+            // inside Init must already see that SAME owner, even though the
+            // legacy created flag is only set by begin_loading_screen later.
+            report_loading_progress(loading_screen_singleton, progress, crt);
+            if (loading_screen_singleton != nullptr) {
+                loading_elements.rotation.progress = loading_screen_singleton->progress;
+                loading_elements.rotation.progress_units = loading_screen_singleton->progress_units;
+            }
+        } else {
         if constexpr (kWireGoal4Chain251Bound) {
             report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
             if (loading_screen.created) {
@@ -696,6 +709,7 @@ struct GameMenuHost::Impl : MenuLocaleTableBorrow<kWireGoal2Chain189Bound> {
             }
         } else {
         report_loading_progress(loading_screen.created ? &loading_screen : nullptr, progress, crt);
+        }
         }
     }
     GameSingletonHost& singletons;
@@ -2286,7 +2300,8 @@ private:
     GameMenuHost::Impl& owner_;
 };
 
-class MenuLoadingScreenHost final : public LoadingScreenHost {
+class MenuLoadingScreenHost final : public LoadingScreenHost,
+    public frontend_seg19_21_cc13::LoadingScreenDestructionHost {
 public:
     explicit MenuLoadingScreenHost(GameMenuHost::Impl& owner) : owner_(owner) {}
 
@@ -2328,7 +2343,32 @@ public:
         owner_.log.notef("loading screen atlas %s", path);
         rec("LoadingScreen::load_texture_atlas", "00af0060");
     }
-    void create_screen() override { rec("LoadingScreen::create_screen", "0057c1c0"); }
+    void create_screen() override {
+        if constexpr (kWireGoal4Chain545Bound) {
+            auto& binding = owner_.loading_screen_deletion;
+            binding = {&owner_, &owner_.loading_screen.lifetime,
+                [](void* context, void* hook, std::uint32_t flags) {
+                    auto& owner = *static_cast<GameMenuHost::Impl*>(context);
+                    if (hook != &owner.loading_screen.lifetime || flags != 1u)
+                        throw std::logic_error("loading screen drain requires its registered member and deleting flag 1");
+                    MenuLoadingScreenHost host(owner);
+                    host.screen_destroy();
+                    // Host storage remains allocated with Impl; retire the SAME
+                    // owner instead of freeing an interior semantic projection.
+                    owner.loading_screen.created = false;
+                }};
+            auto& admitted = owner_.singletons.native_deletion_bindings().loading_screen;
+            if (admitted != nullptr && admitted != &binding)
+                throw std::logic_error("loading screen lifetime already has another owner");
+            admitted = &binding; // before the recovered constructor registers
+            auto context = lifetime_context();
+            frontend_seg19_21_cc13::loading_screen_construct_0057c1c0(
+                owner_.loading_screen, context);
+            owner_.log.implemented("LoadingScreen::create_screen", "0057c1c0");
+        } else {
+        rec("LoadingScreen::create_screen", "0057c1c0");
+        }
+    }
     void screen_init() override {
         if constexpr (kWireGoal4Chain251Bound) {
             MenuLoadingElementHost elements(owner_);
@@ -2341,6 +2381,12 @@ public:
     void screen_show() override { rec("LoadingScreen::screen_show", "00cef264+18h"); }
     void screen_stop_worker() override { rec("LoadingScreen::screen_stop_worker", "00cef264+1Ch"); }
     void screen_destroy() override {
+        if constexpr (kWireGoal4Chain545Bound) {
+            auto context = lifetime_context();
+            frontend_seg19_21_cc13::loading_screen_destruct_0057c2e0(
+                owner_.loading_screen, context, *this);
+            owner_.log.implemented("LoadingScreen::screen_destroy", "0057c2e0");
+        } else {
         if constexpr (kWireGoal4Chain251Bound) {
             // end_loading_screen already committed active=false. Retire the
             // borrowed view before the next load can initialize the singleton.
@@ -2355,8 +2401,36 @@ public:
         } else {
         rec("LoadingScreen::screen_destroy", "00cef264+0Ch");
         }
+        }
     }
-    void lifetime_unregister() override { rec("LoadingScreen::lifetime_unregister", "00415350"); }
+    void lifetime_unregister() override {
+        if constexpr (kWireGoal4Chain545Bound) {
+            // 0057C250 first unregisters directly; 0057C090 subsequently repeats
+            // the search under the captured manager lock and clears E194B4.
+            auto lifetime = owner_.singletons.sound_lifetime();
+            // 0057C29C..B6 captures/pushes the member before 00415350.
+            auto* const registered = owner_.loading_screen_singleton
+                ? &owner_.loading_screen_singleton->lifetime : nullptr;
+            auto manager = lifetime.get_manager_00415350();
+            manager.unregister_object(registered);
+            owner_.log.implemented("LoadingScreen::lifetime_unregister", "00bcfca0");
+        } else {
+        rec("LoadingScreen::lifetime_unregister", "00415350");
+        }
+    }
+    void remove_loading_page() override {
+        auto* page = static_cast<GuiLayoutPage*>(owner_.loading_elements.elements.page);
+        owner_.frontend.release_screen_page(page);
+        owner_.loading_elements = {};
+        owner_.loading_hints = {};
+    }
+    void mark_loading_screen_destroyed() override {
+        owner_.shell_state.loading_screen_destroyed = true;
+    }
+    void destroy_loading_frontend_base() override {
+        unregister_front_end_screen_004f71a0(owner_.world.screens, owner_.loading_screen.base);
+        owner_.screens.erase(frontend_seg19_21_cc13::loading_screen_get_screen_id_0057c230());
+    }
     void select_menu_layout(int layout, int flag) override {
         // 004c1ac0 returns the frame singleton the host's frame_layouts stand
         // for; 00518250 is the same selector the title bring-up runs.
@@ -2412,6 +2486,9 @@ public:
     }
 
 private:
+    frontend_seg19_21_cc13::LoadingScreenLifetimeContext lifetime_context() {
+        return {owner_.singletons.sound_lifetime(), owner_.loading_screen_singleton};
+    }
     void rec(const char* method, const char* address) {
         owner_.log.unimplemented(method, address);  // literals: the log indexes by pointer
     }
@@ -2567,7 +2644,11 @@ public:
                     static_cast<double>(owner_.loading_screen.progress));
             }
             MenuLoadingScreenHost host(owner_);
+            if constexpr (kWireGoal4Chain545Bound) {
+                end_loading_screen(owner_.loading_screen_singleton, host);
+            } else {
             end_loading_screen(owner_.loading_screen.created ? &owner_.loading_screen : nullptr, host);
+            }
             owner_.log.implemented("FrontEndShell::end_loading", "0057c250");
         } else {
             owner_.log.unimplemented("FrontEndShell::end_loading", "0057c250");
@@ -3038,7 +3119,21 @@ GameMenuHost::GameMenuHost(GameHostLog& log, GameFrontendHost& frontend, GameSta
     }
 }
 
-GameMenuHost::~GameMenuHost() = default;
+GameMenuHost::~GameMenuHost() {
+    if constexpr (kWireGoal4Chain545Bound) {
+        // Retire a screen left by an interrupted load before its borrowed
+        // binding and GUI owner disappear. A completed canonical drain already
+        // cleared this publication, so it never recreates the manager here.
+        if (impl_->loading_screen_singleton != nullptr) {
+            MenuLoadingScreenHost loading(*impl_);
+            loading.screen_destroy();
+        }
+        auto& binding = impl_->singletons.native_deletion_bindings().loading_screen;
+        if (binding == &impl_->loading_screen_deletion) binding = nullptr;
+    } else {
+        // Previous default destructor: member owners perform their cleanup.
+    }
+}
 
 void GameMenuHost::bind_input_context_manager(GameInputContextManagerBinding& binding) {
     binding.prepare();

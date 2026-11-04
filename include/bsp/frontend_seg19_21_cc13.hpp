@@ -11,6 +11,8 @@
 #include <cstdint>
 #include <array>
 #include "bsp/frontend_screen_constructor.hpp"
+#include "bsp/frontend_entry.hpp"
+#include "bsp/sound_lifetime_access.hpp"
 
 namespace bsp::frontend_seg19_21_cc13 {
 
@@ -177,12 +179,36 @@ void* multi_lobby_option_registry_get_singleton_00576b10(Seg19_21Host& host);
 
 // ---- segment 19: loading screen ----
 void loading_progress_compute_fraction_0057bf10(void* screen, std::int32_t phase, float fraction, Seg19_21Host& host);
-void* loading_screen_register_singleton_0057bff0(void* base, Seg19_21Host& host);
-void loading_screen_singleton_destruct_0057c090(void* base, Seg19_21Host& host);
+// Chain 545 replaces the unused raw-only entries with one body per address over
+// the live screen. The manager access borrows the application's actual AA0 cell;
+// singleton is the same publication that host progress/teardown observe. New C++ ABI.
+struct LoadingScreenLifetimeContext {
+    SoundLifetimeAccess lifetime;
+    LoadingScreen*& singleton;
+};
+struct LoadingScreenDestructionHost {
+    virtual ~LoadingScreenDestructionHost() = default;
+    virtual void remove_loading_page() = 0;
+    virtual void mark_loading_screen_destroyed() = 0;
+    virtual void destroy_loading_frontend_base() = 0;
+};
+// A finite deletion binding for precisely the registered CEF28C member. Kept
+// by the menu owner through normal teardown and the canonical manager drain.
+struct LoadingScreenDeletionBinding {
+    void* context{};
+    void* registered_hook{};
+    void (*destroy)(void* context, void* registered_hook, std::uint32_t flags){};
+};
+LoadingScreen::LifetimeHook* loading_screen_register_singleton_0057bff0(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context);
+void loading_screen_singleton_destruct_0057c090(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context);
 void loading_progress_report_phase_0057c1a0(std::int32_t phase, float fraction, Seg19_21Host& host);
-void* loading_screen_construct_0057c1c0(void* screen, Seg19_21Host& host);
+LoadingScreen* loading_screen_construct_0057c1c0(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context);
 std::int32_t loading_screen_get_screen_id_0057c230() noexcept;
-void loading_screen_destruct_0057c2e0(void* screen, Seg19_21Host& host);
+void loading_screen_destruct_0057c2e0(LoadingScreen& screen,
+    LoadingScreenLifetimeContext& context, LoadingScreenDestructionHost& host);
 void loading_screen_collect_children_0057cf10(void* screen, void* children, Seg19_21Host& host);
 void loading_screen_publish_config_0057cff0(const void* source, LoadingScreenConfigHost& host);
 void loading_screen_set_mission_text_0057d060(const void* source, LoadingScreenConfigHost& host);

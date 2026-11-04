@@ -16,7 +16,20 @@
 
 namespace bsp::pool15_cc13 {
 
-struct Pool15Host {
+// Complete provider surface of 004CACA0. Its callers need no world-border
+// or traffic hooks. The full packet host below retains those other operations.
+struct NativeStringAppendIntHost {
+    virtual ~NativeStringAppendIntHost() = default;
+    virtual void native_string_from_int_004260b0(void* header, std::int32_t value) = 0;
+    virtual void native_string_resize_0041dd40(void* header, std::uint32_t length,
+        std::uint32_t preserve) = 0;
+    virtual void memcpy_00bf7680(void* dst, const void* src, std::uint32_t bytes) = 0;
+    virtual void* sized_pool_00419cc0() = 0;
+    virtual void sized_pool_return_block_00bd1510(void* pool, void* data, std::uint32_t size,
+        std::uint32_t flag) = 0;
+};
+
+struct Pool15Host : NativeStringAppendIntHost {
     virtual ~Pool15Host() = default;
 
     // --- library bindings (no reconstruction credit) ---
@@ -51,6 +64,6 @@ void world_layout_border_zone_records_004c71c0(void* world, Pool15Host& host);
 void world_border_zone_at_point_004c74c0(void* world, const float* point, void* out_iterator,
     Pool15Host& host);
 // 004CACA0, __thiscall(ECX = string; int value) RET 4.
-void native_string_append_int_004caca0(void* string, std::int32_t value, Pool15Host& host);
+void native_string_append_int_004caca0(void* string, std::int32_t value, NativeStringAppendIntHost& host);
 
 }  // namespace bsp::pool15_cc13

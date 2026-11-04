@@ -870,6 +870,10 @@ public:
 
     // Borrow the actual session participant owner; it must outlive this host.
     void bind_session_participants(const bsp::SessionParticipantPools& owner) noexcept;
+    // Borrow the mission's actual game+5D4h and 00F876B0 cells. Both owners
+    // outlive this host; enqueue and dispatch read them at their own sites.
+    void bind_local_message_clock(const std::uint32_t& game_state,
+        const std::uint32_t& step_count) noexcept;
     // The bound owner, or null (packet cc9_usn02_sameside_torpedoes: 00927F10 for gunnery).
     const bsp::SessionParticipantPools* session_participants() const noexcept;
 
