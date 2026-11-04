@@ -108,7 +108,7 @@ void cc13_front3_gun_set_controlled_audio_mix_0072b540(void* gun, bool controlle
 // ADh -> slot +1DCh(); every handled case returns true. Anything else
 // (including kinds below 4Bh, via the unsigned JA) tail-jumps to
 // 0043F860(ECX = gun; message), whose AL is returned.
-bool cc13_front3_gun_handle_network_message_0072d830(void* gun, void* message, Cc13Front3Host& host) {
+bool cc13_front3_gun_handle_network_message_0072d830(void* gun, void* message, GunNetworkMessageHost& host) {
     switch (at<std::uint8_t>(message, 0x10)) {
     case 0x4B:
     case 0x4C:

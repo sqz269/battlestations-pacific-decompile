@@ -1162,7 +1162,7 @@ bool session_mode_field_is_zero_or_one_006e38e0(void* session) {
 
 // 006E3940, __thiscall(message, std::uint16_t value), RET 4. 0075B430(message, ADh); word +18h = 0,
 // +1Ah = +1Ch = 0 (bytes), word +20h = value, +4h = 1, vtable 00CF9628. Returns message.
-void* gun_fire_message_construct_006e3940(Seg33aHost& host, void* message, std::uint16_t value) {
+void* gun_fire_message_construct_006e3940(Seg33aGunFireMessageHost& host, void* message, std::uint16_t value) {
     host.session_message_construct_base_0075b430(message, 0xAD);
     at<std::uint16_t>(message, 0x18) = 0;
     at<std::uint8_t>(message, 0x1A) = 0;
@@ -2651,12 +2651,12 @@ bool late_horizontal_velocity_above_threshold(const float* velocity) {
 #endif
 }
 
-void late_write_bool_word(Seg33aHost& host, void* message, void* cursor) {
+void late_write_bool_word(Seg33aGunFireMessageHost& host, void* message, void* cursor) {
     host.session_message_write_header_0075b480(message, cursor);
     host.bit_cursor_write_boolean_004290b0(cursor, at<std::uint8_t>(message, 0x1C));
     host.bit_cursor_write_word_bits_00429120(cursor, at<std::uint16_t>(message, 0x20), 12);
 }
-void late_read_bool_word(Seg33aHost& host, void* message, void* stream) {
+void late_read_bool_word(Seg33aGunFireMessageHost& host, void* message, void* stream) {
     host.session_message_read_header_0075b4c0(message, stream);
     void* const cursor = add(stream, 4); // every reader advances from wrapper to raw cursor
     host.bit_cursor_read_boolean_00428d70(cursor, static_cast<std::uint8_t*>(add(message, 0x1C)));
@@ -2692,8 +2692,8 @@ float projectile_shot_weapon_scale_006e2540(void* shot) { return at<float>(shot,
 
 // 006E39B0/E0, 006E3AD0/3B00, 006E3BA0: ECX message, cursor/stream, RET 4.
 // bool byte+1C; then word+20 unsigned12 or DWORD+20 signed6. 3BA0 is signed8+1C only.
-void gun_fire_message_write_006e39b0(Seg33aHost& h, void* m, void* c) { late_write_bool_word(h, m, c); }
-void gun_fire_message_read_006e39e0(Seg33aHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
+void gun_fire_message_write_006e39b0(Seg33aGunFireMessageHost& h, void* m, void* c) { late_write_bool_word(h, m, c); }
+void gun_fire_message_read_006e39e0(Seg33aGunFireMessageHost& h, void* m, void* s) { late_read_bool_word(h, m, s); }
 void bomb_platform_reload_message_write_006e3ad0(Seg33aHost& h, void* m, void* c) {
     h.session_message_write_header_0075b480(m, c);
     h.bit_cursor_write_boolean_004290b0(c, at<std::uint8_t>(m, 0x1C));

@@ -71,10 +71,31 @@ struct HandleTables {
 };
 
 // ---------------------------------------------------------------------------
+// Goal 4 chain 356. The seven routines the MT_GUN_FIRE (ADh) message bodies call
+// (006E3940 construct, 006E39B0 write, 006E39E0 read), split out of Seg33aHost so a host
+// can run those three bodies without the whole engine boundary. Seg33aHost inherits them
+// unchanged; the declarations, ABIs and comments moved here verbatim.
+// ---------------------------------------------------------------------------
+struct Seg33aGunFireMessageHost {
+    virtual ~Seg33aGunFireMessageHost() = default;
+    // 004290B0 (value), RET 4; 00428D70 (byte*), RET 4.
+    virtual void bit_cursor_write_boolean_004290b0(void* cursor, std::uint32_t value) = 0;
+    virtual void bit_cursor_read_boolean_00428d70(void* cursor, std::uint8_t* out) = 0;
+    // 00429120 (value, bits), RET 8; 00428E30 (word*, bits), RET 8.
+    virtual void bit_cursor_write_word_bits_00429120(void* cursor, std::uint32_t value, std::int32_t bits) = 0;
+    virtual void bit_cursor_read_word_bits_00428e30(void* cursor, std::uint16_t* out, std::int32_t bits) = 0;
+    // 0075B430, __thiscall(message, type), RET 4: the session-message base constructor.
+    virtual void session_message_construct_base_0075b430(void* message, std::uint32_t type) = 0;
+    // 0075B480/0075B4C0: ECX message, cursor/read-stream on stack, RET 4.
+    virtual void session_message_write_header_0075b480(void* message, void* cursor) = 0;
+    virtual void session_message_read_header_0075b4c0(void* message, void* stream) = 0;
+};
+
+// ---------------------------------------------------------------------------
 // Engine boundary. Each method stands for one image routine or one virtual slot, named by
 // address; the comment gives the original register ABI.
 // ---------------------------------------------------------------------------
-struct Seg33aHost {
+struct Seg33aHost : Seg33aGunFireMessageHost {
     virtual ~Seg33aHost() = default;
 
     // Image data the routines read.
@@ -126,12 +147,7 @@ struct Seg33aHost {
     virtual void bit_cursor_read_float_array_004294f0(void* cursor, float* values, std::uint32_t count,
                                                       std::int32_t zero, std::int32_t is_signed,
                                                       float scale, std::int32_t width) = 0;
-    // 004290B0 (value), RET 4; 00428D70 (byte*), RET 4.
-    virtual void bit_cursor_write_boolean_004290b0(void* cursor, std::uint32_t value) = 0;
-    virtual void bit_cursor_read_boolean_00428d70(void* cursor, std::uint8_t* out) = 0;
-    // 00429120 (value, bits), RET 8; 00428E30 (word*, bits), RET 8.
-    virtual void bit_cursor_write_word_bits_00429120(void* cursor, std::uint32_t value, std::int32_t bits) = 0;
-    virtual void bit_cursor_read_word_bits_00428e30(void* cursor, std::uint16_t* out, std::int32_t bits) = 0;
+    // 004290B0 / 00428D70 / 00429120 / 00428E30: Seg33aGunFireMessageHost.
     // 00695870, __fastcall(owner /*ECX*/): the callback-owner teardown.
     virtual void callback_owner_destroy_00695870(void* owner) = 0;
     // 006E3C00 / 006E42D0, __thiscall(platform, arg), RET 4: the bomb-rack constructors
@@ -270,8 +286,7 @@ struct Seg33aHost {
     virtual void* class_loadout_record_009552e0(void* vehicle_class, std::int32_t count) = 0;
     // 00729A80, __thiscall(gun, flag), RET 4 -> AL.
     virtual bool gun_can_fire_00729a80(void* gun, std::int32_t flag) = 0;
-    // 0075B430, __thiscall(message, type), RET 4: the session-message base constructor.
-    virtual void session_message_construct_base_0075b430(void* message, std::uint32_t type) = 0;
+    // 0075B430: Seg33aGunFireMessageHost.
     // 0072D830, __thiscall(gun, message), RET 4: the gun's network-message handler.
     virtual bool gun_handle_network_message_0072d830(void* gun, void* message) = 0;
     // 00472520 (TRIV body), __fastcall(object /*ECX*/) -> EAX.
@@ -461,9 +476,7 @@ struct Seg33aHost {
     virtual void bullet_class_read_lua_vt18(void* cls, void* entry) = 0;
 
     // oct18b-nA3: additional contracts recovered from the segment 33 bodies.
-    // 0075B480/0075B4C0: ECX message, cursor/read-stream on stack, RET 4.
-    virtual void session_message_write_header_0075b480(void* message, void* cursor) = 0;
-    virtual void session_message_read_header_0075b4c0(void* message, void* stream) = 0;
+    // 0075B480/0075B4C0: Seg33aGunFireMessageHost.
     // Bit helpers: ECX raw cursor; DWORD value/output and width, RET 8.
     virtual void bit_cursor_write_unsigned_00429070(void* cursor, std::uint32_t value, std::int32_t bits) = 0;
     virtual void bit_cursor_read_unsigned_00428d10(void* cursor, std::uint32_t* out, std::int32_t bits) = 0;
@@ -599,7 +612,7 @@ bool session_mode_field_is_zero_or_one_006e38e0(void* session);
 // ---------------------------------------------------------------------------
 // Bomb platform messages and ordnance queries.
 // ---------------------------------------------------------------------------
-void* gun_fire_message_construct_006e3940(Seg33aHost& host, void* message, std::uint16_t value);
+void* gun_fire_message_construct_006e3940(Seg33aGunFireMessageHost& host, void* message, std::uint16_t value);
 void* bomb_platform_reload_message_construct_006e3a60(Seg33aHost& host, void* message, std::int32_t value);
 void slot_copy_vec3_identity_006e3dc0(void* gun, float* out, const float* in);
 void stub_ret4_006e3de0(void* gun, void* arg);
@@ -782,8 +795,8 @@ float projectile_shot_class_bc_006e2510(void* shot);
 float projectile_shot_class_c0_006e2520(void* shot);
 float projectile_shot_class_c4_006e2530(void* shot);
 float projectile_shot_weapon_scale_006e2540(void* shot);
-void gun_fire_message_write_006e39b0(Seg33aHost&, void* message, void* cursor);
-void gun_fire_message_read_006e39e0(Seg33aHost&, void* message, void* stream);
+void gun_fire_message_write_006e39b0(Seg33aGunFireMessageHost&, void* message, void* cursor);
+void gun_fire_message_read_006e39e0(Seg33aGunFireMessageHost&, void* message, void* stream);
 void bomb_platform_reload_message_write_006e3ad0(Seg33aHost&, void* message, void* cursor);
 void bomb_platform_reload_message_read_006e3b00(Seg33aHost&, void* message, void* stream);
 void multi_bomb_generate_message_write_006e3ba0(Seg33aHost&, void* message, void* cursor);

@@ -56,6 +56,7 @@
 #include "bsp/wire_goal4_chain325_switches.hpp"
 #include "bsp/wire_goal4_chain335_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
+#include "bsp/wire_goal4_chain356_switches.hpp"
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
 #include "bsp/game_hosts_session_messages.hpp"        // chain 335: 93h / 70h / 9Eh copies
 #include "bsp/cc13_seg52.hpp"                         // chain 325: 0084D8F0
@@ -3084,6 +3085,10 @@ struct GameGunneryHost::Impl {
     unsigned long long immediate_arms{0};
     unsigned long long immediate_slot_calls{0};
     unsigned long long immediate_extra_sends{0};
+    // Goal 4 chain 356: ADh copies that reached 0072D830's ADh arm, and any
+    // that did not.
+    unsigned long long gun_fire_copies_ad{0};
+    unsigned long long gun_fire_copy_misses_ad{0};
     unsigned long long immediate_flag_drops{0};
     unsigned long long immediate_fire_clears{0};   // 0084C4EC
     unsigned long long salvo_drops{0};
@@ -9809,19 +9814,46 @@ public:
             return false;
         }
     }
-    void send_fire_message_0ad(std::uint16_t) override {
+    void send_fire_message_0ad(std::uint16_t target) override {
         ++owner_.guns[gun_].fire_messages;
         ++owner_.summary.fire_messages;
         sent_ = true;
+        if constexpr (bsp::kWireGoal4Chain356Bound) {
+            // Goal 4 chain 356: 0077C2A0 flags 1 (0072D290 / 0084C625) is the
+            // local bit alone, so 0076E520 queues the rebuilt copy (006E3940,
+            // 006E39B0, 00768530 case ADh 006E3940(0), 006E39E0) and the gun's
+            // switch 0072D830 runs vtable[1DCh] for it. The pump's FireIfReady
+            // below runs when a copy reached that arm. No commands host: the
+            // posted message, as before.
+            if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+                const bsp::HostSessionMessages::GunFireCopy copy =
+                    messages->queue_gun_fire_ad(target);
+                if (copy.fire_if_ready) {
+                    fire_if_ready_ = true;
+                    ++owner_.gun_fire_copies_ad;
+                    owner_.done("Gun::fire_message_copy_0072d830", 0x0072d830u);
+                } else {
+                    ++owner_.gun_fire_copy_misses_ad;
+                    owner_.record("Gun::fire_message_copy_0072d830", 0x0072d830u);
+                }
+            } else {
+                fire_if_ready_ = true;
+            }
+        } else {
+            static_cast<void>(target);
+        }
         owner_.done("Gun::fire_message_0ad_0072d290", 0x0072d290u);
     }
 
     bool sent() const noexcept { return sent_; }
+    // Goal 4 chain 356: a copy of this step's ADh reached 0072D830's ADh arm.
+    bool fire_if_ready() const noexcept { return fire_if_ready_; }
 
 private:
     GameGunneryHost::Impl& owner_;
     std::size_t gun_;
     bool sent_{false};
+    bool fire_if_ready_{false};
 };
 
 }  // namespace
@@ -11406,7 +11438,13 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             ++forced_torpedo_fires;
             done("NavigatorForceTorpedo::fire_00730160", 0x008a7200u);
         }
+        if constexpr (bsp::kWireGoal4Chain356Bound) {
+            // Goal 4 chain 356: FireIfReady is 0072D830's ADh arm over a
+            // rebuilt copy, so the pump runs it when a copy reached that arm.
+            if (!fire_host.fire_if_ready() && !forced) continue;
+        } else {
         if (!sent && !forced) continue;
+        }
 
         // 0072D860, the 0ADh arm: gun->vtable[1DCh] FireIfReady 00727E30, which
         // asks CanFire and fires on a yes.
@@ -22389,6 +22427,10 @@ void GameGunneryHost::report() {
         s.trigger_rises,
         s.fire_messages, s.fire_if_ready, s.can_fire_refusals, s.shots,
         static_cast<double>(s.first_shot_seconds));
+    host.log.notef("summary mission gunnery ADh copies bound=%d to_fire_if_ready=%llu "
+        "missed=%llu (006E3940 / 006E39B0 / 006E39E0 -> 0072D830, goal 4 chain 356)",
+        bsp::kWireGoal4Chain356Bound ? 1 : 0, host.gun_fire_copies_ad,
+        host.gun_fire_copy_misses_ad);
     host.log.notef("summary mission gunnery projectiles created=%llu steps=%llu sweeps=%llu "
         "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu kamikaze_squadron_drops=%llu",
         s.projectiles, s.projectile_steps, s.sweeps, s.impacts_entity, s.water_crossings,

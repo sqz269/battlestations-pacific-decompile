@@ -365,6 +365,42 @@ public:
         std::uint8_t flag{0};
     };
     ShipyardLaunchCopy queue_shipyard_launch_7a(std::uint8_t flag) const;
+    // Goal 4 chain 356. MT_GUN_FIRE (ADh): the gun step 0072D130
+    // (0072D252..0072D290) and the turning gun's extra send 0084C5B0
+    // (0075B430 at 0084C5EC, routed at 0084C625, +20h = 0) inline 006E3940's
+    // stores (0075B430(ADh), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0, vtable
+    // 00CF9628, +20h word = the target's +174h or 0) and route the message
+    // with 0077C2A0 flags 1, the local bit.
+    // 00768530 case ADh allocates 24h bytes (00769814) and calls
+    // 006E3940(0) (0076982A); slots of 00CF9628 (bsp.py ghidra bytes): 006E47C0
+    // scalar delete, 006E39B0 write (bool +1Ch, 12-bit word +20h), 006E39E0
+    // read, 006E3980 IsType {ADh, 49h, 46h}, 004499C0. 00780120's ladder sends
+    // the copy to the entity switch (0077FE80), whose default is the gun's
+    // slot 164h: 0072D830 (the rapid / MRT overrides 0084C7E0 / 00803480
+    // handle only B0h / AFh and jump to it for the rest), whose ADh arm calls
+    // vtable[1DCh] FireIfReady with no argument.
+    struct GunFireCopy {
+        std::uint8_t type{0};
+        bool to_entity{false};       // 00780120 chose the entity switch
+        bool fire_if_ready{false};   // 0072D830 reached its ADh arm (vtable[1DCh])
+        std::uint16_t target{0};     // the copy's +20h; the ADh arm does not read it
+    };
+    GunFireCopy queue_gun_fire_ad(std::uint16_t target) const;
+    // Goal 4 chain 356. MT_PLANE_DISAPPEAR (C7h): the plane's fixed step
+    // 007CE040 at 007CE6FE..007CE74F makes 0075B430(C7h), +18h word 0, +1Ah 0,
+    // +4h = 1, +1Ch 0, vtable 00D0352C (00762B20's stores) and +20h word = the
+    // holder owner's id ([[[plane+BF4h]+4]+7Ch]+174h), routed with 0077C2A0
+    // flags 5 (the local bit in single player). 00768530 case C7h allocates
+    // 24h bytes (00769BF0) and calls 00762B20 (00769C04); slots of 00D0352C:
+    // 00762BC0 scalar delete, 00762BE0 write (unit header, 12-bit +20h),
+    // 00762C30 read, 00762B90 IsType, 004499C0. The plane's 007CCFA0 case C7h
+    // resolves the copy's +20h through 007BA890 and hands that holder to
+    // 007CC8B0. Returned: the copy's type and +20h.
+    struct PlaneDisappearCopy {
+        std::uint8_t type{0};
+        std::uint16_t holder_id{0};
+    };
+    PlaneDisappearCopy queue_plane_disappear_c7(std::uint16_t holder_id) const;
 
 private:
     struct Image;

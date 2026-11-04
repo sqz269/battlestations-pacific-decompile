@@ -68,7 +68,25 @@ public:
     virtual void gun_clear_bot_fire_target_00728000(void* gun) = 0;
 };
 
-class Cc13Front3Host : public ScenePathSourceHost, public GunPlayerControlReleaseHost {
+// Goal 4 chain 356. The five targets of 0072D830's switch, split out of Cc13Front3Host
+// (declarations, ABIs and comments moved verbatim) so a host can deliver a message copy
+// through the switch without the whole boundary.
+class GunNetworkMessageHost {
+public:
+    virtual ~GunNetworkMessageHost() = default;
+    // Gun slots +1C8h(message) and +1CCh(message) (opcodes 68h / 69h).
+    virtual void vcall_1c8(void* gun, void* message) = 0;
+    virtual void vcall_1cc(void* gun, void* message) = 0;
+    // Gun slot +1DCh() (opcode ADh, the fire-if-ready slot).
+    virtual void vcall_1dc(void* gun) = 0;
+    // 0043F860 BSP_Entity_HandleMessages4B4C, __thiscall(ECX = entity; message), RET 4, AL.
+    virtual bool entity_handle_messages_4b4c_0043f860(void* entity, void* message) = 0;
+    // 0072D5B0 BSP_Gun_SelectFireMode, __thiscall(ECX = gun; mode, flag), RET 8.
+    virtual void gun_select_fire_mode_0072d5b0(void* gun, std::uint32_t mode, std::uint32_t flag) = 0;
+};
+
+class Cc13Front3Host : public ScenePathSourceHost, public GunPlayerControlReleaseHost,
+                       public GunNetworkMessageHost {
 public:
     virtual ~Cc13Front3Host() = default;
 
@@ -104,25 +122,19 @@ public:
     virtual float vcall_204_float(void* plane) = 0;
     // Plane sub-object +72Ch slot +38h(), EAX (ECX = plane+72Ch).
     virtual std::uint32_t vcall_38_dword(void* object) = 0;
-    // Gun slots +1C8h(message) and +1CCh(message) (opcodes 68h / 69h).
-    virtual void vcall_1c8(void* gun, void* message) = 0;
-    virtual void vcall_1cc(void* gun, void* message) = 0;
-    // Gun slot +1DCh() (opcode ADh, the fire-if-ready slot).
-    virtual void vcall_1dc(void* gun) = 0;
+    // Gun slots +1C8h / +1CCh / +1DCh: GunNetworkMessageHost.
 
     // ---- segment 3 / gun helpers ----
     // 00442A30 gun_records_resize, __thiscall(ECX = record array; count), RET 4.
     virtual void gun_records_resize_00442a30(void* records, std::uint32_t count) = 0;
     // 004420D0 device_class_destruct, __thiscall(ECX = class).
     virtual void device_class_destruct_004420d0(void* object) = 0;
-    // 0043F860 BSP_Entity_HandleMessages4B4C, __thiscall(ECX = entity; message), RET 4, AL.
-    virtual bool entity_handle_messages_4b4c_0043f860(void* entity, void* message) = 0;
+    // 0043F860: GunNetworkMessageHost.
     // 0043F080 BSP_UnitInstance_IsAliveAndVisible, __thiscall(ECX = unit), AL.
     virtual bool unit_is_alive_and_visible_0043f080(void* unit) = 0;
     // 0072AA10 BSP_GunEffectSet_SetMix, __thiscall(ECX = effect set; float), RET 4.
     virtual void gun_effect_set_set_mix_0072aa10(void* effects, float mix) = 0;
-    // 0072D5B0 BSP_Gun_SelectFireMode, __thiscall(ECX = gun; mode, flag), RET 8.
-    virtual void gun_select_fire_mode_0072d5b0(void* gun, std::uint32_t mode, std::uint32_t flag) = 0;
+    // 0072D5B0: GunNetworkMessageHost.
     // 00521EA0 BSP_CommandTarget_ResolveObject, __thiscall(ECX = target record), EAX.
     virtual void* command_target_resolve_object_00521ea0(void* record) = 0;
     // 006952A0 BSP_Observer_UnregisterPair, __fastcall(ECX = observed, EDX = owner).
@@ -187,7 +199,7 @@ public:
 void cc13_front3_gun_class_base_destruct_00732f50(void* gun_class, Cc13Front3Host& host);
 void cc13_front3_mission_narrative_apply_mission_info_00734db0(void* message, Cc13Front3Host& host);
 void cc13_front3_gun_set_controlled_audio_mix_0072b540(void* gun, bool controlled, Cc13Front3Host& host);
-bool cc13_front3_gun_handle_network_message_0072d830(void* gun, void* message, Cc13Front3Host& host);
+bool cc13_front3_gun_handle_network_message_0072d830(void* gun, void* message, GunNetworkMessageHost& host);
 void cc13_front3_gun_bot_clear_fire_target_0072bd50(void* bot, Cc13Front3Host& host);
 void cc13_front3_gun_release_player_control_00729f70(void* gun, GunPlayerControlReleaseHost& host);
 
