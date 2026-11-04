@@ -6,6 +6,9 @@
 #include "bsp/native_camera_general_inverse.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/native_ambient_color.hpp"
+#include "bsp/band_006b_cc13.hpp"
+#include "bsp/wire_goal4_chain441_switches.hpp"
+#include <cstring>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native renderer camera preparation requires MSVC Win32 x87/SSE assembly.
@@ -13,6 +16,25 @@
 
 namespace bsp {
 namespace {
+// The live B285A0 clip-plane matrix is consumed immediately by B65BA0 and
+// B23E50. Reuse the complete 006FDD00 transpose instead of the inline MOVSS
+// permutation at B2867B..B28716. Unlike those MOVSS stores, 006FDD00 quiets
+// an sNaN moving from the lower triangle to the upper triangle (bsp.py show
+// 006fdd00 --asm). Keep the original inline path for exactly those inputs;
+// all other DWORD patterns, including denormals and quiet NaNs, are unchanged
+// by its existing integer x87_fld_fstp_bits model. No float math is added.
+__declspec(noinline) bool transpose_clip_matrix(float* matrix) noexcept {
+    for (const unsigned index : {4u, 8u, 12u, 9u, 13u, 14u}) {
+        std::uint32_t bits;
+        std::memcpy(&bits, matrix + index, sizeof bits);
+        if ((bits & 0x7f800000u) == 0x7f800000u
+            && (bits & 0x007fffffu) != 0 && (bits & 0x00400000u) == 0)
+            return false;
+    }
+    band_006b_cc13::matrix4x4_transpose_in_place_006fdd00(matrix);
+    return true;
+}
+
 // Private ABI adapters only. No arithmetic, result, callback or state provider
 // is substituted. Retain native stacked arguments and call complete providers.
 __declspec(naked) void __fastcall state_abi(void*, const NativeRendererCameraPrepareContext*, std::uint32_t, std::uint32_t) {
@@ -54,12 +76,13 @@ __declspec(naked) void* __fastcall plane_abi(const void*, void*, void*, const vo
         ret 8
     }
 }
-} // namespace
-
-// Complete B285A0..B287BF. The original schedule is retained; only explicit
-// integer context/ABI plumbing and corresponding local branch offsets differ.
+// Complete B285A0..B287BF. The original provider order is retained; integer
+// context/ABI plumbing and the optional shared transpose change local branches.
 // Pass canonical native storage; owning C++ companions have separate addresses.
-__declspec(naked) void __fastcall prepare_native_renderer_camera_00b285a0(void*, const NativeRendererCameraPrepareContext*, void*) {
+// The false specialization retains the original inline transpose below.
+template<bool WireTranspose>
+__declspec(naked) void __fastcall prepare_camera(void*, const NativeRendererCameraPrepareContext*, void*) {
+    enum { wire_transpose = WireTranspose };
     __asm {
         push edx // immutable context outside the original scratch/save frame
         sub esp, 0114h // 00b285a0
@@ -126,6 +149,26 @@ __declspec(naked) void __fastcall prepare_native_renderer_camera_00b285a0(void*,
         mov ecx, 010h // 00b28670
         lea edi, [esp + 014h] // 00b28675
         rep movsd  // 00b28679
+        mov eax, wire_transpose
+        test eax, eax
+        jz L_legacy_transpose
+        lea eax, [esp + 014h]
+        push eax
+        call transpose_clip_matrix
+        add esp, 4
+        test al, al
+        jz L_legacy_transpose
+        // Same three stacked arguments/live ECX as the original interleaved
+        // MOVSS permutation. ESI/EDI/EBX/EBP survive the C++ ABI call.
+        mov ecx, dword ptr [esp + 010h]
+        lea edx, [esp + 014h]
+        push edx
+        lea eax, [esp + 058h]
+        push eax
+        push ecx
+        mov ecx, ebx
+        jmp L_transposed
+    L_legacy_transpose:
         movss xmm0, dword ptr [esp + 018h] // 00b2867b
         movss xmm1, dword ptr [esp + 024h] // 00b28681
         mov ecx, dword ptr [esp + 010h] // 00b28687
@@ -157,6 +200,7 @@ __declspec(naked) void __fastcall prepare_native_renderer_camera_00b285a0(void*,
         mov ecx, ebx // 00b2870e
         movss dword ptr [esp + 04ch], xmm1 // 00b28710
         movss dword ptr [esp + 058h], xmm0 // 00b28716
+    L_transposed:
         call native_plane_set_plane_00b656f0 // 00b2871c
         mov ecx, eax // 00b28721
         call plane_abi // 00b28723
@@ -213,6 +257,16 @@ __declspec(naked) void __fastcall prepare_native_renderer_camera_00b285a0(void*,
         add esp, 0114h // 00b287b7
         pop edx // discard context after original scratch/save-frame cleanup
         ret 4 // 00b287bd
+    }
+}
+} // namespace
+
+void __fastcall prepare_native_renderer_camera_00b285a0(void* renderer,
+    const NativeRendererCameraPrepareContext* context, void* camera) {
+    if constexpr (kWireGoal4Chain441Bound) {
+        prepare_camera<true>(renderer, context, camera);
+    } else {
+        prepare_camera<false>(renderer, context, camera);
     }
 }
 } // namespace bsp
