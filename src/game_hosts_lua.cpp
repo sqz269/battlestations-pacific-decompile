@@ -129,6 +129,7 @@
 #include "bsp/native_mission_lua_to_string.hpp"
 #include "bsp/wire_goal4_chain293_switches.hpp"
 #include "bsp/wire_goal4_chain299_switches.hpp"
+#include "bsp/wire_goal4_chain388_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
@@ -2737,9 +2738,22 @@ public:
             // DoFile("unlocks.lua") - without it the constants script aborts
             // there, which leaves the DEG/KMH helpers defined (they are above
             // it) but everything below it undefined.
+            if constexpr (bsp::kWireGoal4Chain388Bound) {
+                // 00B65E20: owns+0 = 0, state+4 = the supplied interpreter,
+                // then DoFile is a closure with ZERO upvalues (00B65E27..46).
+                // Keep this adapter's VFS context in that interpreter's private
+                // registry, so the native registration needs no extra upvalue.
+                lua_pushlightuserdata(state_, &native_context_key_);
+                lua_pushlightuserdata(state_, this);
+                lua_rawset(state_, LUA_REGISTRYINDEX);
+                construct_native_lua_state_00b66bd0(&native_owner_);
+                construct_native_lua_owner_with_dofile_00b65e20(
+                    native_owner_, state_, &LuaGameTuningHost::native_dofile_trampoline);
+            } else {
             lua_pushlightuserdata(state_, this);
             lua_pushcclosure(state_, &LuaGameTuningHost::dofile_trampoline, 1);
             lua_setfield(state_, LUA_GLOBALSINDEX, "DoFile");
+            }
         }
     }
     ~LuaGameTuningHost() override {
@@ -2859,6 +2873,15 @@ public:
         if (state_ == nullptr) return;
         push(handle);
         if (lua_type(state_, -1) == LUA_TTABLE) {
+            if constexpr (bsp::kWireGoal4Chain388Bound) {
+                // 007E2A20's NumberTriple keys call 00B67A80: elements 1..3
+                // use lua_tonumber and each result is stored as float32.
+                // The registry handle above pushes the actual PlaneGlobals
+                // value; tracked temporaries are removed by the native getter.
+                // Numeric strings now follow lua_tonumber, as in the image.
+                auto object = stack_object(native_owner_, lua_gettop(state_));
+                native_lua_get_vector3_00b67a80(object, out);
+            } else {
             for (int i = 0; i < 3; ++i) {
                 lua_pushinteger(state_, i + 1);
                 lua_gettable(state_, -2);
@@ -2866,6 +2889,7 @@ public:
                     out[i] = static_cast<float>(lua_tonumber(state_, -1));
                 }
                 lua_settop(state_, lua_gettop(state_) - 1);
+            }
             }
         }
         lua_settop(state_, lua_gettop(state_) - 1);
@@ -2900,6 +2924,21 @@ public:
     std::size_t script_failures() const noexcept { return script_failures_; }
 
 private:
+    // Unique key in each private state's registry. The value is this adapter,
+    // whose lifetime encloses the state and every DoFile/formation read.
+    inline static char native_context_key_{};
+    static int native_dofile_trampoline(lua_State* state) {
+        lua_pushlightuserdata(state, &native_context_key_);
+        lua_rawget(state, LUA_REGISTRYINDEX);
+        auto* self = static_cast<LuaGameTuningHost*>(lua_touserdata(state, -1));
+        lua_pop(state, 1);
+        const char* path = lua_tolstring(state, 1, nullptr);
+        if (self != nullptr && path != nullptr) {
+            self->run_script(path);
+        }
+        return 0;
+    }
+
     // LUA_REFNIL is -1 and LUA_NOREF is -2, so the bias keeps every encoded
     // handle a small positive number and round-trips both.
     static int dofile_trampoline(lua_State* state) {
@@ -2917,6 +2956,7 @@ private:
     void push(Handle handle) { lua_rawgeti(state_, LUA_REGISTRYINDEX, decode(handle)); }
 
     lua_State* state_{nullptr};
+    NativeLuaStateStorage native_owner_;
     GameMissionLuaHost& owner_;
     GameHostLog& log_;
     std::size_t missing_{0};

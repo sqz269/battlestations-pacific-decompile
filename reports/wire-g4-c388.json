@@ -1,0 +1,163 @@
+{
+  "chain": 388,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain388Bound",
+  "source_wired_before": 9615,
+  "source_wired_after": 9616,
+  "entry_reachable_addresses_before": 4559,
+  "entry_reachable_addresses_after": 4561,
+  "evidence": [
+    "Baseline and final scripts/build.ps1: all three CTest checks passed.",
+    "Baseline call_graph.py: neither 00B65E20 nor 00B67A80 was linked; final graph has one entry-reachable direct call to each reconstructed body.",
+    "00B65E20 assembly 00B65E27..00B65E46: borrowed owner, supplied state and zero-upvalue DoFile registration. The private interpreter's registry retains its actual VFS adapter context.",
+    "00B67A80 decompile: indexed Lua elements 1..3, lua_tonumber, float32 stores and tracked-temporary release. GameTuning's NumberTriple driver supplies the actual PlaneGlobals value and the destination formation-offset fields.",
+    "00B67A80 was already textually wired before this packet, despite having no linked body; its new direct call accounts for the second executable-graph gain.",
+    "No game execution or gameplay/ABI equivalence claim. The pre-existing missing-table zero policy remains; numeric string components now follow the native lua_tonumber conversion."
+  ],
+  "rows": [
+    {
+      "native": "00b65e20",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::LuaGameTuningHost (inlined into GameMissionLuaHost::load_plane_globals_007e2a20)",
+      "call_site": "101307e0"
+    },
+    {
+      "native": "00b67a80",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::number_triple",
+      "call_site": "1013449e"
+    },
+    {
+      "native": "00960230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor",
+      "reason": "Only the device-bullet host projection is reachable; the complete reconstructed class-field reader has no live VehicleClassFieldHost and fills no native descriptor fields."
+    },
+    {
+      "native": "00b680a0",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_fields.cpp: read_vehicle_class_base_fields_00960230",
+      "reason": "Its CockpitCameraPos caller needs the missing live VehicleClassFieldHost/full 00960230 reader; attaching the getter to the partial device-bullet projection would not replace that operation."
+    },
+    {
+      "native": "00b663f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: Lua binding argument counts",
+      "reason": "The inspected bindings lack a native call-frame owner containing argument count at +0Ch; copying lua_gettop into a fabricated receiver would only round-trip an already extracted value."
+    },
+    {
+      "native": "00b662e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: Lua object pointer conversions",
+      "reason": "The inspected live conversions require lua_touserdata; this body uses lua_topointer and needs a real function-serialization/source-formatting caller to preserve its distinct semantics."
+    },
+    {
+      "native": "00b664e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg41b.cpp: land_convoy_post_load_init_00742c10",
+      "reason": "No live convoy placement-law table/parent-cache owner was established; the selected private PlaneGlobals reader has no indexed nil-assignment operation."
+    },
+    {
+      "native": "00b66620",
+      "status": "skipped",
+      "host_site": "src/pool_pool12_cc13.cpp: BSP_MissionLoad_ResolveEntityRefByNumberKey",
+      "reason": "The original caller needs the numeric-key entity-reference cache and its real entity pointer; the selected plane-tuning state has no such cache or resolver."
+    },
+    {
+      "native": "00b67b40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::number_triple",
+      "reason": "The actual formation-offset consumers have three lanes; a fourth component and four-float destination are absent from this path."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::number_triple",
+      "reason": "The actual formation-offset consumers have three lanes; no four-component Lua consumer was established in this packet."
+    },
+    {
+      "native": "00b69f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::LuaGameTuningHost",
+      "reason": "00B65E20 already performs the required DoFile installation; a separate re-registration trigger is absent and calling this too would duplicate the registration."
+    },
+    {
+      "native": "00b66960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost::~LuaGameTuningHost",
+      "reason": "This private tuning interpreter owns no NativeLuaFundamentalsStorage cache; its raw fundamentals buffer owner and lifetime are missing from this path."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_native_enum_lua_declaration.cpp: GameNativeEnumLuaDeclarationBindings::declare",
+      "reason": "The concrete composition is dormant; this packet establishes no live 19Ch enum owner plus native world/Lua publication routed into declare."
+    },
+    {
+      "native": "00b68630",
+      "status": "skipped",
+      "host_site": "src/game_native_lua_display_string.cpp: GameNativeLuaDisplayStringBindings::to_display_string",
+      "reason": "The existing display adapter's enum-declaration consumer remains dormant; the selected tuning path has no display-string operation to replace."
+    },
+    {
+      "native": "00506c80",
+      "status": "skipped",
+      "host_site": "src/native_checked_string_vector_ranges.cpp: native string-vector assignment callers",
+      "reason": "No live native string-vector header/source/destination ownership was established; PlaneGlobals handles are Lua registry references, not string-vector storage."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit screen reset sites",
+      "reason": "The inspected reset sites retain no native selection-screen object/vector/input-context state on which the full reset body can operate."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::map_screen_busy",
+      "reason": "The native carousel scrolling bytes and their owner/writers are absent; map_screen_wanted also remains false in the inspected adapter."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The inspected method discards its animation identifier and retains no native ticker/animation range owner to update."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "The persistent scroller/widget/measurement producers are being built by agent/g4-w5, which owns this host file and address."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MainMenuUpdate::animate_detail_group / animate_page_group",
+      "reason": "The retained scrollers and layout/input contracts are being built by agent/g4-w5, which owns this host file and address."
+    },
+    {
+      "native": "00588c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MainMenuUpdate::drive_map",
+      "reason": "The inspected host lacks the full world-map camera/anchor and selected-point widget graph required by the geometry body."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list diagnostics",
+      "reason": "The native list is debug-overlay state with no release-game gameplay consumer; the single-player host retains no score-list owner."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list diagnostics",
+      "reason": "The required chosen-bit records belong to the unbuilt debug score list; fabricating that list would not replace gameplay state."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party-slot selection",
+      "reason": "No actual eight-slot 00F8A89C party publication was established during this packet; a manufactured active-slot array would not supply the native input."
+    }
+  ]
+}
