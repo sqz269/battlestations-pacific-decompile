@@ -47,6 +47,7 @@
 #include "bsp/wire_goal4_chain326_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/wire_goal4_chain375_switches.hpp"
+#include "bsp/wire_goal4_chain391_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
@@ -2261,8 +2262,19 @@ struct GameShipAiHost::Impl {
         }
         const GameGunneryUnitRow* row = gunnery_unit_row(target);
         if (settings_owner != nullptr && row != nullptr && row->type_id >= 0) {
+            if constexpr (bsp::kWireGoal4Chain391Bound) {
+                // Goal 4 chain 391: class +A0h as the descriptor load 00960230 read
+                // it (Length, a plain number; nil reads 0). Without a loaded
+                // descriptor (load unbound) the direct read stands in.
+                const bsp::VehicleClassBaseFields* fields =
+                    settings_owner->loaded_vehicle_class_base_fields(row->type_id,
+                        "ship_ai_torpedo_threat_length");
+                in.class_length_00a0 = fields != nullptr ? fields->length
+                    : settings_owner->read_vehicle_class_number(row->type_id, "Length", 0.0f);
+            } else {
             in.class_length_00a0 = settings_owner->read_vehicle_class_number(row->type_id,
                 "Length", 0.0f);
+            }
         }
         int count = 0;
         const std::vector<GameGunneryHost::LiveTorpedo>& list = live_torpedoes();
@@ -2332,7 +2344,17 @@ struct GameShipAiHost::Impl {
         float threshold = 100.0f;
         if (settings_owner != nullptr && type_id >= 0) {
             armour = settings_owner->read_vehicle_class_number(type_id, "Armour", 0.0f);
+            if constexpr (bsp::kWireGoal4Chain391Bound) {
+                // Goal 4 chain 391: class +A0h from the descriptor load 00960230
+                // (nil reads 0); the direct read without a loaded descriptor.
+                const bsp::VehicleClassBaseFields* fields =
+                    settings_owner->loaded_vehicle_class_base_fields(type_id,
+                        "ship_ai_target_block_length");
+                length = fields != nullptr ? fields->length
+                    : settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
+            } else {
             length = settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
+            }
             underwater = settings_owner->read_vehicle_class_number(type_id,
                 "UnderwaterArmour", 0.0f);
             threshold = settings_owner->read_vehicle_class_number(type_id,

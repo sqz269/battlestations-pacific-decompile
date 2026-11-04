@@ -131,6 +131,7 @@
 #include "bsp/wire_goal4_chain293_switches.hpp"
 #include "bsp/wire_goal4_chain299_switches.hpp"
 #include "bsp/wire_goal4_chain388_switches.hpp"
+#include "bsp/wire_goal4_chain391_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
@@ -1056,6 +1057,11 @@ constexpr bool kFindEntityCaseInsensitiveBound = true;
 // JM08 w1 fills Mission.Dakota and loses its early completion; USN01 sets the
 // Class 162 / 313 squadrons' altitudes and still wins; JM06 identical.
 constexpr bool kVehicleClassRowIdBound = true;
+// Goal 4 chain 391: the reader arms read what the descriptor load kept
+// (GameMissionLuaVehicleClassBinding::load_descriptor), which is written only
+// when chain 234's 00964790 runs on a marked row.
+constexpr bool kVehicleClassBaseLoadBound =
+    bsp::kWireGoal4Chain391Bound && bsp::kWireGoal3Chain234Bound && kVehicleClassRowIdBound;
 
 // Packet cc9_l63_entry_isfunction (docs/SQUADRON_LAND_TASK.md 5hv.7). 0045F440
 // and 0045F520 gate the entry-point call on 00B66200 (BSP_LuaObject_IsFunction:
@@ -2283,20 +2289,36 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
     });
     script_orders_set_class_default_arm_reader([](int vehicle_class) {
         // class+134h `DefaultEquipment` (00961F0A), 0 when nil (00961F30).
+        if constexpr (kVehicleClassBaseLoadBound) {
+            // Goal 4 chain 391: the +134h 00960230 stored (00961F45).
+            return g_class_arm_host != nullptr
+                ? g_class_arm_host->loaded_default_equipment(vehicle_class,
+                      "script_orders_default_arm")
+                : 0;
+        } else {
         return g_class_arm_host != nullptr
             ? g_class_arm_host->read_vehicle_class_integer(vehicle_class, "DefaultEquipment",
                                                            nullptr, 0)
             : 0;
+        }
     });
     // 006C5950's class restore (006C5AD9) reads the same class+134h; its reader
     // is consulted only under kAirOpsReturnSlotClassArmCc13Bound (and the sw3
     // reach count).
     bsp::set_air_ops_class_default_arm_reader(
         [](std::uint32_t vehicle_class, void*) -> std::int32_t {
+            if constexpr (kVehicleClassBaseLoadBound) {
+                // Goal 4 chain 391: the +134h 00960230 stored (00961F45).
+                return g_class_arm_host != nullptr
+                    ? g_class_arm_host->loaded_default_equipment(
+                          static_cast<int>(vehicle_class), "006c5ad9")
+                    : 0;
+            } else {
             return g_class_arm_host != nullptr
                 ? g_class_arm_host->read_vehicle_class_integer(static_cast<int>(vehicle_class),
                                                                "DefaultEquipment", nullptr, 0)
                 : 0;
+            }
         },
         nullptr);
     // The content-suffix list at manager +48h/+4Ch is empty in this process, as
@@ -4276,10 +4298,17 @@ int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argum
     // path's own DefaultEquipment read masked. Packet cc9_plane_scene_equipment
     // (SQUADRON_LAND_TASK 5dk.1) reads it with kPlaneSceneEquipmentBound, where
     // the launched squadron's bag `Equipment` decides its loadout.
+    if constexpr (kVehicleClassBaseLoadBound) {
+        // Goal 4 chain 391: the +134h 00960230 stored (00961F45).
+        request.class_default_arm = bsp::kPlaneSceneEquipmentBound
+            ? loaded_default_equipment(static_cast<int>(request.vehicle_class), "006cc690")
+            : 0;
+    } else {
     request.class_default_arm = bsp::kPlaneSceneEquipmentBound
         ? read_vehicle_class_integer(static_cast<int>(request.vehicle_class),
                                      "DefaultEquipment", nullptr, 0)
         : 0;
+    }
     request.arm_given = arm_present && argument_count >= 4;
     request.arm = request.arm_given ? arm : request.class_default_arm;
 
@@ -6005,6 +6034,187 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
     }
 }
 
+// Goal 4 chain 391 (kWireGoal4Chain391Bound). The bsp::VehicleClassFieldHost that
+// 00960230's reconstructed body (bsp::read_vehicle_class_base_fields_00960230)
+// takes, over this host's lua_State. Refs follow GameMissionLuaVehicleClassBinding
+// below: a GuiLuaRef id is a Lua registry reference plus 3, so 0 stays invalid.
+// The LuaPlus wrappers it stands for: 00B67800 GetByName (lua_getfield on a
+// table, nil otherwise), 00B67720 GetByIndex (lua_rawgeti, the same read the
+// 00964790 binding makes of the row), 00B67700 the release, and 00B67080 /
+// 00B67190 the iteration with 00B66420 (unbound key) as the end test.
+// The value view `inspect` hands back: nil, boolean, string and table by
+// lua_type; a number is Integer when it has no fractional part (00B66A60's
+// test) and Number otherwise. String values are copied into storage owned by
+// this binding, so a view stays valid after its ref is released.
+// The resource loads 00960230 makes (004C12B0 + 00AA2B30 the SMIcon image,
+// 007188A0 the cockpit mesh, 00A83FD0 the ambient sound, the Flags texture
+// through (*00F8D394)->vtable[64h]) and the +94h platform-slot growth (007F7110)
+// have no owner in this process: each is recorded through the unimplemented
+// policy and leaves its descriptor slot null. 00808F90 (ReconClass) returns the
+// sensor record; this host keys its recon records by the authored ReconClass id
+// (GameGunneryHost::recon_record_for_class), so that id is what is kept.
+class GameMissionLuaVehicleClassFieldBinding final : public bsp::VehicleClassFieldHost {
+public:
+    GameMissionLuaVehicleClassFieldBinding(lua_State* state, GameHostLog& log)
+        : state_(state), log_(log) {}
+
+    // VehicleClass[class_index], read as the 00964790 binding reads it (the
+    // LuaObject 00964790 hands its load as the row argument).
+    bsp::GuiLuaRef row(int class_index) {
+        lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+        if (lua_istable(state_, -1)) lua_rawgeti(state_, -1, class_index);
+        else lua_pushnil(state_);
+        lua_remove(state_, -2);
+        return take();
+    }
+
+    bsp::GuiLuaRef get_by_name(const bsp::GuiLuaRef& table, const char* key) override {
+        push(table);
+        if (lua_istable(state_, -1)) lua_getfield(state_, -1, key);
+        else lua_pushnil(state_);
+        lua_remove(state_, -2);
+        return take();
+    }
+    bsp::GuiLuaRef get_by_index(const bsp::GuiLuaRef& table, std::int32_t index) override {
+        push(table);
+        if (lua_istable(state_, -1)) lua_rawgeti(state_, -1, index);
+        else lua_pushnil(state_);
+        lua_remove(state_, -2);
+        return take();
+    }
+    void release(const bsp::GuiLuaRef& object) override {
+        const int ref = static_cast<int>(object.id) - 3;
+        if (ref > 0) luaL_unref(state_, LUA_REGISTRYINDEX, ref);
+    }
+    bsp::VehicleClassLuaValue inspect(const bsp::GuiLuaRef& object) override {
+        bsp::VehicleClassLuaValue value;
+        push(object);
+        switch (::lua_type(state_, -1)) {
+        case LUA_TNONE:
+        case LUA_TNIL:
+            value.kind = bsp::VehicleClassValueKind::Nil;
+            break;
+        case LUA_TBOOLEAN:
+            value.kind = bsp::VehicleClassValueKind::Boolean;
+            value.boolean = ::lua_toboolean(state_, -1) != 0;
+            break;
+        case LUA_TNUMBER: {
+            const double number = static_cast<double>(::lua_tonumber(state_, -1));
+            value.number = number;
+            // The magnitude bound keeps the int64 conversion defined; a larger
+            // integral double stays a Number and converts the same way.
+            if (std::isfinite(number) && std::floor(number) == number
+                && std::fabs(number) < 9.0e18) {
+                value.kind = bsp::VehicleClassValueKind::Integer;
+                value.integer = static_cast<std::int64_t>(number);
+            } else {
+                value.kind = bsp::VehicleClassValueKind::Number;
+            }
+            break;
+        }
+        case LUA_TSTRING: {
+            std::size_t length = 0;
+            const char* text = lua_tolstring(state_, -1, &length);
+            strings_.emplace_back(text != nullptr ? std::string(text, length) : std::string());
+            value.kind = bsp::VehicleClassValueKind::String;
+            value.string = strings_.back().c_str();
+            break;
+        }
+        case LUA_TTABLE:
+            value.kind = bsp::VehicleClassValueKind::Table;
+            break;
+        default:
+            value.kind = bsp::VehicleClassValueKind::Other;
+            break;
+        }
+        lua_pop(state_, 1);
+        return value;
+    }
+    bool iterate_first(const bsp::GuiLuaRef& table, bsp::GuiLuaRef& key,
+                       bsp::GuiLuaRef& value) override {
+        release(key);
+        release(value);
+        key = bsp::GuiLuaRef{};
+        value = bsp::GuiLuaRef{};
+        return step(table, key, value, true);
+    }
+    bool iterate_next(const bsp::GuiLuaRef& table, bsp::GuiLuaRef& key,
+                      bsp::GuiLuaRef& value) override {
+        return step(table, key, value, false);
+    }
+
+    void* load_small_map_icon(const char*) override {
+        log_.unimplemented("VehicleClassFields::load_small_map_icon", "00aa2b30");
+        return nullptr;
+    }
+    void* load_cockpit_mesh(const char*) override {
+        log_.unimplemented("VehicleClassFields::load_cockpit_mesh", "007188a0");
+        return nullptr;
+    }
+    void* make_sound_handle(std::int32_t) override {
+        log_.unimplemented("VehicleClassFields::make_sound_handle", "00870cd0");
+        return nullptr;
+    }
+    void* load_ambient_sound(const char*) override {
+        log_.unimplemented("VehicleClassFields::load_ambient_sound", "00a83fd0");
+        return nullptr;
+    }
+    std::int32_t resolve_recon_class(std::int32_t recon_id) override { return recon_id; }
+    void* load_flag_texture(const char*) override {
+        log_.unimplemented("VehicleClassFields::load_flag_texture", "00f8d394");
+        return nullptr;
+    }
+    void reserve_platform_slots(std::int32_t) override {
+        log_.unimplemented("VehicleClassFields::reserve_platform_slots", "007f7110");
+    }
+
+private:
+    // One lua_next step. The previous key ref (none on the first step) is the
+    // lua_next cursor; it and the previous value are released before the new
+    // pair is taken. False, with both refs cleared, once the table is done.
+    bool step(const bsp::GuiLuaRef& table, bsp::GuiLuaRef& key, bsp::GuiLuaRef& value,
+              bool first) {
+        const int base = ::lua_gettop(state_);
+        push(table);
+        if (!lua_istable(state_, -1)) {
+            ::lua_settop(state_, base);
+            release(key);
+            release(value);
+            key = bsp::GuiLuaRef{};
+            value = bsp::GuiLuaRef{};
+            return false;
+        }
+        if (first) lua_pushnil(state_);
+        else push(key);
+        release(key);
+        release(value);
+        key = bsp::GuiLuaRef{};
+        value = bsp::GuiLuaRef{};
+        if (::lua_next(state_, -2) == 0) {
+            ::lua_settop(state_, base);
+            return false;
+        }
+        value = take();      // the value is on top
+        key = take();        // then the key
+        ::lua_settop(state_, base);
+        return true;
+    }
+    bsp::GuiLuaRef take() {
+        bsp::GuiLuaRef ref{};
+        ref.id = static_cast<std::uint32_t>(luaL_ref(state_, LUA_REGISTRYINDEX) + 3);
+        return ref;
+    }
+    void push(const bsp::GuiLuaRef& object) {
+        const int ref = static_cast<int>(object.id) - 3;
+        if (ref > 0) lua_rawgeti(state_, LUA_REGISTRYINDEX, ref);
+        else lua_pushnil(state_);
+    }
+
+    lua_State* state_;
+    GameHostLog& log_;
+    std::deque<std::string> strings_;
+};
+
 // Goal 3 chain 234 (kWireGoal3Chain234Bound). The bsp::VehicleClassHost that
 // 00964790's reconstructed body (bsp::resolve_vehicle_class_00964790) takes:
 // the descriptor cache and its constructors (bsp/game_host_vehicle_class.hpp)
@@ -6154,8 +6364,31 @@ public:
     // resolves (mark_vehicle_class_device_bullets_00960230). No image field is
     // filled.
     void load_descriptor(bsp::VehicleClassDescriptor* descriptor) override {
+        if constexpr (bsp::kWireGoal4Chain391Bound) {
+            // Goal 4 chain 391. vtable +8h is __thiscall(descriptor, LuaObject* row);
+            // each kind's loader calls the base reader 00960230 first (006D0BA1,
+            // 00700E63, 00749236, 0074D4C3, 007D1F9F, 0083186E; 008429C0 tail-jumps
+            // to it), so every descriptor runs it on its VehicleClass row. Its
+            // +0C0h, Catapult.LaunchedClass (009604AC, -1 when Catapult is not a
+            // table), is what 00964790 step 14 reads back as the linked class. The
+            // fields it read are kept per class index (vehicle_class_base_fields_)
+            // for the host's class +C0h..+CCh, +124h and +134h readers.
+            // DIVERGENCE (bsp/game_host_vehicle_class.hpp, split copy): the image
+            // bytes are not written; the read lives beside the semantic descriptor.
+            // The kind-specific remainder of each loader (00831840 for ships,
+            // 007D1F70 for planes, ...) is not run here.
+            GameMissionLuaVehicleClassFieldBinding lua(state_, owner_.log_);
+            const bsp::GuiLuaRef row = lua.row(descriptor->class_index);
+            bsp::VehicleClassBaseFields fields;
+            bsp::read_vehicle_class_base_fields_00960230(lua, row, fields);
+            lua.release(row);
+            descriptor->linked_class_index = fields.launched_class;
+            owner_.vehicle_class_base_fields_[descriptor->class_index] = std::move(fields);
+            ++owner_.vehicle_class_base_loads_;
+        } else {
         descriptor->linked_class_index = owner_.read_vehicle_class_integer(
             descriptor->class_index, "Catapult", "LaunchedClass", -1);
+        }
         if constexpr (bsp::game::kVehicleClassPreloadCc15Bound) {
             owner_.mark_vehicle_class_device_bullets_00960230(descriptor->class_index);
         }
@@ -6271,6 +6504,27 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
             mark_vehicle_class_device_bullets_00960230(class_index);
         }
     }
+}
+
+const bsp::VehicleClassBaseFields* GameMissionLuaHost::loaded_vehicle_class_base_fields(
+    int class_index, const char* site) {
+    if (!kVehicleClassBaseLoadBound || class_index < 0) return nullptr;
+    auto found = vehicle_class_base_fields_.find(class_index);
+    if (found == vehicle_class_base_fields_.end()) {
+        // A native holder of class +C0h / +124h / +134h already holds the
+        // descriptor 00964790 built; a class this host has not resolved yet is
+        // resolved here, the same GetOrCreate (and load) the holder went through.
+        ++vehicle_class_base_lazy_resolves_;
+        mark_vehicle_class_row_00964790(class_index, site);
+        found = vehicle_class_base_fields_.find(class_index);
+    }
+    return found != vehicle_class_base_fields_.end() ? &found->second : nullptr;
+}
+
+std::int32_t GameMissionLuaHost::loaded_default_equipment(int class_index, const char* site) {
+    // 00961F16..00961F45: cleared to 0, then the integer when the key is not nil.
+    const bsp::VehicleClassBaseFields* fields = loaded_vehicle_class_base_fields(class_index, site);
+    return fields != nullptr ? fields->default_equipment : 0;
 }
 
 // cc15-vcp6. The Lua load in 00964790 step 13 (vtable[8h]) reaches the base
@@ -11600,6 +11854,21 @@ bsp::ShipCatapultRecord* GameMissionLuaHost::catapult_record(std::size_t unit,
     if (units == nullptr || unit >= units->count()) return nullptr;
     const GameUnitRow* row = units->unit_row(unit);
     if (row == nullptr) return nullptr;
+    if constexpr (kVehicleClassBaseLoadBound) {
+        // Goal 4 chain 391: class +C0h..+CCh as 00960230 loaded them (0096046B:
+        // integers through 00B66380, LaunchedClass -1 / the others 0 by default,
+        // and LaunchedClass -1, LaunchStock 0, MaxLaunchedPlanes 0 when Catapult
+        // is not a table; Equipment keeps the descriptor's zero). No descriptor
+        // (no row) reads as those defaults.
+        const bsp::VehicleClassBaseFields* fields =
+            loaded_vehicle_class_base_fields(row->type_id, "catapult_record");
+        const bsp::VehicleClassBaseFields none;
+        const bsp::VehicleClassBaseFields& source = fields != nullptr ? *fields : none;
+        cls.launched_class = source.launched_class;
+        cls.equipment = source.catapult_equipment;
+        cls.launch_stock = source.launch_stock;
+        cls.max_launched = source.max_launched_planes;
+    } else {
     cls.launched_class = static_cast<std::int32_t>(
         read_vehicle_class_nested_number(row->type_id, "Catapult", "LaunchedClass", -1.0f));
     cls.equipment = static_cast<std::int32_t>(
@@ -11608,6 +11877,7 @@ bsp::ShipCatapultRecord* GameMissionLuaHost::catapult_record(std::size_t unit,
         read_vehicle_class_nested_number(row->type_id, "Catapult", "LaunchStock", 0.0f));
     cls.max_launched = static_cast<std::int32_t>(
         read_vehicle_class_nested_number(row->type_id, "Catapult", "MaxLaunchedPlanes", 0.0f));
+    }
     bsp::ShipCatapultRecord& r = bsp::ship_catapult_registry().record(unit, cls);
     const std::vector<std::pair<std::size_t, float>> destroyed = units->destroyed_units();
     bsp::ShipCatapultRegistry::prune(r, [&](std::uint32_t entity) {
@@ -11704,8 +11974,16 @@ int GameMissionLuaHost::run_ship_use_catapult_00891d50(lua_State* state, int arg
             bsp::catapult_launch_input_006ec8ff(row->launch_equipment_534, cls.equipment);
         std::int32_t owner_player = 9;
         units->unit_role_permission(ship, 0, owner_player);
-        const std::int32_t cost =
-            static_cast<std::int32_t>(read_vehicle_class_number(launched, "Cost", 0.0f));
+        std::int32_t cost = 0;
+        if constexpr (kVehicleClassBaseLoadBound) {
+            // Goal 4 chain 391: launched-class +124h as 00960230 stored it
+            // (009610D4, 00B66380 with default 0); no descriptor reads as 0.
+            const bsp::VehicleClassBaseFields* fields =
+                loaded_vehicle_class_base_fields(launched, "006eca3f");
+            cost = fields != nullptr ? fields->cost : 0;
+        } else {
+            cost = static_cast<std::int32_t>(read_vehicle_class_number(launched, "Cost", 0.0f));
+        }
         const bsp::CatapultSpawnProperties props = bsp::catapult_spawn_properties_006ec8e0(
             launched, equipment, units->skill_level(ship), row->race_58, row->party,
             owner_player, static_cast<std::uint16_t>(ship + 1u), cost);
@@ -14965,6 +15243,11 @@ void GameMissionLuaHost::report_mission_script_state() {
             "script_nil_reads=%zu lua_errors=%zu per_class:%s", vehicle_class_purged_,
             vehicle_class_purge_failures_, vehicle_class_script_nil_reads_, lua_errors_total_,
             script_rows.c_str());
+    }
+    if constexpr (kVehicleClassBaseLoadBound) {
+        log_.notef("summary vehicle class base load (00960230, goal 4 chain 391): loads=%zu "
+            "classes=%zu lazy_resolves=%zu", vehicle_class_base_loads_,
+            vehicle_class_base_fields_.size(), vehicle_class_base_lazy_resolves_);
     }
     log_.notef("summary mission script listeners bound=%d adds=%llu removes=%llu queries=%llu "
         "registered=%zu kill_deaths=%llu kill_fires=%llu attacker_filtered=%llu (008C6760 / "
