@@ -1,0 +1,42 @@
+{
+  "chain": 438,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain438Bound",
+  "rows": [
+    {
+      "native": "008e3710",
+      "status": "wired",
+      "host_site": "src/cc13_powerup.cpp: bsp::cc13_powerup::slot_record_00617030",
+      "contract": "On an actual per-player class-key map miss, the existing reset body constructs the native record fields. Its notified byte, deferred byte, source pointer, start, and expiry become the PowerUpSlot inserted into the live manager's active or other-player vector. The native reserved +4 word has no typed host consumer. The host-only source-offset cache remains zero because the reset source is null. Existing records are untouched; the old insertion remains unchanged in the switch's else arm.",
+      "evidence": "bsp.py show 008E3710 and the existing objectives_seg57_argon.cpp body establish stores at +0, +4, +8, +0C, +10, +14. Static assertions verify every native offset. call_graph.py who 008e3710 reports the body at 103478E0 reachable, with one call at 1043FF0A from slot_record_00617030; path reaches it through the available-powerup Lua dispatch."
+    },
+    {
+      "native": "008e4bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: clone_circle_template / circle_set_fill",
+      "reason": "The HUD has no retained cooldown-circle clone or fill recipient; wiring the fraction without a consumer would discard its result."
+    },
+    {
+      "native": "008e35d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: command_building_powerup_init_008ed720",
+      "reason": "The host retains building-to-class map entries, but has no native binding object's vtable/owner/class storage and observer lifetime for this constructor."
+    },
+    {
+      "native": "008e3570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: send_powerup_message68",
+      "reason": "The power-up host records outgoing effect notifications; a live incoming SessionMessage68 effect-handler adapter and matching native modifier view are missing."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, native_math_differential, tool_tests (3/3).",
+    "call_graph": "Rebuilt from bsp_game.exe; one reachable call to 008E3710 from the changed inventory insertion site.",
+    "float_math": "No float arithmetic changed; the adapter transfers the native reset's zero-valued fields.",
+    "runtime": "The game was not run. This is build and executable-call-graph evidence, not gameplay validation.",
+    "wired_before": 9683,
+    "wired_after": 9684,
+    "target_called": true,
+    "target_call_sites": 1
+  }
+}

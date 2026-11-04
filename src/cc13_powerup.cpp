@@ -6,9 +6,11 @@
 #include "bsp/cc13_powerup.hpp"
 
 #include "bsp/native_string.hpp"
+#include "bsp/objectives_seg57_argon.hpp"
 #include "bsp/panel_sequence_types.hpp"
 #include "bsp/powerup_seg58_argon.hpp"
 #include "bsp/wire_goal4_chain344_switches.hpp"
+#include "bsp/wire_goal4_chain438_switches.hpp"
 
 #include <Windows.h>
 
@@ -23,6 +25,27 @@ extern "C" {
 
 namespace bsp::cc13_powerup {
 namespace {
+
+// Goal 4 chain 438. bsp.py show 008E3710: 00617030 constructs a new map
+// value by resetting byte +0, words +4/+8, floats +0C/+10, and byte +14.
+// PowerUpSlot is a typed projection with a different layout, so let the one
+// reconstructed body initialize its native fields and publish those results
+// into the actual slot inserted below. The native +4 word has no host reader.
+struct SlotResetView {
+    std::uint8_t notified_00;
+    std::uint8_t padding_01[3];
+    std::uint32_t unused_04;
+    std::uint32_t source_08;
+    float start_0c;
+    float end_10;
+    std::uint8_t deferred_14;
+};
+static_assert(offsetof(SlotResetView, notified_00) == 0x00);
+static_assert(offsetof(SlotResetView, unused_04) == 0x04);
+static_assert(offsetof(SlotResetView, source_08) == 0x08);
+static_assert(offsetof(SlotResetView, start_0c) == 0x0c);
+static_assert(offsetof(SlotResetView, end_10) == 0x10);
+static_assert(offsetof(SlotResetView, deferred_14) == 0x14);
 
 // The expiry helper reads only +10h and +14h of the native cooldown value.
 // Project those fields from the actual per-player slot, not a new timer.
@@ -118,7 +141,21 @@ PowerUpSlot& slot_record_00617030(PowerupRuntime& runtime, std::int32_t slot,
     const std::size_t position = static_cast<std::size_t>(at - keys.begin());
     if (at == keys.end() || key < *at) {
         keys.insert(at, key);
-        values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), PowerUpSlot{});
+        if constexpr (bsp::kWireGoal4Chain438Bound) {
+            SlotResetView native;
+            objectives_seg57_argon::powerup_slot_record_reset_008e3710(&native);
+            PowerUpSlot value{};
+            value.notified = native.notified_00 != 0;
+            value.relative_deadline = native.deferred_14 != 0;
+            value.absolute_expiry = native.end_10;
+            value.source = reinterpret_cast<void*>(native.source_08);
+            value.absolute_start = native.start_0c;
+            // source_offset is the host's cached class+80h, not a native
+            // record field. A freshly reset record has no source class.
+            values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), value);
+        } else {
+            values.insert(values.begin() + static_cast<std::ptrdiff_t>(position), PowerUpSlot{});
+        }
         ++runtime.counts.records_inserted;
     }
     return values[position];
