@@ -1,0 +1,42 @@
+{
+  "chain": 487,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain487Bound",
+  "work": "Canonical application remap-provider composition; no setter is claimed wired.",
+  "wired_total_before": 9768,
+  "wired_total_after": 9770,
+  "new_entry_reachable_calls_claimed": 0,
+  "measurement_note": "The readiness source-text tally increased; none of the four targeted setters is linked in the built executable, so no runtime wiring is claimed.",
+  "validation": {
+    "build": "scripts/build.ps1 passed, including all five existing tests",
+    "call_graph": "tools/call_graph.py rebuilt; who queries for all four setters reported no matching linked function",
+    "float_math_changed": false,
+    "runtime": "Not run, as assigned"
+  },
+  "rows": [
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "SceneContentsBinding lacks the selected record's C24h name producer and a borrow of the active render-resource service; the opt-in mission graph has B107F0 initialization, and canonical remap providers are now exposed."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "SceneContentsBinding lacks the selected record's C2Ch name producer and a borrow of the active render-resource service; the opt-in mission graph has B107F0 initialization, and canonical remap providers are now exposed."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "SceneContentsBinding lacks the selected record's C34h name producer and a borrow of the active render-resource service; the opt-in mission graph has B107F0 initialization, and canonical remap providers are now exposed."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "SceneContentsBinding lacks the selected record's C3Ch name producer and a borrow of the active render-resource service; the opt-in mission graph has B107F0 initialization, and canonical remap providers are now exposed."
+    }
+  ]
+}

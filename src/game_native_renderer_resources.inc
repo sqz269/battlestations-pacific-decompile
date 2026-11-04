@@ -20,6 +20,8 @@ struct RenderResourcesGraph {
  NativeTextureSurfaceGetterContext texture_surfaces;
  NativeRenderTextureSurfaceOwnerContext holders;
  NativeRenderResourcesDirectTerminalDomain direct_terminals;
+ // Borrowed metadata only: no Native allocation, texture load or release.
+ std::optional<NativeRenderResourcesRemapContext> remap;
  bool attempted{};
 
  RenderResourcesGraph(DestructionGraph& g,DeviceGraph& devices,CameraGraph& camera,TextureLoadingGraph& loading,
@@ -56,7 +58,16 @@ struct RenderResourcesGraph {
        runtime_textures.unsigned_dword_fix_00ce3978,runtime_textures.unsigned_counter_fix_00d57da0},
    texture_surfaces{g.surface,game_native_renderer_scalar_process().increment_iat_00ce221c()},
    holders{runtime_textures,texture_surfaces,surfaces,camera.decrement},
-   direct_terminals{owners,holders,g.profiles(0xd61eb8)} {}
+   direct_terminals{owners,holders,g.profiles(0xd61eb8)} {
+  if constexpr (kWireGoal4Chain487Bound) {
+   // B0FD70/B0FDC0/B0FE10/B0FE60 require these exact shared domains. In
+   // particular, release and B319B0 must resolve through the SAME owners as
+   // this application's texture loading graph, not an independent registry.
+   remap.emplace(NativeRenderResourcesRemapContext{
+       loading.cache,owners,camera.decrement,g.profiles(0xd5f0a8)});
+  } else {
+  }
+ }
  GameNativeRenderResourceProviders borrowed_providers() noexcept {
   return {runtime_textures,surfaces,texture_surfaces,holders,direct_terminals};
  }

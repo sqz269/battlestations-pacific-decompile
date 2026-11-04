@@ -151,6 +151,8 @@
 #include "bsp/system_camera_axes.hpp"
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_render_resources_lifetime.hpp"
+#include "bsp/native_render_resources_remap.hpp"
+#include "bsp/wire_goal4_chain487_switches.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/gui_text_native_layout.hpp"
 #include "bsp/native_vertex_position_read.hpp"
@@ -753,6 +755,12 @@ void* GameNativeRendererApplication::construct_render_resources() {
 }
 NativeRenderResourcesLifetimeContext& GameNativeRendererApplication::render_resources_lifetime() noexcept {
     return impl_->resources.lifetime;
+}
+NativeRenderResourcesRemapContext& GameNativeRendererApplication::render_resources_remap_context() {
+    auto& p=*impl_;
+    check(p.phase==Impl::Phase::ready,"remap context requires the ready application renderer");
+    check(p.resources.remap.has_value(),"chain487 remap context is disabled");
+    return *p.resources.remap;
 }
 GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
     check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");

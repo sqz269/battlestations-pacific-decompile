@@ -30,6 +30,7 @@ struct NativeNodeRawConstants;
 class NativeViewportRegistry;
 struct NativeCockpitViewportReleaseContext;
 struct NativeRenderResourcesLifetimeContext;
+struct NativeRenderResourcesRemapContext;
 class NativeRenderResourcesConstructionAcquired;
 struct NativeShaderBinaryCacheContext;
 struct NativeMaterialEffectCacheContext;
@@ -347,6 +348,12 @@ public:
     // still gated on that B107F0 integration; this is the shared provider API.
     void* construct_render_resources();
     NativeRenderResourcesLifetimeContext& render_resources_lifetime() noexcept;
+    // Ready-only remap providers borrowing this SAME texture cache, canonical
+    // owners, decrement import and mapped renderer profile. This constructs no
+    // service and performs no B14A10/B107F0 initialization. A caller
+    // must supply its genuine initialized service and retain each fresh acquired
+    // frame, including interrupted texture loads, through the native last use.
+    NativeRenderResourcesRemapContext& render_resources_remap_context();
     // Ready-phase borrowed raw factory contexts, retained by this application.
     // Caller retains each acquired frame and disposes survivors before drain;
     // failed attempts may require process retention. Does not call B107F0 or
