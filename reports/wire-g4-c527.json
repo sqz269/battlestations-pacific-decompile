@@ -1,0 +1,159 @@
+{
+  "goal": 4,
+  "chain": 527,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain527Bound",
+  "base": "cab08846ab",
+  "scope": "Director command-slot count and outgoing clear-command construction",
+  "metrics": {
+    "readiness_wired_before": 9832,
+    "readiness_wired_after": 9832,
+    "entry_reachable_reconstructed_addresses_before": 4896,
+    "entry_reachable_reconstructed_addresses_after": 4897,
+    "note": "Both identifiers were already text-wired. The baseline 0071BE60 address count matched host methods, although its reconstructed identifier had no linked body. The new exact body call is folded with first_empty_slot in Release; the changed source calls filled_slot_count_0071be60 explicitly. 0071C730 contributes the one new counted address."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release passed; all five existing CTests passed after the final C++ edit",
+    "call_graph": "tools/call_graph.py: 4897/5386 reconstructed addresses called from entry-reachable code",
+    "exact_count_body": "filled_slot_count_0071be60 @1032F0D0, changed caller GameCommandsHost::Impl::command_count @1007093F; Release ICF aliases first_empty_slot",
+    "exact_constructor_body": "clearcmd_construct_0071c730 @1032EA70, caller HostSessionMessages::queue_clear_command_5d @101F0B91",
+    "readiness": "tools/wire_readiness.py --standins: both rows called=true; call_sites=2 and 1 respectively",
+    "float_math": "No float arithmetic changed",
+    "runtime": "Game was not run; static entry reach and build/tests are not gameplay or original ABI proof"
+  },
+  "decisions": [
+    "Use existing reconstructed bodies and actual director slot words / outgoing message arguments; no new native-address body or ledger row was needed.",
+    "Count projects only the command_class words its body reads; it does not classify unrelated targets or paths.",
+    "The clear-command result supplies the serialized type, arm byte and index DWORD. The transport still supplies the recovered base/header stores, and memcpy preserves the -1 index bit pattern.",
+    "Existing host paths remain unchanged in the switch's else arms and do not execute on the enabled path.",
+    "The 5Fh remove-point receiver alone would have no live producer, so no dead-path wiring or new user input binding was added."
+  ],
+  "rows": [
+    {
+      "native": "0071be60",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::command_count",
+      "evidence": "bsp.py show 0071be60 --asm: EAX starts at zero, reads director+54h with 1Ch stride, stops at a null or ten slots; the pseudocode's void return loses EAX"
+    },
+    {
+      "native": "0071c730",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_clear_command_5d",
+      "evidence": "bsp.py show 0071c730: type 5Dh, arm byte +20h, index DWORD +24h, delivery 1 and profile 00CFD9D8; semantic result now feeds the actual serializer"
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback",
+      "reason": "The existing live 5Fh sender always sets presence to one; a remove-point message producer is missing, so adding only its absent-payload receive arm would not execute."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback",
+      "reason": "The retained path object exists, but no live sender requests removal of its last point; 0071F5D0 would need that producer first."
+    },
+    {
+      "native": "0071d3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_route_send_point_0071d340",
+      "reason": "The route host exposes the add-point callback only; the original follower listener slot-7 remove-point operation has no bound invoking caller."
+    },
+    {
+      "native": "0071cdd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::advance_path_cursor_00836bf0",
+      "reason": "The host mutates its local path cursor directly and lacks the listener-owned 60h message producer and receiver needed to replace that transition."
+    },
+    {
+      "native": "0071ce60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost path-point queries",
+      "reason": "A native listener's offset-enable byte +18h and vector +20h have no retained producer; passing an invented disabled offset would only wrap the existing point copy."
+    },
+    {
+      "native": "0071cc20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "reason": "The real sender uses 0071D340 MOVSS copies; this value constructor's FLD/FSTP copies would change signaling-NaN and FP-status behavior."
+    },
+    {
+      "native": "0071cc70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback",
+      "reason": "No polymorphic type-query dispatch is needed on this dedicated 5Fh channel; the predicate ignores its receiver and querying constant 5Fh would add a constant-true guard."
+    },
+    {
+      "native": "0071c770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_clear_command_5d",
+      "reason": "The dedicated 5Dh queue lacks a polymorphic type-query consumer; querying the known constructor's constant class would add a constant-true guard."
+    },
+    {
+      "native": "0071c640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_director_sub_kind_5a",
+      "reason": "The dedicated 5Ah queue lacks a polymorphic type-query consumer; the predicate ignores mutable object state and a constant class query would not replace gameplay work."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director snapshot provenance",
+      "reason": "No retained ControllerStateMessage producer, snapshot transport or snapshot consumer exists at the host's flattened flag reads."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-score list notes",
+      "reason": "The score-list's only native reader is the debug overlay; the host has no gameplay list consumer, and debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-score list notes",
+      "reason": "The score-list storage and gameplay consumer are absent; its native debug-only overlay reader is excluded."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "The HUD ambient-sound instance publication is missing; the binding currently records and discards the volume rather than owning a SoundInstance."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The host returns no weapon-animation handle or object, so the timer/range fields and consuming animation are missing."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen_reset",
+      "reason": "The screen's native selection vector, +C0h/+D4h fields and two input-context levels are not retained by these selection tails."
+    },
+    {
+      "native": "0051dce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission briefing path",
+      "reason": "The host has no BriefingScreenState object and consumer for this reconstructed title/side-block assignment."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: Impl::collect_language_names",
+      "reason": "The language catalog is bound, but the collection consumer is gated by an unhosted profile-hints mode-2 state and cannot run on the current path."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp and src/game_hosts_hud_world.cpp: HUD coordinate queries",
+      "reason": "No retained native ScreenMargins producer or matching clamped-coordinate consumer was found in these hosts."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: register_generated_units and seed_brain_draws_009f1160",
+      "reason": "The host stores semantic Controller objects; the allocator's raw 2268h brain, inherited constructors and complete raw-to-gameplay-state binding are missing."
+    }
+  ]
+}

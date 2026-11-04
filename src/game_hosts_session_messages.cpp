@@ -1,5 +1,6 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain527_switches.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
 #include "bsp/wire_goal4_chain506_switches.hpp"
 #include "bsp/wire_goal4_chain514_switches.hpp"
@@ -962,6 +963,22 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     // 0071C730..0071C75E: 0075B430(5Dh), +18h word 0, +1Ah 0, +1Ch 0, +20h =
     // the arm byte, +4h = 1, vtable 00CFD9D8 (profile93), +24h = the index.
     NativeSessionMessage93 sent{};
+    if constexpr (kWireGoal4Chain527Bound) {
+        // bsp.py show 0071C730: the existing semantic body produces the 5Dh
+        // type/arm/index; this transport supplies its recovered base/header
+        // stores. Serialize that result, rather than repeating its payload
+        // construction. Copy the DWORD bits so index -1 retains FFFFFFFFh.
+        const auto posted = gameplay_seg38_cc13::clearcmd_construct_0071c730(
+            arm, static_cast<std::uint32_t>(index));
+        construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
+        sent.header.sender_18 = 0;
+        sent.header.relay_1a = 0;
+        sent.header.flag_1c = 0;
+        sent.flag_20 = static_cast<std::uint8_t>(posted.field_20);
+        sent.header.base.delivery_04 = 1;
+        sent.header.base.profile_00 = image.profile93.slots;
+        std::memcpy(&sent.value_24, &posted.field_24, sizeof sent.value_24);
+    } else {
     construct_native_session_message_0075b430(&sent.header.base, 0x5d, image.session);
     sent.header.sender_18 = 0;
     sent.header.relay_1a = 0;
@@ -970,6 +987,7 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     sent.header.base.delivery_04 = 1;
     sent.header.base.profile_00 = image.profile93.slots;
     sent.value_24 = index;
+    }
 
     LocalStream stream;
     write_native_session_message93_0071c7a0(&sent, &stream.out, image.context);
