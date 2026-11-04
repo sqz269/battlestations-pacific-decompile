@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/cc13_seg49.hpp"
+#include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain419_switches.hpp"
 #include "bsp/wire_goal4_chain414_switches.hpp"
 #include "bsp/wire_goal4_chain412_switches.hpp"
@@ -23229,13 +23231,14 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if constexpr (Impl::kSquadronLandTargetGoneBound) {
             // 009F8160's land arm (009F8295-009F82D5): with the current command
             // `land` 00E08FA0, +3Ch = 1 unless the resolved target exists with
-            // +5Eh and +5Dh clear and either 00927C90(0) is false or the target's
-            // +54h is the squadron's. LABELLED: the leader's installed land task
+            // +5Eh and +5Dh clear and either the squadron's 00927C90(0) is false
+            // or the target's +54h is the squadron's. LABELLED: the leader's installed land task
             // and its site stand for the current command `land` and its target
             // (the host keeps the class the order came from: an explicit land, a
             // recall, or the `land` 007F1940 issues from a returntobase
             // resolution); +5Dh is state->simulate or the gunnery death, +5Eh
-            // scene_destroyed_005e; 00927C90 is the multiplayer test, false here.
+            // scene_destroyed_005e. Chain 436 supplies 00927C90's actual role-0
+            // predicate and the party check; OFF preserves the old false predicate.
             // One latch per lost site: the B5 that follows starts a fresh cycle
             // (the image's latch outlives it, its reset is unread).
             const GameUnitSlot& lead = *h.slots[leader];
@@ -23247,8 +23250,27 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
             }
             if (land) {
                 const GameUnitSlot* ts = site < h.slots.size() ? h.slots[site].get() : nullptr;
+                const bool gone = [&] {
+                    if constexpr (bsp::kWireGoal4Chain436Bound) {
+                        if (ts == nullptr || (ts->state != nullptr && ts->state->simulate != 0)
+                            || ts->scene_destroyed_005e != 0 || gun->unit_dead(site)) return true;
+                        // bsp.py show 009f8160 --asm, 009F82AD..009F82C8:
+                        // ECX = [bot+8] (the squadron), NOT ESI (the target),
+                        // for 00927C90(0). A player/open squadron may keep a
+                        // live landing target only when their parties match.
+                        // The host fuses the squadron with wing 0. Read that
+                        // live slot's party so SetPartyRace changes are visible;
+                        // without its receiver retain only the target-loss test.
+                        if (sq.squadron_unit >= h.slots.size()
+                            || h.slots[sq.squadron_unit] == nullptr) return false;
+                        if (!unit_role_permission_is_player_or_open(sq.squadron_unit, 0)) return false;
+                        return unit_side_0054(site) != unit_side_0054(sq.squadron_unit);
+                    } else {
                 const bool gone = ts == nullptr || (ts->state != nullptr && ts->state->simulate != 0)
                     || ts->scene_destroyed_005e != 0 || gun->unit_dead(site);
+                        return gone;
+                    }
+                }();
                 const std::size_t key = site < h.slots.size() ? site + 1u : 0u;
                 if (gone && st.land_gone_site != key) {
                     st = Impl::SpentOrdnanceRtb{};
@@ -49124,6 +49146,44 @@ bool GameUnitsHost::unit_role_permission(std::size_t index, std::int32_t role_in
         || role_index >= bsp::kUnitRoleTableEntries) return false;
     out = host.slots[index]->role_permission_0188[role_index];
     return true;
+}
+
+namespace {
+// Read-only receiver adapter for 00927CC0 / 00927C90 (__thiscall, RET 4).
+// bsp.py show 00927cc0 / 00927c90: only +188h..+1A8h are read. Copy the
+// canonical table initialized to 9 by GameUnitSlot and changed by
+// set_role_availability_00927d20_impl on every query. The prefix is never
+// read; this is not another unit or a cached policy table.
+struct UnitRolePermissionReadView {
+    std::uint8_t unused[0x188];
+    std::int32_t words[bsp::kUnitRoleTableEntries];
+    explicit UnitRolePermissionReadView(const GameUnitSlot& slot) {
+        std::memcpy(words, slot.role_permission_0188, sizeof words);
+    }
+    bsp::cc13_seg49::Raw raw() {
+        return bsp::cc13_seg49::Raw{reinterpret_cast<std::uint8_t*>(this)};
+    }
+};
+static_assert(bsp::kUnitRoleTableEntries == 9);
+static_assert(offsetof(UnitRolePermissionReadView, words) == 0x188);
+}
+
+std::uint32_t GameUnitsHost::unit_role_permission_mask(std::size_t index,
+    std::int32_t player_slot) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return 0;
+    UnitRolePermissionReadView view{*host.slots[index]};
+    return bsp::cc13_seg49::unit_role_mask_for_00927cc0(
+        view.raw(), player_slot);
+}
+
+bool GameUnitsHost::unit_role_permission_is_player_or_open(std::size_t index,
+    std::int32_t role_index) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr
+        || role_index < 0 || role_index >= bsp::kUnitRoleTableEntries) return false;
+    UnitRolePermissionReadView view{*host.slots[index]};
+    return bsp::cc13_seg49::unit_role_word_is_player_or_open_00927c90(view.raw(), role_index);
 }
 
 void GameUnitsHost::role_request_0077c470(std::size_t index, std::uint32_t mask, bool take) {

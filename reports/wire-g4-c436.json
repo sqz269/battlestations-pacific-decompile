@@ -1,0 +1,157 @@
+{
+  "chain": 436,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain436Bound",
+  "summary": "Use the live nine-word unit permission table for HUD permission masks and the squadron land-target party guard.",
+  "rows": [
+    {
+      "native": "00927cc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_role_permission_mask; src/game_hosts_hud.cpp: GameHudHost::Impl::selectable_inputs_00645060 and WeaponGroupScreenBinding::group_available_bound",
+      "evidence": "bsp.py show 00927cc0: RET 4, reads nine words +188h..+1A8h; bit i is set for permission 9 or the requested player. The adapter snapshots GameUnitSlot::role_permission_0188 on each query; GameUnitSlot initializes it to 9 and set_role_availability_00927d20_impl updates it. HUD consumes the mask instead of running its old scans."
+    },
+    {
+      "native": "00927c90",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_spent_ordnance_rtb_0084e010 -> unit_role_permission_is_player_or_open",
+      "evidence": "bsp.py show 00927c90 and show 009f8160 --asm: 009F82AD loads ECX=[bot+8] (the squadron), 009F82B0 pushes role 0, and 009F82BF..009F82C8 compares squadron+54h against target+54h. The body receives the fused squadron slot's live policy words; both parties come from the live unit slots. PLAYER_AI 8 bypasses the party guard as native; 9 and player slots 0..7 require matching parties."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The skill scalar is retained, but replay of the body's director+6DC and kind-20h child notifications needs an adapter to the live weapon director and device ownership."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane flight-state notification reset_timer40 record",
+      "reason": "The host has no retained plane FX component timer+40h and downstream FX-step consumer; a new standalone timer would be unused."
+    },
+    {
+      "native": "007cd520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane FX component lifetime",
+      "reason": "Native component construction needs its retained subobjects and corresponding live FX owner; that lifetime adapter is missing."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane flight-state FX notification",
+      "reason": "The retained plane FX component and its effect-owner callbacks are missing from this host path."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: recorded plane FX step",
+      "reason": "The host lacks the live FX component and effect ownership needed to consume its timer and effect updates."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship unload ship_landed record",
+      "reason": "Dispatch requires a Seg62Host adapter for the real mission-event manager, subscription channels and landing-target query."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit effects vector clearing",
+      "reason": "No owned native +660h effect-vector producer and Seg62Host resize adapter was established for this host."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane reset-impulse path",
+      "reason": "The raw entity receiver, saved pose+4E0h and impulse-vector ownership need a complete adapter before the native body can replace the host projection."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: untasked plane attack-move fallback",
+      "reason": "The factory needs a live MoveToTaskCalls allocator, command descriptor and persistent native task/target receiver, which this fallback does not retain."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_render.cpp: ocean depth-sample kernel candidate",
+      "reason": "The depth kernel needs the live target dimensions and a shader constant consumer; no such host replacement was established."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding set_ambient_volume",
+      "reason": "The HUD callback records volume without retaining the actual ambient SoundInstance or its sample options."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "The preceding weapon-animation lookup returns zero and no real ticker receiver is retained for its range stores."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene remap texture slot 0",
+      "reason": "record_remap_texture_name returns an empty name and no live render-resource remap acquisition context is supplied."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene remap texture slot 1",
+      "reason": "record_remap_texture_name returns an empty name and no live render-resource remap acquisition context is supplied."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene remap texture slot 2",
+      "reason": "The remap owner and acquisition context are missing from this host path."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene remap texture slot 3",
+      "reason": "The remap owner and acquisition context are missing from this host path."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::instance",
+      "reason": "The host singleton is a projected C++ registry; an adapter to the original getter's raw singleton ownership was not established."
+    },
+    {
+      "native": "00c41ad0",
+      "status": "skipped",
+      "host_site": "src/dyn_world_settings.cpp: dyn_world_settings_game",
+      "reason": "The existing wrapper already composes the descriptor constructor; no additional real-state host replacement was identified."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "reason": "The reconstructed shutdown already calls this destructor on real group storage; no missing host replacement was identified."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured type storage destruction",
+      "reason": "The body already exists in reconstructed configuration cleanup; no additional live host replacement was established."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed MSVC Win32 Release; reconstructed_math and tool_tests both passed (2/2).",
+    "call_graph": {
+      "00927cc0": "Entry-reachable; one call at 102D3BAD from GameUnitsHost::unit_role_permission_mask; HUD selectable_inputs_00645060 is on the entry path.",
+      "00927c90": "Entry-reachable; one call at 102B4C99 from GameUnitsHost::run_spent_ordnance_rtb_0084e010; entry path includes fixed-step air ops and run_landing_queue_006cd240."
+    },
+    "float_math": "No float arithmetic changed.",
+    "runtime": "No game run. Entry reachability is checked against the built executable; native ABI and live gameplay remain unvalidated.",
+    "wired_before": 9681,
+    "wired_after": 9683,
+    "readiness": "wire_readiness.py --standins reports 00927C90 and 00927CC0 as wired, called=true, one call site each."
+  },
+  "limitations": [
+    "The existing host fuses a squadron receiver with wing 0 and uses the installed land task/site as its current land-command projection.",
+    "If a squadron receiver is absent, the landing guard retains the previous target-loss behavior rather than inventing a party or role table.",
+    "The read-only layout adapter supplies only the nine permission words read by these bodies; it is not a complete native unit layout."
+  ]
+}

@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain370_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain291_switches.hpp"
@@ -1474,10 +1475,18 @@ public:
         const std::size_t index = unit - 1;
         // 0059BBD0(unit, role, slot): the permission word is 9 or the local
         // slot game+18ECh (0 here).
+        std::uint32_t permission_mask = 0;
+        if constexpr (bsp::kWireGoal4Chain436Bound) {
+            permission_mask = owner_.units->unit_role_permission_mask(index, 0);
+        }
         auto open = [&](int role) {
+            if constexpr (bsp::kWireGoal4Chain436Bound) {
+                return (permission_mask & (1u << role)) != 0;
+            } else {
             std::int32_t word = 8;
             return owner_.units->unit_role_permission(index, role, word)
                 && (word == 9 || word == 0);
+            }
         };
         bool permitted = false;
         switch (group) {
@@ -2332,11 +2341,19 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     // 00645110 vtable[124h]() (packet cc9_vtable124_liveness).
     in.vtable_124_allows = unit_vtable_124(unit, 0x00645110u);
     // 00645121 00927C50(unit, 0): any role word 9 or 0.
+    if constexpr (bsp::kWireGoal4Chain436Bound) {
+        // 00927CC0 returns the same predicates as a bitmask. Consume it for
+        // this any-role gate; role zero's raw word still supplies spectate_kind.
+        std::int32_t word = 0;
+        if (units->unit_role_permission(unit, 0, word)) in.spectate_kind = word;
+        in.team_query_00927c50 = units->unit_role_permission_mask(unit, 0) != 0;
+    } else {
     for (int role = 0; role < bsp::kUnitRoleTableEntries; ++role) {
         std::int32_t word = 0;
         if (!units->unit_role_permission(unit, role, word)) continue;
         if (role == 0) in.spectate_kind = word;          // [unit+188h]
         if (word == 9 || word == 0) in.team_query_00927c50 = true;
+    }
     }
     // 0064507A: in single player game+2194h is clear, so BL = 0 and the
     // spectator door is shut. SUBSTITUTION (labelled): +2194h is not modelled;
