@@ -140,6 +140,8 @@ public:
     // full 00738360 search registrations. Archive factory tail follows later.
     void run_phase2_mount_scan_search(const char* current_directory_with_separator);
     bool exists(const char* path);
+    // Manager vtable+0Ch: only mounts whose actual payload+0Ch byte is set.
+    bool exists_in_flagged_mounts(const char* path);
     // BDB0B0 visits the live mount tree and dispatches each current provider+28.
     void pump_pending();
     // Request through BE7CD0 against the CURRENT existing factory cache.

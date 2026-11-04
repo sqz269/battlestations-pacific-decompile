@@ -17,6 +17,7 @@ struct NativeVfsLookupRouteContext {
     const void* actual_name_probe_profile_00d683e8;
     NativeVfsDeviceRouteContext* device{}; // Optional D683F4 profile/source binding.
     NativeVfsPendingRouteContext* pending{}; // Optional D68478 profile/source binding.
+    const void* actual_flagged_exists_profile_00d683a4{};
 };
 
 // Invoke the already captured original provider+10h target on actual storage.
@@ -55,8 +56,8 @@ void reset_native_vfs_name_probe_base_00bd8fe0(void* actual_visitor) noexcept;
 void destroy_native_vfs_name_probe_visitor_00bdb5e0(void* actual_visitor,
     ActualNativeStringPoolStorage&);
 
-// Full BDD0A0 (672 bytes), qualified implementation for D68398/E8 and F4/478
-// when the corresponding optional device/pending route binding is supplied.
+// Full BDD0A0 (672 bytes), qualified implementation for D68398/E8 and A4/F4/478
+// when the corresponding optional flagged/device/pending route binding is supplied.
 // ECX captured manager; stack name/visitor; RET8; no specified result.
 // Existing actual tree layout/traversal/EH ordering; no tree population.
 // Unknown identities/current slots are explicit invalid_argument SOURCE

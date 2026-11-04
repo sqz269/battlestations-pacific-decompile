@@ -20,7 +20,8 @@
 //
 // 00BF6713 (the CRT invalid-parameter path of the checked iterators) can return; validation sites
 // continue after it, as in the listings. Original C++ EH and SEH frames are not claimed; nothing here
-// is wired into a game host. Names are hypotheses, not recovered symbols.
+// is claimed as a binary ABI replacement. Explicit host adoptions include
+// 00BDD520's flagged-mount query (chain 519). Names are hypotheses, not recovered symbols.
 
 #include <cstddef>
 #include <cstdint>
@@ -94,7 +95,14 @@ public:
 };
 
 // Routines reconstructed elsewhere that these bodies call. Each takes the native operands.
-class EngineServiceCalls : public InvalidParameterSink, public TextScannerTokenCalls {
+// Complete traversal surface used by 00BDD520, independent of the other
+// engine service adapters. The native runtime supplies its current VFS tree.
+struct VfsMountVisitorCalls {
+    virtual ~VfsMountVisitorCalls() = default;
+    virtual void visit_matching_mounts_00bdd0a0(void* vfs, const NativeString& name, void* visitor) = 0;
+};
+
+class EngineServiceCalls : public InvalidParameterSink, public TextScannerTokenCalls, public VfsMountVisitorCalls {
 public:
     // Iterator steps (ECX iterator).
     virtual void advance_vfs_mount_iterator_00bd97e0(NativeIterator&) = 0;
@@ -524,6 +532,16 @@ struct VfsPathContext {
     char byte_0109ceef;
 };
 
+struct VfsFlaggedExistsContext {
+    NativeStringStorage& strings;
+    VfsMountVisitorCalls& calls;
+    VfsFlaggedExistsContext(NativeStringStorage& storage, VfsMountVisitorCalls& traversal)
+        : strings(storage), calls(traversal) {}
+    // Keep existing source callers using the larger path context compatible.
+    VfsFlaggedExistsContext(VfsPathContext& context)
+        : strings(context.strings), calls(context.calls) {}
+};
+
 // 00BDBFD0, __fastcall(ECX result*, EDX const string* key, stack first, last) RET 10h: walk list nodes
 // (next +0h, string length +8h / data +0Ch) from first.node to last.node; a node matches when the
 // lengths are equal and either both are empty or _stricmp is 0. result = {first.container, match or
@@ -538,7 +556,7 @@ NativeIterator& vfs_find_search_group_00bdc230(void* vfs, NativeIterator& result
 // 00BDD520 BSP_VFS_ExistsInFlaggedMounts, __thiscall(ECX vfs, const string* name) RET 4 -> AL: normalize a
 // copy (00BEE690), visit the matching mounts with a flagged-exists visitor {vtable 00D683A4, BYTE found
 // +4h = 0} (00BDD0A0), reset its vtable to 00D68380, release the copy, return found.
-bool vfs_exists_in_flagged_mounts_00bdd520(void* vfs, const NativeString& name, VfsPathContext& context);
+bool vfs_exists_in_flagged_mounts_00bdd520(void* vfs, const NativeString& name, VfsFlaggedExistsContext context);
 // 00BDF590 BSP_VFS_AddAlias, __thiscall(ECX vfs, const string* alias, const string* target) RET 8: build a
 // pair of normalized copies, push it onto the alias vector at +94h (00BDEC00), destroy the pair
 // (00BDB850).

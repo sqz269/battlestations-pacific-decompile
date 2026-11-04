@@ -1,0 +1,286 @@
+{
+  "goal": 4,
+  "chain": 519,
+  "slot": "g4-w3",
+  "branch": "agent/g4-w3",
+  "base_commit": "c8683ddf76",
+  "switch": "bsp::kWireGoal4Chain519Bound",
+  "rows": [
+    {
+      "native": "00bdd520",
+      "status": "wired",
+      "host_site": "src/game_hosts_message_manager.cpp: GameMessageManagerHost::Impl::file_store_exists_vslotc -> GameVfsHost -> GameNativeVfsRuntime -> NativeVfsRuntimeBindings::exists_in_flagged_mounts",
+      "detail": "Uses the current native VFS manager after checking its vtable+0Ch entry, and the same actual pooled-string storage and mounted-provider lookup context."
+    },
+    {
+      "native": "00bd9130",
+      "status": "wired",
+      "host_site": "src/native_vfs_lookup_routes.cpp: dispatch_lookup_visit",
+      "detail": "Current D683A4 profile+4 selects the existing body on the actual mount payload; mount+0Ch gates the same provider+10h dispatcher used by ordinary exists."
+    },
+    {
+      "native": "00bd9160",
+      "status": "wired",
+      "host_site": "src/native_vfs_lookup_routes.cpp: dispatch_lookup_stop",
+      "detail": "Current D683A4 profile+8 selects the existing raw-byte result getter; Release ICF folds its code with the identical device-result getter."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0",
+      "reason": "No live error-reporter map owner reaches the ErrorContextNode iterator; the baseline executable does not link the iterator."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "No live error-reporter map owner reaches the ErrorContextNode iterator; the baseline executable does not link the iterator."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "No application error-reporter tree producer reaches the insert/erase paths; generic helper replacement alone would not produce reachable calls."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "No application error-reporter tree producer reaches the insert/erase paths; generic helper replacement alone would not produce reachable calls."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director state-message inventory",
+      "reason": "Controller snapshot fields and a live single-player message consumer are missing; inventory mentions a network snapshot rather than an implemented host call."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: snapshot stand-in inventory",
+      "reason": "No live controller snapshot producer/consumer retains the state-message and director fields required by this network snapshot builder."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "The HUD callback receives a multiplier but retains no actual ambient SoundInstance/sample owner; the sound runtime alone does not supply that identity."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "No retained per-unit BBC audio owner and complete device-audio broadcast consumer exist for the returned plan."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00 / original 00AAAED0 caller",
+      "reason": "No live GUI serialization caller currently supplies the actual child/name snapshot; property loading is a different operation."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB3.cpp / src/cc13_sweepB4.cpp: curve rebuild callbacks",
+      "reason": "The curve callbacks have no concrete game host and no retained authored-curve owner; no live rebuild call site was found."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback",
+      "reason": "Loopback entries lack the native message/current tick domain, game+5D4h dispatch-state input and entity+BDh readiness producer required by the gate."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp: mark_native_recon_slot_dirty_00803ba0",
+      "reason": "No complete live F874BC slot table plus canonical world/player-context accessor supplies the required aliases."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::begin_submarine_periscope_failure",
+      "reason": "The existing path binds common 009327F0 stores only; per-instance mast visibility and Dyn collision-shape owners remain missing."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The animation lookup returns handle zero; no real timed-entry owner receives the range stores."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: begin_engine_movie_004cce50",
+      "reason": "The frame host records movie entry and retains no actual EngineMovieClock/movie-player owner to rewind."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: begin_engine_movie_004cce50",
+      "reason": "The frame host records movie entry and retains no actual EngineMovieClock/movie-player owner to advance."
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/unit_state_message.cpp: set_unit_order_ring_param_b_0080da00",
+      "reason": "No live immediate-rudder command caller was identified; substituting the ring tick would overwrite queued targets and change semantics."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/projectile_helpers.cpp: impact_effect_slot_0084b8c0",
+      "reason": "The current gunnery impact path does not retain the weapon effect-template slots and point-effect creation owner needed to consume the selected slot."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The inspected consumer is the hints-mode-2 all-language preload sweep, outside the normal single-player path; its language-switch and mount lifecycle are also unbound."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective_entry_is_revealed",
+      "reason": "No concrete original objective-reveal host was found supplying the entity party-row selector and both retained recon values."
+    },
+    {
+      "native": "008db990",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective_entry_select_entity_or_pos_key",
+      "reason": "No live objective PropertyKeySink serialization caller was found; adding a key-only call would leave the entity/position payload unowned."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene_text_write_multiline_008efa30",
+      "reason": "The scene-text writer Host is not implemented by a live game host, so its escape helper has no reachable serialization consumer."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "This host models release/attitude checks but does not retain the HUD aim vectors and delta consumers used by the three original calls."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_sample_00412070 callbacks",
+      "reason": "No concrete application implementation of the grid-scan callback/owned source grid was found."
+    },
+    {
+      "native": "0093ccc0",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: init_map_scene_zoom_0093ccc0",
+      "reason": "No live strategic-map scene owns a MapSceneZoomState and its zoom consumers."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "No live economic/group-spawn host supplies the weight and retained threat/source lists consumed by this gate."
+    },
+    {
+      "native": "006de3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: objective marker_bind_on_add_stub",
+      "reason": "The native body is RET8, but the application has no actual game+21D4h marker-manager owner; no synthetic receiver was supplied."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameObjectiveSets::remove_member",
+      "reason": "The objective member list exists but its actual marker objects and keep-flag entries are not built, so the marker-drop result has no complete consumer."
+    },
+    {
+      "native": "00809270",
+      "status": "skipped",
+      "host_site": "src/unit_instance_subobjects.cpp: construct_unit_owned_ref_slot_00809270",
+      "reason": "The inspected semantic base-subobject aggregate is not retained by a live native base-unit constructor path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: fov_aspect_product_00b6fc30 callback",
+      "reason": "No concrete caller binding to the actual CameraProjection was identified for the inspected camera/soldier callback paths."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_get_190_00b6fe60",
+      "reason": "The getter uses a semantic CameraView; no live original getter call site supplying that actual camera field was identified."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "No concrete application host retains the selected mode class-pair rows for this lookup."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_powerup_score_for_unit_00a046c0",
+      "reason": "No complete live powerup scoring host supplies the class multipliers and unit inputs to consume the result."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: leak-manager state",
+      "reason": "The inspected host has leak state but no gameplay consumer of this fraction; adding it only to diagnostics would not wire gameplay behavior."
+    }
+  ],
+  "actual_state": [
+    "GameMessageManagerHost uses its existing GameVfsHost and the actual streamed-dialog fallback path.",
+    "The VFS facade invokes the same retained native runtime, manager, mount tree, pooled strings and provider contexts as ordinary exists.",
+    "Runtime binding checks the current manager identity and current +0Ch entry; visitor dispatch rereads the installed D683A4 profile slots.",
+    "No mount flags, provider results or caller path values are manufactured. The previous unconditional false path remains in the switch else arm."
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00bdd520 --lines 35",
+    "python tools/bsp.py show 00bd9130 --lines 25",
+    "python tools/bsp.py show 00bd9160 --lines 15",
+    "python tools/bsp.py ghidra bytes 00d683a4 --length 12: 70 9f bd 00 30 91 bd 00 60 91 bd 00 -> 00BD9F70/00BD9130/00BD9160",
+    "src/engine_seg11_35_66_cc13.cpp: read_message_record_00704590 streamed-dialog fallback"
+  ],
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build": "passed",
+    "ctests": "5/5 passed",
+    "readiness_command": "python tools/wire_readiness.py --standins",
+    "wired_before": 9814,
+    "wired_after": 9817,
+    "target_rows": [
+      {
+        "address": "00bd9130",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "00bd9160",
+        "state": "wired",
+        "called": true,
+        "call_sites": 2,
+        "callers_live": 1
+      },
+      {
+        "address": "00bdd520",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    ],
+    "call_graph": "All three targets REACHABLE; direct compiled callers NativeVfsRuntimeBindings::exists_in_flagged_mounts, dispatch_lookup_visit and visit_native_vfs_lookup_mounts_00bdd0a0.",
+    "call_graph_unique_reconstructed_addresses_before": 4876,
+    "call_graph_unique_reconstructed_addresses_after": 4877,
+    "icf": "00BD9160 is folded with the identical 00BDB670 getter in Release. The explicit source dispatch names 00BD9160; the shared machine-code calls cannot be uniquely attributed by symbol. The global unique-address counter grows by one while readiness grows by three.",
+    "float_math_changed": false
+  },
+  "limitations": [
+    "Build and static call-graph evidence only; no game launch, audible playback or original-binary ABI validation.",
+    "The newly enabled lookup can populate an existing streamed-dialog alternate-name field; later streamed-dialog playback limitations are outside this packet.",
+    "Inventory-only readiness rows were not treated as investigated functions."
+  ]
+}

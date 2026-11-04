@@ -59,7 +59,14 @@ struct TaggedValueEqualityHost {
     virtual bool vec4_exact_equals_00475df0(const float* a, const float* b) = 0;
 };
 
-struct Host : TaggedValueEqualityHost {
+// Complete provider surface of 00BD9130. Flagged mount lookup does not use
+// the unrelated Lua, archive-output or CRT operations of Host.
+struct FlaggedExistsHost {
+    virtual ~FlaggedExistsHost() = default;
+    virtual std::uint8_t vfs_provider_exists_vslot10(void* provider, const void* name) = 0;
+};
+
+struct Host : TaggedValueEqualityHost, FlaggedExistsHost {
     virtual ~Host() = default;
 
     // --- LuaObject primitives, all __thiscall(ECX = LuaObject) ---
@@ -236,7 +243,7 @@ void stdio_stream_write_string_00bd6db0(StdioFileStream* self, const NativeStr* 
 
 // VFS flagged-exists visitor (vtable 00D683A4) slots 1 and 2.
 void vfs_flagged_exists_mount_callback_00bd9130(std::uint8_t* visitor, const std::uint8_t* mount,
-                                                const void* name, Host& host);
+                                                const void* name, FlaggedExistsHost& host);
 std::uint8_t vfs_flagged_exists_read_result_00bd9160(const std::uint8_t* visitor);
 
 }  // namespace bsp::cc13_seg95

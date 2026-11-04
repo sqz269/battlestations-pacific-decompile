@@ -4,6 +4,7 @@
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal4_chain342_switches.hpp"
 #include "bsp/wire_goal4_chain464_switches.hpp"
+#include "bsp/wire_goal4_chain519_switches.hpp"
 #include "bsp/vfs_whole_stream_reader.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
@@ -475,6 +476,10 @@ struct GameNativeVfsRuntime::Impl : NativePhysicalPendingCompletionDispatch,
         required(inputs.data, 0x00d68cfc, 0x10);
         required(inputs.data, 0x00d688b4, 0x10);
         lookup.pending = &pending;
+        if constexpr (bsp::kWireGoal4Chain519Bound) {
+            // Read the same installed PE profile used at every reached slot.
+            lookup.actual_flagged_exists_profile_00d683a4 = required(inputs.data, 0x00d683a4, 12);
+        }
 
         previous_mpkg = bindings.bind_mpkg_provider(&mpkg_provider);
         inputs.owners.bind_deletion(inputs.deletion_bindings);
@@ -766,6 +771,14 @@ bool GameNativeVfsRuntime::exists(const char* path) {
         throw std::logic_error("Native VFS core is not registered");
     PooledHeader name(impl_->inputs.owners.strings(), path);
     return impl_->bindings.exists(word(actual_manager()), actual_manager(), name.value) != 0;
+}
+bool GameNativeVfsRuntime::exists_in_flagged_mounts(const char* path) {
+    if (!impl_->core_registered)
+        throw std::logic_error("Native VFS core is not registered");
+    // bsp.py show 00BDD520: one normalized copy and the D683A4 visitor over
+    // this same manager. The pooled input is caller-owned, not normalized in place.
+    PooledHeader name(impl_->inputs.owners.strings(), path);
+    return impl_->bindings.exists_in_flagged_mounts(word(actual_manager()), actual_manager(), name.value);
 }
 void GameNativeVfsRuntime::pump_pending() {
     if (!impl_->core_registered)

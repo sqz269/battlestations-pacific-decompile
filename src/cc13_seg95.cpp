@@ -1,5 +1,5 @@
 // cc13_seg95: segment 95 leftovers. See include/bsp/cc13_seg95.hpp and
-// docs/CC13_SEG95.md. Not wired into the game.
+// docs/CC13_SEG95.md. The flagged-exists visitor is adopted by chain 519.
 #include "bsp/cc13_seg95.hpp"
 
 #include <cstdlib>
@@ -518,7 +518,7 @@ void stdio_stream_write_string_00bd6db0(StdioFileStream* self, const NativeStr* 
 }
 
 void vfs_flagged_exists_mount_callback_00bd9130(std::uint8_t* visitor, const std::uint8_t* mount,
-                                                const void* name, Host& host) {
+                                                const void* name, FlaggedExistsHost& host) {
     if (mount[0x0C] != 0) {
         void* provider = *reinterpret_cast<void* const*>(mount + 0x08);
         visitor[4] = host.vfs_provider_exists_vslot10(provider, name);

@@ -222,6 +222,10 @@ bool GameVfsHost::exists(const std::string& name) {
     if (!core_ready_) return false;
     return invoke_native([&] { return active_runtime().exists(name.c_str()); });
 }
+bool GameVfsHost::exists_in_flagged_mounts(const std::string& name) {
+    if (!core_ready_) throw std::logic_error("Native VFS core is not registered");
+    return invoke_native([&] { return active_runtime().exists_in_flagged_mounts(name.c_str()); });
+}
 void GameVfsHost::pump_pending() {
     invoke_native([&] { active_runtime().pump_pending(); });
 }

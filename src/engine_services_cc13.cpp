@@ -1,6 +1,7 @@
 // Segments 96-97 leaves with a reviewed ledger name and no reconstruction record (cc13-files1).
 // Reconstructed and build-tested only: not ABI-compatible, not fixture- or game-validated, and not
-// wired except for the explicitly adopted stream-reference calls below.
+// wired except for the explicitly adopted stream-reference calls and
+// 00BDD520's flagged-mount query (chain 519).
 // See docs/CC13_FILES_1.md and the address notes in
 // bsp/engine_services_cc13.hpp.
 
@@ -954,7 +955,7 @@ NativeIterator& vfs_find_search_group_00bdc230(void* vfs, NativeIterator& result
     }
 }
 
-bool vfs_exists_in_flagged_mounts_00bdd520(void* vfs, const NativeString& name, VfsPathContext& context) {
+bool vfs_exists_in_flagged_mounts_00bdd520(void* vfs, const NativeString& name, VfsFlaggedExistsContext context) {
     TemporaryString normalized(context.strings);
     normalized.value.copy_from_00be0a30_fragment(context.strings, name);
     normalize_native_resource_path_header_00bee690(&normalized.value, context.strings);

@@ -1,6 +1,8 @@
 #include "bsp/native_vfs_runtime_bindings.hpp"
 #include "bsp/native_vfs_open_route.hpp"
 #include "bsp/native_vfs_lookup_routes.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
 #include "bsp/native_physical_stream_open.hpp"
 #include "bsp/native_physical_stream_conversion.hpp"
@@ -129,6 +131,19 @@ void NativeVfsRuntimeBindings::restore_mpak_provider(NativeMpakRuntimeContext* i
 std::uint8_t NativeVfsRuntimeBindings::exists(std::uintptr_t table,void* manager,NativeString& name) {
     require_manager(table);if(slot(table,8)!=0x00bdd440)unsupported();
     return exists_native_vfs_file_00bdd440(manager,&name,lookup_);
+}
+bool NativeVfsRuntimeBindings::exists_in_flagged_mounts(std::uintptr_t table,
+    void* manager,NativeString& name) {
+    require_manager(table);if(slot(table,0x0c)!=0x00bdd520)unsupported();
+    struct Traversal final : engine_services_cc13::VfsMountVisitorCalls {
+        NativeVfsLookupRouteContext& lookup;
+        explicit Traversal(NativeVfsLookupRouteContext& context) : lookup(context) {}
+        void visit_matching_mounts_00bdd0a0(void* manager, const NativeString& name, void* visitor) override {
+            visit_native_vfs_lookup_mounts_00bdd0a0(manager, &name, visitor, lookup);
+        }
+    } traversal(lookup_);
+    return engine_services_cc13::vfs_exists_in_flagged_mounts_00bdd520(manager,
+        name, {lookup_.physical.strings, traversal});
 }
 std::uint8_t NativeVfsRuntimeBindings::exists_manager_entry(std::uintptr_t entry,
     void* manager,const void* name) {
