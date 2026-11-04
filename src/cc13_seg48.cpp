@@ -1106,6 +1106,16 @@ bool any_member(void* squadron, Predicate predicate) {
     return false;
 }
 
+template <class Predicate>
+bool any_ordnance_member(void* squadron, Cc13SquadronOrdnanceHost& host, Predicate predicate) {
+    // 007ED7E0..007ED828: reload the member count at each loop test and
+    // stop at the first hit. The default host retains the native offsets.
+    for (std::int32_t i = 0; i < host.squadron_member_count(squadron); ++i) {
+        if (predicate(host.squadron_member(squadron, i))) return true;
+    }
+    return false;
+}
+
 }  // namespace
 
 // 007ED790 BSP_PlaneSquadron_AnyCanDropOrdnance: 007B9140 per member
@@ -1116,8 +1126,8 @@ bool cc13_seg48_plane_squadron_any_can_drop_ordnance_007ed790(void* squadron, st
 }
 
 // 007ED7E0 BSP_Unit_HasGeneralBombOrdnance: 007B9320 (kind 2Ah) per member.
-bool cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host) {
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_general_bomb_ordnance_007b9320(m, loadout);
     });
 }
@@ -1131,15 +1141,15 @@ bool cc13_seg48_unit_has_level_bomb_ordnance_007ed830(void* squadron, std::uint3
 }
 
 // 007ED880 BSP_Unit_HasDropKamikazeOrdnance: 007B93E0 (kind 2Fh) per member.
-bool cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host) {
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_drop_kamikaze_ordnance_007b93e0(m, loadout);
     });
 }
 
 // 007ED8D0 BSP_Unit_HasTorpedoOrdnance: 007B93F0 (kind 2Bh) per member.
-bool cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host) {
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_torpedo_ordnance_007b93f0(m, loadout);
     });
 }
@@ -1159,8 +1169,8 @@ bool cc13_seg48_unit_has_rocket_ordnance_007ed970(void* squadron, std::uint32_t 
 }
 
 // 007EDA10 BSP_Unit_HasDepthChargeOrdnance: 007B94F0 (kind 2Ch) per member.
-bool cc13_seg48_unit_has_depth_charge_ordnance_007eda10(void* squadron, std::uint32_t loadout, Cc13Seg48Host& host) {
-    return any_member(squadron, [&](void* m) {
+bool cc13_seg48_unit_has_depth_charge_ordnance_007eda10(void* squadron, std::uint32_t loadout, Cc13SquadronOrdnanceHost& host) {
+    return any_ordnance_member(squadron, host, [&](void* m) {
         return host.weapon_controller_has_depth_charge_ordnance_007b94f0(m, loadout);
     });
 }
