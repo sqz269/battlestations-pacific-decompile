@@ -10,6 +10,10 @@ namespace bsp {
 // failure does not free the successful unlinked node: no local cleanup exists.
 void append_native_render_alias_004d2660(void* actual_destination_owner,
     const void* actual_source_string_header, SizedStoragePool& actual_string_pool);
+// Same body with the runtime's retained 00419CC0 pool publication/gate. The
+// copied header belongs to this pool; no second string allocation domain is used.
+void append_native_render_alias_004d2660(void* actual_destination_owner,
+    const void* actual_source_string_header, ActualNativeStringPoolStorage& actual_string_pool);
 
 // Full logical004D26A0 through004D27B3, including parent catch004D2746.
 // Native ECX destination; stack three iterator pairs plus one unread DWORD;

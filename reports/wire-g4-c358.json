@@ -1,0 +1,154 @@
+{
+  "chain": 358,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain358Bound",
+  "scope": "Native VFS enumeration output-list append with the retained runtime string pool",
+  "wired_total_before": 9467,
+  "wired_total_after": 9468,
+  "assumptions": [
+    "Reused the existing 004D2660 append algorithm for the identical inline sequence in 00BE0FC0; the output list and source string header are the current runtime objects.",
+    "Selected files outside concurrent workers' game_hosts leases; no game execution or integration into main was performed."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release and both existing CTests",
+    "call_graph": "004D2660 at 105BC2C0 is entry-reachable with one direct call at 1050EBFA from append_unique_00be0fc0",
+    "entry_path": "WinMain -> GameStartupHost initialization -> GameVfsHost::phase2 -> scan_phase2_packages -> scan_native_vfs_packages_0073cb10 -> enumerate_native_vfs_resources_00bdd990 -> visit_native_vfs_enumeration_mounts_00bdd0a0 -> enumerate_mount_00be1130 -> append_unique_00be0fc0 -> append_native_render_alias_004d2660",
+    "float_math": "No float math changed",
+    "limits": "Build and entry-reachability proof only; original register ABI and gameplay equivalence are not established."
+  },
+  "rows": [
+    {
+      "native": "004d2660",
+      "status": "wired",
+      "host_site": "src/native_vfs_enumeration.cpp: append_unique_00be0fc0",
+      "evidence": "Original 004D2660..004D2691 and 00BE1041..00BE1066 capture sentinel/previous, allocate/copy the current pooled header, grow count, and publish sentinel.prev then inserted.prev.next in the same order.",
+      "implementation": "One shared append algorithm now accepts SizedStoragePool or the existing ActualNativeStringPoolStorage. The switched ON arm calls the owning-pool overload; the OFF arm retains the prior inline implementation. BE0FC0 still consumes its by-value input once; the output list retains the node copy."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "Missing live render-resource remap owner and renderer texture-cache acquisition/owner context; the callback currently records a name."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Missing live render-resource remap owner and renderer texture-cache acquisition/owner context."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Missing live render-resource remap owner and renderer texture-cache acquisition/owner context."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Missing live render-resource remap owner and renderer texture-cache acquisition/owner context."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_group_into / PropertyLibrary",
+      "reason": "Scene groups currently own projected property blocks; missing actual native bag/map/record graphs and their retained insertion/clone/lifetime contexts."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary / entity property parsing",
+      "reason": "Native enums exist, but a live native destination bag and insertion/recursive-lifetime owner are missing from this projected parser."
+    },
+    {
+      "native": "008f39b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary / entity property parsing",
+      "reason": "Missing native destination bag and retained insertion/recursive-lifetime context for enum-word records."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: clear_pending_class_ids",
+      "reason": "The callback has no pending-class-ID owner/storage producer to clear; recording the call alone supplies no native state."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer player-count service is outside this single-player wiring assignment."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: assign_party_player_slots",
+      "reason": "Party-slot assignment is gated by the multiplayer session field and is excluded from single-player wiring."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "Missing live AI group command storage and a command slot-24 dispatcher; the current entity-order path has no AI group."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneFx reset-timer record",
+      "reason": "Missing owned plane FX subblock and timer consumer; a scratch block receiving 60.0 would not affect real plane state."
+    },
+    {
+      "native": "008522c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: run_submarine_dive_00936dc0",
+      "reason": "Missing live catapult child/launch-state projection and authored catapult-surface-enable field; dive currently substitutes false."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit skill-level application",
+      "reason": "Existing body returns a plan; missing real device-kind and skill-notification adapters needed to apply its effects."
+    },
+    {
+      "native": "009583c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit world-position setters",
+      "reason": "Existing body only returns a pose plan; real position/vtable-114 effects must be connected rather than calling an unused plan."
+    },
+    {
+      "native": "009585b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit world-matrix setters",
+      "reason": "Existing body returns only a constant pose plan; actual matrix and previous-position state adapters are missing."
+    },
+    {
+      "native": "00837de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ship tuning reads",
+      "reason": "Missing native tuning settings owner containing both +80h/+F0h blocks and the shared game+1FE4h view."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine burning queries",
+      "reason": "Missing producer and retained real engine-slot list; the reconstructed helper cannot operate on the current plane motion projection."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine stop path",
+      "reason": "Missing producer and retained engine-slot list with live stop callbacks."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "The historical OceanState helper models only cloud-frame arithmetic; missing actual cloud-manager node/instance state and remaining update effects."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/native_loading_queue_retirement.cpp: retire_native_loading_queue_front_00506bf0",
+      "reason": "Missing runtime loading-queue job production/update path and retained fileblock/factory/provider retirement contexts; owner construction alone is insufficient."
+    }
+  ]
+}
