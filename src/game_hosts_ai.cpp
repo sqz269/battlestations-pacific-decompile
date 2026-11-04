@@ -7,8 +7,10 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstddef>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <functional>
 #include <limits>
 #include <utility>
@@ -52,6 +54,8 @@
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain304_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
+#include "bsp/wire_goal4_chain341_switches.hpp"
+#include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
 
@@ -1500,6 +1504,43 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     // 00A335D0's record for this run's mode, read back through 00A371A0.
     bsp::AiTuningBlock tuning{};
+
+    // bsp.py show 004C1C50, 00A37130, 00A335D0 and 00A371A0: the
+    // HighLvlAIGlobals singleton starts with D232C4, then seven 23Ch records.
+    // This owns that prefix (not the unrelated trailing native vectors). Each
+    // record comes from the existing authored-table loader; no base-pointer
+    // adjustment aliases the former single projected tuning block.
+    struct TuningRecordOwner {
+        std::uint32_t vtable_image_address{0x00d232c4u}; // provenance tag, never dispatched
+        std::array<std::array<float, bsp::kAiTuningRecordStride / sizeof(float)>,
+            bsp::kAiTuningModeCount> records{};
+    } tuning_records;
+    static_assert(offsetof(TuningRecordOwner, records) == 4);
+    static_assert(sizeof(TuningRecordOwner::records[0]) == 0x23c);
+    static_assert(sizeof(TuningRecordOwner) == 4 + 7 * 0x23c);
+
+    struct TuningRecordBridge final : bsp::cc13_seg70::ActiveModeTuningHost {
+        Impl& owner;
+        int mode;
+        TuningRecordBridge(Impl& owner_in, int mode_in) : owner(owner_in), mode(mode_in) {}
+        int ai_effective_game_mode_index_009ffc80() override { return mode; }
+        void* coordinator_get_or_create_004c1c50() override { return &owner.tuning_records; }
+    };
+
+    float selected_tuning_field(std::uint32_t offset, int effective_mode) {
+        // 009FFC80: modes outside 0..3 never read the difficulty operand.
+        // Their index is derived afresh from the live session/game mode, not
+        // the mode cached when this coordinator was created. Callers retain
+        // the old path for 0..3 until game+18CCh[slot]+2Ch is available.
+        const int index = static_cast<int>(bsp::ai_tuning_mode_009ffc80(effective_mode, 0));
+        TuningRecordBridge bridge(*this, index);
+        const auto* record = static_cast<const std::uint8_t*>(
+            bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
+        if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
+        float value;
+        std::memcpy(&value, record + offset, sizeof(value));
+        return value;
+    }
 
     // The AiModeTuning record 00A08460 reads, projected out of the same block
     // 00A335D0 filled. Only the two fields the model's barrel arithmetic uses
@@ -3592,9 +3633,17 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     float auto_merge_dist() override {
-        // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
-        done("AiGroups::auto_merge_dist", 0x00a371a0u);
-        return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        if constexpr (bsp::kWireGoal4Chain341Bound) {
+            const int mode = game_mode();
+            if (mode < 0 || mode > 3) {
+                return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, mode);
+            }
+            return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        } else {
+            // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
+            done("AiGroups::auto_merge_dist", 0x00a371a0u);
+            return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        }
     }
 
     int game_mode() override {
@@ -6174,11 +6223,17 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     float near_radius_squared() override { return bsp::kAiEngagementRadiusSquaredValue; }
     float tuning_field(std::uint32_t offset) override {
-        // 00A371A0 + offset. The six fields this packet reconstructed carry the
-        // shipped values; every other slot is the zero an unloaded block holds,
-        // so an unreconstructed field answers what it answered before.
-        done("AiPlanners::tuning_field", 0x00a371a0u);
-        return tuning.at(offset);
+        if constexpr (bsp::kWireGoal4Chain341Bound) {
+            const int mode = game_mode();
+            if (mode < 0 || mode > 3) return selected_tuning_field(offset, mode);
+            return tuning.at(offset);
+        } else {
+            // 00A371A0 + offset. The six fields this packet reconstructed carry the
+            // shipped values; every other slot is the zero an unloaded block holds,
+            // so an unreconstructed field answers what it answered before.
+            done("AiPlanners::tuning_field", 0x00a371a0u);
+            return tuning.at(offset);
+        }
     }
     float range_interpolation(float near_value, float far_value, float distance) override {
         if (kPlannerRangeInterpBound) {
@@ -6751,7 +6806,20 @@ void GameAiCoordinatorHost::create_00a32350() {
     {
         bsp::AiTuningAuthoredReader reader;
         const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
-        bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
+        if constexpr (bsp::kWireGoal4Chain341Bound) {
+            // 00A335D0's 00A3374B..00A370D4 loop loads all seven modes.
+            // Preserve the existing partial loader's field coverage/defaults;
+            // unknown fields are not claimed as recovered by this owner.
+            for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
+                bsp::AiTuningBlock block;
+                bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
+                std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
+                    block.field, sizeof(block.field));
+                if (block.mode == mode) host.tuning = block;
+            }
+        } else {
+            bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
+        }
         host.summary.tuning_mode = static_cast<int>(mode);
         host.summary.tuning_merge_dist = host.tuning.at(bsp::kAiTuningAutoMergeMergeDist);
         host.summary.tuning_near_dist = host.tuning.at(bsp::kAiTuningFreeAttackNearDist);
