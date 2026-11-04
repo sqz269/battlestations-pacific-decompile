@@ -4,6 +4,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_startup_random.hpp"
 #include "bsp/wire_goal4_chain305_switches.hpp"
+#include "bsp/wire_goal4_chain445_switches.hpp"
 #include "bsp/game_native_mutable_crt_data.hpp"
 #include "bsp/platform_control_messages.hpp"
 #include "bsp/platform_text_messages.hpp"
@@ -3800,6 +3801,18 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         sinks.languages = &settings_host_->language_catalog();
         sinks.pixel_shader_version_28 = renderer_capabilities_.pixel_shader_version_28;
         sinks.sound_alternate_00f8bbcc = sound_ ? &sound_->alternate_00f8bbcc : nullptr;
+        if constexpr (kWireGoal4Chain445Bound) {
+            if (native_renderer_) {
+                GameNativeRendererApplication* const renderer = native_renderer_.get();
+                sinks.change_renderer_presentation_mode = [renderer](int width, int height,
+                    bool fullscreen, int sample_count, bool vsync, bool force) {
+                    return renderer->change_presentation_mode(width, height, fullscreen,
+                        sample_count, vsync, force);
+                };
+            }
+        } else {
+            // The previous host supplied no presentation-mode sink.
+        }
         // 00A7F8E0: set_sound_class_level_00a7f8e0 applies named profile gains; OFF keeps the unbound sink.
         if constexpr (kWireGoal2Chain144Bound) {
             // 008D5539/55C4/564F borrow [00F8BBD8], initialized at 0073DAFD.

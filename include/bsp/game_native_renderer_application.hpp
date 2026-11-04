@@ -146,6 +146,10 @@ public:
     GameNativeRendererApplication& operator=(const GameNativeRendererApplication&) = delete;
     void construct();
     void create_device(const RendererInitRequest&);
+    // 008D6092's six settings operands, on the same actual renderer and reset
+    // publication used by begin_frame. Called between application frames.
+    bool change_presentation_mode(int width, int height, bool fullscreen,
+        int sample_count, bool vsync, bool force);
     // BECEE0's BED1E8..BED222 fragment, after actual device startup. Retain
     // the registered cache and its source bindings through the shared drain.
     void initialize_window_render_entry_cache();
