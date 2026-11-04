@@ -7,6 +7,7 @@
 #include "bsp/wire_goal4_chain392_switches.hpp"
 #include "bsp/wire_goal4_chain430_switches.hpp"
 #include "bsp/wire_goal4_chain465_switches.hpp"
+#include "bsp/wire_goal4_chain476_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -31,6 +32,10 @@
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
+#include "bsp/native_enum_node_pool.hpp"
+#include "bsp/native_property_library_lookup.hpp"
+#include "bsp/native_property_library_readers.hpp"
+#include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
 #include "bsp/native_enum_map_lifetime.hpp"
 #include "bsp/native_enum_registry_scalar_delete.hpp"
@@ -296,6 +301,97 @@ struct PropertyGroupDefinition {
     ScenePropertyBlock block;
 };
 
+// Source view of the loaded library's group-name table. Its mapped words point
+// to the actual host-owned group records whose blocks feed inheritance/entity
+// defaults, rather than Original-layout 114h bags. The lookup bodies only borrow
+// opaque node+08h words; no native bag dispatcher/lifetime sees those pointers.
+// The 10Ch root, 14h E17540 slots, pooled keys and 64 chains are genuine native
+// storage. This is a typed host binding, not an Original class/thiscall ABI.
+class LibraryGroupNameIndex final {
+public:
+    LibraryGroupNameIndex()
+        : strings_(game_native_string_process()), readers_(strings_), pool_(node_pool()) {
+        initialize_native_property_tree_library_storage_008f5670(owner_);
+    }
+    ~LibraryGroupNameIndex() {
+        // This view borrows its mapped group records: retire only its own keys
+        // and E17540 slots, before the retained process pools' atexit callbacks.
+        for (void* node : nodes_) {
+            if (node == nullptr) continue;
+            destroy_native_string_header_0041dd20(node, strings_.raw_context());
+            return_native_enum_node_0043b0a0(pool_, node);
+        }
+    }
+    LibraryGroupNameIndex(const LibraryGroupNameIndex&) = delete;
+    LibraryGroupNameIndex& operator=(const LibraryGroupNameIndex&) = delete;
+
+    static bool supports(const std::string& name) {
+        return std::none_of(name.begin(), name.end(),
+            [](unsigned char c) { return c == 0 || c >= 0x80; });
+    }
+
+    void publish(const std::vector<PropertyGroupDefinition>& groups) {
+        // Names/order never change on reopening. Allocate each name slot once;
+        // refresh borrowed mapped pointers after a possible groups_ relocation.
+        // Publication and all readers run serially on the scene-loading thread.
+        nodes_.reserve(groups.size());
+        while (nodes_.size() < groups.size()) {
+            const auto& row = groups[nodes_.size()];
+            void* node = nullptr;
+            if (supports(row.name)) {
+                node = allocate_native_enum_node_004e7c00(pool_);
+                if (node == nullptr) throw std::bad_alloc();
+                // Preserve the allocator membership word at slot+10h.
+                const std::uint32_t empty_header[2] = {0, 0};
+                std::memcpy(node, empty_header, sizeof(empty_header));
+            }
+            nodes_.push_back(node);
+            if (node == nullptr) continue;
+            construct_native_string_header_0041e870(node, strings_.raw_context(), row.name.c_str());
+            const auto* mapped = &row;
+            std::memcpy(static_cast<std::byte*>(node) + 8, &mapped, sizeof(mapped));
+            const auto bucket = native_property_library_key_bucket_004689d0(
+                node, strings_.library_empty_00e18560());
+            void* head;
+            std::memcpy(&head, owner_ + 0x0c + 4 * bucket, sizeof(head));
+            std::memcpy(static_cast<std::byte*>(node) + 0x0c, &head, sizeof(head));
+            std::memcpy(owner_ + 0x0c + 4 * bucket, &node, sizeof(node));
+            std::uint32_t count;
+            std::memcpy(&count, owner_ + 8, sizeof(count));
+            ++count;
+            std::memcpy(owner_ + 8, &count, sizeof(count));
+        }
+        for (std::size_t i = 0; i < nodes_.size(); ++i) {
+            if (nodes_[i] == nullptr) continue;
+            const auto* row = &groups[i];
+            std::memcpy(static_cast<std::byte*>(nodes_[i]) + 8, &row, sizeof(row));
+        }
+    }
+
+    const PropertyGroupDefinition* find(const std::string& name) {
+        // bsp.py show 008F2DB0 / 00469B60 / 00468ED0: the contains reader
+        // admits misses; 00469B60 requires a hit and reads node+08h BEFORE
+        // releasing its query key. Both share this same current string process
+        // and its distinct E18560 library / E17654 query empty cells.
+        if (!contains_native_property_library_name_008f2db0(owner_, name.c_str(), readers_))
+            return nullptr;
+        return reinterpret_cast<const PropertyGroupDefinition*>(
+            read_native_property_library_word_00469b60(owner_, name.c_str(), readers_));
+    }
+
+private:
+    static void* node_pool() {
+        auto& pools = game_native_physical_pool_process();
+        pools.initialize_property_library_node_pool_once_00cc8a70();
+        return pools.property_library_node_pool_storage_00e17540();
+    }
+    GameNativeStringProcess& strings_;
+    NativePropertyLibraryReaderContext readers_;
+    void* pool_;
+    alignas(std::uint32_t) std::byte owner_[0x10c];
+    std::vector<void*> nodes_;
+};
+
 struct EnumTable {
     std::string name;
     std::map<std::string, int> symbols;
@@ -546,10 +642,21 @@ public:
     }
 
     const PropertyGroupDefinition* group(const std::string& name) const {
+        if constexpr (kWireGoal4Chain476Bound) {
+            if (LibraryGroupNameIndex::supports(name)) {
+                return native_groups_ != nullptr ? native_groups_->find(name) : nullptr;
+            }
+            // Non-ASCII/NUL-bearing names are outside the native key contract.
+            for (const PropertyGroupDefinition& row : groups_) {
+                if (equal_insensitive(row.name, name)) return &row;
+            }
+            return nullptr;
+        } else {
         for (const PropertyGroupDefinition& row : groups_) {
             if (equal_insensitive(row.name, name)) return &row;
         }
         return nullptr;
+        }
     }
 
     // 00438e10 is case insensitive everywhere the scene reader compares names,
@@ -621,6 +728,7 @@ private:
     std::vector<EnumTable> enums_;
     // Construct only in the ON library-load phase, not in the OFF host.
     std::unique_ptr<LibraryNativeEnums> native_enums_;
+    std::unique_ptr<LibraryGroupNameIndex> native_groups_;
 };
 
 // The bag an entity hands 0046c550 is built in two steps by 0046cf40. Step 6
@@ -793,8 +901,12 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
         }
     }
     PropertyGroupDefinition* existing = nullptr;
+    if constexpr (kWireGoal4Chain476Bound) {
+        existing = const_cast<PropertyGroupDefinition*>(this->group(group.name));
+    } else {
     for (PropertyGroupDefinition& row : groups_) {
         if (equal_insensitive(row.name, group.name)) { existing = &row; break; }
+    }
     }
     // 008F6A7F reopens the existing bag. 008F5AB3 captures each parent with
     // flag 0 before the authored writes; 008F5110/008F4263 recursively clone.
@@ -821,6 +933,10 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
     } else {
         group.block = std::move(captured);
         groups_.push_back(std::move(group));
+    }
+    if constexpr (kWireGoal4Chain476Bound) {
+        if (native_groups_ == nullptr) native_groups_ = std::make_unique<LibraryGroupNameIndex>();
+        native_groups_->publish(groups_);
     }
 }
 
