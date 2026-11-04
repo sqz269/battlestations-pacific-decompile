@@ -1,0 +1,181 @@
+{
+  "goal": 4,
+  "chain": 448,
+  "worker": "agent/g4-w4",
+  "base": "42bdc2229a",
+  "switch": "bsp::kWireGoal4Chain448Bound",
+  "switch_header": "include/bsp/wire_goal4_chain448_switches.hpp",
+  "summary": "Route four existing complete native root/mover class predicates through the entry-reachable unit_is_kind_of dispatcher using its caller-supplied class identity.",
+  "rows": [
+    {
+      "native": "0042b8f0",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp: bsp::unit_is_kind_of, class 00h",
+      "body": "bsp::native_entity_root_is_kind_0042b8f0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0047f190",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp: bsp::unit_is_kind_of, class 01h",
+      "body": "bsp::native_entity_root_is_kind_0047f190",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0042c010",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp: bsp::unit_is_kind_of, class 4Ch",
+      "body": "bsp::native_entity_is_kind_0042c010",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "004351e0",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp: bsp::unit_is_kind_of, class 4Eh",
+      "body": "bsp::native_entity_is_kind_004351e0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp: scale_sound_instance_volume_00a79880",
+      "reason": "No caller of this typed body supplies a live SoundInstance and instance-specific multiplier; a reachable volume request adapter remains missing."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: restart_native_gui_animated_value_00aa0e20",
+      "reason": "No restart request adapter was established for the manager's current/forward/reverse pointer slots and stop-vslot dispatch."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "No target request adapter was established for the current pointer's vslot 88h and manager callback at +4."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: vertex-shader registry removal",
+      "reason": "The existing lifetime service already calls this exact body with renderer+1AC4h and the owner cell; no missing replacement at that site."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp: pixel-shader registry removal",
+      "reason": "The existing lifetime service already calls this exact body with renderer+1AD0h and the owner cell; no missing replacement at that site."
+    },
+    {
+      "native": "00b38a70",
+      "status": "skipped",
+      "host_site": "src/native_shader_binary_cache.cpp: create_native_shader_binary_cache_00b3a600",
+      "reason": "Published cache creation already executes the same construct(raw,c,a) implementation; a second constructor operation frame would add no missing behavior."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI tuning selection",
+      "reason": "The inspected tuning path still supplies difficulty zero; no native brain-array/planner input adapter was established for the first-active-party query."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/native_camera_owner.cpp: live CameraProjection owner",
+      "reason": "The camera has real FOV/aspect storage, but no reachable request consuming their product was identified; adding an unused product calculation would not wire behavior."
+    },
+    {
+      "native": "008869d0",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant_set_number_008869d0",
+      "reason": "This row uses Left55Host/LuaVariant while separate native-layout number setters already exist; no live typed-variant caller conversion was constructed in this packet."
+    },
+    {
+      "native": "008869f0",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant_set_int_008869f0",
+      "reason": "This row uses Left55Host/LuaVariant while separate native-layout scalar setters already exist; no live typed-variant caller conversion was constructed in this packet."
+    },
+    {
+      "native": "00886b30",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant_set_pointer_00886b30",
+      "reason": "This row uses Left55Host/LuaVariant while a separate native-layout pointer setter already exists; no live typed-variant caller conversion was constructed in this packet."
+    },
+    {
+      "native": "00886b50",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: variant_set_map_00886b50",
+      "reason": "The typed VariantMap copy requires a live Left55Host map owner and lifetime adapter; that caller conversion was not established in this packet."
+    },
+    {
+      "native": "00a78330",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC2.cpp: streamed-dialog channel volume by name",
+      "reason": "No reachable channel-volume request with the real logical channel, native name and virtual gain service was bound in this packet."
+    },
+    {
+      "native": "00a78ce0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC2.cpp: streamed-dialog playback",
+      "reason": "No reachable playback request with the manager's director, retained handle and dialog-record lifetime services was bound in this packet."
+    },
+    {
+      "native": "00a78620",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC.cpp: streamed_dialog_manager_end_dialog_stream_00a78620",
+      "reason": "No live EndDialogStream request adapter was established for the current director stream, name-copy allocator and stop service."
+    },
+    {
+      "native": "00a79480",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepC2.cpp: streamed-dialog slot-record assignment",
+      "reason": "No authored slot-assignment adapter was established for party/state indexing, retained table handles and definition-file loading."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/vfs_candidates.cpp: resolve_resource_candidates_00bddc80",
+      "reason": "Selection survey only; no live candidate-registration/direct-resolver/exists adapter was established in this packet."
+    }
+  ],
+  "state_contract": {
+    "input": "Existing gameplay callers supply the owning class_id and query to unit_is_kind_of; GameUnitsHost::unit_is_kind_of reads its live unit slot's class_id.",
+    "adapter": "The existing C8h ShipKindReceiver places that caller-supplied identity at +C4h; the four reused assembly bodies read no prefix bytes.",
+    "semantics": "These bodies' fixed accept sets match their existing table rows. Their final dynamic-id comparison repeats the owning id. unit_kind_body_answers retains its separate dynamic-id comparison for inherited bodies.",
+    "fallback": "The unchanged table lookup is in the chain448 OFF arm. Other classes retain the previous table path, and ship dispatch remains under chain383.",
+    "dependency": "The chain448 arm is inside the existing enabled chain383 dispatcher. Disabling chain383 restores the original all-table implementation."
+  },
+  "evidence": [
+    "bsp.py show 0042b8f0 --asm --lines 28",
+    "bsp.py show 0047f190 --asm --lines 30",
+    "bsp.py show 0042c010 --asm --lines 24",
+    "bsp.py show 004351e0 --asm --lines 26",
+    "call_graph.py who reports one entry-reachable direct call from bsp::unit_is_kind_of for each of the four bodies",
+    "call_graph.py path 0042c010 reaches GameUnitsHost::unit_is_kind_of through the mission frame and WinMain"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "switch_off_build": "scripts/build.ps1 passed; both tests passed; local class-query probe passed",
+    "switch_on_build": "scripts/build.ps1 passed; both tests passed; local class-query probe passed",
+    "class_query_probe": "412 owner/query comparisons against the pre-existing tables, each also checking seven inherited dynamic IDs; includes negative queries and INT_MIN/INT_MAX; no permanent tests added",
+    "probe": "local/chain448/kind_probe.cpp linked against bsp_core.lib as an MSVC Win32 /MD executable with /MANIFEST:EMBED",
+    "float_math": "No float expressions changed; pc24 lint not required",
+    "source_diff": "git diff --check passed",
+    "readiness_wired_before": 9701,
+    "readiness_wired_after": 9701,
+    "readiness_note": "The text-based source reachability classification is unchanged. All four address rows nevertheless report called=true and call_sites=1 from the built graph.",
+    "entry_reachable_reconstructed_addresses_switch_off": 4733,
+    "entry_reachable_reconstructed_addresses_switch_on": 4737,
+    "new_entry_reachable_calls": 4
+  },
+  "limits": [
+    "Build, table-equivalence probe and static entry reachability are verified; the game was not run and no runtime class-frequency claim is made.",
+    "The adapter preserves the existing class-query API; it does not establish native scene-object, camera, vtable, constructor or lifetime integration.",
+    "No new address-suffixed body, ledger row or Ghidra mutation was required.",
+    "Chain444 also changes unit_kind_query.cpp and was reported in review; its owner was notified before this small separate fallback-arm edit."
+  ]
+}
