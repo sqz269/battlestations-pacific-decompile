@@ -800,7 +800,7 @@ void* bot_task_make_rocket_007b7fd0(Seg47Host& host, void* a, void* b) {
 // ============================================================================
 
 // 007B80A0, __thiscall(ECX = target), EAX: 1 when +E4h is set or [00F874FD] is set.
-std::int32_t target_flag_e4_set_or_global_007b80a0(Seg47Host& host, Raw target) {
+std::int32_t target_flag_e4_set_or_global_007b80a0(TargetFlagGlobalsHost& host, Raw target) {
     if (target.at<std::uint8_t>(0xE4) != 0) return 1;
     if (*static_cast<const std::uint8_t*>(host.global_address(0x00F874FDu)) != 0) return 1;
     return 0;

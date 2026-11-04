@@ -1,0 +1,193 @@
+{
+  "chain": 517,
+  "owner": "agent/g4-w1",
+  "base": "fa39fccf6cb40cd2148e0169b99ae8dc43fcf6e1",
+  "switch": "bsp::kWireGoal4Chain517Bound",
+  "scope": "Rocket AntiAir predicate in AI accuracy and loadout scoring",
+  "rows": [
+    {
+      "native": "007b80a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp:AiWeightModelBinding::rocket_accuracy; src/ai_target_weights.cpp:ai_plane_loadout_arm",
+      "evidence": "bsp.py show 007b80a0; show 009fe270 --asm at 009FE516; show 00a08460 --asm at 00A0888B",
+      "real_state": "Existing Lua-loaded AiPlaneBulletFacts::anti_air and ignition_delay; the same rocket_air_ground_same host input as the prior scoring path, projected through existing NativeRocketClassQuery. Only +E4h and the F874FD binding are read by this predicate.",
+      "change": "Reuse the existing body and its existing TargetFlagGlobalsHost base interface; replace the two handwritten OR predicates under the chain switch. The old computations remain in the else arms.",
+      "call_sites": [
+        "1005f37f: AiWeightModelBinding::rocket_accuracy",
+        "103ac185: ai_plane_loadout_arm"
+      ]
+    },
+    {
+      "native": "0076c190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::session_suspend",
+      "reason": "Missing session +4h/+27Ch storage and host-mode broadcast/flush providers in the loading-screen host."
+    },
+    {
+      "native": "0076c230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::session_resume",
+      "reason": "Missing the same session loading byte and SessionSendHost transport provider."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing actual render-command queue reset access; this hook still records the call only."
+    },
+    {
+      "native": "00aa4040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::start_render_worker",
+      "reason": "Missing actual renderer-worker descriptor, callback and worker lifecycle providers."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI score-list review",
+      "reason": "Debug score-list population has no live owning score list in the AI host; do not add debug-only work."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI score-list review",
+      "reason": "Missing the same populated debug score-list owner; marking choices would add debug-only work."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:MissionNamedCall queue hook",
+      "reason": "Missing an actual off-main-thread named Lua call producer and its retained argument queue; current host records that hook."
+    },
+    {
+      "native": "00a15a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::create_party_brain",
+      "reason": "Missing native brain/planner storage and a Seg69Host constructor provider; the existing typed Brain is a different layout."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI command construction",
+      "reason": "Missing a native attack-command owner and its registered observer subobject; AiCommandObject has no such storage."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI command construction",
+      "reason": "Missing native cautious-attack command/observer storage and registration provider."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user-path review",
+      "reason": "Missing a live clear-last-user-point request path; current host implements adding points but has no corresponding removal command."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:user-path review",
+      "reason": "Missing the same clear-last-point producer; calling this on point addition would change the requested path."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp:GameFrontendHost::Impl::build_quads review",
+      "reason": "Missing property-description writer 00AAAED0; its alphabetical child snapshot does not implement the bridge's authored-Z draw order."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp:construct_native_bot_state_registry_00411e20",
+      "reason": "Missing a reached native land-task owner/constructor boundary for this registry; typed host plane tasks do not expose the required layout."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_approach_lifetime.cpp:land approach teardown",
+      "reason": "Missing the corresponding live native land-task/registry owner whose lifetime this body would end."
+    },
+    {
+      "native": "009f9980",
+      "status": "skipped",
+      "host_site": "src/native_land_task_constructor.cpp:construct_native_land_task_009b3240",
+      "reason": "Missing reached native land-task construction and its actual command/gun/control alias fields."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI group review",
+      "reason": "Missing a live recon-ratio consumer and member 00779D00 values in this host; no current group method requests this result."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane-neighbour collision-band review",
+      "reason": "Missing the caller 007DF4F0's actual collision-band matrix; no additional call is justified on unrelated plane pose data."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp:rotate_about_axis_through_point_0085e8c0",
+      "reason": "Missing a reached 0042D610 orbit operation supplying its real input matrix, pivot and axis."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:immediate-angle review",
+      "reason": "Missing an immediate-angle receive boundary exposing all four received lanes, previous/current angles and visual-node update callback."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_wrap_and_clamp_007904d0",
+      "reason": "Missing an active MovCam controller owner supplying these angle fields; only unhosted callback paths name this body."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp:movcam_set_zoom_0078e480",
+      "reason": "Missing the corresponding active MovCam zoom owner and original base-FOV publication."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp:engine movie advance review",
+      "reason": "No linked body in the baseline; a reached engine-movie clock owner and advance boundary still need investigation."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::notify_gun_skill_level",
+      "reason": "No missing wiring: baseline call_graph already reports the reconstructed body reachable from this host method."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No missing wiring: baseline call_graph already reports the native float-property producer reachable here."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/pool_pool06_cc13.cpp:convex_object_compute_box_006f9ee0",
+      "reason": "No missing wiring: baseline call_graph already reports a reachable call from convex_object_compute_box_006f9ee0."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp:ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No missing wiring: baseline call_graph already reports three reachable call sites, including avoidance query/point-offset code."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 5 tests passed",
+    "changed_build": "scripts/build.ps1 passed; all 5 tests passed",
+    "call_graph_before": {"recon_called": 4875, "recon_addresses": 5357},
+    "call_graph_after": {"recon_called": 4876, "recon_addresses": 5358},
+    "source_wired_before": 9813,
+    "source_wired_after": 9814,
+    "readiness_007b80a0": {"state": "wired", "called": true, "call_sites": 2, "callers_live": 2},
+    "scope_limits": "Build, tests and static entry reachability only; no game run or native ABI proof. The existing host F874FD policy is retained, including its mission-load false default; Lua-global publication is not added by this chain."
+  }
+}
