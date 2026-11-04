@@ -40,14 +40,22 @@ struct Raw {
   }
 };
 
-struct Seg60Host {
+// 0092CED0 only calls the session base constructor and binds its final
+// vtable. Keep that contract usable without unrelated entity/world services.
+struct UnitMessageConstructionHost {
+  virtual ~UnitMessageConstructionHost() = default;
+  virtual void* image_address(std::uint32_t address) = 0;
+  virtual void* session_message_construct_base_0075b430(void* msg, std::uint8_t msg_type) = 0;
+};
+
+struct Seg60Host : UnitMessageConstructionHost {
   virtual ~Seg60Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
   virtual std::uint8_t& global_u8(std::uint32_t address) = 0;
   virtual float& global_f32(std::uint32_t address) = 0;
   virtual double& global_f64(std::uint32_t address) = 0;
-  virtual void* image_address(std::uint32_t address) = 0;
+  void* image_address(std::uint32_t address) override = 0;
 
   // Win32 CRITICAL_SECTION import thunks ([0x00ce2218], [0x00ce2210])
   virtual void enter_critical_section_00ce2218(void* cs) = 0;
@@ -169,7 +177,7 @@ struct Seg60Host {
   ) = 0;
   virtual void* weapon_director_current_command_0071be40(void* director) = 0;
   virtual void entity_life_ref_release_00740270(void* global_array, void* life_ref) = 0;
-  virtual void* session_message_construct_base_0075b430(void* msg, std::uint8_t msg_type) = 0;
+  void* session_message_construct_base_0075b430(void* msg, std::uint8_t msg_type) override = 0;
   virtual void session_route_message_0077c2a0(
       void* sender_entity,
       void* msg,
@@ -490,7 +498,7 @@ std::uint32_t triv_body_0092be90(const void* self) noexcept;
 std::uint32_t triv_body_0092bea0(const void* self) noexcept;
 float triv_body_0092beb0(const void* self) noexcept;
 void* unit_message_part_destroyed_construct_0092ced0(
-    Seg60Host& host,
+    UnitMessageConstructionHost& host,
     void* msg,
     std::int32_t part_index
 );
