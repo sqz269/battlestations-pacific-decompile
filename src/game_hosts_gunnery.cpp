@@ -5,6 +5,11 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain518_switches.hpp"
+#include "bsp/native_device_class_construction.hpp"
+#include "bsp/native_damageable_class_construction.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain510_switches.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/wire_goal4_chain496_switches.hpp"
@@ -230,6 +235,92 @@ bool device_descriptor_type_is_kind(const std::string& type, std::int32_t kind) 
         return classes::catapult_class_is_kind_of_00443010(kind);
     return false; // 00443090 also has no class for an unknown Type.
 }
+
+// Chain 518: the constructor-owned portion of a real, cached DeviceClass.
+// 00443090's Type branches allocate DC/E8/18C/EC bytes before constructing;
+// the rapid fixed/turning arms inline the same common-base/vptr sequence.
+// Evidence: bsp.py show 00443090 (00443198..00443342), 00442B90 and
+// 00442F50; native_device_class_construction.cpp contains the existing bodies.
+// The host's Lua field loader still owns the semantic configuration. Only
+// initialized constructor fields are read here: the final vptr selects the
+// genuine +18h class predicate used by 0072C6A0. These VAs are identities,
+// never callable pointers into the original executable.
+class GunDeviceDescriptor final {
+public:
+    enum class Kind { fixed, rapid_turning, single_turning, bomb, multibomb, depth, catapult };
+    struct Row { const char* type; Kind kind; std::uint32_t bytes; };
+    static const Row* row_for(const std::string& type) noexcept {
+        static constexpr Row rows[] = {
+            {"Rapid_Fixed_Slave_Gun", Kind::fixed, 0xdc},
+            {"Rapid_Turning_Gun", Kind::rapid_turning, 0xdc},
+            {"Single_Turning_Gun", Kind::single_turning, 0xdc},
+            {"BombPlatform", Kind::bomb, 0xe8},
+            {"MultiBombPlatform", Kind::multibomb, 0x18c},
+            {"Depth_Charge_Launcher", Kind::depth, 0xdc},
+            {"Catapult", Kind::catapult, 0xec},
+        };
+        for (const auto& row : rows)
+            if (_stricmp(type.c_str(), row.type) == 0) return &row;
+        return nullptr;
+    }
+
+    explicit GunDeviceDescriptor(const Row& row) {
+        void* const allocation = bsp::singleton_lifetime_allocate(
+            {bsp::SingletonAllocationKind::object, row.bytes, row.bytes});
+        if (allocation == nullptr) throw std::bad_alloc();
+        image_.reset(static_cast<std::uint8_t*>(allocation));
+        const bsp::NativeDamageableClassConstructionAccess damageable{
+            0x00ceb130u, 0x00d0e13cu, game_native_string_process().raw_context()};
+        const bsp::NativeDeviceClassConstructionAccess access{damageable,
+            0x00ce4534u, 0x00ce4560u, 0x00ce459cu, 0x00ce45e0u,
+            0x00ce4614u, 0x00ce4648u, 0x00ce467cu, 0x00ce46c0u};
+        switch (row.kind) {
+        case Kind::fixed:
+            bsp::construct_native_rapid_fixed_slave_gun_00442d80(allocation, access); break;
+        case Kind::rapid_turning:
+            bsp::construct_native_rapid_turning_gun_00442e20(allocation, access); break;
+        case Kind::single_turning:
+            bsp::construct_native_single_turning_gun_00442ec0(allocation, access); break;
+        case Kind::bomb:
+            bsp::construct_native_bomb_platform_00442c50(allocation, access); break;
+        case Kind::multibomb:
+            bsp::construct_native_multibomb_platform_00442ce0(allocation, access); break;
+        case Kind::depth:
+            bsp::construct_native_depth_charge_launcher_00442f50(allocation, access); break;
+        case Kind::catapult:
+            bsp::construct_native_catapult_00442ff0(allocation, access); break;
+        }
+        // The constructor creates exactly one empty damageable-tree sentinel
+        // at +64h. This private image never runs a Lua reader/model binder or
+        // escapes to mutable consumers, so no tree rows, strings, point arrays
+        // or effect/owner references can acquire payloads. Own that allocation
+        // separately; its constructor-failure unwind remains in 0087C640.
+        void* sentinel;
+        std::memcpy(&sentinel, image_.get() + 0x64, sizeof(sentinel));
+        sentinel_.reset(static_cast<std::uint8_t*>(sentinel));
+    }
+    bool is_kind(std::int32_t kind) const {
+        std::uint32_t table;
+        std::memcpy(&table, image_.get(), sizeof(table));
+        namespace classes = bsp::cc13_sweepA;
+        switch (table) {
+        case 0x00ce45e0u: return classes::rfs_gun_class_is_kind_of_00442db0(kind);
+        case 0x00ce4614u: return classes::rt_gun_class_is_kind_of_00442e50(kind);
+        case 0x00ce4648u: return classes::st_gun_class_is_kind_of_00442ee0(kind);
+        case 0x00ce4560u: return classes::bomb_platform_class_is_kind_of_00442c70(kind);
+        case 0x00ce459cu: return classes::multiple_bomb_platform_class_is_kind_of_00442d00(kind);
+        case 0x00ce467cu: return classes::depth_charge_launcher_class_is_kind_of_00442fa0(kind);
+        case 0x00ce46c0u: return classes::catapult_class_is_kind_of_00443010(kind);
+        default: throw std::logic_error("DeviceClass constructor left an unknown class identity");
+        }
+    }
+private:
+    struct Free {
+        void operator()(std::uint8_t* p) const noexcept { bsp::singleton_lifetime_free(p); }
+    };
+    std::unique_ptr<std::uint8_t, Free> image_;
+    std::unique_ptr<std::uint8_t, Free> sentinel_;
+};
 
 // Reuse the native lane reductions on the loaded collision model's vertices
 // and retained bounds. bsp.py show 007AE330/007AE3E0 --asm: both read z/y/x
@@ -2893,6 +2984,18 @@ struct GameGunneryHost::Impl {
     }
     std::vector<GameGunRow> guns;
     std::vector<GameDeviceClassRow> devices;
+    // One constructor image per loaded class id, shared by that class's guns.
+    std::map<int, std::unique_ptr<GunDeviceDescriptor>> device_descriptors;
+    bool constructed_device_class_is_kind(int class_id, const std::string& type, int kind) {
+        auto found = device_descriptors.find(class_id);
+        if (found == device_descriptors.end()) {
+            const auto* row = GunDeviceDescriptor::row_for(type);
+            if (row == nullptr) return false; // native unknown-Type branch
+            auto descriptor = std::make_unique<GunDeviceDescriptor>(*row);
+            found = device_descriptors.emplace(class_id, std::move(descriptor)).first;
+        }
+        return found->second->is_kind(kind);
+    }
     std::vector<GameBulletClassRow> bullets;
     std::vector<GameProjectileRow> shots;
     // Packet cc8_torpedo_closest_approach: one row per swimming round, kept
@@ -7702,9 +7805,16 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 const std::string device_type = lua.read_device_class_string(
                     gun.device_class, "Type");
                 if constexpr (bsp::kWireGoal4Chain442Bound) {
+                    if constexpr (bsp::kWireGoal4Chain518Bound) {
+                        const bool turning = constructed_device_class_is_kind(
+                            gun.device_class, device_type, 0x22);
+                        gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
+                            gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+                    } else {
                     const bool turning = device_descriptor_type_is_kind(device_type, 0x22);
                     gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
                         gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+                    }
                 } else {
                 const bool turning = _stricmp(device_type.c_str(), "Rapid_Turning_Gun") == 0
                     || _stricmp(device_type.c_str(), "Single_Turning_Gun") == 0

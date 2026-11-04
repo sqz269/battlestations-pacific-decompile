@@ -1,0 +1,298 @@
+{
+  "chain": 518,
+  "slot": "g4-w2",
+  "switch": "bsp::kWireGoal4Chain518Bound",
+  "rows": [
+    {
+      "native": "00442b90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor -> derived constructor -> construct_native_gun_class_00442b90"
+    },
+    {
+      "native": "00442c50",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442ce0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442d80",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442e20",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442ec0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442f50",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "00442ff0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::build_guns -> GunDeviceDescriptor::GunDeviceDescriptor"
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: skill notification",
+      "reason": "Already entry-called before this packet; readiness text classification is stale for this identifier."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "No producer for the flak alternate ammo record at ammo+48h or its retained-reference/tree payloads."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp",
+      "reason": "No established native unit+660h vector owner/view at the ship-AI site."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director state",
+      "reason": "No single-player controller-state message producer/consumer selected; host stores semantic director fields."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director enables",
+      "reason": "No controller-snapshot publication/consumer; current gun host retains semantic enables without the full snapshot."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "Ambient SoundInstance and camera-derived volume producers are absent at this host site."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "No actual powerup/map-screen owner exposing the two slide flags; current site returns recorded false."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: animation_interval",
+      "reason": "Weapon animation producer returns zero; no ticker owner/range storage exists at this site."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: begin_submarine_periscope_failure",
+      "reason": "Common stores are bound, but per-instance mast and Dyn shape owners required by the outer body are absent."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: warning_fire_failure",
+      "reason": "No listener-manager dispatch adapter connecting this host event to the real manager and warning roster."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage_control_add_seconds",
+      "reason": "No listener-manager dispatch adapter; the repair task callback currently only records the leak channel."
+    },
+    {
+      "native": "00983780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: damage_control_add_seconds",
+      "reason": "No listener-manager dispatch adapter; the repair task callback currently only records the fire channel."
+    },
+    {
+      "native": "00984eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: shipyard order stock_notice",
+      "reason": "No listener-manager dispatch adapter for the real stock entity and arguments."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: run_torpedo_supply_tick_00825450",
+      "reason": "No repair-zone registry producer; supply currently retains area zero over the empty registry."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path handling",
+      "reason": "No GameUnitMessageHost implementation for the clear-user-point message arm; the host has only the set-command path."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: attackmove task creation",
+      "reason": "No established MoveToTaskCalls allocation/target/task owner adapter at this host site."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine state",
+      "reason": "No PlaneEngineSlots object/list producer in host code."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine state",
+      "reason": "No PlaneEngineSlots object/list producer in host code."
+    },
+    {
+      "native": "007eb0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine state",
+      "reason": "No PlaneEngineSlots object/list producer in host code or enginefire dispatch adapter."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/game camera clip handling",
+      "reason": "No established extra-plane storage and enabled-clip consumer selected; camera owner needs further inspection."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/game camera clip handling",
+      "reason": "No established extra-plane storage and enabled-clip consumer selected; camera owner needs further inspection."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: command menu",
+      "reason": "No collected native command-menu list or slot+10h sort-key producer identified at the live menu site."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameStartupHost teardown",
+      "reason": "Full NativeGameLifetimeCalls/context adapter is not established; startup currently retires separate owner domains."
+    },
+    {
+      "native": "004dc6a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_global_subsystems.cpp",
+      "reason": "Full GlobalSubsystemHost/context binding is not established; this host composes four individual owner projections."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint refresh",
+      "reason": "Typed profile-manager publication/lifetime binding is missing at the refresh site; that file was held during selection."
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_host_vehicle_class.cpp: cache_size",
+      "reason": "No native 401Ch registry owner/header; the descriptor cache currently owns a separate semantic vector."
+    },
+    {
+      "native": "008d9cf0",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: SceneLexer",
+      "reason": "Semantic lexer takes buffered text; raw tokenizer has separate native application bindings requiring caller selection."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No game-entry input-byte validation caller bound to the same decoded FontData owner identified."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GuiSoundCalls::play_tracked_sound",
+      "reason": "GUI set now exists, but shared request-queue callback installation and tracked GUI playback plumbing remain missing."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: pause slot",
+      "reason": "Runtime wrapper already names the body; no actual game pause invocation of this slot established."
+    },
+    {
+      "native": "00a79a30",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: handle_slot18",
+      "reason": "Runtime wrapper already names the body; no actual game handle-query invocation established."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: progress slot",
+      "reason": "No entry-reachable progress query established for the real channel instance."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: audibility slot",
+      "reason": "Runtime wrapper already names the body; no actual entry-reachable audibility query established."
+    },
+    {
+      "native": "00ad3970",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: typed timed-entry owner",
+      "reason": "Typed owner already names these bodies, but no game-entry creation/update path was established; raw widget lifetime has separate native bodies."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: typed timed-entry owner",
+      "reason": "Typed owner already names these bodies, but no game-entry creation/update path was established; raw widget lifetime has separate native bodies."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: typed timed-entry owner",
+      "reason": "Typed owner already names these bodies, but no game-entry creation/update path was established; raw widget lifetime has separate native bodies."
+    },
+    {
+      "native": "00ac2f40",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: typed timed-entry owner",
+      "reason": "Typed owner already names these bodies, but no game-entry creation/update path was established; raw widget lifetime has separate native bodies."
+    },
+    {
+      "native": "00abe7b0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: typed timed-entry owner",
+      "reason": "Typed owner already names these bodies, but no game-entry creation/update path was established; raw widget lifetime has separate native bodies."
+    }
+  ],
+  "implementation": "Cache one constructor-owned descriptor image per authored DeviceClass id; its stored native class identity dispatches the existing class predicate consumed by live gun-bot selection.",
+  "evidence": [
+    "bsp.py show 00443090 (Type branches and native allocation sizes)",
+    "bsp.py show 00442b90 and 00442f50; existing native_device_class_construction.cpp bodies",
+    "call_graph.py who on all eight constructors: reachable; seven leaf calls from GameGunneryHost::Impl::build_guns; common base called by all seven leaves"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; five of five CTests passed",
+    "game_run": false,
+    "float_math_changed": false,
+    "source_wired_before": 9813,
+    "source_wired_after": 9821,
+    "built_call_graph": "4883/5367 reconstructed addresses; all eight selected constructors REACHABLE",
+    "built_reconstructed_called_switch_off": 4875,
+    "built_reconstructed_called_switch_on": 4883,
+    "cached_baseline_note": "Initial readiness called totals came from a stale cached graph; use the rebuilt switch-off/on graph comparison instead.",
+    "switch_off_build": "scripts/build.ps1 passed; five of five CTests passed; selected leaf absent from linked executable"
+  },
+  "limits": [
+    "Constructor/class-test projection only: existing semantic Lua field loader remains authoritative for configuration; native virtual readers and the full device registry are not added.",
+    "Only initialized constructor fields are read; image and its empty tree sentinel are privately owned and freed with the gunnery host.",
+    "Original addresses are dispatch identities, never executable pointers; no original ABI or in-game behavior validation claimed."
+  ]
+}
