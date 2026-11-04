@@ -60,8 +60,10 @@ Object pad_at(Object building, std::uint32_t i) {
 }  // namespace
 
 // 006F1EE0 / 006F1F00: EnterCriticalSection then ++depth; --depth then LeaveCriticalSection.
-void command_building_lock_006f1ee0(Seg33bHost& host, Object building) { lock(host, building); }
-void command_building_unlock_006f1f00(Seg33bHost& host, Object building) { unlock(host, building); }
+__declspec(noinline) void command_building_lock_006f1ee0(
+    CommandBuildingCapturerHost& host, Object building) { lock(host, building); }
+__declspec(noinline) void command_building_unlock_006f1f00(
+    CommandBuildingCapturerHost& host, Object building) { unlock(host, building); }
 
 // 006F1F80: RET. The building does not react to the die notification.
 void command_building_die_006f1f80(Object building) { (void)building; }
