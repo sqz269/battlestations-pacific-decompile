@@ -6,6 +6,7 @@
 #include "bsp/native_scene_property_enum_add.hpp"
 #include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/native_scene_property_bag_merge.hpp"
+#include "bsp/native_scene_property_bag_assign_existing.hpp"
 #include "bsp/native_scene_property_bag_reset.hpp"
 #include "bsp/native_scene_property_bag_storage.hpp"
 #include "bsp/native_scene_property_bool_add.hpp"
@@ -25,6 +26,7 @@
 #include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/wire_goal4_chain345_switches.hpp"
 #include "bsp/wire_goal4_chain382_switches.hpp"
+#include "bsp/wire_goal4_chain390_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -59,6 +61,7 @@ public:
           destination_(context_.insertion()), source_(context_.insertion()),
           selected_(source.values.size(), false), enums_(enums), overwrite_(overwrite) {
         bool any = false;
+        bool source_has_only_existing_keys = true;
         for (std::size_t i = 0; i < source.values.size(); ++i) {
             const auto& value = source.values[i];
             if (!admitted(value) || occurrences(source, value.key) != 1
@@ -69,12 +72,32 @@ public:
             if (prior != destination.values.end()) {
                 if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
                 insert_into(destination_, *prior);
+            } else {
+                source_has_only_existing_keys = false;
             }
             insert_into(source_, value);
             selected_[i] = true;
             any = true;
         }
         if (any) {
+            if constexpr (kWireGoal4Chain390Bound) {
+                // bsp.py show 008F23E0 / 008F54F0: both hit arms assign
+                // through 008F0700. For this scalar-only projection, every
+                // selected key already existing and overwrite=true exclude
+                // the merge's clone/miss and keep branches. The raw61 owners
+                // and their payloads come from the same admitted parser data
+                // and canonical insertion context above. Assign exactly once;
+                // publication below still consumes the resulting native bag.
+                if (overwrite && source_has_only_existing_keys) {
+                    assign_existing_native_scene_property_bag_008f23e0(
+                        destination_.data(), source_.data(), context_.insertion());
+                } else if constexpr (kWireGoal4Chain382Bound) {
+                    copy_or_merge(destination_, source_, overwrite);
+                } else {
+                    merge_native_scene_property_bag_008f54f0(
+                        destination_.data(), source_.data(), overwrite ? 0u : 1u, context_);
+                }
+            } else {
             if constexpr (kWireGoal4Chain382Bound) {
                 copy_or_merge(destination_, source_, overwrite);
             } else {
@@ -83,6 +106,7 @@ public:
             // The flag is the host's existing group/default precedence.
             merge_native_scene_property_bag_008f54f0(destination_.data(), source_.data(),
                 overwrite ? 0u : 1u, context_);
+            }
             }
         }
     }
