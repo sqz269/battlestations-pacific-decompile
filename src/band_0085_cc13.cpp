@@ -73,11 +73,13 @@ std::uint32_t unit_hangar_block_offset_00851e40(bool is_mothership, bool is_airf
     return 0u;
 }
 
-bool objective_is_active_008da130(std::int32_t state_1c) noexcept {
+// Keep both recovered predicates visible in the Release call graph for their
+// live objective-membership callers (goal 4 chain 400).
+__declspec(noinline) bool objective_is_active_008da130(std::int32_t state_1c) noexcept {
     return state_1c == 0;
 }
 
-bool objective_is_shown_008da140(std::int32_t kind_18, std::int32_t state_1c) noexcept {
+__declspec(noinline) bool objective_is_shown_008da140(std::int32_t kind_18, std::int32_t state_1c) noexcept {
     return kind_18 != 2 || state_1c == 1;
 }
 

@@ -23,6 +23,7 @@
 #include "bsp/ai_command_lifetime.hpp"
 #include "bsp/gameplay_seg69_70_cc13.hpp"
 #include "bsp/band_009f_cc13.hpp"
+#include "bsp/band_0085_cc13.hpp"
 #include "bsp/attack_commands.hpp"
 #include "bsp/ai_command_object.hpp"
 #include "bsp/ai_close_attack_tick.hpp"
@@ -57,6 +58,7 @@
 #include "bsp/wire_goal4_chain341_switches.hpp"
 #include "bsp/wire_goal4_chain359_switches.hpp"
 #include "bsp/wire_goal4_chain364_switches.hpp"
+#include "bsp/wire_goal4_chain400_switches.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -222,8 +224,16 @@ void GameObjectiveSets::erase_member_unless_held(int slot, const std::string& na
         }
         // 008DF4B2 +1Ch == 0; 008DF4C5/008DF4CB the hidden test, which with
         // +1Ch == 0 leaves kind != 2; 008DF4E3 008DC4A0 the list test.
+        if constexpr (bsp::kWireGoal4Chain400Bound) {
+            // bsp.py show 008DA130/008DA140 and 008DF400: 008DF4B2 followed
+            // by 008DF4C5/008DF4CB inlines both predicates in this same order.
+            // Another active, visible objective must still list the real unit.
+            if (!bsp::cc13_band0085::objective_is_active_008da130(o.state)
+                || !bsp::cc13_band0085::objective_is_shown_008da140(o.kind, o.state)) continue;
+        } else {
         if (o.state != 0) continue;
         if (o.kind == 2 && o.state != 1) continue;
+        }
         if (std::find(o.units.begin(), o.units.end(), unit) != o.units.end()) {
             ++member_holds;                               // 008DF502 JNZ 008DF5AD
             return;
