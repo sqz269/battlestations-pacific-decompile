@@ -67,6 +67,7 @@
 // Goal 4 chain 249: the in-mission interface's calls into the live sound runtime.
 #include "bsp/wire_goal4_chain249_switches.hpp"
 #include "bsp/wire_goal4_chain376_switches.hpp"
+#include "bsp/wire_goal4_chain391_switches.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
@@ -2439,7 +2440,17 @@ public:
         // read from the installed VehicleClass row.
         const GameUnitRow* row = owner_.units != nullptr ? owner_.units->unit_row(unit) : nullptr;
         if (row == nullptr || owner_.lua == nullptr) return 0.0f;
+        if constexpr (bsp::kWireGoal4Chain391Bound) {
+            // Goal 4 chain 391: class +A8h as the descriptor load 00960230 read it
+            // (009603D6, a plain number; nil reads 0). Without a loaded
+            // descriptor (load unbound) the direct read stands in.
+            const bsp::VehicleClassBaseFields* fields =
+                owner_.lua->loaded_vehicle_class_base_fields(row->type_id, "hud_class_height_a8");
+            return fields != nullptr ? fields->height
+                : owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
+        } else {
         return owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
+        }
     }
     bool ground_height_00903860(const std::array<float, 3>& point, float& out) override {
         // Switch 6 (packet cc9_movie_camera_keys): the scene-contents host's
@@ -3344,8 +3355,19 @@ public:
             // rewrites class+C8h after the load is not established.
             if (row != nullptr && owner_.lua != nullptr) {
                 GameMissionLuaHost& lua = *owner_.lua;
+                if constexpr (bsp::kWireGoal4Chain391Bound) {
+                    // Goal 4 chain 391: class +C8h from the descriptor load
+                    // 00960230 (00960503; 0 when Catapult is not a table). Without
+                    // a loaded descriptor (load unbound) the direct read stands in.
+                    const bsp::VehicleClassBaseFields* fields =
+                        lua.loaded_vehicle_class_base_fields(row->type_id, "0064afa3");
+                    put<std::int32_t>(class_, 0xC8, fields != nullptr ? fields->launch_stock
+                        : lua.read_vehicle_class_integer(row->type_id, "Catapult",
+                                                         "LaunchStock", 0));
+                } else {
                 put<std::int32_t>(class_, 0xC8, lua.read_vehicle_class_integer(
                                                      row->type_id, "Catapult", "LaunchStock", 0));
+                }
                 no_repair_gui_ =
                     lua.read_vehicle_class_boolean(row->type_id, "NoRepairGUI", false) ? 1 : 0;
             }
