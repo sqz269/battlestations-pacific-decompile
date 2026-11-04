@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain496_switches.hpp"
+#include "bsp/cc13_seg33a.hpp"
 #include "bsp/wire_goal4_chain492_switches.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal4_chain488_switches.hpp"
@@ -2434,6 +2436,34 @@ float dot3(const float a[3], const float b[3]) noexcept {
 
 float length3(const float v[3]) noexcept {
     return std::sqrt(dot3(v, v));
+}
+
+struct WaterEntryKinematics {
+    std::array<float, 3> velocity;
+    float speed;
+};
+
+[[maybe_unused]] WaterEntryKinematics query_water_entry_kinematics(const float velocity[3]) {
+    // Read-only adapter over the live shot velocity, not a native object or
+    // vtable identity. Both leaf bodies read only +08h..+10h. The unobserved
+    // header is deliberately left unspecified; no class or effects are faked.
+    struct ShotVelocityInput {
+        std::byte unobserved_00[8];
+        float velocity_08[3];
+    } input;
+    static_assert(offsetof(ShotVelocityInput, velocity_08) == 8);
+    static_assert(sizeof(ShotVelocityInput) == 0x14);
+    std::memcpy(input.velocity_08, velocity, sizeof input.velocity_08);
+    WaterEntryKinematics result;
+    bsp::cc13_seg33a::projectile_shot_get_position_006e2470(&input, result.velocity.data());
+    // bsp.py show 006e2490 --asm and 0042b2f0 --asm: identical x87
+    // (y*y+x*x)+z*z, float spill, strict CE3820 double-1e-10 threshold and
+    // rounded sqrt, differing only in the vector base offset. The water-entry
+    // callers 006FD660/008568E0 use 0042B2F0 on this same velocity. Reuse the
+    // existing 006E2490 body; this does not claim an original edge to it.
+    // Its inline x87 preserves the current thread's per-operation PC24 rounding.
+    result.speed = bsp::cc13_seg33a::projectile_shot_speed_006e2490(&input);
+    return result;
 }
 
 // Bind the gun bot's arithmetic calls to the retained hull frame and the
@@ -14492,10 +14522,19 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
                 const float hit_limit = dc != nullptr ? dc->max_water_hit_vel : 0.0f;
                 const float fall_limit = dc != nullptr
                     ? std::sqrt(2.0f * dc->max_fall * 9.81f) : 0.0f;
-                if (length3(v) > hit_limit || v[1] < -fall_limit) {
-                    ++dc_breakups;
-                    shot.alive = false;
-                    continue;
+                if constexpr (bsp::kWireGoal4Chain496Bound) {
+                    const auto impact = query_water_entry_kinematics(v);
+                    if (impact.speed > hit_limit || impact.velocity[1] < -fall_limit) {
+                        ++dc_breakups;
+                        shot.alive = false;
+                        continue;
+                    }
+                } else {
+                    if (length3(v) > hit_limit || v[1] < -fall_limit) {
+                        ++dc_breakups;
+                        shot.alive = false;
+                        continue;
+                    }
                 }
                 ++dc_water_entries;
                 shot.depth_charge_in_water = true;
@@ -14527,7 +14566,16 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             // docs/TORPEDO_TICK.md, docs/TORPEDO_RELEASE_SPAWN.md.
             const float entry_velocity[3] = {shot.flight.velocity.x,
                 shot.flight.velocity.y, shot.flight.velocity.z};
-            const float entry_speed = length3(entry_velocity);
+            [[maybe_unused]] WaterEntryKinematics native_entry;
+            const float entry_speed = [&] {
+                if constexpr (bsp::kWireGoal4Chain496Bound) {
+                    native_entry = query_water_entry_kinematics(entry_velocity);
+                    return native_entry.speed;
+                } else {
+                    const float entry_speed = length3(entry_velocity);
+                    return entry_speed;
+                }
+            }();
             const float hit_limit = entry != nullptr ? entry->max_water_hit_vel : 0.0f;
             if (trace) {
                 log.notef("  torpedo trace %llu water_crossing from_y=%.3f to_y=%.3f "
@@ -14541,8 +14589,16 @@ void GameGunneryHost::Impl::run_projectiles(float frame_dt) {
             // kTorpedoMaxFallBreakupBound: 00856923..00856932, vy < -classDesc+ECh.
             const float fall_limit = entry != nullptr && entry->max_fall > 0.0f
                 ? std::sqrt(static_cast<float>(entry->max_fall * 2.0 * 9.81)) : 0.0f;
-            const bool fall_breakup = kTorpedoMaxFallBreakupBound && fall_limit > 0.0f
-                && entry_velocity[1] < -fall_limit;
+            const bool fall_breakup = [&] {
+                if constexpr (bsp::kWireGoal4Chain496Bound) {
+                    return kTorpedoMaxFallBreakupBound && fall_limit > 0.0f
+                        && native_entry.velocity[1] < -fall_limit;
+                } else {
+                    const bool fall_breakup = kTorpedoMaxFallBreakupBound && fall_limit > 0.0f
+                        && entry_velocity[1] < -fall_limit;
+                    return fall_breakup;
+                }
+            }();
             if (swim > 0.0f && !shot.swimming
                 && ((hit_limit > 0.0f && entry_speed > hit_limit) || fall_breakup)) {
                 ++summary.water_entry_breakups;

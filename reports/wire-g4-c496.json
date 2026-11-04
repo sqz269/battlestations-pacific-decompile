@@ -1,0 +1,279 @@
+{
+  "chain": 496,
+  "slot": "g4-w1",
+  "run": 1012,
+  "branch": "agent/g4-w1",
+  "base_head": "6f1133f3652cec77c3afc4e8565d0f751add72da",
+  "switch": "bsp::kWireGoal4Chain496Bound",
+  "scope": "Live depth-charge and torpedo water-entry velocity and speed queries",
+  "wired_total_before": 9779,
+  "wired_total_after": 9781,
+  "what_built": "Read-only 0x14-byte leaf-input adapter carrying only the live projectile velocity at native +08h..+10h; both existing getters feed the current breakup decisions.",
+  "native_abi": {
+    "006e2470": "Original __thiscall ECX=shot, stack=float[3] output, RET4; reused C++ raw input/output interface, not a drop-in ABI replacement.",
+    "006e2490": "Original ECX=shot, RET, ST0 float; reused existing Win32 x87 reconstruction, not a drop-in ABI replacement."
+  },
+  "evidence": [
+    "bsp.py show 006e2470: three +08/+0C/+10 DWORD copies; the existing descriptive GetPosition name is not treated as a recovered symbol.",
+    "bsp.py show 006e2490 --asm and 0042b2f0 --asm: identical x87 arithmetic, CE3820 strict double-1e-10 threshold and float result stores; only vector base offsets differ.",
+    "bsp.py show 006fd660 and 008568e0: water-entry limits read the shot velocity; original callers use 0042B2F0, so reuse of 006E2490 is semantic composition, not a claimed recovered call edge.",
+    "call_graph.py who 006e2470 / who 006e2490: each REACHABLE with two calls from GameGunneryHost::Impl::run_projectiles.",
+    "call_graph.py path 006e2490: WinMainCRTStartup -> application/mission frame -> fixed simulation -> units motion -> gunnery fixed_step -> run_projectiles -> reused body.",
+    "wire_readiness.py --standins: both rows wired/called=true, call_sites=2, callers_live=1."
+  ],
+  "checks": {
+    "baseline_build": "PASS; 4/4 existing tests",
+    "verify_seeds": "PASS; all exported seeds match disk; native_math_differential enabled by existing tooling",
+    "switch_on_build": "PASS; 5/5 enabled tests",
+    "switch_off_build": "PASS; 5/5 enabled tests",
+    "final_switch_on_build": "PASS; restored true, 5/5 enabled tests",
+    "pc24_lint_staged": "PASS; zero findings, two files",
+    "git_diff_check": "PASS"
+  },
+  "behavior_note": "Restores the native near-zero/unordered length threshold instead of the host unconditional sqrt(dot). The floor and x87 rounding can change tiny or boundary speeds, as supported by the original listing.",
+  "limitations": [
+    "Build and static entry-reachability evidence only; no game was launched and no gameplay or original binary ABI equivalence is claimed.",
+    "The adapter is a value snapshot for two callback-free leaves, not an allocated native shot, vtable, class descriptor, medium-state owner, or effect handle.",
+    "Water-entry class limits, effect construction, and the other existing host substitutions remain outside this packet."
+  ],
+  "rows": [
+    {
+      "native": "006e2470",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles -> query_water_entry_kinematics"
+    },
+    {
+      "native": "006e2490",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_projectiles -> query_water_entry_kinematics"
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0",
+      "reason": "Missing a live native-layout recon entry and sensor-class adapter; current publication stores unit indexes and levels."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0",
+      "reason": "Missing persistent native carry-over lists and their observer lifetime owner; current triples are rebuilt vectors."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Impl::publish_recon_triples_008073c0",
+      "reason": "Missing native member-list and per-party detection-record views for the retained squadron aggregates."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller-state candidate survey",
+      "reason": "No examined live single-player controller-message producer supplies the complete state-message inputs."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller-snapshot candidate survey",
+      "reason": "No examined live single-player snapshot producer supplies the complete DirectorFlags and controller state."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread named-call producer; this host currently runs mission Lua only on the main thread."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: deferred-call queue candidate survey",
+      "reason": "Missing the live deferred-call queue producer and its native node ownership; no synthetic queue added."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing the ambient SoundInstance producer; has_ambient_sound_instance currently returns false."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::begin_submarine_periscope_failure",
+      "reason": "Missing per-instance mast and Dyn collision-shape owners required by the outer break routine."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane flight-state notification",
+      "reason": "Missing the retained native plane FX sub-block at +C98h and its timer consumer."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing task begin",
+      "reason": "Missing the approach +18h plan object whose +25Ch owner this body stores."
+    },
+    {
+      "native": "00837de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: avoid-zone draft-body setup",
+      "reason": "Missing native settings/game views for this raw getter; the current single-player depths are read through Lua."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The existing body covers only the Lua deletion; native profile-record erase and rewrite/storage continuation bindings are missing."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message; src/game_hosts_ship_ai.cpp: Impl::deliver_pass_side_messages",
+      "reason": "Missing a complete live native queue tick/readiness/game-state projection; host loopback queues use their own delivery model."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: objective marker_rebind_unit",
+      "reason": "Missing the objective marker-manager and SzurkeNyil marker producers."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_sampler_application.cpp: curve candidate survey",
+      "reason": "Missing a live Curve widget/control-point producer and concrete curve host adapter."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: skirmish local selection",
+      "reason": "Missing a canonical mutable game+18ECh cell in the examined legacy host; the native game constructor is not linked into this build."
+    },
+    {
+      "native": "004bb3e0",
+      "status": "skipped",
+      "host_site": "src/frontend_menus.cpp: lobby mode reset candidate",
+      "reason": "Missing live views of the eight lobby slot-state fields at the examined frontend host boundary."
+    },
+    {
+      "native": "0076c190",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::session_suspend",
+      "reason": "Missing the actual session mode/+4/+27Ch owner at the loading-screen adapter; zero-mode dummy state was not introduced."
+    },
+    {
+      "native": "0076c230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::session_resume",
+      "reason": "Missing the same actual session +27Ch owner and mode binding needed by loading begin."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: GUI manager frame candidate",
+      "reason": "Missing a live host bridge to the manager-frame resources/widget-owner graph for this reset operation."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native main-scene clip preparation",
+      "reason": "Its reconstructed caller already calls the body, but the examined host lacks the live main-scene submission bridge/context."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: native main-scene clip preparation",
+      "reason": "Its reconstructed caller already calls the body, but the examined host lacks the live main-scene submission bridge/context."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: controlled-unit queries",
+      "reason": "Missing the actual pointer-valued E188D8 publication at the examined host; its existing controlled-unit projection is a bool/index."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: controlled-audio candidate survey",
+      "reason": "Missing the retained +BBCh audio object and +428h device list needed to apply the full audio-flag plan."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "Missing an actual retained ticker/animation object; the current animation lookup only records the call."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: sunk-hull terrain mask / set_hull_class_bit_0092bd70",
+      "reason": "Missing actual native hull-shape owners and the filter-change notification binding; the host currently stores mask projections."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: set_hull_class_bit_0092bd70",
+      "reason": "Missing actual native hull-shape owners and the filter-change notification binding."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: player gun-seat handover",
+      "reason": "Missing native gun/+3F4h descriptor views and the gun-select-fire-mode callback adapter."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-zone area lookup",
+      "reason": "Missing a live repair-zone registry producer and Seg49 repair-area binding; an empty placeholder registry would not establish real state."
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: depth-charge/torpedo water entry",
+      "reason": "Missing native shot medium/effect-handle ownership and the two effect-stop callbacks; only the read-only kinematics leaves were selected."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp: engine-movie candidate survey",
+      "reason": "Missing a live engine-movie clock owner in the examined application hosts."
+    },
+    {
+      "native": "0045e5e0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp: movie action-read candidate survey",
+      "reason": "Missing a live movie tokenizer/track producer and concrete action-read host."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/segs_0_9_11_cc13.cpp: engine-movie advance candidate survey",
+      "reason": "Missing a live engine-movie clock owner in the examined application hosts."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_application.cpp: distortion candidate survey",
+      "reason": "Missing a live distortion-record array owner/producer at the examined renderer boundary."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: camera scalar-product candidate survey",
+      "reason": "No examined live host callback requests this product from its retained native camera projection."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp: scene lifetime candidate survey",
+      "reason": "The examined native GUI scene uses a different concrete retained scene/storage lifetime; a matching NativeGuiSceneOwner binding is missing."
+    },
+    {
+      "native": "004dcf90",
+      "status": "skipped",
+      "host_site": "src/game_native_game_application_frame.cpp: native game lifetime candidate survey",
+      "reason": "Missing a linked live native-game construction/destruction path and its complete lifetime context in this build."
+    }
+  ]
+}
