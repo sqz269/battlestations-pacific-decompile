@@ -283,6 +283,88 @@ public:
         bool engine_jam_6c{false};
     };
     ShipJamCopy queue_ship_jam_6b_6c(bool steering) const;
+    // Goal 4 chain 343 (kWireGoal4Chain343Bound). The ship's death messages
+    // from 00827A90 (BSP_ShipInstance_OnHealthChanged, the ship's vtable
+    // +1B0h): a light ship (class+B0h below 100.0) inlines 0075B430(9Ah) and
+    // 007613B0's stores (+18h word 0, +1Ah 0, +1Ch 0, +4h = 1, vtable
+    // 00D033D8) at 00827ADC..00827B01; a heavy one whose wreck roll passes
+    // calls 00761310 itself at 00827B63 (98h, vtable 00D033C4). Both route
+    // at 00827B77 with flags 7. The local copy: 004645B0 write (the shared
+    // header-and-bool writer, slot 1 of both tables), 00768530 case 98h
+    // 00761310 (0076952E) or case 9Ah 007613B0, 004645D0 read. The drain's
+    // receiver ladder 00780120 asks the copy's IsType (00761370 / 00761410)
+    // for each of its ids (00780162 vtable[0Ch](4Bh) onwards); with no
+    // answer the shared tail 0077FE80 hands it to the unit's 00821E80,
+    // whose 98h arm calls 00814520 (00821FBC) and 9Ah arm 00814560
+    // (00821FD6). `to_unit` is that ladder's answer; `type` the copy's +10h.
+    struct ShipDeathCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool wrecked_98{false};
+        bool explode_to_parts_9a{false};
+    };
+    ShipDeathCopy queue_ship_death_98_9a(bool explode_to_parts) const;
+    // Goal 4 chain 343. 0092CED0 (the hull segment detach, called when
+    // 0092D1F0 parks a segment) builds 0075B430(99h) with +18h word 0, +1Ah
+    // 0, +1Ch 0, +20h = the segment index, +4h = 1, vtable 00D033EC: the
+    // stores of 00761450, the constructor of 00768530's case 99h (0076954E).
+    // 007614F0 write, 00761540 read; 00780120 asks 007614B0; 00821E80's 99h
+    // arm (00821FF0) hands the copy's +20h to 0080E440.
+    struct ExplodeOnePartCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool explode_one_part_99{false};
+        std::uint32_t part{0};
+    };
+    ExplodeOnePartCopy queue_ship_explode_one_part_99(std::uint32_t part) const;
+    // Goal 4 chain 343. StartLanding (94h): 0064A820 makes 0075B430(94h),
+    // +18h word 0, +1Ah 0, +1Ch 0, +4h = 1, vtable 00CF5C4C (the 94h row of
+    // kSessionMessageClasses, the shared session_message_construct); the
+    // approach landing sweep calls it at 009F3598 and routes it with
+    // 0077C2A0 flags 2, which a local session turns into the local route.
+    // 00768530 case 94h calls 0064A820 itself (007694AE). Slots 1 and 2 of
+    // 00CF5C4C are the shared 004645B0 / 004645D0; 00780120 asks slot 3,
+    // 0064A850 (session_message_is_type over the 94h row); 00821E80's 94h arm
+    // (00821F61) hands the copy to the unit's vtable[238h].
+    struct StartLandingCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool start_landing_94{false};
+    };
+    StartLandingCopy queue_start_landing_94() const;
+    // Goal 4 chain 343. SHIP_SINK (92h): the wreck's leak redistribution
+    // 0074EC50 inlines 0074EAB0's stores at 0074ED18..0074ED62 (0075B430(92h),
+    // +18h word 0, +4h = 1, +1Ah 0, vtable 00D00518, +1Ch = the leak count,
+    // the rates copied FLD/FSTP from +20h) and routes it at 0074ED7B flags
+    // 7. 00768530 case 92h allocates E8h bytes (007693F7) and calls 00762130
+    // (0076940E); slots of 00D00518: 0074EB20 write (6-bit count, each rate
+    // on 004295C0's raw 32-bit path, scale [00D7A248] FLT_MAX), 0074EB80
+    // read, 0074EB00 IsType. 00821E80's 92h arm (0082220D) loads the copy's
+    // rates through 0074E860. `count` the copy's +1Ch; the rates past
+    // kShipSinkCapacity (the factory's E8h block) are not copied.
+    static constexpr std::uint32_t kShipSinkCapacity = (0xE8u - 0x20u) / 4u;
+    struct ShipSinkCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool sink_92{false};
+        std::uint32_t count{0};
+        float rates[kShipSinkCapacity]{};
+    };
+    ShipSinkCopy queue_ship_sink_92(const float* rates, std::uint32_t count) const;
+    // Goal 4 chain 343. VEHICLE_SHIPYARD_LAUNCH (7Ah): the takeoff task's slow
+    // leave 009CFB60 inlines 0080F960's stores at 009CFBFB..009CFC23
+    // (0075B430(7Ah), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0, vtable 00D03310,
+    // +20h = the flag byte) and routes it at 009CFC38 with 0077C2A0 flags 0.
+    // 00768530 case 7Ah calls 007604C0 (00769166), whose stores are the same
+    // header; slots of 00D03310: 00760550 write, 007605A0 read, 00760520
+    // IsType. The plane's 7Ah arm (007CD171) hands the copy's +20h to 007B83F0.
+    struct ShipyardLaunchCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool shipyard_launch_7a{false};
+        std::uint8_t flag{0};
+    };
+    ShipyardLaunchCopy queue_shipyard_launch_7a(std::uint8_t flag) const;
 
 private:
     struct Image;

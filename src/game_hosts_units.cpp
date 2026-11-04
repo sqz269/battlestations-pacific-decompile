@@ -24,6 +24,7 @@
 #include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/wire_goal4_chain333_switches.hpp"
 #include "bsp/wire_goal4_chain338_switches.hpp"
+#include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -4378,7 +4379,23 @@ struct GameUnitsHost::Impl {
                 message.rates[i] = (draws[i] * twice) / (total_water + sum_draws)
                     + s.leaks[i].rate;
             }
+            if constexpr (bsp::kWireGoal4Chain343Bound) {
+                // Goal 4 chain 343: 0074ED18..0074ED62 (0074EAB0's stores) and
+                // 0074ED7B (flags 7) queue 0076E520's copy (0074EB20 write,
+                // 00768530 case 92h 00762130, 0074EB80 read); 00780120 asks
+                // the copy's 0074EB00, and the pump's 0082220D hands the copy's
+                // count and rates to 0074E860.
+                const bsp::HostSessionMessages::ShipSinkCopy copy =
+                    commands.session_messages().queue_ship_sink_92(message.rates.data(),
+                        static_cast<std::uint32_t>(s.leaks.size()));
+                if (copy.sink_92) {
+                    for (std::size_t i = 0; i < message.rates.size(); ++i)
+                        message.rates[i] = i < copy.count ? copy.rates[i] : 0.0f;
+                    pending_ship_sink_92h.push_back(message);
+                }
+            } else {
             pending_ship_sink_92h.push_back(message);
+            }
             done("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         } else {
             for (std::size_t i = 0; i < s.leaks.size(); ++i) {
@@ -43480,8 +43497,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 009CFC38 sends 7Ah with flag 0; 007CD171 calls
                                 // 007B83F0(0). Its result is the actual +AA0h cell
                                 // this leave gate reads, not a diagnostic copy.
+                                if constexpr (bsp::kWireGoal4Chain343Bound) {
+                                    // Goal 4 chain 343: the 7Ah goes through
+                                    // 0076E520's copy (00760550 write, 00768530
+                                    // case 7Ah 007604C0, 007605A0 read); 00780120
+                                    // asks the copy's 00760520, and 007CD171
+                                    // hands the copy's +20h flag to 007B83F0.
+                                    const bsp::HostSessionMessages::ShipyardLaunchCopy copy =
+                                        owner_.commands.session_messages().queue_shipyard_launch_7a(0);
+                                    if (copy.shipyard_launch_7a) {
+                                        unit_.plane_shipyard_launch_aa0 =
+                                            bsp::band_007a_cc13::plane_launch_delay_007b83f0(
+                                                copy.flag != 0);
+                                    }
+                                } else {
                                 unit_.plane_shipyard_launch_aa0 =
                                     bsp::band_007a_cc13::plane_launch_delay_007b83f0(false);
+                                }
                             } else {
                             unit_.plane_shipyard_launch_aa0 = -1.0f;            // 007B8412
                             }
