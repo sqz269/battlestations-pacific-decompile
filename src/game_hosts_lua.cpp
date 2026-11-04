@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/gameplay_tuning_lua_rows.hpp"
+#include "bsp/wire_goal4_chain423_switches.hpp"
 #include "bsp/wire_goal4_chain408_switches.hpp"
 #include "bsp/wire_goal4_chain403_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -2684,6 +2686,31 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
     if (table) {
         std::array<float, 5> tuning;
         std::string error;
+        if constexpr (bsp::kWireGoal4Chain423Bound) {
+            auto settings = std::make_unique<bsp::GameplayTuningSettings>();
+            // 00424A10's keyed defaults precede its 00424BFC loader call.
+            // Keep the existing body's partial projection and original constants.
+            bsp::apply_constructor_defaults_00424a10(*settings);
+            const bool sse2 = IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != 0;
+            if (!bsp::read_gameplay_tuning_lua(*state_, *settings, sse2, error)) {
+                log_.notef("keyed gameplay settings load failed: %s", error.c_str());
+                return false;
+            }
+            // Preserve the established snapshots for other consumers, now from
+            // the same load-time object that the neighbour walk borrows.
+            constexpr std::uint32_t offsets[] = {0x194, 0x1d4, 0x1d8, 0x214, 0x218};
+            const auto* bytes = reinterpret_cast<const std::byte*>(settings.get());
+            for (std::size_t i = 0; i < tuning.size(); ++i)
+                std::memcpy(&tuning[i], bytes + offsets[i], sizeof(float));
+            std::memcpy(ship_avoidance_block_.data(), bytes + 0x190,
+                sizeof(ship_avoidance_block_));
+            gameplay_tuning_settings_ = std::move(settings);
+            avoidance_tuning_ = tuning;
+            avoidance_tuning_loaded_ = true;
+            ship_avoidance_block_loaded_ = true;
+            log_.implemented("GameSettings::constructor_defaults_projection", "00424a10");
+            log_.implemented("GameSettings::load_keyed_tuning_projection", "0083b5e0");
+        } else {
         if (!read_ship_avoidance_tuning_lua(*state_, tuning, error)) {
             log_.notef("ship avoidance settings load failed: %s", error.c_str());
             return false;
@@ -2705,6 +2732,7 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
             }
         }
         log_.implemented("GameSettings::load_avoidance_tuning_projection", "0083b5e0");
+        }
         log_.notef("stored ship avoidance tuning 194=%.9g 1d4=%.9g 1d8=%.9g 214=%.9g 218=%.9g",
             tuning[0], tuning[1], tuning[2], tuning[3], tuning[4]);
         // Literal store in the native settings load, not a Lua key/default

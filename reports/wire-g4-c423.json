@@ -1,0 +1,345 @@
+{
+  "chain": 423,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "picked": "Load-time keyed ShipGlobals settings owner consumed directly by the ship-neighbour walk",
+  "switch": "bsp::kWireGoal4Chain423Bound",
+  "scope": "Existing 00424A10 defaults and 0083B5E0 keyed projections only; unkeyed native subobjects, full native constructor ordering and binary ABI are not claimed.",
+  "rows": [
+    {
+      "native": "00424a10",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_ship_globals_0083b6e6",
+      "reason": "Existing defaults body initializes the retained GameplayTuningSettings before its keyed Lua load; original constants, one call per successful load attempt."
+    },
+    {
+      "native": "0083b5e0",
+      "status": "wired",
+      "host_site": "include/bsp/gameplay_tuning_lua_rows.hpp: gameplay_tuning_lua_detail::read_protected, called from GameMissionLuaHost::load_ship_globals_0083b6e6",
+      "reason": "Existing keyed loader now runs over actual ShipGlobals via native Lua getters and retains the resulting object; GameShipAiHost::Impl::neighbour_settings returns that owner. This address was already text-marked wired before; the actual load_gameplay_tuning_settings body now has a reachable compiled call."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller scene flags",
+      "reason": "No controller snapshot producer, stored ControllerSnapshotMessage, or routed snapshot consumer; copying scene flags through a temporary would not wire state transport."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "CompletionBinding has no native 18h command-target owner or event consumer; raw entry also requires the live absolute geometry-global cells."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "Baseline is a semantic name vector; the native 1930h name tree and teardown Lua-object/container adapter are missing."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: named-call queue",
+      "reason": "Deferred copy requires a real off-main-thread named-call producer and frame-job Lua queue; existing path only records that boundary."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding statistics",
+      "reason": "Missing native per-slot scoring maps/vectors, attacker player-record graph and awards providers; scalar failure handles cannot supply those objects."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair_completed_notify",
+      "reason": "Repair notification lacks the native scoring vectors, GA_PL award record and completed-repair event ownership."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: kamikaze direct-hit statistics",
+      "reason": "No native scoring owner and attacker/target record graph for the hit-damage body."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie widget local Z",
+      "reason": "Movie page/widget owner is not supplied by the result movie binding."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie bind_textures",
+      "reason": "Missing decoder-owned video textures and native movie widget resource graph."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: movie clear_subtitles",
+      "reason": "Host subtitle schedule is not the native GUI movie subtitle tree/owner required by this body."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission teardown sound transition",
+      "reason": "Result teardown records this boundary without a sound-transition owner/consumer for its native state."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: objective replication",
+      "reason": "Only network peer replication calls this message constructor; local slot_has_peer is false and network-only work is excluded."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Live text-input acceptance lacks a concrete GuiLeafHost/input-character route carrying its actual font context."
+    },
+    {
+      "native": "00ab6d30",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: text_accepts_input_char_00ab6d30",
+      "reason": "No concrete live text-entry event host reaches this filter with its font context."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: construct_gui_timed_entry_alpha_00ac2ed0",
+      "reason": "Native GUI timed-entry owner already calls its native constructor counterpart; no distinct semantic entry creation was established."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: reset_gui_timed_entry_base_00ad3990",
+      "reason": "Existing timed-entry destruction already calls this reset; a wrapper would duplicate existing work."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: advance_gui_timed_entry_00ad39a0",
+      "reason": "Existing timed-entry owner already calls this advance body with its actual state."
+    },
+    {
+      "native": "00bd2fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: stream0_stand_in_00bd2fc0",
+      "reason": "Address is already wired elsewhere; powerup stream-0 replacement needs the shared startup generator lifetime and draw ownership, not another per-manager seed."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "HUD ambient source/start still supplies no actual SoundInstance for the volume setter."
+    },
+    {
+      "native": "00472420",
+      "status": "skipped",
+      "host_site": "include/bsp/engine_seg4_6_9_cc13.hpp: delete_all_scene_classes",
+      "reason": "No live named AnimClass registry owner is held by the game host; generic map teardown alone does not produce it."
+    },
+    {
+      "native": "00473ce0",
+      "status": "skipped",
+      "host_site": "include/bsp/engine_seg4_6_9_cc13.hpp: delete_all_scene_classes",
+      "reason": "Bullet visual-class registry has no native teardown caller and no matching host-owned sourced class registry."
+    },
+    {
+      "native": "00475860",
+      "status": "skipped",
+      "host_site": "include/bsp/engine_seg4_6_9_cc13.hpp: delete_all_scene_classes",
+      "reason": "No matching host-owned BuoyClass registry to pass to the teardown projection."
+    },
+    {
+      "native": "00479ac0",
+      "status": "skipped",
+      "host_site": "include/bsp/engine_seg4_6_9_cc13.hpp: delete_all_scene_classes",
+      "reason": "No matching host-owned CloudClass registry to pass to the teardown projection."
+    },
+    {
+      "native": "0047b4e0",
+      "status": "skipped",
+      "host_site": "include/bsp/engine_seg4_6_9_cc13.hpp: delete_all_scene_classes",
+      "reason": "No matching host-owned sourced VehicleVisualClass registry to pass to the teardown projection."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: df_pilot_targets_us",
+      "reason": "Host uses semantic dogfight/command targets; no actual pilot DF4h owner with slot-indexed 98h target records is available."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Checkpoint-difference producer is still a false-returning record; pre-load binding has no corresponding BSP_Chk_Save/current-key clear path."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: word-array reserve",
+      "reason": "Existing message read already calls reserve; no additional live array producer was established."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: word-array resize",
+      "reason": "Existing message read already calls resize; no additional live array producer was established."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30",
+      "reason": "Only inspected as part of the existing message word-array lifecycle; a new live message owner was not established."
+    },
+    {
+      "native": "004bb8a0",
+      "status": "skipped",
+      "host_site": "src/band_004b_cc13.cpp: game_session_local_side_check_004bb8a0",
+      "reason": "Its callers concern platform/session and multiplayer pause policy; no single-player host replacement was identified."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "No concrete live SpawnCompositionHost class-pair scoring producer/consumer was found."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_powerup_score_for_unit_00a046c0",
+      "reason": "No matching live composition-scoring host supplies the powerup class and unit scoring context."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_try_spawn_group_gate_00a25a30",
+      "reason": "Live spawn shortcut lacks the request-weight sum, candidate threat records and gate-owned inputs."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: selected_tuning_field",
+      "reason": "Active brain/planner and per-participant difficulty producers are not both represented for modes 0 through 3."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search",
+      "reason": "Existing query-refresh reconstruction already calls this helper with its real list; adding another call would duplicate the operation."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search",
+      "reason": "Existing query-refresh reconstruction already calls this helper with its real manager/list; not new wiring."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search",
+      "reason": "Current concrete runtime already invokes ship_ai_avoid_query_refresh_009d7050; no missing host call to replace."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear marker registry",
+      "reason": "No host-owned MarkerClassRegistry/MarkerClassContext and intrusive marker-resource lifetime provider."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: marker removal",
+      "reason": "No live marker-manager slot, entry keep flags or observer-pair owner for marker_drop_unit."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: script_set_failure_008132c0 Periscope arm",
+      "reason": "Per-class flattened hull/periscope metadata is not a separately mutable per-unit collision shape and mast node; break-plan effects have no complete consumer."
+    },
+    {
+      "native": "009327f0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg61_62_cc13.cpp: submarine_break_periscope_009327f0",
+      "reason": "No established periscope-break producer feeding the unit repair deadline/fast-clock state."
+    },
+    {
+      "native": "0092bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: periscope repair step",
+      "reason": "Repair-complete route lacks a live periscope-break/deadline producer and mutable mast/shape restoration owner."
+    },
+    {
+      "native": "00b65f70",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native_lua_is_bound_00b65f70",
+      "reason": "Other worker g4-w3 wired this predicate in chain 422 while selection was in progress; avoid duplicate work."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/ship_class_fields.cpp: Camos GunColor read",
+      "reason": "Actual full ship/camo class reader has no live game consumer; sensor projection also lacks this exact native Lua color-object call route."
+    },
+    {
+      "native": "00b68630",
+      "status": "skipped",
+      "host_site": "src/game_native_lua_display_string.cpp: to_display_string",
+      "reason": "Existing native enum/display adapter already calls this body; no additional missing runtime call was identified."
+    },
+    {
+      "native": "00b664e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native_lua_set_nil_at_00b664e0",
+      "reason": "Only original caller is convoy placement-law caching; no concrete corresponding numeric-key nil-write owner was established."
+    },
+    {
+      "native": "00b66620",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: decode_slot entity arm",
+      "reason": "Mission savedata decode/finish-load pipeline is not linked from the entry and has no actual restore producer in the current host."
+    },
+    {
+      "native": "006ae870",
+      "status": "skipped",
+      "host_site": "src/mission_savedata_lua.cpp: numeric entity-reference decoding",
+      "reason": "Native savedata restore caller graph is dormant; adding a setter there would remain unreachable."
+    },
+    {
+      "native": "006b23e0",
+      "status": "skipped",
+      "host_site": "src/save_settings_cc13.cpp: finish_mission_load_006b5960",
+      "reason": "No live save-archive entity/game/scoring restore hook graph invokes finish_mission_load."
+    },
+    {
+      "native": "00b1f700",
+      "status": "skipped",
+      "host_site": "src/native_frame_target_owner.cpp: set_native_frame_target_srgb_byte_00b1f700",
+      "reason": "No concrete live SceneRenderFrameHost runs the native RenderScene composite-target/sRGB switching sequence."
+    }
+  ],
+  "verification": {
+    "baseline_head": "280021a9a5eb4b3d0bba8424e60786f8b5e58e91",
+    "build": "./scripts/build.ps1: PASS; reconstructed_math and tool_tests both pass",
+    "probe": "tools/wire_goal4_chain423_probe.cpp: PASS against installed ShipGlobals and its own ScriptOptions; all 24 consumed floats bit-identical to established offsets reader at PC24; successful and failed reads preserve the caller stack; a missing later section preserves the complete prior output",
+    "probe_build": "MSVC Win32 /std:c++17 /EHsc /MD /O2, bsp_core + bsp_lua511 + bsp_zlib121, /link /MANIFEST:EMBED; run from actual game installation directory",
+    "script_sha256": {
+      "scripts/datatables/shipglobals.lua": "5A5DF16493C8D27D08EA2C74860A59A81DD97E7C24AB6F6F6713BA79EF60EF80",
+      "scripts/datatables/ScriptOptions.lua": "386AC4DC83A36F2521C5219289B7D16B588A94696AF0F1564EEFDEDBE3F1B7A7"
+    },
+    "compiled_calls": {
+      "before": 4695,
+      "after": 4696,
+      "constructor": "1 reachable call from GameMissionLuaHost::load_ship_globals_0083b6e6",
+      "keyed_loader": "1 reachable call from gameplay_tuning_lua_detail::read_protected"
+    },
+    "runtime": "Game was not run, as assigned; compiled reachability and offline real-script comparison only.",
+    "readiness_wired": {
+      "before": 9668,
+      "after": 9669
+    },
+    "keyed_loader_metric_note": "0083B5E0 is text-wired through host aliases; inspect call_graph.py who load_gameplay_tuning_settings for the actual body, not the host suffix."
+  },
+  "left": "Unkeyed settings subobjects/resources and the native private-state runner remain with their existing hosts. Other examined gaps are recorded per row."
+}

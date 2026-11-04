@@ -48,6 +48,7 @@
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/wire_goal4_chain375_switches.hpp"
 #include "bsp/wire_goal4_chain391_switches.hpp"
+#include "bsp/wire_goal4_chain423_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
@@ -1572,6 +1573,15 @@ struct GameShipAiHost::Impl {
     // filled (from the stored load, 0083B7AD..0083BCB8); nothing else is read
     // through this object.
     const bsp::GameplayTuningSettings& neighbour_settings() {
+        if constexpr (bsp::kWireGoal4Chain423Bound) {
+            // The same object filled at the ShipGlobals load, not a new read
+            // after mission scripts have had a chance to change that table.
+            const auto* settings = settings_owner != nullptr
+                ? settings_owner->gameplay_tuning_settings() : nullptr;
+            if (settings == nullptr)
+                throw std::logic_error("Ship avoidance settings have no established producer");
+            return *settings;
+        } else {
         if (!neighbour_settings_loaded) {
             std::array<float, 19> block;
             if (!settings_owner || !settings_owner->read_ship_avoidance_block(block))
@@ -1581,6 +1591,7 @@ struct GameShipAiHost::Impl {
             neighbour_settings_loaded = true;
         }
         return neighbour_settings_storage;
+        }
     }
     bsp::GameplayTuningSettings neighbour_settings_storage{};
     bool neighbour_settings_loaded{false};
