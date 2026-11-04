@@ -1,0 +1,193 @@
+{
+  "chain": 394,
+  "slot": "g4-w1",
+  "run": 783,
+  "branch": "agent/g4-w1",
+  "baseline_commit": "adfd6f2b3f",
+  "switch": "bsp::kWireGoal4Chain394Bound",
+  "switch_header": "include/bsp/wire_goal4_chain394_switches.hpp",
+  "scope": "Source-level reuse of the existing 004259F0 body for the equivalent inline slash pass in 00BEE690. The original 00BEE690 inlines this pass; this does not claim an original direct call edge.",
+  "real_state": "Both normalizer instantiations pass the same live 8-byte string header/backing they already own. No new string owner, pool, invented input or second replacement body is introduced.",
+  "equivalence": "Keep the original signed-positive length gate. Use the helper only for nonnull backing disjoint from the header, where byte replacement cannot change the captured length/pointer. Preserve the previous inline loop for aliasing/null backing; the switch-off arm is unchanged.",
+  "evidence": [
+    "python tools/bsp.py show 004259f0 --lines 60",
+    "python tools/bsp.py show 00bee690 --lines 80",
+    "src/native_string_compare.cpp:replace_native_string_character_004259f0",
+    "python tools/call_graph.py who 004259f0",
+    "python tools/call_graph.py path 004259f0"
+  ],
+  "wired_total": {
+    "before": 9624,
+    "after": 9625
+  },
+  "entry_reachable_reconstructed_addresses": {
+    "before": 4640,
+    "after": 4641
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "switch_on_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "004259F0 REACHABLE: two real calls from normalize_with_storage<NativeStringStorage> and normalize_with_storage<NativeStringRawPoolContext>; absent from baseline executable",
+    "wire_readiness": "004259F0 state=wired, called=true, call_sites=2, callers_live=2",
+    "switch_equivalence_probe": "PASS: a local MSVC Win32 manifested probe linked separately against switch-on and switch-off current bsp_core.lib; identical output bytes for mixed-case/backslash/trimmed path, empty string, space-only string and embedded-NUL path. Actual normalizer and CRT NativeStringStorage used; local/c394-path-probe/switch_on.txt and switch_off.txt.",
+    "legacy_fixture": "The existing isolated pooled-resource-path fixture no longer links unchanged against the current expanded core (duplicate instrumented string bodies and missing expanded Lua/zlib dependencies); it supplied no validation for this patch.",
+    "float_math": "No float math changed; pc24 lint not required",
+    "game_validated": false,
+    "original_abi_compatible": false,
+    "switch_off_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed; call graph returns to 4640 and has no 004259F0 symbol",
+    "tracked_tests_added": false,
+    "switch_on_final_build": "scripts/build.ps1 passed after restoring true; reconstructed_math and tool_tests passed; refreshed graph again reports 4641 entry-reachable reconstructed addresses and two 004259F0 call sites"
+  },
+  "rows": [
+    {
+      "native": "004259f0",
+      "status": "wired",
+      "host_site": "src/native_pooled_resource_path.cpp:normalize_with_storage -> normalize_native_resource_path_header_00bee690",
+      "reason": "Reuses the existing complete character-replacement body on the live native string for the resource-name slash pass; original signed-count gate and header-alias/null-data behavior retained."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:movie-completion / teardown sound-transition hook",
+      "reason": "Missing actual game/screen transition storage, listener and cinematic-mode bindings; this is PrepareSoundTransition, not a close-result-GUI operation."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:movie widget local-Z hook",
+      "reason": "A live loaded movie-widget handle was not established in this packet; a constant or temporary widget would not bind the real movie page."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI tuning load",
+      "reason": "Missing planner-live party-slot array and participant difficulty record binding; inspected tuning load passes difficulty zero."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group candidate score list",
+      "reason": "The reviewed host identifies this auxiliary score list as debug-overlay-only; no single-player gameplay consumer requires it."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group candidate score list",
+      "reason": "The reviewed host identifies this auxiliary score list as debug-overlay-only; no single-player gameplay consumer requires it."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/resource_lookup.cpp:resolve_existing_resource_00bdf4c0_fragment",
+      "reason": "Missing a live typed-resolver consumer under native VFS; mounts.native_access returns before this typed candidate body, while actual-header resolution already runs."
+    },
+    {
+      "native": "00be6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp:copy_native_file_store_name_00be6040",
+      "reason": "Provider+1Ch copy-name caller dispatch was not established in this packet; current reviewed name-resolution visitor invokes provider+24h instead."
+    },
+    {
+      "native": "00bb5540",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp:copy_native_package_name_00bb5540",
+      "reason": "Provider+1Ch copy-name caller dispatch was not established in this packet; current reviewed name-resolution visitor invokes provider+24h instead."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_string_vector_erase_unordered.cpp:erase_native_string_vector_unordered_0043ea00",
+      "reason": "Only surveyed: no live content-package-removal request and owning raw vector binding was established for its sole original BDD020 caller."
+    },
+    {
+      "native": "00506c80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::publish_loading_config",
+      "reason": "Missing owned raw loading-text vectors and a consuming loading-screen publication; inspected loading-config hook currently discards its text."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp:skip_native_scene_group_008f0800",
+      "reason": "Only surveyed: no live tokenizer owner and resolved group-skip virtual dispatch was established in this packet."
+    },
+    {
+      "native": "008eea80",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp:property-hash cursor advance",
+      "reason": "Only surveyed: no live raw property-hash owner/cursor binding was established in this packet."
+    },
+    {
+      "native": "008ef650",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp:property-hash begin-copy",
+      "reason": "Only surveyed: no live raw property-hash owner/cursor binding was established in this packet."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp:begin_native_scene_property_hash_008eeb10",
+      "reason": "Only surveyed: no live raw property-hash owner/cursor binding was established for the enum/key-collection callers in this packet."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_hash_iterator.cpp:next_native_scene_property_hash_008eeb60",
+      "reason": "Only surveyed: no live raw property-hash owner/cursor binding was established in this packet."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:join_local_player_007752d0",
+      "reason": "A retained game+18ECh setter target was not established in the inspected local-join hook, which logs the selected slot."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:run_load_scripted_name_baseline_004d30f0",
+      "reason": "False stand-in match: inspected code produces the pre-script baseline, while this body needs the separate teardown game/tree/Lua-object owner binding."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::Impl::landing_request_006c54c0",
+      "reason": "Missing actual AirOps block/slot storage, intrusive incoming observer identity and message84 providers; inspected host queue stores squadron registry indices."
+    },
+    {
+      "native": "006bf720",
+      "status": "skipped",
+      "host_site": "src/native_landing_queue.cpp:NativeLandingQueueCalls::append_record_006bf720",
+      "reason": "Missing the same actual AirOps queue owner and incoming observer endpoint required by 006C0B50; cannot append fabricated raw records."
+    },
+    {
+      "native": "006c6540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:carrier_elevator_site_tick_006d0600",
+      "reason": "Missing ready-plane block+38h and +D8h/+DCh queue producer/owner; the inspected elevator hook explicitly has no ready-plane feed."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:InGameInterfaceUpdate binding set_ambient_volume",
+      "reason": "Missing real ambient SoundChannelInstance producer/handle in the inspected HUD hook, which currently discards volume."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:GUI sound-set playback candidate",
+      "reason": "Selection-only: a live GUI sound-set owner, tracked sound instances and queued sound producer were not established in this packet."
+    },
+    {
+      "native": "00753810",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:mission-start metrics candidate",
+      "reason": "Selection-only: no live metrics owner was established; earlier skip identifies the disabled metrics-enabled gate."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:cockpit-screen flag candidate",
+      "reason": "Selection-only: no live cockpit-screen/plane-effects owner producing the +B8h/+FCh inputs was established in this packet."
+    }
+  ]
+}
