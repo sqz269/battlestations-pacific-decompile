@@ -1,0 +1,266 @@
+{
+  "goal": 4,
+  "chain": 404,
+  "slot": "g4-w5",
+  "run": 804,
+  "picked": "Squadron free-attack target-filter ordnance member queries",
+  "base_sha": "3ffb1232b55603f4b7164cbadb06262a56f2b3ee",
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain404_switches.hpp",
+    "name": "bsp::kWireGoal4Chain404Bound",
+    "enabled": true
+  },
+  "rows": [
+    {
+      "native": "007ed7e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "body": "src/cc13_seg48.cpp: cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0",
+      "built_call_site": "102b4440",
+      "called_before": false,
+      "called_after": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "007ed880",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "body": "src/cc13_seg48.cpp: cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880",
+      "built_call_site": "102b447f",
+      "called_before": false,
+      "called_after": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "007ed8d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "body": "src/cc13_seg48.cpp: cc13_seg48_unit_has_torpedo_ordnance_007ed8d0",
+      "built_call_site": "102b4455",
+      "called_before": false,
+      "called_after": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "007eda10",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::run_squadron_free_attack_009f8470",
+      "body": "src/cc13_seg48.cpp: cc13_seg48_unit_has_depth_charge_ordnance_007eda10",
+      "built_call_site": "102b446a",
+      "called_before": false,
+      "called_after": true,
+      "call_sites": 1,
+      "callers_live": 1
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection only: the live coordinator creation/load gate and a consumed score-list owner were not established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection only: a live coordinator-owned score list whose chosen flags affect planning was not established."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection only: an active party-brain/planner array for this non-campaign difficulty path was not established."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Selection only: current global/per-party hint maps and their enabled coordinator producer were not established."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The scene callback only records the request; actual render-service storage and a bound current renderer/texture-cache ownership context are missing there."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The scene callback lacks actual render-service storage and the current renderer/texture-cache release and loading context."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The scene callback lacks actual render-service storage and the current renderer/texture-cache release and loading context."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The scene callback lacks actual render-service storage and the current renderer/texture-cache release and loading context."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "The HUD bridge has no actual ticker range owner or animation operation consuming its range fields."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::group",
+      "reason": "The property groups remain C++ vector/block owners; the genuine initialized raw library map required by this reader is missing."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::add_group",
+      "reason": "The genuine raw library map and ownership transfer of admitted 114h property bags have not been bound to the host group loader."
+    },
+    {
+      "native": "00469b60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::group",
+      "reason": "The reader requires a genuine raw library node with its mapped word; this host lookup still searches C++ PropertyGroupDefinition records."
+    },
+    {
+      "native": "008f5670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::begin_load",
+      "reason": "A complete raw property-library owner and teardown path are missing; initializing isolated map storage would have no group consumer."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_set_zoom_0078e480",
+      "reason": "Selection only: a reached MovCam owner and its actual base-FOV/zoom state were not established."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_wrap_and_clamp_007904d0",
+      "reason": "Selection only: a reached MovCam angle owner and call site consuming the wrapped/clamped fields were not established."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp: camera_aim_delta_00794910",
+      "reason": "Selection only: a live aim-camera/target view and application implementation of the aim-delta callback were not established."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: MovieKeyframe::gamecamera_modifier",
+      "reason": "The movie callback lacks an owned GameCameraModifier construction/application path; it currently reports this modifier unsupported."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Selection only: the corresponding live traffic/session camera consumer callback was not established."
+    },
+    {
+      "native": "00b65070",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "The extra-clip-plane setters have no established application request producer; adding a count-only call would not replace a live operation."
+    },
+    {
+      "native": "00b65990",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "A live extra-plane request and setter consumer are missing from the inspected application route."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "A live application producer of the actual extra clip plane was not established."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "A live application extra-plane enable/disable request route was not established."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The pre-load checkpoint-diff path has no actual current-mission checkpoint table/key owner and its differs result is still false."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot-plan intake of script controls",
+      "reason": "The original calls consume script angle overrides at unit+9A8/+9AC; those override producers/intake fields were not established in this host."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0",
+      "reason": "The raw baseline set/Lua-object teardown adapter and a reached session-teardown caller are missing; the inspected helper builds a vector baseline only."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: df_pilot_targets_us",
+      "reason": "The native per-player +DF4 controller target storage is missing; the current host compares dogfight/command targets and cannot be passed as that raw object."
+    },
+    {
+      "native": "007ed920",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: run_spent_ordnance_rtb_0084e010",
+      "reason": "The selected 009F6C80 filter does not call the rocket predicate; the separate 009F7C90 rocket arm is still unbound."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: session/deferred-create pump",
+      "reason": "The inspected pump owns no native queued-message record or sender/tick state needed by this gate."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred Lua-call drain",
+      "reason": "The main-thread host has no off-thread named-call producer/source argument vector for this copy operation."
+    }
+  ],
+  "built": "Narrow read-only Cc13SquadronOrdnanceHost adapter over the existing live member snapshot and unit_ordnance state; native-offset defaults retained; original host loop preserved unchanged in the switch's else arm.",
+  "evidence": [
+    "bsp.py show 007ed7e0 --asm: ECX=[squadron+3D0h+4*i], count at +3CCh, first-hit short circuit, forwarded stack word, RET4; descriptive names and new C++ interface are not original ABI.",
+    "bsp.py show 007ed880, 007ed8d0, 007eda10: same member-loop family, respective callees 007B93E0/007B93F0/007B94F0.",
+    "bsp.py show 009f6c80: calls these four predicates with the binary's literal 0 before choosing the target filter.",
+    "Each result replaces the prior corresponding per-member inline accumulation and is consumed in the existing free-attack filter; no shadow-only storage or duplicate host loop runs."
+  ],
+  "measurements": {
+    "entry_reachable_reconstructed_addresses": {
+      "before": 4662,
+      "after": 4666,
+      "delta": 4,
+      "tool": "python tools/call_graph.py"
+    },
+    "readiness_text_wired": {
+      "before": 9646,
+      "after": 9646,
+      "note": "These four were already text-matched as wired despite having no linked body. Built called/call_sites changed from absent to true/1."
+    }
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2)",
+    "diff_check": "git diff --check passed",
+    "call_graph": "All four show exactly one reachable direct call from GameUnitsHost::run_squadron_free_attack_009f8470; path includes run_spent_ordnance_rtb, landing queue, fixed simulation, mission frame, and WinMain.",
+    "readiness": "python tools/wire_readiness.py --standins completed; all four called=true, call_sites=1, callers_live=1.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "Lower weapon-controller predicates continue to use the existing host's live union mask and reload policy. Per-descriptor mixed-rack fidelity is not newly proved by this wiring.",
+    "Executable entry reach and build/tests are static/build evidence; original binary ABI and live gameplay validation remain unproven.",
+    "Remaining ordnance-loop family entries, including the separate rocket arm, were not added."
+  ]
+}

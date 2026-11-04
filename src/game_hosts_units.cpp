@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain404_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_lookup.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
@@ -22650,6 +22651,52 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
         } else {
             f.has_007edac0 = false;   // leader+C24h
         }
+        if constexpr (bsp::kWireGoal4Chain404Bound) {
+            struct OrdnanceMembers final : bsp::Cc13SquadronOrdnanceHost {
+                GameUnitsHost& units;
+                Impl& owner;
+                const std::vector<std::size_t>& members;
+                OrdnanceMembers(GameUnitsHost& u, Impl& o, const std::vector<std::size_t>& m)
+                    : units(u), owner(o), members(m) {}
+                std::int32_t squadron_member_count(void*) override {
+                    return static_cast<std::int32_t>(members.size());
+                }
+                void* squadron_member(void*, std::int32_t i) override {
+                    return owner.slots[members[static_cast<std::size_t>(i)]].get();
+                }
+                bsp::OrdnanceKindSet kinds(void* member, std::uint32_t loadout) {
+                    // 009F6C80 supplies literal 0 (current loadout) to all four
+                    // predicates. This is the same live rack/round mask the
+                    // former loop consumed, including its reload policy;
+                    // it is not an independently seeded native object.
+                    if (loadout != 0) throw std::logic_error("unbound ordnance loadout query");
+                    return {units.unit_ordnance(static_cast<GameUnitSlot*>(member)->process_index)};
+                }
+                bool weapon_controller_has_general_bomb_ordnance_007b9320(
+                    void* member, std::uint32_t loadout) override {
+                    return bsp::ordnance_has_general_bomb_2ah(kinds(member, loadout));
+                }
+                bool weapon_controller_has_drop_kamikaze_ordnance_007b93e0(
+                    void* member, std::uint32_t loadout) override {
+                    return kinds(member, loadout).contains(0x2f);
+                }
+                bool weapon_controller_has_torpedo_ordnance_007b93f0(
+                    void* member, std::uint32_t loadout) override {
+                    return kinds(member, loadout).contains(0x2b);
+                }
+                bool weapon_controller_has_depth_charge_ordnance_007b94f0(
+                    void* member, std::uint32_t loadout) override {
+                    return kinds(member, loadout).contains(0x2c);
+                }
+            } ordnance(*this, h, alive);
+            // 009F6C80 -> these four existing member-loop bodies. The exact
+            // live membership snapshot and lower rack-kind queries are shared
+            // with the OFF arm; their results drive the target filter below.
+            f.has_bomb_ordnance = bsp::cc13_seg48_unit_has_general_bomb_ordnance_007ed7e0(&ordnance, 0, ordnance);
+            f.has_torpedo_ordnance = bsp::cc13_seg48_unit_has_torpedo_ordnance_007ed8d0(&ordnance, 0, ordnance);
+            f.has_depth_charge_ordnance = bsp::cc13_seg48_unit_has_depth_charge_ordnance_007eda10(&ordnance, 0, ordnance);
+            f.has_drop_kamikaze_ordnance = bsp::cc13_seg48_unit_has_drop_kamikaze_ordnance_007ed880(&ordnance, 0, ordnance);
+        } else {
         // 007ED7E0 / 007ED8D0 / 007EDA10 / 007ED880 over +3D0h. LABELLED: the host's
         // mask is the union over a plane's guns, cleared by drops (as 007EDAD0's).
         for (const std::size_t m : alive) {
@@ -22658,6 +22705,7 @@ void GameUnitsHost::run_squadron_free_attack_009f8470(const bsp::PlaneSquadronHo
             if (set.contains(0x2b)) f.has_torpedo_ordnance = true;
             if (set.contains(0x2c)) f.has_depth_charge_ordnance = true;
             if (set.contains(0x2f)) f.has_drop_kamikaze_ordnance = true;
+        }
         }
         f.latch_3c = allow_fire;
         f.latch_3d = allow_move;
