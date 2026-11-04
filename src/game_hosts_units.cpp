@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/entity_local_matrix.hpp"
+#include "bsp/wire_goal4_chain508_switches.hpp"
 #include "bsp/wire_goal4_chain494_switches.hpp"
 #include "bsp/wire_goal4_chain499_switches.hpp"
 #include "bsp/wire_goal4_chain485_switches.hpp"
@@ -17358,6 +17360,53 @@ private:
 };
 }  // namespace
 
+// A borrowed view of the actual convoy member's retained +74h/C8h/10Ch cells.
+// This host flattens scene parents into world coordinates at creation and in
+// convoy placement; its PoseRefreshViews have no child links (create_units).
+// Check that domain before writing instead of fabricating a native hierarchy.
+class ConvoyMemberLocalMatrixBinding final : public bsp::EntityLocalMatrixHost {
+public:
+    ConvoyMemberLocalMatrixBinding(GameUnitsHost::Impl& host, std::uint32_t member)
+        : member_(member), slot_(*host.slots.at(member - 1u)) {
+        if (!slot_.pose || slot_.parent != nullptr)
+            throw std::logic_error("convoy local-matrix binding requires a flat member pose");
+        for (const auto& other : host.slots) {
+            if (other && other->parent == slot_.pose.get())
+                throw std::logic_error("convoy local-matrix binding has an unrepresented child list");
+        }
+    }
+    void copy_local_matrix(std::uint32_t entity, const float source[16]) override {
+        require_member(entity);
+        bsp::copy_native_camera_matrix_004134f0(slot_.local.data(), nullptr, source);
+    }
+    void clear_pose_cache_flags(std::uint32_t entity) override {
+        require_member(entity);
+        slot_.world_valid = 0;
+        slot_.derived_valid = 0;
+    }
+    std::uint32_t first_child(std::uint32_t entity) override {
+        require_member(entity);
+        return 0; // The actual parent links were checked above; the child set is empty.
+    }
+    std::uint32_t next_sibling(std::uint32_t) override {
+        throw std::logic_error("flat convoy member has no child sibling");
+    }
+    void invalidate_subtree_pose(std::uint32_t) override {
+        throw std::logic_error("flat convoy member has no child subtree");
+    }
+    void notify_local_matrix_owner(std::uint32_t) override {
+        // The base setter never takes 006E00A0's embedded-owner arm.
+        throw std::logic_error("convoy base matrix setter has no embedded-owner notification");
+    }
+private:
+    void require_member(std::uint32_t entity) const {
+        if (entity != member_)
+            throw std::logic_error("convoy matrix setter addressed a different member");
+    }
+    std::uint32_t member_;
+    GameUnitSlot& slot_;
+};
+
 // The placement host for 00742400. Member handles are unit index + 1.
 class LandConvoyPlacementBinding final : public bsp::LandConvoyPlacementHost {
 public:
@@ -17447,7 +17496,42 @@ public:
         std::memcpy(local.m, matrix.m.data(), sizeof(local.m));
         std::memcpy(parent.m, c_.parent_world_cc, sizeof(parent.m));
         bsp::multiply_00413920(world, local, parent);
+        if constexpr (bsp::kWireGoal4Chain508Bound) {
+            // 00431410..00431444 (bsp.py show 00431410 --asm): copy the
+            // complete matrix, clear C8h/10Ch, invalidate the actual children.
+            // The generated convoy members are LandFort instances (00747000,
+            // vtable 00CFF3F8), whose +88h slot is this base setter; see
+            // ENTITY_LOCAL_MATRIX.md. 00742400's terrain arm previously wrote
+            // the same pose directly here. Keep the existing parent flattening
+            // above, then set the member's real canonical local matrix and
+            // consume its lazy-refreshed world matrix in motion/row publication.
+            // No second pose owner, shadow matrix or float arithmetic is added.
+            const auto entity = static_cast<std::uint32_t>(member);
+            GameUnitSlot& slot = *host_.slots.at(static_cast<std::size_t>(member - 1u));
+            ConvoyMemberLocalMatrixBinding binding(host_, entity);
+            bsp::set_entity_local_matrix_00431410(binding, entity, world.m);
+            bsp::refresh_pose_00414db0(*slot.pose);
+            for (int i = 0; i < 3; ++i) {
+                slot.motion.pose_row0[i] = slot.world[i];
+                slot.motion.pose_row1[i] = slot.world[4 + i];
+                slot.motion.pose_row2[i] = slot.world[8 + i];
+                slot.motion.position[i] = slot.world[12 + i];
+            }
+            // Retain publish_pose's existing diagnostic verbatim. The setter
+            // and refresh now own matrix publication; do not regenerate the
+            // same matrices a second time through write_world/publish_pose.
+            // pc24: this copied double acos chain only observes diagnostic tilt.
+            double uy = slot.motion.pose_row1[1];
+            if (uy > 1.0) uy = 1.0;
+            if (uy < -1.0) uy = -1.0;
+            const float tilt = static_cast<float>(std::acos(uy) * 57.29577951308232);
+            if (tilt > slot.diag_hull_tilt_max_deg) slot.diag_hull_tilt_max_deg = tilt;
+            host_.refresh_row(slot);
+            ++c_.placements;
+            host_.done("LandConvoy::set_member_local_matrix_00431410", 0x00431410u);
+        } else {
         write_world(member, world.m);
+        }
     }
     void invalidate_member_subtree_0042ed50(std::uintptr_t) override {}
     void set_member_world_pose_00741e90(std::uintptr_t member,

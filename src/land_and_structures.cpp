@@ -5,6 +5,8 @@
 // table and the shipyard-launch sentinel. Every entity is an opaque handle
 // behind LandConvoyPlacementHost.
 #include "bsp/land_and_structures.hpp"
+#include "bsp/entity_local_matrix.hpp"
+#include "bsp/wire_goal4_chain508_switches.hpp"
 
 #include <cmath>
 #include <vector>
@@ -239,12 +241,22 @@ LandConvoySlot land_convoy_slot_00742400(const LandConvoyFormation& formation, i
 
 LandPoseMatrix land_pose_identity() noexcept
 {
+    if constexpr (kWireGoal4Chain508Bound) {
+        // 0042D700..0042D759 (bsp.py show 0042d700): the same 00D7A24C
+        // diagonal and zero off-diagonal words as the convoy's row-frame
+        // initialization at 00742400. This is the frame the placement loop
+        // fills and publishes, not an unused diagnostic identity.
+        LandPoseMatrix out;
+        write_identity_matrix_0042d700(out.m.data());
+        return out;
+    } else {
     LandPoseMatrix out;
     out.m[0] = 1.0f;
     out.m[5] = 1.0f;
     out.m[10] = 1.0f;
     out.m[15] = 1.0f;
     return out;
+    }
 }
 
 // ---------------------------------------------------------------------------
