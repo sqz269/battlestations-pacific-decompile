@@ -62,7 +62,15 @@ struct MusicRowHost {
                                                std::uint32_t keep) = 0;
 };
 
-struct SweepCHost : MusicRowHost {
+// 0080FA50 / 0080FF30 / 0080FF80 / 0080FFD0 call only this boundary.
+// Keep their application adapters independent of the unrelated sweep services.
+struct UnitMessageConstructionHost {
+    virtual ~UnitMessageConstructionHost() = default;
+    // 0075B430, __thiscall(ECX = message, kind), RET 4.
+    virtual void session_message_construct_base_0075b430(void* message, std::uint32_t kind) = 0;
+};
+
+struct SweepCHost : MusicRowHost, UnitMessageConstructionHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
@@ -97,8 +105,6 @@ struct SweepCHost : MusicRowHost {
     virtual void* landing_slot_message_construct_006bd520(void* message, void* block, int slot) = 0;
     // 0077C7B0, __thiscall(ECX = session owner, message, peer), RET 8: broadcast to every peer.
     virtual void session_owner_broadcast_0077c7b0(void* owner, void* message, std::uint32_t peer) = 0;
-    // 0075B430, __thiscall(ECX = message, kind), RET 4: session message base constructor.
-    virtual void session_message_construct_base_0075b430(void* message, std::uint32_t kind) = 0;
     // 0077C2A0, __thiscall(ECX = owner, message, channel, peer), RET 0Ch: route a message.
     virtual void session_route_message_0077c2a0(void* owner, void* message, std::uint32_t channel,
                                                 std::uint32_t peer) = 0;
@@ -489,7 +495,7 @@ void* unit_message_shipyard_launch_construct_0080f960(SweepCHost& host, void* me
 // 0080F9F0, __thiscall(ECX = vehicle class) -> EAX: 1 when either breakup vector is non-empty.
 std::uint32_t vehicle_class_has_breakup_pieces_0080f9f0(void* vehicle_class);
 // 0080FA50, __thiscall(ECX = message, channel, float amount, byte), RET 0Ch: the 9Eh message.
-void* unit_message_fire_or_water_damage_construct_0080fa50(SweepCHost& host, void* message,
+void* unit_message_fire_or_water_damage_construct_0080fa50(UnitMessageConstructionHost& host, void* message,
                                                            std::int32_t channel, float amount,
                                                            std::uint8_t flag);
 // 0080FE10, __thiscall(ECX = message, int), RET 4: the 96h message.
@@ -498,13 +504,13 @@ void* unit_message_torpedo_stock_construct_0080fe10(SweepCHost& host, void* mess
 // 0080FEC0, __thiscall(ECX = message, unit), RET 4: the 6Fh message from unit+1134h..
 void* unit_message_repair_settings_construct_0080fec0(SweepCHost& host, void* message, void* unit);
 // 0080FF30, __thiscall(ECX = message, entity, const float3*), RET 8: the 70h message.
-void* unit_message_kamikaze_detonate_construct_0080ff30(SweepCHost& host, void* message,
+void* unit_message_kamikaze_detonate_construct_0080ff30(UnitMessageConstructionHost& host, void* message,
                                                         void* entity, const float* point);
 // 0080FF80, __thiscall(ECX = message, int, const float3*), RET 8: the 90h message.
-void* unit_message_hull_impact_construct_0080ff80(SweepCHost& host, void* message,
+void* unit_message_hull_impact_construct_0080ff80(UnitMessageConstructionHost& host, void* message,
                                                   std::uint32_t value, const float* point);
 // 0080FFD0, __thiscall(ECX = message, a, b, c), RET 0Ch: the 93h message.
-void* unit_message_add_hull_torque_construct_0080ffd0(SweepCHost& host, void* message,
+void* unit_message_add_hull_torque_construct_0080ffd0(UnitMessageConstructionHost& host, void* message,
                                                       std::uint32_t a, std::uint32_t b,
                                                       std::uint32_t c);
 // 00811150, __thiscall(ECX = unit, float, a, b, c), RET 10h: 00810630 on unit+BD0h.

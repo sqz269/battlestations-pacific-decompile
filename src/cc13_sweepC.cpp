@@ -718,7 +718,7 @@ std::uint32_t vehicle_class_has_breakup_pieces_0080f9f0(void* vehicle_class) {
 // 0080FA50-0080FA8F, __thiscall(ECX = message, channel, float amount, byte), RET 0Ch -> message.
 // 0075B430(9Eh); +18h word 0, +1Ah 0, +20h = byte, +4h = 1, vtable 00D0334C, +1Ch = amount,
 // +24h = channel.
-void* unit_message_fire_or_water_damage_construct_0080fa50(SweepCHost& host, void* message,
+void* unit_message_fire_or_water_damage_construct_0080fa50(UnitMessageConstructionHost& host, void* message,
                                                            std::int32_t channel, float amount,
                                                            std::uint8_t flag) {
     host.session_message_construct_base_0075b430(message, 0x9E);
@@ -761,7 +761,7 @@ void* unit_message_repair_settings_construct_0080fec0(SweepCHost& host, void* me
 // 0080FF30-0080FF77, __thiscall(ECX = message, entity, const float3*), RET 8 -> message.
 // 0075B430(70h), +18h word 0, +1Ah 0, +4h = 1, vtable 00D0348C, +1Ch word = entity+174h (its
 // handle), +20h..+28h = the point (FLD/FSTP float copies).
-void* unit_message_kamikaze_detonate_construct_0080ff30(SweepCHost& host, void* message,
+void* unit_message_kamikaze_detonate_construct_0080ff30(UnitMessageConstructionHost& host, void* message,
                                                         void* entity, const float* point) {
     host.session_message_construct_base_0075b430(message, 0x70);
     message_head(message);
@@ -777,7 +777,7 @@ void* unit_message_kamikaze_detonate_construct_0080ff30(SweepCHost& host, void* 
 // 0080FF80-0080FFC2, __thiscall(ECX = message, value, const float3*), RET 8 -> message.
 // 0075B430(90h), +18h word 0, +1Ah 0, +1Ch = value, +4h = 1, vtable 00D034A0, +20h..+28h = the
 // point (float copies).
-void* unit_message_hull_impact_construct_0080ff80(SweepCHost& host, void* message,
+void* unit_message_hull_impact_construct_0080ff80(UnitMessageConstructionHost& host, void* message,
                                                   std::uint32_t value, const float* point) {
     host.session_message_construct_base_0075b430(message, 0x90);
     message_head(message);
@@ -792,7 +792,7 @@ void* unit_message_hull_impact_construct_0080ff80(SweepCHost& host, void* messag
 
 // 0080FFD0-0081000B, __thiscall(ECX = message, a, b, c), RET 0Ch -> message. 0075B430(93h),
 // +18h word 0, +1Ah 0, +1Ch = a, +20h = b, +4h = 1, vtable 00D034C8, +24h = c.
-void* unit_message_add_hull_torque_construct_0080ffd0(SweepCHost& host, void* message,
+void* unit_message_add_hull_torque_construct_0080ffd0(UnitMessageConstructionHost& host, void* message,
                                                       std::uint32_t a, std::uint32_t b,
                                                       std::uint32_t c) {
     host.session_message_construct_base_0075b430(message, 0x93);
