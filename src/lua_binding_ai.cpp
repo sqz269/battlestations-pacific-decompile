@@ -161,22 +161,20 @@ int lua_binding_ai_set_command(LuaBindingAiHost& host) {
     return kNoResults;
 }
 
-int lua_binding_ai_set_hint_weight(LuaBindingArgumentReader& args,
-                                   LuaBindingAiReader& tables,
-                                   LuaBindingAiHost& host) {
-    const int count = args.count();
+int lua_binding_ai_set_hint_weight_00a37b30(LuaBindingAiHintWeightHost& host) {
+    const int count = host.count();
     if (count == 2) {
         // 00A37BDE: exactly two arguments. The weight is argument 1 and the hint
         // handle is the "Ptr" field of argument 0.
-        const float weight = static_cast<float>(args.get_number(1));
-        void* hint = tables.lua_table_ptr_field(0);
+        const float weight = static_cast<float>(host.get_number(1));
+        void* hint = host.lua_table_ptr_field(0);
         host.ai_hint_weight_set_global(hint, weight);
     } else if (count == 3) {
         // 00A37C4A: exactly three. The weight is argument 2, the party is the
         // integer argument 1, and the handle is again argument 0's "Ptr".
-        const float weight = static_cast<float>(args.get_number(2));
-        const int party = args.get_integer(1);
-        void* hint = tables.lua_table_ptr_field(0);
+        const float weight = static_cast<float>(host.get_number(2));
+        const int party = host.get_integer(1);
+        void* hint = host.lua_table_ptr_field(0);
         host.ai_hint_weight_set_for_party(hint, party, weight);
     }
     // Any other count falls through to the epilogue at 00A37CFC untouched.

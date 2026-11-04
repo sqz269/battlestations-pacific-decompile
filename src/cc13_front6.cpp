@@ -219,36 +219,17 @@ std::uint32_t find_menu_record_for_entry_kind_005d7070(std::int32_t entry_index,
 // precision control). The first find's result is read from the local iterator,
 // the second through the returned pointer (EAX), as the image does.
 // ---------------------------------------------------------------------------
-float ai_hint_weight_entity_multiplier_00a04240(void* entity, Front6Host& host) {
-    const std::uint32_t key_value = addr32(entity);
-    float weight = 1.0f;                                                            // 00A04243
-    void* const map = host.global_address(0x00F8A740);
-    MapIterator it{};
-    host.map_find_00a03b20(map, &it, &key_value);                                   // 00A04267
-    const std::uint8_t* const end = *static_cast<std::uint8_t**>(host.global_address(0x00F8A744));
-    if (it.container == nullptr || it.container != map) host.invalid_parameter_00bf6713();  // 00A04282
-    if (it.node != end) {
-        if (it.container == nullptr) host.invalid_parameter_00bf6713();             // 00A04293
-        if (it.node == Raw{static_cast<std::uint8_t*>(it.container)}.ptr(4)) {
-            host.invalid_parameter_00bf6713();                                      // 00A0429D
-        }
-        weight = Raw{it.node}.at<float>(0x10);
-    }
-    const std::int32_t party = *static_cast<std::int32_t*>(host.global_address(0x00E0E344));
-    std::uint8_t* const party_map = static_cast<std::uint8_t*>(host.global_address(0x00F8A750)) + party * 0xC;
-    MapIterator it2{};
-    const MapIterator* const found = host.map_find_00a03b20(party_map, &it2, &key_value);  // 00A042C9
-    void* const container = found->container;
-    std::uint8_t* const node = found->node;
-    std::uint8_t* const party_end = static_cast<std::uint8_t*>(Raw{party_map}.ptr(4));
-    if (container == nullptr || container != party_map) host.invalid_parameter_00bf6713();  // 00A042DE
-    if (node != party_end) {
-        if (container == nullptr) host.invalid_parameter_00bf6713();                // 00A042EC
-        if (node == Raw{static_cast<std::uint8_t*>(container)}.ptr(4)) {
-            host.invalid_parameter_00bf6713();                                      // 00A042F6
-        }
-        weight = Raw{node}.at<float>(0x10) * weight;
-    }
+__declspec(noinline) float ai_hint_weight_entity_multiplier_00a04240(
+    std::uint32_t entity, std::int32_t party, const AiHintWeightState& state) {
+    // Existing value semantics lowered to source-owned maps. These containers
+    // use their own iterators; the API admits normal valid maps and parties.
+    // Evidence: bsp.py show 00a04240 --asm: A042A2 and A042FE/FSTP A04302.
+    float weight = 1.0f; // 00D7A24C, A04243
+    const auto global = state.global.find(entity);
+    if (global != state.global.end()) weight = global->second; // A042A2
+    const auto& party_map = state.parties.at(static_cast<std::size_t>(party));
+    const auto local = party_map.find(entity);
+    if (local != party_map.end()) weight = local->second * weight; // A042FE, PC24
     return weight;
 }
 

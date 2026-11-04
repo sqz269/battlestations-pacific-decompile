@@ -11,7 +11,9 @@
 // Model: every routine works on the original object as raw bytes (Win32 layout, offsets as
 // in the image) and reaches the engine through Seg69Host, whose methods name the image
 // routine, global or virtual slot they stand for. New C++ interfaces, not drop-in binary
-// replacements; nothing here is bound into bsp_game.
+// replacements. The four hint-weight bodies use source-owned maps and are
+// bound to the mission Lua producer and AI planner by goal4 chain490; their
+// normal value semantics do not reproduce VC9 allocation/iterator-fault ABI.
 
 #ifndef BSP_CC13_SEG69_HPP
 #define BSP_CC13_SEG69_HPP
@@ -20,6 +22,7 @@
 #include <cstdint>
 
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/ai_hint_weight_state.hpp"
 
 namespace bsp::cc13_seg69 {
 
@@ -222,13 +225,13 @@ Raw ai_candidate_record_construct_00a00020(Seg69Host& host, Raw record, void* su
     std::uint8_t flag, const float* point);
 const char* ai_name_or_empty_00a02010(Seg69Host& host, Raw object);
 void ai_forced_target_weight_clear_00a038c0(Seg69Host& host);
-void ai_hint_weight_maps_clear_00a03a60(Seg69Host& host);
+void ai_hint_weight_maps_clear_00a03a60(AiHintWeightState& state);
 NativeStr* ai_debug_describe_class_00a04050(Seg69Host& host, NativeStr* out, Raw vehicle_class,
     int equipment_index);
 void ai_forced_target_weight_set_00a07eb0(Seg69Host& host, std::uint32_t key0, std::uint32_t key1,
     void* attacker, std::uint32_t key3, float weight);
-void ai_hint_weight_set_global_00a07f60(Seg69Host& host, std::uint32_t hint, float weight);
-void ai_hint_weight_set_for_party_00a07f80(Seg69Host& host, std::uint32_t hint, int party,
+void ai_hint_weight_set_global_00a07f60(AiHintWeightState& state, std::uint32_t hint, float weight);
+void ai_hint_weight_set_for_party_00a07f80(AiHintWeightState& state, std::uint32_t hint, int party,
     float weight);
 float ai_group_min_speed_00a07fb0(Seg69Host& host, void* group);
 void ai_collect_spawn_point_class_records_00a08020(Seg69Host& host, void* owner, void* out_vector,

@@ -283,9 +283,18 @@ int lua_binding_ai_enable_grouping(LuaBindingArgumentReader& args,
 int lua_binding_ai_merge_groups(LuaBindingAiHost& host);                 // 00A37790
 int lua_binding_ai_get_group_info(LuaBindingAiHost& host);               // 00A378C0
 int lua_binding_ai_set_command(LuaBindingAiHost& host);                  // 00A37A00
-int lua_binding_ai_set_hint_weight(LuaBindingArgumentReader& args,
-                                   LuaBindingAiReader& tables,
-                                   LuaBindingAiHost& host);              // 00A37B30
+// The hint-weight handler's complete, narrow service boundary. Other AI
+// bindings keep their larger interfaces; no unrelated stubs are required.
+struct LuaBindingAiHintWeightHost {
+    virtual ~LuaBindingAiHintWeightHost() = default;
+    virtual int count() = 0;
+    virtual double get_number(int index) = 0;
+    virtual int get_integer(int index) = 0;
+    virtual void* lua_table_ptr_field(int index) = 0;
+    virtual void ai_hint_weight_set_global(void* hint, float weight) = 0;
+    virtual void ai_hint_weight_set_for_party(void* hint, int party, float weight) = 0;
+};
+int lua_binding_ai_set_hint_weight_00a37b30(LuaBindingAiHintWeightHost& host);
 int lua_binding_ai_set_defend_resource_percent(LuaBindingArgumentReader& args,
                                                LuaBindingAiHost& host);  // 00A37D50
 int lua_binding_ai_set_spawn_scene_units_weight_mul(LuaBindingArgumentReader& args,

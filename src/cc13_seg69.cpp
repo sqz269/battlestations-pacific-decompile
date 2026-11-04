@@ -175,29 +175,12 @@ void ai_forced_target_weight_clear_00a038c0(Seg69Host& host)
 // (through 0096BD60), then the eight per-party maps 00F8A750 + i*0Ch with the erase loop
 // inlined: from the root, while its +15h isnil byte is clear, 0096BD60(ECX = map)(right),
 // step to the left child and free the old node through 00BF65AC; then reset head and size.
-void ai_hint_weight_maps_clear_00a03a60(Seg69Host& host)
+__declspec(noinline) void ai_hint_weight_maps_clear_00a03a60(AiHintWeightState& state)
 {
-    Raw global = host.image_global(kHintWeightGlobalMap);
-    host.tree_erase_0096bd60(global.p, raw(global.ptr(0x4)).ptr(0x4));
-    raw(global.ptr(0x4)).ptr(0x4) = global.ptr(0x4);
-    global.at<std::uint32_t>(0x8) = 0;
-    raw(global.ptr(0x4)).ptr(0x0) = global.ptr(0x4);
-    raw(global.ptr(0x4)).ptr(0x8) = global.ptr(0x4);
-    for (std::uint32_t address = kHintWeightPartyMaps; address < kHintWeightPartyMapsEnd;
-         address += 0xC) {
-        Raw map = host.image_global(address);
-        void* node = raw(map.ptr(0x4)).ptr(0x4);
-        while (raw(node).at<std::uint8_t>(0x15) == 0) {
-            host.tree_erase_0096bd60(map.p, raw(node).ptr(0x8));
-            void* left = raw(node).ptr(0x0);
-            host.operator_delete_00bf65ac(node);
-            node = left;
-        }
-        raw(map.ptr(0x4)).ptr(0x4) = map.ptr(0x4);
-        map.at<std::uint32_t>(0x8) = 0;
-        raw(map.ptr(0x4)).ptr(0x0) = map.ptr(0x4);
-        raw(map.ptr(0x4)).ptr(0x8) = map.ptr(0x4);
-    }
+    // Source container API, preserving global-then-party order and the eight
+    // maps in bsp.py show 00a03a60. Native tree allocation/free ABI is excluded.
+    state.global.clear();
+    for (auto& party : state.parties) party.clear();
 }
 
 // 00A04050, ABI: __fastcall(ECX = out NativeStr*, EDX = vehicle class)(int equipment), RET 4,
@@ -263,20 +246,20 @@ void ai_forced_target_weight_set_00a07eb0(Seg69Host& host, std::uint32_t key0, s
 
 // 00A07F60, ABI: __fastcall(ECX = hint)(float weight), RET 4. The Lua SetHintWeight global
 // arm: 00975C40(ECX = 00F8A740)(&hint) answers the cell; the weight is stored there.
-void ai_hint_weight_set_global_00a07f60(Seg69Host& host, std::uint32_t hint, float weight)
+__declspec(noinline) void ai_hint_weight_set_global_00a07f60(
+    AiHintWeightState& state, std::uint32_t hint, float weight)
 {
-    const std::uint32_t key = hint;
-    *host.hint_weight_subscript_00975c40(host.image_global(kHintWeightGlobalMap).p, &key) = weight;
+    state.global[hint] = weight;
 }
 
 // 00A07F80, ABI: __fastcall(ECX = hint, EDX = party)(float weight), RET 4. The same store in
 // the per-party map 00F8A750 + party*0Ch. No bound check on party, as in the image.
-void ai_hint_weight_set_for_party_00a07f80(Seg69Host& host, std::uint32_t hint, int party,
+__declspec(noinline) void ai_hint_weight_set_for_party_00a07f80(
+    AiHintWeightState& state, std::uint32_t hint, int party,
     float weight)
 {
-    const std::uint32_t key = hint;
-    const std::uint32_t map = kHintWeightPartyMaps + static_cast<std::uint32_t>(party) * 0xC;
-    *host.hint_weight_subscript_00975c40(host.image_global(map).p, &key) = weight;
+    // Caller admits the actual eight-party domain; no clamped/substitute party.
+    state.parties.at(static_cast<std::size_t>(party))[hint] = weight;
 }
 
 // 00A07FB0, ABI: __fastcall(ECX = group) RET, float in ST0 (rounded through a float slot).

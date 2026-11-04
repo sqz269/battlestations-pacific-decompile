@@ -12,6 +12,8 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain484_switches.hpp"
+#include "bsp/wire_goal4_chain490_switches.hpp"
+#include "bsp/cc13_seg69.hpp"
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/gui_widgets_cc13.hpp"
 #include "bsp/gameplay_tuning_lua_rows.hpp"
@@ -1499,6 +1501,15 @@ int binding_trampoline(lua_State* state) {
     // row keeps milestone 2l's record.
     const bsp::MissionLuaBinding& dispatch_row =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    if constexpr (bsp::kWireGoal4Chain490Bound) {
+        if (dispatch_row.address == 0x00a37b30u) {
+            if (host->error_replay()) return 0;
+            host->note_native_call(static_cast<std::size_t>(row), argc, true);
+            return host->run_ai_set_hint_weight(state);
+        }
+    } else {
+        // Previously AISetHintWeight continued into generic native dispatch.
+    }
     if constexpr (bsp::kWireGoal4Chain395Bound) {
         if (dispatch_row.address == 0x0088dc10u) {
             if (host->error_replay()) return 0;
@@ -10567,6 +10578,50 @@ int GameMissionLuaHost::run_get_firepower(lua_State* state) {
     } binding(state, *gunnery, static_cast<std::size_t>(id - 1));
     const int results = bsp::lua_get_firepower_0088dc10(binding);
     log_.implemented("MissionLuaNative::GetFirepower", "0088dc10");
+    return results;
+}
+
+int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
+    // Reuse A37B30's existing arity, conversion and call order. The adapter
+    // binds only its six required operations, over the real mission Lua stack.
+    struct Binding final : bsp::LuaBindingAiHintWeightHost {
+        explicit Binding(lua_State* value) : lua(value) {}
+        int count() override { return ::lua_gettop(lua); }
+        double get_number(int index) override { return ::lua_tonumber(lua, index + 1); }
+        int get_integer(int index) override {
+            // A37CB2 calls B66290: spill to float32, then truncate via the
+            // represented CRT conversion mode, as the other Lua readers do.
+            const bool conversion_mode =
+                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+            const int party = bsp::lua_number_integer_00b66290(
+                ::lua_tonumber(lua, index + 1), conversion_mode);
+            // Native indexes unchecked; the source owner admits only 0..7.
+            if (party < 0 || party >= 8)
+                ::luaL_error(lua, "AISetHintWeight: party outside the eight retained maps");
+            return party;
+        }
+        void* lua_table_ptr_field(int index) override {
+            const int top = ::lua_gettop(lua);
+            ::lua_getfield(lua, index + 1, "Ptr"); // 00888D20
+            void* const hint = ::lua_touserdata(lua, -1);
+            ::lua_settop(lua, top);
+            return hint;
+        }
+        void ai_hint_weight_set_global(void* hint, float weight) override {
+            bsp::cc13_seg69::ai_hint_weight_set_global_00a07f60(
+                bsp::process_ai_hint_weights(), key(hint), weight);
+        }
+        void ai_hint_weight_set_for_party(void* hint, int party, float weight) override {
+            bsp::cc13_seg69::ai_hint_weight_set_for_party_00a07f80(
+                bsp::process_ai_hint_weights(), key(hint), party, weight);
+        }
+        static std::uint32_t key(void* hint) {
+            return static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(hint));
+        }
+        lua_State* lua;
+    } binding(state);
+    const int results = bsp::lua_binding_ai_set_hint_weight_00a37b30(binding);
+    log_.implemented("MissionLuaNative::AISetHintWeight", "00a37b30");
     return results;
 }
 
