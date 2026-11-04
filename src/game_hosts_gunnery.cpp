@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain488_switches.hpp"
+#include "bsp/band_0085_cc13.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/game_recon_sensor_class_registry.hpp"
@@ -20649,7 +20651,17 @@ void GameGunneryHost::repair_unit_to_fraction(std::size_t unit_index, float frac
     Impl::UnitState& state = impl_->unit_state[unit_index];
     if (state.dead) return;
     // 006F47F0: only when 0 < fraction and health < max; min(max, health + fraction * max).
-    if (!(0.0f < fraction) || !(state.health < state.max_health)) return;
+    if constexpr (bsp::kWireGoal4Chain488Bound) {
+        // Reuse the existing damage predicate over the authoritative +36Ch/+370h
+        // fields, rather than duplicating it in the scripted hull-repair guard.
+        // bsp.py show 00859c60 --asm: FLD health, FLD maximum, FCOMIP/JBE;
+        // unordered and equal values both return zero. This is a new C++ call
+        // site for the same predicate, not the native ship-sync caller/ABI.
+        if (!(0.0f < fraction)
+            || !bsp::cc13_band0085::unit_is_damaged_00859c60(state.max_health, state.health)) return;
+    } else {
+        if (!(0.0f < fraction) || !(state.health < state.max_health)) return;
+    }
     const float healed = fraction * state.max_health + state.health;
     state.health = healed < state.max_health ? healed : state.max_health;
     state.row.health = state.health;
