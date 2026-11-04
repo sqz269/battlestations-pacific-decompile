@@ -96,6 +96,9 @@ public:
     // Pass !settings.audio.enabled_24. True selects the recovered no-sound
     // branch; false permits the actual installed FMOD hardware-device path.
     void startup(bool sound_disabled);
+    // OnInitOnce 004DD6F6: owns the five GUI sample references until teardown,
+    // using this runtime's actual class table, cache and sample final release.
+    void initialize_gui_sound_set();
     void shutdown();
     bool started() const noexcept;
     GameSoundRuntimeSummary summary() const noexcept;
