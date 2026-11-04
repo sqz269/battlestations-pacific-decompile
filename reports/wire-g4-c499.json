@@ -1,0 +1,211 @@
+{
+  "chain": 499,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain499Bound",
+  "rows": [
+    {
+      "native": "00644230",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding::hud_root_screen_query and HudUpdateBinding::has_controlled_unit",
+      "state_source": "GameUnitsHost's persistent 00E188D8 publication borrows the actual selected GameUnitSlot identity; SetControlledUnitBinding::store_controlled_unit publishes or clears it at the 004C0890 callback before listener/class queries.",
+      "evidence": "bsp.py show 00644230: MOV EAX,[00E188D8]; RET, ECX unused. bsp.py show 004c0890: publish ECX before the null/class/listener tests. ingame_interface.cpp: 0068ACA0's bomb-view arm invokes the getter at both original query sites.",
+      "limits": "The publication is the existing stable host unit identity, not an original binary entity address. Bomb-view bind/store remain their existing unimplemented adapters; the presence check consumes the getter's result. No game or ABI validation."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: df_pilot_targets_us",
+      "reason": "Missing the pilot control block's per-step +98h target publication; the existing dogfight/command-target OR is an approximation and cannot supply the binary getter's exact state."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing begin-state owner notification",
+      "reason": "Missing the landing task's actual pilot-plan owner +25Ch storage and consumer; adding a write-only scratch plan would not replace live behavior."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing a persistent plane FX component with a +40h timer consumer; the adjacent 007EB380 FX update remains a record."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "Missing the live retained-reference ammunition record and its +48h flak alternate producer; the host currently uses gun/ammo handles and authored class values."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "Missing the command-building unit's owned +660h element vector and its lifetime callbacks."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command callbacks",
+      "reason": "Missing the director/entity AI-group object and its controller-owner forwarding contract; the existing callbacks only record the notification."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector target-report callbacks",
+      "reason": "Missing the target-report manager and native entity/target ownership adapters; existing callbacks only record the report."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry check_multiplayer_player_count",
+      "reason": "Multiplayer player-count behavior is outside the single-player wiring scope."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission-load assign_party_player_slots",
+      "reason": "The native caller gates this arm on session mode 1, while this single-player session uses mode 0."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "Missing the checkpoint-diff/profile persistence path; the existing checkpoint_differs callback returns false, so this write path is not driven."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "Already delegates to the existing set_scroll_range body under chain 407 with live layout measurements; no additional wiring change found."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread named Lua call producer; the current mission Lua machine runs on the main thread and does not queue deferred calls."
+    },
+    {
+      "native": "00837de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::run_world_contact_phase",
+      "reason": "Missing canonical settings +80h/+F0h blocks; the host reads authored avoid-zone depths lazily through Lua rather than owning the native settings storage."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264",
+      "reason": "StationaryClass still has live lazy Lua readers; clearing it needs a retained class-cache producer first."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Missing an executable glyph-byte validation caller backed by the loaded font; only the existing probe directly calls this body."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::build_quads",
+      "reason": "The inspected bridge orders quads by its authored Z/runtime-clone policy, while this body sorts a widget's immediate children by name; replacing that order would change the contract."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: timed-entry allocation",
+      "reason": "The existing owner already invokes this constructor on its owned canonical entry; no additional host wiring change found."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: destroy_gui_timed_entry_profile",
+      "reason": "The existing profile destruction path already delegates to this reset body; no additional host wiring change found."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: timed-entry update",
+      "reason": "The existing owner already delegates to this advance body; no additional host wiring change found."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: player_bomb_release_006082d0",
+      "reason": "Missing the native bomb-fire aim-comparison inputs at this simplified release path; the separate HUD helm aiming calculation has a different contract."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective_entry_is_revealed",
+      "reason": "Missing an objective-entry adapter for the entity's per-party recon row selector and values; the typed view alone does not produce that state."
+    },
+    {
+      "native": "008db990",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective_entry_select_entity_or_pos_key",
+      "reason": "Missing a live objective property-key sink with the native read/write mode and virtual +10h/+14h contract."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: end-movie result-GUI close record",
+      "reason": "Missing the native game sound-transition/interface close state used at this teardown call; the current host only records the operation."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "Objective-state network replication is outside the single-player wiring scope."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: clear_user_path_points_slot_0071f5d0",
+      "reason": "No live host adapter for this typed DirectorQueue was established in this packet."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No live typed-descriptor construction site with the actual class ordinal publication was established in this packet."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "No live adapter for the controller snapshot's typed state, director flags and three controller getters was established in this packet."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the query-refresh body used by GameAvoidZoneRuntime::refresh_search and AvoidSearchBinding; no additional wiring change found."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called by the query-refresh body used by GameAvoidZoneRuntime::refresh_search and AvoidSearchBinding; no additional wiring change found."
+    }
+  ],
+  "validation": {
+    "baseline_readiness_wired": 9784,
+    "baseline_call_graph_reconstructed_called": 4855,
+    "baseline_build": "Win32 Release and all four CTests passed",
+    "after_build": "Win32 Release and all four CTests passed",
+    "after_readiness_wired": 9785,
+    "after_call_graph_reconstructed_called": 4855,
+    "release_selected_called": true,
+    "release_selected_call_sites": 39,
+    "release_call_graph_note": "00644230 folds with 11 identical functions in Release; who lists both changed HUD callers, but the aggregate called count does not increase. A no-inline /OPT:NOICF analysis build is checked separately.",
+    "analysis_build": "build/callgraph Win32 Release, /Ob0 /OPT:NOICF; bsp_game built successfully",
+    "analysis_selected_reachable": true,
+    "analysis_selected_call_sites": 2,
+    "analysis_selected_folded": false,
+    "analysis_selected_callers": [
+      "HudUpdateBinding::has_controlled_unit at 101601E9",
+      "HudInterfaceBinding::hud_root_screen_query at 10160F9C"
+    ],
+    "analysis_entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameHudHost::update_in_game_interface_0068c1f0 -> HudUpdateBinding::has_controlled_unit -> hud_controlled_unit_00644230 (includes virtual-table references)",
+    "analysis_limit": "Entry reachability is static call/vtable-graph evidence, not runtime execution proof.",
+    "live_game": "not run"
+  }
+}

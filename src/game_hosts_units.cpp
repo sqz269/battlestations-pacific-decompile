@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_goal4_chain494_switches.hpp"
+#include "bsp/wire_goal4_chain499_switches.hpp"
 #include "bsp/wire_goal4_chain485_switches.hpp"
 #include "bsp/cc13_left8_seg8.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
@@ -4219,10 +4220,14 @@ struct GameUnitsHost::Impl {
     // one contiguous table without exposing the slots.
     mutable std::vector<GameUnitRow> rows;
     GameUnitsSummary summary{};
-    // 00e188d8, the controlled unit. Held as an index because this process owns
-    // no unit pointers; `bound` is the `!= 0` every reader of the global makes.
+    // Legacy index/presence view of 00E188D8, retained for existing readers
+    // and the chain-499-off path. The publication below borrows the same slot.
     bool controlled_bound{false};
     std::size_t controlled_index{0};
+    // Chain 499: the actual selected slot's stable identity, published by the
+    // 004C0890 host callback before any class/listener query. Initial null is
+    // the image's unbound state; clearing control publishes null again.
+    void* volatile controlled_unit_00e188d8{nullptr};
     // 00424c40 is a singleton, so the curve block is one table shared by every
     // ship in the mission, not a per-unit or per-class tuning. It is filled once
     // by load_gameplay_settings_0083b5e0; until then it carries the zeroes a
@@ -14994,8 +14999,18 @@ class SetControlledUnitBinding final : public bsp::SetControlledUnitHost {
 public:
     explicit SetControlledUnitBinding(GameUnitsHost::Impl& owner) : owner_(owner) {}
     void store_controlled_unit(bool unit_present) override {
+        if constexpr (bsp::kWireGoal4Chain499Bound) {
+            // bsp.py show 004c0890: 004C0893 publishes ECX before testing it.
+            // The caller sets controlled_index from its validated live slot
+            // before entering this callback; the null arm never indexes slots.
+            owner_.controlled_unit_00e188d8 = unit_present
+                ? owner_.slots[owner_.controlled_index].get() : nullptr;
+            owner_.controlled_bound = unit_present;
+            owner_.done("ControlledUnit::store_global", 0x004c0893u);
+        } else {
         owner_.controlled_bound = unit_present;
         owner_.done("ControlledUnit::store_global", 0x004c0893u);
+        }
     }
     bool driven_listener_handle() override {
         owner_.record("ControlledUnit::driven_listener_handle", 0x004c08f7u);
@@ -52469,6 +52484,10 @@ const GameUnitRow* GameUnitsHost::unit_row(std::size_t index) const noexcept {
 }
 
 bool GameUnitsHost::controlled_bound() const noexcept { return impl_->controlled_bound; }
+
+void* const volatile& GameUnitsHost::controlled_unit_publication() const noexcept {
+    return impl_->controlled_unit_00e188d8;
+}
 
 std::size_t GameUnitsHost::controlled_index() const noexcept { return impl_->controlled_index; }
 
