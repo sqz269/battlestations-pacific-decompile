@@ -11,6 +11,10 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain447_switches.hpp"
+#include "bsp/native_mlandfort_kind.hpp"
+#include "bsp/native_mcommandbuilding_kind.hpp"
+#include "bsp/cc13_seg41_land.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain419_switches.hpp"
@@ -24020,8 +24024,20 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         // 00964790's chain to match. A unit whose type resolves there is a
         // stationary prop, and it has no descriptor by construction rather than
         // by a gap in this process. docs/SCENE_STATIONARY_UNITS.md.
-        if (kind == nullptr && host.lua.stationary_class_exists(row.type_symbol)) {
-            slot->stationary_prop = true;
+        if constexpr (bsp::kWireGoal4Chain447Bound) {
+            if (kind == nullptr && host.lua.stationary_class_exists(row.type_symbol)) {
+                slot->stationary_prop = true;
+                // The same StationaryClass factory takes 00748C40 -> 00748A40;
+                // bsp.py show 00748a40 --asm: 00748A91 stores 36h at unit+C4.
+                // These props have no VehicleClass descriptor to publish an id
+                // later. Keep the constructor's actual class stamp for all
+                // existing kind-query consumers, not only the new native arm.
+                slot->class_id = 0x36;
+            }
+        } else {
+            if (kind == nullptr && host.lua.stationary_class_exists(row.type_symbol)) {
+                slot->stationary_prop = true;
+            }
         }
         slot->motion_dispatch = unit_motion_dispatch(kind);
         if (slot->motion_dispatch.entry == 0x007ce040u) {
@@ -51410,8 +51426,41 @@ bool GameUnitsHost::store_pending_destroy_0060(const void* identity, bool pendin
 }
 
 bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
-    if (index >= impl_->slots.size()) return false;
-    return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
+    if constexpr (bsp::kWireGoal4Chain447Bound) {
+        if (index >= impl_->slots.size()) return false;
+        const GameUnitSlot& slot = *impl_->slots[index];
+        // The scene factory above publishes this canonical class_id from the
+        // resolved VehicleClass.Type (or 36h for a StationaryClass prop).
+        // Rebase a byte view WITHIN that live slot so receiver+C4 aliases the
+        // original cell. No copied id, shadow receiver, or synthetic vtable is
+        // needed. These four bodies read no other receiver bytes.
+        // Evidence: bsp.py show 00748b40/0074dd90/006f5890/006f58e0 --asm:
+        // fixed ancestor compares, then exactly one DWORD[ECX+C4] compare;
+        // native ABI is ECX receiver, query at ESP+4, EAX 0/1, RET4. The fort
+        // and building entries preserve that ABI through their fastcall bridge;
+        // the other two expose the existing C++ byte-view interface. This is
+        // solely a field-view adapter, not an original whole-unit ABI claim.
+        static_assert(sizeof(slot.class_id) == sizeof(std::uint32_t));
+        static_assert(offsetof(GameUnitSlot, class_id) >= 0xc4);
+        const auto* const receiver = reinterpret_cast<const std::uint8_t*>(&slot)
+            + offsetof(GameUnitSlot, class_id) - 0xc4;
+        const auto query = static_cast<std::uint32_t>(class_id);
+        switch (slot.class_id) {
+        case 0x19:
+            return bsp::cc13_seg41::land_vehicle_is_kind_of_0074dd90(receiver, query);
+        case 0x1b:
+            return bsp::native_mlandfort_is_kind_006f5890(receiver, nullptr, query) != 0;
+        case 0x1c:
+            return bsp::native_mcommandbuilding_is_kind_006f58e0(receiver, nullptr, query) != 0;
+        case 0x36:
+            return bsp::cc13_seg41::stationary_is_kind_of_00748b40(receiver, query);
+        default:
+            return bsp::unit_is_kind_of(slot.class_id, class_id);
+        }
+    } else {
+        if (index >= impl_->slots.size()) return false;
+        return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
+    }
 }
 
 bool GameUnitsHost::inferior_failure_720(std::size_t index) const {
