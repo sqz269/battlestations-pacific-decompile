@@ -50278,6 +50278,15 @@ bool GameUnitsHost::unit_turn_lead_fields_00902290(std::size_t index, float& eff
     return true;
 }
 
+bool GameUnitsHost::ship_firepower_control_factors(std::size_t index,
+    float& engine_9d8, float& steering_9dc) const {
+    if (index >= impl_->slots.size()) return false;
+    const auto& motion = impl_->slots[index]->motion;
+    engine_9d8 = motion.thrust_mod;
+    steering_9dc = motion.turn_efficiency;
+    return true;
+}
+
 float GameUnitsHost::unit_rudder_curve_0082e890(std::size_t index, float magnitude) {
     Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;

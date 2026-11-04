@@ -101,6 +101,7 @@ namespace bsp {
 // ON by the pairs of 2026-10-05 (docs/GUNNERY_OPEN_ITEMS.md section 103.4).
 inline constexpr bool kGunneryPassByte7dBound = true;
 class ReconSensorPassState;
+struct UnitFirepowerReport;
 }
 
 namespace bsp::game {
@@ -1153,6 +1154,10 @@ public:
     // unit+9E4h (steering) or +9E5h (engine), what 008135C0 answers for the two
     // jam names and what 00826754 / 00826B2E read.
     bool ship_jam_flag(std::size_t unit_index, bool steering) const;
+
+    // 0088DC10's current report, using initial +103Ch..+1048h totals and
+    // current category lists, gun+3B8h flags and ship control factors.
+    bsp::UnitFirepowerReport ship_firepower_report(std::size_t unit_index);
 
     // Packet cc9_blast_element_parts: the hull segments (0..19, controller+310h
     // slots) of unit `unit_index` that 0092D1F0 drove to zero, in the order they

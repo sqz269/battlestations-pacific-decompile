@@ -1028,6 +1028,9 @@ public:
     // the 0092D730 speed) - and 0082E890 over the shared curve settings.
     bool unit_turn_lead_fields_00902290(std::size_t index, float& efficiency_9dc,
         float& rudder_984, float& throttle_980, float& radius_0520, float& speed_vt38);
+    // Borrow current ship +9D8h/+9DCh for 008127E0; no cached copy or defaults.
+    bool ship_firepower_control_factors(std::size_t index,
+        float& engine_9d8, float& steering_9dc) const;
     float unit_rudder_curve_0082e890(std::size_t index, float magnitude);
     // --ai-drive <name>=<throttle>,<rudder>: the diagnostic stand-in for the
     // state steps that produce no desired throttle. Returns false when no

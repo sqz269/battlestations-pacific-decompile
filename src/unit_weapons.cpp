@@ -396,9 +396,19 @@ int lua_get_fire_target_0089c360(UnitWeaponHost& host) {
     return host.lua_result_count();
 }
 
-int lua_get_firepower_0088dc10(UnitWeaponHost& host) {
+int lua_get_firepower_0088dc10(UnitFirepowerLuaHost& host) {
+    // Evidence: bsp.py show 0088DC10, complete table-building tail. The old
+    // scalar projection omitted NewTable and all five SetNumberField calls.
+    // Original __fastcall Lua state -> result count; this is a service ABI,
+    // without the native borrowed-state/string-scratch/SEH prologue.
     const NativeHandle unit = host.entity_from_lua_argument(0);
-    host.lua_push_number(host.unit_firepower(unit));
+    const UnitFirepowerReport report = host.refresh_firepower(unit);
+    host.lua_new_result_table();
+    host.lua_result_number_field("ArtilleryFirePowerRatio", report.weapon[0]);
+    host.lua_result_number_field("AAFirePowerRatio", report.weapon[1]);
+    host.lua_result_number_field("TorpedoFirePowerRatio", report.weapon[2]);
+    host.lua_result_number_field("DCFirePowerRatio", report.weapon[3]);
+    host.lua_result_number_field("Manoeuvrability", report.manoeuvrability);
     return host.lua_result_count();
 }
 

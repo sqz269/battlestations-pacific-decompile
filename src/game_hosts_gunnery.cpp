@@ -5,6 +5,9 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain395_switches.hpp"
+#include "bsp/gameplay_seg50_cc13.hpp"
+#include "bsp/band_0080_cc13.hpp"
 #include "bsp/game_startup_random.hpp"
 #include "bsp/wire_goal4_chain305_switches.hpp"
 #include "bsp/wire_goal4_chain313_switches.hpp"
@@ -2654,6 +2657,11 @@ struct GameGunneryHost::Impl {
         // The twelve category records at unit+394h and the ranges at unit+430h.
         std::array<std::vector<std::size_t>, bsp::kUnitGunneryCategoryCount> category_guns{};
         std::array<float, bsp::kUnitGunneryCategoryCount> category_ranges{};
+        // 0081F980 stores these once, after device/category production, at
+        // +103Ch..+1048h. Repair/category rebuilds must not reset the totals.
+        std::array<float, 4> firepower_totals{};
+        bool firepower_totals_ready{false};
+        bsp::UnitFirepowerReport firepower_report{}; // +101Ch..+1028h, +1014h
         float artillery_max_range{0.0f};  // unit+490h, 00956E43
         float any_weapon_max_range{0.0f}; // unit+494h, 00956E59
         bool dead{false};
@@ -2701,6 +2709,60 @@ struct GameGunneryHost::Impl {
         return physics_torpedo_force_values;
     }
     std::vector<UnitState> unit_state;
+
+    std::vector<bsp::gameplay_seg50_cc13::UnitDevice> firepower_devices(
+        std::size_t unit) const {
+        std::vector<bsp::gameplay_seg50_cc13::UnitDevice> weapon_view;
+        const auto& categories = unit_state.at(unit).category_guns;
+        for (std::size_t category = 0; category < categories.size(); ++category) {
+            for (const auto slot : categories[category]) {
+                const auto& gun = guns.at(slot);
+                weapon_view.push_back({static_cast<std::int32_t>(category),
+                    gun.barrel_num, gun.destroyed_3b8});
+            }
+        }
+        return weapon_view;
+    }
+
+    void capture_firepower_totals(std::size_t unit) {
+        auto& state = unit_state.at(unit);
+        if (state.firepower_totals_ready)
+            throw std::logic_error("ship firepower totals already produced");
+        const auto weapon_view = firepower_devices(unit);
+        using namespace bsp::gameplay_seg50_cc13;
+        // bsp.py show 0081F980: LAB_008201BD calls the four totals in this
+        // order, stores +103Ch..+1048h, then calls 008127E0. The lists here
+        // are 00956C20's live category ownership, not a second device census.
+        state.firepower_totals = {total_artillery_barrels_00812310(weapon_view),
+            total_aa_barrels_008123a0(weapon_view),
+            total_torpedo_barrels_00812430(weapon_view),
+            total_depth_charge_barrels_008124c0(weapon_view)};
+        state.firepower_totals_ready = true;
+    }
+
+    bsp::UnitFirepowerReport refresh_firepower_report(std::size_t unit) {
+        auto& state = unit_state.at(unit);
+        if (!state.firepower_totals_ready)
+            throw std::logic_error("ship firepower queried before device production");
+        const auto weapon_view = firepower_devices(unit);
+        using namespace bsp::gameplay_seg50_cc13;
+        bsp::cc13_band0080::FirepowerInputs input;
+        // 008127E0 skips each live walk when its denominator is zero. AA's
+        // numerator intentionally counts mounts, including disabled mounts;
+        // its denominator is the initial barrel total (00812600/008123A0).
+        for (std::size_t i = 0; i < 4; ++i) input.total[i] = state.firepower_totals[i];
+        if (input.total[0] != 0.0f) input.live[0] = live_artillery_barrels_00812550(weapon_view);
+        if (input.total[1] != 0.0f) input.live[1] = aa_mount_count_00812600(weapon_view);
+        if (input.total[2] != 0.0f) input.live[2] = live_torpedo_barrels_00812680(weapon_view);
+        if (input.total[3] != 0.0f) input.live[3] = live_depth_charge_barrels_00812730(weapon_view);
+        if (!units.ship_firepower_control_factors(unit, input.engine, input.steering))
+            throw std::logic_error("ship firepower has no live control state");
+        input.engine_jammed = damage_control.at(unit).engine_jam_9e5;
+        const auto ratios = bsp::cc13_band0080::refresh_firepower_ratios_008127e0(input);
+        for (std::size_t i = 0; i < 4; ++i) state.firepower_report.weapon[i] = ratios.ratio[i];
+        state.firepower_report.manoeuvrability = ratios.engine_factor;
+        return state.firepower_report;
+    }
     std::vector<GameGunRow> guns;
     std::vector<GameDeviceClassRow> devices;
     std::vector<GameBulletClassRow> bullets;
@@ -7319,7 +7381,15 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     // over an existing unit would put a gun this run has destroyed back into
     // its category lists.
     for (std::size_t i = first_unit; i < count; ++i) {
+        if constexpr (bsp::kWireGoal4Chain395Bound) {
+            rebuild_weapon_category_index_00956c20(i);
+            if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
+                capture_firepower_totals(i);
+                refresh_firepower_report(i);
+            }
+        } else {
         rebuild_weapon_category_index_00956c20(i);
+        }
     }
 }
 
@@ -17258,6 +17328,12 @@ bool GameGunneryHost::ship_jam_flag(std::size_t unit_index, bool steering) const
     if (unit_index >= host.damage_control.size()) return false;
     const Impl::DamageControl& dc = host.damage_control[unit_index];
     return steering ? dc.steering_jam_9e4 : dc.engine_jam_9e5;
+}
+
+bsp::UnitFirepowerReport GameGunneryHost::ship_firepower_report(std::size_t unit_index) {
+    if (!impl_->units.unit_is_kind_of(unit_index, bsp::kUnitGunneryKindShipBase))
+        throw std::invalid_argument("GetFirepower requires a represented ship");
+    return impl_->refresh_firepower_report(unit_index);
 }
 
 bool GameGunneryHost::unit_failure_active(std::size_t unit_index, const char* name) const {

@@ -8,6 +8,7 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/unit_weapons.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ai_planner_tails.hpp"
@@ -4589,6 +4590,38 @@ int main() {
         } catch (const std::runtime_error&) { threw = true; }
         check(threw && slot == &stream, "chain342 failed open propagates before storing a result");
         name.release_to(name_storage);
+    }
+
+    {
+        // Regression: the original 0088DC10 table-building tail must preserve
+        // all five field names and values, rather than returning one scalar.
+        struct FirepowerHost final : bsp::UnitFirepowerLuaHost {
+            bsp::UnitFirepowerReport report;
+            std::vector<std::pair<std::string, float>> fields;
+            bool refreshed{}, table{};
+            bsp::NativeHandle entity_from_lua_argument(int index) override {
+                check(index == 0, "GetFirepower resolves argument zero"); return 7;
+            }
+            bsp::UnitFirepowerReport refresh_firepower(bsp::NativeHandle unit) override {
+                check(unit == 7 && !table, "GetFirepower refresh precedes table");
+                refreshed = true; return report;
+            }
+            void lua_new_result_table() override {
+                check(refreshed, "GetFirepower refreshed real report"); table = true;
+            }
+            void lua_result_number_field(const char* key, float value) override {
+                check(table, "GetFirepower field belongs to result table");
+                fields.emplace_back(key, value);
+            }
+            int lua_result_count() override { return 1; }
+        } host;
+        host.report = {{0.0f, 0.5f, 0.0f, 1.0f}, 0.0f};
+        check(bsp::lua_get_firepower_0088dc10(host) == 1 && host.fields ==
+            std::vector<std::pair<std::string, float>>{
+                {"ArtilleryFirePowerRatio", 0.0f}, {"AAFirePowerRatio", 0.5f},
+                {"TorpedoFirePowerRatio", 0.0f}, {"DCFirePowerRatio", 1.0f},
+                {"Manoeuvrability", 0.0f}},
+            "GetFirepower returns the original five-field table");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
