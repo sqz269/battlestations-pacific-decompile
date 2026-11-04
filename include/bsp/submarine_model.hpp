@@ -316,7 +316,7 @@ bool submarine_periscope_is_out_00855057(float mast_local_y, float periscope_res
 struct SubmarinePeriscopeRepair {
     float deadline{0.0f}; // +1254h
     float clock{0.0f};    // +1258h
-    float clock_fast{0.0f}; // +125Ch, advances at twice the rate and is not tested
+    float clock_fast{0.0f}; // +125Ch, advances by the same step (00854E91) and is not tested
 };
 inline constexpr float kSubFailureRepairMultiplierInstalled = 3.0f;
 struct SubmarinePeriscopeRepairStep {
