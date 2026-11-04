@@ -1,0 +1,158 @@
+{
+  "goal": 4,
+  "chain": 457,
+  "run": 923,
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain457Bound",
+  "picked": "Native VFS extension-prefix multimap insertion during phase-2 startup",
+  "rows": [
+    {
+      "native": "00be0b90",
+      "status": "wired",
+      "host_site": "src/native_vfs_extension_prefix.cpp: insert_pair, called by register_native_vfs_extension_prefix_00be1480",
+      "state": "The actual VFS manager+54h tree, normalized extension/directory pair and the same ActualNativeStringPoolStorage",
+      "call_graph": "register_native_vfs_extension_prefix_00be1480 -> prefix_tree_insert_equal_00be0b90; one entry-reachable call site"
+    },
+    {
+      "native": "00be0370",
+      "status": "wired",
+      "host_site": "src/engine_services_cc13.cpp: prefix_tree_insert_equal_00be0b90",
+      "state": "The actual insertion parent, extension-only comparison result, normalized pair and existing tree header",
+      "call_graph": "prefix_tree_insert_equal_00be0b90 -> prefix_tree_link_new_node_00be0370; one entry-reachable call site"
+    },
+    {
+      "native": "00bdf700",
+      "status": "wired",
+      "host_site": "src/engine_services_cc13.cpp: prefix_tree_link_new_node_00be0370",
+      "state": "The real tree sentinel/parent, native red-node constant, owning pooled headers and singleton allocation provider",
+      "call_graph": "prefix_tree_link_new_node_00be0370 -> buy_prefix_tree_node_00bdf700; one entry-reachable call site"
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0 / error_context_erase_00bf26c0",
+      "reason": "Missing executable error-reporter/map owner: the built graph has no linked error-context caller chain; replacing its generic maximum would add only dormant wiring."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450 / error_context_erase_00bf26c0",
+      "reason": "Missing executable error-reporter/map owner: the built graph has no linked error-context caller chain; replacing its generic minimum would add only dormant wiring."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "Missing executable error-reporter/map owner: insert/erase callers are not linked in bsp_game; a live reporter producer is required before the left rotation can run."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270 / error_context_erase_00bf26c0",
+      "reason": "Missing executable error-reporter/map owner: insert/erase callers are not linked in bsp_game; a live reporter producer is required before the right rotation can run."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart checkpoint_differs / write_checkpoint",
+      "reason": "Missing actual checkpoint-difference and BSP_Chk_Save/current-mission ownership in this pre-load path; checkpoint_differs returns false and write_checkpoint only logs."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: ScriptedNameBinding",
+      "reason": "Missing teardown consumer at this stand-in site: it collects the pre-script Lua baseline for 004D30F0; it does not own 004DA780 session teardown or the raw game/tree/Lua views needed by 004D32A0."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "Missing off-main-thread deferred-call producer; this executable runs mission Lua on the main thread and the queue callback still logs without owning an argument queue."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: entity_ai_group / ai_group_forward_command",
+      "reason": "Missing real entity+16Ch AI-group/controller producer: this host returns null for those owners, so its forward-command log is not an executable native group path."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost",
+      "reason": "Missing live party-brain/planner array for the scan; campaign coordinator publication is false under the current load gate, so no real F8A89C/+0Ch owner was established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing executable coordinator/score-list consumer in campaign: kAiCoordinatorLoadGateBound is true and campaign publication is false; a parallel diagnostic score table would not replace gameplay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing executable coordinator and chosen-record consumer in campaign; the current load gate bypasses the coordinator before native score-list selection."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Missing executable coordinator/entity hint-map owner in campaign; the current campaign load gate bypasses coordinator ticks."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor / merge_child",
+      "reason": "Already entry-reachable at two built call sites from the native scene-property owner; readiness's source-text stand-in result is stale for this runtime path, so no new wiring is needed."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree / insert_into",
+      "reason": "Already entry-reachable at two built call sites from the native scene-property owner; readiness's source-text stand-in result does not identify that existing wiring."
+    },
+    {
+      "native": "00940dd0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::initialize_gui_sound_set",
+      "reason": "Already entry-reachable from the real OnInitOnce GUI sound owner; no missing constructor wiring remains at this candidate."
+    },
+    {
+      "native": "00940ec0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::initialize_gui_sound_set",
+      "reason": "Already entry-reachable from the real OnInitOnce GUI sound owner with actual class/cache/sample services; no missing initialization wiring remains."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::GuiSoundCalls::play_tracked_sound",
+      "reason": "GUI samples now exist, but playback still lacks the shared 00941250/F8BC0C request producer and tracked-sound creation service; play_tracked_sound currently throws."
+    },
+    {
+      "native": "00941250",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: request_gui_sound_00941250",
+      "reason": "Missing live listbox F8BC0C callback installation sharing the sound owner's request queue; mission-frame selection currently uses its separate queue."
+    }
+  ],
+  "implementation": {
+    "existing_host_fallback": "The original insert_pair body is unchanged in the switch's else arm; the new arm runs insertion exactly once.",
+    "supporting_reuse": "00BDF700 now uses the existing 0048E500 pair constructor instead of the similar 00BDCEA0 temporary copy.",
+    "native_evidence": ["bsp.py show 00BE0B90", "bsp.py show 00BE0370", "bsp.py show 00BDF700 --asm", "bsp.py show 0048E500", "00CC6611 FuncInfo 00E00BCC / unwind map 00E00BB4 / cleanup 00CC6600 / no-op 00401130"],
+    "abi": "Existing context-bearing Win32 C++ interfaces and actual native-layout storage; no claim of drop-in original ABI compatibility.",
+    "exception_domain": "0048E500 supplies first-header cleanup. Native allocation unwind calls no-op 00401130; no invented node-free repair is added."
+  },
+  "verification": {
+    "build": "scripts/build.ps1 Win32 Release passed",
+    "tests": "reconstructed_math and tool_tests passed; one focused native extension-tree fixture checks deep copies, empty/equal keys, order, links, black height, and string ownership balance",
+    "float_math_changed": false,
+    "readiness_wired_before": 9714,
+    "readiness_wired_after": 9714,
+    "readiness_note": "The tool's aggregate wired summary remains unchanged; all three target rows now show wired, called=true and call_sites=1. The independently rebuilt call graph confirms three additional reconstructed addresses called from entry-reachable code.",
+    "built_reconstructed_called_before": 4778,
+    "built_reconstructed_called_after": 4781,
+    "entry_path": "WinMain -> GameStartupHost::application_initialize -> run_initialize_phases -> GameVfsHost::phase2 -> GameNativeVfsRuntime::register_phase2_search_defaults -> register_native_vfs_search_defaults_00738360 -> register_native_vfs_extension_prefix_00BE1480 -> 00BE0B90 -> 00BE0370 -> 00BDF700",
+    "game_run": "Not run, per worker instructions; built reachability and fixture evidence only."
+  }
+}
