@@ -1,0 +1,256 @@
+{
+  "chain": 398,
+  "slot": "g4-w1",
+  "base_sha": "417acd1573",
+  "picked": "Lua table identity in GUI page snapshots",
+  "switch": "bsp::kWireGoal4Chain398Bound",
+  "switch_header": "include/bsp/wire_goal4_chain398_switches.hpp",
+  "wired_before": 9627,
+  "wired_after": 9628,
+  "entry_reachable_addresses_before": 4646,
+  "entry_reachable_addresses_after": 4647,
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; 2/2 CTests",
+    "changed_build": "scripts/build.ps1 passed; 2/2 CTests",
+    "readiness": "00b662e0: wired, called=true, call_sites=1, callers_live=1; wired total 9627 -> 9628",
+    "call_graph": "00B662E0 reachable, one direct call at 103F1907 from TableSnapshot::table in gui_lua_runtime.obj",
+    "entry_path": "WinMain -> GameStartupHost application initialization -> GameFrontendHost::run_font_and_gui_startup_0073bae0 -> VfsGuiPageScripts::begin_00ac6600 -> GuiPageLuaEvaluation -> GuiLua51Host::snapshot_table -> TableSnapshot::table -> native_lua_to_pointer_00b662e0",
+    "evidence": "bsp.py show 00b662e0 --asm: object+0 -> owner+4, object+8 -> Lua index, tail jump to lua_topointer",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "contract": "Borrow the evaluator's actual lua_State and current table stack index in native-layout owner/object views. The body acquires no tracked references and does not change the Lua stack. Its pointer directly keys the existing sharing and cycle maps. The old direct lua_topointer path runs only with the switch disabled.",
+  "selection_note": "Skipped rows record bounded selection inspection, not completed reconstruction audits. No code or Ghidra metadata for these addresses was changed. Persistence serializers were checked first but are absent from this built game's call graph; the final caller is the reached GUI page evaluator.",
+  "rows": [
+    {
+      "native": "00b662e0",
+      "status": "wired",
+      "host_site": "src/gui_lua_runtime.cpp: TableSnapshot::table, called by GuiLua51Host::snapshot_table",
+      "real_state": "GuiPageLuaEvaluation's active lua_State and recursive table index; returned pointer feeds table sharing and cycle detection",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: TitleInitBinding::create_title_screen",
+      "reason": "Needs a consumed native front-end manager/base registry and native press-start screen at +40h; this host returns the typed title_object."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: TitleInitBinding::create_attract_screen",
+      "reason": "Needs native manager/base ownership plus FE_attract page loading and its movie activation; the existing factory returns null."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: create_main_menu_manager",
+      "reason": "Needs native manager/base/registry ownership and consumers for the native screen graph; current factory returns typed main_menu."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: create_options_manager",
+      "reason": "Needs native manager/base and options screen initialization consumers; constructor alone would create an unused object."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: effective game-mode selection",
+      "reason": "Needs the real party-brain +0Ch activation inputs and a mode 0..3 consumer; campaign mode 8 bypasses this selector."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Needs the coordinator load/publication path and real scored-group list producer before its insert operation can be adopted."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::fixed_step",
+      "reason": "Needs a reached coordinator with its retained score-list entries and selected-group key producer."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: result transition boundary",
+      "reason": "Needs native game/sound-transition screen ownership and screen commit dispatch; the result host's movie bridge does not supply it."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Needs the native subtitle widget and owning record vectors; the existing bridge retains a projected subtitle schedule."
+    },
+    {
+      "native": "00b663f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: lua_play_bink_movie_0089a480",
+      "reason": "Needs an actual native Lua call/count receiver; the host already receives extracted typed arguments."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "Needs a real movie page/widget owner; the neighboring page factory is unbound and provides no widget handle."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message",
+      "reason": "Needs retained native queue-message timestamps, game state, category and sender readiness in the command loopback transport."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp: scale_sound_instance_volume_00a79880",
+      "reason": "Needs a reached effect-sound or in-game-interface scale caller carrying its actual SoundInstance/sample and multiplier."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: reserve_native_word_array_005296a0",
+      "reason": "Needs a reached owner of the native word-array header; the inspected message/grid builder consumers are not bound here."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: resize_native_word_array_00529980",
+      "reason": "Needs a reached native message or grid-builder owner retaining its word-array storage and size."
+    },
+    {
+      "native": "0052ad30",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30",
+      "reason": "Needs the owning native array producer and retirement boundary; allocating an array solely to destroy it would not wire game state."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint clear boundary",
+      "reason": "Needs the actual BSP_Chk_Save owner, current mission key and checkpoint-diff/write decision at the pre-load caller."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/mission_load_hosts.cpp: run_assign_party_player_slots_004c3840",
+      "reason": "Needs the session-mode-one assignment path and candidate/slot owner adapter; ordinary campaign loading bypasses that mode."
+    },
+    {
+      "native": "00588c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MainMenuUpdate::drive_map",
+      "reason": "Needs the persistent anchor/base/carried-zoom state and selected-point/backdrop widget ownership graph."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission-list return boundary",
+      "reason": "Needs a concrete 00597870 mission-list builder with owned rows/listbox state, not a logged refresh request."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start",
+      "reason": "Needs an owned native loading-config temporary and its publication consumer; publish_loading_config is still unimplemented."
+    },
+    {
+      "native": "0057d060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::publish_loading_config",
+      "reason": "Needs native loading-config vector/string storage, pending globals and a concrete publication adapter to the loading screen."
+    },
+    {
+      "native": "0057cff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: loading_globals / FrontEndShell binding",
+      "reason": "Needs native string-vector/global-config storage shared with the actual loading-screen consumer; current globals are typed projections."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: SceneCommandTarget producers",
+      "reason": "Needs the actual readable mutable F87574/F87578/F8757C cells and consumed raw command-target storage; zero-fill is not a runtime constant contract."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "Needs an owned native approach/task object whose registry is populated and consumed by actual task dispatch."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Needs the corresponding live native task registry producer and its retirement dispatch."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "Needs an editable-text byte acceptance caller with its actual font; the inspected native leaf callback has no concrete host implementation."
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/menu_screens_2.cpp: hud_formation_update_0053a8e0",
+      "reason": "Needs a reached HudFormationUpdateHost or tagged-value equality adapter providing the real vector operands."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/ingame_gui_cc13.cpp: marker_clamp_to_margins_00638b90 callback",
+      "reason": "Needs a concrete native marker projection callback carrying its real screen margins and point outputs."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: GUI pointer frame dispatch",
+      "reason": "Needs application composition of GuiPointerRuntimeServices, manager cursor ownership and hit-test dispatch before frame activation."
+    },
+    {
+      "native": "00ac2d00",
+      "status": "skipped",
+      "host_site": "src/native_gui_line_storage.cpp: default native Line factory",
+      "reason": "Needs native Page/Line factory activation with the retained base/widget and geometry consumers."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: restart_native_gui_animated_value_00aa0e20",
+      "reason": "Needs manager cursor object ownership at +50h/+54h/+58h and concrete stop-vcall dispatch."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Needs the actual manager cursor and concrete target/notify virtual dispatch, not an arbitrary animated scalar."
+    },
+    {
+      "native": "008d9cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::read_scene_file",
+      "reason": "Readiness names construct_native_scene_file_tokenizer_008d9cf0 but no such body is present in the indicated source/header; host uses memory VFS plus SceneLexer."
+    },
+    {
+      "native": "00b680a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: vehicle-class base Lua field adapter",
+      "reason": "Needs the newly published 00960230 class-field adapter integration; that worker's reviewed branch is outside this baseline."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/ship_class_fields.cpp: float4 field conversion",
+      "reason": "Needs a reached ShipClassFieldHost for 00831840 with native class field loading and consumer write-back."
+    },
+    {
+      "native": "00b65f70",
+      "status": "skipped",
+      "host_site": "src/gui_lua_runtime.cpp: GuiLua51Host reference validation",
+      "reason": "Needs native LuaObject lifetime-backed binding state; this host's registry-handle membership is a different ownership contract."
+    }
+  ]
+}
