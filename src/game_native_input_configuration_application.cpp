@@ -179,6 +179,10 @@ bool GameNativeInputConfigurationApplication::load_if_unloaded() {
 
 void GameNativeInputConfigurationApplication::load() { impl_->load(); }
 
+GameInputRuntime& GameNativeInputConfigurationApplication::input_runtime() noexcept {
+    return impl_->b.input;
+}
+
 void GameNativeInputConfigurationApplication::update_actions(float seconds) {
     auto& p = *impl_;
     if (p.phase != Impl::Phase::loaded)

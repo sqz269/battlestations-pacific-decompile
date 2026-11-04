@@ -66,6 +66,9 @@ public:
     // Entry for a raw caller which already captured its receiver/profile.
     void backend_update_vslot04(void*, std::uint32_t captured_profile, float seconds);
     void* action_owner();
+    // Borrow an actual device from the current F8BBF4 class vector. This reads
+    // cached state only; it neither enumerates nor polls the backend again.
+    void* input_device(std::uint32_t device_class, std::uint32_t index = 0);
     // 00683820's two action values from the SAME configured raw owner. These
     // queries never poll hardware or advance listeners a second time.
     float frontend_scroll_axis();

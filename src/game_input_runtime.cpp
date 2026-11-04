@@ -179,6 +179,11 @@ bool GameInputRuntime::poll_dynamic_button_edge() {
     return cc13_band004b::press_start_poll_button_edge_004b43b0(backend[0xdd], down);
 }
 void* GameInputRuntime::action_owner() { return get_native_input_action_owner_004bec00(impl_->actions); }
+void* GameInputRuntime::input_device(std::uint32_t device_class, std::uint32_t index) {
+    void* const backend = impl_->bound.backend_00f8bbf4;
+    if (!backend) throw std::logic_error("input device lookup requires the published native backend");
+    return impl_->bound.lookup_device_004ba6d0(backend, device_class, index);
+}
 float GameInputRuntime::frontend_scroll_axis() {
     // bsp.py show 00683820 --asm: 0068383A/5C each call 004BEC00, then
     // load [owner+4]+36B4/3714. Those are action 123h/125h's +24 value
