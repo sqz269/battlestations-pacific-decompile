@@ -271,7 +271,28 @@
     "build": "scripts/build.ps1 passed all 4 existing tests",
     "focused_fixture": "local/output/wire_g4_c490_probe.ps1 passed producer/read/party-isolation/reset; synthetic state only",
     "call_graph": "all five wired rows have one entry-reachable call site each",
-    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 11 files"
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 11 files",
+    "actual_lua_adapter_fixture": {
+      "script": "local/output/wire_g4_c490_lua_adapter_probe.ps1",
+      "result": "passed",
+      "path": "Actual GameMissionLuaHost creates its Lua state and registers AISetHintWeight from the production binding table; lua_pcall executes binding_trampoline and the compiled production adapter. No mock argument reader is used.",
+      "cases": [
+        {
+          "party_input": 1.6,
+          "selected_map": 1
+        },
+        {
+          "party_input": 7.6,
+          "selected_map": 7
+        },
+        {
+          "party_input": 0.99999999,
+          "selected_map": 1
+        }
+      ],
+      "assertions": "Every call succeeds, stores 2.5 in the expected party map, and leaves every other party map empty.",
+      "scope": "Reconstructed source Lua execution with real source owners and read-only installed literal data; not game execution or original ABI validation."
+    }
   },
   "limits": [
     "No game execution or native register/layout ABI claim.",
@@ -283,5 +304,27 @@
   "assumptions": [
     "One mission per process, matching the current executable lifecycle.",
     "The source map implementation preserves valid-domain value behavior and is not a VC9 tree-layout replacement."
+  ],
+  "review_rounds": [
+    {
+      "run": 1013,
+      "round": 1,
+      "reviewed_head": "6d60bf1f97135c61d4781139cb4dc162f1435399",
+      "findings": [
+        {
+          "id": "P2",
+          "status": "fixed",
+          "location": "src/game_hosts_lua.cpp: run_ai_set_hint_weight::Binding::get_integer",
+          "change": "Use lua_number_integer_00b66290(lua_tonumber(...), conversion_mode) before the unchanged 0..7 bounds check; select conversion mode with the same IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) policy used by existing Lua readers.",
+          "evidence": "bsp.py show 00a37b30 --asm: 00A37CB2 CALL 00B66290; src/lua_numeric.cpp spills to float32 then truncates.",
+          "verification": "Actual registered production Lua adapter passed 1.6->1, 7.6->7, 0.99999999->1 with party-map isolation."
+        }
+      ],
+      "checks": {
+        "build": "scripts/build.ps1 passed all 4 existing tests",
+        "call_graph": "4848 entry-reachable reconstructed addresses; all five claimed bodies each retain one entry-reachable call site",
+        "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 11 files"
+      }
+    }
   ]
 }

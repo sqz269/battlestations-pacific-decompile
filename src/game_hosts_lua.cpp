@@ -10589,7 +10589,12 @@ int GameMissionLuaHost::run_ai_set_hint_weight(lua_State* state) {
         int count() override { return ::lua_gettop(lua); }
         double get_number(int index) override { return ::lua_tonumber(lua, index + 1); }
         int get_integer(int index) override {
-            const int party = static_cast<int>(::lua_tointeger(lua, index + 1));
+            // A37CB2 calls B66290: spill to float32, then truncate via the
+            // represented CRT conversion mode, as the other Lua readers do.
+            const bool conversion_mode =
+                IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+            const int party = bsp::lua_number_integer_00b66290(
+                ::lua_tonumber(lua, index + 1), conversion_mode);
             // Native indexes unchecked; the source owner admits only 0..7.
             if (party < 0 || party >= 8)
                 ::luaL_error(lua, "AISetHintWeight: party outside the eight retained maps");
