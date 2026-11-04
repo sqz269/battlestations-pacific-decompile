@@ -35,11 +35,17 @@ struct LuaFrame : LuaResults {
     virtual int result_count() = 0; // 00B66400
 };
 
+// The integer read needed by SetRace, separately bindable without unrelated
+// global accessors. Existing ImageAccess implementations retain this contract.
+struct EntityIntImageAccess {
+    virtual ~EntityIntImageAccess() = default;
+    virtual std::int32_t read_i32(void* base, std::uint32_t offset) = 0;
+};
+
 // Raw image reads and writes at `base + offset`, and of absolute globals.
-struct ImageAccess {
+struct ImageAccess : EntityIntImageAccess {
     virtual ~ImageAccess() = default;
     virtual std::uint8_t read_u8(void* base, std::uint32_t offset) = 0;
-    virtual std::int32_t read_i32(void* base, std::uint32_t offset) = 0;
     virtual float read_f32(void* base, std::uint32_t offset) = 0;
     virtual void* read_ptr(void* base, std::uint32_t offset) = 0;
     virtual void write_u8(void* base, std::uint32_t offset, std::uint8_t value) = 0;
@@ -143,7 +149,17 @@ struct RoleTransferMessage {
 // ---------------------------------------------------------------------------
 // The host: one method per call site kind
 // ---------------------------------------------------------------------------
-struct Seg56Host {
+// 008A8720's complete callee surface; no defaults for unbound services.
+struct EntityRaceHost {
+    virtual ~EntityRaceHost() = default;
+    // vtable+5Ch: the real entity class test.
+    virtual bool entity_is_class_vt5c(void* entity, std::int32_t class_id) = 0;
+    virtual void route_int_message_0077c2a0(void* target, const IntValueMessage& message, int flags, int out) = 0;
+    // vtable+2Ch(entity, current party, race, class-filter pointer).
+    virtual void entity_set_race_vt2c(void* entity, std::int32_t dword_54, std::int32_t race, std::int32_t* out) = 0;
+};
+
+struct Seg56Host : EntityRaceHost {
     virtual ~Seg56Host() = default;
 
     // --- support manager (in-game interface panel [[00E198C4]+BCh]) ---
@@ -201,8 +217,6 @@ struct Seg56Host {
     virtual std::int32_t parts_dword_374_0092be90(void* parts) = 0;
     // 00814520, __thiscall(unit), RET 0.
     virtual void unit_on_breakup_00814520(void* unit) = 0;
-    // vtable+5Ch, __thiscall(entity, class id) -> AL: the class test.
-    virtual bool entity_is_class_vt5c(void* entity, std::int32_t class_id) = 0;
     // 00953920, __thiscall(ship) -> int.
     virtual std::int32_t ship_count_catapulted_planes_00953920(void* ship) = 0;
     // 009539A0, __thiscall(ship, int), RET 4.
@@ -277,10 +291,7 @@ struct Seg56Host {
     // 0077C2A0 for the other message shapes (see route_message_0077c2a0).
     virtual void route_damage_message_0077c2a0(void* target, const DamageSettingMessage& message, int flags, int out) = 0;
     virtual void route_catapult_message_0077c2a0(void* target, const CatapultLaunchMessage& message, int flags, int out) = 0;
-    virtual void route_int_message_0077c2a0(void* target, const IntValueMessage& message, int flags, int out) = 0;
     virtual void route_role_message_0077c2a0(void* target, const RoleTransferMessage& message, int flags, int out) = 0;
-    // vtable+2Ch, __thiscall(entity, [entity+54h], int, int* out) used by SetRace off-ship.
-    virtual void entity_set_race_vt2c(void* entity, std::int32_t dword_54, std::int32_t race, std::int32_t* out) = 0;
     // vtable+1A0h, __thiscall(entity, const NativeString*, int index, float value).
     virtual void entity_set_control_factor_vt1a0(void* entity, const std::string& name, std::int32_t index, float value) = 0;
     // vtable+1A4h, __thiscall(entity, const NativeString*, int index, float* out). The native
@@ -506,7 +517,7 @@ int lua_set_player_control(LuaArgs& args, ImageAccess& image, Seg56Host& host);
 int lua_enter_player_to_role(LuaArgs& args, Seg56Host& host);
 // SetRace 008A8720: integer arg1 BEFORE entity arg0; class 2 routes message 80h, any other
 // calls vtable+2Ch(entity, [entity+54h], race, &zero).
-int lua_set_race(LuaArgs& args, ImageAccess& image, Seg56Host& host);
+int lua_set_race_008a8720(LuaArgs& args, EntityIntImageAccess& image, EntityRaceHost& host);
 // SetDeadMeat 008AC7B0: class 0Fh vtable+194h("spinning", 0); class 6 Sink({rand(-1,1), 0, 0});
 // else vtable+70h(1).
 inline constexpr const char* kDeadMeatFailureName = "spinning"; // 00D059EC

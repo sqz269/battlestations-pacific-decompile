@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain484_switches.hpp"
+#include "bsp/wire_goal4_chain531_switches.hpp"
 #include "bsp/wire_goal4_chain490_switches.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/mission_picture_owner.hpp"
@@ -4360,16 +4361,27 @@ std::size_t GameMissionLuaHost::mirror_party_race_00928f50() {
         }
         lua_pushinteger(state_, row->party);
         lua_setfield(state_, -2, "Party");
+        if constexpr (bsp::kWireGoal4Chain531Bound) {
+            // 00928FC7..00928FD9 mirrors the entity's actual +58h too.
+            // GameUnitRow now carries the scene value and SetRace's delivery.
+            lua_pushinteger(state_, row->race_58);
+            lua_setfield(state_, -2, "Race");
+        } else {
+        }
         ::lua_settop(state_, ::lua_gettop(state_) - 1);
         ++mirrored;
     }
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
     summary_.party_mirrors = mirrored;
     log_.implemented("MissionEntity::set_party_race_lua_mirror", "00928f50");
+    if constexpr (bsp::kWireGoal4Chain531Bound) {
+        log_.notef("thisTable: 00928f50's Party and Race mirror written on %zu slot(s)", mirrored);
+    } else {
     log_.notef("thisTable: 00928f50's `Party` mirror written on %zu slot(s). Without it "
         "commandhelpers.lua:330 `recon[targetUnit.Party][allegiance]` indexes a nil, which is "
         "what reverted the GetSelectedUnit binding in packet cc8_ship_moveonpath; `Race` is "
         "not written because this host does not carry one", mirrored);
+    }
     return mirrored;
 }
 

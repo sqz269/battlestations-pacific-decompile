@@ -37,6 +37,7 @@
 #include "bsp/camera_position_modes.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
+#include <stdexcept>
 #include "bsp/wire_goal4_chain260_switches.hpp"
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
@@ -724,6 +725,40 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
     // Both message lifetimes own no heap members. The native scalar delete
     // only restamps the vtable before freeing its allocation.
+    return queued.value_1c;
+}
+
+namespace {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type);
+}
+
+std::uint32_t HostSessionMessages::queue_vehicle_race_80(
+    const VehicleRaceFields& posted) const {
+    // Review round 1: selected-player ownership and the 00D032FC profile are
+    // not bound, so do not run or claim the native constructor. These plain
+    // records provide storage only for the codec's fields, taken from the
+    // actual descriptor produced by 008A8720 (008A8879..008A88B7).
+    // bsp.py show 00760420/00760470: only type +10h, id +18h, relay +1Ah and
+    // race +1Ch are read/written. Profile +0h and owner +14h are never used.
+    seg42::VehicleValueMessage sent{};
+    sent.h.base.type_10 = posted.type_10;
+    sent.h.id_18 = posted.id_18;
+    sent.h.relay_1a = posted.relay_1a;
+    sent.value_1c = posted.race_1c;
+    LocalStream stream;
+    seg42::write_vehicle_set_race_00760420(&sent, &stream.out);
+    stream.begin_read();
+    seg42::VehicleValueMessage queued{};
+    seg42::read_vehicle_set_race_00760470(&queued, &stream.in);
+    // 00780120's real IsType ladder must select the session kind switch,
+    // whose 80h arm consumes this payload (0095ABE0 / unit_message_arms.cpp).
+    if (!copy_goes_to_unit_handler([](std::uint32_t type) {
+            return seg42::is_vehicle_set_race_007603f0(type);
+        })
+        || queued.h.base.type_10 != 0x80)
+        throw std::logic_error("SetRace: decoded copy did not reach the unit race arm");
+    // Codec storage owns no heap members and claims no native object lifetime.
     return queued.value_1c;
 }
 

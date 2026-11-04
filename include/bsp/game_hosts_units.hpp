@@ -248,7 +248,8 @@ struct GameUnitRow {
     // (0092708F..0092709C; GameSceneEntityRecord::race, -1 when the bag has none).
     // Retained under kWireGoal4Chain270Bound for MCatapult::Fire's bag (006EC9A6
     // reads owner+58h); -1 while the switch is off. The SetPartyRace (00928F50)
-    // writes this host routes (command buildings only) carry the party alone.
+    // writes from command buildings carry the party alone; SetRace's local
+    // delivery updates this same race field.
     int race_58{-1};
     // unit+530h / unit+534h, the catapult launch overrides 0095E5B0 copies from the
     // bag (GameSceneEntityRecord::launch_class_530 / launch_equipment_534); -1, the
@@ -1100,6 +1101,8 @@ public:
     // The party write of 00928F50 (vtable[2Ch] SetPartyRace), for a
     // CommandBuilding's neutralize and flip (packet cc9_command_building_capture_bind).
     void set_unit_side_0054(std::size_t index, int party);
+    // SetRace's delivery writes the same unit owner's +58h, preserving +54h.
+    void set_unit_race(std::size_t index, int race);
     // unit+BC9h, the latched gunFire (packet cc9_plane_gun_pass). The gunnery
     // host's plane-gun hook reads it; docs/PLANE_GUN_PASS.md.
     bool plane_gun_trigger_bc9(std::size_t index) const;

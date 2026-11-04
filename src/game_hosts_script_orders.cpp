@@ -6,6 +6,7 @@
 
 #include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/options_seg56_cc13.hpp"
+#include "bsp/wire_goal4_chain531_switches.hpp"
 #include "bsp/wire_goal4_chain525_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/wire_goal4_chain482_switches.hpp"
@@ -769,6 +770,47 @@ private:
     bsp::LuaBindingArgumentReader& core_;
 };
 
+// 008A8720's three callees and its sole image read, bound to the current Lua
+// entity owner. The body chooses the direct or local-message path, not this
+// adapter. Narrow interfaces avoid supplying unrelated segment-56 services.
+class SetRaceBinding final : public bsp::seg56_options_cc13::EntityIntImageAccess,
+                             public bsp::seg56_options_cc13::EntityRaceHost {
+public:
+    using ClassQuery = std::function<bool(void*, int)>;
+    using PartyRead = std::function<int(void*)>;
+    using Apply = std::function<void(void*, int, int)>;
+    using Route = std::function<void(void*, const bsp::seg56_options_cc13::IntValueMessage&)>;
+    SetRaceBinding(ClassQuery query, PartyRead party, Apply apply, Route route)
+        : query_(std::move(query)), party_(std::move(party)),
+          apply_(std::move(apply)), route_(std::move(route)) {}
+
+    std::int32_t read_i32(void* entity, std::uint32_t offset) override {
+        if (offset != 0x54u) throw std::logic_error("SetRace: unexpected field read");
+        return party_(entity);
+    }
+    bool entity_is_class_vt5c(void* entity, std::int32_t kind) override {
+        return query_(entity, kind);
+    }
+    void entity_set_race_vt2c(void* entity, std::int32_t party,
+        std::int32_t race, std::int32_t*) override {
+        apply_(entity, party, race);
+    }
+    void route_int_message_0077c2a0(void* entity,
+        const bsp::seg56_options_cc13::IntValueMessage& message,
+        int flags, int out) override {
+        if (message.type != 0x80 || message.vtable != 0x00d032fcu
+            || message.dword_04 != 1 || message.word_18 != 0
+            || message.byte_1a != 0 || flags != 7 || out != 0)
+            throw std::logic_error("SetRace: unexpected route descriptor");
+        route_(entity, message);
+    }
+private:
+    ClassQuery query_;
+    PartyRead party_;
+    Apply apply_;
+    Route route_;
+};
+
 // Goal 4 chain 525. ImageAccess is a typed view of the existing unit owner,
 // not a second image of entity+127Ch. Resolve the actual Lua entity identity
 // at the body's read point and borrow the air value 00855250/00893A60 maintain.
@@ -882,11 +924,16 @@ constexpr ScriptOrderBinding kAddFireBinding{"AddFire", 0x008acd10u};
 // Not a kScriptOrderBindings row so that the switch can withhold it: OFF leaves
 // UnloadMessageMap the unimplemented record it was.
 constexpr ScriptOrderBinding kUnloadMessageMapBinding{"UnloadMessageMap", 0x008c6490u};
+constexpr ScriptOrderBinding kSetRaceBinding{"SetRace", 0x008a8720u};
 
 const ScriptOrderBinding* find_binding(const char* name) noexcept {
     if (name == nullptr) return nullptr;
     for (const ScriptOrderBinding& row : kScriptOrderBindings) {
         if (std::strcmp(row.name, name) == 0) return &row;
+    }
+    if constexpr (bsp::kWireGoal4Chain531Bound) {
+        if (std::strcmp(kSetRaceBinding.name, name) == 0) return &kSetRaceBinding;
+    } else {
     }
     if constexpr (bsp::kWireGoal4Chain331Bound) {
         if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
@@ -5326,6 +5373,60 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         SetThinkCoreHost core(*this);
         if (luainit_depth_ > 0) ++luainit_setparty_calls_;   // cc13-reconload, log-only
         results = bsp::lua_binding_set_party(*this, *this, core);
+    } else if (std::strcmp(binding->name, "SetRace") == 0) {
+        if constexpr (bsp::kWireGoal4Chain531Bound) {
+            // bsp.py show 008A8720: read integer arg1 before resolving arg0;
+            // kind 2 uses route flags 7, others pass the current +54h to +2Ch.
+            // Preserve the host's existing partial 00923B80/00928F50 owner:
+            // fields and Lua mirror are concrete; native child propagation and
+            // observer notification remain outside that owner, as for SetParty.
+            auto party = [this](void* entity) {
+                if (const GameScriptEntity* script = script_entity(entity)) return script->party;
+                const GameUnitRow* row = units_.unit_row(index_of(entity));
+                if (row == nullptr) throw std::logic_error("SetRace: no entity owner");
+                return row->party;
+            };
+            auto apply = [this](void* entity, int current_party, int race) {
+                if (GameScriptEntity* script = script_entity(entity)) {
+                    script->party = current_party;
+                    script->race = race;
+                    write_script_identity_fields(*script, false);
+                } else {
+                    const std::size_t index = index_of(entity);
+                    if (index >= units_.count()) throw std::logic_error("SetRace: no unit owner");
+                    units_.set_unit_race(index, race);
+                    if (party_mirror_ != nullptr) party_mirror_(party_mirror_context_);
+                }
+                log_.implemented("SetRace::set_party_race_lua_mirror", "00928f50");
+            };
+            SetRaceBinding host(
+                [this](void* entity, int kind) { return entity_is_kind_of(entity, kind); },
+                party, apply,
+                [this, party, apply](void* entity,
+                    const bsp::seg56_options_cc13::IntValueMessage& posted) {
+                    const auto* messages = commands_session_messages();
+                    // A real unit route borrows the session codec already used
+                    // by SetParty. Its four-bit result, not the Lua integer,
+                    // reaches the receiver at the commands pump (0095ABE0/80h).
+                    if (messages == nullptr)
+                        throw std::logic_error("SetRace: no local session codec");
+                    const bsp::HostSessionMessages::VehicleRaceFields fields{
+                        posted.type, posted.word_18, posted.byte_1a,
+                        static_cast<std::uint32_t>(posted.value)};
+                    const int copied_race = static_cast<int>(
+                        messages->queue_vehicle_race_80(fields));
+                    const auto id = entity_object_id(entity);
+                    if (id == 0 || !commands_post_loopback_callback_0076e520(
+                        static_cast<std::size_t>(id) - 1u,
+                        [entity, copied_race, party, apply] {
+                            apply(entity, party(entity), copied_race);
+                        }))
+                        throw std::logic_error("SetRace: no local unit delivery queue");
+                });
+            RepairBindingArgs args(*this);
+            results = bsp::seg56_options_cc13::lua_set_race_008a8720(args, host, host);
+        } else {
+        }
     } else if (std::strcmp(binding->name, "SetWait") == 0) {
         results = bsp::lua_binding_set_wait(*this, *this);
     } else if (std::strcmp(binding->name, "ClearThink") == 0) {
