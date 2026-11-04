@@ -1545,6 +1545,19 @@ public:
     // src/vehicle_class_fields.cpp lists the other float fields at 009623A9's
     // sibling offsets; this reader serves all of them.
     float read_vehicle_class_number(int index, const char* key, float fallback);
+
+    // Goal 4 chain 391 (kWireGoal4Chain391Bound). The fields the class
+    // descriptor's Lua load, 00960230, read for `class_index` (class +A0h Length,
+    // +A4h Height, +C0h..+CCh Catapult, +124h Cost, +134h DefaultEquipment, ...).
+    // A class 00964790 has not loaded yet is resolved through it first
+    // (GetOrCreate, as any native holder of the descriptor already did). nullptr
+    // when no descriptor loads: no row, or the load is not bound (chain 234's
+    // 00964790 or the row marking off), in which case callers keep their direct
+    // read. `site` names the native read for the lazy-resolve log.
+    const bsp::VehicleClassBaseFields* loaded_vehicle_class_base_fields(int class_index,
+                                                                        const char* site);
+    // class +134h DefaultEquipment from that load (00961F45), 0 without one.
+    std::int32_t loaded_default_equipment(int class_index, const char* site);
     // `VehicleClass[index][key]` as a boolean; `fallback` unless the field is a Lua
     // boolean (BSP_LuaReference_GetBooleanOrDefault, e.g. 00749210's CapturePost).
     bool read_vehicle_class_boolean(int index, const char* key, bool fallback);
@@ -2528,13 +2541,6 @@ private:
     std::map<int, bsp::VehicleClassBaseFields> vehicle_class_base_fields_;
     std::size_t vehicle_class_base_loads_{0};
     std::size_t vehicle_class_base_lazy_resolves_{0};
-    // The loaded fields of `class_index`. A class 00964790 has not loaded yet is
-    // resolved through it first (GetOrCreate, as any native holder of the
-    // descriptor already did); nullptr when no descriptor loads (no row).
-    const bsp::VehicleClassBaseFields* loaded_vehicle_class_base_fields(int class_index,
-                                                                        const char* site);
-    // class +134h DefaultEquipment from that load (00961F45), 0 without one.
-    std::int32_t loaded_default_equipment(int class_index, const char* site);
     // cc15-vcp1: the rows the last census found unmarked, with the reads
     // of each that came after it.
     std::map<int, std::size_t> vehicle_class_would_nil_;

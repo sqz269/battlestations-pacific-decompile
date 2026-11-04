@@ -6493,7 +6493,7 @@ void GameMissionLuaHost::mark_vehicle_class_row_00964790(int class_index, const 
 
 const bsp::VehicleClassBaseFields* GameMissionLuaHost::loaded_vehicle_class_base_fields(
     int class_index, const char* site) {
-    if (class_index < 0) return nullptr;
+    if (!kVehicleClassBaseLoadBound || class_index < 0) return nullptr;
     auto found = vehicle_class_base_fields_.find(class_index);
     if (found == vehicle_class_base_fields_.end()) {
         // A native holder of class +C0h / +124h / +134h already holds the
