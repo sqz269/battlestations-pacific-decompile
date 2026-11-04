@@ -216,9 +216,9 @@ Object property_bag_create_iterator_00487040(Seg7Host& host, Object owner) {
 }
 
 // 0048F5D0.
-float property_bag_get_float_or_default_0048f5d0(Seg7Host& host, Object bag, const char* name,
+float property_bag_get_float_or_default_0048f5d0(PropertyBagFloatLookupHost& host, Object bag, const char* name,
                                                  float fallback) {
-    if (!property_bag_contains_0048e9f0(host, bag, name)) return fallback;
+    if (!host.property_bag_contains_0048e9f0(bag, name)) return fallback;
     Object record = host.property_bag_find_008f2260(bag, name);
     if (native_at<std::int32_t>(record, 0x04) == 1) return native_at<float>(record, 0x0C);
     return static_cast<float>(native_at<std::int32_t>(record, 0x0C));
@@ -926,6 +926,10 @@ bool property_bag_contains_0048e9f0(Seg7Host& host, Object bag, const char* name
     const bool found = host.property_map_find_borrowed_key_node_0043b8b0(bag + 4, key, slot) != nullptr;
     native_string_destroy_storage_0048cfc0(host, key);
     return found;
+}
+
+bool Seg7Host::property_bag_contains_0048e9f0(Object bag, const char* name) {
+    return cc13_seg7::property_bag_contains_0048e9f0(*this, bag, name);
 }
 
 // 0048DBD0.

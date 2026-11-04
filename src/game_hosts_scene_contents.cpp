@@ -3,6 +3,8 @@
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain361_switches.hpp"
+#include "bsp/wire_goal4_chain384_switches.hpp"
+#include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
@@ -818,6 +820,56 @@ void merge_group_into(const PropertyLibrary& library, const std::string& name,
     merge_property_block(bag, group->block, false);
     }
 }
+
+// 0077E857 calls 0048F5D0 on the descriptor's merged creation bag. Borrow the
+// parser's actual bag and project only the two record fields the body reads:
+// type at +04h and its retained payload at +0Ch. The parser owns the key lookup;
+// no native hash-table layout or Original class ABI is claimed by this view.
+class SceneResourceUsageLookup final : public bsp::cc13_seg7::PropertyBagFloatLookupHost {
+public:
+    using Object = bsp::cc13_seg7::Object;
+    SceneResourceUsageLookup(const ScenePropertyBlock& bag, const PropertyLibrary& library,
+        const std::string& entity_name)
+        : bag_(bag), library_(library), entity_name_(entity_name) {}
+
+    Object bag() const noexcept {
+        return reinterpret_cast<Object>(const_cast<ScenePropertyBlock*>(&bag_));
+    }
+    bool property_bag_contains_0048e9f0(Object bag, const char* name) override {
+        check_bag(bag);
+        return bag_.find(name) != nullptr;
+    }
+    Object property_bag_find_008f2260(Object bag, const char* name) override {
+        check_bag(bag);
+        const SceneProperty* property = bag_.find(name);
+        if (property == nullptr) throw std::logic_error("ResourceUsage lookup lost its property");
+        if (equal_insensitive(property->type_letter, "F") && property->has_float) {
+            record_[1] = static_cast<std::uint32_t>(ScenePropertyType::Float);
+            std::memcpy(&record_[3], &property->float_value, sizeof(float));
+        } else if (equal_insensitive(property->type_letter, "I") && property->has_integer) {
+            record_[1] = static_cast<std::uint32_t>(ScenePropertyType::Int);
+            std::memcpy(&record_[3], &property->integer_value, sizeof(std::int32_t));
+        } else {
+            const SceneEnumProperty value = scene_enum_property(bag_, name);
+            int numeric = 0;
+            if (!equal_insensitive(property->type_letter, "E") || !value.present
+                || !library_.resolve_enum(value, numeric)) {
+                throw std::runtime_error("unsupported ResourceUsage property: " + entity_name_);
+            }
+            record_[1] = static_cast<std::uint32_t>(ScenePropertyType::Enum);
+            std::memcpy(&record_[3], &numeric, sizeof(std::int32_t));
+        }
+        return reinterpret_cast<Object>(record_.data());
+    }
+private:
+    void check_bag(Object actual) const {
+        if (actual != bag()) throw std::logic_error("ResourceUsage lookup received another bag");
+    }
+    const ScenePropertyBlock& bag_;
+    const PropertyLibrary& library_;
+    const std::string& entity_name_;
+    std::array<std::uint32_t, 4> record_{};
+};
 
 bool retain_start_speed(const ScenePropertyBlock& bag, GameSceneEntityRecord& record) {
     const SceneProperty* prop = bag.find(kSceneUnitStartSpeedKey);
@@ -3534,6 +3586,13 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // across a Hidden/GenerateObject deferral, not a later Lua self field.
         // 0048F5D0 reads type1 as float and other numeric tags as int32.
         if (find_scene_unit_creator(klass->class_id) != nullptr) {
+            if constexpr (kWireGoal4Chain384Bound) {
+                // Evidence: 0048F5D0's export, reached at 0077E857 with FLDZ
+                // default; retain its result across delayed entity creation.
+                SceneResourceUsageLookup lookup(bag, owner.library, entity.name);
+                record.resource_usage_304 = bsp::cc13_seg7::property_bag_get_float_or_default_0048f5d0(
+                    lookup, lookup.bag(), "ResourceUsage", 0.0f);
+            } else {
             if (const SceneProperty* resource = bag.find("ResourceUsage")) {
                 if (equal_insensitive(resource->type_letter, "F") && resource->has_float) {
                     record.resource_usage_304 = resource->float_value;
@@ -3548,6 +3607,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
                     }
                     record.resource_usage_304 = static_cast<float>(numeric);
                 }
+            }
             }
         }
     }

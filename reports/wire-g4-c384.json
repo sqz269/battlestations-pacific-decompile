@@ -1,0 +1,111 @@
+{
+  "chain": 384,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain384Bound",
+  "picked": "Merged scene descriptor ResourceUsage scalar read",
+  "rows": [
+    {
+      "native": "0048f5d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneReaderBinding::instantiate_entity",
+      "evidence": "Original 0077E857 calls 0048F5D0 on the kind-1 creation descriptor with a FLDZ default; 0048F5EA..0048F624 chooses retained type-1 float or CVTSI2SS integer, otherwise the default.",
+      "state": "The merged parser-owned bag supplies presence and a view of the actual retained I/F payload or library-resolved E payload. The reconstructed getter writes the retained entity record's resource_usage_304, which entity publication copies into the unit row.",
+      "replacement": "The chain384 ON arm replaces the inline ResourceUsage conversion. The OFF arm retains the old code unchanged; no second read or conversion runs in the ON arm.",
+      "call_graph": "bsp::cc13_seg7::property_bag_get_float_or_default_0048f5d0 is reachable with one direct call at 101A856C from SceneReaderBinding::instantiate_entity in the checked Release build."
+    },
+    {
+      "native": "0048e9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneResourceUsageLookup::property_bag_contains_0048e9f0",
+      "reason": "The parser owns this bag's name map; the new callback supplies actual presence, but native hash-map/string-storage traversal is not bound on this path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship-director enable state",
+      "reason": "The existing path retains selected director-enable writes, not the complete controller snapshot and all getter state consumed by 007214C0."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot construction",
+      "reason": "The gun-bot runtime uses typed host state; a native base-constructor/descriptor binding and persistent compatible bot storage are still needed."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: torpedo-bot construction",
+      "reason": "The torpedo-bot runtime lacks the native 0072BBD0 base-constructor/descriptor binding and persistent 70h bot object."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::script_set_failure_008132c0",
+      "reason": "The Periscope arm only records the action; real class+394h shape, unit+1214h mast and collision-node state must be produced before applying the plan."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::warning_fire_failure",
+      "reason": "The native warning manager, channel callbacks, local-player globals and entity suppression map required by the full dispatcher are not supplied by this log-only site."
+    },
+    {
+      "native": "00984eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::shipyard_order",
+      "reason": "The stock-notice site lacks a live Seg62 warning/channel manager and its dispatch bindings."
+    },
+    {
+      "native": "00877b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::set_damaged_gfx_level_00819cc0",
+      "reason": "The site owns a separate level vector; the native model-group setter, unit layout and game/session publication required by 00877B00 are not bound."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: EntityTurnToEntity ship arm",
+      "reason": "The host fuses ship pose and motion state; no downstream native body-transform consumer accepts the converted 12-float matrix on this path."
+    },
+    {
+      "native": "00c56cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: EntityTurnToEntity ship arm",
+      "reason": "The script host has no native body/proxy/pending-transform binding; posing the existing fused motion state alone cannot supply 00C56CF0's required object graph."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: physics-shape action candidates",
+      "reason": "A live shape pointer and manifold-clear/world-lock bindings were not established for the script path."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "entity_route_slot still has no producer for entity+1ACh and returns -1, so a real 0..7 slot and scoring owner are missing."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: loaded_torpedo_barrels_00810e90",
+      "reason": "The available live loop needs a loaded-barrel count, whereas this body returns any-loaded; the original HUD sight-status consumers are not bound here."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/band_0071_cc13.cpp: leak_manager_flooded_fraction_0074fa80",
+      "reason": "Its sole original caller is the debug unit inspector, excluded by the single-player wiring scope."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed with all 3 test groups",
+    "build": "scripts/build.ps1 passed with all 3 test groups",
+    "wired_before": 9613,
+    "wired_after": 9614,
+    "built_reconstructed_addresses_called_before": 4553,
+    "built_reconstructed_addresses_called_after": 4554,
+    "reachability": "call_graph.py who/path 0048f5d0: one direct reachable call from the edited scene host through mission startup",
+    "limits": "Build and static executable reachability evidence only; no game execution or Original object/thiscall ABI equivalence claimed. Parser map lookups remain source callbacks."
+  }
+}
