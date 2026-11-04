@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/wire_goal4_chain442_switches.hpp"
 #include "bsp/wire_goal4_chain434_switches.hpp"
 #include "bsp/camera_look_at.hpp"
 #include "bsp/wire_goal4_chain427_switches.hpp"
@@ -186,6 +188,31 @@
 
 namespace bsp::game {
 namespace {
+
+// 00443090 selects these seven descriptor classes from the live Lua Type
+// (bsp.py show 00443090; factory branches in cc13_sweepA3.cpp). Their +18h
+// IsKindOf slots ignore ECX and test only the requested id, so the existing
+// typed bodies need no fabricated descriptor. 22h is the turning-gun CLASS
+// ancestor (00442E50 / 00442EE0 / 00442FA0), not an instance-class id.
+// The result below feeds 0072C6A0's gun-bot slot selection at load time.
+bool device_descriptor_type_is_kind(const std::string& type, std::int32_t kind) {
+    namespace classes = bsp::cc13_sweepA;
+    if (_stricmp(type.c_str(), "Rapid_Fixed_Slave_Gun") == 0)
+        return classes::rfs_gun_class_is_kind_of_00442db0(kind);
+    if (_stricmp(type.c_str(), "Rapid_Turning_Gun") == 0)
+        return classes::rt_gun_class_is_kind_of_00442e50(kind);
+    if (_stricmp(type.c_str(), "Single_Turning_Gun") == 0)
+        return classes::st_gun_class_is_kind_of_00442ee0(kind);
+    if (_stricmp(type.c_str(), "BombPlatform") == 0)
+        return classes::bomb_platform_class_is_kind_of_00442c70(kind);
+    if (_stricmp(type.c_str(), "MultiBombPlatform") == 0)
+        return classes::multiple_bomb_platform_class_is_kind_of_00442d00(kind);
+    if (_stricmp(type.c_str(), "Depth_Charge_Launcher") == 0)
+        return classes::depth_charge_launcher_class_is_kind_of_00442fa0(kind);
+    if (_stricmp(type.c_str(), "Catapult") == 0)
+        return classes::catapult_class_is_kind_of_00443010(kind);
+    return false; // 00443090 also has no class for an unknown Type.
+}
 
 // Reuse the native lane reductions on the loaded collision model's vertices
 // and retained bounds. bsp.py show 007AE330/007AE3E0 --asm: both read z/y/x
@@ -7496,11 +7523,17 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 // 006FE050). Read Type itself rather than infer it from Function.
                 const std::string device_type = lua.read_device_class_string(
                     gun.device_class, "Type");
+                if constexpr (bsp::kWireGoal4Chain442Bound) {
+                    const bool turning = device_descriptor_type_is_kind(device_type, 0x22);
+                    gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
+                        gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+                } else {
                 const bool turning = _stricmp(device_type.c_str(), "Rapid_Turning_Gun") == 0
                     || _stricmp(device_type.c_str(), "Single_Turning_Gun") == 0
                     || _stricmp(device_type.c_str(), "Depth_Charge_Launcher") == 0;
                 gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
                     gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+                }
             }
             if constexpr (bsp::kWireGoal4Chain434Bound) {
                 // 00443090: Depth_Charge_Launcher -> 00442F50 -> 006FE390,
