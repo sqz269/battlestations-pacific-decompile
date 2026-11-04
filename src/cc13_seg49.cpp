@@ -302,7 +302,7 @@ void recon_list_splice_all_00804150(ReconList& self, ReconList& source) noexcept
 
 // 008042B0, ABI: __fastcall(ECX = list) RET. Pops the head and frees the node (00BF65AC)
 // until the count is zero; payloads are not touched. The back edge is at 008042EC..008042F3.
-void recon_list_clear_008042b0(Seg49Host& host, ReconList& self)
+void recon_list_clear_008042b0(ReconListStorageHost& host, ReconList& self)
 {
     while (self.count != 0) {
         ReconNode* node = self.head;
@@ -334,7 +334,7 @@ namespace {
 
 // The node allocation 00804C30 and 00804E10 inline: operator new(0Ch), zeroed when non-null.
 // A null result is dereferenced afterwards, as in the image.
-ReconNode* new_recon_node(Seg49Host& host)
+ReconNode* new_recon_node(ReconListStorageHost& host)
 {
     auto* node = static_cast<ReconNode*>(host.operator_new_00bf681b(sizeof(ReconNode)));
     if (node != nullptr) {
@@ -361,7 +361,7 @@ void append_node(ReconList& self, ReconNode* node) noexcept
 }  // namespace
 
 // 00804C30, ABI: __thiscall(ECX = list, payload) RET 4.
-void recon_list_push_back_00804c30(Seg49Host& host, ReconList& self, void* payload)
+void recon_list_push_back_00804c30(ReconListStorageHost& host, ReconList& self, void* payload)
 {
     ReconNode* node = new_recon_node(host);
     node->payload = payload;
@@ -396,7 +396,7 @@ void recon_list_destroy_payloads_00804d20(Seg49Host& host, ReconList& self)
 
 // 00804E10, ABI: __thiscall(ECX = list, source list) RET 4. A fresh node per source node,
 // same payload; the source is untouched.
-void recon_list_copy_append_00804e10(Seg49Host& host, ReconList& self, const ReconList& source)
+void recon_list_copy_append_00804e10(ReconListStorageHost& host, ReconList& self, const ReconList& source)
 {
     for (ReconNode* it = source.head; it != nullptr; it = it->next) {
         void* payload = it->payload;

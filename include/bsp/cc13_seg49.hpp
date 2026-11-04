@@ -10,7 +10,8 @@
 // virtual slot they stand for. Routines the cc9 gameplay hosts already implement by behaviour
 // (00806840 and the other 008073C0 steps, 00805CF0) are recorded ledger-only and are not
 // reconstructed again here. New C++ interfaces, not drop-in binary replacements; nothing here is
-// bound into bsp_game.
+// bound into bsp_game except the node-only clear/push/copy operations, whose
+// allocation boundary is supplied by the chain-538 published recon-list owner.
 
 #ifndef BSP_CC13_SEG49_HPP
 #define BSP_CC13_SEG49_HPP
@@ -67,7 +68,16 @@ inline constexpr float kDetectionDefaultValue = 0.0f;      // 00D7A218
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine or virtual slot it stands for.
 // ---------------------------------------------------------------------------
-struct Seg49Host {
+// List-node storage is independent of the unit, renderer and archive services.
+// The published recon lists can bind their actual allocations without supplying
+// unrelated engine callbacks. Seg49Host remains a valid provider for all callers.
+struct ReconListStorageHost {
+    virtual ~ReconListStorageHost() = default;
+    virtual void* operator_new_00bf681b(std::size_t size) = 0;
+    virtual void free_00bf65ac(void* block) = 0;
+};
+
+struct Seg49Host : ReconListStorageHost {
     virtual ~Seg49Host() = default;
 
     // Globals the routines dereference (named by address).
@@ -246,14 +256,14 @@ void recon_slot_send_detection_levels_to_peer_00803e40(Seg49Host& host, Raw slot
 float unit_max_sensor_range_against_00803f30(Seg49Host& host, Raw unit, Raw target);
 void recon_list_splice_node_008040e0(ReconList& self, ReconList& source, ReconNode* node) noexcept;
 void recon_list_splice_all_00804150(ReconList& self, ReconList& source) noexcept;
-void recon_list_clear_008042b0(Seg49Host& host, ReconList& self);
+void recon_list_clear_008042b0(ReconListStorageHost& host, ReconList& self);
 inline constexpr std::uint32_t kReconDetectionRecordVtable = 0x00D08E74;
 void recon_detection_record_destruct_00804300(Seg49Host& host, Raw record);
 bool unit_sensors_detect_unit_00804350(Seg49Host& host, Raw unit, Raw target, std::uint32_t mask);
 bool unit_sensors_detect_point_00804620(Seg49Host& host, Raw unit, const float* point, std::uint32_t mask);
-void recon_list_push_back_00804c30(Seg49Host& host, ReconList& self, void* payload);
+void recon_list_push_back_00804c30(ReconListStorageHost& host, ReconList& self, void* payload);
 void recon_list_destroy_payloads_00804d20(Seg49Host& host, ReconList& self);
-void recon_list_copy_append_00804e10(Seg49Host& host, ReconList& self, const ReconList& source);
+void recon_list_copy_append_00804e10(ReconListStorageHost& host, ReconList& self, const ReconList& source);
 inline constexpr std::uint32_t kReconEntryVtable = 0x00D08E78;
 void* recon_entry_construct_00804e70(Seg49Host& host, Raw entry, void* unit, int level);
 void recon_detection_set_read_archive_00804f10(Seg49Host& host, Raw set, void* archive);
