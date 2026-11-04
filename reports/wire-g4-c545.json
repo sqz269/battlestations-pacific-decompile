@@ -1,0 +1,44 @@
+{
+  "goal": 4,
+  "chain": 545,
+  "slot": "g4-w5",
+  "base_head": "4440669555",
+  "switch": "bsp::game::kWireGoal4Chain545Bound",
+  "picked": "Loading-screen construction and singleton lifetime over the live menu screen",
+  "wired_before": 9864,
+  "wired_after": 9866,
+  "notes": [
+    "0057BFF0 and 0057C090 were already text-counted as wired at baseline; all five addresses now have called=true and one reachable built call site each.",
+    "The final readiness refresh classifies the existing 0057BEC0 report_loading_progress row as ready even though called=true. Its live calls remain; the final net text-count increase is two. An earlier intermediate scan reported 9867.",
+    "Replaced the four unused raw-only lifetime/constructor/destructor interfaces with one typed body per address; original calling conventions are documented, not claimed compatible.",
+    "The registered hook is a stable member of the SAME LoadingScreen used by progress, GUI element initialization and teardown. Lifetime access borrows GameSingletonHost's canonical raw 01090AA0 publication.",
+    "A finite CEF28C deletion binding validates the exact registered member and dispatches to the same destructor during canonical manager drain. Source storage is retained inside Impl until its normal C++ deletion.",
+    "Progress and end-loading now read the real source E194B4 publication, including reports raised during Init before the legacy created flag is set.",
+    "Added one focused lifetime check to the existing loading-config fixture because direct unregister plus member destruction and popped-owner shutdown are distinct lifetime paths.",
+    "No game launch, visual validation, native ABI compatibility or original FH3/SEH equivalence is claimed. The 25-Hz worker remains outside this packet."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and all four CTests passed",
+    "fixture": "cc462_loading_config includes constructor field/progress preservation, exact live-member registration, ordered normal retirement and canonical raw-manager drain",
+    "call_graph": "tools/call_graph.py plus who for all five addresses: REACHABLE, one call site each; constructor is called by MenuLoadingScreenHost::create_screen",
+    "readiness": "tools/wire_readiness.py --standins: all five rows wired, called=true, call_sites=1"
+  },
+  "rows": [
+    {"native": "0057c1c0", "status": "wired", "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::create_screen"},
+    {"native": "0057bff0", "status": "wired", "host_site": "src/frontend_seg19_21_cc13.cpp: loading_screen_construct_0057c1c0 called by MenuLoadingScreenHost::create_screen"},
+    {"native": "0057c090", "status": "wired", "host_site": "src/frontend_seg19_21_cc13.cpp: loading_screen_destruct_0057c2e0 called by MenuLoadingScreenHost::screen_destroy"},
+    {"native": "0057c2e0", "status": "wired", "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::screen_destroy and its canonical CEF28C deletion binding"},
+    {"native": "0057c230", "status": "wired", "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::destroy_loading_frontend_base"},
+    {"native": "00aa2b80", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh", "reason": "Loading gui_refresh remains record-only; its real GUI render-queue binding was not built in this lifetime packet."},
+    {"native": "00aa4040", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::start_render_worker", "reason": "Missing retained loading render-worker descriptor and 0057CA00 callback/context binding; the existing 25-Hz worker adapter remains record-only."},
+    {"native": "00689800", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager", "reason": "Missing persistent typed options-manager owner and base-registry construction path; the inspected creator still returns null."},
+    {"native": "00689d90", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen", "reason": "Missing live attract-screen manager/page/movie owner and idle-state consumers; the inspected creator still returns null."},
+    {"native": "00a2bd90", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: entity/director ai_group_forward_command adapters", "reason": "Missing real AI-group producer and command-forward receiver in the inspected command adapters; the entity adapter has no group."},
+    {"native": "004f1830", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target adapter", "reason": "Missing retained native command-target owner in this director adapter; make_command_target still records and returns zero."},
+    {"native": "0070db20", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: unit-group creation candidate", "reason": "Missing native group owner/member-storage producer in the inspected command adapter; no group-construction bridge was built in this packet."},
+    {"native": "008363e0", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: weapon-director construction candidate", "reason": "Missing native owner+28h endpoint and tick-parent controller graph identified by the previous skip; not built in this loading-screen packet."},
+    {"native": "00984800", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: WeaponDirector notify_command_target/report_target_event adapters", "reason": "Missing real manager/entity/target event binding; the inspected director adapters only record these notifications."},
+    {"native": "007465e0", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: LandFort fire path", "reason": "Missing real retained death-fire point-effect owner/provider; the inspected host records effects while this body requires +740/+744 effect lifetimes."},
+    {"native": "00744870", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp: LandFort effect synchronization path", "reason": "Missing live D1h effect-message producer/router in the inspected LandFort fire adapter; effect synchronization is still recorded."}
+  ]
+}

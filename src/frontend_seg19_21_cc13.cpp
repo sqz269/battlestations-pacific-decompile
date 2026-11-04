@@ -1,6 +1,7 @@
 // Segments 19 and 21, cc13-seg19-21. Evidence and per-function notes:
 // docs/CC13_SEG19_21.md. Status: reconstructed and Win32 build-tested only.
 #include "bsp/frontend_seg19_21_cc13.hpp"
+#include "bsp/frontend_state_machine.hpp"
 
 #include <cstring>
 #include <initializer_list>
@@ -295,26 +296,33 @@ void loading_progress_compute_fraction_0057bf10(void* screen, std::int32_t phase
 
 // 0057BFF0 __thiscall(base = screen+8h), RET: publish [00E194B4] = screen and
 // register base with the lifetime manager, under its lock.
-void* loading_screen_register_singleton_0057bff0(void* base, Seg19_21Host& host) {
-    raw(base).at<std::uint32_t>(0x0) = 0x00CEF260u;
-    void* cs = lifetime_lock(host);
-    void* screen = static_cast<std::uint8_t*>(base) - 8;
-    *static_cast<void**>(host.global(kLoadingScreen)) = screen;
-    host.singleton_register_00bd0c30(host.singleton_manager_00415350(), screen != nullptr ? base : nullptr);
-    lifetime_unlock(host, cs);
-    return base;
+__declspec(noinline) LoadingScreen::LifetimeHook* loading_screen_register_singleton_0057bff0(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context) {
+    // bsp.py show 0057BFF0 --asm, 0057C04B..61: publish, capture/push the
+    // member BEFORE the second manager getter; leave the first section.
+    screen.lifetime.native_vtable = 0x00CEF260u;
+    CapturedSoundLifetimeSection section(context.lifetime);
+    context.singleton = &screen;
+    auto* const registered = context.singleton ? &context.singleton->lifetime : nullptr;
+    auto manager = context.lifetime.get_manager_00415350();
+    manager.register_object(registered);
+    return &screen.lifetime;
 }
 
 // 0057C090 __thiscall(base), RET: unregister and clear [00E194B4].
-void loading_screen_singleton_destruct_0057c090(void* base, Seg19_21Host& host) {
-    raw(base).at<std::uint32_t>(0x0) = 0x00CEF260u;
-    void* cs = lifetime_lock(host);
-    void*& screen = *static_cast<void**>(host.global(kLoadingScreen));
-    void* registered = screen == nullptr ? nullptr : static_cast<std::uint8_t*>(screen) + 8;
-    host.singleton_unregister_00bcfca0(host.singleton_manager_00415350(), registered);
-    screen = nullptr;
-    lifetime_unlock(host, cs);
-    raw(base).at<std::uint32_t>(0x0) = 0x00CE3818u;
+__declspec(noinline) void loading_screen_singleton_destruct_0057c090(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context) {
+    // bsp.py show 0057C090: unregister CURRENT global+8, not necessarily self.
+    screen.lifetime.native_vtable = 0x00CEF260u;
+    {
+        CapturedSoundLifetimeSection section(context.lifetime);
+        // 0057C0E1..FE captures current global+8 BEFORE the second getter.
+        auto* const registered = context.singleton ? &context.singleton->lifetime : nullptr;
+        auto manager = context.lifetime.get_manager_00415350();
+        manager.unregister_object(registered);
+        context.singleton = nullptr;
+    }
+    screen.lifetime.native_vtable = 0x00CE3818u;
 }
 
 // 0057C1A0 __fastcall(ECX = phase, float fraction), RET 4.
@@ -324,31 +332,35 @@ void loading_progress_report_phase_0057c1a0(std::int32_t phase, float fraction, 
 }
 
 // 0057C1C0 __thiscall(screen), RET: LoadingScreen constructor.
-void* loading_screen_construct_0057c1c0(void* screen, Seg19_21Host& host) {
-    Raw s = raw(screen);
-    host.frontend_construct_004f7180(screen);
-    loading_screen_register_singleton_0057bff0(s.p + 0x8, host);
-    s.at<std::uint32_t>(0x8) = 0x00CEF28Cu;
-    s.at<std::uint32_t>(0x0) = 0x00CEF264u;
-    s.at<std::uint32_t>(0x38) = 0;
-    s.at<std::uint32_t>(0x3C) = 0;
-    s.at<std::uint32_t>(0x44) = 0;
-    s.at<std::uint32_t>(0x40) = 1;
-    return screen;
+__declspec(noinline) LoadingScreen* loading_screen_construct_0057c1c0(
+    LoadingScreen& screen, LoadingScreenLifetimeContext& context) {
+    // bsp.py show 0057C1C0: constructor deliberately leaves GUI elements and
+    // +2C/+30 progress untouched. Those belong to the following virtual Init.
+    construct_front_end_screen_004f7180(screen.base);
+    loading_screen_register_singleton_0057bff0(screen, context);
+    screen.lifetime.native_vtable = 0x00CEF28Cu;
+    screen.native_vtable = 0x00CEF264u;
+    screen.field_38 = 0;
+    screen.field_3c = 0;
+    screen.field_44 = 0;
+    screen.field_40 = 1;
+    return &screen;
 }
 
 // 0057C230: MOV EAX, 59h; RET.
-std::int32_t loading_screen_get_screen_id_0057c230() noexcept { return 0x59; }
+__declspec(noinline) std::int32_t loading_screen_get_screen_id_0057c230() noexcept { return 0x59; }
 
 // 0057C2E0 __thiscall(screen), RET: LoadingScreen destructor.
-void loading_screen_destruct_0057c2e0(void* screen, Seg19_21Host& host) {
-    Raw s = raw(screen);
-    s.at<std::uint32_t>(0x0) = 0x00CEF264u;
-    s.at<std::uint32_t>(0x8) = 0x00CEF28Cu;
-    host.gui_remove_and_destroy_page_00aa31f0(host.gui_manager_004c12b0(), s.at<std::uint32_t>(0xC));
-    raw(global_ptr(host, kGame)).at<std::uint8_t>(0x719E) = 1;
-    loading_screen_singleton_destruct_0057c090(s.p + 0x8, host);
-    host.frontend_destruct_004f71a0(screen);
+__declspec(noinline) void loading_screen_destruct_0057c2e0(LoadingScreen& screen,
+    LoadingScreenLifetimeContext& context, LoadingScreenDestructionHost& host) {
+    // bsp.py show 0057C2E0: leaf identities, remove page, game+719E write,
+    // singleton member destruction, then front-end registry base destruction.
+    screen.native_vtable = 0x00CEF264u;
+    screen.lifetime.native_vtable = 0x00CEF28Cu;
+    host.remove_loading_page();
+    host.mark_loading_screen_destroyed();
+    loading_screen_singleton_destruct_0057c090(screen, context);
+    host.destroy_loading_frontend_base();
 }
 
 // 0057CF10 __thiscall(screen, children), RET 4: push the page slot +0Ch.
