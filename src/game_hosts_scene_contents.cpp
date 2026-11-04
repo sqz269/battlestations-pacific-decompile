@@ -5,6 +5,7 @@
 #include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal4_chain384_switches.hpp"
 #include "bsp/wire_goal4_chain392_switches.hpp"
+#include "bsp/wire_goal4_chain430_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -30,6 +31,7 @@
 #include "bsp/game_native_physical_pool.hpp"
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
+#include "bsp/native_enum_map_lifetime.hpp"
 #include "bsp/native_enum_registry_scalar_delete.hpp"
 #include "bsp/native_enum_scalar_delete.hpp"
 #include "bsp/native_enum_symbol_reader.hpp"
@@ -351,7 +353,16 @@ public:
           declaration_{strings_.raw_context(), tables_.symbol_pool(),
               strings_.enum_empty_00e186ed(), strings_.query_empty_00e17654()} {
         // 004D3040 builds the registry immediately before loading universe/library.
-        initialize_native_scene_enum_registry_storage_004d3069(&registry_);
+        if constexpr (kWireGoal4Chain430Bound) {
+            // bsp.py show 004D25F0 --asm: the complete constructor writes the
+            // same CE78BC/CE7514 phase words, zero count and 64 bucket heads as
+            // the factory's 004D3069 inline initializer. Reuse that body on the
+            // actual fresh 10Ch library registry; no second initialization.
+            // This is Source reuse, not an Original call at the factory site.
+            initialize_native_scene_enum_registry_storage_004d25f0(&registry_);
+        } else {
+            initialize_native_scene_enum_registry_storage_004d3069(&registry_);
+        }
     }
     ~LibraryNativeEnums() {
         // Same nested registry -> CEnum -> keys/nodes release as 004D2620.
