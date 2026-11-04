@@ -172,10 +172,26 @@
     "entry_reachable_reconstructed_addresses_switch_on": 4737,
     "new_entry_reachable_calls": 4
   },
+  "merge_validation": {
+    "merged_main": "1972acc1f6ee5aed2005e9891fb3bbe312aec140",
+    "conflict": "Only the include block in src/unit_kind_query.cpp conflicted; retain both native plane headers, both native root headers and switches 383/444/448.",
+    "preserved_behavior": "Main's nine plane cases remain ahead of the existing ship/root dispatcher; all four chain448 root/mover cases remain in their original fallback arm.",
+    "ledger_or_cmake_conflicts": "None; merge_resolve.py was not needed.",
+    "switch_off_build": "scripts/build.ps1 and both CTests passed after the merge",
+    "switch_on_build": "scripts/build.ps1 and both CTests passed after the merge; chain448 restored to true",
+    "class_query_probe": "All 88 table rows checked with 103 signed/boundary queries and seven inherited dynamic IDs per query: 9064 table comparisons passed with chain448 OFF and ON; local probe only",
+    "entry_reachable_reconstructed_addresses_switch_off": 4748,
+    "entry_reachable_reconstructed_addresses_switch_on": 4752,
+    "call_graph": "All four chain448 bodies and all nine chain444 plane bodies retain one entry-reachable direct call from bsp::unit_is_kind_of",
+    "readiness": "wire_readiness.py --standins passed; all four chain448 address rows report called=true and call_sites=1",
+    "readiness_text_wired_after_merge": 9707,
+    "parent_block_comparison": "The plane dispatcher matches MERGE_HEAD and the root/fallback dispatcher matches the original worker HEAD exactly; all seven required headers appear once",
+    "pc24_lint": "0 findings, 0 allowed, 2 files for --diff origin/main...HEAD"
+  },
   "limits": [
     "Build, table-equivalence probe and static entry reachability are verified; the game was not run and no runtime class-frequency claim is made.",
     "The adapter preserves the existing class-query API; it does not establish native scene-object, camera, vtable, constructor or lifetime integration.",
     "No new address-suffixed body, ledger row or Ghidra mutation was required.",
-    "Chain444 also changes unit_kind_query.cpp and was reported in review; its owner was notified before this small separate fallback-arm edit."
+    "The chain444 include conflict is resolved while preserving its separate plane dispatch; see merge_validation for the refreshed checks."
   ]
 }

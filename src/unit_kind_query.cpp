@@ -11,7 +11,10 @@
 #include "bsp/native_ship_kind.hpp"
 #include "bsp/native_entity_root_kind.hpp"
 #include "bsp/native_entity_kind_4c_4e.hpp"
+#include "bsp/native_plane_kind.hpp"
+#include "bsp/native_plane_derived_kind.hpp"
 #include "bsp/wire_goal4_chain383_switches.hpp"
+#include "bsp/wire_goal4_chain444_switches.hpp"
 #include "bsp/wire_goal4_chain448_switches.hpp"
 
 namespace bsp {
@@ -281,6 +284,60 @@ const UnitKindClassBody* unit_kind_body_for_class(int class_id) noexcept {
 }
 
 bool unit_is_kind_of(int class_id, int literal) noexcept {
+    if (class_id >= 0x0f && class_id <= 0x17) {
+        if constexpr (kWireGoal4Chain444Bound) {
+            // Source adapter, not an original-layout plane: callers supply the
+            // owning id from their live unit/device state. As for chain383's
+            // ships, populate only the sole field these raw leaves can read.
+            // bsp.py show <address> --asm for all nine entries: fixed ancestor
+            // compares, then one DWORD [ECX+C4h] compare, full EAX 0/1, RET 4.
+            // Each owning id is already a fixed accepted word, so this final
+            // read adds no answer to the former table-only API, including for
+            // negative/out-of-catalog queries. The unread prefix supplies no
+            // fabricated scene/vtable state; the aligned cell lives throughout
+            // the synchronous call. No native world/object ABI is claimed.
+            struct PlaneKindReceiver {
+                std::uint8_t unread_prefix[0xc4];
+                std::int32_t class_id_c4;
+            };
+            static_assert(offsetof(PlaneKindReceiver, class_id_c4) == 0xc4);
+            static_assert(sizeof(PlaneKindReceiver) == 0xc8);
+            PlaneKindReceiver receiver;
+            receiver.class_id_c4 = class_id;
+            const auto query = static_cast<std::uint32_t>(literal);
+            switch (class_id) {
+            case 0x0f:
+                return native_plane_is_kind_0074e400(&receiver, nullptr, query) != 0;
+            case 0x10:
+                return native_plane_derived_is_kind_007d77f0(&receiver, nullptr, query) != 0;
+            case 0x11:
+                return native_plane_derived_is_kind_009535c0(&receiver, nullptr, query) != 0;
+            case 0x12:
+                return native_plane_derived_is_kind_00953530(&receiver, nullptr, query) != 0;
+            case 0x13:
+                return native_plane_derived_is_kind_007dda80(&receiver, nullptr, query) != 0;
+            case 0x14:
+                return native_plane_derived_is_kind_0074e480(&receiver, nullptr, query) != 0;
+            case 0x15:
+                return native_plane_derived_is_kind_0084c9f0(&receiver, nullptr, query) != 0;
+            case 0x16:
+                return native_plane_derived_is_kind_0074e4e0(&receiver, nullptr, query) != 0;
+            case 0x17:
+                return native_plane_derived_is_kind_009534a0(&receiver, nullptr, query) != 0;
+            }
+        } else {
+        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+        if (body == nullptr) {
+            return false;
+        }
+        for (std::size_t i = 0; i < body->accept_count; ++i) {
+            if (body->accepts[i] == literal) {
+                return true;
+            }
+        }
+        return false;
+        }
+    }
     if constexpr (kWireGoal4Chain383Bound) {
         // This API receives the live owning class id, not a native object.
         // GameUnitsHost::unit_is_kind_of and the other gameplay callers already

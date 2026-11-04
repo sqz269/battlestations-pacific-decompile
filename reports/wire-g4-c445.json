@@ -1,0 +1,154 @@
+{
+  "chain": 445,
+  "branch": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain445Bound",
+  "measurements": {
+    "wire_readiness_wired_before": 9691,
+    "wire_readiness_wired_after": 9692,
+    "target_called_after": true,
+    "target_call_sites_after": 1,
+    "note": "The before/after total is wire_readiness's source wiring count; executable entry reach is separately verified for the target address."
+  },
+  "rows": [
+    {
+      "native": "00b29e60",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp::GameNativeRendererApplication::change_presentation_mode, called by src/game_profile_load.cpp::QuickSettingsApplyHost::renderer_change_presentation_mode through the src/game_hosts.cpp settings sink",
+      "evidence": "008D6092 passes the live profile width, height, fullscreen, multisample, vsync and subsystem-change flag; 00B29F43..00B29FBC chooses recreation versus the shared reset-pending byte; 00B29FC2..00B29FEE retains the native dimension/gamma publication.",
+      "state": "The application's existing renderer, DeviceGraph::recreation and Reset's actual_pending_0108d4b8 alias. No new renderer, settings values, gamma provider or reset publication.",
+      "call_graph": "REACHABLE: one call site at 1030f8a4 from GameNativeRendererApplication::change_presentation_mode; path reaches GameStartupHost::run_initialize_phases and WinMainCRTStartup."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No missing executable call: the baseline already reaches the enum-symbol constructor through SceneNumericPropertyMerge."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "No missing executable call: the baseline already reaches native property-bag merging through SceneNumericPropertyMerge."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::SetSelectedUnit tail and ForceSelectUnit binding",
+      "reason": "Missing a live unit-pick screen selection-vector owner and its two input-context bindings; current paths only record the reset."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRowsBinding::animation_interval",
+      "reason": "Missing a live WeaponInfo animation/ticker owner; weapon_animation returns a recorded zero handle."
+    },
+    {
+      "native": "0042e180",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp::mover_build_frustum_planes_0042e180",
+      "reason": "Only unreferenced original thunks call this mover-frustum path; no single-player caller was established."
+    },
+    {
+      "native": "007b8450",
+      "status": "skipped",
+      "host_site": "src/cc13_seg47.cpp::plane_clear_flag_904_007b8450",
+      "reason": "Missing a live owner/producer and matching host call site for the native plane +904h flag."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::defend_think_00a28a60",
+      "reason": "No missing executable call: the baseline already calls the defend-member predicate with live kind and team-set answers."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp planner class-pair scoring",
+      "reason": "Missing an identified live producer/owner for the mode-specific class-pair row table at the proposed host site."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp planner powerup scoring",
+      "reason": "Missing a complete live PowerupUnitInputs adapter for the per-unit scoring operands."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp AI tuning mode selection",
+      "reason": "Missing the live eight-slot activity input for the native first-active-party query; the current tuning path still supplies its documented difficulty substitute."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp group candidate-score lists",
+      "reason": "The candidate-score list serves an unreachable debug text overlay; skip debug-only state."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp group candidate-score lists",
+      "reason": "The chosen-record mark serves an unreachable debug text overlay; skip debug-only state."
+    },
+    {
+      "native": "00b2f4b0",
+      "status": "skipped",
+      "host_site": "src/game_native_renderer_frame.inc::FrameGraph / GameNativeRendererApplication::end_frame",
+      "reason": "Missing a real screenshot/save-header request producer; the live default end-frame path uses 00B2F4A0."
+    },
+    {
+      "native": "0093fd00",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp::copy_construct_sound_sample_options_0093fdf0",
+      "reason": "Missing an established live caller with actual native sample-option array headers; the typed sound projection cannot be passed as raw storage."
+    },
+    {
+      "native": "00876020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp tick-subnode attachment",
+      "reason": "Missing an identified live attachment call with the actual receiver, incoming-node slot and matching pending-registry/manager publications."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::clear_user_path_points_slot_0071f5d0",
+      "reason": "No live clear-user-path caller with its owning DirectorQueue was established during this chain."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::entity_from_message_nonzero_00720fe0",
+      "reason": "No single-player caller with the matching live message index and ObjectHandleTables was established during this chain."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_init_00721070",
+      "reason": "No live descriptor-owner initialization site was established during this chain; the descriptor builders remain a separate packet."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp director state notifications",
+      "reason": "No single-player snapshot consumer with both live command-target descriptors was established during this chain."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp director snapshots",
+      "reason": "No single-player snapshot consumer with the complete live controller state and three unit getter operands was established during this chain."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 build and all three CTest suites passed",
+    "call_graph": "tools/call_graph.py and who/path 00b29e60 confirm an executable call reachable from the entry",
+    "float_math": "No float arithmetic or reconstructed native body changed",
+    "runtime": "Game was not run"
+  },
+  "limitations": [
+    "This wires the existing presentation-mode body; it does not complete all video settings application.",
+    "The preceding size-dependent target-release callback 00B0FC00, platform window-mode callback and following post-effect rebuild callback 00B107F0 remain unbound.",
+    "The existing renderer-current-resolution callback still returns the settings size rather than the native renderer size.",
+    "Live fullscreen/windowed transitions, D3D reset/recreation and post-update display behavior remain untested."
+  ]
+}

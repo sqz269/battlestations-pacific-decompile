@@ -73,6 +73,10 @@ struct GameProfileSettingsSinks {
     std::function<bool(std::uint32_t mask, float volume)> apply_sound_class_levels;
     // 008D5B71/008D5B80: 00B1FFB0 on the actual renderer [00F8D394].
     std::function<bool(std::uint32_t word)> store_renderer_texture_detail_bias;
+    // 008D6092 -> 00B29E60, using the application's actual renderer/device
+    // recreation graph. Empty before chain 445 or without a renderer owner.
+    std::function<bool(int width, int height, bool fullscreen, int sample_count,
+        bool vsync, bool force)> change_renderer_presentation_mode;
     // 008D5686/008D5C85: 004C1710's get-or-create of the 18h media manager 00F8AEF8.
     std::function<void*()> media_manager;
     // Chain 144 borrows the already initialized sound/configuration owners.

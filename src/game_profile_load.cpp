@@ -35,6 +35,7 @@
 #include "bsp/wire_goal2_chain90_switches.hpp"
 #include "bsp/wire_goal2_chain144_switches.hpp"
 #include "bsp/wire_goal4_chain302_switches.hpp"
+#include "bsp/wire_goal4_chain445_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -483,8 +484,21 @@ public:
     void renderer_release_size_dependent_targets() override {
         missing("renderer_release_size_dependent_targets", "00b0fc00");
     }
-    void renderer_change_presentation_mode(int, int, bool, int, bool, bool) override {
-        missing("renderer_change_presentation_mode", "00b29e60");
+    void renderer_change_presentation_mode(int width, int height, bool fullscreen,
+        int sample_count, bool vsync, bool force) override {
+        if constexpr (kWireGoal4Chain445Bound) {
+            // 008D6092: forward the settings operands without replacing them
+            // with current dimensions or suppressing a requested reset.
+            if (!sinks_.change_renderer_presentation_mode ||
+                !sinks_.change_renderer_presentation_mode(width, height, fullscreen,
+                    sample_count, vsync, force)) {
+                missing("renderer_change_presentation_mode", "00b29e60");
+                return;
+            }
+            log_.implemented("QuickSettingsApply::renderer_change_presentation_mode", "00b29e60");
+        } else {
+            missing("renderer_change_presentation_mode", "00b29e60");
+        }
     }
     void platform_window_set_mode(bool, int, int) override {
         missing("platform_window_set_mode", "0109cf04+0ch");
