@@ -1,0 +1,31 @@
+{
+  "chain": 356,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "kWireGoal4Chain356Bound",
+  "switch_header": "include/bsp/wire_goal4_chain356_switches.hpp",
+  "summary": "Gun destroyed-failure set/clear (68h / 69h, flags 7 from 0072A054 / 0072A154) also travel through their copies (00728F20 / 00728FA0 constructors, the shared 006D2F20 / 006D1550 scalar codec, IsType 00728F70 / 00728FF0) and the same 0072D830 switch (vtable[1C8h] 0072B5A0, vtable[1CCh] 007280A0). Two further single-player session messages that 0077C2A0 routes to the local queue now travel through their rebuilt copies: MT_GUN_FIRE (ADh, flags 1 from 0072D290 / 0084C625) via 006E3940 / 006E39B0 / 006E39E0 and the gun switch 0072D830, whose ADh arm (vtable[1DCh] FireIfReady) now gates the gunnery pump's FireIfReady; MT_PLANE_DISAPPEAR (C7h, flags 5 from 007CE74F) via 00762B20 / 00762BE0 / 00762C30, whose copy's +20h holder id selects the holder's air-ops block (registry entry bound to id = unit index + 1). Narrow host bases split out (no new bodies): Seg33aGunFireMessageHost from Seg33aHost, GunNetworkMessageHost from Cc13Front3Host. Route-flag survey: 0077C2A0 drops flags exactly 4 unless session mode is 1, so D5h and 95h never reach the local queue in single player.",
+  "rows": [
+    {"native": "006E3940", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_fire_ad (from src/game_hosts_gunnery.cpp FireRequestBinding::send_fire_message_0ad)"},
+    {"native": "006E39B0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_fire_ad"},
+    {"native": "006E39E0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_fire_ad"},
+    {"native": "0072D830", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_fire_ad (copy dispatch; ADh arm gates FireIfReady in game_hosts_gunnery.cpp)"},
+    {"native": "00728F20", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (from src/game_hosts_gunnery.cpp GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0)"},
+    {"native": "00728F70", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (IsType for the 00780120 ladder and 0072B5A0's 68h gate)"},
+    {"native": "00728FA0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (from src/game_hosts_gunnery.cpp GameGunneryHost::Impl::gun_full_health_destroyed_stop_0072a0d0)"},
+    {"native": "00728FF0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (IsType for the 00780120 ladder and 007280AC's 69h gate)"},
+    {"native": "00762B20", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_plane_disappear_c7 (from src/game_hosts_units.cpp GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0)"},
+    {"native": "00762BE0", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_plane_disappear_c7"},
+    {"native": "00762C30", "status": "wired", "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_plane_disappear_c7"},
+    {"native": "007642E0", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp capture tick (006F6760)", "reason": "D5h is routed with 0077C2A0 flags 4 (006F707D); flags exactly 4 is dropped unless game+1FE4h == 1, so single player never queues it (also 006F26B0 / 006F2700 / 006F29D0)."},
+    {"native": "006F29D0", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp capture tick", "reason": "D5h receiver: the message is never delivered in single player (flags 4 at 006F707D); MP host/peer only."},
+    {"native": "00760E90", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp transport_launch_craft_008206f0", "reason": "95h is routed with 0077C2A0 flags 4 (00821E13), dropped outside session mode 1; the arm store unit+1124h is already done by the sender (00821DC9). Also 00760F20 / 00760F80."},
+    {"native": "00761590", "status": "skipped", "host_site": "src/game_hosts_gunnery.cpp session_route_failure_cleared", "reason": "9Bh is local (flags 7, 0093C676) but its arm 0093AA90 only creates/stops a point effect on the unit's scene node +4A4h; the host has no section effect slots or point effects (00867B10 / 008689C0 recorded). Also 00761630 / 007616A0 / 0093AA90 / 0093A2C0."},
+    {"native": "0075A690", "status": "skipped", "host_site": "src/game_hosts_units.cpp issue_unit_order_record_00816a40", "reason": "8Eh helmsman control is sent only when game+1FE4h == 2 (00816A69), an MP client."},
+    {"native": "0075A380", "status": "skipped", "host_site": "src/ai_command_tick.cpp 00A11070 / 00A11690", "reason": "78h formation set goes to peers only (0077C880 -> 0077C7B0); single player has none."},
+    {"native": "0075AE10", "status": "skipped", "host_site": "008528B0 SetDepthLevel", "reason": "A2h dip/rise sync is broadcast with 0077C7B0 to peers, not routed locally."},
+    {"native": "00763B40", "status": "skipped", "host_site": "cc13_paratrooper_round.cpp 007AB230", "reason": "71h paratrooper landing pos is sent only when game+1FE4h == 1 (MP host) and +218Ch clear."},
+    {"native": "0075AF00", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp approach landing mode 3 (009F2304..009F2328)", "reason": "A5h is local (flags 7) but carries the pad's 13-bit network id (+1Ch) and the building's (+1Eh); the host's landing pads have no entity id to resolve the copy back to (also 00749D90 / 00749E10 / 00749E40 / 0074B570)."},
+    {"native": "0075EB40", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp session_broadcast_blackout_0076d310", "reason": "2Bh blackout goes through 00784790 BroadcastExcept, reached only at session mode 1; MP only."}
+  ]
+}

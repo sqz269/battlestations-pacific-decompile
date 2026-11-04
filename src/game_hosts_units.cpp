@@ -25,6 +25,7 @@
 #include "bsp/wire_goal4_chain333_switches.hpp"
 #include "bsp/wire_goal4_chain338_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
+#include "bsp/wire_goal4_chain356_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -3786,6 +3787,9 @@ struct GameUnitsHost::Impl {
     unsigned long long stock_return_sends{0}, stock_return_adds{0}, stock_return_no_deck{0};
     unsigned long long stock_return_no_squadron{0}, stock_return_slot_returns{0};
     unsigned long long stock_return_site_leaves{0}, stock_return_destroys{0};
+    // Goal 4 chain 356: C7h copies made, and returns whose holder fell back to
+    // the +BF4h index (no owner id, or no block bound to the copy's id).
+    unsigned long long stock_return_c7h_copies{0}, stock_return_c7h_index_holder{0};
     // Packet cc13-landc.
     unsigned long long flight_state_notifies{0}, stock_return_destroy_draws{0};
     unsigned long long combat_death_destroy_draws{0};
@@ -20533,7 +20537,36 @@ void GameUnitsHost::Impl::plane_stock_return_c7h_007cc8b0(GameUnitSlot& p) {
     const std::size_t di = p.plane_contact_deck_bf4 != 0 ? p.plane_contact_deck_bf4 - 1u
                                                          : static_cast<std::size_t>(-1);
     bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
-    bsp::AirOpsDeck* deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
+    bsp::AirOpsDeck* deck = nullptr;
+    if constexpr (bsp::kWireGoal4Chain356Bound) {
+        // Goal 4 chain 356. 007CE6ED..007CE735 stores the holder owner's id
+        // ([[[plane+BF4h]+4]+7Ch]+174h; a unit's +174h is its index + 1 here)
+        // at +20h of the C7h message, and 0077C2A0 flags 5 queues 0076E520's
+        // rebuilt copy (00762B20, 00762BE0, 00768530 case C7h 00762B20,
+        // 00762C30). 007CCFA0 case C7h resolves the copy's +20h (007BA890) and
+        // hands that holder to 007CC8B0, whose stock add reaches the holder's
+        // block: the registry entry bound to that id. The holder is +BF4h's
+        // landing deck; its owner index past 12 bits, or an id no block is bound
+        // to, keeps the index lookup (counted).
+        const std::size_t owner = di < landing_decks.size() ? landing_decks[di].owner
+                                                            : static_cast<std::size_t>(-1);
+        if (owner != static_cast<std::size_t>(-1) && owner + 1u <= 0xfffu) {
+            const bsp::HostSessionMessages::PlaneDisappearCopy copy =
+                commands.session_messages().queue_plane_disappear_c7(
+                    static_cast<std::uint16_t>(owner + 1u));
+            ++stock_return_c7h_copies;
+            done("Plane::disappear_copy_00762c30", 0x00762c30u);
+            if (copy.type == 0xc7u) {
+                deck = decks.find_mutable_by_entity_id(static_cast<int>(copy.holder_id));
+            }
+        }
+        if (deck == nullptr) {
+            ++stock_return_c7h_index_holder;
+            deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
+        }
+    } else {
+    deck = di < decks.size() ? decks.mutable_at(di) : nullptr;
+    }
     bsp::PlaneSquadronHostRecord* sq =
         bsp::plane_squadron_registry().find_by_member_unit(p.process_index);
     int stock_after = -1;
@@ -51634,6 +51667,10 @@ void GameUnitsHost::report() {
         host.stock_return_sends, host.stock_return_adds, host.stock_return_no_deck,
         host.stock_return_no_squadron, host.stock_return_slot_returns,
         host.stock_return_site_leaves);
+    host.log.notef("summary plane disappear C7h copies bound=%d copies=%llu index_holder=%llu "
+        "(00762B20 / 00762BE0 / 00762C30, goal 4 chain 356)",
+        bsp::kWireGoal4Chain356Bound ? 1 : 0, host.stock_return_c7h_copies,
+        host.stock_return_c7h_index_holder);
     host.log.notef("summary free flight stall force bound=%d steps=%llu kicks=%llu (007DC830 -> "
         "007DAFD0, packet cc9_p14_stall_force)", Impl::kFreeFlightStallForceBound ? 1 : 0,
         host.stall_force_steps, host.stall_force_kicks);

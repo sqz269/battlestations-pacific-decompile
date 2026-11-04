@@ -16,6 +16,7 @@
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
+#include "bsp/native_session_message_tags_103_to106.hpp"
 #include "bsp/cc13_seg33b.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
@@ -25,6 +26,10 @@
 #include "bsp/wire_goal4_chain260_switches.hpp"
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
+#include "bsp/band_006b_cc13.hpp"
+#include "bsp/cc13_front3.hpp"
+#include "bsp/cc13_seg33a.hpp"
+#include "bsp/wire_goal4_chain356_switches.hpp"
 #include <cfloat>
 #include <cmath>
 #include <cstddef>
@@ -102,6 +107,14 @@ struct HostSessionMessages::Image {
                                                  &read_scale_00d7a348};
     NativeSessionMessage107Profile profile107{context98};
     NativeSessionMessage108Profile profile108{context98};
+    // Goal 4 chain 356: 68h / 69h (sessions 104 / 105) share that scalar
+    // codec (vtables 00CFDE64 / 00CFDE78: 00729050 / 00729070 delete, 006D2F20
+    // write, 006D1550 read, 00728F70 / 00728FF0 IsType, 004499C0); their
+    // constructors take the 103..106 context, the same scalar context plus
+    // 00D7A248.
+    NativeSessionMessage103To106Context context104{context98, &maximum_00d7a248};
+    NativeSessionMessage104Profile profile104{context104};
+    NativeSessionMessage105Profile profile105{context104};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
@@ -180,7 +193,14 @@ struct HostSessionMessages::Image {
         // 004499C0.
         std::uint32_t slots_00d03310[5]{0x00760650u, 0x00760550u, 0x007605a0u, 0x00760520u,
                                         0x004499c0u};
+        // Goal 4 chain 356. C7h 00D0352C (bsp.py ghidra bytes 00D0352C --length
+        // 24, bsp.gpr's /battlestationspacific.exe): 00762BC0 scalar delete,
+        // 00762BE0 write, 00762C30 read, 00762B90 IsType, 004499C0.
+        std::uint32_t slots_00d0352c[5]{0x00762bc0u, 0x00762be0u, 0x00762c30u, 0x00762b90u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            // Only queue_plane_disappear_c7 constructs a C7h message.
+            if (image_address == 0x00d0352cu) return slots_00d0352c;
             if constexpr (kWireGoal4Chain343Bound) {
                 if (image_address == 0x00d033c4u) return slots_00d033c4;
                 if (image_address == 0x00d033d8u) return slots_00d033d8;
@@ -1223,6 +1243,188 @@ HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_laun
     copy.shipyard_launch_7a = copy.to_unit && copy.type == 0x7A;
     copy.flag = queued.flag_20;
     // Neither message owns storage; 00760650 only restamps.
+    return copy;
+}
+
+namespace {
+// Goal 4 chain 356. The seven boundaries 006E3940 / 006E39B0 / 006E39E0 call,
+// bound to the process's own bodies: 0075B430 over Image's session, the
+// extended header 0075B480 / 0075B4C0 and the bool / word bit helpers. The
+// writer hands every call the 10h cursor; the reader hands the header the 18h
+// stream and the fields stream+4, its cursor (late_read_bool_word).
+class GunFireMessageBinding final : public cc13_seg33a::Seg33aGunFireMessageHost {
+public:
+    explicit GunFireMessageBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void bit_cursor_write_boolean_004290b0(void* cursor, std::uint32_t value) override {
+        write_native_bool_bit_004290b0(static_cast<NativeBitCursor*>(cursor), value);
+    }
+    void bit_cursor_read_boolean_00428d70(void* cursor, std::uint8_t* out) override {
+        read_native_bool_bit_00428d70(static_cast<NativeBitCursor*>(cursor),
+            reinterpret_cast<bool*>(out));
+    }
+    void bit_cursor_write_word_bits_00429120(void* cursor, std::uint32_t value,
+                                            std::int32_t bits) override {
+        write_native_word_bits_00429120(static_cast<NativeBitCursor*>(cursor), value,
+            static_cast<std::uint32_t>(bits));
+    }
+    void bit_cursor_read_word_bits_00428e30(void* cursor, std::uint16_t* out,
+                                           std::int32_t bits) override {
+        read_native_word_bits_00428e30(static_cast<NativeBitCursor*>(cursor), out,
+            static_cast<std::uint32_t>(bits));
+    }
+    void session_message_construct_base_0075b430(void* message, std::uint32_t type) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+    void session_message_write_header_0075b480(void* message, void* cursor) override {
+        write_native_session_message_header_0075b480(message,
+            static_cast<NativeBitCursor*>(cursor));
+    }
+    void session_message_read_header_0075b4c0(void* message, void* stream) override {
+        read_native_session_message_header_0075b4c0(message,
+            static_cast<NativeSessionReadStream*>(stream));
+    }
+
+private:
+    const NativeSessionMessageContext& session_;
+};
+
+// The 24h-byte ADh message: the unit header with its +1Ch bool, then the
+// 12-bit target word at +20h (006E3940's stores, 006E39B0's fields).
+struct GunFireMessage24 {
+    seg42::UnitMessage u;
+    std::uint16_t target_20;
+    std::uint16_t pad_22;
+};
+static_assert(sizeof(GunFireMessage24) == 0x24);
+static_assert(offsetof(GunFireMessage24, target_20) == 0x20);
+
+// Goal 4 chain 356. The receiving gun's switch 0072D830 over a copy. The
+// dispatch reports the arm the copy reached; the gunnery host then runs that
+// arm's body for the gun that sent the message: ADh vtable[1DCh] (FireIfReady),
+// 68h vtable[1C8h] (0072B5A0) and 69h vtable[1CCh] (007280A0). ACh and the
+// 0043F860 tail are counted, not run: none of these copies selects them.
+class GunMessageDispatch final : public GunNetworkMessageHost {
+public:
+    void vcall_1c8(void*, void*) override { set_destroyed_arm = true; }
+    void vcall_1cc(void*, void*) override { clear_destroyed_arm = true; }
+    void vcall_1dc(void*) override { fire_if_ready = true; }
+    bool entity_handle_messages_4b4c_0043f860(void*, void*) override {
+        ++other_arms;
+        return false;
+    }
+    void gun_select_fire_mode_0072d5b0(void*, std::uint32_t, std::uint32_t) override {
+        ++other_arms;
+    }
+    bool fire_if_ready{false};
+    bool set_destroyed_arm{false};
+    bool clear_destroyed_arm{false};
+    int other_arms{0};
+};
+}  // namespace
+
+HostSessionMessages::GunFireCopy HostSessionMessages::queue_gun_fire_ad(
+    std::uint16_t target) const {
+    const Image& image = *image_;
+    GunFireMessageBinding binding(image.session);
+    // 0072D252..0072D27D: 006E3940's stores with the target word, so the
+    // sender's message is built by 006E3940 itself.
+    GunFireMessage24 sent{};
+    cc13_seg33a::gun_fire_message_construct_006e3940(binding, &sent, target);
+    LocalStream stream;
+    cc13_seg33a::gun_fire_message_write_006e39b0(binding, &sent, &stream.out);
+    // 00768530 case ADh: operator new(24h), 006E3940(0) at 0076982A; 0076A27B
+    // vtable[8] = 006E39E0.
+    stream.begin_read();
+    GunFireMessage24 queued{};
+    cc13_seg33a::gun_fire_message_construct_006e3940(binding, &queued, 0);
+    cc13_seg33a::gun_fire_message_read_006e39e0(binding, &queued, &stream.in);
+    GunFireCopy copy;
+    copy.type = queued.u.h.base.type_10;
+    copy.target = queued.target_20;
+    // 00780120's ladder over 006E3940's IsType 006E3980 {ADh, 49h, 46h}.
+    const band_006b_cc13::TypeIdRule* const is_gun_fire =
+        band_006b_cc13::find_type_id_rule(0x006E3980u);
+    copy.to_entity = is_gun_fire != nullptr && copy_goes_to_unit_handler(
+        [is_gun_fire](std::uint32_t type) {
+            return band_006b_cc13::type_id_rule_accepts(*is_gun_fire,
+                static_cast<std::int32_t>(type));
+        });
+    if (copy.to_entity) {
+        // The gun's slot 164h, 0072D830 (directly or through 0084C7E0 /
+        // 00803480's jump), over the rebuilt copy. The gun object is the
+        // gunnery host's; the dispatch reports the arm it reached.
+        GunMessageDispatch dispatch;
+        cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
+        copy.fire_if_ready = dispatch.fire_if_ready;
+    }
+    // Neither message owns storage; 006E47C0 only restamps.
+    return copy;
+}
+
+HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_68_69(
+    bool set) const {
+    const Image& image = *image_;
+    // 0072A016..0072A04E / 0072A116..0072A14E: 0075B430(type) and the stores
+    // 00728F20 / 00728FA0 make, +20h the default 256.0f included, so both
+    // messages are built by the constructor 00768530 calls for the type.
+    const auto construct = [&image, set](NativeSessionMessage104* message) {
+        if (set) {
+            construct_native_session_message104_00728f20(message, image.context104,
+                image.profile104);
+        } else {
+            construct_native_session_message105_00728fa0(message, image.context104,
+                image.profile105);
+        }
+    };
+    bool (*const is_type)(std::uint32_t) = set ? &native_session_message_is104_00728f70
+                                               : &native_session_message_is105_00728ff0;
+    NativeSessionMessage104 sent{};
+    construct(&sent);
+    LocalStream stream;
+    write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+    // 00768530 case 68h / 69h: operator new(24h), 00728F20 at 00768F26 /
+    // 00728FA0 at 00768F46; 0076A27B vtable[8] = 006D1550.
+    stream.begin_read();
+    NativeSessionMessage104 queued{};
+    construct(&queued);
+    read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+    GunDestroyedCopy copy;
+    copy.type = queued.header.base.type_10;
+    copy.to_entity = copy_goes_to_unit_handler(is_type);
+    if (copy.to_entity) {
+        // The gun's slot 164h, 0072D830, over the copy; then the arm body's own
+        // IsType test on the request (0072B5A0 68h, 007280AC 69h).
+        GunMessageDispatch dispatch;
+        cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
+        copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
+        copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
+    }
+    // Neither message owns storage; 00729050 / 00729070 only restamp.
+    return copy;
+}
+
+HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappear_c7(
+    std::uint16_t holder_id) const {
+    const Image& image = *image_;
+    // 007CE6FE..007CE735: 0075B430(C7h), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0,
+    // vtable 00D0352C, which are 00762B20's stores; then +20h the holder id.
+    seg42::PlaneDisappearMessage sent{};
+    seg42::construct_plane_disappear_00762b20(&sent, image.seg42);
+    sent.id_20 = holder_id;
+    LocalStream stream;
+    seg42::write_plane_disappear_00762be0(&sent, &stream.out);
+    // 00768530 case C7h: operator new(24h), 00762B20 at 00769C04; 0076A27B
+    // vtable[8] = 00762C30.
+    stream.begin_read();
+    seg42::PlaneDisappearMessage queued{};
+    seg42::construct_plane_disappear_00762b20(&queued, image.seg42);
+    seg42::read_plane_disappear_00762c30(&queued, &stream.in);
+    PlaneDisappearCopy copy;
+    copy.type = queued.u.h.base.type_10;
+    copy.holder_id = queued.id_20;
+    // Neither message owns storage; 00762BC0 only restamps.
     return copy;
 }
 
