@@ -6,6 +6,8 @@
 
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
+#include "bsp/wire_goal4_chain401_switches.hpp"
+#include "bsp/cc13_seg48U.hpp"
 #include "bsp/gameplay_seg50_cc13.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/game_startup_random.hpp"
@@ -90,6 +92,7 @@
 #include <optional>
 
 #include <array>
+#include <cstddef>
 #include <deque>
 #include <limits>
 #include <functional>
@@ -4059,6 +4062,82 @@ struct GameGunneryHost::Impl {
         }
         return best_unit != static_cast<std::size_t>(-1)
             && unit_state[best_unit].row.side == unit_state[owner].row.side;
+    }
+    // The 0072F6E0 miss arm's 00729670 view. These are the live host fields at
+    // their original offsets, not a second gun: the query still operates on
+    // this mission's unit states and spatial index. No unused native bytes are
+    // interpreted. Evidence: 00729677..007296E8 (bsp.py show 00729670 --asm).
+    bool shot_decision_line_of_fire_clear(const GameGunRow& row, std::size_t target,
+        const float world_position[3]) {
+        struct AmmoView {
+            std::byte before_speed[0x50]{};
+            float speed;
+        };
+        struct FireView {
+            std::byte before_ammo[0x34]{};
+            AmmoView* ammo;
+        };
+        struct GunView {
+            std::byte before_pose_valid[0xc8]{};
+            std::uint8_t pose_valid{0};  // this transient view has not copied its pose yet
+            std::byte before_position[0xfc - 0xc9]{};
+            float position[3]{};
+            std::byte before_owner[0x3f0 - 0x108]{};
+            UnitState* owner;
+            std::uint32_t unused_class{};
+            FireView* fire;
+        };
+        struct DecisionView {
+            std::uint32_t unused_vtable{};
+            GunView* gun;
+            Impl* query;
+        };
+        static_assert(offsetof(AmmoView, speed) == 0x50);
+        static_assert(offsetof(FireView, ammo) == 0x34);
+        static_assert(offsetof(GunView, pose_valid) == 0xc8);
+        static_assert(offsetof(GunView, position) == 0xfc);
+        static_assert(offsetof(GunView, owner) == 0x3f0);
+        static_assert(offsetof(GunView, fire) == 0x3f8);
+        static_assert(offsetof(DecisionView, gun) == 4);
+        static_assert(offsetof(DecisionView, query) == 8);
+
+        class Binding final : public bsp::GunShotDecisionLineOfFireHost {
+        public:
+            explicit Binding(const float* position) : position_(position) {}
+            void entity_pose_refresh_world_00414db0(void* entity) override {
+                auto& gun = *static_cast<GunView*>(entity);
+                // The caller just resolved the current unit pose and carried
+                // this platform's mount into world space. Copy that result;
+                // calculating the hierarchy a second time is unnecessary.
+                std::memcpy(gun.position, position_, sizeof(gun.position));
+                gun.pose_valid = 1;
+            }
+            std::uint8_t line_of_fire_query_vslot1(void* query, const float* position,
+                void* owner, std::uint32_t target, float speed) override {
+                // 007296C4..007296E8 passes classDesc+50h (post-006E9890 V0,
+                // not the projectile Range). The installed 0072CDD0 predicate
+                // does not read this fourth argument; retain that boundary.
+                (void)speed;
+                auto& mission = *static_cast<Impl*>(query);
+                const auto unit = static_cast<std::size_t>(
+                    static_cast<UnitState*>(owner) - mission.unit_state.data());
+                return mission.line_of_fire_blocked_0072cdd0(unit, target, position) ? 1 : 0;
+            }
+        private:
+            const float* position_;
+        } binding(world_position);
+        AmmoView ammo{};
+        ammo.speed = row.class_speed;
+        FireView fire{};
+        fire.ammo = &ammo;
+        GunView gun{};
+        gun.owner = &unit_state[row.unit_index];
+        gun.fire = &fire;
+        DecisionView decision{};
+        decision.gun = &gun;
+        decision.query = this;
+        return bsp::cc13_seg48U_shot_decision_line_of_fire_clear_00729670(
+            &decision, static_cast<std::uint32_t>(target), binding);
     }
     unsigned long long mounts_from_model{0};
     unsigned long long plane_mounts_from_model{0};   // cc9_plane_gun_mounts
@@ -8474,9 +8553,15 @@ public:
                     owner_.line_of_fire_records[g], installed, static_cast<std::uint32_t>(other),
                     [&]() -> bool {
                         ++owner_.line_of_fire_queries;
+                        if constexpr (bsp::kWireGoal4Chain401Bound) {
+                            const bool c = owner_.shot_decision_line_of_fire_clear(row, other, muzzle);
+                            if (!c) ++owner_.line_of_fire_blocked;
+                            return c;
+                        } else {
                         const bool c = !owner_.line_of_fire_blocked_0072cdd0(unit_, other, muzzle);
                         if (!c) ++owner_.line_of_fire_blocked;
                         return c;
+                        }
                     },
                     owner_.safe_to_fire_cache_timeout(),
                     [&](int, float low, float high) -> float {
@@ -8494,7 +8579,11 @@ public:
                 clear = cached->second;
             } else {
                 ++owner_.line_of_fire_queries;
+                if constexpr (bsp::kWireGoal4Chain401Bound) {
+                    clear = owner_.shot_decision_line_of_fire_clear(row, other, muzzle);
+                } else {
                 clear = !owner_.line_of_fire_blocked_0072cdd0(unit_, other, muzzle);
+                }
                 if (!clear) ++owner_.line_of_fire_blocked;
                 if constexpr (kAaLineOfFireExpiryDrawBound) {
                     // 0072F76D: the record's expiry, drawn and never read.
