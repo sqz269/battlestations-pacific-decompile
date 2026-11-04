@@ -1,0 +1,280 @@
+{
+  "chain": 441,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "base": "a12ea1a053",
+  "switch": "bsp::kWireGoal4Chain441Bound",
+  "wired_before": 9687,
+  "wired_after": 9688,
+  "rows": [
+    {
+      "native": "006fdd00",
+      "status": "wired",
+      "host_site": "src/native_renderer_camera_prepare.cpp: prepare_camera<true> -> transpose_clip_matrix",
+      "evidence": [
+        "bsp.py show 006fdd00 --asm: complete six-pair transpose; lower-to-upper loads quiet signaling NaNs",
+        "bsp.py show 00b285a0: native B2867B..B28716 inlines the same transpose using MOVSS",
+        "Actual matrix comes from inverse camera projection multiplied by inverse view; result feeds transform_native_plane_00b65ba0 and set_native_renderer_clip_plane_00b23e50",
+        "Existing canonical body is reused; this is a shared-primitive substitution, not a claim that the original B285A0 called 006FDD00",
+        "Lower-triangle signaling NaNs retain the unchanged legacy inline path; all other DWORD patterns use the existing body"
+      ]
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents remap methods",
+      "reason": "The evaluated host returns an empty remap record name and only logs remap; a live resource-service/cache owner and authored remap-name producer are missing."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents remap methods",
+      "reason": "The evaluated host returns an empty remap record name and only logs remap; a live resource-service/cache owner and authored remap-name producer are missing."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents remap methods",
+      "reason": "The evaluated host returns an empty remap record name and only logs remap; a live resource-service/cache owner and authored remap-name producer are missing."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContents remap methods",
+      "reason": "The evaluated host returns an empty remap record name and only logs remap; a live resource-service/cache owner and authored remap-name producer are missing."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI tuning lookup",
+      "reason": "Campaign effective mode is 8; the original mode-0..3 brain-slot lookup needs a live F8A89C brain array and its active planner fields."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group scoring",
+      "reason": "The evaluated coordinator scoring path is behind the campaign load gate; a live group-score producer and command-selection consumer are missing."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group scoring",
+      "reason": "The evaluated coordinator scoring path is behind the campaign load gate; a live group-score producer and command-selection consumer are missing."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: dynamics shape operations",
+      "reason": "A concrete shape/body/manifold owner and Cc13Dyn1Calls lock-and-clear binding were not established in this packet."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: dynamics shape operations",
+      "reason": "A concrete shape/body/manifold owner and Cc13Dyn1Calls lock-and-clear binding were not established in this packet."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state messages",
+      "reason": "A live controller-state message producer/transport with the complete descriptor and slot state is missing from the evaluated host path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "The host has flattened flags but no controller snapshot producer/transport/consumer; copying flags into a temporary and back would not wire behavior."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: byte_grid_propagate_falloff_00880080",
+      "reason": "The evaluated callers require a live Left55Host and persistent native column grid; no entry-reachable provider for those callers was found."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight_state_notify",
+      "reason": "The host only records the plane FX timer reset; a persistent FX timer owner and its update consumer are missing."
+    },
+    {
+      "native": "004fb1f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: native string uppercase helper",
+      "reason": "No evaluated entry-reachable original caller supplied an owned native string requiring this mutation; a concrete uppercase caller remains to bind."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: accepts_text_byte",
+      "reason": "The native font owner exists, but accepts_text_byte has no live text-input caller; an actual editor/font acceptance path is missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: FOV/aspect accessor",
+      "reason": "The evaluated original caller paths were not linked; an entry-reachable caller with a CameraProjection view was not established."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCam angle clamp",
+      "reason": "The evaluated extrapolation caller is not linked; a live MovCamAngles producer and consumer remain to bind."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane submission",
+      "reason": "The existing Source submission reference did not produce a linked call to the typed body; its native camera/frame view route remains to bind."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: camera clip-plane submission",
+      "reason": "The existing Source submission reference did not produce a linked call to the typed body; its native camera/frame view route remains to bind."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream writer DWORD debit",
+      "reason": "The body requires a live native writer vtable+54h and remaining-byte owner; the evaluated MemoryStream path does not provide that writer."
+    },
+    {
+      "native": "00befb60",
+      "status": "skipped",
+      "host_site": "src/file_store_cc13.cpp: RamImage data access",
+      "reason": "The evaluated RamImage is typed vector storage rather than the raw native +18h layout; a canonical native image accessor binding remains to establish."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "No live power-up scroller owner or writers for screen+1F9/+13F exist in the evaluated path; map_screen_wanted is fixed false."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: entity_route_slot / slot_counter_increment",
+      "reason": "The host returns -1 for route slot and owns no corresponding raw scoring-record counter; the unit+1AC producer and scoring owner are missing."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: text editor activation",
+      "reason": "A complete live editor owner, editable NativeString and input-action publication/update binding were not established for a single-player caller."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp: clear gamepad force requests",
+      "reason": "Typed and raw-native force implementations coexist; canonical live force-request owner identity must be established before selecting this typed body."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline collection",
+      "reason": "This host collects the pre-script baseline; a corresponding mission teardown consumer over the same Lua globals/baseline is missing."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: pending loading configuration",
+      "reason": "The evaluated host does not construct the owned native loading-config string-vector/pool-string temporary that this teardown requires."
+    },
+    {
+      "native": "005b5d40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: narrative text hiding",
+      "reason": "A real narrative screen widget at +ACh is missing; the host currently owns queue/fade/callback state only."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: weapon group sight status",
+      "reason": "Barrel timers exist in gunnery, but the corresponding gun-sight layout/status caller remains a recorded host boundary."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: immediate gun-angle synchronization",
+      "reason": "The existing body models the window-search fragment; a complete immediate-angle/snapshot caller with the remaining writes was not established."
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "host_site": "src/unit_parts.cpp: unit_last_damage_state_index",
+      "reason": "A live caller supplying the instance+16C/+170 state-vector span was not established in this packet."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot construction",
+      "reason": "A complete 0072BBD0 base construction and canonical descriptor/observer owner were not established; a sparse bot block would not meet the constructor contract."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot construction",
+      "reason": "A complete 0072BBD0 base construction and canonical descriptor/observer owner were not established; a sparse bot block would not meet the constructor contract."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land task construction",
+      "reason": "The native constructor requires complete base/composite/state/observer ownership; the evaluated host path does not provide those complete contracts."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: friendly capture-radius query",
+      "reason": "The evaluated coordinator caller is gated out in campaign; a live native world/capture-unit graph and caller remain to bind."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/hit_narrowphase.cpp: projectile_may_bind_006e6bb0",
+      "reason": "The named body only reconstructs the torn-down guard; native owner assignment, observer registration and attacker-handle repoint effects are missing."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_get_190_00b6fe60",
+      "reason": "The typed CameraView getter has no evaluated live caller; a canonical alias to the actual camera clear-color field remains to bind."
+    },
+    {
+      "native": "0085e4d0",
+      "status": "skipped",
+      "host_site": "src/cc13_front4.cpp: angular-velocity matrix rotation",
+      "reason": "A complete entry-reachable Front4Host route was not established; the renderer transpose site has an existing live matrix producer and consumer."
+    }
+  ],
+  "validation": {
+    "baseline_build": "passed; 2/2 CTests",
+    "final_build": "passed; 2/2 CTests",
+    "call_graph": {
+      "address": "006fdd00",
+      "called": true,
+      "call_sites": 1,
+      "caller": "bsp::<anonymous>::transpose_clip_matrix",
+      "entry_path_contains": [
+        "prepare_native_renderer_camera_00b285a0",
+        "execute_native_camera_frame_command_00b71360",
+        "execute_native_render_queue_00b1ebe0"
+      ]
+    },
+    "pc24_lint": "0 findings; working diff and committed origin/main...HEAD checked (transpose adds no float arithmetic)",
+    "synthetic_transpose_probe": "61 bit-pattern cases passed, including signed zero, subnormals, infinities, quiet NaNs and both signaling-NaN directions",
+    "synthetic_complete_parent_probe": "3 legacy/wired comparisons passed; equal captured matrix, two state calls, one clip upload, one plane transform and one pending plane",
+    "legacy_source_check": "B2867B..B28716 inline MOVSS block is unchanged",
+    "game_validation": "Not run, as assigned",
+    "local_artifacts": [
+      "local/output/wire-g4-c441-final-build.log",
+      "local/output/wire-g4-c441-pc24.log",
+      "local/output/wire-g4-c441-probe.log",
+      "local/output/wire-g4-c441-frame-probe.log",
+      "local/output/wire-g4-c441-before.log",
+      "local/output/wire-g4-c441-after.log"
+    ]
+  },
+  "remaining": "Original gun-dispersion caller 0072F830 remains separate work; other skips name missing producers/owners. No original binary ABI or gameplay equivalence claim."
+}
