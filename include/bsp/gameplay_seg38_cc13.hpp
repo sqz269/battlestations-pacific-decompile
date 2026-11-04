@@ -146,10 +146,14 @@ bool has_free_command_slot_0071c0c0(const DirectorQueue& q, int want) noexcept;
 
 // 0071C1B0 __thiscall(director, const int pair[2]): writes followMode/startMode
 // (+8h/+0Ch) of the path object at director+1A0h+first_empty*4, i.e. the LAST
-// filled slot's path. With an empty queue the index is -1 and the image reads
-// director+1A0h, which is not a path pointer. Returns the slot index written
-// (-1 for that case).
-int path_follow_mode_slot_0071c1b0(const DirectorQueue& q) noexcept;
+// filled slot's path. The supplied pointers are the actual path owners for
+// director+1A4h+i*4. An empty queue reads director+1A0h in the image; callers
+// must supply a nonempty queue and the selected live path. Missing ownership
+// throws before either store. Returns the written slot as C++ instrumentation.
+struct DirectorPathObject;
+int path_follow_mode_slot_0071c1b0(const DirectorQueue& q,
+    const std::array<DirectorPathObject*, kCommandSlots>& paths,
+    const std::array<std::int32_t, 2>& pair);
 
 // 0071D780 __fastcall(director): commands counted, a valid moveonpath path
 // counting as its point count (at least 1), stopping at the first empty slot
