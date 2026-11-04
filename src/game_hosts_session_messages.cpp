@@ -9,6 +9,8 @@
 #include "bsp/wire_goal4_chain335_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/session_message_dispatch.hpp"
+#include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
 #include "bsp/cc13_seg33b.hpp"
@@ -23,6 +25,7 @@
 #include <cfloat>
 #include <cmath>
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -916,7 +919,8 @@ namespace {
 // of its ladder in turn; the answered ids are the is-a set its first match
 // is chosen from (receiver_for_message_00780120). The ladder ids are that
 // function's, in its order.
-bool copy_goes_to_unit_handler(bool (*is_type)(std::uint32_t)) {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type) {
     static constexpr std::uint8_t kLadder[] = {0x4B, 0x4C, 0x57, 0x4E, 0x4F, 0x50,
                                                0x51, 0x52, 0x97, 0x58, 0x59};
     MessageIsATest is_a{};
@@ -987,6 +991,97 @@ HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_
     copy.explode_one_part_99 = copy.to_unit && copy.type == 0x99;
     copy.part = queued.part_20;
     // Neither message owns storage; 00762600 only restamps.
+    return copy;
+}
+
+namespace {
+// Goal 4 chain 343. The boundaries of the table-driven segment 26/27 message
+// classes (ingame_gui_cc13), bound to the process's header and bit-cursor
+// bodies. Write calls receive the cursor itself, read calls stream+4.
+struct SessionMessageClassCodec final : ingame_gui_cc13::SessionMessageHost {
+    explicit SessionMessageClassCodec(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    using Raw = ingame_gui_cc13::Raw;
+    void construct_base_0075b430(Raw message, std::uint8_t type) override {
+        construct_native_session_message_0075b430(
+            reinterpret_cast<NativeSessionMessageStorage*>(message.p), type, session_);
+    }
+    void write_header_0075b480(Raw message, void* cursor) override {
+        write_native_session_message_header_0075b480(message.p,
+            static_cast<NativeBitCursor*>(cursor));
+    }
+    void read_header_0075b4c0(Raw message, void* cursor) override {
+        read_native_session_message_header_0075b4c0(message.p,
+            static_cast<NativeSessionReadStream*>(cursor));
+    }
+    void write_bool_004290b0(void* cursor, std::uint8_t value) override {
+        write_native_bool_bit_004290b0(static_cast<NativeBitCursor*>(cursor), value);
+    }
+    void write_signed_00429090(void* cursor, std::int32_t value, int bits) override {
+        write_native_signed_dword_bits_00429090(static_cast<NativeBitCursor*>(cursor),
+            static_cast<std::uint32_t>(value), static_cast<std::uint32_t>(bits));
+    }
+    void write_unsigned_00429070(void* cursor, std::uint32_t value, int bits) override {
+        write_native_unsigned_dword_bits_00429070(static_cast<NativeBitCursor*>(cursor), value,
+            static_cast<std::uint32_t>(bits));
+    }
+    void read_bool_00428d70(void* cursor, std::uint8_t& out) override {
+        bool value = false;
+        read_native_bool_bit_00428d70(static_cast<NativeBitCursor*>(cursor), &value);
+        out = value ? 1u : 0u;
+    }
+    void read_signed_00428d30(void* cursor, std::int32_t& out, int bits) override {
+        read_native_i32_bits_00428d30(static_cast<NativeBitCursor*>(cursor), &out,
+            static_cast<std::uint32_t>(bits));
+    }
+    void read_unsigned_00428d10(void* cursor, std::uint32_t& out, int bits) override {
+        read_native_u32_bits_00428d10(static_cast<NativeBitCursor*>(cursor), &out,
+            static_cast<std::uint32_t>(bits));
+    }
+    void read_word_bits_00428e30(void* cursor, std::uint16_t& out, int bits) override {
+        read_native_word_bits_00428e30(static_cast<NativeBitCursor*>(cursor), &out,
+            static_cast<std::uint32_t>(bits));
+    }
+    // Only the scalar deleting destructors free a block; no local copy calls one.
+    void free_block(void*) override { std::abort(); }
+
+private:
+    const NativeSessionMessageContext& session_;
+};
+}  // namespace
+
+HostSessionMessages::StartLandingCopy HostSessionMessages::queue_start_landing_94() const {
+    const Image& image = *image_;
+    const ingame_gui_cc13::SessionMessageClass* const cls =
+        ingame_gui_cc13::find_session_message_class(0x94);
+    StartLandingCopy copy;
+    if (cls == nullptr) return copy;
+    SessionMessageClassCodec construct_host(image.session);
+    SessionBoolCodec codec;
+    // 009F3598 0064A820: the 20h-byte message (header, then the +1Ch bool).
+    seg42::UnitMessage sent{};
+    ingame_gui_cc13::session_message_construct(*cls,
+        ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(&sent)}, 0, 0, construct_host);
+    LocalStream stream;
+    cc13_seg5::session_bool_message_write_004645b0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&sent),
+        reinterpret_cast<cc13_seg5::Object>(&stream.out));
+    // 00768530 case 94h: 0064A820 at 007694AE; 0076A27B vtable[8] = 004645D0.
+    stream.begin_read();
+    seg42::UnitMessage queued{};
+    ingame_gui_cc13::session_message_construct(*cls,
+        ingame_gui_cc13::Raw{reinterpret_cast<std::uint8_t*>(&queued)}, 0, 0, construct_host);
+    cc13_seg5::session_bool_message_read_004645d0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&queued),
+        reinterpret_cast<cc13_seg5::Object>(&stream.in));
+    copy.type = queued.h.base.type_10;
+    // 00780120's ladder through 0064A850, session_message_is_type over the 94h
+    // row (bases 49h, 46h).
+    copy.to_unit = copy_goes_to_unit_handler([cls](std::uint32_t type) {
+        return ingame_gui_cc13::session_message_is_type(*cls, static_cast<std::int32_t>(type));
+    });
+    copy.start_landing_94 = copy.to_unit && copy.type == 0x94;
+    // Neither message owns storage; 0064AE00 is not run on these.
     return copy;
 }
 

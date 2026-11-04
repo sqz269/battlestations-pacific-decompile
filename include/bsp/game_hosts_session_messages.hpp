@@ -317,6 +317,21 @@ public:
         std::uint32_t part{0};
     };
     ExplodeOnePartCopy queue_ship_explode_one_part_99(std::uint32_t part) const;
+    // Goal 4 chain 343. StartLanding (94h): 0064A820 makes 0075B430(94h),
+    // +18h word 0, +1Ah 0, +1Ch 0, +4h = 1, vtable 00CF5C4C (the 94h row of
+    // kSessionMessageClasses, the shared session_message_construct); the
+    // approach landing sweep calls it at 009F3598 and routes it with
+    // 0077C2A0 flags 2, which a local session turns into the local route.
+    // 00768530 case 94h calls 0064A820 itself (007694AE). Slots 1 and 2 of
+    // 00CF5C4C are the shared 004645B0 / 004645D0; 00780120 asks slot 3,
+    // 0064A850 (session_message_is_type over the 94h row); 00821E80's 94h arm
+    // (00821F61) hands the copy to the unit's vtable[238h].
+    struct StartLandingCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool start_landing_94{false};
+    };
+    StartLandingCopy queue_start_landing_94() const;
 
 private:
     struct Image;

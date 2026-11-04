@@ -45,6 +45,7 @@
 #include "bsp/wire_goal4_chain289_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain326_switches.hpp"
+#include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/cc13_torp_goaway.hpp"
 #include "bsp/gameplay_seg40_59_cc13.hpp"
 #include "bsp/cc13_seg49.hpp"                 // 009278A0 typed view (chain 218)
@@ -7855,6 +7856,18 @@ public:
             return;
         }
         owner_.done("ShipAiApproach::route_start_landing_94h", 0x0077c2a0u);
+        if constexpr (bsp::kWireGoal4Chain343Bound) {
+            // Goal 4 chain 343: 009F3598 0064A820 builds 94h and 009F35B3 routes
+            // it (flags 2, local in a local session) through 0076E520's copy;
+            // 00780120 asks the copy's 0064A850 and 00821E80's 94h arm (00821F61)
+            // hands it to the candidate's vt+238h. With no session image the
+            // posted message is delivered.
+            if (const bsp::HostSessionMessages* messages = bsp::game::commands_session_messages()) {
+                if (!messages->queue_start_landing_94().start_landing_94) return;
+            }
+        } else {
+            // The message was delivered as posted.
+        }
         const std::size_t c = static_cast<std::size_t>(candidate - 1u);
         GameShipAiHost* host = owner_.units.ship_ai();
         if (host == nullptr) return;

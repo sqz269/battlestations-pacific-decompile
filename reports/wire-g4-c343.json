@@ -4,14 +4,14 @@
   "baseline": "6df5ce50b6",
   "switch": "bsp::kWireGoal4Chain343Bound",
   "switch_header": "include/bsp/wire_goal4_chain343_switches.hpp",
-  "picked": "The gunnery host's ship death (9Ah explode to parts, 98h wreck, from 00827A90) and hull segment detach (99h, from 0092CED0) session messages through 0076E520's local copy, with 00780120's receiver ladder answered by each copy's own IsType, as chains 260/326/335 route their messages",
+  "picked": "The gunnery host's ship death (9Ah explode to parts, 98h wreck, from 00827A90), hull segment detach (99h, from 0092CED0) and approach landing sweep StartLanding (94h, from 009F3598) session messages through 0076E520's local copy, with 00780120's receiver ladder answered by each copy's own IsType, as chains 260/326/335 route their messages",
   "wired_before": 9374,
-  "wired_after": 9383,
+  "wired_after": 9397,
   "checks": {
     "build_on": "scripts/build.ps1 passed (2/2 tests)",
-    "build_off": "scripts/build.ps1 with kWireGoal4Chain343Bound temporarily false passed; reverted before commit",
+    "build_off": "scripts/build.ps1 with kWireGoal4Chain343Bound temporarily false passed for each batch; reverted before each commit",
     "pc24_lint": "no float arithmetic added (the copies move a bool and a 5-bit index)",
-    "call_graph": "all eight addresses REACHABLE from the entry; caller HostSessionMessages::queue_ship_death_98_9a <- GameGunneryHost::Impl::ship_death_message_00827ab0, queue_ship_explode_one_part_99 <- GameGunneryHost::Impl::apply_segment_damage_0092d1f0"
+    "call_graph": "all eight addresses REACHABLE from the entry; caller HostSessionMessages::queue_ship_death_98_9a <- GameGunneryHost::Impl::ship_death_message_00827ab0, queue_ship_explode_one_part_99 <- GameGunneryHost::Impl::apply_segment_damage_0092d1f0; session_message_construct and session_message_is_type <- HostSessionMessages::queue_start_landing_94 <- ApproachStepBinding::route_warning_message_0077c2a0 (vtable-reachable)"
   },
   "rows": [
     {
@@ -82,6 +82,29 @@
       "abi": "Original __thiscall(ECX message, type) RET 4 ignoring ECX; explicit bool(type) C++ API"
     },
     {
+      "native": "0064a820",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_start_landing_94 (ingame_gui_cc13::session_message_construct over the 94h row of kSessionMessageClasses) <- src/game_hosts_ship_ai.cpp::ApproachStepBinding::route_warning_message_0077c2a0",
+      "real_state": "the approach landing sweep's StartLanding for a candidate landing ship / transport (009F3598)",
+      "evidence": "009F3598 calls 0064A820 (0075B430(94h), +18h/+1Ah/+1Ch 0, +4h = 1, vtable 00CF5C4C) and 009F35B3 routes it with 0077C2A0 flags 2; 00768530 case 94h calls 0064A820 at 007694AE; vtable 00CF5C4C slots 004645B0 / 004645D0 / 0064A850 (bsp.py ghidra bytes 00CF5C4C --length 20)",
+      "abi": "Original __thiscall(ECX message) -> EAX; the shared table-driven session_message_construct C++ API, no drop-in ABI claim",
+      "note": "session_message_construct is one body for the seven kSessionMessageClasses rows; only the 94h row (0064A820) runs here. Text-match credits to the other rows' addresses (0064A770, 00650310, 00656570, 00656670) are not claimed"
+    },
+    {
+      "native": "0064a850",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::copy_goes_to_unit_handler <- HostSessionMessages::queue_start_landing_94",
+      "real_state": "the 94h copy's IsType (session_message_is_type over the 94h row: 94h, 49h, 46h) answering 00780120's ladder ids",
+      "evidence": "slot 3 of vtable 00CF5C4C; 00780120 calls vtable[0Ch] from 00780162 on",
+      "abi": "Original __stdcall-like RET 4 ignoring ECX; the shared session_message_is_type C++ API",
+      "note": "session_message_is_type is shared by the seven rows; only the 94h row is claimed"
+    },
+    {
+      "native": "00762b20",
+      "status": "skipped",
+      "reason": "C7h PLANE_DISAPPEAR (stowed-plane stock return, 007CE6FE): the copy's +20h is the holder owner's +174h handle, and the host's plane_stock_return_c7h_007cc8b0 resolves the holder from the deck registry index instead; routing it needs a deck-owner unit index <-> handle mapping the host does not keep"
+    },
+    {
       "native": "00761590",
       "status": "skipped",
       "reason": "9Bh SHIP_SECTIONFAILUREEFX: no host code models its sender, so no live send site exists to route through the copy"
@@ -91,5 +114,6 @@
       "status": "skipped",
       "reason": "C8h PLANE_DEADMEATROT: no host code models its sender (the plane death rotation post), so no live send site exists"
     }
-  ]
+  ],
+  "wired_note": "wire_readiness counts 9383 -> 9397 for the 94h batch, but the shared table-driven session_message_construct / session_message_is_type bodies are credited for all seven kSessionMessageClasses rows; only 0064A820 and 0064A850 run here, so 10 rows are claimed (8 + 2) and 12 text-match credits are not"
 }
