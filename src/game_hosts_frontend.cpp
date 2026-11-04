@@ -5,6 +5,8 @@
 #include "bsp/wire_goal4_chain370_switches.hpp"
 #include "bsp/wire_goal4_chain433_switches.hpp"
 #include "bsp/frontend_scroller_bridge.hpp"
+#include "bsp/wire_goal4_chain435_switches.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/cc13_sweepA2.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
@@ -290,6 +292,55 @@ struct GameFrontendHost::Impl {
     bool quads_built{false};
     std::size_t last_logged_quads{static_cast<std::size_t>(-1)};
     std::size_t node_counter{0};
+
+    // 00AA7910 -> 00AA7220 publishes the live widget's local translation.
+    // Page owners and their runtime clones outlive these borrowed keys.
+    struct PublishedLocalZ {
+        std::uint32_t input_bits;
+        float translation;
+    };
+    std::map<const GuiWidgetTransform*, PublishedLocalZ> published_local_z;
+    struct LocalZPublication final : GuiWidgetTransformHost {
+        Impl& owner;
+        GuiWidgetTransform& receiver;
+        LocalZPublication(Impl& host, GuiWidgetTransform& widget)
+            : owner(host), receiver(widget) {}
+        bool widescreen_enabled() override { return owner.widescreen; }
+        void publish_local_transform(GuiWidgetTransform& widget,
+            const GuiWidgetLocalTransform& transform) override {
+            if (&widget != &receiver)
+                throw std::logic_error("GUI local Z must publish its live receiver");
+            PublishedLocalZ output;
+            std::memcpy(&output.input_bits, &widget.position.z, sizeof(output.input_bits));
+            std::memcpy(&output.translation, &transform.translation.z, sizeof(output.translation));
+            owner.published_local_z.insert_or_assign(&widget, output);
+            owner.quads_built = false;
+        }
+        void publish_local_bounds(GuiWidgetTransform&, const GuiWidgetBounds&) override {
+            throw std::logic_error("00AA7910 does not refresh bounds");
+        }
+        void notify_layout_changed(GuiWidgetTransform&) override {
+            throw std::logic_error("00AA7910 does not notify layout");
+        }
+        void on_layout_finished(GuiWidgetTransform&) override {
+            throw std::logic_error("00AA7910 does not finish layout");
+        }
+    };
+    float published_resolved_z(const GuiWidgetTransform& widget) const {
+        std::uint32_t input_bits;
+        std::memcpy(&input_bits, &widget.position.z, sizeof(input_bits));
+        const auto found = published_local_z.find(&widget);
+        if (found == published_local_z.end() || found->second.input_bits != input_bits)
+            return resolved_position(widget).z;
+        const float local = found->second.translation;
+        if (widget.parent == nullptr) return local;
+        // Same live parent and Z order as 00AA67C0/00AA6798..00AA67BD.
+        // Consume 00AA7220's published lane in the bridge's resolved depth;
+        // each float operation rounds to PC24, including the zero bias.
+        using namespace bsp::cc13x87;
+        return static_cast<float>(x87_sub24(
+            x87_add24(resolved_position(*widget.parent).z, local), kGuiResolvedZBias));
+    }
 
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameScriptHost& scripts_in,
         GameFontHost& fonts_in, IDirect3DDevice9& device_in, bool widescreen_in,
@@ -1188,7 +1239,11 @@ void GameFrontendHost::Impl::build_quads() {
             const GuiWidgetPoint point = resolved_point(*node);
             record.x = point.x;
             record.y = point.y;
-            record.z = point.z;
+            if constexpr (bsp::kWireGoal4Chain435Bound) {
+                record.z = published_resolved_z(node->transform);
+            } else {
+                record.z = point.z;
+            }
             record.width = node->transform.size.width;
             record.height = node->transform.size.height;
             record.pivot_x = node->transform.pivot_x;
@@ -1662,11 +1717,23 @@ GuiLayoutWidget* GameFrontendHost::clone_runtime_widget(const std::string& page,
 void GameFrontendHost::set_widget_local_position(GuiLayoutWidget& widget, float x, float y,
     float z) {
     Impl& host = *impl_;
+    if constexpr (bsp::kWireGoal4Chain435Bound) {
+        widget.transform.position.x = x;
+        widget.transform.position.y = y;
+        widget.transform.authored_x = x;
+        // Saved listing 00AA7910..00AA7920: MOVSS +14h then 00AA7220,
+        // without the bounds refresh performed by the separate 00AA7D40.
+        // The caller supplies the marker/minimap widget and its real Z.
+        Impl::LocalZPublication publication(host, widget.transform);
+        bsp::gui_widgets_cc13::gui_widget_set_local_z_00aa7910(
+            widget.transform, z, publication);
+    } else {
     widget.transform.position.x = x;
     widget.transform.position.y = y;
     widget.transform.position.z = z;
     widget.transform.authored_x = x;
     host.quads_built = false;
+    }
 }
 
 void GameFrontendHost::set_widget_rotation(GuiLayoutWidget& widget, float radians) {
