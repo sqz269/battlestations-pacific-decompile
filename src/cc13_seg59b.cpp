@@ -4,6 +4,7 @@
 
 #include "bsp/cc13_seg59b.hpp"
 #include "bsp/gun_bot_ticks.hpp"
+#include "bsp/mission_result.hpp"
 
 #include <cmath>
 #include <cstring>
@@ -1610,8 +1611,27 @@ void owned_buffer_free_009037b0(Seg59bHost& host, void* slot) {
 // 0077C8D0, 0077C980, 0077CA60 (formation join / release / snapshot; include/bsp/
 // lua_binding_navigator.hpp:180 keeps only the stride and offset).
 // ---------------------------------------------------------------------------
-std::uint32_t* score_record_increment_field170_00905300(void* scoring, std::int32_t slot) {
-    std::uint32_t& counter = at<std::uint32_t>(scoring, static_cast<std::uint32_t>(slot) * 0x284u + 0x170u);
+ScoreRecordField170Access::ScoreRecordField170Access(void* actual_scoring) noexcept
+    : owner_(actual_scoring), resolve_([](void* owner, std::int32_t slot) -> std::uint32_t& {
+        return at<std::uint32_t>(owner, static_cast<std::uint32_t>(slot) * 0x284u + 0x170u);
+    }) {}
+
+ScoreRecordField170Access::ScoreRecordField170Access(
+    bsp::MissionScoringManagerState& actual_scoring) noexcept
+    : owner_(&actual_scoring), resolve_([](void* owner, std::int32_t slot) -> std::uint32_t& {
+        auto& scoring = *static_cast<bsp::MissionScoringManagerState*>(owner);
+        // 00905300 addresses scoring + slot*284h + 170h. The first record
+        // begins at scoring+4, making this record+16Ch: formationuses in
+        // 00916A00/00908A30 (mission_progress.cpp), not record+170h.
+        // Corresponding signed/unsigned types may alias, retaining the
+        // original DWORD add's wrap even when the signed field is INT_MAX.
+        static_assert(sizeof(int) == sizeof(std::uint32_t));
+        return reinterpret_cast<std::uint32_t&>(scoring.slots[slot].checkpoint_counters_168[1]);
+    }) {}
+
+__declspec(noinline) std::uint32_t* score_record_increment_field170_00905300(
+    ScoreRecordField170Access scoring, std::int32_t slot) {
+    std::uint32_t& counter = scoring.counter(slot);
     counter += 1u;
     return &counter;
 }

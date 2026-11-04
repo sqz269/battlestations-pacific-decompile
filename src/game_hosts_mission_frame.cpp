@@ -20,6 +20,7 @@
 // See include/bsp/game_hosts_mission_frame.hpp for the address list.
 
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/wire_goal4_chain466_switches.hpp"
 #include <stdexcept>
 
 #include "bsp/game_hosts.hpp"
@@ -4511,8 +4512,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // created instances instead of being counted as records.
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
-            if constexpr (bsp::kWireGoal2Chain127Bound) {
+            if constexpr (bsp::kWireGoal4Chain466Bound) {
+                // Same game+21A0h owner for 0077C91B formation-use scoring;
+                // keep its attachment independent of the scoring-name switch.
                 host.script_orders->attach_scoring_name_owner(host.result.get());
+            } else {
+                if constexpr (bsp::kWireGoal2Chain127Bound) {
+                    host.script_orders->attach_scoring_name_owner(host.result.get());
+                }
             }
             if constexpr (bsp::kWireGoal4Chain331Bound) {
                 // [game+21DCh] for the LoadMessageMap binding (008C62FC). Null until

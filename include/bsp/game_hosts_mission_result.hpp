@@ -116,6 +116,9 @@ public:
     void set_mission_clock(float seconds) noexcept;
     // 008B8766 -> 0090BFC0 on the same owner as the mission scoring records.
     void set_final_scoring_function_name(const std::string& name);
+    // 0077C91B -> 00905300, on this owner's same persisted slot record.
+    // Only a validated player slot 0..7 may enter; role value 8 is unassigned.
+    void increment_formation_use(int slot);
     // game+1EE3h, written by the state entry 004da71e. The drain's 10h arm
     // tests it at 004e4715 and takes the early-return sub-path when it is set.
     void set_session_networked(bool networked) noexcept;

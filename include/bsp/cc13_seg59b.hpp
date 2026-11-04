@@ -22,6 +22,8 @@
 #include <cstddef>
 #include <cstdint>
 
+namespace bsp { struct MissionScoringManagerState; }
+
 namespace bsp::cc13_seg59b {
 
 template <class T>
@@ -719,8 +721,24 @@ void scene_property_bag_write_text_008f2540(Seg59bHost& host, void* bag, std::in
 // 00903790 / 009037B0, __thiscall(ECX = slot), RET: _free 00BF65AC([slot]) and clear it.
 void owned_buffer_free_00903790(Seg59bHost& host, void* slot);
 void owned_buffer_free_009037b0(Seg59bHost& host, void* slot);
+// Access to the SAME counter in a native owner or its typed scoring projection.
+// The implicit raw-owner constructor preserves the existing source call surface;
+// the typed constructor borrows the persisted field without fabricating a
+// 284h-stride native buffer or copying the counter into and out of one.
+class ScoreRecordField170Access {
+public:
+    ScoreRecordField170Access(void* actual_scoring) noexcept;
+    ScoreRecordField170Access(bsp::MissionScoringManagerState& actual_scoring) noexcept;
+    std::uint32_t& counter(std::int32_t slot) const { return resolve_(owner_, slot); }
+private:
+    using Resolve = std::uint32_t& (*)(void*, std::int32_t);
+    void* owner_;
+    Resolve resolve_;
+};
 // 00905300, __thiscall(ECX = scoring, slot), RET 4; EAX = &counter: ++[scoring+slot*284h+170h].
-std::uint32_t* score_record_increment_field170_00905300(void* scoring, std::int32_t slot);
+// This source API projects the field access; it is not a native ABI replacement.
+std::uint32_t* score_record_increment_field170_00905300(
+    ScoreRecordField170Access scoring, std::int32_t slot);
 // 00906430, __thiscall(ECX = result owner), RET: call the Lua function named at +147Ch.
 void mission_result_call_named_script_00906430(Seg59bHost& host, void* owner);
 // 0090D2F0, __thiscall(ECX = holder), RET: vtable 00D18784, 00441210(+4), vtable 00CE3784.

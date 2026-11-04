@@ -44,6 +44,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/session_context_cc13.hpp"
 #include "bsp/cc13_seg59a.hpp"
+#include "bsp/cc13_seg59b.hpp"
 #include "bsp/wire_goal2_chain127_switches.hpp"
 
 #include <cstdio>
@@ -605,6 +606,14 @@ bsp::MissionScoreRecord& GameMissionResultHost::scoring_slot(int slot) {
     const std::size_t index = (slot >= 0 && static_cast<std::size_t>(slot)
         < bsp::kMissionScoringSlotCount) ? static_cast<std::size_t>(slot) : 0;
     return scoring_.slots[index];
+}
+
+void GameMissionResultHost::increment_formation_use(int slot) {
+    if (static_cast<unsigned int>(slot) >= bsp::kMissionScoringSlotCount)
+        throw std::out_of_range("formation-use scoring requires player slot 0..7");
+    bsp::cc13_seg59b::ScoreRecordField170Access access{scoring_};
+    bsp::cc13_seg59b::score_record_increment_field170_00905300(access, slot);
+    done("Formation::slot_counter_increment", 0x00905300u);
 }
 
 float GameMissionResultHost::mission_clock() { return mission_clock_; }

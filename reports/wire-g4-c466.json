@@ -1,0 +1,168 @@
+{
+  "chain": 466,
+  "packet": "g4-w4",
+  "branch": "agent/g4-w4",
+  "base": "5494877526",
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain466_switches.hpp",
+    "name": "kWireGoal4Chain466Bound",
+    "enabled": true
+  },
+  "picked": "Formation-use scoring through the canonical current role assignment and persisted mission scoring owner",
+  "totals": {
+    "wired_before": 9730,
+    "wired_after": 9731,
+    "entry_reachable_called_before": 4795,
+    "entry_reachable_called_after": 4796
+  },
+  "checks": {
+    "enabled_build": "scripts/build.ps1 passed, both CTests passed",
+    "focused_probe": "local/output/wire_g4_c466_probe.exe passed: exact typed formationuses field/return identity, adjacent fields and slots, DWORD wrap and raw-source compatibility",
+    "enabled_call_graph": "00905300 reachable: one direct call from GameMissionResultHost::increment_formation_use at 10196ECE; virtual host dispatch from entity_join_formation is verified in source",
+    "readiness": "state=wired, called=true, call_sites=1",
+    "disabled_build": "scripts/build.ps1 passed, both CTests passed; call graph returns to 4795 called and 00905300 is absent",
+    "final_enabled_build": "scripts/build.ps1 passed, both CTests passed; switch restored true; final call graph again reaches 00905300 from the same single direct call",
+    "float_math": "No float arithmetic changed; pc24 lint not applicable",
+    "ghidra": "Prior name/comment retained, chain466 evidence appended at 00905300 via ghidra_annotate.py --apply under its write lock; project saved; prior annotations receipt local/ghidra-annotations-20261104T131407Z.json; affected export refreshed with bsp.py ghidra export 00905300"
+  },
+  "boundaries": [
+    "Source field-access projection; original __thiscall ABI is documented, not restored.",
+    "No game process was run and no gameplay validation is claimed.",
+    "Role value 8 is unassigned; the native unsigned <8 gate omits its count.",
+    "Original release/snapshot callers 0077C980/0077CA60 remain for later work."
+  ],
+  "rows": [
+    {
+      "native": "00905300",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp:GameScriptOrdersHost::slot_counter_increment -> src/game_hosts_mission_result.cpp:GameMissionResultHost::increment_formation_use",
+      "details": "0077C8D0 entity_join_formation now reads the follower current role-0 slot (entity+1ACh), retains unsigned slot<8, and increments the same persisted scoring_.slots[slot].checkpoint_counters_168[1] through the existing address body. Its typed access borrows record+16Ch (scoring+slot*284h+170h); no detached buffer, copy-back or duplicate increment."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:SetSelectedUnit and ForceSelectUnit screen reset",
+      "reason": "Missing live producers for screen+30h selection mode and +C4h selection-vector contents/header; the existing UnitPickScreenState does not retain them."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:scripted squadron_target helm-order arm",
+      "reason": "Missing the actual 00523130 cursor-picker screen and target/command producer; the current file-scripted target is not that state."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp / 00AB6D30 input-character dispatch survey",
+      "reason": "Missing a live input-character dispatcher and GuiLeafHost accepts_glyph_byte implementation; probe constant-byte calls do not wire application input."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp:contains_native_property_library_name_008f2db0 survey",
+      "reason": "Missing an application-owned native property-library map and caller using its lookup result; the scene host currently owns a separate typed library."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_sampler_application.cpp:sampler parameter owner survey",
+      "reason": "Missing the original sampler-parameter receiver with its live native Lua-state-at+4 and parameter-write call site; existing material samplers alone do not supply that owner."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_frame_box_default.cpp:ready_pool and native factory allocation survey",
+      "reason": "No new wiring needed: the factory already calls the same NativeGuiWidgetPool<GuiFrameBoxPoolTraits>::allocate body; an extra call would allocate twice."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:GuiManagerFrame pointer service survey",
+      "reason": "Missing the live GuiPointerRuntimeServices binding, resource-owner pointer state and widget hit-test/ownership dispatch; no matching manager frame host is implemented."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp / plane bomb HUD display survey",
+      "reason": "Missing the plane-HUD camera/view-mode display branch and its yaw/pitch consumers; the live bomb release gates do not use the three original display calls."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:snapshot provenance survey",
+      "reason": "Missing an actual controller snapshot producer/transport and routed snapshot consumer; current flattened scene flags do not form that path."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:MissionFrameBinding::update_ocean_00bbddd0",
+      "reason": "Missing the actual cloud-manager owner, reference-node world-axis state and instance-update bindings; the frame currently records the atmosphere call."
+    },
+    {
+      "native": "00bbddd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:MissionFrameBinding::update_ocean_00bbddd0",
+      "reason": "Missing the atmosphere/cloud-manager producer at game+19E8h/+3Ch; supplying a fabricated null owner would only exercise the empty arm."
+    },
+    {
+      "native": "008fe140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:torpedo aim survey",
+      "reason": "The original 009000D8 cast return is discarded; no live host branch needs replacement by this helper, so adding a call solely for the count would add unused work."
+    },
+    {
+      "native": "00523580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:unit-pick update survey",
+      "reason": "Missing an active lock-branch consumer for the kind-2 cast result; the current update treats that original read as dead."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp:score_record_add_field18_009052e0 survey",
+      "reason": "Missing the original HUD-map usage delta producer/call site for scoring record+14h; formation-use scoring has no float delta and leaves this body untouched."
+    },
+    {
+      "native": "00915760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:scoring owner lifecycle survey",
+      "reason": "Missing native record tree/string ownership and erase bindings for the raw full-record clear; the existing typed scoring owner already initializes the persisted formation counter."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp:clear requests / input runtime survey",
+      "reason": "Missing the live typed GamepadForceContext/device-output owner needed to connect the clear-all caller; current native input backend does not supply that force-state binding."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_0 survey",
+      "reason": "Missing the live raw render-remap service owner and its acquired texture-cache/lifetime context; the scene host still records the setter."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_1 survey",
+      "reason": "Missing the live raw render-remap service owner and its acquired texture-cache/lifetime context; the scene host still records the setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_2 survey",
+      "reason": "Missing the live raw render-remap service owner and its acquired texture-cache/lifetime context; the scene host still records the setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_3 survey",
+      "reason": "Missing the live raw render-remap service owner and its acquired texture-cache/lifetime context; the scene host still records the setter."
+    },
+    {
+      "native": "0077c8d0",
+      "status": "skipped",
+      "host_site": "src/lua_binding_navigator.cpp:entity_join_formation",
+      "reason": "Already-wired caller retained; this packet supplies its missing real route-slot/counter host operations rather than introducing another address body."
+    }
+  ]
+}
