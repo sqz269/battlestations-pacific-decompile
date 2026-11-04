@@ -67,6 +67,7 @@
 #include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
 #include "bsp/wire_goal4_chain362_switches.hpp"
+#include "bsp/wire_goal4_chain367_switches.hpp"
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
 #include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
@@ -10531,7 +10532,43 @@ struct GameUnitsHost::Impl {
                 squadron_allows = sq == nullptr || (sq->sq_avoid_3a4 & 2u) != 0;
             }
             if ((u.task_mask_2e4 & 2) != 0 && squadron_allows) {
+                if constexpr (bsp::kWireGoal4Chain367Bound) {
+                    // bsp.py show 0099B670 --asm: only [pilot+2F4h] and
+                    // [unit+C50h] are read before the nullable dispatch. Borrow
+                    // those two cells; the neighbour identity is this live
+                    // unit's retained +30h list, refreshed by 007E2010. Presence
+                    // uses the same 007D621F allocation predicate as that refresh.
+                    // These are call-scoped views, not full native unit/task
+                    // objects, and their unobserved padding is never consumed.
+                    struct UnitView {
+                        std::byte unobserved[0xc50];
+                        void* neighbours;
+                    } unit_view{{}, nb_has_object_c50(u) ? &u.nb_near_30 : nullptr};
+                    struct PilotView {
+                        std::byte unobserved[0x2f4];
+                        UnitView* unit;
+                    } pilot_view{{}, &unit_view};
+                    static_assert(offsetof(UnitView, neighbours) == 0xc50);
+                    static_assert(offsetof(PilotView, unit) == 0x2f4);
+                    class Calls final : public bsp::PilotVehicleAvoidanceCalls {
+                    public:
+                        Calls(Impl& owner, GameUnitSlot& unit, float dt)
+                            : owner_(owner), unit_(unit), dt_(dt) {}
+                        void vehicle_avoidance_007df4f0(void*, void*) override {
+                            // The borrowed identities above bind this one unit;
+                            // the existing geometry/band implementation reads and
+                            // writes its real state. No second collision pass.
+                            owner_.vehicle_avoidance_007df4f0(unit_, dt_);
+                        }
+                    private:
+                        Impl& owner_;
+                        GameUnitSlot& unit_;
+                        float dt_;
+                    } calls(*this, u, dt);
+                    bsp::pilot_bot_avoid_vehicles_0099b670(calls, &pilot_view);
+                } else {
                 vehicle_avoidance_007df4f0(u, dt);                 // 009A196D -> 0099B670
+                }
             }
         }
         if constexpr (kPilotTerrainAvoidanceBound) {
