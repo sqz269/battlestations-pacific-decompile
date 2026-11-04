@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain492_switches.hpp"
+#include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal4_chain488_switches.hpp"
 #include "bsp/band_0085_cc13.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
@@ -191,6 +193,10 @@
 #include "bsp/gun_device_blast_damage_cc13.hpp"  // packet cc13-gunC C2 (0098C510 children)
 #include "bsp/gun_device_blast_gunless_cc13.hpp"  // packet cc13-c2b (C2b, gunless bursts)
 #include "bsp/gun_device_hit_damage_cc13.hpp"   // packet cc13-gunC C1 (0043F7F0)
+
+// Genuine Win32 CRT intrinsic: ST1 dividend, ST0 divisor, ST0 remainder.
+// A C++ fmod pointer has stack arguments and cannot satisfy this raw binding.
+extern "C" double __cdecl _CIfmod();
 
 namespace bsp::game {
 namespace {
@@ -2382,7 +2388,28 @@ bool seed_angles_from_first_arc_0085a3d0(GameGunRow& gun) noexcept {
         }
         return v;
     };
-    const float h = seed_wrap_0085a3d0(midpoint(first->min_horz, first->max_horz));
+    const float h = [&] {
+        if constexpr (bsp::kWireGoal4Chain492Bound) {
+            const float angle = midpoint(first->min_horz, first->max_horz);
+            // Retain the previous host's unordered/nonfinite behavior.
+            if (!std::isfinite(angle)) return seed_wrap_0085a3d0(angle);
+            // bsp.py show 0085a3d0 --asm (0085A6AC..0085A6FF) and
+            // 00abe960 --asm (00ABE960..00ABE9B6): the same fmod/float
+            // stores and ordered pi fold. Reuse that complete body for the
+            // live platform arc midpoint; its return supplies +480h/+494h.
+            // This shares arithmetic, not an original 0085A3D0->00ABE960 edge.
+            static constexpr double period = 6.2831854820251465; // 00CE3828
+            static constexpr double low = -3.1415927410125732;   // 00CE3D18
+            static constexpr double high = 3.1415927410125732;   // 00CE3D28
+            const double* literals[] = {&period, &low, &high};
+            // The actual host CRT x87 entrypoint preserves the raw ABI.
+            // Original BF857A dispatcher/error-hook binary identity is unproven.
+            return bsp::oct18_tail_c::normalize_angle_00abe960(
+                reinterpret_cast<void*>(&_CIfmod), literals, angle);
+        } else {
+            return seed_wrap_0085a3d0(midpoint(first->min_horz, first->max_horz));
+        }
+    }();
     const float v = seed_wrap_0085a3d0(midpoint(first->min_vert, first->max_vert));
     gun.angles.horz = h;          // +480h
     gun.angles.target_horz = h;   // +494h
