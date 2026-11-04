@@ -61,6 +61,9 @@
 #include "bsp/wire_goal4_chain274_switches.hpp"
 #include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/wire_goal4_chain366_switches.hpp"
+#include "bsp/wire_goal4_chain387_switches.hpp"
+#include "bsp/frontend_screen_animation.hpp"
+#include "bsp/cc13_x87_model.hpp"
 #include "bsp/scenes_seg1_cc13.hpp"
 
 #include <algorithm>
@@ -763,6 +766,55 @@ void load_mission_idle_camera_shots(Owner& owner, const ScenePropertyBlock& head
 // GameMissionHost::Impl
 // ---------------------------------------------------------------------------
 
+// Layout-only binding for the retained screen scrollers. These are the same
+// GuiLayoutWidget objects the frontend owns and renders, not a second widget
+// tree. Input is deliberately unavailable here: 00683820 must not be enabled
+// until its action records, pad provider and GUI cursor are connected.
+class MainMenuScrollerLayoutHost final : public FrontEndScrollerHost {
+public:
+    explicit MainMenuScrollerLayoutHost(GameFrontendHost& frontend) : frontend_(frontend) {}
+    GuiWidgetPoint widget_position(void* widget) override {
+        return resolved_position(node(widget).transform);
+    }
+    void set_widget_position(void* widget, const GuiWidgetPoint& world) override {
+        auto& target = node(widget);
+        const auto local = local_position_for_resolved(target.transform, world);
+        const float authored_x = target.transform.authored_x;
+        frontend_.set_widget_local_position(target, local.x, local.y, local.z);
+        // 00AA8240 writes +0Ch, not the authored X at +08h. The frontend
+        // setter also invalidates its cached quads; preserve the native lane.
+        target.transform.authored_x = authored_x;
+    }
+    GuiWidgetSize widget_size(void* widget) override {
+        return bsp::widget_size(node(widget).transform);
+    }
+    void widget_set_size(void* widget, const GuiWidgetSize& size) override {
+        auto& target = node(widget);
+        target.transform.size = size;
+        invalidate(target);
+    }
+    void widget_set_alpha(void* widget, float alpha) override {
+        auto& target = node(widget);
+        frontend_.set_widget_color(target, target.color[0], target.color[1], target.color[2], alpha);
+    }
+    float scroll_axis() override { throw std::logic_error("Main-menu scroller action records are not bound"); }
+    bool pad_axis(int, double&) override { throw std::logic_error("Main-menu scroller pad provider is not bound"); }
+    float cursor_x() override { throw std::logic_error("Main-menu scroller GUI cursor is not bound"); }
+    float cursor_y() override { throw std::logic_error("Main-menu scroller GUI cursor is not bound"); }
+private:
+    static GuiLayoutWidget& node(void* widget) {
+        if (!widget) throw std::logic_error("Main-menu scroller requires an attached layout widget");
+        return *static_cast<GuiLayoutWidget*>(widget);
+    }
+    void invalidate(GuiLayoutWidget& target) {
+        const auto local = target.transform.position;
+        const float authored_x = target.transform.authored_x;
+        frontend_.set_widget_local_position(target, local.x, local.y, local.z);
+        target.transform.authored_x = authored_x;
+    }
+    GameFrontendHost& frontend_;
+};
+
 struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Bound> {
     GameHostLog& log;
     GameVfsHost& vfs;
@@ -791,6 +843,12 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
     std::array<float, 3> backdrop{0.0f, 0.0f, 0.0f};    // +124h
     // +134h + index*10h, the five point vectors.
     std::array<std::vector<std::array<float, 3>>, 5> point_lists{};
+
+    // 005902E0 embeds these at +1D4h/+354h; 005861B0 attaches the real
+    // content, thumbs and arrows. Keep their captured bases across selections.
+    FrontEndScreenScroller mission_scroller_1d4;
+    FrontEndScreenScroller briefing_scroller_354;
+    bool briefing_scroller_attached{};
 
     // The main-menu screen's own mutable state and the page word at 00E08874.
     MainMenuScreenState screen_state{};
@@ -873,6 +931,12 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
           language(std::move(language_in)) {
         summary.requested_id = requested_id;
         summary.mission_frames_requested = mission_frames;
+        if constexpr (kWireGoal4Chain387Bound) {
+            // 005902E0 -> 00683610 twice; native defaults, not fake input.
+            construct_front_end_screen_scroller_00683610(mission_scroller_1d4);
+            construct_front_end_screen_scroller_00683610(briefing_scroller_354);
+        } else {
+        }
     }
 
     const MissionRecordData* selected_record() const {
@@ -1168,7 +1232,19 @@ public:
         owner_.log.implemented("MissionDetail::set_briefing_text", "00abaed0");
     }
     void reset_scroller() override {
-        owner_.log.unimplemented("MissionDetail::reset_scroller", "00683790");
+        if constexpr (kWireGoal4Chain387Bound) {
+            if (owner_.briefing_scroller_attached) {
+                MainMenuScrollerLayoutHost layout(owner_.frontend);
+                // 0058C84E passes null: retain content/base, clear offset,
+                // drag and auto-scroll, then reposition the existing widgets.
+                attach_content_00683790(owner_.briefing_scroller_354, nullptr, layout);
+                owner_.log.implemented("MissionDetail::reset_scroller", "00683790");
+            } else {
+                owner_.log.unimplemented("MissionDetail::reset_scroller", "00683790");
+            }
+        } else {
+            owner_.log.unimplemented("MissionDetail::reset_scroller", "00683790");
+        }
     }
     double briefing_text_height() override {
         owner_.log.unimplemented("MissionDetail::briefing_text_height", "00ab6bd0");
@@ -2859,6 +2935,70 @@ void GameMissionHost::bind_main_menu_layout_005861b0(GuiLayoutPage* main_page) {
         ++host.summary.detail_widgets_bound;
         host.log.notef("  widget +%03Xh %-32s %s", entry.field, entry.name,
             direct ? "direct child" : "nested (chained lookup)");
+    }
+
+    if constexpr (kWireGoal4Chain387Bound) {
+        MainMenuScrollerLayoutHost layout(host.frontend);
+        const auto child = [](GuiLayoutWidget* parent, const char* name) {
+            return parent ? find_child_by_name_00aa7e00(*parent, name) : nullptr;
+        };
+        // Follow 005868ED..00586E3E's parent chain: detail and briefing both
+        // contain test_Clipbox/textbox_Group/content_main_Text. A whole-page
+        // descendant search can otherwise bind the OTHER content_main_Text.
+        auto* historical = child(&root, "historical_Group");
+        auto* background = child(historical, "bigtextbg_FrameBox");
+        auto* clip = child(background, "test_Clipbox");
+        auto* content = child(clip, "textbox_Group");
+        auto* text = child(content, "content_main_Text");
+        auto* slider = child(background, "slider_Group");
+        auto* top = child(slider, "arrow_top_scroll_Icon");
+        auto* bottom = child(slider, "arrow_botton_scroll_Icon");
+        auto* thumb = child(slider, "textx_scroll_FrameBox");
+        auto* track = child(slider, "textx_scroll_bg_Icon");
+        if (content && text && top && bottom && thumb && track) {
+            attach_content_00683790(host.briefing_scroller_354, content, layout); //00586B02
+            // 00586E02 FLD bg height; 00586E0B FSTP double; 00586E22 FLD
+            // thumb height; 00586E25 FSUBR double; 00586E32 FSTP float.
+            // The main thread's PC24 rounds that one subtraction.
+            const float length = static_cast<float>(cc13x87::x87_sub24(
+                track->transform.size.height, thumb->transform.size.height));
+            attach_scroll_bar_00683380(host.briefing_scroller_354, thumb, length,
+                top, bottom, layout); //00586E3E
+            host.widgets[0x348] = top;
+            host.widgets[0x34c] = bottom;
+            host.widgets[0x350] = content;
+            host.widgets[0x3b0] = clip;
+            host.widgets[0x3b4] = thumb;
+            host.widgets[0x3b8] = text;
+            host.briefing_scroller_attached = true;
+            host.log.implemented("MainMenuScreen::attach_briefing_scroller", "00683380");
+        } else {
+            host.briefing_scroller_attached = false;
+            host.log.unimplemented("MainMenuScreen::attach_briefing_scroller_missing_layout", "00586e3e");
+        }
+
+        // 00587278..005874C3 attaches the independently retained mission list.
+        // The track argument is the binary's constant, not a guessed length.
+        auto* detail = child(&root, "mission_pic_Group");
+        auto* list_clip = child(detail, "test_Clipbox");
+        auto* list_content = child(list_clip, "textbox_Group");
+        auto* list_top = child(detail, "arrow_top_scroll_Icon");
+        auto* list_bottom = child(detail, "arrow_botton_scroll_Icon");
+        auto* list_thumb = child(detail, "textx_scroll_FrameBox");
+        if (list_content && list_top && list_bottom && list_thumb) {
+            attach_content_00683790(host.mission_scroller_1d4, list_content, layout); //0058732B
+            attach_scroll_bar_00683380(host.mission_scroller_1d4, list_thumb,
+                0.10277777910232544f, list_top, list_bottom, layout); //005874C3
+            host.widgets[0x1c8] = list_top;
+            host.widgets[0x1cc] = list_bottom;
+            host.widgets[0x1d0] = list_content;
+            host.widgets[0x230] = list_clip;
+            host.widgets[0x234] = list_thumb;
+            host.log.implemented("MainMenuScreen::attach_mission_scroller", "00683380");
+        } else {
+            host.log.unimplemented("MainMenuScreen::attach_mission_scroller_missing_layout", "005874c3");
+        }
+    } else {
     }
 
     // +124h: 005861B0 stores the three floats 00AA6750 returns, which 0059A68E
