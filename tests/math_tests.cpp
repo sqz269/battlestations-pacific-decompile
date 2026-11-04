@@ -8,6 +8,8 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/cc13_seg67b.hpp"
+#include "bsp/cc13_seg67n.hpp"
 #include "bsp/unit_weapons.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
@@ -274,6 +276,34 @@ private:
 }
 
 int main() {
+    {
+        // Chain468: the constructor must read the live position AFTER the
+        // dirty-pose callback, and a null entity must leave its point alone.
+        struct TargetPose final : bsp::MoveToEntityPoseHost {
+            std::uint8_t valid{0};
+            float position[3]{1.0f, 2.0f, 3.0f};
+            int refreshes{0};
+            bsp::MoveToEntityPoseView move_to_entity_pose(void*) override {
+                return {valid, position};
+            }
+            void entity_pose_refresh_world_00414db0(void*) override {
+                ++refreshes;
+                position[0] = 4.0f;
+                valid = 1;
+            }
+        } host;
+        bsp::MoveToEntityTargetStorage target{};
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        check(target.profile_00 == 0x00d209c4u && target.initial_world_04[0] == 4.0f
+            && target.initial_world_04[1] == 2.0f && target.initial_world_04[2] == 3.0f
+            && bsp::move_to_target_entity_009be140(&target) == &host && host.refreshes == 1,
+            "chain468 entity target borrows identity and copies the refreshed live pose");
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, nullptr);
+        check(host.refreshes == 1 && target.entity_10 == nullptr
+            && target.initial_world_04[0] == 4.0f,
+            "chain468 valid/null target paths preserve refresh and point semantics");
+    }
     {
         // Chain413 review834: the first plane aliases the fused squadron
         // index. Its saved and pending weak references still die with that

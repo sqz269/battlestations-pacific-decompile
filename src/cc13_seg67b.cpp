@@ -2619,15 +2619,18 @@ void plane_unit_copy_leader_velocity_009be050(Cc13Seg67bHost& host, void* unit,
 // 009BE0F0 (009BE0F0-009BE136). [t] = 00D209C4, t+10h = entity (009BE0FA,
 // 009BE100); when entity: 00414DB0(entity) unless byte entity+C8h (009BE110), then
 // t+4h..+0Ch = entity+FCh..+104h (009BE115-009BE12D). Returns t.
-void* move_to_target_construct_from_entity_009be0f0(Cc13Seg67bHost& host, void* t,
+void* move_to_target_construct_from_entity_009be0f0(MoveToEntityPoseHost& host, void* t,
                                                     void* entity) {
     at<std::uint32_t>(t, 0x00) = kMoveToTargetVtable;
     at<std::uintptr_t>(t, 0x10) = reinterpret_cast<std::uintptr_t>(entity);
     if (entity != nullptr) {
-        if (at<std::uint8_t>(entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(entity);
-        at<float>(t, 0x04) = at<float>(entity, 0xFC);
-        at<float>(t, 0x08) = at<float>(entity, 0x100);
-        at<float>(t, 0x0C) = at<float>(entity, 0x104);
+        // bsp.py show 009be0f0: test C8, refresh only when dirty, then read
+        // FC/100/104. The view borrows those live cells; it is not a snapshot.
+        const auto pose = host.move_to_entity_pose(entity);
+        if (pose.world_valid_c8 == 0) host.entity_pose_refresh_world_00414db0(entity);
+        at<float>(t, 0x04) = pose.world_position_fc[0];
+        at<float>(t, 0x08) = pose.world_position_fc[1];
+        at<float>(t, 0x0C) = pose.world_position_fc[2];
     }
     return t;
 }

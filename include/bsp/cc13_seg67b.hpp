@@ -25,6 +25,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include "bsp/moveto_entity_target.hpp"
 
 namespace bsp {
 
@@ -88,7 +89,8 @@ public:
     virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
 };
 
-class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls {
+class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls,
+    public MoveToEntityPoseHost {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -1020,7 +1022,7 @@ bool bot_state_dive_bomb_aim_glide_out_of_bombs_009c7850(
 void plane_unit_copy_leader_velocity_009be050(Cc13Seg67bHost& host, void* unit,
                                               const float* v);
 // 009BE0F0: __thiscall(ECX = target, entity), RET 4, EAX = target.
-void* move_to_target_construct_from_entity_009be0f0(Cc13Seg67bHost& host, void* t,
+void* move_to_target_construct_from_entity_009be0f0(MoveToEntityPoseHost& host, void* t,
                                                     void* entity);
 // 009B7990 / 009C7710: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
 void* bot_task_level_bomb_construct_009b7990(Cc13Seg67bHost& host, void* task, void* bot,
