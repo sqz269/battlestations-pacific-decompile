@@ -1,0 +1,147 @@
+{
+  "chain": 437,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain437Bound",
+  "rows": [
+    {
+      "native": "004b5510",
+      "status": "wired",
+      "host_site": "include/bsp/ai_coordinator_load_gate_cc13.hpp:ai_coordinator_created_at_load_004e17fd, called by src/game_hosts_mission_frame.cpp:GameMissionFrameHost::run_scene_load_004dfb70",
+      "reason": "Replace the load gate's inlined three-byte predicate with the existing body, using occupied/AI/enabled flags read from retained participant records; preserve the session/forced gate and first matching slot.",
+      "evidence": [
+        "004B5510 reads only participant bytes +08h, +09h and +0Ah and returns their conjunction.",
+        "004DFB70 assembly at 004E1819/004E181F/004E1825 tests the same three bytes; 004E1829 exits to coordinator construction on a match.",
+        "Mission load reads claimed_08, ai_held_09 and ai_enabled_0a through participants.active_record/read_record_bytes before invoking the gate.",
+        "Built executable: one reachable call at 1017C6B6 from ai_coordinator_created_at_load_004e17fd to participant_slot_is_active_ai_004b5510 at 10404AC0."
+      ]
+    },
+    {
+      "native": "006fdd00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:BSP_Gun_SpawnShotAndEffects (0072F830); src/plane_advance_pose.cpp:rotate_about_axis_0085e4d0",
+      "reason": "Original gun call requires OneTimeBulletAmount > 1, absent from installed Lua tables (native default 1); the rotation's inline MOVSS transpose preserves signaling NaNs whereas 006FDD00 quiets them, so it is not an equivalent substitute."
+    },
+    {
+      "native": "0072f830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:BSP_Gun_SpawnShotAndEffects",
+      "reason": "Surveyed the multi-bullet producer for 006FDD00; installed arcade/realistic device tables lack OneTimeBulletAmount and therefore do not enter the count > 1 arm."
+    },
+    {
+      "native": "007327b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:BSP_GunClass_ReadLuaFields",
+      "reason": "Surveyed the multi-bullet field defaults (count 1, cone 0); no active installed count > 1 producer was found, so no class-loader change was made."
+    },
+    {
+      "native": "0085e4d0",
+      "status": "skipped",
+      "host_site": "src/plane_advance_pose.cpp:rotate_about_axis_0085e4d0",
+      "reason": "Existing body is already entry-reachable; its MOVSS-only inline transpose is not interchangeable with 006FDD00 for signaling NaNs."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl score-list writers",
+      "reason": "Candidate score-list records are consumed only by the unreachable debug overlay; skip debug-only storage."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl defend-think candidate pass",
+      "reason": "Already has a reachable reconstructed-body call despite readiness state ready; no missing wiring to replace."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl group-value record builder",
+      "reason": "Missing retained native global/per-party hint-weight map owners and their Front6 callback binding."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::CaptureScoreHost::available_resources",
+      "reason": "Missing Left61 binding for the raw world-unit list, four unit flags, squadron-leader owner indirection and queued-spawn manager."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost tuning-mode selection",
+      "reason": "Missing the native optional brain+0Ch planner ownership view and selected participant difficulty needed by 009FFC80."
+    },
+    {
+      "native": "00a10710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl attack-command replacement",
+      "reason": "Missing a retained native command object and observer-pair lifecycle binding; current commands are typed value projections."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::merge_group",
+      "reason": "Missing 00A10710's native attack-base/observer owner needed by the MOVETOATTACK constructor."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::merge_group",
+      "reason": "Missing the retained native attack command/observer and cautious-approach subobject lifecycle."
+    },
+    {
+      "native": "00a10ae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::tick_replace_command",
+      "reason": "Missing 00A10710's native attack-base/observer owner needed by the CLOSEATTACK constructor."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing an off-main-thread named-call producer: this process runs mission Lua on the main thread, leaving the deferred argument queue empty."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp:session queued-message fanout",
+      "reason": "No queued-message decision adapter was claimed; binding needs actual category, send tick, receiver state and ownership outputs at the dispatch site."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:run_load_scripted_name_baseline_004d30f0 teardown consumer",
+      "reason": "Missing the SweepA3 raw game+1930h string-set owner and Lua-iteration/cleanup adapter; the load baseline is currently a typed name vector."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:land-fort death-smoke path",
+      "reason": "Missing death-smoke +744h effect ownership and LandFortHost creation/stop/message binding; existing hosted fire state covers +740h."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameObjectiveSets::release_member",
+      "reason": "Missing the per-unit marker-slot objects, keep flags and observer-pair ownership needed by the marker-drop decision."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "call_graph": "004B5510 has one entry-reachable call from the mission-load coordinator gate",
+    "readiness": {
+      "text_wired_before": 9682,
+      "text_wired_after": 9682,
+      "target_state_before": "ready",
+      "target_state_after": "ready",
+      "target_called_before": null,
+      "target_called_after": true,
+      "target_call_sites_after": 1,
+      "note": "The text-based state does not see the binding in an inline header; the built-executable call graph confirms the actual body call."
+    },
+    "runtime": "No game run; executable reachability and source/assembly equivalence only",
+    "float_math": "No float arithmetic changed"
+  },
+  "assumptions": [
+    "The load gate's inlined 004B5510 predicate may call its existing typed body because both consume exactly the same three normalized nonzero flags.",
+    "The surrounding load gate remains conditional on a hosted session or forced mode; campaign behavior remains governed by that native condition."
+  ]
+}
