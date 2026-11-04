@@ -97,12 +97,17 @@ private:
 // 415350 manager+10 section; real enter/+18++, then publish/register or
 // unregister CURRENT publication after the second getter. Clear after removal;
 // --/leave original section. Destructor receiver need not equal publication.
-void* construct_native_shadow_target_singleton_00a8a820(void*,NativeShadowDepthTargetContext&);
+// An enclosing frame borrows the caller's already retained running operation
+// for this same receiver. Native nested construction must not allocate another
+// observation frame or detach its failure/lock/publication evidence.
+void* construct_native_shadow_target_singleton_00a8a820(void*,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
 void destroy_native_shadow_target_singleton_00a8a8c0(void*,NativeShadowDepthTargetContext&);
 // A8A980: base call before width/height argument-cell reads; EAX owner, RET8.
 // A8A9D0: stamp D5B558 then tail A8A8C0. No implicit allocation or free.
 void* construct_native_shadow_target_extents_00a8a980(void*,
-    const volatile NativeShadowDepthTargetDimensions&,NativeShadowDepthTargetContext&);
+    const volatile NativeShadowDepthTargetDimensions&,NativeShadowDepthTargetContext&,
+    NativeShadowDepthTargetOperation* enclosing = nullptr);
 void destroy_native_shadow_target_extents_00a8a9d0(void*,NativeShadowDepthTargetContext&);
 // A8FE30: ECX fresh2Ch, width/height stack, EAX owner, RET8. Full native writes
 // and current +104/+F8 probes; real B1FF50 and B21EC0. Padding stays untouched.
