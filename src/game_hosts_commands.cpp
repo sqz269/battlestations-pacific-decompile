@@ -22,6 +22,7 @@
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_derived.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
+#include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -805,6 +806,8 @@ struct GameCommandsHost::Impl {
         std::function<void()> after_delivery;
         float user_point[3]{0.0f, 0.0f, 0.0f};  // MT_GAMEUNIT_ADDUSERPATHPOINT +20h
         bool user_outside_map{false};
+        // Chain 450: the factory's 5Fh object, owned through its delivery.
+        std::shared_ptr<bsp::NativeSessionMessage95> user_path_message;
     };
     // Where the last post went: `loopback` while it waits for the drain, or the
     // list being drained when a delivery inserted it (+258h). Null when it was
@@ -2604,8 +2607,20 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
         apply_clear_command(message.unit, message.player, message.clear);
         break;
     case LoopbackKind::UserPathPoint:
+        if constexpr (bsp::kWireGoal4Chain450Bound) {
+            const auto& queued = message.user_path_message;
+            // 00721A40's 5Fh add arm reads the decoded +2Ch and XYZ. This
+            // channel is 0071D340's add sender (+2Ch=1), not a clear sender.
+            if (queued && queued->present_2c != 0) {
+                float point[3];
+                std::memcpy(point, queued->vector_20, sizeof point);
+                apply_user_path_point_007207c0(message.unit, point,
+                    message.user_outside_map);
+            }
+        } else {
         apply_user_path_point_007207c0(message.unit, message.user_point,
                                        message.user_outside_map);
+        }
         break;
     case LoopbackKind::Callback:
         // A message another host receives: its receiver runs as the
@@ -2628,6 +2643,23 @@ void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
     Impl& host = *impl_;
     if (unit_index >= host.units.size() || unit_index >= host.directors.size()) return;
     host.done("PathObject::send_user_path_point_0071d340", 0x0071d340u);
+    if constexpr (bsp::kWireGoal4Chain450Bound) {
+        auto queued = host.session_messages.queue_user_path_point_5f(point);
+        if (kSetCommandQueueDelayBound) {
+            Impl::LoopbackMessage message;
+            message.kind = Impl::LoopbackKind::UserPathPoint;
+            message.unit = unit_index;
+            message.user_path_message = std::move(queued);
+            message.user_outside_map = outside_map;
+            host.post_loopback(message);
+            return;
+        }
+        if (queued->present_2c != 0) {
+            float decoded_point[3];
+            std::memcpy(decoded_point, queued->vector_20, sizeof decoded_point);
+            host.apply_user_path_point_007207c0(unit_index, decoded_point, outside_map);
+        }
+    } else {
     if (kSetCommandQueueDelayBound) {
         Impl::LoopbackMessage message;
         message.kind = Impl::LoopbackKind::UserPathPoint;
@@ -2638,6 +2670,7 @@ void GameCommandsHost::post_user_path_point_0071d340(std::size_t unit_index,
         return;
     }
     host.apply_user_path_point_007207c0(unit_index, point, outside_map);
+    }
 }
 
 void GameCommandsHost::Impl::apply_user_path_point_007207c0(std::size_t unit_index,
