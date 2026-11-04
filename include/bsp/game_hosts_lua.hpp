@@ -58,6 +58,17 @@ struct ShipCameraSettings;
 struct ShipClassCameraInputs;
 }
 
+// Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
+// that AddListener loads (ListenerEntry::native_*).
+namespace bsp::cc13_seg49_64_78 {
+struct EventSubscription;
+struct ReconSubscription;
+struct KillSubscription;
+struct HitSubscription;
+struct EntityKilledSubscription;
+struct ExitZoneSubscription;
+}
+
 namespace bsp::game {
 
 // Packet cc9_wing_construction_lua (docs/WING_CONSTRUCTION_LUA.md, section 15.4 of
@@ -1213,6 +1224,10 @@ struct GameMissionLuaSummary {
     unsigned long long listener_hit_attack_type_subkind_differs{0};  // cc13-atkkind, log-only
     unsigned long long listener_hit_second_passes{0};      // kLuaHitSquadronSecondPassBound
     unsigned long long listener_hit_second_pass_fires{0};
+    // Goal 4 chain 352: AddListener blocks loaded by the native Load slot, and the
+    // blocks whose load threw (an absent filter key) and fell back to the host parse.
+    unsigned long long listener_native_loads{0};
+    unsigned long long listener_native_load_fallbacks{0};
     // Packet cc9_lua51_listener_args.
     unsigned long long listener_kill_with_attacker{0};     // deaths with +2C8h set
     unsigned long long listener_kill_attacker_matched{0};  // filtered entries that held
@@ -2344,8 +2359,26 @@ private:
         // `exitzone` (009726D0) under kLuaExitZoneListenersBound: entity +0Ch (in
         // entity_ids) and exited +1Ch, a boolean set held as 0/1.
         std::vector<int> exited_values;
+        // Goal 4 chain 352 (kWireGoal4Chain352Bound): the subscription 0097E360
+        // constructs for the channel and loads through its vtable slot 1 over the
+        // block's reader. Set only when that load ran; the host sets above are then
+        // left empty and the dispatchers match these filters instead.
+        std::shared_ptr<const bsp::cc13_seg49_64_78::KillSubscription> native_kill;
+        std::shared_ptr<const bsp::cc13_seg49_64_78::EntityKilledSubscription>
+            native_entity_killed;
+        std::shared_ptr<const bsp::cc13_seg49_64_78::ExitZoneSubscription> native_exit_zone;
+        std::shared_ptr<const bsp::cc13_seg49_64_78::ReconSubscription> native_recon;
+        std::shared_ptr<const bsp::cc13_seg49_64_78::HitSubscription> native_hit;
+        // The other eighteen channels 0097E360 accepts (input ... hpEvent), which no
+        // host dispatcher fires: the loaded subscription, held as the channel map
+        // holds it (the owner keeps the derived type's deleter).
+        std::shared_ptr<const bsp::cc13_seg49_64_78::EventSubscription> native_other;
     };
     std::vector<ListenerEntry> listeners_;
+    // Goal 4 chain 352: 00980C10's 004425C0 reader over AddListener's block (argument 3)
+    // and 0097E360's construct + Load for each of its 23 channels. False for any
+    // other channel, or when the load threw; the caller then runs the host parse.
+    bool load_listener_subscription_native(lua_State* state, ListenerEntry& entry);
     // Packet cc9_get_closest_border_zone: world+711Ch..+7130h and world+7134h.
     bool border_zones_loaded_{false};
     bsp::WorldMapBounds border_bounds_{};
