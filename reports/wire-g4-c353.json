@@ -1,0 +1,133 @@
+{
+  "chain": 353,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain353Bound",
+  "scope": "Physical index/vertex buffer destructor calls on the renderer's actual owners",
+  "rows": [
+    {
+      "native": "00b4b490",
+      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp: destroy_native_physical_index_buffer_00b4b900 -> destroy<true,true> / unwind_destroy_base<true,true>",
+      "change": "Replace the generic base cleanup with the existing index base body, on normal and EH paths; same actual owner, one cleanup."
+    },
+    {
+      "native": "00b4b530",
+      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp: destroy_native_physical_vertex_buffer_00b4bab0 -> destroy<true,false> / unwind_destroy_base<true,false>",
+      "change": "Replace the generic base cleanup with the existing vertex base body, on normal and EH paths; same actual owner, one cleanup."
+    },
+    {
+      "native": "00b4b900",
+      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp: delete_native_private_index_buffer_00b4bb20 / delete_native_pooled_index_buffer_00b4c210",
+      "change": "Preserve the existing derived destructor call as an emitted entry and route its base call through the switch. Already text-wired before this chain."
+    },
+    {
+      "native": "00b4bab0",
+      "status": "wired",
+      "host_site": "src/native_physical_buffer_owner.cpp: delete_native_private_vertex_buffer_00b4bb40 / delete_native_pooled_vertex_buffer_00b4c230",
+      "change": "Preserve the existing derived destructor call as an emitted entry and route its base call through the switch. Already text-wired before this chain."
+    },
+    {
+      "native": "00b49700",
+      "status": "skipped",
+      "host_site": "src/native_physical_buffer_owner.cpp: destroy_base",
+      "reason": "Cleanup already calls this body, but Release inlines it; no separate emitted entry, and its behavior was left unchanged."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: single_player_effective_game_mode",
+      "reason": "Campaign effective mode 8 bypasses the active-slot difficulty branch; no admitted campaign use was established."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator candidate score list",
+      "reason": "The existing host documents this list as used only by an unreachable debug overlay; excluded from single-player wiring."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator candidate score list",
+      "reason": "The existing host documents this list as used only by an unreachable debug overlay; excluded from single-player wiring."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: unit marker removal",
+      "reason": "Missing a verified marker-slot producer, per-entry keep flags, and observer-pair membership; no substitute values were introduced."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "An existing raw-bag call is already present; establishing its outer merge admission and reach is a separate packet."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: MergedRecords::collect",
+      "reason": "An existing raw-bag call is already present; establishing its outer merge admission and reach is a separate packet."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "record_remap_texture_name supplies no authored name; the host also lacks a bound raw render-resource remap context at this site."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "record_remap_texture_name supplies no authored name; the host also lacks a bound raw render-resource remap context at this site."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "record_remap_texture_name supplies no authored name; the host also lacks a bound raw render-resource remap context at this site."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "record_remap_texture_name supplies no authored name; the host also lacks a bound raw render-resource remap context at this site."
+    },
+    {
+      "native": "00b346e0",
+      "status": "skipped",
+      "host_site": "src/native_shader_interpolators.cpp: select_native_shader_interpolator_fields_00b36800",
+      "reason": "The candidate caller is the raw shader-builder implementation; readiness's wired 00B36800 resolves to the separate typed shader_source.cpp implementation."
+    },
+    {
+      "native": "00b38390",
+      "status": "skipped",
+      "host_site": "src/native_compiled_shader_owner.cpp: resize_native_compiled_shader_constants_00b38490 / append_native_compiled_shader_constant_00b3a660",
+      "reason": "The callers use an internal reserve operation; changing its retained operation/failure ownership was deferred to a shader-owner packet."
+    },
+    {
+      "native": "00b34e90",
+      "status": "skipped",
+      "host_site": "src/native_shader_field_initialization.cpp: construct_native_shader_field_swizzle_00b34e90",
+      "reason": "No actual shader-field producer/caller was established during selection; left for a shader-builder packet."
+    }
+  ],
+  "evidence": {
+    "original_exports": ["bsp.py show 00b4b490", "bsp.py show 00b4b530", "bsp.py show 00b4b900", "bsp.py show 00b4bab0", "bsp.py show 00b4c210"],
+    "existing_eh_contract": "docs/NATIVE_PHYSICAL_BUFFER_OWNER.md: unwind-only base cleanup remains noexcept, so a second exception terminates",
+    "real_state": "native_renderer_destructor.cpp release_zero dispatches private/pooled buffer profiles with the same owner and actual_physical context; logical index/vertex owners also call the pooled deletion entries",
+    "no_double_run": "Only the bound dispatch calls the address-specific base body; the old generic destroy_base arm is discarded by if constexpr",
+    "abi": "Existing C++ interfaces unchanged; original native ABI remains ECX owner / RET for the four destructor entries, not a drop-in ABI claim"
+  },
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests both passed",
+    "readiness": {"wired_before": 9455, "wired_after": 9457, "new_text_wired": ["00b4b490", "00b4b530"]},
+    "call_graph_before": {"called_reconstructed_addresses": 4471},
+    "call_graph_after": {"called_reconstructed_addresses": 4473},
+    "call_graph_who": "All four changed destructor entries are entry-reachable; derived entries have calls from both private and pooled deletion functions",
+    "readiness_called": {"00b4b490": true, "00b4b530": true, "00b4b900": true, "00b4bab0": true},
+    "folding_limit": "MSVC ICF folds B4B490/B4B530 into one identical emitted body; who cannot distinguish those two labels. Source selects the corresponding type on normal and noexcept unwind paths.",
+    "runtime": "Game not run; build and static entry reach only"
+  }
+}
