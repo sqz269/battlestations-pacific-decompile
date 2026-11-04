@@ -1,0 +1,224 @@
+{
+  "run": 1006,
+  "goal": 4,
+  "chain": 493,
+  "owner": "agent/g4-w2",
+  "scope": "GUI text ASCII uppercase using the existing 004F9AB0 body",
+  "switch": "bsp::kWireGoal4Chain493Bound",
+  "wired_total_before": 9775,
+  "wired_total_after": 9776,
+  "rows": [
+    {
+      "native": "004f9ab0",
+      "status": "wired",
+      "host_site": "src/game_hosts_text.cpp: GameLocaleTextRuntime::crt_uppercase_00c0391c; src/game_native_gui_render_application.cpp: LiteralTextLocale::crt_uppercase_00c0391c",
+      "evidence": "Live text code unit, restricted to ASCII and current C LC_CTYPE; existing single address body; native signed compares/MOVSX verified with bsp.py show --asm; two built entry-reachable direct call sites."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "No weapon-animation object is produced: weapon_animation returns zero, so there is no live ticker range to write."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call; src/game_hosts_fixed_step.cpp: named-call drain",
+      "reason": "The main-thread-only Lua host has no frame-job enqueue producer or live source/destination deferred argument vectors."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "on_frame_job_thread returns false and no frame job pool produces live deferred-call queue nodes."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message; src/game_hosts_ship_ai.cpp: pass-side delivery",
+      "reason": "A complete gate binding still needs native post/current tick values, game dispatch state, and entity readiness; current loopback records do not supply all of them."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::begin_submarine_periscope_failure",
+      "reason": "Common break stores are hosted by 009327F0, but live per-instance mast-node visibility and Dyn collision-shape owners are still missing."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: GameMissionHost::Impl::join_local_player_007752d0",
+      "reason": "The selected slot is only logged; the shared mutable game+18EC slot and its existing consumers are not bound here."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate ambient-volume adapter",
+      "reason": "has_ambient_sound_instance returns false; the live ambient SoundInstance required by the volume body is missing."
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/resource_lookup.cpp: resolve_existing_resource_00bdf4c0_fragment",
+      "reason": "The live native-access arm bypasses the typed resolver; an ordered snapshot of its actual native registrations is missing for this typed body."
+    },
+    {
+      "native": "00735b30",
+      "status": "skipped",
+      "host_site": "src/native_vfs_startup_callbacks.cpp: install_native_vfs_startup_callbacks_0073d63c",
+      "reason": "The secondary handler is only published as an original-address marker; no live secondary-callback invocation was identified."
+    },
+    {
+      "native": "00be6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_file_store_name_00be6040",
+      "reason": "No live file-store-specific name-copy caller was identified; current native string copy providers would need the address-specific dispatch boundary."
+    },
+    {
+      "native": "00bb5540",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_package_name_00bb5540",
+      "reason": "No live package-specific name-copy caller was identified; current native string copy providers would need the address-specific dispatch boundary."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: mission-result close path",
+      "reason": "Full transition requires current movie-screen visibility/entry, input-manager context, cinematic-mode, and sound-frame bindings; the selected close path only records it."
+    },
+    {
+      "native": "005b9760",
+      "status": "skipped",
+      "host_site": "src/voice_playback.cpp: begin_voice_sound_fade_005b9760",
+      "reason": "No selected live caller supplies the VoicePlaybackManager and fade command target/duration/callback together."
+    },
+    {
+      "native": "005b8ea0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: append_effect_sound_sample_005b9af0",
+      "reason": "The existing append delegates to the generic component append; moreover the sound-component dispatcher has no live instantiation or built entry caller."
+    },
+    {
+      "native": "005b8fa0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: destroy_effect_sound_0086fa90",
+      "reason": "Sound-component teardown has no built entry caller because the scalar component dispatcher is not instantiated by the game hosts."
+    },
+    {
+      "native": "005b9af0",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp: acquire_and_append",
+      "reason": "No built entry caller reaches the sound-component reader; the scalar component dispatcher is not instantiated by the game hosts."
+    },
+    {
+      "native": "0086ef60",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_scalar_components.cpp: GameplayEffectScalarComponentDispatcher::read_lua_slot_14",
+      "reason": "No game-host instance of GameplayEffectScalarComponentDispatcher supplies a reachable reader dispatch."
+    },
+    {
+      "native": "00870400",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_acquisition.cpp: gameplay effect acquisition",
+      "reason": "No built game-entry caller was found for the component loader; live effect-definition acquisition/dispatch remains to be bound."
+    },
+    {
+      "native": "00ab95f0",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_text_set_cursor_mode_00ab95f0",
+      "reason": "A live cursor-model/node and GuiLeafHost cursor callbacks were not identified in the selected text host."
+    },
+    {
+      "native": "00ab9240",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: gui_text_position_cursor_00ab9240",
+      "reason": "Cursor-model construction, glyph/font lookup, and cursor-node update callbacks still need one live text-owner binding."
+    },
+    {
+      "native": "00aa7950",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_scale_00aa7950",
+      "reason": "No selected live caller supplies the typed GuiWidgetTransform and recomposition host for this scale setter."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "No selected live caller supplies a GuiWidgetOwner with the required timed-entry ownership binding."
+    },
+    {
+      "native": "00a9e230",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::enable_paging_00a9e230",
+      "reason": "No selected live paging-init caller supplies the actual row list, authored arrow children and page-size command."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp: clear_gamepad_force_requests_00a95890",
+      "reason": "No live typed GamepadForceContext caller was identified; the input backend still needs a matching owner and dispatcher binding."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "No live TextEditorActivationBindings owner/caller was identified for selected-row, platform and input-manager activation."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No live text-byte admission caller was identified for the typed FontData projection; current native font ownership has a separate membership implementation."
+    },
+    {
+      "native": "006e8320",
+      "status": "skipped",
+      "host_site": "src/projectile_kinds.cpp: weapon_class_constructed_defaults",
+      "reason": "No live WeaponClassDescriptor owner was found; current weapon loader representation needs an explicit bridge."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow-slice fitting",
+      "reason": "The inspected fitters compute the product inline but have no built entry caller; their raw cameras still need a live CameraProjection view and caller."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_manager_queries.cpp; src/ship_ai_avoid_zone_search.cpp",
+      "reason": "Already present in the baseline built graph through existing geometry callers; no new wiring needed in this slice."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/pool_pool06_cc13.cpp: convex_object_compute_box_006f9ee0",
+      "reason": "Already entry-reachable in the baseline through convex_object_compute_box_006f9ee0; no new wiring needed."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already entry-reachable in the baseline with one direct call from notify_gun_skill_level; no new wiring needed."
+    },
+    {
+      "native": "0043b700",
+      "status": "skipped",
+      "host_site": "src/band_0040_cc13.cpp: hash_upper_case_0043b700",
+      "reason": "No live caller for the typed hash body was identified; the inspected seg6 hash wrapper was also absent from the built graph."
+    },
+    {
+      "native": "00ac1f30",
+      "status": "skipped",
+      "host_site": "src/native_gui_line_storage.cpp: scalar-delete pool return",
+      "reason": "The native line owner already returns slots through the trait pool template; no separately identified address-specific free entry was found."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: passed; 5/5 tests passed",
+    "call_graph": "python tools/call_graph.py; who 004f9ab0: REACHABLE, two direct calls from the two changed CRT uppercase providers",
+    "readiness": "004f9ab0 state=wired, called=true, call_sites=2, callers_live=2",
+    "native_evidence": "python tools/bsp.py show 004f9ab0; python tools/bsp.py show 004f9ab0 --asm",
+    "game_validation": "Not performed; assignment prohibits running the game",
+    "float_math": "No float arithmetic changed"
+  }
+}

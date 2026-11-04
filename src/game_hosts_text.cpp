@@ -28,9 +28,12 @@
 #include "bsp/wire_goal2_chain52_switches.hpp"
 #include "bsp/wire_goal4_chain407_switches.hpp"
 #include "bsp/cc13_gui1.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/wire_goal4_chain493_switches.hpp"
 
 #include <array>
 #include <atomic>
+#include <clocale>
 #include <cstddef>
 #include <cstring>
 #include <cwchar>
@@ -337,7 +340,23 @@ public:
 
     char16_t crt_uppercase_00c0391c(char16_t code_unit) override {
         log_.implemented("LocaleText::crt_uppercase", "00c0391c");
+        if constexpr (bsp::kWireGoal4Chain493Bound) {
+            // 004F9AB0 (bsp.py show/--asm): signed byte a..z -> A..Z,
+            // otherwise unchanged. This is also towupper's ASCII operation
+            // in the C locale. Use the current text unit, and retain CRT
+            // handling outside that domain (including locale-specific i).
+            if (code_unit <= 0x7f) {
+                const char* const locale = std::setlocale(LC_CTYPE, nullptr);
+                if (locale && locale[0] == 'C' && locale[1] == '\0') {
+                    const char byte = static_cast<char>(code_unit);
+                    return static_cast<char16_t>(
+                        bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
+                }
+            }
+            return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));
+        } else {
         return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(code_unit)));
+        }
     }
 
 private:

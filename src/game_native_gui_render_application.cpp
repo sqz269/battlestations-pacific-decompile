@@ -35,8 +35,11 @@
 #include "bsp/post_effects_cc13.hpp"
 #include "bsp/system_fog_owner.hpp"
 #include "bsp/native_renderer_indexed_draw.hpp"
+#include "bsp/engine_seg11_35_66_cc13.hpp"
+#include "bsp/wire_goal4_chain493_switches.hpp"
 #include <d3d9.h>
 #include <d3dx9shader.h>
+#include <clocale>
 #include <cstring>
 #include <cstdlib>
 #include <cwctype>
@@ -289,7 +292,22 @@ struct LiteralTextLocale final : LocaleTextRuntimeHost {
         throw std::logic_error("standalone native Text has no current Lua-context binding");
     }
     char16_t crt_uppercase_00c0391c(char16_t value) override {
+        if constexpr (bsp::kWireGoal4Chain493Bound) {
+            // Same live-code-unit/C-locale contract as GameLocaleTextRuntime.
+            // 004F9AB0's byte operation is established by its signed compares
+            // and MOVSX in bsp.py show 004f9ab0 --asm.
+            if (value <= 0x7f) {
+                const char* const locale = std::setlocale(LC_CTYPE, nullptr);
+                if (locale && locale[0] == 'C' && locale[1] == '\0') {
+                    const char byte = static_cast<char>(value);
+                    return static_cast<char16_t>(
+                        bsp::engine_seg11_35_66_cc13::to_upper_ascii_004f9ab0(&byte));
+                }
+            }
+            return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
+        } else {
         return static_cast<char16_t>(std::towupper(static_cast<std::wint_t>(value)));
+        }
     }
 };
 // Every identity comes from the mission frame's existing command graph. The
