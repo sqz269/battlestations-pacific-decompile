@@ -6,7 +6,7 @@
 // symbols. Objects are raw image storage (Raw::at at the image's offsets); every
 // engine routine the image calls is a named host method invoked at the same
 // point. The native __thiscall/__fastcall conventions are documented per
-// routine, not reproduced. Nothing here runs in the game.
+// routine, not reproduced. Runtime wiring is supplied by each typed host.
 #include <cstddef>
 #include <cstdint>
 #include <array>
@@ -29,7 +29,16 @@ struct NativeStr {
     char* data;
 };
 
-struct Seg19_21Host {
+// The complete config publishers need only these three services. Keep their
+// contract separate from unrelated screen, movie and session-browser owners.
+struct LoadingScreenConfigHost {
+    virtual ~LoadingScreenConfigHost() = default;
+    virtual void* global(std::uint32_t address) = 0;
+    virtual void native_string_resize_0041dd40(NativeStr* s, std::uint32_t length, std::int32_t flag) = 0;
+    virtual void string_vector_assign_00506c80(void* dst, const void* src) = 0;
+};
+
+struct Seg19_21Host : LoadingScreenConfigHost {
     virtual ~Seg19_21Host() = default;
     // Address of an image global's storage (00E198C4, 00E188A8, 00E194B4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -175,8 +184,8 @@ void* loading_screen_construct_0057c1c0(void* screen, Seg19_21Host& host);
 std::int32_t loading_screen_get_screen_id_0057c230() noexcept;
 void loading_screen_destruct_0057c2e0(void* screen, Seg19_21Host& host);
 void loading_screen_collect_children_0057cf10(void* screen, void* children, Seg19_21Host& host);
-void loading_screen_publish_config_0057cff0(const void* source, Seg19_21Host& host);
-void loading_screen_set_mission_text_0057d060(const void* source, Seg19_21Host& host);
+void loading_screen_publish_config_0057cff0(const void* source, LoadingScreenConfigHost& host);
+void loading_screen_set_mission_text_0057d060(const void* source, LoadingScreenConfigHost& host);
 void main_menu_quit_confirm_callback_0057d3b0(std::int32_t result, Seg19_21Host& host);
 void loading_screen_hide_overlays_0057d3f0(void* screen, Seg19_21Host& host);
 bool game_is_loading_state_0057d430(Seg19_21Host& host);
