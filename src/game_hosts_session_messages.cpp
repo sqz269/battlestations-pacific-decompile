@@ -2,6 +2,7 @@
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
 #include "bsp/wire_goal4_chain506_switches.hpp"
+#include "bsp/wire_goal4_chain514_switches.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/wire_goal4_chain415_switches.hpp"
 #include "bsp/wire_goal4_chain428_switches.hpp"
@@ -1331,6 +1332,36 @@ HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     stream.begin_read();
     // 00768530 case 98h: 00761310 at 0076952E; case 9Ah: 007613B0. 0076A27B
     // vtable[8] = 004645D0.
+    if constexpr (kWireGoal4Chain514Bound) {
+        // The factory allocates a real 20h-byte message for either arm.
+        // Decode and route that object before releasing it through the
+        // profile's scalar delete. The sender is a stack object (flags=0).
+        // Evidence: bsp.py show 00768530, 007625C0 / 007625E0 --asm;
+        // profiles 00D033C4 / 00D033D8 above retain their original slot 0.
+        auto decode = [&](seg42::UnitMessage& queued) {
+            construct(&queued, image.seg42);
+            cc13_seg5::session_bool_message_read_004645d0(codec,
+                reinterpret_cast<cc13_seg5::Object>(&queued),
+                reinterpret_cast<cc13_seg5::Object>(&stream.in));
+            copy.type = queued.h.base.type_10;
+            copy.to_unit = copy_goes_to_unit_handler(explode_to_parts
+                ? &seg42::is_ship_explodetoparts_00761410 : &seg42::is_ship_wrecked_00761370);
+            copy.wrecked_98 = copy.to_unit && copy.type == 0x98;
+            copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
+        };
+        if (explode_to_parts) {
+            OwnedDecodedMessage<seg42::UnitMessage,
+                delete_ship_explode_to_parts_message_007625e0> owner;
+            decode(owner.get());
+            delete_ship_explode_to_parts_message_007625e0(&sent, 0u);
+        } else {
+            OwnedDecodedMessage<seg42::UnitMessage,
+                delete_ship_wrecked_message_007625c0> owner;
+            decode(owner.get());
+            delete_ship_wrecked_message_007625c0(&sent, 0u);
+        }
+        return copy;
+    } else {
     seg42::UnitMessage queued{};
     construct(&queued, image.seg42);
     cc13_seg5::session_bool_message_read_004645d0(codec,
@@ -1345,6 +1376,7 @@ HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
     // Neither message owns storage; 007625C0 / 007625E0 only restamp.
     return copy;
+    }
 }
 
 namespace {
