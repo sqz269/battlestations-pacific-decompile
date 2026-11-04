@@ -1,0 +1,184 @@
+{
+  "chain": 522,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain522Bound",
+  "summary": "Replace mission-renderer diagnostic lighting inputs with the selected scene's reconstructed Lights reader and retain its foliage settings with the existing foliage owner.",
+  "counts": {
+    "call_graph_reconstructed_addresses_called_before": 4881,
+    "call_graph_reconstructed_addresses_called_after": 4887,
+    "new_direct_reconstructed_bodies": 5,
+    "additional_adapter_only_address_matches": ["00ad5730"],
+    "wire_readiness_text_wired_before": 9819,
+    "wire_readiness_text_wired_after": 9818,
+    "note": "004EA870 now has called=true and one real body call, while the text heuristic labels it callees_done_no_wired_caller. The graph's sixth new address match is the normal-setter Host override, not a newly wired standalone native body."
+  },
+  "state_contract": [
+    "The root properties come from the existing GameNativeMissionUnitSource for the selected simulation scene.",
+    "The linearize flag is the existing captured native settings +8C byte; the reader supplies scene colors, alpha/luminance words, scales and angles without replacement constants.",
+    "004BACD0 writes the same current native ambient and directional owners already used by the installed ship shader.",
+    "The foliage owner retains semantic +78 and texture-name companions; its genuine base receives the authored normal byte. Its admitted bush group list is empty because this renderer graph admits no landscape/bush geometry."
+  ],
+  "checks": {
+    "official_build": "./scripts/build.ps1 passed, including all four CTests",
+    "call_graph": "python tools/call_graph.py; who checks prove body calls for 004EA870, 00AD7140, 00AD7FE0, 004E5C00 and 004B6800; path 004EA870 reaches WinMainCRTStartup through the mission renderer",
+    "installed_scene_probe": "Ignored local Win32 probe linked with /MANIFEST:EMBED; the installed USN/usn_2_java.scn passed the existing Lights reader with PC24 and HDR linearization. Ambient=(0.353704,0.436848,0.320407,1), diffuse_scale=5, specular_scale=30, angles=(2.26893,0.610865), bush_diffuse=0.4, bush_normal=1, bush_texture=foliageatlas.dds.",
+    "diff_check": "git diff --check passed"
+  },
+  "limitations": [
+    "No game was launched; build, reachability and installed-data fixture evidence do not prove gameplay appearance or Original ABI compatibility.",
+    "The existing bounded renderer still lacks the original post20 exposure/display composition, so replacing diagnostic illumination with authored inputs can change visible brightness.",
+    "Full sky/cloud scattering, skybox/effect application, terrain/material setup, music/environment audio and derived foliage geometry remain outside this change. Retained bush texture names are pending settings, not evidence of loaded bush textures."
+  ],
+  "rows": [
+    {
+      "native": "004ea870",
+      "status": "wired",
+      "host_site": "src/game_native_mission_lighting.inc:MissionSceneLightInputs::load",
+      "evidence": "004EE450's native Lights arm calls 004EA870 at 004EE4A3; reuse read_sun_light_properties_004ea870 and feed its complete lighting configuration into the existing native owners."
+    },
+    {
+      "native": "00ad7140",
+      "status": "wired",
+      "host_site": "src/game_native_mission_foliage.inc:MissionShipFoliageGraph::set_scene_bush_diffuse_factor",
+      "evidence": "004EA870 supplies the actual BushDiffuseFactor; the existing body writes the foliage owner's retained semantic factor and walks its actual empty admitted bush-group list."
+    },
+    {
+      "native": "00ad7fe0",
+      "status": "wired",
+      "host_site": "src/game_native_mission_foliage.inc:MissionShipFoliageGraph::set_scene_bush_texture_name",
+      "evidence": "004EA870 supplies the actual BushTextureName; the existing body retains texture, normal and atlas names plus its dirty flag on the foliage owner."
+    },
+    {
+      "native": "004e5c00",
+      "status": "wired",
+      "host_site": "src/scene_weather_cc13.cpp:read_lights",
+      "evidence": "The newly reached reader calls the existing x87 linearize_rgb_004e5c00 body for the scene's color channels when the captured native shader setting is enabled."
+    },
+    {
+      "native": "004b6800",
+      "status": "wired",
+      "host_site": "src/game_native_mission_lighting.inc:MissionSceneLightInputs::load",
+      "evidence": "Use the existing native lighting defaults when the selected header has no Lights sub-bag, matching 004EE4AA..004EE4C2."
+    },
+    {
+      "native": "00ad5730",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_foliage.inc:MissionShipFoliageGraph::set_scene_bush_normal_allowed",
+      "reason": "No newly wired standalone body: the existing apply_field_setter operation already runs during foliage creation; the new Host override adds a graph address match and forwards the authored byte to that same operation."
+    },
+    {
+      "native": "004ee450",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc:MissionSceneLightInputs::load",
+      "reason": "The full sky reader needs a live cloud-scatter/model provider and skybox/effect consumers; only its Lights arm has the required real native owner path here."
+    },
+    {
+      "native": "004e7220",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_lighting.inc:MissionSceneLightInputs::load",
+      "reason": "The mandatory 004BA870 tail needs actual cloud-model creation and scattering providers; no such owner is admitted by this native mission renderer."
+    },
+    {
+      "native": "004ed690",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:GameMissionHost::Impl::read_scene_file",
+      "reason": "Live music-manager slot and retained sound-effect providers are missing at the header consumer; recording or inventing successful audio assignments would not wire real state."
+    },
+    {
+      "native": "004ed910",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_ship.inc:MissionShipGraph::prepare",
+      "reason": "The whole terrain-header path needs world-parameter, texture-refresh, retained environment-sample and VFS-alias providers beyond this bounded unit renderer."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionDetailBinding::set_scroll_range",
+      "reason": "No missing body wiring: the existing set_scroll_range body already has an entry-reachable call from MissionDetailBinding despite its ready text-heuristic label."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::Impl::landfort_fire_frame_00745be0 (candidate)",
+      "reason": "Missing native retained point-effect/death-fire owners and effect-creation provider; the existing host records presentation effects instead of owning those references."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MoviePlayerHost::bind_movie_textures",
+      "reason": "Missing actual decoder-player video textures and material texture-slot owner; the movie host currently records texture binding."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::write_checkpoint",
+      "reason": "The existing reconstructed body covers Lua checkpoint clearing only; full wiring needs the profile-record erase, checkpoint comparison and storage-write continuation providers."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::group_target_value_00a0f970 (candidate)",
+      "reason": "Missing a live native candidate-record owner and complete Seg69Host producer/argument mapping; the AI host currently uses a semantic record projection."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::merge_group",
+      "reason": "Missing live native attack-command storage and observer-registration provider; the host currently replaces a semantic AiCommandObject."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::merge_group",
+      "reason": "Missing live native cautious-attack command storage and observer-registration provider; the host currently replaces a semantic AiCommandObject."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::candidate_base_weight (candidate)",
+      "reason": "The retained score list has only a debug-overlay reader and no gameplay decision consumer; skip debug-only work."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::candidate_base_weight (candidate)",
+      "reason": "The retained score list has only a debug-overlay reader and no gameplay decision consumer; skip debug-only work."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing an actual off-main-thread named-call producer; the mission Lua machine runs on the main thread and does not populate this deferred-argument copy path."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing an actual frame-job-thread named-call producer; forcing queue insertion on the main-thread-only path would invent work."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:plane HUD bomb-aim update (candidate)",
+      "reason": "The native vector-argument register layout is still unverified and the bomb-aim consumer does not publish the two actual direction vectors required by this body."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "No missing source call: the existing input-subscription loader already invokes construct_input_0097a790; this chain adds no duplicate constructor call."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::load_listener_subscription_native",
+      "reason": "No missing source call: the existing surrender-subscription loader already invokes construct_surrender_0097a8b0; this chain adds no duplicate constructor call."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:Impl::party_brain_plan_tail",
+      "reason": "Missing complete live engagement-group and ready-powerup input lists for the reconstructed party engagement pass; the current host only records the tail."
+    }
+  ]
+}

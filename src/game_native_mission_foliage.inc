@@ -6,7 +6,7 @@
 // takes stacked byte flags/RET4 and returns the original receiver in EAX.
 // Source member/context interfaces add bindings. Original FH3 stack maps,
 // hardware-fault cleanup, arbitrary provider changes and binary ABI are unproved.
-struct MissionShipFoliageGraph final {
+struct MissionShipFoliageGraph final : foliage_setup_cc13::BushGroupMaterialHost {
     struct RawGuard { U profile; CRITICAL_SECTION* section; };
     struct BaseCleanup {
         void* receiver;
@@ -45,6 +45,31 @@ struct MissionShipFoliageGraph final {
     void* volatile publication_00f8c210{};
     void* allocation{};
     bool entered{}, retired{};
+
+    // Semantic companions for the scene writes to derived +78h/+7Ch..+98h.
+    // Keep these with the live foliage owner without advertising D5D270 or
+    // constructing an unsupported native derived tail. This graph has no
+    // landscape/bush geometry, so its actual admitted group list is empty.
+    float scene_bush_diffuse_factor{}; // 00AD7140 writes before any read
+    foliage_setup_cc13::BushTextureNames scene_bush_names;
+    const std::vector<void*> scene_bush_groups;
+
+    void set_scene_bush_diffuse_factor(float factor) {
+        foliage_setup_cc13::set_bush_diffuse_factor_00ad7140(
+            scene_bush_diffuse_factor, scene_bush_groups, factor, *this);
+    }
+    void set_group_diffuse_factor(void*, float) override {
+        throw std::logic_error("mission foliage has no admitted landscape bush group");
+    }
+    void set_scene_bush_texture_name(const std::string& name) {
+        (void)foliage_setup_cc13::set_bush_texture_name_00ad7fe0(scene_bush_names, name);
+    }
+    void set_scene_bush_normal_allowed(std::uint8_t allowed) {
+        check(entered && !retired && allocation,
+            "scene lighting requires its current native foliage base");
+        check(cc13_terrain::apply_field_setter(0x00ad5730, allocation, allowed),
+            "scene lighting requires the native foliage normal setter");
+    }
 
     MissionShipFoliageGraph(GameHostLog& l, void* volatile& m) : log(l), manager(m) {}
     ~MissionShipFoliageGraph() {

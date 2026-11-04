@@ -1,6 +1,50 @@
 // ON-only lighting required by installed ship.shfx -> per_pixel_shadow.shfx.
 // B46A70 reads these genuine native owners; no fallback register words are
 // supplied. Include after the private renderer and mission-scene graph types.
+
+// The selected mission's lighting record, plus the foliage settings written
+// by 004EA870. These semantic fields do not advertise a native D5D270 derived
+// foliage owner. The existing mission graph admits no landscape/bush groups;
+// its genuine D5D220 base does own the normal-allowed byte read by B46A70.
+// Evidence: bsp.py show 004EA870 / 004EE450, especially the Lights call at
+// 004EE4A3. Original 004EA870 ABI is ECX=Lights bag, EDX=scene record, RET;
+// this adapter is a semantic C++ interface, not an Original ABI replacement.
+struct MissionSceneLightInputs final : scene_weather_cc13::SceneLightsHost {
+ MissionShipFoliageGraph& foliage;
+ scene_weather_cc13::SceneLightsFields fields;
+ bool authored{};
+
+ explicit MissionSceneLightInputs(MissionShipFoliageGraph& actual) : foliage(actual) {}
+ void set_bush_diffuse_factor_00ad7140(float factor) override {
+  foliage.set_scene_bush_diffuse_factor(factor);
+ }
+ void set_bush_texture_name_00ad7fe0(const std::string& name) override {
+  foliage.set_scene_bush_texture_name(name);
+ }
+ void set_bush_normal_allowed_00ad5730(std::uint8_t allowed) override {
+  foliage.set_scene_bush_normal_allowed(allowed);
+ }
+ void load(const ScenePropertyBlock& root,bool linearize) {
+  const auto model=scene_weather_cc13::scene_bag_from_block(root);
+  const auto* environment=scene_property_bag_find(model,0,"g_Environment");
+  const auto* lights=environment && environment->value.type==ScenePropertyType::SubBag
+      ? scene_property_bag_find(model,environment->sub_bag,"Lights") : nullptr;
+  if(lights && lights->value.type==ScenePropertyType::SubBag) {
+   std::string error;
+   // 004EE450's Lights arm at 004EE4A3. The wrapper owns the single existing
+   // 004EA870 body, including native type checks, alpha/luminance handling,
+   // PC24 arithmetic and scene angle conversion. Never fall back on failure.
+   if(!scene_weather_cc13::read_sun_light_properties_004ea870(
+       model,lights->sub_bag,linearize,fields,*this,error))
+    throw std::runtime_error("selected scene lighting: "+error);
+   authored=true;
+  } else {
+   // 004EE4AA..004EE4C2 copies 004B6800's defaults when Lights is absent.
+   scene_weather_cc13::reset_lighting_configuration_004b6800(fields);
+  }
+ }
+};
+
 struct MissionLightingGlobals {
  U half_guard{};
  SystemLightingWords4 half_color{};
@@ -61,6 +105,7 @@ struct MissionShipLightingGraph {
  DirectionalLightPool* sun_pool{};
  std::unique_ptr<DirectionalLightOwner> sun_owner;
  std::unique_ptr<DirectionalLightReference> sun_reference;
+ std::unique_ptr<MissionSceneLightInputs> scene_inputs;
  volatile U published_resource{},null_resource{};
  Phase phase{Phase::prepared};
 
@@ -123,7 +168,50 @@ struct MissionShipLightingGraph {
  static SystemLightingWords4 color(float r,float g,float b) noexcept {
   return {float_bits(r),float_bits(g),float_bits(b),float_bits(1.0f)};
  }
+ void load_scene_lights(const ScenePropertyBlock& root,MissionShipFoliageGraph& foliage) {
+  check(phase==Phase::prepared && !scene_inputs,
+      "mission lighting can load its selected scene only once before creation");
+  scene_inputs=std::make_unique<MissionSceneLightInputs>(foliage);
+  scene_inputs->load(root,captured_scale_ambient!=0);
+ }
+ static SystemLightingWords4 scene_color(const scene_weather_cc13::Rgba& value) {
+  // Preserve the authored fourth word: 004BACD0 uses it as a multiplier.
+  return {float_bits(value.r),float_bits(value.g),float_bits(value.b),float_bits(value.a)};
+ }
+ void configure_scene_owners() {
+  void* const actual_ambient=get<void*>(resource,0x10);
+  check(actual_ambient && sun_owner && scene_inputs,
+      "mission lighting requires its selected scene and current native light owners");
+  const auto& fields=scene_inputs->fields;
+  const auto ambient_words=scene_color(fields.ambient_f48);
+  const auto underwater_ambient=scene_color(fields.ambient_mode3_f58);
+  std::array<SystemLightingWords4,6> cube;
+  for(std::size_t face=0;face<cube.size();++face)cube[face]=scene_color(fields.ambient_cube_f68[face]);
+  const auto diffuse=scene_color(fields.base_diffuse_fc8);
+  const auto underwater_diffuse=scene_color(fields.diffuse_mode3_fd8);
+  const auto specular=scene_color(fields.base_specular_fe8);
+  const U diffuse_scale=float_bits(fields.diffuse_scale_ffc);
+  const U specular_scale=float_bits(fields.specular_scale_1000);
+  const U horizontal=float_bits(fields.horizontal_angle_1004);
+  const U vertical=float_bits(fields.vertical_angle_1008);
+  const LightingConfigurationFields configuration{ambient_words,underwater_ambient,cube,
+      diffuse,underwater_diffuse,specular,diffuse_scale,specular_scale,horizontal,vertical};
+  LightingConfigurationGlobals global_fields{globals.half_guard,globals.half_color,
+      globals.diffuse_guard,globals.diffuse_color,globals.specular_guard,globals.specular_color,
+      fallback_direction,captured_scale_ambient,*graph.profiles(0xce3800),*graph.profiles(0xd7a24c)};
+  auto& light=sun_owner->light;
+  LightingDirectionalFields directional{light.diffuse_184,light.specular_194,
+      light.base_diffuse_1a4,light.diffuse_mode3_1b4,light.base_specular_1c4,
+      light.diffuse_scale_1d8,light.specular_scale_1dc,light.direction_1e0};
+  apply_lighting_configuration_004bacd0(
+      borrow_native_ambient_lighting_fields(actual_ambient,owners),directional,
+      &configuration,global_fields);
+  check(light.shadow_174==nullptr,"mission sun unexpectedly acquired a shadow owner");
+ }
  void configure_owners() {
+  if constexpr(kWireGoal4Chain522Bound) {
+   configure_scene_owners();
+  } else {
   void* const actual_ambient=get<void*>(resource,0x10);
   check(actual_ambient && sun_owner,
       "mission lighting requires current ambient and completed sun owners");
@@ -154,6 +242,7 @@ struct MissionShipLightingGraph {
       borrow_native_ambient_lighting_fields(actual_ambient,owners),directional,
       &configuration,global_fields);
   check(light.shadow_174==nullptr,"mission sun unexpectedly acquired a shadow owner");
+  }
  }
  void create_and_bind(void* actual_outer_scene) {
   check(phase==Phase::prepared && actual_outer_scene &&
@@ -204,9 +293,15 @@ struct MissionShipLightingGraph {
    sun_name_live=false;destroy_native_string_header_0041dd20(&sun_name,strings);
    resource_name_live=false;destroy_native_string_header_0041dd20(&resource_name,strings);
    phase=Phase::ready;
+   if constexpr(kWireGoal4Chain522Bound) {
+    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
+        "configuration=004EA870->004BACD0 illumination=selected_scene authored=%u captured_scale_ambient=%u shadow=null",
+        outer,resource,get<void*>(resource,0x10),sun,unsigned(scene_inputs->authored),unsigned(captured_scale_ambient));
+   } else {
    log.notef("native mission lighting ready: outer=%p resource=%p ambient=%p sun=%p first_light=1 "
        "configuration=004BACD0 illumination=source_HDR_diagnostic captured_scale_ambient=%u ambient_cube=8.00,8.96,10.24 diffuse=11.20,10.88,9.60 specular=1.92,1.92,1.92 shadow=null",
        outer,resource,get<void*>(resource,0x10),sun,unsigned(captured_scale_ambient));
+   }
   } catch(...) {phase=Phase::failed;throw;}
  }
  void begin_root_attachment() {
