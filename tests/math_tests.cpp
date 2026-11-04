@@ -299,6 +299,13 @@ int main() {
             && bsp::move_to_target_entity_009be140(&target) == &host && host.refreshes == 1,
             "chain468 entity target borrows identity and copies the refreshed live pose");
         bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        const std::uint32_t signalling_nan = 0x7fa12345u;
+        std::memcpy(&host.position[1], &signalling_nan, sizeof(signalling_nan));
+        bsp::move_to_target_construct_from_entity_009be0f0(host, &target, &host);
+        std::uint32_t copied_nan;
+        std::memcpy(&copied_nan, &target.initial_world_04[1], sizeof(copied_nan));
+        check(copied_nan == 0x7fe12345u,
+            "chain468 native FLD/FSTP copy quiets signalling NaN without losing payload");
         bsp::move_to_target_construct_from_entity_009be0f0(host, &target, nullptr);
         check(host.refreshes == 1 && target.entity_10 == nullptr
             && target.initial_world_04[0] == 4.0f,

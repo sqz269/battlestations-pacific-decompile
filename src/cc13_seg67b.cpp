@@ -2628,9 +2628,20 @@ void* move_to_target_construct_from_entity_009be0f0(MoveToEntityPoseHost& host, 
         // FC/100/104. The view borrows those live cells; it is not a snapshot.
         const auto pose = host.move_to_entity_pose(entity);
         if (pose.world_valid_c8 == 0) host.entity_pose_refresh_world_00414db0(entity);
-        at<float>(t, 0x04) = pose.world_position_fc[0];
-        at<float>(t, 0x08) = pose.world_position_fc[1];
-        at<float>(t, 0x0C) = pose.world_position_fc[2];
+        // 009BE115..009BE12D are FLD/FSTP pairs, not bit copies. Preserve
+        // signalling-NaN quieting and x87 status under the caller's CW.
+        const float* source = pose.world_position_fc;
+        float* destination = &at<float>(t, 0x04);
+        __asm {
+            mov eax, source
+            mov edx, destination
+            fld dword ptr [eax]
+            fstp dword ptr [edx]
+            fld dword ptr [eax + 4]
+            fstp dword ptr [edx + 4]
+            fld dword ptr [eax + 8]
+            fstp dword ptr [edx + 8]
+        }
     }
     return t;
 }

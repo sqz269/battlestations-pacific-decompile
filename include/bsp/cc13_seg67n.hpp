@@ -180,7 +180,7 @@ void bot_task_gain_altitude_save_009bab70(Cc13Seg67nHost& host, void* task, void
 void bot_task_stop_save_009bac30(Cc13Seg67nHost& host, void* task, void* archive);
 // 009BE140: slot 0 of 00D209C4 (the entity move-to target, ctor 009BE0F0),
 // __thiscall(ECX = target), RET, EAX = target+10h.
-void* move_to_target_entity_009be140(void* target);
+void* move_to_target_entity_009be140(const void* target);
 
 // ---- batch C: maneuver ticks and debug draws ----
 // 009B9AF0: immelmann (00D20400) slot +64h, __thiscall(ECX = task; float dt,

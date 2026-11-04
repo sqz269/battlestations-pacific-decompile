@@ -26,6 +26,9 @@
 #include "bsp/wire_goal4_chain402_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_lookup.hpp"
+#include "bsp/cc13_seg67b.hpp"
+#include "bsp/cc13_seg67n.hpp"
+#include "bsp/wire_goal4_chain468_switches.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
 #include "bsp/wire_goal4_chain272_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
@@ -1180,6 +1183,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // Part 2, the approach at task+3F8h (009C1C30 on 009F9CE0) and two state
     // fields, named by their offset in that object.
     std::size_t moveto_target_plus_one{0};   // approach+44h, the order's target
+    // Chain468: actual 14h entity-target storage, retained with this task's
+    // owner. Slot allocations stay stable for the mission's unit lifetime.
+    std::optional<bsp::MoveToEntityTargetStorage> moveto_entity_target;
+    GameUnitSlot* moveto_entity_44{nullptr}; // approach's borrowed entity, from target slot0
     float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
     // approach+68h: 50.0 (00CEB4D4) from 009C1C30, redrawn U(FollowDist/1,
     // FollowDist/2) by the activation's 009C3650 (kMoveToActivationDrawsBound).
@@ -2832,6 +2839,20 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
 };
 
 // ---------------------------------------------------------------------------
+// Chain468: borrow the same pose cells used by placement/rendering. Native
+// 009BE0F0 tests C8 and calls 00414DB0 before reading world+30h (entity+FCh).
+// No raw unit image or copied validity flag is manufactured for this producer.
+class GameMoveToEntityPoseHost final : public bsp::MoveToEntityPoseHost {
+public:
+    bsp::MoveToEntityPoseView move_to_entity_pose(void* entity) override {
+        auto& unit = *static_cast<GameUnitSlot*>(entity);
+        return {unit.world_valid, unit.world.data() + 12};
+    }
+    void entity_pose_refresh_world_00414db0(void* entity) override {
+        bsp::refresh_pose_00414db0(*static_cast<GameUnitSlot*>(entity)->pose);
+    }
+};
+
 // Chain 412: the 009C62E8 fly-over read consumes the selected target's live
 // velocity through 009FA2E0. This adapter borrows the real unit observer
 // endpoint and motion cells; it does not construct a second unit or register
@@ -11199,10 +11220,23 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
     static constexpr bool kMovetoTargetSpeedClassCc13Bound = true;
     float moveto_target_speed_009c23b0(const GameUnitSlot& unit, float base) {
         ++ts_override_calls;
+        if constexpr (bsp::kWireGoal4Chain468Bound) {
+            if (unit.moveto_entity_44 == nullptr) return base;
+        } else {
         if (unit.moveto_target_plus_one == 0 || unit.moveto_target_plus_one > slots.size()
             || !slots[unit.moveto_target_plus_one - 1u]) return base;
+        }
         ++ts_override_target;
-        const std::size_t target = unit.moveto_target_plus_one - 1u;
+        const std::size_t target = [&]() -> std::size_t {
+            if constexpr (bsp::kWireGoal4Chain468Bound) {
+                // 009C23B0 reads approach+44h, which 009C1C30 produced from
+                // the entity target's slot0 (009BE140), once at construction.
+                return unit.moveto_entity_44->process_index;
+            } else {
+                const std::size_t target = unit.moveto_target_plus_one - 1u;
+                return target;
+            }
+        }();
         const GameUnitSlot& t = *slots[target];
         // The OFF expression, moved verbatim into this lambda: the same arithmetic as before
         // (|motion.linear_velocity| in double, rounded once), not textually identical.
@@ -41432,12 +41466,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.moveto_alt_offset_2c = 0.0f;
                             }
                         }
+                        if constexpr (bsp::kWireGoal4Chain468Bound) {
+                            if (unit_.moveto_entity_44 != nullptr) {
+                                // 009BEBA0's entity-target read keeps following
+                                // the current entity, rather than its ctor's
+                                // initial position. The retained borrowed
+                                // identity selects this tick's live motion.
+                                const auto* t = unit_.moveto_entity_44;
+                                unit_.moveto_point[0] = t->motion.position[0];
+                                unit_.moveto_point[2] = t->motion.position[2];
+                            }
+                        } else {
                         if (unit_.moveto_target_plus_one != 0 &&
                             unit_.moveto_target_plus_one - 1 < owner_.slots.size()) {
                             const GameUnitSlot& t =
                                 *owner_.slots[unit_.moveto_target_plus_one - 1];
                             unit_.moveto_point[0] = t.motion.position[0];
                             unit_.moveto_point[2] = t.motion.position[2];
+                        }
                         }
                         float small_alt = 800.0f, large_alt = 1400.0f, rnd = 50.0f;
                         if (owner_.lua.plane_globals_loaded()) {
@@ -49343,8 +49389,29 @@ void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noex
 void GameUnitsHost::store_unit_moveto_target(std::size_t index,
                                              std::size_t target_index) noexcept {
     if (index >= impl_->slots.size()) return;
+    if constexpr (bsp::kWireGoal4Chain468Bound) {
+        auto& unit = *impl_->slots[index];
+        if (target_index >= impl_->slots.size()) {
+            // Point orders use the point-target profile, whose slot0 returns
+            // null. This host retains that existing point separately.
+            unit.moveto_entity_target.reset();
+            unit.moveto_entity_44 = nullptr;
+            return;
+        }
+        GameMoveToEntityPoseHost pose;
+        auto& target = unit.moveto_entity_target.emplace();
+        bsp::move_to_target_construct_from_entity_009be0f0(
+            pose, &target, impl_->slots[target_index].get());
+        // bsp.py show 009c1c30: target slot0 supplies the observed entity at
+        // approach+44h, then target+4/8/C initialize approach+48/4C/50h.
+        // These fields drive target-speed selection and the next steer refresh.
+        unit.moveto_entity_44 = static_cast<GameUnitSlot*>(
+            bsp::move_to_target_entity_009be140(&target));
+        for (int i = 0; i < 3; ++i) unit.moveto_point[i] = target.initial_world_04[i];
+    } else {
     impl_->slots[index]->moveto_target_plus_one =
         target_index < impl_->slots.size() ? target_index + 1u : 0u;
+    }
 }
 
 void GameUnitsHost::store_unit_moveto_point(std::size_t index,
