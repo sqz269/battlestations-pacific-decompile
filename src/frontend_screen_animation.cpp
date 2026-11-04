@@ -1,6 +1,7 @@
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/wire_goal4_chain397_switches.hpp"
 #include "bsp/wire_goal4_chain463_switches.hpp"
+#include "bsp/wire_goal4_chain486_switches.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_frontend_cc13.hpp"
@@ -293,6 +294,32 @@ void set_scroll_range(FrontEndScreenScroller& scroller, float range,
     }
     const float thumb_alpha =
         scroller.scrollable ? kScrollActiveAlpha : kScrollThumbIdleAlpha;
+    if constexpr (kWireGoal4Chain486Bound) {
+        // Source reuse, not a native CALL claim: 006834A0's inline +4Ch
+        // dispatches are the same thumb/start/end operations as 00683330.
+        // bsp.py show 00683330 --asm confirms three independent float args
+        // (RET 0Ch) and the two optional-arrow checks. These are the retained
+        // scroller's widgets and the PE's active/idle alpha constants. The
+        // live MainMenuScrollerLayoutHost alpha provider only writes widget
+        // colour; it neither calls back nor changes scroller.scrollable.
+        if (host.alpha_writes_preserve_scroller()) {
+            const float arrow_alpha =
+                scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
+            set_widget_alphas_00683330(scroller, thumb_alpha, arrow_alpha, arrow_alpha, host);
+        } else {
+            // A generic callback may alter scrollable during the thumb write.
+            // Keep the original read boundary for hosts without the capability.
+            host.widget_set_alpha(scroller.thumb_widget, thumb_alpha);
+            const float arrow_alpha =
+                scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
+            if (scroller.arrow_start_widget != nullptr) {
+                host.widget_set_alpha(scroller.arrow_start_widget, arrow_alpha);
+            }
+            if (scroller.arrow_end_widget != nullptr) {
+                host.widget_set_alpha(scroller.arrow_end_widget, arrow_alpha);
+            }
+        }
+    } else {
     host.widget_set_alpha(scroller.thumb_widget, thumb_alpha);
     const float arrow_alpha =
         scroller.scrollable ? kScrollActiveAlpha : kScrollArrowIdleAlpha;
@@ -301,6 +328,7 @@ void set_scroll_range(FrontEndScreenScroller& scroller, float range,
     }
     if (scroller.arrow_end_widget != nullptr) {
         host.widget_set_alpha(scroller.arrow_end_widget, arrow_alpha);
+    }
     }
 }
 
@@ -355,7 +383,8 @@ void set_auto_scroll(FrontEndScreenScroller& scroller, ScrollDirection direction
     scroller.auto_scroll_overridden = override_input;
 }
 
-void set_widget_alphas(const FrontEndScreenScroller& scroller, float thumb_alpha,
+// Keep the reused address body observable in the Win32 call graph.
+__declspec(noinline) void set_widget_alphas_00683330(const FrontEndScreenScroller& scroller, float thumb_alpha,
     float arrow_start_alpha, float arrow_end_alpha, FrontEndScrollerHost& host)
 {
     // 00683330 dereferences the thumb without a null check.

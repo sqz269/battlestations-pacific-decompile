@@ -820,6 +820,10 @@ public:
         auto& target = node(widget);
         frontend_.set_widget_color(target, target.color[0], target.color[1], target.color[2], alpha);
     }
+    bool alpha_writes_preserve_scroller() const noexcept override {
+        // set_widget_color only stores RGBA and invalidates cached quads.
+        return true;
+    }
     float scroll_axis() override {
         if constexpr (kWireGoal4Chain463Bound) {
             if (!input_) throw std::logic_error("Main-menu scroller action records are not bound");
