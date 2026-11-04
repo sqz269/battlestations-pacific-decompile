@@ -271,6 +271,15 @@ void* scalar_delete_via(void* object, std::uint32_t flags, DestroyRoutine routin
 // Intrusive reference slots: the object's count is the DWORD at +4h, released with InterlockedDecrement;
 // at zero the object's vtable slot 0 runs with ECX = object.
 
+// The live VFS stores original-image vtable identities in actual native objects.
+// Resolve their calls through the runtime's existing dispatcher instead of
+// executing those identities as process code. Null preserves direct ABI calls.
+struct StreamReferenceCalls {
+    virtual ~StreamReferenceCalls() = default;
+    virtual void* open(void* manager, std::uint32_t name, std::uint32_t flags) = 0;
+    virtual void zero_reference(void* object) = 0;
+};
+
 // __fastcall(ECX slot): release and clear when non-null. 00BE56E0 BSP_StreamRef_Release, 00BE59C0
 // BSP_StreamRef_ReleaseForUnwind, 00BE9D10 / 00BE9D90 BSP_StructuredNodeRef_Release2/3, 00BF0470
 // BSP_StreamRef_Release2 are byte-identical; 00BE9B80 BSP_StructuredNodeRef_Release also returns EAX slot.
@@ -279,13 +288,14 @@ void** release_ref_slot_return_self_00be9b80(void** slot);
 // 00BE44A0 BSP_VFS_ReleaseStream: release when non-null; the slot is NOT cleared.
 void release_ref_slot_keep_00be44a0(void** slot);
 // 00BE4500 BSP_StreamRef_ReleaseUnchecked: release WITHOUT a null test, then clear.
-void release_ref_slot_unchecked_00be4500(void** slot);
+void release_ref_slot_unchecked_00be4500(void** slot, StreamReferenceCalls* calls = nullptr);
 // 00BEF1E0 BSP_RefPtr_Assign, __thiscall(ECX slot, object) RET 4, EAX slot: release and clear the old
 // object, store the new one without adding a reference.
 void** assign_ref_slot_00bef1e0(void** slot, void* object);
 // 00BE4380 BSP_VFS_OpenStreamInto, __thiscall(ECX out, name, flags) RET 8, EAX out: *out = the VFS
 // object's (published word 0109CEEC, passed in) vtable +4h (name, flags).
-void** vfs_open_stream_into_00be4380(void** out, void* vfs_0109ceec, std::uint32_t name, std::uint32_t flags);
+void** vfs_open_stream_into_00be4380(void** out, void* vfs_0109ceec, std::uint32_t name,
+    std::uint32_t flags, StreamReferenceCalls* calls = nullptr);
 // 00BE44C0 BSP_StreamRef_ReopenFromVfs, __thiscall(ECX slot, name, flags) RET 8: release the old object
 // (the slot is not cleared first), then *slot = vfs vtable +4h (name, flags).
 void stream_ref_reopen_00be44c0(void** slot, void* vfs_0109ceec, std::uint32_t name, std::uint32_t flags);

@@ -1,6 +1,7 @@
 // Segments 96-97 leaves with a reviewed ledger name and no reconstruction record (cc13-files1).
 // Reconstructed and build-tested only: not ABI-compatible, not fixture- or game-validated, and not
-// wired into any game host. See docs/CC13_FILES_1.md and the address notes in
+// wired except for the explicitly adopted stream-reference calls below.
+// See docs/CC13_FILES_1.md and the address notes in
 // bsp/engine_services_cc13.hpp.
 
 #include "bsp/engine_services_cc13.hpp"
@@ -398,8 +399,16 @@ void release_ref_slot_keep_00be44a0(void** slot) {
     if (*slot != nullptr) release_object(*slot);
 }
 
-void release_ref_slot_unchecked_00be4500(void** slot) {
-    release_object(*slot);
+void release_ref_slot_unchecked_00be4500(void** slot, StreamReferenceCalls* calls) {
+    // bsp.py show 00be4500 --asm: decrement *slot+4 without a null test,
+    // dispatch its CURRENT slot 0 only at zero, then clear the owning slot.
+    if (calls != nullptr) {
+        void* const object = *slot;
+        auto* const count = reinterpret_cast<volatile LONG*>(bytes(object) + 4);
+        if (InterlockedDecrement(count) == 0) calls->zero_reference(object);
+    } else {
+        release_object(*slot);
+    }
     *slot = nullptr;
 }
 
@@ -409,9 +418,16 @@ void** assign_ref_slot_00bef1e0(void** slot, void* object) {
     return slot;
 }
 
-void** vfs_open_stream_into_00be4380(void** out, void* vfs_0109ceec, std::uint32_t name, std::uint32_t flags) {
-    using Open = void*(__thiscall*)(void*, std::uint32_t, std::uint32_t);
-    *out = vtable_slot<Open>(vfs_0109ceec, 4)(vfs_0109ceec, name, flags);
+void** vfs_open_stream_into_00be4380(void** out, void* vfs_0109ceec, std::uint32_t name,
+    std::uint32_t flags, StreamReferenceCalls* calls) {
+    // bsp.py show 00be4380 --asm, 00BE4387..00BE439A: the published manager's
+    // +4h open receives the SAME native name header and flags; store its result.
+    if (calls != nullptr) {
+        *out = calls->open(vfs_0109ceec, name, flags);
+    } else {
+        using Open = void*(__thiscall*)(void*, std::uint32_t, std::uint32_t);
+        *out = vtable_slot<Open>(vfs_0109ceec, 4)(vfs_0109ceec, name, flags);
+    }
     return out;
 }
 
