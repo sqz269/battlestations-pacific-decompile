@@ -95,6 +95,7 @@
 #include "bsp/native_renderer_query_terminal.hpp"
 #include "bsp/native_renderer_default_surfaces.hpp"
 #include "bsp/native_renderer_device_recreation_actual.hpp"
+#include "bsp/native_renderer_presentation_mode.hpp"
 #include "bsp/native_system_registry_raw_terminal.hpp"
 #include "bsp/native_node_destruction.hpp"
 #include "bsp/light_type_bootstrap.hpp"
@@ -1266,6 +1267,40 @@ void GameNativeRendererApplication::create_device(const RendererInitRequest& req
             p.retained_device,p.frame_flag,p.device_lost,static_cast<unsigned long>(p.devices.render_thread),
             native_platform_has_focus_00b20c50(p.devices.platform_publication.load()));
     } catch(...) {p.phase=Impl::Phase::failed;throw;}
+}
+bool GameNativeRendererApplication::change_presentation_mode(int width, int height,
+    bool fullscreen, int sample_count, bool vsync, bool force) {
+    auto& p = *impl_;
+    check(p.phase == Impl::Phase::ready, "presentation mode requires an idle ready renderer");
+    p.phase = Impl::Phase::initializing_resources;
+    // 00B29F43..00B29FBC: only a changed Windowed word recreates immediately;
+    // otherwise the native body publishes to the pending byte Reset consumes.
+    const bool recreates_device = get<U>(p.renderer, 0x1a48) != static_cast<U>(!fullscreen);
+    try {
+        NativeLuaServiceBindings::Activation activation(p.lua_services.binding());
+        NativeRendererPresentationModeContext context{
+            p.devices.recreation, p.devices.reset.actual_pending_0108d4b8};
+        const auto previous = reinterpret_cast<std::uintptr_t>(p.retained_device);
+        // Application-only COM ownership: the image has no retained AddRef.
+        // Drop it before 00B29670 can release the old device/CreateDevice, then
+        // follow the current +1A10h just as begin_frame does after recreation.
+        if (p.retained_device) p.retained_device->Release();
+        p.retained_device = nullptr;
+        const auto result = change_native_renderer_presentation_mode_00b29e60(p.renderer,
+            static_cast<U>(width), static_cast<U>(height), static_cast<U>(fullscreen),
+            static_cast<U>(sample_count), static_cast<U>(vsync), static_cast<U>(force), context);
+        auto* const current = get<IDirect3DDevice9*>(p.renderer, 0x1a10);
+        check(current != nullptr, "presentation mode left no current device");
+        current->AddRef();
+        p.retained_device = current;
+        if (recreates_device || reinterpret_cast<std::uintptr_t>(current) != previous)
+            ++p.device_generation;
+        p.phase = Impl::Phase::ready;
+        return result != 0;
+    } catch (...) {
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
 }
 void GameNativeRendererApplication::initialize_window_render_entry_cache() {
     auto& p=*impl_;
