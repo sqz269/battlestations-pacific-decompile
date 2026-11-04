@@ -3,6 +3,8 @@
 //            0046aab0, 008d9cf0, 008d8a70, 008d8960, 008d9930, 008d9980,
 //            008d9ad0, 008d9b40.
 #include "bsp/scene_file.hpp"
+#include "bsp/scene_property_bag.hpp"
+#include "bsp/wire_goal4_chain477_switches.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/oct18_rec.hpp"
 #include "bsp/oct18_tail_b.hpp"
@@ -1239,6 +1241,21 @@ bool scene_scan_int(const std::string& text, std::int32_t& out) noexcept
 
 int scene_reference_kind(const std::string& letter) noexcept
 {
+    if constexpr (kWireGoal4Chain477Bound) {
+        // 008F1960's eight kind-to-letter arms (bsp.py show 008f1960 --asm,
+        // 008F1960..008F19F8) supply the same binary constants previously
+        // duplicated below. Invert that existing reconstruction against the
+        // authored letter from the live scene/library lexer. Only native
+        // kinds 0..7 enter it; unknown letters retain the host's -1 result.
+        // This reuses the typed letter projection, not the original
+        // NativeString assignment/register ABI; no second table/body runs.
+        for (int kind = 0; kind <= 7; ++kind) {
+            const char* const native_letter = scene_reference_kind_letter_008f1960(
+                static_cast<SceneReferenceKind>(kind));
+            if (equal_insensitive(letter, native_letter)) return kind;
+        }
+        return -1;
+    } else {
     // Letter strings: R [00CE60EC], RLand [00D1637C], RFort [00D16384],
     // RShip [00D1636C], RPlane [00D16374], RPlnShp [00D16364],
     // RLPlnShp [00D16358], RPath [00D1638C]; kinds from 008F6163..008F6231.
@@ -1250,6 +1267,7 @@ int scene_reference_kind(const std::string& letter) noexcept
         if (equal_insensitive(letter, entry.text)) return entry.kind;
     }
     return -1;
+    }
 }
 
 bool scene_scan_float(const std::string& text, float& out) noexcept
