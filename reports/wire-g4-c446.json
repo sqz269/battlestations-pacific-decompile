@@ -1,0 +1,162 @@
+{
+  "chain": 446,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain446Bound",
+  "baseline": "34dc01d468",
+  "summary": "Reuse the existing shared vertex-buffer getter in the reached native renderer end-of-frame rewind. The returned actual physical buffer is consumed directly under the existing renderer critical section.",
+  "rows": [
+    {
+      "native": "00b1feb0",
+      "status": "wired",
+      "host_site": "src/native_renderer_end_frame.cpp: bsp::end_native_renderer_frame_00b2d8e0",
+      "evidence": "bsp.py show 00b1feb0 and --asm: MOV EAX,[ECX+1974h]; RET. Existing src/render_queue_seg83_cc13.cpp body reused unchanged. Actual renderer+1974h is populated by native_renderer_device_startup_actual.cpp; its current borrowed wrapper is passed directly to rewind_native_physical_vertex_00b232b0.",
+      "call_graph": "One reachable call at 1050d1d3 from end_native_renderer_frame_00b2d8e0; entry path continues through end_native_renderer_frame_default_00b2f4a0 and FrameGraph::worker_finish. Build addresses are specific to this build.",
+      "abi": "Existing ordinary C++ const-void-pointer interface; original ECX input/EAX borrowed-pointer result/plain RET inspected, no binary replacement claim.",
+      "old_path": "Switch OFF retains the unchanged inline renderer+1974h read and rewind statement; ON executes only the getter-based rewind."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_submission.cpp: bsp::draw_native_post_effect_00b4dcc0",
+      "reason": "The native post-effect submission caller is not linked in the built game; it needs a reached execution-context producer before its target getter can run."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_submission.cpp: bsp::draw_native_post_effect_00b4dcc0",
+      "reason": "The native post-effect submission caller is not linked in the built game; it needs a reached material-entry consumer before this getter can run."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: luminance output reads in the composite path",
+      "reason": "No reached native luminance-owner producer was established for the owner+23Ch getter."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate host set_ambient_volume",
+      "reason": "The host reports no ambient sound instance and retains no SoundInstance to pass to the scaler."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit screen reset sites",
+      "reason": "The selected-unit path records the reset but lacks the native selection screen, checked vector, and input-context owner required by SweepAHost."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor_init_00721070",
+      "reason": "No reached default command-target descriptor producer and consumer were established."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: SetUnitCommandAllowedMask snapshot provenance",
+      "reason": "The host retains only director flags; no single-player controller-state-message producer or consumer was established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship director enable snapshot provenance",
+      "reason": "The host has flattened flags but no controller snapshot producer or transport; constructing and copying back a snapshot would only round-trip."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_skill_level_007b8ae0 and set_unit_skill_index_006d1eb0",
+      "reason": "The existing path dispatches the simpler 006D1EB0 unit setter; the separate 009565A0 device-skill object, +6DCh notification, and typed device walk have no established live binding."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp: NativeFontResources::accepts_text_byte",
+      "reason": "The existing FontData-based body cannot read the image Font owner, and accepts_text_byte has no reached text-input caller."
+    },
+    {
+      "native": "00aa7d40",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_local_z_and_bounds_00aa7d40",
+      "reason": "No reached local-Z edit site owning the required GuiWidgetTransform and transform/bounds host was established."
+    },
+    {
+      "native": "00aa7d80",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_authored_x_00aa7d80",
+      "reason": "No reached authored-X edit site owning the required GuiWidgetTransform and transform/bounds host was established."
+    },
+    {
+      "native": "00aa6820",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_set_visibility_recurses_00aa6820",
+      "reason": "No reached visibility-recursion edit site on an actual widget was established."
+    },
+    {
+      "native": "00aa6800",
+      "status": "skipped",
+      "host_site": "src/gui_widgets_cc13.cpp: gui_widget_node_name_00aa6800",
+      "reason": "No reached widget-name consumer with the required GuiSceneNodeHost was established."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_gun_class_00442b90",
+      "reason": "No reached native device-class allocation and NativeDeviceClassConstructionAccess provider were established."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_bomb_platform_00442c50",
+      "reason": "No reached native bomb-platform class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_multibomb_platform_00442ce0",
+      "reason": "No reached native multibomb-platform class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_rapid_fixed_slave_gun_00442d80",
+      "reason": "No reached native rapid-fixed-slave class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_rapid_turning_gun_00442e20",
+      "reason": "No reached native rapid-turning-gun class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_single_turning_gun_00442ec0",
+      "reason": "No reached native single-turning-gun class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_depth_charge_launcher_00442f50",
+      "reason": "No reached native depth-charge-launcher class allocation and constructor-access provider were established."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: construct_native_catapult_00442ff0",
+      "reason": "No reached native catapult class allocation and constructor-access provider were established."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all three CTest groups passed",
+    "changed_build": "scripts/build.ps1 passed; all three CTest groups passed",
+    "call_graph_before": {"called_reconstructed": 4727, "linked_reconstructed": 5181},
+    "call_graph_after": {"called_reconstructed": 4728, "linked_reconstructed": 5182},
+    "readiness_wired_before": 9698,
+    "readiness_wired_after": 9699,
+    "float_math_changed": false,
+    "game_run": false,
+    "limits": "Build and entry-reachability evidence only; no gameplay or drop-in binary ABI validation. No new address-suffixed body or ledger record was introduced."
+  }
+}
