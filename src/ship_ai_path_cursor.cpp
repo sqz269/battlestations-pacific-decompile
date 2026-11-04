@@ -4,7 +4,9 @@
 
 #include "bsp/unit_rudder.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/engine_seg1_cc13.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
+#include "bsp/wire_goal4_chain405_switches.hpp"
 
 namespace bsp {
 
@@ -158,9 +160,34 @@ ShipAiPathFollowStep ship_ai_path_follow_step_007add70(ShipAiPathCursor& cursor,
         const float dz = pz - pos_z;
         float dist_sq;
         if constexpr (kPc24ShipAiCc13Bound) {
+            if constexpr (kWireGoal4Chain405Bound) {
+                // bsp.py show 004191D0 --asm: the existing whole body spills
+                // both PC24 squares before adding. 007ADE4D..007ADE55 keeps
+                // their extended exponents until the sum's float store.
+                // For zero or |delta| in [2^-63, 2^63], both squares are
+                // normal floats and these spill schedules agree exactly.
+                // Preserve the original path for all other values (including
+                // tiny deltas whose separate spills could lose their sum).
+                const auto exact_square_spill = [](float delta) {
+                    const float magnitude = std::fabs(delta);
+                    return magnitude == 0.0f
+                        || (magnitude >= 0x1p-63f && magnitude <= 0x1p63f);
+                };
+                if (exact_square_spill(dz) && exact_square_spill(dx)) {
+                    // Actual waypoint-minus-unit delta; z^2 then x^2 is the
+                    // 007ADE53 addition order. Its result drives both the
+                    // arrival test and the heading-dependent lookahead below.
+                    const float delta[2]{dz, dx};
+                    dist_sq = engine_seg1_cc13::vector2_length_squared_004191d0(delta);
+                } else {
+                    dist_sq = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(dz, dz),
+                                                                    cc13x87::x87_mul24(dx, dx)));
+                }
+            } else {
             // 007ADE4D FMUL ST0, 007ADE51 FMULP, 007ADE53 FADDP, each rounded at PC24.
             dist_sq = static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(dz, dz),
                                                             cc13x87::x87_mul24(dx, dx)));
+            }
         } else {
             dist_sq =
                 static_cast<float>(static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
