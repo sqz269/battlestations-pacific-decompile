@@ -11,6 +11,9 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/cc13_sweepA.hpp"
+#include "bsp/game_native_geometry_globals.hpp"
+#include "bsp/wire_goal4_chain467_switches.hpp"
 #include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/wire_goal4_chain447_switches.hpp"
 #include "bsp/native_mlandfort_kind.hpp"
@@ -343,6 +346,44 @@
 
 namespace bsp::game {
 namespace {
+
+// Goal 4 chain 467. 009F7D68 calls 004684F0 with the command building resolved
+// by this live squadron's target. The constructor reads only its identity/ID
+// and F87574/78/7C, then produces the descriptor issued at 009F7D75. Borrow the
+// actual host identity; it is never interpreted as a native unit allocation.
+void construct_host_unit_reference(bsp::SceneCommandTarget& target,
+    const void* identity, std::uint16_t object_id) {
+    struct Inputs final : bsp::cc13_sweepA::UnitReferenceHost {
+        const void* identity;
+        std::uint16_t object_id;
+        std::array<float, 3> origin;
+
+        Inputs(const void* unit, std::uint16_t id) : identity(unit), object_id(id) {
+            // Read the process's canonical mutable cells at the call boundary,
+            // including any published changes; do not substitute constant zero.
+            const auto& bits = game_native_geometry_globals().zero_vector_00f87574();
+            static_assert(sizeof(origin) == sizeof(bits));
+            std::memcpy(origin.data(), bits.data(), sizeof(origin));
+        }
+        void* global_address(std::uint32_t address) override {
+            if (address != 0x00f87574u)
+                throw std::logic_error("unit reference requested an unrelated global");
+            return origin.data();
+        }
+        std::uint16_t unit_object_id_174(const void* unit) override {
+            if (unit != identity)
+                throw std::logic_error("unit reference requested an unrelated identity");
+            return object_id;
+        }
+    } inputs(identity, object_id);
+    static_assert(sizeof(bsp::SceneCommandTarget) == 0x18);
+    static_assert(offsetof(bsp::SceneCommandTarget, object_id) == 2);
+    static_assert(offsetof(bsp::SceneCommandTarget, object) == 4);
+    static_assert(offsetof(bsp::SceneCommandTarget, position) == 8);
+    static_assert(offsetof(bsp::SceneCommandTarget, trailing) == 0x14);
+    bsp::cc13_sweepA::unit_reference_construct_004684f0(
+        {reinterpret_cast<std::uint8_t*>(&target)}, const_cast<void*>(identity), inputs);
+}
 
 // Chain 273: projections of the host's existing rack fields, not a second rack
 // simulation. Only the fields read/written by these two leaf bodies are bound.
@@ -23214,12 +23255,21 @@ void GameUnitsHost::run_spent_ordnance_rtb_0084e010() {
         if (sq.squadron_unit >= h.slots.size() || gun->unit_dead(sq.squadron_unit)) return false;
         const std::size_t d = t - 1;
         bsp::SceneCommandTarget target;
+        if constexpr (bsp::kWireGoal4Chain467Bound) {
+            // The existing registry identity and one-based uint16 ID are the
+            // same inputs used by command resolution. Keep the constructed
+            // descriptor itself on the actual 009F7D75 issue path below.
+            construct_host_unit_reference(target, unit_identity(d),
+                static_cast<std::uint16_t>(d + 1u));
+            h.done("SquadronAutoTarget::unit_reference_004684f0", 0x004684f0u);
+        } else {
         target.kind = 1;
         target.position_valid = 0;
         target.object_id = static_cast<std::uint16_t>(d + 1);
         target.object = const_cast<void*>(unit_identity(d));
         target.position[0] = target.position[1] = target.position[2] = 0.0f;
         target.trailing = 0.0f;
+        }
         const bool placed = issue_script_command(sq.squadron_unit, 0x00E08F68u, target, 1,
             "009F7D75 moveto command building", h.slots[d]->row.name) != nullptr;
         h.log.notef("command-building moveto: squadron \"%s\" -> \"%s\" (category %d, placed=%d) "

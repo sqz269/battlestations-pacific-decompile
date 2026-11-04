@@ -40,8 +40,24 @@ struct PowerupMultiplierHost {
         Raw modifiers, std::int32_t index, void* unit) = 0;
 };
 
-struct SweepAHost : PowerupMultiplierHost {
+// Complete input surface of 004684F0. A live caller may keep its unit identity
+// in a typed registry rather than a raw native unit allocation. Preserve that
+// identity in the descriptor and obtain only its +174h ID through this view.
+struct UnitReferenceHost {
+    virtual ~UnitReferenceHost() = default;
+    virtual void* global_address(std::uint32_t address) = 0;
+    virtual std::uint16_t unit_object_id_174(const void* unit) = 0;
+};
+
+struct SweepAHost : PowerupMultiplierHost, UnitReferenceHost {
     virtual ~SweepAHost() = default;
+
+    // Existing raw-layout callers retain the original WORD load. Typed live
+    // callers implement UnitReferenceHost without the unrelated sweep hooks.
+    std::uint16_t unit_object_id_174(const void* unit) override {
+        return *reinterpret_cast<const std::uint16_t*>(
+            static_cast<const std::uint8_t*>(unit) + 0x174);
+    }
 
     // The pointer stored in the image global dword at `address` (for example
     // [00E188A8], the game object).
@@ -563,7 +579,7 @@ bool scene_token_equals_0045c440(void* tokenizer, const char* text, SweepAHost& 
 void fire_target_holder_apply_004643a0(Raw holder, void* entity, SweepAHost& host);
 void entity_command_set_submarine_depth_004654d0(Raw command, void* entity, SweepAHost& host);
 // --- segment 6 -------------------------------------------------------------
-Raw unit_reference_construct_004684f0(Raw reference, void* unit, SweepAHost& host);
+Raw unit_reference_construct_004684f0(Raw reference, void* unit, UnitReferenceHost& host);
 float gameplay_modifiers_powerup_multiplier_00470440(Raw modifiers, std::int32_t index, void* unit,
                                                      PowerupMultiplierHost& host);
 void hit_record_destroy_004704b0(Raw record, SweepAHost& host);
