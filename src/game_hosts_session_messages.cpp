@@ -1,5 +1,6 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/wire_goal4_chain350_switches.hpp"
 #include "bsp/actions_seg5_cc13.hpp"
@@ -772,7 +773,18 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
     NativeSessionMessage90 queued{};
     construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
     read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
-    return DirectorSubKindCopy{queued.selector_20, queued.value_24};
+    if constexpr (kWireGoal4Chain373Bound) {
+        const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
+        // bsp.py show 0071C720: ECX=this, stamp CE4974, RET. The sender's
+        // cleanup funclet C85180 belongs to 0071DD30 (bsp.py callers 0071C720).
+        // Finish both real loopback objects after their payload was consumed.
+        // These host objects use stack storage, so use the non-deleting body.
+        destroy_native_session_message90_0071c720(&queued);
+        destroy_native_session_message90_0071c720(&sent);
+        return copy;
+    } else {
+        return DirectorSubKindCopy{queued.selector_20, queued.value_24};
+    }
 }
 
 HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5d(
@@ -798,7 +810,17 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     NativeSessionMessage93 queued{};
     construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
     read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
-    return ClearCommandCopy{queued.flag_20, queued.value_24};
+    if constexpr (kWireGoal4Chain373Bound) {
+        const ClearCommandCopy copy{queued.flag_20, queued.value_24};
+        // bsp.py show 0071C820: root-profile store only; C850C0/C850E0 are
+        // the clear-command senders' cleanup funclets. No payload is read
+        // after teardown, and stack storage must not take scalar-delete bit 0.
+        destroy_native_session_message93_0071c820(&queued);
+        destroy_native_session_message93_0071c820(&sent);
+        return copy;
+    } else {
+        return ClearCommandCopy{queued.flag_20, queued.value_24};
+    }
 }
 
 HostSessionMessages::CommandBuildingCopy HostSessionMessages::queue_command_building_set_owner_d3(
@@ -919,11 +941,19 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     NativeSessionMessage112 queued{};
     construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
     read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
-    // Neither message owns storage; the drain's 00762640 scalar delete only
-    // restamps the root profile.
     KamikazeDetonateCopy copy;
     copy.other_id = queued.value_1c;
     for (int i = 0; i < 3; ++i) std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
+    if constexpr (kWireGoal4Chain373Bound) {
+        // bsp.py show 00761E10: root-profile store only. The original
+        // collision sender 008145B0 has two cleanup sites, C90C33/C90C3B.
+        // Run that same non-deleting teardown on the consumed stack objects.
+        destroy_native_session_message112_00761e10(&queued);
+        destroy_native_session_message112_00761e10(&sent);
+    } else {
+        // Neither message owns storage; the drain's 00762640 scalar delete only
+        // restamps the root profile.
+    }
     return copy;
 }
 
@@ -982,6 +1012,14 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
         copy.type = queued.header.base.type_10;
         answer(&native_session_message_is107_00761960);
+        if constexpr (kWireGoal4Chain373Bound) {
+            // bsp.py show 00761950: root-profile store only; C90B56/C91930
+            // clean up the 6Bh messages of the real failure senders.
+            destroy_native_session_message107_00761950(&queued);
+            destroy_native_session_message107_00761950(&sent);
+        } else {
+            // The previous host ended these trivial storage objects directly.
+        }
     } else {
         // 00827D65 / 00813530: 007619B0 itself.
         NativeSessionMessage108 sent{};
@@ -993,6 +1031,14 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
         copy.type = queued.header.base.type_10;
         answer(&native_session_message_is108_00761a30);
+        if constexpr (kWireGoal4Chain373Bound) {
+            // bsp.py show 00761A20: same non-deleting teardown for 6Ch;
+            // its failure-sender cleanup funclets are C90B61/C91938.
+            destroy_native_session_message108_00761a20(&queued);
+            destroy_native_session_message108_00761a20(&sent);
+        } else {
+            // The previous host ended these trivial storage objects directly.
+        }
     }
     // Neither message owns storage; 00761990 / 00761A60 only restamp.
     return copy;
@@ -1401,7 +1447,21 @@ HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_6
         copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
         copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
     }
-    // Neither message owns storage; 00729050 / 00729070 only restamp.
+    if constexpr (kWireGoal4Chain373Bound) {
+        // bsp.py show 00728F60/00728FE0: stamp CE4974, retaining every other
+        // byte. Their cleanup funclets C85560/C85580 select the same class
+        // as the constructor above. Consume dispatch results before teardown;
+        // use non-deleting bodies because both host objects are on the stack.
+        if (set) {
+            destroy_native_session_message104_00728f60(&queued);
+            destroy_native_session_message104_00728f60(&sent);
+        } else {
+            destroy_native_session_message105_00728fe0(&queued);
+            destroy_native_session_message105_00728fe0(&sent);
+        }
+    } else {
+        // Neither message owns storage; 00729050 / 00729070 only restamp.
+    }
     return copy;
 }
 

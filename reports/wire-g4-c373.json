@@ -1,0 +1,108 @@
+{
+  "chain": 373,
+  "run": 737,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "switch": "kWireGoal4Chain373Bound",
+  "switch_header": "include/bsp/wire_goal4_chain373_switches.hpp",
+  "summary": "Complete the normal teardown of the real sent and deserialized stack objects already used by single-player director, gun-failure, ship-jam and kamikaze loopbacks. Copy payload/dispatch results first, then invoke the existing class-specific non-deleting destructor exactly once per object. Each body only stamps the root profile CE4974. No allocations, invented message inputs, duplicate bodies, payload frees or changes to delivery are introduced.",
+  "rows": [
+    {
+      "native": "0071C720",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_director_sub_kind_5a",
+      "evidence": "bsp.py show 0071C720; callers identifies sender 0071DD30 cleanup funclet C85180; real message selector/value are copied before both stack objects are destroyed."
+    },
+    {
+      "native": "0071C820",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_clear_command_5d",
+      "evidence": "bsp.py show 0071C820; clear-command sender cleanup funclets C850C0/C850E0; real arm/index are copied before teardown."
+    },
+    {
+      "native": "00728F60",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (set arm)",
+      "evidence": "bsp.py show 00728F60; cleanup funclet C85560; the same set selector chooses constructor104, dispatch and destructor104."
+    },
+    {
+      "native": "00728FE0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_gun_destroyed_68_69 (clear arm)",
+      "evidence": "bsp.py show 00728FE0; cleanup funclet C85580; the same clear selector chooses constructor105, dispatch and destructor105."
+    },
+    {
+      "native": "00761950",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_ship_jam_6b_6c (steering arm)",
+      "evidence": "bsp.py show 00761950; failure-sender cleanup funclets C90B56/C91930; type and IsType dispatch answers are captured before teardown."
+    },
+    {
+      "native": "00761A20",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_ship_jam_6b_6c (engine arm)",
+      "evidence": "bsp.py show 00761A20; failure-sender cleanup funclets C90B61/C91938; type and IsType dispatch answers are captured before teardown."
+    },
+    {
+      "native": "00761E10",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp HostSessionMessages::queue_kamikaze_detonate_70",
+      "evidence": "bsp.py show 00761E10; original collision sender 008145B0 cleanup sites C90C33/C90C3B; real other-id and collision point are copied before teardown."
+    },
+    {
+      "native": "005251C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp SetSelectedUnit / ForceSelectUnit screen-reset records",
+      "reason": "Missing producers/storage for screen+30h selection mode and the +C4h selection vector; existing UnitPickScreenState does not carry these inputs, so an empty vector/mode-zero projection would invent state."
+    },
+    {
+      "native": "00A15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp difficulty-loading comment near 009FFC80",
+      "reason": "Missing native party-brain array and planner+0Ch presence producer; the apparent stand-in is a stale difficulty comment, not an owned first-active-slot query."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp AiGroups::release_group_reference",
+      "reason": "Missing a native candidate-score-list producer carrying the sixteen score values/labels and candidate keys; the release host only owns command-target references, not that score list."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp AiGroups::release_group_reference",
+      "reason": "Missing the populated candidate-score-list object and selected candidate key required by the chosen-byte writer; wiring the release comment would operate on invented list state."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp NamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread named-Lua-call producer and its actual argument queue; this host executes mission Lua on the main thread, so its current empty drain cannot supply deferred-call state."
+    },
+    {
+      "native": "0095CF80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp ShipAiFirepower::ammo_select_flak_alternate_0095cf80",
+      "reason": "Missing the ammo+48h flak-alternate record producer; the existing firepower adapter explicitly records that absence."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed with the final switch ON; reconstructed_math and tool_tests both passed (2/2).",
+    "analysis_build": "./scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed with switch OFF and ON.",
+    "call_graph": "python tools/call_graph.py --build-dir build/callgraph plus who for all seven addresses: each ON body has two direct entry-reachable calls from its named HostSessionMessages method; OFF has zero such host calls. Existing scalar-delete adapter calls remain in both builds.",
+    "direct_host_calls_before": 0,
+    "direct_host_calls_after": 14,
+    "analysis_reconstructed_called_before": 6091,
+    "analysis_reconstructed_called_after": 6091,
+    "called_total_explanation": "The graph already counted these bodies through profile delete adapters before the patch; the new evidence is the fourteen direct calls on consumed real host message objects. Release ICF folds their identical code, so separate attribution uses the non-folding analysis build.",
+    "readiness_wired_before": 9583,
+    "readiness_wired_after": 9590,
+    "float_math_changed": false,
+    "boundary": "Build and static executable call-site proof only. The game was not run; original FH3 exception unwinding and drop-in binary ABI are not claimed."
+  },
+  "assumptions": [
+    "The existing host intentionally owns both loopback objects on the stack. Non-deleting teardown is therefore the applicable part of the original queued object's scalar-delete path; scalar-delete flag 1 would incorrectly free host stack memory.",
+    "Only normal completion is changed. Existing native reconstruction bodies and profile lifetimes are reused without modification."
+  ],
+  "left": "Other message families still omit normal teardown; continue only on already produced/consumed real objects. Pick-screen, native candidate-score-list, party-brain and deferred-Lua queue producers remain separate work."
+}
