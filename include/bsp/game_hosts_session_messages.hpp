@@ -72,6 +72,11 @@ public:
     // memory is the caller's, so only the destructor runs.
     static void free_set_command_92(NativeSessionMessage92& message) noexcept;
 
+    // Chain 498: the actual decoded 3Ch allocation, retained by its loopback
+    // entry through delivery. Its last owner runs 0071E3B0 with flags = 1.
+    std::shared_ptr<NativeSessionMessage92> queue_owned_set_command_92(int command_ordinal,
+        const SceneCommandTarget& target, std::uint8_t flag) const;
+
     // MT_COMMAND (58h): the message 007798D0 built, as the typed record that
     // mirrors its 3Ch layout, through 0076E520's local copy (00764D40 write,
     // 00768530 case 88 at 00769CB0: 00764C80, then 00764E60 read). Returns the

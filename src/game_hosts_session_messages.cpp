@@ -474,6 +474,39 @@ void HostSessionMessages::free_set_command_92(NativeSessionMessage92& message) n
     destroy_native_session_message92_0071cb40(&message);
 }
 
+std::shared_ptr<NativeSessionMessage92> HostSessionMessages::queue_owned_set_command_92(
+    int command_ordinal, const SceneCommandTarget& target, std::uint8_t flag) const {
+    const Image& image = *image_;
+    const std::uint32_t command[2] = {0u, static_cast<std::uint32_t>(command_ordinal)};
+    NativeSessionMessage92 sent{};
+    construct_native_session_message92_value_0071c830(
+        &sent, command_ordinal >= 0 ? command : nullptr, &target, flag, image.context,
+        image.profile92);
+    std::uint8_t bytes[0x400]{};
+    NativeBitCursor out{bytes, sizeof bytes, bytes, 0};
+    write_native_session_message92_0071c930(&sent, &out, image.context);
+    destroy_native_session_message92_0071cb40(&sent);
+
+    NativeSessionReadStream in{nullptr, NativeBitCursor{bytes, sizeof bytes, bytes, 0}, 0, {}};
+    std::uint8_t type = 0;
+    read_native_u8_bits_00428c70(&in.cursor_04, &type, 8);
+    rewind_native_bits_00428b80(&in.cursor_04, 8);
+    static_cast<void>(type);
+    // 00768530 case 5Ch (00769D10): allocate 3Ch, construct 00764F90, then
+    // 0076A27B invokes 0071CA30 on that same allocation. Keep the live decoded
+    // object in the command queue, as the existing 5Fh owner does. Evidence:
+    // bsp.py show 0071E3B0: root-profile stamp, 00BF65AC iff flags & 1, RET 4.
+    // This allocator is the matching malloc/free pair. The body owns no
+    // payload subobjects; its target descriptor borrows the game's entity.
+    std::shared_ptr<NativeSessionMessage92> queued(
+        ::new (singleton_lifetime_allocate({SingletonAllocationKind::object,
+            sizeof(NativeSessionMessage92), sizeof(NativeSessionMessage92)})) NativeSessionMessage92{},
+        [](NativeSessionMessage92* message) { delete_native_session_message92_0071e3b0(message, 1u); });
+    construct_native_session_message92_00764f90(queued.get(), image.context, image.profile92);
+    read_native_session_message92_0071ca30(queued.get(), &in, image.context);
+    return queued;
+}
+
 EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessage& posted) const {
     const Image& image = *image_;
     // The record is 007798D0's message field for field (entity_orders.hpp), so

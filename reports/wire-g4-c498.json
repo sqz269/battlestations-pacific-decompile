@@ -1,0 +1,49 @@
+{
+  "chain": 498,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain498Bound",
+  "picked": "Native SetCommand (5Ch / decimal 92) decoded-message ownership through local loopback delivery",
+  "wired_before": 9781,
+  "wired_after": 9782,
+  "rows": [
+    {
+      "native": "0071e3b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_owned_set_command_92 deleter, called by src/game_hosts_commands.cpp: DirectorBinding::route_set_command_message",
+      "evidence": "bsp.py show 0071E3B0: __thiscall(receiver, flags), RET 4; root-profile store then 00BF65AC when flags bit 0 is set. The existing reconstructed body is reused with flags 1 on the actual malloc-backed 3Ch decoded object.",
+      "real_state": "The current command class ordinal, SceneCommandTarget and flag pass through the existing 0071C830 / 0071C930 / 00764F90 / 0071CA30 bodies and the same real session/codec context. The receiver reads this owned decoded object directly. Its queue entry retains it across vector insertions and releases it after dispatch, or when an undelivered queue is discarded.",
+      "no_double_run": "The switch selects the owning decoder instead of the prior value decoder. New-path delivery suppresses free_set_command_92; the shared owner invokes the existing scalar-delete body once on final release. The off arm retains the original value decoder and non-deleting cleanup.",
+      "abi": "Host C++ adapter and existing reconstructed body; original binary ABI compatibility and gameplay are unproved."
+    },
+    {"native":"00780670","status":"skipped","host_site":"src/game_hosts_commands.cpp: local loopback queue","reason":"Missing native message/current F876B0 tick association, game+5D4h publication to this queue, and sender+BDh readiness; a fabricated due-message gate would not be valid wiring."},
+    {"native":"005251c0","status":"skipped","host_site":"src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit screen reset","reason":"Missing selection mode +30h and native selection-vector producer +C4h..+D0h; existing pick state cannot supply the reset body's inputs."},
+    {"native":"00644230","status":"skipped","host_site":"src/game_hosts_hud.cpp: hud_root_screen_query","reason":"The body only returns global controlled-unit state; passing an already obtained unit through it would add no reconstructed behavior."},
+    {"native":"0099b650","status":"skipped","host_site":"src/game_hosts_units.cpp: BotApproachLand update","reason":"Missing the native task object reached through approach+18h and its consumed owner field +25Ch; current host records the write."},
+    {"native":"0092bd30","status":"skipped","host_site":"src/game_hosts_units.cpp: ship kill-depth / kamikaze teardown","reason":"Missing the actual native controller hull-shape fields and their owner; both current teardown sites only record the call."},
+    {"native":"007ddea0","status":"skipped","host_site":"src/game_hosts_units.cpp: PlaneFx flight-state notification","reason":"Missing persistent plane FX component and timer consumer; storing the binary 60.0f in an unused scratch block would not replace host behavior."},
+    {"native":"00501670","status":"skipped","host_site":"src/frontend_seg12_17_cc13.cpp: loading job completion through host.loading_work_items_erase_00501670","reason":"No game-host implementation supplying the actual native workvector was found; wiring requires the loading-job/vector producer first."},
+    {"native":"00bd2fc0","status":"skipped","host_site":"src/game_hosts_powerups.cpp: bracket-list random pick","reason":"Already wired elsewhere through startup RandomThreads; replacing this separate stream-0 stand-in would not add an unwired address to this packet."},
+    {"native":"008b16e0","status":"skipped","host_site":"src/game_hosts_script_orders.cpp: Countdown binding","reason":"The ledger points to the existing verified host binding, rather than a separate address-suffixed body ready to call; no new wiring was claimed."},
+    {"native":"00a77760","status":"skipped","host_site":"src/game_hosts_mission_frame.cpp: cinematic_dialog_pause_on_change","reason":"Already called through the started GameSoundDialogRuntime by chain 439; the readiness label alone does not identify missing behavior here."},
+    {"native":"009c6220","status":"skipped","host_site":"src/cc13_seg67b.cpp: math_clamp_symmetric_009c6220","reason":"Native caller query has zero sites; no justified native runtime call site was found for this otherwise complete clamp body."},
+    {"native":"00638b90","status":"skipped","host_site":"src/cc13_pkt642.cpp: HUD marker margin callbacks","reason":"Missing a live callback implementation and producer of the six screen-margin globals; the reconstructed caller's text reachability is insufficient."},
+    {"native":"007904d0","status":"skipped","host_site":"src/cc13_sweepB6.cpp: movcam angle callback","reason":"Missing a live movcam callback implementation and the camera angle/limit object needed by the body."},
+    {"native":"00605630","status":"skipped","host_site":"src/cc13_left1.cpp: direction_angle_deltas_00605630","reason":"No live plane bomb-fire HUD call site supplying the native pair of direction vectors was established in this packet."},
+    {"native":"0085d770","status":"skipped","host_site":"src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770","reason":"No native-matching host call site and transform owner were established; a speculative replacement of unrelated host math was avoided."},
+    {"native":"00954990","status":"skipped","host_site":"src/game_hosts_hud.cpp: SetControlledUnit::set_unit_controlled_audio","reason":"Missing the ship +BBCh sound object and its +428h device list / +6B4h flag storage."},
+    {"native":"00a79880","status":"skipped","host_site":"src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume","reason":"Missing an actual ambient SoundInstance; the current host records the operation and camera-height inputs remain stand-ins."},
+    {"native":"00ac2f20","status":"skipped","host_site":"src/game_hosts_hud.cpp: HudRootRows::animation_interval","reason":"Missing the native ticker/animation object; weapon_animation currently returns zero, so no real range state is available."},
+    {"native":"00a2bd90","status":"skipped","host_site":"src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command","reason":"The host entity has no AI-group object at this site; implementing the group owner and membership is required before forwarding."}
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1: passed, all five existing tests passed",
+    "changed_build": "scripts/build.ps1: passed, all five existing tests passed",
+    "focused_ownership_probe": "local/output/wire_g4_c498_probe.ps1: passed; complete 3Ch decoded payload equals the prior decoder, one actual object survives queue copying/nested insertion, weak ownership expires after final release",
+    "release_call_graph": "New NativeSessionMessage92 shared-pointer deleter calls the scalar-delete body; release ICF folds it with identical functions, so separate analysis used.",
+    "analysis_call_graph": "call_graph.py --build (no inlining, /OPT:NOICF): 0071E3B0 at 1059EB00 in native_session_message_tags_90_to93.obj; new owning-deleter lambda call at 1028D648. queue_owned_set_command_92 at 1028F040 has an entry-reachable call from DirectorBinding::route_set_command_message at 100AA4B9.",
+    "readiness": "wire_readiness.py --standins: wired 9781 -> 9782; 0071e3b0 is wired and called",
+    "float_math": "No float arithmetic changed; existing codecs are reused unchanged.",
+    "limits": "Static executable reachability and a synthetic ownership/payload probe; no game execution, live gameplay, full ABI or runtime parity claim."
+  },
+  "left": "Other SetCommand and session message classes retain their existing ownership paths. Broader native tick gating, loading-job producers and HUD/FX object producers remain for later packets."
+}
