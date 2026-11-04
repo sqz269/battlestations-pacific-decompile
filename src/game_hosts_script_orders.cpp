@@ -779,7 +779,7 @@ public:
     using ClassQuery = std::function<bool(void*, int)>;
     using PartyRead = std::function<int(void*)>;
     using Apply = std::function<void(void*, int, int)>;
-    using Route = std::function<void(void*, int)>;
+    using Route = std::function<void(void*, const bsp::seg56_options_cc13::IntValueMessage&)>;
     SetRaceBinding(ClassQuery query, PartyRead party, Apply apply, Route route)
         : query_(std::move(query)), party_(std::move(party)),
           apply_(std::move(apply)), route_(std::move(route)) {}
@@ -802,7 +802,7 @@ public:
             || message.dword_04 != 1 || message.word_18 != 0
             || message.byte_1a != 0 || flags != 7 || out != 0)
             throw std::logic_error("SetRace: unexpected route descriptor");
-        route_(entity, message.value);
+        route_(entity, message);
     }
 private:
     ClassQuery query_;
@@ -5402,15 +5402,19 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             SetRaceBinding host(
                 [this](void* entity, int kind) { return entity_is_kind_of(entity, kind); },
                 party, apply,
-                [this, party, apply](void* entity, int race) {
+                [this, party, apply](void* entity,
+                    const bsp::seg56_options_cc13::IntValueMessage& posted) {
                     const auto* messages = commands_session_messages();
                     // A real unit route borrows the session codec already used
                     // by SetParty. Its four-bit result, not the Lua integer,
                     // reaches the receiver at the commands pump (0095ABE0/80h).
                     if (messages == nullptr)
                         throw std::logic_error("SetRace: no local session codec");
+                    const bsp::HostSessionMessages::VehicleRaceFields fields{
+                        posted.type, posted.word_18, posted.byte_1a,
+                        static_cast<std::uint32_t>(posted.value)};
                     const int copied_race = static_cast<int>(
-                        messages->queue_vehicle_race_80(static_cast<std::uint32_t>(race)));
+                        messages->queue_vehicle_race_80(fields));
                     const auto id = entity_object_id(entity);
                     if (id == 0 || !commands_post_loopback_callback_0076e520(
                         static_cast<std::size_t>(id) - 1u,

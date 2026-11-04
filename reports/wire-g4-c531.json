@@ -4,38 +4,42 @@
   "slot": "g4-w3",
   "switch": "bsp::kWireGoal4Chain531Bound",
   "base": "1ba00c16a5",
-  "scope": "SetRace Lua binding, real unit/script race ownership and the local 80h vehicle-race message codec",
+  "scope": "SetRace Lua binding, real unit/script race ownership and the local 80h field codec; native message construction deferred",
   "metrics": {
     "readiness_wired_before": 9842,
-    "readiness_wired_after": 9847,
+    "readiness_wired_after": 9846,
     "entry_reachable_reconstructed_addresses_before": 4901,
-    "entry_reachable_reconstructed_addresses_after": 4906
+    "entry_reachable_reconstructed_addresses_after": 4905,
+    "review_revision": "Round 1 withdraws the unsupported 00760390 constructor claim: five claimed bodies become four; the rebuilt graph confirms 4906 -> 4905 reachable addresses relative to the reviewed head."
   },
   "validation": {
-    "build": "scripts/build.ps1: final MSVC Win32 Release build passed, all five existing CTests passed",
-    "call_graph": "4906/5395 reconstructed addresses reachable from entry; all five selected bodies have direct calls from the changed host functions",
+    "build": "scripts/build.ps1: review-round-1 MSVC Win32 Release build passed; all five existing CTests passed",
+    "call_graph": "4905/5394 reconstructed addresses reachable from entry; each of the four retained bodies has one direct call from the changed host functions",
     "call_sites": {
       "008a8720": 1,
-      "00760390": 2,
       "007603f0": 1,
       "00760420": 1,
       "00760470": 1
     },
-    "readiness": "tools/wire_readiness.py --standins: all five selected rows are wired and called=true",
+    "readiness": "tools/wire_readiness.py --standins: four retained rows wired/called=true with one direct call each; 00760390 is ready with called/call_sites null because its symbol is absent. The built graph and source call search independently confirm the constructor is uncalled.",
     "float_math": "No float arithmetic changed",
     "runtime": "Game was not run. Static entry reach and passing tests do not establish mission execution, gameplay parity or original ABI compatibility.",
+    "ledger": "Existing 008a8720 row replaced through bsp.py ledger add-function; semantic comparison against HEAD confirms only that address changed. Prior shard row order retained.",
+    "constructor_removed": "call_graph.py who 00760390: no function in this build matches the address; source search finds only the existing body definition/declaration, with no callers",
+    "field_only_codec": "Inspected seg42 w_header/r_header and 00760420/00760470: only type +10h, id +18h, relay +1Ah and race +1Ch are accessed. Profile +0h and selected owner +14h are not read.",
+    "off_identity": "Previously reviewed OFF identity remains: the changed field-only helper and descriptor forwarding are used only by the enabled chain531 dispatch; no old OFF-arm code changed in round 1.",
     "readiness_rows": [
+      {
+        "address": "00760390",
+        "state": "ready",
+        "called": null,
+        "call_sites": null
+      },
       {
         "address": "008a8720",
         "state": "wired",
         "called": true,
         "call_sites": 1
-      },
-      {
-        "address": "00760390",
-        "state": "wired",
-        "called": true,
-        "call_sites": 2
       },
       {
         "address": "007603f0",
@@ -55,8 +59,7 @@
         "called": true,
         "call_sites": 1
       }
-    ],
-    "ledger": "Existing 008a8720 row replaced through bsp.py ledger add-function; semantic comparison against HEAD confirms only that address changed. Prior shard row order retained."
+    ]
   },
   "decisions": [
     "Reuse and rename the existing SetRace body with its address suffix; replace its existing ledger row and preserve the original evidence. No second body was added.",
@@ -66,9 +69,11 @@
     "The pre-existing party/race owner remains partial: native child propagation and observer notification are not implemented by this packet. No child/observer parity is claimed.",
     "A missing unit session codec or command-delivery queue raises a concrete binding error rather than inventing a session or bypassing the message path.",
     "The chain531 switch gates registration/dispatch and the added Lua Race mirror. New helpers are used only by enabled arms; old code remains in the disabled arms.",
-    "No tests were added: existing compilation/tests plus focused native evidence and built call-site inspection cover this bounded wiring; live behavior remains unverified."
+    "No tests were added: existing compilation/tests plus focused native evidence and built call-site inspection cover this bounded wiring; live behavior remains unverified.",
+    "Review round 1: withdraw native constructor wiring rather than reuse the synthetic Image::game slot/player table or invent a player publication. The codec now takes all serialized header/payload fields from the actual SetRace IntValueMessage and never reads Image::game or a vtable/profile."
   ],
   "left_for_others": [
+    "00760390 constructor: actual game selected-slot/player-record publication and binary-backed 00D032FC profile, with sender/receiver profile checks, remain unbound.",
     "Native 00923B80 child propagation and 00696350 observer notification for the existing party/race owner.",
     "Native message allocation/scalar-free lifetime remains at the existing semantic local-loopback boundary.",
     "Live SetRace mission execution and visual/race-dependent behavior validation."
@@ -82,9 +87,9 @@
     },
     {
       "native": "00760390",
-      "status": "wired",
+      "status": "skipped",
       "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_vehicle_race_80",
-      "evidence": "Constructs separate sender and receive-copy lifetimes using the existing session/vtable owner and the real SetRace payload."
+      "reason": "No actual selected-player/slot native owner or binary-backed 00D032FC profile is bound. Both constructor calls were removed; the remaining codec uses only actual posted type/id/relay/race fields and claims no native message lifetime."
     },
     {
       "native": "007603f0",
@@ -260,5 +265,35 @@
       "host_site": "src/game_hosts_script_orders.cpp: Countdown",
       "reason": "The native text-message producer is reached through the server-session-mode-1 broadcast, which campaign single-player skips."
     }
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 1097,
+    "reviewed_head": "9ac0fc09b135ae5dcb874f53b45001d7c8dd32bb",
+    "rows_claimed_after_fix": 4,
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "resolution": "Accepted. No actual native selected-player/slot owner is available to this helper. Removed both 00760390 calls, marked that row skipped and revised the report/counts to four retained bodies. The codec borrows type/id/relay/race from the actual posted descriptor instead of constructing messages from synthetic Image::game state."
+      },
+      {
+        "id": 2,
+        "status": "fixed_by_withdrawing_constructor",
+        "resolution": "Accepted. 00D032FC is absent from Seg42Vtables. Constructor wiring is not retained, so no profile binding is claimed or required by this field-only codec. Neither codec body reads profile +0h or selected owner +14h; future constructor wiring must bind and check both profiles."
+      }
+    ],
+    "checks": {
+      "build": "pass, all five tests",
+      "retained_direct_calls": {
+        "008a8720": 1,
+        "007603f0": 1,
+        "00760420": 1,
+        "00760470": 1
+      },
+      "constructor": "no linked function/call",
+      "readiness": "pass: 9846 wired overall, four retained called rows; constructor row ready with null call metrics, independently confirmed absent by built graph/source search",
+      "game_run": false,
+      "field_view": "source assertions confirm the race helper has no constructor calls or Image session/game reads; all serialized inputs come from the actual posted descriptor"
+    }
+  }
 }
