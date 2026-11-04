@@ -73,6 +73,7 @@ class GameUnitsHost;
 class GameHostLog;
 class GameMissionResultHost;
 class GameMessageManagerHost;
+class GameHudHost;
 
 // The plane-squadron member write-back, as a free function so that a caller
 // which holds no scripts-orders host can drive it. It fills the registry's
@@ -765,6 +766,9 @@ public:
     void attach_message_manager(GameMessageManagerHost* manager) noexcept {
         message_manager_ = manager;
     }
+    // Borrow the existing screen owner; the mission frame destroys orders
+    // before replacing its world, while the application's HUD outlives it.
+    void attach_narrative_hud(GameHudHost* hud) noexcept { narrative_hud_ = hud; }
     // 008C6308: 00706760(this = [game+21DCh], &name, side), for
     // bsp::lua_binding_load_message_map's message_map_load.
     void load_mission_message_map(const std::string& name, int side);
@@ -1334,6 +1338,7 @@ private:
     GameMissionResultHost* scoring_name_owner_{nullptr};
     // Goal 4 chain 331: borrowed [game+21DCh]; see attach_message_manager.
     GameMessageManagerHost* message_manager_{nullptr};
+    GameHudHost* narrative_hud_{nullptr};
     unsigned long long message_maps_loaded_{0};
     unsigned long long message_maps_without_manager_{0};
     unsigned long long message_maps_unloaded_{0};

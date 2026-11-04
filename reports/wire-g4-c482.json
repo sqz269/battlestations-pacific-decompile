@@ -1,0 +1,207 @@
+{
+  "chain": 482,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain482Bound",
+  "baseline": {
+    "source_wired": 9763,
+    "readiness_called_rows": 5937
+  },
+  "rows": [
+    {
+      "native": "005b5d40",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::hide_mission_narrative_text; src/game_hosts_script_orders.cpp: narrative_finish_00734140 / narrative_clear_00734fa0"
+    },
+    {
+      "native": "005b5d20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: run_narrative_update_00735100",
+      "reason": "Existing Seg20Host bundles unrelated services; a narrow live text-colour query adapter is still needed."
+    },
+    {
+      "native": "005b5bd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: screen 33h lifecycle",
+      "reason": "Screen-enter dispatch does not yet bind the narrative default virtual; do not move the default hide/show stores to queue entry."
+    },
+    {
+      "native": "005b7390",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: run_narrative_update_00735100",
+      "reason": "Live text context width/line-count and frame-size/timing outputs are missing; only authored text source and group visibility are delivered."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart::write_checkpoint",
+      "reason": "The host's checkpoint-diff predicate is a constant false and the profile storage/continuation owner is absent at this site."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: device_button_held",
+      "reason": "primary_device currently returns null; no real input device supplies its button state."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign_in_state_valid",
+      "reason": "Pending-invite and signed-in-user state belong to online services excluded from this single-player task."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target / report_target_event",
+      "reason": "Native event-manager channel/observer state is not supplied by the command adapters."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "Literal body reads native absolute mutable globals 00F87574/78/7C; no proved runtime producer is attached."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: legacy job projection",
+      "reason": "The actual attached native job path bypasses these legacy methods; their fallback has no actual group elements."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: legacy job projection",
+      "reason": "The actual attached native job path bypasses these legacy methods; their fallback has no actual group elements."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: legacy job projection",
+      "reason": "The actual attached native job path bypasses these legacy methods; their fallback has no actual group elements."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: legacy job projection",
+      "reason": "The actual attached native job path bypasses these legacy methods; their fallback has no actual group elements."
+    },
+    {
+      "native": "00aa2b30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassFieldBinding::load_small_map_icon",
+      "reason": "This binding has no texture/renderer owner; null texture callbacks would only replace one stand-in with another."
+    },
+    {
+      "native": "00683330",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: leaderboard scroller alpha",
+      "reason": "The recovered caller is the online leaderboard screen, outside the single-player task."
+    },
+    {
+      "native": "006833f0",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: layout listeners",
+      "reason": "The needed layout-listener callback and its matching live scroller owner are not attached."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "Baseline readiness already reports called=true from one live call site; no new wiring is needed."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "The retry/balance globals and full participant-count failure continuation are not represented by this host."
+    },
+    {
+      "native": "004c3840",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission load walk",
+      "reason": "The original session-mode gate excludes party-player slot assignment on a single-player load."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: run_class_table_resets_cc264",
+      "reason": "Live lazy host readers still consume StationaryClass directly from Lua; clearing it needs a retained class owner first."
+    },
+    {
+      "native": "00be6040",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_file_store_name_00be6040",
+      "reason": "No live provider+1C caller is currently attached to this filename-copy leaf."
+    },
+    {
+      "native": "00bb5540",
+      "status": "skipped",
+      "host_site": "src/native_vfs_lookup_leaves.cpp: copy_native_package_name_00bb5540",
+      "reason": "No live provider+1C caller is currently attached to this filename-copy leaf."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path message delivery",
+      "reason": "This host has only the add-point route; no real last-point removal input/caller is attached."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command target descriptors",
+      "reason": "No wire-descriptor default-construction site with a proved current 00E08F8C ordinal was found."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: entity_from_message_nonzero_00720fe0",
+      "reason": "A new caller must supply the actual split native handle tables; command-host unit indices are not those tables."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state snapshot reference",
+      "reason": "The inspected use is a network snapshot reader, outside the single-player task."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: queue_named_call_for_main_thread",
+      "reason": "The host never runs Lua on a native frame-job thread, so no real deferred-call producer reaches this queue."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: advance_ticker",
+      "reason": "Award grants do not populate the native ticker queue; no real front entry is available."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "weapon_animation currently returns zero; there is no live timed-entry owner at this site."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp: direction_angle_deltas_00605630",
+      "reason": "Its sole native caller is the unbound plane-HUD bomb-fire update; no corresponding live host call site was found."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB5.cpp: HUD map objective marker pass",
+      "reason": "The objective-entry marker pass and its per-side reveal row view are not attached to the current HUD."
+    },
+    {
+      "native": "008db990",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: objective property-key selector",
+      "reason": "No live property-sink construction site for this objective serializer is attached."
+    }
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed; all 5 CTests passed",
+    "binary": "call_graph.py who/path 005b5d40: reachable, one direct call from GameHudHost::hide_mission_narrative_text",
+    "runtime": "Game not run; source/Win32 build/binary reachability evidence only."
+  }
+}
