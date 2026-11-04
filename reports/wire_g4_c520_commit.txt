@@ -1,0 +1,10 @@
+Wire live formation member lookups and leadership predicates
+
+Route member selection and formation-offset writes through 0070D060 and
+0070D080 using refreshed mission group records. Use the existing 00778890
+body for HUD selection and the ship formation timer gate. Preserve prior
+host behavior behind the chain 520 switch and for groups over native capacity.
+
+Validation: Win32 build and all four CTests pass. The executable call graph
+reaches all three bodies from the changed hosts (4876 -> 4879 reconstructed
+addresses called). No game run or original class ABI parity claim.
