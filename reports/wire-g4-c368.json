@@ -1,0 +1,105 @@
+{
+  "chain": 368,
+  "worker": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain368Bound",
+  "scope": "Construct the actual native-layout checkpoint record consumed by the existing SaveCheckpoint Lua binding.",
+  "wired_before": 9578,
+  "wired_after": 9579,
+  "rows": [
+    {
+      "native": "00436690",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::mission_checkpoint_binding, through ScopedMissionCheckpointRecord",
+      "state": "A 14h record with the native string at +0Ch is constructed by the existing body using the process raw string-pool context. Its actual fields supply the CheckpointRecordFields passed to save_checkpoint_00438020; difficulty is then filled from the same live game_effective_difficulty_6ac producer as before. The old C++ defaults run only in the switch's else arm. The string header is destroyed through the same raw context on scope exit.",
+      "evidence": "bsp.py show 00436690: ECX record, EAX same record, RET; stores 0/-1/-1 and constructs the empty native string at +0Ch. sizeof and offsetof assertions enforce that storage layout. Existing src/oct18_tail_a.cpp body reused without modification.",
+      "call_graph": "REACHABLE, one call site at 1011C442 from the lambda in mission_checkpoint_binding; zero unreachable callers. Baseline readiness had called=null.",
+      "limitations": "Build/tests and static entry reach only. No game run or native ABI compatibility claimed. Existing checkpoint mission-key, play-time, unlock discovery and file-destination substitutions remain as documented by the host."
+    },
+    {
+      "native": "00438a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::mission_checkpoint_binding",
+      "reason": "Needs the actual 00F8ABE8 platform storage owner and its +120h gate, plus the profile-manager pending-table/continuation lifetime; the current binding directly writes its local archive and provides neither owner."
+    },
+    {
+      "native": "00437490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: checkpoint record lifetime",
+      "reason": "Needs a real native checkpoint-record copy consumer; the inspected save binding creates a fresh record and does not copy a map node or an existing native record."
+    },
+    {
+      "native": "00a3e540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: missing 00438A00 storage-gate provider",
+      "reason": "Needs the actual platform storage owner at 00F8ABE8; the body reads owner+120h, so a fabricated false gate cannot justify routing checkpoint writes."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer participant balance and surrender handling is outside the requested single-player wiring scope."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning candidate scores",
+      "reason": "Needs native score-record production and a gameplay consumer; current assignment_scores is a separate host vector, and the prior chain364 report identifies the native record reader as an unreached debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning chosen-score records",
+      "reason": "Needs the real 00A2B950 score-record list and a gameplay reader of its chosen bytes; wiring a parallel debug list would not replace the host assignment path."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator tuning selection",
+      "reason": "Needs the per-slot brain-pointer and pointed-object +0Ch active-state producers documented by chain364; the inspected host does not yet provide those inputs."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "Needs the live selection screen mode, native vector and input-context reset bindings; the inspected host still only records the reset."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "Needs the actual power-up screen scrolling-byte owner and writers at +1F9h/+13Fh; the host callback remains a recorded false answer."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director player-command flags",
+      "reason": "Network controller snapshot construction has no single-player snapshot consumer in the inspected Lua flag-store path."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepowerBinding::ammo_select_flak_alternate",
+      "reason": "Needs the actual ammo-record alternate at +48h and its producer; the inspected firepower binding explicitly has no producer for it."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit weapon-state vector",
+      "reason": "Needs the real unit+660h vector owner and producer before its native clear body can replace gameplay state handling."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Needs the pre-load host's actual BSP_Chk_Save Lua-table and current-mission-key owners plus a real checkpoint-diff result; the existing callback remains unimplemented."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "tools/call_graph.py and who/path 00436690 confirm one reachable constructor call",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "game_run": false
+  }
+}

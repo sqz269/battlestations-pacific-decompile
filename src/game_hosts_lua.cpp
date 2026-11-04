@@ -74,6 +74,9 @@
 #include "bsp/hud_movie_camera.hpp"
 #include "bsp/archive_text_writer.hpp"   // packet cc9_lua49_checkpoint
 #include "bsp/profile_checkpoint.hpp"   // packet cc9_lua49_checkpoint
+#include "bsp/oct18_tail_a.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/wire_goal4_chain368_switches.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -718,6 +721,32 @@ constexpr bool kEntryPointIsFunctionBound = true;   // ON: SQUADRON_LAND_TASK 5h
 // game installation or a profile; 008ACB70's gamepad-force and input-manager
 // calls are not run. OFF: both rows stay unimplemented records.
 constexpr bool kMissionCheckpointBound = true;
+
+// Goal 4 chain 368: actual 14h record consumed by SaveCheckpoint. Evidence:
+// bsp.py show 00436690: words 0/-1/-1, followed by the owned 8h string at +Ch.
+// This is ordinary source storage, not the original __thiscall/SEH ABI.
+struct MissionCheckpointRecord {
+    std::int32_t difficulty;
+    std::int32_t unlock_from;
+    std::int32_t unlock_to;
+    NativeString unlock_name;
+};
+static_assert(sizeof(MissionCheckpointRecord) == 0x14);
+static_assert(offsetof(MissionCheckpointRecord, unlock_name) == 0x0c);
+
+struct ScopedMissionCheckpointRecord {
+    MissionCheckpointRecord value;
+    ScopedMissionCheckpointRecord() {
+        bsp::oct18_tail_a::checkpoint_record_construct_00436690(
+            &value, game_native_string_process().raw_context());
+    }
+    ~ScopedMissionCheckpointRecord() {
+        destroy_native_string_header_0041dd20(
+            &value.unlock_name, game_native_string_process().raw_context());
+    }
+    ScopedMissionCheckpointRecord(const ScopedMissionCheckpointRecord&) = delete;
+    ScopedMissionCheckpointRecord& operator=(const ScopedMissionCheckpointRecord&) = delete;
+};
 
 // Packet cc9_movie_camera_mover_bind: the MovCamNew_AddPosition table as
 // 007A0EB0 reads it (docs/HUD_PICK_SEGMENT_QUERY.md 8.6). Keys the parser
@@ -13708,7 +13737,24 @@ int GameMissionLuaHost::mission_checkpoint_binding(lua_State* state, bool save) 
     }
     const int top = ::lua_gettop(state);
     if (top >= 1 && ::lua_type(state, 1) == LUA_TTABLE) {
-        bsp::CheckpointRecordFields record;   // 00436690's defaults
+        bsp::CheckpointRecordFields record = [&] {
+            if constexpr (bsp::kWireGoal4Chain368Bound) {
+                ScopedMissionCheckpointRecord native;
+                bsp::CheckpointRecordFields fields;
+                fields.difficulty = native.value.difficulty;
+                fields.unlock_from = native.value.unlock_from;
+                fields.unlock_to = native.value.unlock_to;
+                if (native.value.unlock_name.data() != nullptr) {
+                    fields.unlock_name.assign(native.value.unlock_name.data(),
+                        native.value.unlock_name.length());
+                }
+                log_.implemented("MissionLuaNative::checkpoint_record", "00436690");
+                return fields;
+            } else {
+                bsp::CheckpointRecordFields record;   // 00436690's defaults
+                return record;
+            }
+        }();
         record.difficulty = bsp::game::game_effective_difficulty_6ac();
         bsp::ArchiveStringSink sink;
         bsp::ArchiveTextOutput output;
