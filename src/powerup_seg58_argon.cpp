@@ -1,5 +1,6 @@
 #include "bsp/powerup_seg58_argon.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/wire_goal4_chain344_switches.hpp"
 
 #include <cstring>
 
@@ -146,7 +147,7 @@ bool powerup_target_applies_to_unit_008e4680(
 
 // [0x008e4b40] BSP_PowerupSlotRecord_IsCooldownExpired
 std::uint32_t powerup_slot_record_is_cooldown_expired_008e4b40(
-    Seg58Host& host, const void* record) {
+    PowerupSlotClockHost& host, const void* record) {
   const Raw rec{
       const_cast<std::uint8_t*>(static_cast<const std::uint8_t*>(record))};
   if (rec.at<std::uint8_t>(0x14) == 0u &&
@@ -157,23 +158,28 @@ std::uint32_t powerup_slot_record_is_cooldown_expired_008e4b40(
 }
 
 // [0x008e4b60] BSP_PowerupSlotRecord_GetReadyTime
-float powerup_slot_record_get_ready_time_008e4b60(Seg58Host& host, const void* record) {
+// Keep these address bodies as callable boundaries in the optimized game's graph.
+__declspec(noinline) float powerup_slot_record_get_ready_time_008e4b60(PowerupSlotClockHost& host, const void* record) {
   const Raw rec{
       const_cast<std::uint8_t*>(static_cast<const std::uint8_t*>(record))};
   if (rec.at<std::uint8_t>(0x14) != 0u) {
     auto* const cls = rec.at<std::uint8_t*>(0x08);
-    return Raw{cls}.at<float>(0x7c) + host.global_f32(0x00f876a4);
+    // 008E4B6A..008E4B76: FLD/FADD/FSTP float/FLD, PC24 on the game thread.
+    return static_cast<float>(cc13x87::x87_add24(
+        Raw{cls}.at<float>(0x7c), host.global_f32(0x00f876a4)));
   }
   return rec.at<float>(0x0c);
 }
 
 // [0x008e4b80] BSP_PowerupSlotRecord_GetEndTime
-float powerup_slot_record_get_end_time_008e4b80(Seg58Host& host, const void* record) {
+__declspec(noinline) float powerup_slot_record_get_end_time_008e4b80(PowerupSlotClockHost& host, const void* record) {
   const Raw rec{
       const_cast<std::uint8_t*>(static_cast<const std::uint8_t*>(record))};
   if (rec.at<std::uint8_t>(0x14) != 0u) {
     auto* const cls = rec.at<std::uint8_t*>(0x08);
-    return Raw{cls}.at<float>(0x80) + host.global_f32(0x00f876a4);
+    // 008E4B8A..008E4B99: FLD/FADD/FSTP float/FLD, PC24 on the game thread.
+    return static_cast<float>(cc13x87::x87_add24(
+        Raw{cls}.at<float>(0x80), host.global_f32(0x00f876a4)));
   }
   return rec.at<float>(0x10);
 }
@@ -1363,12 +1369,18 @@ void power_up_manager_collect_active_008e9af0(
 
               void* cd = host.stl_map_subscript_00617030(
                   add_bytes(slot_base, 0x14c), add_bytes(item, 0x04));
-              float end_time =
+              float end_time;
+              if constexpr (kWireGoal4Chain344Bound) {
+                // 008E9DB6..008E9DC2 uses the same record and clock as 008E4B80.
+                end_time = powerup_slot_record_get_end_time_008e4b80(host, cd);
+              } else {
+              end_time =
                   (raw(cd).at<std::uint8_t>(0x14) != 0u)
                       ? static_cast<float>(cc13x87::x87_add24(
                             raw(raw(cd).ptr(0x08)).at<float>(0x80),
                             host.global_f32(0x00f876a4u)))
                       : raw(cd).at<float>(0x10);
+              }
               {
                 void* first = raw(out_vec_end_times).ptr(0x04);
                 void* last = raw(out_vec_end_times).ptr(0x08);
@@ -1400,12 +1412,18 @@ void power_up_manager_collect_active_008e9af0(
                 }
               }
 
-              float start_time =
+              float start_time;
+              if constexpr (kWireGoal4Chain344Bound) {
+                // The fifth output is record+0Ch, or source+7Ch plus the clock.
+                start_time = powerup_slot_record_get_ready_time_008e4b60(host, cd);
+              } else {
+              start_time =
                   (raw(cd).at<std::uint8_t>(0x14) != 0u)
                       ? static_cast<float>(cc13x87::x87_add24(
                             raw(raw(cd).ptr(0x08)).at<float>(0x7c),
                             host.global_f32(0x00f876a4u)))
                       : raw(cd).at<float>(0x0c);
+              }
               {
                 void* first = raw(out_vec_start_times).ptr(0x04);
                 void* last = raw(out_vec_start_times).ptr(0x08);
@@ -1444,19 +1462,30 @@ void power_up_manager_collect_active_008e9af0(
             host.stl_vector_push_back_00442190(out_vec_counts, &count_val);
             void* cd = host.stl_map_subscript_00617030(
                 add_bytes(slot_base, 0x14c), item_class_field);
-            float end_time =
+            float end_time;
+            if constexpr (kWireGoal4Chain344Bound) {
+              // The include-zero-limit arm reads the same cooldown value.
+              end_time = powerup_slot_record_get_end_time_008e4b80(host, cd);
+            } else {
+            end_time =
                 (raw(cd).at<std::uint8_t>(0x14) != 0u)
                     ? static_cast<float>(cc13x87::x87_add24(
                           raw(raw(cd).ptr(0x08)).at<float>(0x80),
                           host.global_f32(0x00f876a4u)))
                     : raw(cd).at<float>(0x10);
+            }
             host.stl_vector_push_back_0045afd0(out_vec_end_times, &end_time);
-            float start_time =
+            float start_time;
+            if constexpr (kWireGoal4Chain344Bound) {
+              start_time = powerup_slot_record_get_ready_time_008e4b60(host, cd);
+            } else {
+            start_time =
                 (raw(cd).at<std::uint8_t>(0x14) != 0u)
                     ? static_cast<float>(cc13x87::x87_add24(
                           raw(raw(cd).ptr(0x08)).at<float>(0x7c),
                           host.global_f32(0x00f876a4u)))
                     : raw(cd).at<float>(0x0c);
+            }
             host.stl_vector_push_back_0045afd0(out_vec_start_times,
                                                &start_time);
           }

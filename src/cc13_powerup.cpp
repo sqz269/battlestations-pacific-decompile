@@ -7,6 +7,8 @@
 
 #include "bsp/native_string.hpp"
 #include "bsp/panel_sequence_types.hpp"
+#include "bsp/powerup_seg58_argon.hpp"
+#include "bsp/wire_goal4_chain344_switches.hpp"
 
 #include <Windows.h>
 
@@ -21,6 +23,29 @@ extern "C" {
 
 namespace bsp::cc13_powerup {
 namespace {
+
+// The expiry helper reads only +10h and +14h of the native cooldown value.
+// Project those fields from the actual per-player slot, not a new timer.
+struct SlotExpiryView {
+    std::uint32_t unused_00[4]{};
+    float end_10{};
+    std::uint8_t deferred_14{};
+};
+static_assert(offsetof(SlotExpiryView, end_10) == 0x10);
+static_assert(offsetof(SlotExpiryView, deferred_14) == 0x14);
+
+class SlotClock final : public powerup_seg58_argon::PowerupSlotClockHost {
+public:
+    explicit SlotClock(PowerupManagerHost& host) : host_(host) {}
+    float& global_f32(std::uint32_t address) override {
+        if (address != 0x00f876a4u) throw std::logic_error("power-up slot clock global");
+        clock_ = host_.clock_00f876a4();
+        return clock_;
+    }
+private:
+    PowerupManagerHost& host_;
+    float clock_{};
+};
 
 // 004DC6A0's GUI services as 008E6850 / 008E7350 reach them for the PUMicon and
 // mapIconPicture textures. SUBSTITUTION (labelled): the mission frame keeps no
@@ -300,15 +325,26 @@ std::vector<const PowerupItem*> list_ready_items_008ea0c0(PowerupRuntime& runtim
     std::vector<const PowerupItem*> ready;
     PowerupManagerHost& host = *runtime.host;
     if (!host.powerups_enabled_00e0c978()) return ready;
+    SlotClock clock(host);
     for (const PowerupItem& item : runtime.inventories[slot_index(slot)]) {
         // 008EA133: the record is looked up (and inserted) for every item.
         const PowerUpSlot& record = slot_record_00617030(runtime, slot, item.cls);
+        if constexpr (kWireGoal4Chain344Bound) {
+            // 008EA13C..008EA14F duplicates 008E4B40's CMP/FCOMIP/JBE.
+            // The helper still short-circuits the clock read for deferred slots.
+            SlotExpiryView native;
+            native.end_10 = record.absolute_expiry;
+            native.deferred_14 = record.relative_deadline ? 1u : 0u;
+            if (powerup_seg58_argon::powerup_slot_record_is_cooldown_expired_008e4b40(
+                    clock, &native) == 0u) continue;
+        } else {
         // 008EA13C: byte +14h set skips.
         if (record.relative_deadline) continue;
         // 008EA142..008EA14F: FLD [rec+10h], FLD [00F876A4], FCOMIP, JBE: the
         // clock must be above the stored end; unordered skips.
         const float now = host.clock_00f876a4();
         if (!(now > record.absolute_expiry)) continue;
+        }
         // 008EA163..008EA1B1: the last entry of the same class is replaced,
         // else the item is pushed.
         std::size_t match = ready.size();
