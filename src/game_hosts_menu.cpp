@@ -2,6 +2,7 @@
 // pump and the main menu. See include/bsp/game_hosts_menu.hpp for the address
 // list and the evidence.
 #include "bsp/game_hosts_menu.hpp"
+#include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/frontend_entry.hpp"
@@ -3003,14 +3004,25 @@ void GameMenuHost::select_front_end_frame_set_00518250(int set, bool commit) {
 // ---------------------------------------------------------------------------
 
 bool GameMenuHost::register_in_game_screen(int slot, const std::string& name,
-    std::uint32_t register_virtual, std::uint32_t layout_virtual) {
+    std::uint32_t register_virtual, std::uint32_t layout_virtual,
+    FrontEndScreen* constructed_flags) {
     Impl& host = *impl_;
     if (slot < 0 || slot >= kFrontEndScreenSlotCount) return false;
     if (host.screen_at(slot) != nullptr) return false;
     // 004f7180 leaves both flag bytes clear, so the screen is registered
     // neither wanted nor active and only the level-set recompute can ask for it.
-    Impl::MenuScreen& screen = host.add_screen(slot, name, nullptr, 0, 0, layout_virtual,
-        false);
+    Impl::MenuScreen& screen = [&]() -> Impl::MenuScreen& {
+        if constexpr (kWireGoal4Chain461Bound) {
+            // A reconstructed leaf already constructed this base. Keep the
+            // registry on that same owner's flags; add_screen does not run
+            // 004F7180 again for an external base.
+            return host.add_screen(slot, name, constructed_flags, 0, 0, layout_virtual,
+                false);
+        } else {
+            return host.add_screen(slot, name, nullptr, 0, 0, layout_virtual,
+                false);
+        }
+    }();
     screen.enter_virtual = register_virtual;
     register_front_end_screen_004f71d0(host.world.screens, *screen.flags, slot);
     // cc15-hint2: 34h's register 0054D860 runs the base, builds its widgets,
