@@ -1,0 +1,287 @@
+{
+  "goal": 4,
+  "chain": 490,
+  "slot": "g4-w4",
+  "switch": "kWireGoal4Chain490Bound",
+  "base_head": "2c67040a86258c229c334c59d4060321461cbdba",
+  "picked": "AI hint-weight Lua producer, shared source maps, planner read and coordinator reset",
+  "rows": [
+    {
+      "native": "00a03a60",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::create_00a32350"
+    },
+    {
+      "native": "00a04240",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560"
+    },
+    {
+      "native": "00a07f60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ai_set_hint_weight::Binding::ai_hint_weight_set_global"
+    },
+    {
+      "native": "00a07f80",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ai_set_hint_weight::Binding::ai_hint_weight_set_for_party"
+    },
+    {
+      "native": "00a37b30",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_ai_set_hint_weight (inlined into binding_trampoline)"
+    },
+    {
+      "native": "0080da00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::create_units",
+      "reason": "Its direct native initializer reads serialized-object toTurn at 0081FD5F; that source branch is absent from the scene-only host, and the forced-input FDC field is unbound."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryResolver",
+      "reason": "Typed scene property blocks lack the actual native bag/insertion owner required by the enum insertion body."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: entity property merge",
+      "reason": "The host merges ScenePropertyBlock records; native bag/clone ownership and nested native records are absent."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "Native score-list records serve an unreachable debug overlay; single-player gameplay does not consume the list."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score list",
+      "reason": "Chosen-bit records belong to the same debug-only score list and have no gameplay consumer."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member collection",
+      "reason": "The existing host already calls this body from reachable code; no additional wiring needed."
+    },
+    {
+      "native": "006f1f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::command_building_capture_fraction_006f1f90",
+      "reason": "This host method already has an entry-reachable caller; readiness text classification alone is not a missing call."
+    },
+    {
+      "native": "00744870",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: LandFort fire synchronization",
+      "reason": "The D1 synchronization remains a record without a retained message receiver/transport path."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: LandFort destroyed handling",
+      "reason": "Death-smoke +744 state, its retained effect producer and destruction dispatch are absent."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The plane FX component and its timer/effect consumers are not retained; a write-only sparse sidecar would not wire gameplay state."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The actual plane FX owner, engine array and retained sound/effect holders are absent."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Complete FX step requires the same missing component, tuning fields and bound virtual effect services."
+    },
+    {
+      "native": "00815370",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: UnitStep11Binding::tick_part",
+      "reason": "The host does not retain the two actual effect-pointer arrays or their scalar virtual receivers."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "The active-use tail that creates cooldown state is explicitly unmodelled; passive startup does not reach it."
+    },
+    {
+      "native": "008e4bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: power-up cooldown display",
+      "reason": "No retained active cooldown producer/display consumer is available on the chosen live path."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: landing approach update",
+      "reason": "Landing command +25C storage and downstream command consumers are absent; a sparse write-only task projection is insufficient."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task dispatch",
+      "reason": "The task unit identity and actual per-parity +9C2 scheduler byte storage are not retained by this host."
+    },
+    {
+      "native": "0059abc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: GameHudMinimapHost::update_005c0f20",
+      "reason": "This is the minimap owner, not the full map screen whose +2C mode and +5BC zoom the body reads."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp: manager page update",
+      "reason": "The full GuiWidgetOwner manager-frame path is not bound to the live bridge page owners."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: skirmish local join",
+      "reason": "The local slot is only logged and downstream hosts use a fixed slot; there is no shared retained +18EC cell to update."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane bomb-fire HUD",
+      "reason": "The native caller requires the bomb-fire HUD ballistic direction inputs, which this host does not retain."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::vehicle_avoidance_007df4f0",
+      "reason": "The alternate velocity+B04 frame has no retained B04 producer; the current native-qualified zero-input path uses inverse pose."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: hull-water diagnostics",
+      "reason": "Its only original caller is the debug flooded inspector; debug-only work is excluded."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: weapon sight layout",
+      "reason": "The original sight-status/layout consumers are not bound; no duplicate scan was added to unrelated gunnery counting."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The executable runs mission Lua on the main thread and has no real off-thread argument-vector enqueue producer."
+    },
+    {
+      "native": "008875d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding",
+      "reason": "No real deferred Lua result-sink owner is produced by this path."
+    },
+    {
+      "native": "00887670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding",
+      "reason": "The corresponding deferred Lua result-sink lifetime and cleanup boundary are absent."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: support-site query",
+      "reason": "The actual support-site supply lists and their active query consumer are not retained here."
+    },
+    {
+      "native": "0084d050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: support-site query",
+      "reason": "The support-site active flag and actual supply-class list/consumer are absent."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/game_input_runtime.cpp: GameInputRuntime::devices",
+      "reason": "The live raw device runtime does not publish the typed InputDevice/GamepadForceContext owner required by this body."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: sample cache runtime",
+      "reason": "The live cache does not expose the native 2Ch record-array header/copy owner required by this reserve body."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::destroy_manager",
+      "reason": "The existing native shutdown already invokes this body through close_sound_system; it is inlined in this build, not a new host gap."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::destroy_manager",
+      "reason": "Already used by sound configuration destruction; no new live host call was added merely to expose an inlined body."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::destroy_manager",
+      "reason": "Already used by sound type destruction; no new live host call was added merely to expose an inlined body."
+    },
+    {
+      "native": "004fb1f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: tactical/rewards text",
+      "reason": "The original tactical/rewards ASCII-string consumers are unbound; the live text uppercase path operates on UTF-16."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: diagnostic formatting",
+      "reason": "No gameplay formatter call site was established; diagnostic substitutions were not selected."
+    },
+    {
+      "native": "0084b8c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile impact effects",
+      "reason": "The selected effect slot lacks a bound oriented point-effect producer/consumer on the current impact path."
+    }
+  ],
+  "wired_total_before": 9773,
+  "wired_total_after": 9784,
+  "entry_reachable_reconstructed_before": 4843,
+  "entry_reachable_reconstructed_after": 4848,
+  "count_note": "Readiness is a source-text reachability metric; its total gain includes incidental source-file propagation. Exactly the five wired rows have new entry-reachable built calls.",
+  "evidence": [
+    "bsp.py show 00a04240 --asm: A042A2 global value, A042FE multiply/FSTP A04302",
+    "bsp.py show 00a04560 --asm: A045FF hint lookup and A04604 class-value multiply",
+    "bsp.py show 00a32350 --asm: A32441 clear follows attach and activation",
+    "bsp.py show 00a37b30: exactly 2/3 arguments and Ptr identity",
+    "bsp.py ghidra bytes 00e0e344 --length 8: initial party index -1",
+    "plane_squadron_registry source creation slot is retained independently of promoted leader"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all 4 existing tests",
+    "focused_fixture": "local/output/wire_g4_c490_probe.ps1 passed producer/read/party-isolation/reset; synthetic state only",
+    "call_graph": "all five wired rows have one entry-reachable call site each",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 0 allowed, 11 files"
+  },
+  "limits": [
+    "No game execution or native register/layout ABI claim.",
+    "Native checked-iterator fault and tree allocation/free behavior are outside the typed source-map API.",
+    "Eight valid party maps; invalid Lua party inputs raise a source-host error.",
+    "Non-party observation calls keep their previous class-only weight.",
+    "Entity keys use the existing host Lua Ptr creation identity, including the stable squadron creation slot rather than the geometric leader proxy."
+  ],
+  "assumptions": [
+    "One mission per process, matching the current executable lifecycle.",
+    "The source map implementation preserves valid-domain value behavior and is not a VC9 tree-layout replacement."
+  ]
+}

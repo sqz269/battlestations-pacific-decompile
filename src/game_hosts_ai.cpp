@@ -61,6 +61,9 @@
 #include "bsp/wire_goal4_chain400_switches.hpp"
 #include "bsp/wire_goal4_chain409_switches.hpp"
 #include "bsp/wire_goal4_chain474_switches.hpp"
+#include "bsp/wire_goal4_chain490_switches.hpp"
+#include "bsp/cc13_front6.hpp"
+#include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -1437,6 +1440,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     struct Squadron {
         bsp::PlaneSquadronEntity entity;
         AiSquadronResourceOwner resource_owner;
+        // Lua Ptr of the creation entity. Leadership can move to another wing
+        // without changing the entity whose hint weight A045FF queries.
+        std::uint32_t hint_entity_handle{};
         std::vector<std::size_t> member_units;  // unit indices in +3D0h order
         // Built from a registry record, so 007F3970's leave at death (packet
         // cc9_val_squadron_registry) shrinks the live +3D0h array under it.
@@ -6149,7 +6155,30 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // [00D7A24C]. Only the Lua native SetHintWeight (00A07F60 / 00A07F80)
         // fills them, and in this installation only the multiplayer
         // competitive scripts call it, so on these rows the factor is 1.0.
+        if constexpr (bsp::kWireGoal4Chain490Bound) {
+            // A045EE..A04604 multiplies the class value by A04240(entity).
+            // Lua Ptr is this host's creation ID (unit index+1). A squadron's
+            // creation entity survives leader promotion: r.unit is only the
+            // geometric proxy, not the entity A045FF passes to A04240.
+            // E0E344 starts at -1 (installed bytes); only a live party think
+            // supplies the valid party index the native reader requires.
+            if (current_party >= 0 && current_party < 8) {
+                const float class_weight = unit_class_weight(member);
+                const Squadron* const squadron = squadron_of(member);
+                const auto hint_entity = squadron != nullptr ? squadron->hint_entity_handle
+                    : static_cast<std::uint32_t>(member + 1u);
+                const float hint_weight = bsp::cc13_front6::ai_hint_weight_entity_multiplier_00a04240(
+                    hint_entity, current_party,
+                    bsp::process_ai_hint_weights());
+                r.fix_weight = class_weight * hint_weight;
+            } else {
+                // Preserve the host's non-party observation calls; the image's
+                // unchecked party-map read has no defined source domain here.
+                r.fix_weight = unit_class_weight(member);
+            }
+        } else {
         r.fix_weight = unit_class_weight(member);
+        }
         r.spread = group_value_spread();
         // 00A04652 IsKindOf(5) takes [entity+538h], 00A0466E IsKindOf(18h)
         // [entity+35Ch], the squadron's plane class. LABELLED: this host asks
@@ -7052,6 +7081,12 @@ void GameAiCoordinatorHost::create_00a32350() {
         // and 4 are enabled; above 3 every slot is.
         row.ai_enabled = host.party_admitted(party);
     }
+    if constexpr (bsp::kWireGoal4Chain490Bound) {
+        // A32441 follows the completed scene attach/activation calls.
+        bsp::cc13_seg69::ai_hint_weight_maps_clear_00a03a60(bsp::process_ai_hint_weights());
+    } else {
+        // Previously this host held no hint-weight maps.
+    }
     host.record("AiController::create", 0x00a32350u);
     if constexpr (bsp::kWireGoal2Chain58Bound) {
         host.done("AiController::construct", 0x00a31730u);   // its 00A163D0 ran above
@@ -7098,6 +7133,14 @@ void GameAiCoordinatorHost::Impl::seed_squadron_for_unit(std::size_t unit) {
     // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
     if (wing_units.front() != unit) return;
     Squadron s;
+    if constexpr (bsp::kWireGoal4Chain490Bound) {
+        // The registry records the fused creation slot, independent of its
+        // current first member. An unregistered single plane owns its entity.
+        s.hint_entity_handle = static_cast<std::uint32_t>(
+            (owner != nullptr ? owner->squadron_unit : unit) + 1u);
+    } else {
+        // Previously the planner did not query hint weights.
+    }
     if constexpr (bsp::kWireGoal4Chain308Bound) {
         // The canonical squadron's original fused creation slot survives
         // 007ED610 promotion / 007F3970 member removal. Do not use wing_units[0]

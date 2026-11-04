@@ -11,6 +11,7 @@
 
 #include "bsp/cc13_seg95.hpp"
 #include "bsp/cc13_sweepA.hpp"
+#include "bsp/ai_hint_weight_state.hpp"
 
 #include <cstdint>
 
@@ -162,7 +163,10 @@ std::uint32_t find_menu_record_for_entry_kind_005d7070(std::int32_t entry_index,
 // 00A04240 BSP_AiHintWeight_EntityMultiplier, __fastcall(ECX = entity) RET -> ST0:
 // 1.0 times the entity's weight in map 00F8A740 times its weight in the current
 // party's map 00F8A750 + 0Ch * [00E0E344] (each factor only when present).
-float ai_hint_weight_entity_multiplier_00a04240(void* entity, Front6Host& host);
+// Typed source API: valid party 0..7, canonical entity handle and actual maps.
+// Checked VC9 iterator fault paths and the native register ABI are not exposed.
+float ai_hint_weight_entity_multiplier_00a04240(std::uint32_t entity,
+    std::int32_t party, const AiHintWeightState& state);
 // 0077A2F0 BSP_Unit_HealthColour, __thiscall(ECX = out float[4]; float health) RET 4
 // -> EAX = out: a two-segment blend of three static RGBA colours (00F8715C,
 // 00F8716C, 00F8717C, initialised once under the guard bits of 00F8718C).
