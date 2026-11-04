@@ -34,6 +34,7 @@
 #include "bsp/native_unit_group_lookup.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
 #include "bsp/wire_goal4_chain272_switches.hpp"
+#include "bsp/wire_goal4_chain472_switches.hpp"
 #include "bsp/wire_goal4_chain248_switches.hpp"
 #include "bsp/wire_goal4_chain259_switches.hpp"
 #include "bsp/wire_goal4_chain267_switches.hpp"
@@ -50430,7 +50431,15 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
             // No call through the constructor's original profile is admitted.
             created.native_members.initialize();
         }
+        if constexpr (bsp::kWireGoal4Chain472Bound) {
+            // Publish this mission unit's existing one-based identity into
+            // the fresh native group, then use its +14h result as the host
+            // leader. Only the null-previous arm of 0070D0C0 is admitted.
+            created.leader = created.native_members.initialize_first_leader(
+                static_cast<std::uint32_t>(leader + 1u)) - 1u;
+        } else {
         created.leader = leader;
+        }
         bsp::ShipAiUnitGroupMember record;
         record.entity = static_cast<std::uint32_t>(leader + 1u);
         created.members.push_back(record);
