@@ -1,0 +1,102 @@
+{
+  "chain": 406,
+  "worker": "agent/g4-w4",
+  "base": "451e537657eeeb20abee3813771ab2f78b53486d",
+  "switch": "kWireGoal4Chain406Bound",
+  "summary": "Use the recovered collision-node initializer and destructor for the live gunnery blast-grid nodes.",
+  "counts": {
+    "readiness_wired_before": 9648,
+    "readiness_wired_after": 9652,
+    "entry_reachable_addresses_before_optimized_build": 4664,
+    "entry_reachable_addresses_after_optimized_build": 4666,
+    "new_entry_reachable_addresses": ["004e6480", "004e6570"],
+    "note": "Readiness is a source-text metric; only the two listed addresses are claimed as new verified calls. Its called summary includes identifier aliases and differs from call_graph.py's reconstructed-address total."
+  },
+  "implementation": [
+    "The ON node has the native prefix through byte +158h, followed by host unit-index and loose-list bookkeeping. Compile-time assertions check the offsets consumed by the recovered code and grid adapters.",
+    "004E6480 supplies the live node's intrusive links, self back-pointers, empty cell/root state and frame stamps. The existing geometry and grid registration then populate the same node used by blast queries; the old owner-pointer producer runs only in the OFF arm.",
+    "Ghidra bytes at 00D7A244 are FF FF 7F FF FF FF 7F 7F: maximum-seed FF7FFFFF and minimum-seed 7F7FFFFF. They are passed as integer bit patterns with no float arithmetic.",
+    "Each stable unique_ptr-owned node retains the initializer's allocated child slots until 004E6570 frees them during node destruction. The enclosing allocation is released by unique_ptr.",
+    "The OFF selection preserves the old node definition and producer. No original function body was duplicated or changed."
+  ],
+  "checks": {
+    "initial_index": "python tools/bsp.py index --if-stale passed",
+    "initial_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "switch_on_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "switch_off_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "final_build": "scripts/build.ps1 passed with kWireGoal4Chain406Bound=true; reconstructed_math and tool_tests passed",
+    "call_graph": "004E6480 has a reachable call from GameGunneryHost::Impl::blast_grid_step_0098bdb0; 004E6570 has reachable calls from that path's cleanup and the node vector's destruction.",
+    "entry_path": "WinMain -> mission frame -> fixed simulation -> unit motion -> gunnery fixed_step -> blast_grid_step_0098bdb0 -> 004E6480",
+    "float_math": "No float arithmetic changed; pc24_lint is not applicable.",
+    "runtime": "Game not launched. Build and static entry reach do not establish live blast behavior, original binary ABI, FH3/SEH or allocation-failure equivalence."
+  },
+  "rows": [
+    {
+      "native": "004e6480",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::NativeBlastGridNode::NativeBlastGridNode, called by blast_grid_step_0098bdb0",
+      "evidence": "bsp.py show 004e6480; ghidra bytes 00d7a244; call_graph.py who/path 004e6480"
+    },
+    {
+      "native": "004e6570",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::NativeBlastGridNode::~NativeBlastGridNode",
+      "evidence": "bsp.py show 004e6570; call_graph.py who 004e6570"
+    },
+    {
+      "native": "004e6540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::blast_grid_step_0098bdb0",
+      "reason": "The full constructor needs the original entity pointer stored at node+4Ch; this host owns a unit-index association, so this chain wires the existing field initializer and cleanup directly."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "Already entry-reachable before this chain through SceneNumericPropertyMerge despite readiness state=ready; no missing call to add."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "Already entry-reachable before this chain through the native enum-property merge adapter despite readiness state=ready; no missing call to add."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::unit_selectable_00645060",
+      "reason": "Missing live pick-screen mode +30h and selection-vector +C4h producers; the existing selection-reset site still records the call."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list release/planning",
+      "reason": "The candidate score list feeds an unreachable debug overlay, with no gameplay decision consumer; excluded as debug-only work."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list release/planning",
+      "reason": "The chosen marker is read only by the same unreachable candidate-score debug overlay; excluded as debug-only work."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0 and mission teardown",
+      "reason": "The baseline is a host name vector; the recovered cleanup still needs the native game+1930h tree, Lua-object adapter and teardown owner."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: interface-update exit_free_camera_overlay",
+      "reason": "Missing camera-screen +BCh state and scene-request/level-3 owner; the update adapter still records this action."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: interface-update toggle_tactical_overlay",
+      "reason": "Missing support-manager tracked-unit/list/audio state, blocker bytes and scene-request/level-3 owner; the update adapter still records this action."
+    }
+  ],
+  "left": "Native spatial-index storage and full 0098BA10 attachment remain separate work; the existing typed index and root attachment continue to run."
+}
