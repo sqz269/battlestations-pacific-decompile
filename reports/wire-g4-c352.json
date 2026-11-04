@@ -3,7 +3,7 @@
   "slot": "g4-w4",
   "switch": "kWireGoal4Chain352Bound",
   "switch_header": "include/bsp/wire_goal4_chain352_switches.hpp",
-  "summary": "Mission Lua AddListener (008C6760 -> 00980C10) now builds the kill, entityKilled, exitzone, recon and hit subscriptions with the image's constructors and Load slots over a GuiLuaReader (004425C0) on the block, resolving entity handles through 00888AA0 and the host's Ptr identity; the kill/entityKilled/exitzone/recon/hit dispatchers match those loaded filters, and the entityKilled reason parameter is the 0096DC00 string box. OFF, any other channel, or a block whose load throws (an absent filter key) keeps the host parse.",
+  "summary": "Mission Lua AddListener (008C6760 -> 00980C10) now builds the kill, entityKilled, exitzone, recon and hit subscriptions with the image's constructors and Load slots over a GuiLuaReader (004425C0) on the block, resolving entity handles through 00888AA0 and the host's Ptr identity; the kill/entityKilled/exitzone/recon/hit dispatchers match those loaded filters, and the entityKilled reason parameter is the 0096DC00 string box. The other eighteen channels 0097E360 accepts are constructed and loaded the same way and kept in ListenerEntry::native_other. OFF, any other channel, or a block whose load throws (an absent filter key) keeps the host parse.",
   "rows": [
     {
       "native": "0097a450",
@@ -51,6 +51,111 @@
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (hit arm); its eight filters are tested in 009685B0's order by native_hit_holds in dispatch_hit_listeners_00988510"
     },
     {
+      "native": "0097a790",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, input), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972750",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, input), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "0097a8b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, surrender), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "009727b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, surrender), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972810",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, failure), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "0097a9d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, leak), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "009728a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, leak), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972920",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, fire), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "009729a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, repair), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972a20",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, zone), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972ab0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, command), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972b60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, target), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972be0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, ammoType), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972c60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, stock), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972cf0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, gui), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972d70",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, generate), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972df0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, player), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00971130",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, musicOver), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972e70",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, chat), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972f80",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, shipLanded), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
+      "native": "00972fe0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm, hpEvent), from run_add_listener_008c6760; kept in ListenerEntry::native_other"
+    },
+    {
       "native": "0097c2c0",
       "status": "skipped",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (hit arm)",
@@ -67,6 +172,174 @@
       "status": "skipped",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (entityKilled arm)",
       "reason": "Only the raw cc13_seg62 body exists (Seg62Host, native object storage); the value-model EntityKilledSubscription has no constructor body, so the arm value-initialises the empty filters 0097D210 builds."
+    },
+    {
+      "native": "0097c560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097aaf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097ac10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097c6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097c8a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097ad80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097aef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097b060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097cad0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097cc40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097cdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097cf20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097d040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097b230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "0097d380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::load_listener_subscription_native (other-channel arm)",
+      "reason": "The failure/fire/repair/zone/command/target/ammoType/stock/gui/generate/player/musicOver/chat/shipLanded/hpEvent constructors have only raw cc13_seg62/seg64 bodies over native storage; the arm value-initialises the empty filters they build."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00983780",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00983c10",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00983f50",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00984ba0",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00984eb0",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00985590",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00985920",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00985f30",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
+    },
+    {
+      "native": "00986b00",
+      "status": "skipped",
+      "host_site": "none: the host keeps no WarningManager object for this channel",
+      "reason": "Raw dispatcher over the WarningManager (+24h lock, +F8h channel map); the host has no manager object and reaches some of these sites only as recorded stand-ins. The loaded subscriptions now wait in ListenerEntry::native_other for a dispatcher to match them."
     }
   ]
 }
