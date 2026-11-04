@@ -1,0 +1,297 @@
+{
+  "run": 1046,
+  "goal": 4,
+  "chain": 512,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "outcome": "partial_reconstruction_no_new_wiring",
+  "switch": "bsp::kWireGoal4Chain512Bound",
+  "switch_note": "Declared in the assigned header. No existing host arm changed because no matching live B0h/snapshot binding exists.",
+  "wired_before": 9807,
+  "wired_after": 9807,
+  "reconstructed": [
+    "0085b0f0"
+  ],
+  "wired": [],
+  "built": "Complete typed borrowed-state 0085B0F0 schedule replacing the prior seam-search-only address-labelled body; required platform resolver/node callbacks; one focused fixture.",
+  "verification": {
+    "build": "scripts/build.ps1 passed; all 5 CTests passed",
+    "pc24": "pc24_lint.py src/gun_platform_arc.cpp: 0 findings",
+    "call_graph": "4872/5350 reconstructed addresses called from entry in this build; who 0085b0f0 reports no linked function",
+    "boundary": "Source/build/fixture evidence only; no new game wiring, native ABI, exception/FPU-status or gameplay proof.",
+    "ghidra": "Existing C:/Users/sqz269/bsp.gpr /battlestationspacific.exe verified; comment appended through write-lock annotation tool, project saved, affected export refreshed."
+  },
+  "evidence": [
+    "0085B0F0..0085B7C9 complete 508-instruction listing",
+    "0085B24F..0085B279 received stores precede arc failure",
+    "0085B4B4..0085B4F3 and 0085B746..0085B795 strict snap thresholds",
+    "00D08B88 double = 0.008726646192371845; 00CE3D40 double = 0.800000011920929",
+    "0084C7E0 accepts B0h; 0084C6E0 supplies duplicate target/current pairs",
+    "0072F830 native tail 00730128 constructs B0h via 007290D0"
+  ],
+  "previous_name_evidence": "Hypothesis, not a recovered symbol. __thiscall(gun)(float tHorz, float tVert, float horz, float vert), RET 10h. The replication snap: writes the current pair only when the wrapped difference exceeds 0.8 rad (00CE3D40) and an arc search accepts the candidate, always writes the target pair, ends with 00859550. Partial: 0085B108-0085B720 unread. docs/GUN_AIMING.md.",
+  "previous_reconstruction": {
+    "name": "gun_snap_angle_into_window_0085b0f0",
+    "status": "reconstructed_ledger_backfilled_from_source",
+    "source": "src/gun_platform_arc.cpp",
+    "coverage": "Only the horizontal three-candidate seam search; no stores, snap decisions or node callback."
+  },
+  "assumptions": [
+    "Did not treat the player-seat 79h message as a B0h gun-fire packet.",
+    "Completed and committed correct buildable reconstruction progress as authorized; left runtime binding explicit."
+  ],
+  "rows": [
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (prospective B0h delivery)",
+      "reason": "Completed the source body, but the game host has no bound B0h producer/receiver or snapshot delivery owner; player-seat 79h is a different operation."
+    },
+    {
+      "native": "0084c6e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::run_gun_aim_and_fire",
+      "reason": "Missing B0h payload delivery; current single-player firing consumes ADh requests and fires directly, so adding this receiver would risk a second shot."
+    },
+    {
+      "native": "0084c7e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::run_gun_aim_and_fire",
+      "reason": "Missing B0h producer/queue binding; 79h player-seat aim is not the B0h gun message this handler accepts."
+    },
+    {
+      "native": "0085ba30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (prospective snapshot delivery)",
+      "reason": "No live gun-snapshot producer and delivery binding established; no source of the four replicated angle fields on this path."
+    },
+    {
+      "native": "007290d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::run_gun_aim_and_fire",
+      "reason": "Missing B0h send/delivery binding and retained +488h/+48Ch angle pair; its payload cannot be replaced by the player-seat 79h message."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (group scoring)",
+      "reason": "Current planner uses weight vectors; no native-style AiGroupScoreList producer/consumer was established for replacement."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (group scoring)",
+      "reason": "Missing populated AiGroupScoreList and gameplay consumer of its chosen flag."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (group scoring)",
+      "reason": "Missing per-member 00779D00 recon values and a native recon-ratio consumer in the surveyed planner."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (powerup scoring)",
+      "reason": "Missing the AI powerup-use consumer and full per-unit scoring input binding; no gameplay scoring path selected."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp::MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Multiplayer player-count check; single-player path has no participant-count failure producer requiring this body."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::set_remap_texture_0",
+      "reason": "Missing actual render-service remap owner plus canonical texture-cache/resource-owner contexts; host currently only records the request."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::set_remap_texture_1",
+      "reason": "Missing actual render-service remap owner plus canonical texture-cache/resource-owner contexts."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::set_remap_texture_2",
+      "reason": "Missing actual render-service remap owner plus canonical texture-cache/resource-owner contexts."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp::SceneContentsBinding::set_remap_texture_3",
+      "reason": "Missing actual render-service remap owner plus canonical texture-cache/resource-owner contexts."
+    },
+    {
+      "native": "00b0feb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp (render remap lifetime)",
+      "reason": "Missing the same actual service and post-effect material/resource-owner lifetime required by remap setters."
+    },
+    {
+      "native": "00b4cba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp (render remap lifetime)",
+      "reason": "Missing actual post-effect owner supplying the material at +14h."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::GameMissionLuaHost::run_unit_set_player_commands_enabled_008a6c30",
+      "reason": "This path stores the director mask but does not produce/deliver controller snapshots; no consumer for a new parallel snapshot."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing produced selection-mode +30h and selection-vector +C4h owner with matching consumers; a newly empty shadow screen would not replace selection behavior."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (InGameInterfaceUpdate cockpit query)",
+      "reason": "Cockpit-screen producer is absent and cockpit_screen_wanted is false; no live +B8h plane/+FCh mode owner."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (HudRootScreen award ticker)",
+      "reason": "Missing produced award vector and ticker widget/timed-entry owner; current ticker queue is empty."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (InGameInterfaceUpdate ambient sound)",
+      "reason": "has_ambient_sound_instance returns false; no actual ambient SoundInstance to scale."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::GameCommandsHost::post_user_path_point_0071d340",
+      "reason": "The exposed producer only posts add-point messages; missing a real remove-last-point message/action path to consume its selected slot."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp (plane engine state)",
+      "reason": "No shared PlaneEngineSlots producer/consumer binding established in surveyed hosts."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp (plane engine state)",
+      "reason": "No shared PlaneEngineSlots producer/consumer binding established in surveyed hosts."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp (MissionStart checkpoint)",
+      "reason": "Pre-load checkpoint_differs is false and this path lacks the live BSP_Chk_Save table/current mission-key owner."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (controlled-unit audio)",
+      "reason": "Missing ship +BBCh sound object, +428h device-list and +6B4h audio-flag consumer."
+    },
+    {
+      "native": "00903f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::release_expired_world_objects_00903610",
+      "reason": "No index-based IntrusiveChain producer/consumer binding established in the surveyed fixed-step host."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (marker lifetime)",
+      "reason": "Missing bound marker-manager slot occupancy, per-entry keep flags and observer-pair membership in the surveyed host."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (plane bomb sight)",
+      "reason": "Missing camera-eye/predicted-impact sight-display inputs and display consumer; existing release-gate implementation is a different portion of 006082D0."
+    },
+    {
+      "native": "00ab4990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp (GUI named values)",
+      "reason": "No owner for the legacy semantic GuiNamedValueArray selected; native delayed-icon storage already uses a distinct actual-storage counterpart."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp (camera)",
+      "reason": "Legacy CameraView is not the actual native camera owner; a native actual-storage counterpart already exists for this address."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp (plane collision bands)",
+      "reason": "Original 007DF4F0 collision-band binding not established; substituting it in 0085DC80 would change the dot/cross rounding schedule."
+    },
+    {
+      "native": "0085dc80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp (plane pose commit)",
+      "reason": "Already wired; examined only to compare arithmetic with 0085D770, whose schedule differs."
+    },
+    {
+      "native": "0072f830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (shot spawn)",
+      "reason": "Existing host implementation is wired; its native tail identifies the missing B0h message producer needed for 0085B0F0."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (Function-6 aim mode)",
+      "reason": "Requires a separate real gun/class fire-mode callback binding; it does not provide the missing B0h angle payload."
+    },
+    {
+      "native": "0084c5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::run_gun_aim_and_fire",
+      "reason": "Already wired by chain 266 through ADh requests; its producer does not emit B0h angle snapshots."
+    },
+    {
+      "native": "0084c4e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::Impl::run_gun_aim_and_fire",
+      "reason": "Already wired by chain 266; clearing its fire latch is not a replicated-angle update."
+    },
+    {
+      "native": "00730160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (gun fire consumer)",
+      "reason": "Existing host fire consumer is wired; no second fire invocation added while investigating B0h."
+    },
+    {
+      "native": "007663f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp (Countdown binding)",
+      "reason": "Missing countdown-text message/HUD consumer binding; existing live countdown timer stores are separate from the unimplemented text presentation."
+    },
+    {
+      "native": "00765490",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp (LoadMessageMap session arm)",
+      "reason": "Campaign session mode is zero, so this multiplayer-session message arm is not entered by the bound single-player path."
+    },
+    {
+      "native": "0088b6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp (LoadMessageMap session arm)",
+      "reason": "Campaign session mode is zero; no single-player consumer for this E2h message constructor."
+    },
+    {
+      "native": "007645b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp (ship wreck lifetime)",
+      "reason": "No real erase-wreck event producer/delivery path identified in the surveyed hosts."
+    }
+  ]
+}
