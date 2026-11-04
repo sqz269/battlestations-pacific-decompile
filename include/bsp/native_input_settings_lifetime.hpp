@@ -2,10 +2,14 @@
 #include "bsp/native_input_settings_tables.hpp"
 
 namespace bsp {
+struct NativeStringRawPoolContext;
 struct NativeInputSettingsLifetimeContext {
     void* volatile& publication_00e198e8;
     void* volatile& manager_publication_01090aa0;
     NativeInputSettingsTableServices& tables;
+    // Optional Source binding, not a field in the native 540h owner. The
+    // application process admits only its construction-time pool/publications.
+    NativeStringRawPoolContext* actual_raw_strings{};
 };
 
 // Full 005547D0: native no inputs, EAX, RET. Fast captured return; slow path

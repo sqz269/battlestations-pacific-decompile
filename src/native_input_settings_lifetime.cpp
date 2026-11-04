@@ -1,4 +1,5 @@
 #include "bsp/native_input_settings_lifetime.hpp"
+#include "bsp/wire_goal4_chain389_switches.hpp"
 #include "bsp/native_input_device_tree_range.hpp"
 #include "bsp/native_input_controller_tree_range.hpp"
 #include "bsp/native_input_default_scalar_tree_range.hpp"
@@ -323,7 +324,23 @@ void destroy_native_input_settings_006aa460(
 
 void* scalar_delete_native_input_settings_006ab800(
     void* settings, std::uint32_t flags, NativeInputSettingsLifetimeContext& context) {
-    destroy_native_input_settings_006aa460(settings,context);
+    if constexpr (kWireGoal4Chain389Bound) {
+        if (context.actual_raw_strings) {
+            // 006AB800 calls 006AA460 before testing flags (bsp.py show
+            // 006ab800). Bind the complete raw body to the actual registered
+            // 540h owner, construction pool and E198E8 cell. It closes owner78
+            // twice and cleans +6C/+60/+54/+40/+30/+24/+14/+08 in native order
+            // (006AA460..006AA63F); do not also run the legacy destructor.
+            destroy_native_raw_input_settings_006aa460(settings,
+                *context.actual_raw_strings, context.publication_00e198e8);
+        } else {
+            // Standalone component callers may use the older storage service.
+            // Production bind_context always supplies the actual pool above.
+            destroy_native_input_settings_006aa460(settings,context);
+        }
+    } else {
+        destroy_native_input_settings_006aa460(settings,context);
+    }
     if ((flags & 1u) != 0) singleton_lifetime_free(settings);
     return settings;
 }
@@ -332,7 +349,9 @@ void* scalar_delete_native_input_settings_006ab800(
 // Complete480B ordinary effects with actual provided RawCtx services plus the
 // ten logical cleanup actions. These new arguments/private objects do not
 // preserve the original ECX/plainRET/FH3/SEH ABI or hardware-fault scopes.
-void __cdecl destroy_native_raw_input_settings_006aa460(
+// Keep the canonical body callable so the built-executable graph can audit
+// 006AB800's replacement edge rather than only its inlined cleanup children.
+__declspec(noinline) void __cdecl destroy_native_raw_input_settings_006aa460(
     void* settings, NativeStringRawPoolContext& strings,
     void* volatile& publication_00e198e8) {
     RawMembers members{settings,strings,publication_00e198e8};
