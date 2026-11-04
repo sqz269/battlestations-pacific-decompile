@@ -110,7 +110,8 @@ const char* ai_tuning_mode_table_name(AiTuningMode mode) noexcept {
     return "IslandCaptureParams_Rookie";
 }
 
-AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty) noexcept {
+AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
+    bool active_party_present) noexcept {
     // 009FFC92 CMP EAX,7 / 009FFC95 JA leaves the zero ESI was set to.
     if (effective_game_mode < 0 || effective_game_mode > 7) {
         return AiTuningMode::IslandCaptureRookie;
@@ -122,8 +123,11 @@ AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty) no
     case 7: return AiTuningMode::Competitive;  // 009FFCEB, literal 6
     default: break;                            // 0, 1, 2, 3 share 009FFC9E
     }
-    // 009FFC9E's arm: 00A15950's difficulty, clamped into the three
-    // IslandCapture records.
+    // bsp.py show 009FFC80 --asm: MOV ESI,1 at 009FFC9E precedes the
+    // 00A15950 call. Its -1 result takes the unsigned JA at 009FFCAB to
+    // 009FFCF6, retaining Regular without reading a player/difficulty record.
+    if (!active_party_present) return AiTuningMode::IslandCaptureRegular;
+    // Active slot: [game+18CCh+slot*4]+2Ch minus 3, clamped to 0..2.
     int clamped = difficulty;
     if (clamped < 0) clamped = 0;
     if (clamped > 2) clamped = 2;

@@ -60,6 +60,7 @@
 #include "bsp/wire_goal4_chain364_switches.hpp"
 #include "bsp/wire_goal4_chain400_switches.hpp"
 #include "bsp/wire_goal4_chain409_switches.hpp"
+#include "bsp/wire_goal4_chain474_switches.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -1382,6 +1383,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         int party_slot{0};            // brain+20h
         int world_set{0};             // brain+24h
         std::array<Planner, 8> planners{};  // brain+0h..+1Ch
+        // Owned projection of the native Capture-planner slot, not a second
+        // planner. 00A15A70 installs +0Ch only outside modes 4..7. The pointer
+        // borrows planners[3] for this Brain's whole retained lifetime.
+        Planner* capture_planner_000c{nullptr};
     };
 
     // Groups are held by pointer so a void* handed to a sequence stays valid
@@ -1589,6 +1594,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         int ai_effective_game_mode_index_009ffc80() override { return mode; }
         void* coordinator_get_or_create_004c1c50() override { return &owner.tuning_records; }
     };
+
+    bsp::AiTuningMode initial_tuning_mode(int effective_mode) {
+        if (effective_mode >= 0 && effective_mode <= 3) {
+            // bsp.py show 00A15950: test each retained brain and its +0Ch
+            // Capture planner. Do not use party_record/AI-enabled flags: they
+            // describe admission, not the constructed planner's lifetime.
+            std::array<bool, 8> active{};
+            for (std::size_t i = 0; i < brains.size(); ++i) {
+                active[i] = brains[i] != nullptr &&
+                    brains[i]->capture_planner_000c != nullptr;
+            }
+            const int slot = bsp::band009f::ai_first_active_party_slot_00a15950(active);
+            done("AiController::first_active_party_slot", 0x00a15950u);
+            // The active arm needs [game+18CCh+slot*4]+2Ch minus 3. That slot
+            // record has no producer here yet; preserve the existing labelled
+            // Rookie fallback rather than treat a party index as difficulty.
+            // The canonical mode body consumes slot==-1 as its native Regular
+            // fallback, without consulting the unused difficulty operand.
+            return bsp::ai_tuning_mode_009ffc80(effective_mode, 0, slot >= 0);
+        }
+        return bsp::ai_tuning_mode_009ffc80(effective_mode, 0);
+    }
 
     float selected_tuning_field(std::uint32_t offset, int effective_mode) {
         // 009FFC80: modes outside 0..3 never read the difficulty operand.
@@ -4053,6 +4080,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         for (int slot = 0; slot < 8; ++slot) {
             brain->planners[static_cast<std::size_t>(slot)].slot = slot;
             brain->planners[static_cast<std::size_t>(slot)].kind = planner_kind_for_slot(slot);
+        }
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
+            // 00A15A70's constructor dispatch: modes 4..7 leave +0Ch null;
+            // the default arm installs the actual Capture planner there.
+            const int mode = game_mode();
+            if (mode < 4 || mode > 7) brain->capture_planner_000c = &brain->planners[3];
         }
         Brain* raw = brain.get();
         brains[static_cast<std::size_t>(party_slot)] = std::move(brain);
@@ -6943,14 +6976,19 @@ void GameAiCoordinatorHost::create_00a32350() {
             g_scene_owner_players.size(), g_scene_owner_player_conflicts.size(), authored,
             ai_control, named_slot);
     }
-    // 00A335D0. 009FFC80 picks the record: an effective game mode of 0 takes
-    // the 009FFC9E arm, which clamps 00A15950's difficulty into the three
-    // IslandCapture records. Nothing in this process produces a difficulty, so
-    // it is 0; all three IslandCapture rows carry the same values for the six
-    // fields this packet reconstructed, so the choice does not change a number.
+    // 00A335D0. 009FFC80 picks the record. The bound initial selection also
+    // consumes 00A15950's no-Capture-planner result (Regular); an active slot's
+    // +2Ch difficulty record remains unavailable and retains the old fallback.
     {
         bsp::AiTuningAuthoredReader reader;
-        const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
+        const bsp::AiTuningMode mode = [&host] {
+            if constexpr (bsp::kWireGoal4Chain474Bound) {
+                return host.initial_tuning_mode(host.game_mode());
+            } else {
+                const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
+                return mode;
+            }
+        }();
         if constexpr (bsp::kWireGoal4Chain341Bound) {
             // 00A335D0's 00A3374B..00A370D4 loop loads all seven modes.
             // Preserve the existing partial loader's field coverage/defaults;

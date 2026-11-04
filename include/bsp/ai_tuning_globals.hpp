@@ -46,11 +46,14 @@ enum class AiTuningMode : int {
 const char* ai_tuning_mode_table_name(AiTuningMode mode) noexcept;
 
 // 009FFC80. The jump table at 009FFCFC sends effective game modes 0, 1, 2 and 3
-// to the difficulty arm at 009FFC9E, which clamps 00A15950's difficulty into
-// 0..2; modes 4, 5, 6 and 7 take the literals 3, 4, 5 and 6 at 009FFCD0,
+// to 009FFC9E: no active Capture-planner slot from 00A15950 selects Regular;
+// otherwise clamp the selected player record's (+2Ch - 3) difficulty to 0..2.
+// Modes 4, 5, 6 and 7 take the literals 3, 4, 5 and 6 at 009FFCD0,
 // 009FFCD9, 009FFCE2 and 009FFCEB. A game mode above 7 falls through
 // 009FFC95 JA to the zero at 009FFCF4.
-AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty) noexcept;
+// The default preserves existing callers that already supply a difficulty.
+AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
+    bool active_party_present = true) noexcept;
 
 // ---------------------------------------------------------------------------
 // The fields the coordinator's rules read
