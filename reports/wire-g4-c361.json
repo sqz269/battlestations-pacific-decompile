@@ -3,7 +3,7 @@
   "slot": "g4-w3",
   "switch": "kWireGoal4Chain361Bound",
   "switch_header": "include/bsp/wire_goal4_chain361_switches.hpp",
-  "summary": "The scene file reader 0046DF00 now dispatches its top-level blocks as the image does (0046E9F7..0046EBD8): it peeks each keyword, consumes only `entity` (0046EA47 008D8960) before calling 0046CF40, and leaves `traffic` / `SceneBrowserGroups` pending for the whole 009514B0 / 00469E40 readers, which expect their own keyword. Called rows (call_graph --build, wire_readiness): 5584 -> 5587.",
+  "summary": "The scene file reader 0046DF00 now dispatches its top-level blocks as the image does (0046E9F7..0046EBD8): it peeks each keyword, consumes only `entity` (0046EA47 008D8960) before calling 0046CF40, and leaves `traffic` / `SceneBrowserGroups` pending for the whole 009514B0 / 00469E40 readers, which expect their own keyword. The landscape segment walker (00AECA60/00AEC3F0/00AEC090/00AEBD20) now calls its seven small helpers as their own bodies (walker construct/copy/prepare, edge ground, upper clip) instead of inline field writes. Called rows (call_graph --build, wire_readiness): 5584 -> 5587 -> 5594.",
   "rows": [
     {
       "native": "0046cf40",
@@ -19,6 +19,41 @@
       "native": "00469e40",
       "status": "wired",
       "host_site": "src/game_hosts_scene_contents.cpp SceneReaderBinding::load_browser_groups (0046EBD3) -> read_browser_groups_block"
+    },
+    {
+      "native": "00aebb90",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_clip_00aebd20 (both upper bounds, 00AEBD57 and the axis-2 call)"
+    },
+    {
+      "native": "00aeae70",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_tile_00aec3f0 (00AEC572)"
+    },
+    {
+      "native": "00aeb7e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_tile_00aec3f0 (00AEC5D5)"
+    },
+    {
+      "native": "00aeafa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_cell_edge_00aec090 (00AEC108)"
+    },
+    {
+      "native": "00aeb770",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECB9E)"
+    },
+    {
+      "native": "00aeade0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECBAF)"
+    },
+    {
+      "native": "00aeb890",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp vsub_subwalk_00aeca60 (00AECC12)"
     },
     {
       "native": "00467e10",
