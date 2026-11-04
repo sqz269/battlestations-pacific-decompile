@@ -1,5 +1,6 @@
 #include "bsp/native_compiled_shader_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain377_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <limits>
@@ -145,10 +146,12 @@ Record* copy_native_compiled_shader_constant_00b38310(void* raw, const Record& s
 }
 void reserve_native_compiled_shader_constants_00b38390(Array& array, std::int32_t requested,
     NativeStringStorage& strings, Operation& operation) {
-    begin(operation, array, requested);
+    const bool nested = operation.phase == Operation::Phase::running
+        && operation.step == Operation::Step::reserve_call && operation.array == &array;
+    if (!nested) begin(operation, array, requested);
     try {
         reserve(array, requested, strings, operation);
-        operation.phase = Operation::Phase::complete;
+        if (!nested) operation.phase = Operation::Phase::complete;
     } catch (...) { operation.phase = Operation::Phase::failed; throw; }
 }
 void resize_native_compiled_shader_constants_00b38490(Array& array, std::int32_t requested,
@@ -156,7 +159,16 @@ void resize_native_compiled_shader_constants_00b38490(Array& array, std::int32_t
     if (requested < 0) throw std::invalid_argument("negative compiled shader constant count");
     begin(operation, array, requested);
     try {
+        if constexpr (kWireGoal4Chain377Bound) {
+            // Original 00B384BB calls 00B38390 on this very array (bsp.py
+            // callees 00b38490). Share the caller's retained failure frame.
+            if (array.capacity_08 < requested) {
+                operation.step = Operation::Step::reserve_call;
+                reserve_native_compiled_shader_constants_00b38390(array, requested, strings, operation);
+            }
+        } else {
         if (array.capacity_08 < requested) reserve(array, requested, strings, operation);
+        }
         operation.step = Operation::Step::default_rows;
         for (std::int32_t index = array.count_04; index < requested; ++index) {
             operation.current_record = row(array.data_00, index);
@@ -176,7 +188,17 @@ void append_native_compiled_shader_constant_00b3a660(Array& array, const Record&
     operation.requested = array.count_04 + 1;
     operation.append_source = &source;
     try {
+        if constexpr (kWireGoal4Chain377Bound) {
+            // Original 00B3A695 calls 00B38390 before copying the incoming
+            // reflected constant (bsp.py callees 00b3a660).
+            if (array.count_04 == array.capacity_08) {
+                operation.step = Operation::Step::reserve_call;
+                reserve_native_compiled_shader_constants_00b38390(
+                    array, array.capacity_08 + 8, strings, operation);
+            }
+        } else {
         if (array.count_04 == array.capacity_08) reserve(array, array.capacity_08 + 8, strings, operation);
+        }
         operation.step = Operation::Step::append_row;
         operation.current_record = row(array.data_00, array.count_04);
         if (operation.current_record)

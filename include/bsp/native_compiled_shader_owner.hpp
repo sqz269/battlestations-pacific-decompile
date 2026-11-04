@@ -71,7 +71,7 @@ NativeCompiledShaderConstantStorage* copy_native_compiled_shader_constant_00b383
 struct NativeCompiledShaderArrayOperation {
     enum class Phase { idle, running, complete, failed, diagnostic_retired };
     enum class Step { none, allocation, copying, releasing_old, publication,
-        default_rows, shrinking, append_row };
+        default_rows, shrinking, append_row, reserve_call };
     Phase phase{Phase::idle};
     Step step{Step::none};
     NativeCompiledShaderConstants* array{};
@@ -94,6 +94,9 @@ struct NativeCompiledShaderArrayOperation {
 };
 // Original ECX=array, signed stack count, RET4. Reserve minimum16, copies live
 // rows, releases old names forward, frees old buffer, THEN publishes data/cap.
+// A resize/append marks reserve_call before entering with its SAME running
+// operation and array. Nested reserve retains that caller's request/source and
+// failure acquisitions; only the outermost call completes the operation.
 void reserve_native_compiled_shader_constants_00b38390(NativeCompiledShaderConstants&,
     std::int32_t, NativeStringStorage&, NativeCompiledShaderArrayOperation&);
 // Original ECX=array, signed stack count, RET4. Shrink decrements count BEFORE
