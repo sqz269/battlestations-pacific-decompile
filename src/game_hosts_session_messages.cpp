@@ -1,5 +1,7 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/entity_mission_seg60_argon.hpp"
+#include "bsp/wire_goal4_chain415_switches.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/wire_goal4_chain350_switches.hpp"
@@ -1100,14 +1102,48 @@ HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
     return copy;
 }
 
+namespace {
+class PartDestroyedMessageBinding final
+    : public entity_mission_seg60_argon::UnitMessageConstructionHost {
+public:
+    PartDestroyedMessageBinding(const NativeSessionMessageContext& session,
+        const seg42::VtableBinding& vtables) : session_(session), vtables_(vtables) {}
+
+    void* image_address(std::uint32_t address) override {
+        return const_cast<std::uint32_t*>(vtables_.vtable(address));
+    }
+    void* session_message_construct_base_0075b430(void* message, std::uint8_t type) override {
+        return construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), type, session_);
+    }
+
+private:
+    const NativeSessionMessageContext& session_;
+    const seg42::VtableBinding& vtables_;
+};
+}
+
 HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_one_part_99(
     std::uint32_t part) const {
     const Image& image = *image_;
     // 0092CED0: 0075B430(99h), +18h word 0, +1Ah 0, +1Ch 0, +20h = the index,
     // +4h = 1, vtable 00D033EC; 00761450 makes the same header stores.
     seg42::ExplodeOnePartMessage sent{};
-    seg42::construct_ship_explodeonepart_00761450(&sent, image.seg42);
-    sent.part_20 = part;
+    if constexpr (kWireGoal4Chain415Bound) {
+        // Saved-program 0092CED0..0092CF02 (bsp.py show 0092ced0): the
+        // sender constructor takes the destroyed segment index itself.
+        // Gunnery supplies its live segment index; the session and 00D033EC
+        // binding are the same owners the existing local codec uses.
+        static_assert(sizeof(part) == sizeof(std::int32_t));
+        std::int32_t native_part;
+        std::memcpy(&native_part, &part, sizeof(native_part));
+        PartDestroyedMessageBinding binding(image.session, image.seg42_vtables);
+        entity_mission_seg60_argon::unit_message_part_destroyed_construct_0092ced0(
+            binding, &sent, native_part);
+    } else {
+        seg42::construct_ship_explodeonepart_00761450(&sent, image.seg42);
+        sent.part_20 = part;
+    }
 
     LocalStream stream;
     seg42::write_ship_explodeonepart_007614f0(&sent, &stream.out);

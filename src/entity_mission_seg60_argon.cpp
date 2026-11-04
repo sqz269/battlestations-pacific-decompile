@@ -1788,7 +1788,7 @@ float triv_body_0092beb0(const void* self) noexcept {
 // 0x0092ced0: BSP_UnitMessage_PartDestroyed_Construct
 // Original ABI: void* __thiscall(ECX = msg, [ESP+4] = part_index), RET 4.
 void* unit_message_part_destroyed_construct_0092ced0(
-    Seg60Host& host,
+    UnitMessageConstructionHost& host,
     void* msg,
     std::int32_t part_index
 ) {
