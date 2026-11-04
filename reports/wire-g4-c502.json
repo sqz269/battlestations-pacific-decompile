@@ -1,0 +1,319 @@
+{
+  "goal": 4,
+  "chain": 502,
+  "slot": "g4-w2",
+  "owner": "agent/g4-w2",
+  "run": 1029,
+  "base_head": "c2049fbc27197df44bf4fd433035a11ea0676e19",
+  "switch": "bsp::kWireGoal4Chain502Bound",
+  "summary": "Restore the original B39032 -> B38C60 -> B38D0B -> 5F1840 call boundaries using existing reconstructed bodies and persistent nested acquisition frames.",
+  "rows": [
+    {
+      "native": "005f1840",
+      "status": "wired",
+      "host_site": "src/native_shader_constant_header.cpp:declaration",
+      "reason": "00B38D0B now calls the existing public decimal constructor with the actual declaration temporary, signed register index and shared NativeStringStorage; the private decimal helper is only the OFF arm."
+    },
+    {
+      "native": "00b38c60",
+      "status": "wired",
+      "host_site": "src/native_shader_constant_header.cpp:append_native_system_constant_header_00b38ff0",
+      "reason": "00B39032 now calls the existing public declaration body with the current native builder, captured 20h registry row and signed register DWORD; the private declaration helper is only the OFF arm."
+    },
+    {
+      "native": "00b38ff0",
+      "status": "skipped",
+      "host_site": "src/native_shader_constant_header.cpp:append_native_system_constant_header_00b38ff0",
+      "reason": "Already entry-reachable before this chain; this caller was changed to dispatch its existing reconstructed child and is not counted as newly wired."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_0",
+      "reason": "Missing scene-record C24h string producer and initialized native render-resource service attachment; record_remap_texture_name currently returns an empty string."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_1",
+      "reason": "Missing scene-record C2Ch string producer and initialized native render-resource service attachment."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_2",
+      "reason": "Missing scene-record C34h string producer and initialized native render-resource service attachment."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_3",
+      "reason": "Missing scene-record C3Ch string producer and initialized native render-resource service attachment."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:check_multiplayer_player_count",
+      "reason": "Single-player session mode fails the first gate; no multiplayer participant-count wiring was added."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding",
+      "reason": "Missing actual source/destination LuaVariantRecord vectors on a reached deferred-call enqueue path."
+    },
+    {
+      "native": "0084eb60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:class-table resets",
+      "reason": "Missing native stationary-class cache replacing the host's lazy Lua readers; clearing StationaryClass would starve those real consumers."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuLoadingScreenHost::gui_refresh",
+      "reason": "Missing a live GUI command-queue owner in the loading-screen adapter; existing site only records refresh."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuPressStartHost::device_button_held",
+      "reason": "Missing primary input-device producer; the press-start device path currently supplies no device receiver."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleInitHost::sign_in_state_valid",
+      "reason": "Missing sign-in state owner; online sign-in services are outside the single-player slice."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuShellHost::create_main_menu_manager",
+      "reason": "Owned by the concurrent chain503 main-menu constructor work; no additional wiring attempted here."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuManagerHost::create_options_manager",
+      "reason": "Missing consumed native options-manager/base/registry and options screen graph; a separate raw constructor object would not replace the typed consumer."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:MenuTitleInitHost",
+      "reason": "Missing a native title-manager receiver shared with the typed title-screen consumers and press-start page registration."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroups score list",
+      "reason": "Missing a live score-list producer/consumer on the admitted coordinator path; campaign coordinator creation is gated off."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AiGroups score list",
+      "reason": "Missing consumed score-list entries and an admitted coordinator path; marking an auxiliary fabricated list would not alter planner state."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:defend member candidate filter",
+      "reason": "The existing defend host already calls this body with member-kind and objective-set state; no additional reachable host site established."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:clear_movie_subtitles",
+      "reason": "Missing native subtitle/extratitle vector ownership and actual Text child; the host owns a separate projected subtitle schedule."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:bind_movie_textures",
+      "reason": "Missing native movie decoder texture producers and material/widget bindings."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:mission teardown close_result_gui",
+      "reason": "Missing captured native movie screen, input-context and sound-transition owners; this body is a sound transition rather than a close-result-GUI leaf."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:replicate_objective_state",
+      "reason": "Missing peer/message producers on the multiplayer-only replication arm; single-player never sends this message."
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:last_damage_state_index",
+      "reason": "Missing the actual unit+360h part-instance damage-state vector at +16Ch/+170h; damaged_gfx_level is not its length."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane sight display",
+      "reason": "Missing camera/view-mode binding and sight-display consumer for the yaw/pitch result; the bomb-release path is a different branch."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp:refresh_search",
+      "reason": "The reconstructed avoid-query caller already names this body; no additional unwired host site was established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing a reached shadow-cascade consumer sharing the actual CameraProjection fields; no unrelated aspect/FOV call was introduced."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane detached-part visual path",
+      "reason": "Missing the detached-part visual node's six-float AABB and a consumer of its center."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane enginefire path",
+      "reason": "Missing a canonical plane engine-list owner exposing the actual burning bytes."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:plane engine stop path",
+      "reason": "Missing a canonical engine-list owner and its concrete stop callbacks."
+    },
+    {
+      "native": "004b5510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:party_admitted",
+      "reason": "The native caller reaches this predicate in its session arm; ordinary unforced single-player takes an earlier arm, so no artificial call was added."
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:world_ground_height_00903860",
+      "reason": "Missing an actual LandscapeState +3D0h height-field binding; the existing ground-list query uses slot28h, not this wrapper's slot2Ch."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp:collect_language_names",
+      "reason": "Missing profile-hints mode2 and language-sweep bindings on this path; existing normal host mode0 does not execute the collection arm."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:preload checkpoint write",
+      "reason": "Missing BSP_Chk_Save/current-mission-key owners and a true checkpoint-differs gate in this pre-load host."
+    },
+    {
+      "native": "00599340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:mission_detail_back",
+      "reason": "Missing concrete 00597870 mission-list builder/listbox row state consuming the selected page."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:briefing scroller",
+      "reason": "Missing persistent FrontEndScreenScroller, thumb/arrow widgets and measured briefing-text height."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp:use_item_008eada0",
+      "reason": "Missing reached active-powerup use producer; the current grant path uses passive classes and never enters the cooldown tail."
+    },
+    {
+      "native": "009dabb0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:ship_ai_set_torpedo_avoidance_request_009dabb0",
+      "reason": "Native navigation-block setter has no identified original caller; no synthetic single-player setter call was introduced."
+    },
+    {
+      "native": "009dabc0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:ship_ai_set_ship_avoidance_party_filter_009dabc0",
+      "reason": "Native navigation-block setter has no identified original caller; no synthetic single-player setter call was introduced."
+    },
+    {
+      "native": "009dabd0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp:ship_ai_set_land_avoidance_request_009dabd0",
+      "reason": "Native navigation-block setter has no identified original caller; no synthetic single-player setter call was introduced."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block",
+      "reason": "Existing enum-aware property merge adapter found; a distinct missing public call/ownership contract was not established in this survey."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block",
+      "reason": "Existing numeric/child merge adapter found; a distinct missing public call/ownership contract was not established in this survey."
+    }
+  ],
+  "evidence": {
+    "original_calls": [
+      "00B39032 CALL 00B38C60; ECX=current builder, stack=actual row/signed register DWORD",
+      "00B38D0B CALL 005F1840; ECX=declaration temporary, stack=signed register index"
+    ],
+    "real_state": "The header walks the application's actual system-constant registry and raw 20h rows, writes the actual B0h builder source_4c, and borrows the same native string pool, format buffer and register-limit cell.",
+    "startup_route": "GameStartupHost::run_initialize_phases calls preload_startup_shaders at game_hosts.cpp:3494 under kNativeShaderPreloadStartupCc16Bound=true. StartupShaderPreload::open constructs GameNativeGuiEffectApplication using the renderer/VFS/singletons and creates the real preload graph. Its actual material compiler owns vertex/pixel generators -> B38FF0 -> B38C60 -> 5F1840.",
+    "graph_shortest_path_caution": "call_graph.py path selects an optional GUI probe as the shortest vtable route; the independent normal startup-preload construction above was inspected to avoid relying on that optional path.",
+    "failure_ownership": "Each entered public child owns a one-shot operation frame. A failed child retains the real output-header identity, pooled temporary and captured buffer size. Diagnostic retirement requires deepest children to be explicitly cleaned and retired first.",
+    "no_double_run": "Both former private-helper calls remain byte-for-byte in the OFF arms; ON invokes the corresponding existing public entry once. No second address-suffixed implementation was added."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all 5 existing CTest tests passed.",
+    "focused_probe": {
+      "command": "./local/output/wire_g4_c502_probe.ps1",
+      "scope": "Synthetic string-storage fixture, not game execution.",
+      "result": "Passed exact one-line declaration and nested decimal destination-allocation failure. Both live buffers remained retained with exact sizes and destination identity, then were explicitly released and frames retired."
+    },
+    "call_graph": {
+      "before_called": 4862,
+      "after_called": 4864,
+      "before_linked_addresses": 5334,
+      "after_linked_addresses": 5336,
+      "new_calls": [
+        {
+          "native": "00b38c60",
+          "compiled_address": "105ad260",
+          "site": "105ad4d1",
+          "caller": "bsp::append_native_system_constant_header_00b38ff0",
+          "reachable": true
+        },
+        {
+          "native": "005f1840",
+          "compiled_address": "105ad640",
+          "site": "105ad948",
+          "caller": "bsp::<anonymous>::declaration",
+          "reachable": true
+        }
+      ]
+    },
+    "readiness_text": {
+      "before_wired": 9799,
+      "after_wired": 9800,
+      "note": "00B38C60 was already text-classified wired by another source projection, but had no corresponding public function linked before this change. Both target bodies now have entry-reachable executable call sites."
+    },
+    "diff_check": "git diff --check passed.",
+    "exe_sha256": "9E9A8FE9781F2E48E282021322CA165F0F567DFC17178C781FFDFE8EA6E13957",
+    "game_run": "Not run, per assignment.",
+    "abi": "Existing C++ interfaces; original binary/FH3/SEH compatibility and gameplay behavior remain unproven."
+  },
+  "left_for_others": "The skipped rows list missing owners/consumers. Shader formatting still uses its existing private formatted-line helper; this chain only restores the declaration/decimal boundaries.",
+  "assumptions": [
+    "A synthetic exception-storage probe is sufficient for the new frame-lifetime risk; no additional test suite or game run was added.",
+    "Existing native constant bodies, allocator order, register selection and source text were reused without arithmetic changes."
+  ]
+}
