@@ -39,8 +39,10 @@ struct MissionSceneLightInputs final : scene_weather_cc13::SceneLightsHost {
     throw std::runtime_error("selected scene lighting: "+error);
    authored=true;
   } else {
-   // 004EE4AA..004EE4C2 copies 004B6800's defaults when Lights is absent.
-   scene_weather_cc13::reset_lighting_configuration_004b6800(fields);
+   // 004B6800 leaves +20h..+7Fh and +B8h untouched. This owner has no
+   // recovered prior values for that cube/specular state, so it cannot admit
+   // 004EE450's missing-Lights copy arm. Reject before creating/binding lights.
+   throw std::runtime_error("selected scene lighting requires a g_Environment.Lights sub-bag");
   }
  }
 };
@@ -180,7 +182,7 @@ struct MissionShipLightingGraph {
  }
  void configure_scene_owners() {
   void* const actual_ambient=get<void*>(resource,0x10);
-  check(actual_ambient && sun_owner && scene_inputs,
+  check(actual_ambient && sun_owner && scene_inputs && scene_inputs->authored,
       "mission lighting requires its selected scene and current native light owners");
   const auto& fields=scene_inputs->fields;
   const auto ambient_words=scene_color(fields.ambient_f48);
@@ -245,6 +247,11 @@ struct MissionShipLightingGraph {
   }
  }
  void create_and_bind(void* actual_outer_scene) {
+  if constexpr(kWireGoal4Chain522Bound) {
+   check(scene_inputs && scene_inputs->authored,
+       "mission light binding requires a completely read authored Lights header");
+  } else {
+  }
   check(phase==Phase::prepared && actual_outer_scene &&
       get<U>(actual_outer_scene)==0xd62d48 && get<void*>(actual_outer_scene,0x1c)==nullptr,
       "mission lighting must bind after model roots on the native null-lighting scene");

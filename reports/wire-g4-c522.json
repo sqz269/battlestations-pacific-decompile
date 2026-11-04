@@ -3,30 +3,54 @@
   "owner": "agent/g4-w5",
   "switch": "bsp::kWireGoal4Chain522Bound",
   "summary": "Replace mission-renderer diagnostic lighting inputs with the selected scene's reconstructed Lights reader and retain its foliage settings with the existing foliage owner.",
+  "review_round_1": {
+    "review_run": 1079,
+    "reviewed_head": "b3a4f19b45222598dbb9928f9439079e33838d48",
+    "findings": [
+      {
+        "id": 1,
+        "status": "fixed",
+        "change": "lum_scale_offset now uses x87_mul24 then x87_add24; degrees_to_radians uses x87_mul24 then x87_div24, preserving the original CE3D28/CE3D20 double constants and the wider intermediate exponent range.",
+        "evidence": "bsp.py show 004EA870 --asm: FMUL/FADD at 004EAB45/004EAB49 and qword FMUL/FDIV at 004EB0E0/004EB0E8. One regression fixture checks 35 degrees == 3f1c61ab and luminance cancellation == +0 after separate rounding."
+      },
+      {
+        "id": 2,
+        "status": "fixed",
+        "change": "Missing/invalid g_Environment.Lights headers throw before native light creation/binding. create_and_bind and configure_scene_owners require a completely read authored header. The fabricated-default fallback was removed and 004B6800 is skipped.",
+        "evidence": "bsp.py show 004B6800 --asm confirms untouched cube +20..+7F and specular-scale +B8; this owner has no recovered prior words for those fields. The rebuilt game no longer links/calls reset_lighting_configuration_004b6800."
+      }
+    ]
+  },
   "counts": {
     "call_graph_reconstructed_addresses_called_before": 4881,
-    "call_graph_reconstructed_addresses_called_after": 4887,
-    "new_direct_reconstructed_bodies": 5,
+    "call_graph_reconstructed_addresses_called_after": 4886,
+    "new_direct_reconstructed_bodies": 4,
+    "review_round_1_called_before": 4887,
+    "review_round_1_called_after": 4886,
     "additional_adapter_only_address_matches": ["00ad5730"],
     "wire_readiness_text_wired_before": 9819,
     "wire_readiness_text_wired_after": 9818,
-    "note": "004EA870 now has called=true and one real body call, while the text heuristic labels it callees_done_no_wired_caller. The graph's sixth new address match is the normal-setter Host override, not a newly wired standalone native body."
+    "note": "004EA870 has called=true and one real body call, while the text heuristic labels it callees_done_no_wired_caller. Four real bodies plus the normal-setter Host override give five new address matches versus the pre-chain build; the Host override is not a standalone native body. Review removed the unsupported 004B6800 fallback."
   },
   "state_contract": [
     "The root properties come from the existing GameNativeMissionUnitSource for the selected simulation scene.",
     "The linearize flag is the existing captured native settings +8C byte; the reader supplies scene colors, alpha/luminance words, scales and angles without replacement constants.",
     "004BACD0 writes the same current native ambient and directional owners already used by the installed ship shader.",
+    "Only a completely read authored Lights sub-bag may bind those owners. Missing/invalid lighting headers are rejected because native untouched default words have no recovered prior state here.",
     "The foliage owner retains semantic +78 and texture-name companions; its genuine base receives the authored normal byte. Its admitted bush group list is empty because this renderer graph admits no landscape/bush geometry."
   ],
   "checks": {
     "official_build": "./scripts/build.ps1 passed, including all four CTests",
-    "call_graph": "python tools/call_graph.py; who checks prove body calls for 004EA870, 00AD7140, 00AD7FE0, 004E5C00 and 004B6800; path 004EA870 reaches WinMainCRTStartup through the mission renderer",
+    "call_graph": "python tools/call_graph.py; who checks prove body calls for 004EA870, 00AD7140, 00AD7FE0 and 004E5C00; path 004EA870 reaches WinMainCRTStartup through the mission renderer. 004B6800 is no longer linked in the game.",
+    "rounding_regression": "One reconstructed_math Lights fixture checks both angle fields at 35 degrees against 3f1c61ab and checks Ambient/cube alpha cancellation against +0; both fail with the former retained-double expressions.",
+    "pc24_lint_command": "python tools/pc24_lint.py --diff origin/main...HEAD",
     "installed_scene_probe": "Ignored local Win32 probe linked with /MANIFEST:EMBED; the installed USN/usn_2_java.scn passed the existing Lights reader with PC24 and HDR linearization. Ambient=(0.353704,0.436848,0.320407,1), diffuse_scale=5, specular_scale=30, angles=(2.26893,0.610865), bush_diffuse=0.4, bush_normal=1, bush_texture=foliageatlas.dds.",
     "diff_check": "git diff --check passed"
   },
   "limitations": [
     "No game was launched; build, reachability and installed-data fixture evidence do not prove gameplay appearance or Original ABI compatibility.",
     "The existing bounded renderer still lacks the original post20 exposure/display composition, so replacing diagnostic illumination with authored inputs can change visible brightness.",
+    "Headers without a valid, completely read g_Environment.Lights sub-bag are unsupported and rejected before light owner binding; the native missing-Lights constructor arm needs recovered prior cube/specular-scale words.",
     "Full sky/cloud scattering, skybox/effect application, terrain/material setup, music/environment audio and derived foliage geometry remain outside this change. Retained bush texture names are pending settings, not evidence of loaded bush textures."
   ],
   "rows": [
@@ -56,9 +80,9 @@
     },
     {
       "native": "004b6800",
-      "status": "wired",
+      "status": "skipped",
       "host_site": "src/game_native_mission_lighting.inc:MissionSceneLightInputs::load",
-      "evidence": "Use the existing native lighting defaults when the selected header has no Lights sub-bag, matching 004EE4AA..004EE4C2."
+      "reason": "Missing prior cube +20..+7F and specular-scale +B8 words left untouched by native 004B6800; the fabricated-default call was removed and missing/invalid Lights headers are rejected before owner binding."
     },
     {
       "native": "00ad5730",
