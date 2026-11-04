@@ -1543,6 +1543,16 @@ void GameFrontendHost::bind_scroller_controls(const FrontEndScreenScroller& scro
     impl_->quads_built = false;
 }
 
+GuiWidgetPoint GameFrontendHost::scroller_cursor() {
+    if (!impl_->native_manager)
+        throw std::logic_error("front-end drag requires the application's actual GUI manager");
+    const auto* manager = static_cast<const std::byte*>(impl_->native_manager->get_004c12b0());
+    GuiWidgetPoint cursor;
+    std::memcpy(&cursor.x, manager + 0x5c, sizeof cursor.x);
+    std::memcpy(&cursor.y, manager + 0x60, sizeof cursor.y);
+    return cursor;
+}
+
 namespace {
 // A typed CPU vertex-stream view for the *existing* 0043ABA0 body. Input
 // +0C..+18 is the loaded icon's atlas rectangle. The output buffer is the

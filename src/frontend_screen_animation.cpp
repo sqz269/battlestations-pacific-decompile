@@ -1,5 +1,6 @@
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/wire_goal4_chain397_switches.hpp"
+#include "bsp/wire_goal4_chain463_switches.hpp"
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_frontend_cc13.hpp"
@@ -7,12 +8,9 @@
 #include <cmath>
 
 // Reconstruction of the front-end screen scroll block, 00683300..00683A8F.
-// Every expression below follows the x87 order in the listing: an FLD/FADD/FSUB
-// chain keeps its intermediates at extended precision and rounds once at the
-// closing FSTP, so those chains go through double here and cast to float exactly
-// where the native code stores to a float slot. MSVC's double is 53 bits where
-// the x87 stack is 64, so a chain with three or more roundable steps can differ
-// in the last bit; none of the chains here has more than two.
+// Main-thread x87 arithmetic rounds each operation at PC24 while retaining the
+// extended exponent range. Explicit helpers below preserve that rounding and
+// the native FSTP DWORD boundaries. Disabled arms retain the earlier model.
 
 namespace bsp {
 namespace {
@@ -123,12 +121,22 @@ float scroll_offset_toward_end(float offset, float delta, float range) noexcept
 float dragged_thumb_y(float thumb_base_y, float anchor_thumb_offset,
     float cursor_y, float anchor_cursor_y, float travel) noexcept
 {
+    double delta;
+    float y;
+    if constexpr (game::kWireGoal4Chain463Bound) {
+        // bsp.py show 00683820 --asm, 00683918..2D: FSUB cursor-anchor,
+        // FADDP ST2 base+offset, then FADDP those two results, each at PC24.
+        delta = cc13x87::x87_sub24(cursor_y, anchor_cursor_y);
+        y = static_cast<float>(cc13x87::x87_add24(
+            cc13x87::x87_add24(thumb_base_y, anchor_thumb_offset), delta));
+    } else {
     // 00683918..0068392D: (cursor_y - anchor_cursor_y) added to
     // (thumb_base_y + anchor_thumb_offset), the whole sum in one x87
     // expression with a single store to a float slot.
-    const double delta = static_cast<double>(cursor_y) - anchor_cursor_y;
-    float y = static_cast<float>(
+    delta = static_cast<double>(cursor_y) - anchor_cursor_y;
+    y = static_cast<float>(
         (static_cast<double>(thumb_base_y) + anchor_thumb_offset) + delta);
+    }
     // FCOMI/JBE at 00683937, then FCOMIP/JBE at 0068395C.
     if (thumb_base_y > y) {
         y = thumb_base_y;
@@ -145,10 +153,18 @@ float scroll_offset_from_thumb_y(
 {
     // FSUBRP then FDIVP at 00683980, stored to a float slot at 00683984 and
     // reloaded: the fraction rounds to float before the multiply.
+    if constexpr (game::kWireGoal4Chain463Bound) {
+        // 00683980 FSUBRP, 00683982 FDIVP round separately at PC24; the
+        // 00683984 DWORD spill precedes FCHS/FMULP at 00683990..92.
+        const float fraction = static_cast<float>(cc13x87::x87_div24(
+            cc13x87::x87_sub24(thumb_y, thumb_base_y), travel));
+        return static_cast<float>(cc13x87::x87_mul24(-static_cast<double>(range), fraction));
+    } else {
     const float fraction = static_cast<float>(
         (static_cast<double>(thumb_y) - thumb_base_y) / travel);
     // FCHS then FMULP at 00683990: -range * fraction.
     return static_cast<float>(-static_cast<double>(range) * fraction);
+    }
 }
 
 AutoScrollCommand classify_scroll_axis(float axis) noexcept
@@ -369,7 +385,7 @@ __declspec(noinline) void end_thumb_drag_00683320(FrontEndScreenScroller& scroll
     scroller.dragging = false;
 }
 
-void update_front_end_screen_scroller(FrontEndScreenScroller& scroller,
+void update_front_end_screen_scroller_00683820(FrontEndScreenScroller& scroller,
     bool allow_pad_fallback, FrontEndScrollerHost& host)
 {
     // 00683820. The input read runs only while +59h is set and +58h is clear;

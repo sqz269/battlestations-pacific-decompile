@@ -53,6 +53,9 @@ public:
     // 00698A10 unconditionally, as the press-start commits 0067CEB9 and
     // 0067D50F call it. Exceptions propagate after marking the owner failed.
     void load();
+    // 004E4A63..72: whole native action tick over the configured shared owner.
+    // It includes the backend refresh; callers must not also update_backend.
+    void update_actions(float seconds);
     // 008D5BB6 -> 004B46E0 (ADD ECX,3Ch; JMP 00699B80): store the four device
     // bytes +4C9h..+4CCh from settings +41h..+44h; when they change and +520h
     // is set, 00698730 then 00698A10 rebuild the actions with the new swaps.
