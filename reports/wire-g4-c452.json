@@ -1,0 +1,137 @@
+{
+  "chain": 452,
+  "owner": "agent/g4-w1",
+  "picked": "Live mission ReconClass registry and sensor-table loading for the existing recon sensor pass",
+  "switch": "bsp::kWireGoal4Chain452Bound",
+  "base": "1972acc1f6",
+  "rows": [
+    {
+      "native": "00808f90",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::recon_record_for_class",
+      "evidence": "Release graph: direct reachable call at 100c9a1d to resolve_sensor_class_00808f90; inputs are the live mission lua_State and VehicleClass.ReconClass id read by resolve_recon_inputs. OFF retains the previous fixed arcade builder."
+    },
+    {
+      "native": "008082a0",
+      "status": "wired",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::load_from_row_00809147",
+      "evidence": "Release graph: reachable call at 103c34ba to the existing load_sensor_class_table_008082a0 body. This replaces build_sensor_class_table_008082a0's fixed-data projection for gunnery; the old projection does not run on the ON arm."
+    },
+    {
+      "native": "00808cb0",
+      "status": "wired",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "evidence": "Release graph: reachable call at 103c2f37 to construct_sensor_class_table_00808cb0 before the resolver loads and publishes the record."
+    },
+    {
+      "native": "00b67c40",
+      "status": "wired",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::gui_range_rows_00808786 color reader",
+      "evidence": "Release graph: reachable call at 103c2dbf to the existing native_lua_get_float4_00b67c40 body over the real row.Color table, using actual NativeLuaObjectStorage and its borrowed tracking owner."
+    },
+    {
+      "native": "008085c0",
+      "status": "skipped",
+      "host_site": "src/sensor_tables.cpp: load_sensor_class_table_008082a0",
+      "reason": "The existing entry conversion runs inlined inside the live loader; Release emits no separate call site, so no additional independent wiring is claimed."
+    },
+    {
+      "native": "00808791",
+      "status": "skipped",
+      "host_site": "src/sensor_tables.cpp: load_sensor_class_table_008082a0",
+      "reason": "The existing GUI-ring conversion runs inlined inside the live loader; Release emits no separate call site, so no additional independent wiring is claimed."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 and ForceSelectUnit binding",
+      "reason": "The selected-unit path still lacks the actual pick-screen owner, its selection vector and the two input-context levels needed by the reset body."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::cockpit_screen_mode",
+      "reason": "The cockpit screen and its mode-field producer are absent from this binding; it currently supplies a recorded false answer."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::map_screen_busy",
+      "reason": "The map/powerup screen instance and live scrolling state are not owned by this binding; a zeroed substitute would not be real screen state."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::camera_screen_frame_step",
+      "reason": "The support-info screen instance and its child-panel services are still missing behind this recorded host step."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation-group creation in the follow/join path",
+      "reason": "GameUnitGroupStorage intentionally contains one-based unit identities, so it cannot run the native leader initializer's pointer and observer operations without native unit/group ownership."
+    },
+    {
+      "native": "0070d0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation leader-successor/removal path",
+      "reason": "The formation projection lacks native unit pointers and observer ownership required to replace the existing leader/member mutation path."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityOrder/EntityCommand ai_group_forward_command",
+      "reason": "No entity+16Ch AI-group producer supplies the group's +564Ch command object on this single-player command route."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: UnitSetPlayerCommandsEnabled director flags store",
+      "reason": "The director flag map alone does not supply a live single-player controller-snapshot sender with mode and both command-target descriptors."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: publish_recon_slot_tables_00806b10",
+      "reason": "Publication still detects content changes instead of owning the native recon-slot globals and their +25h dirty bytes."
+    },
+    {
+      "native": "00805d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: publish_recon_slot_tables_00806b10 relation/category loops",
+      "reason": "The publisher still needs raw ReconList payload/unit views and list-allocation services over the real host triples before the whole publication body can replace its loops."
+    }
+  ],
+  "built": [
+    "Mission-owned stable sensor-record cache and scoped SensorClassRegistryHost/SensorTableLuaHost services over the real Lua state.",
+    "Live ReconClass[id] access, native ID/Got writes, exact-number MaxLevel fallback, original float/integer conversion tails, Lua iteration order and GUI colors through the existing whole color reader.",
+    "A direct switched resolver call whose result feeds the pre-existing ReconSensorEntry conversion and sensor pass. No new original-address body or ledger entry was introduced."
+  ],
+  "verification": {
+    "build": "scripts/build.ps1 passed with the switch OFF and ON, including reconstructed_math and tool_tests; final build is ON.",
+    "fixture": "local/output/wire_g4_c452_probe/result.json: passed single Win32 Lua fixture covering cache hit/miss, ID/Got side effects, sparse entry lists, exact-type MaxLevel defaults, Color signed-zero bits, and stack preservation.",
+    "installed_tables": "All 12 arcade and 12 realistic ReconClass rows parsed through the new binding; entry/ring contents matched the authored-data baseline after accounting for Lua iteration order and the old generated GUI-ring angle truncation.",
+    "arcade_sha256": "ef2b8b0bc0b708afcc3f6e2c8fab9f2f2068a3735b664fd12d7041838556d478",
+    "realistic_sha256": "2a2062236ec8f3351149edc93fd9b032e8817342bc1d2b74229ac146c2b4ba5b",
+    "call_graph_recon_called_off": 4748,
+    "call_graph_recon_called_on": 4764,
+    "call_graph_count_note": "Raw suffix-based graph totals include service override names at native call sites and lose the two now-inlined conversion symbols. Four actual reconstructed bodies above have individually checked reachable calls; 008082A0 replaces a same-address fixed-data builder already counted in OFF.",
+    "source_wired_before": 9707,
+    "source_wired_after": 9707,
+    "source_count_note": "The source-text classifier replaces the fixed builder match with the resolver match and does not follow the new scoped service binding. All four listed bodies nevertheless have called=true and one reachable emitted call site each.",
+    "pc24_lint": "The adapter calls existing numeric conversions and introduces no new float arithmetic chain; checked on the staged diff and again with --diff origin/main...HEAD after commit.",
+    "entry_path": "WinMain -> startup/application frame -> menu/mission advance -> finish_scene_load -> mission frame scene load -> run_recon_pass_at_scene_load -> run_recon_sensor_pass_body -> recon_record_for_class -> resolve_sensor_class_00808f90"
+  },
+  "evidence": [
+    "bsp.py show 00808f90: cache, globals.ReconClass[id], ID/Got stores, constructor/load/publication sequence and original ECX-out/EDX-id ABI.",
+    "bsp.py show 008082a0: nested Lua iteration, per-field conversions, MaxLevel default 2 and GUIRange Color handling.",
+    "bsp.py show 00b67720, 00b66380 and 00b67c40: ordinary numeric-key lookup, exact-number fallback and four-float color read.",
+    "Installed luamw_init.lua: COL_RED/GREEN/BLUE and DEG(a)=a*math.pi/180. The old generated GUIRange angle 0.785398 loses bits compared with the evaluated live row."
+  ],
+  "limits": [
+    "Build, actual-Lua fixture and static executable reachability evidence only; the game was not run.",
+    "The registry uses mission-owned C++ storage and invokes the resolver at the first gunnery sensor-class demand, rather than constructing an original refcounted native class+B4h record during vehicle-class parsing. This is not an original binary-ABI replacement.",
+    "The existing SensorTableLuaHost interface snapshots Details/observer keys. Installed authored tables were checked; mutation during metatable callbacks and Lua error reentrancy were not validated.",
+    "Recon-slot dirty-byte ownership, whole relation publication, and the fixed-data OFF-path generation precision remain for follow-up."
+  ]
+}
