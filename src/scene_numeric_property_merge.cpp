@@ -27,10 +27,13 @@
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstddef>
 #include <cstring>
 #include <map>
 #include <new>
+#include <optional>
 #include <stdexcept>
+#include <type_traits>
 #include <vector>
 
 namespace bsp::game {
@@ -81,19 +84,25 @@ public:
     bool handles(std::size_t source_index) const { return selected_[source_index]; }
 
     SceneProperty result(const SceneProperty& authored_metadata) {
+        // The dependent cache parameter lets the OFF instantiation have no
+        // map storage, constructor or destructor. ON constructs the optional's
+        // index only when the first handled property actually needs it.
+        return [&](auto& records) -> SceneProperty {
         if constexpr (kWireGoal4Chain345Bound) {
             // The constructor has finished the whole native merge. Enumerate
             // its stable destination once; every result consumes the mapped
             // native record below, with authored metadata supplying only the
             // spelling/tokens. Neither bag is mutated during publication.
             if (!merged_records_collected_) {
-                merged_records_.collect(destination_.data());
+                records.emplace();
+                records->collect(destination_.data());
                 merged_records_collected_ = true;
             }
-            return read_value(authored_metadata, merged_records_.find(authored_metadata.key));
+            return read_value(authored_metadata, records->find(authored_metadata.key));
         } else {
         return read_value(authored_metadata, destination_.find(authored_metadata.key));
         }
+        }(merged_records_);
     }
 
     bool merge_child(const std::string& key, const ScenePropertyBlock* destination,
@@ -714,7 +723,8 @@ private:
     std::vector<bool> selected_;
     SceneNativeEnumSource* enums_;
     bool overwrite_;
-    MergedRecords merged_records_;
+    std::conditional_t<kWireGoal4Chain345Bound,
+        std::optional<MergedRecords>, std::nullptr_t> merged_records_{};
     bool merged_records_collected_{};
 };
 

@@ -31,6 +31,23 @@
     "The existing native merge destination is raw61-produced, uses the canonical string/property-node processes, and remains alive and unchanged throughout result publication."
   ],
   "limits": "Static executable reachability and existing fixtures were verified. The game was not run. Nested child publication retains its existing lookup path; the separate iterator copies 008EEA80/008EF650 were not needed by this consumer.",
+  "review_round_1": {
+    "review_run": 682,
+    "reviewed_head": "a532c0521e312e5a5ae97e6619e4d36aad42cbe7",
+    "finding_1": {
+      "status": "fixed",
+      "finding": "The unconditional merged_records_ map added sentinel allocation and failure behavior to OFF, even with no handled properties.",
+      "change": "Use a conditional cache type: ON holds an initially disengaged optional<MergedRecords>, while OFF holds only nullptr_t. A dependent result lambda instantiates only the selected path. ON emplaces the index at the first actual handled-property result; the collected flag is set only after successful enumeration.",
+      "verification": [
+        "Switch-OFF scripts/build.ps1 passed reconstructed_math, native_math_differential and tool_tests.",
+        "OFF call_graph.json has zero function symbols containing MergedRecords, and bsp_game.map has zero MergedRecords symbols, including all map template symbols with its KeyLess type. No index constructor, destructor or index allocation code is linked.",
+        "OFF neither 008EEB10 nor 008EEB60 is linked; entry-reachable reconstructed addresses remain 4408.",
+        "Switch-ON scripts/build.ps1 passed all three tests; each iterator retains one entry-reachable call from MergedRecords::collect, for 4410 reconstructed addresses.",
+        "The switch is restored to true for the committed result. No float operations or new tests were added."
+      ],
+      "prior_evidence_correction": "The initial OFF build/test pass and iterator absence established neither allocation identity nor absence of the new map. The corrected OFF symbol checks explicitly cover the index constructor/destructor and its map instantiations."
+    }
+  },
   "rows": [
     {
       "native": "008eeb10",
