@@ -30,6 +30,8 @@
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/structured_resource.hpp"
 #include "bsp/camera_multiply.hpp"
+#include "bsp/engine_seg4_6_9_cc13.hpp"
+#include "bsp/wire_goal4_chain481_switches.hpp"
 #include <algorithm>
 #include <cstring>
 #include <iterator>
@@ -64,6 +66,21 @@ float float_word(const volatile Word& actual) {
     float result;
     std::memcpy(&result, &word, sizeof result);
     return result;
+}
+CameraMatrix compose_model_matrix(const CameraMatrix& left, const CameraMatrix& right) {
+    // bsp.py show 0047c210: the native multiply-into body computes into a
+    // temporary through 00413920, then copies the product over its receiver.
+    // Reuse that body for the installed hierarchy and live unit placement;
+    // its result is the matrix subsequently published to the actual node.
+    // A separate receiver also preserves the previous output-alias behavior.
+    CameraMatrix composed = left;
+    cc13_sys::matrix_multiply_into_0047c210(composed, right,
+        [](const cc13_sys::Matrix4& lhs, const cc13_sys::Matrix4& rhs) {
+            CameraMatrix product;
+            multiply_camera_matrices_00413920(product, lhs, rhs);
+            return product;
+        });
+    return composed;
 }
 std::vector<std::pair<Word,unsigned char>> read_plane_cockpit_notes(
     const std::vector<std::uint8_t>& bytes) {
@@ -375,7 +392,12 @@ struct GameNativeMissionModel::Impl final : NativeRenderGroupModels {
         if(parent==0xffffffffu) world_matrices[index]=local;
         else {
             mission_model_detail::require(parent<hierarchy.size(),"installed hierarchy parent is out of range");
+            if constexpr (kWireGoal4Chain481Bound) {
+                world_matrices[index] = mission_model_detail::compose_model_matrix(
+                    local, authored_world(asset,parent));
+            } else {
             multiply_camera_matrices_00413920(world_matrices[index],local,authored_world(asset,parent));
+            }
         }
         matrix_states[index]=2;
         return world_matrices[index];
@@ -768,7 +790,12 @@ bool GameNativeMissionModel::update_unit_transform(std::size_t index, const Came
             mission_model_detail::require(!drawable.retired && drawable.unit_index==index,
                 "mission unit drawable range changed identity");
             CameraMatrix local;
+            if constexpr (kWireGoal4Chain481Bound) {
+                local = mission_model_detail::compose_model_matrix(
+                    p.authored_world(*unit.asset,drawable.hierarchy_index), transform);
+            } else {
             multiply_camera_matrices_00413920(local,p.authored_world(*unit.asset,drawable.hierarchy_index),transform);
+            }
             // Actual B6DB10 copies local, clears world/bounds flags, notifies
             // attached +A0/current virtual3C, then invalidates descendants.
             // Never write cached world matrices or maintain a simulation pose.
@@ -776,7 +803,12 @@ bool GameNativeMissionModel::update_unit_transform(std::size_t index, const Came
         }
         for(const auto& node:unit.rest_nodes) {
             CameraMatrix local;
+            if constexpr (kWireGoal4Chain481Bound) {
+                local = mission_model_detail::compose_model_matrix(
+                    p.authored_world(*unit.asset,node.first), transform);
+            } else {
             multiply_camera_matrices_00413920(local,p.authored_world(*unit.asset,node.first),transform);
+            }
             set_raw_local_matrix_00b6db10(node.second,p.transform_profiles,&local);
         }
         return true;
