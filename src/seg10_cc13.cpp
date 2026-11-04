@@ -6,7 +6,7 @@ namespace bsp::cc13_seg10 {
 
 namespace {
 
-void release_native_string(Seg10Host& host, Object string) {
+void release_native_string(LoadingConfigReleaseHost& host, Object string) {
     void* data = native_at<void*>(string, 4);
     if (data == nullptr) return;
     const std::uint32_t bytes = native_at<std::uint32_t>(string, 0) + 1;
@@ -423,7 +423,7 @@ void game_notify_player_left_004d0fc0(Seg10Host& host, Object game, Object recor
 // 004D2A80 __fastcall(holder): the NativeString +10h/+14h back to the pool;
 // the NativeString vector +4..+0Ch destroyed (00432050(ECX first, EDX last,
 // holder, holder)), freed and zeroed.
-void game_clear_pending_mission_name_004d2a80(Seg10Host& host, Object holder) {
+void game_clear_pending_mission_name_004d2a80(LoadingConfigReleaseHost& host, Object holder) {
     release_native_string(host, holder + 0x10);
     Object first = native_at<Object>(holder, 0x04);
     if (first != nullptr) {

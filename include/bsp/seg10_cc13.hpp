@@ -37,8 +37,20 @@ struct InputContextHost {
     virtual void vector_push_back_004d6840(Object vector, const std::int32_t* value) = 0;
 };
 
-struct Seg10Host : InputContextHost {
+// 004D2A80 needs only the loading-config ownership services. Keep this
+// contract usable by the actual config owner without unrelated game globals.
+struct LoadingConfigReleaseHost {
+    virtual ~LoadingConfigReleaseHost() = default;
+    virtual void crt_free_00bf65ac(void* memory) = 0;
+    virtual Object sized_pool_singleton_00419cc0(void* data, std::uint32_t bytes, std::int32_t flag) = 0;
+    virtual void sized_pool_return_block_00bd1510(Object pool, void* data, std::uint32_t bytes, std::int32_t flag) = 0;
+    virtual void native_string_range_destroy_00432050(Object first, Object last, Object owner, Object allocator) = 0;
+};
+
+struct Seg10Host : InputContextHost, LoadingConfigReleaseHost {
     virtual ~Seg10Host() = default;
+    // One final overrider for the service shared by both narrow contracts.
+    virtual void crt_free_00bf65ac(void* memory) override = 0;
 
     // Globals.
     virtual Object game_00e188a8() = 0;
@@ -188,7 +200,7 @@ Object award_tracker_singleton_004e1ca0(Seg10Host& host);
 Object award_tracker_construct_004e18e0(Seg10Host& host, Object tracker);
 void session_message_e4_read_004d4bb0(Seg10Host& host, Object message, Object stream);
 void game_notify_player_left_004d0fc0(Seg10Host& host, Object game, Object record);
-void game_clear_pending_mission_name_004d2a80(Seg10Host& host, Object holder);
+void game_clear_pending_mission_name_004d2a80(LoadingConfigReleaseHost& host, Object holder);
 
 // Prompt callbacks, state requests and presence.
 void prompt_leave_session_004d7b10(Seg10Host& host);
