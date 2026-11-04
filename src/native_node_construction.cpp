@@ -1,5 +1,7 @@
 #include "bsp/native_node_construction.hpp"
+#include "bsp/native_unit_part_entries.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain456_switches.hpp"
 #include <cstring>
 #include <new>
 #include <stdexcept>
@@ -183,6 +185,15 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
     node.point_lights_164 = {nullptr, 0, 0};
     node.scene_170 = nullptr;
     try {
+        if constexpr (kWireGoal4Chain456Bound) {
+            // bsp.py show 00B6F5A0 (name block) and 00B6F960: both compare
+            // node+54h against the borrowed header, resize with preserve=true,
+            // reload the two headers and copy the current destination length.
+            // Reuse that body over the constructor's actual node/name/pool;
+            // its name_54 is the one scene and GUI consumers subsequently read.
+            assign_native_unit_part_node_name_00b6f960(node,
+                *static_cast<const NativeString*>(name), strings);
+        } else {
         if (static_cast<const void*>(&node.name_54) != name) {
             resize_native_string_header_0041dd40(&node.name_54, strings,
                 raw_node_word(name), true);
@@ -200,6 +211,7 @@ NativeNodeStorage& construct_native_node_00b6f5a0(void* actual_slot,
                     std::memmove(reinterpret_cast<void*>(destination),
                         reinterpret_cast<const void*>(source), count);
             }
+        }
         }
         CameraMatrix local_identity;
         raw_node_identity(&local_identity, &constants.one_00d7a24c, &node);
