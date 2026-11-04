@@ -3,6 +3,7 @@
 
 #include "bsp/gun_platform_arc.hpp"
 #include "bsp/cc13_x87_model.hpp"
+#include "bsp/unit_rudder.hpp"
 
 #include <cmath>
 
@@ -144,17 +145,22 @@ GunArcRouteOutcome gun_arc_route_deltas_007f6530(const GunPlatformArcs& arcs,
     }
 }
 
-bool gun_snap_angle_into_window_0085b0f0(const GunPlatformArcs& arcs,
-                                         float angle,
-                                         float& accepted) noexcept {
+namespace {
+bool find_replication_heading(const GunPlatformArcs& arcs, float angle,
+    float& accepted) noexcept {
     // 0085B2CF, 0085B38A, 0085B441: the same horizontal search three times, on
     // the angle itself and then half a degree either side of it.
-    const float candidates[3] = {
-        angle,
-        gun_wrap_angle_0085abbd(angle + kGunAimArcEpsilon),
-        gun_wrap_angle_0085abbd(angle - kGunAimArcEpsilon),
-    };
-    for (float candidate : candidates) {
+    for (int attempt = 0; attempt < 3; ++attempt) {
+        float candidate = angle;
+        // 0085B30B/B3C6 and B58E/B649: each epsilon operation stores a
+        // float BEFORE fmod. Do not evaluate later candidates after a hit.
+        if (attempt == 1) {
+            candidate = gun_wrap_angle_0085abbd(static_cast<float>(
+                cc13x87::x87_add24(angle, kGunAimArcEpsilon)));
+        } else if (attempt == 2) {
+            candidate = gun_wrap_angle_0085abbd(static_cast<float>(
+                cc13x87::x87_sub24(angle, kGunAimArcEpsilon)));
+        }
         for (std::size_t i = 0; arcs.first != nullptr && i < arcs.count; ++i) {
             if (traverse_window_horizontal(arcs.first[i], candidate)) {
                 accepted = candidate;
@@ -163,6 +169,51 @@ bool gun_snap_angle_into_window_0085b0f0(const GunPlatformArcs& arcs,
         }
     }
     return false;
+}
+} // namespace
+
+void gun_set_angles_immediate_0085b0f0(GunImmediateAngleState state,
+    GunImmediateAngleInput input, GunImmediateAngleHost& host) {
+    // Evidence: bsp.py show 0085b0f0 --asm, 0085B0F0..0085B7C9.
+    // The previous address-labelled body was only the horizontal search. It
+    // omitted the received stores, two snap thresholds, final target stores
+    // and node update. In particular, an arc miss does NOT leave all fields
+    // unchanged: 0085B24F..B279 precedes the first search.
+    input.target_horz = gun_wrap_angle_0085abbd(input.target_horz);
+    input.current_horz = gun_wrap_angle_0085abbd(input.current_horz);
+    input.target_vert = gun_wrap_angle_0085abbd(input.target_vert);
+    input.current_vert = gun_wrap_angle_0085abbd(input.current_vert);
+    state.received_4bc[1] = input.current_vert;
+    state.received_4bc[0] = input.current_horz;
+    state.received_4bc[3] = input.target_vert;
+    state.received_4bc[2] = input.target_horz;
+
+    float target_horz;
+    if (!find_replication_heading(host.platform_arcs_005471b0(),
+            input.target_horz, target_horz)) return;
+
+    // 0085B4B4..B4F3: 00438B10, FSTP float, then ordered magnitude >
+    // double 00CE3D40 (0.800000011920929, the float threshold widened).
+    const float dh = wrapped_angle_subtract_00438b10(input.current_horz, state.angles.horz);
+    const float abs_h = dh > 0.0f ? dh : -0.0f - dh;
+    if (abs_h > kGunAimSnapThreshold) {
+        float current_horz;
+        if (!find_replication_heading(host.platform_arcs_005471b0(),
+                input.current_horz, current_horz)) return;
+        state.angles.horz = current_horz;
+        state.previous_horz_488 = current_horz;
+    }
+
+    // 0085B746..B795: vertical snapping has NO arc/elevation-window test.
+    const float dv = wrapped_angle_subtract_00438b10(input.current_vert, state.angles.vert);
+    const float abs_v = dv > 0.0f ? dv : -0.0f - dv;
+    if (abs_v > kGunAimSnapThreshold) {
+        state.angles.vert = input.current_vert;
+        state.previous_vert_48c = input.current_vert;
+    }
+    state.angles.target_horz = target_horz;
+    state.angles.target_vert = input.target_vert;
+    host.apply_angles_to_nodes_00859550(); // 0085B7BB, after both stores
 }
 
 void gun_split_insert_arc_007f5a10(std::vector<GunFiringArc>& windows,

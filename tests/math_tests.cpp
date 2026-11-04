@@ -3835,6 +3835,36 @@ int main() {
     }
 
     {
+        // 0085B0F0's early stores must survive the second arc-search failure;
+        // success below the horizontal snap threshold still snaps elevation
+        // without an elevation-window test and commits both target fields.
+        struct ImmediateAngles final : bsp::GunImmediateAngleHost {
+            bsp::GunFiringArc arc{bsp::kGunArcFlagTraverse, -0.5f, 0.5f, -0.1f, 0.1f};
+            int platforms{}, applied{};
+            bsp::GunPlatformArcs platform_arcs_005471b0() override {
+                ++platforms;
+                return {&arc, 1};
+            }
+            void apply_angles_to_nodes_00859550() override { ++applied; }
+        } host;
+        bsp::GunTurningAngles angles{0.0f, 0.0f, -0.2f, -0.3f};
+        float previous_h = -0.4f, previous_v = -0.5f, received[4]{};
+        const bsp::GunImmediateAngleState state{angles, previous_h, previous_v, received};
+        bsp::gun_set_angles_immediate_0085b0f0(state, {0.1f, 0.2f, 2.0f, 2.0f}, host);
+        check(received[0] == 2.0f && received[1] == 2.0f
+                && received[2] == 0.1f && received[3] == 0.2f
+                && angles.horz == 0.0f && angles.vert == 0.0f
+                && angles.target_horz == -0.2f && host.applied == 0 && host.platforms == 2,
+            "0085B0F0 keeps received stores but aborts before targets on a current-H arc miss");
+        bsp::gun_set_angles_immediate_0085b0f0(state, {0.1f, 0.2f, 0.25f, 2.0f}, host);
+        check(angles.horz == 0.0f && previous_h == -0.4f
+                && angles.vert == 2.0f && previous_v == 2.0f
+                && angles.target_horz == 0.1f && angles.target_vert == 0.2f
+                && host.applied == 1 && host.platforms == 3,
+            "0085B0F0 commits targets and the large vertical snap without testing elevation arcs");
+    }
+
+    {
         // 009032A8..009032E9: only a depression steeper than -0.02 rad is
         // corrected, and the correction is v - (0.02 + v) * 0.5, which is
         // 0.5v - 0.01, not a plain halving. A target of kind 0Fh flattens the

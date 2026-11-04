@@ -100,14 +100,35 @@ GunArcRouteOutcome gun_arc_route_deltas_007f6530(const GunPlatformArcs& arcs,
                                                  float target_vert) noexcept;
 
 // ---------------------------------------------------------------------------
-// 0085B0F0's seam search, the part the aiming doc left unread. A replicated
-// angle that no traverse window accepts is retried half a degree either side
-// before the whole update is abandoned. Returns false when all three candidates
-// miss, in which case 0085B0F0 returns without writing anything.
+// 0085B0F0, __thiscall(gun)(targetH, targetV, currentH, currentV), RET 10h.
+// Borrow the SAME gun's angle fields. The received pair at +4BCh and targets at
+// +4C4h are written before either arc search, including on an early return.
+// This is a source view, not the original gun layout or a binary replacement.
 // ---------------------------------------------------------------------------
-bool gun_snap_angle_into_window_0085b0f0(const GunPlatformArcs& arcs,
-                                         float angle,
-                                         float& accepted) noexcept;
+struct GunImmediateAngleState {
+    GunTurningAngles& angles;
+    float& previous_horz_488;
+    float& previous_vert_48c;
+    float (&received_4bc)[4]; // currentH, currentV, targetH, targetV
+};
+struct GunImmediateAngleInput {
+    float target_horz, target_vert, current_horz, current_vert;
+};
+class GunImmediateAngleHost {
+public:
+    virtual ~GunImmediateAngleHost() = default;
+    // Resolve this gun's live unit+538h platform slot at gun+38Ch, performing
+    // 005471B0(index+1) when required. Called again before the current-H search.
+    // The returned borrowed arc list must survive the ensuing search.
+    virtual GunPlatformArcs platform_arcs_005471b0() = 0;
+    virtual void apply_angles_to_nodes_00859550() = 0;
+};
+// Complete angle-store/search/snap schedule. A missing target-H window, or a
+// missing current-H window when a snap is required, returns with the received
+// fields already stored. The node callback runs only after both final targets
+// have been committed. Native exception/FPU-status equivalence is unproven.
+void gun_set_angles_immediate_0085b0f0(GunImmediateAngleState,
+    GunImmediateAngleInput, GunImmediateAngleHost&);
 
 // ---------------------------------------------------------------------------
 // The producer. 007F5A10 treats the window list as a partition of the
