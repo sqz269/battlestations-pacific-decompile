@@ -1,6 +1,8 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/oct18_tail_a.hpp"
+#include "bsp/wire_goal4_chain499_switches.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 #include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/wire_goal4_chain461_switches.hpp"
@@ -772,8 +774,24 @@ public:
         }
     }
     int hud_root_screen_query() override {
+        if constexpr (kWireGoal4Chain499Bound) {
+            // bsp.py show 00644230: MOV EAX,[00E188D8]; RET, ECX unused.
+            // 0068ACA0's two bomb-view queries now read the live publication
+            // maintained by 004C0890, rather than returning the old zero.
+            if (owner_.units == nullptr) {
+                owner_.record("InGameInterface::hud_root_screen_query_missing_units", 0x00644230u);
+                return 0;
+            }
+            void* const unit = oct18_tail_a::hud_controlled_unit_00644230(
+                owner_.units->controlled_unit_publication());
+            owner_.done("InGameInterface::hud_root_screen_query", 0x00644230u);
+            static_assert(sizeof(int) == sizeof(void*));
+            // The existing interface transports Win32 identity words as int.
+            return static_cast<int>(reinterpret_cast<std::uintptr_t>(unit));
+        } else {
         owner_.record("InGameInterface::hud_root_screen_query", 0x00644230u);
         return 0;
+        }
     }
     void bomb_view_screen_bind(int value) override { static_cast<void>(value); }
     void bomb_view_screen_store(int value) override { static_cast<void>(value); }
@@ -844,8 +862,14 @@ public:
         // 00e188d8, written by BSP_Game_SetControlledUnit 004c0880; the units
         // host binds its controlled unit through 004c0890.
         if constexpr (kHudInterfaceControlledUnitBound) {
+            if constexpr (kWireGoal4Chain499Bound) {
+                owner_.done("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
+                return owner_.units != nullptr && oct18_tail_a::hud_controlled_unit_00644230(
+                    owner_.units->controlled_unit_publication()) != nullptr;
+            } else {
             owner_.done("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
             return owner_.units != nullptr && owner_.units->controlled_bound();
+            }
         } else {
             owner_.record("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
             return false;

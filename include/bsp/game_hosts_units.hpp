@@ -789,6 +789,10 @@ public:
     // root observer's destruction slot 00644A20 calls it at 00644A38.
     void clear_controlled_unit_004c0890();
 
+    // The 004C0890 publication read by 00644230. Borrows the same stable
+    // host unit identity as unit_identity(); never an original image address.
+    void* const volatile& controlled_unit_publication() const noexcept;
+
     // --order throttle=<f>,rudder=<f>: one player order into the controlled
     // unit's ring, through the same 00816a40 the authored command takes.
     void issue_player_order(float throttle, float rudder);
