@@ -1,0 +1,268 @@
+{
+  "chain": 383,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain383Bound",
+  "switch_default": true,
+  "scope": "Eight existing native ship-kind bodies replace the decoded-table query for the matching owning classes; other classes keep the existing query.",
+  "built": "Call-scoped aligned C8h receiver adapter with the existing runtime class id at +C4h; no native ship/world/vtable owner is claimed.",
+  "validation": {
+    "build_enabled": "scripts/build.ps1 passed, 2/2 tests",
+    "build_disabled": "scripts/build.ps1 passed, 2/2 tests; switch-off graph removes the eight native entries",
+    "focused_probe": "MSVC Win32 /MANIFEST:EMBED probe passed 9999 owner/query pairs against the pre-existing decoded catalog, including INT_MIN, -1, INT_MAX and unknown classes.",
+    "call_graph_reconstructed_called_before": 4551,
+    "call_graph_reconstructed_called_after": 4559,
+    "source_heuristic_wired_before": 9611,
+    "source_heuristic_wired_after": 9611,
+    "source_heuristic_note": "The source heuristic still labels these eight rows callees_done_no_wired_caller; all eight rows independently report called=true, call_sites=1, callers_live=1 in the built graph.",
+    "runtime_path": "WinMainCRTStartup -> startup/frame/menu/mission -> GameMissionFrameHost::run_mission_frame_004e4a40 -> GameUnitsHost::unit_is_kind_of -> bsp::unit_is_kind_of -> native ship-kind body",
+    "float_math": "No float arithmetic changed; pc24_lint is not required.",
+    "game_validation": "Not run, per worker instructions; evidence is compiled entry reachability and focused probe execution."
+  },
+  "left_for_others": "Native owning ship/vtable layout and other native class predicates; the central adapter deliberately preserves the existing owning-class query contract.",
+  "rows": [
+    {
+      "native": "006dfe50",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_ship_base_is_kind_006dfe50",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 006dfe50 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "006dfe90",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_battleship_is_kind_006dfe90",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 006dfe90 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "006eb230",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_cargo_is_kind_006eb230",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 006eb230 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "006fb3d0",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_cruiser_is_kind_006fb3d0",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 006fb3d0 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "0074bc60",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_landing_ship_is_kind_0074bc60",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 0074bc60 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "00758510",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_mothership_is_kind_00758510",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 00758510 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "00853050",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_submarine_is_kind_00853050",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 00853050 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "00857dc0",
+      "status": "wired",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of, called by src/game_hosts_units.cpp:GameUnitsHost::unit_is_kind_of and existing gameplay callers",
+      "name": "native_torpedo_boat_is_kind_00857dc0",
+      "state_source": "Owning class id and requested kind from the existing runtime unit/device query; call-scoped +C4h adapter carries that same class id.",
+      "evidence": "bsp.py show 00857dc0 --asm: fixed owning-class ancestry tests, sole receiver read at +C4h, full EAX 0/1 and RET 4; existing native body unchanged.",
+      "called": true,
+      "call_sites": 1,
+      "readiness_state": "callees_done_no_wired_caller"
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:set_widget_local_z",
+      "reason": "Missing live movie-page widget owner and transform state; load_movie_page currently returns null."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:bind_movie_textures",
+      "reason": "Missing live decoder handle, texture resources and movie-widget owner."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:clear_movie_subtitles",
+      "reason": "Existing schedule projection is not the native subtitle widget/list owner required by this body."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:make_command_target",
+      "reason": "Missing real native command-target owner and binding for the absolute mutable defaults at 00F87574..00F8757C."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI entity-record construction",
+      "reason": "Native candidate-record owner/layout and complete construction lifetime are not established in this packet."
+    },
+    {
+      "native": "00a10710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI attack-command construction",
+      "reason": "Missing native attack-command and observer-endpoint ownership/lifetime behind the existing host command."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI move-to-attack command construction",
+      "reason": "Missing native attack-command base and observer ownership needed by this constructor."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI cautious-attack command construction",
+      "reason": "Missing native attack-command base and observer ownership needed by this constructor."
+    },
+    {
+      "native": "00a10ae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI close-attack command construction",
+      "reason": "Missing native attack-command base and observer ownership needed by this constructor."
+    },
+    {
+      "native": "00a15a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:create_party_brain",
+      "reason": "Host Brain is a different layout; native party-brain/planner constructor ownership is not established."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ammo_select_flak_alternate",
+      "reason": "Missing native ammunition records with retained resource references and +3Ch tree; current host callback records the operation."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:command-building clear vector +660h path",
+      "reason": "Missing native +660h vector owner/44h-element producer to pass to the existing resize body."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:AI entity hint weighting",
+      "reason": "Missing native global and per-party hint maps with checked iterators and the real current-party map selection."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:party-slot selection",
+      "reason": "No established live caller carrying the eight active-slot values into this separate reconstructed helper."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:CaptureHost::available_resources",
+      "reason": "Missing native unit-cost walk, support-points state and queued team resource usage required to replace the current constant callback."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:run_entity_turn_to_entity ship arm",
+      "reason": "Missing native physics-body transform consumer; current arm poses the shared host motion state and has no separate 3x4 body state."
+    },
+    {
+      "native": "00c56cf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp:run_entity_turn_to_entity ship arm",
+      "reason": "Missing native physics body and world/shape ownership for this full body transform setter."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp:GuiLeafHost::accepts_glyph_byte_00ab6d00",
+      "reason": "Missing live text-input leaf host carrying the actual input byte and selected font; current direct calls are probe inputs."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp:update_ocean_00bbddd0",
+      "reason": "Missing cloud-manager owner and real reference-node axis/dirty-matrix state behind the recorded atmosphere update."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:gun snap/traverse sites",
+      "reason": "Missing live caller for this traverse-target search; existing snap sites perform the distinct 007F6190 operation."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:clear_pending_class_ids",
+      "reason": "Missing native pending-class vector/list producer and lifetime; the current scene callback only records the clear."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:preload_record_effects::push_effect_handle",
+      "reason": "Missing authored effect-name array/count producer; the current record pass has zero effect names and never pushes a real handle."
+    },
+    {
+      "native": "0075a550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:gun message read construction",
+      "reason": "Missing live set-fire-mode message producer; the existing gun-fire path constructs ADh through 006E3940 as the native factory does."
+    },
+    {
+      "native": "0075a580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:gun message read construction",
+      "reason": "Missing live RT continuous-fire message producer; the existing ADh path is a different message class."
+    },
+    {
+      "native": "0075a5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:queue_gun_fire_ad",
+      "reason": "Existing ADh receive factory calls 006E3940, not this separate ST-gun ConstructForRead entry; its live message producer is missing."
+    },
+    {
+      "native": "006fe530",
+      "status": "skipped",
+      "host_site": "src/unit_kind_query.cpp:bsp::unit_is_kind_of class 07h",
+      "reason": "A separate reconstruction of this address is already counted wired; duplicate native entry selection was left out of this eight-function packet."
+    }
+  ]
+}

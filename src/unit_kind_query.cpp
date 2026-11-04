@@ -8,6 +8,8 @@
 // `CMP EAX,[ECX+0C4h]`. Lists are in ascending order, not the compiled compare
 // order, which varies (006D20E0 puts its own id last).
 #include "bsp/unit_kind_query.hpp"
+#include "bsp/native_ship_kind.hpp"
+#include "bsp/wire_goal4_chain383_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -276,16 +278,69 @@ const UnitKindClassBody* unit_kind_body_for_class(int class_id) noexcept {
 }
 
 bool unit_is_kind_of(int class_id, int literal) noexcept {
-    const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-    if (body == nullptr) {
+    if constexpr (kWireGoal4Chain383Bound) {
+        // This API receives the live owning class id, not a native object.
+        // GameUnitsHost::unit_is_kind_of and the other gameplay callers already
+        // supply that id from their unit/device state. Adapt exactly the sole
+        // field the native leaf reads; the prefix is unread, not fabricated
+        // scene or vtable state. This is a call-scoped layout adapter, not an
+        // assertion that the host unit has the original native object layout.
+        // bsp.py show <address> --asm: the eight bodies below test their fixed
+        // owning-class chain, then CMP EAX,[ECX+C4h], and return full EAX 0/1,
+        // RET 4. Here +C4h equals the supplied owning id, which is already in
+        // that body's fixed chain, so its final comparison preserves this API's
+        // table-only rule even for negative and out-of-catalog query DWORDs.
+        struct ShipKindReceiver {
+            std::uint8_t unread_prefix[0xc4];
+            std::int32_t class_id_c4;
+        };
+        static_assert(offsetof(ShipKindReceiver, class_id_c4) == 0xc4);
+        static_assert(sizeof(ShipKindReceiver) == 0xc8);
+        if (class_id >= 0x06 && class_id <= 0x0e && class_id != 0x07) {
+            ShipKindReceiver receiver;
+            receiver.class_id_c4 = class_id;
+            const auto query = static_cast<std::uint32_t>(literal);
+            switch (class_id) {
+            case 0x06:
+                return native_ship_base_is_kind_006dfe50(&receiver, nullptr, query) != 0;
+            case 0x08:
+                return native_submarine_is_kind_00853050(&receiver, nullptr, query) != 0;
+            case 0x09:
+                return native_mothership_is_kind_00758510(&receiver, nullptr, query) != 0;
+            case 0x0a:
+                return native_cruiser_is_kind_006fb3d0(&receiver, nullptr, query) != 0;
+            case 0x0b:
+                return native_cargo_is_kind_006eb230(&receiver, nullptr, query) != 0;
+            case 0x0c:
+                return native_landing_ship_is_kind_0074bc60(&receiver, nullptr, query) != 0;
+            case 0x0d:
+                return native_battleship_is_kind_006dfe90(&receiver, nullptr, query) != 0;
+            case 0x0e:
+                return native_torpedo_boat_is_kind_00857dc0(&receiver, nullptr, query) != 0;
+            }
+        }
+        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+        if (body == nullptr) {
+            return false;
+        }
+        for (std::size_t i = 0; i < body->accept_count; ++i) {
+            if (body->accepts[i] == literal) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+        if (body == nullptr) {
+            return false;
+        }
+        for (std::size_t i = 0; i < body->accept_count; ++i) {
+            if (body->accepts[i] == literal) {
+                return true;
+            }
+        }
         return false;
     }
-    for (std::size_t i = 0; i < body->accept_count; ++i) {
-        if (body->accepts[i] == literal) {
-            return true;
-        }
-    }
-    return false;
 }
 
 bool unit_kind_body_answers(int owner_class_id, int dynamic_class_id, int literal) noexcept {
