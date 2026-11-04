@@ -20462,6 +20462,10 @@ const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
 }
 
+bool GameGunneryHost::has_unit_gunnery_pass(std::size_t unit_index) const noexcept {
+    return unit_index < impl_->unit_state.size() && impl_->unit_state[unit_index].attached;
+}
+
 bool GameGunneryHost::device_visual_metadata(std::size_t gun_index,
     GameDeviceVisualMetadata& out) const noexcept {
     out = {};

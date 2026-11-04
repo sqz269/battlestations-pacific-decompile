@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain419_switches.hpp"
@@ -25505,8 +25506,38 @@ void GameUnitsHost::set_skill_level_007b8ae0(std::size_t unit_index, int level) 
 bool GameUnitsHost::set_unit_skill_index_006d1eb0(std::size_t unit_index, int level) {
     Impl& host = *impl_;
     if (unit_index >= host.slots.size() || host.slots[unit_index] == nullptr) return false;
+    if constexpr (bsp::kWireGoal4Chain451Bound) {
+        namespace skill = bsp::gameplay_seg61_62_cc13;
+        GameUnitSlot& slot = *host.slots[unit_index];
+        std::vector<skill::RoleDevice> devices;
+        bool has_pass = false;
+        if (host.gunnery != nullptr) {
+            has_pass = host.gunnery->has_unit_gunnery_pass(unit_index);
+            // These rows are the actual gun children produced for this unit,
+            // all IsKindOf(20h); non-gun children do not receive the skill call.
+            for (const GameGunRow& gun : host.gunnery->guns()) {
+                if (gun.unit_index == unit_index) devices.push_back({true, gun.category});
+            }
+        }
+        // 006D1EB0 forwards unit+38Ch's slot zero. The shared base body is
+        // 009565A0: 009565A3 gates on unit+5Dh, 009565B9 stores +390h,
+        // 009565C4 notifies the +6DCh pass, then 009565EA notifies gun children.
+        // Evidence: bsp.py show 006d1eb0 / 009565a0. This host normalizes the
+        // pass/gun/pilot skill readers onto pilot_skill_index: gunnery's robot
+        // evaluations and the pilot read skill_level(), rather than retaining
+        // independent bot+34h copies. Thus the accepted level store also makes
+        // the plan's pass/device notifications visible to their real consumers.
+        // This is a typed host adapter, not the original subobject/vtable ABI.
+        const auto plan = skill::unit_skill_apply_level_009565a0(
+            slot.state->simulate != 0, level, has_pass, devices);
+        if (!plan.applied) return false;
+        slot.pilot_skill_index = plan.level_390;
+        host.done("UnitSkill::apply_level_009565a0", 0x009565a0u);
+        return true;
+    } else {
     host.slots[unit_index]->pilot_skill_index = level;
     return true;
+    }
 }
 
 bool GameUnitsHost::set_unit_max_speed_09c0(std::size_t unit_index, float value) noexcept {
