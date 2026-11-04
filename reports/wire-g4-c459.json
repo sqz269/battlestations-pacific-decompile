@@ -1,0 +1,168 @@
+{
+  "chain": 459,
+  "slot": "g4-w4",
+  "run": 930,
+  "branch": "agent/g4-w4",
+  "base_sha": "1fc557ea3ba66b854399135580a28e9139835322",
+  "picked": "Native MPKG provider -> named entry -> local-header offset -> materializer -> adopted-source stream",
+  "switch": "bsp::kWireGoal4Chain459Bound",
+  "wired_total": {
+    "metric": "entry-reachable reconstructed addresses in the built executable",
+    "before": 4782,
+    "after": 4787
+  },
+  "readiness_text_wired": {
+    "before": 9717,
+    "after": 9719,
+    "note": "Text heuristic already counted BB8A90/BB8BE0 before they had executable callers, and still misses BB8E70; compiled called/call_sites are authoritative."
+  },
+  "real_state": "GameVfsHost::phase2 initializes GameNativeVfsRuntime; its existing MPKG provider context owns the archive services and directory/stream context. Provider table D64390+8 selects BB8E70, which reads this provider's archive+14h. Original name/flags and current decoded/reopened stream owners are forwarded without shadow state.",
+  "built": [
+    "Admitted the existing MPKG open slot in NativeVfsRuntimeBindings::provider_open under the ON switch; OFF retains the old dispatcher.",
+    "Added context-carrying source callbacks to the existing MpkgBindings and BB8E70 wrapper; a runtime open_named adapter supplies the application's existing archive, allocator, conversion and stream services.",
+    "Reused all existing address bodies. Numeric current stream slots are dispatched through existing source services; legacy explicit-callback paths remain available.",
+    "Kept original flag rejection, first case-insensitive length-matched entry, local-header cache, compression split, 0x40000 boundary and original-source large-entry reopen.",
+    "Preserved constructor-failure raw-allocation frees and the original reopened-reference ownership. Kept BB8A90 noinline so its actual call is visible in the executable audit."
+  ],
+  "evidence": [
+    "bsp.py ghidra proto verified battlestationspacific.exe before the analysis batch.",
+    "bsp.py show 00BB8D60 --asm: count+2Ch, entries+28h, stride24h, length comparison and stricmp.",
+    "bsp.py show 00BB8A90: cached+0Ch/+10h; read30-byte local header, add local name/extra lengths.",
+    "bsp.py show 00BB8BE0 --asm: compressed path BB8C10..BB8C95, small copy BB8CAC..BB8CCD, reopen/adopt BB8CE7..BB8D21.",
+    "bsp.py ghidra bytes 00D64390: slot8 = 00BB8E70.",
+    "FH3 CC4796 -> DFE388; unwind map DFE370 state0 -> CC4780, DFE380 state2 -> CC478B; both free captured raw owner via BF65AC."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS (Win32 Release); reconstructed_math and tool_tests PASS",
+    "focused_fixture": {
+      "source": "tests/cc459_mpkg_open_fixture.cpp",
+      "result": "PASS: flag reject, missing name, mixed-case match, local-header read/cache, exact large-entry range and one adopted-source release",
+      "native_layout": true,
+      "synthetic": true,
+      "compile": "MSVC x86: cl /nologo /std:c++20 /EHsc /MD /O2 /W4 /Iinclude tests/cc459_mpkg_open_fixture.cpp /Folocal/output/g4_c459_mpkg_probe.obj /Felocal/output/g4_c459_mpkg_probe.exe /link /MANIFEST:EMBED build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib user32.lib d3d9.lib PowrProf.lib shell32.lib kernel32.lib gdi32.lib winspool.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib"
+    },
+    "call_graph": "call_graph.py PASS: 4787/5253 reconstructed addresses called; who for all five shows a reachable call from this chain.",
+    "float_math": "No float arithmetic changed; pc24_lint is not required for this packet."
+  },
+  "limitations": [
+    "Built reachability and one synthetic native-storage fixture are established; the game was not run.",
+    "The focused fixture exercises the newly connected large-entry route. Small and compressed routes reuse existing bodies but were not exercised by this fixture.",
+    "These are source interfaces over Win32 storage, not original binary ABI/FH3 replacements.",
+    "Original large-entry behavior applies the decoded-relative offset to the reopened original source; this chain deliberately preserves that behavior."
+  ],
+  "rows": [
+    {
+      "native": "00bb8e70",
+      "status": "wired",
+      "host_site": "src/native_vfs_runtime_bindings.cpp: NativeVfsRuntimeBindings::provider_open",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00bb8d60",
+      "status": "wired",
+      "host_site": "src/native_mpkg_runtime.cpp: NativeMpkgArchiveRuntimeOperations::open_named",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00bb8be0",
+      "status": "wired",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: mpkg_open_named_00bb8d60",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00bb8a90",
+      "status": "wired",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: mpkg_open_entry_00bb8be0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00bf1130",
+      "status": "wired",
+      "host_site": "src/native_mpkg_runtime.cpp: NativeMpkgArchiveRuntimeOperations::open_named adopted_00bf1130 callback",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: selected-unit screen-reset sites",
+      "reason": "Missing reset mode+30h and native selection-vector+0C4h producers in this base; retained pick-screen fields do not supply them."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: cockpit_screen_mode",
+      "reason": "Missing plane-effects screen/plane+0B8h and mode+0FCh producers; cockpit_screen_wanted still returns false in this base."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "Missing carousel/scroller owners producing screen+1F9h/+13Fh; map_screen_wanted still returns false in this base."
+    },
+    {
+      "native": "00673130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: camera_screen_frame_step",
+      "reason": "Missing support-screen availability state and actual info-panel widgets; this recording method cannot supply that body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "No missing runtime edge: baseline readiness already reports two reachable compiled calls; no additional wiring performed."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "No missing runtime edge: baseline readiness already reports two reachable compiled calls; no additional wiring performed."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary",
+      "reason": "Missing actual native property-library name-map owner; the current library group owner uses host vectors."
+    },
+    {
+      "native": "008ef7c0",
+      "status": "skipped",
+      "host_site": "src/cc13_large61.cpp: powerup_spawn_request_0094bff0 and spawn_manager_handle_message_0094b600",
+      "reason": "Missing concrete Large61Host producer for spawn-member native property records; arbitrary unrelated property stores were not substituted."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator tuning selection",
+      "reason": "Selection review found prior missing native party-brain/planner and per-slot difficulty producers; no new owner work undertaken in this MPKG packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "Missing native score-list owner/consumer in the live planner; existing capture planning uses separate weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "Missing produced AiGroupScoreList entries and a live consumer; no auxiliary list was fabricated."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: ordered widget projection",
+      "reason": "Missing live reflection/descriptor writer caller 00AAAED0; alphabetical child snapshots do not match the frontend's existing render-order sort."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB4.cpp: Cc13SweepB4Host curve caller",
+      "reason": "Missing concrete game implementation of the sweep B4/B5/B6 Host interface chain; no curve descriptor owner was built in this packet."
+    }
+  ]
+}

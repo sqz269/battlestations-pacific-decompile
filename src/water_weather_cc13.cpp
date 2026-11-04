@@ -3630,7 +3630,7 @@ void* w3_memory_stream_cast_00bb8690(void* stream, void* memory_file_type_0109db
 }
 
 void* w3_mpkg_provider_open_entry_00bb8e70(void* provider, const void* name, std::uint32_t flags,
-    void* (*open_named_entry_00bb8d60)(void* state, const void* name, std::uint32_t flags)) {
+    const std::function<void*(void* state, const void* name, std::uint32_t flags)>& open_named_entry_00bb8d60) {
     return open_named_entry_00bb8d60(w3_field<void*>(provider, 0x14), name, flags);
 }
 

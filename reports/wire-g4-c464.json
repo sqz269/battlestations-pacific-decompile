@@ -12,7 +12,7 @@
       "host_site": "src/game_native_vfs_runtime.cpp: GameNativeVfsRuntime::read_all(const char*, uint32_t)",
       "evidence": "bsp.py show 00be4770: current stream Read slot +24h supplies one byte; 0054AA70 appends it until read count is zero; no NUL test.",
       "state": "The existing opened stream, its current native profile, its reported extent, and bytes returned by NativeVfsRuntimeBindings::read. The original OpenedStream owns and releases the same single reference.",
-      "call_graph": "Enabled: read_stream_to_end_00be4770 at 10535240, direct call at 1036479a from GameNativeVfsRuntime::read_all; entry-reachable via GameVfsHost::open. Disabled: no matching function linked in bsp_game."
+      "call_graph": "Post-merge enabled: read_stream_to_end_00be4770 at 10536680, direct call at 10364fca from GameNativeVfsRuntime::read_all; entry-reachable via GameVfsHost::open. Disabled: no matching function linked in bsp_game."
     },
     {
       "native": "004D32A0",
@@ -110,6 +110,22 @@
     "entry_called_after": 4790,
     "entry_called_with_switch_disabled": 4789,
     "float_math_changed": false,
+    "game_run": false
+  },
+  "post_merge_validation": {
+    "merged_main": "ff1733346d7b90fbe3038bca8964b2f85bac423c",
+    "conflicts": ["cmake/startup.cmake"],
+    "resolution": "merge_resolve.py left the mixed appended CMake blocks unresolved (0 of 1); manually retained both complete chain462 and chain464 fixture registrations in chain order.",
+    "merged_build": "scripts/build.ps1: passed all 5 checks",
+    "disabled_build": "scripts/build.ps1: passed all 5 checks; 00BE4770 absent from the game executable",
+    "restored_on_build": "scripts/build.ps1: passed all 5 checks; kWireGoal4Chain464Bound restored to true",
+    "pc24_lint": "0 findings, 0 allowed, 4 files",
+    "source_wired_total": 9733,
+    "entry_called_with_switch_disabled": 4808,
+    "entry_called_with_switch_enabled": 4809,
+    "target_state": "wired",
+    "target_called": true,
+    "target_entry_reachable_call_sites": 1,
     "game_run": false
   },
   "limits": [

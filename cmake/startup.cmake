@@ -2627,6 +2627,17 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 # Chain452: live mission ReconClass registry and sensor-table Lua services.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/game_recon_sensor_class_registry.cpp)
 
+# Chain462: one focused ownership check for the retained native loading configs.
+function(bsp_chain462_loading_config_fixture)
+  if(TARGET bsp_math_tests)
+    add_executable(bsp_cc462_loading_config_fixture tests/cc462_loading_config_fixture.cpp)
+    target_link_libraries(bsp_cc462_loading_config_fixture PRIVATE bsp_core)
+    target_compile_options(bsp_cc462_loading_config_fixture PRIVATE /W4 /WX /fp:strict)
+    add_test(NAME cc462_loading_config COMMAND bsp_cc462_loading_config_fixture)
+  endif()
+endfunction()
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL bsp_chain462_loading_config_fixture)
+
 # Chain464: buffered borrowed stream view used by the live whole-file reader.
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL add_executable bsp_cc464_stream_reader_fixture tests/cc464_stream_reader_fixture.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_link_libraries bsp_cc464_stream_reader_fixture PRIVATE bsp_core)

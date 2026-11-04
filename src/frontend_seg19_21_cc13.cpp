@@ -28,7 +28,7 @@ void release_pool_block(Seg19_21Host& host, void* block, std::uint32_t length) {
 
 // The inlined native-string copy of 005C9830 / 005C9CC0 / 0057CFF0: resize the
 // destination to the source length, then memcpy that many bytes (no terminator).
-void native_string_assign(Seg19_21Host& host, NativeStr* dst, const NativeStr* src) {
+void native_string_assign(LoadingScreenConfigHost& host, NativeStr* dst, const NativeStr* src) {
     host.native_string_resize_0041dd40(dst, src->length, 1);
     if (src->length != 0) std::memcpy(dst->data, src->data, dst->length);
 }
@@ -358,7 +358,8 @@ void loading_screen_collect_children_0057cf10(void* screen, void* children, Seg1
 
 // The loading configuration record: string vector +0h, native string +10h, byte +18h.
 // 0057CFF0 __thiscall(ECX = source), RET: copy it into the live config at 00E08780.
-void loading_screen_publish_config_0057cff0(const void* source, Seg19_21Host& host) {
+// Retain the original separate call boundary for executable wiring inspection.
+__declspec(noinline) void loading_screen_publish_config_0057cff0(const void* source, LoadingScreenConfigHost& host) {
     Raw src = raw(const_cast<void*>(source));
     host.string_vector_assign_00506c80(host.global(0x00E08780u), source);
     auto* name = static_cast<NativeStr*>(host.global(0x00E08790u));
@@ -369,7 +370,7 @@ void loading_screen_publish_config_0057cff0(const void* source, Seg19_21Host& ho
 
 // 0057D060 __thiscall(ECX = source), RET: copy into the pending config at
 // 00E0879C, then tail-jump to 0057CFF0 with that config as the source.
-void loading_screen_set_mission_text_0057d060(const void* source, Seg19_21Host& host) {
+__declspec(noinline) void loading_screen_set_mission_text_0057d060(const void* source, LoadingScreenConfigHost& host) {
     Raw src = raw(const_cast<void*>(source));
     void* pending = host.global(0x00E0879Cu);
     host.string_vector_assign_00506c80(pending, source);
