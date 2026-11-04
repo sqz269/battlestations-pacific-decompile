@@ -18,6 +18,7 @@
 // is where the image's drain frees it.
 #include "bsp/entity_orders.hpp"
 #include "bsp/native_session_message_tags_90_to93.hpp"
+#include "bsp/native_session_message_tags_94_to97.hpp"
 #include <cstdint>
 #include <memory>
 
@@ -78,6 +79,11 @@ public:
     // the command ordinal, the flags bit, the target. The copy is destroyed
     // (00764CF0) here because the record is all the delivery reads.
     EntityOrderMessage queue_command_88(const EntityOrderMessage& posted) const;
+
+    // Goal 4 chain 450: 0071D340's actual point and presence byte (1), through
+    // the native 5Fh codec and factory constructor. The loopback entry owns the
+    // decoded message until delivery; its last owner runs 0071E3F0(1).
+    std::shared_ptr<NativeSessionMessage95> queue_user_path_point_5f(const float point[3]) const;
 
     // MT_VEHICLE_GUN_CONTROL (79h, cc15-smA): 00954A10 at 005489DA over the
     // HUD's posted fields, routed by 0077C2A0 at 00548A1F (flags 3, local

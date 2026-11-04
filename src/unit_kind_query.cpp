@@ -9,10 +9,13 @@
 // order, which varies (006D20E0 puts its own id last).
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/native_ship_kind.hpp"
+#include "bsp/native_entity_root_kind.hpp"
+#include "bsp/native_entity_kind_4c_4e.hpp"
 #include "bsp/native_plane_kind.hpp"
 #include "bsp/native_plane_derived_kind.hpp"
 #include "bsp/wire_goal4_chain383_switches.hpp"
 #include "bsp/wire_goal4_chain444_switches.hpp"
+#include "bsp/wire_goal4_chain448_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -376,16 +379,53 @@ bool unit_is_kind_of(int class_id, int literal) noexcept {
                 return native_torpedo_boat_is_kind_00857dc0(&receiver, nullptr, query) != 0;
             }
         }
-        const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
-        if (body == nullptr) {
+        if constexpr (kWireGoal4Chain448Bound) {
+            // bsp.py show 0042B8F0/0047F190/0042C010/004351E0 --asm:
+            // each complete slot-5Ch body accepts its fixed chain, then reads
+            // only DWORD [ECX+C4h]. Reuse those bodies on the class identity
+            // supplied by the live gameplay callers of this API. As with the
+            // ship adapter above, the unread prefix supplies no object state.
+            // The final compare repeats the owning id, preserving this API's
+            // fixed-chain semantics. unit_kind_body_answers still separately
+            // handles a different dynamic id for inherited slot-5Ch bodies.
+            if (class_id == 0x00 || class_id == 0x01 ||
+                class_id == 0x4c || class_id == 0x4e) {
+                ShipKindReceiver receiver;
+                receiver.class_id_c4 = class_id;
+                const auto query = static_cast<std::uint32_t>(literal);
+                switch (class_id) {
+                case 0x00:
+                    return native_entity_root_is_kind_0042b8f0(&receiver, nullptr, query) != 0;
+                case 0x01:
+                    return native_entity_root_is_kind_0047f190(&receiver, nullptr, query) != 0;
+                case 0x4c:
+                    return native_entity_is_kind_0042c010(&receiver, nullptr, query) != 0;
+                case 0x4e:
+                    return native_entity_is_kind_004351e0(&receiver, nullptr, query) != 0;
+                }
+            }
+            const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+            if (body == nullptr) {
+                return false;
+            }
+            for (std::size_t i = 0; i < body->accept_count; ++i) {
+                if (body->accepts[i] == literal) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
+            if (body == nullptr) {
+                return false;
+            }
+            for (std::size_t i = 0; i < body->accept_count; ++i) {
+                if (body->accepts[i] == literal) {
+                    return true;
+                }
+            }
             return false;
         }
-        for (std::size_t i = 0; i < body->accept_count; ++i) {
-            if (body->accepts[i] == literal) {
-                return true;
-            }
-        }
-        return false;
     } else {
         const UnitKindClassBody* body = unit_kind_body_for_class(class_id);
         if (body == nullptr) {

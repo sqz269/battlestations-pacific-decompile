@@ -1,0 +1,179 @@
+{
+  "chain": 447,
+  "slot": "g4-w1",
+  "run": 899,
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain447Bound",
+  "scope": "Live land-unit kind predicates and the missing stationary class-id producer.",
+  "rows": [
+    {
+      "native": "00748b40",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_is_kind_of",
+      "body": "src/cc13_seg41_land.cpp: stationary_is_kind_of_00748b40",
+      "state": "Live GameUnitSlot.class_id selects 36h / StationaryClass. A byte view inside that same slot places its canonical class-id cell at receiver+C4; no copied class state. The real caller query is passed as its raw DWORD. Other classes retain the existing predicate.",
+      "evidence": "bsp.py show 00748b40 --asm: fixed ancestor comparisons followed by the sole receiver+C4 DWORD comparison; original ECX receiver, stack query, EAX 0/1, RET4.",
+      "original_abi": "__thiscall ECX=receiver, query DWORD at ESP+4, EAX 0/1, RET4; fort/building bodies retain the existing fastcall spelling with unused EDX.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "0074dd90",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_is_kind_of",
+      "body": "src/cc13_seg41_land.cpp: land_vehicle_is_kind_of_0074dd90",
+      "state": "Live GameUnitSlot.class_id selects 19h / LandVehicle. A byte view inside that same slot places its canonical class-id cell at receiver+C4; no copied class state. The real caller query is passed as its raw DWORD. Other classes retain the existing predicate.",
+      "evidence": "bsp.py show 0074dd90 --asm: fixed ancestor comparisons followed by the sole receiver+C4 DWORD comparison; original ECX receiver, stack query, EAX 0/1, RET4.",
+      "original_abi": "__thiscall ECX=receiver, query DWORD at ESP+4, EAX 0/1, RET4; fort/building bodies retain the existing fastcall spelling with unused EDX.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "006f5890",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_is_kind_of",
+      "body": "src/native_mlandfort_kind.cpp: native_mlandfort_is_kind_006f5890",
+      "state": "Live GameUnitSlot.class_id selects 1Bh / LandFort. A byte view inside that same slot places its canonical class-id cell at receiver+C4; no copied class state. The real caller query is passed as its raw DWORD. Other classes retain the existing predicate.",
+      "evidence": "bsp.py show 006f5890 --asm: fixed ancestor comparisons followed by the sole receiver+C4 DWORD comparison; original ECX receiver, stack query, EAX 0/1, RET4.",
+      "original_abi": "__thiscall ECX=receiver, query DWORD at ESP+4, EAX 0/1, RET4; fort/building bodies retain the existing fastcall spelling with unused EDX.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "006f58e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_is_kind_of",
+      "body": "src/native_mcommandbuilding_kind.cpp: native_mcommandbuilding_is_kind_006f58e0",
+      "state": "Live GameUnitSlot.class_id selects 1Ch / CommandBuilding. A byte view inside that same slot places its canonical class-id cell at receiver+C4; no copied class state. The real caller query is passed as its raw DWORD. Other classes retain the existing predicate.",
+      "evidence": "bsp.py show 006f58e0 --asm: fixed ancestor comparisons followed by the sole receiver+C4 DWORD comparison; original ECX receiver, stack query, EAX 0/1, RET4.",
+      "original_abi": "__thiscall ECX=receiver, query DWORD at ESP+4, EAX 0/1, RET4; fort/building bodies retain the existing fastcall spelling with unused EDX.",
+      "abi_compatible": false,
+      "game_validated": false
+    },
+    {
+      "native": "00748a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::create_units",
+      "reason": "Only the evidenced 00748A91 class-id store is now projected for resolved StationaryClass rows; calling the complete constructor still needs its native 1ACh object, base construction, registration and ownership graph.",
+      "partial_progress": "Under the chain switch, the existing stationary factory branch publishes class_id=36h from the binary constructor constant. It previously kept -1 because no VehicleClass descriptor exists."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tuning-load candidate",
+      "reason": "No live party-brain/planner array adapter is supplied; prior campaign-mode evidence also gates out the native first-active-party query."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group planner score-list candidate",
+      "reason": "The live planner lacks a native score-list producer and assignment consumer; its existing weight vectors cannot be replaced by an unused auxiliary sorted table."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group planner score-list candidate",
+      "reason": "The live planner lacks a native score-list producer and assignment consumer; its existing weight vectors cannot be replaced by an unused auxiliary sorted table."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "This setter retains pilot_skill_index, not the separate +390h skill owner; +6DCh object notification and kind-20h device propagation consumers are missing."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "No retained controller snapshot producer and routed consumer are supplied; packing flattened host flags and copying them back would add no gameplay operation."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot construction candidate",
+      "reason": "The host uses split gun state rather than the constructor-owned native bot object; base descriptor construction and downstream virtual/field ownership are missing."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun-bot construction candidate",
+      "reason": "The host uses split gun state rather than the constructor-owned native bot object; base descriptor construction and downstream virtual/field ownership are missing."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: device-class construction candidate",
+      "reason": "No native damageable/device-class storage and stable dispatch-table owner is supplied for the live GameDeviceClassRow loader; constructor writes would have no retained descriptor consumer."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane bomb-fire direction-delta candidate",
+      "reason": "The original caller is the plane HUD bomb-fire updater; no corresponding bomb-fire screen state and output consumer were built in this packet."
+    },
+    {
+      "native": "006fe530",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::unit_is_kind_of class-07h candidate",
+      "reason": "The missing destroyer call adapter remains table-based; this packet owns only the four land predicates."
+    }
+  ],
+  "wired_total": {
+    "before": 9699,
+    "after": 9703
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed on the final C++ changes; both reconstructed_math and tool_tests passed.",
+    "call_graph": "All four wired addresses have one direct call site in entry-reachable GameUnitsHost::unit_is_kind_of; call_graph.py path 00748b40 traces through the live mission-frame path.",
+    "real_state": "Class ids come from the resolved VehicleClass.Type; StationaryClass rows now retain 00748A40 native constant 36h. offsetof(GameUnitSlot,class_id) >= C4 is build-checked, so the byte view stays within the actual slot.",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limitations": [
+    "Build and static entry reachability are verified; no game or live visual validation was performed.",
+    "The rebased byte view supplies exactly the sole class-id field the bodies read; it is not a reconstruction of the whole native unit layout.",
+    "00748A40 remains a partial host projection and is not counted as a newly called full constructor."
+  ]
+}

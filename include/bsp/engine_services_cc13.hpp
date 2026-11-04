@@ -84,8 +84,17 @@ public:
     virtual void invalid_parameter_00bf6713() = 0;
 };
 
+// Keyword acceptance only needs the live scanner's token provider. Keep this
+// seam independent of the VFS/container services so an actual stream scanner
+// can supply it without stand-ins for unrelated operations.
+class TextScannerTokenCalls {
+public:
+    virtual ~TextScannerTokenCalls() = default;
+    virtual char* text_scanner_peek_token_00bee8e0(void* scanner) = 0;
+};
+
 // Routines reconstructed elsewhere that these bodies call. Each takes the native operands.
-class EngineServiceCalls : public InvalidParameterSink {
+class EngineServiceCalls : public InvalidParameterSink, public TextScannerTokenCalls {
 public:
     // Iterator steps (ECX iterator).
     virtual void advance_vfs_mount_iterator_00bd97e0(NativeIterator&) = 0;
@@ -160,7 +169,6 @@ public:
     virtual void stream_reader_construct_00bf09a0(void* reader) = 0;
     virtual void stream_reader_assign_stream_00bf0430(void* reader, void* stream) = 0;
     virtual void profiler_clear_history_00be3380(void* profiler) = 0;
-    virtual char* text_scanner_peek_token_00bee8e0(void* scanner) = 0;
     virtual std::uint32_t text_scanner_skip_whitespace_00beedb0(void* scanner) = 0;
     virtual bool text_scanner_peek_bool_00beec40(void* scanner, char* out) = 0;
     virtual void append_checked_string_vector_00450540(void* vector, const NativeString& value) = 0;
@@ -835,7 +843,7 @@ void* structured_node_construct_with_size_00bea5a0(void* node, void* reader, con
 // 00BEEF60 BSP_TextScanner_ExpectKeyword: the same, and a miss also runs 00BEEDB0.
 // 00BEF0B0 BSP_TextScanner_ReadBool, __thiscall(ECX, char* out) RET 4 -> AL: 00BEEC40 (out); a non-empty
 // out consumes the token as above and returns its result; otherwise 00BEEDB0, *out = 0, AL 0.
-bool text_scanner_accept_keyword_00beed60(void* scanner, const char* keyword, EngineServiceCalls& calls);
+bool text_scanner_accept_keyword_00beed60(void* scanner, const char* keyword, TextScannerTokenCalls& calls);
 bool text_scanner_expect_keyword_00beef60(void* scanner, const char* keyword, EngineServiceCalls& calls);
 bool text_scanner_read_bool_00bef0b0(void* scanner, char* out, EngineServiceCalls& calls);
 

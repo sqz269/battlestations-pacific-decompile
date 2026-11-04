@@ -10,12 +10,26 @@
     "entry_reachable_reconstructed_before": 4744,
     "entry_reachable_reconstructed_after": 4746
   },
+  "counts_scope": "Original chain validation before merging origin/main; refreshed merged-tree totals are recorded under origin_main_merge.",
   "validation": {
-    "build": "Review fix: scripts/build.ps1 passed with the chain ON, OFF, and restored ON; all three test suites passed each time",
-    "call_graph": "Restored ON: 009565a0 has one direct reachable call from set_unit_skill_index_006d1eb0 at 102c6577; 008fbef0 has one direct reachable call from notify_gun_skill_level at 100c41ee. OFF: neither body is linked, and reachable reconstructed calls return to 4744.",
-    "readiness_note": "The text heuristic still labels 008fbef0 ready; its called=true and call_sites=1 fields confirm the new executable call. Readiness wired stays 9704 while the executable's reachable reconstructed address count rises to 4746.",
+    "build": "Merged-tree scripts/build.ps1 passed with chain451 ON; all three test suites passed. The preceding review fix also passed ON, OFF, and restored-ON builds/tests before this merge.",
+    "call_graph": "Merged ON: 009565a0 has one direct reachable call from set_unit_skill_index_006d1eb0 at 102c6a47; 008fbef0 has one direct reachable call from notify_gun_skill_level at 100c4a2e. The earlier pre-merge OFF build linked neither body.",
+    "readiness_note": "The text heuristic labels 008fbef0 ready despite called=true and call_sites=1; executable call evidence is authoritative. The original chain totals and refreshed merged-tree totals are recorded separately.",
     "float_math": "pc24_lint.py --diff origin/main: zero findings; descriptor floats/countdown are copied without new arithmetic",
     "runtime": "Game was not launched; build and entry-reachable call-graph evidence only"
+  },
+  "origin_main_merge": {
+    "origin_main": "1fc557ea3ba66b854399135580a28e9139835322",
+    "conflicts": [
+      "src/game_hosts_gunnery.cpp include block",
+      "src/game_hosts_units.cpp include block"
+    ],
+    "resolution": "Combined both sides' includes by hand. Preserved chain451 skill notification/countdown wiring, main's chain452 ReconClass registry, and main's chain447 land-unit predicates. No ledger shard or cmake/startup.cmake conflicts occurred; those incoming changes merged automatically.",
+    "switch": "kWireGoal4Chain451Bound remains true",
+    "checks": "Merged ON build and all three test suites pass; pc24_lint --diff origin/main has zero findings; no unresolved merge entries or whitespace errors",
+    "readiness_wired_total": 9718,
+    "entry_reachable_reconstructed_total": 4784,
+    "preserved_main_calls": "00808f90 remains directly reachable from recon_record_for_class; 00748b40 remains directly reachable from GameUnitsHost::unit_is_kind_of"
   },
   "representation": "The shared pilot_skill_index remains the scalar skill source for existing pass/base-bot readers. That alone is not equivalent to every gun notification: each plan.devices index is now mapped back to its actual owned gun row and replayed. A retained kTailGunner identity uses the loaded TailGunnerBot descriptor and existing 008FBEF0 body, on every notification even at the same level. Its copied angle error, aim periods and shoot range feed existing aim/fire consumers, and its uniform result replaces the retained +6Ch countdown without changing the held angles. Independent native base-bot+34h copies and dead plane/ship override notifications remain unmodeled.",
   "review_round_1": {

@@ -989,7 +989,7 @@ Object class_entity37_construct_base_00489f30(Seg7Host& host, Object entity) {
 
 // 0047F200. The stack matrix is an identity with row 3 = node+A4h..+ACh;
 // the angle is SUBSS -0.0f (00D7A208) - heading.
-void scene_node_set_heading_0047f200(Seg7Host& host, Object node, float heading) {
+void scene_node_set_heading_0047f200(SceneNodeHeadingHost& host, Object node, float heading) {
     alignas(4) std::uint8_t translation[0x40];
     const float values[16] = {kOne, 0, 0, 0, 0, kOne, 0, 0, 0, 0, kOne, 0,
                               native_at<float>(node, 0xA4), native_at<float>(node, 0xA8),

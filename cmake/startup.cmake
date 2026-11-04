@@ -2623,3 +2623,6 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 
 # Chain302: the application's embedded input configuration (game+3Ch, 00698680/00698A10/004DCEB0).
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/game_native_input_configuration_application.cpp)
+
+# Chain452: live mission ReconClass registry and sensor-table Lua services.
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/game_recon_sensor_class_registry.cpp)

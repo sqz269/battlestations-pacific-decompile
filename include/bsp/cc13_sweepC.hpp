@@ -70,7 +70,14 @@ struct UnitMessageConstructionHost {
     virtual void session_message_construct_base_0075b430(void* message, std::uint32_t kind) = 0;
 };
 
-struct SweepCHost : MusicRowHost, UnitMessageConstructionHost {
+// 00A776B0 reads only the channel-count table. Application bindings need not
+// implement unrelated sweep services to set the layout of a real 14h record.
+struct DialogChannelLayoutHost {
+    virtual ~DialogChannelLayoutHost() = default;
+    virtual std::uint32_t image_dword(std::uint32_t address) = 0;
+};
+
+struct SweepCHost : MusicRowHost, UnitMessageConstructionHost, DialogChannelLayoutHost {
     virtual ~SweepCHost() = default;
 
     // [00CE2218] EnterCriticalSection / [00CE2210] LeaveCriticalSection. The engine's tracked
@@ -610,7 +617,7 @@ void xlive_refresh_participant_policy_00a43180(SweepCHost& host, void* client);
 // ---------------------------------------------------------------------------
 // Segment 73: the streamed dialog and music manager accessors.
 // ---------------------------------------------------------------------------
-void dialog_channel_record_set_speaker_layout_00a776b0(SweepCHost& host, void* record,
+void dialog_channel_record_set_speaker_layout_00a776b0(DialogChannelLayoutHost& host, void* record,
                                                        std::int32_t layout);
 std::uint32_t sound_stream_is_active_00a776d0(void* stream);
 std::uint32_t sound_stream_is_over_00a776f0(void* stream);
