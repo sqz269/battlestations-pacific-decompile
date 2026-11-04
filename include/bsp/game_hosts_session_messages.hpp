@@ -121,6 +121,9 @@ public:
     // 0095ABE0's 7Fh arm uses the copy's three-bit unsigned +1Ch party;
     // its current race is read at delivery, rather than stored in the message.
     std::uint32_t queue_vehicle_party_7f(std::uint32_t party) const;
+    // SetRace 008A8720 routes 80h with flags 7. The local codec retains the
+    // low four race bits (00760420 / 00760470); party is read at delivery.
+    std::uint32_t queue_vehicle_race_80(std::uint32_t race) const;
     // Goal 4 chain 260. MT_SHIPREPAIR_BODYREPAIR (9Fh, 008AD330 RepairEnable:
     // 0075B430(9Fh) at 008AD494, +18h = 0, +4h = 1, +1Ah = 0, vtable 00D03360,
     // +1Ch = the flag; 0077C2A0 at 008AD4CD flags 7). Those are 00760A50's

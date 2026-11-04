@@ -52469,6 +52469,13 @@ void GameUnitsHost::set_unit_side_0054(std::size_t index, int party) {
     }
 }
 
+void GameUnitsHost::set_unit_race(std::size_t index, int race) {
+    // bsp.py show 00923B80: +58h is stored alongside the existing +54h party.
+    // This is the row all current +58h consumers borrow, not a second image.
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->row.race_58 = race;
+}
+
 float GameUnitsHost::command_building_landing_range_07c4(std::size_t unit_index) const {
     // 006F2780 stores the scene LandingRange dword (006F2847) at unit+7C4h
     // (006F285F), 500 when unauthored; 009E6E80's mode-4 arm (009E6F4E FILD) and

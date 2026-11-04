@@ -37,6 +37,7 @@
 #include "bsp/camera_position_modes.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/session_message_cc13_seg42.hpp"
+#include <stdexcept>
 #include "bsp/wire_goal4_chain260_switches.hpp"
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/gameplay_seg38_cc13.hpp"
@@ -724,6 +725,36 @@ std::uint32_t HostSessionMessages::queue_vehicle_party_7f(std::uint32_t party) c
     seg42::read_vehicle_set_party_00760340(&queued, &stream.in);
     // Both message lifetimes own no heap members. The native scalar delete
     // only restamps the vtable before freeing its allocation.
+    return queued.value_1c;
+}
+
+namespace {
+template <class IsType>
+bool copy_goes_to_unit_handler(IsType is_type);
+}
+
+std::uint32_t HostSessionMessages::queue_vehicle_race_80(std::uint32_t race) const {
+    const Image& image = *image_;
+    // bsp.py show 008A8720: 008A8879..008A88B7 builds 80h, delivery 1,
+    // zero relay/id, vtable 00D032FC and the Lua race at +1Ch, flags 7.
+    // Reuse 00760390's identical header stores once for each lifetime.
+    seg42::VehicleValueMessage sent{};
+    seg42::construct_vehicle_set_race_00760390(&sent, image.seg42);
+    sent.value_1c = race;
+    LocalStream stream;
+    seg42::write_vehicle_set_race_00760420(&sent, &stream.out);
+    stream.begin_read();
+    seg42::VehicleValueMessage queued{};
+    seg42::construct_vehicle_set_race_00760390(&queued, image.seg42);
+    seg42::read_vehicle_set_race_00760470(&queued, &stream.in);
+    // 00780120's real IsType ladder must select the session kind switch,
+    // whose 80h arm consumes this payload (0095ABE0 / unit_message_arms.cpp).
+    if (!copy_goes_to_unit_handler([](std::uint32_t type) {
+            return seg42::is_vehicle_set_race_007603f0(type);
+        })
+        || queued.h.base.type_10 != 0x80)
+        throw std::logic_error("SetRace: decoded copy did not reach the unit race arm");
+    // No heap members: the stack lifetimes require no scalar free.
     return queued.value_1c;
 }
 

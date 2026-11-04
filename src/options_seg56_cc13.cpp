@@ -904,7 +904,7 @@ int lua_enter_player_to_role(LuaArgs& args, Seg56Host& host)
     return 0;
 }
 
-int lua_set_race(LuaArgs& args, ImageAccess& image, Seg56Host& host)
+int lua_set_race_008a8720(LuaArgs& args, EntityIntImageAccess& image, EntityRaceHost& host)
 {
     const std::int32_t race = args.get_integer(1); // read before the entity (008A8824)
     void* entity = args.entity_at(0);
