@@ -38,8 +38,32 @@ void FlakBullet_Activate_0070cea0(void* self);
 
 // --- Segment 36: UnitGroup / ShipGroup / ObserverMember (0x0070d1b0..0x0070ecf0) ---
 float Unit_ClassMaxSpeed_0070d1b0(void* self);
+// Borrowed state views for the existing bodies; raw entries below delegate to
+// these same algorithms. Names describe recovered offsets, not native symbols.
+class UnitClassMaxSpeedView {
+public:
+    virtual ~UnitClassMaxSpeedView() = default;
+    virtual bool is_kind_6() const = 0;
+    virtual float ship_class_speed_0500() const = 0;
+    virtual float squadron_plane_class_speed_0188() const = 0;
+};
+float Unit_ClassMaxSpeed_0070d1b0(const UnitClassMaxSpeedView& unit);
+
+class UnitGroupSpeedCeilingView {
+public:
+    virtual ~UnitGroupSpeedCeilingView() = default;
+    virtual float seed_00cfd6f4() const = 0;
+    virtual float unset_00cf4888() const = 0;
+    virtual std::int32_t member_count_04f8() const = 0;
+    virtual bool member_present(std::int32_t index) const = 0;
+    virtual float member_class_speed(std::int32_t index) const = 0;
+    virtual void set_missing_member_speed_30(std::int32_t index, float value) = 0;
+    virtual float ceiling_0504() const = 0;
+    virtual void set_ceiling_0504(float value) = 0;
+};
 void UnitGroup_InitWithLeader_0070d7b0(void* self, void* leader);
 void UnitGroup_RefreshSpeedCeiling_0070da00(void* self);
+void UnitGroup_RefreshSpeedCeiling_0070da00(UnitGroupSpeedCeilingView& group);
 void* UnitGroup_CreateForLeader_0070db20(void* leader);
 void UnitGroup_SwapSlotsByDistance_0070db60(void* self);
 void* Entity_AsKind06_0070e3a0(void* self);

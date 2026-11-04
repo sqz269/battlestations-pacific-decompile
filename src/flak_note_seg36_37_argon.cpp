@@ -636,16 +636,38 @@ void FlakBullet_Activate_0070cea0(void* self) {
 }
 
 // [0x0070d1b0] BSP_Unit_ClassMaxSpeed
-// Original ABI: __thiscall (ECX = self), RET (returns float in ST0).
-float Unit_ClassMaxSpeed_0070d1b0(void* self) {
-    using IsKindFn = std::uint8_t(__thiscall*)(void*, std::uint32_t);
-    if (vslot_at<IsKindFn>(self, 0x5c)(self, 6u) != 0u) {
-        const void* cls = field_at<const void*>(self, 0x538);
-        return field_at<float>(cls, 0x500);
+// Original ABI: ECX = unit, RET, float result in ST0. The borrowed interface
+// is a new C++ contract. bsp.py show 0070D1B0: test kind 6 before selecting
+// [[unit+538h]+500h] or [[[unit+3D0h]+538h]+188h]; read only that arm.
+float Unit_ClassMaxSpeed_0070d1b0(const UnitClassMaxSpeedView& unit) {
+    if (unit.is_kind_6()) {
+        return unit.ship_class_speed_0500();
     }
-    const void* sub = field_at<const void*>(self, 0x3d0);
-    const void* cls = field_at<const void*>(sub, 0x538);
-    return field_at<float>(cls, 0x188);
+    return unit.squadron_plane_class_speed_0188();
+}
+
+namespace {
+class RawUnitClassMaxSpeedView final : public UnitClassMaxSpeedView {
+public:
+    explicit RawUnitClassMaxSpeedView(void* unit) : unit_(unit) {}
+    bool is_kind_6() const override {
+        using IsKindFn = std::uint8_t(__thiscall*)(void*, std::uint32_t);
+        return vslot_at<IsKindFn>(unit_, 0x5c)(unit_, 6u) != 0u;
+    }
+    float ship_class_speed_0500() const override {
+        return field_at<float>(field_at<const void*>(unit_, 0x538), 0x500);
+    }
+    float squadron_plane_class_speed_0188() const override {
+        const void* sub = field_at<const void*>(unit_, 0x3d0);
+        return field_at<float>(field_at<const void*>(sub, 0x538), 0x188);
+    }
+private:
+    void* unit_;
+};
+} // namespace
+
+float Unit_ClassMaxSpeed_0070d1b0(void* self) {
+    return Unit_ClassMaxSpeed_0070d1b0(RawUnitClassMaxSpeedView{self});
 }
 
 // [0x0070d7b0] BSP_UnitGroup_InitWithLeader
@@ -677,32 +699,55 @@ void UnitGroup_InitWithLeader_0070d7b0(void* self, void* leader) {
 }
 
 // [0x0070da00] BSP_UnitGroup_RefreshSpeedCeiling
-// Original ABI: __thiscall (ECX = self), RET.
-void UnitGroup_RefreshSpeedCeiling_0070da00(void* self) {
-    field_at<float>(self, 0x504) = *reinterpret_cast<const float*>(0x00cfd6f4);
-    const std::int32_t count = field_at<std::int32_t>(self, 0x4f8);
-    if (count <= 0) {
-        return;
-    }
-    std::uint8_t* slot = static_cast<std::uint8_t*>(self) + 0x18;
-    for (std::int32_t i = 0; i < count; ++i, slot += 0x34) {
-        void* member = field_at<void*>(slot, 0x00);
-        if (member != nullptr) {
-            using IsKindFn = std::uint8_t(__thiscall*)(void*, std::uint32_t);
-            float spd = 0.0f;
-            if (vslot_at<IsKindFn>(member, 0x5c)(member, 6u) != 0u) {
-                spd = field_at<float>(field_at<const void*>(member, 0x538), 0x500);
-            } else {
-                const void* sub = field_at<const void*>(member, 0x3d0);
-                spd = field_at<float>(field_at<const void*>(sub, 0x538), 0x188);
-            }
-            if (field_at<float>(self, 0x504) > spd) {
-                field_at<float>(self, 0x504) = spd;
+// Original ABI: ECX = group, RET. bsp.py show 0070DA00 --asm: the class-speed
+// selector is the expression in 0070D1B0; share it rather than duplicate it.
+// FCOMIP/JBE at 0070DA6D..71 skips equal/unordered values. The loop rereads
+// +4F8h at 0070DA90, and a null member gets the image's 999.0f at record+30h.
+void UnitGroup_RefreshSpeedCeiling_0070da00(UnitGroupSpeedCeilingView& group) {
+    group.set_ceiling_0504(group.seed_00cfd6f4());
+    for (std::int32_t i = 0; i < group.member_count_04f8(); ++i) {
+        if (group.member_present(i)) {
+            const float spd = group.member_class_speed(i);
+            if (group.ceiling_0504() > spd) {
+                group.set_ceiling_0504(spd);
             }
         } else {
-            field_at<float>(slot, 0x30) = *reinterpret_cast<const float*>(0x00cf4888);
+            group.set_missing_member_speed_30(i, group.unset_00cf4888());
         }
     }
+}
+
+void UnitGroup_RefreshSpeedCeiling_0070da00(void* self) {
+    class RawGroupView final : public UnitGroupSpeedCeilingView {
+    public:
+        explicit RawGroupView(void* group) : group_(group) {}
+        float seed_00cfd6f4() const override {
+            return *reinterpret_cast<const float*>(0x00cfd6f4);
+        }
+        float unset_00cf4888() const override {
+            return *reinterpret_cast<const float*>(0x00cf4888);
+        }
+        std::int32_t member_count_04f8() const override {
+            return field_at<std::int32_t>(group_, 0x4f8);
+        }
+        bool member_present(std::int32_t i) const override {
+            return field_at<void*>(slot(i), 0) != nullptr;
+        }
+        float member_class_speed(std::int32_t i) const override {
+            return Unit_ClassMaxSpeed_0070d1b0(field_at<void*>(slot(i), 0));
+        }
+        void set_missing_member_speed_30(std::int32_t i, float value) override {
+            field_at<float>(slot(i), 0x30) = value;
+        }
+        float ceiling_0504() const override { return field_at<float>(group_, 0x504); }
+        void set_ceiling_0504(float value) override { field_at<float>(group_, 0x504) = value; }
+    private:
+        void* slot(std::int32_t i) const {
+            return static_cast<std::uint8_t*>(group_) + 0x18 + i * 0x34;
+        }
+        void* group_;
+    } group{self};
+    UnitGroup_RefreshSpeedCeiling_0070da00(group);
 }
 
 // [0x0070db20] BSP_UnitGroup_CreateForLeader

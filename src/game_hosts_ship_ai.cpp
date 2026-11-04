@@ -16,6 +16,7 @@
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
+#include "bsp/wire_goal4_chain532_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
 #include "bsp/wire_goal4_chain272_switches.hpp"
@@ -2984,9 +2985,81 @@ struct GameShipAiHost::Impl {
         // 0070DA00 / 0070D0F0: min of the members' class+500h, the same seed.
         float ceiling = 9999999.0f;
         GameUnitGroupStorage* retained_group = nullptr;
+        bool class_speed_refreshed = false;
+        if constexpr (bsp::kWireGoal4Chain532Bound) {
+            if constexpr (bsp::kWireGoal4Chain272Bound) {
+                retained_group = &formation_speed_groups[group];
+            }
+            // Only ship groups have the exact class+500h producer here.
+            // A non-ship needs the real unit+3D0h -> plane-class+188h chain;
+            // the public plane-speed convenience lookup does not establish it.
+            // Keep that group's previous path until its object exists.
+            bool ship_members_present = true;
+            for (std::int32_t i = 0; i < count; ++i) {
+                const std::size_t member = units.formation_member_unit(group, i);
+                if (member == static_cast<std::size_t>(-1) || member >= controllers.size()
+                    || !units.unit_is_kind_of(member, 6)) {
+                    ship_members_present = false;
+                    break;
+                }
+            }
+            if (ship_members_present) {
+                struct UnitSpeedView final : bsp::flak_note_seg36_37_argon::UnitClassMaxSpeedView {
+                    const Impl& host;
+                    std::size_t member;
+                    UnitSpeedView(const Impl& h, std::size_t m) : host(h), member(m) {}
+                    bool is_kind_6() const override { return host.units.unit_is_kind_of(member, 6); }
+                    float ship_class_speed_0500() const override {
+                        return host.units.unit_class_max_speed_0500(member);
+                    }
+                    float squadron_plane_class_speed_0188() const override {
+                        throw std::logic_error("Formation class-speed view requires a ship member");
+                    }
+                };
+                struct GroupSpeedView final : bsp::flak_note_seg36_37_argon::UnitGroupSpeedCeilingView {
+                    const Impl& host;
+                    std::int32_t group;
+                    float& ceiling;
+                    GameUnitGroupStorage* retained;
+                    GroupSpeedView(const Impl& h, std::int32_t g, float& c, GameUnitGroupStorage* r)
+                        : host(h), group(g), ceiling(c), retained(r) {}
+                    float seed_00cfd6f4() const override { return 9999999.0f; }
+                    float unset_00cf4888() const override { return 999.0f; }
+                    std::int32_t member_count_04f8() const override {
+                        return host.units.formation_member_count(group);
+                    }
+                    bool member_present(std::int32_t i) const override {
+                        const std::size_t member = host.units.formation_member_unit(group, i);
+                        return member != static_cast<std::size_t>(-1) && member < host.controllers.size();
+                    }
+                    float member_class_speed(std::int32_t i) const override {
+                        const UnitSpeedView unit{host, host.units.formation_member_unit(group, i)};
+                        return bsp::flak_note_seg36_37_argon::Unit_ClassMaxSpeed_0070d1b0(unit);
+                    }
+                    void set_missing_member_speed_30(std::int32_t, float) override {
+                        // Admission above excludes null/stale records. Do not reset
+                        // an auxiliary copy in place of the owning units-host record.
+                        throw std::logic_error("Admitted formation lost a ship member during speed refresh");
+                    }
+                    float ceiling_0504() const override { return ceiling; }
+                    void set_ceiling_0504(float value) override {
+                        ceiling = value;
+                        if (retained != nullptr) retained->publish_speed_ceiling(value);
+                    }
+                } view{*this, group, ceiling, retained_group};
+                // bsp.py show 0070DA00 --asm and 0070D1B0: these bodies
+                // replace the reduction below. Their result is retained at
+                // +504h and consumed by 0070D0F0 and the throttle ratios.
+                bsp::flak_note_seg36_37_argon::UnitGroup_RefreshSpeedCeiling_0070da00(view);
+                class_speed_refreshed = true;
+            } else if (retained_group != nullptr) {
+                retained_group->publish_speed_ceiling(9999999.0f);
+            }
+        } else {
         if constexpr (bsp::kWireGoal4Chain272Bound) {
             retained_group = &formation_speed_groups[group];
             retained_group->publish_speed_ceiling(9999999.0f); // 00CFD6F4
+        }
         }
         // 0070E3C0: max of 0082E850 over the ship members other than the leader,
         // seeded 100.0f (00CE3D08).
@@ -2998,6 +3071,18 @@ struct GameShipAiHost::Impl {
                 const float slot = controllers[member].member_speed_30;
                 if (slot_min > slot) slot_min = slot;
             }
+            if constexpr (bsp::kWireGoal4Chain532Bound) {
+                if (!class_speed_refreshed) {
+                    const float max_speed = units.unit_class_max_speed_0500(member);
+                    if constexpr (bsp::kWireGoal4Chain272Bound) {
+                        if (retained_group->speed_ceiling() > max_speed) {
+                            retained_group->publish_speed_ceiling(max_speed);
+                        }
+                    } else {
+                        if (ceiling > max_speed) ceiling = max_speed;
+                    }
+                }
+            } else {
             const float max_speed = units.unit_class_max_speed_0500(member);
             if constexpr (bsp::kWireGoal4Chain272Bound) {
                 if (retained_group->speed_ceiling() > max_speed) {
@@ -3005,6 +3090,7 @@ struct GameShipAiHost::Impl {
                 }
             } else {
                 if (ceiling > max_speed) ceiling = max_speed;
+            }
             }
             if constexpr (!bsp::kWireGoal2Chain71Bound) {
                 if (member != leader && units.unit_is_kind_of(member, 6)) {
