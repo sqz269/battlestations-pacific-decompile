@@ -1,0 +1,140 @@
+{
+  "chain": 469,
+  "owner": "agent/g4-w5",
+  "base": "f09de2d94e9aa0ec0caf772bad14970b8378b318",
+  "switch": "bsp::kWireGoal4Chain469Bound",
+  "scope": "Reuse the existing whole sRGB byte setter for the live frame-target constructor's equivalent original zero-byte store. This is Source reuse, not an original native call at that constructor site or new dynamic sRGB policy.",
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math, tool_tests and cc462_loading_config all passed",
+    "float_math_changed": false,
+    "wire_readiness_wired_before": 9742,
+    "wire_readiness_wired_after": 9743,
+    "call_graph_recon_called_before": 4812,
+    "call_graph_recon_called_after": 4813,
+    "new_call": "set_native_frame_target_srgb_byte_00b1f700 <- construct_native_frame_target_owner_00b1fbb0 <- construct_native_render_resources_00b14a10 <- RenderResourcesGraph::construct <- MissionRenderResourcesGraph::construct_and_initialize <- MissionShipGraph::prepare <- GameNativeRendererApplication::prepare_mission_ship <- GameDeviceHost::clear_and_present <- GameLoopCallbacks::frame <- game entry",
+    "new_call_sites": 1,
+    "game_run": false,
+    "evidence": [
+      "bsp.py show 00b1f700: complete byte store at owner+3Ch, RET4",
+      "bsp.py show 00b1fbb0 --start 30 --lines 50: zero +3Ch between +38h and +08h writes",
+      "call_graph.py who 00b1f700: reachable direct call from construct_native_frame_target_owner_00b1fbb0",
+      "call_graph.py path 00b1f700: complete entry path"
+    ]
+  },
+  "rows": [
+    {
+      "native": "00b1f700",
+      "status": "wired",
+      "host_site": "src/native_frame_target_owner.cpp::construct_native_frame_target_owner_00b1fbb0",
+      "reason": "Replaces the constructor's existing +3Ch zero store with the single existing whole setter, on the same actual 40h owner and at the same point in the ordered stores; original padding and OFF store survive. noinline retains an auditable Release call."
+    },
+    {
+      "native": "009b3240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl land-task installation",
+      "reason": "Missing the same-task native base/composite, executable profiles, retained native identities and complete state-entry services required by NativeLandTaskConstructorCalls; current host installs flattened semantic state."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::BotApproachLand on-ground update",
+      "reason": "Missing the actual shared approach+18h command-plan object with its owner+25Ch cell; a sparse throwaway plan would not be real task state."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::pilot task fast-path gate",
+      "reason": "Missing canonical raw task+2F4h unit and unit+9C2h side-indexed flag storage in this host; current update uses semantic unit/control facts."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::controller snapshot provenance",
+      "reason": "Missing a retained ControllerSnapshotMessage producer, transport and consumer; round-tripping flattened flags through a temporary copy would add no real snapshot path."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp::GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing the frame-job-thread enqueue arm and its actual source/destination LuaVariantRecord vectors; this host only drains deferred named calls."
+    },
+    {
+      "native": "00982c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::failure warning_fire_failure",
+      "reason": "Missing the actual raw warning manager, suppression/name maps, entity layout and Seg62Host channel/lock/warning services required by the whole dispatch body."
+    },
+    {
+      "native": "009832f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::repair warning_leak_channel_009832f0",
+      "reason": "Missing the raw warning-manager/entity identities and complete dispatch/local-warning services; Lua semantic subscriptions are not that native manager."
+    },
+    {
+      "native": "00983780",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::repair warning_fire_channel_00983780",
+      "reason": "Missing the raw warning-manager/entity identities and complete dispatch/local-warning services; Lua semantic subscriptions are not that native manager."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::controlled-unit listener publication",
+      "reason": "Missing the actual renderer listener+1C0h and invalidation+30h graph, with complete root-unlinking bindings, at this semantic controlled-unit host site."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::bomb release/flight path",
+      "reason": "Missing a retained BombTickState and complete per-projectile air/water, sweep, timeout, expiration and owner-grace bindings; the drop path alone cannot host the whole tick."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::formation member reads",
+      "reason": "Missing produced member+04h/+08h/+0Ch vector values in the current group projection; those fields are explicitly unread/unpopulated there, and no-match requires actual F87574 globals."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::auto-target command target construction",
+      "reason": "Missing admitted current native F87574/78/7C data and an actual 18h command-target owner; a one-based semantic entity handle cannot supply either."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "Missing the actual HUD screen mode, selection vector/checked iterator domain and context-level input-manager services required by the raw reset body."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::scripted-name baseline teardown consumer",
+      "reason": "Missing a teardown adapter for the actual Lua object iteration and native string set/vector ownership; the existing host here only builds the baseline names."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp::marker screen update",
+      "reason": "Missing retained per-unit marker slot objects, keep flags and registered observer-pair state at this update site; inputs cannot be invented from the screen call."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing the real ambient SoundInstance and sample producer; has_ambient_sound_instance is false and start_ambient_sound remains a record."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::GameGunneryHost::notify_gun_skill_level",
+      "reason": "No missing wiring: compiled graph already calls this existing body from notify_gun_skill_level; readiness's text state is stale for this site."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp::SensorClassBinding::load_from_row_00809147",
+      "reason": "No missing binding: the existing class registry already calls the whole loader over the live ReconClass Lua row; duplicating it at the gunnery provenance mention would load twice."
+    }
+  ]
+}

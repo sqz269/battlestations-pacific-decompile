@@ -1,5 +1,6 @@
 #include "bsp/native_frame_target_owner.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain469_switches.hpp"
 
 #include <exception>
 #include <new>
@@ -117,7 +118,15 @@ NativeFrameTargetOwnerStorage* construct_native_frame_target_owner_00b1fbb0(
     put(address(owner, 0x20), 0);
     put(address(owner, 0x24), 0);
     put(address(owner, 0x38), 0);
-    put_byte(address(owner, 0x3c), 0);
+    if constexpr (kWireGoal4Chain469Bound) {
+        // Source reuse on the actual live 40h target group. bsp.py show
+        // 00b1fbb0 stores zero to +3Ch here; 00b1f700 performs that exact
+        // byte store. Keep its original position between +38h and +08h,
+        // preserving +3Dh..+3Fh. This is not an original native call site.
+        set_native_frame_target_srgb_byte_00b1f700(*owner, 0);
+    } else {
+        put_byte(address(owner, 0x3c), 0);
+    }
     put(address(owner, 8), 0);
     put(address(owner, 0x28), 0);
     put(address(owner, 0xc), 0);
@@ -166,7 +175,7 @@ void set_native_frame_target_depth_00b1fb00(NativeFrameTargetOwnerStorage& owner
     assign_surface(address(&owner, 0x18), incoming, context);
 }
 
-void set_native_frame_target_srgb_byte_00b1f700(
+__declspec(noinline) void set_native_frame_target_srgb_byte_00b1f700(
     NativeFrameTargetOwnerStorage& owner, std::uint8_t value) noexcept {
     put_byte(address(&owner, 0x3c), value);
 }
