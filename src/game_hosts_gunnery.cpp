@@ -57,6 +57,8 @@
 #include "bsp/wire_goal4_chain335_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/wire_goal4_chain356_switches.hpp"
+#include "bsp/wire_goal4_chain365_switches.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"   // goal 4 chain 365: the repair task at unit+A20h
 #include "bsp/wire_goal4_chain369_switches.hpp"       // chain 369: 008522C0 / 00852410
 #include "bsp/ship_catapult_host.hpp"                 // chain 369: catapult launch record
 #include "bsp/pc24_unitshost_cc13.hpp"                // chain 369: 0042B2F0
@@ -4441,6 +4443,20 @@ struct GameGunneryHost::Impl {
         float fire_seconds{0.0f};     // task+38h
         float water_tick{0.0f};       // task+2Ch <- settings+3B0h WaterTickDamage
         float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
+        // Goal 4 chain 365: task+3Ch, the running sum 0093A470 adds every fire
+        // amount into, and task+40h, 0093A4F0's copy of the new water seconds.
+        // 0093BCC0 zeroes both (0093BD50 / 0093BD55), and so do the timer steps
+        // when their seconds run out (0093C2B3 / 0093C1C3, run_damage_control);
+        // nothing in this host reads them yet. The adders' +44h clear is
+        // task.reported_repaired below.
+        // These two floats are the authoritative host copy of +3Ch / +40h.
+        // task.fire_expired_slot / water_expired_slot (RepairTaskState, typed
+        // uint32, labelled with +34h/+38h fire/water swapped against the adders'
+        // listing) name the same offsets, but only the unlinked
+        // repair_task_update_0093ca20 sequence and the revive reset write them,
+        // and nothing reads them.
+        float fire_total_3c{0.0f};
+        float water_last_40{0.0f};
         float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
         // The two factors apart, for 0093C770's own order when a power-up
         // product scales the rate (packet cc13-powerup-bind, rev5 N2).
@@ -4472,6 +4488,9 @@ struct GameGunneryHost::Impl {
         // (what kHullRepairEnableRouteBound withholds).
         int script_hull_repair{-1};
         double withheld{0.0};
+        // Goal 4 chain 365: the last FailureRepairEnable flag (008AD540 -> 00939FE0)
+        // stored at task+46h for this unit (-1: none).
+        int script_failure_repair{-1};
         // Packet cc13_natives1: unit+9E4h / +9E5h, the jam bytes 008198A0 sets.
         bool steering_jam_9e4{false};
         bool engine_jam_9e5{false};
@@ -6489,6 +6508,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     flat_scaled(type_id, "dcgun", 1000000.0f, 2.0f));
             }
             dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
+            if constexpr (bsp::kWireGoal4Chain365Bound) {
+                // Goal 4 chain 365: as for 9Fh below, a FailureRepairEnable this
+                // host received before the task's construction point is kept.
+                if (dc.script_failure_repair >= 0) {
+                    dc.task.failure_repair_enabled = dc.script_failure_repair != 0;
+                }
+            }
             dc.task.hull_repair_enabled = true;      // +45h = 1
             if (dc.script_hull_repair >= 0) {
                 // In the image 0093BCC0 runs at creation, before any script can
@@ -17039,6 +17065,53 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     float seconds) {
     if (unit >= damage_control.size() || unit >= unit_state.size()) return;
     DamageControl& dc = damage_control[unit];
+    if constexpr (bsp::kWireGoal4Chain365Bound) {
+        // Goal 4 chain 365: 00821E80's 9Eh add arm calls 0093A4F0 (0082205C) or
+        // 0093A470 (008220A3) with ECX = unit+A20h. The task view is this host's
+        // fields for the same offsets (+2Ch/+30h ticks, +34h water, +38h fire,
+        // +3Ch, +40h, +44h = task.reported_repaired, +45h/+46h the enables),
+        // copied in and written back around the body. The two statistics calls
+        // go to [00F8A0C4], the listener manager (00983780 "fire", 009832F0
+        // "leak"), which this host does not hold: recorded, as the 0090E6C0 tail
+        // into the scoring owner was before.
+        namespace g61 = bsp::gameplay_seg61_62_cc13;
+        g61::RepairTask task;
+        task.water_tick_2c = dc.water_tick;
+        task.fire_tick_30 = dc.fire_tick;
+        task.water_seconds_34 = dc.water_seconds;
+        task.fire_seconds_38 = dc.fire_seconds;
+        task.fire_total_3c = dc.fire_total_3c;
+        task.water_last_40 = dc.water_last_40;
+        task.byte_44 = dc.task.reported_repaired ? 1 : 0;
+        task.hull_repair_enabled_45 = dc.task.hull_repair_enabled;
+        task.failure_repair_enabled_46 = dc.task.failure_repair_enabled;
+        g61::RepairAddHost add_host;
+        add_host.warning_fire_channel_00983780 = [this](float) {
+            record("RepairTask::listener_manager_fire_00983780", 0x00983780u);
+        };
+        add_host.warning_leak_channel_009832f0 = [this](float) {
+            record("RepairTask::listener_manager_leak_009832f0", 0x009832f0u);
+        };
+        add_host.pending_exceeds_health_0090e6c0 = [this] {
+            ++dc_doomed_notes;
+            record("DamageControl::pending_exceeds_health_0090e6c0", 0x0090e6c0u);
+        };
+        const float health = unit_state[unit].health;   // unit+370h
+        if (water) {
+            g61::repair_add_water_seconds_0093a4f0(task, seconds, health, add_host);
+            ++dc_water_adds;
+            done("DamageControl::add_water_seconds_0093a4f0", 0x0093a4f0u);
+        } else {
+            g61::repair_add_fire_seconds_0093a470(task, seconds, health, add_host);
+            ++dc_fire_adds;
+            done("DamageControl::add_fire_seconds_0093a470", 0x0093a470u);
+        }
+        dc.water_seconds = task.water_seconds_34;
+        dc.fire_seconds = task.fire_seconds_38;
+        dc.fire_total_3c = task.fire_total_3c;
+        dc.water_last_40 = task.water_last_40;
+        dc.task.reported_repaired = task.byte_44 != 0;
+    } else {
     if (water) {
         dc.water_seconds += seconds;
         ++dc_water_adds;
@@ -17052,6 +17125,7 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
     if (pending > unit_state[unit].health) {
         ++dc_doomed_notes;
         record("DamageControl::pending_exceeds_health_0090e6c0", 0x0090e6c0u);
+    }
     }
 }
 
@@ -17217,10 +17291,27 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 total += h0 - state.health;
             }
         };
+        if constexpr (bsp::kWireGoal4Chain365Bound) {
+            // Goal 4 chain 365: when the stored difference (FSUB, FSTP float) is
+            // below 0.0 (FLDZ / FCOMI / JBE: an unordered value keeps both), the
+            // step stores 0 at the seconds and at its companion: 0093C120 +34h and
+            // +40h (0093C1BE / 0093C1C3), 0093C210 +38h and +3Ch (0093C2AE /
+            // 0093C2B3). The timer below clamps the seconds; the companions, which
+            // the adders 0093A4F0 / 0093A470 write, are zeroed here.
+            const bool water_clamps = dc.water_seconds - dt < 0.0f;   // 0093C1A4..0093C1B9
+            timer(dc.water_seconds, dc.water_tick, dc.water_damage);
+            if (water_clamps) dc.water_last_40 = 0.0f;                 // 0093C1C3
+            done("DamageControl::water_step_0093c120", 0x0093c120u);
+            const bool fire_clamps = dc.fire_seconds - dt < 0.0f;     // 0093C294..0093C2A9
+            timer(dc.fire_seconds, dc.fire_tick, dc.fire_damage);
+            if (fire_clamps) dc.fire_total_3c = 0.0f;                  // 0093C2B3
+            done("DamageControl::fire_step_0093c210", 0x0093c210u);
+        } else {
         timer(dc.water_seconds, dc.water_tick, dc.water_damage);
         done("DamageControl::water_step_0093c120", 0x0093c120u);
         timer(dc.fire_seconds, dc.fire_tick, dc.fire_damage);
         done("DamageControl::fire_step_0093c210", 0x0093c210u);
+        }
         state.row.health = state.health;
         bsp::UnitHealth health;
         health.current_health = state.health;
@@ -19887,6 +19978,11 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
         dc.task.water_expired_slot = 0;
         dc.task.fire_expired_slot = 0;
         dc.task.reported_repaired = false;
+        if constexpr (bsp::kWireGoal4Chain365Bound) {
+            // 0093BCC0 zeroes +3Ch / +40h (0093BD50 / 0093BD55) for a fresh entity.
+            dc.fire_total_3c = 0.0f;
+            dc.water_last_40 = 0.0f;
+        }
         dc.segments_built = false;
         for (int i = 0; i < 20; ++i) {
             dc.segment_health[i] = 0.0f;
@@ -19894,6 +19990,12 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
         }
         dc.destroyed_segments.clear();
         dc.script_hull_repair = -1;
+        if constexpr (bsp::kWireGoal4Chain365Bound) {
+            // The re-created entity's task is a fresh 0093BCC0 one (+46h = 1,
+            // 0093BD4C); a FailureRepairEnable sent to the old entity is dropped.
+            dc.script_failure_repair = -1;
+            dc.task.failure_repair_enabled = true;
+        }
     }
     h.log.notef("gunnery: garrison revive unit=%s health=%.0f t=%.2f (006F3660 re-create, "
         "packet cc9_command_building_garrison)", s.row.name.c_str(),
@@ -20681,6 +20783,27 @@ void GameGunneryHost::set_hull_repair_enabled_00939fd0(std::size_t unit_index, b
     impl_->log.notef("  repair enable: unit %zu %s enabled=%d damage_control=%d bound=%d "
         "(008AD4CD 9Fh -> 008220D7 -> 00939FD0 task+45h)", unit_index, name, enabled ? 1 : 0,
         dc.enabled ? 1 : 0, kHullRepairEnableRouteBound ? 1 : 0);
+}
+
+void GameGunneryHost::set_failure_repair_enabled_00939fe0(std::size_t unit_index, bool enabled) {
+    // Goal 4 chain 365. 008AD69F: LEA ECX, [entity+A20h]; CALL 00939FE0, which stores
+    // AL at task+46h (MOV [ECX+46h], AL) and returns (RET 4). The task view carries
+    // this host's +46h (task.failure_repair_enabled) through the body and back.
+    if (unit_index >= impl_->damage_control.size()) impl_->damage_control.resize(unit_index + 1);
+    auto& dc = impl_->damage_control[unit_index];
+    // In the image 0093BCC0 has run at creation before a script can call; a flag this
+    // host receives before build_guns is kept and re-applied there.
+    dc.script_failure_repair = enabled ? 1 : 0;
+    bsp::gameplay_seg61_62_cc13::RepairTask task;
+    task.failure_repair_enabled_46 = dc.task.failure_repair_enabled;
+    bsp::gameplay_seg61_62_cc13::repair_set_failure_repair_enabled_00939fe0(task, enabled);
+    dc.task.failure_repair_enabled = task.failure_repair_enabled_46;
+    impl_->done("RepairTask::set_failure_repair_enabled_00939fe0", 0x00939fe0u);
+    const char* name = unit_index < impl_->unit_state.size()
+        ? impl_->unit_state[unit_index].row.name.c_str() : "?";
+    impl_->log.notef("  failure repair enable: unit %zu %s enabled=%d damage_control=%d "
+        "(008AD540 -> 00939FE0 task+46h, goal 4 chain 365)", unit_index, name,
+        enabled ? 1 : 0, dc.enabled ? 1 : 0);
 }
 
 void GameGunneryHost::set_director_fire_stance_0071be80(std::size_t unit_index, int stance) {

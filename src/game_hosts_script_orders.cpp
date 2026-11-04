@@ -43,6 +43,8 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
 #include "bsp/wire_goal4_chain354_switches.hpp"
+#include "bsp/wire_goal4_chain365_switches.hpp"
+#include "bsp/cc13_left55_seg56b.hpp"   // goal 4 chain 365: 008AD540 / 008ACD10 bodies
 #include "bsp/wire_goal4_chain369_switches.hpp"  // goal 4 chain 369 (008522C0)
 #include "bsp/cc13_sweepB.hpp"
 #include "bsp/world_ocean.hpp"
@@ -720,6 +722,74 @@ private:
     GameScriptOrdersHost& owner_;
 };
 
+// Goal 4 chain 365: FailureRepairEnable (008AD540) and AddFire (008ACD10) through
+// their bodies in src/cc13_left55_seg56b.cpp. Both read only the core argument
+// accessors (008AD540: 00888AA0 argument 0 at 008AD63F, 00B66250 argument 1 at
+// 008AD67B; 008ACD10: 00888AA0 at 008ACE12, 00B66290 twice at 008ACE41 / 008ACE6F
+// and 00B66270 at 008ACE9E); every other accessor is refused.
+[[noreturn]] void repair_binding_unreached(const char* what) {
+    throw std::logic_error(std::string("FailureRepairEnable/AddFire: unreached ") + what);
+}
+
+class RepairBindingArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit RepairBindingArgs(bsp::LuaBindingArgumentReader& core) : core_(core) {}
+    int count() override { return core_.count(); }
+    int get_integer(int index) override { return core_.get_integer(index); }
+    double get_number(int index) override { return core_.get_number(index); }
+    bool get_boolean(int index) override { return core_.get_boolean(index); }
+    std::string get_string(int index) override { return core_.get_string(index); }
+    bool is_string(int index) override { return core_.is_string(index); }
+    bool is_nil(int index) override { return core_.is_nil(index); }
+    bool is_entity_table(int index) override { return core_.is_entity_table(index); }
+    void* entity_at(int index) override { return core_.entity_at(index); }
+    bool is_boolean(int) override { repair_binding_unreached("00B66000"); }
+    bool is_number(int) override { repair_binding_unreached("00B66050"); }
+    bool is_integer(int) override { repair_binding_unreached("00B66A60"); }
+    bool is_table(int) override { repair_binding_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { repair_binding_unreached("00888760"); }
+    bool is_vector3_table(int) override { repair_binding_unreached("0088B840"); }
+    void* to_userdata(int) override { repair_binding_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { repair_binding_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        repair_binding_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        repair_binding_unreached("00B67800 number");
+    }
+
+private:
+    bsp::LuaBindingArgumentReader& core_;
+};
+
+// 008AD540's two callees. The class test's answer is discarded by the binding
+// (no TEST after 008AD65F); the task store goes to the gunnery host, which holds
+// the repair task at unit+A20h. This host's entity handle is the entity's id
+// (index_of), so the task address the body forms (LEA ECX, [entity+A20h] at
+// 008AD699) minus A20h is that handle again.
+class FailureRepairEnableAdapter final
+    : public bsp::cc13_left55::seg56b::Left55FailureRepairEnableHost {
+public:
+    FailureRepairEnableAdapter(std::function<bool(void*, int)> is_kind_of,
+                               std::function<void(void*, bool)> set_enabled)
+        : is_kind_of_(std::move(is_kind_of)), set_enabled_(std::move(set_enabled)) {}
+    bool entity_vcall_5c(void* entity, int class_id) override {
+        return is_kind_of_(entity, class_id);
+    }
+    void repair_task_set_failure_repair_enabled_00939fe0(void* task, bool enabled) override {
+        void* const entity = reinterpret_cast<void*>(
+            reinterpret_cast<std::uintptr_t>(task) - static_cast<std::uintptr_t>(0xA20u));
+        set_enabled_(entity, enabled);
+    }
+
+private:
+    std::function<bool(void*, int)> is_kind_of_;
+    std::function<void(void*, bool)> set_enabled_;
+};
+
+constexpr ScriptOrderBinding kFailureRepairEnableBinding{"FailureRepairEnable", 0x008ad540u};
+constexpr ScriptOrderBinding kAddFireBinding{"AddFire", 0x008acd10u};
+
 // Not a kScriptOrderBindings row so that the switch can withhold it: OFF leaves
 // UnloadMessageMap the unimplemented record it was.
 constexpr ScriptOrderBinding kUnloadMessageMapBinding{"UnloadMessageMap", 0x008c6490u};
@@ -731,6 +801,14 @@ const ScriptOrderBinding* find_binding(const char* name) noexcept {
     }
     if constexpr (bsp::kWireGoal4Chain331Bound) {
         if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
+    } else {
+    }
+    if constexpr (bsp::kWireGoal4Chain365Bound) {
+        // Goal 4 chain 365: offered only ON; OFF leaves both unimplemented records.
+        if (std::strcmp(kFailureRepairEnableBinding.name, name) == 0) {
+            return &kFailureRepairEnableBinding;
+        }
+        if (std::strcmp(kAddFireBinding.name, name) == 0) return &kAddFireBinding;
     } else {
     }
     return nullptr;
@@ -5170,6 +5248,30 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         UnloadMessageMapArgs args(*this);
         UnloadMessageMapGlue glue(*this);
         results = bsp::cc13_seg56::lua_unload_message_map(args, glue);
+    } else if (bsp::kWireGoal4Chain365Bound
+               && std::strcmp(binding->name, "FailureRepairEnable") == 0) {
+        // Goal 4 chain 365: 008AD540's body; find_binding offers the row only ON.
+        RepairBindingArgs args(*this);
+        GameGunneryHost* const gunnery = units_.gunnery();
+        FailureRepairEnableAdapter adapter(
+            [this](void* entity, int class_id) { return entity_is_kind_of(entity, class_id); },
+            [this, gunnery](void* entity, bool enabled) {
+                const std::size_t index = index_of(entity);
+                if (gunnery != nullptr && index < units_.count()) {
+                    gunnery->set_failure_repair_enabled_00939fe0(index, enabled);
+                } else {
+                    // The image stores the byte at [entity+A20h+46h] of whatever the
+                    // argument names; this host holds a repair task for units only.
+                    log_.notef("  FailureRepairEnable: no units-host repair task for the "
+                        "argument (008AD540 -> 00939FE0)");
+                }
+            });
+        results = bsp::cc13_left55::seg56b::lua_failure_repair_enable(args, adapter);
+    } else if (bsp::kWireGoal4Chain365Bound && std::strcmp(binding->name, "AddFire") == 0) {
+        // Goal 4 chain 365: 008ACD10's body reads its four arguments and stores
+        // nothing (the image's AddFire is inert); no result.
+        RepairBindingArgs args(*this);
+        results = bsp::cc13_left55::seg56b::lua_add_fire(args);
     } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_music_control_set_level(*this, core);
