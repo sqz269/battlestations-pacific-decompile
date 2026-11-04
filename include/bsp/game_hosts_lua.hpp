@@ -2440,6 +2440,8 @@ private:
     std::map<std::size_t, int> recon_squadron_category_;
 public:
     void attach_units_hooks(GameUnitsHost* units) noexcept { units_hooks_ = units; }
+    // Goal 4 chain 376: the objective unit-list adapter's read of unit+5Dh (008df2b0).
+    const GameUnitsHost* units_hooks() const noexcept { return units_hooks_; }
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
         extra_fixed_step_ = runner;
     }

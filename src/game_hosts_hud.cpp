@@ -66,6 +66,7 @@
 #include "bsp/unit_kind_query.hpp"
 // Goal 4 chain 249: the in-mission interface's calls into the live sound runtime.
 #include "bsp/wire_goal4_chain249_switches.hpp"
+#include "bsp/wire_goal4_chain376_switches.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_configuration.hpp"
 #include "bsp/sound_streaming_cc13.hpp"
@@ -5056,7 +5057,30 @@ public:
         }
     }
     bool grey_arrow_contains_008ddf90(std::size_t unit) override {
-        if constexpr (kHudGreyArrowSetBound) {
+        if constexpr (kHudGreyArrowSetBound && bsp::kWireGoal4Chain376Bound) {
+            // 008DDF90 itself (bsp::objective_set_contains_008ddf90) on the local
+            // slot's set (game+18ECh is 0 here): the size test 008DDF93, the kind
+            // arms 008DDFA9 / 008DDFB8 and the 008DDF00 lookup feed the body.
+            const std::vector<std::size_t> set =
+                bsp::game::game_objective_sets().units_in_slot(0);
+            bsp::ObjectiveSetQuery query;
+            query.set_size = set.size();                                     // [this+20h]
+            if (unit != 0 && owner_.units != nullptr) {
+                const std::size_t subject = unit - 1;
+                query.unit_is_vehicle = owner_.units->unit_is_kind_of(subject, 5);   // 008DDFA9
+                query.unit_is_squadron = !query.unit_is_vehicle
+                    && owner_.units->unit_is_kind_of(subject, 0x18);                 // 008DDFB8
+                if (query.unit_is_vehicle) {                                         // 008DDF00
+                    query.subject_in_set =
+                        std::find(set.begin(), set.end(), subject) != set.end();
+                } else if (query.unit_is_squadron) {
+                    // unit+3D0h, a squadron's plane: not exposed here.
+                    owner_.record("UnitPickScreen::grey_arrow_squadron", 0x008ddfc2u);
+                }
+            }
+            owner_.done("UnitPickScreen::grey_arrow_set", 0x008ddf90u);
+            return bsp::objective_set_contains_008ddf90(query);
+        } else if constexpr (kHudGreyArrowSetBound) {
             // 008DDF90 on the local slot's set (game+18ECh is 0 here). The
             // set's unit tree (+18h, size +20h) is what the objective table
             // holds per slot; the Lua host fills it (Objectives_AddUnit).

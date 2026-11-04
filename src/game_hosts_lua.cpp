@@ -79,6 +79,8 @@
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/wire_goal4_chain368_switches.hpp"
+#include "bsp/wire_goal4_chain376_switches.hpp"
+#include "bsp/entity_lifecycle_tails.hpp"   // 008DC3E0, goal 4 chain 376
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_binding_mission_2.hpp"
@@ -553,9 +555,9 @@ public:
     void marker_bind_on_add_stub(const std::string&, void*) override {}
     void marker_rebind_unit(const std::string&, void*) override {}
     void marker_clear_position(const std::string&, const bsp::ObjectiveWorldPoint&) override {}
-    void set_remove_unit(const std::string&, void*) override {}
-    void set_remove_position(const std::string&, const bsp::ObjectiveWorldPoint&) override {}
-    void objective_add_tail(const std::string&, void*) override {}
+    void set_remove_unit(int, const std::string&, void*) override {}
+    void set_remove_position(int, const std::string&, const bsp::ObjectiveWorldPoint&) override {}
+    void objective_add_tail(int, const std::string&, void*) override {}
 
 private:
     GameObjectiveSets& sets_;
@@ -641,6 +643,355 @@ unsigned int objective_slot_mask(bool have_party, int party, bool have_slot, int
     }
     (void)party;
     return have_party ? 1u : 1u;
+}
+
+// ---------------------------------------------------------------------------
+// Goal 4 chain 376 (kWireGoal4Chain376Bound): the objective unit lists through
+// their bodies. Objectives_AddUnit 008CDD60 and Objectives_RemoveUnit 008CE510
+// run src/objective_units.cpp; the unit push 008DF2B0 (with its record 008DEE50)
+// serves them and the unit targets of 008CD440; the completed / failed walk
+// 008DFE50 serves 008E20D0 / 008E2200; 008DC3E0 erases a unit's entries.
+//
+// The +20h list is objective_position_lists(), which since chain 152 holds the
+// position entries: under this switch it is the whole list, units and positions
+// in push order, as the image keeps it. GameObjectiveSets::Objective::units stays
+// the unit projection of that list (the readers in src/game_hosts_ai.cpp and
+// erase_member_unless_held read it), refreshed from the list after each change.
+// ---------------------------------------------------------------------------
+
+// The 008DEE50 record's +0h word for a unit: the host's unit index plus one, so a
+// null word stays the position entry's mark (008DEEC9 stores 0) and 008DC3E0's
+// compare at 008DC423 sees the value the push stored.
+void* objective_unit_token(std::size_t unit) noexcept {
+    return reinterpret_cast<void*>(static_cast<std::uintptr_t>(unit) + 1u);
+}
+std::size_t objective_unit_index(const void* token) noexcept {
+    return static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(token)) - 1u;
+}
+
+// 00435C40 / 008E20F6's rule: equal lengths, then _stricmp.
+bool objective_names_equal(const std::string& a, const std::string& b) noexcept {
+    return a.size() == b.size() && _stricmp(a.c_str(), b.c_str()) == 0;
+}
+
+class ObjectiveListHost final : public bsp::ObjectiveUnitHost {
+public:
+    ObjectiveListHost(GameObjectiveSets& sets, const GameUnitsHost* units) noexcept
+        : sets_(sets), units_(units) {}
+
+    // [[game+18CCh + 4*slot]+28h], 008CDEAD, for all eight slots. 004C6890 copies
+    // each scene MultiPlay.PlayerN side block's Party into that word, and the
+    // mission host publishes the eight values (game_hosts_mission.cpp,
+    // ai_publish_scene_slot_parties); a block that authors no Party holds -1,
+    // which scene_slot_party(slot, -1) answers, as it does before publication.
+    // Slot 0 keeps local_player_party(), the reader every other host site of the
+    // local party uses (same published value; 0 when Player1 authors none).
+    // The loop 008CDE94..008CDEF2 has no active-slot test (it reads +28h and
+    // compares, nothing else), so a party argument selects every slot of that
+    // party, AI-held ones included; the 008CDF58 active gate belongs to the
+    // explicit-slot arm only (player_slot_active).
+    int player_party(int slot) override {
+        return slot == 0 ? local_player_party() : scene_slot_party(slot, -1);
+    }
+    // 008CDF58 / 008CDF5E: player+8h set and +9h clear. In single player that is
+    // slot 0 alone: 004BB220 sets +9h on slots 1..7 (docs/SHIP_AI_OPEN_ITEMS.md 125.5).
+    bool player_slot_active(int slot) override { return slot == 0; }
+
+    // 008DF2B0's walk over the set's list at +24h, first case-insensitive match.
+    bsp::ObjectiveUnitList* objective_in_slot(int slot, const std::string& name) override {
+        const std::optional<std::size_t> i = find(slot, name);
+        if (!i) return nullptr;
+        touched_.emplace_back(slot, *i);
+        return &list(slot, *i);
+    }
+    // unit+5Dh and unit+5Eh, 008DF2B0's first test. +5Dh is the host's mirror
+    // GameUnitsHost::unit_flag_005d. Every image writer of +5Eh (009274CE on the
+    // kill list) stores +5Dh in the same pass, and the host mirrors that store
+    // (include/bsp/target_disabled_byte_5d_cc13.hpp), so a set +5Eh is always
+    // refused by the +5Dh read; +5Eh is answered clear rather than read.
+    bsp::ObjectiveUnitLiveness unit_liveness(void* unit) override {
+        bsp::ObjectiveUnitLiveness live;
+        live.removed_5d = units_ != nullptr && units_->unit_flag_005d(objective_unit_index(unit));
+        return live;
+    }
+    // 00694AF0 / 00694A60: the set observes the unit, for the death detach
+    // 008DF1E0. LABELLED, as before this switch: the sets have no observer
+    // registry here, so the pair is answered unregistered and registered nowhere.
+    bool observer_pair_registered(bsp::ObjectiveUnitList&, void*) override { return false; }
+    void observer_register_pair(bsp::ObjectiveUnitList&, void*) override {}
+    // 006DE3D0 at 008DF39E and 006DE3E0 at 008DF5D0's tail: bare RET 8.
+    void marker_bind_on_add_stub(const std::string&, void*) override {}
+    // 006DE3F0 / 006DE4C0 on the marker manager at game+21D4h. The SzurkeNyil
+    // markers are not built in this process (LABELLED; the HUD marker host records
+    // its objective arm), so nothing is rebound or cleared.
+    void marker_rebind_unit(const std::string&, void*) override { ++marker_calls; }
+    void marker_clear_position(const std::string&, const bsp::ObjectiveWorldPoint&) override {
+        ++marker_calls;
+    }
+
+    // 008DFC00 then 008DF400 on set `slot`. 008DFC00's send of message 58h runs
+    // only for a session (game+1FE4h == 1), which a campaign never has. LABELLED,
+    // the rule GameObjectiveSets::remove_unit kept: 008DFC00's kind dispatch
+    // (IsKindOf(5) direct, IsKindOf(18h) once per squadron member +3D0h) takes the
+    // direct arm for every target, the squadron entity being fused with its
+    // leader in this host. 008DF400 (src/objectives_seg57_argon.cpp): every
+    // objective whose name matches loses every entry of the unit through 008DC3E0
+    // (008DF4A5); then 008DF4B2..008DF532, the hold test over the other objectives
+    // and the +18h erase, which is GameObjectiveSets::erase_member_unless_held.
+    void set_remove_unit(int slot, const std::string& name, void* unit) override {
+        if (!valid_slot(slot)) return;
+        refresh_touched();
+        const std::size_t k = static_cast<std::size_t>(slot);
+        const std::size_t word = static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(unit));
+        for (std::size_t i = 0; i < sets_.slots[k].size(); ++i) {
+            if (!objective_names_equal(sets_.slots[k][i].name, name)) continue;
+            bsp::ObjectiveUnitList& l = list(slot, i);
+            std::vector<bsp::ObjectiveUnitEntryHandle> handles;
+            handles.reserve(l.entries.size());
+            for (const bsp::ObjectiveUnitEntry& e : l.entries) {
+                handles.push_back({static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(e.unit))});
+            }
+            const bsp::ObjectiveEraseResult erased = bsp::objective_erase_unit_entries_008dc3e0(
+                handles, word, static_cast<std::int32_t>(l.entries.size()));
+            // The survivors, in the order 008DC3E0 left them: an entry stays exactly
+            // when it is the next remaining record.
+            std::vector<bsp::ObjectiveUnitEntry> kept;
+            kept.reserve(erased.remaining.size());
+            std::size_t next = 0;
+            for (const bsp::ObjectiveUnitEntry& e : l.entries) {
+                if (next < erased.remaining.size()
+                    && static_cast<std::size_t>(reinterpret_cast<std::uintptr_t>(e.unit))
+                           == erased.remaining[next].unit) {
+                    kept.push_back(e);
+                    ++next;
+                }
+            }
+            l.entries = std::move(kept);
+            sets_.unit_removes += static_cast<unsigned long long>(erased.erased);
+            units_removed += erased.erased;
+            project_units(k, i);
+        }
+        // 008DF4FD: the tail runs whether or not an entry was erased.
+        sets_.erase_member_unless_held(slot, name, objective_unit_index(unit));
+    }
+    // 008DDD30 on set `slot`: every objective whose name matches runs 008DC500,
+    // which erases each entry with a null unit word whose three floats equal the
+    // point (008DC53F, 008DC54F..008DC57D, exact compares). Both reconstructions
+    // (src/objectives_seg57_argon.cpp, src/cc15_g24c.cpp) read native records, so
+    // the same rule is applied to this list here. Its session send is skipped as
+    // in set_remove_unit.
+    void set_remove_position(int slot, const std::string& name,
+                             const bsp::ObjectiveWorldPoint& point) override {
+        if (!valid_slot(slot)) return;
+        const std::size_t k = static_cast<std::size_t>(slot);
+        for (std::size_t i = 0; i < sets_.slots[k].size(); ++i) {
+            if (!objective_names_equal(sets_.slots[k][i].name, name)) continue;
+            std::vector<bsp::ObjectiveUnitEntry>& entries = list(slot, i).entries;
+            entries.erase(std::remove_if(entries.begin(), entries.end(),
+                [&](const bsp::ObjectiveUnitEntry& e) {
+                    return e.unit == nullptr && e.position.x == point.x
+                        && e.position.y == point.y && e.position.z == point.z;
+                }), entries.end());
+        }
+    }
+    // 008DE6A0 at 008DF3D7: insert into the set's +18h tree (one node per unit).
+    void objective_add_tail(int slot, const std::string&, void* unit) override {
+        if (!valid_slot(slot)) return;
+        std::vector<std::size_t>& tree = sets_.members[static_cast<std::size_t>(slot)];
+        const std::size_t index = objective_unit_index(unit);
+        if (std::find(tree.begin(), tree.end(), index) == tree.end()) tree.push_back(index);
+    }
+
+    // 008E20D0 (status 1) / 008E2200 (status 2) on set `slot`: the first objective
+    // whose name matches (008E20F6) runs 008DFE50 (008E2177), which returns at
+    // 008DFE6E for a hidden objective and otherwise hands every unit of its list
+    // to 008DFC00, then takes the state (008E2181). The announcement 008E1D30 and
+    // the replication are not modelled, as before this switch.
+    bool set_status(int slot, const std::string& key, int status) {
+        const std::optional<std::size_t> i = find(slot, key);
+        if (!i) {
+            ++sets_.status_misses;
+            return false;
+        }
+        const std::size_t k = static_cast<std::size_t>(slot);
+        const int before = units_removed;
+        bsp::objective_walk_unit_markers_008dfe50(*this, slot, list(slot, *i));
+        if (sets_.slots[k][*i].kind == bsp::kObjectiveKindHidden) ++sets_.hidden_status_holds;
+        sets_.status_unit_drops += static_cast<unsigned long long>(units_removed - before);
+        sets_.slots[k][*i].state = status;
+        ++sets_.status_sets;
+        return true;
+    }
+
+    // The unit projection of every list an add touched; the count of units pushed.
+    int finish() {
+        const int added = refresh_touched();
+        sets_.unit_adds += static_cast<unsigned long long>(added);
+        return added;
+    }
+
+    int marker_calls{0};
+    int units_removed{0};
+
+private:
+    static bool valid_slot(int slot) noexcept {
+        return slot >= 0 && static_cast<std::size_t>(slot) < GameObjectiveSets::kSlotCount;
+    }
+    std::optional<std::size_t> find(int slot, const std::string& name) const {
+        if (!valid_slot(slot)) return std::nullopt;
+        const std::vector<GameObjectiveSets::Objective>& objectives =
+            sets_.slots[static_cast<std::size_t>(slot)];
+        for (std::size_t i = 0; i < objectives.size(); ++i) {
+            if (objective_names_equal(objectives[i].name, name)) return i;
+        }
+        return std::nullopt;
+    }
+    // The +20h list of objective i, index-parallel to sets_.slots[slot], carrying
+    // the record's own name, kind (+18h) and state (+1Ch).
+    bsp::ObjectiveUnitList& list(int slot, std::size_t i) {
+        const std::size_t k = static_cast<std::size_t>(slot);
+        std::vector<bsp::ObjectiveUnitList>& lists = objective_position_lists().slots[k];
+        if (lists.size() < sets_.slots[k].size()) lists.resize(sets_.slots[k].size());
+        bsp::ObjectiveUnitList& l = lists[i];
+        const GameObjectiveSets::Objective& o = sets_.slots[k][i];
+        l.name = o.name;
+        l.kind = o.kind;
+        l.state = o.state;
+        return l;
+    }
+    // Objective::units = the unit words of the list, in list order (duplicates
+    // kept: 008DEE50 has no duplicate test). Returns how many units it gained.
+    int project_units(std::size_t k, std::size_t i) {
+        GameObjectiveSets::Objective& o = sets_.slots[k][i];
+        const std::vector<bsp::ObjectiveUnitList>& lists = objective_position_lists().slots[k];
+        const std::size_t before = o.units.size();
+        o.units.clear();
+        if (i < lists.size()) {
+            for (const bsp::ObjectiveUnitEntry& e : lists[i].entries) {
+                if (e.unit != nullptr) o.units.push_back(objective_unit_index(e.unit));
+            }
+        }
+        return static_cast<int>(o.units.size()) - static_cast<int>(before);
+    }
+    int refresh_touched() {
+        int gained = 0;
+        for (const auto& [slot, i] : touched_) {
+            gained += project_units(static_cast<std::size_t>(slot), i);
+        }
+        touched_.clear();
+        return gained;
+    }
+
+    GameObjectiveSets& sets_;
+    const GameUnitsHost* units_;
+    std::vector<std::pair<int, std::size_t>> touched_;
+};
+
+// The argument reads of 008CDD60 / 008CE510 over the binding's own frame.
+class ObjectiveLuaArguments final : public bsp::ObjectiveArgumentReader {
+public:
+    explicit ObjectiveLuaArguments(lua_State* state) noexcept
+        : state_(state), top_(lua_gettop(state)),
+          // The CRT conversion mode 00BF7420 selects, represented as the decal
+          // and ship-depth readers in this file represent it.
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+
+    int count() override { return top_; }   // 00B663F0
+    // 00B66A60: lua type 3 (00B66A7D), then bsp::gui_lua_is_integer_number_00b66a60
+    // on the number: float32 spill, CVTTSS2SI and the ordered compare.
+    bool is_integer(int index) override {
+        const int slot = index + 1;
+        return slot <= top_ && lua_type(state_, slot) == LUA_TNUMBER
+            && bsp::gui_lua_is_integer_number_00b66a60(lua_tonumber(state_, slot));
+    }
+    // 00B66290: lua_tonumber, the float32 spill and reload at 00B662A0..00B662A3,
+    // then 00BF7420 (bsp::lua_number_integer_00b66290). 0.99999999 reads 1.
+    int get_integer(int index) override {
+        return bsp::lua_number_integer_00b66290(lua_tonumber(state_, index + 1),
+                                                sse2_conversion_);
+    }
+    // 00B66270: the same float32 spill (bsp::lua_number_float32_00b66270).
+    double get_number(int index) override {
+        return static_cast<double>(bsp::lua_number_float32_00b66270(lua_tonumber(state_, index + 1)));
+    }
+    bool get_boolean(int index) override { return lua_toboolean(state_, index + 1) != 0; }
+    // The objective name, by the host's reader of argument 2 (chain 287's 006B7F60
+    // string test), the same read the OFF arm makes.
+    std::string get_string(int index) override { return objective_argument_string(state_, index); }
+    bool is_string(int index) override {
+        return index + 1 <= top_ && lua_type(state_, index + 1) == LUA_TSTRING;
+    }
+    bool is_nil(int index) override {
+        return index + 1 > top_ || lua_type(state_, index + 1) == LUA_TNIL;
+    }
+    bool is_entity_table(int index) override {
+        std::size_t unit = 0;
+        return objective_argument_unit(state_, index, unit);
+    }
+    void* entity_at(int index) override {
+        std::size_t unit = 0;
+        return objective_argument_unit(state_, index, unit) ? objective_unit_token(unit) : nullptr;
+    }
+
+private:
+    lua_State* state_;
+    int top_;
+    bool sse2_conversion_;
+};
+
+// The targets argument `index` names, classified as 008889C0 / 0088B840 do and in
+// the order 008CDD60 / 008CE510 / 008CD440 visit them: an entity table is a unit
+// (00888AA0's stand-in, `ID - 1`); a vector3 table is a point (00888760); any
+// other table, while kObjectiveAddTargetWalkBound, is walked element by element
+// (00B67080 / 00B67190), an entity element a unit and any other table element a
+// point when 00888760 reads one. The two readers the OFF arm uses
+// (objective_argument_units, objective_argument_positions) apply the same tests,
+// one kind each.
+void objective_argument_targets(lua_State* state, int index,
+                                std::vector<bsp::ObjectiveTarget>& out) {
+    std::size_t unit = 0;
+    if (objective_argument_unit(state, index, unit)) {
+        bsp::ObjectiveTarget target;
+        target.is_unit = true;
+        target.unit = objective_unit_token(unit);
+        out.push_back(target);
+        return;
+    }
+    const int slot = index + 1;
+    const int top = lua_gettop(state);
+    if (slot > top || lua_type(state, slot) != LUA_TTABLE) return;
+    float point[3] = {0.0f, 0.0f, 0.0f};
+    if (objective_argument_is_vector3_table(state, slot)) {
+        if (read_vector3_00888760(state, slot, point)) {
+            bsp::ObjectiveTarget target;
+            target.point = {point[0], point[1], point[2]};
+            out.push_back(target);
+        }
+        return;
+    }
+    if (!kObjectiveAddTargetWalkBound) return;
+    lua_pushnil(state);
+    while (lua_next(state, slot) != 0) {
+        const int element = lua_gettop(state);
+        if (lua_type(state, element) == LUA_TTABLE) {
+            lua_getfield(state, element, "ID");
+            const int type = lua_type(state, -1);
+            const int id = (type == LUA_TNUMBER || type == LUA_TSTRING)
+                ? static_cast<int>(lua_tonumber(state, -1)) : 0;
+            lua_pop(state, 1);
+            bsp::ObjectiveTarget target;
+            if (id > 0) {
+                target.is_unit = true;
+                target.unit = objective_unit_token(static_cast<std::size_t>(id - 1));
+                out.push_back(target);
+            } else if (read_vector3_00888760(state, element, point)) {
+                target.point = {point[0], point[1], point[2]};
+                out.push_back(target);
+            }
+        }
+        lua_settop(state, element - 1);
+    }
+    lua_settop(state, top);
 }
 
 GameMissionLuaHost* host_from_upvalue(lua_State* state) {
@@ -1323,13 +1674,49 @@ int binding_trampoline(lua_State* state) {
             int matched = 0;
             for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
                 if ((mask & (1u << k)) == 0u) continue;
+                if constexpr (bsp::kWireGoal4Chain376Bound) {
+                    // 008E20D0 / 008E2200 with their 008DFE50 walk run as the body.
+                    ObjectiveListHost list_host(sets, host->units_hooks());
+                    if (list_host.set_status(k, key, status)) ++matched;
+                } else {
                 if (sets.set_status(k, key, status)) ++matched;
+                }
             }
             static_cast<void>(matched);
             host->note_objective_binding(dispatch_row.name, key, mask, 0);
             return 0;
         }
         const bool is_remove = dispatch_row.address == 0x008ce510u;
+        if constexpr (bsp::kWireGoal4Chain376Bound) {
+            if (!is_add) {
+                // 008CDD60 / 008CE510 run as their bodies: arguments 0..2 through
+                // ObjectiveLuaArguments (00B66A60 for the party and the slot), the
+                // targets from argument 3 on in visit order. The slot mask is the
+                // body's (objective_target_slot_mask), not objective_slot_mask.
+                ObjectiveListHost list_host(sets, host->units_hooks());
+                std::vector<bsp::ObjectiveTarget> targets;
+                for (int arg = bsp::kObjectiveFirstTargetArgument; arg < argc; ++arg) {
+                    objective_argument_targets(state, arg, targets);
+                }
+                ObjectiveLuaArguments arguments(state);
+                if (is_remove) {
+                    bsp::lua_binding_objectives_remove_unit_008ce510(arguments, list_host, targets);
+                } else {
+                    bsp::lua_binding_objectives_add_unit_008cdd60(arguments, list_host, targets);
+                }
+                const int added = list_host.finish();
+                // DIAGNOSTIC: the mask the body built, recomputed for the log line.
+                const bool party_given = arguments.is_integer(0);
+                const bool slot_given = arguments.is_integer(1);
+                const unsigned int body_mask = bsp::objective_target_slot_mask(list_host,
+                    party_given, party_given ? arguments.get_integer(0) : 0,
+                    slot_given, slot_given ? arguments.get_integer(1) : 0);
+                host->note_objective_binding(dispatch_row.name,
+                    arguments.get_string(bsp::kObjectiveNameArgument), body_mask,
+                    is_remove ? list_host.units_removed : added);
+                return 0;
+            }
+        }
         // 008CD65A for Add and 008CDFFA (kObjectiveNameArgument) for AddUnit
         // both read argument 2 as the objective name.
         const std::string name = objective_argument_string(state, 2);
@@ -1345,6 +1732,13 @@ int binding_trampoline(lua_State* state) {
         // stack only: no Lua call, no draw.
         if (is_add) host->note_objective_text(name, objective_argument_string(state, 3));
         int units_touched = 0;
+        // Goal 4 chain 376: 008CD440's targets in visit order (008CD89D on).
+        std::vector<bsp::ObjectiveTarget> add_targets;
+        if constexpr (bsp::kWireGoal4Chain376Bound) {
+            for (int arg = first_target; arg < argc; ++arg) {
+                objective_argument_targets(state, arg, add_targets);
+            }
+        }
         for (int k = 0; k < static_cast<int>(bsp::game::GameObjectiveSets::kSlotCount); ++k) {
             if ((mask & (1u << k)) == 0u) continue;
             if (is_add) {
@@ -1355,6 +1749,21 @@ int binding_trampoline(lua_State* state) {
                     sets.add_objective(k, name);
                 }
             }
+            if constexpr (bsp::kWireGoal4Chain376Bound) {
+                // Only Add reaches here under this switch. Each target in visit order:
+                // a unit through 008DF2B0 (008DEE50's record, the +18h insert 008DE6A0),
+                // a point through 008DF5D0, both on the objective 008E1F80 just made
+                // or found.
+                ObjectiveListHost list_host(sets, host->units_hooks());
+                for (const bsp::ObjectiveTarget& target : add_targets) {
+                    if (target.is_unit) {
+                        bsp::objective_set_add_unit_008df2b0(list_host, k, name, target.unit);
+                    } else {
+                        bsp::objective_set_add_position_008df5d0(list_host, k, name, target.point);
+                    }
+                }
+                units_touched += list_host.finish();
+            } else {
             // 008CDC56 (Add) / 008CE42D (AddUnit): 008DF5D0 objective_set_add_position_008df5d0
             // for each position target, ahead of this host's add_unit, whose
             // add_objective may create an objective 008DF2B0 never would. OFF keeps
@@ -1381,6 +1790,7 @@ int binding_trampoline(lua_State* state) {
                                                  : sets.add_unit(k, name, unit);
                     if (moved) ++units_touched;
                 }
+            }
             }
         }
         host->note_objective_binding(dispatch_row.name, name, mask, units_touched);

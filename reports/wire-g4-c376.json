@@ -1,0 +1,160 @@
+{
+  "goal": 4,
+  "chain": 376,
+  "owner": "agent/g4-w5",
+  "base": "4ccf3969b5",
+  "switch": "bsp::kWireGoal4Chain376Bound",
+  "summary": "Mission objective unit lists run through their reconstructed bodies. Objectives_AddUnit / Objectives_RemoveUnit (Lua natives) call 008CDD60 / 008CE510; the unit targets of Objectives_Add and AddUnit go through 008DF2B0 (record 008DEE50); Objectives_Completed / Failed run the 008DFE50 walk; removals erase entries with 008DC3E0. The chain-152 position list becomes the whole objective+20h list (units and positions in push order) and GameObjectiveSets::Objective::units is its unit projection. Body fixes: 008CDD60/008CE510 test arguments 0/1 with 00B66A60 IsInteger (was is_nil); the removal hooks and the add tail take the set slot the native passes in ECX (008CEB55, 008CEBD1, 008DFE74, 008DF3D7). The objective set membership test 008DDF90 runs as its body at the HUD grey-arrow and marker sites.",
+  "called_before": 5715,
+  "called_after": 5719,
+  "behaviour_changes_on": [
+    "AddUnit on an objective the slot does not hold adds nothing (008DF2B0 returns); the old host created the objective.",
+    "AddUnit / RemoveUnit with neither an integer party nor an integer slot select no set (mask starts 0 at 008CDD8B); the old host used slot 0.",
+    "An explicit slot applies only when that player is active (008CDF58), i.e. slot 0 in single player; the old host accepted slots 1..7.",
+    "A unit with +5Dh set (GameUnitsHost::unit_flag_005d) is not added (008DF2B0's liveness test).",
+    "A unit added twice is listed twice (008DEE50 has no duplicate test); a removal erases every entry of the unit (008DC3E0).",
+    "RemoveUnit position targets now erase matching position entries (008DDD30 / 008DC500 rule); the old host ignored them.",
+    "Add's targets are pushed in visit order (unit and position interleaved) instead of all positions then all units.",
+    "A party argument selects every slot whose published scene Party matches (008CDE94..008CDEF2 has no active gate), AI-held slots 1..7 included; the old host selected slot 0 only."
+  ],
+  "rows": [
+    {
+      "native": "008cdd60",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline, Objectives_AddUnit row -> bsp::lua_binding_objectives_add_unit_008cdd60 over ObjectiveListHost / ObjectiveLuaArguments",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008ce510",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline, Objectives_RemoveUnit row -> bsp::lua_binding_objectives_remove_unit_008ce510",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008df2b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline (Objectives_Add unit targets) and src/objective_units.cpp: lua_binding_objectives_add_unit_008cdd60",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "008dee50",
+      "status": "wired",
+      "host_site": "src/objective_units.cpp: objective_set_add_unit_008df2b0",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008dfe50",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_status (008E20D0 / 008E2200 for the Objectives_Completed / Objectives_Failed rows)",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008dc3e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_remove_unit (the 008DFC00 -> 008DF400 removal)",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008ddf90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: UnitPickBinding::grey_arrow_contains_008ddf90; src/game_hosts_hud_world.cpp: MarkerRuntimeBinding::objective_container_contains (00643183)",
+      "called": true,
+      "call_sites": 2,
+      "scope": "The membership body over the local slot's +18h tree (GameObjectiveSets::units_in_slot(0)); the squadron arm's +3D0h plane is not exposed and stays a record."
+    },
+    {
+      "native": "00a2c450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group_has_member_in_world_set and the 00A0F8B5 target-weight read",
+      "reason": "Both AI sites still test membership inline without 008DDF90's kind arms; routing them through the body changes AI decisions and needs a game-run pair, not done in this unattended run."
+    },
+    {
+      "native": "008bd340",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline, Objectives_Completed / Objectives_Failed rows",
+      "reason": "run_set_objective_status_008bd340 works on MissionResultHost's own MissionObjectiveSet (entries/kind/status), a second model of game+21A4h; nothing joins it to GameObjectiveSets, so the rows run 008E20D0/008E2200's find and the 008DFE50 body through ObjectiveListHost instead."
+    },
+    {
+      "native": "008dfc00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_remove_unit",
+      "reason": "Body is a raw Seg57Host walk over native ObjectiveSet records; its contract (direct arm, 008DF400 erase via 008DC3E0, hold test) is applied on the host lists. The IsKindOf(18h) per-member arm needs squadron entities distinct from their leader."
+    },
+    {
+      "native": "008ddd30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::set_remove_position",
+      "reason": "Raw Seg57Host body over native records (as is 008DC500 in cc15_g24c.cpp); the exact-float position erase rule is applied on the host list instead."
+    },
+    {
+      "native": "006de3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveListHost::marker_rebind_unit / marker_clear_position (006DE4C0)",
+      "reason": "No SzurkeNyil marker manager (game+21D4h) is built in this process."
+    },
+    {
+      "native": "0099a170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp / src/game_hosts_ai.cpp: create_bot_task",
+      "reason": "Looked at the twelve bot_task_make_* factories (seg67b): they build native task objects (vtable words, 0099C6F0 base with two RNG draws) that nothing in this process ticks."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing-ship unload (record MissionEvents::ship_landed_00986820)",
+      "reason": "report_ship_landed_00986820 runs over raw Seg62Host event-manager memory; a host-side shipLanded dispatch over GameMissionLuaHost's loaded ShipLandedSubscription entries is the missing piece."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: kCaptureAvailableResources",
+      "reason": "team_available_resources_00946fc0 walks native unit records (+304h, +54h) and the spawn manager list through Left61Host; needs a typed view of the per-unit ResourceUsage."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landfort_fire_frame_00745be0",
+      "reason": "Death fire is reached only from on_destroyed_00747170; the host models CommandBuildings only and has no death event for them (MLandFort units are not separate records)."
+    },
+    {
+      "native": "00797a00",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp: movie_camera_update_0079a3b0",
+      "reason": "00797A00 / 00797AF0 / 00798E70 / 00797C60 are reached from the movie-camera editor's input actions 82h/83h/86h (0079A605..0079A69E), debug-only."
+    },
+    {
+      "native": "0052b9b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: Countdown / CountdownCancel rows",
+      "reason": "The HUD counters screen object (0052B030) is not built, so show/cancel countdown have no receiver."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Needs the profile's +94h checkpoint map and +98h value read by 007F8D60 and the BSP_Chk_Save storage write; checkpoint_differs is still a record."
+    }
+  ],
+  "review_round_1": {
+    "review_run": 757,
+    "findings": [
+      {
+        "finding": "src/game_hosts_lua.cpp:913 numeric conversion skipped the float32 spill of 00B66290",
+        "outcome": "fixed",
+        "detail": "ObjectiveLuaArguments now reuses bsp::gui_lua_is_integer_number_00b66a60 for 00B66A60, bsp::lua_number_integer_00b66290 for 00B66290 (float32 spill at 00B662A0..00B662A3, then 00BF7420 with the represented CRT SSE2 mode) and bsp::lua_number_float32_00b66270 for 00B66270; 0.99999999 now reads 1."
+      },
+      {
+        "finding": "src/game_hosts_lua.cpp:697 INT_MIN party for slots 1-7",
+        "outcome": "fixed",
+        "detail": "player_party(slot) reads the published scene slot parties for slots 1..7 (scene_slot_party(slot, -1): -1 is the native +28h of a block with no Party, and the answer before publication); slot 0 keeps local_player_party(), the same published value the other host readers use. The active-slot gate stays in player_slot_active, which only the explicit-slot arm consults."
+      }
+    ],
+    "checks": "build.ps1 (ON) passes with tests; call_graph --build: both bindings and the other wired rows still reachable; called 5719."
+  }
+}

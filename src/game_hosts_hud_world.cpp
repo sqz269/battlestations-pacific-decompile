@@ -28,7 +28,11 @@
 #include "bsp/pc24_hudgui_cc13.hpp"
 #include "bsp/hud_heading_vtable50_cc13.hpp"  // packet cc13-hudhdg
 #include "bsp/wire_goal2_chain47_switches.hpp"
+#include "bsp/wire_goal4_chain376_switches.hpp"
+#include "bsp/game_hosts_ai.hpp"           // game_objective_sets, goal 4 chain 376
+#include "bsp/local_player_unit_lists.hpp"  // 008DDF90, goal 4 chain 376
 
+#include <algorithm>
 #include <cmath>
 #include <cstdio>
 #include <map>
@@ -1055,11 +1059,37 @@ public:
         owner_.marked.push_back(owner_.index_of(unit));
     }
     bool objective_container_contains(void* unit) override {
+        if constexpr (bsp::kWireGoal4Chain376Bound) {
+            // 00643145..00643183: ECX = [game+21A4h + 4*[game+18ECh]], the local
+            // player's objective set (game+18ECh is 0 in single player, as for the
+            // unit pick screen's grey arrow), then 008DDF90(unit). The set's +18h
+            // unit tree is GameObjectiveSets::units_in_slot, filled by the Lua
+            // objective bindings (src/game_hosts_lua.cpp).
+            const std::vector<std::size_t> set = game_objective_sets().units_in_slot(0);
+            bsp::ObjectiveSetQuery query;
+            query.set_size = set.size();                                         // [this+20h]
+            if (owner_.units != nullptr) {
+                const std::size_t subject = owner_.index_of(unit);
+                query.unit_is_vehicle = owner_.units->unit_is_kind_of(subject, 5);   // 008DDFA9
+                query.unit_is_squadron = !query.unit_is_vehicle
+                    && owner_.units->unit_is_kind_of(subject, 0x18);                 // 008DDFB8
+                if (query.unit_is_vehicle) {                                         // 008DDF00
+                    query.subject_in_set = std::find(set.begin(), set.end(), subject) != set.end();
+                } else if (query.unit_is_squadron) {
+                    // 008DDFC2 looks up the squadron's plane at +3D0h, which this
+                    // host does not expose (the grey arrow records the same gap).
+                    owner_.record("HudMarkers::objective_container_squadron", 0x008ddfc2u);
+                }
+            }
+            owner_.done("HudMarkers::objective_container", 0x008ddf90u);
+            return bsp::objective_set_contains_008ddf90(query);
+        } else {
         // 00643183 -> 008DDF90 against [00E188A8+21A4h+team*4]. The objective
         // containers belong to the mission objective owner; none exists here.
         static_cast<void>(unit);
         owner_.record("HudMarkers::objective_container", 0x008ddf90u);
         return false;
+        }
     }
     int marker_colour_index(void* unit) override {
         owner_.record("HudMarkers::marker_colour_index", 0x00639990u);

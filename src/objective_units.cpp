@@ -86,7 +86,7 @@ void objective_set_add_unit_008df2b0(ObjectiveUnitHost& host, int slot,
         return;
     }
     host.marker_bind_on_add_stub(kObjectiveMarkerClass, unit);
-    host.objective_add_tail(kObjectiveMarkerClass, unit);
+    host.objective_add_tail(slot, kObjectiveMarkerClass, unit);
 }
 
 void objective_set_add_position_008df5d0(ObjectiveUnitHost& host, int slot,
@@ -105,7 +105,8 @@ void objective_set_add_position_008df5d0(ObjectiveUnitHost& host, int slot,
     host.marker_bind_on_add_stub(kObjectiveMarkerClass, nullptr);
 }
 
-void objective_walk_unit_markers_008dfe50(ObjectiveUnitHost& host, ObjectiveUnitList& objective)
+void objective_walk_unit_markers_008dfe50(ObjectiveUnitHost& host, int slot,
+                                          ObjectiveUnitList& objective)
 {
     if (objective.kind == kObjectiveKindHidden) {
         return; // 008dfe6e
@@ -122,14 +123,16 @@ void objective_walk_unit_markers_008dfe50(ObjectiveUnitHost& host, ObjectiveUnit
     // 008e0010..008e003d: every unit collected above is handed to the set-level removal with
     // the objective's own name, so the walk empties the objective of its live units.
     for (void* unit : live) {
-        host.set_remove_unit(objective.name, unit);
+        host.set_remove_unit(slot, objective.name, unit);
     }
 }
 
 namespace {
 
-// Arguments 0 and 1 of both bindings. 008cde73 and 008cdf19 test each for being an integer
-// before reading it; a non-integer argument simply does not contribute.
+// Arguments 0 and 1 of both bindings. 008cde73 and 008cdf19 (008ce623 and 008ce6c9 in
+// 008ce510) test each with 00B66A60 IsInteger before reading it with 00B66290; a non-integer
+// argument simply does not contribute. Goal 4 chain 376: this was an is_nil test, which let a
+// string or a table through.
 struct ObjectiveSelectorArguments {
     bool have_party{false};
     int party{0};
@@ -137,14 +140,14 @@ struct ObjectiveSelectorArguments {
     int slot{0};
 };
 
-ObjectiveSelectorArguments read_selector(LuaBindingArgumentReader& args)
+ObjectiveSelectorArguments read_selector(ObjectiveArgumentReader& args)
 {
     ObjectiveSelectorArguments out{};
-    if (args.count() > 0 && args.is_nil(0) == false) {
+    if (args.count() > 0 && args.is_integer(0)) {
         out.have_party = true;
         out.party = args.get_integer(0);
     }
-    if (args.count() > 1 && args.is_nil(1) == false) {
+    if (args.count() > 1 && args.is_integer(1)) {
         out.have_slot = true;
         out.slot = args.get_integer(1);
     }
@@ -153,7 +156,7 @@ ObjectiveSelectorArguments read_selector(LuaBindingArgumentReader& args)
 
 } // namespace
 
-int lua_binding_objectives_add_unit_008cdd60(LuaBindingArgumentReader& args,
+int lua_binding_objectives_add_unit_008cdd60(ObjectiveArgumentReader& args,
                                               ObjectiveUnitHost& host,
                                               const std::vector<ObjectiveTarget>& targets)
 {
@@ -177,7 +180,7 @@ int lua_binding_objectives_add_unit_008cdd60(LuaBindingArgumentReader& args,
     return 0;
 }
 
-int lua_binding_objectives_remove_unit_008ce510(LuaBindingArgumentReader& args,
+int lua_binding_objectives_remove_unit_008ce510(ObjectiveArgumentReader& args,
                                                  ObjectiveUnitHost& host,
                                                  const std::vector<ObjectiveTarget>& targets)
 {
@@ -190,14 +193,14 @@ int lua_binding_objectives_remove_unit_008ce510(LuaBindingArgumentReader& args,
         if ((mask & (1u << slot)) == 0) {
             continue;
         }
-        // The removal helpers take the same (name, target) pair as the add helpers; only
-        // their dispatch was read, so the erase itself stays behind the host.
-        static_cast<void>(slot);
+        // The removal helpers take the same (name, target) pair as the add helpers, on set
+        // `slot` (008ceb55 / 008cebd1 load ECX from game+21A4h + 4*slot); only their dispatch
+        // was read, so the erase itself stays behind the host.
         for (const ObjectiveTarget& target : targets) {
             if (target.is_unit) {
-                host.set_remove_unit(name, target.unit);
+                host.set_remove_unit(slot, name, target.unit);
             } else {
-                host.set_remove_position(name, target.point);
+                host.set_remove_position(slot, name, target.point);
             }
         }
     }
