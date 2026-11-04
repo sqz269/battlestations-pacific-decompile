@@ -1,4 +1,5 @@
 #include "bsp/native_physical_buffer_owner.hpp"
+#include "bsp/wire_goal4_chain353_switches.hpp"
 
 #include <cstring>
 #include <type_traits>
@@ -114,11 +115,26 @@ void destroy_base(void* owner) {
     }
     base_profile(owner);
 }
+template<bool BindNativeBase = false, bool IsIndex = false>
+void dispatch_destroy_base(void* owner) {
+    if constexpr (BindNativeBase) {
+        // bsp.py show 00B4B900 / 00B4BAB0: the private-profile COM cleanup
+        // calls its own B4B490 / B4B530 base on this same actual owner.
+        if constexpr (IsIndex)
+            destroy_native_physical_index_buffer_base_00b4b490(owner);
+        else
+            destroy_native_physical_vertex_buffer_base_00b4b530(owner);
+    } else {
+        destroy_base(owner);
+    }
+}
+template<bool BindNativeBase = false, bool IsIndex = false>
 void unwind_destroy_base(void* owner) noexcept {
     // Original FH3 invokes this base cleanup as an unwind action. A second
     // C++ exception terminates; normal base destruction remains throwable.
-    destroy_base(owner);
+    dispatch_destroy_base<BindNativeBase, IsIndex>(owner);
 }
+template<bool BindNativeBase = false, bool IsIndex = false>
 void destroy(void* owner, std::uint32_t profile, NativePhysicalBufferOwnerContext& context) {
     word(owner) = profile;
     try {
@@ -128,10 +144,10 @@ void destroy(void* owner, std::uint32_t profile, NativePhysicalBufferOwnerContex
             word(owner, 0x28) = 0;
         }
     } catch (...) {
-        unwind_destroy_base(owner);
+        unwind_destroy_base<BindNativeBase, IsIndex>(owner);
         throw;
     }
-    destroy_base(owner);
+    dispatch_destroy_base<BindNativeBase, IsIndex>(owner);
 }
 } // namespace
 
@@ -153,12 +169,27 @@ void destroy_native_buffer_diagnostic_record_00b3f4c0(void* record,
     if (auto* const data = static_cast<char*>(pointer(record, 8)))
         storage.release(data, word(record, 4) + 1u);
 }
-void destroy_native_physical_index_buffer_base_00b4b490(void* owner) { destroy_base(owner); }
-void destroy_native_physical_vertex_buffer_base_00b4b530(void* owner) { destroy_base(owner); }
-void destroy_native_physical_index_buffer_00b4b900(void* owner,
-    NativePhysicalBufferOwnerContext& context) { destroy(owner, 0x00d61e10u, context); }
-void destroy_native_physical_vertex_buffer_00b4bab0(void* owner,
-    NativePhysicalBufferOwnerContext& context) { destroy(owner, 0x00d61e34u, context); }
+// Keep the recovered destructor boundaries visible in the built call graph.
+// The deleting slots already receive the renderer's actual pooled/private
+// objects; these calls consume their +08 registry and +28 COM, with no clone.
+__declspec(noinline) void destroy_native_physical_index_buffer_base_00b4b490(void* owner) { destroy_base(owner); }
+__declspec(noinline) void destroy_native_physical_vertex_buffer_base_00b4b530(void* owner) { destroy_base(owner); }
+__declspec(noinline) void destroy_native_physical_index_buffer_00b4b900(void* owner,
+    NativePhysicalBufferOwnerContext& context) {
+    if constexpr (kWireGoal4Chain353Bound) {
+        destroy<true, true>(owner, 0x00d61e10u, context);
+    } else {
+        destroy(owner, 0x00d61e10u, context);
+    }
+}
+__declspec(noinline) void destroy_native_physical_vertex_buffer_00b4bab0(void* owner,
+    NativePhysicalBufferOwnerContext& context) {
+    if constexpr (kWireGoal4Chain353Bound) {
+        destroy<true, false>(owner, 0x00d61e34u, context);
+    } else {
+        destroy(owner, 0x00d61e34u, context);
+    }
+}
 
 void* delete_native_private_index_buffer_00b4bb20(void* owner, std::uint32_t flags,
     NativePhysicalBufferOwnerContext& context) {
