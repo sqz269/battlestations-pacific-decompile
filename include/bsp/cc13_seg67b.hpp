@@ -79,7 +79,16 @@ public:
     virtual bool object_vcall_5c(void* object, std::uint32_t arg) = 0;
 };
 
-class Cc13Seg67bHost : public ShipAiApproachTargetHost {
+// 0099B670 only calls the neighbour object's collision-band insert. A live
+// caller need not implement the unrelated task factory/archive interfaces.
+class PilotVehicleAvoidanceCalls {
+public:
+    virtual ~PilotVehicleAvoidanceCalls() = default;
+    // 007DF4F0: __thiscall(ECX = neighbour object at unit+C50h, pilot), RET 4.
+    virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
+};
+
+class Cc13Seg67bHost : public ShipAiApproachTargetHost, public PilotVehicleAvoidanceCalls {
 public:
     virtual ~Cc13Seg67bHost() = default;
 
@@ -346,8 +355,6 @@ public:
     // 009ADBF0 / 009AEEF0: __thiscall(ECX = task, bot, target), RET 8, EAX = task.
     virtual void* drop_kamikaze_task_construct_009adbf0(void* task, void* bot, void* target) = 0;
     virtual void* kamikaze_task_construct_009aeef0(void* task, void* bot, void* target) = 0;
-    // 007DF4F0: __thiscall(ECX = neighbour list at unit+C50h, pilot), RET 4.
-    virtual void vehicle_avoidance_007df4f0(void* neighbours, void* pilot) = 0;
     // 009F9CE0: __thiscall(ECX = approach, arg, float reference speed), RET 8.
     virtual void bot_approach_construct_speed_reference_009f9ce0(void* approach, void* arg,
                                                                  float reference) = 0;
@@ -887,7 +894,7 @@ void* bot_task_load_depth_charge_009a69e0(Cc13Seg67bHost& host, void* bot, void*
 // 009A19B0: __fastcall(ECX = plan), RET, ST0.
 float pilot_command_heading_diff_from_live_plane_009a19b0(Cc13Seg67bHost& host, void* plan);
 // 0099B670: __fastcall(ECX = pilot task), RET.
-void pilot_bot_avoid_vehicles_0099b670(Cc13Seg67bHost& host, void* p);
+void pilot_bot_avoid_vehicles_0099b670(PilotVehicleAvoidanceCalls& host, void* p);
 // 009AB370 / 009AEB80 / 009AF610: __fastcall(ECX = task), RET.
 void bot_task_dogfight_destruct_body_009ab370(Cc13Seg67bHost& host, void* task);
 void bot_task_drop_kamikaze_destruct_body_009aeb80(Cc13Seg67bHost& host, void* task);
