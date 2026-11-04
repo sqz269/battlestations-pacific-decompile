@@ -1,0 +1,55 @@
+{
+  "goal": 4,
+  "chain": 374,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "base": "3381c2342b",
+  "switch": "kWireGoal4Chain374Bound",
+  "switch_header": "include/bsp/wire_goal4_chain374_switches.hpp",
+  "summary": "The existing pose-setter plans now control the real ship position, heading and relative-placement matrix stores. The shared new tail publishes the existing local/world pose, clears its actual C8h/10Ch cache flags, and refreshes it through 00414DB0 before wake/formation work. Position and matrix plans retain their produced +6A4h value separately from the plane controller's unrelated +608h history; heading preserves it. Existing reconstructed bodies are reused unchanged. Each old host arm is retained behind the chain switch.",
+  "counts": {
+    "readiness_wired_before": 9585,
+    "readiness_wired_after": 9587,
+    "note": "009584D0 was already text-matched as wired through a same-named abstract Host method; it now has a direct, entry-reachable call to the reconstructed PoseSetPlan body. All three selected bodies have called=true and one reachable call site after the build."
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed, including reconstructed_math, native_math_differential and tool_tests (3/3).",
+    "pc24": "python tools/pc24_lint.py --staged: zero findings in the changed code/header; the commit-range check is also run after committing.",
+    "graph": "python tools/call_graph.py: 35942/36107 functions reachable; 4540/4974 reconstructed addresses called. who 009583c0, who 009584d0 and who 009585b0 each report REACHABLE with one direct call from the modified host function.",
+    "readiness": "python tools/wire_readiness.py --standins: all three selected rows wired, called=true, call_sites=1, callers_live=1.",
+    "native_evidence": [
+      "bsp.py show 009583c0, 009584d0 and 009585b0; assembly checked for their register/stack inputs and x87 loads/stores.",
+      "00958445..00958473 and 009585C1..009585D6 store translation/+6A4h; 009584D0 has no +6A4h store.",
+      "Live Ghidra bytes at the nine ship vtable bases 00CF90B0, 00CFA778, 00CFB738, 00CFC3D0, 00CFFA30, 00D01630, 00D09678, 00D0BF80 and 00D0C648 plus 114h all equal 0080E150, the pure +738h getter whose result 00958443 discards.",
+      "bsp.py disasm-raw 007ced70 --length 160 confirms plane finite-difference reads controller+608h; it is not the setter's unit+6A4h storage."
+    ],
+    "runtime": "The game was not run. This is build/static call-graph evidence, not gameplay or native ABI validation."
+  },
+  "remaining": [
+    "The new position integration covers the ship arm. Non-ship placement keeps the prior host substitution; native relocate-message and device-pose consumers are not supplied here.",
+    "Child PoseRefreshViews and the native +310h/0Ch and D8h notification callbacks remain existing host substitutions. This packet does not reconstruct those callback bodies or a native physics ABI.",
+    "The retained +6A4h value has no new generic-unit velocity consumer in this packet. It is deliberately not substituted for the distinct plane controller history."
+  ],
+  "rows": [
+    {"native": "009583C0", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::place_at_world_position_008193a0 (ship arm)", "called": true, "call_sites": 1},
+    {"native": "009584D0", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::set_heading_008196b0", "called": true, "call_sites": 1},
+    {"native": "009585B0", "status": "wired", "host_site": "src/game_hosts_units.cpp GameUnitsHost::put_rel_to_00819840", "called": true, "call_sites": 1},
+    {"native": "00A15950", "status": "skipped", "host_site": "src/game_hosts_ai.cpp tuning initialization", "reason": "The live brain-slot/+0Ch planner producer is not established in this packet; earlier evidence also restricts its difficulty consumer to effective modes 0..3 rather than campaign mode 8."},
+    {"native": "00A179E0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp party_brain_plan_tail", "reason": "No real powerup-ready entry producer and item-use consumer were established; an empty engagement adapter would bypass the body."},
+    {"native": "00A2B950", "status": "skipped", "host_site": "src/game_hosts_ai.cpp capture/defend planning", "reason": "No native score-list storage and gameplay consumer were established; adding a parallel sorted diagnostic list would not replace the current planner."},
+    {"native": "00A2BCC0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp capture/defend planning", "reason": "The required native score-list entry owner/consumer is absent from this packet; existing assignment fields are separate planner state."},
+    {"native": "00A2DEF0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp defend-member selection", "reason": "Already called from reachable host code under kDefendThinkImageBound; no additional missing caller was found."},
+    {"native": "0099B650", "status": "skipped", "host_site": "src/game_hosts_units.cpp BotApproachLand update", "reason": "The real native task+25Ch object view and its owner-pointer consumer are not established; the current land approach records the setter."},
+    {"native": "0099C270", "status": "skipped", "host_site": "src/game_hosts_units.cpp bot tick gate", "reason": "A full task/owner callback adapter was not established before selecting the bounded pose packet."},
+    {"native": "0070D0C0", "status": "skipped", "host_site": "src/game_hosts_units.cpp formation leader changes", "reason": "The native group pointer/list projection needed by this body was not established in this packet."},
+    {"native": "0070DB20", "status": "skipped", "host_site": "src/game_hosts_units.cpp formation group creation", "reason": "The native allocation/leader-owner contract was not established in this packet; current formation storage was not changed."},
+    {"native": "00710AD0", "status": "skipped", "host_site": "src/game_hosts_units.cpp plane collision-part attachment", "reason": "Native unit/part list ownership views were not established in this packet."},
+    {"native": "00710B80", "status": "skipped", "host_site": "src/game_hosts_units.cpp plane collision-part detachment", "reason": "Native unit/part list ownership views were not established in this packet."},
+    {"native": "00C47F60", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::set_hull_class_bit_0092bd70", "reason": "No native shape+30h/body+4h owner projection or live manifold-clear backend was established; a flag-only raw buffer would omit the body's required contact invalidation."},
+    {"native": "00C47F90", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::set_hull_class_bit_0092bd70", "reason": "No native shape+30h/body+4h owner projection or live manifold-clear backend was established; a flag-only raw buffer would omit the body's required contact invalidation."},
+    {"native": "00837DE0", "status": "skipped", "host_site": "src/game_hosts_units.cpp avoidance-depth settings", "reason": "A real game/settings pointer projection was not established in this packet."},
+    {"native": "0080E150", "status": "skipped", "host_site": "src/game_hosts_units.cpp position-setter vtable[114h] evidence", "reason": "No +738h pointer-view adapter was added: this pure getter's result is discarded by 00958443, so replaying it would add no state effect."},
+    {"native": "008193A0", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::place_at_world_position_008193a0", "reason": "The existing host substitution is the caller being improved; no separate reconstructed whole native placement body is supplied by this packet."},
+    {"native": "008196B0", "status": "skipped", "host_site": "src/game_hosts_units.cpp GameUnitsHost::set_heading_008196b0", "reason": "The existing host substitution is the caller being improved; its full native broadcast/notification callback adapter is not supplied by this packet."}
+  ]
+}

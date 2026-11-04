@@ -69,6 +69,8 @@
 #include "bsp/wire_goal4_chain362_switches.hpp"
 #include "bsp/wire_goal4_chain367_switches.hpp"
 #include "bsp/wire_goal4_chain369_switches.hpp"   // 008522C0 / 00852410
+#include "bsp/wire_goal4_chain374_switches.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"
 #include "bsp/gameplay_seg53_cc13.hpp"            // chain 369: 00852410's typed body
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
@@ -312,6 +314,7 @@
 #include <cctype>
 #include <map>
 #include <memory>
+#include <optional>
 #include <set>
 #include <stdexcept>
 #include <string>
@@ -2651,6 +2654,10 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // mission is top level (docs/GAME_EXECUTABLE.md milestone 2h, correction 8).
     bsp::CameraMatrix local{};
     bsp::CameraMatrix world{};
+    // Produced by the position/matrix setters below, not the plane controller's
+    // separate +608h history (007CED84, ESI=unit+310h). No initial value is
+    // assumed while the host has not replayed either native store.
+    std::optional<std::array<float, 3>> previous_position_6a4;
     // The inverse at unit+110h belongs to this same pose. Mutable because a
     // const frame query can lazily fill the cache through PoseRefreshView.
     mutable bsp::CameraMatrix derived{};
@@ -7430,6 +7437,26 @@ struct GameUnitsHost::Impl {
             // during creation; no inverse exists before that publication.
             slot.derived_valid = 0;
         }
+    }
+
+    // Replay the represented tail of 009583C0/009584D0/009585B0. Evidence:
+    // bsp.py show 009583c0 --asm, 009585b0 --asm: +6A4h is written only by
+    // position/matrix setters; all three clear C8h/10Ch. Keep the produced
+    // +6A4h value separate from the plane controller's finite-difference history.
+    // These instances have no child PoseRefreshViews. The native +310h/0Ch
+    // and D8h notifications retain the host's existing substitutions; this
+    // does not claim their native callback/physics ABI. The enclosing placement
+    // routines refresh C8h before their wake/formation work (008193A0/008196B0).
+    static void publish_pose_set_plan(GameUnitSlot& slot,
+        const bsp::gameplay_seg61_62_cc13::PoseSetPlan& plan) {
+        if (plan.set_previous_6a4) {
+            slot.previous_position_6a4 = std::array<float, 3>{
+                slot.motion.position[0], slot.motion.position[1], slot.motion.position[2]};
+        }
+        publish_pose(slot);
+        slot.world_valid = 0;
+        slot.derived_valid = 0;
+        bsp::refresh_pose_00414db0(*slot.pose);
     }
 
     // 009BFD70, the first half of the follow tick 009C1FD0. The plane wing's
@@ -48926,7 +48953,28 @@ bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const fl
         at[2] = st.z;
         station = true;
     }
-    for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        // 009583C0's ship arm suppresses ENTITY_RELOCATE regardless of the
+        // session. Keep the previous non-ship substitution until its message
+        // and device-notification consumers exist; do not invent those owners.
+        if (unit_is_kind_of(index, 6)) {
+            const auto& session = bsp::session_context();
+            const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_world_position_009583c0(
+                unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0f),
+                session.session_word_1fe4, static_cast<std::uint8_t>(session.skirmish_218c));
+            // For ships, vtable[114h] is the side-effect-free +738h director
+            // getter 0080E150 (00CF90B0+114h, also 00CFC3D0+114h). 00958443
+            // discards its result, so call_vtable_114 requires no state change.
+            if (plan.set_translation_a4) {
+                for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];
+            }
+            Impl::publish_pose_set_plan(slot, plan);
+        } else {
+            for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];
+        }
+    } else {
+        for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = at[lane];   // 009583C0
+    }
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));
@@ -48980,17 +49028,38 @@ bool GameUnitsHost::set_heading_008196b0(std::size_t index, float heading) {
         host.record("UnitPlace::set_heading_008196b0 (not a ship)", 0x008196b0u);
         return false;
     }
-    // 009584D0 -> 0047F200: RotationY(-0.0 - heading) (00B646E0: m[0] = cos, m[2] =
-    // -sin, row 2 = (sin, 0, cos)) times the translation of the current position.
-    const float yaw = -0.0f - heading;
-    const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
-    const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
-    slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
-    slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
-    slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
-    Impl::publish_pose(slot);
-    // 008196B0's 00818EA0: the wake ring refilled along the new heading.
-    bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        const auto& session = bsp::session_context();
+        const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_heading_009584d0(
+            unit_is_kind_of(index, 6), unit_is_kind_of(index, 0x0f),
+            session.session_word_1fe4, static_cast<std::uint8_t>(session.skirmish_218c));
+        // 00958556 calls 0047F200. Preserve the existing ship RotationY
+        // projection: each unary subtraction is one float operation, and the
+        // CRT sine/cosine calls are unchanged. No previous-position store.
+        const float yaw = -0.0f - heading;
+        if (plan.rotate_heading_0047f200) {
+            const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
+            const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
+            slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
+            slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
+            slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+        }
+        Impl::publish_pose_set_plan(slot, plan);
+        // 008196B0's 00818EA0: the wake ring refilled along the new heading.
+        bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    } else {
+        // 009584D0 -> 0047F200: RotationY(-0.0 - heading) (00B646E0: m[0] = cos, m[2] =
+        // -sin, row 2 = (sin, 0, cos)) times the translation of the current position.
+        const float yaw = -0.0f - heading;
+        const float c = static_cast<float>(std::cos(static_cast<double>(yaw)));
+        const float s = static_cast<float>(std::sin(static_cast<double>(yaw)));
+        slot.motion.pose_row0[0] = c;    slot.motion.pose_row0[1] = 0.0f; slot.motion.pose_row0[2] = -s;
+        slot.motion.pose_row1[0] = 0.0f; slot.motion.pose_row1[1] = 1.0f; slot.motion.pose_row1[2] = 0.0f;
+        slot.motion.pose_row2[0] = s;    slot.motion.pose_row2[1] = 0.0f; slot.motion.pose_row2[2] = c;
+        Impl::publish_pose(slot);
+        // 008196B0's 00818EA0: the wake ring refilled along the new heading.
+        bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, yaw);
+    }
     ++host.putto_headings;
     host.done("UnitPlace::set_heading_008196b0", 0x008196b0u);
     // 0081968F..: an occupant owner (00778890: the group's leader) re-places the
@@ -49030,13 +49099,29 @@ bool GameUnitsHost::put_rel_to_00819840(std::size_t index, std::size_t ref, cons
         rows[2][lane] = rm.pose_row2[lane];
     }
     GameUnitSlot& slot = *host.slots[index];
-    for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
-        slot.motion.pose_row0[lane] = rows[0][lane];
-        slot.motion.pose_row1[lane] = rows[1][lane];
-        slot.motion.pose_row2[lane] = rows[2][lane];
-        slot.motion.position[lane] = at[lane];
+    if constexpr (bsp::kWireGoal4Chain374Bound) {
+        const auto plan = bsp::gameplay_seg61_62_cc13::unit_set_world_matrix_009585b0();
+        if (plan.copy_matrix_004134f0) {
+            // The actual reference unit's matrix and transformed scene/script
+            // point above supply all rows; publish_pose supplies the unchanged
+            // homogeneous column of this rigid matrix.
+            for (int lane = 0; lane < 3; ++lane) {
+                slot.motion.pose_row0[lane] = rows[0][lane];
+                slot.motion.pose_row1[lane] = rows[1][lane];
+                slot.motion.pose_row2[lane] = rows[2][lane];
+                slot.motion.position[lane] = at[lane];
+            }
+        }
+        Impl::publish_pose_set_plan(slot, plan);
+    } else {
+        for (int lane = 0; lane < 3; ++lane) {                                     // 009585B0
+            slot.motion.pose_row0[lane] = rows[0][lane];
+            slot.motion.pose_row1[lane] = rows[1][lane];
+            slot.motion.pose_row2[lane] = rows[2][lane];
+            slot.motion.position[lane] = at[lane];
+        }
+        Impl::publish_pose(slot);
     }
-    Impl::publish_pose(slot);
     const float heading = static_cast<float>(
         std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
                    static_cast<double>(slot.motion.pose_row2[2])));
