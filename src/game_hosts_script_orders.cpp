@@ -9,6 +9,7 @@
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/band_0071_cc13.hpp"
 #include "bsp/wire_goal4_chain460_switches.hpp"
+#include "bsp/wire_goal4_chain466_switches.hpp"
 #include "bsp/wire_goal2_chain180_switches.hpp"
 #include <stdexcept>
 namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_hosts_mission.cpp
@@ -4229,17 +4230,35 @@ bool GameScriptOrdersHost::entity_command_is_available(void* entity,
 }
 
 int GameScriptOrdersHost::entity_route_slot(void* entity) {
+    if constexpr (bsp::kWireGoal4Chain466Bound) {
+        // 0077C904 reads entity+1ACh, the first CURRENT role assignment,
+        // not the +188h permission or the party. Borrow the table whose
+        // constructor/assignment receivers already retain that exact field.
+        std::int32_t slot = -1;
+        if (!units_.unit_current_role_slot(index_of(entity), 0, slot)) return -1;
+        log_.implemented("Formation::entity_route_slot", "0077c904");
+        return slot; // entity_join_formation keeps the native unsigned <8 gate.
+    } else {
     static_cast<void>(entity);
     // entity+1ACh, the index 00905300 counts against. No field of a created
     // instance carries it, so the record answers outside the 0..7 bound 0077c90a
     // tests, which is the value that skips the counter.
     log_.unimplemented("Formation::entity_route_slot", "0077c904");
     return -1;
+    }
 }
 
 void GameScriptOrdersHost::slot_counter_increment(int slot) {
+    if constexpr (bsp::kWireGoal4Chain466Bound) {
+        // Phase5 attaches the SAME result/scoring owner before any mission
+        // script can issue JoinFormation; no detached counter is introduced.
+        if (scoring_name_owner_ == nullptr)
+            throw std::logic_error("formation-use scoring requires the mission scoring owner");
+        scoring_name_owner_->increment_formation_use(slot);
+    } else {
     static_cast<void>(slot);
     log_.unimplemented("Formation::slot_counter_increment", "00905300");
+    }
 }
 
 // Packet cc9_formation_join_loopback (docs/SHIP_AI_OPEN_ITEMS.md section 92).
