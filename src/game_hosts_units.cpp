@@ -26,6 +26,7 @@
 #include "bsp/wire_goal4_chain338_switches.hpp"
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/wire_goal4_chain356_switches.hpp"
+#include "bsp/wire_goal4_chain380_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -5910,6 +5911,57 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(summary.simulated_seconds));
             ordnance_census_last[i] = a;
         }
+    }
+
+    // 007C1DB0 over the complete owned single-rack census, with no held-kind
+    // filter. An absent answer keeps the existing host calculation below.
+    std::optional<int> complete_single_rack_round_count(GameUnitSlot& unit) {
+        // Same admission as the 007C1F60 binding: only the actual single-rack
+        // owner whose release/reload producers maintain every counter. The
+        // integer census may walk BSPGun order because this sum has no effects.
+        const auto& racks = ordnance_racks(unit);
+        if (!unit.rack_census_done || racks.empty() || unit.rack_multi_count != 0
+            || racks.size() != unit.rack_ammo_per_rack.size()
+            || racks.size() != unit.rack_identity_per_rack.size()
+            || racks.size() != unit.rack_bullet_class_per_rack.size()) return std::nullopt;
+        for (const auto& rack : racks) {
+            if (rack.multi || rack.single_index < 0
+                || static_cast<std::size_t>(rack.single_index) >= unit.rack_ammo_per_rack.size())
+                return std::nullopt;
+            const auto index = static_cast<std::size_t>(rack.single_index);
+            const auto& resolved = unit.rack_identity_per_rack[index];
+            if (resolved.projectile_kind != unit.rack_bullet_class_per_rack[index]
+                || !admits_single_rack_round_census(
+                    {rack.platform_key, rack.device_class, rack.class_id}, resolved,
+                    unit.rack_ammo_per_rack[index])) return std::nullopt;
+        }
+        struct Binding final : bsp::cc13_seg47::RackRoundCountHost {
+            using Raw = bsp::cc13_seg47::Raw;
+            GameUnitSlot& unit;
+            const std::vector<PlaneOrdnanceRack>& racks;
+            Binding(GameUnitSlot& u, const std::vector<PlaneOrdnanceRack>& r)
+                : unit(u), racks(r) {}
+            Raw handle(const PlaneOrdnanceRack* rack) {
+                return bsp::cc13_seg47::raw(const_cast<PlaneOrdnanceRack*>(rack));
+            }
+            Raw first_round_device(Raw) override { return handle(racks.data()); }
+            Raw next_round_device(Raw device) override {
+                const auto* rack = reinterpret_cast<const PlaneOrdnanceRack*>(device.p);
+                const std::size_t next = static_cast<std::size_t>(rack - racks.data()) + 1;
+                return handle(next < racks.size() ? &racks[next] : nullptr);
+            }
+            bool entity_vcall_is_kind_5c(Raw, std::int32_t kind) override {
+                return kind == 0x25; // census category is BombPlatform
+            }
+            std::int32_t bomb_platform_round_count_006e3500(Raw device) override {
+                const auto& rack = *reinterpret_cast<const PlaneOrdnanceRack*>(device.p);
+                return unit.rack_ammo_per_rack[static_cast<std::size_t>(rack.single_index)];
+            }
+        } binding(unit, racks);
+        // Original 007C1DB0 sums every kind-25h child's live remaining count;
+        // unlike 007C1F60 it does not additionally ask holds(2Ah,0).
+        return bsp::cc13_seg47::unit_count_remaining_ordnance_rounds_007c1db0(
+            binding, bsp::cc13_seg47::raw(&unit));
     }
 
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
@@ -29098,11 +29150,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                         }
                         int rounds_remaining_007c1db0(void*) override {
-                            // 007C1DB0 walks the device list at unit+48h and
-                            // sums 006E3500 over every device whose
-                            // vtable[+5Ch] answers 25h. The gunnery host owns
-                            // that list, so the count comes from there.
-                            return owner_.dive_bomb_rounds_remaining(slot_);
+                            if constexpr (kWireGoal4Chain380Bound) {
+                                if (const auto count = owner_.complete_single_rack_round_count(slot_))
+                                    return *count;
+                                return owner_.dive_bomb_rounds_remaining(slot_);
+                            } else {
+                                // 007C1DB0 walks the device list at unit+48h and
+                                // sums 006E3500 over every device whose
+                                // vtable[+5Ch] answers 25h. The gunnery host owns
+                                // that list, so the count comes from there.
+                                return owner_.dive_bomb_rounds_remaining(slot_);
+                            }
                         }
                         float uniform_between(float low, float high) override {
                             // The one caller is the turndown roll magnitude
@@ -35650,7 +35708,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 return bsp::OrdnanceKindSet{a.unit_.ordnance_mask}.contains(0x2c);
                             }
                             int remaining_rounds_007c1db0() override {
-                                return a.owner_.dive_bomb_rounds_remaining(a.unit_);
+                                if constexpr (kWireGoal4Chain380Bound) {
+                                    if (const auto count = a.owner_.complete_single_rack_round_count(a.unit_))
+                                        return *count;
+                                    return a.owner_.dive_bomb_rounds_remaining(a.unit_);
+                                } else {
+                                    return a.owner_.dive_bomb_rounds_remaining(a.unit_);
+                                }
                             }
                             int parity_f876b0() override {
                                 return static_cast<int>(a.unit_.process_index);   // LABELLED stand-in
@@ -36385,8 +36449,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // the two are different objects, so the glide
                                 // latch gets its own field. 009C4F0C clears it.
                                 unit_.db_aimglide_pull_out_76c = false;
-                                const int rounds =
-                                    owner_.dive_bomb_rounds_remaining(unit_);
+                                const int rounds = [&]() {
+                                    if constexpr (kWireGoal4Chain380Bound) {
+                                        if (const auto count = owner_.complete_single_rack_round_count(unit_))
+                                            return *count;
+                                        return owner_.dive_bomb_rounds_remaining(unit_);
+                                    } else {
+                                        return owner_.dive_bomb_rounds_remaining(unit_);
+                                    }
+                                }();
                                 const float seed =
                                     static_cast<float>(rounds - 1) *
                                     static_cast<float>(
