@@ -1,0 +1,104 @@
+{
+  "chain": 379,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain379Bound",
+  "scope": "Native language catalog row construction during actual settings-load append and catalog growth",
+  "rows": [
+    {
+      "native": "008d5890",
+      "status": "wired",
+      "host_site": "src/native_language_catalog_storage.cpp: call_row_constructor, called by append_native_language_catalog_008d6af0 and reserve",
+      "state": "Actual 20h source/destination catalog rows and the SAME NativeStringRawPoolContext from build_native_language_catalog_008d7bc0 during GameNativeSettingsApplication::load",
+      "evidence": "008D6B44 and 008D5A3D call 008D5890; bsp.py show 008d6af0, 008d59c0 and 008d5890 inspected. Existing constructor body reused, with row diagnostic checkpoint transferred to the retaining parent on success or exception."
+    },
+    {
+      "native": "008d59c0",
+      "status": "wired",
+      "host_site": "src/native_language_catalog_lifetime.cpp: resize -> reserve_native_language_catalog_008d59c0 (existing edge)",
+      "note": "Already wired before this chain; its internal relocation copies now also dispatch 008D5890. No additional address-count credit."
+    },
+    {
+      "native": "008d4f50",
+      "status": "wired",
+      "host_site": "src/native_language_catalog_lifetime.cpp: resize -> destroy_native_language_row_008d4f50 (existing edge)",
+      "note": "Inspected as a catalog-lifetime dependency; already wired and unchanged. No additional address-count credit."
+    },
+    {
+      "native": "008d5aa0",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_lifetime.cpp: shutdown_native_language_catalog_00cdeea0",
+      "reason": "Shutdown still uses its private resize schedule; invoking the standalone resize entry needs a separate retained lifetime-operation checkpoint without resetting the running parent."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow fitting",
+      "reason": "The examined 00A8BD20/00A8ECB0 shadow-fitting callers are absent from bsp_game's call graph; a running owner/fit submission chain is missing."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: clip-plane submission",
+      "reason": "Existing submission composition is not linked to a running scene/shadow/ocean caller; the live owner/submission producer chain was not established."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: clip-plane clearing",
+      "reason": "Requires the same missing live main-scene submission owner/caller chain as 00B70410."
+    },
+    {
+      "native": "00b700a0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: camera_clear_00b700a0 callbacks",
+      "reason": "A running 00B156C0 scene-renderer host was not established; the current camera-command clear belongs to 00B71360 and cannot simply be relabelled as this entry."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: camera_clear_color_00b6fe60 callback",
+      "reason": "The examined scene-renderer callback lacks a running 00B156C0 host and a bound same-camera CameraView."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "record_remap_texture_name still returns an empty string; the real scene remap-name/service/texture-acquisition producer chain is missing at this host site."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "Requires the same missing real remap-name/service/texture-acquisition producer chain as 00B0FD70."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "Requires the same missing real remap-name/service/texture-acquisition producer chain as 00B0FD70."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "Requires the same missing real remap-name/service/texture-acquisition producer chain as 00B0FD70."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp: contains_native_property_library_name_008f2db0",
+      "reason": "A running contains-name consumer using the actual coherent 10Ch library owner and SAME string process was not established during selection."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed, 2/2 CTests",
+    "build": "scripts/build.ps1 passed, 2/2 CTests",
+    "wire_readiness_before": 9601,
+    "wire_readiness_after": 9602,
+    "called_addresses_before": 4543,
+    "called_addresses_after": 4544,
+    "call_graph": "008d5890 REACHABLE, one call site from call_row_constructor; adapter has two reachable call sites from append and reserve. Append path: WinMain -> GameStartupHost -> GameNativeSettingsApplication::load -> load_native_game_settings_008d8190 -> build_native_language_catalog_008d7bc0 -> append_native_language_catalog_008d6af0.",
+    "float_math": "Unchanged; no new arithmetic or pc24 requirement.",
+    "runtime": "Build and executable graph evidence only; game not run."
+  }
+}
