@@ -1,0 +1,129 @@
+{
+  "chain": 537,
+  "owner": "agent/g4-w5",
+  "base": "5a366b7a66",
+  "switch": "bsp::kWireGoal4Chain537Bound",
+  "summary": "Reuse the existing translation-frame initializer for each scene root's actual parent matrix, preserving the original identity constants and the old call in the switch's else arm.",
+  "wired_before": 9849,
+  "wired_after": 9850,
+  "entry_reachable_called_before": 4917,
+  "entry_reachable_called_after": 4918,
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTest tests passed",
+    "pc24_lint": "--staged passed with zero findings; no arithmetic expressions changed",
+    "call_graph": "0047C240 has one entry-reachable call from run_scene_file_reader_0046df00; path continues through SceneContentsBinding::read_scene_file and the mission/menu frame to WinMainCRTStartup",
+    "readiness": "0047c240: state=wired, called=true, call_sites=1, callers_live=1",
+    "evidence": "bsp.py show 0047c240; bsp.py show 0046df00 --asm, 0046EA4C..0046EB01: positive-zero translation, four 1.0f diagonal lanes from 00D7A24C",
+    "runtime": "Game was not run. Source interface and static entry reach are verified; original register ABI and gameplay equivalence are not claimed."
+  },
+  "rows": [
+    {
+      "native": "0047c240",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp: visit_root_entity, called by run_scene_file_reader_0046df00",
+      "state": "The matrix built by the existing body is passed to visit_entity, multiplied with the authored local frame, and consumed by SceneFileReaderHost::instantiate_entity. Both existing entity-parser arms select this path when the switch is on."
+    },
+    {
+      "native": "0047c210",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_model.inc: GameNativeMissionModel::update_unit_transform and mission_model_detail::compose_model_matrix",
+      "reason": "No new wiring needed: baseline call_graph.py already reports three reachable calls from the live mission-model transform consumers."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planner / Group score-list owner",
+      "reason": "The native score list's sole reader is unreached debug overlay 00A2CDD0; a gameplay consumer is absent and repurposing its output as planner state would invent behavior."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planner / Group score-list owner",
+      "reason": "Chosen flags are read only by debug overlay 00A2CDD0; there is no single-player gameplay consumer to wire."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: recon aggregate publication",
+      "reason": "The aggregate uses typed unit indices and Rec levels; a real native group detection record at unit+1E8h with observer-unregister and change-delegate consumers is missing."
+    },
+    {
+      "native": "00806a60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: recon convoy aggregate publication",
+      "reason": "Convoy aggregation currently counts groups only; the LandConvoy entity/detection-record owner needed to publish the stored level is missing."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "The legacy group/position adapter has no actual native job-element owner; the attached NativeFixedStepJobWaves path bypasses this recording stub."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "The legacy group/position adapter has no actual native job-element owner; the attached NativeFixedStepJobWaves path bypasses this recording stub."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "The legacy group/position adapter has no actual native job-element owner; the attached NativeFixedStepJobWaves path bypasses this recording stub."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "The legacy group/position adapter has no actual native interpolation-element owner; the attached NativeFixedStepJobWaves path bypasses this recording stub."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: parse_float / scene numeric property parsing",
+      "reason": "The live property parser uses SceneLexer tokens; a same-owner 838h native tokenizer and retained NativeSceneTokenizerContext at this float-lookahead consumer are missing."
+    },
+    {
+      "native": "00436490",
+      "status": "skipped",
+      "host_site": "src/profile_seg2_cc13.cpp: native_string_at_0c_destroy_storage_00436490",
+      "reason": "A live MainMenuWidgetListener owner carrying the native pooled string at +0Ch and its corresponding Seg2Host storage-return provider are missing."
+    },
+    {
+      "native": "00aa7950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: widget transform publication",
+      "reason": "There is no runtime scale setter producer here; authored Scale is descriptor storage followed by the existing loaded-hook recomposition, so injecting another setter there would duplicate that work."
+    },
+    {
+      "native": "00aa1fa0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_manager_application.cpp: native GUI manager application",
+      "reason": "A bound manager+50h cursor widget and its live input-position update consumer are missing from the inspected application boundary."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "weapon_animation currently returns zero; the actual animation owner/handle and range consumer are missing."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate map_screen_busy",
+      "reason": "The powerup-screen scrolling owner and writers for +1F9h/+13Fh are missing; this boundary only records false."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate cockpit_screen_mode",
+      "reason": "The plane-effects screen's +B8h plane and +FCh cockpit-mode owner/producer are missing; this boundary only records false."
+    },
+    {
+      "native": "00467f30",
+      "status": "skipped",
+      "host_site": "src/entity_identity.cpp: entity_find_by_qualified_name_009251f0 / EntityNameNode::child_at",
+      "reason": "A live EntityNameNode child-list owner and next-link adapter for this qualified-name consumer are missing."
+    }
+  ]
+}
