@@ -546,7 +546,7 @@ Raw ai_command_regrouping_move_construct_00a10370(Raw command, void* group, cons
 // +4h group; the observer sub-object at +8h is built as the base (vtable 00CE3CD4, +0Ch..+14h
 // zero, byte +18h zero), then the ATTACK vtables 00D22B7C / 00D22B64 go in, +1Ch = target,
 // and 00694A60(ECX = target, EDX = command + 8) registers the pair.
-Raw ai_command_attack_construct_base_00a10710(Seg69Host& host, Raw command, void* group,
+Raw ai_command_attack_construct_base_00a10710(AttackCommandObserverHost& host, Raw command, void* group,
     void* target)
 {
     command.ptr(0x4) = group;
@@ -563,7 +563,7 @@ Raw ai_command_attack_construct_base_00a10710(Seg69Host& host, Raw command, void
 }
 
 // 00A10890, ABI as 00A10710. MOVETOATTACK: the base, then vtables 00D22BBC / 00D22BA4.
-Raw ai_command_movetoattack_construct_00a10890(Seg69Host& host, Raw command, void* group,
+Raw ai_command_movetoattack_construct_00a10890(AttackCommandObserverHost& host, Raw command, void* group,
     void* target)
 {
     ai_command_attack_construct_base_00a10710(host, command, group, target);
@@ -575,7 +575,7 @@ Raw ai_command_movetoattack_construct_00a10890(Seg69Host& host, Raw command, voi
 // 00A109B0, ABI as 00A10710 (2Ch-byte object). CAUTIOUSATTACK: the base, the approach base at
 // +20h (00D22A08), byte +24h = 0, route counter +28h = 4, vtables 00D22C04 / 00D22BEC, then
 // +20h = 00D22BE4.
-Raw ai_command_cautious_attack_construct_00a109b0(Seg69Host& host, Raw command, void* group,
+Raw ai_command_cautious_attack_construct_00a109b0(AttackCommandObserverHost& host, Raw command, void* group,
     void* target)
 {
     ai_command_attack_construct_base_00a10710(host, command, group, target);
@@ -589,7 +589,7 @@ Raw ai_command_cautious_attack_construct_00a109b0(Seg69Host& host, Raw command, 
 }
 
 // 00A10AE0, ABI as 00A10710. CLOSEATTACK: the base, then vtables 00D22C44 / 00D22C2C.
-Raw ai_command_close_attack_construct_00a10ae0(Seg69Host& host, Raw command, void* group,
+Raw ai_command_close_attack_construct_00a10ae0(AttackCommandObserverHost& host, Raw command, void* group,
     void* target)
 {
     ai_command_attack_construct_base_00a10710(host, command, group, target);

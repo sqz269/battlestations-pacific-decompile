@@ -1,0 +1,85 @@
+{
+  "chain": 544,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain544Bound",
+  "summary": "Install the existing ATTACK-family constructors over retained command storage with live planner owner/target groups; consume their fields and GetType results in the actual command ticks, retain target observers, and unregister them on replacement, promotion, retargeting and teardown.",
+  "wired_total_before": 9860,
+  "wired_total_after": 9865,
+  "metric_note": "Readiness's textual wired total increases by five. 00A10710 and 00A10AE0 were already textually wired at baseline; this chain supplies actual entry-reachable calls for all seven selected bodies. No baseline binary-called total was captured.",
+  "validation": {
+    "release_build_and_tests": "./scripts/build.ps1: all five existing tests pass",
+    "lifetime_fixture": "python tools/wire_goal4_chain544_probe.py: production constructor/storage/install/notification code passes all three subclass outputs, retarget, promotion, non-attack replacement, multiple target observers, unobserved target, target-before-attacker shutdown and heap checks",
+    "analysis_build": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests",
+    "call_graph": "python tools/call_graph.py --build-dir build/analysis, followed by who for each wired address: all seven are entry-reachable with distinct call sites; Release also calls all three subclass constructors and GetType bodies, while the shared base is inlined",
+    "evidence": "bsp.py show 00A10890, 00A109B0 and 00A10710; 00A10710 assembly confirms ECX=target and EDX=command+8 at observer registration",
+    "limits": "Build, focused source-host fixture and binary call-graph evidence only. The game was not run. These source adapters and retained byte buffers do not claim native observer/container or binary vtable ABI compatibility."
+  },
+  "rows": [
+    {
+      "native": "00a10710",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand / replace_command, via the three ATTACK subclass constructors",
+      "analysis_call_sites": 3
+    },
+    {
+      "native": "00a10890",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand, installed from order_attack and merge_group through replace_command",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a109b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand, installed from order_attack and merge_group through replace_command",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a10ae0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand, installed from tick_replace_command and merge_group through replace_command",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a108c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand::state, selected by the actual constructor's primary vtable and consumed as Group::command.type",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a109f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand::state, selected by the actual constructor's primary vtable and consumed as Group::command.type",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a10b10",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::NativeAttackCommand::state, selected by the actual constructor's primary vtable and consumed as Group::command.type",
+      "analysis_call_sites": 1
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl capture planning",
+      "reason": "Needs native-style score-list storage and a planner consumer; current CapturePlan vectors remain the gameplay input."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl capture planning",
+      "reason": "Needs retained score-list entries shared with 00A2B950 and a consumer of each entry's chosen flag."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl SELLING capture-range query",
+      "reason": "Needs an adapter for the same-team capture-entity linked list and integer CaptureRange; left outside the ATTACK command ownership slice."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::tick_issue_clearorders",
+      "reason": "Literal body reads native absolute cells 00F87574/78/7C; the host target descriptor supplies no verified runtime mapping for those cells."
+    }
+  ]
+}

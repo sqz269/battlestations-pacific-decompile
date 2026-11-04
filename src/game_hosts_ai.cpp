@@ -64,6 +64,7 @@
 #include "bsp/wire_goal4_chain409_switches.hpp"
 #include "bsp/wire_goal4_chain474_switches.hpp"
 #include "bsp/wire_goal4_chain490_switches.hpp"
+#include "bsp/wire_goal4_chain544_switches.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
@@ -1366,6 +1367,87 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // --- the records every void* in the two host interfaces points at -------
 
     struct Planner;
+    struct NativeAttackCommand;
+
+    // The target's 00694A60 registrations. Sharing this endpoint keeps command
+    // teardown valid even when mission shutdown frees the target group first.
+    struct AttackObserverEndpoint {
+        std::vector<NativeAttackCommand*> commands;
+    };
+
+    struct NativeAttackCommand final : bsp::cc13_seg69::AttackCommandObserverHost {
+        alignas(4) std::array<std::uint8_t, 0x2c> bytes{};
+        std::shared_ptr<AttackObserverEndpoint> endpoint;
+
+        NativeAttackCommand(void* owner, void* target, bsp::AiCommandType type,
+            std::shared_ptr<AttackObserverEndpoint> observed) : endpoint(std::move(observed)) {
+            namespace native = bsp::cc13_seg69;
+            const native::Raw view{bytes.data()};
+            // bsp.py show 00A10890 / 00A109B0 / 00A10AE0: original command
+            // allocation sizes are 20h / 2Ch / 20h; this retained buffer fits
+            // all three. Inputs are the planner's actual group and target.
+            switch (type) {
+            case bsp::AiCommandType::MoveToAttack:
+                native::ai_command_movetoattack_construct_00a10890(*this, view, owner, target);
+                break;
+            case bsp::AiCommandType::CautiousAttack:
+                native::ai_command_cautious_attack_construct_00a109b0(*this, view, owner, target);
+                break;
+            case bsp::AiCommandType::CloseAttack:
+                native::ai_command_close_attack_construct_00a10ae0(*this, view, owner, target);
+                break;
+            default:
+                throw std::logic_error("Native ATTACK command requires an ATTACK subclass");
+            }
+        }
+
+        ~NativeAttackCommand() override {
+            // 00A10790/00A10A20/00A10AC0 -> 00695870: remove the outgoing
+            // command's registration when 00A2BD00 replaces that command.
+            auto& commands = endpoint->commands;
+            commands.erase(std::remove(commands.begin(), commands.end(), this), commands.end());
+        }
+
+        void observer_register_pair_00694a60(void* target, void* observer) override {
+            const bsp::cc13_seg69::Raw view{bytes.data()};
+            // Listing 00A10734..00A10767: EDX = command+8, ECX = target;
+            // +1Ch is stored before registration. The endpoint is the live
+            // target's notification list, consumed by destroy_group below.
+            if (target != view.ptr(0x1c) || observer != bytes.data() + 8)
+                throw std::logic_error("ATTACK observer registration does not match its command");
+            endpoint->commands.push_back(this);
+        }
+
+        void* owner_group() {
+            return bsp::cc13_seg69::Raw{bytes.data()}.ptr(4);
+        }
+
+        bsp::AiCommandObject state() {
+            namespace native = bsp::cc13_seg69;
+            const native::Raw view{bytes.data()};
+            bsp::AiCommandObject result;
+            // Dispatch the original vt+4h leaves using the constructor's
+            // primary-vtable result; numeric image vtables are never invoked.
+            switch (view.at<std::uint32_t>(0)) {
+            case native::kMoveToAttackVtable:
+                result.type = bsp::ai_command_move_to_attack_get_type_00a108c0();
+                break;
+            case native::kCautiousAttackVtable:
+                result.type = bsp::ai_command_cautious_attack_get_type_00a109f0();
+                result.route_flag_24 = view.at<std::uint8_t>(0x24) != 0;
+                result.route_counter_28 = view.at<std::int32_t>(0x28);
+                break;
+            case native::kCloseAttackVtable:
+                result.type = bsp::ai_command_close_attack_get_type_00a10b10();
+                break;
+            default:
+                throw std::logic_error("ATTACK constructor produced an unknown vtable");
+            }
+            result.owner_group = view.ptr(4);
+            result.target_group = view.ptr(0x1c);
+            return result;
+        }
+    };
 
     struct Group {
         int team{0};                  // group+5638h, the seed entity's +54h
@@ -1375,6 +1457,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // group+564Ch. Every group carries one from its constructor, so the
         // object is held by value and `has_command` is not a separate state.
         bsp::AiCommandObject command{};
+        std::shared_ptr<AttackObserverEndpoint> attack_endpoint;
+        std::unique_ptr<NativeAttackCommand> native_attack;
         float member_pass_due{0.0f};  // group+5650h, 0.0f from the constructor
         bool emptied{false};
         bool destroyed{false};
@@ -1384,6 +1468,29 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::vector<Group*>* walk_list{nullptr};  // the list a walk found it in
         std::size_t walk_at{0};
     };
+
+    // A single install path owns the native constructor output and its
+    // observer lifetime. Non-ATTACK replacements release the old registration.
+    // The existing command ticks consume the projection, including +24h/+28h;
+    // this is a source host adapter, not a binary-compatible object/vtable.
+    void replace_command(Group* g, const bsp::AiCommandObject& next) {
+        bsp::AiCommandObject result = next;
+        std::unique_ptr<NativeAttackCommand> native;
+        if (next.type == bsp::AiCommandType::MoveToAttack ||
+            next.type == bsp::AiCommandType::CautiousAttack ||
+            next.type == bsp::AiCommandType::CloseAttack) {
+            Group* target = group_at(next.target_group);
+            if (target == nullptr || target->destroyed)
+                throw std::logic_error("ATTACK command requires a live target group");
+            if (!target->attack_endpoint)
+                target->attack_endpoint = std::make_shared<AttackObserverEndpoint>();
+            native = std::make_unique<NativeAttackCommand>(g, target, next.type,
+                target->attack_endpoint);
+            result = native->state();
+        }
+        g->native_attack = std::move(native);
+        g->command = result;
+    }
 
     struct Planner {
         bsp::AiPlannerKind kind{bsp::AiPlannerKind::Siege};
@@ -1988,7 +2095,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // OFF: the earlier host rule, the command reverts to the class the
             // constructor installed. ON: destroy_group replaces it with IDLE,
             // as 00A10040 does when 00A2D440 notifies (kAiTargetGroupDestroyedIdleBound).
-            if (!kAiTargetGroupDestroyedIdleBound) h->command = birth;
+            if (!kAiTargetGroupDestroyedIdleBound) {
+                if constexpr (bsp::kWireGoal4Chain544Bound) {
+                    replace_command(h, birth);
+                } else {
+                    h->command = birth;
+                }
+            }
         }
         if constexpr (kAiGroupScoreListReleaseBound) {
             done("AiGroups::release_group_reference", 0x00a2b8f0u);
@@ -2011,15 +2124,36 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // 00A2D440 -> 00696330: each ATTACK command observing g runs 00A10040,
             // which builds IDLE (new(8), vtable 00D229E0, +4h = its own group) and
             // installs it with 00A2BD00, deleting the attack command.
-            for (Group* h : registry) {
-                if (h == nullptr || h == g) continue;
-                if (h->command.target_group != static_cast<void*>(g)) continue;
-                bsp::AiCommandObject idle;
-                idle.type = bsp::AiCommandType::Idle;
-                idle.owner_group = h;
-                h->command = idle;
-                done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
+            if constexpr (bsp::kWireGoal4Chain544Bound) {
+                // 00A2D440 -> 00696330: notify only commands whose constructor
+                // actually registered this target. Replacing each command
+                // removes its pair, including a possible self-observation.
+                while (g->attack_endpoint && !g->attack_endpoint->commands.empty()) {
+                    NativeAttackCommand* observed = g->attack_endpoint->commands.back();
+                    Group* h = static_cast<Group*>(observed->owner_group());
+                    if (h == nullptr || h->native_attack.get() != observed)
+                        throw std::logic_error("ATTACK notification has no owning command");
+                    bsp::AiCommandObject idle;
+                    idle.type = bsp::AiCommandType::Idle;
+                    idle.owner_group = h;
+                    replace_command(h, idle);
+                    done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
+                }
+            } else {
+                for (Group* h : registry) {
+                    if (h == nullptr || h == g) continue;
+                    if (h->command.target_group != static_cast<void*>(g)) continue;
+                    bsp::AiCommandObject idle;
+                    idle.type = bsp::AiCommandType::Idle;
+                    idle.owner_group = h;
+                    h->command = idle;
+                    done("AiCommand::attack_target_destroyed_00a10040", 0x00a10040u);
+                }
             }
+        }
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            // Group teardown also destroys its outgoing command observer.
+            g->native_attack.reset();
         }
         registry.erase(std::remove(registry.begin(), registry.end(), g), registry.end());
         for (std::vector<Group*>& list : by_team) {
@@ -2128,7 +2262,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         // group+564Ch, the eight-byte NONCONTROL or IDLE instance the
         // constructor installs before the first member is added.
-        g->command = initial_command_for(g);
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, initial_command_for(g));
+        } else {
+            g->command = initial_command_for(g);
+        }
         ++summary.groups_created;
         attach(g, unit);
         done("AiGroups::create_group", 0x00a2dfa0u);
@@ -2347,9 +2485,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 c.owner_group = g;
                 c.target_group = a;
                 if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
-                g->command = c;
+                if constexpr (bsp::kWireGoal4Chain544Bound) {
+                    replace_command(g, c);
+                } else {
+                    g->command = c;
+                }
             } else {
-                g->command.target_group = a;
+                if constexpr (bsp::kWireGoal4Chain544Bound) {
+                    bsp::AiCommandObject next = g->command;
+                    next.target_group = a;
+                    replace_command(g, next);
+                } else {
+                    g->command.target_group = a;
+                }
             }
             ++summary.commands_retargeted;
         }
@@ -3745,8 +3893,16 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             groupable ? 1 : 0,
             static_cast<double>(tick_horizontal_distance(own, tgt)),
             static_cast<double>(current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)));
-        g->command.type = type;
-        g->command.owner_group = g;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            bsp::AiCommandObject next;
+            next.type = type;
+            next.owner_group = g;
+            next.target_group = g->command.target_group;
+            replace_command(g, next);
+        } else {
+            g->command.type = type;
+            g->command.owner_group = g;
+        }
         done("AiCommand::promote_to_close_attack", 0x00a2bd00u);
     }
     void command_pass_interval(void* command, float* low, float* high) override {
@@ -4296,7 +4452,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         c.type = bsp::AiCommandType::PatrolTo;
         c.owner_group = g;
         for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
-        g->command = c;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, c);
+        } else {
+            g->command = c;
+        }
         ++mode_think_patrols;
     }
     // 00A2CCF0(group)(point, ratio) through ai_order_cautious_move_00a2ccf0. The
@@ -4347,7 +4507,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                                                 : bsp::AiCommandType::MoveTo;
         c.owner_group = g;
         for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
-        g->command = c;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, c);
+        } else {
+            g->command = c;
+        }
         ++mode_think_moves;
     }
     void mode_think_apply(Planner& p, Group* g, const bsp::gameplay_seg69_70_cc13::ModeThinkResult& r) {
@@ -5114,7 +5278,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             bsp::AiCommandObject c;
             c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
             c.owner_group = g;
-            g->command = c;
+            if constexpr (bsp::kWireGoal4Chain544Bound) {
+                replace_command(g, c);
+            } else {
+                g->command = c;
+            }
             ++capture_orders_defend;
             return 1;
         }
@@ -5135,7 +5303,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         c.target_position[0] = ex;
         c.target_position[1] = ey;
         c.target_position[2] = ez;
-        g->command = c;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, c);
+        } else {
+            g->command = c;
+        }
         ++capture_orders_patrol;
         return 2;
     }
@@ -5374,7 +5546,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             bsp::AiCommandObject c;
             c.type = bsp::AiCommandType::Selling;
             c.owner_group = g;
-            g->command = c;
+            if constexpr (bsp::kWireGoal4Chain544Bound) {
+                replace_command(g, c);
+            } else {
+                g->command = c;
+            }
             ++sell_orders;
         }
         done("AiPlanners::sell_think_00a22800", 0x00a22800u);
@@ -5777,7 +5953,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         bsp::AiCommandObject c;
         c.type = bsp::AiCommandType::DefendPosition;   // vtable 00D22A38
         c.owner_group = g;
-        g->command = c;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, c);
+        } else {
+            g->command = c;
+        }
         ++defend_positions;
         if (capture_diag_enabled() && diag_capture_lines < 60) {
             ++diag_capture_lines;
@@ -5802,7 +5982,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         c.target_position[0] = ex;
         c.target_position[1] = ey;
         c.target_position[2] = ez;
-        g->command = c;
+        if constexpr (bsp::kWireGoal4Chain544Bound) {
+            replace_command(g, c);
+        } else {
+            g->command = c;
+        }
         ++defend_patrols;
     }
     unsigned long long defend_record_thinks{0};
@@ -6890,7 +7074,11 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
                                 : bsp::AiCommandType::MoveToAttack;
     replacement.owner_group = g;
     replacement.target_group = t;
-    g->command = replacement;
+    if constexpr (bsp::kWireGoal4Chain544Bound) {
+        replace_command(g, replacement);
+    } else {
+        g->command = replacement;
+    }
     if (diag_order_lines < 12) {
         ++diag_order_lines;
         log.notef("  ai diag order_attack group_members=%zu group_leader=%s "

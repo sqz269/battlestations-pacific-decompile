@@ -107,7 +107,14 @@ static_assert(sizeof(CandidateRecord) == 0x20, "00A00020 builds a 20h-byte recor
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine, global or virtual slot.
 // ---------------------------------------------------------------------------
-struct Seg69Host {
+// The ATTACK constructors use only observer registration. A live command owner
+// need not implement the segment's unrelated Lua, debug and planner services.
+struct AttackCommandObserverHost {
+    virtual ~AttackCommandObserverHost() = default;
+    virtual void observer_register_pair_00694a60(void* endpoint, void* owner) = 0;  // ECX, EDX
+};
+
+struct Seg69Host : AttackCommandObserverHost {
     virtual ~Seg69Host() = default;
 
     // Image globals: the address of the cell (BSS / .data) named by its image address.
@@ -145,7 +152,6 @@ struct Seg69Host {
     virtual float group_recon_ratio_00a2c3d0(void* group) = 0;     // ECX = group, ST0
     virtual void* group_by_id_00a2c950(int id) = 0;                // ECX = id
     virtual void group_set_command_00a2bd00(void* group, void* command) = 0;  // ECX, RET 4
-    virtual void observer_register_pair_00694a60(void* endpoint, void* owner) = 0;  // ECX, EDX
     virtual void callback_owner_destroy_00695870(void* owner) = 0;  // ECX
     virtual void* director_route_00778860(void* entity) = 0;        // ECX = entity
     virtual bool route_virtual_c(void* route) = 0;                  // route vtable +0Ch
@@ -245,13 +251,13 @@ void ai_command_describe_type_00a0ff60(Seg69Host& host, Raw command, void* lua_o
 Raw ai_command_moveto_construct_00a10240(Raw command, void* group, const float* point);
 Raw ai_command_cautious_move_construct_00a102d0(Raw command, void* group, const float* point);
 Raw ai_command_regrouping_move_construct_00a10370(Raw command, void* group, const float* point);
-Raw ai_command_attack_construct_base_00a10710(Seg69Host& host, Raw command, void* group,
+Raw ai_command_attack_construct_base_00a10710(AttackCommandObserverHost& host, Raw command, void* group,
     void* target);
-Raw ai_command_movetoattack_construct_00a10890(Seg69Host& host, Raw command, void* group,
+Raw ai_command_movetoattack_construct_00a10890(AttackCommandObserverHost& host, Raw command, void* group,
     void* target);
-Raw ai_command_cautious_attack_construct_00a109b0(Seg69Host& host, Raw command, void* group,
+Raw ai_command_cautious_attack_construct_00a109b0(AttackCommandObserverHost& host, Raw command, void* group,
     void* target);
-Raw ai_command_close_attack_construct_00a10ae0(Seg69Host& host, Raw command, void* group,
+Raw ai_command_close_attack_construct_00a10ae0(AttackCommandObserverHost& host, Raw command, void* group,
     void* target);
 void ai_group_refresh_leader_pose(Seg69Host& host, Raw group);  // the shared inline shape
 void ai_command_moveto_debug_draw_00a12540(Seg69Host& host, Raw command);
