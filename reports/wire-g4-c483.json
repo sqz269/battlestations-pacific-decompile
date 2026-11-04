@@ -1,0 +1,273 @@
+{
+  "chain": 483,
+  "owner": "agent/g4-w2",
+  "run": 988,
+  "switch": "kWireGoal4Chain483Bound",
+  "scope": "Reuse existing entity-message table lookup bodies in the live GUI object-handle resolver callback",
+  "rows": [
+    {
+      "native": "00720fa0",
+      "status": "wired",
+      "host_site": "src/object_handle_resolvers.cpp:object_from_handle_006ad080 (nonzero upper-word arm)",
+      "domain": "Same live ObjectHandleTables aliases and low16 of the actual full callback input; in particular nonzero full handles with low16=0 still perform the unchecked native table lookup."
+    },
+    {
+      "native": "00720fe0",
+      "status": "wired",
+      "host_site": "src/object_handle_resolvers.cpp:object_from_handle_006ad080 (zero upper-word arm)",
+      "domain": "Actual callback word when it equals its low16 value; zero returns null without accessing a bank. Both functions feed the existing GUI Handle field reader, rather than an invented message or shadow table."
+    },
+    {
+      "native": "006ad080",
+      "status": "skipped",
+      "host_site": "src/object_handle_resolvers.cpp:object_from_handle_006ad080",
+      "reason": "Already reachable through the installed GUI Handle callback; retained as the caller and changed its implementation, not counted as newly wired."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already reachable from the entry in the baseline executable through the native property-bag projection; readiness text state is not missing binary wiring."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already reachable from the entry in the baseline executable through the native property-bag projection; readiness text state is not missing binary wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl",
+      "reason": "Already reachable through both the scalar constructor and recursive child merge in the baseline executable."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp:SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already bound by the native enum-property insertion path; no new consumer or producer was required here."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp:initialize_native_command_target_004f1830",
+      "reason": "Requires live native DATA at F87574/78/7C; no production owner of those mutable cells was established and loader zeroes cannot substitute for runtime state."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost movie screen",
+      "reason": "The host has typed movie engagement/camera state, but no consumed raw screen limits/defaults block at +34..60 for these setters and resets."
+    },
+    {
+      "native": "004fb1f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp:native_string_to_upper_ascii_004fb1f0",
+      "reason": "No live owning raw string-header consumer in the rewards/tactical-library paths was established; uppercasing unrelated host strings would not bind that path."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp:direction_angle_deltas_00605630",
+      "reason": "The plane bomb-sight display needs its actual camera/impact direction vectors and display consumer; the existing bomb-release path does not provide them."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootRows::animation_interval",
+      "reason": "The preceding weapon_animation callback returns zero and supplies no owned timed-entry/ticker object whose interval can be consumed."
+    },
+    {
+      "native": "00794910",
+      "status": "skipped",
+      "host_site": "src/cc13_camera_controllers.cpp:camera_aim_delta_00794910",
+      "reason": "No live movie aim-target host supplying the native local-point/velocity/scale state and an evaluated movie mover was established."
+    },
+    {
+      "native": "007a06d0",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp:movie keyframe modifier parsing",
+      "reason": "Type-3 gamecamera/fpscamera has no owned modifier slot or live camera-selection/evaluation/lifetime host; the current key owns only a GoAroundModifier."
+    },
+    {
+      "native": "007a3b20",
+      "status": "skipped",
+      "host_site": "src/hud_movie_camera.cpp:movie keyframe modifier parsing",
+      "reason": "Type-3 gamecamera/fpscamera has no owned modifier slot or live camera-selection/evaluation/lifetime host; the current key owns only a GoAroundModifier."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:front-end manager creation",
+      "reason": "The host consumers use typed managers; there is no consumed native raw manager/base/screen graph for the Fe5Host constructor interface."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp:front-end manager creation",
+      "reason": "The host consumers use typed managers; there is no consumed native raw manager/base/screen graph for the Fe5Host constructor interface."
+    },
+    {
+      "native": "0070db20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::formation_join_0077f940",
+      "reason": "Whole leader initialization needs native unit objects and ownership/lifecycle services; the existing group stores one-based registry identities and admits only non-dereferencing operations."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp:GameUnitGroupStorage",
+      "reason": "Native group storage now exists, but no consumed hit-only vector-read caller was identified; the miss still requires unbound mutable F87574/78/7C DATA."
+    },
+    {
+      "native": "0070ef30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::formation_join_0077f940",
+      "reason": "Member-slot production is already bound, but the whole join additionally needs real observer-pair registration/query/lifecycle callbacks, which were not established."
+    },
+    {
+      "native": "009052e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::update_map_screen_005b45c0",
+      "reason": "Missing map-update delta/scoring-owner/local-slot binding for the original session-word-gated timer call; the existing map update only performs helm release."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:MissionNamedCall queue_call",
+      "reason": "No frame-job-thread named-call producer creates the actual deferred argument vector; the current call path uses the main-thread route."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:LibraryGroupNameIndex::publish",
+      "reason": "Mapped group records are borrowed host PropertyGroupDefinition objects, not owned native114h bags; the insert/replace body would incorrectly retire/adopt them."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp:set_remap",
+      "reason": "No live remap-service owner with admitted old texture companions and the required texture-cache/remap acquired context was established."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp:set_remap",
+      "reason": "No live remap-service owner with admitted old texture companions and the required texture-cache/remap acquired context was established."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp:set_remap",
+      "reason": "No live remap-service owner with admitted old texture companions and the required texture-cache/remap acquired context was established."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/native_render_resources_remap.cpp:set_remap",
+      "reason": "No live remap-service owner with admitted old texture companions and the required texture-cache/remap acquired context was established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp:get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Live camera projection views exist, but no current host consumer of the horizontal FOV product was identified; adding an unused product would not wire behavior."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp:font_accepts_text_byte_00ab6d00",
+      "reason": "Text drawing uses missing-glyph fallback, not text-input rejection; no live editing-widget byte-acceptance consumer was established."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp:ocean_orthonormalize_00bbd310",
+      "reason": "This is a partial cloud-manager frame projection despite the legacy ocean name; no live cloud-manager owner/instance update binding was established."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionDetailBinding::set_scroll_range",
+      "reason": "Already calls the reachable bsp::set_scroll_range body in the baseline; its unsuffixed identifier is not new missing wiring."
+    },
+    {
+      "native": "00aabab0",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool template instantiations",
+      "reason": "Already called per readiness explicit trait-address mapping; native pool template identifiers do not carry the address suffix used by the initial graph survey."
+    },
+    {
+      "native": "00ad0050",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp:NativeGuiWidgetPool template instantiations",
+      "reason": "Already called per readiness explicit trait-address mapping; native pool template identifiers do not carry the address suffix used by the initial graph survey."
+    }
+  ],
+  "real_state": "GameStartupHost installs object_from_handle_006ad080 through 006AD0D0. GameNativeGuiPageApplication binds those SAME installed slots to game_native_entity_registry_process().handle_tables(); aliases observe the current native bank bases, split and pointers on each lookup.",
+  "evidence": [
+    "bsp.py ghidra export 006ad080 00720fa0 00720fe0 verified the live /battlestationspacific.exe program before export",
+    "bsp.py show 006ad080 --asm: full ECX TEST before MOVZX CX; signed bank split, wrapping subtraction, stride10h entry+C",
+    "bsp.py show 00720fa0 --asm: same lookup without a zero guard",
+    "bsp.py show 00720fe0 --asm: low16 zero guard before the same lookup",
+    "src/game_native_gui_page_application.cpp:991 binds the installed resolver slots and canonical registry table aliases"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader (5/5)",
+    "focused_fixture": "local/g4-c483-handle-probe.exe linked production object_handle_resolvers.obj and the existing gameplay_seg38_cc13.cpp bodies; PASS: 13 handle/bank-alias checks; linked with /MANIFEST:EMBED",
+    "fixture_domain": [
+      "full zero with null bank pointers",
+      "nonzero high word with low16 zero",
+      "first/second bank boundary",
+      "upper16 truncation",
+      "changed slot pointer",
+      "changed aliased base/split/bank pointers"
+    ],
+    "call_graph": {
+      "before_recon_called": 4832,
+      "after_recon_called": 4834,
+      "delta": 2,
+      "new_reachable_calls": {
+        "00720fa0": "tail JMP from object_from_handle_006ad080 at 1036FCDC",
+        "00720fe0": "tail JMP from object_from_handle_006ad080 at 1036FCD3"
+      }
+    },
+    "float_math_changed": false,
+    "limits": "Source behavior and built entry reachability verified; no game run, native register/RET transport equivalence or particular installed-page Handle value execution is claimed.",
+    "readiness": {
+      "before_wired": 9764,
+      "after_wired": 9765,
+      "note": "Readiness already text-marked 00720FA0 wired before it had a built call; both rows now have called=true/call_sites=1. The actual reconstructed-call delta is 2."
+    }
+  }
+}
