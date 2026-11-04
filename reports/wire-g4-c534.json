@@ -1,0 +1,244 @@
+{
+  "chain": 534,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain534Bound",
+  "scope": "Borrowed native device-list view for the real unit barrel-total and firepower queries.",
+  "real_state": "GameGunneryHost::Impl::firepower_devices reads category_guns, gun.barrel_num and gun.destroyed_3b8. The new view borrows those exact rows, groups their links by their actual category and preserves within-category order. The queries consume the native iterator result; the prior nested walk is only in the OFF arm.",
+  "evidence": [
+    "Live /battlestationspacific.exe decompiles of 00952080 and 009520E0 confirm slot count/head at +394h/+398h, Ch stride, node next at +4.",
+    "bsp.py show 00812310 confirms native iteration and node+8 device payload before reading barrel count.",
+    "Live bytes 00E0A4F8..00E0A533 confirm the four existing category tables each terminate with 0Ch."
+  ],
+  "totals": {
+    "source_wired_before": 9842,
+    "source_wired_after": 9844,
+    "compiled_called_before": 4908,
+    "compiled_called_after": 4910
+  },
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all 5 CTests passed.",
+    "call_graph": "Both 00952080 and 009520E0 have 5 reachable call sites from gameplay_seg50_cc13.cpp; entry path includes GameGunneryHost::Impl::build_guns.",
+    "fixture": "local/output/chain534_device_probe.cpp linked against the built gameplay_seg50 object and bsp_core.lib with /MANIFEST:EMBED; mixed-category/disabled/empty-list fixture passed (totals 6/6/10/5, live 3/3/4/0, empty 0).",
+    "float_math": "Arithmetic and its accumulation order are unchanged; pc24_lint is run on the committed diff.",
+    "limits": "Compiled reachability and focused fixture proof only; no game was launched and no original ABI/drop-in compatibility is claimed."
+  },
+  "rows": [
+    {
+      "native": "00952080",
+      "status": "wired",
+      "host_site": "src/gameplay_seg50_cc13.cpp: sum_over (called by GameGunneryHost::Impl::capture_firepower_totals and refresh_firepower_report)",
+      "call_sites": 5
+    },
+    {
+      "native": "009520e0",
+      "status": "wired",
+      "host_site": "src/gameplay_seg50_cc13.cpp: sum_over (called by GameGunneryHost::Impl::capture_firepower_totals and refresh_firepower_report)",
+      "call_sites": 5
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum insertion",
+      "reason": "Already has reachable compiled callers through the scene-property projection; another call would not add wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native bag merge",
+      "reason": "Already has reachable compiled callers through the scene-property projection; another call would not add wiring."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list handling",
+      "reason": "The retained score table feeds a debug overlay, and the live planner has no score-table consumer; debug-only work is outside this packet."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list handling",
+      "reason": "No production score-list owner/consumer exists; marking an auxiliary debug table would not replace gameplay behavior."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party engagement pass",
+      "reason": "The live host does not supply powerup-ready entries, scoring callbacks and an item-use consumer for the engagement pass."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: mission player-count check",
+      "reason": "This is the multiplayer participant-count check; ordinary single-player returns before that behavior."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "No retained ControllerSnapshotMessage and routed snapshot consumer exists; copying current flags into and out of one would only round-trip them."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex",
+      "reason": "The live group index stores opaque host PropertyGroupDefinition pointers, not native owned property bags required by replacement/destruction."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Failure::statistics_00913d80",
+      "reason": "The callback lacks the complete native scoring/player/attacker hit-record layout needed for the failure statistics and award branches."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-completed scoring",
+      "reason": "No complete native scoring record and unit/player-record producer was established for this raw callback."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: KamikazeDetonate::direct_hit_00915f20",
+      "reason": "The direct-hit path lacks the complete native scoring/player/hit-record binding used by the reconstructed damage/award recorder."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tick_issue_clearorders",
+      "reason": "The literal body reads absolute original 00F87574/78/7C addresses; those runtime publications are not bound in the reconstructed executable."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user path handling",
+      "reason": "There is no live clear-last-user-point action site to replace; slot-0 append/follow ownership alone does not provide that operation."
+    },
+    {
+      "native": "0071bfc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director path ownership",
+      "reason": "The live GameDirector owns typed path state, not the raw director slot-pointer table required by this getter."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_page_application.cpp: RawTimedEntries",
+      "reason": "The existing runtime uses its raw timed-entry construction path; the separate typed GuiTimedEntryStorage model has no production owner."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: typed timed-entry lifetime",
+      "reason": "No production GuiTimedEntryStorage owner was established for the typed base-profile reset."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: typed timed-entry update",
+      "reason": "No production GuiTimedEntryStorage owner was established for this typed timed-entry update."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign_in_state_valid",
+      "reason": "Requires the pending online invite and selected-user/invitee slot queries; online invitation work is outside single-player scope."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: recon_relation_style",
+      "reason": "No live owner of the native relation-style tables and caller consuming their selected record was established."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group recon queries",
+      "reason": "The host has no retained per-member recon-record values and gameplay recon-ratio consumer to bind this query."
+    },
+    {
+      "native": "00447510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: wreck_debris_pieces_00447510",
+      "reason": "The host records debris draws but does not produce the real debris nodes/shapes/physics-body ownership required by the dynamics-list constructor."
+    },
+    {
+      "native": "004704e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: powerup damage owner selection",
+      "reason": "No borrowed native hit/shot player-record object with its actual vtable+108h result and +ACh owner exists at this typed owner-selection site."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: voice directory selection",
+      "reason": "The live host has no marketplace-produced profile owned-content list at profile+D0h."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The callback currently has no borrowed native settings language-row collection; its profile-hints-mode consumer is also absent."
+    },
+    {
+      "native": "008ef7c0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg59b.cpp: scene_property_set_field0c_008ef7c0",
+      "reason": "No live mutable native property-record call site was found to replace; constructor stores are not the original property-update operation."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/band_0040_cc13.cpp: byte_grid_sample_neighbor_00412070",
+      "reason": "No production column-pointer byte-grid neighbor consumer was established; the avoid-zone layer is a different flattened height-grid representation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No live caller borrowing this CameraProjection representation was established; the inspected shadow-slice path is not linked to a production owner."
+    },
+    {
+      "native": "00b65710",
+      "status": "skipped",
+      "host_site": "src/post_effects_cc13.cpp: plane_set_classify_aabb",
+      "reason": "No live typed plane-set/camera AABB classification owner was established for this classifier."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_camera_store_owner.cpp: release_native_gui_scene_00b72250",
+      "reason": "Its existing GUI scene-release call path has no reachable compiled caller; a production owning scene lifetime is still missing."
+    },
+    {
+      "native": "0040cfc0",
+      "status": "skipped",
+      "host_site": "src/cc15_dyn_live.cpp: format_string_1024_0040cfc0",
+      "reason": "No suitable live fixed-1024-byte variadic call site was found; the current logger forwards a va_list."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_max_00bf1400",
+      "reason": "No linked production error-context map caller/owner was established; adding a call inside an unlinked iterator does not wire it."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_min_00bf1420",
+      "reason": "No linked production error-context map caller/owner was established; adding a call inside an unlinked iterator does not wire it."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_left_00bf15e0",
+      "reason": "No linked production error-context insertion owner was established for the rotation wrapper."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_rotate_right_00bf1630",
+      "reason": "No linked production error-context insertion owner was established for the rotation wrapper."
+    }
+  ]
+}

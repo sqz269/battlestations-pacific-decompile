@@ -7,9 +7,13 @@
 
 #include "bsp/gameplay_seg50_cc13.hpp"
 
+#include "bsp/cc13_seg62.hpp"
 #include "bsp/entity_identity.hpp"        // compare_insensitive_00438e10
 #include "bsp/native_string_compare.hpp"  // equal_native_string_header_00425850
+#include "bsp/wire_goal4_chain534_switches.hpp"
 
+#include <array>
+#include <cstddef>
 #include <cstring>
 #include <string.h>  // _stricmp
 
@@ -28,9 +32,72 @@ bool in_list(const std::int32_t (&list)[N], std::int32_t category) {
     return false;
 }
 
+// Borrow the very same device rows the live gunnery host supplies to the barrel
+// queries. Only the iterator's count/head words and next links are projected;
+// this is not a constructed native unit or a second device census. Nodes retain
+// pointers to the source rows, so all barrel/disabled reads still use that state.
+// Evidence: bsp.py ghidra decompile 00952080 / 009520e0: twelve slots at
+// unit+394h/+398h, stride Ch; node+4 is next, and 00812310 reads node+8 as device.
+struct DeviceIterationView {
+    struct Node {
+        Node* previous;
+        Node* next;
+        const UnitDevice* device;
+    };
+    struct Slot {
+        std::uint32_t count;
+        Node* first;
+        Node* last;
+    };
+    struct UnitView {
+        std::array<std::uint8_t, 0x394> unread_prefix;
+        std::array<Slot, 12> slots{};
+    } unit;
+    std::vector<Node> nodes;
+
+    explicit DeviceIterationView(const std::vector<UnitDevice>& devices)
+        : nodes(devices.size()) {
+        for (std::size_t i = 0; i < devices.size(); ++i) {
+            const UnitDevice& device = devices[i];
+            if (static_cast<std::uint32_t>(device.category) >= unit.slots.size()) continue;
+            Slot& list = unit.slots[device.category];
+            Node& node = nodes[i];
+            node = {list.last, nullptr, &device};
+            if (list.last != nullptr) list.last->next = &node;
+            else list.first = &node;
+            list.last = &node;
+            ++list.count;
+        }
+    }
+};
+static_assert(sizeof(void*) == 4);
+static_assert(sizeof(DeviceIterationView::Slot) == 0x0c);
+static_assert(offsetof(DeviceIterationView::UnitView, slots) == 0x394);
+static_assert(offsetof(DeviceIterationView::Node, next) == 4);
+static_assert(offsetof(DeviceIterationView::Node, device) == 8);
+
 // The walk: categories in list order, devices of each category in turn.
 template <std::size_t N, typename Add>
 float sum_over(const std::int32_t (&list)[N], const std::vector<UnitDevice>& devices, Add add) {
+    if constexpr (kWireGoal4Chain534Bound) {
+        DeviceIterationView view(devices);
+        std::array<std::int32_t, N + 1> categories;
+        for (std::size_t i = 0; i < N; ++i) categories[i] = list[i];
+        // The existing typed lists omit the native terminator. Live bytes at
+        // 00E0A4F8..00E0A533 confirm 0Ch after each of the four category tables.
+        categories[N] = 12;
+        auto* const unit = reinterpret_cast<std::uint8_t*>(&view.unit);
+        cc13_seg62::DeviceListIterator iterator;
+        cc13_seg62::device_list_first_00952080(unit, categories.data(), &iterator);
+        float s = 0.0f;
+        while (iterator.node != 0) {
+            const auto* const node = reinterpret_cast<const DeviceIterationView::Node*>(
+                static_cast<std::uintptr_t>(iterator.node));
+            s = add(*node->device, s);
+            cc13_seg62::device_list_next_009520e0(unit, categories.data(), &iterator);
+        }
+        return s;
+    } else {
     float s = 0.0f;
     for (std::int32_t c : list) {
         for (const UnitDevice& d : devices) {
@@ -38,6 +105,7 @@ float sum_over(const std::int32_t (&list)[N], const std::vector<UnitDevice>& dev
         }
     }
     return s;
+    }
 }
 
 float add_barrels(const UnitDevice& d, float s) {
