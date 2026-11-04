@@ -1,0 +1,191 @@
+{
+  "chain": 396,
+  "slot": "g4-w5",
+  "branch": "agent/g4-w5",
+  "switch": "include/bsp/wire_goal4_chain396_switches.hpp: kWireGoal4Chain396Bound = true",
+  "scope": "Native spatial-index lifetime and actual root-list owner for the existing fixed-step walk.",
+  "rows": [
+    {
+      "native": "0042e630",
+      "status": "wired",
+      "host_site": "src/game_hosts_ready.cpp: GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0",
+      "real_state": "Permanent process F8A0D8 publication and the same actual 01090AA0 manager used by GameSingletonHost; supplies the root-list owner read by the existing fixed-step pass.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0042d450",
+      "status": "wired",
+      "host_site": "src/native_spatial_index_publication.cpp: get_native_spatial_index_0042e630 (called from GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0)",
+      "real_state": "The getter allocates the original 0x16018-byte index, initializes the binary profile/grid/count/root fields, publishes it and registers it exactly once.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0042d4b0",
+      "status": "wired",
+      "host_site": "src/native_singleton_destruction.cpp: delete_legacy_current_profile (CE3CEC case)",
+      "real_state": "The real singleton manager drain supplies the popped index, original deletion flags and the same process publication cell bound before registration.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0098ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: SpatialRefreshBinding",
+      "reason": "Scene/unit-part producers still do not publish native collision-node roots to the actual index; this packet builds the retained owner and root reader only."
+    },
+    {
+      "native": "0098bc70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: SpatialRefreshBinding::node_is_static",
+      "reason": "Native dynamic-node pose resolution and cell registration providers are missing; static roots can be walked, and a dynamic root fails before the old stand-in callbacks execute."
+    },
+    {
+      "native": "004caf50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::preload_record_effects / PreloadHost::push_effect_handle",
+      "reason": "No record effect-name array producer or acquired effect handle reaches this path; record_effect_name_count currently returns zero."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum-property insertion adapter",
+      "reason": "The baseline built graph already calls this body from the numeric-property adapter; the readiness ready label is not evidence of missing native calls."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native property merge adapter",
+      "reason": "The baseline built graph already calls this body from the numeric-property adapter; no additional call or duplicate body was added."
+    },
+    {
+      "native": "005fb080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: screen_3b_idle",
+      "reason": "This host site has no native order-screen owner or the input, controlled-unit and menu providers needed by the large idle body."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "The unit-pick screen native storage, selection vector and input-context reset binding are absent at the recording site."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums",
+      "reason": "The library reader is file-backed; no authored Lua enum-declaration caller supplies the actual world Lua owner/context at this site."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary",
+      "reason": "Property groups remain host containers here; the coherent raw 0x10C property-library owner/map required by the reader is missing."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: PropertyLibrary::add_group",
+      "reason": "The raw property-library map, owning pooled nodes and actual mapped payload lifetime are not built by this host container."
+    },
+    {
+      "native": "00501670",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "The retained native loader exists but this host does not produce native work-item vector entries to remove."
+    },
+    {
+      "native": "005055c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "The native job producer, callback and work-item ownership path are not connected to the host loader update."
+    },
+    {
+      "native": "00504d20",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "No native authored work-item name/callback submission path is exposed by the current loader update."
+    },
+    {
+      "native": "00506bf0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: GameFrameHost::update_loading_queue",
+      "reason": "No native queued-job producer or acquired retirement context is supplied by this loader update."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: resize_native_word_array_00529980",
+      "reason": "The surveyed callers are session-message and grid-index owners; no live native word-array producer was selected for this spatial-owner packet."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp: destroy_native_word_array_0052ad30",
+      "reason": "The session-message/grid-index raw word-array owners are separate from the spatial-index owner; their real-state caller bridge remains missing."
+    },
+    {
+      "native": "0098bdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0",
+      "reason": "The existing typed spatial_refresh_moved_nodes_0098bdb0 body already runs and is retained; the alternate raw body needs a complete NativeSpatialLifecycleAccess for populated dynamic roots."
+    }
+  ],
+  "readiness": {
+    "before": {
+      "wired": 9625,
+      "callees_done_no_wired_caller": 9318,
+      "ready": 1527,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 202
+    },
+    "after": {
+      "wired": 9631,
+      "callees_done_no_wired_caller": 9314,
+      "ready": 1525,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 202
+    },
+    "new_verified_reachable_bodies": [
+      "0042e630",
+      "0042d450",
+      "0042d4b0"
+    ],
+    "text_only_dependency_increases": [
+      "0098a2c0",
+      "0098a4c0",
+      "0098a500"
+    ],
+    "note": "The source-text wired total increases by six; only the three selected lifetime bodies are claimed as newly called."
+  },
+  "evidence": [
+    "bsp.py show 0042e630: fixed-step getter at 00875E33, original manager/publication/registration schedule.",
+    "bsp.py show 0042d450: CE3CEC profile, +4 zero, +84 grid clear, +80 count zero and +16014 root zero; loose slots remain untouched.",
+    "bsp.py show 0042d4b0: CE3CEC slot 0, clear F8A0D8, CE3818 store and flags-bit0 free; no node traversal.",
+    "bsp.py show 0098bdb0: read +16014 root, follow node+48, test node+8 before dynamic refresh."
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2).",
+    "graph": "python tools/call_graph.py and who for all three addresses: reachable with one call site each from the changed fixed-step/registration-drain paths.",
+    "lifecycle_probe": {
+      "source": "local/wire_g4_c396_probe.cpp",
+      "result": {
+        "pass": true,
+        "registered_once": true,
+        "native_grid_zero": true,
+        "drain_cleared_same_publication": true
+      },
+      "scope": "Source runtime probe, linked with /MANIFEST:EMBED; uses permanent process cells and the actual core getter/constructor/manager drain. Not a gameplay run."
+    },
+    "float_math": "No float arithmetic changed; only the existing step argument is forwarded.",
+    "game_run": false
+  },
+  "limits": [
+    "No scene node is currently registered into this raw index. The real constructor-owned root head is consumed instead of a hardcoded nullptr.",
+    "Dynamic nodes require the native pose/cell providers; the new arm rejects a dynamic root before the existing logging/default callbacks.",
+    "Existing reconstructed bodies and their Source ABI are reused; no duplicate address body or claim of original caller ABI compatibility.",
+    "The permanent publication and appended deletion binding preserve existing field offsets and remain valid through normal/fallback shutdown."
+  ],
+  "run": 788
+}

@@ -24,6 +24,8 @@
 #include "bsp/native_input_settings_lifetime.hpp"
 #include "bsp/native_lua_fundamentals.hpp"
 #include "bsp/native_loading_queue_owner.hpp"
+#include "bsp/native_spatial_lifecycle.hpp"
+#include "bsp/wire_goal4_chain396_switches.hpp"
 #include "bsp/native_debug_feature_owner.hpp"
 #include "bsp/native_device_registry.hpp"
 #include "bsp/native_game_resource_factory.hpp"
@@ -491,6 +493,19 @@ __declspec(noinline) void __fastcall delete_legacy_current_profile(void* owner,
             delete_native_physical_stream_pool_00bf4370(owner, flags,
                 *bindings.physical_stream_pool);
             return;
+        }
+        break;
+    case 0x00ce3cec:
+        if constexpr (kWireGoal4Chain396Bound) {
+            if (bindings.actual_spatial_index_publication_00f8a0d8 != nullptr) {
+                // bsp.py show 0042D4B0: CE3CEC's slot 0 clears F8A0D8,
+                // writes CE3818 and frees only when flags bit 0 is set.
+                destroy_native_spatial_index_0042d4b0(owner,
+                    bindings.actual_spatial_index_publication_00f8a0d8, flags);
+                return;
+            }
+        } else {
+            // Previously this profile reached the unbound-profile failure.
         }
         break;
     case 0x00ceb198:
