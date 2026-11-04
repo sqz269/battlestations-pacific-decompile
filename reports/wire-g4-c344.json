@@ -1,0 +1,61 @@
+{
+  "chain": 344,
+  "worker": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain344Bound",
+  "picked": "Power-up slot expiry and HUD cooldown timestamps",
+  "wired_before": 9375,
+  "wired_after": 9378,
+  "rows": [
+    {
+      "native": "008e4b40",
+      "status": "wired",
+      "host_site": "src/cc13_powerup.cpp::list_ready_items_008ea0c0",
+      "inputs": "Actual slot_record_00617030 absolute_expiry and relative_deadline projected at native +10h/+14h; clock read lazily from PowerupManagerHost::clock_00f876a4",
+      "evidence": "008EA13C..008EA14F duplicates 008E4B40..008E4B5D: deferred slots skip, otherwise FCOMIP/JBE requires now > end, including unordered rejection",
+      "native_abi": "ECX=record, EAX=0/1; reconstructed C++ interface uses PowerupSlotClockHost& and a read-only record view",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "008e4b60",
+      "status": "wired",
+      "host_site": "src/powerup_seg58_argon.cpp::power_up_manager_collect_active_008e9af0 (both timed-item arms), reached by src/game_hosts_powerups.cpp::CollectionHost::collect",
+      "inputs": "Existing cooldown-map record from the live manager collector; absolute +0Ch or source class +7Ch plus the same mission clock",
+      "evidence": "bsp.py show 008e4b60 --asm: 008E4B6A..008E4B76 FLD/FADD/FSTP float/FLD; use x87_add24. Replaces the equivalent collector expression without running it twice",
+      "native_abi": "ECX=record, ST0=float; reconstructed C++ interface uses PowerupSlotClockHost& and a read-only record",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "008e4b80",
+      "status": "wired",
+      "host_site": "src/powerup_seg58_argon.cpp::power_up_manager_collect_active_008e9af0 (both timed-item arms), reached by src/game_hosts_powerups.cpp::CollectionHost::collect",
+      "inputs": "Existing cooldown-map record from the live manager collector; absolute +10h or source class +80h plus the same mission clock",
+      "evidence": "bsp.py show 008e4b80 --asm: 008E4B8A..008E4B99 FLD/FADD/FSTP float/FLD; use x87_add24. Replaces the equivalent collector expression without running it twice",
+      "native_abi": "ECX=record, ST0=float; reconstructed C++ interface uses PowerupSlotClockHost& and a read-only record",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp (candidate screen only; no call added)",
+      "reason": "The queued-message game-state, native tick and sender-byte adapter was not built in this packet; selected the complete power-up cooldown contract instead."
+    }
+  ],
+  "built": [
+    "Clock-only base contract shared by the existing segment and collection hosts, with no unrelated callbacks stubbed",
+    "Read-only native expiry projection with checked field offsets and lazy actual mission-clock adapter",
+    "Switch-controlled replacement of the ready-item predicate and both HUD timestamp expressions; previous code remains in the OFF arms",
+    "PC24 addition in the two existing address bodies, kept out of line so optimized call-graph inspection can identify them"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, including reconstructed_math and tool_tests",
+    "call_graph": "All three bodies REACHABLE from the built bsp_game.exe entry; direct callers are the changed ready-list and collector functions",
+    "readiness": "wire_readiness.py --standins: wired 9375 -> 9378",
+    "pc24_lint": "pc24_lint.py --staged passed; repeat --diff origin/main...HEAD after commit",
+    "diff_check": "git diff --check passed",
+    "limits": "Build, source/listing and static entry-reachability evidence only; no game launch and no claim of original binary ABI compatibility"
+  },
+  "left": "Queued-message gate needs its real state/tick/sender view; unrelated power-up effect, grant and observer paths remain outside this packet."
+}

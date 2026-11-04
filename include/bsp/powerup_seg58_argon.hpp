@@ -22,10 +22,17 @@ inline void* add_bytes(const void* ptr, std::ptrdiff_t off) noexcept {
   return const_cast<std::uint8_t*>(static_cast<const std::uint8_t*>(ptr)) + off;
 }
 
+// 008E4B40/60/80 read only the mission clock. Keep them usable by the typed
+// manager without implementing unrelated Lua, container or network callbacks.
+struct PowerupSlotClockHost {
+  virtual ~PowerupSlotClockHost() = default;
+  virtual float& global_f32(std::uint32_t address) = 0;
+};
+
 // The collector only needs globals, checked dword-vector operations and the
 // per-player cooldown map. Keep that contract usable without fabricating the
 // unrelated Lua/network callbacks of the whole segment.
-struct PowerupCollectionHost {
+struct PowerupCollectionHost : PowerupSlotClockHost {
   virtual ~PowerupCollectionHost() = default;
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
   virtual std::uint8_t& global_u8(std::uint32_t address) = 0;
@@ -195,9 +202,9 @@ void power_up_manager_refresh_hud_if_shown_008e4660(Seg58Host& host);
 bool powerup_target_applies_to_unit_008e4680(
     Seg58Host& host, const void* target_record, void* unit);
 std::uint32_t powerup_slot_record_is_cooldown_expired_008e4b40(
-    Seg58Host& host, const void* record);
-float powerup_slot_record_get_ready_time_008e4b60(Seg58Host& host, const void* record);
-float powerup_slot_record_get_end_time_008e4b80(Seg58Host& host, const void* record);
+    PowerupSlotClockHost& host, const void* record);
+float powerup_slot_record_get_ready_time_008e4b60(PowerupSlotClockHost& host, const void* record);
+float powerup_slot_record_get_end_time_008e4b80(PowerupSlotClockHost& host, const void* record);
 void tmpl_array12_reserve_008e4e10(Seg58Host& host, void* array, std::int32_t new_cap);
 void tmpl_array12_resize_008e5170(Seg58Host& host, void* array, std::int32_t new_size);
 void tmpl_array12_push_back_008e5670(Seg58Host& host, void* array, const void* elem);
