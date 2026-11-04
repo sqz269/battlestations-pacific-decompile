@@ -15,6 +15,7 @@
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/wire_goal4_chain426_switches.hpp"
 #include "bsp/ai_planner_tails.hpp"
+#include "bsp/ai_tuning_globals.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/land_and_structures.hpp"
 #include "bsp/air_operations.hpp"
@@ -277,6 +278,34 @@ private:
 }
 
 int main() {
+    {
+        // Chain474 review970: the same retained coordinator must switch both
+        // its selected mode and authored values as Capture planners appear
+        // and disappear. These are fixture states, not a gameplay probe.
+        bsp::AiTuningAuthoredReader reader;
+        std::array<bsp::AiTuningBlock, bsp::kAiTuningModeCount> records{};
+        for (int i = 0; i < bsp::kAiTuningModeCount; ++i)
+            bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), records[i]);
+        bsp::AiTuningBlock selected;
+        std::array<bool, 8> capture_planners{};
+        bsp::ai_tuning_refresh_current(selected, records, 0, capture_planners);
+        const bool no_brain = selected.mode == bsp::AiTuningMode::IslandCaptureRegular &&
+            selected.at(bsp::kAiTuningCautionMoveDist) == 8000.0f;
+        capture_planners[4] = true;
+        bsp::ai_tuning_refresh_current(selected, records, 0, capture_planners);
+        const bool created = selected.mode == bsp::AiTuningMode::IslandCaptureRookie &&
+            selected.at(bsp::kAiTuningCautionMoveDist) == 40000.0f;
+        capture_planners[4] = false;
+        bsp::ai_tuning_refresh_current(selected, records, 0, capture_planners);
+        const bool removed = selected.mode == bsp::AiTuningMode::IslandCaptureRegular &&
+            selected.at(bsp::kAiTuningCautionMoveDist) == 8000.0f;
+        bsp::ai_tuning_refresh_current(selected, records, 4, capture_planners);
+        const bool mode_changed = selected.mode == bsp::AiTuningMode::Duel;
+        bsp::ai_tuning_refresh_current(selected, records, 0, capture_planners);
+        check(no_brain && created && removed && mode_changed &&
+            selected.mode == bsp::AiTuningMode::IslandCaptureRegular,
+            "chain474 tuning values and mode follow brain creation/removal and live mode changes");
+    }
     {
         // Chain468: the constructor must read the live position AFTER the
         // dirty-pose callback, and a null entity must leave its point alone.

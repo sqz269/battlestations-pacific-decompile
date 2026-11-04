@@ -5,7 +5,7 @@
 // Addresses: 00A335D0 (the loader), 00A371A0 (the reader side, which settles
 // the base and stride), 009FFC80 BSP_Ai_EffectiveGameModeIndex (which of the
 // seven records a rule reads), 004BCA50 BSP_Game_GetEffectiveGameMode and
-// 00A15950 (the difficulty the first arm clamps).
+// 00A15950 (the first slot owning a Capture planner, or -1).
 //
 // Packet cc8_ai_tuning_globals. docs/AI_TUNING_GLOBALS.md.
 //
@@ -19,6 +19,7 @@
 // bsp/ai_command_lifetime.hpp; every name is prefixed `ai_tuning_` or
 // `AiTuning`.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -46,11 +47,14 @@ enum class AiTuningMode : int {
 const char* ai_tuning_mode_table_name(AiTuningMode mode) noexcept;
 
 // 009FFC80. The jump table at 009FFCFC sends effective game modes 0, 1, 2 and 3
-// to the difficulty arm at 009FFC9E, which clamps 00A15950's difficulty into
-// 0..2; modes 4, 5, 6 and 7 take the literals 3, 4, 5 and 6 at 009FFCD0,
+// to 009FFC9E: no active Capture-planner slot from 00A15950 selects Regular;
+// otherwise clamp the selected player record's (+2Ch - 3) difficulty to 0..2.
+// Modes 4, 5, 6 and 7 take the literals 3, 4, 5 and 6 at 009FFCD0,
 // 009FFCD9, 009FFCE2 and 009FFCEB. A game mode above 7 falls through
 // 009FFC95 JA to the zero at 009FFCF4.
-AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty) noexcept;
+// The default preserves existing callers that already supply a difficulty.
+AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
+    bool active_party_present = true) noexcept;
 
 // ---------------------------------------------------------------------------
 // The fields the coordinator's rules read
@@ -111,6 +115,15 @@ struct AiTuningBlock {
         return field[index];
     }
 };
+
+// Host-side cache of the selected authored block. Re-evaluate 00A15950 and
+// 009FFC80 on each request, as native 00A371A0 does; copy a loaded record only
+// when its mode changes. The active-player difficulty producer is still absent,
+// so an active slot keeps the documented normalized difficulty-zero fallback.
+// All seven records must be loaded by the existing 00A335D0 loader first.
+bool ai_tuning_refresh_current(AiTuningBlock& selected,
+    const std::array<AiTuningBlock, kAiTuningModeCount>& records,
+    int effective_game_mode, const std::array<bool, 8>& capture_planner_present);
 
 // What 00A335D0 reads one key with. A host supplies the shipped table, either
 // the authored rows below or, when one exists, the live `HighLvlAIGlobals`
