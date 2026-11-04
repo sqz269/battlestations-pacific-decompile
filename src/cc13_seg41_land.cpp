@@ -1273,7 +1273,7 @@ namespace {
 // The inlined native-string assignment: when the objects differ,
 // 0041DD40(dst, src.len, 1) and memcpy(dst.data, src.data, dst.len) for a
 // non-empty source.
-void assign_string(std::uint8_t* destination, const std::uint8_t* source, TriggerHost& host) {
+void assign_string(std::uint8_t* destination, const std::uint8_t* source, TriggerStringHost& host) {
     if (destination == source) return;
     host.native_string_resize_0041dd40(destination, at<std::uint32_t>(source, 0), 1);
     if (at<std::uint32_t>(source, 0) != 0) {
@@ -1434,7 +1434,7 @@ std::uint8_t* lua_trigger_construct_007506b0(std::uint8_t* trigger, const std::u
 }
 
 void lua_trigger_set_callback_name_00750790(std::uint8_t* trigger, const std::uint8_t* name,
-                                            const std::uint8_t* callback, TriggerHost& host) {
+                                            const std::uint8_t* callback, TriggerStringHost& host) {
     assign_string(trigger + 0x1C, name, host);
     at<std::uint8_t>(trigger, 0x24) = at<std::uint8_t>(name, 8);
     assign_string(trigger + 0x28, callback, host);

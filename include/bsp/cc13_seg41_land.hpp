@@ -845,7 +845,15 @@ bool ship_sink_is_type_0074eb00(std::uint32_t type);
 // name {len +1Ch, data +20h, flag byte +24h}, callback {len +28h, data +2Ch},
 // +30h.
 // ---------------------------------------------------------------------------
-struct TriggerHost {
+// 00750790 only needs string assignment, independently of trigger attachment,
+// observers and execution. Keep that source boundary usable by real Lua hosts
+// without supplying unrelated trigger callbacks.
+struct TriggerStringHost {
+    virtual ~TriggerStringHost() = default;
+    virtual void native_string_resize_0041dd40(std::uint8_t* string, std::uint32_t size, std::uint32_t flag) = 0;
+    virtual void memcpy_00bf7680(void* destination, const void* source, std::size_t bytes) = 0;
+};
+struct TriggerHost : TriggerStringHost {
     virtual ~TriggerHost() = default;
     virtual void trigger_attach_04(std::uint8_t* trigger, std::uint8_t* list) = 0;  // trigger->vtable[4](list)
     virtual void variant_construct_00886920(std::uint8_t* variant) = 0;
@@ -853,8 +861,6 @@ struct TriggerHost {
     virtual bool string_equals_00435c40(const std::uint8_t* string, const std::int32_t* other) = 0;  // ECX string
     virtual void trigger_fire_10(std::uint8_t* trigger) = 0;                           // vtable+10h()
     virtual void native_string_release_00419cc0_00bd1510(void* data, std::size_t bytes) = 0;
-    virtual void native_string_resize_0041dd40(std::uint8_t* string, std::uint32_t size, std::uint32_t flag) = 0;
-    virtual void memcpy_00bf7680(void* destination, const void* source, std::size_t bytes) = 0;
     virtual void trigger_base_destruct_00875b30(std::uint8_t* trigger) = 0;
     virtual std::uint32_t resolve_target_00521ea0(const std::uint8_t* record) = 0;   // ECX record
     virtual void observer_destruct_00695870(std::uint8_t* observer) = 0;              // ECX this+30h or 0
@@ -923,7 +929,7 @@ std::uint8_t* lua_trigger_construct_007506b0(std::uint8_t* trigger, const std::u
 // 00750790, __thiscall(ECX trigger, const name*, const callback*) RET 8:
 // assign +1Ch (and its flag byte +24h) and +28h.
 void lua_trigger_set_callback_name_00750790(std::uint8_t* trigger, const std::uint8_t* name,
-                                            const std::uint8_t* callback, TriggerHost& host);
+                                            const std::uint8_t* callback, TriggerStringHost& host);
 
 // ---------------------------------------------------------------------------
 // Telemetry / METRICSSESSION.
