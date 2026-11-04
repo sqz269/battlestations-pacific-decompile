@@ -1,0 +1,239 @@
+{
+  "chain": 427,
+  "slot": "g4-w3",
+  "run": 855,
+  "base": "9f233e0bcd",
+  "switch": "bsp::kWireGoal4Chain427Bound",
+  "scope": "Live GeomMesh hull traces call the existing segment/triangle body with main-thread PC24 arithmetic",
+  "wired_total_before": 9670,
+  "wired_total_after": 9671,
+  "rows": [
+    {
+      "native": "0085d020",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: SegmentBinding::shape_trace_segment",
+      "state": "Actual current shot endpoints transformed into the live unit hull frame; retained model->tris or model->element_tris and authored element kind/index arrays. The returned point shortens the remaining segment, selects the hit element, and becomes the published world-space HitRecord point.",
+      "evidence": "bsp.py show 0085d020, its complete 261-instruction assembly, and the 007238e0 leaf loop at 007239f9..00723a14; live bytes at 00d0d098 and 00d7a268 confirm promoted +/-1e-4f determinant bounds.",
+      "proof": "call_graph.py who 0085d020: REACHABLE, one direct call at 100e96d6 from SegmentBinding::shape_trace_segment; path reaches WinMainCRTStartup through the existing live segment query and mission frame.",
+      "precision": "The ON body rounds each arithmetic operation through cc13x87 PC24 helpers, with binary32 stores at the listing's FSTP DWORDs. The previous PC53 body and the previous host intersection remain unchanged in OFF arms. Existing leaf-fixture comparisons now select native PC24 under the same switch."
+    },
+    {
+      "native": "007238e0",
+      "status": "skipped",
+      "host_site": "src/director_geommesh_seg38_39_argon.cpp: bsp_geom_mesh_element_trace_segment_node_007238e0",
+      "reason": "The live mesh owner retains flattened triangle/element arrays, not the native BVH, ordinal array and node-index owner this full caller requires; only its existing triangle callee is bound here."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "No retained ControllerSnapshotMessage producer or routed snapshot consumer exists at the inspected host site; copying current flags into and out of a temporary would add no behavior."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The current pilot-index setter lacks the complete unit+6DCh child callback and kind-20h device fan-out owner required by the general unit-skill plan."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InterfaceUpdateBinding::set_ambient_volume",
+      "reason": "has_ambient_sound_instance returns false and the inspected HUD path owns neither the sound instance nor its camera-height producer."
+    },
+    {
+      "native": "008fe9f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: tail-gunner bot state",
+      "reason": "The host has typed gun state and descriptor tables, without a retained native bot allocation, 0072BBD0 base-constructor host and descriptor-global publication."
+    },
+    {
+      "native": "008ff260",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: torpedo bot state",
+      "reason": "The host has typed gun state and descriptor tables, without a retained native bot allocation, 0072BBD0 base-constructor host and descriptor-global publication."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner group score diagnostics",
+      "reason": "The score records are consumed by the unreached debug overlay, which this single-player wiring task excludes; no live gameplay consumer needs that owner."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner group score diagnostics",
+      "reason": "The chosen markers are consumed by the unreached debug overlay, which this single-player wiring task excludes; no live gameplay consumer needs that owner."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party difficulty selection",
+      "reason": "Earlier reviewed campaign routing bypasses the non-campaign planner-slot selection; a live brain+0Ch planner-array consumer was not established here."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The inspected setter records a texture name but lacks a reviewed actual renderer-service remap-slot owner and resource-reference binding."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The inspected setter records a texture name but lacks a reviewed actual renderer-service remap-slot owner and resource-reference binding."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The inspected setter records a texture name but lacks a reviewed actual renderer-service remap-slot owner and resource-reference binding."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The inspected setter records a texture name but lacks a reviewed actual renderer-service remap-slot owner and resource-reference binding."
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "No live game host constructs the MarkerClassContext registry/resource owner required by this teardown; the Lua reset mention is a different operation."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp: GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "The reconstructed manager already routes through its pointer interface, but a new entry-reachable manager/pointer runtime ownership path was not established in this packet."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: gui_widget_has_live_entries_00aa7ef0",
+      "reason": "The inspected caller is the reconstructed GUI manager frame; its complete live resource/timed-entry owner integration remains outside this collision packet."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "A real byte-input validation caller was not established; invoking this predicate during Unicode layout would substitute a different character domain."
+    },
+    {
+      "native": "0045c5b0",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: rewind_engine_movie_clock_0045c5b0",
+      "reason": "No live retained EngineMovieClock producer and movie action consumer were found at the inspected host sites."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/engine_movie_actions.cpp: advance_engine_movie_clock_0045f970",
+      "reason": "No live retained EngineMovieClock producer and movie action consumer were found at the inspected host sites."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile tick",
+      "reason": "The current projectile row lacks the complete launch-delay, active, arming, owner-grace and effect/sweep lifecycle producers required by BombTickHost."
+    },
+    {
+      "native": "00b86390",
+      "status": "skipped",
+      "host_site": "src/native_mesh_section.cpp: clear_section_streams_body and lifetime access",
+      "reason": "No additional live caller contract preserving the existing issuer-aware native section lifetime ownership was established for the public clear entry."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: local message delivery",
+      "reason": "The inspected local queues do not retain the full native game-state, message-category, posted-tick and sender-ready inputs required by this dispatch gate."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: live gun aim paths",
+      "reason": "Live player aiming sets target angles; the immediate replicated-angle/snapshot caller that requires this seam-search fragment is not retained at that site."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: quick_spawn_named_group",
+      "reason": "Quick-spawn remains recorded without a complete spawn-source, threat-record and requested-composition owner; a constant-fed gate would not build that path."
+    },
+    {
+      "native": "00453f40",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "The inspected tagged-value comparison lacks a bound live Host implementation and caller for its vector comparison arm."
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "The inspected tagged-value comparison lacks a bound live Host implementation and caller for its vector comparison arm."
+    },
+    {
+      "native": "00475df0",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "The inspected tagged-value comparison lacks a bound live Host implementation and caller for its vector comparison arm."
+    },
+    {
+      "native": "00bd5680",
+      "status": "skipped",
+      "host_site": "src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "The inspected comparison has virtual vector hooks but no bound live Host and tagged archive-description caller in this packet."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp: direction angle deltas",
+      "reason": "Its original bomb-fire HUD caller remains a labelled host substitution; the live HUD owner and consumed bomb-aim delta path were not established."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "The original caller is the currently off plane-neighbour collision-band insertion path; its real candidate-frame owner was not built here."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp: ocean_orthonormalize_00bbd310",
+      "reason": "The original atmosphere cloud-update caller needs its actual cloud-manager frame owner, which this collision packet does not provide."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene reference type-letter projection",
+      "reason": "No live caller needing a reference-kind-to-letter conversion was established; parser letters already exist and should not be round-tripped solely to invoke this body."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/engine_seg56_cc13.cpp: scene_token_is_int",
+      "reason": "The native numeric-lookahead implementation already owns this address; no extra live caller needing the legacy std::string-only projection was identified."
+    },
+    {
+      "native": "008f04c0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: owned array assignment",
+      "reason": "The scene merge files were still in another branch's review, and this packet did not establish a distinct missing live array-assignment caller outside them."
+    },
+    {
+      "native": "008f0420",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: owned reference assignment",
+      "reason": "The scene merge files were still in another branch's review, and this packet did not establish a distinct missing live reference-assignment caller outside them."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release succeeds; reconstructed_math, native_math_differential and tool_tests pass after verify-seeds.",
+    "native_differential": "Focused /MANIFEST:EMBED probe compares relocated original 0085D020 bytes with the ON body at PC24: 7005 cases, 686 hits, zero boolean/output-bit mismatches, including degenerate, parallel, miss and endpoint cases. The modified existing cc13_leaf_fixture_tests.cpp also compiles with /W4 /WX /fp:strict against the audited reference header; the full unrelated leaf suite was not run.",
+    "native_artifacts": "local/output/chain427_triangle_probe.cpp, chain427_triangle_probe.exe, chain427_cc13_leaf_reference.hpp and chain427_leaf_audit.json; the audited reference generator output was redirected into local/output without touching its shared tracked report.",
+    "call_graph": "4700/5146 reconstructed addresses called from the entry; 0085D020 has one direct reachable call from the changed host. This is executable graph evidence, not a live gameplay run.",
+    "pc24_lint": "Zero findings in the staged diff; committed range is checked with python tools/pc24_lint.py --diff origin/main...HEAD."
+  },
+  "remaining": "The mesh's existing flattened triangle/element order and host hull-frame projection are retained. Native BVH ownership and the full 007238E0 caller are not reconstructed by this change. The typed C++ body is not a drop-in native ABI replacement; no game was launched."
+}

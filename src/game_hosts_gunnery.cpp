@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain427_switches.hpp"
 #include "bsp/actions_seg5_cc13.hpp"
 #include "bsp/wire_goal4_chain411_switches.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
@@ -12800,6 +12801,45 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         const bool by_element = (kHullElementSegmentBound && !model->element_tris.empty()
             && ship_model) || plane_elements;
         const auto& tri = by_element ? model->element_tris : model->tris;
+        bsp::HitQueryPoint point;
+        if constexpr (bsp::kWireGoal4Chain427Bound) {
+            using namespace bsp::cc13x87;
+            using bsp::cc13_band0080::Vec3f;
+            // 007238E0's leaf loop calls 0085D020 and copies each accepted
+            // local point into the segment's far end (00723A02..00723A14).
+            // Reuse the retained GeomMesh vertices and this live shot's hull-
+            // local segment; later triangles can only shorten that segment.
+            // The supplied flattened element order remains the host's order;
+            // no native BVH or node/element ownership is inferred here.
+            const Vec3f start{o[0], o[1], o[2]};
+            Vec3f end{static_cast<float>(x87_add24(o[0], d[0])),
+                static_cast<float>(x87_add24(o[1], d[1])),
+                static_cast<float>(x87_add24(o[2], d[2]))};
+            bool found = false;
+            for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
+                Vec3f hit;
+                if (!bsp::cc13_band0080::segment_intersect_triangle_0085d020(start, end,
+                        {tri[n][0], tri[n][1], tri[n][2]},
+                        {tri[n + 1][0], tri[n + 1][1], tri[n + 1][2]},
+                        {tri[n + 2][0], tri[n + 2][1], tri[n + 2][2]}, hit)) continue;
+                end = hit;
+                found = true;
+                if (by_element) {
+                    best_kind = model->element_kind[n / 3];
+                    best_index = model->element_index[n / 3];
+                }
+            }
+            if (!found) return false;
+            // Return the body's accepted local point through the same live
+            // orthonormal hull frame used above, rather than deriving a second
+            // segment parameter or rerunning the discarded intersection.
+            const auto world_lane = [&](int lane) {
+                return static_cast<float>(x87_add24(x87_add24(x87_add24(
+                    x87_mul24(end.x, right[lane]), x87_mul24(end.y, up[lane])),
+                    x87_mul24(end.z, forward[lane])), origin[lane]));
+            };
+            point = {world_lane(0), world_lane(1), world_lane(2)};
+        } else {
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
             const auto& b = tri[n + 1];
@@ -12832,10 +12872,10 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
             }
         }
         if (best > 1.0f) return false;
-        bsp::HitQueryPoint point;
         point.x = wf[0] + (wt[0] - wf[0]) * best;
         point.y = wf[1] + (wt[1] - wf[1]) * best;
         point.z = wf[2] + (wt[2] - wf[2]) * best;
+        }
         bsp::shape_hit_fill_0087fec0(record, point, entity);
         // 00723F62 / 00723F6C with the element bound; 0Ah / -1 otherwise.
         if (plane_elements) {

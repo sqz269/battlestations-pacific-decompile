@@ -16,6 +16,7 @@
 #include "bsp/band_0067_cc13.hpp"
 #include "bsp/band_0076_cc13.hpp"
 #include "bsp/band_0080_cc13.hpp"
+#include "bsp/wire_goal4_chain427_switches.hpp"
 #include "bsp/band_0090_cc13.hpp"
 #include "bsp/frontend_seg12_17_cc13.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
@@ -1468,6 +1469,14 @@ int main() {
         auto& s = open("0085D020 segment / triangle");
         auto hit = at<bool (__fastcall*)(const Vec3f*, const Vec3f*, const Vec3f*, const Vec3f*,
                                          const Vec3f*, Vec3f*)>(cc13_leaf_0085d020);
+        // Chain 427 binds the actual main-thread caller and repairs its PC24
+        // operation chain. Keep the existing native-byte comparisons at the
+        // precision model selected by the same bisection switch.
+        unsigned int triangle_control;
+        _controlfp_s(&triangle_control, 0, 0);
+        if constexpr (bsp::kWireGoal4Chain427Bound) {
+            _controlfp_s(&control, _PC_24 | _RC_NEAR, _MCW_PC | _MCW_RC);
+        }
         for (int i = 0; i < 2000; ++i) {
             auto v = [](float lo, float hi) { return Vec3f{uniform(lo, hi), uniform(lo, hi), uniform(lo, hi)}; };
             Vec3f a = v(-5, 5), b = v(-5, 5), c3 = v(-5, 5);
@@ -1479,6 +1488,7 @@ int main() {
             s.check(r1 == r2 && same(o1, o2));
             if (!(r1 == r2 && same(o1, o2)) && s.failures < 4) std::printf("seg i=%d: %d %a,%a,%a / %d %a,%a,%a\n", i, r1,o1.x,o1.y,o1.z,r2,o2.x,o2.y,o2.z);
         }
+        _controlfp_s(&control, triangle_control & (_MCW_PC | _MCW_RC), _MCW_PC | _MCW_RC);
     }
     {   // 00809E10: launch speed through the record's +3Ch object, vt slot 38h.
         auto& c = open("00809E10 rocket flight time");
