@@ -1,0 +1,198 @@
+{
+  "chain": 515,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain515Bound",
+  "rows": [
+    {
+      "native": "00aedf60",
+      "status": "wired",
+      "host_site": "src/native_texture_atlas_item_parameters_storage.cpp::read_native_texture_atlas_item_parameters_00aee620",
+      "details": "Four reachable U1/V1/U2/V2 conversions use the actual 00AEE3C0-produced NativePooledTextStorage cells; outputs replace inline atof stores at item+14h/+18h/+1Ch/+20h before the unchanged token retirement and UV packing."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/cc13_seg48.cpp::cc13_seg48_command_target_pair_construct_007ecf00",
+      "reason": "No reachable command-target pair/snapshot constructor owner was found; the descriptor init and proposed build caller are absent from the built call graph."
+    },
+    {
+      "native": "00721090",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp::descriptor_build_00721090",
+      "reason": "No linked descriptor-build caller/consumer exists in this executable; calling init here would leave the whole family unreachable and overwrite all of its outputs."
+    },
+    {
+      "native": "00afc470",
+      "status": "skipped",
+      "host_site": "src/native_particle_parameter_loading.cpp::ParsePolicy<RawContext>::number",
+      "reason": "Particle parameter loading has no linked contribution in this executable; the reachable pooled-token consumer is atlas item parsing instead."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl",
+      "reason": "Already reachable before this change from the constructor and merge_child; no new wiring is needed."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::insert_into",
+      "reason": "Already reachable before this change from attach_tree and insert_into; no new wiring is needed."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::GameGunneryHost skill notification",
+      "reason": "Already called by the existing chain451 skill notification using loaded tail-gunner descriptors; no new wiring is needed."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRows animation_interval",
+      "reason": "The interval hook only records a call and weapon_animation returns zero; an actual ticker/animation object and owning widget remain missing."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate set_ambient_volume",
+      "reason": "The ambient-volume hook has no actual SoundInstance/sample owner and camera_height supplies no live height producer."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::read_native_session_message35_0052abe0",
+      "reason": "The reserve call already exists in message35 parsing, but no linked message35 receiver/profile owner reaches that parser."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp::read_native_session_message35_0052abe0",
+      "reason": "The resize call already exists in message35 parsing, but no linked message35 receiver/profile owner reaches that parser."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp::GuiTimedEntryOwner::create_by_index_00ad3a80",
+      "reason": "The typed GuiTimedEntryOwner family lacks a linked live owner; the current GUI page application uses its separate raw timed-entry storage/providers."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp::destroy_gui_timed_entry_profile",
+      "reason": "The typed timed-entry family lacks a linked live owner; replacing its reset alone would not reach this body."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp::GuiTimedEntryOwner::update_entries_00aa87b0_fragment",
+      "reason": "The typed timed-entry update lacks a linked live owner; the current GUI page application uses its separate raw timed-entry storage/providers."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20",
+      "reason": "Both examined shadow-fitting callers 00A8BD20/00A8ECB0 are absent from the executable; their render-camera owner and live fitting dispatch must be wired first."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::camera clip-plane binding",
+      "reason": "The existing clip-plane call has no linked live main-scene submission path in this executable."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::camera clip-plane binding",
+      "reason": "The existing clip-plane clear has no linked live main-scene submission path in this executable."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp::unit debug inspector",
+      "reason": "Only original caller 006FB750 is a debug inspector; debug-only work is excluded from this assignment."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane engine state",
+      "reason": "No live PlaneEngineSlots collection/producer was found in the unit host; the list body cannot consume invented engine records."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane engine state",
+      "reason": "No live PlaneEngineSlots collection with stop_engine implementations was found in the unit host."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::plane death visuals",
+      "reason": "The host death path lacks the detached-part visual node and its actual six-float AABB; motion.position cannot substitute for that box."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp::use_item_008eada0",
+      "reason": "The active-use cooldown tail throws and the current grant path only uses passives; a live active-use caller plus the remaining use-count/scoring/HUD tail is required."
+    },
+    {
+      "native": "0087fc60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_world.cpp::landscape height query",
+      "reason": "No LandscapeState/height_field_3d0 owner supplying the required world-height virtual was found in the live hosts."
+    },
+    {
+      "native": "00922e90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::entity ancestry",
+      "reason": "The examined hosts lack the actual +3Ch hierarchy and Seg60Host kind-query bridge needed by the raw ancestor walk."
+    },
+    {
+      "native": "004704e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::hit ownership",
+      "reason": "A native hit record and owner-unit +108h virtual bridge are required; current semantic damage attribution does not supply that storage."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/cc13_front2.cpp::gamepad_force_clear_all_channels_00a95cb0",
+      "reason": "No linked GamepadForceDeviceHost owns the typed force-state collection; the game input runtime uses separate native rumble ownership."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/gui_camera_store_owner.cpp::NativeGuiSceneOwner",
+      "reason": "The current live GUI renderer uses actual-owner NativeGuiSceneReference custody rather than the separate unlinked NativeGuiSceneOwner family."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_resource_cache.cpp::append_sound_resource_cache_record_00a84530",
+      "reason": "The live semantic cache records contain std::string/list storage rather than raw 2Ch records; a native cache owner and its copy/destruction providers are missing."
+    }
+  ],
+  "counts": {
+    "readiness_wired_before": 9810,
+    "readiness_wired_after": 9811,
+    "reachable_reconstructed_addresses_before": 4875,
+    "reachable_reconstructed_addresses_after": 4876
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "call_graph": "00AEDF60 is REACHABLE with four direct call sites from 00AEE620; path reaches GameNativeTextureAtlasApplication::load_common_normal and GameStartupHost initialization",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD passed: 0 findings, 0 allowed, 2 files"
+  },
+  "evidence": [
+    "bsp.py show 00aedf60 --asm: actual text-cell dereference, CRT atof, FSTP32/FLD32",
+    "bsp.py show 00aee620 --asm and existing raw parser: four atof/FSTP32 UV stores",
+    "call_graph.py who 00aedf60; call_graph.py path 00aedf60"
+  ],
+  "limits": [
+    "Static entry reach and build/test evidence; the game was not run.",
+    "The reused helper has a new C++ interface; this change does not establish original ABI or CRT/locale equivalence.",
+    "The helper rounds through private binary32 storage before publishing to the original item field; original caller x87 exception-state parity was not measured."
+  ],
+  "selection_note": "Selection exceeded the suggested ten-minute survey budget; several ready rows were already called or belonged to unlinked semantic owner families. No unrelated source edits were made."
+}

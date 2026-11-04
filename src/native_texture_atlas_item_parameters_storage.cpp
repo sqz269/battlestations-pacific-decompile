@@ -1,5 +1,7 @@
 #include "bsp/native_texture_atlas_item_parameters_storage.hpp"
 #include "bsp/game_native_readonly_data.hpp"
+#include "bsp/native_particle_text_helpers.hpp"
+#include "bsp/wire_goal4_chain515_switches.hpp"
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -96,7 +98,16 @@ std::uint8_t read_native_texture_atlas_item_parameters_00aee620(void* actual_ite
                         auto* value = static_cast<NativePooledTextStorage*>(get_native_pooled_text_token_00aee3c0(
                             &f.line, &f.value_u1, 2, c.strings_));
                         f.active_site = 0x00aee758;
+                        if constexpr (kWireGoal4Chain515Bound) {
+                            // bsp.py show 00AEDF60 --asm: dereference the actual
+                            // token cell, CRT atof, FSTP32/FLD32. AEE758's old
+                            // inline conversion has the same binary32 value;
+                            // publish it to the SAME item before token release.
+                            *static_cast<float*>(field(actual_item, 0x14)) =
+                                parse_native_particle_token_float_00aedf60(value);
+                        } else {
                         store_atof(field(actual_item, 0x14), current(*value));
+                        }
                         f.active_site = 0x00aee782;
                         return_captured(current(f.value_u1), c.strings_);
                         f.value_u1.data = nullptr;              // AEE794
@@ -111,7 +122,12 @@ std::uint8_t read_native_texture_atlas_item_parameters_00aee620(void* actual_ite
                             auto* value = static_cast<NativePooledTextStorage*>(get_native_pooled_text_token_00aee3c0(
                                 &f.line, &f.value_v1, 2, c.strings_));
                             f.active_site = 0x00aee7df;
+                            if constexpr (kWireGoal4Chain515Bound) {
+                                *static_cast<float*>(field(actual_item, 0x18)) =
+                                    parse_native_particle_token_float_00aedf60(value);
+                            } else {
                             store_atof(field(actual_item, 0x18), current(*value));
+                            }
                             f.active_site = 0x00aee809;
                             return_captured(current(f.value_v1), c.strings_);
                             f.value_v1.data = nullptr;          // AEE81B
@@ -126,7 +142,12 @@ std::uint8_t read_native_texture_atlas_item_parameters_00aee620(void* actual_ite
                                 auto* value = static_cast<NativePooledTextStorage*>(get_native_pooled_text_token_00aee3c0(
                                     &f.line, &f.value_u2.token, 2, c.strings_));
                                 f.active_site = 0x00aee86b;
+                                if constexpr (kWireGoal4Chain515Bound) {
+                                    *static_cast<float*>(field(actual_item, 0x1c)) =
+                                        parse_native_particle_token_float_00aedf60(value);
+                                } else {
                                 store_atof(field(actual_item, 0x1c), current(*value));
+                                }
                                 f.active_site = 0x00aee895;
                                 return_captured(current(f.value_u2.token), c.strings_);
                                 f.value_u2.token.data = nullptr; // AEE8A7
@@ -141,7 +162,12 @@ std::uint8_t read_native_texture_atlas_item_parameters_00aee620(void* actual_ite
                                     auto* value = static_cast<NativePooledTextStorage*>(get_native_pooled_text_token_00aee3c0(
                                         &f.line, &f.value_v2, 2, c.strings_));
                                     f.active_site = 0x00aee904;
+                                    if constexpr (kWireGoal4Chain515Bound) {
+                                        *static_cast<float*>(field(actual_item, 0x20)) =
+                                            parse_native_particle_token_float_00aedf60(value);
+                                    } else {
                                     store_atof(field(actual_item, 0x20), current(*value));
+                                    }
                                     f.active_site = 0x00aee913;
                                     destroy_native_pooled_text_00aee2a0(&f.value_v2, c.strings_);
                                 }
