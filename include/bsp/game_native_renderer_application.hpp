@@ -354,6 +354,11 @@ public:
     // must supply its genuine initialized service and retain each fresh acquired
     // frame, including interrupted texture loads, through the native last use.
     NativeRenderResourcesRemapContext& render_resources_remap_context();
+    // Scene-record Colorize names, on the application's genuine F8D39C
+    // service. Before the existing native mission resource initializer runs,
+    // retain the current scene's request; apply it before its first native
+    // draw. True means applied now. Sprite-only rendering owns no service.
+    bool set_scene_remap_texture(std::size_t slot, const std::string& name);
     // Ready-phase borrowed raw factory contexts, retained by this application.
     // Caller retains each acquired frame and disposes survivors before drain;
     // failed attempts may require process retention. Does not call B107F0 or

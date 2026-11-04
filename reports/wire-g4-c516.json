@@ -1,0 +1,225 @@
+{
+  "chain": 516,
+  "slot": "g4-w5",
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain516Bound",
+  "summary": "Carry the selected scene's Colorize strings into the shared native render-resource remap setters.",
+  "wired_before": 9813,
+  "wired_after": 9817,
+  "runtime_scope": "The existing BSP_NATIVE_MISSION_SHIP=1 renderer owns/initializes F8D39C after simulation scene loading. Requests are retained until its B14A10/B107F0 producer completes, then applied in slot order before the first native mission draw. The sprite-only path retains metadata and constructs no service.",
+  "state_producers": [
+    "Selected scene header g_PostProcess.Colorize overrides installed universe/library/scene.props SceneRootProps defaults per key.",
+    "004DA2A0 initializes the four native string headers empty; 004E8510 writes TextureName, TextureNameUW, TextureNameOldFilm and TextureNameOldFilmUW to C24/C2C/C34/C3C.",
+    "Existing application F8D39C service, same texture cache/string pool/canonical owner registry, current renderer profile and decrement import."
+  ],
+  "ownership": "Each actual setter call retains one native acquisition frame. Successful temporary names are released; interrupted names/cache frames retain the whole application/provider domain before teardown. Existing B0F6E0 owns final texture-slot releases; no extra retain or second setter run.",
+  "evidence": [
+    "bsp.py show 004e8510 --start 242 --lines 57",
+    "bsp.py show 004da2a0 --start 55 --lines 46",
+    "mission_scene_contents.cpp:004D4F60..004D4FD0 setter order",
+    "native_render_resources_construction.cpp:B14D3C..B14D4E initializes 66C/670/674/678",
+    "native_render_resources_lifetime.cpp:B0F6E0 releases those same slots",
+    "Installed scene.props Colorize defaults are ColourRemap.tga, ColourRemap.tga, volume_technicolor_002.tga and volume_remap_UW.tga."
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed all four CTest groups",
+    "call_graph": "All four existing bodies have one direct reachable call from set_scene_remap_texture; final graph refreshed after the build.",
+    "precision": "No floating-point arithmetic changed; pc24 lint not applicable.",
+    "runtime": "Game not launched; no visual, gameplay or original ABI claim."
+  },
+  "left": [
+    "Whole 004E8510 HDR/motion-blur/underwater-wave production integration remains separate; only its four existing Colorize string outputs are projected.",
+    "Normal sprite-only startup still has no native F8D39C service; enabling/initializing native rendering outside the existing renderer mode is separate work.",
+    "No extra-plane, scoring, deferred Lua-call or typed GUI-owner work was taken."
+  ],
+  "rows": [
+    {
+      "native": "00b0fd70",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp:GameNativeRendererApplication::set_scene_remap_texture"
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp:GameNativeRendererApplication::set_scene_remap_texture"
+    },
+    {
+      "native": "00b0fe10",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp:GameNativeRendererApplication::set_scene_remap_texture"
+    },
+    {
+      "native": "00b0fe60",
+      "status": "wired",
+      "host_site": "src/game_native_renderer_application.cpp:GameNativeRendererApplication::set_scene_remap_texture"
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding::failure_side_effect",
+      "reason": "Missing the native per-player scoring/counter/award graph and attacker records; the failure host passes semantic handles."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:FailureBinding::repair_completed_notify",
+      "reason": "Missing the native scoring graph and a reachable repair-completion producer in this adapter."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::kamikaze_direct_hit_00819a20",
+      "reason": "Missing native source-player records, relation/class score maps and award/kill-list owners."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing actual source argument-vector and deferred named-call producers on this main-thread host path."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing a live named-call enqueue request from a frame-job thread; the current host does not take that arm."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:device-class loading",
+      "reason": "Missing the actual derived device-class allocation, damageable-base composition and class-reader dispatch; current firing metadata is semantic."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:recon triple construction",
+      "reason": "Missing the actual native recon-entry/list owner; current triple construction uses semantic records."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:recon aggregate retirement",
+      "reason": "Missing native carry-over list ownership and entry destruction; the host rebuilds semantic triples."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:recon aggregate publication",
+      "reason": "Missing the native group-entry/member-list graph; the existing aggregate pass computes semantic levels."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::run_torpedo_supply_tick_00825450",
+      "reason": "Missing populated native repair-zone registry and its area/unit providers; current registry is empty."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:cockpit-screen query",
+      "reason": "Missing the plane-effects screen owner and its cockpit-mode producer; cockpit_screen_wanted is false."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:power-up scrolling query",
+      "reason": "Missing the native carousel/scroller state and its scrolling-byte writers."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HUD award ticker",
+      "reason": "Missing a populated award vector, timed-entry producer and ticker widgets."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp:MissionStartBinding::write_checkpoint",
+      "reason": "Missing the pre-load checkpoint-difference producer and actual checkpoint table/current-key owner; the gate returns false."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:ship-director enable provenance",
+      "reason": "Missing a snapshot producer/consumer; copying existing flattened flags into a temporary snapshot would only round-trip state."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp:direction_angle_deltas_00605630",
+      "reason": "Missing the live bomb-HUD caller with both direction-vector inputs; unrelated gun-angle calculations are not that operation."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:reset_gui_manager_highlights_00aa0f70",
+      "reason": "Missing the typed GuiResourceOwner/GuiWidgetOwnerRuntime composition on the actual raw GUI manager path."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp:GuiPointerRuntime::update_pointer_00aa3910",
+      "reason": "Missing the GuiPointerRuntimeServices composition and actual typed cursor owner on the raw GUI manager path."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp:gui_widget_has_live_entries_00aa7ef0",
+      "reason": "Missing a live GuiWidgetOwner timed-entry domain on the actual raw page path."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp:collect_sorted_children_00aa5a00",
+      "reason": "Missing the typed child-snapshot consumer on the actual native GUI page/render path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp:get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing an actual consumer of the FOV/aspect product on the current camera path."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing a real extra-clip-plane request/producer and the appropriate typed state consumer."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp:clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing a live extra-plane clear operation; replacing unrelated constructor writes would change their schedule."
+    },
+    {
+      "native": "00903f30",
+      "status": "skipped",
+      "host_site": "src/entity_lifecycle_tails.cpp:chain_unlink_00903f30",
+      "reason": "Missing an actual IntrusiveChain/IntrusiveChainNode lifetime owner on the semantic world-chain path."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp:reserve_native_word_array_005296a0",
+      "reason": "Missing a reachable native message35 word-array reader/producer; no real array operation exists at the inspected host sites."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp:resize_native_word_array_00529980",
+      "reason": "Missing a reachable native message35 word-array reader/producer; no real array operation exists at the inspected host sites."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp:NativeFontResources::accepts_text_byte",
+      "reason": "Missing a live editable-text byte consumer; the inspected byte predicate has no production input caller."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/native_scene_tokenizer.cpp:skip_native_scene_group_008f0800",
+      "reason": "Missing an unknown-group caller carrying NativeSceneTokenValueContext; the semantic scene pass uses SceneLexer instead."
+    }
+  ]
+}

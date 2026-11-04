@@ -53,6 +53,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameMissionLuaHost;
 class GameVfsHost;
+class GameNativeRendererApplication;
 
 // One entity the instantiate pass reached, in file order. `world` is the frame
 // 0046cf40 composes through 00413920 before it calls the gate.
@@ -303,6 +304,8 @@ public:
     // loaded, so the registration pass needs the mission Lua host. Attached
     // before the pass runs; without it the preload keeps its record.
     void attach_lua(GameMissionLuaHost* lua) noexcept;
+    void bind_native_scene_remaps(GameNativeRendererApplication&,
+        const std::array<std::string, 4>& names);
     GameSceneContentsHost(const GameSceneContentsHost&) = delete;
     GameSceneContentsHost& operator=(const GameSceneContentsHost&) = delete;
 

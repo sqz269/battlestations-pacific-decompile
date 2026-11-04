@@ -198,6 +198,8 @@ public:
     // The application runtime and Lua owner must outlive this frame's units.
     void bind_observer_runtime(GameObserverRuntime&);
     void bind_input_runtime(GameInputRuntime*);
+    void bind_native_scene_remaps(GameNativeRendererApplication&,
+        const std::array<std::string, 4>& names);
 
     // Walks the recovered load inventory in order from the step the mission
     // path's request 0Ah dispatches, performing every step whose owner area has

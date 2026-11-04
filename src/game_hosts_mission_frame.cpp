@@ -51,6 +51,7 @@
 #include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -706,6 +707,8 @@ struct GameMissionFrameHost::Impl {
     // Milestone 2h: 004d4df0, the scene contents pass. Built on the load walk's
     // own row, because the "2_" file block it opens belongs to that step.
     std::unique_ptr<GameSceneContentsHost> scene_contents;
+    GameNativeRendererApplication* remap_renderer{nullptr};
+    std::array<std::string, 4> remap_names;
     // Milestone 2i: the created units and the world chain the walk reads. Both
     // are built on the load's own load_scene_contents row, because that is the
     // step that creates the instances.
@@ -4011,6 +4014,12 @@ const GameSceneContentsSummary* GameMissionFrameHost::scene_contents_summary()
     return impl_->scene_contents ? &impl_->scene_contents->summary() : nullptr;
 }
 
+void GameMissionFrameHost::bind_native_scene_remaps(GameNativeRendererApplication& renderer,
+    const std::array<std::string, 4>& names) {
+    impl_->remap_renderer = &renderer;
+    impl_->remap_names = names;
+}
+
 void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path,
     const std::string& script_name, const std::string& locale_tables,
     std::int32_t mission_id, const bsp::SceneRecord* scene_record,
@@ -4302,6 +4311,12 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // Milestone 2m: 0095c640's three reads of the live VehicleClass
             // table, which the recovered global-script step already loaded.
             host.scene_contents->attach_lua(&host.lua);
+            if constexpr (bsp::kWireGoal4Chain516Bound) {
+                if (host.remap_renderer)
+                    host.scene_contents->bind_native_scene_remaps(*host.remap_renderer,
+                        host.remap_names);
+            } else {
+            }
             // game+614h and game+61Ch are the two fields 004bca50 reads as the
             // raw game mode and its forced flag; MissionSceneLoadState names the
             // same pair script_slot / script_slot_forced, because 004e087b picks
