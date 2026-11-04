@@ -1,0 +1,141 @@
+{
+  "chain": 473,
+  "run": 962,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain473Bound",
+  "summary": "Wire the existing 004D2A80 loading-config destructor over real mission-derived native string/vector ownership.",
+  "rows": [
+    {
+      "native": "004d2a80",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start -> GameLoadingConfig::finish_start; include/bsp/game_loading_config.hpp: GameLoadingConfig::release teardown/failure paths",
+      "state": "Selected mission loading_text/title/second-side flag are copied into a native-layout owning temporary using the actual application raw string pool; 0057D060 publishes independent pending/current copies before cleanup.",
+      "implementation": "Extract LoadingConfigReleaseHost from the existing Seg10Host services; reuse the sole existing body without changing its title-before-vector cleanup order or its native field stores.",
+      "evidence": "bsp.py show 004D2A80; bsp.py show 0058BDF0 (BE9A..BEDE, BFEF); existing chain462 owning-config fixture",
+      "call_graph": "Entry-reachable seg10_cc13.obj body, nine direct call sites from five reachable compiled callers including MissionStartBinding::finish_start, GameLoadingConfig::publish and MissionStartBinding::publish_loading_config.",
+      "ledger": "Replace stale BSP_Game_ClearPendingMissionName reconstruction identifier with the existing game_clear_pending_mission_name_004d2a80 C++ identifier; no second body was created."
+    },
+    {
+      "native": "00aedf60",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_parser_raw.cpp: parse_native_particle_resource_00af4ba0 stored atof conversions",
+      "reason": "Missing entry-reachable native particle-resource parser producer: neither 00AF4BA0 nor 00AEDF60 is linked in the baseline executable, so a local substitution would remain dormant."
+    },
+    {
+      "native": "00af4ba0",
+      "status": "skipped",
+      "host_site": "src/native_particle_resource_loader_raw.cpp: native resource parser dispatch",
+      "reason": "Missing live application acquisition/loading connection for GameNativeParticleRuntime; the raw parser is absent from the baseline executable."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::insert_into and attach_tree",
+      "reason": "No new wire is needed: the existing enum-symbol producer already has two entry-reachable call sites through the real property merge owner."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor and merge_child",
+      "reason": "No new wire is needed: the native bag merge already has two entry-reachable call sites through the real property merge owner."
+    },
+    {
+      "native": "008f3490",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "No new wire is needed: call_graph.py already reports an entry-reachable call using the authored BIN property's native bag."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator difficulty selection",
+      "reason": "No legitimate campaign call was established: 009FFC80 uses this selector in modes 0..3, while the campaign uses effective mode 8; native per-slot brain/difficulty bindings remain outside this packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate-score records",
+      "reason": "Debug-only record storage: the documented sole record reader is the unreached 00A2CDD0 overlay; no single-player gameplay consumer justifies restoring its score-list writes."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate-score chosen marker",
+      "reason": "Debug-only chosen-byte storage shares 00A2B950's unreached overlay consumer; no single-player gameplay consumer was established."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: target-weight hint factor",
+      "reason": "Missing live native hint-map/AI coordinator producer was not resolved; the host still describes a projected multiplier rather than the raw hint-map state."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge texture binding",
+      "reason": "Missing native movie page, decoder/player textures and material sampler ownership; the existing MovieBridge texture hook remains unimplemented."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing actual subtitle-widget/vector ownership: MovieBridge clears a host schedule and projected text, not the body's native subtitle and extra-title records."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/segment2_camera_cc13.cpp: camera frustum FOV/aspect input",
+      "reason": "Missing live camera-projection binding for the existing typed getter; abstract host declarations alone do not supply the game's projection state."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: camera_set_extra_clip_plane_00b70410 callback",
+      "reason": "Missing live CameraClipPlaneState producer/renderer adapter; the reconstructed scene renderer only declares the callback."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp: camera_clear_extra_clip_plane_00b70470 callback",
+      "reason": "Missing live CameraClipPlaneState producer/renderer adapter; clearing a newly fabricated state would not wire the actual camera."
+    },
+    {
+      "native": "00a9bf90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: semantic GuiListboxRuntime rows",
+      "reason": "Missing compatible raw listbox ownership/NativeGuiListboxCalls bridge; the live runtime owns semantic std::list rows rather than the body's raw checked-list fields."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: semantic GuiListboxRuntime selection",
+      "reason": "Missing compatible raw listbox ownership/NativeGuiListboxCalls bridge; the existing semantic selection iterator cannot be passed as native listbox storage."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: semantic listbox highlight state",
+      "reason": "Missing compatible raw listbox/highlight ownership and NativeGuiListboxCalls bridge; the body's native +124h and widget services are not the live runtime layout."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 and HudRootListsBinding screen-reset recording",
+      "reason": "Missing actual HUD unit-pick screen/vector/mode producer; the live host records this reset and cannot supply the body's +C4h checked vector and +30h mode."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five existing checks passed, including cc462_loading_config with repeated publication, growth, shrink, clear and independent-copy checks.",
+    "graph_before": {"recon_called": 4815, "recon_addresses": 5282},
+    "graph_after": {"recon_called": 4816, "recon_addresses": 5283},
+    "wire_readiness_before": 9746,
+    "wire_readiness_after": 9747,
+    "float_math_changed": false,
+    "game_run": false,
+    "original_abi_compatible": false
+  },
+  "limits": [
+    "The real mission-start temporary survives publication until the existing 0058BFEF finish_start hook; repeated publication or teardown without that hook also retires a pending temporary exactly once. The image's temporary was stack-owned; the Source owner retains the same field layout as a member.",
+    "No native ABI, private EH/SEH alias, gameplay or visual parity claim. Existing raw pool/allocator exception-domain limits remain."
+  ]
+}
