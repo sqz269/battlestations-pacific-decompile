@@ -1,0 +1,128 @@
+{
+  "chain": 458,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain458Bound",
+  "rows": [
+    {
+      "native": "00b663f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveLuaArguments::count",
+      "state": "A native kind-3 call frame produced by 00B679B0 from the binding's live lua_State; +0Ch retains the entry argument count even when temporary stack values are pushed.",
+      "evidence": ["bsp.py show 00b663f0", "bsp.py show 00b679b0", "bsp.py show 008cdd60 --start 55 --lines 36", "src/objective_units.cpp: objective binding argument-count gates"]
+    },
+    {
+      "native": "00b679b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: ObjectiveLuaArguments constructor",
+      "reason": "Already wired before this packet; reused its existing native call-frame producer to supply 00B663F0 rather than counting another newly wired address."
+    },
+    {
+      "native": "008cdd60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: binding_trampoline objective AddUnit branch",
+      "reason": "Already wired through lua_binding_objectives_add_unit_008cdd60; it supplies the live caller of the selected argument-reader adapter."
+    },
+    {
+      "native": "00b18b40",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: register_matrices",
+      "reason": "Missing executable caller of construct_native_particle_model_00af74a0; the release built graph contains no such constructor body, so replacing its generic registrations would not wire this wrapper."
+    },
+    {
+      "native": "00af74a0",
+      "status": "skipped",
+      "host_site": "src/native_particle_model_construction.cpp: construct_native_particle_model_00af74a0",
+      "reason": "Missing live application construction path and its real NativeParticleModelConstructionAccess; only the particle manager and static pool currently appear in the executable."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_icon_application.cpp: Impl::register_parameter (candidate)",
+      "reason": "No three-word source in the inspected live icon registration sites: they supply scalar and four-word color parameters; original float3 callers require different subsystem owners."
+    },
+    {
+      "native": "00b17310",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: map-quad construction projection (candidate)",
+      "reason": "Missing a live native material receiver for the inspected map-quad projection; vertex and binding descriptors alone do not supply material+104h storage."
+    },
+    {
+      "native": "0093de10",
+      "status": "skipped",
+      "host_site": "src/strategic_map_cc13.cpp: build_map_quad_vertices_0093de10 (candidate)",
+      "reason": "The existing reconstruction is a host projection of vertices and shader-binding descriptions; a complete native scene/material/mesh construction owner is still missing."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows::animation_interval",
+      "reason": "Missing live weapon-animation object: weapon_animation currently returns zero, so there is no ticker +0Ch/+10h receiver to update."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "Missing powerup-carousel owner and scrolling-byte producers at screen+1F9h/+13Fh; map-screen activation is also disabled in that host."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen-reset stand-ins",
+      "reason": "Missing native selection-vector header/content at +C4h and selection-mode producer at +30h; clearing an invented empty vector would not preserve the real reset."
+    },
+    {
+      "native": "008a7e60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetRotation dispatch entry (candidate)",
+      "reason": "The ledger points to an existing verified host binding rather than a separate address-suffixed native wrapper; no complete wrapper extraction was undertaken in this frame-count packet."
+    },
+    {
+      "native": "0089cc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GetSquadronPlanes dispatch entry (candidate)",
+      "reason": "The ledger points to an existing verified host binding rather than a separate address-suffixed native wrapper; no complete wrapper extraction was undertaken in this frame-count packet."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: existing ai_defend_member_is_candidate_00a2def0 call",
+      "reason": "An existing host call already names the semantic member predicate; wiring the complete native group-list collector would additionally need its actual list owner and append boundary."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: effective-game-mode selection (candidate)",
+      "reason": "No real eight-slot brain-pointer table with each brain's +0Ch active field was established in this packet."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui",
+      "reason": "Missing the transition's native game/screen/listener owners and input/cinematic bindings; this address is PrepareSoundTransition, not just a close-GUI operation."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing a live ambient SoundInstance and its current sample/options owner; the host currently discards the volume without retaining a sound receiver."
+    }
+  ],
+  "validation": {
+    "release_build_and_tests": "passed; reconstructed_math and tool_tests, 2/2",
+    "readiness_wired_before": 9715,
+    "readiness_wired_after": 9716,
+    "release_called_before": 4779,
+    "release_called_after": 4779,
+    "release_count_note": "Release ICF aliases this four-byte getter with unrelated functions; its aggregate count was already inflated before the new real ObjectiveLuaArguments::count tail call.",
+    "analysis": {
+      "build": "build/callgraph, /Ob0 /OPT:NOICF, switch OFF then ON",
+      "called_before": 6374,
+      "called_after": 6375,
+      "target_off": "00B663F0 is not linked",
+      "target_on": "00B663F0 at 1053DFE0, reachable, one tail-call site at 101A3F06 from ObjectiveLuaArguments::count; no folded aliases",
+      "path": "WinMainCRTStartup -> startup/frame/menu/mission hosts -> GameMissionLuaHost registration -> binding_trampoline -> ObjectiveLuaArguments vtable/count -> 00B663F0"
+    },
+    "game_run": "not run, per assignment",
+    "float_math": "unchanged"
+  }
+}
