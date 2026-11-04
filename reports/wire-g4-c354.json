@@ -1,0 +1,160 @@
+{
+  "chain": 354,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain354Bound",
+  "scope": "LandingPoint marker facing through the shared reconstructed 006AC260 body",
+  "wired_total_before": 9459,
+  "rows": [
+    {
+      "native": "006ac260",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::building_pads",
+      "evidence": "006AC260..006AC2EC; raw dirty-pose refresh remains in the compatibility wrapper; the typed entry shares its normalization body. Real state is the registered authored LandingPoint marker world matrix.",
+      "validation": "Win32 build and both existing tests passed; built entry-reachable call at 101bf38c; focused flattened (3,100,4) probe returned exact float bits 3f19999a/00000000/3f4ccccd."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::set_widget_local_z",
+      "reason": "Movie page loading returns null; a live widget owner is missing for the local-Z write."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::bind_movie_textures",
+      "reason": "Native movie widget textures and decoder ownership are missing; binding remains a recorded callback."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::MovieBridge::clear_movie_subtitles",
+      "reason": "The host clears a projected subtitle schedule; the native widget/subtitle storage contract is missing."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: press-start device path",
+      "reason": "Needs a real input-device vtable+20 button adapter; this packet retains only marker world-frame state."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign-in invite path",
+      "reason": "Pending-invite and Xenon user-slot state belongs to online services; excluded from single-player wiring."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::failure_side_effect",
+      "reason": "The current hook only records the event; native scoring-owner and unit/hit field adapters are missing."
+    },
+    {
+      "native": "00914100",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: FailureBinding::repair_completed_notify",
+      "reason": "The callback is unreached and lacks a native scoring-record owner plus the repaired-unit field adapter."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: mission hit-damage statistics",
+      "reason": "Needs native scoring, unit-class/root and hit record adapters; these were not established in the marker-facing packet."
+    },
+    {
+      "native": "00447510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: wreck-debris path",
+      "reason": "The host records piece draws; retained native debris objects and the dynamics-list producer are missing."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: player-gun-seat handover",
+      "reason": "The host records flak handover; a native gun/class +3F4/+80 view and real 0072D5B0 fire-mode dispatch are missing."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bot_clear_release_008ff2b0",
+      "reason": "Needs the bot target record and observer unregister lifetime; the inspected host path only carries trigger state."
+    },
+    {
+      "native": "0072bf10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile spawn",
+      "reason": "Native shot identity, appearance/scale, factory/medium and owner/director registration contracts remain missing."
+    },
+    {
+      "native": "00c336c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: world-frame consumers",
+      "reason": "No 4x4-to-3x4 conversion is consumed by the selected landing-marker path; a live destination owner is missing."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The scene hook only records a name; real renderer service, native name header and retained texture-acquisition context are missing."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The scene hook only records a name; real renderer service, native name header and retained texture-acquisition context are missing."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The scene hook only records a name; real renderer service, native name header and retained texture-acquisition context are missing."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The scene hook only records a name; real renderer service, native name header and retained texture-acquisition context are missing."
+    },
+    {
+      "native": "004c8aa0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: clear_pending_class_ids",
+      "reason": "Native pending-class vector/list global storage and singleton lifetime callbacks are missing from the host hook."
+    },
+    {
+      "native": "0092bd30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ship sink kill-depth arm",
+      "reason": "The host only records the call; native controller hull/shape ownership is missing at this arm."
+    }
+  ],
+  "checks": {
+    "build": "scripts/build.ps1: passed, reconstructed_math and tool_tests both passed",
+    "call_graph": "006AC260 is reached from GameScriptOrdersHost::building_pads at built call 101bf38c; path reaches WinMainCRTStartup",
+    "focused_probe": "local/output/forward_xz_probe.cpp, /MANIFEST:EMBED: passed exact flattened (3,100,4) result",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: passed, 0 findings, 4 files"
+  },
+  "limitations": [
+    "Static entry reach and a focused fixture are verified; the game was not run.",
+    "The typed view is a new C++ interface, not a drop-in original ABI.",
+    "Only authored world-space markers are supplied by the new host arm; raw entities retain their existing dirty-pose refresh."
+  ],
+  "left_for_others": "Scoring/observer and native render-remap ownership require independent owner/producer work.",
+  "wired_total_after": 9460,
+  "readiness_row_006ac260": {
+    "address": "006ac260",
+    "name": "BSP_Entity_ForwardXZNormalized",
+    "source": "src/cc13_sweepB.cpp",
+    "category": "mission",
+    "state": "wired",
+    "callers": 2,
+    "wired_callers": 1,
+    "callees": 2,
+    "missing_callees": [],
+    "library_bound_callees": [],
+    "address_taken": false,
+    "host_has_own": false,
+    "called": true,
+    "call_sites": 1,
+    "callers_live": 1
+  }
+}

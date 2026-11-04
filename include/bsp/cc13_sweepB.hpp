@@ -3,7 +3,8 @@
 // cc13_sweepB: leftover sweep over segments 15-51 (packet cc13-sweepB,
 // docs/CC13_SWEEPB.md). Every name is a hypothesis, not a recovered symbol.
 // These are new C++ interfaces over the native records, not drop-in
-// replacements of the original ABI. Nothing here is wired into the game.
+// replacements of the original ABI. Typed views also bridge live host state
+// where a native byte-block representation is not retained.
 //
 // Native objects are addressed as raw byte blocks; only the offsets each
 // function reads or writes are touched. Every call the image makes goes
@@ -557,6 +558,15 @@ void cc13_sweepB_frontend_read_action55_00696450(std::uint8_t* out, Cc13SweepBHo
 
 // 006AC260: out = the entity's world +20h/+28h direction flattened to XZ and
 // normalised (zero vector when its length is not positive).
+// The view supplies the current world matrix (+CCh) after any needed pose
+// refresh. It also supports authored scene-marker frames, which are already
+// world-space and have no dirty local-to-parent pose to refresh.
+struct EntityForwardXzView {
+    virtual ~EntityForwardXzView() = default;
+    virtual const float* current_world_cc() = 0;
+    virtual float vector3_length_00419440(const float xyz[3]) = 0;
+};
+void cc13_sweepB_entity_forward_xz_006ac260(EntityForwardXzView& entity, float* out);
 void cc13_sweepB_entity_forward_xz_006ac260(void* entity, float* out, Cc13SweepBHost& host);
 
 // 006BE730 BSP_NativeVector20_PushBack_006be730: engine array {data, count,
