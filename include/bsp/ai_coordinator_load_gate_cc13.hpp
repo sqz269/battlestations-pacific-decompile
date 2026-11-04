@@ -20,6 +20,8 @@
 #include <cstddef>
 
 #include "bsp/session_context_cc13.hpp"
+#include "bsp/band_004b_cc13.hpp"
+#include "bsp/wire_goal4_chain437_switches.hpp"
 
 namespace bsp {
 
@@ -38,7 +40,20 @@ inline bool ai_coordinator_created_at_load_004e17fd(
     const std::array<AiCoordinatorLoadSlot, 8>& slots) noexcept {
     if (!(session.session_word_1fe4 == 1 || session.forced_61c)) return false;  // 004E17FD..004E180D
     for (const AiCoordinatorLoadSlot& slot : slots) {                            // 004E180F..004E1834
+        if constexpr (kWireGoal4Chain437Bound) {
+            // 004E1819..004E1829 inline 004B5510's three byte tests. The
+            // mission-load caller reads these flags from its retained native
+            // participant records (004BB160 / 0076CB90), before publishing
+            // this answer. Only these three fields are read by the body;
+            // preserve the session gate above and the first-match exit.
+            cc13_band004b::ParticipantSlotRecord record;
+            record.occupied_08 = slot.occupied_08;
+            record.flag_09 = slot.ai_09;
+            record.flag_0a = slot.active_0a;
+            if (cc13_band004b::participant_slot_is_active_ai_004b5510(record)) return true;
+        } else {
         if (slot.occupied_08 && slot.ai_09 && slot.active_0a) return true;       // 004E1838
+        }
     }
     return false;                                                                // 004E183D
 }
