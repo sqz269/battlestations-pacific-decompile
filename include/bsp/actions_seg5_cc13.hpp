@@ -385,8 +385,15 @@ void run_hide_entity_00464ee0(Seg5Host& host, Object action, Object entity);
 // ---------------------------------------------------------------------------
 
 // 004646B0 __fastcall(ECX gun), RET: 0072CF00(i, 0.0f, 0) for every barrel
-// i < [gun+448h].
-void gun_reset_all_barrel_reload_timers_004646b0(Seg5Host& host, Object gun);
+// i < [gun+448h]. This semantic provider borrows the actual gun's count and
+// setter; it does not require manufacturing a native-layout gun object.
+struct GunReloadResetHost {
+    virtual ~GunReloadResetHost() = default;
+    virtual std::int32_t barrel_count_448() const = 0;
+    virtual void gun_set_barrel_reload_timer_0072cf00(
+        std::int32_t barrel, float seconds, std::uint32_t flags) = 0;
+};
+void gun_reset_all_barrel_reload_timers_004646b0(GunReloadResetHost& host);
 
 // 00465000 / 00465020 / 00465040 / 00465060, __fastcall(ECX object), RET:
 // the object when it is non-null and answers vtable+5Ch(kind) with true,

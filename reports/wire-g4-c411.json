@@ -1,0 +1,228 @@
+{
+  "chain": 411,
+  "worker": "agent/g4-w5",
+  "base": "3bed58623cda60ae7a7474f0ae13bc0362b14237",
+  "switch": "kWireGoal4Chain411Bound",
+  "summary": "Replace the live ReloadTorpedoes all-barrel loop with the single reconstructed 004646B0 body over the actual gun row and its existing timer writer.",
+  "counts": {
+    "readiness_wired_before": 9655,
+    "readiness_wired_after": 9656,
+    "entry_reachable_addresses_before_optimized_build": 4674,
+    "entry_reachable_addresses_after_optimized_build": 4675,
+    "new_entry_reachable_addresses": [
+      "004646b0"
+    ],
+    "note": "Readiness is a source-text metric; call_graph counts entry-reachable reconstructed addresses. Runtime execution was not sampled."
+  },
+  "implementation": [
+    "GunReloadResetHost narrows the former Seg5Host/raw-layout boundary to the actual barrel count and timer setter; no duplicate address body or synthetic gun image is added.",
+    "The native listing at 004646B6/D3 reloads gun+448h and 004646C0..CB calls 0072CF00 in ascending barrel order with +0.0f and flags zero. The body retains those operations through the narrow provider.",
+    "GameGunneryHost::fixed_step consumes the existing ReloadTorpedoes queue, produced by the real script binding in game_hosts_script_orders.cpp. The adapter borrows that same GameGunRow, barrel_num and fire.barrel_timers; the producer sizes the timer vector from barrel_num.",
+    "The existing modified-barrel counter, category-8 powerup query and barrel_reload_write_0072cf00 call run once per barrel. The untouched previous loop is the switch-OFF arm.",
+    "The existing 0072CF00 semantic writer omits its effect-spawn tail; this change preserves that established boundary and does not claim new coverage for 0072CF00."
+  ],
+  "checks": {
+    "initial_index": "Passed: bsp.py index --if-stale.",
+    "initial_build": "Passed: scripts/build.ps1 and both existing CTest tests.",
+    "switch_on_build": "Passed: scripts/build.ps1 and both existing CTest tests.",
+    "switch_off_build": "Passed: scripts/build.ps1 and both existing CTest tests; call_graph returned to baseline 4674 called addresses and did not link 004646B0.",
+    "final_build": "Passed with kWireGoal4Chain411Bound=true: scripts/build.ps1 and both existing CTest tests.",
+    "call_graph": "004646B0 is REACHABLE with one call at 100BA166 from GameGunneryHost::fixed_step; WinMain -> mission frame -> fixed simulation -> unit motion -> gunnery fixed_step -> 004646B0.",
+    "float_math": "No arithmetic added or reassociated: the existing timer writer and powerup operands are reused. pc24_lint.py --diff origin/main...HEAD is the post-commit check.",
+    "runtime": "Game not launched. Static entry reach and build/tests do not establish live ReloadTorpedoes execution, original binary ABI, native EH or effect-spawn parity."
+  },
+  "rows": [
+    {
+      "native": "004646b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::fixed_step / ReloadTorpedoes queue",
+      "evidence": "bsp.py show 004646b0 --asm; call_graph.py who/path 004646b0; existing script-order ReloadTorpedoes queue producer and gunnery timer-vector producer."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_selected_unit_00647300 / HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "Missing live +30h selection-mode and +C4h selection-vector producers; UnitPickScreenState retains other fields, and constructing an empty vector would not bind this path."
+    },
+    {
+      "native": "00525a10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick screen selection member",
+      "reason": "Missing integration of the selection block with real mode/candidate-list writers and consumers; calling its empty constructor alone would not close the reset path."
+    },
+    {
+      "native": "00525a90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick screen construction candidate",
+      "reason": "Missing the full screen's observer, sound-slot and selection-member ownership composition; the current typed UnitPickScreenState is only a partial view."
+    },
+    {
+      "native": "00524960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick screen enter candidate",
+      "reason": "Missing the persistent +30h mode producer and input-context binding needed by the 4/5/6 arms."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "Missing the root's retained +CCh interface/+E4h restore-payload producer and complete unit+379h/+1A8h adapter."
+    },
+    {
+      "native": "0070d0c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation leader publication candidate",
+      "reason": "Missing native unit/wake pointer ownership for 00815E20; the retained group uses one-based identities which cannot be dereferenced by that handoff."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: formation group member-vector candidate",
+      "reason": "Missing production ownership for the mutable default DATA at 00F87574/78/7C on a lookup miss and an enclosing live reader of record+4/+8/+Ch."
+    },
+    {
+      "native": "00876ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: unit group/model-state candidate",
+      "reason": "Missing the descriptor/model/announcement-context composition for the complete state-increase path."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing the actual alternate ammo record's retained-reference slots and +3Ch tree producer; the host currently exposes a gun handle as the ammo handle."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship weapon director snapshot candidate",
+      "reason": "Missing complete live ControllerStateMessage and the three 008356C0/B0/F0 getter bindings for the snapshot extension."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: deferred argument copy candidate",
+      "reason": "Missing a live deferred-call argument-vector owner; the existing projection is scoped to immediate argument pushing."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing the actual frame-job-thread queue producer and drain; on_frame_job_thread currently returns false."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: glyph-byte acceptance candidate",
+      "reason": "Missing a live text-input event path through 00AB6D30 to the current font membership predicate."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing the checkpoint-difference trigger, which currently returns false, and persistence-rewrite composition beyond the existing Lua-table-only clear helper."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear message candidate",
+      "reason": "Missing a live 5Fh no-point clear dispatch and complete slot-selected path ownership; the existing reconstruction returns only the selected slot."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path clear message candidate",
+      "reason": "Missing the live clear-message dispatch to select and mutate the existing owned path; the source body removes its last point only when size exceeds one."
+    },
+    {
+      "native": "00720fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-message entity lookup candidate",
+      "reason": "Missing the actual two ObjectHandleTables publications at the command-message boundary; that host currently routes registry handles/descriptors."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: wire command descriptor initialization candidate",
+      "reason": "Missing the native ordinal publication and an owned wire-descriptor initialization site; SceneCommandTarget is a different semantic representation."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: typed alpha-entry construction candidate",
+      "reason": "Missing production composition from the currently raw native GUI page/timed-entry owners to this separate typed GuiTimedEntryStorage API."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: typed timed-entry reset candidate",
+      "reason": "Missing a production lifetime path owning this typed storage; the native GUI runtime uses its raw entry owners."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp: typed timed-entry advance candidate",
+      "reason": "Missing production storage/GuiWidgetOwner composition for this typed API in the current raw GUI runtime."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: camera FOV/aspect-product candidate",
+      "reason": "Missing a verified enclosing live horizontal-FOV getter site using the typed CameraProjection view; no camera arithmetic was changed."
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: formation-screen / tagged-value comparison candidate",
+      "reason": "Missing live implementations of the original FormationScreenHost or cc13_seg95::Host comparison path; available ship-AI matches were diagnostic counters."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene-reference letter candidate",
+      "reason": "Missing a live scene-reference subtype serialization path; current property parsing consumes authored type letters rather than formatting reference objects."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: loaded torpedo barrel query candidate",
+      "reason": "Missing a live any-barrel predicate consumer; the inspected torpedo-stock sites require a count or complete barrel list, which this boolean body cannot replace."
+    },
+    {
+      "native": "00727c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: barrel-selection candidate",
+      "reason": "Missing a live minimum-timer barrel consumer; the fire path uses next_ready_barrel's cyclic selection instead."
+    },
+    {
+      "native": "00953170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: device classification candidate",
+      "reason": "No verified live kind-0-only decision matching this predicate was found; the inspected firepower classifier has different category semantics."
+    },
+    {
+      "native": "009531a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: device classification candidate",
+      "reason": "No verified live category-2/3/4/6-only decision matching this predicate was found; the inspected firepower classifier has different category semantics."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit effect-vector clear candidate",
+      "reason": "Missing the actual unit+660h vector producer and ownership needed by the resize provider."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::set_ambient_volume",
+      "reason": "Missing the live ambient-sound instance and camera producers; has_ambient_sound_instance currently returns false."
+    },
+    {
+      "native": "00401cf0",
+      "status": "skipped",
+      "host_site": "src/math.cpp: double-vector length candidate",
+      "reason": "No verified live Vec3d consumer with the same arithmetic/spill schedule was identified; no float/double math substitution was made."
+    }
+  ]
+}

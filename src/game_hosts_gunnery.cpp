@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/actions_seg5_cc13.hpp"
+#include "bsp/wire_goal4_chain411_switches.hpp"
 #include "bsp/wire_goal4_chain395_switches.hpp"
 #include "bsp/wire_goal4_chain401_switches.hpp"
 #include "bsp/wire_goal4_chain406_switches.hpp"
@@ -20028,6 +20030,33 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         for (const std::size_t unit : pending) {
             for (GameGunRow& g : host.guns) {
                 if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                if constexpr (bsp::kWireGoal4Chain411Bound) {
+                    // 008C3E1E..3F performs the same all-barrel reset as
+                    // 004646B0 (bsp.py show 004646b0 --asm). Borrow this live
+                    // row: creation sizes barrel_timers from barrel_num, and
+                    // firing, stock and reload all mutate this same storage.
+                    struct Reload final : bsp::cc13_seg5::GunReloadResetHost {
+                        Impl& owner;
+                        GameGunRow& gun;
+                        Reload(Impl& owner_, GameGunRow& gun_) : owner(owner_), gun(gun_) {}
+                        std::int32_t barrel_count_448() const override { return gun.barrel_num; }
+                        void gun_set_barrel_reload_timer_0072cf00(
+                            std::int32_t barrel, float seconds, std::uint32_t flags) override {
+                            float& timer = gun.fire.barrel_timers.at(static_cast<std::size_t>(barrel));
+                            if (static_cast<double>(timer) > 0.0)
+                                ++owner.summary.reload_torpedoes_barrels;
+                            float reload_rate = 1.0f;
+                            if constexpr (bsp::game_powerups::kPowerUpSubsystemCc13Bound) {
+                                reload_rate = bsp::game_powerups::powerup_site_product(8, gun.unit_index)
+                                    .value_or(1.0f);
+                            }
+                            timer = bsp::barrel_reload_write_0072cf00(seconds,
+                                std::numeric_limits<float>::max(), reload_rate, flags != 0).timer;
+                        }
+                    } reload(host, g);
+                    bsp::cc13_seg5::gun_reset_all_barrel_reload_timers_004646b0(reload);
+                    host.done("Gunnery::reset_all_barrel_reload_timers", 0x004646b0u);
+                } else {
                 for (float& timer : g.fire.barrel_timers) {
                     if (static_cast<double>(timer) > 0.0) ++host.summary.reload_torpedoes_barrels;
                     // The same body: 0072CF4E's category 8 product behind its
@@ -20039,6 +20068,7 @@ void GameGunneryHost::fixed_step(float step_seconds) {
                     }
                     timer = bsp::barrel_reload_write_0072cf00(0.0f,
                         std::numeric_limits<float>::max(), reload_rate, false).timer;
+                }
                 }
             }
             ++host.summary.reload_torpedoes_calls;
