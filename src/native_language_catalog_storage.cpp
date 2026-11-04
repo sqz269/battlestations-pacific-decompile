@@ -3,6 +3,7 @@
 #include "bsp/native_render_resource_record_construction.hpp"
 #include "bsp/native_vfs_enumeration.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain379_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -38,6 +39,33 @@ void copy_row(void* p,const void* source,NativeStringRawPoolContext& strings,Op&
         op.completed_members=member+1;op.row_unwind_state=member<3?static_cast<I>(member):2;
     }
 }
+// 008D6B44 and 008D5A3D call 008D5890 with the current insertion/relocation
+// slot and the actual source row (bsp.py show 008d6af0 / 008d59c0).
+// Keep the row constructor's fresh diagnostic operation separate from its
+// caller. The caller retains the same interrupted row/member checkpoint as
+// the former inline helper; it still owns every allocation on failure.
+void call_row_constructor(void* p,const void* source,NativeStringRawPoolContext& strings,Op& parent) {
+    Op row;
+    // An all-identity row does not reach a string-resize site, so the former
+    // helper leaves the caller's last row_site untouched in that case.
+    row.row_site=parent.row_site;
+    const auto retain_checkpoint=[&] {
+        parent.current_row=row.current_row;
+        parent.completed_members=row.completed_members;
+        parent.row_site=row.row_site;
+        parent.row_unwind_state=row.row_unwind_state;
+    };
+    try {
+        copy_construct_native_language_row_008d5890(p,source,strings,row);
+    } catch(...) {
+        retain_checkpoint();
+        // Transfer diagnostic responsibility, without freeing/rewriting any
+        // native string or changing the parent's failure-retention policy.
+        row.acknowledge_diagnostic_cleanup();
+        throw;
+    }
+    retain_checkpoint();
+}
 void destroy_row(void* p,NativeStringRawPoolContext& strings,Op& op) {
     op.current_row=p;op.completed_members=0;
     constexpr U sites[]{0x8d4f86,0x8d4fa8,0x8d4fca,0x8d4fee};
@@ -59,7 +87,11 @@ void reserve(void* p,I requested,NativeStringRawPoolContext& strings,
         void* const row=at(candidate,index<<5);op.unwind_state=0;
         if(row) {
             const void* const source=at(get<void*>(p),index<<5);op.native_site=0x8d5a3d;
-            copy_row(row,source,strings,op);
+            if constexpr(kWireGoal4Chain379Bound) {
+                call_row_constructor(row,source,strings,op);
+            } else {
+                copy_row(row,source,strings,op);
+            }
         }
         ++index;op.copied_rows=index;op.unwind_state=-1;
     }
@@ -97,7 +129,14 @@ void append_native_language_catalog_008d6af0(void* p,const void* source,NativeSt
         const U capacity=get(p,8);
         if(get(p,4)==capacity){const U doubled=capacity+capacity;const I n=static_cast<I>(doubled)>1?static_cast<I>(doubled):1;reserve(p,n,strings,calls,op);}
         void* const row=at(get<void*>(p),get(p,4)<<5);op.unwind_state=0;
-        if(row){op.native_site=0x8d6b44;copy_row(row,source,strings,op);}
+        if(row){
+            op.native_site=0x8d6b44;
+            if constexpr(kWireGoal4Chain379Bound) {
+                call_row_constructor(row,source,strings,op);
+            } else {
+                copy_row(row,source,strings,op);
+            }
+        }
         put(p,4,get(p,4)+1);op.phase=Phase::complete;
     }catch(...){op.phase=Phase::failed;throw;}
 }
