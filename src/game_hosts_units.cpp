@@ -12,6 +12,8 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_goal4_chain404_switches.hpp"
+#include "bsp/cc13_dyn1.hpp"
+#include "bsp/wire_goal4_chain402_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_lookup.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
@@ -7475,6 +7477,23 @@ struct GameUnitsHost::Impl {
             const float tilt = static_cast<float>(std::acos(uy) * 57.29577951308232);
             if (tilt > slot.diag_hull_tilt_max_deg) slot.diag_hull_tilt_max_deg = tilt;
         }
+        if constexpr (bsp::kWireGoal4Chain402Bound) {
+            // 00C33650..00C336B9 (bsp.py show 00c33650 --asm): expand the
+            // SAME twelve live motion floats into the published entity matrix.
+            // Native callers include 0092F993 (body -> controller pose) and
+            // 00932C28 (hydrodynamics). This host stores those body rows in
+            // motion, rather than a native physics allocation. The result is
+            // the world/local pose consumed by rendering and subsequent ticks.
+            // The existing body retains FLD/FSTP signalling-NaN handling and
+            // the binary's homogeneous-column constants; there is no float
+            // arithmetic added here (pc24).
+            const float compact[12] = {
+                slot.motion.pose_row0[0], slot.motion.pose_row0[1], slot.motion.pose_row0[2],
+                slot.motion.pose_row1[0], slot.motion.pose_row1[1], slot.motion.pose_row1[2],
+                slot.motion.pose_row2[0], slot.motion.pose_row2[1], slot.motion.pose_row2[2],
+                slot.motion.position[0], slot.motion.position[1], slot.motion.position[2]};
+            bsp::cc13_dyn1::transform_expand_3x4_to_4x4_00c33650(compact, slot.world.data());
+        } else {
         for (int i = 0; i < 3; ++i) {
             slot.world[static_cast<std::size_t>(i)] = slot.motion.pose_row0[i];
             slot.world[static_cast<std::size_t>(4 + i)] = slot.motion.pose_row1[i];
@@ -7485,6 +7504,7 @@ struct GameUnitsHost::Impl {
         slot.world[7] = 0.0f;
         slot.world[11] = 0.0f;
         slot.world[15] = 1.0f;
+        }
         slot.local = slot.world;
         if constexpr (bsp::kWireGoal4Chain303Bound) {
             // Motion has published new +74h/+CCh rows. Invalidate the SAME
@@ -49407,11 +49427,28 @@ bool GameUnitsHost::set_local_matrix_006e00a0(std::size_t index, const float m[1
     Impl& host = *impl_;
     if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
     GameUnitSlot& slot = *host.slots[index];
+    if constexpr (bsp::kWireGoal4Chain402Bound) {
+        // 00C336C0..00C3370A (bsp.py show 00c336c0 --asm): 4x4 -> body rows,
+        // with twelve ordered FLD/FSTP copies. 008A0E4F and 008A130F use it
+        // for the scripted ship turns that reach this setter. The host's
+        // physics and entity pose share motion, so consume the converted
+        // basis/position there instead of inventing a second physics body.
+        // This replaces the old extraction; no added float arithmetic (pc24).
+        float compact[12];
+        bsp::cc13_dyn1::transform_from_4x4_00c336c0(compact, m);
+        for (int i = 0; i < 3; ++i) {
+            slot.motion.pose_row0[i] = compact[i];
+            slot.motion.pose_row1[i] = compact[3 + i];
+            slot.motion.pose_row2[i] = compact[6 + i];
+            slot.motion.position[i] = compact[9 + i];
+        }
+    } else {
     for (int i = 0; i < 3; ++i) {
         slot.motion.pose_row0[i] = m[i];
         slot.motion.pose_row1[i] = m[4 + i];
         slot.motion.pose_row2[i] = m[8 + i];
         slot.motion.position[i] = m[12 + i];
+    }
     }
     Impl::publish_pose(slot);
     host.done("Entity::set_local_matrix_006e00a0", 0x006e00a0u);

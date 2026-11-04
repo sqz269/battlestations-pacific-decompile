@@ -14,7 +14,17 @@
 
 namespace bsp {
 
-class Cc13Seg48UHost : public Cc13Seg40Host {
+// 00729670 only needs these two services. Keep its live binding independent
+// of the unrelated narrative, save-reader and squadron host methods below.
+class GunShotDecisionLineOfFireHost {
+public:
+    virtual ~GunShotDecisionLineOfFireHost() = default;
+    virtual void entity_pose_refresh_world_00414db0(void* entity) = 0;
+    virtual std::uint8_t line_of_fire_query_vslot1(void* query, const float* position,
+        void* owner, std::uint32_t target, float speed) = 0;
+};
+
+class Cc13Seg48UHost : public Cc13Seg40Host, public GunShotDecisionLineOfFireHost {
 public:
     // 00440F50 BSP_DeviceEntity_OnKilledLua, __thiscall(ECX = device), RET.
     virtual void device_entity_on_killed_lua_00440f50(void* device) = 0;
@@ -192,7 +202,7 @@ void* cc13_seg48U_gun_current_bullet_00731040(const void* gun);
 void cc13_seg48U_gun_on_activated_00729fa0(void* gun, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_base_init_device_0072d7e0(void* gun, Cc13Seg48UHost& host);
 void* cc13_seg48U_gun_bot_construct_muzzle_class_0072be40(void* bot, Cc13Seg48UHost& host);
-bool cc13_seg48U_shot_decision_line_of_fire_clear_00729670(void* decision, std::uint32_t arg, Cc13Seg48UHost& host);
+bool cc13_seg48U_shot_decision_line_of_fire_clear_00729670(void* decision, std::uint32_t arg, GunShotDecisionLineOfFireHost& host);
 void cc13_seg48U_gun_apply_descriptor_node_flags_00729700(void* gun, Cc13Seg48UHost& host);
 void* cc13_seg48U_gun_shot_command_read_and_create_00731ae0(void* reader, Cc13Seg48UHost& host);
 void cc13_seg48U_gun_class_effect_record_destruct_007323e0(void* record, Cc13Seg48UHost& host);

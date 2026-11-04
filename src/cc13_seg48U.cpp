@@ -142,11 +142,11 @@ void* cc13_seg48U_gun_bot_construct_muzzle_class_0072be40(void* bot, Cc13Seg48UH
 // 00729670 BSP_GunShotDecision_LineOfFireClear. __thiscall(ECX = decision, arg),
 // RET 4; AL. Evidence: export listing 00729670..007296F4. gun = [decision+4h];
 // its pose is refreshed (00414DB0) unless byte +C8h is set; the gun position
-// +FCh..+104h is copied to a local; range = [[[gun+3F8h]+34h]+50h] through
+// +FCh..+104h is copied to a local; speed = [[[gun+3F8h]+34h]+50h] through
 // FLD/FSTP float; the query is vtable slot 1 of [decision+8h] with
-// (&position, [gun+3F0h], arg, range). Result: SETZ (clear when it returns 0).
+// (&position, [gun+3F0h], arg, speed). Result: SETZ (clear when it returns 0).
 // ---------------------------------------------------------------------------
-bool cc13_seg48U_shot_decision_line_of_fire_clear_00729670(void* decision, std::uint32_t arg, Cc13Seg48UHost& host) {
+bool cc13_seg48U_shot_decision_line_of_fire_clear_00729670(void* decision, std::uint32_t arg, GunShotDecisionLineOfFireHost& host) {
     void* const gun = at<void*>(decision, 0x4);
     if (at<std::uint8_t>(gun, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(gun);  // 00729685
     float position[3];
@@ -154,9 +154,9 @@ bool cc13_seg48U_shot_decision_line_of_fire_clear_00729670(void* decision, std::
     position[1] = at<float>(gun, 0x100);
     position[2] = at<float>(gun, 0x104);
     void* const gun2 = at<void*>(decision, 0x4);  // 00729692 reloads [decision+4h]
-    const float range = x87_float_round_trip(at<float>(at<void*>(at<void*>(gun2, 0x3F8), 0x34), 0x50));
+    const float speed = x87_float_round_trip(at<float>(at<void*>(at<void*>(gun2, 0x3F8), 0x34), 0x50));
     const std::uint8_t blocked = host.line_of_fire_query_vslot1(at<void*>(decision, 0x8), position,
-                                                                at<void*>(gun2, 0x3F0), arg, range);  // 007296E8
+                                                                at<void*>(gun2, 0x3F0), arg, speed);  // 007296E8
     return blocked == 0;  // 007296ED SETZ
 }
 

@@ -145,11 +145,6 @@ bool landing_ship_class_slot_c12_clear_00963c70(std::uint8_t byte_809) noexcept 
     return byte_809 == 0;
 }
 
-bool vehicle_class_derive_constants_default_00951f20() noexcept {
-    const std::uint8_t al = 1;  // 00876180: MOV AL, 1 ; RET
-    return al != 0;
-}
-
 // 00939F20: CALL 00939CB0 at 00939F28, then MOV [ESI],00D196F0 at 00939F2D.
 std::uint32_t* controller_construct_variant_c_00939f20(std::uint32_t* self, std::uintptr_t unit,
                                                        const ControllerVariantCtorHost& host) {

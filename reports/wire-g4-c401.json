@@ -1,0 +1,90 @@
+{
+  "goal": 4,
+  "chain": 401,
+  "owner": "agent/g4-w3",
+  "base": "de77158b0a7bcdf89b5f677ec5c1907ddb56980d",
+  "picked": "Gun shot-decision line-of-fire leaf on the live AA acceptance cache-miss path",
+  "switch": "bsp::kWireGoal4Chain401Bound",
+  "wired_total_before": 9644,
+  "wired_total_after": 9645,
+  "called_reconstructed_before": 4660,
+  "called_reconstructed_after": 4661,
+  "rows": [
+    {
+      "native": "00729670",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::shot_decision_line_of_fire_clear, called by GunneryPassBinding::bind_aa_acceptance",
+      "state": "The current GameGunRow supplies classDesc+50h speed and owning UnitState; the caller's just-resolved platform world position supplies gun+FCh; the live acceptance target and mission collision predicate are forwarded unchanged.",
+      "evidence": "bsp.py show 00729670 and --asm: 00729677..007296E8; bsp.py show 0072cdd0: predicate ignores the fourth float argument and returns blocked; its listing ends RET 10h.",
+      "abi": "Original __thiscall(decision, target), RET 4, AL result. Existing reconstructed C++ body retained; only its host parameter is narrowed to the two services it calls. Native offsets are checked with static_assert.",
+      "call_graph": "00729670 REACHABLE, one call site at 1009fdf2 in the gunnery cache callback; path includes bind_aa_acceptance, gun_inputs, mission frame, application startup and WinMainCRTStartup."
+    },
+    {
+      "native": "0072cdd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::line_of_fire_blocked_0072cdd0",
+      "reason": "No missing call: the existing live mission collision predicate is already reached and is reused once as 00729670's query callback."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryPassBinding::apply_director_stance_008624c0",
+      "reason": "Missing complete live director state-message descriptors, avoidance bytes and the three snapshot getter results; the four scene enable flags alone cannot construct an authentic snapshot."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::bot_clear_release_008ff2b0",
+      "reason": "Missing the native bot command-target record and observer registration lifetime; the hosted release latch is only the derived tail-gunner/torpedo follow-up."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor and merge_child",
+      "reason": "No missing call: already REACHABLE with two compiled call sites despite readiness labeling it ready."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree and insert_into",
+      "reason": "No missing call: already REACHABLE with two compiled call sites despite readiness labeling it ready."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "Missing a loaded movie page and actual widget transform; the current movie-page loader returns null."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing a live Bink decoder and its texture/surface owners; the current decoder has no open handle."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing the native movie subtitle container and its widget ownership; the hosted subtitle schedule alone does not provide the raw movie record expected by this body."
+    },
+    {
+      "native": "00a3e3b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: PressStart screen host profile_change_pending",
+      "reason": "Missing a hosted XenonSystemManager profile-change state producer; online sign-in services are excluded from this single-player assignment."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release and both reconstructed_math/tool_tests pass",
+    "call_graph": "4660 -> 4661 reconstructed addresses called; target was not linked before and has one entry-reachable call site after",
+    "readiness": "wire_readiness.py --standins: 9644 -> 9645 wired; 00729670 state=wired, called=true, call_sites=1",
+    "diff_check": "git diff --check passes",
+    "runtime": "Game not run, as assigned; build and static entry reachability do not prove gameplay or original ABI compatibility."
+  },
+  "assumptions": [
+    "The existing hosted platform world-position calculation remains the pose authority, including its authored class-height fallback when a model mount is unavailable.",
+    "The transient native-layout view starts pose-invalid until the leaf requests the already-computed current pose; it owns no second gun or collision state.",
+    "The installed 0072CDD0 predicate does not consume class speed, but the real row.class_speed is still forwarded through the original leaf boundary."
+  ],
+  "left": "Native gun-bot command-target/observer ownership, complete director snapshot production, and decoder-backed movie/widget ownership remain separate work."
+}
