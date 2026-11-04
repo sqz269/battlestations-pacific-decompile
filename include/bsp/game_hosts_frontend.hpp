@@ -263,6 +263,9 @@ public:
     // virtual +44h, as the two per-frame passes call them on an icon. Both
     // invalidate the quad list.
     void set_widget_local_position(GuiLayoutWidget& widget, float x, float y, float z);
+    // Publish changed authored geometry to this same page's sprite-bridge
+    // records, including descendants whose resolved positions depend on it.
+    void refresh_widget_geometry(GuiLayoutWidget& widget);
     void set_widget_rotation(GuiLayoutWidget& widget, float radians);
     // How many run-time clones the bridge currently draws, for the run summary.
     std::size_t runtime_widgets_drawn() const noexcept;

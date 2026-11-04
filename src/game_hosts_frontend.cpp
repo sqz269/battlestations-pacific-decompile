@@ -1622,6 +1622,29 @@ void GameFrontendHost::set_widget_rotation(GuiLayoutWidget& widget, float radian
     host.quads_built = false;
 }
 
+void GameFrontendHost::refresh_widget_geometry(GuiLayoutWidget& widget) {
+    Impl& host = *impl_;
+    for (std::size_t i = 0; i < host.widget_nodes.size(); ++i) {
+        const GuiLayoutWidget* node = host.widget_nodes[i];
+        if (node == nullptr) continue;
+        const GuiWidgetTransform* ancestor = &node->transform;
+        while (ancestor && ancestor != &widget.transform) ancestor = ancestor->parent;
+        if (ancestor == nullptr) continue;
+        auto& record = host.widget_records.at(i);
+        const auto point = resolved_point(*node);
+        record.x = point.x;
+        record.y = point.y;
+        record.z = point.z;
+        record.width = node->transform.size.width;
+        record.height = node->transform.size.height;
+        record.pivot_x = node->transform.pivot_x;
+        record.pivot_y = node->transform.pivot_y;
+        // Text runs cache their origin; a moved parent invalidates it too.
+        host.text_runs.erase(node);
+    }
+    host.quads_built = false;
+}
+
 std::size_t GameFrontendHost::runtime_widgets_drawn() const noexcept {
     std::size_t drawn = 0;
     for (const GameWidgetRecord& record : impl_->widget_records) {
