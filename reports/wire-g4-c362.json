@@ -1,0 +1,114 @@
+{
+  "chain": 362,
+  "slot": "g4-w4",
+  "switch": "bsp::kWireGoal4Chain362Bound",
+  "rows": [
+    {
+      "native": "0099B260",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::commanded_heading_009a1a20 and PlaneBinding::plan_yaw_0099d300",
+      "evidence": "bsp.py show 0099b260 --asm: +8 byte selects float +4 or +0; compile-time offsets and size assert the retained PilotPlanSlot layout. Returned pitch feeds the heading-difference and roll laws. Existing expressions run only in the OFF arm."
+    },
+    {
+      "native": "0099BA10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::plan_yaw_0099d300",
+      "reason": "Native callers 0099D6F1/0099D736 read script angle fields unit+9A8/+9AC; this host has no retained fields or script producers for those requests."
+    },
+    {
+      "native": "0099B670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::pilot_think_and_commit",
+      "reason": "The raw body requires the pilot object +2F4 pointer and its unit+C50 vehicle-avoidance owner; this host has no image-shaped pair for this entry."
+    },
+    {
+      "native": "0099C270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding task ticks",
+      "reason": "Missing a retained raw task+2F4 unit and per-side unit+9C2 byte array for the raw task gate; cannot substitute a synthetic nonzero byte."
+    },
+    {
+      "native": "004A4520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: TrafficConfig::launch_pad_troops sites",
+      "reason": "Missing traffic-config troop list +1FC, locked troop-group map and group construction/lifecycle owner required by the existing raw launch body."
+    },
+    {
+      "native": "00986820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing unload shipLanded record",
+      "reason": "Missing the retained warning/event manager lock, channel map, subscription filters and Lua callback ownership needed to publish the event."
+    },
+    {
+      "native": "00749AA0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing ramp flow",
+      "reason": "No local MLandingShipOpen message queue path owns this constructor result; wiring needs the message producer and dispatch consumer rather than an unused temporary."
+    },
+    {
+      "native": "00749D90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: landing pad flow",
+      "reason": "No image-shaped pad/building IDs and retained LandAtPad message queue path currently connect this constructor to its consumer."
+    },
+    {
+      "native": "004F1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector::make_command_target",
+      "reason": "Literal body reads absolute globals 00F87574/78/7C; this host has no verified runtime publication at those image addresses and loader zeroes are insufficient evidence."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: MissionNamedCall::queue_call",
+      "reason": "No frame-job-thread named-call enqueue path supplies a real source argument vector and owned deferred-call destination in this host."
+    },
+    {
+      "native": "00469E40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneBrowserGroups dispatch",
+      "reason": "The scene block already runs the existing scene_traffic_groups parser under its semantic entry name; this readiness spelling alone supplies no additional unwired runtime operation."
+    },
+    {
+      "native": "009514B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: traffic dispatch",
+      "reason": "The scene block already runs the existing traffic parser; the outstanding ambient traffic spawner lifecycle is a separate owner/consumer gap."
+    },
+    {
+      "native": "008F54F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Existing SceneNumericPropertyMerge and child merge adapters already own native merge execution; no additional replacement was identified for this readiness spelling."
+    },
+    {
+      "native": "007DE5B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane control limiting",
+      "reason": "The host has no retained PlaneEngineSlots collection and burning-byte producers to supply the existing engine-list body."
+    },
+    {
+      "native": "007EB0B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine damage",
+      "reason": "Missing a retained engine list and damage index producer for the existing destroy-at body, plus the engine effect lifecycle consumer."
+    },
+    {
+      "native": "007FBE20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuShellHost::record_award",
+      "reason": "Missing a live profile counter map at +A0 and its find/index adapter at this shell site; award readiness is also currently closed."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "diff_check": "git diff --check passed",
+    "call_graph": "0099B260 REACHABLE; calls from commanded_heading_009a1a20, plan_yaw_0099d300, and inlined commanded-heading in st_aim_tick_009cb1b0",
+    "game_run": false,
+    "float_arithmetic_changed": false,
+    "wired_before": 9500,
+    "wired_after": 9501,
+    "called_rows_before": 4704,
+    "called_rows_after": 4722
+  }
+}

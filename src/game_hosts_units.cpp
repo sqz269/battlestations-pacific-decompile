@@ -65,6 +65,7 @@
 #include "bsp/cc13_seg47b.hpp"         // chain 73: 007C1570, 007C2090 typed overloads
 #include "bsp/cc13_seg48.hpp"          // chain 67: 007D7A40 typed overload
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
+#include "bsp/wire_goal4_chain362_switches.hpp"
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
 #include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
@@ -10272,9 +10273,22 @@ struct GameUnitsHost::Impl {
         bsp::PilotHeadingDiffInputs in;
         in.bank_request = u.plane_bank_angle_c68;
         in.pitch_angle = u.plane_pitch_angle_c64;
+        if constexpr (bsp::kWireGoal4Chain362Bound) {
+            // 0099B260 (bsp.py show --asm): byte +8 selects float +4 or +0.
+            // PilotPlanSlot is the retained live plan slot, not a fabricated
+            // input buffer. This replaces the same inline selection below;
+            // 0099D0A0 consumes its result as the commanded pitch.
+            static_assert(offsetof(bsp::PilotPlanSlot, current) == 0);
+            static_assert(offsetof(bsp::PilotPlanSlot, desired) == 4);
+            static_assert(offsetof(bsp::PilotPlanSlot, active) == 8);
+            static_assert(sizeof(bsp::PilotPlanSlot) == 0x0c);
+            in.pitch_command = bsp::pilot_bot_override_or_value_0099b260(
+                &u.plan_slots[bsp::kPilotSlotPitch]);
+        } else {
         in.pitch_command = u.plan_slots[bsp::kPilotSlotPitch].active != 0
                                ? u.plan_slots[bsp::kPilotSlotPitch].desired
                                : u.plan_slots[bsp::kPilotSlotPitch].current;
+        }
         in.unit_is_null = false;
         in.caps_rate_at_one = bsp::unit_is_kind_of(u.class_id, 0x10) ||
                               bsp::unit_is_kind_of(u.class_id, 0x16);
@@ -46121,10 +46135,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         rin.roll_spd = unit_.plane_class.roll_spd;
                         rin.roll_accel = unit_.plane_class.roll_accel;
                         rin.scale.pitch_angle = unit_.plane_pitch_angle_c64;
+                        if constexpr (bsp::kWireGoal4Chain362Bound) {
+                            // The same +0/+4/+8 selector used above, now on
+                            // 0099D300's live roll-law input. The returned pitch
+                            // drives 0099D0A0's scale, then the roll demand.
+                            rin.scale.pitch_command = bsp::pilot_bot_override_or_value_0099b260(
+                                &unit_.plan_slots[bsp::kPilotSlotPitch]);
+                        } else {
                         rin.scale.pitch_command =
                             unit_.plan_slots[bsp::kPilotSlotPitch].active != 0
                                 ? unit_.plan_slots[bsp::kPilotSlotPitch].desired
                                 : unit_.plan_slots[bsp::kPilotSlotPitch].current;
+                        }
                         rin.scale.roll_spd = unit_.plane_class.roll_spd;
                         rin.scale.pitch_spd = unit_.plane_class.pitch_spd;
                         rin.scale.yaw_spd = unit_.plane_class.yaw_spd;
