@@ -27,6 +27,7 @@
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/wire_goal4_chain356_switches.hpp"
 #include "bsp/wire_goal4_chain380_switches.hpp"
+#include "bsp/wire_goal4_chain386_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -30097,6 +30098,50 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float ax[3];
                         pu::cross_004f9b30(d, n, ax);
                         const float th = static_cast<float>(x87_mul24(-rate, time));
+                        if constexpr (bsp::kWireGoal4Chain386Bound) {
+                            // Goal 4 chain 386: 00952340 itself (fastcall out, pivot c,
+                            // axis, point P, angle th; 00954650 reaches it at the arc
+                            // arm): q = P - c and out = c + q' with float stores
+                            // (00952347..00952370, 00952381..0095239C). Its 0085C3F0 is
+                            // this host's PC24 model of the image's FMUL/FADD/FSIN/FCOS
+                            // schedule (the one below), not the std::sin/std::cos body
+                            // in gameplay_seg53_cc13.cpp, so the result is unchanged.
+                            namespace g6162 = bsp::gameplay_seg61_62_cc13;
+                            const g6162::Vec3 moved = g6162::rotate_about_point_00952340(
+                                g6162::Vec3{c[0], c[1], c[2]}, g6162::Vec3{ax[0], ax[1], ax[2]},
+                                g6162::Vec3{p[0], p[1], p[2]}, th,
+                                [](const g6162::Vec3& v, const g6162::Vec3& axis_v,
+                                   float angle) -> g6162::Vec3 {
+                                    const float q[3] = {v.x, v.y, v.z};
+                                    const float a[3] = {axis_v.x, axis_v.y, axis_v.z};
+                                    const float qa = pu::dot3(a, q);       // 0085C422..0085C450
+                                    float pa[3], perp[3];
+                                    for (int i = 0; i < 3; ++i) {
+                                        pa[i] = static_cast<float>(x87_mul24(qa, a[i]));
+                                        perp[i] = static_cast<float>(x87_sub24(q[i], pa[i]));
+                                    }
+                                    const float pp = static_cast<float>(x87_add24(
+                                        x87_add24(x87_mul24(perp[1], perp[1]), x87_mul24(perp[0], perp[0])),
+                                        x87_mul24(perp[2], perp[2])));
+                                    float rq[3] = {q[0], q[1], q[2]};
+                                    if (!(9.999999747378752e-05 > static_cast<double>(pp))) {   // [00D7A268]
+                                        float cr[3];
+                                        pu::cross_004f9b30(a, perp, cr);
+                                        const float sn = static_cast<float>(x87_sin(angle));
+                                        const float cs = static_cast<float>(x87_cos(angle));
+                                        for (int i = 0; i < 3; ++i) {
+                                            const float sc = static_cast<float>(x87_mul24(cr[i], sn));
+                                            const float cp = static_cast<float>(x87_mul24(perp[i], cs));
+                                            rq[i] = static_cast<float>(x87_add24(static_cast<float>(x87_add24(cp, pa[i])), sc));
+                                        }
+                                    }
+                                    return g6162::Vec3{rq[0], rq[1], rq[2]};
+                                });
+                            out[0] = moved.x;
+                            out[1] = moved.y;
+                            out[2] = moved.z;
+                            return true;
+                        } else {
                         float q[3];
                         for (int i = 0; i < 3; ++i) q[i] = static_cast<float>(x87_sub24(p[i], c[i]));
                         const float qa = pu::dot3(ax, q);
@@ -30122,6 +30167,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         for (int i = 0; i < 3; ++i) out[i] = static_cast<float>(x87_add24(c[i], rq[i]));
                         return true;
+                        }
                     }
                     static bool df_predict_00954650_double(const GameUnitSlot& t, const float acc[3],
                                                            float time, float out[3]) {
