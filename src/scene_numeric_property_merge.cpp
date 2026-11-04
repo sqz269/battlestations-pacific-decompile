@@ -9,6 +9,7 @@
 #include "bsp/native_scene_property_bag_assign_existing.hpp"
 #include "bsp/native_scene_property_bag_reset.hpp"
 #include "bsp/native_scene_property_bag_storage.hpp"
+#include "bsp/native_scene_property_array_assignment.hpp"
 #include "bsp/native_scene_property_bool_add.hpp"
 #include "bsp/native_scene_property_float_add.hpp"
 #include "bsp/native_scene_property_integer_add.hpp"
@@ -27,6 +28,7 @@
 #include "bsp/wire_goal4_chain345_switches.hpp"
 #include "bsp/wire_goal4_chain382_switches.hpp"
 #include "bsp/wire_goal4_chain390_switches.hpp"
+#include "bsp/wire_goal4_chain416_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -69,6 +71,26 @@ public:
                 || has_child(source, value.key) || has_child(destination, value.key)) continue;
             const auto prior = std::find_if(destination.values.begin(), destination.values.end(),
                 [&](const SceneProperty& p) { return same_key(p.key, value.key); });
+            if constexpr (kWireGoal4Chain416Bound) {
+                if (prior != destination.values.end()) {
+                    if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
+                    insert_into(destination_, *prior);
+                    if (overwrite && (same_key(value.type_letter, "V3A")
+                            || same_key(value.type_letter, "BIN") || value.type_letter == "IA")) {
+                        // The admitted same-tag overwrite has a complete,
+                        // sole-owned type-8/10/11 record. Replace its array once;
+                        // do not also put this key through 008F0700/008F54F0.
+                        destination_.replace_owned_array(value);
+                        selected_[i] = true;
+                        continue;
+                    }
+                } else {
+                    source_has_only_existing_keys = false;
+                }
+                insert_into(source_, value);
+                selected_[i] = true;
+                any = true;
+            } else {
             if (prior != destination.values.end()) {
                 if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
                 insert_into(destination_, *prior);
@@ -78,6 +100,7 @@ public:
             insert_into(source_, value);
             selected_[i] = true;
             any = true;
+            }
         }
         if (any) {
             if constexpr (kWireGoal4Chain390Bound) {
@@ -601,6 +624,45 @@ private:
             destroy_native_string_header_0041dd20(&query, context.lifetimes().keys());
             if (record == nullptr) throw std::logic_error("missing merged numeric property");
             return record;
+        }
+        void replace_owned_array(const SceneProperty& value) {
+            // bsp.py show 008F0460 / 008F0520 / 008F0580: replace +20h/+24h,
+            // freeing the old allocation before adopting the new flags-0 one.
+            // The insert_*_array paths built these actual type8/10/11 raw56
+            // records with unique current-heap +20h allocations. For V3A,
+            // 008F5A00 --asm 008F6676..008F6684 calls 008F0580 directly;
+            // for BIN/IA, the parser inlines the same free/size/store steps
+            // (008F63A0..008F63C9 / 008F654A..008F6570). 008F0520 is explicit
+            // Source reuse of the opaque count*4 body, not a recovered IA call.
+            // Each setter frees that allocation and adopts this separate one;
+            // the bag's existing 008F03F0 retirement releases the replacement.
+            // Publication reads this record's +20h/+24h, including changed
+            // counts and the exact authored bits (no float math).
+            static_assert(sizeof(std::array<float, 3>) == 12);
+            static_assert(sizeof(std::int32_t) == 4);
+            void* const record = find(value.key);
+            const bool vector3 = same_key(value.type_letter, "V3A");
+            const bool integers = value.type_letter == "IA";
+            const std::size_t count = vector3 ? value.vector3_array.size()
+                : integers ? value.integer_array.size() : value.byte_array.size();
+            const std::size_t bytes = count * (vector3 ? 12u : integers ? 4u : 1u);
+            const void* const input = vector3 ? static_cast<const void*>(value.vector3_array.data())
+                : integers ? static_cast<const void*>(value.integer_array.data())
+                : static_cast<const void*>(value.byte_array.data());
+            void* const payload = singleton_lifetime_allocate(
+                {SingletonAllocationKind::object, bytes, bytes});
+            if (payload == nullptr) throw std::bad_alloc();
+            std::memcpy(payload, input, bytes);
+            if (vector3) {
+                reassign_native_scene_property_twelve_byte_groups_008f0580(record,
+                    nullptr, static_cast<std::uint32_t>(count), payload, 0u);
+            } else if (integers) {
+                reassign_native_scene_property_four_byte_groups_008f0520(record,
+                    nullptr, static_cast<std::uint32_t>(count), payload, 0u);
+            } else {
+                reassign_native_scene_property_raw_bytes_008f0460(record,
+                    nullptr, payload, static_cast<std::uint32_t>(bytes), 0u);
+            }
         }
     private:
         void insert_vector3_array(const SceneProperty& value) {

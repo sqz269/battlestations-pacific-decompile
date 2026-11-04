@@ -1,0 +1,158 @@
+{
+  "chain": 416,
+  "slot": "g4-w5",
+  "switch": "bsp::game::kWireGoal4Chain416Bound",
+  "base": "51e890b6d5e699a45238b1d2db09ac8757c2886c",
+  "scope": "Same-key, same-tag overwrites of admitted nonempty BIN, IA and V3A scene properties",
+  "rows": [
+    {
+      "native": "008f0460",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::replace_owned_array (BIN)",
+      "evidence": "bsp.py show 008f0460; 008f5a00 --asm 008f63a4..008f63c9 inlines the same free/size/adopt operations",
+      "state": "Actual type-8 raw56 destination record from 008ef2f0/008f3490, prior uniquely owned current-heap +20h payload, new separately allocated copy of the parser-owned BIN bytes, exact byte count, native flags 0",
+      "call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "008f0520",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::replace_owned_array (IA)",
+      "evidence": "bsp.py show 008f0520; 008f5a00 --asm 008f654a..008f6570 inlines the same count*4/free/size/adopt operations; explicit Source reuse of the opaque four-byte-group setter, not a recovered Original IA call",
+      "state": "Actual type-10 raw56 destination record from 008ef3e0/008f3590, prior uniquely owned current-heap +20h payload, new separately allocated copy of decoded int32 words, real element count, native flags 0",
+      "call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "008f0580",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::replace_owned_array (V3A)",
+      "evidence": "bsp.py show 008f0580; 008f5a00 --asm 008f6676..008f6684 supplies the existing type-11 record, element count, owned payload and flags 0",
+      "state": "Actual type-11 raw56 destination record from 008ef460/008f3610, prior uniquely owned current-heap +20h payload, new separately allocated copy of decoded binary32 triples, real element count, native flags 0",
+      "call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "008f04c0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::supported",
+      "reason": "The type-9 FA sibling lacks a complete decoded FA payload admitted by this projection; add that producer before wiring the corresponding assignment."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Buckets currently own unit indices and levels; the native entry constructor additionally requires a live unit+1e4 sensor subobject, and unit_identity explicitly exposes no native whole-unit view."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "The host lacks persistent slot+e14+class*0c carryover lists and their unit/slot observer-pair ownership."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Publishing requires live group-unit per-party detection records, detector observer endpoints and delegates; the current aggregate projection only owns member levels and triples."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_torpedo_supply_tick_00825450",
+      "reason": "The host currently represents an empty repair-area registry; it lacks the area/path/owner producer needed for a meaningful containing-area search."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship weapon director state",
+      "reason": "No stored ControllerSnapshotMessage producer, transport or consumer exists on this flags-only host path."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator tuning load",
+      "reason": "The tuning load lacks the live eight-brain/planner array and associated player difficulty consumed by this lookup."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate pass A",
+      "reason": "Existing host source already calls the predicate with real member-kind and objective-set state under kDefendThinkImageBound; no new independent binding was added."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "This drain host lacks the named off-main-thread enqueue producer and its source argument vector."
+    },
+    {
+      "native": "0097a790",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: listener loading input arm",
+      "reason": "The constructor is already invoked during subscription loading; a live input-channel dispatcher is missing, and another constructor call would duplicate initialization."
+    },
+    {
+      "native": "0097a8b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: listener loading surrender arm",
+      "reason": "The constructor is already invoked during subscription loading; a live surrender-channel dispatcher is missing, and another constructor call would duplicate initialization."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No live GuiLeafHost glyph-acceptance/input path was found to supply and consume this byte predicate; the existing font resource host only loads decoded fonts."
+    },
+    {
+      "native": "008eeb10",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already has an entry-reachable call from the existing native-bag iterator collector; confirmed with call_graph.py who."
+    },
+    {
+      "native": "008eeb60",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect",
+      "reason": "Already has an entry-reachable call from the existing native-bag iterator collector; confirmed with call_graph.py who."
+    },
+    {
+      "native": "008f3770",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "reason": "Already has an entry-reachable call from native F-property insertion; confirmed with call_graph.py who."
+    },
+    {
+      "native": "008f02b0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Already has an entry-reachable call from the existing type-letter classifier; confirmed with call_graph.py who."
+    },
+    {
+      "native": "008f02e0",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_property_type_for_letter",
+      "reason": "Existing source already calls this LUA_S classifier with the authored letter; no new binding was needed."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release passed; reconstructed_math and tool_tests passed (2/2)",
+    "focused_probe": "local/output/c416_array_probe.cpp compiled with MSVC Win32 /MD /fp:strict and /link /MANIFEST:EMBED; passed keep/overwrite, array-only/existing-scalar/new-scalar combinations, resized BIN/IA/V3A, signed zero, and output reads after both native bags retire",
+    "graph": "call_graph.py plus who for all three wired addresses: one direct reachable call each from Bag::replace_owned_array; path 008f0580 reaches WinMain through SceneReaderBinding::instantiate_entity and mission scene loading",
+    "reconstructed_called_before": 4682,
+    "reconstructed_called_after": 4685,
+    "readiness_text_wired_before": 9662,
+    "readiness_text_wired_after": 9662,
+    "readiness_note": "The textual reachability states do not follow this scene-merge projection; wire_readiness.py --standins nevertheless reports called=true and call_sites=1 for all three addresses from the built graph. The measured entry-reachable reconstructed total increases by three.",
+    "float_math": "No float operations changed; payloads are copied as bytes",
+    "game_run": false,
+    "boundary": "Build, focused fixture and static entry-reach evidence; no gameplay, full Original ABI or post-load runtime parity claim"
+  },
+  "decisions": [
+    "Admit only the existing complete nonempty, size-bounded, uniquely named and same-tag BIN/IA/V3A records when overwrite is true.",
+    "Transfer a new unique current-heap payload with native flags 0; never lend a std::vector allocation to a native owner.",
+    "Mark a directly assigned source key handled and omit it from the later generic source bag, so the native setter and generic assignment do not both run for that key.",
+    "The switch-OFF arm retains the original per-key merge construction unchanged.",
+    "No new address-suffixed body, ledger row or Ghidra mutation was needed; the existing whole setters are reused."
+  ]
+}
