@@ -1,0 +1,200 @@
+{
+  "chain": 476,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "picked": "Persistent library group-name index used by group inheritance, reopening and entity defaults",
+  "switch": "bsp::kWireGoal4Chain476Bound",
+  "rows": [
+    {
+      "native": "004689d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::publish",
+      "detail": "Hashes actual canonical pooled group-name keys before linking their genuine E17540 nodes into the loaded library index."
+    },
+    {
+      "native": "00468ed0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::find -> src/native_property_library_readers.cpp: contains/read wrappers",
+      "detail": "The wrappers search the persistent actual 108h map and its 14h node chains."
+    },
+    {
+      "native": "00469b60",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::find -> PropertyLibrary::group/add_group",
+      "detail": "Reads the real loaded group-record pointer; that record's property block supplies parent captures and entity defaults. A contains hit precedes the unchecked native reader."
+    },
+    {
+      "native": "008f2db0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::find -> PropertyLibrary::group/add_group",
+      "detail": "Drives the real missing/existing group decision, including library-loader has_group and case-insensitive reopening."
+    },
+    {
+      "native": "008f5670",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::LibraryGroupNameIndex -> PropertyLibrary::add_group",
+      "detail": "Initializes the actual retained 10Ch root before any native index publication."
+    },
+    {
+      "native": "00cc8a70",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::node_pool -> GameNativePhysicalPoolProcess::initialize_property_library_node_pool_once_00cc8a70",
+      "detail": "Runs the existing concrete E17540 pool startup and registers its real Source atexit callback."
+    },
+    {
+      "native": "00cd9270",
+      "status": "wired",
+      "host_site": "src/native_enum_node_pool.cpp: initialize_static_native_property_library_node_pool_00cc8a70 -> registered destroy_static_native_property_library_node_pool_00cd9270",
+      "detail": "The newly reached startup registers this callback over the same retained pool; the linked graph records a reachable function-pointer reference, not a direct call."
+    },
+    {
+      "native": "004697b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: destroy_scene_database_pending",
+      "reason": "Missing pending-object producer and concrete deleting-destructor dispatch for the database +28h vector; calling the empty constructor state would not retire scene objects."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene contents set_remap_texture_0",
+      "reason": "Missing real renderer texture-cache/remap context and retained native texture ownership; the host currently records the request."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene contents set_remap_texture_1",
+      "reason": "Missing the same concrete renderer texture-cache and native texture ownership required by 00B0FD70."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene contents set_remap_texture_2",
+      "reason": "Missing the same concrete renderer texture-cache and native texture ownership required by 00B0FD70."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene contents set_remap_texture_3",
+      "reason": "Missing the same concrete renderer texture-cache and native texture ownership required by 00B0FD70."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred-call producer comment",
+      "reason": "Missing the off-main-thread named-call enqueue producer and its source LuaVariantRecord vector; the host comment alone supplies no arguments to copy."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator hint-weight path",
+      "reason": "Missing the global/per-party native entity-hint maps required by the existing Front6Host raw reader; existing planner weights do not supply those map objects."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list release commentary",
+      "reason": "Debug-only score-list writers feed an unreachable text overlay; no gameplay consumer requires this list, so exclude it from single-player wiring."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group score-list release commentary",
+      "reason": "Debug-only chosen marking belongs to the same absent overlay list as 00A2B950; no gameplay consumer needs it."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::device_button_held",
+      "reason": "Missing an actual nonnull input-device producer and vslot +20h button binding; the primary-device path still returns null."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: title sign_in_state_valid",
+      "reason": "Missing the concrete platform selected-user/invitee/active-slot manager and E19880 state; online-signin behavior is outside this single-player packet."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: Failure Periscope arm",
+      "reason": "Missing the actual periscope shape/node, repair-state fields and repair deadline consumer; this arm still only records shape-bit work."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "Missing a stored ControllerSnapshotMessage producer/transport/consumer; copying flattened current flags into a temporary and back would only round-trip."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bomb projectile advancement",
+      "reason": "Missing persistent launch-delay/active/arming fields and complete BombTickHost owner-grace/expiry/sweep lifecycle; current motion/life state is insufficient."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Multiplayer-only participant-count behavior; single-player session mode returns before the body and should not be counted as useful wiring."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl::Bag::insert_enum",
+      "reason": "No missing bridge: the built graph already reaches the existing symbol producer through attach_tree/insert_into; the readiness text state is stale relative to this split caller."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl constructor/merge_child",
+      "reason": "No missing bridge: the built graph already reaches both real native bag merge sites; no extra call was added."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "No missing bridge in this packet: chain451 already calls the body with loaded descriptors and stores its skill/countdown results; preserve that path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "Missing a concrete reachable consumer supplying the actual CameraProjection for the queried soldier-traffic/shadow paths; do not create a diagnostic-only product call."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp: SceneLexer numeric parsing",
+      "reason": "Missing a genuine 838h tokenizer and matching NativeSceneTokenizerContext in SceneLexer; a token string alone cannot satisfy the complete native lookahead API."
+    }
+  ],
+  "implementation": {
+    "state_source": "Actual PropertyLibrary::groups_ loaded from mounted VFS .props files; parent captures and entity defaults consume the looked-up blocks.",
+    "ownership": "Fresh native 10Ch root; canonical E17540 14h slots with allocator+10h preserved; canonical raw-string pooled keys. Mapped words borrow current host group records and are refreshed after vector relocation.",
+    "retirement": "LibraryGroupNameIndex retires its own pooled keys and outer slots before process-pool callbacks. It never passes borrowed host group pointers to native bag destruction.",
+    "unsupported_keys": "Non-ASCII or embedded-NUL names retain the old linear host lookup; ASCII names use only the new native lookup path.",
+    "abi": "New typed host binding to existing whole Source bodies; no Original bag-layout, class-vtable or register/stack ABI claim.",
+    "new_address_suffixed_bodies": false
+  },
+  "counts": {
+    "source_text_wired_before": 9750,
+    "source_text_wired_after": 9753,
+    "entry_reachable_address_labels_before": 4819,
+    "entry_reachable_address_labels_after": 4828,
+    "new_original_function_addresses": 7,
+    "new_graph_data_role_labels": ["00e17540", "00e18560"],
+    "note": "The graph's +9 includes the two data-role labels, which are not claimed as Original functions. Five library constructor/lookup bodies and two pool startup/retirement bodies are newly reached."
+  },
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all five CTests before edits.",
+    "switch_off": "scripts/build.ps1 and all five CTests passed; graph returned to 4819 reached address labels; focused fixture passed.",
+    "switch_on": "scripts/build.ps1 and all five CTests passed with the final enabled switch; focused fixture passed.",
+    "fixture": "Ignored local/c476_group_probe.cpp, built/run by local/c476_probe.ps1 against the actual PropertyLibrary source and existing host/core objects, with /MANIFEST:EMBED. One scenario checks 132 groups: vector growth, >=65 keys forcing hash collisions, case-folded reopening, inherited integer payload, a miss, non-ASCII and embedded-NUL fallback, and normal owner retirement. Both switch settings return identical PASS output.",
+    "call_graph": "python tools/call_graph.py, who for all seven native addresses, and path for 00469b60/008f5670 confirm entry reach through the real mounted library loader.",
+    "readiness": "wire_readiness.py --standins reports wired=9753 versus 9750 before; all five library constructor/lookup rows are called=true with call_sites 1,2,4,4,1 respectively for 004689d0,00468ed0,00469b60,008f2db0,008f5670. Pool startup/retirement do not have readiness rows.",
+    "diff_check": "git diff --check passed.",
+    "float_math_changed": false,
+    "game_run": false,
+    "limits": "Build, fixture and linked entry reach are established. No game/visual validation or Original class ABI execution was performed."
+  }
+}
