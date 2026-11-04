@@ -199,6 +199,14 @@ bool StructuredNode::ready() noexcept {
     return reader_ && reader_->check_leaf(*this);
 }
 
+std::uint32_t StructuredNode::format_version() const noexcept {
+    // create_node attaches this node to the SAME reader whose root read
+    // populated control_word_. Nested nodes share it; payload reads debit
+    // remaining_ instead and must never substitute for this version field.
+    return engine_services_cc13::structured_node_control_word_00be9b20(
+        reader_->control_word_);
+}
+
 std::unique_ptr<StructuredNode> StructuredNode::read_child_00bea680() noexcept {
     if (!reader_ || !reader_->check_leaf(*this)) return {};
     return reader_->create_node(this);

@@ -11,6 +11,7 @@
 #include "bsp/unit_weapons.hpp"
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
+#include "bsp/wire_goal4_chain426_switches.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/land_and_structures.hpp"
@@ -4511,6 +4512,53 @@ int main() {
               "unit+C20h and calls 007C0D90 on a countdown that has gone "
               "negative, and parks unit+C28h at 00CE69D0 even when a device "
               "answers vtable +1FCh true, because 007CEAEE precedes 007CEB00");
+    }
+
+    if constexpr (bsp::kWireGoal4Chain426Bound) {
+        // Chain426 regression: a large nested ConvexObject still uses the
+        // root's format version. Version 11 omits the optional first DWORD;
+        // version 12 includes it, independently of the payload's byte count.
+        auto word = [](std::vector<std::uint8_t>& bytes, std::uint32_t value) {
+            for (unsigned shift = 0; shift < 32; shift += 8)
+                bytes.push_back(static_cast<std::uint8_t>(value >> shift));
+        };
+        auto chunk = [&](const char* tag, const std::vector<std::uint8_t>& payload) {
+            std::vector<std::uint8_t> bytes;
+            const auto length = static_cast<std::uint32_t>(std::strlen(tag));
+            word(bytes, length);
+            bytes.insert(bytes.end(), tag, tag + length);
+            word(bytes, static_cast<std::uint32_t>(payload.size()));
+            bytes.insert(bytes.end(), payload.begin(), payload.end());
+            return bytes;
+        };
+        bool versions_ok = true;
+        for (const std::uint32_t version : {11u, 12u}) {
+            std::vector<std::uint8_t> payload;
+            if (version >= 12) word(payload, 0x1234u);
+            word(payload, 3); // three nondegenerate vertices, IEEE-754 bits
+            for (unsigned point = 0; point < 3; ++point) {
+                word(payload, point == 1 ? 0x3f800000u : 0u);
+                word(payload, point == 2 ? 0x3f800000u : 0u);
+                word(payload, 0);
+                for (int list = 0; list < 3; ++list) word(payload, 0);
+            }
+            auto resource = chunk("Resource", chunk("ConvexObject", payload));
+            std::vector<std::uint8_t> reference;
+            word(reference, 0); // hierarchy record zero owns resource zero
+            auto hierarchy = chunk("Hierarchy", chunk("Item", chunk("Resource", reference)));
+            std::vector<std::uint8_t> root_payload;
+            word(root_payload, version);
+            root_payload.insert(root_payload.end(), resource.begin(), resource.end());
+            root_payload.insert(root_payload.end(), hierarchy.begin(), hierarchy.end());
+            const auto bytes = chunk("MMOD", root_payload);
+            bsp::MmodHullConvexBox box;
+            std::string error;
+            const bool hull_read = bsp::read_mmod_hull_convex_box(bytes, box, error);
+            versions_ok = versions_ok && hull_read && box.shape_count == 1 &&
+                box.point_count == 3 && box.shape_points[0][1].x == 1.0f &&
+                box.shape_points[0][2].y == 1.0f;
+        }
+        check(versions_ok, "00BE9B20 uses the shared root version for ConvexObject format gates");
     }
 
     {

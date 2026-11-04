@@ -37,7 +37,7 @@ rather than assumed:
 | `00BE99E0` | byte-identical but `e8 92 68 00 00` | `00BF0280` | 4 |
 | `00BE9A80` | `00be9a95 MOV [EDX],EAX`, `00be9a97 MOV EAX,ESI`, `RET 4` | `00BF0280` | 4 |
 | `00BE99D0` `BSP_StructuredNode_ReadFloat` | `e8 e2 68 00 00` | `00BF02C0` | 4 (float) |
-| `00BE9B20` | `MOV EAX,[ECX]; MOV ECX,[EAX+8]; MOV EAX,[ECX+64h]; RET` | — | the remaining count |
+| `00BE9B20` | `MOV EAX,[ECX]; MOV ECX,[EAX+8]; MOV EAX,[ECX+64h]; RET` | — | the root control/version word |
 | `00BEA010` `BSP_StructuredNodeHandle_ReadString` | — | — | `u32` length then raw bytes |
 | `00BE9C40` `BSP_StructuredNode_SkipAndDetach` | — | — | — |
 
@@ -135,9 +135,8 @@ Three independent lines, two static and one from data:
 The arithmetic closes exactly at four bytes: `4 + 106 + (4 + 1394*12) + (4 + 3565*8) + 4 +
 2212*32 = 116154 = 0x1C5BA`.
 
-The `remaining >= 7` guard at `00727672` therefore fires for every triangle in well-formed data —
-at the last triangle, 28 bytes still remain when it is tested. It is modelled because it is there,
-but no chunk in this installation takes the other arm.
+The `version >= 7` guard at `00727672` selects the extra per-triangle DWORD. It reads
+the root control word, not the payload's remaining-byte count (chain426 correction).
 
 ## 3. What `00727704` does, and why `fizika` survives it
 
@@ -186,7 +185,7 @@ the `00E08138` lookups this module reuses rather than redeclares.
   `StructuredResourceParser`; `type_name()` returns `"GeomMesh"`, the literal `007258F0` pushes
   (`00CFDBCC`, byte-verified).
 
-Three places where the host is deliberately not the native:
+Host interface boundaries and the corrected getter hypothesis:
 
 * **The `< 4` bail.** The native skips the node and returns; that is not a dispatcher failure. The
   host returns `true` with `payload_too_small` set rather than `false`, because
@@ -195,10 +194,13 @@ Three places where the host is deliberately not the native:
   stream returns. The host returns `false` with a message when a read fails, when a count cannot
   fit in the remaining payload, or when a triangle names an element outside the list (which is the
   `00BF6713` throw at `00727612`). That rejection is a host addition.
-* **`00BE9B20`.** The native reads the budget off the stream object at `+64h`. The host reader
-  exposes only the node's own remaining count. For a chunk read directly under its container those
-  coincide; for a deeper nesting they need not, and the guard at `00727672` is the only place where
-  the difference could change behaviour.
+* **`00BE9B20` (corrected in chain426).** `00BE9A40` reads the root control DWORD and
+  stores it at reader `+64h` (`00BE9A51`); `00BE9B20` returns that field. The previous
+  RemainingBytes name and node-budget substitution were incorrect. With
+  `kWireGoal4Chain426Bound` on, `StructuredNode::format_version` borrows the
+  retained reader's actual control field through the existing getter body. GeomMesh
+  checks version 4/7 and ConvexObject checks version 12. The switch's else arms retain
+  the former byte-count guards. This is a C++ state projection, not original-ABI proof.
 
 **The registry seam.** `StructuredResourceParser::decode` writes into `StructuredResourcePayload`,
 a closed `std::variant` of `MeshResourcePayload` / `NoteResourcePayload` /

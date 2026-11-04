@@ -802,8 +802,11 @@ void structured_node_skip_u32_00be9a10(void** handle, EngineServiceCalls& calls)
 void** structured_node_read_float_00be9a60(void** handle, float* out, EngineServiceCalls& calls);
 void** structured_node_read_u32_slot34_00be9a80(void** handle, std::uint32_t* out, EngineServiceCalls& calls);
 void** structured_node_read_u32_00be9aa0(void** handle, std::uint32_t* out, EngineServiceCalls& calls);
-// 00BE9B20 BSP_StructuredNode_RemainingBytes, __fastcall(ECX handle) -> EAX: the reader's +64h.
-std::uint32_t structured_node_remaining_00be9b20(void* const* handle) noexcept;
+// 00BE9B20, __fastcall(ECX handle) -> EAX: handle->node+08h->reader+64h.
+// That field is the control/version word stored by 00BE9A40, not a byte budget.
+// Borrow the actual field from the retained reader; this C++ interface omits
+// the native handle layout and is not an original-ABI replacement.
+std::uint32_t structured_node_control_word_00be9b20(const std::uint32_t& control_word) noexcept;
 // 00BEA030 BSP_StructuredNodeHandle_ReadStringInto, __fastcall(ECX handle, EDX, string* out) RET 4,
 // EAX handle: read into a temporary (00BEA010), copy it into *out unless the same object, release it.
 void** structured_node_read_string_into_00bea030(void** handle, NativeString& out, NativeStringStorage& strings,

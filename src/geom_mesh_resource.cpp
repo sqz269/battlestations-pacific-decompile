@@ -2,6 +2,7 @@
 #include "bsp/leftovers_cc13.hpp"
 #include "bsp/wire_goal2_chain181_switches.hpp"
 #include "bsp/wire_goal2_chain122_switches.hpp"
+#include "bsp/wire_goal4_chain426_switches.hpp"
 
 #include <new>
 #include <cstring>
@@ -53,12 +54,19 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
         return false;
     }
 
-    // 00727336 CALL 00BE9B20 / CMP EAX,4 / JNC. The native reads the budget off
-    // the stream object at +64h; the host has only the node's own remaining
-    // count, which is the same value for a chunk read directly under its
-    // container. Below four bytes the native skips the node (00727342 through
-    // 00BE9C40) and returns, leaving the mesh empty. That is not a dispatcher
-    // failure, so it is reported through the payload flag.
+    // 00727336 CALL 00BE9B20 / CMP EAX,4 / JNC tests the format version,
+    // not payload length: 00BE9A51 writes reader+64h from the root control
+    // word (bsp.py show 00BE9A40/00BE9B20 --asm). Older formats are skipped.
+    if constexpr (kWireGoal4Chain426Bound) {
+        if (node.format_version() < 4) {
+            output.payload_too_small = true;
+            if (!node.skip_00be9c40()) {
+                error = "Could not skip an unsupported GeomMesh format.";
+                return false;
+            }
+            return true;
+        }
+    } else {
     if (node.remaining() < 4) {
         output.payload_too_small = true;
         if (!node.skip_00be9c40()) {
@@ -66,6 +74,7 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
             return false;
         }
         return true;
+    }
     }
 
     try {
@@ -163,9 +172,16 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
                 error = "GeomMesh triangle names an element outside the list.";
                 return false;
             }
-            // 00727672 CALL 00BE9B20 / CMP EAX,7 / JC: one further integer read
-            // only while at least seven bytes remain. The value is discarded.
+            // 00727672 CALL 00BE9B20 / CMP EAX,7 / JC: format >=7 has one
+            // additional DWORD. Its presence does not depend on bytes left.
             std::uint32_t leading = 0;
+            if constexpr (kWireGoal4Chain426Bound) {
+                if (node.format_version() >= 7 &&
+                    !node.read_u32_with_native_node_wrapper(leading, true)) {
+                    error = "Could not read GeomMesh triangle leading word.";
+                    return false;
+                }
+            } else {
             if (node.remaining() >= 7) {
                 if constexpr (kWireGoal2Chain122Bound) {
                     // 00BE99E0 consumes the word; OFF keeps the host field read.
@@ -177,6 +193,7 @@ bool parse_geom_mesh_resource_00727310(StructuredNode& node,
                     if (!read_u32_field(node, leading, "triangle leading word", error))
                         return false;
                 }
+            }
             }
             std::uint32_t corner[3] = {0, 0, 0};
             for (std::uint32_t& value : corner) {

@@ -1,0 +1,130 @@
+{
+  "goal": 4,
+  "chain": 426,
+  "slot": "g4-w5",
+  "base_head": "befcf9cb17a57318a01c72022c55344dee1a1429",
+  "switch": "bsp::kWireGoal4Chain426Bound",
+  "summary": "Wire the existing 00BE9B20 body to the retained structured reader's actual root control word and correct the geometry callers that substituted node remaining bytes for the format version.",
+  "wired_before": 9669,
+  "wired_after": 9670,
+  "entry_reachable_after": 5823,
+  "newly_wired": ["00be9b20"],
+  "rows": [
+    {
+      "native": "00be9b20",
+      "status": "wired",
+      "host_site": "src/structured_reader.cpp::StructuredNode::format_version, called by src/geom_mesh_resource.cpp::parse_geom_mesh_resource_00727310 (two guards) and src/mmod_hull_convex_box.cpp::read_convex_points",
+      "state": "Reference to StructuredReader::control_word_, initialized by the real root read_control_00be9a40 on the retained model stream; shared by nested nodes. No fabricated native-layout object or duplicated payload read.",
+      "body": "src/engine_services_cc13.cpp::structured_node_control_word_00be9b20 (renamed existing body and changed its C++ input to a borrowed field reference)",
+      "evidence": "00BE9B20: MOV EAX,[ECX]; MOV ECX,[EAX+8]; MOV EAX,[ECX+64h]; RET. 00BE9A40 reads the root control DWORD and 00BE9A51 stores it at the same reader+64h. 00727336/00727672 compare with 4/7 and 006FAD7E with 12, all unsigned.",
+      "called": true,
+      "call_graph_noinline": "build/callgraph, /Ob0 and /OPT:NOICF: engine_services_cc13.obj getter 10511540 has one reachable call from StructuredNode::format_version at 10579F18; no unreachable callers.",
+      "entry_path": "WinMain -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameMissionHost::advance -> finish_scene_load -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameUnitsHost::create_units -> class_hull_box -> read_mmod_hull_convex_box -> read_convex_points -> StructuredNode::format_version -> structured_node_control_word_00be9b20"
+    },
+    {
+      "native": "00be9aa0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp::structured_node_read_u32_00be9aa0",
+      "reason": "Missing original single-player invocation: caller query and ledger both identify this wrapper as unreferenced in the disk image; existing parsers use other word-read wrappers."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI tuning load",
+      "reason": "Missing campaign invocation and live brain/planner input for this selector; the inspected host mention supplies tuning provenance rather than the original slot-selection operation."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiGroups candidate scoring",
+      "reason": "Missing gameplay consumer for AiGroupScoreList records; the existing host documents their only original reader as the unreached debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AiGroups candidate scoring",
+      "reason": "Missing live AiGroupScoreList records and gameplay consumer; marking a new auxiliary debug list would not replace a game operation."
+    },
+    {
+      "native": "004b4740",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::join_local_player_007752d0",
+      "reason": "No campaign write site with an owned local_slot_18ec field and downstream consumer was established; the inspected skirmish site logs the slot and was not selected."
+    },
+    {
+      "native": "00748c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::stationary prop provenance",
+      "reason": "Native class-descriptor production and a consumer for the allocated 1ACh stationary object were not established in this slice; a vtable identity comment is insufficient."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp::scene_reference_kind_letter",
+      "reason": "The differently named table projection already feeds the parser; renaming that existing execution alone would not add a missing operation or invocation."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp::clear_gamepad_force_requests_00a95890",
+      "reason": "No missing live explicit-clear invocation with this typed force-state owner was established; a separate raw native-gamepad clear implementation already exists."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::director-enable provenance",
+      "reason": "Missing ControllerSnapshotMessage owner, producer and routed snapshot consumer; constructing a temporary copy of current flags would only round-trip state."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::HudRootRowsBinding::animation_interval",
+      "reason": "Missing bridge animation owner and interval consumer: weapon_animation currently records 00AA8B00 and returns zero, so a temporary GuiHudTickerRange would not animate anything."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::MissionStartBinding::finish_start",
+      "reason": "Missing owned native loading-config temporary and publication boundary; the existing path explicitly borrows the record vector/name and has no copy to destroy."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp::reserve_native_word_array_005296a0",
+      "reason": "No entry-reachable producer/consumer of NativeWordArrayStorage was established; the original session-message/grid owners require a separate integration."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_word_array_storage.cpp::resize_native_word_array_00529980",
+      "reason": "Missing attached NativeWordArrayStorage owner at a live host site; invoking resize on scratch storage would not replace the original session-message/grid operation."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::destroy_sound_configured_group_storage_00a7bfe0",
+      "reason": "No entry-reachable lifecycle for this typed SoundConfigurationState projection was established; raw configured-group storage has a separate interface."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::destroy_sound_configured_type_storage_00a7c6c0",
+      "reason": "No entry-reachable lifecycle for this typed SoundConfigurationState projection was established; raw configured-type storage has a separate interface."
+    }
+  ],
+  "verification": {
+    "baseline": "Fresh index and scripts/build.ps1 passed before selection.",
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math and tool_tests both passed.",
+    "focused_fixture": "One regression fixture in math_tests.cpp reads nested ConvexObject data under actual MMOD root versions 11 and 12. Both decode the same three points; only version 12 carries the optional first DWORD.",
+    "existing_fixture": "Existing installed deruyter.mmod hull check passed as part of reconstructed_math (one hull shape, 117 points).",
+    "call_graph": "python tools/call_graph.py --build; who/path 00be9b20 --build-dir build/callgraph. Unique reachable getter call with identical-code folding disabled.",
+    "readiness": "python tools/wire_readiness.py --standins; refreshed index after ledger changes.",
+    "ghidra": "Verified configured C:/Users/sqz269/bsp.gpr and live /battlestationspacific.exe. ghidra_annotate.py saved the project and prior annotations; targeted export refreshed. Previous name BSP_StructuredNode_RemainingBytes is preserved in git history and annotation receipt local/ghidra-annotations-20261104T082918Z.json.",
+    "float_math": "No floating-point arithmetic changed."
+  },
+  "limitations": [
+    "Source reconstruction, build/fixture checks and entry-reachable static calls; no game run or original-ABI validation.",
+    "The public payload_too_small member name is retained for compatibility, but chain426 sets it for format versions below 4.",
+    "The full ConvexObject arrays and shape construction remain outside the existing point-box parser's scope."
+  ]
+}
