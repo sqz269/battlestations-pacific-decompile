@@ -1,0 +1,229 @@
+{
+  "chain": 542,
+  "goal": 4,
+  "run": 1114,
+  "slot": "g4-w4",
+  "branch": "agent/g4-w4",
+  "picked": "ArchiveTextWriter native scalar/key/structure emitters on the enabled mission SaveCheckpoint owner",
+  "switch": "bsp::kWireGoal4Chain542Bound",
+  "rows": [
+    {
+      "native": "00bd6990",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::indent (inlined into begin_section/end_section/write_field)",
+      "called": true,
+      "call_sites": 3
+    },
+    {
+      "native": "00bd6ac0",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::terminate_row (inlined into end_section/write_field)",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00bd6bd0",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: ArchiveEmitter::emit / ArchiveTextOutput::emit",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00bd7b30",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::begin_section and write_field",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "00bd7f50",
+      "status": "wired",
+      "host_site": "src/archive_text_writer.cpp: ArchiveTextWriter::write_field",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00bd6100",
+      "status": "skipped",
+      "host_site": "src/cc13_front5.cpp: archive emit_text compact branch",
+      "reason": "Current game SaveCheckpoint owns plain buffered output, with no compact FILE producer; the optional compact branch is entry-reachable and fixture-tested, not demonstrated on a game-owned compact request."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_selected_unit_00647300",
+      "reason": "Missing real selection-mode and selection-vector producers at screen+30h/+C4h; recording sites own neither input."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: cockpit_screen_mode",
+      "reason": "Missing plane-effects screen owner and cockpit-mode producer; cockpit_screen_wanted remains false."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "Missing carousel/scroller owner and scrolling-byte producers at +1F9h/+13Fh; map_screen_wanted remains false."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreenBinding::advance_ticker",
+      "reason": "Missing award queue, native award strings and ticker-widget/timed-entry producers."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "Missing actual animation/timed-entry owner; weapon_animation currently returns zero."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Missing owned ship sound object, device-list propagation and controlled-audio field consumer."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already called from the actual projected property bags (two reachable sites); missing an additional unwired call site, not a replacement body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: admitted enum insertion",
+      "reason": "Existing admitted enum projection already invokes this body; no new unbound insertion site established in the surveyed scene host."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: deliver_loopback UserPathPoint",
+      "reason": "Missing clear-message sender: current native 5Fh channel is the add sender and always supplies present_2c=1."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: deliver_loopback UserPathPoint",
+      "reason": "Missing the same real 5Fh clear sender and the selected slot path owner outside the retained slot-0 add domain."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command descriptor initialization survey",
+      "reason": "No proven live initialization site supplying this class-ordinal descriptor was established; current scene command targets use a different representation."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot provenance",
+      "reason": "No real controller snapshot producer/transport/consumer was established; the offered source reads flattened scene flags."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/gui_render.cpp: gui_curve_control_points_00abca10",
+      "reason": "Missing active curve widget authored-point owner and render/rebuild consumer; no compatible running host call site was found."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_selection_listener.cpp: main menu scroller range",
+      "reason": "Existing unsuffixed set_scroll_range body already runs on the real main-menu and briefing scrollers; no replacement needed there."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Missing pre-load checkpoint-difference result and current mission Lua checkpoint table at that site; checkpoint_differs remains false."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "Missing live reflection/property-description traversal; alphabetical child snapshot is not the frontend render-order operation."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: shadow fitting fov/aspect reads",
+      "reason": "Missing entry-reachable shadow-fit caller for the surveyed duplicate products; wiring that inactive source alone would not reach the body."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured type destruction",
+      "reason": "Existing same-address raw destructor is already called by native reserve/resize paths; no additional compatible live destruction site established."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: deferred Lua queue producer comment",
+      "reason": "Missing real off-main-thread deferred-call argument producer; this host comment is not an enqueue implementation."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: close_result_gui record",
+      "reason": "Missing actual transition game/movie-screen/input/cinematic-mode bindings; the body is a sound transition, not a GUI close operation."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight-state reset_timer40 record",
+      "reason": "Missing persistent plane-FX component and timer consumer; a constant-only scratch receiver would not replace live behavior."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: SpawnCompositionHost::class_pair_value",
+      "reason": "Missing a concrete live composition host and real per-mode class-pair table; the surveyed AI host has neither call site."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: scripted-name baseline explanatory comment",
+      "reason": "Missing teardown consumer at the offered site; it rebuilds the pre-script baseline rather than nils mission-added globals."
+    }
+  ],
+  "wired_total": {
+    "text_readiness_before": 9859,
+    "text_readiness_after": 9864,
+    "entry_reachable_addresses_before": 4926,
+    "entry_reachable_addresses_after": 4938,
+    "new_claimed_game_wirings": 5,
+    "note": "The broad graph delta also includes provider methods and the optional compact path; it is not twelve new game-validated bodies. BD6100 was text-wired before but had no linked body call."
+  },
+  "built": [
+    "Complete emitter-only Host boundary without unrelated Lua/VFS stubs",
+    "Native pooled-string/output adapter borrowing GameNativeStringProcess and the actual ArchiveTextOutput sinks",
+    "Actual GuiLuaVariant and SettingsValue tag/payload conversion; no double formatting/emission",
+    "One exact-byte fixture for nested scalar output and signed compact encoding"
+  ],
+  "evidence": [
+    "python tools/bsp.py show 00bd7f50 --lines 45",
+    "python tools/bsp.py show 00bd6100 --lines 46",
+    "python tools/bsp.py show 00bd6990 --lines 35",
+    "src/game_hosts_lua.cpp: mission_checkpoint_binding constructs ArchiveTextWriter over actual SaveCheckpoint data; kMissionCheckpointBound=true",
+    "python tools/call_graph.py who 00bd6100|00bd6990|00bd6ac0|00bd6bd0|00bd7b30|00bd7f50",
+    "python tools/call_graph.py path 00bd7f50"
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1: passed MSVC Win32 Release and all four CTests",
+    "focused_fixture": "tests/math_tests.cpp archive fixture: exact nested text, escaped backslash/quote with raw LF/TAB, INT_MIN, float key/value, bool, FILE precedence, high-bit signed encoding and embedded NUL",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main: 0 findings; no changed arithmetic files; origin/main...HEAD rerun after commit",
+    "game_run": false
+  },
+  "boundaries": [
+    "New C++ host composition; no Original ABI, CRT/EH, fault or allocation-failure parity claim",
+    "Existing writer domain remains scalar tags 0..3; object/vector/matrix tags are not newly admitted",
+    "The existing uncompressed byte sink is retained; no native compressed-block storage manager is fabricated",
+    "Current game SaveCheckpoint emits plain buffered output; compact FILE mode is checked only by the focused fixture"
+  ],
+  "left": [
+    "Native compressed archive storage and live compact FILE producer",
+    "Extended archive value owners and object-id provider",
+    "Live game save/load validation (game not run by assignment)"
+  ]
+}

@@ -8,7 +8,9 @@
 // layout). The archive text emitters use the segment 95 types and host
 // (cc13_seg95::Host) that their callers in src/cc13_seg95.cpp already use. Every
 // call the image makes goes through a host method named for its target.
-// Descriptive names are hypotheses, not recovered symbols. Nothing here is wired.
+// Descriptive names are hypotheses, not recovered symbols. Chain 542 wires the
+// archive emitters through ArchiveTextWriter; the other entries retain their
+// existing callers and binding requirements.
 
 #include "bsp/cc13_seg95.hpp"
 #include "bsp/cc13_sweepA.hpp"
@@ -41,7 +43,21 @@ using cc13_sweepA::Raw;
 // Segment 95: the archive text emitters (shared globals 0109CEE0 FILE,
 // 0109CEE4 compact flag, 0109CECC storage singleton, 0109CEE5 empty string).
 // ---------------------------------------------------------------------------
-struct ArchiveEmitHost : cc13_seg95::Host {
+// Complete emitter boundary. These bodies do not use the unrelated Lua,
+// singleton-registration, VFS or archive-reader operations of seg95::Host.
+struct ArchiveEmitHost {
+    virtual ~ArchiveEmitHost() = default;
+    virtual NativeStr* native_string_assign_0041e870(NativeStr* self, const char* text) = 0;
+    virtual void native_string_resize_0041dd40(NativeStr* self, std::uint32_t length,
+        std::uint32_t preserve) = 0;
+    virtual void native_string_destroy_0041dd20(NativeStr* self) = 0;
+    virtual void* sized_pool_00419cc0() = 0;
+    virtual void sized_pool_return_00bd1510(void* pool, void* block, std::uint32_t size,
+        std::uint32_t flag) = 0;
+    virtual std::size_t fwrite_00bfb08b(const void* data, std::size_t size,
+        std::size_t count, std::FILE* file) = 0;
+    virtual void save_storage_append_00bd49b0(void* storage, const NativeStr* bytes) = 0;
+    virtual std::int32_t object_id_fn_0109cedc(void* object) = 0;
     // 004261A0 BSP_NativeString_Concat, __thiscall(ECX = left; out, const right*) RET 8 -> out.
     virtual NativeStr* native_string_concat_004261a0(const NativeStr* left, NativeStr* out,
                                                      const NativeStr* right) = 0;

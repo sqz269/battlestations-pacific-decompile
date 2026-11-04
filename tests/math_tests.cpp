@@ -41,6 +41,7 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/archive_text_writer.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
@@ -1944,6 +1945,47 @@ int main() {
             "the control reset leaves both invert bytes different from the omitted default");
         check(!has("imperial") && !has("cameraShake"),
             "rows still holding the serializer default are dropped");
+    }
+
+    {
+        // Chain 542: one complete archive exercises the live writer's key,
+        // value, indentation and terminator providers with real owned bytes.
+        bsp::ArchiveStringSink sink;
+        bsp::ArchiveTextOutput output{nullptr, false, &sink};
+        bsp::ArchiveTextWriter writer(output);
+        writer.write_field("number", bsp::SettingsValue::from_int(-2147483647 - 1));
+        writer.begin_section("T");
+        writer.write_field(bsp::gui_lua_key_by_index(3),
+            bsp::SettingsValue::from_text("a\\\"b\n\t"));
+        writer.begin_section(bsp::gui_lua_key_by_float(1.5f));
+        writer.write_field("flag", bsp::SettingsValue::from_bool(true));
+        writer.write_field("ratio", bsp::SettingsValue::from_float(-0.25f));
+        writer.end_section();
+        writer.end_section();
+        const std::string expected = "number = -2147483648\nT = {\n"
+            "\t[3] = \"a\\\\\\\"b\n\t\",\n\t[1.500000] = {\n"
+            "\t\t[\"flag\"] = true,\n\t\t[\"ratio\"] = -0.250000,\n\t},\n}\n";
+        check(writer.depth() == 0 && sink.str() == expected,
+            "archive native emitters preserve exact nested scalar bytes");
+        // 00BD6100 uses signed SAR, not a nibble rotation, for >=80h.
+        // FILE takes precedence over the retained buffered sink.
+        std::FILE* file = nullptr;
+        const auto opened = tmpfile_s(&file);
+        check(opened == 0 && file != nullptr, "archive encoded fixture FILE opens");
+        if (file != nullptr) {
+            output.file_0109cee0 = file;
+            output.compact_encoded_0109cee4 = true;
+            const unsigned char input[]{' ', '\t', '\r', '\n', 'A', 0x80, 0xf1, 0};
+            const unsigned char encoded[]{0x14, 0xf8, 0xff, 0};
+            output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
+            std::rewind(file);
+            unsigned char actual[sizeof encoded]{};
+            check(std::fread(actual, 1, sizeof actual, file) == sizeof actual
+                    && std::memcmp(actual, encoded, sizeof actual) == 0
+                    && std::fgetc(file) == EOF && sink.str() == expected,
+                "archive encoded output strips whitespace and preserves signed high-byte transform");
+            std::fclose(file);
+        }
     }
 
     {
