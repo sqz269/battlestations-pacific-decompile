@@ -1411,6 +1411,34 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.quads_built = false;
 }
 
+bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height) {
+    Impl& host = *impl_;
+    if (!host.text_host || widget.type != GuiWidgetType::Text) return false;
+    auto cached = host.text_runs.find(&widget);
+    if (cached == host.text_runs.end()) {
+        // Reuse the render cache, including its current runtime source. The
+        // next draw consumes this run rather than rebuilding the text path.
+        const auto node = std::find(host.widget_nodes.begin(), host.widget_nodes.end(), &widget);
+        if (node == host.widget_nodes.end()) return false;
+        const auto index = static_cast<std::size_t>(node - host.widget_nodes.begin());
+        const auto position = resolved_position(widget.transform);
+        const auto& transform = widget.transform;
+        GameTextRun run;
+        const auto source = host.text_sources.find(&widget);
+        host.text_host->build_run(host.widget_records[index].page, widget,
+            position.x - transform.pivot_x * transform.size.width,
+            position.y - transform.pivot_y * transform.size.height, run,
+            source != host.text_sources.end() ? &source->second : nullptr);
+        cached = host.text_runs.emplace(&widget, std::move(run)).first;
+        host.summary.text_widgets = host.text_host->summary().text_widgets;
+        host.summary.text_runs = host.text_host->summary().runs_built;
+        host.summary.text_glyphs = host.text_host->summary().glyph_quads;
+    }
+    if (!cached->second.normalized_height) return false;
+    height = *cached->second.normalized_height;
+    return true;
+}
+
 namespace {
 // A typed CPU vertex-stream view for the *existing* 0043ABA0 body. Input
 // +0C..+18 is the loaded icon's atlas rectangle. The output buffer is the

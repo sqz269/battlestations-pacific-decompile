@@ -36,6 +36,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -100,6 +101,9 @@ struct GameTextRun {
     std::size_t lines{0};
     float measured_width{0.0f};
     float measured_height{0.0f};
+    // AB6BD0 over this run's actual wrapped extent or font +14h. Missing
+    // means layout/font inputs were unavailable; it is not a zero-height run.
+    std::optional<float> normalized_height;
     float vertical_offset{0.0f};
     float color[4]{1.0f, 1.0f, 1.0f, 1.0f};
     // The font's existing COM glyph sheet, borrowed without AddRef. Destroy or

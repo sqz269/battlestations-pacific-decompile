@@ -1,0 +1,199 @@
+{
+  "chain": 407,
+  "slot": "g4-w2",
+  "base": "98fbce0e20",
+  "switch": "bsp::kWireGoal4Chain407Bound",
+  "scope": "Main-menu briefing text height and retained scroller range",
+  "rows": [
+    {
+      "native": "006834a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range -> bsp::set_scroll_range",
+      "state": "The retained briefing scroller at screen+354h and its attached frontend widgets; range comes from actual cached text layout, actual clip height and the binary's 00CEED60 padding.",
+      "proof": "call_graph.py who set_scroll_range: bsp::set_scroll_range in frontend_screen_animation.obj is REACHABLE with one call from MissionDetailBinding::set_scroll_range; the original unsuffixed body is reused. The address-only query does not resolve that symbol."
+    },
+    {
+      "native": "00ab6bd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_text.cpp: GameTextHost::build_run -> text_context_get_normalized_text_height_00ab6bd0; consumed by GameFrontendHost::widget_text_height and MissionDetailBinding::briefing_text_height",
+      "state": "Read-only query view of the same run's wrapped flag/raw measured extent or current font+14h bits. No second native Text owner or invented font metrics.",
+      "proof": "call_graph.py who 00ab6bd0: the cc13_gui1.obj body is REACHABLE with one direct call from GameTextHost::build_run. Other folded logging-only virtuals at this address are not counted as body evidence."
+    },
+    {
+      "native": "0058c010",
+      "status": "wired",
+      "host_site": "src/main_menu_mission_detail.cpp: mission_detail_scroll_range, consumed by build_mission_detail_page_0058c010",
+      "note": "Already wired caller, not a newly wired address. Corrected the newly consumed range expression: 0058C870 FSUBR then 0058C877 FADD each round at main-thread PC24; old expression remains in the OFF arm."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MenuUpdateBinding::animate_detail_group/animate_page_group",
+      "reason": "Original scroll action records, pad provider, GUI cursor samples and widget drag/listener path remain unbound; this packet supplies range geometry without inventing input."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Bag::insert_enum",
+      "reason": "No additional wiring is needed: the current property projection already calls this body; the readiness text state alone was misleading."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl constructor and copy_or_merge",
+      "reason": "No additional wiring is needed: the initial readiness graph already reports called=true with two live callers despite state=ready."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target / src/game_hosts_ai.cpp",
+      "reason": "Literal body reads mutable absolute 00F87574/78/7C; a valid native command-target owner and real absolute-data provider were not established."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: Impl::group_value_record_00a04560",
+      "reason": "The current typed record builder lacks the global and per-party native hint-weight map owners and their Lua mutation path."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiFirepower ammo_select_flak_alternate",
+      "reason": "The host explicitly lacks a producer for the native ammo+48h alternate and its retained reference/tree fields; a gun handle is not that record."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building/ammunition integration candidate",
+      "reason": "A live native unit+660h vector owner and its resize/element lifetime host were not established in the inspected integration path."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit set_unit_controlled_audio",
+      "reason": "The controlled-unit audio broadcast endpoints are still logging-only; their actual child/component state was not established."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plan_yaw_0099d300",
+      "reason": "The exact pilot-plan caller belongs to the unit host file still in review; this packet avoided editing that file."
+    },
+    {
+      "native": "0099d300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plan_yaw_0099d300 and existing plane_ai_control fragments",
+      "reason": "Only the caller/fragment contract was inspected; the unit host file was in review and a complete additional plan-controls integration was not established."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry.cpp: construct_native_bot_state_registry_00411e20",
+      "reason": "The inspected game hosts do not own a live NativeBotStateRegistryStorage identity for this constructor; an actual approach/task producer is needed."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Requires the same missing retained native state-registry producer and a matching live cleanup path."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "The preceding checkpoint_differs binding still returns false, and a live profile checkpoint comparison/rewrite integration was not established."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start",
+      "reason": "publish_loading_config borrows the existing vector/name rather than producing the native temporary holder this destructor must retire."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: run_load_scripted_name_baseline_004d30f0 and mission teardown candidate",
+      "reason": "The host captures a typed name vector, not the native game+1930h set/+1938h count and Lua-object/string-vector teardown host required by this raw body."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: live user-path integration candidate",
+      "reason": "An exact live remove-last-user-point command/input caller was not established; arbitrary calls from path creation would change behavior."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp: scene_reference_kind_letter",
+      "reason": "Existing typed reference-letter helper already participates in parser decoding; no additional runtime caller was established for this packet."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "Typed API triage only: a live caller with the current mode's actual ClassPairRow table was not established."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_powerup_score_for_unit_00a046c0",
+      "reason": "Typed API triage only: the exact live powerup-scoring caller and complete PowerupUnitInputs producer were not established."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tuning-mode selection / src/band_009f_cc13.cpp",
+      "reason": "The host's unit-side admission flags are not proof of the original party record's active +0Ch field needed by this query."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted",
+      "reason": "Diagnostic score-list candidate was not selected; an actual single-player gameplay consumer of its retained records was not established."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen",
+      "reason": "Depends on the same unestablished live score-list owner/consumer; this packet does not wire diagnostic-only work."
+    }
+  ],
+  "evidence": [
+    "bsp.py show 006834a0 --lines 85",
+    "bsp.py show 00ab6bd0 --lines 32; show 00ab6bd0 --asm --lines 38",
+    "bsp.py ghidra disasm 0058c86d --lines 16: FSUBR, FADD, FSTP float, CALL 006834A0",
+    "Existing retained scroller attachment/reset: reports/wire-g4-c387.json",
+    "Initial build passed reconstructed_math, native_math_differential and tool_tests",
+    "Switch OFF build passed all three checks; setter body and real AB6BD0 body absent from the OFF caller graph",
+    "pc24_lint.py src/game_hosts_frontend.cpp src/game_hosts_mission.cpp src/game_hosts_text.cpp src/main_menu_mission_detail.cpp: 0 findings",
+    "Final ON call_graph.py: both bodies reachable with one direct live caller each; readiness called rows 4887 OFF -> 4889 ON, static text-wired 9649 unchanged."
+  ],
+  "validation": {
+    "static_wired_before": 9649,
+    "static_wired_after": 9649,
+    "called_rows_before": 4887,
+    "called_rows_after": 4889,
+    "call_graph_reconstructed_before": 4666,
+    "call_graph_reconstructed_after": 4667,
+    "final_build": "Switch ON and OFF builds passed all three existing checks; final switch is ON",
+    "pc24_lint": "0 findings, 4 files checked directly; one host-only no-address region is outside the native-address scanner",
+    "static_count_note": "Text state stays unchanged: 006834A0 remains ready although called=true; 00AB6BD0 was already text-wired through other host names. The executable-derived called rows increase by two.",
+    "target_call_sites": {
+      "006834a0": {
+        "off": null,
+        "on": 1
+      },
+      "00ab6bd0": {
+        "off": null,
+        "on": 1
+      }
+    }
+  },
+  "boundaries": [
+    "No game run, visual check or Original ABI equivalence claim.",
+    "Uses the existing frontend scratch text-layout/render cache, not activation of the separate canonical native GUI/Text factory.",
+    "No range-body call on missing layout/font/clip inputs; the previous zero-height fallback is not consumed.",
+    "Unsupported empty wrapped/sentinel layout remains unavailable under the existing builder's policy.",
+    "Input/drag-driven scrolling remains unbound at 00683820."
+  ]
+}
