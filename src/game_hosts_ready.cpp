@@ -15,10 +15,15 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_pending_entity_runtime.hpp"
+#include "bsp/game_native_string_process.hpp"
 #include "bsp/mission_load_hosts.hpp"
+#include "bsp/native_spatial_index_publication.hpp"
 #include "bsp/spatial_index.hpp"
+#include "bsp/wire_goal4_chain396_switches.hpp"
 
+#include <cstddef>
 #include <cstdio>
+#include <new>
 #include <stdexcept>
 
 namespace bsp::game {
@@ -32,17 +37,45 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // Row 3+4, 0098bdb0: the spatial re-bucket
 // ---------------------------------------------------------------------------
 //
-// 0042e630 hands the walk the registry singleton. This process builds no such
-// registry and registers no node, so the root list is empty and every method
-// below the first is unreachable. Each one still records its own call site, so
-// a later run that does hold nodes reports the boundary rather than crossing it.
+// Chain 396: 0042E630 now hands this walk its actual registered raw index.
+// Node publication (0098BA10) is still absent, so its constructor's real
+// +16014h head is empty. Static roots can be walked; refuse a dynamic root
+// until the pose/cell providers below are bound instead of dropping its update.
 class SpatialRefreshBinding final : public bsp::SpatialRefreshHost {
 public:
     explicit SpatialRefreshBinding(GameHostLog& log) : log_(log) {}
+    SpatialRefreshBinding(GameHostLog& log, void* index) : log_(log), index_(index) {}
 
-    void* first_root_node() override { return nullptr; }
-    void* next_root_node(void* node) override { static_cast<void>(node); return nullptr; }
-    bool node_is_static(void* node) override { static_cast<void>(node); return true; }
+    void* first_root_node() override {
+        if constexpr (kWireGoal4Chain396Bound) {
+            // bsp.py show 0042D450 / 0098BDB0: constructor zeroes this head;
+            // the refresh reads it, rather than a host-authored empty list.
+            void* const root = *reinterpret_cast<void* volatile*>(
+                static_cast<std::byte*>(index_) + kSpatialIndexOffRootList);
+            return root;
+        } else {
+            return nullptr;
+        }
+    }
+    void* next_root_node(void* node) override {
+        if constexpr (kWireGoal4Chain396Bound) {
+            return *reinterpret_cast<void* volatile*>(
+                static_cast<std::byte*>(node) + kSpatialNodeOffRootNext);
+        } else {
+            static_cast<void>(node); return nullptr;
+        }
+    }
+    bool node_is_static(void* node) override {
+        if constexpr (kWireGoal4Chain396Bound) {
+            const bool is_static = *reinterpret_cast<volatile std::uint8_t*>(
+                static_cast<std::byte*>(node) + kSpatialNodeOffStaticFlag) != 0;
+            if (!is_static)
+                throw std::logic_error("native spatial root refresh needs pose/cell providers");
+            return is_static;
+        } else {
+            static_cast<void>(node); return true;
+        }
+    }
     void* node_owner_pose(void* node) override { static_cast<void>(node); return nullptr; }
     bool pose_world_valid(void* pose) override { static_cast<void>(pose); return true; }
     void pose_refresh_world_00414db0(void* pose) override {
@@ -93,6 +126,7 @@ public:
 
 private:
     GameHostLog& log_;
+    void* index_{};
 };
 
 // ---------------------------------------------------------------------------
@@ -542,8 +576,20 @@ void GameStepSubsystemsHost::attach_units(GameUnitsHost* units) noexcept {
 }
 
 void GameStepSubsystemsHost::refresh_moved_spatial_nodes_0098bdb0(float step) {
+    if constexpr (kWireGoal4Chain396Bound) {
+        // 00875E33: singleton getter immediately before the 0098BDB0 walk.
+        // Use the same real lifetime manager that owns the application's other
+        // native singletons; no fixture index or separate manager is created.
+        auto& process = game_native_string_process();
+        void* const index = get_native_spatial_index_0042e630(
+            process.manager_01090aa0(), process.spatial_index_00f8a0d8());
+        if (index == nullptr) throw std::bad_alloc();
+        SpatialRefreshBinding binding(log_, index);
+        bsp::spatial_refresh_moved_nodes_0098bdb0(binding, step);
+    } else {
     SpatialRefreshBinding binding(log_);
     bsp::spatial_refresh_moved_nodes_0098bdb0(binding, step);
+    }
     ++summary_.spatial_passes;
     if (!logged_empty_) {
         logged_empty_ = true;

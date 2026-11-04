@@ -310,6 +310,9 @@ struct NativeSingletonDeletionBindings {
     // This pointer grants no missing-provider, partial-constructor or failed-
     // graph cleanup policy. Explicit normal retirement is armed before drain.
     NativeTextureAtlasDeletionLifetime* texture_atlas{};
+    // CE3CEC -> 0042D4B0. Borrow the exact F8A0D8 cell before 0042E630 can
+    // register its index. Retain through the complete manager drain.
+    void* volatile* actual_spatial_index_publication_00f8a0d8{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -346,7 +349,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, movie_factory) == 216);
 static_assert(offsetof(NativeSingletonDeletionBindings, locale_manager) == 220);
 static_assert(offsetof(NativeSingletonDeletionBindings, gui_icon_raw_scalar_dispatch) == 224);
 static_assert(offsetof(NativeSingletonDeletionBindings, texture_atlas) == 228);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 232);
+static_assert(offsetof(NativeSingletonDeletionBindings, actual_spatial_index_publication_00f8a0d8) == 232);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 236);
 
 // Exception paragraph below is the legacy/default contract. A selected prepared
 // raw edge still armed on an unknown Source escape instead retains/rethrows
