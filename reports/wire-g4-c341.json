@@ -1,0 +1,112 @@
+{
+  "goal": 4,
+  "chain": 341,
+  "slot": "g4-w2",
+  "owner": "agent/g4-w2",
+  "switch": "kWireGoal4Chain341Bound",
+  "rows": [
+    {
+      "native": "00a371a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::auto_merge_dist and tuning_field via selected_tuning_field",
+      "inputs": "Current game_mode(), the existing ai_tuning_mode_009ffc80 result, and an owned HighLvlAIGlobals prefix containing the binary's D232C4 header tag followed by seven contiguous 23Ch records. create_00a32350 loads each record once through the existing AiTuningAuthoredReader/ai_tuning_load_00a335d0, retaining that partial loader's existing coverage and defaults. Static assertions check +4, stride and total prefix size.",
+      "output": "The existing body selects the record actually consumed by the auto-merge distance and planner tuning callbacks. Campaign/effective modes outside 0..3 use the new path. Modes 0..3 retain the old field-read path until player difficulty has a real producer. The old host code and single-record load remain in the switch OFF arms.",
+      "evidence": "bsp.py show 00a371a0: selector calls 009FFC80 then 004C1C50 and returns base+4+index*23Ch. show 004c1c50 and 00a37130: singleton allocation, D232C4 tag and loader. show 00a335d0: seven-record loop. show 009ffc80: campaign mode 8 takes the zero-index fallback without first-active-party/difficulty reads. ghidra proto confirms battlestationspacific.exe, 00A371A0..00A371B8, eight instructions.",
+      "abi": "One existing reconstructed body, with its two required services extracted into ActiveModeTuningHost; Seg70Host inherits the same contract. New C++ context interface, not an original ABI replacement. The prefix is owned by the live AI host; native singleton registration, vtable dispatch and trailing native vectors are not claimed.",
+      "called": true,
+      "call_sites": 2,
+      "callers": [
+        "GameAiCoordinatorHost::Impl::auto_merge_dist",
+        "GameAiCoordinatorHost::Impl::tuning_field"
+      ]
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::create_00a32350 / selected_tuning_field",
+      "reason": "Campaign effective mode 8 bypasses first-active-party selection; modes 0..3 still lack a bound game+18CCh[slot]+2Ch player-difficulty producer, so this slice preserves their old path rather than invoke the body with invented state."
+    },
+    {
+      "native": "004c1c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::TuningRecordBridge::coordinator_get_or_create_004c1c50",
+      "reason": "The adapter supplies the host-owned record prefix; native singleton allocation/registration is not called. Readiness's extra text-only wired row for this same-named Host method is not an additional native wiring gain."
+    },
+    {
+      "native": "00a37130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::create_00a32350",
+      "reason": "Inspected for header and loader evidence only; native singleton lifetime and the three trailing native vector owners remain outside this prefix binding."
+    },
+    {
+      "native": "00a335d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::create_00a32350",
+      "reason": "The existing partial per-record loader was already wired and is reused for all seven records; no additional native address is claimed."
+    },
+    {
+      "native": "009ffc80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::Impl::selected_tuning_field",
+      "reason": "Already-wired mode-index reconstruction is reused; its difficulty operand is ignored on the admitted modes outside 0..3, and difficulty-dependent modes remain deferred."
+    },
+    {
+      "native": "00a31730",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::GameAiCoordinatorHost::create_00a32350",
+      "reason": "Inspected to distinguish the tick coordinator from the separate HighLvlAIGlobals singleton; its existing wiring was not changed."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::SceneCommandTarget storage",
+      "reason": "The literal body reads mutable absolute cells F87574/F87578/F8757C; the host lacks their native-address data owner and cannot substitute zero constants or projected SceneCommandTarget layout."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MissionTeardown sound transition",
+      "reason": "The complete transition requires actual game/movie-screen/input owners, screen visibility dispatch and cinematic/listener services not supplied by the current mission-result host."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::clear_movie_subtitles",
+      "reason": "The host retains a subtitle schedule projection without the native movie/page/Text-child owner; invoking the native clear body on that projection would supply the wrong storage."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::MovieBridge::set_widget_local_z",
+      "reason": "Movie page loading returns no native widget, so the callback has no genuine GuiWidgetTransform receiver."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group score diagnostics",
+      "reason": "The score-list consumer remains the debug overlay 00A2CDD0, as recorded by chain308; debug-only wiring is outside this assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::AI group score diagnostics",
+      "reason": "Chosen-score markers feed the debug overlay 00A2CDD0 rather than a single-player control consumer; debug-only wiring is outside this assignment."
+    }
+  ],
+  "totals": {
+    "readiness_text_wired_before": 9356,
+    "readiness_text_wired_after": 9358,
+    "entry_reachable_reconstructed_addresses_before": 4390,
+    "entry_reachable_reconstructed_addresses_after": 4391,
+    "new_native_wirings": 1,
+    "text_only_extra_address": "004c1c50"
+  },
+  "validation": [
+    "Baseline and changed scripts/build.ps1 pass: reconstructed_math, native_math_differential, tool_tests.",
+    "call_graph.py: 4391/4834 reconstructed addresses called, up from 4390; who 00a371a0 shows two calls from the changed host overrides and REACHABLE from entry.",
+    "wire_readiness.py --standins: 00a371a0 wired, called=true, call_sites=2; separate same-named singleton Host accessor is a text-only extra row.",
+    "git diff --check passes. No float arithmetic was added or changed.",
+    "No game execution or original ABI/runtime parity claim."
+  ],
+  "left": "Per-player difficulty and the first-active-party dependency for effective modes 0..3; untranscribed tuning fields and the native HighLvlAIGlobals singleton lifetime/trailing vector contracts."
+}

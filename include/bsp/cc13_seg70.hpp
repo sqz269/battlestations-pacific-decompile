@@ -11,7 +11,8 @@
 // slot or global they stand for. Routines the cc9 gameplay hosts already implement by behaviour
 // (00A1E210, 00A2C8D0, 00A2D440, 00A2DB50, 00A2DDE0, 00A2DFA0) and the table-driven class test
 // 00A31C60 are recorded ledger-only and are not reconstructed again here. New C++ interfaces, not
-// drop-in binary replacements; nothing here is bound into bsp_game.
+// drop-in binary replacements. Chain 341 binds the active-mode tuning selector
+// to the game's owned HighLvlAIGlobals record prefix.
 
 #ifndef BSP_CC13_SEG70_HPP
 #define BSP_CC13_SEG70_HPP
@@ -153,7 +154,16 @@ struct TreeIterRaw {
 // ---------------------------------------------------------------------------
 // Engine services. Each method names the image routine, virtual slot or global it stands for.
 // ---------------------------------------------------------------------------
-struct Seg70Host {
+// 00A371A0 uses only these two services. Keep that complete dependency contract
+// separate so a tuning-record owner need not pretend to implement planners,
+// allocation, Lua or unrelated coordinator operations.
+struct ActiveModeTuningHost {
+    virtual ~ActiveModeTuningHost() = default;
+    virtual int ai_effective_game_mode_index_009ffc80() = 0;
+    virtual void* coordinator_get_or_create_004c1c50() = 0;
+};
+
+struct Seg70Host : ActiveModeTuningHost {
     virtual ~Seg70Host() = default;
 
     // Image globals: the memory at that image address.
@@ -229,8 +239,6 @@ struct Seg70Host {
     virtual void planner_try_spawn_group_00a25a30(void* planner, const float* position, float amount,
                                                   VectorRaw* candidates, std::uint32_t name,
                                                   std::uint32_t flag) = 0;
-    virtual int ai_effective_game_mode_index_009ffc80() = 0;
-    virtual void* coordinator_get_or_create_004c1c50() = 0;
     virtual unsigned game_effective_game_mode_004bca50(void* game) = 0;  // ECX = [00E188A8]
     virtual bool party_ai_enabled_009ffe50(int slot) = 0;                 // ECX = slot
     virtual void forced_target_weight_clear_00a038c0() = 0;
@@ -345,7 +353,7 @@ void controller_destruct_body_00a32460(Seg70Host& host, Raw controller);
 void forced_target_weight_insert_00a32500(Seg70Host& host, const std::uint8_t* rule, bool global_table,
                                           int mode);
 // 00A371A0 BSP_Ai_ActiveModeTuning, void(): coordinator + 4 + mode * 23Ch.
-void* active_mode_tuning_00a371a0(Seg70Host& host);
+void* active_mode_tuning_00a371a0(ActiveModeTuningHost& host);
 
 // The coordinator's {data, count, capacity} arrays (operator new 00BF55BE, free 00BF6989).
 struct ArrayRaw {

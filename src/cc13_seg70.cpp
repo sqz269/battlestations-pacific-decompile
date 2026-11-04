@@ -825,7 +825,7 @@ void forced_target_weight_insert_00a32500(Seg70Host& host, const std::uint8_t* r
         host, host.global(kModeForcedRules + static_cast<std::uint32_t>(mode) * kModeForcedRuleStride), rule);
 }
 
-void* active_mode_tuning_00a371a0(Seg70Host& host) {
+void* active_mode_tuning_00a371a0(ActiveModeTuningHost& host) {
     const int mode = host.ai_effective_game_mode_index_009ffc80();
     auto* coordinator = static_cast<std::uint8_t*>(host.coordinator_get_or_create_004c1c50());
     return coordinator + 4 + mode * 0x23C;
