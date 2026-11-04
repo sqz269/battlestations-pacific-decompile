@@ -7,6 +7,7 @@
 // keeps unstored intermediates wider.
 
 #include "bsp/cc13_sweepB.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <initializer_list>
 
@@ -998,19 +999,40 @@ void cc13_sweepB_frontend_read_action55_00696450(std::uint8_t* out, Cc13SweepBHo
 // World refreshed through 00414DB0 when +C8h is clear; v = (world+20h, 0,
 // world+28h) (world at +CCh); len = (float)00419440(&v); inv = 1/len when len
 // > 0, else 0 (float); out = (inv*v.x, 0.0 (double 00D7A258)*inv, inv*v.z).
-void cc13_sweepB_entity_forward_xz_006ac260(void* entity, float* out, Cc13SweepBHost& host) {
-    if (cc13_sweepB_at<std::uint8_t>(entity, 0xC8) == 0) host.entity_pose_refresh_world_00414db0(entity);
-    const float v[3] = {cc13_sweepB_at<float>(entity, 0xEC), 0.0f, cc13_sweepB_at<float>(entity, 0xCC + 0x28)};
-    const float length = host.vector3_length_00419440(v);
+void cc13_sweepB_entity_forward_xz_006ac260(EntityForwardXzView& entity, float* out) {
+    const float* world = entity.current_world_cc();
+    const float v[3] = {world[8], 0.0f, world[10]};
+    const float length = entity.vector3_length_00419440(v);
     float inv;
     if (length > 0.0f) {
-        inv = 1.0f / length;
+        // 006AC2B7 FDIVRP, 006AC2B9 FSTP DWORD: round at the main
+        // thread's PC24 before storing, including the x87 exponent range.
+        inv = static_cast<float>(cc13x87::x87_div24(1.0, length));
     } else {
         inv = 0.0f;
     }
-    out[0] = inv * v[0];
-    out[1] = static_cast<float>(0.0 * inv);
-    out[2] = inv * v[2];
+    // 006AC2D1/2DD/2E2 FMUL, each followed by FSTP DWORD. The middle
+    // operand is the binary's +0.0 double at 00D7A258, not a skipped write.
+    out[0] = static_cast<float>(cc13x87::x87_mul24(inv, v[0]));
+    out[1] = static_cast<float>(cc13x87::x87_mul24(0.0, inv));
+    out[2] = static_cast<float>(cc13x87::x87_mul24(inv, v[2]));
+}
+
+void cc13_sweepB_entity_forward_xz_006ac260(void* entity, float* out, Cc13SweepBHost& host) {
+    struct RawView final : EntityForwardXzView {
+        RawView(void* entity, Cc13SweepBHost& host) : entity(entity), host(host) {}
+        const float* current_world_cc() override {
+            if (cc13_sweepB_at<std::uint8_t>(entity, 0xC8) == 0)
+                host.entity_pose_refresh_world_00414db0(entity);
+            return &cc13_sweepB_at<float>(entity, 0xCC);
+        }
+        float vector3_length_00419440(const float xyz[3]) override {
+            return host.vector3_length_00419440(xyz);
+        }
+        void* entity;
+        Cc13SweepBHost& host;
+    } view(entity, host);
+    cc13_sweepB_entity_forward_xz_006ac260(view, out);
 }
 
 // 006BE730 BSP_NativeVector20_PushBack_006be730 (hypothesis). ABI:

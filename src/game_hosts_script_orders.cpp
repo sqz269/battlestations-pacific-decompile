@@ -42,6 +42,9 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
 #include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
+#include "bsp/wire_goal4_chain354_switches.hpp"
+#include "bsp/cc13_sweepB.hpp"
+#include "bsp/world_ocean.hpp"
 #include "bsp/game_hosts_message_manager.hpp"
 #include "bsp/voice_playback.hpp"                // VoiceClipRecord, for 004483F0's record
 #include "bsp/game_hosts_session_messages.hpp"
@@ -1120,6 +1123,23 @@ bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
         // length of (x, 0, z); zero when that length is not positive.
         float frame[16]{};
         if (units_.scene_marker_frame(static_cast<std::uint32_t>(marker.id), frame)) {
+            if constexpr (bsp::kWireGoal4Chain354Bound) {
+                // 006AC260 reads entity+EC/+F4 after refreshing its world pose.
+                // register_scene_marker_frame retains the actual authored world
+                // matrix; this view needs no synthetic entity or dirty flag.
+                struct MarkerFrameView final : bsp::EntityForwardXzView {
+                    explicit MarkerFrameView(const float* frame) : frame(frame) {}
+                    const float* current_world_cc() override { return frame; }
+                    float vector3_length_00419440(const float xyz[3]) override {
+                        return bsp::length_00419440({xyz[0], xyz[1], xyz[2]});
+                    }
+                    const float* frame;
+                } view(frame);
+                float facing[3];
+                bsp::cc13_sweepB_entity_forward_xz_006ac260(view, facing);
+                pad.facing_x = facing[0];
+                pad.facing_z = facing[2];
+            } else {
             if constexpr (kPc24MissionLuaCc13Bound) {
                 // 006AC2A0 calls 00419440 on (x, 0, z): each square FSTP DWORD, the
                 // sums and 00BF7030's FSQRT at PC24, FSTP DWORD; 006AC2AC-006AC2C3:
@@ -1139,6 +1159,7 @@ bsp::BuildingPadModel* GameScriptOrdersHost::building_pads() {
                 const float inv = len > 0.0 ? static_cast<float>(1.0 / len) : 0.0f;
                 pad.facing_x = inv * frame[8];
                 pad.facing_z = inv * frame[10];
+            }
             }
         }
         points.push_back(pad);
