@@ -40,7 +40,15 @@ struct MatrixOrthonormalizeHost {
     virtual void matrix_orthonormalize_0085dc80(Raw matrix) = 0;
 };
 
-struct Seg2Host : MatrixOrthonormalizeHost {
+// 0042B680 needs only the existing matrix-copy operation. Keep that contract
+// separate so a live matrix producer need not implement unrelated services.
+struct MatrixCopyHost {
+    virtual ~MatrixCopyHost() = default;
+    // 004134F0, ECX = destination, stack source, RET 4: sequential FLD/FSTP copy.
+    virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
+};
+
+struct Seg2Host : MatrixOrthonormalizeHost, MatrixCopyHost {
     virtual ~Seg2Host() = default;
     // Image globals (dword storage at a fixed address) and image data addresses.
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -67,8 +75,7 @@ struct Seg2Host : MatrixOrthonormalizeHost {
     virtual void build_rotation_x_00b64640(Mat16& out, const float& angle) = 0;
     virtual void build_rotation_y_00b646e0(Mat16& out, const float& angle) = 0;
     virtual void build_rotation_z_00b64780(Mat16& out, const float& angle) = 0;
-    // 004134F0, ECX = destination, stack source, RET 4: sequential FLD/FSTP copy.
-    virtual void matrix_copy_004134f0(Raw destination, const Mat16& source) = 0;
+    // matrix_copy_004134f0 comes from MatrixCopyHost.
     // 0085DC80 matrix_orthonormalize_0085dc80 comes from MatrixOrthonormalizeHost.
     // Camera copy bodies (__thiscall(this, other), RET 4).
     virtual void ship_camera_copy_state_0042dc20(Raw camera, Raw other) = 0;
@@ -138,7 +145,7 @@ void matrix_set_rotation_y_0042b3f0(Raw matrix, float angle, Seg2Host& host);
 void matrix_set_rotation_z_0042b420(Raw matrix, float angle, Seg2Host& host);
 Raw matrix_set_rotation_x_negated_0042b450(Raw matrix, float angle, Seg2Host& host);
 Raw matrix_set_rotation_y_negated_0042b490(Raw matrix, float angle, Seg2Host& host);
-Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, Seg2Host& host);
+Raw matrix_assign_0042b680(Raw matrix, const Mat16& source, MatrixCopyHost& host);
 Raw matrix_orthonormalize_return_this_0042b7f0(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042d510(Raw matrix, Seg2Host& host);
 Raw matrix_set_identity_0042e8c0(Raw matrix, Seg2Host& host);
