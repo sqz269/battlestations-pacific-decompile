@@ -3,6 +3,7 @@
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/wire_goal4_chain415_switches.hpp"
 #include "bsp/wire_goal4_chain428_switches.hpp"
+#include "bsp/wire_goal4_chain440_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -271,13 +272,14 @@ struct HostSessionMessages::Image {
 };
 
 namespace {
-// 00768530 allocates each decoded message (58h: 3Ch, 5Ah/5Dh: 28h),
+// 00768530 allocates each decoded message (58h: 3Ch, 5Ah/5Dh: 28h,
+// 6Bh/6Ch: 24h),
 // unlike the sender's stack object. Retain that ownership until this bridge
 // projects the decoded payload to its existing value consumer. bsp.py show
 // 00764D20 / 0071E370 / 0071E390: root-profile stamp, then 00BF65AC iff
 // flags bit 0. singleton_lifetime_allocate uses the matching malloc/free pair.
 // The RAII owner also releases a partially decoded message on exceptions;
-// these three message types have no owned payload subobjects.
+// these message types have no owned payload subobjects.
 template<class Message, Message* (*Delete)(Message*, std::uint32_t)>
 class OwnedDecodedMessage {
 public:
@@ -1074,6 +1076,23 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         // 00761990, 006D2F20, 006D1550, 00761960, 004499C0).
         write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
         stream.begin_read();
+        if constexpr (kWireGoal4Chain440Bound) {
+            // 00768530 case 6Bh allocates 24h, constructs 007618E0 and reads
+            // the real stream. Retain that receive object until projection;
+            // 00761990 flags=1 stamps CE4974 and frees this same allocation.
+            OwnedDecodedMessage<NativeSessionMessage107,
+                delete_native_session_message107_00761990> owner;
+            auto& queued = owner.get();
+            construct_native_session_message107_007618e0(&queued, image.context98, image.profile107);
+            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+            copy.type = queued.header.base.type_10;
+            answer(&native_session_message_is107_00761960);
+            if constexpr (kWireGoal4Chain373Bound) {
+                // The sender remains stack-owned; the decoded owner alone
+                // runs the scalar-deleting path. Neither object is run twice.
+                destroy_native_session_message107_00761950(&sent);
+            }
+        } else {
         NativeSessionMessage107 queued{};
         construct_native_session_message107_007618e0(&queued, image.context98, image.profile107);
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
@@ -1087,12 +1106,27 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         } else {
             // The previous host ended these trivial storage objects directly.
         }
+        }
     } else {
         // 00827D65 / 00813530: 007619B0 itself.
         NativeSessionMessage108 sent{};
         construct_native_session_message108_007619b0(&sent, image.context98, image.profile108);
         write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
         stream.begin_read();
+        if constexpr (kWireGoal4Chain440Bound) {
+            // 00768530 case 6Ch likewise allocates 24h for 007619B0;
+            // 00761A60 flags=1 releases the actual decoded message once.
+            OwnedDecodedMessage<NativeSessionMessage108,
+                delete_native_session_message108_00761a60> owner;
+            auto& queued = owner.get();
+            construct_native_session_message108_007619b0(&queued, image.context98, image.profile108);
+            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+            copy.type = queued.header.base.type_10;
+            answer(&native_session_message_is108_00761a30);
+            if constexpr (kWireGoal4Chain373Bound) {
+                destroy_native_session_message108_00761a20(&sent);
+            }
+        } else {
         NativeSessionMessage108 queued{};
         construct_native_session_message108_007619b0(&queued, image.context98, image.profile108);
         read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
@@ -1106,8 +1140,10 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         } else {
             // The previous host ended these trivial storage objects directly.
         }
+        }
     }
-    // Neither message owns storage; 00761990 / 00761A60 only restamp.
+    // Payloads own no subobjects. With chain440, only the receive allocations
+    // are freed; the sender storage still belongs to this stack frame.
     return copy;
 }
 
