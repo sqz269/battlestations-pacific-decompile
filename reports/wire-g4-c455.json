@@ -1,0 +1,81 @@
+{
+  "packet": "g4-w4",
+  "chain": 455,
+  "base": "631b1b776034b62251e4fcafe5f14170458f71b7",
+  "switch": "bsp::kWireGoal4Chain455Bound",
+  "rows": [
+    {
+      "native": "00a776b0",
+      "status": "wired",
+      "host_site": "src/sound_dialog_table.cpp:load_sound_dialog_table_00a87060",
+      "state": "The real scanner temporary's format and channel count, using the existing runtime's format_counts_00e12ef0 table.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a86fb0",
+      "status": "wired",
+      "host_site": "src/sound_dialog_table.cpp:load_sound_dialog_table_00a87060",
+      "state": "The actual table+8 vector header, actual scanner temporary, and existing pooled-string allocator; appended rows feed first-channel and total-channel stores.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group_value_record_00a04560",
+      "reason": "Native global/per-party hint-map owners are not bound; the inspected campaign path retains 1.0 and SetHintWeight's documented writers are multiplayer scripts."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:release_group_reference",
+      "reason": "No live score-list producer/owner: the existing host documents this list's only consumer as an unreachable debug overlay, so debug-only wiring was excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:release_group_reference",
+      "reason": "No live score-list owner or chosen-record consumer; the documented score list serves only the unreachable debug overlay."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "The runtime has no off-main-thread named-call producer and NamedCallBinding::on_frame_job_thread returns false; copying a synthetic call would not wire real state."
+    },
+    {
+      "native": "00759590",
+      "status": "skipped",
+      "host_site": "src/vehicle_class_lua_load.cpp:read_mothership_class_fields_00759590",
+      "reason": "The typed leaf loader inspects then discards DeckCamera.Position; a real class-load adapter and camera-position store are still missing before integration."
+    }
+  ],
+  "implementation": [
+    "Narrowed the existing 00A776B0 body's host parameter to DialogChannelLayoutHost; SweepCHost inherits that interface, so existing full hosts remain usable. No second address body was added.",
+    "The ON arms replace the existing inline layout stores and vector append. The unchanged old operations are retained in the OFF arms; no row or layout executes twice.",
+    "The native image inlines these operations in 00A87060 rather than calling these two out-of-line bodies. Their effects match; this wiring reuses the existing bodies with live state."
+  ],
+  "evidence": [
+    "bsp.py show 00A776B0: ECX 14h record, stack layout, RET4; record+10h=layout and record+8h=E12EF0[layout].",
+    "bsp.py show 00A86FB0 --asm: A86FCB..A8700E grows max(2*capacity,1), copies through A77EF0 and increments count once.",
+    "bsp.py show 00A87060 --asm --start 160 --lines 80: A8726C..A872B1 performs the same append; A872B5..A872C8 writes the first-channel offset and increments the running total."
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; 2/2 CTest tests passed",
+    "final_build": "scripts/build.ps1 passed; 2/2 CTest tests passed",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "call_graph": "Both bodies have exactly one reachable call from load_sound_dialog_table_00a87060; path reaches GameSoundDialogRuntime and GameStartupHost from WinMainCRTStartup.",
+    "readiness_wired_before": 9713,
+    "readiness_wired_after": 9715,
+    "readiness_targets": "Both rows changed from callees_done_no_wired_caller to wired, called=true, call_sites=1.",
+    "fixture": "local/output/wire_g4_c455_probe.cpp",
+    "fixture_sha256": "52adb86d49d69b29aa2a006877f393e14b5ba386b1709d4b0b5d9fd8157d2e4c",
+    "fixture_result": "Win32 manifested probe passed one synthetic parser case: mono/stereo/51, repeated load/appends, capacity growth 1/2/4/8, preserved names/counts, first-channel offsets, volume/loop, and balanced tracked pooled-name cleanup.",
+    "permanent_tests_added": 0,
+    "game_run": false,
+    "native_abi_equivalence_claimed": false,
+    "audible_output_tested": false
+  }
+}
