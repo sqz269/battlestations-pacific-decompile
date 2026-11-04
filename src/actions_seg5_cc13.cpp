@@ -367,10 +367,12 @@ void run_hide_entity_00464ee0(Seg5Host& host, Object action, Object entity) {
     native_at<std::uint8_t>(entity, 0x68) = host.native_string_equals_ci_00425850(action + 0x2C, "Hide") ? 1 : 0;
 }
 
-// 004646B0.
-void gun_reset_all_barrel_reload_timers_004646b0(Seg5Host& host, Object gun) {
-    for (std::int32_t i = 0; i < native_at<std::int32_t>(gun, 0x448); ++i) {
-        host.gun_set_barrel_reload_timer_0072cf00(gun, i, 0.0f, 0);
+// 004646B0. bsp.py show 004646b0 --asm: 004646B6/D3 re-read +448h,
+// 004646C0..CB supply (barrel, +0.0f, 0) to 0072CF00 in ascending order.
+// Keep one body, with only the raw count/setter access narrowed for live rows.
+void gun_reset_all_barrel_reload_timers_004646b0(GunReloadResetHost& host) {
+    for (std::int32_t i = 0; i < host.barrel_count_448(); ++i) {
+        host.gun_set_barrel_reload_timer_0072cf00(i, 0.0f, 0);
     }
 }
 
