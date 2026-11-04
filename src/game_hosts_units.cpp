@@ -43497,8 +43497,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 009CFC38 sends 7Ah with flag 0; 007CD171 calls
                                 // 007B83F0(0). Its result is the actual +AA0h cell
                                 // this leave gate reads, not a diagnostic copy.
+                                if constexpr (bsp::kWireGoal4Chain343Bound) {
+                                    // Goal 4 chain 343: the 7Ah goes through
+                                    // 0076E520's copy (00760550 write, 00768530
+                                    // case 7Ah 007604C0, 007605A0 read); 00780120
+                                    // asks the copy's 00760520, and 007CD171
+                                    // hands the copy's +20h flag to 007B83F0.
+                                    const bsp::HostSessionMessages::ShipyardLaunchCopy copy =
+                                        owner_.commands.session_messages().queue_shipyard_launch_7a(0);
+                                    if (copy.shipyard_launch_7a) {
+                                        unit_.plane_shipyard_launch_aa0 =
+                                            bsp::band_007a_cc13::plane_launch_delay_007b83f0(
+                                                copy.flag != 0);
+                                    }
+                                } else {
                                 unit_.plane_shipyard_launch_aa0 =
                                     bsp::band_007a_cc13::plane_launch_delay_007b83f0(false);
+                                }
                             } else {
                             unit_.plane_shipyard_launch_aa0 = -1.0f;            // 007B8412
                             }

@@ -351,6 +351,20 @@ public:
         float rates[kShipSinkCapacity]{};
     };
     ShipSinkCopy queue_ship_sink_92(const float* rates, std::uint32_t count) const;
+    // Goal 4 chain 343. VEHICLE_SHIPYARD_LAUNCH (7Ah): the takeoff task's slow
+    // leave 009CFB60 inlines 0080F960's stores at 009CFBFB..009CFC23
+    // (0075B430(7Ah), +18h word 0, +1Ah 0, +4h = 1, +1Ch 0, vtable 00D03310,
+    // +20h = the flag byte) and routes it at 009CFC38 with 0077C2A0 flags 0.
+    // 00768530 case 7Ah calls 007604C0 (00769166), whose stores are the same
+    // header; slots of 00D03310: 00760550 write, 007605A0 read, 00760520
+    // IsType. The plane's 7Ah arm (007CD171) hands the copy's +20h to 007B83F0.
+    struct ShipyardLaunchCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool shipyard_launch_7a{false};
+        std::uint8_t flag{0};
+    };
+    ShipyardLaunchCopy queue_shipyard_launch_7a(std::uint8_t flag) const;
 
 private:
     struct Image;

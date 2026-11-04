@@ -173,12 +173,18 @@ struct HostSessionMessages::Image {
         // 004499C0. 00762130 (seg42) and 0074EAB0 (seg41) both store it.
         std::uint32_t slots_00d00518[5]{0x0074eda0u, 0x0074eb20u, 0x0074eb80u, 0x0074eb00u,
                                         0x004499c0u};
+        // 7Ah 00D03310 (bsp.py ghidra bytes 00D03310 --length 20): 00760650
+        // scalar delete, 00760550 write, 007605A0 read, 00760520 IsType,
+        // 004499C0.
+        std::uint32_t slots_00d03310[5]{0x00760650u, 0x00760550u, 0x007605a0u, 0x00760520u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if constexpr (kWireGoal4Chain343Bound) {
                 if (image_address == 0x00d033c4u) return slots_00d033c4;
                 if (image_address == 0x00d033d8u) return slots_00d033d8;
                 if (image_address == 0x00d033ecu) return slots_00d033ec;
                 if (image_address == 0x00d00518u) return slots_00d00518;
+                if (image_address == 0x00d03310u) return slots_00d03310;
             } else {
                 // The previous binding had no 98h / 9Ah / 99h profile.
             }
@@ -1140,6 +1146,31 @@ HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
     if (copy.count > kShipSinkCapacity) copy.count = kShipSinkCapacity;
     std::memcpy(copy.rates, queued + 0x20, copy.count * sizeof(float));
     // Neither message owns storage; 0074EDA0 only restamps.
+    return copy;
+}
+
+HostSessionMessages::ShipyardLaunchCopy HostSessionMessages::queue_shipyard_launch_7a(
+    std::uint8_t flag) const {
+    const Image& image = *image_;
+    // 009CFBFB..009CFC23: 0080F960's stores inline; 007604C0 makes the same
+    // header, and the sender adds +20h.
+    seg42::VehicleShipyardLaunchMessage sent{};
+    seg42::construct_vehicle_shipyard_launch_007604c0(&sent, image.seg42);
+    sent.flag_20 = flag;
+
+    LocalStream stream;
+    seg42::write_vehicle_shipyard_launch_00760550(&sent, &stream.out);
+    // 00768530 case 7Ah: 007604C0 at 00769166; 0076A27B vtable[8] = 007605A0.
+    stream.begin_read();
+    seg42::VehicleShipyardLaunchMessage queued{};
+    seg42::construct_vehicle_shipyard_launch_007604c0(&queued, image.seg42);
+    seg42::read_vehicle_shipyard_launch_007605a0(&queued, &stream.in);
+    ShipyardLaunchCopy copy;
+    copy.type = queued.u.h.base.type_10;
+    copy.to_unit = copy_goes_to_unit_handler(&seg42::is_vehicle_shipyard_launch_00760520);
+    copy.shipyard_launch_7a = copy.to_unit && copy.type == 0x7A;
+    copy.flag = queued.flag_20;
+    // Neither message owns storage; 00760650 only restamps.
     return copy;
 }
 
