@@ -25,6 +25,7 @@
     {"native": "0075A380", "status": "skipped", "host_site": "src/ai_command_tick.cpp 00A11070 / 00A11690", "reason": "78h formation set goes to peers only (0077C880 -> 0077C7B0); single player has none."},
     {"native": "0075AE10", "status": "skipped", "host_site": "008528B0 SetDepthLevel", "reason": "A2h dip/rise sync is broadcast with 0077C7B0 to peers, not routed locally."},
     {"native": "00763B40", "status": "skipped", "host_site": "cc13_paratrooper_round.cpp 007AB230", "reason": "71h paratrooper landing pos is sent only when game+1FE4h == 1 (MP host) and +218Ch clear."},
+    {"native": "0075AF00", "status": "skipped", "host_site": "src/game_hosts_ship_ai.cpp approach landing mode 3 (009F2304..009F2328)", "reason": "A5h is local (flags 7) but carries the pad's 13-bit network id (+1Ch) and the building's (+1Eh); the host's landing pads have no entity id to resolve the copy back to (also 00749D90 / 00749E10 / 00749E40 / 0074B570)."},
     {"native": "0075EB40", "status": "skipped", "host_site": "src/game_hosts_script_orders.cpp session_broadcast_blackout_0076d310", "reason": "2Bh blackout goes through 00784790 BroadcastExcept, reached only at session mode 1; MP only."}
   ]
 }
