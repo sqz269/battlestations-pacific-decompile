@@ -1,0 +1,67 @@
+{
+  "chain": 399,
+  "slot": "g4-w4",
+  "packet": "ship-class derive completion",
+  "switch": "bsp::kWireGoal4Chain399Bound",
+  "baseline_head": "1b1b30d25de4a566de1cf6d960a72e937f549f68",
+  "verification": {
+    "build": "scripts/build.ps1 passed Win32 Release and both existing CTests after moving the default helper into bsp_core; the first attempt exposed the game-only source boundary and was corrected before commit.",
+    "readiness_wired_before": 9637,
+    "readiness_wired_after": 9638,
+    "new_entry_reachable_bodies": ["00951f20", "00876180"],
+    "readiness_note": "00951F20 was already text-classified wired at baseline, but call_graph.py who found no linked function. Its real call and the previously ready 00876180 body are now confirmed. The initial cached global called total was stale, so it is not used as a baseline.",
+    "analysis_graph": "python tools/call_graph.py --build passed: no inlining and no ICF; 6232 reconstructed addresses called in this analysis configuration.",
+    "analysis_call_sites": [
+      "1057A4F2: ship_class_ai_derived_motion_00828f20 calls vehicle_class_derive_constants_default_00951f20 at 106ED680",
+      "106ED6A2: vehicle_class_derive_constants_default_00951f20 calls return_native_one_byte_00876180 at 10782820"
+    ],
+    "entry_path": "WinMainCRTStartup -> WinMain -> startup -> frame -> menu -> mission advance -> scene load -> GameShipAiHost::register_units -> register_ship_ai_unit -> GameUnitsHost::unit_class_turn_radius_0520 -> 00828F20 -> 00951F20 -> 00876180",
+    "float_math": "No float operations changed; existing ship-class arithmetic and its PC24 path are unchanged.",
+    "runtime_boundary": "Build/tests and executable call-graph proof only; the game was not run. Native ABI equivalence is not claimed."
+  },
+  "rows": [
+    {
+      "native": "00951f20",
+      "status": "wired",
+      "host_site": "src/ship_ai_throttle_ring.cpp: ship_class_ai_derived_motion_00828f20",
+      "evidence": "Original 00828F6F JMP 00951F20 follows the two ship-class field stores. The live helper's derived flag now consumes that call's result instead of a literal true. Moved the one existing body to src/vehicle_class_default_derivation.cpp in bsp_core so the game and existing probes/tests share it."
+    },
+    {
+      "native": "00876180",
+      "status": "wired",
+      "host_site": "src/vehicle_class_default_derivation.cpp: vehicle_class_derive_constants_default_00951f20",
+      "evidence": "Original 00951F20 CALL 00876180, TEST AL,AL, SETNZ AL. Calls the existing byte-result body; its binary constant 1 is the genuine native input-free result."
+    },
+    {"native":"00828f20","status":"skipped","host_site":"src/game_hosts_units.cpp: existing ship-registration and steering callers of ship_class_ai_derived_motion_00828f20","reason":"Already entry-reachable before this packet; no new wiring of this caller is needed. Only its native completion call is restored."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/engine_seg49_64_78_cc13.cpp: text_accepts_input_char_00ab6d30","reason":"Missing live input-character consumer and GuiLeafHost glyph-acceptance adapter; rendering arbitrary glyphs is not this native validation path."},
+    {"native":"00686170","status":"skipped","host_site":"src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager","reason":"Missing native base-manager/registry storage and a consumed native main-menu screen graph; current owner returns a typed MainMenuManager."},
+    {"native":"00689800","status":"skipped","host_site":"src/game_hosts_menu.cpp: create_options_manager","reason":"Missing native manager/base owner and consuming options-screen lifecycle; current factory returns null."},
+    {"native":"00689d90","status":"skipped","host_site":"src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen","reason":"Missing retained FE_attract page owner and attract-screen lifecycle; current factory returns null."},
+    {"native":"0068d760","status":"skipped","host_site":"src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen","reason":"Missing native title/base-manager storage and consumed native press-start binding; current title owner is a typed projection."},
+    {"native":"00437c70","status":"skipped","host_site":"src/game_hosts_mission.cpp: MissionStart::write_checkpoint","reason":"Existing body covers Lua removal only; full native path also needs profile-record erase and storage rewrite continuation."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp: group score-list ownership","reason":"Native score-list record consumer is a debug overlay; single-player gameplay does not read this diagnostic list."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp: group score-list ownership","reason":"Native chosen-marker record consumer is a debug overlay; single-player gameplay does not read this diagnostic list."},
+    {"native":"0099ba10","status":"skipped","host_site":"src/game_hosts_units.cpp: plan_yaw_0099d300","reason":"Missing producer for the original unit+9A8h/+9ACh override angles normalized at 0099D6F1/0099D736."},
+    {"native":"00605630","status":"skipped","host_site":"src/game_hosts_units.cpp: plane bomb-sight update","reason":"Missing camera-bound sight-display input and output consumer; the implemented bomb-release gate is a different native branch."},
+    {"native":"008f1960","status":"skipped","host_site":"src/scene_property_bag.cpp: scene_property_type_for_letter","reason":"Existing classifier already uses scene_reference_kind_letter; no additional native call boundary to restore was established in this packet."},
+    {"native":"008dc7a0","status":"skipped","host_site":"src/native_session_message_tags_56_to_62.cpp: scalar56/delete_native_session_message56_008dc820","reason":"Missing reachable message56 producer/retirement path; existing scalar wrapper alone does not establish single-player execution."},
+    {"native":"008dc980","status":"skipped","host_site":"src/native_session_message_tags_56_to_62.cpp: scalar57/delete_native_session_message57_008dc9e0","reason":"Missing reachable message57 producer/retirement path; existing scalar wrapper alone does not establish single-player execution."},
+    {"native":"008dcb40","status":"skipped","host_site":"src/native_session_message_tags_56_to_62.cpp: scalar58/delete_native_session_message58_008dcba0","reason":"Missing reachable message58 producer/retirement path; existing scalar wrapper alone does not establish single-player execution."},
+    {"native":"008dccc0","status":"skipped","host_site":"src/native_session_message_tags_56_to_62.cpp: delete_native_session_message59_008dcd20","reason":"Missing reachable message59 producer/retirement path; existing deletion wrapper alone does not establish single-player execution."},
+    {"native":"00b6fc30","status":"skipped","host_site":"src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 / fit_and_submit_shadow_slice_00a8ecb0","reason":"Missing live shadow-fit caller and camera owner; both inspected shadow-fit bodies are absent from the current executable graph."},
+    {"native":"00a8bd20","status":"skipped","host_site":"src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20","reason":"Missing reachable ShadowFitHost caller with retained shadow-camera and command-queue state."},
+    {"native":"00a8ecb0","status":"skipped","host_site":"src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0","reason":"Missing reachable ShadowFitHost caller with retained shadow-camera and command-queue state."},
+    {"native":"00729a40","status":"skipped","host_site":"src/cc13_sweepB4.cpp / src/cc13_sweepB5.cpp: native HUD gun-sight consumers","reason":"Missing live gun-sight-status host; the available torpedo stock loop counts individual loaded barrels and is not this boolean HUD path."},
+    {"native":"00aa7910","status":"skipped","host_site":"src/game_hosts_mission_result.cpp: set_widget_local_z","reason":"Missing actual movie widget and transform owner; the current adapter ignores its widget argument."},
+    {"native":"0085b0f0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: immediate gun-angle path","reason":"Missing consumed native aim/snapshot receive path and its actual immediate-angle owner; normal turret slew is a different operation."},
+    {"native":"00429fd0","status":"skipped","host_site":"src/scenes_seg1_cc13.cpp: native_legacy_sbo_string_assign_cstring_00429fd0","reason":"Identified native callers are peer removal and XLive error text; skipped the online-only path."},
+    {"native":"00453f40","status":"skipped","host_site":"src/cc13_seg95.cpp: tagged_value_equals_00bd5680","reason":"Missing live tagged-value host adapter for the vector payload comparison; no equivalent native call was established in the current minimap projection."},
+    {"native":"00475df0","status":"skipped","host_site":"src/cc13_seg95.cpp: tagged_value_equals_00bd5680 / src/game_hosts_hud_world.cpp: update_005c0f20","reason":"Missing live tagged-value adapter or the native minimap color-comparison branch; current minimap host covers icon placement only."},
+    {"native":"00bd5680","status":"skipped","host_site":"src/cc13_seg95.cpp: tagged_value_equals_00bd5680","reason":"Missing live archive/tagged-value equality host and payload producer; current scene-property model does not expose an equivalent comparison site."},
+    {"native":"00aa5a00","status":"skipped","host_site":"src/game_hosts_frontend.cpp: build_quads","reason":"Missing native name-sorted child snapshot consumer; the live bridge sorts rendered widgets by runtime status and Z for a different purpose."},
+    {"native":"0087fc60","status":"skipped","host_site":"src/landscape_lua_seg55_argon.cpp: landscape_height_at_world_or_default_0087fc60","reason":"Missing actual LandscapeState height-field owner and vslot2c adapter at a corresponding live query site."},
+    {"native":"008e4b00","status":"skipped","host_site":"src/game_hosts_powerups.cpp: use_item_008eada0 active-use tail","reason":"Missing corresponding active-use cooldown owner/consumer in the inspected passive-grant path."},
+    {"native":"009565a0","status":"skipped","host_site":"src/game_hosts_units.cpp: set_unit_skill_index_006d1eb0","reason":"Missing actual +6DCh notification object and device fan-out binding; replacing only the shared skill index would omit native side effects."},
+    {"native":"00a95890","status":"skipped","host_site":"src/gamepad_force_requests.cpp: clear_gamepad_force_requests_00a95890","reason":"Missing live clear-all channel adapter; base force-state destruction has a distinct purecall lifetime contract and cannot substitute for request clear/pump."}
+  ]
+}

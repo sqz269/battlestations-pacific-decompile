@@ -11,6 +11,8 @@
 
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/pc24_shipai_cc13.hpp"
+#include "bsp/gameplay_seg61_62_cc13.hpp"
+#include "bsp/wire_goal4_chain399_switches.hpp"
 
 namespace bsp {
 
@@ -197,7 +199,14 @@ ShipClassAiDerivedMotion ship_class_ai_derived_motion_00828f20(
     }
     out.turn_radius_0520 =
         static_cast<float>(static_cast<double>(max_speed_0500) / max_rot_angle);
-    out.derived = true;
+    if constexpr (kWireGoal4Chain399Bound) {
+        // bsp.py show 00828F20 --asm: 00828F6F tail-jumps to 00951F20 only
+        // after both real class-field stores. Its byte result is the returned
+        // completion flag; the rejected-input path above makes no such call.
+        out.derived = gameplay_seg61_62_cc13::vehicle_class_derive_constants_default_00951f20();
+    } else {
+        out.derived = true;
+    }
     return out;
 }
 
