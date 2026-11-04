@@ -3,6 +3,7 @@
 #include "bsp/native_singleton_publication.hpp"
 #include "bsp/native_singleton_vector_registration_wrappers.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain363_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -45,11 +46,18 @@ void NativeProfileHintsOwnerCalls::free_00bf65ac(void* p) noexcept{singleton_lif
 void NativeProfileHintsOwnerCalls::register_00bd0c30(void* p,void* owner){register_native_singleton_object_00bd0c30(p,nullptr,owner);}
 void NativeProfileHintsOwnerCalls::enter_section(void* p){EnterCriticalSection(static_cast<CRITICAL_SECTION*>(p));}
 void NativeProfileHintsOwnerCalls::leave_section(void* p){LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(p));}
-Op::~NativeProfileHintsOwnerOperation(){if(phase==Phase::running||phase==Phase::failed)std::terminate();}
+Op::~NativeProfileHintsOwnerOperation(){if(phase==Phase::running||phase==Phase::failed||phase==Phase::constructor_pending)std::terminate();}
 void Op::acknowledge_diagnostic_cleanup() noexcept{phase=Phase::diagnostic_retired;}
 void* construct_native_profile_hints_owner_00426250(void* p,NativeProfileHintsOwnerContext& c,Op& op){
-    begin(op);
-    try{op.result=construct(p,c,op);op.phase=Op::Phase::complete;return op.result;}
+    const bool nested=op.phase==Op::Phase::constructor_pending;
+    if(nested)op.phase=Op::Phase::running;else begin(op);
+    try{
+        void* const result=construct(p,c,op);
+        // The getter owns the guard/allocation/publication progress. Do not
+        // complete it or publish its result before registration and unlock.
+        if(!nested){op.result=result;op.phase=Op::Phase::complete;}
+        return result;
+    }
     catch(...){op.phase=Op::Phase::failed;throw;}
 }
 void destroy_native_profile_hints_owner_00426300(void* p,NativeProfileHintsOwnerContext& c) noexcept{
@@ -69,7 +77,20 @@ void* get_native_profile_hints_owner_004c1e90(NativeProfileHintsOwnerContext& c,
         op.unwind_state=0;
         if(!c.actual_publication_00e17664){
             op.native_site=0x4c1eec;void* const allocation=c.calls.allocate_00bf681b();op.allocation=allocation;op.unwind_state=1;
-            void* const result=allocation?construct(allocation,c,op):nullptr;
+            void* const result=[&]() -> void* {
+                if constexpr(kWireGoal4Chain363Bound){
+                    // 004C1E90 -> 00426250 (bsp.py show 004c1e90): the same
+                    // actual 50h allocation is constructed before publication.
+                    // Keep one operation so a failing constructor retains its
+                    // temporary alongside the getter's held guard/allocation.
+                    if(!allocation)return nullptr;
+                    op.phase=Op::Phase::constructor_pending;
+                    return construct_native_profile_hints_owner_00426250(allocation,c,op);
+                }else{
+                    void* const result=allocation?construct(allocation,c,op):nullptr;
+                    return result;
+                }
+            }();
             op.unwind_state=0;c.actual_publication_00e17664=result;op.owner_published=true;
             op.native_site=0x4c1f16;void* const manager=c.calls.manager_00415350(c.strings);
             void* const current=c.actual_publication_00e17664;op.registered_owner=current;op.native_site=0x4c1f24;
