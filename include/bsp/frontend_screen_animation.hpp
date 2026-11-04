@@ -204,6 +204,9 @@ struct FrontEndScrollerHost {
     // and 006835F8. Naming it an alpha setter follows from the three constants
     // being 0.2, 0.25 and 1.0.
     virtual void widget_set_alpha(void* widget, float alpha) = 0;
+    // Source-only capability: the three alpha setters cannot call back into
+    // or change their scroller. Generic callback hosts retain per-call reads.
+    virtual bool alpha_writes_preserve_scroller() const noexcept { return false; }
     // Input manager 004BEC00, instance +4h, float at +36B4h; when that reads
     // zero the block falls back to +3714h at 00683864.
     virtual float scroll_axis() = 0;
@@ -270,7 +273,7 @@ void set_auto_scroll(FrontEndScreenScroller& scroller, ScrollDirection direction
 // float arrow_end_alpha) RET 0Ch. Ghidra reads this as two arguments because it
 // loses four bytes of stack across each of the three virtual calls; the listing
 // reloads from [ESP+4], [ESP+0Ch] and [ESP+10h], which are three distinct slots.
-void set_widget_alphas(const FrontEndScreenScroller& scroller, float thumb_alpha,
+void set_widget_alphas_00683330(const FrontEndScreenScroller& scroller, float thumb_alpha,
     float arrow_start_alpha, float arrow_end_alpha, FrontEndScrollerHost& host);
 
 // 00683A40 __fastcall(this) RET.

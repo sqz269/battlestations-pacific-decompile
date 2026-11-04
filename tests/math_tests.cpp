@@ -1818,6 +1818,8 @@ int main() {
             bsp::GuiWidgetSize widget_size(void* p) override { return node(p).transform.size; }
             void widget_set_size(void* p, const bsp::GuiWidgetSize& v) override { node(p).transform.size = v; }
             void widget_set_alpha(void* p, float v) override { node(p).color[3] = v; }
+            // Same non-reentrant RGBA provider contract as the live menu host.
+            bool alpha_writes_preserve_scroller() const noexcept override { return true; }
             float scroll_axis() override { std::abort(); }
             bool pad_axis(int, double&) override { std::abort(); }
             float cursor_x() override { std::abort(); }
