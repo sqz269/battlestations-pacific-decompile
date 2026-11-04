@@ -60,6 +60,7 @@
 #include "bsp/wire_goal4_chain365_switches.hpp"
 #include "bsp/gameplay_seg61_62_cc13.hpp"   // goal 4 chain 365: the repair task at unit+A20h
 #include "bsp/wire_goal4_chain369_switches.hpp"       // chain 369: 008522C0 / 00852410
+#include "bsp/wire_goal4_chain386_switches.hpp"       // chain 386: 0072F6E0 / 008FF200 / 008FB590
 #include "bsp/ship_catapult_host.hpp"                 // chain 369: catapult launch record
 #include "bsp/pc24_unitshost_cc13.hpp"                // chain 369: 0042B2F0
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
@@ -3861,6 +3862,34 @@ struct GameGunneryHost::Impl {
     std::map<int, ShipModelSlots> ship_slots_by_class;
     // 0072F6E0's per-gun cache: (gun, target) -> clear.
     std::map<std::pair<std::size_t, std::size_t>, bool> line_of_fire_cache;
+    // Goal 4 chain 386: the same cache as the gun keeps it, gun+424h's 0Ch
+    // records {target, answer, expiry} in append order (0072F809..0072F811),
+    // per gun index. The target word is the host's unit index (natively the
+    // entity pointer); 0072AD40 ages gun+114h's records, never these.
+    std::map<std::size_t, std::vector<bsp::gameplay_seg40_59_cc13::LineOfFireRecord>>
+        line_of_fire_records;
+    // [00432650()+8Ch], the record expiry's multiplier at 0072F772: 0087D7B0's
+    // Globals.WeaponSystems.SafeToFireCacheTimeOut (native_global_config_load.cpp
+    // f_SafeToFireCacheTimeOut; +88h is WeaponDirectorThinkTime, think_time).
+    // Read once from the mission Lua; when the table is absent, the value the
+    // shipped Globals.lua installs (gunnery_tables.hpp).
+    // Goal 4 chain 386: DepthChargeBot slot answers 008FB590 refused (not IsKindOf(8)).
+    unsigned long long depth_charge_kind_refusals{0};
+    bool safe_to_fire_cache_timeout_read{false};
+    float safe_to_fire_cache_timeout_8c{bsp::kInstalledSafeToFireCacheTimeOut};
+    float safe_to_fire_cache_timeout() {
+        if (!safe_to_fire_cache_timeout_read) {
+            safe_to_fire_cache_timeout_read = true;
+            float value = 0.0f;
+            const bool authored = lua.read_global_nested_number("Globals", "WeaponSystems",
+                "SafeToFireCacheTimeOut", value);
+            if (authored) safe_to_fire_cache_timeout_8c = value;
+            log.notef("line of fire: SafeToFireCacheTimeOut %.3f (%s)",
+                static_cast<double>(safe_to_fire_cache_timeout_8c),
+                authored ? "Globals.WeaponSystems" : "installed default");
+        }
+        return safe_to_fire_cache_timeout_8c;
+    }
     unsigned long long impacts_land{0};   // packet cc9_landscape_spatial_attach
     unsigned long long landscape_traces{0};  // Landscape shapes reached past 0085CAD0
     unsigned long long pick_rays_logged{0};
@@ -4741,6 +4770,39 @@ struct GameGunneryHost::Impl {
     // each with a random sign; bot+64h takes the clock, so a roll also covers
     // every shot fired before it (fired = false).
     void roll_aa_flak_error_008fdbe0(AaFlakError& fe, std::size_t g, int level) {
+        if constexpr (kWireGoal4Chain386Bound) {
+            // Goal 4 chain 386: 008FDBE0 itself on the AAFlakBot row 00901610
+            // loaded from Robots.lua (reader 008FC6D0, the same seven fields
+            // kAaFlakErrorRows transcribes). Its seven stream-1 draws keep this
+            // host's keys and order: U(0, 100), then U and the sign for h, v and
+            // the distance. SUBSTITUTION, labelled as before: the sign's raw MT
+            // output (00BA2C20, bit 0 set -> +1) is the host's U(0, 1) >= 0.5.
+            const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+                bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+            if (bots != nullptr && bots->aa_flak_loaded) {
+                const bsp::gameplay_seg40_59_cc13::AaFlakError e =
+                    bsp::gameplay_seg40_59_cc13::aa_flak_bot_roll_error_008fdbe0(
+                        bots->aa_flak.levels[static_cast<std::size_t>(level)],
+                        [&](int, float low, float high) -> float {
+                            return draw(Draw::aa_flak_error, g, 0, low, high);
+                        },
+                        [&](int) -> std::uint32_t {
+                            return draw(Draw::aa_flak_error, g, 1, 0.0f, 1.0f) < 0.5f ? 0u : 1u;
+                        });
+                fe.h = e.horz_058;
+                fe.v = e.vert_05c;
+                fe.dist = e.dist_060;
+                fe.fired = false;
+                ++aa_flak_rolls;
+                ++aa_flak_rolls_by_level[level];
+                // Diagnostics only: the drawn magnitudes back in degrees.
+                aa_flak_angle_sum_deg += (std::fabs(static_cast<double>(e.horz_058))
+                    + std::fabs(static_cast<double>(e.vert_05c))) * (180.0 / 3.14159265358979) * 0.5;
+                aa_flak_dist_abs_sum += std::fabs(static_cast<double>(e.dist_060));
+                done("AAFlakBot::roll_error_008fdbe0", 0x008fdbe0u);
+                return;
+            }
+        }
         const float* row = kAaFlakErrorRows[level];
         const bool good = draw(Draw::aa_flak_error, g, 0, 0.0f, 100.0f) < row[0] * 100.0f;
         const float lo_a = good ? row[1] : row[2], hi_a = good ? row[2] : row[3];
@@ -5394,6 +5456,30 @@ struct GameGunneryHost::Impl {
     float bullet_throw_magnitude_0073031d(const GameGunRow& gun, std::size_t owner,
         int& seat_out, const SecondAmmo* mode1 = nullptr) const {
         seat_out = -1;
+        if constexpr (kWireGoal4Chain386Bound) {
+            // Goal 4 chain 386: 00730160's 0073031D..0073049C itself
+            // (gun_throw_magnitude_0073031d): the authored Throw (007302DF), zeroed
+            // for Function 1, 5 or 6 under TurnOffAAGunThrow (007302EA..00730317),
+            // times the seat bot's BulletThrowMul (00730498 FMUL, FSTP float). No
+            // seat, or no bullet class (00730323..0073032F), leaves 1.0: the image
+            // never reaches the FMUL. The seat and row choice is the host's below.
+            bsp::GunThrowInputs t;
+            t.authored_throw = mode1 != nullptr ? mode1->throw_amount : gun.throw_amount;
+            const int fn = gun.category;                                  // gunclass+80h
+            t.aa_function = fn == 1 || fn == 5 || fn == 6;
+            t.turn_off_aa_gun_throw = kTurnOffAaGunThrow;
+            if (gun.bullet_class >= 0) {
+                int level = units.skill_level(owner);                     // bot+34h, 008FBCAC
+                if (level < 0 || level > 5) level = 1;
+                const int seat = bullet_throw_seat_0073031d(gun, owner, mode1);
+                if (seat >= 0) {
+                    const std::optional<float> mul = seat_bot_bullet_throw_mul(seat, level);
+                    t.bot_throw_multiplier = mul ? *mul : kBulletThrowMul[seat][level];
+                    seat_out = seat;
+                }
+            }
+            return bsp::gun_throw_magnitude_0073031d(t);
+        } else {
         // kFlakSecondAmmoCadenceBound: mode 1 reads [gun+3F8h] = Bullet[2].
         float magnitude = mode1 != nullptr ? mode1->throw_amount : gun.throw_amount;  // 007302DF
         const int f = gun.category;                                   // gunclass+80h
@@ -5439,6 +5525,38 @@ struct GameGunneryHost::Impl {
             seat_out = seat;
         }
         return magnitude;
+        }
+    }
+    // Goal 4 chain 386: the seat whose bot multiplies the throw at 00730498,
+    // the role-slot chain of 00730348..00730482 as the arm above reads it.
+    int bullet_throw_seat_0073031d(const GameGunRow& gun, std::size_t owner,
+        const SecondAmmo* mode1) const {
+        const int f = gun.category;                                       // gunclass+80h
+        int seat = -1;
+        const bool plane = units.unit_is_kind_of(owner, bsp::kUnitGunneryKindPlaneBase);
+        if (plane && f == 0) {                                            // 00730348..0073038D
+            if (role_ai_held_00521e70(owner, 1)) seat = kThrowPilot;      // [unit+0DF4h]
+        } else {
+            const int sub = mode1 != nullptr ? mode1->sub_type
+                                             : gun.bullet_sub_type;       // [[gun+3F8h]+34h]+8h
+            if (sub == 0x0A) {                                            // gun+39Ch, role 5
+                if (f == 7 && role_ai_held_00521e70(owner, 5)) seat = kThrowTorpedo;
+            } else if (sub == 0x0B) {                                     // role 7, +3A4h else +3A0h
+                if (role_ai_held_00521e70(owner, 7)) {
+                    if (f == 9) seat = kThrowArtillery;
+                    else if (f == 8) seat = kThrowDepthCharge;
+                }
+            } else if (sub == 0x10) {                                     // gun+394h, role 3
+                if ((f == 5 || f == 6) && role_ai_held_00521e70(owner, 3)) seat = kThrowAaFlak;
+            } else if (sub >= 4 && sub <= 7) {                            // gun+398h, role 4
+                if ((f == 2 || f == 3 || f == 4 || f == 6)
+                    && role_ai_held_00521e70(owner, 4)) seat = kThrowArtillery;
+            } else if (f == 1 && role_ai_held_00521e70(owner, 2)          // gun+390h, 00730471
+                       && role_ai_held_00521e70(owner, 3)) {              // 00730482
+                seat = plane ? kThrowTailGunner : kThrowAaGunner;         // 00922E90(gun, 0Fh)
+            }
+        }
+        return seat;
     }
     unsigned long long torpedo_gyro_launches{0};
     unsigned long long torpedo_gyro_turn_steps{0};
@@ -8111,6 +8229,20 @@ public:
                 }
             }
         }
+        if constexpr (kWireGoal4Chain386Bound && bsp::kWireGoal4Chain288Bound) {
+            // Goal 4 chain 386: the DepthChargeBot slot's own accept. 00729BC0
+            // takes slot +3A0h for a projectile of kind 0Bh on a gun that is not
+            // kind 9 (00729CE9..00729D00) and returns its vtable[1Ch](target)
+            // (00729D16..00729D1C): 008FB590, a target answering IsKindOf(8)
+            // (008FB594..008FB5A5). The host answered the slot alone.
+            if (in.slot_accepts_target && selected_bot == bsp::GunBotClass::kDepthCharge) {
+                const bool has_target = other < owner_.units.count();
+                in.slot_accepts_target = bsp::gameplay_seg40_59_cc13::depth_charge_bot_accepts_008fb590(
+                    has_target, has_target && owner_.units.unit_is_kind_of(other, 8));
+                if (!in.slot_accepts_target) ++owner_.depth_charge_kind_refusals;
+                owner_.done("DepthChargeBot::accepts_008fb590", 0x008fb590u);
+            }
+        }
         // Evaluated on every call so a run with the switch off still counts what
         // the bound terms would refuse; applied only when that term's own switch is on.
         {
@@ -8256,11 +8388,37 @@ public:
         // line-of-fire decision 00729560 installs for kinds 1, 5 and 6.
         auto line_of_fire_refuses = [&]() -> bool {
             if constexpr (!kAaLineOfFireBound) return false;
+            bool clear;
+            if constexpr (kWireGoal4Chain386Bound) {
+                // Goal 4 chain 386: 00730A20 -> 0072F6E0 itself. Its +8 predicate
+                // is what 00729560 installs for kinds 1, 5 and 6 (none: answer 1,
+                // 0072F6E6); a record for the target answers from the forward
+                // scan (0072F717..0072F821); a miss asks 00729670, the negation of
+                // 0072CDD0's blocked test (0072F73A), draws the expiry U(0.8, 1.2)
+                // on stream 1 times [00432650()+8Ch] (0072F76D, 0072F772; never
+                // read, as kAaLineOfFireExpiryDrawBound has it) and appends.
+                const std::size_t g = static_cast<std::size_t>(&row - owner_.guns.data());
+                const bool installed = kind == 1 || kind == 5 || kind == 6;
+                clear = bsp::gameplay_seg40_59_cc13::gun_line_of_fire_decision_0072f6e0(
+                    owner_.line_of_fire_records[g], installed, static_cast<std::uint32_t>(other),
+                    [&]() -> bool {
+                        ++owner_.line_of_fire_queries;
+                        const bool c = !owner_.line_of_fire_blocked_0072cdd0(unit_, other, muzzle);
+                        if (!c) ++owner_.line_of_fire_blocked;
+                        return c;
+                    },
+                    owner_.safe_to_fire_cache_timeout(),
+                    [&](int, float low, float high) -> float {
+                        return owner_.draw(GameGunneryHost::Impl::Draw::line_of_fire_ttl, g,
+                            other, low, high);
+                    });
+                if (!installed) return false;
+                owner_.done("Gun::target_shot_decision_0072f6e0", 0x0072f6e0u);
+            } else {
             if (kind != 1 && kind != 5 && kind != 6) return false;
             const std::size_t g = static_cast<std::size_t>(&row - owner_.guns.data());
             const auto key = std::make_pair(g, other);
             auto cached = owner_.line_of_fire_cache.find(key);
-            bool clear;
             if (cached != owner_.line_of_fire_cache.end()) {
                 clear = cached->second;
             } else {
@@ -8274,6 +8432,7 @@ public:
                 }
                 owner_.line_of_fire_cache.emplace(key, clear);
                 owner_.done("Gun::target_shot_decision_0072f6e0", 0x0072f6e0u);
+            }
             }
             if (clear) return false;
             in.slot_accepts_target = false;
@@ -8557,6 +8716,59 @@ public:
             }
         }
         row.target_is_fire_target = is_fire_target;
+        if constexpr (kWireGoal4Chain386Bound) {
+            // Goal 4 chain 386: 008FF200 itself, the AAFlakBot's SetFireTarget
+            // (vtable 00D18270, from 00727F10), over the same guns as below. With
+            // a target and the role slot AI-held (008FF21B..008FF228, 00927F10)
+            // it rolls 008FDBE0 (008FF247) on the loaded Robots.lua row. Its
+            // kind-6 request 0072D5B0(1, 0) is not acted on here: the host picks
+            // Bullet[2] per shot (kFlakSecondAmmoCadenceBound, labelled there).
+            const bsp::cc13_torp_goaway::GunBotConfigs* bots =
+                bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+            if (kFlakErrorRerollBound && kAaFlakAimErrorBound && other < owner_.units.count()
+                && (row.category == 5
+                    || (row.category == 6
+                        && owner_.dp_air_ammo(slot, row.category, other) != nullptr))) {
+                int level = owner_.units.skill_level(unit_);
+                if (level < 0 || level > 5) level = 1;
+                if (bots != nullptr && bots->aa_flak_loaded) {
+                    const bsp::gameplay_seg40_59_cc13::AaFlakTargetSetResult set =
+                        bsp::gameplay_seg40_59_cc13::aa_flak_bot_set_fire_target_008ff200(
+                            true, owner_.slot_ai_held_00927f10(row.seat_1ac), row.category,
+                            bots->aa_flak.levels[static_cast<std::size_t>(level)],
+                            [&](int, float low, float high) -> float {
+                                return owner_.draw(GameGunneryHost::Impl::Draw::aa_flak_error,
+                                    slot, 0, low, high);
+                            },
+                            [&](int) -> std::uint32_t {
+                                return owner_.draw(GameGunneryHost::Impl::Draw::aa_flak_error,
+                                    slot, 1, 0.0f, 1.0f) < 0.5f ? 0u : 1u;
+                            });
+                    owner_.done("AAFlakBot::set_fire_target_008ff200", 0x008ff200u);
+                    if (set.rolled) {
+                        GameGunneryHost::Impl::AaFlakError& fe = owner_.aa_flak_error_by_gun[slot];
+                        fe.attached = true;
+                        fe.h = set.error.horz_058;
+                        fe.v = set.error.vert_05c;
+                        fe.dist = set.error.dist_060;
+                        fe.fired = false;
+                        ++owner_.aa_flak_rolls;
+                        ++owner_.aa_flak_rolls_by_level[level];
+                        owner_.aa_flak_angle_sum_deg += (std::fabs(static_cast<double>(fe.h))
+                            + std::fabs(static_cast<double>(fe.v)))
+                            * (180.0 / 3.14159265358979) * 0.5;   // diagnostics only
+                        owner_.aa_flak_dist_abs_sum += std::fabs(static_cast<double>(fe.dist));
+                        owner_.done("AAFlakBot::roll_error_008fdbe0", 0x008fdbe0u);
+                        ++owner_.aa_flak_send_rolls;
+                    }
+                } else if (owner_.slot_ai_held_00927f10(row.seat_1ac)) {
+                    GameGunneryHost::Impl::AaFlakError& fe = owner_.aa_flak_error_by_gun[slot];
+                    fe.attached = true;
+                    owner_.roll_aa_flak_error_008fdbe0(fe, slot, level);
+                    ++owner_.aa_flak_send_rolls;
+                }
+            }
+        } else
         if (kFlakErrorRerollBound && kAaFlakAimErrorBound && other < owner_.units.count()
             && (row.category == 5
                 || (row.category == 6 && owner_.dp_air_ammo(slot, row.category, other) != nullptr))
