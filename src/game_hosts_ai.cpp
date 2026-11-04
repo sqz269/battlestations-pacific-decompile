@@ -64,6 +64,7 @@
 #include "bsp/wire_goal4_chain409_switches.hpp"
 #include "bsp/wire_goal4_chain474_switches.hpp"
 #include "bsp/wire_goal4_chain490_switches.hpp"
+#include "bsp/wire_goal4_chain541_switches.hpp"
 #include "bsp/cc13_front6.hpp"
 #include "bsp/cc13_seg69.hpp"
 #include "bsp/cc13_seg70.hpp"
@@ -4343,10 +4344,39 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A2CDA3..00A2CDB7: the previous +564Ch is deleted, the new one stored.
         if (bsp::ai_command_install_deletes_previous(true)) ++summary.commands_replaced;
         bsp::AiCommandObject c;
+        if constexpr (kWireGoal4Chain541Bound) {
+            // bsp.py show 00A2CCF0 / 00A10240: the constructor receives
+            // this live group and the planner's point.
+            // MOVETO's inline construction in 00A2CCF0 has the same final
+            // layout as 00A10240. Borrow an aligned Original-shaped object,
+            // then publish its actual fields into the command the tick consumes.
+            // Constructor padding stays unread; no image vtable is invoked.
+            if (choice == Choice::MoveTo) {
+                alignas(std::uint32_t) std::array<std::uint8_t, 0x14> storage;
+                const auto native = bsp::cc13_seg69::ai_command_moveto_construct_00a10240(
+                    bsp::cc13_seg69::Raw{storage.data()}, g, point);
+                // Dispatch the published primary vtable's +4h slot to its
+                // reconstructed leaf (bsp.py show 00A10270).
+                if (native.at<std::uint32_t>(0) != bsp::cc13_seg69::kMoveToVtable)
+                    std::abort(); // 00A10240 must publish the MOVETO class.
+                c.type = bsp::ai_command_move_to_get_type_00a10270();
+                c.owner_group = native.ptr(4);
+                std::memcpy(c.target_position, native.p + 8, sizeof(c.target_position));
+            } else {
+                // The only current caller passes ratio=1.0, so its stream-1
+                // fraction cannot select this branch. Retain the host path
+                // until a real producer can select CAUTIOUSMOVE; merely adding
+                // a static CALL here would not make 00A102D0 run in the game.
+                c.type = bsp::AiCommandType::CautiousMove;
+                c.owner_group = g;
+                for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
+            }
+        } else {
         c.type = choice == Choice::CautiousMove ? bsp::AiCommandType::CautiousMove
                                                 : bsp::AiCommandType::MoveTo;
         c.owner_group = g;
         for (int k = 0; k < 3; ++k) c.target_position[k] = point[k];
+        }
         g->command = c;
         ++mode_think_moves;
     }
