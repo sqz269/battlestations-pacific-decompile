@@ -1,0 +1,239 @@
+{
+  "run": 836,
+  "chain": 418,
+  "branch": "agent/g4-w4",
+  "base": "b934d5e115",
+  "switch": "bsp::kWireGoal4Chain418Bound",
+  "picked": "The five application startup VFS-to-FileStore cache requests through the existing whole 00BE7AB0 body",
+  "wired_before": 9663,
+  "wired_after": 9664,
+  "called_before": 4903,
+  "called_after": 4908,
+  "rows": [
+    {
+      "native": "00be7ab0",
+      "status": "wired",
+      "host_site": "src/game_hosts.cpp: GameStartupHost::run_initialize_phases -> GameVfsHost::preload_startup_scripts -> GameNativeVfsRuntime::cache_file_store",
+      "evidence": "bsp.py show 00be7ab0 and --asm: ECX store, name/flags stacked, RET8; open at 7ACB, memory view at 7AD1, AddFile at 7ADC, release memory before source at 7AE1..7B11",
+      "real_state": "The current native VFS publication, existing mounted FileStore factory/provider, pooled NativeString names and flags0x32 from startup_script_preloads_0073d410, actual native stream owners and existing conversion/completion/deletion dispatch",
+      "built_call": "One entry-reachable call at 1035ce47 from GameNativeVfsRuntime::cache_file_store to cache_file_from_vfs_00be7ab0 at 103a2bf0",
+      "remaining": "Gameplay/startup launch and original ABI/fault/EH equivalence are untested"
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Bag::insert_enum",
+      "reason": "Already entry-reachable in the baseline built graph; the readiness text state alone missed this existing connection"
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: Impl merge paths",
+      "reason": "Already entry-reachable in the baseline built graph; no new body connection is needed here"
+    },
+    {
+      "native": "00bddc80",
+      "status": "skipped",
+      "host_site": "src/resource_lookup.cpp: resource candidate resolver",
+      "reason": "Already called from entry-reachable code in the baseline; the identifier manifest omits the address suffix"
+    },
+    {
+      "native": "006e2e10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bomb activation path",
+      "reason": "The whole body needs the native projectile model/scene-node owner and activation callbacks, not only the host's typed ballistic state"
+    },
+    {
+      "native": "006e6450",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile water-entry path",
+      "reason": "Native shot+24/+28 effect owners and the persistent +44 water-mode byte are not attached to this host path"
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: bomb family simulation",
+      "reason": "The whole BombTickState/class/host composition is missing from the live gunnery projection"
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::route_message",
+      "reason": "The command route records the tick-window call but does not supply the session queue's full category/tick/sender dispatch state"
+    },
+    {
+      "native": "004a5620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneTrafficRecorder",
+      "reason": "Traffic parsing has typed records; the runtime constructor, owning map insertion and real raw runtime allocation contract remain unbound"
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: ErrorContext tree operations",
+      "reason": "No entry-reachable ErrorContext tree owner/caller was found; routing its helper alone would leave it uncalled"
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450",
+      "reason": "The ErrorContext map/iterator caller still lacks an entry-reachable application owner"
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: ErrorContext insertion/erasure",
+      "reason": "The ErrorContext tree's application owner and reachable mutation path are missing"
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: ErrorContext insertion/erasure",
+      "reason": "The ErrorContext tree's application owner and reachable mutation path are missing"
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: check_multiplayer_player_count",
+      "reason": "Multiplayer participant-count policy is outside the requested single-player wiring scope"
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Legacy typed job groups are deliberately unattached; the actual native scheduler owns its separate job walk"
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "The legacy typed path lacks actual group publication and frame-job owner attachment"
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "The legacy projection has no actual registered group elements to interpolate"
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "The native job owner is not attached to this legacy projection; replaying a second body walk would be wrong"
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_0",
+      "reason": "The scene host returns no record remap name and does not attach the native remap service/context"
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_1",
+      "reason": "The scene host returns no record remap name and does not attach the native remap service/context"
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_2",
+      "reason": "The scene host returns no record remap name and does not attach the native remap service/context"
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: set_remap_texture_3",
+      "reason": "The scene host returns no record remap name and does not attach the native remap service/context"
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::script_set_failure_008132c0 Periscope arm",
+      "reason": "The live failure route lacks the periscope shape/node state and complete repair-deadline/effect application"
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "entity_route_slot still returns -1 because real entity+1AC ownership is absent; the scoring stride owner is also unbound"
+    },
+    {
+      "native": "0042b680",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movcam_frame_0079c200",
+      "reason": "The reconstructed MovCam matrix-assignment caller and Seg2Host matrix service are not connected to an entry-reachable camera path"
+    },
+    {
+      "native": "00533d30",
+      "status": "skipped",
+      "host_site": "src/menu_screens_2.cpp: formation update; src/cc13_seg95.cpp: tagged_value_equals_00bd5680",
+      "reason": "Neither the typed formation equality host nor the tagged-value equality caller is connected to the live application"
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: text_accepts_input_char_00ab6d30",
+      "reason": "The live editable-text character input host does not yet supply this font-backed acceptance callback"
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::entity_set_skill_level",
+      "reason": "The generic unit's child-object and device/director re-skill fanout state is absent; only the existing pilot index is currently applied"
+    },
+    {
+      "native": "006db2f0",
+      "status": "skipped",
+      "host_site": "src/marker_classes.cpp: clear_marker_classes_006db2f0",
+      "reason": "The live application does not own the MarkerClassContext required for the reconstructed registry lifetime"
+    },
+    {
+      "native": "00922e90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: authored parent resolution",
+      "reason": "The real typed scene-parent map is not a native entity+3C chain with an attached Seg60Host kind query"
+    },
+    {
+      "native": "00437f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp / src/game_hosts_script_orders.cpp: vehicle class lookup",
+      "reason": "The native registry constructor and lazy-singleton host are not connected to these typed descriptor lookups"
+    },
+    {
+      "native": "00424a10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: load_gameplay_settings_0083b5e0",
+      "reason": "The live units path uses separate settings projections; it does not retain and consume this GameplayTuningSettings constructor output"
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native formation message word storage",
+      "reason": "The native message35 word-array owner and its live producer are not attached to the formation route"
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: native formation message word storage",
+      "reason": "The native message35 word-array owner and its live producer are not attached to the formation route"
+    },
+    {
+      "native": "00bbe490",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_set_alpha_00bbe490",
+      "reason": "The required CloudInstanceC owner is not the live weather_render CloudInstanceState projection"
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed",
+    "call_graph": "call_graph.py and who/path 00be7ab0 confirm a direct entry-reachable call from GameNativeVfsRuntime::cache_file_store",
+    "fixture_command": "python tools/wire_goal4_chain418_probe.py",
+    "fixture_result": "local/output/wire_g4_c418_probe/cache418_fixture/result.json",
+    "fixture_scope": "One isolated Source fixture constructs the production raw VFS/FileStore owners with verified original read-only data and synthetic loose files; three whole-body cache calls preserve mounted cached bytes, duplicate entries and opened-empty backing, then complete shared drain",
+    "float_math_changed": false,
+    "game_launched": false,
+    "game_validated": false,
+    "original_binary_abi_compatible": false
+  },
+  "left": "Main-menu music caching/removal and unrelated unbound objects remain separate; startup enclosing-phase parity and in-game behavior are untested"
+}

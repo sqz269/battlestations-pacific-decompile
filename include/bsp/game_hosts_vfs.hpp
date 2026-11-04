@@ -104,6 +104,7 @@ public:
     std::vector<std::string> enumerate(const std::string&, const std::string&, std::uint32_t) override;
     std::array<std::uint32_t, 5> file_date(const std::string&) override;
     void pump_pending();
+    void preload_startup_scripts();
     // The 004C9A70 normal pair. An open or interrupted frame is retained until
     // explicit normal close; no destructor replays native scope cleanup.
     void open_title_fileblock(const char* label);

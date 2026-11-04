@@ -146,6 +146,10 @@ public:
     // Requires a bound completion dispatcher and a previously created FileStore.
     // Resolve/request frames are retained together if a nested call fails.
     bool request_file_store(const char* path, std::uint32_t native_callback);
+    // Whole BE7AB0 over the SAME mounted factory cache and raw streams.
+    // An escaping operation retains its name/frame until the caller stops;
+    // no retry or destructor cleanup replays the interrupted native releases.
+    void cache_file_store(const char* path, std::uint32_t flags);
     // Cold Source-only preparation for the whole raw Icon request. Fresh
     // Runtime-owned node/context/resolver/request backing, no Native call or
     // name copy. Caller retains this Runtime through actual I/O/callback last-

@@ -3108,11 +3108,20 @@ void release_whole_file_00bd91f0(void* buffer, void (__cdecl* free_bf6989)(void*
 }
 void cache_file_from_vfs_00be7ab0(void* store, void* vfs, const void* name,
     CWord flags, const FileStoreBindings& b) {
-    void* const stream = c_virtual<void*>(vfs, 4, name, flags);
-    void* const memory = b.memory_view_00bef750(stream);
-    b.add_file_00be7760(store, name, memory);
-    c_release_ref(memory);
-    c_release_ref(stream);
+    // bsp.py show 00BE7AB0 --asm: 7ACB opens with the supplied name/flags,
+    // 7AD1 obtains the memory view, 7ADC inserts, then 7AE1..7B11 releases
+    // memory before source. Source bindings preserve this sequence using the
+    // mounted provider's real owners; raw bindings retain their existing calls.
+    FileStoreCacheHost* const host = b.source_host;
+    void* const stream = host ? host->open_stream(vfs, name, flags)
+                              : c_virtual<void*>(vfs, 4, name, flags);
+    void* const memory = host ? host->memory_view(stream) : b.memory_view_00bef750(stream);
+    if (host) host->add_file(store, name, memory);
+    else b.add_file_00be7760(store, name, memory);
+    if (host) host->release_temporary(memory);
+    else c_release_ref(memory);
+    if (host) host->release_temporary(stream);
+    else c_release_ref(stream);
 }
 } // namespace bsp::oct18_tail_c
 
