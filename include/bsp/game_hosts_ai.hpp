@@ -500,6 +500,8 @@ void ai_publish_scene_owner_players(const std::vector<std::pair<std::string, int
 // unit+180h for a unit created at run time by index, ahead of the by-name table
 // (008206F0 bags `OwnerPlayer 8` at 00821A72). Cleared by the publication above.
 void ai_set_unit_owner_player(std::size_t unit, int owner);
+// The current unit+180h value, before 009FFD20 maps owner 9 to a party slot.
+int ai_unit_owner_player(const GameUnitsHost& units, std::size_t unit);
 // 009FFD20 BSP_Unit_LossCountingSlot for a units-host index, by the same steps
 // as the coordinator's (packet cc13-powerup-bind: 008E4680's slot arm).
 int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit);

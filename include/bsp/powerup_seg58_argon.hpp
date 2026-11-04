@@ -50,8 +50,30 @@ struct PowerupCollectionHost : PowerupSlotClockHost {
   virtual void stl_vector_push_back_005a7960(void* vec, const void* val_ptr) = 0;
 };
 
-struct Seg58Host : PowerupCollectionHost {
+// 008ED9C0 only reads the local inventory through a temporary copied list.
+// Keep this usable by the live typed inventory without unrelated segment hooks.
+struct PowerupUsableInventoryHost {
+  virtual ~PowerupUsableInventoryHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void invalid_parameter_noinfo_00bf6713() = 0;
+  virtual void* stl_list_copy_construct_008ed660(void* dst_list, const void* src_list) = 0;
+  virtual void stl_inst_008e7da0(void* list) = 0;
+  virtual void free_00bf65ac(void* ptr) = 0;
+};
+
+// 008E62A0's target callback allows the live manager to reuse its existing
+// typed 008E4680 body rather than inventing image unit/id-table storage.
+struct PowerupApplicabilityHost {
+  virtual ~PowerupApplicabilityHost() = default;
+  virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
+  virtual void invalid_parameter_noinfo_00bf6713() = 0;
+  virtual bool powerup_class_unit_kind_mask_accepts_008e3680(void* unit, const void* powerup_class) = 0;
+  virtual bool target_applies(const void* record, void* unit) = 0;
+};
+
+struct Seg58Host : PowerupCollectionHost, PowerupUsableInventoryHost, PowerupApplicabilityHost {
   virtual ~Seg58Host() = default;
+  bool target_applies(const void* record, void* unit) override;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
   virtual std::uint8_t& global_u8(std::uint32_t address) = 0;
@@ -211,7 +233,7 @@ void tmpl_array12_push_back_008e5670(Seg58Host& host, void* array, const void* e
 void tmpl_array12_destroy_008e5f60(Seg58Host& host, void* array);
 void cg_adjustor_thunk_008e6220(Seg58Host& host, void* obj);
 void powerup_item_release_modifiers_008e6230(Seg58Host& host, void* item);
-bool power_up_applies_to_unit_008e62a0(Seg58Host& host, void* entry, void* unit);
+bool power_up_applies_to_unit_008e62a0(PowerupApplicabilityHost& host, void* entry, void* unit);
 void native_string_release_storage_008e6400(Seg58Host& host, void* modifier);
 void native_string_insert_at_008e64a0(
     Seg58Host& host, void* dst_str, const void* src_str, std::uint32_t pos);
@@ -344,7 +366,7 @@ void command_building_powerup_binding_init_from_properties_008ed720(
     Seg58Host& host, void* binding, void* prop_container);
 
 std::uint8_t power_up_manager_local_player_has_usable_item_008ed9c0(
-    Seg58Host& host, void* manager);
+    PowerupUsableInventoryHost& host, void* manager);
 
 void cg_vector_deleting_dtor_008edad0(Seg58Host& host, void* manager);
 

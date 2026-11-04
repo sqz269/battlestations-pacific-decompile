@@ -307,8 +307,14 @@ void powerup_item_release_modifiers_008e6230(Seg58Host& host, void* item) {
   }
 }
 
+// Preserve the full segment host's direct raw target call; typed live hosts
+// can instead supply the already-reconstructed typed 008E4680 body.
+bool Seg58Host::target_applies(const void* record, void* unit) {
+  return powerup_target_applies_to_unit_008e4680(*this, record, unit);
+}
+
 // [0x008e62a0] BSP_PowerUp_AppliesToUnit
-bool power_up_applies_to_unit_008e62a0(Seg58Host& host, void* entry, void* unit) {
+bool power_up_applies_to_unit_008e62a0(PowerupApplicabilityHost& host, void* entry, void* unit) {
   const Raw ent{static_cast<std::uint8_t*>(entry)};
   const Raw u{static_cast<std::uint8_t*>(unit)};
   if (!host.powerup_class_unit_kind_mask_accepts_008e3680(unit, ent.ptr(0x04))) {
@@ -337,7 +343,7 @@ bool power_up_applies_to_unit_008e62a0(Seg58Host& host, void* entry, void* unit)
       for (std::uint8_t* node = Raw{head}.at<std::uint8_t*>(0x00);
            node != Raw{head_slot}.at<std::uint8_t*>(0x00);) {
         if (Raw{node}.ptr(0x08) == entry &&
-            powerup_target_applies_to_unit_008e4680(host, node + 0x08, unit)) {
+            host.target_applies(node + 0x08, unit)) {
           return true;
         }
         if (node == Raw{head_slot}.at<std::uint8_t*>(0x00)) {
@@ -2493,7 +2499,7 @@ void command_building_powerup_binding_init_from_properties_008ed720(
 // Hypothesis, not a recovered symbol. Copies the local player's item list and
 // returns 1 if any item has class type 3 or nonzero remaining uses (+0x14 on node).
 std::uint8_t power_up_manager_local_player_has_usable_item_008ed9c0(
-    Seg58Host& host, void* manager) {
+    PowerupUsableInventoryHost& host, void* manager) {
   void* const game = ptr_from_u32(host.global_u32(0x00e188a8));
   const std::int32_t local_slot = raw_of(game).at<std::int32_t>(0x18ec);
   void* const src_list = raw_of(manager).p + 0x20 + local_slot * 0xc;

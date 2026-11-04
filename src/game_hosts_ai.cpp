@@ -1238,6 +1238,16 @@ int scene_owner_player_by_name(const std::string& name) {
 
 }  // namespace
 
+// Chain 360: read the same runtime override / scene-name publication as the
+// slot reader below, preserving the native constructor's OwnerPlayer 9 default.
+// HUD power-up scope 4 compares this value itself, before party-slot mapping.
+int ai_unit_owner_player(const GameUnitsHost& units, std::size_t unit) {
+    const auto by_index = g_unit_owner_players.find(unit);
+    if (by_index != g_unit_owner_players.end()) return by_index->second;
+    const GameUnitRow* row = units.unit_row(unit);
+    return row != nullptr ? scene_owner_player_by_name(row->name) : 9;
+}
+
 int ai_unit_slot_009ffd20(const GameUnitsHost& units, std::size_t unit) {
     // The coordinator's unit_slot_009ffd20 / unit_owner_player_0180 steps for a
     // unit index (no squadron proxy).

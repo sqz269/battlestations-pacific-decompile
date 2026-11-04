@@ -49,6 +49,7 @@
 
 namespace bsp {
 struct PowerupClassConfig;
+namespace game { class GameUnitsHost; }
 namespace cc13_powerup {
 struct PowerupItem;
 }  // namespace cc13_powerup
@@ -177,5 +178,10 @@ struct HudPowerupEntries {
     std::vector<float> deadlines;
 };
 void collect_hud_powerups(HudPowerupEntries& entries);
+// 00689940's 008ED9C0 query uses the current local slot's actual inventory.
+bool local_player_has_usable_powerup();
+// 00649860 queries each collected live item with the current controlled unit.
+bool hud_powerup_applies_to_unit(const cc13_powerup::PowerupItem& item,
+    const game::GameUnitsHost& units, std::size_t unit_index);
 
 }  // namespace bsp::game_powerups
