@@ -2128,12 +2128,14 @@ void plane_reload_bomb_platforms_007c1d80(Seg47Host& host, Raw plane) {
 
 // 007C1DB0, __thiscall(ECX = plane), EAX: the sum of 006E3500(child) over the
 // kind-25h children.
-std::int32_t unit_count_remaining_ordnance_rounds_007c1db0(Seg47Host& host, Raw plane) {
+std::int32_t unit_count_remaining_ordnance_rounds_007c1db0(RackRoundCountHost& host, Raw plane) {
     std::int32_t sum = 0;
-    for_each_child(plane, [&](Raw child) {
-        if (is_rack_child(host, child)) sum += host.bomb_platform_round_count_006e3500(child);
-        return false;
-    });
+    // 007C1DB1..007C1DD2: +48h head, +44h next, IsKindOf(25h), then
+    // 006E3500. The narrow traversal hooks also accept owned host rack lists.
+    for (Raw child = host.first_round_device(plane); child; child = host.next_round_device(child)) {
+        if (host.entity_vcall_is_kind_5c(child, 0x25))
+            sum += host.bomb_platform_round_count_006e3500(child);
+    }
     return sum;
 }
 

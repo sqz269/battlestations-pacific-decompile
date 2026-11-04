@@ -1,0 +1,56 @@
+{
+  "chain": 380,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::game::kWireGoal4Chain380Bound",
+  "summary": "Run the existing 007C1DB0 remaining-ordnance body for complete live single-rack aircraft at the dive-bomb and depth-charge count sites.",
+  "rows": [
+    {
+      "native": "007c1db0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: DiveBombArmBinding::rounds_remaining_007c1db0, depth-charge Adapter::remaining_rounds_007c1db0, and aimglide-enter 009C4F00 seed via Impl::complete_single_rack_round_count",
+      "evidence": "bsp.py show 007c1db0: walk unit+48h through child+44h; filter IsKindOf(25h); sum 006E3500 with no held-kind predicate. Existing body retained with narrow traversal hooks and native-offset defaults.",
+      "real_state": "GameUnitSlot rack_ammo_per_rack, maintained by the equipment/load seed, release and reload producers. Validate every platform key, resolved equipment device, projectile kind and nonnegative live counter against the existing census admission before binding the owned PlaneOrdnanceRack list.",
+      "fallback": "The original dive_bomb_rounds_remaining implementation is unchanged and remains the fallback for absent/incomplete census, multi racks, torpedoes, rockets and equipment-device mismatches. Each changed caller has an unchanged old arm behind the chain switch; only one count path executes.",
+      "call_sites": 1,
+      "entry_reachable": true,
+      "built_caller": "bsp::game::GameUnitsHost::Impl::complete_single_rack_round_count -> bsp::cc13_seg47::unit_count_remaining_ordnance_rounds_007c1db0",
+      "native_abi": "Original ECX=plane and EAX=count; reconstructed C++ uses a host reference and Raw handle and is not a binary ABI replacement."
+    },
+    {
+      "native": "007c1de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane rocket-count candidate",
+      "reason": "Missing a production rocket-count callback and a typed all-platform traversal adapter for the owned rocket counters; current HUD hosts expose no 007C1DE0 count site."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The setter currently owns only pilot_skill_index; applying the body also needs validated dead-byte, weapon-director notification and kind-20h child-skill propagation bindings."
+    },
+    {
+      "native": "006d1eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The native forwarding body requires the actual unit+38Ch skill-subobject vtable; the host scalar setter lacks that producer and the complete 009565A0 notification path."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown::close_result_gui candidate",
+      "reason": "The recorded teardown site lacks the captured movie-screen, input-context and cinematic-transition owner required by PrepareSoundTransition; its sound-only context is insufficient."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed Win32 Release and both existing CTests (reconstructed_math and tool_tests).",
+    "call_graph": "tools/call_graph.py and who 007c1db0 confirm one direct call to the reconstructed body from the changed units host and entry reachability.",
+    "called_addresses_before": 4547,
+    "called_addresses_after": 4548,
+    "readiness_wired_before": 9605,
+    "readiness_wired_after": 9605,
+    "readiness_note": "Readiness already text-classified 007C1DB0 as wired because of same-named host methods; executable call reachability is the improvement.",
+    "float_math": "No float arithmetic changed.",
+    "runtime": "Game not run; build and executable reachability evidence only."
+  },
+  "left": "Multi-rack attached-list ownership, torpedo/rocket count adapters, equipment-device mismatch cases and the skipped producer chains remain for later work."
+}
