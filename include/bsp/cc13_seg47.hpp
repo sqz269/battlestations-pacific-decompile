@@ -699,6 +699,20 @@ void plane_build_replication_delta_007bd240(Seg47Host& host, Raw plane, void** a
 Raw session_message_plane_create_construct_007bd3e0(Seg47Host& host, Raw message, std::uint32_t a1, Raw plane,
                                                     Raw reference, std::uint32_t a4, std::uint32_t a5, float f6,
                                                     float f7, float f8, std::uint8_t c9, std::uint32_t a10);
+// Goal 4 chain 414: borrow the executable host's fields rather than constructing
+// a second, image-shaped aircraft. The Raw adapter keeps native read order and
+// fetches tuning again for the second comparison, as the listing does.
+struct PlaneBombModeFields {
+    virtual ~PlaneBombModeFields() = default;
+    virtual bool bay_blocks_release() = 0;
+    virtual float bank_c68() = 0;
+    virtual float pitch_c64() = 0;
+    virtual float height_above_surface_9b4() = 0;
+    virtual float level_bomb_angle_max_550() = 0;
+    virtual float paratrooper_min_altitude_354() = 0;
+    virtual float paratrooper_max_altitude_358() = 0;
+};
+bool plane_level_bomb_attitude_gate_007c7750(PlaneBombModeFields& fields, std::uint8_t check_doors);
 bool plane_level_bomb_attitude_gate_007c7750(Seg47Host& host, Raw plane, std::uint8_t check_doors);
 
 
@@ -766,6 +780,7 @@ float plane_class_stall_range_speed_007c4830(Seg47Host& host, Raw cls);
 // the Raw entry forwards here.
 float plane_class_stall_range_speed_007c4830(float tuning_230, float class_184);
 bool plane_in_paratrooper_drop_altitude_007c4d90(Seg47Host& host, Raw plane);
+bool plane_in_paratrooper_drop_altitude_007c4d90(PlaneBombModeFields& fields);
 
 // 007C6760, originally __thiscall(ECX = plane), ST0. Scalar view of class+268h,
 // tuning+4F8h/+4FCh and the ordered IsKindOf(10h), IsKindOf(12h/14h/11h)

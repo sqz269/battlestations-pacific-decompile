@@ -1,0 +1,138 @@
+{
+  "chain": 414,
+  "slot": "g4-w1",
+  "switch": "bsp::kWireGoal4Chain414Bound",
+  "scope": "Player aircraft bomb-mode attitude and paratrooper altitude gates",
+  "base": "f82a4151f1",
+  "rows": [
+    {
+      "native": "007c7750",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "state": "Borrowed aircraft bank/pitch and loaded GameTuning LevelBombAngleMax; check_doors=0 from native 00608357.",
+      "evidence": "0060835B calls 007C7750. Listing 007C77AC/77DD fetches tuning per comparison; FCOMIP/JA admits unordered operands.",
+      "body": "Existing src/cc13_seg47.cpp body shared by the Raw adapter and the new PlaneBombModeFields interface; no second algorithm.",
+      "call_graph": "One direct entry-reachable call from GameUnitsHost::Impl::player_bomb_release_006082d0, distinct from Fe5HostUnreached's same-named virtual method."
+    },
+    {
+      "native": "007c4d90",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "state": "Retained 007CE90D height-above-surface sample and loaded GameTuning ParatrooperDrop/MinAltitude and MaxAltitude; only a current kind-31h single rack with remaining ammo takes this path.",
+      "evidence": "00608388/00608806 call 007C4D90. Listing 007C4DAC/4DC0 uses ordered-greater rejection. 007CE904 FSUBR followed by 007CE90D FSTP [ESI+6A4h] publishes unit+9B4h.",
+      "body": "Existing src/cc13_seg47.cpp body shared by both field adapters; no independent implementation.",
+      "call_graph": "One direct entry-reachable call from GameUnitsHost::Impl::player_bomb_release_006082d0."
+    },
+    {
+      "native": "007ce040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: motion_step_00825f20 / store_height_rate_9b8_007ce92a",
+      "reason": "Existing fixed-step height producer is already live; this packet only retains its 007CE90D result for 007C4D90, with no new call to the full 007CE040 reconstruction."
+    },
+    {
+      "native": "007cc8e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: run_level_bomber_rack_tick_006e56f0",
+      "reason": "The reconstructed level-bomber rack fragment already runs; a full native drop-gate adapter including its non-level 007C7600 arm is still absent."
+    },
+    {
+      "native": "007c7600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "Readiness identifies a host-inline gate without a separately callable reconstructed body; native door/slot handling still needs a complete field contract."
+    },
+    {
+      "native": "007b9140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "The full native device-array holds-kind adapter is absent; this packet uses the retained ancestry and admitted single-rack ammo census for its bounded player path."
+    },
+    {
+      "native": "007b9500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::player_bomb_release_006082d0",
+      "reason": "Its reconstructed tail call needs a concrete 007B91C0 rack-query host; no such native-device-array adapter is available in this packet."
+    },
+    {
+      "native": "007c3ea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown handling",
+      "reason": "The controlled-pilot transition and MT_RESUME_AI_CONTROL sender/consumer composition required by the touchdown body is not retained by the current host."
+    },
+    {
+      "native": "007bc550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane elevator attachment transitions",
+      "reason": "The native Lua-self/attachment field view and complete attachment callbacks are absent; existing host transition rules were left for a separate packet."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::run_loopback_list",
+      "reason": "The queue lacks the native message tick domain, complete category predicates and receiver-ready producer needed to call the reconstructed gate with real inputs."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: EntityIssueBinding::ai_group_forward_command",
+      "reason": "The live order path has no native AI-group current-command object at +564Ch and corresponding slot-24h forwarding consumer."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "The host has no native-style AiGroupScoreList storage/consumer; capture planning currently consumes different weight-vector state."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning",
+      "reason": "No actual AiGroupScoreList entry set is produced or consumed by the live planner, so marking a new auxiliary list would not wire gameplay."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "The native render-resource service, actual texture-cache/owner context and authored remap-name producer are absent at this host site."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "The native render-resource service, actual texture-cache/owner context and authored remap-name producer are absent at this host site."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "The native render-resource service, actual texture-cache/owner context and authored remap-name producer are absent at this host site."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "The native render-resource service, actual texture-cache/owner context and authored remap-name producer are absent at this host site."
+    }
+  ],
+  "metrics": {
+    "source_readiness_wired_before": 9658,
+    "source_readiness_wired_after": 9659,
+    "entry_reachable_reconstructed_addresses_called_before": 4677,
+    "entry_reachable_reconstructed_addresses_called_after": 4679,
+    "note": "007C7750 was already source-text wired through a same-named Host method, but its reconstructed body had no direct call before this packet. Both reconstructed bodies now have one reachable direct call."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release and both existing ctest targets pass",
+    "float_lint": "pc24_lint.py --staged: zero findings; final committed range checked separately",
+    "call_graph": "tools/call_graph.py, who 007c7750, who 007c4d90, path 007c4d90",
+    "readiness": "tools/wire_readiness.py --standins: both rows wired, called=true, call_sites=1",
+    "game_run": false
+  },
+  "limits": [
+    "Static entry reach and successful build/tests do not establish runtime gameplay or original ABI compatibility; no game was run.",
+    "The existing player-release host still models one press with bomb mode already entered; native HUD input/mode/latch behavior is not reconstructed here.",
+    "The paratrooper path waits for actual single-rack ammo, loaded tuning and the first squadron-layer height sample; no fallback values are used to invoke a body.",
+    "The existing release request, bay actuator and rack-drop pipeline consume accepted releases once; no extra direct projectile spawn was added.",
+    "The older dive-bomber bay substitution remains unchanged; specialised torpedo/rocket and multi-rack paths are outside this packet."
+  ]
+}
