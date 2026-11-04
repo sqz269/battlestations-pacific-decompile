@@ -1,0 +1,61 @@
+{
+  "chain": 508,
+  "owner": "agent/g4-w5",
+  "base": "a49fb6b85ed9598697d0b5262ba778ea167bdebf",
+  "switch": "bsp::kWireGoal4Chain508Bound",
+  "scope": "Convoy placement identity frame and the flat member's retained local-matrix setter",
+  "readiness_wired_before": 9804,
+  "readiness_wired_after": 9806,
+  "evidence": [
+    "bsp.py show 00431410 --asm: 004134F0 copies all sixteen floats, then C8h/10Ch clear and the child walk",
+    "bsp.py show 0042d700: identity words from 00D7A24C and zero, matching the existing convoy identity helper",
+    "docs/ENTITY_LOCAL_MATRIX.md: LandFort vtable 00CFF3F8 uses 00431410 at slot 88h",
+    "create_units and bind_land_convoy_motion: generated LandFort members, actual slot handles, flat borrowed PoseRefreshViews",
+    "call_graph.py who/path: both existing reconstructed bodies have one reachable call from the changed placement code"
+  ],
+  "validation": {
+    "build": "scripts/build.ps1; all four existing CTest checks pass",
+    "pc24": "pc24_lint.py --staged: 0 findings; existing diagnostic acos chain retained from publish_pose, no new gameplay arithmetic",
+    "runtime": "Game not launched; this establishes source wiring and built-executable reachability, not gameplay or native object/ABI parity"
+  },
+  "contract": [
+    "The matrix is the existing path/terrain frame multiplied by the actual convoy parent frame, preserving the host's scene-parent flattening.",
+    "The setter borrows the member's canonical local/C8h/10Ch storage; refresh reads that same local matrix into world, and motion/scene rows consume it.",
+    "The adapter checks the actual parent links before writing and rejects a parented member or child list; no native child hierarchy is invented.",
+    "The new arm does not execute write_world/publish_pose again. The previous code remains unchanged in the switch-off arm.",
+    "The identity helper supplies the live group frame subsequently populated and used by the placement loop. It has no shadow consumer."
+  ],
+  "rows": [
+    {"native":"00431410","status":"wired","host_site":"src/game_hosts_units.cpp: LandConvoyPlacementBinding::write_member_local_matrix","source":"src/entity_local_matrix.cpp: set_entity_local_matrix_00431410","called":true,"call_sites":1},
+    {"native":"0042d700","status":"wired","host_site":"src/land_and_structures.cpp: land_pose_identity -> land_convoy_place_members_00742400","source":"src/entity_local_matrix.cpp: write_identity_matrix_0042d700","called":true,"call_sites":1},
+    {"native":"006e00a0","status":"skipped","host_site":"src/game_hosts_units.cpp: GameUnitsHost::set_local_matrix_006e00a0","reason":"The embedded entity+310h vtable[0Ch] owner callback remains unread/unbound; logging it would not execute this notifying setter's complete effect."},
+    {"native":"00955970","status":"skipped","host_site":"src/game_hosts_units.cpp: retained pose publication","reason":"These typed unit slots have has_scene_node=false and no +4A4h scene-node publication owner for the refresh body's required node calls."},
+    {"native":"008f54f0","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: merge_group_into","reason":"The scene parser uses ScenePropertyBlock values and lacks the actual raw114h source/destination maps and clone/insertion context required by the reconstructed merge."},
+    {"native":"00525250","status":"skipped","host_site":"src/game_hosts_mission_frame.cpp: helm target orders","reason":"This path selects target names from authored orders and lacks the native unit-pick screen/cursor target-finder owner required by the body."},
+    {"native":"004d87b0","status":"skipped","host_site":"src/game_hosts_mission_frame.cpp: mission player-count check","reason":"No MissionPlayerCountHost binding to actual participant blocks and side-slot iterators was established for the selected convoy packet."},
+    {"native":"008fbef0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level","reason":"Already has a reachable reconstructed-body call through chain451 and persists the resulting skill/countdown; no missing wiring to add."},
+    {"native":"00a2def0","status":"skipped","host_site":"src/game_hosts_ai.cpp: defend-member candidate filter","reason":"Readiness already reports a reachable body call; no missing wiring to add."},
+    {"native":"00a2b950","status":"skipped","host_site":"src/game_hosts_ai.cpp: coordinator score-list planning","reason":"A live native-style AiGroupScoreList owner/consumer was not established; earlier skips also identify coordinator load-gate reachability as unresolved."},
+    {"native":"00a2bcc0","status":"skipped","host_site":"src/game_hosts_ai.cpp: coordinator chosen-score bookkeeping","reason":"A live native-style AiGroupScoreList entry owner and consumer were not established; marking an auxiliary list would not replace planner state."},
+    {"native":"00437c70","status":"skipped","host_site":"src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint","reason":"The pre-load path lacks the actual BSP_Chk_Save Lua owner/current mission key and checkpoint_differs still returns false."},
+    {"native":"00803ba0","status":"skipped","host_site":"src/game_hosts_lua.cpp: recon publication","reason":"The projected recon publication uses content differences rather than an actual slot+25h dirty byte and player-context/cache owner."},
+    {"native":"00805d90","status":"skipped","host_site":"src/game_hosts_lua.cpp: recon publication","reason":"The live projected recon tables lack the raw ReconList triples and record owner required by the reconstructed relation-category publisher."},
+    {"native":"004842c0","status":"skipped","host_site":"src/game_hosts_units.cpp: unit anchor publication callbacks","reason":"The callbacks only record publication and lack actual anchor scene nodes plus a parent-relative transform owner."},
+    {"native":"00815370","status":"skipped","host_site":"src/game_hosts_units.cpp: unit part tick callback","reason":"The recorded part-tick path has no owned UnitEffectScalarArrays and actual per-effect scalar targets."},
+    {"native":"00780670","status":"skipped","host_site":"src/game_hosts_fixed_step.cpp: session loopback drain","reason":"The fixed-step host delegates delivery and has no queued-message record with native post/current ticks, category predicates and sender-ready byte."},
+    {"native":"0043a870","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: project_clip_space","reason":"This host projects clip-space vectors and lacks a SweepAHost binding for 0043A660's mode/clamp-depth world-to-screen operation."},
+    {"native":"0043a290","status":"skipped","host_site":"src/game_hosts_hud_world.cpp: crosshair horizontal-plane pick","reason":"The native camera/unproject SweepAHost owner needed by 00439F50 was not established; the fallback pick remains the host projection's inverse."},
+    {"native":"00ba0090","status":"skipped","host_site":"src/game_hosts_mission_frame.cpp: ocean render-step comment","reason":"Only timing commentary references this row; no live nine-sample depth-kernel consumer was identified in the selected placement path."},
+    {"native":"00a9a790","status":"skipped","host_site":"src/xinput_device.cpp: XInputDevice::stop_vibration_00a9a790","reason":"No live caller to this typed-device stop method was established; its destructor explicitly performs no implicit vibration reset."},
+    {"native":"0067c8f0","status":"skipped","host_site":"src/ingame_gui_cc13.cpp: game_sign_in_state_valid_0067c8f0","reason":"Requires pending-invite and selected online-user services; outside the single-player wiring scope."},
+    {"native":"00401c20","status":"skipped","host_site":"src/game_hosts_units.cpp: convoy matrix construction","reason":"The convoy owns float32 matrices, not the double-vector inputs required by this reversed-cross body; no corresponding live Vec3d operation was identified."},
+    {"native":"00401cb0","status":"skipped","host_site":"src/game_hosts_units.cpp: convoy matrix construction","reason":"The convoy owns float32 matrices and no matching live Vec3d subtraction owner/consumer was identified."},
+    {"native":"00401cd0","status":"skipped","host_site":"src/game_hosts_units.cpp: convoy matrix construction","reason":"The convoy owns float32 matrices and no matching live Vec3d scale owner/consumer was identified."},
+    {"native":"00401cf0","status":"skipped","host_site":"src/game_hosts_units.cpp: convoy matrix construction","reason":"The convoy owns float32 matrices and no matching live Vec3d squared-length owner/consumer was identified."},
+    {"native":"00412d90","status":"skipped","host_site":"src/cc13_sweepA.cpp: abs_float_00412d90","reason":"Unreferenced native utility; no corresponding operation in the chosen convoy path needs this scalar absolute-value body."},
+    {"native":"00412e80","status":"skipped","host_site":"src/cc13_sweepA.cpp: pointer_array_reverse_00412e80","reason":"Unreferenced native utility; the chosen convoy path has no actual pointer-array reversal consumer."},
+    {"native":"00412f60","status":"skipped","host_site":"src/cc13_sweepA.cpp: int_clamp_00412f60","reason":"Unreferenced native utility; no matching signed integer-clamp operation was found in the selected host path."},
+    {"native":"00412f80","status":"skipped","host_site":"src/cc13_sweepA.cpp: format_string_100_00412f80","reason":"The selected convoy path does not own the original caller's 100-byte formatted-string output buffer."},
+    {"native":"00412fa0","status":"skipped","host_site":"src/cc13_sweepA.cpp: int_min_00412fa0","reason":"Unreferenced native utility; no matching signed integer-min operation was found in the selected host path."}
+  ]
+}
