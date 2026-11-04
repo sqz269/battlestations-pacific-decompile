@@ -852,6 +852,14 @@ public:
     // outside 0..8 returns false and preserves out. Packet cc9_gunner_role_take.
     bool unit_role_permission(std::size_t index, std::int32_t role_index,
         std::int32_t& out) const;
+    // 00927CC0 over the current nine permission words. A bit is set when its
+    // role is PLAYER_ANY (9) or names player_slot. Missing unit returns zero.
+    std::uint32_t unit_role_permission_mask(std::size_t index,
+        std::int32_t player_slot) const;
+    // 00927C90: this role permits a player (slots 0..7) or PLAYER_ANY (9).
+    // PLAYER_AI (8), missing units and invalid role indices answer false.
+    bool unit_role_permission_is_player_or_open(std::size_t index,
+        std::int32_t role_index) const;
     // 0077C470(mask, take) on a unit from the local player: the 4Bh role
     // message 00780162 delivered at once, as the 27h take does. Screen 2Eh's
     // 00545410 sends it when a weapon group is selected or dropped.
