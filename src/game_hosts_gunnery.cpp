@@ -3089,6 +3089,9 @@ struct GameGunneryHost::Impl {
     // that did not.
     unsigned long long gun_fire_copies_ad{0};
     unsigned long long gun_fire_copy_misses_ad{0};
+    // Goal 4 chain 356: 68h / 69h destroyed-failure copies made.
+    unsigned long long gun_destroyed_copies_68{0};
+    unsigned long long gun_destroyed_copies_69{0};
     unsigned long long immediate_flag_drops{0};
     unsigned long long immediate_fire_clears{0};   // 0084C4EC
     unsigned long long salvo_drops{0};
@@ -20257,6 +20260,24 @@ void GameGunneryHost::Impl::gun_destroyed_failure_0072b5a0(std::size_t g) {
     if (gun.destroyed_60) return;                                   // 00926C80
     gun.destroyed_60 = true;
     gun.destroyed_5d = true;                                        // 00926390
+    if constexpr (bsp::kWireGoal4Chain356Bound) {
+        // Goal 4 chain 356: 00729FD0's 68h (flags 7, 0072A054) reaches
+        // 0072B5A0 as 0076E520's rebuilt copy (00728F20, 006D2F20, 00768530
+        // case 68h 00728F20, 006D1550) through 0072D830's vtable[1C8h] arm, whose
+        // body applies only for a request answering IsType(68h) (00728F70).
+        // LABELLED, as before: delivered at once. No commands host: the posted
+        // message, as before.
+        if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+            const bsp::HostSessionMessages::GunDestroyedCopy copy =
+                messages->queue_gun_destroyed_68_69(true);
+            ++gun_destroyed_copies_68;
+            if (!copy.set_arm_68) {
+                record("Gun::set_destroyed_copy_0072d830", 0x0072d830u);
+                return;
+            }
+            done("Gun::set_destroyed_copy_00728f20", 0x00728f20u);
+        }
+    }
     gun.destroyed_3b8 = true;                                       // 0072B5BC
     gun.damage_level_358 = 0;                                       // 00876EC0, level 0
     ++guns_destroyed;
@@ -20286,6 +20307,25 @@ void GameGunneryHost::Impl::set_gun_health_00877b90(std::size_t g, float request
 void GameGunneryHost::Impl::gun_full_health_destroyed_stop_0072a0d0(std::size_t g) {
     if (!guns[g].destroyed_5d) return;
     done("Gun::stop_destroyed_failure_0072a0d0", 0x0072a0d0u);
+    if constexpr (bsp::kWireGoal4Chain356Bound) {
+        // Goal 4 chain 356: 0072A0D0's 69h (flags 7, 0072A154) reaches 007280A0
+        // as the rebuilt copy (00728FA0, 006D2F20, 00768530 case 69h 00728FA0,
+        // 006D1550) through 0072D830's vtable[1CCh] arm; 007280AC asks the
+        // request's IsType(69h) (00728FF0) before the clear. The host's 007280A0
+        // below runs when the copy reached that arm and answered 69h. LABELLED,
+        // as before: delivered at once. No commands host: the posted message.
+        if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+            const bsp::HostSessionMessages::GunDestroyedCopy copy =
+                messages->queue_gun_destroyed_68_69(false);
+            ++gun_destroyed_copies_69;
+            if (copy.clear_arm_69) {
+                done("Gun::clear_destroyed_copy_00728fa0", 0x00728fa0u);
+            } else {
+                record("Gun::clear_destroyed_copy_0072d830", 0x0072d830u);
+                return;
+            }
+        }
+    }
     gun_clear_destroyed_failure_007280a0(g);
 }
 
@@ -22428,9 +22468,11 @@ void GameGunneryHost::report() {
         s.fire_messages, s.fire_if_ready, s.can_fire_refusals, s.shots,
         static_cast<double>(s.first_shot_seconds));
     host.log.notef("summary mission gunnery ADh copies bound=%d to_fire_if_ready=%llu "
-        "missed=%llu (006E3940 / 006E39B0 / 006E39E0 -> 0072D830, goal 4 chain 356)",
+        "missed=%llu destroyed_68=%llu destroyed_69=%llu (006E3940 / 006E39B0 / 006E39E0, "
+        "00728F20 / 00728FA0 -> 0072D830, goal 4 chain 356)",
         bsp::kWireGoal4Chain356Bound ? 1 : 0, host.gun_fire_copies_ad,
-        host.gun_fire_copy_misses_ad);
+        host.gun_fire_copy_misses_ad, host.gun_destroyed_copies_68,
+        host.gun_destroyed_copies_69);
     host.log.notef("summary mission gunnery projectiles created=%llu steps=%llu sweeps=%llu "
         "entity_impacts=%llu water=%llu expired=%llu in_flight=%zu kamikaze_squadron_drops=%llu",
         s.projectiles, s.projectile_steps, s.sweeps, s.impacts_entity, s.water_crossings,

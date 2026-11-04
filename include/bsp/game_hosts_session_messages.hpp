@@ -386,6 +386,24 @@ public:
         std::uint16_t target{0};     // the copy's +20h; the ADh arm does not read it
     };
     GunFireCopy queue_gun_fire_ad(std::uint16_t target) const;
+    // Goal 4 chain 356. MT_GUN_SET_DESTROYEDFAILURE (68h) / _CLEAR (69h): the
+    // gun's "destroyed" event bodies 00729FD0 / 0072A0D0 build a 24h-byte
+    // message (0075B430(68h / 69h) at 0072A016 / 0072A116, +18h word 0, +1Ah
+    // 0, +4h = 1, +1Ch 0, +20h = 256.0f from 00CF8B3C, vtable 00CFDE64 /
+    // 00CFDE78), the stores 00728F20 / 00728FA0 make, and route it with
+    // 0077C2A0 flags 7 (0072A054 / 0072A154). 00768530 case 68h / 69h
+    // allocates 24h bytes and calls 00728F20 (00768F26) / 00728FA0
+    // (00768F46); 006D2F20 writes and 006D1550 reads the shared scalar. The
+    // gun switch 0072D830 sends 68h to vtable[1C8h] (0072B5A0) and 69h to
+    // vtable[1CCh] (007280A0); each body first asks the request's IsType
+    // (00728F70 / 00728FF0) for its own id (0072B5A0's 68h, 007280AC's 69h).
+    struct GunDestroyedCopy {
+        std::uint8_t type{0};
+        bool to_entity{false};       // 00780120 chose the entity switch
+        bool set_arm_68{false};      // 0072D830 -> vtable[1C8h] and IsType(68h)
+        bool clear_arm_69{false};    // 0072D830 -> vtable[1CCh] and IsType(69h)
+    };
+    GunDestroyedCopy queue_gun_destroyed_68_69(bool set) const;
     // Goal 4 chain 356. MT_PLANE_DISAPPEAR (C7h): the plane's fixed step
     // 007CE040 at 007CE6FE..007CE74F makes 0075B430(C7h), +18h word 0, +1Ah 0,
     // +4h = 1, +1Ch 0, vtable 00D0352C (00762B20's stores) and +20h word = the

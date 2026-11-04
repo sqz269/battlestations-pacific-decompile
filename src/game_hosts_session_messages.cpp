@@ -16,6 +16,7 @@
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
+#include "bsp/native_session_message_tags_103_to106.hpp"
 #include "bsp/cc13_seg33b.hpp"
 #include "bsp/native_bit_cursor_numeric.hpp"
 #include "bsp/native_bit_cursor_read.hpp"
@@ -106,6 +107,14 @@ struct HostSessionMessages::Image {
                                                  &read_scale_00d7a348};
     NativeSessionMessage107Profile profile107{context98};
     NativeSessionMessage108Profile profile108{context98};
+    // Goal 4 chain 356: 68h / 69h (sessions 104 / 105) share that scalar
+    // codec (vtables 00CFDE64 / 00CFDE78: 00729050 / 00729070 delete, 006D2F20
+    // write, 006D1550 read, 00728F70 / 00728FF0 IsType, 004499C0); their
+    // constructors take the 103..106 context, the same scalar context plus
+    // 00D7A248.
+    NativeSessionMessage103To106Context context104{context98, &maximum_00d7a248};
+    NativeSessionMessage104Profile profile104{context104};
+    NativeSessionMessage105Profile profile105{context104};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
@@ -1291,14 +1300,15 @@ struct GunFireMessage24 {
 static_assert(sizeof(GunFireMessage24) == 0x24);
 static_assert(offsetof(GunFireMessage24, target_20) == 0x20);
 
-// Goal 4 chain 356. The receiving gun's switch 0072D830 over the copy. Only
-// the ADh arm (vtable[1DCh], FireIfReady) is an answer here; the gunnery host
-// runs its FireIfReady for the gun that sent the message. The other arms are
-// counted, not run: the copy of an ADh send never selects them.
-class GunFireDispatch final : public GunNetworkMessageHost {
+// Goal 4 chain 356. The receiving gun's switch 0072D830 over a copy. The
+// dispatch reports the arm the copy reached; the gunnery host then runs that
+// arm's body for the gun that sent the message: ADh vtable[1DCh] (FireIfReady),
+// 68h vtable[1C8h] (0072B5A0) and 69h vtable[1CCh] (007280A0). ACh and the
+// 0043F860 tail are counted, not run: none of these copies selects them.
+class GunMessageDispatch final : public GunNetworkMessageHost {
 public:
-    void vcall_1c8(void*, void*) override { ++other_arms; }
-    void vcall_1cc(void*, void*) override { ++other_arms; }
+    void vcall_1c8(void*, void*) override { set_destroyed_arm = true; }
+    void vcall_1cc(void*, void*) override { clear_destroyed_arm = true; }
     void vcall_1dc(void*) override { fire_if_ready = true; }
     bool entity_handle_messages_4b4c_0043f860(void*, void*) override {
         ++other_arms;
@@ -1308,6 +1318,8 @@ public:
         ++other_arms;
     }
     bool fire_if_ready{false};
+    bool set_destroyed_arm{false};
+    bool clear_destroyed_arm{false};
     int other_arms{0};
 };
 }  // namespace
@@ -1343,11 +1355,53 @@ HostSessionMessages::GunFireCopy HostSessionMessages::queue_gun_fire_ad(
         // The gun's slot 164h, 0072D830 (directly or through 0084C7E0 /
         // 00803480's jump), over the rebuilt copy. The gun object is the
         // gunnery host's; the dispatch reports the arm it reached.
-        GunFireDispatch dispatch;
+        GunMessageDispatch dispatch;
         cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
         copy.fire_if_ready = dispatch.fire_if_ready;
     }
     // Neither message owns storage; 006E47C0 only restamps.
+    return copy;
+}
+
+HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_68_69(
+    bool set) const {
+    const Image& image = *image_;
+    // 0072A016..0072A04E / 0072A116..0072A14E: 0075B430(type) and the stores
+    // 00728F20 / 00728FA0 make, +20h the default 256.0f included, so both
+    // messages are built by the constructor 00768530 calls for the type.
+    const auto construct = [&image, set](NativeSessionMessage104* message) {
+        if (set) {
+            construct_native_session_message104_00728f20(message, image.context104,
+                image.profile104);
+        } else {
+            construct_native_session_message105_00728fa0(message, image.context104,
+                image.profile105);
+        }
+    };
+    bool (*const is_type)(std::uint32_t) = set ? &native_session_message_is104_00728f70
+                                               : &native_session_message_is105_00728ff0;
+    NativeSessionMessage104 sent{};
+    construct(&sent);
+    LocalStream stream;
+    write_native_session_scalar98_006d2f20(&sent, &stream.out, image.context98);
+    // 00768530 case 68h / 69h: operator new(24h), 00728F20 at 00768F26 /
+    // 00728FA0 at 00768F46; 0076A27B vtable[8] = 006D1550.
+    stream.begin_read();
+    NativeSessionMessage104 queued{};
+    construct(&queued);
+    read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+    GunDestroyedCopy copy;
+    copy.type = queued.header.base.type_10;
+    copy.to_entity = copy_goes_to_unit_handler(is_type);
+    if (copy.to_entity) {
+        // The gun's slot 164h, 0072D830, over the copy; then the arm body's own
+        // IsType test on the request (0072B5A0 68h, 007280AC 69h).
+        GunMessageDispatch dispatch;
+        cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
+        copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
+        copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
+    }
+    // Neither message owns storage; 00729050 / 00729070 only restamp.
     return copy;
 }
 
