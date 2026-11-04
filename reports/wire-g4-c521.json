@@ -1,0 +1,88 @@
+{
+  "chain": 521,
+  "slot": "g4-w1",
+  "run": 1069,
+  "switch": "bsp::kWireGoal4Chain521Bound",
+  "picked": "Reuse the sound-instance volume scaler in live retained-channel updates",
+  "rows": [
+    {
+      "native": "00a79880",
+      "status": "wired",
+      "host_site": "src/sound_retained_update.cpp:publish_and_update, reached by SoundChannelRuntime::update_slot30",
+      "called": true,
+      "call_sites": 3,
+      "callers": [
+        "update_retained_sound_ramp_00a7b520",
+        "update_retained_sound_scaled_ramp_00a7b5d0",
+        "update_retained_sound_nonpositive_00a7b690"
+      ],
+      "state": "The actual channel, retained sample/options+4 and current-owner-derived gain feed the existing scaler; its volume24/dirty14 outputs feed the immediately following base update.",
+      "evidence": "bsp.py show --asm 00A79880 (A7988B..A79896), 00A7B520 (A7B5A5..A7B5C2), 00A7B5D0 (A7B660..A7B67D), 00A7B690 (A7B6E1..A7B6FE).",
+      "scope": "Normal-return behavioral substitution within the existing masked-floating-exception projection. Volume/dirty store order differs, with both complete before base update and no intervening callback. Not a native-ABI replacement or audible/gameplay proof."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:make_command_target",
+      "reason": "The raw body requires readable mutable native cells at 00F87574/78/7C and real output storage; the callback only records construction and returns zero."
+    },
+    {
+      "native": "00a2c3d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group planning",
+      "reason": "Missing a verified live recon-ratio consumer and a per-member 00779D00 input adapter; no corresponding host ratio operation was identified."
+    },
+    {
+      "native": "00521f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages",
+      "reason": "Missing a verified live producer and gameplay consumer for tag87; a generic message profile alone does not provide those inputs."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:pass-side message delivery",
+      "reason": "The local queue lacks the native game+5D4h phase, message/current native tick domain and sender+BDh readiness inputs required by the gate."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp:text input validation",
+      "reason": "Missing a live glyph-byte input-validation caller; ordinary glyph layout does not consume this acceptance predicate."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp:collect_sorted_children_00aa5a00",
+      "reason": "Missing the live descriptor-writer consumer that requests an alphabetical child snapshot; render ordering is a different operation."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/game_unit_group_storage.cpp:GameUnitGroupStorage",
+      "reason": "Existing group storage has no live net-create member-vector serialization consumer, and lookup misses still require unbound mutable 00F87574/78/7C cells."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_camera.inc:mission camera projection",
+      "reason": "Missing a verified live frustum/shadow/message consumer of the FOV-aspect product; camera projection ownership alone does not justify an unused getter call."
+    },
+    {
+      "native": "00872670",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_sound.cpp:effect-sound volume path",
+      "reason": "Missing a linked live effect-sound volume request carrying the real effect instance; the retained-channel substitution instead uses its already-produced sound instance."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS; all 5 CTests PASS",
+    "call_graph": "3 reachable calls from the retained-channel update bodies; entry path passes through SoundChannelRuntime and GameSoundRuntime constructed by GameStartupHost",
+    "reachable_reconstructed_before": 4877,
+    "reachable_reconstructed_after": 4878,
+    "readiness_wired_before": 9815,
+    "readiness_wired_after": 9815,
+    "readiness_note": "The source-text state remains ready because this is a reconstructed-caller substitution; the authoritative built-graph fields are called=true, call_sites=3 and callers_live=3.",
+    "runtime": "Game not run, as instructed"
+  }
+}

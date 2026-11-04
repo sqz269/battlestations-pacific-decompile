@@ -1,4 +1,5 @@
 #include "bsp/sound_retained_update.hpp"
+#include "bsp/wire_goal4_chain521_switches.hpp"
 
 namespace bsp {
 namespace {
@@ -94,6 +95,21 @@ float scaled_gain(const float& native_70, float gain) noexcept {
 
 void publish_and_update(SoundChannelInstance& instance, float gain, float dt,
     std::uint32_t listener, SoundInstanceContext& context) {
+    if constexpr (kWireGoal4Chain521Bound) {
+        // bsp.py show --asm: A7B5A5/B660/B6E1 load sample-options+4,
+        // multiply the already-spilled gain and publish volume24/dirty14
+        // before A7AF10. A7988B..A79896 implements that same operation.
+        // Use the live channel and its retained sample, not a copied object.
+        // Both publications complete before the base update; their relative
+        // order is unobserved in this single-threaded, masked-FP projection.
+        scale_sound_instance_volume_00a79880(instance, gain);
+        float copied_dt;
+        __asm {
+            fld dt
+            fstp copied_dt
+        }
+        update_sound_channel_00a7af10(instance, copied_dt, listener, context);
+    } else {
     void* options = sound_sample_options_00a81860(instance.sample_4c);
     float* volume = &instance.volume_24;
     std::uint8_t* dirty = &instance.dirty_14;
@@ -110,6 +126,7 @@ void publish_and_update(SoundChannelInstance& instance, float gain, float dt,
         fstp copied_dt
     }
     update_sound_channel_00a7af10(instance, copied_dt, listener, context);
+    }
 }
 } // namespace
 
