@@ -1,0 +1,119 @@
+{
+  "chain": 364,
+  "worker": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain364Bound",
+  "scope": "Capture planner attack-target matching over its actual group command and world-list-28 entity group identities.",
+  "wired_before": 9504,
+  "wired_after": 9505,
+  "binary_called_reconstructed_addresses_before": 4518,
+  "binary_called_reconstructed_addresses_after": 4519,
+  "rows": [
+    {
+      "native": "00a2bdb0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::capture_current_target_00a1a7a0",
+      "state": "CaptureAttackTargetQuery projects group+564Ch and command+1Ch from the actual Group::command. CommandTypeQueryHost dispatches IsType(6) on that same typed command. The body result directly returns the matched world-list-28 entity; the previous condition runs only in the switch's else arm.",
+      "evidence": "bsp.py show 00a2bdb0 --asm: ECX group, RET 4, IsType(6) at 00A2BDC0, reload command at 00A2BDC6, compare +1Ch at 00A2BDCC..00A2BDCF. show 00a1a7a0 --asm: 00A1A7D5 reads entity+16Ch and 00A1A7DE calls this predicate before the point/pose checks. A null target group retains the original direct pointer-equality behavior.",
+      "call_graph": "REACHABLE: one call site at 1004C529 from GameAiCoordinatorHost::Impl::capture_current_target_00a1a7a0; no unreachable callers. The baseline had no linked 00A2BDB0 body.",
+      "limitations": "Static entry reach and build/tests only. The coordinator's existing mission-load gate remains authoritative; campaign rows without a coordinator do not run this planner. No game run or native ABI compatibility claimed."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning candidate score storage",
+      "reason": "Needs native score-list storage and a gameplay consumer; the existing evidence identifies only an unreached debug-overlay reader, so adding a parallel debug table is outside the assignment."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning assignment storage",
+      "reason": "Needs 00A2B950-produced score records and a consumer of their chosen bytes; the host assignment vector is separate and the original score-record reader is an unreached debug overlay."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::create tuning-mode selection",
+      "reason": "Needs the per-slot brain pointer and pointed-object +0Ch active-state binding at tuning selection; the host currently supplies difficulty zero."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "Needs the actual 00F8A740 global and 00F8A750 per-party hint-weight maps with their SetHintWeight producer; inventing empty maps would reproduce the current identity stand-in."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::selling_tick_00a11ff0",
+      "reason": "Needs raw unit/world-list views and Small2Host class/pose bindings at the selling-command check; this packet supplies only the attack-target query binding."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "Needs the live selection screen's mode, native +C4h vector and context-level reset bindings; the current host only records this reset."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: ShipScreenBinding::gauge_digit",
+      "reason": "Needs the live gauge icon vertex stream and lock/unlock bindings; the current sprite bridge does not provide the digit UV stream."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen advance_ticker hook",
+      "reason": "Needs native award string-pair queue, GUI texture/text and timed-entry bindings before the recorded ticker callback can use this raw body."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::attach_tree and insert_into",
+      "reason": "No missing call: the baseline already reaches this body from both native property-merge insertion paths; no duplicate host call added."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor and merge_child",
+      "reason": "No missing call: the baseline already reaches this body from the native merge owner and child merge; no duplicate host call added."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: close_sound_system_00a7e240",
+      "reason": "No new wiring needed at the inspected source call: close_sound_system_00a7e240 already invokes the body; the optimized binary exposes no separate address symbol."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_groups_00a7f240_fragment and shutdown_sound_configuration_effects_00a7f560",
+      "reason": "No missing call: the baseline already reaches the group-storage destructor from both reconstructed cleanup paths."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_types_00a7fcc0_fragment",
+      "reason": "No new wiring needed at the inspected source call: the reconstructed shrink already invokes the body; the optimized binary exposes no separate address symbol."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/game_input_runtime.cpp: native input-device runtime ownership",
+      "reason": "Needs a GamepadForceState/GamepadForceContext binding to the actual native device owner and a live clear-requests trigger; the inspected runtime exposes raw device dispatch instead."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0 integration",
+      "reason": "Needs the editable NativeString, cursor and selected-row owner plus the input-action update binding; the platform text-input enable operation alone does not supply that state."
+    }
+  ],
+  "validation": {
+    "baseline": "index --if-stale and scripts/build.ps1 passed; reconstructed_math and tool_tests both passed.",
+    "changed_build": "scripts/build.ps1 passed; reconstructed_math and tool_tests both passed.",
+    "binary": "call_graph.py: reconstructed addresses called 4518 -> 4519; who and path identify the new entry-reachable call from capture_current_target_00a1a7a0.",
+    "source_readiness": "wire_readiness.py --standins: wired 9504 -> 9505; 00A2BDB0 is wired, called=true, call_sites=1, callers_live=1; call graph marked fresh.",
+    "float_math": "No float arithmetic changed.",
+    "runtime": "Not run, as assigned."
+  }
+}
