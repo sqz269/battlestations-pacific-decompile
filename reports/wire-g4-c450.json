@@ -1,0 +1,152 @@
+{
+  "chain": 450,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "base": "91731b1230d36e52c5e34696a8ba666883c5dd23",
+  "switch": "bsp::kWireGoal4Chain450Bound",
+  "picked": "Native message 95 user-path-point sender, local codec and queued lifetime",
+  "measurements": {
+    "readiness_wired_before": 9702,
+    "readiness_wired_after": 9707,
+    "entry_reachable_reconstructed_addresses_before": 4743,
+    "entry_reachable_reconstructed_addresses_after": 4746,
+    "note": "Six actual reconstructed bodies now have calls on this path. 0071D340 already counted through same-address host methods; release identical-code folding also aliases constructor/destructor/delete symbols with existing messages. Totals are address-level tool measurements, not six newly counted addresses."
+  },
+  "implementation": [
+    "The planner's existing post_user_path_point_0071d340 supplies the point; the native sender body replaces the direct host payload copy.",
+    "Use the sender's MOVSS-compatible semantic copy, not 0071CC20's x87 value constructor; preserve the three raw float words until the existing native numeric codec consumes them.",
+    "Use the existing session owner, numeric context, FLT_MAX constant, 400h local stream and type-read/rewind; no invented scene values.",
+    "A shared owner retains the allocated 30h decoded message through loopback insertion, vector copies and delivery. Last release calls native scalar delete with flags 1, including exception/abandoned-queue cleanup.",
+    "The receiver uses decoded +2Ch and +20h/+24h/+28h. The outside-map sideband and queue timing retain the current host policy. OFF keeps the previous host code in else arms."
+  ],
+  "validation": [
+    "Baseline scripts/build.ps1 passed all three test groups.",
+    "Final scripts/build.ps1 passed all three test groups after the sender-copy correction.",
+    "call_graph.py who confirms a reachable direct call from queue_user_path_point_5f to the actual gameplay_seg38_cc13.obj sender body, both native codec bodies and the factory constructor/destructor; the shared-owner deleter reaches 0071E3F0.",
+    "call_graph.py path 0071cd30 reaches the planner, command host and new session bridge from entry.",
+    "wire_readiness.py --standins reports all six wired rows called=true.",
+    "git diff --check passed. pc24_lint is recorded against the committed diff; no float arithmetic was changed."
+  ],
+  "limitations": [
+    "Static executable reachability and build/test evidence only; the game was not run.",
+    "This binds the existing add-point sender only. The clear-point sender and path-index messages remain unwired.",
+    "The typed host channel supplies receiver dispatch; no unused native IsType call was added.",
+    "Native scalar destruction occurs when the drain batch releases the shared entry, rather than immediately after each individual receiver call. The destructor only stamps the root profile and frees this payload-only object."
+  ],
+  "rows": [
+    {
+      "native": "0071d340",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "evidence": "bsp.py show 0071d340 and --asm: MOVSS payload copies, +2Ch=1, route flags 7; concrete source-body call at 101ED367 in the validated Release build."
+    },
+    {
+      "native": "0071cca0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "evidence": "Native writer serializes the actual sent message; reachable direct call at 101ED436."
+    },
+    {
+      "native": "0071cd30",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "evidence": "Native reader fills the retained queued object; reachable direct call at 101ED536."
+    },
+    {
+      "native": "0075b100",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "evidence": "Native factory constructor initializes the separately allocated decoded object; direct call at 101ED52A; Release ICF aliases its symbol with other header constructors."
+    },
+    {
+      "native": "0071cdc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "evidence": "Ends the stack sender lifetime after writing; direct call at 101ED442; Release ICF aliases its root-stamp body with other message destructors."
+    },
+    {
+      "native": "0071e3f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: queue_user_path_point_5f shared-owner deleter",
+      "evidence": "The retained native message is freed through this scalar delete, flags 1; reachable owner calls at 101EA82C and 101EA937; Release ICF aliases other message deletes."
+    },
+    {
+      "native": "0071cc20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_user_path_point_5f",
+      "reason": "This sender needs 0071D340's MOVSS-preserving copy; 0071CC20 performs FLD/FSTP and would change signaling-NaN/FP-status behavior, so a distinct real value-constructor caller is still needed."
+    },
+    {
+      "native": "0071cc70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback",
+      "reason": "The typed UserPathPoint channel already supplies dispatch; native profile-based receiver dispatch is missing, and an otherwise unused IsType query would add no gameplay behavior."
+    },
+    {
+      "native": "00804e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Selection review only: the semantic triple records need a native 1Ch recon-entry owner and unit sensor-class callback before this constructor can replace their producer."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Selection review only: this path needs persistent native E14h carry-over buckets and their unit-clear/destruction callbacks; its current temporary maps are not that storage."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Selection review only: native group entries with linked member records and a real group-level publication callback must replace the current semantic max-level fold."
+    },
+    {
+      "native": "0041bd10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: terrain-grid service",
+      "reason": "Selection review only: wiring needs an actual normal-sampling consumer plus the layer-normal host and CRT/axis access binding; this packet does not introduce that caller."
+    },
+    {
+      "native": "00423af0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: terrain-grid layer reset",
+      "reason": "Selection review only: this raw registry walker needs the native sentinel/node registry view and GridServices binding before it can replace semantic layer reset."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI capture planning",
+      "reason": "Selection review only: an AiGroupScoreList producer and gameplay consumer must replace the planner's current weight vectors; a parallel debug table would not wire gameplay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI capture planning",
+      "reason": "Selection review only: persistent AiGroupScoreList entries and a consumer of their chosen bits are needed before marking can replace planner state."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: difficulty selection",
+      "reason": "Selection review only: the native brain-array/planner-presence producer is needed; a difficulty comment or invented active-slot array cannot supply it."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate collection",
+      "reason": "An existing kDefendThinkImageBound arm already calls this helper with kind/team-set state; no additional producer or caller was established by this packet."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Selection review only: native subtitle/extratitle vector views and their text/object destruction adapters are needed to replace the current schedule reset."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "Selection review only: actual decoder texture planes and material binding are missing from the inspected movie host, whose decoder methods still record unimplemented work."
+    }
+  ]
+}

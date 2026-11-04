@@ -4,6 +4,7 @@
 #include "bsp/wire_goal4_chain415_switches.hpp"
 #include "bsp/wire_goal4_chain428_switches.hpp"
 #include "bsp/wire_goal4_chain440_switches.hpp"
+#include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -123,6 +124,11 @@ struct HostSessionMessages::Image {
     NativeSessionMessage103To106Context context104{context98, &maximum_00d7a248};
     NativeSessionMessage104Profile profile104{context104};
     NativeSessionMessage105Profile profile105{context104};
+
+    // Goal 4 chain 450. Message 95 (5Fh) uses the existing session owner,
+    // numeric codec and binary constant 00D7A248 (FLT_MAX, raw float mode).
+    NativeSessionMessage94To97Context context95{&session, &numeric, &maximum_00d7a248};
+    NativeSessionMessage95Profile profile95{context95};
 
     // The 79h class's vtable 00D032D0, its four slots read from the PE:
     // 007605F0 scalar delete, 0075FFF0 write, 007600D0 read, 0075FFD0 IsType.
@@ -527,6 +533,44 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     destroy_native_session_message88_00764cf0(&queued);
     return result;
     }
+}
+
+std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_point_5f(
+    const float point[3]) const {
+    Image& image = *image_;
+    NativeSessionMessage95 sent{};
+    // Evidence: bsp.py show 0071D340 --asm: MOVSS copies at 0071D36A..3A4,
+    // presence 1, then route flags 7. Use that existing sender body once;
+    // 0071CC20's FLD/FSTP copies would change signaling-NaN/FP-status behavior.
+    const auto posted = gameplay_seg38_cc13::add_user_path_point_message_0071d340(
+        {point[0], point[1], point[2]});
+    // The native header fields the semantic sender leaves to its transport:
+    // 0071D361 base construct, 0071D38B..39C extended header and profile.
+    construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
+    sent.header.sender_18 = 0;
+    sent.header.relay_1a = 0;
+    sent.header.flag_1c = 0;
+    sent.header.base.delivery_04 = 1;
+    sent.header.base.profile_00 = image.profile95.slots;
+    const float payload[3]{posted.point.x, posted.point.y, posted.point.z};
+    std::memcpy(sent.vector_20, payload, sizeof payload);
+    sent.present_2c = static_cast<std::uint8_t>(posted.add_2c);
+    LocalStream stream;
+    write_native_session_message95_0071cca0(&sent, &stream.out, image.context95);
+    destroy_native_session_message95_0071cdc0(&sent);
+    stream.begin_read();
+
+    // 0076E520's local route decodes a separate object; 00768530 case 5Fh
+    // uses 0075B100. Keep that object in the host's real loopback entry,
+    // rather than copying the posted XYZ straight to the receiver. The
+    // matching scalar delete stamps the root profile and frees iff bit 0.
+    std::shared_ptr<NativeSessionMessage95> queued(
+        ::new (singleton_lifetime_allocate({SingletonAllocationKind::object,
+            sizeof(NativeSessionMessage95), sizeof(NativeSessionMessage95)})) NativeSessionMessage95{},
+        [](NativeSessionMessage95* message) { delete_native_session_message95_0071e3f0(message, 1u); });
+    construct_native_session_message95_0075b100(queued.get(), image.context95, image.profile95);
+    read_native_session_message95_0071cd30(queued.get(), &stream.in, image.context95);
+    return queued;
 }
 
 game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
