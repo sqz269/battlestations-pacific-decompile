@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/wire_goal4_chain526_switches.hpp"
+#include "bsp/wire_goal4_chain535_switches.hpp"
 #include "bsp/wire_goal4_chain520_switches.hpp"
 #include "bsp/entity_local_matrix.hpp"
 #include "bsp/wire_goal4_chain508_switches.hpp"
@@ -6523,6 +6524,17 @@ struct GameUnitsHost::Impl {
             slot.db_run_in_origin[2] = slot.motion.position[2];
             slot.db_impact_fall_time = 0.0f;
         } else {
+            if constexpr (bsp::kWireGoal4Chain535Bound) {
+                // bsp.py show 009c7a80 --asm: 009C7D71..009C7D78 passes
+                // approach+48h (the resolved target) to the pilot plan at
+                // approach+18h. ti names that same live target above; the
+                // frozen/missing-target return has already excluded it.
+                bsp::bot_task_set_owner_25c_0099b650(
+                    slot.plan_state.owner_25c,
+                    static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(slots[ti].get())));
+            } else {
+                // The previous dive-bomb path carried no +25Ch owner store.
+            }
             bsp::DiveBombImpactPointInputs ip;
             ip.unit_position[0] = slot.motion.position[0];
             ip.unit_position[1] = slot.motion.position[1];
@@ -45596,8 +45608,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 || (GameUnitsHost::Impl::kLandAbortStateBound
                                     && unit_.land_state == GameUnitSlot::LandTaskState::kAbort))) {
                             land_geometry_009afaf0(true);
+                            if constexpr (bsp::kWireGoal4Chain535Bound) {
+                                // bsp.py show 009b3900 --asm, 009B3AD6..009B3ADD:
+                                // [approach+18h]+25Ch = approach+30h, after geometry.
+                                // land_site_plus_one is that owner, retained by the
+                                // land install and cleared by 009B34D0. Keep null
+                                // when it is cleared; do not substitute the plane.
+                                const std::size_t site = unit_.land_site_plus_one - 1u;
+                                void* const land_owner = site < owner_.slots.size()
+                                    ? owner_.slots[site].get() : nullptr;
+                                bsp::bot_task_set_owner_25c_0099b650(
+                                    unit_.plan_state.owner_25c,
+                                    static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(land_owner)));
+                                owner_.done("BotApproachLand::set_owner_0099b650", 0x0099b650u);
+                            } else {
                             // 0099B650: [approach+18h]+25Ch = the owner (a pointer). Not modelled.
                             owner_.record("BotApproachLand::set_owner_0099b650", 0x0099b650u);
+                            }
                         }
                         // 009B3AE6-009B3B21, the request pacing (x87 order kept).
                         if (dt < unit_.land_request_b0) {

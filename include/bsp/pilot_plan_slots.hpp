@@ -80,9 +80,13 @@ void pilot_seed_plan_slots_0099b450(PilotPlanSlot slots[5], const float live[5])
 // reimplementation that treats the target as persistent state gets a bot that
 // climbs away, which is what this one did until the reset was found.
 //
-// docs/PILOT_PLAN_SLOT_PIPELINE.md lists all sixteen fields; these are the six
-// this reconstruction models.
+// docs/PILOT_PLAN_SLOT_PIPELINE.md lists the reset fields; +25Ch is retained
+// separately because the landing/dive-bomb producer, rather than reset, writes it.
 struct PilotPlanState {
+    // Canonical +25Ch owner word, written by 0099B650. No constructor/reset
+    // interpretation is claimed by this initial value; consumers must wait
+    // for the landing/dive-bomb producer. 0099B450 does not touch this cell.
+    std::uint32_t owner_25c{};
     float pitch_target_2bc = 0.0f;   // 0099B517, zeroed
     float bank_target_2c4 = 0.0f;    // 0099B509, zeroed
     float bank_limit_2c8 = 20.0f;    // 0099B55E, 00CE3930
