@@ -17,6 +17,7 @@
 #include "bsp/wire_goal4_chain311_switches.hpp"
 #include "bsp/wire_goal4_chain321_switches.hpp"
 #include "bsp/wire_goal4_chain330_switches.hpp"
+#include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/band_0080_cc13.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/entity_identity.hpp"
@@ -1462,6 +1463,80 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
     bool tail_begun = false;
     bool stop = false;
     while (!stop && !cur.at_end() && !cur.exhausted()) {
+        if constexpr (kWireGoal4Chain361Bound) {
+            // 0046E9F7..0046EBD8 (bsp.py show 0046DF00 --asm): every arm peeks
+            // the keyword (008D8A70) and compares it with 00438E10, in the
+            // order entity 00CE5818, traffic 00CE5890, groups 00CE55E4,
+            // SceneBrowserGroups 00CE56A4. Only `entity` is consumed here.
+            const std::string keyword = lexer.peek().text;
+            if (equal_insensitive(keyword, "entity")) {
+                lexer.next();  // 0046EA47 008D8960
+                // 0046EB0F: 0046CF40 reads the entity block (identity parent
+                // frame built at 0046EA4C..0046EB01); visit_entity is its
+                // instantiation half (0046C550), as before.
+                SceneEntity ent = parse_scene_entity_0046cf40(lexer, doc.errors);
+                visit_entity(host, ent, kIdentity, pass, result.entities_visited);
+                doc.entities.push_back(std::move(ent));
+                continue;
+            }
+            if (equal_insensitive(keyword, "traffic")) {
+                ++doc.traffic_blocks;
+                if (scene_pass_stops_at_tail_blocks(pass)) {
+                    // 0046EB3D JNZ 0046EBDD: 0095CA10 with the keyword still
+                    // pending, then the loop ends.
+                    host.skip_traffic_block(lexer);
+                    stop = true;
+                    continue;
+                }
+                if (!tail_begun) {
+                    host.begin_tail_blocks();  // 0046EB4B 00925F20
+                    tail_begun = true;
+                }
+                // 0046EB5B 009514B0: the block reader expects `traffic` itself.
+                host.load_traffic_block(lexer);
+                continue;
+            }
+            if (equal_insensitive(keyword, "groups")) {
+                if (scene_pass_stops_at_tail_blocks(pass)) {
+                    stop = true;  // 0046EB7E JNZ 0046EBE2, keyword left pending
+                    continue;
+                }
+                if (!tail_begun) {
+                    host.begin_tail_blocks();  // 0046EB88 00925F20
+                    tail_begun = true;
+                }
+                // 0046EB95 00467E10. Its first step is its own `groups` expect
+                // (00467E15..00467E1C, 008D9930 on 00CE55E4); the recovered
+                // body starts at the `{` that follows (scene_file.hpp: block
+                // parsers take the keyword consumed), so the expect is here.
+                cur.expect("groups");
+                const std::vector<SceneGroupEntry> groups
+                    = parse_scene_groups_00467e10(lexer, doc.errors);
+                doc.groups.insert(doc.groups.end(), groups.begin(), groups.end());
+                doc.has_groups = true;
+                host.load_groups(doc.groups);
+                continue;
+            }
+            if (equal_insensitive(keyword, "SceneBrowserGroups")) {
+                if (scene_pass_stops_at_tail_blocks(pass)) {
+                    stop = true;  // 0046EBBC JNZ 0046EBE2, keyword left pending
+                    continue;
+                }
+                if (!tail_begun) {
+                    host.begin_tail_blocks();  // 0046EBC6 00925F20
+                    tail_begun = true;
+                }
+                // 0046EBD3 00469E40: the block reader expects
+                // `SceneBrowserGroups` (00469E48..00469E4F) itself.
+                host.load_browser_groups(lexer);
+                continue;
+            }
+            // DEVIATION (kept from the previous loop): an unknown top-level
+            // keyword is consumed and ignored. At 0046EBB4 the image jumps back
+            // to 0046E9F5 and peeks the same cached token again, so it never
+            // leaves the loop; no shipped scene has such a keyword.
+            lexer.next();
+        } else {
         const SceneToken token = lexer.next();
         if (equal_insensitive(token.text, "entity")) {
             SceneEntity ent = parse_entity(cur);
@@ -1512,6 +1587,7 @@ SceneFileReadResult run_scene_file_reader_0046df00(SceneFileReaderHost& host,
             continue;
         }
         // Unknown top-level keyword: ignored, as in the native loop.
+        }
     }
     if (!tail_begun) {
         host.end_tail_blocks();  // 00925f20 runs once either way

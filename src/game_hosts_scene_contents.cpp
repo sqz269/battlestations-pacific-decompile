@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
+#include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
 #include "bsp/wire_goal2_chain81_switches.hpp"
@@ -143,7 +144,15 @@ constexpr bool kSceneBrowserGroupsBound = true;
 // are counted only; no traffic unit is created. False: the record, as before,
 // and the scene loop steps over the block's tokens as unknown keywords.
 // ON by cc9-ships59 (SHIP_AI_OPEN_ITEMS 292): JM05 12000 gameplay-identical.
+// Chain 361 (kWireGoal4Chain361Bound): the reader now leaves the keyword
+// pending and the whole 009514B0 / 00469E40 bodies consume it.
 constexpr bool kSceneTrafficBlockBound = true;
+
+// The chain 361 reader leaves `traffic` and `SceneBrowserGroups` for their
+// block readers to consume (0046EB5B, 0046EBD3). The recorded stand-ins
+// consume nothing, so the reader would peek the same keyword forever.
+static_assert(!kWireGoal4Chain361Bound || (kSceneTrafficBlockBound && kSceneBrowserGroupsBound),
+    "chain 361's peeking scene reader needs the 009514B0 and 00469E40 loaders");
 
 class SceneBrowserGroupsCounter final : public SceneBrowserGroupsHost {
 public:
@@ -2682,8 +2691,16 @@ public:
                     return static_cast<const PropertyLibrary*>(library)
                         ->resolve_symbol(table, symbol, value);
                 });
-            const SceneTrafficReadResult read =
-                read_traffic_block_after_keyword(lexer, recorder);
+            const SceneTrafficReadResult read = [&] {
+                if constexpr (kWireGoal4Chain361Bound) {
+                    // 0046EB5B: the reader left `traffic` pending, as the image
+                    // does; 009514B0 clears (009514B5), expects the keyword
+                    // and reads the block.
+                    return read_traffic_block(lexer, recorder);
+                } else {
+                    return read_traffic_block_after_keyword(lexer, recorder);
+                }
+            }();
             owner_.log.implemented("SceneContents::load_traffic_block", "009514b0");
             std::size_t templates = 0;
             for (const TrafficRecord& record : recorder.records) {
@@ -2718,7 +2735,15 @@ public:
     void load_browser_groups(SceneLexer& lexer) override {
         if constexpr (kSceneBrowserGroupsBound) {
             SceneBrowserGroupsCounter counter;
-            const SceneBrowserGroupsReadResult read = read_browser_groups_after_keyword(lexer, counter);
+            const SceneBrowserGroupsReadResult read = [&] {
+                if constexpr (kWireGoal4Chain361Bound) {
+                    // 0046EBD3: the reader left `SceneBrowserGroups` pending;
+                    // 00469E40 expects it (00469E48..00469E4F), then `{`.
+                    return read_browser_groups_block(lexer, counter);
+                } else {
+                    return read_browser_groups_after_keyword(lexer, counter);
+                }
+            }();
             owner_.log.implemented("SceneContents::load_browser_groups", "00469e40");
             owner_.log.notef("scene browser groups: %zu entries, ok=%d%s%s", counter.count,
                 read.ok ? 1 : 0, read.error.empty() ? "" : " error=", read.error.c_str());
