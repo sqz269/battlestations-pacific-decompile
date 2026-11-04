@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
 #include "bsp/wire_goal4_chain467_switches.hpp"
@@ -857,6 +858,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // the node test +1214h, the class's +81Ch, the mast's local Y above periscopeY
     // (+1230h, the node's own Y at attach, 00853CB4), and +1234h periscopeOut.
     int sub_periscope_state_122c{0};
+    bsp::SubmarinePeriscopeRepair sub_periscope_repair{}; // +1254h/+1258h/+125Ch
     bool sub_periscope_node_1214{false};
     float sub_periscope_move_range{10.0f};  // 00CE38B8, NumberOr's default
     float sub_mast_offset{0.0f};
@@ -14523,8 +14525,8 @@ public:
     // Packet cc9_periscope_out. 00854650's periscope arm, 00854AF8..00855057:
     // 00854B00 clears +1234h and skips the arm when +1214h (the "periszkop" node)
     // is null. The repair (00854E44) and the auto-raise (00854ED7, gated by
-    // +1235h) come first in the image; neither has a producer here (no break, no
-    // reflection setter), so periscopeState is the ship AI's store alone. Then
+    // +1235h) come first in the image. Chain479 supplies the common break stores
+    // and repair; auto-raise still has no reflection setter. Then
     // 00854F52: state 1 steps the mast's local Y toward +81Ch + periscopeY at
     // dt * 5.0 (00D7A370), any other state toward periscopeY at dt * 3.0
     // (00D7A2B0), both through 0042AC60; only the extending arm reaches 00855045,
@@ -14538,6 +14540,27 @@ public:
         const bool was_out = slot_.sub_periscope_out_1234;
         slot_.sub_periscope_out_1234 = false;                              // 00854B00
         if (!slot_.sub_periscope_node_1214) return;                         // 00854B06
+        if constexpr (bsp::kWireGoal4Chain479Bound) {
+            // 00854E44..00854ECB: repair precedes the ordinary mast step.
+            // Read the live task priority and the loaded +3D0h, rather than
+            // substituting the installed multiplier or a new repair setting.
+            if (slot_.sub_periscope_state_122c == 2) {
+                const auto* settings = owner_.lua.gameplay_tuning_settings();
+                int priority;
+                if (settings != nullptr && owner_.gunnery != nullptr
+                    && owner_.gunnery->periscope_repair_priority(owner_.index_of_slot(slot_), priority)) {
+                    const auto repaired = bsp::submarine_step_periscope_repair_00854650(
+                        slot_.sub_periscope_repair, dt, priority == 1,
+                        settings->failure_repair_multiplier);
+                    slot_.sub_periscope_repair = repaired.repair;
+                    if (repaired.completed) {
+                        // 00854ECF stores EBX = 0 after 0092BEC0. No native
+                        // mast/shape handles are represented by this adapter.
+                        slot_.sub_periscope_state_122c = 0;
+                    }
+                }
+            }
+        }
         const float range = slot_.sub_periscope_move_range;
         if (slot_.sub_periscope_state_122c == 1) {                         // 00854F52
             slot_.sub_mast_offset = bsp::unit_step_towards_0042ac60(
@@ -25346,6 +25369,40 @@ void GameUnitsHost::set_submarine_periscope_state_122c(std::size_t unit_index, i
         "bound=%d (+122Ch, packet cc9_periscope_out)", slot.row.name.c_str(), state,
         has_node ? 1 : 0, static_cast<double>(move_range), host.summary.simulated_seconds,
         kSubmarinePeriscopeOutBound ? 1 : 0);
+}
+
+int GameUnitsHost::submarine_periscope_state_122c(std::size_t unit_index) const {
+    if (unit_index >= impl_->slots.size()) return 0;
+    return impl_->slots[unit_index]->sub_periscope_state_122c;
+}
+
+bool GameUnitsHost::begin_submarine_periscope_failure(std::size_t unit_index, float clock) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return false;
+    GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.row.submarine_depth_seeded || slot.sub_periscope_state_122c == 2) return false;
+    const auto* settings = host.lua.gameplay_tuning_settings();
+    if (settings == nullptr) return false;
+    const auto& hull = host.class_hull_box(slot);
+    // The existing model reader applies 009396BA..009399BF's periszkop and
+    // kamikaze gates. This is its actual retained shape, not the AI's old
+    // assumed-present node. Do not synthesize an absent shape to run a body.
+    if (!hull.ok || !hull.box.periscope_merged) return false;
+    const auto broken = bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009327f0(
+        clock, settings->submarine_periscope_repair_time);
+    slot.sub_periscope_state_122c = broken.state_122c;
+    slot.sub_periscope_repair = {broken.deadline_1254, broken.clock_1258, broken.clock_fast_125c};
+    slot.sub_periscope_node_1214 = hull.box.periscope_node;
+    // 00853630 NumberOr("PeriscopeMoveRange", 00CE38B8 = 10). A Lua
+    // failure may precede the first AI writer that normally binds this value.
+    slot.sub_periscope_move_range = host.lua.read_vehicle_class_number(
+        slot.row.type_id, "PeriscopeMoveRange", 10.0f);
+    host.done("SubmarineUnit::common_periscope_break", 0x009327f0u);
+    // This deliberately binds only 009327F0's common stores. The outer
+    // 009373C0 has additional 00B6DA70 and 00C47FC0 calls and stays unbound
+    // until per-instance mast and Dyn shape owners are available.
+    host.record("SubmarineUnit::periscope_mast_shape_break_unbound", 0x009373c0u);
+    return true;
 }
 
 bool GameUnitsHost::submarine_periscope_out_1234(std::size_t unit_index) const {

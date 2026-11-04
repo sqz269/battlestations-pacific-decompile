@@ -15,6 +15,7 @@
 #endif
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/game_unit_group_storage.hpp"
 #include "bsp/native_unit_group_direct_views.hpp"
 #include "bsp/wire_goal4_chain272_switches.hpp"
@@ -10517,7 +10518,14 @@ public:
         return ctl_.active_state_ai_offset == kAiOffsetSubAttack
                || ctl_.active_state_ai_offset == kAiOffsetKamikaze;
     }
-    int periscope_state_122c() override { return ctl_.periscope_state_122c; }
+    int periscope_state_122c() override {
+        if constexpr (bsp::kWireGoal4Chain479Bound) {
+            // The failure and repair write the same unit+122Ch the AI reads.
+            return owner_.units.submarine_periscope_state_122c(index_);
+        } else {
+            return ctl_.periscope_state_122c;
+        }
+    }
     void set_periscope_state_122c(int state) override {
         if (state != ctl_.periscope_state_122c) {
             ++(state == 1 ? ctl_.prepass_periscope_raises : ctl_.prepass_periscope_lowers);
@@ -10664,7 +10672,13 @@ public:
         owner_.units.set_submarine_depth_level_008528b0(index_, level);
         owner_.done("ShipAiSubAttack::set_depth_level_008528b0", 0x008528b0u);
     }
-    int periscope_state_122c() override { return ctl_.periscope_state_122c; }
+    int periscope_state_122c() override {
+        if constexpr (bsp::kWireGoal4Chain479Bound) {
+            return owner_.units.submarine_periscope_state_122c(index_);
+        } else {
+            return ctl_.periscope_state_122c;
+        }
+    }
     void set_periscope_state_122c(int state) override {
         if (state == 1 && ctl_.periscope_state_122c != 1) ++ctl_.sub_attack_periscope_raises;
         store_periscope_state_122c(owner_, ctl_, index_, state);

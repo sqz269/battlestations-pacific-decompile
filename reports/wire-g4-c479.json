@@ -1,0 +1,143 @@
+{
+  "chain": 479,
+  "slot": "g4-w4",
+  "switch": "kWireGoal4Chain479Bound",
+  "switch_header": "include/bsp/wire_goal4_chain479_switches.hpp",
+  "summary": "Bind the common periscope break stores and repair clocks to the live submarine slot. Scripted SetFailure reads the mission clock and loaded settings; the existing model reader gates on its actual periscope shape. Both AI readers now observe the unit's shared state so their native state-2 guards preserve a break until repair completes. This is partial outer-break progress: mast visibility and Dyn collision calls remain unbound.",
+  "counts": {
+    "readiness_wired_before": 9754,
+    "readiness_wired_after": 9757,
+    "built_call_graph_called_before": 4821,
+    "built_call_graph_called_after": 4823,
+    "note": "Readiness is a source-text metric; the two new reachable built symbols are the common break body and the repair fragment. No full 009373C0 or full 00854650 claim."
+  },
+  "rows": [
+    {
+      "native": "009327F0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp GameUnitsHost::begin_submarine_periscope_failure, called by src/game_hosts_gunnery.cpp GameGunneryHost::script_set_failure_008132c0",
+      "body": "bsp::gameplay_seg61_62_cc13::submarine_break_periscope_009327f0",
+      "evidence": "bsp.py show 009327f0: state +122Ch=2, +125Ch=0, +1258h=clock, +1254h=settings+4C4h plus clock. 00813586..00813595 gates an already-broken unit before the controller break. The common stores are identical in 009373C0; its additional scene/Dyn calls are not claimed.",
+      "real_state": "Existing unit slot +122Ch and new per-slot +1254h/+1258h/+125Ch storage; GameGunneryHost mission clock, GameMissionLuaHost::gameplay_tuning_settings +4C4h, model-derived periscope_merged under the existing kamikaze gate. The new state is consumed by the existing mast/sensor step and both live AI state readers.",
+      "validation": "call_graph.py who 009327f0: one reachable call from GameUnitsHost::begin_submarine_periscope_failure; path reaches the SetFailure Lua binding and WinMain."
+    },
+    {
+      "native": "00854650",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp ShipMotionBinding::run_submarine_periscope_00854650",
+      "body": "bsp::submarine_step_periscope_repair_00854650",
+      "coverage": "repair fragment 00854E44..00854ED5 only",
+      "evidence": "bsp.py show 00854650 --asm --start 520: state 2 gate; unit+A44h==1 selects settings+3D0h times dt; +125Ch and +1258h each gain one step; 00854ECF stores state 0 after 0092BEC0. The helper now accepts the loaded multiplier, preserving the installed default for existing fixtures.",
+      "real_state": "Per-slot repair clocks created by the common break; force-step dt, current live repair-task priority and loaded FailureRepairMultiplier. The task's constructor priority is 0 and its UI priority setter is still unhosted. Completion returns shared +122Ch to 0 before the ordinary mast step.",
+      "validation": "call_graph.py who 00854650: the repair helper is reachable from ShipMotionBinding::run_submarine_periscope_00854650.",
+      "limitations": "The existing host runs this periscope arm after the force step rather than the native unit-update phase. No native 0092BEC0 visibility/collision restoration is claimed."
+    },
+    {
+      "native": "009373C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp GameGunneryHost::script_set_failure_008132c0 Periscope arm",
+      "reason": "Missing per-instance mast node +1214h for 00B6DA70 and Dyn periscope shape +394h for 00C47FC0; the host keeps model presence/merged bounds, so only the identical common 009327F0 stores are bound here."
+    },
+    {
+      "native": "0085B0F0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp gun angle consumers (survey only)",
+      "reason": "Missing a represented replicated-angle update path for this immediate seam-snap body; ordinary target-angle filtering uses a different native routine."
+    },
+    {
+      "native": "005251C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp SetSelectedUnit and ForceSelectUnit screen-reset records (survey only)",
+      "reason": "Missing the actual selection-screen +C4h checked-iterator vector and input context owner required by the raw reset body."
+    },
+    {
+      "native": "004F1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp command target projections (survey only)",
+      "reason": "Missing the mapped live native absolute constant cells 00F87574/78/7C required by the literal initializer; semantic target projections cannot supply those addresses."
+    },
+    {
+      "native": "0080DA00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp unit ring and saved-state initialization (survey only)",
+      "reason": "Missing the saved ship rudder field producer consumed at 0081FD5F..0081FD6E; no existing immediate-rudder host call could safely replace it."
+    },
+    {
+      "native": "0081F980",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp class_section_points_0081f980 (survey only)",
+      "reason": "Missing the saved-state Lua-reader owner and fields for the full ship bind routine; the present class section-point projection covers only its later geometry fragment."
+    },
+    {
+      "native": "00B92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp native animation vectors (survey only)",
+      "reason": "Missing a reachable skinned-animation record-loading owner; current reserve callers are in the unlinked resource parsing chain."
+    },
+    {
+      "native": "00B6FC30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp fit shadow slices (survey only)",
+      "reason": "Missing a concrete reachable ShadowFitHost for the raw camera shadow-fit callers; substituting its aspect product alone would not connect that chain."
+    },
+    {
+      "native": "00B70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp extra clip plane setter (survey only)",
+      "reason": "Missing a reachable producer for an actual extra camera clip plane; no ordinary host arm currently supplies one."
+    },
+    {
+      "native": "00B70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp clip-state reset (survey only)",
+      "reason": "Missing entry reachability for the existing native main-scene submission caller; the reset is already named there but does not establish a new game call."
+    },
+    {
+      "native": "00A8ECB0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp fit_and_submit_shadow_slice_00a8ecb0 (survey only)",
+      "reason": "Missing a concrete ShadowFitHost and live shadow-owner caller."
+    },
+    {
+      "native": "00A8BD20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp fit_shadow_cascade_00a8bd20 (survey only)",
+      "reason": "Missing a concrete ShadowFitHost and live shadow-owner caller."
+    },
+    {
+      "native": "00437C70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp MissionStart write_checkpoint (survey only)",
+      "reason": "Missing the current profile save-file/storage continuation for the full clear-and-rewrite path; the available Lua-table helper implements only its table erase."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp deferred main-thread call queue (survey only)",
+      "reason": "Missing the live frame-job-thread/deferred queue producer; this host always executes mission calls synchronously."
+    },
+    {
+      "native": "00887C30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp queue_named_call_for_main_thread (survey only)",
+      "reason": "Missing the live frame-job-thread/deferred queue producer; constructing unused queue nodes would not run game work."
+    },
+    {
+      "native": "00AB6D00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp glyph-byte acceptance callback (survey only)",
+      "reason": "Missing a concrete reachable text-entry host using this byte-validation callback; font decoding and glyph selection alone do not call it."
+    },
+    {
+      "native": "0084B8C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp projectile impact path (survey only)",
+      "reason": "Missing the live weapon-class effect-slot and impact point-effect dispatch adapter; the existing slot-selection helper alone would leave its result unused."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1, MSVC Win32 Release, all four CTests pass",
+    "pc24_command": "python tools/pc24_lint.py --diff origin/main...HEAD",
+    "runtime": "Not run; static entry reachability and existing fixtures only."
+  }
+}
