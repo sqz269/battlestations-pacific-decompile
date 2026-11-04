@@ -10,6 +10,8 @@
 #include "bsp/wire_goal4_chain395_switches.hpp"
 #include "bsp/wire_goal4_chain401_switches.hpp"
 #include "bsp/wire_goal4_chain406_switches.hpp"
+#include "bsp/wire_goal4_chain417_switches.hpp"
+#include "bsp/cc13_seg67b.hpp"
 #include "bsp/native_unit_part_storage.hpp"
 #include "bsp/cc13_seg48U.hpp"
 #include "bsp/gameplay_seg50_cc13.hpp"
@@ -2283,6 +2285,27 @@ bool node0_keeps_slot_frame(int category) noexcept {
 // fmod at 00BF857A), stored as a float, then moved by 2pi into (-pi, pi]
 // (00CE3D18 = -pi, 00CE3D28 = pi, all three doubles of the float pi).
 float seed_wrap_0085a3d0(float x) noexcept {
+    if constexpr (bsp::kWireGoal4Chain417Bound) {
+        // Reuse the existing body for the equivalent finite-angle operation.
+        // bsp.py show 0085A3D0 --asm, 0085A6AC..0085A6FF, and 0099BA10
+        // --asm: both round fmod(x, [00CE3828]) to float, compare against
+        // [00CE3D18]/[00CE3D28], then add/subtract [00CE3828] into (-pi, pi].
+        // x is the retained platform arc's clamped midpoint, and callers
+        // publish the result as the live current/target gun angles. This is
+        // shared arithmetic, not an original 0085A3D0 -> 0099BA10 call edge.
+        // Preserve the previous result for nonfinite inputs: the host's
+        // !(minus_pi < r) differs from 0099BA10's ordered >= comparison.
+        if (std::isfinite(x)) {
+            float wrapped;
+            bsp::math_normalize_angle_to_pi_by_ref_0099ba10(&wrapped, &x);
+            return wrapped;
+        }
+        // A nonfinite dividend produces a NaN remainder, so the previous
+        // host's first (unordered) branch always added the period.
+        constexpr double kTwoPi = 6.2831854820251465; // 00CE3828
+        const float r = static_cast<float>(std::fmod(static_cast<double>(x), kTwoPi));
+        return static_cast<float>(static_cast<double>(r) + kTwoPi);
+    } else {
     constexpr double kNegPi = -3.1415927410125732;   // 00CE3D18
     constexpr double kPosPi = 3.1415927410125732;    // 00CE3D28
     constexpr double kTwoPi = 6.2831854820251465;    // 00CE3828
@@ -2294,6 +2317,7 @@ float seed_wrap_0085a3d0(float x) noexcept {
         return static_cast<float>(static_cast<double>(r) - kTwoPi);
     }
     return r;
+    }
 }
 
 // 0085A3D0's unauthored arm (platform+94h == FLT_MAX): walk the platform's arcs
