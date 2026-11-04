@@ -1,0 +1,239 @@
+{
+  "chain": 536,
+  "slot": "g4-w4",
+  "switch": "bsp::kWireGoal4Chain536Bound",
+  "scope": "Command-building critical-section leaves on the live paratrooper capturer owner",
+  "wired_total_before": 9845,
+  "wired_total_after": 9847,
+  "called_total_before": 4912,
+  "called_total_after": 4914,
+  "checks": {
+    "baseline_build": "passed; all four CTests passed",
+    "changed_build": "passed; all four CTests passed",
+    "call_graph": "006f1ee0 has two reachable call sites; 006f1f00 has three, including guard unwind",
+    "diff_check": "passed",
+    "pc24_lint": "not required; no floating-point operations changed",
+    "readiness": "Both 006f1ee0 and 006f1f00 are wired and called in the regenerated report."
+  },
+  "evidence": [
+    "bsp.py show 006f1ee0 --asm: load +764h, EnterCriticalSection, increment section+18h",
+    "bsp.py show 006f1f00 --asm: load +764h, decrement section+18h, LeaveCriticalSection",
+    "Existing NativeCommandBuildingCapturers::Impl owns the section and +7DCh vector; the vector snapshot is resolved to live round side/capture power by RoundWorld::capturers"
+  ],
+  "limitations": [
+    "Build and entry-reachable call-graph evidence only; game was not run.",
+    "The existing partial owner is not a complete native MCommandBuilding or a drop-in binary ABI replacement."
+  ],
+  "rows": [
+    {
+      "native": "006f1ee0",
+      "status": "wired",
+      "host_site": "src/cc13_paratrooper_round.cpp: NativeCommandBuildingCapturers::Impl::Guard constructor, used by read/remove",
+      "reason": "Uses the existing owner's live +764h critical section and +18h depth; guards the actual +7DCh vector consumed by RoundWorld::capturers and remove_capturer."
+    },
+    {
+      "native": "006f1f00",
+      "status": "wired",
+      "host_site": "src/cc13_paratrooper_round.cpp: NativeCommandBuildingCapturers::Impl::Guard destructor, used by read/remove",
+      "reason": "Balances the same live critical section and depth on normal return and snapshot-allocation unwind; replaces the old guard unlock on the enabled path."
+    },
+    {
+      "native": "0070d030",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_lookup.cpp: native_unit_group_member_index_0070d030",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "0070d060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ShipAiApproach/ShipAiAttack group_member_at_0070d060",
+      "reason": "The native direct-view body already has two reachable baseline calls; these additional host paths need their own current group-storage admission."
+    },
+    {
+      "native": "0070d070",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_direct_views.cpp: native_unit_group_record_at_0070d070",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "0070d080",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_lookup.cpp: native_unit_group_member_record_0070d080",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group target scoring",
+      "reason": "Missing a gameplay consumer for the native score-list entries; the current planner consumes its weight vectors directly."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group target scoring",
+      "reason": "Missing the live score-list owner and chosen-entry consumer; marking an auxiliary table would not drive the existing planner."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "Missing the live weapon-animation owner and range consumer; weapon_animation currently returns zero."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum property insertion",
+      "reason": "The existing numeric-property adapter already calls this body with the native enum owner; the overview row misses that route."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "Existing property-merge adapters already own this path; a second insertion at the outer host would double-run the merge."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20",
+      "reason": "Missing a reachable original caller: the shadow-fit and camera-mover callers inspected are not linked in this executable."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: set_camera_extra_clip_plane_00b70410",
+      "reason": "Missing a live extra-clip-plane request producer; camera ownership alone does not provide a requested plane."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp: clear_camera_extra_clip_plane_00b70470",
+      "reason": "Missing a live extra-clip-plane lifecycle caller; adding an initialization-only clear would manufacture a request."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_get_190_00b6fe60",
+      "reason": "CameraView lacks a borrowed binding to the live camera clear-colour field on the inspected renderer paths."
+    },
+    {
+      "native": "00b6fe70",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: camera_set_194_00b6fe70",
+      "reason": "Missing a live stencil setter request and a borrowed CameraView binding to its actual +194h storage."
+    },
+    {
+      "native": "00b700a0",
+      "status": "skipped",
+      "host_site": "src/camera_frame_state.cpp: camera clear submission",
+      "reason": "Missing a borrowed adapter from the existing camera-frame clear path to the older CameraClearView projection; that path already submits the live clear fields inline."
+    },
+    {
+      "native": "00a7a570",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::stop_slot08",
+      "reason": "Already reachable in the baseline executable through SoundChannelRuntime::stop_slot08."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "reason": "Already reachable in the baseline executable through configured-group shutdown and shrinking."
+    },
+    {
+      "native": "006ebd30",
+      "status": "skipped",
+      "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::gate_008141e0",
+      "reason": "Missing catapult-device disabled, ammo and reload-timer producers; the existing host retains only ship stock and child slots."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/hit_narrowphase.cpp: projectile_may_bind_006e6bb0",
+      "reason": "Missing a live projectile-binding caller with the real scene-node flag state; the inspected host paths do not supply that object."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: dogfight df_pilot_targets_us",
+      "reason": "Missing the actual +DF4h pilot object and current-slot +98h target producer; commanded/dogfight targets are separate host state."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_path_leg_manager_get_body_009bd400",
+      "reason": "Missing the live path-leg-manager singleton publication, registration and native lifetime owner."
+    },
+    {
+      "native": "0084cf80",
+      "status": "skipped",
+      "host_site": "src/band_0080_cc13.cpp: support_site_squad_size_0084cf80",
+      "reason": "Missing the support-site +328h/+31Ch list producers containing the real class IDs and squad sizes."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun angle reception",
+      "reason": "Missing a single-player received-angle snapshot producer carrying all four replication inputs; target-angle commands are a different operation."
+    },
+    {
+      "native": "0085d770",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: orthonormalize_from_row_z_0085d770",
+      "reason": "No equivalent live row-Z-first caller was found; current host pose paths explicitly use different orthonormalization orders."
+    },
+    {
+      "native": "0085e8c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg53_cc13.cpp: rotate_about_axis_through_point_0085e8c0",
+      "reason": "Missing a live pivot/axis rotation caller; existing inspected host pose updates do not provide that operation."
+    },
+    {
+      "native": "00aa7950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: widget transform publication",
+      "reason": "Missing a live scale-setter request producer; authored scale fields alone do not justify an extra setter call."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: build_quads",
+      "reason": "Missing a live name-sorted child-snapshot consumer; the actual draw list orders by depth and runtime ownership."
+    },
+    {
+      "native": "00aa8f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: widget rectangle consumers",
+      "reason": "Missing an equivalent unpivoted-rectangle consumer; the inspected renderer and hit-test paths apply widget pivots."
+    },
+    {
+      "native": "0070d0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: retained formation speed read",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "0070d100",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_direct_views.cpp: publish_native_unit_group_member_speed_0070d100",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "00953920",
+      "status": "skipped",
+      "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::count_00953920",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "00953a60",
+      "status": "skipped",
+      "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::last_00953a60",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    },
+    {
+      "native": "008141e0",
+      "status": "skipped",
+      "host_site": "src/ship_catapult_host.cpp: ShipCatapultRegistry::gate_008141e0",
+      "reason": "Already has a reachable call in the baseline executable; no new wiring needed."
+    }
+  ]
+}

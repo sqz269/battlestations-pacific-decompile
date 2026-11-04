@@ -10,6 +10,7 @@
 #include "bsp/wire_goal2_chain131_switches.hpp"
 #include "bsp/wire_goal2_chain179_switches.hpp"
 #include "bsp/wire_goal4_chain282_switches.hpp"
+#include "bsp/wire_goal4_chain536_switches.hpp"
 
 #include <algorithm>
 #include <cstdio>
@@ -74,6 +75,21 @@ struct NativeCommandBuildingCapturers::Impl final : cc13_seg33b::CommandBuilding
     void leave_critical_section(void* value) override {
         LeaveCriticalSection(static_cast<CRITICAL_SECTION*>(value));
     }
+    struct Guard {
+        Impl& owner;
+        explicit Guard(Impl& value) : owner(value) {
+            // bsp.py show 006F1EE0 --asm: load the actual +764h section,
+            // enter it, then increment that same section's +18h depth.
+            cc13_seg33b::command_building_lock_006f1ee0(owner, owner.object());
+        }
+        ~Guard() {
+            // 006F1F00 decrements before leaving. This also balances a
+            // throwing snapshot allocation and remove's nested native lock.
+            cc13_seg33b::command_building_unlock_006f1f00(owner, owner.object());
+        }
+        Guard(const Guard&) = delete;
+        Guard& operator=(const Guard&) = delete;
+    };
 };
 
 NativeCommandBuildingCapturers::NativeCommandBuildingCapturers() : impl_(std::make_unique<Impl>()) {}
@@ -84,18 +100,34 @@ void NativeCommandBuildingCapturers::add(std::uint32_t round) {
 }
 
 bool NativeCommandBuildingCapturers::remove(std::uint32_t round) {
+    if constexpr (kWireGoal4Chain536Bound) {
+        Impl::Guard guard(*impl_);
+        const std::int32_t before = impl_->fields.size_7e0;
+        cc13_seg33b::command_building_remove_paratrooper_006f34b0(*impl_, impl_->object(), round);
+        return impl_->fields.size_7e0 != before;
+    } else {
     std::lock_guard<Impl::Section> guard(impl_->section);
     const std::int32_t before = impl_->fields.size_7e0;
     cc13_seg33b::command_building_remove_paratrooper_006f34b0(*impl_, impl_->object(), round);
     return impl_->fields.size_7e0 != before;
+    }
 }
 
 void NativeCommandBuildingCapturers::read(std::vector<std::uint32_t>& out) const {
+    if constexpr (kWireGoal4Chain536Bound) {
+        Impl::Guard guard(*impl_);
+        out.clear();
+        // The capture-strength consumer reads this exact owned vector.
+        if (impl_->fields.size_7e0 != 0) {
+            out.assign(impl_->fields.data_7dc, impl_->fields.data_7dc + impl_->fields.size_7e0);
+        }
+    } else {
     std::lock_guard<Impl::Section> guard(impl_->section);
     out.clear();
     // Do not form an end pointer from the null data of a newly empty list.
     if (impl_->fields.size_7e0 != 0) {
         out.assign(impl_->fields.data_7dc, impl_->fields.data_7dc + impl_->fields.size_7e0);
+    }
     }
 }
 

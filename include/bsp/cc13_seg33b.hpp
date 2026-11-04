@@ -623,8 +623,9 @@ inline constexpr float kMaxCameraAngleDefault = 89.0f;                 // float 
 inline constexpr double kDegreesPerTurn = 360.0;                       // double 00CF1448
 
 // 006F1EE0 / 006F1F00 __fastcall(ECX = building): enter / leave the +764h section with depth.
-void command_building_lock_006f1ee0(Seg33bHost& host, Object building);
-void command_building_unlock_006f1f00(Seg33bHost& host, Object building);
+// These leaves need only the capturer owner's existing section services.
+void command_building_lock_006f1ee0(CommandBuildingCapturerHost& host, Object building);
+void command_building_unlock_006f1f00(CommandBuildingCapturerHost& host, Object building);
 // 006F1F80 vtable +1A8h, an empty body (RET).
 void command_building_die_006f1f80(Object building);
 // 006F2250 __fastcall(ECX = cell): free the block at +0h (00BF6989) and clear it when set.
