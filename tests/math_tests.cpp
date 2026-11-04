@@ -8,6 +8,7 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/scene_weather_cc13.hpp"
 #include "bsp/cc13_seg67b.hpp"
 #include "bsp/cc13_seg67n.hpp"
 #include "bsp/unit_weapons.hpp"
@@ -5042,6 +5043,78 @@ int main() {
         check(strings.allocated.size() == strings.released.size(),
             "chain457 temporary and tree string ownership balances");
 
+    }
+
+    {
+        // Chain 522 review: the native PC24 FMUL/FADD and FMUL/FDIV each
+        // round separately. One Lights fixture covers the 35-degree one-ULP
+        // regression and cancellation that exposes a retained double product.
+        using namespace bsp::scene_weather_cc13;
+        bsp::ScenePropertyBagModel model;
+        const auto number = [&](int bag, const char* key, float value) {
+            bsp::ScenePropertyEntry entry;
+            entry.key = key;
+            entry.value.type = bsp::ScenePropertyType::Float;
+            entry.value.float_value = value;
+            model.bags[static_cast<std::size_t>(bag)].entries.push_back(entry);
+        };
+        const auto child = [&](int parent, const char* key) {
+            const int bag = static_cast<int>(model.bags.size());
+            model.bags.emplace_back();
+            bsp::ScenePropertyEntry entry;
+            entry.key = key;
+            entry.value.type = bsp::ScenePropertyType::SubBag;
+            entry.sub_bag = bag;
+            model.bags[static_cast<std::size_t>(parent)].entries.push_back(entry);
+            return bag;
+        };
+        number(0, "ParticleMultiplier", 1.0f);
+        number(0, "BushShadowAllowed", 0.0f);
+        number(0, "BushDiffuseFactor", 1.0f);
+        number(0, "BushNormalAllowed", 0.0f);
+        bsp::ScenePropertyEntry texture;
+        texture.key = "BushTextureName";
+        texture.value.type = bsp::ScenePropertyType::String;
+        texture.value.text = "fixture.dds";
+        model.bags[0].entries.push_back(texture);
+        // (1+2^-23)^2 rounds to 1+2^-22 at PC24 before adding -(1+2^-22).
+        // Native alpha is +0; retaining a double product yields 2^-46 instead.
+        constexpr float luminance = 1.00000011920928955078125f;
+        number(0, "AmbientLumScale", luminance);
+        number(0, "AmbientLumOffset", -1.0000002384185791015625f);
+        const auto colour = [&](int bag) {
+            number(bag, "R", 1.0f); number(bag, "G", 1.0f); number(bag, "B", 1.0f);
+            number(bag, "L", luminance);
+        };
+        for (const char* name : {"Ambient", "UWAmbient", "Diffuse", "UWDiffuse", "Specular"})
+            colour(child(0, name));
+        const int hdr = child(child(0, "AmbientCube"), "HDR");
+        for (const char* face : {"Left", "Right", "Top", "Bottom", "Front", "Back"})
+            colour(child(hdr, face));
+        const int angles = child(0, "Angles");
+        number(angles, "HorizontalAngle", 35.0f);
+        number(angles, "VerticalAngle", 35.0f);
+        struct SceneSettings final : SceneLightsHost {
+            float diffuse{};
+            std::string texture_name;
+            std::uint8_t normal{};
+            void set_bush_diffuse_factor_00ad7140(float value) override { diffuse = value; }
+            void set_bush_texture_name_00ad7fe0(const std::string& value) override { texture_name = value; }
+            void set_bush_normal_allowed_00ad5730(std::uint8_t value) override { normal = value; }
+        } settings;
+        SceneLightsFields fields;
+        std::string error;
+        const bool loaded = read_sun_light_properties_004ea870(model, 0, false, fields, settings, error);
+        const auto scene_word = [](float value) {
+            std::uint32_t word;
+            std::memcpy(&word, &value, sizeof word);
+            return word;
+        };
+        check(loaded && error.empty() && scene_word(fields.ambient_f48.a) == 0
+            && scene_word(fields.ambient_cube_f68[0].a) == 0
+            && scene_word(fields.horizontal_angle_1004) == 0x3f1c61abu
+            && scene_word(fields.vertical_angle_1008) == 0x3f1c61abu,
+            "chain522 scene luminance and 35-degree angles round each native PC24 operation");
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

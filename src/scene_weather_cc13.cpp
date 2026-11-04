@@ -126,14 +126,17 @@ void scale_rgba(Rgba& colour, float l) {
     scale_rgba_004e5d20(&colour.r, l);
 }
 
-// FLD L / FMUL scale / FADD offset / FSTP: 80-bit natively, double here.
+// 004EAB41..004EAB4D: FLD L / FMUL scale / FADD offset / FSTP.
+// Main-thread PC24 rounds each arithmetic operation, retaining x87's wider
+// exponent range between them. A single double expression loses that rounding.
 float lum_scale_offset(float l, float scale, float offset) {
-    return static_cast<float>(static_cast<double>(l) * scale + offset);
+    return static_cast<float>(cc13x87::x87_add24(cc13x87::x87_mul24(l, scale), offset));
 }
 
-// FLD deg / FMUL qword pi / FDIV qword 180 / FSTP float.
+// 004EB0D7..004EB0EE (repeated at 004EB111..004EB12F): round FMUL and FDIV
+// separately at PC24, preserving both original qword operands CE3D28/CE3D20.
 float degrees_to_radians(float degrees) {
-    return static_cast<float>(static_cast<double>(degrees) * kPi / kDegrees);
+    return static_cast<float>(cc13x87::x87_div24(cc13x87::x87_mul24(degrees, kPi), kDegrees));
 }
 
 // ---------------------------------------------------------------------------

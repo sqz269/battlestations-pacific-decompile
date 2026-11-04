@@ -220,7 +220,12 @@ struct MissionShipGraph final {
             lighting = std::make_unique<MissionShipLightingGraph>(log, graph, cameras,
                 owners, raw_strings, static_cast<std::uint8_t>(arguments.word_00),
                 startup_domain ? &startup_domain->registry : nullptr);
+            if constexpr (kWireGoal4Chain522Bound) {
+                lighting->load_scene_lights(*source.root_properties, *foliage);
+                lighting->create_and_bind(scene->raw());
+            } else {
             lighting->create_and_bind(scene->raw());
+            }
             // Keep this SAME one-shot cache while late mission models can load.
             // B3B7F4/B34890 dereference it in the installed binary shader mode.
             // A completed current-owner cache is retired exactly once below.
