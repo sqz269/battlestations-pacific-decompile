@@ -6,9 +6,10 @@
   "switch": "bsp::game::kWireGoal4Chain545Bound",
   "picked": "Loading-screen construction and singleton lifetime over the live menu screen",
   "wired_before": 9864,
-  "wired_after": 9867,
+  "wired_after": 9866,
   "notes": [
     "0057BFF0 and 0057C090 were already text-counted as wired at baseline; all five addresses now have called=true and one reachable built call site each.",
+    "The final readiness refresh classifies the existing 0057BEC0 report_loading_progress row as ready even though called=true. Its live calls remain; the final net text-count increase is two. An earlier intermediate scan reported 9867.",
     "Replaced the four unused raw-only lifetime/constructor/destructor interfaces with one typed body per address; original calling conventions are documented, not claimed compatible.",
     "The registered hook is a stable member of the SAME LoadingScreen used by progress, GUI element initialization and teardown. Lifetime access borrows GameSingletonHost's canonical raw 01090AA0 publication.",
     "A finite CEF28C deletion binding validates the exact registered member and dispatches to the same destructor during canonical manager drain. Source storage is retained inside Impl until its normal C++ deletion.",
