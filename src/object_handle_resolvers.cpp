@@ -1,4 +1,6 @@
 #include "bsp/object_handle_resolvers.hpp"
+#include "bsp/gameplay_seg38_cc13.hpp"
+#include "bsp/wire_goal4_chain483_switches.hpp"
 
 #include <cstring>
 #include <exception>
@@ -13,6 +15,20 @@ extern "C" {
 
 namespace bsp {
 void* object_from_handle_006ad080(std::uint32_t handle, const ObjectHandleTables& tables) noexcept {
+    if constexpr (kWireGoal4Chain483Bound) {
+        const auto id = static_cast<std::uint16_t>(handle);
+        // bsp.py show 006AD080 / 00720FA0 / 00720FE0 --asm: all three
+        // entries use the same signed split, wrapping base subtraction and
+        // stride-10h entry+C load. Reuse the existing bodies with this live
+        // callback's SAME aliased registry banks; no shadow ID table is built.
+        // 006AD080 tests the FULL handle before truncation, whereas 00720FE0
+        // tests only its word. Thus a nonzero upper word with low16 == 0 must
+        // still enter the unchecked lookup, rather than become null.
+        // This is C++ body reuse, not Original ECX/RET or register-ABI proof.
+        if (handle == id)
+            return gameplay_seg38_cc13::entity_from_message_nonzero_00720fe0(id, tables);
+        return gameplay_seg38_cc13::entity_from_message_00720fa0(id, tables);
+    } else {
     if (handle == 0) return nullptr;
     const std::uint32_t id = static_cast<std::uint16_t>(handle);
     std::uint32_t index;
@@ -28,6 +44,7 @@ void* object_from_handle_006ad080(std::uint32_t handle, const ObjectHandleTables
     void* object;
     std::memcpy(&object, reinterpret_cast<const void*>(address), sizeof(object));
     return object;
+    }
 }
 
 std::uint16_t handle_from_object_006ad0c0(const void* object) noexcept {
