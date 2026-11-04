@@ -8,6 +8,7 @@
 #endif
 
 #include "bsp/ship_ai_approach_curves.hpp"
+#include "bsp/engine_services_cc13.hpp"
 #include "bsp/mmod_hull_convex_box.hpp"
 #include "bsp/ai_planner_tails.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"
@@ -4447,6 +4448,60 @@ int main() {
             && !active(0) && !active(1) && contexts.context_level[6] == 0,
             "chain271 empty stacks refresh actions at floor 1 without a menu mirror");
         bsp::destroy_native_input_action_owner_00a93dd0(raw, owner_context);
+    }
+
+    {   // Chain 342: the live dispatch boundary must retain name/owner identity
+        // and consume exactly one reference, including the nonterminal case.
+        struct Stream { std::uint32_t table; LONG references; } stream{0x00d691b0u, 2};
+        struct Calls final : bsp::engine_services_cc13::StreamReferenceCalls {
+            void* manager{};
+            std::uint32_t name{}, flags{};
+            void* result{};
+            void* destroyed{};
+            unsigned terminal_calls{};
+            bool fail_open{};
+            void* open(void* actual_manager, std::uint32_t actual_name,
+                std::uint32_t actual_flags) override {
+                manager = actual_manager; name = actual_name; flags = actual_flags;
+                if (fail_open) throw std::runtime_error("open failed");
+                return result;
+            }
+            void zero_reference(void* object) override {
+                destroyed = object;
+                ++terminal_calls;
+            }
+        } calls;
+        calls.result = &stream;
+        RecordingStorage name_storage;
+        bsp::NativeString name;
+        name.assign_0041e870(name_storage, "nav");
+        std::uint32_t manager[2]{};
+        void* slot = nullptr;
+        auto* const returned = bsp::engine_services_cc13::vfs_open_stream_into_00be4380(
+            &slot, manager, reinterpret_cast<std::uint32_t>(&name), 0x32, &calls);
+        check(returned == &slot && slot == &stream && calls.manager == manager
+            && calls.name == reinterpret_cast<std::uint32_t>(&name) && calls.flags == 0x32,
+            "chain342 open forwards actual header, manager, flags and returned owner");
+        bsp::engine_services_cc13::release_ref_slot_unchecked_00be4500(&slot, &calls);
+        check(slot == nullptr && stream.references == 1 && calls.terminal_calls == 0,
+            "chain342 nonterminal release clears slot without destruction");
+        slot = &stream; // The remaining real owner releases its own reference.
+        bsp::engine_services_cc13::release_ref_slot_unchecked_00be4500(&slot, &calls);
+        check(slot == nullptr && stream.references == 0 && calls.terminal_calls == 1
+            && calls.destroyed == &stream, "chain342 terminal release destroys the same stream once");
+        calls.result = nullptr;
+        bsp::engine_services_cc13::vfs_open_stream_into_00be4380(
+            &slot, manager, reinterpret_cast<std::uint32_t>(&name), 2, &calls);
+        check(slot == nullptr, "chain342 null open is preserved");
+        slot = &stream;
+        calls.fail_open = true;
+        bool threw = false;
+        try {
+            bsp::engine_services_cc13::vfs_open_stream_into_00be4380(
+                &slot, manager, reinterpret_cast<std::uint32_t>(&name), 2, &calls);
+        } catch (const std::runtime_error&) { threw = true; }
+        check(threw && slot == &stream, "chain342 failed open propagates before storing a result");
+        name.release_to(name_storage);
     }
 
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";

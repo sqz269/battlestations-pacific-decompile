@@ -1,5 +1,7 @@
 #include "bsp/game_native_vfs_runtime.hpp"
 
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/wire_goal4_chain342_switches.hpp"
 #include "bsp/game_native_readonly_data.hpp"
 #include "bsp/native_filestore_factory.hpp"
 #include "bsp/native_filestore_open.hpp"
@@ -143,6 +145,20 @@ struct PooledNameList {
     PooledNameList(const PooledNameList&) = delete;
     PooledNameList& operator=(const PooledNameList&) = delete;
 };
+// Borrow the same dispatch graph as every other runtime VFS call. Neither
+// substitute tables nor copied names/streams are introduced at this boundary.
+struct RuntimeStreamReferenceCalls final : engine_services_cc13::StreamReferenceCalls {
+    NativeVfsRuntimeBindings& bindings;
+    explicit RuntimeStreamReferenceCalls(NativeVfsRuntimeBindings& source) : bindings(source) {}
+    void* open(void* manager, std::uint32_t name, std::uint32_t flags) override {
+        return bindings.open(word(manager), manager,
+            *reinterpret_cast<const NativeString*>(name), flags);
+    }
+    void zero_reference(void* object) override {
+        bindings.zero_reference(word(object), object);
+    }
+};
+
 // The stream returned by the manager carries one caller reference. Keep its
 // release paired with that open even when length, allocation, or read throws.
 struct OpenedStream {
@@ -163,9 +179,17 @@ struct OpenedStream {
     void release() {
         if (!stream) return;
         void* const owned = std::exchange(stream, nullptr);
+        if constexpr (kWireGoal4Chain342Bound) {
+            // The outer owner is detached before a possibly throwing terminal
+            // call, as in the old arm. 00BE4500 consumes this non-null slot once.
+            void* slot = owned;
+            RuntimeStreamReferenceCalls calls(bindings);
+            engine_services_cc13::release_ref_slot_unchecked_00be4500(&slot, &calls);
+        } else {
         if (InterlockedDecrement(reinterpret_cast<volatile LONG*>(
                 static_cast<std::byte*>(owned) + 4)) == 0)
             bindings.zero_reference(table, owned);
+        }
     }
 };
 }
@@ -884,8 +908,20 @@ bool GameNativeVfsRuntime::read(const char* path, void* output,
     if (!output && capacity)
         throw std::invalid_argument("Native VFS read output is null");
     PooledHeader name(impl_->inputs.owners.strings(), path);
+    const auto open_stream = [&]() -> void* {
+        if constexpr (kWireGoal4Chain342Bound) {
+            void* stream;
+            RuntimeStreamReferenceCalls calls(impl_->bindings);
+            engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
+                reinterpret_cast<std::uint32_t>(&name.value), 2, &calls);
+            return stream;
+        } else {
     void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
         name.value, 2);
+            return stream;
+        }
+    };
+    void* const stream = open_stream();
     bytes_read = 0;
     if (!stream) return false;
     OpenedStream opened(impl_->bindings, stream);
@@ -902,8 +938,20 @@ std::optional<std::vector<std::uint8_t>> GameNativeVfsRuntime::read_all(
     if (!impl_->core_registered)
         throw std::logic_error("Native VFS core is not registered");
     PooledHeader name(impl_->inputs.owners.strings(), path);
+    const auto open_stream = [&]() -> void* {
+        if constexpr (kWireGoal4Chain342Bound) {
+            void* stream;
+            RuntimeStreamReferenceCalls calls(impl_->bindings);
+            engine_services_cc13::vfs_open_stream_into_00be4380(&stream, actual_manager(),
+                reinterpret_cast<std::uint32_t>(&name.value), flags, &calls);
+            return stream;
+        } else {
     void* const stream = impl_->bindings.open(word(actual_manager()), actual_manager(),
         name.value, flags);
+            return stream;
+        }
+    };
+    void* const stream = open_stream();
     if (!stream) return std::nullopt;
     OpenedStream opened(impl_->bindings, stream);
     const std::uint64_t length = impl_->bindings.length(opened.table, stream);

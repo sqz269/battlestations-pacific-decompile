@@ -1,0 +1,119 @@
+{
+  "chain": 342,
+  "worker": "agent/g4-w1",
+  "picked": "Native VFS stream open and reference release over the existing runtime owner graph",
+  "switch": "bsp::kWireGoal4Chain342Bound",
+  "wired_before": 9357,
+  "wired_after": 9359,
+  "rows": [
+    {
+      "native": "00be4380",
+      "status": "wired",
+      "host_site": "src/game_native_vfs_runtime.cpp: GameNativeVfsRuntime::read and GameNativeVfsRuntime::read_all",
+      "real_state": "The runtime's published raw manager, the same live pooled NativeString header and the consumer's original flags (2 or 0x32); returned stream is consumed by the existing native reader owner.",
+      "evidence": "bsp.py show 00be4380 and --asm: 00BE4387..00BE439A dispatch manager+4h(name, flags), then store EAX into the output slot. RuntimeStreamReferenceCalls borrows NativeVfsRuntimeBindings for the original-image table identity.",
+      "built_callers": "call_graph.py who 00be4380: reachable call from GameNativeVfsRuntime::read_all. The bounded-read site is also replaced in source; no independent entry-reachable call is claimed for that API."
+    },
+    {
+      "native": "00be4500",
+      "status": "wired",
+      "host_site": "src/game_native_vfs_runtime.cpp: OpenedStream::release (also inlined in its destructor)",
+      "real_state": "The actual returned stream's owned reference and +4h interlocked count; at zero the current stream vtable is dispatched through the runtime's existing terminal-owner bindings.",
+      "evidence": "bsp.py show 00be4500 and --asm: 00BE4504..00BE451A decrement without a null check and invoke slot 0 at zero; 00BE451C clears the slot. The outer owner is exchanged to null before the call, preserving the old exception/unwind behavior.",
+      "built_callers": "call_graph.py who 00be4500: reachable calls from OpenedStream::release and OpenedStream::~OpenedStream."
+    },
+    {
+      "native": "00be44c0",
+      "status": "skipped",
+      "host_site": "src/game_native_vfs_runtime.cpp: GameNativeVfsRuntime stream ownership",
+      "reason": "Missing a live reopen producer that replaces an already-owned stream; the current read APIs open a fresh owner and release it once."
+    },
+    {
+      "native": "006c6540",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: AirOps ready-plane queue",
+      "reason": "Missing the owning native AirOps ready queue and its 006CC760 enqueue producer; earlier queue-producer evidence still stops at the unbound non-campaign session context."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing attachment of the actual 00F876C0 groups and shared native frame-job owner with 00875890 registrations and 00874C90 group publication."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Missing attachment of the actual native fixed-step groups and frame-job owner; typed Source unit construction does not provide their registrations or publication."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing attachment of the actual native fixed-step groups and frame-job owner; the legacy host methods deliberately reject an unattached body walk."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing attachment of the actual native interpolation group and frame-job owner; no real group/position can be supplied by the legacy projection."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "reason": "Missing an authoritative raw main-menu manager consumed by subsequent menu operations; the current host returns a typed MainMenuManager and cannot use an unused raw constructor sidecar."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "reason": "Missing the raw front-end base-manager/registry owner and its consumer bridge; the current options-manager factory returns null."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "reason": "Missing the authoritative raw attract-screen owner and front-end base-manager registration consumed by its later lifecycle."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen",
+      "reason": "Missing a raw title-screen lifecycle connected to the existing typed title object; constructing an unconsumed raw image would not wire real state."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuPressStartHost::device_button_held",
+      "reason": "Missing the primary device producer (004BA6D0 still returns null) and real device button-0/0Eh bindings; the injected action edge is not a device object."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::sign_in_state_valid",
+      "reason": "Missing the selected-user and pending-invite manager state required by InviteHost; the current title host does not own that state."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message stand-in",
+      "reason": "Missing a concrete live controller state-message sender and queue consumer supplying all state bits; a ready semantic constructor alone does not establish that path."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot stand-in",
+      "reason": "Missing a concrete live controller snapshot producer/consumer with the authoritative DirectorFlags and snapshot getter state."
+    }
+  ],
+  "validation": {
+    "baseline": "index --if-stale and scripts/build.ps1 passed before selection",
+    "build": "scripts/build.ps1 Release Win32 passed; reconstructed_math and tool_tests both passed",
+    "focused_case": "One existing-suite case checks exact header/manager/flags forwarding, returned slot identity, null open, exception propagation, nonterminal release and one terminal release.",
+    "call_graph": "Both reconstructed bodies have direct call sites reachable from WinMainCRTStartup in the built bsp_game.exe; who and path were checked separately.",
+    "readiness": "wire_readiness.py --standins: 9357 to 9359; both target rows wired and called=true",
+    "float_math": "No floating-point arithmetic changed; pc24 lint is not applicable.",
+    "limits": "Build, semantic fixture and static call-graph evidence only. No game launched and no live ABI/gameplay validation claimed. No new address-suffixed body or Ghidra mutation was needed."
+  }
+}
