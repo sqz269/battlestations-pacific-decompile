@@ -1683,7 +1683,7 @@ void consume_scanner_token(void* scanner) noexcept {
 }
 } // namespace
 
-bool text_scanner_accept_keyword_00beed60(void* scanner, const char* keyword, EngineServiceCalls& calls) {
+bool text_scanner_accept_keyword_00beed60(void* scanner, const char* keyword, TextScannerTokenCalls& calls) {
     const char* const token = calls.text_scanner_peek_token_00bee8e0(scanner);
     if (_stricmp(token, keyword) == 0) {
         consume_scanner_token(scanner);

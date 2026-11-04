@@ -1,0 +1,118 @@
+{
+  "chain": 453,
+  "owner": "agent/g4-w2",
+  "base_commit": "75850d2876",
+  "switch": "bsp::kWireGoal4Chain453Bound",
+  "scope": "Native language-catalog keyword acceptance on the application's actual stream scanner",
+  "rows": [
+    {
+      "native": "00beed60",
+      "status": "wired",
+      "host_site": "src/native_language_catalog_producer.cpp::build_native_language_catalog_008d7bc0",
+      "evidence": "bsp.py show 00beed60; existing 008D7BC0 keyword loop at 008D7DD7/008D7DF6 and its three sibling fields",
+      "state": "The actual VFS-backed 828h scanner, its existing context/preimages, and the four keywords from the binary's catalog context are passed through a token-only adapter. The body replaces the inline comparison/acceptance and owns the sole consume on a match; misses retain the pending token for the next keyword.",
+      "built_caller": "build_native_language_catalog_008d7bc0 at 1055e5ea calls text_scanner_accept_keyword_00beed60 at 103f5ba0",
+      "entry_path": "WinMain -> GameStartupHost::application_initialize -> run_initialize_phases -> GameNativeSettingsApplication::load -> load_native_game_settings_008d8190 -> build_native_language_catalog_008d7bc0 -> text_scanner_accept_keyword_00beed60"
+    },
+    {
+      "native": "00beef60",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_producer.cpp::build_native_language_catalog_008d7bc0 (candidate)",
+      "reason": "A failed catalog-key comparison must leave the token pending for the next key; this body instead recovers/skips on a miss, and no live profile-scanner expectation site was established in this packet."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::insert_into/attach_tree",
+      "reason": "Already entry-reachable at two built call sites through SceneNumericPropertyMerge; the overview's text state understates this existing wiring."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl/merge_child",
+      "reason": "Already entry-reachable at two built call sites through SceneNumericPropertyMerge; no new wiring is needed at the examined merge sites."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (coordinator score-list candidate)",
+      "reason": "Did not establish an active coordinator score-list producer and gameplay consumer; existing skip evidence identifies the coordinator load gate and host weight-vector path as the missing climb."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (coordinator score-list candidate)",
+      "reason": "Requires the same active score-list entries and planner consumer as 00A2B950; no auxiliary debug list was created to imitate that state."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (party-brain selection candidate)",
+      "reason": "No live party-brain array with the native nonnull +0Ch planner contract was established during selection; campaign difficulty alone cannot supply it."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (coordinator entity-record candidate)",
+      "reason": "The host still documents placeholder record +18h factors from unread +50h/+54h tuning; this packet does not supply the native coordinator record producer."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp (coordinator target-weight candidate)",
+      "reason": "Requires global and per-party native hint-weight maps; the examined host scoring path still substitutes the identity factor and supplies only class weight."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp (SetControlledUnit controlled-audio candidate)",
+      "reason": "No complete live unit +BBCh emitter, +428h child-device list and +6B4h flag producer/consumer was established; the examined host still records the operation."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp::GameScriptOrdersHost::slot_counter_increment",
+      "reason": "entity_route_slot has no producer for entity+1ACh and returns -1, so the native caller's 0..7 gate skips the counter; the matching game+21A0h table is also absent."
+    },
+    {
+      "native": "00bdba50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp::GameVfsHost::mount (candidate)",
+      "reason": "Original ledger/export identifies this mount-query body as unreferenced in the binary; no gameplay query site requiring its result was found."
+    },
+    {
+      "native": "005fc640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp (quit-prompt callback candidate)",
+      "reason": "No matching live quit-prompt callback registration and result producer was established; assigning this callback to an unrelated quit event would invent its trigger."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/game_native_string_process.cpp (unordered-string-vector candidate)",
+      "reason": "Requires an actual 0Ch string vector and iterator cell at an unordered erase site; no corresponding runtime mutation site was established in this survey."
+    },
+    {
+      "native": "006a9a40",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp (rebinding candidate)",
+      "reason": "The body consumes the separate typed InputSettings device/runtime map model; the examined application owns raw settings, and no live rebinding-screen event plus projection was established."
+    },
+    {
+      "native": "006a33f0",
+      "status": "skipped",
+      "host_site": "src/game_native_input_configuration_application.cpp (binding-text candidate)",
+      "reason": "Needs the typed InputSettings name tables, binding-text hooks and a live action-label consumer; the raw input runtime alone does not provide that consumer."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS, MSVC Win32 Release",
+    "tests": "reconstructed_math, native_math_differential and tool_tests: 3/3 PASS",
+    "call_graph": "00BEED60 REACHABLE, one direct call site from build_native_language_catalog_008d7bc0",
+    "reconstructed_addresses_called_before": 4751,
+    "reconstructed_addresses_called_after": 4752,
+    "readiness_wired_before": 9712,
+    "readiness_wired_after": 9713,
+    "qualification": "Build/test and static entry-reachability evidence. No game run or live catalog-loading observation. No float arithmetic changed."
+  }
+}
