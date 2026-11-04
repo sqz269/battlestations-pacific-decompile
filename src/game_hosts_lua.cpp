@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain395_switches.hpp"
 #include "bsp/wire_goal4_chain372_switches.hpp"
 #include "bsp/cc13_seg41_land.hpp"
 #include "bsp/wire_goal4_chain287_switches.hpp"
@@ -1353,6 +1354,16 @@ int binding_trampoline(lua_State* state) {
     // row keeps milestone 2l's record.
     const bsp::MissionLuaBinding& dispatch_row =
         bsp::mission_lua_bindings()[static_cast<std::size_t>(row)];
+    if constexpr (bsp::kWireGoal4Chain395Bound) {
+        if (dispatch_row.address == 0x0088dc10u) {
+            if (host->error_replay()) return 0;
+            host->note_native_call(static_cast<std::size_t>(row), argc, true);
+            return host->run_get_firepower(state);
+        }
+    } else {
+        // No dedicated GetFirepower arm before chain395: continue into the
+        // unchanged generic native dispatch below.
+    }
     GameScriptOrdersHost* orders = host->script_orders();
     const bool avoidance_setting = dispatch_row.address == 0x008d0740u;
     const bool objective_status_row = kObjectiveStatusBound
@@ -9982,6 +9993,36 @@ int GameMissionLuaHost::run_has_fired_008be7e0(lua_State* state, int argument_co
     ::lua_pushboolean(state, fired ? 1 : 0);
     log_.implemented("MissionLuaNative::HasFired", "008be7e0");
     return 1;
+}
+
+int GameMissionLuaHost::run_get_firepower(lua_State* state) {
+    GameUnitsHost* units = units_hooks_;
+    GameGunneryHost* gunnery = units ? units->gunnery() : nullptr;
+    const int id = air_ops_entity_id(state);
+    if (!gunnery || id <= 0 || static_cast<std::size_t>(id) > units->count() ||
+        !units->unit_is_kind_of(static_cast<std::size_t>(id - 1), bsp::kUnitGunneryKindShipBase))
+        return ::luaL_error(state, "luaMW_GetFirepower failed: unresolved ship");
+    struct Binding final : bsp::UnitFirepowerLuaHost {
+        Binding(lua_State* lua, GameGunneryHost& guns, std::size_t index)
+            : state(lua), gunnery(guns), unit(index), original_top(::lua_gettop(lua)) {}
+        bsp::NativeHandle entity_from_lua_argument(int) override { return unit; }
+        bsp::UnitFirepowerReport refresh_firepower(bsp::NativeHandle index) override {
+            return gunnery.ship_firepower_report(index);
+        }
+        void lua_new_result_table() override { ::lua_newtable(state); }
+        void lua_result_number_field(const char* key, float value) override {
+            ::lua_pushnumber(state, value);
+            ::lua_setfield(state, -2, key);
+        }
+        int lua_result_count() override { return ::lua_gettop(state) - original_top; }
+        lua_State* state;
+        GameGunneryHost& gunnery;
+        std::size_t unit;
+        int original_top;
+    } binding(state, *gunnery, static_cast<std::size_t>(id - 1));
+    const int results = bsp::lua_get_firepower_0088dc10(binding);
+    log_.implemented("MissionLuaNative::GetFirepower", "0088dc10");
+    return results;
 }
 
 // Packet cc13-luawire, under kLuaAddWaterLoadBound. 00893380 AddWaterLoad(unit, side,

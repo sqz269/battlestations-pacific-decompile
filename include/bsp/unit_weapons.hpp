@@ -284,7 +284,21 @@ struct UnitWeaponHost {
 
     // -- session and firepower ----------------------------------------------
     virtual void route_weapon_enable(const WeaponEnableMessage& message) = 0; // 00BE-session
-    virtual float unit_firepower(NativeHandle unit) = 0; // 0088DC10 tail, body unread
+};
+
+// 0088DC10 returns a table, not a scalar. Values are the current fields
+// +101Ch..+1028h and +1014h after the call to 008127E0.
+struct UnitFirepowerReport {
+    float weapon[4]{};
+    float manoeuvrability{};
+};
+struct UnitFirepowerLuaHost {
+    virtual ~UnitFirepowerLuaHost() = default;
+    virtual NativeHandle entity_from_lua_argument(int index) = 0;
+    virtual UnitFirepowerReport refresh_firepower(NativeHandle unit) = 0;
+    virtual void lua_new_result_table() = 0;
+    virtual void lua_result_number_field(const char* key, float value) = 0;
+    virtual int lua_result_count() = 0;
 };
 
 // ---------------------------------------------------------------------------
@@ -302,7 +316,7 @@ int lua_ship_set_torpedo_stock_0089eee0(UnitWeaponHost& host);
 int lua_get_ship_torpedoes_008bed80(UnitWeaponHost& host);
 int lua_set_fire_target_0089a8b0(UnitWeaponHost& host);
 int lua_get_fire_target_0089c360(UnitWeaponHost& host);
-int lua_get_firepower_0088dc10(UnitWeaponHost& host);
+int lua_get_firepower_0088dc10(UnitFirepowerLuaHost& host);
 
 // 008CF350: the nth gun under `unit`, one-based, or 0 when there are fewer.
 NativeHandle find_gun_008cf350(UnitWeaponHost& host, NativeHandle unit, int index);
