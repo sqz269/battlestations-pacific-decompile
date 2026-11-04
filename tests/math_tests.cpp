@@ -89,6 +89,11 @@
 #include "bsp/scene_entity_factory.hpp"
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_numeric_property_merge.hpp"
+#include "bsp/game_native_physical_pool.hpp"
+#include "bsp/game_native_string_process.hpp"
+#include "bsp/native_enum_scalar_delete.hpp"
+#include "bsp/native_enum_symbol_insertion.hpp"
+#include "bsp/wire_goal4_chain382_switches.hpp"
 #include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/scene_unit_creators.hpp"
 #include "bsp/unit_controller.hpp"
@@ -1916,6 +1921,61 @@ int main() {
                     && following->values[0] == "7",
                 "explicit V3 stores three floats, present-empty positive zeros differ "
                 "from absence, and the following key survives");
+        }
+    }
+
+    {
+        // Chain 382: keep a captured enum word when its live symbol changes.
+        if constexpr (bsp::kWireGoal4Chain382Bound) {
+            struct EnumSource final : bsp::game::SceneNativeEnumSource {
+                bsp::game::GameNativeStringProcess& strings = bsp::game::game_native_string_process();
+                void* pool;
+                bsp::NativeSceneEnumOwnerStorage* owner;
+                EnumSource() {
+                    auto& pools = bsp::game::game_native_physical_pool_process();
+                    pools.initialize_enum_symbol_pool_once_00cc8a50();
+                    pool = pools.enum_symbol_pool_storage_00e17578();
+                    owner = static_cast<bsp::NativeSceneEnumOwnerStorage*>(bsp::singleton_lifetime_allocate(
+                        {bsp::SingletonAllocationKind::object, 0x19c, 0x19c}));
+                    static constexpr char type = 'E';
+                    bsp::initialize_native_scene_enum_owner_008f4dd0(*owner, strings.raw_context(), &type);
+                    set_word(7);
+                }
+                ~EnumSource() {
+                    bsp::delete_native_scene_enum_owner_008f59c0(owner, 1, pool, strings.raw_context());
+                }
+                void set_word(std::uint32_t word) {
+                    bsp::NativeString key;
+                    bsp::construct_native_string_header_0041e870(&key, strings.raw_context(), "Alpha");
+                    bsp::insert_native_enum_symbol_word_008f2850(&owner->map, key, word, pool,
+                        strings.raw_context(), strings.enum_empty_00e186ed(), strings.query_empty_00e17654());
+                    bsp::destroy_native_string_header_0041dd20(&key, strings.raw_context());
+                }
+                const void* known_enum_owner(const std::string& table, const std::string& symbol) override {
+                    return table == "Words" && symbol == "Alpha" ? owner : nullptr;
+                }
+            } enums;
+            std::vector<std::string> errors;
+            bsp::SceneLexer enum_text("{ Choice = E Words : Alpha ; }");
+            const auto source = bsp::parse_scene_property_block_008f5a00(enum_text, errors);
+            bsp::ScenePropertyBlock empty, captured;
+            {
+                bsp::game::SceneNumericPropertyMerge merge(empty, source, false, &enums);
+                captured.values.push_back(merge.result(source.values.at(0)));
+            }
+            enums.set_word(9);
+            bool passed = errors.empty() && captured.values[0].has_enum_value
+                && captured.values[0].enum_value == 7;
+            {
+                bsp::game::SceneNumericPropertyMerge merge(empty, captured, false, &enums);
+                passed = passed && merge.result(captured.values[0]).enum_value == 7;
+            }
+            for (const bool overwrite : {false, true}) {
+                bsp::game::SceneNumericPropertyMerge merge(captured, source, overwrite, &enums);
+                passed = passed && merge.result(overwrite ? source.values[0] : captured.values[0])
+                    .enum_value == (overwrite ? 9 : 7);
+            }
+            check(passed, "native enum copy preserves captured words across symbol changes, while fresh overwrite resolves again");
         }
     }
 

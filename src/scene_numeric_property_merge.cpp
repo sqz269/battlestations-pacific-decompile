@@ -6,6 +6,7 @@
 #include "bsp/native_scene_property_enum_add.hpp"
 #include "bsp/wire_goal4_chain319_switches.hpp"
 #include "bsp/native_scene_property_bag_merge.hpp"
+#include "bsp/native_scene_property_bag_reset.hpp"
 #include "bsp/native_scene_property_bag_storage.hpp"
 #include "bsp/native_scene_property_bool_add.hpp"
 #include "bsp/native_scene_property_float_add.hpp"
@@ -23,6 +24,7 @@
 #include "bsp/wire_goal4_chain321_switches.hpp"
 #include "bsp/wire_goal4_chain330_switches.hpp"
 #include "bsp/wire_goal4_chain345_switches.hpp"
+#include "bsp/wire_goal4_chain382_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -73,11 +75,15 @@ public:
             any = true;
         }
         if (any) {
+            if constexpr (kWireGoal4Chain382Bound) {
+                copy_or_merge(destination_, source_, overwrite);
+            } else {
             // 008F55FD..008F560D: keep byte zero assigns an existing scalar;
             // 008F5614..008F563B: a miss clones/inserts the actual source record.
             // The flag is the host's existing group/default precedence.
             merge_native_scene_property_bag_008f54f0(destination_.data(), source_.data(),
                 overwrite ? 0u : 1u, context_);
+            }
         }
     }
 
@@ -117,12 +123,16 @@ public:
         Bag native_source(context_.insertion());
         if (destination != nullptr) attach_tree(native_destination, key, *destination);
         attach_tree(native_source, key, source);
+        if constexpr (kWireGoal4Chain382Bound) {
+            copy_or_merge(native_destination, native_source, overwrite_);
+        } else {
         // bsp.py show 008F54F0: a destination type-6 hit recurses BEFORE the
         // keep-byte test; a miss clones the whole child. No host value merge
         // also runs on this path. Both bags and all children use the same
         // retained string/node/heap domain and retire before context_.
         merge_native_scene_property_bag_008f54f0(native_destination.data(),
             native_source.data(), overwrite_ ? 0u : 1u, context_);
+        }
         result = read_tree(native_destination.child(key), destination, source);
         return true;
     }
@@ -429,6 +439,12 @@ private:
         Bag(const Bag&) = delete;
         Bag& operator=(const Bag&) = delete;
         void* data() { return root_; }
+        bool empty() const {
+            // The genuine raw61 map starts at bag+4; its live count is +4.
+            std::uint32_t count;
+            std::memcpy(&count, root_ + 8, sizeof(count));
+            return count == 0;
+        }
         void adopt_child(const std::string& key, Bag& child) {
             // bsp.py show 008F3B60: the whole producer writes child+110h and
             // adopts the canonical 114h allocation. It is neither a borrowed
@@ -525,8 +541,25 @@ private:
         // key's E arm passes (key, EDI = 0048E960's CEnum, the 008D9980 symbol)
         // to 008F3A20, which resolves the symbol through 0048E840 into +0Ch.
         void insert_enum(const SceneProperty& value, const void* enum_owner) {
+            if constexpr (kWireGoal4Chain382Bound) {
+                if (value.has_enum_value) {
+                    // bsp.py show 008F39B0: +28h is the real declaration and
+                    // +0Ch is the supplied word. A previously merged property
+                    // already owns that word: preserve it if a later library
+                    // declaration has changed the symbol's current mapping.
+                    std::uint32_t bits;
+                    std::memcpy(&bits, &value.enum_value, sizeof(bits));
+                    add_native_scene_property_enum_word_008f39b0(data(), value.key.c_str(),
+                        static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(enum_owner)),
+                        bits, context_);
+                } else {
+                    add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
+                        value.values[2].c_str(), game_native_string_process(), context_);
+                }
+            } else {
             add_native_scene_property_enum_symbol_008f3a20(data(), value.key.c_str(), enum_owner,
                 value.values[2].c_str(), game_native_string_process(), context_);
+            }
         }
         void* find(const std::string& key) {
             return find_in(data(), key, context_);
@@ -596,6 +629,23 @@ private:
         bool owning_child_;
         std::byte* root_;
     };
+
+    void copy_or_merge(Bag& destination, Bag& source, bool overwrite) {
+        if (destination.empty()) {
+            // bsp.py show 008F5470 --asm: 008F5474 clears the OUTER bag's
+            // +4 map; 008F54B0..008F54C3 clones and inserts each source record.
+            // An empty destination has no collision, so keep/overwrite agree.
+            // 008F4F60 also copies +34h (the merge's extra ordinal store is
+            // redundant here). Both bags are actual raw61 owners, disjoint,
+            // and use this same canonical clone/insertion/lifetime context.
+            reset_native_scene_property_bag_008f5470(destination.data(), source.data(), context_);
+        } else {
+            // Populated destinations retain the original recursive merge and
+            // its keep flag; they must never be cleared by the copy routine.
+            merge_native_scene_property_bag_008f54f0(destination.data(), source.data(),
+                overwrite ? 0u : 1u, context_);
+        }
+    }
 
     // Chain 319: the genuine CEnum for a closed E value, or null when there is
     // no registry, the value is not the closed form, or the registry does not
