@@ -24,6 +24,7 @@
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/wire_goal4_chain475_switches.hpp"
+#include "bsp/wire_goal4_chain498_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -799,6 +800,7 @@ struct GameCommandsHost::Impl {
         // until its delivery, where the drain frees it.
         bool set_message_bound{false};
         bsp::NativeSessionMessage92 set_message{};
+        std::shared_ptr<bsp::NativeSessionMessage92> set_message_owner;
         bool player{false};                  // the 5Dh clear (0071C730 / 0071D900)
         bsp::ClearCommandMessage clear{};
         // The receiver side a Lua binding runs once its order is delivered
@@ -2048,8 +2050,13 @@ void DirectorBinding::route_set_command_message(std::uint32_t command,
         // 0071C830 reads the command object's +4h ordinal. A command this host
         // cannot class has no ordinal here and goes as the null command (0FFh).
         const bsp::EntityOrderCommandClass* klass = chain_.owner.class_of(command);
+        if constexpr (bsp::kWireGoal4Chain498Bound) {
+            posted.set_message_owner = chain_.owner.session_messages.queue_owned_set_command_92(
+                (command != 0u && klass != nullptr) ? klass->ordinal : -1, target, flag);
+        } else {
         posted.set_message = chain_.owner.session_messages.queue_set_command_92(
             (command != 0u && klass != nullptr) ? klass->ordinal : -1, target, flag);
+        }
         posted.set_message_bound = true;
         ++chain_.owner.setcmd_round_trips;
         chain_.owner.done("WeaponDirector::build_set_command_message", 0x0071c830u);
@@ -2495,6 +2502,12 @@ void GameCommandsHost::Impl::run_loopback_list(std::vector<LoopbackMessage>& lis
             ++summary.loopback_delivered_queued;
         }
         deliver_loopback(message);
+        if constexpr (bsp::kWireGoal4Chain498Bound) {
+            // Release this queue entry after delivery, including an invalid
+            // receiver. The iteration's copy keeps it alive across insertion
+            // into this vector; the final owner invokes 0071E3B0 exactly once.
+            list[i].set_message_owner.reset();
+        }
     }
     loopback_active = outer;
     loopback_insert = outer_insert;
@@ -2529,7 +2542,7 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             // host's unit, or the posted object for a target that is not one.
             // With the target bit clear the write sends no handle, so there is
             // no object.
-            bsp::NativeSessionMessage92 queued = message.set_message;
+            const auto dispatch = [&](bsp::NativeSessionMessage92& queued) {
             const std::uint8_t ordinal = queued.command_21;
             // 007216D0 calls command_from_ordinal_007216d0; OFF keeps the host's registry search.
             if constexpr (bsp::kWireGoal1Chain10Bound) {
@@ -2589,8 +2602,15 @@ void GameCommandsHost::Impl::deliver_loopback(const LoopbackMessage& message) {
             bsp::gameunit_apply_set_command_00721a40(binding, session_mode_1fe4(),
                 chain.pending_flag);
             done("GameUnitMessage::apply_set_command", 0x00721a40u);
+            };
+            if constexpr (bsp::kWireGoal4Chain498Bound) {
+                dispatch(*message.set_message_owner);
+            } else {
+            bsp::NativeSessionMessage92 queued = message.set_message;
+            dispatch(queued);
             // The drain's scalar delete (0071E3B0 -> 0071CB40) after the dispatch.
             bsp::HostSessionMessages::free_set_command_92(queued);
+            }
             break;
         }
         chain.pending_command = message.set_command;
