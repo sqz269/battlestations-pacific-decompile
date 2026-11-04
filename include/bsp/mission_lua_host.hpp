@@ -18,6 +18,8 @@
 // library attaches, with one method per native Lua API call site.
 namespace bsp {
 
+namespace cc13_seg29 { class LuaMachine; }
+
 // ---------------------------------------------------------------------------
 // Standard libraries, opened by 006b8740 from the pair table at 00cf8350.
 // ---------------------------------------------------------------------------
@@ -249,6 +251,11 @@ struct MissionLuaHostServices {
     virtual void lua_gettable(int index) = 0; // 006b8470 -> 00a67c20
     virtual void lua_remove(int index) = 0; // 006b7ea0 -> 00a67430
     virtual void lua_pushvalue(int index) = 0; // 006b7e90 -> 00a67570
+    // Chain 340. The machine 00887750 and 00887e50 make their stack calls on
+    // (006B7E70, 006B8460, 006B8120, 006B8470 with ECX = machine): a non-owning
+    // 006B7E30 view of the mission state, which the host owns. Null when the host
+    // has none; the named-call body then uses the stack methods above.
+    virtual cc13_seg29::LuaMachine* named_call_machine_006b7e30() { return nullptr; }
     // One 00885da0 record. The implementation chooses the push by tag.
     virtual void push_argument(const MissionLuaArgument& argument) = 0;
     // 00b67980 then 00b67800 then 00b66200: does the global exist and is it

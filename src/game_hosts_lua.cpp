@@ -14456,6 +14456,17 @@ int GameMissionLuaHost::lua_protected_call_006b8530(int nargs, int nresults,
     return last_status_;
 }
 
+// Chain 340. 00887750 reads its machine from [host+4h] (ECX at 008877E3 and
+// every later stack call); here that machine is a non-owning 006B7E30 view of
+// state_, the one interpreter the mission runs in, rebuilt if the state changes.
+bsp::cc13_seg29::LuaMachine* GameMissionLuaHost::named_call_machine_006b7e30() {
+    if (state_ == nullptr) return nullptr;
+    if (!named_call_machine_ || named_call_machine_->state() != state_) {
+        named_call_machine_ = std::make_unique<bsp::cc13_seg29::LuaMachine>(state_);
+    }
+    return named_call_machine_.get();
+}
+
 std::string GameMissionLuaHost::lua_tolstring_at_top() {
     if (state_ == nullptr) return {};
     const char* text = lua_tolstring(state_, -1, nullptr);

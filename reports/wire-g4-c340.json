@@ -180,6 +180,62 @@
       "status": "skipped",
       "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
       "reason": "alert 0 (stall) is never raised here: plane_stall_007c6e10 on [unit+3D0h] is unread and answers false"
+    },
+    {
+      "native": "006b8470",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: LuaMachine::get_table at 008878AF/00887900"
+    },
+    {
+      "native": "006b7e70",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: get_top_native_mission_lua_006b7e70 at 008877E3/008877F7/00887803/0088781D/0088783A/0088796C/008879A9"
+    },
+    {
+      "native": "006b8460",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: LuaMachine::get_global at 00887832/00887883/008878E1 (already called from mirror_identity_00928100)"
+    },
+    {
+      "native": "006b8120",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: push_string_native_mission_lua_006b8120 at 008878A5/008878F6; LuaMachine::push_string in publish_recon_slot_tables_00806b10 (00805EA5)"
+    },
+    {
+      "native": "009514b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp load_traffic_block",
+      "reason": "already runs: the host calls read_traffic_block_after_keyword, the same body minus the keyword expect its scene reader consumed; calling read_traffic_block would only inflate the count"
+    },
+    {
+      "native": "00469e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp load_browser_groups",
+      "reason": "already runs: read_browser_groups_after_keyword is the same body minus the keyword expect the scene reader consumed"
+    },
+    {
+      "native": "00870400",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_components.cpp load_gameplay_effect_components_00870400",
+      "reason": "needs a host effect-definition registry (vtable 00D0DA58 slot 2) and GameplayEffectComponentServices with the per-component Lua readers (read_lua_slot_14); none exist, so the 13 construct_effect_* constructors stay unreached"
+    },
+    {
+      "native": "006b8610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::register_global_function",
+      "reason": "the host registers all 560 bindings through one binding_trampoline closure with two upvalues (host, row); 006B8610 pushes a zero-upvalue closure per C function"
+    },
+    {
+      "native": "00874640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp (kWireGoal3Chain242Bound)",
+      "reason": "left OFF: chain 242 makes the mission clock the fixed-step driver cell instead of the per-frame raw delta sum, which moves every timer that reads it; needs a game run before turning on"
+    },
+    {
+      "native": "00805d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp publish_recon_slot_tables_00806b10",
+      "reason": "the body walks native ReconList triples of raw unit records (+C4h class, +170h category, +174h id); the host keeps recon triples as unit indices, so only its 006B8120/006B84D0 calls are wired"
     }
   ]
 }
