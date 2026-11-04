@@ -1292,7 +1292,7 @@ void xlive_refresh_participant_policy_00a43180(SweepCHost& host, void* client) {
 
 // 00A776B0, __thiscall(ECX = record, i), RET 4: +10h = i; +8h = [00E12EF0 + 4i] (the channel
 // layout table {0, 1, 2, 6}, read through the host as image data; no bounds check).
-void dialog_channel_record_set_speaker_layout_00a776b0(SweepCHost& host, void* record,
+void dialog_channel_record_set_speaker_layout_00a776b0(DialogChannelLayoutHost& host, void* record,
                                                        std::int32_t layout) {
     at<std::int32_t>(record, 0x10) = layout;
     at<std::uint32_t>(record, 0x08) =
