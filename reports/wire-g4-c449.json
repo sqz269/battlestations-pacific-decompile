@@ -1,0 +1,104 @@
+{
+  "chain": 449,
+  "owner": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain449Bound",
+  "source_wired_before": 9701,
+  "source_wired_after": 9702,
+  "new_entry_reachable_bodies": 3,
+  "new_reconstructed_bodies": 0,
+  "evidence": [
+    "Fresh index rebuilt after an initial readiness/index reader lock; baseline and final scripts/build.ps1 passed reconstructed_math and tool_tests (2/2).",
+    "bsp.py show 004DD5B0 --asm --start 65: 004DD6EF gets the sound queue, 004DD6F6 calls 00940EC0 after the input-class setup and before 00698A10 at 004DD745. The application now initializes its GUI sound owner at that gap, behind the assigned switch.",
+    "Existing 00940DD0 and 00940EC0 produce the five owned sample slots, six cleared request bytes, forced-slot constant 6 and InPauseGUI class index. Native sample paths and slot order are reused from sound_streaming_cc13.hpp; acquisitions use the running core's actual VFS, sample cache, resource loader, FMOD and string allocator.",
+    "The 28h owner is a vtable word plus the existing GuiSoundSetState projection. Static assertions establish samples at +4h, requests at +18h, forced slot at +20h and class-index bits at +24h. The opaque void* class field retains the actual signed lookup-result bits, not an invented class pointer.",
+    "bsp.py show 00940E40 and 004C3810: destruction uses the existing raw body on this same owner, reverses all five actual reference slots through the existing atomic-decrement/clear-after-callback body, clears its publication and installs the base vtable. Actual sample final release routes to SoundSampleRuntime.",
+    "GUI references are retired before either the sound manager or sample cache is destroyed, including singleton-driven deletion in either order. Partial initializer failure destroys the already-acquired references through the same body. Existing manager/cache teardown runs once after that cleanup.",
+    "call_graph.py who confirms direct entry-reachable calls to 00940DD0 and 00940EC0 from GameSoundRuntime::Impl::initialize_gui_sound_set, and to 00940E40 from destroy_gui_sound_set. path 00940EC0 reaches run_initialize_phases from WinMainCRTStartup.",
+    "Readiness's text summary changes by one (9701 to 9702); all three selected rows have called=true with one direct call site each. The text detector still labels the projected constructor/init ready and destructor callees_done_no_wired_caller, so its labels are not used as call evidence.",
+    "Application ownership is deliberately scoped to the core sound runtime. The raw 004C1B90 singleton registration/getter is not wired, and the separate mission-frame SoundRequestQueue is not yet unified with this owner's request bytes. No playback request is fabricated and 00941070 remains uncalled.",
+    "No float arithmetic changed. No new test cases, Ghidra mutations, original-ABI validation or game execution were performed."
+  ],
+  "rows": [
+    {
+      "native": "00940dd0",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::initialize_gui_sound_set, called from GameStartupHost::run_initialize_phases"
+    },
+    {
+      "native": "00940ec0",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::initialize_gui_sound_set, called at the OnInitOnce 004DD6F6 gap in src/game_hosts.cpp"
+    },
+    {
+      "native": "00940e40",
+      "status": "wired",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::destroy_gui_sound_set, before destroy_manager/destroy_cache and on initializer failure"
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionFrameBinding::apply_sound_requests_00941140",
+      "reason": "Missing the live 00941250 GUI request callback at F8BC0C and a shared queue binding: MissionFrame::sound_requests must consume this initialized owner's +18h/+20h state before tracked GUI playback can run."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing live pick-screen mode +30h and selection-vector +C4h producers; the current reset site only records this body and cannot supply its actual selection contents."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::cockpit_screen_mode",
+      "reason": "Missing the plane-effects screen owner with the actual +B8h plane and +FCh cockpit-mode producer; the current callback returns its recorded false result."
+    },
+    {
+      "native": "005fb080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::screen_3b_idle",
+      "reason": "Missing the order-screen owner's input/GUI/selection state and service adapters required by this full idle body; the current host site only records it."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector command-target creation",
+      "reason": "The existing literal body reads writable native absolute globals 00F87574/78/7C; no canonical current-process binding for those three live default-vector words was established in this packet."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: entity/director ai_group_forward_command callbacks",
+      "reason": "Missing the native aiGroup+564Ch current command owner and its real vtable+24h dispatch on these recorded command-host sites."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: close_sound_system_00a7e240",
+      "reason": "Existing close_sound_system already calls this helper on its live owner; the normal build inlines it, so there is no additional wiring to perform."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_types_00a7fcc0_fragment",
+      "reason": "The existing type-shrink path already calls this storage destructor; no missing host call was selected."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::progress_slot20",
+      "reason": "The runtime adapter already names this body, but this packet found no live progress-query consumer to call it on an actual channel."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp: SoundChannelRuntime::audibility_slot1c",
+      "reason": "The runtime adapter already names this body, but this packet found no live audibility-query consumer to call it on an actual channel."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GUI sound consumers",
+      "reason": "Missing a live volume-multiplier request and its actual sample-backed sound-instance receiver; this packet initializes GUI samples without inventing a playback or gain change."
+    }
+  ]
+}

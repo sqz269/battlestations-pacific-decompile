@@ -100,6 +100,7 @@
 #include "bsp/renderer_startup.hpp"
 #include "bsp/game_platform_services.hpp"
 #include "bsp/game_sound_runtime.hpp"
+#include "bsp/wire_goal4_chain449_switches.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/wire_goal2_chain180_switches.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
@@ -3901,12 +3902,20 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // separate initialization work, not implied by this fragment's log entry.
     input_runtime_->initialize_classes_004dd6a8();
     log_.implemented("OnInitOnce::configure_input_classes_fragment", "004dd6b4");
+    if constexpr (kWireGoal4Chain449Bound) {
+        // 004DD6F6 calls 00940EC0 after input-class initialization and before
+        // the input-configuration load at 004DD745. The core already owns
+        // the real sound class table, sample cache and FMOD/VFS services.
+        sound_->core.initialize_gui_sound_set();
+        log_.implemented("OnInitOnce::initialize_gui_sound_set", "00940ec0");
+    } else {
+    }
     if constexpr (kWireGoal4Chain302Bound) {
         // The same OnInitOnce, later: 004DD739 CMP byte [game+55Ch],0 (the
         // configuration's +520h loaded byte); clear, 004DD742 LEA ECX,[game+3Ch]
         // and 004DD745 CALL 00698A10 (Scripts\datatables\Inputs.lua into the
         // action owner, then rebind, a zero-second tick and the keyboard
-        // defaults). The intervening OnInitOnce steps (readers, sound set, GUI
+        // defaults). The remaining intervening OnInitOnce steps (readers, GUI
         // hooks, safe zone) are not run by this host; [00F8BBFC], stored at
         // 004DD71B, has no writer here (see the application's comment).
         if (input_configuration_ && input_configuration_->load_if_unloaded())

@@ -3,6 +3,10 @@
 #include "bsp/sound_sample_runtime.hpp"
 #include "bsp/sound_sample_cache_shutdown.hpp"
 #include "bsp/memory_stream.hpp"
+#include "bsp/cc13_census9.hpp"
+#include "bsp/global_config.hpp"
+#include "bsp/sound_streaming_cc13.hpp"
+#include "bsp/wire_goal4_chain449_switches.hpp"
 
 #include <atomic>
 #include <exception>
@@ -32,6 +36,21 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     SoundClassOwnership classes;
     std::unique_ptr<SoundSystemOwner> manager;
     std::unique_ptr<SoundAuxiliaryTreeOwner> cache;
+    // The existing constructor/init are typed projections; adding the native
+    // vtable word gives the existing raw 00940E40 destructor its actual 28h
+    // owner, not a copied list of references. This is application ownership,
+    // not a second registration in the raw singleton manager.
+    struct GuiSoundOwner {
+        std::uint32_t native_vtable_00;
+        cc13_audio::GuiSoundSetState state;
+    };
+    static_assert(sizeof(GuiSoundOwner) == 0x28);
+    static_assert(offsetof(GuiSoundOwner, state) == 4);
+    static_assert(offsetof(cc13_audio::GuiSoundSetState, requested) == 0x14);
+    static_assert(offsetof(cc13_audio::GuiSoundSetState, forced_slot) == 0x1c);
+    static_assert(offsetof(cc13_audio::GuiSoundSetState, sound_class) == 0x20);
+    std::unique_ptr<GuiSoundOwner> gui_sounds;
+    GuiSoundOwner* gui_sound_publication{}; // semantic [00F89B34], host-scoped
     // Declared before its users and destroyed after all explicit FMOD cleanup.
     FmodConfigurationLibrary library;
     SoundResourceRuntime resources;
@@ -57,6 +76,109 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     std::optional<FmodResult> event_release_result;
     std::mutex file_error_mutex;
     std::exception_ptr file_error;
+
+    struct GuiSoundCalls final : cc13_audio::GuiSoundSetHost,
+        cc13_census9::Census9Host, GlobalConfigEffects {
+        Impl& runtime;
+        explicit GuiSoundCalls(Impl& value) : runtime(value) {}
+        struct Name {
+            NativeStringStorage& storage;
+            NativeString value;
+            Name(NativeStringStorage& s, const char* text) : storage(s) {
+                value.assign_0041e870(storage, text);
+            }
+            ~Name() { value.release_to(storage); }
+        };
+        void* find_sound_class(const char* text) override {
+            Name name(runtime.services.strings, text);
+            const auto index = find_sound_class_00a7acf0(
+                runtime.current_owner->levels, name.value, runtime.library);
+            // 00940F28 stores EAX (a signed class index) at owner+24h. The
+            // existing GUI projection uses void* for this opaque DWORD.
+            return reinterpret_cast<void*>(static_cast<std::uintptr_t>(index));
+        }
+        void* acquire_sample(const char* text) override {
+            Name name(runtime.services.strings, text);
+            void* result{};
+            acquire_sound_sample_00a83fd0(*runtime.current_cache, result,
+                name.value, runtime.samples.sample_cache_context());
+            return result; // acquire transfers its one owned reference
+        }
+        void release_sample(void* sample) noexcept override {
+            // Reuse 004C3810 for its atomic decrement and clear-after-callback
+            // ordering. Init's temporary is separate from the live owner slot.
+            destroy_global_config_pointer_slot_004c3810(&sample, *this);
+        }
+        void zero_references_slot_00(void* sample) noexcept override {
+            try { runtime.samples.zero_references_slot_00(sample); }
+            catch (...) { std::terminate(); }
+        }
+        void stop_slot_08(void*, std::uint32_t) noexcept override { std::terminate(); }
+        void play_tracked_sound(void*, void*, const char*, bool) override {
+            // Init/destruction never call this. Playback still needs the
+            // shared 00941250 request producer (F8BC0C), not a synthetic cue.
+            throw std::logic_error("GUI sound request producer is not bound");
+        }
+        void eh_vector_destruct_00bf7c6e(void* first, std::uint32_t stride,
+            std::uint32_t count, std::uint32_t dtor) override {
+            if (!runtime.gui_sounds || first != runtime.gui_sounds->state.samples
+                || stride != 4 || count != 5 || dtor != 0x004c3810)
+                throw std::logic_error("GUI sound destructor received an unrelated vector");
+            // BF7C6E reverse destruction, each 004C3810 sees the actual slot.
+            auto* slots = static_cast<void**>(first);
+            for (std::size_t i = count; i != 0; --i)
+                destroy_global_config_pointer_slot_004c3810(slots + i - 1, *this);
+        }
+        void clear_sound_queue_publication_00f89b34() override {
+            runtime.gui_sound_publication = nullptr;
+        }
+        // Census9Host also covers unrelated message/controller destructors.
+        // The chosen 00940E40 body has only the two callbacks above.
+        [[noreturn]] static void unrelated() {
+            throw std::logic_error("Unrelated Census9 operation on GUI sound owner");
+        }
+        void session_message_construct_base_0075b430(void*, std::uint32_t) override { unrelated(); }
+        void eh_vector_construct_00bf7cd1(void*, std::uint32_t, std::uint32_t,
+            std::uint32_t, std::uint32_t) override { unrelated(); }
+        void free_00bf65ac(void*) override { unrelated(); }
+        float controller_default_vec3_00f87574(int) override { unrelated(); }
+        void controller_build_sub_objects_00937c90(void*) override { unrelated(); }
+        void vector_destroy_range_009316f0(void*, void*, void*, void*) override { unrelated(); }
+        void vector_destroy_range_00931760(void*, void*, void*, void*) override { unrelated(); }
+        void air_ops_holder_list_unlink_006bf880(void*) override { unrelated(); }
+        void net_entity_create_message_destruct_007668e0(void*) override { unrelated(); }
+        void simple3d_scene_release_0093cc20(void*) override { unrelated(); }
+        void ref_counted_destroy_base_00bd30f0(void*) override { unrelated(); }
+        void ordered_map_destruct_0094ca40(void*) override { unrelated(); }
+    };
+
+    void initialize_gui_sound_set() {
+        if (!running || !current_owner || !current_cache)
+            throw std::logic_error("GUI sound init requires the running sound owner and cache");
+        if (gui_sounds) throw std::logic_error("OnInitOnce GUI sound init is one-shot");
+        gui_sounds = std::make_unique<GuiSoundOwner>(GuiSoundOwner{
+            cc13_census9::kSoundQueueVtable, cc13_audio::construct_gui_sound_set_00940dd0()});
+        gui_sound_publication = gui_sounds.get();
+        GuiSoundCalls calls(*this);
+        try {
+            // 004DD6F6 -> 00940EC0: native names/slot order, real InPauseGUI
+            // lookup, five VFS/cache/FMOD acquisitions. No fabricated samples.
+            cc13_audio::init_gui_sound_set_00940ec0(gui_sounds->state, calls);
+            rethrow_file_error();
+        } catch (...) {
+            destroy_gui_sound_set();
+            throw;
+        }
+    }
+    void destroy_gui_sound_set() {
+        if (!gui_sounds) return;
+        GuiSoundCalls calls(*this);
+        // bsp.py show 00940E40: vtable, five actual RefPtr slots in reverse,
+        // clear publication, base vtable. Release BEFORE A883B0 closes FMOD
+        // and BEFORE A88750 destroys the weak sample-cache keys.
+        cc13_census9::sound_request_queue_destruct_00940e40(calls, gui_sounds.get());
+        gui_sounds.reset();
+    }
 
     Impl(GameSoundRuntimeServices input, const std::wstring& core, const std::wstring& events)
         : services(std::move(input)), alternate(services.alternate_word ? *services.alternate_word : own_alternate),
@@ -221,6 +343,10 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     }
     void destroy_manager(std::uint32_t flags) {
         if (!manager || manager_destroyed) return;
+        if constexpr (kWireGoal4Chain449Bound) {
+            destroy_gui_sound_set();
+        } else {
+        }
         auto* object = manager.get();
         // The destructor owns native unregister and leaves dead +44/+48/+54
         // words. Do not dereference them or run it twice after this point.
@@ -235,6 +361,12 @@ struct GameSoundRuntime::Impl final : SoundSystemUpdateHost, SoundShutdownFmodHo
     }
     void destroy_cache(std::uint32_t flags) {
         if (!cache || cache_destroyed) return;
+        if constexpr (kWireGoal4Chain449Bound) {
+            // A singleton drain may retire the auxiliary cache before the
+            // manager. Our owning refs must go while both are still live.
+            destroy_gui_sound_set();
+        } else {
+        }
         auto* object = cache.get();
         cache_destroyed = true;
         if (flags & 1u) cache.release();
@@ -304,6 +436,7 @@ GameSoundRuntime::GameSoundRuntime(GameSoundRuntimeServices services,
 GameSoundRuntime::~GameSoundRuntime() {
     try { impl_->shutdown(); } catch (...) { std::terminate(); }
 }
+void GameSoundRuntime::initialize_gui_sound_set() { impl_->initialize_gui_sound_set(); }
 void GameSoundRuntime::startup(bool disabled) {
     auto& self = *impl_;
     if (self.attempted) throw std::logic_error("Game sound startup is one-shot");
