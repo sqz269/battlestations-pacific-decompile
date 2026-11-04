@@ -169,6 +169,14 @@ public:
     // Source owner cleanup before replacing/destroying the borrowed units/Lua.
     // Releases world-facing child bindings; this is not native HUD teardown.
     void detach_world_2k() noexcept;
+    // Chain 482: the queue's authored text source and the SAME GUI_narrative
+    // widgets screen 33h loaded. Show delivers text/visibility only; native
+    // 005B7390's measured frame sizing and timing outputs remain unbound.
+    bool show_mission_narrative_text(const std::string& source);
+    // 00734140 / 00734FA0 -> reconstructed 005B5D40 on the live +ACh group.
+    bool hide_mission_narrative_text();
+    // 00735100 -> 005B5D20: query/discard the live text's colour (no alpha store).
+    bool query_mission_narrative_text_colour();
     // 004cc460(20h, controlled unit). Milestone 2h applied the request Init
     // pushes, which carries a **null** payload, and the 20h arm's null path
     // publishes `29h, 49h, 44h, 35h`. With a payload the same arm is a unit-kind

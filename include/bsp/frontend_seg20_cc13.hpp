@@ -3,7 +3,8 @@
 // narrative and minimap screen leftovers. docs/CC13_SEG20.md has the evidence.
 // Names are hypotheses, not recovered symbols. Objects are raw image storage
 // (Raw::at at the image's offsets); every engine routine the image calls is a
-// named host method invoked at the same point. Nothing here runs in the game.
+// named host method invoked at the same point. Chain 482 binds the narrative
+// colour query to the running HUD; the other services need their own bindings.
 #include "bsp/engine_seg49_64_78_cc13.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
 
@@ -23,7 +24,14 @@ struct Raw {
 };
 inline Raw raw(void* p) noexcept { return Raw{static_cast<std::uint8_t*>(p)}; }
 
-struct Seg20Host : cc13_fe1::EdgeReferenceHost {
+// 005B5D20 only needs the text widget's colour getter. Keep this contract
+// usable without inventing the unrelated menu/map services of Seg20Host.
+struct NarrativeTextQueryHost {
+    virtual ~NarrativeTextQueryHost() = default;
+    virtual void widget_vslot54(void* widget, std::uint8_t (&out)[16]) = 0;
+};
+
+struct Seg20Host : cc13_fe1::EdgeReferenceHost, NarrativeTextQueryHost {
     // Image globals (dword storage at the address).
     virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
 
@@ -47,7 +55,6 @@ struct Seg20Host : cc13_fe1::EdgeReferenceHost {
 
     // --- narrative screen ---
     virtual void widget_vslot34(void* widget, std::int32_t value) = 0;             // vtable +34h
-    virtual void widget_vslot54(void* widget, std::uint8_t (&out)[16]) = 0;        // vtable +54h(&local16)
     virtual void widget_vslot58(void* widget, const float (&xy)[2]) = 0;           // vtable +58h(&vec2)
     virtual void widget_vslot88(void* widget, void* texture, std::int32_t a, float b) = 0;  // vtable +88h
     // 00ABBE50 __thiscall(text, const char*, int) RET 8.
@@ -239,7 +246,7 @@ void narrative_set_portrait_005b5c10(void* screen, void* texture, Seg20Host& hos
 
 // 005B5D20 __thiscall(screen, unused) RET 4: [screen+B0h]->vtable[54h] into a
 // 16-byte local that is then dropped.
-void narrative_query_text_005b5d20(void* screen, Seg20Host& host);
+void narrative_query_text_005b5d20(void* screen, NarrativeTextQueryHost& host);
 
 // 005B7390 __thiscall(screen, source, float* x, float* y, float* w) RET 10h:
 // [+ACh]->vtable[34h](1); text [+B0h]: 00ABBE50("" at 00CE3A0C, 1),

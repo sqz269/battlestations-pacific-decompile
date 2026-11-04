@@ -5,6 +5,8 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/engine_seg56_cc13.hpp"
 #include "bsp/band_0071_cc13.hpp"
@@ -6643,7 +6645,17 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
             static_cast<double>(mission_clock_), static_cast<double>(narrative_fade_in_1c_),
             static_cast<double>(narrative_display_20_),
             static_cast<double>(narrative_fade_out_24_), narrative_callback_2c_.c_str());
-        log_.unimplemented("HudNarrative::show_text", "005b7390");
+        if constexpr (bsp::kWireGoal4Chain482Bound) {
+            if (narrative_hud_ != nullptr && narrative_hud_->show_mission_narrative_text(narrative_text_)) {
+                // Source delivery is available; the native sizing/timing
+                // outputs of 005B7390 still need its measured text context.
+                log_.unimplemented("HudNarrative::show_text_layout", "005b7390");
+            } else {
+                log_.unimplemented("HudNarrative::show_text", "005b7390");
+            }
+        } else {
+            log_.unimplemented("HudNarrative::show_text", "005b7390");
+        }
         return;   // 0073528B: RET with 1 after the pop
     }
     float top = 1.0f;   // 00D7A24C
@@ -6683,7 +6695,12 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     } else {
         narrative_alpha_28_ = 0.0f;
     }
-    log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
+    if constexpr (bsp::kWireGoal4Chain482Bound) {
+        if (narrative_hud_ == nullptr || !narrative_hud_->query_mission_narrative_text_colour())
+            log_.unimplemented("HudNarrative::query_text", "005b5d20");
+    } else {
+        log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
+    }
     if (0.0f < narrative_alpha_28_) return;
     if (narrative_state_18_ == 2) narrative_finish_00734140();
 }
@@ -6693,7 +6710,12 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
 // zeroed; +14h is cleared on both arms (00734199, 0073419F). The name +2Ch is
 // not cleared here; it is overwritten by the next start.
 void GameScriptOrdersHost::narrative_finish_00734140() {
-    log_.unimplemented("HudNarrative::hide", "005b5d40");
+    if constexpr (bsp::kWireGoal4Chain482Bound) {
+        if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
+            log_.unimplemented("HudNarrative::hide", "005b5d40");
+    } else {
+        log_.unimplemented("HudNarrative::hide", "005b5d40");
+    }
     narrative_active_14_ = false;
     std::vector<int> refs;
     refs.swap(narrative_refs_34_);
@@ -6746,7 +6768,12 @@ void GameScriptOrdersHost::narrative_clear_00734fa0() {
         }
     }
     narrative_queue_.clear();
-    log_.unimplemented("HudNarrative::hide", "005b5d40");
+    if constexpr (bsp::kWireGoal4Chain482Bound) {
+        if (narrative_hud_ == nullptr || !narrative_hud_->hide_mission_narrative_text())
+            log_.unimplemented("HudNarrative::hide", "005b5d40");
+    } else {
+        log_.unimplemented("HudNarrative::hide", "005b5d40");
+    }
     narrative_active_14_ = false;
     for (const int ref : narrative_refs_34_) {
         if (machine_state_ != nullptr) luaL_unref(machine_state_, LUA_REGISTRYINDEX, ref);

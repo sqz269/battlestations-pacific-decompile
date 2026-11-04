@@ -48,6 +48,7 @@
 #include "bsp/warning_owner.hpp"
 #include "bsp/game_hosts_ready.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
@@ -4512,6 +4513,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // created instances instead of being counted as records.
             host.script_orders = std::make_unique<GameScriptOrdersHost>(host.log,
                 *host.units);
+            if constexpr (bsp::kWireGoal4Chain482Bound) {
+                host.script_orders->attach_narrative_hud(host.hud);
+            } else {
+            }
             if constexpr (bsp::kWireGoal4Chain466Bound) {
                 // Same game+21A0h owner for 0077C91B formation-use scoring;
                 // keep its attachment independent of the scoring-name switch.

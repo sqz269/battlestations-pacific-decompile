@@ -1,6 +1,8 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/wire_goal4_chain436_switches.hpp"
@@ -95,6 +97,51 @@
 
 namespace bsp::game {
 namespace {
+
+// Only +ACh is read by 005B5D40. This is a view of screen 33h's retained
+// GUI_narrative widget, not a second widget or a fabricated numeric handle.
+// 005BB130 binds that field to MissionInfoTitle_Group on GUI_narrative.
+struct NarrativeHideView {
+    std::array<std::byte, 0xAC> unused;
+    GuiLayoutWidget* text_group;
+};
+static_assert(offsetof(NarrativeHideView, text_group) == 0xAC);
+static_assert(sizeof(GuiLayoutWidget*) == sizeof(std::uint32_t));
+
+struct NarrativeQueryView {
+    std::array<std::byte, 0xB0> unused;
+    GuiLayoutWidget* text;
+};
+static_assert(offsetof(NarrativeQueryView, text) == 0xB0);
+
+class NarrativeTextColourBinding final : public bsp::frontend_seg20_cc13::NarrativeTextQueryHost {
+public:
+    void widget_vslot54(void* widget, std::uint8_t (&out)[16]) override {
+        // The same live RGBA that GameFrontendHost's widget setters/rendering
+        // use. 005B5D20 drops this copy and never mutates that state.
+        const auto& colour = static_cast<GuiLayoutWidget*>(widget)->color;
+        static_assert(sizeof colour == sizeof out);
+        std::memcpy(out, colour, sizeof out);
+    }
+};
+
+class NarrativeVisibilityBinding final : public bsp::cc13_fe1::WidgetHost {
+public:
+    explicit NarrativeVisibilityBinding(GameFrontendHost& frontend) : frontend_(frontend) {}
+    void set_shown(std::uint32_t widget, bool shown) override {
+        frontend_.set_widget_visible(*reinterpret_cast<GuiLayoutWidget*>(widget), shown);
+    }
+    void set_enabled(std::uint32_t, bool) override { unsupported(); }
+    std::int32_t type(std::uint32_t) override { unsupported(); }
+    void set_scale(std::uint32_t, float) override { unsupported(); }
+    void set_frame_highlight(std::uint32_t, bool, std::int32_t, float) override { unsupported(); }
+    void set_toggle_highlight(std::uint32_t, bool) override { unsupported(); }
+private:
+    [[noreturn]] static void unsupported() {
+        throw std::logic_error("Narrative hide uses only widget visibility");
+    }
+    GameFrontendHost& frontend_;
+};
 
 // 0068CC70 allocates 174h bytes for manager+40h / registry slot 44h.
 // Keep actual bool objects at the native +4h/+5h offsets, so the screen-set
@@ -1253,6 +1300,50 @@ GameHudHost::GameHudHost(GameHostLog& log, GameMenuHost& menu)
     : impl_(std::make_unique<Impl>(log, menu)) {}
 
 GameHudHost::~GameHudHost() = default;
+
+bool GameHudHost::show_mission_narrative_text(const std::string& source) {
+    auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");
+    if (page == nullptr || !page->root) return false;
+    auto* const group = bsp::find_descendant_by_name(*page->root, "MissionInfoTitle_Group");
+    auto* const text = group != nullptr
+        ? bsp::find_descendant_by_name(*group, "textbox_obj_Text") : nullptr;
+    if (text == nullptr) return false;
+    // 005BB130's +AC/+B0 lookups, then the visibility/source portion of
+    // 005B7390. This does not claim its text/frame metrics or output timings.
+    auto& frontend = impl_->menu.frontend();
+    frontend.set_widget_visible(*group, true);
+    frontend.set_widget_text_source(*text, source);
+    return true;
+}
+
+bool GameHudHost::hide_mission_narrative_text() {
+    auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");
+    if (page == nullptr || !page->root) return false;
+    auto* const group = bsp::find_descendant_by_name(*page->root, "MissionInfoTitle_Group");
+    if (group == nullptr) return false;
+    const NarrativeHideView view{{}, group};
+    NarrativeVisibilityBinding binding(impl_->menu.frontend());
+    // bsp.py show 005B5D40: +ACh -> widget vtable+34h(0), no other
+    // fields read. Native ABI is ECX=screen, RET; this is its source view.
+    bsp::cc13_fe1::hud_narrative_hide_text_005b5d40(&view, binding);
+    impl_->done("HudNarrative::hide", 0x005b5d40u);
+    return true;
+}
+
+bool GameHudHost::query_mission_narrative_text_colour() {
+    auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");
+    if (page == nullptr || !page->root) return false;
+    auto* const group = bsp::find_descendant_by_name(*page->root, "MissionInfoTitle_Group");
+    auto* const text = group != nullptr
+        ? bsp::find_descendant_by_name(*group, "textbox_obj_Text") : nullptr;
+    if (text == nullptr) return false;
+    NarrativeQueryView view{{}, text};
+    NarrativeTextColourBinding binding;
+    bsp::frontend_seg20_cc13::narrative_query_text_005b5d20(
+        &view, binding);
+    impl_->done("HudNarrative::query_text", 0x005b5d20u);
+    return true;
+}
 
 void GameHudHost::bind_sound_runtime(GameSoundRuntime* runtime,
     NativeStringStorage* strings) noexcept {
