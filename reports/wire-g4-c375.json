@@ -1,0 +1,142 @@
+{
+  "chain": 375,
+  "slot": "g4-w3",
+  "switch": "bsp::kWireGoal4Chain375Bound",
+  "wired_before": 9589,
+  "wired_after": 9591,
+  "rows": [
+    {
+      "native": "00727d30",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: SubAttackBinding::tubes_ready",
+      "reason": "Replaces the duplicated readiness scan using the live gun barrel-timer vector, its existing bounded authored barrel count and the attack state's horizon; operational filtering and fore/aft list order retain.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "00729920",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: SubAttackBinding::tubes_min_reload",
+      "reason": "Replaces the duplicated per-gun minimum scan over the same live timers and count; the existing body retains the native 3600 seed and FCOMIP/JA unordered replacement behavior.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target",
+      "reason": "The callback still returns a null handle; a persistent command-target owner, native DATA bindings and a consumer of the initialized target are missing."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: entity-order and entity-command ai_group_forward_command callbacks",
+      "reason": "The concrete order adapter has no controller-owned AI group; forwarding currently records only, so the group owner and command-delivery graph are missing."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector notify_command_target/report_target_event",
+      "reason": "These callbacks only record the event; a bound report-target event adapter carrying the native receiver and parameter ownership is missing."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ammo_select_flak_alternate",
+      "reason": "The host explicitly has no producer for the flak alternate at ammo+48h; no live alternate ammunition record can be assigned."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: unit vector reset candidate (no concrete call site found)",
+      "reason": "No matching live unit+660h vector owner/reset dispatch was found in the host; its persistent collection producer is missing."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry check_multiplayer_player_count",
+      "reason": "The native function requires the multiplayer session gate; ordinary single-player returns before participant-count behavior, so it is outside this packet's single-player wiring."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plan_yaw_0099d300 candidate",
+      "reason": "The native plan-angle consumers are in game_hosts_units.cpp, held by g4-w2 during selection; the unleased ship-host fmod site is only a diagnostic census, not that consumer."
+    },
+    {
+      "native": "008da140",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HudMarkers sweep_objectives",
+      "reason": "The concrete HUD sweep is still a record and has no native objective-container traversal feeding this visibility predicate."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HudMarkers sweep_objectives",
+      "reason": "The objective-entry entity/recon visibility view and its concrete HUD traversal are missing."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: user-path command dispatch candidate",
+      "reason": "No concrete clear-user-path message arm currently selects the last queued path and consumes this returned slot; that dispatch/owner binding is missing."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target descriptor candidate",
+      "reason": "The descriptor initializer's current callers use abstract snapshot/pair adapters; a live descriptor owner with the actual class ordinal publication is missing."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: SoundInstance volume-scaling candidate",
+      "reason": "No concrete live scaling request currently supplies the multiplier; using one merely to rerun the constructor's authored-volume assignment would add no real consumer."
+    },
+    {
+      "native": "00424a10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: Impl::neighbour_settings",
+      "reason": "This view owns only the copied ShipAvoidance block; the partial constructor body's DoF/flag/torpedo fields have no consumers here, and the full settings owner/loader construction is missing."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_shadow_cascade_00a8bd20 candidate",
+      "reason": "The candidate shadow-fit caller is not linked in the built game; a reachable fitting caller with the real camera projection binding is missing."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: unit debug inspector",
+      "reason": "The identified consumer is a debug inspector rather than a single-player gameplay path; no gameplay flooded-fraction consumer was established."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: loaded_torpedo_barrels_00810e90 candidate",
+      "reason": "The concrete stock routines need a count/list of loaded barrels, not an any-barrel boolean; a matching live gun-level predicate consumer was not established."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: formation leave/disband slot counter candidate",
+      "reason": "The native per-slot scoring storage at game+21A0h and its +170h counters have no bound persistent owner in the examined formation callback."
+    },
+    {
+      "native": "00968060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: hit listener event-parameter candidate",
+      "reason": "The current listener consumes typed parameters rather than an owned native hit-channel ship-key box; that boxed-parameter producer is missing."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed",
+    "call_graph": "Both bodies have one direct call from the changed SubAttackBinding methods and are reachable from WinMainCRTStartup through mission fixed-step controller dispatch.",
+    "evidence": [
+      "bsp.py show 00727d30 --asm: FCOMI/JNC compares the supplied horizon against the live timers",
+      "bsp.py show 00729920 --asm: FCOMIP/JA replaces the minimum on unordered comparison"
+    ],
+    "scope": "Existing C++ interfaces reused; no duplicate bodies or new native ABI claims; the game was not run."
+  }
+}
