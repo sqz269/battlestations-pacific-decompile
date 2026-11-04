@@ -163,7 +163,14 @@ struct ActiveModeTuningHost {
     virtual void* coordinator_get_or_create_004c1c50() = 0;
 };
 
-struct Seg70Host : ActiveModeTuningHost {
+// 00A2BDB0 only dispatches command vslot +8h. A read-only query over an
+// existing group command must not supply unrelated planner/allocator services.
+struct CommandTypeQueryHost {
+    virtual ~CommandTypeQueryHost() = default;
+    virtual bool command_is_type_08(void* command, int type) = 0;
+};
+
+struct Seg70Host : ActiveModeTuningHost, CommandTypeQueryHost {
     virtual ~Seg70Host() = default;
 
     // Image globals: the memory at that image address.
@@ -185,7 +192,7 @@ struct Seg70Host : ActiveModeTuningHost {
     // Object virtuals, ECX = object.
     virtual void scalar_deleting_destructor_0(void* object, int flags) = 0;   // vtable +0
     virtual bool is_kind_of_5c(void* entity, int class_id) = 0;              // entity vtable +5Ch
-    virtual bool command_is_type_08(void* command, int type) = 0;            // command vtable +8h
+    bool command_is_type_08(void* command, int type) override = 0;          // command vtable +8h
     virtual void* command_clone_for_group_20(void* command, void* group) = 0; // command vtable +20h
     virtual void command_forward_24(void* command, std::uint32_t a, std::uint32_t b) = 0;  // +24h, RET 8
     virtual void command_fill_lua_18(void* command, LuaObjectRaw* table) = 0; // command vtable +18h
@@ -318,7 +325,7 @@ void group_copy_command_from_00a2bd50(Seg70Host& host, Raw group, Raw other);
 // 00A2BD90 BSP_AiGroup_ForwardCommand, __thiscall(group)(a, b), RET 8.
 void group_forward_command_00a2bd90(Seg70Host& host, Raw group, std::uint32_t a, std::uint32_t b);
 // 00A2BDB0 BSP_AiGroup_IsAttackingTarget, __thiscall(group)(target_group), RET 4.
-bool group_is_attacking_target_00a2bdb0(Seg70Host& host, Raw group, void* target_group);
+bool group_is_attacking_target_00a2bdb0(CommandTypeQueryHost& host, Raw group, void* target_group);
 // 00A2BE10 BSP_AiGroup_IsSelling, __thiscall(group), AL.
 bool group_is_selling_00a2be10(Seg70Host& host, Raw group);
 // 00A2BE70 BSP_AiGroup_OrderRetreat, __fastcall(ECX = group). Unreferenced.
