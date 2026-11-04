@@ -1,0 +1,267 @@
+{
+  "chain": 472,
+  "owner": "agent/g4-w4",
+  "switch": "kWireGoal4Chain472Bound",
+  "scope": "First-leader publication into the live formation group's existing native storage",
+  "rows": [
+    {
+      "native": "0070d0c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp:GameUnitsHost::formation_join_0077f940 -> src/game_hosts_unit_group.cpp:GameUnitGroupStorage::initialize_first_leader",
+      "domain": "Fresh group only: previous leader is read from constructor-produced +14h and must be null; next is the mission leader's existing one-based registry identity. The stored +14h result supplies the host leader index."
+    },
+    {
+      "native": "0070dab0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_unit_group.cpp:GameUnitGroupStorage::initialize",
+      "reason": "Already wired by chain272; reused its real +14h=null store as the setter's previous-leader producer."
+    },
+    {
+      "native": "00815e20",
+      "status": "skipped",
+      "host_site": "src/native_unit_group_set_leader.cpp:set_native_unit_group_leader_0070d0c0",
+      "reason": "Wake transfer requires dereferenceable native unit objects; the wrapper rejects non-null previous leaders before entering the raw setter, so this branch is not admitted even though the static graph sees its call."
+    },
+    {
+      "native": "0070d980",
+      "status": "skipped",
+      "host_site": "src/net_entity_create_cc13.cpp:BSP_NetEntityCreateMessage_Construct (00766FC0)",
+      "reason": "The miss path requires mutable native DATA at F87574/78/7C, and no live message-construction caller with a guaranteed matching group member was established."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:ai_group_forward_command",
+      "reason": "Missing a live AI group's +564Ch command object and its real slot24 command-forward implementation; the existing host reports no group."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:set_unit_controlled_audio",
+      "reason": "Missing the live unit emitter at +BBCh, child-gun audio objects at +428h, and application of the returned audio plan to those objects."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::set_selected_unit_00647300 and push_controlled_unit_interface_00647040",
+      "reason": "UnitPickScreenState lacks producers for selection mode +30h and the selection vector/header at +C4h..+D0h."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:cockpit_screen_mode",
+      "reason": "Missing the cockpit screen's actual native fields and their producer; the current host only records a false result."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:map_screen_busy",
+      "reason": "Missing the powerup-manager screen's scrolling-state storage and producers; calling over an invented zero screen would not wire real state."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:hud_root_screen_query",
+      "reason": "The body only returns native global E188D8; no canonical native publication was established here, and passing a host answer into the accessor would add an identity call."
+    },
+    {
+      "native": "00aa1fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:UnitPickScreen camera projection",
+      "reason": "The semantic inline gui_aspect_extent_00aa1fe0 already receives live platform widescreen/aspect fields; no additional call is justified by the legacy readiness name."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "The native message reader already calls this reserve body; no additional single-player message35 producer was established in this packet."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp:read_native_session_message35_0052abe0",
+      "reason": "The native message reader already calls this resize body; the scene-grid alternative holds a different typed vector and needs a canonical native array producer."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw device-class allocation/resolver and its NativeDeviceClassConstructionAccess binding."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw bomb-platform class allocation and common damageable/device construction domain."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw multibomb-platform class allocation and common damageable/device construction domain."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw rapid-fixed-slave class producer and its native profile/construction bindings."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw rapid-turning class producer and its native profile/construction bindings."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw single-turning class producer and its native profile/construction bindings."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw depth-charge-launcher class producer and its native profile/construction bindings."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA3.cpp:BSP_DeviceClass_ResolveFromLua (00443090)",
+      "reason": "Missing the live raw catapult class producer and its native profile/construction bindings."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_0",
+      "reason": "Missing an admitted live raw render-resources owner and NativeRenderResourcesRemapContext with canonical texture-reference owners."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_1",
+      "reason": "Missing an admitted live raw render-resources owner and NativeRenderResourcesRemapContext with canonical texture-reference owners."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_2",
+      "reason": "Missing an admitted live raw render-resources owner and NativeRenderResourcesRemapContext with canonical texture-reference owners."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:set_remap_texture_3",
+      "reason": "Missing an admitted live raw render-resources owner and NativeRenderResourcesRemapContext with canonical texture-reference owners."
+    },
+    {
+      "native": "00b18d60",
+      "status": "skipped",
+      "host_site": "src/native_material_effect_owner.cpp:initialize_native_material_effect_00b407a0",
+      "reason": "The derived initializer already shares initialize_base; replacing that call requires preserving the existing acquired texture-cache construction domain, not constructing the same subobject twice."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:BSP_SceneRenderer_RenderScene (00B156C0)",
+      "reason": "Missing admission of the renderer host's queried object as the actual native post-effect pass whose +08h this raw getter reads."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp:native_post_effect_pass_raw_18_00b4ec50",
+      "reason": "Missing a selected live caller and actual native pass owner for the +18h read."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/native_post_effect_raw_access.cpp:native_post_effect_owner_raw_23c_00b4ffe0",
+      "reason": "Missing a selected live caller and actual native post-effect owner for the +23Ch read."
+    },
+    {
+      "native": "006eeaf0",
+      "status": "skipped",
+      "host_site": "src/landscape_lua_seg55_argon.cpp:BSP_MissionLua_BuildVariantFromStack (00886E00)",
+      "reason": "Missing a canonical native Lua table-header producer; the typed LuaVariantRecord table uses a different vector representation."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing a frame-job-thread deferred-call producer and its real source/destination argument vectors; this host runs mission Lua on the main thread."
+    },
+    {
+      "native": "00a799a0",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::pause_slot40",
+      "reason": "The existing channel runtime already delegates to this body; no additional real pause call requiring replacement was established."
+    },
+    {
+      "native": "00a79a30",
+      "status": "skipped",
+      "host_site": "src/sound_channel_runtime.cpp:SoundChannelRuntime::handle_slot18",
+      "reason": "The existing channel runtime already delegates to this body; no additional real handle query requiring replacement was established."
+    },
+    {
+      "native": "00a7a6b0",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp:sound_channel_progress_00a7a6b0",
+      "reason": "Missing a selected live progress-query caller with its real FMOD channel and sample-length state."
+    },
+    {
+      "native": "00a7a710",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp:sound_channel_audibility_00a7a710",
+      "reason": "Missing a selected live audibility-query caller with its real FMOD channel and SoundInstanceContext."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp:construct_gui_timed_entry_alpha_00ac2ed0 call",
+      "reason": "The typed owner already calls this body, while the live native page host uses the existing raw constructor; replacing the raw path requires a real GuiLayoutWidget owner, not a cast."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp:destroy_gui_timed_entry_profile",
+      "reason": "The typed destructor already calls this reset; no additional live typed entry owner was established beyond the native raw lifetime path."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp:advance_gui_timed_entry_00ad39a0 call",
+      "reason": "The typed owner already calls this body; missing admission of that owner into the current native-widget application path."
+    },
+    {
+      "native": "008f1960",
+      "status": "skipped",
+      "host_site": "src/scene_property_bag.cpp:scene_property_type_for_letter",
+      "reason": "The semantic scene_reference_kind_letter helper is already used by the parser; no additional real query is justified by the legacy readiness identifier."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:tick_issue_clearorders and src/game_hosts_commands.cpp:make_command_target",
+      "reason": "The literal initializer requires readable mutable native DATA at F87574/78/7C; the host's typed descriptor does not supply those native global cells."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four CTests passed",
+    "focused_probe": "Win32 local/wire-g4-c472-probe, linked with /MANIFEST:EMBED: constructor null -> native leader 7; second publication rejected and +14h remains 7",
+    "call_graph": "0070D0C0 has one entry-reachable direct call from GameUnitGroupStorage::initialize_first_leader, reached through GameUnitsHost::formation_join_0077f940",
+    "runtime_boundary": "Built, focused-probe-tested, and statically entry-reachable; game not run. Only first-leader publication is admitted. Native wake transfer and later leader changes remain unbound.",
+    "readiness": {
+      "clean_baseline_wired": 9745,
+      "final_wired": 9746,
+      "targeted_functions_added": 1,
+      "note": "Baseline rebuilt and call graph refreshed with the three production files restored to HEAD; initial overlapping-build readiness snapshot was discarded."
+    },
+    "evidence": [
+      "bsp.py show 0070DAB0: constructor stores leader +14h = 0",
+      "bsp.py show 0070D0C0 --asm: null previous skips wake call before publishing next",
+      "local/output/wire-g4-c472-clean-before.json",
+      "local/output/wire-g4-c472-restored-build.txt",
+      "local/output/wire-g4-c472-probe-build.txt"
+    ]
+  }
+}
