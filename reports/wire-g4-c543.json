@@ -1,0 +1,115 @@
+{
+  "goal": 4,
+  "chain": 543,
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain543Bound",
+  "summary": "Persistent per-side recon scan buckets now carry and refresh native list nodes before the existing squadron fold and contact publication.",
+  "rows": [
+    {
+      "native": "008040e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0 -> include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::refresh",
+      "call_sites": 2,
+      "evidence": "bsp.py show 008040e0 and 008065b0: move the surviving unit's node from its class carry-over list into its current own/enemy/neutral list. The current world-registry scan supplies unit identity/order and recon_pass supplies the level."
+    },
+    {
+      "native": "00804150",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0 -> include/bsp/game_recon_relation_lists.hpp: GameReconRelationLists::begin_pass",
+      "call_sites": 1,
+      "evidence": "bsp.py show 00804150 and 008073c0: 00807430..00807455 moves each class's previous own/enemy/neutral nodes into its carry-over list without copying payloads."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: ship director enable/snapshot provenance",
+      "reason": "No ControllerSnapshotMessage producer, transport or routed consumer exists at this host seam; copying flattened flags into a temporary and back would only round-trip."
+    },
+    {
+      "native": "0072bd50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::bot_clear_release_008ff2b0",
+      "reason": "The trigger-release path lacks a persistent bot+38h CommandTarget record and the matching bot+1Ch observer registration/unregistration lifetime."
+    },
+    {
+      "native": "0084c500",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: player gun seat flak mode request",
+      "reason": "The player-seat path lacks the gun-class Function view and operative 0072D5B0 mode-selection consumer; its current mention records the unbound request."
+    },
+    {
+      "native": "00805430",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Retiring native ReconEntry payloads needs their full 1Ch member-list and observer ownership; chain543 owns host unit/level payloads and only reuses native list nodes."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0 squadron fold",
+      "reason": "The group fold lacks native member ReconEntry lists and each squadron unit's per-side detection record, detector observer and change delegate."
+    },
+    {
+      "native": "00809c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: repair-area input seam",
+      "reason": "The host's repair-area registry is empty; an actual repair-zone area producer and its party/containment records are missing."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: WeaponDirector make_command_target adapter",
+      "reason": "The adapter returns zero and has no owned native command-target object or downstream command-event consumer to receive the initialized target."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: GameFrontendHost::Impl::build_quads candidate",
+      "reason": "This is an alphabetical reflection snapshot, whose 00AAAED0 descriptor-walk caller is missing here; it cannot replace the bridge's authored-Z draw order."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: turning-gun angle state candidate",
+      "reason": "No received immediate-angle snapshot producer/consumer supplies the four target/current values at this seam; existing aim commands use the distinct 0085ABA0 path."
+    },
+    {
+      "native": "0085a270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::device_hierarchy_node_world",
+      "reason": "The host shares device hierarchy descriptors but lacks per-instance barrelfrontN node matrices, recoil records and their shot-driven producer; a zero-barrel update would omit real recoil."
+    },
+    {
+      "native": "0072b2d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: turning-gun recoil producer candidate",
+      "reason": "The base update also needs the actual gun meshholder/wreck-visibility state and per-barrel recoil lifetime, which the shared descriptor-only model does not provide."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp: direction-angle delta candidate for host aiming",
+      "reason": "Its actual PlaneHudScreen_UpdateBombFire caller and paired bomb-HUD direction inputs are missing at the selected gunnery host seam."
+    }
+  ],
+  "counts": {
+    "readiness_text_wired_before": 9860,
+    "readiness_text_wired_after": 9860,
+    "compiled_reconstructed_addresses_called_switch_off": 4929,
+    "compiled_reconstructed_addresses_called_switch_on": 4931,
+    "credited_new_called_addresses": 2,
+    "note": "wire_readiness.py labels both aliases ready/nodef even though called=true; the controlled switch-off/on call graph is the wiring evidence."
+  },
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release succeeds with switch off and on; all five existing tests pass.",
+    "fixture": "tests/game_recon_relation_lists_probe.cpp: one standalone Win32 /MD fixture linked with /MANIFEST:EMBED passes node-identity, relation-change, scan-order, missing-unit retirement, projection and destructor checks.",
+    "fixture_link": "cl /nologo /std:c++17 /EHsc /MD /UNDEBUG /I include tests/game_recon_relation_lists_probe.cpp /Fo:local/output/g4c543_recon_probe.obj /Fe:local/output/g4c543_recon_probe.exe build/win32/Release/bsp_core.lib build/win32/Release/bsp_lua511.lib build/win32/Release/bsp_zlib121.lib /link /MANIFEST:EMBED user32.lib d3d9.lib PowrProf.lib shell32.lib",
+    "call_graph": "tools/call_graph.py and who/path for 008040e0 and 00804150: direct CALLs from the changed publisher/adapter, reached through recon sensor passes, mission scene load and WinMain. Neither body is linked with the switch off.",
+    "float_math": "No float arithmetic changed."
+  },
+  "limits": [
+    "No game run was performed; build, focused fixture and compiled entry reachability are verified, not gameplay or original binary ABI compatibility.",
+    "Payloads are host unit-index/level views. Native ReconEntry construction, observer ownership, group detection publication and convoy entity publication remain separate work.",
+    "The existing vector-built relation scan remains unchanged in the switch's else arm; with the switch on the vectors only project the native list result for existing downstream grouping/publication."
+  ]
+}

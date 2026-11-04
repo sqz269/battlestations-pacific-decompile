@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain543_switches.hpp"
+#include "bsp/game_recon_relation_lists.hpp"
 #include "bsp/wire_goal4_chain538_switches.hpp"
 #include "bsp/cc13_seg49.hpp"
 #include "bsp/wire_goal4_chain518_switches.hpp"
@@ -5989,6 +5991,9 @@ struct GameGunneryHost::Impl {
         std::unique_ptr<PublishedReconUnitLists> published;
     };
     std::vector<ReconSlotTriples> recon_triples;
+    // Chain 543: slot-owned scan records survive publication rebuilds. The
+    // vector buckets below are read projections for the existing group fold.
+    std::map<int, std::unique_ptr<bsp::GameReconRelationLists>> recon_relations_by_side;
     unsigned long long recon_triple_builds{0};
     unsigned long long recon_triple_sum[5]{};
     unsigned long long recon_group_records{0};      // group records published, all sides
@@ -10179,6 +10184,39 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
         // with each record's level (+0Ch): own records carry 2 (00804E70).
         struct Rec { std::size_t unit; int level; };
         std::map<int, std::vector<Rec>> own, enemy, neutral;
+        if constexpr (bsp::kWireGoal4Chain543Bound) {
+            auto& relations = recon_relations_by_side[side];
+            if (!relations) relations = std::make_unique<bsp::GameReconRelationLists>();
+            relations->begin_pass(); // 008073C0's carry-over splice, before the scan
+            for (const int id : ids) {
+                const std::size_t n = units.world_list_size(id);
+                for (std::size_t pos = 0; pos < n; ++pos) {
+                    const std::size_t u = units.world_list_entry(id, pos);
+                    if (u >= count) continue;
+                    if (!host.unit_present(u)) continue;
+                    if (!units.unit_is_kind_of(u, bsp::kReconScanRequiredClassId)) continue;
+                    const bsp::ReconRelation rel = bsp::recon_relation_for_008065ff(side,
+                        units.unit_side_0054(u));
+                    if (rel == bsp::ReconRelation::own) {
+                        relations->refresh(id, 0, u, 2); // 00804E70's own-level constant
+                        continue;
+                    }
+                    const bsp::ReconDetectionLevel level = recon_pass.level(side, u);
+                    const int lv = level == bsp::ReconDetectionLevel::identified ? 2
+                        : level == bsp::ReconDetectionLevel::blip ? 1 : 0;
+                    relations->refresh(id, rel == bsp::ReconRelation::enemy ? 1 : 2, u, lv);
+                    if (id == 0x19) ++recon_convoy_members_seen;
+                }
+                relations->retire_unscanned(id);
+            }
+            // These projections are consumed by the real squadron fold and
+            // published triples below; there is no parallel vector-built path.
+            relations->project(0, own);
+            relations->project(1, enemy);
+            relations->project(2, neutral);
+            done("Recon::carry_relation_lists_00804150", 0x00804150u);
+            done("Recon::refresh_carried_node_008040e0", 0x008040e0u);
+        } else {
         for (const int id : ids) {
             const std::size_t n = units.world_list_size(id);
             for (std::size_t pos = 0; pos < n; ++pos) {
@@ -10198,6 +10236,7 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 (rel == bsp::ReconRelation::enemy ? enemy : neutral)[id].push_back({u, lv});
                 if (id == 0x19) ++recon_convoy_members_seen;
             }
+        }
         }
         // 00805490 over one relation array: the class-18h bucket it leaves.
         const auto group = [&](std::map<int, std::vector<Rec>>& arr, int rel) {
