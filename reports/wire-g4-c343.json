@@ -1,0 +1,95 @@
+{
+  "chain": 343,
+  "worker": "agent/g4-w4",
+  "baseline": "6df5ce50b6",
+  "switch": "bsp::kWireGoal4Chain343Bound",
+  "switch_header": "include/bsp/wire_goal4_chain343_switches.hpp",
+  "picked": "The gunnery host's ship death (9Ah explode to parts, 98h wreck, from 00827A90) and hull segment detach (99h, from 0092CED0) session messages through 0076E520's local copy, with 00780120's receiver ladder answered by each copy's own IsType, as chains 260/326/335 route their messages",
+  "wired_before": 9374,
+  "wired_after": 9383,
+  "checks": {
+    "build_on": "scripts/build.ps1 passed (2/2 tests)",
+    "build_off": "scripts/build.ps1 with kWireGoal4Chain343Bound temporarily false passed; reverted before commit",
+    "pc24_lint": "no float arithmetic added (the copies move a bool and a 5-bit index)",
+    "call_graph": "all eight addresses REACHABLE from the entry; caller HostSessionMessages::queue_ship_death_98_9a <- GameGunneryHost::Impl::ship_death_message_00827ab0, queue_ship_explode_one_part_99 <- GameGunneryHost::Impl::apply_segment_damage_0092d1f0"
+  },
+  "rows": [
+    {
+      "native": "007613b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_death_98_9a <- src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::ship_death_message_00827ab0 (light-ship arm)",
+      "real_state": "a ship whose health reached 0 with class mass below 100.0 (00827ACA)",
+      "evidence": "00827ADC..00827B01 inline 0075B430(9Ah) and 007613B0's stores (vtable 00D033D8), routed at 00827B77 flags 7; 00768530 case 9Ah constructs with 007613B0",
+      "abi": "Original __thiscall(ECX message); explicit (message, context) C++ API, no drop-in ABI claim"
+    },
+    {
+      "native": "00761310",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_death_98_9a <- src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::ship_death_message_00827ab0 (wreck-roll arm)",
+      "real_state": "a heavy ship with front/back breakup nodes whose 00BD2F10 wreck roll passed (00827B5B)",
+      "evidence": "00827B63 calls 00761310 for 98h, routed at 00827B77 flags 7; 00768530 case 98h calls 00761310 at 0076952E",
+      "abi": "Original __thiscall(ECX message); explicit (message, context) C++ API, no drop-in ABI claim"
+    },
+    {
+      "native": "00761410",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::copy_goes_to_unit_handler <- HostSessionMessages::queue_ship_death_98_9a",
+      "real_state": "the 9Ah copy's IsType answering 00780120's ladder ids",
+      "evidence": "slot 3 of vtable 00D033D8 (bsp.py ghidra bytes 00D033C4 --length 40); 00780120 calls vtable[0Ch] from 00780162 on",
+      "abi": "Original __thiscall(ECX message, type) RET 4 ignoring ECX; explicit bool(type) C++ API"
+    },
+    {
+      "native": "00761370",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::copy_goes_to_unit_handler <- HostSessionMessages::queue_ship_death_98_9a",
+      "real_state": "the 98h copy's IsType answering 00780120's ladder ids",
+      "evidence": "slot 3 of vtable 00D033C4; 00780120 calls vtable[0Ch] from 00780162 on",
+      "abi": "Original __thiscall(ECX message, type) RET 4 ignoring ECX; explicit bool(type) C++ API"
+    },
+    {
+      "native": "00761450",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_explode_one_part_99 <- src/game_hosts_gunnery.cpp::GameGunneryHost::Impl::apply_segment_damage_0092d1f0",
+      "real_state": "a hull segment whose 0092D1F0 health reached 0 (parked at -10000.0)",
+      "evidence": "0092D2BD 0092CED0(index): 0075B430(99h) and 00761450's stores (vtable 00D033EC) plus +20h = index, routed at 0092D2D2 flags 7; 00768530 case 99h calls 00761450 at 0076954E",
+      "abi": "Original __thiscall(ECX message); explicit (message, context) C++ API, no drop-in ABI claim",
+      "call_sites": 2
+    },
+    {
+      "native": "007614f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_explode_one_part_99",
+      "real_state": "the posted 99h with the destroyed segment's index",
+      "evidence": "slot 1 of vtable 00D033EC; 0076E575 vtable[4]",
+      "abi": "Original __thiscall(ECX message, cursor) RET 4; explicit C++ API",
+      "call_sites": 1
+    },
+    {
+      "native": "00761540",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_explode_one_part_99",
+      "real_state": "the queued 99h copy; its +20h is the index 00821FF0 hands to 0080E440 and the host publishes in destroyed_segments",
+      "evidence": "slot 2 of vtable 00D033EC; 0076A27B vtable[8]",
+      "abi": "Original __thiscall(ECX message, stream) RET 4; explicit C++ API",
+      "call_sites": 1
+    },
+    {
+      "native": "007614b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::copy_goes_to_unit_handler <- HostSessionMessages::queue_ship_explode_one_part_99",
+      "real_state": "the 99h copy's IsType answering 00780120's ladder ids",
+      "evidence": "slot 3 of vtable 00D033EC",
+      "abi": "Original __thiscall(ECX message, type) RET 4 ignoring ECX; explicit bool(type) C++ API"
+    },
+    {
+      "native": "00761590",
+      "status": "skipped",
+      "reason": "9Bh SHIP_SECTIONFAILUREEFX: no host code models its sender, so no live send site exists to route through the copy"
+    },
+    {
+      "native": "00762c80",
+      "status": "skipped",
+      "reason": "C8h PLANE_DEADMEATROT: no host code models its sender (the plane death rotation post), so no live send site exists"
+    }
+  ]
+}

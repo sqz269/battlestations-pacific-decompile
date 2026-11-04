@@ -7,6 +7,8 @@
 #include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/wire_goal4_chain326_switches.hpp"
 #include "bsp/wire_goal4_chain335_switches.hpp"
+#include "bsp/wire_goal4_chain343_switches.hpp"
+#include "bsp/session_message_dispatch.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
 #include "bsp/cc13_seg33b.hpp"
@@ -150,7 +152,26 @@ struct HostSessionMessages::Image {
                                         0x004499c0u};
         std::uint32_t slots_00d0334c[5]{0x00760bd0u, 0x00760970u, 0x007609e0u, 0x00760940u,
                                         0x004499c0u};
+        // Goal 4 chain 343. bsp.py ghidra bytes 00D033C4 --length 40 and
+        // 00D033EC --length 40, bsp.gpr's /battlestationspacific.exe: 98h
+        // 00D033C4 (007625C0 scalar delete, 004645B0 write, 004645D0 read,
+        // 00761370 IsType, 004499C0), 9Ah 00D033D8 (007625E0, 004645B0,
+        // 004645D0, 00761410, 004499C0) and 99h 00D033EC (00762600, 007614F0,
+        // 00761540, 007614B0, 004499C0).
+        std::uint32_t slots_00d033c4[5]{0x007625c0u, 0x004645b0u, 0x004645d0u, 0x00761370u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d033d8[5]{0x007625e0u, 0x004645b0u, 0x004645d0u, 0x00761410u,
+                                        0x004499c0u};
+        std::uint32_t slots_00d033ec[5]{0x00762600u, 0x007614f0u, 0x00761540u, 0x007614b0u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
+            if constexpr (kWireGoal4Chain343Bound) {
+                if (image_address == 0x00d033c4u) return slots_00d033c4;
+                if (image_address == 0x00d033d8u) return slots_00d033d8;
+                if (image_address == 0x00d033ecu) return slots_00d033ec;
+            } else {
+                // The previous binding had no 98h / 9Ah / 99h profile.
+            }
             if constexpr (kWireGoal4Chain335Bound) {
                 if (image_address == 0x00d034c8u) return slots_00d034c8;
                 if (image_address == 0x00d0334cu) return slots_00d0334c;
@@ -886,6 +907,86 @@ HostSessionMessages::ShipJamCopy HostSessionMessages::queue_ship_jam_6b_6c(bool 
         answer(&native_session_message_is108_00761a30);
     }
     // Neither message owns storage; 00761990 / 00761A60 only restamp.
+    return copy;
+}
+
+namespace {
+// Goal 4 chain 343. 00780120 (the queued message's receiver ladder) calls the
+// message's vtable[0Ch] with 4Bh first (0078015D..00780166) and then each id
+// of its ladder in turn; the answered ids are the is-a set its first match
+// is chosen from (receiver_for_message_00780120). The ladder ids are that
+// function's, in its order.
+bool copy_goes_to_unit_handler(bool (*is_type)(std::uint32_t)) {
+    static constexpr std::uint8_t kLadder[] = {0x4B, 0x4C, 0x57, 0x4E, 0x4F, 0x50,
+                                               0x51, 0x52, 0x97, 0x58, 0x59};
+    MessageIsATest is_a{};
+    for (const std::uint8_t id : kLadder) {
+        if (!is_type(id)) continue;
+        if (is_a.count < static_cast<int>(sizeof is_a.ids)) is_a.ids[is_a.count++] = id;
+    }
+    return receiver_for_message_00780120(is_a) == EntityMessageReceiver::kSessionKindSwitch;
+}
+}  // namespace
+
+HostSessionMessages::ShipDeathCopy HostSessionMessages::queue_ship_death_98_9a(
+    bool explode_to_parts) const {
+    const Image& image = *image_;
+    static_assert(sizeof(seg42::UnitMessage) == 0x20);
+    SessionBoolCodec codec;
+    LocalStream stream;
+    ShipDeathCopy copy;
+    // 00827ADC..00827B01 inline 0075B430(9Ah) and 007613B0's stores; 00827B63
+    // calls 00761310 for 98h. Neither sender writes the +1Ch bool.
+    using Construct = seg42::UnitMessage* (*)(seg42::UnitMessage*, const seg42::Context&);
+    const Construct construct = explode_to_parts ? &seg42::construct_ship_explodetoparts_007613b0
+                                                 : &seg42::construct_ship_wrecked_00761310;
+    seg42::UnitMessage sent{};
+    construct(&sent, image.seg42);
+    // 0076E575 vtable[4]: 004645B0 in both tables.
+    cc13_seg5::session_bool_message_write_004645b0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&sent),
+        reinterpret_cast<cc13_seg5::Object>(&stream.out));
+    stream.begin_read();
+    // 00768530 case 98h: 00761310 at 0076952E; case 9Ah: 007613B0. 0076A27B
+    // vtable[8] = 004645D0.
+    seg42::UnitMessage queued{};
+    construct(&queued, image.seg42);
+    cc13_seg5::session_bool_message_read_004645d0(codec,
+        reinterpret_cast<cc13_seg5::Object>(&queued),
+        reinterpret_cast<cc13_seg5::Object>(&stream.in));
+    copy.type = queued.h.base.type_10;
+    // The copy's own IsType answers the ladder (slot 3 of its table).
+    copy.to_unit = copy_goes_to_unit_handler(explode_to_parts
+        ? &seg42::is_ship_explodetoparts_00761410 : &seg42::is_ship_wrecked_00761370);
+    // 00821E80 switches on the copy's +10h.
+    copy.wrecked_98 = copy.to_unit && copy.type == 0x98;
+    copy.explode_to_parts_9a = copy.to_unit && copy.type == 0x9A;
+    // Neither message owns storage; 007625C0 / 007625E0 only restamp.
+    return copy;
+}
+
+HostSessionMessages::ExplodeOnePartCopy HostSessionMessages::queue_ship_explode_one_part_99(
+    std::uint32_t part) const {
+    const Image& image = *image_;
+    // 0092CED0: 0075B430(99h), +18h word 0, +1Ah 0, +1Ch 0, +20h = the index,
+    // +4h = 1, vtable 00D033EC; 00761450 makes the same header stores.
+    seg42::ExplodeOnePartMessage sent{};
+    seg42::construct_ship_explodeonepart_00761450(&sent, image.seg42);
+    sent.part_20 = part;
+
+    LocalStream stream;
+    seg42::write_ship_explodeonepart_007614f0(&sent, &stream.out);
+    // 00768530 case 99h: 00761450 at 0076954E; 0076A27B vtable[8] = 00761540.
+    stream.begin_read();
+    seg42::ExplodeOnePartMessage queued{};
+    seg42::construct_ship_explodeonepart_00761450(&queued, image.seg42);
+    seg42::read_ship_explodeonepart_00761540(&queued, &stream.in);
+    ExplodeOnePartCopy copy;
+    copy.type = queued.u.h.base.type_10;
+    copy.to_unit = copy_goes_to_unit_handler(&seg42::is_ship_explodeonepart_007614b0);
+    copy.explode_one_part_99 = copy.to_unit && copy.type == 0x99;
+    copy.part = queued.part_20;
+    // Neither message owns storage; 00762600 only restamps.
     return copy;
 }
 

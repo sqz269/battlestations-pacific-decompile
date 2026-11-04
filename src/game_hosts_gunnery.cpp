@@ -55,6 +55,7 @@
 #include "bsp/wire_goal4_chain300_switches.hpp"
 #include "bsp/wire_goal4_chain325_switches.hpp"
 #include "bsp/wire_goal4_chain335_switches.hpp"
+#include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
 #include "bsp/game_hosts_session_messages.hpp"        // chain 335: 93h / 70h / 9Eh copies
 #include "bsp/cc13_seg52.hpp"                         // chain 325: 0084D8F0
@@ -15293,7 +15294,24 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
         seg_damage += before - (h > 0.0f ? h : 0.0f);
         if (result.destroyed) {
             ++seg_destroyed;
+            if constexpr (bsp::kWireGoal4Chain343Bound) {
+                // Goal 4 chain 343: 0092D2BD 0092CED0(index) builds 99h and
+                // 0092D2D2 routes it (flags 7) through 0076E520's copy; 00780120
+                // asks the copy's 007614B0 and 00821E80's 99h arm (00821FF0)
+                // hands the copy's +20h to 0080E440, the detach published here.
+                // With no session image the posted index is delivered.
+                int part = index;
+                bool delivered = true;
+                if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+                    const bsp::HostSessionMessages::ExplodeOnePartCopy copy =
+                        messages->queue_ship_explode_one_part_99(static_cast<std::uint32_t>(index));
+                    delivered = copy.explode_one_part_99;
+                    part = static_cast<int>(copy.part);
+                }
+                if (delivered) dc.destroyed_segments.emplace_back(part, clock_seconds);
+            } else {
             dc.destroyed_segments.emplace_back(index, clock_seconds);
+            }
             log.notef("gunnery: hull segment %d of %s destroyed t=%.2f (0092D1F0 -> 99h -> "
                 "0080E440)", index, unit_state[unit].row.name.c_str(),
                 static_cast<double>(clock_seconds));
@@ -17483,6 +17501,17 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
     if (!c.ship) return;
     if (c.mass < 100.0f) {                         // 00827ACA..00827ADA, [00D7A220]
         ++ship_death.messages_9a;
+        if constexpr (bsp::kWireGoal4Chain343Bound) {
+            // Goal 4 chain 343: 00827ADC..00827B01 build 9Ah and 00827B77
+            // routes it (flags 7) through 0076E520's copy; 00780120 asks the
+            // copy's 00761410 and 00821E80's 9Ah arm (00821FD6) runs 00814560
+            // on it. With no session image the posted message is delivered.
+            if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+                if (!messages->queue_ship_death_98_9a(true).explode_to_parts_9a) return;
+            }
+        } else {
+            // The message was delivered as posted.
+        }
         explode_to_parts_00935c70(victim);         // 9Ah -> 00814560 -> 00935C70
         if (c.kamikaze && units.kill_and_remove_00814595(victim)) {
             ++ship_death.kamikaze_removals;
@@ -17503,6 +17532,16 @@ void GameGunneryHost::Impl::ship_death_message_00827ab0(std::size_t victim) {
         "packet cc9_ship_death_message)", unit_state[victim].row.name.c_str(),
         static_cast<double>(roll), static_cast<double>(clock_seconds));
     record("ShipDeath::breakup_message_98_00761310", 0x00761310u);
+    if constexpr (bsp::kWireGoal4Chain343Bound) {
+        // Goal 4 chain 343: 00827B63 00761310 builds 98h and 00827B77 routes it
+        // (flags 7) through 0076E520's copy; 00780120 asks the copy's 00761370
+        // and 00821E80's 98h arm (00821FBC) runs 00814520 -> 00935D30 on it.
+        if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+            if (!messages->queue_ship_death_98_9a(false).wrecked_98) return;
+        }
+    } else {
+        // The message was delivered as posted.
+    }
     if constexpr (kShipBreakInTwoDrawsBound) {
         // 00935D30: front sx, sy, sz, a, b, d; back sy, sz, a, b, d.
         for (std::size_t piece = 0; piece < 2; ++piece) {
