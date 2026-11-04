@@ -35,6 +35,7 @@ namespace bsp {
 class LocaleTables;
 struct GameInputContextManagerBinding;
 struct GuiLayoutPage;
+struct FrontEndScreen;
 }  // namespace bsp
 
 namespace bsp::game {
@@ -203,8 +204,11 @@ public:
     // pump 004f8830, the recompute 004f7620 and the commit 004f83b0 are the
     // recovered ones. These entry points are what GameHudHost needs from the
     // owner of that registry; the HUD logic itself is in src/game_hosts_hud.cpp.
+    // A reconstructed leaf may supply its already-constructed base. That
+    // owner must outlive registry use; the registry borrows the two flags.
     bool register_in_game_screen(int slot, const std::string& name,
-        std::uint32_t register_virtual, std::uint32_t layout_virtual);
+        std::uint32_t register_virtual, std::uint32_t layout_virtual,
+        FrontEndScreen* constructed_flags = nullptr);
     bool attach_in_game_page(int slot, const std::string& page_name);
     bool in_game_page_has_child(int slot, const std::string& widget_name);
     // Milestone 2k. The page one registered HUD screen loaded through 00aa5840,

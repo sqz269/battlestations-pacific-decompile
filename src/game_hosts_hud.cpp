@@ -1,6 +1,8 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain461_switches.hpp"
+#include "bsp/frontend_state_machine.hpp"
 #include "bsp/wire_goal4_chain436_switches.hpp"
 #include "bsp/wire_goal4_chain370_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
@@ -93,6 +95,37 @@
 
 namespace bsp::game {
 namespace {
+
+// 0068CC70 allocates 174h bytes for manager+40h / registry slot 44h.
+// Keep actual bool objects at the native +4h/+5h offsets, so the screen-set
+// recompute and pump use the very base 0068BF60 constructs, not a flag copy.
+// The tail also owns chain 413's +1Ch/+CCh/+E4h interface/observer fields.
+struct HudRootConstructionStorage {
+    std::uint32_t vtable{};
+    FrontEndScreen flags{};
+    std::array<std::uint8_t, 0x174 - 6> tail{};
+    std::uint8_t* data() { return reinterpret_cast<std::uint8_t*>(this); }
+};
+static_assert(offsetof(HudRootConstructionStorage, flags) == 4);
+static_assert(offsetof(FrontEndScreen, wanted) == 0);
+static_assert(offsetof(FrontEndScreen, active) == 1);
+static_assert(offsetof(HudRootConstructionStorage, tail) == 6);
+static_assert(sizeof(HudRootConstructionStorage) == 0x174);
+
+class HudRootConstructionBinding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    explicit HudRootConstructionBinding(HudRootConstructionStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::cc13_fe5::Raw screen) override {
+        if (screen.p != screen_.data())
+            throw std::logic_error("0068BF60 base belongs to a different HUD root");
+        bsp::construct_front_end_screen_004f7180(screen_.flags);
+        // bsp.py show 004f7180: the typed base represents just the two flags;
+        // its vtable store is retained here before 0068BF60 replaces it.
+        screen.at<std::uint32_t>(0) = 0x00CEAE54u;
+    }
+private:
+    HudRootConstructionStorage& screen_;
+};
 
 // Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
 // (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
@@ -245,10 +278,15 @@ struct GameHudHost::Impl {
     // produces +CCh/+E4h from actual applied requests. No synthetic unit is
     // stored here: +E4h is GameUnitsHost's stable canonical unit identity.
     alignas(4) std::array<std::uint8_t, 0xE8> root_interface_fields{};
+    HudRootConstructionStorage constructed_root_screen{};
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
+        if constexpr (kWireGoal4Chain461Bound) {
+            return {constructed_root_screen.data()};
+        } else {
         return {root_interface_fields.data()};
+        }
     }
     void set_root_closed_value(std::int32_t value) {
         root_interface_view().at<std::int32_t>(0x1C) = value;
@@ -510,7 +548,11 @@ void GameHudHost::Impl::refresh_root_saved_payload() {
     void* old = root_interface_view().ptr(0xE4);
     root_interface_view().ptr(0xE4) = nullptr;
     RootSavedInterfaceObserver observer(*this);
+    if constexpr (kWireGoal4Chain461Bound) {
+        observer.observer_unregister_006952a0(root_interface_view().p + 0xD0, old);
+    } else {
     observer.observer_unregister_006952a0(root_interface_fields.data() + 0xD0, old);
+    }
     root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
 }
 
@@ -1084,12 +1126,40 @@ public:
         }
     }
     bool allocate_screen(std::size_t index, std::size_t size_bytes) override {
+        if constexpr (kWireGoal4Chain461Bound) {
+            if (index == 0) {
+                if (size_bytes != sizeof(HudRootConstructionStorage))
+                    throw std::logic_error("0068CC70 HUD root allocation size changed");
+                // This screen is inline in the HUD owner, alive before any
+                // registry borrows it and until that owner is destroyed.
+                owner_.done("InGameInterface::allocate_root_screen", 0x00bf681bu);
+                return true;
+            }
+            owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
+            return true;
+        } else {
         static_cast<void>(index);
         static_cast<void>(size_bytes);
         owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
         return true;
+        }
     }
     void construct_screen(std::size_t index, std::uint32_t constructor) override {
+        if constexpr (kWireGoal4Chain461Bound) {
+            if (index == 0 && constructor == 0x0068BF60u) {
+                // bsp.py show 0068bf60: one base call, then native vtables,
+                // empty vectors, observer state and literal flags. No engine
+                // services or fixture-supplied inputs are needed on this path.
+                HudRootConstructionBinding binding(owner_.constructed_root_screen);
+                bsp::cc13_fe5::hud_root_screen_construct_0068bf60(
+                    {owner_.constructed_root_screen.data()}, binding);
+                ++owner_.summary.screen_constructors;
+                owner_.done("InGameInterface::root_screen_constructor", constructor);
+            } else {
+                if (constructor != 0) ++owner_.summary.screen_constructors;
+                owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
+            }
+        } else {
         static_cast<void>(index);
         // The 42 leaf constructors have 42 distinct addresses, all of them call
         // sites inside 0068cc70; kInGameHudScreens carries them. One record
@@ -1097,6 +1167,7 @@ public:
         // would put 42 call sites on one row.
         if (constructor != 0) ++owner_.summary.screen_constructors;
         owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
+        }
     }
     void register_screen(std::size_t index) override {
         if (index >= kInGameHudScreenCount) return;
@@ -1111,8 +1182,17 @@ public:
         char name[32];
         std::snprintf(name, sizeof(name), "HUD%02X",
             static_cast<unsigned>(slot.registry_slot));
-        if (!owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                record.register_virtual, record.layout_virtual)) {
+        const bool registered = [&]() {
+            if constexpr (kWireGoal4Chain461Bound) {
+                return owner_.menu.register_in_game_screen(slot.registry_slot, name,
+                    record.register_virtual, record.layout_virtual,
+                    index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
+            } else {
+                return owner_.menu.register_in_game_screen(slot.registry_slot, name,
+                    record.register_virtual, record.layout_virtual);
+            }
+        }();
+        if (!registered) {
             owner_.log.notef("HUD screen slot %02X could not be registered",
                 static_cast<unsigned>(slot.registry_slot));
             return;
@@ -2272,7 +2352,16 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.movie_screen = bsp::HudMovieScreenState{};
     impl.pending_interface_id = 0;
     if constexpr (kWireGoal4Chain413Bound) {
+        if constexpr (kWireGoal4Chain461Bound) {
+            // detach_world releases the mission's saved interface, not the
+            // screen itself. Keep its constructed vtables/containers and the
+            // registry's live flag bytes across this world-owner boundary.
+            impl.root_interface_view().at<std::int32_t>(0x1C) = 0;
+            impl.root_interface_view().at<std::uint32_t>(0xCC) = 0;
+            impl.root_interface_view().ptr(0xE4) = nullptr;
+        } else {
         impl.root_interface_fields.fill(0);
+        }
         impl.root_saved_observer_identity = nullptr;
         impl.root_saved_payload_kind = bsp::HudRootPayloadKind::Unit;
         impl.set_root_closed_value(0);
