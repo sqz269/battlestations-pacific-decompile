@@ -147,6 +147,39 @@
       "native": "00960050",
       "status": "wired",
       "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00681f40",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::near_world_edge_00681f40 -> bsp::cc13_fe5::game_near_world_edge_00681f40 over the host world border box"
+    },
+    {
+      "native": "00682e10",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert -> bsp::cc13_fe5::warning_screen_show_alert (alert 3, exit zone)"
+    },
+    {
+      "native": "00682800",
+      "status": "wired",
+      "host_site": "bsp::cc13_fe5::warning_screen_play_sound_00682800 inside warning_screen_show_alert (null sample: no tracked sound, as before)"
+    },
+    {
+      "native": "00682cb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 1 (submarine oxygen) is never raised here: submarine_127c (unit+127Ch) is not modelled and answers 1.0"
+    },
+    {
+      "native": "00682d60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 2 (shallow water) is never raised here: ship_shallow_1011 needs the unit+1011h terrain-contact latch, which the host lacks"
+    },
+    {
+      "native": "00682ed0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 0 (stall) is never raised here: plane_stall_007c6e10 on [unit+3D0h] is unread and answers false"
     }
   ]
 }
