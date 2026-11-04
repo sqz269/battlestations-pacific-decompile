@@ -12,6 +12,141 @@
       "native": "006b84d0",
       "status": "wired",
       "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::publish_recon_slot_tables_00806b10 pass 2 (00805EBA CALL 006B84D0(-3), with 006B8120 at 00805EA5 on the same machine)"
+    },
+    {
+      "native": "00964790",
+      "status": "wired",
+      "host_site": "bsp::resolve_vehicle_class_00964790, src/game_hosts_lua.cpp GameMissionLuaHost::mark_vehicle_class_row_00964790 ON arm (kWireGoal3Chain234Bound, now = kWireGoal4Chain340Bound)"
+    },
+    {
+      "native": "00437bd0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::resize_cache/store_cached (resize_descriptor_cache_00437bd0), from 00964790"
+    },
+    {
+      "native": "007d1e50",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp LeafConstructorBinding::call_007d1e50, from the eight plane leaf constructors"
+    },
+    {
+      "native": "00963380",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp construct_descriptor (Destroyer/Cruiser inline) and LeafConstructorBinding::call_00963380"
+    },
+    {
+      "native": "00749050",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp LeafConstructorBinding/PlaneBaseBinding/LandFortBaseBinding 00749050 forwards"
+    },
+    {
+      "native": "0087c640",
+      "status": "wired",
+      "host_site": "construct_native_vehicle_class_base_00749050 (damageable base), under 00964790"
+    },
+    {
+      "native": "00749180",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp construct_descriptor (LandFort row) and LeafConstructorBinding::call_00749180 (CommandBuilding)"
+    },
+    {
+      "native": "00749030",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::descriptor_is_kind (LandFort IsKindOf)"
+    },
+    {
+      "native": "00951aa0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "009536e0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00953770",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951af0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951b40",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951c20",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951d00",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951de0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095fee0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095ff50",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095ffc0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951e30",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963c20",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963cb0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963d30",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963db0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963e40",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963ec0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00960050",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
     }
   ]
 }
