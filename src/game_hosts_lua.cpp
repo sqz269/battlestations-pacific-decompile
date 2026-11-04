@@ -160,7 +160,6 @@ extern "C" {
 #include <cstdlib>
 #include <cstring>
 #include <functional>
-#include <limits>
 #include <list>
 #include <optional>
 #include <stdexcept>
@@ -675,26 +674,24 @@ bool objective_names_equal(const std::string& a, const std::string& b) noexcept 
     return a.size() == b.size() && _stricmp(a.c_str(), b.c_str()) == 0;
 }
 
-// The party a missing player record carries in ObjectiveListHost::player_party:
-// no Lua integer argument a script passes equals it.
-constexpr int kObjectiveNoPlayerRecordParty = (std::numeric_limits<int>::min)();
-
 class ObjectiveListHost final : public bsp::ObjectiveUnitHost {
 public:
     ObjectiveListHost(GameObjectiveSets& sets, const GameUnitsHost* units) noexcept
         : sets_(sets), units_(units) {}
 
-    // [[game+18CCh + 4*slot]+28h], 008CDEAD. LABELLED, the substitution
-    // docs/MISSION_OBJECTIVES.md names for the slot mask: this process keeps one
-    // player record, slot 0, whose party is the scene's published Player1 Party
-    // (local_player_party(), kLocalPartyFromSceneBound). Records 1..7 are not built,
-    // so no party argument selects them. The native loop 008CDE94..008CDEF2 has no
-    // active-slot test (it reads +28h and compares, nothing else), so with those
-    // records built a party argument would also select the AI-held slots of that
-    // party; docs/SHIP_AI_OPEN_ITEMS.md 125.5's "every active slot" is the
-    // 008CDF58 gate of the explicit-slot arm only.
+    // [[game+18CCh + 4*slot]+28h], 008CDEAD, for all eight slots. 004C6890 copies
+    // each scene MultiPlay.PlayerN side block's Party into that word, and the
+    // mission host publishes the eight values (game_hosts_mission.cpp,
+    // ai_publish_scene_slot_parties); a block that authors no Party holds -1,
+    // which scene_slot_party(slot, -1) answers, as it does before publication.
+    // Slot 0 keeps local_player_party(), the reader every other host site of the
+    // local party uses (same published value; 0 when Player1 authors none).
+    // The loop 008CDE94..008CDEF2 has no active-slot test (it reads +28h and
+    // compares, nothing else), so a party argument selects every slot of that
+    // party, AI-held ones included; the 008CDF58 active gate belongs to the
+    // explicit-slot arm only (player_slot_active).
     int player_party(int slot) override {
-        return slot == 0 ? local_player_party() : kObjectiveNoPlayerRecordParty;
+        return slot == 0 ? local_player_party() : scene_slot_party(slot, -1);
     }
     // 008CDF58 / 008CDF5E: player+8h set and +9h clear. In single player that is
     // slot 0 alone: 004BB220 sets +9h on slots 1..7 (docs/SHIP_AI_OPEN_ITEMS.md 125.5).
@@ -894,26 +891,28 @@ private:
 class ObjectiveLuaArguments final : public bsp::ObjectiveArgumentReader {
 public:
     explicit ObjectiveLuaArguments(lua_State* state) noexcept
-        : state_(state), top_(lua_gettop(state)) {}
+        : state_(state), top_(lua_gettop(state)),
+          // The CRT conversion mode 00BF7420 selects, represented as the decal
+          // and ship-depth readers in this file represent it.
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
 
     int count() override { return top_; }   // 00B663F0
-    // 00B66A60: lua type 3, then the value stored as a float (00B66A94 FSTP m32)
-    // equal to its CVTTSS2SI truncation reloaded with FILD (00B66AAC FUCOMIP,
-    // JP for unordered). Out of range, CVTTSS2SI answers 80000000h.
+    // 00B66A60: lua type 3 (00B66A7D), then bsp::gui_lua_is_integer_number_00b66a60
+    // on the number: float32 spill, CVTTSS2SI and the ordered compare.
     bool is_integer(int index) override {
         const int slot = index + 1;
-        if (slot > top_ || lua_type(state_, slot) != LUA_TNUMBER) return false;
-        const float value = static_cast<float>(lua_tonumber(state_, slot));
-        const std::int32_t truncated = (value >= -2147483648.0f && value < 2147483648.0f)
-            ? static_cast<std::int32_t>(value) : (std::numeric_limits<std::int32_t>::min)();
-        return static_cast<double>(value) == static_cast<double>(truncated);
+        return slot <= top_ && lua_type(state_, slot) == LUA_TNUMBER
+            && bsp::gui_lua_is_integer_number_00b66a60(lua_tonumber(state_, slot));
     }
-    // 00B66290, read only after is_integer accepted the slot.
+    // 00B66290: lua_tonumber, the float32 spill and reload at 00B662A0..00B662A3,
+    // then 00BF7420 (bsp::lua_number_integer_00b66290). 0.99999999 reads 1.
     int get_integer(int index) override {
-        return static_cast<int>(lua_tonumber(state_, index + 1));
+        return bsp::lua_number_integer_00b66290(lua_tonumber(state_, index + 1),
+                                                sse2_conversion_);
     }
+    // 00B66270: the same float32 spill (bsp::lua_number_float32_00b66270).
     double get_number(int index) override {
-        return static_cast<double>(lua_tonumber(state_, index + 1));
+        return static_cast<double>(bsp::lua_number_float32_00b66270(lua_tonumber(state_, index + 1)));
     }
     bool get_boolean(int index) override { return lua_toboolean(state_, index + 1) != 0; }
     // The objective name, by the host's reader of argument 2 (chain 287's 006B7F60
@@ -937,6 +936,7 @@ public:
 private:
     lua_State* state_;
     int top_;
+    bool sse2_conversion_;
 };
 
 // The targets argument `index` names, classified as 008889C0 / 0088B840 do and in

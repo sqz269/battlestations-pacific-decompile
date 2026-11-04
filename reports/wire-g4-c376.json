@@ -14,7 +14,8 @@
     "A unit with +5Dh set (GameUnitsHost::unit_flag_005d) is not added (008DF2B0's liveness test).",
     "A unit added twice is listed twice (008DEE50 has no duplicate test); a removal erases every entry of the unit (008DC3E0).",
     "RemoveUnit position targets now erase matching position entries (008DDD30 / 008DC500 rule); the old host ignored them.",
-    "Add's targets are pushed in visit order (unit and position interleaved) instead of all positions then all units."
+    "Add's targets are pushed in visit order (unit and position interleaved) instead of all positions then all units.",
+    "A party argument selects every slot whose published scene Party matches (008CDE94..008CDEF2 has no active gate), AI-held slots 1..7 included; the old host selected slot 0 only."
   ],
   "rows": [
     {
@@ -139,5 +140,21 @@
       "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
       "reason": "Needs the profile's +94h checkpoint map and +98h value read by 007F8D60 and the BSP_Chk_Save storage write; checkpoint_differs is still a record."
     }
-  ]
+  ],
+  "review_round_1": {
+    "review_run": 757,
+    "findings": [
+      {
+        "finding": "src/game_hosts_lua.cpp:913 numeric conversion skipped the float32 spill of 00B66290",
+        "outcome": "fixed",
+        "detail": "ObjectiveLuaArguments now reuses bsp::gui_lua_is_integer_number_00b66a60 for 00B66A60, bsp::lua_number_integer_00b66290 for 00B66290 (float32 spill at 00B662A0..00B662A3, then 00BF7420 with the represented CRT SSE2 mode) and bsp::lua_number_float32_00b66270 for 00B66270; 0.99999999 now reads 1."
+      },
+      {
+        "finding": "src/game_hosts_lua.cpp:697 INT_MIN party for slots 1-7",
+        "outcome": "fixed",
+        "detail": "player_party(slot) reads the published scene slot parties for slots 1..7 (scene_slot_party(slot, -1): -1 is the native +28h of a block with no Party, and the answer before publication); slot 0 keeps local_player_party(), the same published value the other host readers use. The active-slot gate stays in player_slot_active, which only the explicit-slot arm consults."
+      }
+    ],
+    "checks": "build.ps1 (ON) passes with tests; call_graph --build: both bindings and the other wired rows still reachable; called 5719."
+  }
 }
