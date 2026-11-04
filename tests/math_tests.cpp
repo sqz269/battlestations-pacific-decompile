@@ -41,6 +41,8 @@
 #include "bsp/blocking_screen.hpp"
 #include "bsp/game_entry.hpp"
 #include "bsp/game_settings.hpp"
+#include "bsp/archive_text_writer.hpp"
+#include "bsp/wire_goal4_chain542_switches.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gunnery_tables.hpp"
 #include "bsp/gun_platform_arc.hpp"
@@ -1944,6 +1946,93 @@ int main() {
             "the control reset leaves both invert bytes different from the omitted default");
         check(!has("imperial") && !has("cameraShake"),
             "rows still holding the serializer default are dropped");
+    }
+
+    {
+        // Chain 542: one complete archive exercises the live writer's key,
+        // value, indentation and terminator providers with real owned bytes.
+        bsp::ArchiveStringSink sink;
+        bsp::ArchiveTextOutput output{nullptr, false, &sink};
+        bsp::ArchiveTextWriter writer(output);
+        writer.write_field("number", bsp::SettingsValue::from_int(-2147483647 - 1));
+        writer.begin_section("T");
+        writer.write_field(bsp::gui_lua_key_by_index(3),
+            bsp::SettingsValue::from_text("a\\\"b\n\t"));
+        writer.begin_section(bsp::gui_lua_key_by_float(1.5f));
+        writer.write_field("flag", bsp::SettingsValue::from_bool(true));
+        writer.write_field("ratio", bsp::SettingsValue::from_float(-0.25f));
+        writer.end_section();
+        writer.end_section();
+        const std::string expected = "number = -2147483648\nT = {\n"
+            "\t[3] = \"a\\\\\\\"b\n\t\",\n\t[1.500000] = {\n"
+            "\t\t[\"flag\"] = true,\n\t\t[\"ratio\"] = -0.250000,\n\t},\n}\n";
+        check(writer.depth() == 0 && sink.str() == expected,
+            "archive native emitters preserve exact nested scalar bytes");
+        // 00BD6100 uses signed SAR, not a nibble rotation, for >=80h.
+        // FILE takes precedence over the retained buffered sink.
+        std::FILE* file = nullptr;
+        const auto opened = tmpfile_s(&file);
+        check(opened == 0 && file != nullptr, "archive encoded fixture FILE opens");
+        if (file != nullptr) {
+            output.file_0109cee0 = file;
+            output.compact_encoded_0109cee4 = true;
+            const unsigned char input[]{' ', '\t', '\r', '\n', 'A', 0x80, 0xf1, 0};
+            const unsigned char encoded[]{0x14, 0xf8, 0xff, 0};
+            output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
+            std::rewind(file);
+            unsigned char actual[sizeof encoded]{};
+            check(std::fread(actual, 1, sizeof actual, file) == sizeof actual
+                    && std::memcmp(actual, encoded, sizeof actual) == 0
+                    && std::fgetc(file) == EOF && sink.str() == expected,
+                "archive encoded output strips whitespace and preserves signed high-byte transform");
+            std::fclose(file);
+            if constexpr (bsp::kWireGoal4Chain542Bound) {
+                // The successful compact write just warmed TWO same-sized
+                // pooled blocks (original + by-value encoded copy). Reusing
+                // that input makes unchanged bump/free counts a direct check
+                // for missing OR double returns when an output provider fails.
+                auto& strings = bsp::game::game_native_string_process();
+                auto* const pool = strings.pool_01090aa8();
+                check(pool != nullptr && strings.returns_disabled_01090aa4() == 0,
+                    "archive failure fixture has the actual returning pool");
+                const auto bump = pool->bump_6acfc8;
+                const auto free_blocks = pool->ring_6acfcc.live_2004b0;
+                struct RejectingSink final : bsp::ArchiveByteSink {
+                    unsigned calls{};
+                    void write(std::string_view) override {
+                        ++calls;
+                        throw std::runtime_error("archive rejecting sink");
+                    }
+                } rejecting;
+                output = {nullptr, false, &rejecting};
+                bool plain_failed = false;
+                try {
+                    output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
+                } catch (const std::runtime_error& error) {
+                    plain_failed = std::string_view(error.what()) == "archive rejecting sink";
+                }
+                check(plain_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
+                        && pool->ring_6acfcc.live_2004b0 == free_blocks,
+                    "throwing archive sink returns its owned pooled block exactly once");
+
+                std::FILE* read_only = nullptr;
+                check(fopen_s(&read_only, "NUL", "rb") == 0 && read_only != nullptr,
+                    "archive compact failure fixture opens a read-only FILE");
+                if (read_only != nullptr) {
+                    output = {read_only, true, &rejecting};
+                    bool compact_failed = false;
+                    try {
+                        output.emit(std::string_view(reinterpret_cast<const char*>(input), sizeof input));
+                    } catch (const std::runtime_error& error) {
+                        compact_failed = std::string_view(error.what()) == "archive fwrite failed";
+                    }
+                    check(compact_failed && rejecting.calls == 1 && pool->bump_6acfc8 == bump
+                            && pool->ring_6acfcc.live_2004b0 == free_blocks,
+                        "failed compact fwrite returns both pooled blocks exactly once");
+                    std::fclose(read_only);
+                }
+            }
+        }
     }
 
     {

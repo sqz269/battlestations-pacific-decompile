@@ -1,5 +1,6 @@
 // Packet cc13-front5 (marker cc13_front5): wiring-frontier callees. Evidence,
-// ABI and uncertainty per function: docs/CC13_FRONT5.md. Nothing here is wired.
+// ABI and uncertainty per function: docs/CC13_FRONT5.md. Chain 542 wires the
+// archive emitters from the live ArchiveTextWriter host.
 #include "bsp/cc13_front5.hpp"
 
 #include <cstring>
@@ -77,7 +78,7 @@ constexpr const char* kNestedTerminator_00ce438c = ",\n";
 // (char >> 4 arithmetic) | (char << 4) as one byte, fwrite(&b, 1, 1, [0109CEE0]).
 // The byte is staged in the caller's length slot (ESP+18h after two pushes).
 // ---------------------------------------------------------------------------
-void archive_emit_compact_encoded_00bd6100(NativeStr owned, const ArchiveWriterGlobals& g, ArchiveEmitHost& host) {
+__declspec(noinline) void archive_emit_compact_encoded_00bd6100(NativeStr owned, const ArchiveWriterGlobals& g, ArchiveEmitHost& host) {
     const std::uint32_t length = owned.length;
     for (std::uint32_t i = 0; i < length; ++i) {
         const char* data = owned.data != nullptr ? owned.data : g.empty_0109cee5;
