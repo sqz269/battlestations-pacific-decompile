@@ -1187,6 +1187,7 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
     // owner. Slot allocations stay stable for the mission's unit lifetime.
     std::optional<bsp::MoveToEntityTargetStorage> moveto_entity_target;
     GameUnitSlot* moveto_entity_44{nullptr}; // approach's borrowed entity, from target slot0
+    bool moveto_entity_refresh_pending{false}; // retarget must refresh before either steering state
     float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
     // approach+68h: 50.0 (00CEB4D4) from 009C1C30, redrawn U(FollowDist/1,
     // FollowDist/2) by the activation's 009C3650 (kMoveToActivationDrawsBound).
@@ -41635,6 +41636,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (unit_.moveto_point[1] != before) ++owner_.moveto_leg_separations;
                             }
                         }
+                        if constexpr (bsp::kWireGoal4Chain468Bound) {
+                            // Installation/activation can satisfy a queued
+                            // retarget before the periodic task update runs.
+                            unit_.moveto_entity_refresh_pending = false;
+                        }
                     }
 
                     // 009C3950, the kind-7 task's vtable+64h, packet
@@ -45408,11 +45414,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
                         ++unit_.moveto_ticks;
                         // 009C3570: the refresh countdown, period 0.5.
+                        if constexpr (bsp::kWireGoal4Chain468Bound) {
+                            // Review961: an installed task skips 009C1C30.
+                            // Preserve the periodic phase, but service a new
+                            // target before arrival checks and state steering.
+                            // Keep the same PC24 countdown expression as OFF.
+                            const bool periodic_due = !(dt < unit_.moveto_refresh_58);
+                            if (dt < unit_.moveto_refresh_58) {
+                                unit_.moveto_refresh_58 -= dt;
+                            } else {
+                                unit_.moveto_refresh_58 = (0.5f - dt) + unit_.moveto_refresh_58;
+                            }
+                            bsp::refresh_move_to_target_before_steering(periodic_due,
+                                unit_.moveto_entity_refresh_pending,
+                                [&] { moveto_refresh_009beba0(); });
+                        } else {
                         if (dt < unit_.moveto_refresh_58) {
                             unit_.moveto_refresh_58 -= dt;
                         } else {
                             unit_.moveto_refresh_58 = (0.5f - dt) + unit_.moveto_refresh_58;
                             moveto_refresh_009beba0();
+                        }
                         }
                         // 009C359F-009C35CB: approach+6Ch from the squadron's
                         // +348h block when its queue head is moveto (+54h == 00E08F68):
@@ -49396,6 +49418,7 @@ void GameUnitsHost::store_unit_moveto_target(std::size_t index,
             // null. This host retains that existing point separately.
             unit.moveto_entity_target.reset();
             unit.moveto_entity_44 = nullptr;
+            unit.moveto_entity_refresh_pending = false;
             return;
         }
         GameMoveToEntityPoseHost pose;
@@ -49404,10 +49427,13 @@ void GameUnitsHost::store_unit_moveto_target(std::size_t index,
             pose, &target, impl_->slots[target_index].get());
         // bsp.py show 009c1c30: target slot0 supplies the observed entity at
         // approach+44h, then target+4/8/C initialize approach+48/4C/50h.
-        // These fields drive target-speed selection and the next steer refresh.
+        // Its immediate 009BEBA0 replaces Y with cruise/path altitude. A
+        // reused task has no constructor refresh, so do not expose raw target
+        // height here; force that full refresh before its next steering tick.
         unit.moveto_entity_44 = static_cast<GameUnitSlot*>(
             bsp::move_to_target_entity_009be140(&target));
-        for (int i = 0; i < 3; ++i) unit.moveto_point[i] = target.initial_world_04[i];
+        bsp::stage_move_to_entity_point(target, unit.moveto_point,
+            unit.moveto_entity_refresh_pending);
     } else {
     impl_->slots[index]->moveto_target_plus_one =
         target_index < impl_->slots.size() ? target_index + 1u : 0u;

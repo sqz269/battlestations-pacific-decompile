@@ -12,7 +12,7 @@
       "native": "009be0f0",
       "status": "wired",
       "host_site": "src/game_hosts_units.cpp: GameUnitsHost::store_unit_moveto_target",
-      "evidence": "009BE0F0 constructs retained 14h target from the canonical GameUnitSlot identity and actual world_valid/world pose; output point and entity feed the move-to approach."
+      "evidence": "009BE0F0 constructs retained 14h target from the canonical GameUnitSlot identity and actual world_valid/world pose. Its entity and X/Z seed the approach; review961 forces cruise/path-height resolution before retargeted steering."
     },
     {
       "native": "009be140",
@@ -412,24 +412,46 @@
     }
   ],
   "validation": {
-    "build": "Final scripts/build.ps1 passed all three CTest checks, including the focused dirty/valid/null/sNaN target regression in reconstructed_math.",
+    "build": "Review961 final scripts/build.ps1 passed all three CTest checks, including the expanded retarget-altitude regression in reconstructed_math.",
     "call_graph": "Final built exe: both addresses entry-reachable with explicit calls from GameUnitsHost::store_unit_moveto_target. 009BE140 is ICF-folded with native_instance_generator_declaration_00b556b0; its second caller is unrelated and not claimed.",
-    "pc24_lint": "Final working tree: zero findings with --diff origin/main. The same committed tree is checked with --diff origin/main...HEAD before release."
+    "pc24_lint": "Review961 final working tree: zero findings with --diff origin/main. The committed range is checked again before release."
   },
   "limits": "Build/fixture and static entry reachability only. No game was run; Original register/stack/FS/SEH ABI and native target-observer death notification remain outside this host projection. Unit-slot allocations remain stable for the mission lifetime, as before.",
   "construction_contract": "Original 009BE0F0: ECX=target, stacked entity, RET4; 009BE140: ECX=target, RET0, reads +10h. New C++ interfaces preserve the same raw14h target; the narrow pose view borrows actual fields. 009BE115..12D FLD/FSTP copies now preserve x87 NaN handling.",
   "result": {
-    "wired": 9743,
+    "wired": 9744,
     "compiled_reconstructed_called": 4811,
     "new_directly_called_addresses": [
       "009be0f0",
       "009be140"
-    ]
+    ],
+    "wired_before_review": 9743,
+    "review_measurement_note": "Readiness reports 9744 after review checks (9743 before review). No additional native address is claimed: the review-counted and directly called additions remain 009BE0F0 and 009BE140."
   },
   "evidence": [
     "bsp.py show 009be0f0; show 009be0f0 --asm (all instructions)",
     "bsp.py show 009be140 (whole getter)",
     "bsp.py show 009c1c30 (target slot0 and initial point consumers)",
     "bsp.py show 009c23b0; show 009beba0 (stored entity consumers)"
+  ],
+  "review_fixes": [
+    {
+      "review_run": 961,
+      "round": 1,
+      "priority": "P2",
+      "site": "src/game_hosts_units.cpp: GameUnitsHost::store_unit_moveto_target (reviewed line 49410)",
+      "finding": "Retargeting an installed move-to task published the entity altitude until its next periodic approach refresh.",
+      "status": "fixed",
+      "change": "Stage the new entity X/Z while retaining the current cruise/path Y; mark a full approach refresh pending. The task update services that request before arrival checks and either steering state even with a positive periodic timer. Merge periodic and retarget requests into one refresh and retain the existing countdown phase. Installation/activation refreshes clear the pending request; point orders cancel it.",
+      "native_evidence": "009C1C30 immediately calls 009BEBA0 after the target point copy; 009BEBA0 overwrites Y from cruise/path altitude before steering. The host now enforces the same command-visible ordering when a task is reused.",
+      "regression": "Extended the focused reconstructed_math case: entity Y=-200, existing steer Y=1200, elapsed=0.1 with remaining=0.4. Publication preserves 1200, the pending request refreshes to the fixture resolved cruise/path Y=1250 before steering, and a simultaneous periodic request causes only one refresh.",
+      "validation": "scripts/build.ps1 passed all three CTest checks; pc24_lint --diff origin/main found zero issues. Both claimed bodies retain explicit calls from entry-reachable store_unit_moveto_target in the matching build.",
+      "limits": "Fixture verifies retarget publication and refresh ordering, not native altitude arithmetic or gameplay. No game was run.",
+      "readiness_wired_after_fix": 9744,
+      "counted_addresses": [
+        "009be0f0",
+        "009be140"
+      ]
+    }
   ]
 }
