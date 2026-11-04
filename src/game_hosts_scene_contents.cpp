@@ -1,6 +1,8 @@
 // bsp_game.exe milestone 2h: the scene contents pass.
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_native_renderer_application.hpp"
+#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal4_chain384_switches.hpp"
@@ -1756,6 +1758,8 @@ struct GameSceneContentsHost::Impl {
     GameVfsHost& vfs;
     // Milestone 2m: the mission Lua host, for 0095c640's three table reads.
     GameMissionLuaHost* lua{nullptr};
+    GameNativeRendererApplication* remap_renderer{nullptr};
+    std::array<std::string, 4> remap_names;
     // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
     std::vector<std::int32_t> preload_census;
     std::vector<std::int32_t> stock_queue;
@@ -4531,8 +4535,13 @@ public:
         owner_.log.unimplemented("SceneContents::close_file_block", "00bdcb30");
     }
     std::string record_remap_texture_name(std::size_t slot) override {
+        if constexpr (bsp::kWireGoal4Chain516Bound) {
+            if (owner_.remap_renderer) return owner_.remap_names.at(slot);
+            return std::string();
+        } else {
         static_cast<void>(slot);
         return std::string();
+        }
     }
     void set_remap_texture_0(const std::string& name) override { remap(name, "00b0fd70"); }
     void set_remap_texture_1(const std::string& name) override { remap(name, "00b0fdc0"); }
@@ -4658,8 +4667,23 @@ public:
 
 private:
     void remap(const std::string& name, const char* address) {
+        if constexpr (bsp::kWireGoal4Chain516Bound) {
+            if (owner_.remap_renderer) {
+                const std::size_t slot = std::strcmp(address, "00b0fd70") == 0 ? 0
+                    : std::strcmp(address, "00b0fdc0") == 0 ? 1
+                    : std::strcmp(address, "00b0fe10") == 0 ? 2 : 3;
+                if (owner_.remap_renderer->set_scene_remap_texture(slot, name))
+                    owner_.log.implemented("SceneContents::set_remap_texture", address);
+                else
+                    owner_.log.notef("scene colour remap %s retained until native F8D39C initialization",
+                        address);
+            } else {
+                owner_.log.unimplemented("SceneContents::set_remap_texture", address);
+            }
+        } else {
         static_cast<void>(name);
         owner_.log.unimplemented("SceneContents::set_remap_texture", address);
+        }
     }
 
     GameSceneContentsHost::Impl& owner_;
@@ -5166,6 +5190,11 @@ void SceneContentsBinding::scatter_clouds() {
 
 void GameSceneContentsHost::attach_lua(GameMissionLuaHost* lua) noexcept {
     impl_->lua = lua;
+}
+void GameSceneContentsHost::bind_native_scene_remaps(GameNativeRendererApplication& renderer,
+    const std::array<std::string, 4>& names) {
+    impl_->remap_renderer = &renderer;
+    impl_->remap_names = names;
 }
 
 namespace {

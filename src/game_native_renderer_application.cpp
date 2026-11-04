@@ -152,6 +152,7 @@
 #include "bsp/native_cockpit_helper_construction.hpp"
 #include "bsp/native_render_resources_lifetime.hpp"
 #include "bsp/native_render_resources_remap.hpp"
+#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/wire_goal4_chain487_switches.hpp"
 #include "bsp/native_game_grid.hpp"
 #include "bsp/gui_text_native_layout.hpp"
@@ -518,6 +519,14 @@ struct GameNativeRendererApplication::Impl {
     CompilerOwnersGraph compiler_owners;
     EffectOwnersGraph effect_owners;
     RenderResourcesGraph resources;
+    struct SceneRemapAttempt {
+        NativeString name;
+        NativeRenderResourcesRemapAcquired acquired;
+        bool name_live{};
+    };
+    std::vector<std::unique_ptr<SceneRemapAttempt>> scene_remaps;
+    std::array<std::string, 4> pending_scene_remap_names;
+    std::array<bool, 4> pending_scene_remaps{};
     ShadowTargetGraph shadow;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
@@ -647,6 +656,12 @@ GameNativeRendererApplication::create_with_ordinary_mesh_ownership(GameHostLog& 
 GameNativeRendererApplication::~GameNativeRendererApplication() {
     // Before ANY Impl/provider/member teardown. No Native read/log/cleanup.
     if(ordinary_mesh_exception_requires_retention()) std::_Exit(1);
+    // Failed remap/cache frames and their borrowed name headers must survive
+    // all providers. As with an interrupted ordinary mesh, retain the whole
+    // process domain before any Impl/member teardown; never guess an unwind.
+    for (const auto& attempt : impl_->scene_remaps)
+        if (attempt->name_live || attempt->acquired.failed)
+            std::_Exit(1);
 }
 void* const volatile& GameNativeRendererApplication::publication_00f8d394() noexcept{return impl_->renderer;}
 void GameNativeRendererApplication::create_shader_cache() {
@@ -761,6 +776,56 @@ NativeRenderResourcesRemapContext& GameNativeRendererApplication::render_resourc
     check(p.phase==Impl::Phase::ready,"remap context requires the ready application renderer");
     check(p.resources.remap.has_value(),"chain487 remap context is disabled");
     return *p.resources.remap;
+}
+bool GameNativeRendererApplication::set_scene_remap_texture(std::size_t slot,
+    const std::string& name) {
+    auto& p = *impl_;
+    check(slot < 4, "scene colour-remap slot is outside the native four strings");
+    check(p.phase == Impl::Phase::ready, "scene colour-remap requires the ready renderer");
+    if (!p.resources.publication) {
+        // The sprite host loads simulation before the opt-in native renderer
+        // constructs F8D39C. Keep the selected record's latest value, not a
+        // surrogate service/texture. No earlier native draw can consume it.
+        p.pending_scene_remap_names[slot] = name;
+        p.pending_scene_remaps[slot] = true;
+        return false;
+    }
+    auto& context = render_resources_remap_context();
+    check(p.resources.publication && p.resources.acquired.phase ==
+        NativeRenderResourcesConstructionAcquired::Phase::complete,
+        "scene colour-remap requires the constructed actual F8D39C service");
+    auto frame = std::make_unique<Impl::SceneRemapAttempt>();
+    auto& attempt = *frame;
+    p.scene_remaps.push_back(std::move(frame));
+    try {
+        // This is the scene record's string value, materialized in the SAME
+        // raw string-pool domain as B319B0's cache. No replacement owner/cache.
+        attempt.name_live = true;
+        attempt.name.assign_0041e870(context.textures.strings, name.c_str());
+        void* const service = p.resources.publication;
+        // 004D4F60..004D4FD0: one setter per slot, in record order. The native
+        // bodies release the captured previous texture and publish the exact
+        // loader result (including null), with no additional retain.
+        switch (slot) {
+        case 0: set_native_render_remap_texture0_00b0fd70(service, &attempt.name,
+                    context, attempt.acquired); break;
+        case 1: set_native_render_remap_texture1_00b0fdc0(service, &attempt.name,
+                    context, attempt.acquired); break;
+        case 2: set_native_render_remap_texture2_00b0fe10(service, &attempt.name,
+                    context, attempt.acquired); break;
+        case 3: set_native_render_remap_texture3_00b0fe60(service, &attempt.name,
+                    context, attempt.acquired); break;
+        }
+        destroy_native_string_header_0041dd20(&attempt.name, context.textures.strings);
+        attempt.name_live = false;
+        p.log.notef("native scene colour remap: slot=%zu name=%s texture=%p",
+            slot, name.c_str(), attempt.acquired.loaded);
+        p.pending_scene_remaps[slot] = false;
+        return true;
+    } catch (...) {
+        p.phase = Impl::Phase::failed;
+        throw;
+    }
 }
 GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
     check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");
@@ -1069,7 +1134,18 @@ void GameNativeRendererApplication::prepare_mission_ship() {
         catch (...) { p.phase = Impl::Phase::failed; throw; }
         return;
     }
-    try { p.mission_ship->prepare(*this, p.device_generation); }
+    try {
+        p.mission_ship->prepare(*this, p.device_generation);
+        if constexpr (bsp::kWireGoal4Chain516Bound) {
+            // The native B14A10/B107F0 producer has now completed, before
+            // the first scene draw. Apply only actual pending record strings,
+            // once each and in 004D4F60's slot order. No construction replay.
+            for (std::size_t slot = 0; slot != p.pending_scene_remaps.size(); ++slot)
+                if (p.pending_scene_remaps[slot])
+                    (void)set_scene_remap_texture(slot, p.pending_scene_remap_names[slot]);
+        } else {
+        }
+    }
     catch (...) { p.phase = Impl::Phase::failed; throw; }
 }
 void GameNativeRendererApplication::draw_mission_ship(std::uint64_t mission_frame, float simulated_seconds) {

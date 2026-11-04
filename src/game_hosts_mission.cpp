@@ -45,6 +45,7 @@
 #include "bsp/mission_scene_load.hpp"
 #include "bsp/mission_tree_data.hpp"
 #include "bsp/game_native_renderer_application.hpp"
+#include "bsp/wire_goal4_chain516_switches.hpp"
 #include "bsp/gui_texture.hpp"
 #include "bsp/mission_picture_owner.hpp"
 #include "bsp/native_game_grid.hpp"
@@ -822,6 +823,50 @@ void load_mission_idle_camera_shots(Owner& owner, const ScenePropertyBlock& head
         authored || defaults ? &root : nullptr, authored || defaults ? 6 : 0);
 }
 
+// Host projection of ONLY the four Colorize strings, not a second 004E8510
+// body. Evidence: 004E8510 Colorize tail writes C24/C2C/C34/C3C; 004DA2A0
+// initializes all four headers empty. 00469BF0 applies scene.props defaults
+// before authored header assignments, so retain defaults for omitted keys.
+std::array<std::string, 4> scene_remap_names(GameVfsHost& vfs,
+    std::optional<ScenePropertyBlock>& schema, const ScenePropertyBlock& header) {
+    if (!schema) {
+        auto* manager = vfs.ready() ? &vfs.context() : nullptr;
+        std::string path = "universe/library/scene.props";
+        if (!manager || !resolve_existing_resource_00bdf4c0_fragment(*manager,
+                vfs.search_registrations(), path))
+            throw std::runtime_error("colour-remap SceneRootProps producer unavailable");
+        VfsMemoryOpen opened = open_resource_memory_00bdf310_fragment(*manager, path, 2);
+        if (!opened.provider_opened || !opened.stream || !opened.stream->fully_initialized())
+            throw std::runtime_error("colour-remap SceneRootProps producer could not be read");
+        std::string text(reinterpret_cast<const char*>(opened.stream->data_00bef610()),
+            static_cast<std::size_t>(opened.stream->size_00bef600()));
+        SceneLexer lexer(std::move(text), ";{}=:()");
+        if (lexer.next().text != "properties" || lexer.next().text != "SceneRootProps")
+            throw std::runtime_error("unsupported colour-remap SceneRootProps declaration");
+        std::vector<std::string> errors;
+        auto parsed = parse_scene_property_block_008f5a00(lexer, errors);
+        if (!errors.empty()) throw std::runtime_error("unsupported colour-remap SceneRootProps syntax");
+        schema.emplace(std::move(parsed));
+    }
+    const auto colorize = [](const ScenePropertyBlock* root) {
+        return idle_camera_child(idle_camera_child(root, "g_PostProcess"), "Colorize");
+    };
+    const auto* authored = colorize(&header);
+    const auto* defaults = colorize(&*schema);
+    constexpr const char* keys[4]{"TextureName", "TextureNameUW",
+        "TextureNameOldFilm", "TextureNameOldFilmUW"};
+    std::array<std::string, 4> result;
+    for (std::size_t slot = 0; slot != result.size(); ++slot) {
+        const SceneProperty* property = authored ? authored->find(keys[slot]) : nullptr;
+        if (!property && defaults) property = defaults->find(keys[slot]);
+        if (!property) continue; // Native constructor's empty string, not a chosen texture.
+        if (_stricmp(property->type_letter.c_str(), "S") != 0 || property->values.empty())
+            throw std::runtime_error(std::string("unsupported colour-remap string: ") + keys[slot]);
+        result[slot] = property->values.front(); // Explicit authored "" overrides the default.
+    }
+    return result;
+}
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -1013,6 +1058,8 @@ struct GameMissionHost::Impl : MissionIdleCameraShotOwner<kWireGoal2Chain176Boun
     // Key by the actual scene path; the semantic side_blocks vector still
     // lacks resolved Party/Race and must not imply a zero participant count.
     std::map<std::string, std::int32_t> participant_scene_counts;
+    std::optional<ScenePropertyBlock> remap_schema;
+    std::map<std::string, std::array<std::string, 4>> remap_scene_names;
     // The last parsed scene's side-block Party ordinals (slot record +28h, 004BB160 /
     // 004C6890 from block +0h), -1 where a block has none. Packet cc13-mp3 (MP3b).
     std::array<int, 8> scene_slot_parties{-1, -1, -1, -1, -1, -1, -1, -1};
@@ -2691,6 +2738,10 @@ void GameMissionHost::Impl::lobby_apply_selected_map_005da530() {
 void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const std::string& scene_path) {
     participant_scene_counts.erase(scene_path);
+    if constexpr (bsp::kWireGoal4Chain516Bound) {
+        remap_scene_names.erase(scene_path);
+    } else {
+    }
     // 0046DF00's header pass. 008D9CF0 opens the path through the VFS provider
     // table at 0109CEEC and reads the whole stream; the parser then runs over
     // the text. The scene-graph owner is needed by passes 2 and 3 (004D4DF0),
@@ -2733,6 +2784,12 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     const SceneDocument document = parse_scene_document(text);
     log.implemented("SetPendingScene::load_scene_header_pass", "0046df00");
     if (document.has_header && document.header.has_properties) {
+        if constexpr (bsp::kWireGoal4Chain516Bound) {
+            if (native_pictures)
+                remap_scene_names.emplace(scene_path,
+                    scene_remap_names(vfs, remap_schema, document.header.properties));
+        } else {
+        }
         if constexpr (kWireGoal2Chain176Bound) {
             // 00551440 loads authored/default idle shots; OFF keeps the partial header apply below.
             load_mission_idle_camera_shots(*this, document.header.properties);
@@ -3468,6 +3525,15 @@ void GameMissionHost::Impl::finish_scene_load() {
     log.note("the mission-detail page roots were hidden: 00686c90 destroys the main-menu "
         "screen, which releases the three layouts it holds at +2F0h, +244h and +248h");
     const auto participant_count = participant_scene_counts.find(record.scene_path);
+    if constexpr (bsp::kWireGoal4Chain516Bound) {
+        if (native_pictures) {
+            const auto remaps = remap_scene_names.find(record.scene_path);
+            if (remaps == remap_scene_names.end())
+                throw std::runtime_error("selected scene has no parsed colour-remap record");
+            frame_host->bind_native_scene_remaps(native_pictures->renderer, remaps->second);
+        }
+    } else {
+    }
     frame_host->run_scene_load_004dfb70(record.scene_path, script_name,
         record.locale_table_list, record.mission_id, &record,
         participant_count == participant_scene_counts.end() ? nullptr : &participant_count->second);
