@@ -55,6 +55,7 @@
 #include "bsp/wire_goal4_chain304_switches.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/wire_goal4_chain341_switches.hpp"
+#include "bsp/wire_goal4_chain359_switches.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -4755,7 +4756,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     float capture_group_value_00a250a0(const Group* g, const CaptureTargetRec& rec) {
         std::vector<GroupValueRecord> attackers;
         std::vector<GroupValueRecord> defenders;
+        if constexpr (bsp::kWireGoal4Chain359Bound) {
+            build_group_value_records(g, attackers);
+        } else {
         for (const std::size_t m : g->members) attackers.push_back(group_value_record_00a04560(m));
+        }
         for (const std::size_t u : rec.defender_units) {
             defenders.push_back(group_value_record_00a04560(u));
         }
@@ -6016,6 +6021,57 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return r;
     }
 
+    // 00A07E40..00A07EA2 (bsp.py show 00a07e40 --asm): the native list's
+    // sentinel is group+5640h, next is node+0h and entity is node+8h. Reuse
+    // the query view already used by the group's other checked-list walks.
+    // The 00A04560 binding remains the existing typed projection above. Its
+    // return object is borrowed until append returns, just as the native
+    // 20h-byte scratch record is. Do not truncate that larger C++ projection
+    // into the native scratch buffer or fabricate a class-pointer layout.
+    struct GroupValueRecordInput {
+        Impl* owner;
+        std::size_t member;
+        GroupValueRecord value;
+    };
+
+    static void* __fastcall build_group_value_record(void*, void* entity,
+                                                     std::uint32_t record_class) {
+        // 00A0F970's and 00A250A0's calls both push 1 for 007B9140's argument.
+        // The typed scoring path retains that argument in record_loadout_00a04560.
+        if (record_class != 1 || entity == nullptr) std::abort();
+        auto& input = *static_cast<GroupValueRecordInput*>(entity);
+        input.value = input.owner->group_value_record_00a04560(input.member);
+        return &input.value;
+    }
+
+    static void __fastcall append_group_value_record(void* output, void*, const void* record) {
+        // Fastcall's unused EDX bridges the __thiscall callback: ECX is the
+        // output vector, the sole stack argument is the returned record.
+        static_cast<std::vector<GroupValueRecord>*>(output)->push_back(
+            *static_cast<const GroupValueRecord*>(record));
+    }
+
+    void build_group_value_records(const Group* group, std::vector<GroupValueRecord>& output) {
+        if (group == nullptr) std::abort();
+        // The list and each borrowed return record remain stable throughout
+        // this synchronous walk. Membership and ordering come from the group;
+        // positions, class weights and loadout still come from its unit owner.
+        std::vector<GroupValueRecordInput> inputs;
+        inputs.reserve(group->members.size());
+        for (const std::size_t member : group->members) inputs.push_back({this, member, {}});
+        std::size_t next = 0;
+        AiGroupListQuery view(group->members, [&](std::size_t member) -> void* {
+            if (next >= inputs.size() || inputs[next].member != member) std::abort();
+            return &inputs[next++];
+        });
+        bsp::oct18_tail_c::AiBindings bindings{};
+        bindings.checked_iterator_bf6713 = ai_group_query_invalid_iterator;
+        bindings.entity_record_00a04560 = build_group_value_record;
+        bindings.append_record_00a078f0 =
+            reinterpret_cast<void (__thiscall*)(void*, const void*)>(append_group_value_record);
+        bsp::oct18_tail_c::ai_build_entity_records_00a07e40(view.data(), &output, 1, bindings);
+    }
+
     // 00A0C3C0 BSP_AiEntityRecord_PairAttackValue, __fastcall(ECX = attacker
     // record, EDX = target record, arg1, distance, debug, rnd flag), RET 10h,
     // with the distance -1.0 and the rnd flag 1 on this path.
@@ -6124,8 +6180,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // 00A07E40 twice: one record per member of the +563Ch list, in order.
         std::vector<GroupValueRecord> attackers;
         std::vector<GroupValueRecord> targets;
+        if constexpr (bsp::kWireGoal4Chain359Bound) {
+            build_group_value_records(own, attackers);
+            build_group_value_records(target, targets);
+        } else {
         for (const std::size_t m : own->members) attackers.push_back(group_value_record_00a04560(m));
         for (const std::size_t m : target->members) targets.push_back(group_value_record_00a04560(m));
+        }
         float attack_sum = 0.0f;
         float maxes_sum = 0.0f;
         const float result = compose_attack_value_00a0c650(attackers, targets, attack_sum, maxes_sum);

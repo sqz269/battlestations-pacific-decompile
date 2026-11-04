@@ -1,0 +1,105 @@
+{
+  "chain": 359,
+  "worker": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain359Bound",
+  "scope": "AI planner group candidate-record enumeration through the existing typed record builder and scoring consumers.",
+  "wired_before": 9470,
+  "wired_after": 9471,
+  "binary_called_reconstructed_addresses_before": 4480,
+  "binary_called_reconstructed_addresses_after": 4481,
+  "rows": [
+    {
+      "native": "00a07e40",
+      "status": "wired",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::build_group_value_records, called by capture_group_value_00a250a0 and group_target_value_00a0f970",
+      "state": "AiGroupListQuery borrows a stable view of each live Group::members list; callbacks invoke the existing group_value_record_00a04560 once per member and append its typed result to the vector consumed by compose_attack_value_00a0c650.",
+      "evidence": "00A07E40 assembly: head +5640h, next +0h, entity +8h; 00A250DE, 00A0F9C2 and 00A0F9D2 push argument 1. Native enumeration only forwards the record callback return pointer to append, permitting the existing larger typed projection without copying it into the 20h native scratch.",
+      "call_graph": "Entry-reachable: 1 call site from GameAiCoordinatorHost::Impl::build_group_value_records; switch-off build has no linked 00A07E40 body."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "The current typed projection lacks the complete native class-pointer subject and candidate record storage/consumer contract; its existing midpoint spread also lacks the original entity-pointer-modulo-79 producer."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "The AI host has no bound 00F8A740 global/00F8A750 per-party hint-weight maps or SetHintWeight producer; passing invented empty native maps would only reproduce the current identity stand-in."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning candidate score storage",
+      "reason": "Needs integration of AiGroupScoreList storage and its sorted entries with the current planner score consumers; this packet retains the existing planner vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture planning assignment storage",
+      "reason": "Needs the 00A2B950-produced score records and a consumer of their chosen bytes; the current planner assignments are a different representation."
+    },
+    {
+      "native": "00a2bdb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::capture_current_target_00a1a7a0",
+      "reason": "Needs a native group+564Ch/command+1Ch query view and command_is_type_08 adapter over the existing typed command; not implemented in this enumeration packet."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::create tuning-mode selection",
+      "reason": "Needs the 00F8A89C per-slot pointer and pointed-object +0Ch active-state query at tuning selection; the host currently supplies difficulty zero without that binding."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: GameAiCoordinatorHost::Impl::party_brain_plan_tail",
+      "reason": "Needs the live per-party ready power-up inventory and PowerupScoreHost/PowerupUseHost bindings before the engagement-pass body can replace the recorded tail."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend-think member candidate filter",
+      "reason": "No missing call: the baseline already has an entry-reachable call to the reconstructed predicate; no additional wiring or duplicate call was added."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit screen-reset tails",
+      "reason": "Needs the pick-screen +30h mode and +C4h selection-vector producer plus +C0h/+D4h reset fields; the current tails only record the reset."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::map_screen_busy",
+      "reason": "Needs the power-up screen carousel/scroller state behind +1F9h/+13Fh; the current map-screen methods have no such owner."
+    },
+    {
+      "native": "008e62a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD power-up filtering",
+      "reason": "Needs a HUD binding to real power-up entry descriptors, scope targets and the unit-kind adapter; the current recorded path does not provide these native inputs."
+    },
+    {
+      "native": "008ed9c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::support_request_pending",
+      "reason": "Needs the local player's live manager inventory and item descriptor/remaining-use views; the current method records the query and returns false."
+    }
+  ],
+  "verification": {
+    "baseline_build": "scripts/build.ps1 passed; all 3 CTests passed",
+    "switch_off_build": "scripts/build.ps1 passed; all 3 CTests passed; call graph reports 4480 reconstructed addresses called and no linked 00A07E40 body",
+    "switch_on_build": "scripts/build.ps1 passed; all 3 CTests passed; call graph reports 4481 reconstructed addresses called and one reachable 00A07E40 call site",
+    "wire_readiness": "9470 -> 9471 wired; 00A07E40 state=wired, called=true, call_sites=1",
+    "float_math_changed": false,
+    "game_run": false
+  },
+  "limits": [
+    "This wires the original checked group traversal using live membership and existing typed callbacks; it does not claim native candidate-record layout or the remaining 00A04560 class/hint/spread terms are complete.",
+    "The existing scorer consumes the returned records. The old enumeration loops only run in the disabled switch arm.",
+    "Build and binary entry-reachability evidence only; no game execution or gameplay validation was performed."
+  ]
+}
