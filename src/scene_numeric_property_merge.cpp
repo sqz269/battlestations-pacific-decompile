@@ -10,6 +10,7 @@
 #include "bsp/native_scene_property_bool_add.hpp"
 #include "bsp/native_scene_property_float_add.hpp"
 #include "bsp/native_scene_property_integer_add.hpp"
+#include "bsp/native_scene_property_hash_iterator.hpp"
 #include "bsp/native_scene_property_reference_subbag_add.hpp"
 #include "bsp/native_scene_property_string_add.hpp"
 #include "bsp/native_scene_typed_array_vector_providers.hpp"
@@ -21,13 +22,18 @@
 #include "bsp/wire_goal4_chain311_switches.hpp"
 #include "bsp/wire_goal4_chain321_switches.hpp"
 #include "bsp/wire_goal4_chain330_switches.hpp"
+#include "bsp/wire_goal4_chain345_switches.hpp"
 
 #include <algorithm>
 #include <array>
 #include <cctype>
+#include <cstddef>
 #include <cstring>
+#include <map>
 #include <new>
+#include <optional>
 #include <stdexcept>
+#include <type_traits>
 #include <vector>
 
 namespace bsp::game {
@@ -78,7 +84,25 @@ public:
     bool handles(std::size_t source_index) const { return selected_[source_index]; }
 
     SceneProperty result(const SceneProperty& authored_metadata) {
+        // The dependent cache parameter lets the OFF instantiation have no
+        // map storage, constructor or destructor. ON constructs the optional's
+        // index only when the first handled property actually needs it.
+        return [&](auto& records) -> SceneProperty {
+        if constexpr (kWireGoal4Chain345Bound) {
+            // The constructor has finished the whole native merge. Enumerate
+            // its stable destination once; every result consumes the mapped
+            // native record below, with authored metadata supplying only the
+            // spelling/tokens. Neither bag is mutated during publication.
+            if (!merged_records_collected_) {
+                records.emplace();
+                records->collect(destination_.data());
+                merged_records_collected_ = true;
+            }
+            return read_value(authored_metadata, records->find(authored_metadata.key));
+        } else {
         return read_value(authored_metadata, destination_.find(authored_metadata.key));
+        }
+        }(merged_records_);
     }
 
     bool merge_child(const std::string& key, const ScenePropertyBlock* destination,
@@ -104,6 +128,58 @@ public:
     }
 
 private:
+    class MergedRecords final {
+    public:
+        void collect(void* actual_bag) {
+            // bsp.py show 008EEB10/008EEB60 --asm: raw12 words are
+            // (map, current node, bucket), map+4 is count, map+8 the 64
+            // heads; Next follows node+0Ch before scanning later buckets.
+            // Borrow the genuine raw61 bag's +4 map and its canonical pooled
+            // nodes. Initialize only table: Begin establishes the remaining
+            // fields (index is deliberately untouched for an empty map).
+            static_assert(sizeof(void*) == 4);
+            std::array<std::uint32_t, 3> iterator;
+            iterator[0] = static_cast<std::uint32_t>(reinterpret_cast<std::uintptr_t>(actual_bag) + 4u);
+            begin_native_scene_property_hash_008eeb10(iterator.data());
+            while (iterator[1] != 0) {
+                const auto* node = reinterpret_cast<const std::byte*>(
+                    static_cast<std::uintptr_t>(iterator[1]));
+                // 00484D20 reads the NativeString DATA at node+4 (length
+                // is +0) and substitutes E186ED for null. Mapped CProperty*
+                // is +8; +10 is allocator metadata, not next.
+                const char* key;
+                void* record;
+                std::memcpy(&key, node + 4, sizeof(key));
+                std::memcpy(&record, node + 8, sizeof(record));
+                records_.emplace(key != nullptr ? key
+                    : game_native_string_process().enum_empty_00e186ed(), record);
+                next_native_scene_property_hash_008eeb60(iterator.data());
+            }
+        }
+
+        void* find(const std::string& key) const {
+            const auto found = records_.find(key);
+            if (found == records_.end()) throw std::logic_error("missing merged numeric property");
+            return found->second;
+        }
+
+    private:
+        struct KeyLess {
+            bool operator()(const std::string& a, const std::string& b) const {
+                // The admission gates permit ASCII keys only. Match the
+                // existing same_key comparison when retaining a differently
+                // cased destination key through an overwrite/keep merge.
+                return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(),
+                    [](unsigned char x, unsigned char y) {
+                        return std::tolower(x) < std::tolower(y);
+                    });
+            }
+        };
+        // Keys are owned here; record pointers borrow destination_, which
+        // outlives this index and owns every payload read by result().
+        std::map<std::string, void*, KeyLess> records_;
+    };
+
     static SceneProperty read_value(const SceneProperty& authored_metadata,
         const void* actual_record) {
         // Keep source spelling/tokens (or the retained destination's when keep
@@ -647,6 +723,9 @@ private:
     std::vector<bool> selected_;
     SceneNativeEnumSource* enums_;
     bool overwrite_;
+    std::conditional_t<kWireGoal4Chain345Bound,
+        std::optional<MergedRecords>, std::nullptr_t> merged_records_{};
+    bool merged_records_collected_{};
 };
 
 SceneNumericPropertyMerge::SceneNumericPropertyMerge(const ScenePropertyBlock& destination,

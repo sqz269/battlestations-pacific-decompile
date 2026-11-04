@@ -1,0 +1,161 @@
+{
+  "chain": 345,
+  "branch": "agent/g4-w2",
+  "baseline_head": "ae690b6046a286661304f473b2a96c19f83f7254",
+  "switch": "bsp::kWireGoal4Chain345Bound",
+  "switch_enabled": true,
+  "scope": "Enumerate the genuine merged native scene-property bag once and consume its mapped records when publishing scalar payloads into the scene loader's owning property tree.",
+  "counts": {
+    "entry_reachable_reconstructed_off": 4408,
+    "entry_reachable_reconstructed_on": 4410,
+    "new_native_addresses": ["008eeb10", "008eeb60"],
+    "removed_native_addresses": [],
+    "readiness_text_wired_before": 9377,
+    "readiness_text_wired_after": 9377,
+    "readiness_note": "The text classifier retains both rows as ready; its fresh built-exe data reports called=true, call_sites=1 and callers_live=1 for each. The executable OFF/ON comparison is the wiring evidence."
+  },
+  "validation": [
+    "Fresh index rebuilt after an initial replacement was blocked by the concurrently running readiness query; old index remained intact.",
+    "Baseline scripts/build.ps1 passed all three tests.",
+    "Final switch-ON scripts/build.ps1 passed reconstructed_math, native_math_differential and tool_tests.",
+    "Switch-OFF scripts/build.ps1 passed the same three tests; neither iterator was linked in that executable.",
+    "call_graph.py who shows one reachable call to each body from SceneNumericPropertyMerge::Impl::MergedRecords::collect.",
+    "call_graph.py path reaches collect through SceneNumericPropertyMerge::result, merge_property_block, SceneReaderBinding::instantiate_entity and the game frame/startup chain.",
+    "Existing scene-merge fixtures exercise retained, overwritten and cloned native payload publication after bag retirement; no new tests were added.",
+    "git diff --check passed; no floating-point operations changed."
+  ],
+  "evidence": [
+    "bsp.py show 008eeb10 and --asm: raw12 table/current/index; map count+4, 64 heads+8; empty Begin writes current only.",
+    "bsp.py show 008eeb60 and --asm: follow current node+0C, then scan buckets through index 63, clearing current at end.",
+    "classes_seg7_cc13.cpp property_bag_iterator_key_00484d20: NativeString length at node+0, data at +4, null data means E186ED empty key.",
+    "The existing native merge destination is raw61-produced, uses the canonical string/property-node processes, and remains alive and unchanged throughout result publication."
+  ],
+  "limits": "Static executable reachability and existing fixtures were verified. The game was not run. Nested child publication retains its existing lookup path; the separate iterator copies 008EEA80/008EF650 were not needed by this consumer.",
+  "review_round_1": {
+    "review_run": 682,
+    "reviewed_head": "a532c0521e312e5a5ae97e6619e4d36aad42cbe7",
+    "finding_1": {
+      "status": "fixed",
+      "finding": "The unconditional merged_records_ map added sentinel allocation and failure behavior to OFF, even with no handled properties.",
+      "change": "Use a conditional cache type: ON holds an initially disengaged optional<MergedRecords>, while OFF holds only nullptr_t. A dependent result lambda instantiates only the selected path. ON emplaces the index at the first actual handled-property result; the collected flag is set only after successful enumeration.",
+      "verification": [
+        "Switch-OFF scripts/build.ps1 passed reconstructed_math, native_math_differential and tool_tests.",
+        "OFF call_graph.json has zero function symbols containing MergedRecords, and bsp_game.map has zero MergedRecords symbols, including all map template symbols with its KeyLess type. No index constructor, destructor or index allocation code is linked.",
+        "OFF neither 008EEB10 nor 008EEB60 is linked; entry-reachable reconstructed addresses remain 4408.",
+        "Switch-ON scripts/build.ps1 passed all three tests; each iterator retains one entry-reachable call from MergedRecords::collect, for 4410 reconstructed addresses.",
+        "The switch is restored to true for the committed result. No float operations or new tests were added."
+      ],
+      "prior_evidence_correction": "The initial OFF build/test pass and iterator absence established neither allocation identity nor absence of the new map. The corrected OFF symbol checks explicitly cover the index constructor/destructor and its map instantiations."
+    }
+  },
+  "rows": [
+    {
+      "native": "008eeb10",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect, consumed by Impl::result",
+      "real_state": "The actual merged destination bag's map at +4; its native current node supplies every record pointer used by result()."
+    },
+    {
+      "native": "008eeb60",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::MergedRecords::collect, consumed by Impl::result",
+      "real_state": "The same live raw12 iterator advances through the destination's native node chains and buckets until exhaustion."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: difficulty/party-brain selection surveyed during choice",
+      "reason": "The surveyed difficulty path needs the native active-party/planner producer and its matching difficulty consumer; no such binding was built in this scene-merge packet."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-score planning surveyed during choice",
+      "reason": "No consumed AiGroupScoreList storage was found at the surveyed host sites; wiring requires replacing the planner's existing score-vector consumer."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group-score planning surveyed during choice",
+      "reason": "Requires real AiGroupScoreList entries and the chosen-record consumer; a second auxiliary list would not replace the host planner's state."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail",
+      "reason": "party_brain_plan_tail still only records the address; the engagement-pass Host binding and its item-use consumer were not built."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndManager::create_main_menu_manager",
+      "reason": "The surveyed site returns the typed main_menu owner; consuming the native constructor requires a raw manager/base/registry and Fe5Host binding."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndManager::create_options_manager",
+      "reason": "The site returns nullptr; the native options-manager owner, constructor binding and consuming init path are missing here."
+    },
+    {
+      "native": "00689d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit::create_attract_screen",
+      "reason": "The site returns nullptr and its init only logs; native attract-screen ownership, FE_attract page and consuming init/update bindings are missing here."
+    },
+    {
+      "native": "0068d760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: TitleInit::create_title_screen",
+      "reason": "The site returns the typed title_object; native title manager/base construction and a consumer of that raw owner are not bound."
+    },
+    {
+      "native": "007b80a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: projectile-class predicate survey",
+      "reason": "Requires the real projectile-class E4 byte and shared F874FD publication at a live predicate consumer; that separate binding is outside the chosen scene-property work."
+    },
+    {
+      "native": "007b80c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: projectile-class predicate survey",
+      "reason": "The projectile-class/global binding was not taken; agent/g4-w1 announced ownership of the live rocket-platform consumer while this packet was running."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: torpedo_gyro_heading_differs survey",
+      "reason": "Native callers are 0099D300 pilot controls; the surveyed ship helper is a torpedo census, so the actual pilot-controls caller binding is still needed."
+    },
+    {
+      "native": "0042e630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: SpatialRefreshBinding",
+      "reason": "first_root_node still returns nullptr; consuming the native singleton requires actual spatial-node registration and a refresh walk over those nodes."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntry::check_multiplayer_player_count",
+      "reason": "Multiplayer participant-count logic is gated by nonzero local_view_mode; this packet adds no single-player use or multiplayer participant-count Host."
+    },
+    {
+      "native": "0078cff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: environment/camera survey",
+      "reason": "The body requires the native environment/camera objects and effect providers; those state owners were not built in this scene-property packet."
+    },
+    {
+      "native": "00a77760",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: streamed-dialog pause survey",
+      "reason": "Requires the manager's native +215 pause byte, both live channel/stream owners and a real stream-pause callback; no such adapter was built."
+    },
+    {
+      "native": "0098a710",
+      "status": "skipped",
+      "host_site": "src/cc13_seg62_seg65.cpp: node_bounds_0098a710 survey",
+      "reason": "The native node's +10C/+118 bounds and actual 009034B1 consumer must be bound; no native node/bounds consumer was added by this packet."
+    }
+  ]
+}
