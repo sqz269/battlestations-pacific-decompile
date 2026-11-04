@@ -1,0 +1,335 @@
+{
+  "chain": 440,
+  "owner": "agent/g4-w3",
+  "picked": "Heap ownership and scalar deletion of live steering/engine jam receive messages",
+  "switch": "bsp::kWireGoal4Chain440Bound",
+  "rows": [
+    {
+      "native": "00761990",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_jam_6b_6c steering arm via OwnedDecodedMessage destructor",
+      "evidence": "bsp.py show 00761990 --asm: test flags bit 0, stamp CE4974, free BF65AC, return captured receiver. Native factory 00768530 case 6Bh allocates 24h and calls 007618E0 at 00768F86.",
+      "real_state": "The existing live ship failure route serializes a 6Bh message and decodes the same stream into this owned 24h receive allocation; projection consumes its actual decoded type before scalar deletion with flags=1. Sender remains stack-owned."
+    },
+    {
+      "native": "00761a60",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_jam_6b_6c engine arm via OwnedDecodedMessage destructor",
+      "evidence": "bsp.py show 00761a60 --asm: test flags bit 0, stamp CE4974, free BF65AC, return captured receiver. Native factory 00768530 case 6Ch allocates 24h and calls 007619B0 at 00768FA6.",
+      "real_state": "The existing live ship failure route serializes a 6Ch message and decodes the same stream into this owned 24h receive allocation; projection consumes its actual decoded type before scalar deletion with flags=1. Sender remains stack-owned."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: tuning mode selection",
+      "reason": "The native eight-slot brain-active view and a single-player consumer of its returned slot were not established."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: candidate_record",
+      "reason": "The global/per-party hint maps and their live writer bindings are missing; the campaign path currently uses the documented default factor."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend_think_00a28a60",
+      "reason": "Already has a reachable call in the baseline build; no new missing edge was found despite readiness saying ready."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: arrival/capture planning",
+      "reason": "The native linked capture-building list and raw per-unit view required by Small2Host are missing."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "The actual subtitle Text widget and owned extra-title widget records are missing; the schedule projection is insufficient."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "Actual decoder texture resources and widget texture bindings are missing."
+    },
+    {
+      "native": "0067c880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: device_button_held",
+      "reason": "The PressStart path has no actual input-device object with the required button-query virtual slot."
+    },
+    {
+      "native": "0067c8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: sign_in_state_valid",
+      "reason": "The platform sign-in state binding is missing and online-service work is outside this single-player packet."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The off-main-thread named-call producer is absent; current mission Lua runs on the main thread."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command",
+      "reason": "The command path has no native group/command forwarding object binding."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: make_command_target",
+      "reason": "The existing literal-entry body reads absolute 00F87574..00F8757C; rebinding these to live command defaults was not implemented."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: write_checkpoint",
+      "reason": "The available body covers the Lua table edit; the live profile-record/storage rewrite continuation is missing."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: camera movement",
+      "reason": "The live host has no MovCamAngles owner corresponding to the original MovCam caller."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: interface sound scaling",
+      "reason": "A live SoundInstance for the native interface/effect scaling call was not established."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail",
+      "reason": "Ready power-up entries, engagement-pair ownership and the actual unit/class score inputs are missing at this host seam."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: camera state candidate",
+      "reason": "No live caller requiring this fov-times-aspect result was established; GetCameraState consumes fov alone."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "A call already exists in the reconstructed submission body; a new entry-reaching caller was not established in this packet."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "A call already exists in the reconstructed submission body; a new entry-reaching caller was not established in this packet."
+    },
+    {
+      "native": "005290d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD counter visibility candidate",
+      "reason": "The native counter-entry flag collection and a live hide-all caller were not established."
+    },
+    {
+      "native": "00529350",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD counter visibility candidate",
+      "reason": "The native counter-entry flag collection and matching restore caller were not established."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane landing transition",
+      "reason": "The actual impulse object required by the raw reset body was not established; only a transition note names the call."
+    },
+    {
+      "native": "008e2ee0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: map ping candidate",
+      "reason": "The clock/cooldown, native game publication and PingBindings producer/consumer path were not established."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: profile_owns_content",
+      "reason": "The real profile-owned native content-ID list is missing at this host seam."
+    },
+    {
+      "native": "008dacd0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: objective reveal candidate",
+      "reason": "The entity's native per-party reveal rows and selected local party row binding were not established."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: collect_language_names",
+      "reason": "The language catalog exists, but the profile-hints mode-2 caller is not reached by the current single-player voice path."
+    },
+    {
+      "native": "0091d620",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: score-record candidate",
+      "reason": "A real raw score-record owner with the required 0091CE90 constructor was not established."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Already called from reachable baseline code; readiness ready does not identify a missing executable edge here."
+    },
+    {
+      "native": "00415010",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_owner.cpp: scene-path bound accumulation",
+      "reason": "Already wired and called in the baseline build; no missing edge remains for this address."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "A call already exists, but the selected-list refresh path was not linked/reachable for this symbol in the baseline release build."
+    },
+    {
+      "native": "004174a0",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: boundary-query candidate",
+      "reason": "No original caller is recorded and no equivalent live expanded-query consumer was established; the push-out routine uses different semantics."
+    },
+    {
+      "native": "0041a4e0",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_pointer_and_intersection.cpp: optional intersection candidate",
+      "reason": "No live caller needing the optional-point wrapper was established; existing segment consumers call their crossing primitive directly."
+    },
+    {
+      "native": "0041b680",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: group boundary-distance candidate",
+      "reason": "A live caller consuming minimum distance alone was not established; nearest-boundary-point consumes a direction as well."
+    },
+    {
+      "native": "0041b120",
+      "status": "skipped",
+      "host_site": "src/cc13_avoid1.cpp: cc13_avoid_group_distance_0041b680",
+      "reason": "The group-distance caller remains unbound; no alternate live zone-distance consumer was established."
+    },
+    {
+      "native": "004171f0",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_distance_followup.cpp: zone segment-boundary-distance candidate",
+      "reason": "No live caller supplying the native corner list and consuming this segment-to-boundary distance was established."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_input_actions.cpp: action deadline callback",
+      "reason": "The callback is already named by the existing adapter; a new entry-reaching producer was not established in this packet."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship brain allocation candidate",
+      "reason": "The native 2268h ship-AI object/constructor contract was not established over the host's semantic Controller owner."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: descriptor initializer candidate",
+      "reason": "No live owner/consumer of CommandTargetDescriptor was established at the host seam."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller-state message candidate",
+      "reason": "The native director descriptors and a live state-message consumer were not established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: controller snapshot candidate",
+      "reason": "The native director state, getter values and a live snapshot-message consumer were not established."
+    },
+    {
+      "native": "0075a550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun fire-mode receive candidate",
+      "reason": "No existing local gun fire-mode queue using this receive layout was established."
+    },
+    {
+      "native": "0075a580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun continuous-fire receive candidate",
+      "reason": "No existing local continuous-fire queue using this receive layout was established."
+    },
+    {
+      "native": "0075a5c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: gun-fire receive candidate",
+      "reason": "No existing local gun-fire queue using this receive layout was established; the current ADh fire packet is a different type."
+    },
+    {
+      "native": "0075af00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp: landing receive candidate",
+      "reason": "This constructor is type A5h; the existing start-landing local queue uses type 94h and cannot substitute it."
+    },
+    {
+      "native": "00aa6be0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: pointer activation registration candidate",
+      "reason": "The actual DWORD callback publication is not owned by the current std::function-based runtime binding."
+    },
+    {
+      "native": "00aab5e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_frontend.cpp: selection callback registration candidate",
+      "reason": "The actual DWORD callback publication and live registration caller were not established."
+    },
+    {
+      "native": "005b5d40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: narrative_finish_00734140",
+      "reason": "The narrative screen's actual Text widget at +ACh is missing; setting only the narrative-active flag is not the native body."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: slot_counter_increment",
+      "reason": "The native scoring record array and entity route-slot producer at +1ACh are missing."
+    },
+    {
+      "native": "005b66d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: interface_request_pending_005b66d0",
+      "reason": "The method already has a reachable callback edge; wiring its real pending-interface state is separate missing work."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner score-list candidate",
+      "reason": "Only the unreachable debug overlay reads the native score-list records; debug-only work is excluded."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: planner score-list candidate",
+      "reason": "Only the unreachable debug overlay reads the chosen-byte records; debug-only work is excluded."
+    }
+  ],
+  "wired_total": {
+    "before": 9685,
+    "after": 9687
+  },
+  "validation": {
+    "official_build": "scripts/build.ps1 passed; reconstructed_math, native_math_differential and tool_tests passed (3/3)",
+    "release_call_graph": "Both target bodies are called and reachable; queue_ship_jam_6b_6c has two call sites into the folded scalar-delete body.",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests passed; /Ob0 and /OPT:NOICF retain independent functions.",
+    "analysis_call_graph": "call_graph.py --build-dir build/analysis who: 00761990 at 10589EF0 is called from the steering OwnedDecodedMessage destructor at 10284BA6; 00761A60 at 10589F20 is called from the engine destructor at 10284BF6. The two destructors are called from queue_ship_jam_6b_6c at 1028730E and 102873C2, respectively; both are entry-reachable. The path includes route_ship_jam_6b_6c -> script_set_failure_008132c0 -> run_set_failure_0088eff0.",
+    "float_math": "No floating-point arithmetic changed; pc24 lint not required.",
+    "gameplay": "Not run, as required by the worker assignment."
+  },
+  "limits": "This extends the existing local queue bridge, not the complete native message factory/transport or native ABI. No gameplay execution is claimed."
+}
