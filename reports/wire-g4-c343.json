@@ -10,7 +10,7 @@
   "checks": {
     "build_on": "scripts/build.ps1 passed (2/2 tests)",
     "build_off": "scripts/build.ps1 with kWireGoal4Chain343Bound temporarily false passed for each batch; reverted before each commit",
-    "pc24_lint": "no float arithmetic added (the copies move a bool, a 5-bit index and raw 32-bit rate bits on 004295C0 / 004293F0 with scale FLT_MAX)",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings, 6 files (no float arithmetic added; the copies move a bool, a 5-bit index and raw 32-bit rate bits)",
     "call_graph": "all eight addresses REACHABLE from the entry; caller HostSessionMessages::queue_ship_death_98_9a <- GameGunneryHost::Impl::ship_death_message_00827ab0, queue_ship_explode_one_part_99 <- GameGunneryHost::Impl::apply_segment_damage_0092d1f0; session_message_construct and session_message_is_type <- HostSessionMessages::queue_start_landing_94 <- ApproachStepBinding::route_warning_message_0077c2a0 (vtable-reachable); 0074EAB0 / 0074EB20 / 00762130 / 0074EB80 / 0074EB00 <- HostSessionMessages::queue_ship_sink_92 <- GameUnitsHost::Impl::ship_wreck_sink_block_00824fe5; 007604C0 / 00760550 / 007605A0 / 00760520 <- HostSessionMessages::queue_shipyard_launch_7a <- PlaneBinding::takeoff_rule_009cfc70"
   },
   "rows": [
@@ -206,6 +206,11 @@
       "native": "00953da0",
       "status": "skipped",
       "reason": "7Dh InferiorFailure (airfield destruction rule, 006D2210 -> 00953DA0): 00768530 has no case that constructs it (no reference to 009532E0 or vtable 00D1A57C in its body), so 0076E520's local copy cannot be reproduced; the host sets deck->airfield_blocked at the send"
+    },
+    {
+      "native": "00749d90",
+      "status": "skipped",
+      "reason": "A5h LANDINGSHIP_STARTLANDING (approach landing mode 3, 009F2304): the message carries the pad and building entities +174h handles (+1Ch / +1Eh), and the host pads are building_pad_model records with no handle, so a copy would need an invented pad handle; delivered at once as before"
     }
   ],
   "wired_note": "wire_readiness counts 9374 -> 9406 over the four commits (+9 for 98h/9Ah/99h with 00780120, +14 for 94h, +5 for 92h, +4 for 7Ah). The shared table-driven session_message_construct / session_message_is_type bodies are credited for all seven kSessionMessageClasses rows, but only their 94h row (0064A820, 0064A850) runs here: 20 rows are claimed (8 + 00780120 + 2 + 5 + 4) and the other 12 text-match credits are not"
