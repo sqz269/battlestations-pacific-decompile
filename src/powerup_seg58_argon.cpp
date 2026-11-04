@@ -307,8 +307,14 @@ void powerup_item_release_modifiers_008e6230(Seg58Host& host, void* item) {
   }
 }
 
+// Preserve the full segment host's direct raw target call; typed live hosts
+// can instead supply the already-reconstructed typed 008E4680 body.
+bool Seg58Host::target_applies(const void* record, void* unit) {
+  return powerup_target_applies_to_unit_008e4680(*this, record, unit);
+}
+
 // [0x008e62a0] BSP_PowerUp_AppliesToUnit
-bool power_up_applies_to_unit_008e62a0(Seg58Host& host, void* entry, void* unit) {
+bool power_up_applies_to_unit_008e62a0(PowerupApplicabilityHost& host, void* entry, void* unit) {
   const Raw ent{static_cast<std::uint8_t*>(entry)};
   const Raw u{static_cast<std::uint8_t*>(unit)};
   if (!host.powerup_class_unit_kind_mask_accepts_008e3680(unit, ent.ptr(0x04))) {
@@ -337,7 +343,7 @@ bool power_up_applies_to_unit_008e62a0(Seg58Host& host, void* entry, void* unit)
       for (std::uint8_t* node = Raw{head}.at<std::uint8_t*>(0x00);
            node != Raw{head_slot}.at<std::uint8_t*>(0x00);) {
         if (Raw{node}.ptr(0x08) == entry &&
-            powerup_target_applies_to_unit_008e4680(host, node + 0x08, unit)) {
+            host.target_applies(node + 0x08, unit)) {
           return true;
         }
         if (node == Raw{head_slot}.at<std::uint8_t*>(0x00)) {

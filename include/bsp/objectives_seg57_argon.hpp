@@ -19,7 +19,14 @@ struct NativeStringView {
   void* data{nullptr};
 };
 
-struct Seg57Host {
+// Only these two virtual queries are consumed by 008E3680.
+struct PowerupUnitKindHost {
+  virtual ~PowerupUnitKindHost() = default;
+  virtual std::uint8_t entity_is_static_installation_009fe0b0(const void* entity) = 0;
+  virtual std::uint8_t vcall_entity_is_kind_of_5c(const void* entity, std::int32_t kind_id) = 0;
+};
+
+struct Seg57Host : PowerupUnitKindHost {
   virtual ~Seg57Host() = default;
 
   virtual std::uint32_t& global_u32(std::uint32_t address) = 0;
@@ -318,7 +325,7 @@ void* command_building_powerup_binding_construct_008e35d0(
 bool powerup_class_scope_accepts_unit_008e35f0(
     Seg57Host& host, void* unit, const void* powerup_class);
 bool powerup_class_unit_kind_mask_accepts_008e3680(
-    Seg57Host& host, void* unit, const void* powerup_class);
+    PowerupUnitKindHost& host, void* unit, const void* powerup_class);
 void powerup_slot_record_reset_008e3710(void* self);
 
 }  // namespace bsp::objectives_seg57_argon

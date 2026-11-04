@@ -6,8 +6,77 @@
     {
       "native": "008ed9c0",
       "status": "wired",
-      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdateBinding::support_request_pending -> game_powerups::local_player_has_usable_powerup",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::support_request_pending -> game_powerups::local_player_has_usable_powerup",
       "evidence": "Original 008ED9C0 export; live runtime inventories, local slot and descriptor layouts; copied-list ownership. Build and both CTests pass; call_graph who shows reachable direct call from local_player_has_usable_powerup."
+    },
+    {
+      "native": "008e62a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::untimed_entry_applies / timed_entry_applies -> game_powerups::hud_powerup_applies_to_unit",
+      "evidence": "Native entry/class/binding/category-list layouts projected from actual collected inventory items, live category records, controlled units, exact OwnerPlayer and party. Existing 008E62A0 dispatcher called once per query. call_graph who/path proves entry reachability."
+    },
+    {
+      "native": "008e3680",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: PowerupApplicabilityBinding::powerup_class_unit_kind_mask_accepts_008e3680",
+      "evidence": "Existing objectives_seg57_argon body through a two-query host. Class target-filter mask is the actual loaded descriptor; virtual kind/static-installation queries use the actual units host. One direct entry-reachable body call."
+    },
+    {
+      "native": "008e4680",
+      "status": "wired",
+      "new_wiring": false,
+      "host_site": "src/game_hosts_powerups.cpp: PowerupApplicabilityBinding::target_applies",
+      "evidence": "Reuses the existing typed target-filter body with the exact source modifier and current unit resolver. Native category-list item identity is preserved. Previously wired address; excluded from the +3 total. Existing pc24 radius arithmetic is unchanged."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit / ForceSelectUnit screen_reset records",
+      "reason": "Native selection-screen checked-vector storage at +C4h and input binding reset callbacks are not exposed at these host reset sites."
+    },
+    {
+      "native": "00646040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudInterfaceBinding HUD root interface record",
+      "reason": "The semantic HUD observer state has no native root layout plus HudScreenHost observer-reference bridge for this raw body."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::advance_ticker",
+      "reason": "Native award string-pair queue and its texture/text widget bridge are absent from this update adapter."
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootUpdateBinding::toggle_closed_hud",
+      "reason": "A live HudClosedRowsHost for first-member queries and closed-state/interface 22h/23h dispatch is still missing."
+    },
+    {
+      "native": "00798c80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::Impl::step_movie_camera",
+      "reason": "Host already calls movie_camera_fixed_step_00798c80; the pool FirstStepReseed identifier/contract needs reconciliation before claiming additional wiring."
+    },
+    {
+      "native": "0079a3b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::Impl::step_movie_camera",
+      "reason": "Host already calls movie_camera_update_0079a3b0; the pool HudMovieCamera_Update identifier/contract needs reconciliation before claiming additional wiring."
     }
+  ],
+  "wired_after": 9474,
+  "wired_delta": 3,
+  "validation": {
+    "build": "scripts/build.ps1 Win32 Release passed, reconstructed_math and tool_tests passed",
+    "call_graph": "008ED9C0, 008E62A0, 008E3680 direct calls reachable from entry; typed 008E4680 also reachable from new target adapter",
+    "readiness": "9471 -> 9474; all four selected addresses state=wired and called=true",
+    "runtime": "Not run, per assignment. No gameplay or original binary ABI compatibility claim.",
+    "float_math": "No float arithmetic changed; existing typed 008E4680 pc24 arithmetic reused."
+  },
+  "remaining": [
+    "Power-up icon/circle cloning, entry textures, and duration GUI presentation remain record/no-op adapters.",
+    "No new native body was created; existing bodies received narrow host interfaces.",
+    "The AI file overlap with chain359 is only an additive owner-player accessor, announced to agent/g4-w2."
   ]
 }

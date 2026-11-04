@@ -1709,7 +1709,7 @@ bool powerup_class_scope_accepts_unit_008e35f0(
 
 // 008e3680: BSP_PowerupClass_UnitKindMaskAccepts
 bool powerup_class_unit_kind_mask_accepts_008e3680(
-    Seg57Host& host, void* unit, const void* powerup_class) {
+    PowerupUnitKindHost& host, void* unit, const void* powerup_class) {
   if (unit == nullptr) {
     return false;
   }

@@ -10,6 +10,9 @@
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/game_hosts_units.hpp"
+#include "bsp/ai_command_object.hpp"
+#include "bsp/objectives_seg57_argon.hpp"
 #include "bsp/powerup_session_broadcast_cc13.hpp"
 #include "bsp/wire_goal4_chain310_switches.hpp"
 #include "bsp/powerup_seg58_argon.hpp"
@@ -304,6 +307,149 @@ private:
     float clock_{};
 };
 
+// Chain 360, bsp.py show 008E62A0 / 008E3680: only the party and exact owner
+// fields of a unit are dereferenced by the applicability dispatcher. Virtual
+// kind queries and 008E4680 use the original units-host index and live resolver.
+struct ApplicabilityUnit {
+    std::uint8_t unused_00[0x54]{};
+    std::int32_t party{};
+    std::uint8_t unused_58[0x128]{};
+    std::int32_t owner{};
+    std::size_t index{};
+};
+struct ApplicabilityBinding {
+    std::uint32_t unused{};
+    ApplicabilityUnit* unit{};
+};
+struct ApplicabilityEntry {
+    std::uint32_t word{};
+    const PowerupClassConfig* cls{};
+    ApplicabilityBinding* binding{};
+};
+struct ApplicabilityNode {
+    ApplicabilityNode* next{};
+    ApplicabilityNode* previous{};
+    const void* item{};
+    const PowerupModifier* source{};
+};
+struct ApplicabilityList {
+    std::uint32_t unused{};
+    ApplicabilityNode* head{};
+    std::uint32_t size{};
+};
+struct ApplicabilityManager {
+    std::uint8_t unused[0x80]{};
+    std::array<ApplicabilityList, kPowerupCategoryCount> categories{};
+};
+static_assert(offsetof(ApplicabilityUnit, party) == 0x54);
+static_assert(offsetof(ApplicabilityUnit, owner) == 0x180);
+static_assert(offsetof(ApplicabilityEntry, cls) == 4);
+static_assert(offsetof(ApplicabilityEntry, binding) == 8);
+static_assert(offsetof(ApplicabilityBinding, unit) == 4);
+static_assert(offsetof(ApplicabilityNode, item) == 8);
+static_assert(sizeof(ApplicabilityList) == 0x0c);
+static_assert(offsetof(ApplicabilityManager, categories) == 0x80);
+
+class PowerupApplicabilityBinding final : public powerup_seg58_argon::PowerupApplicabilityHost,
+    public objectives_seg57_argon::PowerupUnitKindHost {
+public:
+    PowerupApplicabilityBinding(cc13_powerup::PowerupRuntime& runtime,
+        const cc13_powerup::PowerupItem& item, const game::GameUnitsHost& units,
+        std::size_t index) : units_(units) {
+        if (item.cls == nullptr) throw std::logic_error("008E62A0 item without class");
+        unit_ = project_unit(index);
+        entry_.word = item.word_00;
+        entry_.cls = item.cls;
+        if (item.binding != cc13_powerup::PowerupItem::kNoBinding) {
+            bound_unit_ = project_unit(item.binding);
+            binding_.unit = &bound_unit_;
+            entry_.binding = &binding_;
+        }
+        for (std::size_t category = 0; category < nodes_.size(); ++category) {
+            auto& nodes = nodes_[category];
+            auto& head = heads_[category];
+            const auto& source = runtime.category_lists[category];
+            nodes.resize(source.size());
+            std::size_t i = 0;
+            for (const PowerupModifier& record : source) {
+                auto& node = nodes[i];
+                node.next = i + 1 == nodes.size() ? &head : &nodes[i + 1];
+                node.previous = i == 0 ? &head : &nodes[i - 1];
+                // Preserve item identity: the queried inventory item has the
+                // projected entry address, every other item retains its own.
+                node.item = record.item == &item ? static_cast<const void*>(&entry_) : record.item;
+                node.source = &record;
+                ++i;
+            }
+            head.next = nodes.empty() ? &head : &nodes.front();
+            head.previous = nodes.empty() ? &head : &nodes.back();
+            manager_.categories[category].head = &head;
+            manager_.categories[category].size = static_cast<std::uint32_t>(nodes.size());
+        }
+        manager_word_ = reinterpret_cast<std::uint32_t>(&manager_);
+    }
+    bool applies() {
+        return powerup_seg58_argon::power_up_applies_to_unit_008e62a0(*this, &entry_, &unit_);
+    }
+    std::uint32_t& global_u32(std::uint32_t address) override {
+        if (address != 0x00f88c30u) throw std::logic_error("008E62A0 unexpected global");
+        return manager_word_;
+    }
+    void invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("008E62A0 invalid native view");
+    }
+    bool powerup_class_unit_kind_mask_accepts_008e3680(void* unit, const void* cls) override {
+        return objectives_seg57_argon::powerup_class_unit_kind_mask_accepts_008e3680(*this, unit, cls);
+    }
+    std::uint8_t vcall_entity_is_kind_of_5c(const void* unit, std::int32_t kind) override {
+        require_unit(unit);
+        return units_.unit_is_kind_of(unit_.index, kind) ? 1u : 0u;
+    }
+    std::uint8_t entity_is_static_installation_009fe0b0(const void* unit) override {
+        require_unit(unit);
+        return ai_entity_class_matches_009fe0b0(
+            units_.unit_is_kind_of(unit_.index, 0x1b),
+            units_.unit_is_kind_of(unit_.index, 0x45),
+            units_.unit_is_kind_of(unit_.index, 0x46)) ? 1u : 0u;
+    }
+    bool target_applies(const void* record, void* unit) override {
+        require_unit(unit);
+        const PowerupModifier* source = nullptr;
+        for (const auto& nodes : nodes_)
+            for (const auto& node : nodes) if (&node.item == record) source = node.source;
+        PowerupUnitView view;
+        if (source == nullptr || g_unit_resolver == nullptr ||
+            !g_unit_resolver->view_unit(unit_.index, view))
+            throw std::logic_error("008E4680 missing live item/unit view");
+        // Reuse the manager's existing typed body for this address. It reads
+        // this actual modifier (identity, party, slot, centre) and current pose.
+        // Its pc24 radius path was checked against 008E4777..008E47B6.
+        return powerup_target_applies_to_unit_008e4680(*source, view, *g_unit_resolver);
+    }
+
+private:
+    ApplicabilityUnit project_unit(std::size_t index) const {
+        if (index >= units_.count()) throw std::logic_error("008E62A0 invalid unit index");
+        ApplicabilityUnit out;
+        out.party = units_.unit_side_0054(index);
+        out.owner = game::ai_unit_owner_player(units_, index);
+        out.index = index;
+        return out;
+    }
+    void require_unit(const void* unit) const {
+        if (unit != &unit_) throw std::logic_error("008E62A0 foreign query unit");
+    }
+    const game::GameUnitsHost& units_;
+    ApplicabilityUnit unit_{};
+    ApplicabilityUnit bound_unit_{};
+    ApplicabilityBinding binding_{};
+    ApplicabilityEntry entry_{};
+    ApplicabilityManager manager_{};
+    std::array<ApplicabilityNode, kPowerupCategoryCount> heads_{};
+    std::array<std::vector<ApplicabilityNode>, kPowerupCategoryCount> nodes_{};
+    std::uint32_t manager_word_{};
+};
+
 // [00CE6A04], 1000000.0f: what 006F58D0, slot 0 of the command-building binding
 // vtable 00D16194, loads. 008E477E..008E4786 reach it as the centre unit's
 // vtable[64h]() (its binding at +758h) then that object's slot 0.
@@ -327,6 +473,14 @@ bool local_player_has_usable_powerup() {
     // Unlike 008E9AF0, 008ED9C0 has no EnablePowerups early return.
     PowerupCollectionBinding binding(runtime, true);
     return binding.usable();
+}
+
+bool hud_powerup_applies_to_unit(const cc13_powerup::PowerupItem& item,
+    const game::GameUnitsHost& units, std::size_t unit_index) {
+    auto& runtime = cc13_powerup::powerup_runtime();
+    if (runtime.manager == nullptr || runtime.host == nullptr) return false;
+    PowerupApplicabilityBinding binding(runtime, item, units, unit_index);
+    return binding.applies();
 }
 
 // [BSP reconstruction 008e4680]

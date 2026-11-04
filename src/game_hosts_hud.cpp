@@ -4464,8 +4464,8 @@ public:
     bool controlled_unit_present() override {
         return owner_.units != nullptr && owner_.units->controlled_bound();
     }
-    // The clone vectors +104h and +114h remain empty: the applicability and
-    // widget-clone adapters below still answer false/zero.
+    // The clone vectors +104h and +114h remain empty: widget cloning below is
+    // still a record. Chain 360 does evaluate the real item/unit applicability.
     void release_icon_clones() override {}
     void release_circle_clones() override {}
     void collect_powerups() override {
@@ -4493,13 +4493,25 @@ public:
             return powerup_entries_.deadlines.at(index);
         } else { return 0.0f; }
     }
-    bool untimed_entry_applies(std::size_t) override {
+    bool untimed_entry_applies(std::size_t index) override {
+        if constexpr (kWireGoal4Chain360Bound) {
+            if (!controlled_unit_present()) return false;
+            return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.untimed.at(index),
+                *owner_.units, owner_.units->controlled_index());
+        } else {
         owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
         return false;
+        }
     }
-    bool timed_entry_applies(std::size_t) override {
+    bool timed_entry_applies(std::size_t index) override {
+        if constexpr (kWireGoal4Chain360Bound) {
+            if (!controlled_unit_present()) return false;
+            return game_powerups::hud_powerup_applies_to_unit(*powerup_entries_.timed.at(index),
+                *owner_.units, owner_.units->controlled_index());
+        } else {
         owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
         return false;
+        }
     }
     std::uint32_t clone_icon_template() override {
         owner_.record("HudRootScreen::clone_template", 0x00aab4c0u);
