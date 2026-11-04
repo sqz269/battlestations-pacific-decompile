@@ -8,6 +8,7 @@
 #include "bsp/native_lua_script_overrides.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain349_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <stdexcept>
@@ -578,11 +579,13 @@ NativeVfsNameResolutionPhase NativeVfsNameResolutionAcquired::phase() const noex
 U NativeVfsNameResolutionAcquired::active_call_site() const noexcept { return impl_->site; }
 U NativeVfsNameResolutionAcquired::failure_site() const noexcept { return impl_->failure; }
 
-void log_native_vfs_resolved_name_00bdeb40(void* manager, const void* original,
-    const void* resolved, NativeVfsOpenLoggingContext& context) {
+// Keep the recovered entry visible as a call from the live resolver.
+__declspec(noinline) void log_native_vfs_resolved_name_00bdeb40(void* manager, const void* original,
+    const void* resolved, NativeVfsOpenLoggingContext& context, U* active_call_site) {
     U builder[6];
     U site{};
-    log_resolved_name(manager, original, resolved, context, builder, site);
+    log_resolved_name(manager, original, resolved, context, builder,
+        active_call_site ? *active_call_site : site);
 }
 bool resolve_native_vfs_direct_name_00bdd6e0(void* manager, const void* input,
     void* output, NativeVfsNameResolutionContext& context,
@@ -623,7 +626,15 @@ bool resolve_native_vfs_existing_name_00bdf4c0(void* manager, void* name,
         if (result) {
             s.phase = NativeVfsNameResolutionPhase::logging;
             s.site = 0x00bdf547;
-            log_resolved_name(manager, s.original.header(), name, context.logging, s.log_builder, s.site);
+            if constexpr (kWireGoal4Chain349Bound) {
+                // BDF53F..BDF547 passes the mutable resolved name, the saved
+                // normalized original, and the same manager in ECX to BDEB40.
+                // Borrow s.site so failure/active-site reporting stays exact.
+                log_native_vfs_resolved_name_00bdeb40(manager, s.original.header(), name,
+                    context.logging, &s.site);
+            } else {
+                log_resolved_name(manager, s.original.header(), name, context.logging, s.log_builder, s.site);
+            }
         }
         s.original.destroy(s.strings());
         s.phase = NativeVfsNameResolutionPhase::complete;

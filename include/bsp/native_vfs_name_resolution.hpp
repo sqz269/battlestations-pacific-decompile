@@ -57,7 +57,9 @@ bool resolve_native_vfs_direct_name_00bdd6e0(void* actual_manager,
 // BDEB40: ECX manager; original/resolved headers stack; RET8. Tests current
 // 0109CEE8 and manager+79; constructs and destroys the native SRCH builder.
 // There is no native sink/output call in this body.
+// Optional source tracing updates the caller's existing failure-site cell; it
+// adds no native argument or storage-layout claim.
 void log_native_vfs_resolved_name_00bdeb40(void* actual_manager,
     const void* normalized_original, const void* resolved,
-    NativeVfsOpenLoggingContext&);
+    NativeVfsOpenLoggingContext&, std::uint32_t* active_call_site = nullptr);
 } // namespace bsp
