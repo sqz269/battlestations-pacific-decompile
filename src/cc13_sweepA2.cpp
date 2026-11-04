@@ -3,6 +3,8 @@
 // its address, the original ABI and every simplification next to it.
 
 #include "bsp/cc13_sweepA2.hpp"
+#include "bsp/cc13_x87_model.hpp"
+#include "bsp/wire_goal4_chain370_switches.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -159,7 +161,7 @@ void release_counted(void* object, SweepA2Host& host) {
 // 0043ABA0 BSP_HudDigitIcon_RollUv, __fastcall(ECX = digit index, EDX =
 // widget, float magnitude), RET 4; one caller, 0043B2F0. A 24-byte frame
 // buffer filled with '0' gets _itoa(__ftol(magnitude * 100.0), buf + 8, 10)
-// (00BF7420 truncates; the product of a float and 100.0 is exact in double).
+// (00BF7420 truncates after the x87 FMUL's precision-control rounding).
 // With L = strlen(buf): f = buf[L - 3 - index] - '0' (signed char, CVTSI2SS).
 // When index <= 0, or every buf[L - 2 - index .. L - 3] is '9' (the digits
 // below this one roll over), f = (float)(atol(buf[L-2..L-1]) / 100.0 + f).
@@ -172,13 +174,22 @@ void release_counted(void* object, SweepA2Host& host) {
 // 1/12 the double at 00CE42C8; the product order is (h*f)*k then + v0, and
 // (h*(f+1))*k + v0, where the DC CA FMUL ST2,ST0 at 0043ACF5 scales the h*f
 // slot (checked with tools/x87_dc_form_scan.py). The stream is unlocked
-// (+14h). The x87 extended intermediates are modelled in double; only the
-// k products and the 1/100 division can round differently in the last bit.
-void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, float magnitude, SweepA2Host& host) {
+// (+14h). Chain 370 models each main-thread x87 operation with 24-bit
+// significand rounding; the OFF arms retain the former double expressions.
+void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, float magnitude, HudDigitIconHost& host) {
+    using namespace bsp::cc13x87;
     char buffer[25];
     std::memset(buffer, '0', 24);
     buffer[24] = '\0';
-    const double scaled = static_cast<double>(magnitude) * 100.0;
+    double scaled;
+    if constexpr (bsp::kWireGoal4Chain370Bound) {
+        // bsp.py show 0043ABA0 --asm: 0043ABAC FMUL precedes __ftol.
+        // The main thread rounds here too, before truncating the integer.
+        scaled = x87_mul24(magnitude, 100.0);
+    } else {
+    const double old_scaled = static_cast<double>(magnitude) * 100.0;
+    scaled = old_scaled;
+    }
     host.crt_itoa_00bf9010(static_cast<std::int32_t>(static_cast<std::int64_t>(scaled)), buffer + 8, 10);
     const std::int32_t length = static_cast<std::int32_t>(std::strlen(buffer));
     const char* const tail = buffer + length - 8;  // ECX at 0043ABFB
@@ -190,16 +201,30 @@ void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, flo
     if (roll) {
         char fraction[3] = {tail[6], tail[7], '\0'};
         const std::int32_t hundredths = static_cast<std::int32_t>(std::atol(fraction));
+        if constexpr (bsp::kWireGoal4Chain370Bound) {
+            // 0043AC59 FDIV, 0043AC5F FADD, then FSTP DWORD.
+            f = static_cast<float>(x87_add24(x87_div24(hundredths, 100.0), f));
+        } else {
         f = static_cast<float>(static_cast<double>(hundredths) / 100.0 + static_cast<double>(f));
+        }
     }
+    if constexpr (bsp::kWireGoal4Chain370Bound) {
+        f = static_cast<float>(x87_sub24(10.0, f)); // 0043AC6D FSUBR
+    } else {
     f = static_cast<float>(10.0 - static_cast<double>(f));
+    }
     void* const stream_object = host.vcall_widget_vertex_stream_a0(widget);
     const Raw record{static_cast<std::uint8_t*>(host.vcall_widget_icon_record_9c(widget, 0))};
     const float u0 = record.at<float>(0xc);
     const float v0 = record.at<float>(0x10);
     const float u1 = record.at<float>(0x14);
     const float v1 = record.at<float>(0x18);
-    const float h = static_cast<float>(static_cast<double>(v1) - static_cast<double>(v0));
+    float h;
+    if constexpr (bsp::kWireGoal4Chain370Bound) {
+        h = static_cast<float>(x87_sub24(v1, v0)); // 0043ACA9 FSUB / FSTP
+    } else {
+    h = static_cast<float>(static_cast<double>(v1) - static_cast<double>(v0));
+    }
     host.vcall_vertex_stream_lock_10(stream_object, 0, 0, 0);
     const Raw stream{static_cast<std::uint8_t*>(stream_object)};
     double k;
@@ -211,13 +236,24 @@ void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, flo
         return reinterpret_cast<float*>(static_cast<std::uint8_t*>(stream.ptr(0x28)) + stream.at<std::int32_t>(8) +
                                         index * stream.at<std::int32_t>(0xc));
     };
-    const float a = static_cast<float>(static_cast<double>(h) * static_cast<double>(f) * k + static_cast<double>(v0));
+    float a;
+    if constexpr (bsp::kWireGoal4Chain370Bound) {
+        // 0043ACE3 FMULP, 0043ACF5 FMUL ST2, 0043ACFD FADDP.
+        a = static_cast<float>(x87_add24(x87_mul24(x87_mul24(h, f), k), v0));
+    } else {
+    a = static_cast<float>(static_cast<double>(h) * static_cast<double>(f) * k + static_cast<double>(v0));
+    }
     vertex(0)[0] = u0;
     vertex(0)[1] = a;
     vertex(1)[1] = a;
     vertex(1)[0] = u1;
-    const float b =
-        static_cast<float>(static_cast<double>(h) * (static_cast<double>(f) + 1.0) * k + static_cast<double>(v0));
+    float b;
+    if constexpr (bsp::kWireGoal4Chain370Bound) {
+        // 0043AD15 FADD 1, AD21 FMULP, AD2C FMULP, AD37 FADDP.
+        b = static_cast<float>(x87_add24(x87_mul24(x87_mul24(h, x87_add24(f, 1.0)), k), v0));
+    } else {
+    b = static_cast<float>(static_cast<double>(h) * (static_cast<double>(f) + 1.0) * k + static_cast<double>(v0));
+    }
     vertex(3)[0] = u1;
     vertex(3)[1] = b;
     vertex(2)[0] = u0;

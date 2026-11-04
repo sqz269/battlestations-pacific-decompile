@@ -2,6 +2,8 @@
 // See include/bsp/game_hosts_frontend.hpp for the address list and the evidence.
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
+#include "bsp/wire_goal4_chain370_switches.hpp"
+#include "bsp/cc13_sweepA2.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
 #include "bsp/game_native_gui_manager_application.hpp"
@@ -31,6 +33,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <cstdlib>
 #include <cstring>
 #include <map>
 #include <memory>
@@ -177,6 +180,10 @@ struct GameFrontendHost::Impl {
     // Parallel to widget_records: the loaded widget each row describes. The pages live in
     // `registry` for the whole run, so these stay valid.
     std::vector<const GuiLayoutWidget*> widget_nodes;
+    // 0043ABA0's CPU-owned vertex UV plane, keyed by the same live page
+    // widgets as widget_nodes. Registry pages outlive this map's borrowers.
+    using DigitUvs = std::array<std::array<float, 2>, 4>;
+    std::map<const GuiLayoutWidget*, DigitUvs> digit_uvs;
     // The widgets 00aa5e20's virtual +34h calls reached, so a false there can be told from
     // the projected constructor default. Milestone 2c: the page roots that a front-end
     // screen's 004f83b0 commit reached land here too, which is what takes those pages out
@@ -1234,6 +1241,20 @@ void GameFrontendHost::Impl::build_quads() {
         BridgeVertex top_right{right, top, 0.0f, 1.0f, color, u2, v1};
         BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, u1, v2};
         BridgeVertex bottom_right{right, bottom, 0.0f, 1.0f, color, u2, v2};
+        if constexpr (bsp::kWireGoal4Chain370Bound) {
+            // Keep the authored dimensions above: the digit routine changes
+            // the sampled strip, not the geometry's width/height.
+            const auto found = digit_uvs.find(node);
+            if (found != digit_uvs.end()) {
+                const auto& uv = found->second;
+                top_left.u = uv[0][0]; top_left.v = uv[0][1];
+                top_right.u = uv[1][0]; top_right.v = uv[1][1];
+                bottom_left.u = uv[2][0]; bottom_left.v = uv[2][1];
+                bottom_right.u = uv[3][0]; bottom_right.v = uv[3][1];
+            }
+        } else {
+            // OFF keeps the four authored atlas UV pairs above.
+        }
         if (node != nullptr && record.runtime && node->transform.rotate != 0.0f) {
             // The authored Rotate reaches the native Z rotation builder 00AA7250
             // negated (bsp/gui_widget.hpp), and the GUI y axis points down, so a
@@ -1388,6 +1409,86 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.text_sources[&widget] = std::move(source);
     host.text_runs.erase(&widget);
     host.quads_built = false;
+}
+
+namespace {
+// A typed CPU vertex-stream view for the *existing* 0043ABA0 body. Input
+// +0C..+18 is the loaded icon's atlas rectangle. The output buffer is the
+// same four-vertex UV plane consumed by build_quads; no GPU/native object is
+// claimed here. Lock/unlock enforce the owned CPU buffer's access interval.
+class ShipDigitIconBinding final : public bsp::cc13_sweepA2::HudDigitIconHost {
+public:
+    using Uvs = std::array<std::array<float, 2>, 4>;
+    ShipDigitIconBinding(GuiLayoutWidget& widget, const TextureAtlasItem& item)
+        : widget_(widget) {
+        std::copy(std::begin(item.uv), std::end(item.uv), icon_.uv);
+        stream_.vertices = uv.data();
+    }
+    void crt_itoa_00bf9010(std::int32_t value, char* buffer, std::int32_t radix) override {
+        // 0043ABA0 owns a 25-byte buffer and passes buffer+8 to _itoa.
+        if (_itoa_s(value, buffer, 17, radix) != 0) {
+            throw std::logic_error("HUD digit decimal conversion failed");
+        }
+    }
+    void* vcall_widget_vertex_stream_a0(void* widget) override {
+        require_widget(widget);
+        return &stream_;
+    }
+    void* vcall_widget_icon_record_9c(void* widget, std::int32_t index) override {
+        require_widget(widget);
+        if (index != 0) throw std::logic_error("HUD digit icon state is not zero");
+        return &icon_;
+    }
+    void vcall_vertex_stream_lock_10(void* stream, std::int32_t a,
+        std::int32_t b, std::int32_t c) override {
+        if (stream != &stream_ || locked_ || a != 0 || b != 0 || c != 0) {
+            throw std::logic_error("HUD digit CPU stream lock mismatch");
+        }
+        locked_ = true;
+    }
+    void vcall_vertex_stream_unlock_14(void* stream) override {
+        if (stream != &stream_ || !locked_) {
+            throw std::logic_error("HUD digit CPU stream unlock mismatch");
+        }
+        locked_ = false;
+    }
+    Uvs uv{};
+
+private:
+    struct Icon {
+        std::uint8_t unused[0x0c]{};
+        float uv[4]{};
+    } icon_;
+    struct Stream {
+        std::uint8_t unused_00[8]{};
+        std::int32_t offset{};
+        std::int32_t stride{sizeof(Uvs::value_type)};
+        std::uint8_t unused_10[0x18]{};
+        void* vertices{};
+    } stream_;
+    static_assert(offsetof(Icon, uv) == 0x0c);
+    static_assert(offsetof(Stream, vertices) == 0x28);
+    static_assert(offsetof(Stream, offset) == 8 && offsetof(Stream, stride) == 0x0c);
+    void require_widget(void* widget) const {
+        if (widget != &widget_) throw std::logic_error("HUD digit widget mismatch");
+    }
+    GuiLayoutWidget& widget_;
+    bool locked_{};
+};
+} // namespace
+
+bool GameFrontendHost::roll_widget_digit(GuiLayoutWidget& widget, int digit, float magnitude) {
+    if (widget.source == nullptr || widget.type != GuiWidgetType::Icon) return false;
+    const std::string texture = first_state_texture(*widget.source);
+    if (texture.empty()) return false;
+    const std::string key = atlas_key(texture);
+    const TextureAtlasItem* item = find_texture_atlas_item_00aefb20(impl_->atlas.items, key.c_str());
+    if (item == nullptr || item->texture == nullptr) return false;
+    ShipDigitIconBinding binding(widget, *item);
+    bsp::cc13_sweepA2::hud_digit_icon_roll_uv_0043aba0(digit, &widget, magnitude, binding);
+    impl_->digit_uvs[&widget] = binding.uv;
+    impl_->quads_built = false;
+    return true;
 }
 
 void GameFrontendHost::invalidate_bridge() { impl_->quads_built = false; }
