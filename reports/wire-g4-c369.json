@@ -1,0 +1,71 @@
+{
+  "chain": 369,
+  "slot": "g4-w2",
+  "switch": "kWireGoal4Chain369Bound",
+  "switch_header": "include/bsp/wire_goal4_chain369_switches.hpp",
+  "summary": "Submarine depth prediction and catapult surfacing: 00852410 now sets the swim depth of a submarine's torpedo at a submarine (0072C970's arm; the host had kept 00D0C314's -2.5 for every launch), and 008522C0 answers from the boat's CATAPULT gun rows and the ship catapult launch record at its three host sites (dive law 00936DC0, GetSubmarineDepthLevel 00894100, and 00852410 itself) instead of a labelled false.",
+  "rows": [
+    {
+      "native": "00852410",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::predict_submarine_depth, called from src/game_hosts_gunnery.cpp GameGunneryHost::Impl::run_gun_aim_and_fire (the sub-vs-sub torpedo launch, 0072C970)",
+      "evidence": "bsp show 0072c970 --asm: 0072C9A3 device Function 7, 0072CA13 round class +8h == 0Ah, 0072CA19..0072CA36 0042B2F0(target pose - gun pose), 0072CA50 FDIV by round+0E4h WaterTravelSpeed, then 00852410(ECX = target). Fields from the slot the dive law steps (+100h, +1200h.., +123Ch, +1268h, +1270h, +1281h), class UpDownAccel/UpSpeed/DownSpeed, body velocity y.",
+      "labelled": "gun pose is the host gun point (muzzle); the 0072C9D6 arm (owner+738h object cast to a submarine when the target is not one) is not taken"
+    },
+    {
+      "native": "008522C0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::submarine_catapult_wants_surface, called from ShipMotionBinding::run_submarine_dive_00936dc0 (src/game_hosts_units.cpp), GameScriptOrdersHost::dispatch GetSubmarineDepthLevel (src/game_hosts_script_orders.cpp) and GameUnitsHost::predict_submarine_depth",
+      "evidence": "unit+1279h is 00853E10's 'a child answers IsKindOf(28h)' (exports 00853e10: +1279h = 0 then 1 in the child walk); MCatapult+490h is -1 from 006EC640 and the launch tick from 006EC070 (called at 006ECB0F in MCatapult::Fire); no other MCatapult store of +490h in 006EA000..006EFFFF.",
+      "labelled": "host keeps one catapult per ship and no launch tick (include/bsp/ship_catapult_host.hpp); a CATAPULT row reads 0 after the ship's record counts a launch, -1 before; 008522C0 only tests the sign"
+    },
+    {
+      "native": "00852B50",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "BSP_SubmarineUnit_DepthStepShallower_Unreferenced: bsp callers lists no call, data or vtable site in the image, so no game path runs it."
+    },
+    {
+      "native": "00852B70",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "BSP_SubmarineUnit_DepthStepDeeper_Unreferenced: bsp callers lists no call, data or vtable site in the image, so no game path runs it."
+    },
+    {
+      "native": "00AA4F80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: FrontEndFrame::gui_update",
+      "reason": "Missing a live GuiResourceOwner/GuiWidgetFrameRuntime: no host file constructs one, so update_gui_manager_00aa4f80 (and 00AA3910, 00AA7EF0, 00AD39A0 under it) has no manager to run on."
+    },
+    {
+      "native": "006E1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile step",
+      "reason": "Missing producers for BombTickState launch delay +410h, active +458h and arming +45Ch on GameProjectileRow; the host steps projectiles semantically and never names 006E1300."
+    },
+    {
+      "native": "008040E0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: run_recon_sensor_pass_body_008073c0",
+      "reason": "Missing native ReconList storage: the host runs recon through recon_sensor_pass_rebuild_008073c0's semantic model, so the cc13_seg49 list splices (also 00804150, 00804E10, 00804E70) have no lists to operate on."
+    },
+    {
+      "native": "007EB380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight_state_notify_007c11e0 (PlaneFx::step record)",
+      "reason": "Missing the plane+C98h FX component storage the raw body reads (+4 plane, +14h..+40h engine state, sound holders); GameUnitSlot carries no such component. Same for 007DDEA0."
+    },
+    {
+      "native": "0090EB80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: kill/hit attribution",
+      "reason": "Missing native unit records: the scoring bodies read unit+170h/+174h/+180h/+1B0h directly and the scoring owner's 8 x 284h slot records; host units are GameUnitSlot rows (also 0090EBF0, 0090EC40, 0090ED40)."
+    },
+    {
+      "native": "0075A380",
+      "status": "skipped",
+      "host_site": "none",
+      "reason": "Network receive only: the seg42 ConstructForRead family is called from 00768530 CreateFromBitStream <- 0076E520/007858C0 packet receive, which single-player never runs."
+    }
+  ]
+}

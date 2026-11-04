@@ -68,6 +68,8 @@
 #include "bsp/cc13_seg67b.hpp"         // chain 67: 0099BB00 typed overload
 #include "bsp/wire_goal4_chain362_switches.hpp"
 #include "bsp/wire_goal4_chain367_switches.hpp"
+#include "bsp/wire_goal4_chain369_switches.hpp"   // 008522C0 / 00852410
+#include "bsp/gameplay_seg53_cc13.hpp"            // chain 369: 00852410's typed body
 #include "bsp/frontend_screens_cc13.hpp"  // chain 67: 006049F0 typed overload
 #include "bsp/cc13_sweepB.hpp"         // chain 67: 00604A20 typed overload
 #include "bsp/native_unit_role_permission.hpp"  // chain 67: 0059BBD0 typed overload
@@ -13950,8 +13952,8 @@ public:
     // force callback: velocities read first (00936DD0/00936DDD), the
     // hydrodynamics 009329C0 (00936DF8), then the dive law and the write-back
     // (0093739A, 009373A7). The rudder torque of 00937440 is not part of it.
-    // SUBSTITUTIONS (labelled): needAir (+1281h), 008522C0 and the kamikaze test
-    // read false; there are no seabed samples, so the clearance never clamps and
+    // SUBSTITUTIONS (labelled): needAir (+1281h), 008522C0 (answered since goal 4
+    // chain 369) and the kamikaze test read false; there are no seabed samples, so the clearance never clamps and
     // the gain stays 1.0; the ring writes at +844h/+848h (slot +0Ch/+10h, 2.0 and
     // -1.0, 00936E11/00936E2B) and the unused vtable[34h] read (009371E5) are not
     // made; the reference speed is this binding's 0080FC30.
@@ -13972,6 +13974,12 @@ public:
         band.commanded = static_cast<bsp::SubmarineDepthBand>(level < 0 ? 0 : (level > 3 ? 3 : level));
         band.dead = dead;
         band.need_air = kSubmarineAirBound && slot_.sub_air.need_air;  // +1281h
+        if constexpr (bsp::kWireGoal4Chain369Bound) {
+            // Goal 4 chain 369: 00936E53 008522C0 on the boat, over its catapult
+            // devices and its catapult launch record (GameGunneryHost's adapter).
+            band.catapult_wants_surface = owner_.gunnery != nullptr
+                && owner_.gunnery->submarine_catapult_wants_surface(slot_.process_index);
+        }
         // 00936E5C..00936E80: the same class test exempts a kamikaze boat from
         // the surfacing override (packet cc13-subdive; OFF false, LABELLED).
         band.kamikaze_class = bsp::cc13_sub_dive::kCc13SubDiveKamikazeBound
@@ -24811,6 +24819,35 @@ bool GameUnitsHost::submarine_band_y(std::size_t unit_index, int band, float& y)
     const GameUnitSlot& slot = *host.slots[unit_index];
     if (!slot.row.submarine_depth_seeded) return false;
     y = slot.sub_bands[band];
+    return true;
+}
+
+// Goal 4 chain 369. 00852410 (bsp show 00852410) on a seeded submarine, through
+// its typed body: the fields are what the boat's dive law 00936DC0 steps here
+// (run_submarine_dive_00936dc0), +100h the hull y, the rates the class keys the
+// seed read (UpDownAccel, UpSpeed, DownSpeed), the body velocity 0092D6A0 the
+// linear velocity the dive law last wrote, and 008522C0 the gunnery's adapter.
+bool GameUnitsHost::predict_submarine_depth(std::size_t unit_index, float dt, float& y) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.slots.size() || host.slots[unit_index] == nullptr) return false;
+    const GameUnitSlot& slot = *host.slots[unit_index];
+    if (!slot.row.submarine_depth_seeded) return false;
+    bsp::gameplay_seg53_cc13::SubmarineDepthFields fields;
+    fields.world_y_100 = slot.motion.position[1];                       // +100h
+    for (int band = 0; band < 4; ++band) fields.bands_1200[band] = slot.sub_bands[band];
+    fields.clearance_123c = slot.sub_scan.clearance;                     // +123Ch
+    fields.depth_level_1268 = slot.row.submarine_depth_level;            // +1268h
+    fields.sink_1270 = slot.sub_sink_1270;                               // +1270h
+    fields.need_air_1281 = kSubmarineAirBound && slot.sub_air.need_air;  // +1281h
+    bsp::gameplay_seg53_cc13::SubmarineDiveRates rates;
+    rates.accel_824 = slot.sub_accel;                                    // class+824h
+    rates.up_speed_830 = slot.sub_up_speed;                              // class+830h
+    rates.down_speed_834 = slot.sub_down_speed;                          // class+834h
+    const GameGunneryHost* const gun = host.gunnery.get();
+    const bool catapult = gun != nullptr
+        && gun->submarine_catapult_wants_surface(slot.process_index);   // 008524AA
+    y = bsp::gameplay_seg53_cc13::submarine_predict_depth_after_00852410(
+        fields, rates, slot.motion.linear_velocity.y, catapult, dt);
     return true;
 }
 
