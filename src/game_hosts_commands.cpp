@@ -25,6 +25,7 @@
 #include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/wire_goal4_chain475_switches.hpp"
 #include "bsp/wire_goal4_chain498_switches.hpp"
+#include "bsp/wire_goal4_chain524_switches.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_ai.hpp"
 
@@ -440,7 +441,19 @@ bsp::gameplay_seg38_cc13::DirectorQueue cc13_director_queue(const GameDirector& 
     if (director.slot_command[0] == bsp::gameplay_seg38_cc13::kCmdMoveOnPath
         && director.path_built) {
         q.paths[0].present = true;
+        if constexpr (bsp::kWireGoal4Chain524Bound) {
+            // bsp.py show 0071FC30: the retained DirectorPathObject's
+            // vtable[4] is MOV AL,1; it does not inspect its receiver. When
+            // the older authored-path projection has no retained object,
+            // keep that same binary constant rather than inventing storage.
+            q.paths[0].vt4_valid = director.user_path_object
+                ? bsp::director_geommesh_seg38_39_argon::triv_body_0071fc30(
+                    const_cast<bsp::gameplay_seg38_cc13::DirectorPathObject*>(
+                        &*director.user_path_object)) != 0
+                : true;
+        } else {
         q.paths[0].vt4_valid = true;
+        }
         q.paths[0].has_point_list = true;
         q.paths[0].point_count = static_cast<int>(director.path_points.size());
     }
@@ -2963,8 +2976,19 @@ bool GameCommandsHost::user_path_attached_0071fc40(std::size_t unit_index) const
         // it, and path_user distinguishes the owner's list from an authored
         // entity path. Keep those existing predicates; use the reconstructed
         // query to decide the answer consumed by 007ADD70 / the AI route.
-        const bool source_present = director.slot_command[0] == 0x00e08f80u
-            && director.path_begun && director.path_built;
+        const bool source_present = [&]() {
+            if constexpr (bsp::kWireGoal4Chain524Bound) {
+                // bsp.py show 0071BDE0: require the slot's moveonpath class,
+                // a present path, and its vtable[4] result. The existing
+                // projection above borrows this director's built path and
+                // its point list; the follower still must have begun.
+                return bsp::gameplay_seg38_cc13::slot_moveonpath_path_0071bde0(
+                    cc13_director_queue(director), 0) >= 0 && director.path_begun;
+            } else {
+            return director.slot_command[0] == 0x00e08f80u
+                && director.path_begun && director.path_built;
+            }
+        }();
         return bsp::gameplay_seg38_cc13::path_follower_attached_0071d270(
             source_present, director.path_user);
     } else {
@@ -4259,7 +4283,18 @@ bool GameCommandsHost::begin_current_command_00835c70(std::size_t unit_index,
         director.path_begun = false;
         return false;
     }
+    if constexpr (bsp::kWireGoal4Chain524Bound) {
+        // bsp.py show 0071DEE0: on the moveonpath arm selected above, an
+        // active order requires its path's vtable[8] list and positive count.
+        // These are the live built source and points already consumed by
+        // this method; queued slots and freshly begun paths keep their
+        // existing lifecycle below. No path is rebuilt by this query.
+        if (director.path_begun)
+            return bsp::gameplay_seg38_cc13::slot_has_active_order_0071dee0(
+                cc13_director_queue(director), 0);
+    } else {
     if (director.path_begun) return director.path_built && !director.path_points.empty();
+    }
     if (director.slot_target[0].kind == 0 && !director.user_points.empty()) {
         // Packet cc9_director_moveonpath_route. 0071F6A5's descriptor-kind-0 arm:
         // slot 0's vtable[8] resets it, BSP_EntityPathSource_CreateForSlot wraps

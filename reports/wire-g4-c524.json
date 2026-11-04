@@ -1,0 +1,116 @@
+{
+  "goal": 4,
+  "chain": 524,
+  "branch": "agent/g4-w2",
+  "switch": "kWireGoal4Chain524Bound",
+  "picked": "Retained director slot-0 moveonpath presence and active-order queries",
+  "rows": [
+    {
+      "native": "0071bde0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::user_path_attached_0071fc40",
+      "detail": "The returned slot decides whether the existing follower-attachment query receives a live source, using the actual director slot, built source and retained path virtual result.",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "0071dee0",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::begin_current_command_00835c70",
+      "detail": "For an already-begun slot-0 moveonpath, use its actual path presence and source point count to answer whether the active command has points; the new-path build path is unchanged.",
+      "called": true,
+      "call_sites": 2
+    },
+    {
+      "native": "0071fc30",
+      "status": "wired",
+      "host_site": "src/game_hosts_commands.cpp: cc13_director_queue",
+      "detail": "Invoke the existing constant-true virtual body on the persistent user_path_object when the built source has that retained object; the older authored-source projection retains the binary constant when the optional object is absent. Readiness excludes this trivial body from rows; the ordinary Release link folds its constant-return code with other functions. call_graph who shows the cc13_director_queue call at 1006FA93, with folded identity explicitly reported.",
+      "readiness_counted": false
+    },
+    {
+      "native": "0071d3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback / LoopbackKind::UserPathPoint",
+      "reason": "The live host exposes only the add-user-point sender; a real clear-user-point input/action producer and its queued presence-zero message route are missing."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback / LoopbackKind::UserPathPoint",
+      "reason": "The live 5Fh delivery handles add messages only; the presence-zero clear-message producer/receiver and per-selected-slot path ownership are missing."
+    },
+    {
+      "native": "0071f570",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::deliver_loopback / LoopbackKind::UserPathPoint",
+      "reason": "No live clear-user-point message reaches the selected persistent path; do not remove a point during add or unrelated command clearing merely to run this body."
+    },
+    {
+      "native": "0071fc20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: cc13_director_queue",
+      "reason": "The raw +40h getter requires original-layout path storage; the retained semantic DirectorPathObject has a C++ vector layout rather than the native +40h header."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::gui_refresh",
+      "reason": "The loading-screen path has no live renderer stop/begin/end callbacks for 00B1C4B0; its current worker operations only log calls."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::report_target_event",
+      "reason": "CompletionBinding has no actual warning-manager channel tree, entity-variant boxing and observer/Lua callback adapter for the raw mission-events reporter."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: CompletionBinding::make_command_target",
+      "reason": "The callback currently returns a scalar zero and owns no raw 18h target storage or downstream raw target consumer for the native initializer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "The current mission Lua execution uses the main thread; the frame-job-thread deferred named-call producer and persistent variant queue are absent."
+    },
+    {
+      "native": "00926e80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: deferred hit producer / src/game_hosts_ready.cpp: DeferredEventBinding",
+      "reason": "The live hit queue is a semantic container, without the native sentinel/node layout, raw 60h hit record and global-cell adapter required by this producer."
+    }
+  ],
+  "evidence": [
+    "python tools/bsp.py show 0071bde0",
+    "python tools/bsp.py show 0071dee0",
+    "python tools/bsp.py show 0071fc30",
+    "python tools/bsp.py show 0071d3e0",
+    "python tools/bsp.py show 0071f5d0",
+    "python tools/bsp.py show 0071f570",
+    "python tools/bsp.py show 0071fc20"
+  ],
+  "validation": {
+    "baseline_build": "Win32 Release build and all five CTest checks passed",
+    "post_change_build": "Win32 Release build and all five CTest checks passed (reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader).",
+    "call_graph": {
+      "0071bde0": "REACHABLE: 1 call from GameCommandsHost::user_path_attached_0071fc40 at 1007DF08",
+      "0071dee0": "REACHABLE: 2 calls, begin_current_command_00835c70 at 1006EA5C and its inlined caller begin_path_command_0071f600 at 1006EC92",
+      "0071fc30": "Folded constant-return body; reachable cc13_director_queue call at 1006FA93; no claim of an independently unique linked address."
+    },
+    "runtime": "Game not run, per assignment; no gameplay or binary ABI claim.",
+    "readiness": "0071bde0 and 0071dee0 are wired and called=true, with 1 and 2 call_sites respectively; 0071fc30 is excluded from the readiness row pool.",
+    "float_lint": "Not applicable: no floating arithmetic changed."
+  },
+  "totals": {
+    "wired_before": 9827,
+    "wired_after": 9829,
+    "counted_new_addresses": [
+      "0071bde0",
+      "0071dee0"
+    ]
+  },
+  "scope": "Reuses the existing semantic C++ models and retained command-host state; no new address-suffixed body, source ledger, float arithmetic, or secondary execution of replaced queries."
+}
