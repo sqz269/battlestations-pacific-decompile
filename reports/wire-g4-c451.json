@@ -3,26 +3,47 @@
   "chain": 451,
   "worker": "agent/g4-w3",
   "switch": "bsp::kWireGoal4Chain451Bound",
-  "summary": "Wire the unit skill base application through the live skill setter, preserving the reconstructed dead-unit gate and using actual owned guns and gunnery-pass presence.",
+  "summary": "Wire unit skill application through the live setter and replay selected gun notifications, including the tail-gunner descriptor copies and unconditional aim-countdown reroll.",
   "counts": {
     "readiness_wired_before": 9703,
     "readiness_wired_after": 9704,
     "entry_reachable_reconstructed_before": 4744,
-    "entry_reachable_reconstructed_after": 4745
+    "entry_reachable_reconstructed_after": 4746
   },
   "validation": {
-    "build": "scripts/build.ps1 passed; reconstructed_math, native_math_differential and tool_tests all passed",
-    "call_graph": "009565a0 has one direct reachable call from GameUnitsHost::set_unit_skill_index_006d1eb0 at rebuilt site 102c6095; call_graph.py path reaches the registered SetCrewLevel Lua binding and WinMainCRTStartup",
-    "float_math": "No float arithmetic changed",
+    "build": "Review fix: scripts/build.ps1 passed with the chain ON, OFF, and restored ON; all three test suites passed each time",
+    "call_graph": "Restored ON: 009565a0 has one direct reachable call from set_unit_skill_index_006d1eb0 at 102c6577; 008fbef0 has one direct reachable call from notify_gun_skill_level at 100c41ee. OFF: neither body is linked, and reachable reconstructed calls return to 4744.",
+    "readiness_note": "The text heuristic still labels 008fbef0 ready; its called=true and call_sites=1 fields confirm the new executable call. Readiness wired stays 9704 while the executable's reachable reconstructed address count rises to 4746.",
+    "float_math": "pc24_lint.py --diff origin/main: zero findings; descriptor floats/countdown are copied without new arithmetic",
     "runtime": "Game was not launched; build and entry-reachable call-graph evidence only"
   },
-  "representation": "The existing host shares pilot_skill_index through skill_level() with pilot and gunnery robot consumers. Applying plan.level_390 updates that live source; pass/device notifications need no additional cached skill store in this representation. Independent native bot+34h copies and dead plane/ship override notifications remain unmodeled.",
+  "representation": "The shared pilot_skill_index remains the scalar skill source for existing pass/base-bot readers. That alone is not equivalent to every gun notification: each plan.devices index is now mapped back to its actual owned gun row and replayed. A retained kTailGunner identity uses the loaded TailGunnerBot descriptor and existing 008FBEF0 body, on every notification even at the same level. Its copied angle error, aim periods and shoot range feed existing aim/fire consumers, and its uniform result replaces the retained +6Ch countdown without changing the held angles. Independent native base-bot+34h copies and dead plane/ship override notifications remain unmodeled.",
+  "review_round_1": {
+    "finding": "P2: discarded plan.devices omitted the tail-gunner countdown reroll and random draw",
+    "status": "fixed",
+    "evidence": "bsp.py show 00727e70 and 008fbef0; docs/GUN_BOT_TICKS.md +18h table; existing retained tail_gunner_aim countdown consumer",
+    "replay": "Store accepted plan.level_390, then notify actual guns selected by plan.devices in the existing device order. Only the installed TailGunner bot identity takes the override; ordinary scalar-only gun bot notifications use the already shared index.",
+    "random": "The existing 008FBEF0 body makes one stream-1 uniform draw through the host's gameplay RNG provider on every invocation; no previous-level equality guard. The returned aim_time_06c is stored into the countdown used by run_gun_aim_and_fire.",
+    "switch": "All notification effects and profile consumers are guarded by kWireGoal4Chain451Bound; the old setter stays unchanged in its else arm. OFF build/tests passed and neither body is linked. Header restored to true before final checks."
+  },
   "rows": [
     {
       "native": "009565a0",
       "status": "wired",
       "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
       "evidence": "bsp.py show 006d1eb0 and 009565a0: forwarding skill subobject, unit+5Dh gate, +390h store, +6DCh pass and kind-20h gun notifications"
+    },
+    {
+      "native": "008fbef0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "evidence": "Actual retained gun_bot_slots.primary identifies TailGunner; loaded_gun_bot_configs supplies the real descriptor, the gameplay RNG adapter supplies stream one, and the returned countdown/profile update the existing live aim/fire state"
+    },
+    {
+      "native": "00727e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "The raw six-pointer gun object needed by this wrapper is absent from the typed host; selected device notifications are replayed onto the retained bot identities without claiming this raw wrapper as a new wired body."
     },
     {
       "native": "00729a40",

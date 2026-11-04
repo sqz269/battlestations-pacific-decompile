@@ -25510,28 +25510,37 @@ bool GameUnitsHost::set_unit_skill_index_006d1eb0(std::size_t unit_index, int le
         namespace skill = bsp::gameplay_seg61_62_cc13;
         GameUnitSlot& slot = *host.slots[unit_index];
         std::vector<skill::RoleDevice> devices;
+        std::vector<std::size_t> device_guns;
         bool has_pass = false;
         if (host.gunnery != nullptr) {
             has_pass = host.gunnery->has_unit_gunnery_pass(unit_index);
             // These rows are the actual gun children produced for this unit,
             // all IsKindOf(20h); non-gun children do not receive the skill call.
-            for (const GameGunRow& gun : host.gunnery->guns()) {
-                if (gun.unit_index == unit_index) devices.push_back({true, gun.category});
+            const auto& guns = host.gunnery->guns();
+            for (std::size_t gun_index = 0; gun_index < guns.size(); ++gun_index) {
+                const GameGunRow& gun = guns[gun_index];
+                if (gun.unit_index == unit_index) {
+                    devices.push_back({true, gun.category});
+                    device_guns.push_back(gun_index);
+                }
             }
         }
         // 006D1EB0 forwards unit+38Ch's slot zero. The shared base body is
         // 009565A0: 009565A3 gates on unit+5Dh, 009565B9 stores +390h,
         // 009565C4 notifies the +6DCh pass, then 009565EA notifies gun children.
         // Evidence: bsp.py show 006d1eb0 / 009565a0. This host normalizes the
-        // pass/gun/pilot skill readers onto pilot_skill_index: gunnery's robot
-        // evaluations and the pilot read skill_level(), rather than retaining
-        // independent bot+34h copies. Thus the accepted level store also makes
-        // the plan's pass/device notifications visible to their real consumers.
+        // pass/gun/pilot scalar skill readers onto pilot_skill_index. Device
+        // notifications also have non-scalar effects: 00727E70 reaches the
+        // tail gunner's 008FBEF0, which rerolls +6Ch even at the same level.
+        // Replay the plan against the corresponding actual gun rows below.
         // This is a typed host adapter, not the original subobject/vtable ABI.
         const auto plan = skill::unit_skill_apply_level_009565a0(
             slot.state->simulate != 0, level, has_pass, devices);
         if (!plan.applied) return false;
         slot.pilot_skill_index = plan.level_390;
+        for (const std::size_t device : plan.devices) {
+            host.gunnery->notify_gun_skill_level(device_guns.at(device), plan.level_390);
+        }
         host.done("UnitSkill::apply_level_009565a0", 0x009565a0u);
         return true;
     } else {

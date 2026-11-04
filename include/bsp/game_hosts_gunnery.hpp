@@ -1215,6 +1215,10 @@ public:
     const std::vector<GameGunRow>& guns() const noexcept;
     // The live unit+6DCh pass owner, rather than the summary row's last copy.
     bool has_unit_gunnery_pass(std::size_t unit_index) const noexcept;
+    // Replay a selected 009565A0 device notification on an actual gun row.
+    // The shared owner supplies scalar skill reads; retained bot effects (the
+    // tail gunner's 008FBEF0 countdown/profile) must still be applied per call.
+    void notify_gun_skill_level(std::size_t gun_index, int level);
     // Render-only read seam. A nonnull empty Mesh is an authored meshless
     // device; null Mesh means its existing asset-cache provider is absent.
     bool device_visual_metadata(std::size_t gun_index,
