@@ -191,15 +191,17 @@ bool gun_fixed_step_tick_0072d130(GunFireRequestState& state,
                                   float dt);
 
 // ---------------------------------------------------------------------------
-// 006FE160: the salvo ring that displaces a muzzle origin. `basis_right` and
-// `basis_up` are the two rows BSP_Matrix_BuildLookAt produces from the
-// direction; the native routine derives them inside, which is a contract here.
+// 006FE160: class 27h's per-barrel direction cone, not a muzzle displacement
+// (0072FE74 supplies the firing node's row 2; docs/GUN_MOUNT_POSITIONS.md).
+// The caller supplies columns 0 and 1 of 00B63F10's look-at matrix: the native
+// body transposes that matrix at 006FE1A9..006FE23E before reading these rows.
+// The historical identifier and `origin` member are retained for callers.
 // ---------------------------------------------------------------------------
 struct GunRingOffsetInputs {
-    float origin[3]{};      // the routine's second argument
+    float origin[3]{};      // input shot direction, the routine's second argument
     float basis_right[3]{}; // the look-at row scaled by cos
     float basis_up[3]{};    // the look-at row scaled by sin
-    float radius{0.0f};     // descriptor+D0h
+    float radius{0.0f};     // descriptor+D0h, MultiBulletConeAngle (no degree conversion)
     int barrel_index{0};    // gun+44Ch
     int muzzle_count{1};    // (descriptor+A0h - descriptor+9Ch) / 0Ch
 };
