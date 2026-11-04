@@ -380,6 +380,12 @@ struct VehicleClassFieldHost {
     // The value behind a ref, as the type predicates and getters see it.
     virtual VehicleClassLuaValue inspect(const GuiLuaRef& object) = 0;
 
+    // 00960672: convert the actual CockpitCameraPos Lua object through
+    // 00B680A0, using the image's 00F87574 zero-vector fallback. The default
+    // adapter supports typed field hosts; the running Lua host overrides it.
+    virtual void read_vector3_or_default(const GuiLuaRef& object, float out[3],
+                                        const float fallback[3]);
+
     // 00B67080 and 00B67190 against a key/value pair, with 00B66420 as the
     // end test. Returns false once the iterator is unbound.
     virtual bool iterate_first(const GuiLuaRef& table, GuiLuaRef& key, GuiLuaRef& value) = 0;

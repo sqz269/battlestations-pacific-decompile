@@ -1,0 +1,144 @@
+{
+  "goal": 4,
+  "chain": 408,
+  "owner": "agent/g4-w1",
+  "base": "38bb787f1b",
+  "switch": "bsp::kWireGoal4Chain408Bound",
+  "wired_before": 9650,
+  "wired_after": 9651,
+  "called_before": 4667,
+  "called_after": 4668,
+  "rows": [
+    {
+      "native": "00b680a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassFieldBinding::read_vector3_or_default, called by src/vehicle_class_fields.cpp: read_vehicle_class_base_fields_00960230",
+      "source": "src/cc13_seg87.cpp: native_lua_get_vector3_or_00b680a0",
+      "state": "The registry reference is the actual VehicleClass row's CockpitCameraPos value. A constructed NativeLuaStateStorage borrows the running Lua state, and an untracked kind-2 object binds the pushed value. The existing body performs the table/default choice and converts table components through 00B67A80, including tracked temporary cleanup. Its output supplies the descriptor's existing cockpit_camera fields; the former conversion does not run on the ON path.",
+      "evidence": [
+        "bsp.py callers 00b680a0: the sole original caller is 00960230 at 00960672",
+        "bsp.py show 00960230 --asm --start 250 --lines 35: 00960659 obtains CockpitCameraPos, 0096065E pushes 00F87574, 00960672 calls 00B680A0, and 00960677..00960697 stores the three floats at class+84h/+88h/+8Ch",
+        "bsp.py ghidra bytes 00f87574 --length 12: twelve zero bytes; the fallback is the image's zero-vector constant",
+        "bsp.py show 00b680a0 and --asm: kind/type table guard, one 00B67A80 table conversion, otherwise three fallback float copies"
+      ],
+      "call_graph": {
+        "reachable": true,
+        "call_sites": 1,
+        "site": "1013df20",
+        "caller": "GameMissionLuaVehicleClassFieldBinding::read_vector3_or_default"
+      }
+    },
+    {
+      "native": "00960230",
+      "status": "wired",
+      "newly_wired": false,
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor",
+      "state": "Existing live caller extended at its original 00960672 site. The switch retains the previous cockpit-camera conversion in the ELSE arm. A default semantic adapter keeps existing typed field hosts usable. No second address-suffixed body was added."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Needs a produced scene-record remap texture name and initialized live render-resource service; record_remap_texture_name currently returns empty and the available service constructor has no application caller."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "Needs the actual slot-1 scene-record texture name and initialized live render-resource service; neither is supplied by the current binding."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "Needs the actual slot-2 scene-record texture name and initialized live render-resource service; neither is supplied by the current binding."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "Needs the actual slot-3 scene-record texture name and initialized live render-resource service; neither is supplied by the current binding."
+    },
+    {
+      "native": "00b0d080",
+      "status": "skipped",
+      "host_site": "src/game_profile_load.cpp: QuickSettingsApplyHost::renderer_set_old_film_effect",
+      "reason": "Needs a retained initialized render-resource service for its +220h store; GameNativeRendererApplication::construct_render_resources has no application caller, and substituting the renderer pointer would target the wrong owner."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score-list candidate",
+      "reason": "Needs a live coordinator/planner score-list producer; fixed_step still gates the coordinator pass on ai_coordinator_created_at_load()."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score-list chosen marker candidate",
+      "reason": "Needs live inserted coordinator score records and a selected key; the owning coordinator pass remains behind its load-created gate."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: 009FFC80 active-party difficulty candidate",
+      "reason": "Its original caller uses the query for effective modes 0..3; the campaign path uses mode 8 and lacks the active-party planner/slot-difficulty producer needed for this branch."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queued named-Lua-call producer",
+      "reason": "Needs an actual off-main-thread named call with a source argument vector and deferred destination node; the host supplies no frame-job-thread enqueue producer."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: deferred mission-Lua queue insertion candidate",
+      "reason": "Needs the frame-job-thread enqueue arm and a live deferred call record; the current host runs named calls on its main thread."
+    },
+    {
+      "native": "008f2db0",
+      "status": "skipped",
+      "host_site": "src/native_property_library_readers.cpp: contains_native_property_library_name_008f2db0 candidate",
+      "reason": "Needs a game-reached contains-name query over an actual property-library map owner and NativePropertyLibraryReaderContext; no such caller/context binding was found in the inspected hosts."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_text.cpp: typed-font byte acceptance candidate",
+      "reason": "The available FontData consumers build text layout; wiring this editing predicate needs an actual text-input acceptance consumer rather than an extra query during rendering."
+    },
+    {
+      "native": "00b67c40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LuaGameTuningHost vector conversion candidate",
+      "reason": "Needs a real four-component input/output consumer; the inspected tuning callback consumes three components and already uses the three-component body."
+    },
+    {
+      "native": "00b65f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: native Lua binding predicate candidate",
+      "reason": "Needs a consumer of bound-versus-unbound LuaObject state; adding this query to the inspected already-bound stack-object vector conversion would produce an unused result."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: direction-angle display candidate",
+      "reason": "The original sight-display sites need the camera-eye/predicted-impact inputs and a yaw/pitch display consumer; the surveyed host paths do not provide that combination."
+    },
+    {
+      "native": "0099ba10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot override-angle normalization candidate",
+      "reason": "Needs the authoritative unit+9A8h/+9ACh override-angle producer consumed by 0099D6F1/0099D736; this packet does not model those fields."
+    }
+  ],
+  "validation": {
+    "baseline": "index --if-stale and scripts/build.ps1 passed before selection; both CTest suites passed",
+    "build": "scripts/build.ps1 passed after the C++ changes; reconstructed_math and tool_tests both passed",
+    "call_graph": "call_graph.py rebuilt the graph; who 00b680a0 shows one reachable call from the changed adapter and path 00b680a0 reaches the game entry",
+    "readiness": "wire_readiness.py --standins: wired 9650 -> 9651; 00b680a0 is state=wired, called=true, call_sites=1, callers_live=1",
+    "float_math": "No new floating-point arithmetic; conversion remains in the existing native Lua getter. pc24_lint --diff origin/main reported zero findings.",
+    "limits": "Build and static entry-reachability evidence only. No game execution, visual check, native ABI claim or new runtime fixture."
+  },
+  "left": "Render-remap owner/name production, deferred Lua job-thread queue production, and coordinator score-list producers remain for later packets."
+}
