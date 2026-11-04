@@ -1,0 +1,75 @@
+{
+  "chain": 511,
+  "worker": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain511Bound",
+  "rows": [
+    {
+      "native": "007626a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_ship_add_torque_93",
+      "body": "bsp::seg42::delete_ship_addtorque_007626a0",
+      "evidence": "Complete 007626A0..007626BC assembly: root-profile stamp, conditional free, this return. Decoded 28h allocation retained through actual serialized hull-torque consumption; flags=1 releases that allocation once under chain511.",
+      "call_site": "101f09f4",
+      "called": true
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Scene record remap-name producer returns an empty string; live renderer texture-cache/resource-service ownership is not connected to this host."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "Scene record remap-name producer returns an empty string; live renderer texture-cache/resource-service ownership is not connected to this host."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "Scene record remap-name producer returns an empty string; live renderer texture-cache/resource-service ownership is not connected to this host."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "Scene record remap-name producer returns an empty string; live renderer texture-cache/resource-service ownership is not connected to this host."
+    },
+    {
+      "native": "00afc470",
+      "status": "skipped",
+      "host_site": "src/native_particle_parameter_loading.cpp: parse_native_particle_parameter_00afc470",
+      "reason": "Built-executable call graph contains no linked parser; a live particle-definition loading caller and its owner composition are missing."
+    },
+    {
+      "native": "00aedf60",
+      "status": "skipped",
+      "host_site": "src/native_particle_parameter_loading.cpp: token_number / token_pair",
+      "reason": "Candidate token consumers are not linked in bsp_game; their parameter-parser producer is missing from the entry-reachable application path."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp: fit_and_submit_shadow_slice_00a8ecb0 / fit_shadow_cascade_00a8bd20",
+      "reason": "The shadow fitting callers have no entry-reachable application owner; wiring only their inline product would not execute the helper in the game."
+    }
+  ],
+  "wired_before": 9807,
+  "called_before": 4872,
+  "validation": {
+    "baseline_build": "passed; 5 of 5 CTest tests",
+    "game_run": false,
+    "abi_compatible": false,
+    "float_math_changed": false,
+    "final_build": "passed; 5 of 5 CTest tests",
+    "diff_check": "passed",
+    "call_graph": "Entry-reachable queue_ship_add_torque_93 calls scalar delete at built site 101f09f4, targeting 10463ad0. /OPT:ICF folds identical scalar deletes, so aggregate recon_called remains 4872; this does not measure distinct newly named bodies.",
+    "native_listing": "bsp.py show 007626A0 --asm, complete 007626A0..007626BC",
+    "ghidra": "Existing compiler-generated name retained; evidence comment appended with old annotations logged and project saved.",
+    "readiness_scope": "007626A0 is excluded from the readiness pool by its retained cg_scalar_deleting_dtor classification; the real new call is verified separately by the executable graph."
+  },
+  "coordination": "Announced small independent torque-only host edit and additive shared-source/header edit to the owners of the in-review branches; no changes to their plane or repair-message functions.",
+  "called_after": 4872,
+  "wired_after": 9807
+}

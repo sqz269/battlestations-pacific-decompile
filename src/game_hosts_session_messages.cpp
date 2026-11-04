@@ -6,6 +6,7 @@
 #include "bsp/wire_goal4_chain440_switches.hpp"
 #include "bsp/wire_goal4_chain450_switches.hpp"
 #include "bsp/wire_goal4_chain478_switches.hpp"
+#include "bsp/wire_goal4_chain511_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -1049,6 +1050,21 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     // 00768530 case 93h: operator new(28h), 00762220 at 0076942E; 0076A27B
     // vtable[8] = 00762340.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain511Bound) {
+        // 00768530 case 93h allocates the decoded 28h message. Keep that same
+        // allocation through consumption of the real serialized hull torque;
+        // 007626A0 then stamps the root profile and frees it once (flags=1).
+        // The shared RAII owner also covers a reader exception. The sender
+        // remains the existing stack object and never enters this deleting path.
+        OwnedDecodedMessage<seg42::ShipAddTorqueMessage,
+            seg42::delete_ship_addtorque_007626a0> owner;
+        auto& queued = owner.get();
+        seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
+        seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
+        ShipAddTorqueCopy copy;
+        for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
+        return copy;
+    } else {
     seg42::ShipAddTorqueMessage queued{};
     seg42::construct_ship_addtorque_00762220(&queued.h, image.seg42);
     seg42::read_ship_addtorque_00762340(&queued, &stream.in, image.numeric);
@@ -1056,6 +1072,7 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     ShipAddTorqueCopy copy;
     for (int i = 0; i < 3; ++i) copy.torque[i] = queued.torque_1c[i];
     return copy;
+    }
 }
 
 HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_detonate_70(
