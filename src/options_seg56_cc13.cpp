@@ -281,7 +281,7 @@ int lua_set_pump(LuaArgs& args)
     return 0;
 }
 
-int lua_get_submarine_air_supply(LuaArgs& args, LuaResults& results, ImageAccess& image)
+int lua_get_submarine_air_supply_008938e0(LuaArgs& args, LuaResults& results, ImageAccess& image)
 {
     results.push_float(image.read_f32(args.entity_at(0), 0x127Cu));
     return 1;

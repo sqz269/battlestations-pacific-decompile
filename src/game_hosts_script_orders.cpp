@@ -5,6 +5,8 @@
 // this file supplies rather than recovers.
 
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/options_seg56_cc13.hpp"
+#include "bsp/wire_goal4_chain525_switches.hpp"
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/wire_goal4_chain482_switches.hpp"
 #include "bsp/game_sound_dialog_runtime.hpp"
@@ -765,6 +767,59 @@ public:
 
 private:
     bsp::LuaBindingArgumentReader& core_;
+};
+
+// Goal 4 chain 525. ImageAccess is a typed view of the existing unit owner,
+// not a second image of entity+127Ch. Resolve the actual Lua entity identity
+// at the body's read point and borrow the air value 00855250/00893A60 maintain.
+// bsp.py show 008938E0: argument 0 -> 00888AA0 -> FLD [entity+127Ch] ->
+// 00B66480; the existing valid-submarine admission remains at the call site.
+// Only that read and PushFloat belong to this binding; refuse all other
+// operations of the shared segment-56 interfaces.
+class SubmarineAirBinding final : public bsp::seg56_options_cc13::ImageAccess,
+                                  public bsp::cc13_seg56::LuaResults {
+public:
+    SubmarineAirBinding(GameUnitsHost& units,
+        std::function<std::size_t(void*)> index_of, std::function<void(float)> push)
+        : units_(units), index_of_(std::move(index_of)), push_(std::move(push)) {}
+
+    float read_f32(void* entity, std::uint32_t offset) override {
+        if (offset != 0x127cu || entity == nullptr
+            || !units_.submarine_air_008938e0(index_of_(entity), air_))
+            unsupported();
+        return air_;
+    }
+    void push_float(float value) override { push_(value); }
+    float air() const noexcept { return air_; }
+
+    std::uint8_t read_u8(void*, std::uint32_t) override { unsupported(); }
+    std::int32_t read_i32(void*, std::uint32_t) override { unsupported(); }
+    void* read_ptr(void*, std::uint32_t) override { unsupported(); }
+    void write_u8(void*, std::uint32_t, std::uint8_t) override { unsupported(); }
+    void write_i32(void*, std::uint32_t, std::int32_t) override { unsupported(); }
+    void write_f32(void*, std::uint32_t, float) override { unsupported(); }
+    std::uint16_t global_u16(std::uint32_t) override { unsupported(); }
+    void* global_ptr(std::uint32_t) override { unsupported(); }
+    void write_global_u8(std::uint32_t, std::uint8_t) override { unsupported(); }
+    void write_global_f32(std::uint32_t, float) override { unsupported(); }
+    std::int32_t global_i32(std::uint32_t) override { unsupported(); }
+    void push_number(int) override { unsupported(); }
+    void push_boolean(bool) override { unsupported(); }
+    void push_nil() override { unsupported(); }
+    void push_string(const std::string&) override { unsupported(); }
+    void push_integer_fields(const std::vector<std::pair<std::string, int>>&) override { unsupported(); }
+    void push_vector3(const bsp::cc13_seg56::Vec3&) override { unsupported(); }
+    void push_vector3_fields(
+        const std::vector<std::pair<std::string, bsp::cc13_seg56::Vec3>>&) override { unsupported(); }
+
+private:
+    [[noreturn]] static void unsupported() {
+        throw std::logic_error("GetSubmarineAirSupply 008938E0: unbound accessor");
+    }
+    GameUnitsHost& units_;
+    std::function<std::size_t(void*)> index_of_;
+    std::function<void(float)> push_;
+    float air_{};
 };
 
 // Goal 4 chain 460. These callbacks borrow the current script orders owner;
@@ -5127,8 +5182,22 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             float air = 0.0f;
             if (subject != nullptr && row.unit_index < units_.count()
                 && units_.submarine_air_008938e0(row.unit_index, air)) {
+                if constexpr (bsp::kWireGoal4Chain525Bound) {
+                    // Reuse the segment-56 core-argument forwarding adapter.
+                    // The body asks only entity_at(0), so none of its extended
+                    // repair-specific refusal paths can run here.
+                    RepairBindingArgs args(*this);
+                    SubmarineAirBinding view(units_,
+                        [this](void* entity) { return index_of(entity); },
+                        [this](float value) { push_number_float_00b66480(value); });
+                    const int count = bsp::seg56_options_cc13::
+                        lua_get_submarine_air_supply_008938e0(args, view, view);
+                    results = state_ != nullptr ? count : 0;
+                    air = view.air();
+                } else {
                 push_number_float_00b66480(air);
                 results = state_ != nullptr ? 1 : 0;
+                }
                 log_.notef("  GetSubmarineAirSupply: %s air=%.6f (008938E0 <- +127Ch)",
                     row.unit.c_str(), static_cast<double>(air));
             } else {
