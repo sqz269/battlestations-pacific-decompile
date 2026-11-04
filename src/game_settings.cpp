@@ -1,5 +1,9 @@
 #include "bsp/game_settings.hpp"
 #include "bsp/gui_lua_reader.hpp"
+#include "bsp/band_0045_cc13.hpp"
+#include "bsp/cc13_seg95.hpp"
+#include "bsp/frontend_seg15_22_cc13.hpp"
+#include "bsp/wire_goal4_chain429_switches.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -7,6 +11,36 @@
 
 namespace bsp {
 namespace {
+class SettingsEqualityHost final : public cc13_seg95::TaggedValueEqualityHost {
+public:
+    bool vec3_exact_equals_00453f40(const float* a, const float* b) override {
+        return band_0045_cc13::exact_equals_00453f40(
+            {a[0], a[1], a[2]}, {b[0], b[1], b[2]});
+    }
+    bool vec2_equal_00533d30(const float* a, const float* b) override {
+        return frontend_seg15_22_cc13::vec2f_equal_00533d30(a, b);
+    }
+    bool vec4_exact_equals_00475df0(const float* a, const float* b) override {
+        return band_0045_cc13::exact_equals_00475df0(
+            {a[0], a[1], a[2], a[3]}, {b[0], b[1], b[2], b[3]});
+    }
+};
+
+cc13_seg95::TaggedValue native_settings_value(const SettingsValue& value) noexcept {
+    cc13_seg95::TaggedValue native{static_cast<std::uint32_t>(value.type), 0};
+    switch (value.type) {
+    case SettingsValueType::Bool: native.payload = value.boolean ? 1u : 0u; break;
+    case SettingsValueType::Int: native.payload = static_cast<std::uint32_t>(value.integer); break;
+    case SettingsValueType::Float:
+        std::memcpy(&native.payload, &value.real, sizeof native.payload);
+        break;
+    case SettingsValueType::String:
+        native.payload = reinterpret_cast<std::uint32_t>(value.text != nullptr ? value.text : "");
+        break;
+    }
+    return native;
+}
+
 // 008d64eb and the rows around it; the guard call is 00bd5680, an equality test
 // between the field variant and a default variant built on the stack.
 SettingsKey make_bool(const char* name, std::uint16_t offset, bool default_value) noexcept
@@ -275,8 +309,21 @@ void write_settings_008d64a0(const GameSettingsBlock& settings, SettingsWriter& 
             writer.end_section();
         }
         const SettingsValue value = read_field(settings, key.offset);
+        if constexpr (kWireGoal4Chain429Bound) {
+            // 008D64EB and the later omit-default sites call 00BD5680 with
+            // the actual settings field and the binary's per-key default.
+            // These table entries have matching Bool/Int tags. Preserve the
+            // payload bits rather than comparing the projection's padding.
+            // bsp.py show 00bd5680: only the left tag selects the comparison.
+            SettingsEqualityHost equality;
+            if (key.omit_when_default && cc13_seg95::tagged_value_equals_00bd5680(
+                    native_settings_value(value), native_settings_value(key.default_value), equality)) {
+                continue;
+            }
+        } else {
         if (key.omit_when_default && value == key.default_value) {
             continue; // 00bd5680 returned true
+        }
         }
         writer.write_field(key.name, value); // virtual +0Ch
     }
@@ -369,7 +416,21 @@ bool apply_all_settings_008d5b50(const GameSettingsBlock& settings,
     host.localization_load_table(lanfile.c_str()); // 008d5da1
 
     // 008d5dc8: rumble is on only when neither the game nor the setting blocks it.
+    if constexpr (kWireGoal4Chain429Bound) {
+        SettingsEqualityHost equality;
+        // 008D5DD6 compares the live settings+40h byte with literal zero.
+        // Reuse 00BD5680's tag-3 byte equality for that predicate; this is a
+        // semantic reuse, not a recovered Original CALL at this location.
+        // The result reaches GameInputRuntime's actual force-enabled flag
+        // through QuickSettingsApplyHost, including title-time profile loads.
+        const bool enabled = !env.rumble_blocked_by_game
+            && cc13_seg95::tagged_value_equals_00bd5680(
+                native_settings_value(SettingsValue::from_bool(settings.control.rumble_off_40)),
+                {3u, 0u}, equality);
+        host.set_rumble_enabled(enabled);
+    } else {
     host.set_rumble_enabled(!env.rumble_blocked_by_game && !settings.control.rumble_off_40);
+    }
 
     if (env.downloadable_content_present) { // 008d5de7
         if (env.downloadable_content_ready) {

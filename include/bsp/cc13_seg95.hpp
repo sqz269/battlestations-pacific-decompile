@@ -50,7 +50,16 @@ struct ArchiveWriterGlobals {
     const char* empty_0109cee5{};     // the empty string used for a null native string
 };
 
-struct Host {
+// Complete provider surface of 00BD5680. Scalar settings comparisons do not
+// require an archive, Lua state, allocator, or the unrelated engine services.
+struct TaggedValueEqualityHost {
+    virtual ~TaggedValueEqualityHost() = default;
+    virtual bool vec3_exact_equals_00453f40(const float* a, const float* b) = 0;
+    virtual bool vec2_equal_00533d30(const float* a, const float* b) = 0;
+    virtual bool vec4_exact_equals_00475df0(const float* a, const float* b) = 0;
+};
+
+struct Host : TaggedValueEqualityHost {
     virtual ~Host() = default;
 
     // --- LuaObject primitives, all __thiscall(ECX = LuaObject) ---
@@ -124,9 +133,6 @@ struct Host {
     // --- other engine calls ---
     // CALL [0109CEDC] with ECX = the payload object: the installed object-to-id function.
     virtual std::int32_t object_id_fn_0109cedc(void* object) = 0;
-    virtual bool vec3_exact_equals_00453f40(const float* a, const float* b) = 0;  // ECX a, RET 4
-    virtual bool vec2_equal_00533d30(const float* a, const float* b) = 0;
-    virtual bool vec4_exact_equals_00475df0(const float* a, const float* b) = 0;
     // mount+8 provider vtable +10h, __thiscall(provider; name) RET 4 -> AL.
     virtual std::uint8_t vfs_provider_exists_vslot10(void* provider, const void* name) = 0;
 
@@ -161,7 +167,8 @@ void state_owner_destruct_00bd4270(std::uint8_t* self, void*& global_0109cecc,
 // 00BD4BF0 BSP_Matrix4x4_Equals, __thiscall(ECX a, b) RET 4 -> EAX.
 bool matrix4x4_equals_00bd4bf0(const float* a, const float* b);
 // 00BD5680 BSP_TaggedValue_Equals, __thiscall(ECX a, b) RET 4 -> AL.
-bool tagged_value_equals_00bd5680(const TaggedValue& a, const TaggedValue& b, Host& host);
+bool tagged_value_equals_00bd5680(const TaggedValue& a, const TaggedValue& b,
+                                TaggedValueEqualityHost& host);
 
 // Archive reader / writer references: {vtable, refcount block*, archive}.
 struct ArchiveRef {

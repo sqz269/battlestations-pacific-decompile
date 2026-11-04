@@ -133,7 +133,9 @@ bool matrix4x4_equals_00bd4bf0(const float* a, const float* b) {
     return true;
 }
 
-bool tagged_value_equals_00bd5680(const TaggedValue& a, const TaggedValue& b, Host& host) {
+// Keep the recovered boundary visible in optimized executable call graphs.
+__declspec(noinline) bool tagged_value_equals_00bd5680(
+    const TaggedValue& a, const TaggedValue& b, TaggedValueEqualityHost& host) {
     switch (a.tag) {  // only the left tag is read
     case 0: return _stricmp(payload_text(a.payload), payload_text(b.payload)) == 0;  // 00BF7FBF
     case 1:
