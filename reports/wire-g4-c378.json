@@ -1,0 +1,81 @@
+{
+  "chain": 378,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain378Bound",
+  "summary": "Route aircraft gun searches and dogfight early-edge cache clearing through the existing 007B96F0/007B9740 bodies using the live plane-neighbours state.",
+  "rows": [
+    {
+      "native": "007b96f0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::df_early_edge_009aaa80 and PlaneBinding::df_finder_007e2090 via find_gun_target",
+      "evidence": "bsp.py show 007b96f0: unit+C50h null guard followed by 007E2090 with seven unchanged arguments; show 007e2090 identifies cone, inner, range, near, threshold, squadron and noise.",
+      "real_state": "GameUnitSlot neighbour clocks, enemy list and cached slot; live PlaneFinderParams, dogfight threshold and PlaneSquadronHostRecord filter. Noise 0.05 is image constant 00CE7638; gun noise is the existing zero argument.",
+      "call_sites": 2,
+      "entry_reachable": true
+    },
+    {
+      "native": "007b9740",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::df_early_edge_009aaa80",
+      "evidence": "bsp.py show 007b9740: unit+C50h null guard followed by 007E2070. The existing early-edge failure path cleared the same nb_found_plus_one cache.",
+      "real_state": "The aircraft's live nb_found_plus_one cache. Slot identities require no native observer unregister; the existing labelled every-fighter finder lifetime is preserved.",
+      "call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot target query candidate",
+      "reason": "Missing a validated bridge from plane+DF4h and the local-slot pilot target array at +98h+slot*1Ch to the host's task-specific target identities."
+    },
+    {
+      "native": "007bbc50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: grounded-site query candidate",
+      "reason": "Missing a typed owned-site holder chain and holder+48h local transform adapter for the native plane+900h/+BF8h predicate."
+    },
+    {
+      "native": "007c3ea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane touchdown command candidate",
+      "reason": "Missing one adapter covering touchdown target descriptors, squadron command issue, pilot-task retirement and the native 57h state message."
+    },
+    {
+      "native": "007c4d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: paratrooper altitude candidate",
+      "reason": "No identified production caller supplies both plane+9B4h altitude and the verified tuning+354h/+358h limits to this predicate."
+    },
+    {
+      "native": "0099b650",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: land-task approach owner candidate",
+      "reason": "The host explicitly leaves the approach plan's +25Ch owner pointer unmodelled; a persistent owner slot and its consumers are missing."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task tick gate candidate",
+      "reason": "Missing a live task+2F4h unit bridge and local-side unit+9C2h+slot*8 byte view at an identified task gate caller."
+    },
+    {
+      "native": "009bd400",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: path-leg manager candidate",
+      "reason": "Missing singleton construction, registration and critical-section ownership adapters for the native path-leg manager lifetime."
+    },
+    {
+      "native": "009be050",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: leader velocity copy candidate",
+      "reason": "Missing one validated adapter joining the inline unit+AB0h controller, global vector 00F87574 and 007D9C10 body-frame refresh."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release passed; reconstructed_math, native_math_differential and tool_tests all passed",
+    "call_graph": "tools/call_graph.py and who checks: both addresses have direct call sites reachable from WinMainCRTStartup through mission fixed-step aircraft simulation",
+    "readiness_wired_before": 9599,
+    "readiness_wired_after": 9601,
+    "scope": "Build and binary call-graph verification; no gameplay run. Existing 007E2090 host search and slot-identity cache remain the labelled callee implementations."
+  }
+}

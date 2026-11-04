@@ -61,6 +61,7 @@
 #include "bsp/native_air_ops_holder_geometry.hpp"  // chain 73: 006BCC90
 #include "bsp/oct18_tail_b.hpp"        // chain 73: 007B8A90 typed overload
 #include "bsp/cc13_seg47.hpp"          // chain 67: 007B5BE0, 007C4830 typed overloads
+#include "bsp/wire_goal4_chain378_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"         // chain 84: 006C77E0 typed overload
 #include "bsp/cc15_seg48.hpp"          // chain 84: 007F1CA0 typed overload
 #include "bsp/cc13_seg47b.hpp"         // chain 73: 007C1570, 007C2090 typed overloads
@@ -30968,6 +30969,52 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return pick == bsp::kPlaneSquadronNoUnit ? nullptr : owner_.slots[pick].get();
                     }
 
+                    // Chain 378. Evidence: bsp.py show 007B96F0 / 007B9740:
+                    // the wrappers only test +C50h and forward to 007E2090 /
+                    // 007E2070. The live neighbours cache, clocks and enemy list
+                    // already belong to unit_; every aircraft entering these
+                    // gun/early-aim paths owns that finder (see p20_df_early_clear).
+                    // Raw is an identity token here, never an image-offset view.
+                    struct GunTargetBinding final : bsp::cc13_seg47::PlaneGunTargetHost {
+                        using Raw = bsp::cc13_seg47::Raw;
+                        PlaneBinding& plane;
+                        explicit GunTargetBinding(PlaneBinding& value) : plane(value) {}
+                        Raw unit_gun_target_finder(Raw unit) override { return unit; }
+                        void* scan_gun_target(Raw, float cone, float inner,
+                                float range, float near_distance, float threshold,
+                                std::int32_t squadron, float noise) override {
+                            bsp::PlaneFinderParams fp;
+                            fp.cone_b8 = cone;
+                            fp.inner_c0 = inner;
+                            fp.range_bc = range;
+                            fp.near_c4 = near_distance;
+                            const auto* filter = reinterpret_cast<const bsp::PlaneSquadronHostRecord*>(
+                                static_cast<std::uintptr_t>(static_cast<std::uint32_t>(squadron)));
+                            // The existing 007E2090 host accepts a midpoint and
+                            // doubles it for U(0, noise). Halving is exact binary
+                            // scaling, rounded by the float parameter store.
+                            return const_cast<GameUnitSlot*>(plane.df_finder_scan_007e2090(
+                                fp, threshold, filter, noise * 0.5f));
+                        }
+                        void clear_gun_target(Raw) override {
+                            // The cache holds a slot identity, not a native
+                            // observer reference; no unregister is needed.
+                            plane.unit_.nb_found_plus_one = 0;
+                        }
+                    };
+
+                    const GameUnitSlot* find_gun_target(const bsp::PlaneFinderParams& fp,
+                            float threshold, const bsp::PlaneSquadronHostRecord* squadron,
+                            float noise) {
+                        GunTargetBinding binding(*this);
+                        return static_cast<GameUnitSlot*>(
+                            bsp::cc13_seg47::unit_find_gun_target_007b96f0(binding,
+                                bsp::cc13_seg47::raw(&unit_), fp.cone_b8, fp.inner_c0,
+                                fp.range_bc, fp.near_c4, threshold,
+                                static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(squadron)),
+                                noise));
+                    }
+
                     // 009AAA80, read from the listing (packet cc9_plane_gun_pass):
                     // approach+DCh > 0.0 and +E0h < 1.0, else 007B9740 and false;
                     // 007B96F0(+DCh, row+220h, task+344h, row+20Ch, +E0h, task+4C4h,
@@ -30980,7 +31027,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009AAC5D-009AAC63: 007B9740 -> 007E2070 clears the cache.
                             ++owner_.df_early_edge_clears;
                             if constexpr (GameUnitsHost::Impl::kDogfightEarlyEdgeClearBound) {
-                                unit_.nb_found_plus_one = 0;
+                                if constexpr (bsp::kWireGoal4Chain378Bound) {
+                                    GunTargetBinding binding(*this);
+                                    bsp::cc13_seg47::plane_neighbours_clear_target_007b9740(
+                                        binding, bsp::cc13_seg47::raw(&unit_));
+                                } else {
+                                    unit_.nb_found_plus_one = 0;
+                                }
                             }
                             return false;
                         }
@@ -30998,7 +31051,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         fp.range_bc = unit_.df_row.aim_shoot_distance + 650.0f;  // task+344h
                         fp.near_c4 = unit_.df_row.follow_dist;             // row+20Ch
                         // 00CE7638 = 0.05, the U(0, 0.05) draw at its midpoint.
-                        const GameUnitSlot* f = df_finder_scan_007e2090(fp, unit_.df_e0, tsq, 0.025f);
+                        const GameUnitSlot* f;
+                        if constexpr (bsp::kWireGoal4Chain378Bound) {
+                            f = find_gun_target(fp, unit_.df_e0, tsq, 0.05f);
+                        } else {
+                            f = df_finder_scan_007e2090(fp, unit_.df_e0, tsq, 0.025f);
+                        }
                         if (f == nullptr) return false;
                         const double dx = static_cast<double>(f->motion.position[0]) - unit_.motion.position[0];
                         const double dy = static_cast<double>(f->motion.position[1]) - unit_.motion.position[1];
@@ -31106,7 +31164,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fp.inner_c0 = gi.lateral_cap_38;
                             fp.range_bc = gi.search_range_30;
                             fp.near_c4 = static_cast<float>(gi.shoot_distance * 0.30000001192092896);
-                            found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
+                            if constexpr (bsp::kWireGoal4Chain378Bound) {
+                                found = find_gun_target(fp, -1.0f, nullptr, 0.0f);
+                            } else {
+                                found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
+                            }
                         }
                         // 009FC917: +74h = the search result, before the live test.
                         unit_.gun_target_74_plus_one = found != nullptr ? unit_.nb_found_plus_one : 0;

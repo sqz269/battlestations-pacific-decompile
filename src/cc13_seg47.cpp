@@ -1104,15 +1104,17 @@ void plane_detach_into_hangar_007b96c0(Seg47Host& host, Raw plane) {
 
 // 007B96F0, __thiscall(ECX = unit; f0, f1, f2, f3, f4, int n, float f6), RET 1Ch,
 // EAX: [unit+C50h] null -> 0, else 007E2090(finder; the seven arguments, in order).
-void* unit_find_gun_target_007b96f0(Seg47Host& host, Raw unit, float f0, float f1, float f2, float f3, float f4,
+void* unit_find_gun_target_007b96f0(PlaneGunTargetHost& host, Raw unit, float f0, float f1, float f2, float f3, float f4,
                                     std::int32_t n, float f6) {
-    if (unit.ptr(0xC50) == nullptr) return nullptr;
-    return host.gun_target_finder_scan_007e2090(unit.deref(0xC50), f0, f1, f2, f3, f4, n, f6);
+    const Raw finder = host.unit_gun_target_finder(unit);
+    if (!finder) return nullptr;
+    return host.scan_gun_target(finder, f0, f1, f2, f3, f4, n, f6);
 }
 
 // 007B9740, __thiscall(ECX = unit): when [unit+C50h] is set, tail-jumps to 007E2070(finder).
-void plane_neighbours_clear_target_007b9740(Seg47Host& host, Raw unit) {
-    if (unit.ptr(0xC50) != nullptr) host.gun_target_finder_clear_007e2070(unit.deref(0xC50));
+void plane_neighbours_clear_target_007b9740(PlaneGunTargetHost& host, Raw unit) {
+    const Raw finder = host.unit_gun_target_finder(unit);
+    if (finder) host.clear_gun_target(finder);
 }
 
 // 007B97E0, __thiscall(ECX = plane), EAX = +9D4h (the squadron).
