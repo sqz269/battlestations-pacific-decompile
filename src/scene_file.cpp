@@ -4,6 +4,8 @@
 //            008d9ad0, 008d9b40.
 #include "bsp/scene_file.hpp"
 #include "bsp/scene_property_bag.hpp"
+#include "bsp/engine_seg56_cc13.hpp"
+#include "bsp/wire_goal4_chain491_switches.hpp"
 #include "bsp/wire_goal4_chain477_switches.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/oct18_rec.hpp"
@@ -594,8 +596,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                 && std::isspace(static_cast<unsigned char>(token.text[first]))) ++first;
             if (first < token.text.size()
                 && (token.text[first] == '+' || token.text[first] == '-')) ++first;
-            const bool digit = first < token.text.size()
-                && std::isdigit(static_cast<unsigned char>(token.text[first]));
+            bool digit;
+            if constexpr (kWireGoal4Chain491Bound) {
+                digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
+            } else {
+                digit = first < token.text.size()
+                    && std::isdigit(static_cast<unsigned char>(token.text[first]));
+            }
             const bool fraction = first + 1 < token.text.size()
                 && token.text[first] == '.'
                 && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
@@ -645,8 +652,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                         && std::isspace(static_cast<unsigned char>(token.text[first]))) ++first;
                     if (first < token.text.size()
                         && (token.text[first] == '+' || token.text[first] == '-')) ++first;
-                    const bool digit = first < token.text.size()
-                        && std::isdigit(static_cast<unsigned char>(token.text[first]));
+                    bool digit;
+                    if constexpr (kWireGoal4Chain491Bound) {
+                        digit = cc13_seg56::scene_token_is_int_008d8f10(token.text);
+                    } else {
+                        digit = first < token.text.size()
+                            && std::isdigit(static_cast<unsigned char>(token.text[first]));
+                    }
                     const bool fraction = first + 1 < token.text.size()
                         && token.text[first] == '.'
                         && std::isdigit(static_cast<unsigned char>(token.text[first + 1]));
@@ -717,8 +729,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                         while (first < text.size()
                             && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
                         if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
-                        const bool digit = first < text.size()
-                            && std::isdigit(static_cast<unsigned char>(text[first]));
+                        bool digit;
+                        if constexpr (kWireGoal4Chain491Bound) {
+                            digit = cc13_seg56::scene_token_is_int_008d8f10(text);
+                        } else {
+                            digit = first < text.size()
+                                && std::isdigit(static_cast<unsigned char>(text[first]));
+                        }
                         const bool fraction = first + 1 < text.size() && text[first] == '.'
                             && std::isdigit(static_cast<unsigned char>(text[first + 1]));
                         const bool hex = first + 1 < text.size() && text[first] == '0'
@@ -772,8 +789,13 @@ ScenePropertyBlock parse_property_body(Cursor& cur)
                             while (first < text.size()
                                 && std::isspace(static_cast<unsigned char>(text[first]))) ++first;
                             if (first < text.size() && (text[first] == '+' || text[first] == '-')) ++first;
-                            const bool digit = first < text.size()
-                                && std::isdigit(static_cast<unsigned char>(text[first]));
+                            bool digit;
+                            if constexpr (kWireGoal4Chain491Bound) {
+                                digit = cc13_seg56::scene_token_is_int_008d8f10(text);
+                            } else {
+                                digit = first < text.size()
+                                    && std::isdigit(static_cast<unsigned char>(text[first]));
+                            }
                             const bool fraction = first + 1 < text.size() && text[first] == '.'
                                 && std::isdigit(static_cast<unsigned char>(text[first + 1]));
                             const bool hex = first + 1 < text.size() && text[first] == '0'

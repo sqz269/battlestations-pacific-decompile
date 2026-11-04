@@ -979,7 +979,7 @@ int lua_hack_press_input(LuaArgs& args, HackInputHost& host);
 
 // 008D8F10: the peeked token (delimiters 00CE3A34) is an int when sscanf("%d") assigns one
 // field. 008D8F40 is the "%f" twin (delimiters 00CE4334), already modelled as parse_float.
-bool scene_token_is_int(const std::string& token);
+bool scene_token_is_int_008d8f10(const std::string& token);
 
 // 008D9750 (cc13-sys5b), __thiscall(tokenizer, float value, const char* unit), RET 8: converts
 // a scene value into `unit` by the unit token that follows it. Rows are the 10h-byte records at
