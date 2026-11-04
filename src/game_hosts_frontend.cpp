@@ -3,6 +3,7 @@
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/wire_goal4_chain251_switches.hpp"
 #include "bsp/wire_goal4_chain370_switches.hpp"
+#include "bsp/frontend_scroller_bridge.hpp"
 #include "bsp/cc13_sweepA2.hpp"
 
 #include "bsp/game_native_gui_resource_application.hpp"
@@ -114,19 +115,6 @@ std::string string_key(const GuiTable& table, const char* key) {
     return {};
 }
 
-// resolved_position (00AA6750) over the loader's own parent links: the transform's +70h
-// chain is the scene widget's, and a diagnostic tree does not build one.
-GuiWidgetPoint resolved_point(const GuiLayoutWidget& widget) {
-    if (widget.parent == nullptr) return widget.transform.position;
-    const GuiWidgetPoint parent_point = resolved_point(*widget.parent);
-    const GuiWidgetSize offset = pivot_offset(widget.parent->transform);
-    GuiWidgetPoint point;
-    point.x = (parent_point.x + widget.transform.position.x) - offset.width;
-    point.y = (parent_point.y + widget.transform.position.y) - offset.height;
-    point.z = parent_point.z + widget.transform.position.z;
-    return point;
-}
-
 // Atlas item names are full virtual paths; page textures are relative and may use the
 // authored backslash separator.
 std::string atlas_key(const std::string& authored) {
@@ -146,18 +134,6 @@ struct BridgeQuad {
     float z{0.0f};
     BridgeVertex vertices[6]{};
 };
-
-// Milestone 2d: one quad of a Text widget's glyph run carries the widget's authored
-// colour, so the diffuse lane is no longer a constant white for every quad.
-D3DCOLOR bridge_color(const float (&color)[4]) noexcept {
-    const auto lane = [](float value) -> int {
-        const float scaled = value * 255.0f;
-        if (!(scaled > 0.0f)) return 0;
-        if (scaled >= 255.0f) return 255;
-        return static_cast<int>(scaled + 0.5f);
-    };
-    return D3DCOLOR_ARGB(lane(color[3]), lane(color[0]), lane(color[1]), lane(color[2]));
-}
 
 }  // namespace
 
@@ -252,6 +228,7 @@ struct GameFrontendHost::Impl {
     UINT atlas_width{};
     UINT atlas_height{};
     std::vector<BridgeQuad> quads;
+    FrontendScrollerBridge scroller_bridge;
     // Milestone 2d, the text half of the bridge. The runs are built once per widget,
     // because a visibility change or a newly loaded page does not change a layout;
     // build_quads then turns the cached glyph quads into bridge quads every rebuild.
@@ -1157,8 +1134,8 @@ void GameFrontendHost::Impl::build_quads() {
         if (node != nullptr) record.visible = node->visible;
         // Milestone 2k: a run-time clone is moved every mission frame by the
         // minimap icon pass or the marker pass, so its cached transform is stale
-        // by construction and is re-read here. An authored widget keeps the
-        // values the page load resolved, exactly as before.
+        // by construction and is re-read here. Other authored widgets keep
+        // the page-load values except the explicitly bound scroller controls.
         if (node != nullptr && record.runtime) {
             const GuiWidgetPoint point = resolved_point(*node);
             record.x = point.x;
@@ -1168,6 +1145,12 @@ void GameFrontendHost::Impl::build_quads() {
             record.height = node->transform.size.height;
             record.pivot_x = node->transform.pivot_x;
             record.pivot_y = node->transform.pivot_y;
+        }
+        if constexpr (kWireGoal4Chain407Bound) {
+            // 006834A0 changes authored controls too. Refresh the exact
+            // records whose dimensions feed the emitted quad corners below.
+            scroller_bridge.refresh(record, node);
+        } else {
         }
         if (!bridge_visible(node)) continue;
         // Milestone 2d: a Text widget carries a font, not a texture, so it takes the
@@ -1231,12 +1214,19 @@ void GameFrontendHost::Impl::build_quads() {
         quad.z = record.z;
         // Milestone 2k: a run-time clone carries its template's authored Color
         // (the six minimap groups differ only by it) and the rotation the icon
-        // pass wrote. An authored widget keeps milestone 2b's constant white and
+        // pass wrote. Other authored widgets keep milestone 2b's constant white and
         // its axis-aligned quad, so no earlier capture moves. Honouring the
         // authored Color and Rotate on every quad is bridge work this milestone
         // does not do; see the follow-ups.
-        const D3DCOLOR color = (node != nullptr && record.runtime)
-            ? bridge_color(node->color) : D3DCOLOR_ARGB(255, 255, 255, 255);
+        const D3DCOLOR color = [&] {
+            if constexpr (kWireGoal4Chain407Bound) {
+                return scroller_bridge.color(record, node);
+            } else {
+                const D3DCOLOR legacy_color = (node != nullptr && record.runtime)
+                    ? bridge_color(node->color) : D3DCOLOR_ARGB(255, 255, 255, 255);
+                return legacy_color;
+            }
+        }();
         BridgeVertex top_left{left, top, 0.0f, 1.0f, color, u1, v1};
         BridgeVertex top_right{right, top, 0.0f, 1.0f, color, u2, v1};
         BridgeVertex bottom_left{left, bottom, 0.0f, 1.0f, color, u1, v2};
@@ -1409,6 +1399,39 @@ void GameFrontendHost::set_widget_text_source(GuiLayoutWidget& widget, std::stri
     host.text_sources[&widget] = std::move(source);
     host.text_runs.erase(&widget);
     host.quads_built = false;
+}
+
+bool GameFrontendHost::widget_text_height(GuiLayoutWidget& widget, float& height) {
+    Impl& host = *impl_;
+    if (!host.text_host || widget.type != GuiWidgetType::Text) return false;
+    auto cached = host.text_runs.find(&widget);
+    if (cached == host.text_runs.end()) {
+        // Reuse the render cache, including its current runtime source. The
+        // next draw consumes this run rather than rebuilding the text path.
+        const auto node = std::find(host.widget_nodes.begin(), host.widget_nodes.end(), &widget);
+        if (node == host.widget_nodes.end()) return false;
+        const auto index = static_cast<std::size_t>(node - host.widget_nodes.begin());
+        const auto position = resolved_position(widget.transform);
+        const auto& transform = widget.transform;
+        GameTextRun run;
+        const auto source = host.text_sources.find(&widget);
+        host.text_host->build_run(host.widget_records[index].page, widget,
+            position.x - transform.pivot_x * transform.size.width,
+            position.y - transform.pivot_y * transform.size.height, run,
+            source != host.text_sources.end() ? &source->second : nullptr);
+        cached = host.text_runs.emplace(&widget, std::move(run)).first;
+        host.summary.text_widgets = host.text_host->summary().text_widgets;
+        host.summary.text_runs = host.text_host->summary().runs_built;
+        host.summary.text_glyphs = host.text_host->summary().glyph_quads;
+    }
+    if (!cached->second.normalized_height) return false;
+    height = *cached->second.normalized_height;
+    return true;
+}
+
+void GameFrontendHost::bind_scroller_controls(const FrontEndScreenScroller& scroller) {
+    impl_->scroller_bridge.bind(scroller);
+    impl_->quads_built = false;
 }
 
 namespace {

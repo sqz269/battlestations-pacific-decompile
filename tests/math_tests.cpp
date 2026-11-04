@@ -58,6 +58,7 @@
 #include "bsp/game_frame_control.hpp"
 #include "bsp/frontend_entry.hpp"
 #include "bsp/frontend_screen_animation.hpp"
+#include "bsp/frontend_scroller_bridge.hpp"
 #include "bsp/frontend_screen_sets.hpp"
 #include "bsp/native_input_action_contexts.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
@@ -1633,6 +1634,61 @@ int main() {
             "the branch just below that boundary agrees with it");
         check(!empty.scrollable && empty.thumb_height == 52.0f && empty.thumb_travel == 0.0f,
             "a zero range fills the track with the thumb and reports not scrollable");
+    }
+
+    {
+        // Chain407 review R1: exercise 006834A0 through the same authored
+        // render-record refresh and diffuse selection used by build_quads.
+        struct Layout final : bsp::FrontEndScrollerHost {
+            static bsp::GuiLayoutWidget& node(void* p) { return *static_cast<bsp::GuiLayoutWidget*>(p); }
+            bsp::GuiWidgetPoint widget_position(void* p) override { return bsp::resolved_position(node(p).transform); }
+            void set_widget_position(void* p, const bsp::GuiWidgetPoint& v) override {
+                node(p).transform.position = bsp::local_position_for_resolved(node(p).transform, v);
+            }
+            bsp::GuiWidgetSize widget_size(void* p) override { return node(p).transform.size; }
+            void widget_set_size(void* p, const bsp::GuiWidgetSize& v) override { node(p).transform.size = v; }
+            void widget_set_alpha(void* p, float v) override { node(p).color[3] = v; }
+            float scroll_axis() override { std::abort(); }
+            bool pad_axis(int, double&) override { std::abort(); }
+            float cursor_x() override { std::abort(); }
+            float cursor_y() override { std::abort(); }
+        } layout;
+        bsp::GuiLayoutWidget thumb, top, bottom, unrelated;
+        thumb.transform.size = {0.04f, 0.12f};
+        thumb.color[0] = 0.5f;
+        thumb.color[1] = 0.25f;
+        bsp::FrontEndScreenScroller scroller;
+        bsp::attach_scroll_bar_00683380(scroller, &thumb, 0.4f, &top, &bottom, layout);
+        bsp::game::FrontendScrollerBridge bridge;
+        bridge.bind(scroller);
+        for (const float range : {0.0f, 0.2f}) {
+            bsp::set_scroll_range(scroller, range, layout);
+            bsp::game::GameWidgetRecord drawn_thumb, drawn_arrow, untouched;
+            drawn_thumb.height = 0.12f; // load-time authored size, runtime=false
+            untouched.height = 0.7f;
+            bridge.refresh(drawn_thumb, &thumb);
+            bridge.refresh(drawn_arrow, &top);
+            const bool positive = range > 0.0f;
+            if constexpr (bsp::kWireGoal4Chain407Bound) {
+                // build_quads uses this height in bottom = top + height*screen_h
+                // and this packed diffuse value in ALL six submitted vertices.
+                const float expected_pixels = positive ? 230.4f : 374.4f;
+                check(std::fabs(drawn_thumb.height * 720.0f - expected_pixels) < 0.0001f
+                        && bridge.color(drawn_thumb, &thumb) == (positive ? 0xff8040ffu : 0x338040ffu)
+                        && bridge.color(drawn_arrow, &top) == (positive ? 0xffffffffu : 0x40ffffffu)
+                        && bridge.color(drawn_arrow, &bottom) == (positive ? 0xffffffffu : 0x40ffffffu)
+                        && !drawn_thumb.runtime,
+                    "chain407 zero/positive range reaches authored thumb geometry and thumb/arrow vertex tint");
+            } else {
+                check(drawn_thumb.height == 0.12f && !drawn_thumb.runtime
+                        && bridge.color(drawn_thumb, &thumb) == 0xffffffffu
+                        && bridge.color(drawn_arrow, &top) == 0xffffffffu,
+                    "chain407 OFF preserves authored cached size and constant-white vertex tint");
+            }
+            check(!bridge.refresh(untouched, &unrelated) && untouched.height == 0.7f
+                    && bridge.color(untouched, &unrelated) == 0xffffffffu,
+                "chain407 does not opt unrelated authored widgets into live bridge rendering");
+        }
     }
 
     {

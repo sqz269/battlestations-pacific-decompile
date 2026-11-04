@@ -26,6 +26,8 @@
 #include "bsp/cc13_seg87.hpp"
 #include "bsp/oct18_tail_c.hpp"
 #include "bsp/wire_goal2_chain52_switches.hpp"
+#include "bsp/wire_goal4_chain407_switches.hpp"
+#include "bsp/cc13_gui1.hpp"
 
 #include <array>
 #include <atomic>
@@ -599,6 +601,27 @@ bool GameTextHost::build_run(const std::string& page, const GuiLayoutWidget& wid
         run.error = "font resources retired before glyph geometry";
         ++host.summary.runs_failed;
         return false;
+    }
+    if constexpr (kWireGoal4Chain407Bound) {
+        // bsp.py show 00AB6BD0: reads only +FCh, +178h, or [font+14h].
+        // A read-only query view of the SAME layout/font used below, not a
+        // second text lifetime. Wrapped height is the unscaled raw extent;
+        // AB6BD0 divides by 720 and does not multiply mutable vertical scale.
+        alignas(4) std::array<std::uint8_t, 0x17c> context{};
+        alignas(4) std::array<std::uint8_t, 0x16> font_view{};
+        context[0xfc] = run.wrapped ? 1 : 0;
+        if (run.wrapped) {
+            const float extent = binding.wrapped().measured_height;
+            std::memcpy(context.data() + 0x178, &extent, sizeof(extent));
+        } else {
+            const std::uint16_t height = native ? native->scaled_height_14() : decoded->scaled_height;
+            std::memcpy(font_view.data() + 0x14, &height, sizeof(height));
+            const void* const font_pointer = font_view.data();
+            std::memcpy(context.data() + 0x108, &font_pointer, sizeof(font_pointer));
+        }
+        run.normalized_height = cc13_gui1::text_context_get_normalized_text_height_00ab6bd0(
+            context.data());
+    } else {
     }
     run.sheet = borrow_font_sheet(*owned, run.error);
     if (run.sheet == nullptr) {

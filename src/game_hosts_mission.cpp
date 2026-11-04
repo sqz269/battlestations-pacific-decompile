@@ -62,6 +62,7 @@
 #include "bsp/wire_goal4_chain316_switches.hpp"
 #include "bsp/wire_goal4_chain366_switches.hpp"
 #include "bsp/wire_goal4_chain387_switches.hpp"
+#include "bsp/wire_goal4_chain407_switches.hpp"
 #include "bsp/frontend_screen_animation.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/scenes_seg1_cc13.hpp"
@@ -1247,8 +1248,20 @@ public:
         }
     }
     double briefing_text_height() override {
+        if constexpr (kWireGoal4Chain407Bound) {
+            GuiLayoutWidget* text = owner_.widget(0x3b8); // 0058C82C, screen's briefing Text
+            float height{};
+            briefing_height_available_ = text && owner_.frontend.widget_text_height(*text, height);
+            if (briefing_height_available_) {
+                owner_.log.implemented("MissionDetail::briefing_text_height", "00ab6bd0");
+                return height;
+            }
+            owner_.log.unimplemented("MissionDetail::briefing_text_height_missing_layout", "00ab6bd0");
+            return 0.0; // ignored by set_scroll_range when no real measurement exists
+        } else {
         owner_.log.unimplemented("MissionDetail::briefing_text_height", "00ab6bd0");
         return 0.0;
+        }
     }
     float text_clip_height() override {
         GuiLayoutWidget* node = owner_.widget(kMissionDetailTextClipField);
@@ -1256,8 +1269,24 @@ public:
         return node != nullptr ? node->transform.size.height : 0.0f;
     }
     void set_scroll_range(double range) override {
+        if constexpr (kWireGoal4Chain407Bound) {
+            // 0058C844..0058C888: reset +354h, then 006834A0 with text
+            // height minus the real clip height. Do not consume the old
+            // zero-height fallback when the layout/font is unavailable.
+            if (!briefing_height_available_ || !owner_.widget(kMissionDetailTextClipField)) {
+                owner_.log.unimplemented("MissionDetail::set_scroll_range_missing_layout", "006834a0");
+                return;
+            }
+            MainMenuScrollerLayoutHost layout(owner_.frontend);
+            // Review R1: authored controls otherwise retain their load-time
+            // dimensions and constant-white diffuse color in the bridge.
+            owner_.frontend.bind_scroller_controls(owner_.briefing_scroller_354);
+            bsp::set_scroll_range(owner_.briefing_scroller_354, static_cast<float>(range), layout);
+            owner_.log.implemented("MissionDetail::set_scroll_range", "006834a0");
+        } else {
         static_cast<void>(range);
         owner_.log.unimplemented("MissionDetail::set_scroll_range", "006834a0");
+        }
     }
     void start_preview_movie(std::string_view movie_key) override {
         static_cast<void>(movie_key);
@@ -1332,6 +1361,7 @@ private:
     std::size_t points_{0};
     std::size_t missing_{0};
     std::string briefing_key_;
+    bool briefing_height_available_{};
 };
 
 // ---------------------------------------------------------------------------

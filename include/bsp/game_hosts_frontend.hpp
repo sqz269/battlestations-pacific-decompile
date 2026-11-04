@@ -37,6 +37,7 @@ namespace bsp {
 // stays independent of the GUI layout types.
 struct GuiLayoutPage;
 struct GuiLayoutWidget;
+struct FrontEndScreenScroller;
 // bsp/locale_tables.hpp, milestone 2d: the tables the Text widgets resolve through.
 class LocaleTables;
 }  // namespace bsp
@@ -231,6 +232,11 @@ public:
     // cached run is dropped so the next draw resolves and lays out the new
     // source through the same path an authored string takes.
     void set_widget_text_source(GuiLayoutWidget& widget, std::string source);
+    // Obtain AB6BD0 height from the same cached layout the bridge renders.
+    // Builds a not-yet-drawn run once; false leaves height untouched.
+    bool widget_text_height(GuiLayoutWidget& widget, float& height);
+    // Follow 006834A0's live thumb/arrow size and color in the sprite bridge.
+    void bind_scroller_controls(const FrontEndScreenScroller& scroller);
     // Makes the sprite bridge rebuild its quad list on the next draw, so a
     // visibility change or a newly loaded page is on screen the same frame.
     void invalidate_bridge();
