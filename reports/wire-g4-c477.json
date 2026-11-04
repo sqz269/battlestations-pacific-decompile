@@ -1,0 +1,168 @@
+{
+  "chain": 477,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": {
+    "header": "include/bsp/wire_goal4_chain477_switches.hpp",
+    "symbol": "kWireGoal4Chain477Bound",
+    "enabled": true
+  },
+  "scope": "Reuse the existing typed 008F1960 letter projection in the live scene/reference parser instead of the duplicated inverse table. Rename the same body to its address suffix with a noinline boundary; retain the unsuffixed source API as an inline forwarder.",
+  "rows": [
+    {
+      "native": "008f1960",
+      "status": "wired",
+      "host_site": "src/scene_file.cpp::scene_reference_kind (also inlined into parse_property_body)",
+      "evidence": "Eight native kind constants 0..7 from 008F1960..008F19F8 are mapped by the existing body and compared against the real authored scene/library type token. Unknown input retains -1. OFF contains the unchanged old table. Release graph: reachable, three call sites including the changed parser and the pre-existing scene_property_type_for_letter caller.",
+      "limitation": "The body already provided a typed letter projection to another decoder; this adds a live parser use and an address-visible call boundary. It does not reproduce native reference+8/NativeString assignment or original register ABI."
+    },
+    {
+      "native": "006c0b50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::Impl::landing_request_006c54c0",
+      "reason": "The host has typed squadron queue entries, but lacks the complete native observer-prefix identities, two captured critical-section owners, holder80 identity and hex84 notification lifecycle required by NativeLandingQueueCalls."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::selected-unit reset records",
+      "reason": "Missing persistent reset-screen mode+30h, native selection-vector+C4h and its writers; current UnitPickScreenState cannot supply this reset body."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::InGameInterfaceUpdate::map_screen_busy",
+      "reason": "Missing live power-up carousel/scroller bytes+1F9h/+13Fh and their writers; map_screen_wanted remains false."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "The host retains aggregate hull flags, not native shape+30h masks with owning bodies/world locks and manifold invalidation; no complete filter-change adapter exists."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp::GameUnitsHost::set_hull_class_bit_0092bd70",
+      "reason": "Missing native per-shape mask ownership, body/world lock and manifold invalidation needed by the existing raw shape-set body."
+    },
+    {
+      "native": "006e1300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::projectile stepping",
+      "reason": "GameProjectileRow lacks complete persistent launch-delay+410h, active+458h, arming+45Ch and owner-grace/expiry lifecycle producers required by BombTickState/BombTickHost."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/native_camera_owner.cpp::NativeCameraOwner projection",
+      "reason": "Real camera projection exists, but no reachable consumer needing the native aspect-times-fov product was identified; a discard-only getter call would add no behavior."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::submit_native_main_scene_00b101c0",
+      "reason": "The existing caller already names this body, but the main-scene submission component has no current caller in the game process; upstream scene/queue submission integration remains missing."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp::submit_native_main_scene_00b101c0",
+      "reason": "The clear-plane body is already connected to an uncalled main-scene submission component; a live upstream submission owner/caller is still required."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp / src/game_hosts_hud_world.cpp marker projection",
+      "reason": "Missing live normal/wide screen-margin global cells and a matching marker clamp consumer; the current HUD does not retain those bounds."
+    },
+    {
+      "native": "008d8f10",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::Cursor / scene reference parsing",
+      "reason": "The live SceneLexer is a typed token source, not the retained raw 838h tokenizer/context required by the canonical native numeric-lookahead body; adding a mirrored scratch tokenizer would substitute state."
+    },
+    {
+      "native": "008d8f40",
+      "status": "skipped",
+      "host_site": "src/scene_file.cpp::Cursor / numeric property parsing",
+      "reason": "Missing a shared live raw tokenizer/context at the scene parser; the existing native lookahead body cannot borrow the typed SceneLexer token cache."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/native_font_resources.cpp::NativeFontResources::accepts_text_byte",
+      "reason": "The accepts_text_byte method has no current source caller, and image-backed fonts do not own the FontData required by the existing typed glyph-acceptance projection."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/world_ocean.cpp::ocean_orthonormalize_00bbd310",
+      "reason": "The legacy OceanState projection is now documented as cloud-manager frame arithmetic; missing a live cloud-manager frame/instance owner and caller prevents a correct binding."
+    },
+    {
+      "native": "007ee8f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp / src/game_hosts_script_orders.cpp squadron attack handling",
+      "reason": "Missing a matching retained raw squadron/member layout and complete Cc15Seg48Host command/ordnance predicates at the proposed call sites."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp class-pair scoring",
+      "reason": "No matching live per-mode ClassPairRow collection and consumer was identified; source only exposes the reconstructed scoring provider contract."
+    },
+    {
+      "native": "00a25a30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp spawn selection",
+      "reason": "No current host call site exposes the native weight/threat-record/source-count triple together; mapping unrelated planner counts would substitute inputs."
+    }
+  ],
+  "validation": {
+    "baseline": "index --if-stale and official Win32 build: 4/4 tests passed",
+    "final_build": "scripts/build.ps1: 4/4 tests passed",
+    "call_graph": "008f1960 reachable; direct calls from scene_reference_kind and parse_property_body, plus existing scene_property_type_for_letter",
+    "float_math_changed": false,
+    "game_run": false,
+    "original_abi_proven": false,
+    "identifier_map": "config/wire_identifiers_high.json updated for the address-suffixed canonical body; readiness scan passed"
+  },
+  "remaining": "NativeString-output semantics of 008F1960 remain the documented typed-interface deviation; canonical raw scene-tokenizer ownership is a separate producer/integration task.",
+  "measurement": {
+    "readiness_before": {
+      "wired": 9753,
+      "callees_done_no_wired_caller": 9249,
+      "ready": 1469,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 201
+    },
+    "readiness_after": {
+      "wired": 9756,
+      "callees_done_no_wired_caller": 9249,
+      "ready": 1466,
+      "blocked_on_callees": 53,
+      "unknown_no_identifier": 201
+    },
+    "called_rows_before": 5029,
+    "called_rows_after": 5039,
+    "target_after": {
+      "address": "008f1960",
+      "name": "BSP_SceneReference_GetTypeLetter",
+      "source": "src/scene_property_bag.cpp",
+      "category": "ai",
+      "state": "wired",
+      "callers": 1,
+      "wired_callers": 1,
+      "callees": 1,
+      "missing_callees": [],
+      "library_bound_callees": [],
+      "address_taken": false,
+      "host_has_own": false,
+      "called": true,
+      "call_sites": 3,
+      "callers_live": 4
+    },
+    "attribution": "Observed whole-tree readiness total 9753 -> 9756 and called rows 5029 -> 5039; this report claims only the explicit 008F1960 parser connection. Other total changes may include transitive source reachability/linkage and are not separately credited."
+  }
+}

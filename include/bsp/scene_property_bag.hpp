@@ -120,7 +120,11 @@ struct ScenePropertyBagModel {
 const char* scene_property_type_letter(ScenePropertyType type) noexcept;
 
 // The letter for a reference sub-kind ("R", "RLand", ...).
-const char* scene_reference_kind_letter(SceneReferenceKind kind) noexcept;
+const char* scene_reference_kind_letter_008f1960(SceneReferenceKind kind) noexcept;
+// Preserve the existing source API while keeping a single reconstructed body.
+inline const char* scene_reference_kind_letter(SceneReferenceKind kind) noexcept {
+    return scene_reference_kind_letter_008f1960(kind);
+}
 
 // Letter -> type code, in the order the parser tests them. Returns false for a
 // letter the parser never matches. On a reference letter `kind` is filled in.
