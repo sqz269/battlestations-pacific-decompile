@@ -54,6 +54,9 @@
 #include "bsp/wire_goal4_chain288_switches.hpp"
 #include "bsp/wire_goal4_chain300_switches.hpp"
 #include "bsp/wire_goal4_chain325_switches.hpp"
+#include "bsp/wire_goal4_chain335_switches.hpp"
+#include "bsp/game_hosts_commands.hpp"                // chain 335: commands_session_messages
+#include "bsp/game_hosts_session_messages.hpp"        // chain 335: 93h / 70h / 9Eh copies
 #include "bsp/cc13_seg52.hpp"                         // chain 325: 0084D8F0
 #include "bsp/path_movcam_seg46_argon.hpp"
 #include "bsp/cc13_seg53.hpp"
@@ -4600,6 +4603,9 @@ struct GameGunneryHost::Impl {
     void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
                                          float damage);
     void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
+    // Goal 4 chain 335: a 6Bh / 6Ch jam send (00827B90, 008132C0) through
+    // 0076E520's copy, delivered as 008198A0 answers it: +9E4h / +9E5h.
+    void route_ship_jam_6b_6c(std::size_t unit, bool steering);
     bool mothership_failure_message(std::size_t unit, const std::string& name, bool set);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
     void run_damage_control(float dt);
@@ -5058,6 +5064,10 @@ struct GameGunneryHost::Impl {
     void run_kamikaze_contacts(float dt);
     void run_kamikaze_box_contacts();
     void kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
+        const float contact[3]);
+    // Goal 4 chain 335: the contact listener's 70h send (0080FF30, then
+    // 0077C2A0) through 0076E520's copy, delivered as 00821E80's 70h arm.
+    void route_kamikaze_detonate_70h(std::size_t unit, std::size_t target,
         const float contact[3]);
     // Packet cc13-kzdirect: what a record whose shot is the kamikaze unit itself
     // (00470350 SetShot(unit) at 00819B9C) changes in the funnel: the shot is
@@ -14078,7 +14088,24 @@ public:
         }
         // 00827312 packs message 93h; 00827329 routes it (kind 7): posted here,
         // delivered at the start of the next gunnery step.
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            // Goal 4 chain 335: 0077C2A0's local route queues 0076E520's copy
+            // (00762220 stores, 007622B0 write, 00768530 case 93h 00762220,
+            // 00762340 read); 00821E80's 93h arm delivers the copy's +1Ch..+24h.
+            // No live commands host keeps the posted torque.
+            const bsp::HostSessionMessages* messages = commands_session_messages();
+            if (messages != nullptr) {
+                const float posted[3] = {torque.x, torque.y, torque.z};
+                const bsp::HostSessionMessages::ShipAddTorqueCopy copy =
+                    messages->queue_ship_add_torque_93(posted);
+                owner_.pending_hull_torques.push_back(
+                    {victim_, {copy.torque[0], copy.torque[1], copy.torque[2]}});
+            } else {
+                owner_.pending_hull_torques.push_back({victim_, {torque.x, torque.y, torque.z}});
+            }
+        } else {
         owner_.pending_hull_torques.push_back({victim_, {torque.x, torque.y, torque.z}});
+        }
         ++owner_.summary.roll_torque_posted;
         // pc24-lint: allow host diagnostic counter/log, no image chain (pc24w1-gunnery-1)
         const double m = std::sqrt(static_cast<double>(torque.x) * torque.x
@@ -14130,9 +14157,29 @@ public:
         owner_.done("ShipHit::damage_channel_message_9e_0080fa50", 0x0080fa50u);
         // 0082203D: selector 1 is water, 0 fire; both R7b and R7c pass add = 1.
         if constexpr (kShipDamageControlTickBound) {
+            if constexpr (bsp::kWireGoal4Chain335Bound) {
+                // Goal 4 chain 335: 0077C2A0 (00827389 / 00827426, flags 7)
+                // queues 0076E520's copy (007608E0 stores, 00760970 write,
+                // 00768530 case 9Eh 007608E0, 007609E0 read). 00821E80's 9Eh arm
+                // reads the copy: +24h 0 fire / 1 water (any other channel does
+                // nothing), +20h set the add arm, +1Ch the seconds. The set arms
+                // (0082206C / 008220AB) have no host consumer and no sender here.
+                // No live commands host keeps the posted values.
+                const bsp::HostSessionMessages* messages = commands_session_messages();
+                bsp::HostSessionMessages::RepairAddDamageCopy copy{
+                    static_cast<std::int32_t>(channel), value, add};
+                if (messages != nullptr) {
+                    copy = messages->queue_repair_add_damage_9e(
+                        static_cast<std::int32_t>(channel), value, add);
+                }
+                if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
+                    owner_.damage_control_add_seconds(victim_, copy.channel == 1, copy.seconds);
+                }
+            } else {
             if (add) {
                 owner_.damage_control_add_seconds(victim_,
                     channel == bsp::ShipDamageChannel::kWater, value);
+            }
             }
         }
     }
@@ -14778,7 +14825,11 @@ void GameGunneryHost::Impl::run_kamikaze_contacts(float dt) {
                     if (detonated[k] == 0) {
                         detonated[k] = 1;
                         ++kz_contacts;
+                        if constexpr (bsp::kWireGoal4Chain335Bound) {
+                            route_kamikaze_detonate_70h(k, order[1 - q], ev.point);
+                        } else {
                         kamikaze_detonate_00819a20(k, order[1 - q], ev.point);
+                        }
                     }
                 }
             }
@@ -14841,10 +14892,36 @@ void GameGunneryHost::Impl::run_kamikaze_box_contacts() {
                 ++kz_hostile_refused;
                 continue;
             }
+            if constexpr (bsp::kWireGoal4Chain335Bound) {
+                route_kamikaze_detonate_70h(k, o, bow);
+            } else {
             kamikaze_detonate_00819a20(k, o, bow);
+            }
             break;
         }
     }
+}
+
+void GameGunneryHost::Impl::route_kamikaze_detonate_70h(std::size_t unit, std::size_t target,
+    const float contact[3]) {
+    // Goal 4 chain 335. The contact listener builds 70h with 0080FF30 (the
+    // other's +174h word at +1Ch, the contact point at +20h..+28h) and routes
+    // it to the kamikaze with 0077C2A0; the local route queues 0076E520's copy
+    // (00761E20 write, 00768530 case 70h 00761D90, 00761EC0 read), and
+    // 00821E80's 70h arm resolves the copy's +1Ch and passes it and the copy's
+    // point to 00819A20. The other's +174h is its index + 1 here (12 bits on
+    // the wire); an index that does not fit, or no live commands host, keeps
+    // the posted target and point. Delivery stays at the call, as before.
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    if (messages == nullptr || target + 1u > 0xfffu) {
+        kamikaze_detonate_00819a20(unit, target, contact);
+        return;
+    }
+    const float posted[3] = {contact[0], contact[1], contact[2]};
+    // target + 1 is 1..FFFh, so the copy's 12-bit id is too.
+    const bsp::HostSessionMessages::KamikazeDetonateCopy copy =
+        messages->queue_kamikaze_detonate_70(static_cast<std::uint16_t>(target + 1u), posted);
+    kamikaze_detonate_00819a20(unit, static_cast<std::size_t>(copy.other_id) - 1u, copy.point);
 }
 
 void GameGunneryHost::Impl::kamikaze_detonate_00819a20(std::size_t unit, std::size_t target,
@@ -16720,16 +16797,56 @@ void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
     } else if (failure_name_is(name, "Fire")) {
         ++cf_fires;
         if constexpr (kShipDamageControlTickBound) {
+            if constexpr (bsp::kWireGoal4Chain335Bound) {
+                // Goal 4 chain 335: 00827D9A 0080FA50(channel 0, settings+3C0h,
+                // flag 1), routed at 00827DAD flags 7, through the 9Eh copy;
+                // 00821E80's 9Eh arm reads the copy's channel, flag and seconds.
+                bsp::HostSessionMessages::RepairAddDamageCopy copy{0, fire_failure_seconds, true};
+                if (const bsp::HostSessionMessages* messages = commands_session_messages()) {
+                    copy = messages->queue_repair_add_damage_9e(0, fire_failure_seconds, true);
+                }
+                if (copy.add && (copy.channel == 0 || copy.channel == 1)) {
+                    damage_control_add_seconds(unit, copy.channel == 1, copy.seconds);
+                }
+            } else {
             damage_control_add_seconds(unit, false, fire_failure_seconds);
+            }
         }
     } else if (steering_jam || failure_name_is(name, "EngineJam")) {
         ++cf_jams;
         record(steering_jam ? "Failure::steering_jam_flag_0081999d"
                             : "Failure::engine_jam_flag_008199c7",
             steering_jam ? 0x0081999du : 0x008199c7u);
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            // Goal 4 chain 335: 00827D09..00827D37 (6Bh) / 00827D65 (6Ch),
+            // routed at 00827DAD, through the copy.
+            route_ship_jam_6b_6c(unit, steering_jam);
+        } else {
         // Packet cc13_natives1: the byte itself (+9E4h / +9E5h).
         if (steering_jam) damage_control[unit].steering_jam_9e4 = true;
         else damage_control[unit].engine_jam_9e5 = true;
+        }
+    }
+}
+
+void GameGunneryHost::Impl::route_ship_jam_6b_6c(std::size_t unit, bool steering) {
+    // Goal 4 chain 335. 0077C2A0 (flags 7) queues 0076E520's copy of the
+    // 6Bh / 6Ch message; 00821E80 hands it to the ship's vtable[220h], 008198A0,
+    // whose IsType answers set +9E4h (6Bh, 008199A7) or +9E5h (6Ch, 008199C7).
+    // 008199C7's 00867B10 stop of unit+A14h's effects has no host counterpart,
+    // as before. No live commands host sets the posted byte.
+    DamageControl& dc = damage_control[unit];
+    const bsp::HostSessionMessages* messages = commands_session_messages();
+    if (messages == nullptr) {
+        if (steering) dc.steering_jam_9e4 = true;
+        else dc.engine_jam_9e5 = true;
+        return;
+    }
+    const bsp::HostSessionMessages::ShipJamCopy copy = messages->queue_ship_jam_6b_6c(steering);
+    if (copy.steering_jam_6b) {
+        dc.steering_jam_9e4 = true;
+    } else if (copy.engine_jam_6c) {
+        dc.engine_jam_9e5 = true;
     }
 }
 
@@ -16772,11 +16889,19 @@ int GameGunneryHost::script_set_failure_008132c0(std::size_t unit_index,
         return 1;
     }
     if (failure_name_is(name, "SteeringJam")) {
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            host.route_ship_jam_6b_6c(unit_index, true);   // goal 4 chain 335
+        } else {
         dc.steering_jam_9e4 = true;   // 008134C4 message 6Bh -> 0081999D
+        }
         return 2;
     }
     if (failure_name_is(name, "EngineJam")) {
+        if constexpr (bsp::kWireGoal4Chain335Bound) {
+            host.route_ship_jam_6b_6c(unit_index, false);  // goal 4 chain 335
+        } else {
         dc.engine_jam_9e5 = true;     // 00813530 007619B0 message 6Ch -> 008199C7
+        }
         // 0081356F 0093BD80 -> 0093BE89 0093BC30: no active-name test.
         bsp::ActiveFailure record;
         record.id = 5;
