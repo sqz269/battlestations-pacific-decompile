@@ -1,0 +1,88 @@
+{
+  "chain": 391,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain391Bound",
+  "source_wired_before": 9617,
+  "source_wired_after": 9617,
+  "entry_reachable_addresses_before": 4570,
+  "entry_reachable_addresses_after": 4571,
+  "readiness_called_before": 4848,
+  "readiness_called_after": 4849,
+  "evidence": [
+    "Baseline and final scripts/build.ps1: all three CTest checks passed.",
+    "call_graph.py who 00960230: bsp::read_vehicle_class_base_fields_00960230 has one entry-reachable direct call, from GameMissionLuaVehicleClassBinding::load_descriptor (the descriptor's vtable +8h load that chain 234's 00964790 runs for every resolved class).",
+    "bsp.py callers 00960230: every kind loader calls the base reader first (006D0BA1, 00700E63, 00749236, 0074D4C3, 007D1F9F, 0083186E; 008429C0 tail-jumps to it), so running it for every descriptor matches the image order; the kind-specific remainders are not run.",
+    "The row is VehicleClass[class_index] read with lua_rawgeti, the same LuaObject the 00964790 binding reads. Integer/number/boolean/string/table views follow the reader's VehicleClassLuaValue contract; strings are copied into binding-owned storage.",
+    "Consumers moved behind the switch (old reads kept in the else arms): descriptor +0C0h linked class (009604AC), the ship catapult block class +C0h..+CCh (catapult_record, read by GetCatapultStock 00892DE0 and ShipUseCatapult 00891D50), the launched class's Cost +124h (006ECA3F, 009610D4), and DefaultEquipment +134h (00961F45) in the script-orders reader, the air-ops restore reader (006C5AD9) and the air-ops launch request.",
+    "The loaded fields persist per class index, so a row later purged by 0095CA70 still reads what the load read; the OFF direct reads would see nil there.",
+    "Resource loads the reader makes (SMIcon image 00AA2B30, cockpit mesh 007188A0, ambient sound 00A83FD0, flag texture, +94h platform slots 007F7110) have no owner here and go through the unimplemented policy with null slots; 00808F90 keeps the authored ReconClass id, the key this host's recon records use.",
+    "No game execution; no gameplay or ABI equivalence claim. For shipped integral data the values equal the OFF reads."
+  ],
+  "rows": [
+    {
+      "native": "00960230",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassBinding::load_descriptor (consumers: GameMissionLuaHost::catapult_record, run_ship_use_catapult_00891d50 Cost, the DefaultEquipment readers)"
+    },
+    {
+      "native": "00768530",
+      "status": "skipped",
+      "reason": "session-message factory from a bitstream; its callers are the network receive path (0076E520, 007858C0), which single player does not run, and it gates the 84 seg42 construct_for_read rows"
+    },
+    {
+      "native": "009c8c70",
+      "status": "skipped",
+      "reason": "BotTask_Make* factories (also 009b9030 009d4e30 009cd300 007b7fd0 009ab570 009a6970 009ca2b0 009badb0 009bdbb0) build native task objects; the host's create_bot_task hands out an index and no native bot task exists"
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "reason": "RecordHitDamage takes Seg59bHost (169 virtuals, no implementation) and the native scoring map at slot*284h; no scoring object in the host"
+    },
+    {
+      "native": "00c5bb30",
+      "status": "skipped",
+      "reason": "already executes inside the native DYN world-step asm kernel (also 00c321b0, 00c4d980); calling the C++ wrapper would be a round trip"
+    },
+    {
+      "native": "00c40140",
+      "status": "skipped",
+      "reason": "already called by process_native_dyn_sap_00c4c320 in the same file and inlined (also 00c4be10, 00c4c2a0); the graph cannot see inlined calls"
+    },
+    {
+      "native": "008da140",
+      "status": "skipped",
+      "reason": "objective_is_shown's native callers are HUD screens the host does not run with objectives (minimap objective arm 005C1E85, objectives screen 005EE520, map 005B25D0, markers 006435D0)"
+    },
+    {
+      "native": "00647080",
+      "status": "skipped",
+      "reason": "hud_root_toggle_closed needs the root screen's +1Ch/+CCh/+E4h and payload-carrying 22h/23h interface requests (a squadron member payload); the host's pending request only carries the controlled unit"
+    },
+    {
+      "native": "00805d90",
+      "status": "skipped",
+      "reason": "recon publish fill needs native ReconList triples; the host's recon model is unit-index triples from GameGunneryHost"
+    },
+    {
+      "native": "004ed690",
+      "status": "skipped",
+      "reason": "the full 004F1D70 header apply (also 004ee450 004eb9b0 004ee9e0) needs native property bags and the scene record; only read_scene_record_slot_table_004f1d70 is hosted"
+    },
+    {
+      "native": "008689c0",
+      "status": "skipped",
+      "reason": "point effects (also 00868420) need a native effect manager and render command templates; effects are recorded presentation in this host"
+    },
+    {
+      "native": "00b65f70",
+      "status": "skipped",
+      "reason": "IsBound at 0043878D/0043730A is always true for the named lookups the host makes; wiring it would replace no logic"
+    },
+    {
+      "native": "00b68630",
+      "status": "skipped",
+      "reason": "callers 00A7DE10/00A7E0D0/00A7FF80 run, but the reconstructed bodies skip the DSP key ToDisplayString use at 00A7DFCC; the bodies need fixing first"
+    }
+  ]
+}
