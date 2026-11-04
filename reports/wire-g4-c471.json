@@ -1,0 +1,209 @@
+{
+  "run": 957,
+  "chain": 471,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain471Bound",
+  "switch_header": "include/bsp/wire_goal4_chain471_switches.hpp",
+  "rows": [
+    {
+      "native": "00b65070",
+      "status": "wired",
+      "host_site": "src/camera_plane_initialization.cpp::construct_camera_plane_set_00b659d0",
+      "state_provenance": "The existing initial-frustum constructor receives canonical CameraPlaneSet storage from the native renderer cache and camera owners. It passes the binary original count 6, after initializing all records and reloading live D7A24C and before extracting the initial planes.",
+      "evidence": "bsp.py show 00b659d0: original count6 at plane set+140h; bsp.py show 00b65070: whole body is the complete DWORD count store. Reuse that existing body and preserve the original volatile store unchanged in the switch else arm. noinline preserves one shared body; volatile preserves the physical native DWORD store.",
+      "reachable_call_sites": 1,
+      "caller_before": "construct_camera_plane_set_00b659d0 was already entry-reachable with three callers (raw camera, native renderer cache, native camera storage)."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp::tick_issue_clearorders / src/game_hosts_commands.cpp::make_command_target",
+      "reason": "Missing actual runtime mappings/values for absolute native globals 00F87574/78/7C required by the literal body; loader zero-fill is insufficient."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp::set_scroll_range",
+      "reason": "Existing briefing scroller already calls this body; no additional missing range producer or new call was established in this packet."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::ship director snapshot path",
+      "reason": "Missing complete live ControllerStateMessage/DirectorFlags and all three getter results at the snapshot event; only a diagnostic address reference was found."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::tail gunner skill notification",
+      "reason": "Existing skill notification already calls the body with loaded descriptors and real draw state; no new missing producer was identified."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp::scene property insertion",
+      "reason": "Missing a verified real raw bag and NativeScenePropertyInsertionContext binding at this host site; the raw body alone does not create its owning bag."
+    },
+    {
+      "native": "0087bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp::unit health initialization",
+      "reason": "Missing canonical native unit/class part-vector/model bindings and lifecycle needed by the complete initializer; current field projections cannot supply them."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::ammo_select_flak_alternate",
+      "reason": "Missing producer for the alternate ammunition record and its retained references/tree at ammo+48h."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp::command_building_set_owner_player_006f4d10",
+      "reason": "Missing canonical unit+660h checked vector and element lifetime binding; ownership-change host currently only records this operation."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp::shutdown retained references",
+      "reason": "No additional retained-stop lifetime route was established; left this separate shutdown chain outside the selected volume-publication wiring."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::shutdown_sound_configuration_effects_00a7f560",
+      "reason": "Existing shutdown/shrink code already names the body; missing independent entry-reach proof for a new storage-destruction route, so no duplicate cleanup added."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp::shrink_sound_configured_types_00a7fcc0_fragment",
+      "reason": "Existing type shrink code already names the body; missing independent entry-reach proof for a new storage-destruction route, so no duplicate cleanup added."
+    },
+    {
+      "native": "00a84450",
+      "status": "skipped",
+      "host_site": "src/sound_cc13.cpp::sound cache record storage",
+      "reason": "Missing a verified live 2Ch-record array owner/caller at the selected sound runtime; its sample cache instead owns the existing weak tree."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::camera_set_extra_clip_plane_00b70410 callback",
+      "reason": "Missing concrete runtime scene-renderer callback binding to the same camera frame and +2E0 plane; no such override found."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp::camera_clear_extra_clip_plane_00b70470 callback",
+      "reason": "Missing concrete runtime scene-renderer callback binding to the same camera frame; no such override found."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20 / fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing verified entry-reachable ShadowFitHost/cascade owner route for these duplicate products; getter reuse alone would not establish game execution."
+    },
+    {
+      "native": "00a8bd20",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_shadow_cascade_00a8bd20",
+      "reason": "Missing concrete runtime cascade owner/camera/ShadowFitHost route; no renderer integration taken in this packet."
+    },
+    {
+      "native": "00a8ecb0",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp::fit_and_submit_shadow_slice_00a8ecb0",
+      "reason": "Missing concrete runtime slice owner/camera/ShadowFitHost route; no renderer integration taken in this packet."
+    },
+    {
+      "native": "00a7b520",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp::update_retained_sound_ramp_00a7b520",
+      "reason": "Missing connected producer for retained sound owner slots: set_retained_sound_00a7f2f0 has no callers. Reachable virtual dispatch alone does not establish these channel types are instantiated; candidate edit was fully reverted."
+    },
+    {
+      "native": "00a7b5d0",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp::update_retained_sound_scaled_ramp_00a7b5d0",
+      "reason": "Missing connected producer for retained sound owner slots: set_retained_sound_00a7f2f0 has no callers. Reachable virtual dispatch alone does not establish these channel types are instantiated; candidate edit was fully reverted."
+    },
+    {
+      "native": "00a7b690",
+      "status": "skipped",
+      "host_site": "src/sound_retained_update.cpp::update_retained_sound_nonpositive_00a7b690",
+      "reason": "Missing connected producer for retained sound owner slots: set_retained_sound_00a7f2f0 has no callers. Reachable virtual dispatch alone does not establish these channel types are instantiated; candidate edit was fully reverted."
+    },
+    {
+      "native": "00a7f2f0",
+      "status": "skipped",
+      "host_site": "src/sound_retained_factory.cpp::set_retained_sound_00a7f2f0",
+      "reason": "Missing world/environment retained-source record producer and runtime call that populates manager pointers_74/80; no arbitrary sample or source fields substituted."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp::construct_sound_instance_00a7c480",
+      "reason": "Missing linked single-player sound-instance construction producer; neither C480 nor A79880 remained in the Release executable even with noinline. Retained update alternative also lacks populated slots; all sound edits reverted."
+    },
+    {
+      "native": "00a7c480",
+      "status": "skipped",
+      "host_site": "src/sound_instance.cpp::construct_sound_instance_00a7c480",
+      "reason": "Missing linked runtime creation route; Release graph has update/destruction dispatch but no instance constructor. A reachable update vtable does not establish actual instances are created."
+    },
+    {
+      "native": "00b6fe60",
+      "status": "skipped",
+      "host_site": "src/camera_frame_state.cpp::camera clear-color read",
+      "reason": "Missing borrowed CameraView word190 binding; existing CameraView owns a separate value, so it cannot stand in for the actual frame color."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::animation_interval",
+      "reason": "Missing live weapon-animation ticker identity; the current weapon_animation callback returns zero."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::set_unit_controlled_audio",
+      "reason": "Missing real per-unit controlled-audio owner/children bindings; current host only records the operation."
+    },
+    {
+      "native": "00b65990",
+      "status": "skipped",
+      "host_site": "src/camera_clip_planes.cpp::append_camera_plane_00b65990",
+      "reason": "Text readiness becomes wired when this source file enters the source graph, but no executable call site is present. Missing a concrete runtime extra-clip-plane callback; do not count this helper as newly called."
+    }
+  ],
+  "counts": {
+    "readiness_text_wired_before": 9744,
+    "release_entry_called_addresses_before": 4814,
+    "release_entry_called_addresses_after": 4815,
+    "target_before": {
+      "state": "callees_done_no_wired_caller",
+      "release_linked": false
+    },
+    "target_after": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1
+    },
+    "note": "The rebuilt Release graph adds exactly one called reconstructed address (4814 to 4815); readiness confirms the target called with one call site. Text readiness is separately reported because its source reachability is not the executable graph.",
+    "readiness_text_wired_after": 9746,
+    "text_only_addition": "00b65990 is text-wired through the newly reachable source file but not called; only 00b65070 is executable-confirmed wiring."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed MSVC Win32 Release and all 5 CTests after final camera edits and sound reverts.",
+    "call_graph": "tools/call_graph.py rebuilt: 4814 -> 4815 called reconstructed addresses. who 00b65070: reachable, one call site at 105c736f from construct_camera_plane_set_00b659d0. path reaches GameNativeRendererApplication::construct via native render-cache/renderer constructors and GameStartupHost::run_initialize_phases.",
+    "diff_check": "git diff --check passed.",
+    "new_tests": "None: the final change reuses one existing integer store; no floating-point operations changed.",
+    "game_run": false,
+    "readiness": "tools/wire_readiness.py --standins completed; target state=wired, called=True, call_sites=1.",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main...HEAD: 0 findings; final change contains no float arithmetic edits."
+  },
+  "limits": "Static executable entry reach and build/test validation only; no game run or visual validation. Existing typed C++ interfaces are not a native drop-in ABI claim. Plane records, matrix extraction and original binary constants are unchanged.",
+  "left": "World/environment retained-sound source producer for 00A7F2F0 and linked sound-instance creation/ambient host binding remain missing. All candidate sound edits were reverted; only the camera plane-count wiring is committed. Other examined candidates retain specific missing contracts in rows."
+}
