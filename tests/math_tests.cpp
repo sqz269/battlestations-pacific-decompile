@@ -4844,6 +4844,70 @@ int main() {
             "GetFirepower returns the original five-field table");
     }
 
+    {
+        // Chain 457: native insertion must leave a balanced extension multimap
+        // whose strings survive the normalized temporary pairs being released.
+        using namespace bsp::engine_services_cc13;
+        RecordingStorage strings;
+        PrefixTreeNode head{};
+        head.left = head.parent = head.right = &head;
+        head.color_1c = head.isnil_1d = 1;
+        NativeContainerHeader tree{0, &head, 0};
+        struct Pair { bsp::NativeString key, value; };
+        static_assert(sizeof(Pair) == 16);
+        const char* keys[] = {"m", "a", "z", "b", "a", ""};
+        const char* values[] = {"middle", "first", "last", "second", "other", "fallback"};
+        for (std::size_t i = 0; i < 6; ++i) {
+            Pair pair;
+            pair.key.assign_0041e870(strings, keys[i]);
+            pair.value.assign_0041e870(strings, values[i]);
+            InsertResult result{};
+            prefix_tree_insert_equal_00be0b90(tree, result, &pair, strings);
+            const auto* node = static_cast<const PrefixTreeNode*>(result.it.node);
+            check(result.inserted && result.it.container == &tree
+                && (pair.key.length() == 0 ? node->key_0c.length() == 0
+                    : node->key_0c.data() != pair.key.data())
+                && node->value_14.data() != pair.value.data(),
+                "chain457 insertion owns deep copies of both headers");
+            pair.value.release_to(strings);
+            pair.key.release_to(strings);
+        }
+        std::vector<std::string> ordered;
+        const auto inspect = [&](auto&& self, PrefixTreeNode* node) -> int {
+            if (node == &head) return 1;
+            check(!node->isnil_1d && (node->left == &head || node->left->parent == node)
+                && (node->right == &head || node->right->parent == node),
+                "chain457 insertion preserves parent and sentinel links");
+            if (node->color_1c == 0)
+                check(node->left->color_1c == 1 && node->right->color_1c == 1,
+                    "chain457 red nodes have black children");
+            const int left = self(self, node->left);
+            ordered.push_back(std::string(node->key_0c.data() ? node->key_0c.data() : "")
+                + ":" + node->value_14.data());
+            const int right = self(self, node->right);
+            check(left == right, "chain457 insertion preserves black height");
+            return left + (node->color_1c == 1);
+        };
+        inspect(inspect, head.parent);
+        check(tree.size == 6 && head.parent->parent == &head && head.parent->color_1c == 1
+            && head.left->key_0c.length() == 0 && std::strcmp(head.right->key_0c.data(), "z") == 0
+            && ordered == std::vector<std::string>{":fallback", "a:first", "a:other",
+                "b:second", "m:middle", "z:last"},
+            "chain457 empty and equal extension keys retain native order and values");
+        const auto retire = [&](auto&& self, PrefixTreeNode* node) -> void {
+            if (node == &head) return;
+            self(self, node->left);
+            self(self, node->right);
+            node->value_14.release_to(strings);
+            node->key_0c.release_to(strings);
+            bsp::singleton_lifetime_free(node);
+        };
+        retire(retire, head.parent);
+        check(strings.allocated.size() == strings.released.size(),
+            "chain457 temporary and tree string ownership balances");
+
+    }
+
     if (!failures) std::cout << "Reconstructed math semantic tests passed (not binary equivalence).\n";
     return failures ? 1 : 0;
 }

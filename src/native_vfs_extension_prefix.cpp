@@ -2,6 +2,7 @@
 #include "bsp/engine_services_cc13.hpp"
 #include "bsp/wire_goal2_chain148_switches.hpp"
 #include "bsp/wire_goal2_chain208_switches.hpp"
+#include "bsp/wire_goal4_chain457_switches.hpp"
 
 #include "bsp/detail/native_tree_insert_storage.hpp"
 #include "bsp/native_physical_file_date.hpp"
@@ -198,6 +199,16 @@ void* allocate_node(void* left, void* parent, void* right, const void* pair,
 
 void insert_pair(void* tree, const Pair<>& pair,
     ActualNativeStringPoolStorage& strings) {
+    if constexpr (kWireGoal4Chain457Bound) {
+        // bsp.py show 00BE0B90 / 00BE0370 / 00BDF700: extension-only
+        // descent, native 20h node construction, then RB insertion. Borrow
+        // the SAME manager+54h tree and normalized, pooled two-header pair;
+        // the earlier exact-pair lookup still owns duplicate suppression.
+        engine_services_cc13::InsertResult result{};
+        engine_services_cc13::prefix_tree_insert_equal_00be0b90(
+            *static_cast<engine_services_cc13::NativeContainerHeader*>(tree),
+            result, &pair.first, strings);
+    } else {
     void* parent = Tree::head(tree);
     void* current = Tree::parent(parent);
     std::uint8_t insert_left = 1;
@@ -217,6 +228,7 @@ void insert_pair(void* tree, const Pair<>& pair,
         [](void* owner, void* node) { rotate_native_physical_index_left_00bda090(owner, node); },
         [](void* owner, void* node) { rotate_native_physical_index_right_00bd93e0(owner, node); },
         [] { throw std::length_error("map/set<T> too long"); });
+    }
 }
 } // namespace
 

@@ -12,6 +12,7 @@
 #include "bsp/native_vfs_mount_records.hpp"
 #include "bsp/native_string_byte_append.hpp"
 #include "bsp/native_string_vector_lookup.hpp"
+#include "bsp/oct18_tail_a.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/sw1b_switch_reach.hpp"
 
@@ -1209,21 +1210,27 @@ void push_front_search_group_00be1d80(NativeContainerHeader& list, const void* p
     node->prev->next = node;
 }
 
-PrefixTreeNode* buy_prefix_tree_node_00bdf700(PrefixTreeNode* left, PrefixTreeNode* parent, PrefixTreeNode* right,
+__declspec(noinline) PrefixTreeNode* buy_prefix_tree_node_00bdf700(PrefixTreeNode* left, PrefixTreeNode* parent, PrefixTreeNode* right,
                                               const void* pair, std::uint8_t color, NativeStringStorage& strings) {
     auto* const node = static_cast<PrefixTreeNode*>(allocate(sizeof(PrefixTreeNode)));
     if (node != nullptr) {
         node->left = left;
         node->parent = parent;
         node->right = right;
-        copy_string_pair_00bdcea0(&node->key_0c, pair, strings);
+        // bsp.py show 00BDF700: the node's value constructor is 0048E500,
+        // not the similar 00BDCEA0 temporary-pair copy. Reuse its first-header
+        // unwind when the second copy throws. The allocation unwind at
+        // 00CC6600 calls the no-op 00401130, so add no node-free repair here.
+        oct18_tail_a::traffic_string_pair_copy_construct_0048e500(
+            *reinterpret_cast<oct18_tail_a::TrafficStringPairStorage*>(&node->key_0c),
+            *static_cast<const oct18_tail_a::TrafficStringPairStorage*>(pair), strings);
         node->color_1c = color;
         node->isnil_1d = 0;
     }
     return node;
 }
 
-void prefix_tree_link_new_node_00be0370(NativeContainerHeader& tree, NativeIterator& result, bool add_left,
+__declspec(noinline) void prefix_tree_link_new_node_00be0370(NativeContainerHeader& tree, NativeIterator& result, bool add_left,
                                         PrefixTreeNode* where, const void* pair, NativeStringStorage& strings) {
     check_tree_size(tree);
     auto* const head = tree_head<PrefixTreeNode>(tree);
@@ -1231,7 +1238,7 @@ void prefix_tree_link_new_node_00be0370(NativeContainerHeader& tree, NativeItera
     link_and_rebalance(tree, result, add_left, where, node);
 }
 
-void prefix_tree_insert_equal_00be0b90(NativeContainerHeader& tree, InsertResult& result, const void* pair,
+__declspec(noinline) void prefix_tree_insert_equal_00be0b90(NativeContainerHeader& tree, InsertResult& result, const void* pair,
                                        NativeStringStorage& strings) {
     const NativeString& key = string_at(pair, 0);
     auto* where = tree_head<PrefixTreeNode>(tree);
