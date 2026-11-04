@@ -1,0 +1,62 @@
+{
+  "chain": 528,
+  "slot": "g4-w4",
+  "switch": "bsp::kWireGoal4Chain528Bound",
+  "rows": [
+    {
+      "native": "0068d760",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_title_screen",
+      "evidence": "bsp.py show 0068D760: 00684E10 base construction, 00CF7A98 vtable, 00E198C8 publication, then +40h clear.",
+      "state": "The existing title object's base joins the canonical manager registry; world.title is the real state-2 singleton and the activation/update adapters consume that same object's attached_screen field.",
+      "lifetime": "Front-end shell teardown removes the newly owned title base before main-menu activation; the existing press-start screen owner keeps its prior lifetime."
+    },
+    {
+      "native": "0068d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::title_screen_activate",
+      "reason": "Needs a host caller of title virtual +8h; title-init calls +4h (0068D8D0), which already enters the press-start screen once."
+    },
+    {
+      "native": "0068d7e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuShellHost::destroy_title_screen",
+      "reason": "Whole destructor needs an adapter for press-start deleting virtual +0Ch and observer teardown; this change only removes the constructor's added registry entry."
+    },
+    {
+      "native": "00689800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager",
+      "reason": "Needs an owned options manager and the options/control screen construction and registration consumers; this host still returns nullptr."
+    },
+    {
+      "native": "0057c1c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuLoadingScreenHost::create_screen",
+      "reason": "Needs a constructor view over retained loading-screen flags/fields and a +8h singleton-registration adapter; create_screen currently only records the address."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: none (GUI Movie cleanup host absent)",
+      "reason": "Needs a retained GUI Movie owner with live subtitle/extratitle collections, text binding and deleting-widget service; this menu has no such owner or cleanup site."
+    }
+  ],
+  "validation": {
+    "baseline_wired": 9833,
+    "final_wired": 9834,
+    "build": "scripts/build.ps1 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "call_graph": {
+      "command": "python tools/call_graph.py; python tools/call_graph.py who 0068d760; python tools/call_graph.py path 0068d760",
+      "entry_reachable": true,
+      "call_sites": 1,
+      "caller": "MenuTitleInitHost::create_title_screen",
+      "site": "1015df2c",
+      "path": "WinMainCRTStartup -> WinMain -> GameStartupHost::application_initialize/run_initialize_phases -> GameMenuHost::run_title_init_004c9a70 -> MenuTitleInitHost::create_title_screen -> title_screen_construct_0068d760",
+      "proof": "Built-executable static call graph; the game was not run."
+    },
+    "float_math_changed": false,
+    "game_validated": false,
+    "abi_compatible": false
+  }
+}

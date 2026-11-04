@@ -3,6 +3,7 @@
 #include <cstdint>
 
 #include "bsp/app_frame.hpp"
+#include "bsp/frontend_managers.hpp"
 
 // Front-end branch of GGame::OnMove (004e4a40), covering game states 1, 2 and 4
 // read from game+5D4h. Evidence and uncertainties: docs/GAME_FRONTEND_STATES.md.
@@ -66,6 +67,9 @@ struct MenuCommandScreen {
 // vtable +4h is 0068d8d0, the routine that leaves the title screen.
 struct TitleScreen {
     FrontEndScreen* attached_screen{nullptr}; // +40h
+    // Canonical projection of the same title object's +00h..+3Ch. The base
+    // joins the actual manager registry through 0068D760 -> 00684E10.
+    FrontEndManagerBase base{};
 };
 
 // Fields of the game object (00E188A8) that the front-end branch reads or writes.

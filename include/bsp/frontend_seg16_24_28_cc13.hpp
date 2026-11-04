@@ -29,6 +29,8 @@
 #include <string_view>
 #include <utility>
 
+namespace bsp { struct TitleScreen; }
+
 namespace bsp::cc13_fe5 {
 
 using ingame_gui_cc13::Raw;
@@ -1097,8 +1099,10 @@ void* hud_root_screen_construct_0068bf60(Raw screen, Fe5Host& host);
 // The title screen (vtable 00CF7A98, global 00E198C8): front-end manager with
 // its screen object at +40h.
 inline constexpr std::uint32_t kTitleScreenVtable = 0x00CF7A98;
-// 0068D760 __thiscall(title) -> EAX.
-void* title_screen_construct_0068d760(Raw title, Fe5Host& host);
+// 0068D760 __thiscall(title) -> EAX. Chain 528 projects the one body onto the
+// live title/manager owner and its actual 00E198C8 singleton. New C++ ABI.
+TitleScreen* title_screen_construct_0068d760(TitleScreen& title,
+    FrontEndManagerRegistry& registry, TitleScreen*& singleton);
 // 0068D7B0 __thiscall(title): base activate, show screen +40h (+4h/+5h = 1,
 // commit) and tail-jump to its +18h virtual.
 void title_screen_activate_and_show_0068d7b0(Raw title, Fe5Host& host);
