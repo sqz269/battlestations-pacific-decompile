@@ -1,4 +1,6 @@
 #include "bsp/native_language_catalog_producer.hpp"
+#include "bsp/engine_services_cc13.hpp"
+#include "bsp/wire_goal4_chain453_switches.hpp"
 #include "bsp/entity_identity.hpp"
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_render_resource_record.hpp"
@@ -14,6 +16,16 @@
 namespace bsp {
 namespace {
 using U=std::uint32_t;using Op=NativeLanguageCatalogProducerOperation;using C=NativeLanguageCatalogProducerContext;using Phase=Op::Phase;
+class LanguageKeywordCalls final : public engine_services_cc13::TextScannerTokenCalls {
+public:
+    explicit LanguageKeywordCalls(C& context) noexcept : context_(context) {}
+    char* text_scanner_peek_token_00bee8e0(void* scanner) override {
+        return peek_native_stream_text_token_00bee8e0(scanner, context_.scanner,
+            context_.scanner_stack_preimages);
+    }
+private:
+    C& context_;
+};
 void* at(const void* p,U n=0) noexcept{return reinterpret_cast<void*>(reinterpret_cast<U>(p)+n);}
 template<class T=U>T get(const void* p,U n=0) noexcept{T v;std::memcpy(&v,at(p,n),sizeof v);return v;}
 void put(void* p,U n,U v) noexcept{std::memcpy(at(p,n),&v,4);}
@@ -112,10 +124,26 @@ void build_native_language_catalog_008d7bc0(C& c,Op& op) {
                 constexpr U accept_sites[]{0x8d7df6,0x8d7ec1,0x8d7f91,0x8d8061};
                 constexpr U read_sites[]{0x8d7e02,0x8d7ecd,0x8d7f9d,0x8d806d};
                 for(U member=0;member<4;++member) {
+                    if constexpr(kWireGoal4Chain453Bound) {
+                        // bsp.py show 00BEED60: peek, _stricmp, then copy +1h
+                        // to +401h and clear +801h ONLY on a match. This is
+                        // the same acceptance performed inline at 8D7DD7 /
+                        // 8D7DF6 (and the next three catalog keys). Both
+                        // operands are nonnull: the real scanner token and
+                        // the binary's catalog keyword. On a miss the next
+                        // member must see the same pending token. Consume
+                        // it once here; do not also run the old accept below.
+                        LanguageKeywordCalls tokens(c);
+                        op.native_site=peek_sites[member];
+                        if(!engine_services_cc13::text_scanner_accept_keyword_00beed60(
+                            working,c.keywords[member],tokens))continue;
+                        working=op.scanner;op.native_site=accept_sites[member];
+                    } else {
                     op.native_site=peek_sites[member];const char* const key=peek_native_stream_text_token_00bee8e0(working,c.scanner,c.scanner_stack_preimages);
                     op.native_site=compare_sites[member];
                     if(c.calls.compare_00438e10(key,c.keywords[member])!=0)continue;
                     working=op.scanner;op.native_site=accept_sites[member];accept_native_stream_text_token_00bee800(working);
+                    }
                     op.native_site=read_sites[member];const char* const value=read_native_stream_text_string_00bef020(working,&op.ignored_string_success,c.scanner,c.scanner_stack_preimages);
                     assign(c,op,member,value);break;
                 }
