@@ -1,0 +1,139 @@
+{
+  "chain": 529,
+  "branch": "agent/g4-w1",
+  "switch": "bsp::game::kWireGoal4Chain529Bound",
+  "summary": "Replace gun-bot and torpedo direction-decomposition stand-ins with the existing 00521370 body and existing 0042CF10 asin provider.",
+  "rows": [
+    {
+      "native": "00521370",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryDirectionAnglesBinding::direction_to_pitch_yaw_00521370 and GameGunneryHost::Impl::torpedo_swim3d_step::Swim::direction_to_pitch_yaw",
+      "real_state": "Gun-bot normalized local direction after inverse hull-frame transformation; torpedo swim's actual hull-forward and target directions. Outputs feed the existing fire-window and homing computations.",
+      "evidence": "bsp.py show 00521370 --asm: 00521374..005213BE clamps Y, calls 0042CF10, stores pitch, then atan2(X,Z) and stores yaw; original ECX direction, EDX pitch out, stack yaw out, RET 4.",
+      "body": "src/cc13_sweepA.cpp: direction_to_pitch_yaw_00521370; only its provider parameter was narrowed, with no second body or arithmetic changes.",
+      "call_graph": {
+        "body": "bsp::cc13_sweepA::direction_to_pitch_yaw_00521370",
+        "reachable": true,
+        "direct_call_sites": 2,
+        "call_sites": ["100bac46", "100bacae"],
+        "before": "Only the same-named executable Host method existed in the graph; the reconstructed body was absent."
+      }
+    },
+    {
+      "native": "0042cf10",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GunneryDirectionPitchYawBinding::geometry_asin_clamped_0042cf10",
+      "previously_called": true,
+      "real_state": "00521370's clamped direction Y is passed directly to camera_asin_clamped_0042cf10; no replacement std::asin runs in the ON arms.",
+      "call_graph": {"reachable": true, "new_direct_call_site": "100beede"}
+    },
+    {
+      "native": "00926420",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: hierarchy_parent_name",
+      "reason": "The hierarchy-parent callback retains no entity/name-vtable view for the native parent+3Ch traversal and still returns an empty host string."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: native enum insertion",
+      "reason": "Already called by the native property adapter; the scene-contents stand-in text does not indicate an unwired body."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl",
+      "reason": "Already called by the native property adapter; adding another host merge would duplicate the existing native operation."
+    },
+    {
+      "native": "0092bd30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: motion_step_00825f20 kill-depth arm and ship death handling",
+      "reason": "The host DynBody and hull-contact model do not supply controller+2Ch's native shape chain or its filter-change/manifold owner."
+    },
+    {
+      "native": "00c47f60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: motion_step_00825f20 sunk terrain-mask handling",
+      "reason": "The host retains a sunk-terrain-mask flag, not a native shape+30h and body+4 manifold owner required by the body."
+    },
+    {
+      "native": "00c47f90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: collision-mask handling",
+      "reason": "No actual native shape/filter/manifold owner is available on the host collision path."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreen binding advance_ticker",
+      "reason": "The binding has no retained native award queue with paired strings, icon/text widgets and timed-entry owner required by this body."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task cadence",
+      "reason": "The typed task projection supplies no native task+2F4h/unit+9C2h parity-byte view for this gate."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "Original BSP_UnitDebugInspector_PrintFlooded caller",
+      "reason": "The original caller is debug-only, outside the single-player wiring scope."
+    },
+    {
+      "native": "0072ab10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: health/part-state handling",
+      "reason": "The host does not retain the unit+360h part instance's +16Ch/+170h damage-state vector needed to obtain a real index."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: class-pair scoring",
+      "reason": "The real per-mode game+FA8h class-pair row arrays and native miss-result contract are not supplied by the current class-weight stand-ins."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: place_marker",
+      "reason": "The native 0063D1E0 marker-widget writer is absent; applying its clamp to the host's top-down camera substitute would not establish its real coordinate path."
+    },
+    {
+      "native": "006bdac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: airfield ready-plane path",
+      "reason": "The original 006CF980 routed ready-plane message producer and recipient are not exposed at an existing native message-construction site."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile owner binding",
+      "reason": "The existing reconstruction is only the may-bind predicate; the complete owner observer-pair and shot-interface update still need reconstruction."
+    },
+    {
+      "native": "00814520",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::run_break_ship_008914f0",
+      "reason": "The real breakup registry game+21D0h and full motion-controller breakup owner are absent; recorded effects and draws cannot satisfy UnitDeathMessageHost."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "Original PlaneHudScreen_UpdateBombFire caller",
+      "reason": "The original plane bombing HUD direction-pair producer is not bound; other host atan2 calculations have different inputs and contracts."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all 5 CTests passed",
+    "changed_build": "scripts/build.ps1 passed; all 5 CTests passed",
+    "call_graph_before": {"recon_called": 4899, "recon_addresses": 5387},
+    "call_graph_after": {"recon_called": 4900, "recon_addresses": 5388},
+    "readiness_wired_before": 9835,
+    "readiness_wired_after": 9835,
+    "readiness_note": "The text-wired total already included the same-named 00521370 Host method. The actual reconstructed body now has two entry-reachable direct calls.",
+    "pc24_lint": "0 findings; no new float arithmetic expressions, only routing to the existing bodies",
+    "diff_check": "git diff --check passed",
+    "proof_boundary": "Build/tests and entry-point call-graph evidence only; no game run or original CRT last-bit/exception-policy equivalence claimed."
+  }
+}

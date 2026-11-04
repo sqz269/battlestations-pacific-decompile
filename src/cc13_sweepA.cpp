@@ -1993,7 +1993,7 @@ void front_end_screen_reset_descendant_colors_0051c3a0(void* root, std::uint8_t 
 // atan2(x, z) (_CIatan2 00BF701A with x in ST1, z in ST0) rounded to float.
 // The double atan2 can differ from the x87 one in the last float bit.
 void direction_to_pitch_yaw_00521370(const float* direction, float* pitch, float* yaw,
-                                     SweepAHost& host) {
+                                     DirectionPitchYawHost& host) {
     const double y = direction[1];
     double clamped = y;
     if (-1.0 > y) {
