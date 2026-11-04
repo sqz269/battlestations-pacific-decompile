@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain451_switches.hpp"
 #include "bsp/game_recon_sensor_class_registry.hpp"
 #include "bsp/wire_goal4_chain452_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
@@ -3211,6 +3212,7 @@ struct GameGunneryHost::Impl {
     struct TailGunnerAim {
         float countdown{0.0f};
         float horz{0.0f}, vert{0.0f};
+        std::optional<bsp::gameplay_seg40_59_cc13::TailGunnerSkill> skill;
     };
     std::map<std::size_t, TailGunnerAim> tail_gunner_aim;
     unsigned long long tail_gunner_aim_rolls{0};
@@ -11170,7 +11172,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     // re-solved only when the countdown falls below zero, then held.
                     TailGunnerAim& ta = tail_gunner_aim[g];
                     if (bsp::gun_bot_turret_recompute_due_008ffa20(ta.countdown, dt)) {
-                        const float* row = kTailGunnerAimRows[aa_level];
+                        const std::array<float, 3> row = [&] {
+                            if constexpr (bsp::kWireGoal4Chain451Bound) {
+                                if (ta.skill) {
+                                    return std::array<float, 3>{ta.skill->angle_error_084,
+                                        ta.skill->aim_period_min_088, ta.skill->aim_period_max_08c};
+                                }
+                                return std::array<float, 3>{kTailGunnerAimRows[aa_level][0],
+                                    kTailGunnerAimRows[aa_level][1], kTailGunnerAimRows[aa_level][2]};
+                            } else {
+                                const float* row = kTailGunnerAimRows[aa_level];
+                                return std::array<float, 3>{row[0], row[1], row[2]};
+                            }
+                        }();
                         ta.horz = bsp::gun_bot_apply_aim_error_008ffa20(want_horz,
                             draw(Draw::tail_gunner_error, g, 0, 0.0f, row[0]));   // 008FFCD9
                         ta.vert = bsp::gun_bot_apply_aim_error_008ffa20(want_vert,
@@ -11651,7 +11665,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 } else {
                 int level = units.skill_level(owner_unit);
                 if (level < 0 || level > 5) level = 1;
-                const float shoot_range = kTailGunnerShootRange[level];   // bot+90h
+                const float shoot_range = [&] {                         // bot+90h
+                    if constexpr (bsp::kWireGoal4Chain451Bound) {
+                        const auto aim = tail_gunner_aim.find(g);
+                        return aim != tail_gunner_aim.end() && aim->second.skill
+                            ? aim->second.skill->shoot_range_090 : kTailGunnerShootRange[level];
+                    } else {
+                        return kTailGunnerShootRange[level];
+                    }
+                }();
                 bool request = tg.act_58;
                 if (!tg.act_58) {
                     if (have_target && distance < shoot_range - 40.0f       // 008FFDFE
@@ -20473,6 +20495,45 @@ const GameBulletClassRow* GameGunneryHost::bullet_class_row(int id) const noexce
 
 const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
+}
+
+bool GameGunneryHost::has_unit_gunnery_pass(std::size_t unit_index) const noexcept {
+    return unit_index < impl_->unit_state.size() && impl_->unit_state[unit_index].attached;
+}
+
+void GameGunneryHost::notify_gun_skill_level(std::size_t gun_index, int level) {
+    if constexpr (bsp::kWireGoal4Chain451Bound) {
+        Impl& host = *impl_;
+        // The selected indices come from the unit's actual owned gun rows.
+        // 00727E70 forwards to its installed bots; all other gun-side +18h
+        // implementations only store the scalar index already shared with the
+        // owner. The tail gunner's override has the additional retained effect.
+        // Evidence: bsp.py show 00727e70 / 008fbef0; GUN_BOT_TICKS.md +18h.
+        const auto& slots = host.gun_bot_slots.at(gun_index);
+        if (slots.primary != bsp::GunBotClass::kTailGunner) return;
+        const auto* configs = bsp::cc13_torp_goaway::loaded_gun_bot_configs();
+        if (configs == nullptr || !configs->tail_gunner_loaded) {
+            throw std::logic_error("TailGunnerBot skill notification without its loaded descriptor");
+        }
+        if (level < 0 || static_cast<std::size_t>(level) >= configs->tail_gunner.levels.size()) {
+            throw std::out_of_range("TailGunnerBot skill notification outside descriptor levels");
+        }
+        const auto skill = bsp::gameplay_seg40_59_cc13::tail_gunner_bot_set_skill_008fbef0(
+            configs->tail_gunner, level, [&host, gun_index](int stream, float low, float high) {
+                if (stream != 1) throw std::logic_error("TailGunnerBot skill draw is not stream one");
+                return host.draw(Impl::Draw::tail_gunner_error, gun_index, 0, low, high);
+            });
+        auto& aim = host.tail_gunner_aim[gun_index];
+        aim.skill = skill;
+        // Do not compare the previous level: native 008FBF5C draws on EVERY
+        // notification. Keep the held +70h/+74h angles; only +6Ch is reseeded.
+        aim.countdown = skill.aim_time_06c;
+        host.done("TailGunnerBot::set_skill_008fbef0", 0x008fbef0u);
+    } else {
+        // This API has no callers when the chain is disabled.
+        (void)gun_index;
+        (void)level;
+    }
 }
 
 bool GameGunneryHost::device_visual_metadata(std::size_t gun_index,

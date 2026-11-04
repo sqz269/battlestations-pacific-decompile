@@ -1,0 +1,243 @@
+{
+  "goal": 4,
+  "chain": 451,
+  "worker": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain451Bound",
+  "summary": "Wire unit skill application through the live setter and replay selected gun notifications, including the tail-gunner descriptor copies and unconditional aim-countdown reroll.",
+  "counts": {
+    "readiness_wired_before": 9703,
+    "readiness_wired_after": 9704,
+    "entry_reachable_reconstructed_before": 4744,
+    "entry_reachable_reconstructed_after": 4746
+  },
+  "counts_scope": "Original chain validation before merging origin/main; refreshed merged-tree totals are recorded under origin_main_merge.",
+  "validation": {
+    "build": "Merged-tree scripts/build.ps1 passed with chain451 ON; all three test suites passed. The preceding review fix also passed ON, OFF, and restored-ON builds/tests before this merge.",
+    "call_graph": "Merged ON: 009565a0 has one direct reachable call from set_unit_skill_index_006d1eb0 at 102c6a47; 008fbef0 has one direct reachable call from notify_gun_skill_level at 100c4a2e. The earlier pre-merge OFF build linked neither body.",
+    "readiness_note": "The text heuristic labels 008fbef0 ready despite called=true and call_sites=1; executable call evidence is authoritative. The original chain totals and refreshed merged-tree totals are recorded separately.",
+    "float_math": "pc24_lint.py --diff origin/main: zero findings; descriptor floats/countdown are copied without new arithmetic",
+    "runtime": "Game was not launched; build and entry-reachable call-graph evidence only"
+  },
+  "origin_main_merge": {
+    "origin_main": "1fc557ea3ba66b854399135580a28e9139835322",
+    "conflicts": [
+      "src/game_hosts_gunnery.cpp include block",
+      "src/game_hosts_units.cpp include block"
+    ],
+    "resolution": "Combined both sides' includes by hand. Preserved chain451 skill notification/countdown wiring, main's chain452 ReconClass registry, and main's chain447 land-unit predicates. No ledger shard or cmake/startup.cmake conflicts occurred; those incoming changes merged automatically.",
+    "switch": "kWireGoal4Chain451Bound remains true",
+    "checks": "Merged ON build and all three test suites pass; pc24_lint --diff origin/main has zero findings; no unresolved merge entries or whitespace errors",
+    "readiness_wired_total": 9718,
+    "entry_reachable_reconstructed_total": 4784,
+    "preserved_main_calls": "00808f90 remains directly reachable from recon_record_for_class; 00748b40 remains directly reachable from GameUnitsHost::unit_is_kind_of"
+  },
+  "representation": "The shared pilot_skill_index remains the scalar skill source for existing pass/base-bot readers. That alone is not equivalent to every gun notification: each plan.devices index is now mapped back to its actual owned gun row and replayed. A retained kTailGunner identity uses the loaded TailGunnerBot descriptor and existing 008FBEF0 body, on every notification even at the same level. Its copied angle error, aim periods and shoot range feed existing aim/fire consumers, and its uniform result replaces the retained +6Ch countdown without changing the held angles. Independent native base-bot+34h copies and dead plane/ship override notifications remain unmodeled.",
+  "review_round_1": {
+    "finding": "P2: discarded plan.devices omitted the tail-gunner countdown reroll and random draw",
+    "status": "fixed",
+    "evidence": "bsp.py show 00727e70 and 008fbef0; docs/GUN_BOT_TICKS.md +18h table; existing retained tail_gunner_aim countdown consumer",
+    "replay": "Store accepted plan.level_390, then notify actual guns selected by plan.devices in the existing device order. Only the installed TailGunner bot identity takes the override; ordinary scalar-only gun bot notifications use the already shared index.",
+    "random": "The existing 008FBEF0 body makes one stream-1 uniform draw through the host's gameplay RNG provider on every invocation; no previous-level equality guard. The returned aim_time_06c is stored into the countdown used by run_gun_aim_and_fire.",
+    "switch": "All notification effects and profile consumers are guarded by kWireGoal4Chain451Bound; the old setter stays unchanged in its else arm. OFF build/tests passed and neither body is linked. Header restored to true before final checks."
+  },
+  "rows": [
+    {
+      "native": "009565a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "evidence": "bsp.py show 006d1eb0 and 009565a0: forwarding skill subobject, unit+5Dh gate, +390h store, +6DCh pass and kind-20h gun notifications"
+    },
+    {
+      "native": "008fbef0",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "evidence": "Actual retained gun_bot_slots.primary identifies TailGunner; loaded_gun_bot_configs supplies the real descriptor, the gameplay RNG adapter supplies stream one, and the returned countdown/profile update the existing live aim/fire state"
+    },
+    {
+      "native": "00727e70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "The raw six-pointer gun object needed by this wrapper is absent from the typed host; selected device notifications are replayed onto the retained bot identities without claiming this raw wrapper as a new wired body."
+    },
+    {
+      "native": "00729a40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WeaponGroupScreenBinding::group_sight_00548300",
+      "reason": "The HUD weapon sight layout/status adapter and live gun-selection inputs are still missing; the existing torpedo stock counter is not this boolean query's native consumer."
+    },
+    {
+      "native": "00547a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: WeaponGroupScreenBinding::group_sight_00548300",
+      "reason": "Live weapon-sight widget, gun, projection and state providers required by Cc13SweepB6Host are missing."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: gun aiming/replication",
+      "reason": "A real replication SetAnglesImmediate call path is missing; the inspected torpedo aiming path instead uses 0085AB50/007F6190."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: live leak manager",
+      "reason": "An actual flooded-fraction consumer and loaded settings+404h provider are missing; leak initialization still names a settings substitute."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::script_set_failure_008132c0",
+      "reason": "The failure hook records the event but lacks a live controller+394h shape, mast visibility and collision-mask mutation/repair owner."
+    },
+    {
+      "native": "0092bec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine periscope update",
+      "reason": "A hosted broken-periscope repair lifecycle and retained native repair deadline fields are missing."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party brain/difficulty setup",
+      "reason": "The inspected host difficulty setup has no consumer of the first active brain/planner slot result."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_brain_plan_tail",
+      "reason": "Powerup-ready records, engagement groups and concrete powerup score/use adapters needed by the engagement pass are missing at the recorded tail."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scoring",
+      "reason": "The host has no native score-list owner or gameplay consumer; its capture planning uses weight vectors."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group candidate scoring",
+      "reason": "The candidate score-list entries required by mark_chosen are missing; adding an unused auxiliary list would not wire gameplay."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend member candidate loop",
+      "reason": "No new wiring is needed: the existing enabled defend loop already calls the reconstructed predicate with real kind and objective-set state."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: entity hint weighting",
+      "reason": "The Front6Host map/global iterator adapter for global and party entity hint weights is missing."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No new wiring is needed: the baseline executable already has three entry-reachable calls from avoid-zone refresh/point-offset bodies."
+    },
+    {
+      "native": "00415010",
+      "status": "skipped",
+      "host_site": "src/avoid_zone_geometry.cpp: avoid_zone_construct_from_scene_path_0041ccd0",
+      "reason": "No new wiring is needed: the baseline executable already calls this body from scene-path construction and corner-clearance bounds."
+    },
+    {
+      "native": "009d7050",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search",
+      "reason": "No new wiring is needed: the actual runtime adapter already calls ship_ai_avoid_query_refresh_009d7050 with its owned cache/list."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No new wiring is needed: this is already a dependency of the live query-refresh implementation."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "No new wiring is needed: this is already a dependency of the live query-refresh implementation."
+    },
+    {
+      "native": "007b8f20",
+      "status": "skipped",
+      "host_site": "src/pool_pool06_cc13.cpp: convex_object_compute_box_006f9ee0",
+      "reason": "No new wiring is needed: the baseline executable already has a reachable call from convex_object_compute_box_006f9ee0."
+    },
+    {
+      "native": "00b6fe20",
+      "status": "skipped",
+      "host_site": "src/native_cockpit_helper_construction.cpp: construct_native_cockpit_helper_00b3c800",
+      "reason": "No new wiring is needed: the baseline executable already has a reachable clear-depth call from cockpit construction."
+    },
+    {
+      "native": "00b3c800",
+      "status": "skipped",
+      "host_site": "src/native_cockpit_helper_construction.cpp: construct_native_cockpit_helper_00b3c800",
+      "reason": "No new wiring is needed: the existing cockpit constructor already reaches the inspected camera clear-depth leaf."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/game_input_actions.cpp: deadline callback dispatch",
+      "reason": "No new source wiring is needed: the existing action callback dispatcher already calls the reconstructed deadline callback."
+    },
+    {
+      "native": "008e4b00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp: use_item_008eada0",
+      "reason": "A live active-use caller/tail is missing; the inspected grant path invokes use_item only for passive group-3 classes, which do not start cooldown."
+    },
+    {
+      "native": "00878350",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: unit message handling",
+      "reason": "A concrete common fallback dispatcher replaying damaged-gfx and D2h effects is missing; the body inspected is only a kind-classification predicate."
+    },
+    {
+      "native": "008ee5f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene serialization",
+      "reason": "A scene-save text serializer consuming this escaping convention is missing; the inspected host only loads scene content."
+    },
+    {
+      "native": "007de5b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine state",
+      "reason": "Live PlaneEngineSlots owners and the engine-fire query consumer are missing from the inspected host."
+    },
+    {
+      "native": "007de600",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: plane engine state",
+      "reason": "Live PlaneEngineSlots owners and a stop-all event caller are missing from the inspected host."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: screen projection",
+      "reason": "The real HUD screen-margin globals and matching clamp consumer are missing; the inspected map projection uses its own explicitly labeled camera margin."
+    },
+    {
+      "native": "007b8ae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_skill_level_007b8ae0",
+      "reason": "The host method already runs; a native separate pilot-bot skill owner is still missing for reproducing its pre-base notification independently."
+    },
+    {
+      "native": "0080df90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "A native separate unit+740h AI skill owner is missing for this override's pre-base notification; this chain wires the shared 009565A0 base body."
+    },
+    {
+      "native": "006d1eb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The host forwarder already runs; its missing reconstructed base body is the 009565A0 wiring credited above."
+    }
+  ]
+}
