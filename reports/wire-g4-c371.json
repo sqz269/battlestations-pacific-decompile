@@ -1,0 +1,140 @@
+{
+  "chain": 371,
+  "slot": "g4-w5",
+  "switch": "bsp::kWireGoal4Chain371Bound",
+  "wired_before": 9581,
+  "rows": [
+    {
+      "native": "00815680",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::inherit_leader_wake_00815e20",
+      "reason": "Calls the existing whole native copy on the persistent new/old leader rings; samples/head are authoritative runtime storage, with compile-time native-offset checks. Existing outer handover metadata remains unchanged."
+    },
+    {
+      "native": "00815e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::inherit_leader_wake_00815e20",
+      "reason": "Whole handover still needs a native unit owner with live pose ancestry and FA0/FA8 residual rebasing; this change wires only its ring-copy callee."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "No persistent native plane FX component currently backs the recorded reset; the full component producer is missing."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing persistent class-created plane FX component and its effect/sound holders and controller dispatch."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing persistent plane FX owner, authored tuning/effect/sound holders, listener and transform graph for the whole step."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnitBinding/ForceSelectUnitBinding screen_reset",
+      "reason": "Missing native selection-screen owner and selected-range vector/input-context adapter; HUD file is now leased by g4-w4."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HUD speed digit update (owned by g4-w4)",
+      "reason": "Owned by agent/g4-w4 for the current chain; not duplicated here."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval callback",
+      "reason": "Missing real animation handle/producer: weapon_animation currently returns zero and interval only records."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::insert_sorted (no single-player caller selected)",
+      "reason": "Debug-overlay-only score records are outside the single-player runtime wiring scope."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/band_009f_cc13.cpp: AiGroupScoreList::mark_chosen (no single-player caller selected)",
+      "reason": "Debug-overlay-only chosen-record markers are outside the single-player runtime wiring scope."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain / brain_wants_immediate_think",
+      "reason": "No native active-planner slot producer was established in the inspected typed brain construction path."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group_value_record_00a04560",
+      "reason": "Missing authoritative global and per-party hint-weight map producers; existing weighting uses a labelled identity substitution."
+    },
+    {
+      "native": "00a00020",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group_value_record_00a04560",
+      "reason": "Existing candidate projection still substitutes entity-address spread and hint weighting; a complete native record input/owner contract is missing."
+    },
+    {
+      "native": "00a15a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: create_party_brain",
+      "reason": "Missing native planner/brain object owner and complete Seg69Host constructor services; current brain is a typed projection."
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::set_widget_local_z",
+      "reason": "No movie page/widget is produced by the bridge; a live transform owner is missing."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "No real movie decoder or page/widget texture holders are produced by the current bridge."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::reset_subtitles",
+      "reason": "Missing native movie widget, subtitle text child and subtitle container owners; current schedule is a typed projection."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: flight_state_notify_007c11e0",
+      "reason": "Native entity/controller impulse owner and reset dispatch were not established in the inspected path."
+    }
+  ],
+  "validation": {
+    "baseline_build": "passed; 2/2 CTests",
+    "final_build": "passed; 2/2 CTests",
+    "pc24_worktree_diff": "0 findings; no arithmetic expressions added",
+    "runtime": "Game not run; built call-graph reachability checked separately.",
+    "call_graph": {
+      "native": "00815680",
+      "reachable": true,
+      "reachable_call_sites": 1,
+      "caller": "bsp::game::GameUnitsHost::Impl::inherit_leader_wake_00815e20",
+      "call_site": "1025eb53",
+      "body": "10485c80"
+    },
+    "readiness": {
+      "state": "wired",
+      "called": true,
+      "call_sites": 1
+    }
+  },
+  "limitations": [
+    "Native vptr/lock services are not constructed: the reserved prefix is never touched by the wired leaf.",
+    "The outer handover keeps its existing metadata-copy projection; this does not wire the complete 00815E20 raw body."
+  ],
+  "wired_after": 9582
+}

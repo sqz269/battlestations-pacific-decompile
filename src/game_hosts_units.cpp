@@ -258,6 +258,8 @@
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
+#include "bsp/native_unit_wake_copy.hpp"
+#include "bsp/wire_goal4_chain371_switches.hpp"
 #include "bsp/ship_ai_rudder_hop.hpp"
 #include "bsp/unit_group_slot_swap.hpp"
 #include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
@@ -4043,7 +4045,27 @@ struct GameUnitsHost::Impl {
     // (00815680 on old+0BD0h). +FA0h/+FA4h/+FA8h have no host field: recorded.
     void inherit_leader_wake_00815e20(std::size_t new_leader, std::size_t old_leader) {
         if (new_leader >= slots.size() || old_leader >= slots.size()) return;
-        slots[new_leader]->wake = slots[old_leader]->wake;
+        if constexpr (bsp::kWireGoal4Chain371Bound) {
+            bsp::ShipAiWakeTrail& destination = slots[new_leader]->wake;
+            const bsp::ShipAiWakeTrail& source = slots[old_leader]->wake;
+            // 00815EAA calls 00815680 on the new/old leaders' inline rings.
+            // These are the authoritative samples filled at spawn and updated
+            // by append, also read by the formation/follower queries. Preserve
+            // the whole original head-first x87 copy, including self-copy.
+            bsp::copy_native_unit_wake_00815680(&destination, nullptr, &source);
+            // Preserve the existing outer handover projection for fields the
+            // primitive does not touch. Full 00815E20 pose/residual rebasing
+            // remains unbound; this does not claim that larger native owner.
+            destination.leg_shrank = source.leg_shrank;
+            for (std::size_t i = 0; i < 3; ++i) destination.residual[i] = source.residual[i];
+            destination.appends = source.appends;
+            destination.advances = source.advances;
+            destination.merges = source.merges;
+            destination.written = source.written;
+            done("UnitGroup::copy_leader_wake_00815680", 0x00815680u);
+        } else {
+            slots[new_leader]->wake = slots[old_leader]->wake;
+        }
         done("UnitGroup::inherit_leader_wake_00815e20", 0x00815e20u);
         record("UnitGroup::leader_offset_fa0_00815e20", 0x00815e7cu);
         ++formation_death_handovers;
