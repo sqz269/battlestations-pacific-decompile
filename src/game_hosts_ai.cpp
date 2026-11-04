@@ -59,6 +59,7 @@
 #include "bsp/wire_goal4_chain359_switches.hpp"
 #include "bsp/wire_goal4_chain364_switches.hpp"
 #include "bsp/wire_goal4_chain400_switches.hpp"
+#include "bsp/wire_goal4_chain409_switches.hpp"
 #include "bsp/cc13_seg70.hpp"
 #include "bsp/game_ai_candidate_resource.hpp"
 #include "bsp/game_ai_group_queries.hpp"
@@ -5624,10 +5625,25 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 if (r.entity == anchor) r.remaining -= kCaptureGroupResource;   // 00A2C530
                 }
             }
+            if constexpr (bsp::kWireGoal4Chain409Bound) {
+                // 00A1A6D0..00A1A712 (bsp.py show 00a1a6d0): the semantic
+                // body selects PATROLTO for 00A2C5A0(group), DEFENDPOSITION
+                // otherwise. Reuse it for the same choice in DefendThink's
+                // records path. Its result controls the live group's command;
+                // the existing patrol destination reads the anchor's real pose.
+                const auto order = bsp::gameplay_seg69_70_cc13::ai_order_defend_group_00a1a6d0(
+                    group_has_groupable_combatant(g));
+                if (order == bsp::gameplay_seg69_70_cc13::DefendOrder::PatrolToEntity) {
+                    defend_issue_patrol_00a2c310(g, anchor);
+                } else {
+                    defend_issue_position_00a2be20(g, side);
+                }
+            } else {
             if (!group_has_groupable_combatant(g)) {
                 defend_issue_position_00a2be20(g, side);
             } else {
                 defend_issue_patrol_00a2c310(g, anchor);
+            }
             }
             lists[anchor].push_back(g);
         }
