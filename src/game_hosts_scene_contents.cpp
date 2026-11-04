@@ -4,6 +4,8 @@
 #include "bsp/wire_goal4_chain357_switches.hpp"
 #include "bsp/wire_goal4_chain361_switches.hpp"
 #include "bsp/wire_goal4_chain384_switches.hpp"
+#include "bsp/wire_goal4_chain392_switches.hpp"
+#include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
 #include "bsp/wire_goal2_chain74_switches.hpp"
@@ -1606,6 +1608,7 @@ struct GameSceneContentsHost::Impl {
     // 00f8a09c, the deduplicated preload census, and 00f8a0b0, the stock queue.
     std::vector<std::int32_t> preload_census;
     std::vector<std::int32_t> stock_queue;
+    GamePendingClassStorage pending_classes;
     // cc15-vcp1 (kVehicleClassPreloadCc15Bound): the scene database's +08h
     // vector, destroyed by 00468C90 at 004D54A4 before the passes.
     std::vector<std::int32_t> scene_class_vector;
@@ -1987,16 +1990,25 @@ public:
         }
     }
     bool pop_stock_queue(std::int32_t& class_index) override {
+        if constexpr (bsp::kWireGoal4Chain392Bound) {
+            return owner_.pending_classes.pop_stock_queue(class_index);
+        } else {
         if (owner_.stock_queue.empty()) return false;
         class_index = owner_.stock_queue.front();
         owner_.stock_queue.erase(owner_.stock_queue.begin());
         return true;
+        }
     }
     void push_stock_queue(std::int32_t class_index) override {
+        if constexpr (bsp::kWireGoal4Chain392Bound) {
+            // 0095C4D0 maps through the live registry before queue de-duplication.
+            owner_.pending_classes.push_stock_queue(map_class_index(class_index));
+        } else {
         for (std::int32_t existing : owner_.stock_queue) {
             if (existing == class_index) return;
         }
         owner_.stock_queue.push_back(class_index);
+        }
     }
 
 private:
@@ -4358,7 +4370,19 @@ public:
         owner_.log.implemented("SceneContents::set_game_mode", "004bc890");
     }
     void clear_pending_class_ids() override {
+        if constexpr (bsp::kWireGoal4Chain392Bound) {
+            GamePendingClassCensusView census(owner_.preload_census);
+            auto state = owner_.pending_classes.reset_state(census);
+            const bsp::SingletonLifetimeCallbacks callbacks{nullptr, nullptr,
+                [](void*) { throw std::logic_error("pending class census range is invalid"); }};
+            // bsp.py show 004C8AA0 --asm, 004C8AE8..004C8B25: erase the
+            // live census, self-link its stock queue, zero count, free nodes.
+            bsp::oct18_tail_a::clear_pending_class_ids_004c8aa0(state, callbacks);
+            census.publish_size();
+            owner_.log.implemented("SceneContents::clear_pending_class_ids", "004c8aa0");
+        } else {
         owner_.log.unimplemented("SceneContents::clear_pending_class_ids", "004c8aa0");
+        }
     }
     void clear_scene_database_nodes() override {
         owner_.log.unimplemented("SceneContents::clear_scene_database_nodes", "00468c90");

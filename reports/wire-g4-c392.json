@@ -1,0 +1,154 @@
+{
+  "chain": 392,
+  "slot": "g4-w5",
+  "switch": "kWireGoal4Chain392Bound",
+  "picked": "Pending-class reset over the scene loader's live preload census and consumed stock queue",
+  "state": "0095C550 continues to populate Impl::preload_census; the native control view borrows those exact elements and publishes the reset body's resulting end back to the same C++ vector. Stock producers and the 0095CA10 drain now share the retained doubly linked queue. Nodes use the same malloc/free domain as the reconstructed reset. No shadow census or auxiliary queue is populated.",
+  "evidence": [
+    "bsp.py show 004C8AA0 and --asm: 004C8AE8 erases the full DWORD range; 004C8AED..004C8B25 self-links the existing sentinel, zeros its count, and frees each old node.",
+    "bsp.py show 0095C4D0: the producer maps the actual class ID through the registry, deduplicates node+8, and appends before the sentinel using next+0/previous+4.",
+    "bsp.py show 004685A0 and 00467D90: the checked erase publishes the move child's returned end. A whole-range census reset has a zero-length suffix; populated and empty controls are both supported."
+  ],
+  "replacement": "The ON arms replace stock-queue push/pop and the log-only clear. Each OFF arm preserves its previous host code unchanged. The new native operation occurs once at the existing 004D5499 scene-load step. C++ vector-size publication is the control-layout adapter, not a second host clear.",
+  "rows": [
+    {
+      "native": "004c8aa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::clear_pending_class_ids",
+      "call_graph": "One direct call from SceneContentsBinding::clear_pending_class_ids, reachable through GameSceneContentsHost::run_load_scene_contents_004d4df0 and the mission/menu/frame entry chain; absent from the switch-OFF executable."
+    },
+    {
+      "native": "004685a0",
+      "status": "wired",
+      "host_site": "src/oct18_tail_a.cpp: clear_pending_class_ids_004c8aa0, reached from SceneContentsBinding::clear_pending_class_ids",
+      "call_graph": "The actual erase_native_scene_dword_range_004685a0 body has one direct call from 004C8AA0 and is absent with this switch OFF. A pre-existing same-named PowerupCollectionBinding Host method is a separate symbol and is not credited as this body."
+    },
+    {
+      "native": "00467d90",
+      "status": "wired",
+      "host_site": "src/native_scene_dword_erase_range.cpp: erase_native_scene_dword_range_004685a0, reached from SceneContentsBinding::clear_pending_class_ids",
+      "call_graph": "One direct call from the actual 004685A0 body; absent with this switch OFF. The call executes for a nonempty census, including its native zero-suffix case."
+    },
+    {
+      "native": "0095c4d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: scene_stock_queue_0095c4d0 / VehicleClassPreloadBinding::push_stock_queue",
+      "reason": "The queue producer remains host code; no standalone reconstructed 0095C4D0 body is bound, although this packet supplies the actual mapped/deduplicated node storage and its consumer."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Record texture-name production still returns empty and the actual render-service remap field, current renderer, texture cache, and owner-release context are not supplied by this log-only path."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "The record name and live renderer/cache/actual-owner context required to release and replace service+670h are not supplied."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "The record name and live renderer/cache/actual-owner context required to release and replace service+674h are not supplied."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "The record name and live renderer/cache/actual-owner context required to release and replace service+678h are not supplied."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart binding write_checkpoint",
+      "reason": "checkpoint_differs still returns false; the real checkpoint-change trigger, profile-record erase, and storage rewrite continuation are needed before connecting the Lua-only reconstructed clear."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MissionTeardown close_result_gui",
+      "reason": "The record-only teardown site does not supply the actual game/movie-screen images and SoundLoadTransitionContext consumed by the complete sound-transition body."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI difficulty selection",
+      "reason": "Selection audit did not establish the live eight-slot brain/planner producer or a campaign path that needs this accessor; the earlier skip reports identify these prerequisites."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score list",
+      "reason": "A game-running coordinator tick and actual score-list producer/consumer were not established during selection; the release-only binding does not justify a parallel synthetic score table."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator group score choice",
+      "reason": "Actual game-consumed score-list entries and their coordinator tick must be established before marking choices; this packet did not establish that state."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: controller state-message inventory",
+      "reason": "Only the constructor body and candidate inventory were inspected; an actual controller descriptor capture and message consumer were not established for this packet."
+    },
+    {
+      "native": "00905300",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::slot_counter_increment",
+      "reason": "The formation route's entity_route_slot still returns -1; its real entity+1ACh slot and retained slot-counter state must be supplied before incrementing."
+    },
+    {
+      "native": "00644230",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: hud_root_screen_query",
+      "reason": "This host query returns zero; a correct controlled-unit global accessor/caller binding is needed rather than passing a copied value through an unrelated screen query."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: map_screen_busy",
+      "reason": "The callback returns recorded false; no live native screen image and scrolling-state producer were established for the raw-view query."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_ambient_volume",
+      "reason": "The ambient source getter returns zero and the volume setter discards its input; an actual sound-instance owner and its volume state are needed."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: animation_interval",
+      "reason": "weapon_animation returns zero and the interval callback only records; there is no established animation object to receive the range."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: set_unit_controlled_audio",
+      "reason": "The callback discards its controlled flag; the ship sound owner/device-list state required by the reconstructed broadcast was not established in this packet."
+    },
+    {
+      "native": "00927cc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit_bind_player",
+      "reason": "The host site records a player-binding action while the candidate is a role-mask query; a matching query caller and real unit role-word projection are needed."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1: Win32 Release and reconstructed_math/tool_tests pass with switch ON and OFF; final build restored ON.",
+    "focused_probe": "local/g4_c392_probe.cpp: populated census and queue with duplicate insertion, partial drain, reset, empty reset, and reuse pass; census allocation/capacity retained. Compiled against actual reconstructed source/library with /MANIFEST:EMBED, no stubs.",
+    "call_graph": "Switch-OFF 4573 reconstructed implementations called; switch-ON 4576. All three added actual bodies have one reachable direct call each. No game execution performed.",
+    "float_math": "No floating-point math changed; pc24 lint not required.",
+    "limits": "Host control-layout adaptation and ordinary valid-container behavior checked; original binary ABI and in-game scene reload behavior are not validated."
+  },
+  "counts": {
+    "readiness_wired_before": 9618,
+    "readiness_wired_after": 9619,
+    "entry_reachable_reconstructed_implementations_off": 4573,
+    "entry_reachable_reconstructed_implementations_on": 4576
+  }
+}
