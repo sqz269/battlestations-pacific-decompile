@@ -723,8 +723,9 @@ private:
 
 // Goal 4 chain 365: FailureRepairEnable (008AD540) and AddFire (008ACD10) through
 // their bodies in src/cc13_left55_seg56b.cpp. Both read only the core argument
-// accessors (008AD540: 00888AA0 argument 0, 00B66380 argument 1; 008ACD10: 00888AA0,
-// two 00B66180 and one 00B66130); every other accessor is refused.
+// accessors (008AD540: 00888AA0 argument 0 at 008AD63F, 00B66250 argument 1 at
+// 008AD67B; 008ACD10: 00888AA0 at 008ACE12, 00B66290 twice at 008ACE41 / 008ACE6F
+// and 00B66270 at 008ACE9E); every other accessor is refused.
 [[noreturn]] void repair_binding_unreached(const char* what) {
     throw std::logic_error(std::string("FailureRepairEnable/AddFire: unreached ") + what);
 }

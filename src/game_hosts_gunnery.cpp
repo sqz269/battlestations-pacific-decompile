@@ -4439,8 +4439,16 @@ struct GameGunneryHost::Impl {
         float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
         // Goal 4 chain 365: task+3Ch, the running sum 0093A470 adds every fire
         // amount into, and task+40h, 0093A4F0's copy of the new water seconds.
-        // 0093BCC0 zeroes both (0093BD50 / 0093BD55); nothing in this host reads
-        // them yet. The adders' +44h clear is task.reported_repaired below.
+        // 0093BCC0 zeroes both (0093BD50 / 0093BD55), and so do the timer steps
+        // when their seconds run out (0093C2B3 / 0093C1C3, run_damage_control);
+        // nothing in this host reads them yet. The adders' +44h clear is
+        // task.reported_repaired below.
+        // These two floats are the authoritative host copy of +3Ch / +40h.
+        // task.fire_expired_slot / water_expired_slot (RepairTaskState, typed
+        // uint32, labelled with +34h/+38h fire/water swapped against the adders'
+        // listing) name the same offsets, but only the unlinked
+        // repair_task_update_0093ca20 sequence and the revive reset write them,
+        // and nothing reads them.
         float fire_total_3c{0.0f};
         float water_last_40{0.0f};
         float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
@@ -17245,10 +17253,27 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 total += h0 - state.health;
             }
         };
+        if constexpr (bsp::kWireGoal4Chain365Bound) {
+            // Goal 4 chain 365: when the stored difference (FSUB, FSTP float) is
+            // below 0.0 (FLDZ / FCOMI / JBE: an unordered value keeps both), the
+            // step stores 0 at the seconds and at its companion: 0093C120 +34h and
+            // +40h (0093C1BE / 0093C1C3), 0093C210 +38h and +3Ch (0093C2AE /
+            // 0093C2B3). The timer below clamps the seconds; the companions, which
+            // the adders 0093A4F0 / 0093A470 write, are zeroed here.
+            const bool water_clamps = dc.water_seconds - dt < 0.0f;   // 0093C1A4..0093C1B9
+            timer(dc.water_seconds, dc.water_tick, dc.water_damage);
+            if (water_clamps) dc.water_last_40 = 0.0f;                 // 0093C1C3
+            done("DamageControl::water_step_0093c120", 0x0093c120u);
+            const bool fire_clamps = dc.fire_seconds - dt < 0.0f;     // 0093C294..0093C2A9
+            timer(dc.fire_seconds, dc.fire_tick, dc.fire_damage);
+            if (fire_clamps) dc.fire_total_3c = 0.0f;                  // 0093C2B3
+            done("DamageControl::fire_step_0093c210", 0x0093c210u);
+        } else {
         timer(dc.water_seconds, dc.water_tick, dc.water_damage);
         done("DamageControl::water_step_0093c120", 0x0093c120u);
         timer(dc.fire_seconds, dc.fire_tick, dc.fire_damage);
         done("DamageControl::fire_step_0093c210", 0x0093c210u);
+        }
         state.row.health = state.health;
         bsp::UnitHealth health;
         health.current_health = state.health;
@@ -19927,6 +19952,12 @@ bool GameGunneryHost::revive_unit_garrison_006f3660(std::size_t unit_index) {
         }
         dc.destroyed_segments.clear();
         dc.script_hull_repair = -1;
+        if constexpr (bsp::kWireGoal4Chain365Bound) {
+            // The re-created entity's task is a fresh 0093BCC0 one (+46h = 1,
+            // 0093BD4C); a FailureRepairEnable sent to the old entity is dropped.
+            dc.script_failure_repair = -1;
+            dc.task.failure_repair_enabled = true;
+        }
     }
     h.log.notef("gunnery: garrison revive unit=%s health=%.0f t=%.2f (006F3660 re-create, "
         "packet cc9_command_building_garrison)", s.row.name.c_str(),
