@@ -15,6 +15,7 @@
 #include "bsp/native_scene_property_integer_add.hpp"
 #include "bsp/native_scene_property_hash_iterator.hpp"
 #include "bsp/native_scene_property_reference_subbag_add.hpp"
+#include "bsp/native_scene_property_reference_set.hpp"
 #include "bsp/native_scene_property_string_add.hpp"
 #include "bsp/native_scene_typed_array_vector_providers.hpp"
 #include "bsp/native_scene_typed_property_providers.hpp"
@@ -29,6 +30,7 @@
 #include "bsp/wire_goal4_chain382_switches.hpp"
 #include "bsp/wire_goal4_chain390_switches.hpp"
 #include "bsp/wire_goal4_chain416_switches.hpp"
+#include "bsp/wire_goal4_chain421_switches.hpp"
 
 #include <algorithm>
 #include <array>
@@ -87,9 +89,24 @@ public:
                 } else {
                     source_has_only_existing_keys = false;
                 }
+                if constexpr (kWireGoal4Chain421Bound) {
+                    if (prior != destination.values.end() && overwrite
+                            && scene_reference_kind(value.type_letter) >= 0) {
+                        // The same-tag admitted destination was inserted above.
+                        // Replace its owned reference once, then publish that
+                        // record rather than also assigning it through the merge.
+                        destination_.replace_reference(value);
+                        selected_[i] = true;
+                        continue;
+                    }
+                    insert_into(source_, value);
+                    selected_[i] = true;
+                    any = true;
+                } else {
                 insert_into(source_, value);
                 selected_[i] = true;
                 any = true;
+                }
             } else {
             if (prior != destination.values.end()) {
                 if (!admitted(*prior) || prior->type_letter != value.type_letter) continue;
@@ -624,6 +641,20 @@ private:
             destroy_native_string_header_0041dd20(&query, context.lifetimes().keys());
             if (record == nullptr) throw std::logic_error("missing merged numeric property");
             return record;
+        }
+        void replace_reference(const SceneProperty& value) {
+            // bsp.py show 008F0420 --asm: free/duplicate owned +1Ch,
+            // then store the full scalar +18h and reference kind +08h.
+            // Its declared-reference parser call at 008F60C1 supplies the
+            // authored target, scalar0 and the letter's kind, just as the
+            // existing 008F3AC0 producer does for an absent declaration.
+            // Here that producer made the actual type-5 record and sole-owned
+            // current-heap name. The separate parser-owned token survives the
+            // setter's free, and result() reads the replacement before bag
+            // retirement. Same-letter admission preserves the merge's kind.
+            set_native_scene_property_reference_008f0420(find(value.key), nullptr,
+                value.values.front().c_str(), 0u,
+                static_cast<std::uint32_t>(scene_reference_kind(value.type_letter)));
         }
         void replace_owned_array(const SceneProperty& value) {
             // bsp.py show 008F0460 / 008F0520 / 008F0580: replace +20h/+24h,
