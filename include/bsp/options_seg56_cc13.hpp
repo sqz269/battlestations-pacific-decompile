@@ -386,7 +386,7 @@ int lua_set_catapult_stock(LuaArgs& args, Seg56Host& host);
 // SetPump 00893240: reads entity arg0 and boolean arg1 and does nothing with them.
 int lua_set_pump(LuaArgs& args);
 // GetSubmarineAirSupply 008938E0 / SetSubmarineAirSupply 00893A60: float entity+127Ch.
-int lua_get_submarine_air_supply(LuaArgs& args, LuaResults& results, ImageAccess& image);
+int lua_get_submarine_air_supply_008938e0(LuaArgs& args, LuaResults& results, ImageAccess& image);
 int lua_set_submarine_air_supply(LuaArgs& args, ImageAccess& image);
 // ForceSubmarinePeriscope 00893DA0: byte entity+1235h = boolean arg1.
 int lua_force_submarine_periscope(LuaArgs& args, ImageAccess& image);
