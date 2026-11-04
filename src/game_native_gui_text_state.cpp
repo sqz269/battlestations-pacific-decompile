@@ -27,7 +27,7 @@ GameNativeGuiTextState::GameNativeGuiTextState() noexcept
       widget_y_scale_(image_float(0x3f400000u)),
       icon_vertical_scale_(image_float(0x3f400000u)) {}
 
-float (&GameNativeGuiTextState::white_color_00ab7060(
+__declspec(noinline) float (&GameNativeGuiTextState::white_color_00ab7060(
     const volatile float& one_00d7a24c) noexcept)[4] {
     if ((default_color_mask_ & 1u) == 0) {
         const float one = one_00d7a24c; // 706D precedes mask OR and all four stores.

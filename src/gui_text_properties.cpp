@@ -1,6 +1,8 @@
 #include "bsp/gui_text_properties.hpp"
+#include "bsp/game_native_gui_text_state.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/native_string_compare.hpp"
+#include "bsp/wire_goal4_chain393_switches.hpp"
 #include <cstddef>
 #include <cstring>
 #include <limits>
@@ -80,10 +82,32 @@ GuiTextVerticalAlign parse_vertical(const std::string& name) {
         ? GuiTextVerticalAlign::Center : GuiTextVerticalAlign::Top;
 }
 void initialize_default_color(const GuiTextPropertyConstants& c) noexcept {
+    if constexpr (kWireGoal4Chain393Bound) {
+        auto& globals = game::game_native_gui_text_state();
+        if (&c.default_color_mask_00f8be48 == &globals.default_color_mask_00f8be48()
+            && &c.default_color_00f8be38 == &globals.default_color_00f8be38()) {
+            // 00ABB630's four StateColors gates repeat 00AB7060 exactly:
+            // test bit0, load D7A24C, OR bit0, then store the same word four
+            // times. The live render application supplies these SAME process
+            // cells and its image-backed one; the reader below consumes this
+            // quartet as each real field's fallback. See `bsp.py show
+            // 00ab7060 --asm` (7065..7093). This is a new C++ call, not the
+            // original no-argument ABI or evidence of an original caller.
+            (void)globals.white_color_00ab7060(c.one_00d7a24c);
+        } else {
+            // Independent caller-owned property domains retain their own
+            // guard and quartet; do not initialize the process cache for them.
+            if ((c.default_color_mask_00f8be48 & 1u) != 0) return;
+            const float one = c.one_00d7a24c;
+            c.default_color_mask_00f8be48 |= 1u;
+            for (auto& channel : c.default_color_00f8be38) copy_word(channel, one);
+        }
+    } else {
     if ((c.default_color_mask_00f8be48 & 1u) != 0) return;
     const float one = c.one_00d7a24c; // Load precedes OR and all four stores.
     c.default_color_mask_00f8be48 |= 1u;
     for (auto& channel : c.default_color_00f8be38) copy_word(channel, one);
+    }
 }
 void finish(GuiTextPropertiesContinuation& frame) {
     std::string{}.swap(frame.vertical_align);
