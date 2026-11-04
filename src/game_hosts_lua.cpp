@@ -7153,14 +7153,19 @@ private:
 //    Then 00972F00 (callback, entity +0Ch, killReason +1Ch through 00970FF0);
 //  - exitzone: 0097A620 then 009726D0 (callback, entity +0Ch, exited +1Ch, 00972390);
 //  - recon: 0097A220 then 00972450 (callback, entity +0Ch, oldLevel +1Ch, newLevel
-//    +2Ch, and party +3Ch only when 009724F1 has_key finds it).
+//    +2Ch, and party +3Ch only when 009724F1 has_key finds it);
+//  - hit: 0097E430 calls 0097C2C0, again only a raw cc13_seg62 body, so the empty
+//    filters are value-initialised. Then 009725B0 (callback, target +0Ch, targetDevice
+//    +1Ch, attacker +2Ch, attackType +3Ch through 00970FF0, attackerPlayerIndex +4Ch,
+//    and the damageCaused +5Ch, fireCaused +68h and leakCaused +74h "min"/"max"
+//    ranges through 0096AAD0, each defaulting to -1e10 / 1e10).
 // The shipped scripts give every filter key (`lastAttacker = {}` and so on): the native
 // lua_next on an absent key's nil has no type test. GuiLua51Host::next throws there
 // instead, and that block falls back to the host parse (counted, logged).
 bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
                                                            ListenerEntry& entry) {
     namespace seg64 = bsp::cc13_seg49_64_78;
-    enum class Channel { none, kill, entity_killed, exit_zone, recon };
+    enum class Channel { none, kill, entity_killed, exit_zone, recon, hit };
     Channel channel = Channel::none;
     // Each channel only where the dispatcher that consumes it runs the value-model arm.
     if (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound
@@ -7174,6 +7179,9 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         channel = Channel::exit_zone;
     } else if (listener_key_equal(entry.channel, "recon")) {
         channel = Channel::recon;   // fire_recon_listeners_00980e50 has no OFF-gated arm
+    } else if (bsp::kWireGoal4Chain286Bound && kLuaHitFilterFieldsBound
+               && kLuaHitAttackerPlayerIndexBound && listener_key_equal(entry.channel, "hit")) {
+        channel = Channel::hit;     // the dispatcher arm that tests all eight keys
     }
     if (channel == Channel::none) return false;
 
@@ -7226,6 +7234,13 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
             entry.native_recon = std::move(subscription);
             break;
         }
+        case Channel::hit: {
+            auto subscription = std::make_shared<seg64::HitSubscription>();
+            seg64::load_hit_009725b0(*subscription, reader, handles);
+            entry.callback = subscription->callback;
+            entry.native_hit = std::move(subscription);
+            break;
+        }
         case Channel::none:
             break;
         }
@@ -7237,6 +7252,7 @@ bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
         entry.native_entity_killed.reset();
         entry.native_exit_zone.reset();
         entry.native_recon.reset();
+        entry.native_hit.reset();
         ++summary_.listener_native_load_fallbacks;
         log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" native load threw (%s); "
             "host parse (goal 4 chain 352)", entry.channel.c_str(), entry.id.c_str(), error.what());
@@ -7257,7 +7273,7 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
     entry.id = listener_string_argument(state, 2);
     if (argument_count >= 3 && ::lua_type(state, 3) == LUA_TTABLE) {
         // Goal 4 chain 352: the native construct + Load for kill, entityKilled,
-        // exitzone and recon (load_listener_subscription_native). OFF, any other channel, or a
+        // exitzone, recon and hit (load_listener_subscription_native). OFF, any other channel, or a
         // load that threw keeps the host parse below.
         bool native_loaded = false;
         if constexpr (bsp::kWireGoal4Chain352Bound) {
@@ -11341,9 +11357,52 @@ void GameMissionLuaHost::dispatch_hit_listeners_00988510() {
         // Packet cc13-atkkind: the string the callback's argument 4 carries.
         const std::string subkind = hit_attack_type_name_00e08e58(hit.ordnance_kind);
         std::vector<std::string> callbacks;
+        // Goal 4 chain 352: 009685B0's eight keys, in its order, on the subscription
+        // AddListener loaded (009725B0); the first that fails ends the test.
+        auto native_hit_holds = [&](const bsp::cc13_seg49_64_78::HitSubscription& s,
+                                    int shooter) {
+            namespace seg64 = bsp::cc13_seg49_64_78;
+            namespace matchers = bsp::lua_listener_native_matchers;
+            const bool target = s.target.matches(matchers::word_param(victim));      // +0Ch
+            const bool attacker = s.attacker.matches(matchers::word_param(shooter)); // +2Ch
+            if (target && attacker && !s.attack_type.values.empty()
+                && (s.attack_type.values.count(type) != 0)
+                    != (s.attack_type.values.count(subkind) != 0)) {
+                ++summary_.listener_hit_attack_type_subkind_differs;   // the host arm's count
+            }
+            if (!target) return false;
+            // +1Ch on params[1], the device entity 00988B72 boxes through 00968060. The
+            // host builds no device entities, so a non-empty set never holds (the
+            // substitution the host arm states as hit_device_filter).
+            if (!s.target_device.ids.empty()) return false;
+            if (!attacker) return false;
+            // +3Ch on params[3]: 00988B09 takes 00E08E58[[shot+4]+8] and 00988BF7 0096DC00
+            // boxes it (kHitListenerAttackTypeSubKindCc13Bound; OFF the host's bullet
+            // class type, as its own arm compares).
+            seg64::EventParam attack_type;
+            attack_type.text04 = seg64::construct_warning_event_record_0096dc00(
+                kHitListenerAttackTypeSubKindCc13Bound ? subkind : type).name;
+            if (!s.attack_type.matches(attack_type)) return false;
+            if (!s.attacker_player_index.matches(                                     // +4Ch
+                    matchers::word_param(hit.attacker_player_index))) {
+                return false;
+            }
+            // +5Ch, +68h, +74h through 00968440 on the hit record's damage, fire and leak.
+            return seg64::range_filter_matches_00968440(s.damage_caused,
+                       matchers::number_param(hit.damage))
+                && seg64::range_filter_matches_00968440(s.fire_caused,
+                       matchers::number_param(hit.fire_caused))
+                && seg64::range_filter_matches_00968440(s.leak_caused,
+                       matchers::number_param(hit.leak_caused));
+        };
         auto evaluate = [&](int shooter) {
         for (const ListenerEntry& entry : listeners_) {
             if (!listener_key_equal(entry.channel, "hit")) continue;
+            if (bsp::kWireGoal4Chain352Bound && entry.native_hit != nullptr) {
+                if (!native_hit_holds(*entry.native_hit, shooter)) continue;
+                if (!entry.callback.empty()) callbacks.push_back(entry.callback);
+                continue;
+            }
             auto holds = [](const std::vector<int>& set, int v) {
                 return set.empty() || std::find(set.begin(), set.end(), v) != set.end();
             };
