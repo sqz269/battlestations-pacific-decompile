@@ -1,0 +1,186 @@
+{
+  "chain": 510,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain510Bound",
+  "scope": "Use the reconstructed loaded-barrel predicate to reject exhausted live torpedo guns before stock counting and random-unload enumeration.",
+  "readiness_wired_before": 9806,
+  "entry_reachable_reconstructed_before": 4871,
+  "entry_reachable_reconstructed_after": 4872,
+  "rows": [
+    {
+      "native": "00729a40",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::loaded_torpedo_barrels_00810e90 and unload_random_torpedo_barrel_0081dcb0",
+      "evidence": "00729A41/4D load the actual gun count/timer span; 00729A53..61 use double 00D7A278 and ordered strict-below comparison. The host passes its existing live timer vector, and the result excludes exhausted guns from the stock consumer. Surviving barrel order, count, sentinel writes and random draw remain unchanged."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture/group planning",
+      "reason": "No live AiGroupScoreList insertion consumer was established; the planner uses its existing weight/assignment state."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: capture/group planning",
+      "reason": "No live AiGroupScoreList entries and chosen-bit consumer were established for the existing planner."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call; src/game_hosts_fixed_step.cpp: deferred-call drain",
+      "reason": "The named-call producer requires a real frame-job-thread call and argument vector; the host's main-thread path does not produce them."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: queue_named_call",
+      "reason": "No frame-job-thread named-call producer reaches the deferred queue in the current host."
+    },
+    {
+      "native": "00940ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts.cpp: OnInitOnce GUI sound initialization",
+      "reason": "Existing chain449 already initializes the real sound core through initialize_gui_sound_set; no additional functional replacement was identified."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "weapon_animation still returns zero and no actual timed animation object reaches animation_interval."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetControlledUnit controlled_audio",
+      "reason": "The ship sound/device objects consumed by the controlled-audio broadcast are not supplied by this HUD host."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block",
+      "reason": "The host merges semantic property blocks; a complete pair of actual raw114h owning bags and shared clone/retirement context was not established."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: director state/snapshot provenance",
+      "reason": "No routed ControllerSnapshotMessage producer and consumer exist at the inspected host site."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: director state provenance",
+      "reason": "No actual controller state-message transport was established; merely copying current flags into a temporary would not replace gameplay logic."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate set_ambient_volume",
+      "reason": "has_ambient_sound_instance returns false and this path owns no real ambient SoundInstance to scale."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: plane bomb-fire HUD",
+      "reason": "The original plane bomb-fire HUD caller and its two live direction vectors were not established in the current host."
+    },
+    {
+      "native": "0071f5d0",
+      "status": "skipped",
+      "host_site": "src/cruise_command.cpp: GameUnitMessageHost clear-user-path callback",
+      "reason": "The full GameUnitMessageHost clear-user-path receiver remains unimplemented; the active host runs the separate set-command route."
+    },
+    {
+      "native": "00414f50",
+      "status": "skipped",
+      "host_site": "src/game_avoid_zone_runtime.cpp: refresh_search via ship_ai_avoid_query_refresh_009d7050",
+      "reason": "Existing avoidance runtime already calls the reconstructed query refresh and this containment helper; no new functional replacement was needed."
+    },
+    {
+      "native": "00419fa0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing game avoidance adapter already reaches this list-layer operation through query refresh."
+    },
+    {
+      "native": "004224c0",
+      "status": "skipped",
+      "host_site": "src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050",
+      "reason": "The existing game avoidance adapter already reaches this list-refill operation through query refresh."
+    },
+    {
+      "native": "008082a0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::load_from_row_00809147",
+      "reason": "The real Lua-backed sensor registry already invokes the existing loader body at this adapter site."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "reason": "The real sensor registry already invokes the reconstructed constructor when allocating its retained class record."
+    },
+    {
+      "native": "004b5510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: party_admitted via ai_party_ai_enabled_009ffe50",
+      "reason": "The inspected campaign path uses the single-player party-mode branch; no reached participant-slot predicate arm was established."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail::set_scroll_range",
+      "reason": "The existing host already calls the reconstructed set_scroll_range body when it has real measured layout."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg33_cc13.cpp: command registry sort",
+      "reason": "No live command-registry matching-list producer/consumer was established; the inspected Lua stable_sort only orders diagnostic counters."
+    },
+    {
+      "native": "00638b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: marker placement",
+      "reason": "The host marker bridge does not supply the native runtime screen-margin globals consumed by this clamp."
+    },
+    {
+      "native": "00abca10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud_world.cpp: HUD arrow/curve rendering",
+      "reason": "No live authored Curve control-point producer and mesh consumer were established in the inspected HUD bridge."
+    },
+    {
+      "native": "00b72250",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_render_application.cpp: GUI scene ownership",
+      "reason": "The live application uses native GUI scene storage rather than the semantic NativeGuiSceneOwner interface; no replacement of its existing lifetime path was needed."
+    },
+    {
+      "native": "006e6bb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile owner registration",
+      "reason": "The existing body is a SceneNodeFlags predicate projection, not the complete owner-binding operation; a correct live bind path was not established."
+    },
+    {
+      "native": "004bb3e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: lobby/participant initialization",
+      "reason": "No current caller exposing the eight actual lobby state cells to this reset operation was established."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: mission/message language selection",
+      "reason": "No live language-entry table producer and matching lanfile-list consumer were established at an unclaimed host site."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed; all four existing tests passed",
+    "changed_build": "scripts/build.ps1 passed; all four existing tests passed",
+    "call_graph": "00729a40 is entry-reachable at three call sites: loaded_torpedo_barrels_00810e90, its inlined torpedo_stock_pass_c_0081f8b0 use, and unload_random_torpedo_barrel_0081dcb0. Reachable reconstructed addresses increased from 4871 to 4872.",
+    "equivalence": "The reconstructed any predicate and existing count/enumeration compare the same real float timer span against the same widened FLT_MAX sentinel. A rejected span contributes zero; accepted spans preserve original barrel iteration and candidate order. Empty spans, NaNs and positive infinity remain excluded; no RNG draw is added.",
+    "runtime": "Not run; this worker does not launch the game."
+  }
+}

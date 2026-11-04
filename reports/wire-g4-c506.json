@@ -1,0 +1,258 @@
+{
+  "chain": 506,
+  "slot": "g4-w1",
+  "branch": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain506Bound",
+  "picked": "C3h/C5h/C7h plane loopback receive-message allocation and scalar-deleting lifetimes",
+  "rows": [
+    {
+      "native": "00762920",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_change_state_c3",
+      "real_state": "Existing live plane request payload, session/selected-owner context and loopback bitstream; decoded fields are consumed by the same existing caller.",
+      "built": "Existing OwnedDecodedMessage retains the actual 24h receive allocation; scalar delete flags=1 runs once after payload projection, sender flags=0 never frees stack storage.",
+      "evidence": "bsp.py show 00762920 --asm: root profile store at +0, optional 00BF65AC for flags bit0, EAX=this and RET4. 00D03504 slot0; 00768530 factory 00769B70..00769B84.",
+      "call_graph": "Release graph: entry-reachable calls from queue_plane_change_state_c3; identical scalar-delete code is folded with other messages at RVA 10462b80.",
+      "qualification": "Build-tested and statically entry-reachable; source C++ interface changes ABI; game not run."
+    },
+    {
+      "native": "00762b00",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_touchdown_c5",
+      "real_state": "Existing live plane request payload, session/selected-owner context and loopback bitstream; decoded fields are consumed by the same existing caller.",
+      "built": "Existing OwnedDecodedMessage retains the actual 20h receive allocation; scalar delete flags=1 runs once after payload projection, sender flags=0 never frees stack storage.",
+      "evidence": "bsp.py show 00762b00 --asm: root profile store at +0, optional 00BF65AC for flags bit0, EAX=this and RET4. 00D03518 slot0; 00768530 factory 00769BD0..00769BE4.",
+      "call_graph": "Release graph: entry-reachable calls from queue_plane_touchdown_c5; identical scalar-delete code is folded with other messages at RVA 10462b80.",
+      "qualification": "Build-tested and statically entry-reachable; source C++ interface changes ABI; game not run."
+    },
+    {
+      "native": "00762bc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp: HostSessionMessages::queue_plane_disappear_c7",
+      "real_state": "Existing live plane request payload, session/selected-owner context and loopback bitstream; decoded fields are consumed by the same existing caller.",
+      "built": "Existing OwnedDecodedMessage retains the actual 24h receive allocation; scalar delete flags=1 runs once after payload projection, sender flags=0 never frees stack storage.",
+      "evidence": "bsp.py show 00762bc0 --asm: root profile store at +0, optional 00BF65AC for flags bit0, EAX=this and RET4. 00D0352C slot0; 00768530 factory 00769BF0..00769C04.",
+      "call_graph": "Release graph: entry-reachable calls from queue_plane_disappear_c7; identical scalar-delete code is folded with other messages at RVA 10462b80.",
+      "qualification": "Build-tested and statically entry-reachable; source C++ interface changes ABI; game not run."
+    },
+    {
+      "native": "004d87b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: MissionEntryBinding::check_multiplayer_player_count",
+      "reason": "Single-player never takes the participant-count branch; the host also lacks a MissionPlayerCountHost participant enumeration."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::begin_submarine_periscope_failure",
+      "reason": "Per-instance mast node and Dyn collision-shape owners are missing for 00B6DA70/00C47FC0; current path deliberately binds only common stores in 009327F0."
+    },
+    {
+      "native": "0096ae90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: ship noise effect service",
+      "reason": "Missing actual ShipNoiseInfo +8h point-effect owner and its stop/release dispatch."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing frontend text-editor owner and input-action publication/update bridge for the new-profile screen."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: voice language profile_owns_content",
+      "reason": "Missing actual profile-owned content list at +D0h; current voice bridge explicitly has no such owner."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: state_message_build_00721280",
+      "reason": "Network controller-state snapshot construction is not a single-player message producer."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp: snapshot_build_007214c0",
+      "reason": "Network director-state snapshot construction is not a single-player message producer."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call",
+      "reason": "No frame-job-thread Lua producer exists in this executable; mission Lua runs on the main thread."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/native_unit_lifecycle_services.cpp: mark_native_recon_slot_dirty_00803ba0",
+      "reason": "No live NativeReconDirtyAccess binding was identified for actual F874BC slot and E188A8 player-context fields."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/native_command_target_initialize.cpp: initialize_native_command_target_004f1830",
+      "reason": "Body reads original absolute F87574 globals; no same-object absolute-global binding was established for the command host."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList candidate scoring",
+      "reason": "Debug-only score-list readers do not drive gameplay, so no score-list owner is constructed."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AiGroupScoreList chosen marking",
+      "reason": "Debug-only score-list readers do not drive gameplay, so no score-list owner is constructed."
+    },
+    {
+      "native": "009c3c40",
+      "status": "skipped",
+      "host_site": "src/cc13_moveto1.cpp: make_moveto_for_attackmove_009c3c40",
+      "reason": "No concrete live MoveToTaskCalls binding with native bot/descriptor identities was identified in this packet."
+    },
+    {
+      "native": "00ba0090",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: ocean_field_depth_sample_kernel_00ba0090",
+      "reason": "Only fragments represent this large ocean-render body; no live depth-kernel shader consumer was identified."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured-group storage teardown",
+      "reason": "Existing sound_cc13 raw same-address destructor already serves reserve/pop/resize callers; calling the typed projection too would duplicate teardown."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: configured-type storage teardown",
+      "reason": "Existing sound_cc13 raw same-address destructor already serves reserve/resize callers; calling the typed projection too would duplicate teardown."
+    },
+    {
+      "native": "00a7b9c0",
+      "status": "skipped",
+      "host_site": "src/sound_shutdown.cpp: stop_retained_sound_pointers_00a7b9c0",
+      "reason": "No concrete SoundSystemOwner/retained-pointer shutdown replacement site was established in this packet."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot_task_tick_gate_passes_0099c270",
+      "reason": "Missing live Cc13Seg67bHost and raw task+2F4/unit+9C2 task-gate binding."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp: clear_gamepad_force_requests_00a95890",
+      "reason": "Live raw gamepad reconstruction already has clear_native_gamepad_force_00a95890; typed InputDevice projection would add a second body path."
+    },
+    {
+      "native": "00be2ac0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: window_platform_base_construct_00be2ac0",
+      "reason": "Native platform construction already uses construct_native_window_platform_base_00be2ac0; do not also run the older projection."
+    },
+    {
+      "native": "00412070",
+      "status": "skipped",
+      "host_site": "src/cc13_left55_seg55.cpp: landscape shore-mask/falloff neighbor sampling",
+      "reason": "Missing live Left55Host shore-mask/falloff entry path; replacing its abstract helper alone would not create an entry-reachable call."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp: get_camera_fov_aspect_product_00b6fc30",
+      "reason": "No live camera aspect-times-FOV consumer replacement was identified in this packet."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Existing reconstructed submission already calls this helper; no additional real host path was established here."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp: submit_native_main_scene_00b101c0",
+      "reason": "Existing reconstructed submission already calls this helper; no additional real host path was established here."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/native_device_class_construction.cpp: native device-class construction",
+      "reason": "Missing live raw device-class allocation and damageable-base dispatch binding; current mission device metadata does not supply that native owner."
+    }
+  ],
+  "verification": {
+    "build": "./scripts/build.ps1 passed; all five CTests passed",
+    "tests_added": 0,
+    "float_math_changed": false,
+    "ghidra": "Existing C:/Users/sqz269/bsp.gpr /battlestationspacific.exe; correct compiler names retained, comments applied and saved; three affected exports refreshed",
+    "annotation_receipt": "local/ghidra-annotations-20261104T183249Z.json",
+    "call_graph": "python tools/call_graph.py, then who for all three addresses: reachable direct calls from changed host methods; Release ICF folds identical destructor code",
+    "baseline_source_wired": 9802,
+    "baseline_called_reconstructed": 4864,
+    "after_called_reconstructed": 4864,
+    "called_count_qualification": "Release call-graph aggregate remains 4864 -> 4864 despite three additional address symbols; identical destructor code is folded with existing scalar-delete bodies. Exact COFF relocations bind each changed host caller to its selected new symbol.",
+    "game_run": false,
+    "after_source_wired": 9802,
+    "coff_relocations": {
+      "artifact": "local/output/wire_g4_c506_relocations.json",
+      "count": 9,
+      "result": "Exact IMAGE_REL_I386_REL32 targets identify the selected destructor in each host method and each RAII teardown, independently of Release ICF.",
+      "targets": {
+        "00762920": 3,
+        "00762b00": 3,
+        "00762bc0": 3
+      }
+    },
+    "source_count_qualification": "wire_readiness rows omit all three compiler-tagged scalar destructors, so its source total stays 9802 -> 9802. No scope, tags or counting tool changed. Independent call-graph and nine exact COFF relocations verify the new calls.",
+    "assumption": "Chose previously classified compiler-generated message destructors because their complete listing and genuine single-player loopback owner were available; their readiness scope exclusion is retained and reported."
+  },
+  "left": "Other plane/message lifetimes remain for later packets; early surveyed candidates above have specific owner/path gaps or already have another same-address implementation. No game/runtime or original-ABI parity claim."
+}

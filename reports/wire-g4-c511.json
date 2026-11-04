@@ -71,5 +71,46 @@
   },
   "coordination": "Announced small independent torque-only host edit and additive shared-source/header edit to the owners of the in-review branches; no changes to their plane or repair-message functions.",
   "called_after": 4872,
-  "wired_after": 9807
+  "wired_after": 9807,
+  "merge_validation": {
+    "origin_main": "fa39fccf6cb40cd2148e0169b99ae8dc43fcf6e1",
+    "conflict": "Adjacent chain509 and chain511 includes in src/game_hosts_session_messages.cpp; both retained.",
+    "preserved": "Torque changes from this branch and repair/plane message lifetimes from origin/main retained; selected name and reconstruction records verified against both parents.",
+    "normal_build": "passed; 5 of 5 CTest tests",
+    "on_build": "passed; off_switch_on_build.py enabled kAutoAttackAllMembersBound and kPlaneFormationPlacementEnabled, reported 0 diagnostics and restored both files",
+    "restored_configuration_build": "passed; 5 of 5 CTest tests after ON switches restored",
+    "call_graph_summary": {
+      "functions": 37434,
+      "reachable_functions": 37269,
+      "data_symbols": 42557,
+      "edges": 191923,
+      "roots": 1,
+      "instructions": 2178153,
+      "recon_addresses": 5358,
+      "recon_called": 4875,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2067
+    },
+    "wire_readiness": {
+      "wired": 9813,
+      "callees_done_no_wired_caller": 9211,
+      "ready": 1448,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "readiness_call_graph_counts": {
+      "called": 5101,
+      "called_not_wired": 354,
+      "wired_not_called": 31,
+      "not_in_binary": 15593
+    },
+    "torque_delete_call": {
+      "source": "HostSessionMessages::queue_ship_add_torque_93",
+      "source_reachable": true,
+      "call_site": "101f0c04",
+      "target": "10464130",
+      "identical_code_folded": true
+    },
+    "scope_note": "The retained cg_scalar_deleting_dtor tag still excludes 007626A0 from the readiness pool. New main work changes the merged total; this packet does not reclassify the destructor."
+  }
 }

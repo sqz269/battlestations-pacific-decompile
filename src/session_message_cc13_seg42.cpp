@@ -223,6 +223,18 @@ HitWarningMessage* construct_hitwarning_007607b0(HitWarningMessage* m, const Con
     return m;
 }
 RepairAddDamageMessage* construct_shiprepair_adddamage_007608e0(RepairAddDamageMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x9E, 1, 0x00D0334Cu, c); }
+__declspec(noinline) RepairAddDamageMessage* delete_shiprepair_adddamage_00760bd0(
+    RepairAddDamageMessage* message, std::uint32_t flags) {
+    // bsp.py show 00760BD0 --asm: TEST flags,1; capture ECX; MOV [this],
+    // 00CE4974; conditional cdecl BF65AC free; return captured this; RET4.
+    // bsp.gpr /battlestationspacific.exe, bytes 00D0334C..5F: this is slot0
+    // of the 9Eh profile, followed by 00760970/007609E0/00760940/004499C0.
+    // The native root store precedes free; no other header/payload field is touched.
+    static_cast<volatile NativeSessionMessageStorage&>(message->h.base).profile_00 =
+        native_session_message_root_profile_00ce4974();
+    if ((flags & 1u) != 0) singleton_lifetime_free(message);
+    return message;
+}
 RepairBodyMessage* construct_shiprepair_bodyrepair_00760a50(RepairBodyMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x9F, 1, 0x00D03360u, c); }
 HeaderedMessage* construct_shiprepair_repairpriority_00760b70(HeaderedMessage* m, const Context& c) { return construct_headered(m, m, 0xA0, 1, 0x00CF5C38u, c); }
 LandingShipsLaunchedMessage* construct_ship_landingshipslaunched_00760e90(LandingShipsLaunchedMessage* m, const Context& c) { return construct_headered(m, &m->h, 0x95, 1, 0x00D03388u, c); }
