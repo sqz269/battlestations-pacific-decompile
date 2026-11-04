@@ -111,6 +111,8 @@
 #include "bsp/mission_camera.hpp"
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/native_lua_objects.hpp"
+#include "bsp/native_tagged_leaf_b6_16e.hpp"
+#include "bsp/wire_goal4_chain458_switches.hpp"
 #include "bsp/lua_numeric.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
 #include "bsp/vehicle_class.hpp"
@@ -996,12 +998,42 @@ private:
 class ObjectiveLuaArguments final : public bsp::ObjectiveArgumentReader {
 public:
     explicit ObjectiveLuaArguments(lua_State* state) noexcept
-        : state_(state), top_(lua_gettop(state)),
+        : state_(state),
           // The CRT conversion mode 00BF7420 selects, represented as the decal
           // and ship-depth readers in this file represent it.
-          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {}
+          sse2_conversion_(IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE) {
+        if constexpr (bsp::kWireGoal4Chain458Bound) {
+            // 008CDD60/008CE510 open a 00B679B0 frame before reading its
+            // argument count with 00B663F0. Its native +0Ch is a snapshot of
+            // lua_gettop, not the current top after temporary argument reads.
+            // Bind the same live interpreter as NativeBindingPushFrame above;
+            // this owner borrows it and the kind-3 frame is untracked.
+            bsp::construct_native_lua_state_00b66bd0(&frame_owner_);
+            frame_owner_.state_04 = state;
+            bsp::native_lua_call_frame_00b679b0(frame_owner_, &frame_);
+            top_ = static_cast<int>(frame_.opaque_0c);
+        } else {
+            top_ = lua_gettop(state);
+        }
+    }
+    ~ObjectiveLuaArguments() override {
+        if constexpr (bsp::kWireGoal4Chain458Bound) {
+            bsp::destroy_native_lua_object_00b67700(frame_);
+            bsp::close_native_lua_state_00b669a0(frame_owner_);
+        }
+    }
+    ObjectiveLuaArguments(const ObjectiveLuaArguments&) = delete;
+    ObjectiveLuaArguments& operator=(const ObjectiveLuaArguments&) = delete;
 
-    int count() override { return top_; }   // 00B663F0
+    int count() override {
+        if constexpr (bsp::kWireGoal4Chain458Bound) {
+            // bsp.py show 00B663F0: MOV EAX,[ECX+0Ch]; RET. Use the real
+            // frame produced above; argument bounds share its same snapshot.
+            return static_cast<int>(bsp_tagged_b6_16e_00b663f0(&frame_));
+        } else {
+            return top_;
+        }
+    }
     // 00B66A60: lua type 3 (00B66A7D), then bsp::gui_lua_is_integer_number_00b66a60
     // on the number: float32 spill, CVTTSS2SI and the ordered compare.
     bool is_integer(int index) override {
@@ -1039,6 +1071,8 @@ public:
     }
 
 private:
+    bsp::NativeLuaStateStorage frame_owner_;
+    bsp::NativeLuaObjectStorage frame_;
     lua_State* state_;
     int top_;
     bool sse2_conversion_;
