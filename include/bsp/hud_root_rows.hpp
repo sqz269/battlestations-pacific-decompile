@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 #include <cstdint>
 #include <vector>
 
@@ -44,6 +45,26 @@ HudUnitSelection hud_root_find_unit(HudUnitListView primary, HudUnitListView sec
 void hud_root_poll_selection(HudRootSelectionState& state, HudUnitListView primary,
     HudUnitListView secondary, HudRootSelectionHost& host);
 
+// A fused host slot can denote either the squadron or its original plane.
+// Carry the native payload's meaning from its producer instead of inferring
+// lifetime from that shared index (chain 413, review run 834).
+enum class HudRootPayloadKind { Unit, Plane, Squadron };
+struct HudRootPayload {
+    std::size_t unit{static_cast<std::size_t>(-1)};
+    HudRootPayloadKind kind{HudRootPayloadKind::Unit};
+
+    HudRootPayload plane_member(std::size_t first_member) const noexcept {
+        return {kind == HudRootPayloadKind::Squadron ? first_member : unit,
+            HudRootPayloadKind::Plane};
+    }
+    bool release_if_destroyed(bool slot_destroyed, bool squadron_has_survivors) noexcept {
+        if (unit == static_cast<std::size_t>(-1) || !slot_destroyed
+            || (kind == HudRootPayloadKind::Squadron && squadron_has_survivors)) return false;
+        unit = static_cast<std::size_t>(-1);
+        return true;
+    }
+};
+
 struct HudClosedRowsState {
     std::int32_t closed{}; // +1Ch: only exactly 0 and 1 have transitions
     std::int32_t interface_id{}; // +CCh
@@ -60,7 +81,7 @@ struct HudClosedRowsHost {
     virtual void push_interface_request(int id, std::uint32_t payload) = 0; // 004CC460
 };
 // 00647080, ECX=root, RET. Native caller guarantees the required unit/member.
-void hud_root_toggle_closed(HudClosedRowsState& state, HudClosedRowsHost& host);
+void hud_root_toggle_closed_00647080(HudClosedRowsState& state, HudClosedRowsHost& host);
 
 enum class HudRowWidget : std::uint32_t {
     UnitName = 0x34, WeaponInfo = 0x3c, Payload = 0x50,
