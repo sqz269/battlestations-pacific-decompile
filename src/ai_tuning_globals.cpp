@@ -2,6 +2,7 @@
 // listing and the provenance of the authored rows.
 
 #include "bsp/ai_tuning_globals.hpp"
+#include "bsp/band_009f_cc13.hpp"
 
 #include <cstring>
 
@@ -110,7 +111,10 @@ const char* ai_tuning_mode_table_name(AiTuningMode mode) noexcept {
     return "IslandCaptureParams_Rookie";
 }
 
-AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
+// Retain the native 00A371A0 -> 009FFC80 selection boundary when the host's
+// current-state adapter lives in this same translation unit, so the original
+// body's runtime callers remain independently visible in the executable.
+__declspec(noinline) AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
     bool active_party_present) noexcept {
     // 009FFC92 CMP EAX,7 / 009FFC95 JA leaves the zero ESI was set to.
     if (effective_game_mode < 0 || effective_game_mode > 7) {
@@ -135,6 +139,21 @@ AiTuningMode ai_tuning_mode_009ffc80(int effective_game_mode, int difficulty,
 }
 
 const AiTuningKey* ai_tuning_keys() noexcept { return kKeys; }
+
+bool ai_tuning_refresh_current(AiTuningBlock& selected,
+    const std::array<AiTuningBlock, kAiTuningModeCount>& records,
+    int effective_game_mode, const std::array<bool, 8>& capture_planner_present) {
+    // Native 00A371A0 calls 009FFC80 each time it returns a record. Only
+    // 009FFC9E's modes 0..3 query the current party brains through 00A15950.
+    bool active = true;
+    if (effective_game_mode >= 0 && effective_game_mode <= 3) {
+        active = band009f::ai_first_active_party_slot_00a15950(capture_planner_present) >= 0;
+    }
+    const AiTuningMode mode = ai_tuning_mode_009ffc80(effective_game_mode, 0, active);
+    if (selected.loaded && selected.mode == mode) return false;
+    selected = records[static_cast<std::size_t>(mode)];
+    return true;
+}
 
 void ai_tuning_load_00a335d0(AiTuningLuaReader& reader, AiTuningMode mode,
                              AiTuningBlock& out) {

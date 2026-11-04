@@ -1570,8 +1570,11 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return lead;
     }
 
-    // 00A335D0's record for this run's mode, read back through 00A371A0.
+    // Shared selected record; current_tuning refreshes it before value and
+    // mode-dependent queries, as native 00A371A0 does.
     bsp::AiTuningBlock tuning{};
+    std::array<bsp::AiTuningBlock, bsp::kAiTuningModeCount> loaded_tuning_blocks{};
+    bool tuning_selection_ready{false};
 
     // bsp.py show 004C1C50, 00A37130, 00A335D0 and 00A371A0: the
     // HighLvlAIGlobals singleton starts with D232C4, then seven 23Ch records.
@@ -1595,41 +1598,58 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         void* coordinator_get_or_create_004c1c50() override { return &owner.tuning_records; }
     };
 
-    bsp::AiTuningMode initial_tuning_mode(int effective_mode) {
-        if (effective_mode >= 0 && effective_mode <= 3) {
-            // bsp.py show 00A15950: test each retained brain and its +0Ch
-            // Capture planner. Do not use party_record/AI-enabled flags: they
-            // describe admission, not the constructed planner's lifetime.
-            std::array<bool, 8> active{};
-            for (std::size_t i = 0; i < brains.size(); ++i) {
-                active[i] = brains[i] != nullptr &&
-                    brains[i]->capture_planner_000c != nullptr;
-            }
-            const int slot = bsp::band009f::ai_first_active_party_slot_00a15950(active);
-            done("AiController::first_active_party_slot", 0x00a15950u);
-            // The active arm needs [game+18CCh+slot*4]+2Ch minus 3. That slot
-            // record has no producer here yet; preserve the existing labelled
-            // Rookie fallback rather than treat a party index as difficulty.
-            // The canonical mode body consumes slot==-1 as its native Regular
-            // fallback, without consulting the unused difficulty operand.
-            return bsp::ai_tuning_mode_009ffc80(effective_mode, 0, slot >= 0);
+    void refresh_tuning_selection() {
+        if (!tuning_selection_ready) return;
+        // Snapshot constructed ownership, not admission flags. Native
+        // 00A371A0 recomputes the selection for every tuning request.
+        std::array<bool, 8> active{};
+        for (std::size_t i = 0; i < brains.size(); ++i) {
+            active[i] = brains[i] != nullptr && brains[i]->capture_planner_000c != nullptr;
         }
-        return bsp::ai_tuning_mode_009ffc80(effective_mode, 0);
+        if (bsp::ai_tuning_refresh_current(tuning, loaded_tuning_blocks, game_mode(), active)) {
+            summary.tuning_mode = static_cast<int>(tuning.mode);
+            summary.tuning_merge_dist = tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+            summary.tuning_near_dist = tuning.at(bsp::kAiTuningFreeAttackNearDist);
+            summary.tuning_far_dist = tuning.at(bsp::kAiTuningFreeAttackFarDist);
+            summary.tuning_sticky = tuning.at(bsp::kAiTuningFreeAttackExistingTargetMul);
+        }
+    }
+
+    const bsp::AiTuningBlock& current_tuning() const {
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
+            // Impl is the mutable object owned by the coordinator even when
+            // a const query builds a projected scoring/capture record.
+            auto& self = const_cast<Impl&>(*this);
+            self.refresh_tuning_selection();
+            return self.tuning;
+        } else {
+            return tuning;
+        }
     }
 
     float selected_tuning_field(std::uint32_t offset, int effective_mode) {
-        // 009FFC80: modes outside 0..3 never read the difficulty operand.
-        // Their index is derived afresh from the live session/game mode, not
-        // the mode cached when this coordinator was created. Callers retain
-        // the old path for 0..3 until game+18CCh[slot]+2Ch is available.
-        const int index = static_cast<int>(bsp::ai_tuning_mode_009ffc80(effective_mode, 0));
-        TuningRecordBridge bridge(*this, index);
-        const auto* record = static_cast<const std::uint8_t*>(
-            bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
-        if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
-        float value;
-        std::memcpy(&value, record + offset, sizeof(value));
-        return value;
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
+            TuningRecordBridge bridge(*this, static_cast<int>(current_tuning().mode));
+            const auto* record = static_cast<const std::uint8_t*>(
+                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
+            if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
+            float value;
+            std::memcpy(&value, record + offset, sizeof(value));
+            return value;
+        } else {
+            // 009FFC80: modes outside 0..3 never read the difficulty operand.
+            // Their index is derived afresh from the live session/game mode, not
+            // the mode cached when this coordinator was created. Callers retain
+            // the old path for 0..3 until game+18CCh[slot]+2Ch is available.
+            const int index = static_cast<int>(bsp::ai_tuning_mode_009ffc80(effective_mode, 0));
+            TuningRecordBridge bridge(*this, index);
+            const auto* record = static_cast<const std::uint8_t*>(
+                bsp::cc13_seg70::active_mode_tuning_00a371a0(bridge));
+            if (offset % sizeof(float) != 0 || offset >= bsp::kAiTuningRecordStride) return 0.0f;
+            float value;
+            std::memcpy(&value, record + offset, sizeof(value));
+            return value;
+        }
     }
 
     // The AiModeTuning record 00A08460 reads, projected out of the same block
@@ -1735,7 +1755,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const bsp::AiAccuracyTargetGroup group = accuracy_target_group(target);
         const int g = static_cast<int>(group);
         if (g < 0 || g >= kCensusGroups) return;
-        const float damage_calc_time = tuning.at(bsp::kAiTuningDamageCalcTime);
+        const float damage_calc_time = current_tuning().at(bsp::kAiTuningDamageCalcTime);
         for (const GameAiWeaponFacts::Barrel& barrel : attacker_row->barrels) {
             const int s = barrel.bullet_sub_type;
             if (s < 0 || s >= kCensusSubTypes) continue;
@@ -1755,7 +1775,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 ++row.unresolved;
                 continue;
             }
-            const float accuracy = offset == 0u ? 0.0f : tuning.at(offset);
+            const float accuracy = offset == 0u ? 0.0f : current_tuning().at(offset);
             row.accuracy = accuracy;
             if (!(accuracy > 0.0f)) ++row.zero_accuracy;
             // ai_barrel_time_factor and ai_barrel_damage, the two the model
@@ -1803,8 +1823,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
 
     bsp::AiModeTuning mode_tuning_record() const {
         bsp::AiModeTuning record{};
-        record.max_target_kill_ratio = tuning.at(0x05Cu);
-        record.damage_calc_time = tuning.at(0x060u);
+        record.max_target_kill_ratio = current_tuning().at(0x05Cu);
+        record.damage_calc_time = current_tuning().at(0x060u);
         // Packet cc9_plane_attacker_weight: the plane arm's record +58h and
         // +78h..+94h. The tuning block carries none of them, and this
         // installation's highlvlaiglobals.lua (mtime 2024-07-13) authors the
@@ -1826,9 +1846,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // IslandCapture tables Torpedo {80, 3}, Divebomb {60, 3}, Levelbomb
         // {200, 4}, DC {60, 4}, BigRocket {120, 2}; Duel, Escort, Siege and
         // Competitive {25, 3}, {25, 3}, {30, 12}, {25, 4}, {20, 2}.
-        const bool island = tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
-                            tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
-                            tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        const bool island = current_tuning().mode == bsp::AiTuningMode::IslandCaptureRookie ||
+                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular ||
+                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran;
         record.torpedo_params_1 = island ? 80.0f : 25.0f;
         record.torpedo_params_2 = 3.0f;
         record.divebomb_params_1 = island ? 60.0f : 25.0f;
@@ -1839,7 +1859,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record.d_c_params_2 = 4.0f;
         record.big_rocket_params_1 = island ? 120.0f : 20.0f;
         record.big_rocket_params_2 = 2.0f;
-        record.paratroopers = tuning.at(0x14Cu);
+        record.paratroopers = current_tuning().at(0x14Cu);
         return record;
     }
 
@@ -2241,7 +2261,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             other.bind_first_entity(&other_leader);
             AiCommandGroupQuery command;
             command.owner_group = own.data(); // command+4, the absorbed group
-            AiGroupMergeQueryBinding query(tuning);
+            AiGroupMergeQueryBinding query(current_tuning());
             // bsp.py show 00a10d50 --asm: candidate >= own via unrounded ST0;
             // show 00a10c60 --asm: spilled X/Z deltas, radius and squared terms.
             // Reuse those bodies; the old typed arithmetic is only in OFF.
@@ -2275,7 +2295,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             facts.own_leader_position[i] = own_leader[i];
             facts.other_leader_position[i] = other_leader[i];
         }
-        facts.auto_merge_dist = tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        facts.auto_merge_dist = current_tuning().at(bsp::kAiTuningAutoMergeMergeDist);
         const bool ok = bsp::ai_command_can_merge_with(facts);
         done("AiGroups::can_auto_merge", 0x00a2c8d0u);
         return ok;
@@ -2404,7 +2424,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 (g == nullptr || g->members.empty())
                     ? "" : unit_name(g->members.front()).c_str(),
                 static_cast<double>(tick_horizontal_distance(own, tgt)),
-                static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+                static_cast<double>(current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)),
                 (g == nullptr || g->members.empty()) ? 0
                     : (bsp::ai_entity_is_groupable_combatant_009fe080(
                            combatant_facts(g->members.front())) ? 1 : 0),
@@ -2432,7 +2452,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     (tg == nullptr || tg->members.empty())
                         ? "" : unit_name(tg->members.front()).c_str(),
                     static_cast<double>(tick_horizontal_distance(own, tgt)),
-                    static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+                    static_cast<double>(current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)),
                     bsp::ai_entity_is_groupable_combatant_009fe080(
                         combatant_facts(g->members.front())) ? 1 : 0,
                     static_cast<double>(own[0]), static_cast<double>(own[1]),
@@ -2715,7 +2735,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.target_is_neutral =
                 (kAiWeightBarrelGatesBound && units.unit_side_0054(target) >= 2) ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
-            AiWeightModelBinding model(facts, record, tuning,
+            AiWeightModelBinding model(facts, record, current_tuning(),
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
                 [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
                 [this](std::size_t unit) { return units.unit_class_id(unit); });
@@ -2958,7 +2978,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 game_ai_weapon_facts().row(attacker_unit);
             if (attacker_row != nullptr) {
                 const bsp::AiAccuracyTargetGroup group = accuracy_target_group(chosen);
-                const float damage_calc_time = tuning.at(bsp::kAiTuningDamageCalcTime);
+                const float damage_calc_time = current_tuning().at(bsp::kAiTuningDamageCalcTime);
                 double sum = 0.0;
                 double best = 0.0;
                 for (const GameAiWeaponFacts::Barrel& b : attacker_row->barrels) {
@@ -2967,7 +2987,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                         bsp::ai_bullet_type_accuracy_offset_009fe270(
                             b.bullet_sub_type, group, resolved);
                     const float accuracy =
-                        (!resolved || offset == 0u) ? 0.0f : tuning.at(offset);
+                        (!resolved || offset == 0u) ? 0.0f : current_tuning().at(offset);
                     const float factor =
                         bsp::ai_barrel_time_factor(damage_calc_time, b.reload);
                     const float damage = bsp::ai_barrel_damage(factor, accuracy, b.shots);
@@ -3073,7 +3093,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         return tick_issue_moveto(member, bridge.position);
     }
-    float close_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
+    float close_tuning_field(std::uint32_t offset) override { return current_tuning().at(offset); }
     int close_own_team(void* group) override {
         Group* g = group_at(group);
         return g != nullptr ? g->team : 0;
@@ -3088,12 +3108,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                 bsp::ai_entity_class_weight_offset_009fdf30(
                     bsp::kPlaneSquadronClassId);
             return bsp::ai_entity_leader_weight_009ffd80(
-                squadron_offset == 0xFFFFFFFFu ? 1.0f : tuning.at(squadron_offset),
+                squadron_offset == 0xFFFFFFFFu ? 1.0f : current_tuning().at(squadron_offset),
                 false, false);
         }
         const std::uint32_t offset =
             bsp::ai_entity_class_weight_offset_009fdf30(units.unit_class_id(unit));
-        return offset == 0xFFFFFFFFu ? 1.0f : tuning.at(offset);
+        return offset == 0xFFFFFFFFu ? 1.0f : current_tuning().at(offset);
     }
 
     // ---- bsp::AiCommandTickHost, one method per native call ----------------
@@ -3476,7 +3496,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         record("AiCommand::avoid_zone_offset_point", 0x00417b10u);
         return false;
     }
-    float tick_tuning_field(std::uint32_t offset) override { return tuning.at(offset); }
+    float tick_tuning_field(std::uint32_t offset) override { return current_tuning().at(offset); }
     float tick_horizontal_distance(const float a[3], const float b[3]) override {
         // 009FFC10 BSP_Math_HorizontalLength on the difference, x and z only.
         const float dx = a[0] - b[0];
@@ -3536,8 +3556,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // reconstructed key subset, so +190h/+194h read zero. The values are this
         // installation's highlvlaiglobals.lua (mtime 2024-07-13), 2000 and 4000 in
         // all seven mode tables (lines 91/92, 279/280, ..., 1130/1131).
-        const float near_distance = tuning.at(0x190) != 0.0f ? tuning.at(0x190) : 2000.0f;
-        const float far_distance = tuning.at(0x194) != 0.0f ? tuning.at(0x194) : 4000.0f;
+        const float near_distance = current_tuning().at(0x190) != 0.0f ? current_tuning().at(0x190) : 2000.0f;
+        const float far_distance = current_tuning().at(0x194) != 0.0f ? current_tuning().at(0x194) : 4000.0f;
         float total = 0.0f;
         for (std::size_t unit = 0; unit < units.count(); ++unit) {
             if (!units.unit_active(unit)) continue;
@@ -3700,7 +3720,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             g->members.empty() ? "" : unit_name(g->members.front()).c_str(),
             groupable ? 1 : 0,
             static_cast<double>(tick_horizontal_distance(own, tgt)),
-            static_cast<double>(tuning.at(bsp::kAiTuningCloseAttackCollectDist)));
+            static_cast<double>(current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)));
         g->command.type = type;
         g->command.owner_group = g;
         done("AiCommand::promote_to_close_attack", 0x00a2bd00u);
@@ -3723,16 +3743,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     float auto_merge_dist() override {
-        if constexpr (bsp::kWireGoal4Chain341Bound) {
-            const int mode = game_mode();
-            if (mode < 0 || mode > 3) {
-                return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, mode);
-            }
-            return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
+            return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, game_mode());
         } else {
-            // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
-            done("AiGroups::auto_merge_dist", 0x00a371a0u);
-            return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+            if constexpr (bsp::kWireGoal4Chain341Bound) {
+                const int mode = game_mode();
+                if (mode < 0 || mode > 3) {
+                    return selected_tuning_field(bsp::kAiTuningAutoMergeMergeDist, mode);
+                }
+                return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+            } else {
+                // 00A371A0()+208h, AutoMerge_MergeDist, the block 00A335D0 loads.
+                done("AiGroups::auto_merge_dist", 0x00a371a0u);
+                return tuning.at(bsp::kAiTuningAutoMergeMergeDist);
+            }
         }
     }
 
@@ -3911,7 +3935,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     // 00A11D9C..00A11E87: list 28, another team than group+5638h,
                     // XZ squared distance to the first member strictly below the
                     // best, seeded with (tuning+1F4h)^2.
-                    const float reach = tuning.at(bsp::kAiTuningCloseAttackCollectDist);
+                    const float reach = current_tuning().at(bsp::kAiTuningCloseAttackCollectDist);
                     float best = reach * reach;
                     float rx = 0.0f, ry = 0.0f, rz = 0.0f;
                     if (!g->members.empty()) {
@@ -4028,6 +4052,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     void store_party_brain(int party_slot, void* brain) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return;
         if (brain == nullptr) brains[static_cast<std::size_t>(party_slot)].reset();
+        if constexpr (bsp::kWireGoal4Chain474Bound) refresh_tuning_selection();
     }
     float next_think_time(int party_slot) override {
         if (party_slot < 0 || party_slot >= bsp::kAiGroupPartySlotCount) return 0.0f;
@@ -4089,6 +4114,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         }
         Brain* raw = brain.get();
         brains[static_cast<std::size_t>(party_slot)] = std::move(brain);
+        if constexpr (bsp::kWireGoal4Chain474Bound) refresh_tuning_selection();
         party_row(party_slot).brain_created = true;
         record("AiGroups::create_party_brain", 0x00a15a70u);
         return raw;
@@ -4278,7 +4304,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                     }
                 } danger(self, g);
                 return bsp::gameplay_seg69_70_cc13::ai_should_route_cautiously_00a2c9f0(
-                    g->team, self.tuning.at(bsp::kAiTuningCautionMoveDist), pt, danger);
+                    g->team, self.current_tuning().at(bsp::kAiTuningCautionMoveDist), pt, danger);
             }
             float uniform01_stream1() override {
                 ++self.mode_think_draws;
@@ -4497,10 +4523,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     };
     CaptureTuning capture_tuning() const {
         CaptureTuning t;
-        if (tuning.mode == bsp::AiTuningMode::IslandCaptureRegular) {
+        if (current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular) {
             t.spawn_delay_1 = 15.0f;
             t.spawn_delay_2 = 5.0f;
-        } else if (tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran) {
+        } else if (current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran) {
             t.spawn_delay_1 = 5.0f;
             t.spawn_delay_2 = 1.0f;
         }
@@ -6067,9 +6093,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // every candidate's value by the same square, so it moves no pick; the
     // per-entity +-5% the image draws is what is lost.
     float group_value_spread() const {
-        const bool island = tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
-                            tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
-                            tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        const bool island = current_tuning().mode == bsp::AiTuningMode::IslandCaptureRookie ||
+                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular ||
+                            current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran;
         const float lo = island ? 0.95f : 0.85f;
         const float hi = island ? 1.05f : 1.1f;
         return bsp::clamped_interpolate_00419010(0.0f, lo, 78.0f, hi, 39.0f);
@@ -6211,7 +6237,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.target = handle(t.unit);
             key.target_is_neutral = t.third_party ? 1 : 0;
             const bsp::AiModeTuning record = mode_tuning_record();
-            AiWeightModelBinding model(facts, record, tuning,
+            AiWeightModelBinding model(facts, record, current_tuning(),
                 [this](std::size_t unit) { return accuracy_target_group(unit); },
                 [this](std::size_t unit, int code) { return units.unit_is_kind_of(unit, code); },
                 [this](std::size_t unit) { return units.unit_class_id(unit); });
@@ -6279,9 +6305,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return group_value_island_mode() ? 60.0f : 90.0f;
     }
     bool group_value_island_mode() const {
-        return tuning.mode == bsp::AiTuningMode::IslandCaptureRookie ||
-               tuning.mode == bsp::AiTuningMode::IslandCaptureRegular ||
-               tuning.mode == bsp::AiTuningMode::IslandCaptureVeteran;
+        return current_tuning().mode == bsp::AiTuningMode::IslandCaptureRookie ||
+               current_tuning().mode == bsp::AiTuningMode::IslandCaptureRegular ||
+               current_tuning().mode == bsp::AiTuningMode::IslandCaptureVeteran;
     }
 
     // 00A0F970 BSP_AiGroup_TargetValueAgainstGroup, __fastcall(ECX = attacker
@@ -6327,8 +6353,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             // it, so a census line predicts the pick without the ON run.
             const float leader_d2 = squared_planar_distance(own, target);
             const float range = range_interpolation(
-                tuning.at(bsp::kAiPlannerTuningRangeNear),
-                tuning.at(bsp::kAiPlannerTuningRangeFar),
+                current_tuning().at(bsp::kAiPlannerTuningRangeNear),
+                current_tuning().at(bsp::kAiPlannerTuningRangeFar),
                 bsp::ai_target_scoring_distance(leader_d2, near_radius_squared()));
             log.notef("  ai group target value own_lead=%s own_members=%zu target_lead=%s "
                       "target_members=%zu value=%.4f population=%.0f sum=%.4f maxes=%.4f "
@@ -6401,16 +6427,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     float near_radius_squared() override { return bsp::kAiEngagementRadiusSquaredValue; }
     float tuning_field(std::uint32_t offset) override {
-        if constexpr (bsp::kWireGoal4Chain341Bound) {
-            const int mode = game_mode();
-            if (mode < 0 || mode > 3) return selected_tuning_field(offset, mode);
-            return tuning.at(offset);
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
+            return selected_tuning_field(offset, game_mode());
         } else {
-            // 00A371A0 + offset. The six fields this packet reconstructed carry the
-            // shipped values; every other slot is the zero an unloaded block holds,
-            // so an unreconstructed field answers what it answered before.
-            done("AiPlanners::tuning_field", 0x00a371a0u);
-            return tuning.at(offset);
+            if constexpr (bsp::kWireGoal4Chain341Bound) {
+                const int mode = game_mode();
+                if (mode < 0 || mode > 3) return selected_tuning_field(offset, mode);
+                return tuning.at(offset);
+            } else {
+                // 00A371A0 + offset. The six fields this packet reconstructed carry the
+                // shipped values; every other slot is the zero an unloaded block holds,
+                // so an unreconstructed field answers what it answered before.
+                done("AiPlanners::tuning_field", 0x00a371a0u);
+                return tuning.at(offset);
+            }
         }
     }
     float range_interpolation(float near_value, float far_value, float distance) override {
@@ -6561,7 +6591,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
     void auto_merge_leave_00a10ec0(Group* g) {
         if (g == nullptr || g->members.size() <= 1u) return;   // +5648h is always 1 here
-        const float leave = tuning.at(bsp::kAiTuningAutoMergeLeaveDist);
+        const float leave = current_tuning().at(bsp::kAiTuningAutoMergeLeaveDist);
         const float leave_sq = leave * leave;                    // 00A1102A stored as a float
         ++leave_passes;
         std::size_t beyond = 0;
@@ -6665,7 +6695,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::uint32_t offset =
             bsp::ai_entity_class_weight_offset_009fdf30(units.unit_class_id(unit));
         const float class_weight =
-            offset == 0xFFFFFFFFu ? 1.0f : tuning.at(offset);  // 009FDFED is FLD1
+            offset == 0xFFFFFFFFu ? 1.0f : current_tuning().at(offset);  // 009FDFED is FLD1
         return bsp::ai_entity_leader_weight_009ffd80(
             class_weight,
             units.unit_is_kind_of(unit, bsp::kUnitGunneryKindShipBase),
@@ -6796,7 +6826,7 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
             float target_point[3] = {0.0f, 0.0f, 0.0f};
             tick_leader_point(target, target_point);
             gate = bsp::gameplay_seg69_70_cc13::ai_should_route_cautiously_00a2c9f0(
-                g->team, tuning.at(bsp::kAiTuningCautionMoveDist), target_point, danger);
+                g->team, current_tuning().at(bsp::kAiTuningCautionMoveDist), target_point, danger);
         }
         // 00A2CC51: the draw happens only when both gates pass.
         const float draw = (!leader_ship && gate) ? planner_stream1_fraction_00bd2f40(g) : 0.0f;
@@ -6976,38 +7006,42 @@ void GameAiCoordinatorHost::create_00a32350() {
             g_scene_owner_players.size(), g_scene_owner_player_conflicts.size(), authored,
             ai_control, named_slot);
     }
-    // 00A335D0. 009FFC80 picks the record. The bound initial selection also
-    // consumes 00A15950's no-Capture-planner result (Regular); an active slot's
-    // +2Ch difficulty record remains unavailable and retains the old fallback.
+    // 00A335D0 loads all seven authored records. Selection follows live brain
+    // ownership, both at load and on each runtime read; the active-slot +2Ch
+    // difficulty record remains unavailable and retains its prior fallback.
     {
         bsp::AiTuningAuthoredReader reader;
-        const bsp::AiTuningMode mode = [&host] {
-            if constexpr (bsp::kWireGoal4Chain474Bound) {
-                return host.initial_tuning_mode(host.game_mode());
-            } else {
-                const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
-                return mode;
-            }
-        }();
-        if constexpr (bsp::kWireGoal4Chain341Bound) {
-            // 00A335D0's 00A3374B..00A370D4 loop loads all seven modes.
-            // Preserve the existing partial loader's field coverage/defaults;
-            // unknown fields are not claimed as recovered by this owner.
+        if constexpr (bsp::kWireGoal4Chain474Bound) {
             for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
-                bsp::AiTuningBlock block;
+                auto& block = host.loaded_tuning_blocks[static_cast<std::size_t>(i)];
                 bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
                 std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
                     block.field, sizeof(block.field));
-                if (block.mode == mode) host.tuning = block;
             }
+            host.tuning_selection_ready = true;
+            host.refresh_tuning_selection();
         } else {
-            bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
+            const bsp::AiTuningMode mode = bsp::ai_tuning_mode_009ffc80(host.game_mode(), 0);
+            if constexpr (bsp::kWireGoal4Chain341Bound) {
+                // 00A335D0's 00A3374B..00A370D4 loop loads all seven modes.
+                // Preserve the existing partial loader's field coverage/defaults;
+                // unknown fields are not claimed as recovered by this owner.
+                for (int i = 0; i < bsp::kAiTuningModeCount; ++i) {
+                    bsp::AiTuningBlock block;
+                    bsp::ai_tuning_load_00a335d0(reader, static_cast<bsp::AiTuningMode>(i), block);
+                    std::memcpy(host.tuning_records.records[static_cast<std::size_t>(i)].data(),
+                        block.field, sizeof(block.field));
+                    if (block.mode == mode) host.tuning = block;
+                }
+            } else {
+                bsp::ai_tuning_load_00a335d0(reader, mode, host.tuning);
+            }
         }
-        host.summary.tuning_mode = static_cast<int>(mode);
-        host.summary.tuning_merge_dist = host.tuning.at(bsp::kAiTuningAutoMergeMergeDist);
-        host.summary.tuning_near_dist = host.tuning.at(bsp::kAiTuningFreeAttackNearDist);
-        host.summary.tuning_far_dist = host.tuning.at(bsp::kAiTuningFreeAttackFarDist);
-        host.summary.tuning_sticky = host.tuning.at(bsp::kAiTuningFreeAttackExistingTargetMul);
+        host.summary.tuning_mode = static_cast<int>(host.current_tuning().mode);
+        host.summary.tuning_merge_dist = host.current_tuning().at(bsp::kAiTuningAutoMergeMergeDist);
+        host.summary.tuning_near_dist = host.current_tuning().at(bsp::kAiTuningFreeAttackNearDist);
+        host.summary.tuning_far_dist = host.current_tuning().at(bsp::kAiTuningFreeAttackFarDist);
+        host.summary.tuning_sticky = host.current_tuning().at(bsp::kAiTuningFreeAttackExistingTargetMul);
         host.done("AiController::load_tuning", 0x00a335d0u);
     }
     for (int party = 0; party < bsp::kAiGroupPartySlotCount; ++party) {
@@ -7248,6 +7282,7 @@ void GameAiCoordinatorHost::fixed_step(float step_seconds) {
         ++host.coordinator_steps_absent;
         (void)step_seconds;
     } else {
+        if constexpr (bsp::kWireGoal4Chain474Bound) host.refresh_tuning_selection();
         if constexpr (kGeneratedSquadronBrainBound) host.admit_generated_squadrons();
         if constexpr (kAiGroupPartyChangeRemovalBound) host.apply_party_change_removals_00a2db50();
         host.clock_seconds += step_seconds;
@@ -7260,6 +7295,7 @@ void GameAiCoordinatorHost::fixed_step(float step_seconds) {
 }
 
 const GameAiSummary& GameAiCoordinatorHost::summary() const noexcept {
+    if constexpr (bsp::kWireGoal4Chain474Bound) impl_->refresh_tuning_selection();
     return impl_->summary;
 }
 
@@ -7269,6 +7305,7 @@ const std::vector<GameAiPartyRow>& GameAiCoordinatorHost::party_rows() const noe
 
 void GameAiCoordinatorHost::report() {
     Impl& host = *impl_;
+    if constexpr (bsp::kWireGoal4Chain474Bound) host.refresh_tuning_selection();
     const GameAiSummary& s = host.summary;
     std::size_t with_task = 0;
     for (const Impl::Group* g : host.registry) {
@@ -7283,7 +7320,7 @@ void GameAiCoordinatorHost::report() {
         host.summary.cautious_route_builds, host.summary.cautious_route_points,
         host.summary.cautious_route_clears, host.summary.cautious_route_waits,
         host.summary.cautious_route_movetos, host.summary.cautious_route_no_slot,
-        static_cast<double>(host.tuning.at(0x190)), static_cast<double>(host.tuning.at(0x194)));
+        static_cast<double>(host.current_tuning().at(0x190)), static_cast<double>(host.current_tuning().at(0x194)));
     host.log.notef("summary mission ai cautious wedge bound=%d calls=%llu runs=%llu placed=%llu "
         "no_record=%llu zero_frame=%llu (00A11690, packet cc9_cautious_wedge)",
         bsp::kCautiousWedgeBound ? 1 : 0, host.cautious_wedge_calls, host.cautious_wedge_runs,
@@ -7307,7 +7344,7 @@ void GameAiCoordinatorHost::report() {
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
         s.tick_orders, s.tick_followers, s.tick_formation_requests,
         s.command_promotions,
-        static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
+        static_cast<double>(host.current_tuning().at(bsp::kAiTuningCloseAttackCollectDist)),
         s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
         s.close_fallback_movetos, s.close_candidates_scored,
         s.ship_members_not_ordered, s.target_group_releases,
@@ -7321,7 +7358,7 @@ void GameAiCoordinatorHost::report() {
         "followers_beyond=%llu removals=%llu leave_dist=%.1f bound=%d (00A10EC0, packet "
         "cc9_ai_auto_merge_leave)", host.leave_passes, host.leave_passes_beyond,
         host.leave_followers_beyond, host.leave_removals,
-        static_cast<double>(host.tuning.at(bsp::kAiTuningAutoMergeLeaveDist)),
+        static_cast<double>(host.current_tuning().at(bsp::kAiTuningAutoMergeLeaveDist)),
         kAiAutoMergeLeaveBound ? 1 : 0);
     host.log.notef("summary mission ai troop landing trait close_landers=%llu cargo_landers=%llu "
         "bound=%d (00A1443D, 00A03510 Cargo arm; packet cc9_close_member_class_trait)",

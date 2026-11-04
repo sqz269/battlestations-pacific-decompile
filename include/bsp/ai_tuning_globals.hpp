@@ -5,7 +5,7 @@
 // Addresses: 00A335D0 (the loader), 00A371A0 (the reader side, which settles
 // the base and stride), 009FFC80 BSP_Ai_EffectiveGameModeIndex (which of the
 // seven records a rule reads), 004BCA50 BSP_Game_GetEffectiveGameMode and
-// 00A15950 (the difficulty the first arm clamps).
+// 00A15950 (the first slot owning a Capture planner, or -1).
 //
 // Packet cc8_ai_tuning_globals. docs/AI_TUNING_GLOBALS.md.
 //
@@ -19,6 +19,7 @@
 // bsp/ai_command_lifetime.hpp; every name is prefixed `ai_tuning_` or
 // `AiTuning`.
 
+#include <array>
 #include <cstddef>
 #include <cstdint>
 
@@ -114,6 +115,15 @@ struct AiTuningBlock {
         return field[index];
     }
 };
+
+// Host-side cache of the selected authored block. Re-evaluate 00A15950 and
+// 009FFC80 on each request, as native 00A371A0 does; copy a loaded record only
+// when its mode changes. The active-player difficulty producer is still absent,
+// so an active slot keeps the documented normalized difficulty-zero fallback.
+// All seven records must be loaded by the existing 00A335D0 loader first.
+bool ai_tuning_refresh_current(AiTuningBlock& selected,
+    const std::array<AiTuningBlock, kAiTuningModeCount>& records,
+    int effective_game_mode, const std::array<bool, 8>& capture_planner_present);
 
 // What 00A335D0 reads one key with. A host supplies the shipped table, either
 // the authored rows below or, when one exists, the live `HighLvlAIGlobals`
