@@ -2,6 +2,8 @@
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/entity_mission_seg60_argon.hpp"
 #include "bsp/wire_goal4_chain415_switches.hpp"
+#include "bsp/wire_goal4_chain428_switches.hpp"
+#include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
 #include "bsp/wire_goal4_chain350_switches.hpp"
@@ -38,6 +40,8 @@
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
+#include <new>
+#include <type_traits>
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
@@ -267,6 +271,29 @@ struct HostSessionMessages::Image {
 };
 
 namespace {
+// 00768530 allocates each decoded message (58h: 3Ch, 5Ah/5Dh: 28h),
+// unlike the sender's stack object. Retain that ownership until this bridge
+// projects the decoded payload to its existing value consumer. bsp.py show
+// 00764D20 / 0071E370 / 0071E390: root-profile stamp, then 00BF65AC iff
+// flags bit 0. singleton_lifetime_allocate uses the matching malloc/free pair.
+// The RAII owner also releases a partially decoded message on exceptions;
+// these three message types have no owned payload subobjects.
+template<class Message, Message* (*Delete)(Message*, std::uint32_t)>
+class OwnedDecodedMessage {
+public:
+    OwnedDecodedMessage()
+        : message_(::new (singleton_lifetime_allocate({SingletonAllocationKind::object,
+              sizeof(Message), sizeof(Message)})) Message{}) {
+        static_assert(std::is_trivially_destructible_v<Message>);
+    }
+    ~OwnedDecodedMessage() { Delete(message_, 1u); }
+    OwnedDecodedMessage(const OwnedDecodedMessage&) = delete;
+    OwnedDecodedMessage& operator=(const OwnedDecodedMessage&) = delete;
+    Message& get() noexcept { return *message_; }
+private:
+    Message* message_;
+};
+
 // The real session owner and selected player record remain those of Image.
 // bsp.py show 0080FA50 / 0080FF30 / 0080FF80 / 0080FFD0: each body calls
 // 0075B430 once, then stores only the header, its native vptr and its payload.
@@ -465,6 +492,22 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     write_native_session_message88_00764d40(&sent, &stream.out, image.target);
     destroy_native_session_message88_00764cf0(&sent);
     stream.begin_read();
+    if constexpr (kWireGoal4Chain428Bound) {
+        OwnedDecodedMessage<NativeSessionMessage88, delete_native_session_message88_00764d20> owner;
+        NativeSessionMessage88& queued = owner.get();
+        construct_native_session_message88_00764c80(&queued, image.target, image.profile88);
+        read_native_session_message88_00764e60(&queued, &stream.in, image.target);
+
+        EntityOrderMessage result = posted;
+        result.command_ordinal = queued.command_20;
+        result.flags = queued.flags_21;
+        std::memcpy(&result.target_kind, &queued.target_24.kind, sizeof result.target_kind);
+        result.target_id = queued.target_24.object_id;
+        result.target_object = queued.target_24.object;
+        std::memcpy(result.position, queued.target_24.position, sizeof result.position);
+        std::memcpy(&result.trailing, &queued.target_24.trailing, sizeof result.trailing);
+        return result; // owner runs 00764D20(1) once, after extracting the payload.
+    } else {
     NativeSessionMessage88 queued{};
     construct_native_session_message88_00764c80(&queued, image.target, image.profile88);
     read_native_session_message88_00764e60(&queued, &stream.in, image.target);
@@ -481,6 +524,7 @@ EntityOrderMessage HostSessionMessages::queue_command_88(const EntityOrderMessag
     // record does not carry, so ending the copy here is not observable.
     destroy_native_session_message88_00764cf0(&queued);
     return result;
+    }
 }
 
 game::GunAimMessage79 HostSessionMessages::queue_gun_aim_79(
@@ -770,8 +814,18 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
     LocalStream stream;
     write_native_session_message90_0071c670(&sent, &stream.out, image.context);
     // 00768530 case 5Ah: operator new(28h), 0075AF60 at 00769CE4; 0076A27B
-    // vtable[8] = 0071C6C0. The drain's delete (0071E370) frees nothing.
+    // vtable[8] = 0071C6C0. 0071E370 frees the decoded allocation at this
+    // bridge's value-consumer boundary; the OFF arm retains its stack copy.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain428Bound) {
+        OwnedDecodedMessage<NativeSessionMessage90, delete_native_session_message90_0071e370> owner;
+        NativeSessionMessage90& queued = owner.get();
+        construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
+        read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
+        const DirectorSubKindCopy copy{queued.selector_20, queued.value_24};
+        destroy_native_session_message90_0071c720(&sent);
+        return copy; // owner runs 0071E370(1); the sender stays a stack object.
+    } else {
     NativeSessionMessage90 queued{};
     construct_native_session_message90_0075af60(&queued, image.context, image.profile90);
     read_native_session_message90_0071c6c0(&queued, &stream.in, image.context);
@@ -786,6 +840,7 @@ HostSessionMessages::DirectorSubKindCopy HostSessionMessages::queue_director_sub
         return copy;
     } else {
         return DirectorSubKindCopy{queued.selector_20, queued.value_24};
+    }
     }
 }
 
@@ -809,6 +864,15 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
     // 00768530 case 5Dh: operator new(28h), 0075B030 at 00769D44; 0076A27B
     // vtable[8] = 0071C7E0 (00428D30 sign-extends the 5-bit index).
     stream.begin_read();
+    if constexpr (kWireGoal4Chain428Bound) {
+        OwnedDecodedMessage<NativeSessionMessage93, delete_native_session_message93_0071e390> owner;
+        NativeSessionMessage93& queued = owner.get();
+        construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
+        read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
+        const ClearCommandCopy copy{queued.flag_20, queued.value_24};
+        destroy_native_session_message93_0071c820(&sent);
+        return copy; // owner runs 0071E390(1); no second queued-object teardown.
+    } else {
     NativeSessionMessage93 queued{};
     construct_native_session_message93_0075b030(&queued, image.context, image.profile93);
     read_native_session_message93_0071c7e0(&queued, &stream.in, image.context);
@@ -822,6 +886,7 @@ HostSessionMessages::ClearCommandCopy HostSessionMessages::queue_clear_command_5
         return copy;
     } else {
         return ClearCommandCopy{queued.flag_20, queued.value_24};
+    }
     }
 }
 
