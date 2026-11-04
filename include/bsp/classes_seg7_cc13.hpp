@@ -34,7 +34,17 @@ struct PropertyBagFloatLookupHost {
     virtual Object property_bag_find_008f2260(Object bag, const char* name) = 0;
 };
 
-struct Seg7Host : PropertyBagFloatLookupHost {
+// 0047F200 uses only these matrix services. Splitting their source contract
+// lets a live scene-node projection call the existing body without supplying
+// unrelated soldier/traffic/global operations. This is not a native ABI.
+struct SceneNodeHeadingHost {
+    virtual ~SceneNodeHeadingHost() = default;
+    virtual void matrix_copy_004134f0(Object dest, Object source) = 0;
+    virtual Object matrix_build_rotation_y_00b646e0(Object out, const float* angle) = 0;
+    virtual Object matrix_multiply_00413920(Object lhs, Object out, Object rhs) = 0;
+};
+
+struct Seg7Host : PropertyBagFloatLookupHost, SceneNodeHeadingHost {
     virtual ~Seg7Host() = default;
     bool property_bag_contains_0048e9f0(Object bag, const char* name) override;
 
@@ -97,7 +107,6 @@ struct Seg7Host : PropertyBagFloatLookupHost {
     virtual void quad_cell_range_0047ba40(Object tree, const float* box, std::int32_t* i0, std::int32_t* i1,
                                           std::int32_t* j0, std::int32_t* j1) = 0;
     virtual void traffic_visible_cells_00498c40(Object tree, Object node_slot, const float* box) = 0;
-    virtual void matrix_copy_004134f0(Object dest, Object source) = 0;
     virtual void scene_proxy_base_destroy_00489dd0(Object proxy) = 0;
     virtual void path_unregister_base_00928570(Object path) = 0;
     virtual void unit_list_erase_node_004837d0(Object list, Object node) = 0;
@@ -112,8 +121,6 @@ struct Seg7Host : PropertyBagFloatLookupHost {
     virtual bool bit_source_0048f230(Object source) = 0;
     virtual Object property_bag_find_008f2260(Object bag, const char* name) = 0;
     virtual Object effect_handle_acquire_00870cd0(Object out_slot, std::int32_t id, std::int32_t flag) = 0;
-    virtual Object matrix_build_rotation_y_00b646e0(Object out, const float* angle) = 0;  // ECX out, EDX angle
-    virtual Object matrix_multiply_00413920(Object lhs, Object out, Object rhs) = 0;
     virtual double random_uniform_float_range_00bd2f10(Object ecx, float lo, float hi) = 0;
     virtual void entity_destruct_base_00925780(Object entity) = 0;
     virtual void scene_node_construct_00925ce0(Object node) = 0;
@@ -282,7 +289,7 @@ Object class_entity37_construct_base_00489f30(Seg7Host& host, Object entity);
 // 0047F200 __thiscall(node, float heading), RET 4: node+74h = 00413920(
 // rotation-Y(-0.0f - heading) (00B646E0, copied with 004134F0), translation
 // matrix of node+A4h..+ACh), copied with 004134F0.
-void scene_node_set_heading_0047f200(Seg7Host& host, Object node, float heading);
+void scene_node_set_heading_0047f200(SceneNodeHeadingHost& host, Object node, float heading);
 
 // ---------------------------------------------------------------------------
 // Soldier globals and soldier types.
