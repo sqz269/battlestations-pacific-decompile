@@ -1,0 +1,139 @@
+{
+  "chain": 526,
+  "branch": "agent/g4-w1",
+  "switch": "bsp::game::kWireGoal4Chain526Bound",
+  "summary": "Replace existing aircraft landed and turbo boolean writes with the single reconstructed bodies over canonical live state.",
+  "wired_total_before": 9830,
+  "wired_total_after": 9832,
+  "called_total_before": 4894,
+  "called_total_after": 4896,
+  "evidence": [
+    "bsp.py show 007b8450: conditional clear of unit+904h.",
+    "bsp.py show 007b8aa0: direct byte store to unit+9F9h.",
+    "Host takeoff receive already clears the same landed flag at native 007C7460; the helper replaces that exact operation.",
+    "Host pilot commit already publishes plan+2E5h to unit+9F9h at 007BB8D0..007BB8D6; the setter replaces that exact operation."
+  ],
+  "interface_notes": [
+    "Existing unused Raw signatures are changed to borrow bool references. These are typed C++ projections of canonical host bytes, not original ABI replacements. No second body or synthetic native image is added."
+  ],
+  "validation": {
+    "baseline_build": "passed; all five CTests passed",
+    "build": "passed Win32 build; all five CTests passed",
+    "call_graph": "007B8450 and 007B8AA0 each have exactly one entry-reachable call from the edited host; total called addresses 4894 -> 4896.",
+    "game": "not run per assignment",
+    "float_math": "unchanged; pc24_lint not required",
+    "wire_readiness": "9830 -> 9832 wired; both new rows wired=true, called=true, call_sites=1."
+  },
+  "rows": [
+    {
+      "native": "007b8450",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::deliver_takeoff_notify_c3h_007cd02c",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "007b8aa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::pilot_think_and_commit",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "007bc550",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "The required +4A4h scene-node producer is absent: unit creation sets state->has_scene_node=false; a fabricated non-null plane image would misrepresent real state."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval",
+      "reason": "WeaponInfo has no live animation handle or interval consumer; weapon_animation currently returns zero, so storing a range would create an unused auxiliary owner."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300",
+      "reason": "The pick-screen C0h/C4h/D4h selection/vector state and mode-30h producer do not exist; constructing a zeroed screen solely for reset would not replace real state."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group planner",
+      "reason": "No consumed native-style AiGroupScoreList owner exists; capture planning uses live weight vectors, so insertion needs its producer and planner consumers migrated together."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group planner",
+      "reason": "No consumed AiGroupScoreList entries exist to mark; assignment/live fields remain separate planner state."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate pass",
+      "reason": "Already called with member-kind and objective-set state under kDefendThinkImageBound; readiness name matching is stale and there is no missing live call to add."
+    },
+    {
+      "native": "007ba990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: notify_plane_hit_007bbcf0",
+      "reason": "Live hit notifications are counters/task notices; no consumed CAh message payload or receiver/transmitter owner exists for this constructor."
+    },
+    {
+      "native": "006e8320",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: projectile-class loading",
+      "reason": "WeaponClassDescriptor has no live game producer/consumer; host class fields are read individually and require a complete descriptor loader migration before constructor output can be consumed."
+    },
+    {
+      "native": "006f7c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: command-building registry",
+      "reason": "No live native command-category registry query supplies the key list for this matching/sort routine."
+    },
+    {
+      "native": "007c1de0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: aircraft ordnance queries",
+      "reason": "The admitted single-rack census excludes rocket release paths; rocket virtual-21Ch(33h) counts need all release producers connected to a complete per-rack owner."
+    },
+    {
+      "native": "007baf90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitSlot construction",
+      "reason": "The native control-block 48h..ACh channel owner is not instantiated; a detached defaults block would have no game consumer."
+    },
+    {
+      "native": "007bbc10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding::df_pilot_targets_us",
+      "reason": "The native +DF4h pilot target slots do not exist; current dogfight/command target fields are separate models and are not proof of that holder/slot contract."
+    },
+    {
+      "native": "007ce040",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: PlaneBinding fixed-step dispatch",
+      "reason": "The motion selector/dispatcher already runs; full tick wiring still lacks the complete original damage, collision, effects and sound owners, so this chain does not claim a second full body."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding map_screen_busy",
+      "reason": "The powerup-map screen scrolling state has no live screen object or scroll-state producer in this host."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate binding cockpit_screen_mode",
+      "reason": "The cockpit screen mode currently has no produced screen owner; the binding returns a recorded false."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootScreenBinding::advance_ticker",
+      "reason": "Award-ticker GUI clone/animation handles and their owner are absent; this binding only records advance_ticker."
+    }
+  ]
+}
