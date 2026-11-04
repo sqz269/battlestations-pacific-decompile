@@ -1,0 +1,62 @@
+{
+  "chain": 532,
+  "owner": "agent/g4-w4",
+  "run": 1091,
+  "switch": "bsp::kWireGoal4Chain532Bound",
+  "picked": "Live ship-formation class-speed selection and retained speed ceiling",
+  "rows": [
+    {
+      "native": "0070DA00",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0",
+      "evidence": "bsp.py show 0070DA00 --asm: seed +504h from 00CFD6F4; select each live member's class speed; FCOMIP/JBE 0070DA6D..71 preserves equal/unordered ceiling; null records receive 999.0f at +30h; reread count at 0070DA90. The raw entry delegates to the same borrowed-view body used by the host.",
+      "real_state": "Actual formation membership, unit IsKindOf(6), Lua-produced class MaxSpeed and the existing retained GameUnitGroupStorage. The body replaces the host minimum and its +504h result is read by 0070D0F0 and consumed by leader/follower throttle ratios.",
+      "called": true,
+      "call_sites": 1,
+      "built_callers": ["GameShipAiHost::Impl::formation_throttle_ceiling_009f4da0"]
+    },
+    {
+      "native": "0070D1B0",
+      "status": "wired",
+      "host_site": "src/game_hosts_ship_ai.cpp: formation_throttle_ceiling_009f4da0::GroupSpeedView::member_class_speed",
+      "evidence": "bsp.py show 0070D1B0: IsKindOf(6) selects [[unit+538h]+500h], otherwise [[[unit+3D0h]+538h]+188h]. 0070DA00 contains the identical expression; its raw adapter and the live host share this selector rather than duplicate it.",
+      "real_state": "Borrowed mission unit identity selects the actual unit kind and authored class MaxSpeed. Only complete ship groups are admitted, so no replacement value is supplied for the unproduced non-ship pointer chain.",
+      "called": true,
+      "call_sites": 1,
+      "built_callers": ["formation_throttle_ceiling_009f4da0::GroupSpeedView::member_class_speed"]
+    },
+    {
+      "native": "0070D7B0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_join_0077f940 group creation",
+      "reason": "Missing the live group's observer endpoint and native leader back-pointer binding for 00694A60; current storage holds registry identities that cannot be dereferenced as native units."
+    },
+    {
+      "native": "0070DB20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::formation_join_0077f940 group creation",
+      "reason": "Missing allocation/constructor bindings and the complete 0070D7B0 leader initialization contract; the raw body still calls original process addresses."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 4 CTests before edits",
+    "build": "scripts/build.ps1 passed all 4 CTests with chain532 enabled",
+    "call_graph": "Both bodies have calls from changed host code reachable from WinMainCRTStartup through mission frame, fixed-step simulation, ship controller and formation throttle processing",
+    "wired_total_metric": "call_graph.py reconstructed addresses called from entry-reachable code",
+    "wired_total_before": 4902,
+    "wired_total_after": 4904,
+    "readiness_text_wired_before": 9843,
+    "readiness_text_wired_after": 9844,
+    "switch_off": "scripts/build.ps1 passed all 4 CTests with chain532 disabled; call_graph.py returned exactly to 4902 reachable reconstructed addresses, and 0070DA00 was absent from that build",
+    "switch_restored": "chain532 is true; final enabled build passed all 4 CTests and call_graph.py again reported 4904 reachable reconstructed addresses",
+    "old_code": "Programmatic source comparison confirmed that the original seed and per-member reduction blocks remain unchanged in the else arms",
+    "pc24_lint": "python tools/pc24_lint.py --staged: 0 findings across 4 source/header files; no float arithmetic was added",
+    "game_run": false
+  },
+  "limits": [
+    "Complete live ship groups use the new bodies; mixed, missing or stale member groups retain the previous host path.",
+    "The borrowed interfaces expose a new C++ ABI. Raw wrappers preserve native offset operations but are not exercised against the original binary.",
+    "Source, Win32 build/tests and built call-graph reachability were verified; gameplay and original-binary ABI compatibility were not exercised."
+  ],
+  "left": "Non-ship formation class-pointer ownership and full group creation/observer bindings."
+}
