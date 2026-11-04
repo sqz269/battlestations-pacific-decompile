@@ -89,6 +89,14 @@ struct LoadingScreen {
     // test, not a field of the object. 0057c250 nulls the global, so every
     // enter_front_end_shell finds it false and rebuilds the screen.
     bool created{false};
+    // Chain 545: identities of the SAME projected screen and lifetime member.
+    // The lifetime manager registers this stable member, never a raw shadow.
+    std::uint32_t native_vtable{}; // +00h
+    struct LifetimeHook { std::uint32_t native_vtable{}; } lifetime; // +08h
+    std::uint32_t field_38{};
+    std::uint32_t field_3c{};
+    std::uint32_t field_40{};
+    std::uint32_t field_44{};
 };
 
 // Required existing CRT BF7420 dispatch. Input is x87 ST0, not a C++ argument;
@@ -179,6 +187,7 @@ struct FrontEndShellState {
     bool lua_vm_ready{false}; // *(game+1A08h)+4h != 0
     bool network_quit_pending{false}; // +216Dh, cleared at 004e440d
     bool award_ga_hm_recorded{false}; // "GA_HM" present in the map at game+6F0h
+    bool loading_screen_destroyed{false}; // game+719Eh, written by 0057C2E0
 };
 
 // Native game+5D4h values this packet establishes. 4 and 3 are only ever seen
