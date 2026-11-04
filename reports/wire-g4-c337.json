@@ -1,0 +1,112 @@
+{
+  "goal": 4,
+  "chain": 337,
+  "worker": "agent/g4-w2",
+  "base": "86cf758489a49bf34445aeb9a46e842f9428cdb7",
+  "switch": "bsp::kWireGoal4Chain337Bound",
+  "summary": "Wire the live application profiler's measured clock, record exit, seconds conversion and reset; replace the reciprocal QPC scale with the binary's own calibration.",
+  "wired_before": 9350,
+  "wired_after": 9354,
+  "rows": [
+    {
+      "native": "00be3310",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: GameFrameProfiler::GameFrameProfiler",
+      "evidence": "00BE3310 listing: QPC, Sleep(100), QPC, signed 64-bit delta * 10. 00CD8F30 stores the returned ticks/second in 0109DB48. The adapter forwards actual Windows QPC and Sleep; the profiler retains that measured value for the existing end-frame consumer. OFF retains the old QueryPerformanceFrequency reciprocal path."
+    },
+    {
+      "native": "00be32b0",
+      "status": "wired",
+      "host_site": "src/app_frame_game_state.cpp: profiler_end_frame_slot_00be3660 (called by GameFrameHost::profiler_end_frame_slot)",
+      "evidence": "Replace the identical inlined record-exit operation at 00BE3679..00BE36B2. The body owns the depth decrement and samples the same ProfilerClockHost only on the outermost exit, writing the live accumulator and last_exit. The adapter rejects Sleep, which this body never calls. The old decrement and sample remain only in OFF."
+    },
+    {
+      "native": "00be3360",
+      "status": "wired",
+      "host_site": "src/app_frame_game_state.cpp: profiler_end_frame_00be34d0 (called by GameFrameHost::profiler_end_frame)",
+      "evidence": "The actual accumulated ticks and calibrated scale produce the history/current values consumed by the profiler. 00BE3360 --asm shows FILD qword, FDIV double, FSTP float, FLD float. Corrected the existing body to keep this sequence on MSVC Win32: it preserves signed int64 input above 2^53 and inherits the caller's x87 precision, including main-thread PC24. No second body was introduced."
+    },
+    {
+      "native": "00be3300",
+      "status": "wired",
+      "host_site": "src/app_frame_game_state.cpp: profiler_end_frame_00be34d0 (called by GameFrameHost::profiler_end_frame)",
+      "evidence": "Replace the inlined clear after history aggregation with the existing body over the same live record. Only accumulator, depth and hit_count are cleared; first_entry and last_exit survive for the immediately following offset calculations. OFF retains the original inline clear."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator/group scoring",
+      "reason": "Needs a retained AiGroupScoreList producer and gameplay consumer; current capture planning uses weight vectors, so a parallel sorted table would not replace gameplay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: coordinator/group scoring",
+      "reason": "Needs the same retained score-list records and chosen-state consumer as 00A2B950; marking a fabricated auxiliary list would have no gameplay effect."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: difficulty/tuning selection",
+      "reason": "Needs active party-brain slots with live +0Ch planner ownership; the campaign mode-8 difficulty path does not use the mode-0..3 slot selector."
+    },
+    {
+      "native": "00a371a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group/planner tuning overrides",
+      "reason": "Needs the coordinator's contiguous 0x23C-stride mode-record storage; the host owns a projected AiTuningBlock instead."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: generated ship controller construction",
+      "reason": "Needs a persistent 0x2268-byte native AI owner and the full 009F3BA0/009F39C0 constructor adapter; the host currently retains projected Controller state."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: FirepowerBinding::ammo_select_flak_alternate",
+      "reason": "Needs the actual native ammunition record and alternate-source producer; the firepower host currently aliases ammunition to the gun-row handle and only records this operation."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: weapon-director command-target creation",
+      "reason": "The naked body reads actual absolute globals 00F87574/78/7C; their relocated runtime owner and a native command-target allocation are missing from this host path."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::write_checkpoint",
+      "reason": "Needs the pre-load mission's BSP_Chk_Save Lua table, current mission key and a real checkpoint-diff predicate; checkpoint_differs still returns false."
+    },
+    {
+      "native": "004d2a80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStartBinding::finish_start",
+      "reason": "Needs an owned native loading-config temporary with a native string vector and pool string; publish_loading_config remains unimplemented and creates no such owner."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetailBinding::set_scroll_range",
+      "reason": "Needs persistent FrontEndScreenScroller ownership, attached content/thumb/arrow widgets and measured track/minimum-thumb geometry."
+    },
+    {
+      "native": "00683820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: main-menu detail/page animation overrides",
+      "reason": "Needs retained scrollers, attached widgets, input axes and drag-state producers; both animation overrides currently only record the call."
+    }
+  ],
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all 3 checks before editing",
+    "on_build": "scripts/build.ps1 passed all 3 checks with chain337 ON",
+    "off_build": "scripts/build.ps1 passed all 3 checks with chain337 OFF; call_graph.py who found none of the four selected functions linked",
+    "call_graph": "ON: each selected body has one entry-reachable call from its changed constructor/frame caller. OFF to ON changes reconstructed called addresses from 4381 to 4385 in the same source tree.",
+    "focused_probe": "local/output/g4_c337_probe.exe passed a synthetic nested-frame integration check: two QPC samples for the outer pair, calibrated ticks/second consumed as 0.25s, hit-count publication, reset preserving timestamps, and an int64-above-2^53 PC24 midpoint retaining its low bit. Compiled with /link /MANIFEST:EMBED; no game launch.",
+    "pc24": "pc24_lint.py --staged passed: 0 findings across 6 source/header files. Literal FILD/FDIV/FSTP preserves caller precision and wide int64 input; committed-diff command is pc24_lint.py --diff origin/main...HEAD.",
+    "scope": "Build/static-call-graph and synthetic-probe evidence only; no live startup, gameplay, ABI replacement or runtime parity claim."
+  },
+  "left": "AI score-list ownership, native ship-brain construction, ammunition alternate ownership, native command-target globals, checkpoint/start-loading ownership and frontend scrollers remain separate work. No new address-suffixed entries or ledger rows were added."
+}

@@ -39,6 +39,8 @@ public:
 double calibrate_ticks_per_second_00be3310(PerfClockHost& clock);
 
 // 00BE3360, ECX = 64-bit tick count, plain RET, ST0: (float)(ticks / [0109DB48]).
+// Win32 keeps the literal FILD / FDIV / float-store sequence, including the
+// caller's x87 precision control and the full signed 64-bit input.
 float ticks_to_seconds_00be3360(std::int64_t ticks, double ticks_per_second);
 
 // 00BE32B0, ECX record, plain RET. Interlocked depth decrement (+20h); when it

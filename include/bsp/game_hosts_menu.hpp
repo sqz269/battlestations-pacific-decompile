@@ -76,10 +76,9 @@ public:
     // 0109cf18, the run-time registration count. Nothing in the executable
     // registers counters at run time, so it stays 0; 00be34d0 clears it.
     int& runtime_slot_count() noexcept { return runtime_slot_count_; }
-    // 0109db48, zero in the image and filled at run time. Its unit is unproven
-    // (docs/APP_FRAME_GAME_STATE.md), and a zero scale makes every converted
-    // value non finite, so the executable supplies seconds per performance
-    // counter tick and marks it as its own substitute.
+    // 0109db48: ticks per second, measured by 00BE3310 (QPC / Sleep(100)).
+    // 00BE34D0 divides ticks by it. Chain337 OFF retains the old reciprocal
+    // QueryPerformanceFrequency substitute for regression bisection.
     double tick_scale() const noexcept { return tick_scale_; }
     unsigned long long samples() const noexcept { return samples_; }
     const ProfilerCounterRecord& frame_record() const noexcept;
