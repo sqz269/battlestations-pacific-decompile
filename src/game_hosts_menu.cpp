@@ -13,6 +13,8 @@
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain302_switches.hpp"
 #include "bsp/wire_goal4_chain312_switches.hpp"
+#include "bsp/wire_goal4_chain337_switches.hpp"
+#include "bsp/engine_core_cc13.hpp"
 #include "bsp/sound_frame_service.hpp"
 #include "bsp/game_native_input_configuration_application.hpp"
 #include "bsp/engine_seg11_35_66_cc13.hpp"
@@ -395,13 +397,33 @@ GameFrameProfiler::GameFrameProfiler(GameHostLog& log, int slot_count)
     counters_.display = display_.data();
     counters_.slot_count = slot_count_;
 
-    LARGE_INTEGER frequency{};
-    tick_scale_ = QueryPerformanceFrequency(&frequency) && frequency.QuadPart != 0
-        ? 1.0 / static_cast<double>(frequency.QuadPart)
-        : 0.0;
-    log_.notef("profiler slots=%d history=%d spare=%d tick_scale=%.9f "
-        "(0109db48 is zero in the image; seconds per QPC tick substituted)",
-        slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
+    if constexpr (kWireGoal4Chain337Bound) {
+        class Clock final : public cc13_engine_core::PerfClockHost {
+        public:
+            explicit Clock(GameFrameProfiler& profiler) : profiler_(profiler) {}
+            std::int64_t query_performance_counter() override {
+                return profiler_.query_performance_counter();
+            }
+            void sleep_ms(std::uint32_t milliseconds) override { Sleep(milliseconds); }
+        private:
+            GameFrameProfiler& profiler_;
+        } clock(*this);
+        // bsp.py show 00BE3310 --asm: QPC, Sleep(100), QPC, delta * 10.
+        // 00CD8F30 stores the result in 0109DB48; 00BE3360 / 00BE34D0
+        // divide by it. Keep the actual measured ticks/second, not its inverse.
+        tick_scale_ = cc13_engine_core::calibrate_ticks_per_second_00be3310(clock);
+        log_.notef("profiler slots=%d history=%d spare=%d ticks_per_second=%.9f "
+            "(0109db48 calibrated by 00be3310)",
+            slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
+    } else {
+        LARGE_INTEGER frequency{};
+        tick_scale_ = QueryPerformanceFrequency(&frequency) && frequency.QuadPart != 0
+            ? 1.0 / static_cast<double>(frequency.QuadPart)
+            : 0.0;
+        log_.notef("profiler slots=%d history=%d spare=%d tick_scale=%.9f "
+            "(0109db48 is zero in the image; seconds per QPC tick substituted)",
+            slot_count_, kProfilerHistoryFrames, kProfilerSpareSlots, tick_scale_);
+    }
 }
 
 std::int64_t GameFrameProfiler::query_performance_counter() {

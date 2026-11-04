@@ -48,7 +48,22 @@ double calibrate_ticks_per_second_00be3310(PerfClockHost& clock) {
 }
 
 float ticks_to_seconds_00be3360(std::int64_t ticks, double ticks_per_second) {
+#if defined(_MSC_VER) && defined(_M_IX86)
+    // bsp.py show 00BE3360 --asm: FILD qword [ECX], FDIV [0109DB48],
+    // FSTP float, FLD float. Keep the integer exact until FDIV and inherit the
+    // caller's x87 precision (PC24 on the main thread, PC53 on workers).
+    // A double cast before the divide loses integer bits above 2^53 and SSE2
+    // division skips PC24 rounding. This is the existing body, not a new entry.
+    float seconds;
+    __asm {
+        fild ticks
+        fdiv ticks_per_second
+        fstp seconds
+    }
+    return seconds;
+#else
     return static_cast<float>(static_cast<double>(ticks) / ticks_per_second);
+#endif
 }
 
 void end_counter_record_00be32b0(ProfilerCounterRecord& record, PerfClockHost& clock) {
