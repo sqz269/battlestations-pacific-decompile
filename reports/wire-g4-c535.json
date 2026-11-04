@@ -1,0 +1,59 @@
+{
+  "chain": 535,
+  "branch": "agent/g4-w2",
+  "switch": "kWireGoal4Chain535Bound",
+  "scope": "Pilot-plan +25Ch owner production from landing and dive-bomb approaches",
+  "wired_before": 9844,
+  "wired_after": 9845,
+  "release_graph_unique_addresses_called_before": 4910,
+  "release_graph_unique_addresses_called_after": 4910,
+  "release_graph_note": "The setter is ICF-folded with six existing functions in Release, so the unique-address total stays unchanged; both changed host call sites are reachable and readiness reports called=true.",
+  "validation": {
+    "release_build": "scripts/build.ps1 passed; all five tests passed",
+    "readiness": "wire_readiness.py --standins: 9844 -> 9845 wired; 0099b650 called=true",
+    "analysis_build": "scripts/build.ps1 -BuildDir build/callgraph -NoInline -Target bsp_game -SkipTests passed",
+    "analysis_graph": "call_graph.py --build-dir build/callgraph who 0099b650: REACHABLE, exactly two reachable call sites, no folding",
+    "analysis_call_sites": [
+      { "address": "103844cb", "caller": "PlaneBinding::run_land_task_tick_009b3eb0" },
+      { "address": "103a3f55", "caller": "GameUnitsHost::Impl::update_dive_bomb_approach" }
+    ],
+    "game_validated": false
+  },
+  "rows": [
+    {
+      "native": "0099b650",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::update_dive_bomb_approach and landing approach update in the unit task tick",
+      "evidence": "0099B650 stores one dword; 009B3AD6..009B3ADD pass approach+30h; 009C7D71..009C7D78 pass approach+48h; both use approach+18h as the plan.",
+      "state": "Persistent PilotPlanState::owner_25c borrows the setter's destination; values are the live deck-owner or resolved dive-bomb target identities.",
+      "limitations": "New C++ field-reference interface, not native ABI replacement; downstream consumers of plan+25Ch remain unwired; no game run."
+    },
+    { "native": "00780670", "status": "skipped", "host_site": "src/game_hosts_commands.cpp: GameCommandsHost::Impl::run_loopback_list", "reason": "Canonical receiver +BDh readiness production and a borrowed game-state binding are missing from the command queue; queue membership cannot substitute for readiness." },
+    { "native": "0099c270", "status": "skipped", "host_site": "src/game_hosts_units.cpp: pilot task tick", "reason": "Canonical unit+9C2h side-slot publication is missing; current fast-path assumptions do not supply those live bytes." },
+    { "native": "007bbc10", "status": "skipped", "host_site": "src/game_hosts_units.cpp: dogfight target/threat selection", "reason": "Canonical per-side pilot +98h target slot is missing; dogfight or commanded targets are currently stand-ins." },
+    { "native": "007ddea0", "status": "skipped", "host_site": "src/game_hosts_units.cpp: plane control-state change", "reason": "Persistent native plane FX component and its +40h timer consumers are missing; current path only records the reset." },
+    { "native": "007eb270", "status": "skipped", "host_site": "src/game_hosts_units.cpp: plane control-state change", "reason": "Persistent FX component, engine list, and effect-holder startup callbacks are missing." },
+    { "native": "004842c0", "status": "skipped", "host_site": "src/game_hosts_units.cpp: UnitInstanceBinding::publish_bow_anchor/publish_stern_anchor", "reason": "Real bow/stern point-effect sink and parent-relative transform callbacks are missing." },
+    { "native": "00815370", "status": "skipped", "host_site": "src/game_hosts_units.cpp: UnitInstanceBinding::tick_part", "reason": "Real primary and auxiliary effect-group arrays and scalar targets are missing." },
+    { "native": "008f3a20", "status": "skipped", "host_site": "src/game_hosts_scene_contents.cpp: library property parsing", "reason": "The semantic property parser does not supply its persistent native bag/enum insertion owner at this site." },
+    { "native": "008f54f0", "status": "skipped", "host_site": "src/game_hosts_scene_contents.cpp: merge_group_into/entity property merge", "reason": "Native source/destination property bags and their clone context are not bound to this semantic merge." },
+    { "native": "00a2b950", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: AI group score diagnostics", "reason": "The score list is a debug-overlay path with no gameplay consumer; assignment excludes debug-only work." },
+    { "native": "00a2bcc0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: AI group score diagnostics", "reason": "The chosen-byte list is read only by the debug overlay; assignment excludes debug-only work." },
+    { "native": "005290d0", "status": "skipped", "host_site": "HUD counter visibility", "reason": "No persistent live HudCounterEntryFlags collection is bound to the host HUD." },
+    { "native": "005292e0", "status": "skipped", "host_site": "HUD counter visibility", "reason": "No persistent live HudCounterEntryFlags collection is bound to the host HUD." },
+    { "native": "00529350", "status": "skipped", "host_site": "HUD counter visibility", "reason": "No persistent live HudCounterEntryFlags collection is bound to the host HUD." },
+    { "native": "004f8390", "status": "skipped", "host_site": "src/frontend_screens_cc13.cpp: frontend restore-level callback", "reason": "The inspected screen-set path has no live saved-set restore callback binding at this native caller." },
+    { "native": "004f8fa0", "status": "skipped", "host_site": "src/main_menu_tactical_library.cpp: tactical library screen", "reason": "The library screen's actual +138h..+1D8h order storage and its constructor/reset lifecycle are missing." },
+    { "native": "00b9dd90", "status": "skipped", "host_site": "ocean field spectrum attachment", "reason": "The semantic ocean spectrum lacks the native refcounted spectrum-link owner and canonical field slot." },
+    { "native": "007fbe20", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: MenuShellHost::record_award", "reason": "The persistent profile +A0h award-counter map, reset, and serialization bindings are missing." },
+    { "native": "00a3e3b0", "status": "skipped", "host_site": "src/game_hosts_menu.cpp: profile_change_pending", "reason": "The live asynchronous platform-manager profile flags are missing; current host returns a stand-in false." },
+    { "native": "00803c20", "status": "skipped", "host_site": "HUD/recon relation styling", "reason": "Live relation-style tables and their marker consumer binding are missing." },
+    { "native": "00ab95f0", "status": "skipped", "host_site": "GUI text cursor-mode update", "reason": "The inspected live text-content path lacks its cursor-state and GuiLeafHost binding." },
+    { "native": "005f98f0", "status": "skipped", "host_site": "src/game_hosts_ai.cpp: friendly capture-radius query", "reason": "The native friendly-capture world list and Small2Host field view are missing from the current query site." },
+    { "native": "004d32a0", "status": "skipped", "host_site": "mission Lua teardown", "reason": "The actual Lua-global difference traversal and SweepA3Host cleanup binding are missing." },
+    { "native": "00887560", "status": "skipped", "host_site": "src/game_hosts_ready.cpp: NamedCallBinding::queue_call", "reason": "The current named-call host lacks a real off-main-thread deferred-call producer and argument records." },
+    { "native": "0099b450", "status": "skipped", "host_site": "src/pilot_plan_slots.cpp: pilot_reset_plan_0099b450", "reason": "Existing reset path was inspected for field ownership; its native stores do not reset +25Ch, so no additional wiring is needed here." },
+    { "native": "009b3900", "status": "skipped", "host_site": "src/game_hosts_units.cpp: landing approach update", "reason": "Already represented by the live host; inspected as the caller supplying the real approach+30h owner to 0099B650." },
+    { "native": "009c7a80", "status": "skipped", "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::update_dive_bomb_approach", "reason": "Already represented by the live host; inspected as the caller supplying the real approach+48h target to 0099B650." }
+  ]
+}

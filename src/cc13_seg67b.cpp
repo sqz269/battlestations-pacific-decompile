@@ -64,7 +64,6 @@ constexpr std::size_t kTask3F0 = 0x3F0;
 constexpr std::size_t kTaskBot = 0x3F4;
 
 // Pilot plan offsets.
-constexpr std::size_t kPlanOwner25C = 0x25C;
 constexpr std::size_t kPlanPitchTarget = 0x2BC;
 constexpr std::size_t kPlanHeadingTarget = 0x2C0;
 constexpr std::size_t kPlanHeadingMode = 0x2CC;
@@ -182,8 +181,10 @@ float pilot_command_pitch_target_or_live_0099b630(void* plan) {
 }
 
 // 0099B650 (0099B650-0099B65A). +25Ch = the argument.
-void bot_task_set_owner_25c_0099b650(void* plan, std::uint32_t owner) {
-    at<std::uint32_t>(plan, kPlanOwner25C) = owner;
+// bsp.py show 0099b650: a single dword store, with no refcount/lifetime call.
+// Borrow the canonical field so semantic hosts can reuse this one body.
+void bot_task_set_owner_25c_0099b650(std::uint32_t& owner_25c, std::uint32_t owner) {
+    owner_25c = owner;
 }
 
 // 0099B690 (0099B690-0099B69C). PUSH ECX supplies 0099A870's argument (it

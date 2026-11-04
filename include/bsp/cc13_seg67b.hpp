@@ -652,8 +652,9 @@ void bot_task_factory_unregister_0099ebe0(Cc13Seg67bHost& host, void* factory);
 // ---- the bot-task base ----
 // 0099B630: __fastcall(ECX = plan), RET, ST0.
 float pilot_command_pitch_target_or_live_0099b630(void* plan);
-// 0099B650: __thiscall(ECX = plan, owner), RET 4.
-void bot_task_set_owner_25c_0099b650(void* plan, std::uint32_t owner);
+// 0099B650: __thiscall(ECX = plan, owner), RET 4. The C++ interface borrows
+// the actual plan+25Ch cell directly; it does not require an image-shaped plan.
+void bot_task_set_owner_25c_0099b650(std::uint32_t& owner_25c, std::uint32_t owner);
 // 0099B690: __thiscall(ECX = task), RET (the pushed ECX is 0099A870's argument).
 void bot_task_retire_0099b690(Cc13Seg67bHost& host, void* task);
 // 009A1A20: __fastcall(ECX = plan), RET, ST0.
