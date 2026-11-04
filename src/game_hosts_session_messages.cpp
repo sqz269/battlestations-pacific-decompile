@@ -5,6 +5,7 @@
 #include "bsp/wire_goal4_chain428_switches.hpp"
 #include "bsp/wire_goal4_chain440_switches.hpp"
 #include "bsp/wire_goal4_chain450_switches.hpp"
+#include "bsp/wire_goal4_chain478_switches.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/wire_goal4_chain373_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -1051,6 +1052,26 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     write_native_session_message112_00761e20(&sent, &stream.out, image.context112);
     // 00768530 case 70h: 00761D90 at 00769026; 0076A27B vtable[8] = 00761EC0.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain478Bound) {
+        // 00768530 allocates the decoded 2Ch message; keep that allocation
+        // through payload consumption. bsp.py show 00762640: stamp CE4974,
+        // free with 00BF65AC iff flags&1. The existing owner uses its matching
+        // allocator and runs that body once, including on a decode exception.
+        OwnedDecodedMessage<NativeSessionMessage112,
+            delete_native_session_message112_00762640> owner;
+        NativeSessionMessage112& queued = owner.get();
+        construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
+        read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
+        KamikazeDetonateCopy copy;
+        copy.other_id = queued.value_1c;
+        for (int i = 0; i < 3; ++i) {
+            std::memcpy(&copy.point[i], &queued.float_bits_20[i], sizeof copy.point[i]);
+        }
+        if constexpr (kWireGoal4Chain373Bound) {
+            destroy_native_session_message112_00761e10(&sent);
+        }
+        return copy; // owner frees only the decoded object; sender remains on stack.
+    } else {
     NativeSessionMessage112 queued{};
     construct_native_session_message112_00761d90(&queued, image.context112, image.profile112);
     read_native_session_message112_00761ec0(&queued, &stream.in, image.context112);
@@ -1068,6 +1089,7 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
         // restamps the root profile.
     }
     return copy;
+    }
 }
 
 HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_damage_9e(
@@ -1614,6 +1636,39 @@ HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_6
     // 00768530 case 68h / 69h: operator new(24h), 00728F20 at 00768F26 /
     // 00728FA0 at 00768F46; 0076A27B vtable[8] = 006D1550.
     stream.begin_read();
+    if constexpr (kWireGoal4Chain478Bound) {
+        // Both messages borrow the same live session/codec owners as before.
+        // Consume their decoded fields and receiver dispatch before releasing
+        // the native allocation. bsp.py show 00729050 / 00729070: CE4974 store,
+        // then 00BF65AC iff bit 0; neither payload owns further subobjects.
+        const auto consume = [&](NativeSessionMessage104& queued) {
+            construct(&queued);
+            read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
+            GunDestroyedCopy copy;
+            copy.type = queued.header.base.type_10;
+            copy.to_entity = copy_goes_to_unit_handler(is_type);
+            if (copy.to_entity) {
+                GunMessageDispatch dispatch;
+                cc13_front3_gun_handle_network_message_0072d830(nullptr, &queued, dispatch);
+                copy.set_arm_68 = dispatch.set_destroyed_arm && is_type(0x68);
+                copy.clear_arm_69 = dispatch.clear_destroyed_arm && is_type(0x69);
+            }
+            if constexpr (kWireGoal4Chain373Bound) {
+                if (set) destroy_native_session_message104_00728f60(&sent);
+                else destroy_native_session_message105_00728fe0(&sent);
+            }
+            return copy;
+        };
+        if (set) {
+            OwnedDecodedMessage<NativeSessionMessage104,
+                delete_native_session_message104_00729050> owner;
+            return consume(owner.get());
+        } else {
+            OwnedDecodedMessage<NativeSessionMessage105,
+                delete_native_session_message105_00729070> owner;
+            return consume(owner.get());
+        }
+    } else {
     NativeSessionMessage104 queued{};
     construct(&queued);
     read_native_session_scalar98_006d1550(&queued, &stream.in, image.context98);
@@ -1644,6 +1699,7 @@ HostSessionMessages::GunDestroyedCopy HostSessionMessages::queue_gun_destroyed_6
         // Neither message owns storage; 00729050 / 00729070 only restamp.
     }
     return copy;
+    }
 }
 
 HostSessionMessages::PlaneDisappearCopy HostSessionMessages::queue_plane_disappear_c7(
