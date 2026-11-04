@@ -1,4 +1,5 @@
 #include "bsp/native_vfs_lookup_routes.hpp"
+#include "bsp/cc13_seg95.hpp"
 
 #include "bsp/native_mpak_enumeration.hpp"
 #include "bsp/native_mpak_open.hpp"
@@ -51,6 +52,10 @@ std::uint32_t lookup_visitor_slot(const void* visitor, std::uint32_t offset,
     switch (word(visitor)) {
     case 0x00d68398: profile = context.actual_exists_profile_00d68398; break;
     case 0x00d683e8: profile = context.actual_name_probe_profile_00d683e8; break;
+    case 0x00d683a4:
+        if (!context.actual_flagged_exists_profile_00d683a4)
+            throw std::invalid_argument("Native VFS flagged-exists route is not bound");
+        profile = context.actual_flagged_exists_profile_00d683a4; break;
     case 0x00d683f4:
         if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
         profile = context.device->actual_device_profile_00d683f4; break;
@@ -61,10 +66,27 @@ std::uint32_t lookup_visitor_slot(const void* visitor, std::uint32_t offset,
     }
     return word(profile, offset);
 }
+class FlaggedExistsBinding final : public cc13_seg95::FlaggedExistsHost {
+public:
+    explicit FlaggedExistsBinding(NativeVfsLookupRouteContext& context) : context_(context) {}
+    std::uint8_t vfs_provider_exists_vslot10(void* provider, const void* name) override {
+        // 00BD9130 captures this slot only after mount+0Ch passed. Reuse the
+        // complete provider dispatch used by the unfiltered 00BD90D0 route.
+        return invoke_native_vfs_provider_contains(word(pointer(provider), 0x10), provider, name, context_);
+    }
+private:
+    NativeVfsLookupRouteContext& context_;
+};
 void dispatch_lookup_visit(void* visitor, const void* payload, const void* name,
     NativeVfsLookupRouteContext& context) {
     switch (lookup_visitor_slot(visitor, 4, context)) {
     case 0x00bd90d0: read_native_vfs_exists_provider_00bd90d0(visitor, payload, name, context); return;
+    case 0x00bd9130: {
+        FlaggedExistsBinding calls(context);
+        cc13_seg95::vfs_flagged_exists_mount_callback_00bd9130(
+            static_cast<std::uint8_t*>(visitor), static_cast<const std::uint8_t*>(payload), name, calls);
+        return;
+    }
     case 0x00bdbc00: read_native_vfs_name_probe_provider_00bdbc00(visitor, payload, name, context); return;
     case 0x00bdbc70:
         if (!context.device) throw std::invalid_argument("Native VFS device route is not bound");
@@ -78,6 +100,8 @@ void dispatch_lookup_visit(void* visitor, const void* payload, const void* name,
 std::uint8_t dispatch_lookup_stop(const void* visitor, NativeVfsLookupRouteContext& context) {
     switch (lookup_visitor_slot(visitor, 8, context)) {
     case 0x00bd90f0: return read_native_vfs_exists_result_00bd90f0(visitor);
+    case 0x00bd9160: return cc13_seg95::vfs_flagged_exists_read_result_00bd9160(
+        static_cast<const std::uint8_t*>(visitor));
     case 0x00bdb5d0: return read_native_vfs_name_probe_result_00bdb5d0(visitor);
     case 0x00bdb670: return read_native_vfs_device_result_00bdb670(visitor);
     case 0x00bdc1d0: return read_native_vfs_pending_result_00bdc1d0(visitor);

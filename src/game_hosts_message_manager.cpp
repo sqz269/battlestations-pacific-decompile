@@ -7,6 +7,7 @@
 #include "bsp/engine_seg11_35_66_cc13.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_vfs.hpp"
+#include "bsp/wire_goal4_chain519_switches.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/gui_lua_reader.hpp"
 #include "bsp/gui_lua_runtime.hpp"
@@ -485,10 +486,16 @@ struct GameMessageManagerHost::Impl final : seg::MessageManagerCalls {
         ++(present ? summary.voice_probe_hits : summary.voice_probe_misses);
         return present;
     }
-    bool file_store_exists_vslotc(const std::string&) override {
+    bool file_store_exists_vslotc(const std::string& path) override {
+        if constexpr (bsp::kWireGoal4Chain519Bound) {
+            // 00704590's streamed-dialog fallback uses manager+0Ch rather than
+            // the ordinary +08h probe. Preserve each live mount's +0Ch flag.
+            return vfs.exists_in_flagged_mounts(path);
+        } else {
         // 00BDD520 BSP_VFS_ExistsInFlaggedMounts: not reachable through GameVfsHost.
         ++summary.streamed_probes_not_evaluated;
         return false;
+        }
     }
     void* load_sound_bank_00a83fd0(const std::string& file) override {
         if constexpr (kMessageSoundBankCc15Bound) {

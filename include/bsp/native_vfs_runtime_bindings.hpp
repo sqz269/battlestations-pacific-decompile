@@ -42,6 +42,7 @@ public:
     NativeVfsRuntimeBindings& operator=(const NativeVfsRuntimeBindings&)=delete;
     void* open(std::uintptr_t,void*,const NativeString&,std::uint32_t) override;
     std::uint8_t exists(std::uintptr_t,void*,NativeString&) override;
+    bool exists_in_flagged_mounts(std::uintptr_t,void*,NativeString&);
     std::uint8_t is_open(std::uintptr_t,void*) override;
     std::uint64_t length(std::uintptr_t,void*) override;
     void read(std::uintptr_t,void*,void*,std::uint32_t,std::uint32_t*) override;
