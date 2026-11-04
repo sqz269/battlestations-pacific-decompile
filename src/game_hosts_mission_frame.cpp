@@ -20,6 +20,7 @@
 // See include/bsp/game_hosts_mission_frame.hpp for the address list.
 
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/wire_goal4_chain539_switches.hpp"
 #include "bsp/wire_goal4_chain466_switches.hpp"
 #include <stdexcept>
 
@@ -4568,6 +4569,10 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // +61h, and 009f3dd0 reads the director 0071be40 answers for, so the
             // host is built after the authored commands were issued.
             host.ship_ai = std::make_unique<GameShipAiHost>(host.log, *host.units);
+            if constexpr (bsp::kWireGoal4Chain539Bound) {
+                host.ship_ai->bind_local_message_clock(
+                    host.entry_state.game_state, host.fixed_clock.step_count);
+            }
             host.ship_ai->bind_session_participants(host.participants);
             host.ship_ai->register_units(host.lua, host.scene_state.session_mode);
             host.units->set_ship_ai(host.ship_ai.get());
