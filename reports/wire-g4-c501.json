@@ -1,0 +1,246 @@
+{
+  "goal": 4,
+  "chain": 501,
+  "slot": "g4-w4",
+  "base": "9558082043f76f43cc48e3b2ad79ff041c09fc1f",
+  "switch": "bsp::kWireGoal4Chain501Bound",
+  "scope": "Replace the existing power-up collection view's local-slot assignment and signed bounds check with the existing reconstructed game helpers. The runtime host supplies the slot; the same view selects players and inventories for 008E9AF0 and 008ED9C0.",
+  "rows": [
+    {
+      "native": "004b4740",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: PowerupCollectionBinding::PowerupCollectionBinding",
+      "body": "src/band_004b_cc13.cpp: game_set_local_player_slot_004b4740",
+      "evidence": "bsp.py show 004b4740: __thiscall(game, slot), RET 4, stores game+18ECh. CollectionGame already asserts local_slot at +18ECh; runtime.host->local_player_slot_18ec() supplies its value.",
+      "release_call_site": "1019b47c",
+      "analysis_call_site": "10227306",
+      "called_before": false,
+      "called_after": true,
+      "qualification": "Release folds the setter with identical functions. The changed collector has its own direct call site; an analysis build with /OPT:NOICF is checked separately. This remains a C++ field projection."
+    },
+    {
+      "native": "004b6bc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_powerups.cpp: PowerupCollectionBinding::PowerupCollectionBinding",
+      "body": "src/band_004b_cc13.cpp: game_has_local_player_slot_004b6bc0",
+      "evidence": "bsp.py show 004b6bc0: __fastcall(game), AL, tests signed 0 <= game+18ECh < 8. Replaces the same bounds test before either collector can index the live inventory snapshot.",
+      "release_call_site": "1019b483",
+      "analysis_call_site": "1022730d",
+      "called_before": false,
+      "called_after": true,
+      "qualification": "The source-readiness heuristic already marked this predicate wired, but the baseline executable contained no matching function. The new collector call is entry-reachable."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost end-movie transition",
+      "reason": "The recorded close-result-GUI site lacks the real sound-transition screen and game owners required by 004CD610; it is not simply a GUI close operation."
+    },
+    {
+      "native": "008dda20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: GameMissionResultHost::replicate_objective_state",
+      "reason": "No single-player peer/message producer reaches the replication body; the host slot_has_peer path remains false."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::bind_movie_textures",
+      "reason": "Missing loaded movie scene node, decoder texture provider and material sampler owners; the bridge only records texture binding."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: MovieBridge::clear_movie_subtitles",
+      "reason": "Missing native subtitle widget and stride-14h subtitle-vector ownership; the existing host resets a different subtitle schedule model."
+    },
+    {
+      "native": "008750a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing actual native group and owner attachments; the dispatch path explicitly rejects dispatch without them."
+    },
+    {
+      "native": "00875b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Missing actual native group and owner attachments; the current method only logs the job."
+    },
+    {
+      "native": "00874fe0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing actual native group and owner attachments; the current method only logs the job."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing actual native group and owner attachments for interpolation; the current method only logs the job."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::drain_queued_lua_calls_00888230",
+      "reason": "Missing off-main-thread named-call producer; the retained Lua queue remains empty because this host has no frame-job pool."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list ownership",
+      "reason": "Missing native score-list storage and gameplay consumer; the host uses weight vectors, and the original list reader is a debug overlay."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list ownership",
+      "reason": "Missing actual score-list records to mark; fabricating a parallel debug list would not replace the live planner."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate pass",
+      "reason": "Already has an entry-reachable call using member-kind and objective-set state; no missing host call to replace."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Already calls the body with loaded tail-gunner configuration and the real RNG stream under chain451; no missing host call."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing persistent plane-FX component and timer consumer; a scratch block receiving constant 60 would not replace host behavior."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing the plane-FX component and its retained effect owners; the notification only records the step."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::flight_state_notify_007c11e0",
+      "reason": "Missing the native plane-FX component and presentation owners needed by OnFlightState."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SetSelectedUnit and ForceSelectUnit reset sites",
+      "reason": "Missing the selection vector, screen mode and reset fields consumed by this body; existing unit-pick state is a partial view."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::map_screen_busy",
+      "reason": "Missing power-up carousel scrolling-byte owners and writers; map_screen_wanted also remains false."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval binding",
+      "reason": "Missing the native ticker/animation object; weapon_animation returns zero and animation_interval only records the operation."
+    },
+    {
+      "native": "0092bd30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: ship kill-depth and kamikaze clear_hull_shape_fields sites",
+      "reason": "Missing controller+2Ch native hull body, shape chain and collision-filter notification bindings."
+    },
+    {
+      "native": "0092d6a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: motion-proxy velocity substitution",
+      "reason": "Missing actual DYN motion proxy and its +2Ch physics-body owner; a wrapper around host velocity would fabricate that owner."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp: existing property insertion body",
+      "reason": "Fresh readiness confirms an existing entry-reachable body call; no missing host call to add."
+    },
+    {
+      "native": "00884ac0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: kill-listener last-attacker argument",
+      "reason": "Missing the actual last-attacker record with its uint16 entity ID at +18h; the callback currently holds resolved host entity IDs."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: GameMissionLuaHost::queue_named_call_for_main_thread",
+      "reason": "Missing off-main-thread frame-job producer and native queue ownership; on_frame_job_thread returns false."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine common periscope-break path",
+      "reason": "Missing per-instance mast node and DYN shape owners for the outer body's hide/collision calls; the common 009327F0 stores already run."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::set_ambient_volume",
+      "reason": "Missing the retained ambient SoundInstance and its sample-options owner; the host only records the requested volume."
+    },
+    {
+      "native": "00ab2150",
+      "status": "skipped",
+      "host_site": "src/native_material_pools.cpp: NativeGuiWidgetPool<GuiIconPoolTraits>::free",
+      "reason": "Explicit trait mapping already reports an entry-reachable pool-free call; no missing host call to add."
+    },
+    {
+      "native": "00a7bfe0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shutdown_sound_configuration_effects_00a7f560",
+      "reason": "Fresh readiness already reports entry-reachable group-storage destruction; no missing host call to add."
+    },
+    {
+      "native": "00a7c6c0",
+      "status": "skipped",
+      "host_site": "src/sound_configuration_shutdown.cpp: shrink_sound_configured_types_00a7fcc0_fragment",
+      "reason": "The existing typed shrink path already invokes this destructor; a further change needs proof of a missing live type-owner teardown caller."
+    },
+    {
+      "native": "0093fd00",
+      "status": "skipped",
+      "host_site": "src/sound_gameplay_methods.cpp: copy_construct_sound_sample_options_0093fdf0",
+      "reason": "Existing options copy construction already delegates to this body; missing a new live options-copy owner to replace, so no duplicate call added."
+    },
+    {
+      "native": "00bf0340",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: stream_writer_write_dword_00bf0340",
+      "reason": "No live host stream-writer object with native virtual+54h write contract was identified during selection."
+    },
+    {
+      "native": "004ddb90",
+      "status": "skipped",
+      "host_site": "src/game_native_game_runtime.cpp: GameNativeGameRuntime::construct",
+      "reason": "The native construction facade has no linked entry-reachable function in the baseline; adding a local-slot helper inside it would remain dead."
+    }
+  ],
+  "validation": {
+    "baseline_build": "./scripts/build.ps1: passed, all four CTests passed",
+    "changed_build": "./scripts/build.ps1: passed, all four CTests passed",
+    "native_evidence": ["python tools/bsp.py show 004b4740 --lines 35", "python tools/bsp.py show 004b6bc0 --lines 40"],
+    "release_graph": "Both helpers have calls from the changed PowerupCollectionBinding constructor. 004B6BC0 has one unambiguous reachable call. 004B4740 shares an ICF body with five other functions; only the collector call at 1019B47C is claimed here.",
+    "entry_path": "WinMainCRTStartup -> GameStartupHost -> GameFrameHost::game_on_move -> GameMenuHost::frame -> GameHudHost::update_hud_root_screen_00649860 -> collect_hud_powerups -> PowerupCollectionBinding -> helpers; local_player_has_usable_powerup also reaches the same constructor through HudUpdateBinding::support_request_pending.",
+    "analysis_build": "./scripts/build.ps1 -BuildDir build/analysis -NoInline -Target bsp_game -SkipTests: passed. /Ob0 and /OPT:NOICF analysis graph gives each helper exactly one reachable call from PowerupCollectionBinding: setter 10227306 -> 10540D80, predicate 1022730D -> 10540D70, both in bsp_core:band_004b_cc13.obj. No folding ambiguity on either helper.",
+    "float_math_changed": false,
+    "new_test_cases": 0,
+    "game_run": false
+  },
+  "totals": {
+    "source_readiness_wired_before": 9797,
+    "source_readiness_wired_after": 9798,
+    "release_call_graph_recon_called_before": 4862,
+    "release_call_graph_recon_called_after": 4863,
+    "note": "004B6BC0 was already text-wired but absent from the baseline binary. The release reconstructed-called counter increases by one; per-callsite evidence verifies two new helper calls, and the analysis build separates the setter from its release ICF aliases. The initial readiness graph cache was stale; the release graph totals above were regenerated on this worktree before and after the change."
+  },
+  "boundaries": "Existing collector projections are reused. No new native objects, scratch-only consumers, float operations, original ABI replacement or gameplay validation are claimed. The switch's else arm preserves the original assignment and bounds check.",
+  "left": "Native FX, physics, movie, selection-vector and deferred-thread owners listed in skipped rows remain outside this packet."
+}
