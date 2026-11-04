@@ -108,7 +108,10 @@ void narrative_set_portrait_005b5c10(void* screen, void* texture, Seg20Host& hos
     host.widget_vslot88(raw(screen).ptr(0x40), texture, 0, 1.0f);       // 005B5C2C, FLD1
 }
 
-void narrative_query_text_005b5d20(void* screen, Seg20Host& host) {
+void narrative_query_text_005b5d20(void* screen, NarrativeTextQueryHost& host) {
+    // Listing 005B5D20..005B5D37: load +B0, vtable+54h into a local RGBA,
+    // discard it, RET4. The caller's float is never read: this does not set
+    // alpha, despite the previous running host's set_alpha label.
     std::uint8_t local[16];
     host.widget_vslot54(raw(screen).ptr(0xB0), local);                 // 005B5D32
 }

@@ -6695,7 +6695,12 @@ void GameScriptOrdersHost::run_narrative_update_00735100(float step) {
     } else {
         narrative_alpha_28_ = 0.0f;
     }
-    log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
+    if constexpr (bsp::kWireGoal4Chain482Bound) {
+        if (narrative_hud_ == nullptr || !narrative_hud_->query_mission_narrative_text_colour())
+            log_.unimplemented("HudNarrative::query_text", "005b5d20");
+    } else {
+        log_.unimplemented("HudNarrative::set_alpha", "005b5d20");
+    }
     if (0.0f < narrative_alpha_28_) return;
     if (narrative_state_18_ == 2) narrative_finish_00734140();
 }

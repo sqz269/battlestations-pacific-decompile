@@ -3,8 +3,7 @@
   "owner": "agent/g4-w3",
   "switch": "bsp::kWireGoal4Chain482Bound",
   "baseline": {
-    "source_wired": 9763,
-    "readiness_called_rows": 5937
+    "source_wired": 9763
   },
   "rows": [
     {
@@ -14,9 +13,8 @@
     },
     {
       "native": "005b5d20",
-      "status": "skipped",
-      "host_site": "src/game_hosts_script_orders.cpp: run_narrative_update_00735100",
-      "reason": "Existing Seg20Host bundles unrelated services; a narrow live text-colour query adapter is still needed."
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::query_mission_narrative_text_colour; src/game_hosts_script_orders.cpp: run_narrative_update_00735100"
     },
     {
       "native": "005b5bd0",
@@ -88,7 +86,7 @@
       "native": "00aa2b30",
       "status": "skipped",
       "host_site": "src/game_hosts_lua.cpp: GameMissionLuaVehicleClassFieldBinding::load_small_map_icon",
-      "reason": "This binding has no texture/renderer owner; null texture callbacks would only replace one stand-in with another."
+      "reason": "This binding needs its real texture/renderer owner; agent/g4-w5 claimed that independent work as chain484."
     },
     {
       "native": "00683330",
@@ -197,11 +195,55 @@
       "status": "skipped",
       "host_site": "src/engine_seg56_cc13.cpp: objective property-key selector",
       "reason": "No live property-sink construction site for this objective serializer is attached."
+    },
+    {
+      "native": "005bb130",
+      "status": "skipped",
+      "host_site": "src/frontend_screens_cc13.cpp: hud_narrative_register_005bb130",
+      "reason": "Read as widget-binding evidence; full registration also needs native voice/message-box/dialog owners beyond the existing page catalogue."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "The movie bridge has no real decoder/frame/texture owner; decoder operations are still explicit stand-ins."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "The bridge owns a typed schedule projection, not the actual movie+10Ch native subtitle container this raw body reads."
+    },
+    {
+      "native": "00a03900",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_class_pair_value_00a03900",
+      "reason": "No live host caller supplying the mode-selected class-pair table was found."
+    },
+    {
+      "native": "00a046c0",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg69_70_cc13.cpp: ai_powerup_score_for_unit_00a046c0",
+      "reason": "A live scoring caller with the complete per-unit powerup scoring inputs is still missing."
     }
   ],
   "verification": {
-    "build": "scripts/build.ps1 passed; all 5 CTests passed",
-    "binary": "call_graph.py who/path 005b5d40: reachable, one direct call from GameHudHost::hide_mission_narrative_text",
-    "runtime": "Game not run; source/Win32 build/binary reachability evidence only."
+    "build": "scripts/build.ps1 passed after final C++ edits; all 5 CTests passed",
+    "source_readiness": "wire_readiness.py --standins: 9763 -> 9765 wired",
+    "binary": "call_graph.py who/path: 005b5d20 and 005b5d40 both reachable; each has one call site from its named GameHudHost bridge",
+    "evidence": [
+      "bsp.py show 005b5d40",
+      "bsp.py show 005bb130",
+      "bsp.py ghidra disasm 005b5d20 --lines 30"
+    ],
+    "state": "Fresh widget lookup from screen 33h's loaded GUI_narrative; source from the live narrative queue; current widget visibility/RGBA from the frontend owner.",
+    "limitation": "Only source/Win32 build/binary reachability checked. Game not run; raw native ABI, measured narrative layout and screen-enter dispatch are not claimed."
+  },
+  "result": {
+    "source_wired": 9765,
+    "wired_addresses": [
+      "005b5d40",
+      "005b5d20"
+    ]
   }
 }

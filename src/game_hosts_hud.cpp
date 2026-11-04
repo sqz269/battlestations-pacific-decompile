@@ -2,6 +2,7 @@
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
 #include "bsp/frontend_screens_cc13.hpp"
+#include "bsp/frontend_seg20_cc13.hpp"
 #include "bsp/wire_goal4_chain461_switches.hpp"
 #include "bsp/frontend_state_machine.hpp"
 #include "bsp/wire_goal4_chain436_switches.hpp"
@@ -106,6 +107,23 @@ struct NarrativeHideView {
 };
 static_assert(offsetof(NarrativeHideView, text_group) == 0xAC);
 static_assert(sizeof(GuiLayoutWidget*) == sizeof(std::uint32_t));
+
+struct NarrativeQueryView {
+    std::array<std::byte, 0xB0> unused;
+    GuiLayoutWidget* text;
+};
+static_assert(offsetof(NarrativeQueryView, text) == 0xB0);
+
+class NarrativeTextColourBinding final : public bsp::frontend_seg20_cc13::NarrativeTextQueryHost {
+public:
+    void widget_vslot54(void* widget, std::uint8_t (&out)[16]) override {
+        // The same live RGBA that GameFrontendHost's widget setters/rendering
+        // use. 005B5D20 drops this copy and never mutates that state.
+        const auto& colour = static_cast<GuiLayoutWidget*>(widget)->color;
+        static_assert(sizeof colour == sizeof out);
+        std::memcpy(out, colour, sizeof out);
+    }
+};
 
 class NarrativeVisibilityBinding final : public bsp::cc13_fe1::WidgetHost {
 public:
@@ -1309,6 +1327,21 @@ bool GameHudHost::hide_mission_narrative_text() {
     // fields read. Native ABI is ECX=screen, RET; this is its source view.
     bsp::cc13_fe1::hud_narrative_hide_text_005b5d40(&view, binding);
     impl_->done("HudNarrative::hide", 0x005b5d40u);
+    return true;
+}
+
+bool GameHudHost::query_mission_narrative_text_colour() {
+    auto* const page = impl_->menu.in_game_page(0x33, "GUI_narrative");
+    if (page == nullptr || !page->root) return false;
+    auto* const group = bsp::find_descendant_by_name(*page->root, "MissionInfoTitle_Group");
+    auto* const text = group != nullptr
+        ? bsp::find_descendant_by_name(*group, "textbox_obj_Text") : nullptr;
+    if (text == nullptr) return false;
+    NarrativeQueryView view{{}, text};
+    NarrativeTextColourBinding binding;
+    bsp::frontend_seg20_cc13::narrative_query_text_005b5d20(
+        &view, binding);
+    impl_->done("HudNarrative::query_text", 0x005b5d20u);
     return true;
 }
 
