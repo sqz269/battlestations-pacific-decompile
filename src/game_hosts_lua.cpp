@@ -11,6 +11,8 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/wire_goal4_chain420_switches.hpp"
+#include "bsp/cc15_g24c.hpp"
 #include "bsp/wire_goal4_chain408_switches.hpp"
 #include "bsp/wire_goal4_chain403_switches.hpp"
 #include "bsp/cc13_sweepC.hpp"
@@ -167,6 +169,8 @@ extern "C" {
 #include <cstring>
 #include <functional>
 #include <list>
+#include <memory>
+#include <new>
 #include <optional>
 #include <stdexcept>
 #include <type_traits>
@@ -680,6 +684,90 @@ bool objective_names_equal(const std::string& a, const std::string& b) noexcept 
     return a.size() == b.size() && _stricmp(a.c_str(), b.c_str()) == 0;
 }
 
+// Chain 420: an owning VC9 list view of the objective's actual mixed unit/point
+// entries. Evidence: bsp.py show 008dc500, +24h head, +28h count, node +0/+4/+8,
+// record +0 unit word and +4/+8/+Ch coordinates. Only the list representation is
+// adapted; the native body decides which records and nodes to free. Source-only
+// indices retain the survivors' position_valid flags and original payloads.
+class ObjectivePositionEraseList final : public bsp::cc15_g24c::ObjectivePositionHost {
+    struct Record {
+        void* unit;
+        bsp::ObjectiveWorldPoint position;
+    };
+    struct Node {
+        Node* next;
+        Node* previous;
+        Record* record;
+        std::size_t source_index; // after the native 0Ch-byte node prefix
+    };
+    struct Objective {
+        std::uint8_t unused_00[0x24];
+        Node* head;
+        std::uint32_t count;
+    };
+    static_assert(sizeof(void*) == 4 && sizeof(Record) == 0x10);
+    static_assert(offsetof(Record, position) == 4);
+    static_assert(offsetof(bsp::ObjectiveWorldPoint, x) == 0 &&
+        offsetof(bsp::ObjectiveWorldPoint, y) == 4 &&
+        offsetof(bsp::ObjectiveWorldPoint, z) == 8);
+    static_assert(offsetof(Node, next) == 0 && offsetof(Node, previous) == 4 &&
+        offsetof(Node, record) == 8 && offsetof(Node, source_index) == 0xc);
+    static_assert(offsetof(Objective, head) == 0x24 && offsetof(Objective, count) == 0x28);
+
+    using Allocation = std::unique_ptr<void, decltype(&std::free)>;
+    std::vector<Allocation> allocations_;
+    Objective objective_{};
+
+    template<class T> T* allocate() {
+        Allocation block(std::malloc(sizeof(T)), &std::free);
+        if (!block) throw std::bad_alloc();
+        T* const value = ::new (block.get()) T{};
+        allocations_.push_back(std::move(block));
+        return value;
+    }
+    void crt_free_00bf65ac(void* block) override {
+        const auto owned = std::find_if(allocations_.begin(), allocations_.end(),
+            [block](const Allocation& allocation) { return allocation.get() == block; });
+        if (owned == allocations_.end())
+            throw std::logic_error("Objective position erase freed an unowned block");
+        owned->reset();
+    }
+    void crt_invalid_parameter_noinfo_00bf6713() override {
+        throw std::logic_error("Objective position erase encountered an invalid native list");
+    }
+public:
+    explicit ObjectivePositionEraseList(const std::vector<bsp::ObjectiveUnitEntry>& entries) {
+        objective_.head = allocate<Node>();
+        objective_.head->next = objective_.head;
+        objective_.head->previous = objective_.head;
+        for (std::size_t i = 0; i < entries.size(); ++i) {
+            Record* const record = allocate<Record>();
+            // The unit token is tested only for zero; no unit is dereferenced.
+            // Unit records' position half is unused by 008DC500's nonzero arm.
+            record->unit = entries[i].unit;
+            if (record->unit == nullptr) record->position = entries[i].position;
+            Node* const node = allocate<Node>();
+            node->record = record;
+            node->source_index = i;
+            node->next = objective_.head;
+            node->previous = objective_.head->previous;
+            node->previous->next = node;
+            objective_.head->previous = node;
+            ++objective_.count;
+        }
+    }
+    void erase(std::vector<bsp::ObjectiveUnitEntry>& entries,
+        const bsp::ObjectiveWorldPoint& point) {
+        const float position[3] = {point.x, point.y, point.z};
+        bsp::cc15_g24c::objective_erase_position_entries_008dc500(&objective_, position, *this);
+        std::vector<bsp::ObjectiveUnitEntry> kept;
+        kept.reserve(objective_.count);
+        for (const Node* node = objective_.head->next; node != objective_.head; node = node->next)
+            kept.push_back(entries.at(node->source_index));
+        entries.swap(kept);
+    }
+};
+
 class ObjectiveListHost final : public bsp::ObjectiveUnitHost {
 public:
     ObjectiveListHost(GameObjectiveSets& sets, const GameUnitsHost* units) noexcept
@@ -782,10 +870,9 @@ public:
     }
     // 008DDD30 on set `slot`: every objective whose name matches runs 008DC500,
     // which erases each entry with a null unit word whose three floats equal the
-    // point (008DC53F, 008DC54F..008DC57D, exact compares). Both reconstructions
-    // (src/objectives_seg57_argon.cpp, src/cc15_g24c.cpp) read native records, so
-    // the same rule is applied to this list here. Its session send is skipped as
-    // in set_remove_unit.
+    // point (008DC53F, 008DC54F..008DC57D, exact compares).
+    // The ON arm supplies those native records from this list. Its session send
+    // is skipped as in set_remove_unit.
     void set_remove_position(int slot, const std::string& name,
                              const bsp::ObjectiveWorldPoint& point) override {
         if (!valid_slot(slot)) return;
@@ -793,11 +880,16 @@ public:
         for (std::size_t i = 0; i < sets_.slots[k].size(); ++i) {
             if (!objective_names_equal(sets_.slots[k][i].name, name)) continue;
             std::vector<bsp::ObjectiveUnitEntry>& entries = list(slot, i).entries;
+            if constexpr (kWireGoal4Chain420Bound) {
+                ObjectivePositionEraseList native(entries);
+                native.erase(entries, point);
+            } else {
             entries.erase(std::remove_if(entries.begin(), entries.end(),
                 [&](const bsp::ObjectiveUnitEntry& e) {
                     return e.unit == nullptr && e.position.x == point.x
                         && e.position.y == point.y && e.position.z == point.z;
                 }), entries.end());
+            }
         }
     }
     // 008DE6A0 at 008DF3D7: insert into the set's +18h tree (one node per unit).
