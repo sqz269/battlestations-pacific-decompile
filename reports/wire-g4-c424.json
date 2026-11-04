@@ -3,6 +3,20 @@
   "owner": "agent/g4-w1",
   "switch": "bsp::kWireGoal4Chain424Bound",
   "scope": "SpawnNew human-party preference from the mission owner's current participant records",
+  "merge_revalidation": {
+    "origin_main": "743acad6956accd2bc98f106297dc930da94b75b",
+    "merge_commits": ["f30f91e42", "3073d11849"],
+    "resolution": "Kept both chain420 objective-removal includes and chain424 participant includes in game_hosts_lua.cpp; no ledger or startup.cmake conflicts.",
+    "build": "scripts/build.ps1 passed with reconstructed_math and tool_tests (2/2)",
+    "on_build": "tools/off_switch_on_build.py passed with both tests (2/2), zero diagnostics, and both temporary switch edits restored",
+    "default_rebuild_after_on": "scripts/build.ps1 passed again with both tests (2/2) before regenerating graph/readiness",
+    "pc24_lint": "0 findings, 0 allowed, 4 files against origin/main...HEAD",
+    "wire_readiness": {"wired": 9671, "ready": 1497, "callees_done_no_wired_caller": 9302, "blocked_on_callees": 53, "unknown_no_identifier": 202},
+    "function": {"native": "004b54f0", "state": "wired", "called": true, "call_sites": 1, "callers_live": 1},
+    "call_graph": "One reachable direct call at 10150538 from GameMissionLuaHost::run_spawn_queue_0094c490 to participant_slot_is_occupied_human_004b54f0 at 103ffbb0; 4700 reconstructed addresses called overall",
+    "game_run": false,
+    "note": "The verification object below preserves original-submission measurements; this object records validation after merging main."
+  },
   "verification": {
     "build": "scripts/build.ps1 passed: Win32 Release, reconstructed_math and tool_tests (2/2)",
     "call_graph": "004b54f0 reachable with one direct call at 1014fdc8 from GameMissionLuaHost::run_spawn_queue_0094c490",
