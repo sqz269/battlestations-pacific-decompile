@@ -11,6 +11,7 @@
 #include "bsp/native_string.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain349_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -72,16 +73,31 @@ struct StreamCleanup {
     ~StreamCleanup() noexcept { if (armed) release_stream(stream, dispatch); }
     void finish() { armed = false; release_stream(stream, dispatch); }
 };
+template<bool ResidentPair>
 struct PairCleanup {
     void* pair;
     NativeFileStoreCompletionContext& context;
     bool armed{true};
     ~PairCleanup() noexcept {
-        if (armed) destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
+        if (armed) destroy();
     }
     void finish() {
         armed = false;
-        destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
+        destroy();
+    }
+    void destroy() {
+        if constexpr (kWireGoal4Chain349Bound) {
+            if constexpr (ResidentPair) {
+                // 00BE7760 listing: BE7837 destroys the copied second pair via
+                // BE5D70; BE7845 destroys the constructed first pair via BE5CF0.
+                // Keep that identity for ordinary completion and C++ unwinding.
+                destroy_native_file_store_resident_pair_00be5cf0(pair, context.strings, context.streams);
+            } else {
+                destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
+            }
+        } else {
+            destroy_native_file_store_payload_00be5d70(pair, context.strings, context.streams);
+        }
     }
 };
 void publish_insert(void* output, const NativeFileStoreNameIterator& iterator,
@@ -116,7 +132,8 @@ void* copy_native_file_store_resident_pair_00be6250(void* output,
     }
     return output;
 }
-void destroy_native_file_store_resident_pair_00be5cf0(void* pair,
+// Preserve the recovered call identity instead of folding this entry into BE5D70.
+__declspec(noinline) void destroy_native_file_store_resident_pair_00be5cf0(void* pair,
     NativeStringStorage& strings, NativeAdoptedSubstreamDispatch& dispatch) {
     // Independent BE5CF0 listing has the same member/call/clear/EH schedule.
     destroy_native_file_store_payload_00be5d70(pair, strings, dispatch);
@@ -173,9 +190,9 @@ void add_native_file_store_file_00be7760(void* store, const void* name,
     alignas(4) std::byte first[12], second[12], result[12];
     void* stream_cell = stream;
     construct_native_file_store_resident_pair_00be6090(first, normalized, &stream_cell, context.strings);
-    PairCleanup first_cleanup{first, context};
+    PairCleanup<true> first_cleanup{first, context};
     copy_native_file_store_resident_pair_00be6250(second, first, context.strings);
-    PairCleanup second_cleanup{second, context};
+    PairCleanup<false> second_cleanup{second, context};
     insert_native_file_store_resident_pair_00be7340(tree, result, second, context.strings,
         context.invalid_parameters);
     second_cleanup.finish();
