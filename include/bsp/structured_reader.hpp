@@ -78,6 +78,9 @@ public:
     const std::string& tag() const noexcept { return tag_; }
     std::uint32_t declared_payload() const noexcept { return declared_; }
     std::uint32_t remaining() const noexcept { return remaining_; }
+    // The attached reader's control word, initialized to FFFFFFFFh and read
+    // from the root payload by 00BE9A40. Requires an attached node, as native.
+    std::uint32_t format_version() const noexcept;
     std::uint32_t depth() const noexcept { return depth_; }
     bool attached() const noexcept { return reader_ != nullptr; }
     StructuredReaderError error() const noexcept;

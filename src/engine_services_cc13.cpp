@@ -1593,8 +1593,13 @@ void** structured_node_read_u32_00be9aa0(void** handle, std::uint32_t* out, Engi
     return handle;
 }
 
-std::uint32_t structured_node_remaining_00be9b20(void* const* handle) noexcept {
-    return field<std::uint32_t>(node_reader(handle), 0x64);
+__declspec(noinline) std::uint32_t structured_node_control_word_00be9b20(
+    const std::uint32_t& control_word) noexcept {
+    // bsp.py show 00BE9B20 --asm: MOV EAX,[ECX]; MOV ECX,[EAX+8];
+    // MOV EAX,[ECX+64h]; RET. 00BE9A40 at 00BE9A51 stores the just-read
+    // control DWORD at that same +64h. The old RemainingBytes name confused
+    // it with node+20h. The host view borrows the field, without a scratch node.
+    return control_word;
 }
 
 void** structured_node_read_string_into_00bea030(void** handle, NativeString& out, NativeStringStorage& strings,

@@ -125,10 +125,9 @@ struct GeomMeshResourcePayload : detail::GeomMeshTreeOwner<kWireGoal2Chain181Bou
     // The native discards them. In this installation's data each one indexes
     // `edges` and names an edge of its own triangle.
     std::vector<std::array<std::uint32_t, 3>> triangle_edges;
-    // 00727336: the parser tests the remaining payload against 4 and, when it
-    // is smaller, skips the node and returns without touching the mesh. That
-    // is not an error for the enclosing dispatcher, so it is reported here
-    // rather than through the return value.
+    // Historical member name: with chain426 ON, 00727336 tests the reader's
+    // format version against 4, skipping older formats. OFF retains the old
+    // payload-size substitution. A skipped format is not a dispatcher error.
     bool payload_too_small{};
 
 };
