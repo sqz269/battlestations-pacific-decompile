@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain510_switches.hpp"
+#include "bsp/band_0071_cc13.hpp"
 #include "bsp/wire_goal4_chain496_switches.hpp"
 #include "bsp/cc13_seg33a.hpp"
 #include "bsp/wire_goal4_chain492_switches.hpp"
@@ -5224,11 +5226,29 @@ struct GameGunneryHost::Impl {
     // FLT_MAX sentinel 00D7A278) over the unit's category-7 guns.
     int loaded_torpedo_barrels_00810e90(std::size_t unit) const {
         int loaded = 0;
+        if constexpr (bsp::kWireGoal4Chain510Bound) {
+            for (const GameGunRow& g : guns) {
+                if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                // bsp.py show 00729A40 --asm: +414h timers, +448h count;
+                // 00729A53..61 compares each timer to double [00D7A278]
+                // with JA (strictly below, unordered rejected). These are
+                // the same live timers/sentinel the stock counter consumes.
+                // An exhausted gun contributes no barrels; do not run its
+                // old per-barrel scan after the reconstructed gate rejects it.
+                if (!bsp::band_0071_cc13::gun_any_barrel_timer_below_max_00729a40(
+                    g.fire.barrel_timers.data(),
+                    static_cast<std::int32_t>(g.fire.barrel_timers.size()))) continue;
+                for (float t : g.fire.barrel_timers) {
+                    if (static_cast<double>(t) < static_cast<double>(FLT_MAX)) ++loaded;
+                }
+            }
+        } else {
         for (const GameGunRow& g : guns) {
             if (g.unit_index != unit || g.category != bsp::kUnitGunneryTorpedoCategory) continue;
             for (float t : g.fire.barrel_timers) {
                 if (static_cast<double>(t) < static_cast<double>(FLT_MAX)) ++loaded;
             }
+        }
         }
         return loaded;
     }
@@ -5239,6 +5259,23 @@ struct GameGunneryHost::Impl {
     // 0072CF00 (0081DDDD).
     void unload_random_torpedo_barrel_0081dcb0(std::size_t unit) {
         std::vector<std::pair<std::size_t, std::size_t>> loaded;
+        if constexpr (bsp::kWireGoal4Chain510Bound) {
+            for (std::size_t g = 0; g < guns.size(); ++g) {
+                const GameGunRow& gun = guns[g];
+                if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+                // The same real gun span as the stock count above. Preserve
+                // the surviving {gun, barrel} order, so the existing random
+                // selection consumes the same draw and selects the same tube.
+                if (!bsp::band_0071_cc13::gun_any_barrel_timer_below_max_00729a40(
+                    gun.fire.barrel_timers.data(),
+                    static_cast<std::int32_t>(gun.fire.barrel_timers.size()))) continue;
+                for (std::size_t b = 0; b < gun.fire.barrel_timers.size(); ++b) {
+                    if (static_cast<double>(gun.fire.barrel_timers[b]) < static_cast<double>(FLT_MAX)) {
+                        loaded.emplace_back(g, b);
+                    }
+                }
+            }
+        } else {
         for (std::size_t g = 0; g < guns.size(); ++g) {
             const GameGunRow& gun = guns[g];
             if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
@@ -5247,6 +5284,7 @@ struct GameGunneryHost::Impl {
                     loaded.emplace_back(g, b);
                 }
             }
+        }
         }
         if (loaded.empty()) return;
         const float u = draw(Draw::torpedo_unload, unit, 0, 0.0f,
