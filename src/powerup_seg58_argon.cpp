@@ -1,4 +1,5 @@
 #include "bsp/powerup_seg58_argon.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cstring>
 
@@ -1210,8 +1211,10 @@ void command_building_powerup_binding_destruct_008e9a70(Seg58Host& host,
 // Original ABI: __thiscall(void* self, void* out_vec_type3, void* out_vec_items,
 //                          void* out_vec_counts, void* out_vec_end_times, void* out_vec_start_times,
 //                          uint8_t include_all_players, uint8_t include_zero_limit) -> void (RET 0x1C)
+// 008E9DB6..008E9DC2 and 008E9F14..008E9F20 are FLD/FADD/FSTP;
+// the duration arms use the same sequence. Round each add at main-thread PC24.
 void power_up_manager_collect_active_008e9af0(
-    Seg58Host& host, void* self, void* out_vec_type3, void* out_vec_items,
+    PowerupCollectionHost& host, void* self, void* out_vec_type3, void* out_vec_items,
     void* out_vec_counts, void* out_vec_end_times, void* out_vec_start_times,
     std::uint8_t include_all_players, std::uint8_t include_zero_limit) {
   std::uint8_t iter_tmp[8]{};
@@ -1362,8 +1365,9 @@ void power_up_manager_collect_active_008e9af0(
                   add_bytes(slot_base, 0x14c), add_bytes(item, 0x04));
               float end_time =
                   (raw(cd).at<std::uint8_t>(0x14) != 0u)
-                      ? (raw(raw(cd).ptr(0x08)).at<float>(0x80) +
-                         host.global_f32(0x00f876a4u))
+                      ? static_cast<float>(cc13x87::x87_add24(
+                            raw(raw(cd).ptr(0x08)).at<float>(0x80),
+                            host.global_f32(0x00f876a4u)))
                       : raw(cd).at<float>(0x10);
               {
                 void* first = raw(out_vec_end_times).ptr(0x04);
@@ -1398,8 +1402,9 @@ void power_up_manager_collect_active_008e9af0(
 
               float start_time =
                   (raw(cd).at<std::uint8_t>(0x14) != 0u)
-                      ? (raw(raw(cd).ptr(0x08)).at<float>(0x7c) +
-                         host.global_f32(0x00f876a4u))
+                      ? static_cast<float>(cc13x87::x87_add24(
+                            raw(raw(cd).ptr(0x08)).at<float>(0x7c),
+                            host.global_f32(0x00f876a4u)))
                       : raw(cd).at<float>(0x0c);
               {
                 void* first = raw(out_vec_start_times).ptr(0x04);
@@ -1441,14 +1446,16 @@ void power_up_manager_collect_active_008e9af0(
                 add_bytes(slot_base, 0x14c), item_class_field);
             float end_time =
                 (raw(cd).at<std::uint8_t>(0x14) != 0u)
-                    ? (raw(raw(cd).ptr(0x08)).at<float>(0x80) +
-                       host.global_f32(0x00f876a4u))
+                    ? static_cast<float>(cc13x87::x87_add24(
+                          raw(raw(cd).ptr(0x08)).at<float>(0x80),
+                          host.global_f32(0x00f876a4u)))
                     : raw(cd).at<float>(0x10);
             host.stl_vector_push_back_0045afd0(out_vec_end_times, &end_time);
             float start_time =
                 (raw(cd).at<std::uint8_t>(0x14) != 0u)
-                    ? (raw(raw(cd).ptr(0x08)).at<float>(0x7c) +
-                       host.global_f32(0x00f876a4u))
+                    ? static_cast<float>(cc13x87::x87_add24(
+                          raw(raw(cd).ptr(0x08)).at<float>(0x7c),
+                          host.global_f32(0x00f876a4u)))
                     : raw(cd).at<float>(0x0c);
             host.stl_vector_push_back_0045afd0(out_vec_start_times,
                                                &start_time);
