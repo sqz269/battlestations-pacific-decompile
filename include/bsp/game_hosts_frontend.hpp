@@ -222,6 +222,9 @@ public:
     // calls on its prompt widget every frame.
     void set_widget_visible(GuiLayoutWidget& widget, bool visible);
     void set_widget_color(GuiLayoutWidget& widget, float r, float g, float b, float a);
+    // 0043ABA0 on an authored digit icon. Uses its loaded atlas rectangle and
+    // publishes the body's four vertex UVs to the next sprite-bridge draw.
+    bool roll_widget_digit(GuiLayoutWidget& widget, int digit, float magnitude);
     // Milestone 2e. 00ABAED0 called on a Text widget at run time rather than by
     // the page loader: the mission-detail page builder pushes the selected
     // record's `background` key into the briefing text widget this way. The

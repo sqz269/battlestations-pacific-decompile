@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the in-mission HUD screens and their GUI pages.
 // See include/bsp/game_hosts_hud.hpp for the address list and the evidence.
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/wire_goal4_chain370_switches.hpp"
 #include "bsp/wire_goal4_chain271_switches.hpp"
 #include "bsp/wire_goal4_chain291_switches.hpp"
 #include "bsp/wire_goal4_chain339_switches.hpp"
@@ -2958,6 +2959,19 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
             ship_screen_widgets[0x40] =
                 damage != nullptr && damage->root ? damage->root.get() : nullptr;
         }
+        if constexpr (bsp::kWireGoal4Chain370Bound) {
+            // 0064C0F0 stores the speed icons at +60/+64. The other two
+            // pairs (+68..+74) are already bound by the apply-unit arm.
+            GuiLayoutPage* page = menu.in_game_page(0x45, "GUI_ship");
+            if (page != nullptr && page->root) {
+                ship_screen_widgets[0x60] =
+                    bsp::find_descendant_by_name(*page->root, "ship_speed_num1_Icon");
+                ship_screen_widgets[0x64] =
+                    bsp::find_descendant_by_name(*page->root, "ship_speed_num2_Icon");
+            }
+        } else {
+            // OFF keeps the existing widget bindings.
+        }
     }
     auto it = ship_screen_widgets.find(static_cast<int>(widget));
     return it != ship_screen_widgets.end() ? it->second : nullptr;
@@ -3256,6 +3270,30 @@ public:
         return 0;
     }
     void gauge_digit(int gauge, int digit, float magnitude) override {
+        if constexpr (bsp::kWireGoal4Chain370Bound) {
+            // The speed magnitude comes from 0092D730 on the controlled
+            // unit. Recon/torpedo gauges still have recorded source hooks
+            // above, so do not feed their substituted zeros to the body.
+            if (gauge != 0) {
+                owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+                return;
+            }
+            // 0064B429 constructs the speed pair; 0043DFB9..DFCE
+            // appends its SECOND argument first. Thus digit 0 (units) is
+            // num2 (+64), digit 1 (tens) is num1 (+60).
+            if (digit < 0 || digit >= 2) {
+                throw std::logic_error("HUD ship digit outside native gauge pair");
+            }
+            const auto slot = static_cast<bsp::ShipScreenWidget>(0x64 - 4 * digit);
+            GuiLayoutWidget* widget = owner_.ship_screen_widget(slot);
+            if (widget != nullptr && owner_.menu.frontend().roll_widget_digit(*widget, digit, magnitude)) {
+                owner_.done("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+            } else {
+                // A missing authored widget/loaded atlas is still a missing
+                // resource, rather than an invented icon rectangle.
+                owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+            }
+        } else {
         static_cast<void>(gauge);
         static_cast<void>(digit);
         static_cast<void>(magnitude);
@@ -3263,6 +3301,7 @@ public:
         // stream (+A0h, lock +10h, unlock +14h); the sprite bridge draws a
         // widget's first authored state only.
         owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+        }
     }
 
 private:

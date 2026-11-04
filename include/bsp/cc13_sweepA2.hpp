@@ -20,7 +20,18 @@ namespace bsp::cc13_sweepA2 {
 using cc13_sweepA::LuaObjectStorage;
 using cc13_sweepA::Raw;
 
-struct SweepA2Host : cc13_sweepA::SweepAHost {
+// Narrow service boundary for 0043ABA0. The digit body uses no scene/Lua or
+// command services; existing SweepA2Host adapters retain the same overrides.
+struct HudDigitIconHost {
+    virtual ~HudDigitIconHost() = default;
+    virtual void crt_itoa_00bf9010(std::int32_t value, char* buffer, std::int32_t radix) = 0;
+    virtual void* vcall_widget_vertex_stream_a0(void* widget) = 0;
+    virtual void* vcall_widget_icon_record_9c(void* widget, std::int32_t index) = 0;
+    virtual void vcall_vertex_stream_lock_10(void* stream, std::int32_t a, std::int32_t b, std::int32_t c) = 0;
+    virtual void vcall_vertex_stream_unlock_14(void* stream) = 0;
+};
+
+struct SweepA2Host : cc13_sweepA::SweepAHost, HudDigitIconHost {
     // --- player / command manager [00E188D8] ------------------------------
     // [[object]+5Ch](object, kind), RET 4, the whole EAX (00525250 passes it
     // on as the 0077D600 flags; the AL tests use SweepAHost::vcall_entity_is_kind_5c).
@@ -392,7 +403,7 @@ void scene_header_append_unquoted_names_004f1b60(const char* list, void* owner, 
 bool scene_property_bag_remove_record_004f01f0(Raw bag, void* record, SweepA2Host& host);
 
 // ============================ segment 3 ====================================
-void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, float magnitude, SweepA2Host& host);
+void hud_digit_icon_roll_uv_0043aba0(std::int32_t digit_index, void* widget, float magnitude, HudDigitIconHost& host);
 void lua_table_copy_into_property_bag_0043d8f0(LuaObjectStorage* table, void* bag, SweepA2Host& host);
 void device_entity_on_killed_lua_00440f50(Raw entity, SweepA2Host& host);
 void device_class_registry_clear_lua_class_tables_004423a0(SweepA2Host& host);
