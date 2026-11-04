@@ -128,6 +128,8 @@
 #include "bsp/mission_events.hpp"               // packet wire-lua, 0097B8C0
 #include "bsp/lua_listener_native_matchers.hpp" // goal 4 chain 286, 0096ACE0 / 00968FF0 / 00968440
 #include "bsp/wire_goal4_chain286_switches.hpp" // goal 4 chain 286 (kWireGoal4Chain286Bound)
+#include "bsp/wire_goal4_chain352_switches.hpp" // goal 4 chain 352 (kWireGoal4Chain352Bound)
+#include "bsp/object_handle_resolvers.hpp"      // goal 4 chain 352, 00888AA0
 #include "bsp/gameplay_seg48_cc13.hpp"          // packet wire-lua, 007D8020
 #include "bsp/wire_lua_host_switches.hpp"       // packet wire-lua
 #include "bsp/wire_goal1_chain20_switches.hpp"
@@ -7076,6 +7078,162 @@ bool listener_read_entity_set(lua_State* state, int block, const char* key, std:
 // 009722D0 reads an integer set: a number, or a table of numbers.
 void listener_read_int_set_fn(lua_State* state, int block, const char* key, std::vector<int>& out);
 
+namespace {
+
+namespace listener_seg64 = bsp::cc13_seg49_64_78;
+
+// Goal 4 chain 352. The two Handle resolvers 006AD0D0 installs (0109CED4 006AD080 for a
+// number, 0109CED8 00888AA0 for a table) and the 009721C0 [entity+174h] read, over this
+// host's entity identity: the self table's `Ptr` is lightuserdata(entity id)
+// (attach_created_entity_00928a00, cleared to null on death as 00928CEF does), so the
+// object a handle names IS its id, and the id word an entity carries at +174h is that
+// id's low word (host ids are unit index + 1 and scene markers from 50000, all 16-bit).
+//  - a table: 00888AA0 itself, `Ptr` through 00B662D0 lua_touserdata;
+//  - a number: 006AD080's object is the entity the handle names; here that object is the
+//    number. 009721C0 keeps the low word either way: with a null object it reads the key
+//    again as an Int and takes that low word, the same value;
+//  - 00BF6713 fires only for a short parameter vector, which the Load slots never index.
+class ListenerEntityHandles final : public bsp::GuiLuaHandleResolver,
+                                    public listener_seg64::EventSubscriptionHost {
+public:
+    std::int32_t resolve_by_number(std::int32_t id) override { return id; }
+    std::int32_t resolve_by_table(const bsp::GuiTable*) override {
+        throw std::logic_error("listener block: 0109CED8 needs the live Lua table");
+    }
+    std::int32_t resolve_by_live_table(bsp::GuiLuaHost& host, bsp::GuiLuaRef table) override {
+        void* const object = bsp::object_from_lua_table_00888aa0(host, table);
+        return static_cast<std::int32_t>(reinterpret_cast<std::uintptr_t>(object));
+    }
+    std::uint16_t entity_id_174(std::int32_t handle) override {
+        return static_cast<std::uint16_t>(static_cast<std::uint32_t>(handle));
+    }
+    void invalid_parameter_00bf6713() override {
+        throw std::logic_error("listener block: 00BF6713 (short vector)");
+    }
+};
+
+// Goal 4 chain 352. The six-slot reader 004425C0 builds over the copied params
+// LuaObject (vtable 00CE44FC, bsp::GuiLuaReader); its 00BD63B0 conversions resolve
+// handles through the resolvers above.
+class ListenerBlockArchiveReader final : public listener_seg64::EventArchiveReader {
+public:
+    ListenerBlockArchiveReader(bsp::GuiLuaHost& lua, const bsp::GuiLuaRef& root,
+                               const bool& crt_sse2_conversion, bsp::GuiLuaHandleResolver& handles)
+        : reader_(lua, root, crt_sse2_conversion), handles_(handles) {}
+    void enter_04(const bsp::GuiLuaVariant& key) override { reader_.enter_00bd8e20(key); }
+    void leave_08() override { reader_.leave_00bd7a20(); }
+    bool read_or_default_0c(const bsp::GuiLuaVariant& key, const bsp::GuiLuaVariant& field,
+                            const bsp::GuiLuaVariant& fallback) override {
+        return reader_.read_or_default_00bd68d0(key, field, fallback, &handles_);
+    }
+    bool read_10(const bsp::GuiLuaVariant& key, const bsp::GuiLuaVariant& field) override {
+        return reader_.read_00bd6830(key, field, &handles_);
+    }
+    bool has_key_14(const bsp::GuiLuaVariant& key) override { return reader_.has_key_00bd5eb0(key); }
+    std::size_t enumerate_keys_18(bsp::GuiLuaKeyArray& keys) override {
+        return reader_.enumerate_keys_00bd5f50(keys);
+    }
+
+private:
+    bsp::GuiLuaReader reader_;
+    bsp::GuiLuaHandleResolver& handles_;
+};
+
+}  // namespace
+
+// Goal 4 chain 352. 00980C10 copies the params LuaObject (00980C66 00B66FA0), builds the
+// reader over it (00980C6F 004425C0) and stores 0097E360's result (00980CD5): the
+// channel's constructor, then its vtable slot 1 (0097E8B9) with the reader. The reader
+// (00441A20) and the copy (00B67700) are destroyed after. Only the channels whose
+// dispatchers match value-model filters are loaded here:
+//  - kill: 0097A450 then 00972520 (callback, entity +0Ch, lastAttacker +1Ch through
+//    009721C0, lastAttackerPlayerIndex +2Ch through 009722D0);
+//  - entityKilled: 0097E840 calls 0097D210, which this value model has no body for (its
+//    reconstruction is the raw cc13_seg62 one); the empty filters are what it builds.
+//    Then 00972F00 (callback, entity +0Ch, killReason +1Ch through 00970FF0);
+//  - exitzone: 0097A620 then 009726D0 (callback, entity +0Ch, exited +1Ch, 00972390).
+// The shipped scripts give every filter key (`lastAttacker = {}` and so on): the native
+// lua_next on an absent key's nil has no type test. GuiLua51Host::next throws there
+// instead, and that block falls back to the host parse (counted, logged).
+bool GameMissionLuaHost::load_listener_subscription_native(lua_State* state,
+                                                           ListenerEntry& entry) {
+    namespace seg64 = bsp::cc13_seg49_64_78;
+    enum class Channel { none, kill, entity_killed, exit_zone };
+    Channel channel = Channel::none;
+    // Each channel only where the dispatcher that consumes it runs the value-model arm.
+    if (bsp::kWireGoal4Chain286Bound && kLuaKillAttackerBound
+        && listener_key_equal(entry.channel, "kill")) {
+        channel = Channel::kill;
+    } else if (bsp::kWireGoal4Chain286Bound && kLuaEntityKilledListenersBound
+               && listener_key_equal(entry.channel, "entityKilled")) {
+        channel = Channel::entity_killed;
+    } else if (bsp::kWireLuaHostBound && kLuaExitZoneListenersBound
+               && listener_key_equal(entry.channel, "exitzone")) {
+        channel = Channel::exit_zone;
+    }
+    if (channel == Channel::none) return false;
+
+    const int top = ::lua_gettop(state);
+    const bool crt_sse2_conversion =
+        IsProcessorFeaturePresent(PF_XMMI64_INSTRUCTIONS_AVAILABLE) != FALSE;
+    bsp::GuiLua51Host lua(*state);
+    // Argument 3 as GuiLua51Host aliases a stack slot (the chain 195 form): key
+    // slot - LUA_GLOBALSINDEX of the globals object.
+    const bsp::GuiLuaRef globals = lua.globals();
+    const bsp::GuiLuaRef block = lua.get_by_index(globals,
+        static_cast<std::int32_t>(3u - static_cast<std::uint32_t>(LUA_GLOBALSINDEX)));
+    lua.release(globals);
+    ListenerEntityHandles handles;
+    bool loaded = false;
+    try {
+        ListenerBlockArchiveReader reader(lua, lua.copy_ref_00b66fa0(block),
+                                          crt_sse2_conversion, handles);
+        switch (channel) {
+        case Channel::kill: {
+            auto subscription =
+                std::make_shared<seg64::KillSubscription>(seg64::construct_kill_0097a450());
+            seg64::load_kill_00972520(*subscription, reader, handles);
+            entry.callback = subscription->callback;
+            entry.attacker_filters_set = !subscription->last_attacker.ids.empty()
+                || !subscription->last_attacker_player_index.values.empty();
+            entry.native_kill = std::move(subscription);
+            break;
+        }
+        case Channel::entity_killed: {
+            auto subscription = std::make_shared<seg64::EntityKilledSubscription>();
+            seg64::load_entity_killed_00972f00(*subscription, reader, handles);
+            entry.callback = subscription->callback;
+            entry.native_entity_killed = std::move(subscription);
+            break;
+        }
+        case Channel::exit_zone: {
+            auto subscription = std::make_shared<seg64::ExitZoneSubscription>(
+                seg64::construct_exit_zone_0097a620());
+            seg64::load_exit_zone_009726d0(*subscription, reader, handles);
+            entry.callback = subscription->callback;
+            entry.native_exit_zone = std::move(subscription);
+            break;
+        }
+        case Channel::none:
+            break;
+        }
+        loaded = true;
+    } catch (const std::exception& error) {
+        entry.callback.clear();
+        entry.attacker_filters_set = false;
+        entry.native_kill.reset();
+        entry.native_entity_killed.reset();
+        entry.native_exit_zone.reset();
+        ++summary_.listener_native_load_fallbacks;
+        log_.notef("  AddListener 008c6760: channel=\"%s\" id=\"%s\" native load threw (%s); "
+            "host parse (goal 4 chain 352)", entry.channel.c_str(), entry.id.c_str(), error.what());
+    }
+    lua.release(block);
+    ::lua_settop(state, top);
+    if (loaded) ++summary_.listener_native_loads;
+    return loaded;
+}
+
 // Packet cc9_lua_listeners. 008C6760 AddListener(channel, id, block) -> 00980C10:
 // channel map (00980150), the id's slot (00978D60), the subscription 0097E360
 // builds. A re-add of the same (channel, id) replaces the slot.
@@ -7085,6 +7243,14 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
     entry.channel = listener_string_argument(state, 1);
     entry.id = listener_string_argument(state, 2);
     if (argument_count >= 3 && ::lua_type(state, 3) == LUA_TTABLE) {
+        // Goal 4 chain 352: the native construct + Load for kill, entityKilled and
+        // exitzone (load_listener_subscription_native). OFF, any other channel, or a
+        // load that threw keeps the host parse below.
+        bool native_loaded = false;
+        if constexpr (bsp::kWireGoal4Chain352Bound) {
+            native_loaded = load_listener_subscription_native(state, entry);
+        }
+        if (!native_loaded) {
         ::lua_getfield(state, 3, "callback");   // 00972544, reader vtable[10h]
         if (::lua_type(state, -1) == LUA_TSTRING) {
             const char* text = ::lua_tolstring(state, -1, nullptr);
@@ -7202,6 +7368,7 @@ int GameMissionLuaHost::run_add_listener_008c6760(lua_State* state, int argument
             }
             ::lua_pop(state, 1);
         }
+        }  // !native_loaded (goal 4 chain 352)
     }
     for (ListenerEntry& existing : listeners_) {
         if (listener_key_equal(existing.channel, entry.channel)
@@ -7348,12 +7515,30 @@ void GameMissionLuaHost::dispatch_entity_killed_listeners_00986480() {
             namespace seg64 = bsp::cc13_seg49_64_78;
             namespace matchers = bsp::lua_listener_native_matchers;
             const seg64::EventParam entity_param = matchers::word_param(victim);
-            const seg64::EventParam reason_param = matchers::text_param(kReason);
+            seg64::EventParam reason_param;
+            if constexpr (bsp::kWireGoal4Chain352Bound) {
+                // Goal 4 chain 352. 009865EB 00426060 copies the reason NativeString
+                // (00E0CF04[entity+70h], built at 00986514) into the by-value argument
+                // and 009865F2 0096DC00 boxes it (0Ch, vtable 00D1AFE4): params[1], the
+                // NativeString at +4h that 00968FF0's killReason filter tests.
+                reason_param.text04 = seg64::construct_warning_event_record_0096dc00(kReason).name;
+            } else {
+                reason_param = matchers::text_param(kReason);
+            }
             const seg64::EventParams params{&entity_param, &reason_param};
             matchers::MatchesHost matches_host;
             std::vector<bsp::WarningSubscription> subscriptions;
             for (const ListenerEntry& entry : listeners_) {
                 if (!listener_key_equal(entry.channel, "entityKilled") || entry.callback.empty()) {
+                    continue;
+                }
+                if (bsp::kWireGoal4Chain352Bound && entry.native_entity_killed != nullptr) {
+                    // Goal 4 chain 352: the subscription AddListener loaded (00972F00).
+                    bsp::WarningSubscription collected;
+                    collected.callback = entry.callback;
+                    collected.condition_holds = seg64::entity_killed_matches_00968ff0(
+                        *entry.native_entity_killed, params, matches_host);
+                    subscriptions.push_back(std::move(collected));
                     continue;
                 }
                 seg64::EntityKilledSubscription subscription;
@@ -7468,6 +7653,22 @@ void GameMissionLuaHost::dispatch_exit_zone_listeners_00982120() {
                 if (!listener_key_equal(entry.channel, "exitzone") || entry.callback.empty()) continue;
                 bsp::WarningSubscription subscription;
                 subscription.callback = entry.callback;
+                if (bsp::kWireGoal4Chain352Bound && entry.native_exit_zone != nullptr) {
+                    // Goal 4 chain 352: the subscription AddListener loaded (009726D0),
+                    // tested as 00968710 does: the +0Ch entity filter's slot 0 (00979140)
+                    // on params[0], then, only when it held, the +1Ch exited filter's
+                    // slot 0 (00979510) on params[1] (00968731..0096876D).
+                    namespace matchers = bsp::lua_listener_native_matchers;
+                    const bsp::cc13_seg49_64_78::EventParam entity_param =
+                        matchers::word_param(victim);
+                    const bsp::cc13_seg49_64_78::EventParam exited_param =
+                        matchers::word_param(exited);
+                    subscription.condition_holds =
+                        entry.native_exit_zone->entity.matches(entity_param)
+                        && entry.native_exit_zone->exited.matches(exited_param);
+                    subscriptions.push_back(std::move(subscription));
+                    continue;
+                }
                 subscription.condition_holds = (entry.entity_ids.empty()
                         || std::find(entry.entity_ids.begin(), entry.entity_ids.end(), victim)
                             != entry.entity_ids.end())
@@ -8163,6 +8364,19 @@ void GameMissionLuaHost::dispatch_kill_listeners_009813a0() {
             std::vector<bsp::WarningSubscription> subscriptions;
             for (const ListenerEntry& entry : listeners_) {
                 if (!listener_key_equal(entry.channel, "kill")) continue;
+                if (bsp::kWireGoal4Chain352Bound && entry.native_kill != nullptr) {
+                    // Goal 4 chain 352: the subscription AddListener constructed
+                    // (0097A450) and loaded (00972520).
+                    const bool holds =
+                        seg64::kill_matches_0096ace0(*entry.native_kill, params, matches_host);
+                    if (holds && entry.attacker_filters_set) ++summary_.listener_kill_attacker_matched;
+                    if (entry.callback.empty()) continue;
+                    bsp::WarningSubscription collected;
+                    collected.callback = entry.callback;
+                    collected.condition_holds = holds;
+                    subscriptions.push_back(std::move(collected));
+                    continue;
+                }
                 seg64::KillSubscription subscription;
                 const bool holds = matchers::build_kill_subscription(subscription,
                         entry.entity_ids, entry.last_attacker_ids, entry.last_attacker_set,
