@@ -6,6 +6,7 @@
 #include "bsp/wire_goal4_chain384_switches.hpp"
 #include "bsp/wire_goal4_chain392_switches.hpp"
 #include "bsp/wire_goal4_chain430_switches.hpp"
+#include "bsp/wire_goal4_chain465_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -4812,13 +4813,25 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
         NavStream(GameSceneContentsHost::Impl& owner_in, const std::string& data_in)
             : owner(owner_in), data(data_in) {}
         void ensure_registry() override {
+            if constexpr (bsp::kWireGoal4Chain465Bound) {
+                static_cast<void>(GameAvoidZoneRegistry::instance());
+                owner.log.implemented("SceneContents::avoid_zone_registry", "004c17d0");
+            } else {
             owner.log.implemented("SceneContents::avoid_zone_registry", "004c17d0");
+            }
         }
         void begin_load() override {
             owner.log.implemented("SceneContents::avoid_zone_begin_load", "0041ded0");
         }
         void end_load() override {
+            if constexpr (bsp::kWireGoal4Chain465Bound) {
+                // 00424975 calls 0041E000 after the last parsed layer. The
+                // registry owns these file-backed grids and retains +10h.
+                GameAvoidZoneRegistry::instance().load_scene_layers(owner.avoid_zone_layers);
+                owner.log.implemented("SceneContents::avoid_zone_end_load", "0041e000");
+            } else {
             owner.log.implemented("SceneContents::avoid_zone_end_load", "0041e000");
+            }
         }
         std::string read_string() override {
             const std::uint32_t length = read_u32();
@@ -4871,6 +4884,15 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
     owner_.log.implemented("SceneContents::load_avoid_zones", "004c17d0");
     // Packet cc9_avoid_zone_registry: the layers go into the registry singleton
     // [00E17620] the image's 004248A0 fills, where the planes' samples read them.
+    if constexpr (bsp::kWireGoal4Chain465Bound) {
+        const auto& registry = GameAvoidZoneRegistry::instance();
+        owner_.log.implemented("SceneContents::avoid_zone_registry_construct", "00424730");
+        owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` loaded into %zu "
+            "native registry layer(s), replacing the constructor defaults; "
+            "0041e000 first-layer maximum height %.9g m",
+            bytes->size(), registry.layer_count(),
+            static_cast<double>(*registry.max_cell_height()));
+    } else {
     GameAvoidZoneRegistry::instance().load_scene_layers(owner_.avoid_zone_layers);
     const bsp::TerrainGridLayerRecord* first = owner_.avoid_zone_layers.empty()
         ? nullptr : &owner_.avoid_zone_layers.front();
@@ -4881,6 +4903,7 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
         bytes->size(), owner_.avoid_zone_layers.size(),
         first == nullptr ? "" : "; the first is 240x240 at 100.0 m per cell");
     static_cast<void>(first);
+    }
 }
 
 void SceneContentsBinding::scatter_clouds() {

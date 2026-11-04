@@ -5,10 +5,16 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <limits>
+#include <memory>
+#include <new>
+#include <stdexcept>
 
+#include "bsp/cc13_avoid1.hpp"
 #include "bsp/cc13_x87_model.hpp"
 #include "bsp/oct18_tail_a.hpp"
 #include "bsp/wire_goal2_chain78_switches.hpp"
+#include "bsp/wire_goal4_chain465_switches.hpp"
 // kPc24PlaneTasksCc13Bound sites here (pc24w1-sweep3-3): 0041BC20
 // avoid_zone_sample_0041bc20, the two row lerps and the column lerp.
 #include "bsp/pc24_planetasks_cc13.hpp"
@@ -154,13 +160,154 @@ float avoid_zone_sample_0041bc20(const bsp::TerrainGridLayerRecord& layer,
     }
 }
 
+// Chain 465: the process registry owns the original-shaped list and layers.
+// The host's existing records own the grid bytes; native vector pointers borrow
+// those exact buffers, and every query still sees the records that produced
+// the list. Moving a record during vector growth preserves its grid allocation.
+// This binds typed C++ bodies, not the original ECX/vtable or allocator ABI.
+struct GameAvoidZoneRegistry::NativeRegistry final : bsp::Cc13AvoidZoneRegistryHost {
+    explicit NativeRegistry(std::vector<bsp::TerrainGridLayerRecord>& layers)
+        : layers_(layers) {
+        try {
+            // Original 0042474B..0042476B: ECX is the 14h-byte owner; the
+            // body itself selects all three binary angle constants and links
+            // each returned layer. Do not also build the old default list.
+            bsp::cc13_avoid_registry_construct_00424730(registry_, *this);
+            published_ = &registry_;
+        } catch (...) {
+            clear_layers_0041ded0(registry_);
+            destroy_layer_list_0041d710(registry_);
+            throw;
+        }
+    }
+
+    ~NativeRegistry() override {
+        // Original 0041F0FB/0041F103/0041F10C: clear layers, destroy the
+        // sentinel, then withdraw the process registry before its base phase.
+        bsp::cc13_avoid_registry_destroy_0041f0d0(*published_, *this);
+    }
+
+    void load(const std::vector<bsp::TerrainGridLayerRecord>& file_layers) {
+        auto& registry = *published_;
+        clear_layers_0041ded0(registry); // 004248C1 also removes defaults.
+        for (const auto& record : file_layers) {
+            layers_.push_back(record);
+            auto layer = std::make_unique<bsp::Cc13TerrainGridLayerNative>();
+            project_layer(*layer, layers_.back());
+            auto node = std::unique_ptr<bsp::Cc13TerrainGridLayerListNode>(
+                buy_node_0041c1f0(registry, registry.head, registry.head->previous, layer.get()));
+            increment_size_00420140(registry, 1);
+            registry.head->previous = node.get();
+            node->previous->next = node.get();
+            layer.release();
+            node.release();
+        }
+        // Original 00424975 -> 0041E000; 0041E02F selects head->next's
+        // layer, and 0041E095..0041E0CF scans its real grid/scale into +10h.
+        bsp::cc13_avoid_registry_end_load_0041e000(registry, *this);
+    }
+
+    float max_cell_height() const noexcept { return published_->max_cell_height; }
+
+private:
+    static void project_layer(bsp::Cc13TerrainGridLayerNative& native,
+        bsp::TerrainGridLayerRecord& record) noexcept {
+        native.vtable = 0x00ce38ccu;
+        native.half_extent = record.half_extent;
+        native.dimension = record.dimension;
+        native.cell_size = record.cell_size;
+        native.file_scalar = record.file_scalar;
+        native.slope_limit = record.slope_limit;
+        native.grid_proxy_18 = 0; // no original checked-iterator proxy ABI
+        native.grid_first = record.grid.empty() ? nullptr : record.grid.data();
+        native.grid_last = record.grid.empty() ? nullptr : record.grid.data() + record.grid.size();
+        native.grid_end = native.grid_last;
+    }
+
+    bsp::Cc13TerrainGridLayerListNode* buy_head_node_0041bfd0(
+        bsp::Cc13AvoidZoneRegistryNative&) override {
+        auto* head = new bsp::Cc13TerrainGridLayerListNode;
+        head->next = head;
+        head->previous = head;
+        head->value = nullptr; // sentinel payload is never read
+        return head;
+    }
+    void* allocate_layer_00bf681b(std::uint32_t bytes) override {
+        return ::operator new(bytes);
+    }
+    void free_layer_00bf65ac(void* block) noexcept override { ::operator delete(block); }
+    bsp::Cc13TerrainGridLayerNative* construct_layer_00424680(void* block, float angle) override {
+        std::uint32_t bits;
+        std::memcpy(&bits, &angle, sizeof(bits));
+        layers_.push_back(default_layer_00424680(bits));
+        auto* layer = new (block) bsp::Cc13TerrainGridLayerNative;
+        project_layer(*layer, layers_.back());
+        pending_layer_.reset(layer);
+        return layer;
+    }
+    bsp::Cc13TerrainGridLayerListNode* buy_node_0041c1f0(
+        bsp::Cc13AvoidZoneRegistryNative&, bsp::Cc13TerrainGridLayerListNode* next,
+        bsp::Cc13TerrainGridLayerListNode* previous,
+        bsp::Cc13TerrainGridLayerNative* const& value) override {
+        auto* node = new bsp::Cc13TerrainGridLayerListNode{next, previous, value};
+        if (pending_layer_.get() == value) pending_layer_.release();
+        return node;
+    }
+    void increment_size_00420140(bsp::Cc13AvoidZoneRegistryNative& registry,
+        std::uint32_t count) override {
+        if (count > (std::numeric_limits<std::uint32_t>::max)() - registry.size)
+            throw std::length_error("avoid-zone layer list too long");
+        registry.size += count;
+    }
+    void clear_layers_0041ded0(bsp::Cc13AvoidZoneRegistryNative& registry) override {
+        if (registry.head != nullptr) {
+            auto* node = registry.head->next;
+            while (node != registry.head) {
+                auto* next = node->next;
+                delete node->value;
+                delete node;
+                node = next;
+            }
+            registry.head->next = registry.head;
+            registry.head->previous = registry.head;
+        }
+        registry.size = 0;
+        layers_.clear(); // release borrowed grids only after their native views
+    }
+    void destroy_layer_list_0041d710(bsp::Cc13AvoidZoneRegistryNative& registry) override {
+        delete registry.head;
+        registry.head = nullptr;
+    }
+    void store_registry_singleton_00e17620(void* value) override {
+        published_ = static_cast<bsp::Cc13AvoidZoneRegistryNative*>(value);
+    }
+    void invalid_parameter_00bf6713() override {
+        throw std::invalid_argument("invalid avoid-zone layer grid/list");
+    }
+
+    std::vector<bsp::TerrainGridLayerRecord>& layers_;
+    bsp::Cc13AvoidZoneRegistryNative registry_{};
+    bsp::Cc13AvoidZoneRegistryNative* published_ = nullptr;
+    std::unique_ptr<bsp::Cc13TerrainGridLayerNative> pending_layer_;
+};
+
 GameAvoidZoneRegistry::GameAvoidZoneRegistry() {
+    if constexpr (bsp::kWireGoal4Chain465Bound) {
+        native_ = new NativeRegistry(layers_);
+    } else {
     if constexpr (kAvoidZoneRegistryImageLayoutBound) {
         layers_.push_back(default_layer_00424680(0x3E32B8C3u));  // 0042476E-004247C2, 10 degrees
         layers_.push_back(default_layer_00424680(0x3EB2B8C3u));  // 004247CD-0042481E, 20 degrees
         layers_.push_back(default_layer_00424680(0x3F9C61ABu));  // 00424829-00424886, 70 degrees
     } else {
         layers_.push_back(default_layer_00424680());  // 0042476E-004247B7
+    }
+    }
+}
+
+GameAvoidZoneRegistry::~GameAvoidZoneRegistry() {
+    if constexpr (bsp::kWireGoal4Chain465Bound) {
+        delete native_;
     }
 }
 
@@ -171,12 +318,24 @@ GameAvoidZoneRegistry& GameAvoidZoneRegistry::instance() {
 
 void GameAvoidZoneRegistry::load_scene_layers(
     const std::vector<bsp::TerrainGridLayerRecord>& file_layers) {
+    if constexpr (bsp::kWireGoal4Chain465Bound) {
+        native_->load(file_layers);
+        ++scene_loads_;
+    } else {
     layers_.clear();
     // 004248C1: 0041DED0 deletes every layer, the constructor's defaults
     // included, before the file's layers are appended.
     if constexpr (!kAvoidZoneRegistryImageLayoutBound) layers_.push_back(default_layer_00424680());
     for (const bsp::TerrainGridLayerRecord& layer : file_layers) layers_.push_back(layer);
     ++scene_loads_;
+    }
+}
+
+std::optional<float> GameAvoidZoneRegistry::max_cell_height() const noexcept {
+    if constexpr (bsp::kWireGoal4Chain465Bound) {
+        if (scene_loads_ != 0) return native_->max_cell_height();
+    }
+    return std::nullopt;
 }
 
 int GameAvoidZoneRegistry::select_layer_by_slope_0041df40(float value,

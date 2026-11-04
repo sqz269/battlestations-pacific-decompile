@@ -31,6 +31,7 @@
 #include "bsp/scene_contents_hosts.hpp"
 
 #include <cstddef>
+#include <optional>
 #include <vector>
 
 namespace bsp::game {
@@ -67,6 +68,9 @@ public:
     // 004C17D0. One per process, as the image's; it starts as the
     // constructor leaves it, with the default layer(s) only.
     static GameAvoidZoneRegistry& instance();
+    ~GameAvoidZoneRegistry();
+    GameAvoidZoneRegistry(const GameAvoidZoneRegistry&) = delete;
+    GameAvoidZoneRegistry& operator=(const GameAvoidZoneRegistry&) = delete;
 
     // 004248A0: ON, the file's layers only (0041DED0 at 004248C1 clears the
     // list first, so a second scene replaces the first's layers). OFF, the
@@ -79,6 +83,10 @@ public:
     std::size_t layer_count() const noexcept { return layers_.size(); }
     std::size_t scene_loads() const noexcept { return scene_loads_; }
 
+    // 0041E000 writes registry+10h after a navigation-file load. The native
+    // constructor leaves this field untouched, so there is no value before one.
+    std::optional<float> max_cell_height() const noexcept;
+
     // squadron+34Ch, written at 007F1DCA with 0041DF40(1.5 [00CE380C], true):
     // the same layer for every squadron, because neither argument is the
     // squadron's. -1 for an empty list: ON, a `.nav` with no layers (this
@@ -88,8 +96,10 @@ public:
 
 private:
     GameAvoidZoneRegistry();
+    struct NativeRegistry;
     std::vector<bsp::TerrainGridLayerRecord> layers_;
     std::size_t scene_loads_ = 0;
+    NativeRegistry* native_ = nullptr; // owned; destruction follows chain 465's switch
 };
 
 }  // namespace bsp::game
