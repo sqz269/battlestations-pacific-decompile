@@ -2281,7 +2281,8 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
         if constexpr (kVehicleClassBaseLoadBound) {
             // Goal 4 chain 391: the +134h 00960230 stored (00961F45).
             return g_class_arm_host != nullptr
-                ? g_class_arm_host->loaded_default_equipment(vehicle_class, "00961f45")
+                ? g_class_arm_host->loaded_default_equipment(vehicle_class,
+                      "script_orders_default_arm")
                 : 0;
         } else {
         return g_class_arm_host != nullptr
@@ -6089,7 +6090,10 @@ public:
         case LUA_TNUMBER: {
             const double number = static_cast<double>(::lua_tonumber(state_, -1));
             value.number = number;
-            if (std::isfinite(number) && std::floor(number) == number) {
+            // The magnitude bound keeps the int64 conversion defined; a larger
+            // integral double stays a Number and converts the same way.
+            if (std::isfinite(number) && std::floor(number) == number
+                && std::fabs(number) < 9.0e18) {
                 value.kind = bsp::VehicleClassValueKind::Integer;
                 value.integer = static_cast<std::int64_t>(number);
             } else {

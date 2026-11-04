@@ -1548,7 +1548,8 @@ public:
 
     // Goal 4 chain 391 (kWireGoal4Chain391Bound). The fields the class
     // descriptor's Lua load, 00960230, read for `class_index` (class +A0h Length,
-    // +A4h Height, +C0h..+CCh Catapult, +124h Cost, +134h DefaultEquipment, ...).
+    // +A4h Width, +A8h Height, +C0h..+CCh Catapult, +124h Cost, +134h
+    // DefaultEquipment, ...).
     // A class 00964790 has not loaded yet is resolved through it first
     // (GetOrCreate, as any native holder of the descriptor already did). nullptr
     // when no descriptor loads: no row, or the load is not bound (chain 234's
