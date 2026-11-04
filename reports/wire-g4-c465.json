@@ -1,0 +1,106 @@
+{
+  "goal": 4,
+  "chain": 465,
+  "owner": "agent/g4-w1",
+  "baseline": "dc8e2d1878a1ec04950225c5b8e6f36b0c158d39",
+  "switch": "bsp::kWireGoal4Chain465Bound",
+  "scope": "Process avoid-zone registry construction, navigation-file end-load height scan, and destruction",
+  "rows": [
+    {
+      "native": "00424730",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::NativeRegistry, reached through GameAvoidZoneRegistry::instance",
+      "evidence": "Original 0042474B/0042475D/00424763/0042476B establishes ECX owner, vtable, list sentinel and size; the existing body selects the three original angle constants and links the three defaults. Its callbacks produce the records consumed by existing game queries."
+    },
+    {
+      "native": "0041e000",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::load, from SceneContentsBinding::NavStream::end_load in src/game_hosts_scene_contents.cpp",
+      "evidence": "00424975 calls EndLoad; 0041E02F selects the first layer, 0041E095..0041E0CF scans its byte grid times file scale into registry+10h, with the original 10.0 floor. The retained result is exposed by max_cell_height and published in the scene-load log."
+    },
+    {
+      "native": "0041f0d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::NativeRegistry::~NativeRegistry, owned by the process GameAvoidZoneRegistry destructor",
+      "evidence": "Original 0041F0FB/0041F103/0041F10C clears layers, destroys the list sentinel and withdraws the singleton. The adapter frees native views before their parser-owned grid buffers."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::insert_into and attach_tree",
+      "reason": "No missing binding: the baseline executable already reaches the existing enum insertion body; its ready label is a source-text classification limitation."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl constructor, merge_child and copy_or_merge",
+      "reason": "No missing binding: the existing scene-property adapter already calls the whole native bag merge; adding another call would duplicate the operation."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_0",
+      "reason": "Missing authored record remap names and a bound real renderer slot64/texture-cache ownership context; record_remap_texture_name currently returns an empty string."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_1",
+      "reason": "Missing authored record remap names and the real renderer/texture-cache ownership context required by the whole setter."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_2",
+      "reason": "Missing authored record remap names and the real renderer/texture-cache ownership context required by the whole setter."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: SceneContentsBinding::set_remap_texture_3",
+      "reason": "Missing authored record remap names and the real renderer/texture-cache ownership context required by the whole setter."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Existing host code already calls this setter; no additional live skill-notification producer was established in this packet, so no duplicate call was added."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::report (diagnostic reference only; no snapshot capture site)",
+      "reason": "Missing a live controller snapshot capture site supplying DirectorFlags and the actual 008356C0/008356B0/008356F0 getter results."
+    },
+    {
+      "native": "004c17d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_avoid_zones.cpp: GameAvoidZoneRegistry::instance",
+      "reason": "Missing a callable address-specific reconstructed singleton body; engine_seg4_6_9_cc13.cpp supplies a generic singleton specification rather than a second body to wire."
+    }
+  ],
+  "measurement": {
+    "readiness_wired_before": 9728,
+    "readiness_wired_after": 9737,
+    "built_called_addresses_before": 4790,
+    "built_called_addresses_after": 4793,
+    "new_runtime_addresses": ["00424730", "0041e000", "0041f0d0"],
+    "readiness_only_transitive_rows": ["00c40f50", "00416840", "004169a0", "0041ac60", "0041b120", "0041d0c0"],
+    "qualification": "Six other rows change only through source-text propagation into cc13_avoid1.cpp; no executable calls were added for them and they are not claimed as runtime wiring."
+  },
+  "validation": {
+    "baseline_build_and_two_ctests": "passed",
+    "enabled_build_and_two_ctests": "passed final enabled build; reconstructed_math and tool_tests both passed",
+    "disabled_build_and_two_ctests": "passed; all three claimed bodies absent from the disabled executable call graph, matching the baseline 4790 called addresses",
+    "focused_probe": "local/run_avoid465_probe.py: first-layer selection, 10.0 floor, reset and empty loads; 253 installed navigation files, 256 sequential loads, both switch settings",
+    "game_execution": "not run",
+    "original_analysis": "Verified config/target.json selects C:/Users/sqz269/bsp.gpr and /battlestationspacific.exe; live disassembly/prototype reads used bsp.py ghidra. Existing reconstruction bodies and Ghidra annotations unchanged."
+  },
+  "limits_and_remaining": [
+    "Typed host binding with original-shaped registry/layer records; original ECX/vtable dispatch, allocator identity, iterator proxy ABI and native binary replacement are not claimed.",
+    "The parser-owned TerrainGridLayerRecord vectors retain grid ownership. Native layer views borrow their buffers; replacement and destruction release native views before the buffers.",
+    "Layer construction and list allocation/clear/destruction callbacks remain host adapters. Existing slope queries and terrain sampling retain their earlier bodies.",
+    "The end-load height is now retained and logged; further consumers of registry+10h can use max_cell_height. No unrelated flight or pathing decision was invented.",
+    "No new address-suffixed reconstruction was introduced, so no function ledger row was added."
+  ]
+}
