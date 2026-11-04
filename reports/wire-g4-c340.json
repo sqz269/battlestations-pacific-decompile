@@ -1,0 +1,241 @@
+{
+  "chain": 340,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain340Bound",
+  "rows": [
+    {
+      "native": "006b8530",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::lua_protected_call_006b8530, called from src/mission_lua_host.cpp run_named_call_body (00887750/00887e50 body, CALL 006B8530 at 00887989/00888094)"
+    },
+    {
+      "native": "006b84d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::publish_recon_slot_tables_00806b10 pass 2 (00805EBA CALL 006B84D0(-3), with 006B8120 at 00805EA5 on the same machine)"
+    },
+    {
+      "native": "00964790",
+      "status": "wired",
+      "host_site": "bsp::resolve_vehicle_class_00964790, src/game_hosts_lua.cpp GameMissionLuaHost::mark_vehicle_class_row_00964790 ON arm (kWireGoal3Chain234Bound, now = kWireGoal4Chain340Bound)"
+    },
+    {
+      "native": "00437bd0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::resize_cache/store_cached (resize_descriptor_cache_00437bd0), from 00964790"
+    },
+    {
+      "native": "007d1e50",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp LeafConstructorBinding::call_007d1e50, from the eight plane leaf constructors"
+    },
+    {
+      "native": "00963380",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp construct_descriptor (Destroyer/Cruiser inline) and LeafConstructorBinding::call_00963380"
+    },
+    {
+      "native": "00749050",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp LeafConstructorBinding/PlaneBaseBinding/LandFortBaseBinding 00749050 forwards"
+    },
+    {
+      "native": "0087c640",
+      "status": "wired",
+      "host_site": "construct_native_vehicle_class_base_00749050 (damageable base), under 00964790"
+    },
+    {
+      "native": "00749180",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp construct_descriptor (LandFort row) and LeafConstructorBinding::call_00749180 (CommandBuilding)"
+    },
+    {
+      "native": "00749030",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::descriptor_is_kind (LandFort IsKindOf)"
+    },
+    {
+      "native": "00951aa0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "009536e0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00953770",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951af0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951b40",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951c20",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951d00",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951de0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095fee0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095ff50",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "0095ffc0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00951e30",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963c20",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963cb0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963d30",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963db0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963e40",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00963ec0",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00960050",
+      "status": "wired",
+      "host_site": "src/game_host_vehicle_class.cpp GameVehicleClassDescriptorCache::construct_descriptor through kLeafConstructors, from 00964790"
+    },
+    {
+      "native": "00681f40",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding::near_world_edge_00681f40 -> bsp::cc13_fe5::game_near_world_edge_00681f40 over the host world border box"
+    },
+    {
+      "native": "00682e10",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert -> bsp::cc13_fe5::warning_screen_show_alert (alert 3, exit zone)"
+    },
+    {
+      "native": "00682800",
+      "status": "wired",
+      "host_site": "bsp::cc13_fe5::warning_screen_play_sound_00682800 inside warning_screen_show_alert (null sample: no tracked sound, as before)"
+    },
+    {
+      "native": "00682cb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 1 (submarine oxygen) is never raised here: submarine_127c (unit+127Ch) is not modelled and answers 1.0"
+    },
+    {
+      "native": "00682d60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 2 (shallow water) is never raised here: ship_shallow_1011 needs the unit+1011h terrain-contact latch, which the host lacks"
+    },
+    {
+      "native": "00682ed0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp WarningScreenBinding (kWireGoal3Chain233Bound, now = kWireGoal4Chain340Bound), from warning_screen_update_00683020::show_alert",
+      "reason": "alert 0 (stall) is never raised here: plane_stall_007c6e10 on [unit+3D0h] is unread and answers false"
+    },
+    {
+      "native": "006b8470",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: LuaMachine::get_table at 008878AF/00887900"
+    },
+    {
+      "native": "006b7e70",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: get_top_native_mission_lua_006b7e70 at 008877E3/008877F7/00887803/0088781D/0088783A/0088796C/008879A9"
+    },
+    {
+      "native": "006b8460",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: LuaMachine::get_global at 00887832/00887883/008878E1 (already called from mirror_identity_00928100)"
+    },
+    {
+      "native": "006b8120",
+      "status": "wired",
+      "host_site": "src/mission_lua_host.cpp run_named_call_body_on_machine (00887750/00887e50 body) over GameMissionLuaHost::named_call_machine_006b7e30: push_string_native_mission_lua_006b8120 at 008878A5/008878F6; LuaMachine::push_string in publish_recon_slot_tables_00806b10 (00805EA5)"
+    },
+    {
+      "native": "009514b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp load_traffic_block",
+      "reason": "already runs: the host calls read_traffic_block_after_keyword, the same body minus the keyword expect its scene reader consumed; calling read_traffic_block would only inflate the count"
+    },
+    {
+      "native": "00469e40",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp load_browser_groups",
+      "reason": "already runs: read_browser_groups_after_keyword is the same body minus the keyword expect the scene reader consumed"
+    },
+    {
+      "native": "00870400",
+      "status": "skipped",
+      "host_site": "src/gameplay_effect_components.cpp load_gameplay_effect_components_00870400",
+      "reason": "needs a host effect-definition registry (vtable 00D0DA58 slot 2) and GameplayEffectComponentServices with the per-component Lua readers (read_lua_slot_14); none exist, so the 13 construct_effect_* constructors stay unreached"
+    },
+    {
+      "native": "006b8610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp GameMissionLuaHost::register_global_function",
+      "reason": "the host registers all 560 bindings through one binding_trampoline closure with two upvalues (host, row); 006B8610 pushes a zero-upvalue closure per C function"
+    },
+    {
+      "native": "00874640",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp (kWireGoal3Chain242Bound)",
+      "reason": "left OFF: chain 242 makes the mission clock the fixed-step driver cell instead of the per-frame raw delta sum, which moves every timer that reads it; needs a game run before turning on"
+    },
+    {
+      "native": "00805d90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp publish_recon_slot_tables_00806b10",
+      "reason": "the body walks native ReconList triples of raw unit records (+C4h class, +170h category, +174h id); the host keeps recon triples as unit indices, so only its 006B8120/006B84D0 calls are wired"
+    }
+  ]
+}

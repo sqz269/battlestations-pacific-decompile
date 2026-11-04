@@ -1,6 +1,10 @@
 #include "bsp/mission_lua_host.hpp"
 
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/native_mission_lua_scalar_push.hpp"
+#include "bsp/native_mission_lua_stack.hpp"
+#include "bsp/settings_seg29_cc13.hpp"
+#include "bsp/wire_goal4_chain340_switches.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -770,7 +774,13 @@ NamedCallOutcome run_named_call_body(
 
     const int marker = host.lua_gettop();
     host.adjust_call_stack_marker(marker);
+    if constexpr (kWireGoal4Chain340Bound) {
+        // 00887989 / 00888094: CALL 006B8530 on the machine, not 00a680e0.
+        outcome.pcall_status =
+            host.lua_protected_call_006b8530(nargs, kLuaMultRet, error_handler_index);
+    } else {
     outcome.pcall_status = host.lua_pcall(nargs, kLuaMultRet, error_handler_index);
+    }
     host.adjust_call_stack_marker(-marker);
 
     const int results = host.lua_gettop() - saved_top;
@@ -784,6 +794,94 @@ NamedCallOutcome run_named_call_body(
     return outcome;
 }
 
+// Chain 340: the same body with the stack calls 00887750 makes on its machine
+// ([host+4h], ECX at every site below) run through the recovered leaves over
+// the host's non-owning 006B7E30 view: 006B7E70 get_top, 006B8460 get_global,
+// 006B8120 push_string and 006B8470 get_table. The other calls stay the host's
+// (remove/pushvalue/settop already route through the same machine, 006B8530
+// keeps the host's status, 00885DA0/00887220 are the host's argument and
+// result projections).
+[[maybe_unused]] NamedCallOutcome run_named_call_body_on_machine(MissionLuaHostServices& host,
+    cc13_seg29::LuaMachine& machine, const NamedCallRequest& request, NamedCallOutcome outcome)
+{
+    const int saved_top = get_top_native_mission_lua_006b7e70(&machine);   // 008877E3
+
+    int forward_first = request.forward_stack_first;
+    int forward_last = request.forward_stack_last;
+    if (forward_first != 0) {
+        // 008877F7 reads the top and discards it; each negative bound reads it
+        // again (00887803, 0088781D) and becomes top + 1 + bound.
+        static_cast<void>(get_top_native_mission_lua_006b7e70(&machine));
+        if (forward_first < 0) {
+            forward_first = get_top_native_mission_lua_006b7e70(&machine) + 1 + forward_first;
+        }
+        if (forward_last < 0) {
+            forward_last = get_top_native_mission_lua_006b7e70(&machine) + 1 + forward_last;
+        }
+    }
+
+    machine.get_global(kMissionLuaErrorHandler);                            // 00887832
+    const int error_handler_index = get_top_native_mission_lua_006b7e70(&machine);  // 0088783A
+    host.adjust_reentrancy_depth(1);                                        // 00887844
+
+    outcome.resolved_path = split_lua_entry_point_name(request.name);       // 0088786A
+    const char* first = outcome.resolved_path.empty() ? "" : outcome.resolved_path.front().c_str();
+    machine.get_global(first);                                              // 00887883
+    for (std::size_t i = 1; i < outcome.resolved_path.size(); ++i) {
+        push_string_native_mission_lua_006b8120(&machine,
+            outcome.resolved_path[i].c_str());                              // 008878A5
+        machine.get_table(-2);                                              // 008878AF
+        host.lua_remove(-2);                                                // 008878B9
+    }
+
+    int nargs = 0;
+    if (!request.self_key.empty()) {
+        machine.get_global(kMissionLuaSelfTable);                           // 008878E1
+        push_string_native_mission_lua_006b8120(&machine, request.self_key.c_str());  // 008878F6
+        machine.get_table(-2);                                              // 00887900
+        host.lua_remove(-2);                                                // 0088790A
+        nargs = 1;
+    }
+    for (const MissionLuaArgument& argument : request.arguments) {
+        host.push_argument(argument);                                       // 0088792C
+    }
+    nargs += mission_lua_pushed_value_count(request.arguments);
+    if (forward_first != 0 && forward_first <= forward_last) {
+        nargs += 1 + (forward_last - forward_first);
+        for (int index = forward_first; index <= forward_last; ++index) {
+            host.lua_pushvalue(index);                                      // 0088795B
+        }
+    }
+    outcome.arguments_pushed = nargs;
+
+    const int marker = get_top_native_mission_lua_006b7e70(&machine);       // 0088796C
+    host.adjust_call_stack_marker(marker);                                  // 0088797D
+    outcome.pcall_status =
+        host.lua_protected_call_006b8530(nargs, kLuaMultRet, error_handler_index);  // 00887989
+    host.adjust_call_stack_marker(-marker);                                 // 00887993
+
+    const int results = get_top_native_mission_lua_006b7e70(&machine) - saved_top;  // 008879A9
+    outcome.results = results;
+    if (request.collect_results && results != 0) {
+        host.collect_results(results, kCallResultMode);                     // 008879B6
+    }
+    host.lua_settop(saved_top);                                             // 008879BF
+    host.adjust_reentrancy_depth(-1);                                       // 008879C4
+    outcome.dispatched = true;
+    return outcome;
+}
+
+// Chain 340: the body for both entries (00887750 and the inline path of
+// 00887e50) on the host's machine when it has one.
+[[maybe_unused]] NamedCallOutcome run_named_call(
+    MissionLuaHostServices& host, const NamedCallRequest& request, NamedCallOutcome outcome)
+{
+    if (cc13_seg29::LuaMachine* const machine = host.named_call_machine_006b7e30()) {
+        return run_named_call_body_on_machine(host, *machine, request, outcome);
+    }
+    return run_named_call_body(host, request, outcome);
+}
+
 } // namespace
 
 NamedCallOutcome call_named_entry_point(MissionLuaHostServices& host, const NamedCallRequest& request)
@@ -793,7 +891,11 @@ NamedCallOutcome call_named_entry_point(MissionLuaHostServices& host, const Name
     if (!request.run_during_shutdown && host.game_lifecycle_state() == kRefusedLifecycleState) {
         return outcome;
     }
+    if constexpr (kWireGoal4Chain340Bound) {
+        return run_named_call(host, request, outcome);
+    } else {
     return run_named_call_body(host, request, outcome);
+    }
 }
 
 NamedCallOutcome call_named_entry_point_forced(
@@ -830,7 +932,11 @@ NamedCallOutcome call_named_entry_point_threadsafe(
     request.forward_stack_last = kLuaMultRet;
     request.collect_results = false;
     request.run_during_shutdown = true;
+    if constexpr (kWireGoal4Chain340Bound) {
+        return run_named_call(host, request, outcome);
+    } else {
     return run_named_call_body(host, request, outcome);
+    }
 }
 
 NamedCallOutcome call_entry_point_if_defined(MissionLuaHostServices& host, const std::string& name,

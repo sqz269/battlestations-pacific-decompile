@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/wire_goal4_chain287_switches.hpp"
 #include "bsp/wire_goal4_chain334_switches.hpp"
+#include "bsp/wire_goal4_chain340_switches.hpp"
 #include "bsp/native_mission_lua_stack.hpp"
 #include "bsp/native_mission_lua_type.hpp"
 #include "bsp/native_mission_lua_predicates.hpp"
@@ -8552,12 +8553,25 @@ GameMissionLuaHost::ReconPublishCounts GameMissionLuaHost::publish_recon_slot_ta
                     instance, bsp::recon_category_names_00e0b590[c]);
                 for (const int id : buckets[r][c]) {
                     std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, id);
+                    if constexpr (bsp::kWireGoal4Chain340Bound) {
+                        // 00805EA5 CALL 006B8120 and 00805EBA CALL 006B84D0(-3), both
+                        // with ECX = the LuaInstance (EDI), here a non-owning 006B7E30
+                        // view of state_. 00927BF0 between them stays the host's.
+                        bsp::cc13_seg29::LuaMachine machine(state_);
+                        machine.push_string(key);
+                        lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);  // 00927BF0
+                        ::lua_pushstring(state_, key);
+                        ::lua_gettable(state_, -2);
+                        ::lua_remove(state_, -2);
+                        machine.set_table(-3);
+                    } else {
                     ::lua_pushstring(state_, key);                              // 006B8120
                     lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);  // 00927BF0
                     ::lua_pushstring(state_, key);
                     ::lua_gettable(state_, -2);
                     ::lua_remove(state_, -2);
                     ::lua_settable(state_, -3);                                 // 006B84D0(-3)
+                    }
                     ++summary_.recon_publish_entries;
                 }
                 bsp::pop_recon_table_scope(category);
@@ -14427,6 +14441,30 @@ int GameMissionLuaHost::lua_pcall(int nargs, int nresults, int errfunc_index) {
     if (state_ == nullptr) return 1;
     last_status_ = ::lua_pcall(state_, nargs, nresults, errfunc_index);
     return last_status_;
+}
+
+// Chain 340, 006B8530 (bsp.py show 006b8530 --asm): MOV ECX,[ECX+4] then CALL
+// 00a680e0 with (nargs, nresults, errfunc), RET 0Ch. 00887750 and 00887e50 make the
+// call on the game's machine; here the machine is a non-owning 006B7E30 view of
+// this host's state, the one Lua state the mission runs in. Only the named-call
+// body reaches this (mission_lua_host.cpp run_named_call_body).
+int GameMissionLuaHost::lua_protected_call_006b8530(int nargs, int nresults,
+    int errfunc_index) {
+    if (state_ == nullptr) return 1;
+    bsp::cc13_seg29::LuaMachine machine(state_);
+    last_status_ = machine.protected_call(nargs, nresults, errfunc_index);
+    return last_status_;
+}
+
+// Chain 340. 00887750 reads its machine from [host+4h] (ECX at 008877E3 and
+// every later stack call); here that machine is a non-owning 006B7E30 view of
+// state_, the one interpreter the mission runs in, rebuilt if the state changes.
+bsp::cc13_seg29::LuaMachine* GameMissionLuaHost::named_call_machine_006b7e30() {
+    if (state_ == nullptr) return nullptr;
+    if (!named_call_machine_ || named_call_machine_->state() != state_) {
+        named_call_machine_ = std::make_unique<bsp::cc13_seg29::LuaMachine>(state_);
+    }
+    return named_call_machine_.get();
 }
 
 std::string GameMissionLuaHost::lua_tolstring_at_top() {

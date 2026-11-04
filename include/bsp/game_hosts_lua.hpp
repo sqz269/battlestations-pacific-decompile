@@ -1798,6 +1798,8 @@ public:
     void lua_settop(int index) override;
     int luaL_loadbuffer(const char* buffer, int size, const char* chunk_name) override;
     int lua_pcall(int nargs, int nresults, int errfunc_index) override;
+    int lua_protected_call_006b8530(int nargs, int nresults, int errfunc_index) override;
+    bsp::cc13_seg29::LuaMachine* named_call_machine_006b7e30() override;
     std::string lua_tolstring_at_top() override;
     int collect_results(int count, int mode) override;
 
@@ -2476,6 +2478,9 @@ private:
     // (bsp/game_host_vehicle_class.hpp). ON it is the cache in place of
     // vehicle_class_rows_marked_; OFF it is never created.
     std::unique_ptr<GameVehicleClassDescriptorCache> vehicle_class_cache_;
+    // Chain 340: the non-owning 006B7E30 machine over state_ that the named-call
+    // body makes its stack calls on (named_call_machine_006b7e30).
+    std::unique_ptr<bsp::cc13_seg29::LuaMachine> named_call_machine_;
     friend class GameMissionLuaVehicleClassBinding;
     void mark_vehicle_class_row_00964790(int class_index, const char* site = nullptr);
     void mark_vehicle_class_device_bullets_00960230(int class_index);
