@@ -1,5 +1,7 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/cc13_sweepC.hpp"
+#include "bsp/wire_goal4_chain350_switches.hpp"
 #include "bsp/actions_seg5_cc13.hpp"
 #include "bsp/native_bit_cursor_fields.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
@@ -205,6 +207,21 @@ struct HostSessionMessages::Image {
 };
 
 namespace {
+// The real session owner and selected player record remain those of Image.
+// bsp.py show 0080FA50 / 0080FF30 / 0080FF80 / 0080FFD0: each body calls
+// 0075B430 once, then stores only the header, its native vptr and its payload.
+class UnitMessageConstructionBinding final : public cc13_sweepC::UnitMessageConstructionHost {
+public:
+    explicit UnitMessageConstructionBinding(const NativeSessionMessageContext& session)
+        : session_(session) {}
+    void session_message_construct_base_0075b430(void* message, std::uint32_t kind) override {
+        construct_native_session_message_0075b430(
+            static_cast<NativeSessionMessageStorage*>(message), kind, session_);
+    }
+private:
+    const NativeSessionMessageContext& session_;
+};
+
 // 0076E520's stream over a cleared 400h buffer, then 00768530's type read and
 // rewind (00768558 / 00768561). See queue_set_command_92 for the clearing.
 struct LocalStream {
@@ -547,9 +564,16 @@ HostSessionMessages::ShipLeakCopy HostSessionMessages::queue_ship_leak_90(
     // vtable 00D034A0, +20h..+28h the point; 00761F60 is those stores
     // without the two arguments.
     seg42::ShipLeakMessage sent{};
+    if constexpr (kWireGoal4Chain350Bound) {
+        UnitMessageConstructionBinding binding(image.session);
+        cc13_sweepC::unit_message_hull_impact_construct_0080ff80(binding, &sent, count, point);
+        // Relocate only the body's original vptr 00D034A0 to the existing host profile.
+        sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d034a0u);
+    } else {
     seg42::construct_ship_leak_00761f60(&sent, image.seg42);
     sent.leak_1c = count;
     for (int i = 0; i < 3; ++i) sent.vector_20[i] = point[i];
+    }
 
     LocalStream stream;
     seg42::write_ship_leak_00761ff0(&sent, &stream.out, image.numeric);
@@ -781,8 +805,18 @@ HostSessionMessages::ShipAddTorqueCopy HostSessionMessages::queue_ship_add_torqu
     // 00762220 makes the same header stores, so the sent message is 00762220
     // with the torque; 0077C2A0 at 00827329 (flags 7) takes the local route.
     seg42::ShipAddTorqueMessage sent{};
+    if constexpr (kWireGoal4Chain350Bound) {
+        UnitMessageConstructionBinding binding(image.session);
+        // 0080FFD0 copies stack DWORDs; preserve the caller's three float bit patterns.
+        std::uint32_t bits[3];
+        std::memcpy(bits, torque, sizeof bits);
+        cc13_sweepC::unit_message_add_hull_torque_construct_0080ffd0(
+            binding, &sent, bits[0], bits[1], bits[2]);
+        sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d034c8u);
+    } else {
     seg42::construct_ship_addtorque_00762220(&sent.h, image.seg42);
     for (int i = 0; i < 3; ++i) sent.torque_1c[i] = torque[i];
+    }
 
     LocalStream stream;
     seg42::write_ship_addtorque_007622b0(&sent, &stream.out, image.numeric);
@@ -806,9 +840,20 @@ HostSessionMessages::KamikazeDetonateCopy HostSessionMessages::queue_kamikaze_de
     // 00761D90 makes the header stores (+1Ch cleared); the sent message is
     // 00761D90 with the id and the point.
     NativeSessionMessage112 sent{};
+    if constexpr (kWireGoal4Chain350Bound) {
+        UnitMessageConstructionBinding binding(image.session);
+        // Only entity+174h is read (bsp.py show 0080FF30). Project the supplied
+        // real target handle; no other entity bytes are initialized or consumed.
+        alignas(4) std::uint8_t entity_id_view[0x176];
+        std::memcpy(entity_id_view + 0x174, &other_id, sizeof other_id);
+        cc13_sweepC::unit_message_kamikaze_detonate_construct_0080ff30(
+            binding, &sent, entity_id_view, point);
+        sent.base.profile_00 = image.profile112.slots;
+    } else {
     construct_native_session_message112_00761d90(&sent, image.context112, image.profile112);
     sent.value_1c = other_id;
     for (int i = 0; i < 3; ++i) std::memcpy(&sent.float_bits_20[i], &point[i], sizeof point[i]);
+    }
 
     LocalStream stream;
     write_native_session_message112_00761e20(&sent, &stream.out, image.context112);
@@ -832,10 +877,17 @@ HostSessionMessages::RepairAddDamageCopy HostSessionMessages::queue_repair_add_d
     // +1Ah 0, +20h = the flag byte, +4h = 1, vtable 00D0334C, +1Ch = the
     // seconds, +24h = the channel. 007608E0 is the header stores.
     seg42::RepairAddDamageMessage sent{};
+    if constexpr (kWireGoal4Chain350Bound) {
+        UnitMessageConstructionBinding binding(image.session);
+        cc13_sweepC::unit_message_fire_or_water_damage_construct_0080fa50(
+            binding, &sent, channel, seconds, add ? 1u : 0u);
+        sent.h.base.profile_00 = image.seg42.vtables.vtable(0x00d0334cu);
+    } else {
     seg42::construct_shiprepair_adddamage_007608e0(&sent, image.seg42);
     sent.flag_20 = add ? 1u : 0u;
     sent.amount_1c = seconds;
     sent.section_24 = channel;
+    }
 
     LocalStream stream;
     seg42::write_shiprepair_adddamage_00760970(&sent, &stream.out, image.numeric);

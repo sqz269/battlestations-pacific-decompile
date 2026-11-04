@@ -1,0 +1,126 @@
+{
+  "chain": 350,
+  "worker": "agent/g4-w5",
+  "run": 690,
+  "baseline": "bd02ffbade",
+  "switch": "bsp::kWireGoal4Chain350Bound",
+  "switch_header": "include/bsp/wire_goal4_chain350_switches.hpp",
+  "picked": "Existing ship damage/impact sender constructors over the real payloads already routed by HostSessionMessages.",
+  "wired_before": 9421,
+  "wired_after": 9425,
+  "built": "Narrow UnitMessageConstructionHost boundary, real session-base adapter, payload/id views, and four switched sender call sites. Existing bodies are reused once; previous sender construction stays unchanged in each else arm.",
+  "checks": {
+    "build_on": "scripts/build.ps1 passed; reconstructed_math and tool_tests passed (2/2).",
+    "call_graph": "call_graph.py rebuilt the executable graph; who confirms all four new bodies REACHABLE with one direct call each from the listed host_site. path 0080fa50 traces through failure/damage-control fixed-step work to WinMainCRTStartup.",
+    "readiness": "Only the four selected addresses changed state: ready -> wired; called=true and call_sites=1 for each.",
+    "float_math": "No float arithmetic changed; payloads are copied, and all existing codecs are retained.",
+    "runtime": "Game not run; no live gameplay or binary ABI compatibility claim."
+  },
+  "abi": "Original constructor ABIs are documented per row/source. The narrowed explicit C++ host interface is source-level integration, not a drop-in original ABI.",
+  "rows": [
+    {
+      "native": "0080fa50",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_repair_add_damage_9e",
+      "real_state": "Existing ship-hit/failure/script send channel, seconds and add/remove flag; the same local stream and queued damage-control consumer remain.",
+      "evidence": "bsp.py show 0080fa50: __thiscall(message, channel, float amount, byte), RET 0Ch; 0075B430(9Eh), +18h/+1Ah zero, +20h flag, +4h=1, 00D0334C, +1Ch amount, +24h channel.",
+      "call_sites": 1
+    },
+    {
+      "native": "0080ff30",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_kamikaze_detonate_70",
+      "real_state": "Existing collision target handle and contact point; the supplied target handle is projected at the sole entity input +174h.",
+      "evidence": "bsp.py show 0080ff30: __thiscall(message, entity, float3*), RET 8; only entity+174h is read, then +1Ch word and +20h..+28h point are stored. Existing translated profile112 replaces the image vptr after construction.",
+      "call_sites": 1
+    },
+    {
+      "native": "0080ff80",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_leak_90",
+      "real_state": "Existing script/hull-local leak count and point; the existing 90h writer/reader and returned leak copy consume the constructed payload.",
+      "evidence": "bsp.py show 0080ff80: __thiscall(message, count, float3*), RET 8; 0075B430(90h), +1Ch count, 00D034A0, +20h..+28h point.",
+      "call_sites": 1
+    },
+    {
+      "native": "0080ffd0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp::HostSessionMessages::queue_ship_add_torque_93",
+      "real_state": "Existing ship-hit roll torque; memcpy transfers its three original float DWORDs into the constructor arguments without arithmetic.",
+      "evidence": "bsp.py show 0080ffd0: __thiscall(message, three DWORDs), RET 0Ch; 0075B430(93h), +1Ch/+20h/+24h arguments, +4h=1, 00D034C8. Existing codec and force-channel consumer remain.",
+      "call_sites": 1
+    },
+    {
+      "native": "00aa7910",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::set_widget_local_z",
+      "reason": "A real movie-page widget and its transform/node adapter are missing; load_movie_page still returns nullptr."
+    },
+    {
+      "native": "00aac820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::bind_movie_textures",
+      "reason": "The movie decoder, decoded video textures and native movie/widget resource binding are missing."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp::GameMissionResultHost::MovieBridge::clear_movie_subtitles",
+      "reason": "The native movie object, subtitle-record vectors and owned extratitle objects are missing; the host currently clears a typed subtitle schedule."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::GameHudHost::set_selected_unit_00647300 / force_select_unit_006485a0",
+      "reason": "The screen selection vector, +30h input mode and matching input-context adapter are missing from the recorded reset site."
+    },
+    {
+      "native": "0043aba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp::ShipScreenBinding::gauge_digit",
+      "reason": "Mutable digit-icon UV vertex streams and their lock/unlock adapter are missing; the sprite bridge currently draws the authored first state."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::run_load_scripted_name_baseline_004d30f0 (teardown follow-up)",
+      "reason": "The native game+1930h baseline set, Lua-object/string adapters and teardown caller binding are missing; the host stores a typed name list."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp::NamedCallBinding::queue_call",
+      "reason": "The inspected NamedCallBinding lacks a frame-job deferred-call queue producer and Lua-variant argument capture adapter."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::EntityIssueBinding::ai_group_forward_command",
+      "reason": "An entity AI-group object and command-forwarding adapter are missing; entity_ai_group currently returns nullptr at this path."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::DirectorStageBinding::notify_command_target",
+      "reason": "The target-report manager/event adapter is missing at the currently recorded notify_command_target site."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp::weapon-director base construction",
+      "reason": "Native owner+28h endpoint/tick-parent storage and a controller/base-constructor adapter were not built by this packet."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::attach_tree / insert_into",
+      "reason": "No new wiring is missing: the built call graph already proves two reachable calls; the readiness text scan labels this ready. The existing adapter is also in another branch under review."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp::SceneNumericPropertyMerge::Impl::Impl / merge_child",
+      "reason": "No new wiring is missing: the built call graph already proves two reachable calls; the readiness text scan labels this ready. The existing adapter is also in another branch under review."
+    }
+  ]
+}
