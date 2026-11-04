@@ -1,0 +1,113 @@
+{
+  "chain": 434,
+  "slot": "g4-w5",
+  "run": 873,
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain434Bound",
+  "scope": "Class-27h Depth_Charge_Launcher per-barrel direction cone in the live single-player projectile launch path.",
+  "rows": [
+    {
+      "native": "006fe160",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::run_gun_aim_and_fire",
+      "body": "src/gun_platform_arc.cpp: gun_ring_muzzle_origin_006fe160",
+      "state": "The actual device Type selects class 27h; MultiBulletConeAngle is retained per live gun with the binary default 0. The loaded model supplies its muzzle-offset count and current firing-node world row 2; 007298D0 supplies the selected barrel. Ordinary Throw runs first, then 006FE160 consumes that direction and its result feeds projectile_launch_velocity_006e8430.",
+      "evidence": [
+        "006FE160-006FE38D listing, including the look-at transpose at 006FE1A9-006FE23E and per-op float spills at 006FE26A-006FE385",
+        "007327B0: MultiBulletConeAngle read with default 0 at 00732B17-00732B3E",
+        "00443090 Depth_Charge_Launcher branch and 006FE390 / 006FE050 class-27h identity",
+        "docs/GUN_MOUNT_POSITIONS.md sections 6 and 9: 0072FE74 direction virtual, not muzzle-origin displacement"
+      ],
+      "original_abi": "__thiscall ECX=gun, stack(out float3*, input direction float3*), RET 8; vtable +1E0h in class 27h.",
+      "abi_compatible": false,
+      "game_validated": false,
+      "limitations": "Typed caller-projected interface, historical origin name retained. Cone wiring requires loaded nonempty model muzzle offsets and a usable firing-node hierarchy; missing model state retains the prior host path. No game run was performed."
+    },
+    {
+      "native": "0085b0f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: turning-gun replication candidate",
+      "reason": "Existing body is only the seam-search fragment; wiring the full native update requires the received four-angle replication owner, +4BCh..+4C8h snapshot state, 0.8-radian current/previous-angle gates and ApplyAnglesToNodes consumer."
+    },
+    {
+      "native": "008069a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::Impl::publish_recon_triples_008073c0",
+      "reason": "Native group-level publication requires persistent per-party group detection records, observer releases and change delegates; the temporary grouped triples inspected here do not supply that Seg49Host contract."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "The inspected setter only retains pilot_skill_index; full 009565A0 needs the separate +390h skill owner, +6DCh notification object and kind-20h device propagation consumer."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit and HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "Reset needs the pick-screen selection vector +C4h, mode +30h and input-context reset adapter; these owners were not built in this packet."
+    },
+    {
+      "native": "00686170",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_main_menu_manager",
+      "reason": "Raw constructor needs the persistent 78h native manager plus 00684E10 base-construction host and consumers; the inspected host returns its separate typed MainMenuManager."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native enum property projection",
+      "reason": "Already called from entry-reachable code in the baseline call graph; no missing call or new wiring to add here."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block / SceneNumericPropertyMerge",
+      "reason": "Already called from entry-reachable code in the baseline call graph; no missing call or new wiring to add here."
+    }
+  ],
+  "readiness": {
+    "wired_before": 9677,
+    "wired_after": 9678,
+    "new_entry_reachable_calls": {
+      "006fe160": 1
+    }
+  },
+  "validation": {
+    "baseline_build": "./scripts/build.ps1 passed Win32 Release and both existing CTest targets",
+    "numeric_fixture": {
+      "kind": "One independent local Win32 PC24 fixture reproducing the original numeric listing with x87 FSIN/FCOS and DWORD spills; synthetic evidence, not gameplay.",
+      "input": {
+        "direction": [
+          0.36,
+          0.48,
+          0.8
+        ],
+        "basis_cos": [
+          0.9119215,
+          0,
+          -0.4103647
+        ],
+        "basis_sin": [
+          -0.196975,
+          0.877268,
+          -0.437722
+        ],
+        "radius": 0.3,
+        "barrel": 1,
+        "muzzle_count": 3
+      },
+      "actual_and_original_listing_bits": [
+        "3e302a3f",
+        "3f353a4e",
+        "3f3f71de"
+      ],
+      "prior_order_axis0_bits": "3e302a40",
+      "result": "bit-identical to native listing; prior multiply order differs by one ULP",
+      "source": "local/output/g4_c434_cone_probe.cpp",
+      "manifest": "/link /MANIFEST:EMBED"
+    },
+    "final_build": "./scripts/build.ps1 passed Win32 Release; reconstructed_math and tool_tests passed (2/2)",
+    "call_graph": "006fe160 has one call from entry-reachable GameGunneryHost::Impl::run_gun_aim_and_fire; path reaches WinMainCRTStartup"
+  }
+}

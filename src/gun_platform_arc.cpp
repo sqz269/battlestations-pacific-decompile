@@ -2,6 +2,7 @@
 // Packet cc2_gun_platform_arc. See docs/GUN_PLATFORM_ARC.md for the evidence.
 
 #include "bsp/gun_platform_arc.hpp"
+#include "bsp/cc13_x87_model.hpp"
 
 #include <cmath>
 
@@ -309,19 +310,36 @@ bool gun_fixed_step_tick_0072d130(GunFireRequestState& state,
     return true;
 }
 
-void gun_ring_muzzle_origin_006fe160(const GunRingOffsetInputs& in, float out[3]) noexcept {
+__declspec(noinline) void gun_ring_muzzle_origin_006fe160(const GunRingOffsetInputs& in, float out[3]) noexcept {
     // 006FE26A: the native routine divides by the muzzle node count without a
     // guard. A count of zero cannot reach it because the descriptor always has
     // at least one node; the guard here keeps the model total.
+    // 006FE26A..006FE27A: FILD, FMUL qword 00CE3828 (the widened float
+    // 2*pi), FIDIV, FSTP. The game's main thread rounds each arithmetic op
+    // to PC24. Keep FSIN/FCOS and their float spills (006FE27E/006FE2E0).
+    using namespace cc13x87;
     const float angle = in.muzzle_count > 0
-                            ? (static_cast<float>(in.barrel_index) * kGunAimTwoPi) /
-                                  static_cast<float>(in.muzzle_count)
-                            : 0.0f;
-    const float c = std::cos(angle);
-    const float s = std::sin(angle);
+        ? static_cast<float>(x87_div24(x87_mul24(static_cast<double>(in.barrel_index),
+              6.2831854820251465), static_cast<double>(in.muzzle_count)))
+        : 0.0f;
+    float s, c;
+    __asm {
+        fld angle
+        fsin
+        fstp s
+        fld angle
+        fcos
+        fstp c
+    }
     for (int k = 0; k < 3; ++k) {
-        out[k] = in.origin[k] + in.radius * c * in.basis_right[k] +
-                 in.radius * s * in.basis_up[k];
+        // 006FE288..006FE342 multiplies axis by trig, spills, then by the
+        // class radius and spills again. Radius * trig * axis changes rounding.
+        const float scaled_sin = static_cast<float>(x87_mul24(in.basis_up[k], s));
+        const float sin_term = static_cast<float>(x87_mul24(scaled_sin, in.radius));
+        const float scaled_cos = static_cast<float>(x87_mul24(in.basis_right[k], c));
+        const float cos_term = static_cast<float>(x87_mul24(scaled_cos, in.radius));
+        const float partial = static_cast<float>(x87_add24(in.origin[k], cos_term));
+        out[k] = static_cast<float>(x87_add24(partial, sin_term)); // 006FE346..006FE385
     }
 }
 

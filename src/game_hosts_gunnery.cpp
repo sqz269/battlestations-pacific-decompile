@@ -5,6 +5,8 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/wire_goal4_chain434_switches.hpp"
+#include "bsp/camera_look_at.hpp"
 #include "bsp/wire_goal4_chain427_switches.hpp"
 #include "bsp/actions_seg5_cc13.hpp"
 #include "bsp/wire_goal4_chain411_switches.hpp"
@@ -3050,6 +3052,9 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, ImmediateFireState> immediate_fire_by_gun;
     std::vector<int> gun_turning_class;   // parallel to guns
+    // Chain 434: actual class +D0h for the class-27h direction virtual only.
+    // Keyed by live gun, independent of the older flattened gcls approximation.
+    std::map<std::size_t, float> launcher_cone_by_gun;
     // Chain 288: the installed +390h..+3A4h bot identities, retained for each
     // live gun. 0072C6A0 consumes the actual device Type and owner ancestry;
     // 00729BC0 selects among these slots using the current ammunition class.
@@ -7496,6 +7501,18 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     || _stricmp(device_type.c_str(), "Depth_Charge_Launcher") == 0;
                 gun_bot_slots.push_back(bsp::gun_bot_slots_for_subtype_0072c6a0(
                     gun.category, turning, units.unit_is_kind_of(i, 0x0f)));
+            }
+            if constexpr (bsp::kWireGoal4Chain434Bound) {
+                // 00443090: Depth_Charge_Launcher -> 00442F50 -> 006FE390,
+                // the class 27h instance whose vtable has 006FE160 at +1E0h.
+                // 00732B17..00732B3E reads the unscaled field with default 0.
+                const std::string type = lua.read_device_class_string(gun.device_class, "Type");
+                if (_stricmp(type.c_str(), "Depth_Charge_Launcher") == 0) {
+                    launcher_cone_by_gun.emplace(guns.size() - 1,
+                        lua.read_device_class_number(gun.device_class, "MultiBulletConeAngle", 0.0f));
+                }
+            } else {
+                // The previous host retained no class-27h cone field.
             }
         }
     }
@@ -12159,6 +12176,33 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 + right[i] * (flat_component * kGunHorzSign * std::sin(horz))
                 + up[i] * std::sin(vert);
         }
+        std::optional<bsp::GunRingOffsetInputs> launcher_ring;
+        if constexpr (bsp::kWireGoal4Chain434Bound) {
+            // 0073022A..00730249 reads the firing node's world row 2 before
+            // Throw. 0073082D..0073083D then passes that perturbed direction to
+            // 0072F830, whose +1E0h call at 0072FE74 adds the barrel cone below.
+            // Use only a loaded model's real node/muzzle list. Missing model
+            // data keeps the previous direction path, with no fake count.
+            const auto cone = launcher_cone_by_gun.find(g);
+            const auto model = fire_points_by_device.find(gun.device_class);
+            if (cone != launcher_cone_by_gun.end() && gun.mount_known
+                && model != fire_points_by_device.end() && model->second.loaded
+                && !model->second.list.offsets.empty() && !model->second.nodes.empty()) {
+                const DeviceFirePoints& fp = model->second;
+                const int pick = fp.barrel_node > 0 ? fp.barrel_node : (fp.base_node > 0 ? fp.base_node : 0);
+                bsp::CameraMatrix node_world{};
+                if (device_hierarchy_node_world(gun, fp, pick, right, up, forward, origin, node_world)) {
+                    bsp::GunRingOffsetInputs ring;
+                    for (int i = 0; i < 3; ++i) direction[i] = node_world[8 + i];
+                    ring.radius = cone->second;
+                    ring.barrel_index = barrel; // actual +44Ch chosen by 007298D0
+                    ring.muzzle_count = static_cast<int>(fp.list.offsets.size()); // class +9Ch/+A0h
+                    launcher_ring = ring;
+                }
+            }
+        } else {
+            // The previous host passed the computed direction to Throw unchanged.
+        }
         if (gun.shots == 1) {
             // DIAGNOSTIC, both sides: the throw terms this gun fires with.
             int seat = -1;
@@ -12225,6 +12269,27 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 throw_magnitude_sum_deg += magnitude * 57.29577951308232;
             }
             done("Gun::throw_cone_00730540", 0x00730540u);
+        }
+        if constexpr (bsp::kWireGoal4Chain434Bound) {
+            if (launcher_ring) {
+                auto& ring = *launcher_ring;
+                // 0072FE74 consumes 00730160's already-perturbed direction.
+                // It must follow Throw: rotating the basis before Throw gives
+                // a different cone. The result goes directly to launch velocity.
+                for (int i = 0; i < 3; ++i) ring.origin[i] = direction[i];
+                bsp::CameraMatrix view;
+                bsp::build_camera_look_at_00b63f10(view, {0.0f, 0.0f, 0.0f},
+                    {ring.origin[0], ring.origin[1], ring.origin[2]}, {0.0f, 1.0f, 0.0f},
+                    application_camera_axes_crt());
+                for (int i = 0; i < 3; ++i) {
+                    ring.basis_right[i] = view[4 * i];
+                    ring.basis_up[i] = view[4 * i + 1];
+                }
+                bsp::gun_ring_muzzle_origin_006fe160(ring, direction);
+                done("Gun::launcher_direction_cone_006fe160", 0x006fe160u);
+            }
+        } else {
+            // The previous host passed Throw's direction to launch unchanged.
         }
         GameProjectileRow shot;
         shot.gun_row = g;
