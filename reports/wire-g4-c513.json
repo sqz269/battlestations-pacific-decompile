@@ -1,0 +1,229 @@
+{
+  "chain": 513,
+  "owner": "agent/g4-w5",
+  "base": "e07a7836d9",
+  "switch": "bsp::kWireGoal4Chain513Bound",
+  "scope": "Minimap unit vtable+B8 visibility dispatch at original call site 005C1675",
+  "wired_total_before": 9809,
+  "wired_total_after": 9812,
+  "validation": {
+    "build": "scripts/build.ps1 passed before changes and after changes; all four CTests passed",
+    "readiness": "wire_readiness.py --standins reports all three selected addresses wired and called=true",
+    "executable": "call_graph.py who shows calls from reachable MinimapBinding::unit_shows_on_minimap: one true-result call (first site 10110A3A) and two false-result calls (first site 101109DE)",
+    "identity_limit": "Release /OPT:ICF folds identical constant-return bodies. The map retains each selected symbol and object contribution; the two false leaves share 10034510, while the true leaf shares 100334A0 with other true leaves. Aggregate call_sites and path output therefore cannot attribute every folded caller to a particular original address.",
+    "evidence": "bsp.py show 006d1fa0, 006f57d0, 007001e0: MOV AL,1/RET or XOR AL,AL/RET, ECX unused; existing hud_minimap.cpp class/vtable survey selects each exact original body",
+    "state": "The real unit from the minimap walk supplies the current class id. The true entry receives that same unit handle; the two false typed entries omit native unused ECX. Their return values feed the existing minimap inclusion gate.",
+    "switch_off": "Existing literal-return arms and their trace records are preserved unchanged in else arms",
+    "float_math": "No float arithmetic changed; no new tests added",
+    "gameplay": "Not run, as instructed; executable reach and source/state evidence only"
+  },
+  "rows": [
+    {
+      "native": "006d1fa0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapBinding::unit_shows_on_minimap, Always branch"
+    },
+    {
+      "native": "006f57d0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapBinding::unit_shows_on_minimap, Never branch for classes 1Bh/1Ch"
+    },
+    {
+      "native": "007001e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud_world.cpp: MinimapBinding::unit_shows_on_minimap, Never branch for class 35h"
+    },
+    {
+      "native": "006d2510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::motion_step_00825f20",
+      "reason": "Missing a complete per-airfield 00953CC0 binding and owned 006CDC70 schedule; the current path runs only the destruction rule while air-ops work is relocated into the global landing pass. Claimed for inspection, then released without edits."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp: text_accepts_input_char_00ab6d30",
+      "reason": "Missing a live GuiLeafHost::accepts_glyph_byte_00ab6d00 implementation with the current editable text context/font and input byte."
+    },
+    {
+      "native": "005495a0",
+      "status": "skipped",
+      "host_site": "src/main_menu_command_bar.cpp: rebuild_main_menu_command_bar_0054b530",
+      "reason": "Missing a live MainMenuCommandResetHost/MainMenuCommandBarHost implementation and the command owner's widget bindings at this caller."
+    },
+    {
+      "native": "006834a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionDetail binding set_scroll_range",
+      "reason": "Already calls bsp::set_scroll_range with the real briefing scroller and measured layout under chain407; no missing logic replacement at this site."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp and src/game_hosts_fixed_step.cpp: deferred Lua producer comments",
+      "reason": "Missing a live deferred-node enqueue producer with a real source LuaVariantRecord vector; the inspected hosts mention this address only as a contract."
+    },
+    {
+      "native": "004d32a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: script-added-global teardown comment",
+      "reason": "Missing the teardown consumer; this inspected host site collects the pre-script baseline rather than clearing script-added globals."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: ai_group_forward_command bindings",
+      "reason": "Missing the raw AI-group owner and concrete Seg70Host forwarding contract; the inspected command sites only record forwarding."
+    },
+    {
+      "native": "00984800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: notify_command_target/report_target_event bindings",
+      "reason": "Missing the real report manager/entity/target object graph and concrete Seg62Host notification binding."
+    },
+    {
+      "native": "00411e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg67b.cpp: bot-state-registry constructor host calls",
+      "reason": "Missing a live raw bot/task registry owner and concrete Cc13Seg67bHost constructor path; typed current tasks do not supply this registry layout."
+    },
+    {
+      "native": "004116d0",
+      "status": "skipped",
+      "host_site": "src/native_land_state_registry_lifetime.cpp: destroy_native_bot_state_registry_004116d0",
+      "reason": "Missing the matching live NativeBotStateRegistryStorage constructor/owner path and lifetime consumer."
+    },
+    {
+      "native": "00bf1400",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_retreat_00bf16b0/error_context_erase_00bf26c0",
+      "reason": "Missing a live error-reporter map owner; the candidate callers are not linked in this build, so routing their generic tree helpers would add no game-reachable call."
+    },
+    {
+      "native": "00bf1420",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_advance_00bf1450/error_context_erase_00bf26c0",
+      "reason": "Missing a live error-reporter map owner; the candidate callers are not linked in this build."
+    },
+    {
+      "native": "00bf15e0",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270/error_context_erase_00bf26c0",
+      "reason": "Missing the live error-reporter map producer; call_graph.py who finds neither inspected insertion nor erase caller in the executable."
+    },
+    {
+      "native": "00bf1630",
+      "status": "skipped",
+      "host_site": "src/engine_services_cc13.cpp: error_context_insert_at_00bf2270/error_context_erase_00bf26c0",
+      "reason": "Missing the live error-reporter map producer; changing the generic rotation calls in these unlinked callers cannot wire this body."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movie-camera limits reset host call",
+      "reason": "Missing a live camera-limits owner and concrete reset_deviation_factor_005cafb0 host binding."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movie-camera limits reset host call",
+      "reason": "Missing a live camera-limits owner and concrete reset_overview_height_005cafc0 host binding."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movie-camera limits reset host call",
+      "reason": "Missing the live camera-limit/default-time fields and concrete reset_speed_limits_005cb970 host binding."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: movie-camera limits reset host call",
+      "reason": "Missing the live camera-limit/default-time fields and concrete reset_accel_time_005cb9c0 host binding."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp: clear_gamepad_force_requests_00a95890",
+      "reason": "Missing a verified live InputDevice/GamepadForceContext owner for this typed candidate; native_gamepad_xinput.cpp already has a separate raw-owner implementation at the same address, so no duplicate clear path was added."
+    },
+    {
+      "native": "00a966e0",
+      "status": "skipped",
+      "host_site": "src/text_editor_activation.cpp: set_text_editor_active_00a966e0",
+      "reason": "Missing a concrete TextEditorActivationBindings producer and live selected-row activation caller; src references contain only the body."
+    },
+    {
+      "native": "00605630",
+      "status": "skipped",
+      "host_site": "src/cc13_left1.cpp: direction_angle_deltas_00605630",
+      "reason": "Missing the original plane-HUD bomb-sight camera/impact input and display consumer; substituting unrelated unit heading calculations would not reproduce its sight path."
+    },
+    {
+      "native": "00bbd310",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: atmosphere/cloud frame update",
+      "reason": "Missing the live atmosphere+3Ch cloud-manager owner and reference-node world-axis/dirty-state producer required by this body."
+    },
+    {
+      "native": "0045f970",
+      "status": "skipped",
+      "host_site": "src/segs_0_9_11_cc13.cpp: game_update_cutscene_playback_004c6b20",
+      "reason": "Missing a live EngineMovieClock/playback owner; src contains no clock owner outside engine_movie_actions.cpp."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: timed-entry update loop",
+      "reason": "Already calls advance_gui_timed_entry_00ad39a0 with the actual entry, widget owner, delta and constants; no missing replacement."
+    },
+    {
+      "native": "006e8320",
+      "status": "skipped",
+      "host_site": "src/projectile_kinds.cpp: weapon_class_constructed_defaults",
+      "reason": "Missing a live WeaponClassDescriptor loader/owner; current gunnery reads a different finalisation-input model directly, so constructing an unused descriptor would not wire real class state."
+    },
+    {
+      "native": "00808cb0",
+      "status": "skipped",
+      "host_site": "src/game_recon_sensor_class_registry.cpp: SensorClassBinding::allocate_record_0080910d",
+      "reason": "Already constructs the real cached sensor record through construct_sensor_class_table_00808cb0 on chain452's live Lua-registry arm; the older hardcoded table builder is the disabled fallback."
+    },
+    {
+      "native": "006f9ee0",
+      "status": "skipped",
+      "host_site": "src/hull_terrain_contact.cpp: HullTerrainContactSolver::hull_shape",
+      "reason": "Already calls convex_object_compute_box_006f9ee0 on the raw hull points under chain131 and consumes its centre; no missing replacement."
+    },
+    {
+      "native": "007465e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: fort fire/smoke discussion",
+      "reason": "Missing the destroyed-handler/death-smoke owner path; the existing live host arm is the separate damaged-fire routine 00746320."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate loop",
+      "reason": "Already calls ai_defend_member_is_candidate_00a2def0 with current kind/team-set state; remaining reach depends on coordinator creation rather than a missing predicate call."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart binding write_checkpoint",
+      "reason": "Missing the real checkpoint-diff producer and pre-load BSP_Chk_Save owner/current mission key; checkpoint_differs currently always returns false."
+    },
+    {
+      "native": "00780670",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp and src/game_hosts_ship_ai.cpp: local message queues",
+      "reason": "Missing native dispatch game-state, message send/current tick domain and sender readiness state; the inspected pass-side queue cannot supply the complete gate inputs."
+    },
+    {
+      "native": "0074fa80",
+      "status": "skipped",
+      "host_site": "src/dummy_depth_seg34_argon.cpp: unit debug inspector flooded print",
+      "reason": "Only identified original caller is debug-only; excluded by the assignment's single-player rule."
+    }
+  ]
+}
