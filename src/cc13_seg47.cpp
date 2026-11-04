@@ -898,8 +898,16 @@ void plane_set_gear_mode_007b8ce0(Seg47Host& host, Raw plane, std::int32_t mode,
 // value answers 0 when enabled).
 std::int32_t plane_gear_is_down_007b8d70(Raw plane) {
     const Raw channel = plane.deref(0xDEC).sub(0x28);
-    if (channel.at<std::uint8_t>(0) == 0) return 1;
-    return channel.at<float>(4) == kOne_00d7a24c ? 1 : 0;
+    return plane_gear_is_down_007b8d70(PlaneGearChannelView{
+        channel.at<std::uint8_t>(0), channel.at<float>(4)});
+}
+
+std::int32_t plane_gear_is_down_007b8d70(PlaneGearChannelView channel) {
+    // Listing 007B8D79-007B8D98: disabled bypasses the MOVSS; UCOMISS / LAHF /
+    // TEST AH,44h / JNP accepts exactly ordered equality with 00D7A24C (1.0).
+    // Keep the raw and host views on one implementation, including NaNs.
+    if (channel.enabled == 0) return 1;
+    return channel.value == kOne_00d7a24c ? 1 : 0;
 }
 
 // 007B8E70, __thiscall(ECX = plane), ST0 = +B2Ch.

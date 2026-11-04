@@ -23,6 +23,7 @@
 #include "bsp/wire_goal4_chain283_switches.hpp"
 #include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/wire_goal4_chain333_switches.hpp"
+#include "bsp/wire_goal4_chain338_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -19039,8 +19040,10 @@ void GameUnitsHost::Impl::plane_site_probe_007c5ac0(GameUnitSlot& p, float step)
 //   current 7 -> 007CB5F0: state 4, +C04h = -1.0, +904h = +908h > 5.0 and +C18h
 //   = 3 (classDesc+198h != 0), 007C11E0(0), site vtable[24h] 006CED90 (append to
 //   the occupancy vector unless present) and vtable[48h] 006CE230 (+40h = now).
-// SUBSTITUTIONS, labelled: the gear channel (+DECh)+28h is not carried (its
-// enable is the model's class+5D4h), so both gear gates pass; +C49h is taken
+// Goal 4 chain 338: both gear gates now borrow the live channel_b cells and
+// call 007B8D70. Its class+5D4h animation producer is still unbound, so the
+// existing channel retains the native constructor's disabled-byte default.
+// SUBSTITUTIONS, labelled: +C49h is taken
 // clear; both messages are delivered at once (the image drains the loopback
 // queue at row 9 of the same fixed step); the re-parent is not carried (a
 // static airfield); 0090F6C0 (scoring) and 007C11E0(0)'s actuator targets are
@@ -19061,7 +19064,16 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
     if (!(p.plane_wheel_height_1fc >= p.plane_contact_height_bfc)) return false;   // 007CC463 JB
     ++p.td_low_steps;
     if (!(p.plane_airborne_908 > 10.0f)) { ++p.td_refused_airborne; return false; }
-    if (!(p.plane_world_velocity[1] > -6.0f)) { ++p.td_refused_vy; return false; }
+    if constexpr (bsp::kWireGoal4Chain338Bound) {
+        // 007CC47F-007CC494 inline 007B8D70's gate before world velocity. These cells
+        // belong to this plane's existing actuator block, which 007DE3A0 ticks.
+        const auto& gear = p.actuator_block_dec.channel_b;
+        if (bsp::cc13_seg47::plane_gear_is_down_007b8d70({
+                static_cast<std::uint8_t>(gear.enabled), gear.value}) == 0) return false;
+        if (!(p.plane_world_velocity[1] > -6.0f)) { ++p.td_refused_vy; return false; }
+    } else {
+        if (!(p.plane_world_velocity[1] > -6.0f)) { ++p.td_refused_vy; return false; }
+    }
     if constexpr (bsp::kWireGoal4Chain294Bound) {
         // 007CC4B6 posts C5h after these contact gates; 007CCFA0's C5h case
         // delivers 007C71E0. Dispatch the decoded local copy to this live plane.
@@ -19079,7 +19091,16 @@ bool GameUnitsHost::Impl::plane_touchdown_007cc440(GameUnitSlot& p) {
 // row-9 FIFO or a reconstruction of the entire 007C71E0/007CB5F0 bodies.
 bool GameUnitsHost::Impl::deliver_plane_touchdown(GameUnitSlot& p) {
     // 007C71E0 (007C71E6-007C721A).
-    if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
+    if constexpr (bsp::kWireGoal4Chain338Bound) {
+        // 007C71E6-007C723E: class+198h and holder precede the second gear
+        // check. Re-read the receiving plane, rather than caching sender state.
+        if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
+        const auto& gear = p.actuator_block_dec.channel_b;
+        if (bsp::cc13_seg47::plane_gear_is_down_007b8d70({
+                static_cast<std::uint8_t>(gear.enabled), gear.value}) == 0) return false;
+    } else {
+        if (p.plane_min_water_spd_198 == 0.0f || p.plane_contact_deck_bf4 == 0) return false;
+    }
     LandingDeck& d = landing_decks[p.plane_contact_deck_bf4 - 1u];
     if constexpr (kCarrierDeckParentBound) {
         // 007C7244-007C7266: the holder's owner is not the scene parent. Only

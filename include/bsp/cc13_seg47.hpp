@@ -563,6 +563,14 @@ void plane_set_turbo_byte_007b8aa0(Raw plane, std::uint8_t value);
 bool plane_is_cockpit_view_active_007b8c20(Raw plane);
 void plane_set_control_enabled_007b8c30(Seg47Host& host, Raw plane, bool enabled);
 void plane_set_gear_mode_007b8ce0(Seg47Host& host, Raw plane, std::int32_t mode, std::uint8_t flag);
+// Borrow the host's live +28h channel without fabricating a native plane or
+// actuator-block image. The raw entry forwards to this same decision kernel;
+// the value is read only when the channel's enabled byte is nonzero.
+struct PlaneGearChannelView {
+    std::uint8_t enabled;
+    const float& value;
+};
+std::int32_t plane_gear_is_down_007b8d70(PlaneGearChannelView channel);
 std::int32_t plane_gear_is_down_007b8d70(Raw plane);
 float plane_get_float_b2c_007b8e70(Raw plane);
 void plane_lose_power_007b8ef0(Seg47Host& host, Raw plane);
