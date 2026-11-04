@@ -332,6 +332,25 @@ public:
         bool start_landing_94{false};
     };
     StartLandingCopy queue_start_landing_94() const;
+    // Goal 4 chain 343. SHIP_SINK (92h): the wreck's leak redistribution
+    // 0074EC50 inlines 0074EAB0's stores at 0074ED18..0074ED62 (0075B430(92h),
+    // +18h word 0, +4h = 1, +1Ah 0, vtable 00D00518, +1Ch = the leak count,
+    // the rates copied FLD/FSTP from +20h) and routes it at 0074ED7B flags
+    // 7. 00768530 case 92h allocates E8h bytes (007693F7) and calls 00762130
+    // (0076940E); slots of 00D00518: 0074EB20 write (6-bit count, each rate
+    // on 004295C0's raw 32-bit path, scale [00D7A248] FLT_MAX), 0074EB80
+    // read, 0074EB00 IsType. 00821E80's 92h arm (0082220D) loads the copy's
+    // rates through 0074E860. `count` the copy's +1Ch; the rates past
+    // kShipSinkCapacity (the factory's E8h block) are not copied.
+    static constexpr std::uint32_t kShipSinkCapacity = (0xE8u - 0x20u) / 4u;
+    struct ShipSinkCopy {
+        std::uint8_t type{0};
+        bool to_unit{false};
+        bool sink_92{false};
+        std::uint32_t count{0};
+        float rates[kShipSinkCapacity]{};
+    };
+    ShipSinkCopy queue_ship_sink_92(const float* rates, std::uint32_t count) const;
 
 private:
     struct Image;

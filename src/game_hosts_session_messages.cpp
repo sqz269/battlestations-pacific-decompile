@@ -10,6 +10,7 @@
 #include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/session_message_dispatch.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/cc13_seg41_land.hpp"
 #include "bsp/native_bit_cursor_write.hpp"
 #include "bsp/native_session_message_tags_111_112.hpp"
 #include "bsp/native_session_message_tags_107_108.hpp"
@@ -167,11 +168,17 @@ struct HostSessionMessages::Image {
                                         0x004499c0u};
         std::uint32_t slots_00d033ec[5]{0x00762600u, 0x007614f0u, 0x00761540u, 0x007614b0u,
                                         0x004499c0u};
+        // 92h 00D00518 (bsp.py ghidra bytes 00D00518 --length 20): 0074EDA0
+        // scalar delete, 0074EB20 write, 0074EB80 read, 0074EB00 IsType,
+        // 004499C0. 00762130 (seg42) and 0074EAB0 (seg41) both store it.
+        std::uint32_t slots_00d00518[5]{0x0074eda0u, 0x0074eb20u, 0x0074eb80u, 0x0074eb00u,
+                                        0x004499c0u};
         const std::uint32_t* vtable(std::uint32_t image_address) const override {
             if constexpr (kWireGoal4Chain343Bound) {
                 if (image_address == 0x00d033c4u) return slots_00d033c4;
                 if (image_address == 0x00d033d8u) return slots_00d033d8;
                 if (image_address == 0x00d033ecu) return slots_00d033ec;
+                if (image_address == 0x00d00518u) return slots_00d00518;
             } else {
                 // The previous binding had no 98h / 9Ah / 99h profile.
             }
@@ -1082,6 +1089,57 @@ HostSessionMessages::StartLandingCopy HostSessionMessages::queue_start_landing_9
     });
     copy.start_landing_94 = copy.to_unit && copy.type == 0x94;
     // Neither message owns storage; 0064AE00 is not run on these.
+    return copy;
+}
+
+namespace {
+// Goal 4 chain 343. The seg41 message bodies' boundaries: the profile for
+// an image vtable (the same binding seg42 uses) and the extended header.
+struct Seg41MessageHost final : cc13_seg41::SessionMessageHost {
+    explicit Seg41MessageHost(const seg42::VtableBinding& vtables) : vtables_(vtables) {}
+    const std::uint32_t* vtable(std::uint32_t image_address) override {
+        return vtables_.vtable(image_address);
+    }
+    void write_header_0075b480(const void* message, NativeBitCursor* cursor) override {
+        write_native_session_message_header_0075b480(message, cursor);
+    }
+    void read_header_0075b4c0(void* message, NativeSessionReadStream& stream) override {
+        read_native_session_message_header_0075b4c0(message, &stream);
+    }
+
+private:
+    const seg42::VtableBinding& vtables_;
+};
+}  // namespace
+
+HostSessionMessages::ShipSinkCopy HostSessionMessages::queue_ship_sink_92(
+    const float* rates, std::uint32_t count) const {
+    const Image& image = *image_;
+    ShipSinkCopy copy;
+    // Both blocks are the factory's E8h; a count past its capacity would
+    // overrun the image's block too, so it is not posted.
+    if (count > kShipSinkCapacity) return copy;
+    Seg41MessageHost host(image.seg42_vtables);
+    // 0074ED18..0074ED62: 0074EAB0's stores, inline.
+    alignas(4) std::uint8_t sent[0xE8]{};
+    cc13_seg41::ship_sink_construct_0074eab0(sent, count, rates, image.session, host);
+
+    LocalStream stream;
+    cc13_seg41::ship_sink_write_0074eb20(sent, &stream.out, image.maximum_00d7a248, image.numeric);
+    // 00768530 case 92h: operator new(E8h) at 007693F7, 00762130 at 0076940E;
+    // 0076A27B vtable[8] = 0074EB80.
+    stream.begin_read();
+    alignas(4) std::uint8_t queued[0xE8]{};
+    seg42::construct_ship_sink_00762130(reinterpret_cast<seg42::HeaderedMessage*>(queued),
+                                        image.seg42);
+    cc13_seg41::ship_sink_read_0074eb80(queued, stream.in, image.maximum_00d7a248, image.numeric);
+    copy.type = reinterpret_cast<const NativeSessionMessageStorage*>(queued)->type_10;
+    copy.to_unit = copy_goes_to_unit_handler(&cc13_seg41::ship_sink_is_type_0074eb00);
+    copy.sink_92 = copy.to_unit && copy.type == 0x92;
+    std::memcpy(&copy.count, queued + 0x1C, sizeof copy.count);
+    if (copy.count > kShipSinkCapacity) copy.count = kShipSinkCapacity;
+    std::memcpy(copy.rates, queued + 0x20, copy.count * sizeof(float));
+    // Neither message owns storage; 0074EDA0 only restamps.
     return copy;
 }
 

@@ -24,6 +24,7 @@
 #include "bsp/wire_goal4_chain322_switches.hpp"
 #include "bsp/wire_goal4_chain333_switches.hpp"
 #include "bsp/wire_goal4_chain338_switches.hpp"
+#include "bsp/wire_goal4_chain343_switches.hpp"
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/wire_goal4_chain294_switches.hpp"
 #include "bsp/wire_goal4_chain297_switches.hpp"
@@ -4378,7 +4379,23 @@ struct GameUnitsHost::Impl {
                 message.rates[i] = (draws[i] * twice) / (total_water + sum_draws)
                     + s.leaks[i].rate;
             }
+            if constexpr (bsp::kWireGoal4Chain343Bound) {
+                // Goal 4 chain 343: 0074ED18..0074ED62 (0074EAB0's stores) and
+                // 0074ED7B (flags 7) queue 0076E520's copy (0074EB20 write,
+                // 00768530 case 92h 00762130, 0074EB80 read); 00780120 asks
+                // the copy's 0074EB00, and the pump's 0082220D hands the copy's
+                // count and rates to 0074E860.
+                const bsp::HostSessionMessages::ShipSinkCopy copy =
+                    commands.session_messages().queue_ship_sink_92(message.rates.data(),
+                        static_cast<std::uint32_t>(s.leaks.size()));
+                if (copy.sink_92) {
+                    for (std::size_t i = 0; i < message.rates.size(); ++i)
+                        message.rates[i] = i < copy.count ? copy.rates[i] : 0.0f;
+                    pending_ship_sink_92h.push_back(message);
+                }
+            } else {
             pending_ship_sink_92h.push_back(message);
+            }
             done("LeakManager::route_ship_sink_92h", 0x0077c2a0u);
         } else {
             for (std::size_t i = 0; i < s.leaks.size(); ++i) {
