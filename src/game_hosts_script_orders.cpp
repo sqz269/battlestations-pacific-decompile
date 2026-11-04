@@ -41,6 +41,9 @@ namespace bsp::game { void harness_note_mission_end() noexcept; }   // src/game_
 #include "bsp/wire_goal2_chain127_switches.hpp"
 #include "bsp/wire_goal2_chain166_switches.hpp"
 #include "bsp/wire_goal4_chain260_switches.hpp"  // goal 4 chain 260 (kWireGoal4Chain260Bound)
+#include "bsp/wire_goal4_chain331_switches.hpp"  // goal 4 chain 331 (kWireGoal4Chain331Bound)
+#include "bsp/game_hosts_message_manager.hpp"
+#include "bsp/voice_playback.hpp"                // VoiceClipRecord, for 004483F0's record
 #include "bsp/game_hosts_session_messages.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_mission_result.hpp"
@@ -609,7 +612,16 @@ public:
         } else {
         }
     }
-    void message_map_load(const std::string&, int) override {}
+    void message_map_load(const std::string& name, int side) override {
+        // 008C62F6..008C6308: 00706760 on [game+21DCh] with the two Lua
+        // arguments; OFF keeps the no-op.
+        if constexpr (bsp::kWireGoal4Chain331Bound) {
+            owner_.load_mission_message_map(name, side);
+        } else {
+            static_cast<void>(name);
+            static_cast<void>(side);
+        }
+    }
     void call_0088b6d0_0076a9f0_00765590(const std::string&, int) override {}
     void set_entity_message_suppression(void*, bool) override {}
     void set_global_message_suppression(bool) override {}
@@ -627,10 +639,95 @@ private:
     GameScriptOrdersHost& owner_;
 };
 
+// Goal 4 chain 331: the UnloadMessageMap binding 008C6490 through its body
+// bsp::cc13_seg56::lua_unload_message_map. The body reads two arguments and the
+// session word; every other accessor of the two seg56 interfaces belongs to a
+// different binding and is refused rather than answered.
+[[noreturn]] void unload_message_map_unreached(const char* what) {
+    throw std::logic_error(std::string("UnloadMessageMap 008C6490: unreached ") + what);
+}
+
+class UnloadMessageMapArgs final : public bsp::cc13_seg56::LuaArgs {
+public:
+    explicit UnloadMessageMapArgs(bsp::LuaBindingArgumentReader& core) : core_(core) {}
+    int count() override { return core_.count(); }
+    int get_integer(int index) override { return core_.get_integer(index); }
+    double get_number(int index) override { return core_.get_number(index); }
+    bool get_boolean(int index) override { return core_.get_boolean(index); }
+    std::string get_string(int index) override { return core_.get_string(index); }
+    bool is_string(int index) override { return core_.is_string(index); }
+    bool is_nil(int index) override { return core_.is_nil(index); }
+    bool is_entity_table(int index) override { return core_.is_entity_table(index); }
+    void* entity_at(int index) override { return core_.entity_at(index); }
+    bool is_boolean(int) override { unload_message_map_unreached("00B66000"); }
+    bool is_number(int) override { unload_message_map_unreached("00B66050"); }
+    bool is_integer(int) override { unload_message_map_unreached("00B66A60"); }
+    bool is_table(int) override { unload_message_map_unreached("00B661B0"); }
+    bsp::cc13_seg56::Vec3 read_vector3(int) override { unload_message_map_unreached("00888760"); }
+    bool is_vector3_table(int) override { unload_message_map_unreached("0088B840"); }
+    void* to_userdata(int) override { unload_message_map_unreached("00B662D0"); }
+    bool boolean_or(int, bool) override { unload_message_map_unreached("00B662F0"); }
+    double table_field_element(int, const char*, int) override {
+        unload_message_map_unreached("00B67800 element");
+    }
+    double table_field_number_or(int, const char*, double) override {
+        unload_message_map_unreached("00B67800 number");
+    }
+
+private:
+    bsp::LuaBindingArgumentReader& core_;
+};
+
+class UnloadMessageMapGlue final : public bsp::cc13_seg56::GlueHost {
+public:
+    explicit UnloadMessageMapGlue(GameScriptOrdersHost& owner) : owner_(owner) {}
+    // 008C65D8: 00706FC0 on [game+21DCh].
+    void message_map_unload(const std::string& name, int index) override {
+        owner_.unload_mission_message_map(name, index);
+    }
+    // game+1FE4h: the campaign session SetThinkCoreHost::game_non_campaign_flag
+    // answers for LoadMessageMap's same test (008C635B); the session arm is not taken.
+    std::int32_t game_session_mode_1fe4() override { return 0; }
+    void session_manage_messages(const std::string&, int, int) override {
+        unload_message_map_unreached("0088B6D0 MANAGE_MESSAGES (session arm)");
+    }
+    bsp::cc13_seg56::Vec3 game_camera_world_position() override {
+        unload_message_map_unreached("camera position");
+    }
+    bsp::cc13_seg56::Vec3 entity_world_position(void*) override {
+        unload_message_map_unreached("entity position");
+    }
+    bsp::cc13_seg56::Vec3 entity_world_to_local(void*, const bsp::cc13_seg56::Vec3&) override {
+        unload_message_map_unreached("entity inverse");
+    }
+    void input_collect_action_binding_texts(int, std::vector<std::string>&,
+        std::vector<std::string>&) override {
+        unload_message_map_unreached("006A33F0");
+    }
+    void forced_input_set_insert(int) override { unload_message_map_unreached("0069FA40"); }
+    void forced_input_set_erase(int) override { unload_message_map_unreached("008CA7B0"); }
+    std::int32_t vehicle_class_slot(int) override { unload_message_map_unreached("00437F50"); }
+    std::int32_t vehicle_class_cache_size() override { unload_message_map_unreached("00437F50 size"); }
+    void vehicle_class_resize_cache(int) override { unload_message_map_unreached("00437BD0"); }
+    void vehicle_class_release_cached(int) override { unload_message_map_unreached("class release"); }
+    void log_text(const std::string&) override { unload_message_map_unreached("004254B0"); }
+
+private:
+    GameScriptOrdersHost& owner_;
+};
+
+// Not a kScriptOrderBindings row so that the switch can withhold it: OFF leaves
+// UnloadMessageMap the unimplemented record it was.
+constexpr ScriptOrderBinding kUnloadMessageMapBinding{"UnloadMessageMap", 0x008c6490u};
+
 const ScriptOrderBinding* find_binding(const char* name) noexcept {
     if (name == nullptr) return nullptr;
     for (const ScriptOrderBinding& row : kScriptOrderBindings) {
         if (std::strcmp(row.name, name) == 0) return &row;
+    }
+    if constexpr (bsp::kWireGoal4Chain331Bound) {
+        if (std::strcmp(kUnloadMessageMapBinding.name, name) == 0) return &kUnloadMessageMapBinding;
+    } else {
     }
     return nullptr;
 }
@@ -757,6 +854,43 @@ void GameScriptOrdersHost::set_final_scoring_function_name(const std::string& na
     if constexpr (bsp::kWireGoal2Chain127Bound) {
         scoring_name_owner_->set_final_scoring_function_name(name);
     }
+}
+
+void GameScriptOrdersHost::load_mission_message_map(const std::string& name, int side) {
+    // Goal 4 chain 331. 008C62F6 MOV ECX,[00E188A8]; 008C62FC MOV ECX,[ECX+21DCh];
+    // 008C6302/008C6307 push the integer then &name; 008C6308 CALL 00706760. No null
+    // test: [game+21DCh] is built at 004DFA39 inside construct_world, which the
+    // load walk runs before luaStageInit (where the missions call LoadMessageMap,
+    // e.g. bsm_01_stationed_at_pearl.lua:39 LoadMessageMap("bsmdlg",1)). The
+    // host builds it only under kMessageManagerCc15Bound, so a missing manager is
+    // counted instead of dereferenced.
+    if (message_manager_ == nullptr || !message_manager_->constructed()) {
+        ++message_maps_without_manager_;
+        log_.notef("LoadMessageMap(\"%s\", %d): no MessageManager [game+21DCh] (00706760 "
+            "not run, goal 4 chain 331)", name.c_str(), side);
+        return;
+    }
+    const std::size_t before = message_manager_->record_count();
+    message_manager_->load_message_map_00706760(name, side);
+    ++message_maps_loaded_;
+    log_.notef("LoadMessageMap(\"%s\", %d): 00706760 records %zu -> %zu (goal 4 chain 331)",
+        name.c_str(), side, before, message_manager_->record_count());
+}
+
+void GameScriptOrdersHost::unload_mission_message_map(const std::string& name, int side) {
+    // Goal 4 chain 331. 008C65C6 MOV ECX,[00E188A8]; 008C65CC MOV ECX,[ECX+21DCh];
+    // 008C65D2/008C65D7 push the integer then &name; 008C65D8 CALL 00706FC0. No
+    // shipped script calls UnloadMessageMap; the native registers it for every
+    // mission state all the same. A missing manager is counted, as for the load.
+    if (message_manager_ == nullptr || !message_manager_->constructed()) {
+        ++message_maps_without_manager_;
+        log_.notef("UnloadMessageMap(\"%s\", %d): no MessageManager [game+21DCh] (00706FC0 "
+            "not run, goal 4 chain 331)", name.c_str(), side);
+        return;
+    }
+    message_manager_->unload_message_map_00706fc0(name, side);
+    ++message_maps_unloaded_;
+    log_.notef("UnloadMessageMap(\"%s\", %d): 00706FC0 (goal 4 chain 331)", name.c_str(), side);
 }
 
 std::size_t script_orders_drain_loopback_0076c600() {
@@ -5000,6 +5134,12 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         message_map_name_ = get_string(0);
         message_map_index_ = get_integer(1);
         results = bsp::lua_binding_load_message_map(*this, core);
+    } else if (bsp::kWireGoal4Chain331Bound
+               && std::strcmp(binding->name, "UnloadMessageMap") == 0) {
+        // Goal 4 chain 331: 008C6490's body; find_binding offers the row only ON.
+        UnloadMessageMapArgs args(*this);
+        UnloadMessageMapGlue glue(*this);
+        results = bsp::cc13_seg56::lua_unload_message_map(args, glue);
     } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_music_control_set_level(*this, core);
@@ -7405,6 +7545,13 @@ void GameScriptOrdersHost::report() {
             kDialogSequencerBound ? 1 : 0, dialog_messages_, dialog_callbacks_, dialog_pauses_,
             dialog_finished_, dialog_missing_voice_, dialog_entries_.size(),
             message_map_name_.c_str(), message_map_index_);
+        if constexpr (bsp::kWireGoal4Chain331Bound) {
+            log_.notef("summary message maps loaded=%llu unloaded=%llu without_manager=%llu "
+                "dialog records resolved=%llu (008C6308 00706760, 008C65D8 00706FC0, "
+                "00448416 00705E00, goal 4 chain 331)", message_maps_loaded_,
+                message_maps_unloaded_, message_maps_without_manager_, dialog_records_resolved_);
+        } else {
+        }
         if (mission_end_.seen) {
             // Packet cc9_lua_mission_narrative: with the narrative bound the
             // callback fires, so the line says whether EndScene was reached.
@@ -7697,7 +7844,36 @@ std::pair<float, float> GameScriptOrdersHost::dialog_message_timing(const std::s
     if (cached != dialog_message_cache_.end()) return cached->second;
     std::pair<float, float> timing{0.0f, 0.0f};
     std::string voice;
-    if (state_ != nullptr && !message_map_name_.empty()) {
+    bool from_record = false;
+    if constexpr (bsp::kWireGoal4Chain331Bound) {
+        // 004483F0 (src/panel_sequence.cpp request_panel_voice_004483f0):
+        // 00448416 CALL 00705E00 on [game+21DCh] with the command's name and 0,
+        // over the records 00706760 loaded for LoadMessageMap and 007065E0 for
+        // Messages.lua. 005B94D0 (begin_panel_voice_record_005b94d0) then holds
+        // the row for keys.back().end_14 when the record has keys. A miss is
+        // 00705E00's own "<name>" record (kMessageRecordMissCc15Bound). The
+        // voice is the record's +0Ch, 00704590's "voice" with its "tutorials"
+        // language insert. LABELLED: a record with no keys takes 005B94D0's
+        // text/voice-poll arm, which this host does not model (hold 0, as the
+        // map-file read below gives for no subtitles). OFF, or with no manager,
+        // keeps the host's own read of the last-loaded map file.
+        if (message_manager_ != nullptr && message_manager_->constructed()) {
+            const bsp::VoiceClipRecord* record = message_manager_->resolve_record_00705e00(message);
+            if (record != nullptr) {
+                if (!record->timed_keys_34.empty()) {
+                    timing.second = record->timed_keys_34.back().end_14;
+                }
+                const NativeString& name = record->auxiliary_0c;
+                if (name.data() != nullptr && name.length() != 0) {
+                    voice.assign(name.data(), name.length());
+                }
+                from_record = true;
+                ++dialog_records_resolved_;
+            }
+        }
+    } else {
+    }
+    if (!from_record && state_ != nullptr && !message_map_name_.empty()) {
         std::string text;
         const std::string path = "scripts/datatables/messagemaps/" + message_map_name_ + ".lua";
         FILE* f = nullptr;

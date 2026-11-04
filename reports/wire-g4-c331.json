@@ -1,0 +1,92 @@
+{
+  "chain": 331,
+  "slot": "g4-w3",
+  "switch": "kWireGoal4Chain331Bound (include/bsp/wire_goal4_chain331_switches.hpp)",
+  "summary": "Lua LoadMessageMap / UnloadMessageMap reach the MessageManager [game+21DCh] through 00706760 / 00706FC0, and the dialog sequencer resolves its message rows through 00705E00 on the records they load. Before: wired 9335, called 4370. After: wired 9336, called 4373.",
+  "rows": [
+    {
+      "native": "00706760",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: SetThinkCoreHost::message_map_load -> GameScriptOrdersHost::load_mission_message_map -> GameMessageManagerHost::load_message_map_00706760",
+      "evidence": "008C62F6..008C6308: MOV ECX,[00E188A8]; MOV ECX,[ECX+21DCh]; push int, push &name; CALL 00706760, no null test. Missions call it from luaStageInit (bsm_01_stationed_at_pearl.lua:39 LoadMessageMap(\"bsmdlg\",1)); the load walk builds the manager in construct_world before that. Load flags 00CFD2A4 = {1,0,0,1} read from the image."
+    },
+    {
+      "native": "00702a80",
+      "status": "wired",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: load_message_map_00706760 / unload_message_map_00706fc0 (Scripts/datatables/messagemaps/<name>.lua)",
+      "evidence": "Reached only through 00706760 and 00706FC0; call_graph shows 3 call sites from load_message_map_00706760."
+    },
+    {
+      "native": "008c6490",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch \"UnloadMessageMap\" -> bsp::cc13_seg56::lua_unload_message_map over UnloadMessageMapArgs / UnloadMessageMapGlue",
+      "evidence": "The native registers the global for every mission state; the host had no row, so a call was an unimplemented record. The session arm (game+1FE4h == 1) is not taken: the glue answers 0, as SetThinkCoreHost does for LoadMessageMap. No shipped script calls it."
+    },
+    {
+      "native": "00706fc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: UnloadMessageMapGlue::message_map_unload -> GameScriptOrdersHost::unload_mission_message_map -> GameMessageManagerHost::unload_message_map_00706fc0",
+      "evidence": "008C65C6..008C65D8: MOV ECX,[00E188A8]; MOV ECX,[ECX+21DCh]; push int, push &name; CALL 00706FC0."
+    },
+    {
+      "native": "00702bd0",
+      "status": "wired",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: load_actors_and_messages_00706160 unload arm, under unload_message_map_00706fc0",
+      "evidence": "Inlined into 00706160's unload arm in this build, so call_graph has no symbol for it; reached when 00706FC0 unloads a map whose keys exist."
+    },
+    {
+      "native": "00705e00",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dialog_message_timing (004483F0's 00448416 call)",
+      "evidence": "Already called from the warning path; now also the dialog sequencer's record lookup instead of the host's fopen re-read of the last map. Hold = keys.back().end_14 (005B94D0); in all 5765 shipped subtitle blocks the last end is the largest, and no map voice contains \"tutorials\", so shipped timings match the old read except a missing message, which now gets 00705E00's own miss record."
+    },
+    {
+      "native": "008c61c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_script_orders.cpp: GameScriptOrdersHost::dispatch \"LoadMessageMap\" -> bsp::lua_binding_load_message_map",
+      "evidence": "The binding body was already called; this chain gives its message_map_load arm a real target instead of the empty override."
+    },
+    {
+      "native": "008d76c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: Impl::collect_language_names (inside 00706760)",
+      "reason": "Only 00706760's language sweep arm reads it, gated on [004C1E90()]+8 == 2; the message-manager host answers that mode 0 and keeps no language select/FileBlock mount for the sweep."
+    },
+    {
+      "native": "007072c0",
+      "status": "skipped",
+      "host_site": "src/engine_seg11_35_66_cc13.cpp: load_message_map_list_007072c0",
+      "reason": "No native caller or reference (bsp.py callers: 0 sites); nothing to call it from."
+    },
+    {
+      "native": "007f8890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_message_manager.cpp: Impl::profile_owns_content (00706760's englishauthentic bank name)",
+      "reason": "Needs the profile owned-content list (profile+D0h) whose producer commit_profile_007fae70 bsp_game does not run."
+    },
+    {
+      "native": "0088b6d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: SetThinkCoreHost::call_0088b6d0_0076a9f0_00765590",
+      "reason": "Session MANAGE_MESSAGES message for game+1FE4h == 1 (multiplayer); single player never takes it."
+    },
+    {
+      "native": "005bbf10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp: dialog_tick (host stand-in for the voice sequence tail)",
+      "reason": "The voice manager [00E198C4]+A4h and its narrative screen rows/slots (005BC640, 005B94D0, 00702CC0) are not built; the host plays no voice."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Needs the ambient sound instance and the in-mission camera (game+19FCh); the HUD adapter answers has_ambient_sound_instance false and no camera."
+    },
+    {
+      "native": "009badb0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_script_orders.cpp / game_hosts_ai.cpp: create_bot_task (0099A170's BotTask_Make* factories)",
+      "reason": "The factories build native task objects with image vtables (e.g. 00D20500) over 0099C6F0; the host models tasks as (unit, command, target) handles, so no task object exists to construct."
+    }
+  ]
+}

@@ -85,6 +85,7 @@
 #include "bsp/wire_goal4_chain249_switches.hpp"   // 004CD0F0's sound-class arm
 #include "bsp/wire_goal4_chain264_switches.hpp"   // the class-table resets after luaPrecacheUnits
 #include "bsp/wire_goal4_chain312_switches.hpp"   // 004DA780's session-teardown sound reset
+#include "bsp/wire_goal4_chain331_switches.hpp"   // LoadMessageMap's 00706760 on game+21DCh
 #include "bsp/game_sound_dialog_runtime.hpp"
 #include "bsp/game_sound_runtime.hpp"
 #include "bsp/sound_frame_service.hpp"
@@ -4466,6 +4467,12 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             if constexpr (bsp::kWireGoal2Chain127Bound) {
                 host.script_orders->attach_scoring_name_owner(host.result.get());
             }
+            if constexpr (bsp::kWireGoal4Chain331Bound) {
+                // [game+21DCh] for the LoadMessageMap binding (008C62FC). Null until
+                // construct_world builds it; that step attaches it as well.
+                host.script_orders->attach_message_manager(host.messages.get());
+            } else {
+            }
             for (const GameSceneMarkerSeed& marker : markers) {
                 // Packet cc9_building_pad_model: the class id lets the pad model
                 // adopt the LandingPoint (1Dh) markers (docs/SHIP_AI_OPEN_ITEMS.md 75).
@@ -4727,6 +4734,14 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                         host.language);
                 }
                 host.messages->construct_00707480();  // logs its own native row
+                if constexpr (bsp::kWireGoal4Chain331Bound) {
+                    // 004DFA4B stores the manager at game+21DCh, the `this`
+                    // 008C62FC hands 00706760.
+                    if (host.script_orders != nullptr) {
+                        host.script_orders->attach_message_manager(host.messages.get());
+                    }
+                } else {
+                }
             }
         }
         if (bsp::kSkirmishSessionCc13Bound && method == "load_warning_bank") {
