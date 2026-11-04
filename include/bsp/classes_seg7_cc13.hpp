@@ -24,8 +24,19 @@ T& native_at(Object base, std::uint32_t offset) {
     return *reinterpret_cast<T*>(base + offset);
 }
 
-struct Seg7Host {
+// The float reader needs only these two lookup operations. A source host may
+// borrow a parsed bag and expose its retained native type/+0Ch payload without
+// implementing unrelated soldier, traffic, allocator or scene-node services.
+// This is a source interface; it does not recover the Original thiscall ABI.
+struct PropertyBagFloatLookupHost {
+    virtual ~PropertyBagFloatLookupHost() = default;
+    virtual bool property_bag_contains_0048e9f0(Object bag, const char* name) = 0;
+    virtual Object property_bag_find_008f2260(Object bag, const char* name) = 0;
+};
+
+struct Seg7Host : PropertyBagFloatLookupHost {
     virtual ~Seg7Host() = default;
+    bool property_bag_contains_0048e9f0(Object bag, const char* name) override;
 
     // Globals.
     virtual Object game_00e188a8() = 0;                  // [00E188A8]
@@ -161,7 +172,7 @@ Object property_bag_create_iterator_00487040(Seg7Host& host, Object bag);  // ne
 // 0048F5D0 __thiscall(bag, name, float fallback), RET 8: fallback when
 // 0048E9F0 fails; else 008F2260's record +0Ch as float when +4 == 1, else the
 // int converted (CVTSI2SS).
-float property_bag_get_float_or_default_0048f5d0(Seg7Host& host, Object bag, const char* name,
+float property_bag_get_float_or_default_0048f5d0(PropertyBagFloatLookupHost& host, Object bag, const char* name,
                                                  float fallback);
 
 // ---------------------------------------------------------------------------
