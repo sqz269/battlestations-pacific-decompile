@@ -1,0 +1,166 @@
+{
+  "run": 1005,
+  "chain": 492,
+  "owner": "agent/g4-w3",
+  "switch": "bsp::kWireGoal4Chain492Bound",
+  "scope": "Reuse the complete Section x87 angle normalization body for finite live turning-gun platform yaw seeds.",
+  "rows": [
+    {
+      "native": "00abe960",
+      "status": "wired",
+      "host_site": "src/game_hosts_gunnery.cpp:seed_angles_from_first_arc_0085a3d0, inlined into GameGunneryHost::Impl::build_guns",
+      "state": "The first retained traverse/fire arc supplies its clamped horizontal midpoint; the result supplies the gun's current and target horizontal angles (+480h/+494h).",
+      "evidence": "0085A6AC..0085A6FF and 00ABE960..00ABE9B6 perform the same fmod, float stores and pi fold with CE3828/CE3D18/CE3D28. This is shared arithmetic, not a recovered original call edge.",
+      "abi": "Existing MSVC Win32 __fastcall adapter: ECX actual host CRT _CIfmod entrypoint, EDX literal-pointer array, stack float angle, ST0 result, RET 4. No new address-suffixed body.",
+      "call_site": "100b210a",
+      "called": true,
+      "call_sites": 1
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing live producers for unit-pick screen+30h mode and the selection vector at +C4h; the host currently records the reset."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp:state_message_build_00721280 (no single-player host caller)",
+      "reason": "Network controller-state snapshot producer/consumer binding is absent; single-player network snapshots are outside this packet."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::report",
+      "reason": "Missing live snapshot producer/consumer binding; the host applies director state directly and only names the network snapshot in its log."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_integer_add.cpp:add_native_scene_property_integer_word_008f3710",
+      "reason": "No missing executable call: baseline readiness already reports called=true with one reachable call site despite state=ready."
+    },
+    {
+      "native": "008f39b0",
+      "status": "skipped",
+      "host_site": "src/native_scene_property_enum_add.cpp:add_native_scene_property_enum_word_008f39b0",
+      "reason": "No missing executable call: the current built inventory already reports two reachable calls to this existing provider."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block via SceneNumericPropertyMerge",
+      "reason": "No missing executable call: baseline readiness already reports called=true with two reachable call sites despite state=ready."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block via SceneNumericPropertyMerge",
+      "reason": "No missing executable call: baseline readiness already reports called=true with two reachable call sites despite state=ready."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native device-class allocation/owner and downstream descriptor field consumers; constructing a discarded class would not wire gameplay state."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native bomb-platform class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native multibomb-platform class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native rapid-fixed-slave class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native rapid-turning class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native single-turning class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns",
+      "reason": "The live depth-charge path reads Type/cone fields directly; native class construction still needs a retained class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:GameGunneryHost::Impl::build_guns (candidate descriptor owner)",
+      "reason": "Missing retained native catapult class owner and Lua field loading/consumer path."
+    },
+    {
+      "native": "00a04240",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:GameAiCoordinatorHost::Impl::group_value_record_00a04560",
+      "reason": "Missing the two real entity-weight map owners/find binding and SetHintWeight producers; current single-player records use the documented default multiplier."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group score-list planner recording",
+      "reason": "Missing score-list owner; its only native consumer is a debug text overlay, which this assignment excludes."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:group score-list planner recording",
+      "reason": "Missing score-list owner; its only native consumer is a debug text overlay, which this assignment excludes."
+    },
+    {
+      "native": "009f3f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::register_generated_units",
+      "reason": "Missing the retained raw 2268h brain owner and complete constructor host binding; current controller state is a typed host projection."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:MissionTeardown::close_result_gui recording",
+      "reason": "Missing the native transition's game+7184h/movie-screen owner and required transition/input/asynchronous service callbacks."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:set_ambient_volume",
+      "reason": "Missing a retained ambient SoundInstance receiver; the current host discards the volume and records the call."
+    }
+  ],
+  "totals": {
+    "readiness_wired_before": 9775,
+    "readiness_wired_after": 9776,
+    "unique_reconstructed_addresses_called_before": 4845,
+    "unique_reconstructed_addresses_called_after": 4846
+  },
+  "validation": {
+    "baseline": "Fresh index and scripts/build.ps1 passed, all five existing CTests.",
+    "build": "scripts/build.ps1 passed after final C++ edits, all five existing CTests.",
+    "probe": "One local manifested Win32 probe passed 54 bitwise finite-boundary comparisons against the previous 0099BA10 path across PC24/53/64; ESP and x87 TOP stayed balanced.",
+    "call_graph": "call_graph.py who 00abe960 reports a reachable call from GameGunneryHost::Impl::build_guns at 100b210a; path reaches WinMainCRTStartup. 0099BA10 retains one reachable call through the pitch/old fallback helper.",
+    "readiness": "wire_readiness.py --standins reports 00abe960 wired, called=true, call_sites=1.",
+    "pc24_lint": "pc24_lint.py --staged and --diff origin/main...HEAD: zero findings."
+  },
+  "limitations": [
+    "No game execution was performed; executable reachability and an isolated ABI/arithmetic probe are not gameplay validation.",
+    "The original CRT BF857A dispatcher/error hooks are not reproduced; the genuine host CRT x87 entrypoint supplies fmod.",
+    "The original GUI Section companion emitter is not linked from the current active GUI factory; no dormant GUI edit was retained.",
+    "The switch leaves pitch on the existing path and preserves the previous path for nonfinite horizontal inputs."
+  ]
+}
