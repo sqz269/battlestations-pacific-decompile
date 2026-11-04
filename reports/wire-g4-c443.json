@@ -1,0 +1,383 @@
+{
+  "chain": 443,
+  "owner": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain443Bound",
+  "source_wired_before": 9688,
+  "entry_reachable_addresses_before": 4718,
+  "entry_reachable_addresses_after": 4723,
+  "readiness_called_before": 4937,
+  "new_reconstructed_bodies": 0,
+  "evidence": [
+    "Baseline and final scripts/build.ps1 passed reconstructed_math and tool_tests (2/2).",
+    "bsp.py show 00885A70 and callers 006B82A0/006B8320 identify the integer-key number/string setter calls; show 006B82A0/006B8320 confirms push key, push value, settable order.",
+    "LiveMissionArgumentPush is reached by the existing 00885DA0 argument producer over GameMissionLuaHost mission state. The borrowed LuaMachine wraps that exact state, owns_state=false, with its existing Win32 +4h state layout.",
+    "Number pushes pass the actual initialized float parameter address to the existing x87 push body. Boolean/string/nil pushes use existing bodies; no second address body was added.",
+    "Numeric/string table entries use their real projected tag/value and 1-based integer key converted to the native float key. The parent was just created by 00885DA0 with no metatable. Other tags keep recursive rawseti and the tag-4 no-push guard.",
+    "Renamed three existing LuaMachine methods with address suffixes for executable attribution; compatibility names are inline forwards to the same bodies, and reconstruction ledger records supersede the old names.",
+    "call_graph.py who confirms direct calls from LiveMissionArgumentPush to the actual bodies for all seven addresses; callback-name matches are not the evidence. create_table_006B84B0 is ICF-folded with an identical existing table creator, with the direct argument-host call retained.",
+    "No game execution or original ABI compatibility validation was performed."
+  ],
+  "rows": [
+    {
+      "native": "006b80c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_boolean_006b80c0"
+    },
+    {
+      "native": "006b80e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_number_006b80e0"
+    },
+    {
+      "native": "006b8120",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_string_006b8120"
+    },
+    {
+      "native": "006b8130",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_nil_006b8130"
+    },
+    {
+      "native": "006b84b0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_create_table_006b84b0"
+    },
+    {
+      "native": "006b82a0",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_table_pair_00885a70"
+    },
+    {
+      "native": "006b8320",
+      "status": "wired",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_table_pair_00885a70"
+    },
+    {
+      "native": "00885a70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp: LiveMissionArgumentPush::lua_push_table_pair_00885a70",
+      "reason": "The host retains dense argument arrays, not the raw keyed VariantMap owner and iterator/storage/string adapters required by this separate body; only its numeric-key scalar callees are wired here."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 and HudRootListsBinding::push_controlled_unit_interface_00647040",
+      "reason": "Missing live producers for pick-screen mode +30h and selection-vector +C4h; constructing an empty vector would not reset the actual selection state."
+    },
+    {
+      "native": "00525250",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp: helm-order squadron_target path",
+      "reason": "Needs player pick-screen/cursor state, rather than the script-specified target used by the current helm-order path; mission-frame file also belongs to an in-review branch."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene-property loading",
+      "reason": "Readiness lists these as ready but already reports entry-reachable body calls; no additional wiring selected."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: native scene-property loading",
+      "reason": "Readiness lists these as ready but already reports entry-reachable body calls; no additional wiring selected."
+    },
+    {
+      "native": "00b0fd70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: unit record remap callbacks",
+      "reason": "record_remap_texture_name currently returns an empty string; missing retained authored texture-name producer and corresponding actual render-remap owner."
+    },
+    {
+      "native": "00b0fdc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: unit record remap callbacks",
+      "reason": "record_remap_texture_name currently returns an empty string; missing retained authored texture-name producer and corresponding actual render-remap owner."
+    },
+    {
+      "native": "00b0fe10",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: unit record remap callbacks",
+      "reason": "record_remap_texture_name currently returns an empty string; missing retained authored texture-name producer and corresponding actual render-remap owner."
+    },
+    {
+      "native": "00b0fe60",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: unit record remap callbacks",
+      "reason": "record_remap_texture_name currently returns an empty string; missing retained authored texture-name producer and corresponding actual render-remap owner."
+    },
+    {
+      "native": "00a15950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI tuning/party selection",
+      "reason": "Needs the actual brain array and non-null planner +0Ch producer; the tuning host alone does not supply that owner."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: checkpoint-difference preload path",
+      "reason": "Needs the actual BSP_Chk_Save table/current mission key and checkpoint-difference event in this preload path; not replaced by a fabricated checkpoint result."
+    },
+    {
+      "native": "00a10710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group command installation",
+      "reason": "Native command storage, group ownership and attack-observer lifetime adapters are still required before replacing the semantic command projection."
+    },
+    {
+      "native": "00a10890",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group command installation",
+      "reason": "Native command storage, group ownership and attack-observer lifetime adapters are still required before replacing the semantic command projection."
+    },
+    {
+      "native": "00a109b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group command installation",
+      "reason": "Native command storage, group ownership and attack-observer lifetime adapters are still required before replacing the semantic command projection."
+    },
+    {
+      "native": "00a10ae0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group command installation",
+      "reason": "Native command storage, group ownership and attack-observer lifetime adapters are still required before replacing the semantic command projection."
+    },
+    {
+      "native": "00a102d0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group command installation",
+      "reason": "Native command storage, group ownership and attack-observer lifetime adapters are still required before replacing the semantic command projection."
+    },
+    {
+      "native": "00442b90",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442c50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442ce0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442d80",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442e20",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442ec0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442f50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "00442ff0",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_devices.cpp: device metadata production",
+      "reason": "Needs canonical native device-class allocation/base construction and subsequent reader/destructor dispatch, rather than the current typed metadata rows."
+    },
+    {
+      "native": "005cafb0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "005cafc0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "005cb970",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "005cb9c0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "005cb9f0",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "005cba20",
+      "status": "skipped",
+      "host_site": "src/frontend_seg19_21_cc13.cpp: movie-camera debug screen 36h setters",
+      "reason": "Debug-screen-only state; excluded by the single-player/debug-only selection rule."
+    },
+    {
+      "native": "007904d0",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCam frame/input helpers",
+      "reason": "Needs the free-mover input/frame owner and its angle/zoom producers; the live scripted keyframe camera is a separate owner."
+    },
+    {
+      "native": "0078e480",
+      "status": "skipped",
+      "host_site": "src/engine_seg43_45_cc13.cpp: MovCam frame/input helpers",
+      "reason": "Needs the free-mover input/frame owner and its angle/zoom producers; the live scripted keyframe camera is a separate owner."
+    },
+    {
+      "native": "0078fcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: MovieParentBinding::plane_velocity_810",
+      "reason": "The actual plane +810h vector still lacks a traced writer in this binding; its zero stand-in is not valid state for wiring this getter."
+    },
+    {
+      "native": "00954990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: SelectControlledUnitBinding::set_unit_controlled_audio",
+      "reason": "Needs ship sound owner +BBCh, device list +428h and a consumed +6B4h flag; the current callback only records the event."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship firepower ammo/clear callbacks",
+      "reason": "Missing canonical ammo record/alternate +48h and native unit +660h vector producers; the retained typed firing projection cannot be passed as those raw objects."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp: ship firepower ammo/clear callbacks",
+      "reason": "Missing canonical ammo record/alternate +48h and native unit +660h vector producers; the retained typed firing projection cannot be passed as those raw objects."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native GUI animated-value helpers",
+      "reason": "Needs the actual animated-value +50h/+54h/+58h object and virtual-call/notification adapter, not a widget alpha/timed-entry substitute."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: native GUI animated-value helpers",
+      "reason": "Needs the actual animated-value +50h/+54h/+58h object and virtual-call/notification adapter, not a widget alpha/timed-entry substitute."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner",
+      "reason": "Existing owner already calls these bodies; no live host acquisition/publication/update adapter for that timed owner was established in this batch."
+    },
+    {
+      "native": "00ad3990",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner",
+      "reason": "Existing owner already calls these bodies; no live host acquisition/publication/update adapter for that timed owner was established in this batch."
+    },
+    {
+      "native": "00ad39a0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_owner.cpp: GuiTimedEntryOwner",
+      "reason": "Existing owner already calls these bodies; no live host acquisition/publication/update adapter for that timed owner was established in this batch."
+    },
+    {
+      "native": "00a9ac70",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Current listbox uses semantic companion fields/rows; raw listbox layout and row/listener virtual-call adapters are needed before these separate native bodies can consume it."
+    },
+    {
+      "native": "00a9c8f0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Current listbox uses semantic companion fields/rows; raw listbox layout and row/listener virtual-call adapters are needed before these separate native bodies can consume it."
+    },
+    {
+      "native": "00a9cdc0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Current listbox uses semantic companion fields/rows; raw listbox layout and row/listener virtual-call adapters are needed before these separate native bodies can consume it."
+    },
+    {
+      "native": "00a9ceb0",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Current listbox uses semantic companion fields/rows; raw listbox layout and row/listener virtual-call adapters are needed before these separate native bodies can consume it."
+    },
+    {
+      "native": "00a9cf30",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime",
+      "reason": "Current listbox uses semantic companion fields/rows; raw listbox layout and row/listener virtual-call adapters are needed before these separate native bodies can consume it."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp and src/camera_clip_planes.cpp: camera helpers",
+      "reason": "No matching live original caller for the FOV-aspect product or extra-plane set/clear event was established; adding an unused calculation or invented clip-plane event would not wire real behavior."
+    },
+    {
+      "native": "00b70410",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp and src/camera_clip_planes.cpp: camera helpers",
+      "reason": "No matching live original caller for the FOV-aspect product or extra-plane set/clear event was established; adding an unused calculation or invented clip-plane event would not wire real behavior."
+    },
+    {
+      "native": "00b70470",
+      "status": "skipped",
+      "host_site": "src/camera_configuration.cpp and src/camera_clip_planes.cpp: camera helpers",
+      "reason": "No matching live original caller for the FOV-aspect product or extra-plane set/clear event was established; adding an unused calculation or invented clip-plane event would not wire real behavior."
+    },
+    {
+      "native": "00bf1130",
+      "status": "skipped",
+      "host_site": "src/game_hosts_vfs.cpp: substream ownership candidate",
+      "reason": "Needs a genuine adopted source-stream dispatch/ownership transfer and slice producer; no such live producer was established here."
+    },
+    {
+      "native": "00bba030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: MSAR checksum/TOC helpers",
+      "reason": "Needs a live MSAR provider carrying archive bytes and retaining the TOC; ordinary existing VFS reads are not that archive ownership path."
+    },
+    {
+      "native": "00bbb890",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: MSAR checksum/TOC helpers",
+      "reason": "Needs a live MSAR provider carrying archive bytes and retaining the TOC; ordinary existing VFS reads are not that archive ownership path."
+    },
+    {
+      "native": "00425c20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: profile-manager refresh",
+      "reason": "Needs publication/lifetime ownership and real consumers of ProfileManagerOwner; invoking the accessor only to allocate an otherwise unused owner would not wire behavior."
+    }
+  ],
+  "source_wired_after": 9690,
+  "readiness_called_after": 4948,
+  "validation": {
+    "build": "scripts/build.ps1 passed; 2/2 CTest suites",
+    "binary_graph": "all seven actual body symbols have direct entry-reachable calls from LiveMissionArgumentPush",
+    "game_executed": false,
+    "abi_compatible": false
+  }
+}

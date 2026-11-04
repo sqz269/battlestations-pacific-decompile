@@ -59,13 +59,17 @@ public:
     void push_string(const char* text);                       // 006B8120
     void push_nil();                                          // 006B8130
     void set_string_number(const char* key, float value);     // 006B8260
-    void set_number_number(float key, float value);           // 006B82A0
-    void set_number_string(float key, const char* value);     // 006B8320
+    void set_number_number_006b82a0(float key, float value);
+    void set_number_string_006b8320(float key, const char* value);
+    // Compatibility names forward to the same reconstructed bodies.
+    void set_number_number(float key, float value) { set_number_number_006b82a0(key, value); }
+    void set_number_string(float key, const char* value) { set_number_string_006b8320(key, value); }
     void set_string_string(const char* key, const char* value); // 006B8360
     void set_field_nil(const char* key);                      // 006B8390
     void get_global(const char* name);                        // 006B8460
     void get_table(int index);                                // 006B8470
-    void create_table();                                      // 006B84B0
+    void create_table_006b84b0();
+    void create_table() { create_table_006b84b0(); }
     void set_table(int index);                                // 006B84D0
     int protected_call(int nargs, int nresults, int errfunc); // 006B8530
     int next(int index);                                      // 006B85B0

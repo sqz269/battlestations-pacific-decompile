@@ -131,12 +131,12 @@ void LuaMachine::set_string_number(const char* key, float value) {
     lua_pushnumber(state_, static_cast<double>(value));
     lua_settable(state_, -3);
 }
-void LuaMachine::set_number_number(float key, float value) {
+void LuaMachine::set_number_number_006b82a0(float key, float value) {
     lua_pushnumber(state_, static_cast<double>(key));
     lua_pushnumber(state_, static_cast<double>(value));
     lua_settable(state_, -3);
 }
-void LuaMachine::set_number_string(float key, const char* value) {
+void LuaMachine::set_number_string_006b8320(float key, const char* value) {
     lua_pushnumber(state_, static_cast<double>(key));
     lua_pushstring(state_, value);
     lua_settable(state_, -3);
@@ -153,7 +153,7 @@ void LuaMachine::set_field_nil(const char* key) {
 }
 void LuaMachine::get_global(const char* name) { lua_getfield(state_, LUA_GLOBALSINDEX, name); }
 void LuaMachine::get_table(int index) { lua_gettable(state_, index); }
-void LuaMachine::create_table() { lua_createtable(state_, 0, 0); }
+void LuaMachine::create_table_006b84b0() { lua_createtable(state_, 0, 0); }
 void LuaMachine::set_table(int index) { lua_settable(state_, index); }
 int LuaMachine::protected_call(int nargs, int nresults, int errfunc) {
     return lua_pcall(state_, nargs, nresults, errfunc);

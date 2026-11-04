@@ -142,6 +142,8 @@
 #include "bsp/wire_goal4_chain299_switches.hpp"
 #include "bsp/wire_goal4_chain388_switches.hpp"
 #include "bsp/wire_goal4_chain391_switches.hpp"
+#include "bsp/wire_goal4_chain443_switches.hpp"
+#include "bsp/native_mission_lua_scalar_push.hpp"
 #include "bsp/wire_goal4_chain308_switches.hpp"
 #include "bsp/game_native_lua_globals.hpp"      // chain 299, 0108FF2C for 00436C50
 #include "bsp/engine_seg43_45_cc13.hpp"         // packet wire-lua, 0079C040 / 0078FD70
@@ -16056,12 +16058,45 @@ public:
     }
     void lua_push_number_006b80e0(float value) override {
         // Native 006B80E0 receives float32, then widens to Lua's double.
-        ::lua_pushnumber(state_, static_cast<lua_Number>(value));
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::push_number_native_mission_lua_006b80e0(&machine, &value);
+        } else {
+            ::lua_pushnumber(state_, static_cast<lua_Number>(value));
+        }
     }
-    void lua_push_string_006b8120(const char* value) override { ::lua_pushstring(state_, value); }
-    void lua_push_boolean_006b80c0(bool value) override { ::lua_pushboolean(state_, value); }
-    void lua_push_nil_006b8130() override { ::lua_pushnil(state_); }
-    void lua_create_table_006b84b0() override { ::lua_createtable(state_, 0, 0); }
+    void lua_push_string_006b8120(const char* value) override {
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::push_string_native_mission_lua_006b8120(&machine, value);
+        } else {
+            ::lua_pushstring(state_, value);
+        }
+    }
+    void lua_push_boolean_006b80c0(bool value) override {
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::push_boolean_native_mission_lua_006b80c0(&machine, value);
+        } else {
+            ::lua_pushboolean(state_, value);
+        }
+    }
+    void lua_push_nil_006b8130() override {
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            bsp::push_nil_native_mission_lua_006b8130(&machine);
+        } else {
+            ::lua_pushnil(state_);
+        }
+    }
+    void lua_create_table_006b84b0() override {
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            machine.create_table_006b84b0();
+        } else {
+            ::lua_createtable(state_, 0, 0);
+        }
+    }
     void lua_push_entity_from_this_table(std::int16_t entity_id) override {
         char key[16];
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
@@ -16084,11 +16119,31 @@ public:
         // to wire the separate raw-map 00885A70 reconstruction.
         if (pair.key_kind != 0 || pair.value == nullptr)
             throw std::logic_error("mission argument array requires an integer key and value");
-        const int top = ::lua_gettop(state_);
-        bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
-        // Tag 4 pushes nothing. It must not let rawseti consume the parent
-        // table (the old recursive host path did so for a skipped member).
-        if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
+        if constexpr (bsp::kWireGoal4Chain443Bound) {
+            // 00885A70 -> 006B82A0/006B8320: integer-key number/string
+            // entries. These are the real dense argument table and projected
+            // record, not a fabricated native VariantMap. Each parent was just
+            // created by 00885DA0 and has no metatable. Keep other tags on the
+            // existing recursive path (including the tag-4 stack guard).
+            bsp::cc13_seg29::LuaMachine machine(state_);
+            if (pair.value->tag == 0) {
+                machine.set_number_number_006b82a0(
+                    static_cast<float>(pair.int_key), pair.value->num_val);
+            } else if (pair.value->tag == 1) {
+                machine.set_number_string_006b8320(
+                    static_cast<float>(pair.int_key), pair.value->str_val.c_str());
+            } else {
+                const int top = ::lua_gettop(state_);
+                bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
+                if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
+            }
+        } else {
+            const int top = ::lua_gettop(state_);
+            bsp::landscape_lua_seg55_argon::mission_lua_push_argument_record_00885da0(*pair.value, *this);
+            // Tag 4 pushes nothing. It must not let rawseti consume the parent
+            // table (the old recursive host path did so for a skipped member).
+            if (::lua_gettop(state_) != top) ::lua_rawseti(state_, -2, pair.int_key);
+        }
     }
 private:
     Record& project(const bsp::MissionLuaArgument& argument) {
