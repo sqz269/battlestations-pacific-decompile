@@ -44,7 +44,19 @@ struct HudObserverReferenceHost {
     virtual void observer_unregister_006952a0(void* observer, void* observed) = 0;
 };
 
-struct HudScreenServices : HudObserverReferenceHost {
+// The scene-init constructor/register pair needs only these services. Keep
+// its live owner independent of unrelated camera, input and observer services.
+struct HudSceneInitHost {
+    virtual ~HudSceneInitHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+    virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
+    virtual void* gui_load_page_00aa5840(std::string_view name) = 0;
+    virtual void* gui_find_child_00aa7e00(void* parent, std::string_view name) = 0;
+    virtual void widget_set_visible_34(void* widget, bool visible) = 0;
+    virtual void widget_get_colour_54(void* widget, float rgba[4]) = 0;
+};
+
+struct HudScreenServices : HudObserverReferenceHost, HudSceneInitHost {
     virtual ~HudScreenServices() = default;
     // Front-end screen base (src/frontend_state_machine.cpp).
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
@@ -333,10 +345,10 @@ inline constexpr std::uint32_t kSceneInitScreenGlobal = 0x00E19698;
 inline constexpr double kSceneInitPulseScale = 0.75;  // 00CEC9D8
 inline constexpr double kSceneInitPulseBase = 0.25;   // 00D7A348
 void scene_init_exit_00636d80(HudScreenHost& host);
-Raw scene_init_construct_00636d90(Raw s, HudScreenHost& host);
+Raw scene_init_construct_00636d90(Raw s, HudSceneInitHost& host);
 void scene_init_destruct_00636e00(Raw s, HudScreenHost& host);
 void scene_init_update_00636e80(Raw s, float seconds, HudScreenHost& host);
-void scene_init_register_00636f30(Raw s, HudScreenHost& host);
+void scene_init_register_00636f30(Raw s, HudSceneInitHost& host);
 float scene_init_pulse_alpha(float clock) noexcept;
 
 // ---------------------------------------------------------------------------

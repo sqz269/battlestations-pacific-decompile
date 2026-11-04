@@ -331,7 +331,7 @@ void scene_init_exit_00636d80(HudScreenHost& host) {
 }
 
 // 00636D90.
-Raw scene_init_construct_00636d90(Raw s, HudScreenHost& host) {
+Raw scene_init_construct_00636d90(Raw s, HudSceneInitHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;
     s.at<std::uint32_t>(0xC) = 0;
@@ -373,7 +373,7 @@ void scene_init_update_00636e80(Raw s, float /*seconds*/, HudScreenHost& host) {
 
 // 00636F30: base register, page "FE_sceneinit" into +1Ch, "Message_Text" into
 // +20h, its colour (vtable +54h, four floats) into +24h..+30h, page hidden.
-void scene_init_register_00636f30(Raw s, HudScreenHost& host) {
+void scene_init_register_00636f30(Raw s, HudSceneInitHost& host) {
     host.front_end_screen_register_004f71d0(s);
     s.ptr(0x1C) = host.gui_load_page_00aa5840("FE_sceneinit");
     s.ptr(0x20) = host.gui_find_child_00aa7e00(s.ptr(0x1C), "Message_Text");

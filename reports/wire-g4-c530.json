@@ -1,0 +1,83 @@
+{
+  "chain": 530,
+  "owner": "agent/g4-w2",
+  "switch": "bsp::kWireGoal4Chain530Bound",
+  "scope": "HUD manager scene-init screen 5Ah construction and registration",
+  "rows": [
+    {
+      "native": "00636d90",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudInitBinding::construct_screen",
+      "called": true,
+      "call_sites": 1,
+      "built_callers": ["HudInitBinding::construct_screen"],
+      "evidence": "bsp.py show 00636d90; src/ingame_interface.cpp slot 5Ah supplies the original 34h allocation, constructor and manager+D4h ownership. The existing body initializes retained native-layout storage; its base flag objects are borrowed directly by the live menu registry."
+    },
+    {
+      "native": "00636f30",
+      "status": "wired",
+      "host_site": "src/game_hosts_hud.cpp: HudInitBinding::register_screen",
+      "called": true,
+      "call_sites": 1,
+      "built_callers": ["HudInitBinding::register_screen"],
+      "evidence": "bsp.py show 00636f30; the body registers the constructed screen, loads the actual FE_sceneinit page, retains its Message_Text widget and authored colour, and hides that page. Generic page loading and the Message_Text binding are bypassed on this arm."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: GameHudHost::set_selected_unit_00647300 / HudRootListsBinding",
+      "reason": "Missing producers for the selection mode at screen+30h and native selection vector at +C4h; UnitPickScreenState owns other fields and cannot supply either input."
+    },
+    {
+      "native": "00604f30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::cockpit_screen_mode",
+      "reason": "Missing plane-effects screen owner and writers of its +B8h plane and +FCh cockpit flag; cockpit_screen_wanted remains false."
+    },
+    {
+      "native": "00611750",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::map_screen_busy",
+      "reason": "Missing powerup-manager scroller owner and writers for screen+1F9h/+13Fh; the existing host records this query as false."
+    },
+    {
+      "native": "0068b3f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::exit_free_camera_overlay",
+      "reason": "Missing camera-screen owner at interface+BCh with real 006529E0/+30h/+0Ah state and the 004B4B00-to-0068AA40 scene-request graph."
+    },
+    {
+      "native": "0068c0b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudUpdateBinding::toggle_tactical_overlay",
+      "reason": "Missing tactical-support entry/list/target/audio owners and interface+64h blocker-byte producers; the current host only records the request."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: existing scene property storage adapter",
+      "reason": "Already called from entry-reachable code in the refreshed baseline graph; the readiness text-match state was misleading, so no duplicate wiring was added."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: existing numeric/child property merge adapter",
+      "reason": "Already called from entry-reachable code in the refreshed baseline graph; the readiness text-match state was misleading, so no duplicate wiring was added."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five registered tests passed",
+    "readiness_text_wired_before": 9835,
+    "readiness_text_wired_after": 9837,
+    "call_graph": {
+      "reconstructed_addresses_called_before": 4900,
+      "reconstructed_addresses_called_after": 4902,
+      "00636d90": "one reachable call from HudInitBinding::construct_screen",
+      "00636f30": "one reachable call from HudInitBinding::register_screen",
+      "entry_path": "WinMain -> GameStartupHost -> GameFrameHost -> GameMenuHost::frame -> GameMissionHost -> GameMissionFrameHost::run_scene_load_004dfb70 -> GameHudHost::build_manager_0068a990 -> HudInitBinding"
+    },
+    "float_math": "No arithmetic changed; the native register body copies the installed widget's four colour words.",
+    "limits": "Source/build and static entry-reachability proof; no game run or original binary ABI replacement claim. Scene-init update/enter/destruction and the separate pre-mission loading element remain on their existing host paths."
+  },
+  "handoff": "The manager now retains the scene-init callback fields, native page/Message_Text pointers and authored colour for future lifecycle wiring. The six-service HudSceneInitHost is shared with existing HudScreenHost implementations; no body was duplicated and no new address-suffixed function was added."
+}
