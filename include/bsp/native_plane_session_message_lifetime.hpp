@@ -17,4 +17,10 @@ seg42::UnitMessage* delete_plane_touchdown_message_00762b00(
 seg42::PlaneDisappearMessage* delete_plane_disappear_message_00762bc0(
     seg42::PlaneDisappearMessage*, std::uint32_t flags);
 
+// The same recovered ownership contract for ship-death messages 98h / 9Ah.
+seg42::UnitMessage* delete_ship_wrecked_message_007625c0(
+    seg42::UnitMessage*, std::uint32_t flags);
+seg42::UnitMessage* delete_ship_explode_to_parts_message_007625e0(
+    seg42::UnitMessage*, std::uint32_t flags);
+
 } // namespace bsp

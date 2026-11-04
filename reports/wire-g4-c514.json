@@ -1,0 +1,199 @@
+{
+  "chain": 514,
+  "slot": "g4-w2",
+  "run": 1051,
+  "switch": "bsp::kWireGoal4Chain514Bound",
+  "picked": "Owned ship wrecked/explode-to-parts decoded messages and recovered scalar-deleting destructors",
+  "rows": [
+    {
+      "native": "007625c0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_ship_death_98_9a",
+      "called": true,
+      "call_sites": 2,
+      "callers": [
+        "HostSessionMessages::queue_ship_death_98_9a (sender flags=0)",
+        "OwnedDecodedMessage::~OwnedDecodedMessage (decoded object flags=1)"
+      ]
+    },
+    {
+      "native": "007625e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_session_messages.cpp:HostSessionMessages::queue_ship_death_98_9a",
+      "called": true,
+      "call_sites": 2,
+      "callers": [
+        "HostSessionMessages::queue_ship_death_98_9a (sender flags=0)",
+        "OwnedDecodedMessage::~OwnedDecodedMessage (decoded object flags=1)"
+      ]
+    },
+    {
+      "native": "008e6d30",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp",
+      "reason": "Missing native binding-message unit/class storage and a live receive consumer; the current host initializes bindings directly."
+    },
+    {
+      "native": "008e9510",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp",
+      "reason": "Missing native observed-destroyed event/binding views and manager per-party tree storage for the existing raw body."
+    },
+    {
+      "native": "008e9630",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp",
+      "reason": "Missing native observed-released event/binding views for the existing raw body."
+    },
+    {
+      "native": "008eb710",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_frame.cpp",
+      "reason": "Missing a concrete native StartGateHost and start-gate publication path to supply the broadcast manager state."
+    },
+    {
+      "native": "008eb6e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_powerups.cpp",
+      "reason": "Missing a live HUD local-use activation path and native item/target views; existing uses call the per-slot host item operation."
+    },
+    {
+      "native": "0095cf80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:ShipAiFirepower::ammo_select_flak_alternate",
+      "reason": "Missing flak-alternate ammunition producer and retained reference/tree storage; the callback explicitly records the absent producer."
+    },
+    {
+      "native": "0095d3c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ship_ai.cpp:GameShipAiHost::command_building_set_owner_player_006f4d10",
+      "reason": "Missing the real unit +660h vector and its 44h-element producer/destruction bindings."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp:NamedCallBinding::queue_call",
+      "reason": "Missing the off-main-thread named Lua call producer and real source argument records; current mission Lua calls remain on the main thread."
+    },
+    {
+      "native": "004cd610",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:GameMissionResultHost",
+      "reason": "Missing native sound-transition screen/game ownership; this body is not the close-result-GUI operation recorded at the candidate site."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp:clear_movie_subtitles",
+      "reason": "Missing native subtitle widget/vector ownership; the live callback owns only the schedule projection."
+    },
+    {
+      "native": "00a179e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:party_brain_plan_tail",
+      "reason": "Missing native powerup-ready entries and their scoring/item-use consumer for the engagement pass."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Missing live AiGroupScoreList storage/consumer; existing planner weight vectors have a separate contract."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Missing live AiGroupScoreList entries to mark; creating an unused diagnostic table would not replace gameplay logic."
+    },
+    {
+      "native": "00a2def0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp:defend_think",
+      "reason": "Already called from the existing host candidate test with real kind/objective-set values; no new wiring to add at this site."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp:make_command_target",
+      "reason": "Missing canonical command-target ownership and verified providers for the literal body absolute-address globals 00F87574/78/7C."
+    },
+    {
+      "native": "005f98f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Native friendly-capture query/world-unit ownership was not established in this packet; prior coordinator-path skip requires a separate producer audit."
+    },
+    {
+      "native": "00778860",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Native unit director/slot-0 route-object ownership was not established in this packet."
+    },
+    {
+      "native": "007b80a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp",
+      "reason": "Native projectile-class AntiAir byte and shared global ownership was not established in this packet."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/game_input_runtime.cpp",
+      "reason": "Typed InputDevice/GamepadForceContext does not describe the canonical native device storage used by this runtime; its existing raw clear body must not be duplicated."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fonts.cpp",
+      "reason": "No live glyph-byte validation consumer established; the body needs the current font and actual editor input byte."
+    },
+    {
+      "native": "00ab3840",
+      "status": "skipped",
+      "host_site": "src/game_native_gui_icon_application.cpp",
+      "reason": "Typed GuiIconWidget state is separate from the existing native delayed-texture storage path; no shared canonical owner established."
+    },
+    {
+      "native": "0075af00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_session_messages.cpp:queue_start_landing_94",
+      "reason": "Wrong message contract: this receive constructor is tag A5h/profile 00CFF908; the live candidate queue transports tag 94h."
+    },
+    {
+      "native": "0075b860",
+      "status": "skipped",
+      "host_site": "src/session_message_cc13_seg42.cpp:base",
+      "reason": "Missing a live factory mode-zero case to replace; using this body for arbitrary derived constructors would add a different base profile store."
+    }
+  ],
+  "wired_total_before": 9809,
+  "evidence": [
+    "bsp.py show 007625c0 --asm",
+    "bsp.py show 007625e0 --asm",
+    "00768530 listing 0076951A/0076955A allocate 20h; 0076952E/0076956E construct; 0076A27B reads through vtable slot 8"
+  ],
+  "assumptions": [
+    "Keep the callable root-profile translation and singleton_lifetime allocator pairing used by the existing plane-message ownership bridge.",
+    "Keep these small ship bodies in the already-built message-lifetime translation unit to avoid unrelated build metadata edits."
+  ],
+  "validation": {
+    "initial_win32_build": "passed, all 5 CTests",
+    "game_run": false,
+    "abi_compatible": false,
+    "new_tests": false,
+    "win32_build": "passed, all 5 CTests",
+    "call_graph_release": "Both reachable; identical code folded with existing scalar deletes, so exact identity verified separately.",
+    "call_graph_analysis": "python tools/call_graph.py --build; no inlining and /OPT:NOICF; both distinct bodies REACHABLE with two call sites each.",
+    "float_math_changed": false,
+    "pc24_lint": "not required; no float arithmetic changes",
+    "switch_off_source": "Original queued stack-object code preserved unchanged in else arm; no double execution.",
+    "ghidra": "Existing bsp.gpr /battlestationspacific.exe verified by Client.verify; correct compiler names preserved; prior plate comments recorded, ownership evidence appended under ghidra_lock, program saved.",
+    "annotation_receipt": "local/ghidra-annotations-20261104T193356Z.json",
+    "readiness": "python tools/wire_readiness.py --standins after index rebuild; compiler-tagged destructor rows remain excluded.",
+    "exports": "Refreshed both affected decompiled exports after saved annotation updates."
+  },
+  "left": "Powerup binding/HUD native ownership, flak-alternate ammunition producer, command-building vector +660h, native movie/sound transition owners; no game validation.",
+  "wired_total_after": 9809,
+  "wired_total_qualification": "wire_readiness excludes compiler-tagged scalar destructors from rows, so its source-wired total remains 9809 -> 9809. Both newly reconstructed bodies have two distinct entry-reachable calls in the no-inline /OPT:NOICF analysis build. No scope, tags, identifier manifests or counting tool changed.",
+  "new_entry_reachable_bodies": 2
+}
