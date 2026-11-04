@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain412_switches.hpp"
 #include "bsp/wire_goal4_chain404_switches.hpp"
 #include "bsp/cc13_dyn1.hpp"
 #include "bsp/wire_goal4_chain402_switches.hpp"
@@ -2813,6 +2814,38 @@ struct GameUnitSlot : SquadronForceReleaseByte<bsp::kWireGoal2Chain209Bound> {
 };
 
 // ---------------------------------------------------------------------------
+// Chain 412: the 009C62E8 fly-over read consumes the selected target's live
+// velocity through 009FA2E0. This adapter borrows the real unit observer
+// endpoint and motion cells; it does not construct a second unit or register
+// another observer. The temporary ref below projects only +14h/+18h, the only
+// cells the reader uses. Original class/stack ABI is not supplied.
+class GameApproachTargetVelocityHost final : public bsp::cc13_seg68::ApproachTargetVelocityHost {
+public:
+    explicit GameApproachTargetVelocityHost(const GameUnitSlot& target) : target_(target) {}
+
+    std::array<float, 3> entity_velocity_34(bsp::NativeObserverOwnerStorage* entity) override {
+        // 009FA2EE..009FA313 dispatches slot +34h on the selected endpoint.
+        // Only the borrowed target's real observed base is admitted here.
+        if (entity != &target_.observer_prefix.observed_00) std::abort();
+        if (target_.plane_velocity_seeded) {
+            return {target_.plane_world_velocity[0], target_.plane_world_velocity[1],
+                target_.plane_world_velocity[2]};
+        }
+        return {target_.motion.linear_velocity.x, target_.motion.linear_velocity.y,
+            target_.motion.linear_velocity.z};
+    }
+
+    const std::array<float, 3>& static_zero_vector_00f87574() override {
+        // 009FA31B..009FA340 copies the three words at 00F87574/78/7C.
+        // They are in the image's zero-filled .data tail (009FA2E0 export).
+        static const std::array<float, 3> zero{0.0f, 0.0f, 0.0f};
+        return zero;
+    }
+
+private:
+    const GameUnitSlot& target_;
+};
+
 // Packet cc8_hull_aim_point: the aim point both attack tasks steer to.
 // ---------------------------------------------------------------------------
 // Until this packet both tasks aimed at the target's ORIGIN. The image does
@@ -6689,12 +6722,37 @@ struct GameUnitsHost::Impl {
                     // 009FA2E0 reaches vtable[34h] on the object at
                     // approach+44h, else approach+48h; a plane slot carries its
                     // world velocity separately from the rigid body.
+                    if constexpr (bsp::kWireGoal4Chain412Bound) {
+                        // The command names a whole unit, not an interior
+                        // section. 009FB1CC..009FB1D6 puts that same target in
+                        // +14h only for IsKindOf(5); +18h is always the target.
+                        // Keep the former path for targets whose creator has
+                        // not published its native observer endpoint yet.
+                        if (tgt.observer_prefix_ready) {
+                            bsp::cc13_seg68::NativeApproachTargetRef ref;
+                            ref.target_18 = &slots[ti]->observer_prefix.observed_00;
+                            if (bsp::unit_is_kind_of(tgt.class_id, 5))
+                                ref.vehicle_14 = ref.target_18;
+                            GameApproachTargetVelocityHost velocity_host(tgt);
+                            const auto velocity = bsp::cc13_seg68::approach_ref_target_velocity_009fa2e0(
+                                velocity_host, ref);
+                            target_v[0] = velocity[0];
+                            target_v[2] = velocity[2];
+                        } else if (tgt.plane_velocity_seeded) {
+                            target_v[0] = tgt.plane_world_velocity[0];
+                            target_v[2] = tgt.plane_world_velocity[2];
+                        } else {
+                            target_v[0] = tgt.motion.linear_velocity.x;
+                            target_v[2] = tgt.motion.linear_velocity.z;
+                        }
+                    } else {
                     if (tgt.plane_velocity_seeded) {
                         target_v[0] = tgt.plane_world_velocity[0];
                         target_v[2] = tgt.plane_world_velocity[2];
                     } else {
                         target_v[0] = tgt.motion.linear_velocity.x;
                         target_v[2] = tgt.motion.linear_velocity.z;
+                    }
                     }
                 }
             }

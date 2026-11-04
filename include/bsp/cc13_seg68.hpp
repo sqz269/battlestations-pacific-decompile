@@ -494,12 +494,20 @@ static_assert(sizeof(NativeApproachTargetRef) == 0x74);
 
 inline constexpr std::uint32_t kApproachTargetRefVtable = 0x00D21CB4u;
 
-struct ApproachRefHost {
+// The velocity reader needs only these two services. The remaining ref
+// operations also own observer, aim and archive work; a borrowed live-unit
+// velocity adapter must not pretend to implement those unrelated contracts.
+struct ApproachTargetVelocityHost {
+    virtual ~ApproachTargetVelocityHost() = default;
+    // entity vtable+34h(out): the velocity.
+    virtual std::array<float, 3> entity_velocity_34(NativeObserverOwnerStorage* entity) = 0;
+    virtual const std::array<float, 3>& static_zero_vector_00f87574() = 0;
+};
+
+struct ApproachRefHost : ApproachTargetVelocityHost {
     virtual ~ApproachRefHost() = default;
     virtual NativeObserverLifetime& observers() = 0;
     virtual bool is_kind_of_5c(NativeObserverOwnerStorage* entity, int kind) = 0;
-    // entity vtable+34h(out): the velocity.
-    virtual std::array<float, 3> entity_velocity_34(NativeObserverOwnerStorage* entity) = 0;
     // message vtable+4(): the subject the notice is about.
     virtual NativeObserverOwnerStorage* message_subject_04(Handle message) = 0;
     virtual void refresh_pose_00414db0(NativeObserverOwnerStorage* entity) = 0;
@@ -507,7 +515,6 @@ struct ApproachRefHost {
     // 004142E0(point, out, entity+CCh).
     virtual std::array<float, 3> transform_affine_point_004142e0(
         const std::array<float, 3>& point, NativeObserverOwnerStorage* entity) = 0;
-    virtual const std::array<float, 3>& static_zero_vector_00f87574() = 0;
     virtual float random_uniform_00bd2f10(int stream, float lo, float hi) = 0;
     virtual void pick_body_frame_aim_offset_009fa260(NativeApproachTargetRef& ref) = 0;
     virtual void update_009fada0(NativeApproachTargetRef& ref, float dt) = 0;
@@ -525,7 +532,7 @@ struct ApproachRefHost {
 };
 
 // 009FA2E0 __thiscall(ref, out) RET 4 -> out.
-std::array<float, 3> approach_ref_target_velocity_009fa2e0(ApproachRefHost& host,
+std::array<float, 3> approach_ref_target_velocity_009fa2e0(ApproachTargetVelocityHost& host,
                                                            const NativeApproachTargetRef& self);
 // 009FA350 __fastcall(ref).
 void approach_ref_reset_aim_offset_009fa350(ApproachRefHost& host, NativeApproachTargetRef& self);

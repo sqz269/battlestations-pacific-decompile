@@ -1,0 +1,56 @@
+{
+  "chain": 412,
+  "owner": "agent/g4-w1",
+  "switch": "bsp::kWireGoal4Chain412Bound",
+  "picked": "Dive-bomb fly-over target velocity from the commanded live unit",
+  "rows": [
+    {
+      "native": "009fa2e0",
+      "status": "wired",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::Impl::dive_bomb_transition_inputs",
+      "body": "src/cc13_seg68.cpp: approach_ref_target_velocity_009fa2e0",
+      "state": "The command target indexes the owning GameUnitSlot; the borrowed target ref points at that unit's published observed base. The velocity provider reads its plane_world_velocity or motion.linear_velocity. The result supplies the fly-over lead calculation's target X/Z velocity.",
+      "evidence": "009C62E8 calls 009FA2E0; 009FA2E0..009FA346 tests +18h, prefers +14h, then dispatches velocity slot +34h. 009FB1CC..009FB1D6 publishes the target itself as +14h only for IsKindOf(5).",
+      "limits": "Whole-unit command targets only. Targets without a published native observer endpoint retain the former host selection. Frozen or absent targets retain the existing zero-velocity path. This is a borrowed typed projection, not an Original class/stack ABI replacement."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "No wiring gap: the baseline executable already calls this body from reachable SceneNumericPropertyMerge::Impl::attach_tree and insert_into."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: merge_property_block via SceneNumericPropertyMerge",
+      "reason": "No wiring gap: the baseline executable already calls this body from reachable SceneNumericPropertyMerge::Impl::Impl and merge_child."
+    },
+    {
+      "native": "00a2bd90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: DirectorBinding::ai_group_forward_command",
+      "reason": "Missing live director-to-AI-group binding: entity_ai_group currently returns zero and ai_group_forward_command only records the route."
+    },
+    {
+      "native": "009565a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: GameUnitsHost::set_unit_skill_index_006d1eb0",
+      "reason": "Missing admitted +6DCh object and role-device collection/fan-out for SkillApplyPlan; the host currently stores only its shared skill index."
+    }
+  ],
+  "baseline": {
+    "head": "8637a9c414",
+    "readiness_wired": 9656,
+    "entry_reachable_reconstructed_addresses_called": 4675
+  },
+  "validation": {
+    "readiness_wired_after": 9657,
+    "entry_reachable_reconstructed_addresses_called_after": 4676,
+    "build": "scripts/build.ps1 passed Win32 Release, reconstructed_math and tool_tests",
+    "call_graph": "4676 reconstructed addresses called; 009FA2E0 has one reachable call at 10259534 from GameUnitsHost::Impl::dive_bomb_transition_inputs",
+    "entry_path": "WinMain -> GameStartupHost -> frame -> GameMissionHost::advance -> mission fixed step -> GameUnitsHost::motion_step_00825f20 -> pilot/dive-bomb task arm -> dive_bomb_transition_inputs -> 009FA2E0",
+    "float_math": "Only velocity loads/copies changed; existing float arithmetic and the old switch-OFF arm are preserved.",
+    "game_run": false,
+    "new_tests": "None; existing suites plus built-executable call graph cover this adapter's scope."
+  }
+}

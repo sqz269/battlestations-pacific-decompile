@@ -881,7 +881,7 @@ void bot_set_direction_from_heading_pitch_009fabe0(GunHost& host, BotTaskGun& se
 // The approach target ref
 // ===========================================================================
 
-std::array<float, 3> approach_ref_target_velocity_009fa2e0(ApproachRefHost& host,
+std::array<float, 3> approach_ref_target_velocity_009fa2e0(ApproachTargetVelocityHost& host,
                                                            const NativeApproachTargetRef& self)
 {
     if (self.target_18 != nullptr) {
