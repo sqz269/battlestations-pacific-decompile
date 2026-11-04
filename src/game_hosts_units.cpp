@@ -11,6 +11,8 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/wire_goal4_chain485_switches.hpp"
+#include "bsp/cc13_left8_seg8.hpp"
 #include "bsp/wire_goal4_chain479_switches.hpp"
 #include "bsp/cc13_sweepA.hpp"
 #include "bsp/game_native_geometry_globals.hpp"
@@ -5200,6 +5202,21 @@ struct GameUnitsHost::Impl {
         const auto it = part_count_cache.find(class_id);
         if (it != part_count_cache.end()) return it->second;
         char chunk[512];  // the chunk is about 270 bytes; 256 truncated it
+        if constexpr (bsp::kWireGoal4Chain485Bound) {
+            // 004B7F70 is the image's cdecl _vsprintf_s(dst, 200h, fmt, va)
+            // wrapper (bsp.py show 004b7f70). Use the existing body on this
+            // actual query buffer; the loaded class id and fixed Lua source
+            // are the same inputs as the OFF arm. All substituted values are
+            // decimal int32s, so the complete query fits even at INT_MIN.
+            bsp::cc13_left8::format_string_512_004b7f70(chunk,
+                "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+                "if type(c) ~= 'table' then return -1 end\n"
+                "local d = c.Damage\n"
+                "if type(d) ~= 'table' or type(d.Sections) ~= 'table' then return 0 end\n"
+                "local n = 0\n"
+                "for _, v in pairs(d.Sections) do n = n + 1 end\n"
+                "return n\n", class_id);
+        } else {
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' then return -1 end\n"
@@ -5208,6 +5225,7 @@ struct GameUnitsHost::Impl {
             "local n = 0\n"
             "for _, v in pairs(d.Sections) do n = n + 1 end\n"
             "return n\n", class_id);
+        }
         const int top = lua.lua_gettop();
         int value = -2;   // -2: the chunk did not run; -1: no class row
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
@@ -5274,12 +5292,23 @@ struct GameUnitsHost::Impl {
         } else {
             std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
         }
+        if constexpr (bsp::kWireGoal4Chain485Bound) {
+            // Same bounded formatter and real loadout query as damage_section_count.
+            // index is either one decimal int32 or the fixed default expression.
+            bsp::cc13_left8::format_string_512_004b7f70(chunk,
+                "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+                "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+                "local e = c.Equipments[%s]\n"
+                "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+                "return tonumber(e[%d].Ammo) or -1\n", class_id, index, platform_key, platform_key);
+        } else {
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
             "local e = c.Equipments[%s]\n"
             "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
             "return tonumber(e[%d].Ammo) or -1\n", class_id, index, platform_key, platform_key);
+        }
         const int top = lua.lua_gettop();
         int value = -1;
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
@@ -5329,12 +5358,21 @@ struct GameUnitsHost::Impl {
         } else {
             std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
         }
+        if constexpr (bsp::kWireGoal4Chain485Bound) {
+            bsp::cc13_left8::format_string_512_004b7f70(chunk,
+                "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+                "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+                "local e = c.Equipments[%s]\n"
+                "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+                "return tonumber(e[%d].ReloadTime) or -1\n", class_id, index, platform_key, platform_key);
+        } else {
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
             "local e = c.Equipments[%s]\n"
             "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
             "return tonumber(e[%d].ReloadTime) or -1\n", class_id, index, platform_key, platform_key);
+        }
         const int top = lua.lua_gettop();
         float value = -1.0f;
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
@@ -5357,12 +5395,21 @@ struct GameUnitsHost::Impl {
         } else {
             std::snprintf(index, sizeof(index), "c.DefaultEquipment or 1");
         }
+        if constexpr (bsp::kWireGoal4Chain485Bound) {
+            bsp::cc13_left8::format_string_512_004b7f70(chunk,
+                "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+                "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
+                "local e = c.Equipments[%s]\n"
+                "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
+                "return tonumber(e[%d].Platform) or -1\n", class_id, index, platform_key, platform_key);
+        } else {
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
             "local e = c.Equipments[%s]\n"
             "if type(e) ~= 'table' or type(e[%d]) ~= 'table' then return -1 end\n"
             "return tonumber(e[%d].Platform) or -1\n", class_id, index, platform_key, platform_key);
+        }
         const int top = lua.lua_gettop();
         int value = -1;
         if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
