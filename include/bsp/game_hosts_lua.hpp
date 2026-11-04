@@ -58,6 +58,7 @@ class SessionParticipantPools;
 struct ShipAiPathSearchTurnRamp;
 struct ShipCameraSettings;
 struct ShipClassCameraInputs;
+struct GameplayTuningSettings;
 }
 
 // Goal 4 chain 352: the value-model subscriptions of bsp/engine_seg49_64_78_cc13.hpp
@@ -1679,6 +1680,11 @@ public:
     // nineteen floats in offset order ((offset - 190h) / 4), read with the same
     // getters and loader defaults 0083B7AD..0083BCB8 use. False until loaded.
     bool read_ship_avoidance_block(std::array<float, 19>& values) const noexcept;
+    // Keyed 0083B5E0 projection retained at load time; no native gaps/subobjects
+    // are exposed as reconstructed. Null until a complete keyed read succeeds.
+    const bsp::GameplayTuningSettings* gameplay_tuning_settings() const noexcept {
+        return gameplay_tuning_settings_.get();
+    }
     // Packet cc9_plane_death_modes. A global two-number table such as
     // planepartclasses.lua's ExplosionExplosionDelay = {0.6, 1.8}, which
     // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
@@ -2577,6 +2583,7 @@ private:
     bool avoidance_tuning_loaded_{};
     std::array<float, 19> ship_avoidance_block_{};
     bool ship_avoidance_block_loaded_{};
+    std::unique_ptr<bsp::GameplayTuningSettings> gameplay_tuning_settings_;
     bsp::WeaponHitAccuracyProfile weapon_hit_accuracy_[4]{};
     bool weapon_hit_accuracy_loaded_{};
     // Packet cc8_spawn_new_route. DAT_00F876A4, the world clock the drain
