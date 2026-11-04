@@ -1,0 +1,102 @@
+{
+  "chain": 480,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "picked": "Library group name-index node retirement through the existing native property-library holder release",
+  "switch": "bsp::kWireGoal4Chain480Bound",
+  "implementation": {
+    "state_source": "LibraryGroupNameIndex::nodes_ owns the actual canonical E17540 14h nodes and pooled NativeString keys produced by publish() from loaded universe/library group names.",
+    "ownership": "At retirement, clear the actual root count/buckets and each borrowed mapped/next word before releasing the stable vector holder slots. Group records remain under PropertyLibrary ownership. The existing body releases the pooled key, returns its node to E17540 and clears the holder.",
+    "evidence": "bsp.py show 008f3dc0 --asm: 008F3DCA..008F3DE1 releases key storage, 008F3DE7 selects E17540, 008F3DEC returns the node and 008F3DF1 clears the caller's holder. Reused src/native_scene_name_node_holder.cpp without changes.",
+    "abi": "Source reuse at the host owner's real retirement boundary; no Original class layout, thiscall, exception or gameplay validation claim.",
+    "new_address_suffixed_bodies": false,
+    "float_math_changed": false
+  },
+  "counts": {
+    "source_text_wired_before": 9757,
+    "source_text_wired_after": 9758,
+    "entry_reachable_address_labels_switch_off": 4830,
+    "entry_reachable_address_labels_switch_on": 4831,
+    "new_called_functions": [
+      "008f3dc0"
+    ]
+  },
+  "validation": {
+    "baseline": "scripts/build.ps1 passed all five CTests before edits; index rebuilt and wire_readiness.py --standins captured wired=9757.",
+    "switch_on": "scripts/build.ps1 and all five CTests passed; call_graph.py who reports one reachable call to 008f3dc0 from the LibraryGroupNameIndex deleting owner.",
+    "switch_off": "scripts/build.ps1 and all five CTests passed; 008f3dc0 is not linked and the reached-address count returns from 4831 to 4830.",
+    "existing_fixture": "Reused ignored local/c476_probe.ps1 and local/c476_group_probe.cpp without changes. Both switch settings passed the same 132-group scenario: growth/collisions, case-folded reopening, inherited payload, miss and unsupported-key fallback, followed by normal owner destruction. The probe uses /MANIFEST:EMBED and does not run the game.",
+    "final_readiness": "wire_readiness.py --standins: wired=9758 versus 9757 before; 008f3dc0 state=wired, called=true, call_sites=1. Final enabled-switch build and all five CTests passed.",
+    "diff_check": "git diff --check passed.",
+    "game_run": false,
+    "limits": "Build, existing fixture and linked entry reach are established. No game execution or Original ABI execution was performed."
+  },
+  "rows": [
+    {
+      "native": "008f3dc0",
+      "status": "wired",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::~LibraryGroupNameIndex",
+      "evidence": "One entry-reachable call replaces the manual key/node releases; real native node holders, pooled keys and canonical process state are retained through teardown."
+    },
+    {
+      "native": "008f3d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums::~LibraryNativeEnums",
+      "reason": "Missing a detached E17578 symbol-node holder at this host boundary; existing teardown passes the complete owning registry to 004D2620 and cannot use an E17540 group holder."
+    },
+    {
+      "native": "008f29a0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryGroupNameIndex::publish",
+      "reason": "Missing actual owning native property bags: node+8 borrows host PropertyGroupDefinition records, while replacement in 008F29A0 deletes the prior node+8 as a native bag."
+    },
+    {
+      "native": "008f2f70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: LibraryNativeEnums::read",
+      "reason": "Missing the actual current world+1A0C Lua owner, source table and NativeEnumLuaDeclarationContext on this file-lexer path; its real parser already uses 008F31A0."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: unit-pick screen selection reset",
+      "reason": "Missing producers for the native selection vector +C4h and mode +30h; existing UnitPickScreenState does not supply the reset body's complete state."
+    },
+    {
+      "native": "00913d80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: component-failure scoring",
+      "reason": "Missing native per-slot 284h scoring owners, attacker player records and award providers; existing failure bindings expose semantic damage/handles only."
+    },
+    {
+      "native": "00915f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: hit-damage scoring",
+      "reason": "Missing native source-player records, per-source/relation/class score maps and award graph; scalar hit attribution alone cannot run the complete body."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/font_data.cpp: font_accepts_text_byte_00ab6d00",
+      "reason": "No concrete reachable byte-validation consumer was established in this packet; available loaded FontData alone does not provide a real validation call site."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: existing words_40 reserve",
+      "reason": "No missing call established: prior skip evidence identifies an existing direct reserve call in the OFF code; adding another would duplicate it."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/native_session_message35.cpp: existing words_40 resize",
+      "reason": "No missing call established: prior skip evidence identifies an existing direct resize call in the OFF code; adding another would duplicate it."
+    },
+    {
+      "native": "00aa5a00",
+      "status": "skipped",
+      "host_site": "src/gui_render_order.cpp: collect_sorted_children_00aa5a00",
+      "reason": "No concrete reachable consumer producing GuiSnapshotChild inputs was established in this packet; no diagnostic-only collection was added."
+    }
+  ]
+}

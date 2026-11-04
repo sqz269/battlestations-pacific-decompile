@@ -8,6 +8,7 @@
 #include "bsp/wire_goal4_chain430_switches.hpp"
 #include "bsp/wire_goal4_chain465_switches.hpp"
 #include "bsp/wire_goal4_chain476_switches.hpp"
+#include "bsp/wire_goal4_chain480_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
 #include "bsp/wire_goal2_chain51_switches.hpp"
@@ -35,6 +36,7 @@
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_property_library_lookup.hpp"
 #include "bsp/native_property_library_readers.hpp"
+#include "bsp/native_scene_name_node_holder.hpp"
 #include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
 #include "bsp/native_enum_map_lifetime.hpp"
@@ -316,10 +318,30 @@ public:
     ~LibraryGroupNameIndex() {
         // This view borrows its mapped group records: retire only its own keys
         // and E17540 slots, before the retained process pools' atexit callbacks.
-        for (void* node : nodes_) {
-            if (node == nullptr) continue;
-            destroy_native_string_header_0041dd20(node, strings_.raw_context());
-            return_native_enum_node_0043b0a0(pool_, node);
+        if constexpr (kWireGoal4Chain480Bound) {
+            // End all table borrows before returning any node to its pool.
+            // The mapped group records are borrowed and remain owned by groups_.
+            std::memset(owner_ + 8, 0, sizeof(owner_) - 8);
+            for (void* node : nodes_) {
+                if (node == nullptr) continue;
+                const std::uint32_t detached[2] = {0, 0};
+                std::memcpy(static_cast<std::byte*>(node) + 8, detached, sizeof(detached));
+            }
+            // bsp.py show 008F3DC0 --asm: 3DCA..3DE1 releases the pooled
+            // key, 3DE7 selects E17540, then 3DF1 clears the owning DWORD.
+            // These are the genuine stable holder slots for the nodes created
+            // by publish(), using that same retained string/physical process.
+            // Source reuse at host teardown; no Original thiscall ABI claim.
+            for (void*& node : nodes_) {
+                release_native_property_library_node_holder_008f3dc0(&node,
+                    strings_, game_native_physical_pool_process());
+            }
+        } else {
+            for (void* node : nodes_) {
+                if (node == nullptr) continue;
+                destroy_native_string_header_0041dd20(node, strings_.raw_context());
+                return_native_enum_node_0043b0a0(pool_, node);
+            }
         }
     }
     LibraryGroupNameIndex(const LibraryGroupNameIndex&) = delete;
