@@ -1,5 +1,7 @@
 #include "bsp/native_adopted_substream.hpp"
+#include "bsp/native_tagged_leaf_b9bb_16i.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/wire_goal4_chain583_switches.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -112,16 +114,40 @@ void* construct_native_adopted_substream_00bf1130(void* owner, void* source,
     const auto entry = current_method(source, 0x1c);
     StreamBaseUnwind cleanup{owner}; // State0 is armed only after slot lookup.
     (void)dispatch.source_seek(entry, source, start_low, start_high, 0);
+    if constexpr (kWireGoal4Chain583Bound) {
+        const auto current_low = word(owner, 0x10);
+        // BF119F reloads the start-high cell AFTER the source seek returns.
+        // B9A4B0 is exactly MOV EAX,[ECX+14h]; RET (bsp.py show --asm).
+        // Borrow the current owner here, retaining seek reentry observations.
+        const auto current_high = bsp_tagged_b9bb_00b9a4b0(owner);
+        put(owner, 0x20, current_low);
+        put(owner, 0x24, current_high);
+    } else {
     const auto current_low = word(owner, 0x10);
     const auto current_high = word(owner, 0x14);
     put(owner, 0x20, current_low);
     put(owner, 0x24, current_high);
+    }
     cleanup.armed = false;
     return owner;
 }
 std::uint32_t read_native_adopted_substream_00bf1000(void* owner, void* destination,
     std::uint32_t requested, std::uint32_t* optional_actual,
     NativeAdoptedSubstreamDispatch& dispatch) {
+    if constexpr (kWireGoal4Chain583Bound) {
+        auto actual = requested;
+        // bsp.py show 00BA7170 --asm: MOV EAX,[ECX+8]; RET. Its raw-read
+        // contract imposes no class or ownership interpretation. Reuse that
+        // exact operation for BF100C's load from this SAME live substream;
+        // BF1130 published the adopted source at +8. No snapshot, pointer
+        // adjustment, retain/release, or second read of that cell is needed.
+        auto* const source = pointer(bsp_tagged_b9bb_00ba7170(owner));
+        const auto entry = current_method(source, 0x24);
+        dispatch.source_read(entry, source, destination, requested, &actual);
+        advance(owner, actual);
+        if (optional_actual) put(optional_actual, 0, actual);
+        return actual;
+    } else {
     auto actual = requested;
     auto* const source = pointer(word(owner, 8));
     const auto entry = current_method(source, 0x24);
@@ -129,6 +155,7 @@ std::uint32_t read_native_adopted_substream_00bf1000(void* owner, void* destinat
     advance(owner, actual);
     if (optional_actual) put(optional_actual, 0, actual);
     return actual;
+    }
 }
 std::uint32_t write_native_adopted_substream_00bf1040(void* owner, const void* bytes,
     std::uint32_t requested, std::uint32_t* optional_actual,
