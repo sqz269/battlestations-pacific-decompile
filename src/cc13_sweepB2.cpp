@@ -596,7 +596,7 @@ void zero_words(void* base, std::initializer_list<std::size_t> offsets) {
 //   +108h..+11Ch = 0, +5E4h = 0.001f (00D7A23C), +5DCh = 2.0f (00CE3958),
 //   +53Ch = 0, +540h = 0.0f.
 // EH frame 00C71CA1 (states 0, 2, 5, 9, 0Fh) is not modelled.
-void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, Cc13SweepB2Host& host) {
+void* cc13_sweepB2_ingame_interface_screen_construct_005aaef0(void* screen, InGameInterfaceScreenConstructHost& host) {
     std::uint8_t* s = static_cast<std::uint8_t*>(screen);
     host.frontend_screen_construct_004f7180(screen);
     host.simple3d_scene_construct_0093cb10(s + 0x8);
