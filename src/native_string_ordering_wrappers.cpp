@@ -18,7 +18,8 @@ std::uint32_t read_word(const void* storage, std::uint32_t offset) noexcept {
 
 } // namespace
 
-bool less_native_string_headers_00443cb0(
+// Keep the selected COMDAT entry visible at its live input-tree call sites.
+__declspec(noinline) bool less_native_string_headers_00443cb0(
     const void* actual_left_header, const void* actual_right_header) {
     // The complete predicates are identical after their different native
     // argument setup. Reuse the accepted actual-header implementation.
