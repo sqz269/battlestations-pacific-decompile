@@ -1,0 +1,110 @@
+{
+  "chain": 601,
+  "worker": "agent/g4-w1",
+  "base_head": "63bc0970dc37772c2dde52f60dc9df4de2527470",
+  "switch": "kWireGoal4Chain601Bound",
+  "selection": "Use the existing camera own-type getter for the first comparison in the reached camera type predicate.",
+  "rows": [
+    {
+      "native": "00b6fb60",
+      "status": "wired",
+      "host_site": "src/camera_type_bootstrap.cpp: CameraTypeBootstrap::is_type_00b71ce0, reached through native camera attachment and scene registration type dispatch",
+      "evidence": "bsp.py show 00b6fb60 --asm: MOV EAX,[0108FFA0]; RET. bsp.py show 00b71ce0 --asm: short-circuit comparisons of 0108FFA0, 0108FFA4 and 0108FFA8 in that order.",
+      "real_state": "The getter uses the same existing volatile camera descriptor owned by GameNativeTypeStorage and borrowed by CameraGraph/scene registration. It replaces the existing first load; it does not initialize, copy or reread the descriptor.",
+      "abi": "Existing typed C++ interface retained; no original binary ABI claim. noinline retains the callable reconstructed leaf within its translation unit.",
+      "call_sites": 1,
+      "entry_reachable": true,
+      "call_graph_note": "Direct call at 10505816 from CameraTypeBootstrap::is_type_00b71ce0. Release ICF also folds the getter with a HullGeometryUnitAccess accessor; that accessor's vtable reference is not counted as the new wiring."
+    },
+    {
+      "native": "00b71ce0",
+      "status": "skipped",
+      "host_site": "src/camera_type_bootstrap.cpp: CameraTypeBootstrap::is_type_00b71ce0",
+      "reason": "Already entry-reachable before this chain; it is the changed caller, not another newly wired body."
+    },
+    {
+      "native": "00b719e0",
+      "status": "skipped",
+      "host_site": "src/camera_type_bootstrap.cpp: CameraTypeBootstrap::initialize_00b719e0",
+      "reason": "No reached caller needing the lazy caller-target initializer was established; the reached CRT initializer captures both source IDs before storing, while this runtime initializer alternates loads and stores."
+    },
+    {
+      "native": "00b71a30",
+      "status": "skipped",
+      "host_site": "src/camera_type_bootstrap.cpp: CameraTypeBootstrap::construct_00b71a30",
+      "reason": "No entry-reachable producer requiring a caller-target camera descriptor and its returned pointer was established."
+    },
+    {
+      "native": "00bc3030",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud_instance_get_manager_vector50_00bbe340",
+      "reason": "The getter needs an actual CloudClass +14h manager pointer; the host still has no concrete CloudManager/CloudInstance producer and rooted cloud instance."
+    },
+    {
+      "native": "00bbce40",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp: cloud lighting/update consumers",
+      "reason": "The real CloudManager +94h light word and reached lighting/update instance are missing from the host cloud graph."
+    },
+    {
+      "native": "00ba7180",
+      "status": "skipped",
+      "host_site": "src/submarine_model.cpp: submarine scene initialization / ocean root access",
+      "reason": "No actual ocean-owner +30h scene-node backing and reached consumer were established; an unrelated typed ocean value cannot supply this raw receiver."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/native_sampler_parameter_write.cpp: set_native_sampler_parameter_00b1b830",
+      "reason": "No reached sampler receiver containing its real Lua-state owner at +4h and original key/value argument slots was established."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_render_queue_access.cpp: set_native_last_render_command_metadata_00b1cb50",
+      "reason": "No reached scene/shadow/water submission supplying the current last command and its actual three source metadata words was established."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp: GameGunneryHost::notify_gun_skill_level",
+      "reason": "Fresh baseline call graph already shows a direct entry-reachable call; no additional skill draw or initialization is needed."
+    },
+    {
+      "native": "004f9d80",
+      "status": "skipped",
+      "host_site": "src/frontend_seg12_17_cc13.cpp: library_colour_static_grey_004f9d80",
+      "reason": "No reached library-screen Host binding for the actual static colour/guard storage was established in this packet."
+    },
+    {
+      "native": "00545750",
+      "status": "skipped",
+      "host_site": "src/frontend_seg16_24_28_cc13.cpp: static_colour_red_00545750",
+      "reason": "No reached Fe5Host consumer with the actual static red colour block was established in this packet."
+    },
+    {
+      "native": "004f9d30",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepA.cpp: color_static_white_004f9d30",
+      "reason": "No reached SweepAHost consumer exposing this function's actual static colour and guard was established in this packet."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: NativeStreamTypeIds::initialize_file_00be4530",
+      "reason": "The existing memory/physical descriptor initializers already call this body; a missing standalone build symbol alone does not justify another initialization."
+    }
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all five checks before edits",
+    "changed_build": "scripts/build.ps1 passed all five checks after the C++ change",
+    "called_reconstructed_addresses_before": 5004,
+    "called_reconstructed_addresses_after": 5005,
+    "readiness_wired_before": 9935,
+    "readiness_wired_after": 9935,
+    "readiness_note": "The text-based state remains callees_done_no_wired_caller for the qualified getter identifier, while the fresh row now reports called=true and call_sites=1. The executable graph verifies the new direct call from is_type_00b71ce0.",
+    "float_math_changed": false,
+    "game_run": false,
+    "limitations": "Build and executable entry-reachability evidence; no live game or original ABI validation."
+  }
+}

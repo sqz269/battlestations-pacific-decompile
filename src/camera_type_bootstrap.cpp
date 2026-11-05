@@ -1,4 +1,5 @@
 #include "bsp/camera_type_bootstrap.hpp"
+#include "bsp/wire_goal4_chain601_switches.hpp"
 
 #include <cstddef>
 
@@ -18,14 +19,25 @@ CameraTypeBootstrap::CameraTypeBootstrap(TypeIdCounterLifetime& counter,
     LightTypeBootstrap& shared_types, CameraTypeBootstrapStorage storage) noexcept
     : counter_(counter), shared_types_(shared_types), storage_(storage) {}
 
-std::uint32_t CameraTypeBootstrap::type_id_00b6fb60() const noexcept {
+__declspec(noinline) std::uint32_t CameraTypeBootstrap::type_id_00b6fb60() const noexcept {
     return storage_.camera_0108ffa0.own_id;
 }
 
 bool CameraTypeBootstrap::is_type_00b71ce0(std::uint32_t token) const noexcept {
-    return storage_.camera_0108ffa0.own_id == token ||
-        storage_.camera_0108ffa0.node_id == token ||
-        storage_.camera_0108ffa0.root_id == token;
+    if constexpr (kWireGoal4Chain601Bound) {
+        // bsp.py show 00b71ce0 --asm: compare the three volatile descriptor
+        // words at 0108FFA0/4/8 in order, stopping at the first match.
+        // 00B6FB60 reads exactly the first word, without initializing it.
+        // Reuse that body for this existing load; do not cache the token,
+        // initialize the descriptor or repeat the old first comparison.
+        return type_id_00b6fb60() == token ||
+            storage_.camera_0108ffa0.node_id == token ||
+            storage_.camera_0108ffa0.root_id == token;
+    } else {
+        return storage_.camera_0108ffa0.own_id == token ||
+            storage_.camera_0108ffa0.node_id == token ||
+            storage_.camera_0108ffa0.root_id == token;
+    }
 }
 
 std::uint32_t CameraTypeBootstrap::consume_type_id() {
