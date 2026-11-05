@@ -1,0 +1,301 @@
+{
+  "chain": 570,
+  "slot": "g4-w4",
+  "baseline_head": "17c844111a",
+  "switch": "bsp::kWireGoal4Chain570Bound",
+  "rows": [
+    {
+      "native": "00b86390",
+      "status": "wired",
+      "host_site": "src/native_mesh_section.cpp:destroy_section_body / NativeMeshSectionLifetimeAccess::mutate",
+      "evidence": "Original 00B86495 calls 00B86390 after +38/+5C release; same real section, registry and borrowed lifetime issuer now reach the existing body. No extra cleanup execution."
+    },
+    {
+      "native": "00b86420",
+      "status": "wired",
+      "host_site": "src/native_mesh_section.cpp:NativeMeshSectionLifetimeAccess::destroy / delete_native_mesh_section_00b86690",
+      "evidence": "Existing destructor entry now accepts the same borrowed lifetime issuer; the lifetime adapter calls it instead of bypassing it through the shared kernel. Existing native profile and unwind cleanup remain in that kernel.",
+      "baseline": "Already source-wired at baseline; optimized build inlined its old callers. This packet restores the explicit entry in the real lifetime path."
+    },
+    {
+      "native": "00b86550",
+      "status": "skipped",
+      "host_site": "src/native_mesh_section.cpp:rebuild_section_layout_body",
+      "reason": "Already entry-reachable from read_native_mesh_subset_00b941d0 at baseline; no missing body wiring to claim in this packet."
+    },
+    {
+      "native": "00b865a0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_section.cpp:rebuild_native_mesh_section_vertex_layout_00b865a0",
+      "reason": "Already entry-reachable at baseline from GUI text, mesh subset and post-effect construction; no missing body wiring to claim."
+    },
+    {
+      "native": "00b87410",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp:destroy_native_hierarchy_item_pointers_00b87b40",
+      "reason": "Missing local ownership: agent/g4-w1 claimed this exact destructor-to-resize chain before my claim; left its files untouched."
+    },
+    {
+      "native": "00b87350",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp:resize_native_hierarchy_item_pointers_00b87410",
+      "reason": "Missing local ownership: agent/g4-w1 owned the hierarchy-array chain; baseline already has a reachable append-to-reserve call."
+    },
+    {
+      "native": "00b87b40",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp:destroy_native_hierarchy_item_pointers_00b87b40",
+      "reason": "Already entry-reachable from StructuredHierarchyItems::release; missing resize edge belongs to agent/g4-w1."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp:reserve_native_animation_values_00b92440",
+      "reason": "No matching linked function in the baseline graph; a separately bound live animation-value owner/caller was not established in this selection pass."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block",
+      "reason": "No missing original enum-symbol insertion call was established; the inspected merge uses existing native enum/numeric adapters and needs a distinct authored insertion consumer."
+    },
+    {
+      "native": "008f54f0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp:merge_property_block",
+      "reason": "Already called through the reachable scene_numeric_property_merge adapter; earlier chain558 documents the built calls, so no new merge call is warranted."
+    },
+    {
+      "native": "00a79880",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:InGameInterfaceUpdate::set_ambient_volume",
+      "reason": "Missing actual ambient SoundInstance producer: has_ambient_sound_instance returns false and the inspected callback only records the address."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:SetSelectedUnit / ForceSelectUnit",
+      "reason": "Missing native screen+30h selection mode and +C4h selection-vector producer; retained pick-screen fields do not supply those reset inputs."
+    },
+    {
+      "native": "00648060",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootScreen::advance_ticker",
+      "reason": "Missing nonempty award queue, native ticker widget and timed-entry owner; inspected host keeps the queue count zero."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:HudRootRows::animation_interval",
+      "reason": "Missing actual animation/timed-entry instance: weapon_animation returns zero in the existing interval path."
+    },
+    {
+      "native": "008fbef0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:tail-gunner skill notification",
+      "reason": "Already directly called by the chain451 arm with the real descriptor, skill notification and shared RNG draw; no missing wiring here."
+    },
+    {
+      "native": "00b17310",
+      "status": "skipped",
+      "host_site": "src/cc13_sweepB3.cpp:material_set_alpha_ref_00b17310",
+      "reason": "Missing concrete entry-reachable Cc13SweepB3/B5 host with the real material receiver; inspected callers are abstract Host dispatches."
+    },
+    {
+      "native": "00b18ae0",
+      "status": "skipped",
+      "host_site": "src/cc13_large61.cpp:material_register_float3_00b18ae0",
+      "reason": "Missing bound material owner/consumer in the ocean/rain/cloud abstract register-float3 paths; no live replacement site established."
+    },
+    {
+      "native": "00b18d60",
+      "status": "skipped",
+      "host_site": "src/native_material_effect_owner.cpp:initialize_base",
+      "reason": "The actual derived effect loader already runs the shared base initializer via 00B407A0; a separate live base-only constructor consumer is missing."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp:material refresh",
+      "reason": "Already entry-reachable in the baseline call data from the native mission material refresh; no additional call needed."
+    },
+    {
+      "native": "00b253e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:vertex registry removal",
+      "reason": "Already entry-reachable in baseline call data from the native shader lifetime path; no missing wiring here."
+    },
+    {
+      "native": "00b25450",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:pixel registry removal",
+      "reason": "Already entry-reachable in baseline call data from the native shader lifetime path; no missing wiring here."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:resize_native_distortion_records_00b4ee20",
+      "reason": "Already called in source by the reachable resize body and inlined in the baseline build; no distinct missing wiring was established."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:distortion destruction",
+      "reason": "Already entry-reachable at baseline from actual distortion deletion and record destruction; no missing wiring here."
+    },
+    {
+      "native": "00b4f0a0",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:distortion unwind",
+      "reason": "Already entry-reachable at baseline from native distortion unwind; no missing wiring here."
+    },
+    {
+      "native": "00b4f150",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp:destroy_native_distortion_owner",
+      "reason": "No matching baseline linked symbol; existing deletion executes the shared destruction kernel, so a distinct missing behavior was not established."
+    },
+    {
+      "native": "00ab6d00",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp:GuiLeafHost glyph acceptance",
+      "reason": "Missing concrete live GuiLeafHost acceptance implementation with text input and the actual font; existing direct references are probe-only."
+    },
+    {
+      "native": "00aa3910",
+      "status": "skipped",
+      "host_site": "src/gui_pointer_runtime.cpp:GUI pointer update",
+      "reason": "Missing bound pointer runtime services and actual cursor/device sampling, latch constants and hit-test dispatch; no complete live owner established."
+    },
+    {
+      "native": "00b6fc30",
+      "status": "skipped",
+      "host_site": "src/shadow_cascades_cc13.cpp:shadow camera fit",
+      "reason": "Missing linked entry-reachable shadow-fit consumer of the real camera FOV-times-aspect query; prior inspected Lua query consumes a quotient instead."
+    },
+    {
+      "native": "009be150",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp:land follow parameters",
+      "reason": "Missing bound native land-follow parameter owner/copy consumer in this host; no address-named callback implementation was found."
+    },
+    {
+      "native": "00721070",
+      "status": "skipped",
+      "host_site": "src/gameplay_seg38_cc13.cpp:descriptor_init_00721070",
+      "reason": "Missing live default-descriptor consumer; the existing populated descriptor builder is a different construction path."
+    },
+    {
+      "native": "00721280",
+      "status": "skipped",
+      "host_site": "src/game_hosts_lua.cpp:controller state snapshot provenance",
+      "reason": "Missing real controller snapshot producer/transport consumer; the inspected path retains flattened state rather than a routed snapshot."
+    },
+    {
+      "native": "007214c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_gunnery.cpp:controller snapshot provenance",
+      "reason": "Missing stored ControllerSnapshotMessage and routed snapshot consumer; wrapping existing flags and copying them back would only round-trip."
+    },
+    {
+      "native": "00803c20",
+      "status": "skipped",
+      "host_site": "src/engine_seg49_64_78_cc13.cpp:recon_relation_style_00803c20",
+      "reason": "Missing established live style-query consumer with the four original style tables and fallback owner; no justified host replacement was found."
+    },
+    {
+      "native": "00ac2ed0",
+      "status": "skipped",
+      "host_site": "src/gui_timed_entry_types.cpp:construct_gui_timed_entry_alpha_00ac2ed0",
+      "reason": "A separate native_gui_widget_lifetime implementation already supplies this address family; missing distinct typed-owner consumer does not justify a duplicate construction."
+    },
+    {
+      "native": "00b1cb50",
+      "status": "skipped",
+      "host_site": "src/native_main_scene_submission.cpp:main scene submission metadata",
+      "reason": "Already directly called in source with the actual queue and original metadata constants; baseline optimizer inlines it, so no new call is warranted."
+    },
+    {
+      "native": "00b6d980",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp:refresh_leaf_worlds_00b72080 / quadtree_build_00b91d70",
+      "reason": "Missing concrete actual-storage service receiver in inspected typed scene/quadtree callers; a raw +38 getter cannot read an arbitrary projected SceneNode."
+    },
+    {
+      "native": "00ba7170",
+      "status": "skipped",
+      "host_site": "src/water_weather_cc13.cpp:ocean coverage-region caller",
+      "reason": "Missing established concrete live coverage-region receiver/caller for the raw +8 getter; no original runtime replacement site was established."
+    },
+    {
+      "native": "00b33e50",
+      "status": "skipped",
+      "host_site": "src/ocean_coverage_regions.cpp:mask texture loading",
+      "reason": "Missing actual native texture resource image with DWORD+14 provenance; host DDS bytes do not provide that object."
+    },
+    {
+      "native": "00a95890",
+      "status": "skipped",
+      "host_site": "src/gamepad_force_requests.cpp:clear_gamepad_force_requests_00a95890",
+      "reason": "Missing established original live reset caller for the typed force-state owner; no justified clear invocation was found in this selection pass."
+    },
+    {
+      "native": "00401c20",
+      "status": "skipped",
+      "host_site": "src/math.cpp:cross_reversed",
+      "reason": "Missing established entry-reachable original convex-physics caller using this typed Vec3d body; inspected original callers do not justify an unrelated host arithmetic replacement."
+    },
+    {
+      "native": "00401cb0",
+      "status": "skipped",
+      "host_site": "src/math.cpp:subtract_reversed",
+      "reason": "Missing established entry-reachable original convex-physics caller using this typed Vec3d body; inspected original callers do not justify an unrelated host arithmetic replacement."
+    },
+    {
+      "native": "00401cd0",
+      "status": "skipped",
+      "host_site": "src/math.cpp:scale",
+      "reason": "Missing established entry-reachable original convex-physics caller using this typed Vec3d body; inspected original callers do not justify an unrelated host arithmetic replacement."
+    },
+    {
+      "native": "00401cf0",
+      "status": "skipped",
+      "host_site": "src/math.cpp:length_squared",
+      "reason": "Missing established entry-reachable original convex-physics caller using this typed Vec3d body; inspected original callers do not justify an unrelated host arithmetic replacement."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed; all four existing CTests passed",
+    "call_graph_before": {
+      "reconstructed_addresses_called": 4979
+    },
+    "call_graph_after": {
+      "reconstructed_addresses_called": 4981,
+      "00b86390": {
+        "reachable": true,
+        "call_sites": 2,
+        "callers": [
+          "destroy_native_mesh_section_00b86420",
+          "NativeMeshSectionLifetimeAccess::mutate"
+        ]
+      },
+      "00b86420": {
+        "reachable": true,
+        "call_sites": 3,
+        "callers": [
+          "delete_native_mesh_section_00b86690",
+          "NativeMeshSectionLifetimeAccess::destroy",
+          "NativeMeshSectionReference::release_zero_references"
+        ]
+      }
+    },
+    "float_math": "No float expressions changed; PC24 arithmetic untouched.",
+    "runtime": "Game not run; evidence is source, build/tests and entry reachability, not game validation.",
+    "abi": "Existing source C++ interfaces remain non-drop-in; optional issuer pointer is source-only observer metadata.",
+    "readiness": {
+      "wired_before": 9895,
+      "wired_after": 9896
+    },
+    "build_log": "local/output/wire_g4_c570_build.log"
+  }
+}

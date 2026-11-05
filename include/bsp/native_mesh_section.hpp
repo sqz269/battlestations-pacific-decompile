@@ -8,6 +8,7 @@ namespace bsp {
 class NativeMeshSectionLifetimeFrame;
 class NativeMeshSectionLifetimeCall;
 class NativeMeshSectionLifetimeAccess;
+class NativeMeshSectionLifetimeIssuer;
 
 // Actual 60h object; the pool's separate slab-index DWORD is at +60.
 struct NativeMeshSectionStorage {
@@ -122,8 +123,11 @@ void set_native_mesh_section_indexed_00b85600(NativeMeshSectionStorage&, std::ui
 void clear_native_mesh_section_vertex_streams_00b86550(
     NativeMeshSectionStorage&, NativeRenderActualOwners&);
 // Releases material, streams, layout in order; DOES NOT reset stream count.
+// The optional issuer is borrowed from the SAME active lifetime call, keeping
+// child releases and their accounting in that call without a new lifetime.
 void clear_native_mesh_section_resources_00b86390(
-    NativeMeshSectionStorage&, NativeRenderActualOwners&);
+    NativeMeshSectionStorage&, NativeRenderActualOwners&,
+    NativeMeshSectionLifetimeIssuer* same_call = nullptr);
 
 // Actual stack key passed to renderer virtual+40: four descriptor identities
 // followed by signed count. Only active cells are initialized. No extra retain.
@@ -145,7 +149,8 @@ void rebuild_native_mesh_section_vertex_layout_00b865a0(
 // ECX section, RET. Publish D63194, release+38,+5C, clear resources; base CEB130
 // on success or C++ unwind. No callback retry on unwind and no release of+54.
 void destroy_native_mesh_section_00b86420(
-    NativeMeshSectionStorage&, NativeRenderActualOwners&);
+    NativeMeshSectionStorage&, NativeRenderActualOwners&,
+    NativeMeshSectionLifetimeIssuer* same_call = nullptr);
 // ECX section, stack flags, EAX original address, RET4. Return to canonical
 // pool iff flags&1 after successful destructor. Does not directly heap-free.
 NativeMeshSectionStorage* delete_native_mesh_section_00b86690(
