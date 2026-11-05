@@ -1789,7 +1789,7 @@ void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host) {
     write_field<std::uint32_t>(screen, 0x8, 0x00CEB0FCu);
     host.frontend_destruct(screen);
 }
-void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host) {
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF3EF4u);
     write_field<std::uint32_t>(screen, 0x8, 0x00CF3EE0u);

@@ -1405,7 +1405,21 @@ void* options_screen_construct_005f6030(void* screen, OptionsLifetimeHost& host)
 void options_screen_destruct_005f1bb0(void* screen, OptionsLifetimeHost& host);
 
 // HudPauseScreen constructor and destructor (batch 3).
-struct PauseLifetimeHost : ScreenLifetimeHost {
+// 005FFCB0, 0068CC70's pause leaf: the screen base, its scroller 00683610 and
+// three containers' head-node allocators. Standalone (PauseLifetimeHost
+// redeclares the two services ScreenLifetimeHost also declares).
+struct PauseConstructHost {
+    virtual ~PauseConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+    virtual void scroller_construct_00683610(void* scroller) = 0;
+    virtual void* list_allocate_sentinel_00582280(void* list) = 0;
+    virtual void* tree_buy_head_node_005fd1b0(void* tree) = 0;
+    virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
+};
+
+struct PauseLifetimeHost : ScreenLifetimeHost, PauseConstructHost {
+    void frontend_construct_004f7180(void* screen) override = 0;
+    void scroller_construct_00683610(void* scroller) override = 0;
     virtual void* list_allocate_sentinel_00582280(void* list) = 0;
     virtual void* tree_buy_head_node_005fd1b0(void* tree) = 0;
     virtual void* string_list_allocate_sentinel_004c3020(void* list) = 0;
@@ -1417,7 +1431,7 @@ struct PauseLifetimeHost : ScreenLifetimeHost {
 // list +64h (sentinel 00582280 at +68h, size +6Ch = 0); scroller at +9Ch; hint
 // map +11Ch (head 005FD1B0, nil byte +19h, size +124h = 0); pooled string list
 // +128h (sentinel 004C3020 at +12Ch, size +130h = 0).
-void* hud_pause_screen_construct_005ffcb0(void* screen, PauseLifetimeHost& host);
+void* hud_pause_screen_construct_005ffcb0(void* screen, PauseConstructHost& host);
 // 005FF980: vtables back; pages +14h, +18h, +1Ch; clear the string list and
 // free its sentinel; erase the hint map (005FEDC0), free its head, zero +120h and
 // +124h; tidy the list +64h; +08h = 00CEB0FC; FrontEndScreen_Destruct. The

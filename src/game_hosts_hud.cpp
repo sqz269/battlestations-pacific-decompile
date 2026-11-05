@@ -58,6 +58,7 @@
 #include "bsp/seg25_cc13.hpp"                // 0060FD90
 #include "bsp/view_seg14_cc13.hpp"           // 0051E950
 #include "bsp/seg27_cc13.hpp"                // 006735D0
+#include "bsp/frontend_screen_animation.hpp"  // 00683610, 005FFCB0's +9Ch scroller
 #include "bsp/cc13_left61.hpp"               // 0093CB10, 00538E30's scene member
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
@@ -349,6 +350,7 @@ constexpr HudHeadNodeShape kHudHeadNodeShapes[] = {
     {0x005359A0u, 0x18, 0x15}, {0x00535720u, 0x0C, 0}, {0x005356C0u, 0x0C, 0},
     {0x0053DA70u, 0x3C, 0}, {0x005CC2E0u, 0x18, 0x15}, {0x005CC330u, 0x24, 0x21},
     {0x00613AE0u, 0x1C, 0x19}, {0x00613B30u, 0x18, 0x15}, {0x00613860u, 0x0C, 0},
+    {0x005FD1B0u, 0x1C, 0x19}, {0x00582280u, 0x0C, 0}, {0x004C3020u, 0x10, 0},
 };
 void* buy_hud_head_node(HudLeafScreenStorage& screen, std::uint32_t routine) {
     for (const HudHeadNodeShape& shape : kHudHeadNodeShapes) {
@@ -437,6 +439,44 @@ private:
     HudLeafScreenStorage& screen_;
 };
 
+// 00683610 writes the scroller in place at the screen's own offset, so the
+// typed scroller must have the native 5Ch layout (bsp.py show 00683610 --asm).
+static_assert(sizeof(bsp::FrontEndScreenScroller) == 0x5C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, scroll_range) == 0x0C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, auto_scroll) == 0x20);
+static_assert(offsetof(bsp::FrontEndScreenScroller, thumb_widget) == 0x28);
+static_assert(offsetof(bsp::FrontEndScreenScroller, thumb_min_height) == 0x40);
+static_assert(offsetof(bsp::FrontEndScreenScroller, dragging) == 0x48);
+static_assert(offsetof(bsp::FrontEndScreenScroller, drag_anchor_cursor_x) == 0x4C);
+static_assert(offsetof(bsp::FrontEndScreenScroller, drag_anchor_thumb_offset) == 0x54);
+static_assert(offsetof(bsp::FrontEndScreenScroller, auto_scroll_overridden) == 0x58);
+static_assert(offsetof(bsp::FrontEndScreenScroller, tint_widgets) == 0x5B);
+
+// 005FFCB0.
+class HudLeafPauseBinding final : public bsp::cc13_fe1::PauseConstructHost {
+public:
+    explicit HudLeafPauseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override { construct_leaf_screen_base(screen_, screen); }
+    void scroller_construct_00683610(void* scroller) override {
+        if (!screen_.contains(scroller, sizeof(bsp::FrontEndScreenScroller)))
+            throw std::logic_error("00683610 scroller is not a member of this HUD screen");
+        // The object begins its life here, at +9Ch of the zeroed block. 00683610
+        // leaves +4Ch/+50h as operator new returned them; here they stay zero.
+        auto* const typed = ::new (scroller) bsp::FrontEndScreenScroller;
+        bsp::construct_front_end_screen_scroller_00683610(*typed);
+    }
+    void* list_allocate_sentinel_00582280(void* list) override { return head(list, 0x00582280u); }
+    void* tree_buy_head_node_005fd1b0(void* tree) override { return head(tree, 0x005FD1B0u); }
+    void* string_list_allocate_sentinel_004c3020(void* list) override { return head(list, 0x004C3020u); }
+private:
+    void* head(void* container, std::uint32_t routine) {
+        if (!screen_.contains(container, 0x0C))
+            throw std::logic_error("005FFCB0 container is not a member of this HUD screen");
+        return buy_hud_head_node(screen_, routine);
+    }
+    HudLeafScreenStorage& screen_;
+};
+
 const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
     for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
         if (shape.construct == constructor) return shape;
@@ -444,10 +484,11 @@ const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t construc
 }
 
 // The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
-constexpr std::array<std::uint32_t, 27> kHudLeafScreenConstructors{{
+constexpr std::array<std::uint32_t, 29> kHudLeafScreenConstructors{{
     0x0068A8A0u, 0x00640C80u, 0x0051E950u, 0x005472F0u, 0x005C0810u,
     0x00538E30u, 0x00608E60u, 0x00606470u, 0x0060CAE0u, 0x00650B00u,
-    0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CB0A0u,
+    0x00650140u, 0x00540BA0u, 0x0054F8C0u, 0x005CE610u, 0x005CC120u,
+    0x005CB0A0u, 0x005FFCB0u,
     0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
     0x00643DA0u, 0x006735D0u, 0x0061A480u, 0x0052B030u, 0x005EE440u,
     0x005F9440u, 0x0067BE30u,
@@ -489,6 +530,8 @@ void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenSto
     case 0x005C0810u: { HudLeafMinimapBinding b(screen); bsp::cc13_fe1::hud_minimap_screen_construct_005c0810(p, b); return; }
     case 0x0061A480u: { HudLeafPowerupBinding b(screen); bsp::seg25_cc13::powerup_manager_construct_0061a480(p, b); return; }
     case 0x006735D0u: { HudLeafSupportBinding b(screen); bsp::seg27_cc13::support_manager_screen_construct_006735d0(raw, b); return; }
+    case 0x005CC120u: { HudLeafVoidBaseBinding<bsp::frontend_seg19_21_cc13::FrontEndScreenConstructHost> b(screen); bsp::frontend_seg19_21_cc13::hud_movie_screen_construct_005cc120(p, b); return; }
+    case 0x005FFCB0u: { HudLeafPauseBinding b(screen); bsp::cc13_fe1::hud_pause_screen_construct_005ffcb0(p, b); return; }
     default: break;
     }
     throw std::logic_error("0068CC70 leaf constructor listed but not bound");

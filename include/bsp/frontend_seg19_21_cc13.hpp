@@ -40,7 +40,7 @@ struct LoadingScreenConfigHost {
     virtual void string_vector_assign_00506c80(void* dst, const void* src) = 0;
 };
 
-// 005CB0A0's only call is the front-end screen base 004F7180, so the HUD host
+// 005CB0A0's and 005CC120's only call is the front-end screen base 004F7180, so the HUD host
 // binds it over its own native screen storage without the movie services.
 struct FrontEndScreenConstructHost {
     virtual ~FrontEndScreenConstructHost() = default;
@@ -270,7 +270,7 @@ void hud_movie_screen_show_black_bars_005cbc30(void* screen, Seg19_21Host& host)
 void hud_movie_screen_hide_black_bars_005cbcc0(void* screen, Seg19_21Host& host);
 void hud_engine_movie_screen_update_black_bars_005cbd90(void* screen, float seconds, Seg19_21Host& host);
 void movie_camera_debug_ensure_mover_005cc000(void* screen, Seg19_21Host& host);
-void* hud_movie_screen_construct_005cc120(void* screen, Seg19_21Host& host);
+void* hud_movie_screen_construct_005cc120(void* screen, FrontEndScreenConstructHost& host);
 void movie_camera_debug_enter_005cc590(Seg19_21Host& host);
 void movie_camera_show_mode_text_005cc5e0(void* screen, NativeStr text, Seg19_21Host& host);
 void* vehicle_camera_array_construct_005cc700(void* self, Seg19_21Host& host);
