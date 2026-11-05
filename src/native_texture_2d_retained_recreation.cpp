@@ -1,6 +1,8 @@
 #include "bsp/native_texture_2d_retained_recreation.hpp"
 #include "bsp/native_memory_stream.hpp"
 #include "bsp/native_shader_device_reset.hpp"
+#include "bsp/native_tagged_leaf_b3_05.hpp"
+#include "bsp/wire_goal4_chain574_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native retained texture recreation requires MSVC Win32.
@@ -39,7 +41,15 @@ void recreate_native_texture_2d_retained_00b3e190(void* owner,
     const void* const renderer = context.actual_renderer_00f8d394;
     auto* const device = static_cast<IDirect3DDevice9*>(
         get_native_renderer_device_00b1fef0(renderer));
-    const auto format = word(address(owner, 0x18)) == 0x14u ? 0x15u : 0u;
+    // 00B3E190 consumes this SAME retained texture owner's format at +18.
+    // 00B33E60 is the complete DWORD getter; keep the original 14h->15h map.
+    const auto format = [&] {
+        if constexpr (kWireGoal4Chain574Bound) {
+            return native_tagged_b3_read_dword_18_00b33e60(owner) == 0x14u ? 0x15u : 0u;
+        } else {
+            return word(address(owner, 0x18)) == 0x14u ? 0x15u : 0u;
+        }
+    }();
     void* const length_stream = pointer(word(address(owner, 0x4c)));
     auto** const output = reinterpret_cast<IDirect3DTexture9**>(address(owner, 0x10));
     const auto height = word(address(owner, 0x2c));

@@ -1,5 +1,8 @@
 #include "bsp/native_texture_device_reset.hpp"
 #include "bsp/native_surface_owner.hpp"
+#include "bsp/native_tagged_leaf_b3_05.hpp"
+#include "bsp/native_tagged_leaf_b3_06.hpp"
+#include "bsp/wire_goal4_chain574_switches.hpp"
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native texture device reset requires MSVC Win32.
@@ -79,7 +82,16 @@ void restore_native_texture_2d_after_reset_00b3dd90(void* owner,
     const NativeTextureResetSurfaceProfile& profile) {
     // Native PUSH ECX seeds S-4 before its first owner read, on every path.
     write_word(reused_surface_output, reinterpret_cast<std::uintptr_t>(owner));
-    const auto flags = read_word(address(owner, 0x1c));
+    // Evidence: bsp.py show 00B3DD90 (+1C flags, +18 format, +14 levels)
+    // and 00B33E50/60/70 (the complete DWORD getters). Pass the SAME actual
+    // texture owner; retain the native read order and the reset output aliases.
+    const auto flags = [&] {
+        if constexpr (kWireGoal4Chain574Bound) {
+            return native_tagged_b3_read_dword_1c_00b33e70(owner);
+        } else {
+            return read_word(address(owner, 0x1c));
+        }
+    }();
     const auto pool_code = flags & 0x0fu;
     const auto pool = pool_code <= 3u ? pool_code : read_word(device_argument_and_texture_output);
     std::uint32_t usage = (flags & 0x10u) != 0 ? 1u : 0u;
@@ -96,8 +108,20 @@ void restore_native_texture_2d_after_reset_00b3dd90(void* owner,
     void* const captured_device = pointer(read_word(device_argument_and_texture_output));
     const auto* const device_table = pointer(read_word(captured_device));
     const auto create = reinterpret_cast<CreateTexture>(read_word(address(device_table, 0x5c)));
-    const auto format = read_word(address(owner, 0x18));
-    const auto levels = read_word(address(owner, 0x14));
+    const auto format = [&] {
+        if constexpr (kWireGoal4Chain574Bound) {
+            return native_tagged_b3_read_dword_18_00b33e60(owner);
+        } else {
+            return read_word(address(owner, 0x18));
+        }
+    }();
+    const auto levels = [&] {
+        if constexpr (kWireGoal4Chain574Bound) {
+            return native_tagged_b3_read_dword_14_00b33e50(owner);
+        } else {
+            return read_word(address(owner, 0x14));
+        }
+    }();
     const auto height = read_word(address(owner, 0x2c));
     const auto width = read_word(address(owner, 0x28));
     (void)create(captured_device, width, height, levels, usage, format, pool,
