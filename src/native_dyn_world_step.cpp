@@ -1,4 +1,5 @@
 #include "bsp/native_dyn_world_step.hpp"
+#include "bsp/wire_goal4_chain619_switches.hpp"
 #include "bsp/wire_goal4_chain613_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -160,6 +161,21 @@ __declspec(naked) void substep_shim(){
         push dword ptr [esp+10h]
         call substep_kernel
         ret 0ch
+    }
+}
+// bsp.py show 00c5c540 --asm: 00C5C668..66D and 00C5C6B8..6BD
+// pass the actual world (EDI) and the already-rounded full/remainder timestep
+// on the stack to 00C5BB30 (RET 8). The source kernel adds a borrowed Context
+// argument; forward its existing owner to the one public body. No timestep,
+// accumulator arithmetic, service binding, or substep is added here.
+void __stdcall substep_route(Context* c,void* world,float dt){
+    if constexpr(kWireGoal4Chain619Bound){
+        run_native_dyn_world_substep_00c5bb30(world,dt,*c->owner);
+    }else{
+        __asm {push dt}
+        __asm {push world}
+        __asm {push c}
+        __asm {call substep_shim}
     }
 }
 __declspec(naked) void timestamp_00c5bb9d(){
@@ -1305,7 +1321,7 @@ __declspec(naked) void simulate_kernel(){
         fstp dword ptr [esp] // 00c5c669
         push edi // 00c5c66c
         push dword ptr [ebp+12] // Borrowed context; original frame offsets retained.
-        call substep_shim // 00c5c66d
+        call substep_route // 00c5c66d
         fld dword ptr [edi] // 00c5c672
         sub dword ptr [esp + 010h], 1 // 00c5c674
         fstp dword ptr [esp + 014h] // 00c5c679
@@ -1335,7 +1351,7 @@ __declspec(naked) void simulate_kernel(){
         fstp dword ptr [esp] // 00c5c6b9
         push edi // 00c5c6bc
         push dword ptr [ebp+12] // Borrowed context; original frame offsets retained.
-        call substep_shim // 00c5c6bd
+        call substep_route // 00c5c6bd
         jmp l_00c5c6c6 // 00c5c6c2
     l_00c5c6c4:
         fstp st(0) // 00c5c6c4
@@ -1495,6 +1511,6 @@ void NativeDynWorldStepCalls::sleep_groups_00c4b550(void* m,const NativeDynConta
 DynProfileScopeStorage* NativeDynWorldStepCalls::enter_profile_00c57020(DynProfileScopeStorage& s,U id,const char* name,const DynProfileScopeContext& c){return dyn_profile_scope_enter_00c57020(s,id,name,c);}
 __declspec(noinline) void reset_native_dyn_profile_tree_00c321b0(void* node){__asm {mov ecx,node} __asm {call reset_kernel}}
 __declspec(noinline) void flush_native_dyn_pending_bodies_00c4d980(void* world,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {mov ecx,world} __asm {call flush_kernel}}
-void run_native_dyn_world_substep_00c5bb30(void* world,float dt,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {push dt} __asm {push world} __asm {call substep_kernel}}
+__declspec(noinline) void run_native_dyn_world_substep_00c5bb30(void* world,float dt,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {push dt} __asm {push world} __asm {call substep_kernel}}
 void simulate_native_dyn_world_00c5c540(void* world,float dt,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {push dt} __asm {mov ecx,world} __asm {call simulate_kernel}}
 } // namespace bsp
