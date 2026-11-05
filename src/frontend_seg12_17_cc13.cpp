@@ -171,7 +171,7 @@ void leaderboards_listener_recapture_00563400(Raw l, Fe3Host& host) {
     host.scroller_recapture_006833f0(l.p + 0xB0);
 }
 
-void* hud_limbo_construct_00565d40(Raw s, Fe3Host& host) {
+void* hud_limbo_construct_00565d40(Raw s, ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0) = 0x00CEEBAC;
     return s.p;
@@ -508,7 +508,7 @@ void in_game_screen_23_ensure_observer_00517730(Raw s, Fe3TemplateHost& host) {
     if (!host.observer_is_registered_00694af0(s.ptr(0x1C), s.p + 8)) host.observer_register_00694a60(s.ptr(0x1C), s.p + 8);
 }
 
-void* in_game_screen_23_construct_005178b0(Raw s, Fe3TemplateHost& host) {
+void* in_game_screen_23_construct_005178b0(Raw s, ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(8) = 0x00CE3CD4;
     s.at<std::uint32_t>(0xC) = 0;

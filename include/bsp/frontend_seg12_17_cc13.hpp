@@ -73,7 +73,7 @@ inline constexpr std::array<CollectChildrenSlot, 5> kCollectChildrenSlots{{
 // ---------------------------------------------------------------------------
 // Engine routines the packet's code calls. ECX-taking routines get the object first.
 // ---------------------------------------------------------------------------
-struct Fe3Host {
+struct Fe3Host : ingame_gui_cc13::HudScreenBaseHost {
     virtual ~Fe3Host() = default;
     // Allocation.
     virtual void free_00bf65ac(void* block) = 0;
@@ -190,7 +190,7 @@ std::int32_t leaderboards_selected_row_00561300(Raw screen, Fe3Host& host);
 // 00563400: 006833F0(+28h), then tail 006833F0(+0B0h).
 void leaderboards_listener_recapture_00563400(Raw listener, Fe3Host& host);
 // 00565D40 BSP_HudLimboScreen_Construct, EAX = screen: 004F7180, vtable 00CEEBAC.
-void* hud_limbo_construct_00565d40(Raw screen, Fe3Host& host);
+void* hud_limbo_construct_00565d40(Raw screen, ingame_gui_cc13::HudScreenBaseHost& host);
 // 00565D70 BSP_HudLimboScreen_Exit: +14h = 0.
 void hud_limbo_exit_00565d70(Raw screen) noexcept;
 // 00566050, __fastcall(screen): active (+5h) -> 00ABBE50(ECX = +0Ch; name, 1), name = the global
@@ -324,7 +324,7 @@ void* award_record_construct_00506270(Raw record, Fe3RecordHost& host);
 // ---------------------------------------------------------------------------
 // Batch B (continued): library queue and screens, input-settings tree templates.
 // ---------------------------------------------------------------------------
-struct Fe3TemplateHost {
+struct Fe3TemplateHost : ingame_gui_cc13::HudScreenBaseHost {
     virtual ~Fe3TemplateHost() = default;
     virtual void* operator_new_00bf681b(std::uint32_t bytes) = 0;
     virtual void free_00bf65ac(void* block) = 0;
@@ -412,7 +412,7 @@ void hud_bomber_destruct_005193d0(Raw screen, Fe3TemplateHost& host);
 void in_game_screen_23_ensure_observer_00517730(Raw screen, Fe3TemplateHost& host);
 // 005178B0 BSP_InGameScreen23_Construct, EAX = screen: 004F7180, +8h = 00CE3CD4, +0Ch..+14h = 0,
 // +18h = 0, +1Ch = 0, vtables 00CEC194 / +8h 00CEC17C.
-void* in_game_screen_23_construct_005178b0(Raw screen, Fe3TemplateHost& host);
+void* in_game_screen_23_construct_005178b0(Raw screen, ingame_gui_cc13::HudScreenBaseHost& host);
 // 00517CB0, __fastcall(ECX = widget, EDX = rank): vtable +88h(clamp(rank - 1, 0, 13h), 0, 1.0f)
 // (a negative index uses 0).
 void set_player_rank_icon_frame_00517cb0(void* widget, std::int32_t rank, Fe3TemplateHost& host);

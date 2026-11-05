@@ -52,6 +52,11 @@
 #include "bsp/fe5_host_unreached.hpp"     // goal 3 chain 233: the warning show's Fe5Host
 #include "bsp/world_map_bounds.hpp"
 #include "bsp/ingame_gui_cc13.hpp"
+#include "bsp/frontend_seg12_17_cc13.hpp"    // 0068CC70 leaf screens 005178B0, 00565D40
+#include "bsp/frontend_seg15_22_cc13.hpp"    // 0052B030, 005D3540
+#include "bsp/frontend_seg19_21_cc13.hpp"    // 005CB0A0
+#include "bsp/seg25_cc13.hpp"                // 0060FD90
+#include "bsp/view_seg14_cc13.hpp"           // 0051E950
 #include "bsp/frontend_managers.hpp"
 #include "bsp/simulation_gate.hpp"
 
@@ -79,6 +84,7 @@
 #include <cstddef>
 #include <map>
 #include <memory>
+#include <new>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -224,6 +230,148 @@ private:
     HudSceneInitStorage& screen_;
     GameMenuHost& menu_;
 };
+
+// 0068CC70's operator new(size) for a HUD screen whose leaf constructor is
+// reconstructed and needs only the 004F7180 base (plus, for 00606470 and
+// 00608E60, its own 00BF681B blocks and 0064A4F0). The block is this owner's
+// for the HUD's lifetime, like the root and scene-init screens above. As for
+// those two, the front-end base's two flag bytes at +4h/+5h are an actual
+// FrontEndScreen, so the registry borrows the very base the leaf constructed
+// (register_in_game_screen's constructed_flags) instead of a second copy.
+// The block is zeroed; the native allocation is not, and nothing reads a
+// byte the leaf did not store before the screen's own register runs.
+class HudLeafScreenStorage {
+public:
+    explicit HudLeafScreenStorage(std::size_t size_bytes)
+        : bytes_(std::make_unique<std::uint8_t[]>(size_bytes)), size_(size_bytes) {
+        if (size_bytes < 6) throw std::logic_error("0068CC70 leaf screen smaller than its base");
+        flags_ = ::new (static_cast<void*>(bytes_.get() + 4)) FrontEndScreen{};
+    }
+    std::uint8_t* data() const noexcept { return bytes_.get(); }
+    FrontEndScreen& flags() const noexcept { return *flags_; }
+    bool contains(const void* p, std::size_t bytes) const noexcept {
+        const auto* b = static_cast<const std::uint8_t*>(p);
+        return b >= data() && bytes <= size_ && b <= data() + (size_ - bytes);
+    }
+    // 00BF681B blocks the leaf constructor stores into its own fields (the
+    // two 14h flash records of 00606470); the native destructor frees them.
+    void* allocate_owned(std::size_t bytes) {
+        owned_.push_back(std::make_unique<std::uint8_t[]>(bytes));
+        return owned_.back().get();
+    }
+
+private:
+    std::unique_ptr<std::uint8_t[]> bytes_;
+    std::size_t size_;
+    FrontEndScreen* flags_{nullptr};
+    std::vector<std::unique_ptr<std::uint8_t[]>> owned_;
+};
+
+// 004F7180 on a leaf's own block (bsp.py show 004f7180): the base vtable
+// 00CEAE54, then both flag bytes cleared. The leaf replaces the vtable.
+void construct_leaf_screen_base(HudLeafScreenStorage& screen, const void* p) {
+    if (p != screen.data())
+        throw std::logic_error("004F7180 base belongs to a different HUD screen");
+    bsp::construct_front_end_screen_004f7180(screen.flags());
+    std::memcpy(screen.data(), &bsp::kFrontEndScreenBaseVtable, sizeof(std::uint32_t));
+}
+
+// One adapter per narrow host the leaf constructors take; each has the single
+// 004F7180 service.
+class HudLeafGuiBaseBinding final : public bsp::ingame_gui_cc13::HudScreenBaseHost {
+public:
+    explicit HudLeafGuiBaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::ingame_gui_cc13::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+class HudLeafSeg14BaseBinding final : public bsp::cc13_seg14::FrontEndScreenBaseHooks {
+public:
+    explicit HudLeafSeg14BaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+template <class Host>
+class HudLeafVoidBaseBinding final : public Host {
+public:
+    explicit HudLeafVoidBaseBinding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void frontend_construct_004f7180(void* screen) override {
+        construct_leaf_screen_base(screen_, screen);
+    }
+private:
+    HudLeafScreenStorage& screen_;
+};
+// The Fe5Host leaves: 004F7180, 00608E60's 0064A4F0 on its +16Ch member and
+// 00606470's two operator new(14h). Every other Fe5Host service stays the
+// base's loud failure.
+class HudLeafFe5Binding final : public bsp::cc13_fe5::Fe5HostUnreached {
+public:
+    explicit HudLeafFe5Binding(HudLeafScreenStorage& screen) : screen_(screen) {}
+    void front_end_screen_construct_004f7180(bsp::cc13_fe5::Raw screen) override {
+        construct_leaf_screen_base(screen_, screen.p);
+    }
+    void widget_quad_fade_construct_0064a4f0(bsp::cc13_fe5::Raw fade) override {
+        if (!screen_.contains(fade.p, 0x24))
+            throw std::logic_error("0064A4F0 fade is not a member of this HUD screen");
+        bsp::ingame_gui_cc13::hud_widget_quad_fade_construct_0064a4f0(fade);
+    }
+    void* operator_new(std::size_t bytes) override { return screen_.allocate_owned(bytes); }
+private:
+    HudLeafScreenStorage& screen_;
+};
+
+const bsp::cc13_fe5::SmallHudScreenShape& small_hud_shape(std::uint32_t constructor) {
+    for (const auto& shape : bsp::cc13_fe5::kSmallHudScreens)
+        if (shape.construct == constructor) return shape;
+    throw std::logic_error("no small HUD screen shape for this constructor");
+}
+
+// The leaf constructors 0068CC70 calls (kInGameHudScreens) that run here.
+constexpr std::array<std::uint32_t, 20> kHudLeafScreenConstructors{{
+    0x0068A8A0u, 0x0051E950u, 0x005472F0u, 0x00608E60u, 0x00606470u,
+    0x0060CAE0u, 0x00650B00u, 0x00650140u, 0x0054F8C0u, 0x005CB0A0u,
+    0x005178B0u, 0x00604780u, 0x0060FD90u, 0x005D3540u, 0x00565D40u,
+    0x00643DA0u, 0x0052B030u, 0x005EE440u, 0x005F9440u, 0x0067BE30u,
+}};
+bool is_hud_leaf_screen_constructor(std::uint32_t constructor) noexcept {
+    return std::find(kHudLeafScreenConstructors.begin(), kHudLeafScreenConstructors.end(),
+        constructor) != kHudLeafScreenConstructors.end();
+}
+
+// 0068CC70's `call constructor` on the block allocate_screen made.
+void run_hud_leaf_screen_constructor(std::uint32_t constructor, HudLeafScreenStorage& screen) {
+    std::uint8_t* const p = screen.data();
+    const bsp::ingame_gui_cc13::Raw raw{p};
+    switch (constructor) {
+    case 0x0067BE30u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::follow_screen_construct_0067be30(raw, b); return; }
+    case 0x00643DA0u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::spectator_construct_00643da0(raw, b); return; }
+    case 0x00650140u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::submarine_construct_00650140(raw, b); return; }
+    case 0x00650B00u: { HudLeafGuiBaseBinding b(screen); bsp::ingame_gui_cc13::periscope_construct_00650b00(raw, b); return; }
+    case 0x0052B030u: { HudLeafGuiBaseBinding b(screen); bsp::frontend_seg15_22_cc13::hud_counters_construct_0052b030(raw, b); return; }
+    case 0x005D3540u: { HudLeafGuiBaseBinding b(screen); bsp::frontend_seg15_22_cc13::pause_multi_construct_005d3540(raw, b); return; }
+    case 0x00565D40u: { HudLeafGuiBaseBinding b(screen); bsp::cc13_fe3::hud_limbo_construct_00565d40(raw, b); return; }
+    case 0x005178B0u: { HudLeafGuiBaseBinding b(screen); bsp::cc13_fe3::in_game_screen_23_construct_005178b0(raw, b); return; }
+    case 0x0051E950u: { HudLeafSeg14BaseBinding b(screen); bsp::cc13_seg14::binoculars_screen_construct_0051e950(p, b); return; }
+    case 0x005EE440u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_objectives_construct_005ee440(p, b); return; }
+    case 0x005F9440u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_order_construct_005f9440(p, b); return; }
+    case 0x00604780u: { HudLeafVoidBaseBinding<bsp::cc13_fe1::FrontEndScreenConstructHost> b(screen); bsp::cc13_fe1::hud_pause_cheat_construct_00604780(p, b); return; }
+    case 0x005CB0A0u: { HudLeafVoidBaseBinding<bsp::frontend_seg19_21_cc13::FrontEndScreenConstructHost> b(screen); bsp::frontend_seg19_21_cc13::hud_engine_movie_screen_construct_005cb0a0(p, b); return; }
+    case 0x0060FD90u: { HudLeafVoidBaseBinding<bsp::seg25_cc13::FrontEndScreenConstructHost> b(screen); bsp::seg25_cc13::hud_scoring_screen_construct_0060fd90(p, b); return; }
+    case 0x005472F0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::screen2e_construct_005472f0(raw, b); return; }
+    case 0x0054F8C0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::idle_camera_screen_construct_0054f8c0(raw, b); return; }
+    case 0x00608E60u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::plane_screen_construct_00608e60(raw, b); return; }
+    case 0x00606470u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::plane_effects_construct_00606470(raw, b); return; }
+    case 0x0060CAE0u:
+    case 0x0068A8A0u: { HudLeafFe5Binding b(screen); bsp::cc13_fe5::small_hud_screen_construct(small_hud_shape(constructor), raw, b); return; }
+    default: break;
+    }
+    throw std::logic_error("0068CC70 leaf constructor listed but not bound");
+}
 
 // Goal 4 chain 249: [00F8BBD8] for the update's 00A7B710 and 004CD0F0's class pauses
 // (GameHudHost::bind_sound_runtime), and the pool their temporary names use.
@@ -378,6 +526,9 @@ struct GameHudHost::Impl {
     alignas(4) std::array<std::uint8_t, 0xE8> root_interface_fields{};
     HudRootConstructionStorage constructed_root_screen{};
     HudSceneInitStorage constructed_scene_init_screen{};
+    // 0068CC70's blocks for the leaf screens kHudLeafScreenConstructors lists,
+    // by kInGameHudScreens index; empty for every other screen.
+    std::array<std::unique_ptr<HudLeafScreenStorage>, kInGameHudScreenCount> leaf_screens{};
     void* root_saved_observer_identity{nullptr};
     bsp::HudRootPayloadKind root_saved_payload_kind{bsp::HudRootPayloadKind::Unit};
     bsp::ingame_gui_cc13::Raw root_interface_view() {
@@ -1129,10 +1280,12 @@ private:
 // ---------------------------------------------------------------------------
 //
 // bsp::init_in_game_interface_0068cc70 drives this, so the order the 42 screens
-// are built and registered in is the recovered one. The 42 leaf classes are not
-// reconstructed: the allocation and the constructor are records and the
-// registry record is the executable's own, the substitution milestone 2c makes
-// for the seven main-menu screen classes. What register_screen then does is the
+// are built and registered in is the recovered one. The root (0068BF60), the
+// scene-init screen (00636D90) and the kHudLeafScreenConstructors leaves are
+// constructed on this owner's own blocks and the registry borrows each one's
+// base flags; for every other leaf the allocation and the constructor are
+// records and the registry record is the executable's own, the substitution
+// milestone 2c makes for the seven main-menu screen classes. What register_screen then does is the
 // recovered part of each +10h override, 004f71d0 plus the page the screen loads
 // through 00aa5840 and the widget names it binds through 00aa7e00.
 class HudInitBinding final : public InMissionInterfaceInitHost {
@@ -1174,6 +1327,14 @@ public:
             owner_.done("InGameInterface::allocate_scene_init_screen", 0x00bf681bu);
             return true;
         }
+        if (index < kInGameHudScreenCount
+            && is_hud_leaf_screen_constructor(kInGameHudScreens[index].constructor)) {
+            if (owner_.leaf_screens[index])
+                throw std::logic_error("0068CC70 allocated a HUD leaf screen twice");
+            owner_.leaf_screens[index] = std::make_unique<HudLeafScreenStorage>(size_bytes);
+            owner_.done("InGameInterface::allocate_leaf_screen", 0x00bf681bu);
+            return true;
+        }
         owner_.record("InGameInterface::allocate_screen", 0x00bf681bu);
         return true;
     }
@@ -1199,6 +1360,12 @@ public:
                     {owner_.constructed_scene_init_screen.data()}, binding);
                 ++owner_.summary.screen_constructors;
                 owner_.done("InGameInterface::scene_init_constructor", constructor);
+            } else if (index < kInGameHudScreenCount && owner_.leaf_screens[index]) {
+                if (constructor != kInGameHudScreens[index].constructor)
+                    throw std::logic_error("0068CC70 leaf constructor changed");
+                run_hud_leaf_screen_constructor(constructor, *owner_.leaf_screens[index]);
+                ++owner_.summary.screen_constructors;
+                owner_.done("InGameInterface::leaf_screen_constructor", constructor);
             } else {
                 if (constructor != 0) ++owner_.summary.screen_constructors;
                 owner_.record("InGameInterface::screen_constructor", 0x0068cc70u);
@@ -1230,9 +1397,10 @@ public:
                 owner_.done("InGameInterface::scene_init_register", 0x00636f30u);
                 return true;
             }
+            FrontEndScreen* const constructed = index == 0 ? &owner_.constructed_root_screen.flags
+                : owner_.leaf_screens[index] ? &owner_.leaf_screens[index]->flags() : nullptr;
             return owner_.menu.register_in_game_screen(slot.registry_slot, name,
-                record.register_virtual, record.layout_virtual,
-                index == 0 ? &owner_.constructed_root_screen.flags : nullptr);
+                record.register_virtual, record.layout_virtual, constructed);
         }();
         if (!registered) {
             owner_.log.notef("HUD screen slot %02X could not be registered",
@@ -1419,7 +1587,7 @@ void GameHudHost::build_manager_0068a990() {
     impl.manager.base.active = true;
     impl.record("InGameInterface::activate_manager", 0x00684700u);
     impl.log.notef("in-mission HUD manager: %zu of %zu screens registered through "
-        "bsp::init_in_game_interface_0068cc70 (%zu leaf constructors are records), %zu of "
+        "bsp::init_in_game_interface_0068cc70 (%zu leaf constructors called), %zu of "
         "%zu pages loaded, %zu of %zu named widgets bound; INTF_SCENE3D (%02Xh) pushed by "
         "Init at 0068d73a", impl.summary.screens_built,
         static_cast<std::size_t>(kInGameHudScreenCount), impl.summary.screen_constructors,

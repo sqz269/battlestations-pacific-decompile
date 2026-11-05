@@ -161,7 +161,7 @@ void cursor_screen_enter_0067bd70(Raw s, HudScreenHost& host) {
 // ---------------------------------------------------------------------------
 
 // 0067BE30.
-Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host) {
+Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kFollowScreenVtable;
     s.ptr(0x8) = nullptr;
@@ -289,7 +289,7 @@ void common_overlay_released_0067bc60(Raw s, void* object, HudScreenHost& host) 
 // ---------------------------------------------------------------------------
 
 // 00643DA0.
-Raw spectator_construct_00643da0(Raw s, HudScreenHost& host) {
+Raw spectator_construct_00643da0(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint8_t>(0x14) = 0;
     s.ptr(0x10) = nullptr;
@@ -399,7 +399,7 @@ void binoculars_overlay_exit_0067c0a0(Raw s, HudScreenHost& host) {
 // ---------------------------------------------------------------------------
 
 // 00650140.
-Raw submarine_construct_00650140(Raw s, HudScreenHost& host) {
+Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kSubmarineScreenVtable;
     return s;
@@ -438,7 +438,7 @@ void periscope_exit_00650810(Raw s, HudScreenHost& host) {
 }
 
 // 00650B00.
-Raw periscope_construct_00650b00(Raw s, HudScreenHost& host) {
+Raw periscope_construct_00650b00(Raw s, HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kCallbackOwnerBaseVtable;
     for (std::size_t off : {0xCu, 0x10u, 0x14u}) s.at<std::uint32_t>(off) = 0;

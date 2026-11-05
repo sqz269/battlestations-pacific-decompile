@@ -492,7 +492,7 @@ void hud_counters_hide_right_of_edge_00529120(Raw s, Seg15Host& host);
 void hud_counters_update_occlusion_00529810(Raw s, Seg15Host& host);
 void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host);
 void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host);
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host);
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 // 0052AD50 / 0052ADD0 / 0052AE60 / 0052C0A0: the 18h-byte observer-handle
 // record array (vtable 00CE75CC, observed pointer +14h, "set" byte +10h).
 void rec18_array_push_back_0052ad50(Raw array, Raw source, Seg15Host& host);
@@ -803,7 +803,7 @@ void listener_focus_dim_typed_005d3440(void* widget, bool flag, Seg15Host& host)
 void listener_refresh_dim_typed_005d35a0(void* widget, Seg15Host& host);
 // 005D34E0, listener slot (unused, listbox), RET 8: 00E19550 = selected index.
 void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host);
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host);
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host);
 void pause_multi_destroy_005d3710(Raw s, Seg15Host& host);
 // 005D3790, widget listener at screen+0Ch, RET 4.
 void pause_multi_on_activate_005d3790(Raw listener, void* widget, Seg15Host& host);

@@ -465,7 +465,7 @@ void hud_counters_remove_counter_a_0052ab40(Raw s, Seg15Host& host) { remove_vis
 void hud_counters_cancel_countdown_0052ab90(Raw s, Seg15Host& host) { remove_visible(s, 0x10, host); }
 
 // 0052B030: base constructor, vtable 00CED0AC, +0Ch..+28h zeroed.
-Raw hud_counters_construct_0052b030(Raw s, Seg15Host& host) {
+Raw hud_counters_construct_0052b030(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x0) = kHudCountersVtable;
     for (std::size_t off = 0x14; off <= 0x28; off += 4) s.at<std::uint32_t>(off) = 0;
@@ -2290,7 +2290,7 @@ void pause_multi_store_selection_005d34e0(void* listbox, Seg15Host& host) {
 }
 
 // 005D3540: base, listener bases, vtables 00CF1D70 / 00CF1D5C / 00CF1D3C, +24h cleared.
-Raw pause_multi_construct_005d3540(Raw s, Seg15Host& host) {
+Raw pause_multi_construct_005d3540(Raw s, bsp::ingame_gui_cc13::HudScreenBaseHost& host) {
     host.front_end_screen_construct_004f7180(s);
     s.at<std::uint32_t>(0x8) = kListboxListenerBaseVtable;
     s.at<std::uint32_t>(0xC) = kWidgetListenerBaseVtable;

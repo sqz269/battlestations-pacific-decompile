@@ -162,7 +162,7 @@ void* hud_score_row_copy_construct_0060f020(void* self, const void* source, Seg2
 }
 
 // 0060FD90 __thiscall(screen), RET: HudScoringScreen constructor.
-void* hud_scoring_screen_construct_0060fd90(void* screen, Seg25Host& host) {
+void* hud_scoring_screen_construct_0060fd90(void* screen, FrontEndScreenConstructHost& host) {
     Raw s = raw(screen);
     host.frontend_construct_004f7180(screen);
     s.at<std::uint32_t>(0x8) = 0x00CEB0FCu;

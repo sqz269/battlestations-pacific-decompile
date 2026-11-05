@@ -536,7 +536,15 @@ void* session_message188_scalar_delete_005f97d0(void* message, std::uint8_t flag
 // Screen registration, construction and destruction
 // ---------------------------------------------------------------------------
 
-struct ScreenLifetimeHost {
+// The leaf constructors 0068CC70 runs whose only call is the front-end screen
+// base 004F7180 (005EE440, 005F9440, 00604780). The HUD host binds them over
+// its own native screen storage without the page and layout services.
+struct FrontEndScreenConstructHost {
+    virtual ~FrontEndScreenConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+
+struct ScreenLifetimeHost : FrontEndScreenConstructHost {
     virtual ~ScreenLifetimeHost() = default;
     // BSP_FrontEndScreen_Register 004F71D0 / _Construct 004F7180 / _Destruct, ECX = screen.
     virtual void frontend_register_004f71d0(void* screen) = 0;
@@ -587,9 +595,9 @@ void multi_mode_selector_register_005ea7c0(void* screen, ScreenLifetimeHost& hos
 // before return and are not modelled.
 void* multi_main_construct_005e6d90(void* screen, ScreenLifetimeHost& host);
 void* multi_mode_selector_construct_005ea8c0(void* screen, ScreenLifetimeHost& host);
-void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host);
-void* hud_order_construct_005f9440(void* screen, ScreenLifetimeHost& host);
-void* hud_pause_cheat_construct_00604780(void* screen, ScreenLifetimeHost& host);
+void* hud_objectives_construct_005ee440(void* screen, FrontEndScreenConstructHost& host);
+void* hud_order_construct_005f9440(void* screen, FrontEndScreenConstructHost& host);
+void* hud_pause_cheat_construct_00604780(void* screen, FrontEndScreenConstructHost& host);
 
 // Destructors: restore the screen's vtables, destroy the loaded pages, free owned
 // vectors, put the base vtable 00CEB0FC back at +08h (where the screen has one)

@@ -714,7 +714,7 @@ void* multi_mode_selector_construct_005ea8c0(void* screen, ScreenLifetimeHost& h
     return construct_scroller_screen(screen, 0x00CF2B44u, 0x00CF2B30u, 0x00CF2B10u, host);
 }
 
-void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host) {
+void* hud_objectives_construct_005ee440(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF2D20u);
     write_field<std::uint32_t>(screen, 0x8, 0x00CF2D0Cu);
@@ -722,13 +722,13 @@ void* hud_objectives_construct_005ee440(void* screen, ScreenLifetimeHost& host) 
     return screen;
 }
 
-void* hud_order_construct_005f9440(void* screen, ScreenLifetimeHost& host) {
+void* hud_order_construct_005f9440(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF3B7Cu);
     return screen;
 }
 
-void* hud_pause_cheat_construct_00604780(void* screen, ScreenLifetimeHost& host) {
+void* hud_pause_cheat_construct_00604780(void* screen, FrontEndScreenConstructHost& host) {
     host.frontend_construct_004f7180(screen);
     write_field<std::uint32_t>(screen, 0x0, 0x00CF41A0u);
     return screen;

@@ -40,7 +40,14 @@ struct LoadingScreenConfigHost {
     virtual void string_vector_assign_00506c80(void* dst, const void* src) = 0;
 };
 
-struct Seg19_21Host : LoadingScreenConfigHost {
+// 005CB0A0's only call is the front-end screen base 004F7180, so the HUD host
+// binds it over its own native screen storage without the movie services.
+struct FrontEndScreenConstructHost {
+    virtual ~FrontEndScreenConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+
+struct Seg19_21Host : LoadingScreenConfigHost, FrontEndScreenConstructHost {
     virtual ~Seg19_21Host() = default;
     // Address of an image global's storage (00E198C4, 00E188A8, 00E194B4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -245,7 +252,7 @@ void movie_camera_reset_overview_height_005cafc0(void* screen) noexcept;
 void hud_movie_screen_destruct_005caff0(void* screen, Seg19_21Host& host);
 std::int32_t hud_movie_screen_get_screen_id_005cb070() noexcept;
 void hud_movie_screen_on_observed_released_005cb080(void* self, void* object) noexcept;
-void* hud_engine_movie_screen_construct_005cb0a0(void* screen, Seg19_21Host& host);
+void* hud_engine_movie_screen_construct_005cb0a0(void* screen, FrontEndScreenConstructHost& host);
 std::int32_t hud_engine_movie_screen_get_screen_id_005cb0d0() noexcept;
 void hud_engine_movie_screen_show_black_bars_005cb0f0(void* screen, Seg19_21Host& host);
 void hud_engine_movie_screen_hide_black_bars_005cb130(void* screen) noexcept;

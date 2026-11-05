@@ -563,7 +563,7 @@ void hud_movie_screen_on_observed_released_005cb080(void* self, void* object) no
 }
 
 // 005CB0A0 __thiscall(screen), RET: HudEngineMovieScreen (38h) constructor.
-void* hud_engine_movie_screen_construct_005cb0a0(void* screen, Seg19_21Host& host) {
+void* hud_engine_movie_screen_construct_005cb0a0(void* screen, FrontEndScreenConstructHost& host) {
     Raw s = raw(screen);
     host.frontend_construct_004f7180(screen);
     s.at<std::uint8_t>(0x9) = 0;

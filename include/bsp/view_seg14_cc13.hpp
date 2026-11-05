@@ -34,7 +34,14 @@ struct EntityKindHooks {
     virtual bool object_is_kind_virtual_5c(Raw object, std::uint32_t kind) = 0;
 };
 
-struct ViewSeg14Hooks : EntityKindHooks {
+// 0051E950's only call is the front-end screen base 004F7180, so the HUD host
+// binds it over its own native screen storage without the view services.
+struct FrontEndScreenBaseHooks {
+    virtual ~FrontEndScreenBaseHooks() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+};
+
+struct ViewSeg14Hooks : EntityKindHooks, FrontEndScreenBaseHooks {
     virtual ~ViewSeg14Hooks() = default;
     // Virtual slots, named by slot.
     virtual void widget_show_virtual_34(Raw widget, std::uint32_t flag) = 0;
@@ -77,7 +84,7 @@ struct ViewSeg14Hooks : EntityKindHooks {
 // ---- binoculars screen (screen 26h, page "GUI_binoculars") -------------------------------
 void binoculars_toggle_zoom_0051e7e0(Raw screen, const ViewGlobals& globals, ViewSeg14Hooks& hooks);
 void binoculars_reset_0051e8e0(Raw screen, ViewSeg14Hooks& hooks);
-Raw binoculars_screen_construct_0051e950(Raw screen, ViewSeg14Hooks& hooks);
+Raw binoculars_screen_construct_0051e950(Raw screen, FrontEndScreenBaseHooks& hooks);
 void binoculars_screen_exit_0051e9b0(Raw screen, ViewSeg14Hooks& hooks);
 void binoculars_screen_destruct_0051ea20(Raw screen, ViewSeg14Hooks& hooks);
 void binoculars_screen_register_0051ed60(Raw screen, ViewSeg14Hooks& hooks, NativeStringStorage& strings);

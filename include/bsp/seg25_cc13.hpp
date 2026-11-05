@@ -26,7 +26,14 @@ struct NativeStr {
     char* data;
 };
 
-struct Seg25Host {
+// 0060FD90's only call is the front-end screen base 004F7180, so the HUD host
+// binds it over its own native screen storage without the scoring services.
+struct FrontEndScreenConstructHost {
+    virtual ~FrontEndScreenConstructHost() = default;
+    virtual void frontend_construct_004f7180(void* screen) = 0;
+};
+
+struct Seg25Host : FrontEndScreenConstructHost {
     virtual ~Seg25Host() = default;
     // Address of an image global's storage (00E188A8, 00E198C4, ...).
     virtual void* global(std::uint32_t address) = 0;
@@ -110,7 +117,7 @@ void hud_scoring_screen_on_listbox_activate_0060de00(void* listener, Seg25Host& 
 void hud_score_row_destroy_0060de10(void* row, Seg25Host& host);
 void* hud_score_row_assign_0060dfb0(void* self, const void* source, Seg25Host& host);
 void* hud_score_row_copy_construct_0060f020(void* self, const void* source, Seg25Host& host);
-void* hud_scoring_screen_construct_0060fd90(void* screen, Seg25Host& host);
+void* hud_scoring_screen_construct_0060fd90(void* screen, FrontEndScreenConstructHost& host);
 std::int32_t hud_scoring_screen_get_screen_id_0060fe00() noexcept;
 bool hud_scoring_screen_is_self_managed_0060fe20(Seg25Host& host);
 void hud_scoring_screen_collect_children_0060fe40(void* screen, void* children, Seg25Host& host);

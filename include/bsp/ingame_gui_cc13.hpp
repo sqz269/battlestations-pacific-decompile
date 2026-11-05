@@ -44,9 +44,17 @@ struct HudObserverReferenceHost {
     virtual void observer_unregister_006952a0(void* observer, void* observed) = 0;
 };
 
+// The leaf constructors 0068CC70 runs whose only call is the front-end screen
+// base 004F7180 (0067BE30, 00643DA0, 00650140, 00650B00). The HUD host binds
+// them over its own native screen storage without the GUI services.
+struct HudScreenBaseHost {
+    virtual ~HudScreenBaseHost() = default;
+    virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
+};
+
 // The scene-init constructor/register pair needs only these services. Keep
 // its live owner independent of unrelated camera, input and observer services.
-struct HudSceneInitHost {
+struct HudSceneInitHost : HudScreenBaseHost {
     virtual ~HudSceneInitHost() = default;
     virtual void front_end_screen_construct_004f7180(Raw screen) = 0;
     virtual void front_end_screen_register_004f71d0(Raw screen) = 0;
@@ -296,7 +304,7 @@ void cursor_screen_enter_0067bd70(Raw s, HudScreenHost& host);
 // Screen 49h, the follow screen (vtable 00CF6D68): +8h is the followed unit.
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kFollowScreenVtable = 0x00CF6D68;
-Raw follow_screen_construct_0067be30(Raw s, HudScreenHost& host);
+Raw follow_screen_construct_0067be30(Raw s, HudScreenBaseHost& host);
 void follow_screen_register_0067be80(Raw s, HudScreenHost& host);
 void follow_screen_exit_0067bec0(Raw s) noexcept;
 
@@ -328,7 +336,7 @@ void common_overlay_released_0067bc60(Raw s, void* object, HudScreenHost& host);
 // "Score_Text" at +0Ch, "Spectator_Text" at +10h, +14h a byte.
 // ---------------------------------------------------------------------------
 inline constexpr std::uint32_t kSpectatorScreenVtable = 0x00CF5998;
-Raw spectator_construct_00643da0(Raw s, HudScreenHost& host);
+Raw spectator_construct_00643da0(Raw s, HudScreenBaseHost& host);
 void spectator_destruct_00643e00(Raw s, HudScreenHost& host);
 void spectator_register_00643e80(Raw s, HudScreenHost& host);
 void spectator_enter_00643f40(Raw s, HudScreenHost& host);
@@ -357,12 +365,12 @@ float scene_init_pulse_alpha(float clock) noexcept;
 inline constexpr std::uint32_t kSubmarineScreenVtable = 0x00CF61D4;
 inline constexpr std::uint32_t kPeriscopeScreenVtable = 0x00CF639C;
 inline constexpr std::uint32_t kPeriscopeCallbackVtable = 0x00CF6384;
-Raw submarine_construct_00650140(Raw s, HudScreenHost& host);
+Raw submarine_construct_00650140(Raw s, HudScreenBaseHost& host);
 void submarine_register_00650170(Raw s, HudScreenHost& host);
 void submarine_destruct_00650910(Raw s, HudScreenHost& host);
 void periscope_released_006502d0(Raw s, void* object) noexcept;
 void periscope_exit_00650810(Raw s, HudScreenHost& host);
-Raw periscope_construct_00650b00(Raw s, HudScreenHost& host);
+Raw periscope_construct_00650b00(Raw s, HudScreenBaseHost& host);
 
 // ---------------------------------------------------------------------------
 // Screen 4Dh, the HUD markers, and its marker widget sets.
