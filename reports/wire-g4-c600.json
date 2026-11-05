@@ -1,0 +1,107 @@
+{
+  "goal": 4,
+  "chain": 600,
+  "slot": "g4-w4",
+  "base": "63bc0970dc37772c2dde52f60dc9df4de2527470",
+  "switch": "bsp::kWireGoal4Chain600Bound",
+  "summary": "Route live volume-texture scalar deletion through the existing current-slot return body using the same actual 0108DBA8 pool.",
+  "rows": [
+    {
+      "native": "00b3dcf0",
+      "status": "wired",
+      "host_site": "src/native_volume_texture_owner.cpp: bsp::delete_native_volume_texture_00b3f430",
+      "state": "The original owner pointer and NativeVolumeTextureOwnerContext::actual_volume_pool_0108dba8 flow directly into the existing selector after complete destruction, only when flags bit0 is set.",
+      "evidence": "bsp.py show --asm: B3DCF0 PUSH ECX; B3DCF1 MOV ECX,0108DBA8; B3DCF6 CALL B3D860; B3DCFB RET. B3F438..B3F445 performs the same flag-selected return on that pool.",
+      "built_call": "105aa9ef in delete_native_volume_texture_00b3f430 calls return_native_volume_texture_slot_00b3dcf0 at 1061fea0; call_graph.py who reports REACHABLE, one call site.",
+      "limits": "New C++ call interface with explicit pool context; no native ABI replacement or game execution was tested. Runtime volume creation remains outside this wiring."
+    },
+    {
+      "native": "00b3f430",
+      "status": "skipped",
+      "host_site": "src/native_volume_texture_owner.cpp: bsp::delete_native_volume_texture_00b3f430",
+      "reason": "Already entry-reachable at baseline through real texture ownership and renderer binding; used as the host for B3DCF0 without claiming another newly wired function."
+    },
+    {
+      "native": "00b3dcc0",
+      "status": "skipped",
+      "host_site": "src/d3d9_surface_pool.cpp: bsp::return_d3d9_surface_slot_00b3dcc0",
+      "reason": "Already entry-reachable at baseline with three call sites; its surface-pool selector needs no additional call."
+    },
+    {
+      "native": "00a2b950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list boundary",
+      "reason": "The native candidate score table has no live owner or gameplay consumer; the existing host identifies its original reader as an unreachable debug text overlay, which this assignment excludes."
+    },
+    {
+      "native": "00a2bcc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: AI group score-list boundary",
+      "reason": "Missing the candidate score-table owner and entries; its only documented record consumer is the excluded debug overlay."
+    },
+    {
+      "native": "00b4ed70",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: bsp::reserve_native_distortion_records_00b4ed70",
+      "reason": "No live game-native distortion owner or record producer was found; the raw +254h array requires that actual owner and its allocator-backed record state."
+    },
+    {
+      "native": "00b4ee20",
+      "status": "skipped",
+      "host_site": "src/native_distortion_lifetime.cpp: bsp::resize_native_distortion_records_00b4ee20",
+      "reason": "Missing the same live distortion owner and +254h record-array consumer; invoking it on a new empty header would not replace a real state transition."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp: bsp::set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "No game-native caller publishing the real directional light and its constructed shadow-owner graph was found; the existing frontend and weather Host interfaces do not supply a live binding here."
+    },
+    {
+      "native": "00b92440",
+      "status": "skipped",
+      "host_site": "src/native_skinned_animation_item.cpp: animation-value clear, append and assignment helpers",
+      "reason": "The native animation-value parser and owning 30h-stride array have no live caller found in this worktree; wiring reserve requires the actual animation-record loading or assignment path."
+    },
+    {
+      "native": "00b197e0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_base.cpp: bsp::construct_native_resource_registry_base_00b197e0",
+      "reason": "Missing a live registry-base owner and publication path; the body only installs D5E550 and no caller of this base constructor was found."
+    },
+    {
+      "native": "00b197f0",
+      "status": "skipped",
+      "host_site": "src/native_resource_registry_base.cpp: bsp::delete_native_resource_registry_base_00b197f0",
+      "reason": "Missing the same actual registry owner, allocation provenance and F8D41C publication cell required by this scalar-deletion entry."
+    },
+    {
+      "native": "00b60350",
+      "status": "skipped",
+      "host_site": "src/native_hardware_layout_pool_trim.cpp: bsp::trim_native_hardware_layout_pool_00b60350",
+      "reason": "Requires the actual D62AF0/B604D0 hardware-layout pool with 48h slots; the examined generic graphics-pool hardware-layout profile instead uses D61D0C/B486A0 and 44h slots."
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 passed for MSVC Win32 Release before and after the code change.",
+    "tests": "All four existing CTests passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
+    "readiness": {
+      "text_wired_before": 9935,
+      "text_wired_after": 9937,
+      "target_state": "wired",
+      "target_called": true,
+      "target_call_sites": 1,
+      "credit": "Only the single new entry-reachable call to 00b3dcf0 is claimed; the text-match total is a broader heuristic."
+    },
+    "call_graph": {
+      "reconstructed_called_before": 5004,
+      "reconstructed_called_after": 5005,
+      "reachable_functions_before": 37898,
+      "reachable_functions_after": 37899,
+      "new_called_addresses": ["00b3dcf0"],
+      "path": "WinMainCRTStartup -> startup host -> renderer frame graph -> end_native_renderer_frame_default_00b2f4a0 -> end_native_renderer_frame_00b2d8e0 -> bind_native_renderer_texture_00b24710 -> delete_native_volume_texture_00b3f430 -> return_native_volume_texture_slot_00b3dcf0"
+    },
+    "float_math_changed": false,
+    "game_run": false
+  }
+}
