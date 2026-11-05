@@ -3,6 +3,8 @@
 #include "bsp/native_renderer_resource_release.hpp"
 #include "bsp/native_renderer_gamma.hpp"
 #include "bsp/native_render_state_leaves.hpp"
+#include "bsp/native_render_resource_init.hpp"
+#include "bsp/wire_goal4_chain592_switches.hpp"
 
 #include <windows.h>
 #include <exception>
@@ -133,12 +135,29 @@ std::uint8_t change_native_renderer_presentation_mode_00b29e60(void* renderer,
     const Word old_interval_is_zero = word(renderer, 0x1a5c) == 0;
     const auto interval = static_cast<std::uint8_t>(interval_selector_slot);
     const auto fullscreen = static_cast<std::uint8_t>(fullscreen_slot);
+    const bool matches = [&] {
+        if constexpr (kWireGoal4Chain592Bound) {
+            if (static_cast<std::uint8_t>(force_slot) != 0) return false;
+            // 00B21F10 (bsp.py show): copy the actual presentation DWORDs at
+            // +1A28/+1A2C. The lifecycle section held here protects this same
+            // renderer; consume the copy in the existing mode comparison.
+            Word dimensions[2];
+            copy_native_renderer_dimensions_00b21f10(renderer, dimensions);
+            return width == dimensions[0]
+                && height == dimensions[1]
+                && multisample == word(renderer, 0x1a38)
+                && (word(renderer, 0x1a48) != 0) != fullscreen
+                && old_interval_is_zero == interval;
+        } else {
     const bool matches = static_cast<std::uint8_t>(force_slot) == 0
         && width == word(renderer, 0x1a28)
         && height == word(renderer, 0x1a2c)
         && multisample == word(renderer, 0x1a38)
         && (word(renderer, 0x1a48) != 0) != fullscreen
         && old_interval_is_zero == interval;
+            return matches;
+        }
+    }();
     if (!matches) {
         const Word windowed = fullscreen == 0;
         const bool windowed_changed = word(renderer, 0x1a48) != windowed;
