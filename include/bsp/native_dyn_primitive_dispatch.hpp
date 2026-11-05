@@ -30,6 +30,11 @@ public:
     const void* box_sphere_table() const noexcept {return &box_sphere_.method;}
     const void* sphere_ray_table() const noexcept {return &sphere_ray_.method;}
     const void* box_ray_table() const noexcept {return &box_ray_.method;}
+    // 00C4414A's actual ECX dispatcher / EDX method and five stack arguments.
+    // Recognize only this runtime's two pair methods, borrowing their same
+    // table-owned CRT context. Other entries retain one indirect invocation.
+    static bool __fastcall dispatch_collision(void* owner, std::uintptr_t method,
+        void* result, const void* a, const float* ma, const void* b, const float* mb);
 private:
     struct Entry {std::uintptr_t method;const CameraAxesCrtAccess* crt;};
     static_assert(offsetof(Entry,method)==0);

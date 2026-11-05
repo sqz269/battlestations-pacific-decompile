@@ -1,0 +1,165 @@
+{
+  "chain": 618,
+  "run": 1275,
+  "slot": "g4-w2",
+  "picked": "Known primitive pair dispatch at the live 00C44090 narrow-phase boundary",
+  "dispatch": "Unconditional collision_dispatch_bridge call at 00C4414A; chain618 switch and superseded CALL EDX arm removed for review run1294 finding1.",
+  "rows": [
+    {
+      "native": "00c518d0",
+      "status": "wired",
+      "host_site": "src/native_dyn_narrow_phase.cpp: range_kernel -> collision_dispatch_bridge -> NativeDynPrimitiveDispatchRuntime::dispatch_collision",
+      "evidence": "00C44118..00C4414E supplies the actual scene dispatcher, vslot method, output buffer, both shapes and both body+8 transforms; the recognized sphere-sphere method calls the existing body with its table-owned CRT context."
+    },
+    {
+      "native": "00c48330",
+      "status": "wired",
+      "host_site": "src/native_dyn_narrow_phase.cpp: range_kernel -> collision_dispatch_bridge -> NativeDynPrimitiveDispatchRuntime::dispatch_collision",
+      "evidence": "The same live pair boundary recognizes only this runtime's box-sphere method and forwards every native argument unchanged to the existing body. Shape ordering remains the body's responsibility."
+    },
+    {
+      "native": "00c44090",
+      "status": "skipped",
+      "host_site": "src/native_dyn_narrow_phase.cpp: intersect_native_dyn_pairs_00c44090 / range_kernel",
+      "reason": "Already entry reachable; reused as the host site with its single vslot call replaced, without adding another range invocation."
+    },
+    {
+      "native": "00c50740",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::sphere_ray",
+      "reason": "Ray body remains inlined behind its existing table callback; a direct boundary in actual ray traversal is outside this pair-dispatch packet."
+    },
+    {
+      "native": "00c50dd0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::box_ray",
+      "reason": "Ray body remains inlined behind its existing table callback; a direct boundary in actual ray traversal is outside this pair-dispatch packet."
+    },
+    {
+      "native": "00aa0e20",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: restart_native_gui_animated_value_00aa0e20",
+      "reason": "Needs actual GUI +50/+54/+58 object identities and a stop-vslot34 binding; no concrete NativeGuiAnimatedValueCalls implementation was found."
+    },
+    {
+      "native": "00aa0e60",
+      "status": "skipped",
+      "host_site": "src/cc13_seg87.cpp: set_native_gui_animated_value_target_00aa0e60",
+      "reason": "Needs the actual GUI +50 object, target-vslot88 and +4 notification binding; no concrete NativeGuiAnimatedValueCalls implementation was found."
+    },
+    {
+      "native": "00b0d7b0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: SetControlledUnitBinding::publish_listener",
+      "reason": "The binding receives only bool and driven_listener_handle returns false; actual renderer/listener pointers and its +30 root-invalidation binding are still missing."
+    },
+    {
+      "native": "00aa0f70",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Existing manager code already calls reset_gui_manager_highlights_00aa0f70 with actual resources; the readiness alias is not a missing invocation."
+    },
+    {
+      "native": "00aa7ef0",
+      "status": "skipped",
+      "host_site": "src/gui_manager_frame.cpp: update_gui_manager_00aa4f80",
+      "reason": "Existing manager code already calls gui_widget_has_live_entries_00aa7ef0 for invisible screens; another call would duplicate the current conditional check."
+    },
+    {
+      "native": "008f3710",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: numeric property insertion",
+      "reason": "Already called by the live numeric property merge; no additional integer insertion was needed or added."
+    },
+    {
+      "native": "008f3a20",
+      "status": "skipped",
+      "host_site": "src/scene_numeric_property_merge.cpp: enum property insertion",
+      "reason": "Already called by the live enum property merge; no additional symbol resolution or insertion was needed or added."
+    }
+  ],
+  "measurement": {
+    "stage": "Historical initial packet before landing and review; the gate used for this comparison was removed in review run1294. Current checks are recorded in review_round1.",
+    "readiness_text_wired_before": 9952,
+    "readiness_text_wired_after": 9952,
+    "entry_called_unique_addresses_before": 5029,
+    "entry_called_unique_addresses_after": 5031,
+    "baseline": "Switch disabled and both original inlining attributes restored, rebuilt and rescanned; neither selected address had a materialized callable entry.",
+    "selected_after": {
+      "00c518d0": {"called": true, "call_sites": 2},
+      "00c48330": {"called": true, "call_sites": 2}
+    },
+    "note": "Existing indirect primitive algorithms were already present. This packet exposes their original-address entry boundaries and adds explicit calls from the live pair dispatcher; it adds no collision algorithm or second execution."
+  },
+  "initial_validation": {
+    "build": "scripts/build.ps1: MSVC Win32 Release; all five CTests passed with the switch enabled and in the disabled baseline control.",
+    "focused_probe": "local/c618_dispatch_probe.cmd: four PC24 byte-identical old-vslot versus new-dispatch hit/miss comparisons across both pair methods; one foreign miss through the actual 00C44090 range kernel verified exact owner, EDX method, shapes, transforms and single invocation. Passed in enabled and disabled builds.",
+    "call_graph": "Both bodies REACHABLE with direct call sites from NativeDynPrimitiveDispatchRuntime::dispatch_collision; range_kernel directly calls collision_dispatch_bridge. Original table methods remain valid callers.",
+    "floating_point": "Recovered instruction kernels and all float operation/store schedules are unchanged; the new adapter only compares method pointers and forwards existing arguments.",
+    "scope": "Build, call-graph and synthetic ABI/input/output evidence only. No game execution or gameplay validation."
+  },
+  "landing_retry": {
+    "stage": "Historical landing retry before review run1294; the chain618 gate described here has since been removed.",
+    "merged_origin_main": "9605d6b4ccb9c143cf91520b955c7592acc01c75",
+    "previous_packet_head": "674e082e657c75148c0593a4a0647f722d044663",
+    "resolved_file": "src/native_dyn_narrow_phase.cpp",
+    "resolution": "Retained chain614's switch include, manifold_bridge, append_bridge, private-shim adaptations and contact-matching call, alongside chain618's primitive include, switch, collision_dispatch_bridge and conditional 00C4414A call. No ledger or CMake conflicts occurred.",
+    "switch_at_that_stage": "kWireGoal4Chain618Bound=true",
+    "pc24_lint": "python tools/pc24_lint.py --diff origin/main: zero findings in the merged working tree.",
+    "build": "Final plain scripts/build.ps1 after the ON-build checker: MSVC Win32 Release, all five CTests passed.",
+    "on_build": "python tools/off_switch_on_build.py --names kWireGoal4Chain618Bound: exit 0, zero distinct diagnostics. Temporarily set the owned header false for checker selection, then restored true before the final plain build.",
+    "probe": "local/c618_dispatch_probe.cmd: four byte-identical known pair hit/miss comparisons and one exact foreign-method invocation through 00C44090 passed on the merged tree.",
+    "entry_called_unique_addresses": 5040,
+    "readiness": {
+      "command": "python tools/wire_readiness.py --standins after the final plain build and fresh call_graph.py",
+      "text_wired": 9964,
+      "selected_rows": {
+        "00c518d0": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2},
+        "00c48330": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2}
+      },
+      "note": "The text-only graph has no caller edges for these dispatcher entries; both compiled body boundaries have entry-reachable calls. The merged total includes upstream chains, not just this packet."
+    },
+    "selected_calls": {
+      "00c518d0": {"reachable": true, "call_sites": 2, "new_dispatch_site": "105607f0"},
+      "00c48330": {"reachable": true, "call_sites": 2, "new_dispatch_site": "10560817"}
+    },
+    "preserved_chain614_calls": {
+      "00c3f4d0": {"reachable": true, "call_sites": 1, "caller": "manifold_bridge"},
+      "00c35260": {"reachable": true, "call_sites": 1, "caller": "append_bridge"},
+      "00c3f650": {"reachable": true, "call_sites": 1, "caller": "insert_kernel"}
+    }
+  },
+  "review_round1": {
+    "review_run": 1294,
+    "reviewed_head": "b94be56a0e9ab89c4089086bfa2750bf62b65828",
+    "findings": [
+      {
+        "finding": 1,
+        "status": "fixed",
+        "change": "00C4414A now calls collision_dispatch_bridge unconditionally inside the recovered assembly block. Deleted the superseded CALL EDX arm, chain618 conditional, include and switch header. The runtime fallback for unrecognized dispatcher methods and all chain614 paths remain intact.",
+        "verification": "Static inspection confirms exactly one CALL collision_dispatch_bridge, no CALL EDX in native_dyn_narrow_phase.cpp, no chain618 switch reference in that source, and no switch header."
+      }
+    ],
+    "validation": {
+      "build": "scripts/build.ps1: MSVC Win32 Release; all five CTests passed after removing the gate.",
+      "conditional_build_check": "No chain618 gate remains. The standard build compiles and links the sole unconditional dispatcher path; a switch-flip check is no longer applicable.",
+      "readiness": {
+        "command": "python tools/wire_readiness.py --standins after the standard build and fresh call_graph.py",
+        "text_wired": 9964,
+        "00c518d0": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2},
+        "00c48330": {"state": "callees_done_no_wired_caller", "called": true, "call_sites": 2},
+        "note": "The source-text graph still lacks edges for these dispatcher entries; the fresh built-executable graph confirms both actual calls."
+      },
+      "focused_probe": "local/c618_dispatch_probe.cmd passed: four PC24 byte-identical known pair hit/miss comparisons and one exact foreign-method invocation through 00C44090.",
+      "pc24_lint": "python tools/pc24_lint.py --diff origin/main: zero findings in the review-fixed working tree.",
+      "call_graph": {
+        "entry_called_unique_addresses": 5040,
+        "unconditional_bridge_call_site": "10542594",
+        "00c518d0": {"reachable": true, "call_sites": 2, "dispatcher_call_site": "105607f0"},
+        "00c48330": {"reachable": true, "call_sites": 2, "dispatcher_call_site": "10560817"},
+        "preserved_chain614": "00C3F4D0, 00C35260 and 00C3F650 remain reachable with one call site each."
+      },
+      "scope": "Build, executable call graph and synthetic ABI/input/output evidence; no game execution."
+    }
+  }
+}
