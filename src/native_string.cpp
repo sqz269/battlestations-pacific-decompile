@@ -1,5 +1,7 @@
 #include "bsp/native_string.hpp"
+#include "bsp/native_string_allocate_storage.hpp"
 #include "bsp/native_string_pool_storage.hpp"
+#include "bsp/wire_goal4_chain606_switches.hpp"
 
 #include <cstdlib>
 #include <cstring>
@@ -25,8 +27,17 @@ public:
     explicit RawStringPoolAccess(NativeStringRawPoolContext& context) noexcept
         : context_(context) {}
     char* allocate(std::uint32_t size) {
-        auto* const pool = current_pool();
-        return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));
+        if constexpr (kWireGoal4Chain606Bound) {
+            // 0041CB50..66: capture length, resolve 00419CC0, then allocate
+            // DWORD(length+1) through 00BD1120. The raw 0041DD40 resize below
+            // supplies that same byte count; unsigned subtraction recovers its
+            // actual length, including wrap. Reuse the body with the SAME pool
+            // publication/manager cells, replacing this one allocation only.
+            return allocate_native_string_storage_0041cb50(size - 1u, context_);
+        } else {
+            auto* const pool = current_pool();
+            return static_cast<char*>(allocate_native_string_pool_00bd1120(pool, size));
+        }
     }
     void release(char* data, std::uint32_t size) {
         auto* const pool = current_pool();
