@@ -1,0 +1,98 @@
+{
+  "chain": 615,
+  "slot": "g4-w1",
+  "run": 1271,
+  "switch": "kWireGoal4Chain615Bound",
+  "picked": "General-convex dispatcher and its composed-intersection witness, fallback-direction and contact-projection calls",
+  "validation": {
+    "baseline": "Initial index fresh; ./scripts/build.ps1 passed all 5 checks; wire_readiness.py --standins reported wired=9948.",
+    "build": "./scripts/build.ps1 passed all 5 checks with the switch ON, OFF, and restored ON.",
+    "call_graph_before": 5021,
+    "call_graph_after": 5025,
+    "call_graph_metric": "call_graph.py summary.recon_called, measured on switch OFF and restored ON builds; four additional address-named bodies have direct reachable call sites.",
+    "source_wired_before": 9948,
+    "source_wired_after": 9948,
+    "source_metric_limit": "The textual source-file readiness state still labels this already installed native runtime callees_done_no_wired_caller; the built graph confirms each of the four new calls.",
+    "readiness_new_calls": "All four rows report called=true and call_sites=1 in wire_readiness.py output from the switch ON build.",
+    "emitted_code": "Capstone inspection of all four ON adapters confirmed the seven intersect arguments and 28-byte cdecl cleanup plus RET16, search/result 8-byte cdecl cleanup plus RET4, and direction 4-byte cleanup plus RET. OFF graph omits all four public wrappers.",
+    "float_math": "No floating arithmetic changed; the existing x87 instruction schedules remain in their single existing kernels. pc24_lint on the changed C++ file reports zero findings.",
+    "entry_path": "WinMainCRTStartup -> WinMain -> game_native_dyn_process -> GameNativeDynProcess::Impl -> NativeDynGeneralConvexRuntime table -> intersect -> dispatch_kernel -> intersect_shim -> intersect_native_dyn_convex_00c53010 -> intersect_kernel -> search/direction/result adapters -> existing address entries",
+    "limits": "Build, executable call-graph, and emitted-instruction evidence only. The game was not run, and no original binary ABI, gameplay, or collision-result parity claim is made."
+  },
+  "rows": [
+    {
+      "native": "00c53010",
+      "status": "wired",
+      "host_site": "src/native_dyn_general_convex.cpp: dispatch_kernel -> intersect_shim -> intersect_native_dyn_convex_00c53010",
+      "evidence": "bsp.py show 00C535E0 --asm: C53619 calls C53010 with ECX matrixA, EDX shapeB, EAX matrixB, stack work/result/shapeA; C535E0 allocates the actual 1F8h work and seeds owner direction/lock pointers.",
+      "real_state": "The adapter forwards those exact register and stack pointers plus the dispatcher's existing borrowed CameraAxesCrtAccess. The existing C53010 wrapper enters the same single intersect_kernel once.",
+      "call_site": "10540153 -> 10540100; reachable intersect_shim CALL, switch ON build"
+    },
+    {
+      "native": "00c51ef0",
+      "status": "wired",
+      "host_site": "src/native_dyn_general_convex.cpp: intersect_kernel C532A2/C533E0/C53556 -> search_reference -> search_native_dyn_convex_00c51ef0",
+      "evidence": "bsp.py show 00C53010 --asm and show 00C51EF0 --asm: all three original search sites pass work in ECX; EAX returns status 0/1/2.",
+      "real_state": "Forward the actual composed work record and same borrowed CRT argument. The existing wrapper invokes search_kernel once and returns its full EAX status.",
+      "call_site": "10541555 -> 10541530; reachable search_reference CALL, switch ON build"
+    },
+    {
+      "native": "00c51c20",
+      "status": "wired",
+      "host_site": "src/native_dyn_general_convex.cpp: intersect_kernel C53328 -> direction_reference -> select_native_dyn_convex_direction_00c51c20",
+      "evidence": "bsp.py show 00C53010 --asm: C53326 moves actual work from ESI to EDI before C53328; show 00C51C20 --asm confirms EDI work and native support-direction traversal.",
+      "real_state": "Forward the same work and owner-provided 26-direction table; the existing wrapper preserves EDI and invokes direction_kernel once.",
+      "call_site": "1053FA41 -> 10541560; reachable direction_reference CALL, switch ON build"
+    },
+    {
+      "native": "00c48be0",
+      "status": "wired",
+      "host_site": "src/native_dyn_general_convex.cpp: intersect_kernel C535C3 -> result_reference -> project_native_dyn_convex_contact_00c48be0",
+      "evidence": "bsp.py show 00C53010 --asm: C535C3 projects contact with ESI work; show 00C48BE0 --asm confirms work+78 result and the existing x87 normalization/projection schedule.",
+      "real_state": "Forward the same witnesses, composed transforms, result buffer, and borrowed CRT state. The existing wrapper invokes result_kernel once.",
+      "call_site": "105403E5 -> 10540160; reachable result_reference CALL, switch ON build"
+    },
+    {
+      "native": "00c535e0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_general_convex.cpp: NativeDynGeneralConvexRuntime::intersect -> dispatch_native_dyn_general_convex_00c535e0",
+      "reason": "Already entry-reachable in the baseline; reused as the actual scratch/owner producer, with no new dispatcher wiring claimed."
+    },
+    {
+      "native": "00403850",
+      "status": "skipped",
+      "host_site": "src/native_dyn_solver_mode1.cpp: NativeDynSolverMode1Runtime::run",
+      "reason": "Mode-1 task entry dispatch needs separate investigation; no task-manager call boundary changed in this packet, and g4-w4 has since claimed that work."
+    },
+    {
+      "native": "00c49a30",
+      "status": "skipped",
+      "host_site": "src/native_dyn_box_box.cpp: NativeDynBoxBoxRuntime::intersect",
+      "reason": "Existing box runtime already forwards to this wrapper; no missing real-state producer or changed box dispatch boundary established in this packet."
+    },
+    {
+      "native": "00c518d0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::sphere_sphere",
+      "reason": "Existing primitive slot already forwards actual arguments to this wrapper; no missing runtime adapter established in this packet."
+    },
+    {
+      "native": "00c48330",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::box_sphere",
+      "reason": "Existing primitive slot already forwards actual arguments to this wrapper; no missing runtime adapter established in this packet."
+    },
+    {
+      "native": "00c50740",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::sphere_ray",
+      "reason": "Existing primitive slot already forwards actual arguments to this wrapper; no missing runtime adapter established in this packet."
+    },
+    {
+      "native": "00c50dd0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_primitive_dispatch.cpp: NativeDynPrimitiveDispatchRuntime::box_ray",
+      "reason": "Existing primitive slot already forwards actual arguments to this wrapper; no missing runtime adapter established in this packet."
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 #include "bsp/native_dyn_general_convex.hpp"
 #include "bsp/native_dyn_convex_simplex.hpp"
+#include "bsp/wire_goal4_chain615_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native general convex intersection requires MSVC Win32 x87 assembly.
@@ -7,6 +8,9 @@
 namespace bsp {
 namespace {
 void intersect_kernel();
+void search_kernel();
+void direction_kernel();
+void result_kernel();
 alignas(8) const std::uint64_t constant_00d7a278=0x47efffffe0000000ULL;
 alignas(8) const std::uint64_t constant_00d7a280=0x3fe0000000000000ULL;
 alignas(8) const std::uint64_t constant_00d7a290=0x3f1a36e2eb1c432dULL;
@@ -32,6 +36,24 @@ __declspec(naked) void sqrt_shim(){
 }
 // The extra final CRT argument leaves original locals/arguments in place.
 __declspec(naked) void intersect_shim(){
+    if constexpr (kWireGoal4Chain615Bound) {
+        // bsp.py show 00C535E0 --asm: C53619 supplies ECX=matrixA,
+        // EDX=shapeB, EAX=matrixB and stack work/result/shapeA. The
+        // reconstructed dispatcher also pushes its borrowed CRT at +4.
+        // Pass those same pointers through the existing C53010 entry once.
+        __asm {
+            push dword ptr [esp+4]
+            push eax
+            push edx
+            push ecx
+            push dword ptr [esp+20h]
+            push dword ptr [esp+20h]
+            push dword ptr [esp+20h]
+            call intersect_native_dyn_convex_00c53010
+            add esp,1ch
+            ret 10h
+        }
+    } else {
     __asm {
         push dword ptr [esp+4]
         push dword ptr [esp+14h]
@@ -39,6 +61,50 @@ __declspec(naked) void intersect_shim(){
         push dword ptr [esp+14h]
         call intersect_kernel
         ret 10h
+    }
+    }
+}
+// bsp.py show 00C53010 --asm: calls C532A2/C533E0/C53556 have
+// ECX=actual 1F8h dispatcher work; C53328 has EDI=that work; C535C3
+// has ESI=that work. These boundaries have no live x87 operands. Adapt
+// only integer arguments; retain every floating instruction in the bodies.
+// The context-taking kernels consume their extra CRT DWORD with RET4.
+__declspec(naked) void search_reference(){
+    if constexpr (kWireGoal4Chain615Bound) {
+        __asm {
+            push dword ptr [esp+4]
+            push ecx
+            call search_native_dyn_convex_00c51ef0
+            add esp,8
+            ret 4
+        }
+    } else {
+        __asm { jmp search_kernel }
+    }
+}
+__declspec(naked) void direction_reference(){
+    if constexpr (kWireGoal4Chain615Bound) {
+        __asm {
+            push edi
+            call select_native_dyn_convex_direction_00c51c20
+            add esp,4
+            ret
+        }
+    } else {
+        __asm { jmp direction_kernel }
+    }
+}
+__declspec(naked) void result_reference(){
+    if constexpr (kWireGoal4Chain615Bound) {
+        __asm {
+            push dword ptr [esp+4]
+            push esi
+            call project_native_dyn_convex_contact_00c48be0
+            add esp,8
+            ret 4
+        }
+    } else {
+        __asm { jmp result_kernel }
     }
 }
 // Complete recovered instruction schedule; address comments are PE starts.
@@ -2005,7 +2071,7 @@ __declspec(naked) void intersect_kernel(){
         fld qword ptr constant_00d7a2f8 // 00c53299
         fstp qword ptr [esi + 070h] // 00c5329f
         push dword ptr [esp+72] // Borrowed CRT access.
-        call search_kernel // 00c532a2
+        call search_reference // 00c532a2
         test eax, eax // 00c532a7
         jne l_00c532b5 // 00c532a9
         xor al, al // 00c532ab
@@ -2044,7 +2110,7 @@ __declspec(naked) void intersect_kernel(){
         ja l_00c535c3 // 00c53320
     l_00c53326:
         mov edi, esi // 00c53326
-        call direction_kernel // 00c53328
+        call direction_reference // 00c53328
         fld qword ptr [esi + 01c0h] // 00c5332d
         fsub qword ptr [esi + 01d8h] // 00c53333
         fld qword ptr [esi + 01c8h] // 00c53339
@@ -2097,7 +2163,7 @@ __declspec(naked) void intersect_kernel(){
         fld qword ptr constant_00d7a278 // 00c533d7
         fstp qword ptr [esi + 070h] // 00c533dd
         push dword ptr [esp+72] // Borrowed CRT access.
-        call search_kernel // 00c533e0
+        call search_reference // 00c533e0
         fld qword ptr [esi + 01d8h] // 00c533e5
         fsub qword ptr [esi + 01c0h] // 00c533eb
         fld qword ptr [esi + 01e0h] // 00c533f1
@@ -2193,7 +2259,7 @@ __declspec(naked) void intersect_kernel(){
         fadd dword ptr [esi + 068h] // 00c53550
         fstp dword ptr [esi + 068h] // 00c53553
         push dword ptr [esp+72] // Borrowed CRT access.
-        call search_kernel // 00c53556
+        call search_reference // 00c53556
         fld qword ptr [esi + 01d8h] // 00c5355b
         fsub qword ptr [esi + 01c0h] // 00c53561
         fld qword ptr [esi + 01e0h] // 00c53567
@@ -2215,7 +2281,7 @@ __declspec(naked) void intersect_kernel(){
         fstp qword ptr [esi + 01e8h] // 00c535bd
     l_00c535c3:
         push dword ptr [esp+72] // Borrowed CRT access.
-        call result_kernel // 00c535c3
+        call result_reference // 00c535c3
         pop edi // 00c535c8
         mov al, 1 // 00c535c9
         pop esi // 00c535cb
