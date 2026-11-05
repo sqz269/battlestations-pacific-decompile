@@ -249,6 +249,78 @@
    "status": "wired",
    "host_site": "src/game_hosts_hud.cpp run_hud_leaf_screen_register (HudInitBinding::register_screen under bsp::init_in_game_interface_0068cc70)",
    "body": "binoculars_screen_register_0051ed60 (26h)"
+  },
+  {
+   "native": "0064b780",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding (0068CC70 init_in_game_interface_0068cc70)",
+   "reason": "screen 45h: the 0064AE20 adapter keeps its own transient 1B0h screen copy fed from ShipScreenState; a leaf block would be a second copy until that adapter reads it; also needs eh_vector_construct_00bf7cd1 with element ctor 00415680"
+  },
+  {
+   "native": "006821c0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding (0068CC70 init_in_game_interface_0068cc70)",
+   "reason": "screen 50h: WarningScreenState/WarningAlertFe5Binding hold the warning screen; needs eh_vector_construct_00bf7cd1 (004BA0D0, 0054D440 element ctors) and the [00E08CC4] name table strings"
+  },
+  {
+   "native": "005ba7b0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding (0068CC70 init_in_game_interface_0068cc70)",
+   "reason": "screen 33h narrative: needs eh_vector_construct_00bf7cd1 with element ctor 005B7FA0, list head 005B7550 and five native-string bank paths"
+  },
+  {
+   "native": "00525a90",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding (0068CC70 init_in_game_interface_0068cc70)",
+   "reason": "screen 29h unit pick: needs container_init_00525a10, eh_vector_construct_00bf7cd1 (004BA0D0) and the [00E0865C] image cstring table with refcounted handles"
+  },
+  {
+   "native": "0054d680",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding (0068CC70 init_in_game_interface_0068cc70)",
+   "reason": "screen 34h hints: the host keeps hints_screen[0x7C] (read by 0054D3C0) and the menu registers 34h through the cc15 hint registry; a leaf block would split that copy"
+  },
+  {
+   "native": "00643e80",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "spectator 43h register stores +4h=1 (wanted) at registration, which the generic path does not; not taken without a game run showing the level-set recompute clears it"
+  },
+  {
+   "native": "005cccb0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "movie 37h register reads [[0109CF04]+0Dh] (platform object); no host publishes the native platform object"
+  },
+  {
+   "native": "005cce70",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "engine movie 38h register reads [[0109CF04]+0Dh] (platform object) and image strings 00CF1944/00CF193C/00CF1930; no host publishes the platform object"
+  },
+  {
+   "native": "00540fe0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "free camera 2Bh register runs 00540D50 over the native game settings object (00424C40, effect records at +740h); no native settings object in the HUD host"
+  },
+  {
+   "native": "005f9ff0",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "order 3Bh register calls the screen own layout virtual +14h (005FA0F0) from the register; the binding needs that layout body, not yet bound"
+  },
+  {
+   "native": "00650170",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "submarine 48h register calls its layout virtual +14h (00650B90) from the register; that layout body is not yet bound"
+  },
+  {
+   "native": "0067be80",
+   "status": "skipped",
+   "host_site": "src/game_hosts_hud.cpp HudInitBinding::register_screen (0068CC70)",
+   "reason": "follow 49h register calls its layout virtual +14h (0067BEA0) from the register; that layout body is not yet bound"
   }
  ]
 }
