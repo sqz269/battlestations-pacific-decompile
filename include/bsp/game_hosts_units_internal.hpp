@@ -11398,15 +11398,24 @@ static constexpr bool kMoveToActivationDrawsBound = true;  // GUNNERY 193: ON by
         return active;
     }
     bool plane_is_leader_with_wingmen_007b95e0(const GameUnitSlot& unit) const {
+        const bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
         const bsp::PlaneSquadronHostRecord* sq =
-            bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
-        if (sq == nullptr || sq->flight_leader() != unit.process_index) return false;
+            registry.find_by_member_unit(unit.process_index);
+        if (sq == nullptr) return false;
+        int active_wingmen;
         if constexpr (bsp::kWingmenRecountCountdownCc13Bound) {
             const auto it = wingmen_recount_.find(sq->name);
-            return it != wingmen_recount_.end() && it->second.count_3bc > 0;  // +3BCh
+            if (it == wingmen_recount_.end()) return false;
+            active_wingmen = it->second.count_3bc;  // +3BCh
         } else {
-            return count_following_wingmen_007ee790(*sq) > 0;
+            active_wingmen = count_following_wingmen_007ee790(*sq);
         }
+        // bsp.py show 007b95e0: test plane+9D8h, not the first remaining
+        // member of +3D0h. 007F3970 compacts that array without changing the
+        // plane's spawn stamp; the registry retains the stamp separately.
+        // This result selects class+260h TurnRollLeader in live 0099D300.
+        return bsp::band_007a_cc13::plane_is_leader_with_wingmen_007b95e0(
+            registry.spawn_index_of_unit(unit.process_index), sq != nullptr, active_wingmen);
     }
     // squadron+3C4h / +3BCh, packet cc13-tranche2 S19.
     // CORRECTION (rev4 FIX 1): +3C4h is not seeded -1.0. 007F2D30..007F2D6A store
