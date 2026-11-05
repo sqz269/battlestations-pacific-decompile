@@ -31,7 +31,7 @@ void destroy_static_native_hierarchy_pool_00ce0ed0() noexcept {
 }
 
 void return_native_hierarchy_pool_slot_00b17af0(
-    NativeMaterialParameterPool& pool, void* slot) noexcept {
+    NativeMaterialParameterSlots& pool, void* slot) {
     pool.return_slot_00b193fa_fragment(slot);
 }
 } // namespace bsp
