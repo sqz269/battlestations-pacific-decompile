@@ -1,0 +1,86 @@
+{
+  "chain": 597,
+  "owner": "agent/g4-w2",
+  "switch": "kWireGoal4Chain597Bound",
+  "summary": "Reuse the existing material-pass static pool-return body during live canonical pass retirement.",
+  "rows": [
+    {
+      "native": "00b41040",
+      "status": "wired",
+      "host_site": "src/native_material_pass_owner.cpp:delete_native_material_pass_00b46910, called by NativeMaterialPassReference::release_zero_references",
+      "evidence": "bsp.py show 00b41040 --asm: PUSH ECX; MOV ECX,0108FBF8; CALL B40A40; RET. B4691F..25 performs the same slot/global/call sequence after B454E0 and flags&1. This reuses the existing body without repeating the pool return.",
+      "real_state": "GameNativeGraphicsPoolProcess::initialize_once(material_pass) binds pass_ as canonical 0108FBF8. CompilerOwnersGraph::pass_lifetime borrows that exact process pool, while bind_pass registers NativeMaterialPassReference for the actual pass. A host-only identity check preserves direct returns for independent fixture pools.",
+      "call_graph": "REACHABLE at 104bede0; one call at 1051f9ba from delete_native_material_pass_00b46910. The caller is reached through NativeMaterialPassReference::release_zero_references and CompilerOwnersGraph::bind_pass."
+    },
+    {
+      "native": "00b46910",
+      "status": "skipped",
+      "host_site": "src/native_material_pass_owner.cpp:NativeMaterialPassReference::release_zero_references",
+      "reason": "Already entry-reachable in the baseline through inlined scalar deletion; this packet changes its pool-return call and claims no new wiring credit for the caller."
+    },
+    {
+      "native": "00b7b600",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp:delete_native_point_light_storage_00b7c850 (candidate)",
+      "reason": "No production point-light static-pool binding or entry-reachable scalar-deletion producer was established; chain594 independently reported the same missing live owner route."
+    },
+    {
+      "native": "00b7c850",
+      "status": "skipped",
+      "host_site": "src/native_point_light_storage_lifetime.cpp:NativePointLightStorageReference::delete_scalar_00b7c850 (candidate)",
+      "reason": "The built executable has no matching scalar-deletion body and no live production point-light pool/companion producer was established."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp:copy_construct_native_string_with_scalar_00444070 (candidate)",
+      "reason": "No actual production string-plus-scalar destination and source consumer was established during selection."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp:copy_construct_native_string_with_scalar_004440c0 (candidate)",
+      "reason": "No actual production string-plus-scalar copy consumer was established during selection."
+    },
+    {
+      "native": "00b1bf50",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_command.inc:MissionCommandGraph (candidate)",
+      "reason": "No reached three-word command metadata update with the required actual source descriptor was established."
+    },
+    {
+      "native": "00b1d910",
+      "status": "skipped",
+      "host_site": "src/native_render_scene_submission.cpp:submit_native_scene_00b1f4d0 (candidate)",
+      "reason": "The existing submission captures label data before string resize, whereas B1D910 reloads source data afterward; replacing it would change the verified read schedule."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp:get_raw_timer_previous_00bee060 (candidate)",
+      "reason": "Only the original virtual/data slots were identified; no live production consumer of the previous timestamp was established."
+    },
+    {
+      "native": "00b801c0",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp:destroy_native_resource_container_00b88430 (candidate)",
+      "reason": "No new entry-reachable resource-container retirement producer was established for this cache-name erase route."
+    },
+    {
+      "native": "00b88180",
+      "status": "skipped",
+      "host_site": "src/native_resource_hierarchy_fields.cpp:destroy_native_hierarchy_fields_00b88180 (candidate)",
+      "reason": "No new reached hierarchy-record cleanup route with the actual reference-array and string domains was established."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release",
+    "tests": "All five existing CTests passed: reconstructed_math, native_math_differential, tool_tests, cc462_loading_config, cc464_vfs_stream_reader.",
+    "diff_check": "git diff --check passed",
+    "readiness_wired_before": 9931,
+    "readiness_wired_after": 9932,
+    "fresh_call_graph_reconstructed_addresses_called_after": 5004,
+    "baseline_call_graph_note": "The initial readiness file used a stale cached executable graph; its called totals are not used as a before/after measurement. Source readiness before was 9931. The after graph was regenerated explicitly from the passing build.",
+    "runtime": "Game not run. Evidence is original assembly, retained production pool/owner source paths, MSVC build, existing tests and executable call-graph reachability."
+  }
+}

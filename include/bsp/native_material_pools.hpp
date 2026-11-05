@@ -146,6 +146,9 @@ void destroy_native_material_pass_pool_table_00b402b0(void* actual_header) noexc
 // callback, with every payload destroyed beforehand. No additional pool state,
 // initialization guard or private exit registry is created by these wrappers.
 void bind_static_native_material_pass_pool_0108fbf8(NativeMaterialPassPool&) noexcept;
+// Host identity check only: independent fixture pools must not return their
+// slots through the process-wide 0108FBF8 companion.
+bool is_static_native_material_pass_pool(const NativeMaterialPassPool&) noexcept;
 void* allocate_static_native_material_pass_slot_00b41820(); // no args, EAX slot, RET
 void return_static_native_material_pass_slot_00b41040(void*); // original ECX slot, RET
 int initialize_static_native_material_pass_pool_00cd7bc0(); // actual init then CRT atexit result
