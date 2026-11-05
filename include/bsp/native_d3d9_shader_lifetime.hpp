@@ -47,10 +47,16 @@ bool unregister_native_pixel_shader_00b268c0(void*, void*) noexcept;
 // virtual8 Release and only then clear08. Preserve04/0C and restore CEB130.
 // State0 cleanup calls the established BD30F0 base on C++ dependency exceptions;
 // this reproduces that cleanup effect, not the original private FH3 ABI.
+// A scalar-deleting entry borrows its already-running operation. The destructor
+// leaves that phase running so the deleting caller alone owns completion/failure
+// and the optional free. Ordinary callers retain the fresh, one-shot contract.
+enum class NativeD3d9ShaderDestructorEntry { standalone, scalar_deleting };
 void destroy_native_pixel_shader_00b5f410(NativeD3d9ShaderStorage&,
-    NativeD3d9ShaderLifetimeContext&, NativeD3d9ShaderLifetimeOperation&);
+    NativeD3d9ShaderLifetimeContext&, NativeD3d9ShaderLifetimeOperation&,
+    NativeD3d9ShaderDestructorEntry = NativeD3d9ShaderDestructorEntry::standalone);
 void destroy_native_vertex_shader_00b5f490(NativeD3d9ShaderStorage&,
-    NativeD3d9ShaderLifetimeContext&, NativeD3d9ShaderLifetimeOperation&);
+    NativeD3d9ShaderLifetimeContext&, NativeD3d9ShaderLifetimeOperation&,
+    NativeD3d9ShaderDestructorEntry = NativeD3d9ShaderDestructorEntry::standalone);
 // ECX owner, stacked flags, EAX original pointer even after free, RET4.
 // BF65AC shared actual allocator free iff flags&1 AFTER complete destruction.
 NativeD3d9ShaderStorage* delete_native_pixel_shader_00b5f6e0(NativeD3d9ShaderStorage*,

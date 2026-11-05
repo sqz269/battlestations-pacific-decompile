@@ -1,0 +1,209 @@
+{
+  "chain": 576,
+  "slot": "g4-w5",
+  "run": 1189,
+  "baseline_head": "4595878cefcace89ee249ddcf5c9d17a267642c5",
+  "switch": "bsp::kWireGoal4Chain576Bound",
+  "rows": [
+    {
+      "native": "00b5f410",
+      "status": "wired",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:run_delete / NativeD3d9ShaderReference::delete_vslot04",
+      "evidence": "Original 00B5F6E0 calls this pixel destructor before optional free. The existing real shader owner, application renderer/support context and running deletion operation now enter the existing body exactly once.",
+      "built_call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "00b5f490",
+      "status": "wired",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:run_delete / NativeD3d9ShaderReference::delete_vslot04",
+      "evidence": "Original 00B5F700 calls this vertex destructor before optional free. The existing real shader owner, application renderer/support context and running deletion operation now enter the existing body exactly once.",
+      "built_call_sites": 1,
+      "entry_reachable": true
+    },
+    {
+      "native": "00b5f6e0",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:delete_native_pixel_shader_00b5f6e0",
+      "reason": "Already the existing canonical pixel shader deleting dispatch; missing inner destructor edge is wired in this packet, with no new deleting-entry credit."
+    },
+    {
+      "native": "00b5f700",
+      "status": "skipped",
+      "host_site": "src/native_d3d9_shader_lifetime.cpp:delete_native_vertex_shader_00b5f700",
+      "reason": "Already the existing canonical vertex shader deleting dispatch; missing inner destructor edge is wired in this packet, with no new deleting-entry credit."
+    },
+    {
+      "native": "00b4cb90",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0",
+      "reason": "Missing linked scene-renderer or luminance consumer: neither 00B156C0 nor 00B50050 is present in the baseline game graph."
+    },
+    {
+      "native": "00b4ec50",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0",
+      "reason": "Missing linked scene-renderer post-effect consumer; replacing the inline +18 read alone would remain dormant."
+    },
+    {
+      "native": "00b4ffe0",
+      "status": "skipped",
+      "host_site": "src/scene_renderer_cc13.cpp:render_scene_00b156c0",
+      "reason": "Missing linked scene-renderer luminance-owner consumer; replacing the inline +23C read alone would remain dormant."
+    },
+    {
+      "native": "00b873c0",
+      "status": "skipped",
+      "host_site": "src/native_resource_pointer_array.cpp:destroy_native_resource_item_pointers_00b87b20",
+      "reason": "Missing linked resource-item-array destruction consumer; the live hierarchy-array sibling does not authorize using its different address."
+    },
+    {
+      "native": "00b87b20",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp:resource destruction cleanup",
+      "reason": "Missing linked resource-container destruction consumer; this destructor has no function in the baseline game graph."
+    },
+    {
+      "native": "00b88180",
+      "status": "skipped",
+      "host_site": "src/native_resource_container_lifetime.cpp:resource destruction cleanup",
+      "reason": "Missing linked resource-container hierarchy-field destruction consumer; no function in the baseline game graph."
+    },
+    {
+      "native": "00b7bdf0",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_lifetime.cpp:set_native_directional_light_shadow_owner_00b7bdf0",
+      "reason": "Missing bound shadow-owner assignment path in this packet; allocating caller 00A8FD30 is absent from the baseline graph."
+    },
+    {
+      "native": "00a8fd30",
+      "status": "skipped",
+      "host_site": "src/native_directional_shadow_owner_construction.cpp:allocate_native_directional_shadow_owner_00a8fd30",
+      "reason": "Missing linked allocation consumer in the baseline graph; constructing that domain exceeds this shader lifetime slice."
+    },
+    {
+      "native": "00b72b30",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b78_16g.cpp:bsp_tagged_b78_16g_00b72b30",
+      "reason": "Missing established live tree-group constructor consumer for the original +50 mesh read."
+    },
+    {
+      "native": "00b726a0",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b78_16g.cpp:bsp_tagged_b78_16g_00b726a0",
+      "reason": "Missing established live tree-group constructor consumer for the original mesh+98 address helper."
+    },
+    {
+      "native": "00bc3030",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_bcbd_16k.cpp:bsp_tagged_bcbd_16k_00bc3030",
+      "reason": "Missing established actual cloud-instance manager consumer in this packet; original callers are cloud update/lighting paths."
+    },
+    {
+      "native": "00bbce40",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b9bb_16i.cpp:bsp_tagged_b9bb_00bbce40",
+      "reason": "Missing established actual cloud lighting/update consumer for the original +94 owner read."
+    },
+    {
+      "native": "00ba7170",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b9bb_16i.cpp:bsp_tagged_b9bb_00ba7170",
+      "reason": "Missing established actual ocean-wave field consumer for the original +08 read."
+    },
+    {
+      "native": "00ba7180",
+      "status": "skipped",
+      "host_site": "src/native_tagged_leaf_b9bb_16i.cpp:bsp_tagged_b9bb_00ba7180",
+      "reason": "Missing established actual ocean/submarine consumer for the original +30 read."
+    },
+    {
+      "native": "005251c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp:GameHudHost::set_selected_unit_00647300",
+      "reason": "Missing the real unit-pick screen and checked vector ownership; inspected selection hosts only record this call."
+    },
+    {
+      "native": "00b1b890",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp:publish_reflection",
+      "reason": "Missing authored four-component sampler parameter consumer in the inspected refresh path, which publishes a ReflectionCubeMap string."
+    },
+    {
+      "native": "00b1b830",
+      "status": "skipped",
+      "host_site": "src/game_native_mission_material_refresh.cpp:publish_reflection",
+      "reason": "Already called by the existing ReflectionCubeMap publication at baseline; no missing scalar-string parameter wiring to claim."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp:get_raw_timer_previous_00bee060",
+      "reason": "Missing an established live consumer of the previous-time view; the update body does not imply a getter call."
+    },
+    {
+      "native": "00b48cf0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_binding_getters.cpp:native_logical_vertex_stream_get_buffer_00b48cf0",
+      "reason": "Missing a bound physical-buffer virtual-slot resolver for the original numeric profile; calling the raw indirect-jump body on numeric profiles is unsafe."
+    },
+    {
+      "native": "00b48dc0",
+      "status": "skipped",
+      "host_site": "src/native_renderer_binding_getters.cpp:native_logical_index_stream_get_buffer_00b48dc0",
+      "reason": "Missing a bound physical-buffer virtual-slot resolver for the original numeric profile; calling the raw indirect-jump body on numeric profiles is unsafe."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed; all four existing CTests passed",
+    "call_graph_before": {
+      "functions": 38021,
+      "reachable_functions": 37856,
+      "data_symbols": 43219,
+      "edges": 194744,
+      "roots": 1,
+      "instructions": 2203200,
+      "recon_addresses": 5483,
+      "recon_called": 4983,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2091
+    },
+    "call_graph_after": {
+      "functions": 38026,
+      "reachable_functions": 37861,
+      "data_symbols": 43225,
+      "edges": 194764,
+      "roots": 1,
+      "instructions": 2203318,
+      "recon_addresses": 5485,
+      "recon_called": 4985,
+      "orphan_refs_ignored": 0,
+      "folded_functions": 2091
+    },
+    "readiness_before": {
+      "wired": 9902,
+      "callees_done_no_wired_caller": 9163,
+      "ready": 1407,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "float_math_changed": false,
+    "game_run": false,
+    "scope": "Compiled entry-reachable calls from the existing canonical actual shader owner dispatch. No new gameplay, original FH3 or binary ABI proof.",
+    "readiness_after": {
+      "wired": 9902,
+      "callees_done_no_wired_caller": 9163,
+      "ready": 1407,
+      "blocked_on_callees": 52,
+      "unknown_no_identifier": 201
+    },
+    "built_reconstructed_called_delta": 2
+  },
+  "notes": [
+    "No new address-suffixed body or ledger row: both destructor bodies already existed.",
+    "The new explicit scalar-deleting borrow preserves the deleting function identity and leaves phase/free/failure ownership with run_delete. Standalone calls retain their fresh one-shot contract.",
+    "The off-switch arm preserves the previous direct shared-helper call.",
+    "Selection survey also inspected dormant render, resource-container and HUD candidates; their concrete missing consumers are recorded above.",
+    "The source-text readiness wired total remains 9902; both target rows now independently report called=true, call_sites=1 and callers_live=1 in the built graph. Built reconstructed called addresses increased 4983 to 4985."
+  ]
+}
