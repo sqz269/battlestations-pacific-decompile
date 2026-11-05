@@ -1,0 +1,62 @@
+{
+  "chain": 559,
+  "worker": "agent/g4-w4",
+  "switch": "bsp::kWireGoal4Chain559Bound",
+  "picked": "Scene-property by-value V3 insertion on the actual scene merge path",
+  "rows": [
+    {
+      "native": "008f37e0",
+      "status": "wired",
+      "host_site": "src/scene_numeric_property_merge.cpp: SceneNumericPropertyMerge::Impl::Bag::insert",
+      "newly_wired": true,
+      "real_state": "The admitted V3 SceneProperty already owns three parsed binary32 lanes. memcpy passes their exact bits into the by-value entry; the same canonical string/physical insertion context and raw61-produced actual bag receive the record, which the existing merge/clone/class-reader consumers use.",
+      "body": "Reused the sole existing scene_property_bag_add_vec3_008f37e0 body, replacing its unused broad Seg59bHost API with the actual insertion context. It shares the existing 008F3690 producer rather than duplicating allocation, initialization or insertion. This is explicit Source reuse of equivalent successful-domain memory effects, not a claim that Original 008F37E0 called 008F3690.",
+      "evidence": [
+        "bsp.py show 008f37e0 and 008f3690: same type7 XYZ record, 38h allocation and 008F33F0 ownership transfer",
+        "bsp.py show 008f37e0 --asm: three MOVSS bit copies, no arithmetic; both exits RET10h",
+        "call_graph who 008f37e0: REACHABLE, one direct call site from SceneNumericPropertyMerge::Impl::Bag::insert",
+        "call_graph path 008f37e0: WinMainCRTStartup -> startup -> frame/menu -> mission scene load -> SceneReaderBinding::instantiate_entity -> merge_property_block -> Bag::insert",
+        "call_graph who 008f3690: existing body remains REACHABLE, one call site from 008F37E0"
+      ],
+      "limits": "New context-bearing C++ interface; no Original ABI/gameplay proof. Original XYZ dummy-spawn callers remain unbound. Source reuse changes only unobservable fresh-root initialization order in the documented successful, disjoint, non-reentrant domain. No new floating arithmetic."
+    },
+    {"native":"008f3690","status":"wired","newly_wired":false,"host_site":"src/cc13_seg59b.cpp: scene_property_bag_add_vec3_008f37e0","note":"Existing actual insertion provider remains called through the new by-value adapter; no additional wiring credit claimed."},
+    {"native":"007214c0","status":"skipped","host_site":"src/game_hosts_gunnery.cpp: ship-director enables provenance","reason":"No retained ControllerSnapshotMessage producer/transport and consumer; rebuilding flattened flags into a temporary snapshot would only round-trip them."},
+    {"native":"00ac2f20","status":"skipped","host_site":"src/game_hosts_hud.cpp: HudRootRowsBinding::animation_interval","reason":"The WeaponInfo animation lookup returns no live ticker object and the frontend bridge lacks a ticker interval consumer."},
+    {"native":"00954990","status":"skipped","host_site":"src/game_hosts_hud.cpp: controlled-unit binding set_unit_controlled_audio","reason":"The controlled-audio boundary only records the call and supplies no actual unit audio-component broadcast consumer."},
+    {"native":"00605630","status":"skipped","host_site":"src/game_hosts_hud.cpp: plane HUD path search","reason":"The inspected HUD host has no 006082D0 bomb-fire update path supplying the two live direction vectors and consuming the angle pair."},
+    {"native":"00aa0f70","status":"skipped","host_site":"src/gui_manager_frame.cpp: update_gui_manager_00aa4f80","reason":"No live caller binding was found for this GuiResourceOwner/GuiWidgetOwnerRuntime frame-services API; existing raw manager storage is a different interface."},
+    {"native":"00aa3910","status":"skipped","host_site":"src/gui_manager_frame.cpp: GuiManagerPointerCalls dispatch","reason":"The inspected semantic frame path lacks a live pointer-runtime binding with its actual hit-test provider."},
+    {"native":"00aa7ef0","status":"skipped","host_site":"src/gui_manager_frame.cpp: update_gui_manager_00aa4f80","reason":"The frame caller lacks a live binding to this actual GuiWidgetOwner timed-entry list API."},
+    {"native":"00ab6d00","status":"skipped","host_site":"src/font_data.cpp: font_accepts_text_byte_00ab6d00","reason":"No live text-input acceptance consumer was found; the existing font fallback lookup is not a text-byte acceptance operation."},
+    {"native":"0074fa80","status":"skipped","host_site":"src/game_hosts_units.cpp: retained hull leak fields","reason":"The original consumer is the debug inspector 006FB750; debug-only wiring is excluded."},
+    {"native":"007de5b0","status":"skipped","host_site":"src/game_hosts_units.cpp: plane engine-state search","reason":"No retained PlaneEngineSlots list with original burning-byte producers and query consumer exists in this host."},
+    {"native":"007de600","status":"skipped","host_site":"src/game_hosts_units.cpp: plane engine-state search","reason":"The live host lacks the PlaneEngineSlots owner and the per-engine stop virtual implementations."},
+    {"native":"007eb0b0","status":"skipped","host_site":"src/game_hosts_units.cpp: plane engine-state search","reason":"The actual per-engine list and enginefire-message producer/consumer adapter are absent."},
+    {"native":"008e4b00","status":"skipped","host_site":"src/game_hosts_powerups.cpp: active-use cooldown tail","reason":"The inspected host reaches use_item only through passive grants; no real active-use activation path reaches the cooldown-start consumer."},
+    {"native":"0087fc60","status":"skipped","host_site":"src/game_hosts_units.cpp: terrain height-query boundary","reason":"The original plane height-query branch lacks a slot2C height-field provider; substituting the separate slot28 service would change semantics."},
+    {"native":"00437f50","status":"skipped","host_site":"src/game_hosts_scene_contents.cpp: VehicleClassRegistry owner","reason":"The existing semantic vehicle registry is not the original 401Ch singleton allocation/constructor/registration object required by this getter."},
+    {"native":"00a2c3d0","status":"skipped","host_site":"src/game_hosts_ai.cpp: AI group recon inputs","reason":"Group membership exists but the 00779D00 member reveal-row getter and live ratio consumer are missing; party membership cannot supply those values."},
+    {"native":"008dacd0","status":"skipped","host_site":"src/game_hosts_lua.cpp: objective state boundary","reason":"The semantic objective list lacks the actual local-side reveal row and selector-byte projection needed by ObjectiveRevealView."},
+    {"native":"009d7050","status":"skipped","host_site":"src/game_avoid_zone_runtime.cpp: GameAvoidZoneRuntime::refresh_search","reason":"Already directly called from the reachable real avoidance runtime before this chain; no new wiring needed."},
+    {"native":"00419fa0","status":"skipped","host_site":"src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050","reason":"Already called by the existing reachable query refresh body; no new wiring needed."},
+    {"native":"004224c0","status":"skipped","host_site":"src/ship_ai_avoid_zone_search.cpp: ship_ai_avoid_query_refresh_009d7050","reason":"Already called by the existing reachable query refresh body; no new wiring needed."}
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 PASS, MSVC Win32",
+    "ctest": "4/4 PASS: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "new_tests": 0,
+    "readiness_wired_before": 9886,
+    "readiness_wired_after": 9887,
+    "exe_reconstructed_called_before": 4967,
+    "exe_reconstructed_called_after": 4968,
+    "new_reachable_body": "008f37e0",
+    "original_game_run": false,
+    "float_math_changed": false
+  },
+  "decisions": [
+    "Chose a by-value Source API over real parsed V3 payloads rather than fabricate missing controller, GUI, AI or engine objects.",
+    "Shared 008F3690 to preserve its one real allocation/insertion and keep the existing body reachable; no duplicate body per address.",
+    "Corrected the old reconstruction-ledger ABI from pointer/RET8 to XYZ stack components/RET10h; old ledger value remains in git history."
+  ]
+}
