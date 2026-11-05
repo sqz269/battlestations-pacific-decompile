@@ -1,0 +1,252 @@
+{
+  "goal": 4,
+  "chain": 614,
+  "run": 1266,
+  "slot": "g4-w5",
+  "branch": "agent/g4-w5",
+  "switch": "bsp::kWireGoal4Chain614Bound",
+  "base_head": "33d6f883b137b2f921739e5df2038518c1ab4ab2",
+  "rows": [
+    {
+      "native": "00c3f4d0",
+      "status": "wired",
+      "host_site": "src/native_dyn_narrow_phase.cpp: range_kernel -> manifold_shim -> manifold_bridge",
+      "evidence": "00C441C5 passes actual EDI pool, first/second body arguments and the invocation context to the existing find_or_create_native_dyn_manifold_00c3f4d0 body; EAX result feeds the same manifold fields."
+    },
+    {
+      "native": "00c35260",
+      "status": "wired",
+      "host_site": "src/native_dyn_narrow_phase.cpp: manifold_kernel -> append_shim -> append_bridge",
+      "evidence": "00C3F622/00C3F62E pass the actual ESI body and EBX manifold through existing append_native_dyn_manifold_00c35260; the second body is still reloaded from manifold+D0 between calls."
+    },
+    {
+      "native": "00c3f650",
+      "status": "wired",
+      "host_site": "src/native_dyn_narrow_phase.cpp: insert_kernel at original call 00C3F7B3",
+      "evidence": "Existing match_native_dyn_contact_00c3f650 consumes the same EAX manifold and EDI candidate; EAX index replaces the private match_kernel result. The x87 stack is empty at this call."
+    },
+    {
+      "native": "00c3f760",
+      "status": "skipped",
+      "host_site": "src/native_dyn_narrow_phase.cpp: range_kernel / insert_kernel",
+      "reason": "Already called through insert_native_dyn_contact_00c3f760 from four entry-reachable HullTerrainContactSolver sites in the baseline; no additional insert-entry wiring needed."
+    },
+    {
+      "native": "00c321b0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_world_step.cpp: simulate_kernel",
+      "reason": "Owned by agent/g4-w4:g4-w4; overlapping claim refused, so no edits made."
+    },
+    {
+      "native": "00c4d980",
+      "status": "skipped",
+      "host_site": "src/native_dyn_world_step.cpp: simulate_kernel",
+      "reason": "Owned by agent/g4-w4:g4-w4; overlapping claim refused, so no edits made."
+    },
+    {
+      "native": "00c549d0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_collision_pass.cpp: update_kernel",
+      "reason": "Owned by agent/g4-w4:g4-w4 with its collision/world-step packet; no edits made."
+    },
+    {
+      "native": "004f1830",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: command-target initialization candidates",
+      "reason": "Raw initializer still requires actual mutable 00F87574/78/7C publication cells; the inspected host uses typed targets without that native data context."
+    },
+    {
+      "native": "008363e0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_commands.cpp: director construction candidates",
+      "reason": "Native owner+28h and tick-parent construction context were not established in the typed command-unit host."
+    },
+    {
+      "native": "00a9ac90",
+      "status": "skipped",
+      "host_site": "src/gui_listbox_runtime.cpp: GuiListboxRuntime::set_layout_flags_00a9ac90",
+      "reason": "Only original caller is 00602280 pause-screen registration; no reached canonical pause-screen/listbox producer was established in the inspected frontend path."
+    },
+    {
+      "native": "00946fc0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: CaptureHost::available_resources",
+      "reason": "Inspected host returns a constant budget; actual 00E0CFB4 budget, unit resource usage and queued-spawn owner context are missing."
+    },
+    {
+      "native": "007ddea0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::flight_state_notify_007c11e0",
+      "reason": "Host records the FX timer reset without persistent FX component/timer consumers; wiring only a new constant-filled block would not affect real state."
+    },
+    {
+      "native": "007eb270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::flight_state_notify_007c11e0",
+      "reason": "Actual plane FX component, loop/effect holders and their owned producers were not built in this packet."
+    },
+    {
+      "native": "007eb380",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::flight_state_notify_007c11e0",
+      "reason": "Actual plane FX component, sound/effect holders and the per-frame consumer context are absent from the inspected host path."
+    },
+    {
+      "native": "00954580",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: Impl::ground_state_from_locked_007ca3f0",
+      "reason": "No persistent native impulse vectors, timer or saved-pose consumer was established in the inspected plane slot; scratch projection would not replace a live consumer."
+    },
+    {
+      "native": "00a9e0a0",
+      "status": "skipped",
+      "host_site": "src/gui_layout_finished.cpp: dispatch_gui_layout_finished24",
+      "reason": "Inspected frontend transform callbacks reject layout completion and do not supply the canonical GuiWidgetOwner runtime needed by this dispatcher."
+    },
+    {
+      "native": "00ace120",
+      "status": "skipped",
+      "host_site": "src/gui_layout_finished.cpp: dispatch_gui_layout_finished24",
+      "reason": "No reached canonical ClipBox owner/layout-finished callback was established in the inspected frontend path."
+    },
+    {
+      "native": "005296a0",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: GridBuilder / grid_builder_build_all_00b99790",
+      "reason": "The inspected GridBuilder has no linked entry-reachable producer; replacing its word vector alone would remain unreachable."
+    },
+    {
+      "native": "00529980",
+      "status": "skipped",
+      "host_site": "src/scene_graph2_cc13.cpp: grid_builder_build_all_00b99790",
+      "reason": "The inspected GridBuilder has no linked entry-reachable producer; its clear operation cannot supply a live caller in this packet."
+    },
+    {
+      "native": "004bbd00",
+      "status": "skipped",
+      "host_site": "src/sound_frame_service.cpp: run_sound_frame_job_004bbd00",
+      "reason": "This job unconditionally requires the actual interface listener; the inspected standalone sound-frame owner represents a null-interface path."
+    },
+    {
+      "native": "006965a0",
+      "status": "skipped",
+      "host_site": "src/native_input_action_deadlines.cpp: invoke_native_input_action_deadline_callback_006965a0",
+      "reason": "No reached native game/action-deadline callback publication was established; the current mission-frame call uses the separate typed deadline path."
+    }
+  ],
+  "change": "Route three existing public reconstruction entries from the already-reached native narrow-phase kernels. Preserve original kernels and direct old arms; each operation executes once on the same live storage.",
+  "validation": {
+    "build": "./scripts/build.ps1: MSVC Win32 Release; switch-on and switch-off builds, all five CTests pass",
+    "fresh_call_graph": {
+      "metric": "entry-reachable reconstructed addresses",
+      "before": 5020,
+      "after": 5023,
+      "before_configuration": "same source, kWireGoal4Chain614Bound=false; fresh build and call_graph.py",
+      "after_configuration": "kWireGoal4Chain614Bound=true; fresh build and call_graph.py",
+      "before_summary": {
+        "functions": 38091,
+        "reachable_functions": 37926,
+        "data_symbols": 43245,
+        "edges": 194947,
+        "roots": 1,
+        "instructions": 2204537,
+        "recon_addresses": 5538,
+        "recon_called": 5020,
+        "orphan_refs_ignored": 0,
+        "folded_functions": 2103
+      },
+      "after_summary": {
+        "functions": 38096,
+        "reachable_functions": 37931,
+        "data_symbols": 43245,
+        "edges": 194953,
+        "roots": 1,
+        "instructions": 2204652,
+        "recon_addresses": 5541,
+        "recon_called": 5023,
+        "orphan_refs_ignored": 0,
+        "folded_functions": 2103
+      }
+    },
+    "initial_readiness": {
+      "textual_wired": 9947,
+      "note": "Initial --standins result carried a stale call-graph cache (old head 02ac4e914c); called totals are therefore measured from fresh switch-off/on builds instead."
+    },
+    "probe": {
+      "source": "local/output/wire_g4_c614_probe.cpp",
+      "source_sha256": "3bd06614de448895b3e26d1fce51cbdfcad8cc8a5c5991119925918044451d5b",
+      "method": "One focused Win32 probe reuses production TU and native manifold-pool constructor; compile once per switch with /MANIFEST:EMBED and compare outputs using fc /b. Includes private-shim register/stack translation and insertion/matching path. Synthetic fixture, not gameplay.",
+      "result": "Switch on/off outputs identical: same pair returns same manifold; first/second body reference counts 1/1; repeated candidate leaves one contact; contact hash 69369550; locks 2/2; x87 CW 007F and TOP0 preserved; same allocation sites/sizes.",
+      "on_output_sha256": "fbb2041a7d90f2fb55601a63bfa4a3cdfe29b3b527d2a64e5c96d3df1d2232cd",
+      "off_output_sha256": "fbb2041a7d90f2fb55601a63bfa4a3cdfe29b3b527d2a64e5c96d3df1d2232cd"
+    },
+    "evidence": [
+      "bsp.py brief: project /battlestationspacific.exe",
+      "bsp.py ghidra count: live/snapshot 77632",
+      "bsp.py show 00c3f4d0 --asm",
+      "bsp.py show 00c3f650 --asm",
+      "bsp.py show 00c44090 --asm",
+      "docs/NATIVE_DYN_NARROW_PHASE_R138.md"
+    ],
+    "pc24_lint": "No floating arithmetic changed; existing instruction schedules retained.",
+    "readiness_textual_wired": {
+      "before": 9947,
+      "after": 9949,
+      "note": "Textual readiness metric; independent fresh built-executable graph records three newly called address entries."
+    },
+    "final_readiness_rows": [
+      {
+        "address": "00c35260",
+        "name": "append_native_dyn_manifold_00c35260",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "00c3f4d0",
+        "name": "find_or_create_native_dyn_manifold_00c3f4d0",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      },
+      {
+        "address": "00c3f650",
+        "name": "dyn_match_contact_point_00c3f650",
+        "state": "wired",
+        "called": true,
+        "call_sites": 1,
+        "callers_live": 1
+      }
+    ],
+    "reachable_calls": [
+      {
+        "native": "00c3f4d0",
+        "callee": "find_or_create_native_dyn_manifold_00c3f4d0",
+        "caller": "manifold_bridge",
+        "site": "10541dc4",
+        "reachable": true
+      },
+      {
+        "native": "00c35260",
+        "callee": "append_native_dyn_manifold_00c35260",
+        "caller": "append_bridge",
+        "site": "10541261",
+        "reachable": true
+      },
+      {
+        "native": "00c3f650",
+        "callee": "match_native_dyn_contact_00c3f650",
+        "caller": "insert_kernel",
+        "site": "10541545",
+        "reachable": true
+      }
+    ]
+  },
+  "limits": [
+    "Static entry reach and focused adapter fixture are verified separately from runtime/gameplay. Game was not run.",
+    "Public C++ entries retain their explicit source interfaces, not drop-in native register ABIs.",
+    "No new address-suffixed body, native constant, scratch production object, Ghidra mutation or ledger rewrite was introduced."
+  ]
+}
