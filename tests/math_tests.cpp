@@ -2303,6 +2303,28 @@ int main() {
     }
 
     {
+        // Chain616 forwards a type-5 record's payload through a RET8 helper
+        // inside a RET0C setter. Exercise that ABI through the actual owning
+        // merge, including old-name retirement and preservation of keep mode.
+        std::vector<std::string> errors;
+        bsp::SceneLexer prior_text("{ Link = R \"OldTarget\" ; }");
+        bsp::SceneLexer source_text("{ link = R \"NextTarget\" ; }");
+        const auto prior = bsp::parse_scene_property_block_008f5a00(prior_text, errors);
+        const auto source = bsp::parse_scene_property_block_008f5a00(source_text, errors);
+        bool passed = errors.empty() && prior.values.size() == 1 && source.values.size() == 1;
+        if (passed) {
+            for (const bool overwrite : {false, true}) {
+                bsp::game::SceneNumericPropertyMerge merge(prior, source, overwrite);
+                passed = passed && merge.handles(0);
+                const auto result = merge.result(source.values[0]);
+                passed = passed && result.values ==
+                    std::vector<std::string>{overwrite ? "NextTarget" : "OldTarget"};
+            }
+        }
+        check(passed, "reference merge retires the actual old target and preserves keep/overwrite through payload replacement");
+    }
+
+    {
         // Chain 330: one fixture covers authored V3A -> native owning bag ->
         // keep/overwrite/miss merge -> independent publication after teardown.
         if constexpr (bsp::kWireGoal4Chain330Bound) {
