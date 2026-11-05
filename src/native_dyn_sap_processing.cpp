@@ -1,4 +1,5 @@
 #include "bsp/native_dyn_sap_processing.hpp"
+#include "bsp/wire_goal4_chain612_switches.hpp"
 #include <cstring>
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
@@ -22,6 +23,21 @@ void __cdecl free_bridge(U site,Context* c,void* p){c->progress.native_site=site
 void __cdecl create_bridge(void* manager,Context* c,void* first,void* second){create_native_dyn_sap_pair_00c3ffe0(manager,first,second,c->memory,c->calls,c->progress);}
 void __cdecl erase_bridge(void* manager,Context* c,void* first,void* second){erase_native_dyn_sap_pair_00c4bcd0(manager,first,second,c->memory,c->calls,c->progress);}
 void __fastcall decision_kernel(void*,void*,void*,U,U,Context*);
+// 00C4BE8F supplies EAX=peer, EDX=the current manager, ECX=axis,
+// stack=first/add. The shim below already maps those operands to this
+// fastcall signature plus its borrowed Context. Keep its RET10h contract;
+// the outer shim still consumes its original context/first/add with RET0Ch.
+// Evidence: bsp.py show 00c4bd60 --asm (BD60..BE03), move-kernel BE83..BE98.
+// The public entry reuses decision_kernel, including all four x87 overlap
+// comparisons and the existing create/erase paths; neither arm runs twice.
+void __fastcall decision_dispatch(void* peer,void* manager,void* first,U add,U axis,Context* c) {
+    if constexpr (kWireGoal4Chain612Bound) {
+        decide_native_dyn_sap_pair_00c4bd60(manager,first,peer,axis,add,
+            c->memory,c->calls,c->progress);
+    } else {
+        decision_kernel(peer,manager,first,add,axis,c);
+    }
+}
 // Extra context word is consumed here; original stack arguments retain their offsets.
 __declspec(naked) void create_shim(){
     __asm {
@@ -54,7 +70,7 @@ __declspec(naked) void decision_shim(){
         push dword ptr [esp+14h]
         push dword ptr [esp+14h]
         mov ecx,eax
-        call decision_kernel
+        call decision_dispatch
         ret 0ch
     }
 }
@@ -1371,7 +1387,8 @@ void allocate_native_dyn_sap_endpoints_00c36c30(void* manager,void* proxy,U axis
     word(lower,4)=address(proxy)|1;ptr(upper,4,proxy);ptr(proxy,0x20+axis*4,lower);ptr(proxy,0x2c+axis*4,upper);
 }
 void insert_native_dyn_sap_endpoints_00c36e20(void* manager,void* proxy,U axis) noexcept {insert_kernel(proxy,axis,manager);}
-void decide_native_dyn_sap_pair_00c4bd60(void* manager,void* first,void* peer,U axis,U add,const AvoidZoneDynHullMemory& m,NativeDynSapPairCalls& c,NativeDynSapLifetimeProgress& o){Context context{m,c,o};decision_kernel(peer,manager,first,add,axis,&context);}
+// Keep the recovered entry visible across the ABI-adapting dispatch above.
+__declspec(noinline) void decide_native_dyn_sap_pair_00c4bd60(void* manager,void* first,void* peer,U axis,U add,const AvoidZoneDynHullMemory& m,NativeDynSapPairCalls& c,NativeDynSapLifetimeProgress& o){Context context{m,c,o};decision_kernel(peer,manager,first,add,axis,&context);}
 void move_native_dyn_sap_endpoints_00c4be10(void* manager,void* proxy,U axis,const AvoidZoneDynHullMemory& m,NativeDynSapPairCalls& c,NativeDynSapLifetimeProgress& o){Context context{m,c,o};move_kernel(manager,proxy,axis,&context);}
 void insert_native_dyn_sap_pending_00c4c2a0(void* manager,const AvoidZoneDynHullMemory& m,NativeDynSapPairCalls& c,NativeDynSapLifetimeProgress& o){
     U index=0;while(index<word(manager,0x240)){void* proxy=ptr(at(ptr(manager,0x23c),index*4));

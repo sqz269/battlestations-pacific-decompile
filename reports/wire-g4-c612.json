@@ -1,0 +1,167 @@
+{
+  "run": 1264,
+  "slot": "g4-w2",
+  "branch": "agent/g4-w2",
+  "picked": "Live SAP endpoint movement dispatches its pair decision through the existing reconstructed 00C4BD60 entry",
+  "switch": "bsp::kWireGoal4Chain612Bound",
+  "switch_header": "include/bsp/wire_goal4_chain612_switches.hpp",
+  "rows": [
+    {
+      "native": "00c4bd60",
+      "status": "wired",
+      "host_site": "src/native_dyn_sap_processing.cpp: decision_shim -> decision_dispatch -> decide_native_dyn_sap_pair_00c4bd60",
+      "real_state": "Existing move_kernel supplies the live manager, first proxy, peer proxy, axis, add flag and borrowed allocator/calls/progress context; the public entry reuses the existing decision_kernel exactly once.",
+      "before": "The live shim called decision_kernel directly; the public address-suffixed reconstructed entry had no built caller.",
+      "after": "The switch-on fastcall dispatch calls the public reconstructed entry. The switch-off arm calls the former kernel with the same arguments.",
+      "evidence": "bsp.py show 00c4bd60 --asm: CL=axis, EDX=manager, EAX=peer, stack first/add, RET8; move_kernel C4BE83..C4BE98 supplies and reloads the native operands. Existing context shim retains RET0Ch; dispatch retains RET10h.",
+      "call_graph": "Reachable call at 10564f79 from decision_dispatch to decide_native_dyn_sap_pair_00c4bd60 at 10564f20; path continues through decision_shim, move_kernel, NativeDynSapRuntime::update, GameNativeDynProcess and WinMain."
+    },
+    {
+      "native": "00bdd990",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: load_property_library / FolderBinding::enumerate_library_files",
+      "reason": "No missing native connection: the existing fragment wrapper already forwards consumer_context_.native_access to GameVfsHost::enumerate; a proposed shortcut was discarded."
+    },
+    {
+      "native": "00bf47e0",
+      "status": "skipped",
+      "host_site": "src/native_vfs_provider_enumeration_bindings.cpp: NativeVfsProviderEnumerationBindings::enumerate_entry",
+      "reason": "Already entry-reachable through the canonical native VFS provider dispatch; no missing physical-enumeration caller was found."
+    },
+    {
+      "native": "00be6480",
+      "status": "skipped",
+      "host_site": "src/native_vfs_provider_enumeration_bindings.cpp: NativeVfsProviderEnumerationBindings::enumerate_entry",
+      "reason": "Already entry-reachable through the canonical native VFS provider dispatch; no missing FileStore-enumeration caller was found."
+    },
+    {
+      "native": "00bb98f0",
+      "status": "skipped",
+      "host_site": "src/native_vfs_provider_enumeration_bindings.cpp: NativeVfsProviderEnumerationBindings::enumerate_entry",
+      "reason": "Already entry-reachable through the canonical native VFS provider dispatch; no missing MPKG-enumeration caller was found."
+    },
+    {
+      "native": "00bee520",
+      "status": "skipped",
+      "host_site": "src/native_physical_enumeration.cpp: enumerate_native_physical_names_00bf47e0",
+      "reason": "The existing physical-enumeration body already calls this join for files and recursive directories; no missing real-state connection was found."
+    },
+    {
+      "native": "00886280",
+      "status": "skipped",
+      "host_site": "src/native_language_catalog_storage.cpp: enumerate_native_language_resources_00886280",
+      "reason": "Already reported called=true before this change; no missing native language-enumeration connection was found."
+    },
+    {
+      "native": "00ab00c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "The semantic movie host lacks the actual raw subtitle/extratitle vectors and owned widget slots required by the reconstructed body."
+    },
+    {
+      "native": "00aa2b80",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: LoadingScreen binding gui_refresh",
+      "reason": "The loading-screen binding lacks access to the shared native render-command queue reset operation."
+    },
+    {
+      "native": "00ac2f20",
+      "status": "skipped",
+      "host_site": "src/game_hosts_hud.cpp: HudRootRows animation_interval",
+      "reason": "The host has no retained animation/ticker owner for the handle; weapon_animation still returns zero."
+    },
+    {
+      "native": "00941070",
+      "status": "skipped",
+      "host_site": "src/game_sound_runtime.cpp: GameSoundRuntime::Impl::GuiSoundCalls",
+      "reason": "The real GUI sound request producer is still missing; play_tracked_sound explicitly rejects playback without the shared 00941250 request path."
+    },
+    {
+      "native": "009373c0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: submarine common_periscope_break",
+      "reason": "Per-instance native mast-node and Dyn periscope-shape owners required by the outer break routine remain missing."
+    },
+    {
+      "native": "00887560",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ready.cpp: queue_call / src/mission_named_call_args.cpp: queue_named_call",
+      "reason": "The active named-call queue uses a different semantic argument representation; no live landscape_lua_seg55_argon::LuaVariantRecord copy site was found."
+    },
+    {
+      "native": "00887c30",
+      "status": "skipped",
+      "host_site": "src/mission_named_call_args.cpp: queue_named_call",
+      "reason": "The active deferred-call queue is a semantic vector, not the reconstructed sentinel/list-node owner required by this insertion body."
+    },
+    {
+      "native": "00803ba0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: recon/death notification paths",
+      "reason": "A NativeReconDirtyAccess binding to actual F874BC slot dirty bytes and current world/player-context fields is missing."
+    },
+    {
+      "native": "0099c270",
+      "status": "skipped",
+      "host_site": "src/game_hosts_units.cpp: pilot task tick fast path",
+      "reason": "The semantic task host lacks a native task+2F4h and unit+9C2h per-side active-byte view for this raw body."
+    },
+    {
+      "native": "008f0800",
+      "status": "skipped",
+      "host_site": "src/game_hosts_scene_contents.cpp: parser skip paths",
+      "reason": "No compatible raw tokenizer owner and balanced-group skip call site were established for the inspected semantic lexer paths."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "No live caller requiring the previous timestamp was found; inserting an unused getter would not supply missing behavior."
+    },
+    {
+      "native": "00be4530",
+      "status": "skipped",
+      "host_site": "src/native_stream_type_ids.cpp: initialize_memory_00cd8fc0 / initialize_physical_00cd9030",
+      "reason": "The existing stream-type initializers already call this guarded file-type initializer; no missing startup connection was found."
+    },
+    {
+      "native": "00a2c0a0",
+      "status": "skipped",
+      "host_site": "src/native_input_action_binding_runtime.cpp: configured modifier polling",
+      "reason": "No live consumer asks for aggregate left/right Shift state; existing native bindings query their configured individual scan codes."
+    },
+    {
+      "native": "00a2c0d0",
+      "status": "skipped",
+      "host_site": "src/native_input_action_binding_runtime.cpp: configured modifier polling",
+      "reason": "No live consumer asks for aggregate left/right Control state; existing native bindings query their configured individual scan codes."
+    },
+    {
+      "native": "00a2c100",
+      "status": "skipped",
+      "host_site": "src/native_input_action_binding_runtime.cpp: configured modifier polling",
+      "reason": "No live consumer asks for aggregate left/right Alt state; existing native bindings query their configured individual scan codes."
+    },
+    {
+      "native": "00437c70",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission.cpp: MissionStart write_checkpoint",
+      "reason": "The available Lua-only helper does not bind the required profile-record erase and asynchronous storage rewrite continuation."
+    }
+  ],
+  "counts": {
+    "readiness_text_wired_before": 9943,
+    "readiness_text_wired_after": 9943,
+    "entry_reachable_reconstructed_addresses_before": 5016,
+    "entry_reachable_reconstructed_addresses_after": 5017,
+    "note": "The source-text readiness graph does not follow this SAP runtime-table path; the independent built graph proves the new 00C4BD60 call."
+  },
+  "validation": {
+    "build": "scripts/build.ps1 passed; all five existing CTest tests passed",
+    "call_graph": "python tools/call_graph.py; who 00c4bd60; path 00c4bd60",
+    "emitted_abi": "Inspected built x86 with pefile/capstone: dispatch forwards eight original pointers/words to the public entry and RET10h; unchanged operand shim RET0Ch; public entry calls the existing decision kernel with first/add/axis/context.",
+    "float_math": "No x87 comparison/arithmetic instruction or float input changed; only the existing entry boundary is connected.",
+    "game_run": false
+  },
+  "left": "Other SAP public entries and unrelated host ownership gaps remain for later packets; no duplicate bodies, new address-suffixed functions or ledger entries were introduced."
+}
