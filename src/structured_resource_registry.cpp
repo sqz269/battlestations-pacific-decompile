@@ -68,7 +68,7 @@ StructuredResourceParser* StructuredResourceRegistry::find_parser(
 void StructuredResourceRegistry::clear() noexcept { parsers_.clear(); }
 
 bool StructuredResourceRegistry::dispatch_items_00b7e970(StructuredNode& container,
-    std::vector<DecodedStructuredResource>& output, std::string& error) {
+    StructuredResourceOutput output, std::string& error) {
     error.clear();
     if (!container.ready()) {
         error = "Resource container is not ready.";

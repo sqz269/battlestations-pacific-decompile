@@ -2,7 +2,9 @@
 #include "bsp/structured_hierarchy.hpp"
 #include "bsp/structured_resource_registry.hpp"
 #include "bsp/wire_goal4_chain563_switches.hpp"
+#include "bsp/wire_goal4_chain575_switches.hpp"
 #include <cstddef>
+#include <iterator>
 #include <type_traits>
 
 namespace bsp {
@@ -42,11 +44,67 @@ private:
 using StructuredHierarchyStorage = std::conditional_t<kWireGoal4Chain563Bound,
     StructuredHierarchyItems, std::vector<HierarchyItem>>;
 
+// Own the decoded records whose opaque pointers occupy resource+10h/14h/18h.
+// Serialized ordinals, including unsupported records, come only from this
+// array. Pointees are source decoded values, never native refcounted items.
+class StructuredResourceItems final {
+public:
+    StructuredResourceItems() noexcept = default;
+    ~StructuredResourceItems();
+    StructuredResourceItems(StructuredResourceItems&&) noexcept;
+    StructuredResourceItems& operator=(StructuredResourceItems&&) noexcept;
+    StructuredResourceItems(const StructuredResourceItems&) = delete;
+    StructuredResourceItems& operator=(const StructuredResourceItems&) = delete;
+
+    void append_native(DecodedStructuredResource&&);
+    std::size_t size() const noexcept;
+    bool empty() const noexcept { return size() == 0; }
+    DecodedStructuredResource& operator[](std::size_t) noexcept;
+    const DecodedStructuredResource& operator[](std::size_t) const noexcept;
+
+    template<bool Const> class Iterator {
+        using Owner = std::conditional_t<Const, const StructuredResourceItems, StructuredResourceItems>;
+    public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = DecodedStructuredResource;
+        using difference_type = std::ptrdiff_t;
+        using reference = std::conditional_t<Const, const value_type&, value_type&>;
+        using pointer = std::conditional_t<Const, const value_type*, value_type*>;
+        Iterator() noexcept = default;
+        Iterator(Owner* owner, std::size_t index) noexcept : owner_(owner), index_(index) {}
+        reference operator*() const noexcept { return (*owner_)[index_]; }
+        pointer operator->() const noexcept { return &**this; }
+        Iterator& operator++() noexcept { ++index_; return *this; }
+        Iterator operator++(int) noexcept { auto previous = *this; ++*this; return previous; }
+        bool operator==(const Iterator& other) const noexcept {
+            return owner_ == other.owner_ && index_ == other.index_;
+        }
+        bool operator!=(const Iterator& other) const noexcept { return !(*this == other); }
+    private:
+        Owner* owner_{};
+        std::size_t index_{};
+    };
+    Iterator<false> begin() noexcept { return {this, 0}; }
+    Iterator<false> end() noexcept { return {this, size()}; }
+    Iterator<true> begin() const noexcept { return {this, 0}; }
+    Iterator<true> end() const noexcept { return {this, size()}; }
+private:
+    DecodedStructuredResource** data() const noexcept;
+    void release() noexcept;
+    // Only the triplet is used. The unmodelled prefix supplies the append
+    // body's offsets, not a fabricated native resource/vtable/refcount.
+    // 00B88260 initializes the actual triplet to these same zero words.
+    alignas(4) std::array<std::byte, 0x1c> resource_fields_{};
+};
+
+using StructuredResourceStorage = std::conditional_t<kWireGoal4Chain575Bound,
+    StructuredResourceItems, std::vector<DecodedStructuredResource>>;
+
 // Retained owning wire values, not the native 0x74-byte GameResource ABI.
 // Resource records preserve indices even for unsupported payloads (nullopt).
 // Hierarchy references remain serialized DWORDs, without graph resolution.
 struct StructuredModel {
-    std::vector<DecodedStructuredResource> resources;
+    StructuredResourceStorage resources;
     StructuredHierarchyStorage hierarchy;
     // Base constructor00b88260 initializes these six native words to zero.
     // Dispatch overwrites all six only after a complete BoundingBox read.

@@ -2,6 +2,7 @@
 #include "bsp/mesh_resource.hpp"
 #include "bsp/resource_parser_map.hpp"
 #include <optional>
+#include <utility>
 #include <variant>
 #include <vector>
 
@@ -22,6 +23,34 @@ struct DecodedStructuredResource {
     // Native00b7e970 allocates an eight-byte fallback item in this branch;
     // this host record does not construct or stand in for that native object.
     std::optional<StructuredResourcePayload> payload;
+};
+
+// Source-only output binding. The dispatch body still appends exactly once,
+// before closing the child. The vector binding preserves existing callers;
+// a model owner can bind its real native pointer array without an intermediate
+// vector or a second traversal of the serialized Resource container.
+class StructuredResourceOutput final {
+public:
+    StructuredResourceOutput(std::vector<DecodedStructuredResource>& output) noexcept
+        : StructuredResourceOutput(&output, [](void* target, DecodedStructuredResource&& item) {
+            static_cast<std::vector<DecodedStructuredResource>*>(target)->push_back(std::move(item));
+        }) {}
+
+    template<class Container>
+    static StructuredResourceOutput native_items(Container& output) noexcept {
+        return {&output, [](void* target, DecodedStructuredResource&& item) {
+            static_cast<Container*>(target)->append_native(std::move(item));
+        }};
+    }
+    void push_back(DecodedStructuredResource&& item) const {
+        append_(output_, std::move(item));
+    }
+private:
+    using Append = void (*)(void*, DecodedStructuredResource&&);
+    StructuredResourceOutput(void* output, Append append) noexcept
+        : output_(output), append_(append) {}
+    void* output_;
+    Append append_;
 };
 
 // Host interface for native parser virtual+4 (owned type-name result) and
@@ -75,9 +104,10 @@ public:
     // unread-tail seek. GroupParams and unknown handlers explicitly skip.
     // Leaves the Resource container attached. On failure, consumed input and
     // already appended records remain; no stream/output rollback is promised.
-    // Renderer hooks, native item creation/append/lifetime remain separate.
+    // The output binding supplies record ownership/append; native resource-item
+    // vtables/refcounts and renderer hooks remain separate.
     bool dispatch_items_00b7e970(StructuredNode& container,
-        std::vector<DecodedStructuredResource>& output, std::string& error);
+        StructuredResourceOutput output, std::string& error);
 private:
     ResourceParserMap parsers_;
 };
