@@ -6,6 +6,8 @@ struct lua_State;
 #include <string_view>
 
 namespace bsp {
+struct NativeLuaDisplayStringCalls;
+class NativeString;
 
 // Concrete host for the recovered reader, linked to the repository's Lua 5.1.1.
 // Registry references are host handles, not the original 14h LuaObject ABI.
@@ -45,6 +47,11 @@ public:
     bool to_boolean(const GuiLuaRef&) override;
     double to_number(const GuiLuaRef&) override;
     const char* to_string(const GuiLuaRef&) override;
+    // Borrow the retained value at a temporary stack slot for the existing
+    // B68630 body. Does not replace a numeric registry key with its text.
+    // The caller owns the fresh result and releases it in calls.strings.
+    NativeString* to_display_string(const GuiLuaRef&, void* fresh,
+        const NativeLuaDisplayStringCalls& calls);
     void* to_userdata(const GuiLuaRef&) override;
     void release(const GuiLuaRef&) override;
 private:

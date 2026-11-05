@@ -1,6 +1,12 @@
 #pragma once
 #include "bsp/cc13_seg87.hpp"
 
+namespace bsp {
+struct GuiLuaHost;
+class GuiLua51Host;
+struct GuiLuaRef;
+}
+
 namespace bsp::game {
 class GameNativeStringProcess;
 
@@ -20,7 +26,13 @@ public:
     // fresh is actual aligned8B output storage. A returned string owns its raw
     // buffer; its caller performs exactly one destruction in the same domain.
     NativeString* to_display_string(const NativeLuaObjectStorage& object, void* fresh) const;
+    void discard_display_string(GuiLua51Host&, const GuiLuaRef&) const;
 private:
     NativeLuaDisplayStringCalls calls_;
 };
+
+// Sound's typed fixtures can use semantic string storage; production supplies
+// the canonical actual pool. Admit only that same raw pool/Lua reader pair.
+void discard_sound_configuration_key_display(GuiLuaHost&, const GuiLuaRef&,
+    NativeStringStorage& sound_strings);
 } // namespace bsp::game
