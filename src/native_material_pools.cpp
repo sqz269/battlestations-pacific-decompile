@@ -308,6 +308,9 @@ namespace { NativeMaterialPassPool* canonical_pass_pool; }
 void bind_static_native_material_pass_pool_0108fbf8(NativeMaterialPassPool& pool) noexcept {
     canonical_pass_pool = &pool;
 }
+bool is_static_native_material_pass_pool(const NativeMaterialPassPool& pool) noexcept {
+    return canonical_pass_pool == &pool;
+}
 void* allocate_static_native_material_pass_slot_00b41820() {
     return canonical_pass_pool->allocate_slot_00b41210();
 }
