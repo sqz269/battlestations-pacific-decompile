@@ -1,5 +1,7 @@
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_shader_global_readers.hpp"
+#include "bsp/wire_goal4_chain580_switches.hpp"
 #include <cstring>
 #include <exception>
 #include <new>
@@ -159,7 +161,22 @@ void read_native_shader_descriptor_00b43b00(NativeShaderDescriptorStorage& descr
         s.release_value(0x00b442b0);
         if(render_present) {
             s.lookup("RenderStates",0x00b442ca);
-            auto* definitions=context.definitions_0108fe90;
+            auto* definitions=[&] {
+                if constexpr (kWireGoal4Chain580Bound) {
+                    // B400F0 is MOV EAX,[0108FE90]; RET (bsp.py show).
+                    // DescriptorGraph borrows the renderer's canonical cell.
+                    // Replace its one read here, after the Lua lookup; an
+                    // independently bound fixture keeps its own publication.
+                    if (&context.definitions_0108fe90 ==
+                        &native_shader_state_definitions_cell_0108fe90())
+                        return static_cast<NativeShaderStateDefinitionsStorage*>(
+                            native_shader_state_definitions_00b400f0());
+                    return context.definitions_0108fe90;
+                } else {
+                    auto* definitions=context.definitions_0108fe90;
+                    return definitions;
+                }
+            }();
             if(!definitions)throw std::logic_error("descriptor RenderStates requires actual published0108FE90");
             s.site=0x00b442e9;
             read_native_shader_state_table_00b579b0(descriptor.pairs_b8,definitions->render_04,

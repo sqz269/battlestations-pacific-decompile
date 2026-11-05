@@ -1,4 +1,6 @@
 #include "bsp/native_compiled_shader_reflection.hpp"
+#include "bsp/native_shader_global_readers.hpp"
+#include "bsp/wire_goal4_chain580_switches.hpp"
 #include <d3dx9shader.h>
 #include <array>
 #include <cstring>
@@ -203,8 +205,25 @@ void reflect_native_compiled_shader_00b3aea0(const std::uint32_t* bytecode,
                 require(name != nullptr, "D3DX FLOAT descriptor has no readable name");
                 frame.lookup_started = true;
                 construct_name(frame.lookup_name, name, context.strings);
-                auto* const definition = find_native_shader_constant_00b5b960(
-                    context.actual_registry_0108fe94, &frame.lookup_name);
+                auto* const definition = [&] {
+                    if constexpr (kWireGoal4Chain580Bound) {
+                        // B34490 is MOV EAX,[0108FE94]; RET (bsp.py show).
+                        // CompilerOwnersGraph borrows the same canonical cell
+                        // published by the actual renderer constructor. Read
+                        // it once at the existing lookup point, after name
+                        // construction; preserve separate fixture bindings.
+                        void* const registry = &context.actual_registry_0108fe94 ==
+                            &native_shader_system_registry_cell_0108fe94()
+                            ? native_shader_system_registry_00b34490()
+                            : context.actual_registry_0108fe94;
+                        return find_native_shader_constant_00b5b960(
+                            registry, &frame.lookup_name);
+                    } else {
+                        auto* const definition = find_native_shader_constant_00b5b960(
+                            context.actual_registry_0108fe94, &frame.lookup_name);
+                        return definition;
+                    }
+                }();
                 destroy_native_string_header_0041dd20(&frame.lookup_name, context.strings);
                 frame.lookup_started = false;
                 bool accepted = true;

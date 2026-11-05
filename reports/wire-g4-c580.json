@@ -1,0 +1,58 @@
+{
+  "chain": 580,
+  "slot": "g4-w5",
+  "run": 1196,
+  "switch": "bsp::kWireGoal4Chain580Bound",
+  "picked": "Canonical shader registry and state-definition publication reads",
+  "newly_wired": ["00b34490", "00b400f0"],
+  "rows": [
+    {
+      "native": "00b34490",
+      "status": "wired",
+      "host_site": "src/native_compiled_shader_reflection.cpp:reflect_native_compiled_shader_00b3aea0",
+      "evidence": "bsp.py show 00B34490: the whole body returns DAT_0108FE94. native_shader_global_readers.cpp owns that canonical Source cell. GameNativeRendererApplication::Impl::system_publication borrows it; the renderer constructor publishes the actual B5BF70 registry through that reference. CompilerOwnersGraph::reflection borrows the same reference.",
+      "behavior": "For that canonical binding, replace the existing publication read after lookup-name construction with the existing getter and pass its result to the existing B5B960 lookup exactly once. Comparing cell addresses does not read either publication. Independently bound fixture cells retain their existing read. OFF retains the original lookup."
+    },
+    {
+      "native": "00b400f0",
+      "status": "wired",
+      "host_site": "src/native_shader_descriptor_reader.cpp:read_native_shader_descriptor_00b43b00",
+      "evidence": "bsp.py show 00B400F0: the whole body returns DAT_0108FE90. GameNativeRendererApplication::Impl::definitions borrows the canonical Source cell populated by construct_native_shader_state_definitions_00b585a0. DescriptorGraph::reader borrows the same cell.",
+      "behavior": "Replace the one RenderStates publication read after the existing Lua lookup with the existing getter when the context borrows the canonical cell. Preserve the null check, existing state-table consumer, independent fixture bindings, and all subsequent reads. OFF retains the original read."
+    },
+    {"native":"00b253e0","status":"skipped","host_site":"src/native_d3d9_shader_construction.cpp:remove_native_vertex_shader_registry_00b253e0","reason":"Existing shader lifetime and registration code already calls this body; a new removal there would repeat work."},
+    {"native":"00b25450","status":"skipped","host_site":"src/native_d3d9_shader_construction.cpp:remove_native_pixel_shader_registry_00b25450","reason":"Existing shader lifetime and registration code already calls this body; a new removal there would repeat work."},
+    {"native":"00b1cb50","status":"skipped","host_site":"src/native_main_scene_submission.cpp:main scene submission","reason":"Existing submission already calls the body; an enabled entry-reachable submission operation supplying its actual metadata is missing."},
+    {"native":"00b1bf50","status":"skipped","host_site":"src/native_render_queue_access.cpp:set_native_last_render_command_metadata_00b1cb50","reason":"The potential metadata-copy replacement would remain under the unlinked queue setter; a live actual metadata command consumer is missing upstream."},
+    {"native":"00b1d910","status":"skipped","host_site":"src/native_render_command_preparation.cpp:set_native_render_command_diagnostic_00b1d910","reason":"No live command-diagnostic assignment site with its actual source string header and matching pool binding was identified."},
+    {"native":"00b20090","status":"skipped","host_site":"src/native_render_resource_init.cpp:depth-surface capture","reason":"Existing resource initializers already call this getter; no additional live initialization operation was established in this packet."},
+    {"native":"00b18d60","status":"skipped","host_site":"src/native_material_effect_owner.cpp:initialize_native_material_effect_with_texture_cache_00b407a0","reason":"The live cache-aware constructor already executes the shared base initialization kernel; the other entry would bypass its cache binding or repeat initialization."},
+    {"native":"00b92440","status":"skipped","host_site":"src/native_skinned_animation_item.cpp:append_values/assign_native_animation_values_00b926e0","reason":"Existing array helpers already call reserve; a live actual skinned-animation record producer and consumer are missing upstream."},
+    {"native":"00b1b830","status":"skipped","host_site":"src/game_native_mission_material_refresh.cpp:reflection-cube-map parameter write","reason":"The existing material-refresh implementation already calls the body with actual receiver and headers; a new enabled refresh caller was not established."},
+    {"native":"00604f30","status":"skipped","host_site":"src/game_hosts_hud.cpp:cockpit screen query","reason":"Missing live plane-effects screen owner and its plane at +B8h and cockpit mode at +FCh; cockpit_screen_wanted is false."},
+    {"native":"005f98f0","status":"skipped","host_site":"src/game_hosts_ai.cpp:friendly capture query","reason":"Missing live coordinator/world-unit capture graph supplying actual game+19CCh entities; the typed coordinator path remains load-gated."},
+    {"native":"00b6fc60","status":"skipped","host_site":"src/native_tagged_leaf_b6_16e.cpp:bsp_tagged_b6_16e_00b6fc60","reason":"Its recovered callers require actual ocean-beam/lightning-storm camera-position consumers; neither live owner path was established in this packet."},
+    {"native":"00b726a0","status":"skipped","host_site":"src/native_tagged_leaf_b78_16g.cpp:bsp_tagged_b78_16g_00b726a0","reason":"The recovered caller is the tree-group-type constructor; a live tree-group owner consuming its actual +98h subobject is missing."},
+    {"native":"00b72b30","status":"skipped","host_site":"src/native_tagged_leaf_b78_16g.cpp:bsp_tagged_b78_16g_00b72b30","reason":"The recovered caller is the tree-group-type constructor; a live matching owner consuming the actual +50h word is missing."},
+    {"native":"00b343f0","status":"skipped","host_site":"src/native_shader_global_readers.cpp:native_shader_register_limit_00b343f0","reason":"The baseline readiness already reports this getter called from reachable code; another call is not additional wiring."}
+  ],
+  "validation": {
+    "baseline_commit": "2eac390f24",
+    "baseline_readiness_wired": 9907,
+    "final_readiness_wired": 9909,
+    "baseline_called_reconstructed_addresses": 4985,
+    "final_called_reconstructed_addresses": 4987,
+    "build": "scripts/build.ps1 passed with reconstructed_math, tool_tests, cc462_loading_config and cc464_vfs_stream_reader (4/4).",
+    "float_math_changed": false,
+    "diff_check": "git diff --check passed",
+    "call_graph": {
+      "build": "build/win32 Release; python tools/call_graph.py rebuilt after the successful build",
+      "00b34490": "REACHABLE native_shader_system_registry_00b34490 at 104F8BF0; one call at 1052D5B2 from reflect_native_compiled_shader_00b3aea0",
+      "00b400f0": "REACHABLE native_shader_state_definitions_00b400f0 at 104F8BD0; one call at 104CB033 from read_native_shader_descriptor_00b43b00",
+      "entry_paths": "WinMainCRTStartup -> WinMain -> GameStartupHost initialization -> GameNativeGuiEffectApplication -> actual descriptor/compiled-shader children -> the new getter calls. The shortest printed paths select the optional GUI effect probe; the same effect application is also constructed by ordinary StartupShaderPreload::open, GUI rendering, mission-model and raw default-text owners.",
+      "normal_consumer_evidence": "src/game_native_renderer_startup_preload.inc:StartupShaderPreload::open constructs the existing effect application and calls MissionShipShaderPreloadGraph::create with its native_effect_cache. src/game_native_gui_render_application.cpp:compose_effect_services and src/game_native_mission_model.inc construct the same actual application."
+    },
+    "game_run": false,
+    "limits": "Source integration and built-executable reachability only. No live shader compilation/gameplay execution, native address placement, or new drop-in ABI claim. No reconstructed bodies or owners were duplicated."
+  }
+}
