@@ -7,7 +7,7 @@
       "native": "00b7b610",
       "status": "wired",
       "host_site": "src/native_light_lifetime.cpp: delete_native_directional_light_storage_00b7c820; src/directional_light_owner.cpp: delete_native_directional_light_00b7c820",
-      "evidence": "Native 00B7C835..00B7C83B and 00B7B610..00B7B61B both push the same light slot and call 00B7B2F0 on 01090154. GameNativeResourcePoolProcess::initialize_directional_light_once_00cd8080 already binds this canonical companion. Both callers check that identity before invoking the existing wrapper; the previous direct return is retained unchanged in the disabled switch arm.",
+      "evidence": "Native 00B7C835..00B7C83B and 00B7B610..00B7B61B both push the same light slot and call 00B7B2F0 on 01090154. GameNativeResourcePoolProcess::initialize_directional_light_once_00cd8080 already binds this canonical companion. Both callers use a nonthrowing identity query: canonical pools invoke the existing wrapper, while independent or unbound pools retain direct returns to their own allocator state. The previous direct return remains unchanged in the disabled switch arm.",
       "abi": "Existing ordinary C++ adapter; original wrapper takes the slot in ECX, binds ECX=01090154, calls 00B7B2F0, and RETs. No binary ABI compatibility claim."
     },
     {
@@ -72,14 +72,42 @@
     "final_readiness": "python tools/wire_readiness.py: 9936 wired (baseline 9935)",
     "call_graph": "python tools/call_graph.py: 5005/5523 reconstructed addresses called, up from baseline 5004/5522",
     "wrapper_callers": [
-      "104DC187: NativeDirectionalLightStorageReference::delete_scalar_00b7c820 (raw scalar body inlined)",
-      "1052151E: delete_native_directional_light_00b7c820"
+      "104DC18B: NativeDirectionalLightStorageReference::delete_scalar_00b7c820 (raw scalar body inlined)",
+      "105214E2: delete_native_directional_light_00b7c820"
     ],
     "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost -> GameNativeRendererApplication::drain_singletons -> MissionShipGraph::after_native_drain -> DirectionalLightReference::release_zero_references -> delete_native_directional_light_00b7c820 -> return_directional_light_slot_00b7b610 (destructor/vtable/EH references are represented in the static graph)",
     "native_evidence": [
       "python tools/bsp.py show 00b7b610 --asm --lines 20",
       "python tools/bsp.py show 00b7c820 --asm --lines 32"
     ],
-    "limits": "Build and executable call-graph evidence only; the game was not run. No float arithmetic changed and no new address-suffixed body was created."
+    "limits": "Win32 build, executable call graph and existing installed-asset D3D9 diagnostic probe checked; the game was not run. No float arithmetic changed and no new address-suffixed body was created."
+  },
+  "review_round_1": {
+    "review_run": 1241,
+    "reviewed_head": "eae8daf142034690823138146cad76a98671591e",
+    "findings": [
+      {
+        "id": 1,
+        "severity": "P2",
+        "status": "fixed",
+        "finding": "Throwing canonical-pool checks rejected valid independent pools after light destruction, including MeshLightShutdown cleanup.",
+        "change": "DirectionalLightPool::is_static_binding() is a noexcept pointer comparison that returns false when unbound or bound to another companion. Both scalar deletion implementations use 00B7B610 only for the canonical pool and call their supplied pool directly otherwise. The original flags test, teardown order, returned address and switch-off arms are preserved; no process binding is changed."
+      }
+    ],
+    "validation": {
+      "build": "scripts/build.ps1 passed Win32 Release and all five CTests after the code change",
+      "call_graph": "5005/5523 reconstructed addresses remain called; 00B7B610 remains entry-reachable from both changed scalar deletion implementations at 104DC18B and 105214E2",
+      "readiness": "python tools/wire_readiness.py completed after the fix: 9936 wired; 00B7B610 remains called with two live callers",
+      "mesh_probe_command": "build/win32/Release/bsp_d3d9_probe.exe \"I:/SteamLibrary/steamapps/common/Battlestations Pacific/interface/textures/menu_dxt1_2.dds\"",
+      "mesh_probe_exit_code": 0,
+      "mesh_probe_log": "local/output/wire-g4-c599-review1-mesh-probe-pass.txt",
+      "mesh_probe_log_sha256": "2c985be0f5451b761ece01fcd54de320feac4f5e685ca5742e32753b9372d561",
+      "mesh_probe_results": [
+        "Installed light owner: native_pool_types_config_canonical_registry_cleanup=1 type_counters_destroyed=1 shared_lifetime_checked=1",
+        "Installed mesh draw: hr=0x00000000 checked=1 error=",
+        "build_mesh_system_constants completed MeshLightShutdown::close(), emptied the scene registry, trimmed the independent pool to zero slabs and verified recursion_24 == 0"
+      ],
+      "probe_input_note": "Two initial attempts returned 1 before reaching the mesh path because the installed common_dxt5_1.dds and common_dxt1.dds both contain DXT5 headers and do not meet the probe's DXT1 input requirement. The successful run uses header-verified menu_dxt1_2.dds (1024x1024, DXT1, 524416 bytes)."
+    }
   }
 }

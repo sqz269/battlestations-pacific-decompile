@@ -193,9 +193,14 @@ void* delete_native_directional_light_00b7c820(DirectionalLightOwner& owner,
     if constexpr (kWireGoal4Chain599Bound) {
         if (flags & 1u) {
             // Same 00B7C835..00B7C83B pool return as the raw-storage caller;
-            // 00B7B610 preserves its actual slot and canonical 01090154 owner.
-            owner.pool.require_static_binding();
-            return_directional_light_slot_00b7b610(actual_slot);
+            // only the canonical 01090154 owner uses its static adapter.
+            // The mesh probe and other independently supplied pools retain
+            // their own direct-return path without rebinding process state.
+            if (owner.pool.is_static_binding()) {
+                return_directional_light_slot_00b7b610(actual_slot);
+            } else {
+                owner.pool.return_raw_slot_00b7b2f0(actual_slot);
+            }
         }
     } else {
     if (flags & 1u) owner.pool.return_raw_slot_00b7b2f0(actual_slot);

@@ -44,8 +44,9 @@ public:
     DirectionalLightPoolStorage& storage() noexcept { return storage_; }
     const DirectionalLightPoolStorage& storage() const noexcept { return storage_; }
     static std::uint32_t live_slab_index(const void* slot) noexcept;
-    // Admit the static-return adapter only for the canonical 01090154 companion.
-    void require_static_binding() const;
+    // Select the static adapter only for the canonical 01090154 companion;
+    // independent pools retain their direct-return path, including when unbound.
+    bool is_static_binding() const noexcept;
 
 private:
     AllocatorListDomain& allocator_list_;

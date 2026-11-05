@@ -192,11 +192,14 @@ void* delete_native_directional_light_storage_00b7c820(void* light,
         if constexpr (kWireGoal4Chain599Bound) {
             // bsp.py show 00B7C820 --asm: B7C835..B7C83B returns this exact
             // slot to 01090154 after teardown and the low-byte flags&1 test.
-            // 00B7B610..00B7B61B performs that same B7B2F0 call. Verify the
-            // supplied companion is the bound process pool before using it;
-            // neither the slot nor its allocator state is copied or rebound.
-            pool.require_static_binding();
-            return_directional_light_slot_00b7b610(light);
+            // 00B7B610..00B7B61B performs that same B7B2F0 call for the bound
+            // process pool. Independent supplied pools (including an unbound
+            // process adapter) must still return to their own allocator state.
+            if (pool.is_static_binding()) {
+                return_directional_light_slot_00b7b610(light);
+            } else {
+                pool.return_raw_slot_00b7b2f0(light);
+            }
         } else {
         pool.return_raw_slot_00b7b2f0(light);
         }
