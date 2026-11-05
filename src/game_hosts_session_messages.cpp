@@ -1,5 +1,6 @@
 // cc15-sm1: host-owned image memory for session messages. See the header.
 #include "bsp/game_hosts_session_messages.hpp"
+#include "bsp/wire_goal4_chain565_switches.hpp"
 #include "bsp/wire_goal4_chain527_switches.hpp"
 #include "bsp/native_plane_session_message_lifetime.hpp"
 #include "bsp/wire_goal4_chain506_switches.hpp"
@@ -582,9 +583,42 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
     NativeSessionMessage95 sent{};
     // Evidence: bsp.py show 0071D340 --asm: MOVSS copies at 0071D36A..3A4,
     // presence 1, then route flags 7. Use that existing sender body once;
-    // 0071CC20's FLD/FSTP copies would change signaling-NaN/FP-status behavior.
+    // exceptional encodings keep its MOVSS payload construction below.
     const auto posted = gameplay_seg38_cc13::add_user_path_point_message_0071d340(
         {point[0], point[1], point[2]});
+    if constexpr (kWireGoal4Chain565Bound) {
+        const float payload[3]{posted.point.x, posted.point.y, posted.point.z};
+        // Evidence: bsp.py show 0071CC20 --asm, CC47..CC59, versus
+        // 0071D340 --asm, D36A..D3A4. Both produce the same real 5Fh message,
+        // but the shared constructor uses FLD/FSTP and the inlined sender
+        // uses MOVSS. Admit only normal binary32 values and signed zeros:
+        // their copies are exact in every x87 rounding/precision mode and
+        // raise no FP exceptions. Test the bits without inspecting an sNaN
+        // through floating-point instructions. Other encodings retain the
+        // existing transport construction below.
+        bool exact_x87_copy = true;
+        for (const float& component : payload) {
+            std::uint32_t bits;
+            std::memcpy(&bits, &component, sizeof bits);
+            const auto magnitude = bits & 0x7fffffffu;
+            const auto exponent = magnitude & 0x7f800000u;
+            if (magnitude != 0 && (exponent == 0 || exponent == 0x7f800000u))
+                exact_x87_copy = false;
+        }
+        if (exact_x87_copy) {
+            construct_native_session_message95_value_0071cc20(&sent, payload,
+                static_cast<std::uint8_t>(posted.add_2c), image.context95, image.profile95);
+        } else {
+            construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
+            sent.header.sender_18 = 0;
+            sent.header.relay_1a = 0;
+            sent.header.flag_1c = 0;
+            sent.header.base.delivery_04 = 1;
+            sent.header.base.profile_00 = image.profile95.slots;
+            std::memcpy(sent.vector_20, payload, sizeof payload);
+            sent.present_2c = static_cast<std::uint8_t>(posted.add_2c);
+        }
+    } else {
     // The native header fields the semantic sender leaves to its transport:
     // 0071D361 base construct, 0071D38B..39C extended header and profile.
     construct_native_session_message_0075b430(&sent.header.base, posted.type, image.session);
@@ -596,6 +630,7 @@ std::shared_ptr<NativeSessionMessage95> HostSessionMessages::queue_user_path_poi
     const float payload[3]{posted.point.x, posted.point.y, posted.point.z};
     std::memcpy(sent.vector_20, payload, sizeof payload);
     sent.present_2c = static_cast<std::uint8_t>(posted.add_2c);
+    }
     LocalStream stream;
     write_native_session_message95_0071cca0(&sent, &stream.out, image.context95);
     destroy_native_session_message95_0071cdc0(&sent);
