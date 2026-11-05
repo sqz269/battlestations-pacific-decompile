@@ -10,8 +10,6 @@
 #include "bsp/wire_goal4_chain392_switches.hpp"
 #include "bsp/wire_goal4_chain430_switches.hpp"
 #include "bsp/wire_goal4_chain465_switches.hpp"
-#include "bsp/wire_goal4_chain476_switches.hpp"
-#include "bsp/wire_goal4_chain480_switches.hpp"
 #include "bsp/wire_goal4_chain497_switches.hpp"
 #include "bsp/game_pending_class_storage.hpp"
 #include "bsp/classes_seg7_cc13.hpp"
@@ -39,8 +37,7 @@
 #include "bsp/native_enum_dictionary_lookup.hpp"
 #include "bsp/native_enum_node_pool.hpp"
 #include "bsp/native_property_library_lookup.hpp"
-#include "bsp/native_property_library_readers.hpp"
-#include "bsp/native_scene_name_node_holder.hpp"
+#include "bsp/native_property_library_insert.hpp"
 #include "bsp/native_property_tree_library_storage.hpp"
 #include "bsp/native_enum_dictionary_word_getters.hpp"
 #include "bsp/native_enum_map_lifetime.hpp"
@@ -307,115 +304,112 @@ struct PropertyGroupDefinition {
     ScenePropertyBlock block;
 };
 
-// Source view of the loaded library's group-name table. Its mapped words point
-// to the actual host-owned group records whose blocks feed inheritance/entity
-// defaults, rather than Original-layout 114h bags. The lookup bodies only borrow
-// opaque node+08h words; no native bag dispatcher/lifetime sees those pointers.
-// The 10Ch root, 14h E17540 slots, pooled keys and 64 chains are genuine native
-// storage. This is a typed host binding, not an Original class/thiscall ABI.
-class LibraryGroupNameIndex final {
+bool library_group_name_is_native_ascii(const std::string& name) {
+    return std::none_of(name.begin(), name.end(),
+        [](unsigned char c) { return c == 0 || c >= 0x80; });
+}
+
+// Chain 620: the library name table now owns genuine native bags, rather than
+// placing host PropertyGroupDefinition pointers in a bag-owning operation.
+// Parser metadata supplies spelling/order and unsupported payloads; admitted
+// complete trees are read back from the mapped bag for inheritance/defaults.
+class LibraryOwningGroupNameIndex final {
 public:
-    LibraryGroupNameIndex()
-        : strings_(game_native_string_process()), readers_(strings_), pool_(node_pool()) {
+    LibraryOwningGroupNameIndex()
+        : strings_(game_native_string_process()), insertion_(strings_, pools()) {
         initialize_native_property_tree_library_storage_008f5670(owner_);
     }
-    ~LibraryGroupNameIndex() {
-        // This view borrows its mapped group records: retire only its own keys
-        // and E17540 slots, before the retained process pools' atexit callbacks.
-        if constexpr (kWireGoal4Chain480Bound) {
-            // End all table borrows before returning any node to its pool.
-            // The mapped group records are borrowed and remain owned by groups_.
-            std::memset(owner_ + 8, 0, sizeof(owner_) - 8);
-            for (void* node : nodes_) {
-                if (node == nullptr) continue;
-                const std::uint32_t detached[2] = {0, 0};
-                std::memcpy(static_cast<std::byte*>(node) + 8, detached, sizeof(detached));
-            }
-            // bsp.py show 008F3DC0 --asm: 3DCA..3DE1 releases the pooled
-            // key, 3DE7 selects E17540, then 3DF1 clears the owning DWORD.
-            // These are the genuine stable holder slots for the nodes created
-            // by publish(), using that same retained string/physical process.
-            // Source reuse at host teardown; no Original thiscall ABI claim.
-            for (void*& node : nodes_) {
-                release_native_property_library_node_holder_008f3dc0(&node,
-                    strings_, game_native_physical_pool_process());
-            }
-        } else {
-            for (void* node : nodes_) {
-                if (node == nullptr) continue;
-                destroy_native_string_header_0041dd20(node, strings_.raw_context());
-                return_native_enum_node_0043b0a0(pool_, node);
-            }
-        }
+    ~LibraryOwningGroupNameIndex() {
+        // bsp.py show 008F56A0: whole root destruction clears map+4 twice.
+        // Retire bags/keys/nodes while both physical pools and strings survive.
+        destroy_native_property_tree_library_008f56a0(owner_, insertion_.lifetime());
     }
-    LibraryGroupNameIndex(const LibraryGroupNameIndex&) = delete;
-    LibraryGroupNameIndex& operator=(const LibraryGroupNameIndex&) = delete;
+    LibraryOwningGroupNameIndex(const LibraryOwningGroupNameIndex&) = delete;
+    LibraryOwningGroupNameIndex& operator=(const LibraryOwningGroupNameIndex&) = delete;
 
     static bool supports(const std::string& name) {
-        return std::none_of(name.begin(), name.end(),
-            [](unsigned char c) { return c == 0 || c >= 0x80; });
+        return name.size() < 0x7fffffffu && library_group_name_is_native_ascii(name);
     }
 
-    void publish(const std::vector<PropertyGroupDefinition>& groups) {
-        // Names/order never change on reopening. Allocate each name slot once;
-        // refresh borrowed mapped pointers after a possible groups_ relocation.
-        // Publication and all readers run serially on the scene-loading thread.
-        nodes_.reserve(groups.size());
-        while (nodes_.size() < groups.size()) {
-            const auto& row = groups[nodes_.size()];
-            void* node = nullptr;
-            if (supports(row.name)) {
-                node = allocate_native_enum_node_004e7c00(pool_);
-                if (node == nullptr) throw std::bad_alloc();
-                // Preserve the allocator membership word at slot+10h.
-                const std::uint32_t empty_header[2] = {0, 0};
-                std::memcpy(node, empty_header, sizeof(empty_header));
-            }
-            nodes_.push_back(node);
-            if (node == nullptr) continue;
-            construct_native_string_header_0041e870(node, strings_.raw_context(), row.name.c_str());
-            const auto* mapped = &row;
-            std::memcpy(static_cast<std::byte*>(node) + 8, &mapped, sizeof(mapped));
-            const auto bucket = native_property_library_key_bucket_004689d0(
-                node, strings_.library_empty_00e18560());
-            void* head;
-            std::memcpy(&head, owner_ + 0x0c + 4 * bucket, sizeof(head));
-            std::memcpy(static_cast<std::byte*>(node) + 0x0c, &head, sizeof(head));
-            std::memcpy(owner_ + 0x0c + 4 * bucket, &node, sizeof(node));
-            std::uint32_t count;
-            std::memcpy(&count, owner_ + 8, sizeof(count));
-            ++count;
-            std::memcpy(owner_ + 8, &count, sizeof(count));
+    void publish(PropertyGroupDefinition& group, SceneNativeEnumSource* enums) {
+        SceneNumericPropertyMerge projection({}, {}, true, enums);
+        std::unique_ptr<void, BagDeleter> incoming(
+            projection.make_owned_complete_bag(group.block),
+            BagDeleter{&insertion_.lifetime().bags()});
+        Query query(strings_, group.name.c_str());
+        if (!incoming) {
+            // A newly raw/unsupported group is read from the parser's record.
+            // Keep any previous admitted tree owned but unused until a later
+            // replacement or teardown; never publish a fabricated empty bag.
+            void* const node = find_node(query.bytes);
+            const auto previous = rows_.find(node);
+            if (previous != rows_.end()) previous->second.current = false;
+            return;
         }
-        for (std::size_t i = 0; i < nodes_.size(); ++i) {
-            if (nodes_[i] == nullptr) continue;
-            const auto* row = &groups[i];
-            std::memcpy(static_cast<std::byte*>(nodes_[i]) + 8, &row, sizeof(row));
-        }
+        // These are the actual group's inherited/authored values. Consume
+        // native payloads before retaining host metadata for the readers.
+        group.block = projection.read_complete_bag(incoming.get(), group.block);
+        // bsp.py show 008F29A0: map is root+4; hit destroys the previous
+        // owning bag, miss allocates an E17540 node and copies the pooled key.
+        // The fresh graph is disjoint from the old mapping. Unsupported trees
+        // take the parser-owned path above, without calling this insertion.
+        // Source interface only; Original thiscall/RET8/FH3 is not asserted.
+        insert_or_replace_native_property_library_entry_008f29a0(
+            owner_ + 4, query.bytes, incoming.get(), insertion_);
+        incoming.release(); // The native map is now the sole bag owner.
+        void* const node = find_node(query.bytes);
+        if (node == nullptr) throw std::logic_error("published library group is missing");
+        rows_[node] = {group, true};
     }
 
-    const PropertyGroupDefinition* find(const std::string& name) {
-        // bsp.py show 008F2DB0 / 00469B60 / 00468ED0: the contains reader
-        // admits misses; 00469B60 requires a hit and reads node+08h BEFORE
-        // releasing its query key. Both share this same current string process
-        // and its distinct E18560 library / E17654 query empty cells.
-        if (!contains_native_property_library_name_008f2db0(owner_, name.c_str(), readers_))
-            return nullptr;
-        return reinterpret_cast<const PropertyGroupDefinition*>(
-            read_native_property_library_word_00469b60(owner_, name.c_str(), readers_));
+    const PropertyGroupDefinition* find(const std::string& name,
+        SceneNativeEnumSource* enums) {
+        Query query(strings_, name.c_str());
+        void* const node = find_node(query.bytes);
+        if (node == nullptr) return nullptr;
+        auto found = rows_.find(node);
+        if (found == rows_.end()) throw std::logic_error("library group metadata is missing");
+        if (!found->second.current) return nullptr;
+        void* bag;
+        std::memcpy(&bag, static_cast<const std::byte*>(node) + 8, sizeof(bag));
+        SceneNumericPropertyMerge projection({}, {}, true, enums);
+        found->second.row.block = projection.read_complete_bag(bag, found->second.row.block);
+        return &found->second.row;
     }
 
 private:
-    static void* node_pool() {
-        auto& pools = game_native_physical_pool_process();
-        pools.initialize_property_library_node_pool_once_00cc8a70();
-        return pools.property_library_node_pool_storage_00e17540();
+    struct Query {
+        GameNativeStringProcess& strings;
+        alignas(4) std::byte bytes[8];
+        Query(GameNativeStringProcess& s, const char* text) : strings(s) {
+            construct_native_string_header_0041e870(bytes, strings.raw_context(), text);
+        }
+        ~Query() { destroy_native_string_header_0041dd20(bytes, strings.raw_context()); }
+    };
+    struct BagDeleter {
+        NativeScenePropertyLifetimeContext* lifetime;
+        void operator()(void* bag) const {
+            scalar_delete_native_scene_property_bag_008f59e0(bag, 1u, *lifetime);
+        }
+    };
+    static GameNativePhysicalPoolProcess& pools() {
+        auto& process = game_native_physical_pool_process();
+        process.initialize_property_node_pool_once_00cc8a30();
+        process.initialize_property_library_node_pool_once_00cc8a70();
+        return process;
     }
+    void* find_node(const void* query) {
+        std::uint32_t bucket;
+        return find_native_property_library_node_00468ed0(owner_ + 4, query, bucket,
+            strings_.library_empty_00e18560(), strings_.query_empty_00e17654());
+    }
+
     GameNativeStringProcess& strings_;
-    NativePropertyLibraryReaderContext readers_;
-    void* pool_;
-    alignas(std::uint32_t) std::byte owner_[0x10c];
-    std::vector<void*> nodes_;
+    NativePropertyLibraryInsertContext insertion_;
+    alignas(4) std::byte owner_[0x10c];
+    // Stable node identities survive group-vector relocation and reopening.
+    struct Row { PropertyGroupDefinition row; bool current; };
+    std::map<void*, Row> rows_;
 };
 
 struct EnumTable {
@@ -668,21 +662,16 @@ public:
     }
 
     const PropertyGroupDefinition* group(const std::string& name) const {
-        if constexpr (kWireGoal4Chain476Bound) {
-            if (LibraryGroupNameIndex::supports(name)) {
-                return native_groups_ != nullptr ? native_groups_->find(name) : nullptr;
+        if (LibraryOwningGroupNameIndex::supports(name)) {
+            if (owning_native_groups_ != nullptr) {
+                if (const auto* row = owning_native_groups_->find(name, native_enum_source()))
+                    return row;
             }
-            // Non-ASCII/NUL-bearing names are outside the native key contract.
-            for (const PropertyGroupDefinition& row : groups_) {
-                if (equal_insensitive(row.name, name)) return &row;
-            }
-            return nullptr;
-        } else {
+        }
         for (const PropertyGroupDefinition& row : groups_) {
             if (equal_insensitive(row.name, name)) return &row;
         }
         return nullptr;
-        }
     }
 
     // 00438e10 is case insensitive everywhere the scene reader compares names,
@@ -754,7 +743,8 @@ private:
     std::vector<EnumTable> enums_;
     // Construct only in the ON library-load phase, not in the OFF host.
     std::unique_ptr<LibraryNativeEnums> native_enums_;
-    std::unique_ptr<LibraryGroupNameIndex> native_groups_;
+    // Destroy owning bags before the enum registry whose type-4 records borrow it.
+    std::unique_ptr<LibraryOwningGroupNameIndex> owning_native_groups_;
 };
 
 // The bag an entity hands 0046c550 is built in two steps by 0046cf40. Step 6
@@ -927,12 +917,10 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
         }
     }
     PropertyGroupDefinition* existing = nullptr;
-    if constexpr (kWireGoal4Chain476Bound) {
-        existing = const_cast<PropertyGroupDefinition*>(this->group(group.name));
-    } else {
+    // The owning index returns stable snapshots decoded from its native
+    // bag. Reopening still updates the parser's original group record.
     for (PropertyGroupDefinition& row : groups_) {
         if (equal_insensitive(row.name, group.name)) { existing = &row; break; }
-    }
     }
     // 008F6A7F reopens the existing bag. 008F5AB3 captures each parent with
     // flag 0 before the authored writes; 008F5110/008F4263 recursively clone.
@@ -960,9 +948,11 @@ void PropertyLibrary::add_group(PropertyGroupDefinition group) {
         group.block = std::move(captured);
         groups_.push_back(std::move(group));
     }
-    if constexpr (kWireGoal4Chain476Bound) {
-        if (native_groups_ == nullptr) native_groups_ = std::make_unique<LibraryGroupNameIndex>();
-        native_groups_->publish(groups_);
+    auto& published = existing != nullptr ? *existing : groups_.back();
+    if (LibraryOwningGroupNameIndex::supports(published.name)) {
+        if (owning_native_groups_ == nullptr)
+            owning_native_groups_ = std::make_unique<LibraryOwningGroupNameIndex>();
+        owning_native_groups_->publish(published, native_enum_source());
     }
 }
 

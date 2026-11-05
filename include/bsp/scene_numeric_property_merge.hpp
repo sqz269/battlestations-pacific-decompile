@@ -52,6 +52,19 @@ public:
     bool merge_child(const std::string& key, const ScenePropertyBlock* destination,
         const ScenePropertyBlock& source, ScenePropertyBlock& result);
 
+    // Chain 620: materialize a COMPLETE supported tree in a fresh heap-owned
+    // 114h root, using the same canonical string, inner-node and CRT domains.
+    // Null means unsupported and transfers nothing. A nonnull return transfers
+    // sole ownership to the caller, which must publish it into an owning native
+    // library or retire it with scalar_delete_native_scene_property_bag_008f59e0.
+    void* make_owned_complete_bag(const ScenePropertyBlock& source);
+
+    // Borrow a tree produced above (or its current owning library mapping).
+    // Only spelling/order/tokens come from metadata; all supported payloads,
+    // including nested records, are read from the actual native tree.
+    ScenePropertyBlock read_complete_bag(void* actual_bag,
+        const ScenePropertyBlock& metadata);
+
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
