@@ -1,0 +1,56 @@
+{
+  "chain": 613,
+  "slot": "g4-w4",
+  "switch": "bsp::kWireGoal4Chain613Bound",
+  "rows": [
+    {
+      "native": "00c321b0",
+      "status": "wired",
+      "host_site": "src/native_dyn_world_step.cpp: simulate_kernel -> reset_route (native site 00C5C586)",
+      "evidence": "The current engine profile child pointer in ECX reaches the existing reset entry once; recursive kernel remains unchanged."
+    },
+    {
+      "native": "00c4d980",
+      "status": "wired",
+      "host_site": "src/native_dyn_world_step.cpp: simulate_kernel -> flush_route (native site 00C5C5FF)",
+      "evidence": "The current world in ECX and original NativeDynWorldStepContext owner reach the existing flush entry once."
+    },
+    {
+      "native": "00c549d0",
+      "status": "wired",
+      "host_site": "src/native_dyn_collision_pass.cpp: pass_kernel -> update_route (native site 00C5756C)",
+      "evidence": "The current scene+B0h manifold-container pointer and original NativeDynCollisionPassContext owner reach the existing update entry once."
+    },
+    {
+      "native": "00c35480",
+      "status": "wired",
+      "host_site": "src/native_dyn_collision_pass.cpp: pass_kernel -> events_route (native site 00C57827)",
+      "evidence": "The current scene pointer reaches the existing contact-event entry once, including the native empty-pair path."
+    },
+    {
+      "native": "00c4b9b0",
+      "status": "skipped",
+      "host_site": "src/native_dyn_collision_pass.cpp: update_kernel / src/hull_terrain_contact.cpp: HullTerrainContactSolver::world_step",
+      "reason": "No missing live entry wiring: the built graph already shows four reachable calls from HullTerrainContactSolver::world_step; the adjacent private EDX-preserving kernel call was left unchanged."
+    }
+  ],
+  "validation": {
+    "initial_build": "scripts/build.ps1 passed all four CTests",
+    "final_build": "scripts/build.ps1 passed all four CTests",
+    "call_graph_before": {
+      "reconstructed_addresses_called": 5017,
+      "reconstructed_addresses_in_build": 5535
+    },
+    "call_graph_after": {
+      "reconstructed_addresses_called": 5021,
+      "reconstructed_addresses_in_build": 5539
+    },
+    "emitted_routes": "Capstone inspection of bsp_game.exe confirms ECX node/world inputs, original owner pointers, and RET / RET4 / RET8 cleanup at the four new routes.",
+    "body_changes": "Only call routing and noinline entry retention; no arithmetic or record mutation schedule changed.",
+    "limits": "Built entry reachability and emitted argument/stack inspection; game execution and drop-in native ABI compatibility were not tested.",
+    "readiness_wired_before": 9944,
+    "readiness_wired_after": 9948,
+    "switch_off_build": "scripts/build.ps1 passed all four CTests with kWireGoal4Chain613Bound=false; rebuilt graph returned to 5017 called reconstructed addresses.",
+    "switch_final": "kWireGoal4Chain613Bound=true"
+  }
+}

@@ -1,4 +1,5 @@
 #include "bsp/native_dyn_world_step.hpp"
+#include "bsp/wire_goal4_chain613_switches.hpp"
 #include <type_traits>
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native world step requires MSVC Win32 x87/SSE assembly.
@@ -26,6 +27,28 @@ void substep_kernel();
 void simulate_kernel();
 void flush_kernel();
 void reset_kernel();
+// 00C5C586 passes the actual child profile node in ECX; 00C5C5FF passes
+// the actual world in ECX. See bsp.py show 00c5c540 --asm and 00c321b0
+// --asm / 00c4d980 --asm. These routes retain the existing instruction
+// bodies and borrowed owner context, and replace each private-kernel call
+// with one call to its existing address-named entry point.
+void __fastcall reset_route(void* node){
+    if constexpr(kWireGoal4Chain613Bound){
+        reset_native_dyn_profile_tree_00c321b0(node);
+    }else{
+        __asm {mov ecx,node}
+        __asm {call reset_kernel}
+    }
+}
+void __fastcall flush_route(void* world,void*,Context* c){
+    if constexpr(kWireGoal4Chain613Bound){
+        flush_native_dyn_pending_bodies_00c4d980(world,*c->owner);
+    }else{
+        __asm {push c}
+        __asm {mov ecx,world}
+        __asm {call flush_kernel}
+    }
+}
 alignas(8) const std::uint64_t constant_00d7a398=0x3f0a36e2e0000000ULL;
 const char name_00d79f18[]={83,105,109,117,108,97,116,101,0};
 const char name_00d79f24[]={67,114,101,97,116,101,71,114,111,117,112,115,0};
@@ -1198,7 +1221,7 @@ __declspec(naked) void simulate_kernel(){
         je l_00c5c59f // 00c5c582
     l_00c5c584:
         mov ecx, dword ptr [ebx] // 00c5c584
-        call reset_kernel // 00c5c586
+        call reset_route // 00c5c586
         mov edx, dword ptr [esi + 8] // 00c5c58b
         mov eax, dword ptr [esi + 4] // 00c5c58e
         add ebx, 4 // 00c5c591
@@ -1245,7 +1268,7 @@ __declspec(naked) void simulate_kernel(){
         mov ecx, edi // 00c5c5f9
         mov dword ptr [esp + 01ch], edx // 00c5c5fb
         push dword ptr [ebp+12] // Borrowed context; original frame offsets retained.
-        call flush_kernel // 00c5c5ff
+        call flush_route // 00c5c5ff
         mov eax, dword ptr [edi + 0204h] // 00c5c604
         lea edx, [edi + 0208h] // 00c5c60a
         cmp eax, edx // 00c5c610
@@ -1470,8 +1493,8 @@ void NativeDynWorldStepCalls::create_groups_00c4b610(void* m,const NativeDynCont
 void NativeDynWorldStepCalls::integrate_positions_00c5b1b0(void* w,float dt,const CameraAxesCrtAccess& c){native_dyn_integrate_positions_00c5b1b0(w,dt,c);}
 void NativeDynWorldStepCalls::sleep_groups_00c4b550(void* m,const NativeDynContactGroupContext& c){native_dyn_sleep_contact_groups_00c4b550(m,c);}
 DynProfileScopeStorage* NativeDynWorldStepCalls::enter_profile_00c57020(DynProfileScopeStorage& s,U id,const char* name,const DynProfileScopeContext& c){return dyn_profile_scope_enter_00c57020(s,id,name,c);}
-void reset_native_dyn_profile_tree_00c321b0(void* node){__asm {mov ecx,node} __asm {call reset_kernel}}
-void flush_native_dyn_pending_bodies_00c4d980(void* world,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {mov ecx,world} __asm {call flush_kernel}}
+__declspec(noinline) void reset_native_dyn_profile_tree_00c321b0(void* node){__asm {mov ecx,node} __asm {call reset_kernel}}
+__declspec(noinline) void flush_native_dyn_pending_bodies_00c4d980(void* world,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {mov ecx,world} __asm {call flush_kernel}}
 void run_native_dyn_world_substep_00c5bb30(void* world,float dt,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {push dt} __asm {push world} __asm {call substep_kernel}}
 void simulate_native_dyn_world_00c5c540(void* world,float dt,const NativeDynWorldStepContext& c){Context context=bind(c);auto* p=&context;__asm {push p} __asm {push dt} __asm {mov ecx,world} __asm {call simulate_kernel}}
 } // namespace bsp
