@@ -612,10 +612,14 @@ void multi_menu_update_online_interface_006890b0(Raw menu, Fe5Host& host) {
     if (host.ingame_interface_00e198c4().p != nullptr) host.game_request_state_004d7920(0x10);
 }
 
-void* options_menu_construct_00689800(Raw menu, Fe5Host& host) {
-    host.front_end_manager_construct_base_00684e10(menu);
-    menu.at<std::uint32_t>(0) = kOptionsMenuVtable;
-    return menu.p;
+OptionsMenuManager* options_menu_construct_00689800(
+    OptionsMenuManager& menu, FrontEndManagerRegistry& registry) {
+    // 00689800 export: 00684E10 followed only by vtable 00CF78C4. Project
+    // onto the SAME base consumed by 006898C0/006840F0/004BAC20, as the main
+    // menu does. The three screen fields belong to Init, not this constructor.
+    front_end_manager_construct_base_00684e10(menu.base, registry);
+    menu.base.native_vtable = kOptionsMenuVtable;
+    return &menu;
 }
 
 void attract_screen_deactivate_00689c00(Raw screen, Fe5Host& host) {

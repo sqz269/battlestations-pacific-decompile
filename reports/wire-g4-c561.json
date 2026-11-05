@@ -1,0 +1,129 @@
+{
+  "run": 1154,
+  "goal": 4,
+  "chain": 561,
+  "owner": "agent/g4-w2",
+  "picked": "Options-manager constructor on the retained frontend owner, startup Init and lazy creation",
+  "switch": "bsp::kWireGoal4Chain561Bound",
+  "wired_before": 9887,
+  "wired_after": 9888,
+  "built": [
+    "Retained OptionsMenuManager in GameMenuHost::Impl, published by the existing 006898C0 Init",
+    "Single existing 00689800 body projected onto the same typed base and registry used by requests and teardown",
+    "Startup constructor/Init path and lazy constructor path, with unique registry insertion"
+  ],
+  "validation": {
+    "baseline_build": "scripts/build.ps1 passed all five tests",
+    "final_build": "scripts/build.ps1 passed all five tests",
+    "diff_check": "git diff --check passed",
+    "float_math_changed": false,
+    "call_graph": {
+      "00689800": {
+        "reachable": true,
+        "call_sites": 2,
+        "sites": [
+          "101600F9: MenuShellHost::create_manager_b8",
+          "10160215: MenuManagerHost::create_options_manager"
+        ],
+        "entry_path": "WinMainCRTStartup -> WinMain -> GameStartupHost initialization -> GameFrameHost::game_on_move -> GameMenuHost::frame -> Impl::advance_path -> MenuManagerHost::create_options_manager -> options_menu_construct_00689800"
+      },
+      "006898C0": "Entry-reachable call at 10160134 from MenuShellHost::create_manager_b8"
+    },
+    "readiness": "00689800 state=wired, called=true, call_sites=2, callers_live=2",
+    "game_run": false,
+    "abi_compatible": false
+  },
+  "remaining": "MenuManagerHost::create_screen supports main-menu classes only. Options Init therefore still records unsupported constructors and retains null screen slots. This packet establishes the manager consumed by Init/requests/teardown; it does not provide playable options screens or claim visual/runtime validation.",
+  "rows": [
+    {
+      "native": "00689800",
+      "status": "wired",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_options_manager and MenuShellHost::create_manager_b8",
+      "evidence": "bsp.py show 00689800: calls 00684E10, writes vtable 00CF78C4, returns this; no derived fields initialized"
+    },
+    {
+      "native": "005F6030",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_screen, requested by init_options_menu_006898c0",
+      "reason": "Missing retained options-screen image and OptionsLifetimeHost settings/page/allocation ownership; create_screen recognizes only main-menu classes."
+    },
+    {
+      "native": "00527D00",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_screen, requested by init_options_menu_006898c0",
+      "reason": "Missing retained control-layout screen image and registered flags/page consumer; the current factory recognizes only main-menu classes."
+    },
+    {
+      "native": "00555770",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuManagerHost::create_screen, requested by init_options_menu_006898c0",
+      "reason": "Missing retained control-binding screen image, Fe3InputHost and embedded scroller owner in this menu factory."
+    },
+    {
+      "native": "00689820",
+      "status": "skipped",
+      "host_site": "src/frontend_managers.cpp: service_pending_interface_requests_006840f0",
+      "reason": "Missing options-specific apply dispatch to map interface 0C..0E onto screen 0D..0F and the three live registered screen owners."
+    },
+    {
+      "native": "00689D90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_menu.cpp: MenuTitleInitHost::create_attract_screen",
+      "reason": "Missing retained attract-screen manager and FE_attract page/movie consumer; title initialization currently only records construction."
+    },
+    {
+      "native": "00AAC820",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: bind_movie_textures",
+      "reason": "Missing decoder-backed movie widget, node material and three player texture owners; this host opens no decoder/page."
+    },
+    {
+      "native": "00AB00C0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_mission_result.cpp: clear_movie_subtitles",
+      "reason": "Missing native widget subtitle vectors/text-object ownership; the host has only a dormant subtitle-schedule projection."
+    },
+    {
+      "native": "00A2B950",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group scoring",
+      "reason": "Missing retained AiGroupScoreList owner and producer for the sixteen native score terms; no insertion call is present in this host."
+    },
+    {
+      "native": "00A2BCC0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: group scoring",
+      "reason": "Missing retained AiGroupScoreList records produced by 00A2B950 for the selected group key."
+    },
+    {
+      "native": "00A2DEF0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_ai.cpp: defend candidate filtering",
+      "reason": "Already has an entry-reachable call in the baseline readiness output (called=true, call_sites=1); no new wiring required."
+    },
+    {
+      "native": "008750A0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave1_job_008750a0",
+      "reason": "Missing native per-group job object and worker scheduling state; the current host method is a logging callback."
+    },
+    {
+      "native": "00875B90",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave2_job_00875b90",
+      "reason": "Missing native per-group job object and worker scheduling state; the current host method is a logging callback."
+    },
+    {
+      "native": "00874FE0",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_wave3_job_00874fe0",
+      "reason": "Missing native per-group job object and worker scheduling state; the current host method is a logging callback."
+    },
+    {
+      "native": "00875160",
+      "status": "skipped",
+      "host_site": "src/game_hosts_fixed_step.cpp: GameFixedStepHost::run_interpolation_job_00875160",
+      "reason": "Missing native interpolation job object and worker scheduling state; the current host method is a logging callback."
+    }
+  ]
+}
