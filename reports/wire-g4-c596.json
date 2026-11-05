@@ -1,0 +1,110 @@
+{
+  "chain": 596,
+  "worker": "agent/g4-w4",
+  "base_head": "56af009d4a7255eb54e76fe48626433fcf3adcd5",
+  "switch": "kWireGoal4Chain596Bound",
+  "selection": "Reuse the reconstructed COMDAT-equivalent string predicate in the live input-vector map's existing key comparisons.",
+  "rows": [
+    {
+      "native": "00443cb0",
+      "status": "wired",
+      "host_site": "src/native_input_vector_map_index.cpp: less, used by index_native_input_word_vector_006a44b0, index_native_input_descriptor_vector_006a45c0, index_native_input_bit_vector_006a4ca0 and their tree insertion helpers",
+      "evidence": "bsp.py show --asm 00443cb0 and 00443d00: identical length-first predicate and right-data-before-left-data _stricmp call after their different native argument setup.",
+      "real_state": "Original actual input key headers and actual node+0x0c string headers are forwarded without copies, normalization, new constants or additional comparisons.",
+      "abi": "Existing ordinary C++ bool interface; the original CB0 ECX/stack RET4 ABI is not claimed.",
+      "call_sites": 30,
+      "entry_reachable": true
+    },
+    {
+      "native": "0076eaa0",
+      "status": "skipped",
+      "host_site": "src/native_string_ordering_wrappers.cpp: less_native_string_scalar_keys_0076eaa0",
+      "reason": "Original caller belongs to multiplayer scalar-key ordering; no single-player producer for its 16-byte records was established."
+    },
+    {
+      "native": "00b6fe20",
+      "status": "skipped",
+      "host_site": "src/native_camera_configuration_leaves.cpp: set_native_camera_clear_depth_00b6fe20",
+      "reason": "Fresh baseline readiness already reports this body called from entry-reachable code; no missing call remains to add."
+    },
+    {
+      "native": "00b93000",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeIds::initialize_derived",
+      "reason": "Already wired by chain587 through the actual base descriptor read; no missing call remains to add."
+    },
+    {
+      "native": "00b93bd0",
+      "status": "skipped",
+      "host_site": "src/native_mesh_subset_loading.cpp: NativeMeshResourceTypeIds::initialize_mesh_after_guard_check",
+      "reason": "Runtime initializer alternates source loads and stores and rechecks its guard, while the reached CRT path captures source words and an earlier guard decision; a matching runtime caller was not established."
+    },
+    {
+      "native": "00b19c70",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_type_ids.cpp: NativeTextureSourceTypeIds::initialize_texture_source_00c30310",
+      "reason": "Existing texture-source initialization already calls this parent; the missing named build symbol does not justify adding another initialization."
+    },
+    {
+      "native": "00c30310",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp: GameNativeTypeStorage::initialize_texture_source_types",
+      "reason": "Existing VFS startup already invokes this initialization with the real descriptor; no additional call is needed."
+    },
+    {
+      "native": "00c30360",
+      "status": "skipped",
+      "host_site": "src/game_native_type_storage.cpp: GameNativeTypeStorage::initialize_texture_source_types",
+      "reason": "Existing VFS startup already invokes this initialization with the real descriptor; no additional call is needed."
+    },
+    {
+      "native": "00c30460",
+      "status": "skipped",
+      "host_site": "src/native_texture_source_type_ids.cpp: initialize_native_animated_texture_source_type_00c30460",
+      "reason": "No reached caller requiring this descriptor-returning wrapper was established; the existing startup directly invokes its initialization body."
+    },
+    {
+      "native": "00444070",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_00444070",
+      "reason": "No live string-plus-float destination and scalar source were established in the selected input-vector maps."
+    },
+    {
+      "native": "004440c0",
+      "status": "skipped",
+      "host_site": "src/native_string_copy_construct.cpp: copy_construct_native_string_with_scalar_004440c0",
+      "reason": "No live string-plus-float record producer was established in the selected input-vector maps."
+    },
+    {
+      "native": "0043ea00",
+      "status": "skipped",
+      "host_site": "src/native_string_vector_erase_unordered.cpp: erase_native_string_vector_unordered_0043ea00",
+      "reason": "The selected live owners are vector-valued trees, with no actual unordered string-vector erase operation established."
+    },
+    {
+      "native": "00b3ceb0",
+      "status": "skipped",
+      "host_site": "src/native_shadow_texture_access.cpp: write_dimensions",
+      "reason": "The inspected typed shadow path needs an actual texture resolver binding before its reported-dimensions setter can run."
+    },
+    {
+      "native": "00bee060",
+      "status": "skipped",
+      "host_site": "src/native_frame_clock_actual.cpp: get_raw_timer_previous_00bee060",
+      "reason": "No missing reached caller consuming the real previous timestamp was established; the current work stays on input-key comparisons."
+    }
+  ],
+  "validation": {
+    "build": "scripts/build.ps1 passed, MSVC Win32 Release",
+    "tests": "4/4 passed: reconstructed_math, tool_tests, cc462_loading_config, cc464_vfs_stream_reader",
+    "called_addresses_before": 5001,
+    "called_addresses_after": 5002,
+    "text_wired_before": 9929,
+    "text_wired_after": 9930,
+    "call_graph": "python tools/call_graph.py; who 00443cb0; path 00443cb0",
+    "path": "WinMainCRTStartup -> GameStartupHost initialization -> GameNativeInputConfigurationApplication -> NativeInputKeyboardStorage::input_codes_006a44b0 -> index_native_input_word_vector_006a44b0 -> less_native_string_headers_00443cb0",
+    "float_math_changed": false,
+    "game_run": false,
+    "proof_boundary": "Build, tests, source equivalence and compiled entry reachability; no game execution or original ABI replacement claim."
+  }
+}
